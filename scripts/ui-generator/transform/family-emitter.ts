@@ -369,13 +369,19 @@ function injectDataAttributes(
   }
   const joined = attrs.join("\n  ");
 
-  // Prefer attaching next to every data-slot attribute (covers multi-root files).
-  if (/data-slot=/.test(source)) {
-    return source.replace(/data-slot=\{?[^}\s]+\}?/g, (m) => `${joined}\n  ${m}`);
+  // Only match real HTML attributes (line-leading), never inside class="...data-slot=..." utilities.
+  const attrDataSlot =
+    /(^|\n)([ \t]*)data-slot=(?:\{[^}]+\}|"[^"]*"|'[^']*'|[^\s>]+)/g;
+  if (attrDataSlot.test(source)) {
+    attrDataSlot.lastIndex = 0;
+    return source.replace(attrDataSlot, (m, lead, indent) => {
+      const prefix = attrs.map((a) => `${indent}${a}`).join("\n");
+      return `${lead}${prefix}\n${indent}${m.slice(lead.length)}`;
+    });
   }
 
-  // Attach before every class={...}
-  if (/class=\{/.test(source)) {
+  // Attach before line-leading class={...} (not class="static" utilities on icons).
+  if (/\n\s*class=\{/.test(source)) {
     return source.replace(/(\n\s*)class=\{/g, (_m, ws) => {
       return `${ws}${attrs.join(ws)}${ws}class={`;
     });
@@ -456,9 +462,12 @@ function ensureCnImport(source: string): string {
 
 function injectStyleBlock(source: string, remappedCss: string): string {
   const scopedCss = remappedCss
-    .split("\n")
-    .map((line) => line.replaceAll(".dark ", ":global(.dark) "))
-    .join("\n");
+    .replaceAll(".dark ", ":global(.dark) ")
+    // Satisfy svelte-check --fail-on-warnings for -webkit-line-clamp without standard twin.
+    .replace(
+      /-webkit-line-clamp:([^;]+);(?!line-clamp:)/g,
+      "-webkit-line-clamp:$1;line-clamp:$1;",
+    );
 
   const style = `
 <style>
