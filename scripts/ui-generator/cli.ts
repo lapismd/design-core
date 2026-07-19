@@ -79,7 +79,7 @@ async function main() {
   pnpm ui:doctor
   pnpm ui:inspect <component>
   pnpm ui:add <component> [--overwrite] [--dry-run] [--keep-worktree]
-  pnpm ui:add:batch <a|b|c> [--overwrite] [--dry-run] [--keep-worktree]
+  pnpm ui:add:batch <a|b|c|d> [--overwrite] [--dry-run] [--keep-worktree]
   pnpm ui:refresh <component>
   pnpm test:visual:update --component <name>   # requires VISUAL_UPDATE_APPROVED=1
 `);

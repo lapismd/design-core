@@ -42,9 +42,9 @@ export async function runBatch(options: {
   skipParity?: boolean;
 }) {
   const batchName = options.batch?.trim().toLowerCase() as BatchName | undefined;
-  if (!batchName || !["a", "b", "c"].includes(batchName)) {
+  if (!batchName || !["a", "b", "c", "d"].includes(batchName)) {
     throw new GeneratorError(
-      'ui:add:batch requires batch name "a", "b", or "c"',
+      'ui:add:batch requires batch name "a", "b", "c", or "d"',
       EXIT.invalidRequest,
     );
   }

@@ -32,4 +32,4 @@ export type ComponentRecipe = {
   convertAllowed: boolean;
 };
 
-export type BatchName = "a" | "b" | "c";
+export type BatchName = "a" | "b" | "c" | "d";

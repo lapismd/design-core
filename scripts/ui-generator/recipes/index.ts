@@ -49,21 +49,6 @@ const portal = (
     },
   });
 
-const deferred = (
-  component: string,
-  storyTitle: string,
-): ComponentRecipe => ({
-  component,
-  supportVersion: 1,
-  tier: "deferred",
-  storyTitle,
-  maxDiffPixels: 0,
-  themes: ["light", "dark"],
-  parity: { tag: "div", text: component },
-  snapshotKeyIncludes: [component],
-  convertAllowed: false,
-});
-
 export const BATCH_A = [
   "separator",
   "skeleton",
@@ -96,13 +81,17 @@ export const BATCH_C = [
   "command",
 ] as const;
 
-export const BATCH_C_DEFERRED = [
-  "sidebar",
-  "resizable",
-  "scroll-area",
+/** Previously deferred portal/layout compounds — Batch D. */
+export const BATCH_D = [
   "field",
   "input-group",
+  "sidebar",
+  "scroll-area",
+  "resizable",
 ] as const;
+
+/** @deprecated Use BATCH_D */
+export const BATCH_C_DEFERRED = BATCH_D;
 
 const recipes: Record<string, ComponentRecipe> = {
   button: {
@@ -268,11 +257,38 @@ const recipes: Record<string, ComponentRecipe> = {
     attrs: { "data-slot": "command" },
     shotSelector: '[data-ui-component="command"]',
   }),
+  field: lightCompound("field", "Shadcn/Forms/Field", {
+    tag: "div",
+    text: "Field",
+    attrs: { role: "group", "data-slot": "field", "data-orientation": "vertical" },
+    shotSelector: '[data-ui-part="field"]',
+  }),
+  "input-group": lightCompound("input-group", "Shadcn/Forms/Input Group", {
+    tag: "div",
+    text: "",
+    attrs: { role: "group", "data-slot": "input-group" },
+    shotSelector: '[data-ui-part="input-group"]',
+  }),
+  sidebar: lightCompound("sidebar", "Shadcn/Layout/Sidebar", {
+    tag: "div",
+    text: "Sidebar",
+    attrs: { "data-slot": "sidebar" },
+    shotSelector: '[data-ui-part="sidebar-root"]',
+    viewport: { width: 640, height: 400 },
+  }),
+  "scroll-area": lightCompound("scroll-area", "Shadcn/Layout/Scroll Area", {
+    tag: "div",
+    attrs: { "data-slot": "scroll-area" },
+    shotSelector: '[data-ui-part="scroll-area"]',
+    viewport: { width: 320, height: 240 },
+  }),
+  resizable: lightCompound("resizable", "Shadcn/Layout/Resizable", {
+    tag: "div",
+    attrs: { "data-slot": "resizable-handle" },
+    shotSelector: '[data-ui-part="resizable-handle"]',
+    viewport: { width: 480, height: 200 },
+  }),
 };
-
-for (const name of BATCH_C_DEFERRED) {
-  recipes[name] = deferred(name, `Shadcn/Deferred/${name}`);
-}
 
 export function getRecipe(component: string): ComponentRecipe | undefined {
   return recipes[component];
@@ -296,6 +312,8 @@ export function componentsForBatch(batch: BatchName): string[] {
       return [...BATCH_B];
     case "c":
       return [...BATCH_C];
+    case "d":
+      return [...BATCH_D];
     default:
       return [];
   }
