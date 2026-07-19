@@ -1,0 +1,41 @@
+import { Meta, Canvas, Controls, Primary, Source } from "@storybook/addon-docs/blocks";
+import * as CodeEditorStories from "./CodeEditor.stories.svelte";
+import * as CodeEditorVariations from "./CodeEditor.variations.stories.svelte";
+
+<Meta of={CodeEditorStories} />
+
+# CodeEditor
+
+Shared CodeMirror editor for source/code fields. Keep a small outer margin so the editor does not touch panel edges.
+
+## Guidance
+
+### When to use
+
+- Starter/solution/code fields
+- Syntax-aware editing with language + diagnostics
+
+### When not to use
+
+- YAML documents — use `YamlEditor`
+
+See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and the shared form contract in `FORMS.md`.
+
+## Usage
+
+<Source language="html" code={"<CodeEditor\n  value={code}\n  language=\"ts\"\n  onChange={...}\n/>"} />
+
+<Primary />
+
+## Properties
+
+<Controls />
+
+## Examples
+
+### TypeScript
+
+Default language sample.
+
+<Canvas of={CodeEditorVariations.TypeScript} meta={CodeEditorVariations} />
+

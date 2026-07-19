@@ -1,0 +1,49 @@
+import { Meta, Canvas, Controls, Primary, Source } from "@storybook/addon-docs/blocks";
+import * as FormPlaceholderStories from "./FormPlaceholder.stories.svelte";
+import * as FormPlaceholderVariations from "./FormPlaceholder.variations.stories.svelte";
+
+<Meta of={FormPlaceholderStories} />
+
+# FormPlaceholder
+
+Dotted outline box for story/demo bodies so spacing against headers and add actions is visible.
+
+`EntryActions` and `CollapsibleItemList` already outline their content areas — use this for other stubs.
+
+## Guidance
+
+### When to use
+
+- Storybook section bodies
+- Tab stubs in composition demos
+
+### When not to use
+
+- Production empty states that need real Empty/CTA chrome
+
+See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and the shared form contract in `FORMS.md`.
+
+## Usage
+
+<Source language="html" code={"<FormPlaceholder>Section body</FormPlaceholder>"} />
+
+<Primary />
+
+## Properties
+
+<Controls />
+
+## Examples
+
+### Basic
+
+Basic placeholder copy.
+
+<Canvas of={FormPlaceholderVariations.Basic} meta={FormPlaceholderVariations} />
+
+### Tall body
+
+Taller stub to judge vertical rhythm.
+
+<Canvas of={FormPlaceholderVariations.TallBody} meta={FormPlaceholderVariations} />
+

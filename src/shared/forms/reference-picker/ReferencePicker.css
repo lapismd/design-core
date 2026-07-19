@@ -14,7 +14,7 @@
   min-height: 2.25rem;
   grid-template-columns: minmax(0, 1fr);
   border-bottom: 1px solid
-    var(--cv-form-border, var(--kanban-border, var(--border)));
+    var(--ui-form-border);
   padding: 0.35rem 1.5rem 0.35rem 1.25rem;
 }
 
@@ -49,9 +49,9 @@
 
 .cv-reference-ref {
   flex-shrink: 0;
-  color: var(--cv-form-foreground, var(--kanban-foreground, var(--foreground)));
+  color: var(--ui-form-foreground);
   font-family: var(
-    --cv-form-mono,
+    --ui-form-mono,
     ui-monospace,
     SFMono-Regular,
     Menlo,
@@ -74,13 +74,13 @@
 }
 
 .cv-reference-title-link {
-  color: var(--cv-form-foreground, var(--kanban-foreground, var(--foreground)));
+  color: var(--ui-form-foreground);
   text-decoration: none;
 }
 
 .cv-reference-title-link:hover,
 .cv-reference-title-link:focus-visible {
-  color: var(--cv-form-accent, var(--card-color, var(--primary)));
+  color: var(--ui-form-accent);
   outline: 0;
   text-decoration: underline;
   text-underline-offset: 0.15em;
@@ -88,7 +88,7 @@
 
 .cv-reference-label,
 .cv-reference-error {
-  color: var(--cv-form-muted, var(--kanban-muted, var(--muted-foreground)));
+  color: var(--ui-form-muted);
 }
 
 .cv-reference-error,
@@ -102,7 +102,7 @@
 .cv-reference-empty,
 .cv-reference-duplicates {
   margin: 0;
-  color: var(--cv-form-muted, var(--kanban-muted, var(--muted-foreground)));
+  color: var(--ui-form-muted);
   font-size: 0.72rem;
   line-height: 1.35;
 }
@@ -110,7 +110,7 @@
 .cv-reference-create-label {
   min-width: 0;
   overflow: hidden;
-  color: var(--cv-form-foreground, var(--kanban-foreground, var(--foreground)));
+  color: var(--ui-form-foreground);
   font-size: 0.75rem;
   font-weight: 550;
   text-overflow: ellipsis;
@@ -120,7 +120,7 @@
 .cv-reference-path {
   overflow: hidden;
   font-family: var(
-    --cv-form-mono,
+    --ui-form-mono,
     ui-monospace,
     SFMono-Regular,
     Menlo,
@@ -147,7 +147,7 @@
   justify-content: center;
   border: 0;
   background: transparent;
-  color: var(--cv-form-muted, var(--kanban-muted, var(--muted-foreground)));
+  color: var(--ui-form-muted);
   cursor: pointer;
   font: inherit;
 }
@@ -191,7 +191,7 @@
 
 .cv-reference-preview {
   border-bottom: 1px solid
-    var(--cv-form-border, var(--kanban-border, var(--border)));
+    var(--ui-form-border);
   padding: 0.5rem 0 0.5rem 1.25rem;
 }
 
@@ -199,7 +199,7 @@
   display: grid;
   gap: 0.45rem;
   border-bottom: 1px solid
-    var(--cv-form-border, var(--kanban-border, var(--border)));
+    var(--ui-form-border);
   padding: 0.5rem 0;
 }
 
@@ -213,7 +213,7 @@
 
 .cv-reference-add-header p {
   margin: 0;
-  color: var(--cv-form-muted, var(--kanban-muted, var(--muted-foreground)));
+  color: var(--ui-form-muted);
   font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -223,9 +223,9 @@
 .cv-reference-command {
   display: grid;
   overflow: hidden;
-  border: 1px solid var(--cv-form-border, var(--kanban-border, var(--border)));
+  border: 1px solid var(--ui-form-border);
   border-radius: 0.45rem;
-  background: var(--cv-form-background, var(--kanban-card, var(--background)));
+  background: var(--ui-form-background);
 }
 
 .cv-reference-command-input-row {
@@ -234,8 +234,8 @@
   align-items: center;
   gap: 0.4rem;
   border-bottom: 1px solid
-    var(--cv-form-border, var(--kanban-border, var(--border)));
-  color: var(--cv-form-muted, var(--kanban-muted, var(--muted-foreground)));
+    var(--ui-form-border);
+  color: var(--ui-form-muted);
   padding: 0.35rem 0.5rem;
 }
 
@@ -250,7 +250,7 @@
   flex: 1 1 auto;
   border: 0;
   background: transparent;
-  color: var(--cv-form-foreground, var(--kanban-foreground, var(--foreground)));
+  color: var(--ui-form-foreground);
   font: inherit;
   font-size: 0.8rem;
   outline: 0;
@@ -258,7 +258,7 @@
 }
 
 .cv-reference-command-input::placeholder {
-  color: var(--cv-form-muted, var(--kanban-muted, var(--muted-foreground)));
+  color: var(--ui-form-muted);
 }
 
 .cv-reference-command-list {
@@ -274,7 +274,7 @@
 
 .cv-reference-command-item {
   border-bottom: 1px solid
-    var(--cv-form-border, var(--kanban-border, var(--border)));
+    var(--ui-form-border);
   color: inherit;
   cursor: pointer;
   padding: 0.45rem 0.55rem;
@@ -289,10 +289,7 @@
 .cv-reference-command-item:hover,
 .cv-reference-command-item:focus-visible,
 .cv-reference-command-item[data-selected] {
-  background: var(
-    --cv-form-selection,
-    color-mix(in srgb, var(--card-color, var(--primary)) 9%, transparent)
-  );
+  background: var(--ui-form-selection);
   outline: 0;
 }
 
@@ -317,6 +314,6 @@
 .cv-reference-expand:focus-visible,
 .cv-reference-remove:hover,
 .cv-reference-remove:focus-visible {
-  color: var(--cv-form-foreground, var(--kanban-foreground, var(--foreground)));
+  color: var(--ui-form-foreground);
   outline: 0;
 }

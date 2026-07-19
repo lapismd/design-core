@@ -33,7 +33,7 @@
     width: fit-content;
     max-width: 100%;
     overflow: hidden;
-    border: 1px solid var(--cv-form-border, var(--kanban-border, var(--border)));
+    border: 1px solid var(--ui-form-border);
     border-radius: 999px;
     background: transparent;
   }
@@ -42,9 +42,9 @@
     min-height: 1.65rem;
     border: 0;
     border-right: 1px solid
-      var(--cv-form-border, var(--kanban-border, var(--border)));
+      var(--ui-form-border);
     background: transparent;
-    color: var(--cv-form-muted, var(--kanban-muted, var(--muted-foreground)));
+    color: var(--ui-form-muted);
     cursor: pointer;
     font: inherit;
     font-size: 0.75rem;
@@ -58,18 +58,12 @@
 
   .cv-form-segmented button:hover,
   .cv-form-segmented button:focus-visible {
-    color: var(
-      --cv-form-foreground,
-      var(--kanban-foreground, var(--foreground))
-    );
+    color: var(--ui-form-foreground);
     outline: 0;
   }
 
   .cv-form-segmented button.active {
-    background: var(
-      --cv-form-selection,
-      color-mix(in srgb, var(--card-color, var(--primary)) 12%, transparent)
-    );
-    color: var(--cv-form-accent, var(--card-color, var(--primary)));
+    background: var(--ui-form-selection);
+    color: var(--ui-form-accent);
   }
 </style>

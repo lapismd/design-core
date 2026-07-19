@@ -1,0 +1,57 @@
+import { Meta, Canvas, Controls, Primary, Source } from "@storybook/addon-docs/blocks";
+import * as FormFieldStories from "./FormField.stories.svelte";
+import * as FormFieldVariations from "./FormField.variations.stories.svelte";
+
+<Meta of={FormFieldStories} />
+
+# FormField
+
+One labelled editable row in the shared `cv-structured-form` grid (labels left, values right, row separators).
+
+Compose fields inside a single `max-content minmax(0, 1fr)` scope so label columns align via subgrid.
+
+## Guidance
+
+### When to use
+
+- Building labelled form rows outside or inside `StructuredForm`
+- Interactive pills, switches, and date pickers — set `align="center"`
+- Controls with nested interactives / popovers — set `as="div"` (not a wrapping `<label>`)
+
+### When not to use
+
+- Do not invent flex/grid labelled rows outside `cv-structured-form`
+- Do not add extra borders on wrappers around `FormField` (section headers own separators)
+
+See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and the shared form contract in `FORMS.md`.
+
+## Usage
+
+<Source language="html" code={"<script lang=\"ts\">\n  import { FormField } from \"@stevejuma/ui/forms\";\n</script>\n\n<div class=\"cv-structured-form\">\n  <FormField label=\"Name\">\n    <input bind:value={name} />\n  </FormField>\n</div>"} />
+
+<Primary />
+
+## Properties
+
+<Controls />
+
+## Examples
+
+### Default row
+
+Standard start-aligned text field row.
+
+<Canvas of={FormFieldVariations.DefaultRow} meta={FormFieldVariations} />
+
+### Center aligned
+
+Use `align="center"` for pill controls and date-like controls.
+
+<Canvas of={FormFieldVariations.CenterAligned} meta={FormFieldVariations} />
+
+### Div host
+
+Use `as="div"` when the control contains buttons or popovers.
+
+<Canvas of={FormFieldVariations.DivHost} meta={FormFieldVariations} />
+

@@ -39,7 +39,9 @@
 
   {#if open}
     <div class="cv-form-item-list-body">
-      {@render children?.()}
+      <div class="cv-form-item-list-content">
+        {@render children?.()}
+      </div>
       <button type="button" class="cv-form-item-list-add" onclick={onAdd}>
         <PlusIcon />
         Add {addLabel}
@@ -61,7 +63,7 @@
     align-items: center;
     gap: 0.75rem;
     border-bottom: 1px solid
-      var(--cv-form-border, var(--kanban-border, var(--border)));
+      var(--ui-form-border);
     padding: 0 0 0.2rem;
   }
 
@@ -71,7 +73,7 @@
     align-items: center;
     border: 0;
     background: transparent;
-    color: var(--cv-form-muted, var(--kanban-muted, var(--muted-foreground)));
+    color: var(--ui-form-muted);
     cursor: pointer;
     font: inherit;
     padding: 0;
@@ -82,10 +84,7 @@
     min-width: 0;
     min-height: 1.5rem;
     justify-self: stretch;
-    color: var(
-      --cv-form-foreground,
-      var(--kanban-foreground, var(--foreground))
-    );
+    color: var(--ui-form-foreground);
     font-family: inherit;
     font-size: 1rem;
     font-weight: 600;
@@ -99,7 +98,7 @@
     left: -1.35rem;
     width: 0.75rem;
     height: 0.75rem;
-    color: var(--cv-form-muted, var(--kanban-muted, var(--muted-foreground)));
+    color: var(--ui-form-muted);
     translate: 0 -50%;
   }
 
@@ -114,11 +113,8 @@
     align-items: center;
     justify-content: center;
     border-radius: 999px;
-    background: var(
-      --cv-form-selection,
-      color-mix(in srgb, var(--card-color, var(--primary)) 12%, transparent)
-    );
-    color: var(--cv-form-accent, var(--card-color, var(--primary)));
+    background: var(--ui-form-selection);
+    color: var(--ui-form-accent);
     font-size: 0.7rem;
     font-weight: 750;
   }
@@ -140,10 +136,7 @@
   .cv-form-item-list-toggle:focus-visible,
   .cv-form-item-list-add:hover,
   .cv-form-item-list-add:focus-visible {
-    color: var(
-      --cv-form-foreground,
-      var(--kanban-foreground, var(--foreground))
-    );
+    color: var(--ui-form-foreground);
     outline: 0;
   }
 
@@ -151,5 +144,12 @@
     display: grid;
     gap: 0.35rem;
     padding-left: 1rem;
+  }
+
+  .cv-form-item-list-content {
+    min-width: 0;
+    border: 1px dotted var(--ui-form-border);
+    border-radius: 0.35rem;
+    padding: 0.5rem 0.65rem;
   }
 </style>

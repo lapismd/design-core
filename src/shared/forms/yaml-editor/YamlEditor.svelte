@@ -290,11 +290,11 @@
         },
         ".cm-ai-review-block": {
           backgroundColor:
-            "var(--cv-form-background, var(--kanban-card, var(--background)))",
+            "var(--ui-form-background)",
           borderTop:
-            "1px solid var(--cv-form-border, var(--kanban-border, var(--border)))",
+            "1px solid var(--ui-form-border)",
           borderBottom:
-            "1px solid var(--cv-form-border, var(--kanban-border, var(--border)))",
+            "1px solid var(--ui-form-border)",
           fontFamily:
             "var(--studio-font-mono, var(--font-mono, 'Source Code Pro Variable', 'Source Code Pro', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace))",
           fontSize: "13px",
@@ -313,7 +313,7 @@
         },
         ".cm-ai-review-title": {
           color:
-            "var(--cv-form-foreground, var(--kanban-foreground, var(--foreground)))",
+            "var(--ui-form-foreground)",
           fontFamily: "var(--font-sans)",
           fontSize: "12px",
           fontWeight: "600",
@@ -332,7 +332,7 @@
           border: "0",
           borderRadius: "4px",
           color:
-            "var(--cv-form-foreground, var(--kanban-foreground, var(--foreground)))",
+            "var(--ui-form-foreground)",
           cursor: "pointer",
           fontFamily: "var(--font-sans)",
           fontSize: "12px",
@@ -340,7 +340,7 @@
           padding: "0 8px",
         },
         ".cm-ai-review-button:hover": {
-          backgroundColor: "var(--cv-form-muted-surface, var(--muted))",
+          backgroundColor: "var(--ui-form-muted-surface)",
         },
         ".cm-ai-review-button-destructive": {
           color: "var(--destructive, rgb(220 38 38))",
@@ -400,7 +400,7 @@
             ? { height: "100%", minHeight: 0 }
             : { minHeight, height: "auto" }),
           color:
-            "var(--cv-form-foreground, var(--kanban-foreground, var(--foreground)))",
+            "var(--ui-form-foreground)",
           backgroundColor: "transparent",
         },
         "&.cm-focused": {
@@ -422,32 +422,32 @@
         },
         ".cm-gutters": {
           color:
-            "var(--cv-form-muted, var(--kanban-muted, var(--muted-foreground)))",
+            "var(--ui-form-muted)",
           backgroundColor:
-            "var(--cv-form-gutter, color-mix(in srgb, var(--kanban-muted-surface, var(--muted)) 34%, transparent))",
+            "var(--ui-form-gutter)",
           borderRightColor:
-            "var(--cv-form-border, var(--kanban-border, var(--border)))",
+            "var(--ui-form-border)",
         },
         ".cm-activeLine, .cm-activeLineGutter": {
           backgroundColor:
-            "var(--cv-form-active-line, color-mix(in srgb, var(--card-color, var(--primary)) 9%, transparent))",
+            "var(--ui-form-active-line)",
         },
         ".cm-selectionBackground, &.cm-focused .cm-selectionBackground": {
           backgroundColor:
-            "var(--cv-form-selection-strong, color-mix(in srgb, var(--card-color, var(--primary)) 30%, transparent))",
+            "var(--ui-form-selection-strong)",
         },
         ".cm-cursor": {
           borderLeftColor:
-            "var(--cv-form-foreground, var(--kanban-foreground, var(--foreground)))",
+            "var(--ui-form-foreground)",
         },
         ".cm-tooltip": {
           borderRadius: "calc(var(--radius, 0.625rem) - 0.125rem)",
           borderColor:
-            "var(--cv-form-border, var(--kanban-border, var(--border)))",
+            "var(--ui-form-border)",
           backgroundColor:
-            "var(--cv-form-popover, var(--kanban-card, var(--popover)))",
+            "var(--ui-form-popover)",
           color:
-            "var(--cv-form-foreground, var(--kanban-foreground, var(--popover-foreground)))",
+            "var(--ui-form-foreground)",
           boxShadow:
             "0 12px 24px color-mix(in srgb, var(--foreground) 16%, transparent)",
           fontFamily:
@@ -463,7 +463,7 @@
         ".cm-tooltip-autocomplete > ul": {
           backgroundColor: "transparent",
           color:
-            "var(--cv-form-foreground, var(--kanban-foreground, var(--popover-foreground)))",
+            "var(--ui-form-foreground)",
           fontSize: "0.75rem",
           lineHeight: "1.4",
         },
@@ -472,20 +472,20 @@
         },
         ".cm-tooltip-autocomplete > ul > li[aria-selected]": {
           backgroundColor:
-            "var(--cv-form-active-line, var(--kanban-muted-surface, var(--accent)))",
+            "var(--ui-form-active-line)",
           color:
-            "var(--cv-form-foreground, var(--kanban-foreground, var(--accent-foreground)))",
+            "var(--ui-form-foreground)",
         },
         ".cm-completionDetail": {
           color:
-            "var(--cv-form-muted, var(--kanban-muted, var(--muted-foreground)))",
+            "var(--ui-form-muted)",
         },
         ".cm-tooltip-autocomplete > ul > li[aria-selected] .cm-completionDetail":
           {
             color: "inherit",
           },
         ".cm-completionMatchedText": {
-          color: "var(--cv-form-accent, var(--card-color, var(--primary)))",
+          color: "var(--ui-form-accent)",
           fontWeight: "700",
         },
         ".cm-tooltip-autocomplete > ul > li[aria-selected] .cm-completionMatchedText":
@@ -497,38 +497,38 @@
         HighlightStyle.define([
           {
             tag: tags.keyword,
-            color: "var(--cv-form-accent, var(--card-color, var(--primary)))",
+            color: "var(--ui-form-accent)",
           },
           {
             tag: tags.atom,
-            color: "var(--cv-form-accent, var(--card-color, var(--primary)))",
+            color: "var(--ui-form-accent)",
           },
           {
             tag: tags.bool,
-            color: "var(--cv-form-accent, var(--card-color, var(--primary)))",
+            color: "var(--ui-form-accent)",
           },
           {
             tag: tags.number,
-            color: "var(--cv-form-accent, var(--card-color, var(--primary)))",
+            color: "var(--ui-form-accent)",
           },
           {
             tag: tags.string,
             color:
-              "var(--cv-form-foreground, var(--kanban-foreground, var(--foreground)))",
+              "var(--ui-form-foreground)",
           },
           {
             tag: tags.propertyName,
-            color: "var(--cv-form-accent, var(--card-color, var(--primary)))",
+            color: "var(--ui-form-accent)",
           },
           {
             tag: tags.comment,
             color:
-              "var(--cv-form-muted, var(--kanban-muted, var(--muted-foreground)))",
+              "var(--ui-form-muted)",
           },
           {
             tag: tags.punctuation,
             color:
-              "var(--cv-form-muted, var(--kanban-muted, var(--muted-foreground)))",
+              "var(--ui-form-muted)",
           },
         ]),
       ),
@@ -630,7 +630,7 @@
 <style>
   .cvstudio-yaml-editor {
     overflow: hidden;
-    border: 1px solid var(--cv-form-border, var(--kanban-border, var(--border)));
+    border: 1px solid var(--ui-form-border);
     border-radius: 0.35rem;
     background: transparent;
   }

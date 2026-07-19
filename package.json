@@ -98,6 +98,8 @@
     "./shadcn/*": "./src/shared/shadcn/*/index.ts",
     "./forms": "./src/shared/forms/index.ts",
     "./forms/core": "./src/shared/forms/core/core.ts",
+    "./forms/tokens": "./src/shared/forms/form.tokens.ts",
+    "./forms/form.tokens.css": "./src/shared/forms/form.tokens.css",
     "./forms/FormControlRow.css": "./src/shared/forms/form-control-row/FormControlRow.css",
     "./forms/FormField.svelte": "./src/shared/forms/form-field/FormField.svelte",
     "./forms/FormSectionHeader.svelte": "./src/shared/forms/form-section-header/FormSectionHeader.svelte",

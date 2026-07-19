@@ -1,0 +1,57 @@
+import { Meta, Canvas, Controls, Primary, Source } from "@storybook/addon-docs/blocks";
+import * as FormSectionHeaderStories from "./FormSectionHeader.stories.svelte";
+import * as FormSectionHeaderVariations from "./FormSectionHeader.variations.stories.svelte";
+
+<Meta of={FormSectionHeaderStories} />
+
+# FormSectionHeader
+
+Top-level editable section chrome: collapsible title, optional move/delete on hover, and the single separator under the disclosure header.
+
+Disclosure chevron sits in an absolute left rail — not in the label/value grid.
+
+## Guidance
+
+### When to use
+
+- Top-level sections in a CV/studio form
+- Repeated entries that need their own editable title + disclosure (prefer this over bespoke headings)
+- Non-editable titles — set `titleToggleable` so the whole title row toggles open/closed
+
+### When not to use
+
+- Wrapper sections must not add an adjacent top/bottom border; this component owns the separator
+- Do not place disclosure toggles inside the form grid columns
+
+See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and the shared form contract in `FORMS.md`.
+
+## Usage
+
+<Source language="html" code={"<script lang=\"ts\">\n  import { FormSectionHeader } from \"@stevejuma/ui/forms\";\n</script>\n\n<FormSectionHeader\n  title=\"Experience\"\n  index={0}\n  total={1}\n  titleToggleable\n  open={open}\n  onToggle={() => (open = !open)}\n/>"} />
+
+<Primary />
+
+## Properties
+
+<Controls />
+
+## Examples
+
+### Collapsed
+
+Collapsed disclosure with title-row toggle.
+
+<Canvas of={FormSectionHeaderVariations.Collapsed} meta={FormSectionHeaderVariations} />
+
+### Expanded with body
+
+Open section with placeholder body for spacing.
+
+<Canvas of={FormSectionHeaderVariations.ExpandedWithBody} meta={FormSectionHeaderVariations} />
+
+### Multiple entries
+
+Index/total for reorderable section lists.
+
+<Canvas of={FormSectionHeaderVariations.MultipleEntries} meta={FormSectionHeaderVariations} />
+

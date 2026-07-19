@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { Tooltip as TooltipPrimitive } from "bits-ui";
   import XIcon from "@lucide/svelte/icons/x";
 
+  import * as Tooltip from "../../shadcn/tooltip/index.js";
   import AutocompleteInput from "../autocomplete-input/AutocompleteInput.svelte";
 
   let {
@@ -78,7 +78,7 @@
   }
 </script>
 
-<TooltipPrimitive.Provider delayDuration={200}>
+<Tooltip.Provider delayDuration={200}>
   <div
     class={`chip-autocomplete ${embedded ? "is-embedded" : ""} ${uppercase ? "" : "is-normal-case"}`}
   >
@@ -92,13 +92,13 @@
       onpointerdown={focusAutocompleteInput}
     >
       {#each normalizedItems as item (item)}
-        <TooltipPrimitive.Root>
+        <Tooltip.Root>
           <span class="chip">
-            <TooltipPrimitive.Trigger>
+            <Tooltip.Trigger>
               {#snippet child({ props })}
                 <span class="chip-label" {...props}>{item}</span>
               {/snippet}
-            </TooltipPrimitive.Trigger>
+            </Tooltip.Trigger>
             <button
               type="button"
               aria-label={`Remove ${item}`}
@@ -111,17 +111,10 @@
               <XIcon />
             </button>
           </span>
-          <TooltipPrimitive.Portal>
-            <TooltipPrimitive.Content
-              side="top"
-              sideOffset={4}
-              role="tooltip"
-              class="chip-tooltip-content"
-            >
-              {item}
-            </TooltipPrimitive.Content>
-          </TooltipPrimitive.Portal>
-        </TooltipPrimitive.Root>
+          <Tooltip.Content side="top" sideOffset={4} class="chip-tooltip-content">
+            {item}
+          </Tooltip.Content>
+        </Tooltip.Root>
       {/each}
       <div class="chip-input">
         <AutocompleteInput
@@ -139,14 +132,14 @@
       </div>
     </div>
   </div>
-</TooltipPrimitive.Provider>
+</Tooltip.Provider>
 
 <style>
   .chip-autocomplete {
     display: grid;
     min-width: 0;
     gap: 0.25rem;
-    color: var(--card-color);
+    color: var(--ui-form-accent);
     font-size: 0.72rem;
     font-weight: 950;
     text-transform: uppercase;
@@ -166,7 +159,7 @@
     gap: 0.35rem;
     border: 0;
     border-radius: 0.25rem;
-    background: var(--kanban-card);
+    background: var(--ui-form-background);
     padding: 0.32rem 0.4rem;
   }
 
@@ -185,10 +178,19 @@
     align-items: center;
     gap: 0.25rem;
     flex-shrink: 1;
-    border: 1px solid color-mix(in srgb, var(--card-color) 22%, transparent);
+    border: 1px solid
+      color-mix(
+        in srgb,
+        var(--ui-form-accent) 22%,
+        transparent
+      );
     border-radius: 999px;
-    background: color-mix(in srgb, var(--card-color) 8%, var(--kanban-card));
-    color: var(--card-color);
+    background: color-mix(
+      in srgb,
+      var(--ui-form-accent) 8%,
+      var(--ui-form-background)
+    );
+    color: var(--ui-form-accent);
     font-size: 0.72rem;
     font-weight: 900;
     line-height: 1;
@@ -217,7 +219,11 @@
     place-items: center;
     border: 0;
     border-radius: 999px;
-    background: color-mix(in srgb, var(--card-color) 12%, transparent);
+    background: color-mix(
+      in srgb,
+      var(--ui-form-accent) 12%,
+      transparent
+    );
     color: inherit;
     cursor: pointer;
     padding: 0;
@@ -231,7 +237,7 @@
   .chip-input {
     min-width: 8rem;
     flex: 1;
-    color: var(--kanban-card-foreground);
+    color: var(--ui-form-foreground);
     font-size: 0.9rem;
     font-weight: 700;
     line-height: 1.2;

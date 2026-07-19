@@ -28,7 +28,7 @@
   }}
 >
   {#snippet template()}
-    <div class="flex items-center gap-3">
+    <div class="max-w-xl">
       <EntryActions
         index={0}
         total={2}
@@ -38,8 +38,10 @@
         onRemove={() => {
           action = "remove";
         }}
-      />
-      <output class="text-muted-foreground text-sm">{action}</output>
+      >
+        <p class="text-muted-foreground m-0 text-sm">Entry body</p>
+      </EntryActions>
+      <output class="text-muted-foreground mt-2 block text-sm">{action}</output>
     </div>
   {/snippet}
 </Story>

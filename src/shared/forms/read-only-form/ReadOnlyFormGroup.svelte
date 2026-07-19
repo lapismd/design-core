@@ -39,15 +39,12 @@
     display: grid;
     gap: 0.1rem;
     border-bottom: 1px solid
-      var(--cv-form-border, var(--kanban-border, var(--border)));
+      var(--ui-form-border);
     padding: 0.45rem 0 0.35rem;
   }
 
   .cv-readonly-form-group h4 {
-    color: var(
-      --cv-form-foreground,
-      var(--kanban-foreground, var(--foreground))
-    );
+    color: var(--ui-form-foreground);
     font-size: 0.8125rem;
     font-weight: 600;
     line-height: 1.35;
@@ -55,9 +52,9 @@
   }
 
   .cv-readonly-form-group p {
-    color: var(--cv-form-muted, var(--kanban-muted, var(--muted-foreground)));
+    color: var(--ui-form-muted);
     font-family: var(
-      --cv-form-mono,
+      --ui-form-mono,
       ui-monospace,
       SFMono-Regular,
       Menlo,

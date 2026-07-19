@@ -236,10 +236,7 @@
   .cv-forms-preview-value {
     display: block;
     padding: 0.35rem 0;
-    color: var(
-      --cv-form-foreground,
-      var(--kanban-foreground, var(--foreground))
-    );
+    color: var(--ui-form-foreground);
     font: inherit;
     line-height: 1.45;
     overflow-wrap: anywhere;
@@ -275,12 +272,9 @@
     width: 2rem;
     height: 1.15rem;
     align-items: center;
-    border: 1px solid var(--cv-form-border, var(--kanban-border, var(--border)));
+    border: 1px solid var(--ui-form-border);
     border-radius: 999px;
-    background: var(
-      --cv-form-muted-surface,
-      var(--kanban-muted-surface, var(--muted))
-    );
+    background: var(--ui-form-muted-surface);
     transition:
       background 140ms ease,
       border-color 140ms ease;
@@ -292,30 +286,27 @@
     width: 0.82rem;
     height: 0.82rem;
     border-radius: 999px;
-    background: var(
-      --cv-form-background,
-      var(--kanban-background, var(--background))
-    );
+    background: var(--ui-form-background);
     box-shadow: 0 1px 2px
-      var(--cv-form-shadow, var(--kanban-shadow, rgb(15 23 42 / 22%)));
+      var(--ui-form-shadow);
     transition: translate 140ms ease;
   }
 
   .cv-forms-switch[aria-checked="true"] .cv-forms-switch-track {
     border-color: color-mix(
       in srgb,
-      var(--cv-form-accent, var(--card-color, var(--primary))) 55%,
+      var(--ui-form-accent) 55%,
       transparent
     );
     background: color-mix(
       in srgb,
-      var(--cv-form-accent, var(--card-color, var(--primary))) 10%,
+      var(--ui-form-accent) 10%,
       transparent
     );
   }
 
   .cv-forms-switch[aria-checked="true"] .cv-forms-switch-thumb {
-    background: var(--cv-form-accent, var(--card-color, var(--primary)));
+    background: var(--ui-form-accent);
     translate: 0.82rem 0;
   }
 

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import "./structured-form.css";
   import FormFieldRenderer from "./FormFieldRenderer.svelte";
   import type {
     FormConfig,
@@ -40,24 +41,3 @@
     />
   {/each}
 </div>
-
-<style>
-  .cv-structured-form {
-    --cv-control-column-gap: 1rem;
-    display: grid;
-    grid-template-columns: max-content minmax(0, 1fr);
-    column-gap: var(--cv-control-column-gap);
-    row-gap: 0.35rem;
-    min-width: 0;
-  }
-
-  .cv-structured-form > :global(*) {
-    grid-column: 1 / -1;
-  }
-
-  @media (max-width: 720px) {
-    .cv-structured-form {
-      grid-template-columns: 1fr;
-    }
-  }
-</style>

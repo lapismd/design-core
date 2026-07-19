@@ -116,12 +116,9 @@
   }
 
   .cv-yaml-backed-form--framed {
-    border: 1px solid var(--cv-form-border, var(--border));
+    border: 1px solid var(--ui-form-border);
     border-radius: 0.35rem;
-    background: var(
-      --cv-form-panel-background,
-      var(--cv-form-background, transparent)
-    );
+    background: var(--ui-form-panel-background);
     padding: 0.75rem;
   }
 
@@ -139,13 +136,10 @@
 
   .cv-yaml-backed-form-actions button {
     min-height: 2rem;
-    border: 1px solid var(--cv-form-border, var(--kanban-border, var(--border)));
+    border: 1px solid var(--ui-form-border);
     border-radius: 0.25rem;
     background: transparent;
-    color: var(
-      --cv-form-foreground,
-      var(--kanban-foreground, var(--foreground))
-    );
+    color: var(--ui-form-foreground);
     cursor: pointer;
     font: inherit;
     font-size: 0.8rem;
@@ -155,14 +149,14 @@
   .cv-yaml-backed-form-actions button.primary {
     border-color: color-mix(
       in srgb,
-      var(--cv-form-accent, var(--card-color, var(--primary))) 45%,
-      var(--cv-form-border, var(--border))
+      var(--ui-form-accent) 45%,
+      var(--ui-form-border)
     );
-    color: var(--cv-form-accent, var(--card-color, var(--primary)));
+    color: var(--ui-form-accent);
   }
 
   .cv-yaml-backed-form--framed .cv-yaml-backed-form-actions button.primary {
-    background: var(--cv-form-accent, var(--card-color, var(--primary)));
-    color: var(--cv-form-primary-foreground, white);
+    background: var(--ui-form-accent);
+    color: var(--ui-form-primary-foreground);
   }
 </style>

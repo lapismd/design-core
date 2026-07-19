@@ -190,10 +190,11 @@
     width: min(18rem, 80vw);
     max-height: 14rem;
     overflow: auto;
-    border: 1px solid var(--kanban-border);
+    border: 1px solid var(--ui-form-border);
     border-radius: 0.45rem;
-    background: var(--kanban-card);
-    box-shadow: 0 14px 30px var(--kanban-shadow);
+    background: var(--ui-form-popover);
+    box-shadow: 0 14px 30px
+      var(--ui-form-shadow);
     padding: 0.25rem;
   }
 
@@ -201,7 +202,7 @@
     border: 0;
     border-radius: 0.3rem;
     background: transparent;
-    color: var(--kanban-card-foreground);
+    color: var(--ui-form-foreground);
     cursor: pointer;
     font: inherit;
     font-size: 0.86rem;
@@ -212,7 +213,11 @@
 
   .autocomplete-list button:hover,
   .autocomplete-list button.active {
-    background: color-mix(in srgb, var(--card-color) 12%, transparent);
-    color: var(--card-color);
+    background: color-mix(
+      in srgb,
+      var(--ui-form-accent) 12%,
+      transparent
+    );
+    color: var(--ui-form-accent);
   }
 </style>

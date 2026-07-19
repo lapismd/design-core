@@ -1,0 +1,49 @@
+import { Meta, Canvas, Controls, Primary, Source } from "@storybook/addon-docs/blocks";
+import * as ReferencePickerStories from "./ReferencePicker.stories.svelte";
+import * as ReferencePickerVariations from "./ReferencePicker.variations.stories.svelte";
+
+<Meta of={ReferencePickerStories} />
+
+# ReferencePicker
+
+Reference-list editor for evidence/CV markers. Shows stored ref, path, label, and excerpt; unresolved and duplicate refs stay visible.
+
+Markers are editor metadata — generated Markdown/YAML/HTML must strip them.
+
+## Guidance
+
+### When to use
+
+- `reference-list` StructuredForm fields
+- CV/Evidence reference linking UIs
+
+### When not to use
+
+- Generic multi-select without reference semantics — use `ChipAutocomplete`
+
+See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and the shared form contract in `FORMS.md`.
+
+## Usage
+
+<Source language="html" code={"<ReferencePicker\n  refs={refs}\n  referenceIndex={index}\n  onChange={...}\n/>"} />
+
+<Primary />
+
+## Properties
+
+<Controls />
+
+## Examples
+
+### With selection
+
+Selected reference plus add affordance.
+
+<Canvas of={ReferencePickerVariations.WithSelection} meta={ReferencePickerVariations} />
+
+### Empty
+
+No refs selected yet.
+
+<Canvas of={ReferencePickerVariations.Empty} meta={ReferencePickerVariations} />
+

@@ -89,7 +89,7 @@
     text-align: center;
     font-size: 0.82rem;
     font-weight: 700;
-    color: var(--kanban-foreground, var(--foreground));
+    color: var(--foreground);
   }
 
   .task-due-calendar :global(.task-due-calendar__nav) {
@@ -100,7 +100,7 @@
     border: 0;
     border-radius: 0.3rem;
     background: transparent;
-    color: var(--kanban-muted, var(--muted-foreground));
+    color: var(--muted-foreground);
     cursor: pointer;
     padding: 0;
   }
@@ -109,10 +109,10 @@
   .task-due-calendar :global(.task-due-calendar__nav:focus-visible) {
     background: color-mix(
       in srgb,
-      var(--kanban-border, var(--border)) 55%,
+      var(--border) 55%,
       transparent
     );
-    color: var(--kanban-foreground, var(--foreground));
+    color: var(--foreground);
     outline: 0;
   }
 
@@ -136,7 +136,7 @@
     text-align: center;
     font-size: 0.68rem;
     font-weight: 650;
-    color: var(--kanban-muted, var(--muted-foreground));
+    color: var(--muted-foreground);
     padding: 0.15rem 0;
   }
 
@@ -154,7 +154,7 @@
     border: 0;
     border-radius: 999px;
     background: transparent;
-    color: var(--kanban-foreground, var(--foreground));
+    color: var(--foreground);
     cursor: pointer;
     font: inherit;
     font-size: 0.78rem;
@@ -165,7 +165,7 @@
   .task-due-calendar :global(.task-due-calendar__day:focus-visible) {
     background: color-mix(
       in srgb,
-      var(--kanban-border, var(--border)) 55%,
+      var(--border) 55%,
       transparent
     );
     outline: 0;
@@ -174,23 +174,23 @@
   .task-due-calendar :global([data-selected] .task-due-calendar__day) {
     background: color-mix(
       in srgb,
-      var(--card-color, var(--primary)) 88%,
+      var(--primary) 88%,
       transparent
     );
-    color: var(--kanban-card, var(--background));
+    color: var(--background);
     font-weight: 700;
   }
 
   .task-due-calendar
     :global([data-today]:not([data-selected]) .task-due-calendar__day) {
     box-shadow: inset 0 0 0 1px
-      color-mix(in srgb, var(--card-color, var(--primary)) 45%, transparent);
+      color-mix(in srgb, var(--primary) 45%, transparent);
   }
 
   .task-due-calendar :global([data-outside-month] .task-due-calendar__day) {
     color: color-mix(
       in srgb,
-      var(--kanban-muted, var(--muted-foreground)) 72%,
+      var(--muted-foreground) 72%,
       transparent
     );
   }

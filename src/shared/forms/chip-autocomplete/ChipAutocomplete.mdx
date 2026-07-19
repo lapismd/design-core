@@ -1,0 +1,55 @@
+import { Meta, Canvas, Controls, Primary, Source } from "@storybook/addon-docs/blocks";
+import * as ChipAutocompleteStories from "./ChipAutocomplete.stories.svelte";
+import * as ChipAutocompleteVariations from "./ChipAutocomplete.variations.stories.svelte";
+
+<Meta of={ChipAutocompleteStories} />
+
+# ChipAutocomplete
+
+Multi-value chip input with suggestion autocomplete (forms kinds `chip-list` / `string-list` / tag lists).
+
+Use `embedded` inside a `FormField` so chrome matches the row; leave `showLabel={false}` when the row label is enough.
+
+## Guidance
+
+### When to use
+
+- Multi-value lists / tags
+- Newly added blank rows — use field-specific placeholders (e.g. `Add Technology`)
+
+### When not to use
+
+- Single searchable choice — use an app Command/Popover picker or `InlineOptionPicker`
+
+See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and the shared form contract in `FORMS.md`.
+
+## Usage
+
+<Source language="html" code={"<ChipAutocomplete\n  value={roles}\n  suggestions={[\"Frontend\", \"Design\"]}\n  label=\"Target Roles\"\n  showLabel={false}\n  embedded\n  uppercase={false}\n  onChange={...}\n/>"} />
+
+<Primary />
+
+## Properties
+
+<Controls />
+
+## Examples
+
+### With chips
+
+Populated chip list.
+
+<Canvas of={ChipAutocompleteVariations.WithChips} meta={ChipAutocompleteVariations} />
+
+### Embedded in row
+
+Row-embedded chrome for StructuredForm / FormField.
+
+<Canvas of={ChipAutocompleteVariations.EmbeddedInRow} meta={ChipAutocompleteVariations} />
+
+### Empty
+
+Placeholder-only state.
+
+<Canvas of={ChipAutocompleteVariations.Empty} meta={ChipAutocompleteVariations} />
+

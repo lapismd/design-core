@@ -1,0 +1,44 @@
+import { Meta, Canvas, Controls, Primary, Source } from "@storybook/addon-docs/blocks";
+import * as YamlEditorStories from "./YamlEditor.stories.svelte";
+import * as YamlEditorVariations from "./YamlEditor.variations.stories.svelte";
+
+<Meta of={YamlEditorStories} />
+
+# YamlEditor
+
+Use for YAML only. Do not add plain textarea YAML editors.
+
+Toolbar YAML switches should edit the authoritative serialized draft; invalid YAML stays editable and surfaces parse errors.
+
+## Guidance
+
+### When to use
+
+- Document YAML source mode (CV, docs, practice)
+- `YamlBackedForm` source panel
+
+### When not to use
+
+- Non-YAML source — use `CodeEditor`
+- Structured field editing — use `StructuredForm`
+
+See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and the shared form contract in `FORMS.md`.
+
+## Usage
+
+<Source language="html" code={"<YamlEditor value={yaml} onChange={...} />"} />
+
+<Primary />
+
+## Properties
+
+<Controls />
+
+## Examples
+
+### Valid document
+
+Simple YAML document.
+
+<Canvas of={YamlEditorVariations.ValidDocument} meta={YamlEditorVariations} />
+

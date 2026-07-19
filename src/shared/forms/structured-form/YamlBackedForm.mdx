@@ -1,0 +1,41 @@
+import { Meta, Canvas, Controls, Primary, Source } from "@storybook/addon-docs/blocks";
+import * as YamlBackedFormStories from "./YamlBackedForm.stories.svelte";
+import * as YamlBackedFormVariations from "./YamlBackedForm.variations.stories.svelte";
+
+<Meta of={YamlBackedFormStories} />
+
+# YamlBackedForm
+
+Dual structured + YAML source mode over the same draft. YAML mode must edit the authoritative serialized document, not a panel copy.
+
+## Guidance
+
+### When to use
+
+- Document editors with a toolbar YAML switch
+- AI review diffs on form + YAML counterparts
+
+### When not to use
+
+- YAML-only panels without structured fields — use `YamlEditor` alone
+
+See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and the shared form contract in `FORMS.md`.
+
+## Usage
+
+<Source language="html" code={"<YamlBackedForm\n  value={data}\n  config={config}\n  yamlMode={yamlMode}\n  bind:yamlText\n  onChange={...}\n/>"} />
+
+<Primary />
+
+## Properties
+
+<Controls />
+
+## Examples
+
+### Structured mode
+
+Default structured editing surface.
+
+<Canvas of={YamlBackedFormVariations.StructuredMode} meta={YamlBackedFormVariations} />
+

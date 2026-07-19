@@ -82,9 +82,9 @@
       EditorView.theme({
         "&": {
           minHeight,
-          color: "var(--cv-form-foreground, var(--foreground))",
+          color: "var(--ui-form-foreground)",
           backgroundColor:
-            "var(--cv-form-code-background, color-mix(in srgb, var(--muted, #f4f4f5) 34%, transparent))",
+            "var(--ui-form-code-background)",
         },
         "&.cm-focused": {
           outline: "0",
@@ -106,26 +106,26 @@
         },
         ".cm-gutters": {
           color:
-            "var(--cv-form-muted, var(--kanban-muted, var(--muted-foreground)))",
+            "var(--ui-form-muted)",
           backgroundColor:
-            "var(--cv-form-code-gutter, color-mix(in srgb, var(--muted, #f4f4f5) 52%, transparent))",
+            "var(--ui-form-code-gutter)",
           borderRightColor:
-            "var(--cv-form-border, var(--kanban-border, var(--border)))",
+            "var(--ui-form-border)",
         },
         ".cm-activeLine, .cm-activeLineGutter": {
           backgroundColor:
-            "var(--cv-form-active-line, color-mix(in srgb, var(--card-color, var(--primary)) 8%, transparent))",
+            "var(--ui-form-active-line)",
         },
         ".cm-selectionBackground, &.cm-focused .cm-selectionBackground": {
           backgroundColor:
-            "var(--cv-form-selection-strong, color-mix(in srgb, var(--card-color, var(--primary)) 30%, transparent))",
+            "var(--ui-form-selection-strong)",
         },
         ".cm-cursor": {
-          borderLeftColor: "var(--cv-form-foreground, var(--foreground))",
+          borderLeftColor: "var(--ui-form-foreground)",
         },
         ".cm-placeholder": {
           color:
-            "var(--cv-form-muted, var(--kanban-muted, var(--muted-foreground)))",
+            "var(--ui-form-muted)",
         },
         ".cm-tooltip, .cm-tooltip *": {
           fontFamily:
@@ -133,12 +133,12 @@
         },
         ".cm-tooltip": {
           border:
-            "1px solid var(--cv-form-border, var(--kanban-border, var(--border)))",
+            "1px solid var(--ui-form-border)",
           borderRadius: "calc(var(--radius, 0.625rem) - 0.125rem)",
           backgroundColor:
-            "var(--cv-form-popover, var(--kanban-card, var(--popover)))",
+            "var(--ui-form-popover)",
           color:
-            "var(--cv-form-foreground, var(--kanban-foreground, var(--popover-foreground)))",
+            "var(--ui-form-foreground)",
           boxShadow:
             "0 12px 24px color-mix(in srgb, var(--foreground) 16%, transparent)",
           fontSize: "0.75rem",
@@ -148,7 +148,7 @@
         ".cm-tooltip-autocomplete > ul": {
           backgroundColor: "transparent",
           color:
-            "var(--cv-form-foreground, var(--kanban-foreground, var(--popover-foreground)))",
+            "var(--ui-form-foreground)",
           fontSize: "0.75rem",
           lineHeight: "1.4",
         },
@@ -157,20 +157,20 @@
         },
         ".cm-tooltip-autocomplete > ul > li[aria-selected]": {
           backgroundColor:
-            "var(--cv-form-active-line, var(--kanban-muted-surface, var(--accent)))",
+            "var(--ui-form-active-line)",
           color:
-            "var(--cv-form-foreground, var(--kanban-foreground, var(--accent-foreground)))",
+            "var(--ui-form-foreground)",
         },
         ".cm-completionDetail": {
           color:
-            "var(--cv-form-muted, var(--kanban-muted, var(--muted-foreground)))",
+            "var(--ui-form-muted)",
         },
         ".cm-tooltip-autocomplete > ul > li[aria-selected] .cm-completionDetail":
           {
             color: "inherit",
           },
         ".cm-completionMatchedText": {
-          color: "var(--cv-form-accent, var(--card-color, var(--primary)))",
+          color: "var(--ui-form-accent)",
           fontWeight: "700",
         },
         ".cm-tooltip-autocomplete > ul > li[aria-selected] .cm-completionMatchedText":
@@ -211,7 +211,7 @@
           {
             tag: tags.comment,
             color:
-              "var(--cv-form-muted, var(--kanban-muted, var(--muted-foreground)))",
+              "var(--ui-form-muted)",
             fontStyle: "italic",
           },
           {
@@ -320,12 +320,9 @@
     min-width: 0;
     margin: 2px;
     overflow: hidden;
-    border: 1px solid var(--cv-form-border, var(--kanban-border, var(--border)));
+    border: 1px solid var(--ui-form-border);
     border-radius: 0.4rem;
-    background: var(
-      --cv-form-code-background,
-      color-mix(in srgb, var(--muted, #f4f4f5) 34%, transparent)
-    );
+    background: var(--ui-form-code-background);
   }
 
   :global(.cvstudio-code-editor .cm-editor) {

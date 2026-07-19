@@ -15,11 +15,11 @@
 
 .cv-form-inline-option-picker--swap .cv-form-inline-option-trigger {
   min-height: 1.75rem;
-  border: 1px solid var(--cv-form-border, var(--kanban-border, var(--border)));
+  border: 1px solid var(--ui-form-border);
   border-radius: 999px;
   background: color-mix(
     in srgb,
-    var(--cv-form-popover, var(--kanban-card, var(--card))) 82%,
+    var(--ui-form-popover) 82%,
     transparent
   );
   font-size: 0.78rem;
@@ -35,7 +35,7 @@
   background: transparent;
   color: var(
     --cv-inline-option-accent,
-    var(--cv-form-foreground, var(--kanban-foreground, var(--foreground)))
+    var(--ui-form-foreground)
   );
   cursor: pointer;
   font: inherit;
@@ -48,13 +48,13 @@
   border: 1px solid
     color-mix(
       in srgb,
-      var(--cv-form-border, var(--kanban-border, var(--border))) 78%,
+      var(--ui-form-border) 78%,
       transparent
     );
   border-radius: 0.35rem;
   background: color-mix(
     in srgb,
-    var(--cv-form-popover, var(--kanban-card, var(--card))) 88%,
+    var(--ui-form-popover) 88%,
     var(--background)
   );
   font-size: 0.88rem;
@@ -84,17 +84,17 @@
 .cv-form-inline-option-trigger:focus-visible {
   background: color-mix(
     in srgb,
-    var(--cv-inline-option-accent, var(--card-color, var(--primary))) 8%,
-    var(--cv-form-popover, var(--kanban-card, var(--card)))
+    var(--cv-inline-option-accent, var(--primary)) 8%,
+    var(--ui-form-popover)
   );
   border-color: color-mix(
     in srgb,
-    var(--cv-inline-option-accent, var(--card-color, var(--primary))) 28%,
-    var(--cv-form-border, var(--kanban-border, var(--border)))
+    var(--cv-inline-option-accent, var(--primary)) 28%,
+    var(--ui-form-border)
   );
   color: var(
     --cv-inline-option-accent,
-    var(--cv-form-foreground, var(--kanban-foreground, var(--foreground)))
+    var(--ui-form-foreground)
   );
   outline: 0;
 }
@@ -113,10 +113,10 @@
 .cv-form-inline-option-list button {
   min-height: 1.6rem;
   gap: 0.35rem;
-  border: 1px solid var(--cv-form-border, var(--kanban-border, var(--border)));
+  border: 1px solid var(--ui-form-border);
   color: var(
     --cv-inline-option-accent,
-    var(--cv-form-muted, var(--kanban-muted, var(--muted-foreground)))
+    var(--ui-form-muted)
   );
   font-size: 0.75rem;
   font-weight: 550;
@@ -129,7 +129,7 @@
   border-radius: 999px;
   background: color-mix(
     in srgb,
-    var(--cv-form-popover, var(--kanban-card, var(--card))) 82%,
+    var(--ui-form-popover) 82%,
     transparent
   );
   font-size: 0.78rem;
@@ -142,17 +142,17 @@
 .cv-form-inline-option-list button.active {
   border-color: color-mix(
     in srgb,
-    var(--cv-inline-option-accent, var(--card-color, var(--primary))) 42%,
-    var(--cv-form-border, var(--kanban-border, var(--border)))
+    var(--cv-inline-option-accent, var(--primary)) 42%,
+    var(--ui-form-border)
   );
   background: color-mix(
     in srgb,
-    var(--cv-inline-option-accent, var(--card-color, var(--primary))) 12%,
+    var(--cv-inline-option-accent, var(--primary)) 12%,
     transparent
   );
   color: var(
     --cv-inline-option-accent,
-    var(--cv-form-foreground, var(--kanban-foreground, var(--foreground)))
+    var(--ui-form-foreground)
   );
   outline: 0;
 }

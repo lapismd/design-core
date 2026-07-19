@@ -1,0 +1,41 @@
+import { Meta, Canvas, Controls, Primary, Source } from "@storybook/addon-docs/blocks";
+import * as AutocompleteInputStories from "./AutocompleteInput.stories.svelte";
+import * as AutocompleteInputVariations from "./AutocompleteInput.variations.stories.svelte";
+
+<Meta of={AutocompleteInputStories} />
+
+# AutocompleteInput
+
+Single-value combobox with filtered suggestions (max 8). Building block under `ChipAutocomplete`.
+
+## Guidance
+
+### When to use
+
+- Inline single-value commit with suggestions
+- Custom chip/tag editors
+
+### When not to use
+
+- Multi-value chips — use `ChipAutocomplete`
+
+See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and the shared form contract in `FORMS.md`.
+
+## Usage
+
+<Source language="html" code={"<AutocompleteInput\n  bind:value\n  suggestions={[\"typescript\", \"svelte\"]}\n  placeholder=\"Add item...\"\n  onCommit={...}\n/>"} />
+
+<Primary />
+
+## Properties
+
+<Controls />
+
+## Examples
+
+### With value
+
+Focus the field in the canvas to open suggestions.
+
+<Canvas of={AutocompleteInputVariations.WithValue} meta={AutocompleteInputVariations} />
+

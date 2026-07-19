@@ -1,0 +1,44 @@
+import { Meta, Canvas, Controls, Primary, Source } from "@storybook/addon-docs/blocks";
+import * as StructuredFormStories from "./StructuredForm.stories.svelte";
+import * as StructuredFormVariations from "./StructuredForm.variations.stories.svelte";
+
+<Meta of={StructuredFormStories} />
+
+# StructuredForm
+
+Config-driven form runtime for schema-shaped data. Prefer this over hand-rolled field lists when you have typed getters/setters.
+
+Establishes the `cv-structured-form` host grid for label alignment.
+
+## Guidance
+
+### When to use
+
+- Schema-shaped editing with `createFormConfig` / field builders
+- Shared validation issues + readonly/view modes
+
+### When not to use
+
+- One-off composed layouts — use `FormField` + section primitives directly
+- YAML source editing — use `YamlBackedForm` / `YamlEditor`
+
+See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and the shared form contract in `FORMS.md`.
+
+## Usage
+
+<Source language="html" code={"<script lang=\"ts\">\n  import { StructuredForm } from \"@stevejuma/ui/forms\";\n  import { createFormConfig, textField } from \"@stevejuma/ui/forms/core\";\n</script>\n\n<StructuredForm value={data} {config} onChange={...} />"} />
+
+<Primary />
+
+## Properties
+
+<Controls />
+
+## Examples
+
+### Schema fields
+
+Text, segmented, and boolean fields from a typed config.
+
+<Canvas of={StructuredFormVariations.SchemaFields} meta={StructuredFormVariations} />
+

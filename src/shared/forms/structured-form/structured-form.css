@@ -1,0 +1,27 @@
+@import "../form.tokens.css";
+
+/**
+ * Host grid for labelled form rows. Any element with `.cv-structured-form`
+ * (or `.ui-structured-form`) must establish this 2-column track so FormField /
+ * control-row `subgrid` can align labels in one column.
+ */
+.cv-structured-form,
+.ui-structured-form {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  column-gap: var(--ui-form-column-gap);
+  row-gap: 0.35rem;
+  min-width: 0;
+}
+
+.cv-structured-form > *,
+.ui-structured-form > * {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 480px) {
+  .cv-structured-form,
+  .ui-structured-form {
+    grid-template-columns: 1fr;
+  }
+}

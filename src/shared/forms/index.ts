@@ -1,3 +1,8 @@
+export {
+  formLegacyTokenNames,
+  formTokenNames,
+  type FormToken,
+} from "./form.tokens";
 export { default as AddSectionChooser } from "./add-section-chooser/AddSectionChooser.svelte";
 export { default as AutocompleteInput } from "./autocomplete-input/AutocompleteInput.svelte";
 export { default as ChipAutocomplete } from "./chip-autocomplete/ChipAutocomplete.svelte";
@@ -6,6 +11,7 @@ export { default as CollapsibleItemList } from "./collapsible-item-list/Collapsi
 export { default as EntryActions } from "./entry-actions/EntryActions.svelte";
 export { default as FormField } from "./form-field/FormField.svelte";
 export { default as FormFieldRenderer } from "./structured-form/FormFieldRenderer.svelte";
+export { default as FormPlaceholder } from "./form-placeholder/FormPlaceholder.svelte";
 export { default as FormSectionHeader } from "./form-section-header/FormSectionHeader.svelte";
 export { default as FormViewRenderer } from "./structured-form/FormViewRenderer.svelte";
 export { default as InlineOptionPicker } from "./inline-option-picker/InlineOptionPicker.svelte";

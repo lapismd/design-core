@@ -1,0 +1,48 @@
+import { Meta, Canvas, Controls, Primary, Source } from "@storybook/addon-docs/blocks";
+import * as InlineOptionPickerStories from "./InlineOptionPicker.stories.svelte";
+import * as InlineOptionPickerVariations from "./InlineOptionPicker.variations.stories.svelte";
+
+<Meta of={InlineOptionPickerStories} />
+
+# InlineOptionPicker
+
+Compact option picker with `menu` or `swap` presentation. Used by StructuredForm for `options` / `choice` field kinds.
+
+## Guidance
+
+### When to use
+
+- `presentation="menu"` for choice lists
+- `presentation="swap"` for cycling options with icons/accents
+
+### When not to use
+
+- ≤3 exclusive values without icons — prefer `SegmentedControl`
+- Large searchable catalogs — prefer shadcn Command + Popover
+
+See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and the shared form contract in `FORMS.md`.
+
+## Usage
+
+<Source language="html" code={"<InlineOptionPicker\n  value={status}\n  options={[{ value: \"draft\", label: \"Draft\" }, { value: \"published\", label: \"Published\" }]}\n  presentation=\"menu\"\n  onChange={...}\n/>"} />
+
+<Primary />
+
+## Properties
+
+<Controls />
+
+## Examples
+
+### Menu
+
+Default menu presentation.
+
+<Canvas of={InlineOptionPickerVariations.Menu} meta={InlineOptionPickerVariations} />
+
+### Swap
+
+Swap presentation for cycling values.
+
+<Canvas of={InlineOptionPickerVariations.Swap} meta={InlineOptionPickerVariations} />
+

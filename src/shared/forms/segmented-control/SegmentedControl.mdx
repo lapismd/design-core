@@ -1,0 +1,50 @@
+import { Meta, Canvas, Controls, Primary, Source } from "@storybook/addon-docs/blocks";
+import * as SegmentedControlStories from "./SegmentedControl.stories.svelte";
+import * as SegmentedControlVariations from "./SegmentedControl.variations.stories.svelte";
+
+<Meta of={SegmentedControlStories} />
+
+# SegmentedControl
+
+Exclusive pill control for two or three mutually exclusive values in a form row.
+
+Place inside `FormField align="center" as="div"` when used as a labelled row.
+
+## Guidance
+
+### When to use
+
+- ≤3 mutually exclusive values
+- `segmentedField` in StructuredForm configs
+
+### When not to use
+
+- Larger option sets — use shadcn `Select` or `InlineOptionPicker`
+- Multi-select — use `ChipAutocomplete`
+
+See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and the shared form contract in `FORMS.md`.
+
+## Usage
+
+<Source language="html" code={"<SegmentedControl\n  value={mode}\n  options={[\"edit\", \"preview\"]}\n  labels={{ edit: \"Edit\", preview: \"Preview\" }}\n  ariaLabel=\"View mode\"\n  onChange={...}\n/>"} />
+
+<Primary />
+
+## Properties
+
+<Controls />
+
+## Examples
+
+### Two options
+
+Common edit/preview pair.
+
+<Canvas of={SegmentedControlVariations.TwoOptions} meta={SegmentedControlVariations} />
+
+### Three options
+
+Maximum recommended option count.
+
+<Canvas of={SegmentedControlVariations.ThreeOptions} meta={SegmentedControlVariations} />
+

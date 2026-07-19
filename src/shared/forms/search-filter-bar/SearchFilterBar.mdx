@@ -1,0 +1,49 @@
+import { Meta, Canvas, Controls, Primary, Source } from "@storybook/addon-docs/blocks";
+import * as SearchFilterBarStories from "./SearchFilterBar.stories.svelte";
+import * as SearchFilterBarVariations from "./SearchFilterBar.variations.stories.svelte";
+
+<Meta of={SearchFilterBarStories} />
+
+# SearchFilterBar
+
+Search chrome with optional filter chips/snippets — not a labelled form row.
+
+Filter semantics stay in the app; this package owns layout and expand/collapse chrome.
+
+## Guidance
+
+### When to use
+
+- Workspace sidebars and list filters
+- Search + chip filters with a clear control
+
+### When not to use
+
+- Schema field rows — use `FormField` / StructuredForm
+
+See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and the shared form contract in `FORMS.md`.
+
+## Usage
+
+<Source language="html" code={"<SearchFilterBar\n  bind:value={query}\n  placeholder=\"Search...\"\n  onClear={...}\n/>"} />
+
+<Primary />
+
+## Properties
+
+<Controls />
+
+## Examples
+
+### Empty
+
+Idle search pill.
+
+<Canvas of={SearchFilterBarVariations.Empty} meta={SearchFilterBarVariations} />
+
+### With query
+
+Populated search value.
+
+<Canvas of={SearchFilterBarVariations.WithQuery} meta={SearchFilterBarVariations} />
+

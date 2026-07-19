@@ -1,5 +1,7 @@
 <script lang="ts">
   import type { Snippet } from "svelte";
+  // Ensure bare `.cv-structured-form` hosts get the 2-col grid FormField subgrids into.
+  import "../structured-form/structured-form.css";
 
   let {
     label,
@@ -39,21 +41,20 @@
 
 <style>
   .cv-form-field {
-    --cv-control-column-gap: 1rem;
     display: grid;
     grid-template-columns: max-content minmax(0, 1fr);
-    column-gap: var(--cv-control-column-gap);
+    column-gap: var(--ui-form-column-gap);
     row-gap: 0;
     align-items: start;
-    border-bottom: 1px solid
-      var(--cv-form-border, var(--kanban-border, var(--border)));
+    border-bottom: 1px solid var(--ui-form-border);
   }
 
   @supports (grid-template-columns: subgrid) {
-    :global(.cv-structured-form) > .cv-form-field {
+    :global(.cv-structured-form) > .cv-form-field,
+    :global(.ui-structured-form) > .cv-form-field {
       grid-column: 1 / -1;
       grid-template-columns: subgrid;
-      column-gap: var(--cv-control-column-gap);
+      column-gap: var(--ui-form-column-gap);
     }
   }
 
@@ -62,7 +63,7 @@
   }
 
   .cv-form-field > span {
-    color: var(--cv-form-muted, var(--kanban-muted, var(--muted-foreground)));
+    color: var(--ui-form-muted);
     font-size: 0.75rem;
     font-weight: 500;
     padding-top: 0.45rem;
@@ -95,10 +96,7 @@
     border-radius: 0;
     border-bottom: 0;
     background: transparent;
-    color: var(
-      --cv-form-foreground,
-      var(--kanban-foreground, var(--foreground))
-    );
+    color: var(--ui-form-foreground);
     font: inherit;
     line-height: 1.45;
     padding: 0.35rem 0;
@@ -120,7 +118,7 @@
     box-shadow: none;
   }
 
-  @media (max-width: 720px) {
+  @media (max-width: 480px) {
     .cv-form-field {
       grid-column: auto;
       grid-template-columns: 1fr;

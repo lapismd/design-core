@@ -1,0 +1,42 @@
+import { Meta, Canvas, Controls, Primary, Source } from "@storybook/addon-docs/blocks";
+import * as TaskDueCalendarStories from "./TaskDueCalendar.stories.svelte";
+import * as TaskDueCalendarVariations from "./TaskDueCalendar.variations.stories.svelte";
+
+<Meta of={TaskDueCalendarStories} />
+
+# TaskDueCalendar
+
+Generic calendar control for due dates until a shadcn calendar lands.
+
+Use inside `FormField align="center" as="div"` in labelled rows.
+
+## Guidance
+
+### When to use
+
+- Task/application due-date fields
+
+### When not to use
+
+- Plain ISO date typing — a native date input may be enough
+
+See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and the shared form contract in `FORMS.md`.
+
+## Usage
+
+<Source language="html" code={"<TaskDueCalendar value={due} onChange={...} />"} />
+
+<Primary />
+
+## Properties
+
+<Controls />
+
+## Examples
+
+### Selected day
+
+Calendar with a selected date.
+
+<Canvas of={TaskDueCalendarVariations.SelectedDay} meta={TaskDueCalendarVariations} />
+

@@ -1,0 +1,50 @@
+import { Meta, Canvas, Controls, Primary, Source } from "@storybook/addon-docs/blocks";
+import * as EntryActionsStories from "./EntryActions.stories.svelte";
+import * as EntryActionsVariations from "./EntryActions.variations.stories.svelte";
+
+<Meta of={EntryActionsStories} />
+
+# EntryActions
+
+Move/remove chrome for a single repeated entry. Up/down controls sit in a left hover rail; remove on the right.
+
+Entry content is outlined with a dotted border so spacing against the section header is visible.
+
+## Guidance
+
+### When to use
+
+- Repeated entries that can be reordered or removed
+- Arrays whose order is persisted or shown to users (expose up/down unless order is domain-fixed)
+
+### When not to use
+
+- Empty arrays need no filler copy — the add affordance is enough
+- Do not invent local move/delete icon rows
+
+See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and the shared form contract in `FORMS.md`.
+
+## Usage
+
+<Source language="html" code={"<script lang=\"ts\">\n  import { EntryActions } from \"@stevejuma/ui/forms\";\n</script>\n\n<EntryActions index={0} total={2} onMove={...} onRemove={...}>\n  <!-- entry fields -->\n</EntryActions>"} />
+
+<Primary />
+
+## Properties
+
+<Controls />
+
+## Examples
+
+### Single entry
+
+First and only entry (move disabled).
+
+<Canvas of={EntryActionsVariations.SingleEntry} meta={EntryActionsVariations} />
+
+### Middle entry
+
+Reorderable middle item.
+
+<Canvas of={EntryActionsVariations.MiddleEntry} meta={EntryActionsVariations} />
+

@@ -4,6 +4,7 @@
 @import "tw-animate-css";
 @import "shadcn-svelte/tailwind.css";
 @import "./theme.css";
+@import "./shared/forms/form.tokens.css";
 
 @layer base {
   * {

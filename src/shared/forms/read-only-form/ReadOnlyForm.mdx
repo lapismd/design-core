@@ -1,0 +1,49 @@
+import { Meta, Canvas, Controls, Primary, Source } from "@storybook/addon-docs/blocks";
+import * as ReadOnlyFormStories from "./ReadOnlyFormFamily.stories.svelte";
+import * as ReadOnlyFormVariations from "./ReadOnlyForm.variations.stories.svelte";
+
+<Meta of={ReadOnlyFormStories} />
+
+# ReadOnlyForm
+
+Readonly group / list / row primitives for preview surfaces (fixed ~8.5rem label column).
+
+Used inside ReferencePicker and other read-only summaries — not for editable schema forms.
+
+## Guidance
+
+### When to use
+
+- Preview/summary panels
+- Reference picker selected/preview rows
+
+### When not to use
+
+- Editable labelled rows — use `FormField` / `StructuredForm`
+
+See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and the shared form contract in `FORMS.md`.
+
+## Usage
+
+<Source language="html" code={"<ReadOnlyFormGroup title=\"Profile\">\n  <ReadOnlyFormRow label=\"Title\" value=\"Northstar\" />\n  <ReadOnlyFormList label=\"Skills\" items={[\"TypeScript\"]} />\n</ReadOnlyFormGroup>"} />
+
+<Primary />
+
+## Properties
+
+<Controls />
+
+## Examples
+
+### Group
+
+Group with row + list.
+
+<Canvas of={ReadOnlyFormVariations.Group} meta={ReadOnlyFormVariations} />
+
+### Row only
+
+Single read-only row.
+
+<Canvas of={ReadOnlyFormVariations.RowOnly} meta={ReadOnlyFormVariations} />
+

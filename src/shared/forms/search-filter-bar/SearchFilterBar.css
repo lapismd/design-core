@@ -42,30 +42,27 @@
   border: 1px solid
     color-mix(
       in srgb,
-      var(--cv-form-accent, var(--kanban-accent-foreground, var(--primary))) 42%,
-      var(--cv-form-border, var(--kanban-border, var(--border)))
+      var(--ui-form-accent) 42%,
+      var(--ui-form-border)
     );
   border-radius: 999px;
-  background: var(--cv-form-background, var(--kanban-card, var(--background)));
-  color: var(--cv-form-muted, var(--kanban-muted, var(--muted-foreground)));
+  background: var(--ui-form-background);
+  color: var(--ui-form-muted);
   padding: 0 0.35rem 0 0.6rem;
   box-shadow: inset 0 0 0 1px
     color-mix(
       in srgb,
-      var(--cv-form-accent, var(--kanban-accent-foreground, var(--primary))) 10%,
+      var(--ui-form-accent) 10%,
       transparent
     );
 }
 
 .cv-search-filter-bar__search-pill:focus-within {
-  border-color: var(
-    --cv-form-accent,
-    var(--kanban-accent-foreground, var(--primary))
-  );
+  border-color: var(--ui-form-accent);
   box-shadow: 0 0 0 3px
     color-mix(
       in srgb,
-      var(--cv-form-accent, var(--kanban-accent-foreground, var(--primary))) 14%,
+      var(--ui-form-accent) 14%,
       transparent
     );
 }
@@ -81,7 +78,7 @@
   flex: 1 1 auto;
   border: 0;
   background: transparent;
-  color: var(--cv-form-foreground, var(--kanban-foreground, var(--foreground)));
+  color: var(--ui-form-foreground);
   font: inherit;
   font-size: 0.8rem;
   font-weight: 700;
@@ -94,7 +91,7 @@
 }
 
 .cv-search-filter-bar__search-pill input::placeholder {
-  color: var(--cv-form-muted, var(--kanban-muted, var(--muted-foreground)));
+  color: var(--ui-form-muted);
 }
 
 .cv-search-filter-bar__search-pill kbd {
@@ -103,9 +100,9 @@
   height: 1.1rem;
   flex: 0 0 auto;
   place-items: center;
-  border: 1px solid var(--cv-form-border, var(--kanban-border, var(--border)));
+  border: 1px solid var(--ui-form-border);
   border-radius: 0.25rem;
-  color: var(--cv-form-muted, var(--kanban-muted, var(--muted-foreground)));
+  color: var(--ui-form-muted);
   font: inherit;
   font-size: 0.62rem;
   font-weight: 850;
@@ -141,11 +138,8 @@
 .cv-search-filter-bar__clear-all:focus-visible,
 .cv-search-filter-bar__filter-toggle:hover,
 .cv-search-filter-bar__filter-toggle:focus-visible {
-  background: var(
-    --cv-form-selection,
-    color-mix(in srgb, var(--primary) 12%, transparent)
-  );
-  color: var(--cv-form-accent, var(--kanban-accent-foreground, var(--primary)));
+  background: var(--ui-form-selection);
+  color: var(--ui-form-accent);
   outline: 0;
 }
 
@@ -154,11 +148,8 @@
   max-width: min(16rem, 100%);
   gap: 0.35rem;
   border-radius: 999px;
-  background: var(
-    --cv-form-selection,
-    color-mix(in srgb, var(--primary) 14%, transparent)
-  );
-  color: var(--cv-form-accent, var(--kanban-accent-foreground, var(--primary)));
+  background: var(--ui-form-selection);
+  color: var(--ui-form-accent);
   font-size: 0.75rem;
   font-weight: 850;
   padding: 0 0.55rem 0 0.75rem;
@@ -196,19 +187,19 @@
 .cv-search-filter-bar__filters [data-active="true"] {
   border-color: color-mix(
     in srgb,
-    var(--cv-form-accent, var(--kanban-accent-foreground, var(--primary))) 36%,
-    var(--cv-form-border, var(--kanban-border, var(--border)))
+    var(--ui-form-accent) 36%,
+    var(--ui-form-border)
   );
   background: color-mix(
     in srgb,
-    var(--cv-form-accent, var(--kanban-accent-foreground, var(--primary))) 10%,
-    var(--cv-form-background, var(--kanban-card, var(--background)))
+    var(--ui-form-accent) 10%,
+    var(--ui-form-background)
   );
-  color: var(--cv-form-accent, var(--kanban-accent-foreground, var(--primary)));
+  color: var(--ui-form-accent);
   box-shadow: inset 0 0 0 1px
     color-mix(
       in srgb,
-      var(--cv-form-accent, var(--kanban-accent-foreground, var(--primary))) 8%,
+      var(--ui-form-accent) 8%,
       transparent
     );
 }
@@ -217,9 +208,9 @@
 .cv-search-filter-bar__filter-toggle {
   width: 2rem;
   height: 2rem;
-  border: 1px solid var(--cv-form-border, var(--kanban-border, var(--border)));
-  background: var(--cv-form-background, var(--kanban-card, var(--background)));
-  color: var(--cv-form-muted, var(--kanban-muted, var(--muted-foreground)));
+  border: 1px solid var(--ui-form-border);
+  background: var(--ui-form-background);
+  color: var(--ui-form-muted);
 }
 
 .cv-search-filter-bar__filter-toggle--inline {
@@ -234,14 +225,11 @@
 .cv-search-filter-bar__filter-toggle[aria-pressed="true"] {
   border-color: color-mix(
     in srgb,
-    var(--cv-form-accent, var(--kanban-accent-foreground, var(--primary))) 42%,
-    var(--cv-form-border, var(--kanban-border, var(--border)))
+    var(--ui-form-accent) 42%,
+    var(--ui-form-border)
   );
-  background: var(
-    --cv-form-selection,
-    color-mix(in srgb, var(--primary) 12%, transparent)
-  );
-  color: var(--cv-form-accent, var(--kanban-accent-foreground, var(--primary)));
+  background: var(--ui-form-selection);
+  color: var(--ui-form-accent);
 }
 
 .cv-search-filter-bar__clear-search:disabled,

@@ -1,6 +1,7 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent } from "storybook/test";
+  import FormPlaceholder from "../form-placeholder/FormPlaceholder.svelte";
   import FormSectionHeader from "./FormSectionHeader.svelte";
 
   const { Story } = defineMeta({
@@ -44,7 +45,7 @@
         }}
       />
       {#if open}
-        <p class="text-muted-foreground text-sm">Section body</p>
+        <FormPlaceholder>Section body</FormPlaceholder>
       {/if}
       <output class="sr-only">{open ? "expanded" : "collapsed"}</output>
     </div>

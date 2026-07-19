@@ -4,6 +4,7 @@
     ChipAutocomplete,
     EntryActions,
     FormField,
+    FormPlaceholder,
     FormSectionHeader,
     StructuredForm,
   } from "@stevejuma/ui/forms";
@@ -243,16 +244,24 @@
     </Tabs.Content>
 
     <Tabs.Content value="evidence">
-      <p class="text-muted-foreground p-4 text-sm">Evidence tab placeholder.</p>
+      <div class="p-4">
+        <FormPlaceholder>Evidence tab placeholder.</FormPlaceholder>
+      </div>
     </Tabs.Content>
     <Tabs.Content value="design">
-      <p class="text-muted-foreground p-4 text-sm">Design tab placeholder.</p>
+      <div class="p-4">
+        <FormPlaceholder>Design tab placeholder.</FormPlaceholder>
+      </div>
     </Tabs.Content>
     <Tabs.Content value="locale">
-      <p class="text-muted-foreground p-4 text-sm">Locale tab placeholder.</p>
+      <div class="p-4">
+        <FormPlaceholder>Locale tab placeholder.</FormPlaceholder>
+      </div>
     </Tabs.Content>
     <Tabs.Content value="settings">
-      <p class="text-muted-foreground p-4 text-sm">Settings tab placeholder.</p>
+      <div class="p-4">
+        <FormPlaceholder>Settings tab placeholder.</FormPlaceholder>
+      </div>
     </Tabs.Content>
   </Tabs.Root>
 </div>

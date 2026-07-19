@@ -7,31 +7,103 @@ import { Meta } from "@storybook/addon-docs/blocks";
 Use `@stevejuma/ui/forms` for structured editing and CV form-row chrome. Use
 shadcn for generic controls (`Select`, `Switch`, `Command`, `Input`, …).
 
+This page mirrors the CV Studio forms contract (`forms-and-shared-ui`) and the
+package `FORMS.md`. Each component Docs page adds when/when-not guidance,
+usage, properties, and variations.
+
 ## Choose the right layer
 
 1. **StructuredForm** — schema-shaped data with typed field configs from
    `createFormConfig` / `textField` / `segmentedField` / etc.
 2. **Composed primitives** — `FormField`, `FormSectionHeader`,
    `CollapsibleItemList`, `InlineOptionPicker` for one-off layouts.
-3. **YamlBackedForm** — dual structured + YAML source mode.
+3. **YamlBackedForm** — dual structured + YAML source mode over the same draft.
 4. **shadcn** — Select, Switch, Command/Popover pickers, Toggle Group, Field.
 
-## Layout rules
+## Shared form pattern
 
-- Keep labelled fields inside one `cv-structured-form` grid.
-- Use `FormField as="div" align="center"` for pill controls, switches, and
-  pickers that contain nested interactives.
-- Let `FormSectionHeader` own section separators; avoid double borders on
-  wrappers.
+Default editable forms should be minimal and row-based:
+
+- labels on the left
+- editable values on the right
+- visible row separators
+- proper-case labels and section titles
+- debounced autosave unless a workflow has a reason to defer writes
+
+Compose fields inside one `max-content minmax(0, 1fr)` label/value grid per
+form scope (`cv-structured-form` / `ui-structured-form`). Do not invent
+arbitrary flex rows for labelled fields.
+
+## Tokens
+
+Forms use `--ui-form-*` CSS variables (see `formTokenNames` /
+`@stevejuma/ui/forms/tokens`), with defaults in `form.tokens.css` mapped to
+theme tokens. Override accent, border, muted text, editors, etc. on `:root`
+or a form ancestor — same idea as shadcn `--ui-button-*` token maps.
+
+## Sections and repeatable groups
+
+- Use **FormSectionHeader** for top-level editable sections. Keep headers
+  collapsible; expose move/delete on hover. When the title is not editable,
+  set `titleToggleable` so the whole title row is the disclosure control.
+- Disclosure toggles sit in an absolute left rail, not in the row grid.
+- Use **EntryActions** for repeated entries that can be reordered or removed.
+  Arrays whose order is persisted or shown must expose shared up/down controls
+  unless order is domain-fixed.
+- Use **CollapsibleItemList** when the header owns collapse state and count.
+- Repeated entries that need their own editable title + disclosure use
+  `FormSectionHeader`, not a bespoke heading/border combo.
+- Empty arrays render no filler copy — the add affordance is enough.
+- Add actions stay in the section footer, bottom-aligned. Newly added blank
+  rows should use field-specific placeholders (e.g. `Add Technology`).
+- Optional object groups share the same add flow as arrays.
+
+## Layout checklist
+
+1. Prefer `StructuredForm` for schema-shaped data; otherwise compose
+   `FormSectionHeader`, `FormField`, and the shared repeatable-entry primitives.
+2. One label/value grid per form scope; keep the form container `min-width: 0`.
+3. Let `FormSectionHeader` own the single separator under a disclosure header.
+   Wrappers and entry containers provide spacing/indentation only — no adjacent
+   top/bottom borders.
+4. Make every non-editable disclosure title-row clickable. Editable-title rows
+   keep direct title editing and use the left-rail chevron to collapse.
+5. Expandable / multi-item bodies (`EntryActions`, `CollapsibleItemList`) outline
+   their content with a dotted border so spacing is visible. For story-only
+   stubs, wrap copy in `FormPlaceholder`.
+6. Verify expanded/collapsed layout (including nested collapse-all) and check
+   for duplicate separators.
 
 ## Control choice
 
-- `SegmentedControl` for two or three exclusive values in a form row
-- `ChipAutocomplete` for multi-value lists (`tagListField` / `chipListField`)
-- shadcn `Select` for plain string menus; `InlineOptionPicker` when you need
-  swap presentation or option icons
-- Prefer app pickers on shadcn `Command` for searchable choices
-- `CodeEditor` / `YamlEditor` for source editing
+| Need | Use |
+| --- | --- |
+| 2–3 exclusive values | `SegmentedControl` (inside `FormField align="center" as="div"`) |
+| Larger option sets | shadcn `Select`, or `InlineOptionPicker` for menu/swap + icons |
+| Multi-value tags | `ChipAutocomplete` (`tagListField` / `chipListField`) |
+| Searchable choices | App pickers on shadcn `Command` + `Popover` |
+| Pill / date controls | `FormField align="center"`; popovers use `as="div"` |
+| YAML source | `YamlEditor` only — no plain textarea YAML editors |
+| Code source | `CodeEditor` |
+| Dual structured + YAML | `YamlBackedForm` (YAML edits the authoritative draft) |
+| Textareas | Autosize, hide resize handles, avoid internal scroll for ordinary editing |
+
+## Evidence references
+
+`ReferencePicker` shows stored ref, resolved path, label, and excerpt.
+Unresolved and duplicate refs stay visible. Markers (`[^id]`) are editor
+metadata — generated Markdown/YAML/HTML must strip them.
+
+## YAML and AI review
+
+Document editors (CV, docs, practice) expose the same toolbar YAML switch.
+Valid YAML updates the draft and autosaves; invalid YAML stays editable and
+surfaces the parse error. Collapse/expand-all in YAML mode folds the active
+CodeMirror editor.
+
+When an AI proposal changes a form value, review mode shows the two line-aware
+unified-diff versions (removed words struck through; additions emphasized).
+YAML review uses the same two-version model.
 
 ## Visual overview
 
@@ -46,4 +118,4 @@ That story exercises:
 - `AddSectionChooser`
 - shadcn `Tabs` (line variant)
 
-See [FORMS.md](../../../FORMS.md) for the full contract.
+See [FORMS.md](../../../FORMS.md) for the package contract.
