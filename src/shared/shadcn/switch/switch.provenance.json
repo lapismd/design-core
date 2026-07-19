@@ -17,7 +17,14 @@
         "path": "src/lib/components/ui/switch/switch.svelte",
         "sha256": "fb7a808ede2603c1e2f427b9ccc1c4c3e4bca34ecaba1fe082be24b0652ca69c"
       }
-    ]
+    ],
+    "docsUrl": "https://shadcn-svelte.com/docs/components/switch.md",
+    "docsFetchedAt": "2026-07-19T20:18:21.661Z",
+    "docsSha256": "ca9b2405cb46442bc25550231e88861fd609ddc670fed598ff518ed1dad43028",
+    "examplesIncluded": [
+      "Preview"
+    ],
+    "examplesSkipped": []
   },
   "converter": {
     "version": "2.0.0",

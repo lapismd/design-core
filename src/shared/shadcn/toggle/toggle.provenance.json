@@ -17,7 +17,20 @@
         "path": "src/lib/components/ui/toggle/toggle.svelte",
         "sha256": "91c663cd8671c5161978a1a763e13919aaa3dc833c7ff2246fa7b8d3499af519"
       }
-    ]
+    ],
+    "docsUrl": "https://shadcn-svelte.com/docs/components/toggle.md",
+    "docsFetchedAt": "2026-07-19T20:18:21.764Z",
+    "docsSha256": "3e02b56d9951a0aaf3928b2cfc9ef05ecc696aa450d3e908bc1915f74a41b84d",
+    "examplesIncluded": [
+      "Preview",
+      "Default",
+      "Outline",
+      "With Text",
+      "Small",
+      "Large",
+      "Disabled"
+    ],
+    "examplesSkipped": []
   },
   "converter": {
     "version": "2.0.0",

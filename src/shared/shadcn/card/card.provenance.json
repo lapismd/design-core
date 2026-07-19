@@ -41,7 +41,16 @@
         "path": "src/lib/components/ui/card/index.ts",
         "sha256": "218019c78c8be52b5add8267a758f2d2c685e036e35d6bbcee147333e6534db8"
       }
-    ]
+    ],
+    "docsUrl": "https://shadcn-svelte.com/docs/components/card.md",
+    "docsFetchedAt": "2026-07-19T20:18:21.972Z",
+    "docsSha256": "e73ce5c1c25d014cd26a9727b625edc93597a3bc3fdccf0491be0c16cc668efb",
+    "examplesIncluded": [
+      "Preview",
+      "Spacing",
+      "Image"
+    ],
+    "examplesSkipped": []
   },
   "converter": {
     "version": "2.0.0",

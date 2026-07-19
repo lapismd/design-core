@@ -37,6 +37,31 @@
         "path": "src/lib/components/ui/empty/index.ts",
         "sha256": "42353c628663f6cbc7744a8aae60fd5ff26d6e1356629ce51ccc01dda87d7c62"
       }
+    ],
+    "docsUrl": "https://shadcn-svelte.com/docs/components/empty.md",
+    "docsFetchedAt": "2026-07-19T20:18:29.553Z",
+    "docsSha256": "0a8108a39c9a3ba458b4fe839d5253c8e5bf5275eecefc1e2f6132a64463926a",
+    "examplesIncluded": [
+      "Preview",
+      "Outline",
+      "Background"
+    ],
+    "examplesSkipped": [
+      {
+        "name": "Avatar",
+        "reason": "missing-family",
+        "detail": "Catalog is missing family \"avatar\""
+      },
+      {
+        "name": "Avatar Group",
+        "reason": "missing-family",
+        "detail": "Catalog is missing family \"avatar\""
+      },
+      {
+        "name": "InputGroup",
+        "reason": "missing-family",
+        "detail": "Catalog is missing family \"kbd\""
+      }
     ]
   },
   "converter": {

@@ -29,7 +29,14 @@
         "path": "src/lib/components/ui/accordion/index.ts",
         "sha256": "14e729a878c52b3ecc5c9b47c9de4fbc00d8e0df3efcda4c5f0638e14efca655"
       }
-    ]
+    ],
+    "docsUrl": "https://shadcn-svelte.com/docs/components/accordion.md",
+    "docsFetchedAt": "2026-07-19T20:18:22.076Z",
+    "docsSha256": "d830d1784d4a6f4f3dd2c5970d0aa075336f9332884bbdfa771c4afc0521764b",
+    "examplesIncluded": [
+      "Preview"
+    ],
+    "examplesSkipped": []
   },
   "converter": {
     "version": "2.0.0",

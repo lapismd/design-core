@@ -123,7 +123,9 @@ export function rewriteExample(args: {
 
   const tablerIcons = extractTablerIcons(code);
   for (const icon of tablerIcons) {
-    if (!TABLER_TO_LUCIDE[icon]) {
+    // Prefer explicit remaps; otherwise keep the tabler slug (often matches lucide).
+    const lucide = TABLER_TO_LUCIDE[icon] ?? icon;
+    if (!/^[a-z0-9-]+$/.test(lucide)) {
       return {
         example,
         reason: "unmapped-icon",

@@ -26,7 +26,14 @@
         "path": "src/lib/components/ui/collapsible/index.ts",
         "sha256": "b3388337d932c594443568a5494a3ab2740ed803df9c1d0ebb68ed74036fa399"
       }
-    ]
+    ],
+    "docsUrl": "https://shadcn-svelte.com/docs/components/collapsible.md",
+    "docsFetchedAt": "2026-07-19T20:18:21.911Z",
+    "docsSha256": "0d68ffced03fb6e7ca67565212feaaf1a9d36abc5bb4bd8212a767526097d58d",
+    "examplesIncluded": [
+      "Preview"
+    ],
+    "examplesSkipped": []
   },
   "converter": {
     "version": "2.0.0",

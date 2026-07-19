@@ -29,7 +29,14 @@
         "path": "src/lib/components/ui/tabs/tabs.svelte",
         "sha256": "d09516180a1527e299c6714938cb9906041b9198177f7fde67432a84e21cf637"
       }
-    ]
+    ],
+    "docsUrl": "https://shadcn-svelte.com/docs/components/tabs.md",
+    "docsFetchedAt": "2026-07-19T20:18:21.873Z",
+    "docsSha256": "04abbf2f28efa800dca09a899b28e3d2da27122fadf2ff55dc95f47beaf1b44d",
+    "examplesIncluded": [
+      "Preview"
+    ],
+    "examplesSkipped": []
   },
   "converter": {
     "version": "2.0.0",
