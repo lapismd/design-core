@@ -47,6 +47,16 @@ tests to validate the change.
 - Do not invent component props: verify them from the component source,
   TypeScript types, and existing stories.
 
+## Generated UI and visual baseline rules
+
+- Use `pnpm ui:add <component>` to add or convert supported shadcn-svelte
+  components (v1: `button` with `--overwrite`). Do not run the upstream
+  `shadcn-svelte` CLI directly against the shared UI package tree.
+- Treat an unsupported conversion or parity failure as a failed addition; do
+  not bypass the gate by copying files manually.
+- Do not remove `data-ui-component`, `data-ui-part`, `data-slot`, token
+  metadata, or provenance files from generated components.
+
 ## Visual regression baselines
 
 Local Playwright screenshots live under
@@ -55,11 +65,16 @@ Local Playwright screenshots live under
 - **Never** update visual baselines unless the user explicitly asks. Do not pass
   `--update-snapshots` from `storybook`, `test:storybook`, `storybook:check`,
   or `checks`.
+- `pnpm test:visual` sets Playwright `updateSnapshots: "none"` and must not
+  write baselines.
 - Treat `pnpm test:visual` failures as a possible unintended UI change. Inspect
   expected/actual/diff (or `pnpm test:visual:report`) before changing code or
   baselines.
-- New visual components/stories may add first snapshots when the user asks for
-  baseline generation via `pnpm test:visual:update`.
+- Existing component snapshots may be changed only through
+  `VISUAL_UPDATE_APPROVED=1 pnpm test:visual:update --component <name>` after
+  explicit human review.
+- `ui:add` may create or replace baselines only for the component it is adding,
+  and only after reference/candidate parity passes.
 - Tag a story `skip-visual` (with a documented reason) only when pixel flake
   cannot be stabilized after disabling animations.
 - v1 visual suite captures light mode only (Chromium 1280×900).

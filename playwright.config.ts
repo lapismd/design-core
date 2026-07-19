@@ -9,6 +9,9 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: 0,
   workers: process.env.CI ? 1 : undefined,
+  // Ordinary visual runs must never create or overwrite baselines.
+  // Use `pnpm test:visual:update --component <name>` (guarded) instead.
+  updateSnapshots: process.env.PLAYWRIGHT_UPDATE_SNAPSHOTS === "1" ? "all" : "none",
   reporter: [["list"], ["html", { open: "never" }]],
   timeout: 30_000,
   expect: {

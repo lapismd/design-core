@@ -17,7 +17,10 @@ export default mergeConfig(
           test: {
             name: "unit",
             environment: "node",
-            include: ["src/**/*.spec.ts"],
+            include: [
+              "src/**/*.spec.ts",
+              "scripts/ui-generator/**/*.spec.ts",
+            ],
           },
         },
         {

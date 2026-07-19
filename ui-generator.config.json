@@ -1,0 +1,46 @@
+{
+  "packageRoot": ".",
+  "sharedRoot": "src/shared/shadcn",
+  "appsRoot": "src/apps",
+  "componentPrefix": "ui",
+  "componentAttribute": "data-ui-component",
+  "partAttribute": "data-ui-part",
+  "preserveDataSlot": true,
+  "packageManager": "pnpm",
+  "shadcn": {
+    "executable": "shadcn-svelte",
+    "registry": "https://shadcn-svelte.com/registry",
+    "intakeFixture": "scripts/ui-generator/fixtures/shadcn-intake"
+  },
+  "tailwind": {
+    "entryCss": "src/styles.css",
+    "executable": "@tailwindcss/cli",
+    "unknownCandidatePolicy": "error"
+  },
+  "tokens": {
+    "prefix": "ui",
+    "emitMetadata": true
+  },
+  "storybook": {
+    "configDir": ".storybook",
+    "storyExtension": ".stories.svelte"
+  },
+  "visual": {
+    "snapshotDir": "tests/visual/storybook.spec.ts-snapshots",
+    "viewport": { "width": 1280, "height": 900 },
+    "locale": "en-GB",
+    "timezoneId": "Europe/London",
+    "themes": ["light", "dark"],
+    "defaultMaxDiffPixels": 0
+  },
+  "reportsRoot": ".ui-generator/reports",
+  "worktreesRoot": ".ui-generator/worktrees",
+  "pathAllowlist": [
+    "src/shared/shadcn/",
+    "src/apps/",
+    "tests/visual/storybook.spec.ts-snapshots/",
+    "package.json",
+    "pnpm-lock.yaml",
+    "COMPONENT_AUDIT.md"
+  ]
+}

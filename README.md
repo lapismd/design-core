@@ -50,15 +50,27 @@ pnpm storybook:check        # story tests + build + visual compare
 pnpm test:unit              # node unit
 pnpm test:storybook         # headless story Vitest once
 pnpm test:storybook:watch   # story Vitest watch
-pnpm test:visual            # screenshot compare (fail on diff)
-pnpm test:visual:update     # deliberate baseline update (human only)
+pnpm test:visual            # screenshot compare (never writes baselines)
+pnpm test:visual:update --component <name>  # guarded baseline update
 pnpm test:visual:report     # open Playwright HTML report
+pnpm ui:doctor              # generator environment checks
+pnpm ui:inspect <name>      # fetch/parse upstream without writing
+pnpm ui:add <name> [--overwrite] [--dry-run]
 pnpm checks                 # fmt + svelte-check + unit + storybook + build + visual
 ```
 
-Visual baselines are under `tests/visual/storybook.spec.ts-snapshots/`. Only
-update them with `pnpm test:visual:update` when intentionally accepting UI
-changes. Install Chromium once with `pnpm exec playwright install chromium`.
+Visual baselines are under `tests/visual/storybook.spec.ts-snapshots/`.
+`test:visual` never writes snapshots. Update existing baselines only with
+`VISUAL_UPDATE_APPROVED=1 pnpm test:visual:update --component <name>`.
+Install Chromium once with `pnpm exec playwright install chromium`.
+
+### Native CSS generator
+
+`pnpm ui:add` runs the transactional converter in a detached git worktree:
+intake via pinned `shadcn-svelte`, Tailwind CLI expansion, scoped native CSS,
+reference/candidate parity, then one binary patch. Failures leave the real
+worktree unchanged. v1 supports `button` (`--overwrite` to convert the existing
+family).
 
 ## Story tags
 
