@@ -106,12 +106,14 @@ export async function convertFamilyInWorktree(args: {
       .map((f) => [path.basename(f.path), f.content] as const),
   );
 
-  // Prefer local Tailwind sources (catalog under test); fall back to intake.
+  // Prefer local Tailwind sources (catalog under test). When a local family
+  // already exists, do not import intake-only sibling parts (registry supersets
+  // like full sidebar would otherwise expand the catalog).
   const files: Array<{ fileName: string; source: string }> = [];
-  const names = new Set([
-    ...localParts.map((p) => p.fileName),
-    ...intakeByName.keys(),
-  ]);
+  const names =
+    localParts.length > 0
+      ? localParts.map((p) => p.fileName)
+      : [...intakeByName.keys()];
 
   for (const fileName of [...names].sort()) {
     const local = localParts.find((p) => p.fileName === fileName);
@@ -121,14 +123,11 @@ export async function convertFamilyInWorktree(args: {
     }
     const fromIntake = intakeByName.get(fileName);
     if (fromIntake && looksLikeTailwindSource(fromIntake)) {
-      // Prefer intake Tailwind when local is already native (re-convert / missed parts).
+      // Prefer intake Tailwind when local is already native (re-convert).
       files.push({ fileName, source: normalizeIntakeSource(fromIntake) });
       continue;
     }
-    if (local) {
-      // Already native with no intake Tailwind counterpart — leave as-is (not rewritten).
-      continue;
-    }
+    // Already native / empty — skip rewrite for this part.
   }
 
   const convertible = files.filter((f) => looksLikeTailwindSource(f.source));
