@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { cn, type WithElementRef } from "../../../lib/utils.js";
+  import { type WithElementRef } from "../../../lib/utils.js";
   import type { HTMLAttributes } from "svelte/elements";
 
   let {
@@ -12,11 +12,10 @@
 
 <div
   bind:this={ref}
-  data-slot="field-group"
-  class={cn(
-    "group/field-group @container/field-group flex w-full flex-col gap-7 data-[slot=checkbox-group]:gap-3 *:data-[slot=field-group]:gap-4",
-    className,
-  )}
+  data-ui-component="field"
+  data-ui-part="field-group"
+    data-slot="field-group"
+  class={className}
   {...restProps}
 >
   {@render children?.()}

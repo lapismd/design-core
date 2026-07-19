@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Separator } from "../separator/index.js";
-  import { cn, type WithElementRef } from "../../../lib/utils.js";
+  import { type WithElementRef } from "../../../lib/utils.js";
   import type { HTMLAttributes } from "svelte/elements";
   import type { Snippet } from "svelte";
 
@@ -18,19 +18,20 @@
 
 <div
   bind:this={ref}
-  data-slot="field-separator"
+  data-ui-component="field"
+  data-ui-part="field-separator"
+    data-slot="field-separator"
   data-content={hasContent}
-  class={cn(
-    "relative -my-2 h-5 text-sm group-data-[variant=outline]/field-group:-mb-2",
-    className,
-  )}
+  class={className}
   {...restProps}
 >
   <Separator class="absolute inset-0 top-1/2" />
   {#if children}
     <span
       class="text-muted-foreground bg-background relative mx-auto block w-fit px-2"
-      data-slot="field-separator-content"
+      data-ui-component="field"
+      data-ui-part="field-separator"
+            data-slot="field-separator-content"
     >
       {@render children()}
     </span>

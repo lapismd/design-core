@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { cn, type WithElementRef } from "../../../lib/utils.js";
+  import { type WithElementRef } from "../../../lib/utils.js";
   import type { HTMLAttributes } from "svelte/elements";
 
   let {
@@ -15,12 +15,11 @@
 
 <legend
   bind:this={ref}
-  data-slot="field-legend"
+  data-ui-component="field"
+  data-ui-part="field-legend"
+    data-slot="field-legend"
   data-variant={variant}
-  class={cn(
-    "mb-3 font-medium data-[variant=label]:text-sm data-[variant=legend]:text-base",
-    className,
-  )}
+  class={className}
   {...restProps}
 >
   {@render children?.()}

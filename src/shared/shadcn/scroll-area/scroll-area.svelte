@@ -1,7 +1,7 @@
 <script lang="ts">
   import { ScrollArea as ScrollAreaPrimitive } from "bits-ui";
   import { Scrollbar } from "./index.js";
-  import { cn, type WithoutChild } from "../../../lib/utils.js";
+  import { type WithoutChild } from "../../../lib/utils.js";
 
   let {
     ref = $bindable(null),
@@ -22,13 +22,17 @@
 
 <ScrollAreaPrimitive.Root
   bind:ref
-  data-slot="scroll-area"
-  class={cn("relative", className)}
+  data-ui-component="scroll-area"
+  data-ui-part="scroll-area"
+    data-slot="scroll-area"
+  class={className}
   {...restProps}
 >
   <ScrollAreaPrimitive.Viewport
     bind:ref={viewportRef}
-    data-slot="scroll-area-viewport"
+    data-ui-component="scroll-area"
+    data-ui-part="scroll-area"
+        data-slot="scroll-area-viewport"
     class="cn-scroll-area-viewport focus-visible:ring-ring/50 size-full rounded-[inherit] transition-[color,box-shadow] outline-none focus-visible:ring-[3px] focus-visible:outline-1"
   >
     {@render children?.()}
@@ -41,3 +45,11 @@
   {/if}
   <ScrollAreaPrimitive.Corner />
 </ScrollAreaPrimitive.Root>
+
+<style>
+  /* Semantic selectors must be global: they target data attributes and descendants. */
+  :global {
+    /*! tailwindcss v4.3.3 | MIT License | https://tailwindcss.com */
+    @layer properties{}@layer base{@supports (not ((-webkit-appearance:-apple-pay-button))) or (contain-intrinsic-size:1px){}}@layer utilities{[data-ui-component="scroll-area"][data-ui-part="scroll-area"]{position:relative}[data-ui-component="scroll-area"][data-ui-part="scroll-area-scrollbar"]{display:flex}[data-ui-component="scroll-area"][data-ui-part="scroll-area-scrollbar"]{touch-action:none}[data-ui-component="scroll-area"][data-ui-part="scroll-area-scrollbar"]{padding:1px}[data-ui-component="scroll-area"][data-ui-part="scroll-area-scrollbar"]{transition-property:color,background-color,border-color,outline-color,text-decoration-color,fill,stroke,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to;transition-timing-function:var(--tw-ease,var(--default-transition-timing-function));transition-duration:var(--tw-duration,var(--default-transition-duration))}[data-ui-component="scroll-area"][data-ui-part="scroll-area-scrollbar"]{-webkit-user-select:none;user-select:none}[data-ui-component="scroll-area"][data-ui-part="scroll-area-scrollbar"]:where([data-orientation=horizontal]){height:calc(var(--spacing) * 2.5)}[data-ui-component="scroll-area"][data-ui-part="scroll-area-scrollbar"]:where([data-orientation=horizontal]){flex-direction:column}[data-ui-component="scroll-area"][data-ui-part="scroll-area-scrollbar"]:where([data-orientation=horizontal]){border-top-style:var(--tw-border-style);border-top-width:1px}[data-ui-component="scroll-area"][data-ui-part="scroll-area-scrollbar"]:where([data-orientation=horizontal]){border-top-color:#0000}[data-ui-component="scroll-area"][data-ui-part="scroll-area-scrollbar"]:where([data-orientation=vertical]){height:100%}[data-ui-component="scroll-area"][data-ui-part="scroll-area-scrollbar"]:where([data-orientation=vertical]){width:calc(var(--spacing) * 2.5)}[data-ui-component="scroll-area"][data-ui-part="scroll-area-scrollbar"]:where([data-orientation=vertical]){border-left-style:var(--tw-border-style);border-left-width:1px}[data-ui-component="scroll-area"][data-ui-part="scroll-area-scrollbar"]:where([data-orientation=vertical]){border-left-color:#0000}}@property --tw-animation-delay{syntax:"*";inherits:false;initial-value:0s}@property --tw-animation-direction{syntax:"*";inherits:false;initial-value:normal}@property --tw-animation-duration{syntax:"*";inherits:false}@property --tw-animation-fill-mode{syntax:"*";inherits:false;initial-value:none}@property --tw-animation-iteration-count{syntax:"*";inherits:false;initial-value:1}@property --tw-enter-blur{syntax:"*";inherits:false;initial-value:0}@property --tw-enter-opacity{syntax:"*";inherits:false;initial-value:1}@property --tw-enter-rotate{syntax:"*";inherits:false;initial-value:0}@property --tw-enter-scale{syntax:"*";inherits:false;initial-value:1}@property --tw-enter-translate-x{syntax:"*";inherits:false;initial-value:0}@property --tw-enter-translate-y{syntax:"*";inherits:false;initial-value:0}@property --tw-exit-blur{syntax:"*";inherits:false;initial-value:0}@property --tw-exit-opacity{syntax:"*";inherits:false;initial-value:1}@property --tw-exit-rotate{syntax:"*";inherits:false;initial-value:0}@property --tw-exit-scale{syntax:"*";inherits:false;initial-value:1}@property --tw-exit-translate-x{syntax:"*";inherits:false;initial-value:0}@property --tw-exit-translate-y{syntax:"*";inherits:false;initial-value:0}@property --tw-border-style{syntax:"*";inherits:false;initial-value:solid}
+  }
+</style>

@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "component": "field",
+  "scope": "shared",
+  "upstream": {
+    "project": "shadcn-svelte",
+    "registry": "https://shadcn-svelte.com/registry",
+    "cliVersion": "1.4.2",
+    "item": "field",
+    "fetchedAt": "2026-07-19T18:08:48.617Z",
+    "sourceFiles": [
+      {
+        "path": "src/lib/components/ui/field/field-content.svelte",
+        "sha256": "df032a6fd13d33f4a26278c12c554ee24996cf9dafaeae91059b4a21e6aa3e2b"
+      },
+      {
+        "path": "src/lib/components/ui/field/field-description.svelte",
+        "sha256": "fdb7611ff0e4ead2bfc30a7ca90ad9437cb2ab1049bb82390688d8835aadc296"
+      },
+      {
+        "path": "src/lib/components/ui/field/field-error.svelte",
+        "sha256": "e82081dd45ed28af6f180d6b7582e2c2650c8d22721d6e6b176b76bf9d2b1b18"
+      },
+      {
+        "path": "src/lib/components/ui/field/field-group.svelte",
+        "sha256": "4af26826bb4a7c65e6eb969c09fcb7f349c91e1e4523f232e32e7f3d88a50016"
+      },
+      {
+        "path": "src/lib/components/ui/field/field-label.svelte",
+        "sha256": "242a3bf2b96d2c77ec0ac8915e5f721c4c2a5c2b8d5468edf3cabed7be2c96aa"
+      },
+      {
+        "path": "src/lib/components/ui/field/field-legend.svelte",
+        "sha256": "dfbc1ea8949706da5600d400929ec026707fc296225692e2da5c6aa7b804bb9a"
+      },
+      {
+        "path": "src/lib/components/ui/field/field-separator.svelte",
+        "sha256": "518afdad285a59c5e6cd0aa82ccd78228cae69cf4ff4f82d7d1c68ec520f4379"
+      },
+      {
+        "path": "src/lib/components/ui/field/field-set.svelte",
+        "sha256": "16d7f846ae465a92c89a7212c4717175e40f75acf98c97ef0ec9cdfbaf17e264"
+      },
+      {
+        "path": "src/lib/components/ui/field/field-title.svelte",
+        "sha256": "ace4bf15da0f7fb0cbfb7e69541ab77898370930d4155274115933deb640ea92"
+      },
+      {
+        "path": "src/lib/components/ui/field/field.svelte",
+        "sha256": "efbee98c4aa0a1c765690314e96ec8bc00340cbd5bb06a0477678228c56be2dd"
+      },
+      {
+        "path": "src/lib/components/ui/field/index.ts",
+        "sha256": "4a50f5cb00342a180e7c12a2765b7d401a1332b16c938f2c31bee299ad6e71eb"
+      }
+    ]
+  },
+  "converter": {
+    "version": "2.0.0",
+    "irSchemaVersion": 1,
+    "tokenSchemaVersion": 1
+  },
+  "recipe": {
+    "name": "field",
+    "version": 1,
+    "tier": "lightCompound"
+  }
+}

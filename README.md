@@ -56,7 +56,7 @@ pnpm test:visual:report     # open Playwright HTML report
 pnpm ui:doctor              # generator environment checks
 pnpm ui:inspect <name>      # support tier + candidates (no writes)
 pnpm ui:add <name> [--overwrite] [--dry-run]
-pnpm ui:add:batch <a|b|c>   # convert an allowlisted complexity batch
+pnpm ui:add:batch <a|b|c|d> # convert an allowlisted complexity batch
 pnpm checks                 # fmt + svelte-check + unit + storybook + build + visual
 ```
 
@@ -72,10 +72,9 @@ intake via pinned `shadcn-svelte`, Tailwind CLI expansion, scoped native CSS,
 reference/candidate parity, then one binary patch. Failures leave the real
 worktree unchanged.
 
-- **Batches:** `a` simple roots, `b` stateful/light compound, `c` portals
-- **Converted:** most `src/shared/shadcn/*` families (see `COMPONENT_AUDIT.md`)
-- **Deferred:** `sidebar`, `resizable`, `scroll-area`, `field`, `input-group`
-  (`ui:inspect` reports `supportTier: deferred`)
+- **Batches:** `a` simple roots, `b` stateful/light compound, `c` portals,
+  `d` layout/field compounds (sidebar, resizable, scroll-area, field, input-group)
+- **Converted:** all `src/shared/shadcn/*` families (see `COMPONENT_AUDIT.md`)
 
 ## Story tags
 

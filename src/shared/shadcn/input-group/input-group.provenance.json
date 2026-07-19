@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "component": "input-group",
+  "scope": "shared",
+  "upstream": {
+    "project": "shadcn-svelte",
+    "registry": "https://shadcn-svelte.com/registry",
+    "cliVersion": "1.4.2",
+    "item": "input-group",
+    "fetchedAt": "2026-07-19T18:08:52.142Z",
+    "sourceFiles": [
+      {
+        "path": "src/lib/components/ui/input-group/index.ts",
+        "sha256": "75ecb2424de51e8e5771f4b92094c718223464d3b7cdb25f6473d0ffb3a14a1b"
+      },
+      {
+        "path": "src/lib/components/ui/input-group/input-group-addon.svelte",
+        "sha256": "d226aeb42178cf9f1e096108be90c63b4d355c74790f99e9e2c6d4f4014da068"
+      },
+      {
+        "path": "src/lib/components/ui/input-group/input-group-button.svelte",
+        "sha256": "daa6ad4b0a621c4726cff18f3f6b7fc90b1783acc309d2ff520354a742cca8ec"
+      },
+      {
+        "path": "src/lib/components/ui/input-group/input-group-input.svelte",
+        "sha256": "7668f73240ebab839803a85b2a176d77a762e09edd183984a03ef249ffc52b88"
+      },
+      {
+        "path": "src/lib/components/ui/input-group/input-group-text.svelte",
+        "sha256": "0623426c05ab065a1bd0cbcddbeaf3d3e2221fbc724ce20c4ca021648fdc950d"
+      },
+      {
+        "path": "src/lib/components/ui/input-group/input-group-textarea.svelte",
+        "sha256": "4e6b47a4b2ae2051d76952e7945bdccf452416309a6014e450e2d4646b479386"
+      },
+      {
+        "path": "src/lib/components/ui/input-group/input-group.svelte",
+        "sha256": "9dea891a004765216352b2cfbd572c769a51ea9b102c2587102ca78223fa5f64"
+      }
+    ]
+  },
+  "converter": {
+    "version": "2.0.0",
+    "irSchemaVersion": 1,
+    "tokenSchemaVersion": 1
+  },
+  "recipe": {
+    "name": "input-group",
+    "version": 1,
+    "tier": "lightCompound"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "component": "scroll-area",
+  "scope": "shared",
+  "upstream": {
+    "project": "shadcn-svelte",
+    "registry": "https://shadcn-svelte.com/registry",
+    "cliVersion": "1.4.2",
+    "item": "scroll-area",
+    "fetchedAt": "2026-07-19T18:08:56.435Z",
+    "sourceFiles": [
+      {
+        "path": "src/lib/components/ui/scroll-area/index.ts",
+        "sha256": "9b88919b9751aa6bcc575ce5f848c4f1098336867d2a4c982a7d9071712dc26e"
+      },
+      {
+        "path": "src/lib/components/ui/scroll-area/scroll-area-scrollbar.svelte",
+        "sha256": "ddd5f5b0f983bd38dff75eb32d3bafca1a346e6b8fafbb6aab9e5365b2302a95"
+      },
+      {
+        "path": "src/lib/components/ui/scroll-area/scroll-area.svelte",
+        "sha256": "92472dd587436aff6e563df95b1411e7b05062338d210eba349ee169135dcf93"
+      }
+    ]
+  },
+  "converter": {
+    "version": "2.0.0",
+    "irSchemaVersion": 1,
+    "tokenSchemaVersion": 1
+  },
+  "recipe": {
+    "name": "scroll-area",
+    "version": 1,
+    "tier": "lightCompound"
+  }
+}

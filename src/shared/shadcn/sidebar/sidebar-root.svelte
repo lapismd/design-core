@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { cn, type WithElementRef } from "../../../lib/utils.js";
+  import { type WithElementRef } from "../../../lib/utils.js";
   import type { HTMLAttributes } from "svelte/elements";
 
   let {
@@ -16,8 +16,10 @@
 {#if open}
   <aside
     bind:this={ref}
-    data-slot="sidebar"
-    class={cn("bg-sidebar text-sidebar-foreground w-72 shrink-0", className)}
+    data-ui-component="sidebar"
+    data-ui-part="sidebar-root"
+        data-slot="sidebar"
+    class={className}
     {...restProps}
   >
     {@render children?.()}

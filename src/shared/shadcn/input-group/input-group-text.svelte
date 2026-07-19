@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { cn, type WithElementRef } from "../../../lib/utils.js";
+  import { type WithElementRef } from "../../../lib/utils.js";
   import type { HTMLAttributes } from "svelte/elements";
 
   let {
@@ -12,10 +12,9 @@
 
 <span
   bind:this={ref}
-  class={cn(
-    "text-muted-foreground flex items-center gap-2 text-sm [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4",
-    className,
-  )}
+  data-ui-component="input-group"
+  data-ui-part="input-group-text"
+  class={className}
   {...restProps}
 >
   {@render children?.()}

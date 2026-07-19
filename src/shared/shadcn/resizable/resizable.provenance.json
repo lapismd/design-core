@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "component": "resizable",
+  "scope": "shared",
+  "upstream": {
+    "project": "shadcn-svelte",
+    "registry": "https://shadcn-svelte.com/registry",
+    "cliVersion": "1.4.2",
+    "item": "resizable",
+    "fetchedAt": "2026-07-19T18:08:58.577Z",
+    "sourceFiles": [
+      {
+        "path": "src/lib/components/ui/resizable/index.ts",
+        "sha256": "43adf3c048151a6417d06f58ca3e8e42ea4286d38d4b0d3ccc79c7fa5808485f"
+      },
+      {
+        "path": "src/lib/components/ui/resizable/resizable-handle.svelte",
+        "sha256": "d0315b543a216a4ee622bee0c5294b91f24f72fdd8376cfa4aba2e011bb190e0"
+      },
+      {
+        "path": "src/lib/components/ui/resizable/resizable-pane-group.svelte",
+        "sha256": "db02f3c225b84322f1492107cfc4746346bd889ced7817b94bcdcbfe4a16592f"
+      }
+    ]
+  },
+  "converter": {
+    "version": "2.0.0",
+    "irSchemaVersion": 1,
+    "tokenSchemaVersion": 1
+  },
+  "recipe": {
+    "name": "resizable",
+    "version": 1,
+    "tier": "lightCompound"
+  }
+}

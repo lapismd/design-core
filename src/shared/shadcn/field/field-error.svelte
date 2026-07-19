@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { cn, type WithElementRef } from "../../../lib/utils.js";
+  import { type WithElementRef } from "../../../lib/utils.js";
   import type { HTMLAttributes } from "svelte/elements";
   import type { Snippet } from "svelte";
 
@@ -39,8 +39,10 @@
   <div
     bind:this={ref}
     role="alert"
-    data-slot="field-error"
-    class={cn("text-destructive text-sm font-normal", className)}
+    data-ui-component="field"
+    data-ui-part="field-error"
+        data-slot="field-error"
+    class={className}
     {...restProps}
   >
     {#if children}

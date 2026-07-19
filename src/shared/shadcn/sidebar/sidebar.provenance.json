@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 1,
+  "component": "sidebar",
+  "scope": "shared",
+  "upstream": {
+    "project": "shadcn-svelte",
+    "registry": "https://shadcn-svelte.com/registry",
+    "cliVersion": "1.4.2",
+    "item": "sidebar",
+    "fetchedAt": "2026-07-19T18:08:54.339Z",
+    "sourceFiles": [
+      {
+        "path": "src/lib/components/ui/sidebar/constants.ts",
+        "sha256": "ea5f64cfad10009a71dc8148ca91b0db9f7bd386468300ff82e68093dffe2fa4"
+      },
+      {
+        "path": "src/lib/components/ui/sidebar/context.svelte.ts",
+        "sha256": "54c538d55434910a9a71e7e7e022587618a94ad0ab5e5f979b5ffdc9a5c32212"
+      },
+      {
+        "path": "src/lib/components/ui/sidebar/index.ts",
+        "sha256": "dd538896518fa163733347c56550484648ffe3944fb83a41cefceed5b5e6fb58"
+      },
+      {
+        "path": "src/lib/components/ui/sidebar/sidebar-content.svelte",
+        "sha256": "eec32a9debccbad76ba894ecb47c21117f2905535f845661282022febc4e49ed"
+      },
+      {
+        "path": "src/lib/components/ui/sidebar/sidebar-footer.svelte",
+        "sha256": "f3f3cd27584d1e4d55790b8ce24080a29e5c1af0d435836d133d5bc565778477"
+      },
+      {
+        "path": "src/lib/components/ui/sidebar/sidebar-group-action.svelte",
+        "sha256": "749344bd5ecd6305be149981a942686c0ca3a4428b8b7b615b66522c2bc91b64"
+      },
+      {
+        "path": "src/lib/components/ui/sidebar/sidebar-group-content.svelte",
+        "sha256": "8c806e35e66417677cd6df6938244a700f0bd3166cf76e36c3f069e0427f42aa"
+      },
+      {
+        "path": "src/lib/components/ui/sidebar/sidebar-group-label.svelte",
+        "sha256": "7cbc7065357f536868532cf3d05e32371d79f04b88120fab4bd698c6365b5a43"
+      },
+      {
+        "path": "src/lib/components/ui/sidebar/sidebar-group.svelte",
+        "sha256": "e3741f8360d81f040da6f32d437ac36c14ecad0142888d315a47413077082f1b"
+      },
+      {
+        "path": "src/lib/components/ui/sidebar/sidebar-header.svelte",
+        "sha256": "65e9ee370e20cffd17a69281485e28a03b14d2fd64d2fc41d29c95ad4ad272d3"
+      },
+      {
+        "path": "src/lib/components/ui/sidebar/sidebar-input.svelte",
+        "sha256": "21227e98afbb7d423565f34595f54994aae9e7b408f92a7519805af48f757db1"
+      },
+      {
+        "path": "src/lib/components/ui/sidebar/sidebar-inset.svelte",
+        "sha256": "fde835fcabea1506b8b7c82c1110fe4e8f1e49a3a9cb3392883c0b9add3face0"
+      },
+      {
+        "path": "src/lib/components/ui/sidebar/sidebar-menu-action.svelte",
+        "sha256": "24c54fdb32407437b4f07302a9878652ca7dd7cf89822a8ccb74fee6c6ec3654"
+      },
+      {
+        "path": "src/lib/components/ui/sidebar/sidebar-menu-badge.svelte",
+        "sha256": "f0b2e9ac654c8ee3054ce1372e37aef1fb7c550b6ffc42a2f486ed7896b55a40"
+      },
+      {
+        "path": "src/lib/components/ui/sidebar/sidebar-menu-button.svelte",
+        "sha256": "47fd6e07711bb1ab6abfdd848be3b39de93a6c805aa7e2fe4a8f182b2738058f"
+      },
+      {
+        "path": "src/lib/components/ui/sidebar/sidebar-menu-item.svelte",
+        "sha256": "36764c4be6e6d36cd7bc145273f6af0d561d980b781301e0a4cac470e3feed0e"
+      },
+      {
+        "path": "src/lib/components/ui/sidebar/sidebar-menu-skeleton.svelte",
+        "sha256": "5c1cdbe051992b6df66072e8586909f6c61d756a39a261986ced66daa07bd04c"
+      },
+      {
+        "path": "src/lib/components/ui/sidebar/sidebar-menu-sub-button.svelte",
+        "sha256": "494d6bca518604ee12eecb3023149548f973542c594a753dc3d79420a9013038"
+      },
+      {
+        "path": "src/lib/components/ui/sidebar/sidebar-menu-sub-item.svelte",
+        "sha256": "770a25e330c1b5d1779d499f6949866b09d74489be19d5579abc2f58b94ed0cc"
+      },
+      {
+        "path": "src/lib/components/ui/sidebar/sidebar-menu-sub.svelte",
+        "sha256": "354715a243c91dd9e2d60490511e27e872bc2e8dad326599fca1ee1ced3937a6"
+      },
+      {
+        "path": "src/lib/components/ui/sidebar/sidebar-menu.svelte",
+        "sha256": "d3e74076d41a117e4a27d9dae244514311d9a34bc497958f5bcf30c489d3cf26"
+      },
+      {
+        "path": "src/lib/components/ui/sidebar/sidebar-provider.svelte",
+        "sha256": "3fec4100f4d22e4c2dbc14d9e946b02cb3c542157b75065946f3d593002a7c3b"
+      },
+      {
+        "path": "src/lib/components/ui/sidebar/sidebar-rail.svelte",
+        "sha256": "92dae8395f12cc0fe2b3524b2dfedced6391476efdde7e7ea8b326b3bd8dce27"
+      },
+      {
+        "path": "src/lib/components/ui/sidebar/sidebar-separator.svelte",
+        "sha256": "16565097a46c8ac069fb98865824fba3d3e8a302d1fe44a3305a873933c89849"
+      },
+      {
+        "path": "src/lib/components/ui/sidebar/sidebar-trigger.svelte",
+        "sha256": "7c9a3b041e41da4fe8f99dffc84a0b081a5a176cc75501bb881613fdaea4e4d6"
+      },
+      {
+        "path": "src/lib/components/ui/sidebar/sidebar.svelte",
+        "sha256": "f1c4804ed1d7eb9342d09d469f198f556a7c91dbdd9b85c26005981e09188921"
+      }
+    ]
+  },
+  "converter": {
+    "version": "2.0.0",
+    "irSchemaVersion": 1,
+    "tokenSchemaVersion": 1
+  },
+  "recipe": {
+    "name": "sidebar",
+    "version": 1,
+    "tier": "lightCompound"
+  }
+}

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { cn, type WithElementRef } from "../../../lib/utils.js";
+  import { type WithElementRef } from "../../../lib/utils.js";
   import type { HTMLAttributes } from "svelte/elements";
 
   let {
@@ -12,11 +12,10 @@
 
 <div
   bind:this={ref}
-  data-slot="field-content"
-  class={cn(
-    "group/field-content flex flex-1 flex-col gap-1 leading-snug",
-    className,
-  )}
+  data-ui-component="field"
+  data-ui-part="field-content"
+    data-slot="field-content"
+  class={className}
   {...restProps}
 >
   {@render children?.()}
