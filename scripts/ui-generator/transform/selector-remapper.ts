@@ -1,4 +1,10 @@
 import postcss from "postcss";
+import selectorParser, {
+  type Attribute,
+  type ClassName,
+  type Node,
+  type Selector,
+} from "postcss-selector-parser";
 import { splitCandidates } from "../analysis/variant-extractor.js";
 
 export type CandidateOwnership = {
@@ -6,43 +12,63 @@ export type CandidateOwnership = {
   selector: string;
 };
 
-function cssEscapeClass(candidate: string): string {
-  return candidate.replace(/([^a-zA-Z0-9_-])/g, "\\$1");
+function parseSemanticNodes(semantic: string): Node[] {
+  const nodes: Node[] = [];
+  selectorParser((selectors) => {
+    selectors.each((sel) => {
+      sel.each((node) => {
+        nodes.push(node.clone());
+      });
+    });
+  }).processSync(semantic);
+  return nodes;
 }
 
-function replaceClassInSelector(
+function replaceClassesInSelector(
   selector: string,
-  candidate: string,
-  replacement: string,
-): string | null {
-  const escaped = cssEscapeClass(candidate);
-  const patterns = [`.${escaped}`];
+  ownershipByCandidate: Map<string, string>,
+): string[] {
+  const results: string[] = [];
 
-  let next = selector;
-  let replaced = false;
-  for (const pattern of patterns) {
-    if (next.includes(pattern)) {
-      next = next.split(pattern).join(replacement);
-      replaced = true;
-    }
-  }
+  selectorParser((selectors) => {
+    selectors.each((sel: Selector) => {
+      const classNodes: ClassName[] = [];
+      sel.walkClasses((classNode) => {
+        if (ownershipByCandidate.has(classNode.value)) {
+          classNodes.push(classNode);
+        }
+      });
+      if (!classNodes.length) return;
 
-  if (!replaced) {
-    const re = new RegExp(
-      `\\.${candidate.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`,
-      "g",
-    );
-    if (re.test(selector)) {
-      next = selector.replace(re, replacement);
-      replaced = true;
-    }
-  }
+      // One output selector per matched class ownership (a rule may list one utility class).
+      for (const classNode of classNodes) {
+        const semantic = ownershipByCandidate.get(classNode.value);
+        if (!semantic) continue;
+        const clone = sel.clone() as Selector;
+        clone.walkClasses((node) => {
+          if (node.value !== classNode.value) return;
+          const semanticNodes = parseSemanticNodes(semantic);
+          if (!semanticNodes.length) return;
+          let current: Node = node;
+          const first = semanticNodes[0]!;
+          node.replaceWith(first);
+          current = first;
+          for (const extra of semanticNodes.slice(1)) {
+            current.parent?.insertAfter(current, extra);
+            current = extra;
+          }
+        });
+        results.push(clone.toString());
+      }
+    });
+  }).processSync(selector);
 
-  return replaced ? next : null;
+  return results;
 }
 
 /**
  * Remap compiled Tailwind CSS so each utility class becomes a semantic selector.
+ * Ownership is applied per exact class token (no prefix matching).
  */
 export function remapCompiledCss(
   compiledCss: string,
@@ -54,20 +80,16 @@ export function remapCompiledCss(
   );
 
   root.walkRules((rule) => {
-    const selectors = rule.selectors.flatMap((selector) => {
-      const replacements: string[] = [];
-      for (const [candidate, semantic] of byCandidate) {
-        const next = replaceClassInSelector(selector, candidate, semantic);
-        if (next) replacements.push(next);
-      }
-      return replacements.length ? replacements : [];
-    });
+    const nextSelectors: string[] = [];
+    for (const selector of rule.selectors) {
+      nextSelectors.push(...replaceClassesInSelector(selector, byCandidate));
+    }
 
-    if (!selectors.length) {
+    if (!nextSelectors.length) {
       rule.remove();
       return;
     }
-    rule.selectors = [...new Set(selectors)];
+    rule.selectors = [...new Set(nextSelectors)];
   });
 
   root.walkAtRules((atRule) => {
