@@ -21,7 +21,9 @@
 <Story
   name="Group with list and rows"
   play={async ({ canvas }) => {
-    await expect(canvas.getByRole("heading", { name: "Profile" })).toBeVisible();
+    await expect(
+      canvas.getByRole("heading", { name: "Profile" }),
+    ).toBeVisible();
     await expect(canvas.getByText("Northstar")).toBeVisible();
     await expect(canvas.getByText("TypeScript")).toBeVisible();
     await expect(canvas.getByText("Svelte")).toBeVisible();

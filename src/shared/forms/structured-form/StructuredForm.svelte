@@ -1,6 +1,10 @@
 <script lang="ts">
   import FormFieldRenderer from "./FormFieldRenderer.svelte";
-  import type { FormConfig, FormValidationIssue, FormViewName } from "../core/types";
+  import type {
+    FormConfig,
+    FormValidationIssue,
+    FormViewName,
+  } from "../core/types";
 
   type AnyFormConfig = FormConfig<any, any>;
 

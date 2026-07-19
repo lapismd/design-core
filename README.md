@@ -22,14 +22,14 @@ tests/
 
 ## Imports
 
-| Path | Purpose |
-| ---- | ------- |
-| `@stevejuma/ui/shadcn/<family>` | shadcn family barrel |
-| `@stevejuma/ui/forms` | forms barrel |
-| `@stevejuma/ui/forms/core` | form builders / types / registry |
-| `@stevejuma/ui/apps/cv` | CV app barrel (placeholder) |
-| `@stevejuma/ui/apps/beancount` | Beancount app barrel (placeholder) |
-| `@stevejuma/ui/styles.css` | package styles entry |
+| Path                            | Purpose                            |
+| ------------------------------- | ---------------------------------- |
+| `@stevejuma/ui/shadcn/<family>` | shadcn family barrel               |
+| `@stevejuma/ui/forms`           | forms barrel                       |
+| `@stevejuma/ui/forms/core`      | form builders / types / registry   |
+| `@stevejuma/ui/apps/cv`         | CV app barrel (placeholder)        |
+| `@stevejuma/ui/apps/beancount`  | Beancount app barrel (placeholder) |
+| `@stevejuma/ui/styles.css`      | package styles entry               |
 
 Story titles stay `Shadcn/...` and `UI Forms/...` (stable story ids for visual
 baselines). App stories use `Apps/CV/...` and `Apps/Beancount/...`.

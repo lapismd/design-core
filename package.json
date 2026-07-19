@@ -5,13 +5,21 @@
   "type": "module",
   "scripts": {
     "storybook": "WATCHPACK_POLLING=250 storybook dev -p 6006",
+    "storybook:ui": "WATCHPACK_POLLING=250 storybook dev -p 6006",
+    "storybook:check": "pnpm test:storybook && pnpm build-storybook && pnpm test:visual",
     "build-storybook": "storybook build",
-    "test-unit": "vitest run --project unit",
-    "test-storybook": "vitest run --project storybook",
+    "test:unit": "vitest run --project unit",
+    "test:storybook": "vitest run --project storybook",
+    "test:storybook:watch": "vitest --project storybook",
+    "test:visual": "playwright test",
+    "test:visual:update": "playwright test --update-snapshots",
+    "test:visual:report": "playwright show-report",
+    "test-unit": "pnpm test:unit",
+    "test-storybook": "pnpm test:storybook",
     "check": "svelte-check --tsconfig ./tsconfig.json --fail-on-warnings",
     "fmt": "prettier . --write",
     "fmt:check": "prettier . --check",
-    "checks": "pnpm fmt:check && pnpm check && pnpm test-unit && pnpm test-storybook && pnpm build-storybook"
+    "checks": "pnpm fmt:check && pnpm check && pnpm test:unit && pnpm test:storybook && pnpm build-storybook && pnpm test:visual"
   },
   "peerDependencies": {
     "svelte": "^5.0.0"
@@ -43,6 +51,7 @@
     "yaml": "^2.9.0"
   },
   "devDependencies": {
+    "@playwright/test": "1.61.1",
     "@storybook/addon-a11y": "^10.5.2",
     "@storybook/addon-docs": "^10.5.2",
     "@storybook/addon-svelte-csf": "^5.1.2",

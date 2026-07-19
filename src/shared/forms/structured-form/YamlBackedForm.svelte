@@ -1,8 +1,14 @@
 <script lang="ts">
-  import YamlEditor, { type YamlReviewDiff } from "../yaml-editor/YamlEditor.svelte";
+  import YamlEditor, {
+    type YamlReviewDiff,
+  } from "../yaml-editor/YamlEditor.svelte";
 
   import StructuredForm from "./StructuredForm.svelte";
-  import type { FormConfig, FormValidationIssue, FormViewName } from "../core/types";
+  import type {
+    FormConfig,
+    FormValidationIssue,
+    FormViewName,
+  } from "../core/types";
 
   type AnyFormConfig = FormConfig<any, any>;
 

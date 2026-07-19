@@ -1,6 +1,10 @@
 <script lang="ts">
   import StructuredForm from "./StructuredForm.svelte";
-  import type { FormConfig, FormValidationIssue, FormViewName } from "../core/types";
+  import type {
+    FormConfig,
+    FormValidationIssue,
+    FormViewName,
+  } from "../core/types";
 
   type AnyFormConfig = FormConfig<any, any>;
 
