@@ -1,0 +1,33 @@
+<script module lang="ts">
+  import { defineMeta } from "@storybook/addon-svelte-csf";
+  import { expect } from "storybook/test";
+  import * as Resizable from "./index.js";
+
+  const { Story } = defineMeta({
+    title: "Shadcn/Layout/Resizable",
+    component: Resizable.PaneGroup,
+    parameters: {
+      docs: {
+        description: {
+          component: "Resizable pane groups powered by paneforge.",
+        },
+      },
+    },
+  });
+</script>
+
+<Story
+  name="Two pane split"
+  play={async ({ canvas }) => {
+    await expect(canvas.getByText("Left pane")).toBeVisible();
+    await expect(canvas.getByText("Right pane")).toBeVisible();
+  }}
+>
+  {#snippet template()}
+    <Resizable.PaneGroup direction="horizontal" class="h-40 max-w-xl rounded-md border">
+      <Resizable.Pane defaultSize={40} class="p-3 text-sm">Left pane</Resizable.Pane>
+      <Resizable.Handle withHandle />
+      <Resizable.Pane defaultSize={60} class="p-3 text-sm">Right pane</Resizable.Pane>
+    </Resizable.PaneGroup>
+  {/snippet}
+</Story>

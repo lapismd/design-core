@@ -5,7 +5,14 @@ between shared and app-specific folders.
 
 ## Shared — shadcn (slice 2)
 
-Generic primitives copied from CV Studio into `src/components/shadcn/`.
+Generic primitives in `src/components/shadcn/`, copied from CV Studio:
+
+accordion, alert, alert-dialog, badge, button, card, collapsible, command,
+dialog, dropdown-menu, empty, field, input, input-group, label, popover,
+resizable, scroll-area, select, separator, sidebar, skeleton, spinner, switch,
+tabs, textarea, toggle, toggle-group, tooltip
+
+Import: `@stevejuma/ui/shadcn/<family>`
 
 ## Shared — forms (slice 3)
 
