@@ -349,10 +349,10 @@ function injectDataAttributes(
   part: string,
   extraction: StyleExtraction,
 ): string {
-  const attrs: string[] = [`data-ui-component="${component}"`];
-  if (part !== component) {
-    attrs.push(`data-ui-part="${part}"`);
-  }
+  const attrs: string[] = [
+    `data-ui-component="${component}"`,
+    `data-ui-part="${part}"`,
+  ];
   for (const axis of extraction.axes) {
     attrs.push(`data-${axis.prop}={${axis.prop}}`);
   }

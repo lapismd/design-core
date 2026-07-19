@@ -113,10 +113,9 @@ export function buildPartOwnership(
   classMaps: Record<string, Record<string, string>>,
 ): CandidateOwnership[] {
   const ownership: CandidateOwnership[] = [];
-  const root =
-    part === component
-      ? `[data-ui-component="${component}"]`
-      : `[data-ui-component="${component}"][data-ui-part="${part}"]`;
+  // Always include data-ui-part so root utilities (e.g. w-full) do not match child parts
+  // that also carry data-ui-component.
+  const root = `[data-ui-component="${component}"][data-ui-part="${part}"]`;
 
   for (const candidate of baseClasses) {
     ownership.push({ candidate, selector: root });

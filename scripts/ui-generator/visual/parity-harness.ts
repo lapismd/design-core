@@ -103,11 +103,10 @@ function buildElement(
   const baseAttrs = attrsToHtml(recipe.parity.attrs);
   const axes = axisAttrsHtml(axisValues);
   const partFromSelector =
-    recipe.parity.shotSelector?.match(/data-ui-part="([^"]+)"/)?.[1] ?? null;
+    recipe.parity.shotSelector?.match(/data-ui-part="([^"]+)"/)?.[1] ??
+    recipe.component;
   const semanticAttrs = semantic
-    ? `data-ui-component="${recipe.component}" ${
-        partFromSelector ? `data-ui-part="${partFromSelector}"` : ""
-      } ${axes}`
+    ? `data-ui-component="${recipe.component}" data-ui-part="${partFromSelector}" ${axes}`
     : "";
   const classAttr = className ? `class="${className}"` : "";
   const common = `data-parity-root ${baseAttrs} ${semanticAttrs} ${axes}`;
