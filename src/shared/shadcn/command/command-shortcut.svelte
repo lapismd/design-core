@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { cn, type WithElementRef } from "../../../lib/utils.js";
+  import { type WithElementRef } from "../../../lib/utils.js";
   import type { HTMLAttributes } from "svelte/elements";
 
   let {
@@ -12,11 +12,10 @@
 
 <span
   bind:this={ref}
-  data-slot="command-shortcut"
-  class={cn(
-    "text-muted-foreground group-data-selected/command-item:text-foreground ml-auto text-xs tracking-widest",
-    className,
-  )}
+  data-ui-component="command"
+  data-ui-part="command-shortcut"
+    data-slot="command-shortcut"
+  class={className}
   {...restProps}
 >
   {@render children?.()}

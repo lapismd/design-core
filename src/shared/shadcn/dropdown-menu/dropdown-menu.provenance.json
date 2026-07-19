@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "component": "dropdown-menu",
+  "scope": "shared",
+  "upstream": {
+    "project": "shadcn-svelte",
+    "registry": "https://shadcn-svelte.com/registry",
+    "cliVersion": "1.4.2",
+    "item": "dropdown-menu",
+    "fetchedAt": "2026-07-19T16:45:13.518Z",
+    "sourceFiles": [
+      {
+        "path": "src/lib/components/ui/dropdown-menu/dropdown-menu-checkbox-group.svelte",
+        "sha256": "96f8cf7d2ce72fd2fd4ff5e579067b1a32101abbbe5a20612aa00a69e5df205d"
+      },
+      {
+        "path": "src/lib/components/ui/dropdown-menu/dropdown-menu-checkbox-item.svelte",
+        "sha256": "7dd41310d39ba8c27b2828b1f5db0826a80e2f2e9d9702c9aad933a8ece7d4d3"
+      },
+      {
+        "path": "src/lib/components/ui/dropdown-menu/dropdown-menu-content.svelte",
+        "sha256": "f9643ba77af68ff8ceddb85661efe357d011b7cafd656efe5818ad0043e34bff"
+      },
+      {
+        "path": "src/lib/components/ui/dropdown-menu/dropdown-menu-group-heading.svelte",
+        "sha256": "bbdd11b03c6ed89423507a3da355ac2e9c47d17ad23e5625f9b74bc06b501fda"
+      },
+      {
+        "path": "src/lib/components/ui/dropdown-menu/dropdown-menu-group.svelte",
+        "sha256": "75f1eaeff2b3cf25f957d7f9137d3addb409815ec480e1a3bb4036bb82e8d60c"
+      },
+      {
+        "path": "src/lib/components/ui/dropdown-menu/dropdown-menu-item.svelte",
+        "sha256": "cc5b2a6e50eeb2fe4cc089da9bb37492fd190d014d28d6c1d245c20ddd6a5029"
+      },
+      {
+        "path": "src/lib/components/ui/dropdown-menu/dropdown-menu-label.svelte",
+        "sha256": "37bd0429957b185177b296cb71e5e32d57a2b001889a685b5be7d08ead43f910"
+      },
+      {
+        "path": "src/lib/components/ui/dropdown-menu/dropdown-menu-portal.svelte",
+        "sha256": "38f6abf9c1d47d2ab4912556d05845ec9ba1ee6825405adb5f8831d6a30ac08b"
+      },
+      {
+        "path": "src/lib/components/ui/dropdown-menu/dropdown-menu-radio-group.svelte",
+        "sha256": "ac025c63e0ade7c26cef7db98de2fe217208fe9387eb8bfaf97730ab3f013da2"
+      },
+      {
+        "path": "src/lib/components/ui/dropdown-menu/dropdown-menu-radio-item.svelte",
+        "sha256": "2d720cd10a1811244da5ebc59843eab550f5c2919ac3bfbe2cf3371bcbe1a0b8"
+      },
+      {
+        "path": "src/lib/components/ui/dropdown-menu/dropdown-menu-separator.svelte",
+        "sha256": "a75fb6c5878c238d772f3d2a293fe1669ee8499be2a7246b7b4a1142f14b3c38"
+      },
+      {
+        "path": "src/lib/components/ui/dropdown-menu/dropdown-menu-shortcut.svelte",
+        "sha256": "be9b896fa68a0723cf13469344c733c36ac0af448b4aa1e7ebe5d553e40ee5ad"
+      },
+      {
+        "path": "src/lib/components/ui/dropdown-menu/dropdown-menu-sub-content.svelte",
+        "sha256": "9a7625dc9adc83da1d67d50c3d8508eb79fc4064bab14c39ce15ae69d069b456"
+      },
+      {
+        "path": "src/lib/components/ui/dropdown-menu/dropdown-menu-sub-trigger.svelte",
+        "sha256": "8275f8e29293b928dab60a46a7fdeda023bd7f4a796e7c0664037a0cb445bc5f"
+      },
+      {
+        "path": "src/lib/components/ui/dropdown-menu/dropdown-menu-sub.svelte",
+        "sha256": "1208155828183ef72dc8c96ff58c90fcd5584cce28d938a23545253013cfb9c5"
+      },
+      {
+        "path": "src/lib/components/ui/dropdown-menu/dropdown-menu-trigger.svelte",
+        "sha256": "bdad1ff46fd23466dec6d1212186e9ac4e34edf862987308821956c6b24f709c"
+      },
+      {
+        "path": "src/lib/components/ui/dropdown-menu/dropdown-menu.svelte",
+        "sha256": "d49b60f3d9832a870e5eed726d39f9c0e09abb2bc061deb1ef0dfec97aa319e5"
+      },
+      {
+        "path": "src/lib/components/ui/dropdown-menu/index.ts",
+        "sha256": "02354b1d65c9862b678ebc8d247860c418478f7b074af42bd23c10272aefc7e4"
+      }
+    ]
+  },
+  "converter": {
+    "version": "2.0.0",
+    "irSchemaVersion": 1,
+    "tokenSchemaVersion": 1
+  },
+  "recipe": {
+    "name": "dropdown-menu",
+    "version": 1,
+    "tier": "portal"
+  }
+}

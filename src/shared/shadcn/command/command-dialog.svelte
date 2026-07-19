@@ -6,7 +6,7 @@
   import type { Snippet } from "svelte";
   import Command from "./command.svelte";
   import * as Dialog from "../dialog/index.js";
-  import { cn, type WithoutChildrenOrChild } from "../../../lib/utils.js";
+  import { type WithoutChildrenOrChild } from "../../../lib/utils.js";
 
   let {
     open = $bindable(false),
@@ -36,10 +36,9 @@
     <Dialog.Description>{description}</Dialog.Description>
   </Dialog.Header>
   <Dialog.Content
-    class={cn(
-      "top-1/3 translate-y-0 overflow-hidden rounded-xl! p-0",
-      className,
-    )}
+    data-ui-component="command"
+    data-ui-part="command-dialog"
+    class={className}
     {showCloseButton}
     {portalProps}
   >

@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "component": "dialog",
+  "scope": "shared",
+  "upstream": {
+    "project": "shadcn-svelte",
+    "registry": "https://shadcn-svelte.com/registry",
+    "cliVersion": "1.4.2",
+    "item": "dialog",
+    "fetchedAt": "2026-07-19T16:45:09.177Z",
+    "sourceFiles": [
+      {
+        "path": "src/lib/components/ui/dialog/dialog-close.svelte",
+        "sha256": "4a9a1a6327d4e68fd87e8292dcb176eab244ba8da455f15997d2308b1fa03d46"
+      },
+      {
+        "path": "src/lib/components/ui/dialog/dialog-content.svelte",
+        "sha256": "83e14812bdceb9a9791b35658625b09435736abf591dd2624d953928a3abbf86"
+      },
+      {
+        "path": "src/lib/components/ui/dialog/dialog-description.svelte",
+        "sha256": "b2f4226eaceee5e8da55b7365ad9a23f539fbbf0fbc0fcac9739e0fb9be304c7"
+      },
+      {
+        "path": "src/lib/components/ui/dialog/dialog-footer.svelte",
+        "sha256": "20edf259f2c09f3f35e652f8e189b319722adb88c4cdc073aa28371f853a0143"
+      },
+      {
+        "path": "src/lib/components/ui/dialog/dialog-header.svelte",
+        "sha256": "24ec071256705e00ce3714adc9140c3cc87c6d14649012b55bc9bffe51b1d2f0"
+      },
+      {
+        "path": "src/lib/components/ui/dialog/dialog-overlay.svelte",
+        "sha256": "a064d8faf9f2c05621b70cf23bb10625623c822f5da33c281825560fbd587ff4"
+      },
+      {
+        "path": "src/lib/components/ui/dialog/dialog-portal.svelte",
+        "sha256": "718c0b6672a2911d7f9398e4ef14813cceabcf0be02b7920f10028d213a674b6"
+      },
+      {
+        "path": "src/lib/components/ui/dialog/dialog-title.svelte",
+        "sha256": "fed241a169d82ef212f6932cd56a84d4401ef797bbfd77086bb661a3a8b36d36"
+      },
+      {
+        "path": "src/lib/components/ui/dialog/dialog-trigger.svelte",
+        "sha256": "7b72b3d7fc35bf00f331716f723ee711125263ab09329952728483bb3237dd09"
+      },
+      {
+        "path": "src/lib/components/ui/dialog/dialog.svelte",
+        "sha256": "cc60100e895410b9b5f17b6071c933dfc950e5dbf4d00b261edec1e443008a27"
+      },
+      {
+        "path": "src/lib/components/ui/dialog/index.ts",
+        "sha256": "9f5e95e83b0752b0795a21237de3fe2eed0f25c7d4d9eef528c7b321c84b7a0e"
+      }
+    ]
+  },
+  "converter": {
+    "version": "2.0.0",
+    "irSchemaVersion": 1,
+    "tokenSchemaVersion": 1
+  },
+  "recipe": {
+    "name": "dialog",
+    "version": 1,
+    "tier": "portal"
+  }
+}

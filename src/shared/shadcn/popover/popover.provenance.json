@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "component": "popover",
+  "scope": "shared",
+  "upstream": {
+    "project": "shadcn-svelte",
+    "registry": "https://shadcn-svelte.com/registry",
+    "cliVersion": "1.4.2",
+    "item": "popover",
+    "fetchedAt": "2026-07-19T16:45:07.002Z",
+    "sourceFiles": [
+      {
+        "path": "src/lib/components/ui/popover/index.ts",
+        "sha256": "8d70adde101a522ca11cbed47d2b1ede6c2fa7163080276314252c57d054cf3d"
+      },
+      {
+        "path": "src/lib/components/ui/popover/popover-close.svelte",
+        "sha256": "bec13457158cb16ba4a0d45789ef2a6b6f3b2c84e14c819ebfa8eca76baced77"
+      },
+      {
+        "path": "src/lib/components/ui/popover/popover-content.svelte",
+        "sha256": "39da0499217c542ae13378b900d5b9f4d31808771c4e2f28a2e07855a4fc25df"
+      },
+      {
+        "path": "src/lib/components/ui/popover/popover-description.svelte",
+        "sha256": "3ccedd4ef3312b03db6e2cd91cab18c60ff12d7c3e39f09e016aa2199ab68a0b"
+      },
+      {
+        "path": "src/lib/components/ui/popover/popover-header.svelte",
+        "sha256": "e96799264b9c17f5b29002b604a7a8087e74d8c698f5bd838b2cb19bcf07c550"
+      },
+      {
+        "path": "src/lib/components/ui/popover/popover-portal.svelte",
+        "sha256": "4db64c036aace1359a29d703a842998a6c74b17e84900eb6289cedc5f37ff43a"
+      },
+      {
+        "path": "src/lib/components/ui/popover/popover-title.svelte",
+        "sha256": "bdf383a53039186425da5cd312a0f685a878f8d2097a480a8dd418777e104c3f"
+      },
+      {
+        "path": "src/lib/components/ui/popover/popover-trigger.svelte",
+        "sha256": "6b8f6549c81f9e3ed1a0fd890bf488e6fe9c3bb48f6891f5baca4d4efec3ef75"
+      },
+      {
+        "path": "src/lib/components/ui/popover/popover.svelte",
+        "sha256": "9697cf96a4ab4970b93e0aafd3962aaa21a97d88d2976886f2a7dd22db87b1ca"
+      }
+    ]
+  },
+  "converter": {
+    "version": "2.0.0",
+    "irSchemaVersion": 1,
+    "tokenSchemaVersion": 1
+  },
+  "recipe": {
+    "name": "popover",
+    "version": 1,
+    "tier": "portal"
+  }
+}

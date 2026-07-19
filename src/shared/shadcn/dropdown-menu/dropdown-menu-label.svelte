@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { cn, type WithElementRef } from "../../../lib/utils.js";
+  import { type WithElementRef } from "../../../lib/utils.js";
   import type { HTMLAttributes } from "svelte/elements";
 
   let {
@@ -15,12 +15,11 @@
 
 <div
   bind:this={ref}
-  data-slot="dropdown-menu-label"
+  data-ui-component="dropdown-menu"
+  data-ui-part="dropdown-menu-label"
+    data-slot="dropdown-menu-label"
   data-inset={inset}
-  class={cn(
-    "text-muted-foreground px-2 py-1.5 text-xs font-medium data-inset:pl-8 data-[inset]:pl-8",
-    className,
-  )}
+  class={className}
   {...restProps}
 >
   {@render children?.()}

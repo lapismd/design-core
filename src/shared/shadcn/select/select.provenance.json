@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "component": "select",
+  "scope": "shared",
+  "upstream": {
+    "project": "shadcn-svelte",
+    "registry": "https://shadcn-svelte.com/registry",
+    "cliVersion": "1.4.2",
+    "item": "select",
+    "fetchedAt": "2026-07-19T16:45:15.639Z",
+    "sourceFiles": [
+      {
+        "path": "src/lib/components/ui/select/index.ts",
+        "sha256": "ae5104f0aa7f71c97c75f3bad67c91147c94749c19461873c5164bb04043405a"
+      },
+      {
+        "path": "src/lib/components/ui/select/select-content.svelte",
+        "sha256": "cf9f8c3a768b39b40f5fc31ac0d1d96e4cf27f667e71851b7e1e2605e36219d5"
+      },
+      {
+        "path": "src/lib/components/ui/select/select-group-heading.svelte",
+        "sha256": "1501faeabf7c8f840f84a0d73bb0559c1c6483b8a74d3ae49cacb0be96e01816"
+      },
+      {
+        "path": "src/lib/components/ui/select/select-group.svelte",
+        "sha256": "811113866abdcd1ec2430e3177410166404c07b36b7d88f82e345e28bee9c9d0"
+      },
+      {
+        "path": "src/lib/components/ui/select/select-item.svelte",
+        "sha256": "d6fcf224c071f037270fcd71983e9abd3630d57da18daff46a7d34d8d944f13c"
+      },
+      {
+        "path": "src/lib/components/ui/select/select-label.svelte",
+        "sha256": "a7e940ab9b97cfacc457702cdf71d2b2c92b02aa5a6495794e781e37839da34a"
+      },
+      {
+        "path": "src/lib/components/ui/select/select-portal.svelte",
+        "sha256": "3ad1139eaca3b9c989495982493c99f42893d1aafbbf2f4aaab6fd117fbab742"
+      },
+      {
+        "path": "src/lib/components/ui/select/select-scroll-down-button.svelte",
+        "sha256": "36b0be21130527f9c6cd1956a3e8287fa9742dcd1a452150c112d495e0187125"
+      },
+      {
+        "path": "src/lib/components/ui/select/select-scroll-up-button.svelte",
+        "sha256": "f67d5e7c779b63d346f243ad345b1f9419b20a5fd92fa9078f1fde7c50c4996a"
+      },
+      {
+        "path": "src/lib/components/ui/select/select-separator.svelte",
+        "sha256": "57a89082567aecc59326d727478e276453a6865a36a4d5815e89db9c54d5e7f4"
+      },
+      {
+        "path": "src/lib/components/ui/select/select-trigger.svelte",
+        "sha256": "b55beb79ca9697557d31e8535f5c7192cf636916cef8ba02c0b343ebaa024605"
+      },
+      {
+        "path": "src/lib/components/ui/select/select.svelte",
+        "sha256": "4a7062d01d4cd23edfb5667f3da7a829626c169dff46846d713af524ebf30704"
+      }
+    ]
+  },
+  "converter": {
+    "version": "2.0.0",
+    "irSchemaVersion": 1,
+    "tokenSchemaVersion": 1
+  },
+  "recipe": {
+    "name": "select",
+    "version": 1,
+    "tier": "portal"
+  }
+}

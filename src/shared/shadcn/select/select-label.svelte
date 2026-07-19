@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { cn, type WithElementRef } from "../../../lib/utils.js";
+  import { type WithElementRef } from "../../../lib/utils.js";
   import type { HTMLAttributes } from "svelte/elements";
 
   let {
@@ -12,8 +12,10 @@
 
 <div
   bind:this={ref}
-  data-slot="select-label"
-  class={cn("text-muted-foreground px-2 py-1.5 text-xs", className)}
+  data-ui-component="select"
+  data-ui-part="select-label"
+    data-slot="select-label"
+  class={className}
   {...restProps}
 >
   {@render children?.()}

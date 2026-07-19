@@ -1,7 +1,6 @@
 <script lang="ts">
   import { Command as CommandPrimitive } from "bits-ui";
-  import { cn } from "../../../lib/utils.js";
-
+  
   let {
     ref = $bindable(null),
     class: className,
@@ -11,7 +10,9 @@
 
 <CommandPrimitive.Separator
   bind:ref
-  data-slot="command-separator"
-  class={cn("bg-border -mx-1 h-px w-auto", className)}
+  data-ui-component="command"
+  data-ui-part="command-separator"
+    data-slot="command-separator"
+  class={className}
   {...restProps}
 />

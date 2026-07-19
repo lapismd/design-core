@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "component": "command",
+  "scope": "shared",
+  "upstream": {
+    "project": "shadcn-svelte",
+    "registry": "https://shadcn-svelte.com/registry",
+    "cliVersion": "1.4.2",
+    "item": "command",
+    "fetchedAt": "2026-07-19T16:45:17.744Z",
+    "sourceFiles": [
+      {
+        "path": "src/lib/components/ui/command/command-dialog.svelte",
+        "sha256": "41cc10f8e0ce3f5c90d91acfd16200afbb6e6c8dd017d2619d77040cb8ad103c"
+      },
+      {
+        "path": "src/lib/components/ui/command/command-empty.svelte",
+        "sha256": "7f5d9d679a6debe727f5819bc150d65abd35fcefc4448966f10471ff509a583f"
+      },
+      {
+        "path": "src/lib/components/ui/command/command-group.svelte",
+        "sha256": "f9827a1d424ce1b31798673fa23528a8ce243a16f9956a5ca4a3c19e83b1c2a1"
+      },
+      {
+        "path": "src/lib/components/ui/command/command-input.svelte",
+        "sha256": "3f6e4adcc2f218410f8461a70662440db505a65c3860801e743a1dad74f68727"
+      },
+      {
+        "path": "src/lib/components/ui/command/command-item.svelte",
+        "sha256": "3ba16a25cd0869165a8527d3a46a2ecf3d7b7f9e94b22e092142a1f5a9d1cc36"
+      },
+      {
+        "path": "src/lib/components/ui/command/command-link-item.svelte",
+        "sha256": "225a67dafee9e12be6d8b9c059ca3d6174f20097aead3e03e64543a212c217ca"
+      },
+      {
+        "path": "src/lib/components/ui/command/command-list.svelte",
+        "sha256": "b3e7f0758effd1a2973893f25a246a86d80dfc2910632f21619837c3363c52b4"
+      },
+      {
+        "path": "src/lib/components/ui/command/command-loading.svelte",
+        "sha256": "f3512497277a540ed8e365cd2d85084394172896131f555b631a1d57f7487fbf"
+      },
+      {
+        "path": "src/lib/components/ui/command/command-separator.svelte",
+        "sha256": "2b4d6ca03f23b52f65c1e98bd9935bcb0a5ee5fc454662ea8043eee98f80656a"
+      },
+      {
+        "path": "src/lib/components/ui/command/command-shortcut.svelte",
+        "sha256": "ad15042802aecfd6fa01978925e09069a738ab0c3ea7e5615dc23f6e6aff3043"
+      },
+      {
+        "path": "src/lib/components/ui/command/command.svelte",
+        "sha256": "f44576166d57425b39efd19edfc515976e71fd48847724312bb92110d409a9f2"
+      },
+      {
+        "path": "src/lib/components/ui/command/index.ts",
+        "sha256": "871d1e139dc7d39054498e965cd1abb382269e9e51004523c83d7f9a7567fd01"
+      }
+    ]
+  },
+  "converter": {
+    "version": "2.0.0",
+    "irSchemaVersion": 1,
+    "tokenSchemaVersion": 1
+  },
+  "recipe": {
+    "name": "command",
+    "version": 1,
+    "tier": "portal"
+  }
+}

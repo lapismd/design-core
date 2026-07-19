@@ -1,7 +1,6 @@
 <script lang="ts">
   import { Command as CommandPrimitive } from "bits-ui";
-  import { cn } from "../../../lib/utils.js";
-  import * as InputGroup from "../input-group/index.js";
+    import * as InputGroup from "../input-group/index.js";
   import SearchIcon from "@lucide/svelte/icons/search";
 
   let {
@@ -18,11 +17,10 @@
   >
     <CommandPrimitive.Input
       {value}
-      data-slot="command-input"
-      class={cn(
-        "w-full text-sm outline-hidden disabled:cursor-not-allowed disabled:opacity-50",
-        className,
-      )}
+      data-ui-component="command"
+      data-ui-part="command-input"
+            data-slot="command-input"
+      class={className}
       {...restProps}
     >
       {#snippet child({ props })}

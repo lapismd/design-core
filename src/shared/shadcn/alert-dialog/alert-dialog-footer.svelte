@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { HTMLAttributes } from "svelte/elements";
-  import { cn, type WithElementRef } from "../../../lib/utils.js";
+  import { type WithElementRef } from "../../../lib/utils.js";
 
   let {
     ref = $bindable(null),
@@ -12,11 +12,10 @@
 
 <div
   bind:this={ref}
-  data-slot="alert-dialog-footer"
-  class={cn(
-    "cn-alert-dialog-footer flex flex-col-reverse gap-2 group-data-[size=sm]/alert-dialog-content:grid group-data-[size=sm]/alert-dialog-content:grid-cols-2 sm:flex-row sm:justify-end",
-    className,
-  )}
+  data-ui-component="alert-dialog"
+  data-ui-part="alert-dialog-footer"
+    data-slot="alert-dialog-footer"
+  class={className}
   {...restProps}
 >
   {@render children?.()}

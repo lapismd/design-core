@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "component": "alert-dialog",
+  "scope": "shared",
+  "upstream": {
+    "project": "shadcn-svelte",
+    "registry": "https://shadcn-svelte.com/registry",
+    "cliVersion": "1.4.2",
+    "item": "alert-dialog",
+    "fetchedAt": "2026-07-19T16:45:11.403Z",
+    "sourceFiles": [
+      {
+        "path": "src/lib/components/ui/alert-dialog/alert-dialog-action.svelte",
+        "sha256": "c796e2776765b35cc53d97e0f734729f9e551d5754e2dc9255e24cc15730f11a"
+      },
+      {
+        "path": "src/lib/components/ui/alert-dialog/alert-dialog-cancel.svelte",
+        "sha256": "f7d6459ffb061c10f544ad77925d96525ddde51aba64fc17deb576a391c2821f"
+      },
+      {
+        "path": "src/lib/components/ui/alert-dialog/alert-dialog-content.svelte",
+        "sha256": "4d696f4ca0377f4bc0091234bc3ee3295e38acb499bf92e83b5c2530919a3761"
+      },
+      {
+        "path": "src/lib/components/ui/alert-dialog/alert-dialog-description.svelte",
+        "sha256": "17d16b41c79833601d4290e59108b49aa821d26805bb9917fb33d342d7e28314"
+      },
+      {
+        "path": "src/lib/components/ui/alert-dialog/alert-dialog-footer.svelte",
+        "sha256": "10ec72cdaaa9ba737e2087435be673c76377956f59e422dd267ca048e68e4e88"
+      },
+      {
+        "path": "src/lib/components/ui/alert-dialog/alert-dialog-header.svelte",
+        "sha256": "d47b791b3944e0a0765ae58ab6f04ae9c00605e989cc5c642a8dea62b5f21257"
+      },
+      {
+        "path": "src/lib/components/ui/alert-dialog/alert-dialog-media.svelte",
+        "sha256": "e1976bd648d834c06621a3a960022d663e05e47865156d52c14e0b7f6a515226"
+      },
+      {
+        "path": "src/lib/components/ui/alert-dialog/alert-dialog-overlay.svelte",
+        "sha256": "5c65be6bf0592169c037cbc340238eb3833ce79aed08a2551fe5c85d819cd481"
+      },
+      {
+        "path": "src/lib/components/ui/alert-dialog/alert-dialog-portal.svelte",
+        "sha256": "0979d2c7fb096434b1339c047f2d0c6bb8b5894e23cb82f3d304644c3c855f46"
+      },
+      {
+        "path": "src/lib/components/ui/alert-dialog/alert-dialog-title.svelte",
+        "sha256": "d0435af67a4cb8e1f191ed6e329d38a45ec591821e32b52b6261ddc572b8f84c"
+      },
+      {
+        "path": "src/lib/components/ui/alert-dialog/alert-dialog-trigger.svelte",
+        "sha256": "e752721879d70621d40095eff1758f843fc35444554c85d91d55c1f6413e115d"
+      },
+      {
+        "path": "src/lib/components/ui/alert-dialog/alert-dialog.svelte",
+        "sha256": "3c1fcf5e5ce4fe37c365f2bda61a9dd42c1f3aa5c97074908f661a5760f7191b"
+      },
+      {
+        "path": "src/lib/components/ui/alert-dialog/index.ts",
+        "sha256": "7b5ed28b90d1849a2fb8d425ba43bd0fc7607e3ec1ba06ba599e6ea3f7f4e755"
+      }
+    ]
+  },
+  "converter": {
+    "version": "2.0.0",
+    "irSchemaVersion": 1,
+    "tokenSchemaVersion": 1
+  },
+  "recipe": {
+    "name": "alert-dialog",
+    "version": 1,
+    "tier": "portal"
+  }
+}

@@ -2,7 +2,7 @@
   import type { HTMLAttributes } from "svelte/elements";
   import { Dialog as DialogPrimitive } from "bits-ui";
   import { Button } from "../button/index.js";
-  import { cn, type WithElementRef } from "../../../lib/utils.js";
+  import { type WithElementRef } from "../../../lib/utils.js";
 
   let {
     ref = $bindable(null),
@@ -17,11 +17,10 @@
 
 <div
   bind:this={ref}
-  data-slot="dialog-footer"
-  class={cn(
-    "flex flex-col-reverse gap-2 sm:flex-row sm:justify-end",
-    className,
-  )}
+  data-ui-component="dialog"
+  data-ui-part="dialog-footer"
+    data-slot="dialog-footer"
+  class={className}
   {...restProps}
 >
   {@render children?.()}

@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { HTMLAttributes } from "svelte/elements";
-  import { cn, type WithElementRef } from "../../../lib/utils.js";
+  import { type WithElementRef } from "../../../lib/utils.js";
 
   let {
     ref = $bindable(null),
@@ -12,8 +12,10 @@
 
 <div
   bind:this={ref}
-  data-slot="popover-title"
-  class={cn("font-medium", className)}
+  data-ui-component="popover"
+  data-ui-part="popover-title"
+    data-slot="popover-title"
+  class={className}
   {...restProps}
 >
   {@render children?.()}

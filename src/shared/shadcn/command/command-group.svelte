@@ -1,7 +1,6 @@
 <script lang="ts">
   import { Command as CommandPrimitive, useId } from "bits-ui";
-  import { cn } from "../../../lib/utils.js";
-
+  
   let {
     ref = $bindable(null),
     class: className,
@@ -16,11 +15,10 @@
 
 <CommandPrimitive.Group
   bind:ref
-  data-slot="command-group"
-  class={cn(
-    "text-foreground **:[[cmdk-group-heading]]:text-muted-foreground overflow-hidden p-1 **:[[cmdk-group-heading]]:px-2 **:[[cmdk-group-heading]]:py-1.5 **:[[cmdk-group-heading]]:text-xs **:[[cmdk-group-heading]]:font-medium",
-    className,
-  )}
+  data-ui-component="command"
+  data-ui-part="command-group"
+    data-slot="command-group"
+  class={className}
   value={value ?? heading ?? `----${useId()}`}
   {...restProps}
 >
