@@ -113,6 +113,52 @@
         "path": "src/lib/components/ui/sidebar/sidebar.svelte",
         "sha256": "f1c4804ed1d7eb9342d09d469f198f556a7c91dbdd9b85c26005981e09188921"
       }
+    ],
+    "docsUrl": "https://shadcn-svelte.com/docs/components/sidebar.md",
+    "docsFetchedAt": "2026-07-19T20:23:52.047Z",
+    "docsSha256": "64e0afdc66442f307442b63dc4bfbea86da122de1397b86f35e5bd62591c9e9f",
+    "examplesIncluded": [
+      "Sidebar.Provider",
+      "Sidebar.Root",
+      "Sidebar.Header",
+      "Sidebar.Footer",
+      "Sidebar.Content",
+      "Sidebar.Group",
+      "Collapsible Sidebar.Group",
+      "Sidebar.GroupAction",
+      "Sidebar.Menu",
+      "Sidebar.MenuButton",
+      "Sidebar.MenuAction",
+      "Sidebar.MenuSub",
+      "Collapsible Sidebar.Menu",
+      "Sidebar.MenuBadge",
+      "Sidebar.MenuSkeleton",
+      "Sidebar.Separator",
+      "Sidebar.Trigger",
+      "Sidebar.Rail",
+      "Styling"
+    ],
+    "examplesSkipped": [
+      {
+        "name": "Your First Sidebar",
+        "reason": "unsupported-hook",
+        "detail": "Example depends on a catalog-unsupported $lib import"
+      },
+      {
+        "name": "useSidebar",
+        "reason": "unsupported-hook",
+        "detail": "Example depends on a catalog-unsupported hook"
+      },
+      {
+        "name": "Custom Trigger",
+        "reason": "unsupported-hook",
+        "detail": "Example depends on a catalog-unsupported hook"
+      },
+      {
+        "name": "Controlled Sidebar",
+        "reason": "unsupported-hook",
+        "detail": "Example contains a bare bind: that is not valid Svelte"
+      }
     ]
   },
   "converter": {

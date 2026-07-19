@@ -53,6 +53,50 @@
         "path": "src/lib/components/ui/field/index.ts",
         "sha256": "4a50f5cb00342a180e7c12a2765b7d401a1332b16c938f2c31bee299ad6e71eb"
       }
+    ],
+    "docsUrl": "https://shadcn-svelte.com/docs/components/field.md",
+    "docsFetchedAt": "2026-07-19T20:23:51.937Z",
+    "docsSha256": "7789e579c9275be0a5d11c04920cd24947a2576e889acc879fe71db06098e73d",
+    "examplesIncluded": [
+      "Input",
+      "Textarea",
+      "Select",
+      "Fieldset",
+      "Switch",
+      "Responsive Layout",
+      "Validation and Errors"
+    ],
+    "examplesSkipped": [
+      {
+        "name": "Preview",
+        "reason": "missing-family",
+        "detail": "Catalog is missing family \"checkbox\""
+      },
+      {
+        "name": "Slider",
+        "reason": "unsupported-hook",
+        "detail": "Example contains a bare bind: that is not valid Svelte"
+      },
+      {
+        "name": "Checkbox",
+        "reason": "missing-family",
+        "detail": "Catalog is missing family \"checkbox\""
+      },
+      {
+        "name": "Radio",
+        "reason": "missing-family",
+        "detail": "Catalog is missing family \"radio-group\""
+      },
+      {
+        "name": "Choice Card",
+        "reason": "missing-family",
+        "detail": "Catalog is missing family \"radio-group\""
+      },
+      {
+        "name": "Field Group",
+        "reason": "missing-family",
+        "detail": "Catalog is missing family \"checkbox\""
+      }
     ]
   },
   "converter": {

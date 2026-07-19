@@ -126,11 +126,34 @@ export function rewriteExample(args: {
     };
   }
 
-  if (/\$lib\/hooks\//.test(code) || /use-clipboard/i.test(code)) {
+  if (
+    /\$lib\/hooks\//.test(code) ||
+    /use-clipboard/i.test(code) ||
+    /\buseSidebar\b/.test(code)
+  ) {
     return {
       example,
       reason: "unsupported-hook",
-      detail: "Example depends on a catalog-unsupported $lib hook",
+      detail: "Example depends on a catalog-unsupported hook",
+    };
+  }
+
+  // Upstream sometimes shows invalid bare binds (e.g. `<X bind:open>`) as contrast.
+  // Do not treat `bind:value={…}` as bare — only attribute form with no value.
+  if (/\bbind:[A-Za-z][\w-]*(?=\s*\/?>|\s+[A-Za-z_:@.#\[])/.test(code)) {
+    return {
+      example,
+      reason: "unsupported-hook",
+      detail: "Example contains a bare bind: that is not valid Svelte",
+    };
+  }
+
+  // Incomplete snippet fences (docs ellipsis) are not runnable demos.
+  if (/^\s*\/\/\s*\.\.\.\s*$/m.test(code) || /\/\*\s*\.\.\.\s*\*\//.test(code)) {
+    return {
+      example,
+      reason: "empty-code",
+      detail: "Example is an incomplete snippet",
     };
   }
 

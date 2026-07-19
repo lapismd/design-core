@@ -21,7 +21,15 @@
         "path": "src/lib/components/ui/scroll-area/scroll-area.svelte",
         "sha256": "92472dd587436aff6e563df95b1411e7b05062338d210eba349ee169135dcf93"
       }
-    ]
+    ],
+    "docsUrl": "https://shadcn-svelte.com/docs/components/scroll-area.md",
+    "docsFetchedAt": "2026-07-19T20:23:52.071Z",
+    "docsSha256": "3e343ada691527d76575f9d412aba4066abef0a95a56c818a5f1b65994576654",
+    "examplesIncluded": [
+      "Preview",
+      "Horizontal Scrolling"
+    ],
+    "examplesSkipped": []
   },
   "converter": {
     "version": "2.0.0",

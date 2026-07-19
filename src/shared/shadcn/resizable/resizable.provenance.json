@@ -21,7 +21,16 @@
         "path": "src/lib/components/ui/resizable/resizable-pane-group.svelte",
         "sha256": "db02f3c225b84322f1492107cfc4746346bd889ced7817b94bcdcbfe4a16592f"
       }
-    ]
+    ],
+    "docsUrl": "https://shadcn-svelte.com/docs/components/resizable.md",
+    "docsFetchedAt": "2026-07-19T20:23:52.105Z",
+    "docsSha256": "2d3f5066bddd5d542759664ec0b1ceb10c855e34b44522488386b2f181f01b45",
+    "examplesIncluded": [
+      "Preview",
+      "Vertical",
+      "Handle"
+    ],
+    "examplesSkipped": []
   },
   "converter": {
     "version": "2.0.0",

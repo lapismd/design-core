@@ -17,6 +17,13 @@ function toPascalCase(kebab: string): string {
     .join("");
 }
 
+/** defineMeta `component` export — some families lack a Pascal alias / Root. */
+function storyMetaComponentExpr(component: string, pascal: string): string {
+  if (component === "resizable") return `${pascal}.PaneGroup`;
+  if (component === "sidebar") return `${pascal}.Provider`;
+  return `${pascal}.${pascal}`;
+}
+
 function stripSponsorAndHero(markdown: string): string {
   const lines = markdown.split("\n");
   const out: string[] = [];
@@ -210,8 +217,7 @@ ${imports}
 
   const { Story } = defineMeta({
     title: ${JSON.stringify(storyTitle)},
-    // Prefer the Pascal alias (every family exports it); Root is absent on some simpleRoot barrels.
-    component: ${pascal}.${pascal},
+    component: ${storyMetaComponentExpr(args.component, pascal)},
   });
 </script>
 
