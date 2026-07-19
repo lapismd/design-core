@@ -27,8 +27,10 @@
   name="Confirms a destructive action"
   play={async ({ canvas }) => {
     await userEvent.click(canvas.getByRole("button", { name: "Delete item" }));
-    const dialog = within(document.body).getByRole("alertdialog");
-    await expect(dialog).toBeVisible();
+    const dialog = await within(document.body).findByRole("alertdialog");
+    await expect(
+      within(dialog).getByRole("heading", { name: "Delete this item?" }),
+    ).toBeVisible();
     await userEvent.click(
       within(dialog).getByRole("button", { name: "Delete" }),
     );

@@ -6,9 +6,11 @@ import { EXIT, GeneratorError } from "../errors.js";
 import { log } from "../logger.js";
 import { assertCleanGit } from "../adapters/git.js";
 
-export async function runDoctor(options: {
-  requireClean?: boolean;
-} = {}) {
+export async function runDoctor(
+  options: {
+    requireClean?: boolean;
+  } = {},
+) {
   const config = loadConfig();
   const checks: string[] = [];
 

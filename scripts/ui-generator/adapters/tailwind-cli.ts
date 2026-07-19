@@ -30,7 +30,9 @@ export async function compileCandidates(
 
   const theme = readFileSync(themeCssPath, "utf8");
   const inlineSources = candidates
-    .map((candidate) => `@source inline("${escapeForSourceInline(candidate)}");`)
+    .map(
+      (candidate) => `@source inline("${escapeForSourceInline(candidate)}");`,
+    )
     .join("\n");
 
   const inputCss = `@import "tailwindcss" source(none);
@@ -80,7 +82,11 @@ ${inlineSources}
       !css.includes(candidate)
     ) {
       // Also accept if a decoded class form appears in emittedSelectors
-      if (!emittedSelectors.some((sel) => sel === candidate || sel.includes(candidate))) {
+      if (
+        !emittedSelectors.some(
+          (sel) => sel === candidate || sel.includes(candidate),
+        )
+      ) {
         missing.push(candidate);
       }
     }

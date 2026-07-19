@@ -8,7 +8,11 @@ import {
   prepareIntakeProject,
 } from "../adapters/shadcn-cli.js";
 import { extractTvConfig } from "../analysis/variant-extractor.js";
-import { createRunContext, writeJson, writeReportMarkdown } from "../reports/report.js";
+import {
+  createRunContext,
+  writeJson,
+  writeReportMarkdown,
+} from "../reports/report.js";
 import { mkdirSync, rmSync } from "node:fs";
 
 export async function runInspect(options: { component?: string }) {
@@ -37,10 +41,7 @@ export async function runInspect(options: { component?: string }) {
       intake.files.find((f) => f.path.endsWith(`${component}.svelte`)) ??
       intake.files.find((f) => f.path.endsWith(".svelte"));
     if (!mainSource) {
-      throw new GeneratorError(
-        "No .svelte source in intake",
-        EXIT.intake,
-      );
+      throw new GeneratorError("No .svelte source in intake", EXIT.intake);
     }
 
     let extraction = null;
@@ -48,9 +49,7 @@ export async function runInspect(options: { component?: string }) {
     try {
       extraction = extractTvConfig(mainSource.content);
     } catch (error) {
-      unsupported.push(
-        error instanceof Error ? error.message : String(error),
-      );
+      unsupported.push(error instanceof Error ? error.message : String(error));
     }
 
     const localPath = path.join(

@@ -50,7 +50,8 @@ export async function prepareIntakeProject(
     runId,
     "intake",
   );
-  if (existsSync(intakeDir)) rmSync(intakeDir, { recursive: true, force: true });
+  if (existsSync(intakeDir))
+    rmSync(intakeDir, { recursive: true, force: true });
   mkdirSync(path.dirname(intakeDir), { recursive: true });
   cpSync(fixture, intakeDir, { recursive: true });
 
@@ -80,11 +81,7 @@ ${themeCss}
   const nm = path.join(intakeDir, "node_modules");
   if (!existsSync(nm)) {
     const { symlinkSync } = await import("node:fs");
-    symlinkSync(
-      path.join(config.packageRoot, "node_modules"),
-      nm,
-      "junction",
-    );
+    symlinkSync(path.join(config.packageRoot, "node_modules"), nm, "junction");
   }
 
   return intakeDir;
@@ -159,8 +156,10 @@ export async function fetchShadcnComponent(
     .filter((file) => file.startsWith(path.join(intakeDir, "src")))
     .filter((file) => {
       if (existsSync(componentDir)) return file.startsWith(componentDir);
-      return path.basename(path.dirname(file)) === component ||
-        path.basename(file).toLowerCase().includes(component);
+      return (
+        path.basename(path.dirname(file)) === component ||
+        path.basename(file).toLowerCase().includes(component)
+      );
     })
     .map((file) => {
       const content = readFileSync(file);
@@ -174,9 +173,10 @@ export async function fetchShadcnComponent(
   if (!files.length) {
     // Fallback: take all files under ui/<component> if present, else all ui files matching name
     const uiRoot = path.join(intakeDir, "src/lib/components/ui");
-    const candidates = walkFiles(uiRoot).filter((f) =>
-      f.includes(`${path.sep}${component}${path.sep}`) ||
-      path.basename(f).startsWith(component),
+    const candidates = walkFiles(uiRoot).filter(
+      (f) =>
+        f.includes(`${path.sep}${component}${path.sep}`) ||
+        path.basename(f).startsWith(component),
     );
     for (const file of candidates) {
       const content = readFileSync(file);
@@ -211,9 +211,9 @@ export async function fetchShadcnComponent(
   log.ok(`Fetched ${files.length} source file(s) for ${component}`);
   return {
     intakeDir,
-    componentDir: existsSync(componentDir) ? componentDir : path.dirname(
-      path.join(intakeDir, files[0]!.path),
-    ),
+    componentDir: existsSync(componentDir)
+      ? componentDir
+      : path.dirname(path.join(intakeDir, files[0]!.path)),
     files,
     cliVersion,
   };

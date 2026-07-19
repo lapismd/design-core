@@ -99,10 +99,7 @@ function joinStringLiterals(expression: string): string {
   let match: RegExpExecArray | null;
   while ((match = re.exec(expression))) {
     parts.push(
-      match[2]!
-        .replace(/\\n/g, " ")
-        .replace(/\\"/g, '"')
-        .replace(/\\'/g, "'"),
+      match[2]!.replace(/\\n/g, " ").replace(/\\"/g, '"').replace(/\\'/g, "'"),
     );
   }
   return parts.join(" ");
@@ -143,9 +140,8 @@ export function extractTvConfig(source: string): TvExtraction {
   }
   const { text: configText } = extractBalancedObject(source, openBrace);
 
-  const baseMatch = /base\s*:\s*((?:"(?:\\.|[^"\\])*"|`(?:\\.|[^`\\])*`)+)/.exec(
-    configText,
-  );
+  const baseMatch =
+    /base\s*:\s*((?:"(?:\\.|[^"\\])*"|`(?:\\.|[^`\\])*`)+)/.exec(configText);
   if (!baseMatch) {
     throw new GeneratorError("tv().base string not found", EXIT.unsupported);
   }

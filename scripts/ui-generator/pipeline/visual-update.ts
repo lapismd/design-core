@@ -9,7 +9,11 @@ import {
   listComponentSnapshotFiles,
   writeSnapshotManifest,
 } from "../visual/snapshot-manifest.js";
-import { createRunContext, writeJson, writeReportMarkdown } from "../reports/report.js";
+import {
+  createRunContext,
+  writeJson,
+  writeReportMarkdown,
+} from "../reports/report.js";
 
 export async function runVisualUpdate(options: {
   component?: string;
@@ -42,10 +46,7 @@ export async function runVisualUpdate(options: {
   const config = loadConfig();
   assertCleanGit(config.packageRoot);
   const run = createRunContext(config, "visual-update", component);
-  const snapshotDir = path.join(
-    config.packageRoot,
-    config.visual.snapshotDir,
-  );
+  const snapshotDir = path.join(config.packageRoot, config.visual.snapshotDir);
   const before = buildSnapshotManifest(snapshotDir);
   writeSnapshotManifest(
     path.join(run.reportDir, "snapshot-manifest-before.json"),
@@ -58,7 +59,9 @@ export async function runVisualUpdate(options: {
       `No existing snapshots matched component "${component}". Playwright may create first snapshots for new stories only.`,
     );
   } else {
-    log.info(`Updating snapshots:\n${targets.map((t) => `  - ${t}`).join("\n")}`);
+    log.info(
+      `Updating snapshots:\n${targets.map((t) => `  - ${t}`).join("\n")}`,
+    );
   }
 
   // Build Storybook first so the visual suite has static assets.
@@ -67,18 +70,14 @@ export async function runVisualUpdate(options: {
     stdio: "inherit",
   });
 
-  execFileSync(
-    "pnpm",
-    ["exec", "playwright", "test", "--update-snapshots"],
-    {
-      cwd: config.packageRoot,
-      stdio: "inherit",
-      env: {
-        ...process.env,
-        PLAYWRIGHT_UPDATE_SNAPSHOTS: "1",
-      },
+  execFileSync("pnpm", ["exec", "playwright", "test", "--update-snapshots"], {
+    cwd: config.packageRoot,
+    stdio: "inherit",
+    env: {
+      ...process.env,
+      PLAYWRIGHT_UPDATE_SNAPSHOTS: "1",
     },
-  );
+  });
 
   const after = buildSnapshotManifest(snapshotDir);
   writeSnapshotManifest(

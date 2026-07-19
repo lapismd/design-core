@@ -134,10 +134,7 @@ body{margin:0;padding:24px;background:var(--background);color:var(--foreground);
   writeFileSync(path.join(args.outDir, "theme-bundle.css"), args.tailwindCss);
 }
 
-async function shot(
-  browser: Browser,
-  filePath: string,
-): Promise<Buffer> {
+async function shot(browser: Browser, filePath: string): Promise<Buffer> {
   const page = await browser.newPage({
     viewport: { width: 480, height: 160 },
     deviceScaleFactor: 1,
@@ -189,16 +186,23 @@ export async function runParityHarness(options: {
       const refPng = PNG.sync.read(refBuf);
       const candPng = PNG.sync.read(candBuf);
 
-      if (
-        refPng.width !== candPng.width ||
-        refPng.height !== candPng.height
-      ) {
+      if (refPng.width !== candPng.width || refPng.height !== candPng.height) {
         writeFileSync(
-          path.join(options.reportDir, "visual", "reference", `${testCase.id}.png`),
+          path.join(
+            options.reportDir,
+            "visual",
+            "reference",
+            `${testCase.id}.png`,
+          ),
           refBuf,
         );
         writeFileSync(
-          path.join(options.reportDir, "visual", "candidate", `${testCase.id}.png`),
+          path.join(
+            options.reportDir,
+            "visual",
+            "candidate",
+            `${testCase.id}.png`,
+          ),
           candBuf,
         );
         throw new GeneratorError(
@@ -219,11 +223,21 @@ export async function runParityHarness(options: {
       );
 
       writeFileSync(
-        path.join(options.reportDir, "visual", "reference", `${testCase.id}.png`),
+        path.join(
+          options.reportDir,
+          "visual",
+          "reference",
+          `${testCase.id}.png`,
+        ),
         PNG.sync.write(refPng),
       );
       writeFileSync(
-        path.join(options.reportDir, "visual", "candidate", `${testCase.id}.png`),
+        path.join(
+          options.reportDir,
+          "visual",
+          "candidate",
+          `${testCase.id}.png`,
+        ),
         PNG.sync.write(candPng),
       );
       writeFileSync(

@@ -13,7 +13,10 @@ describe("remapCompiledCss", () => {
 .border { border-width: 1px }
 `;
     const ownership = [
-      { candidate: "px-2", selector: '[data-ui-component="button"][data-size="xs"]' },
+      {
+        candidate: "px-2",
+        selector: '[data-ui-component="button"][data-size="xs"]',
+      },
       {
         candidate: "px-2.5",
         selector: '[data-ui-component="button"][data-size="default"]',
@@ -64,11 +67,9 @@ describe("remapCompiledCss", () => {
 
 describe("buildButtonOwnership", () => {
   it("maps base and variant classes", () => {
-    const ownership = buildButtonOwnership(
-      "button",
-      ["inline-flex"],
-      { variant: { default: "bg-primary" } },
-    );
+    const ownership = buildButtonOwnership("button", ["inline-flex"], {
+      variant: { default: "bg-primary" },
+    });
     expect(ownership).toEqual([
       { candidate: "inline-flex", selector: '[data-ui-component="button"]' },
       {

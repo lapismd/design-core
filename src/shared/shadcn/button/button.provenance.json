@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "component": "button",
+  "scope": "shared",
+  "upstream": {
+    "project": "shadcn-svelte",
+    "registry": "https://shadcn-svelte.com/registry",
+    "cliVersion": "1.4.2",
+    "item": "button",
+    "fetchedAt": "2026-07-19T13:38:53.325Z",
+    "sourceFiles": [
+      {
+        "path": "src/lib/components/ui/button/button.svelte",
+        "sha256": "3100b55fd19e87386b3d8320a937da79253744869ac93b29302103b9d7a3e175"
+      },
+      {
+        "path": "src/lib/components/ui/button/index.ts",
+        "sha256": "0f6b6f040d92b4153821d3f9b4d6b9cbc567247e4fda913e64c1d0fcc4a2f386"
+      }
+    ]
+  },
+  "converter": {
+    "version": "1.0.0",
+    "irSchemaVersion": 1,
+    "tokenSchemaVersion": 1
+  },
+  "recipe": {
+    "name": "button",
+    "version": 1
+  }
+}

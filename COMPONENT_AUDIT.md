@@ -14,6 +14,10 @@ tabs, textarea, toggle, toggle-group, tooltip
 
 Import: `@stevejuma/ui/shadcn/<family>`
 
+**Native CSS conversion:** `button` is generated via `pnpm ui:add button --overwrite`
+(scoped CSS + `button.tokens.ts` + `button.provenance.json`). Remaining families
+still use Tailwind/`tv()` until converted.
+
 ## Shared — forms
 
 Config-driven form engine and field primitives in `src/shared/forms/<family>/`:

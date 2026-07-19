@@ -59,9 +59,9 @@ describe("extractTvConfig", () => {
 
 describe("token naming", () => {
   it("is deterministic", () => {
-    expect(publicTokenName("ui", "button", ["outline", "background", "hover"])).toBe(
-      "--ui-button-outline-background-hover",
-    );
+    expect(
+      publicTokenName("ui", "button", ["outline", "background", "hover"]),
+    ).toBe("--ui-button-outline-background-hover");
   });
 });
 

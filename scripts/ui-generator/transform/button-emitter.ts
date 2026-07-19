@@ -23,8 +23,14 @@ function typeName(component: string, axis: string): string {
 }
 
 export function emitButtonFamily(input: EmitButtonInput): string[] {
-  const { targetDir, component, extraction, remappedCss, provenance, storyTitle } =
-    input;
+  const {
+    targetDir,
+    component,
+    extraction,
+    remappedCss,
+    provenance,
+    storyTitle,
+  } = input;
   mkdirSync(targetDir, { recursive: true });
   const written: string[] = [];
 
@@ -49,8 +55,7 @@ export function emitButtonFamily(input: EmitButtonInput): string[] {
   const tokensTs = `export const ${component}TokenNames = {
 ${tokenEntries
   .map(
-    ([key, slug]) =>
-      `  ${key}: "${publicTokenName("ui", component, [slug])}",`,
+    ([key, slug]) => `  ${key}: "${publicTokenName("ui", component, [slug])}",`,
   )
   .join("\n")}
 } as const;

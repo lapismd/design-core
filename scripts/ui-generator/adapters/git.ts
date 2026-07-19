@@ -111,7 +111,10 @@ export function createDetachedWorktree(
     dispose(keep = false) {
       if (keep) return;
       try {
-        git(["worktree", "remove", "--force", worktreePath], config.packageRoot);
+        git(
+          ["worktree", "remove", "--force", worktreePath],
+          config.packageRoot,
+        );
       } catch {
         rmSync(worktreePath, { recursive: true, force: true });
         try {

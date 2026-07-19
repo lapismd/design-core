@@ -95,11 +95,10 @@ export async function runAdd(options: {
   try {
     // Install lockfile-pinned deps inside the worktree (symlink breaks Vitest browser imports).
     log.step("Installing worktree dependencies");
-    await execa(
-      "pnpm",
-      ["install", "--frozen-lockfile", "--prefer-offline"],
-      { cwd: worktree.path, stdio: "inherit" },
-    );
+    await execa("pnpm", ["install", "--frozen-lockfile", "--prefer-offline"], {
+      cwd: worktree.path,
+      stdio: "inherit",
+    });
 
     const intakeDir = await prepareIntakeProject(
       config,
@@ -210,10 +209,14 @@ export async function runAdd(options: {
 
     // Static checks in worktree
     log.step("Running static checks");
-    await execa("pnpm", ["exec", "svelte-check", "--tsconfig", "./tsconfig.json"], {
-      cwd: worktree.path,
-      stdio: "inherit",
-    });
+    await execa(
+      "pnpm",
+      ["exec", "svelte-check", "--tsconfig", "./tsconfig.json"],
+      {
+        cwd: worktree.path,
+        stdio: "inherit",
+      },
+    );
 
     // Forbidden style-engine imports in generated button
     const generated = readFileSync(path.join(emitDir, "button.svelte"), "utf8");
@@ -288,13 +291,21 @@ export async function runAdd(options: {
         name.includes("shadcn-actions-button") ||
         name.includes("shared-button"),
     );
-    const allowedNew = buttonSnapshotKeys.filter((k) => !(k in beforeSnapshots));
+    const allowedNew = buttonSnapshotKeys.filter(
+      (k) => !(k in beforeSnapshots),
+    );
     // Pre-existing non-button hashes must be unchanged; button keys may change.
     const beforeOthers = Object.fromEntries(
-      Object.entries(beforeSnapshots).filter(([k]) => !buttonSnapshotKeys.includes(k) && !k.includes("button")),
+      Object.entries(beforeSnapshots).filter(
+        ([k]) => !buttonSnapshotKeys.includes(k) && !k.includes("button"),
+      ),
     );
     const afterOthers = Object.fromEntries(
-      Object.entries(afterSnapshots).filter(([k]) => !(k in beforeSnapshots) || k in beforeOthers ? !String(k).includes("button") : true),
+      Object.entries(afterSnapshots).filter(([k]) =>
+        !(k in beforeSnapshots) || k in beforeOthers
+          ? !String(k).includes("button")
+          : true,
+      ),
     );
     // Simpler integrity: every key in before that is NOT a button snapshot must match after
     for (const [key, hash] of Object.entries(beforeSnapshots)) {
@@ -326,7 +337,9 @@ export async function runAdd(options: {
         storybookOk = true;
         break;
       }
-      log.warn(`Storybook Vitest attempt ${attempt} failed; retrying once for flake`);
+      log.warn(
+        `Storybook Vitest attempt ${attempt} failed; retrying once for flake`,
+      );
     }
     writeFileSync(
       path.join(run.reportDir, "logs", "test-storybook.log"),
@@ -350,9 +363,7 @@ export async function runAdd(options: {
       },
       {
         heading: "Files",
-        body: written
-          .map((f) => path.relative(worktree.path, f))
-          .join("\n"),
+        body: written.map((f) => path.relative(worktree.path, f)).join("\n"),
       },
       {
         heading: "Candidates",
@@ -382,7 +393,9 @@ export async function runAdd(options: {
     });
 
     if (options.dryRun) {
-      log.ok("Dry run complete — patch retained in report, repository unchanged");
+      log.ok(
+        "Dry run complete — patch retained in report, repository unchanged",
+      );
       log.info(`Report: ${run.reportDir}`);
       log.info(`Patch: ${patchPath}`);
       return;
@@ -397,12 +410,9 @@ export async function runAdd(options: {
   } catch (error) {
     writeJson(path.join(run.reportDir, "failure.json"), {
       message: error instanceof Error ? error.message : String(error),
-      details:
-        error instanceof GeneratorError ? error.details : undefined,
+      details: error instanceof GeneratorError ? error.details : undefined,
     });
-    log.fail(
-      error instanceof Error ? error.message : String(error),
-    );
+    log.fail(error instanceof Error ? error.message : String(error));
     log.info(`No repository files were changed.`);
     log.info(`Report: ${run.reportDir}`);
     throw error;
