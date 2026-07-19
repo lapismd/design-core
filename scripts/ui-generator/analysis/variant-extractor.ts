@@ -94,9 +94,18 @@ function extractBalancedObject(
 }
 
 function joinStringLiterals(expression: string): string {
-  return [...expression.matchAll(/["'`]((?:\\.|[^"'`\\])*)["'`]/g)]
-    .map((m) => m[1]!.replace(/\\n/g, " ").replace(/\\"/g, '"'))
-    .join(" ");
+  const parts: string[] = [];
+  const re = /(["'`])((?:\\.|(?!\1)[^\\])*)\1/g;
+  let match: RegExpExecArray | null;
+  while ((match = re.exec(expression))) {
+    parts.push(
+      match[2]!
+        .replace(/\\n/g, " ")
+        .replace(/\\"/g, '"')
+        .replace(/\\'/g, "'"),
+    );
+  }
+  return parts.join(" ");
 }
 
 function extractStringProperties(objectText: string): Record<string, string> {
