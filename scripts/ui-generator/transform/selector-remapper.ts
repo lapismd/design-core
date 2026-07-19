@@ -7,7 +7,6 @@ export type CandidateOwnership = {
 };
 
 function cssEscapeClass(candidate: string): string {
-  // Approximate Tailwind's escaping for matching in selectors
   return candidate.replace(/([^a-zA-Z0-9_-])/g, "\\$1");
 }
 
@@ -16,50 +15,29 @@ function replaceClassInSelector(
   candidate: string,
   replacement: string,
 ): string | null {
-  let replaced = false;
   const escaped = cssEscapeClass(candidate);
-  const processor = selectorParser((selectors) => {
-    selectors.walkClasses((classNode) => {
-      const value = classNode.value;
-      // postcss-selector-parser gives unescaped value
-      if (value === candidate || classNode.toString() === `.${escaped}`) {
-        classNode.replaceWith(selectorParser.attribute({
-          attribute: replacement.replace(/^\[/, "").replace(/\]$/, ""),
-          quoteMark: '"',
-          // For complex replacements like [data-ui-component="button"][data-variant="x"]
-          // we inject as a raw selector fragment instead.
-        } as never));
-        replaced = true;
-      }
-    });
-  });
+  const patterns = [`.${escaped}`];
 
-  // Simpler string approach for reliability with complex replacements
-  const patterns = [
-    `.${escaped}`,
-    `.${candidate.replace(/:/g, "\\:")}`,
-  ];
   let next = selector;
+  let replaced = false;
   for (const pattern of patterns) {
     if (next.includes(pattern)) {
       next = next.split(pattern).join(replacement);
       replaced = true;
     }
   }
-  // Also try matching unescaped in case minify differs
-  if (!replaced && next.includes(candidate)) {
-    // last resort: replace .candidate forms using regex
+
+  if (!replaced) {
     const re = new RegExp(
       `\\.${candidate.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`,
       "g",
     );
-    if (re.test(next)) {
-      next = next.replace(re, replacement);
+    if (re.test(selector)) {
+      next = selector.replace(re, replacement);
       replaced = true;
     }
   }
 
-  void processor;
   return replaced ? next : null;
 }
 
@@ -92,7 +70,6 @@ export function remapCompiledCss(
     rule.selectors = [...new Set(selectors)];
   });
 
-  // Drop empty at-rules
   root.walkAtRules((atRule) => {
     if (!atRule.nodes || atRule.nodes.length === 0) atRule.remove();
   });
