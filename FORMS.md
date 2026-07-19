@@ -43,7 +43,7 @@ These stay in shared forms when callers supply domain data via props:
 ## App-specific form work
 
 Custom `*FormField.svelte` renderers and CV/beancount domain editors belong under
-`src/components/cv` or `src/components/beancount`, not in shared forms.
+`src/apps/cv` or `src/apps/beancount`, not in shared forms.
 
 ## Storybook
 

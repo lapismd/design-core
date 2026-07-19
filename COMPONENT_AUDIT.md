@@ -5,7 +5,7 @@ between shared and app-specific folders.
 
 ## Shared — shadcn
 
-Generic primitives in `src/components/shadcn/`, copied from CV Studio:
+Generic primitives in `src/shared/shadcn/`, copied from CV Studio:
 
 accordion, alert, alert-dialog, badge, button, card, collapsible, command,
 dialog, dropdown-menu, empty, field, input, input-group, label, popover,
@@ -14,20 +14,22 @@ tabs, textarea, toggle, toggle-group, tooltip
 
 Import: `@stevejuma/ui/shadcn/<family>`
 
-## Shared — forms (landed)
+## Shared — forms
 
-Config-driven form engine and field primitives in `src/components/forms/`:
+Config-driven form engine and field primitives in `src/shared/forms/<family>/`:
 
-**Engine:** `StructuredForm`, `FormFieldRenderer`, `FormViewRenderer`,
-`YamlBackedForm`, `builders` / `types` / `registry` / `core`
+**Engine** (`structured-form/`, `core/`): `StructuredForm`, `FormFieldRenderer`,
+`FormViewRenderer`, `YamlBackedForm`, `builders` / `types` / `registry` /
+`core`
 
-**Primitives:** `FormField`, `FormSectionHeader`, `EntryActions`,
-`CollapsibleItemList`, `AddSectionChooser`, `SegmentedControl`, `ChoiceMenu`,
-`InlineOptionPicker`, `SearchableChoicePicker`, `AutocompleteInput`,
-`ChipAutocomplete`, `TagEditor`, `ReadOnlyFormGroup` / `Row` / `List`,
-`SearchFilterBar`, `ReferencePicker`, `TaskDueCalendar`
+**Primitives** (one kebab-case folder each): `form-field`,
+`form-section-header`, `entry-actions`, `collapsible-item-list`,
+`add-section-chooser`, `segmented-control`, `choice-menu`,
+`inline-option-picker`, `searchable-choice-picker`, `autocomplete-input`,
+`chip-autocomplete`, `tag-editor`, `read-only-form`, `search-filter-bar`,
+`reference-picker`, `task-due-calendar`
 
-**Runtime editors:** `CodeEditor`, `YamlEditor`
+**Runtime editors:** `code-editor`, `yaml-editor`
 
 Borderline but shared when prop-driven: `ReferencePicker`, `TaskDueCalendar`,
 `SearchFilterBar`, `AddSectionChooser`
@@ -41,12 +43,13 @@ Import: `@stevejuma/ui/forms` and `@stevejuma/ui/forms/core`
 - Studio shared controls (`TextControl`, `ListEditor`, option groups)
 - AI elements
 
-## App-specific — `src/components/cv/`
+## App-specific — `src/apps/cv/`
 
 Reserved for CV domain UI (workspace hosts, section editors, evidence,
-applications kanban hosts, docs hosts, studio shell). Empty in the first wave.
+applications kanban hosts, docs hosts, studio shell). Empty placeholder barrel
+only.
 
-## App-specific — `src/components/beancount/`
+## App-specific — `src/apps/beancount/`
 
 Reserved for beancount domain UI (`MerchantPicker`, `AccountAvatar`, filter
-semantics, charts/tables/dashboard). Empty in the first wave.
+semantics, charts/tables/dashboard). Empty placeholder barrel only.
