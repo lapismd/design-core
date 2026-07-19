@@ -43,6 +43,15 @@ function listLocalSvelteParts(
     }));
 }
 
+/** Map intake `$lib/...` imports onto this package's relative `src/lib` paths. */
+function normalizeIntakeSource(source: string): string {
+  return source
+    .replaceAll('from "$lib/utils.js"', 'from "../../../lib/utils.js"')
+    .replaceAll("from '$lib/utils.js'", "from '../../../lib/utils.js'")
+    .replaceAll('from "$lib/', 'from "../../../lib/')
+    .replaceAll("from '$lib/", "from '../../../lib/");
+}
+
 function pickParityExtraction(
   family: FamilyExtraction,
   recipe: ComponentRecipe,
@@ -109,12 +118,13 @@ export async function convertFamilyInWorktree(args: {
     }
     const fromIntake = intakeByName.get(fileName);
     if (fromIntake && looksLikeTailwindSource(fromIntake)) {
-      files.push({ fileName, source: fromIntake });
+      // Prefer intake Tailwind when local is already native (re-convert / missed parts).
+      files.push({ fileName, source: normalizeIntakeSource(fromIntake) });
       continue;
     }
     if (local) {
-      // Already native or empty — skip rewrite of this part unless it's the only file
-      files.push(local);
+      // Already native with no intake Tailwind counterpart — leave as-is (not rewritten).
+      continue;
     }
   }
 
