@@ -1,30 +1,25 @@
 import { expect, test } from "@playwright/test";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-
-type StorybookEntry = {
-  id: string;
-  type?: string;
-  name?: string;
-  title?: string;
-  tags?: string[];
-};
+import {
+  screenshotRelativePath,
+  type StoryIndexEntry,
+} from "../../scripts/ui-generator/visual/snapshot-paths.js";
 
 type StorybookIndex = {
-  entries: Record<string, StorybookEntry>;
+  entries: Record<string, StoryIndexEntry>;
 };
 
-function loadStoryIds(): string[] {
+function loadVisualStories(): StoryIndexEntry[] {
   const indexPath = resolve("storybook-static/index.json");
   const index = JSON.parse(readFileSync(indexPath, "utf8")) as StorybookIndex;
   return Object.values(index.entries)
     .filter((entry) => entry.type === "story")
     .filter((entry) => !(entry.tags ?? []).includes("skip-visual"))
-    .map((entry) => entry.id)
-    .sort();
+    .sort((a, b) => a.id.localeCompare(b.id));
 }
 
-const storyIds = loadStoryIds();
+const stories = loadVisualStories();
 
 test.describe("Storybook visual baselines", () => {
   test.beforeEach(async ({ page }) => {
@@ -43,7 +38,8 @@ test.describe("Storybook visual baselines", () => {
     });
   });
 
-  for (const storyId of storyIds) {
+  for (const story of stories) {
+    const storyId = story.id;
     test(storyId, async ({ page }) => {
       await page.goto(`/iframe.html?id=${storyId}&viewMode=story`, {
         waitUntil: "networkidle",
@@ -90,9 +86,13 @@ test.describe("Storybook visual baselines", () => {
 
       await page.waitForTimeout(100);
 
-      await expect(page).toHaveScreenshot(`${storyId}.png`, {
-        fullPage: true,
-      });
+      // Pass path segments as an array — a string with "/" is flattened by Playwright.
+      await expect(page).toHaveScreenshot(
+        screenshotRelativePath(story).split("/"),
+        {
+          fullPage: true,
+        },
+      );
     });
   }
 });

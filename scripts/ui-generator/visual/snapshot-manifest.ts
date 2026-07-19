@@ -1,7 +1,14 @@
 import { createHash } from "node:crypto";
-import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import {
+  existsSync,
+  readdirSync,
+  readFileSync,
+  statSync,
+  writeFileSync,
+} from "node:fs";
 import path from "node:path";
 import { EXIT, GeneratorError } from "../errors.js";
+import { snapshotKeyMatchesComponent } from "./snapshot-paths.js";
 
 export type SnapshotManifest = Record<string, string>;
 
@@ -9,13 +16,32 @@ function hashFile(filePath: string): string {
   return createHash("sha256").update(readFileSync(filePath)).digest("hex");
 }
 
+/** Recursively list `.png` paths relative to `snapshotDir` (posix separators). */
+export function listSnapshotRelativePaths(snapshotDir: string): string[] {
+  if (!existsSync(snapshotDir)) return [];
+  const out: string[] = [];
+
+  const walk = (absDir: string, relDir: string) => {
+    for (const name of readdirSync(absDir)) {
+      const abs = path.join(absDir, name);
+      const rel = relDir ? `${relDir}/${name}` : name;
+      if (statSync(abs).isDirectory()) {
+        walk(abs, rel.replace(/\\/g, "/"));
+        continue;
+      }
+      if (name.endsWith(".png")) out.push(rel.replace(/\\/g, "/"));
+    }
+  };
+
+  walk(snapshotDir, "");
+  return out.sort();
+}
+
 export function buildSnapshotManifest(snapshotDir: string): SnapshotManifest {
   const manifest: SnapshotManifest = {};
   if (!existsSync(snapshotDir)) return manifest;
-  for (const name of readdirSync(snapshotDir)) {
-    if (!name.endsWith(".png")) continue;
-    const full = path.join(snapshotDir, name);
-    manifest[name] = hashFile(full);
+  for (const rel of listSnapshotRelativePaths(snapshotDir)) {
+    manifest[rel] = hashFile(path.join(snapshotDir, rel));
   }
   return manifest;
 }
@@ -68,15 +94,10 @@ export function assertSnapshotManifestUnchanged(
 export function listComponentSnapshotFiles(
   snapshotDir: string,
   component: string,
+  extraIncludes: string[] = [],
 ): string[] {
   if (!existsSync(snapshotDir)) return [];
-  const needle = component.toLowerCase().replace(/\s+/g, "-");
-  return readdirSync(snapshotDir).filter(
-    (name) =>
-      name.endsWith(".png") &&
-      (name.includes(`-${needle}--`) ||
-        name.includes(`shadcn-actions-${needle}`) ||
-        name.includes(`shared-${needle}`) ||
-        name.startsWith(`${needle}-`)),
+  return listSnapshotRelativePaths(snapshotDir).filter((rel) =>
+    snapshotKeyMatchesComponent(rel, component, extraIncludes),
   );
 }

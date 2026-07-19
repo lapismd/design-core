@@ -16,7 +16,7 @@ const simple = (
   maxDiffPixels: 0,
   themes: ["light", "dark"],
   parity,
-  snapshotKeyIncludes: [component],
+  snapshotKeyIncludes: [`shadcn/${component}`],
   convertAllowed: true,
   ...extras,
 });
@@ -107,7 +107,7 @@ const recipes: Record<string, ComponentRecipe> = {
       attrs: { type: "button", "data-slot": "button" },
       shotSelector: "button",
     },
-    snapshotKeyIncludes: ["button", "shadcn-actions-button"],
+    snapshotKeyIncludes: ["shadcn/button"],
     convertAllowed: true,
   },
   separator: simple("separator", "Shadcn/Layout/Separator", {

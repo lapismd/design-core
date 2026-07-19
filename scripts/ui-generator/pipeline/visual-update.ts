@@ -4,11 +4,13 @@ import { loadConfig } from "../config.js";
 import { EXIT, GeneratorError } from "../errors.js";
 import { log } from "../logger.js";
 import { assertCleanGit } from "../adapters/git.js";
+import { requireRecipe } from "../recipes/index.js";
 import {
   buildSnapshotManifest,
   listComponentSnapshotFiles,
   writeSnapshotManifest,
 } from "../visual/snapshot-manifest.js";
+import { storyIdPrefixFromTitle } from "../visual/snapshot-paths.js";
 import {
   createRunContext,
   writeJson,
@@ -45,6 +47,7 @@ export async function runVisualUpdate(options: {
 
   const config = loadConfig();
   assertCleanGit(config.packageRoot);
+  const recipe = requireRecipe(component);
   const run = createRunContext(config, "visual-update", component);
   const snapshotDir = path.join(config.packageRoot, config.visual.snapshotDir);
   const before = buildSnapshotManifest(snapshotDir);
@@ -53,7 +56,11 @@ export async function runVisualUpdate(options: {
     before,
   );
 
-  const targets = listComponentSnapshotFiles(snapshotDir, component);
+  const targets = listComponentSnapshotFiles(
+    snapshotDir,
+    component,
+    recipe.snapshotKeyIncludes,
+  );
   if (!targets.length) {
     log.warn(
       `No existing snapshots matched component "${component}". Playwright may create first snapshots for new stories only.`,
@@ -64,20 +71,27 @@ export async function runVisualUpdate(options: {
     );
   }
 
+  const grep = storyIdPrefixFromTitle(recipe.storyTitle);
+  log.info(`Playwright filter: -g ${JSON.stringify(grep)}`);
+
   // Build Storybook first so the visual suite has static assets.
   execFileSync("pnpm", ["build-storybook"], {
     cwd: config.packageRoot,
     stdio: "inherit",
   });
 
-  execFileSync("pnpm", ["exec", "playwright", "test", "--update-snapshots"], {
-    cwd: config.packageRoot,
-    stdio: "inherit",
-    env: {
-      ...process.env,
-      PLAYWRIGHT_UPDATE_SNAPSHOTS: "1",
+  execFileSync(
+    "pnpm",
+    ["exec", "playwright", "test", "--update-snapshots", "-g", grep],
+    {
+      cwd: config.packageRoot,
+      stdio: "inherit",
+      env: {
+        ...process.env,
+        PLAYWRIGHT_UPDATE_SNAPSHOTS: "1",
+      },
     },
-  });
+  );
 
   const after = buildSnapshotManifest(snapshotDir);
   writeSnapshotManifest(
@@ -87,6 +101,7 @@ export async function runVisualUpdate(options: {
   writeJson(path.join(run.reportDir, "report.json"), {
     component,
     targets,
+    grep,
     beforeCount: Object.keys(before).length,
     afterCount: Object.keys(after).length,
   });
