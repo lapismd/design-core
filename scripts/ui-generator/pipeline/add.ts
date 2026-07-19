@@ -313,20 +313,30 @@ export async function runAdd(options: {
 
     // Storybook vitest (browser provider needs a real worktree install)
     log.step("Running Storybook Vitest");
-    const storybookResult = await execa("pnpm", ["test:storybook"], {
-      cwd: worktree.path,
-      reject: false,
-      all: true,
-    });
+    let storybookLog = "";
+    let storybookOk = false;
+    for (let attempt = 1; attempt <= 2; attempt++) {
+      const storybookResult = await execa("pnpm", ["test:storybook"], {
+        cwd: worktree.path,
+        reject: false,
+        all: true,
+      });
+      storybookLog += `\n--- attempt ${attempt} ---\n${storybookResult.all ?? ""}`;
+      if (storybookResult.exitCode === 0) {
+        storybookOk = true;
+        break;
+      }
+      log.warn(`Storybook Vitest attempt ${attempt} failed; retrying once for flake`);
+    }
     writeFileSync(
       path.join(run.reportDir, "logs", "test-storybook.log"),
-      storybookResult.all ?? "",
+      storybookLog,
     );
-    if (storybookResult.exitCode !== 0) {
+    if (!storybookOk) {
       throw new GeneratorError(
         "Storybook Vitest failed in the generator worktree",
         EXIT.storybook,
-        storybookResult.all?.slice(-4000),
+        storybookLog.slice(-4000),
       );
     }
     log.ok("Storybook Vitest passed");

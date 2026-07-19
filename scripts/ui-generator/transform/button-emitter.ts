@@ -124,7 +124,13 @@ ${sizeAxis.values.map((v) => `    "${v}",`).join("\n")}
 </button>
 
 <style>
-${scopedCss}
+  /* Semantic selectors must be global: they target data attributes and descendants. */
+  :global {
+${scopedCss
+  .split("\n")
+  .map((line) => (line ? `    ${line}` : ""))
+  .join("\n")}
+  }
 </style>
 `;
 
