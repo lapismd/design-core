@@ -14,9 +14,16 @@ tabs, textarea, toggle, toggle-group, tooltip
 
 Import: `@stevejuma/ui/shadcn/<family>`
 
-**Native CSS conversion:** `button` is generated via `pnpm ui:add button --overwrite`
-(scoped CSS + `button.tokens.ts` + `button.provenance.json`). Remaining families
-still use Tailwind/`tv()` until converted.
+**Native CSS conversion** (scoped CSS + `<family>.tokens.ts` + `<family>.provenance.json`
+via `pnpm ui:add` / `pnpm ui:add:batch`):
+
+| Status | Families |
+| ------ | -------- |
+| Converted | accordion, alert, alert-dialog, badge, button, card, collapsible, command, dialog, dropdown-menu, empty, input, label, popover, select, separator, skeleton, spinner, switch, tabs, textarea, toggle, toggle-group, tooltip |
+| Deferred (Tailwind remaining) | field, input-group, resizable, scroll-area, sidebar |
+
+Batch commands: `pnpm ui:add:batch a` (simple roots), `b` (stateful/light compound),
+`c` (portals). Inspect tier: `pnpm ui:inspect <name>`.
 
 ## Shared — forms
 
