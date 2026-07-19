@@ -1,5 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { extractTvConfig } from "../analysis/variant-extractor.js";
+import {
+  extractTvConfig,
+  splitCandidates,
+} from "../analysis/variant-extractor.js";
 import { publicTokenName } from "../transform/token-names.js";
 import { validatePatchPaths } from "../adapters/git.js";
 import { EXIT, GeneratorError } from "../errors.js";
@@ -23,6 +26,19 @@ export const buttonVariants = tv({
   },
 });
 `;
+
+describe("splitCandidates", () => {
+  it("keeps arbitrary selectors with spaces intact", () => {
+    const parts = splitCandidates(
+      "inline-flex [&_svg:not([class*='size-'])]:size-4 gap-1.5",
+    );
+    expect(parts).toEqual([
+      "inline-flex",
+      "[&_svg:not([class*='size-'])]:size-4",
+      "gap-1.5",
+    ]);
+  });
+});
 
 describe("extractTvConfig", () => {
   it("extracts axes, defaults, and candidates", () => {

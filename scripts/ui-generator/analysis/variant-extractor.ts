@@ -14,11 +14,44 @@ export type TvExtraction = {
   sourceSnippet: string;
 };
 
-function splitCandidates(classString: string): string[] {
-  return classString
-    .split(/\s+/)
-    .map((part) => part.trim())
-    .filter(Boolean);
+/** Split a class string on whitespace while preserving [...] arbitrary groups. */
+export function splitCandidates(classString: string): string[] {
+  const parts: string[] = [];
+  let current = "";
+  let depth = 0;
+  let quote: '"' | "'" | null = null;
+
+  for (let i = 0; i < classString.length; i++) {
+    const ch = classString[i]!;
+    if (quote) {
+      current += ch;
+      if (ch === quote && classString[i - 1] !== "\\") quote = null;
+      continue;
+    }
+    if (ch === '"' || ch === "'") {
+      quote = ch;
+      current += ch;
+      continue;
+    }
+    if (ch === "[") {
+      depth++;
+      current += ch;
+      continue;
+    }
+    if (ch === "]") {
+      depth = Math.max(0, depth - 1);
+      current += ch;
+      continue;
+    }
+    if (/\s/.test(ch) && depth === 0) {
+      if (current) parts.push(current);
+      current = "";
+      continue;
+    }
+    current += ch;
+  }
+  if (current) parts.push(current);
+  return parts;
 }
 
 function extractBalancedObject(

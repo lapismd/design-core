@@ -1,5 +1,5 @@
 import postcss from "postcss";
-import selectorParser from "postcss-selector-parser";
+import { splitCandidates } from "../analysis/variant-extractor.js";
 
 export type CandidateOwnership = {
   candidate: string;
@@ -115,7 +115,7 @@ export function buildButtonOwnership(
   for (const [prop, map] of Object.entries(classMaps)) {
     for (const [value, classString] of Object.entries(map)) {
       const semantic = `${root}[data-${prop}="${value}"]`;
-      for (const candidate of classString.split(/\s+/).filter(Boolean)) {
+      for (const candidate of splitCandidates(classString)) {
         ownership.push({ candidate, selector: semantic });
       }
     }
