@@ -7,7 +7,7 @@
     "registry": "https://shadcn-svelte.com/registry",
     "cliVersion": "1.4.2",
     "item": "alert",
-    "fetchedAt": "2026-07-19T16:31:22.987Z",
+    "fetchedAt": "2026-07-19T16:41:54.319Z",
     "sourceFiles": [
       {
         "path": "src/lib/components/ui/alert/alert-action.svelte",
