@@ -66,12 +66,14 @@
     "vitest": "^4.1.10"
   },
   "exports": {
-    "./shadcn/*": "./src/components/shadcn/*/index.ts",
+    "./shadcn/*": "./src/shared/shadcn/*/index.ts",
     "./forms": "./src/components/forms/index.ts",
     "./forms/core": "./src/components/forms/core.ts",
     "./forms/components/*.svelte": "./src/components/forms/*.svelte",
     "./forms/*.svelte": "./src/components/forms/*.svelte",
     "./forms/FormControlRow.css": "./src/components/forms/FormControlRow.css",
-    "./styles.css": "./src/styles.css"
+    "./styles.css": "./src/styles.css",
+    "./apps/cv": "./src/apps/cv/index.ts",
+    "./apps/beancount": "./src/apps/beancount/index.ts"
   }
 }

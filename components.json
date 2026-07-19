@@ -5,9 +5,9 @@
     "baseColor": "neutral"
   },
   "aliases": {
-    "components": "./src/components",
+    "components": "./src/shared",
     "utils": "./src/lib/utils",
-    "ui": "./src/components/shadcn",
+    "ui": "./src/shared/shadcn",
     "hooks": "./src/lib/hooks",
     "lib": "./src/lib"
   },
