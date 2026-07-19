@@ -80,6 +80,10 @@ async function main() {
           typeof flags.get("component") === "string"
             ? String(flags.get("component"))
             : positionals[0],
+        batch:
+          typeof flags.get("batch") === "string"
+            ? String(flags.get("batch"))
+            : undefined,
         fixture: Boolean(flags.get("fixture")),
       });
       break;
@@ -92,6 +96,7 @@ async function main() {
   pnpm ui:add <component> [--overwrite] [--dry-run] [--keep-worktree] [--skip-visual] [--skip-parity]
   pnpm ui:add:batch <a|b|c|d> [--overwrite] [--dry-run] [--keep-worktree]
   pnpm ui:docs --component <name> [--fixture]
+  pnpm ui:docs --batch <a|b|c|d|all>
   pnpm ui:refresh <component>
   pnpm test:visual:update --component <name>   # requires VISUAL_UPDATE_APPROVED=1
 `);

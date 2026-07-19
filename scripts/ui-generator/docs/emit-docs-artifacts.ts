@@ -1,4 +1,10 @@
-import { existsSync, mkdirSync, unlinkSync, writeFileSync } from "node:fs";
+import {
+  existsSync,
+  mkdirSync,
+  readdirSync,
+  unlinkSync,
+  writeFileSync,
+} from "node:fs";
 import path from "node:path";
 import { rewritePackageImports } from "./rewrite-example.js";
 import type { UpstreamDocs } from "./types.js";
@@ -294,10 +300,20 @@ export function emitDocsArtifacts(args: {
     written.push(legacyExamplesStories);
   }
 
+  const keepSlugs = new Set(examples.map((ex) => `${ex.example.slug}.svelte`));
   for (const ex of examples) {
     const filePath = path.join(examplesDir, `${ex.example.slug}.svelte`);
     writeFileSync(filePath, emitExampleComponent(ex.code));
     written.push(filePath);
+  }
+  // Drop demos that are no longer included (skipped or removed upstream).
+  if (existsSync(examplesDir)) {
+    for (const name of readdirSync(examplesDir)) {
+      if (!name.endsWith(".svelte") || keepSlugs.has(name)) continue;
+      const stale = path.join(examplesDir, name);
+      unlinkSync(stale);
+      written.push(stale);
+    }
   }
 
   // Name sorts after `${pascal}.stories.svelte` so curated stories stay primary.
