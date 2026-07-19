@@ -1,4 +1,4 @@
-import { existsSync, readdirSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import type { UiGeneratorConfig } from "../config.js";
 import { EXIT, GeneratorError } from "../errors.js";
@@ -14,14 +14,22 @@ import {
   type FamilyExtraction,
   type StyleExtraction,
 } from "../analysis/style-extractor.js";
-import { buildPartOwnership, remapCompiledCss } from "../transform/selector-remapper.js";
+import { isMarkerCandidate } from "../analysis/style-sites.js";
+import {
+  buildPartOwnership,
+  remapCompiledCss,
+  remapMarkerSelectors,
+  type MarkerOwnership,
+} from "../transform/selector-remapper.js";
 import {
   emitFamily,
   emitPassthroughFamily,
+  rewritePartSource,
 } from "../transform/family-emitter.js";
 import { runParityHarness } from "../visual/parity-harness.js";
 import { requireRecipe, type ComponentRecipe } from "../recipes/index.js";
 import { writeJson } from "../reports/report.js";
+import { syncUpstreamDocs } from "../docs/sync-upstream-docs.js";
 
 export type ConvertFamilyResult = {
   component: string;
@@ -46,13 +54,26 @@ function listLocalSvelteParts(
     }));
 }
 
-/** Map intake `$lib/...` imports onto this package's relative `src/lib` paths. */
+/** Map intake `$lib/...` imports onto this package's shared shadcn / utils paths. */
 function normalizeIntakeSource(source: string): string {
-  return source
-    .replaceAll('from "$lib/utils.js"', 'from "../../../lib/utils.js"')
-    .replaceAll("from '$lib/utils.js'", "from '../../../lib/utils.js'")
-    .replaceAll('from "$lib/', 'from "../../../lib/')
-    .replaceAll("from '$lib/", "from '../../../lib/");
+  return (
+    source
+      .replaceAll('from "$lib/utils.js"', 'from "../../../lib/utils.js"')
+      .replaceAll("from '$lib/utils.js'", "from '../../../lib/utils.js'")
+      // Cross-family shadcn imports: $lib/components/ui/separator → ../separator
+      .replace(
+        /from\s+["']\$lib\/components\/ui\/([^"']+)["']/g,
+        (_m, rest: string) => `from "../${rest}"`,
+      )
+      // Fallback for other $lib paths
+      .replaceAll('from "$lib/', 'from "../../../lib/')
+      .replaceAll("from '$lib/", "from '../../../lib/")
+      // Repair prior bad rewrites of ui components into src/lib/components/ui
+      .replace(
+        /from\s+["']\.\.\/\.\.\/\.\.\/lib\/components\/ui\/([^"']+)["']/g,
+        (_m, rest: string) => `from "../${rest}"`,
+      )
+  );
 }
 
 function pickParityExtraction(
@@ -117,13 +138,21 @@ export async function convertFamilyInWorktree(args: {
 
   for (const fileName of [...names].sort()) {
     const local = localParts.find((p) => p.fileName === fileName);
-    if (local && looksLikeTailwindSource(local.source)) {
+    const fromIntake = intakeByName.get(fileName);
+    // Prior native conversions may still "look like Tailwind" due to leftover
+    // static utility classes on nested nodes — always prefer fresh intake then.
+    const localAlreadyNative = Boolean(
+      local && /data-ui-component\s*=/.test(local.source),
+    );
+    if (
+      local &&
+      !localAlreadyNative &&
+      looksLikeTailwindSource(local.source)
+    ) {
       files.push(local);
       continue;
     }
-    const fromIntake = intakeByName.get(fileName);
     if (fromIntake && looksLikeTailwindSource(fromIntake)) {
-      // Prefer intake Tailwind when local is already native (re-convert).
       files.push({ fileName, source: normalizeIntakeSource(fromIntake) });
       continue;
     }
@@ -253,15 +282,42 @@ export async function convertFamilyInWorktree(args: {
     themePath,
   );
 
-  const ownership = family.parts.flatMap((p) =>
-    buildPartOwnership(
+  const ownership = family.parts.flatMap((p) => {
+    if (p.sites?.length) {
+      return p.sites.flatMap((site) =>
+        buildPartOwnership(
+          component,
+          site.part,
+          site.baseClasses.filter((c) => !isMarkerCandidate(c)),
+          p.extraction.kind === "tv" ? p.extraction.classMaps : {},
+          {
+            composed: Boolean(site.composedFrom),
+            dataSlot: site.dataSlot,
+          },
+        ),
+      );
+    }
+    return buildPartOwnership(
       component,
       p.part,
-      p.extraction.baseClasses,
+      p.extraction.baseClasses.filter((c) => !isMarkerCandidate(c)),
       p.extraction.classMaps,
+    );
+  });
+  const markerOwnership: MarkerOwnership[] = family.parts.flatMap((p) =>
+    (p.sites ?? []).flatMap((site) =>
+      site.markers.map((marker) => ({
+        marker,
+        selector: site.composedFrom
+          ? site.dataSlot
+            ? `[data-ui-part="${site.part}"][data-slot="${site.dataSlot}"]`
+            : `[data-ui-part="${site.part}"]`
+          : `[data-ui-component="${component}"][data-ui-part="${site.part}"]`,
+      })),
     ),
   );
-  const remappedCss = remapCompiledCss(compiled.css, ownership);
+  let remappedCss = remapCompiledCss(compiled.css, ownership);
+  remappedCss = remapMarkerSelectors(remappedCss, markerOwnership);
   if (!remappedCss.trim()) {
     throw new GeneratorError(
       "Selector remapping produced empty CSS",
@@ -304,6 +360,62 @@ export async function convertFamilyInWorktree(args: {
     provenance,
   });
 
+  // Stamp ownership on local sibling parts that weren't convertible (e.g.
+  // buttonVariants wrappers). Do NOT pull intake supersets — catalogs may be
+  // intentionally smaller than the registry (sidebar).
+  const writtenBasenames = new Set(
+    written.map((f) => path.basename(f)).filter((n) => n.endsWith(".svelte")),
+  );
+  for (const local of localParts) {
+    if (!local.fileName.endsWith(".svelte")) continue;
+    if (writtenBasenames.has(local.fileName)) continue;
+    if (/data-ui-component\s*=/.test(local.source)) continue;
+    const partName = local.fileName.replace(/\.svelte$/, "");
+    let stamped = rewritePartSource({
+      part: {
+        part: partName,
+        fileName: local.fileName,
+        source: local.source,
+        extraction: {
+          kind: "empty",
+          baseClasses: [],
+          axes: [],
+          classMaps: {},
+          allCandidates: [],
+          sourceSnippet: "",
+        },
+        sites: [],
+      },
+      component,
+    });
+    stamped = stamped
+      .replace(
+        /class=\{cn\(\s*buttonVariants\((\{[^}]*\})\s*\)\s*,\s*["']cn-[^"']+["']\s*,\s*className\s*\)\}/g,
+        "class={cn(buttonVariants($1), className)}",
+      )
+      .replace(/class=\{cn\(\s*["']cn-[^"']+["']\s*,\s*className\s*\)\}/g, "class={className}")
+      .replace(/class=\{cn\(\s*["']{2}\s*,\s*className\s*\)\}/g, "class={className}")
+      .replace(/class=\{cn\(\s*className\s*\)\}/g, "class={className}");
+    // Drop unused cn import if no longer referenced
+    if (!/\bcn\s*\(/.test(stamped)) {
+      stamped = stamped.replace(
+        /import\s*\{([^}]*)\}\s*from\s*(["'][^"']*utils\.js["']);?\n?/,
+        (full, inner: string, from: string) => {
+          const parts = inner
+            .split(",")
+            .map((p: string) => p.trim())
+            .filter(Boolean)
+            .filter((p: string) => p !== "cn");
+          if (!parts.length) return "";
+          return `import { ${parts.join(", ")} } from ${from};\n`;
+        },
+      );
+    }
+    const full = path.join(targetAbs, local.fileName);
+    writeFileSync(full, stamped);
+    written.push(full);
+  }
+
   // Forbidden style engines in rewritten parts
   for (const file of written.filter((f) => f.endsWith(".svelte"))) {
     const text = readFileSync(file, "utf8");
@@ -326,7 +438,44 @@ export async function convertFamilyInWorktree(args: {
           EXIT.generation,
         );
       }
+      // Static utility classes should have been extracted (allow cn-* markers only).
+      const staticClass = /class="([^"]*)"/g;
+      let sm: RegExpExecArray | null;
+      while ((sm = staticClass.exec(text))) {
+        const tokens = sm[1]!.split(/\s+/).filter(Boolean);
+        const leftover = tokens.filter(
+          (t) =>
+            !/^cn-[a-z0-9-]+$/i.test(t) &&
+            /\b(flex|bg-|text-|size-|rounded-|absolute|relative|translate|gap-|p-|m-|w-|h-|items-|justify-|shadow-|ring-|border-|overflow-|pointer-events-|shrink-|min-w-|max-w-|whitespace-|dark:|data-|group-)/.test(
+              t,
+            ),
+        );
+        if (leftover.length) {
+          throw new GeneratorError(
+            `Generated ${path.basename(file)} still has static Tailwind utilities: ${leftover.join(", ")}`,
+            EXIT.generation,
+          );
+        }
+      }
     }
+  }
+
+  // Pull published shadcn-svelte docs/examples into Storybook artifacts.
+  try {
+    const docsResult = await syncUpstreamDocs({
+      component,
+      targetDir: targetAbs,
+      storyTitle: recipe.storyTitle,
+      sharedRoot: path.join(worktreePath, config.sharedRoot),
+    });
+    written.push(...docsResult.written);
+    writeJson(path.join(reportDir, `${component}.docs-sync.json`), docsResult);
+  } catch (error) {
+    log.warn(
+      `Upstream docs sync skipped for ${component}: ${
+        error instanceof Error ? error.message : String(error)
+      }`,
+    );
   }
 
   const parityExtraction = pickParityExtraction(family, recipe);

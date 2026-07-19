@@ -71,6 +71,8 @@ export async function runAdd(options: {
   dryRun?: boolean;
   keepWorktree?: boolean;
   skipParity?: boolean;
+  /** Skip Storybook build + Playwright (use when regenerating, then visual-update separately). */
+  skipVisual?: boolean;
 }) {
   const component = options.component?.trim();
   if (!component) {
@@ -141,50 +143,47 @@ export async function runAdd(options: {
       },
     );
 
-    log.step("Running existing visual suite (immutable)");
-    await execa("pnpm", ["build-storybook"], {
-      cwd: worktree.path,
-      stdio: "inherit",
-    });
-    const visual = await execa("pnpm", ["exec", "playwright", "test"], {
-      cwd: worktree.path,
-      reject: false,
-      env: { ...process.env, CI: "1" },
-    });
-    if (visual.exitCode !== 0) {
-      log.warn(
-        `Visual suite failed after converting ${component}; updating snapshots then verifying non-target hashes`,
-      );
-      await execa("pnpm", ["exec", "playwright", "test", "--update-snapshots"], {
+    if (!options.skipVisual) {
+      log.step("Running existing visual suite (immutable — no auto-update)");
+      await execa("pnpm", ["build-storybook"], {
         cwd: worktree.path,
         stdio: "inherit",
-        env: {
-          ...process.env,
-          CI: "1",
-          PLAYWRIGHT_UPDATE_SNAPSHOTS: "1",
-        },
       });
-    }
-
-    const afterSnapshots = buildSnapshotManifest(
-      path.join(worktree.path, config.visual.snapshotDir),
-    );
-    writeSnapshotManifest(
-      path.join(run.reportDir, "snapshot-manifest-after.json"),
-      afterSnapshots,
-    );
-
-    for (const [key, hash] of Object.entries(beforeSnapshots)) {
-      if (isTargetSnapshotKey(key, recipe.snapshotKeyIncludes)) continue;
-      if (afterSnapshots[key] !== hash) {
+      const visual = await execa("pnpm", ["exec", "playwright", "test"], {
+        cwd: worktree.path,
+        reject: false,
+        env: { ...process.env, CI: "1" },
+      });
+      if (visual.exitCode !== 0) {
         throw new GeneratorError(
-          `Non-target snapshot changed during ui:add (${component})`,
+          `Visual suite failed after converting ${component}. Review diffs, then update snapshots explicitly with \`pnpm test:visual:update --component ${component} --approved\` (no auto-update).`,
           EXIT.snapshotIntegrity,
-          key,
+          visual.stderr || visual.stdout || `exit ${visual.exitCode}`,
         );
       }
+
+      const afterSnapshots = buildSnapshotManifest(
+        path.join(worktree.path, config.visual.snapshotDir),
+      );
+      writeSnapshotManifest(
+        path.join(run.reportDir, "snapshot-manifest-after.json"),
+        afterSnapshots,
+      );
+
+      for (const [key, hash] of Object.entries(beforeSnapshots)) {
+        if (isTargetSnapshotKey(key, recipe.snapshotKeyIncludes)) continue;
+        if (afterSnapshots[key] !== hash) {
+          throw new GeneratorError(
+            `Non-target snapshot changed during ui:add (${component})`,
+            EXIT.snapshotIntegrity,
+            key,
+          );
+        }
+      }
+      log.ok("Existing non-target snapshot hashes unchanged");
+    } else {
+      log.warn("Skipping visual suite (--skip-visual); update snapshots explicitly afterward");
     }
-    log.ok("Existing non-target snapshot hashes unchanged");
     void assertSnapshotManifestUnchanged;
 
     await runStorybookVitest(worktree.path, run.reportDir);

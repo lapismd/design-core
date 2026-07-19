@@ -7,7 +7,7 @@
     "registry": "https://shadcn-svelte.com/registry",
     "cliVersion": "1.4.2",
     "item": "dropdown-menu",
-    "fetchedAt": "2026-07-19T16:45:13.518Z",
+    "fetchedAt": "2026-07-19T18:49:59.500Z",
     "sourceFiles": [
       {
         "path": "src/lib/components/ui/dropdown-menu/dropdown-menu-checkbox-group.svelte",

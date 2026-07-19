@@ -16,6 +16,16 @@ export type ParityMarkup = {
   /** CSS selector used when taking the screenshot (defaults to tag). */
   shotSelector?: string;
   viewport?: { width: number; height: number };
+  /**
+   * Inner HTML for the reference (Tailwind) page. Use when the compound has
+   * nested styled parts (thumb, viewport) that must appear in parity shots.
+   */
+  referenceInnerHtml?: string;
+  /**
+   * Inner HTML for the candidate (semantic) page. Should carry data-ui-part
+   * attrs matching converted ownership.
+   */
+  semanticInnerHtml?: string;
 };
 
 export type ComponentRecipe = {

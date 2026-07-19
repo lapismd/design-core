@@ -12,6 +12,12 @@ export type CandidateOwnership = {
   selector: string;
 };
 
+/** Marker class (group/foo, peer) → semantic selector that owned it. */
+export type MarkerOwnership = {
+  marker: string;
+  selector: string;
+};
+
 function parseSemanticNodes(semantic: string): Node[] {
   const nodes: Node[] = [];
   selectorParser((selectors) => {
@@ -103,6 +109,64 @@ export function remapCompiledCss(
 }
 
 /**
+ * Replace leftover `.group\/name` / `.peer` class selectors with the semantic
+ * ownership selector for the element that declared the marker. Required because
+ * marker classes emit no rules of their own but appear in compound selectors
+ * (e.g. group-data-[size=default]/switch:size-4).
+ */
+export function remapMarkerSelectors(
+  css: string,
+  markers: MarkerOwnership[],
+): string {
+  if (!markers.length) return css;
+  const byMarker = new Map<string, string>();
+  for (const m of markers) {
+    if (!byMarker.has(m.marker)) byMarker.set(m.marker, m.selector);
+  }
+
+  const root = postcss.parse(css);
+  root.walkRules((rule) => {
+    const out: string[] = [];
+    for (const selector of rule.selectors) {
+      let result = selector;
+      selectorParser((selectors) => {
+        selectors.each((sel: Selector) => {
+          sel.walkClasses((classNode) => {
+            const value = classNode.value.replace(/\\/g, "");
+            const semantic = byMarker.get(value);
+            if (!semantic) return;
+            const semanticNodes = parseSemanticNodes(semantic);
+            if (!semanticNodes.length) return;
+            let current: Node = classNode;
+            const first = semanticNodes[0]!;
+            classNode.replaceWith(first);
+            current = first;
+            for (const extra of semanticNodes.slice(1)) {
+              current.parent?.insertAfter(current, extra);
+              current = extra;
+            }
+          });
+          result = sel.toString();
+        });
+      }).processSync(selector);
+      out.push(result);
+    }
+    rule.selectors = [...new Set(out)];
+  });
+  return root.toString();
+}
+
+export type PartOwnershipOptions = {
+  /**
+   * Composed hosts keep the child's `data-ui-component`. Selectors must beat the
+   * child's base styles without requiring the parent family component attr.
+   * Prefer `[data-ui-part][data-slot]` when a shared role slot is present.
+   */
+  composed?: boolean;
+  dataSlot?: string | null;
+};
+
+/**
  * Map Tailwind candidates to semantic ownership selectors.
  * Root part may omit data-ui-part when part === component; variant axes become data-* attrs.
  */
@@ -111,11 +175,16 @@ export function buildPartOwnership(
   part: string,
   baseClasses: string[],
   classMaps: Record<string, Record<string, string>>,
+  options: PartOwnershipOptions = {},
 ): CandidateOwnership[] {
   const ownership: CandidateOwnership[] = [];
   // Always include data-ui-part so root utilities (e.g. w-full) do not match child parts
   // that also carry data-ui-component.
-  const root = `[data-ui-component="${component}"][data-ui-part="${part}"]`;
+  const root = options.composed
+    ? options.dataSlot
+      ? `[data-ui-part="${part}"][data-slot="${options.dataSlot}"]`
+      : `[data-ui-part="${part}"]`
+    : `[data-ui-component="${component}"][data-ui-part="${part}"]`;
 
   for (const candidate of baseClasses) {
     ownership.push({ candidate, selector: root });

@@ -5,6 +5,11 @@ import type {
   PartExtraction,
   StyleExtraction,
 } from "../analysis/style-extractor.js";
+import {
+  composedFamilyFromTag,
+  extractStyleSites,
+  type StyleSite,
+} from "../analysis/style-sites.js";
 import { publicTokenName } from "./token-names.js";
 
 function constName(component: string, axis: string): string {
@@ -208,6 +213,232 @@ function rewriteCnClassAttributes(source: string): string {
   return out;
 }
 
+function splitTopLevelArgs(kept: string): string[] {
+  const out: string[] = [];
+  let depth = 0;
+  let inString: '"' | "'" | "`" | null = null;
+  let escaped = false;
+  let start = 0;
+  for (let j = 0; j <= kept.length; j++) {
+    const ch = kept[j] ?? ",";
+    if (j < kept.length) {
+      if (inString) {
+        if (escaped) {
+          escaped = false;
+          continue;
+        }
+        if (ch === "\\") {
+          escaped = true;
+          continue;
+        }
+        if (ch === inString) inString = null;
+        continue;
+      }
+      if (ch === '"' || ch === "'" || ch === "`") {
+        inString = ch;
+        continue;
+      }
+      if (ch === "(" || ch === "{" || ch === "[") depth++;
+      if (ch === ")" || ch === "}" || ch === "]") depth = Math.max(0, depth - 1);
+      if (ch !== "," || depth !== 0) continue;
+    }
+    const arg = kept.slice(start, j).trim();
+    if (arg && !/\w+Variants\s*\(/.test(arg)) out.push(arg);
+    start = j + 1;
+  }
+  return out;
+}
+
+function classReplacementForSite(source: string, site: StyleSite): string {
+  if (site.kind === "cn") {
+    const expr = source.slice(site.attrStart, site.classEnd);
+    const innerMatch = /^class=\{cn\(([\s\S]*)\)\}$/.exec(expr);
+    if (!innerMatch) return "class={undefined}";
+    const kept = stripStringArgsFromCn(innerMatch[1]!);
+    const keptArgs = kept ? splitTopLevelArgs(kept) : [];
+    if (!keptArgs.length) return "class={undefined}";
+    if (keptArgs.length === 1) return `class={${keptArgs[0]}}`;
+    return `class={cn(${keptArgs.join(", ")})}`;
+  }
+  // static / classLit — drop utilities (markers remapped in CSS)
+  return "";
+}
+
+function ownershipPrefix(
+  component: string,
+  site: StyleSite,
+  extraction: StyleExtraction,
+  indent: string,
+  source: string,
+): string {
+  const lines: string[] = [];
+  // Composed hosts (e.g. <Input>) already own data-ui-component; overriding it
+  // drops their base styles (outline-none, focus ring, padding).
+  if (!site.composedFrom) {
+    lines.push(`data-ui-component="${component}"`);
+  }
+  lines.push(`data-ui-part="${site.part}"`);
+  // tv axes only on the primary site for this file
+  if (extraction.kind === "tv") {
+    for (const axis of extraction.axes) {
+      if (new RegExp(`data-${axis.prop}\\s*=`).test(source)) continue;
+      lines.push(`data-${axis.prop}={${axis.prop}}`);
+    }
+  }
+  if (!site.dataSlot) {
+    lines.push(`data-slot="${site.part}"`);
+  }
+  return lines.map((a) => `${indent}${a}`).join("\n") + "\n" + indent;
+}
+
+/**
+ * Strip converted class attrs and inject per-site ownership attributes.
+ * Applies from the end of the file so earlier offsets stay valid.
+ */
+function applyStyleSites(
+  source: string,
+  component: string,
+  sites: StyleSite[],
+  extraction: StyleExtraction,
+): string {
+  if (!sites.length) {
+    return injectDataAttributes(source, component, component, extraction);
+  }
+
+  let out = source;
+  const sorted = [...sites].sort((a, b) => b.attrStart - a.attrStart);
+
+  for (const site of sorted) {
+    const classReplacement = classReplacementForSite(source, site);
+    const indent =
+      out.slice(out.lastIndexOf("\n", site.attrStart) + 1, site.attrStart).match(
+        /([ \t]*)$/,
+      )?.[1] || "  ";
+    const prefix = ownershipPrefix(component, site, extraction, indent, source);
+
+    // Locate data-slot on the full opening tag (may be before or after class=).
+    const tagStart = source.lastIndexOf("<", site.attrStart);
+    let tagEnd = source.indexOf(">", site.attrStart);
+    // Prefer scanning with quote awareness when possible
+    for (let i = tagStart + 1, inStr: '"' | "'" | null = null; i < source.length; i++) {
+      const ch = source[i]!;
+      if (inStr) {
+        if (ch === inStr && source[i - 1] !== "\\") inStr = null;
+        continue;
+      }
+      if (ch === '"' || ch === "'") {
+        inStr = ch;
+        continue;
+      }
+      if (ch === ">") {
+        tagEnd = i;
+        break;
+      }
+    }
+    const fullTag = source.slice(tagStart, tagEnd + 1);
+    const slotInTag = /data-slot=(?:"[^"]*"|'[^']*')/.exec(fullTag);
+
+    if (slotInTag) {
+      // 1) strip/replace class attr
+      out =
+        out.slice(0, site.attrStart) +
+        (classReplacement || "") +
+        out.slice(site.classEnd);
+      // 2) inject ownership before the surviving data-slot on this tag
+      const outTagStart = out.lastIndexOf("<", site.attrStart);
+      let outTagEnd = out.indexOf(">", site.attrStart);
+      for (
+        let i = outTagStart + 1, inStr: '"' | "'" | null = null;
+        i < out.length;
+        i++
+      ) {
+        const ch = out[i]!;
+        if (inStr) {
+          if (ch === inStr && out[i - 1] !== "\\") inStr = null;
+          continue;
+        }
+        if (ch === '"' || ch === "'") {
+          inStr = ch;
+          continue;
+        }
+        if (ch === ">") {
+          outTagEnd = i;
+          break;
+        }
+      }
+      const outTag = out.slice(outTagStart, outTagEnd + 1);
+      const outSlot = /data-slot=(?:"[^"]*"|'[^']*')/.exec(outTag);
+      if (outSlot) {
+        const abs = outTagStart + outSlot.index;
+        const before = out.slice(Math.max(0, abs - 100), abs);
+        if (!before.includes(`data-ui-part="${site.part}"`)) {
+          out = out.slice(0, abs) + prefix + out.slice(abs);
+        }
+      }
+    } else {
+      out =
+        out.slice(0, site.attrStart) +
+        prefix +
+        (classReplacement || "") +
+        out.slice(site.classEnd);
+    }
+  }
+
+  // Stamp remaining data-slot nodes that were not style sites
+  out = out.replace(
+    /(^|\n)([ \t]*)data-slot=(?:"([^"]*)"|'([^']*)')/g,
+    (m, lead: string, indent: string, a: string, b: string, offset: number) => {
+      const slot = a ?? b;
+      const preceding = out.slice(Math.max(0, offset - 200), offset);
+      // Already owned (including composed hosts that only stamp data-ui-part)
+      if (
+        preceding.includes("data-ui-part=") ||
+        /data-ui-component="[^"]*"\s*$/.test(preceding.trimEnd())
+      ) {
+        return m;
+      }
+      // Composed family hosts keep the child's data-ui-component
+      if (composedFamilyFromTag(out, offset)) {
+        return `${lead}${indent}data-ui-part="${slot}"\n${indent}data-slot="${slot}"`;
+      }
+      return `${lead}${indent}data-ui-component="${component}"\n${indent}data-ui-part="${slot}"\n${indent}data-slot="${slot}"`;
+    },
+  );
+
+  // Collapse accidental duplicate ownership attrs on the same element
+  out = out.replace(
+    /(\s*data-ui-component="[^"]*"\s*\n(?:\s*data-ui-part="[^"]*"\s*\n)?){2,}/g,
+    (block) => {
+      const indent = block.match(/\n([ \t]*)data-ui-component/)?.[1] ?? "\t";
+      const part =
+        [...block.matchAll(/data-ui-part="([^"]*)"/g)].pop()?.[1] ?? component;
+      return `\n${indent}data-ui-component="${component}"\n${indent}data-ui-part="${part}"\n`;
+    },
+  );
+
+  // Prefer the semantic data-slot when a synthetic anon slot was also injected.
+  out = out.replace(
+    /data-slot="([^"]*-anon-\d+)"\s*\n(\s*)data-slot="([^"]+)"/g,
+    (_m, _anon: string, indent: string, real: string) =>
+      `data-slot="${real}"\n${indent}`,
+  );
+  out = out.replace(
+    /data-slot="([^"]+)"\s*\n(\s*)data-slot="([^"]*-anon-\d+)"/g,
+    (_m, real: string, indent: string) => `data-slot="${real}"\n${indent}`,
+  );
+  // If both remain on one line-ish block, drop anon when a non-anon sibling exists
+  out = out.replace(
+    /(data-ui-part=")([^"]*-anon-\d+)("[\s\S]{0,120}?data-slot=")([^"]+)(")/g,
+    (full, p1, anonPart, mid, slot, end) => {
+      if (slot.includes("-anon-")) return full;
+      // Align part name with the real slot when we duplicated
+      return `${p1}${slot}${mid}${slot}${end}`;
+    },
+  );
+
+  return out;
+}
+
 function removeTailwindVariantsImport(source: string): string {
   return source
     .replace(
@@ -350,6 +581,26 @@ ${propTypes}
 `;
 
   return source.slice(0, start) + replacement + source.slice(after);
+}
+
+/** Stamp part (+ axes) without overriding a composed child's data-ui-component. */
+function injectComposedPartAttributes(
+  source: string,
+  part: string,
+  extraction: StyleExtraction,
+): string {
+  if (source.includes(`data-ui-part="${part}"`)) return source;
+  const attrs: string[] = [`data-ui-part="${part}"`];
+  for (const axis of extraction.axes) {
+    if (new RegExp(`data-${axis.prop}\\s*=`).test(source)) continue;
+    attrs.push(`data-${axis.prop}={${axis.prop}}`);
+  }
+  const absClass = source.indexOf("class={");
+  if (absClass < 0) return source;
+  const lineStart = source.lastIndexOf("\n", absClass) + 1;
+  const indent = source.slice(lineStart, absClass).match(/^[ \t]*/)?.[0] ?? "\t";
+  const prefix = attrs.map((a) => `${indent}${a}`).join("\n") + "\n" + indent;
+  return source.slice(0, absClass) + prefix + source.slice(absClass);
 }
 
 function injectDataAttributes(
@@ -504,17 +755,44 @@ export function rewritePartSource(args: {
     part.extraction,
   );
   source = rewriteCrossModuleVariantProps(source);
-  source = rewriteCnClassAttributes(source);
-  source = injectDataAttributes(
-    source,
-    component,
-    part.part,
-    part.extraction,
-  );
+
+  if ((part.sites?.length ?? 0) > 0 && part.extraction.kind !== "tv") {
+    // Recompute sites on the cleaned source so offsets match.
+    const sites = extractStyleSites(source, component, part.part);
+    source = applyStyleSites(source, component, sites, part.extraction);
+  } else if ((part.sites?.length ?? 0) > 0 && part.extraction.kind === "tv") {
+    // tv on a composed host (e.g. InputGroup Button): strip classes, stamp
+    // part/slot without overriding the child's data-ui-component.
+    source = rewriteCnClassAttributes(source);
+    const site = part.sites![0]!;
+    const composedFrom =
+      site.composedFrom ??
+      composedFamilyFromTag(source, source.indexOf("class={"));
+    if (composedFrom) {
+      source = injectComposedPartAttributes(source, part.part, part.extraction);
+    } else {
+      source = injectDataAttributes(
+        source,
+        component,
+        part.part,
+        part.extraction,
+      );
+    }
+  } else {
+    source = rewriteCnClassAttributes(source);
+    source = injectDataAttributes(
+      source,
+      component,
+      part.part,
+      part.extraction,
+    );
+  }
+
   source = ensureCnImport(source);
 
-  // Clean class={undefined}
+  // Clean class={undefined} and leftover empty class attrs
   source = source.replace(/\s*class=\{undefined\}/g, "");
+  source = source.replace(/\s*class=""/g, "");
 
   if (injectCss?.trim()) {
     source = injectStyleBlock(source, injectCss);
@@ -577,6 +855,7 @@ export function emitPassthroughFamily(args: {
         fileName: part.fileName,
         source: part.source,
         extraction,
+        sites: [],
       },
       component,
     });

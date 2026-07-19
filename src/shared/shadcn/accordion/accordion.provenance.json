@@ -7,7 +7,7 @@
     "registry": "https://shadcn-svelte.com/registry",
     "cliVersion": "1.4.2",
     "item": "accordion",
-    "fetchedAt": "2026-07-19T16:37:15.919Z",
+    "fetchedAt": "2026-07-19T18:49:02.491Z",
     "sourceFiles": [
       {
         "path": "src/lib/components/ui/accordion/accordion-content.svelte",

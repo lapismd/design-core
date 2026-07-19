@@ -56,8 +56,39 @@ test.describe("Storybook visual baselines", () => {
           await document.fonts.ready;
         }
       });
-      // Allow one frame for layout after fonts.
-      await page.waitForTimeout(50);
+
+      // Wait until Storybook is settled; open-menu stories must show the portal.
+      await page
+        .waitForFunction(
+          (id) => {
+            const preparing = document.querySelector(
+              ".sb-show-preparing-story, .sb-show-preparing-docs",
+            );
+            if (preparing) return false;
+            if (id.includes("open-menu") || id.includes("--open-")) {
+              return Boolean(
+                document.querySelector(
+                  '[role="listbox"], [role="menu"], [data-state="open"]',
+                ),
+              );
+            }
+            if (id.includes("focused")) {
+              return Boolean(
+                document.querySelector(
+                  ':focus-visible, [data-ui-part="input-group"]:has([data-slot="input-group-control"]:focus-visible)',
+                ),
+              );
+            }
+            return true;
+          },
+          storyId,
+          { timeout: 5000 },
+        )
+        .catch(() => {
+          /* stories without overlays still screenshot */
+        });
+
+      await page.waitForTimeout(100);
 
       await expect(page).toHaveScreenshot(`${storyId}.png`, {
         fullPage: true,

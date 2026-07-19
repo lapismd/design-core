@@ -7,7 +7,7 @@
     "registry": "https://shadcn-svelte.com/registry",
     "cliVersion": "1.4.2",
     "item": "input-group",
-    "fetchedAt": "2026-07-19T18:08:52.142Z",
+    "fetchedAt": "2026-07-19T19:07:31.121Z",
     "sourceFiles": [
       {
         "path": "src/lib/components/ui/input-group/index.ts",
@@ -36,6 +36,31 @@
       {
         "path": "src/lib/components/ui/input-group/input-group.svelte",
         "sha256": "9dea891a004765216352b2cfbd572c769a51ea9b102c2587102ca78223fa5f64"
+      }
+    ],
+    "docsUrl": "https://shadcn-svelte.com/docs/components/input-group.md",
+    "docsFetchedAt": "2026-07-19T19:50:10.597Z",
+    "docsSha256": "c17e3c9fb3d5e81c5c597ad2be1c32765b9c66bad2436bbcb52313c1dd7a75c4",
+    "examplesIncluded": [
+      "Icon",
+      "Text",
+      "Tooltip",
+      "Textarea",
+      "Spinner",
+      "Label",
+      "Dropdown",
+      "Custom Input"
+    ],
+    "examplesSkipped": [
+      {
+        "name": "Button",
+        "reason": "unsupported-hook",
+        "detail": "Example depends on a catalog-unsupported $lib hook"
+      },
+      {
+        "name": "Button Group",
+        "reason": "missing-family",
+        "detail": "Catalog is missing family \"button-group\""
       }
     ]
   },

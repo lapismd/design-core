@@ -10,7 +10,7 @@
       docs: {
         description: {
           component:
-            "Input with leading/trailing addons for units and actions.",
+            "Display additional information or actions to an input or textarea. Upstream example variations are adapted from the [shadcn-svelte Input Group docs](https://shadcn-svelte.com/docs/components/input-group.md).",
         },
       },
     },
@@ -37,6 +37,26 @@
         <InputGroup.Input aria-label="Amount" bind:value={amount} />
       </InputGroup.Root>
       <output class="text-muted-foreground text-sm">{amount}</output>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Focused control"
+  tags={["visual-state"]}
+  play={async ({ canvas }) => {
+    const input = canvas.getByLabelText("Amount");
+    await userEvent.click(input);
+    await userEvent.keyboard("1");
+    await expect(input).toHaveFocus();
+  }}
+>
+  {#snippet template()}
+    <div class="flex max-w-sm flex-col gap-2 p-4">
+      <InputGroup.Root>
+        <InputGroup.Addon>USD</InputGroup.Addon>
+        <InputGroup.Input aria-label="Amount" value="120" />
+      </InputGroup.Root>
     </div>
   {/snippet}
 </Story>

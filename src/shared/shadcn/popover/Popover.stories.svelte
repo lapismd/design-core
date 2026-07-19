@@ -1,6 +1,6 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, userEvent } from "storybook/test";
+  import { expect, userEvent, within } from "storybook/test";
   import { Button } from "../button/index.js";
   import * as Popover from "./index.js";
 
@@ -22,8 +22,10 @@
   let open = $state(false);
 </script>
 
+<!-- Interaction story first so vitest doesn't inherit an open portal from the visual story. -->
 <Story
   name="Opens a panel"
+  tags={["skip-visual"]}
   play={async ({ canvas }) => {
     const trigger = canvas.getByRole("button", { name: "Filters" });
     await userEvent.click(trigger);
@@ -48,6 +50,32 @@
       <output class="text-muted-foreground text-sm">
         {open ? "open" : "closed"}
       </output>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Open panel"
+  tags={["visual-state"]}
+  play={async ({ canvas }) => {
+    await userEvent.click(canvas.getByRole("button", { name: "Filters" }));
+    await expect(
+      within(document.body).getByText("Active filters"),
+    ).toBeVisible();
+  }}
+>
+  {#snippet template()}
+    <div class="flex flex-col gap-3 p-4">
+      <Popover.Root>
+        <Popover.Trigger>
+          {#snippet child({ props })}
+            <Button {...props} variant="outline">Filters</Button>
+          {/snippet}
+        </Popover.Trigger>
+        <Popover.Content class="w-56 p-3 text-sm"
+          >Active filters</Popover.Content
+        >
+      </Popover.Root>
     </div>
   {/snippet}
 </Story>

@@ -1,6 +1,5 @@
 <script lang="ts">
   import { Button, type ButtonProps } from "../button/index.js";
-  import { cn } from "../../../lib/utils.js";
 
   let {
     ref = $bindable(null),
@@ -14,10 +13,12 @@
 
 <Button
   bind:ref
+  data-ui-component="sidebar"
+  data-ui-part="sidebar-trigger"
   data-slot="sidebar-trigger"
   {variant}
   {size}
-  class={cn(className)}
+  class={className}
   {...restProps}
 >
   {@render children?.()}

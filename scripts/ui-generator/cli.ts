@@ -7,6 +7,7 @@ import { runInspect } from "./pipeline/inspect.js";
 import { runAdd } from "./pipeline/add.js";
 import { runBatch } from "./pipeline/batch.js";
 import { runRefresh } from "./pipeline/refresh.js";
+import { runDocsSync } from "./pipeline/docs.js";
 
 function parseArgs(argv: string[]) {
   const [command, ...rest] = argv;
@@ -58,6 +59,7 @@ async function main() {
         dryRun: Boolean(flags.get("dry-run")),
         keepWorktree: Boolean(flags.get("keep-worktree")),
         skipParity: Boolean(flags.get("skip-parity")),
+        skipVisual: Boolean(flags.get("skip-visual")),
       });
       break;
     case "add:batch":
@@ -72,14 +74,24 @@ async function main() {
     case "refresh":
       await runRefresh();
       break;
+    case "docs":
+      await runDocsSync({
+        component:
+          typeof flags.get("component") === "string"
+            ? String(flags.get("component"))
+            : positionals[0],
+        fixture: Boolean(flags.get("fixture")),
+      });
+      break;
     case undefined:
     case "help":
     case "--help":
       console.log(`Usage:
   pnpm ui:doctor
   pnpm ui:inspect <component>
-  pnpm ui:add <component> [--overwrite] [--dry-run] [--keep-worktree]
+  pnpm ui:add <component> [--overwrite] [--dry-run] [--keep-worktree] [--skip-visual] [--skip-parity]
   pnpm ui:add:batch <a|b|c|d> [--overwrite] [--dry-run] [--keep-worktree]
+  pnpm ui:docs --component <name> [--fixture]
   pnpm ui:refresh <component>
   pnpm test:visual:update --component <name>   # requires VISUAL_UPDATE_APPROVED=1
 `);

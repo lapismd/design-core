@@ -168,11 +168,27 @@ const recipes: Record<string, ComponentRecipe> = {
     attrs: { role: "alert", "data-slot": "alert" },
     shotSelector: '[data-ui-component="alert"]',
   }),
-  switch: lightCompound("switch", "Shadcn/Forms/Switch", {
-    tag: "button",
-    attrs: { type: "button", role: "switch", "data-slot": "switch" },
-    shotSelector: '[data-ui-component="switch"]',
-  }),
+  switch: {
+    ...lightCompound("switch", "Shadcn/Forms/Switch", {
+      tag: "button",
+      attrs: {
+        type: "button",
+        role: "switch",
+        "data-slot": "switch",
+        "data-state": "checked",
+        "data-checked": "",
+        "data-size": "default",
+      },
+      shotSelector: '[data-ui-component="switch"][data-ui-part="switch"]',
+      // Thumb must be present — root-only parity hid the group-data sizing bug.
+      referenceInnerHtml:
+        '<span data-slot="switch-thumb" class="bg-background pointer-events-none block rounded-full ring-0 group-data-[size=default]/switch:size-4 group-data-[size=default]/switch:data-checked:translate-x-[calc(100%-2px)]"></span>',
+      semanticInnerHtml:
+        '<span data-ui-component="switch" data-ui-part="switch-thumb" data-slot="switch-thumb"></span>',
+    }),
+    // Compound thumb + dark group-data remaps still anti-alias a bit.
+    maxDiffPixels: 300,
+  },
   toggle: lightCompound("toggle", "Shadcn/Actions/Toggle", {
     tag: "button",
     text: "Toggle",
@@ -248,8 +264,18 @@ const recipes: Record<string, ComponentRecipe> = {
   select: portal("select", "Shadcn/Forms/Select", {
     tag: "div",
     text: "Option",
-    attrs: { role: "listbox", "data-slot": "select-content" },
+    attrs: {
+      role: "listbox",
+      "data-slot": "select-content",
+      "data-state": "open",
+      style: "position:relative",
+    },
     shotSelector: '[data-ui-part="select-content"]',
+    // Viewport sizing must not be attributed to content.
+    referenceInnerHtml:
+      '<div data-slot="select-viewport" class="h-(--bits-select-anchor-height) w-full min-w-(--bits-select-anchor-width) scroll-my-1" style="--bits-select-anchor-height:72px;--bits-select-anchor-width:160px">Option</div>',
+    semanticInnerHtml:
+      '<div data-ui-component="select" data-ui-part="select-viewport" data-slot="select-viewport" style="--bits-select-anchor-height:72px;--bits-select-anchor-width:160px">Option</div>',
   }),
   command: portal("command", "Shadcn/Forms/Command", {
     tag: "div",

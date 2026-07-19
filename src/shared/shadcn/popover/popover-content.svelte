@@ -1,32 +1,32 @@
 <script lang="ts">
-  import { Popover as PopoverPrimitive } from "bits-ui";
-  import PopoverPortal from "./popover-portal.svelte";
-  import { type WithoutChildrenOrChild } from "../../../lib/utils.js";
-  import type { ComponentProps } from "svelte";
+	import { Popover as PopoverPrimitive } from "bits-ui";
+	import PopoverPortal from "./popover-portal.svelte";
+	import { type WithoutChildrenOrChild } from "../../../lib/utils.js";
+	import type { ComponentProps } from "svelte";
 
-  let {
-    ref = $bindable(null),
-    class: className,
-    sideOffset = 4,
-    align = "center",
-    portalProps,
-    ...restProps
-  }: PopoverPrimitive.ContentProps & {
-    portalProps?: WithoutChildrenOrChild<ComponentProps<typeof PopoverPortal>>;
-  } = $props();
+	let {
+		ref = $bindable(null),
+		class: className,
+		sideOffset = 4,
+		align = "center",
+		portalProps,
+		...restProps
+	}: PopoverPrimitive.ContentProps & {
+		portalProps?: WithoutChildrenOrChild<ComponentProps<typeof PopoverPortal>>;
+	} = $props();
 </script>
 
 <PopoverPortal {...portalProps}>
-  <PopoverPrimitive.Content
-    bind:ref
-    data-ui-component="popover"
-    data-ui-part="popover-content"
-        data-slot="popover-content"
-    {sideOffset}
-    {align}
-    class={className}
-    {...restProps}
-  />
+	<PopoverPrimitive.Content
+		bind:ref
+				data-ui-component="popover"
+		data-ui-part="popover-content"
+		data-slot="popover-content"
+		{sideOffset}
+		{align}
+		class={className}
+		{...restProps}
+	/>
 </PopoverPortal>
 
 <style>

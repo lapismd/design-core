@@ -7,7 +7,7 @@
     "registry": "https://shadcn-svelte.com/registry",
     "cliVersion": "1.4.2",
     "item": "popover",
-    "fetchedAt": "2026-07-19T16:45:07.002Z",
+    "fetchedAt": "2026-07-19T18:50:06.128Z",
     "sourceFiles": [
       {
         "path": "src/lib/components/ui/popover/index.ts",

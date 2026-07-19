@@ -117,7 +117,22 @@ function buildElement(
   if (tag === "svg") {
     return `<${tag} ${common} ${classAttr}><circle cx="12" cy="12" r="10" fill="currentColor" /></${tag}>`;
   }
-  return `<${tag} ${common} ${classAttr}>${text}</${tag}>`;
+  const inner = semantic
+    ? (recipe.parity.semanticInnerHtml ?? text)
+    : (recipe.parity.referenceInnerHtml ?? text);
+  // Reference compound roots that use group-* child variants need the marker class.
+  const markerClass =
+    !semantic && recipe.parity.referenceInnerHtml?.includes("group-data-")
+      ? 'class="group/switch"'
+      : classAttr;
+  const refClass =
+    !semantic && recipe.parity.referenceInnerHtml?.includes("group-data-")
+      ? className
+        ? `class="group/switch ${className}"`
+        : 'class="group/switch"'
+      : classAttr;
+  void markerClass;
+  return `<${tag} ${common} ${refClass}>${inner}</${tag}>`;
 }
 
 function buildPages(args: {
@@ -194,7 +209,10 @@ async function shot(
     if (document.fonts?.ready) await document.fonts.ready;
   });
   const target = page.locator("[data-parity-root]").first();
-  await target.waitFor({ state: "visible" });
+  // Compound fixtures can report as "hidden" when nested parts size the box;
+  // attached is enough — screenshot still captures the painted pixels.
+  await target.waitFor({ state: "attached" });
+  await page.waitForTimeout(50);
   const buffer = await target.screenshot({ animations: "disabled" });
   await page.close();
   return buffer;

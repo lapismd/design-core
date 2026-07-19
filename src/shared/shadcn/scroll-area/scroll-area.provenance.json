@@ -7,7 +7,7 @@
     "registry": "https://shadcn-svelte.com/registry",
     "cliVersion": "1.4.2",
     "item": "scroll-area",
-    "fetchedAt": "2026-07-19T18:08:56.435Z",
+    "fetchedAt": "2026-07-19T18:49:09.498Z",
     "sourceFiles": [
       {
         "path": "src/lib/components/ui/scroll-area/index.ts",

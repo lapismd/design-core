@@ -7,7 +7,7 @@
     "registry": "https://shadcn-svelte.com/registry",
     "cliVersion": "1.4.2",
     "item": "field",
-    "fetchedAt": "2026-07-19T18:08:48.617Z",
+    "fetchedAt": "2026-07-19T18:50:01.505Z",
     "sourceFiles": [
       {
         "path": "src/lib/components/ui/field/field-content.svelte",

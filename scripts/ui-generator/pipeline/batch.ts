@@ -115,18 +115,11 @@ export async function runBatch(options: {
       env: { ...process.env, CI: "1" },
     });
     if (visual.exitCode !== 0) {
-      log.warn(
-        "Visual suite failed after batch conversion; updating snapshots then verifying non-target hashes",
+      throw new GeneratorError(
+        "Visual suite failed after batch conversion. Review diffs, then update snapshots explicitly with `pnpm test:visual:update --component <name> --approved` (no auto-update).",
+        EXIT.snapshotIntegrity,
+        visual.stderr || visual.stdout || `exit ${visual.exitCode}`,
       );
-      await execa("pnpm", ["exec", "playwright", "test", "--update-snapshots"], {
-        cwd: worktree.path,
-        stdio: "inherit",
-        env: {
-          ...process.env,
-          CI: "1",
-          PLAYWRIGHT_UPDATE_SNAPSHOTS: "1",
-        },
-      });
     }
 
     const afterSnapshots = buildSnapshotManifest(

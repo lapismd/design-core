@@ -21,7 +21,20 @@
 </script>
 
 <Story
+  name="Default"
+  tags={["visual-state"]}
+>
+  {#snippet template()}
+    <div class="flex items-center gap-3">
+      <Switch checked={true} aria-label="Enable notifications" />
+      <span class="text-muted-foreground text-sm">Notifications enabled</span>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
   name="Changes a boolean setting"
+  tags={["skip-visual"]}
   play={async ({ canvas }) => {
     const toggle = canvas.getByRole("switch", { name: "Enable notifications" });
     await expect(toggle).toBeChecked();

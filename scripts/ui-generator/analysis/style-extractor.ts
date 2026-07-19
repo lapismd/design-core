@@ -1,5 +1,11 @@
 import { EXIT, GeneratorError } from "../errors.js";
 import {
+  composedFamilyFromTag,
+  extractStyleSites,
+  mergeSitesToExtraction,
+  type StyleSite,
+} from "./style-sites.js";
+import {
   extractTvConfig,
   splitCandidates,
   type TvExtraction,
@@ -17,7 +23,11 @@ export type PartExtraction = {
   fileName: string;
   source: string;
   extraction: StyleExtraction;
+  /** Per-element style sites (cn / static). Empty for tv-only parts. */
+  sites: StyleSite[];
 };
+
+export type { StyleSite };
 
 export type FamilyExtraction = {
   component: string;
@@ -51,16 +61,18 @@ function assertNoDynamicClassTemplates(source: string) {
   }
 }
 
+const UTILITY_RE =
+  /\b(flex|inline-flex|grid|bg-|text-|border-|rounded-|h-\d|w-|px-|py-|gap-|shadow-|animate-|size-\d|shrink-0|items-|justify-|overflow-|ring-|outline-|font-|leading-|tracking-|whitespace-|min-w-|max-w-|opacity-|pointer-events-|cursor-|transition-|absolute|relative|fixed|sticky|inset-|top-|right-|bottom-|left-|z-|p-\d|m-\d|dark:|data-\[|aria-|focus-visible:|hover:|disabled:|placeholder:|file:)/;
+
 /** True when source still looks like a Tailwind/tv style engine component. */
 export function looksLikeTailwindSource(source: string): boolean {
   if (/\btv\s*\(/.test(source)) return true;
   if (/from\s+["']tailwind-variants["']/.test(source)) return true;
-  if (!/class=\{cn\(/.test(source) && !/class=\{["'`]/.test(source)) {
-    return false;
-  }
-  return /\b(flex|inline-flex|grid|bg-|text-|border-|rounded-|h-\d|w-|px-|py-|gap-|shadow-|animate-|size-\d|shrink-0|items-|justify-|overflow-|ring-|outline-|font-|leading-|tracking-|whitespace-|min-w-|max-w-|opacity-|pointer-events-|cursor-|transition-|absolute|relative|fixed|sticky|inset-|top-|right-|bottom-|left-|z-|p-\d|m-\d|dark:|data-\[|aria-|focus-visible:|hover:|disabled:|placeholder:|file:)/.test(
-    source,
-  );
+  if (/class=\{cn\(/.test(source) && UTILITY_RE.test(source)) return true;
+  if (/class=\{["'`]/.test(source) && UTILITY_RE.test(source)) return true;
+  // Static utility class attributes (e.g. Switch thumb) still need conversion.
+  if (/class="[^"]*"/.test(source) && UTILITY_RE.test(source)) return true;
+  return false;
 }
 
 /**
@@ -102,6 +114,16 @@ export function extractCnClasses(source: string): StyleExtraction {
   let lit: RegExpExecArray | null;
   while ((lit = classLitRe.exec(source))) {
     classes.push(...splitCandidates(lit[2]!));
+  }
+
+  // Static class="..." utility lists (nested thumbs, indicators, etc.)
+  const staticRe = /class="([^"]*)"/g;
+  let st: RegExpExecArray | null;
+  while ((st = staticRe.exec(source))) {
+    const tokens = splitCandidates(st[1]!);
+    if (tokens.some((t) => UTILITY_RE.test(t))) {
+      classes.push(...tokens);
+    }
   }
 
   const unique = [...new Set(classes)];
@@ -182,12 +204,54 @@ export function extractFamilyFromFiles(
 
   for (const file of files) {
     const part = file.fileName.replace(/\.svelte$/, "");
-    const extraction = extractStyleFromSource(file.source);
+    let extraction = extractStyleFromSource(file.source);
+    let sites: StyleSite[] = [];
+
+    if (extraction.kind !== "tv") {
+      sites = extractStyleSites(file.source, component, part);
+      if (sites.length) {
+        const merged = mergeSitesToExtraction(sites);
+        extraction = {
+          kind: merged.baseClasses.length || merged.markers.length ? "cn" : "empty",
+          baseClasses: merged.baseClasses,
+          axes: [],
+          classMaps: {},
+          allCandidates: merged.allCandidates,
+          sourceSnippet: merged.allCandidates.join(" "),
+        };
+      }
+    } else {
+      // tv files: single ownership site on the file part
+      const classIdx = file.source.indexOf("class={");
+      const composedFrom =
+        classIdx >= 0
+          ? composedFamilyFromTag(file.source, classIdx)
+          : null;
+      const slotMatch = /data-slot=(?:"([^"]*)"|'([^']*)')/.exec(
+        file.source,
+      );
+      sites = [
+        {
+          part,
+          dataSlot: slotMatch?.[1] ?? slotMatch?.[2] ?? null,
+          kind: "cn",
+          baseClasses: extraction.baseClasses,
+          allCandidates: extraction.allCandidates,
+          markers: [],
+          composedFrom,
+          classIndex: classIdx >= 0 ? classIdx : 0,
+          classEnd: 0,
+          attrStart: classIdx >= 0 ? classIdx : 0,
+        },
+      ];
+    }
+
     parts.push({
       part,
       fileName: file.fileName,
       source: file.source,
       extraction,
+      sites,
     });
     for (const c of extraction.allCandidates) all.add(c);
   }

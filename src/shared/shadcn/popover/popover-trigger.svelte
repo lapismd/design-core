@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { cn } from "../../../lib/utils.js";
   import { Popover as PopoverPrimitive } from "bits-ui";
 
   let {
@@ -11,7 +10,9 @@
 
 <PopoverPrimitive.Trigger
   bind:ref
+  data-ui-component="popover"
+  data-ui-part="popover-trigger"
   data-slot="popover-trigger"
-  class={cn("", className)}
+  class={className}
   {...restProps}
 />

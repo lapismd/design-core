@@ -7,7 +7,7 @@
     "registry": "https://shadcn-svelte.com/registry",
     "cliVersion": "1.4.2",
     "item": "tooltip",
-    "fetchedAt": "2026-07-19T16:45:04.512Z",
+    "fetchedAt": "2026-07-19T18:50:23.025Z",
     "sourceFiles": [
       {
         "path": "src/lib/components/ui/tooltip/index.ts",
