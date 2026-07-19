@@ -81,7 +81,17 @@
         "path": "src/lib/components/ui/dropdown-menu/index.ts",
         "sha256": "02354b1d65c9862b678ebc8d247860c418478f7b074af42bd23c10272aefc7e4"
       }
-    ]
+    ],
+    "docsUrl": "https://shadcn-svelte.com/docs/components/dropdown-menu.md",
+    "docsFetchedAt": "2026-07-19T20:20:21.154Z",
+    "docsSha256": "e0fc5c351475269e163047a3466c5a5703a4ae60375dcd4911f71e9277d60141",
+    "examplesIncluded": [
+      "Preview",
+      "Checkboxes",
+      "Radio Group",
+      "Dialog"
+    ],
+    "examplesSkipped": []
   },
   "converter": {
     "version": "2.0.0",

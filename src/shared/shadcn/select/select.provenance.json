@@ -57,7 +57,15 @@
         "path": "src/lib/components/ui/select/select.svelte",
         "sha256": "4a7062d01d4cd23edfb5667f3da7a829626c169dff46846d713af524ebf30704"
       }
-    ]
+    ],
+    "docsUrl": "https://shadcn-svelte.com/docs/components/select.md",
+    "docsFetchedAt": "2026-07-19T20:20:21.191Z",
+    "docsSha256": "73684c4bfd491c8afa58c54b16a2edc036d5b1ae163b882f00011946b1e8ae54",
+    "examplesIncluded": [
+      "Preview",
+      "Scrollable"
+    ],
+    "examplesSkipped": []
   },
   "converter": {
     "version": "2.0.0",

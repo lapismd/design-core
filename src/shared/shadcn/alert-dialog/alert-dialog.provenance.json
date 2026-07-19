@@ -61,7 +61,14 @@
         "path": "src/lib/components/ui/alert-dialog/index.ts",
         "sha256": "7b5ed28b90d1849a2fb8d425ba43bd0fc7607e3ec1ba06ba599e6ea3f7f4e755"
       }
-    ]
+    ],
+    "docsUrl": "https://shadcn-svelte.com/docs/components/alert-dialog.md",
+    "docsFetchedAt": "2026-07-19T20:20:21.119Z",
+    "docsSha256": "7e46a4163db48ff1209e6a4b2f7586778d04fc233202b9c17b1ac37996e9f3f3",
+    "examplesIncluded": [
+      "Preview"
+    ],
+    "examplesSkipped": []
   },
   "converter": {
     "version": "2.0.0",

@@ -53,7 +53,15 @@
         "path": "src/lib/components/ui/dialog/index.ts",
         "sha256": "9f5e95e83b0752b0795a21237de3fe2eed0f25c7d4d9eef528c7b321c84b7a0e"
       }
-    ]
+    ],
+    "docsUrl": "https://shadcn-svelte.com/docs/components/dialog.md",
+    "docsFetchedAt": "2026-07-19T20:20:21.079Z",
+    "docsSha256": "40d282a74c0701f08c673ef8d3fd2b9e4f81d3900ac88ae6c553517cd72ed1f8",
+    "examplesIncluded": [
+      "Preview",
+      "Custom close button"
+    ],
+    "examplesSkipped": []
   },
   "converter": {
     "version": "2.0.0",

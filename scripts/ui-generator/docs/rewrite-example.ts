@@ -16,6 +16,12 @@ export const TABLER_TO_LUCIDE: Record<string, string> = {
   refresh: "refresh-cw",
 };
 
+function familyImportSpec(component: string, family: string): string {
+  return family === component
+    ? `"./index.js"`
+    : `"../${family}/index.js"`;
+}
+
 /** Rewrite $lib UI imports + known tabler icons inside markdown/code. */
 export function rewriteCatalogImports(
   source: string,
@@ -23,13 +29,12 @@ export function rewriteCatalogImports(
 ): string {
   let code = source.replace(
     /from\s+["']\$lib\/components\/ui\/([a-z][a-z0-9-]*)(?:\/index\.js)?["']/g,
-    (_m, family: string) => {
-      const spec =
-        family === component
-          ? `"./index.js"`
-          : `"../${family}/index.js"`;
-      return `from ${spec}`;
-    },
+    (_m, family: string) => `from ${familyImportSpec(component, family)}`,
+  );
+  // Upstream LLM pages sometimes use site-relative `../ui/<family>` imports.
+  code = code.replace(
+    /from\s+["']\.\.\/ui\/([a-z][a-z0-9-]*)(?:\/index\.js)?["']/g,
+    (_m, family: string) => `from ${familyImportSpec(component, family)}`,
   );
   // examples/*.svelte → src/lib/utils (four levels up from family/examples)
   code = code.replace(
@@ -67,6 +72,10 @@ export function rewritePackageImports(
     /from\s+["']\$lib\/components\/ui\/([a-z][a-z0-9-]*)(?:\/index\.js)?["']/g,
     (_m, family: string) => `from "@stevejuma/ui/shadcn/${family}"`,
   );
+  code = code.replace(
+    /from\s+["']\.\.\/ui\/([a-z][a-z0-9-]*)(?:\/index\.js)?["']/g,
+    (_m, family: string) => `from "@stevejuma/ui/shadcn/${family}"`,
+  );
   return code;
 }
 
@@ -75,11 +84,15 @@ const UNSUPPORTED_IMPORT_RE =
 
 function extractUiFamilies(code: string): string[] {
   const families = new Set<string>();
-  const re =
-    /\$lib\/components\/ui\/([a-z][a-z0-9-]*)(?:\/index\.js)?/g;
-  let match: RegExpExecArray | null;
-  while ((match = re.exec(code))) {
-    families.add(match[1]!);
+  const patterns = [
+    /\$lib\/components\/ui\/([a-z][a-z0-9-]*)(?:\/index\.js)?/g,
+    /\.\.\/ui\/([a-z][a-z0-9-]*)(?:\/index\.js)?/g,
+  ];
+  for (const re of patterns) {
+    let match: RegExpExecArray | null;
+    while ((match = re.exec(code))) {
+      families.add(match[1]!);
+    }
   }
   return [...families].sort();
 }

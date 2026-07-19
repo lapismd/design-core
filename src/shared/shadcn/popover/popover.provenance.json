@@ -45,7 +45,14 @@
         "path": "src/lib/components/ui/popover/popover.svelte",
         "sha256": "9697cf96a4ab4970b93e0aafd3962aaa21a97d88d2976886f2a7dd22db87b1ca"
       }
-    ]
+    ],
+    "docsUrl": "https://shadcn-svelte.com/docs/components/popover.md",
+    "docsFetchedAt": "2026-07-19T20:20:21.048Z",
+    "docsSha256": "b39592c9349cc9035c56b9d95abcf815e897d8421901d9528749dad2ce5ccd0a",
+    "examplesIncluded": [
+      "Preview"
+    ],
+    "examplesSkipped": []
   },
   "converter": {
     "version": "2.0.0",

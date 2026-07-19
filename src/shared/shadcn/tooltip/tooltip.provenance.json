@@ -33,7 +33,15 @@
         "path": "src/lib/components/ui/tooltip/tooltip.svelte",
         "sha256": "a33d843a5e4e6e5fe426654f6742a453f44f4ff928e94a21d188d9035e4d02f8"
       }
-    ]
+    ],
+    "docsUrl": "https://shadcn-svelte.com/docs/components/tooltip.md",
+    "docsFetchedAt": "2026-07-19T20:20:20.961Z",
+    "docsSha256": "a4406964e9931ab7dfccb6e4edf92d0578ce277443b45e6f8d7c3b81424bc01e",
+    "examplesIncluded": [
+      "Preview",
+      "Nested Providers"
+    ],
+    "examplesSkipped": []
   },
   "converter": {
     "version": "2.0.0",

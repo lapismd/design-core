@@ -1,0 +1,57 @@
+<!-- Adapted from https://shadcn-svelte.com/docs/components/tooltip.md for the @stevejuma/ui native-CSS catalog. -->
+
+# Tooltip
+
+A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.
+
+## [Usage](#usage)
+
+The `Tooltip.Provider` component should be placed once in your root layout, wrapping all content that will contain tooltips. This ensures that only one tooltip within the provider can be open at a time.
+
+src/routes/+layout.svelte
+
+```svelte
+<script lang="ts">
+  import * as Tooltip from "@stevejuma/ui/shadcn/tooltip";
+  let { children } = $props();
+</script>
+```
+
+```svelte
+<Tooltip.Provider>
+  {@render children()}
+</Tooltip.Provider>
+```
+
+Then use tooltips anywhere in your app:
+
+```svelte
+<script lang="ts">
+  import * as Tooltip from "@stevejuma/ui/shadcn/tooltip";
+</script>
+<Tooltip.Root>
+  <Tooltip.Trigger>Hover</Tooltip.Trigger>
+  <Tooltip.Content>
+    <p>Add to library</p>
+  </Tooltip.Content>
+</Tooltip.Root>
+```
+
+### [Nested Providers](#nested-providers)
+
+You can nest providers to create groups with different settings. Tooltips use the closest ancestor provider. This is useful when you want instant tooltips in specific areas:
+
+```svelte
+<Tooltip.Provider delayDuration={0}>
+</Tooltip.Provider>
+```
+
+***
+
+## [Changelog](#changelog)
+
+### [2025-12 Update tooltip colors](#2025-12-update-tooltip-colors)
+
+We've updated the tooltip colors to use the foreground color for the background and the background color for the foreground.
+
+Replace `bg-primary text-primary-foreground` with `bg-foreground text-background` for `<Tooltip.Content />`.
