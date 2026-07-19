@@ -9,6 +9,8 @@
 
 <CollapsiblePrimitive.Content
   bind:ref
+  data-ui-component="collapsible"
+  data-ui-part="collapsible-content"
   data-slot="collapsible-content"
   {...restProps}
 />

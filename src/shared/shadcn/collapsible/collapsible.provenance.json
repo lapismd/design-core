@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "component": "collapsible",
+  "scope": "shared",
+  "kind": "passthrough",
+  "upstream": {
+    "project": "shadcn-svelte",
+    "registry": "https://shadcn-svelte.com/registry",
+    "cliVersion": "1.4.2",
+    "item": "collapsible",
+    "fetchedAt": "2026-07-19T16:37:09.880Z",
+    "sourceFiles": [
+      {
+        "path": "src/lib/components/ui/collapsible/collapsible-content.svelte",
+        "sha256": "8af85ac6ed50471ad32a4e90fb0c54b0fbe0b0700cd3fc5a91b85de70bf22554"
+      },
+      {
+        "path": "src/lib/components/ui/collapsible/collapsible-trigger.svelte",
+        "sha256": "e74d7c62176b48d8f5a7282fd0491fbab4dcfb0f23690b6cfae3f3d08b630e3a"
+      },
+      {
+        "path": "src/lib/components/ui/collapsible/collapsible.svelte",
+        "sha256": "1d48e117ac1b8fef1af070c56237a04e5ad1d4bafd4372852a0e9d10e9f4afc2"
+      },
+      {
+        "path": "src/lib/components/ui/collapsible/index.ts",
+        "sha256": "b3388337d932c594443568a5494a3ab2740ed803df9c1d0ebb68ed74036fa399"
+      }
+    ]
+  },
+  "converter": {
+    "version": "2.0.0",
+    "irSchemaVersion": 1,
+    "tokenSchemaVersion": 1
+  },
+  "recipe": {
+    "name": "collapsible",
+    "version": 1,
+    "tier": "lightCompound"
+  }
+}

@@ -11,6 +11,8 @@
 <CollapsiblePrimitive.Root
   bind:ref
   bind:open
+  data-ui-component="collapsible"
+  data-ui-part="collapsible"
   data-slot="collapsible"
   {...restProps}
 />

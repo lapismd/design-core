@@ -1,26 +1,22 @@
 <script lang="ts" module>
-  import { tv, type VariantProps } from "tailwind-variants";
+  
+    export const EMPTY_MEDIA_VARIANTS = [
+    "default",
+    "icon",
+  ] as const;
+  export type EmptyMediaVariant = (typeof EMPTY_MEDIA_VARIANTS)[number];
 
-  export const emptyMediaVariants = tv({
-    base: "mb-2 flex shrink-0 items-center justify-center [&_svg]:pointer-events-none [&_svg]:shrink-0",
-    variants: {
-      variant: {
-        default: "bg-transparent",
-        icon: "bg-muted text-foreground flex size-10 shrink-0 items-center justify-center rounded-lg [&_svg:not([class*='size-'])]:size-6",
-      },
-    },
-    defaultVariants: {
-      variant: "default",
-    },
-  });
-
-  export type EmptyMediaVariant = VariantProps<
-    typeof emptyMediaVariants
-  >["variant"];
+  /** @deprecated Prefer typed props; retained for API compatibility. */
+  export function emptyMediaVariants(_opts?: {
+    variant?: EmptyMediaVariant;
+    class?: string;
+  }): string {
+    return "";
+  }
 </script>
 
 <script lang="ts">
-  import { cn, type WithElementRef } from "../../../lib/utils.js";
+  import { type WithElementRef } from "../../../lib/utils.js";
   import type { HTMLAttributes } from "svelte/elements";
 
   let {
@@ -36,9 +32,11 @@
 
 <div
   bind:this={ref}
+  data-ui-component="empty"
+  data-ui-part="empty-media"
   data-slot="empty-icon"
   data-variant={variant}
-  class={cn(emptyMediaVariants({ variant }), className)}
+  class={className}
   {...restProps}
 >
   {@render children?.()}

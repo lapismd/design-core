@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "component": "toggle",
+  "scope": "shared",
+  "upstream": {
+    "project": "shadcn-svelte",
+    "registry": "https://shadcn-svelte.com/registry",
+    "cliVersion": "1.4.2",
+    "item": "toggle",
+    "fetchedAt": "2026-07-19T16:37:02.328Z",
+    "sourceFiles": [
+      {
+        "path": "src/lib/components/ui/toggle/index.ts",
+        "sha256": "96772363857f0c48a0b412dd27a84857a5940273e02b583ae03ebcf2aeda50ef"
+      },
+      {
+        "path": "src/lib/components/ui/toggle/toggle.svelte",
+        "sha256": "91c663cd8671c5161978a1a763e13919aaa3dc833c7ff2246fa7b8d3499af519"
+      }
+    ]
+  },
+  "converter": {
+    "version": "2.0.0",
+    "irSchemaVersion": 1,
+    "tokenSchemaVersion": 1
+  },
+  "recipe": {
+    "name": "toggle",
+    "version": 1,
+    "tier": "lightCompound"
+  }
+}

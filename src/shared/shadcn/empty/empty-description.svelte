@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { cn, type WithElementRef } from "../../../lib/utils.js";
+  import { type WithElementRef } from "../../../lib/utils.js";
   import type { HTMLAttributes } from "svelte/elements";
 
   let {
@@ -12,11 +12,10 @@
 
 <div
   bind:this={ref}
+  data-ui-component="empty"
+  data-ui-part="empty-description"
   data-slot="empty-description"
-  class={cn(
-    "text-muted-foreground [&>a:hover]:text-primary text-sm/relaxed text-sm/relaxed [&>a]:underline [&>a]:underline-offset-4",
-    className,
-  )}
+  class={className}
   {...restProps}
 >
   {@render children?.()}

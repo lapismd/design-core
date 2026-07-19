@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { cn, type WithElementRef } from "../../../lib/utils.js";
+  import { type WithElementRef } from "../../../lib/utils.js";
   import type { HTMLAttributes } from "svelte/elements";
 
   let {
@@ -12,8 +12,10 @@
 
 <div
   bind:this={ref}
+  data-ui-component="empty"
+  data-ui-part="empty-title"
   data-slot="empty-title"
-  class={cn("text-lg font-medium tracking-tight", className)}
+  class={className}
   {...restProps}
 >
   {@render children?.()}

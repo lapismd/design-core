@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "component": "tabs",
+  "scope": "shared",
+  "upstream": {
+    "project": "shadcn-svelte",
+    "registry": "https://shadcn-svelte.com/registry",
+    "cliVersion": "1.4.2",
+    "item": "tabs",
+    "fetchedAt": "2026-07-19T16:37:08.118Z",
+    "sourceFiles": [
+      {
+        "path": "src/lib/components/ui/tabs/index.ts",
+        "sha256": "09ee4ae6ac62cd850c08151d9d55b2f9ec2740e4c3cbe47969d15e4457da5638"
+      },
+      {
+        "path": "src/lib/components/ui/tabs/tabs-content.svelte",
+        "sha256": "9c7328fb59f05f600a70dd577968fbac2442f36eeddd495e4f5d7dc57044d7fd"
+      },
+      {
+        "path": "src/lib/components/ui/tabs/tabs-list.svelte",
+        "sha256": "7b737d544a8cb9b37e873f725ba5b20ad496b351c60d072d7399db24e8461be8"
+      },
+      {
+        "path": "src/lib/components/ui/tabs/tabs-trigger.svelte",
+        "sha256": "cc0762b0cc1b4346e7848629bba90c2b61cbc5b958b4985edc98bcee3e4b6c7c"
+      },
+      {
+        "path": "src/lib/components/ui/tabs/tabs.svelte",
+        "sha256": "d09516180a1527e299c6714938cb9906041b9198177f7fde67432a84e21cf637"
+      }
+    ]
+  },
+  "converter": {
+    "version": "2.0.0",
+    "irSchemaVersion": 1,
+    "tokenSchemaVersion": 1
+  },
+  "recipe": {
+    "name": "tabs",
+    "version": 1,
+    "tier": "lightCompound"
+  }
+}

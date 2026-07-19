@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "component": "switch",
+  "scope": "shared",
+  "upstream": {
+    "project": "shadcn-svelte",
+    "registry": "https://shadcn-svelte.com/registry",
+    "cliVersion": "1.4.2",
+    "item": "switch",
+    "fetchedAt": "2026-07-19T16:36:59.750Z",
+    "sourceFiles": [
+      {
+        "path": "src/lib/components/ui/switch/index.ts",
+        "sha256": "29fe3052a55b69e37d9995a3a74ad196bda339c438596bda0dac0bde426a420b"
+      },
+      {
+        "path": "src/lib/components/ui/switch/switch.svelte",
+        "sha256": "fb7a808ede2603c1e2f427b9ccc1c4c3e4bca34ecaba1fe082be24b0652ca69c"
+      }
+    ]
+  },
+  "converter": {
+    "version": "2.0.0",
+    "irSchemaVersion": 1,
+    "tokenSchemaVersion": 1
+  },
+  "recipe": {
+    "name": "switch",
+    "version": 1,
+    "tier": "lightCompound"
+  }
+}

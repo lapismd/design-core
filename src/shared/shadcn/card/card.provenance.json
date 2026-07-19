@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "component": "card",
+  "scope": "shared",
+  "upstream": {
+    "project": "shadcn-svelte",
+    "registry": "https://shadcn-svelte.com/registry",
+    "cliVersion": "1.4.2",
+    "item": "card",
+    "fetchedAt": "2026-07-19T16:37:11.513Z",
+    "sourceFiles": [
+      {
+        "path": "src/lib/components/ui/card/card-action.svelte",
+        "sha256": "032220a0e351eac68b77e4cedf938597376703f1a95648a615306b0a648d2851"
+      },
+      {
+        "path": "src/lib/components/ui/card/card-content.svelte",
+        "sha256": "4fba5d44c333f36929c3e246d8ec8bfd06eeda2372f6f59dada733b100c43616"
+      },
+      {
+        "path": "src/lib/components/ui/card/card-description.svelte",
+        "sha256": "28216234c26a7844f017589c1a661d2db6ef785f396d4d3554c32f25bc4326e5"
+      },
+      {
+        "path": "src/lib/components/ui/card/card-footer.svelte",
+        "sha256": "8562a1e7b4d53f9c7c4f9c792112f1cac38e779f3e24b4481e611a92a62733ac"
+      },
+      {
+        "path": "src/lib/components/ui/card/card-header.svelte",
+        "sha256": "94ff20e5ff0d9aa849d896581cdc6a4fba7d4433f8cb646e11102f4f23727e43"
+      },
+      {
+        "path": "src/lib/components/ui/card/card-title.svelte",
+        "sha256": "6ad8f2dbf303a34f7d906c1b3ad0be025e8c58a66226379ca001b3d757c7fa70"
+      },
+      {
+        "path": "src/lib/components/ui/card/card.svelte",
+        "sha256": "d8cca4219d4115f3b2bea2926963272562deea202d9188c1a41de22e75e7b133"
+      },
+      {
+        "path": "src/lib/components/ui/card/index.ts",
+        "sha256": "218019c78c8be52b5add8267a758f2d2c685e036e35d6bbcee147333e6534db8"
+      }
+    ]
+  },
+  "converter": {
+    "version": "2.0.0",
+    "irSchemaVersion": 1,
+    "tokenSchemaVersion": 1
+  },
+  "recipe": {
+    "name": "card",
+    "version": 1,
+    "tier": "lightCompound"
+  }
+}

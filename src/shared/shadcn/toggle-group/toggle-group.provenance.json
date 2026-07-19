@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "component": "toggle-group",
+  "scope": "shared",
+  "upstream": {
+    "project": "shadcn-svelte",
+    "registry": "https://shadcn-svelte.com/registry",
+    "cliVersion": "1.4.2",
+    "item": "toggle-group",
+    "fetchedAt": "2026-07-19T16:37:05.818Z",
+    "sourceFiles": [
+      {
+        "path": "src/lib/components/ui/toggle-group/index.ts",
+        "sha256": "a21e3fda6b8242165a26b680ef36f47da12d5cdf9733c35c35ff14cd640f8718"
+      },
+      {
+        "path": "src/lib/components/ui/toggle-group/toggle-group-item.svelte",
+        "sha256": "d9c547c56500f99c0024e84ae0683681ba15724fbca512447750d22d22941dd0"
+      },
+      {
+        "path": "src/lib/components/ui/toggle-group/toggle-group.svelte",
+        "sha256": "47f1617e209d910fc547d81ad60049931efc1bd92f0cf12bd0adc03dea342d42"
+      }
+    ]
+  },
+  "converter": {
+    "version": "2.0.0",
+    "irSchemaVersion": 1,
+    "tokenSchemaVersion": 1
+  },
+  "recipe": {
+    "name": "toggle-group",
+    "version": 1,
+    "tier": "lightCompound"
+  }
+}

@@ -9,6 +9,8 @@
 
 <CollapsiblePrimitive.Trigger
   bind:ref
+  data-ui-component="collapsible"
+  data-ui-part="collapsible-trigger"
   data-slot="collapsible-trigger"
   {...restProps}
 />

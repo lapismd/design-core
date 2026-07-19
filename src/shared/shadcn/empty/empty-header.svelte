@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { cn, type WithElementRef } from "../../../lib/utils.js";
+  import { type WithElementRef } from "../../../lib/utils.js";
   import type { HTMLAttributes } from "svelte/elements";
 
   let {
@@ -12,8 +12,10 @@
 
 <div
   bind:this={ref}
+  data-ui-component="empty"
+  data-ui-part="empty-header"
   data-slot="empty-header"
-  class={cn("flex max-w-sm flex-col items-center gap-2", className)}
+  class={className}
   {...restProps}
 >
   {@render children?.()}
