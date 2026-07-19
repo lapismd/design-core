@@ -25,7 +25,9 @@
   name="Chooses a menu item"
   play={async ({ canvas }) => {
     await userEvent.click(canvas.getByRole("button", { name: "Actions" }));
-    await userEvent.click(within(document.body).getByRole("menuitem", { name: "Duplicate" }));
+    await userEvent.click(
+      within(document.body).getByRole("menuitem", { name: "Duplicate" }),
+    );
     await expect(canvas.getByRole("status")).toHaveTextContent("Duplicate");
   }}
 >
@@ -48,7 +50,7 @@
           </DropdownMenu.Group>
         </DropdownMenu.Content>
       </DropdownMenu.Root>
-      <output class="text-sm text-muted-foreground">{chosen}</output>
+      <output class="text-muted-foreground text-sm">{chosen}</output>
     </div>
   {/snippet}
 </Story>

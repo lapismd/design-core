@@ -1,0 +1,197 @@
+<script lang="ts">
+  import ChevronLeftIcon from "@lucide/svelte/icons/chevron-left";
+  import ChevronRightIcon from "@lucide/svelte/icons/chevron-right";
+  import { Calendar } from "bits-ui";
+  import type { DateValue } from "@internationalized/date";
+
+  let {
+    value = $bindable<DateValue | undefined>(),
+    onValueChange = () => {},
+  }: {
+    value?: DateValue;
+    onValueChange?: (value: DateValue | undefined) => void;
+  } = $props();
+</script>
+
+<div class="task-due-calendar">
+  <Calendar.Root
+    bind:value={value as never}
+    type="single"
+    weekdayFormat="short"
+    onValueChange={(nextValue) => {
+      onValueChange(nextValue);
+    }}
+  >
+    {#snippet children({ months, weekdays })}
+      {#each months as month (month)}
+        <div class="task-due-calendar__month">
+          <Calendar.Header class="task-due-calendar__header" role="group">
+            <Calendar.PrevButton class="task-due-calendar__nav">
+              <ChevronLeftIcon />
+            </Calendar.PrevButton>
+            <Calendar.Heading class="task-due-calendar__heading" />
+            <Calendar.NextButton class="task-due-calendar__nav">
+              <ChevronRightIcon />
+            </Calendar.NextButton>
+          </Calendar.Header>
+          <Calendar.Grid class="task-due-calendar__grid">
+            <Calendar.GridHead>
+              <Calendar.GridRow class="task-due-calendar__weekdays">
+                {#each weekdays as weekday, index (index)}
+                  <Calendar.HeadCell class="task-due-calendar__weekday">
+                    {weekday.slice(0, 2)}
+                  </Calendar.HeadCell>
+                {/each}
+              </Calendar.GridRow>
+            </Calendar.GridHead>
+            <Calendar.GridBody>
+              {#each month.weeks as weekDates (weekDates)}
+                <Calendar.GridRow class="task-due-calendar__week">
+                  {#each weekDates as date (date)}
+                    <Calendar.Cell
+                      {date}
+                      month={month.value}
+                      class="task-due-calendar__cell"
+                    >
+                      <Calendar.Day class="task-due-calendar__day" />
+                    </Calendar.Cell>
+                  {/each}
+                </Calendar.GridRow>
+              {/each}
+            </Calendar.GridBody>
+          </Calendar.Grid>
+        </div>
+      {/each}
+    {/snippet}
+  </Calendar.Root>
+</div>
+
+<style>
+  .task-due-calendar {
+    width: 100%;
+    padding: 0;
+  }
+
+  .task-due-calendar__month {
+    display: grid;
+    gap: 0.35rem;
+    width: 100%;
+  }
+
+  .task-due-calendar :global(.task-due-calendar__header) {
+    display: grid;
+    grid-template-columns: 1.75rem minmax(0, 1fr) 1.75rem;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .task-due-calendar :global(.task-due-calendar__heading) {
+    text-align: center;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--kanban-foreground, var(--foreground));
+  }
+
+  .task-due-calendar :global(.task-due-calendar__nav) {
+    display: inline-grid;
+    place-items: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border: 0;
+    border-radius: 0.3rem;
+    background: transparent;
+    color: var(--kanban-muted, var(--muted-foreground));
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .task-due-calendar :global(.task-due-calendar__nav:hover),
+  .task-due-calendar :global(.task-due-calendar__nav:focus-visible) {
+    background: color-mix(
+      in srgb,
+      var(--kanban-border, var(--border)) 55%,
+      transparent
+    );
+    color: var(--kanban-foreground, var(--foreground));
+    outline: 0;
+  }
+
+  .task-due-calendar :global(.task-due-calendar__nav svg) {
+    width: 0.9rem;
+    height: 0.9rem;
+  }
+
+  .task-due-calendar :global(.task-due-calendar__grid) {
+    width: 100%;
+  }
+
+  .task-due-calendar :global(.task-due-calendar__weekdays),
+  .task-due-calendar :global(.task-due-calendar__week) {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 0.1rem;
+  }
+
+  .task-due-calendar :global(.task-due-calendar__weekday) {
+    text-align: center;
+    font-size: 0.68rem;
+    font-weight: 650;
+    color: var(--kanban-muted, var(--muted-foreground));
+    padding: 0.15rem 0;
+  }
+
+  .task-due-calendar :global(.task-due-calendar__cell) {
+    display: grid;
+    place-items: center;
+    padding: 0;
+  }
+
+  .task-due-calendar :global(.task-due-calendar__day) {
+    display: inline-grid;
+    place-items: center;
+    width: 1.65rem;
+    height: 1.65rem;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--kanban-foreground, var(--foreground));
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.78rem;
+    padding: 0;
+  }
+
+  .task-due-calendar :global(.task-due-calendar__day:hover),
+  .task-due-calendar :global(.task-due-calendar__day:focus-visible) {
+    background: color-mix(
+      in srgb,
+      var(--kanban-border, var(--border)) 55%,
+      transparent
+    );
+    outline: 0;
+  }
+
+  .task-due-calendar :global([data-selected] .task-due-calendar__day) {
+    background: color-mix(
+      in srgb,
+      var(--card-color, var(--primary)) 88%,
+      transparent
+    );
+    color: var(--kanban-card, var(--background));
+    font-weight: 700;
+  }
+
+  .task-due-calendar
+    :global([data-today]:not([data-selected]) .task-due-calendar__day) {
+    box-shadow: inset 0 0 0 1px
+      color-mix(in srgb, var(--card-color, var(--primary)) 45%, transparent);
+  }
+
+  .task-due-calendar :global([data-outside-month] .task-due-calendar__day) {
+    color: color-mix(
+      in srgb,
+      var(--kanban-muted, var(--muted-foreground)) 72%,
+      transparent
+    );
+  }
+</style>

@@ -1,0 +1,168 @@
+.cv-form-section-header {
+  position: relative;
+}
+.cv-form-section-move {
+  position: absolute;
+  top: 50%;
+  left: -2.35rem;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  translate: 0 -50%;
+  opacity: 0;
+  transition: opacity 140ms ease;
+}
+
+.cv-form-section-header:hover .cv-form-section-move,
+.cv-form-section-header:focus-within .cv-form-section-move,
+.cv-form-section-header:hover .cv-form-section-remove,
+.cv-form-section-header:focus-within .cv-form-section-remove {
+  opacity: 1;
+}
+
+.cv-form-section-move button,
+.cv-form-section-remove,
+.cv-form-section-toggle {
+  display: grid;
+  width: 1.25rem;
+  height: 1.25rem;
+  place-items: center;
+  border: 0;
+  border-radius: 0.25rem;
+  background: transparent;
+  color: var(--cv-form-muted, var(--kanban-muted, var(--muted-foreground)));
+  cursor: pointer;
+  padding: 0;
+}
+
+.cv-form-section-move button {
+  width: 1rem;
+  height: 1rem;
+}
+
+.cv-form-section-toggle {
+  position: absolute;
+  top: 50%;
+  left: -1.35rem;
+  z-index: 1;
+  translate: 0 -50%;
+}
+
+.cv-form-section-move button:disabled {
+  cursor: default;
+  opacity: 0.28;
+}
+
+.cv-form-section-move button:hover,
+.cv-form-section-remove:hover,
+.cv-form-section-toggle:hover,
+.cv-form-section-move button:focus-visible,
+.cv-form-section-remove:focus-visible,
+.cv-form-section-toggle:focus-visible {
+  color: var(--cv-form-foreground, var(--kanban-foreground, var(--foreground)));
+  outline: 0;
+}
+
+.cv-form-section-move svg,
+.cv-form-section-remove svg,
+.cv-form-section-toggle svg {
+  width: 0.75rem;
+  height: 0.75rem;
+}
+
+.cv-form-section-toggle[aria-expanded="false"] svg {
+  rotate: -90deg;
+}
+
+.cv-form-section-title-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.3rem;
+  align-items: center;
+  border-bottom: 1px solid
+    var(
+      --cv-form-border-muted,
+      color-mix(
+        in srgb,
+        var(--kanban-muted, var(--muted-foreground)) 42%,
+        transparent
+      )
+    );
+  padding-bottom: 0.2rem;
+}
+
+.cv-form-section-title-slot {
+  min-width: 0;
+}
+
+.cv-form-section-title-row textarea {
+  min-height: 1.5rem;
+  resize: none;
+  overflow: hidden;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--cv-form-foreground, var(--kanban-foreground, var(--foreground)));
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.5;
+  padding: 0;
+  white-space: normal;
+}
+
+.cv-form-section-title-row textarea:focus,
+.cv-form-section-title-row textarea:focus-visible {
+  outline: 0;
+  box-shadow: none;
+}
+
+.cv-form-section-title-row h3 {
+  min-height: 1.5rem;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  color: var(--cv-form-foreground, var(--kanban-foreground, var(--foreground)));
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.5;
+  padding: 0;
+}
+
+.cv-form-section-title-toggle {
+  min-height: 1.5rem;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: var(--cv-form-foreground, var(--kanban-foreground, var(--foreground)));
+  cursor: pointer;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.5;
+  padding: 0;
+  text-align: left;
+}
+
+.cv-form-section-title-toggle:hover,
+.cv-form-section-title-toggle:focus-visible {
+  color: var(--cv-form-foreground, var(--kanban-foreground, var(--foreground)));
+  outline: 0;
+}
+
+.cv-form-section-actions {
+  min-width: 0;
+}
+
+.cv-form-section-remove {
+  position: absolute;
+  top: 50%;
+  right: -1.35rem;
+  translate: 0 -50%;
+  opacity: 0;
+  transition: opacity 140ms ease;
+}

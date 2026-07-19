@@ -3,7 +3,7 @@
 Classification for `@stevejuma/ui`. Update this file when components move
 between shared and app-specific folders.
 
-## Shared — shadcn (slice 2)
+## Shared — shadcn
 
 Generic primitives in `src/components/shadcn/`, copied from CV Studio:
 
@@ -14,20 +14,25 @@ tabs, textarea, toggle, toggle-group, tooltip
 
 Import: `@stevejuma/ui/shadcn/<family>`
 
-## Shared — forms (slice 3)
+## Shared — forms (landed)
 
-Config-driven form engine from `@cvstudio/forms` plus field primitives from
-`@cvstudio/ui`, under `src/components/forms/`.
+Config-driven form engine and field primitives in `src/components/forms/`:
 
-Includes form runtime editors `CodeEditor` and `YamlEditor` (required by
-`YamlBackedForm`).
+**Engine:** `StructuredForm`, `FormFieldRenderer`, `FormViewRenderer`,
+`YamlBackedForm`, `builders` / `types` / `registry` / `core`
 
-Borderline but shared when prop-driven:
+**Primitives:** `FormField`, `FormSectionHeader`, `EntryActions`,
+`CollapsibleItemList`, `AddSectionChooser`, `SegmentedControl`, `ChoiceMenu`,
+`InlineOptionPicker`, `SearchableChoicePicker`, `AutocompleteInput`,
+`ChipAutocomplete`, `TagEditor`, `ReadOnlyFormGroup` / `Row` / `List`,
+`SearchFilterBar`, `ReferencePicker`, `TaskDueCalendar`
 
-- `ReferencePicker`
-- `TaskDueCalendar`
-- `SearchFilterBar`
-- `AddSectionChooser`
+**Runtime editors:** `CodeEditor`, `YamlEditor`
+
+Borderline but shared when prop-driven: `ReferencePicker`, `TaskDueCalendar`,
+`SearchFilterBar`, `AddSectionChooser`
+
+Import: `@stevejuma/ui/forms` and `@stevejuma/ui/forms/core`
 
 ## Shared — later
 

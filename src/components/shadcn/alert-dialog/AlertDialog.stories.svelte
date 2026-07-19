@@ -10,7 +10,8 @@
     parameters: {
       docs: {
         description: {
-          component: "Confirmation dialog for destructive or irreversible actions.",
+          component:
+            "Confirmation dialog for destructive or irreversible actions.",
         },
       },
     },
@@ -28,7 +29,9 @@
     await userEvent.click(canvas.getByRole("button", { name: "Delete item" }));
     const dialog = within(document.body).getByRole("alertdialog");
     await expect(dialog).toBeVisible();
-    await userEvent.click(within(dialog).getByRole("button", { name: "Delete" }));
+    await userEvent.click(
+      within(dialog).getByRole("button", { name: "Delete" }),
+    );
     await expect(canvas.getByRole("status")).toHaveTextContent("confirmed");
   }}
 >
@@ -49,11 +52,13 @@
           </AlertDialog.Header>
           <AlertDialog.Footer>
             <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-            <AlertDialog.Action onclick={() => (confirmed = true)}>Delete</AlertDialog.Action>
+            <AlertDialog.Action onclick={() => (confirmed = true)}
+              >Delete</AlertDialog.Action
+            >
           </AlertDialog.Footer>
         </AlertDialog.Content>
       </AlertDialog.Root>
-      <output class="text-sm text-muted-foreground">
+      <output class="text-muted-foreground text-sm">
         {confirmed ? "confirmed" : "idle"}
       </output>
     </div>

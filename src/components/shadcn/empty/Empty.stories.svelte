@@ -10,7 +10,8 @@
     parameters: {
       docs: {
         description: {
-          component: "Empty-state composition for lists and workspaces with no data.",
+          component:
+            "Empty-state composition for lists and workspaces with no data.",
         },
       },
     },
@@ -21,14 +22,18 @@
   name="No results state"
   play={async ({ canvas }) => {
     await expect(canvas.getByText("No documents yet")).toBeVisible();
-    await expect(canvas.getByRole("button", { name: "Create document" })).toBeVisible();
+    await expect(
+      canvas.getByRole("button", { name: "Create document" }),
+    ).toBeVisible();
   }}
 >
   {#snippet template()}
     <Empty.Root class="max-w-md border">
       <Empty.Header>
         <Empty.Title>No documents yet</Empty.Title>
-        <Empty.Description>Create your first document to get started.</Empty.Description>
+        <Empty.Description
+          >Create your first document to get started.</Empty.Description
+        >
       </Empty.Header>
       <Empty.Content>
         <Button>Create document</Button>

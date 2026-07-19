@@ -35,7 +35,7 @@
       <Button variant="outline">Outline</Button>
       <Button variant="ghost">Ghost</Button>
       <Button variant="destructive">Remove</Button>
-      <output class="basis-full text-sm text-muted-foreground">
+      <output class="text-muted-foreground basis-full text-sm">
         {saved ? "Changes saved" : "Changes not saved"}
       </output>
     </div>

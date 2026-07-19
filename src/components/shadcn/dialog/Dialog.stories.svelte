@@ -52,7 +52,7 @@
           </Dialog.Footer>
         </Dialog.Content>
       </Dialog.Root>
-      <output class="text-sm text-muted-foreground">
+      <output class="text-muted-foreground text-sm">
         Dialog is {open ? "open" : "closed"}
       </output>
     </div>

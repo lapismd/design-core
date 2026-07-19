@@ -43,10 +43,12 @@
         </Select.Trigger>
         <Select.Content aria-label="Status options">
           <Select.Item value="draft" label="Draft">Draft</Select.Item>
-          <Select.Item value="published" label="Published">Published</Select.Item>
+          <Select.Item value="published" label="Published"
+            >Published</Select.Item
+          >
         </Select.Content>
       </Select.Root>
-      <output class="text-sm text-muted-foreground">{labels[value]}</output>
+      <output class="text-muted-foreground text-sm">{labels[value]}</output>
     </div>
   {/snippet}
 </Story>

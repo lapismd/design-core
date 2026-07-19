@@ -9,7 +9,8 @@
     parameters: {
       docs: {
         description: {
-          component: "Input with leading/trailing addons for units and actions.",
+          component:
+            "Input with leading/trailing addons for units and actions.",
         },
       },
     },
@@ -35,7 +36,7 @@
         <InputGroup.Addon>USD</InputGroup.Addon>
         <InputGroup.Input aria-label="Amount" bind:value={amount} />
       </InputGroup.Root>
-      <output class="text-sm text-muted-foreground">{amount}</output>
+      <output class="text-muted-foreground text-sm">{amount}</output>
     </div>
   {/snippet}
 </Story>

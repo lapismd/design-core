@@ -2,9 +2,9 @@
 
 :root {
   --radius: 0.625rem;
-  --studio-font-mono:
-    "Source Code Pro Variable", "Source Code Pro", ui-monospace, SFMono-Regular,
-    Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  --studio-font-mono: "Source Code Pro Variable", "Source Code Pro",
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    monospace;
   --background: oklch(100% 0 0);
   --foreground: oklch(15% 0.05 295);
   --card: oklch(100% 0 0);

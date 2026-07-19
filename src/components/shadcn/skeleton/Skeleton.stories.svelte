@@ -24,7 +24,11 @@
   }}
 >
   {#snippet template()}
-    <div class="flex items-center gap-3" role="status" aria-label="Loading profile">
+    <div
+      class="flex items-center gap-3"
+      role="status"
+      aria-label="Loading profile"
+    >
       <Skeleton class="size-10 rounded-full" />
       <div class="flex flex-col gap-2">
         <Skeleton class="h-4 w-40" />

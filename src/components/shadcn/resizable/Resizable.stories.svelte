@@ -24,10 +24,17 @@
   }}
 >
   {#snippet template()}
-    <Resizable.PaneGroup direction="horizontal" class="h-40 max-w-xl rounded-md border">
-      <Resizable.Pane defaultSize={40} class="p-3 text-sm">Left pane</Resizable.Pane>
+    <Resizable.PaneGroup
+      direction="horizontal"
+      class="h-40 max-w-xl rounded-md border"
+    >
+      <Resizable.Pane defaultSize={40} class="p-3 text-sm"
+        >Left pane</Resizable.Pane
+      >
       <Resizable.Handle withHandle />
-      <Resizable.Pane defaultSize={60} class="p-3 text-sm">Right pane</Resizable.Pane>
+      <Resizable.Pane defaultSize={60} class="p-3 text-sm"
+        >Right pane</Resizable.Pane
+      >
     </Resizable.PaneGroup>
   {/snippet}
 </Story>

@@ -34,9 +34,11 @@
       <Field.Field>
         <Field.FieldLabel for="catalog-work-email">Work email</Field.FieldLabel>
         <Input id="catalog-work-email" bind:value={email} />
-        <Field.FieldDescription>Used for account notifications.</Field.FieldDescription>
+        <Field.FieldDescription
+          >Used for account notifications.</Field.FieldDescription
+        >
       </Field.Field>
-      <output class="text-sm text-muted-foreground">{email || "empty"}</output>
+      <output class="text-muted-foreground text-sm">{email || "empty"}</output>
     </Field.FieldGroup>
   {/snippet}
 </Story>

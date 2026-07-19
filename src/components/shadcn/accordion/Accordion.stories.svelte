@@ -9,7 +9,8 @@
     parameters: {
       docs: {
         description: {
-          component: "Stacked expandable sections for FAQs and grouped details.",
+          component:
+            "Stacked expandable sections for FAQs and grouped details.",
         },
       },
     },

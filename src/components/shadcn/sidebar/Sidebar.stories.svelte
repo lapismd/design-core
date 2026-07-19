@@ -25,7 +25,9 @@
   name="Provider with trigger"
   play={async ({ canvas }) => {
     await expect(canvas.getByText("Navigation")).toBeVisible();
-    await userEvent.click(canvas.getByRole("button", { name: "Toggle Sidebar" }));
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Toggle Sidebar" }),
+    );
     await expect(canvas.getByRole("status")).toHaveTextContent("closed");
   }}
 >
@@ -33,7 +35,7 @@
     <Sidebar.Provider class="min-h-[240px]">
       <Sidebar.Root bind:open>
         <Sidebar.Header>Navigation</Sidebar.Header>
-        <Sidebar.Content class="p-3 text-sm text-muted-foreground">
+        <Sidebar.Content class="text-muted-foreground p-3 text-sm">
           Overview
         </Sidebar.Content>
         <Sidebar.Footer>v0.1</Sidebar.Footer>
@@ -47,7 +49,7 @@
         </Sidebar.Trigger>
         <div class="flex flex-col gap-2">
           <p class="text-sm">Main content</p>
-          <output class="text-sm text-muted-foreground">
+          <output class="text-muted-foreground text-sm">
             {open ? "open" : "closed"}
           </output>
         </div>

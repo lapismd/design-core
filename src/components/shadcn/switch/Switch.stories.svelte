@@ -33,7 +33,7 @@
   {#snippet template()}
     <div class="flex items-center gap-3">
       <Switch bind:checked={enabled} aria-label="Enable notifications" />
-      <output class="text-sm text-muted-foreground">
+      <output class="text-muted-foreground text-sm">
         Notifications {enabled ? "enabled" : "disabled"}
       </output>
     </div>

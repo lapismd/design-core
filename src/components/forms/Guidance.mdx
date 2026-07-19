@@ -1,0 +1,33 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="UI Forms/Guidance" />
+
+# Form guidance
+
+Use `@stevejuma/ui/forms` for structured editing. Prefer existing primitives
+before inventing new controls.
+
+## Choose the right layer
+
+1. **StructuredForm** — schema-shaped data with typed field configs from
+   `createFormConfig` / `textField` / `segmentedField` / etc.
+2. **Composed primitives** — `FormField`, `FormSectionHeader`,
+   `CollapsibleItemList`, pickers for one-off layouts.
+3. **YamlBackedForm** — dual structured + YAML source mode.
+
+## Layout rules
+
+- Keep labelled fields inside one `cv-structured-form` grid.
+- Use `FormField as="div" align="center"` for pill controls, switches, and
+  pickers that contain nested interactives.
+- Let `FormSectionHeader` own section separators; avoid double borders on
+  wrappers.
+
+## Control choice
+
+- `SegmentedControl` for two or three exclusive values
+- `TagEditor` / `ChipAutocomplete` for multi-value lists
+- `SearchableChoicePicker` only for legacy callers
+- `CodeEditor` / `YamlEditor` for source editing
+
+See [FORMS.md](../../../FORMS.md) for the full contract.

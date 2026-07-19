@@ -28,10 +28,14 @@
     <Card.Root class="max-w-md">
       <Card.Header>
         <Card.Title>Workspace settings</Card.Title>
-        <Card.Description>Update the defaults for this project.</Card.Description>
+        <Card.Description
+          >Update the defaults for this project.</Card.Description
+        >
       </Card.Header>
       <Card.Content>
-        <p class="text-sm text-muted-foreground">Theme, locale, and export preferences.</p>
+        <p class="text-muted-foreground text-sm">
+          Theme, locale, and export preferences.
+        </p>
       </Card.Content>
       <Card.Footer>
         <Button>Save</Button>

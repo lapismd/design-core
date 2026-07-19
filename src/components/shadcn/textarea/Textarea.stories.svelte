@@ -33,7 +33,7 @@
     <div class="flex max-w-md flex-col gap-2">
       <label class="text-sm font-medium" for="catalog-summary">Summary</label>
       <Textarea id="catalog-summary" bind:value={summary} rows={4} />
-      <output class="text-sm text-muted-foreground">{summary}</output>
+      <output class="text-muted-foreground text-sm">{summary}</output>
     </div>
   {/snippet}
 </Story>

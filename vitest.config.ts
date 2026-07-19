@@ -17,11 +17,7 @@ export default mergeConfig(
           test: {
             name: "unit",
             environment: "node",
-            include: [
-              "src/**/*.spec.ts",
-              "src/components/forms/**/*.spec.ts",
-            ],
-
+            include: ["src/**/*.spec.ts", "src/components/forms/**/*.spec.ts"],
           },
         },
         {

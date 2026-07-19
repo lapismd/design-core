@@ -41,9 +41,11 @@
             <Button {...props} variant="outline">Filters</Button>
           {/snippet}
         </Popover.Trigger>
-        <Popover.Content class="w-56 p-3 text-sm">Active filters</Popover.Content>
+        <Popover.Content class="w-56 p-3 text-sm"
+          >Active filters</Popover.Content
+        >
       </Popover.Root>
-      <output class="text-sm text-muted-foreground">
+      <output class="text-muted-foreground text-sm">
         {open ? "open" : "closed"}
       </output>
     </div>

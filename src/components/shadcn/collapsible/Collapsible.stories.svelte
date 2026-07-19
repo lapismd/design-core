@@ -10,7 +10,8 @@
     parameters: {
       docs: {
         description: {
-          component: "Show and hide secondary content without leaving the page.",
+          component:
+            "Show and hide secondary content without leaving the page.",
         },
       },
     },
@@ -24,7 +25,9 @@
 <Story
   name="Expands details"
   play={async ({ canvas }) => {
-    await userEvent.click(canvas.getByRole("button", { name: "Toggle details" }));
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Toggle details" }),
+    );
     await expect(canvas.getByText("Hidden until expanded")).toBeVisible();
   }}
 >
@@ -35,7 +38,7 @@
           <Button {...props} variant="outline">Toggle details</Button>
         {/snippet}
       </Collapsible.Trigger>
-      <Collapsible.Content class="mt-2 text-sm text-muted-foreground">
+      <Collapsible.Content class="text-muted-foreground mt-2 text-sm">
         Hidden until expanded
       </Collapsible.Content>
     </Collapsible.Root>

@@ -32,9 +32,11 @@
 >
   {#snippet template()}
     <div class="flex max-w-sm flex-col gap-2">
-      <label class="text-sm font-medium" for="catalog-display-name">Display name</label>
+      <label class="text-sm font-medium" for="catalog-display-name"
+        >Display name</label
+      >
       <Input id="catalog-display-name" bind:value={name} />
-      <output class="text-sm text-muted-foreground">{name}</output>
+      <output class="text-muted-foreground text-sm">{name}</output>
     </div>
   {/snippet}
 </Story>

@@ -32,7 +32,7 @@
     <div class="flex max-w-sm flex-col gap-2">
       <Label for="catalog-email">Email</Label>
       <Input id="catalog-email" bind:value />
-      <output class="text-sm text-muted-foreground">{value || "empty"}</output>
+      <output class="text-muted-foreground text-sm">{value || "empty"}</output>
     </div>
   {/snippet}
 </Story>

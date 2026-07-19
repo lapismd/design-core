@@ -61,7 +61,7 @@
           </Command.Group>
         </Command.List>
       </Command.Root>
-      <output class="text-sm text-muted-foreground">{selected}</output>
+      <output class="text-muted-foreground text-sm">{selected}</output>
     </div>
   {/snippet}
 </Story>

@@ -31,10 +31,14 @@
     <div class="flex flex-col gap-2">
       <ToggleGroup.Root type="single" bind:value>
         <ToggleGroup.Item value="left" aria-label="Left">Left</ToggleGroup.Item>
-        <ToggleGroup.Item value="center" aria-label="Center">Center</ToggleGroup.Item>
-        <ToggleGroup.Item value="right" aria-label="Right">Right</ToggleGroup.Item>
+        <ToggleGroup.Item value="center" aria-label="Center"
+          >Center</ToggleGroup.Item
+        >
+        <ToggleGroup.Item value="right" aria-label="Right"
+          >Right</ToggleGroup.Item
+        >
       </ToggleGroup.Root>
-      <output class="text-sm text-muted-foreground">{value}</output>
+      <output class="text-muted-foreground text-sm">{value}</output>
     </div>
   {/snippet}
 </Story>
