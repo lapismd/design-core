@@ -26,7 +26,7 @@ function parseSemanticNodes(semantic: string): Node[] {
 
 function replaceClassesInSelector(
   selector: string,
-  ownershipByCandidate: Map<string, string>,
+  ownershipByCandidate: Map<string, string[]>,
 ): string[] {
   const results: string[] = [];
 
@@ -40,25 +40,25 @@ function replaceClassesInSelector(
       });
       if (!classNodes.length) return;
 
-      // One output selector per matched class ownership (a rule may list one utility class).
       for (const classNode of classNodes) {
-        const semantic = ownershipByCandidate.get(classNode.value);
-        if (!semantic) continue;
-        const clone = sel.clone() as Selector;
-        clone.walkClasses((node) => {
-          if (node.value !== classNode.value) return;
-          const semanticNodes = parseSemanticNodes(semantic);
-          if (!semanticNodes.length) return;
-          let current: Node = node;
-          const first = semanticNodes[0]!;
-          node.replaceWith(first);
-          current = first;
-          for (const extra of semanticNodes.slice(1)) {
-            current.parent?.insertAfter(current, extra);
-            current = extra;
-          }
-        });
-        results.push(clone.toString());
+        const semantics = ownershipByCandidate.get(classNode.value) ?? [];
+        for (const semantic of semantics) {
+          const clone = sel.clone() as Selector;
+          clone.walkClasses((node) => {
+            if (node.value !== classNode.value) return;
+            const semanticNodes = parseSemanticNodes(semantic);
+            if (!semanticNodes.length) return;
+            let current: Node = node;
+            const first = semanticNodes[0]!;
+            node.replaceWith(first);
+            current = first;
+            for (const extra of semanticNodes.slice(1)) {
+              current.parent?.insertAfter(current, extra);
+              current = extra;
+            }
+          });
+          results.push(clone.toString());
+        }
       }
     });
   }).processSync(selector);
@@ -75,9 +75,12 @@ export function remapCompiledCss(
   ownership: CandidateOwnership[],
 ): string {
   const root = postcss.parse(compiledCss);
-  const byCandidate = new Map(
-    ownership.map((item) => [item.candidate, item.selector]),
-  );
+  const byCandidate = new Map<string, string[]>();
+  for (const item of ownership) {
+    const list = byCandidate.get(item.candidate) ?? [];
+    if (!list.includes(item.selector)) list.push(item.selector);
+    byCandidate.set(item.candidate, list);
+  }
 
   root.walkRules((rule) => {
     const nextSelectors: string[] = [];

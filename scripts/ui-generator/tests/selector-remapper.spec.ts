@@ -38,6 +38,28 @@ describe("remapCompiledCss", () => {
     expect(out).not.toContain('[data-ui-component="button"]-border');
     expect(out).not.toContain("\\.5");
   });
+
+  it("keeps shared utilities for every owning variant/size", () => {
+    const css = `.px-2\\.5 { padding-inline: 0.625rem }`;
+    const ownership = [
+      {
+        candidate: "px-2.5",
+        selector: '[data-ui-component="button"][data-size="default"]',
+      },
+      {
+        candidate: "px-2.5",
+        selector: '[data-ui-component="button"][data-size="sm"]',
+      },
+      {
+        candidate: "px-2.5",
+        selector: '[data-ui-component="button"][data-size="lg"]',
+      },
+    ];
+    const out = remapCompiledCss(css, ownership);
+    expect(out).toContain('[data-size="default"]');
+    expect(out).toContain('[data-size="sm"]');
+    expect(out).toContain('[data-size="lg"]');
+  });
 });
 
 describe("buildButtonOwnership", () => {
