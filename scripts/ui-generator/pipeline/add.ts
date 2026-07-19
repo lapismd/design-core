@@ -93,16 +93,13 @@ export async function runAdd(options: {
   log.ok("Created isolated worktree");
 
   try {
-    // Install deps in worktree via symlink to avoid long installs when possible
-    const wtNodeModules = path.join(worktree.path, "node_modules");
-    if (!existsSync(wtNodeModules)) {
-      const { symlinkSync } = await import("node:fs");
-      symlinkSync(
-        path.join(config.packageRoot, "node_modules"),
-        wtNodeModules,
-        "junction",
-      );
-    }
+    // Install lockfile-pinned deps inside the worktree (symlink breaks Vitest browser imports).
+    log.step("Installing worktree dependencies");
+    await execa(
+      "pnpm",
+      ["install", "--frozen-lockfile", "--prefer-offline"],
+      { cwd: worktree.path, stdio: "inherit" },
+    );
 
     const intakeDir = await prepareIntakeProject(
       config,
@@ -314,12 +311,25 @@ export async function runAdd(options: {
     void allowedNew;
     void afterOthers;
 
-    // Storybook vitest for button
+    // Storybook vitest (browser provider needs a real worktree install)
     log.step("Running Storybook Vitest");
-    await execa("pnpm", ["test:storybook"], {
+    const storybookResult = await execa("pnpm", ["test:storybook"], {
       cwd: worktree.path,
-      stdio: "inherit",
+      reject: false,
+      all: true,
     });
+    writeFileSync(
+      path.join(run.reportDir, "logs", "test-storybook.log"),
+      storybookResult.all ?? "",
+    );
+    if (storybookResult.exitCode !== 0) {
+      throw new GeneratorError(
+        "Storybook Vitest failed in the generator worktree",
+        EXIT.storybook,
+        storybookResult.all?.slice(-4000),
+      );
+    }
+    log.ok("Storybook Vitest passed");
 
     writeReportMarkdown(run.reportDir, `Add ${component}`, [
       {
