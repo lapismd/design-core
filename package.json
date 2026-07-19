@@ -15,6 +15,7 @@
     "test:visual:update": "tsx scripts/ui-generator/cli.ts visual-update",
     "test:visual:report": "playwright show-report",
     "ui:add": "tsx scripts/ui-generator/cli.ts add",
+    "ui:add:batch": "tsx scripts/ui-generator/cli.ts add:batch",
     "ui:inspect": "tsx scripts/ui-generator/cli.ts inspect",
     "ui:doctor": "tsx scripts/ui-generator/cli.ts doctor",
     "ui:refresh": "tsx scripts/ui-generator/cli.ts refresh",

@@ -3,16 +3,16 @@ import path from "node:path";
 import { chromium, type Browser } from "@playwright/test";
 import { PNG } from "pngjs";
 import pixelmatch from "pixelmatch";
-import type { TvExtraction } from "../analysis/variant-extractor.js";
+import type { StyleExtraction } from "../analysis/style-extractor.js";
+import type { ComponentRecipe } from "../recipes/types.js";
 import { EXIT, GeneratorError } from "../errors.js";
 import { log } from "../logger.js";
 
 export type ParityCase = {
   id: string;
-  variant: string;
-  size: string;
   theme: "light" | "dark";
   label: string;
+  axisValues: Record<string, string>;
 };
 
 export type ParityResult = {
@@ -24,72 +24,114 @@ export type ParityResult = {
   }>;
 };
 
-function pickCases(extraction: TvExtraction): ParityCase[] {
-  const variants =
-    extraction.axes.find((a) => a.prop === "variant")?.values ?? [];
-  const sizes = extraction.axes.find((a) => a.prop === "size")?.values ?? [];
+function pickCases(
+  extraction: StyleExtraction,
+  themes: ReadonlyArray<"light" | "dark">,
+): ParityCase[] {
   const cases: ParityCase[] = [];
-  const defaultVariant =
-    extraction.axes.find((a) => a.prop === "variant")?.defaultValue ??
-    variants[0]!;
-  const defaultSize =
-    extraction.axes.find((a) => a.prop === "size")?.defaultValue ?? sizes[0]!;
+  const defaults: Record<string, string> = {};
+  for (const axis of extraction.axes) {
+    defaults[axis.prop] = axis.defaultValue ?? axis.values[0]!;
+  }
 
-  for (const theme of ["light", "dark"] as const) {
+  for (const theme of themes) {
     cases.push({
       id: `${theme}-default`,
-      variant: defaultVariant,
-      size: defaultSize,
       theme,
       label: "Default",
+      axisValues: { ...defaults },
     });
-    for (const variant of variants) {
-      cases.push({
-        id: `${theme}-variant-${variant}`,
-        variant,
-        size: defaultSize,
-        theme,
-        label: variant,
-      });
-    }
-    for (const size of sizes) {
-      cases.push({
-        id: `${theme}-size-${size}`,
-        variant: defaultVariant,
-        size,
-        theme,
-        label: size,
-      });
+
+    for (const axis of extraction.axes) {
+      for (const value of axis.values) {
+        cases.push({
+          id: `${theme}-${axis.prop}-${value}`,
+          theme,
+          label: value,
+          axisValues: { ...defaults, [axis.prop]: value },
+        });
+      }
     }
   }
-  return cases;
+
+  // Deduplicate (default overlaps first axis default)
+  const seen = new Set<string>();
+  return cases.filter((c) => {
+    const key = `${c.theme}:${JSON.stringify(c.axisValues)}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
 }
 
 function classFor(
-  extraction: TvExtraction,
-  variant: string,
-  size: string,
+  extraction: StyleExtraction,
+  axisValues: Record<string, string>,
 ): string {
-  const base = extraction.baseClasses.join(" ");
-  const v = extraction.classMaps.variant?.[variant] ?? "";
-  const s = extraction.classMaps.size?.[size] ?? "";
-  return [base, v, s].filter(Boolean).join(" ");
+  const fromMaps: string[] = [];
+  for (const [prop, value] of Object.entries(axisValues)) {
+    const classString = extraction.classMaps[prop]?.[value];
+    if (classString) fromMaps.push(classString);
+  }
+  return [extraction.baseClasses.join(" "), ...fromMaps]
+    .filter(Boolean)
+    .join(" ");
+}
+
+function attrsToHtml(attrs: Record<string, string> | undefined): string {
+  if (!attrs) return "";
+  return Object.entries(attrs)
+    .map(([k, v]) => `${k}="${v.replaceAll('"', "&quot;")}"`)
+    .join(" ");
+}
+
+function axisAttrsHtml(axisValues: Record<string, string>): string {
+  return Object.entries(axisValues)
+    .map(([k, v]) => `data-${k}="${v}"`)
+    .join(" ");
+}
+
+function buildElement(
+  recipe: ComponentRecipe,
+  className: string | null,
+  axisValues: Record<string, string>,
+  label: string,
+  semantic: boolean,
+): string {
+  const tag = recipe.parity.tag;
+  const text = recipe.parity.text ?? label;
+  const baseAttrs = attrsToHtml(recipe.parity.attrs);
+  const axes = axisAttrsHtml(axisValues);
+  const partFromSelector =
+    recipe.parity.shotSelector?.match(/data-ui-part="([^"]+)"/)?.[1] ?? null;
+  const semanticAttrs = semantic
+    ? `data-ui-component="${recipe.component}" ${
+        partFromSelector ? `data-ui-part="${partFromSelector}"` : ""
+      } ${axes}`
+    : "";
+  const classAttr = className ? `class="${className}"` : "";
+  const common = `data-parity-root ${baseAttrs} ${semanticAttrs} ${axes}`;
+  const voidTags = new Set(["input", "hr", "img", "br"]);
+  if (voidTags.has(tag)) {
+    return `<${tag} ${common} ${classAttr} />`;
+  }
+  if (tag === "svg") {
+    return `<${tag} ${common} ${classAttr}><circle cx="12" cy="12" r="10" fill="currentColor" /></${tag}>`;
+  }
+  return `<${tag} ${common} ${classAttr}>${text}</${tag}>`;
 }
 
 function buildPages(args: {
   outDir: string;
-  extraction: TvExtraction;
+  extraction: StyleExtraction;
   remappedCss: string;
   tailwindCss: string;
   cases: ParityCase[];
+  recipe: ComponentRecipe;
 }) {
   mkdirSync(args.outDir, { recursive: true });
   for (const testCase of args.cases) {
-    const refClasses = classFor(
-      args.extraction,
-      testCase.variant,
-      testCase.size,
-    );
+    const refClasses = classFor(args.extraction, testCase.axisValues);
     const darkClass = testCase.theme === "dark" ? "dark" : "";
     const referenceHtml = `<!doctype html>
 <html class="${darkClass}">
@@ -100,7 +142,7 @@ body{margin:0;padding:24px;background:var(--background);color:var(--foreground);
 </style>
 </head>
 <body>
-<button type="button" data-slot="button" class="${refClasses}">${testCase.label}</button>
+${buildElement(args.recipe, refClasses, testCase.axisValues, testCase.label, false)}
 </body>
 </html>`;
 
@@ -109,16 +151,13 @@ body{margin:0;padding:24px;background:var(--background);color:var(--foreground);
 <head>
 <meta charset="utf-8" />
 <style>
-${args.tailwindCss.replace(/@import[^;]+;/g, "/* imports inlined separately */")}
-/* foundation tokens from theme already in remapped context */
-:root, .dark { /* theme vars expected from remapped/theme bundle */ }
 ${args.remappedCss}
 body{margin:0;padding:24px;background:var(--background);color:var(--foreground);font-family:system-ui,sans-serif}
 </style>
 <link rel="stylesheet" href="./theme-bundle.css" />
 </head>
 <body>
-<button type="button" data-ui-component="button" data-slot="button" data-variant="${testCase.variant}" data-size="${testCase.size}">${testCase.label}</button>
+${buildElement(args.recipe, null, testCase.axisValues, testCase.label, true)}
 </body>
 </html>`;
 
@@ -134,9 +173,14 @@ body{margin:0;padding:24px;background:var(--background);color:var(--foreground);
   writeFileSync(path.join(args.outDir, "theme-bundle.css"), args.tailwindCss);
 }
 
-async function shot(browser: Browser, filePath: string): Promise<Buffer> {
+async function shot(
+  browser: Browser,
+  filePath: string,
+  recipe: ComponentRecipe,
+): Promise<Buffer> {
+  const viewport = recipe.parity.viewport ?? { width: 480, height: 160 };
   const page = await browser.newPage({
-    viewport: { width: 480, height: 160 },
+    viewport,
     deviceScaleFactor: 1,
     colorScheme: "light",
     reducedMotion: "reduce",
@@ -150,22 +194,21 @@ async function shot(browser: Browser, filePath: string): Promise<Buffer> {
   await page.evaluate(async () => {
     if (document.fonts?.ready) await document.fonts.ready;
   });
-  const button = page.locator("button");
-  await button.waitFor({ state: "visible" });
-  const buffer = await button.screenshot({ animations: "disabled" });
+  const target = page.locator("[data-parity-root]").first();
+  await target.waitFor({ state: "visible" });
+  const buffer = await target.screenshot({ animations: "disabled" });
   await page.close();
   return buffer;
 }
 
 export async function runParityHarness(options: {
   reportDir: string;
-  extraction: TvExtraction;
+  extraction: StyleExtraction;
   remappedCss: string;
-  /** Full compiled CSS including theme variables (from Tailwind probe with theme). */
   themeAndUtilityCss: string;
-  maxDiffPixels: number;
+  recipe: ComponentRecipe;
 }): Promise<ParityResult> {
-  const cases = pickCases(options.extraction);
+  const cases = pickCases(options.extraction, options.recipe.themes);
   const outDir = path.join(options.reportDir, "visual", "parity-pages");
   buildPages({
     outDir,
@@ -173,6 +216,7 @@ export async function runParityHarness(options: {
     remappedCss: options.remappedCss,
     tailwindCss: options.themeAndUtilityCss,
     cases,
+    recipe: options.recipe,
   });
 
   const browser = await chromium.launch({ headless: true });
@@ -181,10 +225,20 @@ export async function runParityHarness(options: {
     for (const testCase of cases) {
       const refPath = path.join(outDir, `${testCase.id}.reference.html`);
       const candPath = path.join(outDir, `${testCase.id}.candidate.html`);
-      const refBuf = await shot(browser, refPath);
-      const candBuf = await shot(browser, candPath);
+      const refBuf = await shot(browser, refPath, options.recipe);
+      const candBuf = await shot(browser, candPath, options.recipe);
       const refPng = PNG.sync.read(refBuf);
       const candPng = PNG.sync.read(candBuf);
+
+      mkdirSync(path.join(options.reportDir, "visual", "reference"), {
+        recursive: true,
+      });
+      mkdirSync(path.join(options.reportDir, "visual", "candidate"), {
+        recursive: true,
+      });
+      mkdirSync(path.join(options.reportDir, "visual", "diff"), {
+        recursive: true,
+      });
 
       if (refPng.width !== candPng.width || refPng.height !== candPng.height) {
         writeFileSync(
@@ -248,14 +302,14 @@ export async function runParityHarness(options: {
       results.push({
         id: testCase.id,
         diffPixels,
-        maxDiffPixels: options.maxDiffPixels,
+        maxDiffPixels: options.recipe.maxDiffPixels,
       });
 
-      if (diffPixels > options.maxDiffPixels) {
+      if (diffPixels > options.recipe.maxDiffPixels) {
         throw new GeneratorError(
           `Reference/candidate parity failed for ${testCase.id}`,
           EXIT.parity,
-          `diffPixels=${diffPixels} max=${options.maxDiffPixels}`,
+          `diffPixels=${diffPixels} max=${options.recipe.maxDiffPixels}`,
         );
       }
     }
@@ -264,7 +318,7 @@ export async function runParityHarness(options: {
   }
 
   log.ok(
-    `Reference/candidate parity passed (${results.length} cases, light+dark)`,
+    `Reference/candidate parity passed (${results.length} cases, ${options.recipe.themes.join("+")})`,
   );
   return { ok: true, cases: results };
 }

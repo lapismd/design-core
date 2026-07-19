@@ -1,4 +1,10 @@
-import { existsSync, readFileSync } from "node:fs";
+import {
+  existsSync,
+  mkdirSync,
+  readdirSync,
+  readFileSync,
+  rmSync,
+} from "node:fs";
 import path from "node:path";
 import { loadConfig } from "../config.js";
 import { EXIT, GeneratorError } from "../errors.js";
@@ -7,13 +13,16 @@ import {
   fetchShadcnComponent,
   prepareIntakeProject,
 } from "../adapters/shadcn-cli.js";
-import { extractTvConfig } from "../analysis/variant-extractor.js";
+import {
+  extractFamilyFromFiles,
+  looksLikeTailwindSource,
+} from "../analysis/style-extractor.js";
 import {
   createRunContext,
   writeJson,
   writeReportMarkdown,
 } from "../reports/report.js";
-import { mkdirSync, rmSync } from "node:fs";
+import { getRecipe } from "../recipes/index.js";
 
 export async function runInspect(options: { component?: string }) {
   const component = options.component?.trim();
@@ -35,50 +44,73 @@ export async function runInspect(options: { component?: string }) {
   mkdirSync(scratch, { recursive: true });
 
   try {
-    const intakeDir = await prepareIntakeProject(config, scratch, run.runId);
-    const intake = await fetchShadcnComponent(config, intakeDir, component);
-    const mainSource =
-      intake.files.find((f) => f.path.endsWith(`${component}.svelte`)) ??
-      intake.files.find((f) => f.path.endsWith(".svelte"));
-    if (!mainSource) {
-      throw new GeneratorError("No .svelte source in intake", EXIT.intake);
-    }
-
-    let extraction = null;
-    let unsupported: string[] = [];
-    try {
-      extraction = extractTvConfig(mainSource.content);
-    } catch (error) {
-      unsupported.push(error instanceof Error ? error.message : String(error));
-    }
-
+    const recipe = getRecipe(component);
     const localPath = path.join(
       config.packageRoot,
       config.sharedRoot,
       component,
     );
-    const recipePath = path.join(
-      config.packageRoot,
-      "scripts/ui-generator/recipes",
-      `${component}.ts`,
-    );
-    const supportTier =
-      unsupported.length > 0
-        ? "unsupported"
-        : existsSync(recipePath) || component === "button"
-          ? "tier1-with-recipe"
-          : "tier1-generic";
+
+    const intakeDir = await prepareIntakeProject(config, scratch, run.runId);
+    const intake = await fetchShadcnComponent(config, intakeDir, component);
+
+    const localFiles = existsSync(localPath)
+      ? readdirSync(localPath)
+          .filter((f) => f.endsWith(".svelte") && !f.includes(".stories."))
+          .map((fileName) => ({
+            fileName,
+            source: readFileSync(path.join(localPath, fileName), "utf8"),
+          }))
+      : [];
+
+    const intakeFiles = intake.files
+      .filter((f) => f.path.endsWith(".svelte"))
+      .map((f) => ({
+        fileName: path.basename(f.path),
+        source: f.content,
+      }));
+
+    const sourceFiles = localFiles.some((f) => looksLikeTailwindSource(f.source))
+      ? localFiles.filter((f) => looksLikeTailwindSource(f.source))
+      : intakeFiles;
+
+    let family = null;
+    let unsupported: string[] = [];
+    try {
+      family = extractFamilyFromFiles(component, sourceFiles);
+    } catch (error) {
+      unsupported.push(error instanceof Error ? error.message : String(error));
+    }
+
+    const localConverted =
+      localFiles.length > 0 &&
+      localFiles.every((f) => !looksLikeTailwindSource(f.source));
+
+    const supportTier = !recipe
+      ? "unsupported"
+      : !recipe.convertAllowed
+        ? "deferred"
+        : localConverted
+          ? "converted"
+          : recipe.tier;
 
     const report = {
       component,
       cliVersion: intake.cliVersion,
       files: intake.files.map((f) => ({ path: f.path, sha256: f.sha256 })),
       localExists: existsSync(localPath),
-      recipeExists: existsSync(recipePath) || component === "button",
+      recipeExists: Boolean(recipe),
+      convertAllowed: recipe?.convertAllowed ?? false,
       supportTier,
-      variantAxes: extraction?.axes ?? [],
-      candidateCount: extraction?.allCandidates.length ?? 0,
-      candidates: extraction?.allCandidates ?? [],
+      storyTitle: recipe?.storyTitle,
+      parts: family?.parts.map((p) => ({
+        part: p.part,
+        kind: p.extraction.kind,
+        axes: p.extraction.axes,
+        candidateCount: p.extraction.allCandidates.length,
+      })),
+      candidateCount: family?.allCandidates.length ?? 0,
+      candidates: family?.allCandidates ?? [],
       unsupported,
     };
 
@@ -90,8 +122,8 @@ export async function runInspect(options: { component?: string }) {
         body: report.files.map((f) => `- ${f.path}`).join("\n"),
       },
       {
-        heading: "Variant axes",
-        body: JSON.stringify(report.variantAxes, null, 2),
+        heading: "Parts",
+        body: JSON.stringify(report.parts, null, 2),
       },
       {
         heading: "Tailwind candidates",

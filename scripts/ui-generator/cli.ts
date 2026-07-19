@@ -5,6 +5,7 @@ import { runDoctor } from "./pipeline/doctor.js";
 import { runVisualUpdate } from "./pipeline/visual-update.js";
 import { runInspect } from "./pipeline/inspect.js";
 import { runAdd } from "./pipeline/add.js";
+import { runBatch } from "./pipeline/batch.js";
 import { runRefresh } from "./pipeline/refresh.js";
 
 function parseArgs(argv: string[]) {
@@ -59,6 +60,15 @@ async function main() {
         skipParity: Boolean(flags.get("skip-parity")),
       });
       break;
+    case "add:batch":
+    case "batch":
+      await runBatch({
+        batch: positionals[0],
+        dryRun: Boolean(flags.get("dry-run")),
+        keepWorktree: Boolean(flags.get("keep-worktree")),
+        skipParity: Boolean(flags.get("skip-parity")),
+      });
+      break;
     case "refresh":
       await runRefresh();
       break;
@@ -69,6 +79,7 @@ async function main() {
   pnpm ui:doctor
   pnpm ui:inspect <component>
   pnpm ui:add <component> [--overwrite] [--dry-run] [--keep-worktree]
+  pnpm ui:add:batch <a|b|c> [--overwrite] [--dry-run] [--keep-worktree]
   pnpm ui:refresh <component>
   pnpm test:visual:update --component <name>   # requires VISUAL_UPDATE_APPROVED=1
 `);

@@ -102,13 +102,21 @@ export function remapCompiledCss(
   return root.toString();
 }
 
-export function buildButtonOwnership(
+/**
+ * Map Tailwind candidates to semantic ownership selectors.
+ * Root part may omit data-ui-part when part === component; variant axes become data-* attrs.
+ */
+export function buildPartOwnership(
   component: string,
+  part: string,
   baseClasses: string[],
   classMaps: Record<string, Record<string, string>>,
 ): CandidateOwnership[] {
   const ownership: CandidateOwnership[] = [];
-  const root = `[data-ui-component="${component}"]`;
+  const root =
+    part === component
+      ? `[data-ui-component="${component}"]`
+      : `[data-ui-component="${component}"][data-ui-part="${part}"]`;
 
   for (const candidate of baseClasses) {
     ownership.push({ candidate, selector: root });
@@ -124,4 +132,13 @@ export function buildButtonOwnership(
   }
 
   return ownership;
+}
+
+/** @deprecated Prefer buildPartOwnership */
+export function buildButtonOwnership(
+  component: string,
+  baseClasses: string[],
+  classMaps: Record<string, Record<string, string>>,
+): CandidateOwnership[] {
+  return buildPartOwnership(component, component, baseClasses, classMaps);
 }

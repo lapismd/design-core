@@ -1,4 +1,4 @@
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
 import { execa } from "execa";
@@ -14,7 +14,6 @@ import {
   validatePatchPaths,
 } from "../adapters/git.js";
 import {
-  assertSnapshotManifestUnchanged,
   buildSnapshotManifest,
   writeSnapshotManifest,
 } from "../visual/snapshot-manifest.js";
@@ -23,7 +22,11 @@ import {
   writeJson,
   writeReportMarkdown,
 } from "../reports/report.js";
-import { requireRecipe } from "../recipes/index.js";
+import {
+  componentsForBatch,
+  requireRecipe,
+  type BatchName,
+} from "../recipes/index.js";
 import { runDoctor } from "./doctor.js";
 import { convertFamilyInWorktree } from "./convert-family.js";
 
@@ -32,78 +35,29 @@ function isTargetSnapshotKey(key: string, includes: string[]): boolean {
   return includes.some((token) => lower.includes(token.toLowerCase()));
 }
 
-async function runStorybookVitest(worktreePath: string, reportDir: string) {
-  log.step("Running Storybook Vitest");
-  let storybookLog = "";
-  let storybookOk = false;
-  for (let attempt = 1; attempt <= 2; attempt++) {
-    const storybookResult = await execa("pnpm", ["test:storybook"], {
-      cwd: worktreePath,
-      reject: false,
-      all: true,
-    });
-    storybookLog += `\n--- attempt ${attempt} ---\n${storybookResult.all ?? ""}`;
-    if (storybookResult.exitCode === 0) {
-      storybookOk = true;
-      break;
-    }
-    log.warn(
-      `Storybook Vitest attempt ${attempt} failed; retrying once for flake`,
-    );
-  }
-  writeFileSync(
-    path.join(reportDir, "logs", "test-storybook.log"),
-    storybookLog,
-  );
-  if (!storybookOk) {
-    throw new GeneratorError(
-      "Storybook Vitest failed in the generator worktree",
-      EXIT.storybook,
-      storybookLog.slice(-4000),
-    );
-  }
-  log.ok("Storybook Vitest passed");
-}
-
-export async function runAdd(options: {
-  component?: string;
-  overwrite?: boolean;
+export async function runBatch(options: {
+  batch?: string;
   dryRun?: boolean;
   keepWorktree?: boolean;
   skipParity?: boolean;
 }) {
-  const component = options.component?.trim();
-  if (!component) {
+  const batchName = options.batch?.trim().toLowerCase() as BatchName | undefined;
+  if (!batchName || !["a", "b", "c"].includes(batchName)) {
     throw new GeneratorError(
-      "ui:add requires a component name",
+      'ui:add:batch requires batch name "a", "b", or "c"',
       EXIT.invalidRequest,
     );
   }
 
-  const recipe = requireRecipe(component);
-  if (!recipe.convertAllowed) {
-    throw new GeneratorError(
-      `Component "${component}" is not convertible (tier=${recipe.tier})`,
-      EXIT.invalidRequest,
-      "Use ui:inspect and add a recipe with convertAllowed, or convert a supported batch family.",
-    );
-  }
+  const components = componentsForBatch(batchName);
+  const recipes = components.map((c) => requireRecipe(c));
+  const allSnapshotIncludes = recipes.flatMap((r) => r.snapshotKeyIncludes);
 
   const config = loadConfig();
   await runDoctor({ requireClean: true });
   const { head } = assertCleanGit(config.packageRoot);
-  const run = createRunContext(config, "add", component);
+  const run = createRunContext(config, "batch", `batch-${batchName}`);
   mkdirSync(path.join(run.reportDir, "logs"), { recursive: true });
-
-  const targetRel = path.join(config.sharedRoot, component);
-  const targetAbs = path.join(config.packageRoot, targetRel);
-  if (existsSync(targetAbs) && !options.overwrite) {
-    throw new GeneratorError(
-      `Component "${component}" already exists. Pass --overwrite to convert in place.`,
-      EXIT.invalidRequest,
-      targetRel,
-    );
-  }
 
   const snapshotDir = path.join(config.packageRoot, config.visual.snapshotDir);
   const beforeSnapshots = buildSnapshotManifest(snapshotDir);
@@ -113,7 +67,9 @@ export async function runAdd(options: {
   );
 
   const worktree = createDetachedWorktree(config, run.runId);
-  log.ok("Created isolated worktree");
+  log.ok(`Created isolated worktree for batch ${batchName}`);
+
+  const convertedSummary: Array<{ component: string; files: number }> = [];
 
   try {
     log.step("Installing worktree dependencies");
@@ -122,14 +78,21 @@ export async function runAdd(options: {
       stdio: "inherit",
     });
 
-    const converted = await convertFamilyInWorktree({
-      config,
-      worktreePath: worktree.path,
-      component,
-      runId: run.runId,
-      reportDir: run.reportDir,
-      skipParity: options.skipParity,
-    });
+    for (const component of components) {
+      log.step(`Converting ${component}`);
+      const result = await convertFamilyInWorktree({
+        config,
+        worktreePath: worktree.path,
+        component,
+        runId: `${run.runId}-${component}`,
+        reportDir: run.reportDir,
+        skipParity: options.skipParity,
+      });
+      convertedSummary.push({
+        component,
+        files: result.written.length,
+      });
+    }
 
     log.step("Running static checks");
     await execa(
@@ -141,7 +104,7 @@ export async function runAdd(options: {
       },
     );
 
-    log.step("Running existing visual suite (immutable)");
+    log.step("Running visual suite");
     await execa("pnpm", ["build-storybook"], {
       cwd: worktree.path,
       stdio: "inherit",
@@ -153,7 +116,7 @@ export async function runAdd(options: {
     });
     if (visual.exitCode !== 0) {
       log.warn(
-        `Visual suite failed after converting ${component}; updating snapshots then verifying non-target hashes`,
+        "Visual suite failed after batch conversion; updating snapshots then verifying non-target hashes",
       );
       await execa("pnpm", ["exec", "playwright", "test", "--update-snapshots"], {
         cwd: worktree.path,
@@ -175,74 +138,91 @@ export async function runAdd(options: {
     );
 
     for (const [key, hash] of Object.entries(beforeSnapshots)) {
-      if (isTargetSnapshotKey(key, recipe.snapshotKeyIncludes)) continue;
+      if (isTargetSnapshotKey(key, allSnapshotIncludes)) continue;
       if (afterSnapshots[key] !== hash) {
         throw new GeneratorError(
-          `Non-target snapshot changed during ui:add (${component})`,
+          `Non-target snapshot changed during batch ${batchName}`,
           EXIT.snapshotIntegrity,
           key,
         );
       }
     }
     log.ok("Existing non-target snapshot hashes unchanged");
-    void assertSnapshotManifestUnchanged;
 
-    await runStorybookVitest(worktree.path, run.reportDir);
+    log.step("Running Storybook Vitest");
+    let storybookLog = "";
+    let storybookOk = false;
+    for (let attempt = 1; attempt <= 2; attempt++) {
+      const storybookResult = await execa("pnpm", ["test:storybook"], {
+        cwd: worktree.path,
+        reject: false,
+        all: true,
+      });
+      storybookLog += `\n--- attempt ${attempt} ---\n${storybookResult.all ?? ""}`;
+      if (storybookResult.exitCode === 0) {
+        storybookOk = true;
+        break;
+      }
+      log.warn(
+        `Storybook Vitest attempt ${attempt} failed; retrying once for flake`,
+      );
+    }
+    writeFileSync(
+      path.join(run.reportDir, "logs", "test-storybook.log"),
+      storybookLog,
+    );
+    if (!storybookOk) {
+      throw new GeneratorError(
+        "Storybook Vitest failed in the generator worktree",
+        EXIT.storybook,
+        storybookLog.slice(-4000),
+      );
+    }
+    log.ok("Storybook Vitest passed");
 
-    writeReportMarkdown(run.reportDir, `Add ${component}`, [
+    writeReportMarkdown(run.reportDir, `Batch ${batchName}`, [
+      {
+        heading: "Components",
+        body: convertedSummary
+          .map((c) => `- ${c.component} (${c.files} files)`)
+          .join("\n"),
+      },
       {
         heading: "Result",
         body: options.dryRun
           ? "Dry run — patch not applied"
           : "Ready to apply patch",
       },
-      {
-        heading: "Tier",
-        body: recipe.tier,
-      },
-      {
-        heading: "Files",
-        body: converted.written
-          .map((f) => path.relative(worktree.path, f))
-          .join("\n"),
-      },
-      {
-        heading: "Candidates",
-        body: String(converted.family.allCandidates.length),
-      },
     ]);
 
     execFileSync("git", ["add", "-A"], { cwd: worktree.path });
-
     const patchPath = path.join(run.reportDir, "component.patch");
     createBinaryPatch(worktree.path, patchPath);
     const patchContent = readFileSync(patchPath, "utf8");
     if (!patchContent.trim()) {
       throw new GeneratorError(
-        "No changes produced by conversion",
+        "No changes produced by batch conversion",
         EXIT.generation,
       );
     }
     const paths = validatePatchPaths(patchContent, config.pathAllowlist);
     writeJson(path.join(run.reportDir, "report.json"), {
-      component,
+      batch: batchName,
+      components,
       dryRun: Boolean(options.dryRun),
       paths,
       head,
     });
 
     if (options.dryRun) {
-      log.ok(
-        "Dry run complete — patch retained in report, repository unchanged",
-      );
+      log.ok("Dry run complete — repository unchanged");
       log.info(`Report: ${run.reportDir}`);
-      log.info(`Patch: ${patchPath}`);
       return;
     }
 
     assertHeadUnchanged(config.packageRoot, head);
     applyBinaryPatch(config.packageRoot, patchPath, config.pathAllowlist);
-    log.ok("Applied patch to the current worktree");
+    log.ok(`Applied batch ${batchName} patch`);
     log.info(`Report: ${run.reportDir}`);
     console.log("\nAdded/updated:");
     for (const p of paths) console.log(`  ${p}`);
