@@ -17,7 +17,14 @@
         "path": "src/lib/components/ui/separator/separator.svelte",
         "sha256": "2210243552c9339f0507c17481f68323a6d77836c545c9b0d5ce30f47dff9e15"
       }
-    ]
+    ],
+    "docsUrl": "https://shadcn-svelte.com/docs/components/separator.md",
+    "docsFetchedAt": "2026-07-19T20:17:25.204Z",
+    "docsSha256": "318c518eb44a32b38ff46c1428ceed02add0892f2ebc6ab236f9a8fee4be8205",
+    "examplesIncluded": [
+      "Preview"
+    ],
+    "examplesSkipped": []
   },
   "converter": {
     "version": "2.0.0",

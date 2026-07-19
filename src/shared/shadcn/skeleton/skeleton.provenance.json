@@ -17,7 +17,15 @@
         "path": "src/lib/components/ui/skeleton/skeleton.svelte",
         "sha256": "5b6722347a7de38910a9887b51baeb080d668bc2d9038514efe30bc209d038c3"
       }
-    ]
+    ],
+    "docsUrl": "https://shadcn-svelte.com/docs/components/skeleton.md",
+    "docsFetchedAt": "2026-07-19T20:17:25.231Z",
+    "docsSha256": "01d34d83dc871c9952ae98f052e2e011f7bdfbd60a368de8a54130514d4123d6",
+    "examplesIncluded": [
+      "Preview",
+      "Card"
+    ],
+    "examplesSkipped": []
   },
   "converter": {
     "version": "2.0.0",

@@ -17,6 +17,17 @@
         "path": "src/lib/components/ui/label/label.svelte",
         "sha256": "cafe265a42cb2aedc38ab8f547ad3a824d947200cc5fb9e9d30a7f5f7ab8ca13"
       }
+    ],
+    "docsUrl": "https://shadcn-svelte.com/docs/components/label.md",
+    "docsFetchedAt": "2026-07-19T20:17:25.294Z",
+    "docsSha256": "81ed5f280947ef83c2d6cf0918f22b751eb8d1f9243dfb1bc682c6bcc8fb7afd",
+    "examplesIncluded": [],
+    "examplesSkipped": [
+      {
+        "name": "Preview",
+        "reason": "missing-family",
+        "detail": "Catalog is missing family \"checkbox\""
+      }
     ]
   },
   "converter": {

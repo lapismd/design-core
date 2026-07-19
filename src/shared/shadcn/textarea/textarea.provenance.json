@@ -17,7 +17,19 @@
         "path": "src/lib/components/ui/textarea/textarea.svelte",
         "sha256": "e95498452cd2aecd958b010fb5d1393a89f24439aaae04268978580edeee6e58"
       }
-    ]
+    ],
+    "docsUrl": "https://shadcn-svelte.com/docs/components/textarea.md",
+    "docsFetchedAt": "2026-07-19T20:17:25.330Z",
+    "docsSha256": "5ed4fe43cec752723e116acce94e9ece54208b97cbafad63242adc4716834a74",
+    "examplesIncluded": [
+      "Preview",
+      "Default",
+      "Disabled",
+      "With Label",
+      "With Text",
+      "With Button"
+    ],
+    "examplesSkipped": []
   },
   "converter": {
     "version": "2.0.0",

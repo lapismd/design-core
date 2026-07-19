@@ -22,6 +22,13 @@ function parseHeadingTitle(line: string): string | null {
   return null;
 }
 
+/** Prefer markdown anchor for stable unique slugs (`### [Link](#link-1)` → `link-1`). */
+function parseHeadingSlug(line: string, fallbackName: string): string {
+  const linked = /^#{2,3}\s+\[[^\]]+\]\(#([^)]+)\)\s*$/.exec(line.trim());
+  if (linked?.[1]) return linked[1].trim();
+  return slugify(fallbackName);
+}
+
 function isH2(line: string): boolean {
   return /^##\s+/.test(line.trim());
 }
@@ -96,32 +103,50 @@ function parseUsage(body: string): UpstreamUsage {
   return { script, markup };
 }
 
+const META_H2 =
+  /^(installation|usage|examples|changelog|api reference|anatomy|accessibility)$/i;
+
+function isSkippableExampleName(name: string): boolean {
+  return (
+    /^\d{4}-\d{2}-\d{2}/.test(name) ||
+    /^epicenter$/i.test(name) ||
+    /^special sponsor$/i.test(name)
+  );
+}
+
+function exampleFromSection(
+  name: string,
+  slug: string,
+  section: string,
+): UpstreamExample | null {
+  if (isSkippableExampleName(name)) return null;
+  const fenceIdx = section.search(/```svelte\b/);
+  const prose = fenceIdx >= 0 ? section.slice(0, fenceIdx) : section;
+  const description = prose.replace(/\n*View Code\n*/g, "\n").trim();
+  const blocks = extractFencedBlocks(section, "svelte");
+  const code = blocks[0] ?? "";
+  if (!code.trim()) return null;
+  return {
+    name,
+    slug,
+    description: description || null,
+    code,
+  };
+}
+
 function parseExamples(body: string): UpstreamExample[] {
   const lines = body.split("\n");
   const examples: UpstreamExample[] = [];
   let name: string | null = null;
+  let slug: string | null = null;
   let chunk: string[] = [];
 
   const flush = () => {
-    if (!name) return;
-    const section = chunk.join("\n");
-    const fenceIdx = section.search(/```svelte\b/);
-    const prose =
-      fenceIdx >= 0 ? section.slice(0, fenceIdx) : section;
-    const description = prose
-      .replace(/\n*View Code\n*/g, "\n")
-      .trim();
-    const blocks = extractFencedBlocks(section, "svelte");
-    const code = blocks[0] ?? "";
-    if (code.trim()) {
-      examples.push({
-        name,
-        slug: slugify(name),
-        description: description || null,
-        code,
-      });
-    }
+    if (!name || !slug) return;
+    const example = exampleFromSection(name, slug, chunk.join("\n"));
+    if (example) examples.push(example);
     name = null;
+    slug = null;
     chunk = [];
   };
 
@@ -129,6 +154,7 @@ function parseExamples(body: string): UpstreamExample[] {
     if (isH3(line)) {
       flush();
       name = parseHeadingTitle(line);
+      slug = name ? parseHeadingSlug(line, name) : null;
       continue;
     }
     if (!name) continue;
@@ -136,6 +162,55 @@ function parseExamples(body: string): UpstreamExample[] {
   }
   flush();
   return examples;
+}
+
+/** First svelte fence before Installation — the page hero demo. */
+function parseHeroExample(markdown: string): UpstreamExample | null {
+  const lines = markdown.split("\n");
+  const heroLines: string[] = [];
+  let seenTitle = false;
+  for (const line of lines) {
+    if (line.startsWith("# ")) {
+      seenTitle = true;
+      continue;
+    }
+    if (!seenTitle) continue;
+    if (isH2(line)) break;
+    heroLines.push(line);
+  }
+  const example = exampleFromSection("Preview", "preview", heroLines.join("\n"));
+  return example;
+}
+
+/**
+ * Some pages (e.g. Skeleton) put demos in sibling H2 sections instead of
+ * under ## Examples.
+ */
+function parseSiblingH2Examples(
+  sections: Array<{ title: string; body: string; rawHeading?: string }>,
+): UpstreamExample[] {
+  const out: UpstreamExample[] = [];
+  for (const section of sections) {
+    if (!section.title || META_H2.test(section.title)) continue;
+    if (isSkippableExampleName(section.title)) continue;
+    const slug = slugify(section.title);
+    const example = exampleFromSection(section.title, slug, section.body);
+    if (example) out.push(example);
+  }
+  return out;
+}
+
+function mergeExamples(...groups: UpstreamExample[][]): UpstreamExample[] {
+  const seen = new Set<string>();
+  const out: UpstreamExample[] = [];
+  for (const group of groups) {
+    for (const example of group) {
+      if (seen.has(example.slug)) continue;
+      seen.add(example.slug);
+      out.push(example);
+    }
+  }
+  return out;
 }
 
 /**
@@ -174,6 +249,13 @@ export function parseUpstreamDocs(
   const usageSection = sections.find((s) => /^usage$/i.test(s.title));
   const examplesSection = sections.find((s) => /^examples$/i.test(s.title));
 
+  const hero = parseHeroExample(markdown);
+  const fromExamples = examplesSection
+    ? parseExamples(examplesSection.body)
+    : [];
+  const fromUsage = usageSection ? parseExamples(usageSection.body) : [];
+  const fromSiblingH2 = parseSiblingH2Examples(sections);
+
   return {
     component,
     title,
@@ -185,6 +267,11 @@ export function parseUpstreamDocs(
     usage: usageSection
       ? parseUsage(usageSection.body)
       : { script: null, markup: null },
-    examples: examplesSection ? parseExamples(examplesSection.body) : [],
+    examples: mergeExamples(
+      hero ? [hero] : [],
+      fromExamples,
+      fromUsage,
+      fromSiblingH2,
+    ),
   };
 }

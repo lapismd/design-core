@@ -17,7 +17,15 @@
         "path": "src/lib/components/ui/badge/index.ts",
         "sha256": "1dc9eba432869188db370b8e984ca8ff97430c609746a8274a0edecc0d55b765"
       }
-    ]
+    ],
+    "docsUrl": "https://shadcn-svelte.com/docs/components/badge.md",
+    "docsFetchedAt": "2026-07-19T20:17:25.389Z",
+    "docsSha256": "42b549bc860bd68294dcb8dd3de74581b869e9435b054287f480a3fc87437f4a",
+    "examplesIncluded": [
+      "Preview",
+      "Link"
+    ],
+    "examplesSkipped": []
   },
   "converter": {
     "version": "2.0.0",

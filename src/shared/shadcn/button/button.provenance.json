@@ -17,6 +17,31 @@
         "path": "src/lib/components/ui/button/index.ts",
         "sha256": "0f6b6f040d92b4153821d3f9b4d6b9cbc567247e4fda913e64c1d0fcc4a2f386"
       }
+    ],
+    "docsUrl": "https://shadcn-svelte.com/docs/components/button.md",
+    "docsFetchedAt": "2026-07-19T20:17:25.128Z",
+    "docsSha256": "1be4a054b82125d5fc8a9c1be386695881c8604a6a6ce516d2615ca795497e66",
+    "examplesIncluded": [
+      "Preview",
+      "Size",
+      "Default",
+      "Outline",
+      "Secondary",
+      "Ghost",
+      "Destructive",
+      "Link",
+      "Icon",
+      "With Icon",
+      "Rounded",
+      "Spinner",
+      "Link"
+    ],
+    "examplesSkipped": [
+      {
+        "name": "Button Group",
+        "reason": "missing-family",
+        "detail": "Catalog is missing family \"button-group\""
+      }
     ]
   },
   "converter": {

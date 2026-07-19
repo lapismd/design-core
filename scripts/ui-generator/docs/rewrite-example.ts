@@ -31,6 +31,11 @@ export function rewriteCatalogImports(
       return `from ${spec}`;
     },
   );
+  // examples/*.svelte → src/lib/utils (four levels up from family/examples)
+  code = code.replace(
+    /from\s+["']\$lib\/utils\.js["']/g,
+    'from "../../../../lib/utils.js"',
+  );
   code = code.replace(
     /from\s+["']@tabler\/icons-svelte\/icons\/([a-z0-9-]+)["']/g,
     (_m, icon: string) => {
@@ -139,6 +144,14 @@ export function rewriteExample(args: {
   }
 
   code = rewriteCatalogImports(code, component);
+
+  if (/\$lib\//.test(code)) {
+    return {
+      example,
+      reason: "unsupported-hook",
+      detail: "Example depends on a catalog-unsupported $lib import",
+    };
+  }
 
   // Drop leftover unsupported import lines if any slipped through
   if (UNSUPPORTED_IMPORT_RE.test(code) && /@tabler/.test(code)) {

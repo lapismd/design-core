@@ -17,7 +17,19 @@
         "path": "src/lib/components/ui/input/input.svelte",
         "sha256": "728286a2bfbcd5384640e02fd3868372b665ef129d931ebfcc445544ad702d5a"
       }
-    ]
+    ],
+    "docsUrl": "https://shadcn-svelte.com/docs/components/input.md",
+    "docsFetchedAt": "2026-07-19T20:17:25.361Z",
+    "docsSha256": "fe495dd7b5194ffcb11a4abe81684276bc5f8f2f605123879050b861d173a0a4",
+    "examplesIncluded": [
+      "Preview",
+      "Default",
+      "File",
+      "Disabled",
+      "With Label",
+      "With Button"
+    ],
+    "examplesSkipped": []
   },
   "converter": {
     "version": "2.0.0",

@@ -31,7 +31,9 @@ describe("parseUpstreamDocs", () => {
   });
 
   it("parses all example headings", () => {
-    expect(docs.examples.map((e) => e.name)).toEqual([
+    // Hero preview (if present) is prepended; fixture may or may not include one.
+    const names = docs.examples.map((e) => e.name);
+    expect(names.filter((n) => n !== "Preview")).toEqual([
       "Icon",
       "Text",
       "Button",
@@ -43,6 +45,92 @@ describe("parseUpstreamDocs", () => {
       "Button Group",
       "Custom Input",
     ]);
+  });
+
+  it("parses hero and usage-linked demos when Examples is empty", () => {
+    const badgeMd = `# Badge
+
+Displays a badge.
+
+### [Epicenter](https://example.com)
+
+\`\`\`svelte
+<script lang="ts">
+  import { Badge } from "$lib/components/ui/badge/index.js";
+</script>
+<Badge>Badge</Badge>
+\`\`\`
+
+## [Installation](#installation)
+
+\`\`\`bash
+pnpm dlx shadcn-svelte@latest add badge
+\`\`\`
+
+## [Usage](#usage)
+
+\`\`\`svelte
+<script lang="ts">
+  import { Badge } from "$lib/components/ui/badge/index.js";
+</script>
+\`\`\`
+
+\`\`\`svelte
+<Badge variant="outline">Badge</Badge>
+\`\`\`
+
+### [Link](#link)
+
+Use variants for links.
+
+\`\`\`svelte
+<script lang="ts">
+  import { badgeVariants } from "$lib/components/ui/badge/index.js";
+</script>
+<a href="/dashboard" class={badgeVariants({ variant: "outline" })}>Badge</a>
+\`\`\`
+`;
+    const badge = parseUpstreamDocs("badge", badgeMd);
+    expect(badge.examples.map((e) => e.slug)).toEqual(["preview", "link"]);
+
+    const skeletonMd = `# Skeleton
+
+Placeholder.
+
+\`\`\`svelte
+<script lang="ts">
+  import { Skeleton } from "$lib/components/ui/skeleton/index.js";
+</script>
+<Skeleton class="size-12" />
+\`\`\`
+
+## [Installation](#installation)
+
+\`\`\`bash
+pnpm add skeleton
+\`\`\`
+
+## [Usage](#usage)
+
+\`\`\`svelte
+<script lang="ts">
+  import { Skeleton } from "$lib/components/ui/skeleton/index.js";
+</script>
+\`\`\`
+
+## [Examples](#examples)
+
+## [Card](#card)
+
+\`\`\`svelte
+<script lang="ts">
+  import { Skeleton } from "$lib/components/ui/skeleton/index.js";
+</script>
+<Skeleton class="h-4 w-full" />
+\`\`\`
+`;
+    const skeleton = parseUpstreamDocs("skeleton", skeletonMd);
+    expect(skeleton.examples.map((e) => e.slug)).toEqual(["preview", "card"]);
   });
 
   it("captures example prose and code", () => {

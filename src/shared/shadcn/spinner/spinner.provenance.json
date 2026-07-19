@@ -17,6 +17,30 @@
         "path": "src/lib/components/ui/spinner/spinner.svelte",
         "sha256": "de85932893690b26c86fdbcba95f41e2b2541c11dd74f1c640b2f8ab8e21e183"
       }
+    ],
+    "docsUrl": "https://shadcn-svelte.com/docs/components/spinner.md",
+    "docsFetchedAt": "2026-07-19T20:17:25.268Z",
+    "docsSha256": "36b79bada03aa578d29a4cf8b892d2e5c818fe2c2bfbe0156b3b8ba52d541f99",
+    "examplesIncluded": [
+      "Size",
+      "Color",
+      "Button",
+      "Badge",
+      "Input Group",
+      "Empty",
+      "Customization"
+    ],
+    "examplesSkipped": [
+      {
+        "name": "Preview",
+        "reason": "missing-family",
+        "detail": "Catalog is missing family \"item\""
+      },
+      {
+        "name": "Item",
+        "reason": "missing-family",
+        "detail": "Catalog is missing family \"item\""
+      }
     ]
   },
   "converter": {
