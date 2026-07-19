@@ -58,7 +58,7 @@ export function looksLikeTailwindSource(source: string): boolean {
   if (!/class=\{cn\(/.test(source) && !/class=\{["'`]/.test(source)) {
     return false;
   }
-  return /\b(flex|inline-flex|grid|bg-|text-|border-|rounded-|h-\d|w-|px-|py-|gap-|shadow-|animate-|size-\d|shrink-0|items-|justify-|overflow-|ring-|outline-|font-|leading-|tracking-|whitespace-|min-w-|max-w-|opacity-|pointer-events-|cursor-|transition-|dark:|data-\[|aria-|focus-visible:|hover:|disabled:|placeholder:|file:)/.test(
+  return /\b(flex|inline-flex|grid|bg-|text-|border-|rounded-|h-\d|w-|px-|py-|gap-|shadow-|animate-|size-\d|shrink-0|items-|justify-|overflow-|ring-|outline-|font-|leading-|tracking-|whitespace-|min-w-|max-w-|opacity-|pointer-events-|cursor-|transition-|absolute|relative|fixed|sticky|inset-|top-|right-|bottom-|left-|z-|p-\d|m-\d|dark:|data-\[|aria-|focus-visible:|hover:|disabled:|placeholder:|file:)/.test(
     source,
   );
 }

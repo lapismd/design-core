@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "component": "alert",
+  "scope": "shared",
+  "upstream": {
+    "project": "shadcn-svelte",
+    "registry": "https://shadcn-svelte.com/registry",
+    "cliVersion": "1.4.2",
+    "item": "alert",
+    "fetchedAt": "2026-07-19T16:28:54.315Z",
+    "sourceFiles": [
+      {
+        "path": "src/lib/components/ui/alert/alert-action.svelte",
+        "sha256": "561d874a61aa50972cf713e0263777cdda771f6bc9f1939b092f0aeee598a73b"
+      },
+      {
+        "path": "src/lib/components/ui/alert/alert-description.svelte",
+        "sha256": "254b567fcddf01c63dac7ddc2a755bee7b922ac4872a10508834cb6e9a7af81b"
+      },
+      {
+        "path": "src/lib/components/ui/alert/alert-title.svelte",
+        "sha256": "dc73d889656f5d17bf74e64f0a8f6250c4345ffd43d9f8838ef8426db3f2cfbf"
+      },
+      {
+        "path": "src/lib/components/ui/alert/alert.svelte",
+        "sha256": "e13b1400deb8ed713017b2283a87706764c57df23a335f909ed92e1eca032b0c"
+      },
+      {
+        "path": "src/lib/components/ui/alert/index.ts",
+        "sha256": "d18822950678449cb7f38fd37681c5533b32a1b5c0ba57043d470a825eb9837c"
+      }
+    ]
+  },
+  "converter": {
+    "version": "2.0.0",
+    "irSchemaVersion": 1,
+    "tokenSchemaVersion": 1
+  },
+  "recipe": {
+    "name": "alert",
+    "version": 1,
+    "tier": "tvSingleFile"
+  }
+}

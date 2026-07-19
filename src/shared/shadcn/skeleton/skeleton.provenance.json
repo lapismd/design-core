@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "component": "skeleton",
+  "scope": "shared",
+  "upstream": {
+    "project": "shadcn-svelte",
+    "registry": "https://shadcn-svelte.com/registry",
+    "cliVersion": "1.4.2",
+    "item": "skeleton",
+    "fetchedAt": "2026-07-19T16:28:38.276Z",
+    "sourceFiles": [
+      {
+        "path": "src/lib/components/ui/skeleton/index.ts",
+        "sha256": "25f4d78e3dbd09eaf8eaa356a6a907f2e9b8f701190bcc402ee698a39974ca65"
+      },
+      {
+        "path": "src/lib/components/ui/skeleton/skeleton.svelte",
+        "sha256": "5b6722347a7de38910a9887b51baeb080d668bc2d9038514efe30bc209d038c3"
+      }
+    ]
+  },
+  "converter": {
+    "version": "2.0.0",
+    "irSchemaVersion": 1,
+    "tokenSchemaVersion": 1
+  },
+  "recipe": {
+    "name": "skeleton",
+    "version": 1,
+    "tier": "simpleRoot"
+  }
+}

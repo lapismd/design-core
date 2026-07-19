@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "component": "badge",
+  "scope": "shared",
+  "upstream": {
+    "project": "shadcn-svelte",
+    "registry": "https://shadcn-svelte.com/registry",
+    "cliVersion": "1.4.2",
+    "item": "badge",
+    "fetchedAt": "2026-07-19T16:28:49.727Z",
+    "sourceFiles": [
+      {
+        "path": "src/lib/components/ui/badge/badge.svelte",
+        "sha256": "f8c8c618002c21ade6a302dfd1ae1b7f9b893f56a704310308f747f356262a38"
+      },
+      {
+        "path": "src/lib/components/ui/badge/index.ts",
+        "sha256": "1dc9eba432869188db370b8e984ca8ff97430c609746a8274a0edecc0d55b765"
+      }
+    ]
+  },
+  "converter": {
+    "version": "2.0.0",
+    "irSchemaVersion": 1,
+    "tokenSchemaVersion": 1
+  },
+  "recipe": {
+    "name": "badge",
+    "version": 1,
+    "tier": "tvSingleFile"
+  }
+}

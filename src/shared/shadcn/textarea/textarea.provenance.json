@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "component": "textarea",
+  "scope": "shared",
+  "upstream": {
+    "project": "shadcn-svelte",
+    "registry": "https://shadcn-svelte.com/registry",
+    "cliVersion": "1.4.2",
+    "item": "textarea",
+    "fetchedAt": "2026-07-19T16:28:44.915Z",
+    "sourceFiles": [
+      {
+        "path": "src/lib/components/ui/textarea/index.ts",
+        "sha256": "3b5f25dfd5d1d9b5305f613f7544a7e39362cd4b0a9c3250414cd5ff02e45398"
+      },
+      {
+        "path": "src/lib/components/ui/textarea/textarea.svelte",
+        "sha256": "e95498452cd2aecd958b010fb5d1393a89f24439aaae04268978580edeee6e58"
+      }
+    ]
+  },
+  "converter": {
+    "version": "2.0.0",
+    "irSchemaVersion": 1,
+    "tokenSchemaVersion": 1
+  },
+  "recipe": {
+    "name": "textarea",
+    "version": 1,
+    "tier": "simpleRoot"
+  }
+}

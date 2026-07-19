@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { HTMLAttributes } from "svelte/elements";
-  import { cn, type WithElementRef } from "../../../lib/utils.js";
+  import { type WithElementRef } from "../../../lib/utils.js";
 
   let {
     ref = $bindable(null),
@@ -12,11 +12,10 @@
 
 <div
   bind:this={ref}
+  data-ui-component="alert"
+  data-ui-part="alert-title"
   data-slot="alert-title"
-  class={cn(
-    "[&_a]:hover:text-foreground font-medium group-has-[>svg]/alert:col-start-2 [&_a]:underline [&_a]:underline-offset-3",
-    className,
-  )}
+  class={className}
   {...restProps}
 >
   {@render children?.()}

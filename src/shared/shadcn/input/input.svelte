@@ -3,7 +3,7 @@
     HTMLInputAttributes,
     HTMLInputTypeAttribute,
   } from "svelte/elements";
-  import { cn, type WithElementRef } from "../../../lib/utils.js";
+  import { type WithElementRef } from "../../../lib/utils.js";
 
   type InputType = Exclude<HTMLInputTypeAttribute, "file">;
 
@@ -29,11 +29,9 @@
 {#if type === "file"}
   <input
     bind:this={ref}
-    data-slot={dataSlot}
-    class={cn(
-      "dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 file:text-foreground placeholder:text-muted-foreground h-9 w-full min-w-0 rounded-md border bg-transparent px-2.5 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-3 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:ring-3 md:text-sm",
-      className,
-    )}
+    data-ui-component="input"
+  data-slot={dataSlot}
+    class={className}
     type="file"
     bind:files
     bind:value
@@ -42,13 +40,19 @@
 {:else}
   <input
     bind:this={ref}
-    data-slot={dataSlot}
-    class={cn(
-      "dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 file:text-foreground placeholder:text-muted-foreground h-9 w-full min-w-0 rounded-md border bg-transparent px-2.5 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-3 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:ring-3 md:text-sm",
-      className,
-    )}
+    data-ui-component="input"
+  data-slot={dataSlot}
+    class={className}
     {type}
     bind:value
     {...restProps}
   />
 {/if}
+
+<style>
+  /* Semantic selectors must be global: they target data attributes and descendants. */
+  :global {
+    /*! tailwindcss v4.3.3 | MIT License | https://tailwindcss.com */
+    @layer properties{}@layer base{@supports (not ((-webkit-appearance:-apple-pay-button))) or (contain-intrinsic-size:1px){}}@layer utilities{[data-ui-component="input"]{height:calc(var(--spacing) * 9)}[data-ui-component="input"]{width:100%}[data-ui-component="input"]{min-width:0}[data-ui-component="input"]{border-radius:calc(var(--radius) * .8)}[data-ui-component="input"]{border-style:var(--tw-border-style);border-width:1px}[data-ui-component="input"]{border-color:var(--input)}[data-ui-component="input"]{background-color:#0000}[data-ui-component="input"]{padding-inline:calc(var(--spacing) * 2.5)}[data-ui-component="input"]{padding-block:var(--spacing)}[data-ui-component="input"]{font-size:var(--text-base);line-height:var(--tw-leading,var(--text-base--line-height))}[data-ui-component="input"]{--tw-shadow:0 1px 2px 0 var(--tw-shadow-color,#0000000d);box-shadow:var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow)}[data-ui-component="input"]{transition-property:color,box-shadow;transition-timing-function:var(--tw-ease,var(--default-transition-timing-function));transition-duration:var(--tw-duration,var(--default-transition-duration))}[data-ui-component="input"]{--tw-outline-style:none;outline-style:none}[data-ui-component="input"]::file-selector-button{display:inline-flex}[data-ui-component="input"]::file-selector-button{height:calc(var(--spacing) * 7)}[data-ui-component="input"]::file-selector-button{border-style:var(--tw-border-style);border-width:0}[data-ui-component="input"]::file-selector-button{background-color:#0000}[data-ui-component="input"]::file-selector-button{font-size:var(--text-sm);line-height:var(--tw-leading,var(--text-sm--line-height))}[data-ui-component="input"]::file-selector-button{--tw-font-weight:var(--font-weight-medium);font-weight:var(--font-weight-medium)}[data-ui-component="input"]::file-selector-button{color:var(--foreground)}[data-ui-component="input"]::placeholder{color:var(--muted-foreground)}[data-ui-component="input"]:focus-visible{border-color:var(--ring)}[data-ui-component="input"]:focus-visible{--tw-ring-shadow:var(--tw-ring-inset,) 0 0 0 calc(3px + var(--tw-ring-offset-width)) var(--tw-ring-color,currentcolor);box-shadow:var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow)}[data-ui-component="input"]:focus-visible{--tw-ring-color:var(--ring)}@supports (color:color-mix(in lab, red, red)){[data-ui-component="input"]:focus-visible{--tw-ring-color:color-mix(in oklab, var(--ring) 50%, transparent)}}[data-ui-component="input"]:disabled{pointer-events:none}[data-ui-component="input"]:disabled{cursor:not-allowed}[data-ui-component="input"]:disabled{opacity:.5}[data-ui-component="input"][aria-invalid=true]{border-color:var(--destructive)}[data-ui-component="input"][aria-invalid=true]{--tw-ring-shadow:var(--tw-ring-inset,) 0 0 0 calc(3px + var(--tw-ring-offset-width)) var(--tw-ring-color,currentcolor);box-shadow:var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow)}[data-ui-component="input"][aria-invalid=true]{--tw-ring-color:var(--destructive)}@supports (color:color-mix(in lab, red, red)){[data-ui-component="input"][aria-invalid=true]{--tw-ring-color:color-mix(in oklab, var(--destructive) 20%, transparent)}}@media (min-width:48rem){[data-ui-component="input"]{font-size:var(--text-sm);line-height:var(--tw-leading,var(--text-sm--line-height))}}[data-ui-component="input"]:is(:global(.dark) *){background-color:var(--input)}@supports (color:color-mix(in lab, red, red)){[data-ui-component="input"]:is(:global(.dark) *){background-color:color-mix(in oklab, var(--input) 30%, transparent)}}[data-ui-component="input"]:is(:global(.dark) *)[aria-invalid=true]{border-color:var(--destructive)}@supports (color:color-mix(in lab, red, red)){[data-ui-component="input"]:is(:global(.dark) *)[aria-invalid=true]{border-color:color-mix(in oklab, var(--destructive) 50%, transparent)}}[data-ui-component="input"]:is(:global(.dark) *)[aria-invalid=true]{--tw-ring-color:var(--destructive)}@supports (color:color-mix(in lab, red, red)){[data-ui-component="input"]:is(:global(.dark) *)[aria-invalid=true]{--tw-ring-color:color-mix(in oklab, var(--destructive) 40%, transparent)}}}@property --tw-animation-delay{syntax:"*";inherits:false;initial-value:0s}@property --tw-animation-direction{syntax:"*";inherits:false;initial-value:normal}@property --tw-animation-duration{syntax:"*";inherits:false}@property --tw-animation-fill-mode{syntax:"*";inherits:false;initial-value:none}@property --tw-animation-iteration-count{syntax:"*";inherits:false;initial-value:1}@property --tw-enter-blur{syntax:"*";inherits:false;initial-value:0}@property --tw-enter-opacity{syntax:"*";inherits:false;initial-value:1}@property --tw-enter-rotate{syntax:"*";inherits:false;initial-value:0}@property --tw-enter-scale{syntax:"*";inherits:false;initial-value:1}@property --tw-enter-translate-x{syntax:"*";inherits:false;initial-value:0}@property --tw-enter-translate-y{syntax:"*";inherits:false;initial-value:0}@property --tw-exit-blur{syntax:"*";inherits:false;initial-value:0}@property --tw-exit-opacity{syntax:"*";inherits:false;initial-value:1}@property --tw-exit-rotate{syntax:"*";inherits:false;initial-value:0}@property --tw-exit-scale{syntax:"*";inherits:false;initial-value:1}@property --tw-exit-translate-x{syntax:"*";inherits:false;initial-value:0}@property --tw-exit-translate-y{syntax:"*";inherits:false;initial-value:0}@property --tw-border-style{syntax:"*";inherits:false;initial-value:solid}@property --tw-shadow{syntax:"*";inherits:false;initial-value:0 0 #0000}@property --tw-shadow-color{syntax:"*";inherits:false}@property --tw-shadow-alpha{syntax:"<percentage>";inherits:false;initial-value:100%}@property --tw-inset-shadow{syntax:"*";inherits:false;initial-value:0 0 #0000}@property --tw-inset-shadow-color{syntax:"*";inherits:false}@property --tw-inset-shadow-alpha{syntax:"<percentage>";inherits:false;initial-value:100%}@property --tw-ring-color{syntax:"*";inherits:false}@property --tw-ring-shadow{syntax:"*";inherits:false;initial-value:0 0 #0000}@property --tw-inset-ring-color{syntax:"*";inherits:false}@property --tw-inset-ring-shadow{syntax:"*";inherits:false;initial-value:0 0 #0000}@property --tw-ring-inset{syntax:"*";inherits:false}@property --tw-ring-offset-width{syntax:"<length>";inherits:false;initial-value:0}@property --tw-ring-offset-color{syntax:"*";inherits:false;initial-value:#fff}@property --tw-ring-offset-shadow{syntax:"*";inherits:false;initial-value:0 0 #0000}@property --tw-font-weight{syntax:"*";inherits:false}
+  }
+</style>
