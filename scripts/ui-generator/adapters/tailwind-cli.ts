@@ -100,7 +100,9 @@ ${inlineSources}
           c === "group" ||
           c.startsWith("group/") ||
           c === "peer" ||
-          c.startsWith("peer/"),
+          c.startsWith("peer/") ||
+          // shadcn semantic marker classes (no utility CSS of their own)
+          /^cn-[a-z0-9-]+$/i.test(c),
       ),
     );
     const hardMissing = missing.filter((c) => !markerOnly.has(c));
