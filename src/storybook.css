@@ -1,0 +1,23 @@
+@import "./styles.css";
+
+@layer base {
+  html,
+  body,
+  #storybook-root {
+    @apply min-h-full;
+  }
+}
+
+#storybook-root {
+  min-height: 100vh;
+  padding: 1.5rem;
+}
+
+.docs-story {
+  overflow: visible !important;
+}
+
+.docs-story .sb-story {
+  box-sizing: border-box;
+  padding: 1rem 2.5rem;
+}

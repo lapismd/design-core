@@ -1,0 +1,20 @@
+@import "tailwindcss";
+@import "@fontsource-variable/dm-sans";
+@import "@fontsource-variable/source-code-pro";
+@import "tw-animate-css";
+@import "shadcn-svelte/tailwind.css";
+@import "./theme.css";
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-sidebar font-sans text-foreground;
+  }
+
+  html {
+    @apply font-sans;
+  }
+}
