@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { HTMLAttributes } from "svelte/elements";
-  import { cn, type WithElementRef } from "../../../lib/utils.js";
+  import { type WithElementRef } from "../../../lib/utils.js";
 
   let {
     ref = $bindable(null),
@@ -12,8 +12,10 @@
 
 <div
   bind:this={ref}
+  data-ui-component="alert"
+  data-ui-part="alert-action"
   data-slot="alert-action"
-  class={cn("absolute top-2.5 right-3", className)}
+  class={className}
   {...restProps}
 >
   {@render children?.()}
