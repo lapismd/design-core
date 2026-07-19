@@ -59,13 +59,18 @@
       }
     ],
     "docsUrl": "https://shadcn-svelte.com/docs/components/command.md",
-    "docsFetchedAt": "2026-07-19T20:20:21.220Z",
+    "docsFetchedAt": "2026-07-19T20:42:29.412Z",
     "docsSha256": "29af3891e3b7a7a45e3061d231ded1bdd5396f75e48c22b48b4ea1b5c8c24f14",
     "examplesIncluded": [
-      "Preview",
-      "Dialog"
+      "Preview"
     ],
-    "examplesSkipped": []
+    "examplesSkipped": [
+      {
+        "name": "Dialog",
+        "reason": "unsupported-hook",
+        "detail": "Example contains a bare bind: that is not valid Svelte"
+      }
+    ]
   },
   "converter": {
     "version": "2.0.0",

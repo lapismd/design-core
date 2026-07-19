@@ -115,7 +115,7 @@
       }
     ],
     "docsUrl": "https://shadcn-svelte.com/docs/components/sidebar.md",
-    "docsFetchedAt": "2026-07-19T20:23:52.047Z",
+    "docsFetchedAt": "2026-07-19T20:42:29.520Z",
     "docsSha256": "64e0afdc66442f307442b63dc4bfbea86da122de1397b86f35e5bd62591c9e9f",
     "examplesIncluded": [
       "Sidebar.Provider",

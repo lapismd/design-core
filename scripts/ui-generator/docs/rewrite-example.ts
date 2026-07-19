@@ -22,6 +22,24 @@ function familyImportSpec(component: string, family: string): string {
     : `"../${family}/index.js"`;
 }
 
+/**
+ * Upstream demos set CSS vars via Tailwind arbitrary classes like
+ * `[--card-spacing:--spacing(4)]`. Those only work when Tailwind compiles the
+ * class; rewrite to plain `style` so native-CSS catalog demos respond.
+ */
+export function rewriteSpacingArbitraryProps(source: string): string {
+  let code = source.replace(
+    /className:\s*"\[--([a-z0-9-]+):--spacing\((\d+(?:\.\d+)?)\)\]"/g,
+    'style: "--$1: calc(var(--spacing) * $2)"',
+  );
+  code = code.replace(
+    /\bclass=\{([^}?]+)\?\.className\}/g,
+    "style={$1?.style}",
+  );
+  code = code.replace(/\bclass=\{([^}]+)\.className\}/g, "style={$1.style}");
+  return code;
+}
+
 /** Rewrite $lib UI imports + known tabler icons inside markdown/code. */
 export function rewriteCatalogImports(
   source: string,
@@ -48,6 +66,7 @@ export function rewriteCatalogImports(
       return `from "@lucide/svelte/icons/${lucide}"`;
     },
   );
+  code = rewriteSpacingArbitraryProps(code);
   return code;
 }
 

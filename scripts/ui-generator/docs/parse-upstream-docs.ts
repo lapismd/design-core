@@ -114,6 +114,43 @@ function isSkippableExampleName(name: string): boolean {
   );
 }
 
+/**
+ * Upstream LLM pages inject an Epicenter "Special Sponsor" block in the hero
+ * (H3 + marketing links) before the first demo fence. That must not become
+ * Preview story / MDX prose.
+ */
+export function stripSponsorCopy(text: string): string {
+  const lines = text.split("\n");
+  const out: string[] = [];
+  let skippingSponsor = false;
+
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (
+      /^#{2,3}\s+(\[)?Epicenter\b/i.test(trimmed) ||
+      /^\[Special Sponsor\]/i.test(trimmed)
+    ) {
+      skippingSponsor = true;
+      continue;
+    }
+    if (skippingSponsor) {
+      if (!trimmed) continue;
+      if (/EpicenterHQ\/epicenter|Special Sponsor|Local-first, open source/i.test(trimmed)) {
+        continue;
+      }
+      skippingSponsor = false;
+    }
+    if (/EpicenterHQ\/epicenter|Special Sponsor/i.test(trimmed)) continue;
+    out.push(line);
+  }
+
+  return out
+    .join("\n")
+    .replace(/\n*View Code\n*/g, "\n")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+}
+
 function exampleFromSection(
   name: string,
   slug: string,
@@ -122,7 +159,7 @@ function exampleFromSection(
   if (isSkippableExampleName(name)) return null;
   const fenceIdx = section.search(/```svelte\b/);
   const prose = fenceIdx >= 0 ? section.slice(0, fenceIdx) : section;
-  const description = prose.replace(/\n*View Code\n*/g, "\n").trim();
+  const description = stripSponsorCopy(prose);
   const blocks = extractFencedBlocks(section, "svelte");
   const code = blocks[0] ?? "";
   if (!code.trim()) return null;

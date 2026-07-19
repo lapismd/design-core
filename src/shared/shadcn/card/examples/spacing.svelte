@@ -8,22 +8,22 @@
   import * as ToggleGroup from "../../toggle-group/index.js";
   const spacingOptions = [
     {
-      className: "[--card-spacing:--spacing(4)]",
+      style: "--card-spacing: calc(var(--spacing) * 4)",
       label: "16px",
       value: "4"
     },
     {
-      className: "[--card-spacing:--spacing(5)]",
+      style: "--card-spacing: calc(var(--spacing) * 5)",
       label: "20px",
       value: "5"
     },
     {
-      className: "[--card-spacing:--spacing(6)]",
+      style: "--card-spacing: calc(var(--spacing) * 6)",
       label: "24px",
       value: "6"
     },
     {
-      className: "[--card-spacing:--spacing(8)]",
+      style: "--card-spacing: calc(var(--spacing) * 8)",
       label: "32px",
       value: "8"
     }
@@ -45,7 +45,7 @@
       <ToggleGroup.Item value={option.value}>{option.label}</ToggleGroup.Item>
     {/each}
   </ToggleGroup.Root>
-  <Card.Root class={selectedSpacing?.className}>
+  <Card.Root style={selectedSpacing?.style}>
     <Card.Header>
       <Card.Title>Login to your account</Card.Title>
       <Card.Description

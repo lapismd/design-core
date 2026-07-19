@@ -4,11 +4,15 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { emitDocsArtifacts } from "../docs/emit-docs-artifacts.js";
-import { parseUpstreamDocs } from "../docs/parse-upstream-docs.js";
+import {
+  parseUpstreamDocs,
+  stripSponsorCopy,
+} from "../docs/parse-upstream-docs.js";
 import {
   isRewrittenExample,
   rewriteExample,
   rewritePackageImports,
+  rewriteSpacingArbitraryProps,
 } from "../docs/rewrite-example.js";
 
 const fixturePath = path.join(
@@ -45,6 +49,58 @@ describe("parseUpstreamDocs", () => {
       "Button Group",
       "Custom Input",
     ]);
+  });
+
+  it("strips Epicenter sponsor copy from example prose", () => {
+    const prose = `Displays a card with header, content, and footer.
+
+### [Epicenter](https://github.com/EpicenterHQ/epicenter)
+
+[Local-first, open source apps](https://github.com/EpicenterHQ/epicenter)
+
+[Special Sponsor](https://github.com/EpicenterHQ/epicenter)
+`;
+    expect(stripSponsorCopy(prose)).toBe(
+      "Displays a card with header, content, and footer.",
+    );
+
+    const heroMd = `# Card
+
+Displays a card with header, content, and footer.
+
+### [Epicenter](https://github.com/EpicenterHQ/epicenter)
+
+[Local-first, open source apps](https://github.com/EpicenterHQ/epicenter)
+
+[Special Sponsor](https://github.com/EpicenterHQ/epicenter)
+
+\`\`\`svelte
+<script lang="ts">
+  import * as Card from "$lib/components/ui/card/index.js";
+</script>
+<Card.Root>Hi</Card.Root>
+\`\`\`
+
+## [Installation](#installation)
+
+\`\`\`bash
+pnpm add card
+\`\`\`
+
+## [Usage](#usage)
+
+\`\`\`svelte
+<script lang="ts">
+  import * as Card from "$lib/components/ui/card/index.js";
+</script>
+\`\`\`
+`;
+    const card = parseUpstreamDocs("card", heroMd);
+    const preview = card.examples.find((e) => e.slug === "preview");
+    expect(preview?.description).toBe(
+      "Displays a card with header, content, and footer.",
+    );
+    expect(preview?.description).not.toMatch(/Epicenter/i);
   });
 
   it("parses hero and usage-linked demos when Examples is empty", () => {
@@ -165,6 +221,19 @@ describe("rewriteExample", () => {
     if (!isRewrittenExample(result)) return;
     expect(result.code).toContain('from "./index.js"');
     expect(result.code).not.toContain("$lib/components/ui");
+  });
+
+  it("rewrites Tailwind --spacing() arbitrary props to inline styles", () => {
+    const source = `const spacingOptions = [
+  { className: "[--card-spacing:--spacing(4)]", value: "4" },
+];
+<Card.Root class={selectedSpacing?.className}>`;
+    const rewritten = rewriteSpacingArbitraryProps(source);
+    expect(rewritten).toContain(
+      'style: "--card-spacing: calc(var(--spacing) * 4)"',
+    );
+    expect(rewritten).toContain("style={selectedSpacing?.style}");
+    expect(rewritten).not.toContain("className:");
   });
 
   it("rewrites package import paths for consumer docs", () => {
@@ -289,6 +358,15 @@ describe("emitDocsArtifacts", () => {
     expect(stories).toContain('tags={["upstream-example"]}');
     expect(stories).not.toContain("skip-visual");
     expect(stories).toContain("IconExample");
+    // Canvas "Show code" must surface the example SFC, not the Story wrapper.
+    expect(stories).toContain("exampleSources.Icon");
+    expect(stories).toContain('type: "code"');
+    const sources = readFileSync(
+      path.join(targetDir, "InputGroup.example-sources.ts"),
+      "utf8",
+    );
+    expect(sources).toContain("@stevejuma/ui/shadcn/input-group");
+    expect(sources).toContain("<InputGroup.Root>");
 
     const icon = readFileSync(
       path.join(targetDir, "examples/icon.svelte"),
