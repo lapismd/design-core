@@ -57,7 +57,7 @@ describe("visual-baseline-design", () => {
     expect(visualBaselineVisualDeltaParameter(url)).toEqual({
       images: [url],
       opacity: 0.5,
-      colorInversion: true,
+      colorInversion: false,
       align: "viewport",
       passThresholdPercent: 0.1,
     });

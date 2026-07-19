@@ -60,7 +60,7 @@ export function visualBaselineVisualDeltaParameter(src: string) {
   return {
     images: [src],
     opacity: 0.5,
-    colorInversion: true,
+    colorInversion: false,
     align: "viewport" as const,
     passThresholdPercent: 0.1,
   };

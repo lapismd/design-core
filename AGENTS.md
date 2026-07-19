@@ -79,8 +79,8 @@ Local Playwright screenshots live under
   cannot be stabilized after disabling animations.
 - v1 visual suite captures light mode only (Chromium 1280×900).
 - Playwright baselines are served at `/visual-baselines` for live compare via
-  the vendored `storybook-addon-visual-delta` package
-  (`packages/storybook-addon-visual-delta`; see `VENDOR.md`). A Vite inject
+  the workspace `storybook-addon-visual-delta` package
+  (`packages/storybook-addon-visual-delta/src`; see `VENDOR.md`). A Vite inject
   wires `parameters.visualDelta` for `Shadcn/*` stories that are not
   `skip-visual`. Open the **Visual Delta** panel for overlay / heatmap;
   the first baseline auto-selects and pins to the viewport origin (Playwright
