@@ -15,7 +15,10 @@ import {
   type StyleExtraction,
 } from "../analysis/style-extractor.js";
 import { buildPartOwnership, remapCompiledCss } from "../transform/selector-remapper.js";
-import { emitFamily } from "../transform/family-emitter.js";
+import {
+  emitFamily,
+  emitPassthroughFamily,
+} from "../transform/family-emitter.js";
 import { runParityHarness } from "../visual/parity-harness.js";
 import { requireRecipe, type ComponentRecipe } from "../recipes/index.js";
 import { writeJson } from "../reports/report.js";
@@ -130,11 +133,86 @@ export async function convertFamilyInWorktree(args: {
 
   const convertible = files.filter((f) => looksLikeTailwindSource(f.source));
   if (!convertible.length) {
-    throw new GeneratorError(
-      `No Tailwind sources found for "${component}" (already converted?)`,
-      EXIT.invalidRequest,
-      "Pass a family that still uses tv()/cn() utilities, or refresh from intake.",
+    // Styleless Bits pass-through (e.g. collapsible): stamp ownership + provenance.
+    const passthroughParts =
+      localParts.length > 0
+        ? localParts
+        : [...intakeByName.entries()].map(([fileName, source]) => ({
+            fileName,
+            source: normalizeIntakeSource(source),
+          }));
+    if (!passthroughParts.length) {
+      throw new GeneratorError(
+        `No sources found for "${component}"`,
+        EXIT.intake,
+      );
+    }
+    log.warn(
+      `No Tailwind utilities for "${component}" — emitting passthrough ownership`,
     );
+    const provenance = {
+      schemaVersion: 1,
+      component,
+      scope: "shared",
+      kind: "passthrough",
+      upstream: {
+        project: "shadcn-svelte",
+        registry: config.shadcn.registry,
+        cliVersion: intake.cliVersion,
+        item: component,
+        fetchedAt: new Date().toISOString(),
+        sourceFiles: intake.files.map((f) => ({
+          path: f.path,
+          sha256: f.sha256,
+        })),
+      },
+      converter: {
+        version: "2.0.0",
+        irSchemaVersion: 1,
+        tokenSchemaVersion: 1,
+      },
+      recipe: {
+        name: recipe.component,
+        version: recipe.supportVersion,
+        tier: recipe.tier,
+      },
+    };
+    const written = emitPassthroughFamily({
+      targetDir: targetAbs,
+      component,
+      parts: passthroughParts,
+      provenance,
+    });
+    writeJson(path.join(reportDir, `${component}.ir.json`), {
+      schemaVersion: 1,
+      name: component,
+      kind: "passthrough",
+      parts: passthroughParts.map((p) => p.fileName),
+      candidates: [],
+    });
+    return {
+      component,
+      recipe,
+      family: {
+        component,
+        parts: [],
+        allCandidates: [],
+        primaryAxes: [],
+        primaryClassMaps: {},
+        primaryBaseClasses: [],
+      },
+      remappedCss: "",
+      compiledCss: "",
+      written,
+      parityExtraction: {
+        kind: "empty",
+        baseClasses: [],
+        axes: [],
+        classMaps: {},
+        allCandidates: [],
+        sourceSnippet: "",
+      },
+    };
   }
 
   const family = extractFamilyFromFiles(component, convertible);

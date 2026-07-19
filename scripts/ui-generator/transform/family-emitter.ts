@@ -473,6 +473,52 @@ export type ${typeBase}Token =
 `;
 }
 
+/** Stamp ownership attrs on styleless Bits pass-through families. */
+export function emitPassthroughFamily(args: {
+  targetDir: string;
+  component: string;
+  parts: Array<{ fileName: string; source: string }>;
+  provenance: Record<string, unknown>;
+}): string[] {
+  const { targetDir, component, parts, provenance } = args;
+  mkdirSync(targetDir, { recursive: true });
+  const written: string[] = [];
+
+  for (const part of parts) {
+    const partName = part.fileName.replace(/\.svelte$/, "");
+    const extraction = {
+      kind: "empty" as const,
+      baseClasses: [],
+      axes: [],
+      classMaps: {},
+      allCandidates: [],
+      sourceSnippet: "",
+    };
+    const next = rewritePartSource({
+      part: {
+        part: partName,
+        fileName: part.fileName,
+        source: part.source,
+        extraction,
+      },
+      component,
+    });
+    const full = path.join(targetDir, part.fileName);
+    writeFileSync(full, next);
+    written.push(full);
+  }
+
+  const tokensPath = path.join(targetDir, `${component}.tokens.ts`);
+  writeFileSync(tokensPath, buildTokensTs(component));
+  written.push(tokensPath);
+
+  const provenancePath = path.join(targetDir, `${component}.provenance.json`);
+  writeFileSync(provenancePath, `${JSON.stringify(provenance, null, 2)}\n`);
+  written.push(provenancePath);
+
+  return written;
+}
+
 export function emitFamily(args: {
   targetDir: string;
   family: FamilyExtraction;
