@@ -360,11 +360,9 @@ export async function runAdd(options: {
       },
     ]);
 
-    // Stage changes in worktree for git diff
+    // Stage all changes (including new untracked files) so the binary patch
+    // contains additions such as provenance/tokens/snapshots.
     execFileSync("git", ["add", "-A"], { cwd: worktree.path });
-    // git diff --cached for staged? Plan says git diff HEAD which includes unstaged.
-    // Unstage and leave as working tree changes:
-    execFileSync("git", ["reset", "HEAD"], { cwd: worktree.path });
 
     const patchPath = path.join(run.reportDir, "component.patch");
     createBinaryPatch(worktree.path, patchPath);

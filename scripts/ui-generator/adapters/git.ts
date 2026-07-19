@@ -128,9 +128,10 @@ export function createBinaryPatch(
   worktreePath: string,
   patchPath: string,
 ): string {
+  // Prefer staged+unstaged vs HEAD so newly added files (after git add -A) are included.
   const diff = execFileSync(
     "git",
-    ["diff", "--binary", "--no-ext-diff", "HEAD"],
+    ["diff", "--binary", "--no-ext-diff", "--cached", "HEAD"],
     {
       cwd: worktreePath,
       encoding: "buffer",
