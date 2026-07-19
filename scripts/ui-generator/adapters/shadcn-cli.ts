@@ -119,6 +119,7 @@ export async function fetchShadcnComponent(
       intakeDir,
       "--yes",
       "--overwrite",
+      "--no-deps",
     ],
     {
       cwd: config.packageRoot,
