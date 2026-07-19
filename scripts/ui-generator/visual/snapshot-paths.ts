@@ -22,9 +22,11 @@ export function snapshotDirFromImportPath(importPath: string): string {
   const normalized = importPath.replace(/\\/g, "/");
   const stripped = normalized
     .replace(/^\.\//, "")
-    .replace(/^src\/shared\//, "");
+    .replace(/^src\/shared\//, "")
+    .replace(/^src\/apps\//, "apps/");
   // forms/form-field/FormField.stories.svelte → forms/form-field
   // shadcn/input-group/InputGroup.variations.stories.svelte → shadcn/input-group
+  // apps/cv/cv-form-overview/CvFormOverview.stories.svelte → apps/cv/cv-form-overview
   return stripped.replace(/\/[^/]+\.stories\.\w+$/, "");
 }
 

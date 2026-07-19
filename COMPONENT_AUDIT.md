@@ -17,8 +17,8 @@ Import: `@stevejuma/ui/shadcn/<family>`
 **Native CSS conversion** (scoped CSS + `<family>.tokens.ts` + `<family>.provenance.json`
 via `pnpm ui:add` / `pnpm ui:add:batch`):
 
-| Status | Families |
-| ------ | -------- |
+| Status    | Families                                                                                                                                                                                                                                                                         |
+| --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Converted | accordion, alert, alert-dialog, badge, button, card, collapsible, command, dialog, dropdown-menu, empty, field, input, input-group, label, popover, resizable, scroll-area, select, separator, sidebar, skeleton, spinner, switch, tabs, textarea, toggle, toggle-group, tooltip |
 
 Batch commands: `pnpm ui:add:batch a` (simple roots), `b` (stateful/light compound),
@@ -34,10 +34,13 @@ Config-driven form engine and field primitives in `src/shared/forms/<family>/`:
 
 **Primitives** (one kebab-case folder each): `form-field`,
 `form-section-header`, `entry-actions`, `collapsible-item-list`,
-`add-section-chooser`, `segmented-control`, `choice-menu`,
-`inline-option-picker`, `searchable-choice-picker`, `autocomplete-input`,
-`chip-autocomplete`, `tag-editor`, `read-only-form`, `search-filter-bar`,
-`reference-picker`, `task-due-calendar`
+`add-section-chooser`, `segmented-control`, `inline-option-picker`,
+`autocomplete-input`, `chip-autocomplete`, `read-only-form`,
+`search-filter-bar`, `reference-picker`, `task-due-calendar`
+
+Removed as duplicates of shadcn / thin aliases: `choice-menu` (use Select),
+`tag-editor` (use `ChipAutocomplete`), `searchable-choice-picker` (use
+Command + Popover).
 
 **Runtime editors:** `code-editor`, `yaml-editor`
 
@@ -56,8 +59,10 @@ Import: `@stevejuma/ui/forms` and `@stevejuma/ui/forms/core`
 ## App-specific — `src/apps/cv/`
 
 Reserved for CV domain UI (workspace hosts, section editors, evidence,
-applications kanban hosts, docs hosts, studio shell). Empty placeholder barrel
-only.
+applications kanban hosts, docs hosts, studio shell).
+
+- `CvFormOverview` — Storybook visual mirror of Studio’s CV tab
+  (`Apps/CV/CV Form`); composes shared form primitives only.
 
 ## App-specific — `src/apps/beancount/`
 

@@ -1,0 +1,67 @@
+/**
+ * Map Shadcn Storybook stories to committed Playwright visual baselines
+ * served via staticDirs at `/visual-baselines`.
+ *
+ * On-disk filenames use the Playwright project + host platform suffix that
+ * this repo commits today (`-chromium-darwin`).
+ */
+
+export const VISUAL_BASELINE_SUFFIX = "-chromium-darwin";
+
+export type BaselineStoryRef = {
+  title?: string;
+  id?: string;
+  tags?: string[];
+};
+
+/** Story-id slug after `--` (e.g. open-menu). */
+export function storySlugFromId(storyId: string): string {
+  const parts = storyId.split("--");
+  if (parts.length < 2) {
+    throw new Error(`Unexpected story id (missing --): ${storyId}`);
+  }
+  return parts.slice(1).join("--");
+}
+
+/** Last title segment as a kebab folder name (Input Group → input-group). */
+export function familyFromTitle(title: string): string {
+  const segment = title.split("/").pop()?.trim() ?? "";
+  return segment.toLowerCase().replace(/\s+/g, "-");
+}
+
+/**
+ * Returns a baseline PNG URL for Shadcn stories that participate in visual
+ * baselines, or undefined when the story should not show one.
+ */
+export function baselineUrlForStory(
+  story: BaselineStoryRef,
+): string | undefined {
+  const title = story.title ?? "";
+  const id = story.id ?? "";
+  const tags = story.tags ?? [];
+
+  if (!title.startsWith("Shadcn/")) return undefined;
+  if (tags.includes("skip-visual")) return undefined;
+  if (!id.includes("--")) return undefined;
+
+  const family = familyFromTitle(title);
+  if (!family) return undefined;
+
+  const slug = storySlugFromId(id);
+  return `/visual-baselines/shadcn/${family}/${slug}${VISUAL_BASELINE_SUFFIX}.png`;
+}
+
+/**
+ * `parameters.visualDelta` for storybook-addon-visual-delta.
+ * First baseline auto-selects on load; overlay pins to the viewport origin
+ * to match Playwright fullPage PNGs.
+ */
+export function visualBaselineVisualDeltaParameter(src: string) {
+  return {
+    images: [src],
+    opacity: 0.5,
+    colorInversion: true,
+    align: "viewport" as const,
+    passThresholdPercent: 0.1,
+  };
+}

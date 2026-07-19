@@ -1,4 +1,6 @@
 import type { StorybookConfig } from "@storybook/svelte-vite";
+import { mergeConfig } from "vite";
+import { visualBaselineVisualDeltaPlugin } from "./visual-baseline-vite-plugin.js";
 
 const config: StorybookConfig = {
   stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|ts|tsx|svelte)"],
@@ -7,21 +9,30 @@ const config: StorybookConfig = {
     "@storybook/addon-a11y",
     "@storybook/addon-svelte-csf",
     "@storybook/addon-vitest",
+    "@storybook/addon-mcp",
+    "storybook-addon-visual-delta",
+  ],
+  staticDirs: [
+    {
+      from: "../tests/visual/storybook.spec.ts-snapshots",
+      to: "/visual-baselines",
+    },
   ],
   framework: {
     name: "@storybook/svelte-vite",
     options: {},
   },
-  viteFinal: async (viteConfig) => ({
-    ...viteConfig,
-    server: {
-      ...viteConfig.server,
-      watch: {
-        ...viteConfig.server?.watch,
-        ignored: ["**/storybook-static/**"],
+  viteFinal: async (viteConfig) => {
+    const plugins = viteConfig.plugins ?? [];
+    viteConfig.plugins = [visualBaselineVisualDeltaPlugin(), ...plugins];
+    return mergeConfig(viteConfig, {
+      server: {
+        watch: {
+          ignored: ["**/storybook-static/**"],
+        },
       },
-    },
-  }),
+    });
+  },
 };
 
 export default config;

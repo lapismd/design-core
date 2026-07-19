@@ -4,16 +4,17 @@ import { Meta } from "@storybook/addon-docs/blocks";
 
 # Form guidance
 
-Use `@stevejuma/ui/forms` for structured editing. Prefer existing primitives
-before inventing new controls.
+Use `@stevejuma/ui/forms` for structured editing and CV form-row chrome. Use
+shadcn for generic controls (`Select`, `Switch`, `Command`, `Input`, …).
 
 ## Choose the right layer
 
 1. **StructuredForm** — schema-shaped data with typed field configs from
    `createFormConfig` / `textField` / `segmentedField` / etc.
 2. **Composed primitives** — `FormField`, `FormSectionHeader`,
-   `CollapsibleItemList`, pickers for one-off layouts.
+   `CollapsibleItemList`, `InlineOptionPicker` for one-off layouts.
 3. **YamlBackedForm** — dual structured + YAML source mode.
+4. **shadcn** — Select, Switch, Command/Popover pickers, Toggle Group, Field.
 
 ## Layout rules
 
@@ -25,9 +26,24 @@ before inventing new controls.
 
 ## Control choice
 
-- `SegmentedControl` for two or three exclusive values
-- `TagEditor` / `ChipAutocomplete` for multi-value lists
-- `SearchableChoicePicker` only for legacy callers
+- `SegmentedControl` for two or three exclusive values in a form row
+- `ChipAutocomplete` for multi-value lists (`tagListField` / `chipListField`)
+- shadcn `Select` for plain string menus; `InlineOptionPicker` when you need
+  swap presentation or option icons
+- Prefer app pickers on shadcn `Command` for searchable choices
 - `CodeEditor` / `YamlEditor` for source editing
+
+## Visual overview
+
+For a live composition that mirrors Studio’s **CV tab** (tabs chrome + profile,
+social, roles, section header, add section), open **Apps/CV/CV Form**.
+
+That story exercises:
+
+- `StructuredForm` / `FormField` / `textField`
+- shadcn `Select` + `ChipAutocomplete`
+- `FormSectionHeader`, `EntryActions`
+- `AddSectionChooser`
+- shadcn `Tabs` (line variant)
 
 See [FORMS.md](../../../FORMS.md) for the full contract.

@@ -5,7 +5,6 @@
   import type { InlineOptionPickerOption } from "../inline-option-picker/InlineOptionPicker.svelte";
   import ReferencePicker from "../reference-picker/ReferencePicker.svelte";
   import SegmentedControl from "../segmented-control/SegmentedControl.svelte";
-  import TagEditor from "../tag-editor/TagEditor.svelte";
   import { autosizeTextarea } from "../core/autosize-textarea";
   import type { ReferenceIndex } from "../core/reference-utils";
 
@@ -191,22 +190,14 @@
         ariaLabel={field.ariaLabel ?? field.label}
         onChange={updateValue}
       />
-    {:else if field.kind === "tag-list"}
-      <TagEditor
-        value={arrayValue()}
-        suggestions={suggestionsFor()}
-        label={field.label}
-        showLabel={false}
-        placeholder={field.placeholder ?? "Add tag..."}
-        onChange={updateValue}
-      />
-    {:else if field.kind === "chip-list" || field.kind === "string-list"}
+    {:else if field.kind === "tag-list" || field.kind === "chip-list" || field.kind === "string-list"}
       <ChipAutocomplete
         value={arrayValue()}
         suggestions={suggestionsFor()}
         label={field.label}
         showLabel={false}
-        placeholder={field.placeholder ?? "Add item..."}
+        placeholder={field.placeholder ??
+          (field.kind === "tag-list" ? "Add tag..." : "Add item...")}
         onChange={updateValue}
       />
     {:else if field.kind === "reference-list"}

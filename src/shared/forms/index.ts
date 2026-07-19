@@ -1,7 +1,6 @@
 export { default as AddSectionChooser } from "./add-section-chooser/AddSectionChooser.svelte";
 export { default as AutocompleteInput } from "./autocomplete-input/AutocompleteInput.svelte";
 export { default as ChipAutocomplete } from "./chip-autocomplete/ChipAutocomplete.svelte";
-export { default as ChoiceMenu } from "./choice-menu/ChoiceMenu.svelte";
 export { default as CodeEditor } from "./code-editor/CodeEditor.svelte";
 export { default as CollapsibleItemList } from "./collapsible-item-list/CollapsibleItemList.svelte";
 export { default as EntryActions } from "./entry-actions/EntryActions.svelte";
@@ -15,10 +14,8 @@ export { default as ReadOnlyFormList } from "./read-only-form/ReadOnlyFormList.s
 export { default as ReadOnlyFormRow } from "./read-only-form/ReadOnlyFormRow.svelte";
 export { default as ReferencePicker } from "./reference-picker/ReferencePicker.svelte";
 export { default as SearchFilterBar } from "./search-filter-bar/SearchFilterBar.svelte";
-export { default as SearchableChoicePicker } from "./searchable-choice-picker/SearchableChoicePicker.svelte";
 export { default as SegmentedControl } from "./segmented-control/SegmentedControl.svelte";
 export { default as StructuredForm } from "./structured-form/StructuredForm.svelte";
-export { default as TagEditor } from "./tag-editor/TagEditor.svelte";
 export { default as TaskDueCalendar } from "./task-due-calendar/TaskDueCalendar.svelte";
 export { default as YamlBackedForm } from "./structured-form/YamlBackedForm.svelte";
 export {

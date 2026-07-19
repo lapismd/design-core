@@ -5,7 +5,9 @@ Shared form contract for `@stevejuma/ui/forms`, derived from CV Studio's
 
 ## Shared form pattern
 
-Prefer `@stevejuma/ui/forms` before inventing app-local form controls.
+Prefer `@stevejuma/ui/forms` for **schema-shaped editing and CV form-row chrome**.
+Use `@stevejuma/ui/shadcn/<family>` for generic controls (Select, Switch, Command,
+Toggle Group, Input, Textarea, Field).
 
 Default editable forms are row-based:
 
@@ -19,24 +21,24 @@ Compose fields inside a `cv-structured-form` scope (provided by
 
 ## Canonical primitives
 
-| Need                        | Use                                                                              |
-| --------------------------- | -------------------------------------------------------------------------------- |
-| Label/value row             | `FormField`                                                                      |
-| Schema-shaped forms         | `StructuredForm` + builders from `forms/core`                                    |
-| Sections / repeated entries | `FormSectionHeader`, `EntryActions`, `CollapsibleItemList`, `AddSectionChooser`  |
-| 2–3 exclusive values        | `SegmentedControl`                                                               |
-| Larger option menus         | `ChoiceMenu` / `InlineOptionPicker`                                              |
-| Tags / chip lists           | `TagEditor`, `ChipAutocomplete`                                                  |
-| Searchable choices          | Prefer app pickers built on shadcn `Command`; `SearchableChoicePicker` is legacy |
-| YAML dual mode              | `YamlBackedForm` + `YamlEditor`                                                  |
-| Source editing              | `CodeEditor`                                                                     |
+| Need                        | Use                                                                             |
+| --------------------------- | ------------------------------------------------------------------------------- |
+| Label/value row             | `FormField`                                                                     |
+| Schema-shaped forms         | `StructuredForm` + builders from `forms/core`                                   |
+| Sections / repeated entries | `FormSectionHeader`, `EntryActions`, `CollapsibleItemList`, `AddSectionChooser` |
+| 2–3 exclusive values        | `SegmentedControl` (or shadcn `ToggleGroup` when matching Actions UI)           |
+| Option menus                | shadcn `Select`; form-row icons/swap → `InlineOptionPicker`                     |
+| Tags / chip lists           | `ChipAutocomplete` (`tagListField` / `chipListField` builders)                  |
+| Searchable choices          | App pickers on shadcn `Command` + `Popover`                                     |
+| YAML dual mode              | `YamlBackedForm` + `YamlEditor`                                                 |
+| Source editing              | `CodeEditor`                                                                    |
 
 ## Borderline shared components
 
 These stay in shared forms when callers supply domain data via props:
 
 - `ReferencePicker` — reference index from the app
-- `TaskDueCalendar` — generic calendar control
+- `TaskDueCalendar` — generic calendar control (until a shadcn calendar lands)
 - `SearchFilterBar` — search chrome; filter semantics from the app
 - `AddSectionChooser` — option lists from the app
 
