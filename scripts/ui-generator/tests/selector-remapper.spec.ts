@@ -71,10 +71,14 @@ describe("buildButtonOwnership", () => {
       variant: { default: "bg-primary" },
     });
     expect(ownership).toEqual([
-      { candidate: "inline-flex", selector: '[data-ui-component="button"]' },
+      {
+        candidate: "inline-flex",
+        selector: '[data-ui-component="button"][data-ui-part="button"]',
+      },
       {
         candidate: "bg-primary",
-        selector: '[data-ui-component="button"][data-variant="default"]',
+        selector:
+          '[data-ui-component="button"][data-ui-part="button"][data-variant="default"]',
       },
     ]);
   });

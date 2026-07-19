@@ -223,14 +223,17 @@ function removeTailwindVariantsImport(source: string): string {
 function replaceTvModuleBlock(
   source: string,
   component: string,
+  part: string,
   extraction: StyleExtraction,
 ): string {
   if (extraction.kind !== "tv") return source;
 
-  const tvIndex = source.search(/\bexport\s+const\s+\w+Variants\s*=\s*tv\s*\(/);
-  const altIndex = source.search(/\bconst\s+\w+Variants\s*=\s*tv\s*\(/);
-  const start = tvIndex >= 0 ? tvIndex : altIndex;
-  if (start < 0) return source;
+  const nameMatch = source.match(
+    /\bexport\s+const\s+(\w+)\s*=\s*tv\s*\(/,
+  ) ?? source.match(/\bconst\s+(\w+)\s*=\s*tv\s*\(/);
+  if (!nameMatch) return source;
+  const variantsName = nameMatch[1]!;
+  const start = nameMatch.index!;
 
   // Find end of tv(...) call
   const open = source.indexOf("(", start);
@@ -265,7 +268,6 @@ function replaceTvModuleBlock(
       }
     }
   }
-  // Include trailing semicolon
   while (end < source.length && /[\s;]/.test(source[end]!)) {
     if (source[end] === ";") {
       end++;
@@ -274,34 +276,72 @@ function replaceTvModuleBlock(
     end++;
   }
 
-  // Also remove following `export type XxxVariant = VariantProps<...>` lines
+  // Capture and remove all following VariantProps type aliases (single or multiline).
+  const axisTypeNames = new Map<string, string>();
+  let compositeTypeName: string | null = null;
   let after = end;
-  const typeRe =
-    /^\s*export\s+type\s+\w+\s*=\s*VariantProps<[^>]+>\[[^\]]+\];?\s*/;
-  const rest = source.slice(after);
-  const typeMatch = typeRe.exec(rest);
-  if (typeMatch) after += typeMatch[0].length;
+  while (after < source.length) {
+    const slice = source.slice(after);
+    if (!/^\s*export\s+type\s+\w+\s*=\s*VariantProps</.test(slice)) break;
+    const typeMatch =
+      /^\s*export\s+type\s+(\w+)\s*=\s*VariantProps<\s*typeof\s+\w+\s*>(\s*\[\s*["'](\w+)["']\s*\])?\s*;?\s*/s.exec(
+        slice,
+      );
+    if (!typeMatch) break;
+    if (typeMatch[3]) {
+      axisTypeNames.set(typeMatch[3], typeMatch[1]!);
+    } else {
+      compositeTypeName = typeMatch[1]!;
+    }
+    after += typeMatch[0].length;
+  }
 
-  const stub = variantsStubName(component);
-  const axisBlocks = extraction.axes
+  const namingBase = part.includes("-") ? part : component;
+  for (const axis of extraction.axes) {
+    if (!axisTypeNames.has(axis.prop)) {
+      axisTypeNames.set(axis.prop, typeName(namingBase, axis.prop));
+    }
+  }
+
+  const axisBlocksFixed = extraction.axes
     .map((axis) => {
-      const c = constName(component, axis.prop);
-      const t = typeName(component, axis.prop);
-      return `  export const ${c} = [
+      const t = axisTypeNames.get(axis.prop)!;
+      let constId: string;
+      if (t.endsWith("Variant")) {
+        constId = `${t
+          .slice(0, -"Variant".length)
+          .replace(/([a-z])([A-Z])/g, "$1_$2")
+          .toUpperCase()}_VARIANTS`;
+      } else if (t.endsWith("Size")) {
+        constId = `${t
+          .slice(0, -"Size".length)
+          .replace(/([a-z])([A-Z])/g, "$1_$2")
+          .toUpperCase()}_SIZES`;
+      } else {
+        constId = constName(namingBase, axis.prop);
+      }
+      return `  export const ${constId} = [
 ${axis.values.map((v) => `    "${v}",`).join("\n")}
   ] as const;
-  export type ${t} = (typeof ${c})[number];`;
+  export type ${t} = (typeof ${constId})[number];`;
     })
     .join("\n\n");
 
   const propTypes = extraction.axes
-    .map((a) => `    ${a.prop}?: ${typeName(component, a.prop)};`)
+    .map((a) => `    ${a.prop}?: ${axisTypeNames.get(a.prop)!};`)
     .join("\n");
 
-  const replacement = `${axisBlocks}
+  const composite =
+    compositeTypeName != null
+      ? `\n  export type ${compositeTypeName} = {\n${extraction.axes
+          .map((a) => `    ${a.prop}?: ${axisTypeNames.get(a.prop)!};`)
+          .join("\n")}\n  };\n`
+      : "";
 
+  const replacement = `${axisBlocksFixed}
+${composite}
   /** @deprecated Prefer typed props; retained for API compatibility. */
-  export function ${stub}(_opts?: {
+  export function ${variantsName}(_opts?: {
 ${propTypes}
     class?: string;
   }): string {
@@ -309,38 +349,7 @@ ${propTypes}
   }
 `;
 
-  // Find export const name for type aliases that referenced VariantProps
-  let out = source.slice(0, start) + replacement + source.slice(after);
-
-  // Replace VariantProps-based type aliases already removed; fix remaining refs
-  out = out.replace(
-    /:\s*VariantProps<typeof\s+\w+>\[[^\]]+\]/g,
-    (m) => {
-      // fallback — shouldn't remain
-      return m;
-    },
-  );
-
-  // Update prop types that used AlertVariant etc — if type was removed, inject local types
-  for (const axis of extraction.axes) {
-    const t = typeName(component, axis.prop);
-    // Common pattern: variant?: AlertVariant
-    const legacy = new RegExp(
-      `(\\b${axis.prop}\\?:\\s*)[A-Z][A-Za-z0-9_]*`,
-      "g",
-    );
-    // Only replace when the old type name ends with Variant/Size etc.
-    out = out.replace(
-      new RegExp(
-        `(\\b${axis.prop}\\s*\\?:\\s*)([A-Z][A-Za-z0-9_]*(?:Variant|Size|Variants)?)\\b`,
-        "g",
-      ),
-      `$1${t}`,
-    );
-    void legacy;
-  }
-
-  return out;
+  return source.slice(0, start) + replacement + source.slice(after);
 }
 
 function injectDataAttributes(
@@ -354,6 +363,8 @@ function injectDataAttributes(
     `data-ui-part="${part}"`,
   ];
   for (const axis of extraction.axes) {
+    // Don't duplicate attrs already present on the markup (e.g. data-variant={variant}).
+    if (new RegExp(`data-${axis.prop}\\s*=`).test(source)) continue;
     attrs.push(`data-${axis.prop}={${axis.prop}}`);
   }
   const joined = attrs.join("\n  ");
@@ -371,6 +382,57 @@ function injectDataAttributes(
   }
 
   return source;
+}
+
+/** Rewrite VariantProps<typeof xVariants> imports from sibling converted modules. */
+function rewriteCrossModuleVariantProps(source: string): string {
+  let out = source;
+  // import type { VariantProps } from "tailwind-variants";
+  out = out.replace(
+    /import\s+type\s*\{\s*VariantProps\s*\}\s*from\s*["']tailwind-variants["'];?\n?/g,
+    "",
+  );
+
+  // type ToggleVariants = VariantProps<typeof toggleVariants>;
+  // + import { toggleVariants } from "../toggle/index.js";
+  const alias =
+    /type\s+(\w+)\s*=\s*VariantProps<\s*typeof\s+(\w+)\s*>\s*;?\n?/.exec(out);
+  if (alias) {
+    const typeNameAlias = alias[1]!;
+    const variantsIdent = alias[2]!; // toggleVariants
+    out = out.replace(alias[0], "");
+    // Ensure we import the type from the same module that exports the stub.
+    const importRe = new RegExp(
+      `import\\s*\\{([^}]*)\\}\\s*from\\s*(["'][^"']*${variantsIdent.replace(
+        /Variants$/,
+        "",
+      )}[^"']*["'])`,
+    );
+    // Prefer ../toggle/index.js style imports already present
+    const existing = /import\s*\{([^}]*)\}\s*from\s*(["'][^"']*toggle[^"']*["'])/.exec(
+      out,
+    );
+    if (existing) {
+      const inner = existing[1]!;
+      if (!inner.includes(typeNameAlias)) {
+        out = out.replace(
+          existing[0],
+          `import { ${inner.trim().replace(/,?$/, "")}, type ${typeNameAlias} } from ${existing[2]}`,
+        );
+      }
+    } else {
+      // Derive path from variants name: toggleVariants → ../toggle/index.js
+      const family = variantsIdent.replace(/Variants$/, "");
+      const kebab = family
+        .replace(/([a-z])([A-Z])/g, "$1-$2")
+        .toLowerCase();
+      out =
+        `import type { ${typeNameAlias} } from "../${kebab}/index.js";\n` + out;
+    }
+    void importRe;
+  }
+
+  return out;
 }
 
 function ensureCnImport(source: string): string {
@@ -426,7 +488,13 @@ export function rewritePartSource(args: {
   let source = part.source;
 
   source = removeTailwindVariantsImport(source);
-  source = replaceTvModuleBlock(source, component, part.extraction);
+  source = replaceTvModuleBlock(
+    source,
+    component,
+    part.part,
+    part.extraction,
+  );
+  source = rewriteCrossModuleVariantProps(source);
   source = rewriteCnClassAttributes(source);
   source = injectDataAttributes(
     source,
