@@ -44,8 +44,9 @@ baselines). App stories use `Apps/CV/...` and `Apps/Beancount/...`.
 ## Commands
 
 ```text
-pnpm storybook              # UI + story tests in Storybook (no visual update)
-pnpm storybook:ui           # UI only
+pnpm storybook              # UI + story tests; also mounts Docs MCP + llms on :9009
+pnpm storybook:ui           # UI only (same MCP/llms mount)
+pnpm storybook:restart      # kill + restart Storybook on :9009
 pnpm storybook:check        # story tests + build + visual compare
 pnpm test:unit              # node unit
 pnpm test:storybook         # headless story Vitest once
@@ -53,8 +54,14 @@ pnpm test:storybook:watch   # story Vitest watch
 pnpm test:visual            # screenshot compare (never writes baselines)
 pnpm test:visual:update --component <name>  # guarded baseline update
 pnpm test:visual:report     # open Playwright HTML report
-pnpm ui guide [topic]       # agent/human conventions (add --json for agents)
+pnpm ui                     # CLI entry (guide | components | mcp | …)
+pnpm ui guide [topic]       # agent/human conventions (--json for agents)
 pnpm ui:guide [topic]       # alias for ui guide
+pnpm ui components [name]   # list/show catalog usage + examples (all layers)
+pnpm ui:components [name]   # alias for ui components
+pnpm ui components --layer forms
+pnpm ui mcp                 # standalone Docs MCP + llms on :9010 (Storybook off)
+pnpm ui:mcp                 # alias for ui mcp
 pnpm ui:doctor              # generator environment checks
 pnpm ui:inspect <name>      # support tier + candidates (no writes)
 pnpm ui:add <name> [--overwrite] [--dry-run]
@@ -62,8 +69,43 @@ pnpm ui:add:batch <a|b|c|d> # convert an allowlisted complexity batch
 pnpm checks                 # fmt + svelte-check + unit + storybook + build + visual
 ```
 
-Agent topics live under `docs/agent/` (`layers`, `shadcn`, `forms`, `testing`).
+### Agent CLI
+
+Offline conventions and component docs (no Storybook required):
+
+| Command | Purpose |
+| --- | --- |
+| `pnpm ui guide` | Topic index (`layers`, `shadcn`, `forms`, `testing`, …) |
+| `pnpm ui guide <topic>` | Full topic markdown |
+| `pnpm ui components` | Catalog index across shadcn, forms, AI, workspace, apps |
+| `pnpm ui components <layer/id>` | One component: import, summary, examples |
+| `pnpm ui components --layer forms` | Filter by layer |
+
+Use `--json` for machine-readable output. Topics live under `docs/agent/`.
 In-catalog decision pages: `Shadcn/Guidance`, `UI Forms/Guidance`.
+Agent workflow notes: see [`AGENTS.md`](./AGENTS.md).
+
+### MCP and llms.txt
+
+With `pnpm storybook` running on port **9009**, two MCP endpoints and the llms
+surface share that server:
+
+| Surface | URL | Tools / content |
+| --- | --- | --- |
+| Storybook MCP | `http://localhost:9009/mcp` | Story instructions, previews, changed stories, `run-story-tests` |
+| Docs MCP | `http://localhost:9009/docs-mcp` | `list-all-documentation`, `get-documentation`, `get-documentation-for-story` (Svelte props + usage) |
+| llms index | `http://localhost:9009/llms.txt` / `/llms.md` | Layered index (`.md` = HTML, `.txt` = markdown) |
+| Component / guide pages | `/llms/<layer>/<id>.md`, `/llms/guide/<topic>.md` | Full pages (`.txt` aliases) |
+
+Cursor project MCP (`.cursor/mcp.json`):
+
+- `stevejuma-ui-storybook` → `http://localhost:9009/mcp`
+- `stevejuma-ui-docs` → `http://localhost:9009/docs-mcp`
+
+When Storybook is not running, `pnpm ui mcp` (alias `pnpm ui:mcp`) serves the
+same Docs MCP + llms routes on `http://127.0.0.1:9010`. Cache:
+`.cache/ui-docs/` (content-hash); bypass with `UI_DOCS_CACHE=0` or
+`pnpm ui mcp --no-cache`.
 
 Visual baselines are under `tests/visual/storybook.spec.ts-snapshots/`.
 `test:visual` never writes snapshots. Update existing baselines only with

@@ -38,6 +38,9 @@ colocated stories, tokens, provenance, and docs artifacts.
 4. **Stories** — colocated `*.stories.svelte` under `Shadcn/<Family>/…` with
    real interactive play coverage where the control is interactive.
 5. **Verify** — see `pnpm ui guide testing`.
+6. **Lookup usage** — `pnpm ui components <name>` or `pnpm ui components shadcn/<name>`
+   (or `--json`) composes local docs/examples. Use `--layer` to filter; forms/AI/
+   workspace use the same command with `forms/…`, `ai/…`, `workspace/…` keys.
 
 `ui:add` runs in a detached git worktree: shadcn intake → Tailwind expand →
 scoped CSS + tokens + provenance → reference/candidate parity → optional visual
@@ -48,6 +51,8 @@ baselines for the component being added (only after parity passes).
 - Overview: Storybook `Shadcn/Overview`
 - Workflow guidance: Storybook `Shadcn/Guidance`
 - Living docs: autodocs + colocated MDX / `*.docs.md` per family
+- Offline list/show: `pnpm ui components` / `pnpm ui components shadcn/<name>`
+  (all layers: forms, AI, workspace-shell, apps, workspace)
 
 ## Doctor
 

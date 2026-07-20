@@ -11,6 +11,7 @@ import { runBatch } from "./pipeline/batch.js";
 import { runRefresh } from "./pipeline/refresh.js";
 import { runDocsSync } from "./pipeline/docs.js";
 import { runGuide } from "./pipeline/guide.js";
+import { runComponents, parseLayerFlag } from "./pipeline/components.js";
 import {
   colorEnabled,
   createColors,
@@ -18,7 +19,12 @@ import {
   type ColorChoice,
 } from "./cli/color.js";
 import { jsonErr, jsonOk, printJson } from "./cli/json.js";
-import { renderGuideIndex, renderGuideTopic } from "./cli/render.js";
+import {
+  renderComponentShow,
+  renderComponentsIndex,
+  renderGuideIndex,
+  renderGuideTopic,
+} from "./cli/render.js";
 
 const BOOLEAN_FLAGS = new Set([
   "json",
@@ -33,6 +39,7 @@ const BOOLEAN_FLAGS = new Set([
   "approved",
   "allow-dirty",
   "fixture",
+  "no-cache",
 ]);
 
 const GLOBAL_VALUE_FLAGS = new Set(["color"]);
@@ -118,6 +125,8 @@ function parseArgs(argv: string[]): ParsedArgs {
 function usage(): string {
   return `Usage:
   pnpm ui guide [topic] [--json] [--color always|never|auto]
+  pnpm ui components [name] [--layer <layer>] [--json] [--color always|never|auto]
+  pnpm ui mcp [--host 127.0.0.1] [--port 9010] [--no-cache]
   pnpm ui:doctor
   pnpm ui:inspect <component>
   pnpm ui:add <component> [--overwrite] [--dry-run] [--keep-worktree] [--skip-visual] [--skip-parity]
@@ -128,7 +137,10 @@ function usage(): string {
   pnpm test:visual:update --component <name>   # requires VISUAL_UPDATE_APPROVED=1
 
 Agent conventions: pnpm ui guide
-CLI help:          pnpm ui guide --help
+Component docs:    pnpm ui components
+Docs MCP / llms:   via Storybook → http://localhost:9009/docs-mcp and /llms.txt
+                   (fallback: pnpm ui mcp on :9010)
+CLI help:          pnpm ui guide --help | pnpm ui components --help
 `;
 }
 
@@ -141,6 +153,11 @@ function loadCliHelp(packageRoot: string, name: string): string | undefined {
 
 function printGuideHelp(packageRoot: string): void {
   const help = loadCliHelp(packageRoot, "guide");
+  console.log(help ?? usage());
+}
+
+function printComponentsHelp(packageRoot: string): void {
+  const help = loadCliHelp(packageRoot, "components");
   console.log(help ?? usage());
 }
 
@@ -201,6 +218,75 @@ async function main() {
       } else {
         console.log(renderGuideTopic(result.topic, colors));
       }
+      break;
+    }
+    case "components": {
+      if (help) {
+        if (json) {
+          printJson(
+            jsonOk("components", {
+              help: loadCliHelp(packageRoot, "components") ?? usage(),
+            }),
+          );
+        } else {
+          printComponentsHelp(packageRoot);
+        }
+        return;
+      }
+
+      const componentId = positionals[0];
+      const layer = parseLayerFlag(flags.get("layer"));
+      const result = runComponents(packageRoot, componentId, { layer });
+      if (json) {
+        if (result.kind === "index") {
+          printJson(jsonOk("components", result.index));
+        } else {
+          printJson(jsonOk("components", result.component));
+        }
+        return;
+      }
+
+      const colors = createColors(
+        colorEnabled({ choice: color, stream: process.stdout }),
+      );
+      if (result.kind === "index") {
+        console.log(renderComponentsIndex(result.index, colors));
+      } else {
+        console.log(renderComponentShow(result.component, colors));
+      }
+      break;
+    }
+    case "mcp": {
+      const { startDocsMcpServer } = await import("./mcp/server.js");
+      const host =
+        typeof flags.get("host") === "string"
+          ? String(flags.get("host"))
+          : process.env.UI_DOCS_HOST ?? "127.0.0.1";
+      const port =
+        typeof flags.get("port") === "string"
+          ? Number(flags.get("port"))
+          : process.env.UI_DOCS_PORT
+            ? Number(process.env.UI_DOCS_PORT)
+            : 9010;
+      const baseUrl =
+        typeof flags.get("base-url") === "string"
+          ? String(flags.get("base-url"))
+          : process.env.UI_DOCS_BASE_URL;
+      const started = await startDocsMcpServer({
+        packageRoot,
+        host,
+        port,
+        baseUrl,
+        noCache: asBooleanFlag(flags, "no-cache"),
+      });
+      console.log(`UI docs MCP listening on ${started.baseUrl} (standalone)`);
+      console.log(`  MCP:       ${started.baseUrl}/docs-mcp`);
+      console.log(`  llms.txt:  ${started.baseUrl}/llms.txt`);
+      console.log(
+        `  Prefer Storybook: http://localhost:9009/docs-mcp when catalog is up`,
+      );
+      // Keep the process alive for the HTTP server.
+      await new Promise<never>(() => {});
       break;
     }
     case "doctor":

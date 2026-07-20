@@ -2,6 +2,9 @@
   "mcpServers": {
     "stevejuma-ui-storybook": {
       "url": "http://localhost:9009/mcp"
+    },
+    "stevejuma-ui-docs": {
+      "url": "http://localhost:9009/docs-mcp"
     }
   }
 }

@@ -9,11 +9,16 @@ pnpm ui guide                 # index + reading order
 pnpm ui guide <topic>         # colored markdown (TTY)
 pnpm ui guide <topic> --json  # machine-readable envelope
 pnpm ui:guide <topic>         # alias
+pnpm ui components            # list all layers (shadcn, forms, AI, …)
+pnpm ui components <layer/id> # usage + examples for one component
+pnpm ui:components <name>     # alias
 ```
 
 Topics live in this directory as markdown with YAML frontmatter (`id`, `title`,
 `summary`, `sources`). They compose `AGENTS.md`, `README.md`, `FORMS.md`,
 `COMPONENT_AUDIT.md`, and Storybook guidance MDX rather than replacing them.
+
+Per-component docs are not topics here — use `pnpm ui components`.
 
 ## Topic list
 

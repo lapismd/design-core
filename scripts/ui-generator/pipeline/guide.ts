@@ -182,6 +182,7 @@ export function getGuideIndex(packageRoot: string): GuideIndex {
     topics,
     related: [
       "AGENTS.md — primary agent contract (Storybook + visuals)",
+      "pnpm ui components — list/show local usage across shadcn/forms/AI/workspace/apps",
       "Storybook MCP — get-storybook-story-instructions / preview-stories / run-story-tests",
       "UI Forms/Guidance and Shadcn/Guidance — in-catalog decision pages",
       "docs/agent/llms-extraction.md — deferred catalog extraction notes",

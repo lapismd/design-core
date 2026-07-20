@@ -1,25 +1,64 @@
 # Storybook catalog
 
 When working on UI components, use the local Storybook catalog and its browser
-tests to validate the change.
+tests to validate the change. Human-oriented package overview and command list:
+[`README.md`](./README.md).
 
 ## Agent reading order
 
-Before inventing workflows, load package conventions offline:
+Before inventing workflows, load package conventions offline via the CLI:
 
 1. `pnpm ui guide` — topic index and reading order
 2. `pnpm ui guide layers` — shadcn vs forms vs apps vs workspace
 3. `pnpm ui guide shadcn` — `ui:add` / inspect / docs sync (never raw shadcn CLI)
 4. `pnpm ui guide forms` — structured forms vs shadcn controls
 5. `pnpm ui guide testing` — stories, checks, and visual baselines after a change
+6. `pnpm ui components` / `pnpm ui components <layer/id>` — list or show local
+   usage and examples across shadcn, forms, AI, workspace-shell, apps, and
+   `@stevejuma/workspace` (filter with `--layer`)
 
-Use `--json` for machine-readable output (`pnpm ui guide testing --json`).
-Alias: `pnpm ui:guide <topic>`.
+Use `--json` for machine-readable output (`pnpm ui guide testing --json`,
+`pnpm ui components button --json`). Aliases: `pnpm ui:guide`,
+`pnpm ui:components`, `pnpm ui:mcp`.
 
-When Storybook is running, use the Storybook MCP for interactive instructions,
-previews, and `run-story-tests`. In-catalog decision pages: `UI Forms/Guidance`,
-`Shadcn/Guidance`. Deferred LLM catalog extraction notes:
-`pnpm ui guide llms-extraction`.
+When Storybook is running (`pnpm storybook`), prefer the MCP endpoints below for
+interactive story work and live docs; keep the CLI for offline / scripted use.
+
+## CLI quick reference
+
+| Command | Purpose |
+| --- | --- |
+| `pnpm ui guide [topic]` | Agent conventions from `docs/agent/` |
+| `pnpm ui components [name] [--layer …]` | Catalog list / show (all layers) |
+| `pnpm ui mcp [--port 9010] [--no-cache]` | Standalone Docs MCP + llms (no Storybook) |
+| `pnpm ui:add` / `ui:inspect` / `ui:doctor` | Generator pipeline (see README) |
+
+## Docs MCP and llms.txt
+
+Docs MCP is mounted on the Storybook Vite server (starts/restarts with
+`pnpm storybook`) at a path separate from the core Storybook MCP:
+
+| Surface | URL | Use for |
+| --- | --- | --- |
+| Storybook MCP | `http://localhost:9009/mcp` | Story instructions, previews, changed stories, `run-story-tests` |
+| Docs MCP | `http://localhost:9009/docs-mcp` | `list-all-documentation`, `get-documentation`, `get-documentation-for-story` (Svelte props + usage) |
+| llms index | `http://localhost:9009/llms.txt` (markdown) / `/llms.md` (HTML) | Bulk LLM/markdown index by layer |
+| Component page | `http://localhost:9009/llms/<layer>/<id>.md` (HTML) / `.txt` (markdown) | Full props + examples for one component |
+| Guide topic | `http://localhost:9009/llms/guide/<topic>.md` (HTML) / `.txt` (markdown) | Same content as `pnpm ui guide <topic>` |
+
+Cursor (`.cursor/mcp.json`):
+
+- `stevejuma-ui-storybook` → `http://localhost:9009/mcp`
+- `stevejuma-ui-docs` → `http://localhost:9009/docs-mcp`
+
+Optional standalone fallback when Storybook is down: `pnpm ui mcp` (alias
+`pnpm ui:mcp`) on `:9010` with the same Docs MCP + llms routes. Offline CLI:
+`pnpm ui guide` / `pnpm ui components`. Cache under `.cache/ui-docs/`
+(content-hash invalidation); bypass with `UI_DOCS_CACHE=0` or
+`pnpm ui mcp --no-cache`.
+
+In-catalog decision pages: `UI Forms/Guidance`, `Shadcn/Guidance`. Deferred
+full-repo static `llms.txt` notes: `pnpm ui guide llms-extraction`.
 
 ## Component documentation
 

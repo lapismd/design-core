@@ -2,9 +2,14 @@ import type { StorybookConfig } from "@storybook/svelte-vite";
 import { mergeConfig } from "vite";
 import { visualBaselineVisualDeltaPlugin } from "./visual-baseline-vite-plugin.js";
 import { visualDeltaMiddlewarePlugin } from "./visual-delta-middleware.js";
+import { uiDocsMiddlewarePlugin } from "./ui-docs-middleware.js";
 
 const config: StorybookConfig = {
-  stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|ts|tsx|svelte)"],
+  stories: [
+    "../src/**/*.mdx",
+    "../src/**/*.stories.@(js|jsx|ts|tsx|svelte)",
+    "../packages/workspace/src/**/*.stories.@(js|jsx|ts|tsx|svelte)",
+  ],
   addons: [
     "@storybook/addon-docs",
     "@storybook/addon-a11y",
@@ -28,6 +33,7 @@ const config: StorybookConfig = {
     viteConfig.plugins = [
       visualBaselineVisualDeltaPlugin(),
       visualDeltaMiddlewarePlugin(),
+      uiDocsMiddlewarePlugin(),
       ...plugins,
     ];
     return mergeConfig(viteConfig, {

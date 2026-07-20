@@ -1,5 +1,9 @@
 import type { CliColors } from "./color.js";
 import type { GuideIndex, GuideTopic } from "../pipeline/guide.js";
+import type {
+  ComponentDoc,
+  ComponentsIndex,
+} from "../pipeline/components.js";
 
 export function renderGuideIndex(index: GuideIndex, colors: CliColors): string {
   const lines: string[] = [
@@ -56,6 +60,88 @@ export function renderGuideTopic(topic: GuideTopic, colors: CliColors): string {
   }
 
   lines.push(renderMarkdownLite(topic.body, colors));
+  return lines.join("\n").trimEnd();
+}
+
+export function renderComponentsIndex(
+  index: ComponentsIndex,
+  colors: CliColors,
+): string {
+  const lines: string[] = [
+    colors.bold(index.title),
+    "",
+    colors.dim(index.summary),
+    "",
+    colors.bold("Components"),
+  ];
+
+  const keyWidth = Math.max(...index.components.map((c) => c.key.length), 8);
+  let lastLayer = "";
+  for (const component of index.components) {
+    if (component.layer !== lastLayer) {
+      if (lastLayer) lines.push("");
+      lines.push(colors.bold(component.layer));
+      lastLayer = component.layer;
+    }
+    const docs = component.hasDocs
+      ? colors.green("docs")
+      : colors.yellow("no-docs");
+    const batch = component.batch
+      ? colors.dim(` batch:${component.batch}`)
+      : "";
+    const examples =
+      component.exampleCount > 0
+        ? colors.dim(` · ${component.exampleCount} examples`)
+        : "";
+    lines.push(
+      `  ${colors.cyan(component.key.padEnd(keyWidth))}  ${docs}${batch}${examples}`,
+      `  ${"".padEnd(keyWidth)}  ${component.title} — ${colors.dim(component.summary)}`,
+    );
+  }
+
+  lines.push(
+    "",
+    colors.dim("Usage: pnpm ui components <layer/id|id>"),
+    colors.dim("Filter: pnpm ui components --layer forms"),
+    colors.dim("JSON:  pnpm ui components <name> --json"),
+  );
+
+  if (index.related.length > 0) {
+    lines.push("", colors.bold("Related"));
+    for (const related of index.related) {
+      lines.push(`  ${colors.dim("•")} ${related}`);
+    }
+  }
+
+  return lines.join("\n");
+}
+
+export function renderComponentShow(
+  component: ComponentDoc,
+  colors: CliColors,
+): string {
+  const lines: string[] = [
+    colors.bold(component.title),
+    "",
+    colors.dim(component.summary),
+    "",
+    `${colors.bold("Key")}     ${colors.cyan(component.key)}`,
+    `${colors.bold("Layer")}   ${component.layer}`,
+    `${colors.bold("Import")}  ${colors.cyan(component.import)}`,
+  ];
+
+  if (component.batch) {
+    lines.push(`${colors.bold("Batch")}   ${component.batch}`);
+  }
+
+  if (component.sources.length > 0) {
+    lines.push("", colors.bold("Sources"));
+    for (const source of component.sources) {
+      lines.push(`  ${colors.dim("•")} ${source}`);
+    }
+  }
+
+  lines.push("", renderMarkdownLite(component.body, colors));
   return lines.join("\n").trimEnd();
 }
 
