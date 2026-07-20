@@ -29,6 +29,8 @@ export interface WorkspaceSidebarGroup {
   id: string;
   title: string;
   icon?: Component;
+  /** Optional controls rendered at the trailing edge of the group header. */
+  actions?: readonly WorkspaceAction[];
 }
 
 /** A consumer-defined icon-only tab in a left or right sidebar. */

@@ -28,6 +28,17 @@ const PORTAL_SELECTORS = [
 ].join(", ");
 
 const PACKAGE_ROOT = resolve(".");
+const isBaselineUpdate = process.env.PLAYWRIGHT_UPDATE_SNAPSHOTS === "1";
+
+/**
+ * A normal visual comparison permits a small anti-aliasing tolerance. During
+ * an explicitly approved update, make the comparison exact so Playwright
+ * replaces a baseline even when the intended difference is below that normal
+ * threshold (for example, one added icon in a tall ribbon capture).
+ */
+const screenshotExpectationOptions = isBaselineUpdate
+  ? { maxDiffPixelRatio: 0 }
+  : {};
 
 function loadVisualStories(): StoryIndexEntry[] {
   const indexPath = resolve("storybook-static/index.json");
@@ -233,8 +244,7 @@ test.describe("Storybook visual baselines", () => {
       let subject: Locator | null = null;
       if (!clip) {
         const childCount = await root.locator(":scope > *").count();
-        subject =
-          childCount > 0 ? root.locator(":scope > *").first() : root;
+        subject = childCount > 0 ? root.locator(":scope > *").first() : root;
         await expect(subject).toBeVisible();
       }
 
@@ -242,9 +252,15 @@ test.describe("Storybook visual baselines", () => {
       let error: string | undefined;
       try {
         if (clip) {
-          await expect(page).toHaveScreenshot(snapshotPath, { clip });
+          await expect(page).toHaveScreenshot(snapshotPath, {
+            clip,
+            ...screenshotExpectationOptions,
+          });
         } else {
-          await expect(subject!).toHaveScreenshot(snapshotPath);
+          await expect(subject!).toHaveScreenshot(
+            snapshotPath,
+            screenshotExpectationOptions,
+          );
         }
       } catch (err) {
         status = "failed";

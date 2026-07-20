@@ -18,7 +18,9 @@
 </script>
 
 <script lang="ts">
+  import FileTextIcon from "@lucide/svelte/icons/file-text";
   import FilesIcon from "@lucide/svelte/icons/files";
+  import RefreshCwIcon from "@lucide/svelte/icons/refresh-cw";
   import SearchIcon from "@lucide/svelte/icons/search";
   import type { WorkspaceAction } from "../core/types.js";
 
@@ -28,7 +30,6 @@
       id: "files",
       label: "Files",
       icon: FilesIcon,
-      pressed: true,
       onSelect: () => (invoked = "Files"),
     },
     {
@@ -36,6 +37,18 @@
       label: "Search",
       icon: SearchIcon,
       onSelect: () => (invoked = "Search"),
+    },
+    {
+      id: "refresh",
+      label: "Refresh",
+      icon: RefreshCwIcon,
+      onSelect: () => (invoked = "Refresh"),
+    },
+    {
+      id: "note",
+      label: "New note",
+      icon: FileTextIcon,
+      onSelect: () => (invoked = "New note"),
     },
   ];
 </script>
@@ -55,8 +68,8 @@
     },
   }}
   play={async ({ canvas }) => {
-    await userEvent.click(canvas.getByRole("button", { name: "Search" }));
-    await expect(canvas.getByRole("status")).toHaveTextContent("Search");
+    await userEvent.click(canvas.getByRole("button", { name: "New note" }));
+    await expect(canvas.getByRole("status")).toHaveTextContent("New note");
   }}
 >
   {#snippet template()}

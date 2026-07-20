@@ -21,6 +21,7 @@
   import { Button } from "@stevejuma/ui/shadcn/button";
   import FilesIcon from "@lucide/svelte/icons/files";
   import SearchIcon from "@lucide/svelte/icons/search";
+  import type { WorkspaceSidebarGroup } from "../core/types.js";
   import { createDemoController } from "./stories/fixtures";
 
   let resizeController = $state(createDemoController());
@@ -29,6 +30,23 @@
 
   leftController.layout.left.size = 304;
   rightController.layout.right.size = 256;
+
+  const rightGroups: WorkspaceSidebarGroup[] = [
+    {
+      id: "backlinks",
+      title: "Backlinks",
+      icon: FilesIcon,
+      actions: [
+        {
+          id: "search-backlinks",
+          label: "Search backlinks",
+          icon: SearchIcon,
+          onSelect: () => undefined,
+        },
+      ],
+    },
+    { id: "outgoing-links", title: "Outgoing links" },
+  ];
 </script>
 
 <Story
@@ -143,10 +161,7 @@
       <WorkspaceSidebar
         controller={rightController}
         side="right"
-        groups={[
-          { id: "backlinks", title: "Backlinks", icon: FilesIcon },
-          { id: "outgoing-links", title: "Outgoing links" },
-        ]}
+        groups={rightGroups}
       >
         {#snippet groupContent(group)}
           <p>{group.title} content</p>

@@ -184,31 +184,57 @@
                 onOpenChange={(open) =>
                   controller.setSidebarGroupCollapsed(side, group.id, !open)}
               >
-                <Collapsible.Trigger>
-                  {#snippet child({ props })}
-                    <Button
-                      {...props}
-                      type="button"
-                      variant="ghost"
-                      data-workspace-part="sidebar-group-trigger"
-                    >
-                      <ChevronRightIcon
-                        data-icon="inline-start"
-                        data-workspace-part="group-chevron"
-                      />
-                      {#if group.icon}
-                        {@const Icon = group.icon}
-                        <Icon
-                          data-icon="inline-start"
-                          data-workspace-part="group-icon"
-                        />
-                      {/if}
-                      <span data-workspace-part="group-title"
-                        >{group.title}</span
+                <div
+                  data-ui-component="workspace"
+                  data-ui-part="sidebar-group-header"
+                >
+                  <Collapsible.Trigger>
+                    {#snippet child({ props })}
+                      <Button
+                        {...props}
+                        type="button"
+                        variant="ghost"
+                        data-workspace-part="sidebar-group-trigger"
                       >
-                    </Button>
-                  {/snippet}
-                </Collapsible.Trigger>
+                        <ChevronRightIcon
+                          data-icon="inline-start"
+                          data-workspace-part="group-chevron"
+                        />
+                        {#if group.icon}
+                          {@const Icon = group.icon}
+                          <Icon
+                            data-icon="inline-start"
+                            data-workspace-part="group-icon"
+                          />
+                        {/if}
+                        <span data-workspace-part="group-title"
+                          >{group.title}</span
+                        >
+                      </Button>
+                    {/snippet}
+                  </Collapsible.Trigger>
+                  {#if group.actions?.length}
+                    <div
+                      data-ui-component="workspace"
+                      data-ui-part="sidebar-group-actions"
+                    >
+                      {#each group.actions as action (action.id)}
+                        {@const ActionIcon = action.icon}
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon-sm"
+                          aria-label={action.label}
+                          aria-pressed={action.pressed}
+                          disabled={action.disabled}
+                          onclick={action.onSelect}
+                        >
+                          <ActionIcon data-icon="inline-start" />
+                        </Button>
+                      {/each}
+                    </div>
+                  {/if}
+                </div>
                 <Collapsible.Content>
                   <div
                     data-ui-component="workspace"
@@ -337,11 +363,21 @@
     border-bottom: 1px solid var(--ui-workspace-divider, var(--sidebar-border));
   }
 
+  [data-ui-component="workspace"][data-ui-part="sidebar-group-header"] {
+    display: flex;
+    min-width: 0;
+    height: var(--ui-workspace-group-header-height, 2rem);
+    align-items: center;
+    border-bottom: 1px solid var(--ui-workspace-divider, var(--sidebar-border));
+    background: var(--ui-workspace-sidebar-background, var(--sidebar));
+  }
+
   [data-ui-component="workspace"][data-ui-part="sidebar-group"]
     :global([data-workspace-part="sidebar-group-trigger"]) {
     display: flex;
-    width: 100%;
-    height: var(--ui-workspace-group-header-height, 2rem);
+    min-width: 0;
+    height: 100%;
+    flex: 1 1 auto;
     justify-content: flex-start;
     gap: 0.375rem;
     border-radius: 0;
@@ -355,6 +391,26 @@
   [data-ui-component="workspace"][data-ui-part="sidebar-group"]
     :global([data-workspace-part="sidebar-group-trigger"]:hover) {
     background: var(--ui-workspace-group-hover, var(--sidebar-accent));
+  }
+
+  [data-ui-component="workspace"][data-ui-part="sidebar-group-actions"] {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 0.125rem;
+    padding-inline: 0.25rem;
+  }
+
+  [data-ui-component="workspace"][data-ui-part="sidebar-group-actions"]
+    :global(button) {
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: 0;
+  }
+
+  [data-ui-component="workspace"][data-ui-part="sidebar-group-actions"]
+    :global(button:hover:not(:disabled)) {
+    background: var(--ui-workspace-action-hover, var(--sidebar-accent));
   }
 
   [data-ui-component="workspace"][data-ui-part="sidebar-group"]
@@ -386,7 +442,7 @@
 
   [data-ui-component="workspace"][data-ui-part="sidebar-group-body"] {
     min-width: 0;
-    background: var(--ui-workspace-group-body, transparent);
+    background: var(--ui-workspace-group-body, var(--background));
     padding: 0.5rem;
   }
 </style>
