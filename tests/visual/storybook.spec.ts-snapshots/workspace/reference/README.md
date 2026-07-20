@@ -1,31 +1,24 @@
-# Lapis workspace reference captures
+# Lapis workspace component targets
 
-These images are target evidence for the reusable workspace stories. They were
-captured from the running Lapis Notes workspace at `http://localhost:9090/#/`
-on 2026-07-20 with a 1280 x 900 CSS-pixel viewport.
+These images are tight component targets captured from the running Lapis
+workspace at `http://localhost:9090/#/` on 2026-07-20.
 
-The source implementation is
-`/Users/stevejuma/code/lapis-notes/packages/workspace`. The app's saved default
-layout is the reset point for the desktop shell captures.
+The browser viewport was fixed at 1280 x 900 CSS pixels. A temporary full-page
+capture was used only as a crop source; the committed assets are the component
+boundaries used by the Storybook Visual Delta panel:
 
-## Captures
+- `lapis-ribbon-chromium-darwin.png` — 49 x 861 action ribbon.
+- `lapis-left-split-chromium-darwin.png` — 304 x 900 left sidebar split.
+- `lapis-main-panel-chromium-darwin.png` — 672 x 900 single main panel.
+- `lapis-right-split-chromium-darwin.png` — 256 x 900 right sidebar split.
+- `lapis-horizontal-split-chromium-darwin.png` — 672 x 900 two-column split.
+- `lapis-vertical-split-chromium-darwin.png` — 672 x 900 two-row split.
 
-- `lapis-default-layout-chromium-darwin.png` - complete saved desktop layout.
-- `lapis-action-ribbon-chromium-darwin.png` - icon-only action ribbon.
-- `lapis-left-sidebar-chromium-darwin.png` - left sidebar tabs and file panel.
-- `lapis-right-sidebar-groups-chromium-darwin.png` - collapsible right groups.
-- `lapis-top-tab-chrome-chromium-darwin.png` - top-tab strips across panes.
-- `lapis-tabs-and-splits-chromium-darwin.png` - complete central split tree.
-- `lapis-active-tab-pane-chromium-darwin.png` - one top tab and its body.
-- `lapis-stacked-tabs-chromium-darwin.png` - temporary stacked presentation;
-  the app was restored to the saved top-tab layout after capture.
-- `lapis-stacked-layout-full-chromium-darwin.png` - the full shell while that
-  temporary stacked pane was active, for contextual comparison.
-- `lapis-drop-{top,right,bottom,left,center}-chromium-darwin.png` - stabilized
-  live drop overlays. Each capture uses Lapis's own `dragstart` and `dragover`
-  event path and was cancelled with `dragend`, so the saved layout was not
-  changed.
+The horizontal and vertical states were created through Lapis's own tab drag
+and drop path. The tab was merged back and the extra tab was closed after the
+captures, leaving the running app at one main pane with one tab.
 
-Reference files live outside the story-baseline namespace on purpose. Stories
-opt into them through explicit `parameters.visualDelta.images`; Playwright's
-generated story screenshots remain under `workspace/components/`.
+Unlike the earlier evidence stories, these PNGs are not rendered inside the
+story canvas. Each story renders the reusable workspace component directly;
+the PNG is supplied separately through `parameters.visualDelta`, matching the
+component-clipped Shadcn visual workflow.

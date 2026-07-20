@@ -70,19 +70,6 @@
 
 <Story
   name="Selects the expanded view"
-  parameters={{
-    visualDelta: {
-      images: [
-        "/visual-baselines/workspace/reference/lapis-stacked-tabs-chromium-darwin.png",
-        "/visual-baselines/workspace/reference/lapis-stacked-layout-full-chromium-darwin.png",
-      ],
-      opacity: 0.5,
-      colorInversion: false,
-      align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
   play={async ({ canvas }) => {
     await userEvent.click(canvas.getByRole("button", { name: "Details" }));
     await expect(
@@ -207,56 +194,9 @@
   {/snippet}
 </Story>
 
-<Story
-  name="Lapis stacked-tab reference capture"
-  parameters={{
-    visualDelta: {
-      images: [
-        "/visual-baselines/workspace/reference/lapis-stacked-tabs-chromium-darwin.png",
-      ],
-      opacity: 0.5,
-      colorInversion: false,
-      align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-    docs: {
-      description: {
-        story:
-          "A live Lapis pane temporarily switched from top tabs to stacked presentation. It records the shared add/overflow header, vertical title rails, close and icon placement, pane widths, dividers, and body alignment. The app was unstacked after capture.",
-      },
-    },
-  }}
-  play={async ({ canvas }) => {
-    await expect(
-      canvas.getByRole("img", { name: "Lapis stacked tabs reference" }),
-    ).toBeVisible();
-  }}
->
-  {#snippet template()}
-    <img
-      data-ui-component="workspace-stacked-story"
-      data-ui-part="reference-capture"
-      src="/visual-baselines/workspace/reference/lapis-stacked-tabs-chromium-darwin.png"
-      alt="Lapis stacked tabs reference"
-      width="336"
-      height="450"
-    />
-  {/snippet}
-</Story>
-
 <style>
   :global([data-ui-component="workspace-stacked-story"][data-ui-part="host"]) {
     height: 30rem;
     border: 1px solid var(--border);
-  }
-
-  :global(
-      [data-ui-component="workspace-stacked-story"][data-ui-part="reference-capture"]
-    ) {
-    display: block;
-    width: 336px;
-    max-width: none;
-    height: 450px;
   }
 </style>

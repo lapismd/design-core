@@ -23,7 +23,12 @@
   import SearchIcon from "@lucide/svelte/icons/search";
   import { createDemoController } from "./stories/fixtures";
 
-  let controller = $state(createDemoController());
+  let resizeController = $state(createDemoController());
+  let leftController = $state(createDemoController());
+  let rightController = $state(createDemoController());
+
+  leftController.layout.left.size = 304;
+  rightController.layout.right.size = 256;
 </script>
 
 <Story
@@ -38,27 +43,27 @@
 >
   {#snippet template()}
     <div data-ui-component="workspace-sidebar-story" data-ui-part="host">
-      <WorkspaceSidebar {controller} side="left">
+      <WorkspaceSidebar controller={resizeController} side="left">
         <p>Sidebar content</p>
       </WorkspaceSidebar>
       <main>
         <Button
           type="button"
-          onclick={() => controller.setSidebarOpen("left", false)}
+          onclick={() => resizeController.setSidebarOpen("left", false)}
           >Close sidebar</Button
         >
-        <output>{controller.layout.left.size}px</output>
+        <output>{resizeController.layout.left.size}px</output>
       </main>
     </div>
   {/snippet}
 </Story>
 
 <Story
-  name="Icon-only tabs"
+  name="Left split with icon tabs"
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/workspace/reference/lapis-left-sidebar-chromium-darwin.png",
+        "/visual-baselines/workspace/reference/lapis-left-split-chromium-darwin.png",
       ],
       opacity: 0.5,
       colorInversion: false,
@@ -83,9 +88,13 @@
   }}
 >
   {#snippet template()}
-    <div data-ui-component="workspace-sidebar-story" data-ui-part="host">
+    <div
+      data-ui-component="workspace-sidebar-story"
+      data-ui-part="host"
+      data-reference-part="left"
+    >
       <WorkspaceSidebar
-        {controller}
+        controller={leftController}
         side="left"
         tabs={[
           { id: "files", label: "Files", icon: FilesIcon },
@@ -96,17 +105,19 @@
           <p>{tab.label} sidebar content</p>
         {/snippet}
       </WorkspaceSidebar>
-      <output>Selected: {controller.layout.left.activeTabId}</output>
+      <output class="sr-only"
+        >Selected: {leftController.layout.left.activeTabId}</output
+      >
     </div>
   {/snippet}
 </Story>
 
 <Story
-  name="Collapsible sidebar groups"
+  name="Right split with groups"
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/workspace/reference/lapis-right-sidebar-groups-chromium-darwin.png",
+        "/visual-baselines/workspace/reference/lapis-right-split-chromium-darwin.png",
       ],
       opacity: 0.5,
       colorInversion: false,
@@ -116,7 +127,7 @@
     },
   }}
   play={async ({ canvas }) => {
-    const trigger = canvas.getByRole("button", { name: "Navigator" });
+    const trigger = canvas.getByRole("button", { name: "Backlinks" });
     await expect(trigger).toHaveAttribute("aria-expanded", "true");
     await userEvent.click(trigger);
     await expect(trigger).toHaveAttribute("aria-expanded", "false");
@@ -124,80 +135,28 @@
   }}
 >
   {#snippet template()}
-    <div data-ui-component="workspace-sidebar-story" data-ui-part="host">
+    <div
+      data-ui-component="workspace-sidebar-story"
+      data-ui-part="host"
+      data-reference-part="right"
+    >
       <WorkspaceSidebar
-        {controller}
-        side="left"
-        groups={[{ id: "navigator", title: "Navigator", icon: FilesIcon }]}
+        controller={rightController}
+        side="right"
+        groups={[
+          { id: "backlinks", title: "Backlinks", icon: FilesIcon },
+          { id: "outgoing-links", title: "Outgoing links" },
+        ]}
       >
-        {#snippet groupContent()}
-          <p>Workspace files</p>
+        {#snippet groupContent(group)}
+          <p>{group.title} content</p>
         {/snippet}
       </WorkspaceSidebar>
-      <output>
-        Navigator {controller.layout.left.collapsedGroups.navigator
+      <output class="sr-only">
+        Backlinks {rightController.layout.right.collapsedGroups.backlinks
           ? "collapsed"
           : "expanded"}
       </output>
-    </div>
-  {/snippet}
-</Story>
-
-<Story
-  name="Lapis sidebar reference captures"
-  parameters={{
-    visualDelta: {
-      images: [
-        "/visual-baselines/workspace/reference/lapis-left-sidebar-chromium-darwin.png",
-        "/visual-baselines/workspace/reference/lapis-right-sidebar-groups-chromium-darwin.png",
-      ],
-      opacity: 0.5,
-      colorInversion: false,
-      align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-    docs: {
-      description: {
-        story:
-          "Source-backed left and right sidebar targets. The left capture records icon-only tab selection and the file panel; the right capture records collapsible group headers, group actions, dividers, body spacing, and the sidebar footer.",
-      },
-    },
-  }}
-  play={async ({ canvas }) => {
-    await expect(
-      canvas.getByRole("img", { name: "Lapis left sidebar reference" }),
-    ).toBeVisible();
-    await expect(
-      canvas.getByRole("img", {
-        name: "Lapis right sidebar groups reference",
-      }),
-    ).toBeVisible();
-  }}
->
-  {#snippet template()}
-    <div
-      data-ui-component="workspace-sidebar-story"
-      data-ui-part="reference-grid"
-    >
-      <figure>
-        <img
-          src="/visual-baselines/workspace/reference/lapis-left-sidebar-chromium-darwin.png"
-          alt="Lapis left sidebar reference"
-          width="302"
-          height="900"
-        />
-        <figcaption>Left sidebar</figcaption>
-      </figure>
-      <figure>
-        <img
-          src="/visual-baselines/workspace/reference/lapis-right-sidebar-groups-chromium-darwin.png"
-          alt="Lapis right sidebar groups reference"
-          width="253"
-          height="900"
-        />
-        <figcaption>Right sidebar groups</figcaption>
-      </figure>
     </div>
   {/snippet}
 </Story>
@@ -209,6 +168,24 @@
     border: 1px solid var(--border);
   }
 
+  :global(
+      [data-ui-component="workspace-sidebar-story"][data-reference-part="left"]
+    ) {
+    width: 304px;
+    height: 900px;
+    overflow: hidden;
+    border: 0;
+  }
+
+  :global(
+      [data-ui-component="workspace-sidebar-story"][data-reference-part="right"]
+    ) {
+    width: 256px;
+    height: 900px;
+    overflow: hidden;
+    border: 0;
+  }
+
   :global([data-ui-component="workspace-sidebar-story"] main) {
     display: flex;
     gap: 0.75rem;
@@ -218,45 +195,5 @@
   :global([data-ui-component="workspace-sidebar-story"] p) {
     margin: 0;
     padding: 0.75rem;
-  }
-
-  :global(
-      [data-ui-component="workspace-sidebar-story"][data-ui-part="reference-grid"]
-    ) {
-    display: grid;
-    width: max-content;
-    grid-template-columns: 302px 253px;
-    gap: 1rem;
-  }
-
-  :global(
-      [data-ui-component="workspace-sidebar-story"][data-ui-part="reference-grid"]
-        figure
-    ) {
-    margin: 0;
-    overflow: hidden;
-    border: 1px solid var(--border);
-    background: var(--background);
-  }
-
-  :global(
-      [data-ui-component="workspace-sidebar-story"][data-ui-part="reference-grid"]
-        img
-    ) {
-    display: block;
-    max-width: none;
-    height: 900px;
-  }
-
-  :global(
-      [data-ui-component="workspace-sidebar-story"][data-ui-part="reference-grid"]
-        figcaption
-    ) {
-    border-top: 1px solid var(--border);
-    padding: 0.5rem;
-    color: var(--muted-foreground);
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-align: center;
   }
 </style>

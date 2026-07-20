@@ -64,18 +64,6 @@
 
 <Story
   name="Adds selects and closes"
-  parameters={{
-    visualDelta: {
-      images: [
-        "/visual-baselines/workspace/reference/lapis-top-tab-chrome-chromium-darwin.png",
-      ],
-      opacity: 0.5,
-      colorInversion: false,
-      align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
   play={async ({ canvas, canvasElement }) => {
     const details = canvas.getByRole("tab", { name: "Details" });
     const detailsContainer = details.closest<HTMLElement>(
@@ -189,44 +177,6 @@
   {/snippet}
 </Story>
 
-<Story
-  name="Lapis top-tab reference capture"
-  parameters={{
-    visualDelta: {
-      images: [
-        "/visual-baselines/workspace/reference/lapis-top-tab-chrome-chromium-darwin.png",
-      ],
-      opacity: 0.5,
-      colorInversion: false,
-      align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-    docs: {
-      description: {
-        story:
-          "Top-tab chrome cropped from the running Lapis default layout. It records the active contour, icon and title spacing, close affordance, add action, overflow action, dividers, and the absence of native tab-strip scrollbars.",
-      },
-    },
-  }}
-  play={async ({ canvas }) => {
-    await expect(
-      canvas.getByRole("img", { name: "Lapis top-tab chrome reference" }),
-    ).toBeVisible();
-  }}
->
-  {#snippet template()}
-    <img
-      data-ui-component="workspace-tabs-story"
-      data-ui-part="reference-capture"
-      src="/visual-baselines/workspace/reference/lapis-top-tab-chrome-chromium-darwin.png"
-      alt="Lapis top-tab chrome reference"
-      width="677"
-      height="40"
-    />
-  {/snippet}
-</Story>
-
 <style>
   :global([data-ui-component="workspace-tabs-story"][data-ui-part="host"]) {
     height: 24rem;
@@ -237,14 +187,5 @@
       [data-ui-component="workspace-tabs-story"][data-scenario="overflow"]
     ) {
     width: 22rem;
-  }
-
-  :global(
-      [data-ui-component="workspace-tabs-story"][data-ui-part="reference-capture"]
-    ) {
-    display: block;
-    width: 677px;
-    max-width: none;
-    height: 40px;
   }
 </style>
