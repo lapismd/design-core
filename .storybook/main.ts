@@ -1,6 +1,7 @@
 import type { StorybookConfig } from "@storybook/svelte-vite";
 import { mergeConfig } from "vite";
 import { visualBaselineVisualDeltaPlugin } from "./visual-baseline-vite-plugin.js";
+import { visualDeltaMiddlewarePlugin } from "./visual-delta-middleware.js";
 
 const config: StorybookConfig = {
   stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|ts|tsx|svelte)"],
@@ -24,7 +25,11 @@ const config: StorybookConfig = {
   },
   viteFinal: async (viteConfig) => {
     const plugins = viteConfig.plugins ?? [];
-    viteConfig.plugins = [visualBaselineVisualDeltaPlugin(), ...plugins];
+    viteConfig.plugins = [
+      visualBaselineVisualDeltaPlugin(),
+      visualDeltaMiddlewarePlugin(),
+      ...plugins,
+    ];
     return mergeConfig(viteConfig, {
       server: {
         watch: {

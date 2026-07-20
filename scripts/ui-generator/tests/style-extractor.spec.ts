@@ -237,6 +237,38 @@ describe("rewritePartSource", () => {
     expect(out).not.toContain('data-ui-component="input-group"');
     expect(out).not.toContain("focus-visible:ring-0");
   });
+
+  it("gates parent data-ui-component on composed hosts", async () => {
+    const { findComposedHostParentComponents } = await import(
+      "../transform/data-ui-host-gate.js"
+    );
+    const bad = `<script lang="ts">
+  import { Input } from "../input/index.js";
+</script>
+<Input data-ui-component="input-group" data-ui-part="input-group-input" />
+`;
+    const hits = findComposedHostParentComponents(bad, "input-group");
+    expect(hits).toHaveLength(1);
+    expect(hits[0]?.composedFrom).toBe("input");
+    expect(hits[0]?.tag).toBe("Input");
+  });
+
+  it("emits locked attr order with restProps before data-ui-component", async () => {
+    const { emitLockedDataUiAttrOrder } = await import(
+      "../transform/data-ui-host-gate.js"
+    );
+    const unlocked = `<div
+  data-ui-component="skeleton"
+  data-slot="skeleton"
+  class={className}
+  {...restProps}
+></div>`;
+    const locked = emitLockedDataUiAttrOrder(unlocked);
+    const restIdx = locked.indexOf("{...restProps}");
+    const compIdx = locked.indexOf('data-ui-component="skeleton"');
+    expect(restIdx).toBeGreaterThanOrEqual(0);
+    expect(compIdx).toBeGreaterThan(restIdx);
+  });
 });
 
 describe("looksLikeTailwindSource", () => {

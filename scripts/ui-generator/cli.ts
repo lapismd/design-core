@@ -44,7 +44,13 @@ async function main() {
           typeof flags.get("component") === "string"
             ? String(flags.get("component"))
             : positionals[0],
+        storyId:
+          typeof flags.get("story-id") === "string"
+            ? String(flags.get("story-id"))
+            : undefined,
         approved: Boolean(flags.get("approved")),
+        allowDirty: Boolean(flags.get("allow-dirty")),
+        skipBuild: Boolean(flags.get("skip-build")),
       });
       break;
     case "inspect":

@@ -4,13 +4,19 @@ import { loadConfig } from "../config.js";
 import { EXIT, GeneratorError } from "../errors.js";
 import { log } from "../logger.js";
 import { assertCleanGit } from "../adapters/git.js";
-import { requireRecipe } from "../recipes/index.js";
+import {
+  componentFromStoryId,
+  requireRecipe,
+} from "../recipes/index.js";
 import {
   buildSnapshotManifest,
   listComponentSnapshotFiles,
   writeSnapshotManifest,
 } from "../visual/snapshot-manifest.js";
-import { storyIdPrefixFromTitle } from "../visual/snapshot-paths.js";
+import {
+  storyIdPrefixFromStoryId,
+  storyIdPrefixFromTitle,
+} from "../visual/snapshot-paths.js";
 import {
   createRunContext,
   writeJson,
@@ -19,12 +25,24 @@ import {
 
 export async function runVisualUpdate(options: {
   component?: string;
+  /** When set, derive the Playwright `-g` prefix from this story id. */
+  storyId?: string;
   approved?: boolean;
+  /** Skip clean-tree gate (Storybook Visual Delta panel). */
+  allowDirty?: boolean;
+  /** Skip `build-storybook` when static assets are already fresh. */
+  skipBuild?: boolean;
 }) {
-  const component = options.component?.trim();
-  if (!component) {
+  const storyId = options.storyId?.trim();
+  let component = options.component?.trim();
+
+  if (storyId && !component) {
+    component = componentFromStoryId(storyId);
+  }
+
+  if (!component && !storyId) {
     throw new GeneratorError(
-      "test:visual:update requires --component <name>",
+      "test:visual:update requires --component <name> or --story-id <id>",
       EXIT.invalidRequest,
     );
   }
@@ -46,9 +64,13 @@ export async function runVisualUpdate(options: {
   }
 
   const config = loadConfig();
-  assertCleanGit(config.packageRoot);
-  const recipe = requireRecipe(component);
-  const run = createRunContext(config, "visual-update", component);
+  if (!options.allowDirty) {
+    assertCleanGit(config.packageRoot);
+  }
+
+  const recipe = component ? requireRecipe(component) : undefined;
+  const label = component ?? storyId ?? "unknown";
+  const run = createRunContext(config, "visual-update", label);
   const snapshotDir = path.join(config.packageRoot, config.visual.snapshotDir);
   const before = buildSnapshotManifest(snapshotDir);
   writeSnapshotManifest(
@@ -56,29 +78,36 @@ export async function runVisualUpdate(options: {
     before,
   );
 
-  const targets = listComponentSnapshotFiles(
-    snapshotDir,
-    component,
-    recipe.snapshotKeyIncludes,
-  );
-  if (!targets.length) {
+  const targets =
+    component && recipe
+      ? listComponentSnapshotFiles(
+          snapshotDir,
+          component,
+          recipe.snapshotKeyIncludes,
+        )
+      : [];
+  if (component && recipe && !targets.length) {
     log.warn(
       `No existing snapshots matched component "${component}". Playwright may create first snapshots for new stories only.`,
     );
-  } else {
+  } else if (targets.length) {
     log.info(
       `Updating snapshots:\n${targets.map((t) => `  - ${t}`).join("\n")}`,
     );
   }
 
-  const grep = storyIdPrefixFromTitle(recipe.storyTitle);
+  const grep = storyId
+    ? storyIdPrefixFromStoryId(storyId)
+    : storyIdPrefixFromTitle(recipe!.storyTitle);
   log.info(`Playwright filter: -g ${JSON.stringify(grep)}`);
 
-  // Build Storybook first so the visual suite has static assets.
-  execFileSync("pnpm", ["build-storybook"], {
-    cwd: config.packageRoot,
-    stdio: "inherit",
-  });
+  if (!options.skipBuild) {
+    // Build Storybook first so the visual suite has static assets.
+    execFileSync("pnpm", ["build-storybook"], {
+      cwd: config.packageRoot,
+      stdio: "inherit",
+    });
+  }
 
   execFileSync(
     "pnpm",
@@ -99,7 +128,8 @@ export async function runVisualUpdate(options: {
     after,
   );
   writeJson(path.join(run.reportDir, "report.json"), {
-    component,
+    component: component ?? null,
+    storyId: storyId ?? null,
     targets,
     grep,
     beforeCount: Object.keys(before).length,
@@ -108,7 +138,11 @@ export async function runVisualUpdate(options: {
   writeReportMarkdown(run.reportDir, "Visual baseline update", [
     {
       heading: "Component",
-      body: component,
+      body: component ?? "(from story id)",
+    },
+    {
+      heading: "Story id",
+      body: storyId ?? "(none)",
     },
     {
       heading: "Matched existing files",
@@ -116,6 +150,10 @@ export async function runVisualUpdate(options: {
     },
   ]);
 
-  log.ok(`Updated visual baselines for ${component}`);
+  log.ok(
+    component
+      ? `Updated visual baselines for ${component}`
+      : `Updated visual baselines for ${grep}`,
+  );
   log.info(`Report: ${run.reportDir}`);
 }

@@ -1,6 +1,7 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent } from "storybook/test";
+  import FormPlaceholder from "../form-placeholder/FormPlaceholder.svelte";
   import EntryActions from "./EntryActions.svelte";
 
   const { Story } = defineMeta({
@@ -39,7 +40,7 @@
           action = "remove";
         }}
       >
-        <p class="text-muted-foreground m-0 text-sm">Entry body</p>
+        <FormPlaceholder>Entry body</FormPlaceholder>
       </EntryActions>
       <output class="text-muted-foreground mt-2 block text-sm">{action}</output>
     </div>

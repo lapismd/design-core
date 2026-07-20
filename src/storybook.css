@@ -13,6 +13,20 @@
   padding: 1.5rem;
 }
 
+/* Full-bleed workspace shell stories: no canvas padding, no page scroll. */
+html:has([data-workspace-shell="true"]),
+body:has([data-workspace-shell="true"]) {
+  height: 100%;
+  overflow: hidden;
+}
+
+#storybook-root:has([data-workspace-shell="true"]) {
+  height: 100%;
+  min-height: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
 .docs-story {
   overflow: visible !important;
 }

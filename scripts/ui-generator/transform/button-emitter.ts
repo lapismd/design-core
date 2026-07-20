@@ -89,6 +89,8 @@ ${sizeAxis.values.map((v) => `    "${v}",`).join("\n")}
     variant?: ${typeName(component, "variant")};
     size?: ${typeName(component, "size")};
     ref?: HTMLButtonElement | null;
+    /** Intentional family restyle. Overrides default host identity. */
+    dataUiComponent?: string;
   };
 
   /** @deprecated Prefer Button props; retained for API compatibility. */
@@ -102,6 +104,11 @@ ${sizeAxis.values.map((v) => `    "${v}",`).join("\n")}
 </script>
 
 <script lang="ts">
+  import {
+    omitDataUiComponent,
+    resolveDataUiComponent,
+  } from "../../../lib/data-ui-host.js";
+
   let {
     class: className,
     variant = "${variantAxis.defaultValue ?? "default"}",
@@ -110,20 +117,21 @@ ${sizeAxis.values.map((v) => `    "${v}",`).join("\n")}
     type = "button",
     disabled,
     children,
+    dataUiComponent,
     ...restProps
   }: ButtonProps = $props();
 </script>
 
 <button
   bind:this={ref}
-  data-ui-component="${component}"
+  {...omitDataUiComponent(restProps)}
+  data-ui-component={resolveDataUiComponent("${component}", dataUiComponent)}
   data-slot="button"
   data-variant={variant}
   data-size={size}
   class={className}
   {type}
   {disabled}
-  {...restProps}
 >
   {@render children?.()}
 </button>

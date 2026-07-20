@@ -30,29 +30,3 @@ export const formTokenNames = {
 
 export type FormToken =
   (typeof formTokenNames)[keyof typeof formTokenNames];
-
-/**
- * @deprecated Prefer {@link formTokenNames}.
- * Legacy names remain as read aliases in `form.tokens.css`; set `--ui-form-*` when theming.
- */
-export const formLegacyTokenNames = {
-  background: "--cv-form-background",
-  foreground: "--cv-form-foreground",
-  muted: "--cv-form-muted",
-  mutedSurface: "--cv-form-muted-surface",
-  border: "--cv-form-border",
-  borderMuted: "--cv-form-border-muted",
-  accent: "--cv-form-accent",
-  primaryForeground: "--cv-form-primary-foreground",
-  selection: "--cv-form-selection",
-  selectionStrong: "--cv-form-selection-strong",
-  activeLine: "--cv-form-active-line",
-  gutter: "--cv-form-gutter",
-  popover: "--cv-form-popover",
-  panelBackground: "--cv-form-panel-background",
-  shadow: "--cv-form-shadow",
-  mono: "--cv-form-mono",
-  codeBackground: "--cv-form-code-background",
-  codeGutter: "--cv-form-code-gutter",
-  columnGap: "--cv-control-column-gap",
-} as const;

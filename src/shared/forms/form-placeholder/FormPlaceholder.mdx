@@ -6,26 +6,30 @@ import * as FormPlaceholderVariations from "./FormPlaceholder.variations.stories
 
 # FormPlaceholder
 
-Dotted outline box for story/demo bodies so spacing against headers and add actions is visible.
-
-`EntryActions` and `CollapsibleItemList` already outline their content areas — use this for other stubs.
+Dotted outline box for **story/demo stub bodies only** — so spacing against
+headers and add actions is visible when you are not rendering a real form
+component.
 
 ## Guidance
 
 ### When to use
 
-- Storybook section bodies
+- Storybook section bodies that stand in for real content
+- Fake expanded bodies under `FormSectionHeader`, `EntryActions`, or
+  `CollapsibleItemList` in Docs/variations
 - Tab stubs in composition demos
 
 ### When not to use
 
+- Around real package components (`StructuredForm`, editors, fields, etc.) —
+  those should render with their normal chrome, no dotted border
 - Production empty states that need real Empty/CTA chrome
 
 See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and the shared form contract in `FORMS.md`.
 
 ## Usage
 
-<Source language="html" code={"<FormPlaceholder>Section body</FormPlaceholder>"} />
+<Source language="html" code={"<FormSectionHeader title=\"Experience\" open>\n  <FormPlaceholder>Section body</FormPlaceholder>\n</FormSectionHeader>"} />
 
 <Primary />
 
@@ -46,4 +50,3 @@ Basic placeholder copy.
 Taller stub to judge vertical rhythm.
 
 <Canvas of={FormPlaceholderVariations.TallBody} meta={FormPlaceholderVariations} />
-

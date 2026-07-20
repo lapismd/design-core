@@ -12,11 +12,11 @@
 
 <Label
 	bind:ref
-		data-ui-component="field"
+	{...restProps}
+	dataUiComponent="field"
 	data-ui-part="field-label"
 	data-slot="field-label"
 	class={className}
-	{...restProps}
 >
 	{@render children?.()}
 </Label>

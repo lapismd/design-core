@@ -35,8 +35,9 @@ Config-driven form engine and field primitives in `src/shared/forms/<family>/`:
 **Primitives** (one kebab-case folder each): `form-field`,
 `form-section-header`, `entry-actions`, `collapsible-item-list`,
 `add-section-chooser`, `segmented-control`, `inline-option-picker`,
-`autocomplete-input`, `chip-autocomplete`, `read-only-form`,
-`search-filter-bar`, `reference-picker`, `task-due-calendar`
+`autocomplete-input`, `chip-autocomplete`, `list-editor`,
+`sortable-array-item`, `read-only-form`, `search-filter-bar`,
+`reference-picker`, `task-due-calendar`
 
 Removed as duplicates of shadcn / thin aliases: `choice-menu` (use Select),
 `tag-editor` (use `ChipAutocomplete`), `searchable-choice-picker` (use
@@ -49,20 +50,48 @@ Borderline but shared when prop-driven: `ReferencePicker`, `TaskDueCalendar`,
 
 Import: `@stevejuma/ui/forms` and `@stevejuma/ui/forms/core`
 
+## Shared — workspace-shell
+
+Prop-driven three-region Studio chrome in `src/shared/workspace-shell/`:
+
+- `StudioWorkspaceShell` — `Sidebar.Provider` host with `sidebar` / `main` / `ai` snippets
+- `StudioSidebar` — left nav chrome (tabs, collapse, resize, workspace mode switcher)
+- AI padding CSS via `data-ai-sidebar` on the sidebar provider
+
+Import: `@stevejuma/ui/workspace-shell`
+
+## Shared — AI
+
+Presentational AI chat chrome in `src/shared/ai/` (no fetch / no Studio store).
+Storybook: **AI/** (Overview + per-component stories). Built on shadcn
+`Button`, `Textarea`, `ScrollArea`.
+
+- `AiChatDock` — placement / visibility; sets `data-ai-sidebar`
+- `AiChatTranscript` — message list (+ optional review summary)
+- `AiPromptInput` — composer + `onSend`
+- `AiChatPanelSettings` — placement / collapse controls
+- `AiChatPanel` — composes dock + transcript + prompt
+
+Import: `@stevejuma/ui/ai`
+
 ## Shared — later
 
 - Markdown stack (`MarkdownEditor`, `MarkdownPreview`, TOC, carta, mermaid)
 - `FlipCardDeck`, `StructuredTable*`
-- Studio shared controls (`TextControl`, `ListEditor`, option groups)
-- AI elements
 
 ## App-specific — `src/apps/cv/`
 
-Reserved for CV domain UI (workspace hosts, section editors, evidence,
-applications kanban hosts, docs hosts, studio shell).
+CV domain composition for Storybook / app reuse (`@stevejuma/ui/apps/cv`):
 
-- `CvFormOverview` — Storybook visual mirror of Studio’s CV tab
-  (`Apps/CV/CV Form`); composes shared form primitives only.
+- `CvWorkspaceForm` — five-tab form + YAML mode (form-only story `Apps/CV/CV Form`)
+- `CvWorkspaceBody` / `CvEditorToolbar` — main body host + toolbar (undo/redo stubs, collapse, YAML)
+- `CvWorkspaceSidebar` — CV file list + create/import controls (props / fixtures)
+- Flagship shell story — `Apps/CV/CV Workspace` (shell + sidebar + form + AI fixtures)
+- `CvSectionsForm` — profile, social networks, roles, dynamic sections
+- Entry editors — `GenericEntryEditor`, `ExperienceEditor`, `EducationEditor`
+- Tabs — Evidence, Design, Locale, Settings
+- Controls — `TextControl`, `ColorControl`, `SwitchControl`, `OptionButtonGroup`
+- `CvFormOverview` — thin back-compat wrapper around `CvWorkspaceForm`
 
 ## App-specific — `src/apps/beancount/`
 

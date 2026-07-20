@@ -1,6 +1,7 @@
 <script lang="ts">
     import Loader2Icon from "@lucide/svelte/icons/loader-2";
   import type { SVGAttributes } from "svelte/elements";
+  import { omitDataUiComponent } from "../../../lib/data-ui-host.js";
 
   let {
     class: className,
@@ -15,6 +16,7 @@
 </script>
 
 <Loader2Icon
+  {...omitDataUiComponent(restProps)}
   {role}
   name={name === null ? undefined : name}
   color={color === null ? undefined : color}
@@ -22,7 +24,6 @@
   aria-label={ariaLabel}
   data-ui-component="spinner"
   class={className}
-  {...restProps}
 />
 
 <style>

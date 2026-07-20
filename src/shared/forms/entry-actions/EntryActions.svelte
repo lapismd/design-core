@@ -62,9 +62,6 @@
 
   .cv-form-entry-content {
     min-width: 0;
-    border: 1px dotted var(--ui-form-border);
-    border-radius: 0.35rem;
-    padding: 0.5rem 0.65rem;
   }
 
   .cv-form-entry-move {

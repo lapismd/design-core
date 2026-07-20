@@ -53,11 +53,17 @@ export function legacyFlatSnapshotName(storyId: string): string {
   return `${storyId}-chromium-darwin.png`;
 }
 
-/** Nested basename after Playwright appends project + platform. */
-export function nestedSnapshotFileName(entry: StoryIndexEntry): string {
+/**
+ * Nested path after Playwright appends `-{project}-{platform}` before `.png`.
+ * Defaults match the historical chromium/darwin layout.
+ */
+export function nestedSnapshotFileName(
+  entry: StoryIndexEntry,
+  project = "chromium",
+  platform: NodeJS.Platform | string = "darwin",
+): string {
   const rel = screenshotRelativePath(entry);
-  // rel ends with .png → insert -chromium-darwin before .png
-  return rel.replace(/\.png$/, "-chromium-darwin.png");
+  return rel.replace(/\.png$/, `-${project}-${platform}.png`);
 }
 
 /** Storybook story-id prefix for `-g` filtering, e.g. `shadcn-forms-input-group--`. */
@@ -67,6 +73,15 @@ export function storyIdPrefixFromTitle(storyTitle: string): string {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "");
   return `${slug}--`;
+}
+
+/** Prefix used for `-g` from a full story id (`shadcn-disclosure-accordion--…`). */
+export function storyIdPrefixFromStoryId(storyId: string): string {
+  const head = storyId.split("--")[0]?.trim();
+  if (!head) {
+    throw new Error(`Unexpected story id (empty): ${storyId}`);
+  }
+  return `${head}--`;
 }
 
 /** Component folder match for nested keys like `shadcn/button/foo-chromium-darwin.png`. */

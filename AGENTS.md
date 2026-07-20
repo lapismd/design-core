@@ -72,19 +72,24 @@ Local Playwright screenshots live under
   baselines.
 - Existing component snapshots may be changed only through
   `VISUAL_UPDATE_APPROVED=1 pnpm test:visual:update --component <name>` after
-  explicit human review.
+  explicit human review, or via the Storybook **Visual Delta → Update
+  baselines** action (dev server only; same gated updater with `--allow-dirty`).
 - `ui:add` may create or replace baselines only for the component it is adding,
   and only after reference/candidate parity passes.
 - Tag a story `skip-visual` (with a documented reason) only when pixel flake
   cannot be stabilized after disabling animations.
-- v1 visual suite captures light mode only (Chromium 1280×900).
+- v1 visual suite captures light mode only (Chromium 1280×900 CSS viewport,
+  `deviceScaleFactor: 3`, `toHaveScreenshot` `scale: "device"`).
 - Playwright baselines are served at `/visual-baselines` for live compare via
   the workspace `storybook-addon-visual-delta` package
   (`packages/storybook-addon-visual-delta/src`; see `VENDOR.md`). A Vite inject
   wires `parameters.visualDelta` for `Shadcn/*` stories that are not
   `skip-visual`. Open the **Visual Delta** panel for overlay / heatmap;
-  the first baseline auto-selects and pins to the viewport origin (Playwright
-  fullPage framing).
+  the first baseline auto-selects and pins to the story subject (component
+  clip). Device-scale PNGs are displayed at CSS size in the overlay.
+- In Storybook dev, the testing module includes a **Visual tests** target that
+  shells out to the same Playwright suite (compare only — does not update
+  baselines). Prefer that for UI status; CLI remains `pnpm test:visual`.
 
 ## Accessibility and theme
 

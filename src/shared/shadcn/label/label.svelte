@@ -1,19 +1,26 @@
 <script lang="ts">
   import { Label as LabelPrimitive } from "bits-ui";
-  
+  import {
+    omitDataUiComponent,
+    resolveDataUiComponent,
+  } from "../../../lib/data-ui-host.js";
+
   let {
     ref = $bindable(null),
     class: className,
+    dataUiComponent,
     ...restProps
-  }: LabelPrimitive.RootProps = $props();
+  }: LabelPrimitive.RootProps & {
+    dataUiComponent?: string;
+  } = $props();
 </script>
 
 <LabelPrimitive.Root
   bind:ref
-  data-ui-component="label"
+  {...omitDataUiComponent(restProps)}
+  data-ui-component={resolveDataUiComponent("label", dataUiComponent)}
   data-slot="label"
   class={className}
-  {...restProps}
 />
 
 <style>

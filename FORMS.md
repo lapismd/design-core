@@ -27,7 +27,6 @@ Forms expose a public token map like shadcn families:
 - `form.tokens.css` — default bindings to theme tokens (`--border`, `--primary`, …)
 
 Override on `:root` or a form ancestor, e.g. `--ui-form-accent: oklch(...)`.
-Legacy `--cv-form-*` / `--cv-control-column-gap` remain as read aliases.
 
 ## Canonical primitives
 
@@ -36,10 +35,11 @@ Legacy `--cv-form-*` / `--cv-control-column-gap` remain as read aliases.
 | Label/value row             | `FormField`                                                                     |
 | Schema-shaped forms         | `StructuredForm` + builders from `forms/core`                                   |
 | Sections / repeated entries | `FormSectionHeader`, `EntryActions`, `CollapsibleItemList`, `AddSectionChooser` |
-| Story / stub body outlines  | `FormPlaceholder` (dotted); `EntryActions` / `CollapsibleItemList` bodies always outline content |
+| Story / stub body outlines  | `FormPlaceholder` only (dotted). Real components render without outline.                        |
 | 2–3 exclusive values        | `SegmentedControl` (or shadcn `ToggleGroup` when matching Actions UI)           |
 | Option menus                | shadcn `Select`; form-row icons/swap → `InlineOptionPicker`                     |
 | Tags / chip lists           | `ChipAutocomplete` (`tagListField` / `chipListField` builders)                  |
+| Ordered string lists        | `ListEditor` + `SortableArrayItem` (roles, highlights, keywords)                |
 | Searchable choices          | App pickers on shadcn `Command` + `Popover`                                     |
 | YAML dual mode              | `YamlBackedForm` + `YamlEditor`                                                 |
 | Source editing              | `CodeEditor`                                                                    |
@@ -57,6 +57,14 @@ These stay in shared forms when callers supply domain data via props:
 
 Custom `*FormField.svelte` renderers and CV/beancount domain editors belong under
 `src/apps/cv` or `src/apps/beancount`, not in shared forms.
+
+The living CV form composition is **`CvWorkspaceForm`** (`Apps/CV/CV Form`): five
+tabs (CV / Evidence / Design / Locale / Settings), section editors, YAML mode,
+and prop-driven fixtures — no Studio store.
+
+The full workspace shell (sidebar + form + AI rail) is **`Apps/CV/CV Workspace`**,
+built from `@stevejuma/ui/workspace-shell`, `@stevejuma/ui/ai`, and
+`@stevejuma/ui/apps/cv` — still fixture/stub only (no live `/api/ai`).
 
 ## Storybook
 

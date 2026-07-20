@@ -13,7 +13,6 @@
 
 <Button
   bind:ref
-  data-ui-component="sidebar"
   data-ui-part="sidebar-trigger"
   data-slot="sidebar-trigger"
   {variant}

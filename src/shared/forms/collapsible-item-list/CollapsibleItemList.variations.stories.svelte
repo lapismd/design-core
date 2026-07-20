@@ -1,5 +1,6 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
+  import FormPlaceholder from "../form-placeholder/FormPlaceholder.svelte";
   import CollapsibleItemList from "./CollapsibleItemList.svelte";
 
   const { Story } = defineMeta({
@@ -15,7 +16,6 @@
   });
 </script>
 
-
 <Story
   name="With items"
   exportName="WithItems"
@@ -28,10 +28,12 @@
 >
   {#snippet template()}
     <CollapsibleItemList title="Items" count={2} addLabel="item" open={true}>
-      <ul class="m-0 flex list-none flex-col gap-1 p-0 text-sm">
-        <li>Alpha</li>
-        <li>Beta</li>
-      </ul>
+      <FormPlaceholder>
+        <ul class="m-0 flex list-none flex-col gap-1 p-0 text-sm">
+          <li>Alpha</li>
+          <li>Beta</li>
+        </ul>
+      </FormPlaceholder>
     </CollapsibleItemList>
   {/snippet}
 </Story>

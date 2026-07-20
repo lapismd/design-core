@@ -22,6 +22,7 @@
 <script lang="ts">
   import type { HTMLAnchorAttributes } from "svelte/elements";
   import { type WithElementRef } from "../../../lib/utils.js";
+  import { omitDataUiComponent } from "../../../lib/data-ui-host.js";
 
   let {
     ref = $bindable(null),
@@ -38,12 +39,12 @@
 <svelte:element
   this={href ? "a" : "span"}
   bind:this={ref}
+  {...omitDataUiComponent(restProps)}
   data-ui-component="badge"
   data-variant={variant}
   data-slot="badge"
   {href}
   class={className}
-  {...restProps}
 >
   {@render children?.()}
 </svelte:element>

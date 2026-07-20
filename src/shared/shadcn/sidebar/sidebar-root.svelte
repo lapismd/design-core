@@ -1,6 +1,7 @@
 <script lang="ts">
   import { type WithElementRef } from "../../../lib/utils.js";
   import type { HTMLAttributes } from "svelte/elements";
+  import { omitDataUiIdentity } from "../../../lib/data-ui-host.js";
 
   let {
     ref = $bindable(null),
@@ -16,11 +17,11 @@
 {#if open}
   <aside
     bind:this={ref}
+    {...omitDataUiIdentity(restProps)}
     data-ui-component="sidebar"
     data-ui-part="sidebar-root"
-        data-slot="sidebar"
+    data-slot="sidebar"
     class={className}
-    {...restProps}
   >
     {@render children?.()}
   </aside>

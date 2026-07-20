@@ -28,6 +28,10 @@ import {
 } from "../transform/family-emitter.js";
 import { runParityHarness } from "../visual/parity-harness.js";
 import { requireRecipe, type ComponentRecipe } from "../recipes/index.js";
+import {
+  emitLockedDataUiAttrOrder,
+  findComposedHostParentComponents,
+} from "../transform/data-ui-host-gate.js";
 import { writeJson } from "../reports/report.js";
 import { syncUpstreamDocs } from "../docs/sync-upstream-docs.js";
 
@@ -412,8 +416,30 @@ export async function convertFamilyInWorktree(args: {
       );
     }
     const full = path.join(targetAbs, local.fileName);
-    writeFileSync(full, stamped);
+    let stampedOut = stamped;
+    if (full.endsWith(".svelte")) {
+      stampedOut = emitLockedDataUiAttrOrder(stampedOut);
+    }
+    writeFileSync(full, stampedOut);
     written.push(full);
+  }
+
+  // Refuse parent data-ui-component on composed foreign hosts (Input, Button, …)
+  for (const file of written.filter((f) => f.endsWith(".svelte"))) {
+    const text = readFileSync(file, "utf8");
+    const overrides = findComposedHostParentComponents(text, component);
+    if (overrides.length) {
+      const detail = overrides
+        .map(
+          (o) =>
+            `<${o.tag}> from "${o.composedFrom}" stamped data-ui-component="${o.parentComponent}"`,
+        )
+        .join("; ");
+      throw new GeneratorError(
+        `Generated ${path.basename(file)} stamps parent data-ui-component on composed host(s): ${detail}. Use part/slot only.`,
+        EXIT.generation,
+      );
+    }
   }
 
   // Forbidden style engines in rewritten parts

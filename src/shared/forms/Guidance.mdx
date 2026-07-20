@@ -68,9 +68,11 @@ or a form ancestor — same idea as shadcn `--ui-button-*` token maps.
    top/bottom borders.
 4. Make every non-editable disclosure title-row clickable. Editable-title rows
    keep direct title editing and use the left-rail chevron to collapse.
-5. Expandable / multi-item bodies (`EntryActions`, `CollapsibleItemList`) outline
-   their content with a dotted border so spacing is visible. For story-only
-   stubs, wrap copy in `FormPlaceholder`.
+5. Dotted outlines are **only** for story/demo stubs via `FormPlaceholder` —
+   never for real package components. When a docs story needs a fake expanded
+   body (e.g. under `FormSectionHeader`), wrap that sample copy in
+   `FormPlaceholder`. `EntryActions` / `CollapsibleItemList` render children
+   normally with no outline.
 6. Verify expanded/collapsed layout (including nested collapse-all) and check
    for duplicate separators.
 
@@ -81,6 +83,7 @@ or a form ancestor — same idea as shadcn `--ui-button-*` token maps.
 | 2–3 exclusive values | `SegmentedControl` (inside `FormField align="center" as="div"`) |
 | Larger option sets | shadcn `Select`, or `InlineOptionPicker` for menu/swap + icons |
 | Multi-value tags | `ChipAutocomplete` (`tagListField` / `chipListField`) |
+| Ordered string lists | `ListEditor` + `SortableArrayItem` |
 | Searchable choices | App pickers on shadcn `Command` + `Popover` |
 | Pill / date controls | `FormField align="center"`; popovers use `as="div"` |
 | YAML source | `YamlEditor` only — no plain textarea YAML editors |
@@ -107,15 +110,19 @@ YAML review uses the same two-version model.
 
 ## Visual overview
 
-For a live composition that mirrors Studio’s **CV tab** (tabs chrome + profile,
-social, roles, section header, add section), open **Apps/CV/CV Form**.
+For the form-only composition, open **Apps/CV/CV Form** (`CvWorkspaceForm`).
 
-That story exercises:
+For the full Studio-style shell (left sidebar + form + AI rail), open
+**Apps/CV/CV Workspace** (`StudioWorkspaceShell` + `CvWorkspaceBody` + `AiChatPanel`).
 
-- `StructuredForm` / `FormField` / `textField`
-- shadcn `Select` + `ChipAutocomplete`
-- `FormSectionHeader`, `EntryActions`
-- `AddSectionChooser`
-- shadcn `Tabs` (line variant)
+Those stories exercise:
+
+- Profile `StructuredForm`, social networks, target-roles `ListEditor`
+- Dynamic sections for all entry types + `AddSectionChooser`
+- Experience / Education / Publication / OneLine / simple-list editors
+- YAML mode toggle with parse errors
+- Evidence / Design / Locale / Settings tabs
+- shadcn `Tabs`, `Accordion`, `Select`, `Switch`
+- Workspace shell chrome, CV file sidebar fixtures, and stub AI send
 
 See [FORMS.md](../../../FORMS.md) for the package contract.

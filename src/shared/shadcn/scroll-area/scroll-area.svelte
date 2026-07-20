@@ -2,6 +2,7 @@
 	import { ScrollArea as ScrollAreaPrimitive } from "bits-ui";
 	import { Scrollbar } from "./index.js";
 	import { type WithoutChild } from "../../../lib/utils.js";
+	import { omitDataUiIdentity } from "../../../lib/data-ui-host.js";
 
 	let {
 		ref = $bindable(null),
@@ -22,11 +23,11 @@
 
 <ScrollAreaPrimitive.Root
 	bind:ref
-		data-ui-component="scroll-area"
+	{...omitDataUiIdentity(restProps)}
+	data-ui-component="scroll-area"
 	data-ui-part="scroll-area"
 	data-slot="scroll-area"
 	class={className}
-	{...restProps}
 >
 	<ScrollAreaPrimitive.Viewport
 		bind:ref={viewportRef}

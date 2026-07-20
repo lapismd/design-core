@@ -1,6 +1,7 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent } from "storybook/test";
+  import FormPlaceholder from "../form-placeholder/FormPlaceholder.svelte";
   import CollapsibleItemList from "./CollapsibleItemList.svelte";
 
   const { Story } = defineMeta({
@@ -38,11 +39,13 @@
       }}
     >
       {#snippet children()}
-        <ul class="flex flex-col gap-1 text-sm">
-          {#each items as item (item)}
-            <li>{item}</li>
-          {/each}
-        </ul>
+        <FormPlaceholder>
+          <ul class="flex flex-col gap-1 text-sm">
+            {#each items as item (item)}
+              <li>{item}</li>
+            {/each}
+          </ul>
+        </FormPlaceholder>
       {/snippet}
     </CollapsibleItemList>
   {/snippet}

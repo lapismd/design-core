@@ -7,6 +7,11 @@
 	import type { ComponentProps } from "svelte";
 	import { Button } from "../button/index.js";
 	import XIcon from '@lucide/svelte/icons/x';
+	import {
+		omitDataUiIdentity,
+		resolveDataUiComponent,
+		resolveDataUiPart,
+	} from "../../../lib/data-ui-host.js";
 
 	let {
 		ref = $bindable(null),
@@ -14,11 +19,16 @@
 		portalProps,
 		children,
 		showCloseButton = true,
+		dataUiComponent,
+		dataUiPart,
 		...restProps
 	}: WithoutChildrenOrChild<DialogPrimitive.ContentProps> & {
 		portalProps?: WithoutChildrenOrChild<ComponentProps<typeof DialogPortal>>;
 		children: Snippet;
 		showCloseButton?: boolean;
+		/** Intentional family restyle (e.g. command palette). */
+		dataUiComponent?: string;
+		dataUiPart?: string;
 	} = $props();
 </script>
 
@@ -26,20 +36,24 @@
 	<Dialog.Overlay />
 	<DialogPrimitive.Content
 		bind:ref
-				data-ui-component="dialog"
-		data-ui-part="dialog-content"
+		{...omitDataUiIdentity(restProps)}
+		data-ui-component={resolveDataUiComponent("dialog", dataUiComponent)}
+		data-ui-part={resolveDataUiPart("dialog-content", dataUiPart)}
 		data-slot="dialog-content"
 		class={className}
-		{...restProps}
 	>
 		{@render children?.()}
 		{#if showCloseButton}
 			<DialogPrimitive.Close data-slot="dialog-close">
 				{#snippet child({ props })}
-					<Button variant="ghost"  data-ui-component="dialog"
- data-ui-part="dialog-content-anon-0"
- data-slot="dialog-content-anon-0"
-  size="icon-sm" {...props}>
+					<Button
+						variant="ghost"
+						size="icon-sm"
+						{...props}
+						dataUiComponent="dialog"
+						data-ui-part="dialog-content-anon-0"
+						data-slot="dialog-content-anon-0"
+					>
 						<XIcon  />
 						<span class="sr-only">Close</span>
 					</Button>

@@ -11,6 +11,7 @@ import {
   type StyleSite,
 } from "../analysis/style-sites.js";
 import { publicTokenName } from "./token-names.js";
+import { emitLockedDataUiAttrOrder } from "./data-ui-host-gate.js";
 
 function constName(component: string, axis: string): string {
   const base = component.replace(/-/g, "_").toUpperCase();
@@ -797,6 +798,8 @@ export function rewritePartSource(args: {
   if (injectCss?.trim()) {
     source = injectStyleBlock(source, injectCss);
   }
+
+  source = emitLockedDataUiAttrOrder(source);
 
   return source;
 }

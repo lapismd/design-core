@@ -3,8 +3,7 @@
  * Imported by structured-form / FormField hosts so overrides work without
  * per-rule nested theme fallbacks.
  *
- * Theme via `--ui-form-*` (see `form.tokens.ts`). Legacy `--cv-form-*` names
- * alias to the new tokens for read-compat; prefer setting `--ui-form-*`.
+ * Theme via `--ui-form-*` (see `form.tokens.ts`).
  */
 :root,
 .ui-structured-form,
@@ -41,25 +40,4 @@
   --ui-form-code-gutter: color-mix(in srgb, var(--muted) 52%, transparent);
   --ui-form-column-gap: 1rem;
   --ui-form-radius: var(--radius, 0.625rem);
-
-  /* Legacy read aliases (prefer --ui-form-*) */
-  --cv-form-background: var(--ui-form-background);
-  --cv-form-foreground: var(--ui-form-foreground);
-  --cv-form-muted: var(--ui-form-muted);
-  --cv-form-muted-surface: var(--ui-form-muted-surface);
-  --cv-form-border: var(--ui-form-border);
-  --cv-form-border-muted: var(--ui-form-border-muted);
-  --cv-form-accent: var(--ui-form-accent);
-  --cv-form-primary-foreground: var(--ui-form-primary-foreground);
-  --cv-form-selection: var(--ui-form-selection);
-  --cv-form-selection-strong: var(--ui-form-selection-strong);
-  --cv-form-active-line: var(--ui-form-active-line);
-  --cv-form-gutter: var(--ui-form-gutter);
-  --cv-form-popover: var(--ui-form-popover);
-  --cv-form-panel-background: var(--ui-form-panel-background);
-  --cv-form-shadow: var(--ui-form-shadow);
-  --cv-form-mono: var(--ui-form-mono);
-  --cv-form-code-background: var(--ui-form-code-background);
-  --cv-form-code-gutter: var(--ui-form-code-gutter);
-  --cv-control-column-gap: var(--ui-form-column-gap);
 }

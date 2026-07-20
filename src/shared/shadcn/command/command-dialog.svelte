@@ -33,8 +33,8 @@
 		<Dialog.Description>{description}</Dialog.Description>
 	</Dialog.Header>
 	<Dialog.Content
-				data-ui-component="command"
-		data-ui-part="command-content"
+		dataUiComponent="command"
+		dataUiPart="command-content"
 		data-slot="command-content"
 		class={className}
 		{showCloseButton}

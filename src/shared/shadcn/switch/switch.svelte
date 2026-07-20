@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Switch as SwitchPrimitive } from "bits-ui";
 	import { type WithoutChildrenOrChild } from "../../../lib/utils.js";
+	import { omitDataUiIdentity } from "../../../lib/data-ui-host.js";
 
 	let {
 		ref = $bindable(null),
@@ -16,18 +17,17 @@
 <SwitchPrimitive.Root
 	bind:ref
 	bind:checked
-		data-ui-component="switch"
+	{...omitDataUiIdentity(restProps)}
+	data-ui-component="switch"
 	data-ui-part="switch"
 	data-slot="switch"
 	data-size={size}
 	class={className}
-	{...restProps}
 >
 	<SwitchPrimitive.Thumb
-				data-ui-component="switch"
+		data-ui-component="switch"
 		data-ui-part="switch-thumb"
 		data-slot="switch-thumb"
-		
 	/>
 </SwitchPrimitive.Root>
 

@@ -1,3 +1,7 @@
+import {
+  storyIdPrefixFromStoryId,
+  storyIdPrefixFromTitle,
+} from "../visual/snapshot-paths.js";
 import { buttonRecipe } from "./button.js";
 import type { BatchName, ComponentRecipe } from "./types.js";
 
@@ -347,4 +351,18 @@ export function componentsForBatch(batch: BatchName): string[] {
 
 export function listRecipes(): ComponentRecipe[] {
   return Object.values(recipes);
+}
+
+/**
+ * Resolve a recipe component name from a Storybook story id by matching the
+ * story-title slug prefix (e.g. `shadcn-disclosure-accordion--…` → accordion).
+ */
+export function componentFromStoryId(storyId: string): string | undefined {
+  const prefix = storyIdPrefixFromStoryId(storyId);
+  for (const recipe of Object.values(recipes)) {
+    if (storyIdPrefixFromTitle(recipe.storyTitle) === prefix) {
+      return recipe.component;
+    }
+  }
+  return undefined;
 }

@@ -25,6 +25,8 @@
     variant?: ButtonVariant;
     size?: ButtonSize;
     ref?: HTMLButtonElement | null;
+    /** Intentional family restyle (e.g. dialog close). Overrides default host identity. */
+    dataUiComponent?: string;
   };
 
   /** @deprecated Prefer Button props; retained for API compatibility. */
@@ -38,6 +40,11 @@
 </script>
 
 <script lang="ts">
+  import {
+    omitDataUiComponent,
+    resolveDataUiComponent,
+  } from "../../../lib/data-ui-host.js";
+
   let {
     class: className,
     variant = "default",
@@ -46,20 +53,21 @@
     type = "button",
     disabled,
     children,
+    dataUiComponent,
     ...restProps
   }: ButtonProps = $props();
 </script>
 
 <button
   bind:this={ref}
-  data-ui-component="button"
+  {...omitDataUiComponent(restProps)}
+  data-ui-component={resolveDataUiComponent("button", dataUiComponent)}
   data-slot="button"
   data-variant={variant}
   data-size={size}
   class={className}
   {type}
   {disabled}
-  {...restProps}
 >
   {@render children?.()}
 </button>

@@ -1,5 +1,6 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
+  import FormPlaceholder from "../form-placeholder/FormPlaceholder.svelte";
   import EntryActions from "./EntryActions.svelte";
 
   const { Story } = defineMeta({
@@ -15,7 +16,6 @@
   });
 </script>
 
-
 <Story
   name="Single entry"
   exportName="SingleEntry"
@@ -28,7 +28,7 @@
 >
   {#snippet template()}
     <EntryActions index={0} total={1}>
-      <p class="text-muted-foreground m-0 text-sm">Only entry</p>
+      <FormPlaceholder>Only entry</FormPlaceholder>
     </EntryActions>
   {/snippet}
 </Story>
@@ -45,7 +45,7 @@
 >
   {#snippet template()}
     <EntryActions index={1} total={3}>
-      <p class="text-muted-foreground m-0 text-sm">Middle entry</p>
+      <FormPlaceholder>Middle entry</FormPlaceholder>
     </EntryActions>
   {/snippet}
 </Story>

@@ -1,20 +1,27 @@
 <script lang="ts">
   import { Separator as SeparatorPrimitive } from "bits-ui";
-  
+  import {
+    omitDataUiComponent,
+    resolveDataUiComponent,
+  } from "../../../lib/data-ui-host.js";
+
   let {
     ref = $bindable(null),
     class: className,
     "data-slot": dataSlot = "separator",
+    dataUiComponent,
     ...restProps
-  }: SeparatorPrimitive.RootProps = $props();
+  }: SeparatorPrimitive.RootProps & {
+    dataUiComponent?: string;
+  } = $props();
 </script>
 
 <SeparatorPrimitive.Root
   bind:ref
-  data-ui-component="separator"
+  {...omitDataUiComponent(restProps)}
+  data-ui-component={resolveDataUiComponent("separator", dataUiComponent)}
   data-slot={dataSlot}
   class={className}
-  {...restProps}
 />
 
 <style>

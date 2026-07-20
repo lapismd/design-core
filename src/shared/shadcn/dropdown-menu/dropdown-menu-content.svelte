@@ -3,6 +3,7 @@
 	import DropdownMenuPortal from "./dropdown-menu-portal.svelte";
 	import { DropdownMenu as DropdownMenuPrimitive } from "bits-ui";
 	import type { ComponentProps } from "svelte";
+	import { omitDataUiIdentity } from "../../../lib/data-ui-host.js";
 
 	let {
 		ref = $bindable(null),
@@ -19,12 +20,12 @@
 <DropdownMenuPortal {...portalProps}>
 	<DropdownMenuPrimitive.Content
 		bind:ref
-				data-ui-component="dropdown-menu"
+		{...omitDataUiIdentity(restProps)}
+		data-ui-component="dropdown-menu"
 		data-ui-part="dropdown-menu-content"
 		data-slot="dropdown-menu-content"
 		{sideOffset}
 		{align}
 		class={className}
-		{...restProps}
 	/>
 </DropdownMenuPortal>

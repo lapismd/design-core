@@ -1,6 +1,7 @@
 <script lang="ts">
   import { type WithElementRef, type WithoutChildren } from "../../../lib/utils.js";
   import type { HTMLAttributes } from "svelte/elements";
+  import { omitDataUiComponent } from "../../../lib/data-ui-host.js";
 
   let {
     ref = $bindable(null),
@@ -11,10 +12,10 @@
 
 <div
   bind:this={ref}
+  {...omitDataUiComponent(restProps)}
   data-ui-component="skeleton"
   data-slot="skeleton"
   class={className}
-  {...restProps}
 ></div>
 
 <style>

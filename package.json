@@ -115,6 +115,8 @@
     "./forms/ReadOnlyFormList.svelte": "./src/shared/forms/read-only-form/ReadOnlyFormList.svelte",
     "./forms/SearchFilterBar.svelte": "./src/shared/forms/search-filter-bar/SearchFilterBar.svelte",
     "./forms/ReferencePicker.svelte": "./src/shared/forms/reference-picker/ReferencePicker.svelte",
+    "./forms/ListEditor.svelte": "./src/shared/forms/list-editor/ListEditor.svelte",
+    "./forms/SortableArrayItem.svelte": "./src/shared/forms/sortable-array-item/SortableArrayItem.svelte",
     "./forms/TaskDueCalendar.svelte": "./src/shared/forms/task-due-calendar/TaskDueCalendar.svelte",
     "./forms/CodeEditor.svelte": "./src/shared/forms/code-editor/CodeEditor.svelte",
     "./forms/YamlEditor.svelte": "./src/shared/forms/yaml-editor/YamlEditor.svelte",
@@ -123,6 +125,10 @@
     "./forms/FormViewRenderer.svelte": "./src/shared/forms/structured-form/FormViewRenderer.svelte",
     "./forms/YamlBackedForm.svelte": "./src/shared/forms/structured-form/YamlBackedForm.svelte",
     "./styles.css": "./src/styles.css",
+    "./workspace-shell": "./src/shared/workspace-shell/index.ts",
+    "./workspace-shell/tokens": "./src/shared/workspace-shell/workspace-shell.tokens.ts",
+    "./ai": "./src/shared/ai/index.ts",
+    "./ai/tokens": "./src/shared/ai/ai.tokens.ts",
     "./apps/cv": "./src/apps/cv/index.ts",
     "./apps/beancount": "./src/apps/beancount/index.ts"
   }

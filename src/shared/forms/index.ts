@@ -1,5 +1,4 @@
 export {
-  formLegacyTokenNames,
   formTokenNames,
   type FormToken,
 } from "./form.tokens";
@@ -15,12 +14,14 @@ export { default as FormPlaceholder } from "./form-placeholder/FormPlaceholder.s
 export { default as FormSectionHeader } from "./form-section-header/FormSectionHeader.svelte";
 export { default as FormViewRenderer } from "./structured-form/FormViewRenderer.svelte";
 export { default as InlineOptionPicker } from "./inline-option-picker/InlineOptionPicker.svelte";
+export { default as ListEditor } from "./list-editor/ListEditor.svelte";
 export { default as ReadOnlyFormGroup } from "./read-only-form/ReadOnlyFormGroup.svelte";
 export { default as ReadOnlyFormList } from "./read-only-form/ReadOnlyFormList.svelte";
 export { default as ReadOnlyFormRow } from "./read-only-form/ReadOnlyFormRow.svelte";
 export { default as ReferencePicker } from "./reference-picker/ReferencePicker.svelte";
 export { default as SearchFilterBar } from "./search-filter-bar/SearchFilterBar.svelte";
 export { default as SegmentedControl } from "./segmented-control/SegmentedControl.svelte";
+export { default as SortableArrayItem } from "./sortable-array-item/SortableArrayItem.svelte";
 export { default as StructuredForm } from "./structured-form/StructuredForm.svelte";
 export { default as TaskDueCalendar } from "./task-due-calendar/TaskDueCalendar.svelte";
 export { default as YamlBackedForm } from "./structured-form/YamlBackedForm.svelte";

@@ -1,6 +1,16 @@
-import { expect, test } from "@playwright/test";
-import { readFileSync } from "node:fs";
+import { expect, test, type Locator, type Page } from "@playwright/test";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
+import { compareBaselineToActualPng } from "../../scripts/ui-generator/visual/compare-pixels.js";
+import {
+  actualPngPath,
+  baselinePngPath,
+  buildSidecarBase,
+  diffPngPath,
+  sidecarJsonPath,
+  snapshotPublicRel,
+  writeVisualDiffSidecar,
+} from "../../scripts/ui-generator/visual/diff-result.js";
 import {
   screenshotRelativePath,
   type StoryIndexEntry,
@@ -10,6 +20,15 @@ type StorybookIndex = {
   entries: Record<string, StoryIndexEntry>;
 };
 
+const PORTAL_SELECTORS = [
+  '[role="dialog"]',
+  '[role="listbox"]',
+  '[role="menu"]',
+  '[data-state="open"]',
+].join(", ");
+
+const PACKAGE_ROOT = resolve(".");
+
 function loadVisualStories(): StoryIndexEntry[] {
   const indexPath = resolve("storybook-static/index.json");
   const index = JSON.parse(readFileSync(indexPath, "utf8")) as StorybookIndex;
@@ -17,6 +36,119 @@ function loadVisualStories(): StoryIndexEntry[] {
     .filter((entry) => entry.type === "story")
     .filter((entry) => !(entry.tags ?? []).includes("skip-visual"))
     .sort((a, b) => a.id.localeCompare(b.id));
+}
+
+function looksLikePortalStory(storyId: string): boolean {
+  return (
+    storyId.includes("open-menu") ||
+    storyId.includes("--open-") ||
+    storyId.includes("dialog") ||
+    storyId.includes("popover")
+  );
+}
+
+/**
+ * Union clip of #storybook-root and visible portals (menus/dialogs rendered
+ * outside the root). Returns null when the tight first-child shot is enough.
+ */
+async function portalUnionClip(
+  page: Page,
+): Promise<{ x: number; y: number; width: number; height: number } | null> {
+  return page.evaluate((portalSelector) => {
+    const root = document.querySelector("#storybook-root");
+    if (!root) return null;
+    const rects: DOMRect[] = [root.getBoundingClientRect()];
+    for (const el of document.querySelectorAll(portalSelector)) {
+      if (!(el instanceof HTMLElement)) continue;
+      if (root.contains(el)) continue;
+      const r = el.getBoundingClientRect();
+      if (r.width < 1 || r.height < 1) continue;
+      const style = getComputedStyle(el);
+      if (style.visibility === "hidden" || style.display === "none") continue;
+      rects.push(r);
+    }
+    if (rects.length < 2) return null;
+    let left = Infinity;
+    let top = Infinity;
+    let right = -Infinity;
+    let bottom = -Infinity;
+    for (const r of rects) {
+      left = Math.min(left, r.left);
+      top = Math.min(top, r.top);
+      right = Math.max(right, r.right);
+      bottom = Math.max(bottom, r.bottom);
+    }
+    const x = Math.max(0, Math.floor(left));
+    const y = Math.max(0, Math.floor(top));
+    const width = Math.ceil(right - left);
+    const height = Math.ceil(bottom - top);
+    if (width < 1 || height < 1) return null;
+    return { x, y, width, height };
+  }, PORTAL_SELECTORS);
+}
+
+async function captureActualPng(
+  page: Page,
+  subject: Locator | null,
+  clip: { x: number; y: number; width: number; height: number } | null,
+): Promise<Buffer> {
+  if (clip) {
+    return page.screenshot({
+      clip,
+      animations: "disabled",
+      caret: "hide",
+      scale: "device",
+      type: "png",
+    });
+  }
+  if (subject) {
+    return subject.screenshot({
+      animations: "disabled",
+      caret: "hide",
+      scale: "device",
+      type: "png",
+    });
+  }
+  return page.screenshot({
+    animations: "disabled",
+    caret: "hide",
+    scale: "device",
+    type: "png",
+  });
+}
+
+function writeSidecarForStory(
+  story: StoryIndexEntry,
+  status: "passed" | "failed",
+  error: string | undefined,
+  actualPng: Buffer | null,
+): void {
+  const baselinePath = baselinePngPath(story, PACKAGE_ROOT);
+  const outPath = sidecarJsonPath(baselinePath);
+  const base = buildSidecarBase(story, status, error);
+  if (!actualPng || !existsSync(baselinePath)) {
+    writeVisualDiffSidecar(outPath, base);
+    return;
+  }
+  try {
+    const {
+      actualPng: fittedActual,
+      diffPng,
+      ...metrics
+    } = compareBaselineToActualPng(baselinePath, actualPng);
+    const actualPath = actualPngPath(baselinePath);
+    const heatmapPath = diffPngPath(baselinePath);
+    writeFileSync(actualPath, fittedActual);
+    writeFileSync(heatmapPath, diffPng);
+    writeVisualDiffSidecar(outPath, {
+      ...base,
+      ...metrics,
+      actualRel: snapshotPublicRel(actualPath, PACKAGE_ROOT),
+      diffRel: snapshotPublicRel(heatmapPath, PACKAGE_ROOT),
+    });
+  } catch {
+    writeVisualDiffSidecar(outPath, base);
+  }
 }
 
 const stories = loadVisualStories();
@@ -86,13 +218,44 @@ test.describe("Storybook visual baselines", () => {
 
       await page.waitForTimeout(100);
 
-      // Pass path segments as an array — a string with "/" is flattened by Playwright.
-      await expect(page).toHaveScreenshot(
-        screenshotRelativePath(story).split("/"),
-        {
-          fullPage: true,
-        },
-      );
+      // Drop play-function focus rings so baselines stay chrome-free.
+      await page.evaluate(() => {
+        const active = document.activeElement;
+        if (active instanceof HTMLElement) active.blur();
+      });
+
+      const snapshotPath = screenshotRelativePath(story).split("/");
+      const usePortalClip =
+        looksLikePortalStory(storyId) ||
+        (await page.locator(PORTAL_SELECTORS).count()) > 0;
+      const clip = usePortalClip ? await portalUnionClip(page) : null;
+
+      let subject: Locator | null = null;
+      if (!clip) {
+        const childCount = await root.locator(":scope > *").count();
+        subject =
+          childCount > 0 ? root.locator(":scope > *").first() : root;
+        await expect(subject).toBeVisible();
+      }
+
+      let status: "passed" | "failed" = "passed";
+      let error: string | undefined;
+      try {
+        if (clip) {
+          await expect(page).toHaveScreenshot(snapshotPath, { clip });
+        } else {
+          await expect(subject!).toHaveScreenshot(snapshotPath);
+        }
+      } catch (err) {
+        status = "failed";
+        error = err instanceof Error ? err.message : String(err);
+        throw err;
+      } finally {
+        const actualPng = await captureActualPng(page, subject, clip).catch(
+          () => null,
+        );
+        writeSidecarForStory(story, status, error, actualPng);
+      }
     });
   }
 });

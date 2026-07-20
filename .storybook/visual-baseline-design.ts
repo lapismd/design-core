@@ -53,15 +53,16 @@ export function baselineUrlForStory(
 
 /**
  * `parameters.visualDelta` for storybook-addon-visual-delta.
- * First baseline auto-selects on load; overlay pins to the viewport origin
- * to match Playwright fullPage PNGs.
+ * First baseline auto-selects on load; component-clipped PNGs pin to the
+ * story canvas; default split puts the baseline to the right of live.
  */
 export function visualBaselineVisualDeltaParameter(src: string) {
   return {
     images: [src],
     opacity: 0.5,
     colorInversion: false,
-    align: "viewport" as const,
+    align: "canvas" as const,
+    placement: "right" as const,
     passThresholdPercent: 0.1,
   };
 }

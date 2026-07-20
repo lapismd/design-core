@@ -189,6 +189,9 @@ importers:
 
   packages/storybook-addon-visual-delta:
     dependencies:
+      '@storybook/icons':
+        specifier: ^2.1.0
+        version: 2.1.0(react@19.2.7)
       html-to-image:
         specifier: ^1.11.13
         version: 1.11.13

@@ -11,9 +11,9 @@
 
 <Separator
 	bind:ref
-		data-ui-component="select"
+	{...restProps}
+	dataUiComponent="select"
 	data-ui-part="select-separator"
 	data-slot="select-separator"
 	class={className}
-	{...restProps}
 />

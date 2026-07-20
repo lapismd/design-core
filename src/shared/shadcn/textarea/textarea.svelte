@@ -1,6 +1,7 @@
 <script lang="ts">
   import { type WithElementRef, type WithoutChildren } from "../../../lib/utils.js";
   import type { HTMLTextareaAttributes } from "svelte/elements";
+  import { omitDataUiComponent } from "../../../lib/data-ui-host.js";
 
   let {
     ref = $bindable(null),
@@ -13,11 +14,11 @@
 
 <textarea
   bind:this={ref}
+  {...omitDataUiComponent(restProps)}
   data-ui-component="textarea"
   data-slot={dataSlot}
   class={className}
   bind:value
-  {...restProps}
 ></textarea>
 
 <style>

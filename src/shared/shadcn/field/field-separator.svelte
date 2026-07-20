@@ -18,21 +18,21 @@
 
 <div
 	bind:this={ref}
-		data-ui-component="field"
+	data-ui-component="field"
 	data-ui-part="field-separator"
 	data-slot="field-separator"
 	data-content={hasContent}
 	class={className}
 	{...restProps}
 >
-	<Separator  data-ui-component="field"
- data-ui-part="field-separator-anon-0"
- data-slot="field-separator-anon-0"
-  />
+	<Separator
+		dataUiComponent="field"
+		data-ui-part="field-separator-anon-0"
+		data-slot="field-separator-anon-0"
+	/>
 	{#if children}
 		<span
-			
-						data-ui-component="field"
+			data-ui-component="field"
 			data-ui-part="field-separator-content"
 			data-slot="field-separator-content"
 		>

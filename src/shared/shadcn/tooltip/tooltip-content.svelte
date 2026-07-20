@@ -3,6 +3,7 @@
 		import TooltipPortal from "./tooltip-portal.svelte";
 	import type { ComponentProps } from "svelte";
 	import type { WithoutChildrenOrChild } from "../../../lib/utils.js";
+	import { omitDataUiIdentity } from "../../../lib/data-ui-host.js";
 
 	let {
 		ref = $bindable(null),
@@ -22,13 +23,13 @@
 <TooltipPortal {...portalProps}>
 	<TooltipPrimitive.Content
 		bind:ref
-				data-ui-component="tooltip"
+		{...omitDataUiIdentity(restProps)}
+		data-ui-component="tooltip"
 		data-ui-part="tooltip-content"
 		data-slot="tooltip-content"
 		{sideOffset}
 		{side}
 		class={className}
-		{...restProps}
 	>
 		{@render children?.()}
 		<TooltipPrimitive.Arrow>

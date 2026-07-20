@@ -4,6 +4,7 @@
     HTMLInputTypeAttribute,
   } from "svelte/elements";
   import { type WithElementRef } from "../../../lib/utils.js";
+  import { omitDataUiComponent } from "../../../lib/data-ui-host.js";
 
   type InputType = Exclude<HTMLInputTypeAttribute, "file">;
 
@@ -29,23 +30,23 @@
 {#if type === "file"}
   <input
     bind:this={ref}
+    {...omitDataUiComponent(restProps)}
     data-ui-component="input"
-  data-slot={dataSlot}
+    data-slot={dataSlot}
     class={className}
     type="file"
     bind:files
     bind:value
-    {...restProps}
   />
 {:else}
   <input
     bind:this={ref}
+    {...omitDataUiComponent(restProps)}
     data-ui-component="input"
-  data-slot={dataSlot}
+    data-slot={dataSlot}
     class={className}
     {type}
     bind:value
-    {...restProps}
   />
 {/if}
 
