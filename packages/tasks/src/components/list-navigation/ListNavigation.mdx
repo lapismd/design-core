@@ -1,17 +1,36 @@
-import { Canvas, Markdown, Meta } from "@storybook/addon-docs/blocks";
+import {
+  Canvas,
+  Controls,
+  Markdown,
+  Meta,
+  Primary,
+} from "@storybook/addon-docs/blocks";
 import * as ListNavigationStories from "./ListNavigation.stories.svelte";
 import listNavigationSpec from "../../../specs/components/list-navigation.md?raw";
 
 <Meta of={ListNavigationStories} />
 
-The canonical implementation contract is rendered below from
-`packages/tasks/specs/components/list-navigation.md`.
+# ListNavigation
+
+Sidebar destinations with independent favourite controls. Status: **Done**.
 
 <Markdown>{listNavigationSpec}</Markdown>
 
-## Implementation placeholder
+## Usage
+
+<Primary />
+
+## Properties
+
+<Controls />
+
+## Interactions
 
 <Canvas
-  of={ListNavigationStories.ImplementationPlaceholder}
+  of={ListNavigationStories.ActivateDestination}
+  meta={ListNavigationStories}
+/>
+<Canvas
+  of={ListNavigationStories.FavouriteIndependently}
   meta={ListNavigationStories}
 />

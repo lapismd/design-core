@@ -1,18 +1,18 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent } from "storybook/test";
-  import TasksImplementationBrief from "../TasksImplementationBrief.svelte";
+  import ListNavigation from "./ListNavigation.svelte";
 
   const { Story } = defineMeta({
     title: "Tasks/Components/List Navigation and Index",
-    component: TasksImplementationBrief,
+    component: ListNavigation,
     tags: ["skip-visual"],
     parameters: {
       layout: "fullscreen",
       docs: {
         description: {
           component:
-            "List navigation gives its row and favourite control independent targets, so changing favourite never opens the list. Its full specification is on this component's Docs page.",
+            "Sidebar destinations with activate targets independent from favourite controls.",
         },
       },
     },
@@ -20,40 +20,52 @@
 </script>
 
 <script lang="ts">
-  import TasksInteractionTodo from "../TasksInteractionTodo.svelte";
-  import {
-    getComponentImplementationBrief,
-    referenceVisualDelta,
-  } from "../../lib/story-data.js";
-
-  const listNavigation = getComponentImplementationBrief("list-navigation");
+  import { referenceVisualDelta } from "../../lib/story-data.js";
+  import ListNavigationHarness from "./ListNavigationHarness.svelte";
 </script>
 
 <Story
-  name="Implementation placeholder"
-  exportName="ImplementationPlaceholder"
-  parameters={{ visualDelta: referenceVisualDelta("desktop-lists") }}
+  name="Activate destination"
+  exportName="ActivateDestination"
+  parameters={{ visualDelta: referenceVisualDelta("desktop-inbox") }}
+  play={async ({ canvas }) => {
+    await userEvent.click(canvas.getByRole("button", { name: "Today" }));
+    await expect(canvas.getByText("Active today")).toBeVisible();
+  }}
 >
-  {#snippet template()}<TasksImplementationBrief
-      brief={listNavigation}
-    />{/snippet}
+  {#snippet template()}
+    <ListNavigationHarness />
+  {/snippet}
 </Story>
 
 <Story
-  name="Activate a list or change favourite independently (TODO)"
-  exportName="NavigateAndFavouriteTodo"
-  tags={["todo"]}
+  name="Favourite independently"
+  exportName="FavouriteIndependently"
   parameters={{ visualDelta: referenceVisualDelta("desktop-lists") }}
   play={async ({ canvas }) => {
+    await expect(canvas.getByText("Favourite on")).toBeVisible();
     await userEvent.click(
-      canvas.getByRole("button", { name: "Favourite Design notes" }),
+      canvas.getByRole("button", { name: "Favourite Tasks UI Reference" }),
     );
-    await expect(canvas.getByText("List favourite changed")).toBeVisible();
-    await userEvent.click(canvas.getByRole("button", { name: "Design notes" }));
-    await expect(canvas.getByText("List detail open")).toBeVisible();
+    await expect(canvas.getByText("Favourite off")).toBeVisible();
+    await expect(canvas.getByText("Active inbox")).toBeVisible();
   }}
 >
-  {#snippet template()}<TasksInteractionTodo
-      scenario="list-navigation"
-    />{/snippet}
+  {#snippet template()}
+    <ListNavigationHarness />
+  {/snippet}
+</Story>
+
+<Story
+  name="Create list"
+  exportName="CreateList"
+  parameters={{ visualDelta: referenceVisualDelta("desktop-lists") }}
+  play={async ({ canvas }) => {
+    await userEvent.click(canvas.getByRole("button", { name: "New list" }));
+    await expect(canvas.getByText("Create list requested")).toBeVisible();
+  }}
+>
+  {#snippet template()}
+    <ListNavigationHarness />
+  {/snippet}
 </Story>
