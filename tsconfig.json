@@ -23,6 +23,8 @@
     ".storybook/**/*.ts",
     "src/**/*.ts",
     "src/**/*.svelte",
+    "packages/workspace/src/**/*.ts",
+    "packages/workspace/src/**/*.svelte",
     "vite.config.ts",
     "vitest.config.ts"
   ]

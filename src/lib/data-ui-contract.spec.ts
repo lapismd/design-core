@@ -12,6 +12,14 @@ import {
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const srcRoot = path.resolve(dirname, "..");
 const shadcnRoot = path.join(srcRoot, "shared", "shadcn");
+const workspaceRoot = path.resolve(
+  srcRoot,
+  "..",
+  "packages",
+  "workspace",
+  "src",
+  "lib",
+);
 
 /** Avoid Storybook/vitest HTML pipelines stripping `<style>` from fixtures. */
 const STYLE_CLOSE = "</" + "style>";
@@ -34,7 +42,9 @@ function walkSvelteFiles(dir: string): string[] {
 }
 
 function formatViolations(violations: DataUiViolation[]): string {
-  return violations.map((v) => `${v.file}: [${v.kind}] ${v.message}`).join("\n\n");
+  return violations
+    .map((v) => `${v.file}: [${v.kind}] ${v.message}`)
+    .join("\n\n");
 }
 
 describe("data-ui-contract analyzer", () => {
@@ -47,7 +57,9 @@ describe("data-ui-contract analyzer", () => {
       STYLE_CLOSE,
     ].join("\n");
     const violations = analyzeSvelteSource(source, "AiChatDock.svelte");
-    expect(violations.some((v) => v.kind === "missing-component-on-part")).toBe(true);
+    expect(violations.some((v) => v.kind === "missing-component-on-part")).toBe(
+      true,
+    );
   });
 
   it("flags project-path Tooltip.Trigger when CSS requires same-element compound", () => {
@@ -64,7 +76,9 @@ describe("data-ui-contract analyzer", () => {
       STYLE_CLOSE,
     ].join("\n");
     const violations = analyzeSvelteSource(source, "StudioSidebar.svelte");
-    expect(violations.some((v) => v.kind === "missing-component-on-part")).toBe(true);
+    expect(violations.some((v) => v.kind === "missing-component-on-part")).toBe(
+      true,
+    );
   });
 
   it("flags data-ui-component override on shadcn Button host", () => {
@@ -79,7 +93,9 @@ describe("data-ui-contract analyzer", () => {
       STYLE_CLOSE,
     ].join("\n");
     const violations = analyzeSvelteSource(source, "StudioSidebar.svelte");
-    expect(violations.some((v) => v.kind === "host-component-override")).toBe(true);
+    expect(violations.some((v) => v.kind === "host-component-override")).toBe(
+      true,
+    );
   });
 
   it("accepts native hosts with matching same-element attrs", () => {
@@ -147,9 +163,9 @@ describe("data-ui-contract analyzer", () => {
       "shared/shadcn/field/field-label.svelte",
       { allowlist: DATA_UI_SHADCN_ALLOWLIST },
     );
-    expect(violations.filter((v) => v.kind === "host-component-override")).toEqual(
-      [],
-    );
+    expect(
+      violations.filter((v) => v.kind === "host-component-override"),
+    ).toEqual([]);
   });
 });
 
@@ -182,15 +198,20 @@ describe("data-ui-contract source scan", () => {
       path.join(srcRoot, "shared", "workspace-shell"),
       path.join(srcRoot, "shared", "forms"),
       path.join(srcRoot, "apps"),
+      workspaceRoot,
     ];
     const files = roots.flatMap((root) => walkSvelteFiles(root));
     expect(files.length).toBeGreaterThan(10);
 
     const violations = files.flatMap((file) =>
-      analyzeSvelteSource(readFileSync(file, "utf8"), path.relative(srcRoot, file), {
-        hostComponents: catalog.components,
-        hostParts: catalog.parts,
-      }),
+      analyzeSvelteSource(
+        readFileSync(file, "utf8"),
+        path.relative(srcRoot, file),
+        {
+          hostComponents: catalog.components,
+          hostParts: catalog.parts,
+        },
+      ),
     );
 
     expect(violations, formatViolations(violations)).toEqual([]);
@@ -203,15 +224,20 @@ describe("data-ui-contract source scan", () => {
 
     const violations = files
       .flatMap((file) =>
-        analyzeSvelteSource(readFileSync(file, "utf8"), path.relative(srcRoot, file), {
-          hostComponents: catalog.components,
-          hostParts: catalog.parts,
-          allowlist: DATA_UI_SHADCN_ALLOWLIST,
-        }),
+        analyzeSvelteSource(
+          readFileSync(file, "utf8"),
+          path.relative(srcRoot, file),
+          {
+            hostComponents: catalog.components,
+            hostParts: catalog.parts,
+            allowlist: DATA_UI_SHADCN_ALLOWLIST,
+          },
+        ),
       )
       .filter(
         (v) =>
-          v.kind === "host-component-override" || v.kind === "host-part-override",
+          v.kind === "host-component-override" ||
+          v.kind === "host-part-override",
       );
 
     expect(violations, formatViolations(violations)).toEqual([]);

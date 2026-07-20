@@ -1,5 +1,5 @@
 /**
- * Map Shadcn Storybook stories to committed Playwright visual baselines
+ * Map catalog Storybook stories to committed Playwright visual baselines
  * served via staticDirs at `/visual-baselines`.
  *
  * On-disk filenames use the Playwright project + host platform suffix that
@@ -11,6 +11,7 @@ export const VISUAL_BASELINE_SUFFIX = "-chromium-darwin";
 export type BaselineStoryRef = {
   title?: string;
   id?: string;
+  importPath?: string;
   tags?: string[];
 };
 
@@ -30,7 +31,7 @@ export function familyFromTitle(title: string): string {
 }
 
 /**
- * Returns a baseline PNG URL for Shadcn stories that participate in visual
+ * Returns a baseline PNG URL for catalog stories that participate in visual
  * baselines, or undefined when the story should not show one.
  */
 export function baselineUrlForStory(
@@ -40,9 +41,19 @@ export function baselineUrlForStory(
   const id = story.id ?? "";
   const tags = story.tags ?? [];
 
-  if (!title.startsWith("Shadcn/")) return undefined;
   if (tags.includes("skip-visual")) return undefined;
   if (!id.includes("--")) return undefined;
+
+  if (title.startsWith("Workspace/") && story.importPath) {
+    const directory = story.importPath
+      .replace(/\\/g, "/")
+      .replace(/^\.\//, "")
+      .replace(/^packages\/workspace\/src\/lib\//, "workspace/")
+      .replace(/\/[^/]+\.stories\.\w+$/, "");
+    return `/visual-baselines/${directory}/${storySlugFromId(id)}${VISUAL_BASELINE_SUFFIX}.png`;
+  }
+
+  if (!title.startsWith("Shadcn/")) return undefined;
 
   const family = familyFromTitle(title);
   if (!family) return undefined;

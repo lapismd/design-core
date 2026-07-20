@@ -1,0 +1,36 @@
+export {
+  clampSidebarSize,
+  cloneWorkspaceLayout,
+  createWorkspaceLayout,
+  createWorkspaceSplit,
+  createWorkspaceTabs,
+  findWorkspaceNode,
+  normalizeSizes,
+  normalizeWorkspaceLayout,
+  pruneWorkspaceNode,
+} from "./layout.js";
+export { DefaultWorkspaceViewRegistry } from "./view-registry.js";
+export { WorkspaceController } from "./workspace-controller.svelte";
+export type {
+  WorkspaceChangeEvent,
+  WorkspaceChangeSource,
+  WorkspaceAction,
+  WorkspaceControllerOptions,
+  WorkspaceDirection,
+  WorkspaceImperativeViewDefinition,
+  WorkspaceLayoutV1,
+  WorkspaceNode,
+  WorkspaceSidebarState,
+  WorkspaceSidebarGroup,
+  WorkspaceSidebarTab,
+  WorkspaceSplitNode,
+  WorkspaceSvelteViewDefinition,
+  WorkspaceTab,
+  WorkspaceTabsNode,
+  WorkspaceTabsPresentation,
+  WorkspaceViewNavigationAction,
+  WorkspaceViewContext,
+  WorkspaceViewDefinition,
+  WorkspaceViewRegistry,
+  WorkspaceViewState,
+} from "./types.js";

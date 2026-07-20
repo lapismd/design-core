@@ -16,7 +16,7 @@ export function sanitizeStoryName(name: string): string {
 }
 
 function extractTitle(code: string): string | undefined {
-  const match = code.match(/title:\s*["'](Shadcn\/[^"']+)["']/);
+  const match = code.match(/title:\s*["']((?:Shadcn|Workspace)\/[^"']+)["']/);
   return match?.[1];
 }
 
@@ -27,9 +27,9 @@ function extractStoryName(attrs: string): string | undefined {
   return name?.[1];
 }
 
-function visualDeltaObjectLiteral(family: string, slug: string): string {
+function visualDeltaObjectLiteral(directory: string, slug: string): string {
   const visualDelta = visualBaselineVisualDeltaParameter(
-    `/visual-baselines/shadcn/${family}/${slug}${VISUAL_BASELINE_SUFFIX}.png`,
+    `/visual-baselines/${directory}/${slug}${VISUAL_BASELINE_SUFFIX}.png`,
   );
   return JSON.stringify(visualDelta);
 }
@@ -116,7 +116,7 @@ export function findStoryOpenTagEnd(source: string, start: number): number {
 
 function injectVisualDeltaIntoStoryOpenTag(
   openTag: string,
-  family: string,
+  directory: string,
 ): string {
   if (/skip-visual/.test(openTag)) return openTag;
   if (/\bvisualDelta\s*:/.test(openTag)) return openTag;
@@ -125,7 +125,7 @@ function injectVisualDeltaIntoStoryOpenTag(
   if (!storyName) return openTag;
 
   const slug = sanitizeStoryName(storyName);
-  const visualDeltaLiteral = visualDeltaObjectLiteral(family, slug);
+  const visualDeltaLiteral = visualDeltaObjectLiteral(directory, slug);
 
   const paramsKey = "parameters={{";
   const paramsIdx = openTag.indexOf(paramsKey);
@@ -153,7 +153,7 @@ function injectVisualDeltaIntoStoryOpenTag(
 
 export function injectVisualBaselineVisualDeltas(
   code: string,
-  family: string,
+  directory: string,
 ): string {
   let result = "";
   let cursor = 0;
@@ -173,7 +173,7 @@ export function injectVisualBaselineVisualDeltas(
     }
 
     const openTag = code.slice(start, end + 1);
-    result += injectVisualDeltaIntoStoryOpenTag(openTag, family);
+    result += injectVisualDeltaIntoStoryOpenTag(openTag, directory);
     cursor = end + 1;
   }
 
@@ -181,8 +181,8 @@ export function injectVisualBaselineVisualDeltas(
 }
 
 /**
- * Injects `parameters.visualDelta` into Shadcn CSF so Visual Delta receives
- * baseline image URLs.
+ * Injects `parameters.visualDelta` into supported catalog CSF so Visual Delta
+ * receives baseline image URLs.
  */
 export function visualBaselineVisualDeltaPlugin(): Plugin {
   return {
@@ -190,16 +190,21 @@ export function visualBaselineVisualDeltaPlugin(): Plugin {
     enforce: "pre",
     transform(code, id) {
       const normalized = id.split("?")[0]?.replace(/\\/g, "/") ?? id;
-      if (!normalized.includes("/shared/shadcn/")) return null;
       if (!normalized.includes(".stories.svelte")) return null;
 
       const title = extractTitle(code);
       if (!title) return null;
 
-      const family = familyFromTitle(title);
-      if (!family) return null;
+      const directory =
+        normalized.includes("/shared/shadcn/") && title.startsWith("Shadcn/")
+          ? `shadcn/${familyFromTitle(title)}`
+          : normalized.includes("/packages/workspace/src/lib/components/") &&
+              title.startsWith("Workspace/")
+            ? "workspace/components"
+            : undefined;
+      if (!directory) return null;
 
-      const next = injectVisualBaselineVisualDeltas(code, family);
+      const next = injectVisualBaselineVisualDeltas(code, directory);
       if (next === code) return null;
       return { code: next, map: null };
     },

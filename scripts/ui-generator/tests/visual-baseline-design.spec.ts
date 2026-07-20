@@ -24,6 +24,19 @@ describe("visual-baseline-design", () => {
     );
   });
 
+  it("maps workspace stories to their package-local baseline directory", () => {
+    expect(
+      baselineUrlForStory({
+        title: "Workspace/Workspace Shell",
+        id: "workspace-workspace-shell--three-regions",
+        importPath:
+          "packages/workspace/src/lib/components/WorkspaceShell.stories.svelte",
+      }),
+    ).toBe(
+      `/visual-baselines/workspace/components/three-regions${VISUAL_BASELINE_SUFFIX}.png`,
+    );
+  });
+
   it("kebab-cases multi-word family titles", () => {
     expect(familyFromTitle("Shadcn/Forms/Input Group")).toBe("input-group");
   });
@@ -103,5 +116,20 @@ describe("visual-baseline-design", () => {
     );
     expect(choosesBlock).not.toContain("visualDelta:");
     expect(out).toContain("play={async ({ canvas }) => {");
+  });
+
+  it("injects package-local workspace visual baselines", () => {
+    const source = `
+<script module lang="ts">
+  const { Story } = defineMeta({ title: "Workspace/Workspace Shell" });
+</script>
+<Story name="Three regions">{#snippet template()}ok{/snippet}</Story>`;
+    const out = injectVisualBaselineVisualDeltas(
+      source,
+      "workspace/components",
+    );
+    expect(out).toContain(
+      `"images":["/visual-baselines/workspace/components/three-regions${VISUAL_BASELINE_SUFFIX}.png"]`,
+    );
   });
 });

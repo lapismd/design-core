@@ -1,0 +1,19 @@
+{
+  "name": "@stevejuma/workspace",
+  "version": "0.1.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "type": "module",
+  "exports": {
+    ".": "./src/lib/index.ts",
+    "./core": "./src/lib/core/index.ts",
+    "./tokens": "./src/lib/workspace.tokens.ts"
+  },
+  "peerDependencies": {
+    "svelte": "^5.0.0"
+  },
+  "dependencies": {
+    "@lucide/svelte": "^1.21.0",
+    "@stevejuma/ui": "workspace:*"
+  }
+}

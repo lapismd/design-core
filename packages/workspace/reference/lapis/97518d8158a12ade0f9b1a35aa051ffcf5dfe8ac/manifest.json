@@ -1,0 +1,23 @@
+{
+  "name": "lapis-workspace-desktop-reference",
+  "revision": "97518d8158a12ade0f9b1a35aa051ffcf5dfe8ac",
+  "sourceRoot": "/Users/stevejuma/code/lapis-notes",
+  "files": [
+    "packages/workspace/src/lib/components/app/desktop-workspace-shell.svelte",
+    "packages/workspace/src/lib/components/tabs/tabs-drop.svelte",
+    "packages/workspace/src/lib/components/tabs/tabs-top.svelte",
+    "packages/workspace/src/lib/components/tabs/tabs-stacked.svelte",
+    "packages/workspace/src/lib/components/tabs/tabs-sidebar.svelte",
+    "packages/workspace/src/lib/components/sidebar/sidebar-left.svelte",
+    "packages/workspace/src/lib/components/sidebar/sidebar-right.svelte",
+    "packages/workspace/src/lib/components/view-header/view-header.svelte",
+    "packages/workspace/src/lib/styles/workspace-shell.css",
+    "packages/workspace/e2e/tab-drag-drop.spec.ts",
+    "packages/workspace/e2e/workspace-shell-visual.spec.ts"
+  ],
+  "css": ["workspace-reference.css"],
+  "notes": [
+    "Reference fixtures are checked in so verification does not depend on a mutable sibling checkout.",
+    "The scoped theme is for parity checks only and maps Lapis-like shell tokens to this repo's semantic CSS variables."
+  ]
+}

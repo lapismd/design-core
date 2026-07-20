@@ -23,10 +23,12 @@ export function snapshotDirFromImportPath(importPath: string): string {
   const stripped = normalized
     .replace(/^\.\//, "")
     .replace(/^src\/shared\//, "")
-    .replace(/^src\/apps\//, "apps/");
+    .replace(/^src\/apps\//, "apps/")
+    .replace(/^packages\/workspace\/src\/lib\//, "workspace/");
   // forms/form-field/FormField.stories.svelte → forms/form-field
   // shadcn/input-group/InputGroup.variations.stories.svelte → shadcn/input-group
   // apps/cv/cv-form-overview/CvFormOverview.stories.svelte → apps/cv/cv-form-overview
+  // packages/workspace/src/lib/components/WorkspaceShell.stories.svelte → workspace/components
   return stripped.replace(/\/[^/]+\.stories\.\w+$/, "");
 }
 
