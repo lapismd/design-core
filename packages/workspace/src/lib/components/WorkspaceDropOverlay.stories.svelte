@@ -18,6 +18,8 @@
 </script>
 
 <script lang="ts">
+  import WorkspaceLapisReference from "./stories/WorkspaceLapisReference.svelte";
+
   const drops = [
     { position: "left" as const, left: 0, top: 0, width: 60, height: 140 },
     {
@@ -61,14 +63,16 @@
   }}
 >
   {#snippet template()}
-    <div data-ui-component="workspace-drop-overlay-story" data-ui-part="host">
-      {#each drops as drop}
-        <div data-ui-part="drop-target" data-drop-target={drop.position}>
-          <span>{drop.position}</span>
-          <WorkspaceDropOverlay geometry={drop} />
-        </div>
-      {/each}
-    </div>
+    <WorkspaceLapisReference>
+      <div data-ui-component="workspace-drop-overlay-story" data-ui-part="host">
+        {#each drops as drop}
+          <div data-ui-part="drop-target" data-drop-target={drop.position}>
+            <span>{drop.position}</span>
+            <WorkspaceDropOverlay geometry={drop} />
+          </div>
+        {/each}
+      </div>
+    </WorkspaceLapisReference>
   {/snippet}
 </Story>
 

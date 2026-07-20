@@ -1,12 +1,18 @@
 [data-workspace-theme="lapis-reference"] {
-  --workspace-chrome-background: hsl(var(--sidebar, 0 0% 96%));
-  --workspace-reference-background: hsl(var(--background, 0 0% 100%));
-  --workspace-reference-foreground: hsl(var(--foreground, 0 0% 9%));
-  --workspace-reference-muted: hsl(var(--muted-foreground, 0 0% 45%));
-  --workspace-reference-hover: hsl(var(--accent, 0 0% 92%));
-  --workspace-reference-border: hsl(var(--border, 0 0% 85%));
-  --workspace-reference-active: hsl(var(--background, 0 0% 100%));
-  --workspace-reference-drop: hsl(var(--primary, 222 89% 55%) / 0.5);
+  /* This repository's normalised semantic tokens are colour values, not HSL
+     channel triples. Preserve Lapis geometry while mapping to those values. */
+  --workspace-chrome-background: var(--sidebar, #f4f4f5);
+  --workspace-reference-background: var(--background, #ffffff);
+  --workspace-reference-foreground: var(--foreground, #18181b);
+  --workspace-reference-muted: var(--muted-foreground, #71717a);
+  --workspace-reference-hover: var(--accent, #e4e4e7);
+  --workspace-reference-border: var(--border, #d4d4d8);
+  --workspace-reference-active: var(--background, #ffffff);
+  --workspace-reference-drop: color-mix(
+    in srgb,
+    var(--primary, #2563eb) 50%,
+    transparent
+  );
   --header-height: 40px;
   --ribbon-width: 44px;
   --tab-background-active: var(--workspace-reference-active);
@@ -21,6 +27,22 @@
   --tab-max-width: 320px;
   --tab-text-color: var(--workspace-reference-muted);
   --tab-text-color-active: var(--workspace-reference-foreground);
+  --ui-workspace-tab-height: var(--header-height);
+  --ui-workspace-tab-width: var(--tab-width);
+  --ui-workspace-tab-min-width: 0px;
+  --ui-workspace-tab-max-width: var(--tab-max-width);
+  --ui-workspace-tab-container-background: var(--tab-container-background);
+  --ui-workspace-tab-divider: var(--tab-divider-color);
+  --ui-workspace-tab-radius: var(--tab-radius);
+  --ui-workspace-tab-curve: var(--tab-curve);
+  --ui-workspace-tab-hover: var(--workspace-reference-hover);
+  --ui-workspace-tab-active-background: var(--tab-background-active);
+  --ui-workspace-tab-color: var(--tab-text-color);
+  --ui-workspace-tab-active-color: var(--tab-text-color-active);
+  --ui-workspace-divider: var(--tab-outline-color);
+  --ui-workspace-drop-overlay: var(--workspace-reference-drop);
+  --ui-workspace-ribbon-width: var(--ribbon-width);
+  --ui-workspace-ribbon-background: var(--ribbon-background);
   font-family:
     Inter,
     ui-sans-serif,

@@ -20,6 +20,7 @@
 <script lang="ts">
   import type { WorkspaceTabsNode } from "../core/types";
   import { createDemoController } from "./stories/fixtures";
+  import WorkspaceLapisReference from "./stories/WorkspaceLapisReference.svelte";
 
   let controller = $state(
     createDemoController({
@@ -131,17 +132,19 @@
   }}
 >
   {#snippet template()}
-    <div data-ui-component="workspace-tabs-story" data-ui-part="host">
-      <WorkspaceTabs
-        {controller}
-        group={controller.layout.main as WorkspaceTabsNode}
-        createTab={() => ({
-          id: "new-tab",
-          title: "New tab",
-          view: { type: "story", state: {} },
-        })}
-      />
-    </div>
+    <WorkspaceLapisReference>
+      <div data-ui-component="workspace-tabs-story" data-ui-part="host">
+        <WorkspaceTabs
+          {controller}
+          group={controller.layout.main as WorkspaceTabsNode}
+          createTab={() => ({
+            id: "new-tab",
+            title: "New tab",
+            view: { type: "story", state: {} },
+          })}
+        />
+      </div>
+    </WorkspaceLapisReference>
   {/snippet}
 </Story>
 
@@ -160,16 +163,18 @@
   }}
 >
   {#snippet template()}
-    <div
-      data-ui-component="workspace-tabs-story"
-      data-ui-part="host"
-      data-scenario="overflow"
-    >
-      <WorkspaceTabs
-        controller={overflowController}
-        group={overflowController.layout.main as WorkspaceTabsNode}
-      />
-    </div>
+    <WorkspaceLapisReference>
+      <div
+        data-ui-component="workspace-tabs-story"
+        data-ui-part="host"
+        data-scenario="overflow"
+      >
+        <WorkspaceTabs
+          controller={overflowController}
+          group={overflowController.layout.main as WorkspaceTabsNode}
+        />
+      </div>
+    </WorkspaceLapisReference>
   {/snippet}
 </Story>
 
