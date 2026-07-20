@@ -1,17 +1,45 @@
-import { Canvas, Markdown, Meta } from "@storybook/addon-docs/blocks";
+import {
+  Canvas,
+  Controls,
+  Markdown,
+  Meta,
+  Primary,
+} from "@storybook/addon-docs/blocks";
 import * as TaskComposerStories from "./TaskComposer.stories.svelte";
 import taskComposerSpec from "../../../specs/components/task-composer.md?raw";
 
 <Meta of={TaskComposerStories} />
 
-The canonical implementation contract is rendered below from
-`packages/tasks/specs/components/task-composer.md`.
+# TaskComposer
+
+An inline, low-friction add-task control. Idle state is a quiet trigger
+button; active state is a labelled text field with explicit submit and cancel
+controls. Implementation status: **Done** for the leaf-control surface.
 
 <Markdown>{taskComposerSpec}</Markdown>
 
-## Implementation placeholder
+## Usage
 
-<Canvas
-  of={TaskComposerStories.ImplementationPlaceholder}
-  meta={TaskComposerStories}
-/>
+<Primary />
+
+## Properties
+
+<Controls />
+
+## Interactions
+
+### Activate the draft field
+
+<Canvas of={TaskComposerStories.Activate} meta={TaskComposerStories} />
+
+### Submit a non-empty draft
+
+<Canvas of={TaskComposerStories.SubmitNonEmpty} meta={TaskComposerStories} />
+
+### Reject an empty submit
+
+<Canvas of={TaskComposerStories.RejectEmpty} meta={TaskComposerStories} />
+
+### Escape cancels only a blank draft
+
+<Canvas of={TaskComposerStories.EscapeBlankCancel} meta={TaskComposerStories} />
