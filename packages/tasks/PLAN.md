@@ -8,15 +8,15 @@ what remains.
 
 ## Current status
 
-| Field                         | Value                                                                                                                |
-| ----------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| Overall status                | Not started                                                                                                          |
-| Last updated                  | 2026-07-20                                                                                                           |
-| Active phase                  | None                                                                                                                 |
-| Components/behaviors complete | 0 / 10                                                                                                               |
-| Page compositions complete    | 0 / 8                                                                                                                |
-| Phases complete               | 0 / 6                                                                                                                |
-| Current blocker               | Full unit aggregate currently fails in unrelated workspace parity (`drop-center`); focused Tasks contract tests pass |
+| Field                         | Value                                                                                                      |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| Overall status                | In progress                                                                                                |
+| Last updated                  | 2026-07-20                                                                                                 |
+| Active phase                  | Phase 0 — Baseline, contracts, and harness                                                                 |
+| Components/behaviors complete | 0 / 10                                                                                                     |
+| Page compositions complete    | 0 / 8                                                                                                      |
+| Phases complete               | 0 / 6                                                                                                      |
+| Current blocker               | Full unit aggregate fails in unrelated workspace parity (`drop-center`); focused Tasks contract tests pass |
 
 ### Status rules
 
@@ -191,20 +191,20 @@ must not duplicate lower-level task-row, menu, or gesture logic.
 
 ### Phase 0 — Baseline, contracts, and harness
 
-Status: **Not started**
+Status: **In progress**
 
-- [ ] Re-run the current unit, Storybook, static-build, and visual suites before
+- [x] Re-run the current unit, Storybook, static-build, and visual suites before
       implementation; record existing failures separately from Tasks work.
-- [ ] Resolve or isolate any Storybook harness failure that prevents focused
+- [x] Resolve or isolate any Storybook harness failure that prevents focused
       Tasks story tests. The latest prior run reported a syntax failure in
       `.storybook/vitest.setup.ts`; reconfirm it rather than assuming it still
       exists.
-- [ ] Expand `contracts.ts` with controlled public view models, callback types,
+- [x] Expand `contracts.ts` with controlled public view models, callback types,
       selection state, ordering actions, property mutations, and pager state.
-- [ ] Add unit tests for contract invariants and deterministic fixture builders.
-- [ ] Audit `tasks-theme.css` for light/dark/reduced-motion coverage and verify
+- [x] Add unit tests for contract invariants and deterministic fixture builders.
+- [x] Audit `tasks-theme.css` for light/dark/reduced-motion coverage and verify
       it has no effect outside `.tasks-theme`.
-- [ ] Inventory primitive use with `pnpm ui components <family>` and record any
+- [x] Inventory primitive use with `pnpm ui components <family>` and record any
       additions in `COMPONENT_AUDIT.md` before running `pnpm ui:add`.
 - [ ] Create the component/page folder convention and a shared story fixture
       factory without changing product behavior.
@@ -369,20 +369,23 @@ Validation requirements:
 Append one row for each implementation slice or validation-only follow-up.
 Keep evidence concise and include the Jujutsu change/commit ID when available.
 
-| Date       | Phase    | Change                                               | Status | Validation evidence                                               | Next action                  |
-| ---------- | -------- | ---------------------------------------------------- | ------ | ----------------------------------------------------------------- | ---------------------------- |
-| 2026-07-20 | Planning | Created implementation, docs, and validation roadmap | Done   | Prettier; `reference:verify`; focused Tasks unit tests (2 passed) | Begin Phase 0 baseline audit |
+| Date       | Phase    | Change                                               | Status | Validation evidence                                                                                                                                                                             | Next action                   |
+| ---------- | -------- | ---------------------------------------------------- | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| 2026-07-20 | Planning | Created implementation, docs, and validation roadmap | Done   | Prettier; `reference:verify`; focused Tasks unit tests (2 passed)                                                                                                                               | Begin Phase 0 baseline audit  |
+| 2026-07-20 | Phase 0  | Expanded controlled contracts + fixture builders     | Done   | `pnpm test:unit packages/tasks/src/lib/contracts.spec.ts` (8 passed); `reference:verify` ok; `vitest.setup.ts` parses (no syntax failure); aggregate unit fails only on workspace `drop-center` | Commit 0b folder/docs harness |
 
 ## Decision and blocker log
 
 Use this table for choices that change API shape, interaction behavior,
 primitive provenance, or reference interpretation.
 
-| Date       | Area                | Decision or blocker                                                                                         | Resolution/evidence                                                                        | Status   |
-| ---------- | ------------------- | ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ | -------- |
-| 2026-07-20 | Desktop task open   | Browser fixture shows selection first and explicit details action; double click adds no separate transition | Preserve this route until new evidence says otherwise                                      | Accepted |
-| 2026-07-20 | Responsive evidence | Tablet/mobile images are synthetic fixture contracts, not confirmed live viewport observations              | Repeat against the fixture before claiming parity                                          | Open     |
-| 2026-07-20 | Validation baseline | Full unit run fails in unrelated workspace parity scenario `drop-center`                                    | Tasks contract test is focused and passing; recheck aggregate after workspace work settles | Open     |
+| Date       | Area                | Decision or blocker                                                                                         | Resolution/evidence                                                                                                          | Status   |
+| ---------- | ------------------- | ----------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- | -------- |
+| 2026-07-20 | Desktop task open   | Browser fixture shows selection first and explicit details action; double click adds no separate transition | Preserve this route until new evidence says otherwise                                                                        | Accepted |
+| 2026-07-20 | Responsive evidence | Tablet/mobile images are synthetic fixture contracts, not confirmed live viewport observations              | Repeat against the fixture before claiming parity                                                                            | Open     |
+| 2026-07-20 | Validation baseline | Full unit run fails in unrelated workspace parity scenario `drop-center`                                    | Reconfirmed 2026-07-20: `pnpm test:unit` → GeneratorError workspace parity `drop-center`; Tasks `contracts.spec.ts` 8/8 pass | Open     |
+| 2026-07-20 | Storybook harness   | Prior note of `.storybook/vitest.setup.ts` syntax failure                                                   | File parses; only advisory about redundant `setProjectAnnotations` — not a Tasks blocker                                     | Accepted |
+| 2026-07-20 | Primitive inventory | checkbox / avatar / context-menu missing from host                                                          | Confirmed via `pnpm ui components checkbox` (unknown); add via `pnpm ui:add` in C01 / C08 / C06 as planned                   | Accepted |
 
 ## Definition of done
 

@@ -1,4 +1,14 @@
-import type { TaskListReference, TaskReference } from "./contracts.js";
+import type {
+  TaskListReference,
+  TaskReference,
+  TasksFilterId,
+  TasksListGroup,
+  TasksListViewModel,
+  TasksNavDestination,
+  TasksSelectionState,
+  TasksSortId,
+} from "./contracts.js";
+import { createInitialSelection } from "./contracts.js";
 
 export const TASKS_REFERENCE_LIST_NAME = "Tasks UI Reference";
 
@@ -52,7 +62,7 @@ export const taskFixtures = [
   {
     id: "task-empty-state",
     title: "Check empty state behavior",
-    status: "open",
+    status: "done",
     due: null,
     priority: "none",
     labels: ["Reference"],
@@ -68,8 +78,157 @@ export const listFixtures = [
     favourite: true,
     taskIds: taskFixtures.map((task) => task.id),
   },
+  {
+    id: "list-shared",
+    name: "Shared planning",
+    kind: "shared",
+    favourite: false,
+    taskIds: ["task-brief", "task-prototype"],
+  },
 ] as const satisfies readonly TaskListReference[];
 
 export const fixtureTaskById = new Map(
   taskFixtures.map((task) => [task.id, task]),
 );
+
+export type BuildTaskOptions = Partial<TaskReference> & {
+  id: string;
+  title: string;
+};
+
+/** Deterministic task builder for stories and unit tests. */
+export function buildTask(options: BuildTaskOptions): TaskReference {
+  return {
+    id: options.id,
+    title: options.title,
+    status: options.status ?? "open",
+    due: options.due ?? null,
+    priority: options.priority ?? "none",
+    labels: options.labels ?? [],
+    assignee: options.assignee ?? null,
+    note: options.note,
+  };
+}
+
+export type BuildListOptions = Partial<TaskListReference> & {
+  id: string;
+  name: string;
+};
+
+export function buildList(options: BuildListOptions): TaskListReference {
+  return {
+    id: options.id,
+    name: options.name,
+    kind: options.kind ?? "private",
+    favourite: options.favourite ?? false,
+    taskIds: options.taskIds ?? [],
+  };
+}
+
+export function buildSelection(
+  selectedTaskId: string | null = null,
+  openTaskId: string | null = selectedTaskId,
+): TasksSelectionState {
+  return createInitialSelection(openTaskId ?? selectedTaskId);
+}
+
+function dueGroupId(due: TaskReference["due"]): TasksListGroup["id"] {
+  if (due === "overdue") return "overdue";
+  if (due === "today") return "today";
+  if (due === "tomorrow" || due === "later") return "upcoming";
+  return "no-date";
+}
+
+/** Group open tasks by due bucket and append a Done group. */
+export function buildGroupedListView(
+  tasks: readonly TaskReference[] = taskFixtures,
+  options: {
+    filterId?: TasksFilterId;
+    sortId?: TasksSortId;
+    doneCollapsed?: boolean;
+    loading?: boolean;
+  } = {},
+): TasksListViewModel {
+  const filterId = options.filterId ?? "all";
+  const sortId = options.sortId ?? "manual";
+  const open = tasks.filter((task) => task.status === "open");
+  const done = tasks.filter((task) => task.status === "done");
+
+  const buckets = new Map<TasksListGroup["id"], string[]>();
+  for (const id of ["overdue", "today", "upcoming", "no-date"] as const) {
+    buckets.set(id, []);
+  }
+  for (const task of open) {
+    const groupId = dueGroupId(task.due);
+    buckets.get(groupId)?.push(task.id);
+  }
+
+  const groups: TasksListGroup[] = [];
+  for (const id of ["overdue", "today", "upcoming", "no-date"] as const) {
+    const taskIds = buckets.get(id) ?? [];
+    if (taskIds.length === 0) continue;
+    groups.push({
+      id,
+      label:
+        id === "overdue"
+          ? "Overdue"
+          : id === "today"
+            ? "Today"
+            : id === "upcoming"
+              ? "Upcoming"
+              : "No date",
+      taskIds,
+    });
+  }
+  if (done.length > 0) {
+    groups.push({
+      id: "done",
+      label: "Done",
+      taskIds: done.map((task) => task.id),
+      collapsible: true,
+      collapsed: options.doneCollapsed ?? true,
+    });
+  }
+
+  const orderedTaskIds = [
+    ...open.map((task) => task.id),
+    ...done.map((task) => task.id),
+  ];
+
+  return {
+    groups,
+    orderedTaskIds,
+    empty: orderedTaskIds.length === 0,
+    loading: options.loading ?? false,
+    filterId,
+    sortId,
+  };
+}
+
+export function buildNavDestinations(
+  lists: readonly TaskListReference[] = listFixtures,
+): readonly TasksNavDestination[] {
+  return [
+    { id: "inbox", label: "Inbox", kind: "system" },
+    { id: "today", label: "Today", kind: "system" },
+    { id: "tasks", label: "Tasks", kind: "system" },
+    { id: "updates", label: "Updates", kind: "system" },
+    { id: "lists", label: "Lists", kind: "system" },
+    ...lists.map(
+      (list): TasksNavDestination => ({
+        id: `list:${list.id}`,
+        label: list.name,
+        kind: "list",
+        favourite: list.favourite,
+        listId: list.id,
+      }),
+    ),
+  ];
+}
+
+/** Stable task id set for contract invariant checks. */
+export function fixtureTaskIdSet(
+  tasks: readonly TaskReference[] = taskFixtures,
+): ReadonlySet<string> {
+  return new Set(tasks.map((task) => task.id));
+}
