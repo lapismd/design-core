@@ -3,6 +3,24 @@
 When working on UI components, use the local Storybook catalog and its browser
 tests to validate the change.
 
+## Agent reading order
+
+Before inventing workflows, load package conventions offline:
+
+1. `pnpm ui guide` — topic index and reading order
+2. `pnpm ui guide layers` — shadcn vs forms vs apps vs workspace
+3. `pnpm ui guide shadcn` — `ui:add` / inspect / docs sync (never raw shadcn CLI)
+4. `pnpm ui guide forms` — structured forms vs shadcn controls
+5. `pnpm ui guide testing` — stories, checks, and visual baselines after a change
+
+Use `--json` for machine-readable output (`pnpm ui guide testing --json`).
+Alias: `pnpm ui:guide <topic>`.
+
+When Storybook is running, use the Storybook MCP for interactive instructions,
+previews, and `run-story-tests`. In-catalog decision pages: `UI Forms/Guidance`,
+`Shadcn/Guidance`. Deferred LLM catalog extraction notes:
+`pnpm ui guide llms-extraction`.
+
 ## Component documentation
 
 - `@storybook/addon-docs` is enabled and the shared preview applies the
@@ -15,6 +33,8 @@ tests to validate the change.
   state.
 - `UI Forms/Guidance` is the catalog's high-level form decision guide. Link
   reusable form primitives back to it.
+- `Shadcn/Guidance` is the catalog's shadcn add/convert decision guide. Link
+  new or converted families back to it.
 - Before adding a visual form export, classify it in `COMPONENT_AUDIT.md` as a
   shared primitive, app-specific component, or deferred item.
 - `Shadcn/` is the UI-owned shadcn-svelte catalog. Source and stories live in

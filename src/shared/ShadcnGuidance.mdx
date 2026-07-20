@@ -1,0 +1,43 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="Shadcn/Guidance" />
+
+# Shadcn guidance
+
+Use `@stevejuma/ui/shadcn/<family>` for generic primitives. Do **not** run the
+upstream `shadcn-svelte` CLI against this package tree — use the local generator.
+
+This page is the catalog companion to `pnpm ui guide shadcn` and `AGENTS.md`.
+For the form decision guide, see **UI Forms/Guidance**.
+
+## When to use shadcn
+
+- Buttons, toggles, inputs, selects, dialogs, menus, layout chrome, feedback
+- Shared visual language and `--ui-<family>-*` tokens across apps
+- Controls composed inside forms (Select, Switch, Command + Popover, Field)
+
+## When not to use shadcn alone
+
+- Schema-shaped editing / label-value form rows → `@stevejuma/ui/forms`
+- App domain UI → `src/apps/cv` or `src/apps/beancount` (props + callbacks)
+- Studio three-region chrome → workspace-shell / workspace package surfaces
+
+## Add or convert a family
+
+1. Classify in `COMPONENT_AUDIT.md` if the boundary is unclear.
+2. `pnpm ui:inspect <name>` — support tier and candidates (read-only).
+3. `pnpm ui:add <name> [--overwrite] [--dry-run]` — transactional convert in a
+   detached worktree. Batches: `pnpm ui:add:batch a|b|c|d`.
+4. `pnpm ui:docs --component <name>` — sync upstream docs into `*.docs.md` / MDX.
+5. Keep colocated stories under `Shadcn/...` with real interactive play coverage.
+6. Verify with the testing workflow (`pnpm ui guide testing`).
+
+Preserve `data-ui-component`, `data-ui-part`, `data-slot`, token metadata, and
+`*.provenance.json`. Treat parity or unsupported conversion failures as hard
+stops — do not copy registry files by hand.
+
+## Catalog map
+
+- **Overview:** `Shadcn/Overview`
+- **Per-family Docs:** autodocs + colocated MDX beside each family
+- **Offline agent guide:** `pnpm ui guide shadcn` / `pnpm ui guide layers`

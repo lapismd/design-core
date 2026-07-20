@@ -53,12 +53,17 @@ pnpm test:storybook:watch   # story Vitest watch
 pnpm test:visual            # screenshot compare (never writes baselines)
 pnpm test:visual:update --component <name>  # guarded baseline update
 pnpm test:visual:report     # open Playwright HTML report
+pnpm ui guide [topic]       # agent/human conventions (add --json for agents)
+pnpm ui:guide [topic]       # alias for ui guide
 pnpm ui:doctor              # generator environment checks
 pnpm ui:inspect <name>      # support tier + candidates (no writes)
 pnpm ui:add <name> [--overwrite] [--dry-run]
 pnpm ui:add:batch <a|b|c|d> # convert an allowlisted complexity batch
 pnpm checks                 # fmt + svelte-check + unit + storybook + build + visual
 ```
+
+Agent topics live under `docs/agent/` (`layers`, `shadcn`, `forms`, `testing`).
+In-catalog decision pages: `Shadcn/Guidance`, `UI Forms/Guidance`.
 
 Visual baselines are under `tests/visual/storybook.spec.ts-snapshots/`.
 `test:visual` never writes snapshots. Update existing baselines only with
