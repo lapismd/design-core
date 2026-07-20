@@ -657,9 +657,9 @@ function collectWorkspacePackage(packageRoot: string): CatalogEntry[] {
 }
 
 /**
- * Tasks is a reference package in this first slice. Its component entries are
- * implementation contracts rather than source components, so Markdown is the
- * canonical documentation candidate and there are intentionally no stories yet.
+ * Tasks component contracts remain canonical Markdown so capture verification
+ * and the offline agent catalog can consume them. Storybook renders each file
+ * directly in Tasks/Component Specs and pairs it with an implementation brief.
  */
 function collectTasksPackage(packageRoot: string): CatalogEntry[] {
   const dir = path.join(
@@ -670,6 +670,13 @@ function collectTasksPackage(packageRoot: string): CatalogEntry[] {
     "components",
   );
   if (!existsSync(dir)) return [];
+  const storyPath = path.join(
+    packageRoot,
+    "packages",
+    "tasks",
+    "src",
+    "TasksComponents.stories.svelte",
+  );
   return listFiles(dir, ".md")
     .map((full) => {
       const id = path.basename(full, ".md");
@@ -679,7 +686,7 @@ function collectTasksPackage(packageRoot: string): CatalogEntry[] {
         dir,
         importPath: "@stevejuma/tasks",
         docsCandidates: [full],
-        storyPaths: [],
+        storyPaths: existsSync(storyPath) ? [storyPath] : [],
       };
     })
     .sort((a, b) => a.id.localeCompare(b.id));

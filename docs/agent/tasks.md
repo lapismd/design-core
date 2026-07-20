@@ -18,7 +18,8 @@ product and not an excuse to bypass the catalog's component rules.
 
 1. `packages/tasks/specs/product.md` — scope, responsive policy, accessibility.
 2. Relevant `specs/pages/*.md` — page state and behavior.
-3. Relevant `specs/components/*.md` — primitive reuse and test contract.
+3. **Tasks/Component Specs** in Storybook — the canonical component contract,
+   rendered directly from `specs/components/*.md` beside its placeholder.
 4. `@stevejuma/tasks/fixtures` and `@stevejuma/tasks/reference` — deterministic
    story data and viewport/motion contracts.
 5. `@stevejuma/tasks/theme.css` — scoped light/dark companion tokens.

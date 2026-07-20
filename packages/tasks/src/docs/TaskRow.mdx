@@ -1,0 +1,14 @@
+import { Canvas, Markdown, Meta } from "@storybook/addon-docs/blocks";
+import * as TasksComponentsStories from "../TasksComponents.stories.svelte";
+import taskRowSpec from "../../specs/components/task-row.md?raw";
+
+<Meta title="Tasks/Component Specs/Task Row" />
+
+The canonical implementation contract is rendered below from
+`packages/tasks/specs/components/task-row.md`.
+
+<Markdown>{taskRowSpec}</Markdown>
+
+## Implementation placeholder
+
+<Canvas of={TasksComponentsStories.TaskRow} meta={TasksComponentsStories} />

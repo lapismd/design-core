@@ -1,4 +1,5 @@
 import type { StorybookConfig } from "@storybook/svelte-vite";
+import { fileURLToPath } from "node:url";
 import { mergeConfig } from "vite";
 import { visualBaselineVisualDeltaPlugin } from "./visual-baseline-vite-plugin.js";
 import { visualDeltaMiddlewarePlugin } from "./visual-delta-middleware.js";
@@ -10,6 +11,7 @@ const config: StorybookConfig = {
     "../src/**/*.stories.@(js|jsx|ts|tsx|svelte)",
     "../packages/workspace/src/**/*.stories.@(js|jsx|ts|tsx|svelte)",
     "../packages/tasks/src/**/*.mdx",
+    "../packages/tasks/src/**/*.stories.@(js|jsx|ts|tsx|svelte)",
   ],
   addons: [
     "@storybook/addon-docs",
@@ -23,6 +25,10 @@ const config: StorybookConfig = {
     {
       from: "../tests/visual/storybook.spec.ts-snapshots",
       to: "/visual-baselines",
+    },
+    {
+      from: "../packages/tasks/reference/superlist/2026-07-20",
+      to: "/tasks-reference/2026-07-20",
     },
   ],
   framework: {
@@ -38,6 +44,13 @@ const config: StorybookConfig = {
       ...plugins,
     ];
     return mergeConfig(viteConfig, {
+      resolve: {
+        alias: {
+          "@stevejuma/ui/shadcn": fileURLToPath(
+            new URL("../src/shared/shadcn", import.meta.url),
+          ),
+        },
+      },
       server: {
         watch: {
           ignored: ["**/storybook-static/**"],

@@ -82,8 +82,9 @@ Import: `@stevejuma/ui/ai`
 ## Reference — Tasks (`packages/tasks`)
 
 Clean-room implementation specifications, fixtures, responsive/motion contracts,
-and a scoped companion theme for a future white-label Tasks surface. It exports
-no visual Svelte component in this slice.
+and a scoped companion theme for a future white-label Tasks surface. Its
+Storybook-only target and implementation-brief components are catalog planning
+tools, not final product components.
 
 Required reuse for later implementation: Sidebar, Resizable, ScrollArea,
 Button, DropdownMenu, Popover, ToggleGroup, Command, Empty, feedback

@@ -4,6 +4,9 @@
   "private": true,
   "type": "module",
   "description": "White-label task-app reference contracts, fixtures, capture harness, and Storybook implementation specs.",
+  "dependencies": {
+    "@stevejuma/ui": "workspace:*"
+  },
   "exports": {
     ".": "./src/index.ts",
     "./fixtures": "./src/lib/fixtures.ts",
