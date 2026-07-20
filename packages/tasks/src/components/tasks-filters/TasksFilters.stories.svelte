@@ -1,18 +1,18 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent } from "storybook/test";
-  import TasksImplementationBrief from "../TasksImplementationBrief.svelte";
+  import TasksFilters from "./TasksFilters.svelte";
 
   const { Story } = defineMeta({
     title: "Tasks/Components/Filters and Menus",
-    component: TasksImplementationBrief,
+    component: TasksFilters,
     tags: ["skip-visual"],
     parameters: {
       layout: "fullscreen",
       docs: {
         description: {
           component:
-            "Filtering composes the host menu primitives and keeps selection behavior with those primitives. Its full specification is on this component's Docs page.",
+            "Exclusive filter bar with sort menu and separated destructive clear action.",
         },
       },
     },
@@ -20,38 +20,40 @@
 </script>
 
 <script lang="ts">
-  import TasksInteractionTodo from "../TasksInteractionTodo.svelte";
-  import {
-    getComponentImplementationBrief,
-    referenceVisualDelta,
-  } from "../../lib/story-data.js";
-
-  const filtersMenus = getComponentImplementationBrief("tasks-filters-menus");
+  import { referenceVisualDelta } from "../../lib/story-data.js";
+  import TasksFiltersHarness from "./TasksFiltersHarness.svelte";
 </script>
 
 <Story
-  name="Implementation placeholder"
-  exportName="ImplementationPlaceholder"
+  name="Select filter"
+  exportName="SelectFilter"
   parameters={{ visualDelta: referenceVisualDelta("desktop-tasks") }}
+  play={async ({ canvas }) => {
+    await userEvent.click(canvas.getByRole("radio", { name: "For me" }));
+    await expect(canvas.getByText("Filter for-me")).toBeVisible();
+  }}
 >
-  {#snippet template()}<TasksImplementationBrief
-      brief={filtersMenus}
-    />{/snippet}
+  {#snippet template()}
+    <TasksFiltersHarness />
+  {/snippet}
 </Story>
 
 <Story
-  name="Open and select a filter (TODO)"
-  exportName="OpenFilterTodo"
-  tags={["todo"]}
+  name="Sort and clear completed"
+  exportName="SortAndClear"
   parameters={{ visualDelta: referenceVisualDelta("desktop-tasks") }}
   play={async ({ canvas }) => {
-    await userEvent.click(canvas.getByRole("button", { name: "Filter tasks" }));
-    await expect(canvas.getByText("Filter menu open")).toBeVisible();
+    await userEvent.click(canvas.getByRole("button", { name: "Sort" }));
+    await userEvent.click(canvas.getByRole("menuitemradio", { name: "Due" }));
+    await expect(canvas.getByText("Sort due")).toBeVisible();
+    await userEvent.click(canvas.getByRole("button", { name: "Sort" }));
     await userEvent.click(
-      canvas.getByRole("button", { name: "Assigned to me" }),
+      canvas.getByRole("menuitem", { name: "Clear completed" }),
     );
-    await expect(canvas.getByText("Filter menu closed")).toBeVisible();
+    await expect(canvas.getByText("Cleared completed")).toBeVisible();
   }}
 >
-  {#snippet template()}<TasksInteractionTodo scenario="filters" />{/snippet}
+  {#snippet template()}
+    <TasksFiltersHarness />
+  {/snippet}
 </Story>

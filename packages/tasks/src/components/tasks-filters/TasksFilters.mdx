@@ -1,17 +1,30 @@
-import { Canvas, Markdown, Meta } from "@storybook/addon-docs/blocks";
+import {
+  Canvas,
+  Controls,
+  Markdown,
+  Meta,
+  Primary,
+} from "@storybook/addon-docs/blocks";
 import * as TasksFiltersStories from "./TasksFilters.stories.svelte";
-import filtersMenusSpec from "../../../specs/components/tasks-filters-menus.md?raw";
+import filtersSpec from "../../../specs/components/tasks-filters-menus.md?raw";
 
 <Meta of={TasksFiltersStories} />
 
-The canonical implementation contract is rendered below from
-`packages/tasks/specs/components/tasks-filters-menus.md`.
+# TasksFilters
 
-<Markdown>{filtersMenusSpec}</Markdown>
+Exclusive filters with sort menu and separated destructive actions. Status: **Done**.
 
-## Implementation placeholder
+<Markdown>{filtersSpec}</Markdown>
 
-<Canvas
-  of={TasksFiltersStories.ImplementationPlaceholder}
-  meta={TasksFiltersStories}
-/>
+## Usage
+
+<Primary />
+
+## Properties
+
+<Controls />
+
+## Interactions
+
+<Canvas of={TasksFiltersStories.SelectFilter} meta={TasksFiltersStories} />
+<Canvas of={TasksFiltersStories.SortAndClear} meta={TasksFiltersStories} />
