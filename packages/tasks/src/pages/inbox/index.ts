@@ -1,5 +1,1 @@
-/**
- * Page composition folder for Tasks/inbox.
- * Stories land here when the page slice replaces TasksPages placeholders.
- */
-export {};
+export { default as InboxPage } from "./InboxPage.svelte";

@@ -1,0 +1,14 @@
+import { Canvas, Meta, Primary } from "@storybook/addon-docs/blocks";
+import * as Stories from "./InboxPage.stories.svelte";
+
+<Meta of={Stories} />
+
+# InboxPage
+
+Page composition for Tasks/Inbox. Status: **Done**.
+
+<Primary />
+
+## States
+
+<Canvas of={Stories.Default} meta={Stories} />
