@@ -24,6 +24,7 @@
     WorkspaceTabsNode,
   } from "../core/types.js";
   import { createDemoController } from "./stories/fixtures";
+  import WorkspaceLapisReference from "./stories/WorkspaceLapisReference.svelte";
 
   let pruningController = $state(createDemoController());
   let dragController = $state(createDemoController());
@@ -106,16 +107,18 @@
   }}
 >
   {#snippet template()}
-    <div
-      data-ui-component="workspace-split-story"
-      data-ui-part="host"
-      data-reference-part="main-panel"
-    >
-      <WorkspaceSplit
-        controller={mainPanelController}
-        node={mainPanelController.layout.main}
-      />
-    </div>
+    <WorkspaceLapisReference>
+      <div
+        data-ui-component="workspace-split-story"
+        data-ui-part="host"
+        data-reference-part="main-panel"
+      >
+        <WorkspaceSplit
+          controller={mainPanelController}
+          node={mainPanelController.layout.main}
+        />
+      </div>
+    </WorkspaceLapisReference>
   {/snippet}
 </Story>
 
@@ -141,16 +144,18 @@
   }}
 >
   {#snippet template()}
-    <div
-      data-ui-component="workspace-split-story"
-      data-ui-part="host"
-      data-reference-part="horizontal-split"
-    >
-      <WorkspaceSplit
-        controller={horizontalController}
-        node={horizontalController.layout.main}
-      />
-    </div>
+    <WorkspaceLapisReference>
+      <div
+        data-ui-component="workspace-split-story"
+        data-ui-part="host"
+        data-reference-part="horizontal-split"
+      >
+        <WorkspaceSplit
+          controller={horizontalController}
+          node={horizontalController.layout.main}
+        />
+      </div>
+    </WorkspaceLapisReference>
   {/snippet}
 </Story>
 
@@ -176,16 +181,18 @@
   }}
 >
   {#snippet template()}
-    <div
-      data-ui-component="workspace-split-story"
-      data-ui-part="host"
-      data-reference-part="vertical-split"
-    >
-      <WorkspaceSplit
-        controller={verticalController}
-        node={verticalController.layout.main}
-      />
-    </div>
+    <WorkspaceLapisReference>
+      <div
+        data-ui-component="workspace-split-story"
+        data-ui-part="host"
+        data-reference-part="vertical-split"
+      >
+        <WorkspaceSplit
+          controller={verticalController}
+          node={verticalController.layout.main}
+        />
+      </div>
+    </WorkspaceLapisReference>
   {/snippet}
 </Story>
 
