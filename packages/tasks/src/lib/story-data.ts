@@ -283,6 +283,28 @@ export const pageImplementationBriefs = [
     referenceTargetId: "desktop-lists",
   },
   {
+    id: "list-detail",
+    kind: "Page",
+    title: "List detail",
+    summary:
+      "Single-list workspace with title edit, composer, filters, and detail open.",
+    specPath: "packages/tasks/specs/pages/list-detail.md",
+    fixtureState: "Tasks UI Reference list with synthetic open and done tasks.",
+    responsibilities: [
+      "Compose TaskList + TaskComposer without duplicating row logic.",
+      "Keep list title edit and favourite actions independent of row selection.",
+    ],
+    reuse: ["ScrollArea", "Button", "Input", "DropdownMenu"],
+    additions: ["None in the first slice"],
+    storyChecks: [
+      "Populated fixture",
+      "Composer",
+      "Selected detail",
+      "Empty filtered state",
+    ],
+    referenceTargetId: "desktop-list-detail",
+  },
+  {
     id: "task-detail-page",
     kind: "Page",
     title: "Task detail page",

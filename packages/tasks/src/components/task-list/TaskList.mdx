@@ -1,0 +1,14 @@
+import { Canvas, Markdown, Meta } from "@storybook/addon-docs/blocks";
+import * as TaskListStories from "./TaskList.stories.svelte";
+import taskListSpec from "../../../specs/components/task-list.md?raw";
+
+<Meta of={TaskListStories} />
+
+The canonical implementation contract is rendered below from
+`packages/tasks/specs/components/task-list.md`.
+
+<Markdown>{taskListSpec}</Markdown>
+
+## Implementation placeholder
+
+<Canvas of={TaskListStories.ImplementationPlaceholder} meta={TaskListStories} />

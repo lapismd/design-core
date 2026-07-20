@@ -24,6 +24,7 @@ import {
   motionContracts,
   referenceViewports,
 } from "./reference.js";
+import { createTasksStoryFixture } from "./story-fixtures.js";
 import { tasksThemeTokens } from "./tokens.js";
 
 const libDir = dirname(fileURLToPath(import.meta.url));
@@ -151,6 +152,21 @@ describe("Tasks controlled view-model contracts", () => {
     expect(task.status).toBe("open");
     expect(list.kind).toBe("private");
     expect(createInitialPager("detail").preserveListScroll).toBe(true);
+  });
+});
+
+describe("Tasks story fixture factory", () => {
+  it("builds controlled story state from synthetic fixtures", () => {
+    const fixture = createTasksStoryFixture({
+      selectedTaskId: "task-brief",
+      openTaskId: "task-brief",
+      pagerPane: "detail",
+    });
+    expect(fixture.activeTask.id).toBe("task-brief");
+    expect(fixture.selection.openTaskId).toBe("task-brief");
+    expect(fixture.pager.pane).toBe("detail");
+    expect(fixture.listView.orderedTaskIds.length).toBeGreaterThan(0);
+    expect(fixture.navDestinations[0]?.id).toBe("inbox");
   });
 });
 

@@ -25,13 +25,17 @@
     referenceVisualDelta,
   } from "./lib/story-data.js";
 
-  const shell = pageImplementationBriefs[0];
-  const inbox = pageImplementationBriefs[1];
-  const today = pageImplementationBriefs[2];
-  const tasks = pageImplementationBriefs[3];
-  const updates = pageImplementationBriefs[4];
-  const lists = pageImplementationBriefs[5];
-  const taskDetail = pageImplementationBriefs[6];
+  const byId = Object.fromEntries(
+    pageImplementationBriefs.map((brief) => [brief.id, brief]),
+  );
+  const shell = byId.shell;
+  const inbox = byId.inbox;
+  const today = byId.today;
+  const tasks = byId.tasks;
+  const updates = byId.updates;
+  const lists = byId.lists;
+  const listDetail = byId["list-detail"];
+  const taskDetail = byId["task-detail-page"];
 </script>
 
 <Story
@@ -78,6 +82,13 @@
   parameters={{ visualDelta: referenceVisualDelta("desktop-lists") }}
 >
   {#snippet template()}<TasksImplementationBrief brief={lists} />{/snippet}
+</Story>
+
+<Story
+  name="List detail"
+  parameters={{ visualDelta: referenceVisualDelta("desktop-list-detail") }}
+>
+  {#snippet template()}<TasksImplementationBrief brief={listDetail} />{/snippet}
 </Story>
 
 <Story

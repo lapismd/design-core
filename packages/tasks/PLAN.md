@@ -191,7 +191,7 @@ must not duplicate lower-level task-row, menu, or gesture logic.
 
 ### Phase 0 — Baseline, contracts, and harness
 
-Status: **In progress**
+Status: **Done**
 
 - [x] Re-run the current unit, Storybook, static-build, and visual suites before
       implementation; record existing failures separately from Tasks work.
@@ -206,9 +206,9 @@ Status: **In progress**
       it has no effect outside `.tasks-theme`.
 - [x] Inventory primitive use with `pnpm ui components <family>` and record any
       additions in `COMPONENT_AUDIT.md` before running `pnpm ui:add`.
-- [ ] Create the component/page folder convention and a shared story fixture
+- [x] Create the component/page folder convention and a shared story fixture
       factory without changing product behavior.
-- [ ] Add a docs template matching the host shadcn `Story + MDX` pattern.
+- [x] Add a docs template matching the host shadcn `Story + MDX` pattern.
 
 Exit gate: contracts, fixtures, scoped theme, focused Storybook execution, and
 documentation conventions are testable before the first product component.
@@ -373,6 +373,7 @@ Keep evidence concise and include the Jujutsu change/commit ID when available.
 | ---------- | -------- | ---------------------------------------------------- | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
 | 2026-07-20 | Planning | Created implementation, docs, and validation roadmap | Done   | Prettier; `reference:verify`; focused Tasks unit tests (2 passed)                                                                                                                               | Begin Phase 0 baseline audit  |
 | 2026-07-20 | Phase 0  | Expanded controlled contracts + fixture builders     | Done   | `pnpm test:unit packages/tasks/src/lib/contracts.spec.ts` (8 passed); `reference:verify` ok; `vitest.setup.ts` parses (no syntax failure); aggregate unit fails only on workspace `drop-center` | Commit 0b folder/docs harness |
+| 2026-07-20 | Phase 0  | Colocated component/page folders + story fixtures    | Done   | Moved stories/MDX under `src/components/<id>/`; page indexes; `story-fixtures.ts`; docs template at `packages/tasks/docs/`; unit 9/9; `reference:verify` ok                                     | Begin Phase 1 C01 TaskRow     |
 
 ## Decision and blocker log
 

@@ -1,0 +1,17 @@
+import { Canvas, Markdown, Meta } from "@storybook/addon-docs/blocks";
+import * as TaskPropertiesStories from "./TaskProperties.stories.svelte";
+import taskPropertiesSpec from "../../../specs/components/task-properties.md?raw";
+
+<Meta of={TaskPropertiesStories} />
+
+The canonical implementation contract is rendered below from
+`packages/tasks/specs/components/task-properties.md`.
+
+<Markdown>{taskPropertiesSpec}</Markdown>
+
+## Implementation placeholder
+
+<Canvas
+  of={TaskPropertiesStories.ImplementationPlaceholder}
+  meta={TaskPropertiesStories}
+/>
