@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Snippet } from "svelte";
+  import { tick, type Snippet } from "svelte";
   import PlusIcon from "@lucide/svelte/icons/plus";
   import XIcon from "@lucide/svelte/icons/x";
   import * as Empty from "@stevejuma/ui/shadcn/empty";
@@ -34,9 +34,26 @@
   let value = $state("");
   let dropIndex = $state<number | null>(null);
   let hoveredTabId = $state<string | null>(null);
+  let tabStrip: HTMLElement | null = $state(null);
+  let tabClosePositions = $state<Record<string, number>>({});
+  const tabElements = new Map<string, HTMLElement>();
 
   $effect(() => {
     value = group.activeTabId ?? "";
+  });
+
+  $effect(() => {
+    const element = tabStrip;
+    if (!element) return;
+    const observer = new ResizeObserver(() => updateClosePositions());
+    observer.observe(element);
+    void tick().then(updateClosePositions);
+    return () => observer.disconnect();
+  });
+
+  $effect(() => {
+    group.tabs;
+    void tick().then(updateClosePositions);
   });
 
   async function addTab() {
@@ -83,6 +100,32 @@
     hoveredTabId = null;
     clearWorkspaceTabDrag();
   }
+
+  function updateClosePositions() {
+    if (!tabStrip) return;
+    const stripRect = tabStrip.getBoundingClientRect();
+    tabClosePositions = Object.fromEntries(
+      Array.from(tabElements, ([id, element]) => [
+        id,
+        element.getBoundingClientRect().right - stripRect.left - 23,
+      ]),
+    );
+  }
+
+  function observeTab(element: HTMLElement, id: string) {
+    tabElements.set(id, element);
+    const observer = new ResizeObserver(() => updateClosePositions());
+    observer.observe(element);
+    void tick().then(updateClosePositions);
+
+    return {
+      destroy() {
+        observer.disconnect();
+        tabElements.delete(id);
+        void tick().then(updateClosePositions);
+      },
+    };
+  }
 </script>
 
 <div data-ui-component="workspace" data-ui-part="tabs">
@@ -92,6 +135,7 @@
         <div
           data-ui-component="workspace"
           data-ui-part="tab-strip"
+          bind:this={tabStrip}
           role="presentation"
           onpointerleave={() => (hoveredTabId = null)}
           ondrop={dropOnTabStrip}
@@ -120,6 +164,7 @@
                 data-drop-after={dropIndex === index + 1 &&
                   index === group.tabs.length - 1}
                 role="presentation"
+                use:observeTab={tab.id}
                 onpointerenter={() => (hoveredTabId = tab.id)}
                 ondragover={(event) => updateTabDrop(event, index)}
               >
@@ -141,28 +186,35 @@
                     {tab.title}
                   </span>
                 </Tabs.Trigger>
-                {#if tab.closable !== false}
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="icon-sm"
-                    aria-label={`Close ${tab.title}`}
-                    data-workspace-part="tab-close"
-                    tabindex={group.activeTabId === tab.id ||
-                    hoveredTabId === tab.id
-                      ? 0
-                      : -1}
-                    onclick={(event) => {
-                      event.stopPropagation();
-                      controller.closeTab(group.id, tab.id);
-                    }}
-                  >
-                    <XIcon data-icon="inline-start" />
-                  </Button>
-                {/if}
               </div>
             {/each}
           </Tabs.List>
+          <div
+            data-ui-component="workspace"
+            data-ui-part="tab-close-layer"
+            aria-label="Tab close controls"
+          >
+            {#each group.tabs as tab (tab.id)}
+              {#if tab.closable !== false}
+                {@const visible =
+                  group.activeTabId === tab.id || hoveredTabId === tab.id}
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon-sm"
+                  aria-label={`Close ${tab.title}`}
+                  data-workspace-part="tab-close"
+                  data-visible={visible}
+                  style={`left: ${tabClosePositions[tab.id] ?? -9999}px`}
+                  tabindex={visible ? 0 : -1}
+                  onpointerenter={() => (hoveredTabId = tab.id)}
+                  onclick={() => controller.closeTab(group.id, tab.id)}
+                >
+                  <XIcon data-icon="inline-start" />
+                </Button>
+              {/if}
+            {/each}
+          </div>
         </div>
         {#if createTab}
           <div data-ui-component="workspace" data-ui-part="tab-new-action">
@@ -416,22 +468,27 @@
     color: inherit;
   }
 
-  [data-ui-component="workspace"][data-ui-part="tab"]
+  [data-ui-component="workspace"][data-ui-part="tab-close-layer"] {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  [data-ui-component="workspace"][data-ui-part="tab-close-layer"]
     :global([data-workspace-part="tab-close"]) {
     position: absolute;
-    inset-inline-end: 3px;
-    z-index: 3;
+    inset-block-start: calc(50% - 0.625rem);
     width: 1.25rem;
     height: 1.25rem;
     display: none;
+    pointer-events: auto;
     transition: none;
   }
 
-  [data-ui-component="workspace"][data-ui-part="tab"][data-active="true"]
-    :global([data-workspace-part="tab-close"]),
-  [data-ui-component="workspace"][data-ui-part="tab"]:hover
-    :global([data-workspace-part="tab-close"]),
-  [data-ui-component="workspace"][data-ui-part="tab"]
+  [data-ui-component="workspace"][data-ui-part="tab-close-layer"]
+    :global([data-workspace-part="tab-close"][data-visible="true"]),
+  [data-ui-component="workspace"][data-ui-part="tab-close-layer"]
     :global([data-workspace-part="tab-close"]:focus-visible) {
     display: inline-flex;
   }

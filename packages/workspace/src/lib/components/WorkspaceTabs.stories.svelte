@@ -1,6 +1,6 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, fireEvent, userEvent } from "storybook/test";
+  import { expect, userEvent } from "storybook/test";
   import WorkspaceTabs from "./WorkspaceTabs.svelte";
 
   const { Story } = defineMeta({
@@ -75,8 +75,8 @@
       'button[aria-label="Close Details"]',
     );
     if (!closeDetails) throw new Error("Details close button not found");
-    await fireEvent.pointerEnter(detailsContainer);
-    await expect(getComputedStyle(closeDetails).visibility).toBe("visible");
+    await userEvent.hover(detailsContainer);
+    await expect(getComputedStyle(closeDetails).display).toBe("flex");
 
     const notes = canvas.getByRole("tab", { name: "Notes" });
     const notesContainer = notes.closest<HTMLElement>('[data-ui-part="tab"]');
