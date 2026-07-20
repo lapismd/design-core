@@ -1,16 +1,54 @@
-import { Canvas, Markdown, Meta } from "@storybook/addon-docs/blocks";
+import {
+  Canvas,
+  Controls,
+  Markdown,
+  Meta,
+  Primary,
+} from "@storybook/addon-docs/blocks";
 import * as TaskRowStories from "./TaskRow.stories.svelte";
 import taskRowSpec from "../../../specs/components/task-row.md?raw";
 
 <Meta of={TaskRowStories} />
 
-The canonical implementation contract for this component is rendered below from
-`packages/tasks/specs/components/task-row.md`. The TODO interaction stories in
-this entry encode completion, selection, explicit detail opening, double-click
-parity, keyboard behavior, reorder, and mobile swipe.
+# TaskRow
+
+Dense controlled task primitive. Completion, selection, and detail open are
+independent targets. Implementation status: **Done** for the leaf control
+surface (host `Checkbox` family pending — see PLAN blocker; completion uses an
+accessible `role="checkbox"` control composed with Button/Badge).
 
 <Markdown>{taskRowSpec}</Markdown>
 
-## Implementation placeholder
+## Usage
 
-<Canvas of={TaskRowStories.ImplementationPlaceholder} meta={TaskRowStories} />
+<Primary />
+
+## Properties
+
+<Controls />
+
+## Interactions
+
+### Complete independently
+
+<Canvas of={TaskRowStories.CompleteIndependently} meta={TaskRowStories} />
+
+### Select and open details
+
+<Canvas of={TaskRowStories.SelectAndOpen} meta={TaskRowStories} />
+
+### Double-click selection parity
+
+<Canvas of={TaskRowStories.DoubleClickParity} meta={TaskRowStories} />
+
+### Keyboard Enter / Space split
+
+<Canvas of={TaskRowStories.KeyboardSplit} meta={TaskRowStories} />
+
+### Drag handle
+
+<Canvas of={TaskRowStories.DragHandle} meta={TaskRowStories} />
+
+### Swipe action
+
+<Canvas of={TaskRowStories.SwipeReveal} meta={TaskRowStories} />

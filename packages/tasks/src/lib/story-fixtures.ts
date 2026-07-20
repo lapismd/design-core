@@ -54,11 +54,14 @@ export function createTasksStoryFixture(
       : options.selectedTaskId;
   const openTaskId =
     options.openTaskId === undefined ? selectedTaskId : options.openTaskId;
+  const fromFixture =
+    openTaskId === null
+      ? undefined
+      : (tasks.find((task) => task.id === openTaskId) ??
+        [...fixtureTaskById.values()].find((task) => task.id === openTaskId));
   const activeTask =
-    (openTaskId &&
-      (tasks.find((task) => task.id === openTaskId) ??
-        fixtureTaskById.get(openTaskId))) ||
-    tasks[0] ||
+    fromFixture ??
+    tasks[0] ??
     buildTask({ id: "task-story", title: "Story fixture task" });
 
   return {

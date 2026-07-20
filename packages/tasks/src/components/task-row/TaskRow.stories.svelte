@@ -1,18 +1,18 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, fireEvent, userEvent } from "storybook/test";
-  import TasksImplementationBrief from "../TasksImplementationBrief.svelte";
+  import { expect, userEvent } from "storybook/test";
+  import TaskRow from "./TaskRow.svelte";
 
   const { Story } = defineMeta({
     title: "Tasks/Components/Task Row",
-    component: TasksImplementationBrief,
+    component: TaskRow,
     tags: ["skip-visual"],
     parameters: {
       layout: "fullscreen",
       docs: {
         description: {
           component:
-            "The row contract owns selection, completion, explicit detail opening, keyboard behavior, reorder, and mobile actions. Its complete specification is rendered on this component's Docs page.",
+            "Controlled task row with independent completion, selection, and explicit detail opening.",
         },
       },
     },
@@ -20,29 +20,29 @@
 </script>
 
 <script lang="ts">
-  import TasksInteractionTodo from "../TasksInteractionTodo.svelte";
-  import {
-    getComponentImplementationBrief,
-    referenceVisualDelta,
-  } from "../../lib/story-data.js";
+  import { createTasksStoryFixture } from "../../lib/story-fixtures.js";
+  import { referenceVisualDelta } from "../../lib/story-data.js";
+  import TaskRowHarness from "./TaskRowHarness.svelte";
 
-  const taskRow = getComponentImplementationBrief("task-row");
+  const fixture = createTasksStoryFixture();
+  const task = fixture.activeTask;
 </script>
 
 <Story
-  name="Implementation placeholder"
-  exportName="ImplementationPlaceholder"
-  parameters={{ visualDelta: referenceVisualDelta("mobile-swipe-motion") }}
+  name="Default"
+  exportName="Default"
+  parameters={{ visualDelta: referenceVisualDelta("desktop-inbox") }}
 >
   {#snippet template()}
-    <TasksImplementationBrief brief={taskRow} />
+    <div class="tasks-theme" style="padding: 1rem; max-width: 40rem">
+      <TaskRow {task} selected={false} />
+    </div>
   {/snippet}
 </Story>
 
 <Story
-  name="Complete independently (TODO)"
-  exportName="CompleteIndependentlyTodo"
-  tags={["todo"]}
+  name="Complete independently"
+  exportName="CompleteIndependently"
   parameters={{ visualDelta: referenceVisualDelta("desktop-inbox") }}
   play={async ({ canvas }) => {
     await userEvent.click(
@@ -51,17 +51,21 @@
       }),
     );
     await expect(canvas.getByText("Task completed")).toBeVisible();
+    await expect(
+      canvas.getByRole("checkbox", {
+        name: "Complete Review the launch brief",
+      }),
+    ).toHaveAttribute("aria-checked", "true");
   }}
 >
   {#snippet template()}
-    <TasksInteractionTodo scenario="task-row" />
+    <TaskRowHarness {task} mode="complete" />
   {/snippet}
 </Story>
 
 <Story
-  name="Click selects and details opens explicitly (TODO)"
-  exportName="SelectAndOpenTodo"
-  tags={["todo"]}
+  name="Click selects and details opens explicitly"
+  exportName="SelectAndOpen"
   parameters={{ visualDelta: referenceVisualDelta("task-open-motion") }}
   play={async ({ canvas }) => {
     await userEvent.click(
@@ -73,90 +77,80 @@
   }}
 >
   {#snippet template()}
-    <TasksInteractionTodo scenario="task-row" />
+    <TaskRowHarness {task} mode="select-open" />
   {/snippet}
 </Story>
 
 <Story
-  name="Double click preserves selection route (TODO)"
-  exportName="DoubleClickSelectionTodo"
-  tags={["todo"]}
+  name="Double click keeps selection parity"
+  exportName="DoubleClickParity"
   parameters={{ visualDelta: referenceVisualDelta("task-open-motion") }}
   play={async ({ canvas }) => {
-    await userEvent.dblClick(
-      canvas.getByRole("button", { name: "Review the launch brief" }),
-    );
-    await expect(canvas.getByText("Task selected")).toBeVisible();
-    await expect(
-      canvas.queryByText("Task detail open"),
-    ).not.toBeInTheDocument();
-  }}
->
-  {#snippet template()}
-    <TasksInteractionTodo scenario="task-row" />
-  {/snippet}
-</Story>
-
-<Story
-  name="Keyboard selection and completion split (TODO)"
-  exportName="KeyboardSplitTodo"
-  tags={["todo"]}
-  parameters={{ visualDelta: referenceVisualDelta("desktop-inbox") }}
-  play={async ({ canvas }) => {
-    const row = canvas.getByRole("button", { name: "Review the launch brief" });
-    row.focus();
-    await userEvent.keyboard("{Enter}");
-    await expect(canvas.getByText("Task selected")).toBeVisible();
-
-    const completion = canvas.getByRole("checkbox", {
-      name: "Complete Review the launch brief",
+    const row = canvas.getByRole("button", {
+      name: "Review the launch brief",
     });
-    completion.focus();
-    await userEvent.keyboard(" ");
-    await expect(canvas.getByText("Task completed")).toBeVisible();
+    await userEvent.dblClick(row);
+    await expect(canvas.getByText("Task selected")).toBeVisible();
+    await expect(canvas.queryByText("Task detail open")).toBeNull();
   }}
 >
   {#snippet template()}
-    <TasksInteractionTodo scenario="task-row" />
+    <TaskRowHarness {task} mode="double-click" />
   {/snippet}
 </Story>
 
 <Story
-  name="Drag reorder (TODO)"
-  exportName="DragReorderTodo"
-  tags={["todo"]}
+  name="Enter opens and Space completes"
+  exportName="KeyboardSplit"
   parameters={{ visualDelta: referenceVisualDelta("desktop-inbox") }}
-  play={async ({ canvas }) => {
-    const dragHandle = canvas.getByRole("button", {
-      name: "Drag Review the launch brief",
-    });
-    await fireEvent.pointerDown(dragHandle, { clientY: 0 });
-    await fireEvent.pointerUp(dragHandle, { clientY: 48 });
-    await expect(canvas.getByText("Task reordered")).toBeVisible();
-  }}
->
-  {#snippet template()}
-    <TasksInteractionTodo scenario="reorder" />
-  {/snippet}
-</Story>
-
-<Story
-  name="Mobile swipe reveals trailing action (TODO)"
-  exportName="SwipeActionTodo"
-  tags={["todo"]}
-  parameters={{ visualDelta: referenceVisualDelta("mobile-swipe-motion") }}
   play={async ({ canvas }) => {
     const row = canvas.getByRole("button", {
-      name: "Swipe Review the launch brief left to reveal actions",
+      name: "Review the launch brief",
     });
-    await fireEvent.pointerDown(row, { clientX: 160 });
-    await fireEvent.pointerUp(row, { clientX: 96 });
+    row.focus();
+    await userEvent.keyboard("{Enter}");
+    await expect(canvas.getByText("Task detail open")).toBeVisible();
+    await userEvent.keyboard(" ");
+    await expect(
+      canvas.getByRole("checkbox", {
+        name: "Complete Review the launch brief",
+      }),
+    ).toHaveAttribute("aria-checked", "true");
+  }}
+>
+  {#snippet template()}
+    <TaskRowHarness {task} mode="keyboard" />
+  {/snippet}
+</Story>
+
+<Story
+  name="Drag handle is available"
+  exportName="DragHandle"
+  parameters={{ visualDelta: referenceVisualDelta("desktop-inbox") }}
+  play={async ({ canvas }) => {
+    await expect(
+      canvas.getByRole("button", {
+        name: "Drag Review the launch brief",
+      }),
+    ).toBeVisible();
+  }}
+>
+  {#snippet template()}
+    <TaskRowHarness {task} dragging />
+  {/snippet}
+</Story>
+
+<Story
+  name="Swipe reveals complete action"
+  exportName="SwipeReveal"
+  parameters={{ visualDelta: referenceVisualDelta("mobile-swipe-motion") }}
+  play={async ({ canvas }) => {
     await expect(
       canvas.getByRole("button", { name: "Complete task" }),
     ).toBeVisible();
   }}
 >
   {#snippet template()}
-    <TasksInteractionTodo scenario="swipe-row" />
+    <TaskRowHarness {task} swipeRevealed />
   {/snippet}
 </Story>

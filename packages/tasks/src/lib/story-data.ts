@@ -142,8 +142,12 @@ export const referenceTargetById = new Map(
   referenceTargets.map((target) => [target.id, target]),
 );
 
-export function getReferenceTarget(id: string): TasksReferenceTarget {
-  const target = referenceTargetById.get(id);
+export function getReferenceTarget(
+  id: (typeof referenceTargets)[number]["id"] | string,
+): TasksReferenceTarget {
+  const target = referenceTargetById.get(
+    id as (typeof referenceTargets)[number]["id"],
+  );
   if (!target) throw new Error(`Unknown Tasks reference target: ${id}`);
   return target;
 }
