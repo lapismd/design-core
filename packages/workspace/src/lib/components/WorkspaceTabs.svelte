@@ -135,7 +135,6 @@
           data-ui-component="workspace"
           data-ui-part="tab-strip"
           role="presentation"
-          style={`--workspace-tab-count: ${group.tabs.length}`}
           onpointerleave={() => (hoveredTabId = null)}
           ondrop={dropOnTabStrip}
         >
@@ -153,6 +152,7 @@
             }}
           >
             {#each group.tabs as tab, index (tab.id)}
+              {@const icon = controller.registry.resolve(tab.view.type)?.icon}
               <div
                 data-ui-component="workspace"
                 data-ui-part="tab"
@@ -173,24 +173,16 @@
                   ondragend={clearDropState}
                   onclick={() => controller.selectTab(group.id, tab.id)}
                 >
+                  {#if icon}
+                    {@const Icon = icon}
+                    <span data-ui-component="workspace" data-ui-part="tab-icon">
+                      <Icon data-icon="inline-start" />
+                    </span>
+                  {/if}
                   <span data-ui-component="workspace" data-ui-part="tab-title">
                     {tab.title}
                   </span>
                 </Tabs.Trigger>
-              </div>
-            {/each}
-          </Tabs.List>
-          <div data-ui-component="workspace" data-ui-part="tab-close-layer">
-            {#each group.tabs as tab (tab.id)}
-              <div
-                data-ui-component="workspace"
-                data-ui-part="tab-close-cell"
-                data-workspace-tab-id={tab.id}
-                data-active={group.activeTabId === tab.id}
-                data-hovered={hoveredTabId === tab.id}
-                role="presentation"
-                onpointerenter={() => (hoveredTabId = tab.id)}
-              >
                 {#if tab.closable !== false}
                   <Button
                     type="button"
@@ -202,18 +194,17 @@
                     hoveredTabId === tab.id
                       ? 0
                       : -1}
-                    style={group.activeTabId === tab.id ||
-                    hoveredTabId === tab.id
-                      ? "visibility: visible"
-                      : undefined}
-                    onclick={() => controller.closeTab(group.id, tab.id)}
+                    onclick={(event) => {
+                      event.stopPropagation();
+                      controller.closeTab(group.id, tab.id);
+                    }}
                   >
                     <XIcon data-icon="inline-start" />
                   </Button>
                 {/if}
               </div>
             {/each}
-          </div>
+          </Tabs.List>
         </div>
         {#if createTab}
           <div data-ui-component="workspace" data-ui-part="tab-new-action">
@@ -344,6 +335,7 @@
     height: 100%;
     flex: 0 1 auto;
     overflow: hidden;
+    border-bottom: 1px solid var(--ui-workspace-divider, var(--border));
   }
 
   [data-ui-component="workspace"][data-ui-part="tab-bar"] {
@@ -353,9 +345,7 @@
     flex: 0 0 var(--ui-workspace-tab-height, 40px);
     align-items: stretch;
     overflow: hidden;
-    border-bottom: 1px solid var(--ui-workspace-divider, var(--border));
     background: var(--ui-workspace-tab-container-background, var(--muted));
-    padding-inline: 0.5rem;
   }
 
   [data-ui-component="workspace"][data-ui-part="tabs"]
@@ -366,20 +356,23 @@
     max-width: 100%;
     flex: 0 1 auto;
     margin: 6px -5px -1px;
-    overflow: hidden;
+    overflow: auto hidden;
     border-radius: 0;
     background: transparent;
     padding: 1px 15px 0;
+    scrollbar-width: none;
+  }
+
+  [data-ui-component="workspace"][data-ui-part="tabs"]
+    :global([data-workspace-part="tab-list"]::-webkit-scrollbar) {
+    display: none;
   }
 
   [data-ui-component="workspace"][data-ui-part="tab"] {
     position: relative;
     display: flex;
     width: var(--ui-workspace-tab-width, 12.5rem);
-    min-width: min(
-      var(--ui-workspace-tab-min-width, 7rem),
-      calc(100% / var(--workspace-tab-count, 1))
-    );
+    min-width: 0;
     max-width: var(--ui-workspace-tab-max-width, 20rem);
     height: 100%;
     flex: 1 1 0;
@@ -388,7 +381,7 @@
     color: var(--ui-workspace-tab-color, var(--muted-foreground));
     container-name: tab-header;
     container-type: inline-size;
-    padding: 0;
+    padding: 0.25rem 0.5rem;
   }
 
   [data-ui-component="workspace"][data-ui-part="tab"][data-active="true"] {
@@ -432,7 +425,9 @@
     position: absolute;
     inset-block: 0.375rem 0;
     inset-inline-start: 0;
-    width: 2px;
+    z-index: 2;
+    width: 3px;
+    border-radius: 999px;
     background: transparent;
     content: "";
   }
@@ -460,7 +455,7 @@
     background: transparent;
     color: inherit;
     padding-block: 0;
-    padding-inline: 0.375rem 2rem;
+    padding-inline: 0.375rem 1.75rem;
     text-align: left;
   }
 
@@ -471,6 +466,24 @@
     background: var(--ui-workspace-tab-hover, var(--accent));
   }
 
+  [data-ui-component="workspace"][data-ui-part="tab"][data-active="true"]
+    :global([data-workspace-part="tab-trigger"]:hover) {
+    background: transparent;
+  }
+
+  [data-ui-component="workspace"][data-ui-part="tab"]::after {
+    position: absolute;
+    inset-inline-end: -1px;
+    width: 1px;
+    height: 20px;
+    background: var(--ui-workspace-tab-divider, var(--border));
+    content: "";
+  }
+
+  [data-ui-component="workspace"][data-ui-part="tab"][data-active="true"]::after {
+    opacity: 0;
+  }
+
   [data-ui-component="workspace"][data-ui-part="tab-title"] {
     min-width: 0;
     overflow: hidden;
@@ -478,44 +491,30 @@
     white-space: nowrap;
   }
 
-  [data-ui-component="workspace"][data-ui-part="tab-close-layer"] {
-    position: absolute;
-    inset: 0;
+  [data-ui-component="workspace"][data-ui-part="tab-icon"] {
     display: flex;
-    min-width: 0;
-    pointer-events: none;
-  }
-
-  [data-ui-component="workspace"][data-ui-part="tab-close-cell"] {
-    display: flex;
-    width: var(--ui-workspace-tab-width, 12.5rem);
-    min-width: min(
-      var(--ui-workspace-tab-min-width, 7rem),
-      calc(100% / var(--workspace-tab-count, 1))
-    );
-    max-width: var(--ui-workspace-tab-max-width, 20rem);
-    height: 100%;
-    flex: 1 1 0;
+    flex: 0 0 auto;
     align-items: center;
-    justify-content: flex-end;
-    padding: 0 0.375rem 0;
-    pointer-events: none;
+    margin-inline-end: 0.5rem;
+    color: inherit;
   }
 
-  [data-ui-component="workspace"][data-ui-part="tab-close-cell"]
+  [data-ui-component="workspace"][data-ui-part="tab"]
     :global([data-workspace-part="tab-close"]) {
+    position: absolute;
+    inset-inline-end: 0.5rem;
+    z-index: 3;
     width: 1.5rem;
     height: 1.5rem;
     visibility: hidden;
-    pointer-events: auto;
     transition: none;
   }
 
-  [data-ui-component="workspace"][data-ui-part="tab-close-cell"][data-active="true"]
+  [data-ui-component="workspace"][data-ui-part="tab"][data-active="true"]
     :global([data-workspace-part="tab-close"]),
-  [data-ui-component="workspace"][data-ui-part="tab-close-cell"][data-hovered="true"]
+  [data-ui-component="workspace"][data-ui-part="tab"]:hover
     :global([data-workspace-part="tab-close"]),
-  [data-ui-component="workspace"][data-ui-part="tab-close-cell"]
+  [data-ui-component="workspace"][data-ui-part="tab"]
     :global([data-workspace-part="tab-close"]:focus-visible) {
     visibility: visible;
   }
@@ -526,7 +525,7 @@
     flex: 0 0 auto;
     align-items: center;
     border-bottom: 1px solid var(--ui-workspace-divider, var(--border));
-    padding-inline: 0.25rem;
+    padding-inline: 0.25rem 0.5rem;
   }
 
   [data-ui-component="workspace"][data-ui-part="tab-spacer"] {

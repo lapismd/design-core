@@ -134,11 +134,15 @@ export interface WorkspaceSvelteViewDefinition {
   kind: "svelte";
   type: string;
   component: WorkspaceSvelteView;
+  /** Optional non-serializable icon rendered by tab chrome for this view type. */
+  icon?: Component;
 }
 
 export interface WorkspaceImperativeViewDefinition {
   kind: "imperative";
   type: string;
+  /** Optional non-serializable icon rendered by tab chrome for this view type. */
+  icon?: Component;
   mount(
     target: HTMLElement,
     context: WorkspaceViewContext,

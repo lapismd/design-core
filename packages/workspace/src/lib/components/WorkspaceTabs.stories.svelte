@@ -74,12 +74,7 @@
       'button[aria-label="Close Details"]',
     );
     if (!closeDetails) throw new Error("Details close button not found");
-    const closeCell = closeDetails.closest<HTMLElement>(
-      '[data-ui-part="tab-close-cell"]',
-    );
-    if (!closeCell) throw new Error("Details close cell not found");
-    await fireEvent.pointerEnter(closeCell);
-    await expect(closeCell).toHaveAttribute("data-hovered", "true");
+    await fireEvent.pointerEnter(detailsContainer);
     await expect(getComputedStyle(closeDetails).visibility).toBe("visible");
 
     const notes = canvas.getByRole("tab", { name: "Notes" });
@@ -158,8 +153,9 @@
     );
     if (!list) throw new Error("Tab list not found");
     const style = getComputedStyle(list);
-    await expect(style.overflowX).toBe("hidden");
+    await expect(style.overflowX).toBe("auto");
     await expect(style.overflowY).toBe("hidden");
+    await expect(style.scrollbarWidth).toBe("none");
     await expect(list.scrollHeight).toBeLessThanOrEqual(list.clientHeight);
   }}
 >

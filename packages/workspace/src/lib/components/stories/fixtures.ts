@@ -1,6 +1,7 @@
 import { DefaultWorkspaceViewRegistry } from "../../core/view-registry.js";
 import { WorkspaceController } from "../../core/workspace-controller.svelte";
 import type { WorkspaceLayoutV1, WorkspaceTab } from "../../core/types.js";
+import FileTextIcon from "@lucide/svelte/icons/file-text";
 import WorkspaceStoryTextView from "./WorkspaceStoryTextView.svelte";
 
 export const demoTabs: WorkspaceTab[] = [
@@ -81,6 +82,7 @@ export function createDemoController(
     kind: "svelte",
     type: "story",
     component: WorkspaceStoryTextView,
+    icon: FileTextIcon,
   });
   registry.register({
     kind: "imperative",
