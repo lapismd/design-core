@@ -227,6 +227,50 @@ describe("WorkspaceController", () => {
     });
   });
 
+  it("restores an empty split by dropping a tab into its recovery target", () => {
+    const controller = new WorkspaceController({
+      layout: {
+        main: {
+          kind: "split",
+          id: "root",
+          direction: "horizontal",
+          sizes: [50, 50],
+          children: [
+            createWorkspaceTabs(
+              [
+                firstTab,
+                {
+                  id: "details",
+                  title: "Details",
+                  view: { type: "notes", state: {} },
+                },
+              ],
+              "source",
+            ),
+            {
+              kind: "split",
+              id: "empty-split",
+              direction: "vertical",
+              sizes: [],
+              children: [],
+            },
+          ],
+        },
+      },
+    });
+
+    expect(controller.dropTabOnEmptySplit("notes", "empty-split")).toBe(true);
+    expect(controller.layout.main).toMatchObject({
+      kind: "split",
+      id: "root",
+      children: [
+        { id: "source", tabs: [{ id: "details" }] },
+        { kind: "tabs", activeTabId: "notes", tabs: [{ id: "notes" }] },
+      ],
+      sizes: [50, 50],
+    });
+  });
+
   it("drops a tab on an edge to create a split beside the target pane", () => {
     const controller = new WorkspaceController({
       layout: {

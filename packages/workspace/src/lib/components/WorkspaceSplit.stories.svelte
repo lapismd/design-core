@@ -29,6 +29,26 @@
   let pruningController = $state(createDemoController());
   let dragController = $state(createDemoController());
   let edgeDragController = $state(createDemoController());
+  let emptySplitController = $state(createEmptySplitController());
+  let emptySplitStateController = $state(
+    createDemoController({
+      version: 1,
+      left: { open: false, size: 280, activeTabId: null, collapsedGroups: {} },
+      right: {
+        open: false,
+        size: 280,
+        activeTabId: null,
+        collapsedGroups: {},
+      },
+      main: {
+        kind: "split",
+        id: "empty-split-state",
+        direction: "horizontal",
+        sizes: [],
+        children: [],
+      },
+    }),
+  );
   let mainPanelController = $state(
     createDemoController(createReferenceLayout()),
   );
@@ -86,6 +106,52 @@
         : referenceTabs("main-panel", "New Tab"),
     };
   }
+
+  function createEmptySplitController() {
+    return createDemoController({
+      version: 1,
+      left: { open: false, size: 280, activeTabId: null, collapsedGroups: {} },
+      right: {
+        open: false,
+        size: 280,
+        activeTabId: null,
+        collapsedGroups: {},
+      },
+      main: {
+        kind: "split",
+        id: "empty-split-root",
+        direction: "horizontal",
+        sizes: [50, 50],
+        children: [
+          {
+            kind: "tabs",
+            id: "empty-split-source",
+            activeTabId: "notes",
+            presentation: "top",
+            tabs: [
+              {
+                id: "notes",
+                title: "Notes",
+                view: { type: "story", state: {} },
+              },
+              {
+                id: "details",
+                title: "Details",
+                view: { type: "story", state: {} },
+              },
+            ],
+          },
+          {
+            kind: "split",
+            id: "empty-split-target",
+            direction: "vertical",
+            sizes: [],
+            children: [],
+          },
+        ],
+      },
+    });
+  }
 </script>
 
 <Story
@@ -119,6 +185,82 @@
         />
       </div>
     </WorkspaceLapisReference>
+  {/snippet}
+</Story>
+
+<Story
+  name="Empty split drop target"
+  play={async ({ canvas }) => {
+    await expect(canvas.getByText("Empty split")).toBeVisible();
+    await expect(
+      canvas.getByRole("region", {
+        name: "Drop a tab into empty split empty-split-state",
+      }),
+    ).toBeVisible();
+  }}
+>
+  {#snippet template()}
+    <div data-ui-component="workspace-split-story" data-ui-part="host">
+      <WorkspaceSplit
+        controller={emptySplitStateController}
+        node={emptySplitStateController.layout.main}
+      />
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Restores an empty split"
+  play={async ({ canvas, canvasElement }) => {
+    const source = canvas.getByRole("tab", { name: "Notes" });
+    const target = canvas.getByRole("region", {
+      name: "Drop a tab into empty split empty-split-target",
+    });
+    const dataTransfer = new DataTransfer();
+    const rect = target.getBoundingClientRect();
+
+    source.dispatchEvent(
+      new DragEvent("dragstart", {
+        bubbles: true,
+        cancelable: true,
+        dataTransfer,
+      }),
+    );
+    target.dispatchEvent(
+      new DragEvent("dragover", {
+        bubbles: true,
+        cancelable: true,
+        clientX: rect.left + rect.width / 2,
+        clientY: rect.top + rect.height / 2,
+        dataTransfer,
+      }),
+    );
+    await new Promise<void>((resolve) =>
+      requestAnimationFrame(() => resolve()),
+    );
+    await expect(target).toHaveAttribute("data-drop-active", "true");
+    target.dispatchEvent(
+      new DragEvent("drop", {
+        bubbles: true,
+        cancelable: true,
+        clientX: rect.left + rect.width / 2,
+        clientY: rect.top + rect.height / 2,
+        dataTransfer,
+      }),
+    );
+    await expect(canvas.getByText("Notes view")).toBeVisible();
+    await expect(
+      canvasElement.querySelector('[data-ui-part="split-empty-state"]'),
+    ).not.toBeInTheDocument();
+  }}
+>
+  {#snippet template()}
+    <div data-ui-component="workspace-split-story" data-ui-part="host">
+      <WorkspaceSplit
+        controller={emptySplitController}
+        node={emptySplitController.layout.main}
+      />
+    </div>
   {/snippet}
 </Story>
 

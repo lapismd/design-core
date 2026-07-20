@@ -205,6 +205,43 @@ export class WorkspaceController {
     });
   }
 
+  /**
+   * Restore an empty split by moving a tab into its first tab group. This
+   * mirrors Lapis' empty-split recovery target without coupling the package to
+   * any application-specific view type.
+   */
+  dropTabOnEmptySplit(tabId: string, splitId: string) {
+    return this.mutate({ source: "tab-move", id: tabId }, (layout) => {
+      const source = findTabGroup(layout.main, tabId);
+      const splitFound = findWorkspaceNode(layout.main, splitId);
+      if (
+        !source ||
+        !splitFound ||
+        splitFound.node.kind !== "split" ||
+        splitFound.node.children.length > 0
+      ) {
+        return false;
+      }
+
+      const sourceIndex = source.tabs.findIndex((tab) => tab.id === tabId);
+      const tab = source.tabs[sourceIndex];
+      if (!tab) return false;
+
+      source.tabs.splice(sourceIndex, 1);
+      if (source.activeTabId === tabId) {
+        source.activeTabId =
+          source.tabs[sourceIndex]?.id ??
+          source.tabs[sourceIndex - 1]?.id ??
+          null;
+      }
+
+      splitFound.node.children = [createWorkspaceTabs([tab])];
+      splitFound.node.sizes = [100];
+      layout.main = pruneWorkspaceNode(layout.main) ?? createWorkspaceTabs();
+      return true;
+    });
+  }
+
   setTabPresentation(
     groupId: string,
     presentation: WorkspaceTabsNode["presentation"],

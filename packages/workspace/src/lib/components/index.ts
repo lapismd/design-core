@@ -2,6 +2,7 @@ export { default as WorkspaceShell } from "./WorkspaceShell.svelte";
 export { default as WorkspaceActionBar } from "./WorkspaceActionBar.svelte";
 export { default as WorkspaceSidebar } from "./WorkspaceSidebar.svelte";
 export { default as WorkspaceSplit } from "./WorkspaceSplit.svelte";
+export { default as WorkspaceSplitDropZone } from "./WorkspaceSplitDropZone.svelte";
 export { default as WorkspaceStackedTabs } from "./WorkspaceStackedTabs.svelte";
 export { default as WorkspaceDropOverlay } from "./WorkspaceDropOverlay.svelte";
 export { default as WorkspaceTabDropZone } from "./WorkspaceTabDropZone.svelte";
