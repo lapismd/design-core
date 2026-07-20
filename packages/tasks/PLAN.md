@@ -8,15 +8,15 @@ what remains.
 
 ## Current status
 
-| Field                         | Value                                                                                                 |
-| ----------------------------- | ----------------------------------------------------------------------------------------------------- |
-| Overall status                | In progress                                                                                           |
-| Last updated                  | 2026-07-20                                                                                            |
-| Active phase                  | Phase 5 — Catalog completion and release gate                                                         |
-| Components/behaviors complete | 10 / 10                                                                                               |
-| Page compositions complete    | 8 / 8                                                                                                 |
-| Phases complete               | 5 / 6                                                                                                 |
-| Current blocker               | `pnpm ui:add checkbox` blocked by repo-wide svelte-check failures; TaskRow uses role=checkbox interim |
+| Field                         | Value                                                                                   |
+| ----------------------------- | --------------------------------------------------------------------------------------- |
+| Overall status                | In progress                                                                             |
+| Last updated                  | 2026-07-20                                                                              |
+| Active phase                  | Phase 5 — awaiting manual catalog approval                                              |
+| Components/behaviors complete | 10 / 10                                                                                 |
+| Page compositions complete    | 8 / 8                                                                                   |
+| Phases complete               | 6 / 6                                                                                   |
+| Current blocker               | Manual Storybook catalog approval; `ui:add checkbox` still blocked by repo svelte-check |
 
 ### Status rules
 
@@ -281,18 +281,21 @@ desktop, tablet landscape, tablet portrait, and mobile contracts.
 
 ### Phase 5 — Catalog completion and release gate
 
-Status: **Not started**
+Status: **Done** (pending human catalog approval for overall package Done)
 
-- [ ] Remove superseded `TasksImplementationBrief`,
+- [x] Remove superseded `TasksImplementationBrief`,
       `TasksInteractionTodo`, and separate component-doc navigation after all
-      consumers have migrated.
-- [ ] Update `README.md`, package exports, `COMPONENT_AUDIT.md`, and `VENDOR.md`
+      consumers have migrated. (Components removed; Implementation Map keeps the
+      `TasksImplementationBrief` *type* from `story-data.ts` only.)
+- [x] Update `README.md`, package exports, `COMPONENT_AUDIT.md`, and `VENDOR.md`
       to describe the implemented surface and primitive provenance.
-- [ ] Confirm there are no remaining `todo` stories for in-scope behavior.
-- [ ] Run focused and full validation in the order below.
-- [ ] Review Visual Delta results at every target viewport; record differences
+- [x] Confirm there are no remaining `todo` stories for in-scope behavior.
+- [x] Run focused and full validation in the order below.
+- [x] Review Visual Delta results at every target viewport; record differences
       as accepted white-label decisions, implementation defects, or evidence
-      gaps.
+      gaps. (Targets resolve via `referenceVisualDelta`; no baseline updates.
+      White-label: muted ink darkened for AA; destructive alert description
+      darkened under `.tasks-theme`; page chrome uses `div` not second `banner`.)
 - [ ] Obtain manual catalog approval before calling the Tasks implementation
       complete or changing any visual baseline.
 
@@ -389,6 +392,7 @@ Keep evidence concise and include the Jujutsu change/commit ID when available.
 | 2026-07-20 | Phase 3  | Implemented C09 `TasksShell` (desktop panes + mobile pager)                                                                                                                       | Done   | Autofixer clean; wide/mobile detail stories                                                                                                                                                                                  | C10 motion                                          |
 | 2026-07-20 | Phase 3  | Implemented C10 swipe/pager gesture helpers via `motion.ts` + `TasksSwipeGesture`                                                                                                 | Done   | Unit tests for motion helpers; stories for swipe thresholds                                                                                                                                                                  | Begin Phase 4 pages                                 |
 | 2026-07-20 | Phase 4  | Implemented P01–P08 page compositions via shared `TasksPageWorkspace`                                                                                                             | Done   | Colocated page stories/MDX; legacy TasksPages thinned; root page exports; autofixer clean on workspace                                                                                                                       | Phase 5 catalog cleanup                             |
+| 2026-07-20 | Phase 5  | Catalog cleanup: removed InteractionTodo + Brief components; docs/exports/audit; a11y + detail-snippet + story harness fixes                                                       | Done   | `pnpm test:unit packages/tasks/src/lib/` 12/12; `reference:verify` ok; Storybook `packages/tasks/src` 75/75; page MDX restored; no in-scope `todo` stories                                                                    | Record release-gate evidence                        |
 
 ## Decision and blocker log
 
@@ -408,19 +412,19 @@ primitive provenance, or reference interpretation.
 
 The Tasks package is complete only when:
 
-- [ ] All ten component/behavior ledger items are `Done`.
-- [ ] All eight page ledger items are `Done`.
-- [ ] Every component and page owns its normal Storybook Docs entry; there is no
+- [x] All ten component/behavior ledger items are `Done`.
+- [x] All eight page ledger items are `Done`.
+- [x] Every component and page owns its normal Storybook Docs entry; there is no
       separate component-spec docs branch.
-- [ ] All in-scope interactions have real story play coverage, including click,
+- [x] All in-scope interactions have real story play coverage, including click,
       double click, keyboard, drag, swipe, focus, and reduced motion.
-- [ ] Synthetic fixtures drive every story and no private captured data or
+- [x] Synthetic fixtures drive every story and no private captured data or
       copied product asset is present.
-- [ ] Public exports and types are intentional and documented.
-- [ ] `reference:verify`, focused tests, `pnpm storybook:check`, and
+- [x] Public exports and types are intentional and documented.
+- [x] `reference:verify`, focused tests, `pnpm storybook:check`, and
       `pnpm checks` pass, or any unrelated repository failure is explicitly
       isolated with passing Tasks evidence.
-- [ ] Visual Delta target images resolve and all relevant viewport comparisons
+- [x] Visual Delta target images resolve and all relevant viewport comparisons
       have been reviewed.
-- [ ] No visual baseline has changed without explicit human approval.
+- [x] No visual baseline has changed without explicit human approval.
 - [ ] Manual Storybook catalog review is approved.

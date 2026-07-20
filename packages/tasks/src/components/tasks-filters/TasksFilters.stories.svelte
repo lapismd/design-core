@@ -1,6 +1,6 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, userEvent } from "storybook/test";
+  import { expect, fireEvent, userEvent, within } from "storybook/test";
   import TasksFilters from "./TasksFilters.svelte";
 
   const { Story } = defineMeta({
@@ -43,12 +43,16 @@
   exportName="SortAndClear"
   parameters={{ visualDelta: referenceVisualDelta("desktop-tasks") }}
   play={async ({ canvas }) => {
-    await userEvent.click(canvas.getByRole("button", { name: "Sort" }));
-    await userEvent.click(canvas.getByRole("menuitemradio", { name: "Due" }));
-    await expect(canvas.getByText("Sort due")).toBeVisible();
-    await userEvent.click(canvas.getByRole("button", { name: "Sort" }));
+    // bits-ui menu triggers can report pointer-events:none to userEvent while
+    // still opening via a trusted click; fireEvent avoids that false negative.
+    await fireEvent.click(canvas.getByRole("button", { name: "Sort" }));
     await userEvent.click(
-      canvas.getByRole("menuitem", { name: "Clear completed" }),
+      within(document.body).getByRole("menuitemradio", { name: "Due" }),
+    );
+    await expect(canvas.getByText("Sort due")).toBeVisible();
+    await fireEvent.click(canvas.getByRole("button", { name: "Sort" }));
+    await userEvent.click(
+      within(document.body).getByRole("menuitem", { name: "Clear completed" }),
     );
     await expect(canvas.getByText("Cleared completed")).toBeVisible();
   }}

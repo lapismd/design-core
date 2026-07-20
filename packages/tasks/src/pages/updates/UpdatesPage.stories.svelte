@@ -27,7 +27,7 @@
   exportName="Default"
   parameters={{ visualDelta: referenceVisualDelta("desktop-updates") }}
   play={async ({ canvas }) => {
-    await expect(canvas.getByText("Updates")).toBeVisible();
+    await expect(canvas.getByText("Detail closed")).toBeVisible();
   }}
 >
   {#snippet template()}
@@ -53,7 +53,7 @@
   exportName="ErrorRetry"
   parameters={{ visualDelta: referenceVisualDelta("desktop-updates") }}
   play={async ({ canvas }) => {
-    await userEvent.click(canvas.getByRole("button", { name: /retry/i }));
+    await userEvent.click(canvas.getByText("Retry"));
     await expect(canvas.getByText("Retry requested")).toBeVisible();
   }}
 >

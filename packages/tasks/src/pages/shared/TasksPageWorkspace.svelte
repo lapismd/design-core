@@ -90,6 +90,9 @@
     detailOpen={openTaskId !== null}
     onPagerChange={(next) => {
       pager = next;
+      if (next.pane === "list" || next.pane === "navigation") {
+        openTaskId = null;
+      }
     }}
   >
     {#snippet navigation()}
@@ -102,7 +105,7 @@
       />
     {/snippet}
     {#snippet main()}
-      <header class="tasks-page-workspace__header">
+      <div class="tasks-page-workspace__header">
         <h1>{title}</h1>
         {#if page === "tasks" || page === "lists" || page === "updates"}
           <TasksFilters
@@ -112,7 +115,7 @@
             }}
           />
         {/if}
-      </header>
+      </div>
 
       {#if showUpdatesFeedback && feedbackMode === "empty"}
         <TasksFeedback state={{ kind: "empty", message: "No updates yet" }} />
@@ -176,8 +179,8 @@
         </TaskList>
       {/if}
     {/snippet}
-    {#if openTask}
-      {#snippet detail()}
+    {#snippet detail()}
+      {#if openTask}
         <TaskDetail
           task={openTask}
           lists={fixture.lists}
@@ -196,8 +199,8 @@
             );
           }}
         />
-      {/snippet}
-    {/if}
+      {/if}
+    {/snippet}
   </TasksShell>
 </div>
 

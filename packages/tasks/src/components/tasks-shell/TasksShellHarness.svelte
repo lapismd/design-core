@@ -47,6 +47,9 @@
     detailOpen={openTaskId !== null}
     onPagerChange={(next) => {
       pager = next;
+      if (next.pane === "list" || next.pane === "navigation") {
+        openTaskId = null;
+      }
     }}
   >
     {#snippet navigation()}
@@ -69,8 +72,8 @@
         }}
       />
     {/snippet}
-    {#if openTask}
-      {#snippet detail()}
+    {#snippet detail()}
+      {#if openTask}
         <TaskDetail
           task={openTask}
           lists={fixture.lists}
@@ -79,8 +82,8 @@
             pager = { ...pager, pane: "list" };
           }}
         />
-      {/snippet}
-    {/if}
+      {/if}
+    {/snippet}
   </TasksShell>
 </div>
 <p>Pane {pager.pane}</p>

@@ -23,6 +23,5 @@ export { UpdatesPage } from "./pages/updates/index.js";
 export { ListsPage } from "./pages/lists/index.js";
 export { ListDetailPage } from "./pages/list-detail/index.js";
 export { TaskDetailPage } from "./pages/task-detail/index.js";
-export { default as TasksImplementationBrief } from "./components/TasksImplementationBrief.svelte";
 export { default as TasksImplementationMap } from "./components/TasksImplementationMap.svelte";
 export { default as TasksReferenceTarget } from "./components/TasksReferenceTarget.svelte";

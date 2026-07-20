@@ -47,13 +47,13 @@
   play={async ({ canvas }) => {
     await userEvent.click(
       canvas.getByRole("checkbox", {
-        name: "Complete Review the launch brief",
+        name: "Complete Review the launch brief today",
       }),
     );
     await expect(canvas.getByText("Task completed")).toBeVisible();
     await expect(
       canvas.getByRole("checkbox", {
-        name: "Complete Review the launch brief",
+        name: "Complete Review the launch brief today",
       }),
     ).toHaveAttribute("aria-checked", "true");
   }}
@@ -69,7 +69,7 @@
   parameters={{ visualDelta: referenceVisualDelta("task-open-motion") }}
   play={async ({ canvas }) => {
     await userEvent.click(
-      canvas.getByRole("button", { name: "Review the launch brief" }),
+      canvas.getByRole("button", { name: "Review the launch brief today" }),
     );
     await expect(canvas.getByText("Task selected")).toBeVisible();
     await userEvent.click(canvas.getByRole("button", { name: "Details" }));
@@ -87,7 +87,7 @@
   parameters={{ visualDelta: referenceVisualDelta("task-open-motion") }}
   play={async ({ canvas }) => {
     const row = canvas.getByRole("button", {
-      name: "Review the launch brief",
+      name: "Review the launch brief today",
     });
     await userEvent.dblClick(row);
     await expect(canvas.getByText("Task selected")).toBeVisible();
@@ -105,7 +105,7 @@
   parameters={{ visualDelta: referenceVisualDelta("desktop-inbox") }}
   play={async ({ canvas }) => {
     const row = canvas.getByRole("button", {
-      name: "Review the launch brief",
+      name: "Review the launch brief today",
     });
     row.focus();
     await userEvent.keyboard("{Enter}");
@@ -113,7 +113,7 @@
     await userEvent.keyboard(" ");
     await expect(
       canvas.getByRole("checkbox", {
-        name: "Complete Review the launch brief",
+        name: "Complete Review the launch brief today",
       }),
     ).toHaveAttribute("aria-checked", "true");
   }}
@@ -130,7 +130,7 @@
   play={async ({ canvas }) => {
     await expect(
       canvas.getByRole("button", {
-        name: "Drag Review the launch brief",
+        name: "Drag Review the launch brief today",
       }),
     ).toBeVisible();
   }}

@@ -109,6 +109,7 @@
   <button
     type="button"
     class="tasks-task-row__main"
+    aria-label={task.title}
     aria-pressed={selected}
     data-tasks-row-target
     onclick={select}

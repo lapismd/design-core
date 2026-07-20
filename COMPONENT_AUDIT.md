@@ -81,15 +81,21 @@ Import: `@stevejuma/ui/ai`
 
 ## Reference — Tasks (`packages/tasks`)
 
-Clean-room implementation specifications, fixtures, responsive/motion contracts,
-and a scoped companion theme for a future white-label Tasks surface. Its
-Storybook-only target and implementation-brief components are catalog planning
-tools, not final product components.
+Fixture-driven white-label Tasks UI: controlled components and page
+compositions under `packages/tasks/src/{components,pages}`, plus contracts,
+synthetic fixtures, motion helpers, and a scoped `.tasks-theme` companion.
 
-Required reuse for later implementation: Sidebar, Resizable, ScrollArea,
-Button, DropdownMenu, Popover, ToggleGroup, Command, Empty, feedback
-primitives, and `TaskDueCalendar`. Add `checkbox`, `avatar`, and
-`context-menu` only through `pnpm ui:add` when implementation requires them.
+**Implemented families:** TaskRow, TaskComposer, TaskProperties, TasksFeedback,
+TaskList, ListNavigation, TasksFilters, TaskDetail, TasksShell,
+TasksSwipeGesture, and page compositions (Shell through Task detail).
+
+**Host reuse:** Button, Badge, Field, Input, Textarea, Popover, Select,
+DropdownMenu, ToggleGroup, ScrollArea, Collapsible, Separator, Empty, Skeleton,
+Spinner, Alert, and forms `TaskDueCalendar`.
+
+**Still blocked on `pnpm ui:add`:** `checkbox`, `avatar`, `context-menu`
+(generator fails repo-wide svelte-check). TaskRow ships an accessible
+`role="checkbox"` completion control until the host Checkbox family lands.
 
 ## App-specific — `src/apps/cv/`
 

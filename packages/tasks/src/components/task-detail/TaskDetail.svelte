@@ -69,6 +69,12 @@
   $effect(() => {
     const node = rootEl;
     if (!node) return;
+    // Rebind when edit mode changes so Escape-while-editing does not call back.
+    const titleEditing = editingTitle;
+    function onRootKeydown(event: KeyboardEvent) {
+      if (event.key !== "Escape" || titleEditing) return;
+      onBack?.();
+    }
     node.addEventListener("keydown", onRootKeydown);
     return () => node.removeEventListener("keydown", onRootKeydown);
   });
@@ -118,12 +124,6 @@
     const next = noteDraft;
     if (next === (task.note ?? "")) return;
     onNoteChange?.(task.id, next);
-  }
-
-  function onRootKeydown(event: KeyboardEvent) {
-    if (event.key === "Escape") {
-      onBack?.();
-    }
   }
 </script>
 

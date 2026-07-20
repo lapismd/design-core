@@ -95,7 +95,7 @@
           </Collapsible.Root>
         {:else}
           <div class="tasks-task-list__group" data-group={group.id}>
-            <h3 class="tasks-task-list__heading">{group.label}</h3>
+            <h2 class="tasks-task-list__heading">{group.label}</h2>
             {#each group.taskIds as taskId (taskId)}
               {@const task = taskById.get(taskId)}
               {#if task}

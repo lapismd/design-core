@@ -27,7 +27,7 @@
   exportName="Default"
   parameters={{ visualDelta: referenceVisualDelta("desktop-inbox") }}
   play={async ({ canvas }) => {
-    await expect(canvas.getByText("Tasks shell")).toBeVisible();
+    await expect(canvas.getByText("Detail closed")).toBeVisible();
   }}
 >
   {#snippet template()}
@@ -53,7 +53,7 @@
   exportName="MobileList"
   parameters={{ visualDelta: referenceVisualDelta("mobile-inbox") }}
   play={async ({ canvas }) => {
-    await expect(canvas.getByText("Tasks shell")).toBeVisible();
+    await expect(canvas.getByText("Detail closed")).toBeVisible();
   }}
 >
   {#snippet template()}

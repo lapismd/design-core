@@ -29,9 +29,7 @@
   exportName="SwipeThreshold"
   parameters={{ visualDelta: referenceVisualDelta("mobile-swipe-motion") }}
   play={async ({ canvas }) => {
-    const row = canvas.getByRole("button", {
-      name: /Review the launch brief/,
-    });
+    const row = canvas.getByLabelText("Review the launch brief today");
     await fireEvent.pointerDown(row, { clientX: 160, clientY: 40 });
     await fireEvent.pointerUp(row, { clientX: 96, clientY: 40 });
     await expect(canvas.getByText("Trailing action revealed")).toBeVisible();
@@ -50,9 +48,7 @@
   exportName="SwipeBelowThreshold"
   parameters={{ visualDelta: referenceVisualDelta("mobile-swipe-motion") }}
   play={async ({ canvas }) => {
-    const row = canvas.getByRole("button", {
-      name: /Review the launch brief/,
-    });
+    const row = canvas.getByLabelText("Review the launch brief today");
     await fireEvent.pointerDown(row, { clientX: 160, clientY: 40 });
     await fireEvent.pointerUp(row, { clientX: 145, clientY: 40 });
     await expect(canvas.queryByText("Trailing action revealed")).toBeNull();
@@ -68,9 +64,7 @@
   exportName="ScrollIntentCancels"
   parameters={{ visualDelta: referenceVisualDelta("mobile-swipe-motion") }}
   play={async ({ canvas }) => {
-    const row = canvas.getByRole("button", {
-      name: /Review the launch brief/,
-    });
+    const row = canvas.getByLabelText("Review the launch brief today");
     await fireEvent.pointerDown(row, { clientX: 160, clientY: 40 });
     await fireEvent.pointerMove(row, { clientX: 155, clientY: 90 });
     await expect(

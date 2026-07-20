@@ -5,7 +5,8 @@
   --tasks-surface: oklch(1 0 0);
   --tasks-surface-raised: oklch(0.995 0.004 258);
   --tasks-ink: oklch(0.235 0.018 258);
-  --tasks-muted-ink: oklch(0.51 0.018 258);
+  /* Keep muted copy above WCAG AA on --tasks-surface / canvas (~4.5:1). */
+  --tasks-muted-ink: oklch(0.36 0.02 258);
   --tasks-divider: oklch(0.9 0.012 258);
   --tasks-focus-ring: oklch(0.63 0.17 256);
   --tasks-accent: oklch(0.58 0.19 256);

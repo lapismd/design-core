@@ -58,9 +58,7 @@
   exportName="SelectRow"
   parameters={{ visualDelta: referenceVisualDelta("desktop-inbox") }}
   play={async ({ canvas }) => {
-    await userEvent.click(
-      canvas.getByRole("button", { name: "Review the launch brief" }),
-    );
+    await userEvent.click(canvas.getByText("Review the launch brief today"));
     await expect(canvas.getByText("Selected task-brief")).toBeVisible();
   }}
 >

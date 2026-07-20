@@ -81,7 +81,9 @@
   play={async ({ canvas }) => {
     await expect(canvas.getByText("Pane detail")).toBeVisible();
     await expect(canvas.getByLabelText("Task detail")).toBeVisible();
-    await userEvent.click(canvas.getByRole("button", { name: "Back to list" }));
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Back to task list" }),
+    );
     await expect(canvas.getByText("Pane list")).toBeVisible();
     await expect(canvas.getByText("Detail closed")).toBeVisible();
   }}

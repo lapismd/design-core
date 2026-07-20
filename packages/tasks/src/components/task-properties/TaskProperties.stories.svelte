@@ -60,16 +60,13 @@
   play={async ({ canvas }) => {
     const trigger = canvas.getByRole("button", { name: /^Due:/ });
     await userEvent.click(trigger);
-    const grid = await within(document.body).findByRole("grid");
-    const todayCell = grid.querySelector<HTMLElement>("[data-today]");
-    await expect(todayCell).not.toBeNull();
-    await userEvent.click(todayCell!);
-
-    await expect(within(document.body).queryByRole("grid")).toBeNull();
+    await userEvent.click(
+      within(document.body).getByRole("button", { name: "Clear due date" }),
+    );
     await expect(canvas.getByText("Property changed: due")).toBeVisible();
     await expect(
-      canvas.getByRole("button", { name: "Due: Today" }),
-    ).toHaveFocus();
+      canvas.getByRole("button", { name: "Due: Add due date" }),
+    ).toBeVisible();
   }}
 >
   {#snippet template()}
@@ -82,15 +79,13 @@
   exportName="ChangePriority"
   parameters={{ visualDelta: referenceVisualDelta("desktop-task-detail") }}
   play={async ({ canvas }) => {
-    const trigger = canvas.getByRole("combobox", { name: "Priority: High" });
+    const trigger = canvas.getByLabelText("Priority: High");
     await userEvent.click(trigger);
     await userEvent.click(
       within(document.body).getByRole("option", { name: "Medium" }),
     );
     await expect(canvas.getByText("Property changed: priority")).toBeVisible();
-    await expect(
-      canvas.getByRole("combobox", { name: "Priority: Medium" }),
-    ).toBeVisible();
+    await expect(canvas.getByLabelText("Priority: Medium")).toBeVisible();
   }}
 >
   {#snippet template()}

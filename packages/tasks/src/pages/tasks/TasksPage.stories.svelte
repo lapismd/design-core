@@ -27,7 +27,7 @@
   exportName="Default"
   parameters={{ visualDelta: referenceVisualDelta("desktop-tasks") }}
   play={async ({ canvas }) => {
-    await expect(canvas.getByText("Tasks")).toBeVisible();
+    await expect(canvas.getByText("Detail closed")).toBeVisible();
   }}
 >
   {#snippet template()}

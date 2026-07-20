@@ -1,21 +1,37 @@
 # `@stevejuma/tasks`
 
-Implementation-ready reference material for a white-label task and list app.
-It records observed shell behavior, responsive states, motion contracts,
-synthetic fixtures, and a scoped companion theme before UI components exist.
+Fixture-driven white-label task and list UI for Storybook. The package ships
+controlled Svelte compositions, synthetic fixtures, motion helpers, a scoped
+companion theme, and capture-backed Visual Delta targets.
 
-Read [the product spec](./specs/product.md) first. The capture provenance and
-sanitisation rules are in [the reference README](./reference/superlist/README.md).
+Read [the product spec](./specs/product.md) and the live execution plan in
+[`PLAN.md`](./PLAN.md). Capture provenance lives in
+[the reference README](./reference/superlist/README.md).
+
+## Public surface
+
+Import compositions from `@stevejuma/tasks`:
+
+- Leaf: `TaskRow`, `TaskComposer`, `TaskProperties`, `TasksFeedback`
+- Composites: `TaskList`, `ListNavigation`, `TasksFilters`, `TaskDetail`,
+  `TasksShell`, `TasksSwipeGesture`
+- Pages: `ShellPage`, `InboxPage`, `TodayPage`, `TasksPage`, `UpdatesPage`,
+  `ListsPage`, `ListDetailPage`, `TaskDetailPage`
+- Contracts / fixtures / theme: `@stevejuma/tasks/fixtures`,
+  `@stevejuma/tasks/reference`, `@stevejuma/tasks/tokens`,
+  `@stevejuma/tasks/theme.css`
+
+Host primitives come from `@stevejuma/ui/shadcn/<family>` and due dates from
+`@stevejuma/ui/forms` (`TaskDueCalendar`). Checkbox/Avatar/ContextMenu host
+adds remain blocked on the generator’s svelte-check gate; TaskRow uses an
+accessible `role="checkbox"` completion control until then.
 
 ## Storybook surfaces
 
-- **Tasks/Reference Targets** shows synthetic-fixture desktop, tablet, mobile,
-  and interaction evidence.
-- **Tasks/Implementation Map** gives the build order and reuse breakdown.
-- **Tasks/Pages** and **Tasks/Components** are non-product implementation
-  placeholders for every planned composition.
-- **Tasks/Component Specs** renders the canonical component specs directly in
-  Storybook Docs alongside their implementation placeholders.
+- **Tasks/Components/\*** — production components with Docs + play coverage
+- **Tasks/Pages/\*** — page compositions over synthetic fixtures
+- **Tasks/Reference Targets** — synthetic capture evidence for Visual Delta
+- **Tasks/Implementation Map** — ledger overview (planning aid)
 
 ## Commands
 
@@ -26,6 +42,4 @@ pnpm --dir packages/tasks reference:capture
 pnpm --dir packages/tasks reference:verify
 ```
 
-The package deliberately exports planning surfaces, contracts, and tokens—not a
-prematurely implemented Tasks UI. Component implementation follows the specs in
-a later slice and must use the host package's shadcn-svelte primitives.
+Do not update Playwright visual baselines without explicit human approval.

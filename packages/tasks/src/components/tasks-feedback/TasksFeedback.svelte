@@ -162,8 +162,16 @@
   }
 
   :global(.tasks-feedback__alert) {
-    background: var(--tasks-surface);
     border-radius: var(--tasks-radius-control);
+  }
+
+  /* Keep destructive copy above WCAG AA on the alert surface (shadcn red on
+     pure white is ~4.49:1). Darken description ink under the Tasks theme. */
+  :global(
+      .tasks-feedback__alert[data-variant="destructive"]
+        [data-ui-part="alert-description"]
+    ) {
+    color: oklch(0.42 0.19 25);
   }
 
   .tasks-feedback__undo {

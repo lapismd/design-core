@@ -68,7 +68,7 @@
           variant="ghost"
           size="icon-sm"
           aria-label={pager.pane === "detail"
-            ? "Back to list"
+            ? "Back to task list"
             : "Close navigation"}
           data-tasks-shell-back
           onclick={() => goToPane("list")}

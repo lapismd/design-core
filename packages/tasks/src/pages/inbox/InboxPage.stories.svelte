@@ -27,7 +27,7 @@
   exportName="Default"
   parameters={{ visualDelta: referenceVisualDelta("desktop-inbox") }}
   play={async ({ canvas }) => {
-    await expect(canvas.getByText("Inbox")).toBeVisible();
+    await expect(canvas.getByText("Detail closed")).toBeVisible();
   }}
 >
   {#snippet template()}
@@ -40,10 +40,7 @@
   exportName="OpenDetail"
   parameters={{ visualDelta: referenceVisualDelta("desktop-task-detail") }}
   play={async ({ canvas }) => {
-    await userEvent.click(
-      canvas.getByRole("button", { name: "Review the launch brief" }),
-    );
-    await userEvent.click(canvas.getByRole("button", { name: "Details" }));
+    await userEvent.click(canvas.getAllByLabelText("Details")[0]);
     await expect(canvas.getByText("Detail open task-brief")).toBeVisible();
   }}
 >

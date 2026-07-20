@@ -28,7 +28,7 @@
   exportName="SeeColocatedPageStories"
   parameters={{ visualDelta: referenceVisualDelta("desktop-inbox") }}
   play={async ({ canvas }) => {
-    await expect(canvas.getByText("Inbox")).toBeVisible();
+    await expect(canvas.getByRole("heading", { name: "Inbox" })).toBeVisible();
   }}
 >
   {#snippet template()}
