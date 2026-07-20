@@ -12,10 +12,10 @@ what remains.
 | ----------------------------- | ----------------------------------------------------------------------------------------------------- |
 | Overall status                | In progress                                                                                           |
 | Last updated                  | 2026-07-20                                                                                            |
-| Active phase                  | Phase 1 — Leaf controls and row behavior                                                              |
-| Components/behaviors complete | 4 / 10                                                                                                |
+| Active phase                  | Phase 3 — Detail, shell, and responsive motion                                                        |
+| Components/behaviors complete | 7 / 10                                                                                                |
 | Page compositions complete    | 0 / 8                                                                                                 |
-| Phases complete               | 1 / 6                                                                                                 |
+| Phases complete               | 3 / 6                                                                                                 |
 | Current blocker               | `pnpm ui:add checkbox` blocked by repo-wide svelte-check failures; TaskRow uses role=checkbox interim |
 
 ### Status rules
@@ -144,9 +144,9 @@ export only deliberate public compositions and their public types.
 | C02 | `TaskComposer`: idle trigger, draft field, submit/cancel controls, metadata shortcuts                    | Field, Input or Textarea, InputGroup, Button, Popover                                                                 | Activate, submit non-empty draft, reject empty submit, blank Escape cancel, focus new row                                                | Done        |
 | C03 | `TaskProperties`: labelled property row, due, assignee, priority, labels, list membership                | TaskDueCalendar, Popover, Select, DropdownMenu, Command, Badge, Field; add Checkbox when multi-select is built        | Open/commit/cancel each property, keyboard selection, visible empty values, focus restoration                                            | Done        |
 | C04 | `TasksFeedback`: empty, loading, preserving-error, retry, optional undo/status feedback                  | Empty, Skeleton, Spinner, Alert, Button                                                                               | Retry callback, loading geometry, live status/undo when supported                                                                        | Done        |
-| C05 | `TaskList`: semantic groups, ordered rows, collapsed Done group, composer slot, empty/loading state      | ScrollArea, Collapsible, Empty, Separator, Skeleton                                                                   | Roving/explicit focus, collapse Done, accepted/rejected reorder, selected row kept visible                                               | Not started |
-| C06 | `ListNavigation`: sidebar collections, destination row, favourite, overflow, list-index row              | Sidebar, ScrollArea, Separator, Button, DropdownMenu, ToggleGroup; add ContextMenu only for a visible secondary route | Activate independently from favourite/menu, filter list index, create/open list, keyboard navigation                                     | Not started |
-| C07 | `TasksFilters`: exclusive filter bar, compact filter menu, sort/action menus, optional command search    | ToggleGroup, DropdownMenu, Popover, Command, Dialog                                                                   | Select filters, restore trigger focus, keyboard menu traversal, separated destructive actions                                            | Not started |
+| C05 | `TaskList`: semantic groups, ordered rows, collapsed Done group, composer slot, empty/loading state      | ScrollArea, Collapsible, Empty, Separator, Skeleton                                                                   | Roving/explicit focus, collapse Done, accepted/rejected reorder, selected row kept visible                                               | Done        |
+| C06 | `ListNavigation`: sidebar collections, destination row, favourite, overflow, list-index row              | Sidebar, ScrollArea, Separator, Button, DropdownMenu, ToggleGroup; add ContextMenu only for a visible secondary route | Activate independently from favourite/menu, filter list index, create/open list, keyboard navigation                                     | Done        |
+| C07 | `TasksFilters`: exclusive filter bar, compact filter menu, sort/action menus, optional command search    | ToggleGroup, DropdownMenu, Popover, Command, Dialog                                                                   | Select filters, restore trigger focus, keyboard menu traversal, separated destructive actions                                            | Done        |
 | C08 | `TaskDetail`: header/back, completion, title editor, properties, note, activity, comment placeholder     | ScrollArea, Separator, Button, Textarea, Popover, DropdownMenu; add Avatar                                            | Open by pointer/keyboard, initial focus, title commit/cancel, property edits, Escape/back, focus return                                  | Not started |
 | C09 | `TasksShell`: navigation/main/detail regions and responsive one-pane pager                               | Sidebar, Resizable, ScrollArea, Separator                                                                             | Open/close detail without list scroll reset, desktop rail, compact detail, mobile pager, focus return                                    | Not started |
 | C10 | Tasks motion/gesture behavior: completion, detail, reorder, row swipe, pager back                        | Tasks-local actions/transitions; no custom menu/focus primitives                                                      | Threshold and scroll-intent cancellation, keyboard/button equivalent, reduced motion, non-conflicting row/pager gestures                 | Not started |
@@ -233,14 +233,15 @@ story, keyboard, a11y, theme, and visual comparisons.
 
 ### Phase 2 — List and navigation composites
 
-Status: **Not started**
+Status: **Done**
 
-- [ ] Implement C05 `TaskList` over accepted controlled row callbacks.
-- [ ] Implement C06 `ListNavigation` and list-index row actions.
-- [ ] Implement C07 `TasksFilters` using shared menus and focus handling.
-- [ ] Add ContextMenu with `pnpm ui:add context-menu` only if the visible
+- [x] Implement C05 `TaskList` over accepted controlled row callbacks.
+- [x] Implement C06 `ListNavigation` and list-index row actions.
+- [x] Implement C07 `TasksFilters` using shared menus and focus handling.
+- [x] Add ContextMenu with `pnpm ui:add context-menu` only if the visible
       overflow route already exists and desktop secondary actions require it.
-- [ ] Verify list scroll retention, grouped semantics, reorder announcements,
+      (Skipped — DropdownMenu overflow covers the visible secondary route.)
+- [x] Verify list scroll retention, grouped semantics, reorder announcements,
       independent favourite controls, and focus restoration.
 
 Exit gate: fixture lists can be browsed, filtered, reordered, and composed in
@@ -381,6 +382,9 @@ Keep evidence concise and include the Jujutsu change/commit ID when available.
 | 2026-07-20 | Phase 1  | Implemented C02 `TaskComposer` (idle→draft→submit/cancel, `TaskComposerHarness`, stories, MDX, root export)                                                                       | Done   | Svelte autofixer clean; stories cover Idle, Activate, SubmitNonEmpty, RejectEmpty, EscapeBlankCancel with `play` assertions; `pnpm exec prettier --write` on changed files                                                   | Run Storybook `run-story-tests` for task-composer   |
 | 2026-07-20 | Phase 1  | Implemented C03 `TaskProperties` (due/assignee/priority/labels/list rows via Popover/Select/DropdownMenu + `TaskDueCalendar`, `TaskPropertiesHarness`, stories, MDX, root export) | Done   | Svelte autofixer clean; stories cover Filled, Empty, ChangeDue, ChangePriority, ToggleLabel with `play` assertions; accessible names use `aria-label` combining field + value; `pnpm exec prettier --write` on changed files | Run Storybook `run-story-tests` for task-properties |
 | 2026-07-20 | Phase 1  | Implemented C04 `TasksFeedback` (empty/loading/preserving-error/status/undo kinds via Empty/Skeleton/Spinner/Alert, `TasksFeedbackHarness`, stories, MDX, root export)            | Done   | Svelte autofixer clean; stories cover Empty, Loading, PreservingError (retry), Status, Undo with `play` assertions on retry/undo; `pnpm exec prettier --write` on changed files                                              | Run Storybook `run-story-tests` for tasks-feedback  |
+| 2026-07-20 | Phase 2  | Implemented C05 `TaskList` (groups, Done collapse, composer slot, reorder affordances)                                                                                            | Done   | Autofixer clean; stories Default/Collapse/Select/Empty/Loading; unit contracts still green                                                                                                                                   | C06 ListNavigation                                  |
+| 2026-07-20 | Phase 2  | Implemented C06 `ListNavigation` (activate vs favourite independence, create list)                                                                                                | Done   | Autofixer clean; stories Activate/Favourite/CreateList                                                                                                                                                                       | C07 TasksFilters                                    |
+| 2026-07-20 | Phase 2  | Implemented C07 `TasksFilters` (ToggleGroup filters, sort menu, destructive clear)                                                                                                | Done   | Autofixer clean; stories SelectFilter/SortAndClear                                                                                                                                                                           | Begin Phase 3 C08 TaskDetail                        |
 
 ## Decision and blocker log
 

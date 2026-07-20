@@ -1,14 +1,31 @@
-import { Canvas, Markdown, Meta } from "@storybook/addon-docs/blocks";
+import {
+  Canvas,
+  Controls,
+  Markdown,
+  Meta,
+  Primary,
+} from "@storybook/addon-docs/blocks";
 import * as TaskListStories from "./TaskList.stories.svelte";
 import taskListSpec from "../../../specs/components/task-list.md?raw";
 
 <Meta of={TaskListStories} />
 
-The canonical implementation contract is rendered below from
-`packages/tasks/specs/components/task-list.md`.
+# TaskList
+
+Grouped controlled collection. Implementation status: **Done**.
 
 <Markdown>{taskListSpec}</Markdown>
 
-## Implementation placeholder
+## Usage
 
-<Canvas of={TaskListStories.ImplementationPlaceholder} meta={TaskListStories} />
+<Primary />
+
+## Properties
+
+<Controls />
+
+## States
+
+<Canvas of={TaskListStories.DefaultGroups} meta={TaskListStories} />
+<Canvas of={TaskListStories.CollapseDone} meta={TaskListStories} />
+<Canvas of={TaskListStories.Empty} meta={TaskListStories} />
