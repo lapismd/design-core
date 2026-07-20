@@ -29,6 +29,9 @@ existing family already covers the need.
    and callbacks. Catalog: `Apps/CV/...`, `Apps/Beancount/...`.
 6. **Workspace package** (`packages/workspace`) — separate `@stevejuma/workspace`
    surface. See that package's `VENDOR.md`.
+7. **Tasks reference** (`packages/tasks`) — clean-room task product contracts,
+   synthetic fixtures, capture evidence, and a scoped companion theme. Read
+   `pnpm ui guide tasks` before implementing its future components.
 
 ## Dependency rules
 
@@ -37,6 +40,9 @@ existing family already covers the need.
 - `apps/*` may import shared; must not import sibling apps.
 - App components take props/callbacks — no application routers or workspace
   context imports.
+- Tasks composes shared primitives but owns task-specific responsive pager and
+  task selection behavior; it does not import `@stevejuma/workspace` for mobile
+  navigation.
 
 ## Classification
 
@@ -48,3 +54,4 @@ app-specific, or deferred. Prefer extending an audited family over a one-off.
 - `pnpm ui guide shadcn` — add/convert shadcn families
 - `pnpm ui guide forms` — forms vs shadcn controls
 - `pnpm ui guide testing` — verify after changing a core component
+- `pnpm ui guide tasks` — task product specs and capture evidence

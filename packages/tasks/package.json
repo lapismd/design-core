@@ -1,0 +1,20 @@
+{
+  "name": "@stevejuma/tasks",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "White-label task-app reference contracts, fixtures, capture harness, and Storybook implementation specs.",
+  "exports": {
+    ".": "./src/index.ts",
+    "./fixtures": "./src/lib/fixtures.ts",
+    "./reference": "./src/lib/reference.ts",
+    "./tokens": "./src/lib/tokens.ts",
+    "./theme.css": "./src/lib/tasks-theme.css"
+  },
+  "scripts": {
+    "reference:auth": "tsx scripts/reference/auth.ts",
+    "reference:bootstrap": "tsx scripts/reference/bootstrap.ts",
+    "reference:capture": "tsx scripts/reference/capture.ts",
+    "reference:verify": "tsx scripts/reference/verify.ts"
+  }
+}

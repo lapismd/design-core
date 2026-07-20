@@ -10,10 +10,7 @@ import {
   runComponents,
 } from "../pipeline/components.js";
 import { createColors } from "../cli/color.js";
-import {
-  renderComponentShow,
-  renderComponentsIndex,
-} from "../cli/render.js";
+import { renderComponentShow, renderComponentsIndex } from "../cli/render.js";
 
 const packageRoot = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
@@ -27,6 +24,7 @@ describe("ui components", () => {
     expect(layers.has("shadcn")).toBe(true);
     expect(layers.has("forms")).toBe(true);
     expect(layers.has("ai")).toBe(true);
+    expect(layers.has("tasks")).toBe(true);
 
     const button = list.find((c) => c.key === "shadcn/button");
     expect(button).toBeDefined();
@@ -130,6 +128,18 @@ Hello
     expect(shell.import).toBe("@stevejuma/workspace");
   });
 
+  it("shows Tasks implementation contracts from package-local specs", () => {
+    const taskRow = getComponent(packageRoot, "tasks/task-row");
+    expect(taskRow.layer).toBe("tasks");
+    expect(taskRow.import).toBe("@stevejuma/tasks");
+    expect(taskRow.body).toContain("separate completion and open targets");
+    expect(
+      taskRow.sources.some((source) =>
+        source.endsWith("specs/components/task-row.md"),
+      ),
+    ).toBe(true);
+  });
+
   it("runComponents switches between index and show", () => {
     const index = runComponents(packageRoot);
     expect(index.kind).toBe("index");
@@ -143,6 +153,8 @@ Hello
   });
 
   it("rejects unknown and ambiguous names clearly", () => {
-    expect(() => getComponent(packageRoot, "nope")).toThrow(/Unknown component/);
+    expect(() => getComponent(packageRoot, "nope")).toThrow(
+      /Unknown component/,
+    );
   });
 });

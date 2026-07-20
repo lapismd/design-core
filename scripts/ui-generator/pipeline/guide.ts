@@ -77,7 +77,10 @@ function parseFrontmatter(raw: string): {
   const sourceLines: string[] = [];
   let inSources = false;
   for (const line of match[1]!.split(/\r?\n/)) {
-    if (/^sources:\s*$/.test(line.trim()) || /^sources:\s*\[/.test(line.trim())) {
+    if (
+      /^sources:\s*$/.test(line.trim()) ||
+      /^sources:\s*\[/.test(line.trim())
+    ) {
       inSources = true;
       continue;
     }
@@ -135,7 +138,9 @@ export function listGuideTopics(packageRoot: string): GuideTopicMeta[] {
 
   const ordered = [
     ...TOPIC_ORDER.filter((id) => files.includes(id)),
-    ...files.filter((id) => !(TOPIC_ORDER as readonly string[]).includes(id)).sort(),
+    ...files
+      .filter((id) => !(TOPIC_ORDER as readonly string[]).includes(id))
+      .sort(),
   ];
 
   return ordered.map((id) => {
@@ -174,7 +179,7 @@ export function getGuideIndex(packageRoot: string): GuideIndex {
     summary:
       "Offline conventions for agents and humans. Prefer these topics before inventing workflows. When Storybook is running, use the Storybook MCP for interactive catalog work.",
     readingOrder: [
-      "pnpm ui guide layers — choose shadcn vs forms vs apps vs workspace",
+      "pnpm ui guide layers — choose shadcn vs forms vs apps vs workspace vs tasks",
       "pnpm ui guide shadcn — add/convert components via ui:add (never raw shadcn CLI)",
       "pnpm ui guide forms — structured forms vs shadcn controls",
       "pnpm ui guide testing — stories, checks, and visual baselines after a change",
@@ -182,7 +187,7 @@ export function getGuideIndex(packageRoot: string): GuideIndex {
     topics,
     related: [
       "AGENTS.md — primary agent contract (Storybook + visuals)",
-      "pnpm ui components — list/show local usage across shadcn/forms/AI/workspace/apps",
+      "pnpm ui components — list/show local usage across shadcn/forms/AI/workspace/apps/tasks",
       "Storybook MCP — get-storybook-story-instructions / preview-stories / run-story-tests",
       "UI Forms/Guidance and Shadcn/Guidance — in-catalog decision pages",
       "docs/agent/llms-extraction.md — deferred catalog extraction notes",
@@ -194,10 +199,7 @@ export type GuideResult =
   | { kind: "index"; index: GuideIndex }
   | { kind: "topic"; topic: GuideTopic };
 
-export function runGuide(
-  packageRoot: string,
-  topicId?: string,
-): GuideResult {
+export function runGuide(packageRoot: string, topicId?: string): GuideResult {
   if (!topicId) {
     return { kind: "index", index: getGuideIndex(packageRoot) };
   }

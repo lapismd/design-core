@@ -22,13 +22,14 @@ Per-component docs are not topics here — use `pnpm ui components`.
 
 ## Topic list
 
-| Topic | File | Purpose |
-| --- | --- | --- |
-| `layers` | `layers.md` | shadcn vs forms vs apps vs workspace |
-| `shadcn` | `shadcn.md` | `ui:add` / inspect / docs sync |
-| `forms` | `forms.md` | structured forms contract |
-| `testing` | `testing.md` | stories, checks, visual baselines |
-| `llms-extraction` | `llms-extraction.md` | deferred catalog extraction notes |
+| Topic             | File                 | Purpose                                           |
+| ----------------- | -------------------- | ------------------------------------------------- |
+| `layers`          | `layers.md`          | shadcn vs forms vs apps vs workspace vs tasks     |
+| `shadcn`          | `shadcn.md`          | `ui:add` / inspect / docs sync                    |
+| `forms`           | `forms.md`           | structured forms contract                         |
+| `testing`         | `testing.md`         | stories, checks, visual baselines                 |
+| `tasks`           | `tasks.md`           | task-app reference contracts and capture workflow |
+| `llms-extraction` | `llms-extraction.md` | deferred catalog extraction notes                 |
 
 ## Storybook
 

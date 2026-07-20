@@ -16,7 +16,8 @@ export type ComponentLayer =
   | "ai"
   | "workspace-shell"
   | "apps"
-  | "workspace";
+  | "workspace"
+  | "tasks";
 
 export type ComponentExample = {
   id: string;
@@ -73,6 +74,7 @@ const LAYERS: ComponentLayer[] = [
   "workspace-shell",
   "apps",
   "workspace",
+  "tasks",
 ];
 
 const FORMS_SKIP_DIRS = new Set(["core"]);
@@ -134,7 +136,9 @@ function parseTitleAndSummary(markdown: string): {
 }
 
 /** Prefer markdown anchor (`### [Link](#link-1)` → `link-1`). */
-function parseHeadingSlug(line: string): { title: string; slug: string } | null {
+function parseHeadingSlug(
+  line: string,
+): { title: string; slug: string } | null {
   const linked = /^#{2,3}\s+\[([^\]]+)\]\(#([^)]+)\)\s*$/.exec(line.trim());
   if (linked) {
     return { title: linked[1]!.trim(), slug: linked[2]!.trim() };
@@ -244,7 +248,9 @@ export function composeComponentMarkdown(
 
     const exportName = toPascalCase(heading.slug);
     const source = exampleSources.get(exportName);
-    const sectionHasFence = sectionLines.some((l) => l.trim().startsWith("```"));
+    const sectionHasFence = sectionLines.some((l) =>
+      l.trim().startsWith("```"),
+    );
 
     out.push(...sectionLines);
 
@@ -336,7 +342,9 @@ export function mdxToAgentMarkdown(mdx: string): {
 
   text = text
     .split("\n")
-    .filter((line, idx, arr) => !(line.trim() === "" && arr[idx - 1]?.trim() === ""))
+    .filter(
+      (line, idx, arr) => !(line.trim() === "" && arr[idx - 1]?.trim() === ""),
+    )
     .join("\n")
     .trim();
 
@@ -346,7 +354,12 @@ export function mdxToAgentMarkdown(mdx: string): {
 type StoryMeta = {
   title?: string;
   componentDescription?: string;
-  stories: { name: string; exportName?: string; description?: string; template?: string }[];
+  stories: {
+    name: string;
+    exportName?: string;
+    description?: string;
+    template?: string;
+  }[];
 };
 
 export function parseStoriesFile(raw: string): StoryMeta {
@@ -366,9 +379,7 @@ export function parseStoriesFile(raw: string): StoryMeta {
     /description:\s*\{\s*component:\s*\n\s*"((?:\\.|[^"\\])*)"/.exec(raw);
   if (componentDesc) {
     try {
-      meta.componentDescription = JSON.parse(
-        `"${componentDesc[1]}"`,
-      ) as string;
+      meta.componentDescription = JSON.parse(`"${componentDesc[1]}"`) as string;
     } catch {
       meta.componentDescription = componentDesc[1];
     }
@@ -383,8 +394,7 @@ export function parseStoriesFile(raw: string): StoryMeta {
     }
   }
 
-  const storyRe =
-    /<Story\b([^>]*)>([\s\S]*?)<\/Story>/g;
+  const storyRe = /<Story\b([^>]*)>([\s\S]*?)<\/Story>/g;
   let match: RegExpExecArray | null;
   while ((match = storyRe.exec(raw)) !== null) {
     const attrs = match[1]!;
@@ -405,9 +415,8 @@ export function parseStoriesFile(raw: string): StoryMeta {
         description = storyDesc;
       }
     }
-    const templateMatch = /\{#snippet\s+template\(\)\}([\s\S]*?)\{\/snippet\}/.exec(
-      body,
-    );
+    const templateMatch =
+      /\{#snippet\s+template\(\)\}([\s\S]*?)\{\/snippet\}/.exec(body);
     const template = templateMatch?.[1]?.trim();
     meta.stories.push({ name, exportName, description, template });
   }
@@ -418,7 +427,13 @@ export function parseStoriesFile(raw: string): StoryMeta {
 function composeFromStories(
   entry: CatalogEntry,
   packageRoot: string,
-): { title: string; summary: string; body: string; examples: ComponentExample[]; sources: string[] } {
+): {
+  title: string;
+  summary: string;
+  body: string;
+  examples: ComponentExample[];
+  sources: string[];
+} {
   const sources: string[] = [];
   const examples: ComponentExample[] = [];
   const parts: string[] = [];
@@ -641,6 +656,35 @@ function collectWorkspacePackage(packageRoot: string): CatalogEntry[] {
     .sort((a, b) => a.id.localeCompare(b.id));
 }
 
+/**
+ * Tasks is a reference package in this first slice. Its component entries are
+ * implementation contracts rather than source components, so Markdown is the
+ * canonical documentation candidate and there are intentionally no stories yet.
+ */
+function collectTasksPackage(packageRoot: string): CatalogEntry[] {
+  const dir = path.join(
+    packageRoot,
+    "packages",
+    "tasks",
+    "specs",
+    "components",
+  );
+  if (!existsSync(dir)) return [];
+  return listFiles(dir, ".md")
+    .map((full) => {
+      const id = path.basename(full, ".md");
+      return {
+        layer: "tasks" as const,
+        id,
+        dir,
+        importPath: "@stevejuma/tasks",
+        docsCandidates: [full],
+        storyPaths: [],
+      };
+    })
+    .sort((a, b) => a.id.localeCompare(b.id));
+}
+
 export function collectCatalog(packageRoot: string): CatalogEntry[] {
   return [
     ...collectShadcn(packageRoot),
@@ -649,10 +693,14 @@ export function collectCatalog(packageRoot: string): CatalogEntry[] {
     ...collectWorkspaceShell(packageRoot),
     ...collectApps(packageRoot),
     ...collectWorkspacePackage(packageRoot),
+    ...collectTasksPackage(packageRoot),
   ];
 }
 
-function summarizeEntry(packageRoot: string, entry: CatalogEntry): ComponentListItem {
+function summarizeEntry(
+  packageRoot: string,
+  entry: CatalogEntry,
+): ComponentListItem {
   const key = entryKey(entry.layer, entry.id);
   let title = toPascalCase(entry.id);
   let summary = `${entry.layer} · ${entry.importPath}`;
@@ -675,7 +723,7 @@ function summarizeEntry(packageRoot: string, entry: CatalogEntry): ComponentList
         readFileSync(entry.exampleSourcesPath, "utf8"),
       ).size;
     }
-  } else if (entry.layer === "forms") {
+  } else if (entry.layer === "forms" || entry.layer === "tasks") {
     const mdx = entry.docsCandidates[0];
     if (mdx) {
       const converted = mdxToAgentMarkdown(readFileSync(mdx, "utf8"));
@@ -702,7 +750,10 @@ function summarizeEntry(packageRoot: string, entry: CatalogEntry): ComponentList
       if (meta.componentDescription) summary = meta.componentDescription;
       if (meta.title) title = meta.title.split("/").pop()!.trim();
     }
-    if (entry.docsCandidates[0] && summary === `${entry.layer} · ${entry.importPath}`) {
+    if (
+      entry.docsCandidates[0] &&
+      summary === `${entry.layer} · ${entry.importPath}`
+    ) {
       const parsed = parseTitleAndSummary(
         mdxToAgentMarkdown(readFileSync(entry.docsCandidates[0], "utf8")).body,
       );
@@ -897,7 +948,8 @@ function showForms(packageRoot: string, entry: CatalogEntry): ComponentDoc {
     const meta = parseStoriesFile(readFileSync(storyPath, "utf8"));
     for (const story of meta.stories) {
       if (!story.template) continue;
-      if (story.exportName) templateByExport.set(story.exportName, story.template);
+      if (story.exportName)
+        templateByExport.set(story.exportName, story.template);
       templateByName.set(story.name.toLowerCase(), story.template);
     }
   }
@@ -909,7 +961,9 @@ function showForms(packageRoot: string, entry: CatalogEntry): ComponentDoc {
     let i = 0;
     while (i < lines.length) {
       const line = lines[i]!;
-      const heading = /^###\s+/.test(line.trim()) ? parseHeadingSlug(line) : null;
+      const heading = /^###\s+/.test(line.trim())
+        ? parseHeadingSlug(line)
+        : null;
       if (!heading) {
         out.push(line);
         i++;
@@ -954,7 +1008,10 @@ function showForms(packageRoot: string, entry: CatalogEntry): ComponentDoc {
   };
 }
 
-function showStoryDriven(packageRoot: string, entry: CatalogEntry): ComponentDoc {
+function showStoryDriven(
+  packageRoot: string,
+  entry: CatalogEntry,
+): ComponentDoc {
   const fromStories = composeFromStories(entry, packageRoot);
   // For AI, prepend a short pointer to overview when showing a single component.
   let body = fromStories.body;
@@ -963,7 +1020,10 @@ function showStoryDriven(packageRoot: string, entry: CatalogEntry): ComponentDoc
       readFileSync(entry.docsCandidates[0], "utf8"),
     ).body;
     const overviewSummary = parseTitleAndSummary(overview).summary;
-    if (overviewSummary && !fromStories.summary.includes(overviewSummary.slice(0, 40))) {
+    if (
+      overviewSummary &&
+      !fromStories.summary.includes(overviewSummary.slice(0, 40))
+    ) {
       body = `${fromStories.body.trimEnd()}\n\n## Related\n\nSee Storybook **AI/Overview** and \`pnpm ui guide layers\`.\n`;
     }
   }
@@ -988,7 +1048,9 @@ export function getComponent(
 ): ComponentDoc {
   const entry = findEntry(packageRoot, name, options);
   if (entry.layer === "shadcn") return showShadcn(packageRoot, entry);
-  if (entry.layer === "forms") return showForms(packageRoot, entry);
+  if (entry.layer === "forms" || entry.layer === "tasks") {
+    return showForms(packageRoot, entry);
+  }
   return showStoryDriven(packageRoot, entry);
 }
 

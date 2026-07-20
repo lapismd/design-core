@@ -8,10 +8,7 @@ import {
   type ComponentDoc,
   type ComponentLayer,
 } from "../pipeline/components.js";
-import {
-  getGuideTopic,
-  listGuideTopics,
-} from "../pipeline/guide.js";
+import { getGuideTopic, listGuideTopics } from "../pipeline/guide.js";
 import {
   extractPropsFromSvelteFile,
   findPrimarySvelteFile,
@@ -225,47 +222,51 @@ export function createDocsService(options: DocsServiceOptions) {
       ...topicFiles,
     ];
     const origin = getBaseUrl();
-    const { value } = cache.get(`llms:index:${origin}:${mcpPath}`, allFiles, () => {
-      const lines: string[] = [
-        "# @stevejuma/ui",
-        "",
-        "> Local LLM-friendly documentation for the UI package (shadcn, forms, AI, workspace, apps). Generated from package sources — not upstream Storybook React manifests.",
-        "",
-        `MCP: ${origin}${mcpPath}`,
-        "",
-      ];
+    const { value } = cache.get(
+      `llms:index:${origin}:${mcpPath}`,
+      allFiles,
+      () => {
+        const lines: string[] = [
+          "# @stevejuma/ui",
+          "",
+          "> Local LLM-friendly documentation for the UI package (shadcn, forms, AI, workspace, apps, tasks). Generated from package sources — not upstream Storybook React manifests.",
+          "",
+          `MCP: ${origin}${mcpPath}`,
+          "",
+        ];
 
-      const byLayer = new Map<ComponentLayer, CatalogEntry[]>();
-      for (const entry of catalog) {
-        const list = byLayer.get(entry.layer) ?? [];
-        list.push(entry);
-        byLayer.set(entry.layer, list);
-      }
+        const byLayer = new Map<ComponentLayer, CatalogEntry[]>();
+        for (const entry of catalog) {
+          const list = byLayer.get(entry.layer) ?? [];
+          list.push(entry);
+          byLayer.set(entry.layer, list);
+        }
 
-      for (const [layer, entries] of byLayer) {
-        lines.push(`## ${layer}`, "");
-        for (const entry of entries) {
-          const page = getPageCached(entry);
-          const mdUrl = `${origin}/llms/${entry.layer}/${entry.id}.md`;
-          const txtUrl = `${origin}/llms/${entry.layer}/${entry.id}.txt`;
+        for (const [layer, entries] of byLayer) {
+          lines.push(`## ${layer}`, "");
+          for (const entry of entries) {
+            const page = getPageCached(entry);
+            const mdUrl = `${origin}/llms/${entry.layer}/${entry.id}.md`;
+            const txtUrl = `${origin}/llms/${entry.layer}/${entry.id}.txt`;
+            lines.push(
+              `- [${page.title}](${mdUrl}) ([txt](${txtUrl})): ${page.summary}`,
+            );
+          }
+          lines.push("");
+        }
+
+        lines.push("## guide", "");
+        for (const topic of listGuideTopics(packageRoot)) {
+          const mdUrl = `${origin}/llms/guide/${topic.id}.md`;
+          const txtUrl = `${origin}/llms/guide/${topic.id}.txt`;
           lines.push(
-            `- [${page.title}](${mdUrl}) ([txt](${txtUrl})): ${page.summary}`,
+            `- [${topic.title}](${mdUrl}) ([txt](${txtUrl})): ${topic.summary}`,
           );
         }
         lines.push("");
-      }
-
-      lines.push("## guide", "");
-      for (const topic of listGuideTopics(packageRoot)) {
-        const mdUrl = `${origin}/llms/guide/${topic.id}.md`;
-        const txtUrl = `${origin}/llms/guide/${topic.id}.txt`;
-        lines.push(
-          `- [${topic.title}](${mdUrl}) ([txt](${txtUrl})): ${topic.summary}`,
-        );
-      }
-      lines.push("");
-      return lines.join("\n");
-    });
+        return lines.join("\n");
+      },
+    );
     return value;
   }
 

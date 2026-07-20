@@ -79,6 +79,17 @@ Import: `@stevejuma/ui/ai`
 - Markdown stack (`MarkdownEditor`, `MarkdownPreview`, TOC, carta, mermaid)
 - `FlipCardDeck`, `StructuredTable*`
 
+## Reference — Tasks (`packages/tasks`)
+
+Clean-room implementation specifications, fixtures, responsive/motion contracts,
+and a scoped companion theme for a future white-label Tasks surface. It exports
+no visual Svelte component in this slice.
+
+Required reuse for later implementation: Sidebar, Resizable, ScrollArea,
+Button, DropdownMenu, Popover, ToggleGroup, Command, Empty, feedback
+primitives, and `TaskDueCalendar`. Add `checkbox`, `avatar`, and
+`context-menu` only through `pnpm ui:add` when implementation requires them.
+
 ## App-specific — `src/apps/cv/`
 
 CV domain composition for Storybook / app reuse (`@stevejuma/ui/apps/cv`):

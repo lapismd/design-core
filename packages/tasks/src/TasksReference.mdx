@@ -1,0 +1,27 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="Tasks/Reference" />
+
+# Tasks reference
+
+This package is the implementation contract for a white-label task product. It
+does not ship a final product component in this slice.
+
+## Start here
+
+1. Read `packages/tasks/specs/product.md`.
+2. Use `@stevejuma/tasks/fixtures` in all future stories.
+3. Follow the page and component contracts under `packages/tasks/specs/`.
+4. Reuse host shadcn primitives; add missing families through `pnpm ui:add`.
+5. Validate behavior against the sanitized responsive capture manifest.
+
+## Required future stories
+
+- Shell at all four reference viewports.
+- Inbox, Today, Tasks, Updates, Lists, list detail, and task detail.
+- Completion, double click open, keyboard open/complete, reorder, row swipe, and
+  pager swipe/back.
+- Light and dark companion theme states, plus reduced motion.
+
+The source app's branding, content, and artwork are intentionally not part of
+this reference.

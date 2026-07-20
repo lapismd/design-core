@@ -25,6 +25,8 @@
     "src/**/*.svelte",
     "packages/workspace/src/**/*.ts",
     "packages/workspace/src/**/*.svelte",
+    "packages/tasks/src/**/*.ts",
+    "packages/tasks/scripts/**/*.ts",
     "vite.config.ts",
     "vitest.config.ts"
   ]

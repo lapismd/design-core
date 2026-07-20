@@ -1,0 +1,48 @@
+/* Scoped white-label Tasks companion theme. Consumers opt in with .tasks-theme. */
+.tasks-theme {
+  --tasks-canvas: oklch(0.955 0.012 258);
+  --tasks-shell: oklch(0.985 0.005 258);
+  --tasks-surface: oklch(1 0 0);
+  --tasks-surface-raised: oklch(0.995 0.004 258);
+  --tasks-ink: oklch(0.235 0.018 258);
+  --tasks-muted-ink: oklch(0.51 0.018 258);
+  --tasks-divider: oklch(0.9 0.012 258);
+  --tasks-focus-ring: oklch(0.63 0.17 256);
+  --tasks-accent: oklch(0.58 0.19 256);
+  --tasks-accent-ink: oklch(0.99 0.005 258);
+  --tasks-selection: oklch(0.93 0.042 256);
+  --tasks-danger: oklch(0.61 0.2 25);
+  --tasks-success: oklch(0.65 0.16 150);
+  --tasks-task-row-height: 44px;
+  --tasks-sidebar-width: 264px;
+  --tasks-detail-width: 376px;
+  --tasks-radius-shell: 18px;
+  --tasks-radius-control: 10px;
+  --tasks-motion-fast: 160ms;
+  --tasks-motion-standard: 240ms;
+  color: var(--tasks-ink);
+  background: var(--tasks-canvas);
+}
+
+.tasks-theme.dark {
+  --tasks-canvas: oklch(0.19 0.014 258);
+  --tasks-shell: oklch(0.23 0.016 258);
+  --tasks-surface: oklch(0.255 0.016 258);
+  --tasks-surface-raised: oklch(0.29 0.018 258);
+  --tasks-ink: oklch(0.94 0.008 258);
+  --tasks-muted-ink: oklch(0.72 0.014 258);
+  --tasks-divider: oklch(0.36 0.017 258);
+  --tasks-focus-ring: oklch(0.75 0.14 256);
+  --tasks-accent: oklch(0.72 0.15 256);
+  --tasks-accent-ink: oklch(0.19 0.014 258);
+  --tasks-selection: oklch(0.34 0.05 256);
+  --tasks-danger: oklch(0.72 0.16 25);
+  --tasks-success: oklch(0.75 0.12 150);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tasks-theme {
+    --tasks-motion-fast: 0ms;
+    --tasks-motion-standard: 0ms;
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "id": "mobile-row-swipe",
+  "source": "authenticated Superlist web app",
+  "viewport": { "width": 390, "height": 844 },
+  "input": "pointer drag left across the first task row",
+  "observed": [
+    "The row translates left while the parent pane stays in place.",
+    "Trailing task actions become visible on the right.",
+    "The capture does not commit completion; it records the revealed-action state."
+  ],
+  "keyframes": ["00-before.jpg", "01-swipe-left.jpg"],
+  "contactSheet": "contact-sheet.jpg",
+  "redacted": true
+}

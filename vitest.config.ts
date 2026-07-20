@@ -20,6 +20,7 @@ export default mergeConfig(
             include: [
               "src/**/*.spec.ts",
               "packages/workspace/src/**/*.spec.ts",
+              "packages/tasks/src/**/*.spec.ts",
               "scripts/ui-generator/**/*.spec.ts",
             ],
           },

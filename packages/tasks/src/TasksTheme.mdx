@@ -1,0 +1,20 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="Tasks/Theme contract" />
+
+# Tasks theme contract
+
+Import `@stevejuma/tasks/theme.css` and apply `.tasks-theme` at the feature
+root. The companion theme is scoped so it can coexist with the package's shared
+semantic theme.
+
+## Token families
+
+- Canvas, shell, surface, divider, ink, and muted ink.
+- Accent, selection, focus ring, success, and danger feedback.
+- Sidebar/detail widths, row height, control/shell radius.
+- Fast and standard motion duration.
+
+The `.dark` modifier provides a semantic companion rather than an inversion of
+the reference product. Use semantic Tasks tokens in feature CSS; do not depend
+on literal colours from the source application.

@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 1,
+  "source": "authenticated Superlist native and web sessions",
+  "capturedAt": "2026-07-20T18:52:00.000Z",
+  "status": "partial",
+  "redaction": "deterministic opaque overlays over all account, list, task, URL, and audit content",
+  "viewports": ["desktop", "tablet-landscape", "tablet-portrait", "mobile"],
+  "screenshots": [
+    {
+      "id": "desktop-inbox",
+      "page": "inbox",
+      "viewport": "desktop",
+      "state": "default",
+      "file": "screenshots/native-desktop-inbox.jpg",
+      "sha256": "9da9acc8e3c59adbbaae6976f6722b303c1301318fc51be1aa33983a82d6a59a",
+      "redacted": true
+    },
+    {
+      "id": "desktop-today",
+      "page": "today",
+      "viewport": "desktop",
+      "state": "overdue-group",
+      "file": "screenshots/native-desktop-today.jpg",
+      "sha256": "35b26da6919cb471b06bd12f53d3d99f09201d65c3e379321811deb69c229c49",
+      "redacted": true
+    },
+    {
+      "id": "desktop-tasks",
+      "page": "tasks",
+      "viewport": "desktop",
+      "state": "tasks-for-me",
+      "file": "screenshots/native-desktop-tasks.jpg",
+      "sha256": "b004ea070f3318c93ba7210d2112f62796376a41c2d90269eee30ea997bde3e0",
+      "redacted": true
+    },
+    {
+      "id": "desktop-updates",
+      "page": "updates",
+      "viewport": "desktop",
+      "state": "empty",
+      "file": "screenshots/native-desktop-updates.jpg",
+      "sha256": "68eedeea0890e57fbf65398ca9ff2d8e4c80f42a9381998c5c110a9542050087",
+      "redacted": true
+    },
+    {
+      "id": "desktop-lists",
+      "page": "lists",
+      "viewport": "desktop",
+      "state": "all-lists",
+      "file": "screenshots/native-desktop-lists.jpg",
+      "sha256": "5dca12ec6eefcddc8bb592c824a58d5b79516dc2d476b5328a164c0826a93ec4",
+      "redacted": true
+    },
+    {
+      "id": "desktop-list-detail",
+      "page": "list-detail",
+      "viewport": "desktop",
+      "state": "fixture-list",
+      "file": "screenshots/native-desktop-list-detail.jpg",
+      "sha256": "28b703e7015083446056c63178776fd82f00c414adc93a615c8e6e39841e8f4b",
+      "redacted": true
+    },
+    {
+      "id": "desktop-task-detail",
+      "page": "task-detail",
+      "viewport": "desktop",
+      "state": "detail-open",
+      "file": "screenshots/native-desktop-task-detail.jpg",
+      "sha256": "b4ece046a850eb5fb0e8f0b835f7ab73ad90c20f53a2231d79beb04802654bfd",
+      "redacted": true
+    },
+    {
+      "id": "tablet-landscape-inbox",
+      "page": "inbox",
+      "viewport": "tablet-landscape",
+      "state": "default",
+      "file": "screenshots/web-tablet-landscape-inbox.jpg",
+      "sha256": "405292bb149178e254c71f533d97a8c5c9cf5c3327c0d4b96e2f246f493ff9a0",
+      "redacted": true
+    },
+    {
+      "id": "tablet-portrait-inbox",
+      "page": "inbox",
+      "viewport": "tablet-portrait",
+      "state": "single-pane",
+      "file": "screenshots/web-tablet-portrait-inbox.jpg",
+      "sha256": "e2334c5efd45dbbbb2218c5352280774d09620088fb4c69cf08518e50af1f304",
+      "redacted": true
+    },
+    {
+      "id": "mobile-inbox",
+      "page": "inbox",
+      "viewport": "mobile",
+      "state": "single-pane",
+      "file": "screenshots/web-mobile-inbox.jpg",
+      "sha256": "e71f64931a82a678702cc41753dd8f6d4fb8ba75e2aafe7fc5627ead6ba2e362",
+      "redacted": true
+    }
+  ],
+  "motions": [
+    {
+      "id": "task-open",
+      "input": "click, double-click, then explicit details action",
+      "viewport": "desktop",
+      "status": "captured",
+      "manifest": "motion/task-open/manifest.json",
+      "contactSheet": "motion/task-open/contact-sheet.jpg"
+    },
+    {
+      "id": "mobile-row-swipe",
+      "input": "swipe-left",
+      "viewport": "mobile",
+      "status": "captured",
+      "manifest": "motion/mobile-row-swipe/manifest.json",
+      "contactSheet": "motion/mobile-row-swipe/contact-sheet.jpg"
+    },
+    {
+      "id": "task-complete",
+      "input": "click",
+      "viewport": "desktop",
+      "status": "specified-not-captured",
+      "reason": "No synthetic fixture task was available in the native session."
+    },
+    {
+      "id": "task-reorder-drag",
+      "input": "drag",
+      "viewport": "desktop",
+      "status": "specified-not-captured",
+      "reason": "Requires a synthetic multi-task fixture with stable ordering."
+    }
+  ],
+  "limitations": [
+    "Only sanitised frame evidence is committed; raw recordings and auth state are ignored.",
+    "The initial native private fixture title was redacted after editor automation duplicated its text; no private task data was committed.",
+    "Completion, reorder, and mobile detail-back remain explicit implementation contracts until a repaired synthetic fixture capture is run."
+  ]
+}

@@ -18,18 +18,22 @@ src/
     beancount/           # reserved for beancount domain UI
 tests/
   visual/                # Playwright visual suite + committed snapshots
+packages/
+  tasks/                 # white-label task-app reference contracts + capture harness
 ```
 
 ## Imports
 
-| Path                            | Purpose                            |
-| ------------------------------- | ---------------------------------- |
-| `@stevejuma/ui/shadcn/<family>` | shadcn family barrel               |
-| `@stevejuma/ui/forms`           | forms barrel                       |
-| `@stevejuma/ui/forms/core`      | form builders / types / registry   |
-| `@stevejuma/ui/apps/cv`         | CV app barrel (placeholder)        |
-| `@stevejuma/ui/apps/beancount`  | Beancount app barrel (placeholder) |
-| `@stevejuma/ui/styles.css`      | package styles entry               |
+| Path                            | Purpose                                   |
+| ------------------------------- | ----------------------------------------- |
+| `@stevejuma/ui/shadcn/<family>` | shadcn family barrel                      |
+| `@stevejuma/ui/forms`           | forms barrel                              |
+| `@stevejuma/ui/forms/core`      | form builders / types / registry          |
+| `@stevejuma/ui/apps/cv`         | CV app barrel (placeholder)               |
+| `@stevejuma/ui/apps/beancount`  | Beancount app barrel (placeholder)        |
+| `@stevejuma/tasks`              | task-app contracts and synthetic fixtures |
+| `@stevejuma/tasks/theme.css`    | scoped Tasks companion theme              |
+| `@stevejuma/ui/styles.css`      | package styles entry                      |
 
 Story titles stay `Shadcn/...` and `UI Forms/...` (stable story ids for visual
 baselines). App stories use `Apps/CV/...` and `Apps/Beancount/...`.
@@ -40,6 +44,8 @@ baselines). App stories use `Apps/CV/...` and `Apps/Beancount/...`.
 - `shared/forms` may import shadcn; must not import apps.
 - `apps/*` may import shared; must not import sibling apps.
 - App components take props/callbacks — no app routers or workspace context.
+- `packages/tasks` is a reference/spec package. It may describe shared primitive
+  composition but must not copy observed product source, brand, or account data.
 
 ## Commands
 
@@ -60,6 +66,7 @@ pnpm ui:guide [topic]       # alias for ui guide
 pnpm ui components [name]   # list/show catalog usage + examples (all layers)
 pnpm ui:components [name]   # alias for ui components
 pnpm ui components --layer forms
+pnpm --dir packages/tasks reference:verify
 pnpm ui mcp                 # standalone Docs MCP + llms on :9010 (Storybook off)
 pnpm ui:mcp                 # alias for ui mcp
 pnpm ui:doctor              # generator environment checks
@@ -73,13 +80,13 @@ pnpm checks                 # fmt + svelte-check + unit + storybook + build + vi
 
 Offline conventions and component docs (no Storybook required):
 
-| Command | Purpose |
-| --- | --- |
-| `pnpm ui guide` | Topic index (`layers`, `shadcn`, `forms`, `testing`, …) |
-| `pnpm ui guide <topic>` | Full topic markdown |
-| `pnpm ui components` | Catalog index across shadcn, forms, AI, workspace, apps |
-| `pnpm ui components <layer/id>` | One component: import, summary, examples |
-| `pnpm ui components --layer forms` | Filter by layer |
+| Command                            | Purpose                                                        |
+| ---------------------------------- | -------------------------------------------------------------- |
+| `pnpm ui guide`                    | Topic index (`layers`, `shadcn`, `forms`, `testing`, …)        |
+| `pnpm ui guide <topic>`            | Full topic markdown                                            |
+| `pnpm ui components`               | Catalog index across shadcn, forms, AI, workspace, apps, tasks |
+| `pnpm ui components <layer/id>`    | One component: import, summary, examples                       |
+| `pnpm ui components --layer forms` | Filter by layer                                                |
 
 Use `--json` for machine-readable output. Topics live under `docs/agent/`.
 In-catalog decision pages: `Shadcn/Guidance`, `UI Forms/Guidance`.
@@ -90,12 +97,12 @@ Agent workflow notes: see [`AGENTS.md`](./AGENTS.md).
 With `pnpm storybook` running on port **9009**, two MCP endpoints and the llms
 surface share that server:
 
-| Surface | URL | Tools / content |
-| --- | --- | --- |
-| Storybook MCP | `http://localhost:9009/mcp` | Story instructions, previews, changed stories, `run-story-tests` |
-| Docs MCP | `http://localhost:9009/docs-mcp` | `list-all-documentation`, `get-documentation`, `get-documentation-for-story` (Svelte props + usage) |
-| llms index | `http://localhost:9009/llms.txt` / `/llms.md` | Layered index (`.md` = HTML, `.txt` = markdown) |
-| Component / guide pages | `/llms/<layer>/<id>.md`, `/llms/guide/<topic>.md` | Full pages (`.txt` aliases) |
+| Surface                 | URL                                               | Tools / content                                                                                     |
+| ----------------------- | ------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| Storybook MCP           | `http://localhost:9009/mcp`                       | Story instructions, previews, changed stories, `run-story-tests`                                    |
+| Docs MCP                | `http://localhost:9009/docs-mcp`                  | `list-all-documentation`, `get-documentation`, `get-documentation-for-story` (Svelte props + usage) |
+| llms index              | `http://localhost:9009/llms.txt` / `/llms.md`     | Layered index (`.md` = HTML, `.txt` = markdown)                                                     |
+| Component / guide pages | `/llms/<layer>/<id>.md`, `/llms/guide/<topic>.md` | Full pages (`.txt` aliases)                                                                         |
 
 Cursor project MCP (`.cursor/mcp.json`):
 

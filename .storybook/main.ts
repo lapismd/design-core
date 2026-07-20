@@ -9,6 +9,7 @@ const config: StorybookConfig = {
     "../src/**/*.mdx",
     "../src/**/*.stories.@(js|jsx|ts|tsx|svelte)",
     "../packages/workspace/src/**/*.stories.@(js|jsx|ts|tsx|svelte)",
+    "../packages/tasks/src/**/*.mdx",
   ],
   addons: [
     "@storybook/addon-docs",
