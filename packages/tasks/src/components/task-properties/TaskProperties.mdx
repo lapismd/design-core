@@ -1,17 +1,51 @@
-import { Canvas, Markdown, Meta } from "@storybook/addon-docs/blocks";
+import {
+  Canvas,
+  Controls,
+  Markdown,
+  Meta,
+  Primary,
+} from "@storybook/addon-docs/blocks";
 import * as TaskPropertiesStories from "./TaskProperties.stories.svelte";
 import taskPropertiesSpec from "../../../specs/components/task-properties.md?raw";
 
 <Meta of={TaskPropertiesStories} />
 
-The canonical implementation contract is rendered below from
-`packages/tasks/specs/components/task-properties.md`.
+# TaskProperties
+
+An ordered property rail for due date, assignee, priority, labels, and list
+membership. Every row keeps a text label and its current value visible, and
+opens a popover/select/menu to change it. Implementation status: **Done** for
+the leaf-control surface.
+
+Due date uses the shared `TaskDueCalendar` from `@stevejuma/ui/forms`. Because
+the `TaskReference` contract models `due` as a relative bucket
+(`overdue`/`today`/`tomorrow`/`later`/none) rather than a calendar date, the
+picked calendar day is converted to the nearest bucket relative to today when
+it is committed.
 
 <Markdown>{taskPropertiesSpec}</Markdown>
 
-## Implementation placeholder
+## Usage
+
+<Primary />
+
+## Properties
+
+<Controls />
+
+## Interactions
+
+### Change a due date
+
+<Canvas of={TaskPropertiesStories.ChangeDue} meta={TaskPropertiesStories} />
+
+### Change a priority
 
 <Canvas
-  of={TaskPropertiesStories.ImplementationPlaceholder}
+  of={TaskPropertiesStories.ChangePriority}
   meta={TaskPropertiesStories}
 />
+
+### Toggle a label
+
+<Canvas of={TaskPropertiesStories.ToggleLabel} meta={TaskPropertiesStories} />
