@@ -1,9 +1,13 @@
+import { existsSync } from "node:fs";
+import { join } from "node:path";
 import type { Plugin } from "vite";
 import {
   familyFromTitle,
   VISUAL_BASELINE_SUFFIX,
   visualBaselineVisualDeltaParameter,
 } from "./visual-baseline-design.js";
+
+type BaselineExists = (url: string) => boolean;
 
 /** Match Storybook's story-name sanitizer for id slugs. */
 export function sanitizeStoryName(name: string): string {
@@ -27,11 +31,30 @@ function extractStoryName(attrs: string): string | undefined {
   return name?.[1];
 }
 
-function visualDeltaObjectLiteral(directory: string, slug: string): string {
+function baselineUrl(directory: string, slug: string): string {
+  return `/visual-baselines/${directory}/${slug}${VISUAL_BASELINE_SUFFIX}.png`;
+}
+
+function visualDeltaObjectLiteral(
+  directory: string,
+  slug: string,
+  baselineExists: BaselineExists,
+): string | undefined {
+  const url = baselineUrl(directory, slug);
+  if (!baselineExists(url)) return undefined;
+
   const visualDelta = visualBaselineVisualDeltaParameter(
-    `/visual-baselines/${directory}/${slug}${VISUAL_BASELINE_SUFFIX}.png`,
+    url,
   );
   return JSON.stringify(visualDelta);
+}
+
+function committedBaselineExists(url: string): boolean {
+  const relative = url.replace(/^\/visual-baselines\//, "");
+  if (relative === url || relative.includes("..")) return false;
+  return existsSync(
+    join(process.cwd(), "tests/visual/storybook.spec.ts-snapshots", relative),
+  );
 }
 
 function endOfDoubleBraceObject(source: string, start: number): number {
@@ -117,6 +140,7 @@ export function findStoryOpenTagEnd(source: string, start: number): number {
 function injectVisualDeltaIntoStoryOpenTag(
   openTag: string,
   directory: string,
+  baselineExists: BaselineExists,
 ): string {
   if (/skip-visual/.test(openTag)) return openTag;
   if (/\bvisualDelta\s*:/.test(openTag)) return openTag;
@@ -125,7 +149,12 @@ function injectVisualDeltaIntoStoryOpenTag(
   if (!storyName) return openTag;
 
   const slug = sanitizeStoryName(storyName);
-  const visualDeltaLiteral = visualDeltaObjectLiteral(directory, slug);
+  const visualDeltaLiteral = visualDeltaObjectLiteral(
+    directory,
+    slug,
+    baselineExists,
+  );
+  if (!visualDeltaLiteral) return openTag;
 
   const paramsKey = "parameters={{";
   const paramsIdx = openTag.indexOf(paramsKey);
@@ -154,6 +183,7 @@ function injectVisualDeltaIntoStoryOpenTag(
 export function injectVisualBaselineVisualDeltas(
   code: string,
   directory: string,
+  baselineExists: BaselineExists = () => true,
 ): string {
   let result = "";
   let cursor = 0;
@@ -173,7 +203,11 @@ export function injectVisualBaselineVisualDeltas(
     }
 
     const openTag = code.slice(start, end + 1);
-    result += injectVisualDeltaIntoStoryOpenTag(openTag, directory);
+    result += injectVisualDeltaIntoStoryOpenTag(
+      openTag,
+      directory,
+      baselineExists,
+    );
     cursor = end + 1;
   }
 
@@ -204,7 +238,11 @@ export function visualBaselineVisualDeltaPlugin(): Plugin {
             : undefined;
       if (!directory) return null;
 
-      const next = injectVisualBaselineVisualDeltas(code, directory);
+      const next = injectVisualBaselineVisualDeltas(
+        code,
+        directory,
+        committedBaselineExists,
+      );
       if (next === code) return null;
       return { code: next, map: null };
     },

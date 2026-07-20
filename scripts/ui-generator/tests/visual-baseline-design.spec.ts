@@ -133,4 +133,19 @@ describe("visual-baseline-design", () => {
       `"images":["/visual-baselines/workspace/components/three-regions${VISUAL_BASELINE_SUFFIX}.png"]`,
     );
   });
+
+  it("does not inject workspace visual baselines for missing committed screenshots", () => {
+    const source = `
+<script module lang="ts">
+  const { Story } = defineMeta({ title: "Workspace/Workspace Stacked Tabs" });
+</script>
+<Story name="Selects the expanded view">{#snippet template()}ok{/snippet}</Story>`;
+    const out = injectVisualBaselineVisualDeltas(
+      source,
+      "workspace/components",
+      () => false,
+    );
+    expect(out).not.toContain("visualDelta:");
+    expect(out).not.toContain("selects-the-expanded-view");
+  });
 });
