@@ -1,0 +1,14 @@
+import { Canvas, Meta, Primary } from "@storybook/addon-docs/blocks";
+import * as Stories from "./ListDetailPage.stories.svelte";
+
+<Meta of={Stories} />
+
+# ListDetailPage
+
+Page composition for Tasks/List detail. Status: **Done**.
+
+<Primary />
+
+## States
+
+<Canvas of={Stories.Default} meta={Stories} />
