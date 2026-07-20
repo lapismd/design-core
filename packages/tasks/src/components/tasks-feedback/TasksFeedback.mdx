@@ -1,17 +1,39 @@
-import { Canvas, Markdown, Meta } from "@storybook/addon-docs/blocks";
+import {
+  Canvas,
+  Controls,
+  Markdown,
+  Meta,
+  Primary,
+} from "@storybook/addon-docs/blocks";
 import * as TasksFeedbackStories from "./TasksFeedback.stories.svelte";
-import feedbackSpec from "../../../specs/components/tasks-feedback.md?raw";
+import tasksFeedbackSpec from "../../../specs/components/tasks-feedback.md?raw";
 
 <Meta of={TasksFeedbackStories} />
 
-The canonical implementation contract is rendered below from
-`packages/tasks/specs/components/tasks-feedback.md`.
+# TasksFeedback
 
-<Markdown>{feedbackSpec}</Markdown>
+Renders one of the five `TasksFeedbackState` kinds — `empty`, `loading`,
+`preserving-error`, `status`, and `undo` — with the installed `Empty`,
+`Skeleton`, `Spinner`, and `Alert` primitives. Loading rows retain task-row
+geometry, and a recoverable error keeps the last usable result visible while
+offering retry. Implementation status: **Done** for the leaf-control surface.
 
-## Implementation placeholder
+<Markdown>{tasksFeedbackSpec}</Markdown>
 
-<Canvas
-  of={TasksFeedbackStories.ImplementationPlaceholder}
-  meta={TasksFeedbackStories}
-/>
+## Usage
+
+<Primary />
+
+## Properties
+
+<Controls />
+
+## Interactions
+
+### Preserving error with retry
+
+<Canvas of={TasksFeedbackStories.PreservingError} meta={TasksFeedbackStories} />
+
+### Undo a completed action
+
+<Canvas of={TasksFeedbackStories.Undo} meta={TasksFeedbackStories} />

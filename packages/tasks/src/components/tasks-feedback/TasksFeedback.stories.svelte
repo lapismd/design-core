@@ -1,18 +1,18 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent } from "storybook/test";
-  import TasksImplementationBrief from "../TasksImplementationBrief.svelte";
+  import TasksFeedback from "./TasksFeedback.svelte";
 
   const { Story } = defineMeta({
     title: "Tasks/Components/Feedback and Empty States",
-    component: TasksImplementationBrief,
+    component: TasksFeedback,
     tags: ["skip-visual"],
     parameters: {
       layout: "fullscreen",
       docs: {
         description: {
           component:
-            "Feedback states communicate empty, loading, error, and retry paths without product-specific persistence. Its full specification is on this component's Docs page.",
+            "Honest loading, empty, error, and update feedback for TasksFeedbackState kinds: empty, loading, preserving-error, status, and undo.",
         },
       },
     },
@@ -20,32 +20,83 @@
 </script>
 
 <script lang="ts">
-  import TasksInteractionTodo from "../TasksInteractionTodo.svelte";
-  import {
-    getComponentImplementationBrief,
-    referenceVisualDelta,
-  } from "../../lib/story-data.js";
-
-  const feedback = getComponentImplementationBrief("tasks-feedback");
+  import { referenceVisualDelta } from "../../lib/story-data.js";
+  import TasksFeedbackHarness from "./TasksFeedbackHarness.svelte";
 </script>
 
 <Story
-  name="Implementation placeholder"
-  exportName="ImplementationPlaceholder"
+  name="Empty updates"
+  exportName="Empty"
   parameters={{ visualDelta: referenceVisualDelta("desktop-updates") }}
 >
-  {#snippet template()}<TasksImplementationBrief brief={feedback} />{/snippet}
+  {#snippet template()}
+    <div class="tasks-theme" style="padding: 1rem; max-width: 28rem">
+      <TasksFeedback state={{ kind: "empty", message: "No updates yet" }} />
+    </div>
+  {/snippet}
 </Story>
 
 <Story
-  name="Retry feedback action (TODO)"
-  exportName="RetryTodo"
-  tags={["todo"]}
+  name="Loading rows"
+  exportName="Loading"
+  parameters={{ visualDelta: referenceVisualDelta("desktop-updates") }}
+>
+  {#snippet template()}
+    <div class="tasks-theme" style="padding: 1rem; max-width: 28rem">
+      <TasksFeedback state={{ kind: "loading", message: "Loading tasks" }} />
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Preserving error with retry"
+  exportName="PreservingError"
   parameters={{ visualDelta: referenceVisualDelta("desktop-updates") }}
   play={async ({ canvas }) => {
+    await expect(canvas.getByText("Couldn't refresh updates")).toBeVisible();
     await userEvent.click(canvas.getByRole("button", { name: "Retry" }));
     await expect(canvas.getByText("Retry requested")).toBeVisible();
   }}
 >
-  {#snippet template()}<TasksInteractionTodo scenario="feedback" />{/snippet}
+  {#snippet template()}
+    <TasksFeedbackHarness
+      state={{
+        kind: "preserving-error",
+        message: "Couldn't refresh updates",
+        retryable: true,
+      }}
+    />
+  {/snippet}
+</Story>
+
+<Story
+  name="Status while syncing"
+  exportName="Status"
+  parameters={{ visualDelta: referenceVisualDelta("desktop-updates") }}
+>
+  {#snippet template()}
+    <div class="tasks-theme" style="padding: 1rem; max-width: 28rem">
+      <TasksFeedback state={{ kind: "status", message: "Syncing updates" }} />
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Undo a completed action"
+  exportName="Undo"
+  parameters={{ visualDelta: referenceVisualDelta("desktop-updates") }}
+  play={async ({ canvas }) => {
+    await userEvent.click(canvas.getByRole("button", { name: "Undo" }));
+    await expect(canvas.getByText("Undo requested")).toBeVisible();
+  }}
+>
+  {#snippet template()}
+    <TasksFeedbackHarness
+      state={{
+        kind: "undo",
+        message: "Task marked done",
+        undoable: true,
+      }}
+    />
+  {/snippet}
 </Story>
