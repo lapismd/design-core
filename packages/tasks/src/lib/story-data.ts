@@ -24,7 +24,7 @@ export type TasksImplementationBrief = {
 
 const captureRoot = "/tasks-reference/2026-07-20";
 
-/** Only redacted committed evidence is exposed to Storybook. */
+/** Only synthetic-fixture evidence is exposed to Storybook. */
 export const referenceTargets = [
   {
     id: "desktop-inbox",
@@ -33,7 +33,7 @@ export const referenceTargets = [
     page: "Inbox",
     viewport: "1440 × 900 desktop",
     state: "Default",
-    source: `${captureRoot}/screenshots/native-desktop-inbox.jpg`,
+    source: `${captureRoot}/screenshots/synthetic-browser/desktop-inbox.png`,
   },
   {
     id: "desktop-today",
@@ -42,7 +42,7 @@ export const referenceTargets = [
     page: "Today",
     viewport: "1440 × 900 desktop",
     state: "Overdue group",
-    source: `${captureRoot}/screenshots/native-desktop-today.jpg`,
+    source: `${captureRoot}/screenshots/synthetic-browser/desktop-today.png`,
   },
   {
     id: "desktop-tasks",
@@ -51,7 +51,7 @@ export const referenceTargets = [
     page: "Tasks",
     viewport: "1440 × 900 desktop",
     state: "Tasks for me",
-    source: `${captureRoot}/screenshots/native-desktop-tasks.jpg`,
+    source: `${captureRoot}/screenshots/synthetic-browser/desktop-tasks.png`,
   },
   {
     id: "desktop-updates",
@@ -60,7 +60,7 @@ export const referenceTargets = [
     page: "Updates",
     viewport: "1440 × 900 desktop",
     state: "Empty",
-    source: `${captureRoot}/screenshots/native-desktop-updates.jpg`,
+    source: `${captureRoot}/screenshots/synthetic-browser/desktop-updates.png`,
   },
   {
     id: "desktop-lists",
@@ -69,7 +69,7 @@ export const referenceTargets = [
     page: "Lists",
     viewport: "1440 × 900 desktop",
     state: "All lists",
-    source: `${captureRoot}/screenshots/native-desktop-lists.jpg`,
+    source: `${captureRoot}/screenshots/synthetic-browser/desktop-lists.png`,
   },
   {
     id: "desktop-list-detail",
@@ -77,8 +77,8 @@ export const referenceTargets = [
     description: "Selected list with tasks and an inline composer location.",
     page: "List detail",
     viewport: "1440 × 900 desktop",
-    state: "Private fixture list",
-    source: `${captureRoot}/screenshots/native-desktop-list-detail.jpg`,
+    state: "Synthetic fixture list",
+    source: `${captureRoot}/screenshots/synthetic-browser/desktop-list-detail.png`,
   },
   {
     id: "desktop-task-detail",
@@ -87,7 +87,7 @@ export const referenceTargets = [
     page: "Task detail",
     viewport: "1440 × 900 desktop",
     state: "Detail open",
-    source: `${captureRoot}/screenshots/native-desktop-task-detail.jpg`,
+    source: `${captureRoot}/screenshots/synthetic-browser/desktop-task-detail.png`,
   },
   {
     id: "tablet-landscape-inbox",
@@ -96,7 +96,7 @@ export const referenceTargets = [
     page: "Inbox",
     viewport: "1024 × 768 tablet landscape",
     state: "Default",
-    source: `${captureRoot}/screenshots/web-tablet-landscape-inbox.jpg`,
+    source: `${captureRoot}/screenshots/synthetic-browser/tablet-landscape-inbox.png`,
   },
   {
     id: "tablet-portrait-inbox",
@@ -105,7 +105,7 @@ export const referenceTargets = [
     page: "Inbox",
     viewport: "768 × 1024 tablet portrait",
     state: "Pager root",
-    source: `${captureRoot}/screenshots/web-tablet-portrait-inbox.jpg`,
+    source: `${captureRoot}/screenshots/synthetic-browser/tablet-portrait-inbox.png`,
   },
   {
     id: "mobile-inbox",
@@ -114,7 +114,7 @@ export const referenceTargets = [
     page: "Inbox",
     viewport: "390 × 844 mobile",
     state: "Pager root",
-    source: `${captureRoot}/screenshots/web-mobile-inbox.jpg`,
+    source: `${captureRoot}/screenshots/synthetic-browser/mobile-inbox.png`,
   },
   {
     id: "task-open-motion",
@@ -124,7 +124,7 @@ export const referenceTargets = [
     page: "Task detail",
     viewport: "Desktop",
     state: "Selection → explicit open",
-    source: `${captureRoot}/motion/task-open/contact-sheet.jpg`,
+    source: `${captureRoot}/motion/synthetic-browser-task-open/contact-sheet.png`,
   },
   {
     id: "mobile-swipe-motion",
@@ -134,7 +134,7 @@ export const referenceTargets = [
     page: "Task row",
     viewport: "Mobile",
     state: "Swipe action revealed",
-    source: `${captureRoot}/motion/mobile-row-swipe/contact-sheet.jpg`,
+    source: `${captureRoot}/motion/synthetic-browser-mobile-row-swipe/contact-sheet.png`,
   },
 ] as const satisfies readonly TasksReferenceTarget[];
 
@@ -149,7 +149,7 @@ export function getReferenceTarget(id: string): TasksReferenceTarget {
 }
 
 /**
- * Shared Visual Delta settings for the sanitised captures served from
+ * Shared Visual Delta settings for the synthetic fixture captures served from
  * `/tasks-reference`. The captures are evidence, not test baselines.
  */
 export function referenceVisualDelta(...targetIds: readonly string[]) {
