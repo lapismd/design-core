@@ -167,6 +167,156 @@ export function referenceVisualDelta(...targetIds: readonly string[]) {
   };
 }
 
+/**
+ * Local-only live Superlist captures (gitignored under
+ * `.reference-artifacts/live-chrome/`). Never commit these PNGs — they may
+ * contain real account/list content. Served at `/tasks-reference-live`.
+ */
+export const liveCaptureDate = "2026-07-20";
+export const liveCaptureRoot = `/tasks-reference-live/${liveCaptureDate}`;
+
+export type TasksLiveReferenceId =
+  | "desktop-inbox"
+  | "desktop-today"
+  | "desktop-tasks"
+  | "desktop-updates"
+  | "desktop-lists"
+  | "desktop-list-detail"
+  | "desktop-task-detail"
+  | "tablet-landscape-inbox"
+  | "tablet-portrait-inbox"
+  | "mobile-inbox"
+  | "mobile-task-detail";
+
+export const liveReferenceTargets = [
+  {
+    id: "desktop-inbox",
+    title: "Live — Desktop Inbox",
+    description: "Local Chrome capture of Superlist Inbox (not committed).",
+    page: "Inbox",
+    viewport: "1680 × 1000 desktop",
+    state: "Live session — local only",
+    source: `${liveCaptureRoot}/screenshots/desktop-inbox.png`,
+  },
+  {
+    id: "desktop-today",
+    title: "Live — Desktop Today",
+    description: "Local Chrome capture of Superlist Today (not committed).",
+    page: "Today",
+    viewport: "1680 × 1000 desktop",
+    state: "Live session — local only",
+    source: `${liveCaptureRoot}/screenshots/desktop-today.png`,
+  },
+  {
+    id: "desktop-tasks",
+    title: "Live — Desktop Tasks",
+    description: "Local Chrome capture of Superlist Tasks (not committed).",
+    page: "Tasks",
+    viewport: "1680 × 1000 desktop",
+    state: "Live session — local only",
+    source: `${liveCaptureRoot}/screenshots/desktop-tasks.png`,
+  },
+  {
+    id: "desktop-updates",
+    title: "Live — Desktop Updates",
+    description: "Local Chrome capture of Superlist Updates (not committed).",
+    page: "Updates",
+    viewport: "1680 × 1000 desktop",
+    state: "Live session — local only",
+    source: `${liveCaptureRoot}/screenshots/desktop-updates.png`,
+  },
+  {
+    id: "desktop-lists",
+    title: "Live — Desktop Lists",
+    description: "Local Chrome capture of Superlist Lists (not committed).",
+    page: "Lists",
+    viewport: "1680 × 1000 desktop",
+    state: "Live session — local only",
+    source: `${liveCaptureRoot}/screenshots/desktop-lists.png`,
+  },
+  {
+    id: "desktop-list-detail",
+    title: "Live — Desktop List detail",
+    description: "Local Chrome capture of the reference list (not committed).",
+    page: "List detail",
+    viewport: "1680 × 1000 desktop",
+    state: "Live session — local only",
+    source: `${liveCaptureRoot}/screenshots/desktop-list-detail.png`,
+  },
+  {
+    id: "desktop-task-detail",
+    title: "Live — Desktop Task detail",
+    description: "Local Chrome capture with task detail open (not committed).",
+    page: "Task detail",
+    viewport: "1680 × 1000 desktop",
+    state: "Live session — local only",
+    source: `${liveCaptureRoot}/screenshots/desktop-task-detail.png`,
+  },
+  {
+    id: "tablet-landscape-inbox",
+    title: "Live — Tablet landscape Inbox",
+    description: "Local Chrome capture at 1024×768 (not committed).",
+    page: "Inbox",
+    viewport: "1024 × 768 tablet landscape",
+    state: "Live session — local only",
+    source: `${liveCaptureRoot}/screenshots/tablet-landscape-inbox.png`,
+  },
+  {
+    id: "tablet-portrait-inbox",
+    title: "Live — Tablet portrait Inbox",
+    description: "Local Chrome capture at 768×1024 (not committed).",
+    page: "Inbox",
+    viewport: "768 × 1024 tablet portrait",
+    state: "Live session — local only",
+    source: `${liveCaptureRoot}/screenshots/tablet-portrait-inbox.png`,
+  },
+  {
+    id: "mobile-inbox",
+    title: "Live — Mobile Inbox",
+    description: "Local Chrome capture at 390×844 (not committed).",
+    page: "Inbox",
+    viewport: "390 × 844 mobile",
+    state: "Live session — local only",
+    source: `${liveCaptureRoot}/screenshots/mobile-inbox.png`,
+  },
+  {
+    id: "mobile-task-detail",
+    title: "Live — Mobile Task detail",
+    description:
+      "Local Chrome capture with detail open on mobile (not committed).",
+    page: "Task detail",
+    viewport: "390 × 844 mobile",
+    state: "Live session — local only",
+    source: `${liveCaptureRoot}/screenshots/mobile-task-detail.png`,
+  },
+] as const satisfies readonly TasksReferenceTarget[];
+
+const liveReferenceTargetById = new Map(
+  liveReferenceTargets.map((target) => [target.id, target]),
+);
+
+export function getLiveReferenceTarget(
+  id: TasksLiveReferenceId | string,
+): TasksReferenceTarget {
+  const target = liveReferenceTargetById.get(id as TasksLiveReferenceId);
+  if (!target) throw new Error(`Unknown Tasks live reference target: ${id}`);
+  return target;
+}
+
+/** Visual Delta overlay for local-only live Superlist screenshots. */
+export function liveReferenceVisualDelta(
+  ...targetIds: readonly TasksLiveReferenceId[]
+) {
+  return {
+    images: targetIds.map((id) => getLiveReferenceTarget(id).source),
+    opacity: 0.5,
+    colorInversion: false,
+    align: "canvas" as const,
+    placement: "right" as const,
+    passThresholdPercent: 0.1,
+  };
+}
+
 export const pageImplementationBriefs = [
   {
     id: "shell",

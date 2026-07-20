@@ -31,6 +31,7 @@ accessible `role="checkbox"` completion control until then.
 - **Tasks/Components/\*** — production components with Docs + play coverage
 - **Tasks/Pages/\*** — page compositions over synthetic fixtures
 - **Tasks/Reference Targets** — synthetic capture evidence for Visual Delta
+- **Tasks/Live Reference** — local-only live Superlist captures (gitignored)
 - **Tasks/Implementation Map** — ledger overview (planning aid)
 
 ## Commands
@@ -41,5 +42,13 @@ pnpm --dir packages/tasks reference:bootstrap
 pnpm --dir packages/tasks reference:capture
 pnpm --dir packages/tasks reference:verify
 ```
+
+### Local live Superlist overlays
+
+Live Chrome captures for Visual Delta review stay under the gitignored tree
+`.reference-artifacts/live-chrome/<date>/screenshots/` and are served at
+`/tasks-reference-live`. They may contain real account or list content — **never
+commit them**. Open Storybook → **Tasks/Live Reference** and use the Visual
+Delta panel. Production stories keep synthetic `referenceVisualDelta` targets.
 
 Do not update Playwright visual baselines without explicit human approval.
