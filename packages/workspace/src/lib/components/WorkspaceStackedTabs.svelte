@@ -11,6 +11,7 @@
     readWorkspaceTabDrag,
     startWorkspaceTabDrag,
   } from "./tab-drag.js";
+  import WorkspaceTabDropZone from "./WorkspaceTabDropZone.svelte";
   import WorkspaceTabBody from "./WorkspaceTabBody.svelte";
 
   let {
@@ -159,13 +160,15 @@
             role="region"
             aria-label={`${tab.title} view`}
           >
-            <WorkspaceTabBody
-              {controller}
-              groupId={group.id}
-              {tab}
-              active={true}
-              {viewHeaderOptions}
-            />
+            <WorkspaceTabDropZone {controller} {group}>
+              <WorkspaceTabBody
+                {controller}
+                groupId={group.id}
+                {tab}
+                active={true}
+                {viewHeaderOptions}
+              />
+            </WorkspaceTabDropZone>
           </div>
         {/if}
       </section>
@@ -296,9 +299,16 @@
   }
 
   [data-ui-component="workspace"][data-ui-part="stacked-view"] {
+    position: relative;
     min-width: 0;
     min-height: 0;
     flex: 1 1 auto;
     overflow: hidden;
+  }
+
+  [data-ui-component="workspace"][data-ui-part="stacked-view"]
+    :global([data-ui-part="tab-drop-zone"]) {
+    width: 100%;
+    height: 100%;
   }
 </style>

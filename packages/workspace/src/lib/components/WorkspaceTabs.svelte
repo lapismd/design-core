@@ -8,16 +8,12 @@
   import type { WorkspaceController } from "../core/workspace-controller.svelte";
   import type { WorkspaceTab, WorkspaceTabsNode } from "../core/types.js";
   import {
-    getWorkspaceDropOverlayGeometry,
-    workspaceDropOverlayStyle,
-    type WorkspaceDropOverlayGeometry,
-  } from "./drop-geometry.js";
-  import {
     clearWorkspaceTabDrag,
     isWorkspaceTabDrag,
     readWorkspaceTabDrag,
     startWorkspaceTabDrag,
   } from "./tab-drag.js";
+  import WorkspaceTabDropZone from "./WorkspaceTabDropZone.svelte";
   import WorkspaceTabBody from "./WorkspaceTabBody.svelte";
 
   let {
@@ -37,7 +33,6 @@
 
   let value = $state("");
   let dropIndex = $state<number | null>(null);
-  let contentDropGeometry = $state<WorkspaceDropOverlayGeometry | null>(null);
   let hoveredTabId = $state<string | null>(null);
 
   $effect(() => {
@@ -60,7 +55,6 @@
     const element = event.currentTarget as HTMLElement;
     const rect = element.getBoundingClientRect();
     dropIndex = event.clientX < rect.left + rect.width / 2 ? index : index + 1;
-    contentDropGeometry = null;
   }
 
   function dropOnTabStrip(event: DragEvent) {
@@ -69,7 +63,6 @@
     const payload = readWorkspaceTabDrag(event);
     const targetIndex = dropIndex;
     dropIndex = null;
-    contentDropGeometry = null;
     clearWorkspaceTabDrag();
     if (payload && targetIndex !== null) {
       const sourceIndex = group.tabs.findIndex(
@@ -85,43 +78,8 @@
     }
   }
 
-  function updateContentDrop(event: DragEvent) {
-    if (!isWorkspaceTabDrag(event)) return;
-    event.preventDefault();
-    if (event.dataTransfer) event.dataTransfer.dropEffect = "move";
-    const payload = readWorkspaceTabDrag(event);
-    if (payload?.groupId === group.id && group.tabs.length === 1) {
-      dropIndex = null;
-      contentDropGeometry = null;
-      return;
-    }
-    const element = event.currentTarget as HTMLElement;
-    const rect = element.getBoundingClientRect();
-    dropIndex = null;
-    contentDropGeometry = getWorkspaceDropOverlayGeometry({
-      width: rect.width,
-      height: rect.height,
-      x: event.clientX - rect.left,
-      y: event.clientY - rect.top,
-    });
-  }
-
-  function dropOnContent(event: DragEvent) {
-    event.preventDefault();
-    event.stopPropagation();
-    const payload = readWorkspaceTabDrag(event);
-    const position = contentDropGeometry?.position ?? "center";
-    dropIndex = null;
-    contentDropGeometry = null;
-    clearWorkspaceTabDrag();
-    if (payload) {
-      controller.dropTabOnGroup(payload.tabId, group.id, position);
-    }
-  }
-
   function clearDropState() {
     dropIndex = null;
-    contentDropGeometry = null;
     hoveredTabId = null;
     clearWorkspaceTabDrag();
   }
@@ -222,26 +180,7 @@
         <div data-ui-component="workspace" data-ui-part="tab-spacer"></div>
       </div>
 
-      <div
-        data-ui-component="workspace"
-        data-ui-part="tab-drop-zone"
-        data-drop-active={contentDropGeometry !== null}
-        data-drop-position={contentDropGeometry?.position}
-        role="region"
-        aria-label={`Drop a tab into ${group.id}`}
-        ondragenter={updateContentDrop}
-        ondragover={updateContentDrop}
-        ondragleave={(event) => {
-          const zone = event.currentTarget as HTMLElement;
-          if (
-            !(event.relatedTarget instanceof Node) ||
-            !zone.contains(event.relatedTarget)
-          ) {
-            contentDropGeometry = null;
-          }
-        }}
-        ondrop={dropOnContent}
-      >
+      <WorkspaceTabDropZone {controller} {group}>
         {#each group.tabs as tab (tab.id)}
           {#if group.activeTabId === tab.id}
             <Tabs.Content value={tab.id} data-workspace-part="tab-content">
@@ -255,29 +194,10 @@
             </Tabs.Content>
           {/if}
         {/each}
-        {#if contentDropGeometry}
-          <div
-            data-ui-component="workspace"
-            data-ui-part="tab-drop-overlay"
-            data-drop-position={contentDropGeometry.position}
-            style={workspaceDropOverlayStyle(contentDropGeometry)}
-          ></div>
-        {/if}
-      </div>
+      </WorkspaceTabDropZone>
     </Tabs.Root>
   {:else}
-    <div
-      data-ui-component="workspace"
-      data-ui-part="tab-drop-zone"
-      data-drop-active={contentDropGeometry !== null}
-      data-drop-position={contentDropGeometry?.position}
-      role="region"
-      aria-label={`Drop a tab into ${group.id}`}
-      ondragenter={updateContentDrop}
-      ondragover={updateContentDrop}
-      ondragleave={() => (contentDropGeometry = null)}
-      ondrop={dropOnContent}
-    >
+    <WorkspaceTabDropZone {controller} {group}>
       <Empty.Root>
         <Empty.Header>
           <Empty.Title>No open tabs</Empty.Title>
@@ -293,15 +213,7 @@
           </Empty.Content>
         {/if}
       </Empty.Root>
-      {#if contentDropGeometry}
-        <div
-          data-ui-component="workspace"
-          data-ui-part="tab-drop-overlay"
-          data-drop-position={contentDropGeometry.position}
-          style={workspaceDropOverlayStyle(contentDropGeometry)}
-        ></div>
-      {/if}
-    </div>
+    </WorkspaceTabDropZone>
   {/if}
 </div>
 
@@ -535,30 +447,11 @@
     border-bottom: 1px solid var(--ui-workspace-divider, var(--border));
   }
 
-  [data-ui-component="workspace"][data-ui-part="tab-drop-zone"] {
-    position: relative;
-    display: flex;
-    min-width: 0;
-    min-height: 0;
-    flex: 1 1 auto;
-    overflow: hidden;
-    outline: none;
-  }
-
   [data-ui-component="workspace"][data-ui-part="tabs"]
     :global([data-workspace-part="tab-content"]) {
     min-width: 0;
     min-height: 0;
     flex: 1 1 auto;
     overflow: hidden;
-  }
-
-  [data-ui-component="workspace"][data-ui-part="tab-drop-overlay"] {
-    position: absolute;
-    z-index: 2;
-    border: 2px solid var(--primary);
-    border-radius: 0.375rem;
-    background: color-mix(in srgb, var(--primary) 12%, transparent);
-    pointer-events: none;
   }
 </style>
