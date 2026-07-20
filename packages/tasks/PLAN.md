@@ -12,10 +12,10 @@ what remains.
 | ----------------------------- | ----------------------------------------------------------------------------------------------------- |
 | Overall status                | In progress                                                                                           |
 | Last updated                  | 2026-07-20                                                                                            |
-| Active phase                  | Phase 4 — Page compositions                                                                           |
+| Active phase                  | Phase 5 — Catalog completion and release gate                                                         |
 | Components/behaviors complete | 10 / 10                                                                                               |
-| Page compositions complete    | 0 / 8                                                                                                 |
-| Phases complete               | 4 / 6                                                                                                 |
+| Page compositions complete    | 8 / 8                                                                                                 |
+| Phases complete               | 5 / 6                                                                                                 |
 | Current blocker               | `pnpm ui:add checkbox` blocked by repo-wide svelte-check failures; TaskRow uses role=checkbox interim |
 
 ### Status rules
@@ -176,16 +176,16 @@ Apply this checklist to every component ledger row:
 Pages compose the component layer and own fixture state for their stories. They
 must not duplicate lower-level task-row, menu, or gesture logic.
 
-| ID  | Page composition | Minimum story states                                                               | Target evidence                                        | Status      |
-| --- | ---------------- | ---------------------------------------------------------------------------------- | ------------------------------------------------------ | ----------- |
-| P01 | Shell            | Wide no detail, wide detail, compact detail, portrait list, mobile detail          | Desktop Inbox, tablet landscape/portrait, mobile Inbox | Not started |
-| P02 | Inbox            | Default, composer, selected/open detail, empty, collapsed Done                     | Desktop and mobile Inbox, task-open sequence           | Not started |
-| P03 | Today            | Overdue/Today/Done groups, completion, reduced motion, empty                       | Desktop Today                                          | Not started |
-| P04 | Tasks overview   | For me, Others, Upcoming, Done, filtered empty                                     | Desktop Tasks                                          | Not started |
-| P05 | Updates          | All filter empty, each filter, loading, error/retry, future activity row contract  | Desktop Updates                                        | Not started |
-| P06 | Lists index      | All, Shared, Private, Meetings, favourite, create, open detail                     | Desktop Lists                                          | Not started |
-| P07 | List detail      | Populated fixture, filtered, composer, selected/detail, empty, explicit title edit | Desktop List detail                                    | Not started |
-| P08 | Task detail      | Desktop rail, compact presentation, mobile pane, property and title edits          | Desktop Task detail; mobile capture remains required   | Not started |
+| ID  | Page composition | Minimum story states                                                               | Target evidence                                        | Status |
+| --- | ---------------- | ---------------------------------------------------------------------------------- | ------------------------------------------------------ | ------ |
+| P01 | Shell            | Wide no detail, wide detail, compact detail, portrait list, mobile detail          | Desktop Inbox, tablet landscape/portrait, mobile Inbox | Done   |
+| P02 | Inbox            | Default, composer, selected/open detail, empty, collapsed Done                     | Desktop and mobile Inbox, task-open sequence           | Done   |
+| P03 | Today            | Overdue/Today/Done groups, completion, reduced motion, empty                       | Desktop Today                                          | Done   |
+| P04 | Tasks overview   | For me, Others, Upcoming, Done, filtered empty                                     | Desktop Tasks                                          | Done   |
+| P05 | Updates          | All filter empty, each filter, loading, error/retry, future activity row contract  | Desktop Updates                                        | Done   |
+| P06 | Lists index      | All, Shared, Private, Meetings, favourite, create, open detail                     | Desktop Lists                                          | Done   |
+| P07 | List detail      | Populated fixture, filtered, composer, selected/detail, empty, explicit title edit | Desktop List detail                                    | Done   |
+| P08 | Task detail      | Desktop rail, compact presentation, mobile pane, property and title edits          | Desktop Task detail; mobile capture remains required   | Done   |
 
 ## Phased execution
 
@@ -266,14 +266,14 @@ swipe, pager back, and reduced motion pass at all contract viewports.
 
 ### Phase 4 — Page compositions
 
-Status: **Not started**
+Status: **Done**
 
-- [ ] Implement P01–P03: Shell, Inbox, and Today.
-- [ ] Implement P04–P06: Tasks, Updates, and Lists.
-- [ ] Implement P07–P08: List detail and Task detail.
-- [ ] Replace `TasksPages.stories.svelte` briefs with colocated page stories and
+- [x] Implement P01–P03: Shell, Inbox, and Today.
+- [x] Implement P04–P06: Tasks, Updates, and Lists.
+- [x] Implement P07–P08: List detail and Task detail.
+- [x] Replace `TasksPages.stories.svelte` briefs with colocated page stories and
       Docs pages.
-- [ ] Keep callbacks visible in stories through action spies or controlled
+- [x] Keep callbacks visible in stories through action spies or controlled
       harness state; do not add persistence.
 
 Exit gate: every requested page and state renders from synthetic fixtures at
@@ -388,6 +388,7 @@ Keep evidence concise and include the Jujutsu change/commit ID when available.
 | 2026-07-20 | Phase 3  | Implemented C08 `TaskDetail` (back, completion, title, properties, note)                                                                                                          | Done   | Autofixer suggestions only; harness stories for focus/title/Escape                                                                                                                                                           | C09 TasksShell                                      |
 | 2026-07-20 | Phase 3  | Implemented C09 `TasksShell` (desktop panes + mobile pager)                                                                                                                       | Done   | Autofixer clean; wide/mobile detail stories                                                                                                                                                                                  | C10 motion                                          |
 | 2026-07-20 | Phase 3  | Implemented C10 swipe/pager gesture helpers via `motion.ts` + `TasksSwipeGesture`                                                                                                 | Done   | Unit tests for motion helpers; stories for swipe thresholds                                                                                                                                                                  | Begin Phase 4 pages                                 |
+| 2026-07-20 | Phase 4  | Implemented P01–P08 page compositions via shared `TasksPageWorkspace`                                                                                                             | Done   | Colocated page stories/MDX; legacy TasksPages thinned; root page exports; autofixer clean on workspace                                                                                                                       | Phase 5 catalog cleanup                             |
 
 ## Decision and blocker log
 
