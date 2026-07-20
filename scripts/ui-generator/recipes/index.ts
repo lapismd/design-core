@@ -65,6 +65,7 @@ export const BATCH_A = [
 ] as const;
 
 export const BATCH_B = [
+  "checkbox",
   "switch",
   "toggle",
   "toggle-group",
@@ -171,6 +172,22 @@ const recipes: Record<string, ComponentRecipe> = {
     text: "Alert",
     attrs: { role: "alert", "data-slot": "alert" },
     shotSelector: '[data-ui-component="alert"]',
+  }),
+  checkbox: lightCompound("checkbox", "Shadcn/Forms/Checkbox", {
+    tag: "button",
+    attrs: {
+      type: "button",
+      role: "checkbox",
+      "data-slot": "checkbox",
+      "data-state": "checked",
+      "data-checked": "",
+      "aria-checked": "true",
+    },
+    shotSelector: '[data-ui-component="checkbox"][data-ui-part="checkbox"]',
+    referenceInnerHtml:
+      '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-3.5"><path d="M20 6 9 17l-5-5"></path></svg>',
+    semanticInnerHtml:
+      '<svg data-ui-component="checkbox" data-ui-part="checkbox-indicator" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>',
   }),
   switch: {
     ...lightCompound("switch", "Shadcn/Forms/Switch", {
