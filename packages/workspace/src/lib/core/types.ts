@@ -147,6 +147,8 @@ export interface WorkspaceSvelteViewDefinition {
   component: WorkspaceSvelteView;
   /** Optional non-serializable icon rendered by tab chrome for this view type. */
   icon?: Component;
+  /** Set false when a view owns the entire pane rather than the shared header. */
+  showHeader?: boolean;
 }
 
 export interface WorkspaceImperativeViewDefinition {
@@ -154,6 +156,8 @@ export interface WorkspaceImperativeViewDefinition {
   type: string;
   /** Optional non-serializable icon rendered by tab chrome for this view type. */
   icon?: Component;
+  /** Set false when a view owns the entire pane rather than the shared header. */
+  showHeader?: boolean;
   mount(
     target: HTMLElement,
     context: WorkspaceViewContext,

@@ -48,7 +48,7 @@
         {
           id: `${id}-tab`,
           title,
-          view: { type: "story", state: {} },
+          view: { type: "empty", state: {} },
         },
       ],
     };

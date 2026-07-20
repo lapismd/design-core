@@ -3,6 +3,7 @@ import { WorkspaceController } from "../../core/workspace-controller.svelte";
 import type { WorkspaceLayoutV1, WorkspaceTab } from "../../core/types.js";
 import FileTextIcon from "@lucide/svelte/icons/file-text";
 import WorkspaceStoryTextView from "./WorkspaceStoryTextView.svelte";
+import WorkspaceEmptyView from "../WorkspaceEmptyView.svelte";
 
 export const demoTabs: WorkspaceTab[] = [
   {
@@ -83,6 +84,13 @@ export function createDemoController(
     type: "story",
     component: WorkspaceStoryTextView,
     icon: FileTextIcon,
+  });
+  registry.register({
+    kind: "svelte",
+    type: "empty",
+    component: WorkspaceEmptyView,
+    icon: FileTextIcon,
+    showHeader: false,
   });
   registry.register({
     kind: "imperative",

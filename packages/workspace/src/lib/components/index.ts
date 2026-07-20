@@ -6,6 +6,7 @@ export { default as WorkspaceStackedTabs } from "./WorkspaceStackedTabs.svelte";
 export { default as WorkspaceDropOverlay } from "./WorkspaceDropOverlay.svelte";
 export { default as WorkspaceTabDropZone } from "./WorkspaceTabDropZone.svelte";
 export { default as WorkspaceTabBody } from "./WorkspaceTabBody.svelte";
+export { default as WorkspaceEmptyView } from "./WorkspaceEmptyView.svelte";
 export { default as WorkspaceTabs } from "./WorkspaceTabs.svelte";
 export { default as WorkspaceViewHeader } from "./WorkspaceViewHeader.svelte";
 export { default as WorkspaceViewFrame } from "./WorkspaceViewFrame.svelte";

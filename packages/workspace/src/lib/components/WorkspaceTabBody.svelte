@@ -19,11 +19,17 @@
     /** Consumer-owned controls rendered at the end of the view header. */
     viewHeaderOptions?: Snippet<[WorkspaceTab]>;
   } = $props();
+
+  const definition = $derived(controller.registry.resolve(tab.view.type));
 </script>
 
-<WorkspaceViewFrame title={tab.title}>
-  {#snippet options()}
-    {@render viewHeaderOptions?.(tab)}
-  {/snippet}
+{#if definition?.showHeader === false}
   <WorkspaceViewHost {controller} {groupId} {tab} {active} />
-</WorkspaceViewFrame>
+{:else}
+  <WorkspaceViewFrame title={tab.title}>
+    {#snippet options()}
+      {@render viewHeaderOptions?.(tab)}
+    {/snippet}
+    <WorkspaceViewHost {controller} {groupId} {tab} {active} />
+  </WorkspaceViewFrame>
+{/if}
