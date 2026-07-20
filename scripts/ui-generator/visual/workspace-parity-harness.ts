@@ -54,6 +54,7 @@ async function screenshotPage(
   filePath: string,
   scenario: WorkspaceParityScenario,
   pageSpec: WorkspaceParityPage,
+  side: "reference" | "candidate",
 ) {
   const page = await browser.newPage({
     viewport: scenario.viewport,
@@ -63,6 +64,7 @@ async function screenshotPage(
     locale: "en-GB",
     timezoneId: "Europe/London",
   });
+  page.setDefaultTimeout(5_000);
   await page.goto(`file://${filePath}`, { waitUntil: "load" });
   await page.evaluate(async () => {
     if (document.fonts?.ready) await document.fonts.ready;
@@ -72,9 +74,30 @@ async function screenshotPage(
     pageSpec.screenshotSelector ?? "[data-parity-root]",
   );
   await target.first().waitFor({ state: "attached" });
-  const buffer = await target.first().screenshot({ animations: "disabled" });
-  await page.close();
-  return buffer;
+  const box = await target.first().boundingBox();
+  if (!box || box.width === 0 || box.height === 0) {
+    await page.close();
+    throw new GeneratorError(
+      `Workspace parity target is not visible for ${scenario.id} ${side}`,
+      EXIT.parity,
+      `path=${filePath} box=${box ? `${box.width}x${box.height}` : "null"}`,
+    );
+  }
+
+  try {
+    return await target.first().screenshot({
+      animations: "disabled",
+      timeout: 5_000,
+    });
+  } catch (error) {
+    throw new GeneratorError(
+      `Workspace parity screenshot failed for ${scenario.id} ${side}`,
+      EXIT.parity,
+      `path=${filePath} box=${box.width}x${box.height} cause=${String(error)}`,
+    );
+  } finally {
+    await page.close();
+  }
 }
 
 function ensureArtifactDirs(reportDir: string) {
@@ -123,12 +146,14 @@ export async function runWorkspaceParityHarness(options: {
         referencePath,
         scenario,
         scenario.reference,
+        "reference",
       );
       const candidateBuffer = await screenshotPage(
         browser,
         candidatePath,
         scenario,
         scenario.candidate,
+        "candidate",
       );
       const referencePng = PNG.sync.read(referenceBuffer);
       const candidatePng = PNG.sync.read(candidateBuffer);
