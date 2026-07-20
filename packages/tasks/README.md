@@ -45,10 +45,18 @@ pnpm --dir packages/tasks reference:verify
 
 ### Local live Superlist overlays
 
-Live Chrome captures for Visual Delta review stay under the gitignored tree
-`.reference-artifacts/live-chrome/<date>/screenshots/` and are served at
+Live Chrome captures stay under the gitignored tree
+`.reference-artifacts/live-superlist/screenshots/` and are served at
 `/tasks-reference-live`. They may contain real account or list content — **never
-commit them**. Open Storybook → **Tasks/Live Reference** and use the Visual
-Delta panel. Production stories keep synthetic `referenceVisualDelta` targets.
+commit them**.
+
+Opt production stories onto live overlays:
+
+```bash
+STORYBOOK_TASKS_LIVE_REFERENCE=1 pnpm storybook
+```
+
+Or browse **Tasks/Live Reference** (always points at the live PNGs). Default
+Storybook (no env) keeps synthetic `referenceVisualDelta` targets.
 
 Do not update Playwright visual baselines without explicit human approval.

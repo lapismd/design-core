@@ -37,17 +37,23 @@ uses an instant or short-fade equivalent.
 `reference:verify` checks every committed checksum and accepts either a
 redacted evidence frame or an explicitly fixture-only frame.
 
-## Local live Chrome captures (not committed)
+## Local live Superlist captures (not committed)
 
 For side-by-side Visual Delta review against a logged-in Superlist session,
 capture PNGs into the gitignored tree:
 
 ```text
-packages/tasks/.reference-artifacts/live-chrome/<YYYY-MM-DD>/screenshots/
+packages/tasks/.reference-artifacts/live-superlist/screenshots/<id>.png
 ```
 
 Storybook mounts that tree at `/tasks-reference-live` (see `.storybook/main.ts`).
-Catalog stories live under **Tasks/Live Reference** and use
-`liveReferenceVisualDelta(...)` from `src/lib/story-data.ts`. Chrome DevTools
-MCP can only write screenshots under the process temp root; copy files into the
-gitignored path afterward. Do not commit live PNGs or `manifest.local.json`.
+Opt production stories onto live screenshots (motion sheets stay synthetic):
+
+```bash
+STORYBOOK_TASKS_LIVE_REFERENCE=1 pnpm storybook
+```
+
+**Tasks/Live Reference** always overlays the live PNGs via
+`liveReferenceVisualDelta(...)`. Chrome DevTools MCP can only write under the
+process temp root; copy files into the gitignored path afterward. Do not commit
+live PNGs or `manifest.local.json`.

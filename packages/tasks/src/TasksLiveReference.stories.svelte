@@ -11,7 +11,7 @@
       docs: {
         description: {
           component:
-            "Local-only live Superlist captures under `.reference-artifacts/live-chrome/`. These PNGs are gitignored and must never be committed — they may contain real account or list content. Use Visual Delta here for review; production stories keep synthetic `referenceVisualDelta` targets.",
+            "Local-only live Superlist captures under `.reference-artifacts/live-superlist/`. These PNGs are gitignored and must never be committed — they may contain real account or list content. Production stories opt in with `STORYBOOK_TASKS_LIVE_REFERENCE=1 pnpm storybook`.",
         },
       },
     },

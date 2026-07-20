@@ -8,12 +8,12 @@ import { visualDeltaMiddlewarePlugin } from "./visual-delta-middleware.js";
 import { uiDocsMiddlewarePlugin } from "./ui-docs-middleware.js";
 
 const storybookDir = dirname(fileURLToPath(import.meta.url));
-const tasksLiveChromeRoot = resolve(
+const tasksLiveSuperlistRoot = resolve(
   storybookDir,
-  "../packages/tasks/.reference-artifacts/live-chrome",
+  "../packages/tasks/.reference-artifacts/live-superlist",
 );
 // Gitignored capture tree — ensure the mount path exists before Storybook starts.
-mkdirSync(tasksLiveChromeRoot, { recursive: true });
+mkdirSync(resolve(tasksLiveSuperlistRoot, "screenshots"), { recursive: true });
 
 const config: StorybookConfig = {
   stories: [
@@ -41,7 +41,7 @@ const config: StorybookConfig = {
       to: "/tasks-reference/2026-07-20",
     },
     {
-      from: "../packages/tasks/.reference-artifacts/live-chrome",
+      from: "../packages/tasks/.reference-artifacts/live-superlist",
       to: "/tasks-reference-live",
     },
   ],
@@ -58,6 +58,11 @@ const config: StorybookConfig = {
       ...plugins,
     ];
     return mergeConfig(viteConfig, {
+      define: {
+        "import.meta.env.STORYBOOK_TASKS_LIVE_REFERENCE": JSON.stringify(
+          process.env.STORYBOOK_TASKS_LIVE_REFERENCE ?? "",
+        ),
+      },
       resolve: {
         alias: {
           "@stevejuma/ui/shadcn": fileURLToPath(

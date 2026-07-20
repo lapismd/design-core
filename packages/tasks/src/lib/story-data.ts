@@ -22,9 +22,29 @@ export type TasksImplementationBrief = {
   referenceTargetId?: string;
 };
 
-const captureRoot = "/tasks-reference/2026-07-20";
+const syntheticCaptureRoot = "/tasks-reference/2026-07-20";
+/** Local-only live Superlist captures (gitignored). Never commit these PNGs. */
+export const liveCaptureRoot = "/tasks-reference-live";
 
-/** Only synthetic-fixture evidence is exposed to Storybook. */
+const MOTION_REFERENCE_IDS = new Set([
+  "task-open-motion",
+  "mobile-swipe-motion",
+]);
+
+/** Opt-in: `STORYBOOK_TASKS_LIVE_REFERENCE=1 pnpm storybook` */
+export function preferLiveReference(): boolean {
+  return import.meta.env.STORYBOOK_TASKS_LIVE_REFERENCE === "1";
+}
+
+function syntheticScreenshotSource(id: string): string {
+  return `${syntheticCaptureRoot}/screenshots/synthetic-browser/${id}.png`;
+}
+
+function liveScreenshotSource(id: string): string {
+  return `${liveCaptureRoot}/screenshots/${id}.png`;
+}
+
+/** Only synthetic-fixture evidence is exposed to Storybook by default. */
 export const referenceTargets = [
   {
     id: "desktop-inbox",
@@ -33,7 +53,7 @@ export const referenceTargets = [
     page: "Inbox",
     viewport: "1680 × 1000 desktop",
     state: "Synthetic fixture list",
-    source: `${captureRoot}/screenshots/synthetic-browser/desktop-inbox.png`,
+    source: syntheticScreenshotSource("desktop-inbox"),
   },
   {
     id: "desktop-today",
@@ -42,7 +62,7 @@ export const referenceTargets = [
     page: "Today",
     viewport: "1680 × 1000 desktop",
     state: "Synthetic fixture layout",
-    source: `${captureRoot}/screenshots/synthetic-browser/desktop-today.png`,
+    source: syntheticScreenshotSource("desktop-today"),
   },
   {
     id: "desktop-tasks",
@@ -51,7 +71,7 @@ export const referenceTargets = [
     page: "Tasks",
     viewport: "1680 × 1000 desktop",
     state: "Synthetic fixture layout",
-    source: `${captureRoot}/screenshots/synthetic-browser/desktop-tasks.png`,
+    source: syntheticScreenshotSource("desktop-tasks"),
   },
   {
     id: "desktop-updates",
@@ -60,7 +80,7 @@ export const referenceTargets = [
     page: "Updates",
     viewport: "1680 × 1000 desktop",
     state: "Synthetic fixture layout",
-    source: `${captureRoot}/screenshots/synthetic-browser/desktop-updates.png`,
+    source: syntheticScreenshotSource("desktop-updates"),
   },
   {
     id: "desktop-lists",
@@ -69,7 +89,7 @@ export const referenceTargets = [
     page: "Lists",
     viewport: "1680 × 1000 desktop",
     state: "Synthetic fixture layout",
-    source: `${captureRoot}/screenshots/synthetic-browser/desktop-lists.png`,
+    source: syntheticScreenshotSource("desktop-lists"),
   },
   {
     id: "desktop-list-detail",
@@ -78,7 +98,7 @@ export const referenceTargets = [
     page: "List detail",
     viewport: "1680 × 1000 desktop",
     state: "Synthetic fixture list",
-    source: `${captureRoot}/screenshots/synthetic-browser/desktop-list-detail.png`,
+    source: syntheticScreenshotSource("desktop-list-detail"),
   },
   {
     id: "desktop-task-detail",
@@ -87,7 +107,7 @@ export const referenceTargets = [
     page: "Task detail",
     viewport: "1680 × 1000 desktop",
     state: "Detail open",
-    source: `${captureRoot}/screenshots/synthetic-browser/desktop-task-detail.png`,
+    source: syntheticScreenshotSource("desktop-task-detail"),
   },
   {
     id: "tablet-landscape-inbox",
@@ -96,7 +116,7 @@ export const referenceTargets = [
     page: "Inbox",
     viewport: "1024 × 768 tablet landscape",
     state: "Synthetic fixture contract",
-    source: `${captureRoot}/screenshots/synthetic-browser/tablet-landscape-inbox.png`,
+    source: syntheticScreenshotSource("tablet-landscape-inbox"),
   },
   {
     id: "tablet-portrait-inbox",
@@ -105,7 +125,7 @@ export const referenceTargets = [
     page: "Inbox",
     viewport: "768 × 1024 tablet portrait",
     state: "Synthetic fixture contract",
-    source: `${captureRoot}/screenshots/synthetic-browser/tablet-portrait-inbox.png`,
+    source: syntheticScreenshotSource("tablet-portrait-inbox"),
   },
   {
     id: "mobile-inbox",
@@ -114,7 +134,7 @@ export const referenceTargets = [
     page: "Inbox",
     viewport: "390 × 844 mobile",
     state: "Synthetic fixture contract",
-    source: `${captureRoot}/screenshots/synthetic-browser/mobile-inbox.png`,
+    source: syntheticScreenshotSource("mobile-inbox"),
   },
   {
     id: "task-open-motion",
@@ -124,7 +144,7 @@ export const referenceTargets = [
     page: "Task detail",
     viewport: "Desktop",
     state: "Selection → explicit open",
-    source: `${captureRoot}/motion/synthetic-browser-task-open/contact-sheet.png`,
+    source: `${syntheticCaptureRoot}/motion/synthetic-browser-task-open/contact-sheet.png`,
   },
   {
     id: "mobile-swipe-motion",
@@ -134,7 +154,7 @@ export const referenceTargets = [
     page: "Task row",
     viewport: "Mobile",
     state: "Swipe action revealed",
-    source: `${captureRoot}/motion/synthetic-browser-mobile-row-swipe/contact-sheet.png`,
+    source: `${syntheticCaptureRoot}/motion/synthetic-browser-mobile-row-swipe/contact-sheet.png`,
   },
 ] as const satisfies readonly TasksReferenceTarget[];
 
@@ -149,12 +169,21 @@ export function getReferenceTarget(
     id as (typeof referenceTargets)[number]["id"],
   );
   if (!target) throw new Error(`Unknown Tasks reference target: ${id}`);
+  if (preferLiveReference() && !MOTION_REFERENCE_IDS.has(id)) {
+    return {
+      ...target,
+      state: "Live session — local only",
+      source: liveScreenshotSource(id),
+    };
+  }
   return target;
 }
 
 /**
- * Shared Visual Delta settings for the synthetic fixture captures served from
- * `/tasks-reference`. The captures are evidence, not test baselines.
+ * Visual Delta settings for reference captures. Default: committed synthetics
+ * under `/tasks-reference`. With `STORYBOOK_TASKS_LIVE_REFERENCE=1`, screenshot
+ * targets resolve to gitignored `/tasks-reference-live/screenshots/` (motion
+ * contact sheets stay synthetic).
  */
 export function referenceVisualDelta(...targetIds: readonly string[]) {
   return {
@@ -169,11 +198,9 @@ export function referenceVisualDelta(...targetIds: readonly string[]) {
 
 /**
  * Local-only live Superlist captures (gitignored under
- * `.reference-artifacts/live-chrome/`). Never commit these PNGs — they may
+ * `.reference-artifacts/live-superlist/`). Never commit these PNGs — they may
  * contain real account/list content. Served at `/tasks-reference-live`.
  */
-export const liveCaptureDate = "2026-07-20";
-export const liveCaptureRoot = `/tasks-reference-live/${liveCaptureDate}`;
 
 export type TasksLiveReferenceId =
   | "desktop-inbox"
