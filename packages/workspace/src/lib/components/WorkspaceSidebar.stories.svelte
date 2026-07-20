@@ -55,10 +55,19 @@
 
 <Story
   name="Icon-only tabs"
-  play={async ({ canvas }) => {
+  play={async ({ canvas, canvasElement }) => {
+    const fileTab = canvas.getByRole("radio", { name: "Files" });
+    await expect(fileTab.textContent?.trim()).toBe("");
+    await expect(Math.round(fileTab.getBoundingClientRect().width)).toBe(32);
+    await expect(Math.round(fileTab.getBoundingClientRect().height)).toBe(32);
     await userEvent.click(canvas.getByRole("radio", { name: "Search" }));
     await expect(canvas.getByText("Search sidebar content")).toBeVisible();
     await expect(canvas.getByRole("status")).toHaveTextContent("search");
+    await expect(
+      canvasElement.querySelectorAll(
+        '[data-workspace-part="sidebar-tab-trigger"]',
+      ),
+    ).toHaveLength(2);
   }}
 >
   {#snippet template()}

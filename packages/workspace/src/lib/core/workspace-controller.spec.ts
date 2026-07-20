@@ -321,14 +321,24 @@ describe("WorkspaceController", () => {
 
   it("persists stacked presentation and icon-sidebar selection", () => {
     const controller = new WorkspaceController({
-      layout: { main: createWorkspaceTabs([firstTab], "tabs") },
+      layout: { main: createWorkspaceTabs([firstTab], "tabs", "stacked") },
     });
 
-    expect(controller.setTabPresentation("tabs", "stacked")).toBe(true);
     expect(controller.selectSidebarTab("right", "outline")).toBe(true);
     expect(controller.toJSON()).toMatchObject({
       main: { presentation: "stacked" },
       right: { activeTabId: "outline" },
     });
+  });
+
+  it("creates stacked tab groups through the shared layout helper", () => {
+    expect(createWorkspaceTabs([firstTab], "stacked-tabs", "stacked")).toEqual(
+      expect.objectContaining({
+        kind: "tabs",
+        id: "stacked-tabs",
+        presentation: "stacked",
+        activeTabId: "notes",
+      }),
+    );
   });
 });

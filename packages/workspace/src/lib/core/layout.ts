@@ -6,6 +6,7 @@ import type {
   WorkspaceSplitNode,
   WorkspaceTab,
   WorkspaceTabsNode,
+  WorkspaceTabsPresentation,
 } from "./types.js";
 
 const MIN_SIDEBAR_SIZE = 220;
@@ -135,9 +136,16 @@ function normalizeNode(value: unknown, seen: Set<string>): WorkspaceNode {
 export function createWorkspaceTabs(
   tabs: WorkspaceTab[] = [],
   id = nextId("tabs"),
+  presentation: WorkspaceTabsPresentation = "top",
 ): WorkspaceTabsNode {
   return normalizeNode(
-    { kind: "tabs", id, tabs, activeTabId: tabs[0]?.id ?? null },
+    {
+      kind: "tabs",
+      id,
+      tabs,
+      activeTabId: tabs[0]?.id ?? null,
+      presentation,
+    },
     new Set(),
   ) as WorkspaceTabsNode;
 }

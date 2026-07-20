@@ -19,24 +19,53 @@
 
 <script lang="ts">
   import { createDemoController } from "./stories/fixtures";
+  import { createWorkspaceTabs } from "../core/layout.js";
   import type { WorkspaceTabsNode } from "../core/types.js";
 
-  const stackedController = createDemoController({
-    version: 1,
-    left: { open: false, size: 280, activeTabId: null, collapsedGroups: {} },
-    right: { open: false, size: 280, activeTabId: null, collapsedGroups: {} },
-    main: {
-      kind: "tabs",
-      id: "stacked-tabs",
-      activeTabId: "notes",
-      presentation: "stacked",
-      tabs: [
-        { id: "notes", title: "Notes", view: { type: "story", state: {} } },
-        { id: "details", title: "Details", view: { type: "story", state: {} } },
-        { id: "outline", title: "Outline", view: { type: "story", state: {} } },
-      ],
-    },
-  });
+  function createStackedController() {
+    return createDemoController({
+      version: 1,
+      left: { open: false, size: 280, activeTabId: null, collapsedGroups: {} },
+      right: { open: false, size: 280, activeTabId: null, collapsedGroups: {} },
+      main: createWorkspaceTabs(
+        [
+          { id: "notes", title: "Notes", view: { type: "story", state: {} } },
+          {
+            id: "details",
+            title: "Details",
+            view: { type: "story", state: {} },
+          },
+          {
+            id: "outline",
+            title: "Outline",
+            view: { type: "story", state: {} },
+          },
+        ],
+        "stacked-tabs",
+        "stacked",
+      ),
+    });
+  }
+
+  let stackedController = $state(createStackedController());
+  let dragController = $state(createStackedController());
+  let closeController = $state(createStackedController());
+  let overflowController = $state(
+    createDemoController({
+      version: 1,
+      left: { open: false, size: 280, activeTabId: null, collapsedGroups: {} },
+      right: { open: false, size: 280, activeTabId: null, collapsedGroups: {} },
+      main: createWorkspaceTabs(
+        Array.from({ length: 10 }, (_, index) => ({
+          id: `stacked-${index + 1}`,
+          title: `Stacked tab ${index + 1}`,
+          view: { type: "story", state: {} },
+        })),
+        "many-stacked-tabs",
+        "stacked",
+      ),
+    }),
+  );
 </script>
 
 <Story
@@ -54,6 +83,112 @@
       <WorkspaceStackedTabs
         controller={stackedController}
         group={stackedController.layout.main as WorkspaceTabsNode}
+      />
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Reorders vertical rails"
+  play={async ({ canvas, canvasElement }) => {
+    const outline = canvas.getByRole("button", { name: "Outline" });
+    const notes = canvas.getByRole("button", { name: "Notes" });
+    const notesPanel = notes.closest<HTMLElement>(
+      '[data-ui-part="stacked-panel"]',
+    );
+    const strip = notes.closest<HTMLElement>('[data-ui-part="stacked-strip"]');
+    if (!notesPanel || !strip) throw new Error("Stacked drag targets missing");
+
+    const dataTransfer = new DataTransfer();
+    outline.dispatchEvent(
+      new DragEvent("dragstart", {
+        bubbles: true,
+        cancelable: true,
+        dataTransfer,
+      }),
+    );
+    notesPanel.dispatchEvent(
+      new DragEvent("dragover", {
+        bubbles: true,
+        cancelable: true,
+        clientX: notesPanel.getBoundingClientRect().left,
+        dataTransfer,
+      }),
+    );
+    await new Promise<void>((resolve) =>
+      requestAnimationFrame(() => resolve()),
+    );
+    await expect(notesPanel).toHaveAttribute("data-drop-before", "true");
+    strip.dispatchEvent(
+      new DragEvent("drop", {
+        bubbles: true,
+        cancelable: true,
+        dataTransfer,
+      }),
+    );
+    await new Promise<void>((resolve) =>
+      requestAnimationFrame(() => resolve()),
+    );
+
+    const triggerText = Array.from(
+      canvasElement.querySelectorAll<HTMLElement>(
+        '[data-workspace-part="stacked-tab-trigger"]',
+      ),
+      (trigger) => trigger.textContent?.trim(),
+    );
+    await expect(triggerText).toEqual(["Outline", "Notes", "Details"]);
+  }}
+>
+  {#snippet template()}
+    <div data-ui-component="workspace-stacked-story" data-ui-part="host">
+      <WorkspaceStackedTabs
+        controller={dragController}
+        group={dragController.layout.main as WorkspaceTabsNode}
+      />
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Repairs active tab after close"
+  play={async ({ canvas }) => {
+    await userEvent.click(canvas.getByRole("button", { name: "Details" }));
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Close Details" }),
+    );
+    await expect(
+      canvas.queryByRole("button", { name: "Details" }),
+    ).not.toBeInTheDocument();
+    await expect(canvas.getByText("Outline view")).toBeVisible();
+  }}
+>
+  {#snippet template()}
+    <div data-ui-component="workspace-stacked-story" data-ui-part="host">
+      <WorkspaceStackedTabs
+        controller={closeController}
+        group={closeController.layout.main as WorkspaceTabsNode}
+      />
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Many rails without native scrollbars"
+  play={async ({ canvasElement }) => {
+    const strip = canvasElement.querySelector<HTMLElement>(
+      '[data-ui-part="stacked-strip"]',
+    );
+    if (!strip) throw new Error("Stacked strip not found");
+    const style = getComputedStyle(strip);
+    await expect(style.overflowX).toBe("hidden");
+    await expect(style.overflowY).toBe("hidden");
+  }}
+>
+  {#snippet template()}
+    <div data-ui-component="workspace-stacked-story" data-ui-part="host">
+      <WorkspaceStackedTabs
+        controller={overflowController}
+        group={overflowController.layout.main as WorkspaceTabsNode}
       />
     </div>
   {/snippet}
