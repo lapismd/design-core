@@ -2,6 +2,7 @@
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent } from "storybook/test";
   import WorkspaceStackedTabs from "./WorkspaceStackedTabs.svelte";
+  import WorkspaceTabs from "./WorkspaceTabs.svelte";
 
   const { Story } = defineMeta({
     title: "Workspace/Workspace Stacked Tabs",
@@ -19,7 +20,7 @@
 
 <script lang="ts">
   import { createDemoController } from "./stories/fixtures";
-  import { createWorkspaceTabs } from "../core/layout.js";
+  import { createWorkspaceTabs, findWorkspaceNode } from "../core/layout.js";
   import type { WorkspaceTabsNode } from "../core/types.js";
 
   function createStackedController() {
@@ -47,6 +48,54 @@
     });
   }
 
+  function createCrossPaneController() {
+    return createDemoController({
+      version: 1,
+      left: { open: false, size: 280, activeTabId: null, collapsedGroups: {} },
+      right: { open: false, size: 280, activeTabId: null, collapsedGroups: {} },
+      main: {
+        kind: "split",
+        id: "cross-pane-root",
+        direction: "horizontal",
+        sizes: [35, 65],
+        children: [
+          createWorkspaceTabs(
+            [
+              {
+                id: "inbox",
+                title: "Inbox",
+                view: { type: "story", state: {} },
+              },
+            ],
+            "source-tabs",
+          ),
+          createWorkspaceTabs(
+            [
+              {
+                id: "stack-notes",
+                title: "Notes",
+                view: { type: "story", state: {} },
+              },
+            ],
+            "stack-target",
+            "stacked",
+          ),
+        ],
+      },
+    });
+  }
+
+  function tabsFor(
+    controller: ReturnType<typeof createDemoController>,
+    id: string,
+  ) {
+    const found = findWorkspaceNode(controller.layout.main, id);
+    if (!found || found.node.kind !== "tabs") {
+      throw new Error(`Expected tab group ${id}`);
+    }
+    return found.node;
+  }
+
   let stackedController = $state(createStackedController());
   let dragController = $state(createStackedController());
   let closeController = $state(createStackedController());
@@ -66,6 +115,7 @@
       ),
     }),
   );
+  let crossPaneController = $state(createCrossPaneController());
 </script>
 
 <Story
@@ -194,9 +244,71 @@
   {/snippet}
 </Story>
 
+<Story
+  name="Previews an edge drop from another pane"
+  play={async ({ canvas, canvasElement }) => {
+    const source = canvas.getByRole("tab", { name: "Inbox" });
+    const target = canvas.getByRole("region", {
+      name: "Drop a tab into stack-target",
+    });
+    const dataTransfer = new DataTransfer();
+    const rect = target.getBoundingClientRect();
+    source.dispatchEvent(
+      new DragEvent("dragstart", {
+        bubbles: true,
+        cancelable: true,
+        dataTransfer,
+      }),
+    );
+    target.dispatchEvent(
+      new DragEvent("dragover", {
+        bubbles: true,
+        cancelable: true,
+        clientX: rect.left + rect.width / 2,
+        clientY: rect.bottom - rect.height * 0.1,
+        dataTransfer,
+      }),
+    );
+    await new Promise<void>((resolve) =>
+      requestAnimationFrame(() => resolve()),
+    );
+    await expect(
+      canvasElement.querySelector(
+        '[data-ui-part="tab-drop-overlay"][data-drop-position="bottom"]',
+      ),
+    ).toBeVisible();
+  }}
+>
+  {#snippet template()}
+    <div
+      data-ui-component="workspace-stacked-story"
+      data-ui-part="cross-pane-host"
+    >
+      <WorkspaceTabs
+        controller={crossPaneController}
+        group={tabsFor(crossPaneController, "source-tabs")}
+      />
+      <WorkspaceStackedTabs
+        controller={crossPaneController}
+        group={tabsFor(crossPaneController, "stack-target")}
+      />
+    </div>
+  {/snippet}
+</Story>
+
 <style>
   :global([data-ui-component="workspace-stacked-story"][data-ui-part="host"]) {
     height: 30rem;
+    border: 1px solid var(--border);
+  }
+
+  :global(
+      [data-ui-component="workspace-stacked-story"][data-ui-part="cross-pane-host"]
+    ) {
+    display: grid;
+    height: 30rem;
+    grid-template-columns: minmax(12rem, 1fr) minmax(18rem, 2fr);
+    overflow: hidden;
     border: 1px solid var(--border);
   }
 </style>
