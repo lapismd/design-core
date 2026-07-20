@@ -1,8 +1,8 @@
 import { Canvas, Markdown, Meta } from "@storybook/addon-docs/blocks";
-import * as TasksComponentsStories from "../TasksComponents.stories.svelte";
+import * as TasksFeedbackStories from "../components/FeedbackAndEmptyStates.stories.svelte";
 import feedbackSpec from "../../specs/components/tasks-feedback.md?raw";
 
-<Meta title="Tasks/Component Specs/Feedback and Empty States" />
+<Meta of={TasksFeedbackStories} />
 
 The canonical implementation contract is rendered below from
 `packages/tasks/specs/components/tasks-feedback.md`.
@@ -12,6 +12,6 @@ The canonical implementation contract is rendered below from
 ## Implementation placeholder
 
 <Canvas
-  of={TasksComponentsStories.FeedbackAndEmptyStates}
-  meta={TasksComponentsStories}
+  of={TasksFeedbackStories.ImplementationPlaceholder}
+  meta={TasksFeedbackStories}
 />

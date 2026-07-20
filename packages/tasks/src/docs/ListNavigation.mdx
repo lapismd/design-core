@@ -1,8 +1,8 @@
 import { Canvas, Markdown, Meta } from "@storybook/addon-docs/blocks";
-import * as TasksComponentsStories from "../TasksComponents.stories.svelte";
+import * as ListNavigationStories from "../components/ListNavigation.stories.svelte";
 import listNavigationSpec from "../../specs/components/list-navigation.md?raw";
 
-<Meta title="Tasks/Component Specs/List Navigation and Index" />
+<Meta of={ListNavigationStories} />
 
 The canonical implementation contract is rendered below from
 `packages/tasks/specs/components/list-navigation.md`.
@@ -12,6 +12,6 @@ The canonical implementation contract is rendered below from
 ## Implementation placeholder
 
 <Canvas
-  of={TasksComponentsStories.ListNavigationAndIndex}
-  meta={TasksComponentsStories}
+  of={ListNavigationStories.ImplementationPlaceholder}
+  meta={ListNavigationStories}
 />

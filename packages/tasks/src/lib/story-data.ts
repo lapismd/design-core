@@ -148,6 +148,21 @@ export function getReferenceTarget(id: string): TasksReferenceTarget {
   return target;
 }
 
+/**
+ * Shared Visual Delta settings for the sanitised captures served from
+ * `/tasks-reference`. The captures are evidence, not test baselines.
+ */
+export function referenceVisualDelta(...targetIds: readonly string[]) {
+  return {
+    images: targetIds.map((id) => getReferenceTarget(id).source),
+    opacity: 0.5,
+    colorInversion: false,
+    align: "canvas",
+    placement: "right",
+    passThresholdPercent: 0.1,
+  };
+}
+
 export const pageImplementationBriefs = [
   {
     id: "shell",
@@ -487,6 +502,17 @@ export const componentImplementationBriefs = [
     referenceTargetId: "task-open-motion",
   },
 ] as const satisfies readonly TasksImplementationBrief[];
+
+export function getComponentImplementationBrief(
+  id: string,
+): TasksImplementationBrief {
+  const brief = componentImplementationBriefs.find(
+    (candidate) => candidate.id === id,
+  );
+  if (!brief)
+    throw new Error(`Unknown Tasks component implementation brief: ${id}`);
+  return brief;
+}
 
 export const allImplementationBriefs = [
   ...pageImplementationBriefs,

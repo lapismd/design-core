@@ -1,8 +1,8 @@
 import { Canvas, Markdown, Meta } from "@storybook/addon-docs/blocks";
-import * as TasksComponentsStories from "../TasksComponents.stories.svelte";
+import * as TaskComposerStories from "../components/TaskComposer.stories.svelte";
 import taskComposerSpec from "../../specs/components/task-composer.md?raw";
 
-<Meta title="Tasks/Component Specs/Task Composer" />
+<Meta of={TaskComposerStories} />
 
 The canonical implementation contract is rendered below from
 `packages/tasks/specs/components/task-composer.md`.
@@ -12,6 +12,6 @@ The canonical implementation contract is rendered below from
 ## Implementation placeholder
 
 <Canvas
-  of={TasksComponentsStories.TaskComposer}
-  meta={TasksComponentsStories}
+  of={TaskComposerStories.ImplementationPlaceholder}
+  meta={TaskComposerStories}
 />

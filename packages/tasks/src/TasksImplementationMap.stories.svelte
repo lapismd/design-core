@@ -23,11 +23,19 @@
   import {
     componentImplementationBriefs,
     pageImplementationBriefs,
+    referenceVisualDelta,
   } from "./lib/story-data.js";
 </script>
 
 <Story
   name="Component breakdown"
+  parameters={{
+    visualDelta: referenceVisualDelta(
+      "desktop-inbox",
+      "desktop-task-detail",
+      "mobile-swipe-motion",
+    ),
+  }}
   play={async ({ canvas }) => {
     await expect(canvas.getByText("Tasks component breakdown")).toBeVisible();
     await expect(canvas.getByText("Task row")).toBeVisible();

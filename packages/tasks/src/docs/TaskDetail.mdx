@@ -1,14 +1,18 @@
 import { Canvas, Markdown, Meta } from "@storybook/addon-docs/blocks";
-import * as TasksComponentsStories from "../TasksComponents.stories.svelte";
+import * as TaskDetailStories from "../components/TaskDetail.stories.svelte";
 import taskDetailSpec from "../../specs/components/task-detail.md?raw";
 
-<Meta title="Tasks/Component Specs/Task Detail" />
+<Meta of={TaskDetailStories} />
 
 The canonical implementation contract is rendered below from
-`packages/tasks/specs/components/task-detail.md`.
+`packages/tasks/specs/components/task-detail.md`. Its TODO interaction stories
+encode focus on open, Escape return, and mobile right-swipe return.
 
 <Markdown>{taskDetailSpec}</Markdown>
 
 ## Implementation placeholder
 
-<Canvas of={TasksComponentsStories.TaskDetail} meta={TasksComponentsStories} />
+<Canvas
+  of={TaskDetailStories.ImplementationPlaceholder}
+  meta={TaskDetailStories}
+/>

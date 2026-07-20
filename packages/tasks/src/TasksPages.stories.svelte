@@ -20,7 +20,10 @@
 </script>
 
 <script lang="ts">
-  import { pageImplementationBriefs } from "./lib/story-data.js";
+  import {
+    pageImplementationBriefs,
+    referenceVisualDelta,
+  } from "./lib/story-data.js";
 
   const shell = pageImplementationBriefs[0];
   const inbox = pageImplementationBriefs[1];
@@ -33,6 +36,7 @@
 
 <Story
   name="Tasks shell"
+  parameters={{ visualDelta: referenceVisualDelta("desktop-inbox") }}
   play={async ({ canvas }) => {
     await expect(canvas.getByText("Tasks shell")).toBeVisible();
     await expect(canvas.getByText("Sidebar")).toBeVisible();
@@ -41,26 +45,44 @@
   {#snippet template()}<TasksImplementationBrief brief={shell} />{/snippet}
 </Story>
 
-<Story name="Inbox">
+<Story
+  name="Inbox"
+  parameters={{ visualDelta: referenceVisualDelta("desktop-inbox") }}
+>
   {#snippet template()}<TasksImplementationBrief brief={inbox} />{/snippet}
 </Story>
 
-<Story name="Today">
+<Story
+  name="Today"
+  parameters={{ visualDelta: referenceVisualDelta("desktop-today") }}
+>
   {#snippet template()}<TasksImplementationBrief brief={today} />{/snippet}
 </Story>
 
-<Story name="Tasks overview">
+<Story
+  name="Tasks overview"
+  parameters={{ visualDelta: referenceVisualDelta("desktop-tasks") }}
+>
   {#snippet template()}<TasksImplementationBrief brief={tasks} />{/snippet}
 </Story>
 
-<Story name="Updates">
+<Story
+  name="Updates"
+  parameters={{ visualDelta: referenceVisualDelta("desktop-updates") }}
+>
   {#snippet template()}<TasksImplementationBrief brief={updates} />{/snippet}
 </Story>
 
-<Story name="Lists index">
+<Story
+  name="Lists index"
+  parameters={{ visualDelta: referenceVisualDelta("desktop-lists") }}
+>
   {#snippet template()}<TasksImplementationBrief brief={lists} />{/snippet}
 </Story>
 
-<Story name="Task detail page">
+<Story
+  name="Task detail page"
+  parameters={{ visualDelta: referenceVisualDelta("desktop-task-detail") }}
+>
   {#snippet template()}<TasksImplementationBrief brief={taskDetail} />{/snippet}
 </Story>

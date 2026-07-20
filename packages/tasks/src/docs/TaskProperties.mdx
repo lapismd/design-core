@@ -1,8 +1,8 @@
 import { Canvas, Markdown, Meta } from "@storybook/addon-docs/blocks";
-import * as TasksComponentsStories from "../TasksComponents.stories.svelte";
+import * as TaskPropertiesStories from "../components/TaskProperties.stories.svelte";
 import taskPropertiesSpec from "../../specs/components/task-properties.md?raw";
 
-<Meta title="Tasks/Component Specs/Task Properties" />
+<Meta of={TaskPropertiesStories} />
 
 The canonical implementation contract is rendered below from
 `packages/tasks/specs/components/task-properties.md`.
@@ -12,6 +12,6 @@ The canonical implementation contract is rendered below from
 ## Implementation placeholder
 
 <Canvas
-  of={TasksComponentsStories.TaskProperties}
-  meta={TasksComponentsStories}
+  of={TaskPropertiesStories.ImplementationPlaceholder}
+  meta={TaskPropertiesStories}
 />

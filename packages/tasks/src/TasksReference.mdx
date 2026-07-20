@@ -12,10 +12,11 @@ ships Storybook planning surfaces, not a final product component in this slice.
 - **Tasks/Reference Targets** shows the redacted desktop, tablet, mobile, and
   interaction captures that implementation should match structurally.
 - **Tasks/Implementation Map** gives the recommended component build order.
-- **Tasks/Pages** and **Tasks/Components** contain visual implementation briefs
-  with states, fixture use, primitive reuse, planned additions, and test scope.
-- **Tasks/Component Specs** renders the component contracts from `specs/` in
-  the associated Storybook Docs pages.
+- **Tasks/Pages** contains visual page implementation briefs with states,
+  fixture use, primitive reuse, planned additions, and test scope.
+- Every **Tasks/Components/{component}** entry owns its Docs page and renders
+  the corresponding contract from `specs/`; TODO-tagged stories encode its
+  expected interactions until the real component is implemented.
 
 ## Start here
 

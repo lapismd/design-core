@@ -1,8 +1,8 @@
 import { Canvas, Markdown, Meta } from "@storybook/addon-docs/blocks";
-import * as TasksComponentsStories from "../TasksComponents.stories.svelte";
+import * as TasksFiltersMenusStories from "../components/FiltersAndMenus.stories.svelte";
 import filtersMenusSpec from "../../specs/components/tasks-filters-menus.md?raw";
 
-<Meta title="Tasks/Component Specs/Filters and Menus" />
+<Meta of={TasksFiltersMenusStories} />
 
 The canonical implementation contract is rendered below from
 `packages/tasks/specs/components/tasks-filters-menus.md`.
@@ -12,6 +12,6 @@ The canonical implementation contract is rendered below from
 ## Implementation placeholder
 
 <Canvas
-  of={TasksComponentsStories.FiltersAndMenus}
-  meta={TasksComponentsStories}
+  of={TasksFiltersMenusStories.ImplementationPlaceholder}
+  meta={TasksFiltersMenusStories}
 />
