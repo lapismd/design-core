@@ -71,7 +71,8 @@ describe("visual-baseline-design", () => {
       images: [url],
       opacity: 0.5,
       colorInversion: false,
-      align: "viewport",
+      align: "canvas",
+      placement: "right",
       passThresholdPercent: 0.1,
     });
   });
@@ -106,7 +107,7 @@ describe("visual-baseline-design", () => {
   {#snippet template()}ok{/snippet}
 </Story>
 `;
-    const out = injectVisualBaselineVisualDeltas(source, "select");
+    const out = injectVisualBaselineVisualDeltas(source, "shadcn/select");
     expect(out).toContain(
       `"images":["/visual-baselines/shadcn/select/open-menu${VISUAL_BASELINE_SUFFIX}.png"]`,
     );
