@@ -5,6 +5,7 @@ export { default as WorkspaceSplit } from "./WorkspaceSplit.svelte";
 export { default as WorkspaceStackedTabs } from "./WorkspaceStackedTabs.svelte";
 export { default as WorkspaceTabBody } from "./WorkspaceTabBody.svelte";
 export { default as WorkspaceTabs } from "./WorkspaceTabs.svelte";
+export { default as WorkspaceViewHeader } from "./WorkspaceViewHeader.svelte";
 export { default as WorkspaceViewFrame } from "./WorkspaceViewFrame.svelte";
 export { default as WorkspaceViewHost } from "./WorkspaceViewHost.svelte";
 export {

@@ -1,16 +1,16 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent } from "storybook/test";
-  import WorkspaceViewFrame from "./WorkspaceViewFrame.svelte";
+  import WorkspaceViewHeader from "./WorkspaceViewHeader.svelte";
 
   const { Story } = defineMeta({
-    title: "Workspace/Workspace View Frame",
-    component: WorkspaceViewFrame,
+    title: "Workspace/Workspace View Header",
+    component: WorkspaceViewHeader,
     parameters: {
       docs: {
         description: {
           component:
-            "Shared tab body with Lapis-style view title, navigation, actions, options, and a bounded content region.",
+            "Reusable Lapis-style desktop view toolbar with navigation, breadcrumbs, title, actions, and consumer-owned options.",
         },
       },
     },
@@ -19,13 +19,12 @@
 
 <script lang="ts">
   import FileTextIcon from "@lucide/svelte/icons/file-text";
-  import RefreshCwIcon from "@lucide/svelte/icons/refresh-cw";
   import MoreHorizontalIcon from "@lucide/svelte/icons/more-horizontal";
+  import RefreshCwIcon from "@lucide/svelte/icons/refresh-cw";
   import { Button } from "@stevejuma/ui/shadcn/button";
   import type { WorkspaceAction } from "../core/types.js";
 
   let result = $state("Ready");
-  let location = $state("All notes");
   const actions: WorkspaceAction[] = [
     {
       id: "refresh",
@@ -37,25 +36,33 @@
 </script>
 
 <Story
-  name="Lapis-style view header"
+  name="Navigation, breadcrumb, actions and options"
   play={async ({ canvas }) => {
     await userEvent.click(canvas.getByRole("button", { name: "Notes" }));
-    await expect(canvas.getByRole("status")).toHaveTextContent("Notes");
+    await expect(canvas.getByRole("status")).toHaveTextContent(
+      "Notes selected",
+    );
     await userEvent.click(canvas.getByRole("button", { name: "Refresh view" }));
     await expect(canvas.getByRole("status")).toHaveTextContent("Refreshed");
-    await expect(canvas.getByText("Reusable view body")).toBeVisible();
   }}
 >
   {#snippet template()}
-    <div data-ui-component="workspace-view-frame-story" data-ui-part="host">
-      <WorkspaceViewFrame
+    <div data-ui-component="workspace-view-header-story" data-ui-part="host">
+      <WorkspaceViewHeader
         title="Daily notes.md"
         icon={FileTextIcon}
-        back={{ label: "Back", onSelect: () => (location = "Back") }}
-        forward={{ label: "Forward", onSelect: () => (location = "Forward") }}
+        back={{ label: "Back", onSelect: () => (result = "Back selected") }}
+        forward={{
+          label: "Forward",
+          onSelect: () => (result = "Forward selected"),
+        }}
         breadcrumbs={[
           { id: "vault", label: "Vault" },
-          { id: "notes", label: "Notes", onSelect: () => (location = "Notes") },
+          {
+            id: "notes",
+            label: "Notes",
+            onSelect: () => (result = "Notes selected"),
+          },
         ]}
         {actions}
       >
@@ -69,26 +76,29 @@
             <MoreHorizontalIcon data-icon="inline-start" />
           </Button>
         {/snippet}
-        <div data-ui-component="workspace-view-frame-story" data-ui-part="body">
-          <p>Reusable view body</p>
-          <output>{result === "Ready" ? location : result}</output>
-        </div>
-      </WorkspaceViewFrame>
+      </WorkspaceViewHeader>
+      <output>{result}</output>
     </div>
   {/snippet}
 </Story>
 
 <style>
   :global(
-      [data-ui-component="workspace-view-frame-story"][data-ui-part="host"]
+      [data-ui-component="workspace-view-header-story"][data-ui-part="host"]
     ) {
-    height: 24rem;
+    width: min(100%, 48rem);
+    overflow: hidden;
     border: 1px solid var(--border);
   }
 
   :global(
-      [data-ui-component="workspace-view-frame-story"][data-ui-part="body"]
+      [data-ui-component="workspace-view-header-story"][data-ui-part="host"]
+        output
     ) {
-    padding: 1rem;
+    display: block;
+    padding: 0.5rem 0.75rem;
+    border-top: 1px solid var(--border);
+    color: var(--muted-foreground);
+    font-size: 0.75rem;
   }
 </style>

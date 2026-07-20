@@ -73,6 +73,15 @@ export interface WorkspaceViewNavigationAction {
   disabled?: boolean;
 }
 
+/** An optional parent location rendered before a workspace view title. */
+export interface WorkspaceViewBreadcrumb {
+  /** Stable key for rendering repeated labels. Defaults to `label`. */
+  id?: string;
+  label: string;
+  onSelect?: () => void;
+  disabled?: boolean;
+}
+
 /** A split whose sizes are percentages aligned with its children. */
 export interface WorkspaceSplitNode {
   kind: "split";
