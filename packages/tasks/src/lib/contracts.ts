@@ -62,5 +62,5 @@ export type ReferenceCapture = {
   viewport: TasksViewportId;
   state: string;
   file: string;
-  redacted: true;
+  fixtureOnly: true;
 };

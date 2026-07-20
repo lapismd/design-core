@@ -16,8 +16,10 @@ intent, and expose the resulting action through keyboard and pointer controls.
 
 ## Captured observation
 
-The 2026-07-20 native desktop pass shows one click selecting a row and revealing
-its trailing details affordance. In that state, a second/double click does not
-open a new pane; the explicit affordance opens task detail. The mobile web pass
-shows a left drag translating the row while keeping the parent pane stationary.
-See the redacted keyframes under `reference/superlist/2026-07-20/motion/`.
+The 2026-07-20 browser fixture capture shows one click selecting a row and
+revealing its trailing details affordance. In that state, a second/double click
+does not open a new pane; the explicit affordance opens task detail. The mobile
+swipe sheet is an explicit synthetic fixture contract, pending a real-device
+repeat. See the synthetic-fixture keyframes under
+`reference/superlist/2026-07-20/motion/synthetic-browser-task-open/` and
+`motion/synthetic-browser-mobile-row-swipe/`.

@@ -5,6 +5,10 @@ import { promisify } from "node:util";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import type { Page } from "playwright";
+import {
+  TASKS_REFERENCE_LIST_NAME,
+  taskFixtures,
+} from "../../src/lib/fixtures.js";
 
 const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
 const execFileAsync = promisify(execFile);
@@ -22,7 +26,7 @@ export const committedReferenceRoot = path.join(
 export const sourceUrl =
   process.env.SUPERLIST_REFERENCE_URL ?? "https://app.superlist.com/";
 
-const safeSemanticPrefixes = [
+const genericSemanticPrefixes = [
   "enable accessibility",
   "inbox",
   "today",
@@ -45,15 +49,15 @@ const safeSemanticPrefixes = [
   "label",
   "search",
   "all",
-  "private",
-  "shared",
-  "meetings",
-  "tasks ui reference",
-  "review the launch brief",
-  "sketch the mobile task flow",
-  "prepare the empty-state copy",
-  "publish the release checklist",
+  "synthetic task fixture",
+  "reference lists",
 ];
+
+const safeSemanticPrefixes = [
+  ...genericSemanticPrefixes,
+  TASKS_REFERENCE_LIST_NAME,
+  ...taskFixtures.map((task) => task.title),
+].map((label) => label.toLocaleLowerCase());
 
 export function isAllowedSemanticLabel(label: string): boolean {
   const normalised = label.trim().toLocaleLowerCase();
@@ -80,13 +84,11 @@ export async function sha256(file: string): Promise<string> {
 }
 
 /**
- * Flutter exposes meaningful content in aria-labelled semantics nodes. Cover every
- * label that is not a generic control or the synthetic fixture before capture.
+ * Capture only approved fixture labels. This fails closed rather than producing
+ * opaque replacement bars that would compromise the visual reference.
  */
-export async function installRedactionOverlay(
-  page: Page,
-): Promise<() => Promise<void>> {
-  const regions = await page
+export async function assertFixtureOnlyPage(page: Page): Promise<void> {
+  const unapproved = await page
     .locator("[aria-label]")
     .evaluateAll((nodes, allowedPrefixes) => {
       const allowed = allowedPrefixes as string[];
@@ -108,65 +110,27 @@ export async function installRedactionOverlay(
         ) {
           return [];
         }
-        return [
-          {
-            left: Math.max(0, rect.left),
-            top: Math.max(0, rect.top),
-            width:
-              Math.min(window.innerWidth, rect.right) - Math.max(0, rect.left),
-            height:
-              Math.min(window.innerHeight, rect.bottom) - Math.max(0, rect.top),
-          },
-        ];
+        return [label];
       });
     }, safeSemanticPrefixes);
-
-  const overlayId = "tasks-reference-redactions";
-  await page.evaluate(
-    ({ id, redactions }) => {
-      document.getElementById(id)?.remove();
-      const root = document.createElement("div");
-      root.id = id;
-      root.setAttribute("aria-hidden", "true");
-      root.style.cssText =
-        "position:fixed;inset:0;pointer-events:none;z-index:2147483647";
-      for (const rect of redactions) {
-        const cover = document.createElement("div");
-        cover.style.cssText = [
-          "position:absolute",
-          `left:${rect.left}px`,
-          `top:${rect.top}px`,
-          `width:${rect.width}px`,
-          `height:${rect.height}px`,
-          "border-radius:4px",
-          "background:linear-gradient(135deg,#d9dee8,#cfd6e2)",
-        ].join(";");
-        root.append(cover);
-      }
-      document.body.append(root);
-    },
-    { id: overlayId, redactions: regions },
-  );
-
-  return async () => {
-    await page.evaluate(
-      (id) => document.getElementById(id)?.remove(),
-      overlayId,
+  if (unapproved.length) {
+    throw new Error(
+      `Refusing capture with unapproved semantic labels: ${[
+        ...new Set(unapproved),
+      ]
+        .slice(0, 5)
+        .join(", ")}`,
     );
-  };
+  }
 }
 
-export async function screenshotRedacted(
+export async function screenshotFixture(
   page: Page,
   file: string,
 ): Promise<void> {
   await ensureDirectory(path.dirname(file));
-  const remove = await installRedactionOverlay(page);
-  try {
-    await page.screenshot({ path: file, animations: "disabled" });
-  } finally {
-    await remove();
-  }
+  await assertFixtureOnlyPage(page);
+  await page.screenshot({ path: file, animations: "disabled" });
 }
 
 /** Flutter's web app starts with a one-pixel accessibility activation control. */

@@ -1,5 +1,6 @@
 import { chromium } from "playwright";
 import path from "node:path";
+import { referenceViewports } from "../../src/lib/reference.js";
 import { authStatePath, ensureDirectory, sourceUrl } from "./runtime.js";
 
 /**
@@ -10,7 +11,7 @@ async function main(): Promise<void> {
   await ensureDirectory(path.dirname(authStatePath));
   const browser = await chromium.launch({ headless: false });
   const context = await browser.newContext({
-    viewport: { width: 1440, height: 900 },
+    viewport: referenceViewports[0],
   });
   const page = await context.newPage();
   await page.goto(sourceUrl, { waitUntil: "domcontentloaded" });

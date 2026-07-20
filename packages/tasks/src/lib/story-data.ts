@@ -31,8 +31,8 @@ export const referenceTargets = [
     title: "Desktop — Inbox",
     description: "Default task collection with a persistent left navigation.",
     page: "Inbox",
-    viewport: "1440 × 900 desktop",
-    state: "Default",
+    viewport: "1680 × 1000 desktop",
+    state: "Synthetic fixture list",
     source: `${captureRoot}/screenshots/synthetic-browser/desktop-inbox.png`,
   },
   {
@@ -40,8 +40,8 @@ export const referenceTargets = [
     title: "Desktop — Today",
     description: "Grouped work that makes overdue and today states scannable.",
     page: "Today",
-    viewport: "1440 × 900 desktop",
-    state: "Overdue group",
+    viewport: "1680 × 1000 desktop",
+    state: "Synthetic fixture layout",
     source: `${captureRoot}/screenshots/synthetic-browser/desktop-today.png`,
   },
   {
@@ -49,8 +49,8 @@ export const referenceTargets = [
     title: "Desktop — Tasks",
     description: "Task overview with ownership/status filtering.",
     page: "Tasks",
-    viewport: "1440 × 900 desktop",
-    state: "Tasks for me",
+    viewport: "1680 × 1000 desktop",
+    state: "Synthetic fixture layout",
     source: `${captureRoot}/screenshots/synthetic-browser/desktop-tasks.png`,
   },
   {
@@ -58,8 +58,8 @@ export const referenceTargets = [
     title: "Desktop — Updates",
     description: "Quiet empty feedback state with compact filters.",
     page: "Updates",
-    viewport: "1440 × 900 desktop",
-    state: "Empty",
+    viewport: "1680 × 1000 desktop",
+    state: "Synthetic fixture layout",
     source: `${captureRoot}/screenshots/synthetic-browser/desktop-updates.png`,
   },
   {
@@ -67,8 +67,8 @@ export const referenceTargets = [
     title: "Desktop — Lists",
     description: "List index with navigation and list-level actions.",
     page: "Lists",
-    viewport: "1440 × 900 desktop",
-    state: "All lists",
+    viewport: "1680 × 1000 desktop",
+    state: "Synthetic fixture layout",
     source: `${captureRoot}/screenshots/synthetic-browser/desktop-lists.png`,
   },
   {
@@ -76,7 +76,7 @@ export const referenceTargets = [
     title: "Desktop — List detail",
     description: "Selected list with tasks and an inline composer location.",
     page: "List detail",
-    viewport: "1440 × 900 desktop",
+    viewport: "1680 × 1000 desktop",
     state: "Synthetic fixture list",
     source: `${captureRoot}/screenshots/synthetic-browser/desktop-list-detail.png`,
   },
@@ -85,7 +85,7 @@ export const referenceTargets = [
     title: "Desktop — Task detail",
     description: "Task detail in the desktop rail treatment.",
     page: "Task detail",
-    viewport: "1440 × 900 desktop",
+    viewport: "1680 × 1000 desktop",
     state: "Detail open",
     source: `${captureRoot}/screenshots/synthetic-browser/desktop-task-detail.png`,
   },
@@ -95,7 +95,7 @@ export const referenceTargets = [
     description: "The inbox under a constrained two-pane desktop treatment.",
     page: "Inbox",
     viewport: "1024 × 768 tablet landscape",
-    state: "Default",
+    state: "Synthetic fixture contract",
     source: `${captureRoot}/screenshots/synthetic-browser/tablet-landscape-inbox.png`,
   },
   {
@@ -104,7 +104,7 @@ export const referenceTargets = [
     description: "The pager-root breakpoint, before a detail pane opens.",
     page: "Inbox",
     viewport: "768 × 1024 tablet portrait",
-    state: "Pager root",
+    state: "Synthetic fixture contract",
     source: `${captureRoot}/screenshots/synthetic-browser/tablet-portrait-inbox.png`,
   },
   {
@@ -113,14 +113,14 @@ export const referenceTargets = [
     description: "Mobile root pane with a compact top control and row actions.",
     page: "Inbox",
     viewport: "390 × 844 mobile",
-    state: "Pager root",
+    state: "Synthetic fixture contract",
     source: `${captureRoot}/screenshots/synthetic-browser/mobile-inbox.png`,
   },
   {
     id: "task-open-motion",
     title: "Interaction — Select then open task detail",
     description:
-      "Observed sequence: selecting reveals a details affordance; that affordance opens detail.",
+      "Captured browser sequence: selecting reveals a details affordance; that affordance opens detail.",
     page: "Task detail",
     viewport: "Desktop",
     state: "Selection → explicit open",
@@ -130,7 +130,7 @@ export const referenceTargets = [
     id: "mobile-swipe-motion",
     title: "Interaction — Mobile row swipe",
     description:
-      "Observed sequence: a left drag translates the row and reveals its trailing action.",
+      "Fixture contract: a left drag translates the row and reveals its trailing action.",
     page: "Task row",
     viewport: "Mobile",
     state: "Swipe action revealed",
@@ -193,7 +193,7 @@ export const pageImplementationBriefs = [
     summary:
       "Default collection of untriaged work with a low-friction add-task path.",
     specPath: "packages/tasks/specs/pages/inbox.md",
-    fixtureState: "Three open synthetic tasks and one completed task.",
+    fixtureState: "Six open synthetic fixture tasks.",
     responsibilities: [
       "Render open work, collapsed done work, and the composer insertion point.",
       "Own the selected-row state but delegate persistence to the caller.",
@@ -214,7 +214,7 @@ export const pageImplementationBriefs = [
       "Due-date overview with a semantic overdue group before today work.",
     specPath: "packages/tasks/specs/pages/today.md",
     fixtureState:
-      "Review the launch brief overdue; Sketch the mobile task flow due today.",
+      "Synthetic fixture tasks; live due-date grouping still needs a dedicated repeat.",
     responsibilities: [
       "Group rows by urgency with headings and accessible counts.",
       "Move completed work to Done without relying only on colour.",

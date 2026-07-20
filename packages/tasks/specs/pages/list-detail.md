@@ -7,7 +7,7 @@ but no action becomes unreachable.
 
 ## States
 
-- Private fixture list with open and completed tasks.
+- Dedicated synthetic fixture list with multiple open task rows.
 - Filtered list.
 - Composer active.
 - Selected task / detail open.

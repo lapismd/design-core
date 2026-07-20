@@ -9,7 +9,7 @@ ships Storybook planning surfaces, not a final product component in this slice.
 
 ## Catalog surfaces
 
-- **Tasks/Reference Targets** shows the redacted desktop, tablet, mobile, and
+- **Tasks/Reference Targets** shows the synthetic-fixture desktop, tablet, mobile, and
   interaction captures that implementation should match structurally.
 - **Tasks/Implementation Map** gives the recommended component build order.
 - **Tasks/Pages** contains visual page implementation briefs with states,
@@ -24,7 +24,8 @@ ships Storybook planning surfaces, not a final product component in this slice.
 2. Use `@stevejuma/tasks/fixtures` in all future stories.
 3. Follow the page and component contracts under `packages/tasks/specs/`.
 4. Reuse host shadcn primitives; add missing families through `pnpm ui:add`.
-5. Validate behavior against the sanitized responsive capture manifest.
+5. Validate behavior against the fixture capture manifest, observing its
+   browser-derived versus synthetic-contract flags.
 
 ## Required future stories
 

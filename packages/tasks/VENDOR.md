@@ -5,7 +5,7 @@ captured on 2026-07-20. This package is a clean-room behavior reference only:
 it contains no source code, artwork, logos, proprietary strings, account data,
 or exported data from that application.
 
-Captured images are deliberately redacted and use synthetic fixture task/list
+Captured images use synthetic fixture task/list
 content. They document interaction, information architecture, spacing, and
 responsive state only. The future implementation must have its own Tasks name,
 theme, icons, and copy.

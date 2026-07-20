@@ -3,6 +3,7 @@ import {
   TASKS_REFERENCE_LIST_NAME,
   taskFixtures,
 } from "../../src/lib/fixtures.js";
+import { referenceViewports } from "../../src/lib/reference.js";
 import { authStatePath, fileExists, openSource } from "./runtime.js";
 
 async function firstVisible(locator: Locator): Promise<Locator | null> {
@@ -66,7 +67,7 @@ async function addTaskIfMissing(page: Page, title: string): Promise<void> {
 }
 
 /**
- * This deliberately touches only the exact-name private fixture. It is safe to
+ * This deliberately touches only the exact-name synthetic fixture. It is safe to
  * re-run; existing fixture rows are not duplicated.
  */
 async function main(): Promise<void> {
@@ -77,7 +78,7 @@ async function main(): Promise<void> {
   const browser = await chromium.launch({ headless: false });
   const context = await browser.newContext({
     storageState: authStatePath,
-    viewport: { width: 1440, height: 900 },
+    viewport: referenceViewports[0],
   });
   const page = await context.newPage();
 

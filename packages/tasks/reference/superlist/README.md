@@ -1,13 +1,13 @@
 # Superlist reference capture
 
-This folder holds versioned, **sanitized** observation artifacts for the Tasks
+This folder holds versioned, **synthetic-fixture** observation artifacts for the Tasks
 implementation contract. It is not a product export and must never contain a
 real task title, list title, account name, avatar, comment, raw recording, or
 authenticated browser state.
 
 ## Capture shape
 
-- Desktop: 1440×900
+- Desktop: 1680×1000
 - Tablet landscape: 1024×768
 - Tablet portrait: 768×1024
 - Mobile: 390×844
@@ -15,10 +15,16 @@ authenticated browser state.
 
 Each dated capture includes a manifest with sha256 checksums, screenshots, and
 motion keyframes. Raw WebM and Playwright trace output remain in the ignored
-`.reference-artifacts/` directory. Before a screenshot is written, the capture
-harness overlays every unapproved semantic label; the native evidence helper
-uses the same policy as deterministic opaque rectangles. Both approaches permit
-only generic navigation, structural controls, and synthetic fixture text.
+`.reference-artifacts/` directory. Browser-derived frames are taken only after
+the dedicated synthetic task list has been created. At export time, account
+navigation and generated audit text are replaced with labelled fixture content;
+the committed assets do not use opaque grey bars.
+
+When the authenticated browser cannot expose a real responsive viewport, the
+tablet and mobile frames are marked `synthetic fixture contract` in the
+manifest. They are implementation references rather than claims of observed
+breakpoint behaviour and should be re-captured from a real device before a
+pixel-parity milestone.
 
 ## Motion evidence
 
@@ -28,6 +34,5 @@ double-click inputs, and native pointer drags. A future implementation follows
 the timing ranges in `src/lib/reference.ts`, while `prefers-reduced-motion`
 uses an instant or short-fade equivalent.
 
-The initial manifest is deliberately pending until an authenticated capture has
-run. `reference:verify` accepts that state but will checksum all listed files
-once evidence is committed.
+`reference:verify` checks every committed checksum and accepts either a
+redacted evidence frame or an explicitly fixture-only frame.

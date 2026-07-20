@@ -9,8 +9,8 @@ sanitisation rules are in [the reference README](./reference/superlist/README.md
 
 ## Storybook surfaces
 
-- **Tasks/Reference Targets** shows redacted desktop, tablet, mobile, and
-  interaction evidence.
+- **Tasks/Reference Targets** shows synthetic-fixture desktop, tablet, mobile,
+  and interaction evidence.
 - **Tasks/Implementation Map** gives the build order and reuse breakdown.
 - **Tasks/Pages** and **Tasks/Components** are non-product implementation
   placeholders for every planned composition.

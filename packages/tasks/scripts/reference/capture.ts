@@ -18,7 +18,7 @@ import {
   ensureDirectory,
   fileExists,
   openSource,
-  screenshotRedacted,
+  screenshotFixture,
   sha256,
   writeJson,
 } from "./runtime.js";
@@ -30,7 +30,7 @@ type ScreenshotEvidence = {
   state: string;
   file: string;
   sha256: string;
-  redacted: true;
+  fixtureOnly: true;
 };
 
 type MotionEvidence = {
@@ -119,10 +119,10 @@ async function captureMotion(
       if (motion.id === "task-complete" && completion) {
         const before = path.join(motionDirectory, "00-before.png");
         const after = path.join(motionDirectory, "01-after.png");
-        await screenshotRedacted(page, before);
+        await screenshotFixture(page, before);
         await completion.click();
         await page.waitForTimeout(motion.durationMs[1]);
-        await screenshotRedacted(page, after);
+        await screenshotFixture(page, after);
         keyframes.push(
           path.relative(captureDirectory, before),
           path.relative(captureDirectory, after),
@@ -130,10 +130,10 @@ async function captureMotion(
       } else if (motion.id === "task-open-double-click" && fixtureRow) {
         const before = path.join(motionDirectory, "00-before.png");
         const after = path.join(motionDirectory, "01-after.png");
-        await screenshotRedacted(page, before);
+        await screenshotFixture(page, before);
         await fixtureRow.dblclick();
         await page.waitForTimeout(motion.durationMs[1]);
-        await screenshotRedacted(page, after);
+        await screenshotFixture(page, after);
         keyframes.push(
           path.relative(captureDirectory, before),
           path.relative(captureDirectory, after),
@@ -143,14 +143,14 @@ async function captureMotion(
         if (!box) throw new Error("Task row is not in the viewport.");
         const before = path.join(motionDirectory, "00-before.png");
         const after = path.join(motionDirectory, "01-after.png");
-        await screenshotRedacted(page, before);
+        await screenshotFixture(page, before);
         await dispatchTouchSwipe(
           page,
           { x: box.x + box.width * 0.82, y: box.y + box.height / 2 },
           { x: box.x + box.width * 0.18, y: box.y + box.height / 2 },
           motion.durationMs[1],
         );
-        await screenshotRedacted(page, after);
+        await screenshotFixture(page, after);
         keyframes.push(
           path.relative(captureDirectory, before),
           path.relative(captureDirectory, after),
@@ -229,10 +229,10 @@ async function main(): Promise<void> {
       await activateScenario(page, scenario);
       const file = path.join(
         captureDirectory,
-        "screenshots",
+        "screenshots/synthetic-browser",
         `${scenario.id}.png`,
       );
-      await screenshotRedacted(page, file);
+      await screenshotFixture(page, file);
       screenshots.push({
         id: scenario.id,
         page: scenario.page,
@@ -240,7 +240,7 @@ async function main(): Promise<void> {
         state: scenario.state,
         file: path.relative(captureDirectory, file),
         sha256: await sha256(file),
-        redacted: true,
+        fixtureOnly: true,
       });
     } catch (error) {
       errors.push({
@@ -334,11 +334,12 @@ async function main(): Promise<void> {
   }
 
   await writeJson(path.join(captureDirectory, "manifest.json"), {
-    schemaVersion: 1,
-    source: "authenticated Superlist web session",
+    schemaVersion: 2,
+    source: "authenticated Superlist synthetic fixture session",
     capturedAt: new Date().toISOString(),
     status: errors.length ? "partial" : "captured",
-    redaction: "semantic allow-list overlay",
+    fixturePolicy:
+      "fail closed on unapproved semantic labels; no opaque overlays",
     viewports: referenceViewports,
     screenshots,
     motions,
@@ -352,7 +353,7 @@ async function main(): Promise<void> {
   }
 
   process.stdout.write(
-    `Captured ${screenshots.length} sanitized screenshots in ${captureDirectory}.\n`,
+    `Captured ${screenshots.length} synthetic fixture screenshots in ${captureDirectory}.\n`,
   );
 }
 

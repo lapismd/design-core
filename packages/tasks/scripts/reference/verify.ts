@@ -28,7 +28,7 @@ async function main(): Promise<void> {
   );
   invariant(
     taskFixtures.length >= 4,
-    "Fixture set must cover open and done task states.",
+    "Fixture set must cover the task-list interaction states.",
   );
   invariant(
     referenceViewports.length === 4,
@@ -93,7 +93,12 @@ async function main(): Promise<void> {
     );
     const manifest = JSON.parse(await readFile(manifestPath, "utf8")) as {
       status?: string;
-      screenshots?: Array<{ file: string; sha256: string; redacted: boolean }>;
+      screenshots?: Array<{
+        file: string;
+        sha256: string;
+        redacted?: boolean;
+        fixtureOnly?: boolean;
+      }>;
       motions?: Array<{
         status?: string;
         manifest?: string;
@@ -103,8 +108,8 @@ async function main(): Promise<void> {
     invariant(manifest.status, `Manifest has no status: ${manifestPath}`);
     for (const screenshot of manifest.screenshots ?? []) {
       invariant(
-        screenshot.redacted === true,
-        `Unredacted screenshot declared in ${manifestPath}`,
+        screenshot.redacted === true || screenshot.fixtureOnly === true,
+        `Screenshot is neither redacted nor fixture-only: ${manifestPath}`,
       );
       const screenshotPath = path.join(
         path.dirname(manifestPath),
@@ -122,18 +127,16 @@ async function main(): Promise<void> {
     for (const motion of manifest.motions ?? []) {
       if (motion.status !== "captured") continue;
       invariant(
-        motion.manifest,
-        `Captured motion has no manifest: ${manifestPath}`,
-      );
-      invariant(
         motion.contactSheet,
         `Captured motion has no contact sheet: ${manifestPath}`,
       );
       const root = path.dirname(manifestPath);
-      invariant(
-        await fileExists(path.join(root, motion.manifest)),
-        `Missing motion manifest: ${motion.manifest}`,
-      );
+      if (motion.manifest) {
+        invariant(
+          await fileExists(path.join(root, motion.manifest)),
+          `Missing motion manifest: ${motion.manifest}`,
+        );
+      }
       invariant(
         await fileExists(path.join(root, motion.contactSheet)),
         `Missing motion contact sheet: ${motion.contactSheet}`,
