@@ -37,6 +37,18 @@
 
 <Story
   name="Header actions and options"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/reference/lapis-active-tab-pane-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
   play={async ({ canvas }) => {
     await userEvent.click(canvas.getByRole("button", { name: "Refresh view" }));
     await expect(canvas.getByRole("status")).toHaveTextContent("Refreshed");
@@ -65,6 +77,44 @@
   {/snippet}
 </Story>
 
+<Story
+  name="Lapis tab-body reference capture"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/reference/lapis-active-tab-pane-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+    docs: {
+      description: {
+        story:
+          "One active Lapis pane from the saved layout. It captures the tab-to-body boundary, empty-view centering, action spacing, pane scrollbar treatment, and the exact 40px header geometry used by the reusable tab-body target.",
+      },
+    },
+  }}
+  play={async ({ canvas }) => {
+    await expect(
+      canvas.getByRole("img", { name: "Lapis active tab pane reference" }),
+    ).toBeVisible();
+  }}
+>
+  {#snippet template()}
+    <img
+      data-ui-component="workspace-view-frame-story"
+      data-ui-part="reference-capture"
+      src="/visual-baselines/workspace/reference/lapis-active-tab-pane-chromium-darwin.png"
+      alt="Lapis active tab pane reference"
+      width="225"
+      height="448"
+    />
+  {/snippet}
+</Story>
+
 <style>
   :global(
       [data-ui-component="workspace-view-frame-story"][data-ui-part="host"]
@@ -77,5 +127,14 @@
       [data-ui-component="workspace-view-frame-story"][data-ui-part="body"]
     ) {
     padding: 1rem;
+  }
+
+  :global(
+      [data-ui-component="workspace-view-frame-story"][data-ui-part="reference-capture"]
+    ) {
+    display: block;
+    width: 225px;
+    max-width: none;
+    height: 448px;
   }
 </style>

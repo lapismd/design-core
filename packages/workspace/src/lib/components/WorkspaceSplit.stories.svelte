@@ -28,6 +28,18 @@
 
 <Story
   name="Nested directions"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/reference/lapis-tabs-and-splits-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
   play={async ({ canvas }) => {
     await expect(canvas.getByText("Notes view")).toBeVisible();
     await expect(canvas.getByText("Top pane view")).toBeVisible();
@@ -38,6 +50,44 @@
     <div data-ui-component="workspace-split-story" data-ui-part="host">
       <WorkspaceSplit {controller} node={controller.layout.main} />
     </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Lapis split-layout reference capture"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/reference/lapis-tabs-and-splits-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+    docs: {
+      description: {
+        story:
+          "The complete central pane tree from the saved Lapis layout, including horizontal and vertical splits, resizers, nested tab groups, stacked scrollbar behavior, and pane-edge geometry.",
+      },
+    },
+  }}
+  play={async ({ canvas }) => {
+    await expect(
+      canvas.getByRole("img", { name: "Lapis split layout reference" }),
+    ).toBeVisible();
+  }}
+>
+  {#snippet template()}
+    <img
+      data-ui-component="workspace-split-story"
+      data-ui-part="reference-capture"
+      src="/visual-baselines/workspace/reference/lapis-tabs-and-splits-chromium-darwin.png"
+      alt="Lapis split layout reference"
+      width="677"
+      height="900"
+    />
   {/snippet}
 </Story>
 
@@ -97,6 +147,22 @@
 
 <Story
   name="Drops tabs onto pane edges"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/reference/lapis-drop-top-chromium-darwin.png",
+        "/visual-baselines/workspace/reference/lapis-drop-right-chromium-darwin.png",
+        "/visual-baselines/workspace/reference/lapis-drop-bottom-chromium-darwin.png",
+        "/visual-baselines/workspace/reference/lapis-drop-left-chromium-darwin.png",
+        "/visual-baselines/workspace/reference/lapis-drop-center-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
   play={async ({ canvas, canvasElement }) => {
     const source = canvas.getByRole("tab", { name: "Notes" });
     const target = canvas.getByRole("region", {
@@ -183,9 +249,113 @@
   {/snippet}
 </Story>
 
+<Story
+  name="Lapis drop-zone reference captures"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/reference/lapis-drop-top-chromium-darwin.png",
+        "/visual-baselines/workspace/reference/lapis-drop-right-chromium-darwin.png",
+        "/visual-baselines/workspace/reference/lapis-drop-bottom-chromium-darwin.png",
+        "/visual-baselines/workspace/reference/lapis-drop-left-chromium-darwin.png",
+        "/visual-baselines/workspace/reference/lapis-drop-center-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+    docs: {
+      description: {
+        story:
+          "Five stabilized captures from Lapis's live dragstart and dragover path. The translucent geometry is the target for top, right, bottom, left, and center drops; dragend cancelled each capture without changing the saved layout.",
+      },
+    },
+  }}
+  play={async ({ canvas }) => {
+    for (const position of ["top", "right", "bottom", "left", "center"]) {
+      await expect(
+        canvas.getByRole("img", {
+          name: `Lapis ${position} drop-zone reference`,
+        }),
+      ).toBeVisible();
+    }
+  }}
+>
+  {#snippet template()}
+    <div
+      data-ui-component="workspace-split-story"
+      data-ui-part="drop-reference-grid"
+    >
+      {#each ["top", "right", "bottom", "left", "center"] as position}
+        <figure>
+          <img
+            src={`/visual-baselines/workspace/reference/lapis-drop-${position}-chromium-darwin.png`}
+            alt={`Lapis ${position} drop-zone reference`}
+            width="225"
+            height="450"
+          />
+          <figcaption>{position}</figcaption>
+        </figure>
+      {/each}
+    </div>
+  {/snippet}
+</Story>
+
 <style>
   :global([data-ui-component="workspace-split-story"][data-ui-part="host"]) {
     height: 34rem;
     border: 1px solid var(--border);
+  }
+
+  :global(
+      [data-ui-component="workspace-split-story"][data-ui-part="drop-reference-grid"]
+    ) {
+    display: grid;
+    width: max-content;
+    grid-template-columns: repeat(5, 225px);
+    gap: 0.75rem;
+  }
+
+  :global(
+      [data-ui-component="workspace-split-story"][data-ui-part="drop-reference-grid"]
+        figure
+    ) {
+    margin: 0;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--background);
+  }
+
+  :global(
+      [data-ui-component="workspace-split-story"][data-ui-part="drop-reference-grid"]
+        img
+    ) {
+    display: block;
+    width: 225px;
+    height: 450px;
+  }
+
+  :global(
+      [data-ui-component="workspace-split-story"][data-ui-part="drop-reference-grid"]
+        figcaption
+    ) {
+    border-top: 1px solid var(--border);
+    padding: 0.5rem;
+    color: var(--muted-foreground);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  :global(
+      [data-ui-component="workspace-split-story"][data-ui-part="reference-capture"]
+    ) {
+    display: block;
+    width: 677px;
+    max-width: none;
+    height: 900px;
   }
 </style>

@@ -219,8 +219,7 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/workspace/components/lapis-reference-desktop-shell-chromium-darwin.png",
-        "/visual-baselines/workspace/components/desktop-shell-with-tab-variations-chromium-darwin.png",
+        "/visual-baselines/workspace/reference/lapis-default-layout-chromium-darwin.png",
       ],
       opacity: 0.5,
       colorInversion: false,
@@ -338,6 +337,46 @@
   {/snippet}
 </Story>
 
+<Story
+  name="Lapis reference capture"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/reference/lapis-default-layout-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+    docs: {
+      description: {
+        story:
+          "The saved 1280 x 900 Lapis desktop layout captured from the running reference app. Stage two replaces this evidence-only story with the directly ported shell composition.",
+      },
+    },
+  }}
+  play={async ({ canvas }) => {
+    await expect(
+      canvas.getByRole("img", {
+        name: "Lapis desktop workspace default layout reference",
+      }),
+    ).toBeVisible();
+  }}
+>
+  {#snippet template()}
+    <img
+      data-ui-component="workspace-shell-story"
+      data-ui-part="reference-capture"
+      src="/visual-baselines/workspace/reference/lapis-default-layout-chromium-darwin.png"
+      alt="Lapis desktop workspace default layout reference"
+      width="1280"
+      height="900"
+    />
+  {/snippet}
+</Story>
+
 <style>
   :global([data-ui-component="workspace-shell-story"][data-ui-part="host"]) {
     display: flex;
@@ -390,5 +429,14 @@
   :global([data-ui-component="workspace-shell-story"] p) {
     margin: 0;
     padding: 0.75rem;
+  }
+
+  :global(
+      [data-ui-component="workspace-shell-story"][data-ui-part="reference-capture"]
+    ) {
+    display: block;
+    width: 1280px;
+    max-width: none;
+    height: 900px;
   }
 </style>
