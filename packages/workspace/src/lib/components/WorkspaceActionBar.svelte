@@ -5,9 +5,12 @@
 
   let {
     actions = [],
+    offsetTop = false,
     footer,
   }: {
     actions?: readonly WorkspaceAction[];
+    /** Offset actions below the top tab chrome in the desktop shell. */
+    offsetTop?: boolean;
     footer?: Snippet;
   } = $props();
 </script>
@@ -16,6 +19,7 @@
   aria-label="Workspace actions"
   data-ui-component="workspace"
   data-ui-part="action-ribbon"
+  data-offset-top={offsetTop}
 >
   <div data-ui-component="workspace" data-ui-part="action-list">
     {#each actions as action (action.id)}
@@ -30,7 +34,7 @@
         data-workspace-action={action.id}
         onclick={action.onSelect}
       >
-        <Icon />
+        <Icon data-icon="inline-start" />
       </Button>
     {/each}
   </div>
@@ -60,6 +64,12 @@
     align-items: center;
     gap: 0.125rem;
     padding-block: 0.25rem;
+  }
+
+  [data-ui-component="workspace"][data-ui-part="action-ribbon"][data-offset-top="true"]
+    [data-ui-component="workspace"][data-ui-part="action-list"] {
+    margin-top: calc(var(--ui-workspace-tab-height, 40px) - 1px);
+    border-top: 1px solid var(--ui-workspace-divider, var(--sidebar-border));
   }
 
   [data-ui-component="workspace"][data-ui-part="action-ribbon"]

@@ -60,7 +60,7 @@
 </script>
 
 <div class={className} data-ui-component="workspace" data-ui-part="shell">
-  <WorkspaceActionBar {actions} footer={actionFooter} />
+  <WorkspaceActionBar {actions} offsetTop={true} footer={actionFooter} />
 
   {#if left || leftGroups.length > 0 || leftTabs.length > 0}
     <WorkspaceSidebar

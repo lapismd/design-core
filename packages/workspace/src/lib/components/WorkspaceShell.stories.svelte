@@ -96,6 +96,7 @@
     const ribbon = canvasElement.querySelector<HTMLElement>(
       '[data-ui-part="action-ribbon"]',
     );
+    const firstRibbonButton = canvas.getByRole("button", { name: "Files" });
     const leftSidebar = canvasElement.querySelector<HTMLElement>(
       '[data-workspace-sidebar="left"]',
     );
@@ -108,6 +109,12 @@
           (leftSidebar?.getBoundingClientRect().width ?? 0),
       ),
     ).toBe(280);
+    await expect(
+      Math.round(
+        firstRibbonButton.getBoundingClientRect().top -
+          (ribbon?.getBoundingClientRect().top ?? 0),
+      ),
+    ).toBe(44);
   }}
 >
   {#snippet template()}
