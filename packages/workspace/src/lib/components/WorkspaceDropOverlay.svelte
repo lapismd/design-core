@@ -21,7 +21,15 @@
     position: absolute;
     z-index: 2;
     border-radius: var(--ui-workspace-tab-radius, 0.375rem);
-    background: var(--ui-workspace-drop-overlay, var(--accent));
+    /*
+     * Lapis uses its interactive accent at half alpha, then applies the
+     * overlay opacity. Keep the same layering while allowing consumers to
+     * provide a semantic override for their own palette.
+     */
+    background: var(
+      --ui-workspace-drop-overlay,
+      color-mix(in srgb, var(--primary) 50%, transparent)
+    );
     opacity: 0.5;
     pointer-events: none;
     transition: all 100ms ease-in-out;

@@ -23,16 +23,13 @@ function reportDir(name: string) {
   );
 }
 
-function readWorkspaceTabsCss() {
+function readWorkspaceComponentCss(component: string) {
   const source = readFileSync(
-    path.join(
-      packageRoot,
-      "packages/workspace/src/lib/components/WorkspaceTabs.svelte",
-    ),
+    path.join(packageRoot, "packages/workspace/src/lib/components", component),
     "utf8",
   );
   const match = source.match(/<style>([\s\S]*)<\/style>/);
-  if (!match?.[1]) throw new Error("WorkspaceTabs.svelte style not found");
+  if (!match?.[1]) throw new Error(`${component} style not found`);
   return match[1]
     .replace(/:global\(([^()]*)\)/g, "$1")
     .replace(/:global\(([^()]*)\)/g, "$1");
@@ -56,6 +53,7 @@ const candidateTheme = `
   --ui-workspace-tab-active-background: #ffffff;
   --ui-workspace-tab-hover: #e4e4e7;
   --ui-workspace-divider: #d4d4d8;
+  --ui-workspace-tab-radius: 4px;
 }
 button {
   font: inherit;
@@ -101,15 +99,6 @@ function candidateTabsHtml() {
             <button data-workspace-part="tab-trigger" type="button">
               <span data-ui-component="workspace" data-ui-part="tab-title">${title}</span>
             </button>
-          </div>`,
-          )
-          .join("")}
-      </div>
-      <div data-ui-component="workspace" data-ui-part="tab-close-layer">
-        ${["Notes", "Details with a long title", "Graph"]
-          .map(
-            (_title, index) => `
-          <div data-ui-component="workspace" data-ui-part="tab-close-cell" data-active="${index === 1}">
             <button data-workspace-part="tab-close" type="button">x</button>
           </div>`,
           )
@@ -162,7 +151,9 @@ describe("workspace parity scenarios", () => {
       path.join(lapisReferenceRoot, "workspace-reference.css"),
       "utf8",
     );
-    const candidateCss = `${candidateTheme}\n${readWorkspaceTabsCss()}`;
+    const candidateCss = `${candidateTheme}\n${readWorkspaceComponentCss(
+      "WorkspaceTabs.svelte",
+    )}\n${readWorkspaceComponentCss("WorkspaceDropOverlay.svelte")}`;
     const result = await runWorkspaceParityHarness({
       reportDir: reportDir("workspace"),
       scenarios: [

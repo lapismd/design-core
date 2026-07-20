@@ -247,7 +247,6 @@
     height: 100%;
     flex: 0 1 auto;
     overflow: hidden;
-    border-bottom: 1px solid var(--ui-workspace-divider, var(--border));
   }
 
   [data-ui-component="workspace"][data-ui-part="tab-bar"] {
@@ -257,6 +256,7 @@
     flex: 0 0 var(--ui-workspace-tab-height, 40px);
     align-items: stretch;
     overflow: hidden;
+    border-bottom: 1px solid var(--ui-workspace-divider, var(--border));
     background: var(--ui-workspace-tab-container-background, var(--muted));
   }
 
@@ -293,7 +293,8 @@
     color: var(--ui-workspace-tab-color, var(--muted-foreground));
     container-name: tab-header;
     container-type: inline-size;
-    padding: 0.25rem 0.5rem;
+    /* Lapis top tabs use a 6px leading / 3px trailing chrome inset. */
+    padding: 0 3px 0 6px;
   }
 
   [data-ui-component="workspace"][data-ui-part="tab"][data-active="true"] {
@@ -359,22 +360,23 @@
 
   [data-ui-component="workspace"][data-ui-part="tab"]
     :global([data-workspace-part="tab-trigger"]) {
+    position: relative;
+    display: flex;
     width: 100%;
     min-width: 0;
     height: 100%;
+    align-items: center;
     justify-content: flex-start;
     border-radius: var(--ui-workspace-tab-radius, 4px);
     background: transparent;
     color: inherit;
-    padding-block: 0;
-    padding-inline: 0.375rem 1.75rem;
+    padding: 0 3px 0 0;
     text-align: left;
   }
 
   [data-ui-component="workspace"][data-ui-part="tab"]:not(
       [data-active="true"]
-    ):hover
-    :global([data-workspace-part="tab-trigger"]) {
+    ):hover {
     background: var(--ui-workspace-tab-hover, var(--accent));
   }
 
@@ -383,8 +385,10 @@
     background: transparent;
   }
 
-  [data-ui-component="workspace"][data-ui-part="tab"]::after {
+  [data-ui-component="workspace"][data-ui-part="tab"]
+    :global([data-workspace-part="tab-trigger"])::after {
     position: absolute;
+    inset-block: 0.625rem;
     inset-inline-end: -1px;
     width: 1px;
     height: 20px;
@@ -392,7 +396,8 @@
     content: "";
   }
 
-  [data-ui-component="workspace"][data-ui-part="tab"][data-active="true"]::after {
+  [data-ui-component="workspace"][data-ui-part="tab"][data-active="true"]
+    :global([data-workspace-part="tab-trigger"])::after {
     opacity: 0;
   }
 
@@ -414,11 +419,11 @@
   [data-ui-component="workspace"][data-ui-part="tab"]
     :global([data-workspace-part="tab-close"]) {
     position: absolute;
-    inset-inline-end: 0.5rem;
+    inset-inline-end: 3px;
     z-index: 3;
-    width: 1.5rem;
-    height: 1.5rem;
-    visibility: hidden;
+    width: 1.25rem;
+    height: 1.25rem;
+    display: none;
     transition: none;
   }
 
@@ -428,7 +433,7 @@
     :global([data-workspace-part="tab-close"]),
   [data-ui-component="workspace"][data-ui-part="tab"]
     :global([data-workspace-part="tab-close"]:focus-visible) {
-    visibility: visible;
+    display: inline-flex;
   }
 
   [data-ui-component="workspace"][data-ui-part="tab-new-action"] {
@@ -436,15 +441,13 @@
     height: 100%;
     flex: 0 0 auto;
     align-items: center;
-    border-bottom: 1px solid var(--ui-workspace-divider, var(--border));
-    padding-inline: 0.25rem 0.5rem;
+    padding-inline: 0.25rem;
   }
 
   [data-ui-component="workspace"][data-ui-part="tab-spacer"] {
     min-width: 0;
     height: 100%;
     flex: 1 1 auto;
-    border-bottom: 1px solid var(--ui-workspace-divider, var(--border));
   }
 
   [data-ui-component="workspace"][data-ui-part="tabs"]

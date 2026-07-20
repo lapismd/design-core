@@ -7,7 +7,10 @@ This package adapts owned source code from Lapis Notes at revision
 | ------------------------------------------------------------------------------------ | -------------------------------------- |
 | `packages/workspace/src/lib/components/app/desktop-workspace-shell.svelte`           | Three-region workspace shell           |
 | `packages/workspace/src/lib/components/sidebar/sidebar-*.svelte`                     | Generic controlled sidebars            |
-| `packages/workspace/src/lib/components/tabs/tabs-split.svelte` and `tabs-top.svelte` | Recursive splits and tab pane behavior |
+| `packages/workspace/src/lib/components/tabs/tabs-sidebar.svelte`                     | Icon sidebar tabs and collapsible groups |
+| `packages/workspace/src/lib/components/tabs/tabs-split.svelte` and `tabs-top.svelte` | Recursive splits and top-tab pane behavior |
+| `packages/workspace/src/lib/components/tabs/tabs-stacked.svelte`                     | Vertical stacked-tab rails             |
+| `packages/workspace/src/lib/components/tabs/tabs-drop.svelte`                        | Five-zone tab drop geometry and overlay |
 | `packages/workspace/src/lib/components/leaf/leaf.svelte`                             | View host lifecycle                    |
 | `packages/api/src/lib/workspace.svelte.ts` and `view.svelte.ts`                      | Decoupled layout and view contracts    |
 | `packages/workspace/src/lib/components/view-header/view-header.svelte`               | Reusable workspace view frame          |
