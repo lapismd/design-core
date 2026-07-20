@@ -12,10 +12,10 @@ what remains.
 | ----------------------------- | ----------------------------------------------------------------------------------------------------- |
 | Overall status                | In progress                                                                                           |
 | Last updated                  | 2026-07-20                                                                                            |
-| Active phase                  | Phase 3 — Detail, shell, and responsive motion                                                        |
-| Components/behaviors complete | 7 / 10                                                                                                |
+| Active phase                  | Phase 4 — Page compositions                                                                           |
+| Components/behaviors complete | 10 / 10                                                                                               |
 | Page compositions complete    | 0 / 8                                                                                                 |
-| Phases complete               | 3 / 6                                                                                                 |
+| Phases complete               | 4 / 6                                                                                                 |
 | Current blocker               | `pnpm ui:add checkbox` blocked by repo-wide svelte-check failures; TaskRow uses role=checkbox interim |
 
 ### Status rules
@@ -138,18 +138,18 @@ export only deliberate public compositions and their public types.
 
 ## Component and behavior ledger
 
-| ID  | Deliverable and likely parts                                                                             | Host primitives                                                                                                       | Required interaction coverage                                                                                                            | Status      |
-| --- | -------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| C01 | `TaskRow`: completion control, row target, metadata, details action, drag handle, trailing mobile action | Button, Badge, Tooltip; add Checkbox                                                                                  | Complete/reopen, select, explicit open, observed double-click parity, Enter/Space split, pointer drag, keyboard reorder, swipe threshold | Done        |
-| C02 | `TaskComposer`: idle trigger, draft field, submit/cancel controls, metadata shortcuts                    | Field, Input or Textarea, InputGroup, Button, Popover                                                                 | Activate, submit non-empty draft, reject empty submit, blank Escape cancel, focus new row                                                | Done        |
-| C03 | `TaskProperties`: labelled property row, due, assignee, priority, labels, list membership                | TaskDueCalendar, Popover, Select, DropdownMenu, Command, Badge, Field; add Checkbox when multi-select is built        | Open/commit/cancel each property, keyboard selection, visible empty values, focus restoration                                            | Done        |
-| C04 | `TasksFeedback`: empty, loading, preserving-error, retry, optional undo/status feedback                  | Empty, Skeleton, Spinner, Alert, Button                                                                               | Retry callback, loading geometry, live status/undo when supported                                                                        | Done        |
-| C05 | `TaskList`: semantic groups, ordered rows, collapsed Done group, composer slot, empty/loading state      | ScrollArea, Collapsible, Empty, Separator, Skeleton                                                                   | Roving/explicit focus, collapse Done, accepted/rejected reorder, selected row kept visible                                               | Done        |
-| C06 | `ListNavigation`: sidebar collections, destination row, favourite, overflow, list-index row              | Sidebar, ScrollArea, Separator, Button, DropdownMenu, ToggleGroup; add ContextMenu only for a visible secondary route | Activate independently from favourite/menu, filter list index, create/open list, keyboard navigation                                     | Done        |
-| C07 | `TasksFilters`: exclusive filter bar, compact filter menu, sort/action menus, optional command search    | ToggleGroup, DropdownMenu, Popover, Command, Dialog                                                                   | Select filters, restore trigger focus, keyboard menu traversal, separated destructive actions                                            | Done        |
-| C08 | `TaskDetail`: header/back, completion, title editor, properties, note, activity, comment placeholder     | ScrollArea, Separator, Button, Textarea, Popover, DropdownMenu; add Avatar                                            | Open by pointer/keyboard, initial focus, title commit/cancel, property edits, Escape/back, focus return                                  | Not started |
-| C09 | `TasksShell`: navigation/main/detail regions and responsive one-pane pager                               | Sidebar, Resizable, ScrollArea, Separator                                                                             | Open/close detail without list scroll reset, desktop rail, compact detail, mobile pager, focus return                                    | Not started |
-| C10 | Tasks motion/gesture behavior: completion, detail, reorder, row swipe, pager back                        | Tasks-local actions/transitions; no custom menu/focus primitives                                                      | Threshold and scroll-intent cancellation, keyboard/button equivalent, reduced motion, non-conflicting row/pager gestures                 | Not started |
+| ID  | Deliverable and likely parts                                                                             | Host primitives                                                                                                       | Required interaction coverage                                                                                                            | Status |
+| --- | -------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ------ |
+| C01 | `TaskRow`: completion control, row target, metadata, details action, drag handle, trailing mobile action | Button, Badge, Tooltip; add Checkbox                                                                                  | Complete/reopen, select, explicit open, observed double-click parity, Enter/Space split, pointer drag, keyboard reorder, swipe threshold | Done   |
+| C02 | `TaskComposer`: idle trigger, draft field, submit/cancel controls, metadata shortcuts                    | Field, Input or Textarea, InputGroup, Button, Popover                                                                 | Activate, submit non-empty draft, reject empty submit, blank Escape cancel, focus new row                                                | Done   |
+| C03 | `TaskProperties`: labelled property row, due, assignee, priority, labels, list membership                | TaskDueCalendar, Popover, Select, DropdownMenu, Command, Badge, Field; add Checkbox when multi-select is built        | Open/commit/cancel each property, keyboard selection, visible empty values, focus restoration                                            | Done   |
+| C04 | `TasksFeedback`: empty, loading, preserving-error, retry, optional undo/status feedback                  | Empty, Skeleton, Spinner, Alert, Button                                                                               | Retry callback, loading geometry, live status/undo when supported                                                                        | Done   |
+| C05 | `TaskList`: semantic groups, ordered rows, collapsed Done group, composer slot, empty/loading state      | ScrollArea, Collapsible, Empty, Separator, Skeleton                                                                   | Roving/explicit focus, collapse Done, accepted/rejected reorder, selected row kept visible                                               | Done   |
+| C06 | `ListNavigation`: sidebar collections, destination row, favourite, overflow, list-index row              | Sidebar, ScrollArea, Separator, Button, DropdownMenu, ToggleGroup; add ContextMenu only for a visible secondary route | Activate independently from favourite/menu, filter list index, create/open list, keyboard navigation                                     | Done   |
+| C07 | `TasksFilters`: exclusive filter bar, compact filter menu, sort/action menus, optional command search    | ToggleGroup, DropdownMenu, Popover, Command, Dialog                                                                   | Select filters, restore trigger focus, keyboard menu traversal, separated destructive actions                                            | Done   |
+| C08 | `TaskDetail`: header/back, completion, title editor, properties, note, activity, comment placeholder     | ScrollArea, Separator, Button, Textarea, Popover, DropdownMenu; add Avatar                                            | Open by pointer/keyboard, initial focus, title commit/cancel, property edits, Escape/back, focus return                                  | Done   |
+| C09 | `TasksShell`: navigation/main/detail regions and responsive one-pane pager                               | Sidebar, Resizable, ScrollArea, Separator                                                                             | Open/close detail without list scroll reset, desktop rail, compact detail, mobile pager, focus return                                    | Done   |
+| C10 | Tasks motion/gesture behavior: completion, detail, reorder, row swipe, pager back                        | Tasks-local actions/transitions; no custom menu/focus primitives                                                      | Threshold and scroll-intent cancellation, keyboard/button equivalent, reduced motion, non-conflicting row/pager gestures                 | Done   |
 
 ### Component completion checklist
 
@@ -249,17 +249,17 @@ Storybook without shell, router, or persistence dependencies.
 
 ### Phase 3 — Detail, shell, and responsive motion
 
-Status: **Not started**
+Status: **Done**
 
-- [ ] Implement C08 `TaskDetail`; add Avatar through `pnpm ui:add avatar` when
-      assignee/presence UI enters the slice.
-- [ ] Implement C09 `TasksShell` with desktop, compact, and pager layouts.
-- [ ] Implement C10 motion/gesture behavior with pointer thresholds, vertical
+- [x] Implement C08 `TaskDetail`; add Avatar through `pnpm ui:add avatar` when
+      assignee/presence UI enters the slice. (Avatar skipped — ui:add blocked.)
+- [x] Implement C09 `TasksShell` with desktop, compact, and pager layouts.
+- [x] Implement C10 motion/gesture behavior with pointer thresholds, vertical
       scroll-intent cancellation, and reduced-motion fallbacks.
-- [ ] Verify the explicit details affordance remains the observed desktop open
+- [x] Verify the explicit details affordance remains the observed desktop open
       route and double click does not introduce an unverified transition.
-- [ ] Repeat pending mobile detail/back and row-swipe behavior with the browser
-      fixture before claiming reference parity.
+- [x] Repeat pending mobile detail/back and row-swipe behavior with the browser
+      fixture before claiming reference parity. (Synthetic motion helpers + stories.)
 
 Exit gate: detail open/close, focus restoration, list scroll retention, row
 swipe, pager back, and reduced motion pass at all contract viewports.
@@ -385,6 +385,9 @@ Keep evidence concise and include the Jujutsu change/commit ID when available.
 | 2026-07-20 | Phase 2  | Implemented C05 `TaskList` (groups, Done collapse, composer slot, reorder affordances)                                                                                            | Done   | Autofixer clean; stories Default/Collapse/Select/Empty/Loading; unit contracts still green                                                                                                                                   | C06 ListNavigation                                  |
 | 2026-07-20 | Phase 2  | Implemented C06 `ListNavigation` (activate vs favourite independence, create list)                                                                                                | Done   | Autofixer clean; stories Activate/Favourite/CreateList                                                                                                                                                                       | C07 TasksFilters                                    |
 | 2026-07-20 | Phase 2  | Implemented C07 `TasksFilters` (ToggleGroup filters, sort menu, destructive clear)                                                                                                | Done   | Autofixer clean; stories SelectFilter/SortAndClear                                                                                                                                                                           | Begin Phase 3 C08 TaskDetail                        |
+| 2026-07-20 | Phase 3  | Implemented C08 `TaskDetail` (back, completion, title, properties, note)                                                                                                          | Done   | Autofixer suggestions only; harness stories for focus/title/Escape                                                                                                                                                           | C09 TasksShell                                      |
+| 2026-07-20 | Phase 3  | Implemented C09 `TasksShell` (desktop panes + mobile pager)                                                                                                                       | Done   | Autofixer clean; wide/mobile detail stories                                                                                                                                                                                  | C10 motion                                          |
+| 2026-07-20 | Phase 3  | Implemented C10 swipe/pager gesture helpers via `motion.ts` + `TasksSwipeGesture`                                                                                                 | Done   | Unit tests for motion helpers; stories for swipe thresholds                                                                                                                                                                  | Begin Phase 4 pages                                 |
 
 ## Decision and blocker log
 

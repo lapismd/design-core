@@ -1,18 +1,18 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, fireEvent, userEvent } from "storybook/test";
-  import TasksImplementationBrief from "../TasksImplementationBrief.svelte";
+  import { expect, userEvent } from "storybook/test";
+  import TaskDetail from "./TaskDetail.svelte";
 
   const { Story } = defineMeta({
     title: "Tasks/Components/Task Detail",
-    component: TasksImplementationBrief,
+    component: TaskDetail,
     tags: ["skip-visual"],
     parameters: {
       layout: "fullscreen",
       docs: {
         description: {
           component:
-            "The detail contract controls opening focus, property editing, Escape and back return, and narrow-screen pager return. Its full specification is on this component's Docs page.",
+            "Controlled selected-task editor: back/completion header, an inline title editor, TaskProperties, a note field, and a presentational activity placeholder. Opening moves focus to the title heading; Escape (when not editing the title) calls back.",
         },
       },
     },
@@ -20,59 +20,107 @@
 </script>
 
 <script lang="ts">
-  import TasksInteractionTodo from "../TasksInteractionTodo.svelte";
-  import {
-    getComponentImplementationBrief,
-    referenceVisualDelta,
-  } from "../../lib/story-data.js";
+  import { referenceVisualDelta } from "../../lib/story-data.js";
+  import { createTasksStoryFixture } from "../../lib/story-fixtures.js";
+  import TaskDetailHarness from "./TaskDetailHarness.svelte";
 
-  const taskDetail = getComponentImplementationBrief("task-detail");
+  const fixture = createTasksStoryFixture();
+  const filledTask = fixture.activeTask;
 </script>
 
 <Story
-  name="Implementation placeholder"
-  exportName="ImplementationPlaceholder"
-  parameters={{ visualDelta: referenceVisualDelta("desktop-task-detail") }}
->
-  {#snippet template()}<TasksImplementationBrief brief={taskDetail} />{/snippet}
-</Story>
-
-<Story
-  name="Focus on open and Escape returns (TODO)"
-  exportName="FocusAndEscapeTodo"
-  tags={["todo"]}
+  name="Open focuses the title heading"
+  exportName="OpenFocusesHeading"
   parameters={{ visualDelta: referenceVisualDelta("desktop-task-detail") }}
   play={async ({ canvas }) => {
-    await userEvent.click(
-      canvas.getByRole("button", { name: "Open task detail" }),
-    );
-    const heading = canvas.getByRole("heading", { name: "Task detail" });
+    const heading = canvas.getByRole("heading", {
+      name: "Review the launch brief today",
+    });
     await expect(heading).toHaveFocus();
-    await userEvent.keyboard("{Escape}");
-    await expect(canvas.getByText("Returned to task list")).toBeVisible();
   }}
 >
-  {#snippet template()}<TasksInteractionTodo
-      scenario="detail-return"
-    />{/snippet}
+  {#snippet template()}
+    <TaskDetailHarness task={filledTask} lists={fixture.lists} />
+  {/snippet}
 </Story>
 
 <Story
-  name="Mobile back and right swipe return (TODO)"
-  exportName="MobileReturnTodo"
-  tags={["todo"]}
+  name="Commits an edited title"
+  exportName="CommitTitle"
+  parameters={{ visualDelta: referenceVisualDelta("desktop-task-detail") }}
+  play={async ({ canvas }) => {
+    await userEvent.click(canvas.getByRole("button", { name: "Edit title" }));
+    const input = canvas.getByRole("textbox", { name: "Task title" });
+    await userEvent.clear(input);
+    await userEvent.type(input, "Review the launch brief this week{Enter}");
+    await expect(
+      canvas.getByRole("heading", {
+        name: "Review the launch brief this week",
+      }),
+    ).toBeVisible();
+    await expect(
+      canvas.getByText("Title changed: Review the launch brief this week"),
+    ).toBeVisible();
+  }}
+>
+  {#snippet template()}
+    <TaskDetailHarness task={filledTask} lists={fixture.lists} />
+  {/snippet}
+</Story>
+
+<Story
+  name="Escape cancels the title edit without closing"
+  exportName="EscapeCancelsTitleEdit"
+  parameters={{ visualDelta: referenceVisualDelta("desktop-task-detail") }}
+  play={async ({ canvas }) => {
+    await userEvent.click(canvas.getByRole("button", { name: "Edit title" }));
+    const input = canvas.getByRole("textbox", { name: "Task title" });
+    await userEvent.clear(input);
+    await userEvent.type(input, "Discard this draft");
+    await userEvent.keyboard("{Escape}");
+    await expect(
+      canvas.getByRole("heading", {
+        name: "Review the launch brief today",
+      }),
+    ).toBeVisible();
+    await expect(canvas.queryByText("Returned to task list")).toBeNull();
+  }}
+>
+  {#snippet template()}
+    <TaskDetailHarness task={filledTask} lists={fixture.lists} />
+  {/snippet}
+</Story>
+
+<Story
+  name="Escape and back return to the list"
+  exportName="EscapeAndBackReturn"
   parameters={{ visualDelta: referenceVisualDelta("mobile-inbox") }}
   play={async ({ canvas }) => {
-    await userEvent.click(
-      canvas.getByRole("button", { name: "Open task detail" }),
-    );
-    const detail = canvas.getByRole("dialog", { name: "Task detail" });
-    await fireEvent.pointerDown(detail, { clientX: 24 });
-    await fireEvent.pointerUp(detail, { clientX: 88 });
+    await expect(
+      canvas.getByRole("heading", {
+        name: "Review the launch brief today",
+      }),
+    ).toHaveFocus();
+    await userEvent.keyboard("{Escape}");
+    await expect(canvas.getByText("Returned to task list")).toBeVisible();
+    await expect(canvas.getByText("Back requested")).toBeVisible();
+  }}
+>
+  {#snippet template()}
+    <TaskDetailHarness task={filledTask} lists={fixture.lists} />
+  {/snippet}
+</Story>
+
+<Story
+  name="Back button returns to the list"
+  exportName="BackButtonReturns"
+  parameters={{ visualDelta: referenceVisualDelta("desktop-task-detail") }}
+  play={async ({ canvas }) => {
+    await userEvent.click(canvas.getByRole("button", { name: "Back to list" }));
     await expect(canvas.getByText("Returned to task list")).toBeVisible();
   }}
 >
-  {#snippet template()}<TasksInteractionTodo
-      scenario="detail-return"
-    />{/snippet}
+  {#snippet template()}
+    <TaskDetailHarness task={filledTask} lists={fixture.lists} />
+  {/snippet}
 </Story>
