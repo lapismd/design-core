@@ -6,11 +6,15 @@ import type { Plugin } from "vite";
 import {
   VISUAL_DELTA_CANCEL_PATH,
   VISUAL_DELTA_CREATE_PATH,
+  VISUAL_DELTA_REVIEW_PATH,
   VISUAL_DELTA_RUN_PATH,
   VISUAL_DELTA_UPDATE_PATH,
+  isVisualReviewStatus,
+  type VisualReviewStatus,
 } from "../packages/storybook-addon-visual-delta/src/constants.js";
 import type { VisualDiffSidecar } from "../packages/storybook-addon-visual-delta/src/visual-diff-sidecar.js";
 import { loadSidecarForStoryId } from "../scripts/ui-generator/visual/diff-result.js";
+import { patchStoryVisualReviewStatus } from "../scripts/ui-generator/visual/patch-story-visual-review.js";
 import type { StoryIndexEntry } from "../scripts/ui-generator/visual/snapshot-paths.js";
 
 type UpdateBody = {
@@ -555,12 +559,53 @@ function handleCancel(res: ServerResponse) {
   writeJson(res, 200, { ok: true, cancelled: true });
 }
 
+type ReviewBody = {
+  storyId?: string;
+  status?: VisualReviewStatus;
+};
+
+async function handleReviewStatus(
+  req: IncomingMessage,
+  res: ServerResponse,
+  root: string,
+) {
+  let body: ReviewBody;
+  try {
+    body = await readJsonBody<ReviewBody>(req);
+  } catch (error) {
+    writeJson(res, 400, {
+      ok: false,
+      error: error instanceof Error ? error.message : "Invalid JSON",
+    });
+    return;
+  }
+
+  const storyId = body.storyId?.trim();
+  const status = body.status;
+  if (!storyId || !isVisualReviewStatus(status)) {
+    writeJson(res, 400, {
+      ok: false,
+      error:
+        'Provide storyId and status ("pending" | "approved" | "failed")',
+    });
+    return;
+  }
+
+  const result = patchStoryVisualReviewStatus({
+    packageRoot: root,
+    storyId,
+    status,
+  });
+  writeJson(res, result.ok ? 200 : 400, result);
+}
+
 /**
  * Dev-only Visual Delta endpoints:
  * - POST /__visual-delta/update-baseline — regenerate baselines (overwrite)
  * - POST /__visual-delta/create-baseline — create missing baselines only
  * - POST /__visual-delta/run-tests — run Playwright visual suite (no updates)
  * - POST /__visual-delta/cancel-tests — stop an in-flight run
+ * - POST /__visual-delta/review-status — set visual-pending / visual-approved tag
  */
 export function visualDeltaMiddlewarePlugin(): Plugin {
   return {
@@ -589,6 +634,17 @@ export function visualDeltaMiddlewarePlugin(): Plugin {
             return;
           }
           await handleBaselineWrite(req, res, root, "create");
+          return;
+        }
+
+        if (url === VISUAL_DELTA_REVIEW_PATH) {
+          if (req.method !== "POST") {
+            res.statusCode = 405;
+            res.setHeader("Allow", "POST");
+            res.end("Method Not Allowed");
+            return;
+          }
+          await handleReviewStatus(req, res, root);
           return;
         }
 

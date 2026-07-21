@@ -91,6 +91,9 @@ const TAG_ICONS: Record<string, string> = {
   "skip-test": "∅",
   "upstream-example": "↑",
   "visual-state": "◉",
+  "visual-pending": "⏱",
+  "visual-approved": "⛨",
+  "visual-failed": "✕",
   "tasks-reference-visual": "☰",
   new: "✦",
   alpha: "α",
@@ -189,6 +192,30 @@ addons.setConfig({
         text: "Visual",
         style: "turquoise",
         tooltip: "Explicit visual-state story",
+      },
+    },
+    {
+      tags: "visual-pending",
+      badge: {
+        text: "Pending review",
+        style: "orange",
+        tooltip: "Baseline exists; awaiting human approval",
+      },
+    },
+    {
+      tags: "visual-approved",
+      badge: {
+        text: "Approved",
+        style: "green",
+        tooltip: "Baseline reviewed and accepted",
+      },
+    },
+    {
+      tags: "visual-failed",
+      badge: {
+        text: "Failed",
+        style: "red",
+        tooltip: "Baseline review failed or rejected",
       },
     },
     {

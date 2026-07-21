@@ -18,6 +18,7 @@ import {
   storyIdPrefixFromTitle,
 } from "../visual/snapshot-paths.js";
 import { patchStoriesVisualDeltaImages } from "../visual/patch-story-visual-delta.js";
+import { markCreatedStoriesPending } from "../visual/patch-story-visual-review.js";
 import {
   createRunContext,
   writeJson,
@@ -158,6 +159,15 @@ export async function runVisualUpdate(options: {
     log.info(
       `Story visualDelta patch: ${patchResult.patched.length} updated, ${patchResult.skipped.length} skipped`,
     );
+    if (patchResult.patched.length) {
+      const pending = markCreatedStoriesPending({
+        packageRoot: config.packageRoot,
+        storyIds: patchResult.patched,
+      });
+      log.info(
+        `Story review pending: ${pending.marked.length} marked, ${pending.skipped.length} skipped`,
+      );
+    }
   }
 
   const after = buildSnapshotManifest(snapshotDir);

@@ -30,6 +30,8 @@
     );
     await expect(canvas.getByText("Hidden until expanded")).toBeVisible();
   }}
+
+  tags={["visual-approved"]}
 >
   {#snippet template()}
     <Collapsible.Root bind:open class="max-w-sm">

@@ -7,6 +7,7 @@ import {
   stripAnsi,
 } from "../../../.storybook/visual-delta-middleware.js";
 import { patchStoryOpenTagWithBaselineUrl } from "../visual/patch-story-visual-delta.js";
+import { patchStoryOpenTagWithReviewStatus } from "../visual/patch-story-visual-review.js";
 
 describe("parseListReporterProgress", () => {
   it("parses passed and failed list-reporter lines", () => {
@@ -130,5 +131,39 @@ describe("patchStoryOpenTagWithBaselineUrl", () => {
   it("skips skip-visual stories", () => {
     const tag = `<Story name="Default" tags={["skip-visual"]}>`;
     expect(patchStoryOpenTagWithBaselineUrl(tag, url)).toBe(tag);
+  });
+});
+
+describe("patchStoryOpenTagWithReviewStatus", () => {
+  it("adds visual-pending when no tags exist", () => {
+    const next = patchStoryOpenTagWithReviewStatus(
+      `<Story name="Default">`,
+      "pending",
+    );
+    expect(next).toContain('tags={["visual-pending"]}');
+  });
+
+  it("swaps pending for approved and keeps other tags", () => {
+    const next = patchStoryOpenTagWithReviewStatus(
+      `<Story name="Default" tags={["skip-test", "visual-pending"]}>`,
+      "approved",
+    );
+    expect(next).toContain('"skip-test"');
+    expect(next).toContain('"visual-approved"');
+    expect(next).not.toContain("visual-pending");
+  });
+
+  it("swaps approved for failed", () => {
+    const next = patchStoryOpenTagWithReviewStatus(
+      `<Story name="Default" tags={["visual-approved"]}>`,
+      "failed",
+    );
+    expect(next).toContain('"visual-failed"');
+    expect(next).not.toContain("visual-approved");
+  });
+
+  it("is idempotent when the status tag is already present", () => {
+    const tag = `<Story name="Default" tags={["visual-approved"]}>`;
+    expect(patchStoryOpenTagWithReviewStatus(tag, "approved")).toBe(tag);
   });
 });

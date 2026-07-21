@@ -141,4 +141,7 @@ extra wiring. Global tags `autodocs` and `test` are not badged.
 - `skip-visual` — exclude from Playwright visual suite (document reason)
 - `upstream-example` — generated from upstream docs examples
 - `visual-state` — explicit visual-state story
+- `visual-pending` — baseline exists; awaiting human approval (Visual Delta)
+- `visual-approved` — baseline reviewed and accepted (Visual Delta)
+- `visual-failed` — baseline review failed or rejected (Visual Delta)
 - `tasks-reference-visual` — Tasks vs Superlist reference baselines
