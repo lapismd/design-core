@@ -1,12 +1,14 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent } from "storybook/test";
+  import { TASKS_REFERENCE_LIST_NAME } from "../../lib/fixtures.js";
   import TasksShell from "./TasksShell.svelte";
 
   const { Story } = defineMeta({
     title: "Tasks/Components/Tasks Shell",
     component: TasksShell,
-
+    // Compare Playwright baselines to synced Superlist shell captures.
+    tags: ["tasks-reference-visual"],
     parameters: {
       layout: "fullscreen",
       docs: {
@@ -25,21 +27,160 @@
 </script>
 
 <Story
-  name="Wide, no detail"
-  exportName="WideNoDetail"
+  name="Inbox"
+  exportName="Inbox"
   parameters={{
-    visualDelta: visualDeltaForStory(
-      "tasks-components-tasks-shell--wide-no-detail",
-    ),
+    visualDelta: visualDeltaForStory("tasks-components-tasks-shell--inbox"),
   }}
   play={async ({ canvas }) => {
     await expect(canvas.getByLabelText("Tasks navigation")).toBeVisible();
-    await expect(canvas.getByLabelText("Tasks")).toBeVisible();
+    await expect(
+      canvas.getByRole("button", { name: "Inbox", current: "page" }),
+    ).toBeVisible();
+    await expect(
+      canvas.getByRole("heading", { level: 1, name: "Inbox" }),
+    ).toBeVisible();
     await expect(canvas.getByText("Detail closed")).toBeVisible();
   }}
 >
   {#snippet template()}
-    <TasksShellHarness viewport="desktop" />
+    <TasksShellHarness activeNavId="inbox" />
+  {/snippet}
+</Story>
+
+<Story
+  name="Today"
+  exportName="Today"
+  parameters={{
+    visualDelta: visualDeltaForStory("tasks-components-tasks-shell--today"),
+  }}
+  play={async ({ canvas }) => {
+    await expect(
+      canvas.getByRole("button", { name: "Today", current: "page" }),
+    ).toBeVisible();
+    await expect(
+      canvas.getByRole("heading", { level: 1, name: "Today" }),
+    ).toBeVisible();
+    await expect(canvas.getByText("Detail closed")).toBeVisible();
+  }}
+>
+  {#snippet template()}
+    <TasksShellHarness activeNavId="today" />
+  {/snippet}
+</Story>
+
+<Story
+  name="Tasks"
+  exportName="Tasks"
+  parameters={{
+    visualDelta: visualDeltaForStory("tasks-components-tasks-shell--tasks"),
+  }}
+  play={async ({ canvas }) => {
+    await expect(
+      canvas.getByRole("button", { name: "Tasks", current: "page" }),
+    ).toBeVisible();
+    await expect(
+      canvas.getByRole("heading", { level: 1, name: "Tasks" }),
+    ).toBeVisible();
+    await expect(canvas.getByText("All")).toBeVisible();
+    await expect(canvas.getByText("Detail closed")).toBeVisible();
+  }}
+>
+  {#snippet template()}
+    <TasksShellHarness activeNavId="tasks" />
+  {/snippet}
+</Story>
+
+<Story
+  name="Updates"
+  exportName="Updates"
+  parameters={{
+    visualDelta: visualDeltaForStory("tasks-components-tasks-shell--updates"),
+  }}
+  play={async ({ canvas }) => {
+    await expect(
+      canvas.getByRole("button", { name: "Updates", current: "page" }),
+    ).toBeVisible();
+    await expect(
+      canvas.getByRole("heading", { level: 1, name: "Updates" }),
+    ).toBeVisible();
+    await expect(canvas.getByText("All")).toBeVisible();
+    await expect(canvas.getByText("Detail closed")).toBeVisible();
+  }}
+>
+  {#snippet template()}
+    <TasksShellHarness activeNavId="updates" />
+  {/snippet}
+</Story>
+
+<Story
+  name="Lists"
+  exportName="Lists"
+  parameters={{
+    visualDelta: visualDeltaForStory("tasks-components-tasks-shell--lists"),
+  }}
+  play={async ({ canvas }) => {
+    await expect(
+      canvas.getByRole("button", { name: "Lists", current: "page" }),
+    ).toBeVisible();
+    await expect(
+      canvas.getByRole("heading", { level: 1, name: "Lists" }),
+    ).toBeVisible();
+    await expect(canvas.getByText("All")).toBeVisible();
+    await expect(canvas.getByText("Detail closed")).toBeVisible();
+  }}
+>
+  {#snippet template()}
+    <TasksShellHarness activeNavId="lists" />
+  {/snippet}
+</Story>
+
+<Story
+  name="List — Tasks UI Reference"
+  exportName="ListReference"
+  parameters={{
+    visualDelta: visualDeltaForStory(
+      "tasks-components-tasks-shell--list-reference",
+    ),
+  }}
+  play={async ({ canvas }) => {
+    await expect(
+      canvas.getByRole("button", {
+        name: TASKS_REFERENCE_LIST_NAME,
+        current: "page",
+      }),
+    ).toBeVisible();
+    await expect(
+      canvas.getByRole("heading", { level: 1, name: TASKS_REFERENCE_LIST_NAME }),
+    ).toBeVisible();
+    await expect(canvas.getByText("Detail closed")).toBeVisible();
+  }}
+>
+  {#snippet template()}
+    <TasksShellHarness activeNavId="list:list-reference" />
+  {/snippet}
+</Story>
+
+<Story
+  name="List — Shared planning"
+  exportName="ListShared"
+  parameters={{
+    visualDelta: visualDeltaForStory(
+      "tasks-components-tasks-shell--list-shared",
+    ),
+  }}
+  play={async ({ canvas }) => {
+    await expect(
+      canvas.getByRole("button", { name: "Shared planning", current: "page" }),
+    ).toBeVisible();
+    await expect(
+      canvas.getByRole("heading", { level: 1, name: "Shared planning" }),
+    ).toBeVisible();
+    await expect(canvas.getByText("Detail closed")).toBeVisible();
+  }}
+>
+  {#snippet template()}
+    <TasksShellHarness activeNavId="list:list-shared" />
   {/snippet}
 </Story>
 
@@ -52,6 +193,9 @@
     ),
   }}
   play={async ({ canvas }) => {
+    await expect(
+      canvas.getByRole("button", { name: "Inbox", current: "page" }),
+    ).toBeVisible();
     await userEvent.click(
       canvas.getAllByRole("button", { name: "Details" })[0],
     );
@@ -60,7 +204,7 @@
   }}
 >
   {#snippet template()}
-    <TasksShellHarness viewport="desktop" />
+    <TasksShellHarness viewport="desktop" startWithDetail />
   {/snippet}
 </Story>
 
@@ -74,11 +218,17 @@
   }}
   play={async ({ canvas }) => {
     await expect(canvas.getByText("Pane list")).toBeVisible();
-    await expect(canvas.getByLabelText("Tasks")).toBeVisible();
+    await expect(
+      canvas.getByRole("heading", { level: 1, name: "Inbox" }),
+    ).toBeVisible();
     await userEvent.click(
       canvas.getByRole("button", { name: "Open navigation" }),
     );
     await expect(canvas.getByText("Pane navigation")).toBeVisible();
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Close navigation" }),
+    );
+    await expect(canvas.getByText("Pane list")).toBeVisible();
   }}
 >
   {#snippet template()}
@@ -102,6 +252,10 @@
     );
     await expect(canvas.getByText("Pane list")).toBeVisible();
     await expect(canvas.getByText("Detail closed")).toBeVisible();
+    await userEvent.click(
+      canvas.getAllByRole("button", { name: "Details" })[0],
+    );
+    await expect(canvas.getByText("Pane detail")).toBeVisible();
   }}
 >
   {#snippet template()}

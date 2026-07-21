@@ -14,22 +14,26 @@ components.
 - Committed Superlist captures under `reference/superlist/<date>/screenshots/{pages,components}/`
   are Visual Delta evidence (DSF 3; pages full-viewport, components subject-clipped).
   Keep raw videos, traces, and auth state out of version control.
-- Regenerate with `reference:capture:delta` (live) or `reference:migrate:delta`
-  (bootstrap from `screenshots/browser/`). Matrix: `capture-matrix.json`.
-- Component visual baselines use the shared Playwright suite under
-  `tests/visual/storybook.spec.ts-snapshots/tasks/` (same update gate as shadcn);
-  that suite is separate from Superlist Visual Delta overlays.
+- Regenerate primarily via Chrome MCP + `reference:ingest:delta` (see
+  `reference/superlist/README.md`). Optional: `reference:migrate:delta` /
+  `reference:capture:delta`. Matrix: `capture-matrix.json`.
+- Playwright baselines for Tasks Shell (`tasks-reference-visual`) are synced from
+  Superlist captures via `pnpm --dir packages/tasks reference:sync-visual-baselines`
+  into `tests/visual/storybook.spec.ts-snapshots/tasks/`. Do not overwrite those
+  with `test:visual:update`. Other Tasks stories are `skip-visual` while shell
+  alignment is in progress. Visual Delta overlays remain a separate Storybook
+  review aid via `visualDeltaForStory`.
 
 ## Capture workflow
 
-1. `pnpm --dir packages/tasks reference:auth` stores an ignored authenticated
-   browser state after a human login.
-2. `pnpm --dir packages/tasks reference:bootstrap` creates or repairs only the
-   private `Tasks UI Reference` fixture.
-3. `pnpm --dir packages/tasks reference:capture` writes sanitized keyframes and
-   a checksummed manifest beneath `reference/superlist/<capture-id>/`.
-4. `pnpm --dir packages/tasks reference:verify` checks specs, fixtures, and the
-   committed manifest before handoff.
+1. Capture live Superlist in Chrome MCP (verbatim viewport; no redaction overlays).
+   Stage PNGs under `os.tmpdir()/tasks-live-chrome/<matrix-id>.png`.
+2. `pnpm --dir packages/tasks reference:ingest:delta -- --dir=… --ids=…` lands
+   pages/clips and updates the dated manifest checksums.
+3. `pnpm --dir packages/tasks reference:verify` checks specs, fixtures, matrix,
+   and manifests before handoff.
+4. Optional Playwright path: `reference:auth` → `reference:bootstrap` →
+   `reference:capture` / `reference:capture:delta` when headed Chromium is usable.
 
 Never use the bootstrap tool against a shared list. It aborts unless the
 fixture's exact name is selected.

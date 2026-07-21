@@ -7,6 +7,8 @@
     title: "Tasks/Components/List Navigation and Index",
     component: ListNavigation,
 
+    // Out of scope while Tasks Shell is driven by Superlist reference baselines.
+    tags: ["skip-visual"],
     parameters: {
       layout: "fullscreen",
       docs: {

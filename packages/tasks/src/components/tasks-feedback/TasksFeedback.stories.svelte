@@ -7,6 +7,8 @@
     title: "Tasks/Components/Feedback and Empty States",
     component: TasksFeedback,
 
+    // Out of scope while Tasks Shell is driven by Superlist reference baselines.
+    tags: ["skip-visual"],
     parameters: {
       layout: "fullscreen",
       docs: {

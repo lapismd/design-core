@@ -139,9 +139,15 @@ export async function enableFlutterSemantics(page: Page): Promise<void> {
     'flt-semantics-placeholder[aria-label="Enable accessibility"]',
   );
   if (await enable.count()) {
+    await enable.click({ force: true }).catch(() => undefined);
     await enable.press("Enter").catch(() => undefined);
   }
-  await page.waitForTimeout(200);
+  // Some Superlist builds expose the control without the placeholder attribute.
+  const fallback = page.getByLabel(/^Enable accessibility$/i);
+  if (await fallback.count()) {
+    await fallback.first().click({ force: true }).catch(() => undefined);
+  }
+  await page.waitForTimeout(250);
 }
 
 export async function openSource(page: Page): Promise<void> {

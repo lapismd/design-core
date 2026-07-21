@@ -13,18 +13,20 @@
     buildGroupedListView,
     createTasksStoryFixture,
   } from "../../lib/story-fixtures.js";
+  import { destinationTip } from "../../lib/fixtures.js";
   import { ListNavigation } from "../../components/list-navigation/index.js";
   import { TaskComposer } from "../../components/task-composer/index.js";
   import { TaskDetail } from "../../components/task-detail/index.js";
   import { TaskList } from "../../components/task-list/index.js";
   import { TasksFeedback } from "../../components/tasks-feedback/index.js";
-  import { TasksFilters } from "../../components/tasks-filters/index.js";
+  import TasksDestinationHeader from "../../components/tasks-shell/TasksDestinationHeader.svelte";
   import { TasksShell } from "../../components/tasks-shell/index.js";
 
   type Props = {
     page: TasksPageId | "shell";
     viewport?: TasksViewportId;
     title?: string;
+    activeNavId?: TasksNavDestinationId;
     initialFilter?: TasksFilterId;
     startWithDetail?: boolean;
     feedbackMode?: "none" | "empty" | "loading" | "error";
@@ -33,7 +35,8 @@
   let {
     page,
     viewport = "desktop",
-    title = "Inbox",
+    title,
+    activeNavId: activeNavIdOverride,
     initialFilter = "all",
     startWithDetail = false,
     feedbackMode = "none",
@@ -55,17 +58,56 @@
     initialDetail ? "task-brief" : null,
   );
   const initialPage = untrack(() => page);
+  const initialActiveNavId = untrack(() => activeNavIdOverride);
   let activeNavId = $state<TasksNavDestinationId>(
-    initialPage === "list-detail"
-      ? "list:list-reference"
-      : initialPage === "shell"
-        ? "inbox"
-        : (initialPage as TasksNavDestinationId),
+    initialActiveNavId ??
+      (initialPage === "list-detail"
+        ? "list:list-reference"
+        : initialPage === "shell"
+          ? "inbox"
+          : (initialPage as TasksNavDestinationId)),
   );
   let retried = $state(false);
 
+  const displayTitle = $derived(
+    title ??
+      fixture.navDestinations.find((destination) => destination.id === activeNavId)
+        ?.label ??
+      "Inbox",
+  );
+
+  const showFilters = $derived(
+    page === "tasks" ||
+      page === "lists" ||
+      page === "updates" ||
+      (page === "shell" &&
+        (activeNavId === "tasks" ||
+          activeNavId === "lists" ||
+          activeNavId === "updates")),
+  );
+
+  const showComposer = $derived(
+    !(
+      page === "updates" ||
+      page === "lists" ||
+      (page === "shell" &&
+        (activeNavId === "updates" || activeNavId === "lists"))
+    ),
+  );
+
+  const visibleTasks = $derived.by(() => {
+    if (activeNavId.startsWith("list:")) {
+      const listId = activeNavId.slice("list:".length);
+      const list = fixture.lists.find((item) => item.id === listId);
+      if (list) {
+        return tasks.filter((task) => list.taskIds.includes(task.id));
+      }
+    }
+    return tasks;
+  });
+
   const listView = $derived(
-    buildGroupedListView(tasks, {
+    buildGroupedListView(visibleTasks, {
       filterId,
       doneCollapsed,
       loading: feedbackMode === "loading",
@@ -73,16 +115,19 @@
   );
 
   const openTask = $derived(
-    tasks.find((task) => task.id === openTaskId) ?? null,
+    visibleTasks.find((task) => task.id === openTaskId) ??
+      tasks.find((task) => task.id === openTaskId) ??
+      null,
   );
 
-  const showUpdatesFeedback = $derived(page === "updates");
+  const showUpdatesFeedback = $derived(
+    page === "updates" || (page === "shell" && activeNavId === "updates"),
+  );
 </script>
 
 <div
-  class="tasks-page-workspace"
+  class="tasks-page-workspace tasks-shell-stage"
   data-tasks-page={page}
-  style="height: 28rem; border: 1px solid var(--tasks-divider, #ccc); border-radius: 12px; overflow: hidden"
 >
   <TasksShell
     {pager}
@@ -105,17 +150,15 @@
       />
     {/snippet}
     {#snippet main()}
-      <div class="tasks-page-workspace__header">
-        <h1>{title}</h1>
-        {#if page === "tasks" || page === "lists" || page === "updates"}
-          <TasksFilters
-            {filterId}
-            onFilterChange={(id) => {
-              filterId = id;
-            }}
-          />
-        {/if}
-      </div>
+      <TasksDestinationHeader
+        title={displayTitle}
+        description={destinationTip(activeNavId)}
+        {showFilters}
+        {filterId}
+        onFilterChange={(id) => {
+          filterId = id;
+        }}
+      />
 
       {#if showUpdatesFeedback && feedbackMode === "empty"}
         <TasksFeedback state={{ kind: "empty", message: "No updates yet" }} />
@@ -139,8 +182,9 @@
           listView={feedbackMode === "empty"
             ? { ...listView, empty: true, orderedTaskIds: [], groups: [] }
             : listView}
-          {tasks}
+          tasks={visibleTasks}
           selection={{ selectedTaskId, openTaskId }}
+          showReorderControls={false}
           onSelect={(id) => {
             selectedTaskId = id;
           }}
@@ -158,15 +202,20 @@
             doneCollapsed = collapsed;
           }}
         >
-          {#if page !== "updates" && page !== "lists"}
+          {#if showComposer}
             <TaskComposer
+              idleLabel="New task"
               onSubmit={({ title: nextTitle }) => {
                 tasks = [
                   {
                     id: `task-new-${tasks.length + 1}`,
                     title: nextTitle,
                     status: "open",
-                    due: page === "today" ? "today" : null,
+                    due:
+                      page === "today" ||
+                      (page === "shell" && activeNavId === "today")
+                        ? "today"
+                        : null,
                     priority: "none",
                     labels: [],
                     assignee: null,
@@ -205,28 +254,14 @@
 </div>
 
 {#if selectedTaskId}
-  <p>Selected {selectedTaskId}</p>
+  <p class="sr-only">Selected {selectedTaskId}</p>
 {/if}
 {#if openTaskId}
-  <p>Detail open {openTaskId}</p>
+  <p class="sr-only">Detail open {openTaskId}</p>
 {:else}
-  <p>Detail closed</p>
+  <p class="sr-only">Detail closed</p>
 {/if}
-<p>Filter {filterId}</p>
+<p class="sr-only">Filter {filterId}</p>
 {#if retried}
-  <p>Retry requested</p>
+  <p class="sr-only">Retry requested</p>
 {/if}
-
-<style>
-  .tasks-page-workspace__header {
-    display: grid;
-    gap: 0.5rem;
-    padding: 0.75rem 0.75rem 0.25rem;
-  }
-
-  .tasks-page-workspace__header h1 {
-    margin: 0;
-    font-size: 1.25rem;
-    color: var(--tasks-ink);
-  }
-</style>

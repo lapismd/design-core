@@ -20,6 +20,19 @@ type StorybookIndex = {
   entries: Record<string, StoryIndexEntry>;
 };
 
+type CaptureMatrixViewport = { width: number; height: number };
+
+type CaptureMatrix = {
+  captureId: string;
+  viewports: Record<string, CaptureMatrixViewport>;
+  entries: Array<{
+    storyId: string;
+    id: string;
+    viewport: string;
+    coverageOnly?: boolean;
+  }>;
+};
+
 const PORTAL_SELECTORS = [
   '[role="dialog"]',
   '[role="listbox"]',
@@ -29,16 +42,61 @@ const PORTAL_SELECTORS = [
 
 const PACKAGE_ROOT = resolve(".");
 const isBaselineUpdate = process.env.PLAYWRIGHT_UPDATE_SNAPSHOTS === "1";
+const TASKS_REFERENCE_VISUAL_TAG = "tasks-reference-visual";
 
 /**
  * A normal visual comparison permits a small anti-aliasing tolerance. During
  * an explicitly approved update, make the comparison exact so Playwright
  * replaces a baseline even when the intended difference is below that normal
  * threshold (for example, one added icon in a tall ribbon capture).
+ *
+ * Tasks Shell stories tagged `tasks-reference-visual` compare against Superlist
+ * captures (synced into the snapshot tree). Keep that gate tight so styling
+ * drift fails the suite.
  */
 const screenshotExpectationOptions = isBaselineUpdate
   ? { maxDiffPixelRatio: 0 }
   : {};
+
+/**
+ * Tasks Shell stories compare against Superlist full-viewport captures.
+ * Keep chrome (canvas, system nav, workspace frame, title) under a tight
+ * threshold. Mask fixture content that cannot match live Superlist pixels.
+ */
+const TASKS_REFERENCE_MASK_SELECTORS = [
+  "[data-tasks-list]",
+  "[data-tasks-composer]",
+  "[data-tasks-nav-account]",
+  "[data-tasks-nav-lists]",
+  "[data-tasks-shell-detail]",
+  "[data-tasks-destination-header] [role='note']",
+  "[data-tasks-destination-utilities]",
+  ".tasks-list-navigation__icon",
+] as const;
+
+const tasksReferenceExpectationOptions = {
+  maxDiffPixelRatio: 0.001,
+};
+
+function loadCaptureMatrix(): CaptureMatrix {
+  return JSON.parse(
+    readFileSync(
+      resolve("packages/tasks/reference/superlist/capture-matrix.json"),
+      "utf8",
+    ),
+  ) as CaptureMatrix;
+}
+
+const captureMatrix = loadCaptureMatrix();
+const matrixEntryByStoryId = new Map(
+  captureMatrix.entries
+    .filter((entry) => !entry.coverageOnly)
+    .map((entry) => [entry.storyId, entry]),
+);
+
+function isTasksReferenceVisual(entry: StoryIndexEntry): boolean {
+  return (entry.tags ?? []).includes(TASKS_REFERENCE_VISUAL_TAG);
+}
 
 function loadVisualStories(): StoryIndexEntry[] {
   const indexPath = resolve("storybook-static/index.json");
@@ -102,7 +160,17 @@ async function captureActualPng(
   page: Page,
   subject: Locator | null,
   clip: { x: number; y: number; width: number; height: number } | null,
+  fullViewport: boolean,
 ): Promise<Buffer> {
+  if (fullViewport) {
+    return page.screenshot({
+      fullPage: false,
+      animations: "disabled",
+      caret: "hide",
+      scale: "device",
+      type: "png",
+    });
+  }
   if (clip) {
     return page.screenshot({
       clip,
@@ -162,6 +230,14 @@ function writeSidecarForStory(
   }
 }
 
+function referenceViewportForStory(
+  storyId: string,
+): CaptureMatrixViewport | null {
+  const entry = matrixEntryByStoryId.get(storyId);
+  if (!entry) return null;
+  return captureMatrix.viewports[entry.viewport] ?? null;
+}
+
 const stories = loadVisualStories();
 
 test.describe("Storybook visual baselines", () => {
@@ -183,7 +259,23 @@ test.describe("Storybook visual baselines", () => {
 
   for (const story of stories) {
     const storyId = story.id;
+    const referenceVisual = isTasksReferenceVisual(story);
     test(storyId, async ({ page }) => {
+      if (referenceVisual && isBaselineUpdate) {
+        throw new Error(
+          `${storyId} uses Superlist reference baselines. Re-sync with ` +
+            "`pnpm --dir packages/tasks reference:sync-visual-baselines` " +
+            "instead of Playwright --update-snapshots.",
+        );
+      }
+
+      const viewport = referenceVisual
+        ? referenceViewportForStory(storyId)
+        : null;
+      if (viewport) {
+        await page.setViewportSize(viewport);
+      }
+
       await page.goto(`/iframe.html?id=${storyId}&viewMode=story`, {
         waitUntil: "networkidle",
       });
@@ -236,40 +328,58 @@ test.describe("Storybook visual baselines", () => {
       });
 
       const snapshotPath = screenshotRelativePath(story).split("/");
-      const usePortalClip =
-        looksLikePortalStory(storyId) ||
-        (await page.locator(PORTAL_SELECTORS).count()) > 0;
-      const clip = usePortalClip ? await portalUnionClip(page) : null;
+      const expectOptions = referenceVisual
+        ? tasksReferenceExpectationOptions
+        : screenshotExpectationOptions;
 
       let subject: Locator | null = null;
-      if (!clip) {
-        const childCount = await root.locator(":scope > *").count();
-        subject = childCount > 0 ? root.locator(":scope > *").first() : root;
-        await expect(subject).toBeVisible();
-      }
+      let clip: { x: number; y: number; width: number; height: number } | null =
+        null;
 
       let status: "passed" | "failed" = "passed";
       let error: string | undefined;
       try {
-        if (clip) {
+        if (referenceVisual) {
+          // Superlist shell captures are full CSS viewport @ deviceScaleFactor 3.
+          // Mask fixture/list/account regions that cannot match live Superlist.
+          const mask = TASKS_REFERENCE_MASK_SELECTORS.map((selector) =>
+            page.locator(selector),
+          );
           await expect(page).toHaveScreenshot(snapshotPath, {
-            clip,
-            ...screenshotExpectationOptions,
+            ...expectOptions,
+            mask,
           });
         } else {
-          await expect(subject!).toHaveScreenshot(
-            snapshotPath,
-            screenshotExpectationOptions,
-          );
+          const usePortalClip =
+            looksLikePortalStory(storyId) ||
+            (await page.locator(PORTAL_SELECTORS).count()) > 0;
+          clip = usePortalClip ? await portalUnionClip(page) : null;
+          if (!clip) {
+            const childCount = await root.locator(":scope > *").count();
+            subject =
+              childCount > 0 ? root.locator(":scope > *").first() : root;
+            await expect(subject).toBeVisible();
+          }
+          if (clip) {
+            await expect(page).toHaveScreenshot(snapshotPath, {
+              clip,
+              ...expectOptions,
+            });
+          } else {
+            await expect(subject!).toHaveScreenshot(snapshotPath, expectOptions);
+          }
         }
       } catch (err) {
         status = "failed";
         error = err instanceof Error ? err.message : String(err);
         throw err;
       } finally {
-        const actualPng = await captureActualPng(page, subject, clip).catch(
-          () => null,
-        );
+        const actualPng = await captureActualPng(
+          page,
+          subject,
+          clip,
+          referenceVisual,
+        ).catch(() => null);
         writeSidecarForStory(story, status, error, actualPng);
       }
     });

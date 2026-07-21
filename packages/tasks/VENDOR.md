@@ -8,9 +8,10 @@ data from that application.
 Committed reference screenshots under
 `reference/superlist/2026-07-20/screenshots/{pages,components}/` are browser
 captures of the dedicated **Tasks UI Reference** fixture list at
-**deviceScaleFactor 3**. Pages are full viewport; components are subject-clipped.
-Avatar/banner placeholders are applied on live re-capture. Fixture task titles
-remain synthetic.
+**deviceScaleFactor 3** and desktop CSS **1280×900** (same max as Playwright
+visual baselines → **3840×2700** page PNGs). Pages are full viewport; components
+are subject-clipped. Captures are verbatim (no avatar/banner redaction overlays).
+Fixture task titles remain synthetic.
 
 These images feed Storybook Visual Delta via `visualDeltaForStory` /
 `capture-matrix.json`. Playwright visual baselines for Tasks components live

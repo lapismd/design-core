@@ -14,7 +14,7 @@ export type ReferenceViewport = {
 
 /** CSS viewports for Superlist reference captures. */
 export const referenceViewports = [
-  { id: "desktop", width: 1680, height: 1000, deviceScaleFactor: 1 },
+  { id: "desktop", width: 1280, height: 900, deviceScaleFactor: 1 },
   { id: "tablet-landscape", width: 1024, height: 768, deviceScaleFactor: 1 },
   { id: "tablet-portrait", width: 768, height: 1024, deviceScaleFactor: 1 },
   { id: "mobile", width: 390, height: 844, deviceScaleFactor: 1 },

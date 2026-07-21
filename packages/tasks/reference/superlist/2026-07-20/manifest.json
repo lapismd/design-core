@@ -1,25 +1,44 @@
 {
   "captureId": "2026-07-20",
   "source": "https://app.superlist.com/",
-  "capturedAt": "2026-07-21T09:09:48.081Z",
+  "capturedAt": "2026-07-21T10:25:29.834Z",
   "status": "browser-fixture",
   "deviceScaleFactor": 3,
-  "redaction": "Committed Superlist reference captures for Visual Delta. Component shots are subject-clipped. Avatar/banner placeholders applied on live re-capture; migrated crops inherit fixture-list content.",
+  "redaction": "No overlays. Chrome MCP captures are verbatim viewport PNGs; component shots are subject-clipped from those pages.",
   "screenshots": [
+    {
+      "id": "comp-shell-wide",
+      "storyId": "tasks-components-tasks-shell--wide-no-detail",
+      "kind": "component",
+      "page": "inbox",
+      "viewport": "desktop",
+      "state": "chrome-mcp",
+      "file": "screenshots/components/comp-shell-wide.png",
+      "sha256": "40476f213d147887a07b57615064d62f1ac8a305ef15bcf657a5ec58b6bb845f",
+      "fixtureOnly": true,
+      "clip": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 900
+      },
+      "placeholdersApplied": [],
+      "pixelWidth": 3840,
+      "pixelHeight": 2700
+    },
     {
       "id": "page-desktop-inbox",
       "storyId": "tasks-pages-inbox--default",
       "kind": "page",
       "page": "inbox",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/pages/page-desktop-inbox.png",
-      "sha256": "e2450c8c0e770ea0b621bd75d1a4d7398f77759a40bcf183b2b89a7941c67b0a",
+      "sha256": "c4352018b149f9c93a2ed309fd1af11bf44f1af63f094800fb9d21f551cfbd6a",
       "fixtureOnly": true,
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 3840,
+      "pixelHeight": 2700
     },
     {
       "id": "page-desktop-inbox-detail",
@@ -27,14 +46,13 @@
       "kind": "page",
       "page": "task-detail",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/pages/page-desktop-inbox-detail.png",
-      "sha256": "4eebf24562ca555b0a2394dba60ea3b12bc5692b3756491d7200ec3fb5b6d218",
+      "sha256": "1aee129592a78eb423514ecbfb964ce22003e72f0ad826b8d1374795135ddb78",
       "fixtureOnly": true,
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 3840,
+      "pixelHeight": 2700
     },
     {
       "id": "page-desktop-today",
@@ -42,14 +60,13 @@
       "kind": "page",
       "page": "today",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/pages/page-desktop-today.png",
-      "sha256": "f08fbae7049c951e16d58bef81cc14148c248964a8cffad291eb7d90632391fe",
+      "sha256": "3e9972271a3d2633bd1061d68f76387b85a00a1da63f91d63798429c514346d6",
       "fixtureOnly": true,
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 3840,
+      "pixelHeight": 2700
     },
     {
       "id": "page-desktop-today-detail",
@@ -57,14 +74,13 @@
       "kind": "page",
       "page": "task-detail",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/pages/page-desktop-today-detail.png",
-      "sha256": "4eebf24562ca555b0a2394dba60ea3b12bc5692b3756491d7200ec3fb5b6d218",
+      "sha256": "743d15455afd86a9b24acede0e4bc149695b7fbf7819be25c5ef478ca410dbf7",
       "fixtureOnly": true,
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 3840,
+      "pixelHeight": 2700
     },
     {
       "id": "page-desktop-tasks",
@@ -72,14 +88,13 @@
       "kind": "page",
       "page": "tasks",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/pages/page-desktop-tasks.png",
-      "sha256": "bbc711c232d3c9b737b2397f8daf37b4675ffd4a63ba8e65edc61269d7ab2445",
+      "sha256": "dd0f4ece9504a7fda94aa4c7d5894e24d4c531143a52a9bf9b187617bd8a477d",
       "fixtureOnly": true,
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 3840,
+      "pixelHeight": 2700
     },
     {
       "id": "page-desktop-updates",
@@ -87,14 +102,13 @@
       "kind": "page",
       "page": "updates",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/pages/page-desktop-updates.png",
-      "sha256": "09c0920b58b8fa565029f011564dd1d284a0f9ba0586db7d8ff07595627e9d60",
+      "sha256": "c32e23aea01eed47a15c433de78b883e0c7d1eeb32d0f504abc04e385bea4055",
       "fixtureOnly": true,
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 3840,
+      "pixelHeight": 2700
     },
     {
       "id": "page-desktop-updates-loading",
@@ -102,14 +116,13 @@
       "kind": "page",
       "page": "updates",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/pages/page-desktop-updates-loading.png",
-      "sha256": "09c0920b58b8fa565029f011564dd1d284a0f9ba0586db7d8ff07595627e9d60",
+      "sha256": "c32e23aea01eed47a15c433de78b883e0c7d1eeb32d0f504abc04e385bea4055",
       "fixtureOnly": true,
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 3840,
+      "pixelHeight": 2700
     },
     {
       "id": "page-desktop-updates-error",
@@ -117,14 +130,13 @@
       "kind": "page",
       "page": "updates",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/pages/page-desktop-updates-error.png",
-      "sha256": "09c0920b58b8fa565029f011564dd1d284a0f9ba0586db7d8ff07595627e9d60",
+      "sha256": "c32e23aea01eed47a15c433de78b883e0c7d1eeb32d0f504abc04e385bea4055",
       "fixtureOnly": true,
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 3840,
+      "pixelHeight": 2700
     },
     {
       "id": "page-desktop-lists",
@@ -132,14 +144,13 @@
       "kind": "page",
       "page": "lists",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/pages/page-desktop-lists.png",
-      "sha256": "ad99e53676fc4db3ef1677d4b116c0fe8c7519183ae2898f1aa85a8432780886",
+      "sha256": "a3198dd5431894ef2253b00943f5c52f7c66fad969495f96250b6570aa3298d2",
       "fixtureOnly": true,
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 3840,
+      "pixelHeight": 2700
     },
     {
       "id": "page-desktop-list-detail",
@@ -147,14 +158,13 @@
       "kind": "page",
       "page": "list-detail",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/pages/page-desktop-list-detail.png",
-      "sha256": "354cc0f192373cc168f6bed8fa07b0d44c1f8749fc38be44e93acc18a5fe623e",
+      "sha256": "6b863e95ff413ec1661470eed49d732f12bc8a6a746538f737c90871d7bca336",
       "fixtureOnly": true,
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 3840,
+      "pixelHeight": 2700
     },
     {
       "id": "page-desktop-list-detail-open",
@@ -162,14 +172,13 @@
       "kind": "page",
       "page": "task-detail",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/pages/page-desktop-list-detail-open.png",
-      "sha256": "4eebf24562ca555b0a2394dba60ea3b12bc5692b3756491d7200ec3fb5b6d218",
+      "sha256": "a0da121c4837430444aca962ca0942344ea1e720fce0de7522127081e9b088db",
       "fixtureOnly": true,
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 3840,
+      "pixelHeight": 2700
     },
     {
       "id": "page-desktop-task-detail",
@@ -177,14 +186,13 @@
       "kind": "page",
       "page": "task-detail",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/pages/page-desktop-task-detail.png",
-      "sha256": "4eebf24562ca555b0a2394dba60ea3b12bc5692b3756491d7200ec3fb5b6d218",
+      "sha256": "a0da121c4837430444aca962ca0942344ea1e720fce0de7522127081e9b088db",
       "fixtureOnly": true,
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 3840,
+      "pixelHeight": 2700
     },
     {
       "id": "page-desktop-task-detail-open",
@@ -192,29 +200,111 @@
       "kind": "page",
       "page": "task-detail",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/pages/page-desktop-task-detail-open.png",
-      "sha256": "4eebf24562ca555b0a2394dba60ea3b12bc5692b3756491d7200ec3fb5b6d218",
+      "sha256": "a0da121c4837430444aca962ca0942344ea1e720fce0de7522127081e9b088db",
       "fixtureOnly": true,
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 3840,
+      "pixelHeight": 2700
     },
     {
       "id": "page-desktop-shell",
-      "storyId": "tasks-pages-tasks-shell--default",
+      "storyId": "tasks-pages-tasks-shell--inbox",
       "kind": "page",
       "page": "inbox",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/pages/page-desktop-shell.png",
-      "sha256": "e2450c8c0e770ea0b621bd75d1a4d7398f77759a40bcf183b2b89a7941c67b0a",
+      "sha256": "c4352018b149f9c93a2ed309fd1af11bf44f1af63f094800fb9d21f551cfbd6a",
       "fixtureOnly": true,
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 3840,
+      "pixelHeight": 2700
+    },
+    {
+      "id": "page-desktop-shell-today",
+      "storyId": "tasks-pages-tasks-shell--today",
+      "kind": "page",
+      "page": "today",
+      "viewport": "desktop",
+      "state": "chrome-mcp",
+      "file": "screenshots/pages/page-desktop-shell-today.png",
+      "sha256": "3e9972271a3d2633bd1061d68f76387b85a00a1da63f91d63798429c514346d6",
+      "fixtureOnly": true,
+      "placeholdersApplied": [],
+      "pixelWidth": 3840,
+      "pixelHeight": 2700
+    },
+    {
+      "id": "page-desktop-shell-tasks",
+      "storyId": "tasks-pages-tasks-shell--tasks",
+      "kind": "page",
+      "page": "tasks",
+      "viewport": "desktop",
+      "state": "chrome-mcp",
+      "file": "screenshots/pages/page-desktop-shell-tasks.png",
+      "sha256": "dd0f4ece9504a7fda94aa4c7d5894e24d4c531143a52a9bf9b187617bd8a477d",
+      "fixtureOnly": true,
+      "placeholdersApplied": [],
+      "pixelWidth": 3840,
+      "pixelHeight": 2700
+    },
+    {
+      "id": "page-desktop-shell-updates",
+      "storyId": "tasks-pages-tasks-shell--updates",
+      "kind": "page",
+      "page": "updates",
+      "viewport": "desktop",
+      "state": "chrome-mcp",
+      "file": "screenshots/pages/page-desktop-shell-updates.png",
+      "sha256": "c32e23aea01eed47a15c433de78b883e0c7d1eeb32d0f504abc04e385bea4055",
+      "fixtureOnly": true,
+      "placeholdersApplied": [],
+      "pixelWidth": 3840,
+      "pixelHeight": 2700
+    },
+    {
+      "id": "page-desktop-shell-lists",
+      "storyId": "tasks-pages-tasks-shell--lists",
+      "kind": "page",
+      "page": "lists",
+      "viewport": "desktop",
+      "state": "chrome-mcp",
+      "file": "screenshots/pages/page-desktop-shell-lists.png",
+      "sha256": "a3198dd5431894ef2253b00943f5c52f7c66fad969495f96250b6570aa3298d2",
+      "fixtureOnly": true,
+      "placeholdersApplied": [],
+      "pixelWidth": 3840,
+      "pixelHeight": 2700
+    },
+    {
+      "id": "page-desktop-shell-list-reference",
+      "storyId": "tasks-pages-tasks-shell--list-reference",
+      "kind": "page",
+      "page": "list-detail",
+      "viewport": "desktop",
+      "state": "chrome-mcp",
+      "file": "screenshots/pages/page-desktop-shell-list-reference.png",
+      "sha256": "6b863e95ff413ec1661470eed49d732f12bc8a6a746538f737c90871d7bca336",
+      "fixtureOnly": true,
+      "placeholdersApplied": [],
+      "pixelWidth": 3840,
+      "pixelHeight": 2700
+    },
+    {
+      "id": "page-desktop-shell-list-shared",
+      "storyId": "tasks-pages-tasks-shell--list-shared",
+      "kind": "page",
+      "page": "list-detail",
+      "viewport": "desktop",
+      "state": "chrome-mcp",
+      "file": "screenshots/pages/page-desktop-shell-list-shared.png",
+      "sha256": "6b863e95ff413ec1661470eed49d732f12bc8a6a746538f737c90871d7bca336",
+      "fixtureOnly": true,
+      "placeholdersApplied": [],
+      "pixelWidth": 3840,
+      "pixelHeight": 2700
     },
     {
       "id": "page-desktop-shell-detail",
@@ -222,14 +312,13 @@
       "kind": "page",
       "page": "task-detail",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/pages/page-desktop-shell-detail.png",
-      "sha256": "4eebf24562ca555b0a2394dba60ea3b12bc5692b3756491d7200ec3fb5b6d218",
+      "sha256": "1aee129592a78eb423514ecbfb964ce22003e72f0ad826b8d1374795135ddb78",
       "fixtureOnly": true,
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 3840,
+      "pixelHeight": 2700
     },
     {
       "id": "page-mobile-shell",
@@ -237,14 +326,13 @@
       "kind": "page",
       "page": "inbox",
       "viewport": "mobile",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/pages/page-mobile-shell.png",
-      "sha256": "ba938f9a63053bd765a3b4c8296394a7b4986dae6fb37058e662c9c6d32c22ef",
+      "sha256": "a532ded98cebe7e7bbdd49d21484a7b1214a35c4396f8f21ea994aa052820131",
       "fixtureOnly": true,
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 1170,
+      "pixelHeight": 2532
     },
     {
       "id": "page-tablet-landscape-inbox",
@@ -252,14 +340,13 @@
       "kind": "page",
       "page": "inbox",
       "viewport": "tablet-landscape",
-      "state": "viewport-coverage",
+      "state": "chrome-mcp",
       "file": "screenshots/pages/page-tablet-landscape-inbox.png",
-      "sha256": "4f5ec570829a85f3795833674a1ab35cdce56c69dff70ae4a7460c1bc796e4df",
+      "sha256": "1138e4565243108bde57e165fdbe272c8fcf8cb29b8cfd97760f420aacce72ea",
       "fixtureOnly": true,
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 3072,
+      "pixelHeight": 2304
     },
     {
       "id": "page-tablet-portrait-inbox",
@@ -267,14 +354,13 @@
       "kind": "page",
       "page": "inbox",
       "viewport": "tablet-portrait",
-      "state": "viewport-coverage",
+      "state": "chrome-mcp",
       "file": "screenshots/pages/page-tablet-portrait-inbox.png",
-      "sha256": "1bbefddde9744089cd02f0ee82e15c2a7a19a29c277bd92b2af9cbc59c2809b1",
+      "sha256": "b9292b7faf48daabadab07c516f38f3a131e11d66ee426609a63ab3539e669cc",
       "fixtureOnly": true,
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 2304,
+      "pixelHeight": 3072
     },
     {
       "id": "page-mobile-inbox",
@@ -282,14 +368,13 @@
       "kind": "page",
       "page": "inbox",
       "viewport": "mobile",
-      "state": "viewport-coverage",
+      "state": "chrome-mcp",
       "file": "screenshots/pages/page-mobile-inbox.png",
-      "sha256": "ba938f9a63053bd765a3b4c8296394a7b4986dae6fb37058e662c9c6d32c22ef",
+      "sha256": "a532ded98cebe7e7bbdd49d21484a7b1214a35c4396f8f21ea994aa052820131",
       "fixtureOnly": true,
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 1170,
+      "pixelHeight": 2532
     },
     {
       "id": "page-mobile-task-detail",
@@ -297,14 +382,13 @@
       "kind": "page",
       "page": "task-detail",
       "viewport": "mobile",
-      "state": "viewport-coverage",
+      "state": "chrome-mcp",
       "file": "screenshots/pages/page-mobile-task-detail.png",
-      "sha256": "8d24f50f6fcfbd96c59257057a1bdfa608314615c1d0f68ea28d41f6c5324253",
+      "sha256": "c30a0d2331b42e0a908bb8cd5a83d9c6a265be919a58d69ae4d9a9cec2f09e94",
       "fixtureOnly": true,
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 1170,
+      "pixelHeight": 2532
     },
     {
       "id": "comp-task-row-default",
@@ -312,20 +396,19 @@
       "kind": "component",
       "page": "list-detail",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/components/comp-task-row-default.png",
-      "sha256": "717082983ccb040bbf608b56e9b4f887473151f0c025338fad37f2d6d7e89009",
+      "sha256": "a41be97ce14e59f66dd53f09b5e0926518258c76cebf0a1f16133d5296ad0044",
       "fixtureOnly": true,
       "clip": {
-        "x": 248,
-        "y": 160,
-        "width": 900,
-        "height": 56
+        "x": 270,
+        "y": 152,
+        "width": 750,
+        "height": 40
       },
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 2250,
+      "pixelHeight": 120
     },
     {
       "id": "comp-task-row-complete",
@@ -333,20 +416,19 @@
       "kind": "component",
       "page": "list-detail",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/components/comp-task-row-complete.png",
-      "sha256": "717082983ccb040bbf608b56e9b4f887473151f0c025338fad37f2d6d7e89009",
+      "sha256": "a41be97ce14e59f66dd53f09b5e0926518258c76cebf0a1f16133d5296ad0044",
       "fixtureOnly": true,
       "clip": {
-        "x": 248,
-        "y": 160,
-        "width": 900,
-        "height": 56
+        "x": 270,
+        "y": 152,
+        "width": 750,
+        "height": 40
       },
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 2250,
+      "pixelHeight": 120
     },
     {
       "id": "comp-task-row-select",
@@ -354,20 +436,19 @@
       "kind": "component",
       "page": "list-detail",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/components/comp-task-row-select.png",
-      "sha256": "4752297c09deba4fc0de8a4bc935c292c396662425b1a15e90b88dbdf4b852f2",
+      "sha256": "cc9e1413372fbfbfbb337984bb4d7cf77a7c861638ba3cb307ec64d388deeb5e",
       "fixtureOnly": true,
       "clip": {
-        "x": 248,
-        "y": 160,
-        "width": 900,
-        "height": 72
+        "x": 270,
+        "y": 152,
+        "width": 750,
+        "height": 48
       },
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 2250,
+      "pixelHeight": 144
     },
     {
       "id": "comp-task-row-dblclick",
@@ -375,20 +456,19 @@
       "kind": "component",
       "page": "list-detail",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/components/comp-task-row-dblclick.png",
-      "sha256": "4752297c09deba4fc0de8a4bc935c292c396662425b1a15e90b88dbdf4b852f2",
+      "sha256": "cc9e1413372fbfbfbb337984bb4d7cf77a7c861638ba3cb307ec64d388deeb5e",
       "fixtureOnly": true,
       "clip": {
-        "x": 248,
-        "y": 160,
-        "width": 900,
-        "height": 72
+        "x": 270,
+        "y": 152,
+        "width": 750,
+        "height": 48
       },
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 2250,
+      "pixelHeight": 144
     },
     {
       "id": "comp-task-row-keyboard",
@@ -396,20 +476,19 @@
       "kind": "component",
       "page": "list-detail",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/components/comp-task-row-keyboard.png",
-      "sha256": "4752297c09deba4fc0de8a4bc935c292c396662425b1a15e90b88dbdf4b852f2",
+      "sha256": "cc9e1413372fbfbfbb337984bb4d7cf77a7c861638ba3cb307ec64d388deeb5e",
       "fixtureOnly": true,
       "clip": {
-        "x": 248,
-        "y": 160,
-        "width": 900,
-        "height": 72
+        "x": 270,
+        "y": 152,
+        "width": 750,
+        "height": 48
       },
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 2250,
+      "pixelHeight": 144
     },
     {
       "id": "comp-task-row-drag",
@@ -417,20 +496,19 @@
       "kind": "component",
       "page": "list-detail",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/components/comp-task-row-drag.png",
-      "sha256": "717082983ccb040bbf608b56e9b4f887473151f0c025338fad37f2d6d7e89009",
+      "sha256": "a41be97ce14e59f66dd53f09b5e0926518258c76cebf0a1f16133d5296ad0044",
       "fixtureOnly": true,
       "clip": {
-        "x": 248,
-        "y": 160,
-        "width": 900,
-        "height": 56
+        "x": 270,
+        "y": 152,
+        "width": 750,
+        "height": 40
       },
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 2250,
+      "pixelHeight": 120
     },
     {
       "id": "comp-task-row-swipe",
@@ -438,9 +516,9 @@
       "kind": "component",
       "page": "inbox",
       "viewport": "mobile",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/components/comp-task-row-swipe.png",
-      "sha256": "c8ff71cdfa7270c8fa8247f2ab8fa42de1c41dd8be618e030ce6024bba03689d",
+      "sha256": "fca43a23956ce5c3deb059804da8368e1b87a6b7fc3f1149f869a39f3e935646",
       "fixtureOnly": true,
       "clip": {
         "x": 0,
@@ -448,10 +526,9 @@
         "width": 390,
         "height": 64
       },
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 1170,
+      "pixelHeight": 192
     },
     {
       "id": "comp-task-list-default",
@@ -459,20 +536,19 @@
       "kind": "component",
       "page": "list-detail",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/components/comp-task-list-default.png",
-      "sha256": "91d4aea305964b9a308607746fee62156c5ed8ad43f526fff4e9db7f6b7647c8",
+      "sha256": "c41aa52a372384ac6a94b6384944fdeace8a7f45044ac8cf52de020484b0573c",
       "fixtureOnly": true,
       "clip": {
-        "x": 248,
-        "y": 72,
-        "width": 900,
-        "height": 820
+        "x": 270,
+        "y": 90,
+        "width": 750,
+        "height": 780
       },
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 2250,
+      "pixelHeight": 2340
     },
     {
       "id": "comp-task-list-done",
@@ -480,20 +556,19 @@
       "kind": "component",
       "page": "list-detail",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/components/comp-task-list-done.png",
-      "sha256": "91d4aea305964b9a308607746fee62156c5ed8ad43f526fff4e9db7f6b7647c8",
+      "sha256": "c41aa52a372384ac6a94b6384944fdeace8a7f45044ac8cf52de020484b0573c",
       "fixtureOnly": true,
       "clip": {
-        "x": 248,
-        "y": 72,
-        "width": 900,
-        "height": 820
+        "x": 270,
+        "y": 90,
+        "width": 750,
+        "height": 780
       },
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 2250,
+      "pixelHeight": 2340
     },
     {
       "id": "comp-task-list-select",
@@ -501,20 +576,19 @@
       "kind": "component",
       "page": "list-detail",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/components/comp-task-list-select.png",
-      "sha256": "91d4aea305964b9a308607746fee62156c5ed8ad43f526fff4e9db7f6b7647c8",
+      "sha256": "67df2b59fdd21207dd27fc346fc2f0802d5aa598f9ae911a5ea00cef38308800",
       "fixtureOnly": true,
       "clip": {
-        "x": 248,
-        "y": 72,
-        "width": 900,
-        "height": 820
+        "x": 270,
+        "y": 90,
+        "width": 750,
+        "height": 780
       },
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 2250,
+      "pixelHeight": 2340
     },
     {
       "id": "comp-task-list-empty",
@@ -522,20 +596,19 @@
       "kind": "component",
       "page": "updates",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/components/comp-task-list-empty.png",
-      "sha256": "ead52ea37d0959e6050af165cd6df666439454880894a54b36154f489778df94",
+      "sha256": "94c35c190a9b6792a8b186aeff551cfcf38d85857eac6d8e1ff46291f69e2546",
       "fixtureOnly": true,
       "clip": {
-        "x": 400,
-        "y": 200,
-        "width": 880,
-        "height": 480
+        "x": 270,
+        "y": 90,
+        "width": 750,
+        "height": 500
       },
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 2250,
+      "pixelHeight": 1500
     },
     {
       "id": "comp-task-list-loading",
@@ -543,20 +616,19 @@
       "kind": "component",
       "page": "updates",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/components/comp-task-list-loading.png",
-      "sha256": "ead52ea37d0959e6050af165cd6df666439454880894a54b36154f489778df94",
+      "sha256": "94c35c190a9b6792a8b186aeff551cfcf38d85857eac6d8e1ff46291f69e2546",
       "fixtureOnly": true,
       "clip": {
-        "x": 400,
-        "y": 200,
-        "width": 880,
-        "height": 480
+        "x": 270,
+        "y": 90,
+        "width": 750,
+        "height": 500
       },
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 2250,
+      "pixelHeight": 1500
     },
     {
       "id": "comp-composer-idle",
@@ -564,20 +636,19 @@
       "kind": "component",
       "page": "list-detail",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/components/comp-composer-idle.png",
-      "sha256": "67c2b346c68cffafc6f728d3dbd9896136fe74e4ae963f157afd3dc1489c91fd",
+      "sha256": "2c407e8e892e2fb1d8fbf0e3a46d5a44da9f1e3141cbb0f45198efc2e91e901a",
       "fixtureOnly": true,
       "clip": {
-        "x": 248,
-        "y": 880,
-        "width": 900,
-        "height": 72
+        "x": 270,
+        "y": 210,
+        "width": 750,
+        "height": 50
       },
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 2250,
+      "pixelHeight": 150
     },
     {
       "id": "comp-composer-active",
@@ -585,20 +656,19 @@
       "kind": "component",
       "page": "list-detail",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/components/comp-composer-active.png",
-      "sha256": "67c2b346c68cffafc6f728d3dbd9896136fe74e4ae963f157afd3dc1489c91fd",
+      "sha256": "2c407e8e892e2fb1d8fbf0e3a46d5a44da9f1e3141cbb0f45198efc2e91e901a",
       "fixtureOnly": true,
       "clip": {
-        "x": 248,
-        "y": 880,
-        "width": 900,
-        "height": 72
+        "x": 270,
+        "y": 210,
+        "width": 750,
+        "height": 50
       },
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 2250,
+      "pixelHeight": 150
     },
     {
       "id": "comp-composer-submit",
@@ -606,20 +676,19 @@
       "kind": "component",
       "page": "list-detail",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/components/comp-composer-submit.png",
-      "sha256": "67c2b346c68cffafc6f728d3dbd9896136fe74e4ae963f157afd3dc1489c91fd",
+      "sha256": "2c407e8e892e2fb1d8fbf0e3a46d5a44da9f1e3141cbb0f45198efc2e91e901a",
       "fixtureOnly": true,
       "clip": {
-        "x": 248,
-        "y": 880,
-        "width": 900,
-        "height": 72
+        "x": 270,
+        "y": 210,
+        "width": 750,
+        "height": 50
       },
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 2250,
+      "pixelHeight": 150
     },
     {
       "id": "comp-composer-reject",
@@ -627,20 +696,19 @@
       "kind": "component",
       "page": "list-detail",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/components/comp-composer-reject.png",
-      "sha256": "67c2b346c68cffafc6f728d3dbd9896136fe74e4ae963f157afd3dc1489c91fd",
+      "sha256": "2c407e8e892e2fb1d8fbf0e3a46d5a44da9f1e3141cbb0f45198efc2e91e901a",
       "fixtureOnly": true,
       "clip": {
-        "x": 248,
-        "y": 880,
-        "width": 900,
-        "height": 72
+        "x": 270,
+        "y": 210,
+        "width": 750,
+        "height": 50
       },
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 2250,
+      "pixelHeight": 150
     },
     {
       "id": "comp-composer-escape",
@@ -648,20 +716,19 @@
       "kind": "component",
       "page": "list-detail",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/components/comp-composer-escape.png",
-      "sha256": "67c2b346c68cffafc6f728d3dbd9896136fe74e4ae963f157afd3dc1489c91fd",
+      "sha256": "2c407e8e892e2fb1d8fbf0e3a46d5a44da9f1e3141cbb0f45198efc2e91e901a",
       "fixtureOnly": true,
       "clip": {
-        "x": 248,
-        "y": 880,
-        "width": 900,
-        "height": 72
+        "x": 270,
+        "y": 210,
+        "width": 750,
+        "height": 50
       },
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 2250,
+      "pixelHeight": 150
     },
     {
       "id": "comp-detail-open",
@@ -669,20 +736,19 @@
       "kind": "component",
       "page": "task-detail",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/components/comp-detail-open.png",
-      "sha256": "4fdc2cdd1b35c917bf2ade62365551af64a3451b0a1632417126e1e31f1962ba",
+      "sha256": "3d5dd0e84fed89bb0e633b65c1d8adb5c890cac8bde265691db6510162df15b7",
       "fixtureOnly": true,
       "clip": {
-        "x": 1160,
-        "y": 56,
-        "width": 500,
-        "height": 900
+        "x": 820,
+        "y": 10,
+        "width": 450,
+        "height": 880
       },
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 1350,
+      "pixelHeight": 2640
     },
     {
       "id": "comp-detail-title",
@@ -690,20 +756,19 @@
       "kind": "component",
       "page": "task-detail",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/components/comp-detail-title.png",
-      "sha256": "4fdc2cdd1b35c917bf2ade62365551af64a3451b0a1632417126e1e31f1962ba",
+      "sha256": "508a3dd130627c0cbc81f8234502ff09268ba1771158cc3d14be85c4b0f60061",
       "fixtureOnly": true,
       "clip": {
-        "x": 1160,
-        "y": 56,
-        "width": 500,
-        "height": 900
+        "x": 820,
+        "y": 10,
+        "width": 450,
+        "height": 880
       },
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 1350,
+      "pixelHeight": 2640
     },
     {
       "id": "comp-detail-escape-edit",
@@ -711,20 +776,19 @@
       "kind": "component",
       "page": "task-detail",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/components/comp-detail-escape-edit.png",
-      "sha256": "4fdc2cdd1b35c917bf2ade62365551af64a3451b0a1632417126e1e31f1962ba",
+      "sha256": "508a3dd130627c0cbc81f8234502ff09268ba1771158cc3d14be85c4b0f60061",
       "fixtureOnly": true,
       "clip": {
-        "x": 1160,
-        "y": 56,
-        "width": 500,
-        "height": 900
+        "x": 820,
+        "y": 10,
+        "width": 450,
+        "height": 880
       },
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 1350,
+      "pixelHeight": 2640
     },
     {
       "id": "comp-detail-escape-back",
@@ -732,20 +796,19 @@
       "kind": "component",
       "page": "task-detail",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/components/comp-detail-escape-back.png",
-      "sha256": "4fdc2cdd1b35c917bf2ade62365551af64a3451b0a1632417126e1e31f1962ba",
+      "sha256": "508a3dd130627c0cbc81f8234502ff09268ba1771158cc3d14be85c4b0f60061",
       "fixtureOnly": true,
       "clip": {
-        "x": 1160,
-        "y": 56,
-        "width": 500,
-        "height": 900
+        "x": 820,
+        "y": 10,
+        "width": 450,
+        "height": 880
       },
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 1350,
+      "pixelHeight": 2640
     },
     {
       "id": "comp-detail-back",
@@ -753,20 +816,19 @@
       "kind": "component",
       "page": "task-detail",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/components/comp-detail-back.png",
-      "sha256": "4fdc2cdd1b35c917bf2ade62365551af64a3451b0a1632417126e1e31f1962ba",
+      "sha256": "508a3dd130627c0cbc81f8234502ff09268ba1771158cc3d14be85c4b0f60061",
       "fixtureOnly": true,
       "clip": {
-        "x": 1160,
-        "y": 56,
-        "width": 500,
-        "height": 900
+        "x": 820,
+        "y": 10,
+        "width": 450,
+        "height": 880
       },
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 1350,
+      "pixelHeight": 2640
     },
     {
       "id": "comp-props-filled",
@@ -774,20 +836,19 @@
       "kind": "component",
       "page": "task-detail",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/components/comp-props-filled.png",
-      "sha256": "496b97da3b66bba8cf325bf9060a7f151b05d585e5610360e13e909d5d21a1e8",
+      "sha256": "897e4fa59b185393efc7c42af5de54889e51ad3b9d29a54ebe3787ecfe9ff82b",
       "fixtureOnly": true,
       "clip": {
-        "x": 1180,
-        "y": 200,
-        "width": 460,
-        "height": 320
+        "x": 840,
+        "y": 100,
+        "width": 410,
+        "height": 300
       },
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 1230,
+      "pixelHeight": 900
     },
     {
       "id": "comp-props-empty",
@@ -795,20 +856,19 @@
       "kind": "component",
       "page": "task-detail",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/components/comp-props-empty.png",
-      "sha256": "496b97da3b66bba8cf325bf9060a7f151b05d585e5610360e13e909d5d21a1e8",
+      "sha256": "897e4fa59b185393efc7c42af5de54889e51ad3b9d29a54ebe3787ecfe9ff82b",
       "fixtureOnly": true,
       "clip": {
-        "x": 1180,
-        "y": 200,
-        "width": 460,
-        "height": 320
+        "x": 840,
+        "y": 100,
+        "width": 410,
+        "height": 300
       },
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 1230,
+      "pixelHeight": 900
     },
     {
       "id": "comp-props-due",
@@ -816,20 +876,19 @@
       "kind": "component",
       "page": "task-detail",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/components/comp-props-due.png",
-      "sha256": "496b97da3b66bba8cf325bf9060a7f151b05d585e5610360e13e909d5d21a1e8",
+      "sha256": "897e4fa59b185393efc7c42af5de54889e51ad3b9d29a54ebe3787ecfe9ff82b",
       "fixtureOnly": true,
       "clip": {
-        "x": 1180,
-        "y": 200,
-        "width": 460,
-        "height": 320
+        "x": 840,
+        "y": 100,
+        "width": 410,
+        "height": 300
       },
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 1230,
+      "pixelHeight": 900
     },
     {
       "id": "comp-props-priority",
@@ -837,20 +896,19 @@
       "kind": "component",
       "page": "task-detail",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/components/comp-props-priority.png",
-      "sha256": "496b97da3b66bba8cf325bf9060a7f151b05d585e5610360e13e909d5d21a1e8",
+      "sha256": "897e4fa59b185393efc7c42af5de54889e51ad3b9d29a54ebe3787ecfe9ff82b",
       "fixtureOnly": true,
       "clip": {
-        "x": 1180,
-        "y": 200,
-        "width": 460,
-        "height": 320
+        "x": 840,
+        "y": 100,
+        "width": 410,
+        "height": 300
       },
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 1230,
+      "pixelHeight": 900
     },
     {
       "id": "comp-props-label",
@@ -858,20 +916,19 @@
       "kind": "component",
       "page": "task-detail",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/components/comp-props-label.png",
-      "sha256": "496b97da3b66bba8cf325bf9060a7f151b05d585e5610360e13e909d5d21a1e8",
+      "sha256": "897e4fa59b185393efc7c42af5de54889e51ad3b9d29a54ebe3787ecfe9ff82b",
       "fixtureOnly": true,
       "clip": {
-        "x": 1180,
-        "y": 200,
-        "width": 460,
-        "height": 320
+        "x": 840,
+        "y": 100,
+        "width": 410,
+        "height": 300
       },
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 1230,
+      "pixelHeight": 900
     },
     {
       "id": "comp-feedback-empty",
@@ -879,20 +936,19 @@
       "kind": "component",
       "page": "updates",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/components/comp-feedback-empty.png",
-      "sha256": "ead52ea37d0959e6050af165cd6df666439454880894a54b36154f489778df94",
+      "sha256": "94c35c190a9b6792a8b186aeff551cfcf38d85857eac6d8e1ff46291f69e2546",
       "fixtureOnly": true,
       "clip": {
-        "x": 400,
-        "y": 200,
-        "width": 880,
-        "height": 480
+        "x": 270,
+        "y": 90,
+        "width": 750,
+        "height": 500
       },
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 2250,
+      "pixelHeight": 1500
     },
     {
       "id": "comp-feedback-loading",
@@ -900,20 +956,19 @@
       "kind": "component",
       "page": "updates",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/components/comp-feedback-loading.png",
-      "sha256": "ead52ea37d0959e6050af165cd6df666439454880894a54b36154f489778df94",
+      "sha256": "94c35c190a9b6792a8b186aeff551cfcf38d85857eac6d8e1ff46291f69e2546",
       "fixtureOnly": true,
       "clip": {
-        "x": 400,
-        "y": 200,
-        "width": 880,
-        "height": 480
+        "x": 270,
+        "y": 90,
+        "width": 750,
+        "height": 500
       },
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 2250,
+      "pixelHeight": 1500
     },
     {
       "id": "comp-feedback-error",
@@ -921,20 +976,19 @@
       "kind": "component",
       "page": "updates",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/components/comp-feedback-error.png",
-      "sha256": "ead52ea37d0959e6050af165cd6df666439454880894a54b36154f489778df94",
+      "sha256": "94c35c190a9b6792a8b186aeff551cfcf38d85857eac6d8e1ff46291f69e2546",
       "fixtureOnly": true,
       "clip": {
-        "x": 400,
-        "y": 200,
-        "width": 880,
-        "height": 480
+        "x": 270,
+        "y": 90,
+        "width": 750,
+        "height": 500
       },
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 2250,
+      "pixelHeight": 1500
     },
     {
       "id": "comp-feedback-status",
@@ -942,20 +996,19 @@
       "kind": "component",
       "page": "updates",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/components/comp-feedback-status.png",
-      "sha256": "ead52ea37d0959e6050af165cd6df666439454880894a54b36154f489778df94",
+      "sha256": "94c35c190a9b6792a8b186aeff551cfcf38d85857eac6d8e1ff46291f69e2546",
       "fixtureOnly": true,
       "clip": {
-        "x": 400,
-        "y": 200,
-        "width": 880,
-        "height": 480
+        "x": 270,
+        "y": 90,
+        "width": 750,
+        "height": 500
       },
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 2250,
+      "pixelHeight": 1500
     },
     {
       "id": "comp-feedback-undo",
@@ -963,20 +1016,19 @@
       "kind": "component",
       "page": "list-detail",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/components/comp-feedback-undo.png",
-      "sha256": "717082983ccb040bbf608b56e9b4f887473151f0c025338fad37f2d6d7e89009",
+      "sha256": "a41be97ce14e59f66dd53f09b5e0926518258c76cebf0a1f16133d5296ad0044",
       "fixtureOnly": true,
       "clip": {
-        "x": 248,
-        "y": 160,
-        "width": 900,
-        "height": 56
+        "x": 270,
+        "y": 152,
+        "width": 750,
+        "height": 40
       },
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 2250,
+      "pixelHeight": 120
     },
     {
       "id": "comp-filters-select",
@@ -984,20 +1036,19 @@
       "kind": "component",
       "page": "tasks",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/components/comp-filters-select.png",
-      "sha256": "32885b7bcbc66a453d22f838af24e58fe6b5cb1a6eec3d92de89fe5f8c90eea8",
+      "sha256": "94b12fd7913a379d24217d184c6bacf50dc5ae5702316874497721a38bc9e3e8",
       "fixtureOnly": true,
       "clip": {
-        "x": 248,
-        "y": 72,
+        "x": 270,
+        "y": 220,
         "width": 900,
-        "height": 64
+        "height": 50
       },
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 2700,
+      "pixelHeight": 150
     },
     {
       "id": "comp-filters-sort",
@@ -1005,20 +1056,19 @@
       "kind": "component",
       "page": "tasks",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/components/comp-filters-sort.png",
-      "sha256": "32885b7bcbc66a453d22f838af24e58fe6b5cb1a6eec3d92de89fe5f8c90eea8",
+      "sha256": "94b12fd7913a379d24217d184c6bacf50dc5ae5702316874497721a38bc9e3e8",
       "fixtureOnly": true,
       "clip": {
-        "x": 248,
-        "y": 72,
+        "x": 270,
+        "y": 220,
         "width": 900,
-        "height": 64
+        "height": 50
       },
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 2700,
+      "pixelHeight": 150
     },
     {
       "id": "comp-nav-activate",
@@ -1026,20 +1076,19 @@
       "kind": "component",
       "page": "inbox",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/components/comp-nav-activate.png",
-      "sha256": "ee4188f10bf5055cbc68f72e8a27530d5c58661e9b986bbc5640d1427f230450",
+      "sha256": "67f4a23f6fc143f8cb4db40bdc05ffe8ee370907c6d44b5364186547b75dbc97",
       "fixtureOnly": true,
       "clip": {
         "x": 0,
         "y": 0,
-        "width": 248,
-        "height": 1000
+        "width": 267,
+        "height": 900
       },
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 801,
+      "pixelHeight": 2700
     },
     {
       "id": "comp-nav-favourite",
@@ -1047,20 +1096,19 @@
       "kind": "component",
       "page": "lists",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/components/comp-nav-favourite.png",
-      "sha256": "2c48ba7529325b26f6e996884fa5925b9164c3c4f40f27d8c13274899b04aa96",
+      "sha256": "cf4e75ea44f286b3c2da98cca78d0dd3ccc56b387aaf5da9b9ab965f21cbce49",
       "fixtureOnly": true,
       "clip": {
-        "x": 248,
-        "y": 72,
-        "width": 1400,
-        "height": 820
+        "x": 270,
+        "y": 90,
+        "width": 900,
+        "height": 780
       },
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 2700,
+      "pixelHeight": 2340
     },
     {
       "id": "comp-nav-create",
@@ -1068,41 +1116,159 @@
       "kind": "component",
       "page": "lists",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/components/comp-nav-create.png",
-      "sha256": "2c48ba7529325b26f6e996884fa5925b9164c3c4f40f27d8c13274899b04aa96",
+      "sha256": "cf4e75ea44f286b3c2da98cca78d0dd3ccc56b387aaf5da9b9ab965f21cbce49",
       "fixtureOnly": true,
       "clip": {
-        "x": 248,
-        "y": 72,
-        "width": 1400,
-        "height": 820
+        "x": 270,
+        "y": 90,
+        "width": 900,
+        "height": 780
       },
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 2700,
+      "pixelHeight": 2340
     },
     {
-      "id": "comp-shell-wide",
-      "storyId": "tasks-components-tasks-shell--wide-no-detail",
+      "id": "comp-shell-inbox",
+      "storyId": "tasks-components-tasks-shell--inbox",
       "kind": "component",
       "page": "inbox",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
-      "file": "screenshots/components/comp-shell-wide.png",
-      "sha256": "e2450c8c0e770ea0b621bd75d1a4d7398f77759a40bcf183b2b89a7941c67b0a",
+      "state": "chrome-mcp",
+      "file": "screenshots/components/comp-shell-inbox.png",
+      "sha256": "40476f213d147887a07b57615064d62f1ac8a305ef15bcf657a5ec58b6bb845f",
       "fixtureOnly": true,
       "clip": {
         "x": 0,
         "y": 0,
-        "width": 1680,
-        "height": 1000
+        "width": 1280,
+        "height": 900
       },
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 3840,
+      "pixelHeight": 2700
+    },
+    {
+      "id": "comp-shell-today",
+      "storyId": "tasks-components-tasks-shell--today",
+      "kind": "component",
+      "page": "today",
+      "viewport": "desktop",
+      "state": "chrome-mcp",
+      "file": "screenshots/components/comp-shell-today.png",
+      "sha256": "84a19bbdd9ff8a2f8ad557c1149875ab64b471f398084852724510477a19417c",
+      "fixtureOnly": true,
+      "clip": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 900
+      },
+      "placeholdersApplied": [],
+      "pixelWidth": 3840,
+      "pixelHeight": 2700
+    },
+    {
+      "id": "comp-shell-tasks",
+      "storyId": "tasks-components-tasks-shell--tasks",
+      "kind": "component",
+      "page": "tasks",
+      "viewport": "desktop",
+      "state": "chrome-mcp",
+      "file": "screenshots/components/comp-shell-tasks.png",
+      "sha256": "502c55e589ca083d373123fa1ec62813eea726167c2ecccd4916206a97acf307",
+      "fixtureOnly": true,
+      "clip": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 900
+      },
+      "placeholdersApplied": [],
+      "pixelWidth": 3840,
+      "pixelHeight": 2700
+    },
+    {
+      "id": "comp-shell-updates",
+      "storyId": "tasks-components-tasks-shell--updates",
+      "kind": "component",
+      "page": "updates",
+      "viewport": "desktop",
+      "state": "chrome-mcp",
+      "file": "screenshots/components/comp-shell-updates.png",
+      "sha256": "9d4e990859136be2c3e5f8642d4363f60a892f83a95a91e6595dcfdc9b445713",
+      "fixtureOnly": true,
+      "clip": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 900
+      },
+      "placeholdersApplied": [],
+      "pixelWidth": 3840,
+      "pixelHeight": 2700
+    },
+    {
+      "id": "comp-shell-lists",
+      "storyId": "tasks-components-tasks-shell--lists",
+      "kind": "component",
+      "page": "lists",
+      "viewport": "desktop",
+      "state": "chrome-mcp",
+      "file": "screenshots/components/comp-shell-lists.png",
+      "sha256": "8b4ba476d3aebe840bd7462192f064e8f8325badc60a795641fa6f0bb5d4b5e1",
+      "fixtureOnly": true,
+      "clip": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 900
+      },
+      "placeholdersApplied": [],
+      "pixelWidth": 3840,
+      "pixelHeight": 2700
+    },
+    {
+      "id": "comp-shell-list-reference",
+      "storyId": "tasks-components-tasks-shell--list-reference",
+      "kind": "component",
+      "page": "list-detail",
+      "viewport": "desktop",
+      "state": "chrome-mcp",
+      "file": "screenshots/components/comp-shell-list-reference.png",
+      "sha256": "2526e10adbfdec824e35889fcc14eda67575f3a3741cc461de1ccf14f04b1019",
+      "fixtureOnly": true,
+      "clip": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 900
+      },
+      "placeholdersApplied": [],
+      "pixelWidth": 3840,
+      "pixelHeight": 2700
+    },
+    {
+      "id": "comp-shell-list-shared",
+      "storyId": "tasks-components-tasks-shell--list-shared",
+      "kind": "component",
+      "page": "list-detail",
+      "viewport": "desktop",
+      "state": "chrome-mcp",
+      "file": "screenshots/components/comp-shell-list-shared.png",
+      "sha256": "2526e10adbfdec824e35889fcc14eda67575f3a3741cc461de1ccf14f04b1019",
+      "fixtureOnly": true,
+      "clip": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 900
+      },
+      "placeholdersApplied": [],
+      "pixelWidth": 3840,
+      "pixelHeight": 2700
     },
     {
       "id": "comp-shell-wide-detail",
@@ -1110,20 +1276,19 @@
       "kind": "component",
       "page": "task-detail",
       "viewport": "desktop",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/components/comp-shell-wide-detail.png",
-      "sha256": "4eebf24562ca555b0a2394dba60ea3b12bc5692b3756491d7200ec3fb5b6d218",
+      "sha256": "7bf6b56cefcab1fdf37c7c2acc6f5c47d3db590925e924f583c10a4c3a158bd4",
       "fixtureOnly": true,
       "clip": {
         "x": 0,
         "y": 0,
-        "width": 1680,
-        "height": 1000
+        "width": 1280,
+        "height": 900
       },
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 3840,
+      "pixelHeight": 2700
     },
     {
       "id": "comp-shell-mobile-list",
@@ -1131,9 +1296,9 @@
       "kind": "component",
       "page": "inbox",
       "viewport": "mobile",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/components/comp-shell-mobile-list.png",
-      "sha256": "ba938f9a63053bd765a3b4c8296394a7b4986dae6fb37058e662c9c6d32c22ef",
+      "sha256": "377d40827038a057e50de6e0672182c08ec5b51341a1f1fe1a0286801d7b41ee",
       "fixtureOnly": true,
       "clip": {
         "x": 0,
@@ -1141,10 +1306,9 @@
         "width": 390,
         "height": 844
       },
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 1170,
+      "pixelHeight": 2532
     },
     {
       "id": "comp-shell-mobile-detail",
@@ -1152,9 +1316,9 @@
       "kind": "component",
       "page": "task-detail",
       "viewport": "mobile",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/components/comp-shell-mobile-detail.png",
-      "sha256": "8d24f50f6fcfbd96c59257057a1bdfa608314615c1d0f68ea28d41f6c5324253",
+      "sha256": "cc82cca1eec5652f79865278b7fd043057087fe5155a92d21c4e93ee1175fb82",
       "fixtureOnly": true,
       "clip": {
         "x": 0,
@@ -1162,10 +1326,9 @@
         "width": 390,
         "height": 844
       },
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 1170,
+      "pixelHeight": 2532
     },
     {
       "id": "comp-motion-swipe",
@@ -1173,9 +1336,9 @@
       "kind": "component",
       "page": "inbox",
       "viewport": "mobile",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/components/comp-motion-swipe.png",
-      "sha256": "c8ff71cdfa7270c8fa8247f2ab8fa42de1c41dd8be618e030ce6024bba03689d",
+      "sha256": "fca43a23956ce5c3deb059804da8368e1b87a6b7fc3f1149f869a39f3e935646",
       "fixtureOnly": true,
       "clip": {
         "x": 0,
@@ -1183,10 +1346,9 @@
         "width": 390,
         "height": 64
       },
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 1170,
+      "pixelHeight": 192
     },
     {
       "id": "comp-motion-swipe-below",
@@ -1194,9 +1356,9 @@
       "kind": "component",
       "page": "inbox",
       "viewport": "mobile",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/components/comp-motion-swipe-below.png",
-      "sha256": "c8ff71cdfa7270c8fa8247f2ab8fa42de1c41dd8be618e030ce6024bba03689d",
+      "sha256": "fca43a23956ce5c3deb059804da8368e1b87a6b7fc3f1149f869a39f3e935646",
       "fixtureOnly": true,
       "clip": {
         "x": 0,
@@ -1204,10 +1366,9 @@
         "width": 390,
         "height": 64
       },
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 1170,
+      "pixelHeight": 192
     },
     {
       "id": "comp-motion-scroll",
@@ -1215,9 +1376,9 @@
       "kind": "component",
       "page": "inbox",
       "viewport": "mobile",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/components/comp-motion-scroll.png",
-      "sha256": "c8ff71cdfa7270c8fa8247f2ab8fa42de1c41dd8be618e030ce6024bba03689d",
+      "sha256": "fca43a23956ce5c3deb059804da8368e1b87a6b7fc3f1149f869a39f3e935646",
       "fixtureOnly": true,
       "clip": {
         "x": 0,
@@ -1225,10 +1386,9 @@
         "width": 390,
         "height": 64
       },
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 1170,
+      "pixelHeight": 192
     },
     {
       "id": "comp-motion-pager",
@@ -1236,9 +1396,9 @@
       "kind": "component",
       "page": "task-detail",
       "viewport": "mobile",
-      "state": "migrated-browser-crop",
+      "state": "chrome-mcp",
       "file": "screenshots/components/comp-motion-pager.png",
-      "sha256": "8d24f50f6fcfbd96c59257057a1bdfa608314615c1d0f68ea28d41f6c5324253",
+      "sha256": "cc82cca1eec5652f79865278b7fd043057087fe5155a92d21c4e93ee1175fb82",
       "fixtureOnly": true,
       "clip": {
         "x": 0,
@@ -1246,10 +1406,9 @@
         "width": 390,
         "height": 844
       },
-      "placeholdersApplied": [
-        "avatar",
-        "banner"
-      ]
+      "placeholdersApplied": [],
+      "pixelWidth": 1170,
+      "pixelHeight": 2532
     }
   ],
   "motions": [
@@ -1285,7 +1444,9 @@
     }
   ],
   "limitations": [
-    "Initial tree may be migrated/upscaled from prior browser captures until reference:capture:delta runs against a logged-in session.",
-    "Component clips use matrix CSS rectangles; live capture prefers locator bounding boxes when available."
+    "Chrome MCP must write staging PNGs under os.tmpdir()/tasks-live-chrome (workspace paths are denied).",
+    "Close Cursor sidebars that steal focus if Flutter clicks appear ignored.",
+    "Open task detail via the row's Open task details arrow (not title double-click alone).",
+    "Component clips use matrix CSS rectangles scaled from the page PNG."
   ]
 }

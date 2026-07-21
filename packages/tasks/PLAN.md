@@ -11,8 +11,8 @@ what remains.
 | Field                         | Value                                                                                   |
 | ----------------------------- | --------------------------------------------------------------------------------------- |
 | Overall status                | In progress                                                                             |
-| Last updated                  | 2026-07-20                                                                              |
-| Active phase                  | Phase 5 — awaiting manual catalog approval                                              |
+| Last updated                  | 2026-07-21                                                                              |
+| Active phase                  | Phase 5 — shell visual alignment to Superlist Visual Delta (in progress)                |
 | Components/behaviors complete | 10 / 10                                                                                 |
 | Page compositions complete    | 8 / 8                                                                                   |
 | Phases complete               | 6 / 6                                                                                   |

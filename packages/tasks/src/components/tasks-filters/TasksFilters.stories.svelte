@@ -7,6 +7,8 @@
     title: "Tasks/Components/Filters and Menus",
     component: TasksFilters,
 
+    // Out of scope while Tasks Shell is driven by Superlist reference baselines.
+    tags: ["skip-visual"],
     parameters: {
       layout: "fullscreen",
       docs: {

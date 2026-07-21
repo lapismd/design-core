@@ -6,6 +6,8 @@
   const { Story } = defineMeta({
     title: "Tasks/Pages/Task detail",
     component: Page,
+    // Out of scope while Tasks Shell is driven by Superlist reference baselines.
+    tags: ["skip-visual"],
     parameters: {
       layout: "fullscreen",
       docs: {

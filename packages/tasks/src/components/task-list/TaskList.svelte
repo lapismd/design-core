@@ -17,6 +17,8 @@
     listView: TasksListViewModel;
     tasks: readonly TaskReference[];
     selection?: TasksSelectionState;
+    /** Show the Up/Down keyboard-equivalent reorder affordance per row. Default true for backward compat. */
+    showReorderControls?: boolean;
     onComplete?: (taskId: string, status: TaskStatus) => void;
     onSelect?: (taskId: string) => void;
     onOpen?: (taskId: string) => void;
@@ -29,6 +31,7 @@
     listView,
     tasks,
     selection = { selectedTaskId: null, openTaskId: null },
+    showReorderControls = true,
     onComplete,
     onSelect,
     onOpen,
@@ -107,22 +110,24 @@
                     {onSelect}
                     {onOpen}
                   />
-                  <div class="tasks-task-list__reorder">
-                    <button
-                      type="button"
-                      aria-label={`Move ${task.title} up`}
-                      onclick={() => moveTask(task.id, -1)}
-                    >
-                      Up
-                    </button>
-                    <button
-                      type="button"
-                      aria-label={`Move ${task.title} down`}
-                      onclick={() => moveTask(task.id, 1)}
-                    >
-                      Down
-                    </button>
-                  </div>
+                  {#if showReorderControls}
+                    <div class="tasks-task-list__reorder">
+                      <button
+                        type="button"
+                        aria-label={`Move ${task.title} up`}
+                        onclick={() => moveTask(task.id, -1)}
+                      >
+                        Up
+                      </button>
+                      <button
+                        type="button"
+                        aria-label={`Move ${task.title} down`}
+                        onclick={() => moveTask(task.id, 1)}
+                      >
+                        Down
+                      </button>
+                    </div>
+                  {/if}
                 </div>
               {/if}
             {/each}
@@ -145,8 +150,8 @@
     gap: 0.5rem;
     min-height: 12rem;
     padding: 0.75rem;
-    border-radius: var(--tasks-radius-shell);
-    background: var(--tasks-shell);
+    border-radius: 0;
+    background: transparent;
     color: var(--tasks-ink);
   }
 

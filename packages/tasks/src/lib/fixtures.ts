@@ -205,14 +205,33 @@ export function buildGroupedListView(
   };
 }
 
+/** Synthetic destination tip copy for header banners (not product copy). */
+export function destinationTip(id: TasksNavDestination["id"]): string | null {
+  if (id.startsWith("list:")) return null;
+  switch (id) {
+    case "inbox":
+      return "Manage all new and incoming tasks — create, move, schedule, and more";
+    case "today":
+      return "Focus on what is due today";
+    case "tasks":
+      return "View, sort, and access all of your tasks in one place";
+    case "updates":
+      return "Catch up on task activity";
+    case "lists":
+      return "Easily access all your lists";
+    default:
+      return null;
+  }
+}
+
 export function buildNavDestinations(
   lists: readonly TaskListReference[] = listFixtures,
 ): readonly TasksNavDestination[] {
   return [
-    { id: "inbox", label: "Inbox", kind: "system" },
-    { id: "today", label: "Today", kind: "system" },
+    { id: "inbox", label: "Inbox", kind: "system", count: 2 },
+    { id: "today", label: "Today", kind: "system", count: 1 },
     { id: "tasks", label: "Tasks", kind: "system" },
-    { id: "updates", label: "Updates", kind: "system" },
+    { id: "updates", label: "Updates", kind: "system", count: 1 },
     { id: "lists", label: "Lists", kind: "system" },
     ...lists.map(
       (list): TasksNavDestination => ({

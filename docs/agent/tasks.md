@@ -40,17 +40,19 @@ The reference harness stores auth state and raw video under ignored package-loca
 directories. Committed Superlist captures under
 `reference/superlist/<date>/screenshots/{pages,components}/` must use the
 dedicated Tasks UI Reference fixture list (synthetic task titles). Pages are
-full-viewport; components are subject-clipped. Ordinary account chrome is
-neutralized with avatar/banner placeholders on live capture. Story data still
-uses synthetic fixtures from `@stevejuma/tasks/fixtures`.
+full-viewport; components are subject-clipped. Live captures are verbatim (no
+avatar/banner redaction overlays). Story data still uses synthetic fixtures from
+`@stevejuma/tasks/fixtures`.
 
 Visual Delta overlays resolve from `capture-matrix.json` via
 `visualDeltaForStory`. Playwright baselines under
 `tests/visual/storybook.spec.ts-snapshots/tasks/` are a separate CI regression
 of our Tasks stories.
 
-Run `pnpm --dir packages/tasks reference:verify` after changing contracts. For a
-live refresh: `reference:auth` → `reference:bootstrap` → `reference:capture:delta`
-→ `reference:verify`. Without auth, `reference:migrate:delta` bootstraps from
-prior `screenshots/browser/` shots.
+Run `pnpm --dir packages/tasks reference:verify` after changing contracts. Prefer
+Chrome MCP + `reference:ingest:delta` for live refresh (see
+`packages/tasks/reference/superlist/README.md`). Optional Playwright path:
+`reference:auth` → `reference:bootstrap` → `reference:capture:delta` →
+`reference:verify`. Without a live session, `reference:migrate:delta` bootstraps
+from prior `screenshots/browser/` shots.
 

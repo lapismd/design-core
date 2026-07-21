@@ -3,7 +3,6 @@
   import MenuIcon from "@lucide/svelte/icons/menu";
   import type { Snippet } from "svelte";
   import { Button } from "@stevejuma/ui/shadcn/button";
-  import { Separator } from "@stevejuma/ui/shadcn/separator";
   import type {
     TasksPagerChangeHandler,
     TasksPagerState,
@@ -88,30 +87,25 @@
       {@render navigation()}
     </div>
 
-    {#if !onePane}
-      <Separator orientation="vertical" />
-    {/if}
-
-    <div
-      class="tasks-shell__main"
-      data-tasks-shell-main
-      inert={onePane && pager.pane !== "list" ? true : undefined}
-    >
-      {@render main()}
-    </div>
-
-    {#if detail}
-      {#if !onePane}
-        <Separator orientation="vertical" />
-      {/if}
+    <div class="tasks-shell__workspace">
       <div
-        class="tasks-shell__detail"
-        data-tasks-shell-detail
-        inert={onePane && pager.pane !== "detail" ? true : undefined}
+        class="tasks-shell__main"
+        data-tasks-shell-main
+        inert={onePane && pager.pane !== "list" ? true : undefined}
       >
-        {@render detail()}
+        {@render main()}
       </div>
-    {/if}
+
+      {#if detail}
+        <div
+          class="tasks-shell__detail"
+          data-tasks-shell-detail
+          inert={onePane && pager.pane !== "detail" ? true : undefined}
+        >
+          {@render detail()}
+        </div>
+      {/if}
+    </div>
   </div>
 </div>
 
@@ -119,46 +113,84 @@
   .tasks-shell {
     display: grid;
     grid-template-rows: auto 1fr;
+    width: 100%;
     height: 100%;
     min-height: 0;
+    padding: var(--tasks-space-canvas);
     background: var(--tasks-canvas);
     color: var(--tasks-ink);
+  }
+
+  .tasks-shell[data-viewport="mobile"] {
+    padding: var(--tasks-space-canvas-compact);
+  }
+
+  .tasks-shell[data-pane] {
+    padding: 0;
   }
 
   .tasks-shell__topbar {
     display: flex;
     align-items: center;
-    min-height: 2.75rem;
+    min-height: var(--tasks-topbar-height);
     padding: 0 0.5rem;
     border-bottom: 1px solid var(--tasks-divider);
-    background: var(--tasks-shell);
+    background: var(--tasks-surface);
   }
 
   .tasks-shell__body {
     display: grid;
-    grid-template-columns:
-      var(--tasks-sidebar-width) auto minmax(0, 1fr) auto
-      0;
+    grid-template-columns: var(--tasks-sidebar-width) minmax(0, 1fr);
+    gap: var(--tasks-gap-nav);
     min-height: 0;
   }
 
-  .tasks-shell[data-detail-open="true"] .tasks-shell__body {
-    grid-template-columns:
-      var(--tasks-sidebar-width) auto minmax(0, 1fr) auto
-      var(--tasks-detail-width);
+  .tasks-shell__navigation {
+    min-width: 0;
+    min-height: 0;
+    overflow: auto;
+    background: transparent;
   }
 
-  .tasks-shell[data-viewport="tablet-landscape"] .tasks-shell__body {
-    position: relative;
-    grid-template-columns: var(--tasks-sidebar-width) auto minmax(0, 1fr);
+  .tasks-shell__workspace {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+    /* Flush with canvas; soft left edge separates nav (Superlist shell chrome). */
+    border: 0;
+    border-radius: 0;
+    box-shadow: var(--tasks-shadow-workspace);
+    background: var(--tasks-surface);
   }
 
-  .tasks-shell__navigation,
+  .tasks-shell[data-detail-open="true"] .tasks-shell__workspace {
+    grid-template-columns: minmax(0, 1fr) var(--tasks-detail-width);
+  }
+
   .tasks-shell__main,
   .tasks-shell__detail {
     min-width: 0;
     min-height: 0;
-    overflow: hidden;
+    overflow: auto;
+  }
+
+  .tasks-shell[data-detail-open="true"] .tasks-shell__main {
+    border-right: 1px solid var(--tasks-divider);
+  }
+
+  .tasks-shell[data-viewport="tablet-landscape"] .tasks-shell__body {
+    position: relative;
+  }
+
+  .tasks-shell[data-viewport="tablet-landscape"] .tasks-shell__workspace {
+    position: relative;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .tasks-shell[data-viewport="tablet-landscape"] .tasks-shell__main {
+    border-right: none;
   }
 
   .tasks-shell[data-viewport="tablet-landscape"] .tasks-shell__detail {
@@ -168,9 +200,11 @@
     bottom: 0;
     width: var(--tasks-detail-width);
     max-width: 100%;
-    box-shadow: -4px 0 16px oklch(0 0 0 / 0.12);
+    box-shadow: var(--tasks-shadow-detail);
     transform: translateX(100%);
     transition: transform var(--tasks-motion-standard) ease;
+    border-left: 1px solid var(--tasks-divider);
+    background: var(--tasks-surface);
   }
 
   .tasks-shell[data-viewport="tablet-landscape"][data-detail-open="true"]
@@ -180,22 +214,43 @@
 
   .tasks-shell[data-pane] .tasks-shell__body {
     grid-template-columns: 100%;
+    gap: 0;
   }
 
   .tasks-shell[data-pane] .tasks-shell__navigation,
-  .tasks-shell[data-pane] .tasks-shell__main,
-  .tasks-shell[data-pane] .tasks-shell__detail {
+  .tasks-shell[data-pane] .tasks-shell__workspace {
     grid-column: 1;
     grid-row: 1;
   }
 
-  .tasks-shell[data-pane="navigation"] .tasks-shell__main,
-  .tasks-shell[data-pane="navigation"] .tasks-shell__detail,
+  .tasks-shell[data-pane="navigation"] .tasks-shell__workspace,
   .tasks-shell[data-pane="list"] .tasks-shell__navigation,
+  .tasks-shell[data-pane="detail"] .tasks-shell__navigation {
+    display: none;
+  }
+
+  .tasks-shell[data-pane="navigation"] .tasks-shell__navigation,
+  .tasks-shell[data-pane="list"] .tasks-shell__workspace,
+  .tasks-shell[data-pane="detail"] .tasks-shell__workspace {
+    display: grid;
+  }
+
   .tasks-shell[data-pane="list"] .tasks-shell__detail,
-  .tasks-shell[data-pane="detail"] .tasks-shell__navigation,
+  .tasks-shell[data-pane="navigation"] .tasks-shell__detail {
+    display: none;
+  }
+
   .tasks-shell[data-pane="detail"] .tasks-shell__main {
     display: none;
+  }
+
+  .tasks-shell[data-pane="detail"] .tasks-shell__detail {
+    display: block;
+    position: static;
+    width: auto;
+    transform: none;
+    box-shadow: none;
+    border-left: none;
   }
 
   @media (prefers-reduced-motion: reduce) {

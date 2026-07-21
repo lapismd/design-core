@@ -8,7 +8,7 @@ Delta overlays. Screenshots are committed and regenerated from the dedicated
 
 | Surface | Path | Purpose |
 | ------- | ---- | ------- |
-| Superlist Visual Delta | `/tasks-reference/2026-07-20/screenshots/{pages,components}/` | Design reference overlays (DSF **3**) |
+| Superlist Visual Delta | `/tasks-reference/2026-07-20/screenshots/{pages,components}/` | Design reference overlays (desktop **1280×900 @3x**) |
 | Playwright baselines | `/visual-baselines/tasks/…` | CI regression of *our* Tasks stories (separate) |
 
 ## Capture matrix
@@ -23,42 +23,47 @@ Delta overlays. Screenshots are committed and regenerated from the dedicated
 ## Commands
 
 ```bash
-pnpm --dir packages/tasks reference:auth          # once, interactive login
-pnpm --dir packages/tasks reference:bootstrap     # fixture list
+pnpm --dir packages/tasks reference:bootstrap     # fixture list (once)
 pnpm --dir packages/tasks reference:migrate:delta # bootstrap PNGs from prior browser/ shots
-pnpm --dir packages/tasks reference:capture:delta # live Superlist re-capture @ DSF 3
+pnpm --dir packages/tasks reference:ingest:delta  # land Chrome MCP staging PNGs @ DSF 3
+pnpm --dir packages/tasks reference:capture:delta # optional Playwright live re-capture
 pnpm --dir packages/tasks reference:verify
 ```
 
-Live capture writes hi-DPI PNGs, applies avatar/banner placeholder overlays, and
-updates `2026-07-20/manifest.json` checksums.
+## Primary: Chrome MCP playbook
 
-## Chrome MCP playbook (optional)
+Use **`user-chrome-devtools`** against your normal logged-in Chrome. Do **not**
+redact or overlay placeholders — capture the viewport exactly as shown.
 
-Use when auth/UI needs a human; day-to-day re-runs prefer `reference:capture:delta`.
+1. Prefer a focused Superlist tab (close Cursor sidebars / other overlays if
+   Flutter clicks seem ignored).
+2. `list_pages` / `new_page` → `https://app.superlist.com/` (already signed in).
+3. Enable Flutter accessibility:
+   `document.querySelector('flt-semantics-placeholder')?.click()`
+4. `emulate` viewport **`1280x900x3`** — same CSS size and DSF as Playwright
+   visual baselines (`VISUAL_VIEWPORT` / `VISUAL_DEVICE_SCALE_FACTOR`).
+   Page PNGs are therefore **3840×2700** max for desktop.
+5. Follow matrix `nav` steps. For task detail, open the fixture list, hover the
+   row, then click the **Open task details** arrow (right edge of the row) until
+   the URL contains `/tasks/<uuid>` and Due date / Assignee / Priority show.
+6. `take_screenshot` with `filePath` under **`os.tmpdir()/tasks-live-chrome/<id>.png`**
+   only (workspace paths are denied by the MCP server).
+7. Ingest into the committed tree:
 
-1. `list_pages` / navigate to `https://app.superlist.com/` (logged in).
-2. Enable Flutter accessibility (`flt-semantics-placeholder` → Enable accessibility).
-3. For each matrix entry: `resize_page` to the entry viewport CSS size.
-4. Follow `nav` steps (Inbox / Today / … / open fixture task).
-5. Inject placeholders for avatar + banner regions (or capture then redact).
-6. **Pages:** full-window screenshot → `screenshots/pages/<id>.png`.
-7. **Components:** crop to the subject bbox / matrix `clip` — never the full shell —
-   → `screenshots/components/<id>.png`.
-8. Chrome MCP may only write under the process temp root; copy into
-   `packages/tasks/reference/superlist/2026-07-20/` afterward.
-9. Re-run `reference:verify` (or re-run migrate checksums via `reference:migrate:delta`
-   only when bootstrapping from `screenshots/browser/`).
+```bash
+pnpm --dir packages/tasks reference:ingest:delta -- \
+  --dir="$TMPDIR/tasks-live-chrome" \
+  --ids=page-desktop-task-detail-open,comp-detail-open \
+  --from-page=page-desktop-task-detail-open
+```
 
-Device scale: prefer **3** (match shadcn). Prefer the Playwright harness for
-correct DSF.
+- **Pages:** staging `<id>.png` is resized to viewport × DSF 3.
+- **Components:** cropped from `--from-page` (or a staged clip PNG) using the
+  matrix `clip`, then sized to clip × DSF 3.
+8. `pnpm --dir packages/tasks reference:verify`
 
-## Placeholders
+## Optional: Playwright headed capture
 
-Before live screenshots, the harness overlays neutral blocks for:
-
-- account avatar
-- top banner / promo chrome
-
-Flutter canvas content may still need matrix-driven rect redaction
-(`scripts/reference/redact-image.swift`) when overlays miss painted pixels.
+`reference:auth` / `reference:capture:delta` / `reference:debug:delta` remain for
+scripted re-runs, but headed Chromium is often unusable for login/click. Prefer
+Chrome MCP for live Superlist observation.

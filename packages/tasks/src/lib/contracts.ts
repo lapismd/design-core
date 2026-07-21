@@ -136,6 +136,8 @@ export type TasksNavDestination = {
   kind: "system" | "list";
   favourite?: boolean;
   listId?: string;
+  /** Optional unread or item count shown as a secondary badge. */
+  count?: number;
 };
 
 export type TasksFeedbackKind =

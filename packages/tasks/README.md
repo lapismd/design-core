@@ -32,17 +32,22 @@ Import compositions from `@stevejuma/tasks`:
 ## Commands
 
 ```text
-pnpm --dir packages/tasks reference:auth
 pnpm --dir packages/tasks reference:bootstrap
 pnpm --dir packages/tasks reference:migrate:delta
+pnpm --dir packages/tasks reference:ingest:delta
 pnpm --dir packages/tasks reference:capture:delta
 pnpm --dir packages/tasks reference:verify
 ```
 
+Live Superlist observation prefers Chrome MCP + `reference:ingest:delta`
+(verbatim screenshots; see `reference/superlist/README.md`).
 ### Visual checks
 
 - **Superlist Visual Delta** — matrix in `reference/superlist/capture-matrix.json`;
   PNGs under `screenshots/pages/` and `screenshots/components/` (DSF 3).
-- **Playwright baselines** — separate CI suite under
-  `tests/visual/storybook.spec.ts-snapshots/tasks/` (our implementation pixels).
-  Do not write those without explicit approval.
+- **Playwright baselines (Tasks Shell)** — synced from those Superlist captures via
+  `pnpm --dir packages/tasks reference:sync-visual-baselines` into
+  `tests/visual/storybook.spec.ts-snapshots/tasks/`. Stories tagged
+  `tasks-reference-visual` fail CI when they diverge. Do not use
+  `test:visual:update` for shell — re-sync from Superlist instead.
+  Other Tasks stories are `skip-visual` while shell alignment is in progress.

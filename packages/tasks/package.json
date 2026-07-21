@@ -21,6 +21,11 @@
     "reference:capture": "tsx scripts/reference/capture.ts",
     "reference:capture:delta": "tsx scripts/reference/capture-visual-delta.ts",
     "reference:migrate:delta": "tsx scripts/reference/migrate-visual-delta.ts",
+    "reference:ingest:delta": "tsx scripts/reference/ingest-visual-delta.ts",
+    "reference:stage-map": "tsx scripts/reference/stage-map.ts",
+    "reference:stage-all": "tsx scripts/reference/stage-all.ts",
+    "reference:sync-visual-baselines": "tsx scripts/reference/sync-visual-baselines.ts",
+    "reference:debug:delta": "tsx scripts/reference/debug-visual-delta.ts",
     "reference:verify": "tsx scripts/reference/verify.ts"
   }
 }

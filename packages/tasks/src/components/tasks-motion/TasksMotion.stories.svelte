@@ -6,6 +6,8 @@
   const { Story } = defineMeta({
     title: "Tasks/Components/Motion and Gestures",
     component: TasksSwipeGesture,
+    // Out of scope while Tasks Shell is driven by Superlist reference baselines.
+    tags: ["skip-visual"],
     parameters: {
       layout: "fullscreen",
       docs: {

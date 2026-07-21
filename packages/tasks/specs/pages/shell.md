@@ -6,11 +6,13 @@ Provide the stable navigation and workspace frame around all core Tasks pages.
 
 ## Desktop anatomy
 
-1. Muted outer canvas.
-2. Persistent left navigation: product switcher/account area, Inbox, Today,
-   Tasks, Updates, Lists, then private/shared list collections.
-3. Rounded main working surface with page header and scrollable content.
-4. Optional right detail rail for the selected task at wide desktop widths.
+1. Muted outer canvas with inset padding.
+2. Persistent left navigation on the canvas (transparent; no nested card):
+   product switcher/account area, Inbox, Today, Tasks, Updates, Lists, then
+   Favorites and remaining list collections.
+3. Rounded main working surface (`--tasks-surface`) with destination header,
+   optional tip banner, and scrollable content.
+4. Optional right detail rail inside the workspace panel at wide desktop widths.
 
 The active destination is a quiet filled selection, not a heavy tab. Numeric
 counts are secondary. Sidebar controls retain icon + text labels; do not make
@@ -24,7 +26,8 @@ top control; never squeeze the desktop three-column layout into mobile.
 
 ## Storybook states
 
-- Desktop, no selection.
+- Destination variants: Inbox, Today, Tasks, Updates, Lists, and per-list
+  destinations (e.g. Tasks UI Reference, Shared planning).
 - Desktop, selected task with detail rail.
 - Compact desktop, selected task in constrained detail presentation.
 - Tablet portrait list pane.

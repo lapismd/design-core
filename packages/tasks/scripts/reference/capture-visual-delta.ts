@@ -7,6 +7,7 @@ import {
   type CaptureMatrix,
   type CaptureMatrixEntry,
 } from "./capture-matrix.js";
+import { firstVisible, runCaptureNav } from "./nav-steps.js";
 import {
   TASKS_REFERENCE_LIST_NAME,
   taskFixtures,
@@ -21,122 +22,6 @@ import {
   sha256,
   writeJson,
 } from "./runtime.js";
-
-async function firstVisible(locator: Locator): Promise<Locator | null> {
-  const count = await locator.count();
-  for (let index = 0; index < count; index++) {
-    const candidate = locator.nth(index);
-    if (await candidate.isVisible().catch(() => false)) return candidate;
-  }
-  return null;
-}
-
-async function activateDestination(page: Page, name: string): Promise<void> {
-  const control =
-    (await firstVisible(
-      page.getByRole("button", { name: new RegExp(`^${name}`, "i") }),
-    )) ?? (await firstVisible(page.getByText(name, { exact: true })));
-  if (!control) {
-    throw new Error(`Could not find the accessible ${name} destination.`);
-  }
-  await control.click();
-  await page.waitForTimeout(350);
-}
-
-async function runNav(page: Page, steps: readonly string[]): Promise<void> {
-  for (const step of steps) {
-    if (step === "inbox") await activateDestination(page, "Inbox");
-    else if (step === "today") await activateDestination(page, "Today");
-    else if (step === "tasks") await activateDestination(page, "Tasks");
-    else if (step === "updates") await activateDestination(page, "Updates");
-    else if (step === "lists") await activateDestination(page, "Lists");
-    else if (step === "list-detail") {
-      await activateDestination(page, "Lists");
-      const fixture = await firstVisible(
-        page.getByText(TASKS_REFERENCE_LIST_NAME, { exact: true }),
-      );
-      if (!fixture) {
-        throw new Error(
-          "Reference fixture list is missing; run reference:bootstrap.",
-        );
-      }
-      await fixture.click();
-      await page.waitForTimeout(350);
-    } else if (step === "open-first-task" || step === "select-first-task") {
-      const task = await firstVisible(
-        page.getByText(taskFixtures[0].title, { exact: true }),
-      );
-      if (!task) {
-        throw new Error(
-          "Reference fixture task is missing; run reference:bootstrap.",
-        );
-      }
-      if (step === "open-first-task") await task.dblclick();
-      else await task.click();
-      await page.waitForTimeout(350);
-    } else if (step === "focus-composer") {
-      const add =
-        (await firstVisible(
-          page.getByRole("button", { name: /new task|add task/i }),
-        )) ?? (await firstVisible(page.getByText(/add task/i)));
-      if (add) await add.click();
-      await page.waitForTimeout(200);
-    } else {
-      throw new Error(`Unknown nav step: ${step}`);
-    }
-  }
-}
-
-async function applyPlaceholders(
-  page: Page,
-  matrix: CaptureMatrix,
-  names: readonly string[],
-): Promise<void> {
-  const regions = names
-    .map((name) => matrix.placeholders[name])
-    .filter(Boolean)
-    .map((item) => ({
-      ...item.region,
-      label: item.label,
-    }));
-  if (!regions.length) return;
-
-  await page.evaluate((rects) => {
-    document
-      .querySelectorAll("[data-tasks-ref-placeholder]")
-      .forEach((node) => node.remove());
-    for (const rect of rects) {
-      const el = document.createElement("div");
-      el.dataset.tasksRefPlaceholder = rect.label;
-      el.setAttribute("aria-hidden", "true");
-      Object.assign(el.style, {
-        position: "fixed",
-        left: `${rect.x}px`,
-        top: `${rect.y}px`,
-        width: `${rect.width}px`,
-        height: `${rect.height}px`,
-        background: "#d4d4d8",
-        border: "1px solid #a1a1aa",
-        zIndex: "2147483647",
-        pointerEvents: "none",
-        boxSizing: "border-box",
-      });
-      const caption = document.createElement("span");
-      caption.textContent = rect.label;
-      Object.assign(caption.style, {
-        position: "absolute",
-        inset: "0",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        font: "11px/1.2 ui-sans-serif, system-ui, sans-serif",
-        color: "#52525b",
-      });
-      el.appendChild(caption);
-      document.documentElement.appendChild(el);
-    }
-  }, regions);
-}
 
 async function resolveClip(
   page: Page,
@@ -224,8 +109,7 @@ async function captureEntry(
     height: viewport.height,
   });
   await openSource(page);
-  await runNav(page, entry.nav);
-  await applyPlaceholders(page, matrix, entry.placeholders);
+  await runCaptureNav(page, entry.nav);
 
   const output = path.join(captureDirectory, entry.file);
   await ensureDirectory(path.dirname(output));
@@ -262,7 +146,7 @@ async function captureEntry(
     sha256: await sha256(output),
     fixtureOnly: true,
     clip,
-    placeholdersApplied: entry.placeholders,
+    placeholdersApplied: [],
   };
 }
 
@@ -333,7 +217,7 @@ async function main(): Promise<void> {
     status: "browser-fixture",
     deviceScaleFactor: matrix.deviceScaleFactor,
     redaction:
-      "Live Superlist Visual Delta captures with avatar/banner placeholder overlays. Component shots are subject-clipped.",
+      "No overlays. Live Superlist Visual Delta captures are verbatim viewport PNGs; component shots are subject-clipped.",
     screenshots,
     motions,
     errors,

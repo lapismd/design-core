@@ -3,8 +3,8 @@
   "deviceScaleFactor": 3,
   "viewports": {
     "desktop": {
-      "width": 1680,
-      "height": 1000
+      "width": 1280,
+      "height": 900
     },
     "tablet-landscape": {
       "width": 1024,
@@ -270,7 +270,7 @@
       "migrateFrom": "screenshots/browser/desktop-task-detail.png"
     },
     {
-      "storyId": "tasks-pages-tasks-shell--default",
+      "storyId": "tasks-pages-tasks-shell--inbox",
       "id": "page-desktop-shell",
       "kind": "page",
       "page": "inbox",
@@ -283,8 +283,110 @@
         "avatar",
         "banner"
       ],
-      "notes": "",
+      "notes": "Shell destination variant",
       "migrateFrom": "screenshots/browser/desktop-inbox.png"
+    },
+    {
+      "storyId": "tasks-pages-tasks-shell--today",
+      "id": "page-desktop-shell-today",
+      "kind": "page",
+      "page": "today",
+      "viewport": "desktop",
+      "file": "screenshots/pages/page-desktop-shell-today.png",
+      "nav": [
+        "today"
+      ],
+      "placeholders": [
+        "avatar",
+        "banner"
+      ],
+      "notes": "Shell destination variant",
+      "migrateFrom": "screenshots/browser/desktop-today.png"
+    },
+    {
+      "storyId": "tasks-pages-tasks-shell--tasks",
+      "id": "page-desktop-shell-tasks",
+      "kind": "page",
+      "page": "tasks",
+      "viewport": "desktop",
+      "file": "screenshots/pages/page-desktop-shell-tasks.png",
+      "nav": [
+        "tasks"
+      ],
+      "placeholders": [
+        "avatar",
+        "banner"
+      ],
+      "notes": "Shell destination variant",
+      "migrateFrom": "screenshots/browser/desktop-tasks.png"
+    },
+    {
+      "storyId": "tasks-pages-tasks-shell--updates",
+      "id": "page-desktop-shell-updates",
+      "kind": "page",
+      "page": "updates",
+      "viewport": "desktop",
+      "file": "screenshots/pages/page-desktop-shell-updates.png",
+      "nav": [
+        "updates"
+      ],
+      "placeholders": [
+        "avatar",
+        "banner"
+      ],
+      "notes": "Shell destination variant",
+      "migrateFrom": "screenshots/browser/desktop-updates.png"
+    },
+    {
+      "storyId": "tasks-pages-tasks-shell--lists",
+      "id": "page-desktop-shell-lists",
+      "kind": "page",
+      "page": "lists",
+      "viewport": "desktop",
+      "file": "screenshots/pages/page-desktop-shell-lists.png",
+      "nav": [
+        "lists"
+      ],
+      "placeholders": [
+        "avatar",
+        "banner"
+      ],
+      "notes": "Shell destination variant",
+      "migrateFrom": "screenshots/browser/desktop-lists.png"
+    },
+    {
+      "storyId": "tasks-pages-tasks-shell--list-reference",
+      "id": "page-desktop-shell-list-reference",
+      "kind": "page",
+      "page": "list-detail",
+      "viewport": "desktop",
+      "file": "screenshots/pages/page-desktop-shell-list-reference.png",
+      "nav": [
+        "list-detail"
+      ],
+      "placeholders": [
+        "avatar",
+        "banner"
+      ],
+      "notes": "Shell destination variant",
+      "migrateFrom": "screenshots/browser/desktop-list-detail.png"
+    },
+    {
+      "storyId": "tasks-pages-tasks-shell--list-shared",
+      "id": "page-desktop-shell-list-shared",
+      "kind": "page",
+      "page": "list-detail",
+      "viewport": "desktop",
+      "file": "screenshots/pages/page-desktop-shell-list-shared.png",
+      "nav": [
+        "list-shared"
+      ],
+      "placeholders": [
+        "avatar",
+        "banner"
+      ],
+      "notes": "Second list destination for shell variants (Shared planning fixture).",
+      "migrateFrom": "screenshots/browser/desktop-list-detail.png"
     },
     {
       "storyId": "tasks-pages-tasks-shell--wide-with-detail",
@@ -402,10 +504,10 @@
       "viewport": "desktop",
       "file": "screenshots/components/comp-task-row-default.png",
       "clip": {
-        "x": 248,
-        "y": 160,
-        "width": 900,
-        "height": 56
+        "x": 270,
+        "y": 152,
+        "width": 750,
+        "height": 40
       },
       "locator": "task-row",
       "nav": [
@@ -426,10 +528,10 @@
       "viewport": "desktop",
       "file": "screenshots/components/comp-task-row-complete.png",
       "clip": {
-        "x": 248,
-        "y": 160,
-        "width": 900,
-        "height": 56
+        "x": 270,
+        "y": 152,
+        "width": 750,
+        "height": 40
       },
       "locator": "task-row",
       "nav": [
@@ -450,10 +552,10 @@
       "viewport": "desktop",
       "file": "screenshots/components/comp-task-row-select.png",
       "clip": {
-        "x": 248,
-        "y": 160,
-        "width": 900,
-        "height": 72
+        "x": 270,
+        "y": 152,
+        "width": 750,
+        "height": 48
       },
       "locator": "task-row",
       "nav": [
@@ -475,10 +577,10 @@
       "viewport": "desktop",
       "file": "screenshots/components/comp-task-row-dblclick.png",
       "clip": {
-        "x": 248,
-        "y": 160,
-        "width": 900,
-        "height": 72
+        "x": 270,
+        "y": 152,
+        "width": 750,
+        "height": 48
       },
       "locator": "task-row",
       "nav": [
@@ -500,10 +602,10 @@
       "viewport": "desktop",
       "file": "screenshots/components/comp-task-row-keyboard.png",
       "clip": {
-        "x": 248,
-        "y": 160,
-        "width": 900,
-        "height": 72
+        "x": 270,
+        "y": 152,
+        "width": 750,
+        "height": 48
       },
       "locator": "task-row",
       "nav": [
@@ -525,10 +627,10 @@
       "viewport": "desktop",
       "file": "screenshots/components/comp-task-row-drag.png",
       "clip": {
-        "x": 248,
-        "y": 160,
-        "width": 900,
-        "height": 56
+        "x": 270,
+        "y": 152,
+        "width": 750,
+        "height": 40
       },
       "locator": "task-row",
       "nav": [
@@ -573,10 +675,10 @@
       "viewport": "desktop",
       "file": "screenshots/components/comp-task-list-default.png",
       "clip": {
-        "x": 248,
-        "y": 72,
-        "width": 900,
-        "height": 820
+        "x": 270,
+        "y": 90,
+        "width": 750,
+        "height": 780
       },
       "locator": "main-list",
       "nav": [
@@ -597,10 +699,10 @@
       "viewport": "desktop",
       "file": "screenshots/components/comp-task-list-done.png",
       "clip": {
-        "x": 248,
-        "y": 72,
-        "width": 900,
-        "height": 820
+        "x": 270,
+        "y": 90,
+        "width": 750,
+        "height": 780
       },
       "locator": "main-list",
       "nav": [
@@ -621,10 +723,10 @@
       "viewport": "desktop",
       "file": "screenshots/components/comp-task-list-select.png",
       "clip": {
-        "x": 248,
-        "y": 72,
-        "width": 900,
-        "height": 820
+        "x": 270,
+        "y": 90,
+        "width": 750,
+        "height": 780
       },
       "locator": "main-list",
       "nav": [
@@ -646,10 +748,10 @@
       "viewport": "desktop",
       "file": "screenshots/components/comp-task-list-empty.png",
       "clip": {
-        "x": 400,
-        "y": 200,
-        "width": 880,
-        "height": 480
+        "x": 270,
+        "y": 90,
+        "width": 750,
+        "height": 500
       },
       "locator": "feedback",
       "nav": [
@@ -670,10 +772,10 @@
       "viewport": "desktop",
       "file": "screenshots/components/comp-task-list-loading.png",
       "clip": {
-        "x": 400,
-        "y": 200,
-        "width": 880,
-        "height": 480
+        "x": 270,
+        "y": 90,
+        "width": 750,
+        "height": 500
       },
       "locator": "feedback",
       "nav": [
@@ -694,10 +796,10 @@
       "viewport": "desktop",
       "file": "screenshots/components/comp-composer-idle.png",
       "clip": {
-        "x": 248,
-        "y": 880,
-        "width": 900,
-        "height": 72
+        "x": 270,
+        "y": 210,
+        "width": 750,
+        "height": 50
       },
       "locator": "composer",
       "nav": [
@@ -718,10 +820,10 @@
       "viewport": "desktop",
       "file": "screenshots/components/comp-composer-active.png",
       "clip": {
-        "x": 248,
-        "y": 880,
-        "width": 900,
-        "height": 72
+        "x": 270,
+        "y": 210,
+        "width": 750,
+        "height": 50
       },
       "locator": "composer",
       "nav": [
@@ -743,10 +845,10 @@
       "viewport": "desktop",
       "file": "screenshots/components/comp-composer-submit.png",
       "clip": {
-        "x": 248,
-        "y": 880,
-        "width": 900,
-        "height": 72
+        "x": 270,
+        "y": 210,
+        "width": 750,
+        "height": 50
       },
       "locator": "composer",
       "nav": [
@@ -768,10 +870,10 @@
       "viewport": "desktop",
       "file": "screenshots/components/comp-composer-reject.png",
       "clip": {
-        "x": 248,
-        "y": 880,
-        "width": 900,
-        "height": 72
+        "x": 270,
+        "y": 210,
+        "width": 750,
+        "height": 50
       },
       "locator": "composer",
       "nav": [
@@ -793,10 +895,10 @@
       "viewport": "desktop",
       "file": "screenshots/components/comp-composer-escape.png",
       "clip": {
-        "x": 248,
-        "y": 880,
-        "width": 900,
-        "height": 72
+        "x": 270,
+        "y": 210,
+        "width": 750,
+        "height": 50
       },
       "locator": "composer",
       "nav": [
@@ -818,10 +920,10 @@
       "viewport": "desktop",
       "file": "screenshots/components/comp-detail-open.png",
       "clip": {
-        "x": 1160,
-        "y": 56,
-        "width": 500,
-        "height": 900
+        "x": 820,
+        "y": 10,
+        "width": 450,
+        "height": 880
       },
       "locator": "detail-rail",
       "nav": [
@@ -843,10 +945,10 @@
       "viewport": "desktop",
       "file": "screenshots/components/comp-detail-title.png",
       "clip": {
-        "x": 1160,
-        "y": 56,
-        "width": 500,
-        "height": 900
+        "x": 820,
+        "y": 10,
+        "width": 450,
+        "height": 880
       },
       "locator": "detail-rail",
       "nav": [
@@ -868,10 +970,10 @@
       "viewport": "desktop",
       "file": "screenshots/components/comp-detail-escape-edit.png",
       "clip": {
-        "x": 1160,
-        "y": 56,
-        "width": 500,
-        "height": 900
+        "x": 820,
+        "y": 10,
+        "width": 450,
+        "height": 880
       },
       "locator": "detail-rail",
       "nav": [
@@ -893,10 +995,10 @@
       "viewport": "desktop",
       "file": "screenshots/components/comp-detail-escape-back.png",
       "clip": {
-        "x": 1160,
-        "y": 56,
-        "width": 500,
-        "height": 900
+        "x": 820,
+        "y": 10,
+        "width": 450,
+        "height": 880
       },
       "locator": "detail-rail",
       "nav": [
@@ -918,10 +1020,10 @@
       "viewport": "desktop",
       "file": "screenshots/components/comp-detail-back.png",
       "clip": {
-        "x": 1160,
-        "y": 56,
-        "width": 500,
-        "height": 900
+        "x": 820,
+        "y": 10,
+        "width": 450,
+        "height": 880
       },
       "locator": "detail-rail",
       "nav": [
@@ -943,10 +1045,10 @@
       "viewport": "desktop",
       "file": "screenshots/components/comp-props-filled.png",
       "clip": {
-        "x": 1180,
-        "y": 200,
-        "width": 460,
-        "height": 320
+        "x": 840,
+        "y": 100,
+        "width": 410,
+        "height": 300
       },
       "locator": "properties",
       "nav": [
@@ -968,10 +1070,10 @@
       "viewport": "desktop",
       "file": "screenshots/components/comp-props-empty.png",
       "clip": {
-        "x": 1180,
-        "y": 200,
-        "width": 460,
-        "height": 320
+        "x": 840,
+        "y": 100,
+        "width": 410,
+        "height": 300
       },
       "locator": "properties",
       "nav": [
@@ -993,10 +1095,10 @@
       "viewport": "desktop",
       "file": "screenshots/components/comp-props-due.png",
       "clip": {
-        "x": 1180,
-        "y": 200,
-        "width": 460,
-        "height": 320
+        "x": 840,
+        "y": 100,
+        "width": 410,
+        "height": 300
       },
       "locator": "properties",
       "nav": [
@@ -1018,10 +1120,10 @@
       "viewport": "desktop",
       "file": "screenshots/components/comp-props-priority.png",
       "clip": {
-        "x": 1180,
-        "y": 200,
-        "width": 460,
-        "height": 320
+        "x": 840,
+        "y": 100,
+        "width": 410,
+        "height": 300
       },
       "locator": "properties",
       "nav": [
@@ -1043,10 +1145,10 @@
       "viewport": "desktop",
       "file": "screenshots/components/comp-props-label.png",
       "clip": {
-        "x": 1180,
-        "y": 200,
-        "width": 460,
-        "height": 320
+        "x": 840,
+        "y": 100,
+        "width": 410,
+        "height": 300
       },
       "locator": "properties",
       "nav": [
@@ -1068,10 +1170,10 @@
       "viewport": "desktop",
       "file": "screenshots/components/comp-feedback-empty.png",
       "clip": {
-        "x": 400,
-        "y": 200,
-        "width": 880,
-        "height": 480
+        "x": 270,
+        "y": 90,
+        "width": 750,
+        "height": 500
       },
       "locator": "feedback",
       "nav": [
@@ -1092,10 +1194,10 @@
       "viewport": "desktop",
       "file": "screenshots/components/comp-feedback-loading.png",
       "clip": {
-        "x": 400,
-        "y": 200,
-        "width": 880,
-        "height": 480
+        "x": 270,
+        "y": 90,
+        "width": 750,
+        "height": 500
       },
       "locator": "feedback",
       "nav": [
@@ -1116,10 +1218,10 @@
       "viewport": "desktop",
       "file": "screenshots/components/comp-feedback-error.png",
       "clip": {
-        "x": 400,
-        "y": 200,
-        "width": 880,
-        "height": 480
+        "x": 270,
+        "y": 90,
+        "width": 750,
+        "height": 500
       },
       "locator": "feedback",
       "nav": [
@@ -1140,10 +1242,10 @@
       "viewport": "desktop",
       "file": "screenshots/components/comp-feedback-status.png",
       "clip": {
-        "x": 400,
-        "y": 200,
-        "width": 880,
-        "height": 480
+        "x": 270,
+        "y": 90,
+        "width": 750,
+        "height": 500
       },
       "locator": "feedback",
       "nav": [
@@ -1164,10 +1266,10 @@
       "viewport": "desktop",
       "file": "screenshots/components/comp-feedback-undo.png",
       "clip": {
-        "x": 248,
-        "y": 160,
-        "width": 900,
-        "height": 56
+        "x": 270,
+        "y": 152,
+        "width": 750,
+        "height": 40
       },
       "locator": "task-row",
       "nav": [
@@ -1188,10 +1290,10 @@
       "viewport": "desktop",
       "file": "screenshots/components/comp-filters-select.png",
       "clip": {
-        "x": 248,
-        "y": 72,
+        "x": 270,
+        "y": 220,
         "width": 900,
-        "height": 64
+        "height": 50
       },
       "locator": "filters",
       "nav": [
@@ -1212,10 +1314,10 @@
       "viewport": "desktop",
       "file": "screenshots/components/comp-filters-sort.png",
       "clip": {
-        "x": 248,
-        "y": 72,
+        "x": 270,
+        "y": 220,
         "width": 900,
-        "height": 64
+        "height": 50
       },
       "locator": "filters",
       "nav": [
@@ -1238,8 +1340,8 @@
       "clip": {
         "x": 0,
         "y": 0,
-        "width": 248,
-        "height": 1000
+        "width": 267,
+        "height": 900
       },
       "locator": "sidebar",
       "nav": [
@@ -1260,10 +1362,10 @@
       "viewport": "desktop",
       "file": "screenshots/components/comp-nav-favourite.png",
       "clip": {
-        "x": 248,
-        "y": 72,
-        "width": 1400,
-        "height": 820
+        "x": 270,
+        "y": 90,
+        "width": 900,
+        "height": 780
       },
       "locator": "lists-main",
       "nav": [
@@ -1284,10 +1386,10 @@
       "viewport": "desktop",
       "file": "screenshots/components/comp-nav-create.png",
       "clip": {
-        "x": 248,
-        "y": 72,
-        "width": 1400,
-        "height": 820
+        "x": 270,
+        "y": 90,
+        "width": 900,
+        "height": 780
       },
       "locator": "lists-main",
       "nav": [
@@ -1301,17 +1403,17 @@
       "migrateFrom": "screenshots/browser/desktop-lists.png"
     },
     {
-      "storyId": "tasks-components-tasks-shell--wide-no-detail",
-      "id": "comp-shell-wide",
+      "storyId": "tasks-components-tasks-shell--inbox",
+      "id": "comp-shell-inbox",
       "kind": "component",
       "page": "inbox",
       "viewport": "desktop",
-      "file": "screenshots/components/comp-shell-wide.png",
+      "file": "screenshots/components/comp-shell-inbox.png",
       "clip": {
         "x": 0,
         "y": 0,
-        "width": 1680,
-        "height": 1000
+        "width": 1280,
+        "height": 900
       },
       "locator": "shell",
       "nav": [
@@ -1326,6 +1428,156 @@
       "allowFullViewport": true
     },
     {
+      "storyId": "tasks-components-tasks-shell--today",
+      "id": "comp-shell-today",
+      "kind": "component",
+      "page": "today",
+      "viewport": "desktop",
+      "file": "screenshots/components/comp-shell-today.png",
+      "clip": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 900
+      },
+      "locator": "shell",
+      "nav": [
+        "today"
+      ],
+      "placeholders": [
+        "avatar",
+        "banner"
+      ],
+      "notes": "Shell subject is the full app frame; full-viewport clip allowed.",
+      "migrateFrom": "screenshots/browser/desktop-today.png",
+      "allowFullViewport": true
+    },
+    {
+      "storyId": "tasks-components-tasks-shell--tasks",
+      "id": "comp-shell-tasks",
+      "kind": "component",
+      "page": "tasks",
+      "viewport": "desktop",
+      "file": "screenshots/components/comp-shell-tasks.png",
+      "clip": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 900
+      },
+      "locator": "shell",
+      "nav": [
+        "tasks"
+      ],
+      "placeholders": [
+        "avatar",
+        "banner"
+      ],
+      "notes": "Shell subject is the full app frame; full-viewport clip allowed.",
+      "migrateFrom": "screenshots/browser/desktop-tasks.png",
+      "allowFullViewport": true
+    },
+    {
+      "storyId": "tasks-components-tasks-shell--updates",
+      "id": "comp-shell-updates",
+      "kind": "component",
+      "page": "updates",
+      "viewport": "desktop",
+      "file": "screenshots/components/comp-shell-updates.png",
+      "clip": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 900
+      },
+      "locator": "shell",
+      "nav": [
+        "updates"
+      ],
+      "placeholders": [
+        "avatar",
+        "banner"
+      ],
+      "notes": "Shell subject is the full app frame; full-viewport clip allowed.",
+      "migrateFrom": "screenshots/browser/desktop-updates.png",
+      "allowFullViewport": true
+    },
+    {
+      "storyId": "tasks-components-tasks-shell--lists",
+      "id": "comp-shell-lists",
+      "kind": "component",
+      "page": "lists",
+      "viewport": "desktop",
+      "file": "screenshots/components/comp-shell-lists.png",
+      "clip": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 900
+      },
+      "locator": "shell",
+      "nav": [
+        "lists"
+      ],
+      "placeholders": [
+        "avatar",
+        "banner"
+      ],
+      "notes": "Shell subject is the full app frame; full-viewport clip allowed.",
+      "migrateFrom": "screenshots/browser/desktop-lists.png",
+      "allowFullViewport": true
+    },
+    {
+      "storyId": "tasks-components-tasks-shell--list-reference",
+      "id": "comp-shell-list-reference",
+      "kind": "component",
+      "page": "list-detail",
+      "viewport": "desktop",
+      "file": "screenshots/components/comp-shell-list-reference.png",
+      "clip": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 900
+      },
+      "locator": "shell",
+      "nav": [
+        "list-detail"
+      ],
+      "placeholders": [
+        "avatar",
+        "banner"
+      ],
+      "notes": "Shell subject is the full app frame; full-viewport clip allowed.",
+      "migrateFrom": "screenshots/browser/desktop-list-detail.png",
+      "allowFullViewport": true
+    },
+    {
+      "storyId": "tasks-components-tasks-shell--list-shared",
+      "id": "comp-shell-list-shared",
+      "kind": "component",
+      "page": "list-detail",
+      "viewport": "desktop",
+      "file": "screenshots/components/comp-shell-list-shared.png",
+      "clip": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 900
+      },
+      "locator": "shell",
+      "nav": [
+        "list-shared"
+      ],
+      "placeholders": [
+        "avatar",
+        "banner"
+      ],
+      "notes": "Second list destination for shell variants (Shared planning fixture).",
+      "migrateFrom": "screenshots/browser/desktop-list-detail.png",
+      "allowFullViewport": true
+    },
+    {
       "storyId": "tasks-components-tasks-shell--wide-with-detail",
       "id": "comp-shell-wide-detail",
       "kind": "component",
@@ -1335,8 +1587,8 @@
       "clip": {
         "x": 0,
         "y": 0,
-        "width": 1680,
-        "height": 1000
+        "width": 1280,
+        "height": 900
       },
       "locator": "shell",
       "nav": [
