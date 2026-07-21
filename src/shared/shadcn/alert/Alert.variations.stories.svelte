@@ -14,8 +14,9 @@
 <Story
   name="Preview"
   exportName="Preview"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/alert/preview-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
     a11y: { test: "todo" },
     docs: {
       description: {

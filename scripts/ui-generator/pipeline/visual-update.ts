@@ -17,7 +17,12 @@ import {
   storyIdPrefixFromStoryId,
   storyIdPrefixFromTitle,
 } from "../visual/snapshot-paths.js";
-import { patchStoriesVisualDeltaImages } from "../visual/patch-story-visual-delta.js";
+import { ensurePlaywrightWebServerPort } from "../visual/ensure-playwright-webserver.js";
+import {
+  listSkipVisualStoryIdsForPrefix,
+  patchStoriesVisualDeltaImages,
+  removeSkipVisualFromStories,
+} from "../visual/patch-story-visual-delta.js";
 import { markCreatedStoriesPending } from "../visual/patch-story-visual-review.js";
 import {
   createRunContext,
@@ -128,13 +133,41 @@ export async function runVisualUpdate(options: {
     : storyIdPrefixFromTitle(recipe!.storyTitle);
   log.info(`Playwright filter: -g ${JSON.stringify(grep)}`);
 
-  if (!options.skipBuild) {
+  let skipBuild = Boolean(options.skipBuild);
+  if (createOnly) {
+    // Opt every skip-visual story under the component prefix into capture
+    // (sidebar "create for component" only passes one leaf story id).
+    const unskipIds = [
+      ...new Set([
+        ...(storyId ? [storyId] : []),
+        ...listSkipVisualStoryIdsForPrefix({
+          packageRoot: config.packageRoot,
+          storyIdPrefix: grep,
+        }),
+      ]),
+    ];
+    const unskipped = removeSkipVisualFromStories({
+      packageRoot: config.packageRoot,
+      storyIds: unskipIds,
+    });
+    if (unskipped.length) {
+      log.info(
+        `Removed skip-visual from ${unskipped.length} stor${unskipped.length === 1 ? "y" : "ies"} before create:\n${unskipped.map((id) => `  - ${id}`).join("\n")}`,
+      );
+      // Index must refresh so Playwright no longer filters the stories out.
+      skipBuild = false;
+    }
+  }
+
+  if (!skipBuild) {
     // Build Storybook first so the visual suite has static assets.
     execFileSync("pnpm", ["build-storybook"], {
       cwd: config.packageRoot,
       stdio: "inherit",
     });
   }
+
+  await ensurePlaywrightWebServerPort();
 
   execFileSync(
     "pnpm",
@@ -150,19 +183,27 @@ export async function runVisualUpdate(options: {
     },
   );
 
-  let patchResult: { patched: string[]; skipped: string[] } | null = null;
+  let patchResult: {
+    patched: string[];
+    alreadyWired: string[];
+    skipped: string[];
+  } | null = null;
   if (createOnly) {
     patchResult = patchStoriesVisualDeltaImages({
       packageRoot: config.packageRoot,
       storyIdPrefix: grep,
     });
     log.info(
-      `Story visualDelta patch: ${patchResult.patched.length} updated, ${patchResult.skipped.length} skipped`,
+      `Story visualDelta patch: ${patchResult.patched.length} updated, ${patchResult.alreadyWired.length} already wired, ${patchResult.skipped.length} skipped`,
     );
-    if (patchResult.patched.length) {
+    const toMarkPending = [
+      ...patchResult.patched,
+      ...patchResult.alreadyWired,
+    ];
+    if (toMarkPending.length) {
       const pending = markCreatedStoriesPending({
         packageRoot: config.packageRoot,
-        storyIds: patchResult.patched,
+        storyIds: toMarkPending,
       });
       log.info(
         `Story review pending: ${pending.marked.length} marked, ${pending.skipped.length} skipped`,
@@ -184,6 +225,7 @@ export async function runVisualUpdate(options: {
     beforeCount: Object.keys(before).length,
     afterCount: Object.keys(after).length,
     patchedStories: patchResult?.patched ?? [],
+    alreadyWiredStories: patchResult?.alreadyWired ?? [],
   });
   writeReportMarkdown(
     run.reportDir,
@@ -211,6 +253,12 @@ export async function runVisualUpdate(options: {
               heading: "Patched stories",
               body: patchResult.patched.length
                 ? patchResult.patched.join("\n")
+                : "(none)",
+            },
+            {
+              heading: "Already wired stories",
+              body: patchResult.alreadyWired.length
+                ? patchResult.alreadyWired.join("\n")
                 : "(none)",
             },
           ]

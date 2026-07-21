@@ -101,6 +101,50 @@ export function rewritePackageImports(
 const UNSUPPORTED_IMPORT_RE =
   /\$lib\/hooks\/|use-clipboard|@tabler\/icons-svelte/i;
 
+/**
+ * Upstream sometimes ships an empty wrapper as a "Nested Providers" illustration
+ * (e.g. `<Tooltip.Provider delayDuration={0}></Tooltip.Provider>`). Those are not
+ * runnable demos — complete known stubs, otherwise skip.
+ */
+const EMPTY_SHELL_COMPLETIONS: Record<string, string> = {
+  "tooltip/nested-providers": `<script lang="ts">
+  import { buttonVariants } from "$lib/components/ui/button/index.js";
+  import * as Tooltip from "$lib/components/ui/tooltip/index.js";
+</script>
+
+<Tooltip.Provider>
+  <div class="flex flex-wrap items-center gap-4">
+    <Tooltip.Root>
+      <Tooltip.Trigger class={buttonVariants({ variant: "outline" })}>
+        Default delay
+      </Tooltip.Trigger>
+      <Tooltip.Content>
+        <p>Uses the outer provider delay</p>
+      </Tooltip.Content>
+    </Tooltip.Root>
+
+    <Tooltip.Provider delayDuration={0}>
+      <Tooltip.Root>
+        <Tooltip.Trigger class={buttonVariants({ variant: "outline" })}>
+          Instant
+        </Tooltip.Trigger>
+        <Tooltip.Content>
+          <p>Closest provider wins (delayDuration=0)</p>
+        </Tooltip.Content>
+      </Tooltip.Root>
+    </Tooltip.Provider>
+  </div>
+</Tooltip.Provider>
+`,
+};
+
+/** True when the fence is a single empty element (no children, no script). */
+export function isEmptyElementShell(code: string): boolean {
+  const trimmed = code.trim();
+  if (!trimmed || /^\s*<script\b/m.test(trimmed)) return false;
+  return /^<([A-Za-z][\w.]*)\b[^>]*>\s*<\/\1>\s*$/.test(trimmed);
+}
+
 function extractUiFamilies(code: string): string[] {
   const families = new Set<string>();
   const patterns = [
@@ -174,6 +218,18 @@ export function rewriteExample(args: {
       reason: "empty-code",
       detail: "Example is an incomplete snippet",
     };
+  }
+
+  if (isEmptyElementShell(code)) {
+    const completion = EMPTY_SHELL_COMPLETIONS[`${component}/${example.slug}`];
+    if (!completion) {
+      return {
+        example,
+        reason: "empty-code",
+        detail: "Example is an empty element shell",
+      };
+    }
+    code = completion.trim();
   }
 
   const tablerIcons = extractTablerIcons(code);

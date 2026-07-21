@@ -69,7 +69,7 @@
 <Story
   name="Text"
   exportName="Text"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {

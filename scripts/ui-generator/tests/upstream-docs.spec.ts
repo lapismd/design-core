@@ -6,9 +6,11 @@ import { fileURLToPath } from "node:url";
 import { emitDocsArtifacts } from "../docs/emit-docs-artifacts.js";
 import {
   parseUpstreamDocs,
+  pickExampleCode,
   stripSponsorCopy,
 } from "../docs/parse-upstream-docs.js";
 import {
+  isEmptyElementShell,
   isRewrittenExample,
   rewriteExample,
   rewritePackageImports,
@@ -19,6 +21,25 @@ const fixturePath = path.join(
   path.dirname(fileURLToPath(import.meta.url)),
   "../fixtures/upstream-docs/input-group.md",
 );
+
+describe("pickExampleCode", () => {
+  it("prefers the full script SFC when a truncated fence comes first", () => {
+    const stub = `<DropdownMenu.Root>
+  <DropdownMenu.Trigger class={buttonVariants({ variant: "outline" })}>
+    Actions
+  </DropdownMenu.Trigger>
+</DropdownMenu.Root>`;
+    const full = `<script lang="ts">
+  import { buttonVariants } from "$lib/components/ui/button/index.js";
+  import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js";
+  let open = $state(false);
+</script>
+${stub}
+`;
+    expect(pickExampleCode([stub, full])).toBe(full);
+    expect(pickExampleCode([full, stub])).toBe(full);
+  });
+});
 
 describe("parseUpstreamDocs", () => {
   const markdown = readFileSync(fixturePath, "utf8");
@@ -195,6 +216,52 @@ pnpm add skeleton
     expect(text?.code).toContain("<InputGroup.Text>");
     expect(text?.slug).toBe("text");
   });
+
+  it("picks the complete Dialog demo when upstream ships a stub fence first", () => {
+    const dialogMd = `# Dropdown Menu
+
+## Examples
+
+### Dialog
+
+This example shows how to open a dialog from a dropdown menu.
+
+\`\`\`svelte
+<DropdownMenu.Root>
+  <DropdownMenu.Trigger class={buttonVariants({ variant: "outline" })}>
+    Actions
+  </DropdownMenu.Trigger>
+</DropdownMenu.Root>
+\`\`\`
+
+\`\`\`svelte
+<script lang="ts">
+  import { buttonVariants } from "$lib/components/ui/button/index.js";
+  import * as Dialog from "$lib/components/ui/dialog/index.js";
+  import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js";
+  let showNewDialog = $state(false);
+</script>
+<DropdownMenu.Root>
+  <DropdownMenu.Trigger class={buttonVariants({ variant: "outline" })}>
+    Actions
+  </DropdownMenu.Trigger>
+  <DropdownMenu.Content>
+    <DropdownMenu.Item onSelect={() => (showNewDialog = true)}>
+      New File...
+    </DropdownMenu.Item>
+  </DropdownMenu.Content>
+</DropdownMenu.Root>
+<Dialog.Root bind:open={showNewDialog}>
+  <Dialog.Content>Hi</Dialog.Content>
+</Dialog.Root>
+\`\`\`
+`;
+    const parsed = parseUpstreamDocs("dropdown-menu", dialogMd);
+    const dialog = parsed.examples.find((e) => e.slug === "dialog");
+    expect(dialog?.code).toContain("<script lang=\"ts\">");
+    expect(dialog?.code).toContain("showNewDialog");
+    expect(dialog?.code).toContain("<Dialog.Root");
+  });
 });
 
 describe("rewriteExample", () => {
@@ -284,6 +351,59 @@ import * as Tooltip from "$lib/components/ui/tooltip/index.js";`;
     if (!isRewrittenExample(result)) return;
     expect(result.code).toContain("@lucide/svelte/icons/");
     expect(result.code).not.toContain("@tabler/icons-svelte");
+  });
+
+  it("detects empty element shells", () => {
+    expect(
+      isEmptyElementShell(
+        `<Tooltip.Provider delayDuration={0}>
+</Tooltip.Provider>`,
+      ),
+    ).toBe(true);
+    expect(
+      isEmptyElementShell(`<Tooltip.Provider>
+  <Tooltip.Root />
+</Tooltip.Provider>`),
+    ).toBe(false);
+  });
+
+  it("completes tooltip nested-providers empty shell", () => {
+    const result = rewriteExample({
+      component: "tooltip",
+      example: {
+        name: "Nested Providers",
+        slug: "nested-providers",
+        description: "Nest providers for different delay groups.",
+        code: `<Tooltip.Provider delayDuration={0}>
+</Tooltip.Provider>`,
+      },
+      availableFamilies: new Set(["tooltip", "button"]),
+    });
+    expect(isRewrittenExample(result)).toBe(true);
+    if (!isRewrittenExample(result)) return;
+    expect(result.code).toContain("Default delay");
+    expect(result.code).toContain("Instant");
+    expect(result.code).toContain("delayDuration={0}");
+    expect(result.code).toContain('from "./index.js"');
+    expect(result.code).toContain('from "../button/index.js"');
+  });
+
+  it("skips unknown empty element shells", () => {
+    const result = rewriteExample({
+      component: "dialog",
+      example: {
+        name: "Empty",
+        slug: "empty",
+        description: "",
+        code: `<Dialog.Root>
+</Dialog.Root>`,
+      },
+      availableFamilies: new Set(["dialog"]),
+    });
+    expect(isRewrittenExample(result)).toBe(false);
+    if (isRewrittenExample(result)) return;
+    expect(result.reason).toBe("empty-code");
+    expect(result.detail).toMatch(/empty element shell/i);
   });
 });
 

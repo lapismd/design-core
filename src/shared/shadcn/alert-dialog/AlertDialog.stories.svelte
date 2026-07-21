@@ -36,6 +36,8 @@
     );
     await expect(canvas.getByRole("status")).toHaveTextContent("confirmed");
   }}
+
+  tags={["visual-approved"]}
 >
   {#snippet template()}
     <div class="flex flex-col gap-3">

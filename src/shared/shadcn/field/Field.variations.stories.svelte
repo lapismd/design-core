@@ -20,7 +20,7 @@
 <Story
   name="Input"
   exportName="Input"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -42,7 +42,7 @@
 <Story
   name="Textarea"
   exportName="Textarea"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -64,7 +64,7 @@
 <Story
   name="Select"
   exportName="Select"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -108,7 +108,7 @@
 <Story
   name="Switch"
   exportName="Switch"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -155,7 +155,7 @@
 <Story
   name="Validation and Errors"
   exportName="ValidationAndErrors"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {

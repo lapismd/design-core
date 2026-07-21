@@ -41,7 +41,20 @@ describe("visual-baseline-design", () => {
     expect(familyFromTitle("Shadcn/Forms/Input Group")).toBe("input-group");
   });
 
-  it("skips non-Shadcn titles and skip-visual stories", () => {
+  it("maps UI Forms stories via importPath", () => {
+    expect(
+      baselineUrlForStory({
+        title: "UI Forms/Add Section Chooser",
+        id: "ui-forms-add-section-chooser--chooses-a-section",
+        importPath:
+          "./src/shared/forms/add-section-chooser/AddSectionChooser.stories.svelte",
+      }),
+    ).toBe(
+      `/visual-baselines/forms/add-section-chooser/chooses-a-section${VISUAL_BASELINE_SUFFIX}.png`,
+    );
+  });
+
+  it("skips skip-visual stories and unknown trees without importPath", () => {
     expect(
       baselineUrlForStory({
         title: "UI Forms/Form Field",

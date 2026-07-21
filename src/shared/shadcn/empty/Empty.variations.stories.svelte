@@ -16,7 +16,7 @@
 <Story
   name="Preview"
   exportName="Preview"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -41,7 +41,7 @@
 <Story
   name="Outline"
   exportName="Outline"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -66,7 +66,7 @@
 <Story
   name="Background"
   exportName="Background"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {

@@ -52,6 +52,21 @@ function extractFencedBlocks(
   return blocks;
 }
 
+/**
+ * Some upstream example sections ship a truncated markup fence first (e.g.
+ * Dropdown Menu → Dialog shows only the trigger), then the full SFC. Prefer a
+ * complete `<script>` demo over a shorter stub.
+ */
+export function pickExampleCode(blocks: string[]): string {
+  if (blocks.length === 0) return "";
+  if (blocks.length === 1) return blocks[0]!;
+  const withScript = blocks.filter((b) => /^\s*<script\b/m.test(b));
+  const pool = withScript.length ? withScript : blocks;
+  return pool.reduce((best, block) =>
+    block.length > best.length ? block : best,
+  );
+}
+
 function splitByH2(markdown: string): Array<{ title: string; body: string }> {
   const lines = markdown.split("\n");
   const sections: Array<{ title: string; body: string }> = [];
@@ -161,7 +176,7 @@ function exampleFromSection(
   const prose = fenceIdx >= 0 ? section.slice(0, fenceIdx) : section;
   const description = stripSponsorCopy(prose);
   const blocks = extractFencedBlocks(section, "svelte");
-  const code = blocks[0] ?? "";
+  const code = pickExampleCode(blocks);
   if (!code.trim()) return null;
   return {
     name,

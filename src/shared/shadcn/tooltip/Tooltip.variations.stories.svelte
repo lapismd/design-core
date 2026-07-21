@@ -15,7 +15,7 @@
 <Story
   name="Preview"
   exportName="Preview"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -40,7 +40,7 @@
 <Story
   name="Nested Providers"
   exportName="NestedProviders"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {

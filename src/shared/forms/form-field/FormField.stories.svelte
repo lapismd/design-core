@@ -29,6 +29,12 @@
     await userEvent.type(input, "Shared ledger");
     await expect(canvas.getByRole("status")).toHaveTextContent("Shared ledger");
   }}
+
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/forms/form-field/text-input-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
+  }}
+
+  tags={["visual-approved"]}
 >
   {#snippet template()}
     <div class="cv-structured-form max-w-xl">

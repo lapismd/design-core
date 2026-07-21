@@ -102,6 +102,22 @@
     padding: 0.35rem 0;
   }
 
+  /* Match input vertical rhythm so bare buttons/links sit with the label. */
+  .cv-form-field:not([data-align="center"])
+    .cv-form-field-control
+    :global(:where(button, a)) {
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: var(--ui-form-foreground);
+    font: inherit;
+    line-height: 1.45;
+    padding: 0.35rem 0;
+    text-align: inherit;
+    cursor: pointer;
+  }
+
   .cv-form-field-control :global(textarea) {
     min-height: 1.8rem;
     overflow: hidden;

@@ -27,6 +27,8 @@
     await userEvent.click(canvas.getByRole("button", { name: "Save changes" }));
     await expect(canvas.getByRole("status")).toHaveTextContent("Changes saved");
   }}
+
+  tags={["visual-approved"]}
 >
   {#snippet template()}
     <div class="flex flex-wrap items-center gap-3">

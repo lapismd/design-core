@@ -26,11 +26,16 @@ function extractTitle(code: string): string | undefined {
   return match?.[1];
 }
 
+/**
+ * Prefer human `name` for baseline slug — Storybook story ids use it
+ * (`Default row` → `default-row`). Preferring `exportName` (`DefaultRow` →
+ * `defaultrow`) pointed inject/create at the wrong PNG path.
+ */
 function extractStoryName(attrs: string): string | undefined {
-  const exportName = attrs.match(/\bexportName=["']([^"']+)["']/);
-  if (exportName) return exportName[1];
   const name = attrs.match(/\bname=["']([^"']+)["']/);
-  return name?.[1];
+  if (name) return name[1];
+  const exportName = attrs.match(/\bexportName=["']([^"']+)["']/);
+  return exportName?.[1];
 }
 
 function baselineUrl(directory: string, slug: string): string {
@@ -231,18 +236,28 @@ export function visualBaselineVisualDeltaPlugin(): Plugin {
       const title = extractTitle(code);
       if (!title) return null;
 
+      const formsDir = normalized.match(
+        /\/shared\/forms\/(.+)\/[^/]+\.stories\.\w+$/,
+      )?.[1];
+      const appsDir = normalized.match(
+        /\/src\/apps\/(.+)\/[^/]+\.stories\.\w+$/,
+      )?.[1];
       const directory =
         normalized.includes("/shared/shadcn/") && title.startsWith("Shadcn/")
           ? `shadcn/${familyFromTitle(title)}`
-          : normalized.includes("/packages/workspace/src/lib/components/") &&
-              title.startsWith("Workspace/")
-            ? "workspace/components"
-            : normalized.includes("/packages/tasks/src/") &&
-                title.startsWith("Tasks/")
-              ? normalized
-                  .replace(/^.*?\/packages\/tasks\/src\//, "tasks/")
-                  .replace(/\/[^/]+\.stories\.\w+$/, "")
-              : undefined;
+          : formsDir && title.startsWith("UI Forms/")
+            ? `forms/${formsDir}`
+            : appsDir && title.startsWith("Apps/")
+              ? `apps/${appsDir}`
+              : normalized.includes("/packages/workspace/src/lib/components/") &&
+                  title.startsWith("Workspace/")
+                ? "workspace/components"
+                : normalized.includes("/packages/tasks/src/") &&
+                    title.startsWith("Tasks/")
+                  ? normalized
+                      .replace(/^.*?\/packages\/tasks\/src\//, "tasks/")
+                      .replace(/\/[^/]+\.stories\.\w+$/, "")
+                  : undefined;
       if (!directory) return null;
 
       const next = injectVisualBaselineVisualDeltas(

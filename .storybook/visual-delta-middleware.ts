@@ -14,6 +14,7 @@ import {
 } from "../packages/storybook-addon-visual-delta/src/constants.js";
 import type { VisualDiffSidecar } from "../packages/storybook-addon-visual-delta/src/visual-diff-sidecar.js";
 import { loadSidecarForStoryId } from "../scripts/ui-generator/visual/diff-result.js";
+import { ensurePlaywrightWebServerPort } from "../scripts/ui-generator/visual/ensure-playwright-webserver.js";
 import { patchStoryVisualReviewStatus } from "../scripts/ui-generator/visual/patch-story-visual-review.js";
 import type { StoryIndexEntry } from "../scripts/ui-generator/visual/snapshot-paths.js";
 
@@ -349,16 +350,24 @@ async function handleBaselineWrite(
   res.statusCode = 200;
   res.setHeader("Content-Type", "text/plain; charset=utf-8");
   res.setHeader("Cache-Control", "no-store");
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  // Hint proxies / browsers not to buffer the streamed body.
+  res.setHeader("X-Accel-Buffering", "no");
   const verb = createOnly ? "Creating missing baselines" : "Updating baselines";
   res.write(
     `${verb}${component ? ` for ${component}` : ` for ${storyId}`}…\n`,
   );
 
   try {
-    const { code, log } = await runCommand("pnpm", args, root, {
-      VISUAL_UPDATE_APPROVED: "1",
-    });
-    res.write(log);
+    const { code } = await runCommand(
+      "pnpm",
+      args,
+      root,
+      { VISUAL_UPDATE_APPROVED: "1" },
+      (chunk) => {
+        res.write(chunk);
+      },
+    );
     res.write(`\n[exit ${code}]\n`);
   } catch (error) {
     res.write(
@@ -469,6 +478,8 @@ async function handleRun(
     let passed = 0;
     let failed = 0;
     let lineBuf = "";
+
+    await ensurePlaywrightWebServerPort();
 
     const args = [
       "exec",

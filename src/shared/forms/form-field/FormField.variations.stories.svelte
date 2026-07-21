@@ -19,12 +19,14 @@
 <Story
   name="Default row"
   exportName="DefaultRow"
-  tags={["skip-visual"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/forms/form-field/default-row-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
     docs: {
       description: { story: "Standard start-aligned text field row." },
     },
   }}
+
+  tags={["visual-approved"]}
 >
   {#snippet template()}
     <div class="cv-structured-form max-w-xl">
@@ -38,12 +40,14 @@
 <Story
   name="Center aligned"
   exportName="CenterAligned"
-  tags={["skip-visual"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/forms/form-field/center-aligned-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
     docs: {
       description: { story: "Use `align=\"center\"` for pill controls and date-like controls." },
     },
   }}
+
+  tags={["visual-approved"]}
 >
   {#snippet template()}
     <div class="cv-structured-form max-w-xl">
@@ -57,17 +61,22 @@
 <Story
   name="Div host"
   exportName="DivHost"
-  tags={["skip-visual"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/forms/form-field/div-host-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
     docs: {
-      description: { story: "Use `as=\"div\"` when the control contains buttons or popovers." },
+      description: {
+        story:
+          'Use `as="div"` for buttons/popovers. Prefer `align="center"` for single-line interactive values; start align still matches input padding on bare buttons.',
+      },
     },
   }}
+
+  tags={["visual-approved"]}
 >
   {#snippet template()}
     <div class="cv-structured-form max-w-xl">
       <FormField label="Network" as="div">
-        <button type="button" class="text-sm">LinkedIn</button>
+        <button type="button">LinkedIn</button>
       </FormField>
     </div>
   {/snippet}

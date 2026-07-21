@@ -21,6 +21,12 @@
   play={async ({ canvas }) => {
     await expect(canvas.getByText("Sync complete")).toBeVisible();
   }}
+
+  tags={["visual-approved"]}
+
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/alert/informational-callout-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
+  }}
 >
   {#snippet template()}
     <Alert.Root class="max-w-md">

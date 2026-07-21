@@ -32,6 +32,10 @@
     await userEvent.click(canvas.getByRole("button", { name: "Projects" }));
     await expect(canvas.getByRole("status")).toHaveTextContent("projects");
   }}
+
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/forms/add-section-chooser/chooses-a-section-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
+  }}
 >
   {#snippet template()}
     <div class="flex flex-col gap-2">

@@ -33,6 +33,8 @@
     await userEvent.keyboard("{Escape}");
     await expect(canvas.getByRole("status")).toHaveTextContent("closed");
   }}
+
+  tags={["visual-approved"]}
 >
   {#snippet template()}
     <div class="flex flex-col gap-3">

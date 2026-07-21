@@ -20,7 +20,7 @@
 <Story
   name="Size"
   exportName="Size"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -45,7 +45,7 @@
 <Story
   name="Color"
   exportName="Color"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -70,7 +70,7 @@
 <Story
   name="Button"
   exportName="Button"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -95,7 +95,7 @@
 <Story
   name="Badge"
   exportName="Badge"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -120,7 +120,7 @@
 <Story
   name="Input Group"
   exportName="InputGroup"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -145,7 +145,7 @@
 <Story
   name="Empty"
   exportName="Empty"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -167,7 +167,7 @@
 <Story
   name="Customization"
   exportName="Customization"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {

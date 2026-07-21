@@ -24,17 +24,58 @@ function endOfDoubleBraceObject(source: string, start: number): number {
   return -1;
 }
 
-function extractStoryName(attrs: string): string | undefined {
-  const exportName = attrs.match(/\bexportName=["']([^"']+)["']/);
-  if (exportName) return exportName[1];
-  const name = attrs.match(/\bname=["']([^"']+)["']/);
-  return name?.[1];
+/**
+ * Candidate titles for matching a Storybook `--slug`.
+ * Prefer human `name` — story ids use it (`Default row` → `default-row`).
+ * `exportName` alone (`DefaultRow` → `defaultrow`) must not win or create /
+ * review patches miss skip-visual stories that set both.
+ */
+function storyNameCandidates(attrs: string): string[] {
+  const names: string[] = [];
+  const name = attrs.match(/\bname=["']([^"']+)["']/)?.[1];
+  const exportName = attrs.match(/\bexportName=["']([^"']+)["']/)?.[1];
+  if (name) names.push(name);
+  if (exportName) names.push(exportName);
+  return names;
 }
 
 function storyMatchesSlug(openTag: string, slug: string): boolean {
-  const storyName = extractStoryName(openTag);
-  if (!storyName) return false;
-  return sanitizeStoryName(storyName) === slug;
+  return storyNameCandidates(openTag).some(
+    (storyName) => sanitizeStoryName(storyName) === slug,
+  );
+}
+
+/** Test/helper: does this `<Story …>` open tag match a story id or `--slug`? */
+export function storyOpenTagMatchesIdSlug(
+  openTag: string,
+  storyIdOrSlug: string,
+): boolean {
+  const slug = storyIdOrSlug.includes("--")
+    ? storyIdOrSlug.slice(storyIdOrSlug.indexOf("--") + 2)
+    : storyIdOrSlug;
+  return storyMatchesSlug(openTag, slug);
+}
+
+function parseTagsArrayLiteral(inside: string): string[] {
+  return [...inside.matchAll(/["']([^"']+)["']/g)].map((m) => m[1]!);
+}
+
+/**
+ * Drop `skip-visual` from a Story open tag (create-baseline opts the story in).
+ */
+export function removeSkipVisualFromStoryOpenTag(openTag: string): string {
+  const tagsMatch = openTag.match(/\btags=\{\[([\s\S]*?)\]\}/);
+  if (!tagsMatch) return openTag;
+  const full = tagsMatch[0];
+  const inside = tagsMatch[1] ?? "";
+  const before = parseTagsArrayLiteral(inside);
+  const tags = before.filter((t) => t !== "skip-visual");
+  if (tags.length === before.length) return openTag;
+  if (tags.length === 0) {
+    return openTag.replace(/\s*tags=\{\[[\s\S]*?\]\}/, "");
+  }
+  const literal = tags.map((t) => JSON.stringify(t)).join(", ");
+  return openTag.replace(full, `tags={[${literal}]}`);
 }
 
 /**
@@ -113,6 +154,25 @@ function patchStoriesFileForEntry(
   entry: StoryIndexEntry,
   url: string,
 ): boolean {
+  return patchStoriesFileWithOpenTagTransform(filePath, entry, (openTag) =>
+    patchStoryOpenTagWithBaselineUrl(openTag, url),
+  );
+}
+
+function resolveStoriesPath(
+  packageRoot: string,
+  importPath: string,
+): string | null {
+  const normalized = importPath.replace(/\\/g, "/").replace(/^\.\//, "");
+  const abs = path.join(packageRoot, normalized);
+  return existsSync(abs) ? abs : null;
+}
+
+function patchStoriesFileWithOpenTagTransform(
+  filePath: string,
+  entry: StoryIndexEntry,
+  transform: (openTag: string) => string,
+): boolean {
   const slug = entry.id.includes("--")
     ? entry.id.slice(entry.id.indexOf("--") + 2)
     : sanitizeStoryName(entry.name ?? "");
@@ -137,7 +197,7 @@ function patchStoriesFileForEntry(
     }
     const openTag = original.slice(start, end + 1);
     if (storyMatchesSlug(openTag, slug)) {
-      const next = patchStoryOpenTagWithBaselineUrl(openTag, url);
+      const next = transform(openTag);
       result += next;
       if (next !== openTag) changed = true;
     } else {
@@ -152,14 +212,86 @@ function patchStoriesFileForEntry(
   return changed;
 }
 
-function resolveStoriesPath(
-  packageRoot: string,
-  importPath: string,
-): string | null {
-  const normalized = importPath.replace(/\\/g, "/").replace(/^\.\//, "");
-  const abs = path.join(packageRoot, normalized);
-  return existsSync(abs) ? abs : null;
+/**
+ * Story ids under a prefix (e.g. `ui-forms-form-field--`) that still carry
+ * `skip-visual` in the static index — used for component-scoped create.
+ */
+export function listSkipVisualStoryIdsForPrefix(options: {
+  packageRoot: string;
+  storyIdPrefix: string;
+}): string[] {
+  const indexPath = path.join(
+    options.packageRoot,
+    "storybook-static",
+    "index.json",
+  );
+  if (!existsSync(indexPath) || !options.storyIdPrefix) return [];
+  const index = JSON.parse(readFileSync(indexPath, "utf8")) as {
+    entries?: Record<string, StoryIndexEntry>;
+  };
+  return Object.values(index.entries ?? {})
+    .filter(
+      (e) =>
+        e.type === "story" &&
+        e.id.startsWith(options.storyIdPrefix) &&
+        (e.tags ?? []).includes("skip-visual"),
+    )
+    .map((e) => e.id);
 }
+
+/**
+ * Remove `skip-visual` from the given stories so create-baseline can capture
+ * and wire them. Returns story ids that were changed on disk.
+ */
+export function removeSkipVisualFromStories(options: {
+  packageRoot: string;
+  storyIds: string[];
+}): string[] {
+  const indexPath = path.join(
+    options.packageRoot,
+    "storybook-static",
+    "index.json",
+  );
+  const removed: string[] = [];
+  if (!existsSync(indexPath) || options.storyIds.length === 0) return removed;
+
+  const index = JSON.parse(readFileSync(indexPath, "utf8")) as {
+    entries?: Record<string, StoryIndexEntry>;
+  };
+  const idSet = new Set(options.storyIds);
+
+  for (const entry of Object.values(index.entries ?? {})) {
+    if (entry.type !== "story" || !idSet.has(entry.id)) continue;
+    if (!(entry.tags ?? []).includes("skip-visual")) continue;
+    if (!entry.importPath) continue;
+    const storiesPath = resolveStoriesPath(
+      options.packageRoot,
+      entry.importPath,
+    );
+    if (!storiesPath) continue;
+    if (
+      patchStoriesFileWithOpenTagTransform(
+        storiesPath,
+        entry,
+        removeSkipVisualFromStoryOpenTag,
+      )
+    ) {
+      removed.push(entry.id);
+      log.info(`Removed skip-visual from ${entry.id}`);
+    }
+  }
+
+  return removed;
+}
+
+export type VisualDeltaPatchResult = {
+  /** CSF newly wrote `visualDelta.images`. */
+  patched: string[];
+  /** PNG + CSF already had the URL (still success for the UI). */
+  alreadyWired: string[];
+  /** skip-visual, missing PNG, or unresolved path. */
+  skipped: string[];
+};
 
 /**
  * After create-only Playwright writes, wire each matching story's CSF to the
@@ -171,17 +303,18 @@ export function patchStoriesVisualDeltaImages(options: {
   storyIds?: string[];
   /** Or filter index entries whose id starts with this prefix (e.g. `shadcn-button--`). */
   storyIdPrefix?: string;
-}): { patched: string[]; skipped: string[] } {
+}): VisualDeltaPatchResult {
   const indexPath = path.join(
     options.packageRoot,
     "storybook-static",
     "index.json",
   );
   const patched: string[] = [];
+  const alreadyWired: string[] = [];
   const skipped: string[] = [];
   if (!existsSync(indexPath)) {
     log.warn("storybook-static/index.json missing; skip story visualDelta patch");
-    return { patched, skipped };
+    return { patched, alreadyWired, skipped };
   }
 
   const index = JSON.parse(readFileSync(indexPath, "utf8")) as {
@@ -226,10 +359,13 @@ export function patchStoriesVisualDeltaImages(options: {
     if (patchStoriesFileForEntry(storiesPath, entry, url)) {
       patched.push(entry.id);
       log.info(`Patched visualDelta.images for ${entry.id}`);
+    } else if (readFileSync(storiesPath, "utf8").includes(url)) {
+      // Open tag already contains the URL — treat as success, not a failure.
+      alreadyWired.push(entry.id);
     } else {
       skipped.push(entry.id);
     }
   }
 
-  return { patched, skipped };
+  return { patched, alreadyWired, skipped };
 }

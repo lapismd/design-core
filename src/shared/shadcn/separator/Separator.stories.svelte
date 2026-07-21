@@ -22,6 +22,8 @@
     await expect(canvas.getByText("Above")).toBeVisible();
     await expect(canvas.getByText("Below")).toBeVisible();
   }}
+
+  tags={["visual-approved"]}
 >
   {#snippet template()}
     <div class="max-w-sm">

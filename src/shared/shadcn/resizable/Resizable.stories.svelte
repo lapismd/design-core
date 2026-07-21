@@ -22,6 +22,8 @@
     await expect(canvas.getByText("Left pane")).toBeVisible();
     await expect(canvas.getByText("Right pane")).toBeVisible();
   }}
+
+  tags={["visual-approved"]}
 >
   {#snippet template()}
     <Resizable.PaneGroup

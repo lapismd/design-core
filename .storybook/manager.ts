@@ -6,6 +6,7 @@ import {
   type TagBadgeParameters,
 } from "storybook-addon-tag-badges/manager-helpers";
 import type { CSSObject } from "storybook/theming";
+import { stackedRenderLabel } from "./manager-stacked-badges.js";
 
 const SMALL_CAPS: CSSObject = {
   fontVariant: "all-small-caps",
@@ -129,10 +130,11 @@ function withContextBadge(badge: BadgeOrBadgeFn): BadgeOrBadgeFn {
       typeof badge === "function" ? badge(params) : { ...badge };
     const colors = resolvePresetColors(resolved.style);
     const { context, tag } = params;
+    const icon = sidebarIconFor(tag, resolved.text);
 
     if (context === "sidebar") {
       return {
-        text: sidebarIconFor(tag, resolved.text),
+        text: icon,
         style: {
           ...colors,
           ...SIDEBAR_ICON_STYLE,
@@ -141,8 +143,16 @@ function withContextBadge(badge: BadgeOrBadgeFn): BadgeOrBadgeFn {
       };
     }
 
+    // Toolbar / MDX: glyph before the label (e.g. "⛨ Approved").
+    const label = resolved.text.trim();
+    const text =
+      icon && label && !label.startsWith(icon)
+        ? `${icon} ${label}`
+        : label || icon;
+
     return {
       ...resolved,
+      text,
       style: {
         ...colors,
         ...SMALL_CAPS,
@@ -160,7 +170,26 @@ function withContextBadges(
   }));
 }
 
+/**
+ * Review status on component/group (high-level scan) and on leaves.
+ * `skipInherited: false` so a parent ⛨ does not hide Approved on stories
+ * (which would otherwise fall through to the Upstream ↑ chip).
+ */
+const REVIEW_SIDEBAR_DISPLAY = [
+  { type: "story" as const, skipInherited: false },
+  { type: "docs" as const, skipInherited: false },
+  { type: "component" as const, skipInherited: false },
+  { type: "group" as const, skipInherited: false },
+];
+
 addons.setConfig({
+  // Custom renderLabel stacks every matching tag (Approved + Upstream, …)
+  // like an avatar group. Review tags stay ahead of upstream-example in
+  // config order so they lead the stack.
+  sidebar: {
+    ...addons.getConfig()?.sidebar,
+    renderLabel: stackedRenderLabel,
+  },
   tagBadges: withContextBadges([
     {
       tags: "skip-visual",
@@ -179,6 +208,33 @@ addons.setConfig({
       },
     },
     {
+      tags: "visual-failed",
+      badge: {
+        text: "Failed",
+        style: "red",
+        tooltip: "Baseline review failed or rejected",
+      },
+      display: { sidebar: REVIEW_SIDEBAR_DISPLAY, toolbar: ["docs", "story"] },
+    },
+    {
+      tags: "visual-pending",
+      badge: {
+        text: "Pending review",
+        style: "orange",
+        tooltip: "Baseline exists; awaiting human approval",
+      },
+      display: { sidebar: REVIEW_SIDEBAR_DISPLAY, toolbar: ["docs", "story"] },
+    },
+    {
+      tags: "visual-approved",
+      badge: {
+        text: "Approved",
+        style: "green",
+        tooltip: "Baseline reviewed and accepted",
+      },
+      display: { sidebar: REVIEW_SIDEBAR_DISPLAY, toolbar: ["docs", "story"] },
+    },
+    {
       tags: "upstream-example",
       badge: {
         text: "Upstream",
@@ -192,30 +248,6 @@ addons.setConfig({
         text: "Visual",
         style: "turquoise",
         tooltip: "Explicit visual-state story",
-      },
-    },
-    {
-      tags: "visual-pending",
-      badge: {
-        text: "Pending review",
-        style: "orange",
-        tooltip: "Baseline exists; awaiting human approval",
-      },
-    },
-    {
-      tags: "visual-approved",
-      badge: {
-        text: "Approved",
-        style: "green",
-        tooltip: "Baseline reviewed and accepted",
-      },
-    },
-    {
-      tags: "visual-failed",
-      badge: {
-        text: "Failed",
-        style: "red",
-        tooltip: "Baseline review failed or rejected",
       },
     },
     {

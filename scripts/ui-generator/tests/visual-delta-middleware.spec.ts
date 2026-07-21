@@ -6,7 +6,11 @@ import {
   parseListReporterProgress,
   stripAnsi,
 } from "../../../.storybook/visual-delta-middleware.js";
-import { patchStoryOpenTagWithBaselineUrl } from "../visual/patch-story-visual-delta.js";
+import {
+  patchStoryOpenTagWithBaselineUrl,
+  removeSkipVisualFromStoryOpenTag,
+  storyOpenTagMatchesIdSlug,
+} from "../visual/patch-story-visual-delta.js";
 import { patchStoryOpenTagWithReviewStatus } from "../visual/patch-story-visual-review.js";
 
 describe("parseListReporterProgress", () => {
@@ -128,9 +132,70 @@ describe("patchStoryOpenTagWithBaselineUrl", () => {
     expect(next).toContain(url);
   });
 
-  it("skips skip-visual stories", () => {
+  it("skips skip-visual stories until the tag is removed", () => {
     const tag = `<Story name="Default" tags={["skip-visual"]}>`;
     expect(patchStoryOpenTagWithBaselineUrl(tag, url)).toBe(tag);
+    const optedIn = removeSkipVisualFromStoryOpenTag(tag);
+    expect(optedIn).not.toContain("skip-visual");
+    expect(patchStoryOpenTagWithBaselineUrl(optedIn, url)).toContain(url);
+  });
+});
+
+describe("removeSkipVisualFromStoryOpenTag", () => {
+  it("removes skip-visual and keeps other tags", () => {
+    const next = removeSkipVisualFromStoryOpenTag(
+      `<Story name="Default" tags={["skip-visual", "visual-state"]}>`,
+    );
+    expect(next).toContain('"visual-state"');
+    expect(next).not.toContain("skip-visual");
+  });
+
+  it("drops an empty tags attribute", () => {
+    const next = removeSkipVisualFromStoryOpenTag(
+      `<Story name="Default" tags={["skip-visual"]}>`,
+    );
+    expect(next).toBe(`<Story name="Default">`);
+  });
+});
+
+describe("baselineUrlForStoryRef (panel hydrate)", () => {
+  // Keep import path mapping in sync with panel post-create hydrate.
+  it("builds forms/form-field URLs and can ignore stale skip-visual", async () => {
+    const { baselineUrlForStoryRef } = await import(
+      "../../../packages/storybook-addon-visual-delta/src/shared/baseline-url.ts"
+    );
+    const story = {
+      id: "ui-forms-form-field--center-aligned",
+      importPath: "./src/shared/forms/form-field/FormField.variations.stories.svelte",
+      tags: ["skip-visual"],
+    };
+    expect(baselineUrlForStoryRef(story)).toBeUndefined();
+    expect(baselineUrlForStoryRef(story, { allowSkipVisual: true })).toBe(
+      "/visual-baselines/forms/form-field/center-aligned-chromium-darwin.png",
+    );
+  });
+});
+
+describe("storyOpenTagMatchesIdSlug", () => {
+  it("matches Default row when exportName would sanitize differently", () => {
+    // Regression: preferring exportName="DefaultRow" → slug "defaultrow"
+    // missed story id …--default-row, so skip-visual was never removed.
+    const tag = `<Story
+  name="Default row"
+  exportName="DefaultRow"
+  tags={["skip-visual"]}
+>`;
+    expect(
+      storyOpenTagMatchesIdSlug(tag, "ui-forms-form-field--default-row"),
+    ).toBe(true);
+    expect(storyOpenTagMatchesIdSlug(tag, "default-row")).toBe(true);
+    expect(storyOpenTagMatchesIdSlug(tag, "defaultrow")).toBe(true);
+
+    const optedIn = removeSkipVisualFromStoryOpenTag(tag);
+    expect(optedIn).not.toContain("skip-visual");
+    const url =
+      "/visual-baselines/forms/form-field/default-row-chromium-darwin.png";
+    expect(patchStoryOpenTagWithBaselineUrl(optedIn, url)).toContain(url);
   });
 });
 

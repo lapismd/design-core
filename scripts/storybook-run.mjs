@@ -45,6 +45,8 @@ const restartWatchPaths = [
   path.join(root, ".storybook/visual-delta-preset.ts"),
   path.join(root, ".storybook/visual-baseline-vite-plugin.ts"),
   path.join(root, ".storybook/visual-baseline-design.ts"),
+  path.join(root, ".storybook/manager.ts"),
+  path.join(root, ".storybook/manager-stacked-badges.ts"),
 ];
 
 /** @type {Map<string, string>} */

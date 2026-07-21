@@ -25,7 +25,6 @@
 <!-- Interaction story first so vitest doesn't inherit an open portal from the visual story. -->
 <Story
   name="Opens a panel"
-  tags={["skip-visual"]}
   play={async ({ canvas }) => {
     const trigger = canvas.getByRole("button", { name: "Filters" });
     await userEvent.click(trigger);
@@ -34,6 +33,12 @@
     await userEvent.keyboard("{Escape}");
     await expect(canvas.getByRole("status")).toHaveTextContent("closed");
   }}
+
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/popover/opens-a-panel-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
+  }}
+
+  tags={["visual-approved"]}
 >
   {#snippet template()}
     <div class="flex flex-col gap-3">
@@ -56,12 +61,16 @@
 
 <Story
   name="Open panel"
-  tags={["visual-state"]}
+  tags={["visual-state", "visual-approved"]}
   play={async ({ canvas }) => {
     await userEvent.click(canvas.getByRole("button", { name: "Filters" }));
     await expect(
       within(document.body).getByText("Active filters"),
     ).toBeVisible();
+  }}
+
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/popover/open-panel-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
   }}
 >
   {#snippet template()}

@@ -22,6 +22,8 @@
   play={async ({ canvas }) => {
     await expect(canvas.getByRole("status")).toBeVisible();
   }}
+
+  tags={["visual-approved"]}
 >
   {#snippet template()}
     <div

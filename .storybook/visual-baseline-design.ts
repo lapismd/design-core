@@ -6,6 +6,8 @@
  * this repo commits today (`-chromium-darwin`).
  */
 
+import { snapshotDirFromImportPath } from "../scripts/ui-generator/visual/snapshot-paths.js";
+
 export const VISUAL_BASELINE_SUFFIX = "-chromium-darwin";
 
 export type BaselineStoryRef = {
@@ -30,6 +32,18 @@ export function familyFromTitle(title: string): string {
   return segment.toLowerCase().replace(/\s+/g, "-");
 }
 
+const WIRED_SNAPSHOT_PREFIXES = [
+  "shadcn/",
+  "forms/",
+  "apps/",
+  "workspace/",
+  "tasks/",
+] as const;
+
+function isWiredSnapshotDir(directory: string): boolean {
+  return WIRED_SNAPSHOT_PREFIXES.some((prefix) => directory.startsWith(prefix));
+}
+
 /**
  * Returns a baseline PNG URL for catalog stories that participate in visual
  * baselines, or undefined when the story should not show one.
@@ -44,31 +58,21 @@ export function baselineUrlForStory(
   if (tags.includes("skip-visual")) return undefined;
   if (!id.includes("--")) return undefined;
 
-  if (title.startsWith("Workspace/") && story.importPath) {
-    const directory = story.importPath
-      .replace(/\\/g, "/")
-      .replace(/^\.\//, "")
-      .replace(/^packages\/workspace\/src\/lib\//, "workspace/")
-      .replace(/\/[^/]+\.stories\.\w+$/, "");
-    return `/visual-baselines/${directory}/${storySlugFromId(id)}${VISUAL_BASELINE_SUFFIX}.png`;
+  if (story.importPath) {
+    const directory = snapshotDirFromImportPath(story.importPath);
+    if (isWiredSnapshotDir(directory)) {
+      return `/visual-baselines/${directory}/${storySlugFromId(id)}${VISUAL_BASELINE_SUFFIX}.png`;
+    }
   }
 
-  if (title.startsWith("Tasks/") && story.importPath) {
-    const directory = story.importPath
-      .replace(/\\/g, "/")
-      .replace(/^\.\//, "")
-      .replace(/^packages\/tasks\/src\//, "tasks/")
-      .replace(/\/[^/]+\.stories\.\w+$/, "");
-    return `/visual-baselines/${directory}/${storySlugFromId(id)}${VISUAL_BASELINE_SUFFIX}.png`;
+  // Title-only fallback when importPath is missing (Shadcn catalog).
+  if (title.startsWith("Shadcn/")) {
+    const family = familyFromTitle(title);
+    if (!family) return undefined;
+    return `/visual-baselines/shadcn/${family}/${storySlugFromId(id)}${VISUAL_BASELINE_SUFFIX}.png`;
   }
 
-  if (!title.startsWith("Shadcn/")) return undefined;
-
-  const family = familyFromTitle(title);
-  if (!family) return undefined;
-
-  const slug = storySlugFromId(id);
-  return `/visual-baselines/shadcn/${family}/${slug}${VISUAL_BASELINE_SUFFIX}.png`;
+  return undefined;
 }
 
 /**

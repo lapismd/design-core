@@ -19,12 +19,14 @@
 <Story
   name="Closed"
   exportName="Closed"
-  tags={["skip-visual"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/forms/add-section-chooser/closed-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
     docs: {
       description: { story: "Dashed add button idle state." },
     },
   }}
+
+  tags={["visual-approved"]}
 >
   {#snippet template()}
     <AddSectionChooser

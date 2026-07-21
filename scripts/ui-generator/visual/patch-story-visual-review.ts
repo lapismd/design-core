@@ -14,17 +14,20 @@ import {
 import { log } from "../logger.js";
 import type { StoryIndexEntry } from "./snapshot-paths.js";
 
-function extractStoryName(attrs: string): string | undefined {
-  const exportName = attrs.match(/\bexportName=["']([^"']+)["']/);
-  if (exportName) return exportName[1];
-  const name = attrs.match(/\bname=["']([^"']+)["']/);
-  return name?.[1];
+/** Prefer `name` over `exportName` — story ids use the human title slug. */
+function storyNameCandidates(attrs: string): string[] {
+  const names: string[] = [];
+  const name = attrs.match(/\bname=["']([^"']+)["']/)?.[1];
+  const exportName = attrs.match(/\bexportName=["']([^"']+)["']/)?.[1];
+  if (name) names.push(name);
+  if (exportName) names.push(exportName);
+  return names;
 }
 
 function storyMatchesSlug(openTag: string, slug: string): boolean {
-  const storyName = extractStoryName(openTag);
-  if (!storyName) return false;
-  return sanitizeStoryName(storyName) === slug;
+  return storyNameCandidates(openTag).some(
+    (storyName) => sanitizeStoryName(storyName) === slug,
+  );
 }
 
 function parseTagsArrayLiteral(inside: string): string[] {
