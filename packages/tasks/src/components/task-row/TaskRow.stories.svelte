@@ -6,7 +6,7 @@
   const { Story } = defineMeta({
     title: "Tasks/Components/Task Row",
     component: TaskRow,
-    tags: ["skip-visual"],
+
     parameters: {
       layout: "fullscreen",
       docs: {
@@ -21,7 +21,6 @@
 
 <script lang="ts">
   import { createTasksStoryFixture } from "../../lib/story-fixtures.js";
-  import { referenceVisualDelta } from "../../lib/story-data.js";
   import TaskRowHarness from "./TaskRowHarness.svelte";
 
   const fixture = createTasksStoryFixture();
@@ -31,7 +30,6 @@
 <Story
   name="Default"
   exportName="Default"
-  parameters={{ visualDelta: referenceVisualDelta("desktop-inbox") }}
 >
   {#snippet template()}
     <div class="tasks-theme" style="padding: 1rem; max-width: 40rem">
@@ -43,7 +41,6 @@
 <Story
   name="Complete independently"
   exportName="CompleteIndependently"
-  parameters={{ visualDelta: referenceVisualDelta("desktop-inbox") }}
   play={async ({ canvas }) => {
     await userEvent.click(
       canvas.getByRole("checkbox", {
@@ -66,7 +63,6 @@
 <Story
   name="Click selects and details opens explicitly"
   exportName="SelectAndOpen"
-  parameters={{ visualDelta: referenceVisualDelta("task-open-motion") }}
   play={async ({ canvas }) => {
     await userEvent.click(
       canvas.getByRole("button", { name: "Review the launch brief today" }),
@@ -84,7 +80,6 @@
 <Story
   name="Double click keeps selection parity"
   exportName="DoubleClickParity"
-  parameters={{ visualDelta: referenceVisualDelta("task-open-motion") }}
   play={async ({ canvas }) => {
     const row = canvas.getByRole("button", {
       name: "Review the launch brief today",
@@ -102,7 +97,6 @@
 <Story
   name="Enter opens and Space completes"
   exportName="KeyboardSplit"
-  parameters={{ visualDelta: referenceVisualDelta("desktop-inbox") }}
   play={async ({ canvas }) => {
     const row = canvas.getByRole("button", {
       name: "Review the launch brief today",
@@ -126,7 +120,6 @@
 <Story
   name="Drag handle is available"
   exportName="DragHandle"
-  parameters={{ visualDelta: referenceVisualDelta("desktop-inbox") }}
   play={async ({ canvas }) => {
     await expect(
       canvas.getByRole("button", {
@@ -143,7 +136,6 @@
 <Story
   name="Swipe reveals complete action"
   exportName="SwipeReveal"
-  parameters={{ visualDelta: referenceVisualDelta("mobile-swipe-motion") }}
   play={async ({ canvas }) => {
     await expect(
       canvas.getByRole("button", { name: "Complete task" }),

@@ -6,7 +6,7 @@
   const { Story } = defineMeta({
     title: "Tasks/Components/Task Composer",
     component: TaskComposer,
-    tags: ["skip-visual"],
+
     parameters: {
       layout: "fullscreen",
       docs: {
@@ -20,14 +20,12 @@
 </script>
 
 <script lang="ts">
-  import { referenceVisualDelta } from "../../lib/story-data.js";
   import TaskComposerHarness from "./TaskComposerHarness.svelte";
 </script>
 
 <Story
   name="Idle trigger"
   exportName="Idle"
-  parameters={{ visualDelta: referenceVisualDelta("desktop-list-detail") }}
 >
   {#snippet template()}
     <div class="tasks-theme" style="padding: 1rem; max-width: 28rem">
@@ -39,7 +37,6 @@
 <Story
   name="Activates the draft field"
   exportName="Activate"
-  parameters={{ visualDelta: referenceVisualDelta("desktop-list-detail") }}
   play={async ({ canvas }) => {
     await userEvent.click(canvas.getByRole("button", { name: "Add task" }));
     await expect(canvas.getByLabelText("Task title")).toBeVisible();
@@ -54,7 +51,6 @@
 <Story
   name="Submits a non-empty draft"
   exportName="SubmitNonEmpty"
-  parameters={{ visualDelta: referenceVisualDelta("desktop-list-detail") }}
   play={async ({ canvas }) => {
     await userEvent.click(canvas.getByRole("button", { name: "Add task" }));
     await userEvent.type(
@@ -77,7 +73,6 @@
 <Story
   name="Rejects an empty submit"
   exportName="RejectEmpty"
-  parameters={{ visualDelta: referenceVisualDelta("desktop-list-detail") }}
   play={async ({ canvas }) => {
     await userEvent.click(canvas.getByRole("button", { name: "Add task" }));
     const submit = canvas.getByRole("button", { name: "Add task" });
@@ -95,7 +90,6 @@
 <Story
   name="Escape cancels only a blank draft"
   exportName="EscapeBlankCancel"
-  parameters={{ visualDelta: referenceVisualDelta("desktop-list-detail") }}
   play={async ({ canvas }) => {
     await userEvent.click(canvas.getByRole("button", { name: "Add task" }));
     await userEvent.type(canvas.getByLabelText("Task title"), "Not blank");

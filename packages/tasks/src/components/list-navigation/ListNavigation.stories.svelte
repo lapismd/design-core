@@ -6,7 +6,7 @@
   const { Story } = defineMeta({
     title: "Tasks/Components/List Navigation and Index",
     component: ListNavigation,
-    tags: ["skip-visual"],
+
     parameters: {
       layout: "fullscreen",
       docs: {
@@ -20,14 +20,12 @@
 </script>
 
 <script lang="ts">
-  import { referenceVisualDelta } from "../../lib/story-data.js";
   import ListNavigationHarness from "./ListNavigationHarness.svelte";
 </script>
 
 <Story
   name="Activate destination"
   exportName="ActivateDestination"
-  parameters={{ visualDelta: referenceVisualDelta("desktop-inbox") }}
   play={async ({ canvas }) => {
     await userEvent.click(canvas.getByRole("button", { name: "Today" }));
     await expect(canvas.getByText("Active today")).toBeVisible();
@@ -41,7 +39,6 @@
 <Story
   name="Favourite independently"
   exportName="FavouriteIndependently"
-  parameters={{ visualDelta: referenceVisualDelta("desktop-lists") }}
   play={async ({ canvas }) => {
     await expect(canvas.getByText("Favourite on")).toBeVisible();
     await userEvent.click(
@@ -59,7 +56,6 @@
 <Story
   name="Create list"
   exportName="CreateList"
-  parameters={{ visualDelta: referenceVisualDelta("desktop-lists") }}
   play={async ({ canvas }) => {
     await userEvent.click(canvas.getByRole("button", { name: "New list" }));
     await expect(canvas.getByText("Create list requested")).toBeVisible();

@@ -37,9 +37,15 @@ product and not an excuse to bypass the catalog's component rules.
 ## Evidence and privacy
 
 The reference harness stores auth state and raw video under ignored package-local
-directories. Only sanitised screenshots/keyframes plus a checksummed manifest can
-be committed. Do not add account/list/task content to stories; use the synthetic
-fixture list and task fixtures instead.
+directories. Committed browser captures under
+`reference/superlist/<date>/screenshots/browser/` must use the dedicated Tasks
+UI Reference fixture list (synthetic task titles). Ordinary account chrome in
+those frames is allowed; do not commit unrelated personal tasks. Story data
+still uses synthetic fixtures from `@stevejuma/tasks/fixtures`.
+
+Component visual regression uses the shared Playwright suite (same gate as
+shadcn) under `tests/visual/storybook.spec.ts-snapshots/tasks/`. That is
+separate from Superlist reference overlays (`referenceVisualDelta`).
 
 Run `pnpm --dir packages/tasks reference:verify` after changing contracts. For a
 new research pass, follow the auth → bootstrap → capture → verify sequence in

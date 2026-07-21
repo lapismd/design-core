@@ -53,6 +53,15 @@ export function baselineUrlForStory(
     return `/visual-baselines/${directory}/${storySlugFromId(id)}${VISUAL_BASELINE_SUFFIX}.png`;
   }
 
+  if (title.startsWith("Tasks/") && story.importPath) {
+    const directory = story.importPath
+      .replace(/\\/g, "/")
+      .replace(/^\.\//, "")
+      .replace(/^packages\/tasks\/src\//, "tasks/")
+      .replace(/\/[^/]+\.stories\.\w+$/, "");
+    return `/visual-baselines/${directory}/${storySlugFromId(id)}${VISUAL_BASELINE_SUFFIX}.png`;
+  }
+
   if (!title.startsWith("Shadcn/")) return undefined;
 
   const family = familyFromTitle(title);

@@ -6,7 +6,6 @@
   const { Story } = defineMeta({
     title: "Tasks/Components/Motion and Gestures",
     component: TasksSwipeGesture,
-    tags: ["skip-visual"],
     parameters: {
       layout: "fullscreen",
       docs: {

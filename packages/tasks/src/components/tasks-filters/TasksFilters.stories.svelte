@@ -6,7 +6,7 @@
   const { Story } = defineMeta({
     title: "Tasks/Components/Filters and Menus",
     component: TasksFilters,
-    tags: ["skip-visual"],
+
     parameters: {
       layout: "fullscreen",
       docs: {
@@ -20,14 +20,12 @@
 </script>
 
 <script lang="ts">
-  import { referenceVisualDelta } from "../../lib/story-data.js";
   import TasksFiltersHarness from "./TasksFiltersHarness.svelte";
 </script>
 
 <Story
   name="Select filter"
   exportName="SelectFilter"
-  parameters={{ visualDelta: referenceVisualDelta("desktop-tasks") }}
   play={async ({ canvas }) => {
     await userEvent.click(canvas.getByRole("radio", { name: "For me" }));
     await expect(canvas.getByText("Filter for-me")).toBeVisible();
@@ -41,7 +39,6 @@
 <Story
   name="Sort and clear completed"
   exportName="SortAndClear"
-  parameters={{ visualDelta: referenceVisualDelta("desktop-tasks") }}
   play={async ({ canvas }) => {
     // bits-ui menu triggers can report pointer-events:none to userEvent while
     // still opening via a trusted click; fireEvent avoids that false negative.

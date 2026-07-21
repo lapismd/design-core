@@ -1,18 +1,23 @@
 {
   "schemaVersion": 2,
   "source": "authenticated Superlist Chrome fixture session",
-  "capturedAt": "2026-07-20T21:41:00.000Z",
-  "status": "synthetic-fixture",
-  "redaction": "Export-only synthetic labels replace account navigation and generated audit metadata; fixture task rows are synthetic and no opaque grey bars are used.",
-  "viewports": ["desktop", "tablet-landscape", "tablet-portrait", "mobile"],
+  "capturedAt": "2026-07-20T22:41:46.538Z",
+  "status": "browser-fixture",
+  "redaction": "Committed browser captures of the dedicated Tasks UI Reference fixture list. May include account chrome (avatar/nav favourites); fixture task titles remain synthetic. Not product source assets.",
+  "viewports": [
+    "desktop",
+    "tablet-landscape",
+    "tablet-portrait",
+    "mobile"
+  ],
   "screenshots": [
     {
       "id": "desktop-inbox",
       "page": "inbox",
       "viewport": "desktop",
-      "state": "fixture task list",
-      "file": "screenshots/synthetic-browser/desktop-inbox.png",
-      "sha256": "e177e7a29974634faed1c26b41e0d1c5a79a172327bbfef25ef19ff9c34a8d52",
+      "state": "live browser — fixture list",
+      "file": "screenshots/browser/desktop-inbox.png",
+      "sha256": "cd11b618679bbd5c684d9bc62ead8f2c2aae598df081ee52a303726c7cec52df",
       "fixtureOnly": true,
       "browserDerived": true
     },
@@ -20,9 +25,9 @@
       "id": "desktop-today",
       "page": "today",
       "viewport": "desktop",
-      "state": "fixture layout",
-      "file": "screenshots/synthetic-browser/desktop-today.png",
-      "sha256": "030eb7281c6fca5319e429d4d13ea2695a3dbecf70c44b8dfe2bab2b4416c070",
+      "state": "live browser",
+      "file": "screenshots/browser/desktop-today.png",
+      "sha256": "ca1b1f625a644f7dc38cf97348f0dfd2109c6570b2a094e8fd59bac237c51058",
       "fixtureOnly": true,
       "browserDerived": true
     },
@@ -30,9 +35,9 @@
       "id": "desktop-tasks",
       "page": "tasks",
       "viewport": "desktop",
-      "state": "fixture layout",
-      "file": "screenshots/synthetic-browser/desktop-tasks.png",
-      "sha256": "d0f7dedc2766ba99667f64ee563a8d91cd99416c2fc78af8830f5231fb5e5a46",
+      "state": "live browser",
+      "file": "screenshots/browser/desktop-tasks.png",
+      "sha256": "42b4416cc07da861ae94ddbcf95b6fb3ac61629fc1ad017f13ae29cd38b49b48",
       "fixtureOnly": true,
       "browserDerived": true
     },
@@ -40,9 +45,9 @@
       "id": "desktop-updates",
       "page": "updates",
       "viewport": "desktop",
-      "state": "fixture layout",
-      "file": "screenshots/synthetic-browser/desktop-updates.png",
-      "sha256": "b3cd501ce9a6f1f7329fdb5cc60bd18b6ad1ffc253b1b1205d987110543d52cf",
+      "state": "live browser",
+      "file": "screenshots/browser/desktop-updates.png",
+      "sha256": "b62373b2a242d08b5ff40d7f5d5853eb0453c938cf65e71392e20941b8669520",
       "fixtureOnly": true,
       "browserDerived": true
     },
@@ -50,9 +55,9 @@
       "id": "desktop-lists",
       "page": "lists",
       "viewport": "desktop",
-      "state": "fixture layout",
-      "file": "screenshots/synthetic-browser/desktop-lists.png",
-      "sha256": "abe5562ac59a5f3bdcc1e03a824b1388186f2013f5132568edee6c1bec4eebfa",
+      "state": "live browser",
+      "file": "screenshots/browser/desktop-lists.png",
+      "sha256": "7e0c79e601e08fc527a06b150b0a10095e2e784a4eda27940b68b7976bd5c931",
       "fixtureOnly": true,
       "browserDerived": true
     },
@@ -60,9 +65,9 @@
       "id": "desktop-list-detail",
       "page": "list-detail",
       "viewport": "desktop",
-      "state": "synthetic fixture list",
-      "file": "screenshots/synthetic-browser/desktop-list-detail.png",
-      "sha256": "deaf3335d724f1dba5d4c12d371f153e69d7c2252f168902ad3502015c1348bd",
+      "state": "live browser — Tasks UI Reference list",
+      "file": "screenshots/browser/desktop-list-detail.png",
+      "sha256": "d72f1baf81e28ffef2e3432cb7323e6315878d2c846a0de3f16791576c1b863a",
       "fixtureOnly": true,
       "browserDerived": true
     },
@@ -70,9 +75,9 @@
       "id": "desktop-task-detail",
       "page": "task-detail",
       "viewport": "desktop",
-      "state": "detail rail open",
-      "file": "screenshots/synthetic-browser/desktop-task-detail.png",
-      "sha256": "1da2398310c5842e8d16223e7a5361f6a5755ea0e5192f2c3e011e2c8fadbfb3",
+      "state": "live browser — detail open",
+      "file": "screenshots/browser/desktop-task-detail.png",
+      "sha256": "fe73335ab0e89a1c450247f1d1eb01b657f4ab97bde54d844805f61461c40061",
       "fixtureOnly": true,
       "browserDerived": true
     },
@@ -80,31 +85,41 @@
       "id": "tablet-landscape-inbox",
       "page": "inbox",
       "viewport": "tablet-landscape",
-      "state": "synthetic fixture contract",
-      "file": "screenshots/synthetic-browser/tablet-landscape-inbox.png",
-      "sha256": "e3fdbf036f14dcbbb09923df29165b2900033f8561f0d2a1d13a924cbd9ead59",
+      "state": "live browser resize",
+      "file": "screenshots/browser/tablet-landscape-inbox.png",
+      "sha256": "56664d5201a253c7758b4e987426e0ea6a65d12aa0a8ca07c485513bd6d8bfa2",
       "fixtureOnly": true,
-      "browserDerived": false
+      "browserDerived": true
     },
     {
       "id": "tablet-portrait-inbox",
       "page": "inbox",
       "viewport": "tablet-portrait",
-      "state": "synthetic fixture contract",
-      "file": "screenshots/synthetic-browser/tablet-portrait-inbox.png",
-      "sha256": "0c85b9dfbfab3eab17bdd97837eff9c01bc7e9f22eed2c2da8d585e7d75c3291",
+      "state": "live browser resize",
+      "file": "screenshots/browser/tablet-portrait-inbox.png",
+      "sha256": "bdb211b7c58e3516a272e1886ce40ab924d9e814b592c89e0826c69d8823372c",
       "fixtureOnly": true,
-      "browserDerived": false
+      "browserDerived": true
     },
     {
       "id": "mobile-inbox",
       "page": "inbox",
       "viewport": "mobile",
-      "state": "synthetic fixture contract",
-      "file": "screenshots/synthetic-browser/mobile-inbox.png",
-      "sha256": "15358fd66ece716a7679da7f82af3f5ceafdaed83a422b5aac81e58bb0bbbcbf",
+      "state": "live browser resize",
+      "file": "screenshots/browser/mobile-inbox.png",
+      "sha256": "3307442eb34d2c1184f34b354ed7218055112780d8acd0c0e03290a492f1821d",
       "fixtureOnly": true,
-      "browserDerived": false
+      "browserDerived": true
+    },
+    {
+      "id": "mobile-task-detail",
+      "page": "task-detail",
+      "viewport": "mobile",
+      "state": "live browser — detail open",
+      "file": "screenshots/browser/mobile-task-detail.png",
+      "sha256": "a66f0a0e10a34ccfe576da096952f3228a581aad5aefccff314f829e63e09c68",
+      "fixtureOnly": true,
+      "browserDerived": true
     }
   ],
   "motions": [
@@ -140,8 +155,8 @@
     }
   ],
   "limitations": [
-    "Desktop frames derive from the authenticated Chrome session after creating the dedicated synthetic task list.",
-    "Chrome did not expose viewport emulation in the authenticated session. Tablet, mobile, and swipe images are labelled synthetic fixture contracts, not observed breakpoint captures.",
-    "The old raw browser/native captures and opaque-redaction assets are intentionally excluded from the fixture manifest and Storybook target paths."
+    "Screenshot ids under screenshots/browser/ are committed Visual Delta reference targets from a logged-in Superlist session against the Tasks UI Reference list.",
+    "Playwright visual baselines for Tasks components live separately under tests/visual/storybook.spec.ts-snapshots/tasks/ (component-clipped, shadcn-style).",
+    "Motion contact sheets remain under motion/synthetic-browser-* until re-captured."
   ]
 }

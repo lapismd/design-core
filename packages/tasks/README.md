@@ -28,10 +28,13 @@ accessible `role="checkbox"` completion control until then.
 
 ## Storybook surfaces
 
-- **Tasks/Components/\*** — production components with Docs + play coverage
-- **Tasks/Pages/\*** — page compositions over synthetic fixtures
-- **Tasks/Reference Targets** — synthetic capture evidence for Visual Delta
-- **Tasks/Live Reference** — local-only live Superlist captures (gitignored)
+- **Tasks/Components/\*** — production components; every story participates in
+  Playwright visual baselines (component-clipped), with Visual Delta auto-wired
+  from those baselines
+- **Tasks/Pages/\*** — page compositions with Superlist `referenceVisualDelta`
+  overlays plus Playwright baselines
+- **Tasks/Reference Targets** — committed browser capture evidence (`skip-visual`
+  for Playwright; overlays are the captures themselves)
 - **Tasks/Implementation Map** — ledger overview (planning aid)
 
 ## Commands
@@ -43,20 +46,12 @@ pnpm --dir packages/tasks reference:capture
 pnpm --dir packages/tasks reference:verify
 ```
 
-### Local live Superlist overlays
+### Visual checks
 
-Live Chrome captures stay under the gitignored tree
-`.reference-artifacts/live-superlist/screenshots/` and are served at
-`/tasks-reference-live`. They may contain real account or list content — **never
-commit them**.
-
-Opt production stories onto live overlays:
-
-```bash
-STORYBOOK_TASKS_LIVE_REFERENCE=1 pnpm storybook
-```
-
-Or browse **Tasks/Live Reference** (always points at the live PNGs). Default
-Storybook (no env) keeps synthetic `referenceVisualDelta` targets.
-
-Do not update Playwright visual baselines without explicit human approval.
+- **Reference overlays** — committed PNGs under
+  `reference/superlist/2026-07-20/screenshots/browser/`, served at
+  `/tasks-reference/2026-07-20/…`, wired via `referenceVisualDelta`.
+- **Component baselines** — Playwright suite under
+  `tests/visual/storybook.spec.ts-snapshots/tasks/…` (component-clipped).
+  Same update gate as shadcn: do not write baselines without explicit approval
+  (`VISUAL_UPDATE_APPROVED=1 pnpm test:visual:update …`).

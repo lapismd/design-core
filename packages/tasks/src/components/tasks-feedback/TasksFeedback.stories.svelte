@@ -6,7 +6,7 @@
   const { Story } = defineMeta({
     title: "Tasks/Components/Feedback and Empty States",
     component: TasksFeedback,
-    tags: ["skip-visual"],
+
     parameters: {
       layout: "fullscreen",
       docs: {
@@ -20,14 +20,12 @@
 </script>
 
 <script lang="ts">
-  import { referenceVisualDelta } from "../../lib/story-data.js";
   import TasksFeedbackHarness from "./TasksFeedbackHarness.svelte";
 </script>
 
 <Story
   name="Empty updates"
   exportName="Empty"
-  parameters={{ visualDelta: referenceVisualDelta("desktop-updates") }}
 >
   {#snippet template()}
     <div class="tasks-theme" style="padding: 1rem; max-width: 28rem">
@@ -39,7 +37,6 @@
 <Story
   name="Loading rows"
   exportName="Loading"
-  parameters={{ visualDelta: referenceVisualDelta("desktop-updates") }}
 >
   {#snippet template()}
     <div class="tasks-theme" style="padding: 1rem; max-width: 28rem">
@@ -51,7 +48,6 @@
 <Story
   name="Preserving error with retry"
   exportName="PreservingError"
-  parameters={{ visualDelta: referenceVisualDelta("desktop-updates") }}
   play={async ({ canvas }) => {
     await expect(canvas.getByText("Couldn't refresh updates")).toBeVisible();
     await userEvent.click(canvas.getByRole("button", { name: "Retry" }));
@@ -72,7 +68,6 @@
 <Story
   name="Status while syncing"
   exportName="Status"
-  parameters={{ visualDelta: referenceVisualDelta("desktop-updates") }}
 >
   {#snippet template()}
     <div class="tasks-theme" style="padding: 1rem; max-width: 28rem">
@@ -84,7 +79,6 @@
 <Story
   name="Undo a completed action"
   exportName="Undo"
-  parameters={{ visualDelta: referenceVisualDelta("desktop-updates") }}
   play={async ({ canvas }) => {
     await userEvent.click(canvas.getByRole("button", { name: "Undo" }));
     await expect(canvas.getByText("Undo requested")).toBeVisible();

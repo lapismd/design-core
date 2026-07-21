@@ -229,7 +229,7 @@ async function main(): Promise<void> {
       await activateScenario(page, scenario);
       const file = path.join(
         captureDirectory,
-        "screenshots/synthetic-browser",
+        "screenshots/browser",
         `${scenario.id}.png`,
       );
       await screenshotFixture(page, file);

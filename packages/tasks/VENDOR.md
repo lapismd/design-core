@@ -2,13 +2,19 @@
 
 The product research source is a logged-in Superlist application session,
 captured on 2026-07-20. This package is a clean-room behavior reference and
-fixture-driven implementation: it contains no source code, artwork, logos,
-proprietary strings, account data, or exported data from that application.
+fixture-driven implementation: it contains no source code, artwork, logos, or
+exported product data from that application.
 
-Captured images use synthetic fixture task/list content. They document
-interaction, information architecture, spacing, and responsive state only, and
-feed Storybook Visual Delta via `referenceVisualDelta` — they are not Playwright
-baselines.
+Committed reference screenshots under
+`reference/superlist/2026-07-20/screenshots/browser/` are browser captures of
+the dedicated **Tasks UI Reference** fixture list. They may include ordinary
+account chrome (avatar, nav favourites). Fixture task titles remain synthetic.
+They document interaction, information architecture, spacing, and responsive
+state, and feed Storybook Visual Delta via `referenceVisualDelta`.
+
+Playwright visual baselines for Tasks **components** are separate: they live
+under `tests/visual/storybook.spec.ts-snapshots/tasks/` (component-clipped,
+same suite as shadcn). Do not confuse the two.
 
 ## Primitive provenance
 

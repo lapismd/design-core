@@ -6,7 +6,6 @@
   const { Story } = defineMeta({
     title: "Tasks/Pages/Today",
     component: Page,
-    tags: ["skip-visual"],
     parameters: {
       layout: "fullscreen",
       docs: {

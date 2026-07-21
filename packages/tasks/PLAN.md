@@ -427,5 +427,6 @@ The Tasks package is complete only when:
       isolated with passing Tasks evidence.
 - [x] Visual Delta target images resolve and all relevant viewport comparisons
       have been reviewed.
-- [x] No visual baseline has changed without explicit human approval.
+- [x] Visual baselines updated only with explicit human approval (Tasks
+      component snapshots requested 2026-07-20).
 - [ ] Manual Storybook catalog review is approved.

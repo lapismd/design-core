@@ -11,9 +11,11 @@ components.
   primitive only through `pnpm ui:add <family>` and update `COMPONENT_AUDIT.md`.
 - Treat `src/lib/tasks-theme.css` as a scoped companion theme. Do not change the
   root product theme merely to implement a Tasks surface.
-- The reference screenshots are evidence of interaction and layout, not assets
-  to copy. Keep raw videos, trace files, auth state, and unsanitized screenshots
-  out of version control.
+- Committed browser captures under `reference/superlist/<date>/screenshots/browser/`
+  are evidence of interaction and layout (Tasks UI Reference fixture list). Keep
+  raw videos, traces, and auth state out of version control.
+- Component visual baselines use the shared Playwright suite under
+  `tests/visual/storybook.spec.ts-snapshots/tasks/` (same update gate as shadcn).
 
 ## Capture workflow
 

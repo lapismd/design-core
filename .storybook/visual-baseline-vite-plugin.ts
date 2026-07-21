@@ -20,7 +20,9 @@ export function sanitizeStoryName(name: string): string {
 }
 
 function extractTitle(code: string): string | undefined {
-  const match = code.match(/title:\s*["']((?:Shadcn|Workspace)\/[^"']+)["']/);
+  const match = code.match(
+    /title:\s*["']((?:Shadcn|Workspace|Tasks)\/[^"']+)["']/,
+  );
   return match?.[1];
 }
 
@@ -235,7 +237,12 @@ export function visualBaselineVisualDeltaPlugin(): Plugin {
           : normalized.includes("/packages/workspace/src/lib/components/") &&
               title.startsWith("Workspace/")
             ? "workspace/components"
-            : undefined;
+            : normalized.includes("/packages/tasks/src/") &&
+                title.startsWith("Tasks/")
+              ? normalized
+                  .replace(/^.*?\/packages\/tasks\/src\//, "tasks/")
+                  .replace(/\/[^/]+\.stories\.\w+$/, "")
+              : undefined;
       if (!directory) return null;
 
       const next = injectVisualBaselineVisualDeltas(

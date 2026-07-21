@@ -11,7 +11,7 @@
       docs: {
         description: {
           component:
-            "Committed sanitised evidence from the reference research pass. These are target captures for structure and interaction, not implementation assets or visual-regression baselines.",
+            "Committed Superlist browser captures of the Tasks UI Reference fixture list. Full-page Visual Delta targets — separate from Playwright component baselines under /visual-baselines/tasks/.",
         },
       },
     },
@@ -118,6 +118,15 @@
 >
   {#snippet template()}
     <TasksReferenceTarget target={getReferenceTarget("mobile-inbox")} />
+  {/snippet}
+</Story>
+
+<Story
+  name="Mobile — Task detail"
+  parameters={{ visualDelta: referenceVisualDelta("mobile-task-detail") }}
+>
+  {#snippet template()}
+    <TasksReferenceTarget target={getReferenceTarget("mobile-task-detail")} />
   {/snippet}
 </Story>
 

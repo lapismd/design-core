@@ -6,7 +6,7 @@
   const { Story } = defineMeta({
     title: "Tasks/Components/Task Detail",
     component: TaskDetail,
-    tags: ["skip-visual"],
+
     parameters: {
       layout: "fullscreen",
       docs: {
@@ -20,7 +20,6 @@
 </script>
 
 <script lang="ts">
-  import { referenceVisualDelta } from "../../lib/story-data.js";
   import { createTasksStoryFixture } from "../../lib/story-fixtures.js";
   import TaskDetailHarness from "./TaskDetailHarness.svelte";
 
@@ -31,7 +30,6 @@
 <Story
   name="Open focuses the title heading"
   exportName="OpenFocusesHeading"
-  parameters={{ visualDelta: referenceVisualDelta("desktop-task-detail") }}
   play={async ({ canvas }) => {
     const heading = canvas.getByRole("heading", {
       name: "Review the launch brief today",
@@ -47,7 +45,6 @@
 <Story
   name="Commits an edited title"
   exportName="CommitTitle"
-  parameters={{ visualDelta: referenceVisualDelta("desktop-task-detail") }}
   play={async ({ canvas }) => {
     await userEvent.click(canvas.getByRole("button", { name: "Edit title" }));
     const input = canvas.getByRole("textbox", { name: "Task title" });
@@ -71,7 +68,6 @@
 <Story
   name="Escape cancels the title edit without closing"
   exportName="EscapeCancelsTitleEdit"
-  parameters={{ visualDelta: referenceVisualDelta("desktop-task-detail") }}
   play={async ({ canvas }) => {
     await userEvent.click(canvas.getByRole("button", { name: "Edit title" }));
     const input = canvas.getByRole("textbox", { name: "Task title" });
@@ -94,7 +90,6 @@
 <Story
   name="Escape and back return to the list"
   exportName="EscapeAndBackReturn"
-  parameters={{ visualDelta: referenceVisualDelta("mobile-inbox") }}
   play={async ({ canvas }) => {
     await expect(
       canvas.getByRole("heading", {
@@ -114,7 +109,6 @@
 <Story
   name="Back button returns to the list"
   exportName="BackButtonReturns"
-  parameters={{ visualDelta: referenceVisualDelta("desktop-task-detail") }}
   play={async ({ canvas }) => {
     await userEvent.click(canvas.getByRole("button", { name: "Back to list" }));
     await expect(canvas.getByText("Returned to task list")).toBeVisible();

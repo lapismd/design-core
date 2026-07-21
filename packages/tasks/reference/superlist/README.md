@@ -1,9 +1,9 @@
 # Superlist reference capture
 
-This folder holds versioned, **synthetic-fixture** observation artifacts for the Tasks
-implementation contract. It is not a product export and must never contain a
-real task title, list title, account name, avatar, comment, raw recording, or
-authenticated browser state.
+This folder holds versioned observation artifacts for the Tasks implementation
+contract. Screenshots under `screenshots/browser/` are committed browser
+captures of the dedicated **Tasks UI Reference** fixture list (not a product
+export). Do not add unrelated personal tasks or private list content.
 
 ## Capture shape
 
@@ -15,45 +15,26 @@ authenticated browser state.
 
 Each dated capture includes a manifest with sha256 checksums, screenshots, and
 motion keyframes. Raw WebM and Playwright trace output remain in the ignored
-`.reference-artifacts/` directory. Browser-derived frames are taken only after
-the dedicated synthetic task list has been created. At export time, account
-navigation and generated audit text are replaced with labelled fixture content;
-the committed assets do not use opaque grey bars.
+`.reference-artifacts/` directory.
 
-When the authenticated browser cannot expose a real responsive viewport, the
-tablet and mobile frames are marked `synthetic fixture contract` in the
-manifest. They are implementation references rather than claims of observed
-breakpoint behaviour and should be re-captured from a real device before a
-pixel-parity milestone.
+## Two visual systems
+
+| Surface | Path | Purpose |
+| ------- | ---- | ------- |
+| Reference overlays | `/tasks-reference/2026-07-20/screenshots/browser/` | Full-page Superlist captures for Visual Delta on Reference Targets / page stories |
+| Component baselines | `/visual-baselines/tasks/components/…` | Playwright `toHaveScreenshot` clips of story subjects (shadcn-style) |
+
+Update component baselines only with explicit approval:
+
+```bash
+VISUAL_UPDATE_APPROVED=1 pnpm test:visual:update --story-id tasks-components-… --allow-dirty
+```
 
 ## Motion evidence
 
 Motion captures record a JSON contract plus deterministic keyframes/contact
 sheets. The harness uses CDP touch trajectories for swipes, ordinary click and
-double-click inputs, and native pointer drags. A future implementation follows
-the timing ranges in `src/lib/reference.ts`, while `prefers-reduced-motion`
-uses an instant or short-fade equivalent.
+double-click inputs, and native pointer drags.
 
 `reference:verify` checks every committed checksum and accepts either a
 redacted evidence frame or an explicitly fixture-only frame.
-
-## Local live Superlist captures (not committed)
-
-For side-by-side Visual Delta review against a logged-in Superlist session,
-capture PNGs into the gitignored tree:
-
-```text
-packages/tasks/.reference-artifacts/live-superlist/screenshots/<id>.png
-```
-
-Storybook mounts that tree at `/tasks-reference-live` (see `.storybook/main.ts`).
-Opt production stories onto live screenshots (motion sheets stay synthetic):
-
-```bash
-STORYBOOK_TASKS_LIVE_REFERENCE=1 pnpm storybook
-```
-
-**Tasks/Live Reference** always overlays the live PNGs via
-`liveReferenceVisualDelta(...)`. Chrome DevTools MCP can only write under the
-process temp root; copy files into the gitignored path afterward. Do not commit
-live PNGs or `manifest.local.json`.

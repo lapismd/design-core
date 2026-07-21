@@ -6,7 +6,7 @@
   const { Story } = defineMeta({
     title: "Tasks/Components/Task Properties",
     component: TaskProperties,
-    tags: ["skip-visual"],
+
     parameters: {
       layout: "fullscreen",
       docs: {
@@ -21,7 +21,6 @@
 
 <script lang="ts">
   import { createTasksStoryFixture } from "../../lib/story-fixtures.js";
-  import { referenceVisualDelta } from "../../lib/story-data.js";
   import TaskPropertiesHarness from "./TaskPropertiesHarness.svelte";
 
   const fixture = createTasksStoryFixture();
@@ -32,7 +31,6 @@
 <Story
   name="Filled properties"
   exportName="Filled"
-  parameters={{ visualDelta: referenceVisualDelta("desktop-task-detail") }}
 >
   {#snippet template()}
     <div class="tasks-theme" style="padding: 1rem; max-width: 26rem">
@@ -44,7 +42,6 @@
 <Story
   name="Empty properties"
   exportName="Empty"
-  parameters={{ visualDelta: referenceVisualDelta("desktop-task-detail") }}
 >
   {#snippet template()}
     <div class="tasks-theme" style="padding: 1rem; max-width: 26rem">
@@ -56,7 +53,6 @@
 <Story
   name="Opens and commits a due date"
   exportName="ChangeDue"
-  parameters={{ visualDelta: referenceVisualDelta("desktop-task-detail") }}
   play={async ({ canvas }) => {
     const trigger = canvas.getByRole("button", { name: /^Due:/ });
     await userEvent.click(trigger);
@@ -77,7 +73,6 @@
 <Story
   name="Opens and commits a priority"
   exportName="ChangePriority"
-  parameters={{ visualDelta: referenceVisualDelta("desktop-task-detail") }}
   play={async ({ canvas }) => {
     const trigger = canvas.getByLabelText("Priority: High");
     await userEvent.click(trigger);
@@ -96,7 +91,6 @@
 <Story
   name="Toggles a label without closing the menu"
   exportName="ToggleLabel"
-  parameters={{ visualDelta: referenceVisualDelta("desktop-task-detail") }}
   play={async ({ canvas }) => {
     await userEvent.click(canvas.getByRole("button", { name: "Edit labels" }));
     const option = within(document.body).getByRole("menuitemcheckbox", {

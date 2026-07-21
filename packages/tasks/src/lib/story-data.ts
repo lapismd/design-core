@@ -22,29 +22,18 @@ export type TasksImplementationBrief = {
   referenceTargetId?: string;
 };
 
-const syntheticCaptureRoot = "/tasks-reference/2026-07-20";
-/** Local-only live Superlist captures (gitignored). Never commit these PNGs. */
-export const liveCaptureRoot = "/tasks-reference-live";
+const captureRoot = "/tasks-reference/2026-07-20";
 
-const MOTION_REFERENCE_IDS = new Set([
-  "task-open-motion",
-  "mobile-swipe-motion",
-]);
-
-/** Opt-in: `STORYBOOK_TASKS_LIVE_REFERENCE=1 pnpm storybook` */
-export function preferLiveReference(): boolean {
-  return import.meta.env.STORYBOOK_TASKS_LIVE_REFERENCE === "1";
+function browserScreenshotSource(id: string): string {
+  return `${captureRoot}/screenshots/browser/${id}.png`;
 }
 
-function syntheticScreenshotSource(id: string): string {
-  return `${syntheticCaptureRoot}/screenshots/synthetic-browser/${id}.png`;
-}
-
-function liveScreenshotSource(id: string): string {
-  return `${liveCaptureRoot}/screenshots/${id}.png`;
-}
-
-/** Only synthetic-fixture evidence is exposed to Storybook by default. */
+/**
+ * Committed Superlist browser captures (Tasks UI Reference fixture list) plus
+ * motion contact sheets. These feed Storybook Visual Delta via
+ * `referenceVisualDelta` and are separate from Playwright component baselines
+ * under `/visual-baselines/tasks/…`.
+ */
 export const referenceTargets = [
   {
     id: "desktop-inbox",
@@ -52,8 +41,8 @@ export const referenceTargets = [
     description: "Default task collection with a persistent left navigation.",
     page: "Inbox",
     viewport: "1680 × 1000 desktop",
-    state: "Synthetic fixture list",
-    source: syntheticScreenshotSource("desktop-inbox"),
+    state: "Browser capture — fixture list",
+    source: browserScreenshotSource("desktop-inbox"),
   },
   {
     id: "desktop-today",
@@ -61,8 +50,8 @@ export const referenceTargets = [
     description: "Grouped work that makes overdue and today states scannable.",
     page: "Today",
     viewport: "1680 × 1000 desktop",
-    state: "Synthetic fixture layout",
-    source: syntheticScreenshotSource("desktop-today"),
+    state: "Browser capture",
+    source: browserScreenshotSource("desktop-today"),
   },
   {
     id: "desktop-tasks",
@@ -70,8 +59,8 @@ export const referenceTargets = [
     description: "Task overview with ownership/status filtering.",
     page: "Tasks",
     viewport: "1680 × 1000 desktop",
-    state: "Synthetic fixture layout",
-    source: syntheticScreenshotSource("desktop-tasks"),
+    state: "Browser capture",
+    source: browserScreenshotSource("desktop-tasks"),
   },
   {
     id: "desktop-updates",
@@ -79,8 +68,8 @@ export const referenceTargets = [
     description: "Quiet empty feedback state with compact filters.",
     page: "Updates",
     viewport: "1680 × 1000 desktop",
-    state: "Synthetic fixture layout",
-    source: syntheticScreenshotSource("desktop-updates"),
+    state: "Browser capture",
+    source: browserScreenshotSource("desktop-updates"),
   },
   {
     id: "desktop-lists",
@@ -88,8 +77,8 @@ export const referenceTargets = [
     description: "List index with navigation and list-level actions.",
     page: "Lists",
     viewport: "1680 × 1000 desktop",
-    state: "Synthetic fixture layout",
-    source: syntheticScreenshotSource("desktop-lists"),
+    state: "Browser capture",
+    source: browserScreenshotSource("desktop-lists"),
   },
   {
     id: "desktop-list-detail",
@@ -97,8 +86,8 @@ export const referenceTargets = [
     description: "Selected list with tasks and an inline composer location.",
     page: "List detail",
     viewport: "1680 × 1000 desktop",
-    state: "Synthetic fixture list",
-    source: syntheticScreenshotSource("desktop-list-detail"),
+    state: "Browser capture — Tasks UI Reference",
+    source: browserScreenshotSource("desktop-list-detail"),
   },
   {
     id: "desktop-task-detail",
@@ -107,7 +96,7 @@ export const referenceTargets = [
     page: "Task detail",
     viewport: "1680 × 1000 desktop",
     state: "Detail open",
-    source: syntheticScreenshotSource("desktop-task-detail"),
+    source: browserScreenshotSource("desktop-task-detail"),
   },
   {
     id: "tablet-landscape-inbox",
@@ -115,8 +104,8 @@ export const referenceTargets = [
     description: "The inbox under a constrained two-pane desktop treatment.",
     page: "Inbox",
     viewport: "1024 × 768 tablet landscape",
-    state: "Synthetic fixture contract",
-    source: syntheticScreenshotSource("tablet-landscape-inbox"),
+    state: "Browser capture — resized",
+    source: browserScreenshotSource("tablet-landscape-inbox"),
   },
   {
     id: "tablet-portrait-inbox",
@@ -124,8 +113,8 @@ export const referenceTargets = [
     description: "The pager-root breakpoint, before a detail pane opens.",
     page: "Inbox",
     viewport: "768 × 1024 tablet portrait",
-    state: "Synthetic fixture contract",
-    source: syntheticScreenshotSource("tablet-portrait-inbox"),
+    state: "Browser capture — resized",
+    source: browserScreenshotSource("tablet-portrait-inbox"),
   },
   {
     id: "mobile-inbox",
@@ -133,8 +122,17 @@ export const referenceTargets = [
     description: "Mobile root pane with a compact top control and row actions.",
     page: "Inbox",
     viewport: "390 × 844 mobile",
-    state: "Synthetic fixture contract",
-    source: syntheticScreenshotSource("mobile-inbox"),
+    state: "Browser capture — resized",
+    source: browserScreenshotSource("mobile-inbox"),
+  },
+  {
+    id: "mobile-task-detail",
+    title: "Mobile — Task detail",
+    description: "Task detail opened from Inbox on a mobile viewport.",
+    page: "Task detail",
+    viewport: "390 × 844 mobile",
+    state: "Detail open",
+    source: browserScreenshotSource("mobile-task-detail"),
   },
   {
     id: "task-open-motion",
@@ -144,7 +142,7 @@ export const referenceTargets = [
     page: "Task detail",
     viewport: "Desktop",
     state: "Selection → explicit open",
-    source: `${syntheticCaptureRoot}/motion/synthetic-browser-task-open/contact-sheet.png`,
+    source: `${captureRoot}/motion/synthetic-browser-task-open/contact-sheet.png`,
   },
   {
     id: "mobile-swipe-motion",
@@ -154,7 +152,7 @@ export const referenceTargets = [
     page: "Task row",
     viewport: "Mobile",
     state: "Swipe action revealed",
-    source: `${syntheticCaptureRoot}/motion/synthetic-browser-mobile-row-swipe/contact-sheet.png`,
+    source: `${captureRoot}/motion/synthetic-browser-mobile-row-swipe/contact-sheet.png`,
   },
 ] as const satisfies readonly TasksReferenceTarget[];
 
@@ -169,21 +167,13 @@ export function getReferenceTarget(
     id as (typeof referenceTargets)[number]["id"],
   );
   if (!target) throw new Error(`Unknown Tasks reference target: ${id}`);
-  if (preferLiveReference() && !MOTION_REFERENCE_IDS.has(id)) {
-    return {
-      ...target,
-      state: "Live session — local only",
-      source: liveScreenshotSource(id),
-    };
-  }
   return target;
 }
 
 /**
- * Visual Delta settings for reference captures. Default: committed synthetics
- * under `/tasks-reference`. With `STORYBOOK_TASKS_LIVE_REFERENCE=1`, screenshot
- * targets resolve to gitignored `/tasks-reference-live/screenshots/` (motion
- * contact sheets stay synthetic).
+ * Shared Visual Delta settings for committed Superlist reference captures
+ * served from `/tasks-reference`. Separate from Playwright component baselines
+ * under `/visual-baselines/tasks/…`.
  */
 export function referenceVisualDelta(...targetIds: readonly string[]) {
   return {
@@ -192,154 +182,6 @@ export function referenceVisualDelta(...targetIds: readonly string[]) {
     colorInversion: false,
     align: "canvas",
     placement: "right",
-    passThresholdPercent: 0.1,
-  };
-}
-
-/**
- * Local-only live Superlist captures (gitignored under
- * `.reference-artifacts/live-superlist/`). Never commit these PNGs — they may
- * contain real account/list content. Served at `/tasks-reference-live`.
- */
-
-export type TasksLiveReferenceId =
-  | "desktop-inbox"
-  | "desktop-today"
-  | "desktop-tasks"
-  | "desktop-updates"
-  | "desktop-lists"
-  | "desktop-list-detail"
-  | "desktop-task-detail"
-  | "tablet-landscape-inbox"
-  | "tablet-portrait-inbox"
-  | "mobile-inbox"
-  | "mobile-task-detail";
-
-export const liveReferenceTargets = [
-  {
-    id: "desktop-inbox",
-    title: "Live — Desktop Inbox",
-    description: "Local Chrome capture of Superlist Inbox (not committed).",
-    page: "Inbox",
-    viewport: "1680 × 1000 desktop",
-    state: "Live session — local only",
-    source: `${liveCaptureRoot}/screenshots/desktop-inbox.png`,
-  },
-  {
-    id: "desktop-today",
-    title: "Live — Desktop Today",
-    description: "Local Chrome capture of Superlist Today (not committed).",
-    page: "Today",
-    viewport: "1680 × 1000 desktop",
-    state: "Live session — local only",
-    source: `${liveCaptureRoot}/screenshots/desktop-today.png`,
-  },
-  {
-    id: "desktop-tasks",
-    title: "Live — Desktop Tasks",
-    description: "Local Chrome capture of Superlist Tasks (not committed).",
-    page: "Tasks",
-    viewport: "1680 × 1000 desktop",
-    state: "Live session — local only",
-    source: `${liveCaptureRoot}/screenshots/desktop-tasks.png`,
-  },
-  {
-    id: "desktop-updates",
-    title: "Live — Desktop Updates",
-    description: "Local Chrome capture of Superlist Updates (not committed).",
-    page: "Updates",
-    viewport: "1680 × 1000 desktop",
-    state: "Live session — local only",
-    source: `${liveCaptureRoot}/screenshots/desktop-updates.png`,
-  },
-  {
-    id: "desktop-lists",
-    title: "Live — Desktop Lists",
-    description: "Local Chrome capture of Superlist Lists (not committed).",
-    page: "Lists",
-    viewport: "1680 × 1000 desktop",
-    state: "Live session — local only",
-    source: `${liveCaptureRoot}/screenshots/desktop-lists.png`,
-  },
-  {
-    id: "desktop-list-detail",
-    title: "Live — Desktop List detail",
-    description: "Local Chrome capture of the reference list (not committed).",
-    page: "List detail",
-    viewport: "1680 × 1000 desktop",
-    state: "Live session — local only",
-    source: `${liveCaptureRoot}/screenshots/desktop-list-detail.png`,
-  },
-  {
-    id: "desktop-task-detail",
-    title: "Live — Desktop Task detail",
-    description: "Local Chrome capture with task detail open (not committed).",
-    page: "Task detail",
-    viewport: "1680 × 1000 desktop",
-    state: "Live session — local only",
-    source: `${liveCaptureRoot}/screenshots/desktop-task-detail.png`,
-  },
-  {
-    id: "tablet-landscape-inbox",
-    title: "Live — Tablet landscape Inbox",
-    description: "Local Chrome capture at 1024×768 (not committed).",
-    page: "Inbox",
-    viewport: "1024 × 768 tablet landscape",
-    state: "Live session — local only",
-    source: `${liveCaptureRoot}/screenshots/tablet-landscape-inbox.png`,
-  },
-  {
-    id: "tablet-portrait-inbox",
-    title: "Live — Tablet portrait Inbox",
-    description: "Local Chrome capture at 768×1024 (not committed).",
-    page: "Inbox",
-    viewport: "768 × 1024 tablet portrait",
-    state: "Live session — local only",
-    source: `${liveCaptureRoot}/screenshots/tablet-portrait-inbox.png`,
-  },
-  {
-    id: "mobile-inbox",
-    title: "Live — Mobile Inbox",
-    description: "Local Chrome capture at 390×844 (not committed).",
-    page: "Inbox",
-    viewport: "390 × 844 mobile",
-    state: "Live session — local only",
-    source: `${liveCaptureRoot}/screenshots/mobile-inbox.png`,
-  },
-  {
-    id: "mobile-task-detail",
-    title: "Live — Mobile Task detail",
-    description:
-      "Local Chrome capture with detail open on mobile (not committed).",
-    page: "Task detail",
-    viewport: "390 × 844 mobile",
-    state: "Live session — local only",
-    source: `${liveCaptureRoot}/screenshots/mobile-task-detail.png`,
-  },
-] as const satisfies readonly TasksReferenceTarget[];
-
-const liveReferenceTargetById = new Map(
-  liveReferenceTargets.map((target) => [target.id, target]),
-);
-
-export function getLiveReferenceTarget(
-  id: TasksLiveReferenceId | string,
-): TasksReferenceTarget {
-  const target = liveReferenceTargetById.get(id as TasksLiveReferenceId);
-  if (!target) throw new Error(`Unknown Tasks live reference target: ${id}`);
-  return target;
-}
-
-/** Visual Delta overlay for local-only live Superlist screenshots. */
-export function liveReferenceVisualDelta(
-  ...targetIds: readonly TasksLiveReferenceId[]
-) {
-  return {
-    images: targetIds.map((id) => getLiveReferenceTarget(id).source),
-    opacity: 0.5,
-    colorInversion: false,
-    align: "canvas" as const,
-    placement: "right" as const,
     passThresholdPercent: 0.1,
   };
 }

@@ -6,7 +6,7 @@
   const { Story } = defineMeta({
     title: "Tasks/Components/Task List",
     component: TaskList,
-    tags: ["skip-visual"],
+
     parameters: {
       layout: "fullscreen",
       docs: {
@@ -20,14 +20,12 @@
 </script>
 
 <script lang="ts">
-  import { referenceVisualDelta } from "../../lib/story-data.js";
   import TaskListHarness from "./TaskListHarness.svelte";
 </script>
 
 <Story
   name="Default groups"
   exportName="DefaultGroups"
-  parameters={{ visualDelta: referenceVisualDelta("desktop-inbox") }}
   play={async ({ canvas }) => {
     await expect(canvas.getByLabelText("Tasks")).toBeVisible();
     await expect(canvas.getByText("Overdue")).toBeVisible();
@@ -41,7 +39,6 @@
 <Story
   name="Collapse Done"
   exportName="CollapseDone"
-  parameters={{ visualDelta: referenceVisualDelta("desktop-inbox") }}
   play={async ({ canvas }) => {
     await expect(canvas.getByText("Done collapsed")).toBeVisible();
     await userEvent.click(canvas.getByRole("button", { name: "Expand Done" }));
@@ -56,7 +53,6 @@
 <Story
   name="Select row"
   exportName="SelectRow"
-  parameters={{ visualDelta: referenceVisualDelta("desktop-inbox") }}
   play={async ({ canvas }) => {
     await userEvent.click(canvas.getByText("Review the launch brief today"));
     await expect(canvas.getByText("Selected task-brief")).toBeVisible();
@@ -70,7 +66,6 @@
 <Story
   name="Empty"
   exportName="Empty"
-  parameters={{ visualDelta: referenceVisualDelta("desktop-updates") }}
   play={async ({ canvas }) => {
     await expect(canvas.getByText("No tasks in this view")).toBeVisible();
   }}
@@ -83,7 +78,6 @@
 <Story
   name="Loading"
   exportName="Loading"
-  parameters={{ visualDelta: referenceVisualDelta("desktop-updates") }}
   play={async ({ canvas }) => {
     await expect(canvas.getByText("Loading tasks")).toBeVisible();
   }}

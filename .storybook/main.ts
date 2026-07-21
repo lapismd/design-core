@@ -1,19 +1,9 @@
 import type { StorybookConfig } from "@storybook/svelte-vite";
-import { mkdirSync } from "node:fs";
-import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { mergeConfig } from "vite";
 import { visualBaselineVisualDeltaPlugin } from "./visual-baseline-vite-plugin.js";
 import { visualDeltaMiddlewarePlugin } from "./visual-delta-middleware.js";
 import { uiDocsMiddlewarePlugin } from "./ui-docs-middleware.js";
-
-const storybookDir = dirname(fileURLToPath(import.meta.url));
-const tasksLiveSuperlistRoot = resolve(
-  storybookDir,
-  "../packages/tasks/.reference-artifacts/live-superlist",
-);
-// Gitignored capture tree — ensure the mount path exists before Storybook starts.
-mkdirSync(resolve(tasksLiveSuperlistRoot, "screenshots"), { recursive: true });
 
 const config: StorybookConfig = {
   stories: [
@@ -40,10 +30,6 @@ const config: StorybookConfig = {
       from: "../packages/tasks/reference/superlist/2026-07-20",
       to: "/tasks-reference/2026-07-20",
     },
-    {
-      from: "../packages/tasks/.reference-artifacts/live-superlist",
-      to: "/tasks-reference-live",
-    },
   ],
   framework: {
     name: "@storybook/svelte-vite",
@@ -58,11 +44,6 @@ const config: StorybookConfig = {
       ...plugins,
     ];
     return mergeConfig(viteConfig, {
-      define: {
-        "import.meta.env.STORYBOOK_TASKS_LIVE_REFERENCE": JSON.stringify(
-          process.env.STORYBOOK_TASKS_LIVE_REFERENCE ?? "",
-        ),
-      },
       resolve: {
         alias: {
           "@stevejuma/ui/shadcn": fileURLToPath(
