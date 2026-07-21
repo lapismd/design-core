@@ -50,8 +50,8 @@ baselines). App stories use `Apps/CV/...` and `Apps/Beancount/...`.
 ## Commands
 
 ```text
-pnpm storybook              # UI + story tests; also mounts Docs MCP + llms on :9009
-pnpm storybook:ui           # UI only (same MCP/llms mount)
+pnpm storybook              # UI + Docs MCP/llms on :9009; restarts on Visual Delta src edits
+pnpm storybook:ui           # same server entry (UI-focused workflow)
 pnpm storybook:restart      # kill + restart Storybook on :9009
 pnpm storybook:check        # story tests + build + visual compare
 pnpm test:unit              # node unit
@@ -132,5 +132,13 @@ worktree unchanged.
 
 ## Story tags
 
+Configured tags render as sidebar and toolbar badges via
+`storybook-addon-tag-badges` (see `.storybook/manager.ts`). Status tags from the
+addon defaults (`new`, `beta`, `deprecated`, and related) are available without
+extra wiring. Global tags `autodocs` and `test` are not badged.
+
 - `skip-test` — exclude from Storybook Vitest (document reason)
 - `skip-visual` — exclude from Playwright visual suite (document reason)
+- `upstream-example` — generated from upstream docs examples
+- `visual-state` — explicit visual-state story
+- `tasks-reference-visual` — Tasks vs Superlist reference baselines

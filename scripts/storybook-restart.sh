@@ -33,4 +33,4 @@ for port in $PORT $EXTRA_PORTS; do
 done
 
 echo "starting Storybook on http://localhost:$PORT"
-exec env WATCHPACK_POLLING=250 pnpm exec storybook dev -p "$PORT" --exact-port --no-open
+exec env WATCHPACK_POLLING=250 STORYBOOK_PORT="$PORT" node "$ROOT/scripts/storybook-run.mjs" --no-open

@@ -4,8 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "storybook": "WATCHPACK_POLLING=250 storybook dev -p 9009 --exact-port",
-    "storybook:ui": "WATCHPACK_POLLING=250 storybook dev -p 9009 --exact-port",
+    "storybook": "WATCHPACK_POLLING=250 node scripts/storybook-run.mjs",
+    "storybook:ui": "WATCHPACK_POLLING=250 node scripts/storybook-run.mjs",
     "storybook:restart": "bash scripts/storybook-restart.sh",
     "storybook:check": "pnpm test:storybook && pnpm build-storybook && pnpm test:visual",
     "build-storybook": "storybook build",
@@ -91,6 +91,7 @@
     "prettier-plugin-svelte": "^3.3.2",
     "prettier-plugin-tailwindcss": "^0.6.9",
     "storybook": "^10.5.2",
+    "storybook-addon-tag-badges": "^3.1.0",
     "storybook-addon-visual-delta": "workspace:*",
     "svelte": "^5.56.1",
     "svelte-check": "^4.6.0",
