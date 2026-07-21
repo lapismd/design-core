@@ -5,6 +5,7 @@ import path from "node:path";
 import type { Plugin } from "vite";
 import {
   VISUAL_DELTA_CANCEL_PATH,
+  VISUAL_DELTA_CREATE_PATH,
   VISUAL_DELTA_RUN_PATH,
   VISUAL_DELTA_UPDATE_PATH,
 } from "../packages/storybook-addon-visual-delta/src/constants.js";
@@ -103,11 +104,13 @@ function escapeRegExp(value: string): string {
 /** Build a Playwright `-g` filter from selected story ids. */
 export function grepFromStoryIds(storyIds?: string[]): string | undefined {
   if (!storyIds?.length) return undefined;
-  if (storyIds.length === 1) return storyIds[0];
+  if (storyIds.length === 1) {
+    return `^${escapeRegExp(storyIds[0]!)}$`;
+  }
 
   const heads = storyIds.map((id) => id.split("--")[0] ?? id);
   if (new Set(heads).size === 1) {
-    return `${heads[0]}--`;
+    return `^${escapeRegExp(heads[0]!)}--`;
   }
 
   return `^(${storyIds.map(escapeRegExp).join("|")})$`;
@@ -197,30 +200,34 @@ function summarize(results: VisualRunResultItem[]) {
   return summary;
 }
 
-/** Count visual stories in storybook-static, optionally filtered by grep/storyIds. */
+/**
+ * Count visual stories in storybook-static.
+ * When `storyIds` is provided, count exact membership (not a regex filter) so
+ * story/component progress totals match the scoped run.
+ */
 export function countVisualStories(
   root: string,
   storyIds?: string[],
 ): number {
   const indexPath = path.join(root, "storybook-static", "index.json");
-  if (!existsSync(indexPath)) return 0;
+  if (!existsSync(indexPath)) {
+    // Fall back to the requested scope size when the static index is absent.
+    return storyIds?.length ?? 0;
+  }
   try {
     const index = JSON.parse(readFileSync(indexPath, "utf8")) as {
       entries?: Record<string, StoryIndexEntry>;
     };
-    let stories = Object.values(index.entries ?? {}).filter(
+    const stories = Object.values(index.entries ?? {}).filter(
       (e) => e.type === "story" && !(e.tags ?? []).includes("skip-visual"),
     );
     if (storyIds?.length) {
-      const grep = grepFromStoryIds(storyIds);
-      if (grep) {
-        const re = new RegExp(grep);
-        stories = stories.filter((e) => re.test(e.id));
-      }
+      const wanted = new Set(storyIds);
+      return stories.filter((e) => wanted.has(e.id)).length;
     }
     return stories.length;
   } catch {
-    return 0;
+    return storyIds?.length ?? 0;
   }
 }
 
@@ -300,10 +307,11 @@ function runCommand(
   });
 }
 
-async function handleUpdate(
+async function handleBaselineWrite(
   req: IncomingMessage,
   res: ServerResponse,
   root: string,
+  mode: "update" | "create",
 ) {
   let body: UpdateBody;
   try {
@@ -322,6 +330,7 @@ async function handleUpdate(
     return;
   }
 
+  const createOnly = mode === "create";
   const args = [
     "exec",
     "tsx",
@@ -329,14 +338,16 @@ async function handleUpdate(
     "visual-update",
     "--allow-dirty",
     "--approved",
+    ...(createOnly ? ["--create-only"] : []),
     ...(component ? ["--component", component] : ["--story-id", storyId!]),
   ];
 
   res.statusCode = 200;
   res.setHeader("Content-Type", "text/plain; charset=utf-8");
   res.setHeader("Cache-Control", "no-store");
+  const verb = createOnly ? "Creating missing baselines" : "Updating baselines";
   res.write(
-    `Updating baselines${component ? ` for ${component}` : ` for ${storyId}`}…\n`,
+    `${verb}${component ? ` for ${component}` : ` for ${storyId}`}…\n`,
   );
 
   try {
@@ -387,6 +398,22 @@ async function handleRun(
       ok: false,
       crashed: true,
       error: error instanceof Error ? error.message : "Invalid JSON",
+      exitCode: 1,
+      rebuild: false,
+      summary: { total: 0, passed: 0, failed: 0, skipped: 0 },
+      results: [],
+      logTail: "",
+    } satisfies VisualRunResponse);
+    return;
+  }
+
+  // Scoped runs must never broaden to the full suite when the selection is empty.
+  if (Array.isArray(body.storyIds) && body.storyIds.length === 0) {
+    writeJson(res, 400, {
+      ok: false,
+      crashed: true,
+      error:
+        "No runnable visual stories in the selected scope (all skip-visual or empty)",
       exitCode: 1,
       rebuild: false,
       summary: { total: 0, passed: 0, failed: 0, skipped: 0 },
@@ -530,7 +557,8 @@ function handleCancel(res: ServerResponse) {
 
 /**
  * Dev-only Visual Delta endpoints:
- * - POST /__visual-delta/update-baseline — regenerate baselines
+ * - POST /__visual-delta/update-baseline — regenerate baselines (overwrite)
+ * - POST /__visual-delta/create-baseline — create missing baselines only
  * - POST /__visual-delta/run-tests — run Playwright visual suite (no updates)
  * - POST /__visual-delta/cancel-tests — stop an in-flight run
  */
@@ -549,7 +577,18 @@ export function visualDeltaMiddlewarePlugin(): Plugin {
             res.end("Method Not Allowed");
             return;
           }
-          await handleUpdate(req, res, root);
+          await handleBaselineWrite(req, res, root, "update");
+          return;
+        }
+
+        if (url === VISUAL_DELTA_CREATE_PATH) {
+          if (req.method !== "POST") {
+            res.statusCode = 405;
+            res.setHeader("Allow", "POST");
+            res.end("Method Not Allowed");
+            return;
+          }
+          await handleBaselineWrite(req, res, root, "create");
           return;
         }
 

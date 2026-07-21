@@ -305,6 +305,7 @@ async function main() {
         approved: asBooleanFlag(flags, "approved"),
         allowDirty: asBooleanFlag(flags, "allow-dirty"),
         skipBuild: asBooleanFlag(flags, "skip-build"),
+        createOnly: asBooleanFlag(flags, "create-only"),
       });
       break;
     case "inspect":

@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { VISUAL_COMPARE_PANE_PAD_PX } from "../../../packages/storybook-addon-visual-delta/src/constants.js";
-import { baselineCompareSizesFromNatural } from "../../../packages/storybook-addon-visual-delta/src/shared/compare-viewport.js";
+import {
+  baselineCompareSizesFromNatural,
+  sharedScrollExtentSize,
+} from "../../../packages/storybook-addon-visual-delta/src/shared/compare-viewport.js";
 
 describe("baselineCompareSizesFromNatural", () => {
   it("converts device-scale natural size to CSS content + padded viewport", () => {
@@ -18,5 +21,17 @@ describe("baselineCompareSizesFromNatural", () => {
   it("returns null for invalid natural size", () => {
     expect(baselineCompareSizesFromNatural(0, 100)).toBeNull();
     expect(baselineCompareSizesFromNatural(100, 0)).toBeNull();
+  });
+});
+
+describe("sharedScrollExtentSize", () => {
+  it("takes the max of either side and an optional minimum", () => {
+    expect(
+      sharedScrollExtentSize(
+        { width: 120, height: 40 },
+        { width: 80, height: 200 },
+        { width: 100, height: 100 },
+      ),
+    ).toEqual({ width: 120, height: 200 });
   });
 });

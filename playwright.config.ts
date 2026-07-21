@@ -15,8 +15,13 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   // Ordinary visual runs must never create or overwrite baselines.
   // Use `pnpm test:visual:update --component <name>` (guarded) instead.
+  // Create-only path sets PLAYWRIGHT_UPDATE_MODE=missing (new PNGs only).
   updateSnapshots:
-    process.env.PLAYWRIGHT_UPDATE_SNAPSHOTS === "1" ? "all" : "none",
+    process.env.PLAYWRIGHT_UPDATE_SNAPSHOTS === "1"
+      ? process.env.PLAYWRIGHT_UPDATE_MODE === "missing"
+        ? "missing"
+        : "all"
+      : "none",
   reporter: [["list"], ["html", { open: "never" }]],
   timeout: 30_000,
   expect: {
