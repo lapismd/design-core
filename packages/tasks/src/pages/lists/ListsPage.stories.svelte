@@ -18,13 +18,15 @@
 </script>
 
 <script lang="ts">
-  import { referenceVisualDelta } from "../../lib/story-data.js";
+  import { visualDeltaForStory } from "../../lib/visual-delta.js";
 </script>
 
 <Story
   name="Default"
   exportName="Default"
-  parameters={{ visualDelta: referenceVisualDelta("desktop-lists") }}
+  parameters={{
+    visualDelta: visualDeltaForStory("tasks-pages-lists--default"),
+  }}
   play={async ({ canvas }) => {
     await expect(canvas.getByText("Detail closed")).toBeVisible();
   }}

@@ -20,6 +20,7 @@
 </script>
 
 <script lang="ts">
+  import { visualDeltaForStory } from "../../lib/visual-delta.js";
   import { createTasksStoryFixture } from "../../lib/story-fixtures.js";
   import TaskDetailHarness from "./TaskDetailHarness.svelte";
 
@@ -30,6 +31,11 @@
 <Story
   name="Open focuses the title heading"
   exportName="OpenFocusesHeading"
+  parameters={{
+    visualDelta: visualDeltaForStory(
+      "tasks-components-task-detail--open-focuses-heading",
+    ),
+  }}
   play={async ({ canvas }) => {
     const heading = canvas.getByRole("heading", {
       name: "Review the launch brief today",
@@ -45,6 +51,11 @@
 <Story
   name="Commits an edited title"
   exportName="CommitTitle"
+  parameters={{
+    visualDelta: visualDeltaForStory(
+      "tasks-components-task-detail--commit-title",
+    ),
+  }}
   play={async ({ canvas }) => {
     await userEvent.click(canvas.getByRole("button", { name: "Edit title" }));
     const input = canvas.getByRole("textbox", { name: "Task title" });
@@ -68,6 +79,11 @@
 <Story
   name="Escape cancels the title edit without closing"
   exportName="EscapeCancelsTitleEdit"
+  parameters={{
+    visualDelta: visualDeltaForStory(
+      "tasks-components-task-detail--escape-cancels-title-edit",
+    ),
+  }}
   play={async ({ canvas }) => {
     await userEvent.click(canvas.getByRole("button", { name: "Edit title" }));
     const input = canvas.getByRole("textbox", { name: "Task title" });
@@ -90,6 +106,11 @@
 <Story
   name="Escape and back return to the list"
   exportName="EscapeAndBackReturn"
+  parameters={{
+    visualDelta: visualDeltaForStory(
+      "tasks-components-task-detail--escape-and-back-return",
+    ),
+  }}
   play={async ({ canvas }) => {
     await expect(
       canvas.getByRole("heading", {
@@ -109,6 +130,11 @@
 <Story
   name="Back button returns to the list"
   exportName="BackButtonReturns"
+  parameters={{
+    visualDelta: visualDeltaForStory(
+      "tasks-components-task-detail--back-button-returns",
+    ),
+  }}
   play={async ({ canvas }) => {
     await userEvent.click(canvas.getByRole("button", { name: "Back to list" }));
     await expect(canvas.getByText("Returned to task list")).toBeVisible();

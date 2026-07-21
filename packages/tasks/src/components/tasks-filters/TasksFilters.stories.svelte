@@ -20,12 +20,18 @@
 </script>
 
 <script lang="ts">
+  import { visualDeltaForStory } from "../../lib/visual-delta.js";
   import TasksFiltersHarness from "./TasksFiltersHarness.svelte";
 </script>
 
 <Story
   name="Select filter"
   exportName="SelectFilter"
+  parameters={{
+    visualDelta: visualDeltaForStory(
+      "tasks-components-filters-and-menus--select-filter",
+    ),
+  }}
   play={async ({ canvas }) => {
     await userEvent.click(canvas.getByRole("radio", { name: "For me" }));
     await expect(canvas.getByText("Filter for-me")).toBeVisible();
@@ -39,6 +45,11 @@
 <Story
   name="Sort and clear completed"
   exportName="SortAndClear"
+  parameters={{
+    visualDelta: visualDeltaForStory(
+      "tasks-components-filters-and-menus--sort-and-clear",
+    ),
+  }}
   play={async ({ canvas }) => {
     // bits-ui menu triggers can report pointer-events:none to userEvent while
     // still opening via a trusted click; fireEvent avoids that false negative.

@@ -1,125 +1,1255 @@
 {
-  "schemaVersion": 2,
-  "source": "authenticated Superlist Chrome fixture session",
-  "capturedAt": "2026-07-20T22:41:46.538Z",
+  "captureId": "2026-07-20",
+  "source": "https://app.superlist.com/",
+  "capturedAt": "2026-07-21T09:09:48.081Z",
   "status": "browser-fixture",
-  "redaction": "Committed browser captures of the dedicated Tasks UI Reference fixture list. May include account chrome (avatar/nav favourites); fixture task titles remain synthetic. Not product source assets.",
-  "viewports": [
-    "desktop",
-    "tablet-landscape",
-    "tablet-portrait",
-    "mobile"
-  ],
+  "deviceScaleFactor": 3,
+  "redaction": "Committed Superlist reference captures for Visual Delta. Component shots are subject-clipped. Avatar/banner placeholders applied on live re-capture; migrated crops inherit fixture-list content.",
   "screenshots": [
     {
-      "id": "desktop-inbox",
+      "id": "page-desktop-inbox",
+      "storyId": "tasks-pages-inbox--default",
+      "kind": "page",
       "page": "inbox",
       "viewport": "desktop",
-      "state": "live browser — fixture list",
-      "file": "screenshots/browser/desktop-inbox.png",
-      "sha256": "cd11b618679bbd5c684d9bc62ead8f2c2aae598df081ee52a303726c7cec52df",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/pages/page-desktop-inbox.png",
+      "sha256": "e2450c8c0e770ea0b621bd75d1a4d7398f77759a40bcf183b2b89a7941c67b0a",
       "fixtureOnly": true,
-      "browserDerived": true
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
     },
     {
-      "id": "desktop-today",
+      "id": "page-desktop-inbox-detail",
+      "storyId": "tasks-pages-inbox--open-detail",
+      "kind": "page",
+      "page": "task-detail",
+      "viewport": "desktop",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/pages/page-desktop-inbox-detail.png",
+      "sha256": "4eebf24562ca555b0a2394dba60ea3b12bc5692b3756491d7200ec3fb5b6d218",
+      "fixtureOnly": true,
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "page-desktop-today",
+      "storyId": "tasks-pages-today--default",
+      "kind": "page",
       "page": "today",
       "viewport": "desktop",
-      "state": "live browser",
-      "file": "screenshots/browser/desktop-today.png",
-      "sha256": "ca1b1f625a644f7dc38cf97348f0dfd2109c6570b2a094e8fd59bac237c51058",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/pages/page-desktop-today.png",
+      "sha256": "f08fbae7049c951e16d58bef81cc14148c248964a8cffad291eb7d90632391fe",
       "fixtureOnly": true,
-      "browserDerived": true
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
     },
     {
-      "id": "desktop-tasks",
+      "id": "page-desktop-today-detail",
+      "storyId": "tasks-pages-today--open-detail",
+      "kind": "page",
+      "page": "task-detail",
+      "viewport": "desktop",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/pages/page-desktop-today-detail.png",
+      "sha256": "4eebf24562ca555b0a2394dba60ea3b12bc5692b3756491d7200ec3fb5b6d218",
+      "fixtureOnly": true,
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "page-desktop-tasks",
+      "storyId": "tasks-pages-tasks--default",
+      "kind": "page",
       "page": "tasks",
       "viewport": "desktop",
-      "state": "live browser",
-      "file": "screenshots/browser/desktop-tasks.png",
-      "sha256": "42b4416cc07da861ae94ddbcf95b6fb3ac61629fc1ad017f13ae29cd38b49b48",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/pages/page-desktop-tasks.png",
+      "sha256": "bbc711c232d3c9b737b2397f8daf37b4675ffd4a63ba8e65edc61269d7ab2445",
       "fixtureOnly": true,
-      "browserDerived": true
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
     },
     {
-      "id": "desktop-updates",
+      "id": "page-desktop-updates",
+      "storyId": "tasks-pages-updates--default",
+      "kind": "page",
       "page": "updates",
       "viewport": "desktop",
-      "state": "live browser",
-      "file": "screenshots/browser/desktop-updates.png",
-      "sha256": "b62373b2a242d08b5ff40d7f5d5853eb0453c938cf65e71392e20941b8669520",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/pages/page-desktop-updates.png",
+      "sha256": "09c0920b58b8fa565029f011564dd1d284a0f9ba0586db7d8ff07595627e9d60",
       "fixtureOnly": true,
-      "browserDerived": true
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
     },
     {
-      "id": "desktop-lists",
+      "id": "page-desktop-updates-loading",
+      "storyId": "tasks-pages-updates--loading",
+      "kind": "page",
+      "page": "updates",
+      "viewport": "desktop",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/pages/page-desktop-updates-loading.png",
+      "sha256": "09c0920b58b8fa565029f011564dd1d284a0f9ba0586db7d8ff07595627e9d60",
+      "fixtureOnly": true,
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "page-desktop-updates-error",
+      "storyId": "tasks-pages-updates--error-retry",
+      "kind": "page",
+      "page": "updates",
+      "viewport": "desktop",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/pages/page-desktop-updates-error.png",
+      "sha256": "09c0920b58b8fa565029f011564dd1d284a0f9ba0586db7d8ff07595627e9d60",
+      "fixtureOnly": true,
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "page-desktop-lists",
+      "storyId": "tasks-pages-lists--default",
+      "kind": "page",
       "page": "lists",
       "viewport": "desktop",
-      "state": "live browser",
-      "file": "screenshots/browser/desktop-lists.png",
-      "sha256": "7e0c79e601e08fc527a06b150b0a10095e2e784a4eda27940b68b7976bd5c931",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/pages/page-desktop-lists.png",
+      "sha256": "ad99e53676fc4db3ef1677d4b116c0fe8c7519183ae2898f1aa85a8432780886",
       "fixtureOnly": true,
-      "browserDerived": true
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
     },
     {
-      "id": "desktop-list-detail",
+      "id": "page-desktop-list-detail",
+      "storyId": "tasks-pages-list-detail--default",
+      "kind": "page",
       "page": "list-detail",
       "viewport": "desktop",
-      "state": "live browser — Tasks UI Reference list",
-      "file": "screenshots/browser/desktop-list-detail.png",
-      "sha256": "d72f1baf81e28ffef2e3432cb7323e6315878d2c846a0de3f16791576c1b863a",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/pages/page-desktop-list-detail.png",
+      "sha256": "354cc0f192373cc168f6bed8fa07b0d44c1f8749fc38be44e93acc18a5fe623e",
       "fixtureOnly": true,
-      "browserDerived": true
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
     },
     {
-      "id": "desktop-task-detail",
+      "id": "page-desktop-list-detail-open",
+      "storyId": "tasks-pages-list-detail--open-detail",
+      "kind": "page",
       "page": "task-detail",
       "viewport": "desktop",
-      "state": "live browser — detail open",
-      "file": "screenshots/browser/desktop-task-detail.png",
-      "sha256": "fe73335ab0e89a1c450247f1d1eb01b657f4ab97bde54d844805f61461c40061",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/pages/page-desktop-list-detail-open.png",
+      "sha256": "4eebf24562ca555b0a2394dba60ea3b12bc5692b3756491d7200ec3fb5b6d218",
       "fixtureOnly": true,
-      "browserDerived": true
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
     },
     {
-      "id": "tablet-landscape-inbox",
+      "id": "page-desktop-task-detail",
+      "storyId": "tasks-pages-task-detail--default",
+      "kind": "page",
+      "page": "task-detail",
+      "viewport": "desktop",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/pages/page-desktop-task-detail.png",
+      "sha256": "4eebf24562ca555b0a2394dba60ea3b12bc5692b3756491d7200ec3fb5b6d218",
+      "fixtureOnly": true,
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "page-desktop-task-detail-open",
+      "storyId": "tasks-pages-task-detail--open-detail",
+      "kind": "page",
+      "page": "task-detail",
+      "viewport": "desktop",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/pages/page-desktop-task-detail-open.png",
+      "sha256": "4eebf24562ca555b0a2394dba60ea3b12bc5692b3756491d7200ec3fb5b6d218",
+      "fixtureOnly": true,
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "page-desktop-shell",
+      "storyId": "tasks-pages-tasks-shell--default",
+      "kind": "page",
+      "page": "inbox",
+      "viewport": "desktop",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/pages/page-desktop-shell.png",
+      "sha256": "e2450c8c0e770ea0b621bd75d1a4d7398f77759a40bcf183b2b89a7941c67b0a",
+      "fixtureOnly": true,
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "page-desktop-shell-detail",
+      "storyId": "tasks-pages-tasks-shell--wide-with-detail",
+      "kind": "page",
+      "page": "task-detail",
+      "viewport": "desktop",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/pages/page-desktop-shell-detail.png",
+      "sha256": "4eebf24562ca555b0a2394dba60ea3b12bc5692b3756491d7200ec3fb5b6d218",
+      "fixtureOnly": true,
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "page-mobile-shell",
+      "storyId": "tasks-pages-tasks-shell--mobile-list",
+      "kind": "page",
+      "page": "inbox",
+      "viewport": "mobile",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/pages/page-mobile-shell.png",
+      "sha256": "ba938f9a63053bd765a3b4c8296394a7b4986dae6fb37058e662c9c6d32c22ef",
+      "fixtureOnly": true,
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "page-tablet-landscape-inbox",
+      "storyId": "tasks-pages-inbox--default",
+      "kind": "page",
       "page": "inbox",
       "viewport": "tablet-landscape",
-      "state": "live browser resize",
-      "file": "screenshots/browser/tablet-landscape-inbox.png",
-      "sha256": "56664d5201a253c7758b4e987426e0ea6a65d12aa0a8ca07c485513bd6d8bfa2",
+      "state": "viewport-coverage",
+      "file": "screenshots/pages/page-tablet-landscape-inbox.png",
+      "sha256": "4f5ec570829a85f3795833674a1ab35cdce56c69dff70ae4a7460c1bc796e4df",
       "fixtureOnly": true,
-      "browserDerived": true
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
     },
     {
-      "id": "tablet-portrait-inbox",
+      "id": "page-tablet-portrait-inbox",
+      "storyId": "tasks-pages-inbox--default",
+      "kind": "page",
       "page": "inbox",
       "viewport": "tablet-portrait",
-      "state": "live browser resize",
-      "file": "screenshots/browser/tablet-portrait-inbox.png",
-      "sha256": "bdb211b7c58e3516a272e1886ce40ab924d9e814b592c89e0826c69d8823372c",
+      "state": "viewport-coverage",
+      "file": "screenshots/pages/page-tablet-portrait-inbox.png",
+      "sha256": "1bbefddde9744089cd02f0ee82e15c2a7a19a29c277bd92b2af9cbc59c2809b1",
       "fixtureOnly": true,
-      "browserDerived": true
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
     },
     {
-      "id": "mobile-inbox",
+      "id": "page-mobile-inbox",
+      "storyId": "tasks-pages-inbox--default",
+      "kind": "page",
       "page": "inbox",
       "viewport": "mobile",
-      "state": "live browser resize",
-      "file": "screenshots/browser/mobile-inbox.png",
-      "sha256": "3307442eb34d2c1184f34b354ed7218055112780d8acd0c0e03290a492f1821d",
+      "state": "viewport-coverage",
+      "file": "screenshots/pages/page-mobile-inbox.png",
+      "sha256": "ba938f9a63053bd765a3b4c8296394a7b4986dae6fb37058e662c9c6d32c22ef",
       "fixtureOnly": true,
-      "browserDerived": true
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
     },
     {
-      "id": "mobile-task-detail",
+      "id": "page-mobile-task-detail",
+      "storyId": "tasks-pages-task-detail--open-detail",
+      "kind": "page",
       "page": "task-detail",
       "viewport": "mobile",
-      "state": "live browser — detail open",
-      "file": "screenshots/browser/mobile-task-detail.png",
-      "sha256": "a66f0a0e10a34ccfe576da096952f3228a581aad5aefccff314f829e63e09c68",
+      "state": "viewport-coverage",
+      "file": "screenshots/pages/page-mobile-task-detail.png",
+      "sha256": "8d24f50f6fcfbd96c59257057a1bdfa608314615c1d0f68ea28d41f6c5324253",
       "fixtureOnly": true,
-      "browserDerived": true
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "comp-task-row-default",
+      "storyId": "tasks-components-task-row--default",
+      "kind": "component",
+      "page": "list-detail",
+      "viewport": "desktop",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/components/comp-task-row-default.png",
+      "sha256": "717082983ccb040bbf608b56e9b4f887473151f0c025338fad37f2d6d7e89009",
+      "fixtureOnly": true,
+      "clip": {
+        "x": 248,
+        "y": 160,
+        "width": 900,
+        "height": 56
+      },
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "comp-task-row-complete",
+      "storyId": "tasks-components-task-row--complete-independently",
+      "kind": "component",
+      "page": "list-detail",
+      "viewport": "desktop",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/components/comp-task-row-complete.png",
+      "sha256": "717082983ccb040bbf608b56e9b4f887473151f0c025338fad37f2d6d7e89009",
+      "fixtureOnly": true,
+      "clip": {
+        "x": 248,
+        "y": 160,
+        "width": 900,
+        "height": 56
+      },
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "comp-task-row-select",
+      "storyId": "tasks-components-task-row--select-and-open",
+      "kind": "component",
+      "page": "list-detail",
+      "viewport": "desktop",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/components/comp-task-row-select.png",
+      "sha256": "4752297c09deba4fc0de8a4bc935c292c396662425b1a15e90b88dbdf4b852f2",
+      "fixtureOnly": true,
+      "clip": {
+        "x": 248,
+        "y": 160,
+        "width": 900,
+        "height": 72
+      },
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "comp-task-row-dblclick",
+      "storyId": "tasks-components-task-row--double-click-parity",
+      "kind": "component",
+      "page": "list-detail",
+      "viewport": "desktop",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/components/comp-task-row-dblclick.png",
+      "sha256": "4752297c09deba4fc0de8a4bc935c292c396662425b1a15e90b88dbdf4b852f2",
+      "fixtureOnly": true,
+      "clip": {
+        "x": 248,
+        "y": 160,
+        "width": 900,
+        "height": 72
+      },
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "comp-task-row-keyboard",
+      "storyId": "tasks-components-task-row--keyboard-split",
+      "kind": "component",
+      "page": "list-detail",
+      "viewport": "desktop",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/components/comp-task-row-keyboard.png",
+      "sha256": "4752297c09deba4fc0de8a4bc935c292c396662425b1a15e90b88dbdf4b852f2",
+      "fixtureOnly": true,
+      "clip": {
+        "x": 248,
+        "y": 160,
+        "width": 900,
+        "height": 72
+      },
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "comp-task-row-drag",
+      "storyId": "tasks-components-task-row--drag-handle",
+      "kind": "component",
+      "page": "list-detail",
+      "viewport": "desktop",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/components/comp-task-row-drag.png",
+      "sha256": "717082983ccb040bbf608b56e9b4f887473151f0c025338fad37f2d6d7e89009",
+      "fixtureOnly": true,
+      "clip": {
+        "x": 248,
+        "y": 160,
+        "width": 900,
+        "height": 56
+      },
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "comp-task-row-swipe",
+      "storyId": "tasks-components-task-row--swipe-reveal",
+      "kind": "component",
+      "page": "inbox",
+      "viewport": "mobile",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/components/comp-task-row-swipe.png",
+      "sha256": "c8ff71cdfa7270c8fa8247f2ab8fa42de1c41dd8be618e030ce6024bba03689d",
+      "fixtureOnly": true,
+      "clip": {
+        "x": 0,
+        "y": 120,
+        "width": 390,
+        "height": 64
+      },
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "comp-task-list-default",
+      "storyId": "tasks-components-task-list--default-groups",
+      "kind": "component",
+      "page": "list-detail",
+      "viewport": "desktop",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/components/comp-task-list-default.png",
+      "sha256": "91d4aea305964b9a308607746fee62156c5ed8ad43f526fff4e9db7f6b7647c8",
+      "fixtureOnly": true,
+      "clip": {
+        "x": 248,
+        "y": 72,
+        "width": 900,
+        "height": 820
+      },
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "comp-task-list-done",
+      "storyId": "tasks-components-task-list--collapse-done",
+      "kind": "component",
+      "page": "list-detail",
+      "viewport": "desktop",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/components/comp-task-list-done.png",
+      "sha256": "91d4aea305964b9a308607746fee62156c5ed8ad43f526fff4e9db7f6b7647c8",
+      "fixtureOnly": true,
+      "clip": {
+        "x": 248,
+        "y": 72,
+        "width": 900,
+        "height": 820
+      },
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "comp-task-list-select",
+      "storyId": "tasks-components-task-list--select-row",
+      "kind": "component",
+      "page": "list-detail",
+      "viewport": "desktop",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/components/comp-task-list-select.png",
+      "sha256": "91d4aea305964b9a308607746fee62156c5ed8ad43f526fff4e9db7f6b7647c8",
+      "fixtureOnly": true,
+      "clip": {
+        "x": 248,
+        "y": 72,
+        "width": 900,
+        "height": 820
+      },
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "comp-task-list-empty",
+      "storyId": "tasks-components-task-list--empty",
+      "kind": "component",
+      "page": "updates",
+      "viewport": "desktop",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/components/comp-task-list-empty.png",
+      "sha256": "ead52ea37d0959e6050af165cd6df666439454880894a54b36154f489778df94",
+      "fixtureOnly": true,
+      "clip": {
+        "x": 400,
+        "y": 200,
+        "width": 880,
+        "height": 480
+      },
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "comp-task-list-loading",
+      "storyId": "tasks-components-task-list--loading",
+      "kind": "component",
+      "page": "updates",
+      "viewport": "desktop",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/components/comp-task-list-loading.png",
+      "sha256": "ead52ea37d0959e6050af165cd6df666439454880894a54b36154f489778df94",
+      "fixtureOnly": true,
+      "clip": {
+        "x": 400,
+        "y": 200,
+        "width": 880,
+        "height": 480
+      },
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "comp-composer-idle",
+      "storyId": "tasks-components-task-composer--idle",
+      "kind": "component",
+      "page": "list-detail",
+      "viewport": "desktop",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/components/comp-composer-idle.png",
+      "sha256": "67c2b346c68cffafc6f728d3dbd9896136fe74e4ae963f157afd3dc1489c91fd",
+      "fixtureOnly": true,
+      "clip": {
+        "x": 248,
+        "y": 880,
+        "width": 900,
+        "height": 72
+      },
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "comp-composer-active",
+      "storyId": "tasks-components-task-composer--activate",
+      "kind": "component",
+      "page": "list-detail",
+      "viewport": "desktop",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/components/comp-composer-active.png",
+      "sha256": "67c2b346c68cffafc6f728d3dbd9896136fe74e4ae963f157afd3dc1489c91fd",
+      "fixtureOnly": true,
+      "clip": {
+        "x": 248,
+        "y": 880,
+        "width": 900,
+        "height": 72
+      },
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "comp-composer-submit",
+      "storyId": "tasks-components-task-composer--submit-non-empty",
+      "kind": "component",
+      "page": "list-detail",
+      "viewport": "desktop",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/components/comp-composer-submit.png",
+      "sha256": "67c2b346c68cffafc6f728d3dbd9896136fe74e4ae963f157afd3dc1489c91fd",
+      "fixtureOnly": true,
+      "clip": {
+        "x": 248,
+        "y": 880,
+        "width": 900,
+        "height": 72
+      },
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "comp-composer-reject",
+      "storyId": "tasks-components-task-composer--reject-empty",
+      "kind": "component",
+      "page": "list-detail",
+      "viewport": "desktop",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/components/comp-composer-reject.png",
+      "sha256": "67c2b346c68cffafc6f728d3dbd9896136fe74e4ae963f157afd3dc1489c91fd",
+      "fixtureOnly": true,
+      "clip": {
+        "x": 248,
+        "y": 880,
+        "width": 900,
+        "height": 72
+      },
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "comp-composer-escape",
+      "storyId": "tasks-components-task-composer--escape-blank-cancel",
+      "kind": "component",
+      "page": "list-detail",
+      "viewport": "desktop",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/components/comp-composer-escape.png",
+      "sha256": "67c2b346c68cffafc6f728d3dbd9896136fe74e4ae963f157afd3dc1489c91fd",
+      "fixtureOnly": true,
+      "clip": {
+        "x": 248,
+        "y": 880,
+        "width": 900,
+        "height": 72
+      },
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "comp-detail-open",
+      "storyId": "tasks-components-task-detail--open-focuses-heading",
+      "kind": "component",
+      "page": "task-detail",
+      "viewport": "desktop",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/components/comp-detail-open.png",
+      "sha256": "4fdc2cdd1b35c917bf2ade62365551af64a3451b0a1632417126e1e31f1962ba",
+      "fixtureOnly": true,
+      "clip": {
+        "x": 1160,
+        "y": 56,
+        "width": 500,
+        "height": 900
+      },
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "comp-detail-title",
+      "storyId": "tasks-components-task-detail--commit-title",
+      "kind": "component",
+      "page": "task-detail",
+      "viewport": "desktop",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/components/comp-detail-title.png",
+      "sha256": "4fdc2cdd1b35c917bf2ade62365551af64a3451b0a1632417126e1e31f1962ba",
+      "fixtureOnly": true,
+      "clip": {
+        "x": 1160,
+        "y": 56,
+        "width": 500,
+        "height": 900
+      },
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "comp-detail-escape-edit",
+      "storyId": "tasks-components-task-detail--escape-cancels-title-edit",
+      "kind": "component",
+      "page": "task-detail",
+      "viewport": "desktop",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/components/comp-detail-escape-edit.png",
+      "sha256": "4fdc2cdd1b35c917bf2ade62365551af64a3451b0a1632417126e1e31f1962ba",
+      "fixtureOnly": true,
+      "clip": {
+        "x": 1160,
+        "y": 56,
+        "width": 500,
+        "height": 900
+      },
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "comp-detail-escape-back",
+      "storyId": "tasks-components-task-detail--escape-and-back-return",
+      "kind": "component",
+      "page": "task-detail",
+      "viewport": "desktop",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/components/comp-detail-escape-back.png",
+      "sha256": "4fdc2cdd1b35c917bf2ade62365551af64a3451b0a1632417126e1e31f1962ba",
+      "fixtureOnly": true,
+      "clip": {
+        "x": 1160,
+        "y": 56,
+        "width": 500,
+        "height": 900
+      },
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "comp-detail-back",
+      "storyId": "tasks-components-task-detail--back-button-returns",
+      "kind": "component",
+      "page": "task-detail",
+      "viewport": "desktop",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/components/comp-detail-back.png",
+      "sha256": "4fdc2cdd1b35c917bf2ade62365551af64a3451b0a1632417126e1e31f1962ba",
+      "fixtureOnly": true,
+      "clip": {
+        "x": 1160,
+        "y": 56,
+        "width": 500,
+        "height": 900
+      },
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "comp-props-filled",
+      "storyId": "tasks-components-task-properties--filled",
+      "kind": "component",
+      "page": "task-detail",
+      "viewport": "desktop",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/components/comp-props-filled.png",
+      "sha256": "496b97da3b66bba8cf325bf9060a7f151b05d585e5610360e13e909d5d21a1e8",
+      "fixtureOnly": true,
+      "clip": {
+        "x": 1180,
+        "y": 200,
+        "width": 460,
+        "height": 320
+      },
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "comp-props-empty",
+      "storyId": "tasks-components-task-properties--empty",
+      "kind": "component",
+      "page": "task-detail",
+      "viewport": "desktop",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/components/comp-props-empty.png",
+      "sha256": "496b97da3b66bba8cf325bf9060a7f151b05d585e5610360e13e909d5d21a1e8",
+      "fixtureOnly": true,
+      "clip": {
+        "x": 1180,
+        "y": 200,
+        "width": 460,
+        "height": 320
+      },
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "comp-props-due",
+      "storyId": "tasks-components-task-properties--change-due",
+      "kind": "component",
+      "page": "task-detail",
+      "viewport": "desktop",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/components/comp-props-due.png",
+      "sha256": "496b97da3b66bba8cf325bf9060a7f151b05d585e5610360e13e909d5d21a1e8",
+      "fixtureOnly": true,
+      "clip": {
+        "x": 1180,
+        "y": 200,
+        "width": 460,
+        "height": 320
+      },
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "comp-props-priority",
+      "storyId": "tasks-components-task-properties--change-priority",
+      "kind": "component",
+      "page": "task-detail",
+      "viewport": "desktop",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/components/comp-props-priority.png",
+      "sha256": "496b97da3b66bba8cf325bf9060a7f151b05d585e5610360e13e909d5d21a1e8",
+      "fixtureOnly": true,
+      "clip": {
+        "x": 1180,
+        "y": 200,
+        "width": 460,
+        "height": 320
+      },
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "comp-props-label",
+      "storyId": "tasks-components-task-properties--toggle-label",
+      "kind": "component",
+      "page": "task-detail",
+      "viewport": "desktop",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/components/comp-props-label.png",
+      "sha256": "496b97da3b66bba8cf325bf9060a7f151b05d585e5610360e13e909d5d21a1e8",
+      "fixtureOnly": true,
+      "clip": {
+        "x": 1180,
+        "y": 200,
+        "width": 460,
+        "height": 320
+      },
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "comp-feedback-empty",
+      "storyId": "tasks-components-feedback-and-empty-states--empty",
+      "kind": "component",
+      "page": "updates",
+      "viewport": "desktop",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/components/comp-feedback-empty.png",
+      "sha256": "ead52ea37d0959e6050af165cd6df666439454880894a54b36154f489778df94",
+      "fixtureOnly": true,
+      "clip": {
+        "x": 400,
+        "y": 200,
+        "width": 880,
+        "height": 480
+      },
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "comp-feedback-loading",
+      "storyId": "tasks-components-feedback-and-empty-states--loading",
+      "kind": "component",
+      "page": "updates",
+      "viewport": "desktop",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/components/comp-feedback-loading.png",
+      "sha256": "ead52ea37d0959e6050af165cd6df666439454880894a54b36154f489778df94",
+      "fixtureOnly": true,
+      "clip": {
+        "x": 400,
+        "y": 200,
+        "width": 880,
+        "height": 480
+      },
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "comp-feedback-error",
+      "storyId": "tasks-components-feedback-and-empty-states--preserving-error",
+      "kind": "component",
+      "page": "updates",
+      "viewport": "desktop",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/components/comp-feedback-error.png",
+      "sha256": "ead52ea37d0959e6050af165cd6df666439454880894a54b36154f489778df94",
+      "fixtureOnly": true,
+      "clip": {
+        "x": 400,
+        "y": 200,
+        "width": 880,
+        "height": 480
+      },
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "comp-feedback-status",
+      "storyId": "tasks-components-feedback-and-empty-states--status",
+      "kind": "component",
+      "page": "updates",
+      "viewport": "desktop",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/components/comp-feedback-status.png",
+      "sha256": "ead52ea37d0959e6050af165cd6df666439454880894a54b36154f489778df94",
+      "fixtureOnly": true,
+      "clip": {
+        "x": 400,
+        "y": 200,
+        "width": 880,
+        "height": 480
+      },
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "comp-feedback-undo",
+      "storyId": "tasks-components-feedback-and-empty-states--undo",
+      "kind": "component",
+      "page": "list-detail",
+      "viewport": "desktop",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/components/comp-feedback-undo.png",
+      "sha256": "717082983ccb040bbf608b56e9b4f887473151f0c025338fad37f2d6d7e89009",
+      "fixtureOnly": true,
+      "clip": {
+        "x": 248,
+        "y": 160,
+        "width": 900,
+        "height": 56
+      },
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "comp-filters-select",
+      "storyId": "tasks-components-filters-and-menus--select-filter",
+      "kind": "component",
+      "page": "tasks",
+      "viewport": "desktop",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/components/comp-filters-select.png",
+      "sha256": "32885b7bcbc66a453d22f838af24e58fe6b5cb1a6eec3d92de89fe5f8c90eea8",
+      "fixtureOnly": true,
+      "clip": {
+        "x": 248,
+        "y": 72,
+        "width": 900,
+        "height": 64
+      },
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "comp-filters-sort",
+      "storyId": "tasks-components-filters-and-menus--sort-and-clear",
+      "kind": "component",
+      "page": "tasks",
+      "viewport": "desktop",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/components/comp-filters-sort.png",
+      "sha256": "32885b7bcbc66a453d22f838af24e58fe6b5cb1a6eec3d92de89fe5f8c90eea8",
+      "fixtureOnly": true,
+      "clip": {
+        "x": 248,
+        "y": 72,
+        "width": 900,
+        "height": 64
+      },
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "comp-nav-activate",
+      "storyId": "tasks-components-list-navigation-and-index--activate-destination",
+      "kind": "component",
+      "page": "inbox",
+      "viewport": "desktop",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/components/comp-nav-activate.png",
+      "sha256": "ee4188f10bf5055cbc68f72e8a27530d5c58661e9b986bbc5640d1427f230450",
+      "fixtureOnly": true,
+      "clip": {
+        "x": 0,
+        "y": 0,
+        "width": 248,
+        "height": 1000
+      },
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "comp-nav-favourite",
+      "storyId": "tasks-components-list-navigation-and-index--favourite-independently",
+      "kind": "component",
+      "page": "lists",
+      "viewport": "desktop",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/components/comp-nav-favourite.png",
+      "sha256": "2c48ba7529325b26f6e996884fa5925b9164c3c4f40f27d8c13274899b04aa96",
+      "fixtureOnly": true,
+      "clip": {
+        "x": 248,
+        "y": 72,
+        "width": 1400,
+        "height": 820
+      },
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "comp-nav-create",
+      "storyId": "tasks-components-list-navigation-and-index--create-list",
+      "kind": "component",
+      "page": "lists",
+      "viewport": "desktop",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/components/comp-nav-create.png",
+      "sha256": "2c48ba7529325b26f6e996884fa5925b9164c3c4f40f27d8c13274899b04aa96",
+      "fixtureOnly": true,
+      "clip": {
+        "x": 248,
+        "y": 72,
+        "width": 1400,
+        "height": 820
+      },
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "comp-shell-wide",
+      "storyId": "tasks-components-tasks-shell--wide-no-detail",
+      "kind": "component",
+      "page": "inbox",
+      "viewport": "desktop",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/components/comp-shell-wide.png",
+      "sha256": "e2450c8c0e770ea0b621bd75d1a4d7398f77759a40bcf183b2b89a7941c67b0a",
+      "fixtureOnly": true,
+      "clip": {
+        "x": 0,
+        "y": 0,
+        "width": 1680,
+        "height": 1000
+      },
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "comp-shell-wide-detail",
+      "storyId": "tasks-components-tasks-shell--wide-with-detail",
+      "kind": "component",
+      "page": "task-detail",
+      "viewport": "desktop",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/components/comp-shell-wide-detail.png",
+      "sha256": "4eebf24562ca555b0a2394dba60ea3b12bc5692b3756491d7200ec3fb5b6d218",
+      "fixtureOnly": true,
+      "clip": {
+        "x": 0,
+        "y": 0,
+        "width": 1680,
+        "height": 1000
+      },
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "comp-shell-mobile-list",
+      "storyId": "tasks-components-tasks-shell--mobile-list",
+      "kind": "component",
+      "page": "inbox",
+      "viewport": "mobile",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/components/comp-shell-mobile-list.png",
+      "sha256": "ba938f9a63053bd765a3b4c8296394a7b4986dae6fb37058e662c9c6d32c22ef",
+      "fixtureOnly": true,
+      "clip": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+      },
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "comp-shell-mobile-detail",
+      "storyId": "tasks-components-tasks-shell--mobile-detail",
+      "kind": "component",
+      "page": "task-detail",
+      "viewport": "mobile",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/components/comp-shell-mobile-detail.png",
+      "sha256": "8d24f50f6fcfbd96c59257057a1bdfa608314615c1d0f68ea28d41f6c5324253",
+      "fixtureOnly": true,
+      "clip": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+      },
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "comp-motion-swipe",
+      "storyId": "tasks-components-motion-and-gestures--swipe-threshold",
+      "kind": "component",
+      "page": "inbox",
+      "viewport": "mobile",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/components/comp-motion-swipe.png",
+      "sha256": "c8ff71cdfa7270c8fa8247f2ab8fa42de1c41dd8be618e030ce6024bba03689d",
+      "fixtureOnly": true,
+      "clip": {
+        "x": 0,
+        "y": 120,
+        "width": 390,
+        "height": 64
+      },
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "comp-motion-swipe-below",
+      "storyId": "tasks-components-motion-and-gestures--swipe-below-threshold",
+      "kind": "component",
+      "page": "inbox",
+      "viewport": "mobile",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/components/comp-motion-swipe-below.png",
+      "sha256": "c8ff71cdfa7270c8fa8247f2ab8fa42de1c41dd8be618e030ce6024bba03689d",
+      "fixtureOnly": true,
+      "clip": {
+        "x": 0,
+        "y": 120,
+        "width": 390,
+        "height": 64
+      },
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "comp-motion-scroll",
+      "storyId": "tasks-components-motion-and-gestures--scroll-intent-cancels",
+      "kind": "component",
+      "page": "inbox",
+      "viewport": "mobile",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/components/comp-motion-scroll.png",
+      "sha256": "c8ff71cdfa7270c8fa8247f2ab8fa42de1c41dd8be618e030ce6024bba03689d",
+      "fixtureOnly": true,
+      "clip": {
+        "x": 0,
+        "y": 120,
+        "width": 390,
+        "height": 64
+      },
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
+    },
+    {
+      "id": "comp-motion-pager",
+      "storyId": "tasks-components-motion-and-gestures--pager-back-threshold",
+      "kind": "component",
+      "page": "task-detail",
+      "viewport": "mobile",
+      "state": "migrated-browser-crop",
+      "file": "screenshots/components/comp-motion-pager.png",
+      "sha256": "8d24f50f6fcfbd96c59257057a1bdfa608314615c1d0f68ea28d41f6c5324253",
+      "fixtureOnly": true,
+      "clip": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+      },
+      "placeholdersApplied": [
+        "avatar",
+        "banner"
+      ]
     }
   ],
   "motions": [
@@ -155,8 +1285,7 @@
     }
   ],
   "limitations": [
-    "Screenshot ids under screenshots/browser/ are committed Visual Delta reference targets from a logged-in Superlist session against the Tasks UI Reference list.",
-    "Playwright visual baselines for Tasks components live separately under tests/visual/storybook.spec.ts-snapshots/tasks/ (component-clipped, shadcn-style).",
-    "Motion contact sheets remain under motion/synthetic-browser-* until re-captured."
+    "Initial tree may be migrated/upscaled from prior browser captures until reference:capture:delta runs against a logged-in session.",
+    "Component clips use matrix CSS rectangles; live capture prefers locator bounding boxes when available."
   ]
 }

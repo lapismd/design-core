@@ -19,6 +19,8 @@
     "reference:auth": "tsx scripts/reference/auth.ts",
     "reference:bootstrap": "tsx scripts/reference/bootstrap.ts",
     "reference:capture": "tsx scripts/reference/capture.ts",
+    "reference:capture:delta": "tsx scripts/reference/capture-visual-delta.ts",
+    "reference:migrate:delta": "tsx scripts/reference/migrate-visual-delta.ts",
     "reference:verify": "tsx scripts/reference/verify.ts"
   }
 }

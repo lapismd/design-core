@@ -18,13 +18,15 @@
 </script>
 
 <script lang="ts">
-  import { referenceVisualDelta } from "../../lib/story-data.js";
+  import { visualDeltaForStory } from "../../lib/visual-delta.js";
 </script>
 
 <Story
   name="Default"
   exportName="Default"
-  parameters={{ visualDelta: referenceVisualDelta("desktop-updates") }}
+  parameters={{
+    visualDelta: visualDeltaForStory("tasks-pages-updates--default"),
+  }}
   play={async ({ canvas }) => {
     await expect(canvas.getByText("Detail closed")).toBeVisible();
   }}
@@ -37,7 +39,9 @@
 <Story
   name="Loading"
   exportName="Loading"
-  parameters={{ visualDelta: referenceVisualDelta("desktop-updates") }}
+  parameters={{
+    visualDelta: visualDeltaForStory("tasks-pages-updates--loading"),
+  }}
   play={async ({ canvas }) => {
     await expect(canvas.getByText("Loading updates")).toBeVisible();
   }}
@@ -50,7 +54,9 @@
 <Story
   name="Error with retry"
   exportName="ErrorRetry"
-  parameters={{ visualDelta: referenceVisualDelta("desktop-updates") }}
+  parameters={{
+    visualDelta: visualDeltaForStory("tasks-pages-updates--error-retry"),
+  }}
   play={async ({ canvas }) => {
     await userEvent.click(canvas.getByText("Retry"));
     await expect(canvas.getByText("Retry requested")).toBeVisible();

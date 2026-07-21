@@ -26,7 +26,7 @@
 <Story
   name="See colocated page stories"
   exportName="SeeColocatedPageStories"
-  parameters={{ visualDelta: referenceVisualDelta("desktop-inbox") }}
+  parameters={{ visualDelta: referenceVisualDelta("page-desktop-inbox") }}
   play={async ({ canvas }) => {
     await expect(canvas.getByRole("heading", { name: "Inbox" })).toBeVisible();
   }}

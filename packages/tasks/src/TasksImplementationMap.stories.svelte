@@ -31,8 +31,8 @@
   name="Component breakdown"
   parameters={{
     visualDelta: referenceVisualDelta(
-      "desktop-inbox",
-      "desktop-task-detail",
+      "page-desktop-inbox",
+      "page-desktop-task-detail",
       "mobile-swipe-motion",
     ),
   }}

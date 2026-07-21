@@ -20,12 +20,18 @@
 </script>
 
 <script lang="ts">
+  import { visualDeltaForStory } from "../../lib/visual-delta.js";
   import TasksShellHarness from "./TasksShellHarness.svelte";
 </script>
 
 <Story
   name="Wide, no detail"
   exportName="WideNoDetail"
+  parameters={{
+    visualDelta: visualDeltaForStory(
+      "tasks-components-tasks-shell--wide-no-detail",
+    ),
+  }}
   play={async ({ canvas }) => {
     await expect(canvas.getByLabelText("Tasks navigation")).toBeVisible();
     await expect(canvas.getByLabelText("Tasks")).toBeVisible();
@@ -40,6 +46,11 @@
 <Story
   name="Wide with detail"
   exportName="WideWithDetail"
+  parameters={{
+    visualDelta: visualDeltaForStory(
+      "tasks-components-tasks-shell--wide-with-detail",
+    ),
+  }}
   play={async ({ canvas }) => {
     await userEvent.click(
       canvas.getAllByRole("button", { name: "Details" })[0],
@@ -56,6 +67,11 @@
 <Story
   name="Mobile list pane"
   exportName="MobileList"
+  parameters={{
+    visualDelta: visualDeltaForStory(
+      "tasks-components-tasks-shell--mobile-list",
+    ),
+  }}
   play={async ({ canvas }) => {
     await expect(canvas.getByText("Pane list")).toBeVisible();
     await expect(canvas.getByLabelText("Tasks")).toBeVisible();
@@ -73,6 +89,11 @@
 <Story
   name="Mobile detail pane"
   exportName="MobileDetail"
+  parameters={{
+    visualDelta: visualDeltaForStory(
+      "tasks-components-tasks-shell--mobile-detail",
+    ),
+  }}
   play={async ({ canvas }) => {
     await expect(canvas.getByText("Pane detail")).toBeVisible();
     await expect(canvas.getByLabelText("Task detail")).toBeVisible();

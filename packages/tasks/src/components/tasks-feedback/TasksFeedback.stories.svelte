@@ -20,12 +20,18 @@
 </script>
 
 <script lang="ts">
+  import { visualDeltaForStory } from "../../lib/visual-delta.js";
   import TasksFeedbackHarness from "./TasksFeedbackHarness.svelte";
 </script>
 
 <Story
   name="Empty updates"
   exportName="Empty"
+  parameters={{
+    visualDelta: visualDeltaForStory(
+      "tasks-components-feedback-and-empty-states--empty",
+    ),
+  }}
 >
   {#snippet template()}
     <div class="tasks-theme" style="padding: 1rem; max-width: 28rem">
@@ -37,6 +43,11 @@
 <Story
   name="Loading rows"
   exportName="Loading"
+  parameters={{
+    visualDelta: visualDeltaForStory(
+      "tasks-components-feedback-and-empty-states--loading",
+    ),
+  }}
 >
   {#snippet template()}
     <div class="tasks-theme" style="padding: 1rem; max-width: 28rem">
@@ -48,6 +59,11 @@
 <Story
   name="Preserving error with retry"
   exportName="PreservingError"
+  parameters={{
+    visualDelta: visualDeltaForStory(
+      "tasks-components-feedback-and-empty-states--preserving-error",
+    ),
+  }}
   play={async ({ canvas }) => {
     await expect(canvas.getByText("Couldn't refresh updates")).toBeVisible();
     await userEvent.click(canvas.getByRole("button", { name: "Retry" }));
@@ -68,6 +84,11 @@
 <Story
   name="Status while syncing"
   exportName="Status"
+  parameters={{
+    visualDelta: visualDeltaForStory(
+      "tasks-components-feedback-and-empty-states--status",
+    ),
+  }}
 >
   {#snippet template()}
     <div class="tasks-theme" style="padding: 1rem; max-width: 28rem">
@@ -79,6 +100,11 @@
 <Story
   name="Undo a completed action"
   exportName="Undo"
+  parameters={{
+    visualDelta: visualDeltaForStory(
+      "tasks-components-feedback-and-empty-states--undo",
+    ),
+  }}
   play={async ({ canvas }) => {
     await userEvent.click(canvas.getByRole("button", { name: "Undo" }));
     await expect(canvas.getByText("Undo requested")).toBeVisible();

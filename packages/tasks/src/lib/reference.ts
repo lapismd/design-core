@@ -8,16 +8,20 @@ export type ReferenceViewport = {
   id: TasksViewportId;
   width: number;
   height: number;
-  deviceScaleFactor: 1;
+  /** Legacy capture scenarios default to 1; Visual Delta harness uses 3. */
+  deviceScaleFactor: 1 | 3;
 };
 
-/** Reference capture is intentionally CSS-pixel deterministic, unlike product visual baselines. */
+/** CSS viewports for Superlist reference captures. */
 export const referenceViewports = [
   { id: "desktop", width: 1680, height: 1000, deviceScaleFactor: 1 },
   { id: "tablet-landscape", width: 1024, height: 768, deviceScaleFactor: 1 },
   { id: "tablet-portrait", width: 768, height: 1024, deviceScaleFactor: 1 },
   { id: "mobile", width: 390, height: 844, deviceScaleFactor: 1 },
 ] as const satisfies readonly ReferenceViewport[];
+
+/** Device scale for Visual Delta / `reference:capture:delta` (matches shadcn). */
+export const visualDeltaDeviceScaleFactor = 3 as const;
 
 export type CaptureScenario = {
   id: string;

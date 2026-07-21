@@ -18,13 +18,15 @@
 </script>
 
 <script lang="ts">
-  import { referenceVisualDelta } from "../../lib/story-data.js";
+  import { visualDeltaForStory } from "../../lib/visual-delta.js";
 </script>
 
 <Story
   name="Default"
   exportName="Default"
-  parameters={{ visualDelta: referenceVisualDelta("desktop-task-detail") }}
+  parameters={{
+    visualDelta: visualDeltaForStory("tasks-pages-task-detail--default"),
+  }}
   play={async ({ canvas }) => {
     await expect(canvas.getByText("Detail open task-brief")).toBeVisible();
   }}
@@ -37,7 +39,9 @@
 <Story
   name="Open detail"
   exportName="OpenDetail"
-  parameters={{ visualDelta: referenceVisualDelta("desktop-task-detail") }}
+  parameters={{
+    visualDelta: visualDeltaForStory("tasks-pages-task-detail--open-detail"),
+  }}
   play={async ({ canvas }) => {
     await userEvent.click(canvas.getAllByLabelText("Details")[0]);
     await expect(canvas.getByText("Detail open task-brief")).toBeVisible();

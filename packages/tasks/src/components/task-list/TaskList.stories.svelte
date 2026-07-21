@@ -20,12 +20,18 @@
 </script>
 
 <script lang="ts">
+  import { visualDeltaForStory } from "../../lib/visual-delta.js";
   import TaskListHarness from "./TaskListHarness.svelte";
 </script>
 
 <Story
   name="Default groups"
   exportName="DefaultGroups"
+  parameters={{
+    visualDelta: visualDeltaForStory(
+      "tasks-components-task-list--default-groups",
+    ),
+  }}
   play={async ({ canvas }) => {
     await expect(canvas.getByLabelText("Tasks")).toBeVisible();
     await expect(canvas.getByText("Overdue")).toBeVisible();
@@ -39,6 +45,11 @@
 <Story
   name="Collapse Done"
   exportName="CollapseDone"
+  parameters={{
+    visualDelta: visualDeltaForStory(
+      "tasks-components-task-list--collapse-done",
+    ),
+  }}
   play={async ({ canvas }) => {
     await expect(canvas.getByText("Done collapsed")).toBeVisible();
     await userEvent.click(canvas.getByRole("button", { name: "Expand Done" }));
@@ -53,6 +64,9 @@
 <Story
   name="Select row"
   exportName="SelectRow"
+  parameters={{
+    visualDelta: visualDeltaForStory("tasks-components-task-list--select-row"),
+  }}
   play={async ({ canvas }) => {
     await userEvent.click(canvas.getByText("Review the launch brief today"));
     await expect(canvas.getByText("Selected task-brief")).toBeVisible();
@@ -66,6 +80,9 @@
 <Story
   name="Empty"
   exportName="Empty"
+  parameters={{
+    visualDelta: visualDeltaForStory("tasks-components-task-list--empty"),
+  }}
   play={async ({ canvas }) => {
     await expect(canvas.getByText("No tasks in this view")).toBeVisible();
   }}
@@ -78,6 +95,9 @@
 <Story
   name="Loading"
   exportName="Loading"
+  parameters={{
+    visualDelta: visualDeltaForStory("tasks-components-task-list--loading"),
+  }}
   play={async ({ canvas }) => {
     await expect(canvas.getByText("Loading tasks")).toBeVisible();
   }}

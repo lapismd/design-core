@@ -1,40 +1,64 @@
 # Superlist reference capture
 
-This folder holds versioned observation artifacts for the Tasks implementation
-contract. Screenshots under `screenshots/browser/` are committed browser
-captures of the dedicated **Tasks UI Reference** fixture list (not a product
-export). Do not add unrelated personal tasks or private list content.
-
-## Capture shape
-
-- Desktop: 1680×1000
-- Tablet landscape: 1024×768
-- Tablet portrait: 768×1024
-- Mobile: 390×844
-- Device scale factor: 1 for legible diffs and manageable source control size
-
-Each dated capture includes a manifest with sha256 checksums, screenshots, and
-motion keyframes. Raw WebM and Playwright trace output remain in the ignored
-`.reference-artifacts/` directory.
+This folder holds versioned Superlist observation artifacts for Tasks Visual
+Delta overlays. Screenshots are committed and regenerated from the dedicated
+**Tasks UI Reference** fixture list.
 
 ## Two visual systems
 
 | Surface | Path | Purpose |
 | ------- | ---- | ------- |
-| Reference overlays | `/tasks-reference/2026-07-20/screenshots/browser/` | Full-page Superlist captures for Visual Delta on Reference Targets / page stories |
-| Component baselines | `/visual-baselines/tasks/components/…` | Playwright `toHaveScreenshot` clips of story subjects (shadcn-style) |
+| Superlist Visual Delta | `/tasks-reference/2026-07-20/screenshots/{pages,components}/` | Design reference overlays (DSF **3**) |
+| Playwright baselines | `/visual-baselines/tasks/…` | CI regression of *our* Tasks stories (separate) |
 
-Update component baselines only with explicit approval:
+## Capture matrix
+
+[`capture-matrix.json`](./capture-matrix.json) maps every `Tasks/Components/*` and
+`Tasks/Pages/*` story id to a capture job:
+
+- **Pages** (`kind: "page"`) — full viewport
+- **Components** (`kind: "component"`) — **subject clip only** (required `clip`;
+  rejected if the clip covers ≥90% of the viewport unless `allowFullViewport`)
+
+## Commands
 
 ```bash
-VISUAL_UPDATE_APPROVED=1 pnpm test:visual:update --story-id tasks-components-… --allow-dirty
+pnpm --dir packages/tasks reference:auth          # once, interactive login
+pnpm --dir packages/tasks reference:bootstrap     # fixture list
+pnpm --dir packages/tasks reference:migrate:delta # bootstrap PNGs from prior browser/ shots
+pnpm --dir packages/tasks reference:capture:delta # live Superlist re-capture @ DSF 3
+pnpm --dir packages/tasks reference:verify
 ```
 
-## Motion evidence
+Live capture writes hi-DPI PNGs, applies avatar/banner placeholder overlays, and
+updates `2026-07-20/manifest.json` checksums.
 
-Motion captures record a JSON contract plus deterministic keyframes/contact
-sheets. The harness uses CDP touch trajectories for swipes, ordinary click and
-double-click inputs, and native pointer drags.
+## Chrome MCP playbook (optional)
 
-`reference:verify` checks every committed checksum and accepts either a
-redacted evidence frame or an explicitly fixture-only frame.
+Use when auth/UI needs a human; day-to-day re-runs prefer `reference:capture:delta`.
+
+1. `list_pages` / navigate to `https://app.superlist.com/` (logged in).
+2. Enable Flutter accessibility (`flt-semantics-placeholder` → Enable accessibility).
+3. For each matrix entry: `resize_page` to the entry viewport CSS size.
+4. Follow `nav` steps (Inbox / Today / … / open fixture task).
+5. Inject placeholders for avatar + banner regions (or capture then redact).
+6. **Pages:** full-window screenshot → `screenshots/pages/<id>.png`.
+7. **Components:** crop to the subject bbox / matrix `clip` — never the full shell —
+   → `screenshots/components/<id>.png`.
+8. Chrome MCP may only write under the process temp root; copy into
+   `packages/tasks/reference/superlist/2026-07-20/` afterward.
+9. Re-run `reference:verify` (or re-run migrate checksums via `reference:migrate:delta`
+   only when bootstrapping from `screenshots/browser/`).
+
+Device scale: prefer **3** (match shadcn). Prefer the Playwright harness for
+correct DSF.
+
+## Placeholders
+
+Before live screenshots, the harness overlays neutral blocks for:
+
+- account avatar
+- top banner / promo chrome
+
+Flutter canvas content may still need matrix-driven rect redaction
+(`scripts/reference/redact-image.swift`) when overlays miss painted pixels.

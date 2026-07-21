@@ -37,16 +37,20 @@ product and not an excuse to bypass the catalog's component rules.
 ## Evidence and privacy
 
 The reference harness stores auth state and raw video under ignored package-local
-directories. Committed browser captures under
-`reference/superlist/<date>/screenshots/browser/` must use the dedicated Tasks
-UI Reference fixture list (synthetic task titles). Ordinary account chrome in
-those frames is allowed; do not commit unrelated personal tasks. Story data
-still uses synthetic fixtures from `@stevejuma/tasks/fixtures`.
+directories. Committed Superlist captures under
+`reference/superlist/<date>/screenshots/{pages,components}/` must use the
+dedicated Tasks UI Reference fixture list (synthetic task titles). Pages are
+full-viewport; components are subject-clipped. Ordinary account chrome is
+neutralized with avatar/banner placeholders on live capture. Story data still
+uses synthetic fixtures from `@stevejuma/tasks/fixtures`.
 
-Component visual regression uses the shared Playwright suite (same gate as
-shadcn) under `tests/visual/storybook.spec.ts-snapshots/tasks/`. That is
-separate from Superlist reference overlays (`referenceVisualDelta`).
+Visual Delta overlays resolve from `capture-matrix.json` via
+`visualDeltaForStory`. Playwright baselines under
+`tests/visual/storybook.spec.ts-snapshots/tasks/` are a separate CI regression
+of our Tasks stories.
 
 Run `pnpm --dir packages/tasks reference:verify` after changing contracts. For a
-new research pass, follow the auth → bootstrap → capture → verify sequence in
-`packages/tasks/AGENTS.md`.
+live refresh: `reference:auth` → `reference:bootstrap` → `reference:capture:delta`
+→ `reference:verify`. Without auth, `reference:migrate:delta` bootstraps from
+prior `screenshots/browser/` shots.
+

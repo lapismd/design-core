@@ -20,6 +20,7 @@
 </script>
 
 <script lang="ts">
+  import { visualDeltaForStory } from "../../lib/visual-delta.js";
   import { createTasksStoryFixture } from "../../lib/story-fixtures.js";
   import TaskRowHarness from "./TaskRowHarness.svelte";
 
@@ -30,6 +31,9 @@
 <Story
   name="Default"
   exportName="Default"
+  parameters={{
+    visualDelta: visualDeltaForStory("tasks-components-task-row--default"),
+  }}
 >
   {#snippet template()}
     <div class="tasks-theme" style="padding: 1rem; max-width: 40rem">
@@ -41,6 +45,11 @@
 <Story
   name="Complete independently"
   exportName="CompleteIndependently"
+  parameters={{
+    visualDelta: visualDeltaForStory(
+      "tasks-components-task-row--complete-independently",
+    ),
+  }}
   play={async ({ canvas }) => {
     await userEvent.click(
       canvas.getByRole("checkbox", {
@@ -63,6 +72,11 @@
 <Story
   name="Click selects and details opens explicitly"
   exportName="SelectAndOpen"
+  parameters={{
+    visualDelta: visualDeltaForStory(
+      "tasks-components-task-row--select-and-open",
+    ),
+  }}
   play={async ({ canvas }) => {
     await userEvent.click(
       canvas.getByRole("button", { name: "Review the launch brief today" }),
@@ -80,6 +94,11 @@
 <Story
   name="Double click keeps selection parity"
   exportName="DoubleClickParity"
+  parameters={{
+    visualDelta: visualDeltaForStory(
+      "tasks-components-task-row--double-click-parity",
+    ),
+  }}
   play={async ({ canvas }) => {
     const row = canvas.getByRole("button", {
       name: "Review the launch brief today",
@@ -97,6 +116,11 @@
 <Story
   name="Enter opens and Space completes"
   exportName="KeyboardSplit"
+  parameters={{
+    visualDelta: visualDeltaForStory(
+      "tasks-components-task-row--keyboard-split",
+    ),
+  }}
   play={async ({ canvas }) => {
     const row = canvas.getByRole("button", {
       name: "Review the launch brief today",
@@ -120,6 +144,9 @@
 <Story
   name="Drag handle is available"
   exportName="DragHandle"
+  parameters={{
+    visualDelta: visualDeltaForStory("tasks-components-task-row--drag-handle"),
+  }}
   play={async ({ canvas }) => {
     await expect(
       canvas.getByRole("button", {
@@ -136,6 +163,9 @@
 <Story
   name="Swipe reveals complete action"
   exportName="SwipeReveal"
+  parameters={{
+    visualDelta: visualDeltaForStory("tasks-components-task-row--swipe-reveal"),
+  }}
   play={async ({ canvas }) => {
     await expect(
       canvas.getByRole("button", { name: "Complete task" }),

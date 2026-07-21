@@ -24,115 +24,135 @@ export type TasksImplementationBrief = {
 
 const captureRoot = "/tasks-reference/2026-07-20";
 
-function browserScreenshotSource(id: string): string {
-  return `${captureRoot}/screenshots/browser/${id}.png`;
+function pageScreenshotSource(id: string): string {
+  return `${captureRoot}/screenshots/pages/${id}.png`;
+}
+
+function componentScreenshotSource(id: string): string {
+  return `${captureRoot}/screenshots/components/${id}.png`;
 }
 
 /**
- * Committed Superlist browser captures (Tasks UI Reference fixture list) plus
- * motion contact sheets. These feed Storybook Visual Delta via
- * `referenceVisualDelta` and are separate from Playwright component baselines
- * under `/visual-baselines/tasks/…`.
+ * Catalog targets for Tasks/Reference Targets. Visual Delta on production
+ * stories resolves via `visualDeltaForStory` + capture-matrix.json.
  */
 export const referenceTargets = [
   {
-    id: "desktop-inbox",
+    id: "page-desktop-inbox",
     title: "Desktop — Inbox",
     description: "Default task collection with a persistent left navigation.",
     page: "Inbox",
-    viewport: "1680 × 1000 desktop",
-    state: "Browser capture — fixture list",
-    source: browserScreenshotSource("desktop-inbox"),
+    viewport: "1680 × 1000 desktop @3x",
+    state: "Full-page Superlist reference",
+    source: pageScreenshotSource("page-desktop-inbox"),
   },
   {
-    id: "desktop-today",
+    id: "page-desktop-today",
     title: "Desktop — Today",
     description: "Grouped work that makes overdue and today states scannable.",
     page: "Today",
-    viewport: "1680 × 1000 desktop",
-    state: "Browser capture",
-    source: browserScreenshotSource("desktop-today"),
+    viewport: "1680 × 1000 desktop @3x",
+    state: "Full-page Superlist reference",
+    source: pageScreenshotSource("page-desktop-today"),
   },
   {
-    id: "desktop-tasks",
+    id: "page-desktop-tasks",
     title: "Desktop — Tasks",
     description: "Task overview with ownership/status filtering.",
     page: "Tasks",
-    viewport: "1680 × 1000 desktop",
-    state: "Browser capture",
-    source: browserScreenshotSource("desktop-tasks"),
+    viewport: "1680 × 1000 desktop @3x",
+    state: "Full-page Superlist reference",
+    source: pageScreenshotSource("page-desktop-tasks"),
   },
   {
-    id: "desktop-updates",
+    id: "page-desktop-updates",
     title: "Desktop — Updates",
     description: "Quiet empty feedback state with compact filters.",
     page: "Updates",
-    viewport: "1680 × 1000 desktop",
-    state: "Browser capture",
-    source: browserScreenshotSource("desktop-updates"),
+    viewport: "1680 × 1000 desktop @3x",
+    state: "Full-page Superlist reference",
+    source: pageScreenshotSource("page-desktop-updates"),
   },
   {
-    id: "desktop-lists",
+    id: "page-desktop-lists",
     title: "Desktop — Lists",
     description: "List index with navigation and list-level actions.",
     page: "Lists",
-    viewport: "1680 × 1000 desktop",
-    state: "Browser capture",
-    source: browserScreenshotSource("desktop-lists"),
+    viewport: "1680 × 1000 desktop @3x",
+    state: "Full-page Superlist reference",
+    source: pageScreenshotSource("page-desktop-lists"),
   },
   {
-    id: "desktop-list-detail",
+    id: "page-desktop-list-detail",
     title: "Desktop — List detail",
     description: "Selected list with tasks and an inline composer location.",
     page: "List detail",
-    viewport: "1680 × 1000 desktop",
-    state: "Browser capture — Tasks UI Reference",
-    source: browserScreenshotSource("desktop-list-detail"),
+    viewport: "1680 × 1000 desktop @3x",
+    state: "Full-page Superlist reference",
+    source: pageScreenshotSource("page-desktop-list-detail"),
   },
   {
-    id: "desktop-task-detail",
+    id: "page-desktop-task-detail",
     title: "Desktop — Task detail",
     description: "Task detail in the desktop rail treatment.",
     page: "Task detail",
-    viewport: "1680 × 1000 desktop",
-    state: "Detail open",
-    source: browserScreenshotSource("desktop-task-detail"),
+    viewport: "1680 × 1000 desktop @3x",
+    state: "Full-page Superlist reference",
+    source: pageScreenshotSource("page-desktop-task-detail"),
   },
   {
-    id: "tablet-landscape-inbox",
+    id: "page-tablet-landscape-inbox",
     title: "Tablet landscape — Inbox",
     description: "The inbox under a constrained two-pane desktop treatment.",
     page: "Inbox",
-    viewport: "1024 × 768 tablet landscape",
-    state: "Browser capture — resized",
-    source: browserScreenshotSource("tablet-landscape-inbox"),
+    viewport: "1024 × 768 tablet landscape @3x",
+    state: "Full-page Superlist reference",
+    source: pageScreenshotSource("page-tablet-landscape-inbox"),
   },
   {
-    id: "tablet-portrait-inbox",
+    id: "page-tablet-portrait-inbox",
     title: "Tablet portrait — Inbox",
     description: "The pager-root breakpoint, before a detail pane opens.",
     page: "Inbox",
-    viewport: "768 × 1024 tablet portrait",
-    state: "Browser capture — resized",
-    source: browserScreenshotSource("tablet-portrait-inbox"),
+    viewport: "768 × 1024 tablet portrait @3x",
+    state: "Full-page Superlist reference",
+    source: pageScreenshotSource("page-tablet-portrait-inbox"),
   },
   {
-    id: "mobile-inbox",
+    id: "page-mobile-inbox",
     title: "Mobile — Inbox",
     description: "Mobile root pane with a compact top control and row actions.",
     page: "Inbox",
-    viewport: "390 × 844 mobile",
-    state: "Browser capture — resized",
-    source: browserScreenshotSource("mobile-inbox"),
+    viewport: "390 × 844 mobile @3x",
+    state: "Full-page Superlist reference",
+    source: pageScreenshotSource("page-mobile-inbox"),
   },
   {
-    id: "mobile-task-detail",
+    id: "page-mobile-task-detail",
     title: "Mobile — Task detail",
-    description: "Task detail opened from Inbox on a mobile viewport.",
+    description: "Task detail opened on a mobile viewport.",
     page: "Task detail",
-    viewport: "390 × 844 mobile",
-    state: "Detail open",
-    source: browserScreenshotSource("mobile-task-detail"),
+    viewport: "390 × 844 mobile @3x",
+    state: "Full-page Superlist reference",
+    source: pageScreenshotSource("page-mobile-task-detail"),
+  },
+  {
+    id: "comp-task-row-default",
+    title: "Component — Task row",
+    description: "Subject-clipped Superlist task row (not a full-page shell).",
+    page: "List detail",
+    viewport: "Desktop crop @3x",
+    state: "Component clip",
+    source: componentScreenshotSource("comp-task-row-default"),
+  },
+  {
+    id: "comp-detail-open",
+    title: "Component — Task detail rail",
+    description: "Subject-clipped Superlist detail rail.",
+    page: "Task detail",
+    viewport: "Desktop crop @3x",
+    state: "Component clip",
+    source: componentScreenshotSource("comp-detail-open"),
   },
   {
     id: "task-open-motion",
@@ -171,17 +191,16 @@ export function getReferenceTarget(
 }
 
 /**
- * Shared Visual Delta settings for committed Superlist reference captures
- * served from `/tasks-reference`. Separate from Playwright component baselines
- * under `/visual-baselines/tasks/…`.
+ * Shared Visual Delta settings for catalog reference targets.
+ * Production stories should use `visualDeltaForStory` from `visual-delta.ts`.
  */
 export function referenceVisualDelta(...targetIds: readonly string[]) {
   return {
     images: targetIds.map((id) => getReferenceTarget(id).source),
     opacity: 0.5,
     colorInversion: false,
-    align: "canvas",
-    placement: "right",
+    align: "canvas" as const,
+    placement: "right" as const,
     passThresholdPercent: 0.1,
   };
 }
@@ -207,7 +226,7 @@ export const pageImplementationBriefs = [
       "Tablet and mobile pager positions",
       "Focus returns to the selected task after close",
     ],
-    referenceTargetId: "desktop-inbox",
+    referenceTargetId: "page-desktop-inbox",
   },
   {
     id: "inbox",
@@ -227,7 +246,7 @@ export const pageImplementationBriefs = [
       "Default, empty, composer, and selected-row states",
       "Completion and explicit detail-open routes",
     ],
-    referenceTargetId: "desktop-inbox",
+    referenceTargetId: "page-desktop-inbox",
   },
   {
     id: "today",
@@ -245,7 +264,7 @@ export const pageImplementationBriefs = [
     reuse: ["ScrollArea", "Collapsible", "Badge"],
     additions: ["None in the first slice"],
     storyChecks: ["Overdue grouping", "Completion motion", "Reduced motion"],
-    referenceTargetId: "desktop-today",
+    referenceTargetId: "page-desktop-today",
   },
   {
     id: "tasks",
@@ -266,7 +285,7 @@ export const pageImplementationBriefs = [
       "Empty filtered state",
       "Keyboard segment selection",
     ],
-    referenceTargetId: "desktop-tasks",
+    referenceTargetId: "page-desktop-tasks",
   },
   {
     id: "updates",
@@ -282,7 +301,7 @@ export const pageImplementationBriefs = [
     reuse: ["ToggleGroup", "Empty", "Spinner", "Alert"],
     additions: ["White-label empty-state artwork decision"],
     storyChecks: ["Empty", "Loading", "Error with retry", "Filter selection"],
-    referenceTargetId: "desktop-updates",
+    referenceTargetId: "page-desktop-updates",
   },
   {
     id: "lists",
@@ -303,7 +322,7 @@ export const pageImplementationBriefs = [
       "Favourite action",
       "Open list detail",
     ],
-    referenceTargetId: "desktop-lists",
+    referenceTargetId: "page-desktop-lists",
   },
   {
     id: "list-detail",
@@ -325,7 +344,7 @@ export const pageImplementationBriefs = [
       "Selected detail",
       "Empty filtered state",
     ],
-    referenceTargetId: "desktop-list-detail",
+    referenceTargetId: "page-desktop-list-detail",
   },
   {
     id: "task-detail-page",
@@ -347,7 +366,7 @@ export const pageImplementationBriefs = [
       "Mobile back",
       "Right swipe",
     ],
-    referenceTargetId: "desktop-task-detail",
+    referenceTargetId: "page-desktop-task-detail",
   },
 ] as const satisfies readonly TasksImplementationBrief[];
 
@@ -388,7 +407,7 @@ export const componentImplementationBriefs = [
     reuse: ["ScrollArea", "Collapsible", "Empty", "Separator", "Skeleton"],
     additions: ["None in the first slice"],
     storyChecks: ["Grouped", "Empty", "Loading", "Selected", "Done collapsed"],
-    referenceTargetId: "desktop-inbox",
+    referenceTargetId: "page-desktop-inbox",
   },
   {
     id: "task-composer",
@@ -405,7 +424,7 @@ export const componentImplementationBriefs = [
     reuse: ["Input", "Textarea", "InputGroup", "Field", "Popover", "Button"],
     additions: ["None in the first slice"],
     storyChecks: ["Idle", "Active", "Validation", "Enter", "Escape"],
-    referenceTargetId: "desktop-list-detail",
+    referenceTargetId: "page-desktop-list-detail",
   },
   {
     id: "task-detail",
@@ -428,7 +447,7 @@ export const componentImplementationBriefs = [
       "Initial focus",
       "Close/back",
     ],
-    referenceTargetId: "desktop-task-detail",
+    referenceTargetId: "page-desktop-task-detail",
   },
   {
     id: "task-properties",
@@ -453,7 +472,7 @@ export const componentImplementationBriefs = [
     ],
     additions: ["Checkbox for multi-select menus"],
     storyChecks: ["Filled", "Empty", "Property change", "Keyboard menu return"],
-    referenceTargetId: "desktop-task-detail",
+    referenceTargetId: "page-desktop-task-detail",
   },
   {
     id: "list-navigation",
@@ -482,7 +501,7 @@ export const componentImplementationBriefs = [
       "List filters",
       "Keyboard focus",
     ],
-    referenceTargetId: "desktop-lists",
+    referenceTargetId: "page-desktop-lists",
   },
   {
     id: "tasks-filters-menus",
@@ -505,7 +524,7 @@ export const componentImplementationBriefs = [
       "Focus return",
       "Destructive separation",
     ],
-    referenceTargetId: "desktop-tasks",
+    referenceTargetId: "page-desktop-tasks",
   },
   {
     id: "tasks-feedback",
@@ -522,7 +541,7 @@ export const componentImplementationBriefs = [
     reuse: ["Empty", "Spinner", "Skeleton", "Alert", "Button"],
     additions: ["White-label illustration only after a separate decision"],
     storyChecks: ["Empty", "Loading", "Error retry", "Last usable result"],
-    referenceTargetId: "desktop-updates",
+    referenceTargetId: "page-desktop-updates",
   },
   {
     id: "tasks-motion",

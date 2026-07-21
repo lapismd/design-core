@@ -20,12 +20,18 @@
 </script>
 
 <script lang="ts">
+  import { visualDeltaForStory } from "../../lib/visual-delta.js";
   import ListNavigationHarness from "./ListNavigationHarness.svelte";
 </script>
 
 <Story
   name="Activate destination"
   exportName="ActivateDestination"
+  parameters={{
+    visualDelta: visualDeltaForStory(
+      "tasks-components-list-navigation-and-index--activate-destination",
+    ),
+  }}
   play={async ({ canvas }) => {
     await userEvent.click(canvas.getByRole("button", { name: "Today" }));
     await expect(canvas.getByText("Active today")).toBeVisible();
@@ -39,6 +45,11 @@
 <Story
   name="Favourite independently"
   exportName="FavouriteIndependently"
+  parameters={{
+    visualDelta: visualDeltaForStory(
+      "tasks-components-list-navigation-and-index--favourite-independently",
+    ),
+  }}
   play={async ({ canvas }) => {
     await expect(canvas.getByText("Favourite on")).toBeVisible();
     await userEvent.click(
@@ -56,6 +67,11 @@
 <Story
   name="Create list"
   exportName="CreateList"
+  parameters={{
+    visualDelta: visualDeltaForStory(
+      "tasks-components-list-navigation-and-index--create-list",
+    ),
+  }}
   play={async ({ canvas }) => {
     await userEvent.click(canvas.getByRole("button", { name: "New list" }));
     await expect(canvas.getByText("Create list requested")).toBeVisible();

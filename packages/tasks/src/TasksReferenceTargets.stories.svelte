@@ -11,7 +11,7 @@
       docs: {
         description: {
           component:
-            "Committed Superlist browser captures of the Tasks UI Reference fixture list. Full-page Visual Delta targets — separate from Playwright component baselines under /visual-baselines/tasks/.",
+            "Committed Superlist Visual Delta captures (DSF 3). Pages are full-viewport; component entries are subject-clipped. Production stories resolve overlays via capture-matrix.json.",
         },
       },
     },
@@ -27,106 +27,134 @@
 
 <Story
   name="Desktop — Inbox"
-  parameters={{ visualDelta: referenceVisualDelta("desktop-inbox") }}
+  parameters={{ visualDelta: referenceVisualDelta("page-desktop-inbox") }}
 >
   {#snippet template()}
-    <TasksReferenceTarget target={getReferenceTarget("desktop-inbox")} />
+    <TasksReferenceTarget target={getReferenceTarget("page-desktop-inbox")} />
   {/snippet}
 </Story>
 
 <Story
   name="Desktop — Today"
-  parameters={{ visualDelta: referenceVisualDelta("desktop-today") }}
+  parameters={{ visualDelta: referenceVisualDelta("page-desktop-today") }}
 >
   {#snippet template()}
-    <TasksReferenceTarget target={getReferenceTarget("desktop-today")} />
+    <TasksReferenceTarget target={getReferenceTarget("page-desktop-today")} />
   {/snippet}
 </Story>
 
 <Story
   name="Desktop — Tasks"
-  parameters={{ visualDelta: referenceVisualDelta("desktop-tasks") }}
+  parameters={{ visualDelta: referenceVisualDelta("page-desktop-tasks") }}
 >
   {#snippet template()}
-    <TasksReferenceTarget target={getReferenceTarget("desktop-tasks")} />
+    <TasksReferenceTarget target={getReferenceTarget("page-desktop-tasks")} />
   {/snippet}
 </Story>
 
 <Story
   name="Desktop — Updates"
-  parameters={{ visualDelta: referenceVisualDelta("desktop-updates") }}
+  parameters={{ visualDelta: referenceVisualDelta("page-desktop-updates") }}
 >
   {#snippet template()}
-    <TasksReferenceTarget target={getReferenceTarget("desktop-updates")} />
+    <TasksReferenceTarget target={getReferenceTarget("page-desktop-updates")} />
   {/snippet}
 </Story>
 
 <Story
   name="Desktop — Lists"
-  parameters={{ visualDelta: referenceVisualDelta("desktop-lists") }}
+  parameters={{ visualDelta: referenceVisualDelta("page-desktop-lists") }}
 >
   {#snippet template()}
-    <TasksReferenceTarget target={getReferenceTarget("desktop-lists")} />
+    <TasksReferenceTarget target={getReferenceTarget("page-desktop-lists")} />
   {/snippet}
 </Story>
 
 <Story
   name="Desktop — List detail"
-  parameters={{ visualDelta: referenceVisualDelta("desktop-list-detail") }}
+  parameters={{ visualDelta: referenceVisualDelta("page-desktop-list-detail") }}
 >
   {#snippet template()}
-    <TasksReferenceTarget target={getReferenceTarget("desktop-list-detail")} />
+    <TasksReferenceTarget
+      target={getReferenceTarget("page-desktop-list-detail")}
+    />
   {/snippet}
 </Story>
 
 <Story
   name="Desktop — Task detail"
-  parameters={{ visualDelta: referenceVisualDelta("desktop-task-detail") }}
+  parameters={{ visualDelta: referenceVisualDelta("page-desktop-task-detail") }}
 >
   {#snippet template()}
-    <TasksReferenceTarget target={getReferenceTarget("desktop-task-detail")} />
+    <TasksReferenceTarget
+      target={getReferenceTarget("page-desktop-task-detail")}
+    />
   {/snippet}
 </Story>
 
 <Story
   name="Tablet landscape — Inbox"
   parameters={{
-    visualDelta: referenceVisualDelta("tablet-landscape-inbox"),
+    visualDelta: referenceVisualDelta("page-tablet-landscape-inbox"),
   }}
 >
   {#snippet template()}
     <TasksReferenceTarget
-      target={getReferenceTarget("tablet-landscape-inbox")}
+      target={getReferenceTarget("page-tablet-landscape-inbox")}
     />
   {/snippet}
 </Story>
 
 <Story
   name="Tablet portrait — Inbox"
-  parameters={{ visualDelta: referenceVisualDelta("tablet-portrait-inbox") }}
+  parameters={{
+    visualDelta: referenceVisualDelta("page-tablet-portrait-inbox"),
+  }}
 >
   {#snippet template()}
     <TasksReferenceTarget
-      target={getReferenceTarget("tablet-portrait-inbox")}
+      target={getReferenceTarget("page-tablet-portrait-inbox")}
     />
   {/snippet}
 </Story>
 
 <Story
   name="Mobile — Inbox"
-  parameters={{ visualDelta: referenceVisualDelta("mobile-inbox") }}
+  parameters={{ visualDelta: referenceVisualDelta("page-mobile-inbox") }}
 >
   {#snippet template()}
-    <TasksReferenceTarget target={getReferenceTarget("mobile-inbox")} />
+    <TasksReferenceTarget target={getReferenceTarget("page-mobile-inbox")} />
   {/snippet}
 </Story>
 
 <Story
   name="Mobile — Task detail"
-  parameters={{ visualDelta: referenceVisualDelta("mobile-task-detail") }}
+  parameters={{ visualDelta: referenceVisualDelta("page-mobile-task-detail") }}
 >
   {#snippet template()}
-    <TasksReferenceTarget target={getReferenceTarget("mobile-task-detail")} />
+    <TasksReferenceTarget
+      target={getReferenceTarget("page-mobile-task-detail")}
+    />
+  {/snippet}
+</Story>
+
+<Story
+  name="Component — Task row"
+  parameters={{ visualDelta: referenceVisualDelta("comp-task-row-default") }}
+>
+  {#snippet template()}
+    <TasksReferenceTarget
+      target={getReferenceTarget("comp-task-row-default")}
+    />
+  {/snippet}
+</Story>
+
+<Story
+  name="Component — Task detail rail"
+  parameters={{ visualDelta: referenceVisualDelta("comp-detail-open") }}
+>
+  {#snippet template()}
+    <TasksReferenceTarget target={getReferenceTarget("comp-detail-open")} />
   {/snippet}
 </Story>
 

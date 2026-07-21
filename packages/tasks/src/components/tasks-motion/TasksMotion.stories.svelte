@@ -19,14 +19,18 @@
 </script>
 
 <script lang="ts">
-  import { referenceVisualDelta } from "../../lib/story-data.js";
+  import { visualDeltaForStory } from "../../lib/visual-delta.js";
   import TasksSwipeGestureHarness from "./TasksSwipeGestureHarness.svelte";
 </script>
 
 <Story
   name="Reveal a row action after the swipe threshold"
   exportName="SwipeThreshold"
-  parameters={{ visualDelta: referenceVisualDelta("mobile-swipe-motion") }}
+  parameters={{
+    visualDelta: visualDeltaForStory(
+      "tasks-components-motion-and-gestures--swipe-threshold",
+    ),
+  }}
   play={async ({ canvas }) => {
     const row = canvas.getByLabelText("Review the launch brief today");
     await fireEvent.pointerDown(row, { clientX: 160, clientY: 40 });
@@ -45,7 +49,11 @@
 <Story
   name="Below the threshold does not reveal"
   exportName="SwipeBelowThreshold"
-  parameters={{ visualDelta: referenceVisualDelta("mobile-swipe-motion") }}
+  parameters={{
+    visualDelta: visualDeltaForStory(
+      "tasks-components-motion-and-gestures--swipe-below-threshold",
+    ),
+  }}
   play={async ({ canvas }) => {
     const row = canvas.getByLabelText("Review the launch brief today");
     await fireEvent.pointerDown(row, { clientX: 160, clientY: 40 });
@@ -61,7 +69,11 @@
 <Story
   name="Vertical scroll intent cancels the swipe"
   exportName="ScrollIntentCancels"
-  parameters={{ visualDelta: referenceVisualDelta("mobile-swipe-motion") }}
+  parameters={{
+    visualDelta: visualDeltaForStory(
+      "tasks-components-motion-and-gestures--scroll-intent-cancels",
+    ),
+  }}
   play={async ({ canvas }) => {
     const row = canvas.getByLabelText("Review the launch brief today");
     await fireEvent.pointerDown(row, { clientX: 160, clientY: 40 });
@@ -81,7 +93,11 @@
 <Story
   name="Pager back after the horizontal threshold"
   exportName="PagerBackThreshold"
-  parameters={{ visualDelta: referenceVisualDelta("task-open-motion") }}
+  parameters={{
+    visualDelta: visualDeltaForStory(
+      "tasks-components-motion-and-gestures--pager-back-threshold",
+    ),
+  }}
   play={async ({ canvas }) => {
     const surface = canvas.getByText("Task detail pane");
     await fireEvent.pointerDown(surface, { clientX: 24, clientY: 40 });

@@ -11,11 +11,14 @@ components.
   primitive only through `pnpm ui:add <family>` and update `COMPONENT_AUDIT.md`.
 - Treat `src/lib/tasks-theme.css` as a scoped companion theme. Do not change the
   root product theme merely to implement a Tasks surface.
-- Committed browser captures under `reference/superlist/<date>/screenshots/browser/`
-  are evidence of interaction and layout (Tasks UI Reference fixture list). Keep
-  raw videos, traces, and auth state out of version control.
+- Committed Superlist captures under `reference/superlist/<date>/screenshots/{pages,components}/`
+  are Visual Delta evidence (DSF 3; pages full-viewport, components subject-clipped).
+  Keep raw videos, traces, and auth state out of version control.
+- Regenerate with `reference:capture:delta` (live) or `reference:migrate:delta`
+  (bootstrap from `screenshots/browser/`). Matrix: `capture-matrix.json`.
 - Component visual baselines use the shared Playwright suite under
-  `tests/visual/storybook.spec.ts-snapshots/tasks/` (same update gate as shadcn).
+  `tests/visual/storybook.spec.ts-snapshots/tasks/` (same update gate as shadcn);
+  that suite is separate from Superlist Visual Delta overlays.
 
 ## Capture workflow
 
