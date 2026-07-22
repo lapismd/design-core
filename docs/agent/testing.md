@@ -26,6 +26,8 @@ with the catalog — do not invent props or skip visual compare.
    failure.
 5. **Before commit** — `pnpm checks` (fmt, svelte-check including warnings, unit,
    storybook, static build, visual). Shorter: `pnpm storybook:check`.
+6. **Commit** — record the verified slice immediately (see `pnpm ui guide vcs`).
+   Prefer `jj commit` when Jujutsu is available; otherwise use Git.
 
 ## Visual baselines
 

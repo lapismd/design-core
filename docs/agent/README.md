@@ -28,6 +28,7 @@ Per-component docs are not topics here — use `pnpm ui components`.
 | `shadcn`          | `shadcn.md`          | `ui:add` / inspect / docs sync                    |
 | `forms`           | `forms.md`           | structured forms contract                         |
 | `testing`         | `testing.md`         | stories, checks, visual baselines                 |
+| `vcs`             | `vcs.md`             | commit after verified changes (prefer jj)         |
 | `tasks`           | `tasks.md`           | task-app reference contracts and capture workflow |
 | `llms-extraction` | `llms-extraction.md` | deferred catalog extraction notes                 |
 

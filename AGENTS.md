@@ -13,7 +13,8 @@ Before inventing workflows, load package conventions offline via the CLI:
 3. `pnpm ui guide shadcn` — `ui:add` / inspect / docs sync (never raw shadcn CLI)
 4. `pnpm ui guide forms` — structured forms vs shadcn controls
 5. `pnpm ui guide testing` — stories, checks, and visual baselines after a change
-6. `pnpm ui components` / `pnpm ui components <layer/id>` — list or show local
+6. `pnpm ui guide vcs` — commit after each verified change (prefer `jj` when available)
+7. `pnpm ui components` / `pnpm ui components <layer/id>` — list or show local
    usage and examples across shadcn, forms, AI, workspace-shell, apps,
    `@stevejuma/workspace`, and `@stevejuma/tasks` (filter with `--layer`)
 
@@ -108,6 +109,8 @@ full-repo static `llms.txt` notes: `pnpm ui guide llms-extraction`.
 - `pnpm storybook:check` runs story tests + Storybook build + visual compare.
 - Do not invent component props: verify them from the component source,
   TypeScript types, and existing stories.
+- After a verified slice, commit promptly (`pnpm ui guide vcs`): prefer
+  `jj commit` when available.
 
 ## Generated UI and visual baseline rules
 
