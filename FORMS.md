@@ -19,6 +19,17 @@ Default editable forms are row-based:
 Compose fields inside a `cv-structured-form` / `ui-structured-form` scope
 (provided by `StructuredForm`) so label columns align via CSS subgrid.
 
+**Label/value alignment depends on subgrid, not on “using shared components”
+alone.** Rows must be direct subgrid participants of that host:
+
+- `FormField` (`.cv-form-field`)
+- `.cv-control-row` (e.g. `ReviewedTextControl`)
+- `.cv-control-row-group` (e.g. `ListEditor` header + items)
+
+If a composite keeps its own `max-content | 1fr` tracks instead of
+`grid-template-columns: subgrid`, its values start at a different x than sibling
+rows — the recurring misalignment regression.
+
 ## Tokens
 
 Forms expose a public token map like shadcn families:
@@ -30,19 +41,20 @@ Override on `:root` or a form ancestor, e.g. `--ui-form-accent: oklch(...)`.
 
 ## Canonical primitives
 
-| Need                        | Use                                                                             |
-| --------------------------- | ------------------------------------------------------------------------------- |
-| Label/value row             | `FormField`                                                                     |
-| Schema-shaped forms         | `StructuredForm` + builders from `forms/core`                                   |
-| Sections / repeated entries | `FormSectionHeader`, `EntryActions`, `CollapsibleItemList`, `AddSectionChooser` |
-| Story / stub body outlines  | `FormPlaceholder` only (dotted). Real components render without outline.                        |
-| 2–3 exclusive values        | `SegmentedControl` (or shadcn `ToggleGroup` when matching Actions UI)           |
-| Option menus                | shadcn `Select`; form-row icons/swap → `InlineOptionPicker`                     |
-| Tags / chip lists           | `ChipAutocomplete` (`tagListField` / `chipListField` builders)                  |
-| Ordered string lists        | `ListEditor` + `SortableArrayItem` (roles, highlights, keywords)                |
-| Searchable choices          | App pickers on shadcn `Command` + `Popover`                                     |
-| YAML dual mode              | `YamlBackedForm` + `YamlEditor`                                                 |
-| Source editing              | `CodeEditor`                                                                    |
+| Need                        | Use                                                                                            |
+| --------------------------- | ---------------------------------------------------------------------------------------------- |
+| Label/value row             | `FormField`                                                                                    |
+| Schema-shaped forms         | `StructuredForm` + builders from `forms/core`                                                  |
+| Sections / repeated entries | `FormSectionHeader`, `EntryActions`, `CollapsibleItemList`, `AddSectionChooser`                |
+| Story / stub body outlines  | `FormPlaceholder` only (dotted). Real components render without outline.                       |
+| 2–3 exclusive values        | `SegmentedControl` (or shadcn `ToggleGroup` when matching Actions UI)                          |
+| Option menus                | shadcn `Select`; form-row icons/swap → `InlineOptionPicker`                                    |
+| Tags / chip lists           | `ChipAutocomplete` (`tagListField` / `chipListField` builders)                                 |
+| Ordered string lists        | `ListEditor` + `SortableArrayItem` (roles, highlights, keywords)                               |
+| Searchable choices          | App pickers on shadcn `Command` + `Popover`                                                    |
+| YAML dual mode              | `YamlBackedForm` + `YamlEditor`                                                                |
+| Patch Keep/Undo review      | `PatchableForm` + `reviewedTextField` / `reviewedStringListField` + `createOrAppendJsonReview` |
+| Source editing              | `CodeEditor`                                                                                   |
 
 ## Borderline shared components
 

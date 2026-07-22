@@ -41,9 +41,17 @@
   border-bottom: 0;
 }
 
+/**
+ * Subgrid into a host that already owns the shared label/value tracks.
+ * `.cv-control-row-group` (ListEditor, SocialNetworksEditor, …) must also
+ * participate — otherwise nested action rows invent their own max-content
+ * label column and values drift left of sibling FormField / control rows.
+ */
 @supports (grid-template-columns: subgrid) {
   .cv-structured-form > .cv-control-row,
   .ui-structured-form > .cv-control-row,
+  .cv-structured-form > .cv-control-row-group,
+  .ui-structured-form > .cv-control-row-group,
   .cv-control-row-group > .cv-control-row,
   .cv-control-row-group > .cv-control-action-row,
   .cv-control-row-group > .cv-control-row-group,
@@ -114,6 +122,9 @@
   }
 
   .cv-structured-form > .cv-control-row,
+  .ui-structured-form > .cv-control-row,
+  .cv-structured-form > .cv-control-row-group,
+  .ui-structured-form > .cv-control-row-group,
   .cv-control-row-group > .cv-control-row,
   .cv-control-row-group > .cv-control-action-row,
   .cv-control-row-group > .cv-control-row-group,

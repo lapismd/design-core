@@ -3,7 +3,10 @@
 /**
  * Host grid for labelled form rows. Any element with `.cv-structured-form`
  * (or `.ui-structured-form`) must establish this 2-column track so FormField /
- * control-row `subgrid` can align labels in one column.
+ * `.cv-control-row` / `.cv-control-row-group` can `subgrid` into one shared
+ * label column. Wrappers that are not subgrid participants (extra divs, or a
+ * row-group that keeps its own `max-content` tracks) reintroduce the classic
+ * label/value misalignment regression.
  */
 .cv-structured-form,
 .ui-structured-form {
