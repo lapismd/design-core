@@ -28,7 +28,8 @@ For the form decision guide, see **UI Forms/Guidance**.
 2. `pnpm ui:inspect <name>` — support tier and candidates (read-only).
 3. `pnpm ui:add <name> [--overwrite] [--dry-run]` — transactional convert in a
    detached worktree. Batches: `pnpm ui:add:batch a|b|c|d`.
-4. `pnpm ui:docs --component <name>` — sync upstream docs into `*.docs.md` / MDX.
+4. `pnpm ui:docs --component <name>` — sync vendored upstream docs into `*.docs.md` / MDX
+   (`vendor/shadcn-svelte-docs`; refresh with `pnpm ui docs:vendor`).
 5. Keep colocated stories under `Shadcn/...` with real interactive play coverage.
 6. Verify with the testing workflow (`pnpm ui guide testing`).
 

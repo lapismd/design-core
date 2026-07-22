@@ -32,28 +32,23 @@
   }}
 >
   {#snippet template()}
-    <Sidebar.Provider class="min-h-[240px]">
-      <Sidebar.Root bind:open>
+    <Sidebar.Provider bind:open class="min-h-[240px]">
+      <Sidebar.Root>
         <Sidebar.Header>Navigation</Sidebar.Header>
         <Sidebar.Content class="text-muted-foreground p-3 text-sm">
           Overview
         </Sidebar.Content>
         <Sidebar.Footer>v0.1</Sidebar.Footer>
       </Sidebar.Root>
-      <main class="flex flex-1 items-start gap-3 p-4">
-        <Sidebar.Trigger
-          aria-label="Toggle Sidebar"
-          onclick={() => (open = !open)}
-        >
-          Toggle
-        </Sidebar.Trigger>
+      <Sidebar.Inset class="flex flex-1 items-start gap-3 p-4">
+        <Sidebar.Trigger />
         <div class="flex flex-col gap-2">
           <p class="text-sm">Main content</p>
           <output class="text-muted-foreground text-sm">
             {open ? "open" : "closed"}
           </output>
         </div>
-      </main>
+      </Sidebar.Inset>
     </Sidebar.Provider>
   {/snippet}
 </Story>

@@ -1,29 +1,94 @@
-<!-- Adapted from https://shadcn-svelte.com/docs/components/input.md for the @stevejuma/ui native-CSS catalog. -->
+<!-- Adapted from https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/input.md for the @stevejuma/ui native-CSS catalog. -->
 
 # Input
 
 Displays a form input field or a component that looks like an input field.
 
-## [Usage](#usage)
+## Installation
 
-```svelte
+```bash
+pnpm ui:add input
+```
+
+## Usage
+
+```html
 <script lang="ts">
   import { Input } from "@stevejuma/ui/shadcn/input";
 </script>
 ```
 
-```svelte
+```html
 <Input />
 ```
 
-## [Examples](#examples)
+## Examples
 
-### [Default](#default)
+### Default
 
-### [File](#file)
 
-### [Disabled](#disabled)
+```html
+<script lang="ts">
+	import { Input } from "@stevejuma/ui/shadcn/input";
+</script>
 
-### [With Label](#with-label)
+<Input type="email" placeholder="Email" class="max-w-xs" />
+```
 
-### [With Button](#with-button)
+### File
+
+
+```html
+<script lang="ts">
+	import { Input } from "@stevejuma/ui/shadcn/input";
+	import { Label } from "@stevejuma/ui/shadcn/label";
+</script>
+
+<div class="grid w-full max-w-sm items-center gap-1.5">
+	<Label for="picture">Picture</Label>
+	<Input id="picture" type="file" />
+</div>
+```
+
+### Disabled
+
+
+```html
+<script lang="ts">
+	import { Input } from "@stevejuma/ui/shadcn/input";
+</script>
+
+<Input disabled type="email" placeholder="Email" class="max-w-sm" />
+```
+
+### With Label
+
+
+```html
+<script lang="ts">
+	import { Input } from "@stevejuma/ui/shadcn/input";
+	import { Label } from "@stevejuma/ui/shadcn/label";
+
+	const id = $props.id();
+</script>
+
+<div class="flex w-full max-w-sm flex-col gap-1.5">
+	<Label for="email-{id}">Email</Label>
+	<Input type="email" id="email-{id}" placeholder="Email" />
+</div>
+```
+
+### With Button
+
+
+```html
+<script lang="ts">
+	import { Button } from "@stevejuma/ui/shadcn/button";
+	import { Input } from "@stevejuma/ui/shadcn/input";
+</script>
+
+<div class="flex w-full max-w-sm items-center gap-2">
+	<Input type="email" placeholder="Email" />
+	<Button type="submit" variant="outline">Subscribe</Button>
+</div>
+```

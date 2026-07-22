@@ -62,13 +62,16 @@
         "sha256": "7b5ed28b90d1849a2fb8d425ba43bd0fc7607e3ec1ba06ba599e6ea3f7f4e755"
       }
     ],
-    "docsUrl": "https://shadcn-svelte.com/docs/components/alert-dialog.md",
-    "docsFetchedAt": "2026-07-19T20:42:29.318Z",
-    "docsSha256": "7e46a4163db48ff1209e6a4b2f7586778d04fc233202b9c17b1ac37996e9f3f3",
+    "docsUrl": "https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/alert-dialog.md",
+    "docsFetchedAt": "2026-07-22T09:57:18.341Z",
+    "docsSha256": "38e472de819004a4d7e748d307f8dee06ce4fc72468cc3e4569c1b2eca8b4cd8",
     "examplesIncluded": [
       "Preview"
     ],
-    "examplesSkipped": []
+    "examplesSkipped": [],
+    "docsCommit": "bf4f461d88526359d0e96e1950f637912bbeebe7",
+    "docsRef": "shadcn-svelte@1.4.2",
+    "docsVendorPath": "vendor/shadcn-svelte-docs"
   },
   "converter": {
     "version": "2.0.0",

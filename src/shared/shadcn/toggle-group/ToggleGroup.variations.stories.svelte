@@ -3,13 +3,13 @@
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import * as ToggleGroup from "./index.js";
   import * as exampleSources from "./ToggleGroup.example-sources.js";
-  import PreviewExample from "./examples/preview.svelte";
+  import SpacingExample from "./examples/spacing.svelte";
   import OutlineExample from "./examples/outline.svelte";
   import SingleExample from "./examples/single.svelte";
   import SmallExample from "./examples/small.svelte";
   import LargeExample from "./examples/large.svelte";
   import DisabledExample from "./examples/disabled.svelte";
-  import SpacingExample from "./examples/spacing.svelte";
+  import Spacing2Example from "./examples/spacing-2.svelte";
 
   const { Story } = defineMeta({
     title: "Shadcn/Actions/Toggle Group",
@@ -18,17 +18,14 @@
 </script>
 
 <Story
-  name="Preview"
-  exportName="Preview"
-  tags={["upstream-example", "visual-approved"]}
+  name="Spacing"
+  exportName="Spacing"
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
-      description: {
-        story: "A set of two-state buttons that can be toggled on or off.\n\n[Docs](https://bits-ui.com/docs/components/toggle-group)\n\n[API Reference](https://bits-ui.com/docs/components/toggle-group#api-reference)",
-      },
       source: {
-        code: exampleSources.Preview,
+        code: exampleSources.Spacing,
         language: "html",
         type: "code",
       },
@@ -37,7 +34,7 @@
 >
   {#snippet template()}
     <div class="p-4">
-      <PreviewExample />
+      <SpacingExample />
     </div>
   {/snippet}
 </Story>
@@ -45,7 +42,7 @@
 <Story
   name="Outline"
   exportName="Outline"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -67,7 +64,7 @@
 <Story
   name="Single"
   exportName="Single"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -89,7 +86,7 @@
 <Story
   name="Small"
   exportName="Small"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -111,7 +108,7 @@
 <Story
   name="Large"
   exportName="Large"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -133,7 +130,7 @@
 <Story
   name="Disabled"
   exportName="Disabled"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -154,8 +151,8 @@
 
 <Story
   name="Spacing"
-  exportName="Spacing"
-  tags={["upstream-example", "visual-approved"]}
+  exportName="Spacing2"
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -163,7 +160,7 @@
         story: "Use `spacing={2}` to add spacing between toggle group items.",
       },
       source: {
-        code: exampleSources.Spacing,
+        code: exampleSources.Spacing2,
         language: "html",
         type: "code",
       },
@@ -172,7 +169,7 @@
 >
   {#snippet template()}
     <div class="p-4">
-      <SpacingExample />
+      <Spacing2Example />
     </div>
   {/snippet}
 </Story>

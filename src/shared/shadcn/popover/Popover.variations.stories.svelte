@@ -14,14 +14,10 @@
 <Story
   name="Preview"
   exportName="Preview"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/popover/preview-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
     a11y: { test: "todo" },
     docs: {
-      description: {
-        story: "Displays rich content in a portal, triggered by a button.\n\n[Docs](https://bits-ui.com/docs/components/popover)\n\n[API Reference](https://bits-ui.com/docs/components/popover#api-reference)",
-      },
       source: {
         code: exampleSources.Preview,
         language: "html",

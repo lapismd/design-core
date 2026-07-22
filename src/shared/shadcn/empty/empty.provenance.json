@@ -38,9 +38,9 @@
         "sha256": "42353c628663f6cbc7744a8aae60fd5ff26d6e1356629ce51ccc01dda87d7c62"
       }
     ],
-    "docsUrl": "https://shadcn-svelte.com/docs/components/empty.md",
-    "docsFetchedAt": "2026-07-19T20:42:29.153Z",
-    "docsSha256": "0a8108a39c9a3ba458b4fe839d5253c8e5bf5275eecefc1e2f6132a64463926a",
+    "docsUrl": "https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/empty.md",
+    "docsFetchedAt": "2026-07-22T09:57:18.313Z",
+    "docsSha256": "4f54dc0bd6bba1f57ed883a841bb9f0a944381898483272cfca86267a1c7b4d9",
     "examplesIncluded": [
       "Preview",
       "Outline",
@@ -62,7 +62,10 @@
         "reason": "missing-family",
         "detail": "Catalog is missing family \"kbd\""
       }
-    ]
+    ],
+    "docsCommit": "bf4f461d88526359d0e96e1950f637912bbeebe7",
+    "docsRef": "shadcn-svelte@1.4.2",
+    "docsVendorPath": "vendor/shadcn-svelte-docs"
   },
   "converter": {
     "version": "2.0.0",

@@ -18,9 +18,6 @@
   parameters={{
     a11y: { test: "todo" },
     docs: {
-      description: {
-        story: "A control that allows the user to toggle between checked and not checked.\n\n[Docs](https://bits-ui.com/docs/components/switch)\n\n[API Reference](https://bits-ui.com/docs/components/switch#api-reference)",
-      },
       source: {
         code: exampleSources.Preview,
         language: "html",

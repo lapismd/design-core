@@ -22,14 +22,17 @@
         "sha256": "92472dd587436aff6e563df95b1411e7b05062338d210eba349ee169135dcf93"
       }
     ],
-    "docsUrl": "https://shadcn-svelte.com/docs/components/scroll-area.md",
-    "docsFetchedAt": "2026-07-19T20:42:29.556Z",
-    "docsSha256": "3e343ada691527d76575f9d412aba4066abef0a95a56c818a5f1b65994576654",
+    "docsUrl": "https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/scroll-area.md",
+    "docsFetchedAt": "2026-07-22T09:57:18.442Z",
+    "docsSha256": "6f092cd87b9bf8b05ca6225393cc408c7175a45832553901eb3a8ce8307bd103",
     "examplesIncluded": [
       "Preview",
       "Horizontal Scrolling"
     ],
-    "examplesSkipped": []
+    "examplesSkipped": [],
+    "docsCommit": "bf4f461d88526359d0e96e1950f637912bbeebe7",
+    "docsRef": "shadcn-svelte@1.4.2",
+    "docsVendorPath": "vendor/shadcn-svelte-docs"
   },
   "converter": {
     "version": "2.0.0",

@@ -1,18 +1,24 @@
-<!-- Adapted from https://shadcn-svelte.com/docs/components/dialog.md for the @stevejuma/ui native-CSS catalog. -->
+<!-- Adapted from https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/dialog.md for the @stevejuma/ui native-CSS catalog. -->
 
 # Dialog
 
 A window overlaid on either the primary window or another dialog window, rendering the content underneath inert.
 
-## [Usage](#usage)
+## Installation
 
-```svelte
+```bash
+pnpm ui:add dialog
+```
+
+## Usage
+
+```html
 <script lang="ts">
   import * as Dialog from "@stevejuma/ui/shadcn/dialog";
 </script>
 ```
 
-```svelte
+```html
 <Dialog.Root>
   <Dialog.Trigger>Open</Dialog.Trigger>
   <Dialog.Content>
@@ -27,6 +33,75 @@ A window overlaid on either the primary window or another dialog window, renderi
 </Dialog.Root>
 ```
 
-## [Examples](#examples)
+## Examples
 
-### [Custom close button](#custom-close-button)
+### Custom close button
+
+<!-- Need to convert to svelte component
+
+```html
+<script lang="ts">
+	import { buttonVariants } from "@stevejuma/ui/shadcn/button";
+	import * as Dialog from "@stevejuma/ui/shadcn/dialog";
+	import { Input } from "@stevejuma/ui/shadcn/input";
+	import { Label } from "@stevejuma/ui/shadcn/label";
+</script>
+
+<Dialog.Root>
+	<Dialog.Trigger class={buttonVariants({ variant: "outline" })}>Share</Dialog.Trigger>
+	<Dialog.Content class="sm:max-w-md">
+		<Dialog.Header>
+			<Dialog.Title>Share link</Dialog.Title>
+			<Dialog.Description>
+				Anyone who has this link will be able to view this.
+			</Dialog.Description>
+		</Dialog.Header>
+		<div class="flex items-center gap-2">
+			<div class="grid flex-1 gap-2">
+				<Label for="link" class="sr-only">Link</Label>
+				<Input id="link" defaultValue="https://shadcn-svelte.com/docs/installation" />
+			</div>
+		</div>
+		<Dialog.Footer class="sm:justify-start">
+			<Dialog.Close class={buttonVariants({ variant: "secondary" })}>Close</Dialog.Close>
+		</Dialog.Footer>
+	</Dialog.Content>
+</Dialog.Root>
+```
+
+## Notes
+
+To use the `Dialog` component from within a `Context Menu` or `Dropdown Menu`, you must encase the `Context Menu` or
+`Dropdown Menu` component in the `Dialog` component.
+
+```tsx
+<Dialog>
+  <ContextMenu>
+    <ContextMenuTrigger>Right click</ContextMenuTrigger>
+    <ContextMenuContent>
+      <ContextMenuItem>Open</ContextMenuItem>
+      <ContextMenuItem>Download</ContextMenuItem>
+      <DialogTrigger>
+        {#snippet child({ props })}
+          <ContextMenuItem {...props}>
+            <span>Delete</span>
+          </ContextMenuItem>
+        {/snippet}
+      </DialogTrigger>
+    </ContextMenuContent>
+  </ContextMenu>
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle>Are you absolutely sure?</DialogTitle>
+      <DialogDescription>
+        This action cannot be undone. Are you sure you want to permanently
+        delete this file from our servers?
+      </DialogDescription>
+    </DialogHeader>
+    <DialogFooter>
+      <Button type="submit">Confirm</Button>
+    </DialogFooter>
+  </DialogContent>
+</Dialog>
+```
+-->

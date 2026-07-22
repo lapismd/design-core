@@ -4,7 +4,9 @@
   import * as Card from "./index.js";
   import * as exampleSources from "./Card.example-sources.js";
   import PreviewExample from "./examples/preview.svelte";
+  import Preview2Example from "./examples/preview-2.svelte";
   import SpacingExample from "./examples/spacing.svelte";
+  import Spacing2Example from "./examples/spacing-2.svelte";
   import ImageExample from "./examples/image.svelte";
 
   const { Story } = defineMeta({
@@ -16,13 +18,10 @@
 <Story
   name="Preview"
   exportName="Preview"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
-      description: {
-        story: "Displays a card with header, content, and footer.",
-      },
       source: {
         code: exampleSources.Preview,
         language: "html",
@@ -39,9 +38,31 @@
 </Story>
 
 <Story
+  name="Preview"
+  exportName="Preview2"
+  tags={["upstream-example"]}
+  parameters={{
+    a11y: { test: "todo" },
+    docs: {
+      source: {
+        code: exampleSources.Preview2,
+        language: "html",
+        type: "code",
+      },
+    },
+  }}
+>
+  {#snippet template()}
+    <div class="p-4">
+      <Preview2Example />
+    </div>
+  {/snippet}
+</Story>
+
+<Story
   name="Spacing"
   exportName="Spacing"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -64,9 +85,34 @@
 </Story>
 
 <Story
+  name="Spacing"
+  exportName="Spacing2"
+  tags={["upstream-example"]}
+  parameters={{
+    a11y: { test: "todo" },
+    docs: {
+      description: {
+        story: "ComponentPreview name=\"card-spacing\" class=\"[&_.preview]:h-[34rem]\">\n\nUse negative margins with `-mx-(--card-spacing)` to make content go edge to edge while keeping it aligned with the card inset. When the edge-to-edge content sits above a footer, use `-mb-(--card-spacing)` on `CardContent` to remove the section gap.",
+      },
+      source: {
+        code: exampleSources.Spacing2,
+        language: "html",
+        type: "code",
+      },
+    },
+  }}
+>
+  {#snippet template()}
+    <div class="p-4">
+      <Spacing2Example />
+    </div>
+  {/snippet}
+</Story>
+
+<Story
   name="Image"
   exportName="Image"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {

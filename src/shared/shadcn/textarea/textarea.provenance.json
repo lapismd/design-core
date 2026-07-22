@@ -18,9 +18,9 @@
         "sha256": "e95498452cd2aecd958b010fb5d1393a89f24439aaae04268978580edeee6e58"
       }
     ],
-    "docsUrl": "https://shadcn-svelte.com/docs/components/textarea.md",
-    "docsFetchedAt": "2026-07-19T20:42:28.827Z",
-    "docsSha256": "5ed4fe43cec752723e116acce94e9ece54208b97cbafad63242adc4716834a74",
+    "docsUrl": "https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/textarea.md",
+    "docsFetchedAt": "2026-07-22T09:57:18.229Z",
+    "docsSha256": "d8aa76cd0c5a5eca5b01600316fb3ffcd7aff90468953a1bc35fa771c3f4cc9e",
     "examplesIncluded": [
       "Preview",
       "Default",
@@ -29,7 +29,10 @@
       "With Text",
       "With Button"
     ],
-    "examplesSkipped": []
+    "examplesSkipped": [],
+    "docsCommit": "bf4f461d88526359d0e96e1950f637912bbeebe7",
+    "docsRef": "shadcn-svelte@1.4.2",
+    "docsVendorPath": "vendor/shadcn-svelte-docs"
   },
   "converter": {
     "version": "2.0.0",

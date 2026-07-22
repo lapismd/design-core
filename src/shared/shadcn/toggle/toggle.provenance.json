@@ -18,9 +18,9 @@
         "sha256": "91c663cd8671c5161978a1a763e13919aaa3dc833c7ff2246fa7b8d3499af519"
       }
     ],
-    "docsUrl": "https://shadcn-svelte.com/docs/components/toggle.md",
-    "docsFetchedAt": "2026-07-19T20:42:28.969Z",
-    "docsSha256": "3e02b56d9951a0aaf3928b2cfc9ef05ecc696aa450d3e908bc1915f74a41b84d",
+    "docsUrl": "https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/toggle.md",
+    "docsFetchedAt": "2026-07-22T09:57:18.264Z",
+    "docsSha256": "016d6818bda5b157330f689de7b0d4e5365f80f4ad9bd6941846347184db66ca",
     "examplesIncluded": [
       "Preview",
       "Default",
@@ -30,7 +30,10 @@
       "Large",
       "Disabled"
     ],
-    "examplesSkipped": []
+    "examplesSkipped": [],
+    "docsCommit": "bf4f461d88526359d0e96e1950f637912bbeebe7",
+    "docsRef": "shadcn-svelte@1.4.2",
+    "docsVendorPath": "vendor/shadcn-svelte-docs"
   },
   "converter": {
     "version": "2.0.0",

@@ -814,7 +814,7 @@ export function getComponentsIndex(
     related: [
       "pnpm ui guide — conventions (shadcn / forms / testing)",
       "pnpm ui components --layer forms — filter by layer",
-      "pnpm ui:docs --component <name> — sync shadcn upstream docs",
+      "pnpm ui:docs --component <name> — sync vendored shadcn docs sources",
       "Storybook MCP — interactive catalog when the server is up",
     ],
   };

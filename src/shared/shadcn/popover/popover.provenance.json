@@ -46,13 +46,16 @@
         "sha256": "9697cf96a4ab4970b93e0aafd3962aaa21a97d88d2976886f2a7dd22db87b1ca"
       }
     ],
-    "docsUrl": "https://shadcn-svelte.com/docs/components/popover.md",
-    "docsFetchedAt": "2026-07-19T20:42:29.250Z",
-    "docsSha256": "b39592c9349cc9035c56b9d95abcf815e897d8421901d9528749dad2ce5ccd0a",
+    "docsUrl": "https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/popover.md",
+    "docsFetchedAt": "2026-07-22T09:57:18.323Z",
+    "docsSha256": "f600a1abc191ca9021af8707addf46fe423ba874dad7aee79e73b5b09d788b26",
     "examplesIncluded": [
       "Preview"
     ],
-    "examplesSkipped": []
+    "examplesSkipped": [],
+    "docsCommit": "bf4f461d88526359d0e96e1950f637912bbeebe7",
+    "docsRef": "shadcn-svelte@1.4.2",
+    "docsVendorPath": "vendor/shadcn-svelte-docs"
   },
   "converter": {
     "version": "2.0.0",

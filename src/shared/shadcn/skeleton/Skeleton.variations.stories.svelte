@@ -15,13 +15,10 @@
 <Story
   name="Preview"
   exportName="Preview"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
-      description: {
-        story: "Use to show a placeholder while content is loading.",
-      },
       source: {
         code: exampleSources.Preview,
         language: "html",
@@ -40,7 +37,7 @@
 <Story
   name="Card"
   exportName="Card"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {

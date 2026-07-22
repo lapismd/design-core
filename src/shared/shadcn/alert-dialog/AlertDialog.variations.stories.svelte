@@ -14,13 +14,10 @@
 <Story
   name="Preview"
   exportName="Preview"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
-      description: {
-        story: "A modal dialog that interrupts the user with important content and expects a response.\n\n[Docs](https://bits-ui.com/docs/components/alert-dialog)\n\n[API Reference](https://bits-ui.com/docs/components/alert-dialog#api-reference)",
-      },
       source: {
         code: exampleSources.Preview,
         language: "html",

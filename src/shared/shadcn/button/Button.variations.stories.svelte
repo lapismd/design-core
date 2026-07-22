@@ -15,7 +15,6 @@
   import WithIconExample from "./examples/with-icon.svelte";
   import RoundedExample from "./examples/rounded.svelte";
   import SpinnerExample from "./examples/spinner.svelte";
-  import Link1Example from "./examples/link-1.svelte";
 
   const { Story } = defineMeta({
     title: "Shadcn/Actions/Button",
@@ -26,12 +25,12 @@
 <Story
   name="Preview"
   exportName="Preview"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "Displays a button or a component that looks like a button.\n\n[API Reference](https://bits-ui.com/docs/components/button#api-reference)\n\n**Updated:** We have updated the button component to add new sizes: `icon-sm` and `icon-lg`. See the [changelog](https://shadcn-svelte.com/docs/components/button#changelog) for more details. Follow the instructions to update your project.",
+        story: "**Updated:** We have updated the button component to add new sizes: `icon-sm` and `icon-lg`. See the\n[changelog](/docs/components/button#changelog) for more details. Follow the\ninstructions to update your project.",
       },
       source: {
         code: exampleSources.Preview,
@@ -51,7 +50,7 @@
 <Story
   name="Size"
   exportName="Size"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -73,7 +72,7 @@
 <Story
   name="Default"
   exportName="Default"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -95,7 +94,7 @@
 <Story
   name="Outline"
   exportName="Outline"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -117,7 +116,7 @@
 <Story
   name="Secondary"
   exportName="Secondary"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -139,7 +138,7 @@
 <Story
   name="Ghost"
   exportName="Ghost"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -161,7 +160,7 @@
 <Story
   name="Destructive"
   exportName="Destructive"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -183,7 +182,7 @@
 <Story
   name="Link"
   exportName="Link"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -205,7 +204,7 @@
 <Story
   name="Icon"
   exportName="Icon"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -227,7 +226,7 @@
 <Story
   name="With Icon"
   exportName="WithIcon"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -252,7 +251,7 @@
 <Story
   name="Rounded"
   exportName="Rounded"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -277,7 +276,7 @@
 <Story
   name="Spinner"
   exportName="Spinner"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -292,31 +291,6 @@
   {#snippet template()}
     <div class="p-4">
       <SpinnerExample />
-    </div>
-  {/snippet}
-</Story>
-
-<Story
-  name="Link"
-  exportName="Link1"
-  tags={["upstream-example", "visual-approved"]}
-  parameters={{
-    a11y: { test: "todo" },
-    docs: {
-      description: {
-        story: "You can convert the `<button>` into an `<a>` element by simply passing an `href` as a prop.",
-      },
-      source: {
-        code: exampleSources.Link1,
-        language: "html",
-        type: "code",
-      },
-    },
-  }}
->
-  {#snippet template()}
-    <div class="p-4">
-      <Link1Example />
     </div>
   {/snippet}
 </Story>

@@ -1,31 +1,116 @@
-<!-- Adapted from https://shadcn-svelte.com/docs/components/toggle.md for the @stevejuma/ui native-CSS catalog. -->
+<!-- Adapted from https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/toggle.md for the @stevejuma/ui native-CSS catalog. -->
 
 # Toggle
 
 A two-state button that can be either on or off.
 
-## [Usage](#usage)
+## Installation
 
-```svelte
+```bash
+pnpm ui:add toggle
+```
+
+## Usage
+
+```html
 <script lang="ts">
   import { Toggle } from "@stevejuma/ui/shadcn/toggle";
 </script>
 ```
 
-```svelte
+```html
 <Toggle>Toggle</Toggle>
 ```
 
-## [Examples](#examples)
+## Examples
 
-### [Default](#default)
+### Default
 
-### [Outline](#outline)
 
-### [With Text](#with-text)
+```html
+<script lang="ts">
+	import BookmarkIcon from "@lucide/svelte/icons/bookmark";
+	import { Toggle } from "@stevejuma/ui/shadcn/toggle";
+</script>
 
-### [Small](#small)
+<Toggle
+	aria-label="Toggle bookmark"
+	size="sm"
+	variant="outline"
+	class="data-[state=on]:bg-transparent data-[state=on]:*:[svg]:fill-blue-500 data-[state=on]:*:[svg]:stroke-blue-500"
+>
+	<BookmarkIcon />
+	Bookmark
+</Toggle>
+```
 
-### [Large](#large)
+### Outline
 
-### [Disabled](#disabled)
+
+```html
+<script lang="ts">
+	import ItalicIcon from "@lucide/svelte/icons/italic";
+	import { Toggle } from "@stevejuma/ui/shadcn/toggle";
+</script>
+
+<Toggle variant="outline" aria-label="Toggle italic">
+	<ItalicIcon class="size-4" />
+</Toggle>
+```
+
+### With Text
+
+
+```html
+<script lang="ts">
+	import ItalicIcon from "@lucide/svelte/icons/italic";
+	import { Toggle } from "@stevejuma/ui/shadcn/toggle";
+</script>
+
+<Toggle aria-label="Toggle italic">
+	<ItalicIcon class="me-2 size-4" />
+	Italic
+</Toggle>
+```
+
+### Small
+
+
+```html
+<script lang="ts">
+	import ItalicIcon from "@lucide/svelte/icons/italic";
+	import { Toggle } from "@stevejuma/ui/shadcn/toggle";
+</script>
+
+<Toggle size="sm" aria-label="Toggle italic">
+	<ItalicIcon class="size-4" />
+</Toggle>
+```
+
+### Large
+
+
+```html
+<script lang="ts">
+	import ItalicIcon from "@lucide/svelte/icons/italic";
+	import { Toggle } from "@stevejuma/ui/shadcn/toggle";
+</script>
+
+<Toggle size="lg" aria-label="Toggle italic">
+	<ItalicIcon class="size-4" />
+</Toggle>
+```
+
+### Disabled
+
+
+```html
+<script lang="ts">
+	import UnderlineIcon from "@lucide/svelte/icons/underline";
+	import { Toggle } from "@stevejuma/ui/shadcn/toggle";
+</script>
+
+<Toggle aria-label="Toggle underline" disabled>
+	<UnderlineIcon class="size-4" />
+</Toggle>
+```

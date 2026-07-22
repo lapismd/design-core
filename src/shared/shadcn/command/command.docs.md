@@ -1,18 +1,24 @@
-<!-- Adapted from https://shadcn-svelte.com/docs/components/command.md for the @stevejuma/ui native-CSS catalog. -->
+<!-- Adapted from https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/command.md for the @stevejuma/ui native-CSS catalog. -->
 
 # Command
 
 Fast, composable, unstyled command menu for Svelte.
 
-## [Usage](#usage)
+## Installation
 
-```svelte
+```bash
+pnpm ui:add command
+```
+
+## Usage
+
+```html
 <script lang="ts">
   import * as Command from "@stevejuma/ui/shadcn/command";
 </script>
 ```
 
-```svelte
+```html
 <Command.Root>
   <Command.Input placeholder="Type a command or search..." />
   <Command.List>
@@ -32,20 +38,48 @@ Fast, composable, unstyled command menu for Svelte.
 </Command.Root>
 ```
 
-## [Examples](#examples)
+## Examples
 
-### [Dialog](#dialog)
+### Dialog
 
 To show the command menu in a dialog, use the `<Command.Dialog />` component instead of `<Command.Root />`. It accepts props for both the `<Dialog.Root />` and `<Command.Root />` components.
 
-lib/components/example-command-menu.svelte
+```html
+<script lang="ts">
+  import * as Command from "@stevejuma/ui/shadcn/command";
+  import { onMount } from "svelte";
 
-### [Combobox](#combobox)
+  let open = $state(false);
 
-You can use the `<Command />` component as a combobox. See the [Combobox](https://shadcn-svelte.com/docs/components/combobox) page for more information.
+  function handleKeydown(e: KeyboardEvent) {
+    if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+      e.preventDefault();
+      open = !open;
+    }
+  }
+</script>
 
-## [Changelog](#changelog)
+<svelte:document onkeydown={handleKeydown} />
 
-### [2024-10-30 Classes for icons](#2024-10-30-classes-for-icons)
+<Command.Dialog bind:open>
+  <Command.Input placeholder="Type a command or search..." />
+  <Command.List>
+    <Command.Empty>No results found.</Command.Empty>
+    <Command.Group heading="Suggestions">
+      <Command.Item>Calendar</Command.Item>
+      <Command.Item>Search Emoji</Command.Item>
+      <Command.Item>Calculator</Command.Item>
+    </Command.Group>
+  </Command.List>
+</Command.Dialog>
+```
+
+### Combobox
+
+You can use the `<Command />` component as a combobox. See the [Combobox](/docs/components/combobox) page for more information.
+
+## Changelog
+
+### 2024-10-30 Classes for icons
 
 - Added `gap-2 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0` to the `<Command.Item>` component to automatically style the icons inside.

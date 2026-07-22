@@ -3,7 +3,19 @@ import { mkdtempSync, readFileSync, existsSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { emitDocsArtifacts } from "../docs/emit-docs-artifacts.js";
+import {
+  emitDocsArtifacts,
+  expandSectionExampleSources,
+  extractThemeCustomProperties,
+  normalizeDocsFenceLanguages,
+  shouldReplaceFenceWithFullExample,
+  stripSponsorAndHero,
+} from "../docs/emit-docs-artifacts.js";
+import {
+  collectComponentPreviews,
+  loadVendoredDocs,
+  stripDocsSiteComponents,
+} from "../docs/load-vendored-docs.js";
 import {
   parseUpstreamDocs,
   pickExampleCode,
@@ -17,10 +29,10 @@ import {
   rewriteSpacingArbitraryProps,
 } from "../docs/rewrite-example.js";
 
-const fixturePath = path.join(
-  path.dirname(fileURLToPath(import.meta.url)),
-  "../fixtures/upstream-docs/input-group.md",
-);
+const here = path.dirname(fileURLToPath(import.meta.url));
+const packageRoot = path.resolve(here, "../../..");
+const fixturePath = path.join(here, "../fixtures/upstream-docs/input-group.md");
+const vendoredFixtureRoot = path.join(here, "../fixtures/vendored-docs");
 
 describe("pickExampleCode", () => {
   it("prefers the full script SFC when a truncated fence comes first", () => {
@@ -367,28 +379,7 @@ import * as Tooltip from "$lib/components/ui/tooltip/index.js";`;
     ).toBe(false);
   });
 
-  it("completes tooltip nested-providers empty shell", () => {
-    const result = rewriteExample({
-      component: "tooltip",
-      example: {
-        name: "Nested Providers",
-        slug: "nested-providers",
-        description: "Nest providers for different delay groups.",
-        code: `<Tooltip.Provider delayDuration={0}>
-</Tooltip.Provider>`,
-      },
-      availableFamilies: new Set(["tooltip", "button"]),
-    });
-    expect(isRewrittenExample(result)).toBe(true);
-    if (!isRewrittenExample(result)) return;
-    expect(result.code).toContain("Default delay");
-    expect(result.code).toContain("Instant");
-    expect(result.code).toContain("delayDuration={0}");
-    expect(result.code).toContain('from "./index.js"');
-    expect(result.code).toContain('from "../button/index.js"');
-  });
-
-  it("skips unknown empty element shells", () => {
+  it("skips empty element shells", () => {
     const result = rewriteExample({
       component: "dialog",
       example: {
@@ -404,6 +395,350 @@ import * as Tooltip from "$lib/components/ui/tooltip/index.js";`;
     if (isRewrittenExample(result)) return;
     expect(result.reason).toBe("empty-code");
     expect(result.detail).toMatch(/empty element shell/i);
+  });
+
+  it("rewrites $lib/registry/ui imports from vendored examples", () => {
+    const result = rewriteExample({
+      component: "tooltip",
+      example: {
+        name: "Preview",
+        slug: "preview",
+        description: null,
+        code: `<script lang="ts">
+  import { buttonVariants } from "../ui/button/index.js";
+  import * as Tooltip from "$lib/registry/ui/tooltip/index.js";
+</script>
+<Tooltip.Provider><Tooltip.Root /></Tooltip.Provider>
+`,
+        previewName: "tooltip-demo",
+      },
+      availableFamilies: new Set(["tooltip", "button"]),
+    });
+    expect(isRewrittenExample(result)).toBe(true);
+    if (!isRewrittenExample(result)) return;
+    expect(result.code).toContain('from "./index.js"');
+    expect(result.code).toContain('from "../button/index.js"');
+    expect(result.code).not.toContain("$lib/registry");
+  });
+});
+
+describe("stripDocsSiteComponents", () => {
+  it("unwraps Steps/Step/Callout so tutorial prose and fences survive", () => {
+    const md = `## Your First Sidebar
+
+Intro.
+
+<Steps>
+
+<Step>
+
+Add a provider.
+
+</Step>
+
+\`\`\`svelte
+<Sidebar.Provider />
+\`\`\`
+
+<Callout>
+
+**Note:** Wrap inset content in \`SidebarInset\`.
+
+</Callout>
+
+</Steps>
+`;
+    const cleaned = stripDocsSiteComponents(md);
+    expect(cleaned).toContain("Add a provider.");
+    expect(cleaned).toContain("<Sidebar.Provider />");
+    expect(cleaned).toContain("Wrap inset content in `SidebarInset`.");
+    expect(cleaned).not.toMatch(/<\/?Steps\b/i);
+    expect(cleaned).not.toMatch(/<\/?Step\b/i);
+    expect(cleaned).not.toMatch(/<\/?Callout\b/i);
+  });
+
+  it("preserves {#snippet} inside code fences while unwrapping install snippets", () => {
+    const md = `## Sidebar.Header
+
+\`\`\`svelte
+<DropdownMenu.Trigger>
+  {#snippet child({ props })}
+    <Sidebar.MenuButton {...props} />
+  {/snippet}
+</DropdownMenu.Trigger>
+\`\`\`
+
+{#snippet cli()}
+outside
+{/snippet}
+`;
+    const cleaned = stripDocsSiteComponents(md);
+    expect(cleaned).toContain("{#snippet child({ props })}");
+    expect(cleaned).toContain("{/snippet}");
+    expect(cleaned).toContain("outside");
+    expect(cleaned).not.toMatch(/\{#snippet cli/);
+  });
+
+  it("keeps Installation content and unwraps snippet/install chrome", () => {
+    const md = `## Installation
+
+<InstallTabs>
+{#snippet cli()}
+
+Run the following command to install the \`sidebar\` components:
+
+<PMAddComp name="sidebar" />
+
+Add the following colors to your CSS file
+
+\`\`\`css
+:root { --sidebar: oklch(0.985 0 0); }
+\`\`\`
+
+{/snippet}
+{#snippet manual()}
+Copy and paste source.
+{#if viewerData}
+<ComponentSource item={viewerData} />
+{/if}
+{/snippet}
+</InstallTabs>
+
+<DocsFigure caption="Demo">
+hello
+</DocsFigure>
+`;
+    const cleaned = stripDocsSiteComponents(md);
+    expect(cleaned).toContain("## Installation");
+    expect(cleaned).toContain("pnpm ui:add sidebar");
+    expect(cleaned).toContain("--sidebar: oklch(0.985 0 0)");
+    expect(cleaned).not.toContain("Copy and paste source");
+    expect(cleaned).not.toMatch(/\{#snippet|InstallTabs|PMAddComp|DocsFigure|hello/i);
+  });
+});
+
+describe("expandSectionExampleSources", () => {
+  it("replaces abbreviated section fences with the full example SFC", () => {
+    const full = `<script lang="ts">
+  import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
+</script>
+
+<Sidebar.Provider>
+  <Sidebar.Root>
+    <Sidebar.Header>Workspace</Sidebar.Header>
+  </Sidebar.Root>
+</Sidebar.Provider>`;
+    const md = `## Sidebar.Header
+
+Intro.
+
+\`\`\`svelte
+<Sidebar.Root>
+  <Sidebar.Header />
+</Sidebar.Root>
+\`\`\`
+
+## Next
+`;
+    const expanded = expandSectionExampleSources(
+      md,
+      [
+        {
+          example: {
+            name: "Sidebar.Header",
+            slug: "sidebar-header",
+            description: null,
+            code: full,
+          },
+          code: full,
+          requiredFamilies: ["sidebar"],
+        },
+      ],
+      "sidebar",
+    );
+    expect(expanded).toContain('from "@stevejuma/ui/shadcn/sidebar"');
+    expect(expanded).toContain("<Sidebar.Header>Workspace</Sidebar.Header>");
+    expect(expanded).not.toContain("<Sidebar.Header />");
+  });
+
+  it("leaves tiny API one-liners alone", () => {
+    expect(
+      shouldReplaceFenceWithFullExample(
+        `<Sidebar.Root collapsible="offcanvas | icon | none" />`,
+        "<script></script>\n<Sidebar.Provider><Sidebar.Root /></Sidebar.Provider>",
+      ),
+    ).toBe(false);
+  });
+});
+
+describe("stripSponsorAndHero", () => {
+  it("keeps hero prose before Installation and drops hero fences", () => {
+    const md = `# Sidebar
+
+Short blurb.
+
+Sidebars are complex to build.
+
+\`\`\`svelte
+<script></script>
+\`\`\`
+
+### [Epicenter](https://example.com)
+
+[Special Sponsor](https://example.com)
+
+## Installation
+
+install me
+
+## Structure
+
+A \`Sidebar\` has parts.
+`;
+    const cleaned = stripSponsorAndHero(md);
+    expect(cleaned).toContain("Sidebars are complex to build.");
+    expect(cleaned).toContain("## Structure");
+    expect(cleaned).toContain("A `Sidebar` has parts.");
+    expect(cleaned).toContain("## Installation");
+    expect(cleaned).not.toContain("<script></script>");
+    expect(cleaned).not.toMatch(/Epicenter|Special Sponsor/i);
+  });
+});
+
+describe("loadVendoredDocs", () => {
+  it("collects ComponentPreview names with heading context", () => {
+    const md = readFileSync(
+      path.join(vendoredFixtureRoot, "content/components/dropdown-menu.md"),
+      "utf8",
+    );
+    const body = md.replace(/^---[\s\S]*?---\r?\n/, "").replace(
+      /^\s*<script\b[^>]*>[\s\S]*?<\/script>\s*/i,
+      "",
+    );
+    const previews = collectComponentPreviews(body);
+    expect(previews.map((p) => p.name)).toEqual([
+      "dropdown-menu-demo",
+      "dropdown-menu-dialog",
+    ]);
+    expect(previews[0]!.headingName).toBeNull();
+    expect(previews[1]!.headingName).toBe("Dialog");
+  });
+
+  it("loads tooltip demos from ComponentPreview SFCs only", () => {
+    const { docs } = loadVendoredDocs({
+      packageRoot: here,
+      component: "tooltip",
+      vendorRoot: vendoredFixtureRoot,
+    });
+    expect(docs.title).toBe("Tooltip");
+    expect(docs.examples).toHaveLength(1);
+    expect(docs.examples[0]!.name).toBe("Preview");
+    expect(docs.examples[0]!.slug).toBe("preview");
+    expect(docs.examples[0]!.previewName).toBe("tooltip-demo");
+    expect(docs.examples[0]!.code).toContain("Add to library");
+    expect(docs.examples.map((e) => e.name)).not.toContain("Nested Providers");
+  });
+
+  it("loads dropdown-menu dialog from the full example SFC", () => {
+    const { docs } = loadVendoredDocs({
+      packageRoot: here,
+      component: "dropdown-menu",
+      vendorRoot: vendoredFixtureRoot,
+    });
+    expect(docs.examples.map((e) => e.name)).toEqual(["Preview", "Dialog"]);
+    const dialog = docs.examples.find((e) => e.slug === "dialog")!;
+    expect(dialog.code).toContain("Dialog.Root");
+    expect(dialog.code).toContain("bind:open");
+    expect(dialog.code).toContain("<script");
+  });
+
+  it("does not span example descriptions across Installation", () => {
+    const body = `
+<ComponentPreview name="card-demo">
+<div></div>
+</ComponentPreview>
+
+## Installation
+
+{#snippet cli()}
+install
+{/snippet}
+
+## Examples
+
+<ComponentPreview name="card-demo">
+<div></div>
+</ComponentPreview>
+
+### Spacing
+
+Use extra padding.
+
+<ComponentPreview name="card-spacing">
+<div></div>
+</ComponentPreview>
+`;
+    const previews = collectComponentPreviews(body);
+    expect(previews).toHaveLength(3);
+    expect(previews[0]!.description ?? "").not.toMatch(/Installation|snippet/i);
+    expect(previews[1]!.description).toBeNull();
+    expect(previews[2]!.description).toBe("Use extra padding.");
+  });
+
+  it("skips type=block only when reporting isBlock flag", () => {
+    const body = `
+<ComponentPreview type="block" name="sidebar-07">
+<div></div>
+</ComponentPreview>
+
+## Examples
+
+### Header
+
+<ComponentPreview name="tooltip-demo">
+<div></div>
+</ComponentPreview>
+`;
+    const previews = collectComponentPreviews(body);
+    expect(previews).toHaveLength(2);
+    expect(previews[0]!.isBlock).toBe(true);
+    expect(previews[1]!.isBlock).toBe(false);
+  });
+
+  it("loads single-file block demos for sidebar", () => {
+    const vendorRoot = path.join(
+      here,
+      "../../..",
+      "vendor/shadcn-svelte-docs",
+    );
+    const { docs, skippedBlocks } = loadVendoredDocs({
+      packageRoot: here,
+      component: "sidebar",
+      vendorRoot,
+    });
+    expect(skippedBlocks).toEqual(["sidebar-07"]);
+    expect(docs.examples.length).toBe(12);
+    expect(docs.examples.map((e) => e.previewName)).toContain("demo-sidebar");
+    expect(docs.examples.map((e) => e.previewName)).toContain(
+      "demo-sidebar-header",
+    );
+    expect(docs.examples.map((e) => e.previewName)).toContain(
+      "demo-sidebar-group-action",
+    );
+    expect(docs.examples.map((e) => e.name)).toContain("Sidebar.Header");
+    const first = docs.examples.find((e) => e.previewName === "demo-sidebar")!;
+    expect(first.code).toContain("Sidebar.Provider");
+    expect(first.code).toContain("$lib/registry/ui/sidebar");
+  });
+
+  it("fails when a ComponentPreview SFC is missing", () => {
+    expect(() =>
+      loadVendoredDocs({
+        packageRoot: here,
+        component: "missing-preview",
+        vendorRoot: vendoredFixtureRoot,
+      }),
+    ).toThrow(/Vendored content missing/);
   });
 });
 
@@ -446,7 +781,15 @@ describe("emitDocsArtifacts", () => {
 
     const mdx = readFileSync(path.join(targetDir, "InputGroup.mdx"), "utf8");
     expect(mdx).toContain("## Usage");
-    expect(mdx).not.toMatch(/##\s+Installation/);
+    expect(mdx).toContain('import docsBody from "./input-group.docs-body.md?raw"');
+    expect(mdx).toContain("<Markdown>{docsBody}</Markdown>");
+    expect(mdx).not.toContain("## Documentation");
+    expect(existsSync(path.join(targetDir, "input-group.docs-body.md"))).toBe(
+      true,
+    );
+    expect(
+      readFileSync(path.join(targetDir, "input-group.docs-body.md"), "utf8"),
+    ).toMatch(/##\s+(\[)?Installation/);
     expect(mdx).toContain("<Primary />");
     expect(mdx).toContain("<Controls />");
     expect(mdx).toContain('<Source language="html" code={');
@@ -458,16 +801,18 @@ describe("emitDocsArtifacts", () => {
     expect(mdx).toContain(
       "<Canvas of={InputGroupVariations.Text} meta={InputGroupVariations} />",
     );
-    expect(mdx).not.toContain("Button Group");
+    // Skipped examples must not get a Canvas (prose may still appear in Documentation).
+    expect(mdx).not.toContain("InputGroupVariations.ButtonGroup");
 
     const docsMd = readFileSync(path.join(targetDir, "input-group.docs.md"), "utf8");
-    expect(docsMd).not.toMatch(/##\s+(\[)?Installation/);
+    expect(docsMd).toMatch(/##\s+(\[)?Installation/);
     expect(docsMd).toContain("## [Usage](#usage)");
     expect(docsMd).toContain("@stevejuma/ui/shadcn/input-group");
-    expect(docsMd).toContain("```svelte");
-    // Example code fences are stripped; prose headings remain.
+    // Svelte fences are remapped to `html` for Storybook Prism highlighting.
+    expect(docsMd).toContain("```html");
+    // Example headings keep prose; abbreviated fences expand to full SFCs.
     expect(docsMd).toContain("### [Icon](#icon)");
-    expect(docsMd).not.toContain("<CreditCardIcon />");
+    expect(docsMd).toContain("<CreditCardIcon />");
 
     const stories = readFileSync(
       path.join(targetDir, "InputGroup.variations.stories.svelte"),
@@ -494,5 +839,41 @@ describe("emitDocsArtifacts", () => {
     );
     expect(icon.startsWith("<script")).toBe(true);
     expect(icon).toContain("// @generated by ui-generator");
+  });
+});
+
+describe("normalizeDocsFenceLanguages", () => {
+  it("strips fence meta and maps svelte/ts to Prism-supported langs", () => {
+    const md = `\`\`\`svelte showLineNumbers title="app.svelte"
+<script lang="ts">
+  const x = 1;
+</script>
+\`\`\`
+
+\`\`\`ts
+export const n = 1;
+\`\`\`
+`;
+    const out = normalizeDocsFenceLanguages(md);
+    expect(out).toContain("```html\n");
+    expect(out).toContain("```typescript\n");
+    expect(out).not.toContain("showLineNumbers");
+    expect(out).not.toContain("```svelte");
+    expect(out).not.toContain("```ts\n");
+  });
+});
+
+describe("extractThemeCustomProperties", () => {
+  it("extracts :root and .dark sidebar vars from theme.css", () => {
+    const theme = readFileSync(
+      path.join(packageRoot, "src/theme.css"),
+      "utf8",
+    );
+    const snippet = extractThemeCustomProperties(theme, "--sidebar");
+    expect(snippet).toContain(":root {");
+    expect(snippet).toContain(".dark {");
+    expect(snippet).toContain("--sidebar:");
+    expect(snippet).toContain("--sidebar-ring:");
+    expect(snippet).toMatch(/oklch\(98\.5%/);
   });
 });

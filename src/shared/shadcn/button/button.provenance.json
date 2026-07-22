@@ -18,9 +18,9 @@
         "sha256": "0f6b6f040d92b4153821d3f9b4d6b9cbc567247e4fda913e64c1d0fcc4a2f386"
       }
     ],
-    "docsUrl": "https://shadcn-svelte.com/docs/components/button.md",
-    "docsFetchedAt": "2026-07-19T20:42:28.636Z",
-    "docsSha256": "1be4a054b82125d5fc8a9c1be386695881c8604a6a6ce516d2615ca795497e66",
+    "docsUrl": "https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/button.md",
+    "docsFetchedAt": "2026-07-22T09:57:18.196Z",
+    "docsSha256": "26ef62f25e0f196d368cd3812563b9adb86449b8d029934d147cb744920ebbe7",
     "examplesIncluded": [
       "Preview",
       "Size",
@@ -33,8 +33,7 @@
       "Icon",
       "With Icon",
       "Rounded",
-      "Spinner",
-      "Link"
+      "Spinner"
     ],
     "examplesSkipped": [
       {
@@ -42,7 +41,10 @@
         "reason": "missing-family",
         "detail": "Catalog is missing family \"button-group\""
       }
-    ]
+    ],
+    "docsCommit": "bf4f461d88526359d0e96e1950f637912bbeebe7",
+    "docsRef": "shadcn-svelte@1.4.2",
+    "docsVendorPath": "vendor/shadcn-svelte-docs"
   },
   "converter": {
     "version": "1.0.0",

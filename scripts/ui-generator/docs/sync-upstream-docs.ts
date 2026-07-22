@@ -1,4 +1,3 @@
-import { createHash } from "node:crypto";
 import {
   existsSync,
   readdirSync,
@@ -9,13 +8,14 @@ import path from "node:path";
 import { EXIT, GeneratorError } from "../errors.js";
 import { log } from "../logger.js";
 import { emitDocsArtifacts } from "./emit-docs-artifacts.js";
-import { fetchUpstreamDocsMarkdown } from "./fetch-upstream-docs.js";
+import { loadVendoredDocs } from "./load-vendored-docs.js";
 import { parseUpstreamDocs } from "./parse-upstream-docs.js";
 import {
   isRewrittenExample,
   rewriteExample,
 } from "./rewrite-example.js";
 import type { SyncUpstreamDocsResult } from "./types.js";
+import { VENDOR_DOCS_RELATIVE } from "./vendor-docs.js";
 
 export function listShadcnFamilies(sharedRoot: string): Set<string> {
   if (!existsSync(sharedRoot)) return new Set();
@@ -24,10 +24,6 @@ export function listShadcnFamilies(sharedRoot: string): Set<string> {
       .filter((d) => d.isDirectory())
       .map((d) => d.name),
   );
-}
-
-function sha256(text: string): string {
-  return createHash("sha256").update(text).digest("hex");
 }
 
 function patchProvenance(
@@ -48,6 +44,9 @@ function patchProvenance(
     docsUrl: result.docsUrl,
     docsFetchedAt: result.docsFetchedAt,
     docsSha256: result.docsSha256,
+    docsCommit: result.docsCommit,
+    docsRef: result.docsRef,
+    docsVendorPath: result.docsVendorPath,
     examplesIncluded: result.examplesIncluded,
     examplesSkipped: result.examplesSkipped,
   };
@@ -60,17 +59,23 @@ export async function syncUpstreamDocs(args: {
   targetDir: string;
   storyTitle: string;
   sharedRoot: string;
-  /** When set, skip network and parse this markdown instead. */
+  packageRoot: string;
+  /**
+   * Offline LLM-markdown fixture (legacy parse path). Prefer vendored fixtures
+   * under scripts/ui-generator/fixtures/vendored-docs for new tests.
+   */
   markdownFixture?: string;
-  fetchImpl?: typeof fetch;
+  /** Override vendor root (tests). */
+  vendorRoot?: string;
 }): Promise<SyncUpstreamDocsResult> {
   const {
     component,
     targetDir,
     storyTitle,
     sharedRoot,
+    packageRoot,
     markdownFixture,
-    fetchImpl,
+    vendorRoot,
   } = args;
 
   if (!existsSync(targetDir)) {
@@ -83,21 +88,35 @@ export async function syncUpstreamDocs(args: {
 
   log.step(`Syncing upstream docs for ${component}`);
 
-  let url: string;
-  let markdown: string;
-  if (markdownFixture) {
-    markdown = readFileSync(markdownFixture, "utf8");
-    url = `fixture:${markdownFixture}`;
-  } else {
-    const fetched = await fetchUpstreamDocsMarkdown(component, { fetchImpl });
-    url = fetched.url;
-    markdown = fetched.markdown;
-  }
+  let docs;
+  let docsSha256: string;
+  let docsCommit: string | undefined;
+  let docsRef: string | undefined;
+  let docsVendorPath: string | undefined;
 
-  const docs = parseUpstreamDocs(component, markdown);
-  docs.docsUrl = url.startsWith("fixture:")
-    ? `https://shadcn-svelte.com/docs/components/${component}.md`
-    : url;
+  if (markdownFixture) {
+    const markdown = readFileSync(markdownFixture, "utf8");
+    docs = parseUpstreamDocs(component, markdown);
+    docs.docsUrl = `https://shadcn-svelte.com/docs/components/${component}.md`;
+    const { createHash } = await import("node:crypto");
+    docsSha256 = createHash("sha256").update(markdown).digest("hex");
+  } else {
+    const loaded = loadVendoredDocs({
+      packageRoot,
+      component,
+      vendorRoot,
+    });
+    docs = loaded.docs;
+    docsSha256 = loaded.contentSha256;
+    docsCommit = loaded.pin.commit;
+    docsRef = loaded.pin.ref;
+    docsVendorPath = VENDOR_DOCS_RELATIVE;
+    if (loaded.skippedBlocks.length) {
+      log.warn(
+        `${component}: skipping ${loaded.skippedBlocks.length} multi-file block preview(s): ${loaded.skippedBlocks.join(", ")}`,
+      );
+    }
+  }
 
   const available = listShadcnFamilies(sharedRoot);
   const included = [];
@@ -130,8 +149,11 @@ export async function syncUpstreamDocs(args: {
   const result: SyncUpstreamDocsResult = {
     component,
     docsUrl: docs.docsUrl,
-    docsSha256: sha256(markdown),
+    docsSha256,
     docsFetchedAt: new Date().toISOString(),
+    docsCommit,
+    docsRef,
+    docsVendorPath,
     written,
     examplesIncluded: included.map((e) => e.example.name),
     examplesSkipped: skipped.map((s) => ({

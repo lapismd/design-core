@@ -1,17 +1,23 @@
-<!-- Adapted from https://shadcn-svelte.com/docs/components/label.md for the @stevejuma/ui native-CSS catalog. -->
+<!-- Adapted from https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/label.md for the @stevejuma/ui native-CSS catalog. -->
 
 # Label
 
 Renders an accessible label associated with controls.
 
-## [Usage](#usage)
+## Installation
 
-```svelte
+```bash
+pnpm ui:add label
+```
+
+## Usage
+
+```html
 <script lang="ts">
   import { Label } from "@stevejuma/ui/shadcn/label";
 </script>
 ```
 
-```svelte
+```html
 <Label for="email">Your email address</Label>
 ```

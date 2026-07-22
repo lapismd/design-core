@@ -1,23 +1,28 @@
-<!-- Adapted from https://shadcn-svelte.com/docs/components/tooltip.md for the @stevejuma/ui native-CSS catalog. -->
+<!-- Adapted from https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/tooltip.md for the @stevejuma/ui native-CSS catalog. -->
 
 # Tooltip
 
 A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.
 
-## [Usage](#usage)
+## Installation
+
+```bash
+pnpm ui:add tooltip
+```
+
+## Usage
 
 The `Tooltip.Provider` component should be placed once in your root layout, wrapping all content that will contain tooltips. This ensures that only one tooltip within the provider can be open at a time.
 
-src/routes/+layout.svelte
-
-```svelte
+```html
 <script lang="ts">
   import * as Tooltip from "@stevejuma/ui/shadcn/tooltip";
+
   let { children } = $props();
 </script>
 ```
 
-```svelte
+```html
 <Tooltip.Provider>
   {@render children()}
 </Tooltip.Provider>
@@ -25,10 +30,11 @@ src/routes/+layout.svelte
 
 Then use tooltips anywhere in your app:
 
-```svelte
+```html
 <script lang="ts">
   import * as Tooltip from "@stevejuma/ui/shadcn/tooltip";
 </script>
+
 <Tooltip.Root>
   <Tooltip.Trigger>Hover</Tooltip.Trigger>
   <Tooltip.Content>
@@ -37,20 +43,21 @@ Then use tooltips anywhere in your app:
 </Tooltip.Root>
 ```
 
-### [Nested Providers](#nested-providers)
+### Nested Providers
 
 You can nest providers to create groups with different settings. Tooltips use the closest ancestor provider. This is useful when you want instant tooltips in specific areas:
 
-```svelte
+```html
 <Tooltip.Provider delayDuration={0}>
+  <!-- Tooltips here will open instantly -->
 </Tooltip.Provider>
 ```
 
-***
+---
 
-## [Changelog](#changelog)
+## Changelog
 
-### [2025-12 Update tooltip colors](#2025-12-update-tooltip-colors)
+### 2025-12 Update tooltip colors
 
 We've updated the tooltip colors to use the foreground color for the background and the background color for the foreground.
 

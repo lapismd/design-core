@@ -1,18 +1,24 @@
-<!-- Adapted from https://shadcn-svelte.com/docs/components/tabs.md for the @stevejuma/ui native-CSS catalog. -->
+<!-- Adapted from https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/tabs.md for the @stevejuma/ui native-CSS catalog. -->
 
 # Tabs
 
-A set of layered sections of contentknown as tab panelsthat are displayed one at a time.
+A set of layered sections of content—known as tab panels—that are displayed one at a time.
 
-## [Usage](#usage)
+## Installation
 
-```svelte
+```bash
+pnpm ui:add tabs
+```
+
+## Usage
+
+```html
 <script lang="ts">
   import * as Tabs from "@stevejuma/ui/shadcn/tabs";
 </script>
 ```
 
-```svelte
+```html
 <Tabs.Root value="account" class="w-[400px]">
   <Tabs.List>
     <Tabs.Trigger value="account">Account</Tabs.Trigger>

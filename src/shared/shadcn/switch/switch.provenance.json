@@ -18,13 +18,16 @@
         "sha256": "fb7a808ede2603c1e2f427b9ccc1c4c3e4bca34ecaba1fe082be24b0652ca69c"
       }
     ],
-    "docsUrl": "https://shadcn-svelte.com/docs/components/switch.md",
-    "docsFetchedAt": "2026-07-19T20:42:28.944Z",
-    "docsSha256": "ca9b2405cb46442bc25550231e88861fd609ddc670fed598ff518ed1dad43028",
+    "docsUrl": "https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/switch.md",
+    "docsFetchedAt": "2026-07-22T09:57:18.259Z",
+    "docsSha256": "c957c7966d1cf7e298af5a8d06ff2b677023ef434fea5082735509a46c512f60",
     "examplesIncluded": [
       "Preview"
     ],
-    "examplesSkipped": []
+    "examplesSkipped": [],
+    "docsCommit": "bf4f461d88526359d0e96e1950f637912bbeebe7",
+    "docsRef": "shadcn-svelte@1.4.2",
+    "docsVendorPath": "vendor/shadcn-svelte-docs"
   },
   "converter": {
     "version": "2.0.0",

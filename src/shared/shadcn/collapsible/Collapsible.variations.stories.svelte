@@ -14,13 +14,10 @@
 <Story
   name="Preview"
   exportName="Preview"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
-      description: {
-        story: "An interactive component which expands/collapses a panel.\n\n[Docs](https://bits-ui.com/docs/components/collapsible)\n\n[API Reference](https://bits-ui.com/docs/components/collapsible#api-reference)",
-      },
       source: {
         code: exampleSources.Preview,
         language: "html",

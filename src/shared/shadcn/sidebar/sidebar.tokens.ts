@@ -1,9 +1,21 @@
+/**
+ * Public CSS custom properties consumed by the sidebar family.
+ *
+ * Color/surface tokens are defined in `src/theme.css` (`:root` / `.dark`).
+ * Width tokens are injected by `Sidebar.Provider` (see `constants.ts`).
+ * Component CSS under this family reads these names directly — not `--ui-sidebar-*`.
+ */
 export const sidebarTokenNames = {
-  background: "--ui-sidebar-background",
-  foreground: "--ui-sidebar-foreground",
-  borderColor: "--ui-sidebar-border-color",
-  radius: "--ui-sidebar-radius",
-  focusRingColor: "--ui-sidebar-focus-ring-color",
+  background: "--sidebar",
+  foreground: "--sidebar-foreground",
+  primary: "--sidebar-primary",
+  primaryForeground: "--sidebar-primary-foreground",
+  accent: "--sidebar-accent",
+  accentForeground: "--sidebar-accent-foreground",
+  borderColor: "--sidebar-border",
+  ring: "--sidebar-ring",
+  width: "--sidebar-width",
+  widthIcon: "--sidebar-width-icon",
 } as const;
 
 export type SidebarToken =

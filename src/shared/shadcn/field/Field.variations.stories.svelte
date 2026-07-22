@@ -3,13 +3,15 @@
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import * as Field from "./index.js";
   import * as exampleSources from "./Field.example-sources.js";
+  import PreviewExample from "./examples/preview.svelte";
   import InputExample from "./examples/input.svelte";
   import TextareaExample from "./examples/textarea.svelte";
   import SelectExample from "./examples/select.svelte";
   import FieldsetExample from "./examples/fieldset.svelte";
+  import CheckboxExample from "./examples/checkbox.svelte";
   import SwitchExample from "./examples/switch.svelte";
+  import FieldGroupExample from "./examples/field-group.svelte";
   import ResponsiveLayoutExample from "./examples/responsive-layout.svelte";
-  import ValidationAndErrorsExample from "./examples/validation-and-errors.svelte";
 
   const { Story } = defineMeta({
     title: "Shadcn/Forms/Field",
@@ -18,9 +20,31 @@
 </script>
 
 <Story
+  name="Preview"
+  exportName="Preview"
+  tags={["upstream-example"]}
+  parameters={{
+    a11y: { test: "todo" },
+    docs: {
+      source: {
+        code: exampleSources.Preview,
+        language: "html",
+        type: "code",
+      },
+    },
+  }}
+>
+  {#snippet template()}
+    <div class="p-4">
+      <PreviewExample />
+    </div>
+  {/snippet}
+</Story>
+
+<Story
   name="Input"
   exportName="Input"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -42,7 +66,7 @@
 <Story
   name="Textarea"
   exportName="Textarea"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -64,7 +88,7 @@
 <Story
   name="Select"
   exportName="Select"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -106,9 +130,31 @@
 </Story>
 
 <Story
+  name="Checkbox"
+  exportName="Checkbox"
+  tags={["upstream-example"]}
+  parameters={{
+    a11y: { test: "todo" },
+    docs: {
+      source: {
+        code: exampleSources.Checkbox,
+        language: "html",
+        type: "code",
+      },
+    },
+  }}
+>
+  {#snippet template()}
+    <div class="p-4">
+      <CheckboxExample />
+    </div>
+  {/snippet}
+</Story>
+
+<Story
   name="Switch"
   exportName="Switch"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -128,6 +174,31 @@
 </Story>
 
 <Story
+  name="Field Group"
+  exportName="FieldGroup"
+  tags={["upstream-example"]}
+  parameters={{
+    a11y: { test: "todo" },
+    docs: {
+      description: {
+        story: "Stack `Field` components with `Field.Group`. Add `Field.Separator` to divide them.",
+      },
+      source: {
+        code: exampleSources.FieldGroup,
+        language: "html",
+        type: "code",
+      },
+    },
+  }}
+>
+  {#snippet template()}
+    <div class="p-4">
+      <FieldGroupExample />
+    </div>
+  {/snippet}
+</Story>
+
+<Story
   name="Responsive Layout"
   exportName="ResponsiveLayout"
   tags={["upstream-example"]}
@@ -135,7 +206,7 @@
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "- **Vertical fields:** Default orientation stacks label, control, and helper textideal for mobile-first layouts.\n- **Horizontal fields:** Set `orientation=\"horizontal\"` on `Field` to align the label and control side-by-side. Pair with `Field.Content` to keep descriptions aligned.\n- **Responsive fields:** Set `orientation=\"responsive\"` for automatic column layouts inside container-aware parents. Apply `@container/field-group` classes on `Field.Group` to switch orientations at specific breakpoints.",
+        story: "- **Vertical fields:** Default orientation stacks label, control, and helper text—ideal for mobile-first layouts.\n- **Horizontal fields:** Set `orientation=\"horizontal\"` on `Field` to align the label and control side-by-side. Pair with `Field.Content` to keep descriptions aligned.\n- **Responsive fields:** Set `orientation=\"responsive\"` for automatic column layouts inside container-aware parents. Apply `@container/field-group` classes on `Field.Group` to switch orientations at specific breakpoints.",
       },
       source: {
         code: exampleSources.ResponsiveLayout,
@@ -148,31 +219,6 @@
   {#snippet template()}
     <div class="p-4">
       <ResponsiveLayoutExample />
-    </div>
-  {/snippet}
-</Story>
-
-<Story
-  name="Validation and Errors"
-  exportName="ValidationAndErrors"
-  tags={["upstream-example", "visual-approved"]}
-  parameters={{
-    a11y: { test: "todo" },
-    docs: {
-      description: {
-        story: "- Add `data-invalid` to `Field` to switch the entire block into an error state.\n- Add `aria-invalid` on the input itself for assistive technologies.\n- Render `FieldError` immediately after the control or inside `FieldContent` to keep error messages aligned with the field. Copy",
-      },
-      source: {
-        code: exampleSources.ValidationAndErrors,
-        language: "html",
-        type: "code",
-      },
-    },
-  }}
->
-  {#snippet template()}
-    <div class="p-4">
-      <ValidationAndErrorsExample />
     </div>
   {/snippet}
 </Story>

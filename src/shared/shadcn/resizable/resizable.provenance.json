@@ -22,15 +22,18 @@
         "sha256": "db02f3c225b84322f1492107cfc4746346bd889ced7817b94bcdcbfe4a16592f"
       }
     ],
-    "docsUrl": "https://shadcn-svelte.com/docs/components/resizable.md",
-    "docsFetchedAt": "2026-07-19T20:42:29.585Z",
-    "docsSha256": "2d3f5066bddd5d542759664ec0b1ceb10c855e34b44522488386b2f181f01b45",
+    "docsUrl": "https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/resizable.md",
+    "docsFetchedAt": "2026-07-22T09:57:18.448Z",
+    "docsSha256": "e7812f4354aa25b03bfcca2808686745f6436e7b7852ef65642aa6eaa84c28dd",
     "examplesIncluded": [
       "Preview",
       "Vertical",
       "Handle"
     ],
-    "examplesSkipped": []
+    "examplesSkipped": [],
+    "docsCommit": "bf4f461d88526359d0e96e1950f637912bbeebe7",
+    "docsRef": "shadcn-svelte@1.4.2",
+    "docsVendorPath": "vendor/shadcn-svelte-docs"
   },
   "converter": {
     "version": "2.0.0",

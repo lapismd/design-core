@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "component": "checkbox",
+  "scope": "shared",
+  "upstream": {
+    "project": "shadcn-svelte",
+    "registry": "https://shadcn-svelte.com/registry",
+    "cliVersion": "1.4.2",
+    "item": "checkbox",
+    "fetchedAt": "2026-07-22T07:29:25.123Z",
+    "sourceFiles": [
+      {
+        "path": "src/lib/components/ui/checkbox/checkbox.svelte",
+        "sha256": "b4929467b91cbf8e53c31399a2b27efda163523321777bf83460b4743ca75454"
+      },
+      {
+        "path": "src/lib/components/ui/checkbox/index.ts",
+        "sha256": "39b322ab4a26c63f60c64588ff4b18552c8b596e8472b9261fb68429b8cff1d6"
+      }
+    ],
+    "docsUrl": "https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/checkbox.md",
+    "docsFetchedAt": "2026-07-22T09:57:18.257Z",
+    "docsSha256": "254bf4dff309e239f2662c81e50e619dcfd19c404892dffd0d90f52d2917b339",
+    "docsCommit": "bf4f461d88526359d0e96e1950f637912bbeebe7",
+    "docsRef": "shadcn-svelte@1.4.2",
+    "docsVendorPath": "vendor/shadcn-svelte-docs",
+    "examplesIncluded": [
+      "Preview"
+    ],
+    "examplesSkipped": []
+  },
+  "converter": {
+    "version": "2.0.0",
+    "irSchemaVersion": 1,
+    "tokenSchemaVersion": 1
+  },
+  "recipe": {
+    "name": "checkbox",
+    "version": 1,
+    "tier": "lightCompound"
+  }
+}

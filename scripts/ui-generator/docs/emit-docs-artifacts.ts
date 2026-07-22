@@ -1,6 +1,7 @@
 import {
   existsSync,
   mkdirSync,
+  readFileSync,
   readdirSync,
   unlinkSync,
   writeFileSync,
@@ -24,36 +25,55 @@ function storyMetaComponentExpr(component: string, pascal: string): string {
   return `${pascal}.${pascal}`;
 }
 
-function stripSponsorAndHero(markdown: string): string {
+/**
+ * Drop sponsor chrome and leading hero demo fences; keep intro prose.
+ *
+ * Previously this jumped from the first description paragraph straight to
+ * `## Installation` / `## Usage`, which deleted real hero guidance (e.g.
+ * Sidebar’s “Sidebars are one of the most complex…” copy).
+ */
+export function stripSponsorAndHero(markdown: string): string {
   const lines = markdown.split("\n");
   const out: string[] = [];
-  let i = 0;
-  // Keep H1 + description paragraph
-  if (lines[0]?.startsWith("# ")) {
-    out.push(lines[0]!);
-    i = 1;
-    while (i < lines.length && !lines[i]!.trim()) {
-      out.push("");
-      i++;
+  let beforeFirstH2 = true;
+  let inFence = false;
+  let skippingSponsor = false;
+
+  for (const line of lines) {
+    const trimmed = line.trim();
+
+    if (trimmed.startsWith("```")) {
+      inFence = !inFence;
+      // Hero demos before the first H2 are replaced by Storybook canvases.
+      if (beforeFirstH2) continue;
+      out.push(line);
+      continue;
     }
-    while (
-      i < lines.length &&
-      lines[i]!.trim() &&
-      !lines[i]!.startsWith("#") &&
-      !lines[i]!.startsWith("```") &&
-      !/Epicenter|Special Sponsor/i.test(lines[i]!)
+    if (inFence) {
+      if (!beforeFirstH2) out.push(line);
+      continue;
+    }
+
+    if (/^##\s+/.test(trimmed)) {
+      beforeFirstH2 = false;
+      skippingSponsor = false;
+      out.push(line);
+      continue;
+    }
+
+    if (
+      /Epicenter|Special Sponsor/i.test(trimmed) ||
+      /^###?\s*\[Epicenter\]/i.test(trimmed)
     ) {
-      out.push(lines[i]!);
-      i++;
+      skippingSponsor = true;
+      continue;
     }
-    out.push("");
+    // Keep skipping until the next H2 resets the flag above.
+    if (skippingSponsor) continue;
+
+    out.push(line);
   }
-  // Skip until ## Installation or ## Usage
-  while (i < lines.length) {
-    if (/^##\s+(\[)?(Installation|Usage)/i.test(lines[i]!.trim())) break;
-    i++;
-  }
-  out.push(...lines.slice(i));
+
   return (
     out
       .join("\n")
@@ -61,25 +81,6 @@ function stripSponsorAndHero(markdown: string): string {
       .replace(/\n{3,}/g, "\n\n")
       .trim() + "\n"
   );
-}
-
-/** Drop the upstream Installation section (CLI install is not part of this catalog). */
-function stripInstallationSection(markdown: string): string {
-  const lines = markdown.split("\n");
-  const out: string[] = [];
-  let skipping = false;
-  for (const line of lines) {
-    if (/^##\s+(\[)?Installation\b/i.test(line.trim())) {
-      skipping = true;
-      continue;
-    }
-    if (skipping && /^##\s+/.test(line.trim())) {
-      skipping = false;
-    }
-    if (skipping) continue;
-    out.push(line);
-  }
-  return out.join("\n").replace(/\n{3,}/g, "\n\n").trim() + "\n";
 }
 
 /**
@@ -98,18 +99,217 @@ function stripExampleCodeFences(markdown: string): string {
   return (before + examples).trim() + "\n";
 }
 
+/** Drop leaked docs-site chrome from example prose before MDX emit. */
+function sanitizeExampleProse(prose: string): string {
+  let out = prose
+    .replace(/\{#snippet\s+\w+\([^)]*\)\}/g, "")
+    .replace(/\{\/snippet\}/g, "")
+    .replace(/\{#if\s+[^}]+\}[\s\S]*?\{\/if\}/g, "");
+  // Truncate at an embedded Installation (or other H2) if present
+  const lines = out.split("\n");
+  const kept: string[] = [];
+  for (const line of lines) {
+    if (/^##\s+(\[)?(Installation|Usage|Examples)\b/i.test(line.trim())) break;
+    kept.push(line);
+  }
+  return kept.join("\n").replace(/\n{3,}/g, "\n\n").trim();
+}
+
 function rewriteDocsMarkdown(
   docs: UpstreamDocs,
   component: string,
+  examples: RewrittenExample[] = [],
 ): string {
-  const md = rewritePackageImports(
-    stripExampleCodeFences(
-      stripInstallationSection(stripSponsorAndHero(docs.rawMarkdown)),
-    ),
+  let md = rewritePackageImports(
+    stripExampleCodeFences(stripSponsorAndHero(docs.rawMarkdown)),
     component,
   );
+  md = expandSectionExampleSources(md, examples, component);
+  md = alignComponentThemeDocs(md, component);
+  md = normalizeDocsFenceLanguages(md);
   const banner = `<!-- Adapted from ${docs.docsUrl} for the @stevejuma/ui native-CSS catalog. -->\n\n`;
   return banner + md;
+}
+
+/**
+ * Storybook's Markdown → SyntaxHighlighter only knows a fixed Prism set
+ * (no `svelte`). Strip fence meta (`showLineNumbers title=…`) and map langs
+ * so script/SFC blocks highlight instead of rendering as plain text.
+ */
+export function normalizeDocsFenceLanguages(markdown: string): string {
+  return markdown.replace(/^```([^\n`]*)/gm, (_m, info: string) => {
+    const raw = String(info).trim();
+    if (!raw) return "```";
+    const lang = raw.split(/\s+/)[0]!.toLowerCase();
+    const mapped =
+      lang === "svelte" || lang === "sv"
+        ? "html"
+        : lang === "ts" || lang === "typescript"
+          ? "typescript"
+          : lang === "js" || lang === "javascript"
+            ? "jsx"
+            : lang === "sh" || lang === "shell" || lang === "zsh"
+              ? "bash"
+              : lang;
+    return `\`\`\`${mapped}`;
+  });
+}
+
+/**
+ * Replace upstream Installation/Theming color fences with this package's
+ * `theme.css` values so docs match the tokens the sidebar CSS actually reads.
+ */
+export function alignComponentThemeDocs(
+  markdown: string,
+  component: string,
+): string {
+  if (component !== "sidebar") return markdown;
+  const themePath = path.resolve(process.cwd(), "src/theme.css");
+  if (!existsSync(themePath)) return markdown;
+  const themeCss = readFileSync(themePath, "utf8");
+  const snippet = extractThemeCustomProperties(themeCss, "--sidebar");
+  if (!snippet) return markdown;
+
+  return markdown.replace(/```css[^\n]*\n([\s\S]*?)```/g, (full, body: string) => {
+    if (!/--sidebar\s*:/.test(body)) return full;
+    // Keep width-only / non-theme fences alone.
+    if (!/--sidebar-foreground\s*:/.test(body)) return full;
+    return `\`\`\`css\n${snippet}\n\`\`\``;
+  });
+}
+
+/** Pull `:root` + `.dark` declarations whose names start with `prefix`. */
+export function extractThemeCustomProperties(
+  themeCss: string,
+  prefix: string,
+): string | null {
+  const blocks: string[] = [];
+  for (const selector of [":root", ".dark"]) {
+    const re = new RegExp(
+      `${selector.replace(".", "\\.")}\\s*\\{([\\s\\S]*?)\\n\\}`,
+      "m",
+    );
+    const m = re.exec(themeCss);
+    if (!m) continue;
+    const decls = m[1]!
+      .split("\n")
+      .map((l) => l.trimEnd())
+      .filter((l) => {
+        const t = l.trim();
+        return t.startsWith(prefix);
+      });
+    if (decls.length === 0) continue;
+    blocks.push(`${selector} {\n${decls.join("\n")}\n}`);
+  }
+  return blocks.length > 0 ? blocks.join("\n\n") : null;
+}
+
+/**
+ * Upstream docs often show abbreviated fences (`<Sidebar.Header />`, markup
+ * without `<script>`, etc.). When we have a runnable example for that section,
+ * prefer the full consumer-facing SFC.
+ */
+export function expandSectionExampleSources(
+  markdown: string,
+  examples: RewrittenExample[],
+  component: string,
+): string {
+  if (examples.length === 0) return markdown;
+
+  const byName = new Map(
+    examples.map((ex) => [
+      ex.example.name.toLowerCase(),
+      buildExampleDocsSource(component, ex.code),
+    ]),
+  );
+
+  const lines = markdown.split("\n");
+  const sections: Array<{ start: number; end: number; title: string | null }> =
+    [];
+  let current = { start: 0, end: 0, title: null as string | null };
+
+  for (let i = 0; i < lines.length; i++) {
+    const heading = /^(#{1,3})\s+(?:\[)?([^\]\n#(]+)/.exec(lines[i]!);
+    if (heading && heading[1]!.length >= 2) {
+      current.end = i;
+      sections.push(current);
+      current = {
+        start: i,
+        end: lines.length,
+        title: heading[2]!.trim(),
+      };
+    }
+  }
+  current.end = lines.length;
+  sections.push(current);
+
+  const out = [...lines];
+  // Process bottom-up so line splices don't shift earlier sections.
+  for (let s = sections.length - 1; s >= 0; s--) {
+    const section = sections[s]!;
+    if (!section.title) continue;
+    const full = byName.get(section.title.toLowerCase());
+    if (!full) continue;
+
+    const body = out.slice(section.start + 1, section.end).join("\n");
+    const fenceRe = /```(svelte[^\n]*)\n([\s\S]*?)```/g;
+    const fences: Array<{
+      start: number;
+      end: number;
+      info: string;
+      code: string;
+    }> = [];
+    let m: RegExpExecArray | null;
+    while ((m = fenceRe.exec(body))) {
+      fences.push({
+        start: m.index,
+        end: m.index + m[0].length,
+        info: m[1]!,
+        code: m[2]!,
+      });
+    }
+
+    let nextBody = body;
+    if (fences.length === 0) {
+      nextBody = `${body.trimEnd()}\n\n\`\`\`svelte\n${full}\n\`\`\`\n`;
+    } else {
+      for (let i = fences.length - 1; i >= 0; i--) {
+        const fence = fences[i]!;
+        if (!shouldReplaceFenceWithFullExample(fence.code, full)) continue;
+        nextBody =
+          nextBody.slice(0, fence.start) +
+          `\`\`\`${fence.info}\n${full}\n\`\`\`` +
+          nextBody.slice(fence.end);
+      }
+    }
+
+    const headingLine = out[section.start]!;
+    const replacement = [headingLine, ...nextBody.split("\n")];
+    out.splice(section.start, section.end - section.start, ...replacement);
+  }
+
+  return out.join("\n");
+}
+
+/** True when a fence is a stub / partial demo rather than the full example. */
+export function shouldReplaceFenceWithFullExample(
+  fenceCode: string,
+  fullExample: string,
+): boolean {
+  const fence = fenceCode.trim();
+  const full = fullExample.trim();
+  if (!fence) return true;
+  // Tiny API one-liners (e.g. `<Sidebar.Root collapsible="…" />`) stay as-is.
+  const nonEmptyLines = fence.split("\n").filter((l) => l.trim()).length;
+  if (nonEmptyLines <= 2) return false;
+  // Markup-only demos should expand even when they're nearly as long as the
+  // full SFC (common for upstream fences that omit `<script>` imports).
+  if (!/<script\b/i.test(fence)) return true;
+  if (fence.length >= full.length * 0.85) return false;
+  // Script present but still mostly placeholder self-closing hosts.
+  const selfClosing = (fence.match(/<[A-Za-z][\w.]*[^>]*\/>/g) || []).length;
+  if (selfClosing >= 1 && fence.length < full.length * 0.6) return true;
+  return fence.length < full.length * 0.5;
 }
 
 /** Combined Usage SFC with published package import paths. */
@@ -205,14 +405,21 @@ function emitExamplesStories(args: {
     )
     .join("\n");
 
+  // Sidebar demos need a tall host: Provider is height:100%, so plain p-4 collapses them.
+  const wrapperClass =
+    args.component === "sidebar" ? "h-[480px] p-0" : "p-4";
+
   const stories = examples
     .map((ex) => {
       const comp = `${toPascalCase(ex.example.slug)}Example`;
       const exportName = toPascalCase(ex.example.slug);
-      const descriptionEntry = ex.example.description
+      const storyDescription = ex.example.description
+        ? sanitizeExampleProse(ex.example.description)
+        : "";
+      const descriptionEntry = storyDescription
         ? `
       description: {
-        story: ${JSON.stringify(ex.example.description)},
+        story: ${JSON.stringify(storyDescription)},
       },`
         : "";
       // Visual baselines cover these demos so style extraction regressions surface
@@ -236,7 +443,7 @@ function emitExamplesStories(args: {
   }}
 >
   {#snippet template()}
-    <div class="p-4">
+    <div class="${wrapperClass}">
       <${comp} />
     </div>
   {/snippet}
@@ -265,6 +472,10 @@ function emitMdx(args: {
   component: string;
   docs: UpstreamDocs;
   examples: RewrittenExample[];
+  /** Final rewritten `*.docs.md` body (includes Installation, Structure, …). */
+  docsMarkdown: string;
+  /** Relative path to the stripped guide markdown imported via `?raw`. */
+  docsBodyImport: string;
 }): string {
   const pascal = toPascalCase(args.component);
   const usage = buildPackageUsageSource(args.docs, args.component);
@@ -272,9 +483,10 @@ function emitMdx(args: {
   const exampleSections = args.examples
     .map((ex) => {
       const exportName = toPascalCase(ex.example.slug);
-      const prose = ex.example.description
-        ? `\n${ex.example.description}\n`
-        : "\n";
+      const cleaned = ex.example.description
+        ? sanitizeExampleProse(ex.example.description)
+        : "";
+      const prose = cleaned ? `\n${cleaned}\n` : "\n";
       return `### ${ex.example.name}
 ${prose}
 <Canvas of={${pascal}Variations.${exportName}} meta={${pascal}Variations} />
@@ -296,9 +508,20 @@ ${prose}
     ? `\n## Examples\n\n${exampleSections}\n`
     : "";
 
-  return `import { Meta, Canvas, Controls, Primary, Source } from "@storybook/addon-docs/blocks";
+  // Storybook MDX treats `{` as JSX — render the guide via <Markdown> from a
+  // `?raw` file so Installation / Structure / `{#snippet}` fences survive and
+  // HMR picks up docs edits. Headings stay top-level for the Docs TOC.
+  const guideBody = docsMarkdownForMdxGuide(args.docsMarkdown);
+  const guideImport = guideBody
+    ? `import docsBody from ${JSON.stringify(args.docsBodyImport)};\n`
+    : "";
+  const guideSection = guideBody
+    ? `\n<Markdown>{docsBody}</Markdown>\n`
+    : "";
+
+  return `import { Meta, Canvas, Controls, Primary, Source, Markdown } from "@storybook/addon-docs/blocks";
 import * as ${pascal}Stories from "./${pascal}.stories.svelte";
-${variationsImport}
+${variationsImport}${guideImport}
 {/* @generated by ui-generator — do not edit */}
 
 <Meta of={${pascal}Stories} />
@@ -308,13 +531,29 @@ ${variationsImport}
 ${args.docs.description}
 
 Adapted from the upstream [shadcn-svelte docs](${args.docs.docsUrl}).
-
+${guideSection}
 ## Usage
 ${usageSource}
 <Primary />
 
 <Controls />
 ${examplesSection}`;
+}
+
+/**
+ * Strip the generator banner + duplicate H1/description so MDX can render the
+ * rest of `*.docs.md` (Installation, Structure, API, …) as top-level headings.
+ */
+export function docsMarkdownForMdxGuide(docsMarkdown: string): string {
+  let md = docsMarkdown.replace(/^<!--[\s\S]*?-->\s*/u, "").trimStart();
+  if (md.startsWith("# ")) {
+    const nl = md.indexOf("\n");
+    md = nl >= 0 ? md.slice(nl + 1).trimStart() : "";
+  }
+  // Drop the leading description paragraph(s) before the first H2.
+  const h2 = md.search(/^##\s+/m);
+  if (h2 > 0) md = md.slice(h2);
+  return md.trim() + (md.trim() ? "\n" : "");
 }
 
 export function emitDocsArtifacts(args: {
@@ -333,8 +572,20 @@ export function emitDocsArtifacts(args: {
   mkdirSync(examplesDir, { recursive: true });
 
   const docsMdPath = path.join(targetDir, `${component}.docs.md`);
-  writeFileSync(docsMdPath, rewriteDocsMarkdown(docs, component));
+  const docsMarkdown = rewriteDocsMarkdown(docs, component, examples);
+  writeFileSync(docsMdPath, docsMarkdown);
   written.push(docsMdPath);
+
+  const guideBody = docsMarkdownForMdxGuide(docsMarkdown);
+  const docsBodyPath = path.join(targetDir, `${component}.docs-body.md`);
+  const docsBodyImport = `./${component}.docs-body.md?raw`;
+  if (guideBody) {
+    writeFileSync(docsBodyPath, guideBody);
+    written.push(docsBodyPath);
+  } else if (existsSync(docsBodyPath)) {
+    unlinkSync(docsBodyPath);
+    written.push(docsBodyPath);
+  }
 
   // Older emit used `*.examples.stories.svelte`, which sorts before the hand
   // `*.stories.svelte` file and steals the primary Docs canvas.
@@ -353,15 +604,6 @@ export function emitDocsArtifacts(args: {
     writeFileSync(filePath, emitExampleComponent(ex.code));
     written.push(filePath);
   }
-  // Drop demos that are no longer included (skipped or removed upstream).
-  if (existsSync(examplesDir)) {
-    for (const name of readdirSync(examplesDir)) {
-      if (!name.endsWith(".svelte") || keepSlugs.has(name)) continue;
-      const stale = path.join(examplesDir, name);
-      unlinkSync(stale);
-      written.push(stale);
-    }
-  }
 
   // Name sorts after `${pascal}.stories.svelte` so curated stories stay primary.
   const storiesPath = path.join(
@@ -369,7 +611,17 @@ export function emitDocsArtifacts(args: {
     `${pascal}.variations.stories.svelte`,
   );
   const sourcesPath = path.join(targetDir, `${pascal}.example-sources.ts`);
+
   if (examples.length > 0) {
+    // Drop demos that are no longer included (skipped or removed upstream).
+    if (existsSync(examplesDir)) {
+      for (const name of readdirSync(examplesDir)) {
+        if (!name.endsWith(".svelte") || keepSlugs.has(name)) continue;
+        const stale = path.join(examplesDir, name);
+        unlinkSync(stale);
+        written.push(stale);
+      }
+    }
     writeFileSync(
       sourcesPath,
       emitExampleSourcesModule({ component, examples }),
@@ -380,17 +632,9 @@ export function emitDocsArtifacts(args: {
       emitExamplesStories({ component, storyTitle, examples }),
     );
     written.push(storiesPath);
-  } else {
-    if (existsSync(storiesPath)) {
-      // Empty defineMeta files break Storybook's svelte-csf indexer.
-      unlinkSync(storiesPath);
-      written.push(storiesPath);
-    }
-    if (existsSync(sourcesPath)) {
-      unlinkSync(sourcesPath);
-      written.push(sourcesPath);
-    }
   }
+  // When there are no example SFCs (e.g. sidebar is all type="block"), leave
+  // existing examples/variations alone — only refresh prose docs + MDX.
 
   const mdxPath = path.join(targetDir, `${pascal}.mdx`);
   writeFileSync(
@@ -399,6 +643,8 @@ export function emitDocsArtifacts(args: {
       component,
       docs,
       examples,
+      docsMarkdown,
+      docsBodyImport,
     }),
   );
   written.push(mdxPath);

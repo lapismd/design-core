@@ -1,0 +1,12 @@
+{
+  "repo": "https://github.com/huntabyte/shadcn-svelte",
+  "ref": "shadcn-svelte@1.4.2",
+  "commit": "bf4f461d88526359d0e96e1950f637912bbeebe7",
+  "fetchedAt": "2026-07-22T09:51:00Z",
+  "paths": [
+    "docs/content/components",
+    "docs/src/lib/registry/examples (top-level *.svelte only)",
+    "docs/src/lib/registry/blocks",
+    "docs/static/img"
+  ]
+}

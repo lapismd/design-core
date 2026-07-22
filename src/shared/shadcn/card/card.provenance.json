@@ -42,15 +42,20 @@
         "sha256": "218019c78c8be52b5add8267a758f2d2c685e036e35d6bbcee147333e6534db8"
       }
     ],
-    "docsUrl": "https://shadcn-svelte.com/docs/components/card.md",
-    "docsFetchedAt": "2026-07-19T20:47:46.764Z",
-    "docsSha256": "e73ce5c1c25d014cd26a9727b625edc93597a3bc3fdccf0491be0c16cc668efb",
+    "docsUrl": "https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/card.md",
+    "docsFetchedAt": "2026-07-22T09:57:18.289Z",
+    "docsSha256": "ce7f071eb3b4a0ba87b3d5f810a7040c970333e321e56756b23d2837939c65f0",
     "examplesIncluded": [
       "Preview",
+      "Preview",
+      "Spacing",
       "Spacing",
       "Image"
     ],
-    "examplesSkipped": []
+    "examplesSkipped": [],
+    "docsCommit": "bf4f461d88526359d0e96e1950f637912bbeebe7",
+    "docsRef": "shadcn-svelte@1.4.2",
+    "docsVendorPath": "vendor/shadcn-svelte-docs"
   },
   "converter": {
     "version": "2.0.0",

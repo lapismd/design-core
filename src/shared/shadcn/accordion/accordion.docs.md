@@ -1,18 +1,24 @@
-<!-- Adapted from https://shadcn-svelte.com/docs/components/accordion.md for the @stevejuma/ui native-CSS catalog. -->
+<!-- Adapted from https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/accordion.md for the @stevejuma/ui native-CSS catalog. -->
 
 # Accordion
 
 A vertically stacked set of interactive headings that each reveal a section of content.
 
-## [Usage](#usage)
+## Installation
 
-```svelte
+```bash
+pnpm ui:add accordion
+```
+
+## Usage
+
+```html
 <script lang="ts">
   import * as Accordion from "@stevejuma/ui/shadcn/accordion";
 </script>
 ```
 
-```svelte
+```html
 <Accordion.Root type="single">
   <Accordion.Item value="item-1">
     <Accordion.Trigger>Is it accessible?</Accordion.Trigger>

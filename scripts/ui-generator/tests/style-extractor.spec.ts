@@ -269,6 +269,55 @@ describe("rewritePartSource", () => {
     expect(restIdx).toBeGreaterThanOrEqual(0);
     expect(compIdx).toBeGreaterThan(restIdx);
   });
+
+  it("registers peer/group markers from tv() base for remapping", () => {
+    const source = `
+<script lang="ts" module>
+  import { tv, type VariantProps } from "tailwind-variants";
+  export const sidebarMenuButtonVariants = tv({
+    base: "peer/menu-button group/menu-button flex w-full items-center [&_svg]:size-4",
+    variants: {
+      size: { default: "h-8", sm: "h-7" },
+    },
+    defaultVariants: { size: "default" },
+  });
+  export type SidebarMenuButtonSize = VariantProps<
+    typeof sidebarMenuButtonVariants
+  >["size"];
+</script>
+<script lang="ts">
+  let { size = "default", class: className }: { size?: SidebarMenuButtonSize; class?: string } = $props();
+  const buttonProps = $derived({
+    class: cn(sidebarMenuButtonVariants({ size }), className),
+    "data-slot": "sidebar-menu-button",
+    "data-size": size,
+  });
+</script>
+{#snippet Button({ props })}
+  {@const mergedProps = mergeProps(buttonProps, props)}
+  <button {...mergedProps}></button>
+{/snippet}
+`;
+    const family = extractFamilyFromFiles("sidebar", [
+      { fileName: "sidebar-menu-button.svelte", source },
+    ]);
+    const part = family.parts[0]!;
+    expect(part.sites[0]!.markers).toEqual(
+      expect.arrayContaining(["peer/menu-button", "group/menu-button"]),
+    );
+    expect(part.extraction.baseClasses).toContain("flex");
+    expect(part.extraction.baseClasses).not.toContain("peer/menu-button");
+
+    const rewritten = rewritePartSource({
+      part,
+      component: "sidebar",
+    });
+    expect(rewritten).toContain(
+      'return "peer/menu-button group/menu-button"',
+    );
+    expect(rewritten).toContain('"data-ui-component": "sidebar"');
+    expect(rewritten).toContain('"data-ui-part": "sidebar-menu-button"');
+  });
 });
 
 describe("looksLikeTailwindSource", () => {

@@ -1,18 +1,24 @@
-<!-- Adapted from https://shadcn-svelte.com/docs/components/alert-dialog.md for the @stevejuma/ui native-CSS catalog. -->
+<!-- Adapted from https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/alert-dialog.md for the @stevejuma/ui native-CSS catalog. -->
 
 # Alert Dialog
 
 A modal dialog that interrupts the user with important content and expects a response.
 
-## [Usage](#usage)
+## Installation
 
-```svelte
+```bash
+pnpm ui:add alert-dialog
+```
+
+## Usage
+
+```html
 <script lang="ts">
   import * as AlertDialog from "@stevejuma/ui/shadcn/alert-dialog";
 </script>
 ```
 
-```svelte
+```html
 <AlertDialog.Root>
   <AlertDialog.Trigger>Open</AlertDialog.Trigger>
   <AlertDialog.Content>

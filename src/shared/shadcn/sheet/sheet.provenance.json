@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "component": "sheet",
+  "scope": "shared",
+  "upstream": {
+    "project": "shadcn-svelte",
+    "registry": "https://shadcn-svelte.com/registry",
+    "cliVersion": "1.4.2",
+    "item": "sheet",
+    "fetchedAt": "2026-07-22T08:04:01.674Z",
+    "sourceFiles": [
+      {
+        "path": "src/lib/components/ui/sheet/index.ts",
+        "sha256": "14661116f3618deeffe854f3393ed32e7e25a4ad99ffb9b7eafb47896f7137d5"
+      },
+      {
+        "path": "src/lib/components/ui/sheet/sheet-close.svelte",
+        "sha256": "5513573158c75ade2db6b5a07b59cf40f60f26e456cd811cd1f492057608216d"
+      },
+      {
+        "path": "src/lib/components/ui/sheet/sheet-content.svelte",
+        "sha256": "d36c3d3b91efea83afd4d068ede7b595efc1555502211b2d2d1d6d49651cab32"
+      },
+      {
+        "path": "src/lib/components/ui/sheet/sheet-description.svelte",
+        "sha256": "b82729533e82187507bdb6d32503508886a2ce8767855aa035c608eba6ea2ca5"
+      },
+      {
+        "path": "src/lib/components/ui/sheet/sheet-footer.svelte",
+        "sha256": "e9d622d076c8c2c80159cd92a01cd7ce91a7ee8ac211cebce4a08a3ea7b13546"
+      },
+      {
+        "path": "src/lib/components/ui/sheet/sheet-header.svelte",
+        "sha256": "32b331f8772494833e0eff2cd594fe18c837a4094a4f52b092adec0aa626e665"
+      },
+      {
+        "path": "src/lib/components/ui/sheet/sheet-overlay.svelte",
+        "sha256": "39517639f2e59c86b515636013f1432e669d4d84c9454c23f66c1851e41a092c"
+      },
+      {
+        "path": "src/lib/components/ui/sheet/sheet-portal.svelte",
+        "sha256": "9391a12d66727280eadc465b8edfa04134f92a28468218683140624feebe5c94"
+      },
+      {
+        "path": "src/lib/components/ui/sheet/sheet-title.svelte",
+        "sha256": "618231b961eae3d19183ef8899a57468aa9162046413082aaf83ae100a7e2d83"
+      },
+      {
+        "path": "src/lib/components/ui/sheet/sheet-trigger.svelte",
+        "sha256": "5e22ce7c04bbe478db7c37a43128902563c90d53febe6aa5684a706c959ca05b"
+      },
+      {
+        "path": "src/lib/components/ui/sheet/sheet.svelte",
+        "sha256": "eed2a698206fc1fb24ca85f7ff351c8520a8fcc3f8fd489c04b974738088f00e"
+      }
+    ],
+    "docsUrl": "https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/sheet.md",
+    "docsFetchedAt": "2026-07-22T09:57:18.335Z",
+    "docsSha256": "b765f2b73cf98bdcee284c3563cb3c7b96dd04fd2a7c7e67401c9f7599e458a9",
+    "docsCommit": "bf4f461d88526359d0e96e1950f637912bbeebe7",
+    "docsRef": "shadcn-svelte@1.4.2",
+    "docsVendorPath": "vendor/shadcn-svelte-docs",
+    "examplesIncluded": [
+      "Preview"
+    ],
+    "examplesSkipped": []
+  },
+  "converter": {
+    "version": "2.0.0",
+    "irSchemaVersion": 1,
+    "tokenSchemaVersion": 1
+  },
+  "recipe": {
+    "name": "sheet",
+    "version": 1,
+    "tier": "portal"
+  }
+}

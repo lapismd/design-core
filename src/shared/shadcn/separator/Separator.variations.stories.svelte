@@ -14,13 +14,10 @@
 <Story
   name="Preview"
   exportName="Preview"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
-      description: {
-        story: "Visually or semantically separates content.\n\n[Docs](https://bits-ui.com/docs/components/separator)\n\n[API Reference](https://bits-ui.com/docs/components/separator#api-reference)",
-      },
       source: {
         code: exampleSources.Preview,
         language: "html",

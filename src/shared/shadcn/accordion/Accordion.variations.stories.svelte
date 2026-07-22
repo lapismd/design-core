@@ -14,13 +14,10 @@
 <Story
   name="Preview"
   exportName="Preview"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
-      description: {
-        story: "A vertically stacked set of interactive headings that each reveal a section of content.\n\n[Docs](https://bits-ui.com/docs/components/accordion)\n\n[API Reference](https://bits-ui.com/docs/components/accordion#api-reference)",
-      },
       source: {
         code: exampleSources.Preview,
         language: "html",

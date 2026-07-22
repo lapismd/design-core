@@ -4,7 +4,6 @@
   import * as Tooltip from "./index.js";
   import * as exampleSources from "./Tooltip.example-sources.js";
   import PreviewExample from "./examples/preview.svelte";
-  import NestedProvidersExample from "./examples/nested-providers.svelte";
 
   const { Story } = defineMeta({
     title: "Shadcn/Overlays/Tooltip",
@@ -15,13 +14,10 @@
 <Story
   name="Preview"
   exportName="Preview"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
-      description: {
-        story: "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.\n\n[Docs](https://bits-ui.com/docs/components/tooltip)\n\n[API Reference](https://bits-ui.com/docs/components/tooltip#api-reference)",
-      },
       source: {
         code: exampleSources.Preview,
         language: "html",
@@ -33,31 +29,6 @@
   {#snippet template()}
     <div class="p-4">
       <PreviewExample />
-    </div>
-  {/snippet}
-</Story>
-
-<Story
-  name="Nested Providers"
-  exportName="NestedProviders"
-  tags={["upstream-example", "visual-approved"]}
-  parameters={{
-    a11y: { test: "todo" },
-    docs: {
-      description: {
-        story: "You can nest providers to create groups with different settings. Tooltips use the closest ancestor provider. This is useful when you want instant tooltips in specific areas:",
-      },
-      source: {
-        code: exampleSources.NestedProviders,
-        language: "html",
-        type: "code",
-      },
-    },
-  }}
->
-  {#snippet template()}
-    <div class="p-4">
-      <NestedProvidersExample />
     </div>
   {/snippet}
 </Story>

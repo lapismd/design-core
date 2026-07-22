@@ -15,13 +15,10 @@
 <Story
   name="Preview"
   exportName="Preview"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
-      description: {
-        story: "Augments native scroll functionality for custom, cross-browser styling.\n\n[Docs](https://bits-ui.com/docs/components/scroll-area)\n\n[API Reference](https://bits-ui.com/docs/components/scroll-area#api-reference)",
-      },
       source: {
         code: exampleSources.Preview,
         language: "html",
@@ -40,7 +37,7 @@
 <Story
   name="Horizontal Scrolling"
   exportName="HorizontalScrolling"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {

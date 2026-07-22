@@ -38,9 +38,9 @@
         "sha256": "9dea891a004765216352b2cfbd572c769a51ea9b102c2587102ca78223fa5f64"
       }
     ],
-    "docsUrl": "https://shadcn-svelte.com/docs/components/input-group.md",
-    "docsFetchedAt": "2026-07-19T20:42:29.478Z",
-    "docsSha256": "c17e3c9fb3d5e81c5c597ad2be1c32765b9c66bad2436bbcb52313c1dd7a75c4",
+    "docsUrl": "https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/input-group.md",
+    "docsFetchedAt": "2026-07-22T09:57:18.416Z",
+    "docsSha256": "46be7a3a84cc05ecb50a63ad5270de9f64183c2a64223dde919e260fdb408a7d",
     "examplesIncluded": [
       "Preview",
       "Icon",
@@ -63,7 +63,10 @@
         "reason": "missing-family",
         "detail": "Catalog is missing family \"button-group\""
       }
-    ]
+    ],
+    "docsCommit": "bf4f461d88526359d0e96e1950f637912bbeebe7",
+    "docsRef": "shadcn-svelte@1.4.2",
+    "docsVendorPath": "vendor/shadcn-svelte-docs"
   },
   "converter": {
     "version": "2.0.0",

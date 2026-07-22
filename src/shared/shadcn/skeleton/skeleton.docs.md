@@ -1,21 +1,42 @@
-<!-- Adapted from https://shadcn-svelte.com/docs/components/skeleton.md for the @stevejuma/ui native-CSS catalog. -->
+<!-- Adapted from https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/skeleton.md for the @stevejuma/ui native-CSS catalog. -->
 
 # Skeleton
 
 Use to show a placeholder while content is loading.
 
-## [Usage](#usage)
+## Installation
 
-```svelte
+```bash
+pnpm ui:add skeleton
+```
+
+## Usage
+
+```html
 <script lang="ts">
   import { Skeleton } from "@stevejuma/ui/shadcn/skeleton";
 </script>
 ```
 
-```svelte
+```html
 <Skeleton class="h-[20px] w-[100px] rounded-full" />
 ```
 
-## [Examples](#examples)
+## Examples
 
-## [Card](#card)
+## Card
+
+
+```html
+<script lang="ts">
+	import { Skeleton } from "@stevejuma/ui/shadcn/skeleton";
+</script>
+
+<div class="flex flex-col space-y-3">
+	<Skeleton class="h-[125px] w-[250px] rounded-xl" />
+	<div class="space-y-2">
+		<Skeleton class="h-4 w-[250px]" />
+		<Skeleton class="h-4 w-[200px]" />
+	</div>
+</div>
+```

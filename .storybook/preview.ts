@@ -42,6 +42,13 @@ const preview: Preview = {
     backgrounds: {
       disable: true,
     },
+    // Docs TOC (right rail): Installation / Structure / API headings from MDX + Markdown.
+    docs: {
+      toc: {
+        headingSelector: "h2, h3",
+        title: "On this page",
+      },
+    },
     layout: "fullscreen",
   },
 };

@@ -133,6 +133,7 @@ function usage(): string {
   pnpm ui:add:batch <a|b|c|d> [--overwrite] [--dry-run] [--keep-worktree]
   pnpm ui:docs --component <name> [--fixture]
   pnpm ui:docs --batch <a|b|c|d|all>
+  pnpm ui docs:vendor [--ref shadcn-svelte@1.4.2]
   pnpm ui:refresh <component>
   pnpm test:visual:update --component <name>   # requires VISUAL_UPDATE_APPROVED=1
 
@@ -348,6 +349,24 @@ async function main() {
         fixture: asBooleanFlag(flags, "fixture"),
       });
       break;
+    case "docs:vendor": {
+      const { refreshDocsVendor } = await import("./docs/vendor-docs.js");
+      const pin = refreshDocsVendor({
+        packageRoot,
+        ref:
+          typeof flags.get("ref") === "string"
+            ? String(flags.get("ref"))
+            : positionals[0],
+      });
+      if (json) {
+        printJson(jsonOk("docs:vendor", pin));
+      } else {
+        console.log(
+          `Pinned ${pin.ref} → ${pin.commit} under vendor/shadcn-svelte-docs`,
+        );
+      }
+      break;
+    }
     case undefined:
     case "help":
       if (json) {

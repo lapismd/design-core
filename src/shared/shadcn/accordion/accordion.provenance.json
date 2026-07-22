@@ -30,13 +30,16 @@
         "sha256": "14e729a878c52b3ecc5c9b47c9de4fbc00d8e0df3efcda4c5f0638e14efca655"
       }
     ],
-    "docsUrl": "https://shadcn-svelte.com/docs/components/accordion.md",
-    "docsFetchedAt": "2026-07-19T20:42:29.186Z",
-    "docsSha256": "d830d1784d4a6f4f3dd2c5970d0aa075336f9332884bbdfa771c4afc0521764b",
+    "docsUrl": "https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/accordion.md",
+    "docsFetchedAt": "2026-07-22T09:57:18.316Z",
+    "docsSha256": "54ab5ed974062367cfd7e4b08f3057466d481418fb5e104c79b99d09decf2d1e",
     "examplesIncluded": [
       "Preview"
     ],
-    "examplesSkipped": []
+    "examplesSkipped": [],
+    "docsCommit": "bf4f461d88526359d0e96e1950f637912bbeebe7",
+    "docsRef": "shadcn-svelte@1.4.2",
+    "docsVendorPath": "vendor/shadcn-svelte-docs"
   },
   "converter": {
     "version": "2.0.0",

@@ -33,8 +33,10 @@ colocated stories, tokens, provenance, and docs artifacts.
 1. **Inspect** — `pnpm ui:inspect <name>` (support tier + candidates; no writes).
 2. **Add / convert** — `pnpm ui:add <name> [--overwrite] [--dry-run]`.
    Batches: `pnpm ui:add:batch a|b|c|d` for allowlisted complexity groups.
-3. **Docs sync** — `pnpm ui:docs --component <name>` (or `--batch …`) pulls
-   upstream LLM markdown into `<family>.docs.md` + MDX/example sources.
+3. **Docs sync** — `pnpm ui:docs --component <name>` (or `--batch …`) reads the
+   pinned tree under `vendor/shadcn-svelte-docs/` (`<ComponentPreview name>` →
+   `examples/<name>.svelte`) and emits `<family>.docs.md` + MDX/example sources.
+   Refresh the pin with `pnpm ui docs:vendor --ref shadcn-svelte@1.4.2`.
 4. **Stories** — colocated `*.stories.svelte` under `Shadcn/<Family>/…` with
    real interactive play coverage where the control is interactive.
 5. **Verify** — see `pnpm ui guide testing`.

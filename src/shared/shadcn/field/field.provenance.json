@@ -54,33 +54,25 @@
         "sha256": "4a50f5cb00342a180e7c12a2765b7d401a1332b16c938f2c31bee299ad6e71eb"
       }
     ],
-    "docsUrl": "https://shadcn-svelte.com/docs/components/field.md",
-    "docsFetchedAt": "2026-07-19T20:42:29.447Z",
-    "docsSha256": "7789e579c9275be0a5d11c04920cd24947a2576e889acc879fe71db06098e73d",
+    "docsUrl": "https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/field.md",
+    "docsFetchedAt": "2026-07-22T09:57:18.405Z",
+    "docsSha256": "c1f7813581a484724ce4c4adf9cfbb7287824040e60cae3c0be632b655aa4e3c",
     "examplesIncluded": [
+      "Preview",
       "Input",
       "Textarea",
       "Select",
       "Fieldset",
+      "Checkbox",
       "Switch",
-      "Responsive Layout",
-      "Validation and Errors"
+      "Field Group",
+      "Responsive Layout"
     ],
     "examplesSkipped": [
-      {
-        "name": "Preview",
-        "reason": "missing-family",
-        "detail": "Catalog is missing family \"checkbox\""
-      },
       {
         "name": "Slider",
         "reason": "unsupported-hook",
         "detail": "Example contains a bare bind: that is not valid Svelte"
-      },
-      {
-        "name": "Checkbox",
-        "reason": "missing-family",
-        "detail": "Catalog is missing family \"checkbox\""
       },
       {
         "name": "Radio",
@@ -91,13 +83,11 @@
         "name": "Choice Card",
         "reason": "missing-family",
         "detail": "Catalog is missing family \"radio-group\""
-      },
-      {
-        "name": "Field Group",
-        "reason": "missing-family",
-        "detail": "Catalog is missing family \"checkbox\""
       }
-    ]
+    ],
+    "docsCommit": "bf4f461d88526359d0e96e1950f637912bbeebe7",
+    "docsRef": "shadcn-svelte@1.4.2",
+    "docsVendorPath": "vendor/shadcn-svelte-docs"
   },
   "converter": {
     "version": "2.0.0",

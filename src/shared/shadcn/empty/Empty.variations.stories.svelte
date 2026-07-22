@@ -16,13 +16,10 @@
 <Story
   name="Preview"
   exportName="Preview"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
-      description: {
-        story: "Use the Empty component to display an empty state.",
-      },
       source: {
         code: exampleSources.Preview,
         language: "html",
@@ -41,7 +38,7 @@
 <Story
   name="Outline"
   exportName="Outline"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -66,7 +63,7 @@
 <Story
   name="Background"
   exportName="Background"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {

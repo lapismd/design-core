@@ -23,9 +23,6 @@
   parameters={{
     a11y: { test: "todo" },
     docs: {
-      description: {
-        story: "Displays a form input field or a component that looks like an input field.",
-      },
       source: {
         code: exampleSources.Preview,
         language: "html",

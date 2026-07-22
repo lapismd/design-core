@@ -14,13 +14,10 @@
 <Story
   name="Preview"
   exportName="Preview"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
-      description: {
-        story: "A set of layered sections of contentknown as tab panelsthat are displayed one at a time.\n\n[Docs](https://bits-ui.com/docs/components/tabs)\n\n[API Reference](https://bits-ui.com/docs/components/tabs#api-reference)",
-      },
       source: {
         code: exampleSources.Preview,
         language: "html",

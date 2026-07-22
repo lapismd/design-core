@@ -4,7 +4,6 @@
   import * as Badge from "./index.js";
   import * as exampleSources from "./Badge.example-sources.js";
   import PreviewExample from "./examples/preview.svelte";
-  import LinkExample from "./examples/link.svelte";
 
   const { Story } = defineMeta({
     title: "Shadcn/Data/Badge",
@@ -15,14 +14,10 @@
 <Story
   name="Preview"
   exportName="Preview"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/badge/preview-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
     a11y: { test: "todo" },
     docs: {
-      description: {
-        story: "Displays a badge or a component that looks like a badge.",
-      },
       source: {
         code: exampleSources.Preview,
         language: "html",
@@ -34,32 +29,6 @@
   {#snippet template()}
     <div class="p-4">
       <PreviewExample />
-    </div>
-  {/snippet}
-</Story>
-
-<Story
-  name="Link"
-  exportName="Link"
-  tags={["upstream-example", "visual-approved"]}
-  parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/badge/link-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
-    a11y: { test: "todo" },
-    docs: {
-      description: {
-        story: "You can use the `badgeVariants` helper to create a link that looks like a badge.",
-      },
-      source: {
-        code: exampleSources.Link,
-        language: "html",
-        type: "code",
-      },
-    },
-  }}
->
-  {#snippet template()}
-    <div class="p-4">
-      <LinkExample />
     </div>
   {/snippet}
 </Story>

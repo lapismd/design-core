@@ -20,13 +20,10 @@
 <Story
   name="Preview"
   exportName="Preview"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
-      description: {
-        story: "A two-state button that can be either on or off.\n\n[Docs](https://bits-ui.com/docs/components/toggle)\n\n[API Reference](https://bits-ui.com/docs/components/toggle#api-reference)",
-      },
       source: {
         code: exampleSources.Preview,
         language: "html",
@@ -45,7 +42,7 @@
 <Story
   name="Default"
   exportName="Default"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -67,7 +64,7 @@
 <Story
   name="Outline"
   exportName="Outline"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -89,7 +86,7 @@
 <Story
   name="With Text"
   exportName="WithText"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -111,7 +108,7 @@
 <Story
   name="Small"
   exportName="Small"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -133,7 +130,7 @@
 <Story
   name="Large"
   exportName="Large"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -155,7 +152,7 @@
 <Story
   name="Disabled"
   exportName="Disabled"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {

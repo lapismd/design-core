@@ -8,6 +8,7 @@ import type {
 import {
   composedFamilyFromTag,
   extractStyleSites,
+  isMarkerCandidate,
   type StyleSite,
 } from "../analysis/style-sites.js";
 import { publicTokenName } from "./token-names.js";
@@ -261,6 +262,16 @@ function classReplacementForSite(source: string, site: StyleSite): string {
     if (keptArgs.length === 1) return `class={${keptArgs[0]}}`;
     return `class={cn(${keptArgs.join(", ")})}`;
   }
+  if (site.kind === "cnObject") {
+    const expr = source.slice(site.attrStart, site.classEnd);
+    const innerMatch = /^class:\s*cn\(([\s\S]*)\)$/.exec(expr);
+    if (!innerMatch) return "class: undefined";
+    const kept = stripStringArgsFromCn(innerMatch[1]!);
+    const keptArgs = kept ? splitTopLevelArgs(kept) : [];
+    if (!keptArgs.length) return "class: undefined";
+    if (keptArgs.length === 1) return `class: ${keptArgs[0]}`;
+    return `class: cn(${keptArgs.join(", ")})`;
+  }
   // static / classLit — drop utilities (markers remapped in CSS)
   return "";
 }
@@ -316,6 +327,40 @@ function applyStyleSites(
         /([ \t]*)$/,
       )?.[1] || "  ";
     const prefix = ownershipPrefix(component, site, extraction, indent, source);
+
+    if (site.kind === "cnObject") {
+      // Replace class: cn(...) in the object literal.
+      out =
+        out.slice(0, site.attrStart) +
+        classReplacement +
+        out.slice(site.classEnd);
+      // Inject ownership keys next to data-slot in the same object when present.
+      const searchFrom = Math.max(0, site.attrStart - 200);
+      const searchTo = Math.min(out.length, site.attrStart + 500);
+      const region = out.slice(searchFrom, searchTo);
+      const slotKey = /["']data-slot["']\s*:/.exec(region);
+      if (slotKey && !region.includes("data-ui-part")) {
+        const abs = searchFrom + slotKey.index!;
+        const ownLines: string[] = [];
+        if (!site.composedFrom) {
+          ownLines.push(`${indent}"data-ui-component": "${component}",`);
+        }
+        ownLines.push(`${indent}"data-ui-part": "${site.part}",`);
+        out = out.slice(0, abs) + ownLines.join("\n") + "\n" + out.slice(abs);
+      }
+      // Also stamp the concrete host that spreads mergedProps (button/div/a).
+      out = out.replace(
+        /(<(?:button|div|a|span)\b)([^>]*?\{\.\.\.mergedProps\})/,
+        (full, tag: string, rest: string) => {
+          if (rest.includes("data-ui-part=")) return full;
+          const inject = site.composedFrom
+            ? ` data-ui-part="${site.part}"`
+            : ` data-ui-component="${component}" data-ui-part="${site.part}"`;
+          return `${tag}${inject}${rest}`;
+        },
+      );
+      continue;
+    }
 
     // Locate data-slot on the full opening tag (may be before or after class=).
     const tagStart = source.lastIndexOf("<", site.attrStart);
@@ -457,6 +502,7 @@ function replaceTvModuleBlock(
   component: string,
   part: string,
   extraction: StyleExtraction,
+  markers: string[] = [],
 ): string {
   if (extraction.kind !== "tv") return source;
 
@@ -570,6 +616,12 @@ ${axis.values.map((v) => `    "${v}",`).join("\n")}
           .join("\n")}\n  };\n`
       : "";
 
+  const uniqueMarkers = [...new Set(markers)];
+  const markerReturn =
+    uniqueMarkers.length > 0
+      ? `    return ${JSON.stringify(uniqueMarkers.join(" "))};`
+      : `    return "";`;
+
   const replacement = `${axisBlocksFixed}
 ${composite}
   /** @deprecated Prefer typed props; retained for API compatibility. */
@@ -577,7 +629,7 @@ ${composite}
 ${propTypes}
     class?: string;
   }): string {
-    return "";
+${markerReturn}
   }
 `;
 
@@ -596,6 +648,15 @@ function injectComposedPartAttributes(
     if (new RegExp(`data-${axis.prop}\\s*=`).test(source)) continue;
     attrs.push(`data-${axis.prop}={${axis.prop}}`);
   }
+  const attrDataSlot =
+    /(^|\n)([ \t]*)data-slot=(?:\{[^}]+\}|"[^"]*"|'[^']*'|[^\s>]+)/g;
+  if (attrDataSlot.test(source)) {
+    attrDataSlot.lastIndex = 0;
+    return source.replace(attrDataSlot, (match, lead, indent) => {
+      const prefix = attrs.map((a) => `${indent}${a}`).join("\n");
+      return `${lead}${prefix}\n${indent}${match.slice(lead.length)}`;
+    });
+  }
   const absClass = source.indexOf("class={");
   if (absClass < 0) return source;
   const lineStart = source.lastIndexOf("\n", absClass) + 1;
@@ -604,12 +665,103 @@ function injectComposedPartAttributes(
   return source.slice(0, absClass) + prefix + source.slice(absClass);
 }
 
+function ensureOmitDataUiIdentityImport(source: string): string {
+  if (/omitDataUiIdentity/.test(source)) return source;
+  if (!/\.\.\.(?:omitDataUiIdentity\()?restProps/.test(source) && !/\.\.\.restProps/.test(source)) {
+    return source;
+  }
+  // Prefer colocating with an existing utils import when present.
+  const utilsImport =
+    /import\s*\{([^}]*)\}\s*from\s*(["'][^"']*lib\/utils\.js["'])\s*;?/.exec(
+      source,
+    );
+  if (utilsImport) {
+    const from = utilsImport[2]!.replace(/utils\.js/, "data-ui-host.js");
+    const insert = `import { omitDataUiIdentity } from ${from};\n`;
+    return source.replace(utilsImport[0], `${utilsImport[0]}\n${insert}`);
+  }
+  const script = source.indexOf("<script");
+  if (script < 0) return source;
+  const close = source.indexOf(">", script);
+  if (close < 0) return source;
+  return (
+    source.slice(0, close + 1) +
+    `\n\timport { omitDataUiIdentity } from "../../../lib/data-ui-host.js";` +
+    source.slice(close + 1)
+  );
+}
+
+/**
+ * Object-literal hosts must keep ownership after rest spreads. Foreign asChild
+ * parents (e.g. Collapsible.Trigger) otherwise overwrite data-ui-* and kill CSS.
+ */
+function lockObjectLiteralDataUiIdentity(source: string): string {
+  if (!/["']data-ui-part["']\s*:/.test(source)) return source;
+  if (!/\.\.\.restProps/.test(source)) return source;
+
+  let out = source.replace(
+    /\.\.\.(?:omitDataUiIdentity\()?restProps\)?\s*,/,
+    "...omitDataUiIdentity(restProps),",
+  );
+
+  // Move ownership keys after the rest spread when rest still trails them.
+  out = out.replace(
+    /(\{[\s\S]*?)("data-ui-component"\s*:\s*"[^"]+"\s*,\s*"data-ui-part"\s*:\s*"[^"]+"\s*,)([\s\S]*?)(\.\.\.omitDataUiIdentity\(restProps\),)/g,
+    (_m, before: string, ownership: string, mid: string, rest: string) => {
+      // Only rewrite when ownership appears before rest in this object.
+      return `${before}${rest}${ownership}${mid}`;
+    },
+  );
+
+  out = ensureOmitDataUiIdentityImport(out);
+
+  // Host markup: ownership must win over {...mergedProps}.
+  out = out.replace(
+    /(<(?:button|div|a|span)\b)([^>]*?\bdata-ui-(?:component|part)=["'][^"']+["'][^>]*?)(\{\.\.\.mergedProps\})([^>]*>)/g,
+    (_m, tag: string, before: string, spread: string, after: string) => {
+      const comp = before.match(/\bdata-ui-component=(["'][^"']+["'])/)?.[0];
+      const part = before.match(/\bdata-ui-part=(["'][^"']+["'])/)?.[0];
+      if (!comp || !part) return _m;
+      const cleaned = before
+        .replace(/\s*data-ui-component=(["'][^"']+["'])/, "")
+        .replace(/\s*data-ui-part=(["'][^"']+["'])/, "");
+      return `${tag}${cleaned}${spread} ${comp} ${part}${after}`;
+    },
+  );
+
+  return out;
+}
+
 function injectDataAttributes(
   source: string,
   component: string,
   part: string,
   extraction: StyleExtraction,
 ): string {
+  // Object-literal hosts (e.g. $derived buttonProps with class: cn(...))
+  // spread onto <a> via child snippets — ownership must live on the object.
+  if (
+    /["']data-slot["']\s*:/.test(source) &&
+    !/["']data-ui-part["']\s*:/.test(source)
+  ) {
+    const objDataSlot =
+      /(^|\n)([ \t]*)["']data-slot["']\s*:/g;
+    source = source.replace(objDataSlot, (m, lead, indent) => {
+      const own: string[] = [
+        `${indent}"data-ui-component": "${component}",`,
+        `${indent}"data-ui-part": "${part}",`,
+      ];
+      for (const axis of extraction.axes) {
+        const key = `"data-${axis.prop}"`;
+        if (source.includes(key) || new RegExp(`data-${axis.prop}\\s*=`).test(source)) {
+          continue;
+        }
+        own.push(`${indent}${key}: ${axis.prop},`);
+      }
+      return `${lead}${own.join("\n")}\n${m.slice(lead.length)}`;
+    });
+  }
+
   const attrs: string[] = [
     `data-ui-component="${component}"`,
     `data-ui-part="${part}"`,
@@ -617,27 +769,43 @@ function injectDataAttributes(
   for (const axis of extraction.axes) {
     // Don't duplicate attrs already present on the markup (e.g. data-variant={variant}).
     if (new RegExp(`data-${axis.prop}\\s*=`).test(source)) continue;
+    if (new RegExp(`["']data-${axis.prop}["']\\s*:`).test(source)) continue;
     attrs.push(`data-${axis.prop}={${axis.prop}}`);
   }
-  const joined = attrs.join("\n  ");
 
   // Only match real HTML attributes (line-leading), never inside class="...data-slot=..." utilities.
   const attrDataSlot =
     /(^|\n)([ \t]*)data-slot=(?:\{[^}]+\}|"[^"]*"|'[^']*'|[^\s>]+)/g;
   if (attrDataSlot.test(source)) {
     attrDataSlot.lastIndex = 0;
-    return source.replace(attrDataSlot, (m, lead, indent) => {
-      const prefix = attrs.map((a) => `${indent}${a}`).join("\n");
-      return `${lead}${prefix}\n${indent}${m.slice(lead.length)}`;
-    });
+    if (!/data-ui-part=/.test(source)) {
+      source = source.replace(attrDataSlot, (m, lead, indent) => {
+        const prefix = attrs.map((a) => `${indent}${a}`).join("\n");
+        return `${lead}${prefix}\n${indent}${m.slice(lead.length)}`;
+      });
+    }
   }
 
   // Attach before line-leading class={...} (not class="static" utilities on icons).
-  if (/\n\s*class=\{/.test(source)) {
-    return source.replace(/(\n\s*)class=\{/g, (_m, ws) => {
+  if (/\n\s*class=\{/.test(source) && !/data-ui-part=/.test(source)) {
+    source = source.replace(/(\n\s*)class=\{/g, (_m, ws) => {
       return `${ws}${attrs.join(ws)}${ws}class={`;
     });
   }
+
+  // Stamp the concrete host that spreads mergedProps (button/div/a).
+  // Ownership after the spread so it wins over asChild parent identity.
+  source = source.replace(
+    /(<(?:button|div|a|span)\b)([^>]*?\{\.\.\.mergedProps\})([^>]*>)/,
+    (full, tag: string, rest: string, after: string) => {
+      if (/\bdata-ui-part=/.test(after) || /\bdata-ui-part=/.test(rest)) {
+        return full;
+      }
+      return `${tag}${rest} data-ui-component="${component}" data-ui-part="${part}"${after}`;
+    },
+  );
+
+  source = lockObjectLiteralDataUiIdentity(source);
 
   return source;
 }
@@ -712,8 +880,20 @@ function ensureCnImport(source: string): string {
   );
 }
 
+/**
+ * Tailwind's compiler wraps utilities in `@layer utilities`. Layered rules lose to
+ * any unlayered page/browser CSS (including Storybook chrome and embedded browsers).
+ * Promote the remapped semantic selectors out of that layer so component styles win.
+ */
+function unwrapUtilitiesLayer(css: string): string {
+  return css.replace(
+    /@layer\s+utilities\s*\{([\s\S]*?)\}\s*(?=@layer|@property|$)/g,
+    "$1",
+  );
+}
+
 function injectStyleBlock(source: string, remappedCss: string): string {
-  const scopedCss = remappedCss
+  const scopedCss = unwrapUtilitiesLayer(remappedCss)
     .replaceAll(".dark ", ":global(.dark) ")
     // Satisfy svelte-check --fail-on-warnings for -webkit-line-clamp without standard twin.
     .replace(
@@ -754,6 +934,7 @@ export function rewritePartSource(args: {
     component,
     part.part,
     part.extraction,
+    part.sites?.flatMap((s) => s.markers) ?? [],
   );
   source = rewriteCrossModuleVariantProps(source);
 
@@ -781,12 +962,28 @@ export function rewritePartSource(args: {
     }
   } else {
     source = rewriteCnClassAttributes(source);
-    source = injectDataAttributes(
-      source,
-      component,
-      part.part,
-      part.extraction,
-    );
+    const composedProbe =
+      source.indexOf("class={") >= 0
+        ? source.indexOf("class={")
+        : source.indexOf("data-slot=");
+    const composedFrom =
+      composedProbe >= 0
+        ? composedFamilyFromTag(source, composedProbe)
+        : null;
+    if (composedFrom) {
+      source = injectComposedPartAttributes(
+        source,
+        part.part,
+        part.extraction,
+      );
+    } else {
+      source = injectDataAttributes(
+        source,
+        component,
+        part.part,
+        part.extraction,
+      );
+    }
   }
 
   source = ensureCnImport(source);

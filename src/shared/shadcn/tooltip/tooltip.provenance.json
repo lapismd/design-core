@@ -34,14 +34,16 @@
         "sha256": "a33d843a5e4e6e5fe426654f6742a453f44f4ff928e94a21d188d9035e4d02f8"
       }
     ],
-    "docsUrl": "https://shadcn-svelte.com/docs/components/tooltip.md",
-    "docsFetchedAt": "2026-07-21T23:49:36.004Z",
-    "docsSha256": "a4406964e9931ab7dfccb6e4edf92d0578ce277443b45e6f8d7c3b81424bc01e",
+    "docsUrl": "https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/tooltip.md",
+    "docsFetchedAt": "2026-07-22T09:57:18.320Z",
+    "docsSha256": "cf81b479e1b9a0c17a94c0af71ddbb8facce552802fb8ba3374537227e95f851",
     "examplesIncluded": [
-      "Preview",
-      "Nested Providers"
+      "Preview"
     ],
-    "examplesSkipped": []
+    "examplesSkipped": [],
+    "docsCommit": "bf4f461d88526359d0e96e1950f637912bbeebe7",
+    "docsRef": "shadcn-svelte@1.4.2",
+    "docsVendorPath": "vendor/shadcn-svelte-docs"
   },
   "converter": {
     "version": "2.0.0",

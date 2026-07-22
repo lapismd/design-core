@@ -26,9 +26,6 @@
   parameters={{
     a11y: { test: "todo" },
     docs: {
-      description: {
-        story: "Display additional information or actions to an input or textarea.",
-      },
       source: {
         code: exampleSources.Preview,
         language: "html",
@@ -69,7 +66,7 @@
 <Story
   name="Text"
   exportName="Text"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {

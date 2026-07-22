@@ -19,7 +19,7 @@ via `pnpm ui:add` / `pnpm ui:add:batch`):
 
 | Status    | Families                                                                                                                                                                                                                                                                         |
 | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Converted | accordion, alert, alert-dialog, badge, button, card, collapsible, command, dialog, dropdown-menu, empty, field, input, input-group, label, popover, resizable, scroll-area, select, separator, sidebar, skeleton, spinner, switch, tabs, textarea, toggle, toggle-group, tooltip |
+| Converted | accordion, alert, alert-dialog, badge, button, card, collapsible, command, dialog, sheet, dropdown-menu, empty, field, input, input-group, label, popover, resizable, scroll-area, select, separator, sidebar, skeleton, spinner, switch, tabs, textarea, toggle, toggle-group, tooltip |
 
 Batch commands: `pnpm ui:add:batch a` (simple roots), `b` (stateful/light compound),
 `c` (portals), `d` (layout/field compounds). Inspect: `pnpm ui:inspect <name>`.

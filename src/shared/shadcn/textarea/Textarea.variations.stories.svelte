@@ -23,9 +23,6 @@
   parameters={{
     a11y: { test: "todo" },
     docs: {
-      description: {
-        story: "Displays a form textarea or a component that looks like a textarea.",
-      },
       source: {
         code: exampleSources.Preview,
         language: "html",

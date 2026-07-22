@@ -1,4 +1,4 @@
-import { mkdirSync } from "node:fs";
+import { existsSync, mkdirSync } from "node:fs";
 import path from "node:path";
 import { loadConfig } from "../config.js";
 import { EXIT, GeneratorError } from "../errors.js";
@@ -42,6 +42,14 @@ async function syncOne(args: {
   const { component, fixture, packageRoot, sharedRoot } = args;
   const recipe = requireRecipe(component);
   const targetDir = path.join(sharedRoot, component);
+  const targetAbs = path.resolve(packageRoot, targetDir);
+  if (!existsSync(targetAbs)) {
+    throw new GeneratorError(
+      `Target directory missing for ${component} (not converted yet)`,
+      EXIT.generation,
+      targetAbs,
+    );
+  }
   const fixturePath = fixture
     ? path.join(
         packageRoot,
@@ -52,9 +60,10 @@ async function syncOne(args: {
 
   return syncUpstreamDocs({
     component,
-    targetDir: path.resolve(packageRoot, targetDir),
+    targetDir: targetAbs,
     storyTitle: recipe.storyTitle,
     sharedRoot: path.resolve(packageRoot, sharedRoot),
+    packageRoot,
     markdownFixture: fixturePath,
   });
 }
@@ -95,8 +104,19 @@ export async function runDocsSync(options: {
 
   const results: SyncUpstreamDocsResult[] = [];
   const failures: Array<{ component: string; error: string }> = [];
+  const skippedMissing: string[] = [];
 
   for (const name of components) {
+    const targetAbs = path.resolve(
+      config.packageRoot,
+      config.sharedRoot,
+      name,
+    );
+    if (!existsSync(targetAbs)) {
+      skippedMissing.push(name);
+      log.warn(`${name}: skipped (not converted yet — no ${config.sharedRoot}/${name})`);
+      continue;
+    }
     try {
       const result = await syncOne({
         component: name,
@@ -119,7 +139,11 @@ export async function runDocsSync(options: {
     }
   }
 
-  writeJson(path.join(reportDir, "docs-sync.json"), { results, failures });
+  writeJson(path.join(reportDir, "docs-sync.json"), {
+    results,
+    failures,
+    skippedMissing,
+  });
   log.info(`Report: ${reportDir}`);
 
   console.log("\nDocs sync summary");
@@ -127,6 +151,12 @@ export async function runDocsSync(options: {
   console.log(`  failed: ${failures.length}`);
   for (const f of failures) {
     console.log(`    - ${f.component}: ${f.error}`);
+  }
+  if (skippedMissing.length) {
+    console.log(`  not converted (skipped): ${skippedMissing.length}`);
+    for (const name of skippedMissing) {
+      console.log(`    - ${name}`);
+    }
   }
   const skippedTotal = results.reduce(
     (n, r) => n + r.examplesSkipped.length,
@@ -142,5 +172,5 @@ export async function runDocsSync(options: {
     );
   }
 
-  return { results, failures, reportDir };
+  return { results, failures, reportDir, skippedMissing };
 }

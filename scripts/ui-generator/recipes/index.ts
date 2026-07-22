@@ -80,6 +80,7 @@ export const BATCH_C = [
   "tooltip",
   "popover",
   "dialog",
+  "sheet",
   "alert-dialog",
   "dropdown-menu",
   "select",
@@ -270,6 +271,12 @@ const recipes: Record<string, ComponentRecipe> = {
     attrs: { role: "dialog", "data-slot": "dialog-content" },
     shotSelector: '[data-ui-part="dialog-content"]',
   }),
+  sheet: portal("sheet", "Shadcn/Overlays/Sheet", {
+    tag: "div",
+    text: "Sheet",
+    attrs: { role: "dialog", "data-slot": "sheet-content" },
+    shotSelector: '[data-ui-part="sheet-content"]',
+  }),
   "alert-dialog": portal("alert-dialog", "Shadcn/Overlays/Alert Dialog", {
     tag: "div",
     text: "Confirm",
@@ -320,7 +327,7 @@ const recipes: Record<string, ComponentRecipe> = {
     tag: "div",
     text: "Sidebar",
     attrs: { "data-slot": "sidebar" },
-    shotSelector: '[data-ui-part="sidebar-root"]',
+    shotSelector: '[data-ui-part="sidebar"]',
     viewport: { width: 640, height: 400 },
   }),
   "scroll-area": lightCompound("scroll-area", "Shadcn/Layout/Scroll Area", {

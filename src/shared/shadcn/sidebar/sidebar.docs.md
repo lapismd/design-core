@@ -1,32 +1,78 @@
-<!-- Adapted from https://shadcn-svelte.com/docs/components/sidebar.md for the @stevejuma/ui native-CSS catalog. -->
+<!-- Adapted from https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/sidebar.md for the @stevejuma/ui native-CSS catalog. -->
 
 # Sidebar
 
 A composable, themeable and customizable sidebar component.
 
-## [Structure](#structure)
+Sidebars are one of the most complex components to build. They are central to any application and often contain a lot of moving parts.
+
+Shad doesn't like building sidebars, so he built 30+ of them with all kinds of configurations. The core components have been extracted into `sidebar-*.svelte` files, and you can use them in your own projects.
+
+We now have a solid foundation to build on top of. Composable. Themeable. Customizable.
+
+[Browse the Blocks Library](/blocks).
+
+## Installation
+
+Run the following command to install the `sidebar` components:
+
+```bash
+pnpm ui:add sidebar
+```
+
+Add the following colors to your CSS file
+
+We'll go over the colors later in the [theming section](/docs/components/sidebar#theming).
+
+```css
+:root {
+  --sidebar: oklch(98.5% 0.008 295);
+  --sidebar-foreground: oklch(15% 0.05 295);
+  --sidebar-primary: oklch(45% 0.2 295);
+  --sidebar-primary-foreground: oklch(99% 0.005 295);
+  --sidebar-accent: oklch(96.5% 0.015 295);
+  --sidebar-accent-foreground: oklch(20% 0.05 295);
+  --sidebar-border: oklch(92.5% 0.02 295);
+  --sidebar-ring: oklch(55% 0.15 295);
+}
+
+.dark {
+  --sidebar: oklch(20.8% 0.042 265.755);
+  --sidebar-foreground: oklch(98.4% 0.003 247.858);
+  --sidebar-primary: oklch(48.8% 0.243 264.376);
+  --sidebar-primary-foreground: oklch(98.4% 0.003 247.858);
+  --sidebar-accent: oklch(27.9% 0.041 260.031);
+  --sidebar-accent-foreground: oklch(98.4% 0.003 247.858);
+  --sidebar-border: oklch(100% 0 0 / 10%);
+  --sidebar-ring: oklch(55.1% 0.027 264.364);
+}
+```
+
+## Structure
 
 A `Sidebar` component is composed of the following parts:
 
-- `Sidebar.Provider` \- Handles collapsible state.
-- `Sidebar.Root` \- The sidebar container.
-- `Sidebar.Header` and `Sidebar.Footer` \- Sticky at the top and bottom of the sidebar.  
-- `Sidebar.Content` \- Scrollable content.
-- `Sidebar.Group` \- Section within the `Sidebar.Content` .
-- `Sidebar.Trigger` \- Trigger for the `Sidebar` .
+- `Sidebar.Provider` - Handles collapsible state.
+- `Sidebar.Root` - The sidebar container.
+- `Sidebar.Header` and `Sidebar.Footer` - Sticky at the top and bottom of the sidebar.
+- `Sidebar.Content` - Scrollable content.
+- `Sidebar.Group` - Section within the `Sidebar.Content`.
+- `Sidebar.Trigger` - Trigger for the `Sidebar`.
 
-![Sidebar structure](/img/sidebar/sidebar-structure.png) ![Sidebar structure](/img/sidebar/sidebar-structure-dark.png)
+<img src="/img/sidebar/sidebar-structure.png" width="716" height="420" alt="Sidebar structure" class="border dark:hidden rounded-lg overflow-hidden mt-6 w-full" />
 
-## [Usage](#usage)
+<img src="/img/sidebar/sidebar-structure-dark.png" width="716" height="420" alt="Sidebar structure" class="border hidden dark:block rounded-lg overflow-hidden mt-6 w-full" />
 
-src/routes/+layout.svelte
+## Usage
 
-```svelte
+```html
 <script lang="ts">
   import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
   import AppSidebar from "$lib/components/app-sidebar.svelte";
+
   let { children } = $props();
 </script>
+
 <Sidebar.Provider>
   <AppSidebar />
   <main>
@@ -36,12 +82,11 @@ src/routes/+layout.svelte
 </Sidebar.Provider>
 ```
 
-src/lib/components/app-sidebar.svelte
-
-```svelte
+```html
 <script lang="ts">
   import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
 </script>
+
 <Sidebar.Root>
   <Sidebar.Header />
   <Sidebar.Content>
@@ -52,49 +97,161 @@ src/lib/components/app-sidebar.svelte
 </Sidebar.Root>
 ```
 
-## [Your First Sidebar](#your-first-sidebar)
+## Your First Sidebar
 
 Let's start with the most basic sidebar. A collapsible sidebar with a menu.
 
 Add a `Sidebar.Provider` and `Sidebar.Trigger` at the root of your application.
 
-src/routes/+layout.svelte
-
-```svelte
+```html
 <script lang="ts">
-  import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
-  import AppSidebar from "$lib/components/app-sidebar.svelte";
-  let { children } = $props();
+	import CalendarIcon from "@lucide/svelte/icons/calendar";
+	import HouseIcon from "@lucide/svelte/icons/house";
+	import InboxIcon from "@lucide/svelte/icons/inbox";
+	import SearchIcon from "@lucide/svelte/icons/search";
+	import SettingsIcon from "@lucide/svelte/icons/settings";
+	import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
+
+	// Menu items.
+	const items = [
+		{
+			title: "Home",
+			url: "#",
+			icon: HouseIcon,
+		},
+		{
+			title: "Inbox",
+			url: "#",
+			icon: InboxIcon,
+		},
+		{
+			title: "Calendar",
+			url: "#",
+			icon: CalendarIcon,
+		},
+		{
+			title: "Search",
+			url: "#",
+			icon: SearchIcon,
+		},
+		{
+			title: "Settings",
+			url: "#",
+			icon: SettingsIcon,
+		},
+	];
 </script>
+
 <Sidebar.Provider>
-  <AppSidebar />
-  <main>
-    <Sidebar.Trigger />
-    {@render children?.()}
-  </main>
+	<Sidebar.Root>
+		<Sidebar.Content>
+			<Sidebar.Group>
+				<Sidebar.GroupLabel>Application</Sidebar.GroupLabel>
+				<Sidebar.GroupContent>
+					<Sidebar.Menu>
+						{#each items as item (item.title)}
+							<Sidebar.MenuItem>
+								<Sidebar.MenuButton>
+									{#snippet child({ props })}
+										<a href={item.url} {...props}>
+											<item.icon />
+											<span>{item.title}</span>
+										</a>
+									{/snippet}
+								</Sidebar.MenuButton>
+							</Sidebar.MenuItem>
+						{/each}
+					</Sidebar.Menu>
+				</Sidebar.GroupContent>
+			</Sidebar.Group>
+		</Sidebar.Content>
+	</Sidebar.Root>
+	<Sidebar.Inset>
+		<header class="flex h-12 items-center justify-between px-4">
+			<Sidebar.Trigger />
+		</header>
+	</Sidebar.Inset>
 </Sidebar.Provider>
 ```
 
 Create a new sidebar component at `src/lib/components/app-sidebar.svelte`.
 
-src/lib/components/app-sidebar.svelte
-
-```svelte
+```html
 <script lang="ts">
-  import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
+	import CalendarIcon from "@lucide/svelte/icons/calendar";
+	import HouseIcon from "@lucide/svelte/icons/house";
+	import InboxIcon from "@lucide/svelte/icons/inbox";
+	import SearchIcon from "@lucide/svelte/icons/search";
+	import SettingsIcon from "@lucide/svelte/icons/settings";
+	import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
+
+	// Menu items.
+	const items = [
+		{
+			title: "Home",
+			url: "#",
+			icon: HouseIcon,
+		},
+		{
+			title: "Inbox",
+			url: "#",
+			icon: InboxIcon,
+		},
+		{
+			title: "Calendar",
+			url: "#",
+			icon: CalendarIcon,
+		},
+		{
+			title: "Search",
+			url: "#",
+			icon: SearchIcon,
+		},
+		{
+			title: "Settings",
+			url: "#",
+			icon: SettingsIcon,
+		},
+	];
 </script>
-<Sidebar.Root>
-  <Sidebar.Content />
-</Sidebar.Root>
+
+<Sidebar.Provider>
+	<Sidebar.Root>
+		<Sidebar.Content>
+			<Sidebar.Group>
+				<Sidebar.GroupLabel>Application</Sidebar.GroupLabel>
+				<Sidebar.GroupContent>
+					<Sidebar.Menu>
+						{#each items as item (item.title)}
+							<Sidebar.MenuItem>
+								<Sidebar.MenuButton>
+									{#snippet child({ props })}
+										<a href={item.url} {...props}>
+											<item.icon />
+											<span>{item.title}</span>
+										</a>
+									{/snippet}
+								</Sidebar.MenuButton>
+							</Sidebar.MenuItem>
+						{/each}
+					</Sidebar.Menu>
+				</Sidebar.GroupContent>
+			</Sidebar.Group>
+		</Sidebar.Content>
+	</Sidebar.Root>
+	<Sidebar.Inset>
+		<header class="flex h-12 items-center justify-between px-4">
+			<Sidebar.Trigger />
+		</header>
+	</Sidebar.Inset>
+</Sidebar.Provider>
 ```
 
 Now, let's add a `Sidebar.Menu` to the sidebar.
 
 We'll use the `Sidebar.Menu` component in a `Sidebar.Group`.
 
-src/lib/components/app-sidebar.svelte
-
-```svelte
+```html
 <script lang="ts">
   import CalendarIcon from "@lucide/svelte/icons/calendar";
   import HouseIcon from "@lucide/svelte/icons/house";
@@ -102,6 +259,7 @@ src/lib/components/app-sidebar.svelte
   import SearchIcon from "@lucide/svelte/icons/search";
   import SettingsIcon from "@lucide/svelte/icons/settings";
   import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
+
   // Menu items.
   const items = [
     {
@@ -129,8 +287,9 @@ src/lib/components/app-sidebar.svelte
       url: "#",
       icon: SettingsIcon,
     },
- ];
+  ];
 </script>
+
 <Sidebar.Root>
   <Sidebar.Content>
     <Sidebar.Group>
@@ -158,9 +317,7 @@ src/lib/components/app-sidebar.svelte
 
 You've created your first sidebar.
 
-Your first sidebar.
-
-## [Components](#components)
+## Components
 
 The components in the `sidebar-*.svelte` files are built to be composable i.e you build your sidebar by putting the provided components together. They also compose well with other shadcn-svelte components such as `DropdownMenu`, `Collapsible`, `Dialog`, etc.
 
@@ -168,24 +325,22 @@ The components in the `sidebar-*.svelte` files are built to be composable i.e yo
 
 In the next sections, we'll go over each component and how to use them.
 
-## [Sidebar.Provider](#sidebarprovider)
+## Sidebar.Provider
 
 The `Sidebar.Provider` component is used to provide the sidebar context to the `Sidebar` component. You should always wrap your application in a `Sidebar.Provider` component.
 
-### [Props](#props)
+### Props
 
-| Name                          | Type                             | Description                                                                                                                                            |
-| ----------------------------------------------------------- | -------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `open`         | `boolean`                 | Open state of the sidebar (bindable).                                                                                                                  |
-| `onOpenChange` | `(open: boolean) => void` | A callback fired *after* the open state of the sidebar changes if uncontrolled, and *before* the sidebar opens or closes if controlled. |
+| Name           | Type                      | Description                                                                                                                             |
+| -------------- | ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `open`         | `boolean`                 | Open state of the sidebar (bindable).                                                                                                   |
+| `onOpenChange` | `(open: boolean) => void` | A callback fired _after_ the open state of the sidebar changes if uncontrolled, and _before_ the sidebar opens or closes if controlled. |
 
-### [Width](#width)
+### Width
 
 If you have a single sidebar in your application, you can use the `SIDEBAR_WIDTH` and `SIDEBAR_WIDTH_MOBILE` constants in `src/lib/components/ui/sidebar/constants.ts` to set the width of the sidebar.
 
-src/lib/components/ui/sidebar/constants.ts
-
-```ts
+```typescript
 export const SIDEBAR_WIDTH = "16rem";
 export const SIDEBAR_WIDTH_MOBILE = "18rem";
 ```
@@ -194,7 +349,7 @@ For multiple sidebars in your application, you can use the `style` prop to set t
 
 To set the width of the sidebar, you can use the `--sidebar-width` and `--sidebar-width-mobile` CSS variables in the `style` prop.
 
-```svelte
+```html
 <Sidebar.Provider
   style="--sidebar-width: 20rem; --sidebar-width-mobile: 20rem;"
 >
@@ -204,7 +359,7 @@ To set the width of the sidebar, you can use the `--sidebar-width` and `--sideba
 
 This will not only handle the width of the sidebar but also the layout spacing.
 
-### [Keyboard Shortcut](#keyboard-shortcut)
+### Keyboard Shortcut
 
 The `SIDEBAR_KEYBOARD_SHORTCUT` variable in `src/lib/components/ui/sidebar/constants.ts` is used to set the keyboard shortcut used to open and close the sidebar.
 
@@ -212,206 +367,223 @@ To trigger the sidebar, you use the `cmd+b` keyboard shortcut on Mac and `ctrl+b
 
 You can change the keyboard shortcut by changing the value of the `SIDEBAR_KEYBOARD_SHORTCUT` variable.
 
-src/lib/components/ui/sidebar/constants.ts
-
-```ts
+```typescript
 export const SIDEBAR_KEYBOARD_SHORTCUT = "b";
 ```
 
-## [Sidebar.Root](#sidebarroot)
+## Sidebar.Root
 
 The main `Sidebar` component used to render a collapsible sidebar.
 
-```svelte
+```html
 <script lang="ts">
   import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
 </script>
+
 <Sidebar.Root />
 ```
 
-### [Props](#props-1)
+### Props
 
-| Property                     | Type                                                                 | Description                                      |
-| ---------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| `side`        | `left` or `right`                               | The side of the sidebar.                         |
-| `variant`     | `sidebar`, `floating`, or `inset` | The variant of the sidebar.                      |
+| Property      | Type                              | Description                       |
+| ------------- | --------------------------------- | --------------------------------- |
+| `side`        | `left` or `right`                 | The side of the sidebar.          |
+| `variant`     | `sidebar`, `floating`, or `inset` | The variant of the sidebar.       |
 | `collapsible` | `offcanvas`, `icon`, or `none`    | Collapsible state of the sidebar. |
 
-### [side](#side)
+### side
 
 Use the `side` prop to change the side of the sidebar.
 
 Available options are `left` and `right`.
 
-```svelte
+```html
 <Sidebar.Root side="left | right" />
 ```
 
-### [variant](#variant)
+### variant
 
 Use the `variant` prop to change the variant of the sidebar.
 
 Available options are `sidebar`, `floating` and `inset`.
 
-```svelte
+```html
 <Sidebar.Root variant="sidebar | floating | inset" />
 ```
 
-**Note:** If you use the `inset` variant, remember to wrap your main content in a `SidebarInset` component.
+**Note:** If you use the `inset` variant, remember to wrap your main content
+in a `SidebarInset` component.
 
-```svelte
+```html
 <Sidebar.Provider>
   <Sidebar.Root variant="inset">
     <Sidebar.Inset>
       <main>
+        <!-- Your main content -->
       </main>
     </Sidebar.Inset>
   </Sidebar.Root>
 </Sidebar.Provider>
 ```
 
-### [collapsible](#collapsible)
+### collapsible
 
 Use the `collapsible` prop to make the sidebar collapsible.
 
 Available options are `offcanvas`, `icon` and `none`.
 
-```svelte
+```html
 <Sidebar.Root collapsible="offcanvas | icon | none" />
 ```
 
-| Prop                       | Description                                                  |
-| -------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| Prop        | Description                                                  |
+| ----------- | ------------------------------------------------------------ |
 | `offcanvas` | A collapsible sidebar that slides in from the left or right. |
 | `icon`      | A sidebar that collapses to icons.                           |
-| `none`      | A non-collapsible sidebar.                    |
+| `none`      | A non-collapsible sidebar.                                   |
 
-## [useSidebar](#usesidebar)
+## useSidebar
 
-The `useSidebar` function is used to hook into the sidebar context. It returns a reactive class instance, so it *cannot* be destructured. Additionally, it must be called during the lifecycle of the component.
+The `useSidebar` function is used to hook into the sidebar context. It returns a reactive class instance, so it _cannot_ be destructured. Additionally, it must be called during the lifecycle of the component.
 
-```svelte
+```html
 <script lang="ts">
   import { useSidebar } from "@stevejuma/ui/shadcn/sidebar";
   const sidebar = useSidebar();
+
   // ...
+
   sidebar.state;
   sidebar.isMobile;
   sidebar.toggle();
 </script>
 ```
 
-| Property                       | Type                                           | Description                                             |
-| ------------------------------------------------------------ | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| `state`         | `expanded` or `collapsed` | The current state of the sidebar.                       |
-| `open`          | `boolean`                               | Whether the sidebar is open.                            |
-| `setOpen`       | `(open: boolean) => void`               | Sets the open state of the sidebar.                     |
-| `openMobile`    | `boolean`                               | Whether the sidebar is open on mobile.                  |
-| `setOpenMobile` | `(open: boolean) => void`               | Sets the open state of the sidebar on mobile.           |
-| `isMobile`      | `boolean`                               | Whether the sidebar is on mobile.                       |
-| `toggle`        | `() => void`                            | Toggles the sidebar. Desktop and mobile. |
+| Property        | Type                      | Description                                   |
+| --------------- | ------------------------- | --------------------------------------------- |
+| `state`         | `expanded` or `collapsed` | The current state of the sidebar.             |
+| `open`          | `boolean`                 | Whether the sidebar is open.                  |
+| `setOpen`       | `(open: boolean) => void` | Sets the open state of the sidebar.           |
+| `openMobile`    | `boolean`                 | Whether the sidebar is open on mobile.        |
+| `setOpenMobile` | `(open: boolean) => void` | Sets the open state of the sidebar on mobile. |
+| `isMobile`      | `boolean`                 | Whether the sidebar is on mobile.             |
+| `toggle`        | `() => void`              | Toggles the sidebar. Desktop and mobile.      |
 
-## [Sidebar.Header](#sidebarheader)
+## Sidebar.Header
 
 Use the `Sidebar.Header` component to add a sticky header to the sidebar.
 
 The following example adds a `<DropdownMenu>` to the `Sidebar.Header`.
 
-A sidebar header with a dropdown menu.
+```html
+<script lang="ts">
+	import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
+	import * as DropdownMenu from "@stevejuma/ui/shadcn/dropdown-menu";
+	import ChevronDownIcon from "@lucide/svelte/icons/chevron-down";
+</script>
 
-src/lib/components/app-sidebar.svelte
-
-```svelte
-<Sidebar.Root>
-  <Sidebar.Header>
-    <Sidebar.Menu>
-      <Sidebar.MenuItem>
-        <DropdownMenu.Root>
-          <DropdownMenu.Trigger>
-            {#snippet child({ props })}
-              <Sidebar.MenuButton {...props}>
-                Select Workspace
-                <ChevronDown class="ms-auto" />
-              </Sidebar.MenuButton>
-            {/snippet}
-          </DropdownMenu.Trigger>
-          <DropdownMenu.Content class="w-(--bits-dropdown-menu-anchor-width)">
-            <DropdownMenu.Item>
-              <span>Acme Inc</span>
-            </DropdownMenu.Item>
-            <DropdownMenu.Item>
-              <span>Acme Corp.</span>
-            </DropdownMenu.Item>
-          </DropdownMenu.Content>
-        </DropdownMenu.Root>
-      </Sidebar.MenuItem>
-    </Sidebar.Menu>
-  </Sidebar.Header>
-</Sidebar.Root>
+<Sidebar.Provider>
+	<Sidebar.Root>
+		<Sidebar.Header>
+			<Sidebar.Menu>
+				<Sidebar.MenuItem>
+					<DropdownMenu.Root>
+						<DropdownMenu.Trigger>
+							{#snippet child({ props })}
+								<Sidebar.MenuButton
+									{...props}
+									class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+								>
+									Select Workspace
+									<ChevronDownIcon class="ms-auto" />
+								</Sidebar.MenuButton>
+							{/snippet}
+						</DropdownMenu.Trigger>
+						<DropdownMenu.Content class="w-(--bits-dropdown-menu-anchor-width)">
+							<DropdownMenu.Item>
+								<span>Acme Inc</span>
+							</DropdownMenu.Item>
+							<DropdownMenu.Item>
+								<span>Acme Corp.</span>
+							</DropdownMenu.Item>
+						</DropdownMenu.Content>
+					</DropdownMenu.Root>
+				</Sidebar.MenuItem>
+			</Sidebar.Menu>
+		</Sidebar.Header>
+	</Sidebar.Root>
+	<Sidebar.Inset>
+		<header class="flex h-12 items-center justify-between px-4">
+			<Sidebar.Trigger />
+		</header>
+	</Sidebar.Inset>
+</Sidebar.Provider>
 ```
 
-## [Sidebar.Footer](#sidebarfooter)
+## Sidebar.Footer
 
 Use the `Sidebar.Footer` component to add a sticky footer to the sidebar.
 
 The following example adds a `<DropdownMenu>` to the `Sidebar.Footer`.
 
-A sidebar footer with a dropdown menu.
+```html
+<script lang="ts">
+	import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
+	import * as DropdownMenu from "@stevejuma/ui/shadcn/dropdown-menu";
+	import ChevronUpIcon from "@lucide/svelte/icons/chevron-up";
+</script>
 
-src/lib/components/app-sidebar.svelte
-
-```svelte
 <Sidebar.Provider>
-  <Sidebar.Root>
-    <Sidebar.Header />
-    <Sidebar.Content />
-    <Sidebar.Footer>
-      <Sidebar.Menu>
-        <Sidebar.MenuItem>
-          <DropdownMenu.Root>
-            <DropdownMenu.Trigger>
-              {#snippet child({ props })}
-                <Sidebar.MenuButton
-                  {...props}
-                  class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-                >
-                  Username
-                  <ChevronUp class="ms-auto" />
-                </Sidebar.MenuButton>
-              {/snippet}
-            </DropdownMenu.Trigger>
-            <DropdownMenu.Content
-              side="top"
-              class="w-(--bits-dropdown-menu-anchor-width)"
-            >
-              <DropdownMenu.Item>
-                <span>Account</span>
-              </DropdownMenu.Item>
-              <DropdownMenu.Item>
-                <span>Billing</span>
-              </DropdownMenu.Item>
-              <DropdownMenu.Item>
-                <span>Sign out</span>
-              </DropdownMenu.Item>
-            </DropdownMenu.Content>
-          </DropdownMenu.Root>
-        </Sidebar.MenuItem>
-      </Sidebar.Menu>
-    </Sidebar.Footer>
-  </Sidebar.Root>
-  <Sidebar.Inset>
-    <header class="flex h-12 items-center justify-between px-4">
-      <Sidebar.Trigger />
-    </header>
-  </Sidebar.Inset>
+	<Sidebar.Root>
+		<Sidebar.Header />
+		<Sidebar.Content />
+		<Sidebar.Footer>
+			<Sidebar.Menu>
+				<Sidebar.MenuItem>
+					<DropdownMenu.Root>
+						<DropdownMenu.Trigger>
+							{#snippet child({ props })}
+								<Sidebar.MenuButton
+									{...props}
+									class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+								>
+									Username
+									<ChevronUpIcon class="ms-auto" />
+								</Sidebar.MenuButton>
+							{/snippet}
+						</DropdownMenu.Trigger>
+						<DropdownMenu.Content
+							side="top"
+							class="w-(--bits-dropdown-menu-anchor-width)"
+						>
+							<DropdownMenu.Item>
+								<span>Account</span>
+							</DropdownMenu.Item>
+							<DropdownMenu.Item>
+								<span>Billing</span>
+							</DropdownMenu.Item>
+							<DropdownMenu.Item>
+								<span>Sign out</span>
+							</DropdownMenu.Item>
+						</DropdownMenu.Content>
+					</DropdownMenu.Root>
+				</Sidebar.MenuItem>
+			</Sidebar.Menu>
+		</Sidebar.Footer>
+	</Sidebar.Root>
+	<Sidebar.Inset>
+		<header class="flex h-12 items-center justify-between px-4">
+			<Sidebar.Trigger />
+		</header>
+	</Sidebar.Inset>
 </Sidebar.Provider>
 ```
 
-## [Sidebar.Content](#sidebarcontent)
+## Sidebar.Content
 
 The `Sidebar.Content` component is used to wrap the content of the sidebar. This is where you add your `Sidebar.Group` components. It is scrollable.
 
-```svelte
+```html
 <Sidebar.Root>
   <Sidebar.Content>
     <Sidebar.Group />
@@ -420,119 +592,256 @@ The `Sidebar.Content` component is used to wrap the content of the sidebar. This
 </Sidebar.Root>
 ```
 
-## [Sidebar.Group](#sidebargroup)
+## Sidebar.Group
 
 Use the `Sidebar.Group` component to create a section within the sidebar.
 
 A `Sidebar.Group` has a `Sidebar.GroupLabel`, a `Sidebar.GroupContent` and an optional `Sidebar.GroupAction`.
 
-A sidebar group.
+```html
+<script lang="ts">
+	import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
+	import LifeBuoyIcon from "@lucide/svelte/icons/life-buoy";
+	import SendIcon from "@lucide/svelte/icons/send";
+</script>
 
-```svelte
-<Sidebar.Root>
-  <Sidebar.Content>
-    <Sidebar.Group>
-      <Sidebar.GroupLabel>Application</Sidebar.GroupLabel>
-      <Sidebar.GroupAction>
-        <Plus /> <span class="sr-only">Add Project</span>
-      </Sidebar.GroupAction>
-      <Sidebar.GroupContent></Sidebar.GroupContent>
-    </Sidebar.Group>
-  </Sidebar.Content>
-</Sidebar.Root>
+<Sidebar.Provider>
+	<Sidebar.Root>
+		<Sidebar.Content>
+			<Sidebar.Group>
+				<Sidebar.GroupLabel>Help</Sidebar.GroupLabel>
+				<Sidebar.GroupContent>
+					<Sidebar.Menu>
+						<Sidebar.MenuItem>
+							<Sidebar.MenuButton>
+								<LifeBuoyIcon />
+								Support
+							</Sidebar.MenuButton>
+						</Sidebar.MenuItem>
+						<Sidebar.MenuItem>
+							<Sidebar.MenuButton>
+								<SendIcon />
+								Feedback
+							</Sidebar.MenuButton>
+						</Sidebar.MenuItem>
+					</Sidebar.Menu>
+				</Sidebar.GroupContent>
+			</Sidebar.Group>
+		</Sidebar.Content>
+	</Sidebar.Root>
+</Sidebar.Provider>
 ```
 
-## [Collapsible Sidebar.Group](#collapsible-sidebargroup)
+## Collapsible Sidebar.Group
 
 To make a `Sidebar.Group` collapsible, wrap it in a `Collapsible`.
 
-A collapsible sidebar group.
+```html
+<script lang="ts">
+	import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
+	import * as Collapsible from "@stevejuma/ui/shadcn/collapsible";
+	import ChevronDownIcon from "@lucide/svelte/icons/chevron-down";
+	import LifeBuoyIcon from "@lucide/svelte/icons/life-buoy";
+	import SendIcon from "@lucide/svelte/icons/send";
+</script>
 
-```svelte
-<Collapsible.Root open class="group/collapsible">
-  <Sidebar.Group>
-    <Sidebar.GroupLabel>
-      {#snippet child({ props })}
-        <Collapsible.Trigger {...props}>
-          Help
-          <ChevronDown
-            class="ms-auto transition-transform group-data-[state=open]/collapsible:rotate-180"
-          />
-        </Collapsible.Trigger>
-      {/snippet}
-    </Sidebar.GroupLabel>
-    <Collapsible.Content>
-      <Sidebar.GroupContent />
-    </Collapsible.Content>
-  </Sidebar.Group>
-</Collapsible.Root>
+<Sidebar.Provider>
+	<Sidebar.Root>
+		<Sidebar.Content>
+			<Collapsible.Root open class="group/collapsible">
+				<Sidebar.Group>
+					<Sidebar.GroupLabel
+						class="hover:bg-sidebar-accent hover:text-sidebar-accent-foreground text-sm"
+					>
+						{#snippet child({ props })}
+							<Collapsible.Trigger {...props}>
+								Help
+								<ChevronDownIcon
+									class="ms-auto transition-transform group-data-[state=open]/collapsible:rotate-180"
+								/>
+							</Collapsible.Trigger>
+						{/snippet}
+					</Sidebar.GroupLabel>
+					<Collapsible.Content>
+						<Sidebar.GroupContent>
+							<Sidebar.Menu>
+								<Sidebar.MenuItem>
+									<Sidebar.MenuButton>
+										<LifeBuoyIcon />
+										Support
+									</Sidebar.MenuButton>
+								</Sidebar.MenuItem>
+								<Sidebar.MenuItem>
+									<Sidebar.MenuButton>
+										<SendIcon />
+										Feedback
+									</Sidebar.MenuButton>
+								</Sidebar.MenuItem>
+							</Sidebar.Menu>
+						</Sidebar.GroupContent>
+					</Collapsible.Content>
+				</Sidebar.Group>
+			</Collapsible.Root>
+		</Sidebar.Content>
+	</Sidebar.Root>
+</Sidebar.Provider>
 ```
 
-**Note:** We wrap the `Collapsible.Trigger` in a `Sidebar.GroupLabel` to render a button.
+**Note:** We wrap the `Collapsible.Trigger` in a `Sidebar.GroupLabel` to render
+a button.
 
-## [Sidebar.GroupAction](#sidebargroupaction)
+## Sidebar.GroupAction
 
 Use the `Sidebar.GroupAction` component to add an action to a `Sidebar.Group`.
 
-```svelte
-<Sidebar.Group>
-  <Sidebar.GroupLabel>Projects</Sidebar.GroupLabel>
-  <Sidebar.GroupAction title="Add Project">
-    <Plus /> <span class="sr-only">Add Project</span>
-  </Sidebar.GroupAction>
-  <Sidebar.GroupContent />
-</Sidebar.Group>
+```html
+<script lang="ts">
+	import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
+
+	import PlusIcon from "@lucide/svelte/icons/plus";
+	import FrameIcon from "@lucide/svelte/icons/frame";
+	import ChartPieIcon from "@lucide/svelte/icons/chart-pie";
+	import MapIcon from "@lucide/svelte/icons/map";
+
+</script>
+
+<Sidebar.Provider>
+	
+	<Sidebar.Root>
+		<Sidebar.Content>
+			<Sidebar.Group>
+				<Sidebar.GroupLabel>Projects</Sidebar.GroupLabel>
+				<Sidebar.GroupAction
+					title="Add Project"
+					onclick={() => void ("You clicked the group action!")}
+				>
+					<PlusIcon /> <span class="sr-only">Add Project</span>
+				</Sidebar.GroupAction>
+				<Sidebar.GroupContent>
+					<Sidebar.Menu>
+						<Sidebar.MenuItem>
+							<Sidebar.MenuButton>
+								{#snippet child({ props })}
+									<a href="##" {...props}>
+										<FrameIcon />
+										<span>Design Engineering</span>
+									</a>
+								{/snippet}
+							</Sidebar.MenuButton>
+						</Sidebar.MenuItem>
+						<Sidebar.MenuItem>
+							<Sidebar.MenuButton>
+								{#snippet child({ props })}
+									<a href="##" {...props}>
+										<ChartPieIcon />
+										<span>Sales & Marketing</span>
+									</a>
+								{/snippet}
+							</Sidebar.MenuButton>
+						</Sidebar.MenuItem>
+						<Sidebar.MenuItem>
+							<Sidebar.MenuButton>
+								{#snippet child({ props })}
+									<a href="##" {...props}>
+										<MapIcon />
+										<span>Travel</span>
+									</a>
+								{/snippet}
+							</Sidebar.MenuButton>
+						</Sidebar.MenuItem>
+					</Sidebar.Menu>
+				</Sidebar.GroupContent>
+			</Sidebar.Group>
+		</Sidebar.Content>
+	</Sidebar.Root>
+</Sidebar.Provider>
 ```
 
-A sidebar group with an action button.
-
-## [Sidebar.Menu](#sidebarmenu)
+## Sidebar.Menu
 
 The `Sidebar.Menu` component is used for building a menu within a `Sidebar.Group`.
 
 A `Sidebar.Menu` is composed of `Sidebar.MenuItem`, `Sidebar.MenuButton`, `Sidebar.MenuAction`, and `Sidebar.MenuSub` components.
 
-![Sidebar menu](/img/sidebar/sidebar-menu.png) ![Sidebar menu](/img/sidebar/sidebar-menu-dark.png)
+<img src="/img/sidebar/sidebar-menu.png" width="716" height="420" alt="Sidebar menu" class="border dark:hidden rounded-lg overflow-hidden mt-6 w-full" />
+
+<img src="/img/sidebar/sidebar-menu-dark.png" width="716" height="420" alt="Sidebar menu" class="border hidden dark:block rounded-lg overflow-hidden mt-6 w-full" />
 
 Here's an example of a `Sidebar.Menu` component rendering a list of projects.
 
-A sidebar menu with a list of projects.
+```html
+<script lang="ts">
+	import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
+	import LifeBuoyIcon from "@lucide/svelte/icons/life-buoy";
+	import SendIcon from "@lucide/svelte/icons/send";
+	import FrameIcon from "@lucide/svelte/icons/frame";
+	import ChartPieIcon from "@lucide/svelte/icons/chart-pie";
+	import MapIcon from "@lucide/svelte/icons/map";
+	const projects = [
+		{
+			name: "Design Engineering",
+			url: "#",
+			icon: FrameIcon,
+		},
+		{
+			name: "Sales & Marketing",
+			url: "#",
+			icon: ChartPieIcon,
+		},
+		{
+			name: "Travel",
+			url: "#",
+			icon: MapIcon,
+		},
+		{
+			name: "Support",
+			url: "#",
+			icon: LifeBuoyIcon,
+		},
+		{
+			name: "Feedback",
+			url: "#",
+			icon: SendIcon,
+		},
+	];
+</script>
 
-```svelte
-<Sidebar.Root>
-  <Sidebar.Content>
-    <Sidebar.Group>
-      <Sidebar.GroupLabel>Projects</Sidebar.GroupLabel>
-      <Sidebar.GroupContent>
-        <Sidebar.Menu>
-          {#each projects as project}
-            <Sidebar.MenuItem>
-              <Sidebar.MenuButton>
-                {#snippet child({ props })}
-                  <a href={project.url} {...props}>
-                    <project.icon />
-                    <span>{project.name}</span>
-                  </a>
-                {/snippet}
-              </Sidebar.MenuButton>
-            </Sidebar.MenuItem>
-          {/each}
-        </Sidebar.Menu>
-      </Sidebar.GroupContent>
-    </Sidebar.Group>
-  </Sidebar.Content>
-</Sidebar.Root>
+<Sidebar.Provider>
+	<Sidebar.Root>
+		<Sidebar.Content>
+			<Sidebar.Group>
+				<Sidebar.GroupLabel>Projects</Sidebar.GroupLabel>
+				<Sidebar.GroupContent>
+					<Sidebar.Menu>
+						{#each projects as project (project.name)}
+							<Sidebar.MenuItem>
+								<Sidebar.MenuButton>
+									{#snippet child({ props })}
+										<a href={project.url} {...props}>
+											<project.icon />
+											<span>{project.name}</span>
+										</a>
+									{/snippet}
+								</Sidebar.MenuButton>
+							</Sidebar.MenuItem>
+						{/each}
+					</Sidebar.Menu>
+				</Sidebar.GroupContent>
+			</Sidebar.Group>
+		</Sidebar.Content>
+	</Sidebar.Root>
+</Sidebar.Provider>
 ```
 
-## [Sidebar.MenuButton](#sidebarmenubutton)
+## Sidebar.MenuButton
 
 The `Sidebar.MenuButton` component is used to render a menu button within a `Sidebar.Menu`.
 
-### [Link or Anchor](#link-or-anchor)
+### Link or Anchor
 
 By default, the `Sidebar.MenuButton` renders a button, but you can use the `child` snippet to render a different component such as an `<a>` tag.
 
-```svelte
+```html
 <Sidebar.MenuButton>
   {#snippet child({ props })}
     <a href="/home" {...props}> Home </a>
@@ -540,11 +849,11 @@ By default, the `Sidebar.MenuButton` renders a button, but you can use the `chil
 </Sidebar.MenuButton>
 ```
 
-### [Icon and Label](#icon-and-label)
+### Icon and Label
 
 You can render an icon and a truncated label inside the button. Remember to wrap the label in a `<span>` tag.
 
-```svelte
+```html
 <Sidebar.MenuButton>
   {#snippet child({ props })}
     <a href="/home" {...props}>
@@ -555,11 +864,11 @@ You can render an icon and a truncated label inside the button. Remember to wrap
 </Sidebar.MenuButton>
 ```
 
-### [isActive](#isactive)
+### isActive
 
 Use the `isActive` prop to mark a menu item as active.
 
-```svelte
+```html
 <Sidebar.MenuButton isActive>
   {#snippet child({ props })}
     <a href="/home" {...props}>
@@ -570,13 +879,13 @@ Use the `isActive` prop to mark a menu item as active.
 </Sidebar.MenuButton>
 ```
 
-## [Sidebar.MenuAction](#sidebarmenuaction)
+## Sidebar.MenuAction
 
 The `Sidebar.MenuAction` component is used to render a menu action within a `Sidebar.Menu`.
 
 This button works independently of the `Sidebar.MenuButton`, i.e. you can have the `Sidebar.MenuButton` as a clickable link and the `Sidebar.MenuAction` as a button.
 
-```svelte
+```html
 <Sidebar.MenuItem>
   <Sidebar.MenuButton>
     {#snippet child({ props })}
@@ -592,107 +901,540 @@ This button works independently of the `Sidebar.MenuButton`, i.e. you can have t
 </Sidebar.MenuItem>
 ```
 
-### [DropdownMenu](#dropdownmenu)
+### DropdownMenu
 
 Here's an example of a `Sidebar.MenuAction` that renders a `DropdownMenu`.
 
-A sidebar menu action with a dropdown menu.
+```html
+<script lang="ts">
+	import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
+	import * as DropdownMenu from "@stevejuma/ui/shadcn/dropdown-menu";
+	import EllipsisIcon from "@lucide/svelte/icons/ellipsis";
+	import LifeBuoyIcon from "@lucide/svelte/icons/life-buoy";
+	import SendIcon from "@lucide/svelte/icons/send";
+	import FrameIcon from "@lucide/svelte/icons/frame";
+	import ChartPieIcon from "@lucide/svelte/icons/chart-pie";
+	import MapIcon from "@lucide/svelte/icons/map";
 
-```svelte
-<Sidebar.MenuItem>
-  <Sidebar.MenuButton>
-    {#snippet child({ props })}
-      <a href="##" {...props}>
-        <House />
-        <span>Home</span>
-      </a>
-    {/snippet}
-  </Sidebar.MenuButton>
-  <DropdownMenu.Root>
-    <DropdownMenu.Trigger>
-      {#snippet child({ props })}
-        <Sidebar.MenuAction {...props}>
-          <Ellipsis />
-        </Sidebar.MenuAction>
-      {/snippet}
-    </DropdownMenu.Trigger>
-    <DropdownMenu.Content side="right" align="start">
-      <DropdownMenu.Item>
-        <span>Edit Project</span>
-      </DropdownMenu.Item>
-      <DropdownMenu.Item>
-        <span>Delete Project</span>
-      </DropdownMenu.Item>
-    </DropdownMenu.Content>
-  </DropdownMenu.Root>
-</Sidebar.MenuItem>
+	const projects = [
+		{
+			name: "Design Engineering",
+			url: "#",
+			icon: FrameIcon,
+		},
+		{
+			name: "Sales & Marketing",
+			url: "#",
+			icon: ChartPieIcon,
+		},
+		{
+			name: "Travel",
+			url: "#",
+			icon: MapIcon,
+		},
+		{
+			name: "Support",
+			url: "#",
+			icon: LifeBuoyIcon,
+		},
+		{
+			name: "Feedback",
+			url: "#",
+			icon: SendIcon,
+		},
+	];
+</script>
+
+<Sidebar.Provider>
+	<Sidebar.Root>
+		<Sidebar.Content>
+			<Sidebar.Group>
+				<Sidebar.GroupLabel>Projects</Sidebar.GroupLabel>
+				<Sidebar.GroupContent>
+					<Sidebar.Menu>
+						{#each projects as project (project.name)}
+							<Sidebar.MenuItem>
+								<Sidebar.MenuButton
+									class="group-has-[[data-state=open]]/menu-item:bg-sidebar-accent"
+								>
+									{#snippet child({ props })}
+										<a href={project.url} {...props}>
+											<project.icon />
+											<span>{project.name}</span>
+										</a>
+									{/snippet}
+								</Sidebar.MenuButton>
+								<DropdownMenu.Root>
+									<DropdownMenu.Trigger>
+										{#snippet child({ props })}
+											<Sidebar.MenuAction {...props}>
+												<EllipsisIcon />
+												<span class="sr-only">More</span>
+											</Sidebar.MenuAction>
+										{/snippet}
+									</DropdownMenu.Trigger>
+									<DropdownMenu.Content side="right" align="start">
+										<DropdownMenu.Item>
+											<span>Edit Project</span>
+										</DropdownMenu.Item>
+										<DropdownMenu.Item>
+											<span>Delete Project</span>
+										</DropdownMenu.Item>
+									</DropdownMenu.Content>
+								</DropdownMenu.Root>
+							</Sidebar.MenuItem>
+						{/each}
+					</Sidebar.Menu>
+				</Sidebar.GroupContent>
+			</Sidebar.Group>
+		</Sidebar.Content>
+	</Sidebar.Root>
+</Sidebar.Provider>
 ```
 
-## [Sidebar.MenuSub](#sidebarmenusub)
+## Sidebar.MenuSub
 
 The `Sidebar.MenuSub` component is used to render a submenu within a `Sidebar.Menu`.
 
 Use `Sidebar.MenuSubItem` and `Sidebar.MenuSubButton` to render a submenu item.
 
-A sidebar menu sub.
+```html
+<script lang="ts">
+	import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
 
-```svelte
-<Sidebar.MenuItem>
-  <Sidebar.MenuButton />
-  <Sidebar.MenuSub>
-    <Sidebar.MenuSubItem>
-      <Sidebar.MenuSubButton />
-    </Sidebar.MenuSubItem>
-    <Sidebar.MenuSubItem>
-      <Sidebar.MenuSubButton />
-    </Sidebar.MenuSubItem>
-  </Sidebar.MenuSub>
-</Sidebar.MenuItem>
+	const items = [
+		{
+			title: "Getting Started",
+			url: "#",
+			items: [
+				{
+					title: "Installation",
+					url: "#",
+				},
+				{
+					title: "Project Structure",
+					url: "#",
+				},
+			],
+		},
+		{
+			title: "Build Your Application",
+			url: "#",
+			items: [
+				{
+					title: "Routing",
+					url: "#",
+				},
+				{
+					title: "Data Fetching",
+					url: "#",
+					isActive: true,
+				},
+				{
+					title: "Rendering",
+					url: "#",
+				},
+				{
+					title: "Caching",
+					url: "#",
+				},
+				{
+					title: "Styling",
+					url: "#",
+				},
+				{
+					title: "Optimizing",
+					url: "#",
+				},
+				{
+					title: "Configuring",
+					url: "#",
+				},
+				{
+					title: "Testing",
+					url: "#",
+				},
+				{
+					title: "Authentication",
+					url: "#",
+				},
+				{
+					title: "Deploying",
+					url: "#",
+				},
+				{
+					title: "Upgrading",
+					url: "#",
+				},
+				{
+					title: "Examples",
+					url: "#",
+				},
+			],
+		},
+		{
+			title: "API Reference",
+			url: "#",
+			items: [
+				{
+					title: "Components",
+					url: "#",
+				},
+				{
+					title: "File Conventions",
+					url: "#",
+				},
+				{
+					title: "Functions",
+					url: "#",
+				},
+				{
+					title: "next.config.js Options",
+					url: "#",
+				},
+				{
+					title: "CLI",
+					url: "#",
+				},
+				{
+					title: "Edge Runtime",
+					url: "#",
+				},
+			],
+		},
+		{
+			title: "Architecture",
+			url: "#",
+			items: [
+				{
+					title: "Accessibility",
+					url: "#",
+				},
+				{
+					title: "Fast Refresh",
+					url: "#",
+				},
+				{
+					title: "Next.js Compiler",
+					url: "#",
+				},
+				{
+					title: "Supported Browsers",
+					url: "#",
+				},
+				{
+					title: "Turbopack",
+					url: "#",
+				},
+			],
+		},
+	];
+</script>
+
+<Sidebar.Provider>
+	<Sidebar.Root>
+		<Sidebar.Content>
+			<Sidebar.Group>
+				<Sidebar.GroupContent>
+					<Sidebar.Menu>
+						{#each items as item, index (index)}
+							<Sidebar.MenuItem>
+								<Sidebar.MenuButton>
+									{#snippet child({ props })}
+										<a href={item.url} {...props}>
+											<span>{item.title}</span>
+										</a>
+									{/snippet}
+								</Sidebar.MenuButton>
+								<Sidebar.MenuSub>
+									{#each item.items as subItem, subIndex (subIndex)}
+										<Sidebar.MenuSubItem>
+											<Sidebar.MenuSubButton>
+												{#snippet child({ props })}
+													<a href={subItem.url} {...props}>
+														<span>{subItem.title}</span>
+													</a>
+												{/snippet}
+											</Sidebar.MenuSubButton>
+										</Sidebar.MenuSubItem>
+									{/each}
+								</Sidebar.MenuSub>
+							</Sidebar.MenuItem>
+						{/each}
+					</Sidebar.Menu>
+				</Sidebar.GroupContent>
+			</Sidebar.Group>
+		</Sidebar.Content>
+	</Sidebar.Root>
+</Sidebar.Provider>
 ```
 
-## [Collapsible Sidebar.Menu](#collapsible-sidebarmenu)
+## Collapsible Sidebar.Menu
 
 To make a `Sidebar.Menu` collapsible, wrap it and the `Sidebar.MenuSub` components in a `Collapsible`.
 
-A collapsible sidebar menu.
+```html
+<script lang="ts">
+	import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
+	import * as Collapsible from "@stevejuma/ui/shadcn/collapsible";
+	import ChevronRightIcon from "@lucide/svelte/icons/chevron-right";
 
-```svelte
-<Sidebar.Menu>
-  <Collapsible.Root open class="group/collapsible">
-    <Sidebar.MenuItem>
-      <Collapsible.Trigger>
-        {#snippet child({ props })}
-          <Sidebar.MenuButton {...props} />
-        {/snippet}
-      </Collapsible.Trigger>
-      <Collapsible.Content>
-        <Sidebar.MenuSub>
-          <Sidebar.MenuSubItem />
-        </Sidebar.MenuSub>
-      </Collapsible.Content>
-    </Sidebar.MenuItem>
-  </Collapsible.Root>
-</Sidebar.Menu>
+	const items = [
+		{
+			title: "Getting Started",
+			url: "#",
+			items: [
+				{
+					title: "Installation",
+					url: "#",
+				},
+				{
+					title: "Project Structure",
+					url: "#",
+				},
+			],
+		},
+		{
+			title: "Build Your Application",
+			url: "#",
+			items: [
+				{
+					title: "Routing",
+					url: "#",
+				},
+				{
+					title: "Data Fetching",
+					url: "#",
+					isActive: true,
+				},
+				{
+					title: "Rendering",
+					url: "#",
+				},
+				{
+					title: "Caching",
+					url: "#",
+				},
+				{
+					title: "Styling",
+					url: "#",
+				},
+				{
+					title: "Optimizing",
+					url: "#",
+				},
+				{
+					title: "Configuring",
+					url: "#",
+				},
+				{
+					title: "Testing",
+					url: "#",
+				},
+				{
+					title: "Authentication",
+					url: "#",
+				},
+				{
+					title: "Deploying",
+					url: "#",
+				},
+				{
+					title: "Upgrading",
+					url: "#",
+				},
+				{
+					title: "Examples",
+					url: "#",
+				},
+			],
+		},
+		{
+			title: "API Reference",
+			url: "#",
+			items: [
+				{
+					title: "Components",
+					url: "#",
+				},
+				{
+					title: "File Conventions",
+					url: "#",
+				},
+				{
+					title: "Functions",
+					url: "#",
+				},
+				{
+					title: "next.config.js Options",
+					url: "#",
+				},
+				{
+					title: "CLI",
+					url: "#",
+				},
+				{
+					title: "Edge Runtime",
+					url: "#",
+				},
+			],
+		},
+		{
+			title: "Architecture",
+			url: "#",
+			items: [
+				{
+					title: "Accessibility",
+					url: "#",
+				},
+				{
+					title: "Fast Refresh",
+					url: "#",
+				},
+				{
+					title: "Next.js Compiler",
+					url: "#",
+				},
+				{
+					title: "Supported Browsers",
+					url: "#",
+				},
+				{
+					title: "Turbopack",
+					url: "#",
+				},
+			],
+		},
+	];
+</script>
+
+<Sidebar.Provider>
+	<Sidebar.Root>
+		<Sidebar.Content>
+			<Sidebar.Group>
+				<Sidebar.GroupContent>
+					<Sidebar.Menu>
+						{#each items as item, index (index)}
+							<Collapsible.Root class="group/collapsible" open={index === 0}>
+								<Sidebar.MenuItem>
+									<Collapsible.Trigger>
+										{#snippet child({ props })}
+											<Sidebar.MenuButton {...props}>
+												<span>{item.title}</span>
+												<ChevronRightIcon
+													class="ms-auto transition-transform group-data-[state=open]/collapsible:rotate-90"
+												/>
+											</Sidebar.MenuButton>
+										{/snippet}
+									</Collapsible.Trigger>
+									<Collapsible.Content>
+										<Sidebar.MenuSub>
+											{#each item.items as subItem, subIndex (subIndex)}
+												<Sidebar.MenuSubItem>
+													<Sidebar.MenuSubButton>
+														{#snippet child({ props })}
+															<a href={subItem.url} {...props}>
+																<span>{subItem.title}</span>
+															</a>
+														{/snippet}
+													</Sidebar.MenuSubButton>
+												</Sidebar.MenuSubItem>
+											{/each}
+										</Sidebar.MenuSub>
+									</Collapsible.Content>
+								</Sidebar.MenuItem>
+							</Collapsible.Root>
+						{/each}
+					</Sidebar.Menu>
+				</Sidebar.GroupContent>
+			</Sidebar.Group>
+		</Sidebar.Content>
+	</Sidebar.Root>
+</Sidebar.Provider>
 ```
 
-## [Sidebar.MenuBadge](#sidebarmenubadge)
+## Sidebar.MenuBadge
 
 The `Sidebar.MenuBadge` component is used to render a badge within a `Sidebar.MenuItem`.
 
-A sidebar menu badge.
+```html
+<script lang="ts">
+	import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
+	import LifeBuoyIcon from "@lucide/svelte/icons/life-buoy";
+	import SendIcon from "@lucide/svelte/icons/send";
+	import FrameIcon from "@lucide/svelte/icons/frame";
+	import ChartPieIcon from "@lucide/svelte/icons/chart-pie";
+	import MapIcon from "@lucide/svelte/icons/map";
 
-```svelte
-<Sidebar.MenuItem>
-  <Sidebar.MenuButton />
-  <Sidebar.MenuBadge>24</Sidebar.MenuBadge>
-</Sidebar.MenuItem>
+	const projects = [
+		{
+			name: "Design Engineering",
+			url: "#",
+			icon: FrameIcon,
+			badge: "24",
+		},
+		{
+			name: "Sales & Marketing",
+			url: "#",
+			icon: ChartPieIcon,
+			badge: "12",
+		},
+		{
+			name: "Travel",
+			url: "#",
+			icon: MapIcon,
+			badge: "3",
+		},
+		{
+			name: "Support",
+			url: "#",
+			icon: LifeBuoyIcon,
+			badge: "21",
+		},
+		{
+			name: "Feedback",
+			url: "#",
+			icon: SendIcon,
+			badge: "8",
+		},
+	];
+</script>
+
+<Sidebar.Provider>
+	<Sidebar.Root>
+		<Sidebar.Content>
+			<Sidebar.Group>
+				<Sidebar.GroupLabel>Projects</Sidebar.GroupLabel>
+				<Sidebar.GroupContent>
+					<Sidebar.Menu>
+						{#each projects as project (project.name)}
+							<Sidebar.MenuItem>
+								<Sidebar.MenuButton
+									class="group-has-[[data-state=open]]/menu-item:bg-sidebar-accent"
+								>
+									{#snippet child({ props })}
+										<a href={project.url} {...props}>
+											<project.icon />
+											<span>{project.name}</span>
+										</a>
+									{/snippet}
+								</Sidebar.MenuButton>
+								<Sidebar.MenuBadge>{project.badge}</Sidebar.MenuBadge>
+							</Sidebar.MenuItem>
+						{/each}
+					</Sidebar.Menu>
+				</Sidebar.GroupContent>
+			</Sidebar.Group>
+		</Sidebar.Content>
+	</Sidebar.Root>
+</Sidebar.Provider>
 ```
 
-## [Sidebar.MenuSkeleton](#sidebarmenuskeleton)
+## Sidebar.MenuSkeleton
 
 The `Sidebar.MenuSkeleton` component is used to render a skeleton within a `Sidebar.MenuItem`. You can use this to show a loading state while waiting for data to load.
 
-```svelte
+```html
 <Sidebar.Menu>
   {#each Array.from({ length: 5 }) as _, index (index)}
     <Sidebar.MenuItem>
@@ -702,11 +1444,11 @@ The `Sidebar.MenuSkeleton` component is used to render a skeleton within a `Side
 </Sidebar.Menu>
 ```
 
-## [Sidebar.Separator](#sidebarseparator)
+## Sidebar.Separator
 
 The `Sidebar.Separator` component is used to render a separator within a `Sidebar`.
 
-```svelte
+```html
 <Sidebar.Root>
   <Sidebar.Header />
   <Sidebar.Separator />
@@ -718,13 +1460,13 @@ The `Sidebar.Separator` component is used to render a separator within a `Sideba
 </Sidebar.Root>
 ```
 
-## [Sidebar.Trigger](#sidebartrigger)
+## Sidebar.Trigger
 
 Use the `Sidebar.Trigger` component to render a button that toggles the sidebar.
 
 The `Sidebar.Trigger` component must be used within a `Sidebar.Provider`.
 
-```svelte
+```html
 <Sidebar.Provider>
   <Sidebar.Root />
   <main>
@@ -733,23 +1475,24 @@ The `Sidebar.Trigger` component must be used within a `Sidebar.Provider`.
 </Sidebar.Provider>
 ```
 
-## [Custom Trigger](#custom-trigger)
+## Custom Trigger
 
 To create a custom trigger, you can use the `useSidebar` hook.
 
-```svelte
+```html
 <script lang="ts">
   import { useSidebar } from "@stevejuma/ui/shadcn/sidebar";
   const sidebar = useSidebar();
 </script>
+
 <button onclick={() => sidebar.toggle()}>Toggle Sidebar</button>
 ```
 
-## [Sidebar.Rail](#sidebarrail)
+## Sidebar.Rail
 
 The `Sidebar.Rail` component is used to render a rail within a `Sidebar.Root`. This rail can be used to toggle the sidebar.
 
-```svelte
+```html
 <Sidebar.Root>
   <Sidebar.Header />
   <Sidebar.Content>
@@ -760,62 +1503,129 @@ The `Sidebar.Rail` component is used to render a rail within a `Sidebar.Root`. T
 </Sidebar.Root>
 ```
 
-## [Controlled Sidebar](#controlled-sidebar)
+## Controlled Sidebar
 
 Use Svelte's [Function Binding](https://svelte.dev/docs/svelte/bind#Function-bindings) to control the sidebar state.
 
-A controlled sidebar.
-
-```svelte
+```html
 <script lang="ts">
-  import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
-  let myOpen = $state(true);
-</script>
-<Sidebar.Provider bind:open={() => myOpen, (newOpen) => (myOpen = newOpen)}>
-  <Sidebar.Root />
-</Sidebar.Provider>
+	import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
+	import { Button } from "@stevejuma/ui/shadcn/button";
+	import PanelLeftOpenIcon from "@lucide/svelte/icons/panel-left-open";
+	import PanelLeftCloseIcon from "@lucide/svelte/icons/panel-left-close";
+	import LifeBuoyIcon from "@lucide/svelte/icons/life-buoy";
+	import SendIcon from "@lucide/svelte/icons/send";
+	import FrameIcon from "@lucide/svelte/icons/frame";
+	import ChartPieIcon from "@lucide/svelte/icons/chart-pie";
+	import MapIcon from "@lucide/svelte/icons/map";
 
-<Sidebar.Provider bind:open>
-  <Sidebar.Root />
+	const projects = [
+		{
+			name: "Design Engineering",
+			url: "#",
+			icon: FrameIcon,
+		},
+		{
+			name: "Sales & Marketing",
+			url: "#",
+			icon: ChartPieIcon,
+		},
+		{
+			name: "Travel",
+			url: "#",
+			icon: MapIcon,
+		},
+		{
+			name: "Support",
+			url: "#",
+			icon: LifeBuoyIcon,
+		},
+		{
+			name: "Feedback",
+			url: "#",
+			icon: SendIcon,
+		},
+	];
+
+	let open = $state(true);
+</script>
+
+<Sidebar.Provider bind:open={() => open, (v) => (open = v)}>
+	<Sidebar.Root>
+		<Sidebar.Content>
+			<Sidebar.Group>
+				<Sidebar.GroupLabel>Projects</Sidebar.GroupLabel>
+				<Sidebar.GroupContent>
+					<Sidebar.Menu>
+						{#each projects as project (project.name)}
+							<Sidebar.MenuItem>
+								<Sidebar.MenuButton>
+									{#snippet child({ props })}
+										<a href={project.url} {...props}>
+											<project.icon />
+											<span>{project.name}</span>
+										</a>
+									{/snippet}
+								</Sidebar.MenuButton>
+							</Sidebar.MenuItem>
+						{/each}
+					</Sidebar.Menu>
+				</Sidebar.GroupContent>
+			</Sidebar.Group>
+		</Sidebar.Content>
+	</Sidebar.Root>
+	<Sidebar.Inset>
+		<header class="flex h-12 items-center justify-between px-4">
+			<Button onclick={() => (open = !open)} size="sm" variant="ghost">
+				{#if open}
+					<PanelLeftCloseIcon />
+				{:else}
+					<PanelLeftOpenIcon />
+				{/if}
+				<span>{open ? "Close" : "Open"} Sidebar</span>
+			</Button>
+		</header>
+	</Sidebar.Inset>
 </Sidebar.Provider>
 ```
 
-## [Theming](#theming)
+## Theming
 
 We use the following CSS variables to theme the sidebar.
 
 ```css
 :root {
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --sidebar: oklch(98.5% 0.008 295);
+  --sidebar-foreground: oklch(15% 0.05 295);
+  --sidebar-primary: oklch(45% 0.2 295);
+  --sidebar-primary-foreground: oklch(99% 0.005 295);
+  --sidebar-accent: oklch(96.5% 0.015 295);
+  --sidebar-accent-foreground: oklch(20% 0.05 295);
+  --sidebar-border: oklch(92.5% 0.02 295);
+  --sidebar-ring: oklch(55% 0.15 295);
 }
+
 .dark {
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.439 0 0);
+  --sidebar: oklch(20.8% 0.042 265.755);
+  --sidebar-foreground: oklch(98.4% 0.003 247.858);
+  --sidebar-primary: oklch(48.8% 0.243 264.376);
+  --sidebar-primary-foreground: oklch(98.4% 0.003 247.858);
+  --sidebar-accent: oklch(27.9% 0.041 260.031);
+  --sidebar-accent-foreground: oklch(98.4% 0.003 247.858);
+  --sidebar-border: oklch(100% 0 0 / 10%);
+  --sidebar-ring: oklch(55.1% 0.027 264.364);
 }
 ```
 
 **We intentionally use different variables for the sidebar and the rest of the application** to make it easy to have a sidebar that is styled differently from the rest of the application. Think a sidebar with a darker shade from the main application.
 
-## [Styling](#styling)
+## Styling
 
 Here are some tips for styling the sidebar based on different states.
 
 - **Styling an element based on the sidebar collapsible state.** The following will hide the `Sidebar.Group` when the sidebar is in `icon` mode.
 
-```svelte
+```html
 <Sidebar.Root collapsible="icon">
   <Sidebar.Content>
     <Sidebar.Group class="group-data-[collapsible=icon]:hidden" />
@@ -825,7 +1635,7 @@ Here are some tips for styling the sidebar based on different states.
 
 - **Styling a menu action based on the menu button active state.** The following will force the menu action to be visible when the menu button is active.
 
-```svelte
+```html
 <Sidebar.MenuItem>
   <Sidebar.MenuButton />
   <Sidebar.MenuAction

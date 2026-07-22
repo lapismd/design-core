@@ -2,6 +2,7 @@ import { EXIT, GeneratorError } from "../errors.js";
 import {
   composedFamilyFromTag,
   extractStyleSites,
+  isMarkerCandidate,
   mergeSitesToExtraction,
   type StyleSite,
 } from "./style-sites.js";
@@ -69,6 +70,8 @@ export function looksLikeTailwindSource(source: string): boolean {
   if (/\btv\s*\(/.test(source)) return true;
   if (/from\s+["']tailwind-variants["']/.test(source)) return true;
   if (/class=\{cn\(/.test(source) && UTILITY_RE.test(source)) return true;
+  // Object-literal hosts: `class: cn("…", className)` inside $derived props.
+  if (/class:\s*cn\(/.test(source) && UTILITY_RE.test(source)) return true;
   if (/class=\{["'`]/.test(source) && UTILITY_RE.test(source)) return true;
   // Static utility class attributes (e.g. Switch thumb) still need conversion.
   if (/class="[^"]*"/.test(source) && UTILITY_RE.test(source)) return true;
@@ -221,7 +224,9 @@ export function extractFamilyFromFiles(
         };
       }
     } else {
-      // tv files: single ownership site on the file part
+      // tv files: single ownership site on the file part.
+      // Markers (peer/foo, group/bar) must be registered for selector remapping —
+      // they emit no utilities of their own but appear in compound selectors.
       const classIdx = file.source.indexOf("class={");
       const composedFrom =
         classIdx >= 0
@@ -230,20 +235,28 @@ export function extractFamilyFromFiles(
       const slotMatch = /data-slot=(?:"([^"]*)"|'([^']*)')/.exec(
         file.source,
       );
+      const markers = extraction.baseClasses.filter(isMarkerCandidate);
+      const baseClasses = extraction.baseClasses.filter(
+        (c) => !isMarkerCandidate(c),
+      );
       sites = [
         {
           part,
           dataSlot: slotMatch?.[1] ?? slotMatch?.[2] ?? null,
           kind: "cn",
-          baseClasses: extraction.baseClasses,
+          baseClasses,
           allCandidates: extraction.allCandidates,
-          markers: [],
+          markers,
           composedFrom,
           classIndex: classIdx >= 0 ? classIdx : 0,
           classEnd: 0,
           attrStart: classIdx >= 0 ? classIdx : 0,
         },
       ];
+      extraction = {
+        ...extraction,
+        baseClasses,
+      };
     }
 
     parts.push({

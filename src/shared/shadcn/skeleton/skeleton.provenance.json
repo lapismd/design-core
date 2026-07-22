@@ -18,14 +18,17 @@
         "sha256": "5b6722347a7de38910a9887b51baeb080d668bc2d9038514efe30bc209d038c3"
       }
     ],
-    "docsUrl": "https://shadcn-svelte.com/docs/components/skeleton.md",
-    "docsFetchedAt": "2026-07-19T20:42:28.734Z",
-    "docsSha256": "01d34d83dc871c9952ae98f052e2e011f7bdfbd60a368de8a54130514d4123d6",
+    "docsUrl": "https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/skeleton.md",
+    "docsFetchedAt": "2026-07-22T09:57:18.205Z",
+    "docsSha256": "c154d3bcd0db02dee7ce0772cfb1c1fbe9064746b3ebc7613cdaaf15b851983c",
     "examplesIncluded": [
       "Preview",
       "Card"
     ],
-    "examplesSkipped": []
+    "examplesSkipped": [],
+    "docsCommit": "bf4f461d88526359d0e96e1950f637912bbeebe7",
+    "docsRef": "shadcn-svelte@1.4.2",
+    "docsVendorPath": "vendor/shadcn-svelte-docs"
   },
   "converter": {
     "version": "2.0.0",

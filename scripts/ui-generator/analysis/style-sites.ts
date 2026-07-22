@@ -1,7 +1,7 @@
 import { EXIT, GeneratorError } from "../errors.js";
 import { splitCandidates } from "./variant-extractor.js";
 
-export type StyleSiteKind = "cn" | "static" | "classLit";
+export type StyleSiteKind = "cn" | "cnObject" | "static" | "classLit";
 
 export type StyleSite = {
   /** Ownership part name (data-slot value or synthetic). */
@@ -293,6 +293,51 @@ export function extractStyleSites(
       attrStart: start,
     });
     from = classEnd;
+  }
+
+  // class: cn(...) inside object literals ($derived mergedProps)
+  // also allow class:cn(
+  const objRe = /class:\s*cn\(/g;
+  let objMatch: RegExpExecArray | null;
+  while ((objMatch = objRe.exec(source))) {
+    const start = objMatch.index;
+    const paren = start + objMatch[0]!.length - 1; // '('
+    const { end: callEnd } = extractBalancedCall(source, paren);
+    // object property ends at callEnd (no trailing })
+    const classEnd = callEnd;
+    if (sites.some((s) => s.attrStart === start)) continue;
+    const inner = source.slice(paren + 1, callEnd - 1);
+    if (/\$\{/.test(inner) && /`/.test(inner)) {
+      throw new GeneratorError(
+        "Unsupported dynamic cn() argument",
+        EXIT.unsupported,
+      );
+    }
+    const joined = joinStringLiterals(inner);
+    const classes = joined.trim() ? splitCandidates(joined) : [];
+    if (!classes.length) continue;
+    const partitioned = partitionCandidates(classes);
+    // data-slot is usually a sibling key in the same object
+    const window = source.slice(start, Math.min(source.length, start + 400));
+    const slot =
+      /["']data-slot["']\s*:\s*["']([^"']+)["']/.exec(window)?.[1] ??
+      /data-slot=(?:"([^"]*)"|'([^']*)')/.exec(window)?.[1] ??
+      null;
+    // Prefer scanning backward/forward in the object for data-slot
+    const objStart = source.lastIndexOf("{", start);
+    const objSlice =
+      objStart >= 0 ? source.slice(objStart, Math.min(source.length, objStart + 800)) : window;
+    const slot2 =
+      /["']data-slot["']\s*:\s*["']([^"']+)["']/.exec(objSlice)?.[1] ?? slot;
+    pushSite({
+      partHint: slot2,
+      dataSlot: slot2,
+      kind: "cnObject",
+      ...partitioned,
+      classIndex: start,
+      classEnd,
+      attrStart: start,
+    });
   }
 
   // class={"..."} / class={'...'} / class={`...`} without cn

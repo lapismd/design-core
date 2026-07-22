@@ -15,13 +15,10 @@
 <Story
   name="Preview"
   exportName="Preview"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
-      description: {
-        story: "A window overlaid on either the primary window or another dialog window, rendering the content underneath inert.\n\n[Docs](https://bits-ui.com/docs/components/dialog)\n\n[API Reference](https://bits-ui.com/docs/components/dialog#api-reference)",
-      },
       source: {
         code: exampleSources.Preview,
         language: "html",
@@ -40,7 +37,7 @@
 <Story
   name="Custom close button"
   exportName="CustomCloseButton"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {

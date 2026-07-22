@@ -18,9 +18,9 @@
         "sha256": "728286a2bfbcd5384640e02fd3868372b665ef129d931ebfcc445544ad702d5a"
       }
     ],
-    "docsUrl": "https://shadcn-svelte.com/docs/components/input.md",
-    "docsFetchedAt": "2026-07-19T20:42:28.852Z",
-    "docsSha256": "fe495dd7b5194ffcb11a4abe81684276bc5f8f2f605123879050b861d173a0a4",
+    "docsUrl": "https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/input.md",
+    "docsFetchedAt": "2026-07-22T09:57:18.242Z",
+    "docsSha256": "457a92317ce3c086f490a73a53e054475a5770ff1f9f96b6840a73e20b8282b6",
     "examplesIncluded": [
       "Preview",
       "Default",
@@ -29,7 +29,10 @@
       "With Label",
       "With Button"
     ],
-    "examplesSkipped": []
+    "examplesSkipped": [],
+    "docsCommit": "bf4f461d88526359d0e96e1950f637912bbeebe7",
+    "docsRef": "shadcn-svelte@1.4.2",
+    "docsVendorPath": "vendor/shadcn-svelte-docs"
   },
   "converter": {
     "version": "2.0.0",

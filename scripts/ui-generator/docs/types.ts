@@ -8,6 +8,8 @@ export type UpstreamExample = {
   slug: string;
   description: string | null;
   code: string;
+  /** Upstream `<ComponentPreview name>` when loaded from vendored docs. */
+  previewName?: string;
 };
 
 export type UpstreamDocs = {
@@ -43,6 +45,9 @@ export type SyncUpstreamDocsResult = {
   docsUrl: string;
   docsSha256: string;
   docsFetchedAt: string;
+  docsCommit?: string;
+  docsRef?: string;
+  docsVendorPath?: string;
   written: string[];
   examplesIncluded: string[];
   examplesSkipped: Array<{ name: string; reason: RewriteSkipReason; detail: string }>;

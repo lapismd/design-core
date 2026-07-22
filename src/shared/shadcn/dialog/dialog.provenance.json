@@ -54,14 +54,17 @@
         "sha256": "9f5e95e83b0752b0795a21237de3fe2eed0f25c7d4d9eef528c7b321c84b7a0e"
       }
     ],
-    "docsUrl": "https://shadcn-svelte.com/docs/components/dialog.md",
-    "docsFetchedAt": "2026-07-19T20:42:29.292Z",
-    "docsSha256": "40d282a74c0701f08c673ef8d3fd2b9e4f81d3900ac88ae6c553517cd72ed1f8",
+    "docsUrl": "https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/dialog.md",
+    "docsFetchedAt": "2026-07-22T09:57:18.330Z",
+    "docsSha256": "e418a4863b7ff68558e390c9a696c3e242cf18557c448e5aa1d4f36cd29ffa63",
     "examplesIncluded": [
       "Preview",
       "Custom close button"
     ],
-    "examplesSkipped": []
+    "examplesSkipped": [],
+    "docsCommit": "bf4f461d88526359d0e96e1950f637912bbeebe7",
+    "docsRef": "shadcn-svelte@1.4.2",
+    "docsVendorPath": "vendor/shadcn-svelte-docs"
   },
   "converter": {
     "version": "2.0.0",

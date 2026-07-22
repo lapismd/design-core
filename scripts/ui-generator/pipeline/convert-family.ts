@@ -1,4 +1,4 @@
-import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import type { UiGeneratorConfig } from "../config.js";
 import { EXIT, GeneratorError } from "../errors.js";
@@ -44,6 +44,76 @@ export type ConvertFamilyResult = {
   written: string[];
   parityExtraction: StyleExtraction;
 };
+
+
+/** Ensure family barrel exists — package exports require shadcn/<family>/index.ts. */
+function ensureBarrelIndex(args: {
+  targetDir: string;
+  intakeFiles: Array<{ path: string; content: string }>;
+  written: string[];
+  /** When true, replace an existing partial barrel with the intake barrel. */
+  overwrite?: boolean;
+}): void {
+  const indexPath = path.join(args.targetDir, "index.ts");
+  if (existsSync(indexPath) && !args.overwrite) return;
+  const fromIntake = args.intakeFiles.find(
+    (f) => path.basename(f.path) === "index.ts",
+  );
+  if (!fromIntake) {
+    throw new GeneratorError(
+      `Missing index.ts for ${path.basename(args.targetDir)} (not in intake, not local)`,
+      EXIT.generation,
+    );
+  }
+  writeFileSync(indexPath, normalizeIntakeSource(fromIntake.content));
+  args.written.push(indexPath);
+  log.ok(
+    args.overwrite
+      ? "Wrote index.ts from intake barrel (overwrite)"
+      : "Wrote index.ts from intake barrel",
+  );
+}
+
+/**
+ * Write non-Svelte intake siblings (constants.ts, context.svelte.ts, …) and
+ * any `$lib/hooks/*` modules the family needs (e.g. is-mobile for sidebar).
+ * Hooks live outside the component dir (shadcn add --no-deps still materializes
+ * them under intake `src/lib/hooks/`), so we copy from `intakeDir` when present.
+ */
+function writeIntakeSupportFiles(args: {
+  targetDir: string;
+  worktreePath: string;
+  intakeDir: string;
+  intakeFiles: Array<{ path: string; content: string }>;
+  written: string[];
+}): void {
+  for (const file of args.intakeFiles) {
+    const base = path.basename(file.path);
+    // Skip Svelte parts (handled by emit) and the barrel (ensureBarrelIndex).
+    if (base.endsWith(".svelte") || base === "index.ts") continue;
+    // Family-local support: constants.ts, context.svelte.ts, *.ts modules.
+    if (base.endsWith(".ts") || base.endsWith(".js")) {
+      const dest = path.join(args.targetDir, base);
+      writeFileSync(dest, normalizeIntakeSource(file.content));
+      args.written.push(dest);
+      log.ok(`Wrote support ${base} from intake`);
+    }
+  }
+
+  const hooksSrc = path.join(args.intakeDir, "src", "lib", "hooks");
+  if (existsSync(hooksSrc)) {
+    const hooksDest = path.join(args.worktreePath, "src", "lib", "hooks");
+    mkdirSync(hooksDest, { recursive: true });
+    for (const name of readdirSync(hooksSrc)) {
+      if (!name.endsWith(".ts") && !name.endsWith(".js")) continue;
+      const content = readFileSync(path.join(hooksSrc, name), "utf8");
+      const dest = path.join(hooksDest, name);
+      writeFileSync(dest, normalizeIntakeSource(content));
+      args.written.push(dest);
+      log.ok(`Wrote hook ${name} from intake`);
+    }
+  }
+}
 
 function listLocalSvelteParts(
   familyDir: string,
@@ -106,8 +176,14 @@ export async function convertFamilyInWorktree(args: {
   runId: string;
   reportDir: string;
   skipParity?: boolean;
+  /**
+   * When true, convert every intake `.svelte` part even if a smaller local
+   * family already exists (registry supersets like full sidebar).
+   */
+  forceFullIntake?: boolean;
 }): Promise<ConvertFamilyResult> {
   const { config, worktreePath, component, runId, reportDir } = args;
+  const forceFullIntake = Boolean(args.forceFullIntake);
   const recipe = requireRecipe(component);
   if (!recipe.convertAllowed) {
     throw new GeneratorError(
@@ -133,12 +209,19 @@ export async function convertFamilyInWorktree(args: {
 
   // Prefer local Tailwind sources (catalog under test). When a local family
   // already exists, do not import intake-only sibling parts (registry supersets
-  // like full sidebar would otherwise expand the catalog).
+  // like full sidebar would otherwise expand the catalog) — unless forceFullIntake.
   const files: Array<{ fileName: string; source: string }> = [];
+  /** Intake parts without Tailwind utilities (e.g. marker-only Button wrappers). */
+  const intakePassthrough: Array<{ fileName: string; source: string }> = [];
   const names =
-    localParts.length > 0
-      ? localParts.map((p) => p.fileName)
-      : [...intakeByName.keys()];
+    forceFullIntake || localParts.length === 0
+      ? [...intakeByName.keys()]
+      : localParts.map((p) => p.fileName);
+  if (forceFullIntake) {
+    log.info(
+      `forceFullIntake: using ${names.length} intake part(s) for "${component}"`,
+    );
+  }
 
   for (const fileName of [...names].sort()) {
     const local = localParts.find((p) => p.fileName === fileName);
@@ -149,6 +232,7 @@ export async function convertFamilyInWorktree(args: {
       local && /data-ui-component\s*=/.test(local.source),
     );
     if (
+      !forceFullIntake &&
       local &&
       !localAlreadyNative &&
       looksLikeTailwindSource(local.source)
@@ -160,6 +244,14 @@ export async function convertFamilyInWorktree(args: {
       files.push({ fileName, source: normalizeIntakeSource(fromIntake) });
       continue;
     }
+    if (fromIntake && (forceFullIntake || !local)) {
+      // Marker-only / Bits passthrough parts (e.g. sheet root, sidebar trigger).
+      intakePassthrough.push({
+        fileName,
+        source: normalizeIntakeSource(fromIntake),
+      });
+      continue;
+    }
     // Already native / empty — skip rewrite for this part.
   }
 
@@ -167,12 +259,12 @@ export async function convertFamilyInWorktree(args: {
   if (!convertible.length) {
     // Styleless Bits pass-through (e.g. collapsible): stamp ownership + provenance.
     const passthroughParts =
-      localParts.length > 0
-        ? localParts
-        : [...intakeByName.entries()].map(([fileName, source]) => ({
+      forceFullIntake || localParts.length === 0
+        ? [...intakeByName.entries()].map(([fileName, source]) => ({
             fileName,
             source: normalizeIntakeSource(source),
-          }));
+          }))
+        : localParts;
     if (!passthroughParts.length) {
       throw new GeneratorError(
         `No sources found for "${component}"`,
@@ -215,6 +307,21 @@ export async function convertFamilyInWorktree(args: {
       parts: passthroughParts,
       provenance,
     });
+    ensureBarrelIndex({
+      targetDir: targetAbs,
+      intakeFiles: intake.files,
+      written,
+      overwrite: forceFullIntake,
+    });
+    if (forceFullIntake) {
+      writeIntakeSupportFiles({
+        targetDir: targetAbs,
+        worktreePath,
+        intakeDir: intake.intakeDir,
+        intakeFiles: intake.files,
+        written,
+      });
+    }
     writeJson(path.join(reportDir, `${component}.ir.json`), {
       schemaVersion: 1,
       name: component,
@@ -363,16 +470,61 @@ export async function convertFamilyInWorktree(args: {
     remappedCss,
     provenance,
   });
+  ensureBarrelIndex({
+    targetDir: targetAbs,
+    intakeFiles: intake.files,
+    written,
+    overwrite: forceFullIntake,
+  });
+  if (forceFullIntake) {
+    writeIntakeSupportFiles({
+      targetDir: targetAbs,
+      worktreePath,
+      intakeDir: intake.intakeDir,
+      intakeFiles: intake.files,
+      written,
+    });
+  }
+
+  // forceFullIntake: write marker-only / non-Tailwind intake parts (e.g. trigger).
+  for (const part of intakePassthrough) {
+    const partName = part.fileName.replace(/\.svelte$/, "");
+    let next = rewritePartSource({
+      part: {
+        part: partName,
+        fileName: part.fileName,
+        source: part.source,
+        extraction: {
+          kind: "empty",
+          baseClasses: [],
+          axes: [],
+          classMaps: {},
+          allCandidates: [],
+          sourceSnippet: "",
+        },
+        sites: [],
+      },
+      component,
+    });
+    if (next.endsWith(".svelte") || part.fileName.endsWith(".svelte")) {
+      next = emitLockedDataUiAttrOrder(next);
+    }
+    const full = path.join(targetAbs, part.fileName);
+    writeFileSync(full, next);
+    written.push(full);
+    log.ok(`Wrote intake passthrough ${part.fileName}`);
+  }
 
   // Stamp ownership on local sibling parts that weren't convertible (e.g.
   // buttonVariants wrappers). Do NOT pull intake supersets — catalogs may be
-  // intentionally smaller than the registry (sidebar).
+  // intentionally smaller than the registry (sidebar) unless forceFullIntake.
   const writtenBasenames = new Set(
     written.map((f) => path.basename(f)).filter((n) => n.endsWith(".svelte")),
   );
   for (const local of localParts) {
     if (!local.fileName.endsWith(".svelte")) continue;
     if (writtenBasenames.has(local.fileName)) continue;
+    if (forceFullIntake && !intakeByName.has(local.fileName)) continue;
     if (/data-ui-component\s*=/.test(local.source)) continue;
     const partName = local.fileName.replace(/\.svelte$/, "");
     let stamped = rewritePartSource({
@@ -486,13 +638,14 @@ export async function convertFamilyInWorktree(args: {
     }
   }
 
-  // Pull published shadcn-svelte docs/examples into Storybook artifacts.
+  // Pull vendored shadcn-svelte docs/examples into Storybook artifacts.
   try {
     const docsResult = await syncUpstreamDocs({
       component,
       targetDir: targetAbs,
       storyTitle: recipe.storyTitle,
       sharedRoot: path.join(worktreePath, config.sharedRoot),
+      packageRoot: worktreePath,
     });
     written.push(...docsResult.written);
     writeJson(path.join(reportDir, `${component}.docs-sync.json`), docsResult);

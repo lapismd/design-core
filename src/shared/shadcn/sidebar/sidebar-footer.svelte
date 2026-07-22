@@ -1,23 +1,23 @@
 <script lang="ts">
-  import { type WithElementRef } from "../../../lib/utils.js";
-  import type { HTMLAttributes } from "svelte/elements";
-  import { omitDataUiIdentity } from "../../../lib/data-ui-host.js";
+	import type { HTMLAttributes } from "svelte/elements";
+	import { type WithElementRef } from "../../../lib/utils.js";
 
-  let {
-    ref = $bindable(null),
-    class: className,
-    children,
-    ...restProps
-  }: WithElementRef<HTMLAttributes<HTMLDivElement>> = $props();
+	let {
+		ref = $bindable(null),
+		class: className,
+		children,
+		...restProps
+	}: WithElementRef<HTMLAttributes<HTMLElement>> = $props();
 </script>
 
 <div
-  bind:this={ref}
-  {...omitDataUiIdentity(restProps)}
+	bind:this={ref}
+		{...restProps}
   data-ui-component="sidebar"
-  data-ui-part="sidebar-footer"
-  data-slot="sidebar-footer"
-  class={className}
+	data-ui-part="sidebar-footer"
+	data-slot="sidebar-footer"
+	data-sidebar="footer"
+	class={className}
 >
-  {@render children?.()}
+	{@render children?.()}
 </div>

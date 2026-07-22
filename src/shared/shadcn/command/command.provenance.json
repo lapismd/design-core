@@ -58,9 +58,9 @@
         "sha256": "871d1e139dc7d39054498e965cd1abb382269e9e51004523c83d7f9a7567fd01"
       }
     ],
-    "docsUrl": "https://shadcn-svelte.com/docs/components/command.md",
-    "docsFetchedAt": "2026-07-19T20:42:29.412Z",
-    "docsSha256": "29af3891e3b7a7a45e3061d231ded1bdd5396f75e48c22b48b4ea1b5c8c24f14",
+    "docsUrl": "https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/command.md",
+    "docsFetchedAt": "2026-07-22T09:57:18.373Z",
+    "docsSha256": "e1aba4575d7b1a8ef4d71136ff583aace43c19c3a3350be890aba37a6c065dda",
     "examplesIncluded": [
       "Preview"
     ],
@@ -70,7 +70,10 @@
         "reason": "unsupported-hook",
         "detail": "Example contains a bare bind: that is not valid Svelte"
       }
-    ]
+    ],
+    "docsCommit": "bf4f461d88526359d0e96e1950f637912bbeebe7",
+    "docsRef": "shadcn-svelte@1.4.2",
+    "docsVendorPath": "vendor/shadcn-svelte-docs"
   },
   "converter": {
     "version": "2.0.0",

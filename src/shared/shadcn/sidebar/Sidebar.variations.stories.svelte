@@ -3,25 +3,18 @@
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import * as Sidebar from "./index.js";
   import * as exampleSources from "./Sidebar.example-sources.js";
-  import SidebarProviderExample from "./examples/sidebar-provider.svelte";
-  import SidebarRootExample from "./examples/sidebar-root.svelte";
+  import YourFirstSidebarExample from "./examples/your-first-sidebar.svelte";
   import SidebarHeaderExample from "./examples/sidebar-header.svelte";
   import SidebarFooterExample from "./examples/sidebar-footer.svelte";
-  import SidebarContentExample from "./examples/sidebar-content.svelte";
   import SidebarGroupExample from "./examples/sidebar-group.svelte";
   import CollapsibleSidebarGroupExample from "./examples/collapsible-sidebar-group.svelte";
   import SidebarGroupactionExample from "./examples/sidebar-groupaction.svelte";
   import SidebarMenuExample from "./examples/sidebar-menu.svelte";
-  import SidebarMenubuttonExample from "./examples/sidebar-menubutton.svelte";
-  import SidebarMenuactionExample from "./examples/sidebar-menuaction.svelte";
+  import DropdownmenuExample from "./examples/dropdownmenu.svelte";
   import SidebarMenusubExample from "./examples/sidebar-menusub.svelte";
   import CollapsibleSidebarMenuExample from "./examples/collapsible-sidebar-menu.svelte";
   import SidebarMenubadgeExample from "./examples/sidebar-menubadge.svelte";
-  import SidebarMenuskeletonExample from "./examples/sidebar-menuskeleton.svelte";
-  import SidebarSeparatorExample from "./examples/sidebar-separator.svelte";
-  import SidebarTriggerExample from "./examples/sidebar-trigger.svelte";
-  import SidebarRailExample from "./examples/sidebar-rail.svelte";
-  import StylingExample from "./examples/styling.svelte";
+  import ControlledSidebarExample from "./examples/controlled-sidebar.svelte";
 
   const { Story } = defineMeta({
     title: "Shadcn/Layout/Sidebar",
@@ -30,17 +23,17 @@
 </script>
 
 <Story
-  name="Sidebar.Provider"
-  exportName="SidebarProvider"
+  name="Your First Sidebar"
+  exportName="YourFirstSidebar"
   tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "The `Sidebar.Provider` component is used to provide the sidebar context to the `Sidebar` component. You should always wrap your application in a `Sidebar.Provider` component.\n\n### [Props](#props)\n\n| Name                          | Type                             | Description                                                                                                                                            |\n| ----------------------------------------------------------- | -------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |\n| `open`         | `boolean`                 | Open state of the sidebar (bindable).                                                                                                                  |\n| `onOpenChange` | `(open: boolean) => void` | A callback fired *after* the open state of the sidebar changes if uncontrolled, and *before* the sidebar opens or closes if controlled. |\n\n### [Width](#width)\n\nIf you have a single sidebar in your application, you can use the `SIDEBAR_WIDTH` and `SIDEBAR_WIDTH_MOBILE` constants in `src/lib/components/ui/sidebar/constants.ts` to set the width of the sidebar.\n\nsrc/lib/components/ui/sidebar/constants.ts\n\n```ts\nexport const SIDEBAR_WIDTH = \"16rem\";\nexport const SIDEBAR_WIDTH_MOBILE = \"18rem\";\n```\n\nFor multiple sidebars in your application, you can use the `style` prop to set the width of the sidebar.\n\nTo set the width of the sidebar, you can use the `--sidebar-width` and `--sidebar-width-mobile` CSS variables in the `style` prop.",
+        story: "Let's start with the most basic sidebar. A collapsible sidebar with a menu.\n\nAdd a `Sidebar.Provider` and `Sidebar.Trigger` at the root of your application.\n\nCreate a new sidebar component at `src/lib/components/app-sidebar.svelte`.\n\nNow, let's add a `Sidebar.Menu` to the sidebar.\n\nWe'll use the `Sidebar.Menu` component in a `Sidebar.Group`.\n\nYou've created your first sidebar.",
       },
       source: {
-        code: exampleSources.SidebarProvider,
+        code: exampleSources.YourFirstSidebar,
         language: "html",
         type: "code",
       },
@@ -48,33 +41,8 @@
   }}
 >
   {#snippet template()}
-    <div class="p-4">
-      <SidebarProviderExample />
-    </div>
-  {/snippet}
-</Story>
-
-<Story
-  name="Sidebar.Root"
-  exportName="SidebarRoot"
-  tags={["upstream-example"]}
-  parameters={{
-    a11y: { test: "todo" },
-    docs: {
-      description: {
-        story: "The main `Sidebar` component used to render a collapsible sidebar.",
-      },
-      source: {
-        code: exampleSources.SidebarRoot,
-        language: "html",
-        type: "code",
-      },
-    },
-  }}
->
-  {#snippet template()}
-    <div class="p-4">
-      <SidebarRootExample />
+    <div class="h-[480px] p-0">
+      <YourFirstSidebarExample />
     </div>
   {/snippet}
 </Story>
@@ -87,7 +55,7 @@
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "Use the `Sidebar.Header` component to add a sticky header to the sidebar.\n\nThe following example adds a `<DropdownMenu>` to the `Sidebar.Header`.\n\nA sidebar header with a dropdown menu.\n\nsrc/lib/components/app-sidebar.svelte",
+        story: "Use the `Sidebar.Header` component to add a sticky header to the sidebar.\n\nThe following example adds a `DropdownMenu` to the `Sidebar.Header`.",
       },
       source: {
         code: exampleSources.SidebarHeader,
@@ -98,7 +66,7 @@
   }}
 >
   {#snippet template()}
-    <div class="p-4">
+    <div class="h-[480px] p-0">
       <SidebarHeaderExample />
     </div>
   {/snippet}
@@ -112,7 +80,7 @@
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "Use the `Sidebar.Footer` component to add a sticky footer to the sidebar.\n\nThe following example adds a `<DropdownMenu>` to the `Sidebar.Footer`.\n\nA sidebar footer with a dropdown menu.\n\nsrc/lib/components/app-sidebar.svelte",
+        story: "Use the `Sidebar.Footer` component to add a sticky footer to the sidebar.\n\nThe following example adds a `DropdownMenu` to the `Sidebar.Footer`.",
       },
       source: {
         code: exampleSources.SidebarFooter,
@@ -123,33 +91,8 @@
   }}
 >
   {#snippet template()}
-    <div class="p-4">
+    <div class="h-[480px] p-0">
       <SidebarFooterExample />
-    </div>
-  {/snippet}
-</Story>
-
-<Story
-  name="Sidebar.Content"
-  exportName="SidebarContent"
-  tags={["upstream-example"]}
-  parameters={{
-    a11y: { test: "todo" },
-    docs: {
-      description: {
-        story: "The `Sidebar.Content` component is used to wrap the content of the sidebar. This is where you add your `Sidebar.Group` components. It is scrollable.",
-      },
-      source: {
-        code: exampleSources.SidebarContent,
-        language: "html",
-        type: "code",
-      },
-    },
-  }}
->
-  {#snippet template()}
-    <div class="p-4">
-      <SidebarContentExample />
     </div>
   {/snippet}
 </Story>
@@ -162,7 +105,7 @@
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "Use the `Sidebar.Group` component to create a section within the sidebar.\n\nA `Sidebar.Group` has a `Sidebar.GroupLabel`, a `Sidebar.GroupContent` and an optional `Sidebar.GroupAction`.\n\nA sidebar group.",
+        story: "Use the `Sidebar.Group` component to create a section within the sidebar.\n\nA `Sidebar.Group` has a `Sidebar.GroupLabel`, a `Sidebar.GroupContent` and an optional `Sidebar.GroupAction`.",
       },
       source: {
         code: exampleSources.SidebarGroup,
@@ -173,7 +116,7 @@
   }}
 >
   {#snippet template()}
-    <div class="p-4">
+    <div class="h-[480px] p-0">
       <SidebarGroupExample />
     </div>
   {/snippet}
@@ -187,7 +130,7 @@
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "To make a `Sidebar.Group` collapsible, wrap it in a `Collapsible`.\n\nA collapsible sidebar group.",
+        story: "To make a `Sidebar.Group` collapsible, wrap it in a `Collapsible`.",
       },
       source: {
         code: exampleSources.CollapsibleSidebarGroup,
@@ -198,7 +141,7 @@
   }}
 >
   {#snippet template()}
-    <div class="p-4">
+    <div class="h-[480px] p-0">
       <CollapsibleSidebarGroupExample />
     </div>
   {/snippet}
@@ -223,7 +166,7 @@
   }}
 >
   {#snippet template()}
-    <div class="p-4">
+    <div class="h-[480px] p-0">
       <SidebarGroupactionExample />
     </div>
   {/snippet}
@@ -237,7 +180,7 @@
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "The `Sidebar.Menu` component is used for building a menu within a `Sidebar.Group`.\n\nA `Sidebar.Menu` is composed of `Sidebar.MenuItem`, `Sidebar.MenuButton`, `Sidebar.MenuAction`, and `Sidebar.MenuSub` components.\n\n![Sidebar menu](/img/sidebar/sidebar-menu.png) ![Sidebar menu](/img/sidebar/sidebar-menu-dark.png)\n\nHere's an example of a `Sidebar.Menu` component rendering a list of projects.\n\nA sidebar menu with a list of projects.",
+        story: "The `Sidebar.Menu` component is used for building a menu within a `Sidebar.Group`.\n\nA `Sidebar.Menu` is composed of `Sidebar.MenuItem`, `Sidebar.MenuButton`, `Sidebar.MenuAction`, and `Sidebar.MenuSub` components.\n\nHere's an example of a `Sidebar.Menu` component rendering a list of projects.",
       },
       source: {
         code: exampleSources.SidebarMenu,
@@ -248,24 +191,24 @@
   }}
 >
   {#snippet template()}
-    <div class="p-4">
+    <div class="h-[480px] p-0">
       <SidebarMenuExample />
     </div>
   {/snippet}
 </Story>
 
 <Story
-  name="Sidebar.MenuButton"
-  exportName="SidebarMenubutton"
+  name="DropdownMenu"
+  exportName="Dropdownmenu"
   tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "The `Sidebar.MenuButton` component is used to render a menu button within a `Sidebar.Menu`.\n\n### [Link or Anchor](#link-or-anchor)\n\nBy default, the `Sidebar.MenuButton` renders a button, but you can use the `child` snippet to render a different component such as an `<a>` tag.",
+        story: "Here's an example of a `Sidebar.MenuAction` that renders a `DropdownMenu`.",
       },
       source: {
-        code: exampleSources.SidebarMenubutton,
+        code: exampleSources.Dropdownmenu,
         language: "html",
         type: "code",
       },
@@ -273,33 +216,8 @@
   }}
 >
   {#snippet template()}
-    <div class="p-4">
-      <SidebarMenubuttonExample />
-    </div>
-  {/snippet}
-</Story>
-
-<Story
-  name="Sidebar.MenuAction"
-  exportName="SidebarMenuaction"
-  tags={["upstream-example"]}
-  parameters={{
-    a11y: { test: "todo" },
-    docs: {
-      description: {
-        story: "The `Sidebar.MenuAction` component is used to render a menu action within a `Sidebar.Menu`.\n\nThis button works independently of the `Sidebar.MenuButton`, i.e. you can have the `Sidebar.MenuButton` as a clickable link and the `Sidebar.MenuAction` as a button.",
-      },
-      source: {
-        code: exampleSources.SidebarMenuaction,
-        language: "html",
-        type: "code",
-      },
-    },
-  }}
->
-  {#snippet template()}
-    <div class="p-4">
-      <SidebarMenuactionExample />
+    <div class="h-[480px] p-0">
+      <DropdownmenuExample />
     </div>
   {/snippet}
 </Story>
@@ -312,7 +230,7 @@
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "The `Sidebar.MenuSub` component is used to render a submenu within a `Sidebar.Menu`.\n\nUse `Sidebar.MenuSubItem` and `Sidebar.MenuSubButton` to render a submenu item.\n\nA sidebar menu sub.",
+        story: "The `Sidebar.MenuSub` component is used to render a submenu within a `Sidebar.Menu`.\n\nUse `Sidebar.MenuSubItem` and `Sidebar.MenuSubButton` to render a submenu item.",
       },
       source: {
         code: exampleSources.SidebarMenusub,
@@ -323,7 +241,7 @@
   }}
 >
   {#snippet template()}
-    <div class="p-4">
+    <div class="h-[480px] p-0">
       <SidebarMenusubExample />
     </div>
   {/snippet}
@@ -337,7 +255,7 @@
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "To make a `Sidebar.Menu` collapsible, wrap it and the `Sidebar.MenuSub` components in a `Collapsible`.\n\nA collapsible sidebar menu.",
+        story: "To make a `Sidebar.Menu` collapsible, wrap it and the `Sidebar.MenuSub` components in a `Collapsible`.",
       },
       source: {
         code: exampleSources.CollapsibleSidebarMenu,
@@ -348,7 +266,7 @@
   }}
 >
   {#snippet template()}
-    <div class="p-4">
+    <div class="h-[480px] p-0">
       <CollapsibleSidebarMenuExample />
     </div>
   {/snippet}
@@ -362,7 +280,7 @@
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "The `Sidebar.MenuBadge` component is used to render a badge within a `Sidebar.MenuItem`.\n\nA sidebar menu badge.",
+        story: "The `Sidebar.MenuBadge` component is used to render a badge within a `Sidebar.MenuItem`.",
       },
       source: {
         code: exampleSources.SidebarMenubadge,
@@ -373,24 +291,24 @@
   }}
 >
   {#snippet template()}
-    <div class="p-4">
+    <div class="h-[480px] p-0">
       <SidebarMenubadgeExample />
     </div>
   {/snippet}
 </Story>
 
 <Story
-  name="Sidebar.MenuSkeleton"
-  exportName="SidebarMenuskeleton"
+  name="Controlled Sidebar"
+  exportName="ControlledSidebar"
   tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "The `Sidebar.MenuSkeleton` component is used to render a skeleton within a `Sidebar.MenuItem`. You can use this to show a loading state while waiting for data to load.",
+        story: "Use Svelte's [Function Binding](https://svelte.dev/docs/svelte/bind#Function-bindings) to control the sidebar state.",
       },
       source: {
-        code: exampleSources.SidebarMenuskeleton,
+        code: exampleSources.ControlledSidebar,
         language: "html",
         type: "code",
       },
@@ -398,108 +316,8 @@
   }}
 >
   {#snippet template()}
-    <div class="p-4">
-      <SidebarMenuskeletonExample />
-    </div>
-  {/snippet}
-</Story>
-
-<Story
-  name="Sidebar.Separator"
-  exportName="SidebarSeparator"
-  tags={["upstream-example"]}
-  parameters={{
-    a11y: { test: "todo" },
-    docs: {
-      description: {
-        story: "The `Sidebar.Separator` component is used to render a separator within a `Sidebar`.",
-      },
-      source: {
-        code: exampleSources.SidebarSeparator,
-        language: "html",
-        type: "code",
-      },
-    },
-  }}
->
-  {#snippet template()}
-    <div class="p-4">
-      <SidebarSeparatorExample />
-    </div>
-  {/snippet}
-</Story>
-
-<Story
-  name="Sidebar.Trigger"
-  exportName="SidebarTrigger"
-  tags={["upstream-example"]}
-  parameters={{
-    a11y: { test: "todo" },
-    docs: {
-      description: {
-        story: "Use the `Sidebar.Trigger` component to render a button that toggles the sidebar.\n\nThe `Sidebar.Trigger` component must be used within a `Sidebar.Provider`.",
-      },
-      source: {
-        code: exampleSources.SidebarTrigger,
-        language: "html",
-        type: "code",
-      },
-    },
-  }}
->
-  {#snippet template()}
-    <div class="p-4">
-      <SidebarTriggerExample />
-    </div>
-  {/snippet}
-</Story>
-
-<Story
-  name="Sidebar.Rail"
-  exportName="SidebarRail"
-  tags={["upstream-example"]}
-  parameters={{
-    a11y: { test: "todo" },
-    docs: {
-      description: {
-        story: "The `Sidebar.Rail` component is used to render a rail within a `Sidebar.Root`. This rail can be used to toggle the sidebar.",
-      },
-      source: {
-        code: exampleSources.SidebarRail,
-        language: "html",
-        type: "code",
-      },
-    },
-  }}
->
-  {#snippet template()}
-    <div class="p-4">
-      <SidebarRailExample />
-    </div>
-  {/snippet}
-</Story>
-
-<Story
-  name="Styling"
-  exportName="Styling"
-  tags={["upstream-example"]}
-  parameters={{
-    a11y: { test: "todo" },
-    docs: {
-      description: {
-        story: "Here are some tips for styling the sidebar based on different states.\n\n- **Styling an element based on the sidebar collapsible state.** The following will hide the `Sidebar.Group` when the sidebar is in `icon` mode.",
-      },
-      source: {
-        code: exampleSources.Styling,
-        language: "html",
-        type: "code",
-      },
-    },
-  }}
->
-  {#snippet template()}
-    <div class="p-4">
-      <StylingExample />
+    <div class="h-[480px] p-0">
+      <ControlledSidebarExample />
     </div>
   {/snippet}
 </Story>

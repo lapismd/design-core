@@ -17,13 +17,10 @@
 <Story
   name="Preview"
   exportName="Preview"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
-      description: {
-        story: "Displays a menu to the user  such as a set of actions or functions  triggered by a button.\n\n[Docs](https://bits-ui.com/docs/components/dropdown-menu)\n\n[API Reference](https://bits-ui.com/docs/components/dropdown-menu#api-reference)",
-      },
       source: {
         code: exampleSources.Preview,
         language: "html",
@@ -42,7 +39,7 @@
 <Story
   name="Checkboxes"
   exportName="Checkboxes"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -64,7 +61,7 @@
 <Story
   name="Radio Group"
   exportName="RadioGroup"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -86,7 +83,7 @@
 <Story
   name="Dialog"
   exportName="Dialog"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {

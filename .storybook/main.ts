@@ -60,6 +60,11 @@ const config: StorybookConfig = {
       from: "../packages/tasks/reference/superlist/2026-07-20",
       to: "/tasks-reference/2026-07-20",
     },
+    // Upstream docs images (`/img/sidebar/…`) vendored with `pnpm ui docs:vendor`.
+    {
+      from: "../vendor/shadcn-svelte-docs/static",
+      to: "/",
+    },
   ],
   framework: {
     name: "@storybook/svelte-vite",

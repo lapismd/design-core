@@ -3,13 +3,13 @@
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import * as Spinner from "./index.js";
   import * as exampleSources from "./Spinner.example-sources.js";
+  import CustomizationExample from "./examples/customization.svelte";
   import SizeExample from "./examples/size.svelte";
   import ColorExample from "./examples/color.svelte";
   import ButtonExample from "./examples/button.svelte";
   import BadgeExample from "./examples/badge.svelte";
   import InputGroupExample from "./examples/input-group.svelte";
   import EmptyExample from "./examples/empty.svelte";
-  import CustomizationExample from "./examples/customization.svelte";
 
   const { Story } = defineMeta({
     title: "Shadcn/Feedback/Spinner",
@@ -18,9 +18,34 @@
 </script>
 
 <Story
+  name="Customization"
+  exportName="Customization"
+  tags={["upstream-example"]}
+  parameters={{
+    a11y: { test: "todo" },
+    docs: {
+      description: {
+        story: "You can replace the default spinner icon with any other icon by editing the `Spinner` component.",
+      },
+      source: {
+        code: exampleSources.Customization,
+        language: "html",
+        type: "code",
+      },
+    },
+  }}
+>
+  {#snippet template()}
+    <div class="p-4">
+      <CustomizationExample />
+    </div>
+  {/snippet}
+</Story>
+
+<Story
   name="Size"
   exportName="Size"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -45,7 +70,7 @@
 <Story
   name="Color"
   exportName="Color"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -70,12 +95,12 @@
 <Story
   name="Button"
   exportName="Button"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "Add a spinner to a button to indicate a loading state. The `<Button />` will handle the spacing between the spinner and the text.",
+        story: "Add a spinner to a button to indicate a loading state. The `` will handle the spacing between the spinner and the text.",
       },
       source: {
         code: exampleSources.Button,
@@ -95,7 +120,7 @@
 <Story
   name="Badge"
   exportName="Badge"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -120,12 +145,12 @@
 <Story
   name="Input Group"
   exportName="InputGroup"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "Input Group can have spinners inside `<InputGroup.Addon>`.",
+        story: "Input Group can have spinners inside `InputGroup.Addon`.",
       },
       source: {
         code: exampleSources.InputGroup,
@@ -145,7 +170,7 @@
 <Story
   name="Empty"
   exportName="Empty"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -160,31 +185,6 @@
   {#snippet template()}
     <div class="p-4">
       <EmptyExample />
-    </div>
-  {/snippet}
-</Story>
-
-<Story
-  name="Customization"
-  exportName="Customization"
-  tags={["upstream-example", "visual-approved"]}
-  parameters={{
-    a11y: { test: "todo" },
-    docs: {
-      description: {
-        story: "You can replace the default spinner icon with any other icon by editing the `Spinner` component.",
-      },
-      source: {
-        code: exampleSources.Customization,
-        language: "html",
-        type: "code",
-      },
-    },
-  }}
->
-  {#snippet template()}
-    <div class="p-4">
-      <CustomizationExample />
     </div>
   {/snippet}
 </Story>
