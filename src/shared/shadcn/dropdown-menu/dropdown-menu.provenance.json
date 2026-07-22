@@ -85,12 +85,7 @@
     "docsUrl": "https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/dropdown-menu.md",
     "docsFetchedAt": "2026-07-22T09:57:18.354Z",
     "docsSha256": "ea2893f807a1ef3f65bcff77ba346c58cd4b89d0e5c68a59548044f62515ebeb",
-    "examplesIncluded": [
-      "Preview",
-      "Checkboxes",
-      "Radio Group",
-      "Dialog"
-    ],
+    "examplesIncluded": ["Preview", "Checkboxes", "Radio Group", "Dialog"],
     "examplesSkipped": [],
     "docsCommit": "bf4f461d88526359d0e96e1950f637912bbeebe7",
     "docsRef": "shadcn-svelte@1.4.2",

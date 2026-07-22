@@ -3,7 +3,7 @@
   import SegmentedControl from "./SegmentedControl.svelte";
 
   const { Story } = defineMeta({
-    title: "UI Forms/Segmented Control",
+    title: "UI Forms/Form Inputs/Segmented Control",
     component: SegmentedControl,
     parameters: {
       docs: {
@@ -14,7 +14,6 @@
     },
   });
 </script>
-
 
 <Story
   name="Two options"

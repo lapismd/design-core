@@ -1,4 +1,11 @@
-import { Meta, Canvas, Controls, Primary, Source, Markdown } from "@storybook/addon-docs/blocks";
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+  Markdown,
+} from "@storybook/addon-docs/blocks";
 import * as CardStories from "./Card.stories.svelte";
 import * as CardVariations from "./Card.variations.stories.svelte";
 import docsBody from "./card.docs-body.md?raw";
@@ -17,7 +24,12 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 
 ## Usage
 
-<Source language="html" code={"<script lang=\"ts\">\n  import * as Card from \"@stevejuma/ui/shadcn/card\";\n</script>\n\n<Card.Root>\n  <Card.Header>\n    <Card.Title>Card Title</Card.Title>\n    <Card.Description>Card Description</Card.Description>\n  </Card.Header>\n  <Card.Content>\n    <p>Card Content</p>\n  </Card.Content>\n  <Card.Footer>\n    <p>Card Footer</p>\n  </Card.Footer>\n</Card.Root>"} />
+<Source
+  language="html"
+  code={
+    '<script lang="ts">\n  import * as Card from "@stevejuma/ui/shadcn/card";\n</script>\n\n<Card.Root>\n  <Card.Header>\n    <Card.Title>Card Title</Card.Title>\n    <Card.Description>Card Description</Card.Description>\n  </Card.Header>\n  <Card.Content>\n    <p>Card Content</p>\n  </Card.Content>\n  <Card.Footer>\n    <p>Card Footer</p>\n  </Card.Footer>\n</Card.Root>'
+  }
+/>
 
 <Primary />
 
@@ -27,11 +39,9 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 
 ### Preview
 
-
 <Canvas of={CardVariations.Preview} meta={CardVariations} />
 
 ### Preview
-
 
 <Canvas of={CardVariations.Preview2} meta={CardVariations} />
 
@@ -54,4 +64,3 @@ Use negative margins with `-mx-(--card-spacing)` to make content go edge to edge
 Add an image before the card header to create a card with an image.
 
 <Canvas of={CardVariations.Image} meta={CardVariations} />
-

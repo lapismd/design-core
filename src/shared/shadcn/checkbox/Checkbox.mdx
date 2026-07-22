@@ -1,4 +1,11 @@
-import { Meta, Canvas, Controls, Primary, Source, Markdown } from "@storybook/addon-docs/blocks";
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+  Markdown,
+} from "@storybook/addon-docs/blocks";
 import * as CheckboxStories from "./Checkbox.stories.svelte";
 import * as CheckboxVariations from "./Checkbox.variations.stories.svelte";
 import docsBody from "./checkbox.docs-body.md?raw";
@@ -17,7 +24,12 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 
 ## Usage
 
-<Source language="html" code={"<script lang=\"ts\">\n  import { Checkbox } from \"@stevejuma/ui/shadcn/checkbox\";\n</script>\n\n<Checkbox />"} />
+<Source
+  language="html"
+  code={
+    '<script lang="ts">\n  import { Checkbox } from "@stevejuma/ui/shadcn/checkbox";\n</script>\n\n<Checkbox />'
+  }
+/>
 
 <Primary />
 
@@ -27,6 +39,4 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 
 ### Preview
 
-
 <Canvas of={CheckboxVariations.Preview} meta={CheckboxVariations} />
-

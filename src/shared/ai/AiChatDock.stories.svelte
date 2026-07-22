@@ -28,12 +28,18 @@
   name="Collapsed right rail"
   tags={["skip-visual"]}
   play={async ({ canvas }) => {
-    await userEvent.click(canvas.getByRole("button", { name: "Expand AI sidebar" }));
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Expand AI sidebar" }),
+    );
     await expect(canvas.getByText("Expanded panel")).toBeVisible();
   }}
 >
   {#snippet template()}
-    <div data-slot="sidebar-provider" data-ui-component="ai-story-host" data-ui-part="dock-host">
+    <div
+      data-slot="sidebar-provider"
+      data-ui-component="ai-story-host"
+      data-ui-part="dock-host"
+    >
       <AiChatDock
         {placement}
         {visibility}
@@ -54,8 +60,17 @@
 
 <Story name="Expanded right rail" tags={["skip-visual"]}>
   {#snippet template()}
-    <div data-slot="sidebar-provider" data-ui-component="ai-story-host" data-ui-part="dock-host">
-      <AiChatDock placement="right" visibility="expanded" label="AI chat" onExpand={() => {}}>
+    <div
+      data-slot="sidebar-provider"
+      data-ui-component="ai-story-host"
+      data-ui-part="dock-host"
+    >
+      <AiChatDock
+        placement="right"
+        visibility="expanded"
+        label="AI chat"
+        onExpand={() => {}}
+      >
         <div data-ui-part="panel-stub">Dock children render here</div>
       </AiChatDock>
     </div>

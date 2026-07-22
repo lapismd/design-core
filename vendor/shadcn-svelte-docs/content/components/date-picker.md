@@ -51,7 +51,7 @@ See installations instructions for the [Popover](/docs/components/popover#instal
         variant="outline"
         class={cn(
           "w-[280px] justify-start text-start font-normal",
-          !value && "text-muted-foreground"
+          !value && "text-muted-foreground",
         )}
         {...props}
       >

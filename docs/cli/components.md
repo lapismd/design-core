@@ -19,14 +19,14 @@ pnpm ui:components <name>
 
 Inventories every package surface:
 
-| Layer | Source |
-| --- | --- |
-| `shadcn` | `*.docs.md` + `*.example-sources.ts` |
-| `forms` | colocated `*.mdx` (+ variation story templates) |
-| `ai` | stories (+ AI overview) |
-| `workspace-shell` | stories |
-| `apps` | app stories under `src/apps/*` |
-| `workspace` | `@stevejuma/workspace` component stories |
+| Layer             | Source                                          |
+| ----------------- | ----------------------------------------------- |
+| `shadcn`          | `*.docs.md` + `*.example-sources.ts`            |
+| `forms`           | colocated `*.mdx` (+ variation story templates) |
+| `ai`              | stories (+ AI overview)                         |
+| `workspace-shell` | stories                                         |
+| `apps`            | app stories under `src/apps/*`                  |
+| `workspace`       | `@stevejuma/workspace` component stories        |
 
 Keys are `layer/id` (e.g. `shadcn/button`, `forms/form-field`). Bare ids work
 when unique; ambiguous names require the qualified key.

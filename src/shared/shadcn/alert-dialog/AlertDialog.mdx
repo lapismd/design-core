@@ -1,4 +1,11 @@
-import { Meta, Canvas, Controls, Primary, Source, Markdown } from "@storybook/addon-docs/blocks";
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+  Markdown,
+} from "@storybook/addon-docs/blocks";
 import * as AlertDialogStories from "./AlertDialog.stories.svelte";
 import * as AlertDialogVariations from "./AlertDialog.variations.stories.svelte";
 import docsBody from "./alert-dialog.docs-body.md?raw";
@@ -17,7 +24,12 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 
 ## Usage
 
-<Source language="html" code={"<script lang=\"ts\">\n  import * as AlertDialog from \"@stevejuma/ui/shadcn/alert-dialog\";\n</script>\n\n<AlertDialog.Root>\n  <AlertDialog.Trigger>Open</AlertDialog.Trigger>\n  <AlertDialog.Content>\n    <AlertDialog.Header>\n      <AlertDialog.Title>Are you absolutely sure?</AlertDialog.Title>\n      <AlertDialog.Description>\n        This action cannot be undone. This will permanently delete your account\n        and remove your data from our servers.\n      </AlertDialog.Description>\n    </AlertDialog.Header>\n    <AlertDialog.Footer>\n      <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>\n      <AlertDialog.Action>Continue</AlertDialog.Action>\n    </AlertDialog.Footer>\n  </AlertDialog.Content>\n</AlertDialog.Root>"} />
+<Source
+  language="html"
+  code={
+    '<script lang="ts">\n  import * as AlertDialog from "@stevejuma/ui/shadcn/alert-dialog";\n</script>\n\n<AlertDialog.Root>\n  <AlertDialog.Trigger>Open</AlertDialog.Trigger>\n  <AlertDialog.Content>\n    <AlertDialog.Header>\n      <AlertDialog.Title>Are you absolutely sure?</AlertDialog.Title>\n      <AlertDialog.Description>\n        This action cannot be undone. This will permanently delete your account\n        and remove your data from our servers.\n      </AlertDialog.Description>\n    </AlertDialog.Header>\n    <AlertDialog.Footer>\n      <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>\n      <AlertDialog.Action>Continue</AlertDialog.Action>\n    </AlertDialog.Footer>\n  </AlertDialog.Content>\n</AlertDialog.Root>'
+  }
+/>
 
 <Primary />
 
@@ -27,6 +39,4 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 
 ### Preview
 
-
 <Canvas of={AlertDialogVariations.Preview} meta={AlertDialogVariations} />
-

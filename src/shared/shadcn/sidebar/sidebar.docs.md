@@ -105,72 +105,72 @@ Add a `Sidebar.Provider` and `Sidebar.Trigger` at the root of your application.
 
 ```html
 <script lang="ts">
-	import CalendarIcon from "@lucide/svelte/icons/calendar";
-	import HouseIcon from "@lucide/svelte/icons/house";
-	import InboxIcon from "@lucide/svelte/icons/inbox";
-	import SearchIcon from "@lucide/svelte/icons/search";
-	import SettingsIcon from "@lucide/svelte/icons/settings";
-	import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
+  import CalendarIcon from "@lucide/svelte/icons/calendar";
+  import HouseIcon from "@lucide/svelte/icons/house";
+  import InboxIcon from "@lucide/svelte/icons/inbox";
+  import SearchIcon from "@lucide/svelte/icons/search";
+  import SettingsIcon from "@lucide/svelte/icons/settings";
+  import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
 
-	// Menu items.
-	const items = [
-		{
-			title: "Home",
-			url: "#",
-			icon: HouseIcon,
-		},
-		{
-			title: "Inbox",
-			url: "#",
-			icon: InboxIcon,
-		},
-		{
-			title: "Calendar",
-			url: "#",
-			icon: CalendarIcon,
-		},
-		{
-			title: "Search",
-			url: "#",
-			icon: SearchIcon,
-		},
-		{
-			title: "Settings",
-			url: "#",
-			icon: SettingsIcon,
-		},
-	];
+  // Menu items.
+  const items = [
+    {
+      title: "Home",
+      url: "#",
+      icon: HouseIcon,
+    },
+    {
+      title: "Inbox",
+      url: "#",
+      icon: InboxIcon,
+    },
+    {
+      title: "Calendar",
+      url: "#",
+      icon: CalendarIcon,
+    },
+    {
+      title: "Search",
+      url: "#",
+      icon: SearchIcon,
+    },
+    {
+      title: "Settings",
+      url: "#",
+      icon: SettingsIcon,
+    },
+  ];
 </script>
 
 <Sidebar.Provider>
-	<Sidebar.Root>
-		<Sidebar.Content>
-			<Sidebar.Group>
-				<Sidebar.GroupLabel>Application</Sidebar.GroupLabel>
-				<Sidebar.GroupContent>
-					<Sidebar.Menu>
-						{#each items as item (item.title)}
-							<Sidebar.MenuItem>
-								<Sidebar.MenuButton>
-									{#snippet child({ props })}
-										<a href={item.url} {...props}>
-											<item.icon />
-											<span>{item.title}</span>
-										</a>
-									{/snippet}
-								</Sidebar.MenuButton>
-							</Sidebar.MenuItem>
-						{/each}
-					</Sidebar.Menu>
-				</Sidebar.GroupContent>
-			</Sidebar.Group>
-		</Sidebar.Content>
-	</Sidebar.Root>
-	<Sidebar.Inset>
-		<header class="flex h-12 items-center justify-between px-4">
-			<Sidebar.Trigger />
-		</header>
-	</Sidebar.Inset>
+  <Sidebar.Root>
+    <Sidebar.Content>
+      <Sidebar.Group>
+        <Sidebar.GroupLabel>Application</Sidebar.GroupLabel>
+        <Sidebar.GroupContent>
+          <Sidebar.Menu>
+            {#each items as item (item.title)}
+            <Sidebar.MenuItem>
+              <Sidebar.MenuButton>
+                {#snippet child({ props })}
+                <a href="{item.url}" {...props}>
+                  <item.icon />
+                  <span>{item.title}</span>
+                </a>
+                {/snippet}
+              </Sidebar.MenuButton>
+            </Sidebar.MenuItem>
+            {/each}
+          </Sidebar.Menu>
+        </Sidebar.GroupContent>
+      </Sidebar.Group>
+    </Sidebar.Content>
+  </Sidebar.Root>
+  <Sidebar.Inset>
+    <header class="flex h-12 items-center justify-between px-4">
+      <Sidebar.Trigger />
+    </header>
+  </Sidebar.Inset>
 </Sidebar.Provider>
 ```
 
@@ -178,72 +178,72 @@ Create a new sidebar component at `src/lib/components/app-sidebar.svelte`.
 
 ```html
 <script lang="ts">
-	import CalendarIcon from "@lucide/svelte/icons/calendar";
-	import HouseIcon from "@lucide/svelte/icons/house";
-	import InboxIcon from "@lucide/svelte/icons/inbox";
-	import SearchIcon from "@lucide/svelte/icons/search";
-	import SettingsIcon from "@lucide/svelte/icons/settings";
-	import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
+  import CalendarIcon from "@lucide/svelte/icons/calendar";
+  import HouseIcon from "@lucide/svelte/icons/house";
+  import InboxIcon from "@lucide/svelte/icons/inbox";
+  import SearchIcon from "@lucide/svelte/icons/search";
+  import SettingsIcon from "@lucide/svelte/icons/settings";
+  import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
 
-	// Menu items.
-	const items = [
-		{
-			title: "Home",
-			url: "#",
-			icon: HouseIcon,
-		},
-		{
-			title: "Inbox",
-			url: "#",
-			icon: InboxIcon,
-		},
-		{
-			title: "Calendar",
-			url: "#",
-			icon: CalendarIcon,
-		},
-		{
-			title: "Search",
-			url: "#",
-			icon: SearchIcon,
-		},
-		{
-			title: "Settings",
-			url: "#",
-			icon: SettingsIcon,
-		},
-	];
+  // Menu items.
+  const items = [
+    {
+      title: "Home",
+      url: "#",
+      icon: HouseIcon,
+    },
+    {
+      title: "Inbox",
+      url: "#",
+      icon: InboxIcon,
+    },
+    {
+      title: "Calendar",
+      url: "#",
+      icon: CalendarIcon,
+    },
+    {
+      title: "Search",
+      url: "#",
+      icon: SearchIcon,
+    },
+    {
+      title: "Settings",
+      url: "#",
+      icon: SettingsIcon,
+    },
+  ];
 </script>
 
 <Sidebar.Provider>
-	<Sidebar.Root>
-		<Sidebar.Content>
-			<Sidebar.Group>
-				<Sidebar.GroupLabel>Application</Sidebar.GroupLabel>
-				<Sidebar.GroupContent>
-					<Sidebar.Menu>
-						{#each items as item (item.title)}
-							<Sidebar.MenuItem>
-								<Sidebar.MenuButton>
-									{#snippet child({ props })}
-										<a href={item.url} {...props}>
-											<item.icon />
-											<span>{item.title}</span>
-										</a>
-									{/snippet}
-								</Sidebar.MenuButton>
-							</Sidebar.MenuItem>
-						{/each}
-					</Sidebar.Menu>
-				</Sidebar.GroupContent>
-			</Sidebar.Group>
-		</Sidebar.Content>
-	</Sidebar.Root>
-	<Sidebar.Inset>
-		<header class="flex h-12 items-center justify-between px-4">
-			<Sidebar.Trigger />
-		</header>
-	</Sidebar.Inset>
+  <Sidebar.Root>
+    <Sidebar.Content>
+      <Sidebar.Group>
+        <Sidebar.GroupLabel>Application</Sidebar.GroupLabel>
+        <Sidebar.GroupContent>
+          <Sidebar.Menu>
+            {#each items as item (item.title)}
+            <Sidebar.MenuItem>
+              <Sidebar.MenuButton>
+                {#snippet child({ props })}
+                <a href="{item.url}" {...props}>
+                  <item.icon />
+                  <span>{item.title}</span>
+                </a>
+                {/snippet}
+              </Sidebar.MenuButton>
+            </Sidebar.MenuItem>
+            {/each}
+          </Sidebar.Menu>
+        </Sidebar.GroupContent>
+      </Sidebar.Group>
+    </Sidebar.Content>
+  </Sidebar.Root>
+  <Sidebar.Inset>
+    <header class="flex h-12 items-center justify-between px-4">
+      <Sidebar.Trigger />
+    </header>
+  </Sidebar.Inset>
 </Sidebar.Provider>
 ```
 
@@ -297,16 +297,16 @@ We'll use the `Sidebar.Menu` component in a `Sidebar.Group`.
       <Sidebar.GroupContent>
         <Sidebar.Menu>
           {#each items as item (item.title)}
-            <Sidebar.MenuItem>
-              <Sidebar.MenuButton>
-                {#snippet child({ props })}
-                  <a href={item.url} {...props}>
-                    <item.icon />
-                    <span>{item.title}</span>
-                  </a>
-                {/snippet}
-              </Sidebar.MenuButton>
-            </Sidebar.MenuItem>
+          <Sidebar.MenuItem>
+            <Sidebar.MenuButton>
+              {#snippet child({ props })}
+              <a href="{item.url}" {...props}>
+                <item.icon />
+                <span>{item.title}</span>
+              </a>
+              {/snippet}
+            </Sidebar.MenuButton>
+          </Sidebar.MenuItem>
           {/each}
         </Sidebar.Menu>
       </Sidebar.GroupContent>
@@ -477,46 +477,46 @@ The following example adds a `<DropdownMenu>` to the `Sidebar.Header`.
 
 ```html
 <script lang="ts">
-	import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
-	import * as DropdownMenu from "@stevejuma/ui/shadcn/dropdown-menu";
-	import ChevronDownIcon from "@lucide/svelte/icons/chevron-down";
+  import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
+  import * as DropdownMenu from "@stevejuma/ui/shadcn/dropdown-menu";
+  import ChevronDownIcon from "@lucide/svelte/icons/chevron-down";
 </script>
 
 <Sidebar.Provider>
-	<Sidebar.Root>
-		<Sidebar.Header>
-			<Sidebar.Menu>
-				<Sidebar.MenuItem>
-					<DropdownMenu.Root>
-						<DropdownMenu.Trigger>
-							{#snippet child({ props })}
-								<Sidebar.MenuButton
-									{...props}
-									class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-								>
-									Select Workspace
-									<ChevronDownIcon class="ms-auto" />
-								</Sidebar.MenuButton>
-							{/snippet}
-						</DropdownMenu.Trigger>
-						<DropdownMenu.Content class="w-(--bits-dropdown-menu-anchor-width)">
-							<DropdownMenu.Item>
-								<span>Acme Inc</span>
-							</DropdownMenu.Item>
-							<DropdownMenu.Item>
-								<span>Acme Corp.</span>
-							</DropdownMenu.Item>
-						</DropdownMenu.Content>
-					</DropdownMenu.Root>
-				</Sidebar.MenuItem>
-			</Sidebar.Menu>
-		</Sidebar.Header>
-	</Sidebar.Root>
-	<Sidebar.Inset>
-		<header class="flex h-12 items-center justify-between px-4">
-			<Sidebar.Trigger />
-		</header>
-	</Sidebar.Inset>
+  <Sidebar.Root>
+    <Sidebar.Header>
+      <Sidebar.Menu>
+        <Sidebar.MenuItem>
+          <DropdownMenu.Root>
+            <DropdownMenu.Trigger>
+              {#snippet child({ props })}
+              <Sidebar.MenuButton
+                {...props}
+                class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+              >
+                Select Workspace
+                <ChevronDownIcon class="ms-auto" />
+              </Sidebar.MenuButton>
+              {/snippet}
+            </DropdownMenu.Trigger>
+            <DropdownMenu.Content class="w-(--bits-dropdown-menu-anchor-width)">
+              <DropdownMenu.Item>
+                <span>Acme Inc</span>
+              </DropdownMenu.Item>
+              <DropdownMenu.Item>
+                <span>Acme Corp.</span>
+              </DropdownMenu.Item>
+            </DropdownMenu.Content>
+          </DropdownMenu.Root>
+        </Sidebar.MenuItem>
+      </Sidebar.Menu>
+    </Sidebar.Header>
+  </Sidebar.Root>
+  <Sidebar.Inset>
+    <header class="flex h-12 items-center justify-between px-4">
+      <Sidebar.Trigger />
+    </header>
+  </Sidebar.Inset>
 </Sidebar.Provider>
 ```
 
@@ -528,54 +528,54 @@ The following example adds a `<DropdownMenu>` to the `Sidebar.Footer`.
 
 ```html
 <script lang="ts">
-	import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
-	import * as DropdownMenu from "@stevejuma/ui/shadcn/dropdown-menu";
-	import ChevronUpIcon from "@lucide/svelte/icons/chevron-up";
+  import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
+  import * as DropdownMenu from "@stevejuma/ui/shadcn/dropdown-menu";
+  import ChevronUpIcon from "@lucide/svelte/icons/chevron-up";
 </script>
 
 <Sidebar.Provider>
-	<Sidebar.Root>
-		<Sidebar.Header />
-		<Sidebar.Content />
-		<Sidebar.Footer>
-			<Sidebar.Menu>
-				<Sidebar.MenuItem>
-					<DropdownMenu.Root>
-						<DropdownMenu.Trigger>
-							{#snippet child({ props })}
-								<Sidebar.MenuButton
-									{...props}
-									class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-								>
-									Username
-									<ChevronUpIcon class="ms-auto" />
-								</Sidebar.MenuButton>
-							{/snippet}
-						</DropdownMenu.Trigger>
-						<DropdownMenu.Content
-							side="top"
-							class="w-(--bits-dropdown-menu-anchor-width)"
-						>
-							<DropdownMenu.Item>
-								<span>Account</span>
-							</DropdownMenu.Item>
-							<DropdownMenu.Item>
-								<span>Billing</span>
-							</DropdownMenu.Item>
-							<DropdownMenu.Item>
-								<span>Sign out</span>
-							</DropdownMenu.Item>
-						</DropdownMenu.Content>
-					</DropdownMenu.Root>
-				</Sidebar.MenuItem>
-			</Sidebar.Menu>
-		</Sidebar.Footer>
-	</Sidebar.Root>
-	<Sidebar.Inset>
-		<header class="flex h-12 items-center justify-between px-4">
-			<Sidebar.Trigger />
-		</header>
-	</Sidebar.Inset>
+  <Sidebar.Root>
+    <Sidebar.Header />
+    <Sidebar.Content />
+    <Sidebar.Footer>
+      <Sidebar.Menu>
+        <Sidebar.MenuItem>
+          <DropdownMenu.Root>
+            <DropdownMenu.Trigger>
+              {#snippet child({ props })}
+              <Sidebar.MenuButton
+                {...props}
+                class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+              >
+                Username
+                <ChevronUpIcon class="ms-auto" />
+              </Sidebar.MenuButton>
+              {/snippet}
+            </DropdownMenu.Trigger>
+            <DropdownMenu.Content
+              side="top"
+              class="w-(--bits-dropdown-menu-anchor-width)"
+            >
+              <DropdownMenu.Item>
+                <span>Account</span>
+              </DropdownMenu.Item>
+              <DropdownMenu.Item>
+                <span>Billing</span>
+              </DropdownMenu.Item>
+              <DropdownMenu.Item>
+                <span>Sign out</span>
+              </DropdownMenu.Item>
+            </DropdownMenu.Content>
+          </DropdownMenu.Root>
+        </Sidebar.MenuItem>
+      </Sidebar.Menu>
+    </Sidebar.Footer>
+  </Sidebar.Root>
+  <Sidebar.Inset>
+    <header class="flex h-12 items-center justify-between px-4">
+      <Sidebar.Trigger />
+    </header>
+  </Sidebar.Inset>
 </Sidebar.Provider>
 ```
 
@@ -600,35 +600,35 @@ A `Sidebar.Group` has a `Sidebar.GroupLabel`, a `Sidebar.GroupContent` and an op
 
 ```html
 <script lang="ts">
-	import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
-	import LifeBuoyIcon from "@lucide/svelte/icons/life-buoy";
-	import SendIcon from "@lucide/svelte/icons/send";
+  import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
+  import LifeBuoyIcon from "@lucide/svelte/icons/life-buoy";
+  import SendIcon from "@lucide/svelte/icons/send";
 </script>
 
 <Sidebar.Provider>
-	<Sidebar.Root>
-		<Sidebar.Content>
-			<Sidebar.Group>
-				<Sidebar.GroupLabel>Help</Sidebar.GroupLabel>
-				<Sidebar.GroupContent>
-					<Sidebar.Menu>
-						<Sidebar.MenuItem>
-							<Sidebar.MenuButton>
-								<LifeBuoyIcon />
-								Support
-							</Sidebar.MenuButton>
-						</Sidebar.MenuItem>
-						<Sidebar.MenuItem>
-							<Sidebar.MenuButton>
-								<SendIcon />
-								Feedback
-							</Sidebar.MenuButton>
-						</Sidebar.MenuItem>
-					</Sidebar.Menu>
-				</Sidebar.GroupContent>
-			</Sidebar.Group>
-		</Sidebar.Content>
-	</Sidebar.Root>
+  <Sidebar.Root>
+    <Sidebar.Content>
+      <Sidebar.Group>
+        <Sidebar.GroupLabel>Help</Sidebar.GroupLabel>
+        <Sidebar.GroupContent>
+          <Sidebar.Menu>
+            <Sidebar.MenuItem>
+              <Sidebar.MenuButton>
+                <LifeBuoyIcon />
+                Support
+              </Sidebar.MenuButton>
+            </Sidebar.MenuItem>
+            <Sidebar.MenuItem>
+              <Sidebar.MenuButton>
+                <SendIcon />
+                Feedback
+              </Sidebar.MenuButton>
+            </Sidebar.MenuItem>
+          </Sidebar.Menu>
+        </Sidebar.GroupContent>
+      </Sidebar.Group>
+    </Sidebar.Content>
+  </Sidebar.Root>
 </Sidebar.Provider>
 ```
 
@@ -638,52 +638,52 @@ To make a `Sidebar.Group` collapsible, wrap it in a `Collapsible`.
 
 ```html
 <script lang="ts">
-	import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
-	import * as Collapsible from "@stevejuma/ui/shadcn/collapsible";
-	import ChevronDownIcon from "@lucide/svelte/icons/chevron-down";
-	import LifeBuoyIcon from "@lucide/svelte/icons/life-buoy";
-	import SendIcon from "@lucide/svelte/icons/send";
+  import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
+  import * as Collapsible from "@stevejuma/ui/shadcn/collapsible";
+  import ChevronDownIcon from "@lucide/svelte/icons/chevron-down";
+  import LifeBuoyIcon from "@lucide/svelte/icons/life-buoy";
+  import SendIcon from "@lucide/svelte/icons/send";
 </script>
 
 <Sidebar.Provider>
-	<Sidebar.Root>
-		<Sidebar.Content>
-			<Collapsible.Root open class="group/collapsible">
-				<Sidebar.Group>
-					<Sidebar.GroupLabel
-						class="hover:bg-sidebar-accent hover:text-sidebar-accent-foreground text-sm"
-					>
-						{#snippet child({ props })}
-							<Collapsible.Trigger {...props}>
-								Help
-								<ChevronDownIcon
-									class="ms-auto transition-transform group-data-[state=open]/collapsible:rotate-180"
-								/>
-							</Collapsible.Trigger>
-						{/snippet}
-					</Sidebar.GroupLabel>
-					<Collapsible.Content>
-						<Sidebar.GroupContent>
-							<Sidebar.Menu>
-								<Sidebar.MenuItem>
-									<Sidebar.MenuButton>
-										<LifeBuoyIcon />
-										Support
-									</Sidebar.MenuButton>
-								</Sidebar.MenuItem>
-								<Sidebar.MenuItem>
-									<Sidebar.MenuButton>
-										<SendIcon />
-										Feedback
-									</Sidebar.MenuButton>
-								</Sidebar.MenuItem>
-							</Sidebar.Menu>
-						</Sidebar.GroupContent>
-					</Collapsible.Content>
-				</Sidebar.Group>
-			</Collapsible.Root>
-		</Sidebar.Content>
-	</Sidebar.Root>
+  <Sidebar.Root>
+    <Sidebar.Content>
+      <Collapsible.Root open class="group/collapsible">
+        <Sidebar.Group>
+          <Sidebar.GroupLabel
+            class="hover:bg-sidebar-accent hover:text-sidebar-accent-foreground text-sm"
+          >
+            {#snippet child({ props })}
+            <Collapsible.Trigger {...props}>
+              Help
+              <ChevronDownIcon
+                class="ms-auto transition-transform group-data-[state=open]/collapsible:rotate-180"
+              />
+            </Collapsible.Trigger>
+            {/snippet}
+          </Sidebar.GroupLabel>
+          <Collapsible.Content>
+            <Sidebar.GroupContent>
+              <Sidebar.Menu>
+                <Sidebar.MenuItem>
+                  <Sidebar.MenuButton>
+                    <LifeBuoyIcon />
+                    Support
+                  </Sidebar.MenuButton>
+                </Sidebar.MenuItem>
+                <Sidebar.MenuItem>
+                  <Sidebar.MenuButton>
+                    <SendIcon />
+                    Feedback
+                  </Sidebar.MenuButton>
+                </Sidebar.MenuItem>
+              </Sidebar.Menu>
+            </Sidebar.GroupContent>
+          </Collapsible.Content>
+        </Sidebar.Group>
+      </Collapsible.Root>
+    </Sidebar.Content>
+  </Sidebar.Root>
 </Sidebar.Provider>
 ```
 
@@ -696,64 +696,60 @@ Use the `Sidebar.GroupAction` component to add an action to a `Sidebar.Group`.
 
 ```html
 <script lang="ts">
-	import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
+  import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
 
-	import PlusIcon from "@lucide/svelte/icons/plus";
-	import FrameIcon from "@lucide/svelte/icons/frame";
-	import ChartPieIcon from "@lucide/svelte/icons/chart-pie";
-	import MapIcon from "@lucide/svelte/icons/map";
-
+  import PlusIcon from "@lucide/svelte/icons/plus";
+  import FrameIcon from "@lucide/svelte/icons/frame";
+  import ChartPieIcon from "@lucide/svelte/icons/chart-pie";
+  import MapIcon from "@lucide/svelte/icons/map";
 </script>
 
 <Sidebar.Provider>
-	
-	<Sidebar.Root>
-		<Sidebar.Content>
-			<Sidebar.Group>
-				<Sidebar.GroupLabel>Projects</Sidebar.GroupLabel>
-				<Sidebar.GroupAction
-					title="Add Project"
-					onclick={() => void ("You clicked the group action!")}
-				>
-					<PlusIcon /> <span class="sr-only">Add Project</span>
-				</Sidebar.GroupAction>
-				<Sidebar.GroupContent>
-					<Sidebar.Menu>
-						<Sidebar.MenuItem>
-							<Sidebar.MenuButton>
-								{#snippet child({ props })}
-									<a href="##" {...props}>
-										<FrameIcon />
-										<span>Design Engineering</span>
-									</a>
-								{/snippet}
-							</Sidebar.MenuButton>
-						</Sidebar.MenuItem>
-						<Sidebar.MenuItem>
-							<Sidebar.MenuButton>
-								{#snippet child({ props })}
-									<a href="##" {...props}>
-										<ChartPieIcon />
-										<span>Sales & Marketing</span>
-									</a>
-								{/snippet}
-							</Sidebar.MenuButton>
-						</Sidebar.MenuItem>
-						<Sidebar.MenuItem>
-							<Sidebar.MenuButton>
-								{#snippet child({ props })}
-									<a href="##" {...props}>
-										<MapIcon />
-										<span>Travel</span>
-									</a>
-								{/snippet}
-							</Sidebar.MenuButton>
-						</Sidebar.MenuItem>
-					</Sidebar.Menu>
-				</Sidebar.GroupContent>
-			</Sidebar.Group>
-		</Sidebar.Content>
-	</Sidebar.Root>
+  <Sidebar.Root>
+    <Sidebar.Content>
+      <Sidebar.Group>
+        <Sidebar.GroupLabel>Projects</Sidebar.GroupLabel>
+        <Sidebar.GroupAction title="Add Project" onclick="{()" ="">
+          void ("You clicked the group action!")} > <PlusIcon />
+          <span class="sr-only">Add Project</span>
+        </Sidebar.GroupAction>
+        <Sidebar.GroupContent>
+          <Sidebar.Menu>
+            <Sidebar.MenuItem>
+              <Sidebar.MenuButton>
+                {#snippet child({ props })}
+                <a href="##" {...props}>
+                  <FrameIcon />
+                  <span>Design Engineering</span>
+                </a>
+                {/snippet}
+              </Sidebar.MenuButton>
+            </Sidebar.MenuItem>
+            <Sidebar.MenuItem>
+              <Sidebar.MenuButton>
+                {#snippet child({ props })}
+                <a href="##" {...props}>
+                  <ChartPieIcon />
+                  <span>Sales & Marketing</span>
+                </a>
+                {/snippet}
+              </Sidebar.MenuButton>
+            </Sidebar.MenuItem>
+            <Sidebar.MenuItem>
+              <Sidebar.MenuButton>
+                {#snippet child({ props })}
+                <a href="##" {...props}>
+                  <MapIcon />
+                  <span>Travel</span>
+                </a>
+                {/snippet}
+              </Sidebar.MenuButton>
+            </Sidebar.MenuItem>
+          </Sidebar.Menu>
+        </Sidebar.GroupContent>
+      </Sidebar.Group>
+    </Sidebar.Content>
+  </Sidebar.Root>
 </Sidebar.Provider>
 ```
 
@@ -771,65 +767,65 @@ Here's an example of a `Sidebar.Menu` component rendering a list of projects.
 
 ```html
 <script lang="ts">
-	import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
-	import LifeBuoyIcon from "@lucide/svelte/icons/life-buoy";
-	import SendIcon from "@lucide/svelte/icons/send";
-	import FrameIcon from "@lucide/svelte/icons/frame";
-	import ChartPieIcon from "@lucide/svelte/icons/chart-pie";
-	import MapIcon from "@lucide/svelte/icons/map";
-	const projects = [
-		{
-			name: "Design Engineering",
-			url: "#",
-			icon: FrameIcon,
-		},
-		{
-			name: "Sales & Marketing",
-			url: "#",
-			icon: ChartPieIcon,
-		},
-		{
-			name: "Travel",
-			url: "#",
-			icon: MapIcon,
-		},
-		{
-			name: "Support",
-			url: "#",
-			icon: LifeBuoyIcon,
-		},
-		{
-			name: "Feedback",
-			url: "#",
-			icon: SendIcon,
-		},
-	];
+  import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
+  import LifeBuoyIcon from "@lucide/svelte/icons/life-buoy";
+  import SendIcon from "@lucide/svelte/icons/send";
+  import FrameIcon from "@lucide/svelte/icons/frame";
+  import ChartPieIcon from "@lucide/svelte/icons/chart-pie";
+  import MapIcon from "@lucide/svelte/icons/map";
+  const projects = [
+    {
+      name: "Design Engineering",
+      url: "#",
+      icon: FrameIcon,
+    },
+    {
+      name: "Sales & Marketing",
+      url: "#",
+      icon: ChartPieIcon,
+    },
+    {
+      name: "Travel",
+      url: "#",
+      icon: MapIcon,
+    },
+    {
+      name: "Support",
+      url: "#",
+      icon: LifeBuoyIcon,
+    },
+    {
+      name: "Feedback",
+      url: "#",
+      icon: SendIcon,
+    },
+  ];
 </script>
 
 <Sidebar.Provider>
-	<Sidebar.Root>
-		<Sidebar.Content>
-			<Sidebar.Group>
-				<Sidebar.GroupLabel>Projects</Sidebar.GroupLabel>
-				<Sidebar.GroupContent>
-					<Sidebar.Menu>
-						{#each projects as project (project.name)}
-							<Sidebar.MenuItem>
-								<Sidebar.MenuButton>
-									{#snippet child({ props })}
-										<a href={project.url} {...props}>
-											<project.icon />
-											<span>{project.name}</span>
-										</a>
-									{/snippet}
-								</Sidebar.MenuButton>
-							</Sidebar.MenuItem>
-						{/each}
-					</Sidebar.Menu>
-				</Sidebar.GroupContent>
-			</Sidebar.Group>
-		</Sidebar.Content>
-	</Sidebar.Root>
+  <Sidebar.Root>
+    <Sidebar.Content>
+      <Sidebar.Group>
+        <Sidebar.GroupLabel>Projects</Sidebar.GroupLabel>
+        <Sidebar.GroupContent>
+          <Sidebar.Menu>
+            {#each projects as project (project.name)}
+            <Sidebar.MenuItem>
+              <Sidebar.MenuButton>
+                {#snippet child({ props })}
+                <a href="{project.url}" {...props}>
+                  <project.icon />
+                  <span>{project.name}</span>
+                </a>
+                {/snippet}
+              </Sidebar.MenuButton>
+            </Sidebar.MenuItem>
+            {/each}
+          </Sidebar.Menu>
+        </Sidebar.GroupContent>
+      </Sidebar.Group>
+    </Sidebar.Content>
+  </Sidebar.Root>
 </Sidebar.Provider>
 ```
 
@@ -844,7 +840,7 @@ By default, the `Sidebar.MenuButton` renders a button, but you can use the `chil
 ```html
 <Sidebar.MenuButton>
   {#snippet child({ props })}
-    <a href="/home" {...props}> Home </a>
+  <a href="/home" {...props}> Home </a>
   {/snippet}
 </Sidebar.MenuButton>
 ```
@@ -856,10 +852,10 @@ You can render an icon and a truncated label inside the button. Remember to wrap
 ```html
 <Sidebar.MenuButton>
   {#snippet child({ props })}
-    <a href="/home" {...props}>
-      <House />
-      <span>Home</span>
-    </a>
+  <a href="/home" {...props}>
+    <House />
+    <span>Home</span>
+  </a>
   {/snippet}
 </Sidebar.MenuButton>
 ```
@@ -871,10 +867,10 @@ Use the `isActive` prop to mark a menu item as active.
 ```html
 <Sidebar.MenuButton isActive>
   {#snippet child({ props })}
-    <a href="/home" {...props}>
-      <House />
-      <span>Home</span>
-    </a>
+  <a href="/home" {...props}>
+    <House />
+    <span>Home</span>
+  </a>
   {/snippet}
 </Sidebar.MenuButton>
 ```
@@ -889,10 +885,10 @@ This button works independently of the `Sidebar.MenuButton`, i.e. you can have t
 <Sidebar.MenuItem>
   <Sidebar.MenuButton>
     {#snippet child({ props })}
-      <a href="/home" {...props}>
-        <House />
-        <span>Home</span>
-      </a>
+    <a href="/home" {...props}>
+      <House />
+      <span>Home</span>
+    </a>
     {/snippet}
   </Sidebar.MenuButton>
   <Sidebar.MenuAction>
@@ -907,88 +903,88 @@ Here's an example of a `Sidebar.MenuAction` that renders a `DropdownMenu`.
 
 ```html
 <script lang="ts">
-	import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
-	import * as DropdownMenu from "@stevejuma/ui/shadcn/dropdown-menu";
-	import EllipsisIcon from "@lucide/svelte/icons/ellipsis";
-	import LifeBuoyIcon from "@lucide/svelte/icons/life-buoy";
-	import SendIcon from "@lucide/svelte/icons/send";
-	import FrameIcon from "@lucide/svelte/icons/frame";
-	import ChartPieIcon from "@lucide/svelte/icons/chart-pie";
-	import MapIcon from "@lucide/svelte/icons/map";
+  import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
+  import * as DropdownMenu from "@stevejuma/ui/shadcn/dropdown-menu";
+  import EllipsisIcon from "@lucide/svelte/icons/ellipsis";
+  import LifeBuoyIcon from "@lucide/svelte/icons/life-buoy";
+  import SendIcon from "@lucide/svelte/icons/send";
+  import FrameIcon from "@lucide/svelte/icons/frame";
+  import ChartPieIcon from "@lucide/svelte/icons/chart-pie";
+  import MapIcon from "@lucide/svelte/icons/map";
 
-	const projects = [
-		{
-			name: "Design Engineering",
-			url: "#",
-			icon: FrameIcon,
-		},
-		{
-			name: "Sales & Marketing",
-			url: "#",
-			icon: ChartPieIcon,
-		},
-		{
-			name: "Travel",
-			url: "#",
-			icon: MapIcon,
-		},
-		{
-			name: "Support",
-			url: "#",
-			icon: LifeBuoyIcon,
-		},
-		{
-			name: "Feedback",
-			url: "#",
-			icon: SendIcon,
-		},
-	];
+  const projects = [
+    {
+      name: "Design Engineering",
+      url: "#",
+      icon: FrameIcon,
+    },
+    {
+      name: "Sales & Marketing",
+      url: "#",
+      icon: ChartPieIcon,
+    },
+    {
+      name: "Travel",
+      url: "#",
+      icon: MapIcon,
+    },
+    {
+      name: "Support",
+      url: "#",
+      icon: LifeBuoyIcon,
+    },
+    {
+      name: "Feedback",
+      url: "#",
+      icon: SendIcon,
+    },
+  ];
 </script>
 
 <Sidebar.Provider>
-	<Sidebar.Root>
-		<Sidebar.Content>
-			<Sidebar.Group>
-				<Sidebar.GroupLabel>Projects</Sidebar.GroupLabel>
-				<Sidebar.GroupContent>
-					<Sidebar.Menu>
-						{#each projects as project (project.name)}
-							<Sidebar.MenuItem>
-								<Sidebar.MenuButton
-									class="group-has-[[data-state=open]]/menu-item:bg-sidebar-accent"
-								>
-									{#snippet child({ props })}
-										<a href={project.url} {...props}>
-											<project.icon />
-											<span>{project.name}</span>
-										</a>
-									{/snippet}
-								</Sidebar.MenuButton>
-								<DropdownMenu.Root>
-									<DropdownMenu.Trigger>
-										{#snippet child({ props })}
-											<Sidebar.MenuAction {...props}>
-												<EllipsisIcon />
-												<span class="sr-only">More</span>
-											</Sidebar.MenuAction>
-										{/snippet}
-									</DropdownMenu.Trigger>
-									<DropdownMenu.Content side="right" align="start">
-										<DropdownMenu.Item>
-											<span>Edit Project</span>
-										</DropdownMenu.Item>
-										<DropdownMenu.Item>
-											<span>Delete Project</span>
-										</DropdownMenu.Item>
-									</DropdownMenu.Content>
-								</DropdownMenu.Root>
-							</Sidebar.MenuItem>
-						{/each}
-					</Sidebar.Menu>
-				</Sidebar.GroupContent>
-			</Sidebar.Group>
-		</Sidebar.Content>
-	</Sidebar.Root>
+  <Sidebar.Root>
+    <Sidebar.Content>
+      <Sidebar.Group>
+        <Sidebar.GroupLabel>Projects</Sidebar.GroupLabel>
+        <Sidebar.GroupContent>
+          <Sidebar.Menu>
+            {#each projects as project (project.name)}
+            <Sidebar.MenuItem>
+              <Sidebar.MenuButton
+                class="group-has-[[data-state=open]]/menu-item:bg-sidebar-accent"
+              >
+                {#snippet child({ props })}
+                <a href="{project.url}" {...props}>
+                  <project.icon />
+                  <span>{project.name}</span>
+                </a>
+                {/snippet}
+              </Sidebar.MenuButton>
+              <DropdownMenu.Root>
+                <DropdownMenu.Trigger>
+                  {#snippet child({ props })}
+                  <Sidebar.MenuAction {...props}>
+                    <EllipsisIcon />
+                    <span class="sr-only">More</span>
+                  </Sidebar.MenuAction>
+                  {/snippet}
+                </DropdownMenu.Trigger>
+                <DropdownMenu.Content side="right" align="start">
+                  <DropdownMenu.Item>
+                    <span>Edit Project</span>
+                  </DropdownMenu.Item>
+                  <DropdownMenu.Item>
+                    <span>Delete Project</span>
+                  </DropdownMenu.Item>
+                </DropdownMenu.Content>
+              </DropdownMenu.Root>
+            </Sidebar.MenuItem>
+            {/each}
+          </Sidebar.Menu>
+        </Sidebar.GroupContent>
+      </Sidebar.Group>
+    </Sidebar.Content>
+  </Sidebar.Root>
 </Sidebar.Provider>
 ```
 
@@ -1000,172 +996,172 @@ Use `Sidebar.MenuSubItem` and `Sidebar.MenuSubButton` to render a submenu item.
 
 ```html
 <script lang="ts">
-	import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
+  import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
 
-	const items = [
-		{
-			title: "Getting Started",
-			url: "#",
-			items: [
-				{
-					title: "Installation",
-					url: "#",
-				},
-				{
-					title: "Project Structure",
-					url: "#",
-				},
-			],
-		},
-		{
-			title: "Build Your Application",
-			url: "#",
-			items: [
-				{
-					title: "Routing",
-					url: "#",
-				},
-				{
-					title: "Data Fetching",
-					url: "#",
-					isActive: true,
-				},
-				{
-					title: "Rendering",
-					url: "#",
-				},
-				{
-					title: "Caching",
-					url: "#",
-				},
-				{
-					title: "Styling",
-					url: "#",
-				},
-				{
-					title: "Optimizing",
-					url: "#",
-				},
-				{
-					title: "Configuring",
-					url: "#",
-				},
-				{
-					title: "Testing",
-					url: "#",
-				},
-				{
-					title: "Authentication",
-					url: "#",
-				},
-				{
-					title: "Deploying",
-					url: "#",
-				},
-				{
-					title: "Upgrading",
-					url: "#",
-				},
-				{
-					title: "Examples",
-					url: "#",
-				},
-			],
-		},
-		{
-			title: "API Reference",
-			url: "#",
-			items: [
-				{
-					title: "Components",
-					url: "#",
-				},
-				{
-					title: "File Conventions",
-					url: "#",
-				},
-				{
-					title: "Functions",
-					url: "#",
-				},
-				{
-					title: "next.config.js Options",
-					url: "#",
-				},
-				{
-					title: "CLI",
-					url: "#",
-				},
-				{
-					title: "Edge Runtime",
-					url: "#",
-				},
-			],
-		},
-		{
-			title: "Architecture",
-			url: "#",
-			items: [
-				{
-					title: "Accessibility",
-					url: "#",
-				},
-				{
-					title: "Fast Refresh",
-					url: "#",
-				},
-				{
-					title: "Next.js Compiler",
-					url: "#",
-				},
-				{
-					title: "Supported Browsers",
-					url: "#",
-				},
-				{
-					title: "Turbopack",
-					url: "#",
-				},
-			],
-		},
-	];
+  const items = [
+    {
+      title: "Getting Started",
+      url: "#",
+      items: [
+        {
+          title: "Installation",
+          url: "#",
+        },
+        {
+          title: "Project Structure",
+          url: "#",
+        },
+      ],
+    },
+    {
+      title: "Build Your Application",
+      url: "#",
+      items: [
+        {
+          title: "Routing",
+          url: "#",
+        },
+        {
+          title: "Data Fetching",
+          url: "#",
+          isActive: true,
+        },
+        {
+          title: "Rendering",
+          url: "#",
+        },
+        {
+          title: "Caching",
+          url: "#",
+        },
+        {
+          title: "Styling",
+          url: "#",
+        },
+        {
+          title: "Optimizing",
+          url: "#",
+        },
+        {
+          title: "Configuring",
+          url: "#",
+        },
+        {
+          title: "Testing",
+          url: "#",
+        },
+        {
+          title: "Authentication",
+          url: "#",
+        },
+        {
+          title: "Deploying",
+          url: "#",
+        },
+        {
+          title: "Upgrading",
+          url: "#",
+        },
+        {
+          title: "Examples",
+          url: "#",
+        },
+      ],
+    },
+    {
+      title: "API Reference",
+      url: "#",
+      items: [
+        {
+          title: "Components",
+          url: "#",
+        },
+        {
+          title: "File Conventions",
+          url: "#",
+        },
+        {
+          title: "Functions",
+          url: "#",
+        },
+        {
+          title: "next.config.js Options",
+          url: "#",
+        },
+        {
+          title: "CLI",
+          url: "#",
+        },
+        {
+          title: "Edge Runtime",
+          url: "#",
+        },
+      ],
+    },
+    {
+      title: "Architecture",
+      url: "#",
+      items: [
+        {
+          title: "Accessibility",
+          url: "#",
+        },
+        {
+          title: "Fast Refresh",
+          url: "#",
+        },
+        {
+          title: "Next.js Compiler",
+          url: "#",
+        },
+        {
+          title: "Supported Browsers",
+          url: "#",
+        },
+        {
+          title: "Turbopack",
+          url: "#",
+        },
+      ],
+    },
+  ];
 </script>
 
 <Sidebar.Provider>
-	<Sidebar.Root>
-		<Sidebar.Content>
-			<Sidebar.Group>
-				<Sidebar.GroupContent>
-					<Sidebar.Menu>
-						{#each items as item, index (index)}
-							<Sidebar.MenuItem>
-								<Sidebar.MenuButton>
-									{#snippet child({ props })}
-										<a href={item.url} {...props}>
-											<span>{item.title}</span>
-										</a>
-									{/snippet}
-								</Sidebar.MenuButton>
-								<Sidebar.MenuSub>
-									{#each item.items as subItem, subIndex (subIndex)}
-										<Sidebar.MenuSubItem>
-											<Sidebar.MenuSubButton>
-												{#snippet child({ props })}
-													<a href={subItem.url} {...props}>
-														<span>{subItem.title}</span>
-													</a>
-												{/snippet}
-											</Sidebar.MenuSubButton>
-										</Sidebar.MenuSubItem>
-									{/each}
-								</Sidebar.MenuSub>
-							</Sidebar.MenuItem>
-						{/each}
-					</Sidebar.Menu>
-				</Sidebar.GroupContent>
-			</Sidebar.Group>
-		</Sidebar.Content>
-	</Sidebar.Root>
+  <Sidebar.Root>
+    <Sidebar.Content>
+      <Sidebar.Group>
+        <Sidebar.GroupContent>
+          <Sidebar.Menu>
+            {#each items as item, index (index)}
+            <Sidebar.MenuItem>
+              <Sidebar.MenuButton>
+                {#snippet child({ props })}
+                <a href="{item.url}" {...props}>
+                  <span>{item.title}</span>
+                </a>
+                {/snippet}
+              </Sidebar.MenuButton>
+              <Sidebar.MenuSub>
+                {#each item.items as subItem, subIndex (subIndex)}
+                <Sidebar.MenuSubItem>
+                  <Sidebar.MenuSubButton>
+                    {#snippet child({ props })}
+                    <a href="{subItem.url}" {...props}>
+                      <span>{subItem.title}</span>
+                    </a>
+                    {/snippet}
+                  </Sidebar.MenuSubButton>
+                </Sidebar.MenuSubItem>
+                {/each}
+              </Sidebar.MenuSub>
+            </Sidebar.MenuItem>
+            {/each}
+          </Sidebar.Menu>
+        </Sidebar.GroupContent>
+      </Sidebar.Group>
+    </Sidebar.Content>
+  </Sidebar.Root>
 </Sidebar.Provider>
 ```
 
@@ -1175,181 +1171,187 @@ To make a `Sidebar.Menu` collapsible, wrap it and the `Sidebar.MenuSub` componen
 
 ```html
 <script lang="ts">
-	import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
-	import * as Collapsible from "@stevejuma/ui/shadcn/collapsible";
-	import ChevronRightIcon from "@lucide/svelte/icons/chevron-right";
+  import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
+  import * as Collapsible from "@stevejuma/ui/shadcn/collapsible";
+  import ChevronRightIcon from "@lucide/svelte/icons/chevron-right";
 
-	const items = [
-		{
-			title: "Getting Started",
-			url: "#",
-			items: [
-				{
-					title: "Installation",
-					url: "#",
-				},
-				{
-					title: "Project Structure",
-					url: "#",
-				},
-			],
-		},
-		{
-			title: "Build Your Application",
-			url: "#",
-			items: [
-				{
-					title: "Routing",
-					url: "#",
-				},
-				{
-					title: "Data Fetching",
-					url: "#",
-					isActive: true,
-				},
-				{
-					title: "Rendering",
-					url: "#",
-				},
-				{
-					title: "Caching",
-					url: "#",
-				},
-				{
-					title: "Styling",
-					url: "#",
-				},
-				{
-					title: "Optimizing",
-					url: "#",
-				},
-				{
-					title: "Configuring",
-					url: "#",
-				},
-				{
-					title: "Testing",
-					url: "#",
-				},
-				{
-					title: "Authentication",
-					url: "#",
-				},
-				{
-					title: "Deploying",
-					url: "#",
-				},
-				{
-					title: "Upgrading",
-					url: "#",
-				},
-				{
-					title: "Examples",
-					url: "#",
-				},
-			],
-		},
-		{
-			title: "API Reference",
-			url: "#",
-			items: [
-				{
-					title: "Components",
-					url: "#",
-				},
-				{
-					title: "File Conventions",
-					url: "#",
-				},
-				{
-					title: "Functions",
-					url: "#",
-				},
-				{
-					title: "next.config.js Options",
-					url: "#",
-				},
-				{
-					title: "CLI",
-					url: "#",
-				},
-				{
-					title: "Edge Runtime",
-					url: "#",
-				},
-			],
-		},
-		{
-			title: "Architecture",
-			url: "#",
-			items: [
-				{
-					title: "Accessibility",
-					url: "#",
-				},
-				{
-					title: "Fast Refresh",
-					url: "#",
-				},
-				{
-					title: "Next.js Compiler",
-					url: "#",
-				},
-				{
-					title: "Supported Browsers",
-					url: "#",
-				},
-				{
-					title: "Turbopack",
-					url: "#",
-				},
-			],
-		},
-	];
+  const items = [
+    {
+      title: "Getting Started",
+      url: "#",
+      items: [
+        {
+          title: "Installation",
+          url: "#",
+        },
+        {
+          title: "Project Structure",
+          url: "#",
+        },
+      ],
+    },
+    {
+      title: "Build Your Application",
+      url: "#",
+      items: [
+        {
+          title: "Routing",
+          url: "#",
+        },
+        {
+          title: "Data Fetching",
+          url: "#",
+          isActive: true,
+        },
+        {
+          title: "Rendering",
+          url: "#",
+        },
+        {
+          title: "Caching",
+          url: "#",
+        },
+        {
+          title: "Styling",
+          url: "#",
+        },
+        {
+          title: "Optimizing",
+          url: "#",
+        },
+        {
+          title: "Configuring",
+          url: "#",
+        },
+        {
+          title: "Testing",
+          url: "#",
+        },
+        {
+          title: "Authentication",
+          url: "#",
+        },
+        {
+          title: "Deploying",
+          url: "#",
+        },
+        {
+          title: "Upgrading",
+          url: "#",
+        },
+        {
+          title: "Examples",
+          url: "#",
+        },
+      ],
+    },
+    {
+      title: "API Reference",
+      url: "#",
+      items: [
+        {
+          title: "Components",
+          url: "#",
+        },
+        {
+          title: "File Conventions",
+          url: "#",
+        },
+        {
+          title: "Functions",
+          url: "#",
+        },
+        {
+          title: "next.config.js Options",
+          url: "#",
+        },
+        {
+          title: "CLI",
+          url: "#",
+        },
+        {
+          title: "Edge Runtime",
+          url: "#",
+        },
+      ],
+    },
+    {
+      title: "Architecture",
+      url: "#",
+      items: [
+        {
+          title: "Accessibility",
+          url: "#",
+        },
+        {
+          title: "Fast Refresh",
+          url: "#",
+        },
+        {
+          title: "Next.js Compiler",
+          url: "#",
+        },
+        {
+          title: "Supported Browsers",
+          url: "#",
+        },
+        {
+          title: "Turbopack",
+          url: "#",
+        },
+      ],
+    },
+  ];
 </script>
 
 <Sidebar.Provider>
-	<Sidebar.Root>
-		<Sidebar.Content>
-			<Sidebar.Group>
-				<Sidebar.GroupContent>
-					<Sidebar.Menu>
-						{#each items as item, index (index)}
-							<Collapsible.Root class="group/collapsible" open={index === 0}>
-								<Sidebar.MenuItem>
-									<Collapsible.Trigger>
-										{#snippet child({ props })}
-											<Sidebar.MenuButton {...props}>
-												<span>{item.title}</span>
-												<ChevronRightIcon
-													class="ms-auto transition-transform group-data-[state=open]/collapsible:rotate-90"
-												/>
-											</Sidebar.MenuButton>
-										{/snippet}
-									</Collapsible.Trigger>
-									<Collapsible.Content>
-										<Sidebar.MenuSub>
-											{#each item.items as subItem, subIndex (subIndex)}
-												<Sidebar.MenuSubItem>
-													<Sidebar.MenuSubButton>
-														{#snippet child({ props })}
-															<a href={subItem.url} {...props}>
-																<span>{subItem.title}</span>
-															</a>
-														{/snippet}
-													</Sidebar.MenuSubButton>
-												</Sidebar.MenuSubItem>
-											{/each}
-										</Sidebar.MenuSub>
-									</Collapsible.Content>
-								</Sidebar.MenuItem>
-							</Collapsible.Root>
-						{/each}
-					</Sidebar.Menu>
-				</Sidebar.GroupContent>
-			</Sidebar.Group>
-		</Sidebar.Content>
-	</Sidebar.Root>
+  <Sidebar.Root>
+    <Sidebar.Content>
+      <Sidebar.Group>
+        <Sidebar.GroupContent>
+          <Sidebar.Menu>
+            {#each items as item, index (index)}
+            <Collapsible.Root
+              class="group/collapsible"
+              open="{index"
+              =""
+              =""
+              ="0}"
+            >
+              <Sidebar.MenuItem>
+                <Collapsible.Trigger>
+                  {#snippet child({ props })}
+                  <Sidebar.MenuButton {...props}>
+                    <span>{item.title}</span>
+                    <ChevronRightIcon
+                      class="ms-auto transition-transform group-data-[state=open]/collapsible:rotate-90"
+                    />
+                  </Sidebar.MenuButton>
+                  {/snippet}
+                </Collapsible.Trigger>
+                <Collapsible.Content>
+                  <Sidebar.MenuSub>
+                    {#each item.items as subItem, subIndex (subIndex)}
+                    <Sidebar.MenuSubItem>
+                      <Sidebar.MenuSubButton>
+                        {#snippet child({ props })}
+                        <a href="{subItem.url}" {...props}>
+                          <span>{subItem.title}</span>
+                        </a>
+                        {/snippet}
+                      </Sidebar.MenuSubButton>
+                    </Sidebar.MenuSubItem>
+                    {/each}
+                  </Sidebar.MenuSub>
+                </Collapsible.Content>
+              </Sidebar.MenuItem>
+            </Collapsible.Root>
+            {/each}
+          </Sidebar.Menu>
+        </Sidebar.GroupContent>
+      </Sidebar.Group>
+    </Sidebar.Content>
+  </Sidebar.Root>
 </Sidebar.Provider>
 ```
 
@@ -1359,74 +1361,74 @@ The `Sidebar.MenuBadge` component is used to render a badge within a `Sidebar.Me
 
 ```html
 <script lang="ts">
-	import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
-	import LifeBuoyIcon from "@lucide/svelte/icons/life-buoy";
-	import SendIcon from "@lucide/svelte/icons/send";
-	import FrameIcon from "@lucide/svelte/icons/frame";
-	import ChartPieIcon from "@lucide/svelte/icons/chart-pie";
-	import MapIcon from "@lucide/svelte/icons/map";
+  import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
+  import LifeBuoyIcon from "@lucide/svelte/icons/life-buoy";
+  import SendIcon from "@lucide/svelte/icons/send";
+  import FrameIcon from "@lucide/svelte/icons/frame";
+  import ChartPieIcon from "@lucide/svelte/icons/chart-pie";
+  import MapIcon from "@lucide/svelte/icons/map";
 
-	const projects = [
-		{
-			name: "Design Engineering",
-			url: "#",
-			icon: FrameIcon,
-			badge: "24",
-		},
-		{
-			name: "Sales & Marketing",
-			url: "#",
-			icon: ChartPieIcon,
-			badge: "12",
-		},
-		{
-			name: "Travel",
-			url: "#",
-			icon: MapIcon,
-			badge: "3",
-		},
-		{
-			name: "Support",
-			url: "#",
-			icon: LifeBuoyIcon,
-			badge: "21",
-		},
-		{
-			name: "Feedback",
-			url: "#",
-			icon: SendIcon,
-			badge: "8",
-		},
-	];
+  const projects = [
+    {
+      name: "Design Engineering",
+      url: "#",
+      icon: FrameIcon,
+      badge: "24",
+    },
+    {
+      name: "Sales & Marketing",
+      url: "#",
+      icon: ChartPieIcon,
+      badge: "12",
+    },
+    {
+      name: "Travel",
+      url: "#",
+      icon: MapIcon,
+      badge: "3",
+    },
+    {
+      name: "Support",
+      url: "#",
+      icon: LifeBuoyIcon,
+      badge: "21",
+    },
+    {
+      name: "Feedback",
+      url: "#",
+      icon: SendIcon,
+      badge: "8",
+    },
+  ];
 </script>
 
 <Sidebar.Provider>
-	<Sidebar.Root>
-		<Sidebar.Content>
-			<Sidebar.Group>
-				<Sidebar.GroupLabel>Projects</Sidebar.GroupLabel>
-				<Sidebar.GroupContent>
-					<Sidebar.Menu>
-						{#each projects as project (project.name)}
-							<Sidebar.MenuItem>
-								<Sidebar.MenuButton
-									class="group-has-[[data-state=open]]/menu-item:bg-sidebar-accent"
-								>
-									{#snippet child({ props })}
-										<a href={project.url} {...props}>
-											<project.icon />
-											<span>{project.name}</span>
-										</a>
-									{/snippet}
-								</Sidebar.MenuButton>
-								<Sidebar.MenuBadge>{project.badge}</Sidebar.MenuBadge>
-							</Sidebar.MenuItem>
-						{/each}
-					</Sidebar.Menu>
-				</Sidebar.GroupContent>
-			</Sidebar.Group>
-		</Sidebar.Content>
-	</Sidebar.Root>
+  <Sidebar.Root>
+    <Sidebar.Content>
+      <Sidebar.Group>
+        <Sidebar.GroupLabel>Projects</Sidebar.GroupLabel>
+        <Sidebar.GroupContent>
+          <Sidebar.Menu>
+            {#each projects as project (project.name)}
+            <Sidebar.MenuItem>
+              <Sidebar.MenuButton
+                class="group-has-[[data-state=open]]/menu-item:bg-sidebar-accent"
+              >
+                {#snippet child({ props })}
+                <a href="{project.url}" {...props}>
+                  <project.icon />
+                  <span>{project.name}</span>
+                </a>
+                {/snippet}
+              </Sidebar.MenuButton>
+              <Sidebar.MenuBadge>{project.badge}</Sidebar.MenuBadge>
+            </Sidebar.MenuItem>
+            {/each}
+          </Sidebar.Menu>
+        </Sidebar.GroupContent>
+      </Sidebar.Group>
+    </Sidebar.Content>
+  </Sidebar.Root>
 </Sidebar.Provider>
 ```
 
@@ -1437,9 +1439,9 @@ The `Sidebar.MenuSkeleton` component is used to render a skeleton within a `Side
 ```html
 <Sidebar.Menu>
   {#each Array.from({ length: 5 }) as _, index (index)}
-    <Sidebar.MenuItem>
-      <Sidebar.MenuSkeleton />
-    </Sidebar.MenuItem>
+  <Sidebar.MenuItem>
+    <Sidebar.MenuSkeleton />
+  </Sidebar.MenuItem>
   {/each}
 </Sidebar.Menu>
 ```
@@ -1485,7 +1487,7 @@ To create a custom trigger, you can use the `useSidebar` hook.
   const sidebar = useSidebar();
 </script>
 
-<button onclick={() => sidebar.toggle()}>Toggle Sidebar</button>
+<button onclick="{()" ="">sidebar.toggle()}>Toggle Sidebar</button>
 ```
 
 ## Sidebar.Rail
@@ -1509,83 +1511,84 @@ Use Svelte's [Function Binding](https://svelte.dev/docs/svelte/bind#Function-bin
 
 ```html
 <script lang="ts">
-	import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
-	import { Button } from "@stevejuma/ui/shadcn/button";
-	import PanelLeftOpenIcon from "@lucide/svelte/icons/panel-left-open";
-	import PanelLeftCloseIcon from "@lucide/svelte/icons/panel-left-close";
-	import LifeBuoyIcon from "@lucide/svelte/icons/life-buoy";
-	import SendIcon from "@lucide/svelte/icons/send";
-	import FrameIcon from "@lucide/svelte/icons/frame";
-	import ChartPieIcon from "@lucide/svelte/icons/chart-pie";
-	import MapIcon from "@lucide/svelte/icons/map";
+  import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
+  import { Button } from "@stevejuma/ui/shadcn/button";
+  import PanelLeftOpenIcon from "@lucide/svelte/icons/panel-left-open";
+  import PanelLeftCloseIcon from "@lucide/svelte/icons/panel-left-close";
+  import LifeBuoyIcon from "@lucide/svelte/icons/life-buoy";
+  import SendIcon from "@lucide/svelte/icons/send";
+  import FrameIcon from "@lucide/svelte/icons/frame";
+  import ChartPieIcon from "@lucide/svelte/icons/chart-pie";
+  import MapIcon from "@lucide/svelte/icons/map";
 
-	const projects = [
-		{
-			name: "Design Engineering",
-			url: "#",
-			icon: FrameIcon,
-		},
-		{
-			name: "Sales & Marketing",
-			url: "#",
-			icon: ChartPieIcon,
-		},
-		{
-			name: "Travel",
-			url: "#",
-			icon: MapIcon,
-		},
-		{
-			name: "Support",
-			url: "#",
-			icon: LifeBuoyIcon,
-		},
-		{
-			name: "Feedback",
-			url: "#",
-			icon: SendIcon,
-		},
-	];
+  const projects = [
+    {
+      name: "Design Engineering",
+      url: "#",
+      icon: FrameIcon,
+    },
+    {
+      name: "Sales & Marketing",
+      url: "#",
+      icon: ChartPieIcon,
+    },
+    {
+      name: "Travel",
+      url: "#",
+      icon: MapIcon,
+    },
+    {
+      name: "Support",
+      url: "#",
+      icon: LifeBuoyIcon,
+    },
+    {
+      name: "Feedback",
+      url: "#",
+      icon: SendIcon,
+    },
+  ];
 
-	let open = $state(true);
+  let open = $state(true);
 </script>
 
-<Sidebar.Provider bind:open={() => open, (v) => (open = v)}>
-	<Sidebar.Root>
-		<Sidebar.Content>
-			<Sidebar.Group>
-				<Sidebar.GroupLabel>Projects</Sidebar.GroupLabel>
-				<Sidebar.GroupContent>
-					<Sidebar.Menu>
-						{#each projects as project (project.name)}
-							<Sidebar.MenuItem>
-								<Sidebar.MenuButton>
-									{#snippet child({ props })}
-										<a href={project.url} {...props}>
-											<project.icon />
-											<span>{project.name}</span>
-										</a>
-									{/snippet}
-								</Sidebar.MenuButton>
-							</Sidebar.MenuItem>
-						{/each}
-					</Sidebar.Menu>
-				</Sidebar.GroupContent>
-			</Sidebar.Group>
-		</Sidebar.Content>
-	</Sidebar.Root>
-	<Sidebar.Inset>
-		<header class="flex h-12 items-center justify-between px-4">
-			<Button onclick={() => (open = !open)} size="sm" variant="ghost">
-				{#if open}
-					<PanelLeftCloseIcon />
-				{:else}
-					<PanelLeftOpenIcon />
-				{/if}
-				<span>{open ? "Close" : "Open"} Sidebar</span>
-			</Button>
-		</header>
-	</Sidebar.Inset>
+<Sidebar.Provider bind:open="{()" ="">
+  open, (v) => (open = v)}>
+  <Sidebar.Root>
+    <Sidebar.Content>
+      <Sidebar.Group>
+        <Sidebar.GroupLabel>Projects</Sidebar.GroupLabel>
+        <Sidebar.GroupContent>
+          <Sidebar.Menu>
+            {#each projects as project (project.name)}
+            <Sidebar.MenuItem>
+              <Sidebar.MenuButton>
+                {#snippet child({ props })}
+                <a href="{project.url}" {...props}>
+                  <project.icon />
+                  <span>{project.name}</span>
+                </a>
+                {/snippet}
+              </Sidebar.MenuButton>
+            </Sidebar.MenuItem>
+            {/each}
+          </Sidebar.Menu>
+        </Sidebar.GroupContent>
+      </Sidebar.Group>
+    </Sidebar.Content>
+  </Sidebar.Root>
+  <Sidebar.Inset>
+    <header class="flex h-12 items-center justify-between px-4">
+      <button onclick="{()" ="">
+        (open = !open)} size="sm" variant="ghost"> {#if open}
+        <PanelLeftCloseIcon />
+        {:else}
+        <PanelLeftOpenIcon />
+        {/if}
+        <span>{open ? "Close" : "Open"} Sidebar</span>
+      </button>
+    </header>
+  </Sidebar.Inset>
 </Sidebar.Provider>
 ```
 
@@ -1638,9 +1641,7 @@ Here are some tips for styling the sidebar based on different states.
 ```html
 <Sidebar.MenuItem>
   <Sidebar.MenuButton />
-  <Sidebar.MenuAction
-    class="peer-data-[active=true]/menu-button:opacity-100"
-  />
+  <Sidebar.MenuAction class="peer-data-[active=true]/menu-button:opacity-100" />
 </Sidebar.MenuItem>
 ```
 

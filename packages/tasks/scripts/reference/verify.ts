@@ -10,10 +10,7 @@ import {
   listFixtures,
   taskFixtures,
 } from "../../src/lib/fixtures.js";
-import {
-  assertComponentClip,
-  loadCaptureMatrix,
-} from "./capture-matrix.js";
+import { assertComponentClip, loadCaptureMatrix } from "./capture-matrix.js";
 import {
   committedReferenceRoot,
   fileExists,

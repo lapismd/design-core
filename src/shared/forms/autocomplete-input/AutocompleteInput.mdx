@@ -1,4 +1,10 @@
-import { Meta, Canvas, Controls, Primary, Source } from "@storybook/addon-docs/blocks";
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+} from "@storybook/addon-docs/blocks";
 import * as AutocompleteInputStories from "./AutocompleteInput.stories.svelte";
 import * as AutocompleteInputVariations from "./AutocompleteInput.variations.stories.svelte";
 
@@ -23,7 +29,12 @@ See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and the shared
 
 ## Usage
 
-<Source language="html" code={"<AutocompleteInput\n  bind:value\n  suggestions={[\"typescript\", \"svelte\"]}\n  placeholder=\"Add item...\"\n  onCommit={...}\n/>"} />
+<Source
+  language="html"
+  code={
+    '<AutocompleteInput\n  bind:value\n  suggestions={["typescript", "svelte"]}\n  placeholder="Add item..."\n  onCommit={...}\n/>'
+  }
+/>
 
 <Primary />
 
@@ -37,5 +48,7 @@ See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and the shared
 
 Focus the field in the canvas to open suggestions.
 
-<Canvas of={AutocompleteInputVariations.WithValue} meta={AutocompleteInputVariations} />
-
+<Canvas
+  of={AutocompleteInputVariations.WithValue}
+  meta={AutocompleteInputVariations}
+/>

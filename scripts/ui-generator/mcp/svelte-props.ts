@@ -61,7 +61,10 @@ function jsDocText(node: ts.Node): string | undefined {
   return text || undefined;
 }
 
-function typeNodeText(type: ts.TypeNode | undefined, sf: ts.SourceFile): string {
+function typeNodeText(
+  type: ts.TypeNode | undefined,
+  sf: ts.SourceFile,
+): string {
   if (!type) return "unknown";
   return type.getText(sf).replace(/\s+/g, " ").trim();
 }
@@ -256,7 +259,9 @@ export function formatPropsMarkdown(
     );
     const req = prop.required ? "yes" : "no";
     const def = prop.defaultValue?.value?.replace(/\|/g, "\\|") ?? "";
-    const desc = (prop.description ?? "").replace(/\|/g, "\\|").replace(/\n/g, " ");
+    const desc = (prop.description ?? "")
+      .replace(/\|/g, "\\|")
+      .replace(/\n/g, " ");
     lines.push(`| \`${name}\` | \`${type}\` | ${req} | ${def} | ${desc} |`);
   }
   lines.push("");
@@ -312,7 +317,10 @@ export function extractPropsFromSvelteSource(
   return toReactDocgen(displayName, props, extendsNote);
 }
 
-export function findPrimarySvelteFile(dir: string, id: string): string | undefined {
+export function findPrimarySvelteFile(
+  dir: string,
+  id: string,
+): string | undefined {
   if (!existsSync(dir)) return undefined;
 
   const candidates = [

@@ -63,7 +63,7 @@ See installation instructions for the [Popover](/docs/components/popover#install
   let triggerRef = $state<HTMLButtonElement>(null!);
 
   const selectedValue = $derived(
-    frameworks.find((f) => f.value === value)?.label
+    frameworks.find((f) => f.value === value)?.label,
   );
 
   // We want to refocus the trigger button when the user selects
@@ -109,7 +109,7 @@ See installation instructions for the [Popover](/docs/components/popover#install
               <CheckIcon
                 class={cn(
                   "me-2 size-4",
-                  value !== framework.value && "text-transparent"
+                  value !== framework.value && "text-transparent",
                 )}
               />
               {framework.label}

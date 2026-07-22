@@ -1,4 +1,11 @@
-import { Meta, Canvas, Controls, Primary, Source, Markdown } from "@storybook/addon-docs/blocks";
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+  Markdown,
+} from "@storybook/addon-docs/blocks";
 import * as SeparatorStories from "./Separator.stories.svelte";
 import * as SeparatorVariations from "./Separator.variations.stories.svelte";
 import docsBody from "./separator.docs-body.md?raw";
@@ -17,7 +24,12 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 
 ## Usage
 
-<Source language="html" code={"<script lang=\"ts\">\n  import { Separator } from \"@stevejuma/ui/shadcn/separator\";\n</script>\n\n<Separator />"} />
+<Source
+  language="html"
+  code={
+    '<script lang="ts">\n  import { Separator } from "@stevejuma/ui/shadcn/separator";\n</script>\n\n<Separator />'
+  }
+/>
 
 <Primary />
 
@@ -27,6 +39,4 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 
 ### Preview
 
-
 <Canvas of={SeparatorVariations.Preview} meta={SeparatorVariations} />
-

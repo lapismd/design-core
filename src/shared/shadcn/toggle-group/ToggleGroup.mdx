@@ -1,4 +1,11 @@
-import { Meta, Canvas, Controls, Primary, Source, Markdown } from "@storybook/addon-docs/blocks";
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+  Markdown,
+} from "@storybook/addon-docs/blocks";
 import * as ToggleGroupStories from "./ToggleGroup.stories.svelte";
 import * as ToggleGroupVariations from "./ToggleGroup.variations.stories.svelte";
 import docsBody from "./toggle-group.docs-body.md?raw";
@@ -17,7 +24,12 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 
 ## Usage
 
-<Source language="html" code={"<script lang=\"ts\">\n  import * as ToggleGroup from \"@stevejuma/ui/shadcn/toggle-group\";\n</script>\n\n<ToggleGroup.Root type=\"single\">\n  <ToggleGroup.Item value=\"a\">A</ToggleGroup.Item>\n  <ToggleGroup.Item value=\"b\">B</ToggleGroup.Item>\n  <ToggleGroup.Item value=\"c\">C</ToggleGroup.Item>\n</ToggleGroup.Root>"} />
+<Source
+  language="html"
+  code={
+    '<script lang="ts">\n  import * as ToggleGroup from "@stevejuma/ui/shadcn/toggle-group";\n</script>\n\n<ToggleGroup.Root type="single">\n  <ToggleGroup.Item value="a">A</ToggleGroup.Item>\n  <ToggleGroup.Item value="b">B</ToggleGroup.Item>\n  <ToggleGroup.Item value="c">C</ToggleGroup.Item>\n</ToggleGroup.Root>'
+  }
+/>
 
 <Primary />
 
@@ -27,31 +39,25 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 
 ### Spacing
 
-
 <Canvas of={ToggleGroupVariations.Spacing} meta={ToggleGroupVariations} />
 
 ### Outline
-
 
 <Canvas of={ToggleGroupVariations.Outline} meta={ToggleGroupVariations} />
 
 ### Single
 
-
 <Canvas of={ToggleGroupVariations.Single} meta={ToggleGroupVariations} />
 
 ### Small
-
 
 <Canvas of={ToggleGroupVariations.Small} meta={ToggleGroupVariations} />
 
 ### Large
 
-
 <Canvas of={ToggleGroupVariations.Large} meta={ToggleGroupVariations} />
 
 ### Disabled
-
 
 <Canvas of={ToggleGroupVariations.Disabled} meta={ToggleGroupVariations} />
 
@@ -60,4 +66,3 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 Use `spacing={2}` to add spacing between toggle group items.
 
 <Canvas of={ToggleGroupVariations.Spacing2} meta={ToggleGroupVariations} />
-

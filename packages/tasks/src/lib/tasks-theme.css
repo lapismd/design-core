@@ -15,8 +15,16 @@
   --tasks-selection: oklch(0.936 0.007 295);
   --tasks-danger: oklch(0.61 0.2 25);
   --tasks-success: oklch(0.65 0.16 150);
-  --tasks-tip-bg: color-mix(in oklch, oklch(0.92 0.04 290) 70%, var(--tasks-surface));
-  --tasks-tip-border: color-mix(in oklch, oklch(0.8 0.06 290) 40%, var(--tasks-divider));
+  --tasks-tip-bg: color-mix(
+    in oklch,
+    oklch(0.92 0.04 290) 70%,
+    var(--tasks-surface)
+  );
+  --tasks-tip-border: color-mix(
+    in oklch,
+    oklch(0.8 0.06 290) 40%,
+    var(--tasks-divider)
+  );
   --tasks-task-row-height: 44px;
   --tasks-sidebar-width: 267px;
   --tasks-detail-width: 450px;
@@ -53,8 +61,16 @@
   --tasks-selection: oklch(0.34 0.03 295);
   --tasks-danger: oklch(0.72 0.16 25);
   --tasks-success: oklch(0.75 0.12 150);
-  --tasks-tip-bg: color-mix(in oklch, oklch(0.4 0.06 290) 55%, var(--tasks-surface));
-  --tasks-tip-border: color-mix(in oklch, oklch(0.55 0.09 290) 45%, var(--tasks-divider));
+  --tasks-tip-bg: color-mix(
+    in oklch,
+    oklch(0.4 0.06 290) 55%,
+    var(--tasks-surface)
+  );
+  --tasks-tip-border: color-mix(
+    in oklch,
+    oklch(0.55 0.09 290) 45%,
+    var(--tasks-divider)
+  );
   --tasks-shadow-workspace: 1px 0 0 var(--tasks-divider);
 }
 

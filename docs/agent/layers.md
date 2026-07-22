@@ -1,7 +1,7 @@
 ---
 id: layers
 title: Package layers
-summary: Choose shadcn, forms, workspace shell, AI, or app-specific UI.
+summary: Choose shadcn, forms, filter, workspace shell, AI, or app-specific UI.
 sources:
   - README.md
   - COMPONENT_AUDIT.md
@@ -22,21 +22,26 @@ existing family already covers the need.
 2. **Forms** (`src/shared/forms/<family>/`) — schema-shaped editing and form-row
    chrome. Import from `@stevejuma/ui/forms` or `@stevejuma/ui/forms/core`.
    Catalog: `UI Forms/...`. Guidance: `UI Forms/Guidance`.
-3. **Workspace shell** (`src/shared/workspace-shell/`) — prop-driven Studio
+3. **Filter** (`src/shared/filter/`) — search chrome and filter-query language
+   (`SearchFilterBar`, `parseFilterQuery`, host `filterSyntax`). Import from
+   `@stevejuma/ui/filter`. Catalog: `Filter/...`. Guidance: `Filter/Guidance`.
+4. **Workspace shell** (`src/shared/workspace-shell/`) — prop-driven Studio
    chrome (sidebar / main / AI regions). No app routers or workspace context.
-4. **AI** (`src/shared/ai/`) — shared AI panel primitives. Catalog: `AI/...`.
-5. **Apps** (`src/apps/cv`, `src/apps/beancount`) — domain UI only. Receive props
+5. **AI** (`src/shared/ai/`) — shared AI panel primitives. Catalog: `AI/...`.
+6. **Apps** (`src/apps/cv`, `src/apps/beancount`) — domain UI only. Receive props
    and callbacks. Catalog: `Apps/CV/...`, `Apps/Beancount/...`.
-6. **Workspace package** (`packages/workspace`) — separate `@stevejuma/workspace`
+7. **Workspace package** (`packages/workspace`) — separate `@stevejuma/workspace`
    surface. See that package's `VENDOR.md`.
-7. **Tasks reference** (`packages/tasks`) — clean-room task product contracts,
+8. **Tasks reference** (`packages/tasks`) — clean-room task product contracts,
    synthetic fixtures, capture evidence, and a scoped companion theme. Read
    `pnpm ui guide tasks` before implementing its future components.
 
 ## Dependency rules
 
-- `shared/shadcn` must not import forms or apps.
-- `shared/forms` may import shadcn; must not import apps.
+- `shared/shadcn` must not import forms, filter, or apps.
+- `shared/filter` may import shadcn; must not import forms or apps in production
+  code (stories may compose forms pickers).
+- `shared/forms` may import shadcn and filter; must not import apps.
 - `apps/*` may import shared; must not import sibling apps.
 - App components take props/callbacks — no application routers or workspace
   context imports.

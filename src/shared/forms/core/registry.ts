@@ -40,6 +40,8 @@ export function defaultFieldWrapper(kind: FormFieldKind): FormFieldWrapper {
     kind === "choice" ||
     kind === "tag-list" ||
     kind === "chip-list" ||
+    kind === "string-list" ||
+    kind === "ordered-string-list" ||
     kind === "reference-list" ||
     kind === "custom"
     ? "div"

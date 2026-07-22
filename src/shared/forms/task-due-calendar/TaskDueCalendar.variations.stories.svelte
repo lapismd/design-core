@@ -4,7 +4,7 @@
   import TaskDueCalendar from "./TaskDueCalendar.svelte";
 
   const { Story } = defineMeta({
-    title: "UI Forms/Task Due Calendar",
+    title: "UI Forms/Form Inputs/Task Due Calendar",
     component: TaskDueCalendar,
     parameters: {
       docs: {
@@ -19,7 +19,6 @@
 <script lang="ts">
   let value = $state(new CalendarDate(2026, 7, 19));
 </script>
-
 
 <Story
   name="Selected day"

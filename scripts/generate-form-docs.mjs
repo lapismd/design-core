@@ -901,9 +901,7 @@ const specs = [
       'Use inside `FormField align="center" as="div"` in labelled rows.',
     ],
     when: ["Task/application due-date fields"],
-    whenNot: [
-      "Plain ISO date typing — a native date input may be enough",
-    ],
+    whenNot: ["Plain ISO date typing — a native date input may be enough"],
     usage: `<TaskDueCalendar value={due} onChange={...} />`,
     variations: [
       {
@@ -945,84 +943,6 @@ const specs = [
       <p class="m-0 mt-2">Line two</p>
       <p class="m-0 mt-2">Line three</p>
     </FormPlaceholder>`,
-      },
-    ],
-  },
-  {
-    dir: "read-only-form",
-    storiesFile: "ReadOnlyFormFamily.stories.svelte",
-    storiesImport: "ReadOnlyFormStories",
-    title: "Read Only Form",
-    heading: "ReadOnlyForm",
-    mdxFile: "ReadOnlyForm.mdx",
-    variationsFile: "ReadOnlyForm.variations.stories.svelte",
-    variationsImport: "ReadOnlyFormVariations",
-    importBlock: `import ReadOnlyFormGroup from "./ReadOnlyFormGroup.svelte";
-  import ReadOnlyFormList from "./ReadOnlyFormList.svelte";
-  import ReadOnlyFormRow from "./ReadOnlyFormRow.svelte";`,
-    component: "ReadOnlyFormGroup",
-    guidance: [
-      "Readonly group / list / row primitives for preview surfaces (fixed ~8.5rem label column).",
-      "Used inside ReferencePicker and other read-only summaries — not for editable schema forms.",
-    ],
-    when: [
-      "Preview/summary panels",
-      "Reference picker selected/preview rows",
-    ],
-    whenNot: [
-      "Editable labelled rows — use `FormField` / `StructuredForm`",
-    ],
-    usage: `<ReadOnlyFormGroup title="Profile">
-  <ReadOnlyFormRow label="Title" value="Northstar" />
-  <ReadOnlyFormList label="Skills" items={["TypeScript"]} />
-</ReadOnlyFormGroup>`,
-    variations: [
-      {
-        name: "Group",
-        exportName: "Group",
-        description: "Group with row + list.",
-        markup: `<ReadOnlyFormGroup title="Profile" meta="Preview">
-      <ReadOnlyFormRow label="Title" value="Northstar" />
-      <ReadOnlyFormList label="Skills" items={["TypeScript", "Svelte"]} />
-    </ReadOnlyFormGroup>`,
-      },
-      {
-        name: "Row only",
-        exportName: "RowOnly",
-        description: "Single read-only row.",
-        markup: `<ReadOnlyFormRow label="Title" value="Northstar" />`,
-      },
-    ],
-  },
-  {
-    dir: "read-only-form",
-    storiesFile: "ReadOnlyFormRow.stories.svelte",
-    storiesImport: "ReadOnlyFormRowStories",
-    title: "Read Only Form Row",
-    heading: "ReadOnlyFormRow",
-    mdxFile: "ReadOnlyFormRow.mdx",
-    variationsFile: "ReadOnlyFormRow.variations.stories.svelte",
-    variationsImport: "ReadOnlyFormRowVariations",
-    importBlock: `import ReadOnlyFormRow from "./ReadOnlyFormRow.svelte";`,
-    component: "ReadOnlyFormRow",
-    guidance: [
-      "Single read-only label/value row for preview surfaces.",
-    ],
-    when: ["Sparse preview rows outside a full `ReadOnlyFormGroup`"],
-    whenNot: ["Editable rows — use `FormField`"],
-    usage: `<ReadOnlyFormRow label="Title" value="Northstar" />`,
-    variations: [
-      {
-        name: "Default",
-        exportName: "Default",
-        description: "Label and value.",
-        markup: `<ReadOnlyFormRow label="Title" value="Northstar" />`,
-      },
-      {
-        name: "Empty value",
-        exportName: "EmptyValue",
-        description: "Missing value still keeps the row.",
-        markup: `<ReadOnlyFormRow label="Title" value="" />`,
       },
     ],
   },
@@ -1076,8 +996,7 @@ ${stories}
 }
 
 function writeMdx(/** @type {DocSpec} */ spec) {
-  const variationsImport =
-    spec.variationsImport ?? `${spec.heading}Variations`;
+  const variationsImport = spec.variationsImport ?? `${spec.heading}Variations`;
   const variationsFile =
     spec.variationsFile ?? `${spec.heading}.variations.stories.svelte`;
   const whenNot = spec.whenNot?.length

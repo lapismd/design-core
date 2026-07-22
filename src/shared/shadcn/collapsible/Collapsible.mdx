@@ -1,4 +1,11 @@
-import { Meta, Canvas, Controls, Primary, Source, Markdown } from "@storybook/addon-docs/blocks";
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+  Markdown,
+} from "@storybook/addon-docs/blocks";
 import * as CollapsibleStories from "./Collapsible.stories.svelte";
 import * as CollapsibleVariations from "./Collapsible.variations.stories.svelte";
 import docsBody from "./collapsible.docs-body.md?raw";
@@ -17,7 +24,12 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 
 ## Usage
 
-<Source language="html" code={"<script lang=\"ts\">\n  import * as Collapsible from \"@stevejuma/ui/shadcn/collapsible\";\n</script>\n\n<Collapsible.Root>\n  <Collapsible.Trigger>Can I use this in my project?</Collapsible.Trigger>\n  <Collapsible.Content>\n    Yes. Free to use for personal and commercial projects. No attribution\n    required.\n  </Collapsible.Content>\n</Collapsible.Root>"} />
+<Source
+  language="html"
+  code={
+    '<script lang="ts">\n  import * as Collapsible from "@stevejuma/ui/shadcn/collapsible";\n</script>\n\n<Collapsible.Root>\n  <Collapsible.Trigger>Can I use this in my project?</Collapsible.Trigger>\n  <Collapsible.Content>\n    Yes. Free to use for personal and commercial projects. No attribution\n    required.\n  </Collapsible.Content>\n</Collapsible.Root>'
+  }
+/>
 
 <Primary />
 
@@ -27,6 +39,4 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 
 ### Preview
 
-
 <Canvas of={CollapsibleVariations.Preview} meta={CollapsibleVariations} />
-

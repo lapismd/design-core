@@ -75,10 +75,7 @@
     onUpdate({ ...experience, ...partial });
   }
 
-  function updateRole(
-    index: number,
-    value: ExperienceRoleHistoryEntry,
-  ) {
+  function updateRole(index: number, value: ExperienceRoleHistoryEntry) {
     const role_history = [...(experience.role_history ?? [])];
     role_history[index] = value;
     patch({ role_history });

@@ -29,6 +29,372 @@
   /* Semantic selectors must be global: they target data attributes and descendants. */
   :global {
     /*! tailwindcss v4.3.3 | MIT License | https://tailwindcss.com */
-    @layer properties{}@layer base{@supports (not ((-webkit-appearance:-apple-pay-button))) or (contain-intrinsic-size:1px){}}@layer utilities{[data-ui-component="card"][data-ui-part="card-header"]{container:card-header/inline-size}[data-ui-component="card"][data-ui-part="card-action"]{grid-column-start:2}[data-ui-component="card"][data-ui-part="card-action"]{grid-row:span 2/span 2}[data-ui-component="card"][data-ui-part="card-action"]{grid-row-start:1}[data-ui-component="card"][data-ui-part="card-footer"],[data-ui-component="card"][data-ui-part="card"]{display:flex}[data-ui-component="card"][data-ui-part="card-header"]{display:grid}[data-ui-component="card"][data-ui-part="card-header"]{grid-auto-rows:min-content}[data-ui-component="card"][data-ui-part="card"]{flex-direction:column}[data-ui-component="card"][data-ui-part="card-footer"]{align-items:center}[data-ui-component="card"][data-ui-part="card-header"]{align-items:flex-start}[data-ui-component="card"][data-ui-part="card-header"]{gap:var(--spacing)}[data-ui-component="card"][data-ui-part="card"]{--card-spacing:calc(var(--spacing) * 6);gap:var(--card-spacing)}[data-ui-component="card"][data-ui-part="card-action"]{align-self:flex-start}[data-ui-component="card"][data-ui-part="card-action"]{justify-self:flex-end}[data-ui-component="card"][data-ui-part="card"]{overflow:hidden}[data-ui-component="card"][data-ui-part="card"]{border-radius:calc(var(--radius) * 1.4)}[data-ui-component="card"][data-ui-part="card-header"]{border-top-left-radius:calc(var(--radius) * 1.4);border-top-right-radius:calc(var(--radius) * 1.4)}[data-ui-component="card"][data-ui-part="card-footer"]{border-bottom-right-radius:calc(var(--radius) * 1.4);border-bottom-left-radius:calc(var(--radius) * 1.4)}[data-ui-component="card"][data-ui-part="card"]{background-color:var(--card)}[data-ui-component="card"][data-ui-part="card-content"],[data-ui-component="card"][data-ui-part="card-footer"],[data-ui-component="card"][data-ui-part="card-header"]{padding-inline:var(--card-spacing)}[data-ui-component="card"][data-ui-part="card"]{padding-block:var(--card-spacing)}[data-ui-component="card"][data-ui-part="card-title"]{font-size:var(--text-base);line-height:var(--tw-leading,var(--text-base--line-height))}[data-ui-component="card"][data-ui-part="card-description"],[data-ui-component="card"][data-ui-part="card"]{font-size:var(--text-sm);line-height:var(--tw-leading,var(--text-sm--line-height))}[data-ui-component="card"][data-ui-part="card-title"]{--tw-leading:var(--leading-normal);line-height:var(--leading-normal)}[data-ui-component="card"][data-ui-part="card-title"]{--tw-font-weight:var(--font-weight-medium);font-weight:var(--font-weight-medium)}[data-ui-component="card"][data-ui-part="card"]{color:var(--card-foreground)}[data-ui-component="card"][data-ui-part="card-description"]{color:var(--muted-foreground)}[data-ui-component="card"][data-ui-part="card"]{--tw-shadow:0 1px 2px 0 var(--tw-shadow-color,#0000000d);box-shadow:var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow)}[data-ui-component="card"][data-ui-part="card"]{--tw-ring-shadow:var(--tw-ring-inset,) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color,currentcolor);box-shadow:var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow)}[data-ui-component="card"][data-ui-part="card"]{--tw-ring-color:var(--foreground)}@supports (color:color-mix(in lab, red, red)){[data-ui-component="card"][data-ui-part="card"]{--tw-ring-color:color-mix(in oklab, var(--foreground) 10%, transparent)}}[data-ui-component="card"][data-ui-part="card-content"]:is(:where(.group\/card)[data-size=sm] *),[data-ui-component="card"][data-ui-part="card-footer"]:is(:where(.group\/card)[data-size=sm] *),[data-ui-component="card"][data-ui-part="card-header"]:is(:where(.group\/card)[data-size=sm] *),.group-data-\[size\=sm\]\/card\:px-4:is(:where([data-ui-component="card"][data-ui-part="card"])[data-size=sm] *){padding-inline:calc(var(--spacing) * 4)}[data-ui-component="card"][data-ui-part="card-title"]:is(:where(.group\/card)[data-size=sm] *),.group-data-\[size\=sm\]\/card\:text-sm:is(:where([data-ui-component="card"][data-ui-part="card"])[data-size=sm] *){font-size:var(--text-sm);line-height:var(--tw-leading,var(--text-sm--line-height))}[data-ui-component="card"][data-ui-part="card-header"]:has([data-slot=card-action]){grid-template-columns:1fr auto}[data-ui-component="card"][data-ui-part="card-header"]:has([data-slot=card-description]){grid-template-rows:auto auto}[data-ui-component="card"][data-ui-part="card"]:has(>img:first-child){padding-top:0}[data-ui-component="card"][data-ui-part="card"][data-size=sm]{--card-spacing:calc(var(--spacing) * 4)}[data-ui-component="card"][data-ui-part="card-header"].border-b{padding-bottom:var(--card-spacing)}[data-ui-component="card"][data-ui-part="card-header"]:is(:where(.group\/card)[data-size=sm] *).border-b,.group-data-\[size\=sm\]\/card\:\[\.border-b\]\:pb-4:is(:where([data-ui-component="card"][data-ui-part="card"])[data-size=sm] *).border-b{padding-bottom:calc(var(--spacing) * 4)}[data-ui-component="card"][data-ui-part="card-footer"].border-t{padding-top:var(--card-spacing)}[data-ui-component="card"][data-ui-part="card-footer"]:is(:where(.group\/card)[data-size=sm] *).border-t,.group-data-\[size\=sm\]\/card\:\[\.border-t\]\:pt-4:is(:where([data-ui-component="card"][data-ui-part="card"])[data-size=sm] *).border-t{padding-top:calc(var(--spacing) * 4)}:is([data-ui-component="card"][data-ui-part="card"]>*):is(img:first-child){border-top-left-radius:calc(var(--radius) * 1.4);border-top-right-radius:calc(var(--radius) * 1.4)}:is([data-ui-component="card"][data-ui-part="card"]>*):is(img:last-child){border-bottom-right-radius:calc(var(--radius) * 1.4);border-bottom-left-radius:calc(var(--radius) * 1.4)}}@property --tw-animation-delay{syntax:"*";inherits:false;initial-value:0s}@property --tw-animation-direction{syntax:"*";inherits:false;initial-value:normal}@property --tw-animation-duration{syntax:"*";inherits:false}@property --tw-animation-fill-mode{syntax:"*";inherits:false;initial-value:none}@property --tw-animation-iteration-count{syntax:"*";inherits:false;initial-value:1}@property --tw-enter-blur{syntax:"*";inherits:false;initial-value:0}@property --tw-enter-opacity{syntax:"*";inherits:false;initial-value:1}@property --tw-enter-rotate{syntax:"*";inherits:false;initial-value:0}@property --tw-enter-scale{syntax:"*";inherits:false;initial-value:1}@property --tw-enter-translate-x{syntax:"*";inherits:false;initial-value:0}@property --tw-enter-translate-y{syntax:"*";inherits:false;initial-value:0}@property --tw-exit-blur{syntax:"*";inherits:false;initial-value:0}@property --tw-exit-opacity{syntax:"*";inherits:false;initial-value:1}@property --tw-exit-rotate{syntax:"*";inherits:false;initial-value:0}@property --tw-exit-scale{syntax:"*";inherits:false;initial-value:1}@property --tw-exit-translate-x{syntax:"*";inherits:false;initial-value:0}@property --tw-exit-translate-y{syntax:"*";inherits:false;initial-value:0}@property --tw-leading{syntax:"*";inherits:false}@property --tw-font-weight{syntax:"*";inherits:false}@property --tw-shadow{syntax:"*";inherits:false;initial-value:0 0 #0000}@property --tw-shadow-color{syntax:"*";inherits:false}@property --tw-shadow-alpha{syntax:"<percentage>";inherits:false;initial-value:100%}@property --tw-inset-shadow{syntax:"*";inherits:false;initial-value:0 0 #0000}@property --tw-inset-shadow-color{syntax:"*";inherits:false}@property --tw-inset-shadow-alpha{syntax:"<percentage>";inherits:false;initial-value:100%}@property --tw-ring-color{syntax:"*";inherits:false}@property --tw-ring-shadow{syntax:"*";inherits:false;initial-value:0 0 #0000}@property --tw-inset-ring-color{syntax:"*";inherits:false}@property --tw-inset-ring-shadow{syntax:"*";inherits:false;initial-value:0 0 #0000}@property --tw-ring-inset{syntax:"*";inherits:false}@property --tw-ring-offset-width{syntax:"<length>";inherits:false;initial-value:0}@property --tw-ring-offset-color{syntax:"*";inherits:false;initial-value:#fff}@property --tw-ring-offset-shadow{syntax:"*";inherits:false;initial-value:0 0 #0000}
+    @layer properties {
+    }
+    @layer base {
+      @supports (not ((-webkit-appearance: -apple-pay-button))) or
+        (contain-intrinsic-size: 1px) {
+      }
+    }
+    @layer utilities {
+      [data-ui-component="card"][data-ui-part="card-header"] {
+        container: card-header/inline-size;
+      }
+      [data-ui-component="card"][data-ui-part="card-action"] {
+        grid-column-start: 2;
+      }
+      [data-ui-component="card"][data-ui-part="card-action"] {
+        grid-row: span 2 / span 2;
+      }
+      [data-ui-component="card"][data-ui-part="card-action"] {
+        grid-row-start: 1;
+      }
+      [data-ui-component="card"][data-ui-part="card-footer"],
+      [data-ui-component="card"][data-ui-part="card"] {
+        display: flex;
+      }
+      [data-ui-component="card"][data-ui-part="card-header"] {
+        display: grid;
+      }
+      [data-ui-component="card"][data-ui-part="card-header"] {
+        grid-auto-rows: min-content;
+      }
+      [data-ui-component="card"][data-ui-part="card"] {
+        flex-direction: column;
+      }
+      [data-ui-component="card"][data-ui-part="card-footer"] {
+        align-items: center;
+      }
+      [data-ui-component="card"][data-ui-part="card-header"] {
+        align-items: flex-start;
+      }
+      [data-ui-component="card"][data-ui-part="card-header"] {
+        gap: var(--spacing);
+      }
+      [data-ui-component="card"][data-ui-part="card"] {
+        --card-spacing: calc(var(--spacing) * 6);
+        gap: var(--card-spacing);
+      }
+      [data-ui-component="card"][data-ui-part="card-action"] {
+        align-self: flex-start;
+      }
+      [data-ui-component="card"][data-ui-part="card-action"] {
+        justify-self: flex-end;
+      }
+      [data-ui-component="card"][data-ui-part="card"] {
+        overflow: hidden;
+      }
+      [data-ui-component="card"][data-ui-part="card"] {
+        border-radius: calc(var(--radius) * 1.4);
+      }
+      [data-ui-component="card"][data-ui-part="card-header"] {
+        border-top-left-radius: calc(var(--radius) * 1.4);
+        border-top-right-radius: calc(var(--radius) * 1.4);
+      }
+      [data-ui-component="card"][data-ui-part="card-footer"] {
+        border-bottom-right-radius: calc(var(--radius) * 1.4);
+        border-bottom-left-radius: calc(var(--radius) * 1.4);
+      }
+      [data-ui-component="card"][data-ui-part="card"] {
+        background-color: var(--card);
+      }
+      [data-ui-component="card"][data-ui-part="card-content"],
+      [data-ui-component="card"][data-ui-part="card-footer"],
+      [data-ui-component="card"][data-ui-part="card-header"] {
+        padding-inline: var(--card-spacing);
+      }
+      [data-ui-component="card"][data-ui-part="card"] {
+        padding-block: var(--card-spacing);
+      }
+      [data-ui-component="card"][data-ui-part="card-title"] {
+        font-size: var(--text-base);
+        line-height: var(--tw-leading, var(--text-base--line-height));
+      }
+      [data-ui-component="card"][data-ui-part="card-description"],
+      [data-ui-component="card"][data-ui-part="card"] {
+        font-size: var(--text-sm);
+        line-height: var(--tw-leading, var(--text-sm--line-height));
+      }
+      [data-ui-component="card"][data-ui-part="card-title"] {
+        --tw-leading: var(--leading-normal);
+        line-height: var(--leading-normal);
+      }
+      [data-ui-component="card"][data-ui-part="card-title"] {
+        --tw-font-weight: var(--font-weight-medium);
+        font-weight: var(--font-weight-medium);
+      }
+      [data-ui-component="card"][data-ui-part="card"] {
+        color: var(--card-foreground);
+      }
+      [data-ui-component="card"][data-ui-part="card-description"] {
+        color: var(--muted-foreground);
+      }
+      [data-ui-component="card"][data-ui-part="card"] {
+        --tw-shadow: 0 1px 2px 0 var(--tw-shadow-color, #0000000d);
+        box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow),
+          var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+      }
+      [data-ui-component="card"][data-ui-part="card"] {
+        --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0
+          calc(1px + var(--tw-ring-offset-width))
+          var(--tw-ring-color, currentcolor);
+        box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow),
+          var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+      }
+      [data-ui-component="card"][data-ui-part="card"] {
+        --tw-ring-color: var(--foreground);
+      }
+      @supports (color: color-mix(in lab, red, red)) {
+        [data-ui-component="card"][data-ui-part="card"] {
+          --tw-ring-color: color-mix(
+            in oklab,
+            var(--foreground) 10%,
+            transparent
+          );
+        }
+      }
+      [data-ui-component="card"][data-ui-part="card-content"]:is(
+          :where(.group\/card)[data-size="sm"] *
+        ),
+      [data-ui-component="card"][data-ui-part="card-footer"]:is(
+          :where(.group\/card)[data-size="sm"] *
+        ),
+      [data-ui-component="card"][data-ui-part="card-header"]:is(
+          :where(.group\/card)[data-size="sm"] *
+        ),
+      .group-data-\[size\=sm\]\/card\:px-4:is(
+          :where(
+              [data-ui-component="card"][data-ui-part="card"]
+            )[data-size="sm"]
+            *
+        ) {
+        padding-inline: calc(var(--spacing) * 4);
+      }
+      [data-ui-component="card"][data-ui-part="card-title"]:is(
+          :where(.group\/card)[data-size="sm"] *
+        ),
+      .group-data-\[size\=sm\]\/card\:text-sm:is(
+          :where(
+              [data-ui-component="card"][data-ui-part="card"]
+            )[data-size="sm"]
+            *
+        ) {
+        font-size: var(--text-sm);
+        line-height: var(--tw-leading, var(--text-sm--line-height));
+      }
+      [data-ui-component="card"][data-ui-part="card-header"]:has(
+          [data-slot="card-action"]
+        ) {
+        grid-template-columns: 1fr auto;
+      }
+      [data-ui-component="card"][data-ui-part="card-header"]:has(
+          [data-slot="card-description"]
+        ) {
+        grid-template-rows: auto auto;
+      }
+      [data-ui-component="card"][data-ui-part="card"]:has(> img:first-child) {
+        padding-top: 0;
+      }
+      [data-ui-component="card"][data-ui-part="card"][data-size="sm"] {
+        --card-spacing: calc(var(--spacing) * 4);
+      }
+      [data-ui-component="card"][data-ui-part="card-header"].border-b {
+        padding-bottom: var(--card-spacing);
+      }
+      [data-ui-component="card"][data-ui-part="card-header"]:is(
+          :where(.group\/card)[data-size="sm"] *
+        ).border-b,
+      .group-data-\[size\=sm\]\/card\:\[\.border-b\]\:pb-4:is(
+          :where(
+              [data-ui-component="card"][data-ui-part="card"]
+            )[data-size="sm"]
+            *
+        ).border-b {
+        padding-bottom: calc(var(--spacing) * 4);
+      }
+      [data-ui-component="card"][data-ui-part="card-footer"].border-t {
+        padding-top: var(--card-spacing);
+      }
+      [data-ui-component="card"][data-ui-part="card-footer"]:is(
+          :where(.group\/card)[data-size="sm"] *
+        ).border-t,
+      .group-data-\[size\=sm\]\/card\:\[\.border-t\]\:pt-4:is(
+          :where(
+              [data-ui-component="card"][data-ui-part="card"]
+            )[data-size="sm"]
+            *
+        ).border-t {
+        padding-top: calc(var(--spacing) * 4);
+      }
+      :is([data-ui-component="card"][data-ui-part="card"] > *):is(
+          img:first-child
+        ) {
+        border-top-left-radius: calc(var(--radius) * 1.4);
+        border-top-right-radius: calc(var(--radius) * 1.4);
+      }
+      :is([data-ui-component="card"][data-ui-part="card"] > *):is(
+          img:last-child
+        ) {
+        border-bottom-right-radius: calc(var(--radius) * 1.4);
+        border-bottom-left-radius: calc(var(--radius) * 1.4);
+      }
+    }
+    @property --tw-animation-delay {
+      syntax: "*";
+      inherits: false;
+      initial-value: 0s;
+    }
+    @property --tw-animation-direction {
+      syntax: "*";
+      inherits: false;
+      initial-value: normal;
+    }
+    @property --tw-animation-duration {
+      syntax: "*";
+      inherits: false;
+    }
+    @property --tw-animation-fill-mode {
+      syntax: "*";
+      inherits: false;
+      initial-value: none;
+    }
+    @property --tw-animation-iteration-count {
+      syntax: "*";
+      inherits: false;
+      initial-value: 1;
+    }
+    @property --tw-enter-blur {
+      syntax: "*";
+      inherits: false;
+      initial-value: 0;
+    }
+    @property --tw-enter-opacity {
+      syntax: "*";
+      inherits: false;
+      initial-value: 1;
+    }
+    @property --tw-enter-rotate {
+      syntax: "*";
+      inherits: false;
+      initial-value: 0;
+    }
+    @property --tw-enter-scale {
+      syntax: "*";
+      inherits: false;
+      initial-value: 1;
+    }
+    @property --tw-enter-translate-x {
+      syntax: "*";
+      inherits: false;
+      initial-value: 0;
+    }
+    @property --tw-enter-translate-y {
+      syntax: "*";
+      inherits: false;
+      initial-value: 0;
+    }
+    @property --tw-exit-blur {
+      syntax: "*";
+      inherits: false;
+      initial-value: 0;
+    }
+    @property --tw-exit-opacity {
+      syntax: "*";
+      inherits: false;
+      initial-value: 1;
+    }
+    @property --tw-exit-rotate {
+      syntax: "*";
+      inherits: false;
+      initial-value: 0;
+    }
+    @property --tw-exit-scale {
+      syntax: "*";
+      inherits: false;
+      initial-value: 1;
+    }
+    @property --tw-exit-translate-x {
+      syntax: "*";
+      inherits: false;
+      initial-value: 0;
+    }
+    @property --tw-exit-translate-y {
+      syntax: "*";
+      inherits: false;
+      initial-value: 0;
+    }
+    @property --tw-leading {
+      syntax: "*";
+      inherits: false;
+    }
+    @property --tw-font-weight {
+      syntax: "*";
+      inherits: false;
+    }
+    @property --tw-shadow {
+      syntax: "*";
+      inherits: false;
+      initial-value: 0 0 #0000;
+    }
+    @property --tw-shadow-color {
+      syntax: "*";
+      inherits: false;
+    }
+    @property --tw-shadow-alpha {
+      syntax: "<percentage>";
+      inherits: false;
+      initial-value: 100%;
+    }
+    @property --tw-inset-shadow {
+      syntax: "*";
+      inherits: false;
+      initial-value: 0 0 #0000;
+    }
+    @property --tw-inset-shadow-color {
+      syntax: "*";
+      inherits: false;
+    }
+    @property --tw-inset-shadow-alpha {
+      syntax: "<percentage>";
+      inherits: false;
+      initial-value: 100%;
+    }
+    @property --tw-ring-color {
+      syntax: "*";
+      inherits: false;
+    }
+    @property --tw-ring-shadow {
+      syntax: "*";
+      inherits: false;
+      initial-value: 0 0 #0000;
+    }
+    @property --tw-inset-ring-color {
+      syntax: "*";
+      inherits: false;
+    }
+    @property --tw-inset-ring-shadow {
+      syntax: "*";
+      inherits: false;
+      initial-value: 0 0 #0000;
+    }
+    @property --tw-ring-inset {
+      syntax: "*";
+      inherits: false;
+    }
+    @property --tw-ring-offset-width {
+      syntax: "<length>";
+      inherits: false;
+      initial-value: 0;
+    }
+    @property --tw-ring-offset-color {
+      syntax: "*";
+      inherits: false;
+      initial-value: #fff;
+    }
+    @property --tw-ring-offset-shadow {
+      syntax: "*";
+      inherits: false;
+      initial-value: 0 0 #0000;
+    }
   }
 </style>

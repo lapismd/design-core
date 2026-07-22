@@ -48,22 +48,25 @@ export function findComposedHostParentComponents(
  */
 export function emitLockedDataUiAttrOrder(source: string): string {
   const openTagRe = /<([a-z][\w-]*)(\s[^>]*?)(\/?)>/g;
-  return source.replace(openTagRe, (full, tag: string, attrs: string, selfClose: string) => {
-    if (!/\bdata-ui-component=/.test(attrs)) return full;
-    if (!/\{\.\.\.restProps\}/.test(attrs)) return full;
+  return source.replace(
+    openTagRe,
+    (full, tag: string, attrs: string, selfClose: string) => {
+      if (!/\bdata-ui-component=/.test(attrs)) return full;
+      if (!/\{\.\.\.restProps\}/.test(attrs)) return full;
 
-    // Already locked: rest spread appears before data-ui-component
-    const restIdx = attrs.indexOf("{...restProps}");
-    const compIdx = attrs.search(/\bdata-ui-component=/);
-    if (restIdx >= 0 && restIdx < compIdx) return full;
+      // Already locked: rest spread appears before data-ui-component
+      const restIdx = attrs.indexOf("{...restProps}");
+      const compIdx = attrs.search(/\bdata-ui-component=/);
+      if (restIdx >= 0 && restIdx < compIdx) return full;
 
-    const withoutRest = attrs.replace(/\s*\{\.\.\.restProps\}/, "");
-    const beforeComp = withoutRest.search(/\bdata-ui-component=/);
-    if (beforeComp < 0) return full;
-    const locked =
-      withoutRest.slice(0, beforeComp) +
-      "{...restProps}\n  " +
-      withoutRest.slice(beforeComp).replace(/^\s*/, "");
-    return `<${tag}${locked}${selfClose}>`;
-  });
+      const withoutRest = attrs.replace(/\s*\{\.\.\.restProps\}/, "");
+      const beforeComp = withoutRest.search(/\bdata-ui-component=/);
+      if (beforeComp < 0) return full;
+      const locked =
+        withoutRest.slice(0, beforeComp) +
+        "{...restProps}\n  " +
+        withoutRest.slice(beforeComp).replace(/^\s*/, "");
+      return `<${tag}${locked}${selfClose}>`;
+    },
+  );
 }

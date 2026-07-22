@@ -25,7 +25,8 @@
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "You can replace the default spinner icon with any other icon by editing the `Spinner` component.",
+        story:
+          "You can replace the default spinner icon with any other icon by editing the `Spinner` component.",
       },
       source: {
         code: exampleSources.Customization,
@@ -50,7 +51,8 @@
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "Use the `size-*` utility class to change the size of the spinner.",
+        story:
+          "Use the `size-*` utility class to change the size of the spinner.",
       },
       source: {
         code: exampleSources.Size,
@@ -75,7 +77,8 @@
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "Use the `text-*` utility class to change the color of the spinner.",
+        story:
+          "Use the `text-*` utility class to change the color of the spinner.",
       },
       source: {
         code: exampleSources.Color,
@@ -100,7 +103,8 @@
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "Add a spinner to a button to indicate a loading state. The `` will handle the spacing between the spinner and the text.",
+        story:
+          "Add a spinner to a button to indicate a loading state. The `` will handle the spacing between the spinner and the text.",
       },
       source: {
         code: exampleSources.Button,

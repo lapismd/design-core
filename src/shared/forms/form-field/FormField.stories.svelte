@@ -4,7 +4,7 @@
   import FormField from "./FormField.svelte";
 
   const { Story } = defineMeta({
-    title: "UI Forms/Form Field",
+    title: "UI Forms/Form Inputs/Form Field",
     component: FormField,
     parameters: {
       docs: {
@@ -29,11 +29,18 @@
     await userEvent.type(input, "Shared ledger");
     await expect(canvas.getByRole("status")).toHaveTextContent("Shared ledger");
   }}
-
   parameters={{
-    visualDelta: {"images":["/visual-baselines/forms/form-field/text-input-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
+    visualDelta: {
+      images: [
+        "/visual-baselines/forms/form-field/text-input-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
   }}
-
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -42,6 +49,16 @@
         <input aria-label="Ledger name" bind:value={name} />
       </FormField>
       <output class="sr-only">{name}</output>
+    </div>
+  {/snippet}
+</Story>
+
+<Story name="Shows an error" tags={["skip-visual"]}>
+  {#snippet template()}
+    <div class="cv-structured-form max-w-xl">
+      <FormField label="Ledger name" error="This field is required.">
+        <input aria-label="Ledger name" value="" />
+      </FormField>
     </div>
   {/snippet}
 </Story>

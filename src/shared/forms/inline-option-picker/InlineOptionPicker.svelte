@@ -15,6 +15,8 @@
     placeholder = "Select option",
     ariaLabel = "Select option",
     presentation = "swap",
+    /** Validation message; marks the picker invalid and renders below. */
+    error = null,
     onChange = () => {},
   }: {
     value?: string;
@@ -22,6 +24,7 @@
     placeholder?: string;
     ariaLabel?: string;
     presentation?: "menu" | "swap";
+    error?: string | null;
     onChange?: (value: string) => void;
   } = $props();
 
@@ -80,6 +83,7 @@
   class="cv-form-inline-option-picker"
   class:cv-form-inline-option-picker--swap={presentation === "swap"}
   data-open={open}
+  data-invalid={error ? "" : undefined}
 >
   {#if presentation === "swap" && open}
     <div
@@ -141,5 +145,9 @@
         {/each}
       </div>
     {/if}
+  {/if}
+
+  {#if error}
+    <p class="ui-form-control-error" role="alert">{error}</p>
   {/if}
 </div>

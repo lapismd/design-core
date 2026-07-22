@@ -27,7 +27,10 @@ export const sampleCvSource: CvSource = {
             end_date: "present",
             display_date: "2020 — Present",
             summary: "Led product design for the design system.",
-            highlights: ["Shipped the token system", "Mentored three designers"],
+            highlights: [
+              "Shipped the token system",
+              "Mentored three designers",
+            ],
             role_history: [
               {
                 position: "Designer",

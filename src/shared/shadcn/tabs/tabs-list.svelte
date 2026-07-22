@@ -1,9 +1,5 @@
 <script lang="ts" module>
-  
-    export const TABS_LIST_VARIANTS = [
-    "default",
-    "line",
-  ] as const;
+  export const TABS_LIST_VARIANTS = ["default", "line"] as const;
   export type TabsListVariant = (typeof TABS_LIST_VARIANTS)[number];
 
   /** @deprecated Prefer typed props; retained for API compatibility. */
@@ -17,7 +13,7 @@
 
 <script lang="ts">
   import { Tabs as TabsPrimitive } from "bits-ui";
-  
+
   let {
     ref = $bindable(null),
     variant = "default",

@@ -5,6 +5,7 @@ import path from "node:path";
 import type { Plugin } from "vite";
 import {
   VISUAL_DELTA_CANCEL_PATH,
+  VISUAL_DELTA_CREATE_INTERACTION_PATH,
   VISUAL_DELTA_CREATE_PATH,
   VISUAL_DELTA_REVIEW_PATH,
   VISUAL_DELTA_RUN_PATH,
@@ -21,6 +22,16 @@ import type { StoryIndexEntry } from "../scripts/ui-generator/visual/snapshot-pa
 type UpdateBody = {
   storyId?: string;
   component?: string;
+};
+
+type InteractionUpdateBody = {
+  storyId?: string;
+  /** Human step label from `step("…")`. */
+  stepLabel?: string;
+  /** Optional pre-slugified id; defaults to slugify(stepLabel). */
+  stepId?: string;
+  /** Overwrite an existing interaction PNG. */
+  overwrite?: boolean;
 };
 
 type RunBody = {
@@ -210,10 +221,7 @@ function summarize(results: VisualRunResultItem[]) {
  * When `storyIds` is provided, count exact membership (not a regex filter) so
  * story/component progress totals match the scoped run.
  */
-export function countVisualStories(
-  root: string,
-  storyIds?: string[],
-): number {
+export function countVisualStories(root: string, storyIds?: string[]): number {
   const indexPath = path.join(root, "storybook-static", "index.json");
   if (!existsSync(indexPath)) {
     // Fall back to the requested scope size when the static index is absent.
@@ -354,8 +362,73 @@ async function handleBaselineWrite(
   // Hint proxies / browsers not to buffer the streamed body.
   res.setHeader("X-Accel-Buffering", "no");
   const verb = createOnly ? "Creating missing baselines" : "Updating baselines";
+  res.write(`${verb}${component ? ` for ${component}` : ` for ${storyId}`}…\n`);
+
+  try {
+    const { code } = await runCommand(
+      "pnpm",
+      args,
+      root,
+      { VISUAL_UPDATE_APPROVED: "1" },
+      (chunk) => {
+        res.write(chunk);
+      },
+    );
+    res.write(`\n[exit ${code}]\n`);
+  } catch (error) {
+    res.write(
+      `\n[spawn error] ${error instanceof Error ? error.message : String(error)}\n`,
+    );
+  }
+  res.end();
+}
+
+async function handleInteractionBaselineWrite(
+  req: IncomingMessage,
+  res: ServerResponse,
+  root: string,
+) {
+  let body: InteractionUpdateBody;
+  try {
+    body = await readJsonBody<InteractionUpdateBody>(req);
+  } catch (error) {
+    res.statusCode = 400;
+    res.end(error instanceof Error ? error.message : "Invalid JSON");
+    return;
+  }
+
+  const storyId = body.storyId?.trim();
+  const stepLabel = body.stepLabel?.trim();
+  const stepId = body.stepId?.trim();
+  if (!storyId || !stepLabel) {
+    res.statusCode = 400;
+    res.end("Provide storyId and stepLabel");
+    return;
+  }
+
+  const args = [
+    "exec",
+    "tsx",
+    "scripts/ui-generator/cli.ts",
+    "visual-interaction-update",
+    "--allow-dirty",
+    "--approved",
+    "--skip-build",
+    ...(body.overwrite ? [] : ["--create-only"]),
+    "--story-id",
+    storyId,
+    "--step-label",
+    stepLabel,
+    ...(stepId ? ["--step-id", stepId] : []),
+  ];
+
+  res.statusCode = 200;
+  res.setHeader("Content-Type", "text/plain; charset=utf-8");
+  res.setHeader("Cache-Control", "no-store");
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("X-Accel-Buffering", "no");
   res.write(
-    `${verb}${component ? ` for ${component}` : ` for ${storyId}`}…\n`,
+    `${body.overwrite ? "Updating" : "Creating"} interaction baseline "${stepLabel}" for ${storyId}…\n`,
   );
 
   try {
@@ -596,8 +669,7 @@ async function handleReviewStatus(
   if (!storyId || !isVisualReviewStatus(status)) {
     writeJson(res, 400, {
       ok: false,
-      error:
-        'Provide storyId and status ("pending" | "approved" | "failed")',
+      error: 'Provide storyId and status ("pending" | "approved" | "failed")',
     });
     return;
   }
@@ -614,6 +686,7 @@ async function handleReviewStatus(
  * Dev-only Visual Delta endpoints:
  * - POST /__visual-delta/update-baseline — regenerate baselines (overwrite)
  * - POST /__visual-delta/create-baseline — create missing baselines only
+ * - POST /__visual-delta/create-interaction-baseline — mid-play step capture
  * - POST /__visual-delta/run-tests — run Playwright visual suite (no updates)
  * - POST /__visual-delta/cancel-tests — stop an in-flight run
  * - POST /__visual-delta/review-status — set visual-pending / visual-approved tag
@@ -645,6 +718,17 @@ export function visualDeltaMiddlewarePlugin(): Plugin {
             return;
           }
           await handleBaselineWrite(req, res, root, "create");
+          return;
+        }
+
+        if (url === VISUAL_DELTA_CREATE_INTERACTION_PATH) {
+          if (req.method !== "POST") {
+            res.statusCode = 405;
+            res.setHeader("Allow", "POST");
+            res.end("Method Not Allowed");
+            return;
+          }
+          await handleInteractionBaselineWrite(req, res, root);
           return;
         }
 

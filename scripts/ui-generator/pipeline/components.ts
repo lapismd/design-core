@@ -13,6 +13,7 @@ import {
 export type ComponentLayer =
   | "shadcn"
   | "forms"
+  | "filter"
   | "ai"
   | "workspace-shell"
   | "apps"
@@ -70,6 +71,7 @@ export type ComponentsOptions = {
 const LAYERS: ComponentLayer[] = [
   "shadcn",
   "forms",
+  "filter",
   "ai",
   "workspace-shell",
   "apps",
@@ -78,6 +80,7 @@ const LAYERS: ComponentLayer[] = [
 ];
 
 const FORMS_SKIP_DIRS = new Set(["core"]);
+const FILTER_SKIP_DIRS = new Set(["filter-query"]);
 
 export type CatalogEntry = {
   layer: ComponentLayer;
@@ -547,6 +550,42 @@ function collectForms(packageRoot: string): CatalogEntry[] {
     });
 }
 
+function collectFilter(packageRoot: string): CatalogEntry[] {
+  const root = path.join(packageRoot, "src", "shared", "filter");
+  if (!existsSync(root)) return [];
+  const entries: CatalogEntry[] = listDirs(root)
+    .filter((id) => !FILTER_SKIP_DIRS.has(id))
+    .map((id) => {
+      const dir = path.join(root, id);
+      const mdx = listFiles(dir, ".mdx");
+      return {
+        layer: "filter" as const,
+        id,
+        dir,
+        importPath: "@stevejuma/ui/filter",
+        docsCandidates: mdx,
+        storyPaths: [
+          ...listFiles(dir, ".stories.svelte"),
+          ...listFiles(dir, ".variations.stories.svelte"),
+        ],
+      };
+    });
+
+  const guidance = path.join(root, "Guidance.mdx");
+  if (existsSync(guidance)) {
+    entries.push({
+      layer: "filter",
+      id: "guidance",
+      dir: root,
+      importPath: "@stevejuma/ui/filter",
+      docsCandidates: [guidance],
+      storyPaths: [],
+    });
+  }
+
+  return entries.sort((a, b) => a.id.localeCompare(b.id));
+}
+
 function collectAi(packageRoot: string): CatalogEntry[] {
   const dir = path.join(packageRoot, "src", "shared", "ai");
   if (!existsSync(dir)) return [];
@@ -696,6 +735,7 @@ export function collectCatalog(packageRoot: string): CatalogEntry[] {
   return [
     ...collectShadcn(packageRoot),
     ...collectForms(packageRoot),
+    ...collectFilter(packageRoot),
     ...collectAi(packageRoot),
     ...collectWorkspaceShell(packageRoot),
     ...collectApps(packageRoot),
@@ -730,7 +770,11 @@ function summarizeEntry(
         readFileSync(entry.exampleSourcesPath, "utf8"),
       ).size;
     }
-  } else if (entry.layer === "forms" || entry.layer === "tasks") {
+  } else if (
+    entry.layer === "forms" ||
+    entry.layer === "filter" ||
+    entry.layer === "tasks"
+  ) {
     const mdx = entry.docsCandidates[0];
     if (mdx) {
       const converted = mdxToAgentMarkdown(readFileSync(mdx, "utf8"));
@@ -1055,7 +1099,11 @@ export function getComponent(
 ): ComponentDoc {
   const entry = findEntry(packageRoot, name, options);
   if (entry.layer === "shadcn") return showShadcn(packageRoot, entry);
-  if (entry.layer === "forms" || entry.layer === "tasks") {
+  if (
+    entry.layer === "forms" ||
+    entry.layer === "filter" ||
+    entry.layer === "tasks"
+  ) {
     return showForms(packageRoot, entry);
   }
   return showStoryDriven(packageRoot, entry);

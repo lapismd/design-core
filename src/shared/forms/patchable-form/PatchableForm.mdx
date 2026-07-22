@@ -1,0 +1,56 @@
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+} from "@storybook/addon-docs/blocks";
+import * as PatchableFormStories from "./PatchableForm.stories.svelte";
+
+<Meta of={PatchableFormStories} />
+
+# PatchableForm
+
+Dual structured + YAML form with JSON Patch proposal review. Pending changes show
+as word-aware unified diffs (form fields) or CodeMirror hunks (YAML mode). Users
+**Keep** or **Undo** each change; when nothing is pending, accepted ops commit and
+the review clears (or the base value restores if everything was undone).
+
+## Guidance
+
+### When to use
+
+- Host apps that receive validated JSON Patch proposals and need reusable Keep/Undo UX
+- Storybook demos of form + YAML review without wiring a Studio store
+
+### When not to use
+
+- Plain editing without proposals — use `StructuredForm` / `YamlBackedForm`
+- Chat proposal cards / summary bars — stay in `@stevejuma/ui/ai`
+
+See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and `FORMS.md`.
+
+## Usage
+
+<Source
+  language="html"
+  code={`<PatchableForm
+  value={data}
+  config={config}
+  review={review}
+  onReviewChange={setReview}
+  onChange={setData}
+  toYamlDiffs={toYamlDiffs}
+/>`}
+/>
+
+Use `reviewedTextField` / `reviewedStringListField` in the form config so field
+rows read `FieldReviewContext` from `PatchableForm`.
+
+Build review state with `createOrAppendJsonReview` from `@stevejuma/ui/forms`.
+
+<Primary />
+
+## Properties
+
+<Controls />

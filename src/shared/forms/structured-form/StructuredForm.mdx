@@ -1,4 +1,10 @@
-import { Meta, Canvas, Controls, Primary, Source } from "@storybook/addon-docs/blocks";
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+} from "@storybook/addon-docs/blocks";
 import * as StructuredFormStories from "./StructuredForm.stories.svelte";
 import * as StructuredFormVariations from "./StructuredForm.variations.stories.svelte";
 
@@ -26,7 +32,12 @@ See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and the shared
 
 ## Usage
 
-<Source language="html" code={"<script lang=\"ts\">\n  import { StructuredForm } from \"@stevejuma/ui/forms\";\n  import { createFormConfig, textField } from \"@stevejuma/ui/forms/core\";\n</script>\n\n<StructuredForm value={data} {config} onChange={...} />"} />
+<Source
+  language="html"
+  code={
+    '<script lang="ts">\n  import { StructuredForm } from "@stevejuma/ui/forms";\n  import { createFormConfig, textField } from "@stevejuma/ui/forms/core";\n</script>\n\n<StructuredForm value={data} {config} onChange={...} />'
+  }
+/>
 
 <Primary />
 
@@ -40,5 +51,7 @@ See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and the shared
 
 Text, segmented, and boolean fields from a typed config.
 
-<Canvas of={StructuredFormVariations.SchemaFields} meta={StructuredFormVariations} />
-
+<Canvas
+  of={StructuredFormVariations.SchemaFields}
+  meta={StructuredFormVariations}
+/>

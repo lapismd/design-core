@@ -21,9 +21,7 @@
     "docsUrl": "https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/switch.md",
     "docsFetchedAt": "2026-07-22T09:57:18.259Z",
     "docsSha256": "c957c7966d1cf7e298af5a8d06ff2b677023ef434fea5082735509a46c512f60",
-    "examplesIncluded": [
-      "Preview"
-    ],
+    "examplesIncluded": ["Preview"],
     "examplesSkipped": [],
     "docsCommit": "bf4f461d88526359d0e96e1950f637912bbeebe7",
     "docsRef": "shadcn-svelte@1.4.2",

@@ -4,7 +4,7 @@
   import FormField from "../form-field/FormField.svelte";
 
   const { Story } = defineMeta({
-    title: "UI Forms/Chip Autocomplete",
+    title: "UI Forms/Form Inputs/Chip Autocomplete",
     component: ChipAutocomplete,
     parameters: {
       docs: {
@@ -15,7 +15,6 @@
     },
   });
 </script>
-
 
 <Story
   name="With chips"
@@ -43,7 +42,9 @@
   tags={["skip-visual"]}
   parameters={{
     docs: {
-      description: { story: "Row-embedded chrome for StructuredForm / FormField." },
+      description: {
+        story: "Row-embedded chrome for StructuredForm / FormField.",
+      },
     },
   }}
 >

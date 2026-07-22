@@ -27,7 +27,9 @@
   name="Toggles placement"
   tags={["skip-visual"]}
   play={async ({ canvas }) => {
-    await userEvent.click(canvas.getByRole("button", { name: "Float AI chat" }));
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Float AI chat" }),
+    );
     await expect(canvas.getByRole("status")).toHaveTextContent("floating");
   }}
 >

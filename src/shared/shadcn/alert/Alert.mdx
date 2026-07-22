@@ -1,4 +1,11 @@
-import { Meta, Canvas, Controls, Primary, Source, Markdown } from "@storybook/addon-docs/blocks";
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+  Markdown,
+} from "@storybook/addon-docs/blocks";
 import * as AlertStories from "./Alert.stories.svelte";
 import * as AlertVariations from "./Alert.variations.stories.svelte";
 import docsBody from "./alert.docs-body.md?raw";
@@ -17,7 +24,12 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 
 ## Usage
 
-<Source language="html" code={"<script lang=\"ts\">\n  import * as Alert from \"@stevejuma/ui/shadcn/alert\";\n</script>\n\n<Alert.Root>\n  <Alert.Title>Heads up!</Alert.Title>\n  <Alert.Description>\n    You can add components to your app using the cli.\n  </Alert.Description>\n</Alert.Root>"} />
+<Source
+  language="html"
+  code={
+    '<script lang="ts">\n  import * as Alert from "@stevejuma/ui/shadcn/alert";\n</script>\n\n<Alert.Root>\n  <Alert.Title>Heads up!</Alert.Title>\n  <Alert.Description>\n    You can add components to your app using the cli.\n  </Alert.Description>\n</Alert.Root>'
+  }
+/>
 
 <Primary />
 
@@ -27,6 +39,4 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 
 ### Preview
 
-
 <Canvas of={AlertVariations.Preview} meta={AlertVariations} />
-

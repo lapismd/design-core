@@ -25,14 +25,14 @@ pnpm ui:add field
   <Field.Group>
     <Field.Field>
       <Field.Label for="name">Full name</Field.Label>
-      <Input id="name" autocomplete="off" placeholder="Evil Rabbit" />
+      <input id="name" autocomplete="off" placeholder="Evil Rabbit" />
       <Field.Description
         >This appears on invoices and emails.</Field.Description
       >
     </Field.Field>
     <Field.Field>
       <Field.Label for="username">Username</Field.Label>
-      <Input id="username" autocomplete="off" aria-invalid />
+      <input id="username" autocomplete="off" aria-invalid />
       <Field.Error>Choose another username.</Field.Error>
     </Field.Field>
     <Field.Field orientation="horizontal">
@@ -64,94 +64,102 @@ The `Field` family is designed for composing accessible forms. A typical field i
 
 ### Input
 
-
 ```html
 <script lang="ts">
-	import * as Field from "@stevejuma/ui/shadcn/field";
-	import { Input } from "@stevejuma/ui/shadcn/input";
+  import * as Field from "@stevejuma/ui/shadcn/field";
+  import { Input } from "@stevejuma/ui/shadcn/input";
 </script>
 
 <div class="w-full max-w-md">
-	<Field.Set>
-		<Field.Group>
-			<Field.Field>
-				<Field.Label for="username">Username</Field.Label>
-				<Input id="username" type="text" placeholder="Max Leiter" />
-				<Field.Description>Choose a unique username for your account.</Field.Description>
-			</Field.Field>
-			<Field.Field>
-				<Field.Label for="password">Password</Field.Label>
-				<Field.Description>Must be at least 8 characters long.</Field.Description>
-				<Input id="password" type="password" placeholder="••••••••" />
-			</Field.Field>
-		</Field.Group>
-	</Field.Set>
+  <Field.Set>
+    <Field.Group>
+      <Field.Field>
+        <Field.Label for="username">Username</Field.Label>
+        <input id="username" type="text" placeholder="Max Leiter" />
+        <Field.Description
+          >Choose a unique username for your account.</Field.Description
+        >
+      </Field.Field>
+      <Field.Field>
+        <Field.Label for="password">Password</Field.Label>
+        <Field.Description
+          >Must be at least 8 characters long.</Field.Description
+        >
+        <input id="password" type="password" placeholder="••••••••" />
+      </Field.Field>
+    </Field.Group>
+  </Field.Set>
 </div>
 ```
 
 ### Textarea
 
-
 ```html
 <script lang="ts">
-	import * as Field from "@stevejuma/ui/shadcn/field";
-	import { Textarea } from "@stevejuma/ui/shadcn/textarea";
+  import * as Field from "@stevejuma/ui/shadcn/field";
+  import { Textarea } from "@stevejuma/ui/shadcn/textarea";
 </script>
 
 <div class="w-full max-w-md">
-	<Field.Set>
-		<Field.Group>
-			<Field.Field>
-				<Field.Label for="feedback">Feedback</Field.Label>
-				<Textarea id="feedback" placeholder="Your feedback helps us improve..." rows={4} />
-				<Field.Description>Share your thoughts about our service.</Field.Description>
-			</Field.Field>
-		</Field.Group>
-	</Field.Set>
+  <Field.Set>
+    <Field.Group>
+      <Field.Field>
+        <Field.Label for="feedback">Feedback</Field.Label>
+        <textarea
+          id="feedback"
+          placeholder="Your feedback helps us improve..."
+          rows="{4}"
+        />
+        <Field.Description
+          >Share your thoughts about our service.</Field.Description
+        >
+      </Field.Field>
+    </Field.Group>
+  </Field.Set>
 </div>
 ```
 
 ### Select
 
-
 ```html
 <script lang="ts">
-	import * as Field from "@stevejuma/ui/shadcn/field";
-	import * as Select from "@stevejuma/ui/shadcn/select";
+  import * as Field from "@stevejuma/ui/shadcn/field";
+  import * as Select from "@stevejuma/ui/shadcn/select";
 
-	let department = $state<string>();
+  let department = $state<string>();
 
-	const departments = [
-		{ value: "engineering", label: "Engineering" },
-		{ value: "design", label: "Design" },
-		{ value: "marketing", label: "Marketing" },
-		{ value: "sales", label: "Sales" },
-		{ value: "support", label: "Customer Support" },
-		{ value: "hr", label: "Human Resources" },
-		{ value: "finance", label: "Finance" },
-		{ value: "operations", label: "Operations" },
-	];
+  const departments = [
+    { value: "engineering", label: "Engineering" },
+    { value: "design", label: "Design" },
+    { value: "marketing", label: "Marketing" },
+    { value: "sales", label: "Sales" },
+    { value: "support", label: "Customer Support" },
+    { value: "hr", label: "Human Resources" },
+    { value: "finance", label: "Finance" },
+    { value: "operations", label: "Operations" },
+  ];
 
-	const departmentLabel = $derived(
-		departments.find((d) => d.value === department)?.label ?? "Choose department"
-	);
+  const departmentLabel = $derived(
+    departments.find((d) => d.value === department)?.label ??
+      "Choose department",
+  );
 </script>
 
 <div class="w-full max-w-md">
-	<Field.Field>
-		<Field.Label for="department">Department</Field.Label>
-		<Select.Root type="single" bind:value={department}>
-			<Select.Trigger id="department">
-				{departmentLabel}
-			</Select.Trigger>
-			<Select.Content>
-				{#each departments as department (department.value)}
-					<Select.Item {...department} />
-				{/each}
-			</Select.Content>
-		</Select.Root>
-		<Field.Description>Select your department or area of work.</Field.Description>
-	</Field.Field>
+  <Field.Field>
+    <Field.Label for="department">Department</Field.Label>
+    <Select.Root type="single" bind:value="{department}">
+      <Select.Trigger id="department"> {departmentLabel} </Select.Trigger>
+      <Select.Content>
+        {#each departments as department (department.value)}
+        <Select.Item {...department} />
+        {/each}
+      </Select.Content>
+    </Select.Root>
+    <Field.Description
+      >Select your department or area of work.</Field.Description
+    >
+  </Field.Field>
 </div>
 ```
 
@@ -159,92 +167,102 @@ The `Field` family is designed for composing accessible forms. A typical field i
 
 ### Fieldset
 
-
 ```html
 <script lang="ts">
-	import * as Field from "@stevejuma/ui/shadcn/field";
-	import { Input } from "@stevejuma/ui/shadcn/input";
+  import * as Field from "@stevejuma/ui/shadcn/field";
+  import { Input } from "@stevejuma/ui/shadcn/input";
 </script>
 
 <div class="w-full max-w-md space-y-6">
-	<Field.Set>
-		<Field.Legend>Address Information</Field.Legend>
-		<Field.Description>We need your address to deliver your order.</Field.Description>
-		<Field.Group>
-			<Field.Field>
-				<Field.Label for="street">Street Address</Field.Label>
-				<Input id="street" type="text" placeholder="123 Main St" />
-			</Field.Field>
-			<div class="grid grid-cols-2 gap-4">
-				<Field.Field>
-					<Field.Label for="city">City</Field.Label>
-					<Input id="city" type="text" placeholder="New York" />
-				</Field.Field>
-				<Field.Field>
-					<Field.Label for="zip">Postal Code</Field.Label>
-					<Input id="zip" type="text" placeholder="90502" />
-				</Field.Field>
-			</div>
-		</Field.Group>
-	</Field.Set>
+  <Field.Set>
+    <Field.Legend>Address Information</Field.Legend>
+    <Field.Description
+      >We need your address to deliver your order.</Field.Description
+    >
+    <Field.Group>
+      <Field.Field>
+        <Field.Label for="street">Street Address</Field.Label>
+        <input id="street" type="text" placeholder="123 Main St" />
+      </Field.Field>
+      <div class="grid grid-cols-2 gap-4">
+        <Field.Field>
+          <Field.Label for="city">City</Field.Label>
+          <input id="city" type="text" placeholder="New York" />
+        </Field.Field>
+        <Field.Field>
+          <Field.Label for="zip">Postal Code</Field.Label>
+          <input id="zip" type="text" placeholder="90502" />
+        </Field.Field>
+      </div>
+    </Field.Group>
+  </Field.Set>
 </div>
 ```
 
 ### Checkbox
 
-
 ```html
 <script lang="ts">
-	import * as Field from "@stevejuma/ui/shadcn/field";
-	import { Checkbox } from "@stevejuma/ui/shadcn/checkbox";
+  import * as Field from "@stevejuma/ui/shadcn/field";
+  import { Checkbox } from "@stevejuma/ui/shadcn/checkbox";
 </script>
 
 <div class="w-full max-w-md">
-	<Field.Group>
-		<Field.Set>
-			<Field.Legend variant="label">Show these items on the desktop</Field.Legend>
-			<Field.Description>Select the items you want to show on the desktop.</Field.Description>
-			<Field.Group class="gap-3">
-				<Field.Field orientation="horizontal">
-					<Checkbox id="finder-pref-9k2-hard-disks-ljj" checked />
-					<Field.Label for="finder-pref-9k2-hard-disks-ljj" class="font-normal">
-						Hard disks
-					</Field.Label>
-				</Field.Field>
-				<Field.Field orientation="horizontal">
-					<Checkbox id="finder-pref-9k2-external-disks-1yg" />
-					<Field.Label for="finder-pref-9k2-external-disks-1yg" class="font-normal">
-						External disks
-					</Field.Label>
-				</Field.Field>
-				<Field.Field orientation="horizontal">
-					<Checkbox id="finder-pref-9k2-cds-dvds-fzt" />
-					<Field.Label for="finder-pref-9k2-cds-dvds-fzt" class="font-normal">
-						CDs, DVDs, and iPods
-					</Field.Label>
-				</Field.Field>
-				<Field.Field orientation="horizontal">
-					<Checkbox id="finder-pref-9k2-connected-servers-6l2" />
-					<Field.Label for="finder-pref-9k2-connected-servers-6l2" class="font-normal">
-						Connected servers
-					</Field.Label>
-				</Field.Field>
-			</Field.Group>
-		</Field.Set>
-		<Field.Separator />
-		<Field.Field orientation="horizontal">
-			<Checkbox id="finder-pref-9k2-sync-folders-nep" checked />
-			<Field.Content>
-				<Field.Label for="finder-pref-9k2-sync-folders-nep">
-					Sync Desktop & Documents folders
-				</Field.Label>
-				<Field.Description>
-					Your Desktop & Documents folders are being synced with iCloud Drive. You can
-					access them from other devices.
-				</Field.Description>
-			</Field.Content>
-		</Field.Field>
-	</Field.Group>
+  <Field.Group>
+    <Field.Set>
+      <Field.Legend variant="label"
+        >Show these items on the desktop</Field.Legend
+      >
+      <Field.Description
+        >Select the items you want to show on the desktop.</Field.Description
+      >
+      <Field.Group class="gap-3">
+        <Field.Field orientation="horizontal">
+          <Checkbox id="finder-pref-9k2-hard-disks-ljj" checked />
+          <Field.Label for="finder-pref-9k2-hard-disks-ljj" class="font-normal">
+            Hard disks
+          </Field.Label>
+        </Field.Field>
+        <Field.Field orientation="horizontal">
+          <Checkbox id="finder-pref-9k2-external-disks-1yg" />
+          <Field.Label
+            for="finder-pref-9k2-external-disks-1yg"
+            class="font-normal"
+          >
+            External disks
+          </Field.Label>
+        </Field.Field>
+        <Field.Field orientation="horizontal">
+          <Checkbox id="finder-pref-9k2-cds-dvds-fzt" />
+          <Field.Label for="finder-pref-9k2-cds-dvds-fzt" class="font-normal">
+            CDs, DVDs, and iPods
+          </Field.Label>
+        </Field.Field>
+        <Field.Field orientation="horizontal">
+          <Checkbox id="finder-pref-9k2-connected-servers-6l2" />
+          <Field.Label
+            for="finder-pref-9k2-connected-servers-6l2"
+            class="font-normal"
+          >
+            Connected servers
+          </Field.Label>
+        </Field.Field>
+      </Field.Group>
+    </Field.Set>
+    <Field.Separator />
+    <Field.Field orientation="horizontal">
+      <Checkbox id="finder-pref-9k2-sync-folders-nep" checked />
+      <Field.Content>
+        <Field.Label for="finder-pref-9k2-sync-folders-nep">
+          Sync Desktop & Documents folders
+        </Field.Label>
+        <Field.Description>
+          Your Desktop & Documents folders are being synced with iCloud Drive.
+          You can access them from other devices.
+        </Field.Description>
+      </Field.Content>
+    </Field.Field>
+  </Field.Group>
 </div>
 ```
 
@@ -252,24 +270,23 @@ The `Field` family is designed for composing accessible forms. A typical field i
 
 ### Switch
 
-
 ```html
 <script lang="ts">
-	import * as Field from "@stevejuma/ui/shadcn/field";
-	import { Switch } from "@stevejuma/ui/shadcn/switch";
+  import * as Field from "@stevejuma/ui/shadcn/field";
+  import { Switch } from "@stevejuma/ui/shadcn/switch";
 </script>
 
 <div class="w-full max-w-md">
-	<Field.Field orientation="horizontal">
-		<Field.Content>
-			<Field.Label for="2fa">Multi-factor authentication</Field.Label>
-			<Field.Description>
-				Enable multi-factor authentication. If you do not have a two-factor device, you can
-				use a one-time code sent to your email.
-			</Field.Description>
-		</Field.Content>
-		<Switch id="2fa" />
-	</Field.Field>
+  <Field.Field orientation="horizontal">
+    <Field.Content>
+      <Field.Label for="2fa">Multi-factor authentication</Field.Label>
+      <Field.Description>
+        Enable multi-factor authentication. If you do not have a two-factor
+        device, you can use a one-time code sent to your email.
+      </Field.Description>
+    </Field.Content>
+    <Switch id="2fa" />
+  </Field.Field>
 </div>
 ```
 
@@ -283,48 +300,50 @@ Stack `Field` components with `Field.Group`. Add `Field.Separator` to divide the
 
 ```html
 <script lang="ts">
-	import * as Field from "@stevejuma/ui/shadcn/field";
-	import { Checkbox } from "@stevejuma/ui/shadcn/checkbox";
+  import * as Field from "@stevejuma/ui/shadcn/field";
+  import { Checkbox } from "@stevejuma/ui/shadcn/checkbox";
 </script>
 
 <div class="w-full max-w-md">
-	<Field.Group>
-		<Field.Set>
-			<Field.Label>Responses</Field.Label>
-			<Field.Description>
-				Get notified when ChatGPT responds to requests that take time, like research or
-				image generation.
-			</Field.Description>
-			<Field.Group data-slot="checkbox-group">
-				<Field.Field orientation="horizontal">
-					<Checkbox id="push" checked disabled />
-					<Field.Label for="push" class="font-normal">Push notifications</Field.Label>
-				</Field.Field>
-			</Field.Group>
-		</Field.Set>
-		<Field.Separator />
-		<Field.Set>
-			<Field.Label>Tasks</Field.Label>
-			<Field.Description>
-				Get notified when tasks you've created have updates.
-				<a href="#/">Manage tasks</a>
-			</Field.Description>
-			<Field.Group data-slot="checkbox-group">
-				<Field.Field orientation="horizontal">
-					<Checkbox id="push-tasks" />
-					<Field.Label for="push-tasks" class="font-normal">
-						Push notifications
-					</Field.Label>
-				</Field.Field>
-				<Field.Field orientation="horizontal">
-					<Checkbox id="email-tasks" />
-					<Field.Label for="email-tasks" class="font-normal">
-						Email notifications
-					</Field.Label>
-				</Field.Field>
-			</Field.Group>
-		</Field.Set>
-	</Field.Group>
+  <Field.Group>
+    <Field.Set>
+      <Field.Label>Responses</Field.Label>
+      <Field.Description>
+        Get notified when ChatGPT responds to requests that take time, like
+        research or image generation.
+      </Field.Description>
+      <Field.Group data-slot="checkbox-group">
+        <Field.Field orientation="horizontal">
+          <Checkbox id="push" checked disabled />
+          <Field.Label for="push" class="font-normal"
+            >Push notifications</Field.Label
+          >
+        </Field.Field>
+      </Field.Group>
+    </Field.Set>
+    <Field.Separator />
+    <Field.Set>
+      <Field.Label>Tasks</Field.Label>
+      <Field.Description>
+        Get notified when tasks you've created have updates.
+        <a href="#/">Manage tasks</a>
+      </Field.Description>
+      <Field.Group data-slot="checkbox-group">
+        <Field.Field orientation="horizontal">
+          <Checkbox id="push-tasks" />
+          <Field.Label for="push-tasks" class="font-normal">
+            Push notifications
+          </Field.Label>
+        </Field.Field>
+        <Field.Field orientation="horizontal">
+          <Checkbox id="email-tasks" />
+          <Field.Label for="email-tasks" class="font-normal">
+            Email notifications
+          </Field.Label>
+        </Field.Field>
+      </Field.Group>
+    </Field.Set>
+  </Field.Group>
 </div>
 ```
 
@@ -336,52 +355,52 @@ Stack `Field` components with `Field.Group`. Add `Field.Separator` to divide the
 
 ```html
 <script lang="ts">
-	import * as Field from "@stevejuma/ui/shadcn/field";
-	import { Button } from "@stevejuma/ui/shadcn/button";
-	import { Input } from "@stevejuma/ui/shadcn/input";
-	import { Textarea } from "@stevejuma/ui/shadcn/textarea";
+  import * as Field from "@stevejuma/ui/shadcn/field";
+  import { Button } from "@stevejuma/ui/shadcn/button";
+  import { Input } from "@stevejuma/ui/shadcn/input";
+  import { Textarea } from "@stevejuma/ui/shadcn/textarea";
 </script>
 
 <div class="w-full max-w-4xl">
-	<form>
-		<Field.Set>
-			<Field.Legend>Profile</Field.Legend>
-			<Field.Description>Fill in your profile information.</Field.Description>
-			<Field.Separator />
-			<Field.Group>
-				<Field.Field orientation="responsive">
-					<Field.Content>
-						<Field.Label for="name">Name</Field.Label>
-						<Field.Description>
-							Provide your full name for identification
-						</Field.Description>
-					</Field.Content>
-					<Input id="name" placeholder="Evil Rabbit" required />
-				</Field.Field>
-				<Field.Separator />
-				<Field.Field orientation="responsive">
-					<Field.Content>
-						<Field.Label for="message">Message</Field.Label>
-						<Field.Description>
-							You can write your message here. Keep it short, preferably under 100
-							characters.
-						</Field.Description>
-					</Field.Content>
-					<Textarea
-						id="message"
-						placeholder="Hello, world!"
-						required
-						class="min-h-[100px] resize-none sm:min-w-[300px]"
-					/>
-				</Field.Field>
-				<Field.Separator />
-				<Field.Field orientation="responsive">
-					<Button type="submit">Submit</Button>
-					<Button type="button" variant="outline">Cancel</Button>
-				</Field.Field>
-			</Field.Group>
-		</Field.Set>
-	</form>
+  <form>
+    <Field.Set>
+      <Field.Legend>Profile</Field.Legend>
+      <Field.Description>Fill in your profile information.</Field.Description>
+      <Field.Separator />
+      <Field.Group>
+        <Field.Field orientation="responsive">
+          <Field.Content>
+            <Field.Label for="name">Name</Field.Label>
+            <Field.Description>
+              Provide your full name for identification
+            </Field.Description>
+          </Field.Content>
+          <input id="name" placeholder="Evil Rabbit" required />
+        </Field.Field>
+        <Field.Separator />
+        <Field.Field orientation="responsive">
+          <Field.Content>
+            <Field.Label for="message">Message</Field.Label>
+            <Field.Description>
+              You can write your message here. Keep it short, preferably under
+              100 characters.
+            </Field.Description>
+          </Field.Content>
+          <textarea
+            id="message"
+            placeholder="Hello, world!"
+            required
+            class="min-h-[100px] resize-none sm:min-w-[300px]"
+          />
+        </Field.Field>
+        <Field.Separator />
+        <Field.Field orientation="responsive">
+          <button type="submit">Submit</button>
+          <button type="button" variant="outline">Cancel</button>
+        </Field.Field>
+      </Field.Group>
+    </Field.Set>
+  </form>
 </div>
 ```
 

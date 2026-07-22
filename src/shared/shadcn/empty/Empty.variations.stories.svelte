@@ -43,7 +43,8 @@
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "Use the `border` utility class to create an outline empty state.",
+        story:
+          "Use the `border` utility class to create an outline empty state.",
       },
       source: {
         code: exampleSources.Outline,
@@ -68,7 +69,8 @@
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "Use the `bg-*` and `bg-gradient-*` utilities to add a background to the empty state.",
+        story:
+          "Use the `bg-*` and `bg-gradient-*` utilities to add a background to the empty state.",
       },
       source: {
         code: exampleSources.Background,

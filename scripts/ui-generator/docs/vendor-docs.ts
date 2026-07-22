@@ -197,7 +197,9 @@ export function refreshDocsVendor(args: {
       path.join(vendorRoot, "PIN.json"),
       `${JSON.stringify(pin, null, 2)}\n`,
     );
-    log.ok(`Vendored docs sources → ${VENDOR_DOCS_RELATIVE} @ ${commit.slice(0, 7)}`);
+    log.ok(
+      `Vendored docs sources → ${VENDOR_DOCS_RELATIVE} @ ${commit.slice(0, 7)}`,
+    );
     return pin;
   } finally {
     rmSync(tmp, { recursive: true, force: true });

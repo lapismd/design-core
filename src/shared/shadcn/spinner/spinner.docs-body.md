@@ -47,14 +47,14 @@ Use the `size-*` utility class to change the size of the spinner.
 
 ```html
 <script lang="ts">
-	import { Spinner } from "@stevejuma/ui/shadcn/spinner";
+  import { Spinner } from "@stevejuma/ui/shadcn/spinner";
 </script>
 
 <div class="flex items-center gap-6">
-	<Spinner class="size-3" />
-	<Spinner class="size-4" />
-	<Spinner class="size-6" />
-	<Spinner class="size-8" />
+  <Spinner class="size-3" />
+  <Spinner class="size-4" />
+  <Spinner class="size-6" />
+  <Spinner class="size-8" />
 </div>
 ```
 
@@ -64,15 +64,15 @@ Use the `text-*` utility class to change the color of the spinner.
 
 ```html
 <script lang="ts">
-	import { Spinner } from "@stevejuma/ui/shadcn/spinner";
+  import { Spinner } from "@stevejuma/ui/shadcn/spinner";
 </script>
 
 <div class="flex items-center gap-6">
-	<Spinner class="size-6 text-red-500" />
-	<Spinner class="size-6 text-green-500" />
-	<Spinner class="size-6 text-blue-500" />
-	<Spinner class="size-6 text-yellow-500" />
-	<Spinner class="size-6 text-purple-500" />
+  <Spinner class="size-6 text-red-500" />
+  <Spinner class="size-6 text-green-500" />
+  <Spinner class="size-6 text-blue-500" />
+  <Spinner class="size-6 text-yellow-500" />
+  <Spinner class="size-6 text-purple-500" />
 </div>
 ```
 
@@ -82,23 +82,23 @@ Add a spinner to a button to indicate a loading state. The `<Button />` will han
 
 ```html
 <script lang="ts">
-	import { Button } from "@stevejuma/ui/shadcn/button";
-	import { Spinner } from "@stevejuma/ui/shadcn/spinner";
+  import { Button } from "@stevejuma/ui/shadcn/button";
+  import { Spinner } from "@stevejuma/ui/shadcn/spinner";
 </script>
 
 <div class="flex flex-col items-center gap-4">
-	<Button disabled size="sm">
-		<Spinner />
-		Loading...
-	</Button>
-	<Button variant="outline" disabled size="sm">
-		<Spinner />
-		Please wait
-	</Button>
-	<Button variant="secondary" disabled size="sm">
-		<Spinner />
-		Processing
-	</Button>
+  <button disabled size="sm">
+    <Spinner />
+    Loading...
+  </button>
+  <button variant="outline" disabled size="sm">
+    <Spinner />
+    Please wait
+  </button>
+  <button variant="secondary" disabled size="sm">
+    <Spinner />
+    Processing
+  </button>
 </div>
 ```
 
@@ -108,23 +108,23 @@ You can also use a spinner inside a badge.
 
 ```html
 <script lang="ts">
-	import { Badge } from "@stevejuma/ui/shadcn/badge";
-	import { Spinner } from "@stevejuma/ui/shadcn/spinner";
+  import { Badge } from "@stevejuma/ui/shadcn/badge";
+  import { Spinner } from "@stevejuma/ui/shadcn/spinner";
 </script>
 
 <div class="flex items-center gap-2">
-	<Badge>
-		<Spinner />
-		Syncing
-	</Badge>
-	<Badge variant="secondary">
-		<Spinner />
-		Updating
-	</Badge>
-	<Badge variant="outline">
-		<Spinner />
-		Loading
-	</Badge>
+  <Badge>
+    <Spinner />
+    Syncing
+  </Badge>
+  <Badge variant="secondary">
+    <Spinner />
+    Updating
+  </Badge>
+  <Badge variant="outline">
+    <Spinner />
+    Loading
+  </Badge>
 </div>
 ```
 
@@ -134,54 +134,53 @@ Input Group can have spinners inside `<InputGroup.Addon>`.
 
 ```html
 <script lang="ts">
-	import * as InputGroup from "@stevejuma/ui/shadcn/input-group";
-	import { Spinner } from "@stevejuma/ui/shadcn/spinner";
-	import ArrowUpIcon from "@lucide/svelte/icons/arrow-up";
+  import * as InputGroup from "@stevejuma/ui/shadcn/input-group";
+  import { Spinner } from "@stevejuma/ui/shadcn/spinner";
+  import ArrowUpIcon from "@lucide/svelte/icons/arrow-up";
 </script>
 
 <div class="flex w-full max-w-md flex-col gap-4">
-	<InputGroup.Root>
-		<InputGroup.Input placeholder="Send a message..." disabled />
-		<InputGroup.Addon align="inline-end">
-			<Spinner />
-		</InputGroup.Addon>
-	</InputGroup.Root>
-	<InputGroup.Root>
-		<InputGroup.Textarea placeholder="Send a message..." disabled />
-		<InputGroup.Addon align="block-end">
-			<Spinner /> Validating...
-			<InputGroup.Button class="ms-auto" variant="default">
-				<ArrowUpIcon />
-				<span class="sr-only">Send</span>
-			</InputGroup.Button>
-		</InputGroup.Addon>
-	</InputGroup.Root>
+  <InputGroup.Root>
+    <InputGroup.Input placeholder="Send a message..." disabled />
+    <InputGroup.Addon align="inline-end">
+      <Spinner />
+    </InputGroup.Addon>
+  </InputGroup.Root>
+  <InputGroup.Root>
+    <InputGroup.Textarea placeholder="Send a message..." disabled />
+    <InputGroup.Addon align="block-end">
+      <Spinner /> Validating...
+      <InputGroup.Button class="ms-auto" variant="default">
+        <ArrowUpIcon />
+        <span class="sr-only">Send</span>
+      </InputGroup.Button>
+    </InputGroup.Addon>
+  </InputGroup.Root>
 </div>
 ```
 
 ### Empty
 
-
 ```html
 <script lang="ts">
-	import * as Empty from "@stevejuma/ui/shadcn/empty";
-	import { Spinner } from "@stevejuma/ui/shadcn/spinner";
-	import { Button } from "@stevejuma/ui/shadcn/button";
+  import * as Empty from "@stevejuma/ui/shadcn/empty";
+  import { Spinner } from "@stevejuma/ui/shadcn/spinner";
+  import { Button } from "@stevejuma/ui/shadcn/button";
 </script>
 
 <Empty.Root class="w-full border md:p-6">
-	<Empty.Header>
-		<Empty.Media variant="icon">
-			<Spinner />
-		</Empty.Media>
-		<Empty.Title>Processing your request</Empty.Title>
-		<Empty.Description>
-			Please wait while we process your request. Do not refresh the page.
-		</Empty.Description>
-	</Empty.Header>
-	<Empty.Content>
-		<Button variant="outline" size="sm">Cancel</Button>
-	</Empty.Content>
+  <Empty.Header>
+    <Empty.Media variant="icon">
+      <Spinner />
+    </Empty.Media>
+    <Empty.Title>Processing your request</Empty.Title>
+    <Empty.Description>
+      Please wait while we process your request. Do not refresh the page.
+    </Empty.Description>
+  </Empty.Header>
+  <Empty.Content>
+    <button variant="outline" size="sm">Cancel</button>
+  </Empty.Content>
 </Empty.Root>
 ```
 

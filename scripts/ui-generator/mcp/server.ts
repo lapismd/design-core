@@ -32,7 +32,10 @@ function parseServerArgs(argv: string[]) {
   if (process.env.UI_DOCS_HOST) host = process.env.UI_DOCS_HOST;
   if (process.env.UI_DOCS_PORT) port = Number(process.env.UI_DOCS_PORT);
   if (process.env.UI_DOCS_BASE_URL) baseUrl = process.env.UI_DOCS_BASE_URL;
-  if (process.env.UI_DOCS_CACHE === "0" || process.env.UI_DOCS_CACHE === "false") {
+  if (
+    process.env.UI_DOCS_CACHE === "0" ||
+    process.env.UI_DOCS_CACHE === "false"
+  ) {
     noCache = true;
   }
   return { host, port, noCache, baseUrl };

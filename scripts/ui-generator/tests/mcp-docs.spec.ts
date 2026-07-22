@@ -1,10 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  mkdtempSync,
-  writeFileSync,
-  mkdirSync,
-  rmSync,
-} from "node:fs";
+import { mkdtempSync, writeFileSync, mkdirSync, rmSync } from "node:fs";
 import path from "node:path";
 import { tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
@@ -162,7 +157,9 @@ describe("llms docs service", () => {
     expect(indexMd.status).toBe(200);
     expect(indexMd.contentType).toBe("text/html; charset=utf-8");
     expect(indexMd.body).toContain("<h1>@stevejuma/ui</h1>");
-    expect(indexMd.body).toContain('href="http://127.0.0.1:9010/llms/shadcn/button.md"');
+    expect(indexMd.body).toContain(
+      'href="http://127.0.0.1:9010/llms/shadcn/button.md"',
+    );
   });
 
   it("serves guide topics and components.json manifest", () => {

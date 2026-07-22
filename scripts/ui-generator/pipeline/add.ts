@@ -182,7 +182,9 @@ export async function runAdd(options: {
       }
       log.ok("Existing non-target snapshot hashes unchanged");
     } else {
-      log.warn("Skipping visual suite (--skip-visual); update snapshots explicitly afterward");
+      log.warn(
+        "Skipping visual suite (--skip-visual); update snapshots explicitly afterward",
+      );
     }
     void assertSnapshotManifestUnchanged;
 

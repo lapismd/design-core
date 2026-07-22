@@ -29,7 +29,9 @@
     const box = canvas.getByPlaceholderText("Ask the assistant…");
     await userEvent.type(box, "Shorten the summary");
     await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
-    await expect(canvas.getByRole("status")).toHaveTextContent("Shorten the summary");
+    await expect(canvas.getByRole("status")).toHaveTextContent(
+      "Shorten the summary",
+    );
   }}
 >
   {#snippet template()}

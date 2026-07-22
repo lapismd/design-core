@@ -121,7 +121,8 @@
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "Input groups also work with textarea components. Use `block-start` or `block-end` for alignment.",
+        story:
+          "Input groups also work with textarea components. Use `block-start` or `block-end` for alignment.",
       },
       source: {
         code: exampleSources.Textarea,
@@ -196,7 +197,8 @@
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "Pair input groups with dropdown menus for complex interactions.",
+        story:
+          "Pair input groups with dropdown menus for complex interactions.",
       },
       source: {
         code: exampleSources.Dropdown,
@@ -221,7 +223,8 @@
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "Add the `data-slot=\"input-group-control\"` attribute to your custom input for automatic behavior and focus state handling.\n\nNo style is applied to the custom input. Apply your own styles using the `class` prop.",
+        story:
+          'Add the `data-slot="input-group-control"` attribute to your custom input for automatic behavior and focus state handling.\n\nNo style is applied to the custom input. Apply your own styles using the `class` prop.',
       },
       source: {
         code: exampleSources.CustomInput,

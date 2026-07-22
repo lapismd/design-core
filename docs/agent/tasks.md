@@ -55,4 +55,3 @@ Chrome MCP + `reference:ingest:delta` for live refresh (see
 `reference:auth` → `reference:bootstrap` → `reference:capture:delta` →
 `reference:verify`. Without a live session, `reference:migrate:delta` bootstraps
 from prior `screenshots/browser/` shots.
-

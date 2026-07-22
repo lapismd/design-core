@@ -26,7 +26,6 @@
       canvas.getByRole("button", { name: "Create document" }),
     ).toBeVisible();
   }}
-
   tags={["visual-approved"]}
 >
   {#snippet template()}

@@ -112,7 +112,10 @@ function sanitizeExampleProse(prose: string): string {
     if (/^##\s+(\[)?(Installation|Usage|Examples)\b/i.test(line.trim())) break;
     kept.push(line);
   }
-  return kept.join("\n").replace(/\n{3,}/g, "\n\n").trim();
+  return kept
+    .join("\n")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
 }
 
 function rewriteDocsMarkdown(
@@ -170,12 +173,15 @@ export function alignComponentThemeDocs(
   const snippet = extractThemeCustomProperties(themeCss, "--sidebar");
   if (!snippet) return markdown;
 
-  return markdown.replace(/```css[^\n]*\n([\s\S]*?)```/g, (full, body: string) => {
-    if (!/--sidebar\s*:/.test(body)) return full;
-    // Keep width-only / non-theme fences alone.
-    if (!/--sidebar-foreground\s*:/.test(body)) return full;
-    return `\`\`\`css\n${snippet}\n\`\`\``;
-  });
+  return markdown.replace(
+    /```css[^\n]*\n([\s\S]*?)```/g,
+    (full, body: string) => {
+      if (!/--sidebar\s*:/.test(body)) return full;
+      // Keep width-only / non-theme fences alone.
+      if (!/--sidebar-foreground\s*:/.test(body)) return full;
+      return `\`\`\`css\n${snippet}\n\`\`\``;
+    },
+  );
 }
 
 /** Pull `:root` + `.dark` declarations whose names start with `prefix`. */
@@ -406,8 +412,7 @@ function emitExamplesStories(args: {
     .join("\n");
 
   // Sidebar demos need a tall host: Provider is height:100%, so plain p-4 collapses them.
-  const wrapperClass =
-    args.component === "sidebar" ? "h-[480px] p-0" : "p-4";
+  const wrapperClass = args.component === "sidebar" ? "h-[480px] p-0" : "p-4";
 
   const stories = examples
     .map((ex) => {
@@ -515,9 +520,7 @@ ${prose}
   const guideImport = guideBody
     ? `import docsBody from ${JSON.stringify(args.docsBodyImport)};\n`
     : "";
-  const guideSection = guideBody
-    ? `\n<Markdown>{docsBody}</Markdown>\n`
-    : "";
+  const guideSection = guideBody ? `\n<Markdown>{docsBody}</Markdown>\n` : "";
 
   return `import { Meta, Canvas, Controls, Primary, Source, Markdown } from "@storybook/addon-docs/blocks";
 import * as ${pascal}Stories from "./${pascal}.stories.svelte";

@@ -61,7 +61,13 @@
     <Resizable.PaneGroup direction="horizontal" data-ui-part="split">
       <Resizable.Pane defaultSize={55} minSize={30} data-ui-part="pane">
         <div data-ui-part="form-scroll">
-          <CvWorkspaceForm bind:value bind:tab bind:yamlMode {collapseAll} {onChange} />
+          <CvWorkspaceForm
+            bind:value
+            bind:tab
+            bind:yamlMode
+            {collapseAll}
+            {onChange}
+          />
         </div>
       </Resizable.Pane>
       <Resizable.Handle withHandle />
@@ -77,7 +83,13 @@
     </Resizable.PaneGroup>
   {:else}
     <div data-ui-part="form-scroll">
-      <CvWorkspaceForm bind:value bind:tab bind:yamlMode {collapseAll} {onChange} />
+      <CvWorkspaceForm
+        bind:value
+        bind:tab
+        bind:yamlMode
+        {collapseAll}
+        {onChange}
+      />
     </div>
   {/if}
 </div>
@@ -103,7 +115,9 @@
     overflow: hidden;
   }
 
-  :global([data-ui-component="cv-workspace-body"] [data-ui-part="form-scroll"]) {
+  :global(
+      [data-ui-component="cv-workspace-body"] [data-ui-part="form-scroll"]
+    ) {
     min-height: 0;
     flex: 1 1 auto;
     overflow: auto;

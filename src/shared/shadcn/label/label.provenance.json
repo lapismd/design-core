@@ -21,9 +21,7 @@
     "docsUrl": "https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/label.md",
     "docsFetchedAt": "2026-07-22T09:57:18.223Z",
     "docsSha256": "216d2eb6e70985abcbb3664ffda192348b6238c1dac85c2aad79dc2a1692124d",
-    "examplesIncluded": [
-      "Preview"
-    ],
+    "examplesIncluded": ["Preview"],
     "examplesSkipped": [],
     "docsCommit": "bf4f461d88526359d0e96e1950f637912bbeebe7",
     "docsRef": "shadcn-svelte@1.4.2",

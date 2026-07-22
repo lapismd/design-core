@@ -21,120 +21,112 @@ pnpm ui:add button
   import { Button } from "@stevejuma/ui/shadcn/button";
 </script>
 
-<Button variant="outline">Button</Button>
+<button variant="outline">Button</button>
 ```
 
 ## Examples
 
 ### Size
 
-
 ```html
 <script lang="ts">
-	import ArrowUpRightIcon from "@lucide/svelte/icons/arrow-up-right";
-	import { Button } from "@stevejuma/ui/shadcn/button";
+  import ArrowUpRightIcon from "@lucide/svelte/icons/arrow-up-right";
+  import { Button } from "@stevejuma/ui/shadcn/button";
 </script>
 
 <div class="flex flex-col items-start gap-8 sm:flex-row">
-	<div class="flex items-start gap-2">
-		<Button size="sm" variant="outline">Small</Button>
-		<Button size="icon-sm" aria-label="Submit" variant="outline">
-			<ArrowUpRightIcon />
-		</Button>
-	</div>
-	<div class="flex items-start gap-2">
-		<Button variant="outline">Default</Button>
-		<Button size="icon" aria-label="Submit" variant="outline">
-			<ArrowUpRightIcon />
-		</Button>
-	</div>
-	<div class="flex items-start gap-2">
-		<Button variant="outline" size="lg">Large</Button>
-		<Button size="icon-lg" aria-label="Submit" variant="outline">
-			<ArrowUpRightIcon />
-		</Button>
-	</div>
+  <div class="flex items-start gap-2">
+    <button size="sm" variant="outline">Small</button>
+    <button size="icon-sm" aria-label="Submit" variant="outline">
+      <ArrowUpRightIcon />
+    </button>
+  </div>
+  <div class="flex items-start gap-2">
+    <button variant="outline">Default</button>
+    <button size="icon" aria-label="Submit" variant="outline">
+      <ArrowUpRightIcon />
+    </button>
+  </div>
+  <div class="flex items-start gap-2">
+    <button variant="outline" size="lg">Large</button>
+    <button size="icon-lg" aria-label="Submit" variant="outline">
+      <ArrowUpRightIcon />
+    </button>
+  </div>
 </div>
 ```
 
 ### Default
 
-
 ```html
 <script lang="ts">
-	import { Button } from "@stevejuma/ui/shadcn/button";
+  import { Button } from "@stevejuma/ui/shadcn/button";
 </script>
 
-<Button>Button</Button>
+<button>Button</button>
 ```
 
 ### Outline
 
-
 ```html
 <script lang="ts">
-	import { Button } from "@stevejuma/ui/shadcn/button";
+  import { Button } from "@stevejuma/ui/shadcn/button";
 </script>
 
-<Button variant="outline">Outline</Button>
+<button variant="outline">Outline</button>
 ```
 
 ### Secondary
 
-
 ```html
 <script lang="ts">
-	import { Button } from "@stevejuma/ui/shadcn/button";
+  import { Button } from "@stevejuma/ui/shadcn/button";
 </script>
 
-<Button variant="secondary">Secondary</Button>
+<button variant="secondary">Secondary</button>
 ```
 
 ### Ghost
 
-
 ```html
 <script lang="ts">
-	import { Button } from "@stevejuma/ui/shadcn/button";
+  import { Button } from "@stevejuma/ui/shadcn/button";
 </script>
 
-<Button variant="ghost">Ghost</Button>
+<button variant="ghost">Ghost</button>
 ```
 
 ### Destructive
 
-
 ```html
 <script lang="ts">
-	import { Button } from "@stevejuma/ui/shadcn/button";
+  import { Button } from "@stevejuma/ui/shadcn/button";
 </script>
 
-<Button variant="destructive">Destructive</Button>
+<button variant="destructive">Destructive</button>
 ```
 
 ### Link
 
-
 ```html
 <script lang="ts">
-	import { Button } from "@stevejuma/ui/shadcn/button";
+  import { Button } from "@stevejuma/ui/shadcn/button";
 </script>
 
-<Button variant="link">Link</Button>
+<button variant="link">Link</button>
 ```
 
 ### Icon
 
-
 ```html
 <script lang="ts">
-	import CircleFadingArrowUpIcon from "@lucide/svelte/icons/circle-fading-arrow-up";
-	import { Button } from "@stevejuma/ui/shadcn/button";
+  import CircleFadingArrowUpIcon from "@lucide/svelte/icons/circle-fading-arrow-up";
+  import { Button } from "@stevejuma/ui/shadcn/button";
 </script>
 
-<Button variant="outline" size="icon" aria-label="Submit">
-	<CircleFadingArrowUpIcon />
-</Button>
+<button variant="outline" size="icon" aria-label="Submit">
+  <CircleFadingArrowUpIcon />
+</button>
 ```
 
 ### With Icon
@@ -143,13 +135,11 @@ The spacing between the icon and the text is automatically adjusted based on the
 
 ```html
 <script lang="ts">
-	import IconGitBranch from "@lucide/svelte/icons/git-branch";
-	import { Button } from "@stevejuma/ui/shadcn/button";
+  import IconGitBranch from "@lucide/svelte/icons/git-branch";
+  import { Button } from "@stevejuma/ui/shadcn/button";
 </script>
 
-<Button variant="outline" size="sm">
-	<IconGitBranch /> New Branch
-</Button>
+<button variant="outline" size="sm"><IconGitBranch /> New Branch</button>
 ```
 
 ### Rounded
@@ -158,14 +148,14 @@ Use the `rounded-full` class to make the button rounded.
 
 ```html
 <script lang="ts">
-	import ArrowUpIcon from "@lucide/svelte/icons/arrow-up";
-	import { Button } from "@stevejuma/ui/shadcn/button";
+  import ArrowUpIcon from "@lucide/svelte/icons/arrow-up";
+  import { Button } from "@stevejuma/ui/shadcn/button";
 </script>
 
 <div class="flex flex-col gap-8">
-	<Button variant="outline" size="icon" class="rounded-full">
-		<ArrowUpIcon />
-	</Button>
+  <button variant="outline" size="icon" class="rounded-full">
+    <ArrowUpIcon />
+  </button>
 </div>
 ```
 
@@ -173,14 +163,14 @@ Use the `rounded-full` class to make the button rounded.
 
 ```html
 <script lang="ts">
-	import { Button } from "@stevejuma/ui/shadcn/button";
-	import { Spinner } from "@stevejuma/ui/shadcn/spinner";
+  import { Button } from "@stevejuma/ui/shadcn/button";
+  import { Spinner } from "@stevejuma/ui/shadcn/spinner";
 </script>
 
-<Button size="sm" variant="outline" disabled>
-	<Spinner />
-	Submit
-</Button>
+<button size="sm" variant="outline" disabled>
+  <Spinner />
+  Submit
+</button>
 ```
 
 ### Button Group
@@ -190,27 +180,27 @@ To create a button group, use the `ButtonGroup` component. See the [Button Group
 ```html
 <ButtonGroup.Root>
   <ButtonGroup.Root class="hidden sm:flex">
-    <Button variant="outline" size="icon" aria-label="Go Back">
+    <button variant="outline" size="icon" aria-label="Go Back">
       <ArrowLeft />
-    </Button>
+    </button>
   </ButtonGroup.Root>
   <ButtonGroup.Root>
-    <Button variant="outline">Archive</Button>
-    <Button variant="outline">Report</Button>
+    <button variant="outline">Archive</button>
+    <button variant="outline">Report</button>
   </ButtonGroup.Root>
   <ButtonGroup.Root>
-    <Button variant="outline">Snooze</Button>
+    <button variant="outline">Snooze</button>
     <DropdownMenu.Root>
       <DropdownMenu.Trigger>
         {#snippet child({ props })}
-          <Button
-            {...props}
-            variant="outline"
-            size="icon"
-            aria-label="More Options"
-          >
-            <MoreHorizontal />
-          </Button>
+        <button
+          {...props}
+          variant="outline"
+          size="icon"
+          aria-label="More Options"
+        >
+          <MoreHorizontal />
+        </button>
         {/snippet}
       </DropdownMenu.Trigger>
       <DropdownMenu.Content align="end" class="w-52">
@@ -244,7 +234,7 @@ To create a button group, use the `ButtonGroup` component. See the [Button Group
               Label As...
             </DropdownMenu.SubTrigger>
             <DropdownMenu.SubContent>
-              <DropdownMenu.RadioGroup bind:value={label}>
+              <DropdownMenu.RadioGroup bind:value="{label}">
                 <DropdownMenu.RadioItem value="personal">
                   Personal
                 </DropdownMenu.RadioItem>
@@ -279,10 +269,10 @@ Alternatively, you can use the `buttonVariants` helper to create a link that loo
 
 ```html
 <script lang="ts">
-	import { Button } from "@stevejuma/ui/shadcn/button";
+  import { Button } from "@stevejuma/ui/shadcn/button";
 </script>
 
-<Button variant="link">Link</Button>
+<button variant="link">Link</button>
 ```
 
 ## Changelog

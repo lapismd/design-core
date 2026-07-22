@@ -23,11 +23,9 @@ export async function ensurePlaywrightWebServerPort(
   }
 
   try {
-    const pids = execFileSync(
-      "lsof",
-      [`-tiTCP:${port}`, "-sTCP:LISTEN"],
-      { encoding: "utf8" },
-    )
+    const pids = execFileSync("lsof", [`-tiTCP:${port}`, "-sTCP:LISTEN"], {
+      encoding: "utf8",
+    })
       .trim()
       .split(/\s+/)
       .filter(Boolean);

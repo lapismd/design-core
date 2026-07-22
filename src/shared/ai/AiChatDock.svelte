@@ -24,13 +24,16 @@
   } = $props();
 
   $effect(() => {
-    const shell = document.querySelector<HTMLElement>('[data-slot="sidebar-provider"]');
+    const shell = document.querySelector<HTMLElement>(
+      '[data-slot="sidebar-provider"]',
+    );
     const sidebarState = placement === "right" ? visibility : null;
     if (!shell || !sidebarState) return;
 
     shell.dataset.aiSidebar = sidebarState;
     return () => {
-      if (shell.dataset.aiSidebar === sidebarState) delete shell.dataset.aiSidebar;
+      if (shell.dataset.aiSidebar === sidebarState)
+        delete shell.dataset.aiSidebar;
     };
   });
 </script>
@@ -120,15 +123,17 @@
   }
 
   /* Pin to the shell provider so the rail is end-to-end (top→bottom). */
-  :global([data-ui-component="ai-chat-dock"][data-ui-part="root"][data-placement="right"]) {
+  :global(
+      [data-ui-component="ai-chat-dock"][data-ui-part="root"][data-placement="right"]
+    ) {
     position: absolute;
     inset: 0 0 0 auto;
     height: 100%;
   }
 
   :global(
-    [data-ui-component="ai-chat-dock"][data-ui-part="root"][data-placement="floating"][data-visibility="expanded"]
-  ) {
+      [data-ui-component="ai-chat-dock"][data-ui-part="root"][data-placement="floating"][data-visibility="expanded"]
+    ) {
     position: absolute;
     right: 0;
     bottom: 0.75rem;
@@ -137,11 +142,11 @@
   }
 
   :global(
-    [data-ui-component="ai-chat-dock"][data-ui-part="root"][data-placement="floating"][data-visibility="collapsed"]
-  ),
+      [data-ui-component="ai-chat-dock"][data-ui-part="root"][data-placement="floating"][data-visibility="collapsed"]
+    ),
   :global(
-    [data-ui-component="ai-chat-dock"][data-ui-part="root"][data-placement="floating"][data-visibility="hidden"]
-  ) {
+      [data-ui-component="ai-chat-dock"][data-ui-part="root"][data-placement="floating"][data-visibility="hidden"]
+    ) {
     position: absolute;
     right: 0.75rem;
     bottom: 0.75rem;
@@ -153,30 +158,31 @@
   }
 
   :global(
-    [data-ui-component="ai-chat-dock"][data-ui-part="root"][data-placement="right"] > [data-ui-part="frame"]
-  ) {
+      [data-ui-component="ai-chat-dock"][data-ui-part="root"][data-placement="right"]
+        > [data-ui-part="frame"]
+    ) {
     height: 100%;
   }
 
   :global(
-    [data-ui-component="ai-chat-dock"][data-ui-part="root"][data-visibility="expanded"][data-placement="right"]
-      > [data-ui-part="frame"]
-  ) {
+      [data-ui-component="ai-chat-dock"][data-ui-part="root"][data-visibility="expanded"][data-placement="right"]
+        > [data-ui-part="frame"]
+    ) {
     width: var(--ui-ai-width-expanded);
     max-width: calc(100vw - 3rem);
   }
 
   :global(
-    [data-ui-component="ai-chat-dock"][data-ui-part="root"][data-visibility="collapsed"][data-placement="right"]
-      > [data-ui-part="frame"]
-  ) {
+      [data-ui-component="ai-chat-dock"][data-ui-part="root"][data-visibility="collapsed"][data-placement="right"]
+        > [data-ui-part="frame"]
+    ) {
     width: var(--ui-ai-width-collapsed);
   }
 
   :global(
-    [data-ui-component="ai-chat-dock"][data-ui-part="root"][data-visibility="expanded"][data-placement="floating"]
-      > [data-ui-part="frame"]
-  ) {
+      [data-ui-component="ai-chat-dock"][data-ui-part="root"][data-visibility="expanded"][data-placement="floating"]
+        > [data-ui-part="frame"]
+    ) {
     width: 100%;
     max-width: 680px;
   }
@@ -210,13 +216,17 @@
     color: var(--sidebar-foreground);
   }
 
-  :global([data-ui-component="ai-chat-dock"][data-ui-part="vertical-label"]:hover) {
+  :global(
+      [data-ui-component="ai-chat-dock"][data-ui-part="vertical-label"]:hover
+    ) {
     border-color: var(--sidebar-border);
     background: var(--sidebar-accent);
     color: var(--sidebar-accent-foreground);
   }
 
-  :global([data-ui-component="ai-chat-dock"][data-ui-part="vertical-label"] span) {
+  :global(
+      [data-ui-component="ai-chat-dock"][data-ui-part="vertical-label"] span
+    ) {
     max-height: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -233,11 +243,15 @@
 
   :global([data-ui-component="ai-chat-dock"] [data-ui-part="fab"]) {
     background: color-mix(in oklab, var(--background) 90%, transparent);
-    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    box-shadow:
+      0 10px 15px -3px rgb(0 0 0 / 0.1),
+      0 4px 6px -4px rgb(0 0 0 / 0.1);
     backdrop-filter: blur(8px);
   }
 
-  :global([data-ui-component="ai-chat-dock"] [data-ui-part="fab"][data-round="true"]) {
+  :global(
+      [data-ui-component="ai-chat-dock"] [data-ui-part="fab"][data-round="true"]
+    ) {
     border-radius: 9999px;
   }
 

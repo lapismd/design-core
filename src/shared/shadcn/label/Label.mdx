@@ -1,4 +1,11 @@
-import { Meta, Canvas, Controls, Primary, Source, Markdown } from "@storybook/addon-docs/blocks";
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+  Markdown,
+} from "@storybook/addon-docs/blocks";
 import * as LabelStories from "./Label.stories.svelte";
 import * as LabelVariations from "./Label.variations.stories.svelte";
 import docsBody from "./label.docs-body.md?raw";
@@ -17,7 +24,12 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 
 ## Usage
 
-<Source language="html" code={"<script lang=\"ts\">\n  import { Label } from \"@stevejuma/ui/shadcn/label\";\n</script>\n\n<Label for=\"email\">Your email address</Label>"} />
+<Source
+  language="html"
+  code={
+    '<script lang="ts">\n  import { Label } from "@stevejuma/ui/shadcn/label";\n</script>\n\n<Label for="email">Your email address</Label>'
+  }
+/>
 
 <Primary />
 
@@ -27,6 +39,4 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 
 ### Preview
 
-
 <Canvas of={LabelVariations.Preview} meta={LabelVariations} />
-

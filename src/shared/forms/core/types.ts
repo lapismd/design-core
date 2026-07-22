@@ -16,6 +16,7 @@ export type FormFieldKind =
   | "segmented"
   | "choice"
   | "string-list"
+  | "ordered-string-list"
   | "tag-list"
   | "chip-list"
   | "reference-list"

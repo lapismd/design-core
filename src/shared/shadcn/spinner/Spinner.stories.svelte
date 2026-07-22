@@ -21,7 +21,6 @@
   play={async ({ canvas }) => {
     await expect(canvas.getByLabelText("Loading")).toBeVisible();
   }}
-
   tags={["visual-approved"]}
 >
   {#snippet template()}

@@ -137,10 +137,7 @@ async function main(): Promise<void> {
   const ids = parseIds();
   const fromPageId = parseArg("from-page");
   const matrix = await loadCaptureMatrix();
-  const captureDirectory = path.join(
-    committedReferenceRoot,
-    matrix.captureId,
-  );
+  const captureDirectory = path.join(committedReferenceRoot, matrix.captureId);
 
   const selected = ids
     ? matrix.entries.filter((entry) => ids.includes(entry.id))
@@ -152,14 +149,18 @@ async function main(): Promise<void> {
   let entries: CaptureMatrixEntry[];
   if (ids) {
     entries = matrix.entries.filter((entry) => ids.includes(entry.id));
-    const missing = ids.filter((id) => !entries.some((entry) => entry.id === id));
+    const missing = ids.filter(
+      (id) => !entries.some((entry) => entry.id === id),
+    );
     if (missing.length) {
       throw new Error(`Unknown matrix ids: ${missing.join(", ")}`);
     }
   } else {
     const staged = await readdir(stagingDir).catch(() => [] as string[]);
     const stagedIds = new Set(
-      staged.filter((name) => name.endsWith(".png")).map((name) => name.slice(0, -4)),
+      staged
+        .filter((name) => name.endsWith(".png"))
+        .map((name) => name.slice(0, -4)),
     );
     let componentFromPage: Record<string, string> = {};
     try {
@@ -220,12 +221,7 @@ async function main(): Promise<void> {
       if (!hasStaged) {
         throw new Error(`Missing staged page PNG: ${staged}`);
       }
-      await resizePage(
-        staged,
-        output,
-        viewport,
-        matrix.deviceScaleFactor,
-      );
+      await resizePage(staged, output, viewport, matrix.deviceScaleFactor);
     } else {
       if (!entry.clip) {
         throw new Error(`Component ${entry.id} missing clip`);
@@ -340,9 +336,12 @@ async function main(): Promise<void> {
     ],
   });
 
-  await mkdir(path.dirname(path.join(committedReferenceRoot, "capture-matrix.json")), {
-    recursive: true,
-  });
+  await mkdir(
+    path.dirname(path.join(committedReferenceRoot, "capture-matrix.json")),
+    {
+      recursive: true,
+    },
+  );
   await copyFile(
     path.join(committedReferenceRoot, "capture-matrix.json"),
     path.join(captureDirectory, "capture-matrix.json"),

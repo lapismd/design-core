@@ -107,11 +107,7 @@
 
   .task-due-calendar :global(.task-due-calendar__nav:hover),
   .task-due-calendar :global(.task-due-calendar__nav:focus-visible) {
-    background: color-mix(
-      in srgb,
-      var(--border) 55%,
-      transparent
-    );
+    background: color-mix(in srgb, var(--border) 55%, transparent);
     color: var(--foreground);
     outline: 0;
   }
@@ -163,20 +159,12 @@
 
   .task-due-calendar :global(.task-due-calendar__day:hover),
   .task-due-calendar :global(.task-due-calendar__day:focus-visible) {
-    background: color-mix(
-      in srgb,
-      var(--border) 55%,
-      transparent
-    );
+    background: color-mix(in srgb, var(--border) 55%, transparent);
     outline: 0;
   }
 
   .task-due-calendar :global([data-selected] .task-due-calendar__day) {
-    background: color-mix(
-      in srgb,
-      var(--primary) 88%,
-      transparent
-    );
+    background: color-mix(in srgb, var(--primary) 88%, transparent);
     color: var(--background);
     font-weight: 700;
   }
@@ -188,10 +176,6 @@
   }
 
   .task-due-calendar :global([data-outside-month] .task-due-calendar__day) {
-    color: color-mix(
-      in srgb,
-      var(--muted-foreground) 72%,
-      transparent
-    );
+    color: color-mix(in srgb, var(--muted-foreground) 72%, transparent);
   }
 </style>

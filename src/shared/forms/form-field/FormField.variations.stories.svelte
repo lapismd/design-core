@@ -3,7 +3,7 @@
   import FormField from "./FormField.svelte";
 
   const { Story } = defineMeta({
-    title: "UI Forms/Form Field",
+    title: "UI Forms/Form Inputs/Form Field",
     component: FormField,
     parameters: {
       docs: {
@@ -15,17 +15,24 @@
   });
 </script>
 
-
 <Story
   name="Default row"
   exportName="DefaultRow"
   parameters={{
-    visualDelta: {"images":["/visual-baselines/forms/form-field/default-row-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
+    visualDelta: {
+      images: [
+        "/visual-baselines/forms/form-field/default-row-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
     docs: {
       description: { story: "Standard start-aligned text field row." },
     },
   }}
-
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -41,12 +48,22 @@
   name="Center aligned"
   exportName="CenterAligned"
   parameters={{
-    visualDelta: {"images":["/visual-baselines/forms/form-field/center-aligned-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
+    visualDelta: {
+      images: [
+        "/visual-baselines/forms/form-field/center-aligned-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
     docs: {
-      description: { story: "Use `align=\"center\"` for pill controls and date-like controls." },
+      description: {
+        story: 'Use `align="center"` for pill controls and date-like controls.',
+      },
     },
   }}
-
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -62,7 +79,16 @@
   name="Div host"
   exportName="DivHost"
   parameters={{
-    visualDelta: {"images":["/visual-baselines/forms/form-field/div-host-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
+    visualDelta: {
+      images: [
+        "/visual-baselines/forms/form-field/div-host-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
     docs: {
       description: {
         story:
@@ -70,7 +96,6 @@
       },
     },
   }}
-
   tags={["visual-approved"]}
 >
   {#snippet template()}

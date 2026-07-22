@@ -1,4 +1,11 @@
-import { Meta, Canvas, Controls, Primary, Source, Markdown } from "@storybook/addon-docs/blocks";
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+  Markdown,
+} from "@storybook/addon-docs/blocks";
 import * as ButtonStories from "./Button.stories.svelte";
 import * as ButtonVariations from "./Button.variations.stories.svelte";
 import docsBody from "./button.docs-body.md?raw";
@@ -17,7 +24,12 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 
 ## Usage
 
-<Source language="html" code={"<script lang=\"ts\">\n  import { Button } from \"@stevejuma/ui/shadcn/button\";\n</script>\n\n<Button variant=\"outline\">Button</Button>"} />
+<Source
+  language="html"
+  code={
+    '<script lang="ts">\n  import { Button } from "@stevejuma/ui/shadcn/button";\n</script>\n\n<Button variant="outline">Button</Button>'
+  }
+/>
 
 <Primary />
 
@@ -35,41 +47,33 @@ instructions to update your project.
 
 ### Size
 
-
 <Canvas of={ButtonVariations.Size} meta={ButtonVariations} />
 
 ### Default
-
 
 <Canvas of={ButtonVariations.Default} meta={ButtonVariations} />
 
 ### Outline
 
-
 <Canvas of={ButtonVariations.Outline} meta={ButtonVariations} />
 
 ### Secondary
-
 
 <Canvas of={ButtonVariations.Secondary} meta={ButtonVariations} />
 
 ### Ghost
 
-
 <Canvas of={ButtonVariations.Ghost} meta={ButtonVariations} />
 
 ### Destructive
-
 
 <Canvas of={ButtonVariations.Destructive} meta={ButtonVariations} />
 
 ### Link
 
-
 <Canvas of={ButtonVariations.Link} meta={ButtonVariations} />
 
 ### Icon
-
 
 <Canvas of={ButtonVariations.Icon} meta={ButtonVariations} />
 
@@ -87,6 +91,4 @@ Use the `rounded-full` class to make the button rounded.
 
 ### Spinner
 
-
 <Canvas of={ButtonVariations.Spinner} meta={ButtonVariations} />
-

@@ -128,8 +128,7 @@ export function collectSidebarBadges(item: HashEntry): ResolvedBadge[] {
   ) {
     return [];
   }
-  const parameters = (addons.getConfig().tagBadges ??
-    []) as TagBadgeParameters;
+  const parameters = (addons.getConfig().tagBadges ?? []) as TagBadgeParameters;
   const tags = item.tags ?? [];
   const out: ResolvedBadge[] = [];
 
@@ -153,9 +152,9 @@ function hasComponentTestStatus(
 }
 
 function StackedSidebarLabel({ item }: { item: HashEntry }) {
-  const itemStatuses = experimental_useStatusStore(
-    (all) => all[item.id],
-  ) as Record<string, unknown> | undefined;
+  const itemStatuses = experimental_useStatusStore((all) => all[item.id]) as
+    | Record<string, unknown>
+    | undefined;
   const badges = useMemo(() => collectSidebarBadges(item), [item]);
   const title = badges
     .map((entry) => {

@@ -5,7 +5,7 @@
   import FormSectionHeader from "./FormSectionHeader.svelte";
 
   const { Story } = defineMeta({
-    title: "UI Forms/Form Section Header",
+    title: "UI Forms/Layout/Form Section Header",
     component: FormSectionHeader,
     parameters: {
       docs: {

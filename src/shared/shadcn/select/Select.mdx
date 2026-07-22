@@ -1,4 +1,11 @@
-import { Meta, Canvas, Controls, Primary, Source, Markdown } from "@storybook/addon-docs/blocks";
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+  Markdown,
+} from "@storybook/addon-docs/blocks";
 import * as SelectStories from "./Select.stories.svelte";
 import * as SelectVariations from "./Select.variations.stories.svelte";
 import docsBody from "./select.docs-body.md?raw";
@@ -17,7 +24,12 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 
 ## Usage
 
-<Source language="html" code={"<script lang=\"ts\">\n  import * as Select from \"@stevejuma/ui/shadcn/select\";\n</script>\n\n<Select.Root type=\"single\">\n  <Select.Trigger class=\"w-[180px]\"></Select.Trigger>\n  <Select.Content>\n    <Select.Item value=\"light\">Light</Select.Item>\n    <Select.Item value=\"dark\">Dark</Select.Item>\n    <Select.Item value=\"system\">System</Select.Item>\n  </Select.Content>\n</Select.Root>"} />
+<Source
+  language="html"
+  code={
+    '<script lang="ts">\n  import * as Select from "@stevejuma/ui/shadcn/select";\n</script>\n\n<Select.Root type="single">\n  <Select.Trigger class="w-[180px]"></Select.Trigger>\n  <Select.Content>\n    <Select.Item value="light">Light</Select.Item>\n    <Select.Item value="dark">Dark</Select.Item>\n    <Select.Item value="system">System</Select.Item>\n  </Select.Content>\n</Select.Root>'
+  }
+/>
 
 <Primary />
 
@@ -27,6 +39,4 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 
 ### Scrollable
 
-
 <Canvas of={SelectVariations.Scrollable} meta={SelectVariations} />
-

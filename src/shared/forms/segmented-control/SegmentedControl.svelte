@@ -4,30 +4,49 @@
     options,
     labels = {},
     ariaLabel,
+    /** Validation message; marks the control invalid and renders below. */
+    error = null,
     onChange = () => {},
   }: {
     value: string;
     options: string[];
     labels?: Record<string, string>;
     ariaLabel: string;
+    error?: string | null;
     onChange?: (value: string) => void;
   } = $props();
 </script>
 
-<div class="cv-form-segmented" aria-label={ariaLabel}>
-  {#each options as option (option)}
-    <button
-      type="button"
-      class:active={value === option}
-      aria-pressed={value === option}
-      onclick={() => onChange(option)}
-    >
-      {labels[option] ?? option}
-    </button>
-  {/each}
+<div class="cv-form-segmented-root">
+  <div
+    class="cv-form-segmented"
+    aria-label={ariaLabel}
+    data-invalid={error ? "" : undefined}
+  >
+    {#each options as option (option)}
+      <button
+        type="button"
+        class:active={value === option}
+        aria-pressed={value === option}
+        onclick={() => onChange(option)}
+      >
+        {labels[option] ?? option}
+      </button>
+    {/each}
+  </div>
+  {#if error}
+    <p class="ui-form-control-error" role="alert">{error}</p>
+  {/if}
 </div>
 
 <style>
+  .cv-form-segmented-root {
+    display: grid;
+    width: fit-content;
+    max-width: 100%;
+    gap: 0.25rem;
+  }
+
   .cv-form-segmented {
     display: inline-flex;
     width: fit-content;
@@ -38,11 +57,26 @@
     background: transparent;
   }
 
+  .cv-form-segmented[data-invalid] {
+    border-color: color-mix(
+      in srgb,
+      var(--destructive, #dc2626) 55%,
+      var(--ui-form-border)
+    );
+  }
+
+  .ui-form-control-error {
+    margin: 0;
+    color: var(--destructive, #dc2626);
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1.3;
+  }
+
   .cv-form-segmented button {
     min-height: 1.65rem;
     border: 0;
-    border-right: 1px solid
-      var(--ui-form-border);
+    border-right: 1px solid var(--ui-form-border);
     background: transparent;
     color: var(--ui-form-muted);
     cursor: pointer;

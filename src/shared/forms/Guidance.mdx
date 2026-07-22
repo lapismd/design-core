@@ -12,6 +12,16 @@ package `FORMS.md`. Offline agent summary: `pnpm ui guide forms`. Each
 component Docs page adds when/when-not guidance, usage, properties, and
 variations.
 
+## Catalog sections
+
+| Section           | Contents                                                      |
+| ----------------- | ------------------------------------------------------------- |
+| **Form Inputs**   | Labelled controls used to compose forms                       |
+| **Layout**        | Section headers, collapsible lists, entry actions, choosers   |
+| **Orchestrators** | StructuredForm, YamlBackedForm, JsonBackedForm, PatchableForm |
+| **Editors**       | Code / YAML source editors and read-only highlighter          |
+| **Review**        | Keep/Undo primitives composed with Form Inputs                |
+
 ## Choose the right layer
 
 1. **StructuredForm** — schema-shaped data with typed field configs from
@@ -19,7 +29,11 @@ variations.
 2. **Composed primitives** — `FormField`, `FormSectionHeader`,
    `CollapsibleItemList`, `InlineOptionPicker` for one-off layouts.
 3. **YamlBackedForm** — dual structured + YAML source mode over the same draft.
-4. **shadcn** — Select, Switch, Command/Popover pickers, Toggle Group, Field.
+4. **JsonBackedForm** — dual structured + JSON source mode (prefer YAML for new
+   user-authored config).
+5. **PatchableForm** — YamlBackedForm + JSON Patch Keep/Undo review
+   (`createOrAppendJsonReview`, reviewed field builders, YAML `toYamlDiffs`).
+6. **shadcn** — Select, Switch, Command/Popover pickers, Toggle Group, Field.
 
 ## Shared form pattern
 
@@ -79,18 +93,23 @@ or a form ancestor — same idea as shadcn `--ui-button-*` token maps.
 
 ## Control choice
 
-| Need | Use |
-| --- | --- |
-| 2–3 exclusive values | `SegmentedControl` (inside `FormField align="center" as="div"`) |
-| Larger option sets | shadcn `Select`, or `InlineOptionPicker` for menu/swap + icons |
-| Multi-value tags | `ChipAutocomplete` (`tagListField` / `chipListField`) |
-| Ordered string lists | `ListEditor` + `SortableArrayItem` |
-| Searchable choices | App pickers on shadcn `Command` + `Popover` |
-| Pill / date controls | `FormField align="center"`; popovers use `as="div"` |
-| YAML source | `YamlEditor` only — no plain textarea YAML editors |
-| Code source | `CodeEditor` |
-| Dual structured + YAML | `YamlBackedForm` (YAML edits the authoritative draft) |
-| Textareas | Autosize, hide resize handles, avoid internal scroll for ordinary editing |
+| Need                   | Use                                                                       |
+| ---------------------- | ------------------------------------------------------------------------- |
+| 2–3 exclusive values   | `SegmentedControl` (inside `FormField align="center" as="div"`)           |
+| Larger option sets     | shadcn `Select`, or `InlineOptionPicker` for menu/swap + icons            |
+| Multi-value tags       | `ChipAutocomplete` (`tagListField` / `chipListField`)                     |
+| Ordered string lists   | `ListEditor` + `SortableArrayItem`                                        |
+| Searchable choices     | `FilterCommandPicker` (options + optional `allowCustom` via props)        |
+| Search / filter query  | `@stevejuma/ui/filter` `SearchFilterBar` (compose; see Filter/Guidance)   |
+| Dates                  | `DatePicker` (natural-language + `TaskDueCalendar` month grid)            |
+| Pill / date controls   | `FormField align="center"`; popovers use `as="div"`                       |
+| YAML source            | `YamlEditor` only — no plain textarea YAML editors                        |
+| Code source            | `CodeEditor`                                                              |
+| Read-only source       | `CodeHighlighter` (Lezer parser + display-ready text)                     |
+| Credentials            | `SecretField` (`env:NAME` or masked inline; host supplies env key names)  |
+| Dual structured + YAML | `YamlBackedForm` (YAML edits the authoritative draft)                     |
+| Dual structured + JSON | `JsonBackedForm` (compatibility path; prefer YAML for new drafts)         |
+| Textareas              | Autosize, hide resize handles, avoid internal scroll for ordinary editing |
 
 ## Evidence references
 
@@ -108,6 +127,12 @@ CodeMirror editor.
 When an AI proposal changes a form value, review mode shows the two line-aware
 unified-diff versions (removed words struck through; additions emphasized).
 YAML review uses the same two-version model.
+
+Use **`PatchableForm`** with `createOrAppendJsonReview` for reusable Keep/Undo
+orchestration over structured fields and `YamlEditor` hunks. Field configs should
+use `reviewedTextField` / `reviewedStringListField` so pending JSON Pointer paths
+wire into `FieldReviewContext`. Hosts supply `toYamlDiffs` for CodeMirror widgets.
+Interaction stories live under **UI Forms/Patchable Form** and **UI Forms/YAML Editor**.
 
 ## Visual overview
 

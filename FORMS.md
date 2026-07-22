@@ -19,21 +19,32 @@ Default editable forms are row-based:
 Compose fields inside a `cv-structured-form` / `ui-structured-form` scope
 (provided by `StructuredForm`) so label columns align via CSS subgrid.
 
+## Storybook catalog
+
+| Section                     | Contents                                                         |
+| --------------------------- | ---------------------------------------------------------------- |
+| **UI Forms/Guidance**       | Decision guide                                                   |
+| **UI Forms/Form Inputs/**   | Field controls (FormField, ListEditor, chips, pickers, …)        |
+| **UI Forms/Layout/**        | Section chrome, collapsible lists, entry actions, choosers       |
+| **UI Forms/Orchestrators/** | StructuredForm, YamlBackedForm, JsonBackedForm, PatchableForm    |
+| **UI Forms/Editors/**       | CodeEditor, CodeHighlighter, YamlEditor                          |
+| **UI Forms/Review/**        | UnifiedReviewDiff / FieldReviewActions composed with Form Inputs |
+
 **Label/value alignment depends on subgrid, not on “using shared components”
 alone.** Rows must be direct subgrid participants of that host:
 
 - `FormField` (`.cv-form-field`)
-- `.cv-control-row` (e.g. `ReviewedTextControl`)
-- `.cv-control-row-group` (e.g. `ListEditor` header + items)
+- `.cv-control-row` / `.cv-control-row-group` (e.g. `ListEditor` header + items)
 
 If a composite keeps its own `max-content | 1fr` tracks instead of
 `grid-template-columns: subgrid`, its values start at a different x than sibling
 rows — the recurring misalignment regression.
 
-List bodies under a row-group must sit in **column 2** (the control track), not
-`col-span-full`, or item text lines up under labels instead of under sibling
-values. Inline `ListEditor` uses `SortableArrayItem inset="flush"` so the drag
-grip hangs in the gutter without shifting value text.
+Inline `ListEditor` lists (Roles, Tags, …) are **full-bleed**, not value-column
+fields: items use `col-span-full` so borders span the row, `SortableArrayItem`
+`pl-5` for the drag gutter, and `text-sm leading-5` values (CV Tags parity).
+Do not put the items wrapper in column 2 to “match” FormField values — that
+truncates borders and breaks the Tags layout.
 
 ## Tokens
 
@@ -54,12 +65,16 @@ Override on `:root` or a form ancestor, e.g. `--ui-form-accent: oklch(...)`.
 | Story / stub body outlines  | `FormPlaceholder` only (dotted). Real components render without outline.                       |
 | 2–3 exclusive values        | `SegmentedControl` (or shadcn `ToggleGroup` when matching Actions UI)                          |
 | Option menus                | shadcn `Select`; form-row icons/swap → `InlineOptionPicker`                                    |
-| Tags / chip lists           | `ChipAutocomplete` (`tagListField` / `chipListField` builders)                                 |
-| Ordered string lists        | `ListEditor` + `SortableArrayItem` (roles, highlights, keywords)                               |
-| Searchable choices          | App pickers on shadcn `Command` + `Popover`                                                    |
+| Tags / chip lists           | `ChipAutocomplete` (`tagListField` / `chipListField` / `stringListField`)                      |
+| Ordered string lists        | `ListEditor` via `orderedStringListField` (or `reviewedStringListField` for Keep/Undo)         |
+| Searchable choices          | `FilterCommandPicker` (bits-ui Command + Popover; options via props)                           |
+| Dates                       | `DatePicker` (natural-language + shadcn Popover + `TaskDueCalendar`)                           |
 | YAML dual mode              | `YamlBackedForm` + `YamlEditor`                                                                |
+| JSON dual mode (legacy)     | `JsonBackedForm` + `CodeEditor` (`language="json"`)                                            |
+| Credentials                 | `SecretField` (`env:NAME` or masked inline)                                                    |
 | Patch Keep/Undo review      | `PatchableForm` + `reviewedTextField` / `reviewedStringListField` + `createOrAppendJsonReview` |
 | Source editing              | `CodeEditor`                                                                                   |
+| Read-only source preview    | `CodeHighlighter`                                                                              |
 
 ## Borderline shared components
 
@@ -67,8 +82,14 @@ These stay in shared forms when callers supply domain data via props:
 
 - `ReferencePicker` — reference index from the app
 - `TaskDueCalendar` — generic calendar control (until a shadcn calendar lands)
-- `SearchFilterBar` — search chrome; filter semantics from the app
+- `DatePicker` — natural-language / semantic dates + `TaskDueCalendar` (no calendar recipe yet)
+- `FilterCommandPicker` — searchable single/multi picker; host supplies options
 - `AddSectionChooser` — option lists from the app
+
+Search chrome and filter-query language live in `@stevejuma/ui/filter`
+(`SearchFilterBar`). Compose them from forms (see
+**UI Forms/Form Inputs/Search Filter in a Form**); do not treat the bar as a
+forms primitive.
 
 ## App-specific form work
 

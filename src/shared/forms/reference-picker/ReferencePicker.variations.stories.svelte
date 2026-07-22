@@ -3,7 +3,7 @@
   import ReferencePicker from "./ReferencePicker.svelte";
 
   const { Story } = defineMeta({
-    title: "UI Forms/Reference Picker",
+    title: "UI Forms/Form Inputs/Reference Picker",
     component: ReferencePicker,
     parameters: {
       docs: {
@@ -35,7 +35,6 @@
     duplicates: {},
   };
 </script>
-
 
 <Story
   name="With selection"

@@ -26,11 +26,18 @@
     await expect(trigger).toHaveAttribute("data-state", "instant-open");
     await expect(trigger).toHaveAttribute("aria-describedby");
   }}
-
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/tooltip/shows-on-focus-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
+    visualDelta: {
+      images: [
+        "/visual-baselines/shadcn/tooltip/shows-on-focus-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
   }}
-
   tags={["visual-approved"]}
 >
   {#snippet template()}

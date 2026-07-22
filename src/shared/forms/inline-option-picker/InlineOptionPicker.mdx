@@ -1,4 +1,10 @@
-import { Meta, Canvas, Controls, Primary, Source } from "@storybook/addon-docs/blocks";
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+} from "@storybook/addon-docs/blocks";
 import * as InlineOptionPickerStories from "./InlineOptionPicker.stories.svelte";
 import * as InlineOptionPickerVariations from "./InlineOptionPicker.variations.stories.svelte";
 
@@ -24,7 +30,12 @@ See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and the shared
 
 ## Usage
 
-<Source language="html" code={"<InlineOptionPicker\n  value={status}\n  options={[{ value: \"draft\", label: \"Draft\" }, { value: \"published\", label: \"Published\" }]}\n  presentation=\"menu\"\n  onChange={...}\n/>"} />
+<Source
+  language="html"
+  code={
+    '<InlineOptionPicker\n  value={status}\n  options={[{ value: "draft", label: "Draft" }, { value: "published", label: "Published" }]}\n  presentation="menu"\n  onChange={...}\n/>'
+  }
+/>
 
 <Primary />
 
@@ -38,11 +49,16 @@ See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and the shared
 
 Default menu presentation.
 
-<Canvas of={InlineOptionPickerVariations.Menu} meta={InlineOptionPickerVariations} />
+<Canvas
+  of={InlineOptionPickerVariations.Menu}
+  meta={InlineOptionPickerVariations}
+/>
 
 ### Swap
 
 Swap presentation for cycling values.
 
-<Canvas of={InlineOptionPickerVariations.Swap} meta={InlineOptionPickerVariations} />
-
+<Canvas
+  of={InlineOptionPickerVariations.Swap}
+  meta={InlineOptionPickerVariations}
+/>

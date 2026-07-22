@@ -1,9 +1,6 @@
 import type { CliColors } from "./color.js";
 import type { GuideIndex, GuideTopic } from "../pipeline/guide.js";
-import type {
-  ComponentDoc,
-  ComponentsIndex,
-} from "../pipeline/components.js";
+import type { ComponentDoc, ComponentsIndex } from "../pipeline/components.js";
 
 export function renderGuideIndex(index: GuideIndex, colors: CliColors): string {
   const lines: string[] = [

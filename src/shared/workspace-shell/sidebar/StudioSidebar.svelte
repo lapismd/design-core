@@ -78,24 +78,42 @@
     description: string;
     icon: typeof IconType;
   }> = [
-    { mode: "cv", label: "CV", description: "Structured CV editor", icon: FileTextIcon },
+    {
+      mode: "cv",
+      label: "CV",
+      description: "Structured CV editor",
+      icon: FileTextIcon,
+    },
     {
       mode: "applications",
       label: "Applications",
       description: "Kanban, activity, actions",
       icon: BriefcaseBusinessIcon,
     },
-    { mode: "tasks", label: "Tasks", description: "Planner buckets", icon: ListTodoIcon },
-    { mode: "docs", label: "Docs", description: "Notes and practice", icon: BookOpenIcon },
+    {
+      mode: "tasks",
+      label: "Tasks",
+      description: "Planner buckets",
+      icon: ListTodoIcon,
+    },
+    {
+      mode: "docs",
+      label: "Docs",
+      description: "Notes and practice",
+      icon: BookOpenIcon,
+    },
   ];
 
   const activeWorkspaceItem = $derived(
-    workspaceItems.find((item) => item.mode === workspaceMode) ?? workspaceItems[0],
+    workspaceItems.find((item) => item.mode === workspaceMode) ??
+      workspaceItems[0],
   );
   const formattedActiveProjectPath = $derived(
     activeProjectPath ? formatProjectPath(activeProjectPath) : "",
   );
-  const activeProjectPathLabel = $derived(middleTruncate(formattedActiveProjectPath, 34));
+  const activeProjectPathLabel = $derived(
+    middleTruncate(formattedActiveProjectPath, 34),
+  );
   const SIDEBAR_WIDTH_STORAGE_KEY = "ui:main-sidebar-width";
   const DEFAULT_SIDEBAR_WIDTH = 256;
   const MIN_SIDEBAR_WIDTH = 220;
@@ -109,7 +127,9 @@
   let previousBodyUserSelect = "";
 
   const sidebarStyle = $derived(`width: ${collapsed ? 48 : sidebarWidth}px;`);
-  const sidebarBackdropStyle = $derived(`left: ${collapsed ? 48 : sidebarWidth}px;`);
+  const sidebarBackdropStyle = $derived(
+    `left: ${collapsed ? 48 : sidebarWidth}px;`,
+  );
 
   $effect(() => {
     if (typeof localStorage === "undefined") return;
@@ -131,7 +151,10 @@
   }
 
   function clampSidebarWidth(value: number) {
-    return Math.min(MAX_SIDEBAR_WIDTH, Math.max(MIN_SIDEBAR_WIDTH, Math.round(value)));
+    return Math.min(
+      MAX_SIDEBAR_WIDTH,
+      Math.max(MIN_SIDEBAR_WIDTH, Math.round(value)),
+    );
   }
 
   function startSidebarResize(event: PointerEvent) {
@@ -151,7 +174,9 @@
   function handleSidebarResizeMove(event: PointerEvent) {
     if (!resizing) return;
     event.preventDefault();
-    sidebarWidth = clampSidebarWidth(resizeStartWidth + event.clientX - resizeStartX);
+    sidebarWidth = clampSidebarWidth(
+      resizeStartWidth + event.clientX - resizeStartX,
+    );
   }
 
   function stopSidebarResize() {
@@ -243,7 +268,11 @@
   {:else}
     <Sidebar.Header>
       <div data-ui-component="studio-sidebar" data-ui-part="brand-row">
-        <div data-ui-component="studio-sidebar" data-ui-part="logo" aria-hidden="true">
+        <div
+          data-ui-component="studio-sidebar"
+          data-ui-part="logo"
+          aria-hidden="true"
+        >
           <span>{title.slice(0, 1)}</span>
         </div>
         <div data-ui-component="studio-sidebar" data-ui-part="brand-text">
@@ -277,10 +306,7 @@
         {#if formattedActiveProjectPath}
           <Tooltip.Provider>
             <Tooltip.Root>
-              <Tooltip.Trigger
-                type="button"
-                data-ui-part="project-path"
-              >
+              <Tooltip.Trigger type="button" data-ui-part="project-path">
                 <span>{activeProjectPathLabel}</span>
               </Tooltip.Trigger>
               <Tooltip.Content side="bottom" data-studio-sidebar="tooltip-wide">
@@ -340,12 +366,21 @@
             >
               {@const ActiveIcon = activeWorkspaceItem.icon}
               <ActiveIcon data-icon="inline-start" />
-              <span data-ui-part="workspace-label">{activeWorkspaceItem.label}</span>
-              <ChevronsUpDownIcon data-icon="inline-end" data-ui-part="muted-icon" />
+              <span data-ui-part="workspace-label"
+                >{activeWorkspaceItem.label}</span
+              >
+              <ChevronsUpDownIcon
+                data-icon="inline-end"
+                data-ui-part="muted-icon"
+              />
             </Button>
           {/snippet}
         </DropdownMenu.Trigger>
-        <DropdownMenu.Content side="top" align="start" data-studio-sidebar="menu">
+        <DropdownMenu.Content
+          side="top"
+          align="start"
+          data-studio-sidebar="menu"
+        >
           <DropdownMenu.Label>Workspaces</DropdownMenu.Label>
           <DropdownMenu.Group>
             {#each workspaceItems as item (item.mode)}
@@ -357,7 +392,10 @@
                 }}
               >
                 <Icon data-icon="inline-start" />
-                <span data-ui-component="studio-sidebar" data-ui-part="menu-item-text">
+                <span
+                  data-ui-component="studio-sidebar"
+                  data-ui-part="menu-item-text"
+                >
                   <span>{item.label}</span>
                   <span data-ui-part="muted">{item.description}</span>
                 </span>
@@ -454,16 +492,23 @@
     padding: 0.5rem 0.375rem;
   }
 
-  :global([data-ui-component="studio-sidebar"] [data-ui-part="icon-button"] svg) {
+  :global(
+      [data-ui-component="studio-sidebar"] [data-ui-part="icon-button"] svg
+    ) {
     width: 1rem;
     height: 1rem;
   }
 
-  :global([data-ui-component="studio-sidebar"] [data-ui-part="icon-button"][data-collapse="true"]) {
+  :global(
+      [data-ui-component="studio-sidebar"]
+        [data-ui-part="icon-button"][data-collapse="true"]
+    ) {
     margin-right: -0.25rem;
   }
 
-  :global([data-ui-component="studio-sidebar"] [data-ui-part="vertical-label"]) {
+  :global(
+      [data-ui-component="studio-sidebar"] [data-ui-part="vertical-label"]
+    ) {
     display: flex;
     min-height: 0;
     flex: 1 1 auto;
@@ -475,13 +520,17 @@
     color: var(--sidebar-foreground);
   }
 
-  :global([data-ui-component="studio-sidebar"] [data-ui-part="vertical-label"]:hover) {
+  :global(
+      [data-ui-component="studio-sidebar"] [data-ui-part="vertical-label"]:hover
+    ) {
     border-color: var(--sidebar-border);
     background: var(--sidebar-accent);
     color: var(--sidebar-accent-foreground);
   }
 
-  :global([data-ui-component="studio-sidebar"] [data-ui-part="vertical-label"] span) {
+  :global(
+      [data-ui-component="studio-sidebar"] [data-ui-part="vertical-label"] span
+    ) {
     max-height: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -556,7 +605,9 @@
     color: var(--muted-foreground);
   }
 
-  :global([data-studio-sidebar="true"] [data-ui-part="project-path"]:focus-visible) {
+  :global(
+      [data-studio-sidebar="true"] [data-ui-part="project-path"]:focus-visible
+    ) {
     outline: none;
     box-shadow: 0 0 0 2px var(--ring);
   }
@@ -595,14 +646,20 @@
     border: 1px solid transparent;
     border-radius: 0.125rem;
     color: var(--muted-foreground);
-    transition: color 150ms ease, background-color 150ms ease, border-color 150ms ease;
+    transition:
+      color 150ms ease,
+      background-color 150ms ease,
+      border-color 150ms ease;
   }
 
   :global([data-ui-component="studio-sidebar"] [data-ui-part="tab"]:hover) {
     color: var(--sidebar-foreground);
   }
 
-  :global([data-ui-component="studio-sidebar"] [data-ui-part="tab"][data-active="true"]) {
+  :global(
+      [data-ui-component="studio-sidebar"]
+        [data-ui-part="tab"][data-active="true"]
+    ) {
     border-color: var(--sidebar-border);
     background: var(--background);
     color: var(--sidebar-accent-foreground);
@@ -633,17 +690,22 @@
     color: var(--sidebar-foreground);
   }
 
-  :global([data-studio-sidebar="true"] [data-ui-part="workspace-switcher"]:hover),
   :global(
-    [data-studio-sidebar="true"] [data-ui-part="workspace-switcher"][aria-expanded="true"]
-  ) {
+      [data-studio-sidebar="true"] [data-ui-part="workspace-switcher"]:hover
+    ),
+  :global(
+      [data-studio-sidebar="true"]
+        [data-ui-part="workspace-switcher"][aria-expanded="true"]
+    ) {
     background: var(--sidebar-accent);
     color: var(--sidebar-accent-foreground);
   }
 
   :global(
-    [data-studio-sidebar="true"] [data-ui-part="workspace-switcher"] [data-ui-part="workspace-label"]
-  ) {
+      [data-studio-sidebar="true"]
+        [data-ui-part="workspace-switcher"]
+        [data-ui-part="workspace-label"]
+    ) {
     min-width: 0;
     flex: 1 1 auto;
     overflow: hidden;
@@ -668,13 +730,19 @@
     flex-direction: column;
   }
 
-  :global([data-ui-component="studio-sidebar"][data-ui-part="menu-item-text"] > span:first-child) {
+  :global(
+      [data-ui-component="studio-sidebar"][data-ui-part="menu-item-text"]
+        > span:first-child
+    ) {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
 
-  :global([data-ui-component="studio-sidebar"][data-ui-part="menu-item-text"] [data-ui-part="muted"]) {
+  :global(
+      [data-ui-component="studio-sidebar"][data-ui-part="menu-item-text"]
+        [data-ui-part="muted"]
+    ) {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -703,25 +771,34 @@
     outline: none;
   }
 
-  :global([data-ui-component="studio-sidebar"][data-ui-part="resize"][data-resizing="true"]) {
+  :global(
+      [data-ui-component="studio-sidebar"][data-ui-part="resize"][data-resizing="true"]
+    ) {
     background: color-mix(in oklab, var(--primary) 5%, transparent);
   }
 
-  :global([data-ui-component="studio-sidebar"][data-ui-part="resize"] [data-ui-part="resize-thumb"]) {
+  :global(
+      [data-ui-component="studio-sidebar"][data-ui-part="resize"]
+        [data-ui-part="resize-thumb"]
+    ) {
     width: 0.25rem;
     margin-block: 0.625rem;
     background: transparent;
     transition: background-color 150ms ease;
   }
 
-  :global([data-ui-component="studio-sidebar"][data-ui-part="resize"]:hover [data-ui-part="resize-thumb"]),
   :global(
-    [data-ui-component="studio-sidebar"][data-ui-part="resize"]:focus-visible [data-ui-part="resize-thumb"]
-  ),
+      [data-ui-component="studio-sidebar"][data-ui-part="resize"]:hover
+        [data-ui-part="resize-thumb"]
+    ),
   :global(
-    [data-ui-component="studio-sidebar"][data-ui-part="resize"][data-resizing="true"]
-      [data-ui-part="resize-thumb"]
-  ) {
+      [data-ui-component="studio-sidebar"][data-ui-part="resize"]:focus-visible
+        [data-ui-part="resize-thumb"]
+    ),
+  :global(
+      [data-ui-component="studio-sidebar"][data-ui-part="resize"][data-resizing="true"]
+        [data-ui-part="resize-thumb"]
+    ) {
     background: color-mix(in oklab, var(--primary) 60%, transparent);
   }
 </style>

@@ -28,5 +28,4 @@ export const formTokenNames = {
   radius: "--ui-form-radius",
 } as const;
 
-export type FormToken =
-  (typeof formTokenNames)[keyof typeof formTokenNames];
+export type FormToken = (typeof formTokenNames)[keyof typeof formTokenNames];

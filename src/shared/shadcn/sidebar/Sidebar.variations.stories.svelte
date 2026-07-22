@@ -30,7 +30,8 @@
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "Let's start with the most basic sidebar. A collapsible sidebar with a menu.\n\nAdd a `Sidebar.Provider` and `Sidebar.Trigger` at the root of your application.\n\nCreate a new sidebar component at `src/lib/components/app-sidebar.svelte`.\n\nNow, let's add a `Sidebar.Menu` to the sidebar.\n\nWe'll use the `Sidebar.Menu` component in a `Sidebar.Group`.\n\nYou've created your first sidebar.",
+        story:
+          "Let's start with the most basic sidebar. A collapsible sidebar with a menu.\n\nAdd a `Sidebar.Provider` and `Sidebar.Trigger` at the root of your application.\n\nCreate a new sidebar component at `src/lib/components/app-sidebar.svelte`.\n\nNow, let's add a `Sidebar.Menu` to the sidebar.\n\nWe'll use the `Sidebar.Menu` component in a `Sidebar.Group`.\n\nYou've created your first sidebar.",
       },
       source: {
         code: exampleSources.YourFirstSidebar,
@@ -55,7 +56,8 @@
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "Use the `Sidebar.Header` component to add a sticky header to the sidebar.\n\nThe following example adds a `DropdownMenu` to the `Sidebar.Header`.",
+        story:
+          "Use the `Sidebar.Header` component to add a sticky header to the sidebar.\n\nThe following example adds a `DropdownMenu` to the `Sidebar.Header`.",
       },
       source: {
         code: exampleSources.SidebarHeader,
@@ -80,7 +82,8 @@
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "Use the `Sidebar.Footer` component to add a sticky footer to the sidebar.\n\nThe following example adds a `DropdownMenu` to the `Sidebar.Footer`.",
+        story:
+          "Use the `Sidebar.Footer` component to add a sticky footer to the sidebar.\n\nThe following example adds a `DropdownMenu` to the `Sidebar.Footer`.",
       },
       source: {
         code: exampleSources.SidebarFooter,
@@ -105,7 +108,8 @@
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "Use the `Sidebar.Group` component to create a section within the sidebar.\n\nA `Sidebar.Group` has a `Sidebar.GroupLabel`, a `Sidebar.GroupContent` and an optional `Sidebar.GroupAction`.",
+        story:
+          "Use the `Sidebar.Group` component to create a section within the sidebar.\n\nA `Sidebar.Group` has a `Sidebar.GroupLabel`, a `Sidebar.GroupContent` and an optional `Sidebar.GroupAction`.",
       },
       source: {
         code: exampleSources.SidebarGroup,
@@ -130,7 +134,8 @@
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "To make a `Sidebar.Group` collapsible, wrap it in a `Collapsible`.",
+        story:
+          "To make a `Sidebar.Group` collapsible, wrap it in a `Collapsible`.",
       },
       source: {
         code: exampleSources.CollapsibleSidebarGroup,
@@ -155,7 +160,8 @@
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "Use the `Sidebar.GroupAction` component to add an action to a `Sidebar.Group`.",
+        story:
+          "Use the `Sidebar.GroupAction` component to add an action to a `Sidebar.Group`.",
       },
       source: {
         code: exampleSources.SidebarGroupaction,
@@ -180,7 +186,8 @@
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "The `Sidebar.Menu` component is used for building a menu within a `Sidebar.Group`.\n\nA `Sidebar.Menu` is composed of `Sidebar.MenuItem`, `Sidebar.MenuButton`, `Sidebar.MenuAction`, and `Sidebar.MenuSub` components.\n\nHere's an example of a `Sidebar.Menu` component rendering a list of projects.",
+        story:
+          "The `Sidebar.Menu` component is used for building a menu within a `Sidebar.Group`.\n\nA `Sidebar.Menu` is composed of `Sidebar.MenuItem`, `Sidebar.MenuButton`, `Sidebar.MenuAction`, and `Sidebar.MenuSub` components.\n\nHere's an example of a `Sidebar.Menu` component rendering a list of projects.",
       },
       source: {
         code: exampleSources.SidebarMenu,
@@ -205,7 +212,8 @@
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "Here's an example of a `Sidebar.MenuAction` that renders a `DropdownMenu`.",
+        story:
+          "Here's an example of a `Sidebar.MenuAction` that renders a `DropdownMenu`.",
       },
       source: {
         code: exampleSources.Dropdownmenu,
@@ -230,7 +238,8 @@
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "The `Sidebar.MenuSub` component is used to render a submenu within a `Sidebar.Menu`.\n\nUse `Sidebar.MenuSubItem` and `Sidebar.MenuSubButton` to render a submenu item.",
+        story:
+          "The `Sidebar.MenuSub` component is used to render a submenu within a `Sidebar.Menu`.\n\nUse `Sidebar.MenuSubItem` and `Sidebar.MenuSubButton` to render a submenu item.",
       },
       source: {
         code: exampleSources.SidebarMenusub,
@@ -255,7 +264,8 @@
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "To make a `Sidebar.Menu` collapsible, wrap it and the `Sidebar.MenuSub` components in a `Collapsible`.",
+        story:
+          "To make a `Sidebar.Menu` collapsible, wrap it and the `Sidebar.MenuSub` components in a `Collapsible`.",
       },
       source: {
         code: exampleSources.CollapsibleSidebarMenu,
@@ -280,7 +290,8 @@
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "The `Sidebar.MenuBadge` component is used to render a badge within a `Sidebar.MenuItem`.",
+        story:
+          "The `Sidebar.MenuBadge` component is used to render a badge within a `Sidebar.MenuItem`.",
       },
       source: {
         code: exampleSources.SidebarMenubadge,
@@ -305,7 +316,8 @@
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "Use Svelte's [Function Binding](https://svelte.dev/docs/svelte/bind#Function-bindings) to control the sidebar state.",
+        story:
+          "Use Svelte's [Function Binding](https://svelte.dev/docs/svelte/bind#Function-bindings) to control the sidebar state.",
       },
       source: {
         code: exampleSources.ControlledSidebar,

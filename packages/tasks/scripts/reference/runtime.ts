@@ -145,7 +145,10 @@ export async function enableFlutterSemantics(page: Page): Promise<void> {
   // Some Superlist builds expose the control without the placeholder attribute.
   const fallback = page.getByLabel(/^Enable accessibility$/i);
   if (await fallback.count()) {
-    await fallback.first().click({ force: true }).catch(() => undefined);
+    await fallback
+      .first()
+      .click({ force: true })
+      .catch(() => undefined);
   }
   await page.waitForTimeout(250);
 }

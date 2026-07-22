@@ -21,9 +21,7 @@
     "docsUrl": "https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/badge.md",
     "docsFetchedAt": "2026-07-22T09:57:18.250Z",
     "docsSha256": "7e855f1205615e0619806efbdbb30d2bd6e978325b168633a6c8e5e5e1ce7bff",
-    "examplesIncluded": [
-      "Preview"
-    ],
+    "examplesIncluded": ["Preview"],
     "examplesSkipped": [],
     "docsCommit": "bf4f461d88526359d0e96e1950f637912bbeebe7",
     "docsRef": "shadcn-svelte@1.4.2",

@@ -65,9 +65,7 @@
     "docsUrl": "https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/alert-dialog.md",
     "docsFetchedAt": "2026-07-22T09:57:18.341Z",
     "docsSha256": "38e472de819004a4d7e748d307f8dee06ce4fc72468cc3e4569c1b2eca8b4cd8",
-    "examplesIncluded": [
-      "Preview"
-    ],
+    "examplesIncluded": ["Preview"],
     "examplesSkipped": [],
     "docsCommit": "bf4f461d88526359d0e96e1950f637912bbeebe7",
     "docsRef": "shadcn-svelte@1.4.2",

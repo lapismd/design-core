@@ -14,7 +14,11 @@ import {
 } from "../visual/diff-result.js";
 import { nestedSnapshotFileName } from "../visual/snapshot-paths.js";
 
-function solidPng(width: number, height: number, rgba: [number, number, number, number]): Buffer {
+function solidPng(
+  width: number,
+  height: number,
+  rgba: [number, number, number, number],
+): Buffer {
   const png = new PNG({ width, height });
   for (let i = 0; i < width * height; i++) {
     const o = i * 4;

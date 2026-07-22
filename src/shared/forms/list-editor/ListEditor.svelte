@@ -17,7 +17,10 @@
     placeholder = "",
     variant = "inline",
     headerVariant = "field",
+    readonly = false,
     reviewItems = {},
+    /** Validation message shown under the list. */
+    error = null,
     onChange,
   }: {
     label: string;
@@ -28,8 +31,11 @@
     placeholder?: string;
     variant?: "boxed" | "inline";
     headerVariant?: "field" | "section";
+    /** Hide add / drag / remove; textareas become readonly. Review UI still shows. */
+    readonly?: boolean;
     /** Pending Keep/Undo reviews keyed by item index. */
     reviewItems?: Record<number, FieldReview | null | undefined>;
+    error?: string | null;
     onChange: (items: string[]) => void;
   } = $props();
 
@@ -116,6 +122,8 @@
     ? "cv-control-row-group gap-0"
     : "flex flex-col gap-2"}
   data-ui-part="list-editor"
+  data-readonly={readonly ? "" : undefined}
+  data-invalid={error ? "" : undefined}
 >
   <div
     class={headerVariant === "section"
@@ -133,23 +141,29 @@
     >
       {label}
     </span>
-    <div class={variant === "inline" ? "cv-control-action-row__control" : ""}>
-      <Button
-        type="button"
-        variant="ghost"
-        size="xs"
-        class="text-muted-foreground hover:text-foreground h-5 gap-1 px-0 text-xs font-normal hover:bg-transparent [&_svg]:size-3"
-        onclick={add}
-      >
-        <PlusIcon data-icon="inline-start" />
-        {addLabel}
-      </Button>
-    </div>
+    {#if !readonly}
+      <div class={variant === "inline" ? "cv-control-action-row__control" : ""}>
+        <Button
+          type="button"
+          variant="ghost"
+          size="xs"
+          class={headerVariant === "section"
+            ? "text-muted-foreground hover:text-foreground h-4 gap-1 px-0 text-xs font-normal hover:bg-transparent [&_svg]:size-3"
+            : variant === "inline"
+              ? "text-muted-foreground hover:text-foreground h-5 gap-1 px-0 text-xs font-normal hover:bg-transparent [&_svg]:size-3"
+              : "text-muted-foreground hover:text-foreground h-5 gap-1 px-0 text-xs font-normal hover:bg-transparent [&_svg]:size-3"}
+          onclick={add}
+        >
+          <PlusIcon data-icon="inline-start" />
+          {addLabel}
+        </Button>
+      </div>
+    {/if}
   </div>
 
   <div
     class={variant === "inline"
-      ? "list-editor-items flex flex-col"
+      ? "col-span-full flex flex-col"
       : "list-editor-items flex flex-col gap-2"}
   >
     {#each items as item, index (`${label}-${index}`)}
@@ -157,12 +171,13 @@
       <SortableArrayItem
         id={`${label}-${index}`}
         {index}
-        dragging={draggingIndex === index}
+        dragging={!readonly && draggingIndex === index}
         compact={variant === "inline"}
-        inset={variant === "inline" ? "flush" : "normal"}
-        onDragStart={startDrag}
-        onRemove={() =>
-          onChange(items.filter((_, itemIndex) => itemIndex !== index))}
+        removable={!readonly}
+        onDragStart={readonly ? undefined : startDrag}
+        onRemove={readonly
+          ? undefined
+          : () => onChange(items.filter((_, itemIndex) => itemIndex !== index))}
       >
         <div class="flex min-w-0 flex-col">
           {#if review}
@@ -175,7 +190,7 @@
           {:else}
             <textarea
               class={variant === "inline"
-                ? "min-h-5 w-full resize-none overflow-hidden border-0 bg-transparent px-0 py-0 text-sm leading-5 break-words whitespace-pre-wrap shadow-none outline-none"
+                ? "min-h-5 w-full resize-none overflow-hidden border-0 bg-transparent px-0 py-0 text-sm leading-5 break-words whitespace-pre-wrap [color:var(--ui-form-foreground)] shadow-none outline-none"
                 : multiline
                   ? "border-input bg-background min-h-20 w-full resize-none overflow-hidden rounded-md border px-2 py-1.5 text-sm outline-none"
                   : "border-input bg-background min-h-9 w-full resize-none overflow-hidden rounded-md border px-2 py-1.5 text-sm outline-none"}
@@ -187,6 +202,7 @@
               value={item}
               placeholder={inferredPlaceholder()}
               aria-label={`${label} ${index + 1}`}
+              {readonly}
               oninput={(event) => update(index, event.currentTarget.value)}
             ></textarea>
           {/if}
@@ -194,15 +210,18 @@
       </SortableArrayItem>
     {/each}
   </div>
+
+  {#if error}
+    <p class="ui-form-control-error col-span-full" role="alert">{error}</p>
+  {/if}
 </div>
 
 <style>
-  /*
-   * Keep list values in the shared control column. `col-span-full` used to
-   * pull items under the label track so "Backend" sat left of Name/Headline.
-   */
-  .list-editor-items {
-    grid-column: 2;
-    min-width: 0;
+  .ui-form-control-error {
+    margin: 0;
+    color: var(--destructive, #dc2626);
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1.3;
   }
 </style>

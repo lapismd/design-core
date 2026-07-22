@@ -148,12 +148,9 @@
     ></textarea>
   </FormField>
 {:else if entryType === "ExperienceEntry"}
-  <ExperienceEditor
-    experience={entry as ExperienceEntry}
-    onUpdate={onUpdate}
-  />
+  <ExperienceEditor experience={entry as ExperienceEntry} {onUpdate} />
 {:else if entryType === "EducationEntry"}
-  <EducationEditor education={entry as EducationEntry} onUpdate={onUpdate} />
+  <EducationEditor education={entry as EducationEntry} {onUpdate} />
 {:else if entryType === "PublicationEntry"}
   {@const publication = entry as PublicationEntry}
   <div class="flex flex-col gap-4">

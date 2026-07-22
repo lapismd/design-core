@@ -84,7 +84,10 @@
     box-shadow: none;
   }
 
-  :global([data-ui-component="ai-prompt-input"] [data-ui-part="textarea"]:focus-visible) {
+  :global(
+      [data-ui-component="ai-prompt-input"]
+        [data-ui-part="textarea"]:focus-visible
+    ) {
     box-shadow: none;
     outline: none;
   }

@@ -1,4 +1,11 @@
-import { Meta, Canvas, Controls, Primary, Source, Markdown } from "@storybook/addon-docs/blocks";
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+  Markdown,
+} from "@storybook/addon-docs/blocks";
 import * as PopoverStories from "./Popover.stories.svelte";
 import * as PopoverVariations from "./Popover.variations.stories.svelte";
 import docsBody from "./popover.docs-body.md?raw";
@@ -17,7 +24,12 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 
 ## Usage
 
-<Source language="html" code={"<script lang=\"ts\">\n  import * as Popover from \"@stevejuma/ui/shadcn/popover\";\n</script>\n\n<Popover.Root>\n  <Popover.Trigger>Open</Popover.Trigger>\n  <Popover.Content>Place content for the popover here.</Popover.Content>\n</Popover.Root>"} />
+<Source
+  language="html"
+  code={
+    '<script lang="ts">\n  import * as Popover from "@stevejuma/ui/shadcn/popover";\n</script>\n\n<Popover.Root>\n  <Popover.Trigger>Open</Popover.Trigger>\n  <Popover.Content>Place content for the popover here.</Popover.Content>\n</Popover.Root>'
+  }
+/>
 
 <Primary />
 
@@ -27,6 +39,4 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 
 ### Preview
 
-
 <Canvas of={PopoverVariations.Preview} meta={PopoverVariations} />
-

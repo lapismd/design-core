@@ -1,19 +1,11 @@
-import {
-  existsSync,
-  readdirSync,
-  readFileSync,
-  writeFileSync,
-} from "node:fs";
+import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { EXIT, GeneratorError } from "../errors.js";
 import { log } from "../logger.js";
 import { emitDocsArtifacts } from "./emit-docs-artifacts.js";
 import { loadVendoredDocs } from "./load-vendored-docs.js";
 import { parseUpstreamDocs } from "./parse-upstream-docs.js";
-import {
-  isRewrittenExample,
-  rewriteExample,
-} from "./rewrite-example.js";
+import { isRewrittenExample, rewriteExample } from "./rewrite-example.js";
 import type { SyncUpstreamDocsResult } from "./types.js";
 import { VENDOR_DOCS_RELATIVE } from "./vendor-docs.js";
 
@@ -31,10 +23,7 @@ function patchProvenance(
   component: string,
   result: SyncUpstreamDocsResult,
 ): string | null {
-  const provenancePath = path.join(
-    targetDir,
-    `${component}.provenance.json`,
-  );
+  const provenancePath = path.join(targetDir, `${component}.provenance.json`);
   if (!existsSync(provenancePath)) return null;
   const raw = JSON.parse(readFileSync(provenancePath, "utf8")) as {
     upstream?: Record<string, unknown>;

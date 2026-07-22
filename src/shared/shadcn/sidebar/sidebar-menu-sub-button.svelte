@@ -1,39 +1,44 @@
 <script lang="ts">
-	import { type WithElementRef } from "../../../lib/utils.js";
-	import { omitDataUiIdentity } from "../../../lib/data-ui-host.js";
-	import type { Snippet } from "svelte";
-	import type { HTMLAnchorAttributes } from "svelte/elements";
+  import { type WithElementRef } from "../../../lib/utils.js";
+  import { omitDataUiIdentity } from "../../../lib/data-ui-host.js";
+  import type { Snippet } from "svelte";
+  import type { HTMLAnchorAttributes } from "svelte/elements";
 
-	let {
-		ref = $bindable(null),
-		children,
-		child,
-		class: className,
-		size = "md",
-		isActive = false,
-		...restProps
-	}: WithElementRef<HTMLAnchorAttributes> & {
-		child?: Snippet<[{ props: Record<string, unknown> }]>;
-		size?: "sm" | "md";
-		isActive?: boolean;
-	} = $props();
+  let {
+    ref = $bindable(null),
+    children,
+    child,
+    class: className,
+    size = "md",
+    isActive = false,
+    ...restProps
+  }: WithElementRef<HTMLAnchorAttributes> & {
+    child?: Snippet<[{ props: Record<string, unknown> }]>;
+    size?: "sm" | "md";
+    isActive?: boolean;
+  } = $props();
 
-	const mergedProps = $derived({
-		...omitDataUiIdentity(restProps),
-		class: className,
-		"data-ui-component": "sidebar",
-		"data-ui-part": "sidebar-menu-sub-button",
-		"data-slot": "sidebar-menu-sub-button",
-		"data-sidebar": "menu-sub-button",
-		"data-size": size,
-		"data-active": isActive,
-	});
+  const mergedProps = $derived({
+    ...omitDataUiIdentity(restProps),
+    class: className,
+    "data-ui-component": "sidebar",
+    "data-ui-part": "sidebar-menu-sub-button",
+    "data-slot": "sidebar-menu-sub-button",
+    "data-sidebar": "menu-sub-button",
+    "data-size": size,
+    "data-active": isActive,
+  });
 </script>
 
 {#if child}
-	{@render child({ props: mergedProps })}
+  {@render child({ props: mergedProps })}
 {:else}
-	<a bind:this={ref} {...mergedProps} data-ui-component="sidebar" data-ui-part="sidebar-menu-sub-button">
-		{@render children?.()}
-	</a>
+  <a
+    bind:this={ref}
+    {...mergedProps}
+    data-ui-component="sidebar"
+    data-ui-part="sidebar-menu-sub-button"
+  >
+    {@render children?.()}
+  </a>
 {/if}

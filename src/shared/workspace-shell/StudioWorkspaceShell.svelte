@@ -24,7 +24,11 @@
   data-sidebar-open={sidebarOpen ? "true" : "false"}
 >
   {@render sidebar?.()}
-  <div data-ui-component="workspace-shell" data-ui-part="shell" data-slot="studio-workspace-shell">
+  <div
+    data-ui-component="workspace-shell"
+    data-ui-part="shell"
+    data-slot="studio-workspace-shell"
+  >
     <main data-ui-component="workspace-shell" data-ui-part="main">
       {@render main?.()}
     </main>
@@ -40,7 +44,8 @@
     --ui-workspace-ai-width-expanded: 20rem;
     --ui-workspace-ai-width-collapsed: 3rem;
     --ui-workspace-radius: 0.75rem;
-    --ui-workspace-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    --ui-workspace-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1),
+      0 1px 2px -1px rgb(0 0 0 / 0.1);
     --ui-workspace-shadow-dark: 0 2px 8px oklch(0 0 0 / 0.5);
     --ui-workspace-toolbar-height: 3rem;
     --ai-sidebar-inline-size: 0px;
@@ -60,9 +65,9 @@
 
   /* Inside a sized host (Storybook root / app layout), fill the host exactly. */
   :global(
-    #storybook-root:has([data-workspace-shell="true"])
-      [data-slot="sidebar-provider"][data-workspace-shell="true"]
-  ) {
+      #storybook-root:has([data-workspace-shell="true"])
+        [data-slot="sidebar-provider"][data-workspace-shell="true"]
+    ) {
     min-height: 0;
     height: 100%;
   }
@@ -79,9 +84,9 @@
 
   @media (min-width: 1024px) {
     :global(
-      [data-slot="sidebar-provider"][data-workspace-shell="true"][data-sidebar-open="true"]
-        [data-ui-component="workspace-shell"][data-ui-part="shell"]
-    ) {
+        [data-slot="sidebar-provider"][data-workspace-shell="true"][data-sidebar-open="true"]
+          [data-ui-component="workspace-shell"][data-ui-part="shell"]
+      ) {
       padding-left: 0;
     }
   }
@@ -104,18 +109,22 @@
   }
 
   @media (min-width: 1024px) {
-    :global([data-slot="sidebar-provider"][data-workspace-shell="true"][data-ai-sidebar="expanded"]) {
+    :global(
+        [data-slot="sidebar-provider"][data-workspace-shell="true"][data-ai-sidebar="expanded"]
+      ) {
       --ai-sidebar-inline-size: var(--ui-workspace-ai-width-expanded);
     }
 
-    :global([data-slot="sidebar-provider"][data-workspace-shell="true"][data-ai-sidebar="collapsed"]) {
+    :global(
+        [data-slot="sidebar-provider"][data-workspace-shell="true"][data-ai-sidebar="collapsed"]
+      ) {
       --ai-sidebar-inline-size: var(--ui-workspace-ai-width-collapsed);
     }
 
     :global(
-      [data-slot="sidebar-provider"][data-workspace-shell="true"][data-ai-sidebar]
-        [data-ui-component="workspace-shell"][data-ui-part="shell"]
-    ) {
+        [data-slot="sidebar-provider"][data-workspace-shell="true"][data-ai-sidebar]
+          [data-ui-component="workspace-shell"][data-ui-part="shell"]
+      ) {
       padding-right: var(--ui-workspace-ai-gap);
     }
   }

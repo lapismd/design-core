@@ -13,6 +13,8 @@
     id = undefined,
     embedded = false,
     uppercase = true,
+    /** Validation message; forwarded to AutocompleteInput and marks the chip box. */
+    error = null,
     onChange = () => {},
   }: {
     value?: string[];
@@ -23,6 +25,7 @@
     id?: string;
     embedded?: boolean;
     uppercase?: boolean;
+    error?: string | null;
     onChange?: (items: string[]) => void | Promise<void>;
   } = $props();
 
@@ -89,6 +92,7 @@
       class="chip-autocomplete-box"
       role="group"
       aria-label={label}
+      data-invalid={error ? "" : undefined}
       onpointerdown={focusAutocompleteInput}
     >
       {#each normalizedItems as item (item)}
@@ -111,7 +115,11 @@
               <XIcon />
             </button>
           </span>
-          <Tooltip.Content side="top" sideOffset={4} class="chip-tooltip-content">
+          <Tooltip.Content
+            side="top"
+            sideOffset={4}
+            class="chip-tooltip-content"
+          >
             {item}
           </Tooltip.Content>
         </Tooltip.Root>
@@ -123,6 +131,7 @@
           suggestions={availableSuggestions}
           {placeholder}
           ariaLabel={label}
+          {error}
           commitOnComma
           commitOnBlur
           commitOnTab
@@ -178,12 +187,7 @@
     align-items: center;
     gap: 0.25rem;
     flex-shrink: 1;
-    border: 1px solid
-      color-mix(
-        in srgb,
-        var(--ui-form-accent) 22%,
-        transparent
-      );
+    border: 1px solid color-mix(in srgb, var(--ui-form-accent) 22%, transparent);
     border-radius: 999px;
     background: color-mix(
       in srgb,
@@ -219,11 +223,7 @@
     place-items: center;
     border: 0;
     border-radius: 999px;
-    background: color-mix(
-      in srgb,
-      var(--ui-form-accent) 12%,
-      transparent
-    );
+    background: color-mix(in srgb, var(--ui-form-accent) 12%, transparent);
     color: inherit;
     cursor: pointer;
     padding: 0;
@@ -239,9 +239,14 @@
     flex: 1;
     color: var(--ui-form-foreground);
     font-size: 0.9rem;
-    font-weight: 700;
+    font-weight: 400;
     line-height: 1.2;
     text-transform: none;
+  }
+
+  .chip-autocomplete-box[data-invalid] {
+    box-shadow: 0 0 0 1px
+      color-mix(in srgb, var(--destructive, #dc2626) 55%, transparent);
   }
 
   .chip-input :global(input) {

@@ -3,7 +3,7 @@
   import InlineOptionPicker from "./InlineOptionPicker.svelte";
 
   const { Story } = defineMeta({
-    title: "UI Forms/Inline Option Picker",
+    title: "UI Forms/Form Inputs/Inline Option Picker",
     component: InlineOptionPicker,
     parameters: {
       docs: {
@@ -14,7 +14,6 @@
     },
   });
 </script>
-
 
 <Story
   name="Menu"

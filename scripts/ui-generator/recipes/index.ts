@@ -314,7 +314,11 @@ const recipes: Record<string, ComponentRecipe> = {
   field: lightCompound("field", "Shadcn/Forms/Field", {
     tag: "div",
     text: "Field",
-    attrs: { role: "group", "data-slot": "field", "data-orientation": "vertical" },
+    attrs: {
+      role: "group",
+      "data-slot": "field",
+      "data-orientation": "vertical",
+    },
     shotSelector: '[data-ui-part="field"]',
   }),
   "input-group": lightCompound("input-group", "Shadcn/Forms/Input Group", {

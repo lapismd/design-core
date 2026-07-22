@@ -1,4 +1,11 @@
-import { Meta, Canvas, Controls, Primary, Source, Markdown } from "@storybook/addon-docs/blocks";
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+  Markdown,
+} from "@storybook/addon-docs/blocks";
 import * as ResizableStories from "./Resizable.stories.svelte";
 import * as ResizableVariations from "./Resizable.variations.stories.svelte";
 import docsBody from "./resizable.docs-body.md?raw";
@@ -17,7 +24,12 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 
 ## Usage
 
-<Source language="html" code={"<script lang=\"ts\">\n  import * as Resizable from \"@stevejuma/ui/shadcn/resizable\";\n</script>\n\n<Resizable.PaneGroup direction=\"horizontal\">\n  <Resizable.Pane>One</Resizable.Pane>\n  <Resizable.Handle />\n  <Resizable.Pane>Two</Resizable.Pane>\n</Resizable.PaneGroup>"} />
+<Source
+  language="html"
+  code={
+    '<script lang="ts">\n  import * as Resizable from "@stevejuma/ui/shadcn/resizable";\n</script>\n\n<Resizable.PaneGroup direction="horizontal">\n  <Resizable.Pane>One</Resizable.Pane>\n  <Resizable.Handle />\n  <Resizable.Pane>Two</Resizable.Pane>\n</Resizable.PaneGroup>'
+  }
+/>
 
 <Primary />
 
@@ -26,7 +38,6 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 ## Examples
 
 ### Preview
-
 
 <Canvas of={ResizableVariations.Preview} meta={ResizableVariations} />
 
@@ -41,4 +52,3 @@ Use the `direction` prop to set the direction of the resizable panels.
 You can set or hide the handle by using the `withHandle` prop on the `ResizableHandle` component.
 
 <Canvas of={ResizableVariations.Handle} meta={ResizableVariations} />
-

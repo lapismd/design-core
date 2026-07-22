@@ -119,9 +119,7 @@ export function patchStoryOpenTagWithBaselineUrl(
       ? `${inside.replace(/,\s*$/, "")}, ${JSON.stringify(url)}`
       : JSON.stringify(url);
     return (
-      openTag.slice(0, bracketStart + 1) +
-      insertion +
-      openTag.slice(bracketEnd)
+      openTag.slice(0, bracketStart + 1) + insertion + openTag.slice(bracketEnd)
     );
   }
 
@@ -313,7 +311,9 @@ export function patchStoriesVisualDeltaImages(options: {
   const alreadyWired: string[] = [];
   const skipped: string[] = [];
   if (!existsSync(indexPath)) {
-    log.warn("storybook-static/index.json missing; skip story visualDelta patch");
+    log.warn(
+      "storybook-static/index.json missing; skip story visualDelta patch",
+    );
     return { patched, alreadyWired, skipped };
   }
 
@@ -351,7 +351,10 @@ export function patchStoriesVisualDeltaImages(options: {
       skipped.push(entry.id);
       continue;
     }
-    const storiesPath = resolveStoriesPath(options.packageRoot, entry.importPath);
+    const storiesPath = resolveStoriesPath(
+      options.packageRoot,
+      entry.importPath,
+    );
     if (!storiesPath) {
       skipped.push(entry.id);
       continue;
@@ -368,4 +371,144 @@ export function patchStoriesVisualDeltaImages(options: {
   }
 
   return { patched, alreadyWired, skipped };
+}
+
+/**
+ * Locate the `visualDelta: {…}` object literal inside a Story open tag.
+ * Returns [start, endExclusive] of the object braces, or null.
+ */
+function findVisualDeltaObjectRange(
+  openTag: string,
+): { start: number; end: number } | null {
+  const key = openTag.match(/\bvisualDelta\s*:\s*/);
+  if (!key || key.index == null) return null;
+  const start = key.index + key[0].length;
+  if (openTag[start] !== "{") return null;
+  const end = endOfDoubleBraceObject(openTag, start);
+  if (end === -1) return null;
+  return { start, end: end + 1 };
+}
+
+/**
+ * Parse `visualDelta` whether it is compact JSON or a prettier JS object
+ * literal (`images: [...]`, unquoted keys, trailing commas).
+ */
+export function parseVisualDeltaObjectLiteral(
+  objectText: string,
+): Record<string, unknown> | null {
+  try {
+    return JSON.parse(objectText) as Record<string, unknown>;
+  } catch {
+    /* fall through — prettier JS object */
+  }
+  try {
+    const normalized = objectText
+      .replace(/([{\[,]\s*)([A-Za-z_][A-Za-z0-9_]*)\s*:/g, '$1"$2":')
+      .replace(/,(\s*[}\]])/g, "$1");
+    return JSON.parse(normalized) as Record<string, unknown>;
+  } catch {
+    return null;
+  }
+}
+
+export function patchStoryOpenTagWithInteraction(
+  openTag: string,
+  interaction: { id: string; label: string; src: string },
+): string {
+  if (/skip-visual/.test(openTag)) return openTag;
+
+  const range = findVisualDeltaObjectRange(openTag);
+  if (!range) {
+    return openTag;
+  }
+
+  const parsed = parseVisualDeltaObjectLiteral(
+    openTag.slice(range.start, range.end),
+  );
+  if (!parsed) return openTag;
+
+  const existing = Array.isArray(parsed.interactions)
+    ? (parsed.interactions as Array<Record<string, unknown>>)
+    : [];
+  const without = existing.filter((item) => item?.id !== interaction.id);
+  without.push({
+    id: interaction.id,
+    label: interaction.label,
+    src: interaction.src,
+  });
+  parsed.interactions = without;
+
+  const nextLiteral = JSON.stringify(parsed);
+  return openTag.slice(0, range.start) + nextLiteral + openTag.slice(range.end);
+}
+
+/**
+ * Wire `parameters.visualDelta.interactions` for one mid-play capture.
+ */
+export function patchStoryVisualDeltaInteraction(options: {
+  packageRoot: string;
+  storyId: string;
+  interaction: { id: string; label: string; src: string };
+}): { ok: boolean; changed: boolean; error?: string } {
+  const indexPath = path.join(
+    options.packageRoot,
+    "storybook-static",
+    "index.json",
+  );
+  if (!existsSync(indexPath)) {
+    return {
+      ok: false,
+      changed: false,
+      error: "storybook-static/index.json missing",
+    };
+  }
+  const index = JSON.parse(readFileSync(indexPath, "utf8")) as {
+    entries?: Record<string, StoryIndexEntry>;
+  };
+  const entry = Object.values(index.entries ?? {}).find(
+    (e) => e.id === options.storyId,
+  );
+  if (!entry?.importPath) {
+    return {
+      ok: false,
+      changed: false,
+      error: `Story not found: ${options.storyId}`,
+    };
+  }
+  if ((entry.tags ?? []).includes("skip-visual")) {
+    return {
+      ok: false,
+      changed: false,
+      error: "Cannot patch skip-visual stories",
+    };
+  }
+  const storiesPath = resolveStoriesPath(options.packageRoot, entry.importPath);
+  if (!storiesPath) {
+    return {
+      ok: false,
+      changed: false,
+      error: `Stories file not found: ${entry.importPath}`,
+    };
+  }
+
+  const before = readFileSync(storiesPath, "utf8");
+  const changed = patchStoriesFileWithOpenTagTransform(
+    storiesPath,
+    entry,
+    (openTag) => patchStoryOpenTagWithInteraction(openTag, options.interaction),
+  );
+  if (!changed) {
+    if (before.includes(options.interaction.src)) {
+      return { ok: true, changed: false };
+    }
+    return {
+      ok: false,
+      changed: false,
+      error: `Could not patch visualDelta.interactions for ${options.storyId}`,
+    };
+  }
+  log.info(
+    `Patched visualDelta.interactions[${options.interaction.id}] for ${options.storyId}`,
+  );
+  return { ok: true, changed: true };
 }

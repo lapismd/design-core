@@ -71,8 +71,9 @@
 
   const displayTitle = $derived(
     title ??
-      fixture.navDestinations.find((destination) => destination.id === activeNavId)
-        ?.label ??
+      fixture.navDestinations.find(
+        (destination) => destination.id === activeNavId,
+      )?.label ??
       "Inbox",
   );
 
@@ -125,10 +126,7 @@
   );
 </script>
 
-<div
-  class="tasks-page-workspace tasks-shell-stage"
-  data-tasks-page={page}
->
+<div class="tasks-page-workspace tasks-shell-stage" data-tasks-page={page}>
   <TasksShell
     {pager}
     {viewport}

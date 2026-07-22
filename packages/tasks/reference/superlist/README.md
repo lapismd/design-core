@@ -6,10 +6,10 @@ Delta overlays. Screenshots are committed and regenerated from the dedicated
 
 ## Two visual systems
 
-| Surface | Path | Purpose |
-| ------- | ---- | ------- |
+| Surface                | Path                                                          | Purpose                                              |
+| ---------------------- | ------------------------------------------------------------- | ---------------------------------------------------- |
 | Superlist Visual Delta | `/tasks-reference/2026-07-20/screenshots/{pages,components}/` | Design reference overlays (desktop **1280×900 @3x**) |
-| Playwright baselines | `/visual-baselines/tasks/…` | CI regression of *our* Tasks stories (separate) |
+| Playwright baselines   | `/visual-baselines/tasks/…`                                   | CI regression of _our_ Tasks stories (separate)      |
 
 ## Capture matrix
 
@@ -60,6 +60,7 @@ pnpm --dir packages/tasks reference:ingest:delta -- \
 - **Pages:** staging `<id>.png` is resized to viewport × DSF 3.
 - **Components:** cropped from `--from-page` (or a staged clip PNG) using the
   matrix `clip`, then sized to clip × DSF 3.
+
 8. `pnpm --dir packages/tasks reference:verify`
 
 ## Optional: Playwright headed capture

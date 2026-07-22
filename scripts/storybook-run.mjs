@@ -38,7 +38,10 @@ const restartWatchPaths = [
   path.join(root, "packages/storybook-addon-visual-delta/src/panel"),
   path.join(root, "packages/storybook-addon-visual-delta/src/constants.ts"),
   path.join(root, "packages/storybook-addon-visual-delta/src/types.ts"),
-  path.join(root, "packages/storybook-addon-visual-delta/src/visual-diff-sidecar.ts"),
+  path.join(
+    root,
+    "packages/storybook-addon-visual-delta/src/visual-diff-sidecar.ts",
+  ),
   path.join(root, "packages/storybook-addon-visual-delta/src/shared"),
   path.join(root, "packages/storybook-addon-visual-delta/src/preset.ts"),
   path.join(root, ".storybook/visual-delta-middleware.ts"),
@@ -211,8 +214,7 @@ for (const watchPath of restartWatchPaths) {
 
 const watchers = restartWatchPaths.map((watchPath) => {
   try {
-    const isDir =
-      existsSync(watchPath) && statSync(watchPath).isDirectory();
+    const isDir = existsSync(watchPath) && statSync(watchPath).isDirectory();
     return watch(watchPath, { recursive: isDir }, (_event, filename) => {
       const changedPath = filename
         ? isDir

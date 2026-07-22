@@ -298,7 +298,7 @@ export const columns: ColumnDef<Payment>[] = [
             render: () =>
               `<div class="text-end font-medium">${formatted}</div>`,
           };
-        }
+        },
       );
 
       return renderSnippet(amountCellSnippet, {

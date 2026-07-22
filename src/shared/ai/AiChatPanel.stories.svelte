@@ -3,7 +3,11 @@
   import { expect, userEvent } from "storybook/test";
   import AiChatPanel from "./AiChatPanel.svelte";
   import { sampleAiMessages } from "./fixtures.js";
-  import type { AiChatMessage, AiChatPlacement, AiChatVisibility } from "./types.js";
+  import type {
+    AiChatMessage,
+    AiChatPlacement,
+    AiChatVisibility,
+  } from "./types.js";
 
   const { Story } = defineMeta({
     title: "AI/AI Chat Panel",
@@ -50,7 +54,11 @@
   }}
 >
   {#snippet template()}
-    <div data-slot="sidebar-provider" data-ui-component="ai-story-host" data-ui-part="panel-host">
+    <div
+      data-slot="sidebar-provider"
+      data-ui-component="ai-story-host"
+      data-ui-part="panel-host"
+    >
       <div data-ui-part="main-stub">Main workspace</div>
       <AiChatPanel
         {messages}
@@ -65,7 +73,11 @@
 
 <Story name="Collapsed" exportName="Collapsed" tags={["skip-visual"]}>
   {#snippet template()}
-    <div data-slot="sidebar-provider" data-ui-component="ai-story-host" data-ui-part="panel-host">
+    <div
+      data-slot="sidebar-provider"
+      data-ui-component="ai-story-host"
+      data-ui-part="panel-host"
+    >
       <div data-ui-part="main-stub">Main workspace</div>
       <AiChatPanel
         messages={sampleAiMessages}
@@ -91,7 +103,10 @@
     padding-right: var(--ai-sidebar-inline-size);
   }
 
-  :global([data-ui-component="ai-story-host"][data-ui-part="panel-host"] [data-ui-part="main-stub"]) {
+  :global(
+      [data-ui-component="ai-story-host"][data-ui-part="panel-host"]
+        [data-ui-part="main-stub"]
+    ) {
     display: flex;
     flex: 1 1 auto;
     align-items: center;

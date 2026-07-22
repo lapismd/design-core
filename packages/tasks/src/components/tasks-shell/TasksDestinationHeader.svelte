@@ -27,7 +27,10 @@
 <div class="tasks-theme tasks-destination-header" data-tasks-destination-header>
   <div class="tasks-destination-header__title-row">
     <h1 class="tasks-destination-header__title">{title}</h1>
-    <div class="tasks-destination-header__utilities" data-tasks-destination-utilities>
+    <div
+      class="tasks-destination-header__utilities"
+      data-tasks-destination-utilities
+    >
       <Button type="button" variant="ghost" size="icon-sm" aria-label="Filter">
         <ListFilterIcon aria-hidden="true" />
       </Button>
@@ -47,10 +50,7 @@
   {/if}
 
   {#if showFilters}
-    <TasksFilters
-      {filterId}
-      onFilterChange={(id) => onFilterChange?.(id)}
-    />
+    <TasksFilters {filterId} onFilterChange={(id) => onFilterChange?.(id)} />
   {/if}
 </div>
 

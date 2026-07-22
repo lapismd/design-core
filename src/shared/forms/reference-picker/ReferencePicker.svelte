@@ -1,14 +1,14 @@
 <script lang="ts">
   import "./ReferencePicker.css";
+  import "../form-control-row/FormControlRow.css";
   import { Command as CommandPrimitive } from "bits-ui";
   import ChevronDownIcon from "@lucide/svelte/icons/chevron-down";
   import PlusIcon from "@lucide/svelte/icons/plus";
   import SearchIcon from "@lucide/svelte/icons/search";
   import XIcon from "@lucide/svelte/icons/x";
   import type { Snippet } from "svelte";
-  import ReadOnlyFormGroup from "../read-only-form/ReadOnlyFormGroup.svelte";
-  import ReadOnlyFormList from "../read-only-form/ReadOnlyFormList.svelte";
-  import ReadOnlyFormRow from "../read-only-form/ReadOnlyFormRow.svelte";
+  import { Button } from "@stevejuma/ui/shadcn/button";
+  import FormAddButton from "../form-add-button/FormAddButton.svelte";
   import {
     duplicateReferenceCount,
     normalizeReferenceList,
@@ -17,12 +17,15 @@
     type ReferenceSelectedSlotProps,
     type ReferenceTarget,
   } from "../core/reference-utils";
+  import ReferencePreview from "./ReferencePreview.svelte";
 
   let {
     refs = [],
     referenceIndex,
     excludedRefs = [],
-    addOpen = false,
+    label,
+    error = null,
+    addOpen = $bindable(false),
     addButtonClass = "",
     addLabel = "Add Reference",
     addHeading = "Reference",
@@ -42,6 +45,10 @@
     refs?: string[];
     referenceIndex: ReferenceIndex;
     excludedRefs?: string[];
+    /** When set, renders a ListEditor-like header with label + Add/Cancel. */
+    label?: string;
+    /** Validation message shown under the list. */
+    error?: string | null;
     addOpen?: boolean;
     addButtonClass?: string;
     addLabel?: string;
@@ -61,15 +68,15 @@
   } = $props();
 
   let expandedRefs = $state<string[]>([]);
-  let localRefs = $state<string[]>([]);
   let query = $state("");
 
-  $effect(() => {
-    localRefs = normalizeReferenceList(refs);
-  });
-
   function selectedRefs() {
-    return localRefs;
+    return normalizeReferenceList(refs);
+  }
+
+  function setAddOpen(open: boolean) {
+    addOpen = open;
+    onAddOpenChange(open);
   }
 
   function duplicateCount(ref: string) {
@@ -77,16 +84,22 @@
   }
 
   function availableReferences() {
-    const selected = new Set(selectedRefs());
-    const excluded = new Set(normalizeReferenceList(excludedRefs));
+    const selected = Object.fromEntries(
+      selectedRefs().map((ref) => [ref, true] as const),
+    );
+    const excluded = Object.fromEntries(
+      normalizeReferenceList(excludedRefs).map((ref) => [ref, true] as const),
+    );
     const normalizedQuery = query.trim().toLowerCase();
-    const byRef = new Map<string, ReferenceTarget>();
+    const seen: Record<string, true> = {};
+    const available: ReferenceTarget[] = [];
     for (const reference of referenceIndex.references) {
       if (
         reference.duplicate ||
         reference.selectable === false ||
-        selected.has(reference.ref) ||
-        excluded.has(reference.ref)
+        selected[reference.ref] ||
+        excluded[reference.ref] ||
+        seen[reference.ref]
       )
         continue;
       const searchable = [
@@ -100,11 +113,10 @@
         .join(" ")
         .toLowerCase();
       if (normalizedQuery && !searchable.includes(normalizedQuery)) continue;
-      if (!byRef.has(reference.ref)) byRef.set(reference.ref, reference);
+      seen[reference.ref] = true;
+      available.push(reference);
     }
-    return [...byRef.values()].sort((left, right) =>
-      left.ref.localeCompare(right.ref),
-    );
+    return available.sort((left, right) => left.ref.localeCompare(right.ref));
   }
 
   function addReference(ref: string) {
@@ -112,15 +124,13 @@
     if (selectedRefs().includes(ref)) return;
     if (!resolveReferenceTarget(referenceIndex, ref)) return;
     const nextRefs = [...selectedRefs(), ref];
-    localRefs = nextRefs;
     onChange(nextRefs);
     query = "";
-    onAddOpenChange(false);
+    setAddOpen(false);
   }
 
   function removeReference(ref: string) {
     const nextRefs = selectedRefs().filter((item) => item !== ref);
-    localRefs = nextRefs;
     expandedRefs = expandedRefs.filter((item) => item !== ref);
     onChange(nextRefs);
   }
@@ -156,10 +166,9 @@
     if (duplicateCount(ref) > 0) return;
     if (selectedRefs().includes(ref)) return;
     const nextRefs = [...selectedRefs(), ref];
-    localRefs = nextRefs;
     onChange(nextRefs);
     query = "";
-    onAddOpenChange(false);
+    setAddOpen(false);
   }
 
   function handleSearchCreate() {
@@ -171,246 +180,267 @@
       return;
     }
     query = "";
-    onAddOpenChange(false);
+    setAddOpen(false);
   }
 </script>
 
-<div class="cv-reference-picker">
-  {#each selectedRefs() as ref (ref)}
-    {@const resolved = resolveReferenceTarget(referenceIndex, ref)}
-    {@const duplicates = duplicateCount(ref)}
-    {@const expanded = isExpanded(ref)}
-    <div class="cv-reference-row-group">
-      <div
-        class="cv-reference-row"
-        class:cv-reference-row--custom={Boolean(selected)}
-      >
-        {#if hasPreview(resolved)}
-          <button
-            type="button"
-            class="cv-reference-expand"
-            aria-label={expanded
-              ? `Collapse ${ref} context`
-              : `Expand ${ref} context`}
-            aria-expanded={expanded}
-            onclick={(event) =>
-              handleButtonClick(event, () => toggleExpanded(ref))}
-          >
-            <ChevronDownIcon class={expanded ? "" : "is-collapsed"} />
-          </button>
-        {/if}
-        <div class="cv-reference-row-copy">
-          {#if selected}
-            {@render selected({
-              ref,
-              reference: resolved,
-              duplicates,
-              expanded,
-              onToggleExpand: () => toggleExpanded(ref),
-            })}
+<div
+  class={["cv-reference-picker", label ? "cv-control-row-group gap-0" : ""]
+    .filter(Boolean)
+    .join(" ")}
+  data-ui-part="reference-picker"
+  data-invalid={error ? "" : undefined}
+>
+  {#if label}
+    <div class="cv-control-action-row">
+      <span class="cv-control-action-row__label">{label}</span>
+      <div class="cv-control-action-row__control">
+        <Button
+          type="button"
+          variant="ghost"
+          size="xs"
+          class="text-muted-foreground hover:text-foreground h-5 gap-1 px-0 text-xs font-normal hover:bg-transparent [&_svg]:size-3"
+          onclick={() => setAddOpen(!addOpen)}
+        >
+          {#if addOpen}
+            Cancel
           {:else}
-            <div class="cv-reference-title-row">
-              {#if resolved}
-                {#if resolved.href}
-                  <a
-                    class="cv-reference-title-link"
-                    href={resolved.href}
-                    title={ref}
-                  >
-                    {resolved.label}
-                  </a>
-                {:else}
-                  <span class="cv-reference-title-link" title={ref}>
-                    {resolved.label}
-                  </span>
-                {/if}
-              {:else if duplicates > 0}
-                <span class="cv-reference-ref">{ref}</span>
-                <span class="cv-reference-error">
-                  Duplicate reference ({duplicates} matches)
-                </span>
-              {:else}
-                <span class="cv-reference-ref">{ref}</span>
-                <span class="cv-reference-error">{unresolvedLabel}</span>
-              {/if}
-            </div>
-            {#if resolved}
-              <p class="cv-reference-path">{resolved.path}</p>
-              {#if resolved.excerpt}
-                <p class="cv-reference-excerpt">{resolved.excerpt}</p>
-              {/if}
-            {:else}
-              <p class="cv-reference-help">{unresolvedDescription}</p>
-            {/if}
+            <PlusIcon data-icon="inline-start" />
+            {addLabel}
           {/if}
-        </div>
-        <button
-          type="button"
-          class="cv-reference-remove"
-          aria-label={`Remove ${ref}`}
-          onclick={(event) =>
-            handleButtonClick(event, () => removeReference(ref))}
-        >
-          <XIcon />
-        </button>
+        </Button>
       </div>
-      {#if resolved && expanded && hasPreview(resolved)}
-        <div class="cv-reference-preview">
-          {#if preview}
-            {@render preview(resolved)}
-          {:else if resolved.preview}
-            <ReadOnlyFormGroup
-              title={resolved.preview.title ?? resolved.label}
-              meta={resolved.preview.meta ?? resolved.path}
-            >
-              {#each resolved.preview.items as item, itemIndex (`${item.kind}-${item.label}-${itemIndex}`)}
-                {#if item.kind === "list"}
-                  <ReadOnlyFormList
-                    label={item.label}
-                    items={item.items ?? []}
-                    highlightedIndexes={item.highlightedIndexes ?? []}
-                  />
-                {:else}
-                  <ReadOnlyFormRow
-                    label={item.label}
-                    value={item.value ?? ""}
-                    highlighted={item.highlighted ?? false}
-                  />
-                {/if}
-              {/each}
-            </ReadOnlyFormGroup>
-          {/if}
-        </div>
-      {/if}
     </div>
-  {/each}
+  {/if}
 
-  {#if addOpen}
-    {@const references = availableReferences()}
-    <section class="cv-reference-add">
-      <div class="cv-reference-add-header">
-        <p>{addHeading}</p>
-        <button
-          type="button"
-          class="cv-reference-add-close"
-          aria-label="Cancel adding reference"
-          onclick={(event) =>
-            handleButtonClick(event, () => onAddOpenChange(false))}
+  <div class={label ? "col-span-full flex flex-col" : undefined}>
+    {#each selectedRefs() as ref (ref)}
+      {@const resolved = resolveReferenceTarget(referenceIndex, ref)}
+      {@const duplicates = duplicateCount(ref)}
+      {@const expanded = isExpanded(ref)}
+      <div class="cv-reference-row-group">
+        <div
+          class="cv-reference-row"
+          class:cv-reference-row--custom={Boolean(selected)}
         >
-          <XIcon />
-        </button>
-      </div>
-      <CommandPrimitive.Root
-        class="cv-reference-command"
-        label={`${addHeading} search`}
-        shouldFilter={false}
-        loop
-      >
-        <div class="cv-reference-command-input-row">
-          <SearchIcon />
-          <CommandPrimitive.Input
-            bind:value={query}
-            class="cv-reference-command-input"
-            placeholder={searchPlaceholder}
-            aria-controls="cv-reference-command-list"
-          />
-        </div>
-        <CommandPrimitive.List
-          id="cv-reference-command-list"
-          class="cv-reference-command-list"
-        >
-          {#if references.length > 0}
-            <CommandPrimitive.Group
-              class="cv-reference-command-group"
-              value="references"
-              forceMount
+          {#if hasPreview(resolved)}
+            <button
+              type="button"
+              class="cv-reference-expand"
+              aria-label={expanded
+                ? `Collapse ${ref} context`
+                : `Expand ${ref} context`}
+              aria-expanded={expanded}
+              onclick={(event) =>
+                handleButtonClick(event, () => toggleExpanded(ref))}
             >
-              <CommandPrimitive.GroupItems>
-                {#each references as reference (reference.ref)}
+              <ChevronDownIcon class={expanded ? "" : "is-collapsed"} />
+            </button>
+          {/if}
+          <div class="cv-reference-row-copy">
+            {#if selected}
+              {@render selected({
+                ref,
+                reference: resolved,
+                duplicates,
+                expanded,
+                onToggleExpand: () => toggleExpanded(ref),
+              })}
+            {:else}
+              <div class="cv-reference-title-row">
+                {#if resolved}
+                  {#if resolved.href}
+                    <a
+                      class="cv-reference-title-link"
+                      href={resolved.href}
+                      title={ref}
+                    >
+                      {resolved.label}
+                    </a>
+                  {:else}
+                    <span class="cv-reference-title-link" title={ref}>
+                      {resolved.label}
+                    </span>
+                  {/if}
+                {:else if duplicates > 0}
+                  <span class="cv-reference-ref">{ref}</span>
+                  <span class="cv-reference-error">
+                    Duplicate reference ({duplicates} matches)
+                  </span>
+                {:else}
+                  <span class="cv-reference-ref">{ref}</span>
+                  <span class="cv-reference-error">{unresolvedLabel}</span>
+                {/if}
+              </div>
+              {#if resolved}
+                <p class="cv-reference-path">{resolved.path}</p>
+                {#if resolved.excerpt}
+                  <p class="cv-reference-excerpt">{resolved.excerpt}</p>
+                {/if}
+              {:else}
+                <p class="cv-reference-help">{unresolvedDescription}</p>
+              {/if}
+            {/if}
+          </div>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon-xs"
+            class="cv-reference-remove text-muted-foreground/70 hover:text-foreground size-5 rounded-sm hover:bg-transparent focus-visible:opacity-100 [&_svg]:size-3.5"
+            aria-label={`Remove ${ref}`}
+            onclick={(event) =>
+              handleButtonClick(event, () => removeReference(ref))}
+          >
+            <XIcon class="size-3.5" />
+          </Button>
+        </div>
+        {#if resolved && expanded && hasPreview(resolved)}
+          <div class="cv-reference-preview">
+            {#if preview}
+              {@render preview(resolved)}
+            {:else if resolved.preview}
+              <ReferencePreview
+                title={resolved.preview.title ?? resolved.label}
+                meta={resolved.preview.meta ?? resolved.path}
+                items={resolved.preview.items}
+              />
+            {/if}
+          </div>
+        {/if}
+      </div>
+    {/each}
+
+    {#if addOpen}
+      {@const references = availableReferences()}
+      <section class="cv-reference-add">
+        <div class="cv-reference-add-header">
+          <p>{addHeading}</p>
+          {#if !label}
+            <button
+              type="button"
+              class="cv-reference-add-close"
+              aria-label="Cancel adding reference"
+              onclick={(event) =>
+                handleButtonClick(event, () => setAddOpen(false))}
+            >
+              <XIcon />
+            </button>
+          {/if}
+        </div>
+        <CommandPrimitive.Root
+          class="cv-reference-command"
+          label={`${addHeading} search`}
+          shouldFilter={false}
+          loop
+        >
+          <div class="cv-reference-command-input-wrap">
+            <div class="cv-reference-command-input-row">
+              <SearchIcon />
+              <CommandPrimitive.Input
+                bind:value={query}
+                class="cv-reference-command-input"
+                placeholder={searchPlaceholder}
+                aria-controls="cv-reference-command-list"
+              />
+            </div>
+          </div>
+          <CommandPrimitive.List
+            id="cv-reference-command-list"
+            class="cv-reference-command-list"
+          >
+            {#if references.length > 0}
+              <CommandPrimitive.Group
+                class="cv-reference-command-group"
+                value="references"
+                forceMount
+              >
+                <CommandPrimitive.GroupItems>
+                  {#each references as reference (reference.ref)}
+                    <CommandPrimitive.Item
+                      class={[
+                        "cv-reference-command-item",
+                        searchOption && "cv-reference-command-item--custom",
+                      ]
+                        .filter(Boolean)
+                        .join(" ")}
+                      value={reference.ref}
+                      keywords={[
+                        reference.path,
+                        reference.type,
+                        reference.label,
+                        reference.excerpt,
+                        reference.optionNotes ?? "",
+                      ]}
+                      onSelect={() => addReference(reference.ref)}
+                    >
+                      {#if searchOption}
+                        {@render searchOption(reference, {
+                          onSelect: () => addReference(reference.ref),
+                        })}
+                      {:else}
+                        <span class="cv-reference-option-title">
+                          <span class="cv-reference-ref">{reference.ref}</span>
+                          <span class="cv-reference-label"
+                            >{reference.label}</span
+                          >
+                        </span>
+                        <span class="cv-reference-path">{reference.path}</span>
+                        {#if reference.excerpt}
+                          <span class="cv-reference-excerpt">
+                            {reference.excerpt}
+                          </span>
+                        {/if}
+                      {/if}
+                    </CommandPrimitive.Item>
+                  {/each}
+                </CommandPrimitive.GroupItems>
+              </CommandPrimitive.Group>
+            {:else if canCreateFromSearch()}
+              <CommandPrimitive.Group
+                class="cv-reference-command-group"
+                value="create"
+                forceMount
+              >
+                <CommandPrimitive.GroupItems>
                   <CommandPrimitive.Item
                     class={[
                       "cv-reference-command-item",
-                      searchOption && "cv-reference-command-item--custom",
+                      searchCreate && "cv-reference-command-item--custom",
                     ]
                       .filter(Boolean)
                       .join(" ")}
-                    value={reference.ref}
-                    keywords={[
-                      reference.path,
-                      reference.type,
-                      reference.label,
-                      reference.excerpt,
-                      reference.optionNotes ?? "",
-                    ]}
-                    onSelect={() => addReference(reference.ref)}
+                    value={`__create__:${query.trim()}`}
+                    onSelect={handleSearchCreate}
                   >
-                    {#if searchOption}
-                      {@render searchOption(reference, {
-                        onSelect: () => addReference(reference.ref),
-                      })}
+                    {#if searchCreate}
+                      {@render searchCreate(query.trim())}
                     {:else}
-                      <span class="cv-reference-option-title">
-                        <span class="cv-reference-ref">{reference.ref}</span>
-                        <span class="cv-reference-label">{reference.label}</span
-                        >
+                      <span class="cv-reference-create-label">
+                        Create "{query.trim()}"
                       </span>
-                      <span class="cv-reference-path">{reference.path}</span>
-                      {#if reference.excerpt}
-                        <span class="cv-reference-excerpt">
-                          {reference.excerpt}
-                        </span>
-                      {/if}
                     {/if}
                   </CommandPrimitive.Item>
-                {/each}
-              </CommandPrimitive.GroupItems>
-            </CommandPrimitive.Group>
-          {:else if canCreateFromSearch()}
-            <CommandPrimitive.Group
-              class="cv-reference-command-group"
-              value="create"
-              forceMount
-            >
-              <CommandPrimitive.GroupItems>
-                <CommandPrimitive.Item
-                  class={[
-                    "cv-reference-command-item",
-                    searchCreate && "cv-reference-command-item--custom",
-                  ]
-                    .filter(Boolean)
-                    .join(" ")}
-                  value={`__create__:${query.trim()}`}
-                  onSelect={handleSearchCreate}
-                >
-                  {#if searchCreate}
-                    {@render searchCreate(query.trim())}
-                  {:else}
-                    <span class="cv-reference-create-label">
-                      Create "{query.trim()}"
-                    </span>
-                  {/if}
-                </CommandPrimitive.Item>
-              </CommandPrimitive.GroupItems>
-            </CommandPrimitive.Group>
-          {:else}
-            <CommandPrimitive.Empty class="cv-reference-empty" forceMount>
-              {emptyLabel}
-            </CommandPrimitive.Empty>
-          {/if}
-        </CommandPrimitive.List>
-      </CommandPrimitive.Root>
-      {#if Object.keys(referenceIndex.duplicates).length > 0}
-        <p class="cv-reference-duplicates">{duplicateMessage}</p>
-      {/if}
-    </section>
-  {:else}
-    <button
-      type="button"
-      class={`cv-reference-add-button ${addButtonClass}`}
-      onclick={(event) => handleButtonClick(event, () => onAddOpenChange(true))}
-    >
-      <PlusIcon />
-      {addLabel}
-    </button>
-  {/if}
+                </CommandPrimitive.GroupItems>
+              </CommandPrimitive.Group>
+            {:else}
+              <CommandPrimitive.Empty class="cv-reference-empty" forceMount>
+                {emptyLabel}
+              </CommandPrimitive.Empty>
+            {/if}
+          </CommandPrimitive.List>
+        </CommandPrimitive.Root>
+        {#if Object.keys(referenceIndex.duplicates).length > 0}
+          <p class="cv-reference-duplicates">{duplicateMessage}</p>
+        {/if}
+      </section>
+    {:else if !label}
+      <div class={addButtonClass || undefined}>
+        <FormAddButton label={addLabel} onclick={() => setAddOpen(true)} />
+      </div>
+    {/if}
+
+    {#if error}
+      <p class="cv-reference-field-error" role="alert">{error}</p>
+    {/if}
+  </div>
 </div>

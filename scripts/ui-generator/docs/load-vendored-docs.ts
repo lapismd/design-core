@@ -66,26 +66,22 @@ function parseFrontmatter(markdown: string): {
 }
 
 function stripLeadingScript(body: string): string {
-  return body.replace(/^\s*<script\b[^>]*>[\s\S]*?<\/script>\s*/i, "").trimStart();
+  return body
+    .replace(/^\s*<script\b[^>]*>[\s\S]*?<\/script>\s*/i, "")
+    .trimStart();
 }
 
 /** Remove ComponentPreview blocks (and their placeholder children). */
 export function stripComponentPreviews(markdown: string): string {
   return markdown
-    .replace(
-      /<ComponentPreview\b[^>]*>[\s\S]*?<\/ComponentPreview>/gi,
-      "",
-    )
+    .replace(/<ComponentPreview\b[^>]*>[\s\S]*?<\/ComponentPreview>/gi, "")
     .replace(/<ComponentPreview\b[^>]*\/>/gi, "");
 }
 
 /** Remove a paired Svelte tag and its inner content (docs-site chrome). */
 function removePairedTag(markdown: string, name: string): string {
   return markdown
-    .replace(
-      new RegExp(`<${name}\\b[^>]*>[\\s\\S]*?<\\/${name}>`, "gi"),
-      "",
-    )
+    .replace(new RegExp(`<${name}\\b[^>]*>[\\s\\S]*?<\\/${name}>`, "gi"), "")
     .replace(new RegExp(`<${name}\\b[^>]*\\/>`, "gi"), "");
 }
 
@@ -484,7 +480,12 @@ export function loadVendoredDocs(args: {
       } satisfies DocsVendorPin)
     : readDocsVendorPin(packageRoot);
 
-  const contentPath = path.join(root, "content", "components", `${component}.md`);
+  const contentPath = path.join(
+    root,
+    "content",
+    "components",
+    `${component}.md`,
+  );
   if (!existsSync(contentPath)) {
     throw new GeneratorError(
       `Vendored content missing for ${component}`,
@@ -543,10 +544,8 @@ export function loadVendoredDocs(args: {
     frontmatter.description?.trim() ||
     `shadcn-svelte ${title} examples adapted for the native-CSS catalog.`;
 
-  const normalizedMarkdown = `# ${title}\n\n${description}\n\n${cleanedBody}`.replace(
-    /\n{3,}/g,
-    "\n\n",
-  );
+  const normalizedMarkdown =
+    `# ${title}\n\n${description}\n\n${cleanedBody}`.replace(/\n{3,}/g, "\n\n");
 
   const sections = splitByH2(normalizedMarkdown);
   const usageSection = sections.find((s) => /^usage$/i.test(s.title));

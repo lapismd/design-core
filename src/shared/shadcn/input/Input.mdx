@@ -1,4 +1,11 @@
-import { Meta, Canvas, Controls, Primary, Source, Markdown } from "@storybook/addon-docs/blocks";
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+  Markdown,
+} from "@storybook/addon-docs/blocks";
 import * as InputStories from "./Input.stories.svelte";
 import * as InputVariations from "./Input.variations.stories.svelte";
 import docsBody from "./input.docs-body.md?raw";
@@ -17,7 +24,12 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 
 ## Usage
 
-<Source language="html" code={"<script lang=\"ts\">\n  import { Input } from \"@stevejuma/ui/shadcn/input\";\n</script>\n\n<Input />"} />
+<Source
+  language="html"
+  code={
+    '<script lang="ts">\n  import { Input } from "@stevejuma/ui/shadcn/input";\n</script>\n\n<Input />'
+  }
+/>
 
 <Primary />
 
@@ -27,31 +39,24 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 
 ### Preview
 
-
 <Canvas of={InputVariations.Preview} meta={InputVariations} />
 
 ### Default
-
 
 <Canvas of={InputVariations.Default} meta={InputVariations} />
 
 ### File
 
-
 <Canvas of={InputVariations.File} meta={InputVariations} />
 
 ### Disabled
-
 
 <Canvas of={InputVariations.Disabled} meta={InputVariations} />
 
 ### With Label
 
-
 <Canvas of={InputVariations.WithLabel} meta={InputVariations} />
 
 ### With Button
 
-
 <Canvas of={InputVariations.WithButton} meta={InputVariations} />
-

@@ -39,7 +39,8 @@ async function resolveClip(
       feedback: () => page.getByText(/no updates|updates|empty/i).first(),
       filters: () => page.getByText(/for me|all|sort/i).first(),
       sidebar: () => page.getByRole("button", { name: /^Inbox/i }),
-      "lists-main": () => page.getByText(TASKS_REFERENCE_LIST_NAME, { exact: true }),
+      "lists-main": () =>
+        page.getByText(TASKS_REFERENCE_LIST_NAME, { exact: true }),
       shell: () => page.locator("body"),
     };
     const factory = locatorMap[entry.locator];
@@ -53,7 +54,10 @@ async function resolveClip(
             return {
               x: Math.max(0, box.x - 48),
               y: Math.max(0, box.y - 8),
-              width: Math.min(page.viewportSize()!.width - box.x + 48, box.width + 96),
+              width: Math.min(
+                page.viewportSize()!.width - box.x + 48,
+                box.width + 96,
+              ),
               height: Math.max(box.height + 16, 48),
             };
           }
@@ -158,10 +162,7 @@ async function main(): Promise<void> {
   }
 
   const matrix = await loadCaptureMatrix();
-  const captureDirectory = path.join(
-    committedReferenceRoot,
-    matrix.captureId,
-  );
+  const captureDirectory = path.join(committedReferenceRoot, matrix.captureId);
   await ensureDirectory(path.join(artifactRoot, "live-delta"));
 
   const browser = await chromium.launch({ headless: true });
@@ -178,12 +179,7 @@ async function main(): Promise<void> {
   try {
     for (const entry of matrix.entries) {
       try {
-        const shot = await captureEntry(
-          page,
-          matrix,
-          entry,
-          captureDirectory,
-        );
+        const shot = await captureEntry(page, matrix, entry, captureDirectory);
         screenshots.push(shot);
         process.stdout.write(`captured ${entry.id}\n`);
       } catch (error) {
@@ -200,10 +196,9 @@ async function main(): Promise<void> {
   let motions: unknown[] = [];
   try {
     const previous = JSON.parse(
-      await (await import("node:fs/promises")).readFile(
-        path.join(captureDirectory, "manifest.json"),
-        "utf8",
-      ),
+      await (
+        await import("node:fs/promises")
+      ).readFile(path.join(captureDirectory, "manifest.json"), "utf8"),
     ) as { motions?: unknown[] };
     motions = previous.motions ?? [];
   } catch {

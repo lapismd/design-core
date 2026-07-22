@@ -4,7 +4,7 @@
   import StructuredForm from "./StructuredForm.svelte";
 
   const { Story } = defineMeta({
-    title: "UI Forms/Structured Form",
+    title: "UI Forms/Orchestrators/Structured Form",
     component: StructuredForm,
     parameters: {
       docs: {

@@ -4,7 +4,7 @@
   import InlineOptionPicker from "./InlineOptionPicker.svelte";
 
   const { Story } = defineMeta({
-    title: "UI Forms/Inline Option Picker",
+    title: "UI Forms/Form Inputs/Inline Option Picker",
     component: InlineOptionPicker,
     parameters: {
       docs: {
@@ -43,6 +43,22 @@
         }}
       />
       <output class="text-muted-foreground text-sm">{value}</output>
+    </div>
+  {/snippet}
+</Story>
+
+<Story name="Shows an error" tags={["skip-visual"]}>
+  {#snippet template()}
+    <div class="flex flex-col gap-2 p-4">
+      <InlineOptionPicker
+        value=""
+        ariaLabel="Status"
+        options={[
+          { value: "draft", label: "Draft" },
+          { value: "published", label: "Published" },
+        ]}
+        error="This field is required."
+      />
     </div>
   {/snippet}
 </Story>

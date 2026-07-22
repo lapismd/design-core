@@ -25,11 +25,7 @@
     "docsUrl": "https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/resizable.md",
     "docsFetchedAt": "2026-07-22T09:57:18.448Z",
     "docsSha256": "e7812f4354aa25b03bfcca2808686745f6436e7b7852ef65642aa6eaa84c28dd",
-    "examplesIncluded": [
-      "Preview",
-      "Vertical",
-      "Handle"
-    ],
+    "examplesIncluded": ["Preview", "Vertical", "Handle"],
     "examplesSkipped": [],
     "docsCommit": "bf4f461d88526359d0e96e1950f637912bbeebe7",
     "docsRef": "shadcn-svelte@1.4.2",

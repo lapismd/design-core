@@ -181,7 +181,8 @@
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "Stack `Field` components with `Field.Group`. Add `Field.Separator` to divide them.",
+        story:
+          "Stack `Field` components with `Field.Group`. Add `Field.Separator` to divide them.",
       },
       source: {
         code: exampleSources.FieldGroup,
@@ -206,7 +207,8 @@
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "- **Vertical fields:** Default orientation stacks label, control, and helper text—ideal for mobile-first layouts.\n- **Horizontal fields:** Set `orientation=\"horizontal\"` on `Field` to align the label and control side-by-side. Pair with `Field.Content` to keep descriptions aligned.\n- **Responsive fields:** Set `orientation=\"responsive\"` for automatic column layouts inside container-aware parents. Apply `@container/field-group` classes on `Field.Group` to switch orientations at specific breakpoints.",
+        story:
+          '- **Vertical fields:** Default orientation stacks label, control, and helper text—ideal for mobile-first layouts.\n- **Horizontal fields:** Set `orientation="horizontal"` on `Field` to align the label and control side-by-side. Pair with `Field.Content` to keep descriptions aligned.\n- **Responsive fields:** Set `orientation="responsive"` for automatic column layouts inside container-aware parents. Apply `@container/field-group` classes on `Field.Group` to switch orientations at specific breakpoints.',
       },
       source: {
         code: exampleSources.ResponsiveLayout,

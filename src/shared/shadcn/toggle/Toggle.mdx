@@ -1,4 +1,11 @@
-import { Meta, Canvas, Controls, Primary, Source, Markdown } from "@storybook/addon-docs/blocks";
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+  Markdown,
+} from "@storybook/addon-docs/blocks";
 import * as ToggleStories from "./Toggle.stories.svelte";
 import * as ToggleVariations from "./Toggle.variations.stories.svelte";
 import docsBody from "./toggle.docs-body.md?raw";
@@ -17,7 +24,12 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 
 ## Usage
 
-<Source language="html" code={"<script lang=\"ts\">\n  import { Toggle } from \"@stevejuma/ui/shadcn/toggle\";\n</script>\n\n<Toggle>Toggle</Toggle>"} />
+<Source
+  language="html"
+  code={
+    '<script lang="ts">\n  import { Toggle } from "@stevejuma/ui/shadcn/toggle";\n</script>\n\n<Toggle>Toggle</Toggle>'
+  }
+/>
 
 <Primary />
 
@@ -27,36 +39,28 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 
 ### Preview
 
-
 <Canvas of={ToggleVariations.Preview} meta={ToggleVariations} />
 
 ### Default
-
 
 <Canvas of={ToggleVariations.Default} meta={ToggleVariations} />
 
 ### Outline
 
-
 <Canvas of={ToggleVariations.Outline} meta={ToggleVariations} />
 
 ### With Text
-
 
 <Canvas of={ToggleVariations.WithText} meta={ToggleVariations} />
 
 ### Small
 
-
 <Canvas of={ToggleVariations.Small} meta={ToggleVariations} />
 
 ### Large
-
 
 <Canvas of={ToggleVariations.Large} meta={ToggleVariations} />
 
 ### Disabled
 
-
 <Canvas of={ToggleVariations.Disabled} meta={ToggleVariations} />
-

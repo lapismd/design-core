@@ -136,9 +136,7 @@
   name="List — Tasks UI Reference"
   exportName="ListReference"
   parameters={{
-    visualDelta: visualDeltaForStory(
-      "tasks-pages-tasks-shell--list-reference",
-    ),
+    visualDelta: visualDeltaForStory("tasks-pages-tasks-shell--list-reference"),
   }}
   play={async ({ canvas }) => {
     await expect(
@@ -148,7 +146,10 @@
       }),
     ).toBeVisible();
     await expect(
-      canvas.getByRole("heading", { level: 1, name: TASKS_REFERENCE_LIST_NAME }),
+      canvas.getByRole("heading", {
+        level: 1,
+        name: TASKS_REFERENCE_LIST_NAME,
+      }),
     ).toBeVisible();
     await expect(canvas.getByText("Detail closed")).toBeVisible();
   }}

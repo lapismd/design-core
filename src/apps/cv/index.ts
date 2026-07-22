@@ -4,7 +4,11 @@ export { default as CvWorkspaceForm } from "./cv-workspace-form/CvWorkspaceForm.
 export { default as CvWorkspaceBody } from "./cv-workspace-shell/CvWorkspaceBody.svelte";
 export { default as CvEditorToolbar } from "./cv-workspace-shell/CvEditorToolbar.svelte";
 export { default as CvWorkspaceSidebar } from "./sidebar/CvWorkspaceSidebar.svelte";
-export type { CvFileBucket, CvFileInfo, OptionalFileSection } from "./sidebar/types";
+export type {
+  CvFileBucket,
+  CvFileInfo,
+  OptionalFileSection,
+} from "./sidebar/types";
 export { default as CvSectionsForm } from "./cv-sections-form/CvSectionsForm.svelte";
 export { default as SocialNetworksEditor } from "./social-networks-editor/SocialNetworksEditor.svelte";
 export { default as GenericEntryEditor } from "./editors/GenericEntryEditor.svelte";

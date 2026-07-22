@@ -1,8 +1,10 @@
 <script lang="ts">
   import ChipAutocomplete from "../chip-autocomplete/ChipAutocomplete.svelte";
+  import DatePicker from "../date-picker/DatePicker.svelte";
   import FormField from "../form-field/FormField.svelte";
   import InlineOptionPicker from "../inline-option-picker/InlineOptionPicker.svelte";
   import type { InlineOptionPickerOption } from "../inline-option-picker/InlineOptionPicker.svelte";
+  import ListEditor from "../list-editor/ListEditor.svelte";
   import ReferencePicker from "../reference-picker/ReferencePicker.svelte";
   import SegmentedControl from "../segmented-control/SegmentedControl.svelte";
   import { autosizeTextarea } from "../core/autosize-textarea";
@@ -44,6 +46,7 @@
 
   const value = $derived(field.get(root, context));
   const fieldIssues = $derived(fieldIssuesFor(issues, field));
+  const fieldError = $derived(fieldIssues[0]?.message ?? null);
   const customRenderer = $derived(resolveFieldRenderer(field, view, readonly));
   const readonlyView = $derived(
     readonly || field.readonly === true || view === "readonly",
@@ -52,6 +55,19 @@
     readonlyView ||
       (view !== "edit" && customRenderer?.interactive !== true) ||
       (view !== "edit" && !customRenderer),
+  );
+
+  /** Leaf controls that render their own validation message. */
+  const leafOwnsError = $derived(
+    field.kind === "date" ||
+      field.kind === "options" ||
+      field.kind === "choice" ||
+      field.kind === "segmented" ||
+      field.kind === "tag-list" ||
+      field.kind === "chip-list" ||
+      field.kind === "string-list" ||
+      field.kind === "reference-list" ||
+      field.kind === "ordered-string-list",
   );
 
   function updateValue(nextValue: unknown) {
@@ -95,10 +111,6 @@
     return formatFieldValue(field, value, root, context);
   }
 
-  function describedBy() {
-    return fieldIssues.length ? `${field.id}-issues` : undefined;
-  }
-
   function rendererArgs() {
     return {
       root,
@@ -123,6 +135,30 @@
 {#if customRenderer?.wrapper === "none"}
   {@const Renderer = customRenderer.component}
   <Renderer {...rendererProps()} />
+{:else if field.kind === "ordered-string-list"}
+  <!-- ListEditor owns its own label/action row chrome. -->
+  <ListEditor
+    label={field.label}
+    items={arrayValue()}
+    addLabel={field.addLabel ?? "Add"}
+    placeholder={field.placeholder ?? ""}
+    multiline={false}
+    readonly={fieldReadonly}
+    error={fieldError}
+    onChange={updateValue}
+  />
+{:else if field.kind === "reference-list"}
+  <!-- ReferencePicker owns list-section chrome (header + Add). -->
+  <ReferencePicker
+    label={field.label}
+    refs={arrayValue()}
+    referenceIndex={referenceIndexFor()}
+    addLabel={field.addLabel ?? "Add Reference"}
+    addHeading={field.addHeading ?? "Reference"}
+    searchPlaceholder={field.searchPlaceholder ?? "Search references..."}
+    error={fieldError}
+    onChange={updateValue}
+  />
 {:else}
   <FormField
     label={field.label}
@@ -130,10 +166,21 @@
       field.align ??
       defaultFieldAlign(field.kind)}
     as={customRenderer?.as ?? field.as ?? defaultFieldWrapper(field.kind)}
+    readonly={fieldReadonly}
+    error={customRenderer || (leafOwnsError && !fieldReadonly)
+      ? null
+      : fieldError}
   >
     {#if customRenderer}
       {@const Renderer = customRenderer.component}
       <Renderer {...rendererProps()} />
+      {#if fieldIssues.length}
+        <div id={`${field.id}-issues`} class="cv-forms-field-issues">
+          {#each fieldIssues as issue, index (index)}
+            <p>{issue.message}</p>
+          {/each}
+        </div>
+      {/if}
     {:else if fieldReadonly}
       <span class="cv-forms-preview-value">{previewText() || " "}</span>
     {:else if field.kind === "textarea"}
@@ -144,17 +191,14 @@
         placeholder={field.placeholder ?? ""}
         aria-label={field.ariaLabel ?? field.label}
         aria-invalid={fieldIssues.length ? "true" : undefined}
-        aria-describedby={describedBy()}
         oninput={(event) => updateValue(event.currentTarget.value)}
       ></textarea>
     {:else if field.kind === "date"}
-      <input
-        type="date"
-        value={textValue()}
-        aria-label={field.ariaLabel ?? field.label}
-        aria-invalid={fieldIssues.length ? "true" : undefined}
-        aria-describedby={describedBy()}
-        oninput={(event) => updateValue(event.currentTarget.value)}
+      <DatePicker
+        value={textValue() || undefined}
+        ariaLabel={field.ariaLabel ?? field.label}
+        error={fieldError}
+        onValueChange={(next) => updateValue(next ?? "")}
       />
     {:else if field.kind === "boolean"}
       <button
@@ -164,7 +208,6 @@
         aria-label={field.ariaLabel ?? field.label}
         aria-checked={value === true}
         aria-invalid={fieldIssues.length ? "true" : undefined}
-        aria-describedby={describedBy()}
         onclick={() => updateValue(value !== true)}
       >
         <span class="cv-forms-switch-track" aria-hidden="true">
@@ -178,6 +221,7 @@
         presentation={field.presentation ??
           (field.kind === "choice" ? "menu" : "swap")}
         ariaLabel={field.ariaLabel ?? field.label}
+        error={fieldError}
         onChange={updateValue}
       />
     {:else if field.kind === "segmented"}
@@ -188,6 +232,7 @@
           optionsFor().map((option) => [option.value, option.label]),
         )}
         ariaLabel={field.ariaLabel ?? field.label}
+        error={fieldError}
         onChange={updateValue}
       />
     {:else if field.kind === "tag-list" || field.kind === "chip-list" || field.kind === "string-list"}
@@ -198,15 +243,7 @@
         showLabel={false}
         placeholder={field.placeholder ??
           (field.kind === "tag-list" ? "Add tag..." : "Add item...")}
-        onChange={updateValue}
-      />
-    {:else if field.kind === "reference-list"}
-      <ReferencePicker
-        refs={arrayValue()}
-        referenceIndex={referenceIndexFor()}
-        addLabel={field.addLabel ?? "Add Reference"}
-        addHeading={field.addHeading ?? "Reference"}
-        searchPlaceholder={field.searchPlaceholder ?? "Search references..."}
+        error={fieldError}
         onChange={updateValue}
       />
     {:else}
@@ -217,17 +254,8 @@
         autocomplete={field.autocomplete}
         aria-label={field.ariaLabel ?? field.label}
         aria-invalid={fieldIssues.length ? "true" : undefined}
-        aria-describedby={describedBy()}
         oninput={(event) => updateValue(event.currentTarget.value)}
       />
-    {/if}
-
-    {#if fieldIssues.length}
-      <div id={`${field.id}-issues`} class="cv-forms-field-issues">
-        {#each fieldIssues as issue}
-          <p>{issue.message}</p>
-        {/each}
-      </div>
     {/if}
   </FormField>
 {/if}
@@ -235,10 +263,12 @@
 <style>
   .cv-forms-preview-value {
     display: block;
-    padding: 0.35rem 0;
+    min-height: 1.25rem;
+    padding: 0;
     color: var(--ui-form-foreground);
     font: inherit;
-    line-height: 1.45;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
     overflow-wrap: anywhere;
     white-space: pre-wrap;
   }
@@ -287,22 +317,13 @@
     height: 0.82rem;
     border-radius: 999px;
     background: var(--ui-form-background);
-    box-shadow: 0 1px 2px
-      var(--ui-form-shadow);
+    box-shadow: 0 1px 2px var(--ui-form-shadow);
     transition: translate 140ms ease;
   }
 
   .cv-forms-switch[aria-checked="true"] .cv-forms-switch-track {
-    border-color: color-mix(
-      in srgb,
-      var(--ui-form-accent) 55%,
-      transparent
-    );
-    background: color-mix(
-      in srgb,
-      var(--ui-form-accent) 10%,
-      transparent
-    );
+    border-color: color-mix(in srgb, var(--ui-form-accent) 55%, transparent);
+    background: color-mix(in srgb, var(--ui-form-accent) 10%, transparent);
   }
 
   .cv-forms-switch[aria-checked="true"] .cv-forms-switch-thumb {

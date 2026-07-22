@@ -41,11 +41,7 @@
     "docsUrl": "https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/empty.md",
     "docsFetchedAt": "2026-07-22T09:57:18.313Z",
     "docsSha256": "4f54dc0bd6bba1f57ed883a841bb9f0a944381898483272cfca86267a1c7b4d9",
-    "examplesIncluded": [
-      "Preview",
-      "Outline",
-      "Background"
-    ],
+    "examplesIncluded": ["Preview", "Outline", "Background"],
     "examplesSkipped": [
       {
         "name": "Avatar",

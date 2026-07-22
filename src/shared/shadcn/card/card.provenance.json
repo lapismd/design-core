@@ -45,13 +45,7 @@
     "docsUrl": "https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/card.md",
     "docsFetchedAt": "2026-07-22T09:57:18.289Z",
     "docsSha256": "ce7f071eb3b4a0ba87b3d5f810a7040c970333e321e56756b23d2837939c65f0",
-    "examplesIncluded": [
-      "Preview",
-      "Preview",
-      "Spacing",
-      "Spacing",
-      "Image"
-    ],
+    "examplesIncluded": ["Preview", "Preview", "Spacing", "Spacing", "Image"],
     "examplesSkipped": [],
     "docsCommit": "bf4f461d88526359d0e96e1950f637912bbeebe7",
     "docsRef": "shadcn-svelte@1.4.2",

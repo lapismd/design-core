@@ -16,7 +16,10 @@
   }
 </script>
 
-<div class="flex max-w-[646px] flex-col gap-6 py-4 pr-11 pl-10" data-ui-part="cv-locale-tab">
+<div
+  class="flex max-w-[646px] flex-col gap-6 py-4 pr-11 pl-10"
+  data-ui-part="cv-locale-tab"
+>
   <section class="flex flex-col gap-2">
     <h3 class="text-base font-semibold">Language</h3>
     <div class="cv-structured-form">

@@ -1,3 +1,6 @@
+import ReviewedStringListFormField from "../form-review/ReviewedStringListFormField.svelte";
+import ReviewedTextFormField from "../form-review/ReviewedTextFormField.svelte";
+import type { FieldReviewContext } from "./field-review";
 import type {
   FormConfig,
   FormCustomRenderer,
@@ -87,10 +90,34 @@ export function optionField<TRoot, TContext = undefined>(
   return { ...config, kind: "options" as const };
 }
 
+export function choiceField<TRoot, TContext = undefined>(
+  config: FieldBuilderInput<TRoot, TContext, string>,
+) {
+  return {
+    ...config,
+    kind: "choice" as const,
+    presentation: config.presentation ?? "menu",
+  };
+}
+
 export function segmentedField<TRoot, TContext = undefined>(
   config: FieldBuilderInput<TRoot, TContext, string>,
 ) {
   return { ...config, kind: "segmented" as const };
+}
+
+/** Chip-style multi-value list (`ChipAutocomplete`). */
+export function stringListField<TRoot, TContext = undefined>(
+  config: FieldBuilderInput<TRoot, TContext, string[]>,
+) {
+  return { ...config, kind: "string-list" as const };
+}
+
+/** Ordered editable string list (`ListEditor`) — Roles/Tags style, not chips. */
+export function orderedStringListField<TRoot, TContext = undefined>(
+  config: FieldBuilderInput<TRoot, TContext, string[]>,
+) {
+  return { ...config, kind: "ordered-string-list" as const };
 }
 
 export function tagListField<TRoot, TContext = undefined>(
@@ -103,6 +130,12 @@ export function chipListField<TRoot, TContext = undefined>(
   config: FieldBuilderInput<TRoot, TContext, string[]>,
 ) {
   return { ...config, kind: "chip-list" as const };
+}
+
+export function referenceListField<TRoot, TContext = undefined>(
+  config: FieldBuilderInput<TRoot, TContext, string[]>,
+) {
+  return { ...config, kind: "reference-list" as const };
 }
 
 export function customField<TRoot, TContext = undefined, TValue = unknown>(
@@ -141,4 +174,105 @@ export function customViewField<TRoot, TContext = undefined, TValue = TRoot>(
 
 export function readonlyView(view: FormViewName) {
   return view === "preview" || view === "readonly";
+}
+
+type ReviewedTextFieldOptions<TRoot> = {
+  id: string;
+  label: string;
+  placeholder?: string;
+  inputType?: string;
+  multiline?: boolean;
+  multilineSize?: "normal" | "compact";
+  get: (root: TRoot, context: FieldReviewContext) => string;
+  set: (root: TRoot, value: string, context: FieldReviewContext) => TRoot;
+};
+
+/** Text field that swaps to unified-diff Keep/Undo when review context matches. */
+export function reviewedTextField<TRoot>({
+  id,
+  label,
+  placeholder,
+  inputType,
+  multiline = false,
+  multilineSize = "normal",
+  get,
+  set,
+}: ReviewedTextFieldOptions<TRoot>): FormFieldConfig<
+  TRoot,
+  FieldReviewContext,
+  string
+> {
+  return textField<TRoot, FieldReviewContext>({
+    id,
+    label,
+    placeholder,
+    inputType,
+    get,
+    set,
+    renderers: {
+      edit: {
+        component: ReviewedTextFormField,
+        wrapper: "none",
+        interactive: true,
+        props: {
+          reviewKey: id,
+          inputType,
+          multiline,
+          multilineSize,
+        },
+      },
+    },
+  });
+}
+
+type ReviewedStringListFieldOptions<TRoot> = {
+  id: string;
+  label: string;
+  addLabel?: string;
+  placeholder?: string;
+  multiline?: boolean;
+  multilineSize?: "normal" | "compact";
+  get: (root: TRoot, context: FieldReviewContext) => string[];
+  set: (root: TRoot, value: string[], context: FieldReviewContext) => TRoot;
+};
+
+/** Ordered string-list with per-item Keep/Undo when review context matches. */
+export function reviewedStringListField<TRoot>({
+  id,
+  label,
+  addLabel = "Add",
+  placeholder,
+  multiline = true,
+  multilineSize = "normal",
+  get,
+  set,
+}: ReviewedStringListFieldOptions<TRoot>): FormFieldConfig<
+  TRoot,
+  FieldReviewContext,
+  string[]
+> {
+  return {
+    ...orderedStringListField<TRoot, FieldReviewContext>({
+      id,
+      label,
+      addLabel,
+      placeholder,
+      get,
+      set,
+    }),
+    renderers: {
+      edit: {
+        component: ReviewedStringListFormField,
+        wrapper: "none",
+        interactive: true,
+        props: {
+          reviewKey: id,
+          addLabel,
+          multiline,
+          multilineSize,
+          placeholder,
+        },
+      },
+    },
+  };
 }

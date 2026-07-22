@@ -36,7 +36,10 @@ function resolveLanguage(lang: string | undefined): string {
   return hljs.getLanguage(aliased) ? aliased : "plaintext";
 }
 
-function highlightCode(code: string, lang: string | undefined): {
+function highlightCode(
+  code: string,
+  lang: string | undefined,
+): {
   html: string;
   language: string;
 } {
@@ -228,7 +231,8 @@ export function markdownToHtmlDocument(
 ): string {
   const bodyHtml = marked.parse(markdown, { async: false }) as string;
   const titleMatch = /^#\s+(.+)$/m.exec(markdown);
-  const title = options.title ?? titleMatch?.[1]?.trim() ?? "@stevejuma/ui docs";
+  const title =
+    options.title ?? titleMatch?.[1]?.trim() ?? "@stevejuma/ui docs";
 
   return `<!doctype html>
 <html lang="en">

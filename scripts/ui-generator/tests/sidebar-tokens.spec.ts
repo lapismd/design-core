@@ -11,10 +11,7 @@ const packageRoot = path.resolve(
 
 describe("sidebar tokens vs emitted CSS", () => {
   it("every sidebarTokenNames entry is defined in theme or injected by Provider", () => {
-    const theme = readFileSync(
-      path.join(packageRoot, "src/theme.css"),
-      "utf8",
-    );
+    const theme = readFileSync(path.join(packageRoot, "src/theme.css"), "utf8");
     const provider = readFileSync(
       path.join(
         packageRoot,

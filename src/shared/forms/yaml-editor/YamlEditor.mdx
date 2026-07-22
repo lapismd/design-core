@@ -1,4 +1,10 @@
-import { Meta, Canvas, Controls, Primary, Source } from "@storybook/addon-docs/blocks";
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+} from "@storybook/addon-docs/blocks";
 import * as YamlEditorStories from "./YamlEditor.stories.svelte";
 import * as YamlEditorVariations from "./YamlEditor.variations.stories.svelte";
 
@@ -15,12 +21,13 @@ Toolbar YAML switches should edit the authoritative serialized draft; invalid YA
 ### When to use
 
 - Document YAML source mode (CV, docs, practice)
-- `YamlBackedForm` source panel
+- `YamlBackedForm` / `PatchableForm` source panel
+- AI review hunks via `reviewDiffs` + Keep/Undo callbacks
 
 ### When not to use
 
 - Non-YAML source — use `CodeEditor`
-- Structured field editing — use `StructuredForm`
+- Structured field editing — use `StructuredForm` / `PatchableForm`
 
 See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and the shared form contract in `FORMS.md`.
 
@@ -41,4 +48,3 @@ See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and the shared
 Simple YAML document.
 
 <Canvas of={YamlEditorVariations.ValidDocument} meta={YamlEditorVariations} />
-

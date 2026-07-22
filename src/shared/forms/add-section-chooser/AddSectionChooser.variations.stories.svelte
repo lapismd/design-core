@@ -3,7 +3,7 @@
   import AddSectionChooser from "./AddSectionChooser.svelte";
 
   const { Story } = defineMeta({
-    title: "UI Forms/Add Section Chooser",
+    title: "UI Forms/Layout/Add Section Chooser",
     component: AddSectionChooser,
     parameters: {
       docs: {
@@ -15,17 +15,24 @@
   });
 </script>
 
-
 <Story
   name="Closed"
   exportName="Closed"
   parameters={{
-    visualDelta: {"images":["/visual-baselines/forms/add-section-chooser/closed-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
+    visualDelta: {
+      images: [
+        "/visual-baselines/forms/add-section-chooser/closed-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
     docs: {
       description: { story: "Dashed add button idle state." },
     },
   }}
-
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -47,12 +54,22 @@
 <Story
   name="Open chooser"
   exportName="OpenChooser"
-  tags={["skip-visual"]}
   parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/forms/add-section-chooser/open-chooser-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
     docs: {
       description: { story: "Title field + type chips after opening add." },
     },
   }}
+  tags={["visual-approved"]}
 >
   {#snippet template()}
     <AddSectionChooser

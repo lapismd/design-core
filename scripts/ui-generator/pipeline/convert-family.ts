@@ -1,4 +1,10 @@
-import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import {
+  existsSync,
+  mkdirSync,
+  readdirSync,
+  readFileSync,
+  writeFileSync,
+} from "node:fs";
 import path from "node:path";
 import type { UiGeneratorConfig } from "../config.js";
 import { EXIT, GeneratorError } from "../errors.js";
@@ -44,7 +50,6 @@ export type ConvertFamilyResult = {
   written: string[];
   parityExtraction: StyleExtraction;
 };
-
 
 /** Ensure family barrel exists — package exports require shadcn/<family>/index.ts. */
 function ensureBarrelIndex(args: {
@@ -549,8 +554,14 @@ export async function convertFamilyInWorktree(args: {
         /class=\{cn\(\s*buttonVariants\((\{[^}]*\})\s*\)\s*,\s*["']cn-[^"']+["']\s*,\s*className\s*\)\}/g,
         "class={cn(buttonVariants($1), className)}",
       )
-      .replace(/class=\{cn\(\s*["']cn-[^"']+["']\s*,\s*className\s*\)\}/g, "class={className}")
-      .replace(/class=\{cn\(\s*["']{2}\s*,\s*className\s*\)\}/g, "class={className}")
+      .replace(
+        /class=\{cn\(\s*["']cn-[^"']+["']\s*,\s*className\s*\)\}/g,
+        "class={className}",
+      )
+      .replace(
+        /class=\{cn\(\s*["']{2}\s*,\s*className\s*\)\}/g,
+        "class={className}",
+      )
       .replace(/class=\{cn\(\s*className\s*\)\}/g, "class={className}");
     // Drop unused cn import if no longer referenced
     if (!/\bcn\s*\(/.test(stamped)) {

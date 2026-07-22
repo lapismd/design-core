@@ -219,7 +219,7 @@
 
 <div class="flex flex-col gap-6" data-ui-part="cv-sections-form">
   <StructuredForm
-    value={value}
+    {value}
     config={profileConfig}
     onChange={(next) => onChange(next as CvDocument)}
   />
@@ -268,8 +268,7 @@
               <GenericEntryEditor
                 entryType="TextEntry"
                 {entry}
-                onUpdate={(next) =>
-                  updateEntry(sectionIndex, entryIndex, next)}
+                onUpdate={(next) => updateEntry(sectionIndex, entryIndex, next)}
               />
             </EntryActions>
           {/each}
@@ -285,8 +284,7 @@
               <GenericEntryEditor
                 entryType="OneLineEntry"
                 {entry}
-                onUpdate={(next) =>
-                  updateEntry(sectionIndex, entryIndex, next)}
+                onUpdate={(next) => updateEntry(sectionIndex, entryIndex, next)}
               />
             </EntryActions>
           {/each}
@@ -302,7 +300,9 @@
                   startSimpleDrag(event, section.id, index)}
                 onRemove={() => removeEntry(sectionIndex, entryIndex)}
               >
-                <FormField label={entryTitle(section.entry_type, entry, entryIndex)}>
+                <FormField
+                  label={entryTitle(section.entry_type, entry, entryIndex)}
+                >
                   <input
                     aria-label={entryTitle(
                       section.entry_type,

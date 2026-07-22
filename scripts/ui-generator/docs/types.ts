@@ -50,5 +50,9 @@ export type SyncUpstreamDocsResult = {
   docsVendorPath?: string;
   written: string[];
   examplesIncluded: string[];
-  examplesSkipped: Array<{ name: string; reason: RewriteSkipReason; detail: string }>;
+  examplesSkipped: Array<{
+    name: string;
+    reason: RewriteSkipReason;
+    detail: string;
+  }>;
 };

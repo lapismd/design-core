@@ -1,4 +1,10 @@
-import { Meta, Canvas, Controls, Primary, Source } from "@storybook/addon-docs/blocks";
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+} from "@storybook/addon-docs/blocks";
 import * as YamlBackedFormStories from "./YamlBackedForm.stories.svelte";
 import * as YamlBackedFormVariations from "./YamlBackedForm.variations.stories.svelte";
 
@@ -23,7 +29,12 @@ See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and the shared
 
 ## Usage
 
-<Source language="html" code={"<YamlBackedForm\n  value={data}\n  config={config}\n  yamlMode={yamlMode}\n  bind:yamlText\n  onChange={...}\n/>"} />
+<Source
+  language="html"
+  code={
+    "<YamlBackedForm\n  value={data}\n  config={config}\n  yamlMode={yamlMode}\n  bind:yamlText\n  onChange={...}\n/>"
+  }
+/>
 
 <Primary />
 
@@ -37,5 +48,7 @@ See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and the shared
 
 Default structured editing surface.
 
-<Canvas of={YamlBackedFormVariations.StructuredMode} meta={YamlBackedFormVariations} />
-
+<Canvas
+  of={YamlBackedFormVariations.StructuredMode}
+  meta={YamlBackedFormVariations}
+/>

@@ -53,7 +53,7 @@ To show the command menu in a dialog, use the `<Command.Dialog />` component ins
   }
 </script>
 
-<svelte:document onkeydown={handleKeydown} />
+<svelte:document onkeydown="{handleKeydown}" />
 
 <Command.Dialog bind:open>
   <Command.Input placeholder="Type a command or search..." />

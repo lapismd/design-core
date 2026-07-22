@@ -41,6 +41,7 @@ pnpm --dir packages/tasks reference:verify
 
 Live Superlist observation prefers Chrome MCP + `reference:ingest:delta`
 (verbatim screenshots; see `reference/superlist/README.md`).
+
 ### Visual checks
 
 - **Superlist Visual Delta** — matrix in `reference/superlist/capture-matrix.json`;

@@ -17,9 +17,7 @@ export const TABLER_TO_LUCIDE: Record<string, string> = {
 };
 
 function familyImportSpec(component: string, family: string): string {
-  return family === component
-    ? `"./index.js"`
-    : `"../${family}/index.js"`;
+  return family === component ? `"./index.js"` : `"../${family}/index.js"`;
 }
 
 /**
@@ -201,7 +199,10 @@ export function rewriteExample(args: {
   }
 
   // Incomplete snippet fences (docs ellipsis) are not runnable demos.
-  if (/^\s*\/\/\s*\.\.\.\s*$/m.test(code) || /\/\*\s*\.\.\.\s*\*\//.test(code)) {
+  if (
+    /^\s*\/\/\s*\.\.\.\s*$/m.test(code) ||
+    /\/\*\s*\.\.\.\s*\*\//.test(code)
+  ) {
     return {
       example,
       reason: "empty-code",

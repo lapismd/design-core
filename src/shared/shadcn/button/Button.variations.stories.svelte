@@ -30,7 +30,8 @@
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "**Updated:** We have updated the button component to add new sizes: `icon-sm` and `icon-lg`. See the\n[changelog](/docs/components/button#changelog) for more details. Follow the\ninstructions to update your project.",
+        story:
+          "**Updated:** We have updated the button component to add new sizes: `icon-sm` and `icon-lg`. See the\n[changelog](/docs/components/button#changelog) for more details. Follow the\ninstructions to update your project.",
       },
       source: {
         code: exampleSources.Preview,
@@ -231,7 +232,8 @@
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "The spacing between the icon and the text is automatically adjusted based on the size of the button. You do not need any margin on the icon.",
+        story:
+          "The spacing between the icon and the text is automatically adjusted based on the size of the button. You do not need any margin on the icon.",
       },
       source: {
         code: exampleSources.WithIcon,

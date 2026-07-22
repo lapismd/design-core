@@ -23,7 +23,6 @@
     await userEvent.click(canvas.getByRole("button", { name: "Shipping" }));
     await expect(canvas.getByText("Arrives in 2-3 days")).toBeVisible();
   }}
-
   tags={["visual-approved"]}
 >
   {#snippet template()}

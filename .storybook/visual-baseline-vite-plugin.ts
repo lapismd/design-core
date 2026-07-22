@@ -50,9 +50,7 @@ function visualDeltaObjectLiteral(
   const url = baselineUrl(directory, slug);
   if (!baselineExists(url)) return undefined;
 
-  const visualDelta = visualBaselineVisualDeltaParameter(
-    url,
-  );
+  const visualDelta = visualBaselineVisualDeltaParameter(url);
   return JSON.stringify(visualDelta);
 }
 
@@ -249,8 +247,9 @@ export function visualBaselineVisualDeltaPlugin(): Plugin {
             ? `forms/${formsDir}`
             : appsDir && title.startsWith("Apps/")
               ? `apps/${appsDir}`
-              : normalized.includes("/packages/workspace/src/lib/components/") &&
-                  title.startsWith("Workspace/")
+              : normalized.includes(
+                    "/packages/workspace/src/lib/components/",
+                  ) && title.startsWith("Workspace/")
                 ? "workspace/components"
                 : normalized.includes("/packages/tasks/src/") &&
                     title.startsWith("Tasks/")

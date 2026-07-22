@@ -45,8 +45,7 @@ export const DATA_UI_SHADCN_ALLOWLIST = [
   },
 ] as const;
 
-export type DataUiAllowlistEntry =
-  (typeof DATA_UI_SHADCN_ALLOWLIST)[number];
+export type DataUiAllowlistEntry = (typeof DATA_UI_SHADCN_ALLOWLIST)[number];
 
 function kebabToPascal(kebab: string): string {
   return kebab
@@ -86,7 +85,9 @@ function extractHostIdentity(source: string): {
       component ??= dual[2] ?? dual[8] ?? null;
       if (locksPart) part ??= dual[4] ?? dual[6] ?? null;
     } else if (!component) {
-      const componentOnly = markup.match(/\bdata-ui-component=(["'])([^"']+)\1/);
+      const componentOnly = markup.match(
+        /\bdata-ui-component=(["'])([^"']+)\1/,
+      );
       component = componentOnly?.[2] ?? null;
     }
   }
@@ -256,7 +257,11 @@ export function isAllowlistedOverride(
   file: string,
   tag: string,
   component: string,
-  allowlist: ReadonlyArray<{ file: string; tag: string; component: string }> = DATA_UI_SHADCN_ALLOWLIST,
+  allowlist: ReadonlyArray<{
+    file: string;
+    tag: string;
+    component: string;
+  }> = DATA_UI_SHADCN_ALLOWLIST,
 ): boolean {
   const normalized = file.replace(/\\/g, "/");
   return allowlist.some(

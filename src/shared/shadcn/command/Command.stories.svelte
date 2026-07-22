@@ -29,7 +29,6 @@
     await userEvent.click(canvas.getByRole("option", { name: "Calendar" }));
     await expect(canvas.getByRole("status")).toHaveTextContent("Calendar");
   }}
-
   tags={["visual-approved"]}
 >
   {#snippet template()}

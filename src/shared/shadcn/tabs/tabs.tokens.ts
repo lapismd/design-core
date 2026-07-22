@@ -6,5 +6,4 @@ export const tabsTokenNames = {
   focusRingColor: "--ui-tabs-focus-ring-color",
 } as const;
 
-export type TabsToken =
-  (typeof tabsTokenNames)[keyof typeof tabsTokenNames];
+export type TabsToken = (typeof tabsTokenNames)[keyof typeof tabsTokenNames];

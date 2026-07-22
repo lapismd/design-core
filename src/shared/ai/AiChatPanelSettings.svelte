@@ -77,12 +77,16 @@
     gap: 0.25rem;
   }
 
-  :global([data-ui-component="ai-chat-panel-settings"] [data-ui-part="button"] svg) {
+  :global(
+      [data-ui-component="ai-chat-panel-settings"] [data-ui-part="button"] svg
+    ) {
     width: 1rem;
     height: 1rem;
   }
 
-  :global([data-ui-component="ai-chat-panel-settings"] [data-ui-part="sr-only"]) {
+  :global(
+      [data-ui-component="ai-chat-panel-settings"] [data-ui-part="sr-only"]
+    ) {
     position: absolute;
     width: 1px;
     height: 1px;

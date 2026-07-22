@@ -67,7 +67,8 @@
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "In addition to the `size` prop, you can use the `--card-spacing` CSS variable to control the spacing between sections and the inset of card parts.",
+        story:
+          "In addition to the `size` prop, you can use the `--card-spacing` CSS variable to control the spacing between sections and the inset of card parts.",
       },
       source: {
         code: exampleSources.Spacing,
@@ -92,7 +93,8 @@
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "ComponentPreview name=\"card-spacing\" class=\"[&_.preview]:h-[34rem]\">\n\nUse negative margins with `-mx-(--card-spacing)` to make content go edge to edge while keeping it aligned with the card inset. When the edge-to-edge content sits above a footer, use `-mb-(--card-spacing)` on `CardContent` to remove the section gap.",
+        story:
+          'ComponentPreview name="card-spacing" class="[&_.preview]:h-[34rem]">\n\nUse negative margins with `-mx-(--card-spacing)` to make content go edge to edge while keeping it aligned with the card inset. When the edge-to-edge content sits above a footer, use `-mb-(--card-spacing)` on `CardContent` to remove the section gap.',
       },
       source: {
         code: exampleSources.Spacing2,
@@ -117,7 +119,8 @@
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "Add an image before the card header to create a card with an image.",
+        story:
+          "Add an image before the card header to create a card with an image.",
       },
       source: {
         code: exampleSources.Image,

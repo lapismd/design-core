@@ -115,7 +115,9 @@
     scrollbar-width: none;
   }
 
-  :global([data-ui-component="cv-editor-toolbar"][data-ui-part="root"]::-webkit-scrollbar) {
+  :global(
+      [data-ui-component="cv-editor-toolbar"][data-ui-part="root"]::-webkit-scrollbar
+    ) {
     display: none;
   }
 
@@ -126,7 +128,9 @@
     gap: 0.5rem;
   }
 
-  :global([data-ui-component="cv-editor-toolbar"] [data-ui-part="sidebar-trigger"]) {
+  :global(
+      [data-ui-component="cv-editor-toolbar"] [data-ui-part="sidebar-trigger"]
+    ) {
     margin-left: -0.25rem;
   }
 
@@ -139,17 +143,32 @@
     box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   }
 
-  :global([data-ui-component="cv-editor-toolbar"] [data-ui-part="history-button"]) {
+  :global(
+      [data-ui-component="cv-editor-toolbar"] [data-ui-part="history-button"]
+    ) {
     border-radius: 0;
   }
 
-  :global([data-ui-component="cv-editor-toolbar"] [data-ui-part="history-button"][data-border="start"]) {
+  :global(
+      [data-ui-component="cv-editor-toolbar"]
+        [data-ui-part="history-button"][data-border="start"]
+    ) {
     border-left: 1px solid var(--border);
   }
 
-  :global([data-ui-component="cv-editor-toolbar"] [data-ui-part="icon-button"] svg),
-  :global([data-ui-component="cv-editor-toolbar"] [data-ui-part="history-button"] svg),
-  :global([data-ui-component="cv-editor-toolbar"] [data-ui-part="sidebar-trigger"] svg) {
+  :global(
+      [data-ui-component="cv-editor-toolbar"] [data-ui-part="icon-button"] svg
+    ),
+  :global(
+      [data-ui-component="cv-editor-toolbar"]
+        [data-ui-part="history-button"]
+        svg
+    ),
+  :global(
+      [data-ui-component="cv-editor-toolbar"]
+        [data-ui-part="sidebar-trigger"]
+        svg
+    ) {
     width: 1rem;
     height: 1rem;
   }

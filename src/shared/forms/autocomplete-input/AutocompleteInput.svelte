@@ -1,4 +1,6 @@
 <script lang="ts">
+  import * as Popover from "@stevejuma/ui/shadcn/popover";
+
   let {
     id = undefined,
     value = $bindable(""),
@@ -16,6 +18,8 @@
     commitOnComma = false,
     commitOnBlur = false,
     commitOnTab = false,
+    /** Validation message; sets aria-invalid and renders below the input. */
+    error = null,
     onCommit = () => {},
     onEmptyBackspace = () => {},
     onCancel = () => {},
@@ -31,6 +35,7 @@
     commitOnComma?: boolean;
     commitOnBlur?: boolean;
     commitOnTab?: boolean;
+    error?: string | null;
     onCommit?: (value: string) => void | Promise<void>;
     onEmptyBackspace?: () => void | Promise<void>;
     onCancel?: () => void | Promise<void>;
@@ -67,6 +72,12 @@
       input?.select();
     });
   });
+
+  function setPopoverOpen(next: boolean) {
+    if (forceOpen) return;
+    open = next;
+    if (!next) activeIndex = 0;
+  }
 
   function chooseSuggestion(suggestion: string) {
     value = suggestion;
@@ -137,56 +148,77 @@
   }
 </script>
 
-<div class="autocomplete-input">
-  <input
-    {id}
-    bind:this={input}
-    bind:value
-    {placeholder}
-    aria-label={ariaLabel}
-    aria-autocomplete="list"
-    aria-controls={listId}
-    aria-expanded={listVisible ? "true" : "false"}
-    role="combobox"
-    onfocus={() => (open = true)}
-    oninput={() => {
-      open = true;
-      activeIndex = 0;
-    }}
-    onkeydown={handleKeydown}
-    onblur={() => {
-      if (commitOnBlur) {
-        commitValue();
-      }
-      closeList();
-    }}
-  />
-  {#if listVisible}
-    <div id={listId} class="autocomplete-list" role="listbox">
-      {#each normalizedSuggestions as suggestion, index (suggestion)}
-        <button
-          type="button"
-          role="option"
-          class:active={index === activeIndex}
-          class:force-hover={forceHoverIndex === index}
-          aria-selected={index === activeIndex}
-          onmousedown={(event) => event.preventDefault()}
-          onclick={() => chooseSuggestion(suggestion)}
-        >
-          {suggestion}
-        </button>
-      {/each}
-    </div>
+<div class="ui-autocomplete-input">
+  <Popover.Root open={listVisible} onOpenChange={setPopoverOpen}>
+    <Popover.Trigger>
+      {#snippet child({ props })}
+        <input
+          {...props}
+          {id}
+          bind:this={input}
+          bind:value
+          type="text"
+          {placeholder}
+          aria-label={ariaLabel}
+          aria-autocomplete="list"
+          aria-controls={listId}
+          aria-expanded={listVisible ? "true" : "false"}
+          aria-haspopup="listbox"
+          aria-invalid={error ? "true" : undefined}
+          role="combobox"
+          onfocus={() => (open = true)}
+          oninput={() => {
+            open = true;
+            activeIndex = 0;
+          }}
+          onkeydown={handleKeydown}
+          onblur={() => {
+            if (commitOnBlur) {
+              commitValue();
+            }
+            closeList();
+          }}
+        />
+      {/snippet}
+    </Popover.Trigger>
+    <Popover.Content
+      class="ui-autocomplete-input__popover"
+      align="start"
+      sideOffset={6}
+      onOpenAutoFocus={(event) => event.preventDefault()}
+    >
+      <div id={listId} class="ui-autocomplete-input__list" role="listbox">
+        {#each normalizedSuggestions as suggestion, index (suggestion)}
+          <button
+            type="button"
+            role="option"
+            class="ui-autocomplete-input__item"
+            class:active={index === activeIndex}
+            class:force-hover={forceHoverIndex === index}
+            aria-selected={index === activeIndex}
+            onmousedown={(event) => event.preventDefault()}
+            onclick={() => chooseSuggestion(suggestion)}
+          >
+            {suggestion}
+          </button>
+        {/each}
+      </div>
+    </Popover.Content>
+  </Popover.Root>
+  {#if error}
+    <p class="ui-form-control-error" role="alert">{error}</p>
   {/if}
 </div>
 
 <style>
-  .autocomplete-input {
+  .ui-autocomplete-input {
     position: relative;
+    display: grid;
     min-width: 0;
+    gap: 0.25rem;
   }
 
-  input {
+  .ui-autocomplete-input :global(input) {
     width: 100%;
     min-width: 0;
     border: 0;
@@ -196,45 +228,66 @@
     outline: none;
   }
 
-  .autocomplete-list {
-    position: absolute;
-    top: calc(100% + 0.35rem);
-    left: 0;
-    z-index: 30;
-    display: grid;
-    gap: 0.5rem;
+  :global(.ui-autocomplete-input__popover) {
+    z-index: 80;
     width: min(18rem, 80vw);
+    min-width: 14rem;
+    gap: 0;
+    overflow: hidden;
+    border: 1px solid var(--ui-form-border);
+    border-radius: 0.75rem;
+    background: var(--ui-form-popover, var(--ui-form-background));
+    color: var(--ui-form-foreground);
+    padding: 0;
+    box-shadow: 0 1rem 2rem rgb(15 23 42 / 12%);
+    outline: 0;
+  }
+
+  .ui-autocomplete-input__list {
+    display: grid;
+    gap: 0.125rem;
     max-height: 14rem;
     overflow: auto;
-    border: 1px solid var(--ui-form-border);
-    border-radius: 0.45rem;
-    background: var(--ui-form-popover);
-    box-shadow: 0 14px 30px
-      var(--ui-form-shadow);
+    outline: 0;
     padding: 0.25rem;
   }
 
-  .autocomplete-list button {
+  .ui-autocomplete-input__item {
+    display: flex;
+    min-width: 0;
+    align-items: center;
     border: 0;
-    border-radius: 0.3rem;
+    border-radius: 0.25rem;
     background: transparent;
-    color: var(--ui-form-foreground);
+    color: inherit;
     cursor: pointer;
     font: inherit;
-    font-size: 0.86rem;
-    font-weight: 800;
-    padding: 0.45rem 0.55rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    padding: 0.375rem 0.5rem;
     text-align: left;
+    outline: 0;
+    user-select: none;
   }
 
-  .autocomplete-list button:hover,
-  .autocomplete-list button.active,
-  .autocomplete-list button.force-hover {
+  .ui-autocomplete-input__item:hover,
+  .ui-autocomplete-input__item:focus-visible,
+  .ui-autocomplete-input__item.active,
+  .ui-autocomplete-input__item.force-hover {
     background: color-mix(
       in srgb,
-      var(--ui-form-accent) 12%,
-      transparent
+      var(--ui-form-accent) 9%,
+      var(--ui-form-muted-surface, var(--ui-form-background))
     );
-    color: var(--ui-form-accent);
+    color: var(--ui-form-foreground);
+    outline: 0;
+  }
+
+  .ui-form-control-error {
+    margin: 0;
+    color: var(--destructive, #dc2626);
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1.3;
   }
 </style>

@@ -44,10 +44,7 @@ const STATE_TO_PAGES: Record<string, { state: string; pages: string[] }> = {
   },
   "desktop|list-detail|list-detail": {
     state: "state-desktop-list-detail.png",
-    pages: [
-      "page-desktop-list-detail",
-      "page-desktop-shell-list-reference",
-    ],
+    pages: ["page-desktop-list-detail", "page-desktop-shell-list-reference"],
   },
   "desktop|list-detail|list-shared": {
     state: "state-desktop-list-shared.png",
@@ -96,7 +93,8 @@ const COMPONENT_FROM_PAGE: Record<string, string> = {
   "desktop|lists|lists": "page-desktop-lists",
   "desktop|list-detail|list-detail": "page-desktop-list-detail",
   "desktop|list-detail|list-shared": "page-desktop-shell-list-shared",
-  "desktop|list-detail|list-detail>select-first-task": "page-desktop-list-detail",
+  "desktop|list-detail|list-detail>select-first-task":
+    "page-desktop-list-detail",
   "desktop|list-detail|list-detail>focus-composer": "page-desktop-list-detail",
   "desktop|task-detail|list-detail>open-first-task":
     "page-desktop-task-detail-open",
@@ -211,9 +209,7 @@ async function main(): Promise<void> {
     .filter((e) => e.kind === "component" && !componentMap[e.id])
     .map((e) => e.id);
   if (missingComps.length) {
-    process.stderr.write(
-      `missing component map: ${missingComps.join(", ")}\n`,
-    );
+    process.stderr.write(`missing component map: ${missingComps.join(", ")}\n`);
   }
 }
 

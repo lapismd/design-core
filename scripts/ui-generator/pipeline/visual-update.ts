@@ -4,10 +4,7 @@ import { loadConfig } from "../config.js";
 import { EXIT, GeneratorError } from "../errors.js";
 import { log } from "../logger.js";
 import { assertCleanGit } from "../adapters/git.js";
-import {
-  componentFromStoryId,
-  requireRecipe,
-} from "../recipes/index.js";
+import { componentFromStoryId, requireRecipe } from "../recipes/index.js";
 import {
   buildSnapshotManifest,
   listComponentSnapshotFiles,
@@ -23,7 +20,10 @@ import {
   patchStoriesVisualDeltaImages,
   removeSkipVisualFromStories,
 } from "../visual/patch-story-visual-delta.js";
-import { markCreatedStoriesPending } from "../visual/patch-story-visual-review.js";
+import {
+  listStoryIdsForPrefix,
+  markCreatedStoriesPending,
+} from "../visual/patch-story-visual-review.js";
 import {
   createRunContext,
   writeJson,
@@ -196,10 +196,7 @@ export async function runVisualUpdate(options: {
     log.info(
       `Story visualDelta patch: ${patchResult.patched.length} updated, ${patchResult.alreadyWired.length} already wired, ${patchResult.skipped.length} skipped`,
     );
-    const toMarkPending = [
-      ...patchResult.patched,
-      ...patchResult.alreadyWired,
-    ];
+    const toMarkPending = [...patchResult.patched, ...patchResult.alreadyWired];
     if (toMarkPending.length) {
       const pending = markCreatedStoriesPending({
         packageRoot: config.packageRoot,
@@ -207,6 +204,19 @@ export async function runVisualUpdate(options: {
       });
       log.info(
         `Story review pending: ${pending.marked.length} marked, ${pending.skipped.length} skipped`,
+      );
+    }
+  } else {
+    // Overwrite: drop approved badges so rewritten baselines need re-review.
+    const toReset = listStoryIdsForPrefix(config.packageRoot, grep);
+    if (toReset.length) {
+      const pending = markCreatedStoriesPending({
+        packageRoot: config.packageRoot,
+        storyIds: toReset,
+        resetApproved: true,
+      });
+      log.info(
+        `Story review pending (rewrite): ${pending.marked.length} marked, ${pending.skipped.length} skipped`,
       );
     }
   }

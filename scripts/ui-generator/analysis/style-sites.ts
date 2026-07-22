@@ -56,7 +56,10 @@ function extractBalancedCall(
   openParenIndex: number,
 ): { text: string; end: number } {
   if (source[openParenIndex] !== "(") {
-    throw new GeneratorError("Expected '(' for cn() extraction", EXIT.unsupported);
+    throw new GeneratorError(
+      "Expected '(' for cn() extraction",
+      EXIT.unsupported,
+    );
   }
   let depth = 0;
   let inString: '"' | "'" | "`" | null = null;
@@ -326,7 +329,9 @@ export function extractStyleSites(
     // Prefer scanning backward/forward in the object for data-slot
     const objStart = source.lastIndexOf("{", start);
     const objSlice =
-      objStart >= 0 ? source.slice(objStart, Math.min(source.length, objStart + 800)) : window;
+      objStart >= 0
+        ? source.slice(objStart, Math.min(source.length, objStart + 800))
+        : window;
     const slot2 =
       /["']data-slot["']\s*:\s*["']([^"']+)["']/.exec(objSlice)?.[1] ?? slot;
     pushSite({
@@ -346,7 +351,8 @@ export function extractStyleSites(
   while ((lit = classLitRe.exec(source))) {
     const full = lit[0]!;
     // Skip if this is part of class={cn(...)} — those start with class={cn
-    if (source.slice(lit.index, lit.index + 10).startsWith("class={cn")) continue;
+    if (source.slice(lit.index, lit.index + 10).startsWith("class={cn"))
+      continue;
     const classes = splitCandidates(lit[2]!);
     if (!classes.some((c) => UTILITY_HINT.test(c) || isMarkerCandidate(c))) {
       continue;
@@ -373,7 +379,8 @@ export function extractStyleSites(
     // Ignore if already covered by a cn/classLit site at same index
     if (sites.some((s) => s.attrStart === st!.index)) continue;
     const partitioned = partitionCandidates(classes);
-    if (!partitioned.baseClasses.length && !partitioned.markers.length) continue;
+    if (!partitioned.baseClasses.length && !partitioned.markers.length)
+      continue;
     const slot = dataSlotOnSameTag(source, st.index);
     pushSite({
       partHint: slot,

@@ -56,12 +56,15 @@
   const trashedFiles: CvFileInfo[] = [];
 
   const selectedFile = $derived(
-    [...cvFiles, ...archivedFiles, ...trashedFiles].find((f) => f.id === selectedFileId) ??
-      null,
+    [...cvFiles, ...archivedFiles, ...trashedFiles].find(
+      (f) => f.id === selectedFileId,
+    ) ?? null,
   );
   const activeProjectPath = "/Users/demo/Projects/portfolio";
   const collapsedTitle = $derived(
-    activeProjectPath.split("/").filter(Boolean).at(-1) ?? selectedFile?.name ?? "Workspace",
+    activeProjectPath.split("/").filter(Boolean).at(-1) ??
+      selectedFile?.name ??
+      "Workspace",
   );
 
   function handleSend(text: string) {
@@ -111,7 +114,10 @@
             selectedFileId = file.id;
           }}
           onSetSectionVisible={(section, visible) => {
-            fileSectionVisibility = { ...fileSectionVisibility, [section]: visible };
+            fileSectionVisibility = {
+              ...fileSectionVisibility,
+              [section]: visible,
+            };
           }}
         />
       {/snippet}
@@ -144,7 +150,9 @@
       {#snippet preview()}
         <div data-ui-component="cv-workspace-demo" data-ui-part="preview-stub">
           <p data-ui-part="preview-title">Preview placeholder</p>
-          <p data-ui-part="preview-copy">Preview renderer stays in the consuming app.</p>
+          <p data-ui-part="preview-copy">
+            Preview renderer stays in the consuming app.
+          </p>
         </div>
       {/snippet}
     </CvWorkspaceBody>
@@ -168,7 +176,9 @@
     color: var(--muted-foreground);
   }
 
-  :global([data-ui-component="cv-workspace-demo"][data-ui-part="preview-stub"]) {
+  :global(
+      [data-ui-component="cv-workspace-demo"][data-ui-part="preview-stub"]
+    ) {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -176,13 +186,17 @@
     text-align: center;
   }
 
-  :global([data-ui-component="cv-workspace-demo"] [data-ui-part="preview-title"]) {
+  :global(
+      [data-ui-component="cv-workspace-demo"] [data-ui-part="preview-title"]
+    ) {
     margin: 0;
     font-size: 0.875rem;
     font-weight: 500;
   }
 
-  :global([data-ui-component="cv-workspace-demo"] [data-ui-part="preview-copy"]) {
+  :global(
+      [data-ui-component="cv-workspace-demo"] [data-ui-part="preview-copy"]
+    ) {
     margin: 0;
     font-size: 0.75rem;
     color: var(--muted-foreground);

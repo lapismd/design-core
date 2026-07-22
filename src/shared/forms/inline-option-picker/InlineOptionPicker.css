@@ -5,6 +5,24 @@
   gap: 0.35rem;
 }
 
+.cv-form-inline-option-picker[data-invalid] .cv-form-inline-option-trigger,
+.cv-form-inline-option-picker[data-invalid]
+  .cv-form-inline-option-picker--swap
+  .cv-form-inline-option-trigger,
+.cv-form-inline-option-picker--swap[data-invalid]
+  .cv-form-inline-option-trigger {
+  box-shadow: 0 0 0 1px
+    color-mix(in srgb, var(--destructive, #dc2626) 55%, transparent);
+}
+
+.ui-form-control-error {
+  margin: 0;
+  color: var(--destructive, #dc2626);
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
 .cv-form-inline-option-picker[data-open="true"] {
   padding-bottom: 0.4rem;
 }
@@ -17,11 +35,7 @@
   min-height: 1.75rem;
   border: 1px solid var(--ui-form-border);
   border-radius: 999px;
-  background: color-mix(
-    in srgb,
-    var(--ui-form-popover) 82%,
-    transparent
-  );
+  background: color-mix(in srgb, var(--ui-form-popover) 82%, transparent);
   font-size: 0.78rem;
   font-weight: 650;
   padding: 0 0.6rem;
@@ -33,10 +47,7 @@
   align-items: center;
   border-radius: 0.25rem;
   background: transparent;
-  color: var(
-    --cv-inline-option-accent,
-    var(--ui-form-foreground)
-  );
+  color: var(--cv-inline-option-accent, var(--ui-form-foreground));
   cursor: pointer;
   font: inherit;
 }
@@ -45,18 +56,9 @@
   min-height: 1.6rem;
   justify-content: flex-start;
   gap: 0.4rem;
-  border: 1px solid
-    color-mix(
-      in srgb,
-      var(--ui-form-border) 78%,
-      transparent
-    );
+  border: 1px solid color-mix(in srgb, var(--ui-form-border) 78%, transparent);
   border-radius: 0.35rem;
-  background: color-mix(
-    in srgb,
-    var(--ui-form-popover) 88%,
-    var(--background)
-  );
+  background: color-mix(in srgb, var(--ui-form-popover) 88%, var(--background));
   font-size: 0.88rem;
   font-weight: 500;
   padding: 0.1rem 0.45rem;
@@ -92,10 +94,7 @@
     var(--cv-inline-option-accent, var(--primary)) 28%,
     var(--ui-form-border)
   );
-  color: var(
-    --cv-inline-option-accent,
-    var(--ui-form-foreground)
-  );
+  color: var(--cv-inline-option-accent, var(--ui-form-foreground));
   outline: 0;
 }
 
@@ -114,10 +113,7 @@
   min-height: 1.6rem;
   gap: 0.35rem;
   border: 1px solid var(--ui-form-border);
-  color: var(
-    --cv-inline-option-accent,
-    var(--ui-form-muted)
-  );
+  color: var(--cv-inline-option-accent, var(--ui-form-muted));
   font-size: 0.75rem;
   font-weight: 550;
   padding: 0 0.55rem;
@@ -127,11 +123,7 @@
 .cv-form-inline-option-list--swap button {
   min-height: 1.75rem;
   border-radius: 999px;
-  background: color-mix(
-    in srgb,
-    var(--ui-form-popover) 82%,
-    transparent
-  );
+  background: color-mix(in srgb, var(--ui-form-popover) 82%, transparent);
   font-size: 0.78rem;
   font-weight: 650;
   padding: 0 0.55rem;
@@ -150,9 +142,6 @@
     var(--cv-inline-option-accent, var(--primary)) 12%,
     transparent
   );
-  color: var(
-    --cv-inline-option-accent,
-    var(--ui-form-foreground)
-  );
+  color: var(--cv-inline-option-accent, var(--ui-form-foreground));
   outline: 0;
 }

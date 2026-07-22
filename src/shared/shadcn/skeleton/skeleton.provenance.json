@@ -21,10 +21,7 @@
     "docsUrl": "https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/skeleton.md",
     "docsFetchedAt": "2026-07-22T09:57:18.205Z",
     "docsSha256": "c154d3bcd0db02dee7ce0772cfb1c1fbe9064746b3ebc7613cdaaf15b851983c",
-    "examplesIncluded": [
-      "Preview",
-      "Card"
-    ],
+    "examplesIncluded": ["Preview", "Card"],
     "examplesSkipped": [],
     "docsCommit": "bf4f461d88526359d0e96e1950f637912bbeebe7",
     "docsRef": "shadcn-svelte@1.4.2",

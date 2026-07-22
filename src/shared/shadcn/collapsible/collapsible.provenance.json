@@ -30,9 +30,7 @@
     "docsUrl": "https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/collapsible.md",
     "docsFetchedAt": "2026-07-22T09:57:18.275Z",
     "docsSha256": "503e630625d9e819eee8c54a8f421824bcdc22abb5686af95012ff62570566fc",
-    "examplesIncluded": [
-      "Preview"
-    ],
+    "examplesIncluded": ["Preview"],
     "examplesSkipped": [],
     "docsCommit": "bf4f461d88526359d0e96e1950f637912bbeebe7",
     "docsRef": "shadcn-svelte@1.4.2",

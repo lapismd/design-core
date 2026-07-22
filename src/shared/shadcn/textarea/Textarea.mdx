@@ -1,4 +1,11 @@
-import { Meta, Canvas, Controls, Primary, Source, Markdown } from "@storybook/addon-docs/blocks";
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+  Markdown,
+} from "@storybook/addon-docs/blocks";
 import * as TextareaStories from "./Textarea.stories.svelte";
 import * as TextareaVariations from "./Textarea.variations.stories.svelte";
 import docsBody from "./textarea.docs-body.md?raw";
@@ -17,7 +24,12 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 
 ## Usage
 
-<Source language="html" code={"<script lang=\"ts\">\n  import { Textarea } from \"@stevejuma/ui/shadcn/textarea\";\n</script>\n\n<Textarea />"} />
+<Source
+  language="html"
+  code={
+    '<script lang="ts">\n  import { Textarea } from "@stevejuma/ui/shadcn/textarea";\n</script>\n\n<Textarea />'
+  }
+/>
 
 <Primary />
 
@@ -27,31 +39,24 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 
 ### Preview
 
-
 <Canvas of={TextareaVariations.Preview} meta={TextareaVariations} />
 
 ### Default
-
 
 <Canvas of={TextareaVariations.Default} meta={TextareaVariations} />
 
 ### Disabled
 
-
 <Canvas of={TextareaVariations.Disabled} meta={TextareaVariations} />
 
 ### With Label
-
 
 <Canvas of={TextareaVariations.WithLabel} meta={TextareaVariations} />
 
 ### With Text
 
-
 <Canvas of={TextareaVariations.WithText} meta={TextareaVariations} />
 
 ### With Button
 
-
 <Canvas of={TextareaVariations.WithButton} meta={TextareaVariations} />
-

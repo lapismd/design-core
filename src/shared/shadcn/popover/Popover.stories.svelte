@@ -33,11 +33,18 @@
     await userEvent.keyboard("{Escape}");
     await expect(canvas.getByRole("status")).toHaveTextContent("closed");
   }}
-
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/popover/opens-a-panel-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
+    visualDelta: {
+      images: [
+        "/visual-baselines/shadcn/popover/opens-a-panel-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
   }}
-
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -68,9 +75,17 @@
       within(document.body).getByText("Active filters"),
     ).toBeVisible();
   }}
-
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/popover/open-panel-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
+    visualDelta: {
+      images: [
+        "/visual-baselines/shadcn/popover/open-panel-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
   }}
 >
   {#snippet template()}

@@ -1,4 +1,10 @@
-import { Meta, Canvas, Controls, Primary, Source } from "@storybook/addon-docs/blocks";
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+} from "@storybook/addon-docs/blocks";
 import * as TaskDueCalendarStories from "./TaskDueCalendar.stories.svelte";
 import * as TaskDueCalendarVariations from "./TaskDueCalendar.variations.stories.svelte";
 
@@ -24,7 +30,10 @@ See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and the shared
 
 ## Usage
 
-<Source language="html" code={"<TaskDueCalendar value={due} onChange={...} />"} />
+<Source
+  language="html"
+  code={"<TaskDueCalendar value={due} onChange={...} />"}
+/>
 
 <Primary />
 
@@ -38,5 +47,7 @@ See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and the shared
 
 Calendar with a selected date.
 
-<Canvas of={TaskDueCalendarVariations.SelectedDay} meta={TaskDueCalendarVariations} />
-
+<Canvas
+  of={TaskDueCalendarVariations.SelectedDay}
+  meta={TaskDueCalendarVariations}
+/>

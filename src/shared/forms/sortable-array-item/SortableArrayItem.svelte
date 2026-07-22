@@ -21,7 +21,7 @@
     sortableGroup?: string | null;
     dragging?: boolean;
     compact?: boolean;
-    /** `flush` keeps value text on the form control column (grip hangs in the gutter). */
+    /** Horizontal padding; `flush` is `pl-0` with grip hanging left (no subgrid). */
     inset?: "normal" | "tight" | "flush";
     removable?: boolean;
     onDragStart?: (event: PointerEvent, index: number) => void;
@@ -32,7 +32,7 @@
 
 <div
   class={[
-    "group/sortable relative grid grid-cols-[minmax(0,1fr)] border-b pr-6 transition-colors focus-within:bg-accent/40",
+    "group/sortable focus-within:bg-accent/40 relative grid grid-cols-[minmax(0,1fr)] border-b pr-6 transition-colors",
     compact ? "py-1" : "py-1.5",
     inset === "flush" ? "pl-0" : inset === "tight" ? "pl-3" : "pl-5",
     dragging ? "bg-accent opacity-70" : "",
@@ -44,19 +44,21 @@
   data-sortable-id={id}
   data-sortable-group={sortableGroup}
 >
-  <button
-    type="button"
-    aria-label="Drag item"
-    class={[
-      "text-muted-foreground/70 hover:text-foreground focus-visible:ring-ring absolute top-1/2 grid size-4 shrink-0 -translate-y-1/2 cursor-grab place-items-center rounded-sm opacity-0 transition-opacity group-hover/sortable:opacity-100 group-focus-within/sortable:opacity-100 hover:bg-transparent focus-visible:opacity-100 focus-visible:ring-2 active:cursor-grabbing [&_svg]:size-3",
-      inset === "flush" ? "-left-4" : "left-0",
-    ]
-      .filter(Boolean)
-      .join(" ")}
-    onpointerdown={(event) => onDragStart?.(event, index)}
-  >
-    <GripVerticalIcon class="size-3" />
-  </button>
+  {#if onDragStart}
+    <button
+      type="button"
+      aria-label="Drag item"
+      class={[
+        "text-muted-foreground/70 hover:text-foreground focus-visible:ring-ring absolute top-1/2 grid size-4 shrink-0 -translate-y-1/2 cursor-grab place-items-center rounded-sm opacity-0 transition-opacity group-focus-within/sortable:opacity-100 group-hover/sortable:opacity-100 hover:bg-transparent focus-visible:opacity-100 focus-visible:ring-2 active:cursor-grabbing [&_svg]:size-3",
+        inset === "flush" ? "-left-4" : "left-0",
+      ]
+        .filter(Boolean)
+        .join(" ")}
+      onpointerdown={(event) => onDragStart(event, index)}
+    >
+      <GripVerticalIcon class="size-3" />
+    </button>
+  {/if}
 
   <div class="min-w-0">
     {@render children?.()}
@@ -67,7 +69,7 @@
       type="button"
       variant="ghost"
       size="icon-xs"
-      class="text-muted-foreground/70 hover:text-foreground absolute top-1/2 right-0 size-5 -translate-y-1/2 rounded-sm opacity-0 transition-opacity group-hover/sortable:opacity-100 group-focus-within/sortable:opacity-100 hover:bg-transparent focus-visible:opacity-100 [&_svg]:size-3.5"
+      class="text-muted-foreground/70 hover:text-foreground absolute top-1/2 right-0 size-5 -translate-y-1/2 rounded-sm opacity-0 transition-opacity group-focus-within/sortable:opacity-100 group-hover/sortable:opacity-100 hover:bg-transparent focus-visible:opacity-100 [&_svg]:size-3.5"
       aria-label="Remove item"
       onclick={onRemove}
     >

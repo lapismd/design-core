@@ -1,9 +1,5 @@
 <script lang="ts" module>
-  
-    export const EMPTY_MEDIA_VARIANTS = [
-    "default",
-    "icon",
-  ] as const;
+  export const EMPTY_MEDIA_VARIANTS = ["default", "icon"] as const;
   export type EmptyMediaVariant = (typeof EMPTY_MEDIA_VARIANTS)[number];
 
   /** @deprecated Prefer typed props; retained for API compatibility. */

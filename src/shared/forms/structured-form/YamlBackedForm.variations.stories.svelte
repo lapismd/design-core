@@ -4,7 +4,7 @@
   import { createFormConfig, textField } from "../core/core";
 
   const { Story } = defineMeta({
-    title: "UI Forms/YAML Backed Form",
+    title: "UI Forms/Orchestrators/YAML Backed Form",
     component: YamlBackedForm,
     parameters: {
       docs: {
@@ -35,7 +35,6 @@
   let yamlMode = $state(false);
   let yamlText = $state("name: Jane Doe\n");
 </script>
-
 
 <Story
   name="Structured mode"

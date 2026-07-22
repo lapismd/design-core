@@ -23,9 +23,7 @@ The `Tooltip.Provider` component should be placed once in your root layout, wrap
 ```
 
 ```html
-<Tooltip.Provider>
-  {@render children()}
-</Tooltip.Provider>
+<Tooltip.Provider> {@render children()} </Tooltip.Provider>
 ```
 
 Then use tooltips anywhere in your app:
@@ -48,7 +46,7 @@ Then use tooltips anywhere in your app:
 You can nest providers to create groups with different settings. Tooltips use the closest ancestor provider. This is useful when you want instant tooltips in specific areas:
 
 ```html
-<Tooltip.Provider delayDuration={0}>
+<Tooltip.Provider delayDuration="{0}">
   <!-- Tooltips here will open instantly -->
 </Tooltip.Provider>
 ```

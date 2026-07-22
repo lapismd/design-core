@@ -33,9 +33,7 @@
     "docsUrl": "https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/accordion.md",
     "docsFetchedAt": "2026-07-22T09:57:18.316Z",
     "docsSha256": "54ab5ed974062367cfd7e4b08f3057466d481418fb5e104c79b99d09decf2d1e",
-    "examplesIncluded": [
-      "Preview"
-    ],
+    "examplesIncluded": ["Preview"],
     "examplesSkipped": [],
     "docsCommit": "bf4f461d88526359d0e96e1950f637912bbeebe7",
     "docsRef": "shadcn-svelte@1.4.2",

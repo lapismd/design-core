@@ -22,11 +22,16 @@
     await expect(canvas.getByText("Default")).toBeVisible();
     await expect(canvas.getByText("Secondary")).toBeVisible();
   }}
-
   tags={["visual-approved"]}
-
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/badge/variants-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
+    visualDelta: {
+      images: ["/visual-baselines/shadcn/badge/variants-chromium-darwin.png"],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
   }}
 >
   {#snippet template()}

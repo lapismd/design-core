@@ -4,7 +4,7 @@
   import ReferencePicker from "./ReferencePicker.svelte";
 
   const { Story } = defineMeta({
-    title: "UI Forms/Reference Picker",
+    title: "UI Forms/Form Inputs/Reference Picker",
     component: ReferencePicker,
     parameters: {
       docs: {
@@ -58,6 +58,32 @@
       onChange={(next) => {
         refs = next;
       }}
+    />
+  {/snippet}
+</Story>
+
+<Story name="Shows an error" tags={["skip-visual"]}>
+  {#snippet template()}
+    <ReferencePicker
+      refs={[]}
+      addOpen={false}
+      error="Enter at least one value."
+      referenceIndex={{
+        references: [
+          {
+            id: "1",
+            ref: "[^1]",
+            marker: "1",
+            path: "/stories/1",
+            type: "story",
+            label: "Deployment story",
+            excerpt: "Shipped the deploy pipeline",
+            duplicate: false,
+          },
+        ],
+        duplicates: {},
+      }}
+      onChange={() => {}}
     />
   {/snippet}
 </Story>

@@ -1,0 +1,31 @@
+import { Meta, Source } from "@storybook/addon-docs/blocks";
+
+<Meta title="UI Forms/Review/Form Review" />
+
+# Form review primitives
+
+Shared Keep/Undo building blocks used by `PatchableForm`, `ListEditor` review
+rows, and reviewed StructuredForm field renderers.
+
+- `UnifiedReviewDiff` — word-aware two-version diff
+- `FieldReviewActions` — Keep / Undo row (hides Keep when stale)
+- `FormField` `review` / `ListEditor` `reviewItems` — row chrome for Keep/Undo
+- `reviewedTextField` / `reviewedStringListField` — StructuredForm builders
+
+Compose these with **Form Inputs** (`FormField`, `ListEditor`) — see
+[Composed Review](?path=/docs/ui-forms-review-composed-review--docs) stories.
+Orchestration lives under
+[Patchable Form](?path=/docs/ui-forms-orchestrators-patchable-form--docs).
+
+## Usage
+
+<Source
+  language="html"
+  code={`<FormField
+  label="Name"
+  value={after}
+  review={{ removedValue: before, onKeep, onUndo }}
+>
+  <input value={after} oninput={...} />
+</FormField>`}
+/>

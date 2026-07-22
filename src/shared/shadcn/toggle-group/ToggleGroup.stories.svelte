@@ -26,7 +26,6 @@
     await userEvent.click(canvas.getByRole("radio", { name: "Center" }));
     await expect(canvas.getByRole("status")).toHaveTextContent("center");
   }}
-
   tags={["visual-approved"]}
 >
   {#snippet template()}

@@ -52,7 +52,9 @@ describe("ui guide", () => {
   });
 
   it("rejects unknown topics", () => {
-    expect(() => getGuideTopic(packageRoot, "nope")).toThrow(/Unknown guide topic/);
+    expect(() => getGuideTopic(packageRoot, "nope")).toThrow(
+      /Unknown guide topic/,
+    );
   });
 
   it("builds json envelopes", () => {

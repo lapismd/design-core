@@ -6,5 +6,4 @@ export const alertTokenNames = {
   focusRingColor: "--ui-alert-focus-ring-color",
 } as const;
 
-export type AlertToken =
-  (typeof alertTokenNames)[keyof typeof alertTokenNames];
+export type AlertToken = (typeof alertTokenNames)[keyof typeof alertTokenNames];

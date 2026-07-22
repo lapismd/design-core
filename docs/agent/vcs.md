@@ -48,7 +48,7 @@ workflow (stage relevant files, `git commit -m "…"`, verify with `git status`)
 
 ## Relation to testing
 
-`pnpm ui guide testing` covers *what* to validate. This topic covers *when* to
+`pnpm ui guide testing` covers _what_ to validate. This topic covers _when_ to
 record that work in version control. For UI package changes, run the appropriate
 checks (focused tests while iterating; `pnpm checks` or `pnpm storybook:check`
 before a handoff commit when the slice touches catalog surfaces).

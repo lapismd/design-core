@@ -37,7 +37,10 @@
     onCreate?: () => void;
     onImport?: () => void;
     onSelectFile?: (file: CvFileInfo) => void;
-    onSetSectionVisible?: (section: OptionalFileSection, visible: boolean) => void;
+    onSetSectionVisible?: (
+      section: OptionalFileSection,
+      visible: boolean,
+    ) => void;
     onImportDragOver?: (event: DragEvent) => void;
     onImportDragLeave?: () => void;
     onImportDrop?: (event: DragEvent) => void;
@@ -191,7 +194,9 @@
     gap: 0.5rem;
   }
 
-  :global([data-ui-component="cv-workspace-sidebar"] [data-ui-part="create-button"]) {
+  :global(
+      [data-ui-component="cv-workspace-sidebar"] [data-ui-part="create-button"]
+    ) {
     height: 2.5rem;
     width: 100%;
     justify-content: flex-start;
@@ -201,13 +206,18 @@
     color: var(--sidebar-foreground);
   }
 
-  :global([data-ui-component="cv-workspace-sidebar"] [data-ui-part="create-button"]:hover) {
+  :global(
+      [data-ui-component="cv-workspace-sidebar"]
+        [data-ui-part="create-button"]:hover
+    ) {
     border-color: var(--sidebar-accent-foreground);
     background: var(--sidebar-accent);
     color: var(--sidebar-accent-foreground);
   }
 
-  :global([data-ui-component="cv-workspace-sidebar"] [data-ui-part="import-button"]) {
+  :global(
+      [data-ui-component="cv-workspace-sidebar"] [data-ui-part="import-button"]
+    ) {
     height: 3rem;
     width: 100%;
     justify-content: flex-start;
@@ -219,14 +229,20 @@
   }
 
   :global(
-    [data-ui-component="cv-workspace-sidebar"] [data-ui-part="import-button"][data-dragging="true"]
-  ),
-  :global([data-ui-component="cv-workspace-sidebar"] [data-ui-part="import-button"]:hover) {
+      [data-ui-component="cv-workspace-sidebar"]
+        [data-ui-part="import-button"][data-dragging="true"]
+    ),
+  :global(
+      [data-ui-component="cv-workspace-sidebar"]
+        [data-ui-part="import-button"]:hover
+    ) {
     background: var(--sidebar-accent);
     color: var(--sidebar-accent-foreground);
   }
 
-  :global([data-ui-component="cv-workspace-sidebar"] [data-ui-part="import-copy"]) {
+  :global(
+      [data-ui-component="cv-workspace-sidebar"] [data-ui-part="import-copy"]
+    ) {
     display: flex;
     min-width: 0;
     flex-direction: column;
@@ -235,14 +251,24 @@
     line-height: 1.25;
   }
 
-  :global([data-ui-component="cv-workspace-sidebar"] [data-ui-part="import-hint"]) {
+  :global(
+      [data-ui-component="cv-workspace-sidebar"] [data-ui-part="import-hint"]
+    ) {
     font-size: 0.75rem;
     font-weight: 400;
     color: var(--muted-foreground);
   }
 
-  :global([data-ui-component="cv-workspace-sidebar"] [data-ui-part="create-button"] svg),
-  :global([data-ui-component="cv-workspace-sidebar"] [data-ui-part="import-button"] svg) {
+  :global(
+      [data-ui-component="cv-workspace-sidebar"]
+        [data-ui-part="create-button"]
+        svg
+    ),
+  :global(
+      [data-ui-component="cv-workspace-sidebar"]
+        [data-ui-part="import-button"]
+        svg
+    ) {
     width: 1rem;
     height: 1rem;
     flex-shrink: 0;
@@ -261,13 +287,17 @@
   }
 
   :global(
-    [data-ui-component="cv-workspace-sidebar"] [data-ui-part="scroll"] > [data-ui-component="scroll-area"]
-  ) {
+      [data-ui-component="cv-workspace-sidebar"]
+        [data-ui-part="scroll"]
+        > [data-ui-component="scroll-area"]
+    ) {
     min-height: 0;
     flex: 1 1 auto;
   }
 
-  :global([data-ui-component="cv-workspace-sidebar"] [data-ui-part="sections"]) {
+  :global(
+      [data-ui-component="cv-workspace-sidebar"] [data-ui-part="sections"]
+    ) {
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -280,14 +310,18 @@
     gap: 0.25rem;
   }
 
-  :global([data-ui-component="cv-workspace-sidebar"] [data-ui-part="section-header"]) {
+  :global(
+      [data-ui-component="cv-workspace-sidebar"] [data-ui-part="section-header"]
+    ) {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding-inline: 0.25rem;
   }
 
-  :global([data-ui-component="cv-workspace-sidebar"] [data-ui-part="section-title"]) {
+  :global(
+      [data-ui-component="cv-workspace-sidebar"] [data-ui-part="section-title"]
+    ) {
     padding-inline: 0.25rem;
     font-size: 0.75rem;
     font-weight: 500;
@@ -302,7 +336,9 @@
     cursor: pointer;
   }
 
-  :global([data-ui-component="cv-workspace-sidebar"] [data-ui-part="hide"]:hover) {
+  :global(
+      [data-ui-component="cv-workspace-sidebar"] [data-ui-part="hide"]:hover
+    ) {
     color: var(--foreground);
   }
 
@@ -327,25 +363,34 @@
     cursor: pointer;
   }
 
-  :global([data-ui-component="cv-workspace-sidebar"] [data-ui-part="file"]:hover) {
+  :global(
+      [data-ui-component="cv-workspace-sidebar"] [data-ui-part="file"]:hover
+    ) {
     background: var(--sidebar-accent);
   }
 
-  :global([data-ui-component="cv-workspace-sidebar"] [data-ui-part="file"][data-selected="true"]) {
+  :global(
+      [data-ui-component="cv-workspace-sidebar"]
+        [data-ui-part="file"][data-selected="true"]
+    ) {
     border-color: var(--sidebar-border);
     background: var(--background);
     color: var(--sidebar-accent-foreground);
     box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   }
 
-  :global([data-ui-component="cv-workspace-sidebar"] [data-ui-part="file"] svg) {
+  :global(
+      [data-ui-component="cv-workspace-sidebar"] [data-ui-part="file"] svg
+    ) {
     width: 0.875rem;
     height: 0.875rem;
     flex-shrink: 0;
     color: var(--muted-foreground);
   }
 
-  :global([data-ui-component="cv-workspace-sidebar"] [data-ui-part="file"] span) {
+  :global(
+      [data-ui-component="cv-workspace-sidebar"] [data-ui-part="file"] span
+    ) {
     min-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;

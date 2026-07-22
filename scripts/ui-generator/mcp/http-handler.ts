@@ -68,9 +68,7 @@ export async function createDocsHttpHandler(
 
   const service = createDocsService({
     packageRoot: options.packageRoot,
-    baseUrl:
-      options.baseUrl ??
-      (() => lastOrigin),
+    baseUrl: options.baseUrl ?? (() => lastOrigin),
     mcpPath,
     noCache: options.noCache,
   });
@@ -99,8 +97,7 @@ export async function createDocsHttpHandler(
     const request = new Request(url, {
       method,
       headers,
-      body:
-        body && body.length > 0 ? (body as unknown as BodyInit) : undefined,
+      body: body && body.length > 0 ? (body as unknown as BodyInit) : undefined,
       // @ts-expect-error undici duplex for streaming bodies in Node
       duplex: body && body.length > 0 ? "half" : undefined,
     });

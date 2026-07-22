@@ -13,5 +13,5 @@ pnpm ui:add label
 ```
 
 ```html
-<Label for="email">Your email address</Label>
+<label for="email">Your email address</label>
 ```

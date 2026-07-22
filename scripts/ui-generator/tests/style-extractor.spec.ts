@@ -66,16 +66,13 @@ describe("extractStyleSites", () => {
 </SwitchPrimitive.Root>
 `;
     const sites = extractStyleSites(source, "switch", "switch");
-    expect(sites.map((s) => s.part).sort()).toEqual([
-      "switch",
-      "switch-thumb",
-    ]);
+    expect(sites.map((s) => s.part).sort()).toEqual(["switch", "switch-thumb"]);
     expect(sites.find((s) => s.part === "switch")?.markers).toEqual(
       expect.arrayContaining(["group/switch", "peer"]),
     );
-    expect(
-      sites.find((s) => s.part === "switch-thumb")?.baseClasses,
-    ).toContain("size-4");
+    expect(sites.find((s) => s.part === "switch-thumb")?.baseClasses).toContain(
+      "size-4",
+    );
   });
 
   it("finds data-slot after class= on the same tag", () => {
@@ -85,12 +82,14 @@ describe("extractStyleSites", () => {
   data-slot="dropdown-menu-checkbox-item-indicator"
 ></span>
 `;
-    const sites = extractStyleSites(source, "dropdown-menu", "dropdown-menu-checkbox-item");
+    const sites = extractStyleSites(
+      source,
+      "dropdown-menu",
+      "dropdown-menu-checkbox-item",
+    );
     expect(sites).toHaveLength(1);
     expect(sites[0]!.part).toBe("dropdown-menu-checkbox-item-indicator");
-    expect(sites[0]!.dataSlot).toBe(
-      "dropdown-menu-checkbox-item-indicator",
-    );
+    expect(sites[0]!.dataSlot).toBe("dropdown-menu-checkbox-item-indicator");
   });
 
   it("synthesizes a part for Viewport without data-slot", () => {
@@ -123,11 +122,7 @@ describe("extractStyleSites", () => {
   class={cn("rounded-none border-0 focus-visible:ring-0", className)}
 />
 `;
-    const sites = extractStyleSites(
-      source,
-      "input-group",
-      "input-group-input",
-    );
+    const sites = extractStyleSites(source, "input-group", "input-group-input");
     expect(sites).toHaveLength(1);
     expect(sites[0]!.composedFrom).toBe("input");
     expect(sites[0]!.part).toBe("input-group-input");
@@ -312,9 +307,7 @@ describe("rewritePartSource", () => {
       part,
       component: "sidebar",
     });
-    expect(rewritten).toContain(
-      'return "peer/menu-button group/menu-button"',
-    );
+    expect(rewritten).toContain('return "peer/menu-button group/menu-button"');
     expect(rewritten).toContain('"data-ui-component": "sidebar"');
     expect(rewritten).toContain('"data-ui-part": "sidebar-menu-button"');
   });

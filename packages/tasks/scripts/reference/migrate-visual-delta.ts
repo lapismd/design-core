@@ -19,7 +19,13 @@ const execFileAsync = promisify(execFile);
 async function imageSize(
   file: string,
 ): Promise<{ width: number; height: number }> {
-  const { stdout } = await execFileAsync("sips", ["-g", "pixelWidth", "-g", "pixelHeight", file]);
+  const { stdout } = await execFileAsync("sips", [
+    "-g",
+    "pixelWidth",
+    "-g",
+    "pixelHeight",
+    file,
+  ]);
   const width = Number(stdout.match(/pixelWidth:\s*(\d+)/)?.[1]);
   const height = Number(stdout.match(/pixelHeight:\s*(\d+)/)?.[1]);
   if (!width || !height) throw new Error(`Could not read size for ${file}`);
@@ -61,10 +67,7 @@ async function migrateEntry(
   const { x, y, width, height } = entry.clip;
   const cropX = Math.max(0, Math.round(x * scaleX));
   const cropY = Math.max(0, Math.round(y * scaleY));
-  const cropW = Math.min(
-    sourceSize.width - cropX,
-    Math.round(width * scaleX),
-  );
+  const cropW = Math.min(sourceSize.width - cropX, Math.round(width * scaleX));
   const cropH = Math.min(
     sourceSize.height - cropY,
     Math.round(height * scaleY),
@@ -96,10 +99,7 @@ async function migrateEntry(
 
 async function main(): Promise<void> {
   const matrix = await loadCaptureMatrix();
-  const captureDirectory = path.join(
-    committedReferenceRoot,
-    matrix.captureId,
-  );
+  const captureDirectory = path.join(committedReferenceRoot, matrix.captureId);
 
   const screenshots: Array<{
     id: string;

@@ -14,7 +14,10 @@ export function installFocusPrototypeGuard(): void {
   }
 
   const wrapIfNeeded = (): boolean => {
-    const desc = Object.getOwnPropertyDescriptor(HTMLElement.prototype, "focus");
+    const desc = Object.getOwnPropertyDescriptor(
+      HTMLElement.prototype,
+      "focus",
+    );
     if (!desc || typeof desc.get !== "function") return false;
 
     const getter = desc.get as (() => typeof HTMLElement.prototype.focus) & {

@@ -6,5 +6,4 @@ export const inputTokenNames = {
   focusRingColor: "--ui-input-focus-ring-color",
 } as const;
 
-export type InputToken =
-  (typeof inputTokenNames)[keyof typeof inputTokenNames];
+export type InputToken = (typeof inputTokenNames)[keyof typeof inputTokenNames];

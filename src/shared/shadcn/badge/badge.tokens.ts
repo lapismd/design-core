@@ -6,5 +6,4 @@ export const badgeTokenNames = {
   focusRingColor: "--ui-badge-focus-ring-color",
 } as const;
 
-export type BadgeToken =
-  (typeof badgeTokenNames)[keyof typeof badgeTokenNames];
+export type BadgeToken = (typeof badgeTokenNames)[keyof typeof badgeTokenNames];

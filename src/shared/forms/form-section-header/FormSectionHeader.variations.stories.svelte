@@ -4,7 +4,7 @@
   import FormPlaceholder from "../form-placeholder/FormPlaceholder.svelte";
 
   const { Story } = defineMeta({
-    title: "UI Forms/Form Section Header",
+    title: "UI Forms/Layout/Form Section Header",
     component: FormSectionHeader,
     parameters: {
       docs: {
@@ -15,7 +15,6 @@
     },
   });
 </script>
-
 
 <Story
   name="Collapsed"
@@ -76,8 +75,22 @@
 >
   {#snippet template()}
     <div class="flex max-w-xl flex-col gap-3">
-      <FormSectionHeader title="Experience" index={0} total={2} editable={false} titleToggleable open={true} />
-      <FormSectionHeader title="Education" index={1} total={2} editable={false} titleToggleable open={false} />
+      <FormSectionHeader
+        title="Experience"
+        index={0}
+        total={2}
+        editable={false}
+        titleToggleable
+        open={true}
+      />
+      <FormSectionHeader
+        title="Education"
+        index={1}
+        total={2}
+        editable={false}
+        titleToggleable
+        open={false}
+      />
     </div>
   {/snippet}
 </Story>

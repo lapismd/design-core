@@ -53,7 +53,10 @@ type ParsedArgs = {
   help: boolean;
 };
 
-function asBooleanFlag(flags: Map<string, string | boolean>, key: string): boolean {
+function asBooleanFlag(
+  flags: Map<string, string | boolean>,
+  key: string,
+): boolean {
   const value = flags.get(key);
   return value === true || value === "true";
 }
@@ -262,7 +265,7 @@ async function main() {
       const host =
         typeof flags.get("host") === "string"
           ? String(flags.get("host"))
-          : process.env.UI_DOCS_HOST ?? "127.0.0.1";
+          : (process.env.UI_DOCS_HOST ?? "127.0.0.1");
       const port =
         typeof flags.get("port") === "string"
           ? Number(flags.get("port"))
@@ -309,6 +312,30 @@ async function main() {
         createOnly: asBooleanFlag(flags, "create-only"),
       });
       break;
+    case "visual-interaction-update": {
+      const { runVisualInteractionUpdate } = await import(
+        "./pipeline/visual-interaction-update.js"
+      );
+      await runVisualInteractionUpdate({
+        storyId:
+          typeof flags.get("story-id") === "string"
+            ? String(flags.get("story-id"))
+            : positionals[0],
+        stepLabel:
+          typeof flags.get("step-label") === "string"
+            ? String(flags.get("step-label"))
+            : (positionals[1] ?? ""),
+        stepId:
+          typeof flags.get("step-id") === "string"
+            ? String(flags.get("step-id"))
+            : undefined,
+        approved: asBooleanFlag(flags, "approved"),
+        allowDirty: asBooleanFlag(flags, "allow-dirty"),
+        skipBuild: asBooleanFlag(flags, "skip-build"),
+        createOnly: asBooleanFlag(flags, "create-only"),
+      });
+      break;
+    }
     case "inspect":
       await runInspect({
         component: positionals[0],
@@ -388,11 +415,7 @@ main().catch((error) => {
   if (error instanceof GeneratorError) {
     if (json) {
       printJson(
-        jsonErr(
-          `exit_${error.exitCode}`,
-          error.message,
-          error.details,
-        ),
+        jsonErr(`exit_${error.exitCode}`, error.message, error.details),
       );
     } else {
       log.fail(error.message);

@@ -126,8 +126,7 @@ function sidebarIconFor(tag: string, text: string): string {
 
 function withContextBadge(badge: BadgeOrBadgeFn): BadgeOrBadgeFn {
   return (params) => {
-    const resolved =
-      typeof badge === "function" ? badge(params) : { ...badge };
+    const resolved = typeof badge === "function" ? badge(params) : { ...badge };
     const colors = resolvePresetColors(resolved.style);
     const { context, tag } = params;
     const icon = sidebarIconFor(tag, resolved.text);
@@ -161,9 +160,7 @@ function withContextBadge(badge: BadgeOrBadgeFn): BadgeOrBadgeFn {
   };
 }
 
-function withContextBadges(
-  configs: TagBadgeParameters,
-): TagBadgeParameters {
+function withContextBadges(configs: TagBadgeParameters): TagBadgeParameters {
   return configs.map((entry) => ({
     ...entry,
     badge: withContextBadge(entry.badge),

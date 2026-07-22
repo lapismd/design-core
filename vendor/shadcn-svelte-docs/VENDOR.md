@@ -3,11 +3,11 @@
 Sparse pin of authored docs content and runnable example SFCs from
 [huntabyte/shadcn-svelte](https://github.com/huntabyte/shadcn-svelte).
 
-| | |
-| --- | --- |
-| Upstream | `https://github.com/huntabyte/shadcn-svelte` |
-| Pin | See [`PIN.json`](./PIN.json) (`ref` + `commit`) |
-| License | MIT (same as upstream repo) |
+|          |                                                 |
+| -------- | ----------------------------------------------- |
+| Upstream | `https://github.com/huntabyte/shadcn-svelte`    |
+| Pin      | See [`PIN.json`](./PIN.json) (`ref` + `commit`) |
+| License  | MIT (same as upstream repo)                     |
 
 ## Included paths
 

@@ -80,7 +80,7 @@ function stripStringArgsFromCn(inner: string): string {
     for (; i < inner.length; i++) {
       const c = inner[i]!;
       if (inStr) {
-        if (c === "\\" ) {
+        if (c === "\\") {
           i++;
           continue;
         }
@@ -241,7 +241,8 @@ function splitTopLevelArgs(kept: string): string[] {
         continue;
       }
       if (ch === "(" || ch === "{" || ch === "[") depth++;
-      if (ch === ")" || ch === "}" || ch === "]") depth = Math.max(0, depth - 1);
+      if (ch === ")" || ch === "}" || ch === "]")
+        depth = Math.max(0, depth - 1);
       if (ch !== "," || depth !== 0) continue;
     }
     const arg = kept.slice(start, j).trim();
@@ -323,9 +324,9 @@ function applyStyleSites(
   for (const site of sorted) {
     const classReplacement = classReplacementForSite(source, site);
     const indent =
-      out.slice(out.lastIndexOf("\n", site.attrStart) + 1, site.attrStart).match(
-        /([ \t]*)$/,
-      )?.[1] || "  ";
+      out
+        .slice(out.lastIndexOf("\n", site.attrStart) + 1, site.attrStart)
+        .match(/([ \t]*)$/)?.[1] || "  ";
     const prefix = ownershipPrefix(component, site, extraction, indent, source);
 
     if (site.kind === "cnObject") {
@@ -366,7 +367,11 @@ function applyStyleSites(
     const tagStart = source.lastIndexOf("<", site.attrStart);
     let tagEnd = source.indexOf(">", site.attrStart);
     // Prefer scanning with quote awareness when possible
-    for (let i = tagStart + 1, inStr: '"' | "'" | null = null; i < source.length; i++) {
+    for (
+      let i = tagStart + 1, inStr: '"' | "'" | null = null;
+      i < source.length;
+      i++
+    ) {
       const ch = source[i]!;
       if (inStr) {
         if (ch === inStr && source[i - 1] !== "\\") inStr = null;
@@ -506,9 +511,9 @@ function replaceTvModuleBlock(
 ): string {
   if (extraction.kind !== "tv") return source;
 
-  const nameMatch = source.match(
-    /\bexport\s+const\s+(\w+)\s*=\s*tv\s*\(/,
-  ) ?? source.match(/\bconst\s+(\w+)\s*=\s*tv\s*\(/);
+  const nameMatch =
+    source.match(/\bexport\s+const\s+(\w+)\s*=\s*tv\s*\(/) ??
+    source.match(/\bconst\s+(\w+)\s*=\s*tv\s*\(/);
   if (!nameMatch) return source;
   const variantsName = nameMatch[1]!;
   const start = nameMatch.index!;
@@ -660,14 +665,18 @@ function injectComposedPartAttributes(
   const absClass = source.indexOf("class={");
   if (absClass < 0) return source;
   const lineStart = source.lastIndexOf("\n", absClass) + 1;
-  const indent = source.slice(lineStart, absClass).match(/^[ \t]*/)?.[0] ?? "\t";
+  const indent =
+    source.slice(lineStart, absClass).match(/^[ \t]*/)?.[0] ?? "\t";
   const prefix = attrs.map((a) => `${indent}${a}`).join("\n") + "\n" + indent;
   return source.slice(0, absClass) + prefix + source.slice(absClass);
 }
 
 function ensureOmitDataUiIdentityImport(source: string): string {
   if (/omitDataUiIdentity/.test(source)) return source;
-  if (!/\.\.\.(?:omitDataUiIdentity\()?restProps/.test(source) && !/\.\.\.restProps/.test(source)) {
+  if (
+    !/\.\.\.(?:omitDataUiIdentity\()?restProps/.test(source) &&
+    !/\.\.\.restProps/.test(source)
+  ) {
     return source;
   }
   // Prefer colocating with an existing utils import when present.
@@ -744,8 +753,7 @@ function injectDataAttributes(
     /["']data-slot["']\s*:/.test(source) &&
     !/["']data-ui-part["']\s*:/.test(source)
   ) {
-    const objDataSlot =
-      /(^|\n)([ \t]*)["']data-slot["']\s*:/g;
+    const objDataSlot = /(^|\n)([ \t]*)["']data-slot["']\s*:/g;
     source = source.replace(objDataSlot, (m, lead, indent) => {
       const own: string[] = [
         `${indent}"data-ui-component": "${component}",`,
@@ -753,7 +761,10 @@ function injectDataAttributes(
       ];
       for (const axis of extraction.axes) {
         const key = `"data-${axis.prop}"`;
-        if (source.includes(key) || new RegExp(`data-${axis.prop}\\s*=`).test(source)) {
+        if (
+          source.includes(key) ||
+          new RegExp(`data-${axis.prop}\\s*=`).test(source)
+        ) {
           continue;
         }
         own.push(`${indent}${key}: ${axis.prop},`);
@@ -835,9 +846,8 @@ function rewriteCrossModuleVariantProps(source: string): string {
       )}[^"']*["'])`,
     );
     // Prefer ../toggle/index.js style imports already present
-    const existing = /import\s*\{([^}]*)\}\s*from\s*(["'][^"']*toggle[^"']*["'])/.exec(
-      out,
-    );
+    const existing =
+      /import\s*\{([^}]*)\}\s*from\s*(["'][^"']*toggle[^"']*["'])/.exec(out);
     if (existing) {
       const inner = existing[1]!;
       if (!inner.includes(typeNameAlias)) {
@@ -849,9 +859,7 @@ function rewriteCrossModuleVariantProps(source: string): string {
     } else {
       // Derive path from variants name: toggleVariants → ../toggle/index.js
       const family = variantsIdent.replace(/Variants$/, "");
-      const kebab = family
-        .replace(/([a-z])([A-Z])/g, "$1-$2")
-        .toLowerCase();
+      const kebab = family.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
       out =
         `import type { ${typeNameAlias} } from "../${kebab}/index.js";\n` + out;
     }
@@ -871,7 +879,13 @@ function ensureCnImport(source: string): string {
         .map((p: string) => p.trim())
         .filter(Boolean)
         .filter((p: string) => p !== "cn");
-      if (parts.length === inner.split(",").map((p) => p.trim()).filter(Boolean).length) {
+      if (
+        parts.length ===
+        inner
+          .split(",")
+          .map((p) => p.trim())
+          .filter(Boolean).length
+      ) {
         return full;
       }
       if (!parts.length) return "";
@@ -967,15 +981,9 @@ export function rewritePartSource(args: {
         ? source.indexOf("class={")
         : source.indexOf("data-slot=");
     const composedFrom =
-      composedProbe >= 0
-        ? composedFamilyFromTag(source, composedProbe)
-        : null;
+      composedProbe >= 0 ? composedFamilyFromTag(source, composedProbe) : null;
     if (composedFrom) {
-      source = injectComposedPartAttributes(
-        source,
-        part.part,
-        part.extraction,
-      );
+      source = injectComposedPartAttributes(source, part.part, part.extraction);
     } else {
       source = injectDataAttributes(
         source,

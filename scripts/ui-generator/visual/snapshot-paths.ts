@@ -52,6 +52,22 @@ export function screenshotRelativePath(entry: StoryIndexEntry): string {
   return `${dir}/${slug}.png`;
 }
 
+/**
+ * Mid-play interaction baseline path (no project/platform suffix).
+ * On disk: `{slug}--{stepId}-chromium-darwin.png`.
+ */
+export function interactionScreenshotRelativePath(
+  entry: StoryIndexEntry,
+  stepId: string,
+): string {
+  const primary = screenshotRelativePath(entry);
+  const id = stepId.trim();
+  if (!id) {
+    throw new Error(`Story ${entry.id}: interaction stepId is required`);
+  }
+  return primary.replace(/\.png$/, `--${id}.png`);
+}
+
 /** Flat legacy basename Playwright used before nesting. */
 export function legacyFlatSnapshotName(storyId: string): string {
   return `${storyId}-chromium-darwin.png`;

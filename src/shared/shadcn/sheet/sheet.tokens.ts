@@ -6,5 +6,4 @@ export const sheetTokenNames = {
   focusRingColor: "--ui-sheet-focus-ring-color",
 } as const;
 
-export type SheetToken =
-  (typeof sheetTokenNames)[keyof typeof sheetTokenNames];
+export type SheetToken = (typeof sheetTokenNames)[keyof typeof sheetTokenNames];

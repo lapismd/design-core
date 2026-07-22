@@ -1,4 +1,11 @@
-import { Meta, Canvas, Controls, Primary, Source, Markdown } from "@storybook/addon-docs/blocks";
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+  Markdown,
+} from "@storybook/addon-docs/blocks";
 import * as DialogStories from "./Dialog.stories.svelte";
 import * as DialogVariations from "./Dialog.variations.stories.svelte";
 import docsBody from "./dialog.docs-body.md?raw";
@@ -17,7 +24,12 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 
 ## Usage
 
-<Source language="html" code={"<script lang=\"ts\">\n  import * as Dialog from \"@stevejuma/ui/shadcn/dialog\";\n</script>\n\n<Dialog.Root>\n  <Dialog.Trigger>Open</Dialog.Trigger>\n  <Dialog.Content>\n    <Dialog.Header>\n      <Dialog.Title>Are you sure absolutely sure?</Dialog.Title>\n      <Dialog.Description>\n        This action cannot be undone. This will permanently delete your account\n        and remove your data from our servers.\n      </Dialog.Description>\n    </Dialog.Header>\n  </Dialog.Content>\n</Dialog.Root>"} />
+<Source
+  language="html"
+  code={
+    '<script lang="ts">\n  import * as Dialog from "@stevejuma/ui/shadcn/dialog";\n</script>\n\n<Dialog.Root>\n  <Dialog.Trigger>Open</Dialog.Trigger>\n  <Dialog.Content>\n    <Dialog.Header>\n      <Dialog.Title>Are you sure absolutely sure?</Dialog.Title>\n      <Dialog.Description>\n        This action cannot be undone. This will permanently delete your account\n        and remove your data from our servers.\n      </Dialog.Description>\n    </Dialog.Header>\n  </Dialog.Content>\n</Dialog.Root>'
+  }
+/>
 
 <Primary />
 
@@ -27,11 +39,8 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 
 ### Preview
 
-
 <Canvas of={DialogVariations.Preview} meta={DialogVariations} />
 
 ### Custom close button
 
-
 <Canvas of={DialogVariations.CustomCloseButton} meta={DialogVariations} />
-

@@ -42,7 +42,8 @@
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "Set the `orientation` prop to `\"horizontal\"` to enable horizontal scrolling.",
+        story:
+          'Set the `orientation` prop to `"horizontal"` to enable horizontal scrolling.',
       },
       source: {
         code: exampleSources.HorizontalScrolling,

@@ -270,7 +270,7 @@ This example shows how to open a dialog from a dropdown menu.
 `;
     const parsed = parseUpstreamDocs("dropdown-menu", dialogMd);
     const dialog = parsed.examples.find((e) => e.slug === "dialog");
-    expect(dialog?.code).toContain("<script lang=\"ts\">");
+    expect(dialog?.code).toContain('<script lang="ts">');
     expect(dialog?.code).toContain("showNewDialog");
     expect(dialog?.code).toContain("<Dialog.Root");
   });
@@ -319,9 +319,7 @@ describe("rewriteExample", () => {
     const source = `import * as InputGroup from "$lib/components/ui/input-group/index.js";
 import * as Tooltip from "$lib/components/ui/tooltip/index.js";`;
     const rewritten = rewritePackageImports(source, "input-group");
-    expect(rewritten).toContain(
-      'from "@stevejuma/ui/shadcn/input-group"',
-    );
+    expect(rewritten).toContain('from "@stevejuma/ui/shadcn/input-group"');
     expect(rewritten).toContain('from "@stevejuma/ui/shadcn/tooltip"');
     expect(rewritten).not.toContain("$lib/components/ui");
     expect(rewritten).not.toContain("./index.js");
@@ -513,7 +511,9 @@ hello
     expect(cleaned).toContain("pnpm ui:add sidebar");
     expect(cleaned).toContain("--sidebar: oklch(0.985 0 0)");
     expect(cleaned).not.toContain("Copy and paste source");
-    expect(cleaned).not.toMatch(/\{#snippet|InstallTabs|PMAddComp|DocsFigure|hello/i);
+    expect(cleaned).not.toMatch(
+      /\{#snippet|InstallTabs|PMAddComp|DocsFigure|hello/i,
+    );
   });
 });
 
@@ -611,10 +611,9 @@ describe("loadVendoredDocs", () => {
       path.join(vendoredFixtureRoot, "content/components/dropdown-menu.md"),
       "utf8",
     );
-    const body = md.replace(/^---[\s\S]*?---\r?\n/, "").replace(
-      /^\s*<script\b[^>]*>[\s\S]*?<\/script>\s*/i,
-      "",
-    );
+    const body = md
+      .replace(/^---[\s\S]*?---\r?\n/, "")
+      .replace(/^\s*<script\b[^>]*>[\s\S]*?<\/script>\s*/i, "");
     const previews = collectComponentPreviews(body);
     expect(previews.map((p) => p.name)).toEqual([
       "dropdown-menu-demo",
@@ -706,11 +705,7 @@ Use extra padding.
   });
 
   it("loads single-file block demos for sidebar", () => {
-    const vendorRoot = path.join(
-      here,
-      "../../..",
-      "vendor/shadcn-svelte-docs",
-    );
+    const vendorRoot = path.join(here, "../../..", "vendor/shadcn-svelte-docs");
     const { docs, skippedBlocks } = loadVendoredDocs({
       packageRoot: here,
       component: "sidebar",
@@ -774,14 +769,16 @@ describe("emitDocsArtifacts", () => {
       examples,
     });
 
-    expect(written.some((p) => p.endsWith("InputGroup.variations.stories.svelte"))).toBe(
-      true,
-    );
+    expect(
+      written.some((p) => p.endsWith("InputGroup.variations.stories.svelte")),
+    ).toBe(true);
     expect(existsSync(path.join(targetDir, "InputGroup.mdx"))).toBe(true);
 
     const mdx = readFileSync(path.join(targetDir, "InputGroup.mdx"), "utf8");
     expect(mdx).toContain("## Usage");
-    expect(mdx).toContain('import docsBody from "./input-group.docs-body.md?raw"');
+    expect(mdx).toContain(
+      'import docsBody from "./input-group.docs-body.md?raw"',
+    );
     expect(mdx).toContain("<Markdown>{docsBody}</Markdown>");
     expect(mdx).not.toContain("## Documentation");
     expect(existsSync(path.join(targetDir, "input-group.docs-body.md"))).toBe(
@@ -804,7 +801,10 @@ describe("emitDocsArtifacts", () => {
     // Skipped examples must not get a Canvas (prose may still appear in Documentation).
     expect(mdx).not.toContain("InputGroupVariations.ButtonGroup");
 
-    const docsMd = readFileSync(path.join(targetDir, "input-group.docs.md"), "utf8");
+    const docsMd = readFileSync(
+      path.join(targetDir, "input-group.docs.md"),
+      "utf8",
+    );
     expect(docsMd).toMatch(/##\s+(\[)?Installation/);
     expect(docsMd).toContain("## [Usage](#usage)");
     expect(docsMd).toContain("@stevejuma/ui/shadcn/input-group");
@@ -865,10 +865,7 @@ export const n = 1;
 
 describe("extractThemeCustomProperties", () => {
   it("extracts :root and .dark sidebar vars from theme.css", () => {
-    const theme = readFileSync(
-      path.join(packageRoot, "src/theme.css"),
-      "utf8",
-    );
+    const theme = readFileSync(path.join(packageRoot, "src/theme.css"), "utf8");
     const snippet = extractThemeCustomProperties(theme, "--sidebar");
     expect(snippet).toContain(":root {");
     expect(snippet).toContain(".dark {");

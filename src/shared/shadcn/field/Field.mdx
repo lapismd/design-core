@@ -1,4 +1,11 @@
-import { Meta, Canvas, Controls, Primary, Source, Markdown } from "@storybook/addon-docs/blocks";
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+  Markdown,
+} from "@storybook/addon-docs/blocks";
 import * as FieldStories from "./Field.stories.svelte";
 import * as FieldVariations from "./Field.variations.stories.svelte";
 import docsBody from "./field.docs-body.md?raw";
@@ -17,7 +24,12 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 
 ## Usage
 
-<Source language="html" code={"<script lang=\"ts\">\n  import * as Field from \"@stevejuma/ui/shadcn/field\";\n</script>\n\n<Field.Set>\n  <Field.Legend>Profile</Field.Legend>\n  <Field.Description>This appears on invoices and emails.</Field.Description>\n  <Field.Group>\n    <Field.Field>\n      <Field.Label for=\"name\">Full name</Field.Label>\n      <Input id=\"name\" autocomplete=\"off\" placeholder=\"Evil Rabbit\" />\n      <Field.Description\n        >This appears on invoices and emails.</Field.Description\n      >\n    </Field.Field>\n    <Field.Field>\n      <Field.Label for=\"username\">Username</Field.Label>\n      <Input id=\"username\" autocomplete=\"off\" aria-invalid />\n      <Field.Error>Choose another username.</Field.Error>\n    </Field.Field>\n    <Field.Field orientation=\"horizontal\">\n      <Switch id=\"newsletter\" />\n      <Field.Label for=\"newsletter\">Subscribe to the newsletter</Field.Label>\n    </Field.Field>\n  </Field.Group>\n</Field.Set>"} />
+<Source
+  language="html"
+  code={
+    '<script lang="ts">\n  import * as Field from "@stevejuma/ui/shadcn/field";\n</script>\n\n<Field.Set>\n  <Field.Legend>Profile</Field.Legend>\n  <Field.Description>This appears on invoices and emails.</Field.Description>\n  <Field.Group>\n    <Field.Field>\n      <Field.Label for="name">Full name</Field.Label>\n      <Input id="name" autocomplete="off" placeholder="Evil Rabbit" />\n      <Field.Description\n        >This appears on invoices and emails.</Field.Description\n      >\n    </Field.Field>\n    <Field.Field>\n      <Field.Label for="username">Username</Field.Label>\n      <Input id="username" autocomplete="off" aria-invalid />\n      <Field.Error>Choose another username.</Field.Error>\n    </Field.Field>\n    <Field.Field orientation="horizontal">\n      <Switch id="newsletter" />\n      <Field.Label for="newsletter">Subscribe to the newsletter</Field.Label>\n    </Field.Field>\n  </Field.Group>\n</Field.Set>'
+  }
+/>
 
 <Primary />
 
@@ -27,36 +39,29 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 
 ### Preview
 
-
 <Canvas of={FieldVariations.Preview} meta={FieldVariations} />
 
 ### Input
-
 
 <Canvas of={FieldVariations.Input} meta={FieldVariations} />
 
 ### Textarea
 
-
 <Canvas of={FieldVariations.Textarea} meta={FieldVariations} />
 
 ### Select
-
 
 <Canvas of={FieldVariations.Select} meta={FieldVariations} />
 
 ### Fieldset
 
-
 <Canvas of={FieldVariations.Fieldset} meta={FieldVariations} />
 
 ### Checkbox
 
-
 <Canvas of={FieldVariations.Checkbox} meta={FieldVariations} />
 
 ### Switch
-
 
 <Canvas of={FieldVariations.Switch} meta={FieldVariations} />
 
@@ -73,4 +78,3 @@ Stack `Field` components with `Field.Group`. Add `Field.Separator` to divide the
 - **Responsive fields:** Set `orientation="responsive"` for automatic column layouts inside container-aware parents. Apply `@container/field-group` classes on `Field.Group` to switch orientations at specific breakpoints.
 
 <Canvas of={FieldVariations.ResponsiveLayout} meta={FieldVariations} />
-

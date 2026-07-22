@@ -25,9 +25,7 @@ export async function activateDestination(
         page.getByRole("button", { name: new RegExp(`^${name}`, "i") }),
       )) ??
       (await firstVisible(page.getByText(name, { exact: true }))) ??
-      (await firstVisible(
-        page.locator(`[aria-label^="${name}" i]`),
-      ));
+      (await firstVisible(page.locator(`[aria-label^="${name}" i]`)));
     if (control) {
       await control.click();
       await page.waitForTimeout(400);

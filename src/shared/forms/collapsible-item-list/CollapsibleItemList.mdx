@@ -1,4 +1,10 @@
-import { Meta, Canvas, Controls, Primary, Source } from "@storybook/addon-docs/blocks";
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+} from "@storybook/addon-docs/blocks";
 import * as CollapsibleItemListStories from "./CollapsibleItemList.stories.svelte";
 import * as CollapsibleItemListVariations from "./CollapsibleItemList.variations.stories.svelte";
 
@@ -41,17 +47,25 @@ See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and the shared
 
 Open list with two items.
 
-<Canvas of={CollapsibleItemListVariations.WithItems} meta={CollapsibleItemListVariations} />
+<Canvas
+  of={CollapsibleItemListVariations.WithItems}
+  meta={CollapsibleItemListVariations}
+/>
 
 ### Empty open
 
 Open empty list — add affordance only, no filler copy.
 
-<Canvas of={CollapsibleItemListVariations.EmptyOpen} meta={CollapsibleItemListVariations} />
+<Canvas
+  of={CollapsibleItemListVariations.EmptyOpen}
+  meta={CollapsibleItemListVariations}
+/>
 
 ### Collapsed
 
 Collapsed header with count.
 
-<Canvas of={CollapsibleItemListVariations.Collapsed} meta={CollapsibleItemListVariations} />
-
+<Canvas
+  of={CollapsibleItemListVariations.Collapsed}
+  meta={CollapsibleItemListVariations}
+/>

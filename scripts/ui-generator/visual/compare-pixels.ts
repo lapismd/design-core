@@ -54,8 +54,12 @@ function buildDiffHistogram(
         continue;
       }
       const dr = Math.abs((actualData[i] ?? 0) - (baselineData[i] ?? 0));
-      const dg = Math.abs((actualData[i + 1] ?? 0) - (baselineData[i + 1] ?? 0));
-      const db = Math.abs((actualData[i + 2] ?? 0) - (baselineData[i + 2] ?? 0));
+      const dg = Math.abs(
+        (actualData[i + 1] ?? 0) - (baselineData[i + 1] ?? 0),
+      );
+      const db = Math.abs(
+        (actualData[i + 2] ?? 0) - (baselineData[i + 2] ?? 0),
+      );
       const delta = Math.max(dr, dg, db);
       const bin = Math.min(bins - 1, Math.floor(delta / binSize));
       counts[bin] += 1;
@@ -107,11 +111,7 @@ function changeBoundsFromDiff(
 }
 
 /** Fit `src` into `width`×`height` by center-crop / pad (no stretch). */
-function fitRgba(
-  src: PNG,
-  width: number,
-  height: number,
-): Uint8Array {
+function fitRgba(src: PNG, width: number, height: number): Uint8Array {
   const out = new Uint8Array(width * height * 4);
   const ox = Math.floor((width - src.width) / 2);
   const oy = Math.floor((height - src.height) / 2);

@@ -135,7 +135,12 @@ export function patchStoryVisualReviewStatus(options: {
   packageRoot: string;
   storyId: string;
   status: VisualReviewStatus;
-}): { ok: boolean; storyId: string; status: VisualReviewStatus; error?: string } {
+}): {
+  ok: boolean;
+  storyId: string;
+  status: VisualReviewStatus;
+  error?: string;
+} {
   const storyId = options.storyId.trim();
   if (!storyId) {
     return {
@@ -175,10 +180,7 @@ export function patchStoryVisualReviewStatus(options: {
     };
   }
 
-  const storiesPath = resolveStoriesPath(
-    options.packageRoot,
-    entry.importPath,
-  );
+  const storiesPath = resolveStoriesPath(options.packageRoot, entry.importPath);
   if (!storiesPath) {
     return {
       ok: false,
@@ -188,14 +190,12 @@ export function patchStoryVisualReviewStatus(options: {
     };
   }
 
-  const changed = patchStoriesFileForEntry(
-    storiesPath,
-    entry,
-    options.status,
-  );
+  const changed = patchStoriesFileForEntry(storiesPath, entry, options.status);
   if (!changed) {
     // Idempotent: already had the tag (or open tag not matched).
-    const already = (entry.tags ?? []).includes(visualReviewTagFor(options.status));
+    const already = (entry.tags ?? []).includes(
+      visualReviewTagFor(options.status),
+    );
     if (already) {
       return { ok: true, storyId, status: options.status };
     }
@@ -207,22 +207,41 @@ export function patchStoryVisualReviewStatus(options: {
     };
   }
 
-  log.info(
-    `Patched ${visualReviewTagFor(options.status)} on ${storyId}`,
-  );
+  log.info(`Patched ${visualReviewTagFor(options.status)} on ${storyId}`);
   return { ok: true, storyId, status: options.status };
 }
 
+/** Leaf story ids under a Playwright `-g` prefix (e.g. `shadcn-actions-button--`). */
+export function listStoryIdsForPrefix(
+  packageRoot: string,
+  storyIdPrefix: string,
+): string[] {
+  const prefix = storyIdPrefix.trim();
+  if (!prefix) return [];
+  return loadStoryIndex(packageRoot)
+    .filter((entry) => {
+      if (!entry.id.startsWith(prefix)) return false;
+      return !(entry.tags ?? []).includes("skip-visual");
+    })
+    .map((entry) => entry.id);
+}
+
 /**
- * After create-baseline, mark patched stories as pending unless already approved.
- * Failed reviews are reset to pending so the new baseline can be re-reviewed.
+ * Mark stories as `visual-pending` for review.
+ *
+ * - Create-missing: skips stories that are already approved or pending.
+ * - Rewrite/update: pass `resetApproved: true` so `visual-approved` is cleared
+ *   and the component loses its approved badge after new pixels land.
  */
 export function markCreatedStoriesPending(options: {
   packageRoot: string;
   storyIds: string[];
+  /** When true, also reset `visual-approved` → `visual-pending`. */
+  resetApproved?: boolean;
 }): { marked: string[]; skipped: string[] } {
   const marked: string[] = [];
   const skipped: string[] = [];
+  const resetApproved = Boolean(options.resetApproved);
   const entries = loadStoryIndex(options.packageRoot);
   const byId = new Map(entries.map((e) => [e.id, e]));
 
@@ -232,11 +251,20 @@ export function markCreatedStoriesPending(options: {
       skipped.push(storyId);
       continue;
     }
-    if ((entry.tags ?? []).includes(VISUAL_REVIEW_APPROVED_TAG)) {
+    const tags = entry.tags ?? [];
+    if (!resetApproved && tags.includes(VISUAL_REVIEW_APPROVED_TAG)) {
       skipped.push(storyId);
       continue;
     }
-    if ((entry.tags ?? []).includes(VISUAL_REVIEW_PENDING_TAG)) {
+    if (!resetApproved && tags.includes(VISUAL_REVIEW_PENDING_TAG)) {
+      skipped.push(storyId);
+      continue;
+    }
+    if (
+      resetApproved &&
+      tags.includes(VISUAL_REVIEW_PENDING_TAG) &&
+      !tags.includes(VISUAL_REVIEW_APPROVED_TAG)
+    ) {
       skipped.push(storyId);
       continue;
     }

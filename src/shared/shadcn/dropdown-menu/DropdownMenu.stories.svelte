@@ -30,7 +30,6 @@
     );
     await expect(canvas.getByRole("status")).toHaveTextContent("Duplicate");
   }}
-
   tags={["visual-approved"]}
 >
   {#snippet template()}

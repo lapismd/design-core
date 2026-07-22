@@ -4,7 +4,7 @@
   import SegmentedControl from "./SegmentedControl.svelte";
 
   const { Story } = defineMeta({
-    title: "UI Forms/Segmented Control",
+    title: "UI Forms/Form Inputs/Segmented Control",
     component: SegmentedControl,
     parameters: {
       docs: {
@@ -37,6 +37,20 @@
         onChange={(next) => (value = next)}
       />
       <output class="text-muted-foreground text-sm">{value}</output>
+    </div>
+  {/snippet}
+</Story>
+
+<Story name="Shows an error" tags={["skip-visual"]}>
+  {#snippet template()}
+    <div class="flex flex-col gap-2 p-4">
+      <SegmentedControl
+        value="edit"
+        options={["edit", "preview"]}
+        labels={{ edit: "Edit", preview: "Preview" }}
+        ariaLabel="View mode"
+        error="This field is required."
+      />
     </div>
   {/snippet}
 </Story>

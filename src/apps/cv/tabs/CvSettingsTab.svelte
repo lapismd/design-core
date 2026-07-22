@@ -19,7 +19,10 @@
   let showKeywords = $state(true);
 </script>
 
-<div class="flex max-w-[646px] flex-col gap-6 py-4 pr-11 pl-10" data-ui-part="cv-settings-tab">
+<div
+  class="flex max-w-[646px] flex-col gap-6 py-4 pr-11 pl-10"
+  data-ui-part="cv-settings-tab"
+>
   <div class="cv-structured-form">
     <FormField as="div" label="Current date">
       <TextControl

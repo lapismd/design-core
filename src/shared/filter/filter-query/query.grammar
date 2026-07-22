@@ -1,0 +1,150 @@
+@top Filter { 
+  Expr*
+}
+
+@skip {
+  space
+}
+
+@precedence {
+  not @right 
+  and @left 
+  or @left 
+  times @left
+  plus @left
+  minus @left
+  round @left 
+}
+
+ExprAnd {
+  Expr !and AND { ("&&" | @specialize<Key, "and"> | @specialize<Key, "AND"> | @specialize<AccountName, "AND">)? } Expr 
+}
+
+ExprOr {
+  Expr !or OR {("," | "||" | @specialize<Key, "or"> | @specialize<Key, "OR"> | @specialize<AccountName, "OR">)} Expr 
+}
+
+ExprNot {
+  !not NOT { (MINUS | @specialize<Key, "not"> | @specialize<Key, "NOT"> | @specialize<AccountName, "NOT">) } Expr 
+}
+
+TermExpr {
+  Key ~key OP (
+    (Value |  Integer ~int | DateExpr) |
+    LPAREN  (Value |  Integer ~int | DateExpr) RPAREN
+  )
+}
+
+Expr {
+  ExprAnd |
+  ExprOr |
+  ExprNot |
+  LPAREN Expr+ RPAREN |
+  DateExpr |
+  TermExpr |
+  Value
+}
+
+Date {
+  DATE |
+  Quarter |
+  Week |
+  Day |
+  Month |
+  Year |
+  Integer ~int
+}
+
+DateExpr {
+  Date |
+  Duration |
+  DateExpr !round SLASH Interval |
+  DateExpr !times ASTERISK DateExpr |
+  DateExpr !plus PLUS DateExpr |
+  DateExpr !minus MINUS DateExpr
+}
+
+Value {
+  Tag |
+  Link |
+  Key ~key |
+  AccountName |
+  String |
+  Regex
+}
+
+Duration {
+  Integer ~int Interval
+}
+
+Interval {
+  Date |
+  @specialize<Key, "Q">       | // quarter 
+  @specialize<Key, "q">       |  
+  @specialize<Key, "Y">       | // year
+  @specialize<Key, "y">       |  
+  @specialize<Key, "yr">       |  
+  @specialize<Key, "M">       | // month
+  @specialize<Key, "mon">     | 
+  @specialize<Key, "mth">     | 
+  @specialize<Key, "w">       | // week
+  @specialize<Key, "W">       |
+  @specialize<Key, "d">       | // day
+  @specialize<Key, "D">       |
+  @specialize<Key, "h">       | // hour
+  @specialize<Key, "H">       | 
+  @specialize<Key, "hr">      | 
+  @specialize<Key, "hrs">     |  
+  @specialize<Key, "hours">   |  
+  @specialize<Key, "m">       | // minutes
+  @specialize<Key, "min">     |  
+  @specialize<Key, "minutes"> |  
+  @specialize<Key, "s">       | // seconds
+  @specialize<Key, "sec">     |  
+  @specialize<Key, "S">       |  
+  @specialize<Key, "seconds"> 
+}
+
+@tokens {
+   MINUS { "-" }
+   PLUS  { "+" }
+   OP { ":" | ">" | "=" | "<" | "!=" | ">=" | "<=" | "~" | "!~" }
+   SLASH { "/" }
+   ASTERISK { "*" }
+   LPAREN { '(' } 
+   RPAREN { ')' }
+   space { $[ \t]+ }
+   INT { @digit }
+   num {$[1-9]$[0-9]?$[0-9]? ("," " "* $[0-9]$[0-9]$[0-9])+ }
+   int { num | @digit+ }
+   frac { '.' @digit+ }
+   Integer { int frac? | int frac? }
+   DATE { "now" | "today" | "year" | "years" | "month" | "months" | "day" | "days" | "week" | "weeks" | "quarter" | "quarters" | "(year)" | "(month)" | "(day)" | "(week)" | "(quarter)"  }
+   Year { INT INT INT INT }
+   Quarter { Year "-" "Q" INT}
+   Week { Year "-" "W" INT INT?}
+   Month { Year "-" INT INT }
+   Day { Year "-" INT INT "-" INT INT }
+   Tag { "#" $[a-zA-Z0-9_-]+}
+   Link { "^" $[a-zA-Z0-9_-]+ }
+   name { $[A-Z.*]$[A-Za-z0-9-.*]+ }
+   AccountName { name ( ":" name)* }
+   @precedence { Integer Year}
+   @precedence { Day Month Week Quarter Integer }
+   @precedence { DATE  Key }
+   @precedence { AccountName Key ASTERISK }
+   @precedence { Regex SLASH}
+ 
+   String {
+     '"' (!["\\] | "\\" _)* '"' |
+     "'" (!['\\] | "\\" _)* "'"
+   }
+
+   Regex {
+     '/' (![/\\] | "\\" _)* '/' ($[a-z]+)?
+   }
+   
+   Key { $[a-zA-Z]$[a-zA-Z0-9.*$_-]* }
+}
+
+@external propSource filterHighlighting from "./highlight"

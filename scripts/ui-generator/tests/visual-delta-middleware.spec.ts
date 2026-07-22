@@ -54,9 +54,9 @@ describe("grepFromStoryIds", () => {
   });
 
   it("anchors and escapes a single story id", () => {
-    expect(grepFromStoryIds(["shadcn-disclosure-accordion--opens-a-section"])).toBe(
-      "^shadcn-disclosure-accordion--opens-a-section$",
-    );
+    expect(
+      grepFromStoryIds(["shadcn-disclosure-accordion--opens-a-section"]),
+    ).toBe("^shadcn-disclosure-accordion--opens-a-section$");
   });
 
   it("uses an anchored shared title prefix for one component", () => {
@@ -105,8 +105,7 @@ describe("attachSidecars", () => {
 });
 
 describe("patchStoryOpenTagWithBaselineUrl", () => {
-  const url =
-    "/visual-baselines/shadcn/button/default-chromium-darwin.png";
+  const url = "/visual-baselines/shadcn/button/default-chromium-darwin.png";
 
   it("inserts visualDelta when parameters are missing", () => {
     const tag = `<Story name="Default">`;
@@ -166,7 +165,8 @@ describe("baselineUrlForStoryRef (panel hydrate)", () => {
     );
     const story = {
       id: "ui-forms-form-field--center-aligned",
-      importPath: "./src/shared/forms/form-field/FormField.variations.stories.svelte",
+      importPath:
+        "./src/shared/forms/form-field/FormField.variations.stories.svelte",
       tags: ["skip-visual"],
     };
     expect(baselineUrlForStoryRef(story)).toBeUndefined();

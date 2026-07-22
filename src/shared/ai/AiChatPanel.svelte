@@ -58,13 +58,7 @@
   }
 </script>
 
-<AiChatDock
-  {placement}
-  {visibility}
-  {label}
-  onExpand={handleExpand}
-  {onPopOut}
->
+<AiChatDock {placement} {visibility} {label} onExpand={handleExpand} {onPopOut}>
   <div
     data-ui-component="ai-chat-panel"
     data-ui-part="root"
@@ -100,7 +94,9 @@
     backdrop-filter: blur(8px);
   }
 
-  :global([data-ui-component="ai-chat-panel"][data-ui-part="root"][data-placement="right"]) {
+  :global(
+      [data-ui-component="ai-chat-panel"][data-ui-part="root"][data-placement="right"]
+    ) {
     width: 100%;
     height: 100%;
     min-height: 100%;
@@ -109,7 +105,9 @@
     border-right-width: 0;
   }
 
-  :global([data-ui-component="ai-chat-panel"][data-ui-part="root"][data-placement="floating"]) {
+  :global(
+      [data-ui-component="ai-chat-panel"][data-ui-part="root"][data-placement="floating"]
+    ) {
     max-height: min(58vh, 430px);
     border-radius: var(--ui-ai-radius);
   }

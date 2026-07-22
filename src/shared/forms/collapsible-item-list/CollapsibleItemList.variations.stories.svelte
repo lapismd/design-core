@@ -4,7 +4,7 @@
   import CollapsibleItemList from "./CollapsibleItemList.svelte";
 
   const { Story } = defineMeta({
-    title: "UI Forms/Collapsible Item List",
+    title: "UI Forms/Layout/Collapsible Item List",
     component: CollapsibleItemList,
     parameters: {
       docs: {
@@ -44,7 +44,9 @@
   tags={["skip-visual"]}
   parameters={{
     docs: {
-      description: { story: "Open empty list — add affordance only, no filler copy." },
+      description: {
+        story: "Open empty list — add affordance only, no filler copy.",
+      },
     },
   }}
 >

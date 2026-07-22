@@ -25,4 +25,7 @@ export function managerEntries(entry: string[] = []) {
   return [...entry, addonSrc("manager.tsx")];
 }
 
-export { viteFinal, webpack } from "../packages/storybook-addon-visual-delta/src/preset.js";
+export {
+  viteFinal,
+  webpack,
+} from "../packages/storybook-addon-visual-delta/src/preset.js";

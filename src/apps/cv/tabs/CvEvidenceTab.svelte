@@ -46,7 +46,10 @@
   }
 </script>
 
-<div class="flex max-w-[646px] flex-col gap-6 py-4 pr-11 pl-10" data-ui-part="cv-evidence-tab">
+<div
+  class="flex max-w-[646px] flex-col gap-6 py-4 pr-11 pl-10"
+  data-ui-part="cv-evidence-tab"
+>
   <ListEditor
     label="Technologies"
     items={value.technologies ?? []}
@@ -142,7 +145,8 @@
           label="Useful for"
           items={story.useful_for ?? []}
           addLabel="use"
-          onChange={(useful_for) => updateStory(index, { ...story, useful_for })}
+          onChange={(useful_for) =>
+            updateStory(index, { ...story, useful_for })}
         />
 
         <ReferencePicker
@@ -152,7 +156,8 @@
           onAddOpenChange={(openNext) => {
             addOpen = openNext;
           }}
-          onChange={(source_refs) => updateStory(index, { ...story, source_refs })}
+          onChange={(source_refs) =>
+            updateStory(index, { ...story, source_refs })}
         />
 
         <div class="cv-structured-form">

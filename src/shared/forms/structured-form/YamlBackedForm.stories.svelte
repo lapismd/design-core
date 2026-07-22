@@ -4,7 +4,7 @@
   import YamlBackedForm from "./YamlBackedForm.svelte";
 
   const { Story } = defineMeta({
-    title: "UI Forms/YAML Backed Form",
+    title: "UI Forms/Orchestrators/YAML Backed Form",
     component: YamlBackedForm,
     parameters: {
       docs: {

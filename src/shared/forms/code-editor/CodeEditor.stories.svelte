@@ -4,7 +4,7 @@
   import CodeEditor from "./CodeEditor.svelte";
 
   const { Story } = defineMeta({
-    title: "UI Forms/Code Editor",
+    title: "UI Forms/Editors/Code Editor",
     component: CodeEditor,
     parameters: {
       docs: {

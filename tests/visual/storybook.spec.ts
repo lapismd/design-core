@@ -12,9 +12,18 @@ import {
   writeVisualDiffSidecar,
 } from "../../scripts/ui-generator/visual/diff-result.js";
 import {
+  interactionBaselinePngPath,
+  listInteractionBaselinesOnDisk,
+} from "../../scripts/ui-generator/visual/interaction-baselines.js";
+import {
+  interactionScreenshotRelativePath,
   screenshotRelativePath,
   type StoryIndexEntry,
 } from "../../scripts/ui-generator/visual/snapshot-paths.js";
+import {
+  VISUAL_CAPTURE_READY_ATTR,
+  VISUAL_CAPTURE_UNTIL_PARAM,
+} from "../../packages/storybook-addon-visual-delta/src/shared/interaction-capture.js";
 
 type StorybookIndex = {
   entries: Record<string, StoryIndexEntry>;
@@ -33,6 +42,12 @@ type CaptureMatrix = {
   }>;
 };
 
+type InteractionCaptureRequest = {
+  storyId: string;
+  stepId: string;
+  stepLabel?: string;
+};
+
 const PORTAL_SELECTORS = [
   '[role="dialog"]',
   '[role="listbox"]',
@@ -43,6 +58,13 @@ const PORTAL_SELECTORS = [
 const PACKAGE_ROOT = resolve(".");
 const isBaselineUpdate = process.env.PLAYWRIGHT_UPDATE_SNAPSHOTS === "1";
 const TASKS_REFERENCE_VISUAL_TAG = "tasks-reference-visual";
+
+const interactionCaptureEnv =
+  process.env.PLAYWRIGHT_INTERACTION_CAPTURE?.trim();
+const interactionCaptureRequest: InteractionCaptureRequest | null =
+  interactionCaptureEnv
+    ? (JSON.parse(interactionCaptureEnv) as InteractionCaptureRequest)
+    : null;
 
 /**
  * A normal visual comparison permits a small anti-aliasing tolerance. During
@@ -196,13 +218,13 @@ async function captureActualPng(
   });
 }
 
-function writeSidecarForStory(
+function writeSidecarForBaseline(
   story: StoryIndexEntry,
+  baselinePath: string,
   status: "passed" | "failed",
   error: string | undefined,
   actualPng: Buffer | null,
 ): void {
-  const baselinePath = baselinePngPath(story, PACKAGE_ROOT);
   const outPath = sidecarJsonPath(baselinePath);
   const base = buildSidecarBase(story, status, error);
   if (!actualPng || !existsSync(baselinePath)) {
@@ -230,12 +252,140 @@ function writeSidecarForStory(
   }
 }
 
+function writeSidecarForStory(
+  story: StoryIndexEntry,
+  status: "passed" | "failed",
+  error: string | undefined,
+  actualPng: Buffer | null,
+): void {
+  writeSidecarForBaseline(
+    story,
+    baselinePngPath(story, PACKAGE_ROOT),
+    status,
+    error,
+    actualPng,
+  );
+}
+
 function referenceViewportForStory(
   storyId: string,
 ): CaptureMatrixViewport | null {
   const entry = matrixEntryByStoryId.get(storyId);
   if (!entry) return null;
   return captureMatrix.viewports[entry.viewport] ?? null;
+}
+
+async function prepareStoryPage(
+  page: Page,
+  storyId: string,
+  options?: { visualCaptureUntil?: string },
+): Promise<void> {
+  const params = new URLSearchParams({
+    id: storyId,
+    viewMode: "story",
+  });
+  if (options?.visualCaptureUntil) {
+    params.set(VISUAL_CAPTURE_UNTIL_PARAM, options.visualCaptureUntil);
+  }
+  await page.goto(`/iframe.html?${params.toString()}`, {
+    waitUntil: "networkidle",
+  });
+
+  const root = page.locator("#storybook-root");
+  await expect(root).toBeVisible();
+  await page.evaluate(async () => {
+    if (document.fonts?.ready) {
+      await document.fonts.ready;
+    }
+  });
+}
+
+async function settleAfterPlay(page: Page, storyId: string): Promise<void> {
+  await page
+    .waitForFunction(
+      (id) => {
+        const preparing = document.querySelector(
+          ".sb-show-preparing-story, .sb-show-preparing-docs",
+        );
+        if (preparing) return false;
+        if (id.includes("open-menu") || id.includes("--open-")) {
+          return Boolean(
+            document.querySelector(
+              '[role="listbox"], [role="menu"], [data-state="open"]',
+            ),
+          );
+        }
+        if (id.includes("focused")) {
+          return Boolean(
+            document.querySelector(
+              ':focus-visible, [data-ui-part="input-group"]:has([data-slot="input-group-control"]:focus-visible)',
+            ),
+          );
+        }
+        return true;
+      },
+      storyId,
+      { timeout: 5000 },
+    )
+    .catch(() => {
+      /* stories without overlays still screenshot */
+    });
+
+  await page.waitForTimeout(100);
+
+  await page.evaluate(() => {
+    const active = document.activeElement;
+    if (active instanceof HTMLElement) active.blur();
+  });
+}
+
+async function screenshotStorySubject(
+  page: Page,
+  story: StoryIndexEntry,
+  snapshotPath: string[],
+  expectOptions: { maxDiffPixelRatio?: number },
+): Promise<{
+  subject: Locator | null;
+  clip: { x: number; y: number; width: number; height: number } | null;
+  referenceVisual: boolean;
+}> {
+  const storyId = story.id;
+  const referenceVisual = isTasksReferenceVisual(story);
+  const root = page.locator("#storybook-root");
+
+  let subject: Locator | null = null;
+  let clip: { x: number; y: number; width: number; height: number } | null =
+    null;
+
+  if (referenceVisual) {
+    const mask = TASKS_REFERENCE_MASK_SELECTORS.map((selector) =>
+      page.locator(selector),
+    );
+    await expect(page).toHaveScreenshot(snapshotPath, {
+      ...expectOptions,
+      mask,
+    });
+  } else {
+    const usePortalClip =
+      looksLikePortalStory(storyId) ||
+      (await page.locator(PORTAL_SELECTORS).count()) > 0;
+    clip = usePortalClip ? await portalUnionClip(page) : null;
+    if (!clip) {
+      const childCount = await root.locator(":scope > *").count();
+      subject = childCount > 0 ? root.locator(":scope > *").first() : root;
+      await expect(subject).toBeVisible();
+    }
+    if (clip) {
+      await expect(page).toHaveScreenshot(snapshotPath, {
+        clip,
+        ...expectOptions,
+      });
+    } else {
+      await expect(subject!).toHaveScreenshot(snapshotPath, expectOptions);
+    }
+  }
+
+  return { subject, clip, referenceVisual };
 }
 
 const stories = loadVisualStories();
@@ -257,6 +407,77 @@ test.describe("Storybook visual baselines", () => {
     });
   });
 
+  // Dedicated create/update of one mid-play interaction (from Visual Delta).
+  if (interactionCaptureRequest) {
+    const { storyId, stepId } = interactionCaptureRequest;
+    const story = stories.find((entry) => entry.id === storyId);
+    test(`${storyId}::interaction::${stepId}`, async ({ page }) => {
+      test.setTimeout(60_000);
+      if (!story) {
+        throw new Error(`Unknown story for interaction capture: ${storyId}`);
+      }
+      if (isTasksReferenceVisual(story)) {
+        throw new Error(
+          `${storyId} uses Superlist reference baselines; interaction captures are not supported.`,
+        );
+      }
+
+      await prepareStoryPage(page, storyId, { visualCaptureUntil: stepId });
+      await page.waitForSelector(
+        `html[${VISUAL_CAPTURE_READY_ATTR}="${stepId}"]`,
+        { timeout: 30_000 },
+      );
+      await page.waitForTimeout(100);
+      await page.evaluate(() => {
+        const active = document.activeElement;
+        if (active instanceof HTMLElement) active.blur();
+      });
+
+      const snapshotPath = interactionScreenshotRelativePath(
+        story,
+        stepId,
+      ).split("/");
+      let subject: Locator | null = null;
+      let clip: {
+        x: number;
+        y: number;
+        width: number;
+        height: number;
+      } | null = null;
+      let status: "passed" | "failed" = "passed";
+      let error: string | undefined;
+      try {
+        const shot = await screenshotStorySubject(
+          page,
+          story,
+          snapshotPath,
+          screenshotExpectationOptions,
+        );
+        subject = shot.subject;
+        clip = shot.clip;
+      } catch (err) {
+        status = "failed";
+        error = err instanceof Error ? err.message : String(err);
+        throw err;
+      } finally {
+        const actualPng = await captureActualPng(
+          page,
+          subject,
+          clip,
+          false,
+        ).catch(() => null);
+        writeSidecarForBaseline(
+          story,
+          interactionBaselinePngPath(story, stepId, PACKAGE_ROOT),
+          status,
+          error,
+          actualPng,
+        );
+      }
+    });
+    return;
+  }
+
   for (const story of stories) {
     const storyId = story.id;
     const referenceVisual = isTasksReferenceVisual(story);
@@ -276,56 +497,8 @@ test.describe("Storybook visual baselines", () => {
         await page.setViewportSize(viewport);
       }
 
-      await page.goto(`/iframe.html?id=${storyId}&viewMode=story`, {
-        waitUntil: "networkidle",
-      });
-
-      const root = page.locator("#storybook-root");
-      await expect(root).toBeVisible();
-      await page.evaluate(async () => {
-        if (document.fonts?.ready) {
-          await document.fonts.ready;
-        }
-      });
-
-      // Wait until Storybook is settled; open-menu stories must show the portal.
-      await page
-        .waitForFunction(
-          (id) => {
-            const preparing = document.querySelector(
-              ".sb-show-preparing-story, .sb-show-preparing-docs",
-            );
-            if (preparing) return false;
-            if (id.includes("open-menu") || id.includes("--open-")) {
-              return Boolean(
-                document.querySelector(
-                  '[role="listbox"], [role="menu"], [data-state="open"]',
-                ),
-              );
-            }
-            if (id.includes("focused")) {
-              return Boolean(
-                document.querySelector(
-                  ':focus-visible, [data-ui-part="input-group"]:has([data-slot="input-group-control"]:focus-visible)',
-                ),
-              );
-            }
-            return true;
-          },
-          storyId,
-          { timeout: 5000 },
-        )
-        .catch(() => {
-          /* stories without overlays still screenshot */
-        });
-
-      await page.waitForTimeout(100);
-
-      // Drop play-function focus rings so baselines stay chrome-free.
-      await page.evaluate(() => {
-        const active = document.activeElement;
-        if (active instanceof HTMLElement) active.blur();
-      });
+      await prepareStoryPage(page, storyId);
+      await settleAfterPlay(page, storyId);
 
       const snapshotPath = screenshotRelativePath(story).split("/");
       const expectOptions = referenceVisual
@@ -339,36 +512,14 @@ test.describe("Storybook visual baselines", () => {
       let status: "passed" | "failed" = "passed";
       let error: string | undefined;
       try {
-        if (referenceVisual) {
-          // Superlist shell captures are full CSS viewport @ deviceScaleFactor 3.
-          // Mask fixture/list/account regions that cannot match live Superlist.
-          const mask = TASKS_REFERENCE_MASK_SELECTORS.map((selector) =>
-            page.locator(selector),
-          );
-          await expect(page).toHaveScreenshot(snapshotPath, {
-            ...expectOptions,
-            mask,
-          });
-        } else {
-          const usePortalClip =
-            looksLikePortalStory(storyId) ||
-            (await page.locator(PORTAL_SELECTORS).count()) > 0;
-          clip = usePortalClip ? await portalUnionClip(page) : null;
-          if (!clip) {
-            const childCount = await root.locator(":scope > *").count();
-            subject =
-              childCount > 0 ? root.locator(":scope > *").first() : root;
-            await expect(subject).toBeVisible();
-          }
-          if (clip) {
-            await expect(page).toHaveScreenshot(snapshotPath, {
-              clip,
-              ...expectOptions,
-            });
-          } else {
-            await expect(subject!).toHaveScreenshot(snapshotPath, expectOptions);
-          }
-        }
+        const shot = await screenshotStorySubject(
+          page,
+          story,
+          snapshotPath,
+          expectOptions,
+        );
+        subject = shot.subject;
+        clip = shot.clip;
       } catch (err) {
         status = "failed";
         error = err instanceof Error ? err.message : String(err);
@@ -383,5 +534,66 @@ test.describe("Storybook visual baselines", () => {
         writeSidecarForStory(story, status, error, actualPng);
       }
     });
+
+    if (referenceVisual) continue;
+
+    const interactions = listInteractionBaselinesOnDisk(story, PACKAGE_ROOT);
+    for (const interaction of interactions) {
+      test(`${storyId}::interaction::${interaction.stepId}`, async ({
+        page,
+      }) => {
+        await prepareStoryPage(page, storyId, {
+          visualCaptureUntil: interaction.stepId,
+        });
+        await page.waitForSelector(
+          `html[${VISUAL_CAPTURE_READY_ATTR}="${interaction.stepId}"]`,
+          { timeout: 30_000 },
+        );
+        await page.waitForTimeout(100);
+        await page.evaluate(() => {
+          const active = document.activeElement;
+          if (active instanceof HTMLElement) active.blur();
+        });
+
+        const snapshotPath = interaction.screenshotRel.split("/");
+        let subject: Locator | null = null;
+        let clip: {
+          x: number;
+          y: number;
+          width: number;
+          height: number;
+        } | null = null;
+        let status: "passed" | "failed" = "passed";
+        let error: string | undefined;
+        try {
+          const shot = await screenshotStorySubject(
+            page,
+            story,
+            snapshotPath,
+            screenshotExpectationOptions,
+          );
+          subject = shot.subject;
+          clip = shot.clip;
+        } catch (err) {
+          status = "failed";
+          error = err instanceof Error ? err.message : String(err);
+          throw err;
+        } finally {
+          const actualPng = await captureActualPng(
+            page,
+            subject,
+            clip,
+            false,
+          ).catch(() => null);
+          writeSidecarForBaseline(
+            story,
+            interaction.pngAbs,
+            status,
+            error,
+            actualPng,
+          );
+        }
+      });
+    }
   }
 });

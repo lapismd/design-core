@@ -48,8 +48,9 @@
   let doneCollapsed = $state(true);
 
   const mainTitle = $derived(
-    fixture.navDestinations.find((destination) => destination.id === activeNavId)
-      ?.label ?? "Inbox",
+    fixture.navDestinations.find(
+      (destination) => destination.id === activeNavId,
+    )?.label ?? "Inbox",
   );
 
   const showFilters = $derived(

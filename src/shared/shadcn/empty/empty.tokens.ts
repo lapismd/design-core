@@ -6,5 +6,4 @@ export const emptyTokenNames = {
   focusRingColor: "--ui-empty-focus-ring-color",
 } as const;
 
-export type EmptyToken =
-  (typeof emptyTokenNames)[keyof typeof emptyTokenNames];
+export type EmptyToken = (typeof emptyTokenNames)[keyof typeof emptyTokenNames];

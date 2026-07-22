@@ -6,5 +6,4 @@ export const cardTokenNames = {
   focusRingColor: "--ui-card-focus-ring-color",
 } as const;
 
-export type CardToken =
-  (typeof cardTokenNames)[keyof typeof cardTokenNames];
+export type CardToken = (typeof cardTokenNames)[keyof typeof cardTokenNames];

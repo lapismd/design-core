@@ -43,7 +43,8 @@
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "Use the `direction` prop to set the direction of the resizable panels.",
+        story:
+          "Use the `direction` prop to set the direction of the resizable panels.",
       },
       source: {
         code: exampleSources.Vertical,
@@ -68,7 +69,8 @@
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "You can set or hide the handle by using the `withHandle` prop on the `ResizableHandle` component.",
+        story:
+          "You can set or hide the handle by using the `withHandle` prop on the `ResizableHandle` component.",
       },
       source: {
         code: exampleSources.Handle,

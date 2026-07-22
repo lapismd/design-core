@@ -26,7 +26,16 @@ This topic summarizes the package contract. Full decision guide:
 2. **Composed primitives** — `FormField`, `FormSectionHeader`,
    `CollapsibleItemList`, `InlineOptionPicker` for one-off layouts.
 3. **YamlBackedForm** — dual structured + YAML source mode over the same draft.
-4. **shadcn** — Select, Switch, Command/Popover pickers, Toggle Group, Field.
+4. **JsonBackedForm** — dual structured + JSON source mode (prefer YAML for new
+   user-authored config).
+5. **PatchableForm** — YamlBackedForm + JSON Patch Keep/Undo (`createOrAppendJsonReview`,
+   `reviewedTextField` / `reviewedStringListField`, YAML `toYamlDiffs`).
+6. **shadcn** — Select, Switch, Command/Popover pickers, Toggle Group, Field.
+   Prefer shared `FilterCommandPicker` / `DatePicker` when the forms catalog
+   already covers the control.
+7. **filter** — search chrome and filter-query language via `@stevejuma/ui/filter`
+   (`SearchFilterBar`). Compose from forms; see `Filter/Guidance` and
+   **UI Forms/Form Inputs/Search Filter in a Form**.
 
 ## Shared form pattern
 

@@ -127,10 +127,7 @@
         onclick={() => onActivate?.(item.id)}
       >
         {#if Icon}
-          <Icon
-            aria-hidden="true"
-            class="tasks-list-navigation__icon"
-          />
+          <Icon aria-hidden="true" class="tasks-list-navigation__icon" />
         {/if}
         <span class="tasks-list-navigation__label">{item.label}</span>
         {#if item.count !== undefined}

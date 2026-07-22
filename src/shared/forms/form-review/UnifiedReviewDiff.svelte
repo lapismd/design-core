@@ -60,12 +60,13 @@
     flex-direction: column;
     border-radius: calc(var(--ui-form-radius, 0.625rem) * 0.5);
     background: var(--ui-form-background);
-    font-size: 0.8rem;
-    line-height: 1.5;
+    font: inherit;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
     overflow-x: auto;
-    /* Match ReviewedTextControl / FormField input padding so the first
+    /* Match FormField input padding so the first
        diff line lines up with the row label. */
-    padding-block: 0.35rem;
+    padding-block: 0;
   }
 
   .unified-review-diff__line {

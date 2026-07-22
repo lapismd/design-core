@@ -32,21 +32,24 @@ Use the `direction` prop to set the direction of the resizable panels.
 
 ```html
 <script lang="ts">
-	import * as Resizable from "@stevejuma/ui/shadcn/resizable";
+  import * as Resizable from "@stevejuma/ui/shadcn/resizable";
 </script>
 
-<Resizable.PaneGroup direction="vertical" class="min-h-[200px] max-w-md rounded-lg border">
-	<Resizable.Pane defaultSize={25}>
-		<div class="flex h-full items-center justify-center p-6">
-			<span class="font-semibold">Header</span>
-		</div>
-	</Resizable.Pane>
-	<Resizable.Handle />
-	<Resizable.Pane defaultSize={75}>
-		<div class="flex h-full items-center justify-center p-6">
-			<span class="font-semibold">Content</span>
-		</div>
-	</Resizable.Pane>
+<Resizable.PaneGroup
+  direction="vertical"
+  class="min-h-[200px] max-w-md rounded-lg border"
+>
+  <Resizable.Pane defaultSize="{25}">
+    <div class="flex h-full items-center justify-center p-6">
+      <span class="font-semibold">Header</span>
+    </div>
+  </Resizable.Pane>
+  <Resizable.Handle />
+  <Resizable.Pane defaultSize="{75}">
+    <div class="flex h-full items-center justify-center p-6">
+      <span class="font-semibold">Content</span>
+    </div>
+  </Resizable.Pane>
 </Resizable.PaneGroup>
 ```
 
@@ -56,20 +59,23 @@ You can set or hide the handle by using the `withHandle` prop on the `ResizableH
 
 ```html
 <script lang="ts">
-	import * as Resizable from "@stevejuma/ui/shadcn/resizable";
+  import * as Resizable from "@stevejuma/ui/shadcn/resizable";
 </script>
 
-<Resizable.PaneGroup direction="horizontal" class="min-h-[200px] max-w-md rounded-lg border">
-	<Resizable.Pane defaultSize={25}>
-		<div class="flex h-full items-center justify-center p-6">
-			<span class="font-semibold">Sidebar</span>
-		</div>
-	</Resizable.Pane>
-	<Resizable.Handle withHandle />
-	<Resizable.Pane defaultSize={75}>
-		<div class="flex h-full items-center justify-center p-6">
-			<span class="font-semibold">Content</span>
-		</div>
-	</Resizable.Pane>
+<Resizable.PaneGroup
+  direction="horizontal"
+  class="min-h-[200px] max-w-md rounded-lg border"
+>
+  <Resizable.Pane defaultSize="{25}">
+    <div class="flex h-full items-center justify-center p-6">
+      <span class="font-semibold">Sidebar</span>
+    </div>
+  </Resizable.Pane>
+  <Resizable.Handle withHandle />
+  <Resizable.Pane defaultSize="{75}">
+    <div class="flex h-full items-center justify-center p-6">
+      <span class="font-semibold">Content</span>
+    </div>
+  </Resizable.Pane>
 </Resizable.PaneGroup>
 ```

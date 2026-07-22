@@ -42,6 +42,5 @@ Install stuff here.
 You can nest providers. This fence is prose-only (no ComponentPreview):
 
 ```svelte
-<Tooltip.Provider delayDuration={0}>
-</Tooltip.Provider>
+<Tooltip.Provider delayDuration={0}></Tooltip.Provider>
 ```

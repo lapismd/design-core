@@ -1,0 +1,97 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="Filter/Guidance" />
+
+# Filter guidance
+
+Use `@stevejuma/ui/filter` for search chrome and the Fava-inspired filter-query
+language. Forms still own labelled rows and option pickers
+(`FilterCommandPicker`); compose them with `SearchFilterBar` when a list or
+sidebar needs facets plus a typed query.
+
+Offline agent summary: `pnpm ui guide layers`. Catalog component:
+`pnpm ui components filter/search-filter-bar`.
+
+## Layer boundary
+
+| Need                                    | Package                                         |
+| --------------------------------------- | ----------------------------------------------- |
+| Search pill, clear chrome, filter slots | `SearchFilterBar` (`@stevejuma/ui/filter`)      |
+| Parse / highlight filter queries        | `parseFilterQuery`, `filterQuery()`             |
+| Field → operator → value completions    | Host `SearchFilterSyntax` + `filterSyntax` prop |
+| Facet pickers (type, account, …)        | forms `FilterCommandPicker`                     |
+| Matching rows against a ledger          | App / domain package (not in this UI package)   |
+
+## SearchFilterBar modes
+
+- **`plain` (default)** — normal `<input type="search">` for free-text search
+- **`filter-query`** — single-line CodeMirror editor with syntax highlighting;
+  pass `filterSyntax` for autocomplete and the expandable syntax help panel
+
+## Filter query language
+
+Boolean / grouping:
+
+- AND: space, `and`, `AND`, `&&`
+- OR: `,`, `or`, `OR`, `||`
+- NOT: `-`, `not`, `NOT`
+- Grouping: `(...)`
+
+Operators: `:`, `>`, `=`, `<`, `!=`, `>=`, `<=`, `~`, `!~`
+
+Values / tokens:
+
+- `#tag`, `^link`
+- Account-style names (`Assets:Cash`)
+- Quoted strings `'...'` / `"..."`
+- Regex `/pattern/flags`
+- Field terms: `payee:"x"`, `amount > 100`, `account:Expenses:Food`
+- Bare text (free-text search when the host evaluates it)
+
+Dates / relative time (parsed by `parseFilterQuery`):
+
+- Absolute: `2015`, `2012-Q1`, `2010-10`, `2016-W12`, `2015-06-12`
+- Relative: `now`, `today`, `year`, `month`, `week`, `day`, `quarter`
+- Arithmetic: `year-1`, `now-1w`, `2010 - 2012-10`
+- Round: `now/month`
+- Parens for literal day-of-month: `(month)-10`
+
+### Host-owned completion schema
+
+```ts
+import type { SearchFilterSyntax } from "@stevejuma/ui/filter";
+
+const syntax: SearchFilterSyntax = {
+  description: "Narrow ledger directives.",
+  fields: [
+    {
+      name: "account",
+      description: "Any account on the entry.",
+      operators: [":", "=", "~"],
+      values: ["Assets:Cash", "Expenses:Food"],
+    },
+  ],
+  examples: [{ query: "account:Expenses", description: "Expense accounts" }],
+};
+```
+
+The bar only renders and completes this display model. Field catalogs and
+match/evaluation stay in the app.
+
+### Known gaps vs Fava Python docs
+
+`any(...)` / `all(...)` are documented upstream for posting-level matches but
+are **not** implemented in the JS Lezer grammar shipped here.
+
+## Stories
+
+- **Filter/Search Filter Bar** — plain mode, filter-query autocomplete, ledger
+  search demo (facets + live parse preview)
+- **UI Forms/Form Inputs/Search Filter in a Form** — composition-only example
+  importing the bar into form chrome
+
+Regenerate the committed Lezer parser after grammar edits:
+
+```bash
+pnpm filter:grammar
+```

@@ -32,13 +32,15 @@ function json(value: unknown) {
   return JSON.stringify(value);
 }
 
-export function parseCvYaml(text: string): {
-  ok: true;
-  value: CvSource;
-} | {
-  ok: false;
-  error: string;
-} {
+export function parseCvYaml(text: string):
+  | {
+      ok: true;
+      value: CvSource;
+    }
+  | {
+      ok: false;
+      error: string;
+    } {
   try {
     const document = parseDocument(text);
     if (document.errors.length > 0) {

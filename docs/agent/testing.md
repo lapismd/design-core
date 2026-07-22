@@ -40,6 +40,10 @@ Committed under `tests/visual/storybook.spec.ts-snapshots/`.
   `VISUAL_UPDATE_APPROVED=1 pnpm test:visual:update --component <name>` after
   human review, or Storybook **Visual Delta → Update baselines** (dev; gated,
   `--allow-dirty`).
+- **Primary PNG = end of play** (unchanged). Opt-in mid-play captures are
+  sibling files `{slug}--{stepId}-chromium-darwin.png`, created from the Visual
+  Delta **Interactions** tab for named `step("…")` / `visualCapture(step, …)`
+  rows only. Import `visualCapture` from `src/storybook/visual-capture`.
 - `ui:add` may create/replace baselines only for the component it is adding,
   and only after parity passes.
 - Tag `skip-visual` only when pixel flake cannot be stabilized (document why).

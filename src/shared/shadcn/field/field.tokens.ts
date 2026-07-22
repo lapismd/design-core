@@ -6,5 +6,4 @@ export const fieldTokenNames = {
   focusRingColor: "--ui-field-focus-ring-color",
 } as const;
 
-export type FieldToken =
-  (typeof fieldTokenNames)[keyof typeof fieldTokenNames];
+export type FieldToken = (typeof fieldTokenNames)[keyof typeof fieldTokenNames];

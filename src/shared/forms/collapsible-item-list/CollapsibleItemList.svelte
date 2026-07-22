@@ -62,8 +62,7 @@
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
     gap: 0.75rem;
-    border-bottom: 1px solid
-      var(--ui-form-border);
+    border-bottom: 1px solid var(--ui-form-border);
     padding: 0 0 0.2rem;
   }
 

@@ -1,4 +1,10 @@
-import { Meta, Canvas, Controls, Primary, Source } from "@storybook/addon-docs/blocks";
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+} from "@storybook/addon-docs/blocks";
 import * as SegmentedControlStories from "./SegmentedControl.stories.svelte";
 import * as SegmentedControlVariations from "./SegmentedControl.variations.stories.svelte";
 
@@ -26,7 +32,12 @@ See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and the shared
 
 ## Usage
 
-<Source language="html" code={"<SegmentedControl\n  value={mode}\n  options={[\"edit\", \"preview\"]}\n  labels={{ edit: \"Edit\", preview: \"Preview\" }}\n  ariaLabel=\"View mode\"\n  onChange={...}\n/>"} />
+<Source
+  language="html"
+  code={
+    '<SegmentedControl\n  value={mode}\n  options={["edit", "preview"]}\n  labels={{ edit: "Edit", preview: "Preview" }}\n  ariaLabel="View mode"\n  onChange={...}\n/>'
+  }
+/>
 
 <Primary />
 
@@ -40,11 +51,16 @@ See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and the shared
 
 Common edit/preview pair.
 
-<Canvas of={SegmentedControlVariations.TwoOptions} meta={SegmentedControlVariations} />
+<Canvas
+  of={SegmentedControlVariations.TwoOptions}
+  meta={SegmentedControlVariations}
+/>
 
 ### Three options
 
 Maximum recommended option count.
 
-<Canvas of={SegmentedControlVariations.ThreeOptions} meta={SegmentedControlVariations} />
-
+<Canvas
+  of={SegmentedControlVariations.ThreeOptions}
+  meta={SegmentedControlVariations}
+/>

@@ -23,8 +23,13 @@ describe("ui components", () => {
     const layers = new Set(list.map((c) => c.layer));
     expect(layers.has("shadcn")).toBe(true);
     expect(layers.has("forms")).toBe(true);
+    expect(layers.has("filter")).toBe(true);
     expect(layers.has("ai")).toBe(true);
     expect(layers.has("tasks")).toBe(true);
+
+    const searchFilter = list.find((c) => c.key === "filter/search-filter-bar");
+    expect(searchFilter).toBeDefined();
+    expect(searchFilter!.import).toBe("@stevejuma/ui/filter");
 
     const button = list.find((c) => c.key === "shadcn/button");
     expect(button).toBeDefined();

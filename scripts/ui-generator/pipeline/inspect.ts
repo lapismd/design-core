@@ -70,7 +70,9 @@ export async function runInspect(options: { component?: string }) {
         source: f.content,
       }));
 
-    const sourceFiles = localFiles.some((f) => looksLikeTailwindSource(f.source))
+    const sourceFiles = localFiles.some((f) =>
+      looksLikeTailwindSource(f.source),
+    )
       ? localFiles.filter((f) => looksLikeTailwindSource(f.source))
       : intakeFiles;
 

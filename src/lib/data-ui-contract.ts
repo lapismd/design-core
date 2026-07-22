@@ -124,7 +124,9 @@ function templateMarkup(source: string): string {
     .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, "");
 }
 
-function compoundPairs(styles: string): Array<{ component: string; part: string }> {
+function compoundPairs(
+  styles: string,
+): Array<{ component: string; part: string }> {
   const pairs: Array<{ component: string; part: string }> = [];
   for (const match of styles.matchAll(COMPOUND_SELECTOR_RE)) {
     pairs.push({ component: match[2]!, part: match[4]! });

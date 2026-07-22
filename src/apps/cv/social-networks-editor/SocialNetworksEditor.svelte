@@ -106,7 +106,7 @@
           type="button"
           variant="ghost"
           size="icon-sm"
-          class="text-muted-foreground/70 hover:text-foreground absolute top-1/2 -right-5 size-5 -translate-y-1/2 rounded-sm opacity-0 transition-opacity group-hover/social-network:opacity-100 group-focus-within/social-network:opacity-100 hover:bg-transparent focus-visible:opacity-100 [&_svg]:size-3.5"
+          class="text-muted-foreground/70 hover:text-foreground absolute top-1/2 -right-5 size-5 -translate-y-1/2 rounded-sm opacity-0 transition-opacity group-focus-within/social-network:opacity-100 group-hover/social-network:opacity-100 hover:bg-transparent focus-visible:opacity-100 [&_svg]:size-3.5"
           aria-label="Delete social network"
           onclick={() => remove(index)}
         >

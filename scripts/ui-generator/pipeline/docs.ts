@@ -91,9 +91,7 @@ export async function runDocsSync(options: {
   }
 
   const config = loadConfig();
-  const components = batch
-    ? resolveBatchComponents(batch)
-    : [component!];
+  const components = batch ? resolveBatchComponents(batch) : [component!];
 
   const reportDir = path.join(
     config.packageRoot,
@@ -107,14 +105,12 @@ export async function runDocsSync(options: {
   const skippedMissing: string[] = [];
 
   for (const name of components) {
-    const targetAbs = path.resolve(
-      config.packageRoot,
-      config.sharedRoot,
-      name,
-    );
+    const targetAbs = path.resolve(config.packageRoot, config.sharedRoot, name);
     if (!existsSync(targetAbs)) {
       skippedMissing.push(name);
-      log.warn(`${name}: skipped (not converted yet — no ${config.sharedRoot}/${name})`);
+      log.warn(
+        `${name}: skipped (not converted yet — no ${config.sharedRoot}/${name})`,
+      );
       continue;
     }
     try {

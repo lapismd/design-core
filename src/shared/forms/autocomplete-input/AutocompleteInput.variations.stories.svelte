@@ -3,7 +3,7 @@
   import AutocompleteInput from "./AutocompleteInput.svelte";
 
   const { Story } = defineMeta({
-    title: "UI Forms/Autocomplete Input",
+    title: "UI Forms/Form Inputs/Autocomplete Input",
     component: AutocompleteInput,
     parameters: {
       docs: {
@@ -15,14 +15,15 @@
   });
 </script>
 
-
 <Story
   name="With value"
   exportName="WithValue"
   tags={["skip-visual"]}
   parameters={{
     docs: {
-      description: { story: "Focus the field in the canvas to open suggestions." },
+      description: {
+        story: "Focus the field in the canvas to open suggestions.",
+      },
     },
   }}
 >

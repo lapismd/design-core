@@ -50,13 +50,8 @@
       "page": "inbox",
       "viewport": "desktop",
       "file": "screenshots/pages/page-desktop-inbox.png",
-      "nav": [
-        "inbox"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["inbox"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/desktop-inbox.png"
     },
@@ -67,14 +62,8 @@
       "page": "task-detail",
       "viewport": "desktop",
       "file": "screenshots/pages/page-desktop-inbox-detail.png",
-      "nav": [
-        "inbox",
-        "open-first-task"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["inbox", "open-first-task"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/desktop-task-detail.png"
     },
@@ -85,13 +74,8 @@
       "page": "today",
       "viewport": "desktop",
       "file": "screenshots/pages/page-desktop-today.png",
-      "nav": [
-        "today"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["today"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/desktop-today.png"
     },
@@ -102,14 +86,8 @@
       "page": "task-detail",
       "viewport": "desktop",
       "file": "screenshots/pages/page-desktop-today-detail.png",
-      "nav": [
-        "today",
-        "open-first-task"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["today", "open-first-task"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/desktop-task-detail.png"
     },
@@ -120,13 +98,8 @@
       "page": "tasks",
       "viewport": "desktop",
       "file": "screenshots/pages/page-desktop-tasks.png",
-      "nav": [
-        "tasks"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["tasks"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/desktop-tasks.png"
     },
@@ -137,13 +110,8 @@
       "page": "updates",
       "viewport": "desktop",
       "file": "screenshots/pages/page-desktop-updates.png",
-      "nav": [
-        "updates"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["updates"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/desktop-updates.png"
     },
@@ -154,13 +122,8 @@
       "page": "updates",
       "viewport": "desktop",
       "file": "screenshots/pages/page-desktop-updates-loading.png",
-      "nav": [
-        "updates"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["updates"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/desktop-updates.png"
     },
@@ -171,13 +134,8 @@
       "page": "updates",
       "viewport": "desktop",
       "file": "screenshots/pages/page-desktop-updates-error.png",
-      "nav": [
-        "updates"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["updates"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/desktop-updates.png"
     },
@@ -188,13 +146,8 @@
       "page": "lists",
       "viewport": "desktop",
       "file": "screenshots/pages/page-desktop-lists.png",
-      "nav": [
-        "lists"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["lists"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/desktop-lists.png"
     },
@@ -205,13 +158,8 @@
       "page": "list-detail",
       "viewport": "desktop",
       "file": "screenshots/pages/page-desktop-list-detail.png",
-      "nav": [
-        "list-detail"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["list-detail"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/desktop-list-detail.png"
     },
@@ -222,14 +170,8 @@
       "page": "task-detail",
       "viewport": "desktop",
       "file": "screenshots/pages/page-desktop-list-detail-open.png",
-      "nav": [
-        "list-detail",
-        "open-first-task"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["list-detail", "open-first-task"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/desktop-task-detail.png"
     },
@@ -240,14 +182,8 @@
       "page": "task-detail",
       "viewport": "desktop",
       "file": "screenshots/pages/page-desktop-task-detail.png",
-      "nav": [
-        "list-detail",
-        "open-first-task"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["list-detail", "open-first-task"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/desktop-task-detail.png"
     },
@@ -258,14 +194,8 @@
       "page": "task-detail",
       "viewport": "desktop",
       "file": "screenshots/pages/page-desktop-task-detail-open.png",
-      "nav": [
-        "list-detail",
-        "open-first-task"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["list-detail", "open-first-task"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/desktop-task-detail.png"
     },
@@ -276,13 +206,8 @@
       "page": "inbox",
       "viewport": "desktop",
       "file": "screenshots/pages/page-desktop-shell.png",
-      "nav": [
-        "inbox"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["inbox"],
+      "placeholders": ["avatar", "banner"],
       "notes": "Shell destination variant",
       "migrateFrom": "screenshots/browser/desktop-inbox.png"
     },
@@ -293,13 +218,8 @@
       "page": "today",
       "viewport": "desktop",
       "file": "screenshots/pages/page-desktop-shell-today.png",
-      "nav": [
-        "today"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["today"],
+      "placeholders": ["avatar", "banner"],
       "notes": "Shell destination variant",
       "migrateFrom": "screenshots/browser/desktop-today.png"
     },
@@ -310,13 +230,8 @@
       "page": "tasks",
       "viewport": "desktop",
       "file": "screenshots/pages/page-desktop-shell-tasks.png",
-      "nav": [
-        "tasks"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["tasks"],
+      "placeholders": ["avatar", "banner"],
       "notes": "Shell destination variant",
       "migrateFrom": "screenshots/browser/desktop-tasks.png"
     },
@@ -327,13 +242,8 @@
       "page": "updates",
       "viewport": "desktop",
       "file": "screenshots/pages/page-desktop-shell-updates.png",
-      "nav": [
-        "updates"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["updates"],
+      "placeholders": ["avatar", "banner"],
       "notes": "Shell destination variant",
       "migrateFrom": "screenshots/browser/desktop-updates.png"
     },
@@ -344,13 +254,8 @@
       "page": "lists",
       "viewport": "desktop",
       "file": "screenshots/pages/page-desktop-shell-lists.png",
-      "nav": [
-        "lists"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["lists"],
+      "placeholders": ["avatar", "banner"],
       "notes": "Shell destination variant",
       "migrateFrom": "screenshots/browser/desktop-lists.png"
     },
@@ -361,13 +266,8 @@
       "page": "list-detail",
       "viewport": "desktop",
       "file": "screenshots/pages/page-desktop-shell-list-reference.png",
-      "nav": [
-        "list-detail"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["list-detail"],
+      "placeholders": ["avatar", "banner"],
       "notes": "Shell destination variant",
       "migrateFrom": "screenshots/browser/desktop-list-detail.png"
     },
@@ -378,13 +278,8 @@
       "page": "list-detail",
       "viewport": "desktop",
       "file": "screenshots/pages/page-desktop-shell-list-shared.png",
-      "nav": [
-        "list-shared"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["list-shared"],
+      "placeholders": ["avatar", "banner"],
       "notes": "Second list destination for shell variants (Shared planning fixture).",
       "migrateFrom": "screenshots/browser/desktop-list-detail.png"
     },
@@ -395,14 +290,8 @@
       "page": "task-detail",
       "viewport": "desktop",
       "file": "screenshots/pages/page-desktop-shell-detail.png",
-      "nav": [
-        "inbox",
-        "open-first-task"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["inbox", "open-first-task"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/desktop-task-detail.png"
     },
@@ -413,13 +302,8 @@
       "page": "inbox",
       "viewport": "mobile",
       "file": "screenshots/pages/page-mobile-shell.png",
-      "nav": [
-        "inbox"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["inbox"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/mobile-inbox.png"
     },
@@ -430,13 +314,8 @@
       "page": "inbox",
       "viewport": "tablet-landscape",
       "file": "screenshots/pages/page-tablet-landscape-inbox.png",
-      "nav": [
-        "inbox"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["inbox"],
+      "placeholders": ["avatar", "banner"],
       "notes": "Extra viewport coverage for inbox",
       "migrateFrom": "screenshots/browser/tablet-landscape-inbox.png",
       "coverageOnly": true
@@ -448,13 +327,8 @@
       "page": "inbox",
       "viewport": "tablet-portrait",
       "file": "screenshots/pages/page-tablet-portrait-inbox.png",
-      "nav": [
-        "inbox"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["inbox"],
+      "placeholders": ["avatar", "banner"],
       "notes": "Extra viewport coverage for inbox",
       "migrateFrom": "screenshots/browser/tablet-portrait-inbox.png",
       "coverageOnly": true
@@ -466,13 +340,8 @@
       "page": "inbox",
       "viewport": "mobile",
       "file": "screenshots/pages/page-mobile-inbox.png",
-      "nav": [
-        "inbox"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["inbox"],
+      "placeholders": ["avatar", "banner"],
       "notes": "Extra viewport coverage for inbox",
       "migrateFrom": "screenshots/browser/mobile-inbox.png",
       "coverageOnly": true
@@ -484,14 +353,8 @@
       "page": "task-detail",
       "viewport": "mobile",
       "file": "screenshots/pages/page-mobile-task-detail.png",
-      "nav": [
-        "inbox",
-        "open-first-task"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["inbox", "open-first-task"],
+      "placeholders": ["avatar", "banner"],
       "notes": "Mobile detail viewport",
       "migrateFrom": "screenshots/browser/mobile-task-detail.png",
       "coverageOnly": true
@@ -510,13 +373,8 @@
         "height": 40
       },
       "locator": "task-row",
-      "nav": [
-        "list-detail"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["list-detail"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/desktop-list-detail.png"
     },
@@ -534,13 +392,8 @@
         "height": 40
       },
       "locator": "task-row",
-      "nav": [
-        "list-detail"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["list-detail"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/desktop-list-detail.png"
     },
@@ -558,14 +411,8 @@
         "height": 48
       },
       "locator": "task-row",
-      "nav": [
-        "list-detail",
-        "select-first-task"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["list-detail", "select-first-task"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/desktop-list-detail.png"
     },
@@ -583,14 +430,8 @@
         "height": 48
       },
       "locator": "task-row",
-      "nav": [
-        "list-detail",
-        "select-first-task"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["list-detail", "select-first-task"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/desktop-list-detail.png"
     },
@@ -608,14 +449,8 @@
         "height": 48
       },
       "locator": "task-row",
-      "nav": [
-        "list-detail",
-        "select-first-task"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["list-detail", "select-first-task"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/desktop-list-detail.png"
     },
@@ -633,13 +468,8 @@
         "height": 40
       },
       "locator": "task-row",
-      "nav": [
-        "list-detail"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["list-detail"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/desktop-list-detail.png"
     },
@@ -657,13 +487,8 @@
         "height": 64
       },
       "locator": "task-row",
-      "nav": [
-        "inbox"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["inbox"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/mobile-inbox.png"
     },
@@ -681,13 +506,8 @@
         "height": 780
       },
       "locator": "main-list",
-      "nav": [
-        "list-detail"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["list-detail"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/desktop-list-detail.png"
     },
@@ -705,13 +525,8 @@
         "height": 780
       },
       "locator": "main-list",
-      "nav": [
-        "list-detail"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["list-detail"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/desktop-list-detail.png"
     },
@@ -729,14 +544,8 @@
         "height": 780
       },
       "locator": "main-list",
-      "nav": [
-        "list-detail",
-        "select-first-task"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["list-detail", "select-first-task"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/desktop-list-detail.png"
     },
@@ -754,13 +563,8 @@
         "height": 500
       },
       "locator": "feedback",
-      "nav": [
-        "updates"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["updates"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/desktop-updates.png"
     },
@@ -778,13 +582,8 @@
         "height": 500
       },
       "locator": "feedback",
-      "nav": [
-        "updates"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["updates"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/desktop-updates.png"
     },
@@ -802,13 +601,8 @@
         "height": 50
       },
       "locator": "composer",
-      "nav": [
-        "list-detail"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["list-detail"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/desktop-list-detail.png"
     },
@@ -826,14 +620,8 @@
         "height": 50
       },
       "locator": "composer",
-      "nav": [
-        "list-detail",
-        "focus-composer"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["list-detail", "focus-composer"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/desktop-list-detail.png"
     },
@@ -851,14 +639,8 @@
         "height": 50
       },
       "locator": "composer",
-      "nav": [
-        "list-detail",
-        "focus-composer"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["list-detail", "focus-composer"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/desktop-list-detail.png"
     },
@@ -876,14 +658,8 @@
         "height": 50
       },
       "locator": "composer",
-      "nav": [
-        "list-detail",
-        "focus-composer"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["list-detail", "focus-composer"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/desktop-list-detail.png"
     },
@@ -901,14 +677,8 @@
         "height": 50
       },
       "locator": "composer",
-      "nav": [
-        "list-detail",
-        "focus-composer"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["list-detail", "focus-composer"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/desktop-list-detail.png"
     },
@@ -926,14 +696,8 @@
         "height": 880
       },
       "locator": "detail-rail",
-      "nav": [
-        "list-detail",
-        "open-first-task"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["list-detail", "open-first-task"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/desktop-task-detail.png"
     },
@@ -951,14 +715,8 @@
         "height": 880
       },
       "locator": "detail-rail",
-      "nav": [
-        "list-detail",
-        "open-first-task"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["list-detail", "open-first-task"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/desktop-task-detail.png"
     },
@@ -976,14 +734,8 @@
         "height": 880
       },
       "locator": "detail-rail",
-      "nav": [
-        "list-detail",
-        "open-first-task"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["list-detail", "open-first-task"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/desktop-task-detail.png"
     },
@@ -1001,14 +753,8 @@
         "height": 880
       },
       "locator": "detail-rail",
-      "nav": [
-        "list-detail",
-        "open-first-task"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["list-detail", "open-first-task"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/desktop-task-detail.png"
     },
@@ -1026,14 +772,8 @@
         "height": 880
       },
       "locator": "detail-rail",
-      "nav": [
-        "list-detail",
-        "open-first-task"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["list-detail", "open-first-task"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/desktop-task-detail.png"
     },
@@ -1051,14 +791,8 @@
         "height": 300
       },
       "locator": "properties",
-      "nav": [
-        "list-detail",
-        "open-first-task"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["list-detail", "open-first-task"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/desktop-task-detail.png"
     },
@@ -1076,14 +810,8 @@
         "height": 300
       },
       "locator": "properties",
-      "nav": [
-        "list-detail",
-        "open-first-task"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["list-detail", "open-first-task"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/desktop-task-detail.png"
     },
@@ -1101,14 +829,8 @@
         "height": 300
       },
       "locator": "properties",
-      "nav": [
-        "list-detail",
-        "open-first-task"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["list-detail", "open-first-task"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/desktop-task-detail.png"
     },
@@ -1126,14 +848,8 @@
         "height": 300
       },
       "locator": "properties",
-      "nav": [
-        "list-detail",
-        "open-first-task"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["list-detail", "open-first-task"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/desktop-task-detail.png"
     },
@@ -1151,14 +867,8 @@
         "height": 300
       },
       "locator": "properties",
-      "nav": [
-        "list-detail",
-        "open-first-task"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["list-detail", "open-first-task"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/desktop-task-detail.png"
     },
@@ -1176,13 +886,8 @@
         "height": 500
       },
       "locator": "feedback",
-      "nav": [
-        "updates"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["updates"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/desktop-updates.png"
     },
@@ -1200,13 +905,8 @@
         "height": 500
       },
       "locator": "feedback",
-      "nav": [
-        "updates"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["updates"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/desktop-updates.png"
     },
@@ -1224,13 +924,8 @@
         "height": 500
       },
       "locator": "feedback",
-      "nav": [
-        "updates"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["updates"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/desktop-updates.png"
     },
@@ -1248,13 +943,8 @@
         "height": 500
       },
       "locator": "feedback",
-      "nav": [
-        "updates"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["updates"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/desktop-updates.png"
     },
@@ -1272,13 +962,8 @@
         "height": 40
       },
       "locator": "task-row",
-      "nav": [
-        "list-detail"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["list-detail"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/desktop-list-detail.png"
     },
@@ -1296,13 +981,8 @@
         "height": 50
       },
       "locator": "filters",
-      "nav": [
-        "tasks"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["tasks"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/desktop-tasks.png"
     },
@@ -1320,13 +1000,8 @@
         "height": 50
       },
       "locator": "filters",
-      "nav": [
-        "tasks"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["tasks"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/desktop-tasks.png"
     },
@@ -1344,13 +1019,8 @@
         "height": 900
       },
       "locator": "sidebar",
-      "nav": [
-        "inbox"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["inbox"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/desktop-inbox.png"
     },
@@ -1368,13 +1038,8 @@
         "height": 780
       },
       "locator": "lists-main",
-      "nav": [
-        "lists"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["lists"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/desktop-lists.png"
     },
@@ -1392,13 +1057,8 @@
         "height": 780
       },
       "locator": "lists-main",
-      "nav": [
-        "lists"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["lists"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/desktop-lists.png"
     },
@@ -1416,13 +1076,8 @@
         "height": 900
       },
       "locator": "shell",
-      "nav": [
-        "inbox"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["inbox"],
+      "placeholders": ["avatar", "banner"],
       "notes": "Shell subject is the full app frame; full-viewport clip allowed.",
       "migrateFrom": "screenshots/browser/desktop-inbox.png",
       "allowFullViewport": true
@@ -1441,13 +1096,8 @@
         "height": 900
       },
       "locator": "shell",
-      "nav": [
-        "today"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["today"],
+      "placeholders": ["avatar", "banner"],
       "notes": "Shell subject is the full app frame; full-viewport clip allowed.",
       "migrateFrom": "screenshots/browser/desktop-today.png",
       "allowFullViewport": true
@@ -1466,13 +1116,8 @@
         "height": 900
       },
       "locator": "shell",
-      "nav": [
-        "tasks"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["tasks"],
+      "placeholders": ["avatar", "banner"],
       "notes": "Shell subject is the full app frame; full-viewport clip allowed.",
       "migrateFrom": "screenshots/browser/desktop-tasks.png",
       "allowFullViewport": true
@@ -1491,13 +1136,8 @@
         "height": 900
       },
       "locator": "shell",
-      "nav": [
-        "updates"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["updates"],
+      "placeholders": ["avatar", "banner"],
       "notes": "Shell subject is the full app frame; full-viewport clip allowed.",
       "migrateFrom": "screenshots/browser/desktop-updates.png",
       "allowFullViewport": true
@@ -1516,13 +1156,8 @@
         "height": 900
       },
       "locator": "shell",
-      "nav": [
-        "lists"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["lists"],
+      "placeholders": ["avatar", "banner"],
       "notes": "Shell subject is the full app frame; full-viewport clip allowed.",
       "migrateFrom": "screenshots/browser/desktop-lists.png",
       "allowFullViewport": true
@@ -1541,13 +1176,8 @@
         "height": 900
       },
       "locator": "shell",
-      "nav": [
-        "list-detail"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["list-detail"],
+      "placeholders": ["avatar", "banner"],
       "notes": "Shell subject is the full app frame; full-viewport clip allowed.",
       "migrateFrom": "screenshots/browser/desktop-list-detail.png",
       "allowFullViewport": true
@@ -1566,13 +1196,8 @@
         "height": 900
       },
       "locator": "shell",
-      "nav": [
-        "list-shared"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["list-shared"],
+      "placeholders": ["avatar", "banner"],
       "notes": "Second list destination for shell variants (Shared planning fixture).",
       "migrateFrom": "screenshots/browser/desktop-list-detail.png",
       "allowFullViewport": true
@@ -1591,14 +1216,8 @@
         "height": 900
       },
       "locator": "shell",
-      "nav": [
-        "inbox",
-        "open-first-task"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["inbox", "open-first-task"],
+      "placeholders": ["avatar", "banner"],
       "notes": "Shell subject is the full app frame; full-viewport clip allowed.",
       "migrateFrom": "screenshots/browser/desktop-task-detail.png",
       "allowFullViewport": true
@@ -1617,13 +1236,8 @@
         "height": 844
       },
       "locator": "shell",
-      "nav": [
-        "inbox"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["inbox"],
+      "placeholders": ["avatar", "banner"],
       "notes": "Shell subject is the full app frame; full-viewport clip allowed.",
       "migrateFrom": "screenshots/browser/mobile-inbox.png",
       "allowFullViewport": true
@@ -1642,14 +1256,8 @@
         "height": 844
       },
       "locator": "shell",
-      "nav": [
-        "inbox",
-        "open-first-task"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["inbox", "open-first-task"],
+      "placeholders": ["avatar", "banner"],
       "notes": "Shell subject is the full app frame; full-viewport clip allowed.",
       "migrateFrom": "screenshots/browser/mobile-task-detail.png",
       "allowFullViewport": true
@@ -1668,13 +1276,8 @@
         "height": 64
       },
       "locator": "task-row",
-      "nav": [
-        "inbox"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["inbox"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/mobile-inbox.png"
     },
@@ -1692,13 +1295,8 @@
         "height": 64
       },
       "locator": "task-row",
-      "nav": [
-        "inbox"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["inbox"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/mobile-inbox.png"
     },
@@ -1716,13 +1314,8 @@
         "height": 64
       },
       "locator": "task-row",
-      "nav": [
-        "inbox"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["inbox"],
+      "placeholders": ["avatar", "banner"],
       "notes": "",
       "migrateFrom": "screenshots/browser/mobile-inbox.png"
     },
@@ -1740,14 +1333,8 @@
         "height": 844
       },
       "locator": "shell",
-      "nav": [
-        "inbox",
-        "open-first-task"
-      ],
-      "placeholders": [
-        "avatar",
-        "banner"
-      ],
+      "nav": ["inbox", "open-first-task"],
+      "placeholders": ["avatar", "banner"],
       "notes": "Shell subject is the full app frame; full-viewport clip allowed.",
       "migrateFrom": "screenshots/browser/mobile-task-detail.png",
       "allowFullViewport": true

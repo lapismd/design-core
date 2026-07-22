@@ -1,4 +1,10 @@
-import { Meta, Canvas, Controls, Primary, Source } from "@storybook/addon-docs/blocks";
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+} from "@storybook/addon-docs/blocks";
 import * as ReferencePickerStories from "./ReferencePicker.stories.svelte";
 import * as ReferencePickerVariations from "./ReferencePicker.variations.stories.svelte";
 
@@ -25,7 +31,12 @@ See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and the shared
 
 ## Usage
 
-<Source language="html" code={"<ReferencePicker\n  refs={refs}\n  referenceIndex={index}\n  onChange={...}\n/>"} />
+<Source
+  language="html"
+  code={
+    "<ReferencePicker\n  refs={refs}\n  referenceIndex={index}\n  onChange={...}\n/>"
+  }
+/>
 
 <Primary />
 
@@ -39,11 +50,13 @@ See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and the shared
 
 Selected reference plus add affordance.
 
-<Canvas of={ReferencePickerVariations.WithSelection} meta={ReferencePickerVariations} />
+<Canvas
+  of={ReferencePickerVariations.WithSelection}
+  meta={ReferencePickerVariations}
+/>
 
 ### Empty
 
 No refs selected yet.
 
 <Canvas of={ReferencePickerVariations.Empty} meta={ReferencePickerVariations} />
-

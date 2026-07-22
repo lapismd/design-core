@@ -33,9 +33,17 @@ export const ENTRY_TYPE_OPTIONS: Array<{
     label: "Publication Entry",
     addLabel: "publication entry",
   },
-  { value: "OneLineEntry", label: "One-Line Entry", addLabel: "one-line entry" },
+  {
+    value: "OneLineEntry",
+    label: "One-Line Entry",
+    addLabel: "one-line entry",
+  },
   { value: "BulletEntry", label: "Bullet Entry", addLabel: "bullet entry" },
-  { value: "NumberedEntry", label: "Numbered Entry", addLabel: "numbered entry" },
+  {
+    value: "NumberedEntry",
+    label: "Numbered Entry",
+    addLabel: "numbered entry",
+  },
   {
     value: "ReversedNumberedEntry",
     label: "Reversed Numbered Entry",

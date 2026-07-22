@@ -1,4 +1,11 @@
-import { Meta, Canvas, Controls, Primary, Source, Markdown } from "@storybook/addon-docs/blocks";
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+  Markdown,
+} from "@storybook/addon-docs/blocks";
 import * as TabsStories from "./Tabs.stories.svelte";
 import * as TabsVariations from "./Tabs.variations.stories.svelte";
 import docsBody from "./tabs.docs-body.md?raw";
@@ -17,7 +24,12 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 
 ## Usage
 
-<Source language="html" code={"<script lang=\"ts\">\n  import * as Tabs from \"@stevejuma/ui/shadcn/tabs\";\n</script>\n\n<Tabs.Root value=\"account\" class=\"w-[400px]\">\n  <Tabs.List>\n    <Tabs.Trigger value=\"account\">Account</Tabs.Trigger>\n    <Tabs.Trigger value=\"password\">Password</Tabs.Trigger>\n  </Tabs.List>\n  <Tabs.Content value=\"account\">\n    Make changes to your account here.\n  </Tabs.Content>\n  <Tabs.Content value=\"password\">Change your password here.</Tabs.Content>\n</Tabs.Root>"} />
+<Source
+  language="html"
+  code={
+    '<script lang="ts">\n  import * as Tabs from "@stevejuma/ui/shadcn/tabs";\n</script>\n\n<Tabs.Root value="account" class="w-[400px]">\n  <Tabs.List>\n    <Tabs.Trigger value="account">Account</Tabs.Trigger>\n    <Tabs.Trigger value="password">Password</Tabs.Trigger>\n  </Tabs.List>\n  <Tabs.Content value="account">\n    Make changes to your account here.\n  </Tabs.Content>\n  <Tabs.Content value="password">Change your password here.</Tabs.Content>\n</Tabs.Root>'
+  }
+/>
 
 <Primary />
 
@@ -27,6 +39,4 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 
 ### Preview
 
-
 <Canvas of={TabsVariations.Preview} meta={TabsVariations} />
-

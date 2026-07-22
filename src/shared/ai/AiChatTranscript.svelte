@@ -34,7 +34,9 @@
         {/if}
 
         {#each messages as message (message.id)}
-          <div data-ui-part="message" data-role={message.role}>{message.text}</div>
+          <div data-ui-part="message" data-role={message.role}>
+            {message.text}
+          </div>
         {/each}
 
         {#if reviewChanges.length > 0}
@@ -72,7 +74,11 @@
     flex-direction: column;
   }
 
-  :global([data-ui-component="ai-chat-transcript"] [data-ui-part="scroll"] > [data-ui-component="scroll-area"]) {
+  :global(
+      [data-ui-component="ai-chat-transcript"]
+        [data-ui-part="scroll"]
+        > [data-ui-component="scroll-area"]
+    ) {
     min-height: 0;
     flex: 1 1 auto;
   }
@@ -123,19 +129,28 @@
     white-space: pre-wrap;
   }
 
-  :global([data-ui-component="ai-chat-transcript"] [data-ui-part="message"][data-role="user"]) {
+  :global(
+      [data-ui-component="ai-chat-transcript"]
+        [data-ui-part="message"][data-role="user"]
+    ) {
     margin-left: auto;
     background: var(--primary);
     color: var(--primary-foreground);
   }
 
-  :global([data-ui-component="ai-chat-transcript"] [data-ui-part="message"][data-role="assistant"]) {
+  :global(
+      [data-ui-component="ai-chat-transcript"]
+        [data-ui-part="message"][data-role="assistant"]
+    ) {
     margin-right: auto;
     background: var(--muted);
     color: var(--foreground);
   }
 
-  :global([data-ui-component="ai-chat-transcript"] [data-ui-part="message"][data-role="system"]) {
+  :global(
+      [data-ui-component="ai-chat-transcript"]
+        [data-ui-part="message"][data-role="system"]
+    ) {
     margin-inline: auto;
     max-width: 92%;
     background: var(--muted);
@@ -151,7 +166,9 @@
     padding: 0.5rem 0.75rem;
   }
 
-  :global([data-ui-component="ai-chat-transcript"] [data-ui-part="review-title"]) {
+  :global(
+      [data-ui-component="ai-chat-transcript"] [data-ui-part="review-title"]
+    ) {
     margin-bottom: 0.25rem;
     font-size: 0.75rem;
     font-weight: 500;
@@ -171,7 +188,9 @@
     color: var(--muted-foreground);
   }
 
-  :global([data-ui-component="ai-chat-transcript"] [data-ui-part="review-label"]) {
+  :global(
+      [data-ui-component="ai-chat-transcript"] [data-ui-part="review-label"]
+    ) {
     font-weight: 500;
     color: var(--foreground);
   }

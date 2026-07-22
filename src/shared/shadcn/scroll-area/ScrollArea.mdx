@@ -1,4 +1,11 @@
-import { Meta, Canvas, Controls, Primary, Source, Markdown } from "@storybook/addon-docs/blocks";
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+  Markdown,
+} from "@storybook/addon-docs/blocks";
 import * as ScrollAreaStories from "./ScrollArea.stories.svelte";
 import * as ScrollAreaVariations from "./ScrollArea.variations.stories.svelte";
 import docsBody from "./scroll-area.docs-body.md?raw";
@@ -17,7 +24,12 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 
 ## Usage
 
-<Source language="html" code={"<script lang=\"ts\">\n  import { ScrollArea } from \"@stevejuma/ui/shadcn/scroll-area\";\n</script>\n\n<ScrollArea class=\"h-[200px] w-[350px] rounded-md border p-4\">\n  Jokester began sneaking into the castle in the middle of the night and\n  leaving jokes all over the place: under the king's pillow, in his soup, even\n  in the royal toilet. The king was furious, but he couldn't seem to stop\n  Jokester. And then, one day, the people of the kingdom discovered that the\n  jokes left by Jokester were so funny that they couldn't help but laugh. And\n  once they started laughing, they couldn't stop.\n</ScrollArea>"} />
+<Source
+  language="html"
+  code={
+    '<script lang="ts">\n  import { ScrollArea } from "@stevejuma/ui/shadcn/scroll-area";\n</script>\n\n<ScrollArea class="h-[200px] w-[350px] rounded-md border p-4">\n  Jokester began sneaking into the castle in the middle of the night and\n  leaving jokes all over the place: under the king\'s pillow, in his soup, even\n  in the royal toilet. The king was furious, but he couldn\'t seem to stop\n  Jokester. And then, one day, the people of the kingdom discovered that the\n  jokes left by Jokester were so funny that they couldn\'t help but laugh. And\n  once they started laughing, they couldn\'t stop.\n</ScrollArea>'
+  }
+/>
 
 <Primary />
 
@@ -27,12 +39,13 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 
 ### Preview
 
-
 <Canvas of={ScrollAreaVariations.Preview} meta={ScrollAreaVariations} />
 
 ### Horizontal Scrolling
 
 Set the `orientation` prop to `"horizontal"` to enable horizontal scrolling.
 
-<Canvas of={ScrollAreaVariations.HorizontalScrolling} meta={ScrollAreaVariations} />
-
+<Canvas
+  of={ScrollAreaVariations.HorizontalScrolling}
+  meta={ScrollAreaVariations}
+/>

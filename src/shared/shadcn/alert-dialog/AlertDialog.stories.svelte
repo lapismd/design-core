@@ -36,7 +36,6 @@
     );
     await expect(canvas.getByRole("status")).toHaveTextContent("confirmed");
   }}
-
   tags={["visual-approved"]}
 >
   {#snippet template()}

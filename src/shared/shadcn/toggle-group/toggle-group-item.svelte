@@ -80,16 +80,20 @@
       border-width: 1px;
       border-color: var(--input);
       box-shadow:
-        var(--tw-inset-shadow, 0 0 #0000), var(--tw-inset-ring-shadow, 0 0 #0000),
-        var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
+        var(--tw-inset-shadow, 0 0 #0000),
+        var(--tw-inset-ring-shadow, 0 0 #0000),
+        var(--tw-ring-offset-shadow, 0 0 #0000),
+        var(--tw-ring-shadow, 0 0 #0000),
         0 1px 2px 0 var(--tw-shadow-color, #0000000d);
     }
 
     /* Joined outline group when spacing is 0 (default upstream look). */
     [data-ui-component="toggle-group"][data-ui-part="toggle-group"][data-spacing="0"][data-variant="outline"] {
       box-shadow:
-        var(--tw-inset-shadow, 0 0 #0000), var(--tw-inset-ring-shadow, 0 0 #0000),
-        var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
+        var(--tw-inset-shadow, 0 0 #0000),
+        var(--tw-inset-ring-shadow, 0 0 #0000),
+        var(--tw-ring-offset-shadow, 0 0 #0000),
+        var(--tw-ring-shadow, 0 0 #0000),
         0 1px 2px 0 var(--tw-shadow-color, #0000000d);
     }
 
@@ -128,11 +132,11 @@
     [data-ui-component="toggle-group"][data-ui-part="toggle-group-item"]:focus-visible {
       border-color: var(--ring);
       --tw-ring-color: var(--ring);
-      --tw-ring-shadow: var(--tw-ring-inset, ) 0 0 0
+      --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0
         calc(3px + var(--tw-ring-offset-width, 0px))
         var(--tw-ring-color, currentcolor);
-      box-shadow:
-        var(--tw-inset-shadow, 0 0 #0000), var(--tw-inset-ring-shadow, 0 0 #0000),
+      box-shadow: var(--tw-inset-shadow, 0 0 #0000),
+        var(--tw-inset-ring-shadow, 0 0 #0000),
         var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow),
         var(--tw-shadow, 0 0 #0000);
     }

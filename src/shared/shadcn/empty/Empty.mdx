@@ -1,4 +1,11 @@
-import { Meta, Canvas, Controls, Primary, Source, Markdown } from "@storybook/addon-docs/blocks";
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+  Markdown,
+} from "@storybook/addon-docs/blocks";
 import * as EmptyStories from "./Empty.stories.svelte";
 import * as EmptyVariations from "./Empty.variations.stories.svelte";
 import docsBody from "./empty.docs-body.md?raw";
@@ -17,7 +24,12 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 
 ## Usage
 
-<Source language="html" code={"<script lang=\"ts\">\n  import * as Empty from \"@stevejuma/ui/shadcn/empty\";\n  import FolderCodeIcon from \"@lucide/svelte/icons/folder-code\";\n</script>\n\n<Empty.Root>\n  <Empty.Header>\n    <Empty.Media variant=\"icon\">\n      <FolderCodeIcon />\n    </Empty.Media>\n    <Empty.Title>No data</Empty.Title>\n    <Empty.Description>No data found</Empty.Description>\n  </Empty.Header>\n  <Empty.Content>\n    <Button>Add data</Button>\n  </Empty.Content>\n</Empty.Root>"} />
+<Source
+  language="html"
+  code={
+    '<script lang="ts">\n  import * as Empty from "@stevejuma/ui/shadcn/empty";\n  import FolderCodeIcon from "@lucide/svelte/icons/folder-code";\n</script>\n\n<Empty.Root>\n  <Empty.Header>\n    <Empty.Media variant="icon">\n      <FolderCodeIcon />\n    </Empty.Media>\n    <Empty.Title>No data</Empty.Title>\n    <Empty.Description>No data found</Empty.Description>\n  </Empty.Header>\n  <Empty.Content>\n    <Button>Add data</Button>\n  </Empty.Content>\n</Empty.Root>'
+  }
+/>
 
 <Primary />
 
@@ -26,7 +38,6 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 ## Examples
 
 ### Preview
-
 
 <Canvas of={EmptyVariations.Preview} meta={EmptyVariations} />
 
@@ -41,4 +52,3 @@ Use the `border` utility class to create an outline empty state.
 Use the `bg-*` and `bg-gradient-*` utilities to add a background to the empty state.
 
 <Canvas of={EmptyVariations.Background} meta={EmptyVariations} />
-

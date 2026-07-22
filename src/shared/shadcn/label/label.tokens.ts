@@ -6,5 +6,4 @@ export const labelTokenNames = {
   focusRingColor: "--ui-label-focus-ring-color",
 } as const;
 
-export type LabelToken =
-  (typeof labelTokenNames)[keyof typeof labelTokenNames];
+export type LabelToken = (typeof labelTokenNames)[keyof typeof labelTokenNames];

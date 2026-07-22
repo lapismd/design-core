@@ -20,6 +20,7 @@ Display additional information or actions to an input or textarea.
   import SearchIcon from "@lucide/svelte/icons/search";
   import ArrowUpIcon from "@lucide/svelte/icons/arrow-up";
 </script>
+
 <div class="grid w-full max-w-sm gap-6">
   <InputGroup.Root>
     <InputGroup.Input placeholder="Search..." />
@@ -147,6 +148,7 @@ bun x shadcn-svelte@latest add input-group
   import SearchIcon from "@lucide/svelte/icons/search";
   import StarIcon from "@lucide/svelte/icons/star";
 </script>
+
 <div class="grid w-full max-w-sm gap-6">
   <InputGroup.Root>
     <InputGroup.Input placeholder="Search..." />
@@ -189,6 +191,7 @@ Display additional text information alongside inputs.
 <script lang="ts">
   import * as InputGroup from "$lib/components/ui/input-group/index.js";
 </script>
+
 <div class="grid w-full max-w-sm gap-6">
   <InputGroup.Root>
     <InputGroup.Addon>
@@ -243,6 +246,7 @@ Add buttons to perform actions within the input group.
   let isFavorite = $state(false);
   const clipboard = new UseClipboard();
 </script>
+
 <div class="grid w-full max-w-sm gap-6">
   <InputGroup.Root>
     <InputGroup.Input placeholder="https://x.com/shadcn" readonly />
@@ -315,6 +319,7 @@ Add tooltips to provide additional context or help.
   import HelpCircleIcon from "@lucide/svelte/icons/help-circle";
   import InfoIcon from "@lucide/svelte/icons/info";
 </script>
+
 <div class="grid w-full max-w-sm gap-4">
   <InputGroup.Root>
     <InputGroup.Input placeholder="Enter password" type="password" />
@@ -399,6 +404,7 @@ Input groups also work with textarea components. Use `block-start` or `block-end
   import IconRefresh from "@tabler/icons-svelte/icons/refresh";
   import * as InputGroup from "$lib/components/ui/input-group/index.js";
 </script>
+
 <div class="grid w-full max-w-md gap-4">
   <InputGroup.Root>
     <InputGroup.Addon align="block-start" class="border-b">
@@ -439,6 +445,7 @@ Show loading indicators while processing input.
   import { Spinner } from "$lib/components/ui/spinner/index.js";
   import LoaderIcon from "@lucide/svelte/icons/loader";
 </script>
+
 <div class="grid w-full max-w-sm gap-4">
   <InputGroup.Root data-disabled>
     <InputGroup.Input placeholder="Searching..." disabled />
@@ -486,6 +493,7 @@ Add labels within input groups to improve accessibility.
   import * as Tooltip from "$lib/components/ui/tooltip/index.js";
   import InfoIcon from "@lucide/svelte/icons/info";
 </script>
+
 <div class="grid w-full max-w-sm gap-4">
   <InputGroup.Root>
     <InputGroup.Input id="email" placeholder="shadcn" />
@@ -533,6 +541,7 @@ Pair input groups with dropdown menus for complex interactions.
   import ChevronDownIcon from "@lucide/svelte/icons/chevron-down";
   import MoreHorizontalIcon from "@lucide/svelte/icons/more-horizontal";
 </script>
+
 <div class="grid w-full max-w-sm gap-4">
   <InputGroup.Root>
     <InputGroup.Input placeholder="Enter file name" />
@@ -597,6 +606,7 @@ Wrap input groups with button groups to create prefixes and suffixes.
   import * as Label from "$lib/components/ui/label/index.js";
   import Link2Icon from "@lucide/svelte/icons/link-2";
 </script>
+
 <div class="grid w-full max-w-sm gap-6">
   <ButtonGroup.Root>
     <ButtonGroup.Text>
@@ -625,6 +635,7 @@ No style is applied to the custom input. Apply your own styles using the `class`
 <script lang="ts">
   import * as InputGroup from "$lib/components/ui/input-group/index.js";
 </script>
+
 <div class="grid w-full max-w-sm gap-6">
   <InputGroup.Root>
     <textarea

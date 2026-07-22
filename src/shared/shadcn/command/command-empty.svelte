@@ -1,18 +1,18 @@
 <script lang="ts">
-	import { Command as CommandPrimitive } from "bits-ui";
-	
-	let {
-		ref = $bindable(null),
-		class: className,
-		...restProps
-	}: CommandPrimitive.EmptyProps = $props();
+  import { Command as CommandPrimitive } from "bits-ui";
+
+  let {
+    ref = $bindable(null),
+    class: className,
+    ...restProps
+  }: CommandPrimitive.EmptyProps = $props();
 </script>
 
 <CommandPrimitive.Empty
-	bind:ref
-		data-ui-component="command"
-	data-ui-part="command-empty"
-	data-slot="command-empty"
-	class={className}
-	{...restProps}
+  bind:ref
+  data-ui-component="command"
+  data-ui-part="command-empty"
+  data-slot="command-empty"
+  class={className}
+  {...restProps}
 />

@@ -289,12 +289,9 @@
           backgroundColor: "color-mix(in oklab, #16a34a 14%, transparent)",
         },
         ".cm-ai-review-block": {
-          backgroundColor:
-            "var(--ui-form-background)",
-          borderTop:
-            "1px solid var(--ui-form-border)",
-          borderBottom:
-            "1px solid var(--ui-form-border)",
+          backgroundColor: "var(--ui-form-background)",
+          borderTop: "1px solid var(--ui-form-border)",
+          borderBottom: "1px solid var(--ui-form-border)",
           fontFamily:
             "var(--studio-font-mono, var(--font-mono, 'Source Code Pro Variable', 'Source Code Pro', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace))",
           fontSize: "13px",
@@ -312,8 +309,7 @@
           whiteSpace: "normal",
         },
         ".cm-ai-review-title": {
-          color:
-            "var(--ui-form-foreground)",
+          color: "var(--ui-form-foreground)",
           fontFamily: "var(--font-sans)",
           fontSize: "12px",
           fontWeight: "600",
@@ -331,8 +327,7 @@
           backgroundColor: "transparent",
           border: "0",
           borderRadius: "4px",
-          color:
-            "var(--ui-form-foreground)",
+          color: "var(--ui-form-foreground)",
           cursor: "pointer",
           fontFamily: "var(--font-sans)",
           fontSize: "12px",
@@ -399,8 +394,7 @@
           ...(fillParent
             ? { height: "100%", minHeight: 0 }
             : { minHeight, height: "auto" }),
-          color:
-            "var(--ui-form-foreground)",
+          color: "var(--ui-form-foreground)",
           backgroundColor: "transparent",
         },
         "&.cm-focused": {
@@ -421,33 +415,24 @@
           padding: "0.75rem",
         },
         ".cm-gutters": {
-          color:
-            "var(--ui-form-muted)",
-          backgroundColor:
-            "var(--ui-form-gutter)",
-          borderRightColor:
-            "var(--ui-form-border)",
+          color: "var(--ui-form-muted)",
+          backgroundColor: "var(--ui-form-gutter)",
+          borderRightColor: "var(--ui-form-border)",
         },
         ".cm-activeLine, .cm-activeLineGutter": {
-          backgroundColor:
-            "var(--ui-form-active-line)",
+          backgroundColor: "var(--ui-form-active-line)",
         },
         ".cm-selectionBackground, &.cm-focused .cm-selectionBackground": {
-          backgroundColor:
-            "var(--ui-form-selection-strong)",
+          backgroundColor: "var(--ui-form-selection-strong)",
         },
         ".cm-cursor": {
-          borderLeftColor:
-            "var(--ui-form-foreground)",
+          borderLeftColor: "var(--ui-form-foreground)",
         },
         ".cm-tooltip": {
           borderRadius: "calc(var(--radius, 0.625rem) - 0.125rem)",
-          borderColor:
-            "var(--ui-form-border)",
-          backgroundColor:
-            "var(--ui-form-popover)",
-          color:
-            "var(--ui-form-foreground)",
+          borderColor: "var(--ui-form-border)",
+          backgroundColor: "var(--ui-form-popover)",
+          color: "var(--ui-form-foreground)",
           boxShadow:
             "0 12px 24px color-mix(in srgb, var(--foreground) 16%, transparent)",
           fontFamily:
@@ -462,8 +447,7 @@
         },
         ".cm-tooltip-autocomplete > ul": {
           backgroundColor: "transparent",
-          color:
-            "var(--ui-form-foreground)",
+          color: "var(--ui-form-foreground)",
           fontSize: "0.75rem",
           lineHeight: "1.4",
         },
@@ -471,14 +455,11 @@
           padding: "0.25rem 0.45rem",
         },
         ".cm-tooltip-autocomplete > ul > li[aria-selected]": {
-          backgroundColor:
-            "var(--ui-form-active-line)",
-          color:
-            "var(--ui-form-foreground)",
+          backgroundColor: "var(--ui-form-active-line)",
+          color: "var(--ui-form-foreground)",
         },
         ".cm-completionDetail": {
-          color:
-            "var(--ui-form-muted)",
+          color: "var(--ui-form-muted)",
         },
         ".cm-tooltip-autocomplete > ul > li[aria-selected] .cm-completionDetail":
           {
@@ -513,8 +494,7 @@
           },
           {
             tag: tags.string,
-            color:
-              "var(--ui-form-foreground)",
+            color: "var(--ui-form-foreground)",
           },
           {
             tag: tags.propertyName,
@@ -522,13 +502,11 @@
           },
           {
             tag: tags.comment,
-            color:
-              "var(--ui-form-muted)",
+            color: "var(--ui-form-muted)",
           },
           {
             tag: tags.punctuation,
-            color:
-              "var(--ui-form-muted)",
+            color: "var(--ui-form-muted)",
           },
         ]),
       ),

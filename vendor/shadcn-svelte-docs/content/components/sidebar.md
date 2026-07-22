@@ -1049,9 +1049,7 @@ Here are some tips for styling the sidebar based on different states.
 ```svelte
 <Sidebar.MenuItem>
   <Sidebar.MenuButton />
-  <Sidebar.MenuAction
-    class="peer-data-[active=true]/menu-button:opacity-100"
-  />
+  <Sidebar.MenuAction class="peer-data-[active=true]/menu-button:opacity-100" />
 </Sidebar.MenuItem>
 ```
 

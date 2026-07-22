@@ -17,8 +17,8 @@ Import: `@stevejuma/ui/shadcn/<family>`
 **Native CSS conversion** (scoped CSS + `<family>.tokens.ts` + `<family>.provenance.json`
 via `pnpm ui:add` / `pnpm ui:add:batch`):
 
-| Status    | Families                                                                                                                                                                                                                                                                         |
-| --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Status    | Families                                                                                                                                                                                                                                                                                |
+| --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Converted | accordion, alert, alert-dialog, badge, button, card, collapsible, command, dialog, sheet, dropdown-menu, empty, field, input, input-group, label, popover, resizable, scroll-area, select, separator, sidebar, skeleton, spinner, switch, tabs, textarea, toggle, toggle-group, tooltip |
 
 Batch commands: `pnpm ui:add:batch a` (simple roots), `b` (stateful/light compound),
@@ -29,26 +29,46 @@ Batch commands: `pnpm ui:add:batch a` (simple roots), `b` (stateful/light compou
 Config-driven form engine and field primitives in `src/shared/forms/<family>/`:
 
 **Engine** (`structured-form/`, `core/`): `StructuredForm`, `FormFieldRenderer`,
-`FormViewRenderer`, `YamlBackedForm`, `builders` / `types` / `registry` /
-`core`
+`FormViewRenderer`, `YamlBackedForm`, `JsonBackedForm`, `PatchableForm`,
+`builders` / `types` / `registry` / `core` / `json-patch` / `patch-review` /
+`review-diff`
 
 **Primitives** (one kebab-case folder each): `form-field`,
-`form-section-header`, `entry-actions`, `collapsible-item-list`,
-`add-section-chooser`, `segmented-control`, `inline-option-picker`,
-`autocomplete-input`, `chip-autocomplete`, `list-editor`,
-`sortable-array-item`, `read-only-form`, `search-filter-bar`,
-`reference-picker`, `task-due-calendar`
+`form-section-header`, `form-toolbar`, `form-add-button`, `form-sheet`,
+`entry-actions`, `collapsible-item-list`, `add-section-chooser`,
+`segmented-control`, `inline-option-picker`, `autocomplete-input`,
+`chip-autocomplete`, `list-editor`, `sortable-array-item`, `secret-field`,
+`filter-command-picker`, `date-picker`,
+`reference-picker`, `task-due-calendar`, `form-review`
 
 Removed as duplicates of shadcn / thin aliases: `choice-menu` (use Select),
 `tag-editor` (use `ChipAutocomplete`), `searchable-choice-picker` (use
-Command + Popover).
+`FilterCommandPicker`), `read-only-form` (use `FormField` `readonly` /
+`ReferencePicker` preview).
 
-**Runtime editors:** `code-editor`, `yaml-editor`
+**Runtime editors:** `code-editor`, `code-highlighter`, `yaml-editor`
+
+**Patch review:** `PatchableForm` orchestrates Keep/Undo over structured fields
+and YAML hunks; `form-review/` provides `UnifiedReviewDiff`,
+`FieldReviewActions`, and reviewed field renderers (`ReviewedTextFormField`,
+`ReviewedStringListFormField`) built on `FormField` / `ListEditor`.
 
 Borderline but shared when prop-driven: `ReferencePicker`, `TaskDueCalendar`,
-`SearchFilterBar`, `AddSectionChooser`
+`DatePicker`, `FilterCommandPicker`, `AddSectionChooser`
 
 Import: `@stevejuma/ui/forms` and `@stevejuma/ui/forms/core`
+
+## Shared — filter
+
+Search chrome and Fava-inspired filter-query language in `src/shared/filter/`:
+
+- `SearchFilterBar` — plain or `filter-query` CodeMirror mode + host
+  `filterSyntax` autocomplete
+- `filter-query/` — Lezer grammar, `parseFilterQuery`, `filterQuery()` language
+  support
+
+Import: `@stevejuma/ui/filter`. Catalog: `Filter/...`. Guidance: `Filter/Guidance`.
+Forms may compose the bar; do not re-export it from `@stevejuma/ui/forms`.
 
 ## Shared — workspace-shell
 

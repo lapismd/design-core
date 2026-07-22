@@ -1,8 +1,4 @@
-import type {
-  UpstreamDocs,
-  UpstreamExample,
-  UpstreamUsage,
-} from "./types.js";
+import type { UpstreamDocs, UpstreamExample, UpstreamUsage } from "./types.js";
 import { upstreamDocsUrl } from "./fetch-upstream-docs.js";
 
 function slugify(name: string): string {
@@ -37,10 +33,7 @@ function isH3(line: string): boolean {
   return /^###\s+/.test(line.trim());
 }
 
-function extractFencedBlocks(
-  section: string,
-  lang?: string,
-): string[] {
+function extractFencedBlocks(section: string, lang?: string): string[] {
   const blocks: string[] = [];
   const re = /```([a-zA-Z0-9_-]*)\n([\s\S]*?)```/g;
   let match: RegExpExecArray | null;
@@ -84,7 +77,8 @@ function splitByH2(markdown: string): Array<{ title: string; body: string }> {
   for (const line of lines) {
     if (isH2(line)) {
       flush();
-      currentTitle = parseHeadingTitle(line) ?? line.replace(/^##\s+/, "").trim();
+      currentTitle =
+        parseHeadingTitle(line) ?? line.replace(/^##\s+/, "").trim();
       currentBody = [];
       continue;
     }
@@ -150,7 +144,11 @@ export function stripSponsorCopy(text: string): string {
     }
     if (skippingSponsor) {
       if (!trimmed) continue;
-      if (/EpicenterHQ\/epicenter|Special Sponsor|Local-first, open source/i.test(trimmed)) {
+      if (
+        /EpicenterHQ\/epicenter|Special Sponsor|Local-first, open source/i.test(
+          trimmed,
+        )
+      ) {
         continue;
       }
       skippingSponsor = false;
@@ -230,7 +228,11 @@ function parseHeroExample(markdown: string): UpstreamExample | null {
     if (isH2(line)) break;
     heroLines.push(line);
   }
-  const example = exampleFromSection("Preview", "preview", heroLines.join("\n"));
+  const example = exampleFromSection(
+    "Preview",
+    "preview",
+    heroLines.join("\n"),
+  );
   return example;
 }
 

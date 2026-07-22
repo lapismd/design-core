@@ -1,4 +1,11 @@
-import { Meta, Canvas, Controls, Primary, Source, Markdown } from "@storybook/addon-docs/blocks";
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+  Markdown,
+} from "@storybook/addon-docs/blocks";
 import * as SkeletonStories from "./Skeleton.stories.svelte";
 import * as SkeletonVariations from "./Skeleton.variations.stories.svelte";
 import docsBody from "./skeleton.docs-body.md?raw";
@@ -17,7 +24,12 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 
 ## Usage
 
-<Source language="html" code={"<script lang=\"ts\">\n  import { Skeleton } from \"@stevejuma/ui/shadcn/skeleton\";\n</script>\n\n<Skeleton class=\"h-[20px] w-[100px] rounded-full\" />"} />
+<Source
+  language="html"
+  code={
+    '<script lang="ts">\n  import { Skeleton } from "@stevejuma/ui/shadcn/skeleton";\n</script>\n\n<Skeleton class="h-[20px] w-[100px] rounded-full" />'
+  }
+/>
 
 <Primary />
 
@@ -27,11 +39,8 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 
 ### Preview
 
-
 <Canvas of={SkeletonVariations.Preview} meta={SkeletonVariations} />
 
 ### Card
 
-
 <Canvas of={SkeletonVariations.Card} meta={SkeletonVariations} />
-

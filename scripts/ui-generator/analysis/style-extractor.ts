@@ -156,7 +156,10 @@ function extractBalancedCall(
   openParenIndex: number,
 ): { text: string; end: number } {
   if (source[openParenIndex] !== "(") {
-    throw new GeneratorError("Expected '(' for cn() extraction", EXIT.unsupported);
+    throw new GeneratorError(
+      "Expected '(' for cn() extraction",
+      EXIT.unsupported,
+    );
   }
   let depth = 0;
   let inString: '"' | "'" | "`" | null = null;
@@ -215,7 +218,8 @@ export function extractFamilyFromFiles(
       if (sites.length) {
         const merged = mergeSitesToExtraction(sites);
         extraction = {
-          kind: merged.baseClasses.length || merged.markers.length ? "cn" : "empty",
+          kind:
+            merged.baseClasses.length || merged.markers.length ? "cn" : "empty",
           baseClasses: merged.baseClasses,
           axes: [],
           classMaps: {},
@@ -229,12 +233,8 @@ export function extractFamilyFromFiles(
       // they emit no utilities of their own but appear in compound selectors.
       const classIdx = file.source.indexOf("class={");
       const composedFrom =
-        classIdx >= 0
-          ? composedFamilyFromTag(file.source, classIdx)
-          : null;
-      const slotMatch = /data-slot=(?:"([^"]*)"|'([^']*)')/.exec(
-        file.source,
-      );
+        classIdx >= 0 ? composedFamilyFromTag(file.source, classIdx) : null;
+      const slotMatch = /data-slot=(?:"([^"]*)"|'([^']*)')/.exec(file.source);
       const markers = extraction.baseClasses.filter(isMarkerCandidate);
       const baseClasses = extraction.baseClasses.filter(
         (c) => !isMarkerCandidate(c),

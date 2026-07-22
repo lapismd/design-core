@@ -1,4 +1,10 @@
-import { Meta, Canvas, Controls, Primary, Source } from "@storybook/addon-docs/blocks";
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+} from "@storybook/addon-docs/blocks";
 import * as FormPlaceholderStories from "./FormPlaceholder.stories.svelte";
 import * as FormPlaceholderVariations from "./FormPlaceholder.variations.stories.svelte";
 
@@ -29,7 +35,12 @@ See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and the shared
 
 ## Usage
 
-<Source language="html" code={"<FormSectionHeader title=\"Experience\" open>\n  <FormPlaceholder>Section body</FormPlaceholder>\n</FormSectionHeader>"} />
+<Source
+  language="html"
+  code={
+    '<FormSectionHeader title="Experience" open>\n  <FormPlaceholder>Section body</FormPlaceholder>\n</FormSectionHeader>'
+  }
+/>
 
 <Primary />
 
@@ -49,4 +60,7 @@ Basic placeholder copy.
 
 Taller stub to judge vertical rhythm.
 
-<Canvas of={FormPlaceholderVariations.TallBody} meta={FormPlaceholderVariations} />
+<Canvas
+  of={FormPlaceholderVariations.TallBody}
+  meta={FormPlaceholderVariations}
+/>
