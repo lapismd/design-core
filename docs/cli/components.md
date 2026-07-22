@@ -1,7 +1,7 @@
 ---
 name: components
 command: ui components
-summary: List or show local component docs across shadcn, forms, AI, workspace, and apps.
+summary: List or show local component docs across shadcn, forms, AI, apps, and tasks.
 ---
 
 ## Usage
@@ -19,14 +19,13 @@ pnpm ui:components <name>
 
 Inventories every package surface:
 
-| Layer             | Source                                          |
-| ----------------- | ----------------------------------------------- |
-| `shadcn`          | `*.docs.md` + `*.example-sources.ts`            |
-| `forms`           | colocated `*.mdx` (+ variation story templates) |
-| `ai`              | stories (+ AI overview)                         |
-| `workspace-shell` | stories                                         |
-| `apps`            | app stories under `src/apps/*`                  |
-| `workspace`       | `@stevejuma/workspace` component stories        |
+| Layer    | Source                                          |
+| -------- | ----------------------------------------------- |
+| `shadcn` | `*.docs.md` + `*.example-sources.ts`            |
+| `forms`  | colocated `*.mdx` (+ variation story templates) |
+| `ai`     | stories (+ AI overview)                         |
+| `apps`   | app stories under `src/apps/*`                  |
+| `tasks`  | `@stevejuma/tasks` component contracts          |
 
 Keys are `layer/id` (e.g. `shadcn/button`, `forms/form-field`). Bare ids work
 when unique; ambiguous names require the qualified key.
@@ -48,5 +47,5 @@ pnpm ui components
 pnpm ui components --layer forms
 pnpm ui components button
 pnpm ui components forms/form-field
-pnpm ui components workspace/workspace-shell --json
+pnpm ui components tasks/task-row --json
 ```

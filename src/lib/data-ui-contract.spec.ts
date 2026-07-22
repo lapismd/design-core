@@ -12,14 +12,6 @@ import {
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const srcRoot = path.resolve(dirname, "..");
 const shadcnRoot = path.join(srcRoot, "shared", "shadcn");
-const workspaceRoot = path.resolve(
-  srcRoot,
-  "..",
-  "packages",
-  "workspace",
-  "src",
-  "lib",
-);
 
 /** Avoid Storybook/vitest HTML pipelines stripping `<style>` from fixtures. */
 const STYLE_CLOSE = "</" + "style>";
@@ -195,10 +187,8 @@ describe("data-ui-contract source scan", () => {
     const catalog = loadDataUiHostCatalog(shadcnRoot);
     const roots = [
       path.join(srcRoot, "shared", "ai"),
-      path.join(srcRoot, "shared", "workspace-shell"),
       path.join(srcRoot, "shared", "forms"),
       path.join(srcRoot, "apps"),
-      workspaceRoot,
     ];
     const files = roots.flatMap((root) => walkSvelteFiles(root));
     expect(files.length).toBeGreaterThan(10);

@@ -33,7 +33,7 @@
       description: { story: "Dashed add button idle state." },
     },
   }}
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <AddSectionChooser
@@ -69,7 +69,7 @@
       description: { story: "Title field + type chips after opening add." },
     },
   }}
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <AddSectionChooser

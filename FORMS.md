@@ -98,11 +98,7 @@ Custom `*FormField.svelte` renderers and CV/beancount domain editors belong unde
 
 The living CV form composition is **`CvWorkspaceForm`** (`Apps/CV/CV Form`): five
 tabs (CV / Evidence / Design / Locale / Settings), section editors, YAML mode,
-and prop-driven fixtures — no Studio store.
-
-The full workspace shell (sidebar + form + AI rail) is **`Apps/CV/CV Workspace`**,
-built from `@stevejuma/ui/workspace-shell`, `@stevejuma/ui/ai`, and
-`@stevejuma/ui/apps/cv` — still fixture/stub only (no live `/api/ai`).
+and prop-driven fixtures — no host app store.
 
 ## Storybook
 

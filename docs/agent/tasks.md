@@ -31,8 +31,7 @@ product and not an excuse to bypass the catalog's component rules.
 - Use `@stevejuma/ui/forms` `TaskDueCalendar` for the first due-date picker.
 - Add Checkbox, Avatar, and ContextMenu only when their implementation slice
   needs them, via `pnpm ui:add <family>`; update `COMPONENT_AUDIT.md`.
-- Keep the responsive pager and task selection coordination local to Tasks; do
-  not bend `@stevejuma/workspace` into a mobile task navigator.
+- Keep the responsive pager and task selection coordination local to Tasks.
 
 ## Evidence and privacy
 

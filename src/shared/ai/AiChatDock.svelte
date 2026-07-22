@@ -114,15 +114,15 @@
 
 <style>
   :global([data-ui-component="ai-chat-dock"][data-ui-part="root"]) {
-    --ui-ai-width-expanded: var(--ui-workspace-ai-width-expanded, 20rem);
-    --ui-ai-width-collapsed: var(--ui-workspace-ai-width-collapsed, 3rem);
+    --ui-ai-width-expanded: 20rem;
+    --ui-ai-width-collapsed: 3rem;
     --ui-ai-z-index: 70;
     pointer-events: none;
     z-index: var(--ui-ai-z-index);
     display: flex;
   }
 
-  /* Pin to the shell provider so the rail is end-to-end (top→bottom). */
+  /* Pin to the host so the rail is end-to-end (top→bottom). */
   :global(
       [data-ui-component="ai-chat-dock"][data-ui-part="root"][data-placement="right"]
     ) {

@@ -120,17 +120,11 @@ Hello
     expect(doc.sources.some((s) => s.endsWith("FormField.mdx"))).toBe(true);
   });
 
-  it("shows AI and workspace components from stories", () => {
+  it("shows AI components from stories", () => {
     const ai = getComponent(packageRoot, "ai/ai-chat-panel");
     expect(ai.layer).toBe("ai");
     expect(ai.import).toBe("@stevejuma/ui/ai");
     expect(ai.body).toContain("Import");
-
-    const workspace = listComponents(packageRoot, { layer: "workspace" });
-    expect(workspace.length).toBeGreaterThan(0);
-    const shell = getComponent(packageRoot, workspace[0]!.key);
-    expect(shell.layer).toBe("workspace");
-    expect(shell.import).toBe("@stevejuma/workspace");
   });
 
   it("shows Tasks implementation contracts from package-local specs", () => {

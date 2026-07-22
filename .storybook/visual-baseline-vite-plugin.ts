@@ -247,16 +247,12 @@ export function visualBaselineVisualDeltaPlugin(): Plugin {
             ? `forms/${formsDir}`
             : appsDir && title.startsWith("Apps/")
               ? `apps/${appsDir}`
-              : normalized.includes(
-                    "/packages/workspace/src/lib/components/",
-                  ) && title.startsWith("Workspace/")
-                ? "workspace/components"
-                : normalized.includes("/packages/tasks/src/") &&
-                    title.startsWith("Tasks/")
-                  ? normalized
-                      .replace(/^.*?\/packages\/tasks\/src\//, "tasks/")
-                      .replace(/\/[^/]+\.stories\.\w+$/, "")
-                  : undefined;
+              : normalized.includes("/packages/tasks/src/") &&
+                  title.startsWith("Tasks/")
+                ? normalized
+                    .replace(/^.*?\/packages\/tasks\/src\//, "tasks/")
+                    .replace(/\/[^/]+\.stories\.\w+$/, "")
+                : undefined;
       if (!directory) return null;
 
       const next = injectVisualBaselineVisualDeltas(

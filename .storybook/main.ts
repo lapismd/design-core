@@ -37,7 +37,6 @@ const config: StorybookConfig = {
   stories: [
     "../src/**/*.mdx",
     "../src/**/*.stories.@(js|jsx|ts|tsx|svelte)",
-    "../packages/workspace/src/**/*.stories.@(js|jsx|ts|tsx|svelte)",
     "../packages/tasks/src/**/*.mdx",
     "../packages/tasks/src/**/*.stories.@(js|jsx|ts|tsx|svelte)",
   ],
@@ -47,6 +46,7 @@ const config: StorybookConfig = {
     "@storybook/addon-svelte-csf",
     "@storybook/addon-vitest",
     "@storybook/addon-mcp",
+    "@storybook/addon-themes",
     // Absolute local preset → package `src/` (not node_modules package name).
     import.meta.resolve("./visual-delta-preset.ts"),
     "storybook-addon-tag-badges",

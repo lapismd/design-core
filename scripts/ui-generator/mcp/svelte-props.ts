@@ -356,7 +356,7 @@ export function findPrimarySvelteFile(
   );
   if (match) return path.join(dir, match);
 
-  // workspace-shell / nested: search one level
+  // Nested component trees: search one level
   for (const name of readdirSync(dir, { withFileTypes: true })) {
     if (!name.isDirectory()) continue;
     const nested = findPrimarySvelteFile(path.join(dir, name.name), id);

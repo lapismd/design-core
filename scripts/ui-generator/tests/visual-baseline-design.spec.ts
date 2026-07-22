@@ -24,16 +24,16 @@ describe("visual-baseline-design", () => {
     );
   });
 
-  it("maps workspace stories to their package-local baseline directory", () => {
+  it("maps Tasks stories to their package-local baseline directory", () => {
     expect(
       baselineUrlForStory({
-        title: "Workspace/Workspace Shell",
-        id: "workspace-workspace-shell--three-regions",
+        title: "Tasks/Components/Task Row",
+        id: "tasks-components-task-row--default",
         importPath:
-          "packages/workspace/src/lib/components/WorkspaceShell.stories.svelte",
+          "packages/tasks/src/components/task-row/TaskRow.stories.svelte",
       }),
     ).toBe(
-      `/visual-baselines/workspace/components/three-regions${VISUAL_BASELINE_SUFFIX}.png`,
+      `/visual-baselines/tasks/components/task-row/default${VISUAL_BASELINE_SUFFIX}.png`,
     );
   });
 
@@ -132,33 +132,34 @@ describe("visual-baseline-design", () => {
     expect(out).toContain("play={async ({ canvas }) => {");
   });
 
-  it("injects package-local workspace visual baselines", () => {
+  it("injects package-local visual baselines when screenshots exist", () => {
     const source = `
 <script module lang="ts">
-  const { Story } = defineMeta({ title: "Workspace/Workspace Shell" });
+  const { Story } = defineMeta({ title: "Tasks/Components/Task Row" });
 </script>
-<Story name="Three regions">{#snippet template()}ok{/snippet}</Story>`;
+<Story name="Default">{#snippet template()}ok{/snippet}</Story>`;
     const out = injectVisualBaselineVisualDeltas(
       source,
-      "workspace/components",
+      "tasks/components/task-row",
+      () => true,
     );
     expect(out).toContain(
-      `"images":["/visual-baselines/workspace/components/three-regions${VISUAL_BASELINE_SUFFIX}.png"]`,
+      `"images":["/visual-baselines/tasks/components/task-row/default${VISUAL_BASELINE_SUFFIX}.png"]`,
     );
   });
 
-  it("does not inject workspace visual baselines for missing committed screenshots", () => {
+  it("does not inject package-local visual baselines for missing committed screenshots", () => {
     const source = `
 <script module lang="ts">
-  const { Story } = defineMeta({ title: "Workspace/Workspace Stacked Tabs" });
+  const { Story } = defineMeta({ title: "Tasks/Components/Task Row" });
 </script>
-<Story name="Selects the expanded view">{#snippet template()}ok{/snippet}</Story>`;
+<Story name="Missing shot">{#snippet template()}ok{/snippet}</Story>`;
     const out = injectVisualBaselineVisualDeltas(
       source,
-      "workspace/components",
+      "tasks/components/task-row",
       () => false,
     );
     expect(out).not.toContain("visualDelta:");
-    expect(out).not.toContain("selects-the-expanded-view");
+    expect(out).not.toContain("missing-shot");
   });
 });

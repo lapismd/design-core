@@ -1,7 +1,7 @@
 ---
 id: layers
 title: Package layers
-summary: Choose shadcn, forms, filter, workspace shell, AI, or app-specific UI.
+summary: Choose shadcn, forms, filter, AI, apps, or tasks.
 sources:
   - README.md
   - COMPONENT_AUDIT.md
@@ -25,14 +25,10 @@ existing family already covers the need.
 3. **Filter** (`src/shared/filter/`) — search chrome and filter-query language
    (`SearchFilterBar`, `parseFilterQuery`, host `filterSyntax`). Import from
    `@stevejuma/ui/filter`. Catalog: `Filter/...`. Guidance: `Filter/Guidance`.
-4. **Workspace shell** (`src/shared/workspace-shell/`) — prop-driven Studio
-   chrome (sidebar / main / AI regions). No app routers or workspace context.
-5. **AI** (`src/shared/ai/`) — shared AI panel primitives. Catalog: `AI/...`.
-6. **Apps** (`src/apps/cv`, `src/apps/beancount`) — domain UI only. Receive props
+4. **AI** (`src/shared/ai/`) — shared AI panel primitives. Catalog: `AI/...`.
+5. **Apps** (`src/apps/cv`, `src/apps/beancount`) — domain UI only. Receive props
    and callbacks. Catalog: `Apps/CV/...`, `Apps/Beancount/...`.
-7. **Workspace package** (`packages/workspace`) — separate `@stevejuma/workspace`
-   surface. See that package's `VENDOR.md`.
-8. **Tasks reference** (`packages/tasks`) — clean-room task product contracts,
+6. **Tasks reference** (`packages/tasks`) — clean-room task product contracts,
    synthetic fixtures, capture evidence, and a scoped companion theme. Read
    `pnpm ui guide tasks` before implementing its future components.
 
@@ -43,11 +39,10 @@ existing family already covers the need.
   code (stories may compose forms pickers).
 - `shared/forms` may import shadcn and filter; must not import apps.
 - `apps/*` may import shared; must not import sibling apps.
-- App components take props/callbacks — no application routers or workspace
+- App components take props/callbacks — no application routers or host app
   context imports.
 - Tasks composes shared primitives but owns task-specific responsive pager and
-  task selection behavior; it does not import `@stevejuma/workspace` for mobile
-  navigation.
+  task selection behavior.
 
 ## Classification
 

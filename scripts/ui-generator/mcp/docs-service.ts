@@ -229,7 +229,7 @@ export function createDocsService(options: DocsServiceOptions) {
         const lines: string[] = [
           "# @stevejuma/ui",
           "",
-          "> Local LLM-friendly documentation for the UI package (shadcn, forms, AI, workspace, apps, tasks). Generated from package sources — not upstream Storybook React manifests.",
+          "> Local LLM-friendly documentation for the UI package (shadcn, forms, AI, apps, tasks). Generated from package sources — not upstream Storybook React manifests.",
           "",
           `MCP: ${origin}${mcpPath}`,
           "",

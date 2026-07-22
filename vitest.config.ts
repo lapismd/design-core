@@ -19,9 +19,24 @@ export default mergeConfig(
             environment: "node",
             include: [
               "src/**/*.spec.ts",
-              "packages/workspace/src/**/*.spec.ts",
               "packages/tasks/src/**/*.spec.ts",
               "scripts/ui-generator/**/*.spec.ts",
+            ],
+          },
+        },
+        {
+          extends: true,
+          resolve: {
+            dedupe: ["react", "react-dom"],
+          },
+          test: {
+            name: "visual-delta",
+            environment: "jsdom",
+            include: [
+              "packages/storybook-addon-visual-delta/src/**/*.{spec,test}.{ts,tsx}",
+            ],
+            setupFiles: [
+              "./packages/storybook-addon-visual-delta/src/test/setup.ts",
             ],
           },
         },

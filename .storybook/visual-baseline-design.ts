@@ -36,7 +36,6 @@ const WIRED_SNAPSHOT_PREFIXES = [
   "shadcn/",
   "forms/",
   "apps/",
-  "workspace/",
   "tasks/",
 ] as const;
 

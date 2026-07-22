@@ -59,7 +59,7 @@
       data-ui-component="ai-story-host"
       data-ui-part="panel-host"
     >
-      <div data-ui-part="main-stub">Main workspace</div>
+      <div data-ui-part="main-stub">Main content</div>
       <AiChatPanel
         {messages}
         bind:visibility
@@ -78,7 +78,7 @@
       data-ui-component="ai-story-host"
       data-ui-part="panel-host"
     >
-      <div data-ui-part="main-stub">Main workspace</div>
+      <div data-ui-part="main-stub">Main content</div>
       <AiChatPanel
         messages={sampleAiMessages}
         visibility="collapsed"
@@ -91,8 +91,8 @@
 
 <style>
   :global([data-ui-component="ai-story-host"][data-ui-part="panel-host"]) {
-    --ui-workspace-ai-width-expanded: 20rem;
-    --ui-workspace-ai-width-collapsed: 3rem;
+    --ui-ai-width-expanded: 20rem;
+    --ui-ai-width-collapsed: 3rem;
     --ai-sidebar-inline-size: 20rem;
     position: relative;
     display: flex;

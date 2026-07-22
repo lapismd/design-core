@@ -15,9 +15,7 @@ export type ComponentLayer =
   | "forms"
   | "filter"
   | "ai"
-  | "workspace-shell"
   | "apps"
-  | "workspace"
   | "tasks";
 
 export type ComponentExample = {
@@ -73,9 +71,7 @@ const LAYERS: ComponentLayer[] = [
   "forms",
   "filter",
   "ai",
-  "workspace-shell",
   "apps",
-  "workspace",
   "tasks",
 ];
 
@@ -607,35 +603,6 @@ function collectAi(packageRoot: string): CatalogEntry[] {
   });
 }
 
-function collectWorkspaceShell(packageRoot: string): CatalogEntry[] {
-  const dir = path.join(packageRoot, "src", "shared", "workspace-shell");
-  if (!existsSync(dir)) return [];
-  const entries: CatalogEntry[] = [];
-  const walk = (abs: string) => {
-    for (const name of readdirSync(abs)) {
-      const full = path.join(abs, name);
-      if (statSync(full).isDirectory()) {
-        walk(full);
-        continue;
-      }
-      if (!name.endsWith(".svelte") || name.includes(".stories.")) continue;
-      const pascal = name.replace(/\.svelte$/, "");
-      const id = kebabFromPascal(pascal);
-      const storyPath = path.join(abs, `${pascal}.stories.svelte`);
-      entries.push({
-        layer: "workspace-shell",
-        id,
-        dir: abs,
-        importPath: "@stevejuma/ui/workspace-shell",
-        docsCandidates: [],
-        storyPaths: existsSync(storyPath) ? [storyPath] : [],
-      });
-    }
-  };
-  walk(dir);
-  return entries.sort((a, b) => a.id.localeCompare(b.id));
-}
-
 function collectApps(packageRoot: string): CatalogEntry[] {
   const root = path.join(packageRoot, "src", "apps");
   if (!existsSync(root)) return [];
@@ -665,34 +632,6 @@ function collectApps(packageRoot: string): CatalogEntry[] {
     walk(appDir);
   }
   return entries.sort((a, b) => a.id.localeCompare(b.id));
-}
-
-function collectWorkspacePackage(packageRoot: string): CatalogEntry[] {
-  const dir = path.join(
-    packageRoot,
-    "packages",
-    "workspace",
-    "src",
-    "lib",
-    "components",
-  );
-  if (!existsSync(dir)) return [];
-  return readdirSync(dir)
-    .filter((name) => name.endsWith(".svelte") && !name.includes(".stories."))
-    .map((name) => {
-      const pascal = name.replace(/\.svelte$/, "");
-      const id = kebabFromPascal(pascal);
-      const storyPath = path.join(dir, `${pascal}.stories.svelte`);
-      return {
-        layer: "workspace" as const,
-        id,
-        dir,
-        importPath: "@stevejuma/workspace",
-        docsCandidates: [],
-        storyPaths: existsSync(storyPath) ? [storyPath] : [],
-      };
-    })
-    .sort((a, b) => a.id.localeCompare(b.id));
 }
 
 /**
@@ -737,9 +676,7 @@ export function collectCatalog(packageRoot: string): CatalogEntry[] {
     ...collectForms(packageRoot),
     ...collectFilter(packageRoot),
     ...collectAi(packageRoot),
-    ...collectWorkspaceShell(packageRoot),
     ...collectApps(packageRoot),
-    ...collectWorkspacePackage(packageRoot),
     ...collectTasksPackage(packageRoot),
   ];
 }

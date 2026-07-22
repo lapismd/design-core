@@ -46,8 +46,7 @@ what remains.
 - Keep all Tasks-specific styling under `.tasks-theme` and semantic
   `--tasks-*` tokens. Do not add raw product colors or mutate global/root tokens.
 - Keep responsive pager, task selection, focus restoration, and gesture
-  coordination inside this package. Do not bend `@stevejuma/workspace` into a
-  Tasks mobile navigator.
+  coordination inside this package.
 - Treat the supplied captures as implementation evidence, not distributable
   product assets or approved visual-test baselines.
 - Never update visual snapshots unless a human explicitly approves that

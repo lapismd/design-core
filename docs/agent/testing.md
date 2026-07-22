@@ -60,4 +60,6 @@ Offline convention lookup stays on `pnpm ui guide`.
 ## Accessibility and theme
 
 - `a11y.test: "error"` — fix real violations; do not weaken global rules.
-- Theme via catalog `theme` global (`.dark` + shared tokens), not backgrounds addon.
+- Brand theme via catalog `theme` global + `@storybook/addon-themes`
+  (`default` / `data-ui-theme`); light/dark via `colorMode` (`.dark` + shared
+  tokens). Not backgrounds addon.

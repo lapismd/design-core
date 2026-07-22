@@ -16,26 +16,28 @@ import {
 } from "storybook-addon-tag-badges/manager-helpers";
 
 const Row = styled.div<{
-  $hasParentPadding: boolean;
   $hasStatusWithUI: boolean;
-}>(({ $hasParentPadding, $hasStatusWithUI }) => ({
+}>(({ $hasStatusWithUI }) => ({
   display: "flex",
   flex: 1,
-  alignItems: "flex-start",
-  flexWrap: "wrap",
-  textWrapStyle: "balance",
+  alignItems: "center",
+  flexWrap: "nowrap",
   gap: 4,
-  marginRight: $hasStatusWithUI ? 6 : $hasParentPadding ? 28 : 34,
+  minWidth: 0,
+  // Reserve room for Storybook's status glyph when present; otherwise keep a
+  // single trailing gutter so chips share one column at every tree depth.
+  marginRight: $hasStatusWithUI ? 6 : 28,
 }));
 
 const Label = styled.div({
   display: "flex",
   alignItems: "center",
   minHeight: 19,
-});
-
-const Spacer = styled.div({
-  flex: 1,
+  minWidth: 0,
+  flex: "0 1 auto",
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+  whiteSpace: "nowrap",
 });
 
 /** Avatar-style overlap: later chips sit on top of earlier ones. */
@@ -44,6 +46,7 @@ const Stack = styled.div(({ theme }) => ({
   flexDirection: "row",
   alignItems: "center",
   flexShrink: 0,
+  marginLeft: "auto",
   // Match sidebar chrome so the ring reads as a cutout, not a halo.
   ["--tag-stack-ring" as string]:
     theme.base === "dark" ? theme.background.content : theme.background.app,
@@ -169,11 +172,9 @@ function StackedSidebarLabel({ item }: { item: HashEntry }) {
   return React.createElement(
     Row,
     {
-      $hasParentPadding: item.type === "component" || item.type === "group",
       $hasStatusWithUI: hasComponentTestStatus(itemStatuses),
     },
     React.createElement(Label, null, item.name),
-    React.createElement(Spacer, null),
     badges.length
       ? React.createElement(
           Stack,

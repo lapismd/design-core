@@ -43,7 +43,7 @@ baselines). App stories use `Apps/CV/...` and `Apps/Beancount/...`.
 - `shared/shadcn` must not import forms or apps.
 - `shared/forms` may import shadcn; must not import apps.
 - `apps/*` may import shared; must not import sibling apps.
-- App components take props/callbacks — no app routers or workspace context.
+- App components take props/callbacks — no app routers or host app context.
 - `packages/tasks` is a reference/spec package. It may describe shared primitive
   composition but must not copy observed product source, brand, or account data.
 
@@ -84,7 +84,7 @@ Offline conventions and component docs (no Storybook required):
 | ---------------------------------- | -------------------------------------------------------------- |
 | `pnpm ui guide`                    | Topic index (`layers`, `shadcn`, `forms`, `testing`, …)        |
 | `pnpm ui guide <topic>`            | Full topic markdown                                            |
-| `pnpm ui components`               | Catalog index across shadcn, forms, AI, workspace, apps, tasks |
+| `pnpm ui components`               | Catalog index across shadcn, forms, AI, apps, tasks |
 | `pnpm ui components <layer/id>`    | One component: import, summary, examples                       |
 | `pnpm ui components --layer forms` | Filter by layer                                                |
 

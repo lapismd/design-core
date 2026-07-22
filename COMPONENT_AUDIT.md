@@ -70,16 +70,6 @@ Search chrome and Fava-inspired filter-query language in `src/shared/filter/`:
 Import: `@stevejuma/ui/filter`. Catalog: `Filter/...`. Guidance: `Filter/Guidance`.
 Forms may compose the bar; do not re-export it from `@stevejuma/ui/forms`.
 
-## Shared — workspace-shell
-
-Prop-driven three-region Studio chrome in `src/shared/workspace-shell/`:
-
-- `StudioWorkspaceShell` — `Sidebar.Provider` host with `sidebar` / `main` / `ai` snippets
-- `StudioSidebar` — left nav chrome (tabs, collapse, resize, workspace mode switcher)
-- AI padding CSS via `data-ai-sidebar` on the sidebar provider
-
-Import: `@stevejuma/ui/workspace-shell`
-
 ## Shared — AI
 
 Presentational AI chat chrome in `src/shared/ai/` (no fetch / no Studio store).
@@ -122,9 +112,6 @@ Spinner, Alert, and forms `TaskDueCalendar`.
 CV domain composition for Storybook / app reuse (`@stevejuma/ui/apps/cv`):
 
 - `CvWorkspaceForm` — five-tab form + YAML mode (form-only story `Apps/CV/CV Form`)
-- `CvWorkspaceBody` / `CvEditorToolbar` — main body host + toolbar (undo/redo stubs, collapse, YAML)
-- `CvWorkspaceSidebar` — CV file list + create/import controls (props / fixtures)
-- Flagship shell story — `Apps/CV/CV Workspace` (shell + sidebar + form + AI fixtures)
 - `CvSectionsForm` — profile, social networks, roles, dynamic sections
 - Entry editors — `GenericEntryEditor`, `ExperienceEditor`, `EducationEditor`
 - Tabs — Evidence, Design, Locale, Settings

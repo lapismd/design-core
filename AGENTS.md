@@ -9,14 +9,14 @@ tests to validate the change. Human-oriented package overview and command list:
 Before inventing workflows, load package conventions offline via the CLI:
 
 1. `pnpm ui guide` — topic index and reading order
-2. `pnpm ui guide layers` — shadcn vs forms vs filter vs apps vs workspace vs tasks
+2. `pnpm ui guide layers` — shadcn vs forms vs filter vs apps vs tasks
 3. `pnpm ui guide shadcn` — `ui:add` / inspect / docs sync (never raw shadcn CLI)
 4. `pnpm ui guide forms` — structured forms vs shadcn controls
 5. `pnpm ui guide testing` — stories, checks, and visual baselines after a change
 6. `pnpm ui guide vcs` — commit after each verified change (prefer `jj` when available)
 7. `pnpm ui components` / `pnpm ui components <layer/id>` — list or show local
-   usage and examples across shadcn, forms, filter, AI, workspace-shell, apps,
-   `@stevejuma/workspace`, and `@stevejuma/tasks` (filter with `--layer`)
+   usage and examples across shadcn, forms, filter, AI, apps, and
+   `@stevejuma/tasks` (filter with `--layer`)
 
 Use `--json` for machine-readable output (`pnpm ui guide testing --json`,
 `pnpm ui components button --json`). Aliases: `pnpm ui:guide`,
@@ -85,7 +85,7 @@ full-repo static `llms.txt` notes: `pnpm ui guide llms-extraction`.
   `src/shared/filter/`. Import from `@stevejuma/ui/filter`.
 - App-specific components belong under `src/apps/cv` or `src/apps/beancount`.
   They must receive props and callbacks rather than importing application
-  routers or workspace context. Story titles for those surfaces: `Apps/CV/...`
+  routers or host app context. Story titles for those surfaces: `Apps/CV/...`
   and `Apps/Beancount/...`.
 - `@stevejuma/tasks` is a clean-room reference/spec package until an implementation
   slice adds Stories. Follow `pnpm ui guide tasks`; use synthetic fixtures and
@@ -163,5 +163,8 @@ Local Playwright screenshots live under
 - Accessibility tests inherit `a11y.test: "error"`; resolve real violations in
   the component or story rather than weakening the global rules.
 - `.cm-gutters` is the sole scoped exclusion for CodeMirror decorative gutters.
-- Storybook disables the backgrounds addon. Use the catalog `theme` global
-  instead; the decorator applies the same `.dark` class and shared UI tokens.
+- Storybook disables the backgrounds addon. Brand themes use
+  `@storybook/addon-themes` (`withThemeByDataAttribute` → `data-ui-theme`)
+  plus the catalog `theme` toolbar global (currently `default`). Light/dark
+  uses the catalog `colorMode` global; the decorator applies the same `.dark`
+  class and shared UI tokens.

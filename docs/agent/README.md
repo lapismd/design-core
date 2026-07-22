@@ -24,7 +24,7 @@ Per-component docs are not topics here — use `pnpm ui components`.
 
 | Topic             | File                 | Purpose                                           |
 | ----------------- | -------------------- | ------------------------------------------------- |
-| `layers`          | `layers.md`          | shadcn vs forms vs apps vs workspace vs tasks     |
+| `layers`          | `layers.md`          | shadcn vs forms vs apps vs tasks              |
 | `shadcn`          | `shadcn.md`          | `ui:add` / inspect / docs sync                    |
 | `forms`           | `forms.md`           | structured forms contract                         |
 | `testing`         | `testing.md`         | stories, checks, visual baselines                 |
