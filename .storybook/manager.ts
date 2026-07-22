@@ -6,6 +6,7 @@ import {
   type TagBadgeParameters,
 } from "storybook-addon-tag-badges/manager-helpers";
 import type { CSSObject } from "storybook/theming";
+import "./manager-color-mode-toggle.js";
 import { stackedRenderLabel } from "./manager-stacked-badges.js";
 
 const SMALL_CAPS: CSSObject = {
