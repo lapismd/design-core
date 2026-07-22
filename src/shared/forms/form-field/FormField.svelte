@@ -5,12 +5,12 @@
 
   let {
     label,
-    align = "start",
+    align = "middle",
     as = "label",
     children,
   }: {
     label: string;
-    align?: "start" | "center";
+    align?: "start" | "center" | "middle";
     as?: "label" | "div";
     children?: Snippet;
   } = $props();
@@ -45,7 +45,7 @@
     grid-template-columns: max-content minmax(0, 1fr);
     column-gap: var(--ui-form-column-gap);
     row-gap: 0;
-    align-items: start;
+    align-items: center;
     border-bottom: 1px solid var(--ui-form-border);
   }
 
@@ -66,6 +66,16 @@
     color: var(--ui-form-muted);
     font-size: 0.75rem;
     font-weight: 500;
+    line-height: 1.25rem;
+    padding-top: 0;
+  }
+
+  .cv-form-field[data-align="start"] {
+    align-items: start;
+  }
+
+  .cv-form-field[data-align="start"] > span {
+    /* Multiline / tall controls: pin label to the first value line. */
     padding-top: 0.45rem;
   }
 

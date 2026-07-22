@@ -3,6 +3,9 @@
   import PlusIcon from "@lucide/svelte/icons/plus";
   import { onDestroy } from "svelte";
   import { Button } from "@stevejuma/ui/shadcn/button";
+  import type { FieldReview } from "../core/field-review";
+  import FieldReviewActions from "../form-review/FieldReviewActions.svelte";
+  import UnifiedReviewDiff from "../form-review/UnifiedReviewDiff.svelte";
   import SortableArrayItem from "../sortable-array-item/SortableArrayItem.svelte";
 
   let {
@@ -14,6 +17,7 @@
     placeholder = "",
     variant = "inline",
     headerVariant = "field",
+    reviewItems = {},
     onChange,
   }: {
     label: string;
@@ -24,10 +28,16 @@
     placeholder?: string;
     variant?: "boxed" | "inline";
     headerVariant?: "field" | "section";
+    /** Pending Keep/Undo reviews keyed by item index. */
+    reviewItems?: Record<number, FieldReview | null | undefined>;
     onChange: (items: string[]) => void;
   } = $props();
 
   let draggingIndex = $state<number | null>(null);
+
+  function reviewForIndex(index: number) {
+    return reviewItems[index] ?? null;
+  }
 
   function arrayMove<T>(values: T[], from: number, to: number): T[] {
     const next = [...values];
@@ -59,10 +69,7 @@
     const normalizedAddLabel = addLabel.trim();
     if (normalizedAddLabel.toLowerCase().startsWith("add "))
       return normalizedAddLabel;
-    if (
-      normalizedAddLabel &&
-      normalizedAddLabel.toLowerCase() !== "add"
-    ) {
+    if (normalizedAddLabel && normalizedAddLabel.toLowerCase() !== "add") {
       return `Add ${normalizedAddLabel}`;
     }
     return `Add ${singularizeLabel(label)}`;
@@ -105,7 +112,9 @@
 </script>
 
 <div
-  class={variant === "inline" ? "cv-control-row-group gap-0" : "flex flex-col gap-2"}
+  class={variant === "inline"
+    ? "cv-control-row-group gap-0"
+    : "flex flex-col gap-2"}
   data-ui-part="list-editor"
 >
   <div
@@ -138,32 +147,62 @@
     </div>
   </div>
 
-  <div class={variant === "inline" ? "col-span-full flex flex-col" : "flex flex-col gap-2"}>
+  <div
+    class={variant === "inline"
+      ? "list-editor-items flex flex-col"
+      : "list-editor-items flex flex-col gap-2"}
+  >
     {#each items as item, index (`${label}-${index}`)}
+      {@const review = reviewForIndex(index)}
       <SortableArrayItem
         id={`${label}-${index}`}
         {index}
         dragging={draggingIndex === index}
         compact={variant === "inline"}
+        inset={variant === "inline" ? "flush" : "normal"}
         onDragStart={startDrag}
         onRemove={() =>
           onChange(items.filter((_, itemIndex) => itemIndex !== index))}
       >
-        <textarea
-          class={variant === "inline"
-            ? "min-h-5 w-full resize-none overflow-hidden border-0 bg-transparent px-0 py-0 text-sm leading-5 break-words whitespace-pre-wrap shadow-none outline-none"
-            : multiline
-              ? "border-input bg-background min-h-20 w-full resize-none overflow-hidden rounded-md border px-2 py-1.5 text-sm outline-none"
-              : "border-input bg-background min-h-9 w-full resize-none overflow-hidden rounded-md border px-2 py-1.5 text-sm outline-none"}
-          rows={variant === "inline" || !multiline || multilineSize === "compact"
-            ? 1
-            : 3}
-          value={item}
-          placeholder={inferredPlaceholder()}
-          aria-label={`${label} ${index + 1}`}
-          oninput={(event) => update(index, event.currentTarget.value)}
-        ></textarea>
+        <div class="flex min-w-0 flex-col">
+          {#if review}
+            <UnifiedReviewDiff before={review.removedValue} after={item} />
+            <FieldReviewActions
+              stale={review.stale}
+              onUndo={review.onUndo}
+              onKeep={review.onKeep}
+            />
+          {:else}
+            <textarea
+              class={variant === "inline"
+                ? "min-h-5 w-full resize-none overflow-hidden border-0 bg-transparent px-0 py-0 text-sm leading-5 break-words whitespace-pre-wrap shadow-none outline-none"
+                : multiline
+                  ? "border-input bg-background min-h-20 w-full resize-none overflow-hidden rounded-md border px-2 py-1.5 text-sm outline-none"
+                  : "border-input bg-background min-h-9 w-full resize-none overflow-hidden rounded-md border px-2 py-1.5 text-sm outline-none"}
+              rows={variant === "inline" ||
+              !multiline ||
+              multilineSize === "compact"
+                ? 1
+                : 3}
+              value={item}
+              placeholder={inferredPlaceholder()}
+              aria-label={`${label} ${index + 1}`}
+              oninput={(event) => update(index, event.currentTarget.value)}
+            ></textarea>
+          {/if}
+        </div>
       </SortableArrayItem>
     {/each}
   </div>
 </div>
+
+<style>
+  /*
+   * Keep list values in the shared control column. `col-span-full` used to
+   * pull items under the label track so "Backend" sat left of Name/Headline.
+   */
+  .list-editor-items {
+    grid-column: 2;
+    min-width: 0;
+  }
+</style>

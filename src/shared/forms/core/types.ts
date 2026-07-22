@@ -21,7 +21,8 @@ export type FormFieldKind =
   | "reference-list"
   | "custom";
 
-export type FormFieldAlign = "start" | "center";
+/** `middle` = vertically center label with control; `start` = top (multiline); `center` = pill controls. */
+export type FormFieldAlign = "start" | "center" | "middle";
 export type FormFieldWrapper = "label" | "div";
 
 export type FormValidationIssue = {

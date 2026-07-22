@@ -5,10 +5,10 @@
   grid-template-columns: max-content minmax(0, 1fr);
   column-gap: var(--ui-form-column-gap);
   row-gap: 0;
-  align-items: start;
+  /* Center label against the control box so 0.75rem labels sit with 1rem values. */
+  align-items: center;
   min-height: 2rem;
   border-bottom: 1px solid var(--ui-form-border);
-  padding-block: 0.375rem;
 }
 
 .cv-control-row-group {
@@ -70,6 +70,16 @@
   align-items: center;
 }
 
+.cv-control-row--start {
+  align-items: start;
+}
+
+.cv-control-row--start .cv-control-row__label,
+.cv-control-row--start [data-slot="field-label"],
+.cv-control-row--start [data-slot="field-content"] [data-slot="field-label"] {
+  padding-top: 0.45rem;
+}
+
 .cv-control-row__label,
 .cv-control-action-row__label,
 .cv-control-row [data-slot="field-label"],
@@ -78,7 +88,7 @@
   font-size: 0.75rem;
   font-weight: 500;
   line-height: 1.25rem;
-  padding-top: 0.075rem;
+  padding-top: 0;
 }
 
 .cv-control-action-row__label {

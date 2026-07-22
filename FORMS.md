@@ -30,6 +30,11 @@ If a composite keeps its own `max-content | 1fr` tracks instead of
 `grid-template-columns: subgrid`, its values start at a different x than sibling
 rows — the recurring misalignment regression.
 
+List bodies under a row-group must sit in **column 2** (the control track), not
+`col-span-full`, or item text lines up under labels instead of under sibling
+values. Inline `ListEditor` uses `SortableArrayItem inset="flush"` so the drag
+grip hangs in the gutter without shifting value text.
+
 ## Tokens
 
 Forms expose a public token map like shadcn families:

@@ -21,7 +21,8 @@
     sortableGroup?: string | null;
     dragging?: boolean;
     compact?: boolean;
-    inset?: "normal" | "tight";
+    /** `flush` keeps value text on the form control column (grip hangs in the gutter). */
+    inset?: "normal" | "tight" | "flush";
     removable?: boolean;
     onDragStart?: (event: PointerEvent, index: number) => void;
     onRemove?: () => void;
@@ -33,7 +34,7 @@
   class={[
     "group/sortable relative grid grid-cols-[minmax(0,1fr)] border-b pr-6 transition-colors focus-within:bg-accent/40",
     compact ? "py-1" : "py-1.5",
-    inset === "tight" ? "pl-3" : "pl-5",
+    inset === "flush" ? "pl-0" : inset === "tight" ? "pl-3" : "pl-5",
     dragging ? "bg-accent opacity-70" : "",
   ]
     .filter(Boolean)
@@ -46,7 +47,12 @@
   <button
     type="button"
     aria-label="Drag item"
-    class="text-muted-foreground/70 hover:text-foreground focus-visible:ring-ring absolute top-1/2 left-0 grid size-4 shrink-0 -translate-y-1/2 cursor-grab place-items-center rounded-sm opacity-0 transition-opacity group-hover/sortable:opacity-100 group-focus-within/sortable:opacity-100 hover:bg-transparent focus-visible:opacity-100 focus-visible:ring-2 active:cursor-grabbing [&_svg]:size-3"
+    class={[
+      "text-muted-foreground/70 hover:text-foreground focus-visible:ring-ring absolute top-1/2 grid size-4 shrink-0 -translate-y-1/2 cursor-grab place-items-center rounded-sm opacity-0 transition-opacity group-hover/sortable:opacity-100 group-focus-within/sortable:opacity-100 hover:bg-transparent focus-visible:opacity-100 focus-visible:ring-2 active:cursor-grabbing [&_svg]:size-3",
+      inset === "flush" ? "-left-4" : "left-0",
+    ]
+      .filter(Boolean)
+      .join(" ")}
     onpointerdown={(event) => onDragStart?.(event, index)}
   >
     <GripVerticalIcon class="size-3" />

@@ -21,12 +21,16 @@ export function fieldIssuesFor<TRoot, TContext, TValue>(
 }
 
 export function defaultFieldAlign(kind: FormFieldKind): FormFieldAlign {
-  return kind === "boolean" ||
+  if (
+    kind === "boolean" ||
     kind === "options" ||
     kind === "segmented" ||
     kind === "choice"
-    ? "center"
-    : "start";
+  ) {
+    return "center";
+  }
+  if (kind === "textarea") return "start";
+  return "middle";
 }
 
 export function defaultFieldWrapper(kind: FormFieldKind): FormFieldWrapper {
