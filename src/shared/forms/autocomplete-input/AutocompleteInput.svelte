@@ -6,6 +6,13 @@
     placeholder = "",
     ariaLabel = "Autocomplete",
     autofocus = false,
+    /** Keep the suggestion list open (visual-state stories). */
+    forceOpen = false,
+    /**
+     * Force a suggestion row into the hover style (visual-state stories).
+     * Independent of keyboard `activeIndex` so active + hover can be shown together.
+     */
+    forceHoverIndex = undefined,
     commitOnComma = false,
     commitOnBlur = false,
     commitOnTab = false,
@@ -19,6 +26,8 @@
     placeholder?: string;
     ariaLabel?: string;
     autofocus?: boolean;
+    forceOpen?: boolean;
+    forceHoverIndex?: number;
     commitOnComma?: boolean;
     commitOnBlur?: boolean;
     commitOnTab?: boolean;
@@ -47,6 +56,10 @@
       .slice(0, 8);
   });
 
+  const listVisible = $derived(
+    (forceOpen || open) && normalizedSuggestions.length > 0,
+  );
+
   $effect(() => {
     if (!autofocus) return;
     requestAnimationFrame(() => {
@@ -57,7 +70,7 @@
 
   function chooseSuggestion(suggestion: string) {
     value = suggestion;
-    open = false;
+    if (!forceOpen) open = false;
     activeIndex = 0;
     void onCommit(suggestion);
   }
@@ -65,11 +78,12 @@
   function commitValue() {
     const committed = value.trim();
     if (!committed) return;
-    open = false;
+    if (!forceOpen) open = false;
     void onCommit(committed);
   }
 
   function closeList() {
+    if (forceOpen) return;
     open = false;
     activeIndex = 0;
   }
@@ -92,7 +106,7 @@
     }
     if (event.key === "Enter") {
       event.preventDefault();
-      if (open && normalizedSuggestions[activeIndex]) {
+      if (listVisible && normalizedSuggestions[activeIndex]) {
         chooseSuggestion(normalizedSuggestions[activeIndex]);
       } else {
         commitValue();
@@ -132,7 +146,7 @@
     aria-label={ariaLabel}
     aria-autocomplete="list"
     aria-controls={listId}
-    aria-expanded={open && normalizedSuggestions.length > 0 ? "true" : "false"}
+    aria-expanded={listVisible ? "true" : "false"}
     role="combobox"
     onfocus={() => (open = true)}
     oninput={() => {
@@ -147,13 +161,14 @@
       closeList();
     }}
   />
-  {#if open && normalizedSuggestions.length}
+  {#if listVisible}
     <div id={listId} class="autocomplete-list" role="listbox">
       {#each normalizedSuggestions as suggestion, index (suggestion)}
         <button
           type="button"
           role="option"
           class:active={index === activeIndex}
+          class:force-hover={forceHoverIndex === index}
           aria-selected={index === activeIndex}
           onmousedown={(event) => event.preventDefault()}
           onclick={() => chooseSuggestion(suggestion)}
@@ -187,6 +202,7 @@
     left: 0;
     z-index: 30;
     display: grid;
+    gap: 0.5rem;
     width: min(18rem, 80vw);
     max-height: 14rem;
     overflow: auto;
@@ -212,7 +228,8 @@
   }
 
   .autocomplete-list button:hover,
-  .autocomplete-list button.active {
+  .autocomplete-list button.active,
+  .autocomplete-list button.force-hover {
     background: color-mix(
       in srgb,
       var(--ui-form-accent) 12%,
