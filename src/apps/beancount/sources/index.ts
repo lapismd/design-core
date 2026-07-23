@@ -9,3 +9,4 @@ export {
   type SourceAccountSource,
   type UnassignedAccountGroup,
 } from "./SourceAccountGroups.svelte";
+export { default as SourceToolbar } from "./SourceToolbar.svelte";

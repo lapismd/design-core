@@ -316,6 +316,8 @@ filter semantics.
   routing state
 - `SourceAccountGroups` — controlled source-account and unassigned-account
   rows with host-owned disclosure/setup callbacks
+- `SourceToolbar` — controlled Sync all, YAML mode, edit, and history requests;
+  the host owns each operation and source state
 
 **Rules (`rules/`)** — `Apps/Beancount/Rules/*`:
 

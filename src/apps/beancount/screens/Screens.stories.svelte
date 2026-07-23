@@ -21,6 +21,7 @@
   import RuleList from "../rules/RuleList.svelte";
   import SourceAccountGroups from "../sources/SourceAccountGroups.svelte";
   import SourceConnectionCatalog from "../sources/SourceConnectionCatalog.svelte";
+  import SourceToolbar from "../sources/SourceToolbar.svelte";
   import QueryComposer from "./QueryComposer.svelte";
   import {
     accountDetailGroups,
@@ -188,6 +189,7 @@
   let statisticsQueryRequested = $state(false);
   let recordsAccountsRequested = $state(false);
   let sourceAction = $state("");
+  let sourceYamlMode = $state(false);
   let sourceAccountAction = $state("");
   let ruleActive = $state(true);
   let ruleAction = $state("");
@@ -1000,15 +1002,32 @@
   play={async ({ canvas }) => {
     await expect(canvas.getByText("Your connections · 1")).toBeVisible();
     await userEvent.click(
-      canvas.getByRole("button", { name: "Connect Monzo Bank" }),
+      canvas.getByRole("switch", { name: "Use YAML source configuration" }),
     );
-    await expect(canvas.getByRole("status")).toHaveTextContent(
-      "Connect Monzo Bank",
-    );
+    await expect(canvas.getByRole("status")).toHaveTextContent("YAML enabled");
   }}
 >
   {#snippet template()}
     <ScreenFrame pageTitle="Sources">
+      {#snippet headerActions()}
+        <SourceToolbar
+          syncAllDisabled={true}
+          yamlMode={sourceYamlMode}
+          onSyncAll={() => {
+            sourceAction = "Sync all";
+          }}
+          onYamlModeChange={(next) => {
+            sourceYamlMode = next;
+            sourceAction = `YAML ${next ? "enabled" : "disabled"}`;
+          }}
+          onEditSources={() => {
+            sourceAction = "Edit sources";
+          }}
+          onOpenSyncHistory={() => {
+            sourceAction = "Open source sync history";
+          }}
+        />
+      {/snippet}
       <ContentScrollArea>
         <div class="bc-screen-story__page bc-screen-story__sources">
           <SourceConnectionCatalog

@@ -12,9 +12,12 @@
    */
   let {
     pageTitle,
+    headerActions,
     children,
   }: {
     pageTitle: string;
+    /** Optional controlled route actions rendered in the shared shell header. */
+    headerActions?: Snippet;
     children?: Snippet;
   } = $props();
 
@@ -78,6 +81,7 @@
     {sidebarTabs}
     activeSidebarTab="workspace"
     projectTabId="projects"
+    {headerActions}
   >
     {#snippet sidebarTabContent(tabId)}
       {#if tabId === "workspace"}
