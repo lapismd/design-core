@@ -61,7 +61,7 @@
   }}
 >
   {#snippet template()}
-    <div class="max-w-5xl p-5">
+    <div class="bc-scatter-plot-story">
       <ScatterPlot {points} />
     </div>
   {/snippet}
@@ -74,8 +74,15 @@
   }}
 >
   {#snippet template()}
-    <div class="max-w-5xl p-5">
+    <div class="bc-scatter-plot-story">
       <ScatterPlot points={[]} emptyLabel="No matching events." />
     </div>
   {/snippet}
 </Story>
+
+<style>
+  .bc-scatter-plot-story {
+    max-width: 64rem;
+    padding: var(--ui-beancount-space-5);
+  }
+</style>

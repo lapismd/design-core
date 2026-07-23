@@ -157,13 +157,11 @@
   }
 </script>
 
-<section class="flex min-w-0 flex-col gap-3" aria-label={ariaLabel}>
+<section class="bc-line-chart" aria-label={ariaLabel}>
   {#if hasData}
-    <div
-      class="border-border/80 bg-card overflow-x-auto rounded-xl border p-3 shadow-sm"
-    >
+    <div class="bc-line-chart__canvas">
       <svg
-        class="block min-w-[36rem]"
+        class="bc-line-chart__svg"
         viewBox={`0 0 ${width} ${height}`}
         role="group"
         aria-label={ariaLabel}
@@ -177,7 +175,7 @@
                 y="4"
                 text-anchor="end"
                 fill="var(--muted-foreground)"
-                class="text-[11px]"
+                class="bc-line-chart__axis-label"
               >
                 {valueFormatter(tick)}
               </text>
@@ -199,7 +197,7 @@
               y={innerHeight + 26}
               text-anchor="middle"
               fill="var(--muted-foreground)"
-              class="text-[11px]"
+              class="bc-line-chart__axis-label"
             >
               {label}
             </text>
@@ -231,7 +229,7 @@
                     ? 5
                     : 3.5}
                   fill={item.color}
-                  class="focus:stroke-foreground cursor-pointer outline-none focus:stroke-2"
+                  class="bc-line-chart__point"
                   role="button"
                   tabindex="0"
                   aria-label={pointLabel(point, item)}
@@ -246,7 +244,7 @@
         </g>
       </svg>
     </div>
-    <output class="text-muted-foreground min-h-5 text-sm" aria-live="polite">
+    <output class="bc-line-chart__summary" aria-live="polite">
       {#if activePoint}
         {pointLabel(activePoint.point, activePoint.series)}
       {:else}
@@ -254,11 +252,77 @@
       {/if}
     </output>
   {:else}
-    <div
-      class="border-border bg-muted/35 text-muted-foreground flex min-h-48 flex-col items-center justify-center gap-2 rounded-xl border border-dashed px-5 text-center text-sm"
-    >
-      <CircleAlert class="size-5" aria-hidden="true" />
+    <div class="bc-line-chart__empty">
+      <CircleAlert class="bc-line-chart__empty-icon" aria-hidden="true" />
       <p>{emptyLabel}</p>
     </div>
   {/if}
 </section>
+
+<style>
+  .bc-line-chart {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: var(--ui-beancount-space-3);
+  }
+
+  .bc-line-chart__canvas {
+    overflow-x: auto;
+    border: 1px solid color-mix(in srgb, var(--ui-beancount-border) 80%, transparent);
+    border-radius: var(--ui-beancount-radius-panel);
+    background-color: var(--ui-beancount-surface);
+    padding: var(--ui-beancount-space-3);
+    box-shadow: var(--ui-beancount-shadow-panel);
+  }
+
+  .bc-line-chart__svg {
+    display: block;
+    min-width: 36rem;
+  }
+
+  .bc-line-chart__axis-label {
+    font-size: 0.6875rem;
+  }
+
+  .bc-line-chart__point {
+    cursor: pointer;
+    outline: none;
+  }
+
+  .bc-line-chart__point:focus {
+    stroke: var(--ui-beancount-foreground);
+    stroke-width: 2;
+  }
+
+  .bc-line-chart__summary {
+    min-height: var(--ui-beancount-space-5);
+    color: var(--ui-beancount-muted-foreground);
+    font-size: 0.875rem;
+  }
+
+  .bc-line-chart__empty {
+    display: flex;
+    min-height: 12rem;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--ui-beancount-space-2);
+    border: 1px dashed var(--ui-beancount-border);
+    border-radius: var(--ui-beancount-radius-panel);
+    background-color: color-mix(
+      in srgb,
+      var(--ui-beancount-surface-muted) 35%,
+      transparent
+    );
+    padding-inline: var(--ui-beancount-space-5);
+    color: var(--ui-beancount-muted-foreground);
+    text-align: center;
+    font-size: 0.875rem;
+  }
+
+  :global(.bc-line-chart__empty-icon) {
+    width: var(--ui-beancount-space-5);
+    height: var(--ui-beancount-space-5);
+  }
+</style>
