@@ -44,25 +44,31 @@
           onclick={() => onToggle(node.id)}
         >
           <span
-            class="size-3"
+            class="bj-statement-summary-chevron"
             class:bj-statement-summary-chevron-collapsed={isCollapsed}
           >
-            <ChevronDown class="size-3" aria-hidden="true" />
+            <ChevronDown
+              class="bj-statement-summary-chevron-icon"
+              aria-hidden="true"
+            />
           </span>
         </button>
       {:else}
-        <span class="size-4 shrink-0" aria-hidden="true"></span>
+        <span
+          class="bj-statement-summary-disclosure-spacer"
+          aria-hidden="true"
+        ></span>
       {/if}
       {#if node.href}
         <a
           href={node.href}
-          class="text-primary min-w-0 truncate font-medium hover:underline"
+          class="bj-statement-summary-account-link"
           onclick={navigate}
         >
           {node.label}
         </a>
       {:else}
-        <span class="min-w-0 truncate font-medium">{node.label}</span>
+        <span class="bj-statement-summary-account-label">{node.label}</span>
       {/if}
     </div>
     <span class="bj-statement-summary-meter" aria-hidden="true">
@@ -82,7 +88,9 @@
     {/each}
     <span class:bj-statement-summary-muted={!node.otherValues?.length}>
       {#each node.otherValues ?? [] as value (value.label)}
-        <span class="block" title={value.title}>{value.value}</span>
+        <span class="bj-statement-summary-other-value" title={value.title}
+          >{value.value}</span
+        >
       {:else}
         —
       {/each}
@@ -115,14 +123,19 @@
       minmax(11rem, 1fr);
     min-height: 3rem;
     align-items: center;
-    border-top: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
-    color: var(--foreground);
+    border-top: 1px solid
+      color-mix(in srgb, var(--ui-beancount-border) 70%, transparent);
+    color: var(--ui-beancount-foreground);
     font-size: 0.875rem;
     transition: background-color 150ms ease;
   }
 
   .bj-statement-summary-row:hover {
-    background: color-mix(in srgb, var(--muted) 65%, transparent);
+    background: color-mix(
+      in srgb,
+      var(--ui-beancount-surface-muted) 65%,
+      transparent
+    );
   }
 
   .bj-statement-summary-name {
@@ -142,19 +155,47 @@
     border: 0;
     border-radius: 0.125rem;
     background: transparent;
-    color: var(--muted-foreground);
+    color: var(--ui-beancount-muted-foreground);
     cursor: pointer;
   }
 
   .bj-statement-summary-disclosure:hover,
   .bj-statement-summary-disclosure:focus-visible {
-    background: var(--muted);
-    color: var(--foreground);
+    background: var(--ui-beancount-surface-muted);
+    color: var(--ui-beancount-foreground);
     outline: none;
   }
 
   .bj-statement-summary-chevron-collapsed {
     transform: rotate(-90deg);
+  }
+
+  :global(.bj-statement-summary-chevron-icon) {
+    width: var(--ui-beancount-space-3);
+    height: var(--ui-beancount-space-3);
+  }
+
+  .bj-statement-summary-disclosure-spacer {
+    width: var(--ui-beancount-space-4);
+    height: var(--ui-beancount-space-4);
+    flex-shrink: 0;
+  }
+
+  .bj-statement-summary-account-link,
+  .bj-statement-summary-account-label {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 500;
+  }
+
+  .bj-statement-summary-account-link {
+    color: var(--primary);
+  }
+
+  .bj-statement-summary-account-link:hover {
+    text-decoration: underline;
   }
 
   .bj-statement-summary-meter {
@@ -180,6 +221,10 @@
   }
 
   .bj-statement-summary-muted {
-    color: var(--muted-foreground);
+    color: var(--ui-beancount-muted-foreground);
+  }
+
+  .bj-statement-summary-other-value {
+    display: block;
   }
 </style>

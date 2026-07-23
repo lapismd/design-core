@@ -11,7 +11,7 @@
       href: "/accounts/Assets",
       values: { gbp: "£1,510.00" },
       weight: "100.0%",
-      color: "oklch(60% 0.16 245)",
+      color: "var(--primary)",
       children: [
         {
           id: "assets-cash",
@@ -19,7 +19,7 @@
           href: "/accounts/Assets:Cash",
           values: { gbp: "£510.00" },
           weight: "33.8%",
-          color: "oklch(62% 0.14 165)",
+          color: "var(--chart-2)",
         },
         {
           id: "assets-bank",
@@ -27,7 +27,7 @@
           href: "/accounts/Assets:Bank",
           values: { gbp: "£1,000.00" },
           weight: "66.2%",
-          color: "oklch(62% 0.16 275)",
+          color: "var(--chart-3)",
           otherValues: [{ label: "USD", value: "$50.00", title: "US dollars" }],
         },
       ],
@@ -40,14 +40,14 @@
       label: "Assets:Cash",
       percentage: 33.8,
       amount: "£510.00",
-      color: "oklch(62% 0.14 165)",
+      color: "var(--chart-2)",
     },
     {
       id: "bank",
       label: "Assets:Bank",
       percentage: 66.2,
       amount: "£1,000.00",
-      color: "oklch(62% 0.16 275)",
+      color: "var(--chart-3)",
     },
   ];
 
@@ -88,7 +88,7 @@
   }}
 >
   {#snippet template()}
-    <div class="bg-card max-w-5xl rounded-xl border p-5 shadow-sm">
+    <div class="bj-statement-summary-story">
       <StatementSummaryTreeTable
         title="Assets"
         total="£1,510.00"
@@ -109,7 +109,7 @@
   }}
 >
   {#snippet template()}
-    <div class="bg-card max-w-5xl rounded-xl border p-5 shadow-sm">
+    <div class="bj-statement-summary-story">
       <StatementSummaryTreeTable
         title="Assets"
         total="£1,510.00"
@@ -120,7 +120,7 @@
           selectedAccount = node.label;
         }}
       />
-      <output class="sr-only" aria-live="polite">
+      <output class="bj-statement-summary-story__status" aria-live="polite">
         {selectedAccount
           ? `Selected ${selectedAccount}`
           : "No account selected"}
@@ -128,3 +128,23 @@
     </div>
   {/snippet}
 </Story>
+
+<style>
+  .bj-statement-summary-story {
+    max-width: 64rem;
+    border: 1px solid var(--ui-beancount-border);
+    border-radius: var(--ui-beancount-radius-panel);
+    background-color: var(--ui-beancount-surface);
+    padding: var(--ui-beancount-space-5);
+    box-shadow: var(--ui-beancount-shadow-panel);
+  }
+
+  .bj-statement-summary-story__status {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+</style>

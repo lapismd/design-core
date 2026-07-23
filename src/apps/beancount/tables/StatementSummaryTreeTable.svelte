@@ -145,7 +145,10 @@
                 : "Collapse all accounts"}
               onclick={toggleAll}
             >
-              <ChevronsUpDown class="size-3" aria-hidden="true" />
+              <ChevronsUpDown
+                class="bj-statement-summary-toggle-icon"
+                aria-hidden="true"
+              />
             </button>
           {/if}
           Account
@@ -185,14 +188,14 @@
 
   h2 {
     margin: 0;
-    color: var(--foreground);
+    color: var(--ui-beancount-foreground);
     font-size: 1.125rem;
     font-weight: 600;
     letter-spacing: -0.01em;
   }
 
   h2 span {
-    color: var(--muted-foreground);
+    color: var(--ui-beancount-muted-foreground);
     font-family: var(--font-mono, ui-monospace, monospace);
     font-size: 1rem;
     font-weight: 500;
@@ -216,7 +219,7 @@
     overflow: hidden;
     margin-top: 0.75rem;
     border-radius: 999px;
-    background: var(--muted);
+    background: var(--ui-beancount-surface-muted);
   }
 
   .bj-statement-summary-contribution-bar > span:first-child {
@@ -232,7 +235,7 @@
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
     gap: 0.5rem 1.5rem;
     margin-top: 1rem;
-    color: var(--muted-foreground);
+    color: var(--ui-beancount-muted-foreground);
     font-size: 0.875rem;
   }
 
@@ -256,7 +259,7 @@
   }
 
   .bj-statement-summary-contribution > span:nth-child(n + 3) {
-    color: var(--foreground);
+    color: var(--ui-beancount-foreground);
     font-family: var(--font-mono, ui-monospace, monospace);
     font-size: 0.75rem;
     font-variant-numeric: tabular-nums;
@@ -269,10 +272,11 @@
     max-width: 100%;
     overflow-x: auto;
     margin-top: 1rem;
-    border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
+    border: 1px solid
+      color-mix(in srgb, var(--ui-beancount-border) 80%, transparent);
     border-radius: 0.75rem;
-    background: var(--card);
-    box-shadow: 0 1px 2px color-mix(in srgb, var(--foreground) 6%, transparent);
+    background: var(--ui-beancount-surface);
+    box-shadow: var(--ui-beancount-shadow-panel);
   }
 
   .bj-statement-summary-table {
@@ -293,8 +297,12 @@
       minmax(11rem, 1fr);
     min-height: 2.5rem;
     align-items: center;
-    background: color-mix(in srgb, var(--muted) 65%, transparent);
-    color: var(--muted-foreground);
+    background: color-mix(
+      in srgb,
+      var(--ui-beancount-surface-muted) 65%,
+      transparent
+    );
+    color: var(--ui-beancount-muted-foreground);
     font-size: 0.75rem;
     font-weight: 600;
     letter-spacing: 0.12em;
@@ -322,14 +330,19 @@
     border: 0;
     border-radius: 0.125rem;
     background: transparent;
-    color: var(--muted-foreground);
+    color: var(--ui-beancount-muted-foreground);
     cursor: pointer;
   }
 
   .bj-statement-summary-header button:hover,
   .bj-statement-summary-header button:focus-visible {
-    background: var(--background);
-    color: var(--foreground);
+    background: var(--ui-beancount-surface);
+    color: var(--ui-beancount-foreground);
     outline: none;
+  }
+
+  :global(.bj-statement-summary-toggle-icon) {
+    width: var(--ui-beancount-space-3);
+    height: var(--ui-beancount-space-3);
   }
 </style>
