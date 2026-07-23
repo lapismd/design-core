@@ -14,6 +14,7 @@
   import FinancialDashboard from "../dashboard/FinancialDashboard.svelte";
   import LedgerActivityTable from "../tables/LedgerActivityTable.svelte";
   import HoldingsTable from "../tables/HoldingsTable.svelte";
+  import QueryResultsTable from "../tables/QueryResultsTable.svelte";
   import StatementSummaryTreeTable from "../tables/StatementSummaryTreeTable.svelte";
   import IngestionReviewTable from "../tables/IngestionReviewTable.svelte";
   import ValidationErrorTable from "../feedback/ValidationErrorTable.svelte";
@@ -38,6 +39,8 @@
     incomeStatementNodes,
     journalGroups,
     journalUpcomingGroups,
+    queryResultColumns,
+    queryResultRows,
     statementColumns,
     statementNodes,
     statisticsColumns,
@@ -269,6 +272,9 @@
   const formatDashboardAmount = (value: number) => `${value.toFixed(2)} GBP`;
   let journalTimeframe = $state("transactions");
   let journalRecordAction = $state("");
+  let queryText = $state("");
+  let queryExecuted = $state(false);
+  let queryAction = $state("");
   let dashboardAction = $state("");
   let incomeChartMode = $state<"single" | "stacked">("stacked");
   let incomePerspective = $state("net-profit");
@@ -1060,16 +1066,42 @@
   name="Query"
   parameters={{ visualDelta: visualDeltaForScreen("query") }}
   play={async ({ canvas }) => {
-    await expect(
-      canvas.getByRole("textbox", { name: "BQL query" }),
-    ).toBeVisible();
+    const queryInput = canvas.getByRole("textbox", { name: "BQL query" });
+    await expect(queryInput).toBeVisible();
+    await userEvent.type(queryInput, "SELECT account, sum(position)");
+    await userEvent.click(canvas.getByRole("button", { name: "Execute" }));
+    await expect(canvas.getByText("Groceries")).toBeVisible();
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Query display options" }),
+    );
+    await expect(canvas.getByRole("status")).toHaveTextContent(
+      "Query display options requested",
+    );
   }}
 >
   {#snippet template()}
     <ScreenFrame pageTitle="Query">
       <ContentScrollArea>
         <div class="bc-screen-story__page">
-          <QueryComposer />
+          <QueryComposer
+            bind:value={queryText}
+            onExecute={(value) => {
+              queryExecuted = Boolean(value.trim());
+              queryAction = `Executed ${value}`;
+            }}
+            onOptions={() => {
+              queryAction = "Query display options requested";
+            }}
+          />
+          {#if queryExecuted}
+            <QueryResultsTable
+              columns={queryResultColumns}
+              rows={queryResultRows}
+            />
+          {/if}
+          <output class="bc-screen-story__status" aria-live="polite"
+            >{queryAction}</output
+          >
         </div>
       </ContentScrollArea>
     </ScreenFrame>

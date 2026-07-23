@@ -120,6 +120,35 @@ export const journalUpcomingGroups = [
   },
 ];
 
+/** Synthetic formatted rows for the Query executed-state Storybook contract. */
+export const queryResultColumns = [
+  { id: "date", label: "Date", sortable: true },
+  { id: "description", label: "Description", sortable: true },
+  { id: "account", label: "Account" },
+  { id: "amount", label: "Amount", sortable: true, align: "right" as const },
+];
+
+export const queryResultRows = [
+  {
+    id: "groceries",
+    values: {
+      date: "18 Jul 2026",
+      description: "Groceries",
+      account: "Expenses:Groceries",
+      amount: "−42.17 GBP",
+    },
+  },
+  {
+    id: "salary",
+    values: {
+      date: "15 Jul 2026",
+      description: "Salary",
+      account: "Income:Salary",
+      amount: "3200.00 GBP",
+    },
+  },
+];
+
 export const statementColumns = [
   { id: "gbp", label: "GBP", title: "Pounds sterling" },
 ];
