@@ -67,7 +67,7 @@
   }}
 >
   {#snippet template()}
-    <div class="bg-card max-w-5xl rounded-xl border shadow-sm">
+    <div class="bc-dashboard-flow-story">
       <DashboardFlow
         {inflows}
         {outflows}
@@ -77,7 +77,7 @@
           selectedCategory = `Selected: ${category.label}`;
         }}
       />
-      <p class="sr-only" data-testid="selected-category">{selectedCategory}</p>
+      <p class="bc-dashboard-flow-story__status" data-testid="selected-category">{selectedCategory}</p>
     </div>
   {/snippet}
 </Story>
@@ -91,8 +91,13 @@
   }}
 >
   {#snippet template()}
-    <div class="bg-card max-w-5xl rounded-xl border shadow-sm">
+    <div class="bc-dashboard-flow-story">
       <DashboardFlow valueFormatter={(value) => String(value)} />
     </div>
   {/snippet}
 </Story>
+
+<style>
+  .bc-dashboard-flow-story { max-width:64rem; border:1px solid var(--ui-beancount-border); border-radius:var(--ui-beancount-radius-panel); background:var(--ui-beancount-surface); box-shadow:var(--ui-beancount-shadow-panel); }
+  .bc-dashboard-flow-story__status { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+</style>

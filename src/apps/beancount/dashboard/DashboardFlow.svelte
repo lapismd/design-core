@@ -176,15 +176,15 @@
 
 {#if isEmpty}
   <div
-    class="text-muted-foreground grid min-h-60 place-items-center px-6 text-center text-sm"
+    class="bc-dashboard-flow__empty"
   >
     {emptyLabel}
   </div>
 {:else}
-  <div class="overflow-x-auto px-3 py-4">
-    <div class="relative min-w-[720px]" bind:this={chartContainer}>
+  <div class="bc-dashboard-flow__scroll">
+    <div class="bc-dashboard-flow__chart" bind:this={chartContainer}>
       <svg
-        class="w-full"
+        class="bc-dashboard-flow__svg"
         viewBox={`0 0 ${width} ${chartHeight}`}
         role="group"
         aria-label={flowAriaLabel}
@@ -354,6 +354,10 @@
 {/if}
 
 <style>
+  .bc-dashboard-flow__empty { display:grid; min-height:15rem; place-items:center; padding-inline:calc(var(--ui-beancount-space-3) * 2); color:var(--ui-beancount-muted-foreground); text-align:center; font-size:.875rem; }
+  .bc-dashboard-flow__scroll { overflow-x:auto; padding:var(--ui-beancount-space-4) var(--ui-beancount-space-3); }
+  .bc-dashboard-flow__chart { position:relative; min-width:45rem; }
+  .bc-dashboard-flow__svg { width:100%; }
   .label {
     fill: var(--foreground);
     font-family: "DM Sans Variable", sans-serif;
