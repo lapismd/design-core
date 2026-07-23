@@ -1,6 +1,6 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, userEvent } from "storybook/test";
+  import { expect, userEvent, within } from "storybook/test";
   import * as Breadcrumb from "@stevejuma/ui/shadcn/breadcrumb";
   import { Button } from "@stevejuma/ui/shadcn/button";
   import * as Tabs from "@stevejuma/ui/shadcn/tabs";
@@ -44,6 +44,7 @@
     statisticsRows,
     sourceAccountSource,
     testRule,
+    testRuleActions,
     trialBalanceContributions,
     trialBalanceHierarchy,
     trialBalanceNodes,
@@ -1241,6 +1242,13 @@
     await expect(canvas.getByRole("status")).toHaveTextContent(
       "Test Rule inactive",
     );
+    await userEvent.click(
+      canvas.getByRole("button", { name: "More actions for Test Rule" }),
+    );
+    await userEvent.click(
+      within(document.body).getByRole("menuitem", { name: "Run…" }),
+    );
+    await expect(canvas.getByRole("status")).toHaveTextContent("Run Test Rule");
   }}
 >
   {#snippet template()}
@@ -1249,6 +1257,7 @@
         <div class="bc-screen-story__page bc-screen-story__rules">
           <RuleList
             rule={{ ...testRule, active: ruleActive }}
+            actions={testRuleActions}
             onOpenRule={(rule) => {
               ruleAction = `Open ${rule.name}`;
             }}
@@ -1256,8 +1265,8 @@
               ruleActive = active;
               ruleAction = `${rule.name} ${active ? "active" : "inactive"}`;
             }}
-            onMoreActions={(rule) => {
-              ruleAction = `More actions for ${rule.name}`;
+            onActionSelect={(rule, action) => {
+              ruleAction = `${action.label.replace("…", "")} ${rule.name}`;
             }}
           />
           <output class="bc-screen-story__status" aria-live="polite"

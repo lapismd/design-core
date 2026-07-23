@@ -1,6 +1,6 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, userEvent } from "storybook/test";
+  import { expect, userEvent, within } from "storybook/test";
   import RuleList from "./RuleList.svelte";
 
   const rule = {
@@ -20,6 +20,12 @@
       },
     ],
   };
+
+  const actions = [
+    { id: "edit", label: "Edit" },
+    { id: "run", label: "Run…" },
+    { id: "delete", label: "Delete", destructive: true },
+  ];
 
   const { Story } = defineMeta({
     title: "Apps/Beancount/Rules/Rule List",
@@ -58,15 +64,17 @@
     await userEvent.click(
       canvas.getByRole("button", { name: "More actions for Test Rule" }),
     );
-    await expect(canvas.getByRole("status")).toHaveTextContent(
-      "More actions for Test Rule",
+    await userEvent.click(
+      within(document.body).getByRole("menuitem", { name: "Run…" }),
     );
+    await expect(canvas.getByRole("status")).toHaveTextContent("Run Test Rule");
   }}
 >
   {#snippet template()}
     <div class="bc-rule-list-story">
       <RuleList
         rule={{ ...rule, active }}
+        {actions}
         onOpenRule={(item) => {
           action = `Open ${item.name}`;
         }}
@@ -74,8 +82,8 @@
           active = next;
           action = `${item.name} ${next ? "active" : "inactive"}`;
         }}
-        onMoreActions={(item) => {
-          action = `More actions for ${item.name}`;
+        onActionSelect={(item, selectedAction) => {
+          action = `${selectedAction.label.replace("…", "")} ${item.name}`;
         }}
       />
       <output class="bc-rule-list-story__status" aria-live="polite"

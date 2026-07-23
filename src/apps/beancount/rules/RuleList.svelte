@@ -3,6 +3,7 @@
   import { Badge } from "@stevejuma/ui/shadcn/badge";
   import { Button } from "@stevejuma/ui/shadcn/button";
   import * as Card from "@stevejuma/ui/shadcn/card";
+  import * as DropdownMenu from "@stevejuma/ui/shadcn/dropdown-menu";
   import { Switch } from "@stevejuma/ui/shadcn/switch";
 
   export type RuleClauseKind = "IF" | "THEN" | "FOR";
@@ -20,14 +21,23 @@
     active: boolean;
   };
 
+  /** A host-owned action exposed from a rule's contextual menu. */
+  export type RuleAction = {
+    id: string;
+    label: string;
+    destructive?: boolean;
+    disabled?: boolean;
+  };
+
   let {
     rule,
     ariaLabel = "Rules",
     recentRunsLabel = "Recent runs",
     emptyRecentRunsLabel = "No rule runs yet.",
+    actions = [],
     onOpenRule = () => {},
     onActiveChange = () => {},
-    onMoreActions = () => {},
+    onActionSelect = () => {},
   }: {
     /** The rule content belongs to the host's rules adapter. */
     rule: AutomationRule;
@@ -37,12 +47,14 @@
     recentRunsLabel?: string;
     /** Copy when the host reports no rule executions. */
     emptyRecentRunsLabel?: string;
+    /** Available host-owned contextual actions, such as edit, run, or delete. */
+    actions?: readonly RuleAction[];
     /** Request that the host opens the rule editor/details. */
     onOpenRule?: (rule: AutomationRule) => void;
     /** Request a host-owned active-state update. */
     onActiveChange?: (rule: AutomationRule, active: boolean) => void;
-    /** Request host-owned actions such as edit or delete. */
-    onMoreActions?: (rule: AutomationRule) => void;
+    /** Requests a host-owned contextual action for this rule. */
+    onActionSelect?: (rule: AutomationRule, action: RuleAction) => void;
   } = $props();
 </script>
 
@@ -75,15 +87,36 @@
           aria-label={`Set ${rule.name} active`}
           onCheckedChange={(active) => onActiveChange(rule, active)}
         />
-        <Button
-          class="bc-rule-list__more"
-          variant="ghost"
-          size="icon"
-          aria-label={`More actions for ${rule.name}`}
-          onclick={() => onMoreActions(rule)}
-        >
-          <MoreHorizontal aria-hidden="true" />
-        </Button>
+        {#if actions.length}
+          <DropdownMenu.Root>
+            <DropdownMenu.Trigger>
+              {#snippet child({ props })}
+                <Button
+                  {...props}
+                  class="bc-rule-list__more"
+                  variant="ghost"
+                  size="icon"
+                  aria-label={`More actions for ${rule.name}`}
+                >
+                  <MoreHorizontal aria-hidden="true" />
+                </Button>
+              {/snippet}
+            </DropdownMenu.Trigger>
+            <DropdownMenu.Content align="end">
+              <DropdownMenu.Group>
+                {#each actions as action (action.id)}
+                  <DropdownMenu.Item
+                    disabled={action.disabled}
+                    variant={action.destructive ? "destructive" : "default"}
+                    onSelect={() => onActionSelect(rule, action)}
+                  >
+                    {action.label}
+                  </DropdownMenu.Item>
+                {/each}
+              </DropdownMenu.Group>
+            </DropdownMenu.Content>
+          </DropdownMenu.Root>
+        {/if}
       </Card.Action>
     </Card.Header>
     <Card.Content class="bc-rule-list__clauses">

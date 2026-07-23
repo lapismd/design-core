@@ -3,4 +3,5 @@ export {
   type AutomationRule,
   type RuleClause,
   type RuleClauseKind,
+  type RuleAction,
 } from "./RuleList.svelte";

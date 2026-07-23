@@ -936,6 +936,12 @@ export const testRule = {
   active: true,
 };
 
+export const testRuleActions = [
+  { id: "edit", label: "Edit" },
+  { id: "run", label: "Run…" },
+  { id: "delete", label: "Delete", destructive: true },
+];
+
 export const unassignedAccountGroup = {
   id: "other-accounts",
   label: "Other Accounts",
