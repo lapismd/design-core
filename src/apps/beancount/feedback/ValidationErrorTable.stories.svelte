@@ -78,6 +78,23 @@
   {/snippet}
 </Story>
 
+<Story
+  name="Frames a compact route empty state"
+  play={async ({ canvas }) => {
+    await expect(canvas.getByText("No records")).toBeVisible();
+  }}
+>
+  {#snippet template()}
+    <div class="bc-validation-error-table-story">
+      <ValidationErrorTable
+        errors={[]}
+        emptyVariant="compact"
+        emptyTitle="No records"
+      />
+    </div>
+  {/snippet}
+</Story>
+
 <style>
   .bc-validation-error-table-story {
     max-width: 64rem;

@@ -31,7 +31,6 @@
     trialBalanceContributions,
     trialBalanceHierarchy,
     trialBalanceNodes,
-    validationErrors,
   } from "./fixtures.js";
 
   const { Story } = defineMeta({
@@ -775,16 +774,18 @@
   name="Errors"
   parameters={{ visualDelta: visualDeltaForScreen("errors") }}
   play={async ({ canvas }) => {
-    await expect(
-      canvas.getByText("Duplicate open directive for Assets:Cash"),
-    ).toBeVisible();
+    await expect(canvas.getByText("No records")).toBeVisible();
   }}
 >
   {#snippet template()}
     <ScreenFrame pageTitle="Errors">
       <ContentScrollArea>
         <div class="bc-screen-story__page">
-          <ValidationErrorTable errors={validationErrors} />
+          <ValidationErrorTable
+            errors={[]}
+            emptyVariant="compact"
+            emptyTitle="No records"
+          />
         </div>
       </ContentScrollArea>
     </ScreenFrame>

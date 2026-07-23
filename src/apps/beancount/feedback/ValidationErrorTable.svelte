@@ -10,17 +10,22 @@
     href?: string;
   };
 
+  export type ValidationErrorEmptyVariant = "standard" | "compact";
+
   let {
     errors,
     ariaLabel = "Validation errors",
     emptyTitle = "No validation errors",
     emptyDescription = "This ledger has no errors to review.",
+    emptyVariant = "standard",
     onNavigate,
   }: {
     errors: readonly ValidationErrorRow[];
     ariaLabel?: string;
     emptyTitle?: string;
     emptyDescription?: string;
+    /** A compact route-level empty panel for Fava-derived record views. */
+    emptyVariant?: ValidationErrorEmptyVariant;
     onNavigate?: (error: ValidationErrorRow) => void;
   } = $props();
 
@@ -89,6 +94,10 @@
         {/each}
       </Table.Body>
     </Table.Root>
+  </div>
+{:else if emptyVariant === "compact"}
+  <div class="bc-validation-error-table__compact-empty" aria-label={ariaLabel}>
+    <p>{emptyTitle}</p>
   </div>
 {:else}
   <Empty.Root class="bc-validation-error-table__empty" aria-label={ariaLabel}>
@@ -207,5 +216,21 @@
     );
     background: var(--card);
     box-shadow: var(--ui-beancount-shadow-panel);
+  }
+
+  .bc-validation-error-table__compact-empty {
+    display: flex;
+    min-height: calc(var(--ui-beancount-space-4) * 4);
+    align-items: center;
+    border: 1px solid var(--ui-beancount-border);
+    border-radius: var(--ui-beancount-radius-panel);
+    background: var(--ui-beancount-surface);
+    padding-inline: calc(var(--ui-beancount-space-4) * 1.5);
+    color: var(--ui-beancount-foreground);
+    font-size: var(--text-base);
+  }
+
+  .bc-validation-error-table__compact-empty p {
+    margin: 0;
   }
 </style>
