@@ -92,14 +92,14 @@
 </script>
 
 <section
-  class="grid min-h-64 place-items-center p-4"
+  class="bc-dashboard-donut"
   aria-label={ariaLabel}
   data-dashboard-donut
 >
   {#if total}
     <svg
       viewBox="-116 -116 232 232"
-      class="size-56"
+      class="bc-dashboard-donut__svg"
       role="group"
       aria-label={ariaLabel}
     >
@@ -114,7 +114,7 @@
           opacity={activeCategory && activeCategory.id !== arc.category.id
             ? "0.2"
             : "1"}
-          class="cursor-pointer transition-opacity outline-none"
+          class="bc-dashboard-donut__arc"
           role="button"
           tabindex="0"
           aria-label={categoryLabel(arc.category)}
@@ -128,7 +128,7 @@
         text-anchor="middle"
         y="-7"
         fill="var(--muted-foreground)"
-        class="text-[13px] font-semibold"
+        class="bc-dashboard-donut__label"
       >
         {activeCategory?.label ?? title}
       </text>
@@ -136,13 +136,22 @@
         text-anchor="middle"
         y="16"
         fill="var(--foreground)"
-        class="font-mono text-[13px] font-semibold"
+        class="bc-dashboard-donut__value"
       >
         {activeCategory?.valueLabel ??
           valueFormatter(activeCategory?.value ?? total)}
       </text>
     </svg>
   {:else}
-    <p class="text-muted-foreground text-sm">{emptyLabel}</p>
+    <p class="bc-dashboard-donut__empty">{emptyLabel}</p>
   {/if}
 </section>
+
+<style>
+  .bc-dashboard-donut { display:grid; min-height:16rem; place-items:center; padding:var(--ui-beancount-space-4); }
+  .bc-dashboard-donut__svg { width:14rem; height:14rem; }
+  .bc-dashboard-donut__arc { cursor:pointer; outline:none; transition:opacity 150ms ease; }
+  .bc-dashboard-donut__label { font-size:.8125rem; font-weight:600; }
+  .bc-dashboard-donut__value { font-family:var(--font-mono); font-size:.8125rem; font-weight:600; }
+  .bc-dashboard-donut__empty { color:var(--ui-beancount-muted-foreground); font-size:.875rem; }
+</style>

@@ -45,7 +45,7 @@
   }}
 >
   {#snippet template()}
-    <div class="bg-card max-w-md rounded-xl border shadow-sm">
+    <div class="bc-dashboard-donut-story">
       <DashboardDonut
         {categories}
         valueFormatter={(value) => `£${value.toFixed(2)}`}
@@ -61,8 +61,12 @@
   }}
 >
   {#snippet template()}
-    <div class="bg-card max-w-md rounded-xl border shadow-sm">
+    <div class="bc-dashboard-donut-story">
       <DashboardDonut valueFormatter={(value) => String(value)} />
     </div>
   {/snippet}
 </Story>
+
+<style>
+  .bc-dashboard-donut-story { max-width:28rem; border:1px solid var(--ui-beancount-border); border-radius:var(--ui-beancount-radius-panel); background:var(--ui-beancount-surface); box-shadow:var(--ui-beancount-shadow-panel); }
+</style>
