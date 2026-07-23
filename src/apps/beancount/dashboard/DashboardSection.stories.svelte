@@ -35,17 +35,22 @@
   }}
 >
   {#snippet template()}
-    <div class="max-w-3xl p-5">
+    <div class="bc-dashboard-section-story">
       <DashboardSection
         id="monthly-spending-content"
         title="Monthly spending"
         eyebrow="Cash flow"
         bind:open
       >
-        <p class="text-muted-foreground p-5 text-sm">
+        <p class="bc-dashboard-section-story__copy">
           Groceries are below budget.
         </p>
       </DashboardSection>
     </div>
   {/snippet}
 </Story>
+
+<style>
+  .bc-dashboard-section-story { max-width:48rem; padding:var(--ui-beancount-space-5); }
+  .bc-dashboard-section-story__copy { padding:var(--ui-beancount-space-5); color:var(--ui-beancount-muted-foreground); font-size:.875rem; }
+</style>
