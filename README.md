@@ -187,14 +187,15 @@ Setup: `.storybook/vitest.setup.ts` merges a11y + project preview annotations.
 Visual Delta compares the live story canvas to committed Playwright PNGs
 (overlay, heatmap Live Diff, create/update baselines, review tags). This
 section is the **host-side** source of truth for recreating the same workflow.
-Addon API/options: [`packages/storybook-addon-visual-delta/README.md`](./packages/storybook-addon-visual-delta/README.md).
-Boundary notes: [`VENDOR.md`](./packages/storybook-addon-visual-delta/VENDOR.md).
+Addon API/options: [`packages/storybook-addon-visual-delta/README.md`](./packages/storybook-addon-visual-delta/README.md)
+(including **Review layout** — canvas on top, Visual Delta docked full-width
+below). Boundary notes: [`VENDOR.md`](./packages/storybook-addon-visual-delta/VENDOR.md).
 
 ### Addon vs host boundary
 
 | Owned by `packages/storybook-addon-visual-delta` | Owned by `@stevejuma/ui` (host) |
 | ------------------------------------------------ | -------------------------------- |
-| Panel / Testing Module UI, overlay, Live Diff | Playwright suite `tests/visual/storybook.spec.ts` |
+| Panel / Testing Module UI, overlay, Live Diff, **review layout** toggle | Playwright suite `tests/visual/storybook.spec.ts` |
 | Preset `viteFinal`: `/__visual-delta/*` middleware, baseline CSF inject, src watch | `staticDirs` → `/visual-baselines` |
 | Preview `runStep` / park / overlay channel | Baseline write CLIs (`visual-update`, `visual-interaction-update`) |
 | Fetch clients + path constants | CSF patchers under `scripts/ui-generator/visual/` |
