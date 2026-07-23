@@ -150,7 +150,10 @@
 </script>
 
 <ContentScrollArea contentClass="scroll-container">
-  <main class="mx-auto w-full max-w-[1440px] px-4 pt-5 pb-7 md:px-6 lg:px-8">
+  <section
+    class="mx-auto w-full max-w-[1440px] px-4 pt-5 pb-7 md:px-6 lg:px-8"
+    aria-label={title}
+  >
     <header
       class="border-border/80 mb-6 flex flex-col gap-4 border-b pb-5 lg:flex-row lg:items-center lg:justify-between"
     >
@@ -438,7 +441,7 @@
         {/if}
       </DashboardSection>
     </div>
-  </main>
+  </section>
 </ContentScrollArea>
 
 <style>

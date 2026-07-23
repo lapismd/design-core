@@ -40,7 +40,7 @@ Studio revision, fixture digest, viewport, and per-image digest.
 | Reference provenance      | ✅     | 2026-07-23 capture: Studio `191dae81…`, sample fixture digest, 15 image digests                                                                                           |
 | Loaded route capture      | 🟡     | The unseeded sample project holds Records, Import accounts, and Rules in real loading states; add a deterministic ingestion/rules fixture before making loaded references |
 | Fava overwrite guard      | ✅     | Normal visual updater and Playwright snapshot updates reject reference-tagged stories                                                                                     |
-| Screen story health       | 🟡     | Fix Holdings, Statistics, Settings, and Dashboard a11y before alignment                                                                                                   |
+| Screen story health       | ✅     | Holdings, Statistics, Settings queries are unambiguous; Dashboard uses one top-level main landmark                                                                        |
 | Component regression PNGs | ⬜     | 94 Beancount visual candidates still need reviewed, family-by-family baselines                                                                                            |
 
 ## Screen tracker

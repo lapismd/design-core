@@ -209,7 +209,9 @@
   name="Holdings"
   parameters={{ visualDelta: visualDeltaForScreen("holdings") }}
   play={async ({ canvas }) => {
-    await expect(canvas.getByText("Holdings")).toBeVisible();
+    await expect(
+      canvas.getByText(/Holdings query results compose through/),
+    ).toBeVisible();
   }}
 >
   {#snippet template()}
@@ -231,7 +233,11 @@
   name="Statistics"
   parameters={{ visualDelta: visualDeltaForScreen("statistics") }}
   play={async ({ canvas }) => {
-    await expect(canvas.getByText("Statistics")).toBeVisible();
+    await expect(
+      canvas.getByText(
+        "Preset statistics views stay Fava-owned until extracted.",
+      ),
+    ).toBeVisible();
   }}
 >
   {#snippet template()}
@@ -311,7 +317,9 @@
   name="Settings"
   parameters={{ visualDelta: visualDeltaForScreen("settings") }}
   play={async ({ canvas }) => {
-    await expect(canvas.getByText("Sources")).toBeVisible();
+    await expect(
+      canvas.getByText(/Ingestion config editors remain in Fava/),
+    ).toBeVisible();
   }}
 >
   {#snippet template()}
