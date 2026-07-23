@@ -161,23 +161,23 @@
 {#snippet accountCell(node: IntervalTreeNode)}
   {#snippet contents()}
     <span
-      class="bg-primary/15 text-primary grid size-4 shrink-0 place-items-center rounded-full text-[0.55rem]"
+      class="bc-interval-tree-table-story__account-mark"
       aria-hidden="true"
     >
       {node.label.slice(0, 1)}
     </span>
-    <span class="min-w-0 truncate">{node.label}</span>
+    <span class="bc-interval-tree-table-story__account-label">{node.label}</span>
   {/snippet}
 
   {#if node.href}
     <a
       href={node.href}
-      class="text-foreground hover:text-primary inline-flex min-w-0 items-center gap-2 font-medium"
+      class="bc-interval-tree-table-story__account-link"
     >
       {@render contents()}
     </a>
   {:else}
-    <span class="inline-flex min-w-0 items-center gap-2 font-medium">
+    <span class="bc-interval-tree-table-story__account-static">
       {@render contents()}
     </span>
   {/if}
@@ -202,7 +202,7 @@
   }}
 >
   {#snippet template()}
-    <div class="max-w-5xl p-5">
+    <div class="bc-interval-tree-table-story">
       <IntervalTreeTable {nodes} {columns} />
     </div>
   {/snippet}
@@ -210,7 +210,7 @@
 
 <Story name="Supports contextual account links">
   {#snippet template()}
-    <div class="max-w-5xl p-5">
+    <div class="bc-interval-tree-table-story">
       <IntervalTreeTable {nodes} {columns} {accountCell} />
     </div>
   {/snippet}
@@ -226,7 +226,7 @@
   }}
 >
   {#snippet template()}
-    <div class="max-w-5xl p-5">
+    <div class="bc-interval-tree-table-story">
       <IntervalTreeTable
         {nodes}
         {columns}
@@ -234,9 +234,61 @@
           selected = node.label;
         }}
       />
-      <output class="sr-only" aria-live="polite">
+      <output class="bc-interval-tree-table-story__status" aria-live="polite">
         {selected ? `Selected ${selected}` : "No account selected"}
       </output>
     </div>
   {/snippet}
 </Story>
+
+<style>
+  .bc-interval-tree-table-story {
+    max-width: 64rem;
+    padding: var(--ui-beancount-space-5);
+  }
+
+  .bc-interval-tree-table-story__account-mark {
+    display: grid;
+    width: var(--ui-beancount-space-4);
+    height: var(--ui-beancount-space-4);
+    flex-shrink: 0;
+    place-items: center;
+    border-radius: 999px;
+    background-color: color-mix(in srgb, var(--primary) 15%, transparent);
+    color: var(--primary);
+    font-size: 0.55rem;
+  }
+
+  .bc-interval-tree-table-story__account-label {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .bc-interval-tree-table-story__account-link,
+  .bc-interval-tree-table-story__account-static {
+    display: inline-flex;
+    min-width: 0;
+    align-items: center;
+    gap: var(--ui-beancount-space-2);
+    font-weight: 500;
+  }
+
+  .bc-interval-tree-table-story__account-link {
+    color: var(--ui-beancount-foreground);
+  }
+
+  .bc-interval-tree-table-story__account-link:hover {
+    color: var(--primary);
+  }
+
+  .bc-interval-tree-table-story__status {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+</style>

@@ -132,28 +132,28 @@
   }
 </script>
 
-<div
-  data-interval-tree-table
-  class="border-border/80 bg-card overflow-x-auto rounded-xl border shadow-sm"
->
-  <Table.Root aria-label={ariaLabel} class="min-w-[48rem]">
+<div data-interval-tree-table class="bc-interval-tree-table">
+  <Table.Root aria-label={ariaLabel} class="bc-interval-tree-table__table">
     <Table.Header>
-      <Table.Row class="bg-muted/65 hover:bg-muted/65">
+      <Table.Row class="bc-interval-tree-table__header-row">
         <Table.Head
-          class="min-w-64 px-4 py-2 text-xs font-semibold tracking-[0.12em] uppercase"
+          class="bc-interval-tree-table__account-heading"
         >
-          <span class="flex items-center gap-2">
+          <span class="bc-interval-tree-table__heading-content">
             {#if collapsibleIds.length}
               <button
                 type="button"
-                class="text-muted-foreground hover:bg-background hover:text-foreground focus-visible:ring-ring grid size-4 place-items-center rounded-sm focus-visible:ring-1 focus-visible:outline-none"
+                class="bc-interval-tree-table__disclosure"
                 aria-label={allCollapsed
                   ? "Expand all accounts"
                   : "Collapse all accounts"}
                 aria-pressed={allCollapsed}
                 onclick={toggleAll}
               >
-                <ChevronsUpDown class="size-3" aria-hidden="true" />
+                <ChevronsUpDown
+                  class="bc-interval-tree-table__disclosure-icon"
+                  aria-hidden="true"
+                />
               </button>
             {/if}
             Account
@@ -161,13 +161,13 @@
         </Table.Head>
         {#each columns as column (column.id)}
           <Table.Head
-            class="min-w-44 px-4 py-2 text-right text-xs font-semibold tracking-[0.12em] uppercase"
+            class="bc-interval-tree-table__amount-heading"
             title={column.title}
           >
             {#if column.href}
               <a
                 href={column.href}
-                class="text-primary hover:underline"
+                class="bc-interval-tree-table__column-link"
                 onclick={(event) => navigateColumn(column, event)}
               >
                 {column.label}
@@ -183,40 +183,51 @@
       {#each visibleNodes as { node, depth, hasChildren } (node.id)}
         {@const isCollapsed = collapsedIds.has(node.id)}
         <Table.Row>
-          <Table.Cell class="px-4 py-2 align-top">
+          <Table.Cell class="bc-interval-tree-table__account-cell">
             <div
-              class="flex min-w-0 items-center gap-2"
+              class="bc-interval-tree-table__account-content"
               style={`padding-left: ${depth * 1.25}rem`}
             >
               {#if hasChildren}
                 <button
                   type="button"
-                  class="text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:ring-ring grid size-4 shrink-0 place-items-center rounded-sm focus-visible:ring-1 focus-visible:outline-none"
+                  class="bc-interval-tree-table__disclosure bc-interval-tree-table__disclosure--row"
                   aria-label={`${isCollapsed ? "Expand" : "Collapse"} ${node.label}`}
                   aria-expanded={!isCollapsed}
                   onclick={() => toggle(node.id)}
                 >
                   {#if isCollapsed}
-                    <ChevronRight class="size-3" aria-hidden="true" />
+                    <ChevronRight
+                      class="bc-interval-tree-table__disclosure-icon"
+                      aria-hidden="true"
+                    />
                   {:else}
-                    <ChevronDown class="size-3" aria-hidden="true" />
+                    <ChevronDown
+                      class="bc-interval-tree-table__disclosure-icon"
+                      aria-hidden="true"
+                    />
                   {/if}
                 </button>
               {:else}
-                <span class="size-4 shrink-0" aria-hidden="true"></span>
+                <span
+                  class="bc-interval-tree-table__disclosure-spacer"
+                  aria-hidden="true"
+                ></span>
               {/if}
               {#if accountCell}
                 {@render accountCell(node)}
               {:else if node.href}
                 <a
                   href={node.href}
-                  class="text-primary min-w-0 truncate font-medium hover:underline"
+                  class="bc-interval-tree-table__account-link"
                   onclick={(event) => navigate(node, event)}
                 >
                   {node.label}
                 </a>
               {:else}
-                <span class="min-w-0 truncate font-medium">{node.label}</span>
+                <span class="bc-interval-tree-table__account-label"
+                  >{node.label}</span
+                >
               {/if}
             </div>
           </Table.Cell>
@@ -230,14 +241,20 @@
                   }
                 : cell}
             <Table.Cell
-              class={`px-4 py-2 text-right font-mono text-xs tabular-nums ${displayedCell?.dimmed ? "opacity-55" : ""}`}
+              class={displayedCell?.dimmed
+                ? "bc-interval-tree-table__amount-cell bc-interval-tree-table__amount-cell--dimmed"
+                : "bc-interval-tree-table__amount-cell"}
             >
               {#each displayedCell?.values ?? [] as amount, index (index)}
-                <span class="block whitespace-nowrap" title={amount.title}>
+                <span class="bc-interval-tree-table__amount" title={amount.title}>
                   {amount.value}
                   {#if amount.difference}
                     <span
-                      class={`ml-1 text-[0.9em] ${amount.difference.tone === "positive" ? "text-emerald-700 dark:text-emerald-300" : "text-destructive"}`}
+                      class="bc-interval-tree-table__difference"
+                      class:bc-interval-tree-table__difference--positive={amount.difference
+                        .tone === "positive"}
+                      class:bc-interval-tree-table__difference--negative={amount.difference
+                        .tone === "negative"}
                       title={amount.difference.title}
                     >
                       {amount.difference.value}
@@ -245,7 +262,7 @@
                   {/if}
                 </span>
               {:else}
-                <span class="text-muted-foreground">—</span>
+                <span class="bc-interval-tree-table__empty-value">—</span>
               {/each}
             </Table.Cell>
           {/each}
@@ -254,3 +271,155 @@
     </Table.Body>
   </Table.Root>
 </div>
+
+<style>
+  .bc-interval-tree-table {
+    overflow-x: auto;
+    border: 1px solid color-mix(in srgb, var(--ui-beancount-border) 80%, transparent);
+    border-radius: var(--ui-beancount-radius-panel);
+    background-color: var(--ui-beancount-surface);
+    box-shadow: var(--ui-beancount-shadow-panel);
+  }
+
+  :global(.bc-interval-tree-table__table) {
+    min-width: 48rem;
+  }
+
+  :global(.bc-interval-tree-table__header-row) {
+    background-color: color-mix(
+      in srgb,
+      var(--ui-beancount-surface-muted) 65%,
+      transparent
+    );
+  }
+
+  :global(.bc-interval-tree-table__header-row:hover) {
+    background-color: color-mix(
+      in srgb,
+      var(--ui-beancount-surface-muted) 65%,
+      transparent
+    );
+  }
+
+  :global(.bc-interval-tree-table__account-heading) {
+    min-width: 16rem;
+  }
+
+  .bc-interval-tree-table__heading-content,
+  .bc-interval-tree-table__account-content {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: var(--ui-beancount-space-2);
+  }
+
+  :global(.bc-interval-tree-table__account-heading),
+  :global(.bc-interval-tree-table__amount-heading) {
+    padding: var(--ui-beancount-space-2) var(--ui-beancount-space-4);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  :global(.bc-interval-tree-table__amount-heading) {
+    min-width: 11rem;
+    text-align: right;
+  }
+
+  .bc-interval-tree-table__column-link,
+  .bc-interval-tree-table__account-link {
+    color: var(--primary);
+  }
+
+  .bc-interval-tree-table__column-link:hover,
+  .bc-interval-tree-table__account-link:hover {
+    text-decoration: underline;
+  }
+
+  .bc-interval-tree-table__disclosure {
+    display: grid;
+    width: var(--ui-beancount-space-4);
+    height: var(--ui-beancount-space-4);
+    flex-shrink: 0;
+    place-items: center;
+    border-radius: var(--radius-sm);
+    color: var(--ui-beancount-muted-foreground);
+    outline: none;
+  }
+
+  .bc-interval-tree-table__disclosure:hover {
+    background-color: var(--ui-beancount-surface);
+    color: var(--ui-beancount-foreground);
+  }
+
+  .bc-interval-tree-table__disclosure--row:hover {
+    background-color: var(--ui-beancount-surface-muted);
+  }
+
+  .bc-interval-tree-table__disclosure:focus-visible {
+    outline: 1px solid var(--ui-beancount-focus-ring);
+  }
+
+  :global(.bc-interval-tree-table__disclosure-icon) {
+    width: var(--ui-beancount-space-3);
+    height: var(--ui-beancount-space-3);
+  }
+
+  :global(.bc-interval-tree-table__account-cell),
+  :global(.bc-interval-tree-table__amount-cell) {
+    padding: var(--ui-beancount-space-2) var(--ui-beancount-space-4);
+  }
+
+  :global(.bc-interval-tree-table__account-cell) {
+    vertical-align: top;
+  }
+
+  .bc-interval-tree-table__disclosure-spacer {
+    width: var(--ui-beancount-space-4);
+    height: var(--ui-beancount-space-4);
+    flex-shrink: 0;
+  }
+
+  .bc-interval-tree-table__account-link,
+  .bc-interval-tree-table__account-label {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 500;
+  }
+
+  :global(.bc-interval-tree-table__amount-cell) {
+    text-align: right;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  :global(.bc-interval-tree-table__amount-cell--dimmed) {
+    opacity: 0.55;
+  }
+
+  .bc-interval-tree-table__amount {
+    display: block;
+    white-space: nowrap;
+  }
+
+  .bc-interval-tree-table__difference {
+    margin-inline-start: var(--ui-beancount-space-1);
+    font-size: 0.9em;
+  }
+
+  .bc-interval-tree-table__difference--positive {
+    color: var(--ui-beancount-positive);
+  }
+
+  .bc-interval-tree-table__difference--negative {
+    color: var(--ui-beancount-negative);
+  }
+
+  .bc-interval-tree-table__empty-value {
+    color: var(--ui-beancount-muted-foreground);
+  }
+</style>

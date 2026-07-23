@@ -17,6 +17,8 @@
   --ui-beancount-radius-panel: var(--radius-xl);
   --ui-beancount-shadow-panel: 0 1px 2px rgb(0 0 0 / 0.05);
   --ui-beancount-focus-ring: var(--ring);
+  --ui-beancount-positive: oklch(0.448 0.119 151.328);
+  --ui-beancount-negative: var(--destructive);
   --ui-beancount-control-height: calc(var(--spacing) * 9);
   --ui-beancount-compact-control-height: calc(var(--spacing) * 8);
   --ui-beancount-space-1: calc(var(--spacing) * 1);
@@ -28,4 +30,5 @@
 
 .dark {
   --ui-beancount-shadow-panel: 0 2px 8px rgb(0 0 0 / 0.5);
+  --ui-beancount-positive: oklch(0.765 0.177 163.223);
 }
