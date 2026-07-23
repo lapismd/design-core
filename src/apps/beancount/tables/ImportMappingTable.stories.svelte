@@ -122,7 +122,7 @@
   }}
 >
   {#snippet template()}
-    <div class="max-w-6xl p-5">
+    <div class="bc-import-mapping-story">
       <ImportMappingTable
         fileName="northstar-july.csv"
         {columns}
@@ -142,7 +142,7 @@
         }}
       />
       <output
-        class="text-muted-foreground mt-3 block text-sm"
+        class="bc-import-mapping-story__status"
         aria-live="polite"
       >
         {status}
@@ -160,7 +160,7 @@
   }}
 >
   {#snippet template()}
-    <div class="max-w-6xl p-5">
+    <div class="bc-import-mapping-story">
       <ImportMappingTable
         fileName="empty.csv"
         {columns}
@@ -172,3 +172,17 @@
     </div>
   {/snippet}
 </Story>
+
+<style>
+  .bc-import-mapping-story {
+    max-width: 72rem;
+    padding: var(--ui-beancount-space-5);
+  }
+
+  .bc-import-mapping-story__status {
+    display: block;
+    margin-block-start: var(--ui-beancount-space-3);
+    color: var(--ui-beancount-muted-foreground);
+    font-size: 0.875rem;
+  }
+</style>

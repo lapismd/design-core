@@ -83,17 +83,13 @@
   }
 </script>
 
-<section class="flex min-w-0 flex-col gap-4" aria-label="Import mapping">
-  <header
-    class="border-border/80 bg-card flex flex-col gap-3 rounded-xl border p-4 shadow-sm sm:flex-row sm:items-center sm:justify-between"
-  >
-    <div class="min-w-0">
-      <p
-        class="text-muted-foreground text-xs font-semibold tracking-wide uppercase"
-      >
+<section class="bc-import-mapping" aria-label="Import mapping">
+  <header class="bc-import-mapping__file-header">
+    <div class="bc-import-mapping__file-copy">
+      <p class="bc-import-mapping__eyebrow">
         Import file
       </p>
-      <h2 class="text-foreground mt-1 truncate text-sm font-semibold">
+      <h2 class="bc-import-mapping__file-name">
         {fileName}
       </h2>
     </div>
@@ -125,10 +121,8 @@
     {/if}
   </header>
 
-  <div class="border-border/80 bg-card min-w-0 rounded-xl border shadow-sm">
-    <div
-      class="border-border flex flex-col gap-3 border-b p-3 sm:flex-row sm:items-center sm:justify-between"
-    >
+  <div class="bc-import-mapping__table-panel">
+    <div class="bc-import-mapping__toolbar">
       <Tabs.Root value={activeTab} onValueChange={changeTab}>
         <Tabs.List aria-label="Import mapping rows">
           <Tabs.Trigger value="categorized">
@@ -141,30 +135,30 @@
           {/if}
         </Tabs.List>
       </Tabs.Root>
-      <p class="text-muted-foreground text-xs">
+      <p class="bc-import-mapping__hint">
         Choose an account for each imported row.
       </p>
     </div>
 
-    <div class="max-h-[34rem] overflow-auto">
-      <Table.Root class="min-w-[52rem] text-sm">
-        <Table.Header class="bg-muted text-muted-foreground sticky top-0 z-10">
-          <Table.Row class="hover:bg-muted">
+    <div class="bc-import-mapping__scroll">
+      <Table.Root class="bc-import-mapping__table">
+        <Table.Header class="bc-import-mapping__table-header">
+          <Table.Row class="bc-import-mapping__header-row">
             {#if onOpenSource}
-              <Table.Head class="w-12 px-3 py-3">
-                <span class="sr-only">Source</span>
+              <Table.Head class="bc-import-mapping__source-heading">
+                <span class="bc-import-mapping__source-label">Source</span>
               </Table.Head>
             {/if}
             <Table.Head
-              class="min-w-64 px-4 py-3 text-xs font-semibold tracking-wide uppercase"
+              class="bc-import-mapping__account-heading"
             >
               Account
             </Table.Head>
             {#each columns as column (column.id)}
               <Table.Head
                 class={column.align === "right"
-                  ? "px-4 py-3 text-right text-xs font-semibold tracking-wide uppercase"
-                  : "px-4 py-3 text-xs font-semibold tracking-wide uppercase"}
+                  ? "bc-import-mapping__heading bc-import-mapping__heading--right"
+                  : "bc-import-mapping__heading"}
               >
                 {column.label}
               </Table.Head>
@@ -175,12 +169,12 @@
           {#each rows as row (row.id)}
             <Table.Row>
               {#if onOpenSource}
-                <Table.Cell class="px-3 py-2">
+                <Table.Cell class="bc-import-mapping__source-cell">
                   <Button
                     type="button"
                     variant="ghost"
                     size="sm"
-                    class="h-8 px-2 text-xs"
+                    class="bc-import-mapping__source-button"
                     aria-label={`Edit source for ${row.label}`}
                     onclick={() => onOpenSource(row)}
                   >
@@ -188,8 +182,8 @@
                   </Button>
                 </Table.Cell>
               {/if}
-              <Table.Cell class="min-w-64 px-4 py-2 align-top">
-                <div class="flex min-w-56 flex-col gap-1">
+              <Table.Cell class="bc-import-mapping__account-cell">
+                <div class="bc-import-mapping__account-control">
                   <FilterCommandPicker
                     value={row.account}
                     options={accountOptions}
@@ -198,7 +192,7 @@
                     onChange={(account) => onAccountChange(row, account)}
                   />
                   {#if row.accountHint}
-                    <p class="text-muted-foreground text-xs leading-snug">
+                    <p class="bc-import-mapping__account-hint">
                       {row.accountHint}
                     </p>
                   {/if}
@@ -207,8 +201,8 @@
               {#each columns as column (column.id)}
                 <Table.Cell
                   class={column.align === "right"
-                    ? "px-4 py-3 text-right font-mono tabular-nums"
-                    : "px-4 py-3 font-mono"}
+                    ? "bc-import-mapping__cell bc-import-mapping__cell--right"
+                    : "bc-import-mapping__cell"}
                 >
                   {displayCell(row.values[column.id])}
                 </Table.Cell>
@@ -218,7 +212,7 @@
             <Table.Row>
               <Table.Cell
                 colspan={columns.length + (onOpenSource ? 2 : 1)}
-                class="h-28 px-4 text-center text-sm text-muted-foreground"
+                class="bc-import-mapping__empty"
               >
                 {emptyLabel}
               </Table.Cell>
@@ -229,3 +223,180 @@
     </div>
   </div>
 </section>
+
+<style>
+  .bc-import-mapping {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: var(--ui-beancount-space-4);
+  }
+
+  .bc-import-mapping__file-header,
+  .bc-import-mapping__toolbar {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ui-beancount-space-3);
+  }
+
+  .bc-import-mapping__file-header {
+    border: 1px solid color-mix(in srgb, var(--ui-beancount-border) 80%, transparent);
+    border-radius: var(--ui-beancount-radius-panel);
+    background-color: var(--ui-beancount-surface);
+    padding: var(--ui-beancount-space-4);
+    box-shadow: var(--ui-beancount-shadow-panel);
+  }
+
+  .bc-import-mapping__file-copy {
+    min-width: 0;
+  }
+
+  .bc-import-mapping__eyebrow {
+    color: var(--ui-beancount-muted-foreground);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.025em;
+    text-transform: uppercase;
+  }
+
+  .bc-import-mapping__file-name {
+    margin-block-start: var(--ui-beancount-space-1);
+    overflow: hidden;
+    color: var(--ui-beancount-foreground);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+
+  .bc-import-mapping__table-panel {
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid color-mix(in srgb, var(--ui-beancount-border) 80%, transparent);
+    border-radius: var(--ui-beancount-radius-panel);
+    background-color: var(--ui-beancount-surface);
+    box-shadow: var(--ui-beancount-shadow-panel);
+  }
+
+  .bc-import-mapping__toolbar {
+    border-block-end: 1px solid var(--ui-beancount-border);
+    padding: var(--ui-beancount-space-3);
+  }
+
+  .bc-import-mapping__hint,
+  .bc-import-mapping__account-hint {
+    color: var(--ui-beancount-muted-foreground);
+    font-size: 0.75rem;
+  }
+
+  .bc-import-mapping__account-hint {
+    line-height: 1.375;
+  }
+
+  .bc-import-mapping__scroll {
+    max-height: 34rem;
+    overflow: auto;
+  }
+
+  :global(.bc-import-mapping__table) {
+    min-width: 52rem;
+    font-size: 0.875rem;
+  }
+
+  :global(.bc-import-mapping__table-header) {
+    position: sticky;
+    z-index: 10;
+    top: 0;
+    background-color: var(--ui-beancount-surface-muted);
+    color: var(--ui-beancount-muted-foreground);
+  }
+
+  :global(.bc-import-mapping__header-row:hover) {
+    background-color: var(--ui-beancount-surface-muted);
+  }
+
+  :global(.bc-import-mapping__source-heading) {
+    width: 3rem;
+    padding: var(--ui-beancount-space-3);
+  }
+
+  .bc-import-mapping__source-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  :global(.bc-import-mapping__account-heading) {
+    min-width: 16rem;
+    padding: var(--ui-beancount-space-3) var(--ui-beancount-space-4);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.025em;
+    text-transform: uppercase;
+  }
+
+  :global(.bc-import-mapping__heading) {
+    padding: var(--ui-beancount-space-3) var(--ui-beancount-space-4);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.025em;
+    text-transform: uppercase;
+  }
+
+  :global(.bc-import-mapping__heading--right) {
+    text-align: right;
+  }
+
+  :global(.bc-import-mapping__source-cell) {
+    padding: var(--ui-beancount-space-2) var(--ui-beancount-space-3);
+  }
+
+  :global(.bc-import-mapping__source-button) {
+    height: var(--ui-beancount-compact-control-height);
+    padding-inline: var(--ui-beancount-space-2);
+    font-size: 0.75rem;
+  }
+
+  :global(.bc-import-mapping__account-cell) {
+    min-width: 16rem;
+    vertical-align: top;
+    padding: var(--ui-beancount-space-2) var(--ui-beancount-space-4);
+  }
+
+  .bc-import-mapping__account-control {
+    display: flex;
+    min-width: 14rem;
+    flex-direction: column;
+    gap: var(--ui-beancount-space-1);
+  }
+
+  :global(.bc-import-mapping__cell) {
+    padding: var(--ui-beancount-space-3) var(--ui-beancount-space-4);
+    font-family: var(--font-mono);
+  }
+
+  :global(.bc-import-mapping__cell--right) {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  :global(.bc-import-mapping__empty) {
+    height: 7rem;
+    padding-inline: var(--ui-beancount-space-4);
+    color: var(--ui-beancount-muted-foreground);
+    text-align: center;
+    font-size: 0.875rem;
+  }
+
+  @media (min-width: 640px) {
+    .bc-import-mapping__file-header,
+    .bc-import-mapping__toolbar {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+</style>
