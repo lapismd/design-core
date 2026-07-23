@@ -12,10 +12,10 @@
   import FinancialDashboard from "../dashboard/FinancialDashboard.svelte";
   import LedgerActivityTable from "../tables/LedgerActivityTable.svelte";
   import StatementSummaryTreeTable from "../tables/StatementSummaryTreeTable.svelte";
-  import QueryResultsTable from "../tables/QueryResultsTable.svelte";
   import IngestionReviewTable from "../tables/IngestionReviewTable.svelte";
   import ValidationErrorTable from "../feedback/ValidationErrorTable.svelte";
   import ContentScrollArea from "../layout/ContentScrollArea.svelte";
+  import QueryComposer from "./QueryComposer.svelte";
   import {
     accountDetailGroups,
     accountDetailLineSeries,
@@ -31,8 +31,6 @@
     trialBalanceContributions,
     trialBalanceHierarchy,
     trialBalanceNodes,
-    queryColumns,
-    queryRows,
     validationErrors,
   } from "./fixtures.js";
 
@@ -757,14 +755,16 @@
   name="Query"
   parameters={{ visualDelta: visualDeltaForScreen("query") }}
   play={async ({ canvas }) => {
-    await expect(canvas.getByText("Groceries")).toBeVisible();
+    await expect(
+      canvas.getByRole("textbox", { name: "BQL query" }),
+    ).toBeVisible();
   }}
 >
   {#snippet template()}
     <ScreenFrame pageTitle="Query">
       <ContentScrollArea>
         <div class="bc-screen-story__page">
-          <QueryResultsTable columns={queryColumns} rows={queryRows} />
+          <QueryComposer />
         </div>
       </ContentScrollArea>
     </ScreenFrame>
