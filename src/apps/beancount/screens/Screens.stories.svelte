@@ -169,8 +169,104 @@
     },
   ];
 
+  const dashboardAccountGroups = [
+    {
+      id: "assets",
+      title: "Assets",
+      viewAllLabel: "View assets",
+      nodes: [
+        {
+          id: "assets-root",
+          label: "Assets",
+          value: 6155.89,
+          color: "var(--chart-3)",
+          children: [
+            {
+              id: "assets-cash",
+              label: "Cash",
+              value: 3725.89,
+              color: "var(--chart-4)",
+            },
+            {
+              id: "assets-pension",
+              label: "Pension",
+              value: 2430,
+              color: "var(--chart-2)",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: "liabilities",
+      title: "Liabilities",
+      viewAllLabel: "View liabilities",
+      nodes: [
+        {
+          id: "liabilities-root",
+          label: "Liabilities",
+          value: 4400,
+          color: "var(--chart-1)",
+          children: [
+            {
+              id: "liabilities-card",
+              label: "Credit card",
+              value: 4400,
+              color: "var(--chart-1)",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: "equity",
+      title: "Equity",
+      viewAllLabel: "View equity",
+      nodes: [
+        {
+          id: "equity-root",
+          label: "Equity",
+          value: 0,
+          color: "var(--chart-5)",
+        },
+      ],
+    },
+  ];
+
+  const dashboardNetWorth = {
+    valueLabel: "1755.89 GBP",
+    change: 16345.93,
+    changeLabel: "+16345.93 GBP",
+    changeDescription: "Compared with the start of this period",
+    trendTone: "positive" as const,
+    points: [
+      {
+        id: "january",
+        date: new Date("2026-01-01"),
+        label: "01 Jan 2026",
+        value: -14590.04,
+        valueLabel: "−14590.04 GBP",
+      },
+      {
+        id: "april",
+        date: new Date("2026-04-01"),
+        label: "01 Apr 2026",
+        value: -6250.12,
+        valueLabel: "−6250.12 GBP",
+      },
+      {
+        id: "july",
+        date: new Date("2026-07-01"),
+        label: "01 Jul 2026",
+        value: 1755.89,
+        valueLabel: "1755.89 GBP",
+      },
+    ],
+  };
+
   const formatDashboardAmount = (value: number) => `${value.toFixed(2)} GBP`;
   let journalTimeframe = $state("transactions");
+  let dashboardAction = $state("");
   let incomeChartMode = $state<"single" | "stacked">("stacked");
   let incomePerspective = $state("net-profit");
   let balanceSheetChartMode = $state<"line" | "area">("line");
@@ -262,32 +358,54 @@
         name: "Salary to Cash flow: 59224.98 GBP",
       }),
     ).toBeVisible();
+    await expect(
+      canvas.getByRole("button", { name: "Credit card" }),
+    ).toBeVisible();
+    await expect(
+      canvas.getByRole("slider", { name: "Explore trend by date" }),
+    ).toBeVisible();
+    await userEvent.click(canvas.getByRole("button", { name: "Credit card" }));
+    await expect(canvas.getByRole("status")).toHaveTextContent(
+      "Open Credit card in Liabilities",
+    );
   }}
 >
   {#snippet template()}
     <ScreenFrame pageTitle="Dashboard">
-      <ContentScrollArea>
-        <FinancialDashboard
-          metrics={dashboardMetrics}
-          period="ytd"
-          periodOptions={[
-            { value: "ytd", label: "Year to date" },
-            { value: "1y", label: "Last year" },
-          ]}
-          currency="GBP"
-          currencyOptions={[{ value: "GBP", label: "GBP" }]}
-          valuation="cost"
-          valuationOptions={[
-            { value: "cost", label: "At Cost" },
-            { value: "market", label: "At Market Value" },
-            { value: "units", label: "Units" },
-          ]}
-          onPeriodChange={() => {}}
-          inflows={dashboardInflows}
-          outflows={dashboardOutflows}
-          valueFormatter={formatDashboardAmount}
-        />
-      </ContentScrollArea>
+      <FinancialDashboard
+        metrics={dashboardMetrics}
+        period="ytd"
+        periodOptions={[
+          { value: "ytd", label: "Year to date" },
+          { value: "1y", label: "Last year" },
+        ]}
+        currency="GBP"
+        currencyOptions={[{ value: "GBP", label: "GBP" }]}
+        valuation="cost"
+        valuationOptions={[
+          { value: "cost", label: "At Cost" },
+          { value: "market", label: "At Market Value" },
+          { value: "units", label: "Units" },
+        ]}
+        onPeriodChange={() => {}}
+        inflows={dashboardInflows}
+        outflows={dashboardOutflows}
+        accountGroups={dashboardAccountGroups}
+        netWorth={dashboardNetWorth}
+        valueFormatter={formatDashboardAmount}
+        onOutflowSelect={(category) => {
+          dashboardAction = `Open ${category.label} outflows`;
+        }}
+        onAccountSelect={(node, group) => {
+          dashboardAction = `Open ${node.label} in ${group.title}`;
+        }}
+        onAccountGroupSelect={(group) => {
+          dashboardAction = `Open ${group.title}`;
+        }}
+      />
+      <output class="bc-screen-story__status" aria-live="polite"
+        >{dashboardAction}</output
+      >
     </ScreenFrame>
   {/snippet}
 </Story>
