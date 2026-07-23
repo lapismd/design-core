@@ -255,6 +255,95 @@ export const incomeStatementChartGroups = incomeStatementMonths.map(
   }),
 );
 
+export const balanceSheetNodes = [
+  {
+    id: "assets",
+    label: "Assets",
+    href: "/accounts/Assets",
+    values: { gbp: "24921.78" },
+    weight: "100.0%",
+    color: "var(--ui-beancount-accepted)",
+    children: [
+      {
+        id: "assets-cash",
+        label: "Cash",
+        values: { gbp: "70.00" },
+        weight: "0.3%",
+        color: "var(--ui-beancount-positive)",
+      },
+      {
+        id: "assets-checking",
+        label: "Checking",
+        href: "/accounts/Assets:Checking",
+        values: { gbp: "24851.78" },
+        weight: "99.7%",
+        color: "var(--ui-beancount-accepted)",
+        children: [
+          {
+            id: "assets-checking-monzo",
+            label: "Monzo",
+            values: { gbp: "7637.59" },
+            weight: "30.6%",
+            color: "var(--ui-beancount-accepted)",
+          },
+          {
+            id: "assets-checking-starling",
+            label: "Starling",
+            values: { gbp: "17214.19" },
+            weight: "69.1%",
+            color: "var(--ui-beancount-accepted)",
+          },
+        ],
+      },
+    ],
+  },
+];
+
+export const balanceSheetContributions = [
+  {
+    id: "assets-cash",
+    label: "Assets:Cash",
+    percentage: 0.3,
+    amount: "70.00 GBP",
+    color: "var(--ui-beancount-positive)",
+  },
+  {
+    id: "assets-checking",
+    label: "Assets:Checking",
+    percentage: 99.7,
+    amount: "24851.78 GBP",
+    color: "var(--ui-beancount-accepted)",
+  },
+];
+
+const balanceSheetValues = [
+  -8500, -8500, -8500, -8500, -8500, -8500, -8500, -8500, -8500, -8500, -8500,
+  -53500, -51000, -48000, -45000, -42000, -39000, -36000, -33000, -30000,
+  -27000, -24000, -21000, -18000, -15000, -12000, -9000, -6000, -3000, 0, 3500,
+  5000,
+];
+
+export const balanceSheetLineSeries = [
+  {
+    id: "net-worth",
+    label: "Net worth",
+    color: "var(--ui-beancount-accepted)",
+    points: balanceSheetValues.map((value, index) => {
+      const date = new Date(Date.UTC(2024, 9 + index, 1));
+      return {
+        id: `net-worth-${index}`,
+        date: date.toISOString(),
+        label:
+          index === 0 || index === 10 || index === 20 || index === 30
+            ? date.toLocaleString("en-GB", { month: "long" })
+            : "",
+        value,
+        valueLabel: `${value.toFixed(2)} GBP`,
+      };
+    }),
+  },
+];
+
 export const queryColumns = [
   { id: "date", label: "Date", sortable: true },
   { id: "description", label: "Description", sortable: true },

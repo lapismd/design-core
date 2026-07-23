@@ -6,6 +6,7 @@
   import BarChart from "../charts/BarChart.svelte";
   import ChartPanel from "../charts/ChartPanel.svelte";
   import ChartSwitcher from "../charts/ChartSwitcher.svelte";
+  import LineChart from "../charts/LineChart.svelte";
   import FinancialDashboard from "../dashboard/FinancialDashboard.svelte";
   import LedgerActivityTable from "../tables/LedgerActivityTable.svelte";
   import StatementSummaryTreeTable from "../tables/StatementSummaryTreeTable.svelte";
@@ -15,6 +16,9 @@
   import ContentScrollArea from "../layout/ContentScrollArea.svelte";
   import {
     accountActivityGroups,
+    balanceSheetContributions,
+    balanceSheetLineSeries,
+    balanceSheetNodes,
     incomeStatementChartGroups,
     incomeStatementContributions,
     incomeStatementNodes,
@@ -150,6 +154,8 @@
   let journalTimeframe = $state("transactions");
   let incomeChartMode = $state<"single" | "stacked">("stacked");
   let incomePerspective = $state("net-profit");
+  let balanceSheetChartMode = $state<"line" | "area">("line");
+  let balanceSheetPerspective = $state("net-worth");
 
   const formatReportAxisAmount = (value: number) =>
     `${value < 0 ? "−" : ""}${(Math.abs(value) / 1000).toFixed(1)}k`;
@@ -356,19 +362,91 @@
   name="Balance sheet"
   parameters={{ visualDelta: visualDeltaForScreen("balance-sheet") }}
   play={async ({ canvas }) => {
-    await expect(canvas.getByText("Expenses")).toBeVisible();
+    await expect(
+      canvas.getByRole("group", { name: "Balance sheet net worth history" }),
+    ).toBeVisible();
+    await userEvent.click(canvas.getByRole("tab", { name: "Area Map" }));
+    await expect(canvas.getByRole("tab", { name: "Area Map" })).toHaveAttribute(
+      "data-state",
+      "active",
+    );
+    await userEvent.click(canvas.getByRole("tab", { name: "Line Chart" }));
+    await expect(canvas.getByText("Assets:Checking")).toBeVisible();
   }}
 >
   {#snippet template()}
     <ScreenFrame pageTitle="Balance sheet">
       <ContentScrollArea>
-        <div class="bc-screen-story__page">
-          <StatementSummaryTreeTable
-            title="Balance sheet"
-            columns={statementColumns}
-            nodes={statementNodes}
-            contributions={[]}
-          />
+        <div class="bc-screen-story__page bc-screen-story__page--report">
+          <ChartPanel
+            ariaLabel="Balance sheet controls"
+            legend={{
+              items: [
+                {
+                  id: "gbp",
+                  label: "GBP",
+                  color: "var(--ui-beancount-accepted)",
+                },
+              ],
+              selection: "single",
+              selectedIds: ["gbp"],
+            }}
+            conversion={{
+              ariaLabel: "Valuation",
+              value: "cost",
+              options: [{ value: "cost", label: "At Cost" }],
+            }}
+            interval={{
+              ariaLabel: "Interval",
+              value: "month",
+              options: [{ value: "month", label: "Monthly" }],
+            }}
+            modes={{
+              value: balanceSheetChartMode,
+              options: [
+                { value: "line", label: "Line Chart" },
+                { value: "area", label: "Area Map" },
+              ],
+              ariaLabel: "Balance sheet chart representation",
+              onChange: (value) => {
+                balanceSheetChartMode = value as "line" | "area";
+              },
+            }}
+          >
+            {#snippet children()}
+              <LineChart
+                series={balanceSheetLineSeries}
+                mode={balanceSheetChartMode}
+                ariaLabel="Balance sheet net worth history"
+                valueFormatter={formatReportAxisAmount}
+              />
+            {/snippet}
+          </ChartPanel>
+          <ChartSwitcher
+            charts={[
+              { id: "net-worth", label: "Net Worth" },
+              { id: "assets", label: "Assets" },
+              { id: "liabilities", label: "Liabilities" },
+              { id: "equity", label: "Equity" },
+            ]}
+            activeChartId={balanceSheetPerspective}
+            ariaLabel="Balance sheet sections"
+            tabsPlacement="top"
+            onActiveChartChange={(value) => {
+              balanceSheetPerspective = value;
+            }}
+          >
+            {#snippet children()}
+              <StatementSummaryTreeTable
+                title="Assets"
+                total="24921.78 GBP"
+                href="/accounts/Assets"
+                columns={statementColumns}
+                nodes={balanceSheetNodes}
+                contributions={balanceSheetContributions}
+              />
+            {/snippet}
+          </ChartSwitcher>
         </div>
       </ContentScrollArea>
     </ScreenFrame>
@@ -606,6 +684,15 @@
   }
 
   :global(.bc-screen-story__page--report .bc-bar-chart__summary) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  :global(.bc-screen-story__page--report .bc-line-chart__summary) {
     position: absolute;
     width: 1px;
     height: 1px;
