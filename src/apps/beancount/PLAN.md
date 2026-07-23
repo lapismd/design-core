@@ -81,7 +81,7 @@ Tailwind utilities before a `fava-beta` adapter consumes the app layer.
 | `feedback`   |              205 | Replace hand-built loading, status, and empty states with Skeleton, Alert, Empty, Badge | ✅ primitives + skeletons; guard passes         |
 | `layout`     |               81 | Reuse ScrollArea, Resizable, Separator, and shared shell controls                       | ✅ semantic selectors + focused story tests     |
 | `navigation` |              124 | Reuse Button, Tabs, Tooltip, Sidebar/ScrollArea where suitable                          | ✅ all source + stories semantic; focused tests |
-| `pickers`    |               50 | Reuse Input, Popover, Command, Avatar, and Button                                       | ⬜                                              |
+| `pickers`    |               50 | Reuse Input, Popover, Command, Avatar, and Button                                       | ✅ all source + stories semantic; guard passes  |
 | `screens`    |               24 | Compose shell and report bodies with semantic screen selectors                          | 🟡 shell/story framing semantic; bodies pending |
 | `tables`     |              265 | Reuse shared Table, Button, Badge, Checkbox, and semantic table-state tokens            | ⬜                                              |
 

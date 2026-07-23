@@ -176,12 +176,18 @@
           style={`--appearance-color: ${currentColor}; --appearance-foreground: ${currentForeground}`}
           aria-hidden="true"
         >
-          <SelectedIcon class="size-5" strokeWidth={1.9} />
+          <SelectedIcon
+            class="beancount-icon-color-picker__preview-icon"
+            strokeWidth={1.9}
+          />
         </span>
         <span class="beancount-icon-color-picker__trigger-label"
           >Colour and icon</span
         >
-        <Pencil class="size-3.5" aria-hidden="true" />
+        <Pencil
+          class="beancount-icon-color-picker__trigger-icon"
+          aria-hidden="true"
+        />
       </button>
     {/snippet}
   </Popover.Trigger>
@@ -211,7 +217,9 @@
             class:selected={!colors.includes(currentColor)}
             style={`--appearance-color: ${currentColor}`}
           >
-            <span class="sr-only">Choose a custom colour</span>
+            <span class="beancount-icon-color-picker__screen-reader-text"
+              >Choose a custom colour</span
+            >
             <input
               type="color"
               value={currentColor}
@@ -244,8 +252,13 @@
           >
         </div>
         <label class="beancount-icon-color-picker__search">
-          <Search class="size-4" aria-hidden="true" />
-          <span class="sr-only">Search icons</span>
+          <Search
+            class="beancount-icon-color-picker__search-icon"
+            aria-hidden="true"
+          />
+          <span class="beancount-icon-color-picker__screen-reader-text"
+            >Search icons</span
+          >
           <input
             bind:value={iconSearch}
             type="search"
@@ -274,7 +287,11 @@
                     : `${option.label} · ${option.category}`}
                   onclick={() => chooseIcon(option.value)}
                 >
-                  <Icon class="size-5" strokeWidth={1.8} aria-hidden="true" />
+                  <Icon
+                    class="beancount-icon-color-picker__icon-glyph"
+                    strokeWidth={1.8}
+                    aria-hidden="true"
+                  />
                 </button>
               {/each}
             </div>
@@ -326,13 +343,37 @@
     color: var(--appearance-foreground);
   }
 
+  :global(.beancount-icon-color-picker__preview-icon),
+  :global(.beancount-icon-color-picker__icon-glyph) {
+    width: var(--ui-beancount-space-5);
+    height: var(--ui-beancount-space-5);
+  }
+
+  :global(.beancount-icon-color-picker__trigger-icon) {
+    width: calc(var(--spacing) * 3.5);
+    height: calc(var(--spacing) * 3.5);
+  }
+
+  :global(.beancount-icon-color-picker__search-icon) {
+    width: var(--ui-beancount-space-4);
+    height: var(--ui-beancount-space-4);
+  }
+
+  .beancount-icon-color-picker__screen-reader-text {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
   .beancount-icon-color-picker__trigger-label {
     font-size: 0.875rem;
     font-weight: 500;
   }
 
   :global(.beancount-icon-color-picker__content) {
-    z-index: 60;
     width: min(22rem, calc(100vw - 2rem));
     border: 1px solid var(--border);
     border-radius: 0.875rem;

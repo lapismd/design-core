@@ -34,15 +34,28 @@
   }}
 >
   {#snippet template()}
-    <div class="flex flex-col gap-3">
+    <div class="bc-icon-color-picker-story">
       <IconColorPicker
         color={appearance.color}
         icon={appearance.icon}
         onChange={(next) => (appearance = next)}
       />
-      <output class="text-muted-foreground text-sm">
+      <output class="bc-icon-color-picker-story__status">
         {appearance.color} / {appearance.icon}
       </output>
     </div>
   {/snippet}
 </Story>
+
+<style>
+  .bc-icon-color-picker-story {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ui-beancount-space-3);
+  }
+
+  .bc-icon-color-picker-story__status {
+    color: var(--ui-beancount-muted-foreground);
+    font-size: var(--text-sm);
+  }
+</style>

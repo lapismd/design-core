@@ -18,27 +18,46 @@
 
 <Story name="Shows fallback, configured, and merchant appearances">
   {#snippet template()}
-    <div class="flex flex-wrap items-center gap-6">
-      <div class="flex items-center gap-2">
+    <div class="bc-account-avatar-story">
+      <div class="bc-account-avatar-story__item">
         <AccountAvatar account="Assets:Bank:Checking" />
-        <span class="text-sm">Fallback</span>
+        <span class="bc-account-avatar-story__label">Fallback</span>
       </div>
-      <div class="flex items-center gap-2">
+      <div class="bc-account-avatar-story__item">
         <AccountAvatar
           account="Expenses:Groceries"
           color="#22C55E"
           icon="shopping-cart"
         />
-        <span class="text-sm">Configured</span>
+        <span class="bc-account-avatar-story__label">Configured</span>
       </div>
-      <div class="flex items-center gap-2">
+      <div class="bc-account-avatar-story__item">
         <AccountAvatar
           account="Expenses:Coffee"
           merchantLogoUrl="https://invalid.example/logo.svg"
           size="lg"
         />
-        <span class="text-sm">Logo fallback</span>
+        <span class="bc-account-avatar-story__label">Logo fallback</span>
       </div>
     </div>
   {/snippet}
 </Story>
+
+<style>
+  .bc-account-avatar-story {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: calc(var(--ui-beancount-space-3) * 2);
+  }
+
+  .bc-account-avatar-story__item {
+    display: flex;
+    align-items: center;
+    gap: var(--ui-beancount-space-2);
+  }
+
+  .bc-account-avatar-story__label {
+    font-size: var(--text-sm);
+  }
+</style>

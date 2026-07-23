@@ -52,7 +52,7 @@
   }}
 >
   {#snippet template()}
-    <div class="flex max-w-2xl flex-col gap-3">
+    <div class="bc-merchant-picker-story__form">
       <MerchantPicker
         {merchants}
         value={merchantId}
@@ -67,7 +67,7 @@
           attachedMerchant = merchant.canonicalName;
         }}
       />
-      <output class="text-muted-foreground text-sm" aria-live="polite">
+      <output class="bc-merchant-picker-story__status" aria-live="polite">
         Attached merchant: {attachedMerchant}
       </output>
     </div>
@@ -92,7 +92,7 @@
   }}
 >
   {#snippet template()}
-    <div class="flex max-w-2xl flex-col gap-3">
+    <div class="bc-merchant-picker-story__form">
       <MerchantPicker
         {merchants}
         searchAction={(search) => ({
@@ -104,7 +104,7 @@
           createdMerchant = search;
         }}
       />
-      <output class="text-muted-foreground text-sm" aria-live="polite">
+      <output class="bc-merchant-picker-story__status" aria-live="polite">
         Requested merchant: {createdMerchant}
       </output>
     </div>
@@ -113,8 +113,26 @@
 
 <Story name="Shows the selected merchant in read-only mode">
   {#snippet template()}
-    <div class="max-w-2xl">
+    <div class="bc-merchant-picker-story__read-only">
       <MerchantPicker {merchants} value="northstar-cafe" readOnly />
     </div>
   {/snippet}
 </Story>
+
+<style>
+  .bc-merchant-picker-story__form {
+    display: flex;
+    max-width: 42rem;
+    flex-direction: column;
+    gap: var(--ui-beancount-space-3);
+  }
+
+  .bc-merchant-picker-story__status {
+    color: var(--ui-beancount-muted-foreground);
+    font-size: var(--text-sm);
+  }
+
+  .bc-merchant-picker-story__read-only {
+    max-width: 42rem;
+  }
+</style>

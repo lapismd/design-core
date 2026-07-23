@@ -40,7 +40,7 @@
   }}
 >
   {#snippet template()}
-    <div class="beancount-structured-form max-w-2xl">
+    <div class="beancount-structured-form bc-account-picker-story__form">
       <FormField label="Source account" as="div" align="center">
         <AccountPicker
           {accounts}
@@ -51,7 +51,7 @@
           }}
         />
       </FormField>
-      <output class="text-muted-foreground text-sm" aria-live="polite">
+      <output class="bc-account-picker-story__status" aria-live="polite">
         Account: {account || "Not selected"}
       </output>
     </div>
@@ -60,7 +60,7 @@
 
 <Story name="Shows an account in read-only mode">
   {#snippet template()}
-    <div class="beancount-structured-form max-w-2xl">
+    <div class="beancount-structured-form bc-account-picker-story__form">
       <FormField label="Source account" as="div" align="center">
         <AccountPicker
           {accounts}
@@ -72,3 +72,14 @@
     </div>
   {/snippet}
 </Story>
+
+<style>
+  .bc-account-picker-story__form {
+    max-width: 42rem;
+  }
+
+  .bc-account-picker-story__status {
+    color: var(--ui-beancount-muted-foreground);
+    font-size: var(--text-sm);
+  }
+</style>
