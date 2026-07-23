@@ -25,6 +25,13 @@ export {
   type IngestionReviewRow,
 } from "./IngestionReviewTable.svelte";
 export {
+  default as HoldingsTable,
+  type HoldingColumn,
+  type HoldingRow,
+  type HoldingsPagination,
+  type HoldingValue,
+} from "./HoldingsTable.svelte";
+export {
   default as IntervalTreeTable,
   type IntervalTreeAmount,
   type IntervalTreeCell,

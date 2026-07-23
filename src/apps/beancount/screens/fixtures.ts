@@ -559,6 +559,131 @@ export const queryRows = [
   },
 ];
 
+export const holdingColumns = [
+  { id: "account", label: "account" },
+  { id: "units", label: "units", align: "right" as const },
+  { id: "cost", label: "cost", align: "right" as const },
+  { id: "price", label: "price", align: "right" as const },
+  { id: "book-value", label: "book_value", align: "right" as const },
+  { id: "market-value", label: "market_value", align: "right" as const },
+  {
+    id: "acquisition-date",
+    label: "acquisition_date",
+    align: "right" as const,
+  },
+];
+
+export const holdingRows = [
+  {
+    id: "cash",
+    account: "Assets:Cash",
+    values: {
+      units: { label: "70.00", sortValue: 70 },
+      "book-value": { label: "70.00", sortValue: 70 },
+      "market-value": { label: "70.00", sortValue: 70 },
+    },
+  },
+  {
+    id: "monzo",
+    account: "Assets:Checking:Monzo",
+    values: {
+      units: { label: "7637.59", sortValue: 7637.59 },
+      "book-value": { label: "7637.59", sortValue: 7637.59 },
+      "market-value": { label: "7637.59", sortValue: 7637.59 },
+    },
+  },
+  {
+    id: "starling",
+    account: "Assets:Checking:Starling",
+    values: {
+      units: { label: "17214.19", sortValue: 17214.19 },
+      "book-value": { label: "17214.19", sortValue: 17214.19 },
+      "market-value": { label: "17214.19", sortValue: 17214.19 },
+    },
+  },
+  {
+    id: "credit-card-amex",
+    account: "Liabilities:CreditCard:Amex",
+    values: {
+      units: { label: "3377.90", sortValue: 3377.9 },
+      "book-value": { label: "3377.90", sortValue: 3377.9 },
+      "market-value": { label: "3377.90", sortValue: 3377.9 },
+    },
+  },
+  {
+    id: "credit-card-barclays",
+    account: "Liabilities:CreditCard:Barclays",
+    values: {
+      units: { label: "2365.62", sortValue: 2365.62 },
+      "book-value": { label: "2365.62", sortValue: 2365.62 },
+      "market-value": { label: "2365.62", sortValue: 2365.62 },
+    },
+  },
+  {
+    id: "credit-card-mbna",
+    account: "Liabilities:CreditCard:MbNa",
+    values: {
+      units: { label: "976.61", sortValue: 976.61 },
+      "book-value": { label: "976.61", sortValue: 976.61 },
+      "market-value": { label: "976.61", sortValue: 976.61 },
+    },
+  },
+  {
+    id: "credit-card-natwest",
+    account: "Liabilities:CreditCard:Natwest",
+    values: {
+      units: { label: "−4150.00", sortValue: -4150 },
+      "book-value": { label: "−4150.00", sortValue: -4150 },
+      "market-value": { label: "−4150.00", sortValue: -4150 },
+    },
+  },
+  {
+    id: "credit-card-paypal",
+    account: "Liabilities:CreditCard:PayPal",
+    values: {
+      units: { label: "−2002.45", sortValue: -2002.45 },
+      "book-value": { label: "−2002.45", sortValue: -2002.45 },
+      "market-value": { label: "−2002.45", sortValue: -2002.45 },
+    },
+  },
+  {
+    id: "loan-miriam",
+    account: "Liabilities:Loan:Miriam",
+    values: {
+      units: { label: "−1000.00", sortValue: -1000 },
+      "book-value": { label: "−1000.00", sortValue: -1000 },
+      "market-value": { label: "−1000.00", sortValue: -1000 },
+    },
+  },
+  {
+    id: "loan-novuna",
+    account: "Liabilities:Loan:Novuna",
+    values: {
+      units: { label: "1896.40", sortValue: 1896.4 },
+      "book-value": { label: "1896.40", sortValue: 1896.4 },
+      "market-value": { label: "1896.40", sortValue: 1896.4 },
+    },
+  },
+  {
+    id: "pension-liability",
+    account: "Liabilities:Pension",
+    values: {
+      units: { label: "−2400.00 GBP", sortValue: -2400 },
+      "book-value": { label: "−2400.00 GBP", sortValue: -2400 },
+      "market-value": { label: "−2400.00 GBP", sortValue: -2400 },
+    },
+  },
+  {
+    id: "mortgage",
+    account: "Liabilities:Mortgage",
+    values: {
+      units: { label: "−180000.00 GBP", sortValue: -180000 },
+      "book-value": { label: "−180000.00 GBP", sortValue: -180000 },
+      "market-value": { label: "−180000.00 GBP", sortValue: -180000 },
+    },
+  },
+];
+
 export const validationErrors = [
   {
     id: "duplicate-open",

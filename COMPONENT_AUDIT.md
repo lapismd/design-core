@@ -285,6 +285,8 @@ No filesystem, ledger, or route access — props and callbacks only.
   with categorized/uncategorized tabs over forms `FilterCommandPicker`
 - `IngestionReviewTable` — model-driven queue for grouped import proposals
   with selection, disclosure, and forms `SegmentedControl` filters
+- `HoldingsTable` — controlled Fava-style holdings display, with account
+  avatars, locally sortable display columns, and `PagePagination`
 - `IntervalTreeTable` — display-model-driven multi-period account comparison
   with budget variance and an `accountCell` snippet slot
 - `LedgerActivityTable` — model-driven ledger activity surface with grouping,

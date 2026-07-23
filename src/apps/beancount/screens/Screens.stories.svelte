@@ -2,6 +2,8 @@
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent } from "storybook/test";
   import * as Breadcrumb from "@stevejuma/ui/shadcn/breadcrumb";
+  import { Button } from "@stevejuma/ui/shadcn/button";
+  import * as Tabs from "@stevejuma/ui/shadcn/tabs";
   import ScreenFrame from "./ScreenFrame.svelte";
   import { visualDeltaForScreen } from "./visual-delta.js";
   import BarChart from "../charts/BarChart.svelte";
@@ -11,6 +13,7 @@
   import LineChart from "../charts/LineChart.svelte";
   import FinancialDashboard from "../dashboard/FinancialDashboard.svelte";
   import LedgerActivityTable from "../tables/LedgerActivityTable.svelte";
+  import HoldingsTable from "../tables/HoldingsTable.svelte";
   import StatementSummaryTreeTable from "../tables/StatementSummaryTreeTable.svelte";
   import IngestionReviewTable from "../tables/IngestionReviewTable.svelte";
   import ValidationErrorTable from "../feedback/ValidationErrorTable.svelte";
@@ -22,6 +25,8 @@
     balanceSheetContributions,
     balanceSheetLineSeries,
     balanceSheetNodes,
+    holdingColumns,
+    holdingRows,
     incomeStatementChartGroups,
     incomeStatementContributions,
     incomeStatementNodes,
@@ -165,6 +170,23 @@
   let accountDetailPerspective = $state("account-balance");
   let accountDetailTablePerspective = $state("account-table");
   let accountDetailTimeframe = $state("transactions");
+  let holdingsPerspective = $state("holdings");
+  let holdingsPage = $state(1);
+  let holdingsQueryRequested = $state(false);
+
+  const holdingsPageSize = 10;
+  const visibleHoldingRows = $derived(
+    holdingRows.slice(
+      (holdingsPage - 1) * holdingsPageSize,
+      holdingsPage * holdingsPageSize,
+    ),
+  );
+  const holdingsResultLabel = $derived(
+    `Showing ${(holdingsPage - 1) * holdingsPageSize + 1}–${Math.min(
+      holdingsPage * holdingsPageSize,
+      holdingRows.length,
+    )} of ${holdingRows.length}`,
+  );
 
   const formatReportAxisAmount = (value: number) =>
     `${value < 0 ? "−" : ""}${(Math.abs(value) / 1000).toFixed(1)}k`;
@@ -707,20 +729,75 @@
   name="Holdings"
   parameters={{ visualDelta: visualDeltaForScreen("holdings") }}
   play={async ({ canvas }) => {
+    await expect(canvas.getByText("Assets:Cash")).toBeVisible();
+    await userEvent.click(
+      canvas.getByRole("tab", { name: "Holdings by Account" }),
+    );
     await expect(
-      canvas.getByText(/Holdings query results compose through/),
-    ).toBeVisible();
+      canvas.getByRole("tab", { name: "Holdings by Account" }),
+    ).toHaveAttribute("data-state", "active");
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Open holdings query" }),
+    );
+    await expect(
+      canvas.getByRole("button", { name: "Open holdings query" }),
+    ).toHaveAttribute("aria-pressed", "true");
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Open holdings query" }),
+    );
+    await userEvent.click(canvas.getByRole("tab", { name: "Holdings" }));
   }}
 >
   {#snippet template()}
     <ScreenFrame pageTitle="Holdings">
       <ContentScrollArea>
-        <div class="bc-screen-story__placeholder">
-          <p class="bc-screen-story__placeholder-title">Holdings</p>
-          <p>
-            Holdings query results compose through QueryResultsTable / charts
-            once Fava adapters supply display models.
-          </p>
+        <div class="bc-screen-story__page bc-screen-story__holdings">
+          <Tabs.Root
+            value={holdingsPerspective}
+            onValueChange={(next) => {
+              if (next) holdingsPerspective = next;
+            }}
+          >
+            <Tabs.List aria-label="Holdings perspectives">
+              <Tabs.Trigger value="holdings">Holdings</Tabs.Trigger>
+              <Tabs.Trigger value="by-account">Holdings by Account</Tabs.Trigger
+              >
+              <Tabs.Trigger value="by-currency"
+                >Holdings by Currency</Tabs.Trigger
+              >
+              <Tabs.Trigger value="by-cost-currency"
+                >Holdings by Cost currency</Tabs.Trigger
+              >
+            </Tabs.List>
+          </Tabs.Root>
+          <Button
+            variant="outline"
+            class="bc-screen-story__holdings-query"
+            aria-label="Open holdings query"
+            aria-pressed={holdingsQueryRequested}
+            onclick={() => {
+              holdingsQueryRequested = !holdingsQueryRequested;
+            }}
+          >
+            Query
+          </Button>
+          <HoldingsTable
+            columns={holdingColumns}
+            rows={visibleHoldingRows}
+            pagination={{
+              page: holdingsPage,
+              pageCount: Math.ceil(holdingRows.length / holdingsPageSize),
+              resultLabel: holdingsResultLabel,
+              pageSize: holdingsPageSize,
+              pageSizes: [10, 20, 50],
+            }}
+            onPageChange={(page) => {
+              holdingsPage = page;
+            }}
+          />
+          <output class="bc-screen-story__status" aria-live="polite">
+            {holdingsQueryRequested ? "Query controls requested" : ""}
+          </output>
         </div>
       </ContentScrollArea>
     </ScreenFrame>
@@ -885,6 +962,24 @@
   .bc-screen-story__page--report {
     display: grid;
     gap: calc(var(--ui-beancount-space-4) * 2);
+  }
+
+  .bc-screen-story__holdings {
+    display: grid;
+    gap: var(--ui-beancount-space-3);
+  }
+
+  :global(.bc-screen-story__holdings-query) {
+    width: max-content;
+  }
+
+  .bc-screen-story__status {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
   }
 
   :global(.bc-screen-story__page--report .bc-bar-chart__summary) {
