@@ -105,7 +105,7 @@
   }}
 >
   {#snippet template()}
-    <div class="max-w-5xl p-5">
+    <div class="bc-ledger-activity-story">
       <LedgerActivityTable
         {groups}
         {selectedIds}
@@ -116,7 +116,7 @@
           openedRecord = record.description;
         }}
       />
-      <output class="sr-only" aria-live="polite">
+      <output class="bc-ledger-activity-story__status" aria-live="polite">
         {openedRecord
           ? `Opened ${openedRecord}`
           : `${selectedIds.length} record${selectedIds.length === 1 ? "" : "s"} selected`}
@@ -136,7 +136,7 @@
   }}
 >
   {#snippet template()}
-    <div class="max-w-5xl p-5">
+    <div class="bc-ledger-activity-story">
       <LedgerActivityTable {groups} selectable={false} />
     </div>
   {/snippet}
@@ -152,7 +152,7 @@
   }}
 >
   {#snippet template()}
-    <div class="max-w-5xl p-5">
+    <div class="bc-ledger-activity-story">
       <LedgerActivityTable
         {groups}
         selectable={false}
@@ -165,7 +165,7 @@
           activityTimeframe = value;
         }}
       />
-      <output class="sr-only" aria-live="polite">
+      <output class="bc-ledger-activity-story__status" aria-live="polite">
         Showing {activityTimeframe} activity
       </output>
     </div>
@@ -181,7 +181,7 @@
   }}
 >
   {#snippet template()}
-    <div class="max-w-5xl p-5">
+    <div class="bc-ledger-activity-story">
       <LedgerActivityTable groups={[]} />
     </div>
   {/snippet}
@@ -210,11 +210,11 @@
   }}
 >
   {#snippet template()}
-    <div class="bg-card max-w-5xl overflow-hidden rounded-xl border shadow-sm">
+    <div class="bc-ledger-activity-workflow">
       <div
-        class="bg-muted/30 flex items-center justify-between border-b px-4 py-2"
+        class="bc-ledger-activity-workflow__header"
       >
-        <span class="text-sm font-medium">Journal actions</span>
+        <span class="bc-ledger-activity-workflow__title">Journal actions</span>
         <Button
           type="button"
           size="sm"
@@ -226,7 +226,7 @@
           Replace accounts ({bulkSelectedIds.length})
         </Button>
       </div>
-      <div class="p-5">
+      <div class="bc-ledger-activity-workflow__body">
         <LedgerActivityTable
           {groups}
           selectedIds={bulkSelectedIds}
@@ -254,10 +254,19 @@
           bulkStatus = `Updated ${bulkSelectedIds.length} record${bulkSelectedIds.length === 1 ? "" : "s"} from ${fromAccount}.`;
         }}
       />
-      <output class="sr-only" aria-live="polite">
+      <output class="bc-ledger-activity-story__status" aria-live="polite">
         {bulkSelectedIds.length} record{bulkSelectedIds.length === 1 ? "" : "s"}
         selected
       </output>
     </div>
   {/snippet}
 </Story>
+
+<style>
+  .bc-ledger-activity-story { max-width: 64rem; padding: var(--ui-beancount-space-5); }
+  .bc-ledger-activity-story__status { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .bc-ledger-activity-workflow { max-width: 64rem; overflow: hidden; border: 1px solid var(--ui-beancount-border); border-radius: var(--ui-beancount-radius-panel); background: var(--ui-beancount-surface); box-shadow: var(--ui-beancount-shadow-panel); }
+  .bc-ledger-activity-workflow__header { display: flex; align-items: center; justify-content: space-between; border-block-end: 1px solid var(--ui-beancount-border); background: color-mix(in srgb, var(--ui-beancount-surface-muted) 30%, transparent); padding: var(--ui-beancount-space-2) var(--ui-beancount-space-4); }
+  .bc-ledger-activity-workflow__title { font-size: .875rem; font-weight: 500; }
+  .bc-ledger-activity-workflow__body { padding: var(--ui-beancount-space-5); }
+</style>

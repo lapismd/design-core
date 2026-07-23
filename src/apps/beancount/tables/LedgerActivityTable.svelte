@@ -157,9 +157,9 @@
   }
 </script>
 
-<section class="w-full" aria-label={ariaLabel}>
+<section class="bc-ledger-activity" aria-label={ariaLabel}>
   {#if timeframes.length > 1}
-    <div class="mb-3">
+    <div class="bc-ledger-activity__timeframes">
       <SegmentedControl
         value={timeframe ?? timeframes[0]!.id}
         options={timeframes.map(({ id }) => id)}
@@ -172,45 +172,45 @@
     </div>
   {/if}
   <div
-    class="border-border/80 bg-card overflow-hidden rounded-2xl border shadow-sm"
+    class="bc-ledger-activity__panel"
   >
     <div
       class={selectable
-        ? "activity-grid activity-grid--selectable bg-muted/65 text-muted-foreground items-center gap-4 px-5 py-3 text-xs font-semibold tracking-wide uppercase"
-        : "activity-grid activity-grid--read-only bg-muted/65 text-muted-foreground items-center gap-4 px-5 py-3 text-xs font-semibold tracking-wide uppercase"}
+        ? "activity-grid activity-grid--selectable bc-ledger-activity__header"
+        : "activity-grid activity-grid--read-only bc-ledger-activity__header"}
     >
       {#if selectable}
         <input
           type="checkbox"
           checked={allSelected}
           use:setIndeterminate={someSelected}
-          class="border-input accent-primary focus-visible:ring-ring size-4 shrink-0 rounded focus-visible:ring-2 focus-visible:outline-none"
+          class="bc-ledger-activity__checkbox"
           aria-label="Select all visible records"
           onchange={(event) =>
             toggleAll((event.currentTarget as HTMLInputElement).checked)}
         />
       {/if}
       <span>Date and record</span>
-      <span class="text-right">{amountHeading}</span>
+      <span class="bc-ledger-activity__amount-heading">{amountHeading}</span>
     </div>
 
     {#if groups.length}
-      <div class="divide-border/80 divide-y">
+      <div class="bc-ledger-activity__groups">
         {#each groups as group (group.id)}
           {@const expanded = expandedGroupIds.has(group.id)}
           {@const groupState = groupSelection(group)}
           <section>
             <div
               class={selectable
-                ? "activity-grid activity-grid--selectable bg-card items-center gap-4 px-5 py-3"
-                : "activity-grid activity-grid--read-only bg-card items-center gap-4 px-5 py-3"}
+                ? "activity-grid activity-grid--selectable bc-ledger-activity__group"
+                : "activity-grid activity-grid--read-only bc-ledger-activity__group"}
             >
               {#if selectable}
                 <input
                   type="checkbox"
                   checked={groupState === "checked"}
                   use:setIndeterminate={groupState === "indeterminate"}
-                  class="border-input accent-primary focus-visible:ring-ring size-4 shrink-0 rounded focus-visible:ring-2 focus-visible:outline-none"
+                  class="bc-ledger-activity__checkbox"
                   aria-label={`Select records on ${group.date}`}
                   onchange={(event) =>
                     toggleGroup(
@@ -221,24 +221,24 @@
               {/if}
               <button
                 type="button"
-                class="focus-visible:ring-ring flex min-w-0 items-center gap-2 text-left focus-visible:ring-2 focus-visible:outline-none"
+                class="bc-ledger-activity__group-toggle"
                 aria-expanded={expanded}
                 aria-controls={`${group.id}-details`}
                 onclick={() => toggleGroupDisclosure(group.id)}
               >
                 {#if expanded}
                   <ChevronDown
-                    class="text-muted-foreground size-4 shrink-0"
+                    class="bc-ledger-activity__icon"
                     aria-hidden="true"
                   />
                 {:else}
                   <ChevronRight
-                    class="text-muted-foreground size-4 shrink-0"
+                    class="bc-ledger-activity__icon"
                     aria-hidden="true"
                   />
                 {/if}
-                <span class="truncate text-sm font-semibold">{group.date}</span>
-                <span class="text-muted-foreground text-xs"
+                <span class="bc-ledger-activity__date">{group.date}</span>
+                <span class="bc-ledger-activity__record-count"
                   >{group.records.length} record{group.records.length === 1
                     ? ""
                     : "s"}</span
@@ -246,7 +246,7 @@
               </button>
               {#if group.balance}
                 <span
-                  class="text-muted-foreground text-right font-mono text-xs tabular-nums"
+                  class="bc-ledger-activity__balance"
                   aria-label={`${balanceDescription}: ${group.balance}`}
                   >{group.balance}</span
                 >
@@ -256,31 +256,31 @@
             </div>
 
             {#if expanded}
-              <div id={`${group.id}-details`} class="border-border/70 border-t">
+              <div id={`${group.id}-details`} class="bc-ledger-activity__details">
                 {#if group.summary}
                   <div
-                    class="border-border/80 grid gap-x-4 gap-y-2 border-b border-dashed px-5 py-4 text-sm sm:grid-cols-[auto_minmax(0,1fr)_auto]"
+                    class="bc-ledger-activity__summary"
                     aria-label={`Balance summary for ${group.date}`}
                   >
                     <span>Start balance</span>
                     <span
-                      class="border-border/80 hidden self-center border-t border-dashed sm:block"
+                      class="bc-ledger-activity__summary-rule"
                     ></span>
-                    <span class="text-right font-semibold tabular-nums">
+                    <span class="bc-ledger-activity__summary-value">
                       {group.summary.start}
                     </span>
                     <span>Net cash flow</span>
                     <span
-                      class="border-border/80 hidden self-center border-t border-dashed sm:block"
+                      class="bc-ledger-activity__summary-rule"
                     ></span>
-                    <span class="text-right font-semibold tabular-nums">
+                    <span class="bc-ledger-activity__summary-value">
                       {group.summary.change}
                     </span>
                     <span>Final balance</span>
                     <span
-                      class="border-border/80 hidden self-center border-t border-dashed sm:block"
+                      class="bc-ledger-activity__summary-rule"
                     ></span>
-                    <span class="text-right font-bold tabular-nums">
+                    <span class="bc-ledger-activity__summary-value bc-ledger-activity__summary-value--final">
                       {group.summary.final}
                     </span>
                   </div>
@@ -289,15 +289,15 @@
                   {#each group.records as record (record.id)}
                     <li
                       class={selectable
-                        ? "activity-grid activity-grid--selectable hover:bg-muted/45 items-start gap-4 px-5 py-3 transition-colors"
-                        : "activity-grid activity-grid--read-only hover:bg-muted/45 items-start gap-4 px-5 py-3 transition-colors"}
+                        ? "activity-grid activity-grid--selectable bc-ledger-activity__record"
+                        : "activity-grid activity-grid--read-only bc-ledger-activity__record"}
                     >
                       {#if selectable}
                         <input
                           type="checkbox"
                           checked={selectedIdSet.has(record.id)}
                           aria-label={`Select ${record.description}`}
-                          class="border-input accent-primary focus-visible:ring-ring mt-0.5 size-4 shrink-0 rounded focus-visible:ring-2 focus-visible:outline-none"
+                          class="bc-ledger-activity__checkbox bc-ledger-activity__checkbox--record"
                           onchange={(event) =>
                             toggleRecord(
                               record.id,
@@ -308,44 +308,44 @@
                       {#if onOpenRecord}
                         <button
                           type="button"
-                          class="focus-visible:ring-ring min-w-0 text-left focus-visible:ring-2 focus-visible:outline-none"
+                          class="bc-ledger-activity__record-action"
                           onclick={() => onOpenRecord(record)}
                         >
                           {@render ActivityRecord(record, true)}
                         </button>
                       {:else}
-                        <div class="min-w-0">
+                        <div class="bc-ledger-activity__record-copy">
                           {@render ActivityRecord(record)}
                         </div>
                       {/if}
                       {#if record.postings?.length}
-                        <div class="flex min-w-0 flex-col gap-1 text-right">
+                        <div class="bc-ledger-activity__postings">
                           {#each record.postings as posting, index (`${record.id}-${posting.id ?? posting.account}-${index}`)}
                             <div
-                              class="grid min-w-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-3"
+                              class="bc-ledger-activity__posting"
                             >
                               {#if posting.href}
                                 <a
                                   href={posting.href}
-                                  class="text-primary focus-visible:ring-ring truncate text-left text-xs underline-offset-4 hover:underline focus-visible:ring-2 focus-visible:outline-none"
+                                  class="bc-ledger-activity__posting-link"
                                   >{posting.account}</a
                                 >
                               {:else}
                                 <span
-                                  class="text-muted-foreground truncate text-left text-xs"
+                                  class="bc-ledger-activity__posting-account"
                                   title={posting.account}
                                   >{posting.account}</span
                                 >
                               {/if}
                               <span
-                                class="font-mono text-sm font-semibold tabular-nums"
+                                class="bc-ledger-activity__posting-amount"
                                 >{posting.amount ?? "—"}</span
                               >
                             </div>
                           {/each}
                         </div>
                       {:else}
-                        <div class="text-right font-mono text-sm tabular-nums">
+                        <div class="bc-ledger-activity__amount">
                           {record.amount}
                         </div>
                       {/if}
@@ -358,7 +358,7 @@
         {/each}
       </div>
     {:else}
-      <div class="text-muted-foreground px-5 py-12 text-center text-sm">
+      <div class="bc-ledger-activity__empty">
         {emptyMessage}
       </div>
     {/if}
@@ -367,39 +367,40 @@
 
 {#snippet ActivityRecord(record: LedgerActivityRecord, interactive = false)}
   {@const avatar = avatarFor(record)}
-  <span class="flex min-w-0 items-start gap-2">
+  <span class="bc-ledger-activity__identity">
     {#if avatar.imageUrl}
       <img
         src={avatar.imageUrl}
         alt={avatar.alt ?? ""}
-        class="border-border/70 mt-0.5 size-10 shrink-0 rounded-full border object-contain"
+        class="bc-ledger-activity__avatar-image"
       />
     {:else}
       <span
-        class="border-border/70 bg-muted text-muted-foreground mt-0.5 flex size-10 shrink-0 items-center justify-center rounded-full border text-sm font-semibold"
+        class="bc-ledger-activity__avatar-fallback"
         aria-hidden="true"
       >
         {#if avatar.fallback}
           {avatar.fallback.slice(0, 1).toUpperCase()}
         {:else}
-          <FileText class="size-4" />
+          <FileText class="bc-ledger-activity__icon" />
         {/if}
       </span>
     {/if}
-    <span class="min-w-0">
+    <span class="bc-ledger-activity__identity-copy">
       <span
-        class={`block truncate text-sm font-medium ${interactive ? "hover:underline" : ""}`}
+        class="bc-ledger-activity__record-description"
+        class:bc-ledger-activity__record-description--interactive={interactive}
       >
         {record.description}
       </span>
       {#if record.account}
         <span
-          class="text-muted-foreground mt-0.5 block truncate font-mono text-xs"
+          class="bc-ledger-activity__record-account"
           >{record.account}</span
         >
       {/if}
       {#if record.detail}
-        <span class="text-muted-foreground mt-1 block truncate text-xs">
+        <span class="bc-ledger-activity__record-detail">
           {record.detail}
         </span>
       {/if}
@@ -419,4 +420,48 @@
   .activity-grid--read-only {
     grid-template-columns: minmax(0, 1fr) auto;
   }
+
+  .bc-ledger-activity { width: 100%; }
+  .bc-ledger-activity__timeframes { margin-block-end: var(--ui-beancount-space-3); }
+  .bc-ledger-activity__panel { overflow: hidden; border: 1px solid color-mix(in srgb, var(--ui-beancount-border) 80%, transparent); border-radius: var(--radius-2xl); background: var(--ui-beancount-surface); box-shadow: var(--ui-beancount-shadow-panel); }
+  .bc-ledger-activity__header { align-items: center; gap: var(--ui-beancount-space-4); background: color-mix(in srgb, var(--ui-beancount-surface-muted) 65%, transparent); padding: var(--ui-beancount-space-3) var(--ui-beancount-space-5); color: var(--ui-beancount-muted-foreground); font-size: .75rem; font-weight: 600; letter-spacing: .025em; text-transform: uppercase; }
+  .bc-ledger-activity__checkbox { width: var(--ui-beancount-space-4); height: var(--ui-beancount-space-4); flex-shrink: 0; border-color: var(--input); border-radius: var(--radius-sm); accent-color: var(--primary); outline: none; }
+  .bc-ledger-activity__checkbox:focus-visible, .bc-ledger-activity__group-toggle:focus-visible, .bc-ledger-activity__record-action:focus-visible, .bc-ledger-activity__posting-link:focus-visible { outline: 2px solid var(--ui-beancount-focus-ring); }
+  .bc-ledger-activity__checkbox--record { margin-block-start: calc(var(--ui-beancount-space-1) / 2); }
+  .bc-ledger-activity__amount-heading, .bc-ledger-activity__balance, .bc-ledger-activity__amount, .bc-ledger-activity__postings { text-align: right; }
+  .bc-ledger-activity__groups { border-block-start: 1px solid color-mix(in srgb, var(--ui-beancount-border) 80%, transparent); }
+  .bc-ledger-activity__groups > section { border-block-end: 1px solid color-mix(in srgb, var(--ui-beancount-border) 80%, transparent); }
+  .bc-ledger-activity__group { align-items: center; gap: var(--ui-beancount-space-4); padding: var(--ui-beancount-space-3) var(--ui-beancount-space-5); }
+  .bc-ledger-activity__group-toggle { display: flex; min-width: 0; align-items: center; gap: var(--ui-beancount-space-2); outline: none; text-align: left; }
+  :global(.bc-ledger-activity__icon) { width: var(--ui-beancount-space-4); height: var(--ui-beancount-space-4); flex-shrink: 0; color: var(--ui-beancount-muted-foreground); }
+  .bc-ledger-activity__date { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .875rem; font-weight: 600; }
+  .bc-ledger-activity__record-count, .bc-ledger-activity__balance { color: var(--ui-beancount-muted-foreground); font-size: .75rem; }
+  .bc-ledger-activity__balance { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+  .bc-ledger-activity__details { border-block-start: 1px solid color-mix(in srgb, var(--ui-beancount-border) 70%, transparent); }
+  .bc-ledger-activity__summary { display: grid; gap: var(--ui-beancount-space-2) var(--ui-beancount-space-4); border-block-end: 1px dashed color-mix(in srgb, var(--ui-beancount-border) 80%, transparent); padding: var(--ui-beancount-space-4) var(--ui-beancount-space-5); font-size: .875rem; }
+  .bc-ledger-activity__summary-rule { display: none; border-block-start: 1px dashed color-mix(in srgb, var(--ui-beancount-border) 80%, transparent); align-self: center; }
+  .bc-ledger-activity__summary-value { text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .bc-ledger-activity__summary-value--final { font-weight: 700; }
+  .bc-ledger-activity__record { align-items: flex-start; gap: var(--ui-beancount-space-4); padding: var(--ui-beancount-space-3) var(--ui-beancount-space-5); transition: background-color 150ms ease; }
+  .bc-ledger-activity__record:hover { background: color-mix(in srgb, var(--ui-beancount-surface-muted) 45%, transparent); }
+  .bc-ledger-activity__record-action, .bc-ledger-activity__record-copy { min-width: 0; outline: none; text-align: left; }
+  .bc-ledger-activity__postings { display: flex; min-width: 0; flex-direction: column; gap: var(--ui-beancount-space-1); }
+  .bc-ledger-activity__posting { display: grid; min-width: 0; grid-template-columns: minmax(0,1fr) auto; align-items: center; gap: var(--ui-beancount-space-3); }
+  .bc-ledger-activity__posting-link, .bc-ledger-activity__posting-account { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: left; font-size: .75rem; }
+  .bc-ledger-activity__posting-link { color: var(--primary); outline: none; text-underline-offset: 4px; }
+  .bc-ledger-activity__posting-link:hover, .bc-ledger-activity__record-description--interactive:hover { text-decoration: underline; }
+  .bc-ledger-activity__posting-account { color: var(--ui-beancount-muted-foreground); }
+  .bc-ledger-activity__posting-amount, .bc-ledger-activity__amount { font-family: var(--font-mono); font-size: .875rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .bc-ledger-activity__amount { font-weight: 400; }
+  .bc-ledger-activity__empty { padding: calc(var(--ui-beancount-space-3) * 4) var(--ui-beancount-space-5); color: var(--ui-beancount-muted-foreground); text-align: center; font-size: .875rem; }
+  .bc-ledger-activity__identity { display: flex; min-width: 0; align-items: flex-start; gap: var(--ui-beancount-space-2); }
+  .bc-ledger-activity__avatar-image, .bc-ledger-activity__avatar-fallback { width: 2.5rem; height: 2.5rem; flex-shrink: 0; margin-block-start: calc(var(--ui-beancount-space-1) / 2); border: 1px solid color-mix(in srgb, var(--ui-beancount-border) 70%, transparent); border-radius: 999px; }
+  .bc-ledger-activity__avatar-image { object-fit: contain; }
+  .bc-ledger-activity__avatar-fallback { display: flex; align-items: center; justify-content: center; background: var(--ui-beancount-surface-muted); color: var(--ui-beancount-muted-foreground); font-size: .875rem; font-weight: 600; }
+  .bc-ledger-activity__identity-copy { min-width: 0; }
+  .bc-ledger-activity__record-description { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .875rem; font-weight: 500; }
+  .bc-ledger-activity__record-account, .bc-ledger-activity__record-detail { display: block; overflow: hidden; color: var(--ui-beancount-muted-foreground); text-overflow: ellipsis; white-space: nowrap; font-size: .75rem; }
+  .bc-ledger-activity__record-account { margin-block-start: calc(var(--ui-beancount-space-1) / 2); font-family: var(--font-mono); }
+  .bc-ledger-activity__record-detail { margin-block-start: var(--ui-beancount-space-1); }
+  @media (min-width: 640px) { .bc-ledger-activity__summary { grid-template-columns: auto minmax(0,1fr) auto; } .bc-ledger-activity__summary-rule { display: block; } }
 </style>
