@@ -12,12 +12,15 @@
     charts,
     activeChartId,
     ariaLabel = "Chart perspectives",
+    tabsPlacement = "bottom",
     onActiveChartChange = () => {},
     children,
   }: {
     charts: readonly ChartPerspective[];
     activeChartId: string;
     ariaLabel?: string;
+    /** Put report-perspective tabs before a summary when that matches the screen hierarchy. */
+    tabsPlacement?: "top" | "bottom";
     onActiveChartChange?: (id: string) => void;
     /** Receives the active chart id so the parent can render its chart data. */
     children?: Snippet<[string]>;
@@ -31,18 +34,33 @@
     if (next) onActiveChartChange(next);
   }}
 >
+  {#if tabsPlacement === "top"}
+    <ScrollArea.Root orientation="horizontal" class="bc-chart-switcher__scroll">
+      <div class="bc-chart-switcher__tabs">
+        <Tabs.List aria-label={ariaLabel}>
+          {#each charts as chart (chart.id)}
+            <Tabs.Trigger value={chart.id}>{chart.label || "All"}</Tabs.Trigger>
+          {/each}
+        </Tabs.List>
+      </div>
+    </ScrollArea.Root>
+  {/if}
+
   <Tabs.Content value={activeChartId}>
     {@render children?.(activeChartId)}
   </Tabs.Content>
-  <ScrollArea.Root orientation="horizontal" class="bc-chart-switcher__scroll">
-    <div class="bc-chart-switcher__tabs">
-      <Tabs.List aria-label={ariaLabel}>
-        {#each charts as chart (chart.id)}
-          <Tabs.Trigger value={chart.id}>{chart.label || "All"}</Tabs.Trigger>
-        {/each}
-      </Tabs.List>
-    </div>
-  </ScrollArea.Root>
+
+  {#if tabsPlacement === "bottom"}
+    <ScrollArea.Root orientation="horizontal" class="bc-chart-switcher__scroll">
+      <div class="bc-chart-switcher__tabs">
+        <Tabs.List aria-label={ariaLabel}>
+          {#each charts as chart (chart.id)}
+            <Tabs.Trigger value={chart.id}>{chart.label || "All"}</Tabs.Trigger>
+          {/each}
+        </Tabs.List>
+      </div>
+    </ScrollArea.Root>
+  {/if}
 </Tabs.Root>
 
 <style>

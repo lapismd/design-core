@@ -3,6 +3,9 @@
   import { expect, userEvent } from "storybook/test";
   import ScreenFrame from "./ScreenFrame.svelte";
   import { visualDeltaForScreen } from "./visual-delta.js";
+  import BarChart from "../charts/BarChart.svelte";
+  import ChartPanel from "../charts/ChartPanel.svelte";
+  import ChartSwitcher from "../charts/ChartSwitcher.svelte";
   import FinancialDashboard from "../dashboard/FinancialDashboard.svelte";
   import LedgerActivityTable from "../tables/LedgerActivityTable.svelte";
   import StatementSummaryTreeTable from "../tables/StatementSummaryTreeTable.svelte";
@@ -12,6 +15,9 @@
   import ContentScrollArea from "../layout/ContentScrollArea.svelte";
   import {
     accountActivityGroups,
+    incomeStatementChartGroups,
+    incomeStatementContributions,
+    incomeStatementNodes,
     journalGroups,
     statementColumns,
     statementNodes,
@@ -142,6 +148,11 @@
 
   const formatDashboardAmount = (value: number) => `${value.toFixed(2)} GBP`;
   let journalTimeframe = $state("transactions");
+  let incomeChartMode = $state<"single" | "stacked">("stacked");
+  let incomePerspective = $state("net-profit");
+
+  const formatReportAxisAmount = (value: number) =>
+    `${value < 0 ? "−" : ""}${(Math.abs(value) / 1000).toFixed(1)}k`;
 </script>
 
 <Story
@@ -254,19 +265,87 @@
   name="Income statement"
   parameters={{ visualDelta: visualDeltaForScreen("income-statement") }}
   play={async ({ canvas }) => {
-    await expect(canvas.getByText("Expenses")).toBeVisible();
+    await expect(
+      canvas.getByRole("group", {
+        name: "Income statement historical performance",
+      }),
+    ).toBeVisible();
+    await userEvent.click(canvas.getByRole("tab", { name: "Single Bars" }));
+    await expect(
+      canvas.getByRole("tab", { name: "Single Bars" }),
+    ).toHaveAttribute("data-state", "active");
+    await userEvent.click(canvas.getByRole("tab", { name: "Stacked Bars" }));
+    await expect(canvas.getByText("Income:Starling")).toBeVisible();
   }}
 >
   {#snippet template()}
     <ScreenFrame pageTitle="Income statement">
       <ContentScrollArea>
-        <div class="bc-screen-story__page">
-          <StatementSummaryTreeTable
-            title="Income statement"
-            columns={statementColumns}
-            nodes={statementNodes}
-            contributions={[]}
-          />
+        <div class="bc-screen-story__page bc-screen-story__page--report">
+          <ChartPanel
+            ariaLabel="Income statement controls"
+            legend={{
+              items: [{ id: "gbp", label: "GBP", color: "var(--chart-4)" }],
+              selection: "single",
+              selectedIds: ["gbp"],
+            }}
+            conversion={{
+              ariaLabel: "Valuation",
+              value: "cost",
+              options: [{ value: "cost", label: "At Cost" }],
+            }}
+            interval={{
+              ariaLabel: "Interval",
+              value: "month",
+              options: [{ value: "month", label: "Monthly" }],
+            }}
+            modes={{
+              value: incomeChartMode,
+              options: [
+                { value: "stacked", label: "Stacked Bars" },
+                { value: "single", label: "Single Bars" },
+              ],
+              ariaLabel: "Income statement chart representation",
+              onChange: (value) => {
+                incomeChartMode = value as "single" | "stacked";
+              },
+            }}
+          >
+            {#snippet children()}
+              <BarChart
+                groups={incomeStatementChartGroups}
+                mode={incomeChartMode}
+                ariaLabel="Income statement historical performance"
+                valueFormatter={formatReportAxisAmount}
+              />
+            {/snippet}
+          </ChartPanel>
+          <ChartSwitcher
+            charts={[
+              { id: "net-profit", label: "Net Profit" },
+              { id: "income-monthly", label: "Income (Monthly)" },
+              { id: "expenses-monthly", label: "Expenses (Monthly)" },
+              { id: "income", label: "Income" },
+              { id: "expenses", label: "Expenses" },
+            ]}
+            activeChartId={incomePerspective}
+            ariaLabel="Income statement sections"
+            tabsPlacement="top"
+            onActiveChartChange={(value) => {
+              incomePerspective = value;
+            }}
+          >
+            {#snippet children()}
+              <StatementSummaryTreeTable
+                title="Income"
+                total="−213145.48 GBP"
+                href="/accounts/Income"
+                columns={statementColumns}
+                nodes={incomeStatementNodes}
+                contributions={incomeStatementContributions}
+              />
+            {/snippet}
+          </ChartSwitcher>
         </div>
       </ContentScrollArea>
     </ScreenFrame>
@@ -519,6 +598,20 @@
   .bc-screen-story__page--stack {
     display: grid;
     gap: var(--ui-beancount-space-4);
+  }
+
+  .bc-screen-story__page--report {
+    display: grid;
+    gap: calc(var(--ui-beancount-space-4) * 2);
+  }
+
+  :global(.bc-screen-story__page--report .bc-bar-chart__summary) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
   }
 
   .bc-screen-story__section-title,

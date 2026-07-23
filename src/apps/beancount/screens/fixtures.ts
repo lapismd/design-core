@@ -144,6 +144,117 @@ export const statementNodes = [
   },
 ];
 
+export const incomeStatementNodes = [
+  {
+    id: "income",
+    label: "Income",
+    href: "/accounts/Income",
+    values: { gbp: "−213145.48" },
+    weight: "96.4%",
+    color: "var(--chart-4)",
+    children: [
+      {
+        id: "income-starling",
+        label: "Starling",
+        href: "/accounts/Income:Starling",
+        values: { gbp: "−213145.48" },
+        weight: "96.4%",
+        color: "var(--chart-4)",
+        children: [
+          {
+            id: "income-starling-pension",
+            label: "Pension",
+            values: { gbp: "4036.12" },
+            weight: "1.8%",
+            color: "var(--chart-3)",
+          },
+          {
+            id: "income-starling-salary",
+            label: "Salary",
+            values: { gbp: "−217181.60" },
+            weight: "98.2%",
+            color: "var(--chart-4)",
+          },
+        ],
+      },
+    ],
+  },
+];
+
+export const incomeStatementContributions = [
+  {
+    id: "income-starling",
+    label: "Income:Starling",
+    percentage: 100,
+    amount: "−213145.48 GBP",
+    color: "var(--chart-4)",
+  },
+];
+
+const incomeStatementMonths = [
+  "Oct 2024",
+  "",
+  "Dec 2024",
+  "",
+  "Feb 2025",
+  "",
+  "Apr 2025",
+  "",
+  "Jun 2025",
+  "",
+  "Aug 2025",
+  "",
+  "Oct 2025",
+  "",
+  "Dec 2025",
+  "",
+  "Feb 2026",
+  "",
+  "Apr 2026",
+  "",
+  "Jun 2026",
+  "Aug 2026",
+];
+
+export const incomeStatementChartGroups = incomeStatementMonths.map(
+  (label, index) => ({
+    id: `income-month-${index}`,
+    label,
+    values: [
+      {
+        id: "net-profit",
+        label: "Net profit",
+        value: -6250,
+        valueLabel: "−6250.00 GBP",
+        color: "var(--chart-1)",
+      },
+    ],
+    stacks: [
+      {
+        id: "salary",
+        label: "Income:Starling:Salary",
+        value: 3500,
+        valueLabel: "3500.00 GBP",
+        color: "var(--chart-4)",
+      },
+      {
+        id: "pension",
+        label: "Income:Starling:Pension",
+        value: 3600,
+        valueLabel: "3600.00 GBP",
+        color: "var(--chart-3)",
+      },
+      {
+        id: "expenses",
+        label: "Expenses",
+        value: -10000,
+        valueLabel: "−10000.00 GBP",
+        color: "var(--chart-2)",
+      },
+    ],
+  }),
+);
+
 export const queryColumns = [
   { id: "date", label: "Date", sortable: true },
   { id: "description", label: "Description", sortable: true },

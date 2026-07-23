@@ -42,6 +42,7 @@
       <ChartSwitcher
         {charts}
         {activeChartId}
+        tabsPlacement="top"
         onActiveChartChange={(id) => {
           activeChartId = id;
         }}
