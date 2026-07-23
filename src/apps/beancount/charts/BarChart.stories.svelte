@@ -120,8 +120,8 @@
   }}
 >
   {#snippet template()}
-    <div class="max-w-5xl p-5">
-      <div class="mb-3 flex justify-end">
+    <div class="bc-bar-chart-story">
+      <div class="bc-bar-chart-story__controls">
         <ChartModeSwitch
           value={mode}
           options={[
@@ -152,8 +152,21 @@
   }}
 >
   {#snippet template()}
-    <div class="max-w-5xl p-5">
+    <div class="bc-bar-chart-story">
       <BarChart groups={[]} emptyLabel="No spending matches these filters." />
     </div>
   {/snippet}
 </Story>
+
+<style>
+  .bc-bar-chart-story {
+    max-width: 64rem;
+    padding: var(--ui-beancount-space-5);
+  }
+
+  .bc-bar-chart-story__controls {
+    display: flex;
+    justify-content: flex-end;
+    margin-block-end: var(--ui-beancount-space-3);
+  }
+</style>

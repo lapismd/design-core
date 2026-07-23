@@ -60,8 +60,8 @@
   }}
 >
   {#snippet template()}
-    <div class="max-w-5xl p-5">
-      <div class="mb-3 flex justify-end">
+    <div class="bc-hierarchy-chart-story">
+      <div class="bc-hierarchy-chart-story__controls">
         <ChartModeSwitch
           value={mode}
           options={[
@@ -88,7 +88,7 @@
   }}
 >
   {#snippet template()}
-    <div class="max-w-5xl p-5">
+    <div class="bc-hierarchy-chart-story">
       <HierarchyChart
         root={{ id: "assets", label: "Assets", color: "var(--primary)" }}
         emptyLabel="No balances match these filters."
@@ -96,3 +96,16 @@
     </div>
   {/snippet}
 </Story>
+
+<style>
+  .bc-hierarchy-chart-story {
+    max-width: 64rem;
+    padding: var(--ui-beancount-space-5);
+  }
+
+  .bc-hierarchy-chart-story__controls {
+    display: flex;
+    justify-content: flex-end;
+    margin-block-end: var(--ui-beancount-space-3);
+  }
+</style>
