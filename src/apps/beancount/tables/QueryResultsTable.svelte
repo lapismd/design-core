@@ -119,43 +119,49 @@
   }
 </script>
 
-<div class="space-y-3">
-  <div
-    class="border-border/80 bg-card overflow-x-auto rounded-xl border shadow-sm"
-  >
-    <Table.Root aria-label={ariaLabel} class="min-w-max font-mono text-xs">
-      <Table.Header class="bg-muted/65 text-muted-foreground">
-        <Table.Row class="hover:bg-muted/65">
+<div class="bc-query-results">
+  <div class="bc-query-results__table-frame">
+    <Table.Root aria-label={ariaLabel} class="bc-query-results__table">
+      <Table.Header class="bc-query-results__header">
+        <Table.Row class="bc-query-results__header-row">
           {#each columns as column (column.id)}
             {@const order = orderFor(column)}
             <Table.Head
               aria-sort={column.sortable ? order : undefined}
-              class={column.align === "right" ? "p-0 text-right" : "p-0"}
+              class={column.align === "right"
+                ? "bc-query-results__head bc-query-results__head--right"
+                : "bc-query-results__head"}
             >
               {#if column.sortable}
                 <button
                   type="button"
                   class={column.align === "right"
-                    ? "hover:text-foreground focus-visible:ring-ring inline-flex h-10 w-full items-center justify-end gap-1.5 px-4 font-sans text-xs font-semibold tracking-wide uppercase transition-colors outline-none focus-visible:ring-2"
-                    : "hover:text-foreground focus-visible:ring-ring inline-flex h-10 w-full items-center gap-1.5 px-4 font-sans text-xs font-semibold tracking-wide uppercase transition-colors outline-none focus-visible:ring-2"}
+                    ? "bc-query-results__sort-control bc-query-results__sort-control--right"
+                    : "bc-query-results__sort-control"}
                   aria-label={`Sort by ${column.label}`}
                   onclick={() => toggleSort(column)}
                 >
                   <span>{column.label}</span>
                   {#if order === "ascending"}
-                    <ArrowUpNarrowWide class="size-3.5" aria-hidden="true" />
+                    <ArrowUpNarrowWide
+                      class="bc-query-results__sort-icon"
+                      aria-hidden="true"
+                    />
                   {:else if order === "descending"}
-                    <ArrowDownWideNarrow class="size-3.5" aria-hidden="true" />
+                    <ArrowDownWideNarrow
+                      class="bc-query-results__sort-icon"
+                      aria-hidden="true"
+                    />
                   {:else}
                     <ArrowUpDown
-                      class="size-3.5 opacity-50"
+                      class="bc-query-results__sort-icon bc-query-results__sort-icon--idle"
                       aria-hidden="true"
                     />
                   {/if}
                 </button>
               {:else}
                 <span
-                  class="inline-flex h-10 items-center px-4 font-sans text-xs font-semibold tracking-wide uppercase"
+                  class="bc-query-results__column-label"
                   >{column.label}</span
                 >
               {/if}
@@ -169,13 +175,13 @@
             {#each columns as column (column.id)}
               <Table.Cell
                 class={column.align === "right"
-                  ? "px-4 py-3 text-right font-mono tabular-nums"
-                  : "px-4 py-3 font-mono"}
+                  ? "bc-query-results__cell bc-query-results__cell--right"
+                  : "bc-query-results__cell"}
               >
                 {#each displayCell(row.values[column.id]) as value, index}
                   <span
-                    class:mt-1={index > 0}
-                    class="block whitespace-pre-wrap"
+                    class="bc-query-results__cell-line"
+                    class:bc-query-results__cell-line--stacked={index > 0}
                   >
                     {value}
                   </span>
@@ -187,7 +193,7 @@
           <Table.Row>
             <Table.Cell
               colspan={Math.max(columns.length, 1)}
-              class="h-24 text-center font-sans text-sm text-muted-foreground"
+              class="bc-query-results__empty"
             >
               {emptyLabel}
             </Table.Cell>
@@ -196,21 +202,24 @@
       </Table.Body>
       {#if error}
         <Table.Footer
-          class="border-destructive/45 bg-destructive/10 text-foreground border-t"
+          class="bc-query-results__error-footer"
         >
-          <Table.Row class="hover:bg-transparent">
-            <Table.Cell colspan={Math.max(columns.length, 1)} class="px-4 py-3">
-              <div class="flex items-start gap-2" role="alert">
+          <Table.Row class="bc-query-results__error-row">
+            <Table.Cell
+              colspan={Math.max(columns.length, 1)}
+              class="bc-query-results__error-cell"
+            >
+              <div class="bc-query-results__error" role="alert">
                 <TriangleAlert
-                  class="mt-0.5 size-4 shrink-0"
+                  class="bc-query-results__error-icon"
                   aria-hidden="true"
                 />
                 <div>
-                  <p class="font-sans text-xs font-semibold">
+                  <p class="bc-query-results__error-title">
                     Could not run query
                   </p>
                   <p
-                    class="mt-1 font-mono text-[11px] leading-snug break-words"
+                    class="bc-query-results__error-message"
                   >
                     {error}
                   </p>
@@ -224,15 +233,15 @@
   </div>
   {#if pagination && pagination.pageCount > 1}
     <div
-      class="border-border/80 bg-card flex flex-col gap-3 rounded-xl border px-4 py-3 sm:flex-row sm:items-center sm:justify-between"
+      class="bc-query-results__pagination"
     >
-      <span class="text-muted-foreground text-sm">{pagination.resultLabel}</span
+      <span class="bc-query-results__result-label">{pagination.resultLabel}</span
       >
-      <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
+      <div class="bc-query-results__pagination-controls">
         {#if pagination.pageSize && pagination.pageSizes?.length}
-          <div class="flex items-center gap-2">
+          <div class="bc-query-results__page-size">
             <span
-              class="text-muted-foreground text-sm"
+              class="bc-query-results__page-size-label"
               id="query-results-page-size-label">Rows per page</span
             >
             <Select.Root
@@ -242,7 +251,7 @@
             >
               <Select.Trigger
                 aria-labelledby="query-results-page-size-label"
-                class="h-8 w-20 font-mono text-sm tabular-nums"
+                class="bc-query-results__page-size-select"
               >
                 {pagination.pageSize}
               </Select.Trigger>
@@ -271,3 +280,213 @@
     </div>
   {/if}
 </div>
+
+<style>
+  .bc-query-results {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ui-beancount-space-3);
+  }
+
+  .bc-query-results__table-frame {
+    overflow-x: auto;
+    border: 1px solid color-mix(in srgb, var(--ui-beancount-border) 80%, transparent);
+    border-radius: var(--ui-beancount-radius-panel);
+    background-color: var(--ui-beancount-surface);
+    box-shadow: var(--ui-beancount-shadow-panel);
+  }
+
+  :global(.bc-query-results__table) {
+    min-width: max-content;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+  }
+
+  :global(.bc-query-results__header),
+  :global(.bc-query-results__header-row) {
+    background-color: color-mix(
+      in srgb,
+      var(--ui-beancount-surface-muted) 65%,
+      transparent
+    );
+    color: var(--ui-beancount-muted-foreground);
+  }
+
+  :global(.bc-query-results__header-row:hover) {
+    background-color: color-mix(
+      in srgb,
+      var(--ui-beancount-surface-muted) 65%,
+      transparent
+    );
+  }
+
+  :global(.bc-query-results__head) {
+    padding: 0;
+  }
+
+  :global(.bc-query-results__head--right) {
+    text-align: right;
+  }
+
+  .bc-query-results__sort-control,
+  .bc-query-results__column-label {
+    display: inline-flex;
+    width: 100%;
+    height: 2.5rem;
+    align-items: center;
+    gap: var(--ui-beancount-space-1);
+    padding-inline: var(--ui-beancount-space-4);
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.025em;
+    text-transform: uppercase;
+  }
+
+  .bc-query-results__sort-control {
+    outline: none;
+    transition: color 150ms ease;
+  }
+
+  .bc-query-results__sort-control--right {
+    justify-content: flex-end;
+  }
+
+  .bc-query-results__sort-control:hover {
+    color: var(--ui-beancount-foreground);
+  }
+
+  .bc-query-results__sort-control:focus-visible {
+    outline: 2px solid var(--ui-beancount-focus-ring);
+  }
+
+  :global(.bc-query-results__sort-icon) {
+    width: 0.875rem;
+    height: 0.875rem;
+  }
+
+  :global(.bc-query-results__sort-icon--idle) {
+    opacity: 0.5;
+  }
+
+  :global(.bc-query-results__cell) {
+    padding: var(--ui-beancount-space-3) var(--ui-beancount-space-4);
+    font-family: var(--font-mono);
+  }
+
+  :global(.bc-query-results__cell--right) {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .bc-query-results__cell-line {
+    display: block;
+    white-space: pre-wrap;
+  }
+
+  .bc-query-results__cell-line--stacked {
+    margin-block-start: var(--ui-beancount-space-1);
+  }
+
+  :global(.bc-query-results__empty) {
+    height: 6rem;
+    color: var(--ui-beancount-muted-foreground);
+    text-align: center;
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+  }
+
+  :global(.bc-query-results__error-footer) {
+    border-top: 1px solid
+      color-mix(in srgb, var(--ui-beancount-negative) 45%, transparent);
+    background-color: color-mix(
+      in srgb,
+      var(--ui-beancount-negative) 10%,
+      transparent
+    );
+    color: var(--ui-beancount-foreground);
+  }
+
+  :global(.bc-query-results__error-row:hover) {
+    background-color: transparent;
+  }
+
+  :global(.bc-query-results__error-cell) {
+    padding: var(--ui-beancount-space-3) var(--ui-beancount-space-4);
+  }
+
+  .bc-query-results__error {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--ui-beancount-space-2);
+  }
+
+  :global(.bc-query-results__error-icon) {
+    width: var(--ui-beancount-space-4);
+    height: var(--ui-beancount-space-4);
+    margin-block-start: calc(var(--ui-beancount-space-1) / 2);
+    flex-shrink: 0;
+  }
+
+  .bc-query-results__error-title {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  .bc-query-results__error-message {
+    margin-block-start: var(--ui-beancount-space-1);
+    overflow-wrap: break-word;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    line-height: 1.375;
+  }
+
+  .bc-query-results__pagination {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ui-beancount-space-3);
+    border: 1px solid color-mix(in srgb, var(--ui-beancount-border) 80%, transparent);
+    border-radius: var(--ui-beancount-radius-panel);
+    background-color: var(--ui-beancount-surface);
+    padding: var(--ui-beancount-space-3) var(--ui-beancount-space-4);
+  }
+
+  .bc-query-results__result-label,
+  .bc-query-results__page-size-label {
+    color: var(--ui-beancount-muted-foreground);
+    font-size: 0.875rem;
+  }
+
+  .bc-query-results__pagination-controls {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ui-beancount-space-3);
+  }
+
+  .bc-query-results__page-size {
+    display: flex;
+    align-items: center;
+    gap: var(--ui-beancount-space-2);
+  }
+
+  :global(.bc-query-results__page-size-select) {
+    width: 5rem;
+    height: var(--ui-beancount-compact-control-height);
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (min-width: 640px) {
+    .bc-query-results__pagination,
+    .bc-query-results__pagination-controls {
+      flex-direction: row;
+      align-items: center;
+    }
+
+    .bc-query-results__pagination {
+      justify-content: space-between;
+    }
+  }
+</style>
