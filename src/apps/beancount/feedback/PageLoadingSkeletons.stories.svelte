@@ -34,7 +34,7 @@
   }}
 >
   {#snippet template()}
-    <div class="max-w-4xl p-4">
+    <div class="bc-page-loading-skeletons__content">
       <AccountsPageSkeleton />
     </div>
   {/snippet}
@@ -49,7 +49,7 @@
   }}
 >
   {#snippet template()}
-    <div class="bg-card w-80 rounded-xl border p-4 shadow-sm">
+    <div class="bc-page-loading-skeletons__dock">
       <AiDockSkeleton />
     </div>
   {/snippet}
@@ -64,7 +64,7 @@
   }}
 >
   {#snippet template()}
-    <div class="max-w-4xl p-4">
+    <div class="bc-page-loading-skeletons__content">
       <BrandSettingsSkeleton />
     </div>
   {/snippet}
@@ -79,7 +79,7 @@
   }}
 >
   {#snippet template()}
-    <div class="max-w-4xl p-4">
+    <div class="bc-page-loading-skeletons__content">
       <MerchantsPageSkeleton />
     </div>
   {/snippet}
@@ -95,9 +95,7 @@
   }}
 >
   {#snippet template()}
-    <div
-      class="bg-background h-[34rem] max-w-5xl overflow-hidden rounded-xl border"
-    >
+    <div class="bc-page-loading-skeletons__route">
       <QueryPageSkeleton />
     </div>
   {/snippet}
@@ -112,7 +110,7 @@
   }}
 >
   {#snippet template()}
-    <div class="bg-card flex h-80 max-w-4xl rounded-xl border p-4 shadow-sm">
+    <div class="bc-page-loading-skeletons__resource">
       <ResourceViewerSkeleton />
     </div>
   {/snippet}
@@ -127,7 +125,7 @@
   }}
 >
   {#snippet template()}
-    <div class="max-w-4xl p-4">
+    <div class="bc-page-loading-skeletons__content">
       <ReviewImportsSkeleton />
     </div>
   {/snippet}
@@ -142,7 +140,7 @@
   }}
 >
   {#snippet template()}
-    <div class="max-w-4xl p-4">
+    <div class="bc-page-loading-skeletons__content">
       <RulesPageSkeleton />
     </div>
   {/snippet}
@@ -157,8 +155,43 @@
   }}
 >
   {#snippet template()}
-    <div class="max-w-4xl p-4">
+    <div class="bc-page-loading-skeletons__content">
       <SourcesPageSkeleton />
     </div>
   {/snippet}
 </Story>
+
+<style>
+  .bc-page-loading-skeletons__content {
+    max-width: 56rem;
+    padding: var(--ui-beancount-space-4);
+  }
+
+  .bc-page-loading-skeletons__dock,
+  .bc-page-loading-skeletons__resource {
+    border: 1px solid var(--ui-beancount-border);
+    border-radius: var(--ui-beancount-radius-panel);
+    background: var(--card);
+    padding: var(--ui-beancount-space-4);
+    box-shadow: var(--ui-beancount-shadow-panel);
+  }
+
+  .bc-page-loading-skeletons__dock {
+    width: 20rem;
+  }
+
+  .bc-page-loading-skeletons__route {
+    max-width: 64rem;
+    height: 34rem;
+    overflow: hidden;
+    border: 1px solid var(--ui-beancount-border);
+    border-radius: var(--ui-beancount-radius-panel);
+    background: var(--ui-beancount-surface);
+  }
+
+  .bc-page-loading-skeletons__resource {
+    display: flex;
+    max-width: 56rem;
+    height: 20rem;
+  }
+</style>
