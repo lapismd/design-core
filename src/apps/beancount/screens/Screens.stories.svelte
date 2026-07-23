@@ -52,16 +52,16 @@
   name="Editor"
   parameters={{ visualDelta: visualDeltaForScreen("editor") }}
   play={async ({ canvas }) => {
-    await expect(canvas.getByText("Editor")).toBeVisible();
+    await expect(canvas.getByText("Beancount editor")).toBeVisible();
   }}
 >
   {#snippet template()}
     <ScreenFrame pageTitle="Editor">
       <ContentScrollArea>
-        <div class="text-muted-foreground p-6 font-mono text-sm">
-          <p class="text-foreground mb-2 font-sans text-base font-medium">
-            Beancount editor
-          </p>
+        <div
+          class="bc-screen-story__placeholder bc-screen-story__placeholder--code"
+        >
+          <p class="bc-screen-story__placeholder-title">Beancount editor</p>
           <p>
             CodeMirror ledger editing remains in Fava until a catalog editor
             surface lands. This screen story frames the Studio shell for Visual
@@ -109,7 +109,7 @@
   {#snippet template()}
     <ScreenFrame pageTitle="Journal">
       <ContentScrollArea>
-        <div class="p-4">
+        <div class="bc-screen-story__page">
           <LedgerActivityTable groups={journalGroups} selectable={false} />
         </div>
       </ContentScrollArea>
@@ -127,7 +127,7 @@
   {#snippet template()}
     <ScreenFrame pageTitle="Income statement">
       <ContentScrollArea>
-        <div class="p-4">
+        <div class="bc-screen-story__page">
           <StatementSummaryTreeTable
             title="Income statement"
             columns={statementColumns}
@@ -150,7 +150,7 @@
   {#snippet template()}
     <ScreenFrame pageTitle="Balance sheet">
       <ContentScrollArea>
-        <div class="p-4">
+        <div class="bc-screen-story__page">
           <StatementSummaryTreeTable
             title="Balance sheet"
             columns={statementColumns}
@@ -173,7 +173,7 @@
   {#snippet template()}
     <ScreenFrame pageTitle="Trial balance">
       <ContentScrollArea>
-        <div class="p-4">
+        <div class="bc-screen-story__page">
           <StatementSummaryTreeTable
             title="Trial balance"
             columns={statementColumns}
@@ -196,8 +196,8 @@
   {#snippet template()}
     <ScreenFrame pageTitle="Account">
       <ContentScrollArea>
-        <div class="space-y-4 p-4">
-          <h2 class="text-lg font-medium">Assets:Checking</h2>
+        <div class="bc-screen-story__page bc-screen-story__page--stack">
+          <h2 class="bc-screen-story__section-title">Assets:Checking</h2>
           <LedgerActivityTable groups={journalGroups} selectable={false} />
         </div>
       </ContentScrollArea>
@@ -217,8 +217,8 @@
   {#snippet template()}
     <ScreenFrame pageTitle="Holdings">
       <ContentScrollArea>
-        <div class="text-muted-foreground p-6 text-sm">
-          <p class="text-foreground mb-2 text-base font-medium">Holdings</p>
+        <div class="bc-screen-story__placeholder">
+          <p class="bc-screen-story__placeholder-title">Holdings</p>
           <p>
             Holdings query results compose through QueryResultsTable / charts
             once Fava adapters supply display models.
@@ -243,8 +243,8 @@
   {#snippet template()}
     <ScreenFrame pageTitle="Statistics">
       <ContentScrollArea>
-        <div class="text-muted-foreground p-6 text-sm">
-          <p class="text-foreground mb-2 text-base font-medium">Statistics</p>
+        <div class="bc-screen-story__placeholder">
+          <p class="bc-screen-story__placeholder-title">Statistics</p>
           <p>Preset statistics views stay Fava-owned until extracted.</p>
         </div>
       </ContentScrollArea>
@@ -262,7 +262,7 @@
   {#snippet template()}
     <ScreenFrame pageTitle="Query">
       <ContentScrollArea>
-        <div class="p-4">
+        <div class="bc-screen-story__page">
           <QueryResultsTable columns={queryColumns} rows={queryRows} />
         </div>
       </ContentScrollArea>
@@ -282,7 +282,7 @@
   {#snippet template()}
     <ScreenFrame pageTitle="Errors">
       <ContentScrollArea>
-        <div class="p-4">
+        <div class="bc-screen-story__page">
           <ValidationErrorTable errors={validationErrors} />
         </div>
       </ContentScrollArea>
@@ -302,7 +302,7 @@
   {#snippet template()}
     <ScreenFrame pageTitle="Review imports">
       <ContentScrollArea>
-        <div class="p-4">
+        <div class="bc-screen-story__page">
           <IngestionReviewTable
             groups={[]}
             counts={{ review: 0, ready: 0, duplicates: 0 }}
@@ -325,8 +325,8 @@
   {#snippet template()}
     <ScreenFrame pageTitle="Sources">
       <ContentScrollArea>
-        <div class="text-muted-foreground p-6 text-sm">
-          <p class="text-foreground mb-2 text-base font-medium">Sources</p>
+        <div class="bc-screen-story__placeholder">
+          <p class="bc-screen-story__placeholder-title">Sources</p>
           <p>
             Ingestion config editors remain in Fava (forms stay out of this
             catalog migration). Shell chrome is framed for Visual Delta.
@@ -347,10 +347,8 @@
   {#snippet template()}
     <ScreenFrame pageTitle="Import accounts">
       <ContentScrollArea>
-        <div class="text-muted-foreground p-6 text-sm">
-          <p class="text-foreground mb-2 text-base font-medium">
-            Import accounts
-          </p>
+        <div class="bc-screen-story__placeholder">
+          <p class="bc-screen-story__placeholder-title">Import accounts</p>
           <p>Account setup sheets remain Fava-owned for now.</p>
         </div>
       </ContentScrollArea>
@@ -368,11 +366,52 @@
   {#snippet template()}
     <ScreenFrame pageTitle="Rules">
       <ContentScrollArea>
-        <div class="text-muted-foreground p-6 text-sm">
-          <p class="text-foreground mb-2 text-base font-medium">Rules</p>
+        <div class="bc-screen-story__placeholder">
+          <p class="bc-screen-story__placeholder-title">Rules</p>
           <p>Rules settings remain Fava-owned for now.</p>
         </div>
       </ContentScrollArea>
     </ScreenFrame>
   {/snippet}
 </Story>
+
+<style>
+  .bc-screen-story__page {
+    padding: var(--ui-beancount-space-4);
+  }
+
+  .bc-screen-story__page--stack {
+    display: grid;
+    gap: var(--ui-beancount-space-4);
+  }
+
+  .bc-screen-story__section-title,
+  .bc-screen-story__placeholder-title {
+    margin: 0;
+    color: var(--ui-beancount-foreground);
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+  }
+
+  .bc-screen-story__section-title {
+    font-size: var(--text-lg);
+  }
+
+  .bc-screen-story__placeholder {
+    color: var(--ui-beancount-muted-foreground);
+    padding: calc(var(--ui-beancount-space-3) * 2);
+    font-size: var(--text-sm);
+  }
+
+  .bc-screen-story__placeholder-title {
+    margin-block-end: var(--ui-beancount-space-2);
+  }
+
+  .bc-screen-story__placeholder--code {
+    font-family: var(--studio-font-mono);
+  }
+
+  .bc-screen-story__placeholder--code .bc-screen-story__placeholder-title {
+    font-family: var(--font-sans);
+  }
+</style>

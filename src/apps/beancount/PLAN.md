@@ -49,23 +49,23 @@ Legend: `⬜` not started, `🟡` composing/reviewing, `✅` near-pixel approved
 Promotion requires a genuine screen body, passing Storybook/a11y checks, and
 Visual Delta at or below 0.1% before removing `skip-visual`.
 
-| Screen           | Reference           | Story composition | Next alignment slice                            |
-| ---------------- | ------------------- | ----------------- | ----------------------------------------------- |
-| Editor           | ✅                  | ⬜ placeholder    | Shell first; catalog editor chrome only         |
-| Dashboard        | ✅                  | 🟡 partial        | Shell, dashboard fixtures, flow/chart widgets   |
-| Journal          | ✅                  | 🟡 partial        | Shell, ledger workspace data, activity controls |
-| Income statement | ✅                  | 🟡 partial        | Statement toolbar, hierarchy chart, table       |
-| Balance sheet    | ✅                  | 🟡 partial        | Statement toolbar, hierarchy chart, table       |
-| Trial balance    | ✅                  | 🟡 partial        | Statement toolbar, hierarchy chart, table       |
-| Account detail   | ✅                  | 🟡 partial        | Account chart, tabs, activity table             |
-| Holdings         | ✅                  | ⬜ placeholder    | Query/chart composition                         |
-| Statistics       | ✅                  | ⬜ placeholder    | Statistics display model and charts             |
-| Query            | ✅                  | 🟡 partial        | Query editor chrome, results and controls       |
-| Errors           | ✅                  | 🟡 partial        | Error table fixtures and shell                  |
-| Records          | 🟡 recapture loaded | 🟡 empty-only     | Ingestion review states and actions             |
-| Sources          | ✅                  | ⬜ placeholder    | Source connection display adapters              |
-| Import accounts  | 🟡 recapture loaded | ⬜ placeholder    | Account setup display adapters                  |
-| Rules            | 🟡 recapture loaded | ⬜ placeholder    | Rules list and run-history adapters             |
+| Screen           | Reference           | Story composition      | Next alignment slice                            |
+| ---------------- | ------------------- | ---------------------- | ----------------------------------------------- |
+| Editor           | ✅                  | 🟡 shell + placeholder | Catalog editor chrome only                      |
+| Dashboard        | ✅                  | 🟡 partial             | Shell, dashboard fixtures, flow/chart widgets   |
+| Journal          | ✅                  | 🟡 partial             | Shell, ledger workspace data, activity controls |
+| Income statement | ✅                  | 🟡 partial             | Statement toolbar, hierarchy chart, table       |
+| Balance sheet    | ✅                  | 🟡 partial             | Statement toolbar, hierarchy chart, table       |
+| Trial balance    | ✅                  | 🟡 partial             | Statement toolbar, hierarchy chart, table       |
+| Account detail   | ✅                  | 🟡 partial             | Account chart, tabs, activity table             |
+| Holdings         | ✅                  | 🟡 shell + placeholder | Query/chart composition                         |
+| Statistics       | ✅                  | 🟡 shell + placeholder | Statistics display model and charts             |
+| Query            | ✅                  | 🟡 partial             | Query editor chrome, results and controls       |
+| Errors           | ✅                  | 🟡 partial             | Error table fixtures and shell                  |
+| Records          | 🟡 recapture loaded | 🟡 empty-only          | Ingestion review states and actions             |
+| Sources          | ✅                  | 🟡 shell + placeholder | Source connection display adapters              |
+| Import accounts  | 🟡 recapture loaded | 🟡 shell + placeholder | Account setup display adapters                  |
+| Rules            | 🟡 recapture loaded | 🟡 shell + placeholder | Rules list and run-history adapters             |
 
 ## Styling migration inventory
 
@@ -74,16 +74,16 @@ Svelte files. They are existing Tailwind utility strings, not shared shadcn
 token selectors. This table is a removal checklist; every row must reach zero
 Tailwind utilities before a `fava-beta` adapter consumes the app layer.
 
-| Area         | Class attributes | Shared control decision                                                                 | Status                                      |
-| ------------ | ---------------: | --------------------------------------------------------------------------------------- | ------------------------------------------- |
-| `charts`     |               73 | Chart containers and legends remain app-specific; use normalized chart/surface tokens   | ⬜                                          |
-| `dashboard`  |              149 | Reuse Card, Button, Badge, and Table; keep financial layout app-specific                | ⬜                                          |
-| `feedback`   |              205 | Replace hand-built loading, status, and empty states with Skeleton, Alert, Empty, Badge | ⬜                                          |
-| `layout`     |               81 | Reuse ScrollArea, Resizable, Separator, and shared shell controls                       | ✅ semantic selectors + focused story tests |
-| `navigation` |              124 | Reuse Button, Tabs, Tooltip, Sidebar/ScrollArea where suitable                          | 🟡 core shell navigation converted          |
-| `pickers`    |               50 | Reuse Input, Popover, Command, Avatar, and Button                                       | ⬜                                          |
-| `screens`    |               24 | Compose shell and report bodies with semantic screen selectors                          | ⬜                                          |
-| `tables`     |              265 | Reuse shared Table, Button, Badge, Checkbox, and semantic table-state tokens            | ⬜                                          |
+| Area         | Class attributes | Shared control decision                                                                 | Status                                          |
+| ------------ | ---------------: | --------------------------------------------------------------------------------------- | ----------------------------------------------- |
+| `charts`     |               73 | Chart containers and legends remain app-specific; use normalized chart/surface tokens   | ⬜                                              |
+| `dashboard`  |              149 | Reuse Card, Button, Badge, and Table; keep financial layout app-specific                | ⬜                                              |
+| `feedback`   |              205 | Replace hand-built loading, status, and empty states with Skeleton, Alert, Empty, Badge | ⬜                                              |
+| `layout`     |               81 | Reuse ScrollArea, Resizable, Separator, and shared shell controls                       | ✅ semantic selectors + focused story tests     |
+| `navigation` |              124 | Reuse Button, Tabs, Tooltip, Sidebar/ScrollArea where suitable                          | 🟡 core shell navigation converted              |
+| `pickers`    |               50 | Reuse Input, Popover, Command, Avatar, and Button                                       | ⬜                                              |
+| `screens`    |               24 | Compose shell and report bodies with semantic screen selectors                          | 🟡 shell/story framing semantic; bodies pending |
+| `tables`     |              265 | Reuse shared Table, Button, Badge, Checkbox, and semantic table-state tokens            | ⬜                                              |
 
 ### Styling exit criteria
 
@@ -103,8 +103,11 @@ Tailwind utilities before a `fava-beta` adapter consumes the app layer.
    remove Tailwind utilities by family, beginning with shared layout,
    navigation, feedback, and table primitives. Complete the static guard.
 3. **Shared shell** — `ScreenFrame`, `StudioWorkspaceShell`, project header,
-   ledger navigation, and deterministic sample-ledger fixtures. Recheck all
-   15 overlays because the frame is shared.
+   ledger navigation, and deterministic sample-ledger fixtures. The candidate
+   now composes the actual project header and ledger navigation against all 15
+   screen frames; the first Visual Delta review remains intentionally
+   non-approved because Fava's fixture tree and every screen body still differ.
+   Recheck all 15 overlays after each shell adjustment.
 4. **Core reports** — Journal; the three statements; Dashboard and Account
    detail; then Query, Errors, Holdings, and Statistics.
 5. **Workflow screens** — Records, Sources, Import accounts, Rules, and
