@@ -22,7 +22,12 @@ export type PredicateTermParts = {
   value: string;
 };
 
-export type PredicateChipEditSession = PredicateTermParts & {
+/** Editor session shared by CM chips and PowerSearch (anchor optional). */
+export type PredicateEditSession = PredicateTermParts & {
+  getAnchorRect?: () => DOMRect;
+};
+
+export type PredicateChipEditSession = PredicateEditSession & {
   from: number;
   to: number;
   getAnchorRect: () => DOMRect;

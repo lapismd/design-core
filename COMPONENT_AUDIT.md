@@ -62,6 +62,8 @@ Import: `@stevejuma/ui/forms` and `@stevejuma/ui/forms/core`
 
 Search chrome and Fava-inspired filter-query language in `src/shared/filter/`:
 
+- `PowerSearch` — structured field/operator/value tokens + field combobox (no
+  CodeMirror); shared predicate editor with `SearchFilterBar`
 - `SearchFilterBar` — plain or `filter-query` CodeMirror mode + host
   `filterSyntax` autocomplete
 - `filter-query/` — Lezer grammar, `parseFilterQuery`, `filterQuery()` language

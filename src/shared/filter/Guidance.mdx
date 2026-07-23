@@ -6,21 +6,40 @@ import { Meta } from "@storybook/addon-docs/blocks";
 
 Use `@stevejuma/ui/filter` for search chrome and the Fava-inspired filter-query
 language. Forms still own labelled rows and option pickers
-(`FilterCommandPicker`); compose them with `SearchFilterBar` when a list or
-sidebar needs facets plus a typed query.
+(`FilterCommandPicker`); compose them with `SearchFilterBar` or `PowerSearch`
+when a list or sidebar needs facets plus structured filters.
 
-Offline agent summary: `pnpm ui guide layers`. Catalog component:
-`pnpm ui components filter/search-filter-bar`.
+Offline agent summary: `pnpm ui guide layers`. Catalog components:
+`pnpm ui components filter/search-filter-bar`,
+`pnpm ui components filter/power-search`.
 
 ## Layer boundary
 
 | Need                                    | Package                                         |
 | --------------------------------------- | ----------------------------------------------- |
+| Structured multi-field filters, no QL   | `PowerSearch` (`@stevejuma/ui/filter`)          |
 | Search pill, clear chrome, filter slots | `SearchFilterBar` (`@stevejuma/ui/filter`)      |
 | Parse / highlight filter queries        | `parseFilterQuery`, `filterQuery()`             |
 | Field → operator → value completions    | Host `SearchFilterSyntax` + `filterSyntax` prop |
 | Facet pickers (type, account, …)        | forms `FilterCommandPicker`                     |
 | Matching rows against a ledger          | App / domain package (not in this UI package)   |
+
+## Choosing a search surface
+
+| Need                                              | Use                              |
+| ------------------------------------------------- | -------------------------------- |
+| Structured multi-field filters, no query language | **PowerSearch**                  |
+| Free-text only                                    | `SearchFilterBar` `plain`        |
+| Typed filter-query string + Lezer/CM              | `SearchFilterBar` `filter-query` |
+| Facet pickers outside the bar                     | forms `FilterCommandPicker`      |
+
+## PowerSearch
+
+Controlled `tokens: PowerSearchToken[]` (field + operator + value). Combobox
+adds fields; chips open the shared predicate editor; optional
+`contentSearchFieldKey` commits free-text Enter as a token. Optional
+`tokensToFilterQuery` serializes to a space-joined filter-query string for hosts
+that still call `parseFilterQuery`. No CodeMirror.
 
 ## SearchFilterBar modes
 

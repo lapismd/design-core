@@ -1,0 +1,67 @@
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+} from "@storybook/addon-docs/blocks";
+import * as PowerSearchStories from "./PowerSearch.stories.svelte";
+import * as PowerSearchVariations from "./PowerSearch.variations.stories.svelte";
+
+<Meta of={PowerSearchStories} />
+
+# PowerSearch
+
+Structured multi-field filter bar: each **token** is field + operator + value,
+plus a combobox to add more. No CodeMirror — prefer this when hosts want chip
+filters without a typed filter-query language.
+
+Import from `@stevejuma/ui/filter`. See [Filter/Guidance](?path=/docs/filter-guidance--docs)
+for when to use PowerSearch vs `SearchFilterBar`.
+
+## Guidance
+
+### When to use
+
+- Multi-field structured filters without a query string
+- Chip + combobox UX (Astryx-style power search)
+- Hosts that still want `tokensToFilterQuery` for optional `parseFilterQuery`
+
+### When not to use
+
+- Free-text only — `SearchFilterBar` `plain`
+- Typed filter-query + Lezer/CM — `SearchFilterBar` `filter-query`
+- Facet pickers outside the bar — forms `FilterCommandPicker`
+
+## Usage
+
+<Source
+  language="ts"
+  code={`import {
+  PowerSearch,
+  tokensToFilterQuery,
+  type PowerSearchToken,
+} from "@stevejuma/ui/filter";
+
+let tokens = $state<PowerSearchToken[]>([]);
+
+<PowerSearch
+  {tokens}
+  filterSyntax={syntax}
+  contentSearchFieldKey="payee"
+  resultCount="5 results"
+  onTokensChange={(next) => (tokens = next)}
+/>
+`} />
+
+<Primary />
+
+## Properties
+
+<Controls />
+
+## Examples
+
+<Canvas of={PowerSearchStories.EditRemoveAndClear} />
+<Canvas of={PowerSearchVariations.WithSeededTokens} />
+<Canvas of={PowerSearchVariations.ContentSearchEnter} />

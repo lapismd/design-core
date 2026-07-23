@@ -12,6 +12,16 @@ export {
   type SearchFilterValueEditorProps,
   type SearchFilterValueKind,
 } from "./search-filter-bar/index.js";
+export {
+  PowerSearch,
+  commitContentSearchToken,
+  createPowerSearchToken,
+  createPowerSearchTokenId,
+  matchPowerSearchFields,
+  powerSearchOperatorLabel,
+  tokensToFilterQuery,
+  type PowerSearchToken,
+} from "./power-search/index.js";
 export { createDemoLedgerFilterSyntax } from "./demo-ledger-filter-syntax.js";
 export {
   beancountFilter,

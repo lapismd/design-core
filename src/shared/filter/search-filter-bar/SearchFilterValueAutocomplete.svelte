@@ -95,6 +95,7 @@
         commit(query);
       }
       if (event.key === "Escape") {
+        event.stopPropagation();
         open = false;
       }
     }}

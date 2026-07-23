@@ -10,11 +10,12 @@
     type SearchFilterSyntax,
   } from "./search-filter-syntax.js";
   import {
-    formatTermExpr,
     unwrapPredicateValue,
-    type PredicateChipEditSession,
+    type PredicateEditSession,
+    type PredicateTermParts,
   } from "./search-filter-predicate-chips.js";
   import SearchFilterValueAutocomplete from "./SearchFilterValueAutocomplete.svelte";
+  import SearchFilterFieldAutocomplete from "./SearchFilterFieldAutocomplete.svelte";
 
   const OPERATOR_LABELS: Record<string, string> = {
     ":": "contains",
@@ -35,11 +36,12 @@
     onCancel,
     onApply,
   }: {
-    session: PredicateChipEditSession;
+    session: PredicateEditSession;
     filterSyntax?: SearchFilterSyntax;
     disabled?: boolean;
     onCancel: () => void;
-    onApply: (next: string) => void;
+    /** Applied field/operator/value parts (value unquoted). */
+    onApply: (parts: PredicateTermParts) => void;
   } = $props();
 
   let field = $state(untrack(() => session.field));
@@ -47,10 +49,11 @@
   let value = $state(untrack(() => unwrapPredicateValue(session.value)));
   let panelEl = $state<HTMLDivElement | null>(null);
 
-  const anchor = $derived(session.getAnchorRect());
-  const style = $derived(
-    `top: ${Math.round(anchor.bottom + 6)}px; left: ${Math.round(anchor.left)}px;`,
-  );
+  const style = $derived.by(() => {
+    const rect = session.getAnchorRect?.();
+    if (!rect) return "top: 50%; left: 50%; transform: translate(-50%, 0);";
+    return `top: ${Math.round(rect.bottom + 6)}px; left: ${Math.round(rect.left)}px;`;
+  });
 
   const activeField = $derived(
     searchFilterFieldByName(filterSyntax, field) ??
@@ -65,12 +68,6 @@
   const valueKind = $derived(activeField.valueKind ?? "text");
   const ValueEditor = $derived(activeField.ValueEditor);
 
-  const fieldOptions = $derived.by(() => {
-    const names = filterSyntax?.fields.map((item) => item.name) ?? [];
-    if (field && !names.includes(field)) return [field, ...names];
-    return names.length ? names : [field].filter(Boolean);
-  });
-
   const operatorOptions = $derived.by(() => {
     const ops = [...activeField.operators];
     if (operator && !ops.includes(operator)) return [operator, ...ops];
@@ -79,10 +76,12 @@
 
   const canApply = $derived.by(() => {
     if (valueKind === "boolean") return true;
-    return value.trim().length > 0;
+    return String(value ?? "").trim().length > 0;
   });
 
-  const booleanChecked = $derived(/^(true|1|yes)$/i.test(value.trim()));
+  const booleanChecked = $derived(
+    /^(true|1|yes)$/i.test(String(value ?? "").trim()),
+  );
 
   function operatorLabel(op: string) {
     return OPERATOR_LABELS[op] ?? op;
@@ -95,8 +94,7 @@
       : Object.keys(OPERATOR_LABELS);
   }
 
-  function handleFieldChange(next: string | undefined) {
-    if (!next) return;
+  function handleFieldChange(next: string) {
     field = next;
     const ops = operatorsForField(next);
     if (!ops.includes(operator)) {
@@ -104,20 +102,21 @@
     }
     const nextField = searchFilterFieldByName(filterSyntax, next);
     const kind = nextField?.valueKind ?? "text";
-    if (kind === "boolean" && value.trim() === "") {
+    if (kind === "boolean" && String(value ?? "").trim() === "") {
       value = "true";
     }
   }
 
   function handleApply() {
     if (!canApply) return;
+    const raw = String(value ?? "");
     const serialized =
       valueKind === "boolean"
-        ? /^(true|1|yes)$/i.test(value.trim())
+        ? /^(true|1|yes)$/i.test(raw.trim())
           ? "true"
           : "false"
-        : value;
-    onApply(formatTermExpr(field, operator, serialized));
+        : raw;
+    onApply({ field, operator, value: serialized });
   }
 
   function onWindowKeydown(event: KeyboardEvent) {
@@ -151,31 +150,17 @@
 <div
   bind:this={panelEl}
   class="cv-search-filter-bar__predicate-editor"
-  style={style}
+  {style}
   role="dialog"
   aria-label="Edit filter"
 >
   <div class="cv-search-filter-bar__predicate-editor-row">
-    <Select.Root
-      type="single"
+    <SearchFilterFieldAutocomplete
       value={field}
-      onValueChange={handleFieldChange}
+      {filterSyntax}
       {disabled}
-    >
-      <Select.Trigger
-        class="cv-search-filter-bar__predicate-editor-trigger"
-        aria-label="Field"
-      >
-        {field || "Field"}
-      </Select.Trigger>
-      <Select.Portal>
-        <Select.Content aria-label="Field options">
-          {#each fieldOptions as name (name)}
-            <Select.Item value={name} label={name}>{name}</Select.Item>
-          {/each}
-        </Select.Content>
-      </Select.Portal>
-    </Select.Root>
+      onValueChange={handleFieldChange}
+    />
 
     <Select.Root type="single" bind:value={operator} {disabled}>
       <Select.Trigger
@@ -223,7 +208,11 @@
         aria-label="Value"
         placeholder="Enter number…"
         {disabled}
-        bind:value
+        {value}
+        oninput={(event) => {
+          if (!(event.currentTarget instanceof HTMLInputElement)) return;
+          value = event.currentTarget.value;
+        }}
         onkeydown={(event) => {
           if (event.key === "Enter") {
             event.preventDefault();
@@ -237,7 +226,11 @@
         type="date"
         aria-label="Value"
         {disabled}
-        bind:value
+        {value}
+        oninput={(event) => {
+          if (!(event.currentTarget instanceof HTMLInputElement)) return;
+          value = event.currentTarget.value;
+        }}
         onkeydown={(event) => {
           if (event.key === "Enter") {
             event.preventDefault();
@@ -251,9 +244,7 @@
         field={activeField}
         {disabled}
         allowCustom={valueKind !== "enum"}
-        placeholder={valueKind === "enum"
-          ? "Select value…"
-          : "Enter value..."}
+        placeholder={valueKind === "enum" ? "Select value…" : "Enter value..."}
       />
     {/if}
   </div>

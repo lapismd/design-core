@@ -23,7 +23,8 @@ existing family already covers the need.
    chrome. Import from `@stevejuma/ui/forms` or `@stevejuma/ui/forms/core`.
    Catalog: `UI Forms/...`. Guidance: `UI Forms/Guidance`.
 3. **Filter** (`src/shared/filter/`) — search chrome and filter-query language
-   (`SearchFilterBar`, `parseFilterQuery`, host `filterSyntax`). Import from
+   (`PowerSearch`, `SearchFilterBar`, `parseFilterQuery`, host `filterSyntax`).
+   Import from
    `@stevejuma/ui/filter`. Catalog: `Filter/...`. Guidance: `Filter/Guidance`.
 4. **AI** (`src/shared/ai/`) — shared AI panel primitives. Catalog: `AI/...`.
 5. **Apps** (`src/apps/cv`, `src/apps/beancount`) — domain UI only. Receive props

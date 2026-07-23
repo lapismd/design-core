@@ -27,9 +27,11 @@
   import { mount, type Snippet, unmount } from "svelte";
   import { searchFilterHighlightStyle } from "./search-filter-highlight.js";
   import {
+    formatTermExpr,
     predicateChipEditHandler,
     searchFilterPredicateChips,
     type PredicateChipEditSession,
+    type PredicateTermParts,
   } from "./search-filter-predicate-chips.js";
   import {
     searchFilterCompletion,
@@ -246,11 +248,12 @@
     chipEditSession = null;
   }
 
-  function applyPredicateChipEdit(next: string) {
+  function applyPredicateChipEdit(parts: PredicateTermParts) {
     const session = chipEditSession;
     const view = editor;
     chipEditSession = null;
     if (!session || !view) return;
+    const next = formatTermExpr(parts.field, parts.operator, parts.value);
     view.dispatch({
       changes: { from: session.from, to: session.to, insert: next },
     });
