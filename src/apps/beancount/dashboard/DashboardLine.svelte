@@ -229,7 +229,7 @@
     class:positive={resolvedTrendTone === "positive"}
     class:negative={resolvedTrendTone === "negative"}
     class:neutral={resolvedTrendTone === "neutral"}
-    class="focus-visible:ring-ring relative rounded-md px-5 pt-3 pb-4 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+    class="bc-dashboard-line"
     bind:this={chartContainer}
     role="slider"
     tabindex="0"
@@ -250,7 +250,7 @@
     <svg
       bind:this={chartSvg}
       viewBox={`0 0 ${width} ${height}`}
-      class="w-full"
+      class="bc-dashboard-line__svg"
       role="img"
       aria-label={chartLabel}
     >
@@ -339,11 +339,11 @@
   </div>
 {:else}
   <div
-    class="text-muted-foreground grid min-h-52 place-items-center px-6 text-center text-sm"
+    class="bc-dashboard-line__empty"
   >
     {emptyLabel}
     {#if orderedPoints.length}
-      <span class="text-foreground mt-1 block font-mono text-xs"
+      <span class="bc-dashboard-line__empty-value"
         >{displayValue(orderedPoints[0])}</span
       >
     {/if}
@@ -354,6 +354,12 @@
   .positive {
     --dashboard-series: var(--chart-2);
   }
+
+  .bc-dashboard-line { position:relative; border-radius:var(--radius-md); padding:var(--ui-beancount-space-3) var(--ui-beancount-space-5) var(--ui-beancount-space-4); outline:none; }
+  .bc-dashboard-line:focus-visible { outline:2px solid var(--ui-beancount-focus-ring); outline-offset:2px; }
+  .bc-dashboard-line__svg { width:100%; }
+  .bc-dashboard-line__empty { display:grid; min-height:13rem; place-items:center; padding-inline:calc(var(--ui-beancount-space-3) * 2); color:var(--ui-beancount-muted-foreground); text-align:center; font-size:.875rem; }
+  .bc-dashboard-line__empty-value { display:block; margin-block-start:var(--ui-beancount-space-1); color:var(--ui-beancount-foreground); font-family:var(--font-mono); font-size:.75rem; }
 
   .negative {
     --dashboard-series: var(--destructive);

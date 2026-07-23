@@ -61,7 +61,7 @@
   }}
 >
   {#snippet template()}
-    <div class="bg-card max-w-4xl rounded-xl border p-4 shadow-sm">
+    <div class="bc-dashboard-line-story">
       <DashboardLine
         {points}
         change={270}
@@ -72,7 +72,7 @@
           selectedPoint = `Selected: ${point.label}`;
         }}
       />
-      <p class="sr-only" data-testid="selected-point">{selectedPoint}</p>
+      <p class="bc-dashboard-line-story__status" data-testid="selected-point">{selectedPoint}</p>
     </div>
   {/snippet}
 </Story>
@@ -86,7 +86,7 @@
   }}
 >
   {#snippet template()}
-    <div class="bg-card max-w-4xl rounded-xl border p-4 shadow-sm">
+    <div class="bc-dashboard-line-story">
       <DashboardLine
         points={[points[2]]}
         emptyLabel="A longer date range is needed to chart net worth."
@@ -95,3 +95,8 @@
     </div>
   {/snippet}
 </Story>
+
+<style>
+  .bc-dashboard-line-story { max-width:56rem; border:1px solid var(--ui-beancount-border); border-radius:var(--ui-beancount-radius-panel); background:var(--ui-beancount-surface); padding:var(--ui-beancount-space-4); box-shadow:var(--ui-beancount-shadow-panel); }
+  .bc-dashboard-line-story__status { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+</style>
