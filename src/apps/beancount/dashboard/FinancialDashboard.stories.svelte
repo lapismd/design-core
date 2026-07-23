@@ -190,9 +190,7 @@
   }}
 >
   {#snippet template()}
-    <div
-      class="bg-background h-[44rem] overflow-hidden rounded-xl border shadow-sm"
-    >
+    <div class="bc-financial-dashboard-story__shell">
       <FinancialDashboard
         {period}
         periodOptions={periods}
@@ -237,7 +235,9 @@
         }}
       />
     </div>
-    <output class="sr-only" aria-live="polite">{activity}</output>
+    <output class="bc-financial-dashboard-story__status" aria-live="polite"
+      >{activity}</output
+    >
   {/snippet}
 </Story>
 
@@ -253,9 +253,7 @@
   }}
 >
   {#snippet template()}
-    <div
-      class="bg-background h-[44rem] overflow-hidden rounded-xl border shadow-sm"
-    >
+    <div class="bc-financial-dashboard-story__shell">
       <FinancialDashboard
         metrics={[]}
         period="ytd"
@@ -265,3 +263,25 @@
     </div>
   {/snippet}
 </Story>
+
+<style>
+  .bc-financial-dashboard-story__shell {
+    block-size: 44rem;
+    overflow: hidden;
+    border: 1px solid var(--ui-beancount-border);
+    border-radius: var(--ui-beancount-radius-panel);
+    background: var(--ui-beancount-surface);
+    box-shadow: var(--ui-beancount-shadow-panel);
+  }
+  .bc-financial-dashboard-story__status {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+</style>

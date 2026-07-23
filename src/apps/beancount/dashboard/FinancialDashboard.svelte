@@ -150,24 +150,17 @@
 </script>
 
 <ContentScrollArea contentClass="scroll-container">
-  <section
-    class="mx-auto w-full max-w-[1440px] px-4 pt-5 pb-7 md:px-6 lg:px-8"
-    aria-label={title}
-  >
-    <header
-      class="border-border/80 mb-6 flex flex-col gap-4 border-b pb-5 lg:flex-row lg:items-center lg:justify-between"
-    >
+  <section class="bc-financial-dashboard" aria-label={title}>
+    <header class="bc-financial-dashboard__header">
       <div>
-        <p
-          class="text-muted-foreground text-xs font-semibold tracking-[0.16em] uppercase"
-        >
+        <p class="bc-financial-dashboard__eyebrow">
           {eyebrow}
         </p>
-        <h1 class="text-foreground mt-1 text-2xl font-semibold tracking-tight">
+        <h1 class="bc-financial-dashboard__title">
           {title}
         </h1>
       </div>
-      <div class="flex flex-wrap items-center gap-2">
+      <div class="bc-financial-dashboard__controls">
         {#if periodOptions.length && period}
           <Select.Root
             type="single"
@@ -177,7 +170,7 @@
             }}
           >
             <Select.Trigger
-              class="h-8 w-36 text-xs font-medium"
+              class="bc-financial-dashboard__select-trigger bc-financial-dashboard__select-trigger--period"
               aria-label="Dashboard period"
             >
               {optionLabel(period, periodOptions)}
@@ -203,7 +196,7 @@
             }}
           >
             <Select.Trigger
-              class="h-8 w-24 text-xs font-medium"
+              class="bc-financial-dashboard__select-trigger bc-financial-dashboard__select-trigger--currency"
               aria-label="Display currency"
             >
               {optionLabel(currency, currencyOptions)}
@@ -219,9 +212,7 @@
             </Select.Content>
           </Select.Root>
         {:else if currency}
-          <span
-            class="border-border bg-muted/55 text-foreground rounded-md border px-3 py-2 font-mono text-xs"
-          >
+          <span class="bc-financial-dashboard__currency">
             {currency}
           </span>
         {/if}
@@ -239,20 +230,18 @@
     </header>
 
     <section
-      class="border-border/80 bg-border/80 mb-6 grid gap-px overflow-hidden rounded-xl border sm:grid-cols-2 xl:grid-cols-4"
+      class="bc-financial-dashboard__metrics"
       aria-label="Period summary"
     >
       {#each metrics as metric (metric.id)}
-        <article class="bg-card px-5 py-4">
-          <p
-            class="text-muted-foreground text-xs font-semibold tracking-[0.12em] uppercase"
-          >
+        <article class="bc-financial-dashboard__metric">
+          <p class="bc-financial-dashboard__metric-label">
             {metric.label}
           </p>
           <p
-            class:positive={metric.tone === "positive"}
-            class:negative={metric.tone === "negative"}
-            class="text-foreground mt-2 flex items-center gap-1.5 font-mono text-xl font-semibold tabular-nums"
+            class:bc-financial-dashboard__positive={metric.tone === "positive"}
+            class:bc-financial-dashboard__negative={metric.tone === "negative"}
+            class="bc-financial-dashboard__metric-value"
           >
             {#if metric.trend === "up"}
               <span aria-hidden="true">↗</span>
@@ -263,13 +252,15 @@
           </p>
           {#if metric.changeLabel}
             <p
-              class:positive={metric.tone === "positive"}
-              class:negative={metric.tone === "negative"}
-              class="mt-1 font-mono text-xs tabular-nums"
+              class:bc-financial-dashboard__positive={metric.tone ===
+                "positive"}
+              class:bc-financial-dashboard__negative={metric.tone ===
+                "negative"}
+              class="bc-financial-dashboard__metric-change"
             >
               {metric.changeLabel}
               {#if metric.changeDescription}
-                <span class="text-muted-foreground font-sans">
+                <span class="bc-financial-dashboard__metric-change-description">
                   {metric.changeDescription}
                 </span>
               {/if}
@@ -277,13 +268,13 @@
           {/if}
         </article>
       {:else}
-        <p class="bg-card px-5 py-4 text-sm text-muted-foreground">
+        <p class="bc-financial-dashboard__metric-empty">
           No summary is available for this period.
         </p>
       {/each}
     </section>
 
-    <div class="grid gap-6">
+    <div class="bc-financial-dashboard__sections">
       <DashboardSection
         id="financial-dashboard-cash-flow"
         title="Cash flow"
@@ -306,9 +297,7 @@
         open={sectionOpen.outflows}
         onOpenChange={(open) => setSectionOpen("outflows", open)}
       >
-        <div
-          class="divide-border/80 grid divide-y lg:grid-cols-[minmax(18rem,0.8fr)_minmax(0,1.2fr)] lg:divide-x lg:divide-y-0"
-        >
+        <div class="bc-financial-dashboard__outflow-layout">
           <DashboardDonut
             categories={outflows}
             {valueFormatter}
@@ -316,51 +305,49 @@
           />
           <ScrollArea.Root
             orientation="horizontal"
-            class="w-full max-w-full min-w-0"
+            class="bc-financial-dashboard__outflow-scroll"
           >
             <div
-              class="p-4 sm:p-5 lg:min-w-[32rem]"
+              class="bc-financial-dashboard__outflow-table"
               data-dashboard-outflow-table
             >
-              <div
-                class="border-border/80 text-muted-foreground mb-2 grid grid-cols-[minmax(0,1fr)_auto] gap-x-3 border-b px-2 py-2 text-xs font-semibold tracking-[0.12em] uppercase lg:grid-cols-[minmax(0,1fr)_5.5rem_9rem] lg:gap-4"
-              >
+              <div class="bc-financial-dashboard__outflow-header">
                 <span>Category</span>
-                <span class="hidden text-right lg:block">Share</span>
-                <span class="text-right">Value</span>
+                <span class="bc-financial-dashboard__outflow-share-header"
+                  >Share</span
+                >
+                <span class="bc-financial-dashboard__outflow-value-header"
+                  >Value</span
+                >
               </div>
               {#each outflows as category (category.id)}
                 <button
                   type="button"
-                  class="hover:bg-muted/65 focus-visible:ring-ring grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 gap-y-1 rounded-md px-2 py-2.5 text-left text-sm transition-colors focus-visible:ring-1 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-70 lg:grid-cols-[minmax(0,1fr)_5.5rem_9rem] lg:gap-4"
+                  class="bc-financial-dashboard__outflow-row"
                   disabled={!onOutflowSelect}
                   onclick={() => onOutflowSelect?.(category)}
                 >
-                  <span
-                    class="col-span-2 flex min-w-0 items-center gap-2 lg:col-span-1"
-                  >
+                  <span class="bc-financial-dashboard__outflow-name">
                     <span
-                      class="size-2.5 shrink-0 rounded-full"
+                      class="bc-financial-dashboard__outflow-marker"
                       style={`background: ${category.color}`}
                       aria-hidden="true"
                     ></span>
-                    <span class="text-foreground font-medium break-words">
+                    <span class="bc-financial-dashboard__outflow-label">
                       {category.label}
                     </span>
                   </span>
-                  <span
-                    class="text-muted-foreground font-mono text-xs tabular-nums lg:text-right"
-                  >
-                    <span class="lg:hidden">Share </span>{category.shareLabel}
+                  <span class="bc-financial-dashboard__outflow-share">
+                    <span class="bc-financial-dashboard__outflow-share-label"
+                      >Share
+                    </span>{category.shareLabel}
                   </span>
-                  <span
-                    class="text-foreground text-right font-mono text-sm tabular-nums"
-                  >
+                  <span class="bc-financial-dashboard__outflow-value">
                     {category.valueLabel ?? valueFormatter(category.value)}
                   </span>
                 </button>
               {:else}
-                <p class="px-2 py-6 text-sm text-muted-foreground">
+                <p class="bc-financial-dashboard__outflow-empty">
                   No outflows match this period.
                 </p>
               {/each}
@@ -376,7 +363,7 @@
         open={sectionOpen["balance-sheet"]}
         onOpenChange={(open) => setSectionOpen("balance-sheet", open)}
       >
-        <div class="grid gap-8 p-4 sm:p-6">
+        <div class="bc-financial-dashboard__balance-sheet">
           {#each accountGroups as group (group.id)}
             <DashboardTreeTable
               nodes={group.nodes}
@@ -390,7 +377,7 @@
                 : undefined}
             />
           {:else}
-            <p class="text-sm text-muted-foreground">
+            <p class="bc-financial-dashboard__balance-sheet-empty">
               No balance-sheet accounts match this period.
             </p>
           {/each}
@@ -405,24 +392,22 @@
         onOpenChange={(open) => setSectionOpen("net-worth", open)}
       >
         {#if netWorth}
-          <div
-            class="border-border/80 border-b px-5 py-4 sm:flex sm:items-end sm:justify-between"
-          >
+          <div class="bc-financial-dashboard__net-worth-header">
             <div>
-              <p
-                class="text-foreground font-mono text-2xl font-semibold tabular-nums"
-              >
+              <p class="bc-financial-dashboard__net-worth-value">
                 {netWorth.valueLabel}
               </p>
             </div>
             <p
-              class:positive={netWorth.trendTone === "positive"}
-              class:negative={netWorth.trendTone === "negative"}
-              class="mt-2 font-mono text-sm tabular-nums sm:mt-0 sm:text-right"
+              class:bc-financial-dashboard__positive={netWorth.trendTone ===
+                "positive"}
+              class:bc-financial-dashboard__negative={netWorth.trendTone ===
+                "negative"}
+              class="bc-financial-dashboard__net-worth-change"
             >
               {netWorth.changeLabel}
               {#if netWorth.changeDescription}
-                <span class="text-muted-foreground block font-sans text-xs">
+                <span class="bc-financial-dashboard__net-worth-description">
                   {netWorth.changeDescription}
                 </span>
               {/if}
@@ -435,7 +420,7 @@
             {valueFormatter}
           />
         {:else}
-          <p class="text-muted-foreground p-5 text-sm">
+          <p class="bc-financial-dashboard__net-worth-empty">
             No net-worth trend is available for this period.
           </p>
         {/if}
@@ -445,11 +430,325 @@
 </ContentScrollArea>
 
 <style>
-  .positive {
-    color: var(--success-foreground);
+  .bc-financial-dashboard {
+    inline-size: 100%;
+    max-inline-size: 90rem;
+    margin-inline: auto;
+    padding: var(--ui-beancount-space-5) var(--ui-beancount-space-4) 1.75rem;
+  }
+  .bc-financial-dashboard__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ui-beancount-space-4);
+    margin-block-end: calc(var(--ui-beancount-space-3) * 2);
+    padding-block-end: var(--ui-beancount-space-5);
+    border-block-end: 1px solid
+      color-mix(in srgb, var(--ui-beancount-border) 80%, transparent);
+  }
+  .bc-financial-dashboard__eyebrow,
+  .bc-financial-dashboard__metric-label {
+    color: var(--ui-beancount-muted-foreground);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+  .bc-financial-dashboard__title {
+    margin-block-start: var(--ui-beancount-space-1);
+    color: var(--ui-beancount-foreground);
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .bc-financial-dashboard__controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--ui-beancount-space-2);
+  }
+  :global(.bc-financial-dashboard__select-trigger) {
+    block-size: var(--ui-beancount-compact-control-height);
+    color: var(--ui-beancount-foreground);
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+  :global(.bc-financial-dashboard__select-trigger--period) {
+    inline-size: 9rem;
+  }
+  :global(.bc-financial-dashboard__select-trigger--currency) {
+    inline-size: 6rem;
+  }
+  .bc-financial-dashboard__currency {
+    padding: var(--ui-beancount-space-2) var(--ui-beancount-space-3);
+    border: 1px solid var(--ui-beancount-border);
+    border-radius: calc(var(--ui-beancount-radius-panel) / 1.5);
+    background: color-mix(
+      in srgb,
+      var(--ui-beancount-surface-muted) 55%,
+      transparent
+    );
+    color: var(--ui-beancount-foreground);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+  }
+  .bc-financial-dashboard__metrics {
+    display: grid;
+    gap: 1px;
+    margin-block-end: calc(var(--ui-beancount-space-3) * 2);
+    overflow: hidden;
+    border: 1px solid
+      color-mix(in srgb, var(--ui-beancount-border) 80%, transparent);
+    border-radius: var(--ui-beancount-radius-panel);
+    background: color-mix(in srgb, var(--ui-beancount-border) 80%, transparent);
+  }
+  .bc-financial-dashboard__metric,
+  .bc-financial-dashboard__metric-empty {
+    padding: var(--ui-beancount-space-4) var(--ui-beancount-space-5);
+    background: var(--ui-beancount-surface);
+  }
+  .bc-financial-dashboard__metric-label {
+    letter-spacing: 0.12em;
+  }
+  .bc-financial-dashboard__metric-value {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--ui-beancount-space-1) + 2px);
+    margin-block-start: var(--ui-beancount-space-2);
+    color: var(--ui-beancount-foreground);
+    font-family: var(--font-mono);
+    font-size: 1.25rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+  .bc-financial-dashboard__metric-change {
+    margin-block-start: var(--ui-beancount-space-1);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .bc-financial-dashboard__metric-change-description {
+    color: var(--ui-beancount-muted-foreground);
+    font-family: var(--font-sans);
+  }
+  .bc-financial-dashboard__metric-empty,
+  .bc-financial-dashboard__outflow-empty,
+  .bc-financial-dashboard__balance-sheet-empty,
+  .bc-financial-dashboard__net-worth-empty {
+    color: var(--ui-beancount-muted-foreground);
+    font-size: 0.875rem;
+  }
+  .bc-financial-dashboard__sections {
+    display: grid;
+    gap: calc(var(--ui-beancount-space-3) * 2);
+  }
+  .bc-financial-dashboard__outflow-layout {
+    display: grid;
+  }
+  .bc-financial-dashboard__outflow-layout > :not(:first-child) {
+    border-block-start: 1px solid
+      color-mix(in srgb, var(--ui-beancount-border) 80%, transparent);
+  }
+  :global(.bc-financial-dashboard__outflow-scroll) {
+    inline-size: 100%;
+    max-inline-size: 100%;
+    min-inline-size: 0;
+  }
+  .bc-financial-dashboard__outflow-table {
+    padding: var(--ui-beancount-space-4);
+  }
+  .bc-financial-dashboard__outflow-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: var(--ui-beancount-space-3);
+    margin-block-end: var(--ui-beancount-space-2);
+    padding: var(--ui-beancount-space-2);
+    border-block-end: 1px solid
+      color-mix(in srgb, var(--ui-beancount-border) 80%, transparent);
+    color: var(--ui-beancount-muted-foreground);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .bc-financial-dashboard__outflow-share-header {
+    display: none;
+    text-align: end;
+  }
+  .bc-financial-dashboard__outflow-value-header,
+  .bc-financial-dashboard__outflow-value {
+    text-align: end;
+  }
+  .bc-financial-dashboard__outflow-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: var(--ui-beancount-space-3);
+    row-gap: var(--ui-beancount-space-1);
+    inline-size: 100%;
+    padding: calc(var(--ui-beancount-space-2) + 2px) var(--ui-beancount-space-2);
+    border-radius: calc(var(--ui-beancount-radius-panel) / 1.5);
+    color: var(--ui-beancount-foreground);
+    font-size: 0.875rem;
+    outline: none;
+    text-align: start;
+    transition: background-color 150ms ease;
+  }
+  .bc-financial-dashboard__outflow-row:hover {
+    background: color-mix(
+      in srgb,
+      var(--ui-beancount-surface-muted) 65%,
+      transparent
+    );
+  }
+  .bc-financial-dashboard__outflow-row:focus-visible {
+    outline: 1px solid var(--ui-beancount-focus-ring);
+    outline-offset: 1px;
+  }
+  .bc-financial-dashboard__outflow-row:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+  .bc-financial-dashboard__outflow-name {
+    display: flex;
+    grid-column: span 2;
+    min-inline-size: 0;
+    align-items: center;
+    gap: var(--ui-beancount-space-2);
+  }
+  .bc-financial-dashboard__outflow-marker {
+    inline-size: 0.625rem;
+    block-size: 0.625rem;
+    flex-shrink: 0;
+    border-radius: 999px;
+  }
+  .bc-financial-dashboard__outflow-label {
+    color: var(--ui-beancount-foreground);
+    font-weight: 500;
+    overflow-wrap: break-word;
+  }
+  .bc-financial-dashboard__outflow-share {
+    color: var(--ui-beancount-muted-foreground);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .bc-financial-dashboard__outflow-value {
+    color: var(--ui-beancount-foreground);
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .bc-financial-dashboard__outflow-empty {
+    padding: var(--ui-beancount-space-5) var(--ui-beancount-space-2);
+  }
+  .bc-financial-dashboard__balance-sheet {
+    display: grid;
+    gap: calc(var(--ui-beancount-space-4) * 2);
+    padding: var(--ui-beancount-space-4);
+  }
+  .bc-financial-dashboard__net-worth-header {
+    padding: var(--ui-beancount-space-4) var(--ui-beancount-space-5);
+    border-block-end: 1px solid
+      color-mix(in srgb, var(--ui-beancount-border) 80%, transparent);
+  }
+  .bc-financial-dashboard__net-worth-value {
+    color: var(--ui-beancount-foreground);
+    font-family: var(--font-mono);
+    font-size: 1.5rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+  .bc-financial-dashboard__net-worth-change {
+    margin-block-start: var(--ui-beancount-space-2);
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .bc-financial-dashboard__net-worth-description {
+    display: block;
+    color: var(--ui-beancount-muted-foreground);
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+  }
+  .bc-financial-dashboard__net-worth-empty {
+    padding: var(--ui-beancount-space-5);
+  }
+  .bc-financial-dashboard__positive {
+    color: var(--ui-beancount-positive);
+  }
+  .bc-financial-dashboard__negative {
+    color: var(--ui-beancount-negative);
   }
 
-  .negative {
-    color: var(--destructive);
+  @media (min-width: 40rem) {
+    .bc-financial-dashboard__metrics {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .bc-financial-dashboard__outflow-table {
+      padding: var(--ui-beancount-space-5);
+    }
+    .bc-financial-dashboard__balance-sheet {
+      padding: calc(var(--ui-beancount-space-3) * 2);
+    }
+    .bc-financial-dashboard__net-worth-header {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+    }
+    .bc-financial-dashboard__net-worth-change {
+      margin-block-start: 0;
+      text-align: end;
+    }
+  }
+
+  @media (min-width: 48rem) {
+    .bc-financial-dashboard {
+      padding-inline: calc(var(--ui-beancount-space-3) * 2);
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .bc-financial-dashboard {
+      padding-inline: calc(var(--ui-beancount-space-4) * 2);
+    }
+    .bc-financial-dashboard__header {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .bc-financial-dashboard__outflow-layout {
+      grid-template-columns: minmax(18rem, 0.8fr) minmax(0, 1.2fr);
+    }
+    .bc-financial-dashboard__outflow-layout > :not(:first-child) {
+      border-block-start: 0;
+      border-inline-start: 1px solid
+        color-mix(in srgb, var(--ui-beancount-border) 80%, transparent);
+    }
+    .bc-financial-dashboard__outflow-table {
+      min-inline-size: 32rem;
+    }
+    .bc-financial-dashboard__outflow-header,
+    .bc-financial-dashboard__outflow-row {
+      grid-template-columns: minmax(0, 1fr) 5.5rem 9rem;
+      column-gap: var(--ui-beancount-space-4);
+    }
+    .bc-financial-dashboard__outflow-share-header {
+      display: block;
+    }
+    .bc-financial-dashboard__outflow-name {
+      grid-column: span 1;
+    }
+    .bc-financial-dashboard__outflow-share {
+      text-align: end;
+    }
+    .bc-financial-dashboard__outflow-share-label {
+      display: none;
+    }
+  }
+
+  @media (min-width: 80rem) {
+    .bc-financial-dashboard__metrics {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
   }
 </style>
