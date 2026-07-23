@@ -196,14 +196,19 @@ async function startStorybook() {
 
 function scheduleRestart(reason) {
   if (shuttingDown || starting) return;
-  if (Date.now() < graceUntil) return;
   if (restartTimer) clearTimeout(restartTimer);
+  const delay = Math.max(RESTART_DEBOUNCE_MS, graceUntil - Date.now());
   restartTimer = setTimeout(() => {
     restartTimer = null;
-    if (Date.now() < graceUntil || starting || shuttingDown) return;
+    if (starting || shuttingDown) return;
+    // Still in grace (nested start): wait out the remainder.
+    if (Date.now() < graceUntil) {
+      scheduleRestart(reason);
+      return;
+    }
     console.log(`[storybook-run] restarting (${reason})`);
     void startStorybook();
-  }, RESTART_DEBOUNCE_MS);
+  }, delay);
 }
 
 for (const watchPath of restartWatchPaths) {

@@ -53,19 +53,19 @@ describe("grepFromStoryIds", () => {
     expect(grepFromStoryIds([])).toBeUndefined();
   });
 
-  it("anchors and escapes a single story id", () => {
+  it("escapes a single story id and anchors only at the end", () => {
     expect(
       grepFromStoryIds(["shadcn-disclosure-accordion--opens-a-section"]),
-    ).toBe("^shadcn-disclosure-accordion--opens-a-section$");
+    ).toBe("shadcn-disclosure-accordion--opens-a-section$");
   });
 
-  it("uses an anchored shared title prefix for one component", () => {
+  it("uses a shared title prefix for one component", () => {
     expect(
       grepFromStoryIds([
         "shadcn-disclosure-accordion--opens-a-section",
         "shadcn-disclosure-accordion--default",
       ]),
-    ).toBe("^shadcn-disclosure-accordion--");
+    ).toBe("shadcn-disclosure-accordion--");
   });
 
   it("ORs distinct story ids across components", () => {
@@ -75,7 +75,7 @@ describe("grepFromStoryIds", () => {
         "shadcn-disclosure-accordion--default",
       ]),
     ).toBe(
-      "^(shadcn-actions-button--default|shadcn-disclosure-accordion--default)$",
+      "(shadcn-actions-button--default|shadcn-disclosure-accordion--default)$",
     );
   });
 });

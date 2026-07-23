@@ -1,9 +1,5 @@
 import React, { useMemo, type CSSProperties, type ReactNode } from "react";
-import {
-  addons,
-  experimental_useStatusStore,
-  type HashEntry,
-} from "storybook/manager-api";
+import { addons, type HashEntry } from "storybook/manager-api";
 import { styled } from "storybook/theming";
 import {
   getTagParts,
@@ -15,38 +11,53 @@ import {
   type TagBadgeParameters,
 } from "storybook-addon-tag-badges/manager-helpers";
 
-const Row = styled.div<{
-  $hasStatusWithUI: boolean;
-}>(({ $hasStatusWithUI }) => ({
-  display: "flex",
-  flex: 1,
+/**
+ * Storybook paints StatusButton as a flex sibling of the leaf link inside
+ * `.sidebar-item` (already `position: relative`). Tag chips are pinned to that
+ * row so they stay in one column whether or not a status glyph is present —
+ * no status-store detection / margin guessing.
+ */
+const STATUS_SLOT_PX = 28;
+/** Clearance between tag chips and the status glyph (avoids status shadow bleed). */
+const STATUS_GAP_PX = 8;
+const TAG_SLOT_PX = 18;
+const COL_GAP_PX = 6;
+const TRAILING_RESERVE_PX = TAG_SLOT_PX + COL_GAP_PX + STATUS_GAP_PX + STATUS_SLOT_PX;
+
+const Row = styled.div({
+  display: "grid",
+  gridTemplateColumns: "minmax(0, 1fr)",
   alignItems: "center",
-  flexWrap: "nowrap",
-  gap: 4,
+  width: "100%",
   minWidth: 0,
-  // Reserve room for Storybook's status glyph when present; otherwise keep a
-  // single trailing gutter so chips share one column at every tree depth.
-  marginRight: $hasStatusWithUI ? 6 : 28,
-}));
+  // Keep the story name clear of the absolute tag column + status band.
+  paddingRight: TRAILING_RESERVE_PX,
+  boxSizing: "border-box",
+});
 
 const Label = styled.div({
   display: "flex",
   alignItems: "center",
   minHeight: 19,
   minWidth: 0,
-  flex: "0 1 auto",
   overflow: "hidden",
   textOverflow: "ellipsis",
   whiteSpace: "nowrap",
 });
 
-/** Avatar-style overlap: later chips sit on top of earlier ones. */
+/**
+ * Avatar-style overlap, anchored to the sidebar item’s trailing edge (just
+ * left of the status slot).
+ */
 const Stack = styled.div(({ theme }) => ({
+  position: "absolute",
+  right: STATUS_SLOT_PX + STATUS_GAP_PX,
+  top: "50%",
+  transform: "translateY(-50%)",
   display: "inline-flex",
   flexDirection: "row",
   alignItems: "center",
-  flexShrink: 0,
-  marginLeft: "auto",
+  height: TAG_SLOT_PX,
   // Match sidebar chrome so the ring reads as a cutout, not a halo.
   ["--tag-stack-ring" as string]:
     theme.base === "dark" ? theme.background.content : theme.background.app,
@@ -56,9 +67,9 @@ const Chip = styled.div(({ theme }) => ({
   display: "inline-flex",
   alignItems: "center",
   justifyContent: "center",
-  width: 18,
-  height: 18,
-  minWidth: 18,
+  width: TAG_SLOT_PX,
+  height: TAG_SLOT_PX,
+  minWidth: TAG_SLOT_PX,
   padding: 0,
   borderRadius: "50%",
   fontSize: 11,
@@ -148,16 +159,7 @@ export function collectSidebarBadges(item: HashEntry): ResolvedBadge[] {
   return out;
 }
 
-function hasComponentTestStatus(
-  itemStatuses: Record<string, unknown> | undefined,
-): boolean {
-  return Boolean(itemStatuses?.["storybook/component-test"]);
-}
-
 function StackedSidebarLabel({ item }: { item: HashEntry }) {
-  const itemStatuses = experimental_useStatusStore((all) => all[item.id]) as
-    | Record<string, unknown>
-    | undefined;
   const badges = useMemo(() => collectSidebarBadges(item), [item]);
   const title = badges
     .map((entry) => {
@@ -171,9 +173,7 @@ function StackedSidebarLabel({ item }: { item: HashEntry }) {
 
   return React.createElement(
     Row,
-    {
-      $hasStatusWithUI: hasComponentTestStatus(itemStatuses),
-    },
+    null,
     React.createElement(Label, null, item.name),
     badges.length
       ? React.createElement(
