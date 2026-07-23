@@ -2,6 +2,87 @@
 
 export const journalGroups = [
   {
+    id: "2026-07-23",
+    date: "JULY 23, 2026",
+    balance: "1755.89 GBP",
+    summary: {
+      start: "1767.05 GBP",
+      change: "−11.16 GBP",
+      final: "1755.89 GBP",
+    },
+    records: [
+      {
+        id: "nhs",
+        description: "NHS",
+        detail: "NHS · NHSBSA Prescription",
+        amount: "−11.16 GBP",
+        avatar: { fallback: "N" },
+        postings: [
+          { account: "Assets:Checking:Starling", amount: "−11.16 GBP" },
+          { account: "Expenses:Health:Prescription", amount: "11.16 GBP" },
+        ],
+      },
+    ],
+  },
+  {
+    id: "2026-07-21",
+    date: "JULY 21, 2026",
+    balance: "1767.05 GBP",
+    records: [
+      {
+        id: "pure-gym",
+        description: "Pure Gym",
+        detail: "Pure Gym · Gym",
+        amount: "−12.99 GBP",
+        avatar: { fallback: "P" },
+        postings: [
+          { account: "Assets:Checking:Monzo", amount: "−12.99 GBP" },
+          { account: "Expenses:Home:Lifestyle", amount: "12.99 GBP" },
+        ],
+      },
+    ],
+  },
+  {
+    id: "2026-07-15",
+    date: "JULY 15, 2026",
+    balance: "1780.04 GBP",
+    records: [
+      {
+        id: "ee-limited",
+        description: "EE LIMITED",
+        detail: "EE LIMITED · Phone contract",
+        amount: "−72.66 GBP",
+        avatar: { fallback: "E" },
+        postings: [
+          { account: "Assets:Checking:Starling", amount: "−72.66 GBP" },
+          { account: "Expenses:Home:Phone", amount: "72.66 GBP" },
+        ],
+      },
+    ],
+  },
+  {
+    id: "2026-07-13",
+    date: "JULY 13, 2026",
+    balance: "1852.70 GBP",
+    records: [
+      {
+        id: "joint-transfer",
+        description: "Joint account transfer",
+        detail: "Joint account · household contribution",
+        amount: "−23.86 GBP",
+        avatar: { fallback: "J" },
+        postings: [
+          { account: "Assets:Checking:Starling", amount: "−23.86 GBP" },
+          { account: "Assets:Checking:Joint", amount: "23.86 GBP" },
+        ],
+      },
+    ],
+  },
+];
+
+/** Account-detail activity remains an intentionally small account-scoped fixture. */
+export const accountActivityGroups = [
+  {
     id: "2026-07-18",
     date: "18 July 2026",
     balance: "£1,510.00",

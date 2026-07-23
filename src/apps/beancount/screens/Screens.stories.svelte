@@ -1,6 +1,6 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect } from "storybook/test";
+  import { expect, userEvent } from "storybook/test";
   import ScreenFrame from "./ScreenFrame.svelte";
   import { visualDeltaForScreen } from "./visual-delta.js";
   import FinancialDashboard from "../dashboard/FinancialDashboard.svelte";
@@ -11,6 +11,7 @@
   import ValidationErrorTable from "../feedback/ValidationErrorTable.svelte";
   import ContentScrollArea from "../layout/ContentScrollArea.svelte";
   import {
+    accountActivityGroups,
     journalGroups,
     statementColumns,
     statementNodes,
@@ -140,6 +141,7 @@
   ];
 
   const formatDashboardAmount = (value: number) => `${value.toFixed(2)} GBP`;
+  let journalTimeframe = $state("transactions");
 </script>
 
 <Story
@@ -213,14 +215,35 @@
   name="Journal"
   parameters={{ visualDelta: visualDeltaForScreen("journal") }}
   play={async ({ canvas }) => {
-    await expect(canvas.getByText("Groceries")).toBeVisible();
+    await expect(canvas.getByText("NHS")).toBeVisible();
+    await expect(
+      canvas.getByText("Expenses:Health:Prescription"),
+    ).toBeVisible();
+    await userEvent.click(canvas.getByRole("button", { name: "Upcoming" }));
+    await expect(
+      canvas.getByRole("button", { name: "Upcoming" }),
+    ).toHaveAttribute("aria-pressed", "true");
+    await userEvent.click(canvas.getByRole("button", { name: "Transactions" }));
+    await expect(
+      canvas.getByRole("button", { name: "Transactions" }),
+    ).toHaveAttribute("aria-pressed", "true");
   }}
 >
   {#snippet template()}
     <ScreenFrame pageTitle="Journal">
       <ContentScrollArea>
         <div class="bc-screen-story__page">
-          <LedgerActivityTable groups={journalGroups} selectable={false} />
+          <LedgerActivityTable
+            groups={journalGroups}
+            timeframes={[
+              { id: "transactions", label: "Transactions" },
+              { id: "upcoming", label: "Upcoming" },
+            ]}
+            timeframe={journalTimeframe}
+            onTimeframeChange={(value) => {
+              journalTimeframe = value;
+            }}
+          />
         </div>
       </ContentScrollArea>
     </ScreenFrame>
@@ -308,7 +331,10 @@
       <ContentScrollArea>
         <div class="bc-screen-story__page bc-screen-story__page--stack">
           <h2 class="bc-screen-story__section-title">Assets:Checking</h2>
-          <LedgerActivityTable groups={journalGroups} selectable={false} />
+          <LedgerActivityTable
+            groups={accountActivityGroups}
+            selectable={false}
+          />
         </div>
       </ContentScrollArea>
     </ScreenFrame>

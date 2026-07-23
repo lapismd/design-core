@@ -49,23 +49,23 @@ Legend: `⬜` not started, `🟡` composing/reviewing, `✅` near-pixel approved
 Promotion requires a genuine screen body, passing Storybook/a11y checks, and
 Visual Delta at or below 0.1% before removing `skip-visual`.
 
-| Screen           | Reference           | Story composition      | Next alignment slice                                                                                                |
-| ---------------- | ------------------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| Editor           | ✅                  | 🟡 shell + placeholder | Catalog editor chrome only                                                                                          |
-| Dashboard        | ✅                  | 🟡 partial             | Fava metrics + cash-flow fixture complete; align outflows, balance sheet, net worth, then review Visual Delta ≤0.1% |
-| Journal          | ✅                  | 🟡 partial             | Shell, ledger workspace data, activity controls                                                                     |
-| Income statement | ✅                  | 🟡 partial             | Statement toolbar, hierarchy chart, table                                                                           |
-| Balance sheet    | ✅                  | 🟡 partial             | Statement toolbar, hierarchy chart, table                                                                           |
-| Trial balance    | ✅                  | 🟡 partial             | Statement toolbar, hierarchy chart, table                                                                           |
-| Account detail   | ✅                  | 🟡 partial             | Account chart, tabs, activity table                                                                                 |
-| Holdings         | ✅                  | 🟡 shell + placeholder | Query/chart composition                                                                                             |
-| Statistics       | ✅                  | 🟡 shell + placeholder | Statistics display model and charts                                                                                 |
-| Query            | ✅                  | 🟡 partial             | Query editor chrome, results and controls                                                                           |
-| Errors           | ✅                  | 🟡 partial             | Error table fixtures and shell                                                                                      |
-| Records          | 🟡 recapture loaded | 🟡 empty-only          | Ingestion review states and actions                                                                                 |
-| Sources          | ✅                  | 🟡 shell + placeholder | Source connection display adapters                                                                                  |
-| Import accounts  | 🟡 recapture loaded | 🟡 shell + placeholder | Account setup display adapters                                                                                      |
-| Rules            | 🟡 recapture loaded | 🟡 shell + placeholder | Rules list and run-history adapters                                                                                 |
+| Screen           | Reference           | Story composition      | Next alignment slice                                                                                                                        |
+| ---------------- | ------------------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| Editor           | ✅                  | 🟡 shell + placeholder | Catalog editor chrome only                                                                                                                  |
+| Dashboard        | ✅                  | 🟡 partial             | Fava metrics + cash-flow fixture complete; align outflows, balance sheet, net worth, then review Visual Delta ≤0.1%                         |
+| Journal          | ✅                  | 🟡 partial             | Fava transactions fixture, postings, and timeframe control complete; align record density and Upcoming data, then review Visual Delta ≤0.1% |
+| Income statement | ✅                  | 🟡 partial             | Statement toolbar, hierarchy chart, table                                                                                                   |
+| Balance sheet    | ✅                  | 🟡 partial             | Statement toolbar, hierarchy chart, table                                                                                                   |
+| Trial balance    | ✅                  | 🟡 partial             | Statement toolbar, hierarchy chart, table                                                                                                   |
+| Account detail   | ✅                  | 🟡 partial             | Account chart, tabs, activity table                                                                                                         |
+| Holdings         | ✅                  | 🟡 shell + placeholder | Query/chart composition                                                                                                                     |
+| Statistics       | ✅                  | 🟡 shell + placeholder | Statistics display model and charts                                                                                                         |
+| Query            | ✅                  | 🟡 partial             | Query editor chrome, results and controls                                                                                                   |
+| Errors           | ✅                  | 🟡 partial             | Error table fixtures and shell                                                                                                              |
+| Records          | 🟡 recapture loaded | 🟡 empty-only          | Ingestion review states and actions                                                                                                         |
+| Sources          | ✅                  | 🟡 shell + placeholder | Source connection display adapters                                                                                                          |
+| Import accounts  | 🟡 recapture loaded | 🟡 shell + placeholder | Account setup display adapters                                                                                                              |
+| Rules            | 🟡 recapture loaded | 🟡 shell + placeholder | Rules list and run-history adapters                                                                                                         |
 
 ## Styling migration inventory
 
