@@ -74,6 +74,28 @@
       ],
     },
   ];
+
+  const upcomingGroups = [
+    {
+      id: "2026-07-25",
+      date: "25 July 2026",
+      balance: "£1,510.00",
+      records: [
+        {
+          id: "scheduled-rent",
+          description: "Scheduled rent",
+          account: "Expenses:Rent",
+          detail: "Monthly rent due",
+          amount: "−£1,300.00",
+          avatar: { fallback: "R" },
+          postings: [
+            { account: "Assets:Cash", amount: "−£1,300.00" },
+            { account: "Expenses:Rent", amount: "£1,300.00" },
+          ],
+        },
+      ],
+    },
+  ];
 </script>
 
 <script lang="ts">
@@ -83,6 +105,9 @@
   let selectedIds = $state<string[]>([]);
   let openedRecord = $state("");
   let activityTimeframe = $state("posted");
+  const activityGroups = $derived(
+    activityTimeframe === "upcoming" ? upcomingGroups : groups,
+  );
   let bulkSelectedIds = $state<string[]>([]);
   let bulkSheetOpen = $state(false);
   let bulkStatus = $state("");
@@ -146,6 +171,7 @@
   name="Changes between posted and upcoming activity"
   play={async ({ canvas }) => {
     await userEvent.click(canvas.getByRole("button", { name: "Upcoming" }));
+    await expect(canvas.getByText("Scheduled rent")).toBeVisible();
     await expect(canvas.getByRole("status")).toHaveTextContent(
       "Showing upcoming activity",
     );
@@ -154,7 +180,7 @@
   {#snippet template()}
     <div class="bc-ledger-activity-story">
       <LedgerActivityTable
-        {groups}
+        groups={activityGroups}
         selectable={false}
         timeframes={[
           { id: "posted", label: "Posted" },

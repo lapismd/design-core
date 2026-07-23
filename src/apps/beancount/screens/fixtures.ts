@@ -80,6 +80,46 @@ export const journalGroups = [
   },
 ];
 
+/** A deterministic future-dated lane for the Journal Upcoming composition. */
+export const journalUpcomingGroups = [
+  {
+    id: "2026-07-25",
+    date: "JULY 25, 2026",
+    balance: "1755.89 GBP",
+    records: [
+      {
+        id: "scheduled-rent",
+        description: "Scheduled rent",
+        detail: "Monthly rent due",
+        amount: "−1300.00 GBP",
+        avatar: { fallback: "R" },
+        postings: [
+          { account: "Assets:Checking:Starling", amount: "−1300.00 GBP" },
+          { account: "Expenses:Home:Rent", amount: "1300.00 GBP" },
+        ],
+      },
+    ],
+  },
+  {
+    id: "2026-08-01",
+    date: "AUGUST 1, 2026",
+    balance: "455.89 GBP",
+    records: [
+      {
+        id: "scheduled-salary",
+        description: "Scheduled salary",
+        detail: "Monthly salary payment",
+        amount: "3400.00 GBP",
+        avatar: { fallback: "S" },
+        postings: [
+          { account: "Assets:Checking:Starling", amount: "3400.00 GBP" },
+          { account: "Income:Salary", amount: "−3400.00 GBP" },
+        ],
+      },
+    ],
+  },
+];
+
 export const statementColumns = [
   { id: "gbp", label: "GBP", title: "Pounds sterling" },
 ];

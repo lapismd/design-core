@@ -90,6 +90,17 @@
   let expandedGroupIds = $state<Set<string>>(
     new Set(untrack(() => groups).map((group) => group.id)),
   );
+  let expandedGroupsSignature = $state(
+    untrack(() => groups.map((group) => group.id).join("|")),
+  );
+
+  $effect(() => {
+    const nextSignature = groups.map((group) => group.id).join("|");
+    if (nextSignature === expandedGroupsSignature) return;
+
+    expandedGroupsSignature = nextSignature;
+    expandedGroupIds = new Set(groups[0] ? [groups[0].id] : []);
+  });
 
   const recordIds = $derived(
     groups.flatMap((group) => group.records.map((record) => record.id)),

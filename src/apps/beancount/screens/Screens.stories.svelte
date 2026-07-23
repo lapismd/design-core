@@ -37,6 +37,7 @@
     incomeStatementContributions,
     incomeStatementNodes,
     journalGroups,
+    journalUpcomingGroups,
     statementColumns,
     statementNodes,
     statisticsColumns,
@@ -266,6 +267,7 @@
 
   const formatDashboardAmount = (value: number) => `${value.toFixed(2)} GBP`;
   let journalTimeframe = $state("transactions");
+  let journalRecordAction = $state("");
   let dashboardAction = $state("");
   let incomeChartMode = $state<"single" | "stacked">("stacked");
   let incomePerspective = $state("net-profit");
@@ -291,6 +293,9 @@
   let ruleAction = $state("");
 
   const holdingsPageSize = 10;
+  const activeJournalGroups = $derived(
+    journalTimeframe === "upcoming" ? journalUpcomingGroups : journalGroups,
+  );
   const visibleHoldingRows = $derived(
     holdingRows.slice(
       (holdingsPage - 1) * holdingsPageSize,
@@ -422,10 +427,18 @@
     await expect(
       canvas.getByRole("button", { name: "Upcoming" }),
     ).toHaveAttribute("aria-pressed", "true");
+    await expect(canvas.getByText("Scheduled rent")).toBeVisible();
+    await userEvent.click(
+      canvas.getByRole("button", { name: /Scheduled rent/ }),
+    );
+    await expect(canvas.getByRole("status")).toHaveTextContent(
+      "Open Scheduled rent",
+    );
     await userEvent.click(canvas.getByRole("button", { name: "Transactions" }));
     await expect(
       canvas.getByRole("button", { name: "Transactions" }),
     ).toHaveAttribute("aria-pressed", "true");
+    await expect(canvas.getByText("NHS")).toBeVisible();
   }}
 >
   {#snippet template()}
@@ -433,7 +446,7 @@
       <ContentScrollArea>
         <div class="bc-screen-story__page">
           <LedgerActivityTable
-            groups={journalGroups}
+            groups={activeJournalGroups}
             timeframes={[
               { id: "transactions", label: "Transactions" },
               { id: "upcoming", label: "Upcoming" },
@@ -442,7 +455,13 @@
             onTimeframeChange={(value) => {
               journalTimeframe = value;
             }}
+            onOpenRecord={(record) => {
+              journalRecordAction = `Open ${record.description}`;
+            }}
           />
+          <output class="bc-screen-story__status" aria-live="polite"
+            >{journalRecordAction}</output
+          >
         </div>
       </ContentScrollArea>
     </ScreenFrame>
