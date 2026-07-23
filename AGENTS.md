@@ -144,7 +144,9 @@ Local Playwright screenshots live under
 - `ui:add` may create or replace baselines only for the component it is adding,
   and only after reference/candidate parity passes.
 - Tag a story `skip-visual` (with a documented reason) only when pixel flake
-  cannot be stabilized after disabling animations.
+  cannot be stabilized after disabling animations. Prefer Visual Delta panel
+  **More → Skip visual tests** / **Include in visual tests** over hand-editing
+  CSF (`POST /__visual-delta/skip-visual`).
 - v1 visual suite captures light mode only (Chromium 1280×900 CSS viewport,
   `deviceScaleFactor: 3`, `toHaveScreenshot` `scale: "device"`).
 - Playwright baselines are served at `/visual-baselines` for live compare via

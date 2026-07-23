@@ -7,6 +7,7 @@ import {
   stripAnsi,
 } from "storybook-addon-visual-delta/node";
 import {
+  addSkipVisualToStoryOpenTag,
   patchStoryOpenTagWithBaselineUrl,
   removeSkipVisualFromStoryOpenTag,
   storyOpenTagMatchesIdSlug,
@@ -154,6 +155,27 @@ describe("removeSkipVisualFromStoryOpenTag", () => {
       `<Story name="Default" tags={["skip-visual"]}>`,
     );
     expect(next).toBe(`<Story name="Default">`);
+  });
+});
+
+describe("addSkipVisualToStoryOpenTag", () => {
+  it("adds skip-visual when no tags exist", () => {
+    const next = addSkipVisualToStoryOpenTag(`<Story name="Default">`);
+    expect(next).toContain('tags={["skip-visual"]}');
+  });
+
+  it("adds skip-visual and clears review tags", () => {
+    const next = addSkipVisualToStoryOpenTag(
+      `<Story name="Default" tags={["visual-approved", "visual-state"]}>`,
+    );
+    expect(next).toContain('"skip-visual"');
+    expect(next).toContain('"visual-state"');
+    expect(next).not.toContain("visual-approved");
+  });
+
+  it("is idempotent when skip-visual already present", () => {
+    const tag = `<Story name="Default" tags={["skip-visual", "test"]}>`;
+    expect(addSkipVisualToStoryOpenTag(tag)).toBe(tag);
   });
 });
 

@@ -77,6 +77,128 @@ export function removeSkipVisualFromStoryOpenTag(openTag: string): string {
 }
 
 /**
+ * Ensure `skip-visual` is present on a Story open tag (opts the story out of
+ * Playwright visual suite / Visual Delta runs). Clears mutually exclusive
+ * visual review tags — review status cannot apply while skipped.
+ */
+export function addSkipVisualToStoryOpenTag(openTag: string): string {
+  const reviewTagSet = new Set([
+    "visual-pending",
+    "visual-approved",
+    "visual-failed",
+  ]);
+  const tagsMatch = openTag.match(/\btags=\{\[([\s\S]*?)\]\}/);
+  if (tagsMatch) {
+    const full = tagsMatch[0];
+    const inside = tagsMatch[1] ?? "";
+    const tags = parseTagsArrayLiteral(inside).filter(
+      (t) => !reviewTagSet.has(t),
+    );
+    if (!tags.includes("skip-visual")) tags.push("skip-visual");
+    const literal = tags.map((t) => JSON.stringify(t)).join(", ");
+    return openTag.replace(full, `tags={[${literal}]}`);
+  }
+
+  const tagsAttr = `\n  tags={["skip-visual"]}`;
+  if (openTag.endsWith("/>")) {
+    return `${openTag.slice(0, -2)}${tagsAttr}\n/>`;
+  }
+  if (openTag.endsWith(">")) {
+    return `${openTag.slice(0, -1)}${tagsAttr}\n>`;
+  }
+  return openTag;
+}
+
+/**
+ * Persist `skip-visual` add/remove on the story's `.stories.svelte` CSF open tag.
+ */
+export function patchStorySkipVisual(options: {
+  packageRoot: string;
+  storyId: string;
+  /** `true` = add skip-visual; `false` = remove it. */
+  skip: boolean;
+}): {
+  ok: boolean;
+  storyId: string;
+  skip: boolean;
+  error?: string;
+} {
+  const storyId = options.storyId.trim();
+  if (!storyId) {
+    return {
+      ok: false,
+      storyId,
+      skip: options.skip,
+      error: "storyId is required",
+    };
+  }
+
+  const indexPath = path.join(
+    options.packageRoot,
+    "storybook-static",
+    "index.json",
+  );
+  if (!existsSync(indexPath)) {
+    return {
+      ok: false,
+      storyId,
+      skip: options.skip,
+      error: "storybook-static/index.json missing or empty",
+    };
+  }
+
+  const index = JSON.parse(readFileSync(indexPath, "utf8")) as {
+    entries?: Record<string, StoryIndexEntry>;
+  };
+  const entry = Object.values(index.entries ?? {}).find((e) => e.id === storyId);
+  if (!entry || entry.type !== "story" || !entry.importPath) {
+    return {
+      ok: false,
+      storyId,
+      skip: options.skip,
+      error: `Story not found in index: ${storyId}`,
+    };
+  }
+
+  const alreadySkipped = (entry.tags ?? []).includes("skip-visual");
+  if (options.skip === alreadySkipped) {
+    return { ok: true, storyId, skip: options.skip };
+  }
+
+  const storiesPath = resolveStoriesPath(options.packageRoot, entry.importPath);
+  if (!storiesPath) {
+    return {
+      ok: false,
+      storyId,
+      skip: options.skip,
+      error: `Stories file not found: ${entry.importPath}`,
+    };
+  }
+
+  const transform = options.skip
+    ? addSkipVisualToStoryOpenTag
+    : removeSkipVisualFromStoryOpenTag;
+  const changed = patchStoriesFileWithOpenTagTransform(
+    storiesPath,
+    entry,
+    transform,
+  );
+  if (!changed) {
+    return {
+      ok: false,
+      storyId,
+      skip: options.skip,
+      error: `Could not locate <Story> open tag for ${storyId}`,
+    };
+  }
+
+  log.info(
+    `${options.skip ? "Added" : "Removed"} skip-visual on ${storyId}`,
+  );
+  return { ok: true, storyId, skip: options.skip };
+}
+
+/**
  * Ensure `parameters.visualDelta.images` includes `url` in a Story open tag.
  * Inserts a full visualDelta block when missing; appends to images when present.
  */

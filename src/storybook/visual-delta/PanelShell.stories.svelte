@@ -18,7 +18,7 @@
       docs: {
         description: {
           component:
-            "Live-panel-shaped harness with in-memory create/update/run/review mocks. Click through or rely on play functions — no Playwright writes.",
+            "Live-panel-shaped harness with in-memory create/update/run/review/skip-visual mocks. Click through or rely on play functions — no Playwright writes.",
         },
       },
     },
@@ -144,6 +144,52 @@
     );
     await waitFor(() =>
       expect(scope.getByTestId("fixture-review")).toHaveTextContent("approved"),
+    );
+  }}
+>
+  {#snippet template()}
+    <ReactThemeHost
+      element={React.createElement(PanelShell, {
+        backend: createMockVisualBackend(),
+      })}
+    />
+  {/snippet}
+</Story>
+
+<Story
+  name="Toggle skip-visual"
+  play={async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const shell = await waitFor(() => canvas.getByTestId("panel-shell"));
+    const scope = within(shell);
+    // Popover menus portal outside the story canvas.
+    const page = within(document.body);
+
+    await userEvent.click(scope.getByRole("button", { name: /More actions/i }));
+    await userEvent.click(
+      await waitFor(() =>
+        page.getByRole("button", { name: /Skip visual tests/i }),
+      ),
+    );
+    await waitFor(() =>
+      expect(scope.getByTestId("fixture-actions")).toHaveTextContent(
+        "skip-visual",
+      ),
+    );
+    await expect(scope.getByTestId("fixture-skip-visual")).toHaveTextContent(
+      "true",
+    );
+
+    await userEvent.click(scope.getByRole("button", { name: /More actions/i }));
+    await userEvent.click(
+      await waitFor(() =>
+        page.getByRole("button", { name: /Include in visual tests/i }),
+      ),
+    );
+    await waitFor(() =>
+      expect(scope.getByTestId("fixture-skip-visual")).toHaveTextContent(
+        "false",
+      ),
     );
   }}
 >

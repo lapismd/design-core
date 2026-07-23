@@ -50,6 +50,10 @@ Committed under `tests/visual/storybook.spec.ts-snapshots/`.
 - `ui:add` may create/replace baselines only for the component it is adding,
   and only after parity passes.
 - Tag `skip-visual` only when pixel flake cannot be stabilized (document why).
+  Prefer Visual Delta panel **More → Skip visual tests** /
+  **Include in visual tests** (`POST /__visual-delta/skip-visual`) over
+  hand-editing CSF. Adding skip clears review tags; skipped stories are
+  excluded from Playwright / Testing Module runs.
 - v1 suite: light mode only, Chromium 1280×900 CSS viewport, deviceScaleFactor 3.
 
 ## Storybook MCP (when catalog is up)
