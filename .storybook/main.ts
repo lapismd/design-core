@@ -1,37 +1,11 @@
 import type { StorybookConfig } from "@storybook/svelte-vite";
-import type { Plugin } from "vite";
 import { fileURLToPath } from "node:url";
 import { mergeConfig } from "vite";
-import { visualBaselineVisualDeltaPlugin } from "./visual-baseline-vite-plugin.js";
-import { visualDeltaMiddlewarePlugin } from "./visual-delta-middleware.js";
 import { uiDocsMiddlewarePlugin } from "./ui-docs-middleware.js";
 
 const visualDeltaPackageRoot = fileURLToPath(
   new URL("../packages/storybook-addon-visual-delta", import.meta.url),
 );
-const visualDeltaSrc = fileURLToPath(
-  new URL("../packages/storybook-addon-visual-delta/src", import.meta.url),
-);
-
-/**
- * Watch the workspace addon source (outside node_modules) so preview HMR
- * picks up overlay/decorator edits. Manager/panel edits still need a full
- * Storybook restart — the manager builder is a one-shot esbuild compile.
- */
-function watchVisualDeltaSourcePlugin(): Plugin {
-  return {
-    name: "watch-visual-delta-source",
-    configureServer(server) {
-      server.watcher.add(visualDeltaSrc);
-      server.watcher.on("change", (file) => {
-        if (!file.startsWith(visualDeltaSrc)) return;
-        // Preview decorators/overlay can reload in the iframe.
-        // Manager React panel is not on this Vite graph.
-        server.ws.send({ type: "full-reload", path: "*" });
-      });
-    },
-  };
-}
 
 const config: StorybookConfig = {
   stories: [
@@ -48,6 +22,7 @@ const config: StorybookConfig = {
     "@storybook/addon-mcp",
     "@storybook/addon-themes",
     // Absolute local preset → package `src/` (not node_modules package name).
+    // viteFinal lives in the addon (middleware + baseline inject + src watch).
     import.meta.resolve("./visual-delta-preset.ts"),
     "storybook-addon-tag-badges",
   ],
@@ -71,14 +46,9 @@ const config: StorybookConfig = {
     options: {},
   },
   viteFinal: async (viteConfig) => {
+    // Visual Delta plugins register via the addon preset's viteFinal.
     const plugins = viteConfig.plugins ?? [];
-    viteConfig.plugins = [
-      visualBaselineVisualDeltaPlugin(),
-      visualDeltaMiddlewarePlugin(),
-      uiDocsMiddlewarePlugin(),
-      watchVisualDeltaSourcePlugin(),
-      ...plugins,
-    ];
+    viteConfig.plugins = [uiDocsMiddlewarePlugin(), ...plugins];
     return mergeConfig(viteConfig, {
       resolve: {
         alias: {
@@ -94,9 +64,6 @@ const config: StorybookConfig = {
       },
       server: {
         watch: {
-          // Vite ignores node_modules by default; keep watching storybook-static
-          // out, and rely on the explicit watcher.add(visualDeltaSrc) above for
-          // the workspace addon package.
           ignored: ["**/storybook-static/**"],
         },
       },

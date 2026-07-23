@@ -3,11 +3,9 @@ import path from "node:path";
 import {
   baselineUrlForStory,
   visualBaselineVisualDeltaParameter,
-} from "../../../.storybook/visual-baseline-design.js";
-import {
   findStoryOpenTagEnd,
   sanitizeStoryName,
-} from "../../../.storybook/visual-baseline-vite-plugin.js";
+} from "storybook-addon-visual-delta/node";
 import { log } from "../logger.js";
 import type { StoryIndexEntry } from "./snapshot-paths.js";
 

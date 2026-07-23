@@ -5,7 +5,7 @@ import {
   grepFromStoryIds,
   parseListReporterProgress,
   stripAnsi,
-} from "../../../.storybook/visual-delta-middleware.js";
+} from "storybook-addon-visual-delta/node";
 import {
   patchStoryOpenTagWithBaselineUrl,
   removeSkipVisualFromStoryOpenTag,

@@ -44,6 +44,9 @@ Committed under `tests/visual/storybook.spec.ts-snapshots/`.
   sibling files `{slug}--{stepId}-chromium-darwin.png`, created from the Visual
   Delta **Interactions** tab for named `step("…")` / `visualCapture(step, …)`
   rows only. Import `visualCapture` from `src/storybook/visual-capture`.
+- Dev create/update/run/review hit addon-owned Vite middleware
+  (`/__visual-delta/*` via the Visual Delta preset `viteFinal`); the host still
+  owns Playwright writers and `staticDirs` → `/visual-baselines`.
 - `ui:add` may create/replace baselines only for the component it is adding,
   and only after parity passes.
 - Tag `skip-visual` only when pixel flake cannot be stabilized (document why).

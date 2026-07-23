@@ -2,14 +2,12 @@ import { describe, expect, it } from "vitest";
 import {
   baselineUrlForStory,
   familyFromTitle,
+  injectVisualBaselineVisualDeltas,
+  sanitizeStoryName,
   storySlugFromId,
   visualBaselineVisualDeltaParameter,
   VISUAL_BASELINE_SUFFIX,
-} from "../../../.storybook/visual-baseline-design.js";
-import {
-  injectVisualBaselineVisualDeltas,
-  sanitizeStoryName,
-} from "../../../.storybook/visual-baseline-vite-plugin.js";
+} from "storybook-addon-visual-delta/node";
 
 describe("visual-baseline-design", () => {
   it("maps Shadcn title + story id to the committed baseline URL", () => {

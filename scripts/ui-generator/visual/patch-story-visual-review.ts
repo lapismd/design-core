@@ -10,7 +10,7 @@ import {
 import {
   findStoryOpenTagEnd,
   sanitizeStoryName,
-} from "../../../.storybook/visual-baseline-vite-plugin.js";
+} from "storybook-addon-visual-delta/node";
 import { log } from "../logger.js";
 import type { StoryIndexEntry } from "./snapshot-paths.js";
 

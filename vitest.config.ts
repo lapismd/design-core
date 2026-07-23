@@ -42,6 +42,9 @@ export default mergeConfig(
         },
         {
           extends: true,
+          resolve: {
+            dedupe: ["react", "react-dom"],
+          },
           plugins: [
             storybookTest({
               configDir: path.join(dirname, ".storybook"),
