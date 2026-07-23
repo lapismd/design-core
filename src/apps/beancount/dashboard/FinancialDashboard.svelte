@@ -746,7 +746,7 @@
     }
   }
 
-  @media (min-width: 80rem) {
+  @media (min-width: 76rem) {
     .bc-financial-dashboard__metrics {
       grid-template-columns: repeat(4, minmax(0, 1fr));
     }

@@ -36,16 +36,110 @@
 
 <script lang="ts">
   const dashboardMetrics = [
-    { id: "income", label: "Income", valueLabel: "£3,520.00" },
-    { id: "outflows", label: "Outflows", valueLabel: "£2,040.00" },
+    { id: "income", label: "Income", valueLabel: "58124.22 GBP" },
+    { id: "outflows", label: "Outflows", valueLabel: "41778.29 GBP" },
     {
       id: "cash-flow",
       label: "Net cash flow",
-      valueLabel: "£1,480.00",
+      valueLabel: "16345.93 GBP",
       trend: "up" as const,
       tone: "positive" as const,
     },
+    {
+      id: "net-worth",
+      label: "Net worth",
+      valueLabel: "1755.89 GBP",
+      changeLabel: "16345.93 GBP",
+      changeDescription: " in this period",
+      tone: "positive" as const,
+    },
   ];
+
+  const dashboardInflows = [
+    {
+      id: "salary",
+      label: "Salary",
+      value: 59224.98,
+      color: "var(--chart-4)",
+    },
+  ];
+
+  const dashboardOutflows = [
+    {
+      id: "joint",
+      label: "Joint",
+      value: 19500,
+      valueLabel: "19500.00 GBP",
+      shareLabel: "45.5%",
+      color: "var(--chart-3)",
+    },
+    {
+      id: "paye",
+      label: "PAYE",
+      value: 18703.56,
+      valueLabel: "18703.56 GBP",
+      shareLabel: "43.6%",
+      color: "var(--chart-1)",
+    },
+    {
+      id: "nic",
+      label: "NIC",
+      value: 2167.5,
+      valueLabel: "2167.50 GBP",
+      shareLabel: "5.1%",
+      color: "var(--chart-5)",
+    },
+    {
+      id: "pension",
+      label: "Pension",
+      value: 1100.76,
+      valueLabel: "1100.76 GBP",
+      shareLabel: "2.6%",
+      color: "var(--chart-2)",
+    },
+    {
+      id: "phone",
+      label: "Phone",
+      value: 508.62,
+      valueLabel: "508.62 GBP",
+      shareLabel: "1.2%",
+      color: "var(--chart-4)",
+    },
+    {
+      id: "interest",
+      label: "Interest",
+      value: 369.43,
+      valueLabel: "369.43 GBP",
+      shareLabel: "0.9%",
+      color: "var(--chart-2)",
+    },
+    {
+      id: "insurance",
+      label: "Insurance",
+      value: 221.64,
+      valueLabel: "221.64 GBP",
+      shareLabel: "0.5%",
+      color: "var(--chart-1)",
+    },
+    {
+      id: "lifestyle",
+      label: "Lifestyle",
+      value: 90.93,
+      valueLabel: "90.93 GBP",
+      shareLabel: "0.2%",
+      color: "var(--chart-2)",
+    },
+    {
+      id: "other",
+      label: "Other",
+      value: 216.61,
+      valueLabel: "216.61 GBP",
+      shareLabel: "0.5%",
+      color: "var(--chart-5)",
+    },
+  ];
+
+  const formatDashboardAmount = (value: number) => `${value.toFixed(2)} GBP`;
 </script>
 
 <Story
@@ -80,6 +174,11 @@
     await expect(
       canvas.getByRole("heading", { name: "Financial dashboard" }),
     ).toBeVisible();
+    await expect(
+      canvas.getByRole("button", {
+        name: "Salary to Cash flow: 59224.98 GBP",
+      }),
+    ).toBeVisible();
   }}
 >
   {#snippet template()}
@@ -92,7 +191,18 @@
             { value: "ytd", label: "Year to date" },
             { value: "1y", label: "Last year" },
           ]}
+          currency="GBP"
+          currencyOptions={[{ value: "GBP", label: "GBP" }]}
+          valuation="cost"
+          valuationOptions={[
+            { value: "cost", label: "At Cost" },
+            { value: "market", label: "At Market Value" },
+            { value: "units", label: "Units" },
+          ]}
           onPeriodChange={() => {}}
+          inflows={dashboardInflows}
+          outflows={dashboardOutflows}
+          valueFormatter={formatDashboardAmount}
         />
       </ContentScrollArea>
     </ScreenFrame>
