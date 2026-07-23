@@ -63,13 +63,11 @@
   }
 </script>
 
-<section class="flex min-w-0 flex-col gap-3" aria-label={ariaLabel}>
+<section class="bc-chart-panel" aria-label={ariaLabel}>
   {#if hasControls}
-    <div
-      class="border-border/70 flex flex-col gap-3 border-b pb-3 md:flex-row md:items-center md:justify-between"
-    >
+    <div class="bc-chart-panel__toolbar">
       {#if legend}
-        <div class="min-w-0 overflow-x-auto pb-0.5">
+        <div class="bc-chart-panel__legend">
           <ChartLegend
             items={legend.items}
             selection={legend.selection}
@@ -80,7 +78,7 @@
       {/if}
 
       {#if conversion || interval || modes}
-        <div class="flex flex-wrap items-center gap-2 md:justify-end">
+        <div class="bc-chart-panel__controls">
           {#if conversion}
             <Select.Root
               type="single"
@@ -88,7 +86,7 @@
               onValueChange={(value) => updateSelect(conversion, value)}
             >
               <Select.Trigger
-                class="w-[10rem]"
+                class="bc-chart-panel__select bc-chart-panel__select--conversion"
                 aria-label={conversion.ariaLabel}
               >
                 {conversion.options.find(
@@ -110,7 +108,7 @@
               onValueChange={(value) => updateSelect(interval, value)}
             >
               <Select.Trigger
-                class="w-[8.5rem]"
+                class="bc-chart-panel__select bc-chart-panel__select--interval"
                 aria-label={interval.ariaLabel}
               >
                 {interval.options.find(
@@ -140,3 +138,54 @@
 
   {@render children?.()}
 </section>
+
+<style>
+  .bc-chart-panel {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: var(--ui-beancount-space-3);
+  }
+
+  .bc-chart-panel__toolbar {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ui-beancount-space-3);
+    border-block-end: 1px solid
+      color-mix(in srgb, var(--ui-beancount-border) 70%, transparent);
+    padding-block-end: var(--ui-beancount-space-3);
+  }
+
+  .bc-chart-panel__legend {
+    min-width: 0;
+    overflow-x: auto;
+    padding-block-end: calc(var(--ui-beancount-space-1) / 2);
+  }
+
+  .bc-chart-panel__controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--ui-beancount-space-2);
+  }
+
+  :global(.bc-chart-panel__select--conversion) {
+    width: 10rem;
+  }
+
+  :global(.bc-chart-panel__select--interval) {
+    width: 8.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .bc-chart-panel__toolbar {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .bc-chart-panel__controls {
+      justify-content: flex-end;
+    }
+  }
+</style>

@@ -35,7 +35,7 @@
   }}
 >
   {#snippet template()}
-    <div class="flex max-w-md flex-col gap-3">
+    <div class="bc-chart-legend-story">
       <ChartLegend
         items={currencies}
         selectedIds={selectedCurrencies}
@@ -43,7 +43,7 @@
           selectedCurrencies = ids;
         }}
       />
-      <output class="text-muted-foreground text-sm" aria-live="polite">
+      <output class="bc-chart-legend-story__status" aria-live="polite">
         Visible series: {selectedCurrencies
           .map((id) => currencies.find((currency) => currency.id === id)?.label)
           .filter(Boolean)
@@ -61,7 +61,7 @@
   }}
 >
   {#snippet template()}
-    <div class="flex max-w-md flex-col gap-3">
+    <div class="bc-chart-legend-story">
       <ChartLegend
         items={currencies}
         selection="single"
@@ -70,7 +70,7 @@
           activeCurrency = ids;
         }}
       />
-      <output class="text-muted-foreground text-sm" aria-live="polite">
+      <output class="bc-chart-legend-story__status" aria-live="polite">
         Active series: {currencies.find(
           (currency) => currency.id === activeCurrency[0],
         )?.label}
@@ -78,3 +78,17 @@
     </div>
   {/snippet}
 </Story>
+
+<style>
+  .bc-chart-legend-story {
+    display: flex;
+    max-width: 28rem;
+    flex-direction: column;
+    gap: var(--ui-beancount-space-3);
+  }
+
+  .bc-chart-legend-story__status {
+    color: var(--ui-beancount-muted-foreground);
+    font-size: var(--text-sm);
+  }
+</style>

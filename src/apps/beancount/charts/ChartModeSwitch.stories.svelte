@@ -34,7 +34,7 @@
   }}
 >
   {#snippet template()}
-    <div class="flex max-w-md flex-col gap-3">
+    <div class="bc-chart-mode-switch-story">
       <ChartModeSwitch
         value={mode}
         {options}
@@ -42,10 +42,24 @@
           mode = value;
         }}
       />
-      <output class="text-muted-foreground text-sm" aria-live="polite">
+      <output class="bc-chart-mode-switch-story__status" aria-live="polite">
         Chart representation: {options.find((option) => option.value === mode)
           ?.label}
       </output>
     </div>
   {/snippet}
 </Story>
+
+<style>
+  .bc-chart-mode-switch-story {
+    display: flex;
+    max-width: 28rem;
+    flex-direction: column;
+    gap: var(--ui-beancount-space-3);
+  }
+
+  .bc-chart-mode-switch-story__status {
+    color: var(--ui-beancount-muted-foreground);
+    font-size: var(--text-sm);
+  }
+</style>

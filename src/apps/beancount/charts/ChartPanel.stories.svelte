@@ -136,7 +136,7 @@
   }}
 >
   {#snippet template()}
-    <div class="bg-card max-w-5xl rounded-xl border p-5 shadow-sm">
+    <div class="bc-chart-panel-story">
       <ChartPanel
         legend={{
           items: [
@@ -182,7 +182,7 @@
       </ChartPanel>
       <output
         data-testid="chart-panel-state"
-        class="sr-only"
+        class="bc-chart-panel-story__status"
         aria-live="polite"
       >
         Visible series: {visibleSeries.map((item) => item.label).join(", ") ||
@@ -194,7 +194,7 @@
 
 <Story name="Frames a focused chart without controls">
   {#snippet template()}
-    <div class="bg-card max-w-5xl rounded-xl border p-5 shadow-sm">
+    <div class="bc-chart-panel-story">
       <ChartPanel ariaLabel="Focused net worth chart">
         {#snippet children()}
           <LineChart series={[series[0]]} ariaLabel="Net worth over time" />
@@ -203,3 +203,23 @@
     </div>
   {/snippet}
 </Story>
+
+<style>
+  .bc-chart-panel-story {
+    max-width: 64rem;
+    border: 1px solid var(--ui-beancount-border);
+    border-radius: var(--ui-beancount-radius-panel);
+    background: var(--card);
+    padding: var(--ui-beancount-space-5);
+    box-shadow: var(--ui-beancount-shadow-panel);
+  }
+
+  .bc-chart-panel-story__status {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+</style>

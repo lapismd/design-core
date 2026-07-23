@@ -36,10 +36,10 @@
       {#if item.color}
         <span
           style={`background-color: ${item.color}`}
-          class="mr-1 size-3 rounded-full"
+          class="bc-chart-legend__swatch"
         ></span>
       {/if}
-      <span class:line-through={!selected}>{item.label}</span>
+      <span class:bc-chart-legend__label--hidden={!selected}>{item.label}</span>
     </ToggleGroup.Item>
   {/each}
 {/snippet}
@@ -65,3 +65,17 @@
     {@render legendItems()}
   </ToggleGroup.Root>
 {/if}
+
+<style>
+  .bc-chart-legend__swatch {
+    display: inline-block;
+    width: var(--ui-beancount-space-3);
+    height: var(--ui-beancount-space-3);
+    margin-inline-end: var(--ui-beancount-space-1);
+    border-radius: 999px;
+  }
+
+  .bc-chart-legend__label--hidden {
+    text-decoration: line-through;
+  }
+</style>

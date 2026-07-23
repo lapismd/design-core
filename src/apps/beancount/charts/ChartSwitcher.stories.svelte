@@ -38,7 +38,7 @@
   }}
 >
   {#snippet template()}
-    <div class="bg-card max-w-4xl rounded-xl border p-4 shadow-sm">
+    <div class="bc-chart-switcher-story">
       <ChartSwitcher
         {charts}
         {activeChartId}
@@ -47,17 +47,50 @@
         }}
       >
         {#snippet children(activeId)}
-          <div
-            class="bg-muted/20 text-muted-foreground grid h-48 place-items-center rounded-lg border border-dashed text-sm"
-          >
+          <div class="bc-chart-switcher-story__canvas">
             {charts.find((chart) => chart.id === activeId)?.label} chart
           </div>
         {/snippet}
       </ChartSwitcher>
-      <output class="sr-only" aria-live="polite">
+      <output class="bc-chart-switcher-story__status" aria-live="polite">
         Active chart: {charts.find((chart) => chart.id === activeChartId)
           ?.label}
       </output>
     </div>
   {/snippet}
 </Story>
+
+<style>
+  .bc-chart-switcher-story {
+    max-width: 56rem;
+    border: 1px solid var(--ui-beancount-border);
+    border-radius: var(--ui-beancount-radius-panel);
+    background: var(--card);
+    padding: var(--ui-beancount-space-4);
+    box-shadow: var(--ui-beancount-shadow-panel);
+  }
+
+  .bc-chart-switcher-story__canvas {
+    display: grid;
+    height: 12rem;
+    place-items: center;
+    border: 1px dashed var(--ui-beancount-border);
+    border-radius: var(--radius-lg);
+    background: color-mix(
+      in srgb,
+      var(--ui-beancount-surface-muted) 20%,
+      transparent
+    );
+    color: var(--ui-beancount-muted-foreground);
+    font-size: var(--text-sm);
+  }
+
+  .bc-chart-switcher-story__status {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+</style>
