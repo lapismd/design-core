@@ -4,4 +4,6 @@ export {
   type RuleClause,
   type RuleClauseKind,
   type RuleAction,
+  type RuleRun,
+  type RuleRunTone,
 } from "./RuleList.svelte";

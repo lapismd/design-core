@@ -65,7 +65,7 @@ Visual Delta at or below 0.1% before removing `skip-visual`.
 | Records          | ✅ empty queue | 🟡 partial             | Fava no-imports panel and Accounts action complete; deterministic loaded review fixture, record toolbar, and workflow actions still need capture/alignment                                    |
 | Sources          | ✅             | 🟡 partial             | Fava connected/available source cards, source toolbar, and host callbacks complete; align expanded connection details and live sync adapters, then review Visual Delta ≤0.1%                  |
 | Import accounts  | ✅ loaded      | 🟡 partial             | Fava source-account and unassigned-account rows complete; align account details, source menus, Sync all, and account-setup adapters, then review Visual Delta ≤0.1%                           |
-| Rules            | ✅ loaded      | 🟡 partial             | Fava rule list, active callback, host menu, and empty history complete; add deterministic runs and production adapters, then review Visual Delta ≤0.1%                                        |
+| Rules            | ✅ loaded      | 🟡 partial             | Fava list, active callback, host menu, and run-history model complete; add production adapters, then review Visual Delta ≤0.1%                                                                |
 
 ## Styling migration inventory
 

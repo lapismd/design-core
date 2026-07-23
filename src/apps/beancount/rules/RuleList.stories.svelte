@@ -27,6 +27,22 @@
     { id: "delete", label: "Delete", destructive: true },
   ];
 
+  const runs = [
+    {
+      id: "run-2026-07-24",
+      dateTime: "24 Jul 2026, 09:15",
+      executionType: "Manual",
+      target: "Live ledger",
+      status: "Completed",
+      statusTone: "positive" as const,
+      ruleName: "Test Rule",
+      queued: "12",
+      processed: "12",
+      modified: "3",
+      blocked: "0",
+    },
+  ];
+
   const { Story } = defineMeta({
     title: "Apps/Beancount/Rules/Rule List",
     component: RuleList,
@@ -89,6 +105,23 @@
       <output class="bc-rule-list-story__status" aria-live="polite"
         >{action}</output
       >
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Displays deterministic run history"
+  play={async ({ canvas }) => {
+    await expect(
+      canvas.getByRole("table", { name: "Rules execution history" }),
+    ).toBeVisible();
+    await expect(canvas.getByText("24 Jul 2026, 09:15")).toBeVisible();
+    await expect(canvas.getByText("Completed")).toBeVisible();
+  }}
+>
+  {#snippet template()}
+    <div class="bc-rule-list-story">
+      <RuleList rule={{ ...rule, active: true }} {actions} {runs} />
     </div>
   {/snippet}
 </Story>

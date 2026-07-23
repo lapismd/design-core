@@ -5,6 +5,7 @@
   import * as Card from "@stevejuma/ui/shadcn/card";
   import * as DropdownMenu from "@stevejuma/ui/shadcn/dropdown-menu";
   import { Switch } from "@stevejuma/ui/shadcn/switch";
+  import * as Table from "@stevejuma/ui/shadcn/table";
 
   export type RuleClauseKind = "IF" | "THEN" | "FOR";
 
@@ -29,12 +30,30 @@
     disabled?: boolean;
   };
 
+  export type RuleRunTone = "default" | "positive" | "negative";
+
+  /** A fully formatted execution result supplied by the host rules adapter. */
+  export type RuleRun = {
+    id: string;
+    dateTime: string;
+    executionType: string;
+    target: string;
+    status: string;
+    statusTone?: RuleRunTone;
+    ruleName: string;
+    queued: string;
+    processed: string;
+    modified: string;
+    blocked: string;
+  };
+
   let {
     rule,
     ariaLabel = "Rules",
     recentRunsLabel = "Recent runs",
     emptyRecentRunsLabel = "No rule runs yet.",
     actions = [],
+    runs = [],
     onOpenRule = () => {},
     onActiveChange = () => {},
     onActionSelect = () => {},
@@ -49,6 +68,8 @@
     emptyRecentRunsLabel?: string;
     /** Available host-owned contextual actions, such as edit, run, or delete. */
     actions?: readonly RuleAction[];
+    /** Fully formatted rule execution history. The host owns paging and loading. */
+    runs?: readonly RuleRun[];
     /** Request that the host opens the rule editor/details. */
     onOpenRule?: (rule: AutomationRule) => void;
     /** Request a host-owned active-state update. */
@@ -131,7 +152,83 @@
 
   <div class="bc-rule-list__runs">
     <h3>{recentRunsLabel}</h3>
-    <p>{emptyRecentRunsLabel}</p>
+    {#if runs.length}
+      <div class="bc-rule-list__runs-table-wrap">
+        <Table.Root
+          class="bc-rule-list__runs-table"
+          aria-label={`${ariaLabel} execution history`}
+        >
+          <Table.Header>
+            <Table.Row class="bc-rule-list__runs-header-row">
+              <Table.Head class="bc-rule-list__runs-head">Date/time</Table.Head>
+              <Table.Head class="bc-rule-list__runs-head">Type</Table.Head>
+              <Table.Head class="bc-rule-list__runs-head">Target</Table.Head>
+              <Table.Head class="bc-rule-list__runs-head">Status</Table.Head>
+              <Table.Head class="bc-rule-list__runs-head">Rule</Table.Head>
+              <Table.Head
+                class="bc-rule-list__runs-head bc-rule-list__runs-head--number"
+                >Queued</Table.Head
+              >
+              <Table.Head
+                class="bc-rule-list__runs-head bc-rule-list__runs-head--number"
+                >Processed</Table.Head
+              >
+              <Table.Head
+                class="bc-rule-list__runs-head bc-rule-list__runs-head--number"
+                >Modified</Table.Head
+              >
+              <Table.Head
+                class="bc-rule-list__runs-head bc-rule-list__runs-head--number"
+                >Blocked</Table.Head
+              >
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
+            {#each runs as run (run.id)}
+              <Table.Row>
+                <Table.Cell class="bc-rule-list__runs-cell"
+                  >{run.dateTime}</Table.Cell
+                >
+                <Table.Cell class="bc-rule-list__runs-cell"
+                  >{run.executionType}</Table.Cell
+                >
+                <Table.Cell class="bc-rule-list__runs-cell"
+                  >{run.target}</Table.Cell
+                >
+                <Table.Cell class="bc-rule-list__runs-cell">
+                  <Badge
+                    class="bc-rule-list__run-status"
+                    data-tone={run.statusTone ?? "default"}
+                    variant="secondary">{run.status}</Badge
+                  >
+                </Table.Cell>
+                <Table.Cell class="bc-rule-list__runs-cell"
+                  >{run.ruleName}</Table.Cell
+                >
+                <Table.Cell
+                  class="bc-rule-list__runs-cell bc-rule-list__runs-cell--number"
+                  >{run.queued}</Table.Cell
+                >
+                <Table.Cell
+                  class="bc-rule-list__runs-cell bc-rule-list__runs-cell--number"
+                  >{run.processed}</Table.Cell
+                >
+                <Table.Cell
+                  class="bc-rule-list__runs-cell bc-rule-list__runs-cell--number"
+                  >{run.modified}</Table.Cell
+                >
+                <Table.Cell
+                  class="bc-rule-list__runs-cell bc-rule-list__runs-cell--number"
+                  >{run.blocked}</Table.Cell
+                >
+              </Table.Row>
+            {/each}
+          </Table.Body>
+        </Table.Root>
+      </div>
+    {:else}
+      <p>{emptyRecentRunsLabel}</p>
+    {/if}
   </div>
 </section>
 
@@ -260,6 +357,71 @@
 
   .bc-rule-list__runs p {
     font-size: var(--text-xl);
+  }
+
+  .bc-rule-list__runs-table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--ui-beancount-border);
+    border-radius: var(--ui-beancount-radius-panel);
+    background: var(--card);
+    box-shadow: var(--ui-beancount-shadow-panel);
+  }
+
+  :global(.bc-rule-list__runs-table) {
+    min-width: 48rem;
+  }
+
+  :global(.bc-rule-list__runs-header-row) {
+    background: color-mix(
+      in srgb,
+      var(--ui-beancount-surface-muted) 65%,
+      transparent
+    );
+  }
+
+  :global(.bc-rule-list__runs-header-row:hover) {
+    background: color-mix(
+      in srgb,
+      var(--ui-beancount-surface-muted) 65%,
+      transparent
+    );
+  }
+
+  :global(.bc-rule-list__runs-head) {
+    padding: var(--ui-beancount-space-2) var(--ui-beancount-space-4);
+    font-size: var(--text-xs);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  :global(.bc-rule-list__runs-head--number) {
+    text-align: end;
+  }
+
+  :global(.bc-rule-list__runs-cell) {
+    padding: var(--ui-beancount-space-3) var(--ui-beancount-space-4);
+    color: var(--ui-beancount-muted-foreground);
+    font-size: var(--text-sm);
+  }
+
+  :global(.bc-rule-list__runs-cell--number) {
+    text-align: end;
+    font-variant-numeric: tabular-nums;
+  }
+
+  :global(.bc-rule-list__run-status[data-tone="positive"]) {
+    background: color-mix(
+      in srgb,
+      var(--ui-beancount-positive) 14%,
+      transparent
+    );
+    color: var(--ui-beancount-positive);
+  }
+
+  :global(.bc-rule-list__run-status[data-tone="negative"]) {
+    background: color-mix(in srgb, var(--destructive) 14%, transparent);
+    color: var(--destructive);
   }
 
   @media (max-width: 640px) {
