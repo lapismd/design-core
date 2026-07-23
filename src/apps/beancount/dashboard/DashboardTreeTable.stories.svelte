@@ -83,7 +83,7 @@
   }}
 >
   {#snippet template()}
-    <div class="max-w-5xl p-5">
+    <div class="bc-dashboard-tree-table-story">
       <DashboardTreeTable
         {nodes}
         title="Assets"
@@ -95,7 +95,9 @@
           selected = "Selected all assets";
         }}
       />
-      <output class="sr-only" aria-live="polite">{selected}</output>
+      <output class="bc-dashboard-tree-table-story__status" aria-live="polite"
+        >{selected}</output
+      >
     </div>
   {/snippet}
 </Story>
@@ -109,8 +111,26 @@
   }}
 >
   {#snippet template()}
-    <div class="max-w-5xl p-5">
+    <div class="bc-dashboard-tree-table-story">
       <DashboardTreeTable title="Assets" />
     </div>
   {/snippet}
 </Story>
+
+<style>
+  .bc-dashboard-tree-table-story {
+    max-inline-size: 64rem;
+    padding: var(--ui-beancount-space-5);
+  }
+  .bc-dashboard-tree-table-story__status {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+</style>
