@@ -91,6 +91,11 @@
       canvas.getByRole("button", { name: "Net worth, July 2026: £1,510" }),
     );
     await expect(canvas.getByRole("status")).toHaveTextContent("July 2026");
+    await userEvent.click(canvas.getByRole("tab", { name: "Line" }));
+    await expect(canvas.getByRole("tab", { name: "Line" })).toHaveAttribute(
+      "data-state",
+      "active",
+    );
   }}
 >
   {#snippet template()}
@@ -113,6 +118,25 @@
         {mode}
         valueFormatter={(value) =>
           `£${Math.round(value).toLocaleString("en-GB")}`}
+      />
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Preserves ledger balances between postings"
+  play={async ({ canvas }) => {
+    await expect(
+      canvas.getByRole("group", { name: "Stepped account balance" }),
+    ).toBeVisible();
+  }}
+>
+  {#snippet template()}
+    <div class="bc-line-chart-story">
+      <LineChart
+        {series}
+        interpolation="step"
+        ariaLabel="Stepped account balance"
       />
     </div>
   {/snippet}

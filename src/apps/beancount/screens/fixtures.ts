@@ -80,37 +80,6 @@ export const journalGroups = [
   },
 ];
 
-/** Account-detail activity remains an intentionally small account-scoped fixture. */
-export const accountActivityGroups = [
-  {
-    id: "2026-07-18",
-    date: "18 July 2026",
-    balance: "£1,510.00",
-    summary: {
-      start: "£1,552.17",
-      change: "−£42.17",
-      final: "£1,510.00",
-    },
-    records: [
-      {
-        id: "groceries",
-        description: "Groceries",
-        account: "Expenses:Groceries",
-        detail: "Weekly household shopping",
-        amount: "−£42.17",
-        avatar: { fallback: "G" },
-      },
-      {
-        id: "salary",
-        description: "Salary",
-        account: "Income:Salary",
-        amount: "+£3,200.00",
-        avatar: { fallback: "S" },
-      },
-    ],
-  },
-];
-
 export const statementColumns = [
   { id: "gbp", label: "GBP", title: "Pounds sterling" },
 ];
@@ -488,6 +457,77 @@ export const trialBalanceContributions = [
     percentage: 4.5,
     amount: "−20868.23 GBP",
     color: "var(--ui-beancount-positive)",
+  },
+];
+
+const accountDetailValues = [
+  -1800, 1200, 200, 0, 0, 3000, 1100, 1000, 900, 4000, 2200, 2100, 1900, 5000,
+  3400, 3200, 3100, 7000, 4600, 4500, 4400, 9000, 6500, 6200, 6000, 11000, 9000,
+  8900, 8800, 13000, 11500, 11300, 11200, 15000, 13200, 13000, 12800, 17000,
+  15300, 15100, 15000, 19000, 17600, 17400, 17200, 21000, 20000, 19800, 19600,
+  23000, 22000, 21800, 21600, 25000, 24000, 23800, 23600, 26000, 24800, 24500,
+  24300,
+];
+
+const accountDetailChartStart = Date.UTC(2024, 10, 1);
+const accountDetailChartEnd = Date.UTC(2026, 7, 1);
+const accountDetailAxisLabels = new Map([
+  [6, "2025"],
+  [14, "April"],
+  [23, "July"],
+  [32, "October"],
+  [41, "2026"],
+  [50, "April"],
+  [59, "July"],
+]);
+
+export const accountDetailLineSeries = [
+  {
+    id: "account-balance",
+    label: "Assets:Checking",
+    color: "var(--ui-beancount-accepted)",
+    points: accountDetailValues.map((value, index) => {
+      const date = new Date(
+        accountDetailChartStart +
+          ((accountDetailChartEnd - accountDetailChartStart) * index) /
+            (accountDetailValues.length - 1),
+      );
+      return {
+        id: `account-balance-${index}`,
+        date: date.toISOString(),
+        label: accountDetailAxisLabels.get(index) ?? "",
+        value,
+        valueLabel: `${value.toFixed(2)} GBP`,
+      };
+    }),
+  },
+];
+
+export const accountDetailGroups = [
+  {
+    id: "2026-07-23",
+    date: "JULY 23, 2026",
+    balance: "23405.35 GBP",
+    summary: {
+      start: "23416.51 GBP",
+      change: "−11.16 GBP",
+      final: "23405.35 GBP",
+    },
+    records: [
+      {
+        id: "account-nhs",
+        description: "NHS",
+        detail: "NHS · NHSBSA Prescription",
+        amount: "−11.16 GBP",
+        avatar: { fallback: "N" },
+        postings: [
+          {
+            account: "Assets:Checking:Starling",
+            amount: "−11.16 GBP",
+          },
+        ],
+      },
+    ],
   },
 ];
 

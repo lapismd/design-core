@@ -19,10 +19,14 @@
   };
 
   export type LineChartMode = "line" | "area";
+  export type LineChartInterpolation = "linear" | "step";
 
   let {
     series,
     mode = "line",
+    interpolation = "linear",
+    xTickCount = 3,
+    yTickCount = 5,
     ariaLabel = "Time series chart",
     emptyLabel = "No chart data is available.",
     valueFormatter = (value) => String(value),
@@ -30,6 +34,12 @@
   }: {
     series: readonly LineChartSeries[];
     mode?: LineChartMode;
+    /** Use step interpolation for ledger balances that remain constant between postings. */
+    interpolation?: LineChartInterpolation;
+    /** Maximum number of labelled timestamps to render along the horizontal axis. */
+    xTickCount?: number;
+    /** Number of evenly spaced value ticks to render along the vertical axis. */
+    yTickCount?: number;
     ariaLabel?: string;
     emptyLabel?: string;
     valueFormatter?: (value: number) => string;
@@ -86,17 +96,26 @@
       : rawMaxValue + valuePadding,
   );
   const baseline = $derived(Math.max(minValue, Math.min(maxValue, 0)));
+  const resolvedXTickCount = $derived(Math.max(2, Math.floor(xTickCount)));
+  const resolvedYTickCount = $derived(Math.max(2, Math.floor(yTickCount)));
   const yTicks = $derived(
-    [0, 1, 2, 3, 4].map(
-      (index) => minValue + ((maxValue - minValue) * index) / 4,
+    Array.from(
+      { length: resolvedYTickCount },
+      (_, index) =>
+        minValue + ((maxValue - minValue) * index) / (resolvedYTickCount - 1),
     ),
   );
   const xTicks = $derived.by(() => {
     const labels = new Map<number, string>();
     for (const item of points) labels.set(item.time, item.point.label);
-    const values = [...labels.entries()];
-    if (values.length <= 3) return values;
-    return [values[0], values[Math.floor(values.length / 2)], values.at(-1)!];
+    const values = [...labels.entries()].filter(([, label]) => label);
+    if (values.length <= resolvedXTickCount) return values;
+    return Array.from({ length: resolvedXTickCount }, (_, index) => {
+      const position = Math.round(
+        (index * (values.length - 1)) / (resolvedXTickCount - 1),
+      );
+      return values[position]!;
+    });
   });
 
   function xFor(date: string) {
@@ -118,10 +137,12 @@
         (point) =>
           Number.isFinite(point.value) && !Number.isNaN(Date.parse(point.date)),
       )
-      .map(
-        (point, index) =>
-          `${index === 0 ? "M" : "L"}${xFor(point.date)},${yFor(point.value)}`,
-      )
+      .map((point, index) => {
+        const x = xFor(point.date);
+        const y = yFor(point.value);
+        if (index === 0) return `M${x},${y}`;
+        return interpolation === "step" ? `H${x} V${y}` : `L${x},${y}`;
+      })
       .join(" ");
   }
 
@@ -269,7 +290,8 @@
 
   .bc-line-chart__canvas {
     overflow-x: auto;
-    border: 1px solid color-mix(in srgb, var(--ui-beancount-border) 80%, transparent);
+    border: 1px solid
+      color-mix(in srgb, var(--ui-beancount-border) 80%, transparent);
     border-radius: var(--ui-beancount-radius-panel);
     background-color: var(--ui-beancount-surface);
     padding: var(--ui-beancount-space-3);
