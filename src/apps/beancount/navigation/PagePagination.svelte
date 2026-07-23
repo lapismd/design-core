@@ -28,13 +28,13 @@
     if (!disabled && nextPage !== page) onPageChange(nextPage);
   }}
   aria-label={ariaLabel}
-  class="mx-0 w-full justify-center sm:w-auto"
+  class="bc-page-pagination"
   data-page-pagination
 >
   {#snippet children({ pages, currentPage })}
-    <Pagination.Content class="gap-0.5">
+    <Pagination.Content class="bc-page-pagination__content">
       <Pagination.Item>
-        <Pagination.Previous {disabled} class="size-8 px-0" />
+        <Pagination.Previous {disabled} class="bc-page-pagination__edge" />
       </Pagination.Item>
       {#each pages as pageItem (pageItem.key)}
         {#if pageItem.type === "ellipsis"}
@@ -55,8 +55,32 @@
         {/if}
       {/each}
       <Pagination.Item>
-        <Pagination.Next {disabled} class="size-8 px-0" />
+        <Pagination.Next {disabled} class="bc-page-pagination__edge" />
       </Pagination.Item>
     </Pagination.Content>
   {/snippet}
 </Pagination.Root>
+
+<style>
+  :global(.bc-page-pagination) {
+    width: 100%;
+    margin-inline: 0;
+    justify-content: center;
+  }
+
+  :global(.bc-page-pagination__content) {
+    gap: calc(var(--ui-beancount-space-1) / 2);
+  }
+
+  :global(.bc-page-pagination__edge) {
+    width: var(--ui-beancount-compact-control-height);
+    height: var(--ui-beancount-compact-control-height);
+    padding-inline: 0;
+  }
+
+  @media (min-width: 640px) {
+    :global(.bc-page-pagination) {
+      width: auto;
+    }
+  }
+</style>

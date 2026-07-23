@@ -40,9 +40,8 @@
 
 <a
   href={href ?? "#"}
-  class="text-foreground hover:text-primary focus-visible:ring-ring inline-flex shrink-0 items-center gap-2 transition-colors focus-visible:ring-1 focus-visible:outline-none"
-  class:pointer-events-none={disabled}
-  class:opacity-50={disabled}
+  class="bc-account-navigation-link"
+  class:bc-account-navigation-link--disabled={disabled}
   aria-disabled={disabled || undefined}
   tabindex={disabled ? -1 : undefined}
   data-account-navigation-link={account}
@@ -57,5 +56,35 @@
       size={avatarSize}
     />
   {/if}
-  <span class="whitespace-nowrap">{label}</span>
+  <span class="bc-account-navigation-link__label">{label}</span>
 </a>
+
+<style>
+  .bc-account-navigation-link {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: var(--ui-beancount-space-2);
+    color: var(--ui-beancount-foreground);
+    text-decoration: none;
+    transition: color 150ms ease;
+  }
+
+  .bc-account-navigation-link:hover {
+    color: var(--primary);
+  }
+
+  .bc-account-navigation-link:focus-visible {
+    outline: 1px solid var(--ui-beancount-focus-ring);
+    outline-offset: 2px;
+  }
+
+  .bc-account-navigation-link--disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  .bc-account-navigation-link__label {
+    white-space: nowrap;
+  }
+</style>

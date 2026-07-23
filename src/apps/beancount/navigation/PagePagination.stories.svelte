@@ -31,7 +31,7 @@
   }}
 >
   {#snippet template()}
-    <div class="flex flex-col items-start gap-3">
+    <div class="bc-page-pagination-story">
       <PagePagination
         {page}
         pageCount={5}
@@ -40,7 +40,7 @@
           page = value;
         }}
       />
-      <output class="text-muted-foreground text-sm" aria-live="polite">
+      <output class="bc-page-pagination-story__status" aria-live="polite">
         Page {page}
       </output>
     </div>
@@ -58,3 +58,17 @@
     />
   {/snippet}
 </Story>
+
+<style>
+  .bc-page-pagination-story {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--ui-beancount-space-3);
+  }
+
+  .bc-page-pagination-story__status {
+    color: var(--ui-beancount-muted-foreground);
+    font-size: var(--text-sm);
+  }
+</style>

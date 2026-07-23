@@ -39,7 +39,7 @@
 >
   {#snippet template()}
     <div
-      class="bg-card flex flex-wrap items-center gap-6 rounded-xl border p-5"
+      class="bc-account-navigation-story__card bc-account-navigation-story__card--row"
     >
       <AccountNavigationLink
         account="Expenses:Groceries"
@@ -58,13 +58,15 @@
         }}
       />
     </div>
-    <output class="sr-only" aria-live="polite">{selectedAccount}</output>
+    <output class="bc-account-navigation-story__status" aria-live="polite"
+      >{selectedAccount}</output
+    >
   {/snippet}
 </Story>
 
 <Story name="Makes an unavailable account inert">
   {#snippet template()}
-    <div class="bg-card rounded-xl border p-5">
+    <div class="bc-account-navigation-story__card">
       <AccountNavigationLink
         account="Expenses:Archived"
         label="Archived account"
@@ -73,3 +75,28 @@
     </div>
   {/snippet}
 </Story>
+
+<style>
+  .bc-account-navigation-story__card {
+    border: 1px solid var(--ui-beancount-border);
+    border-radius: var(--ui-beancount-radius-panel);
+    background: var(--card);
+    padding: var(--ui-beancount-space-5);
+  }
+
+  .bc-account-navigation-story__card--row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: calc(var(--ui-beancount-space-3) * 2);
+  }
+
+  .bc-account-navigation-story__status {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+</style>

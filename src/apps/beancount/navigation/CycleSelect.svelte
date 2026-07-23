@@ -39,11 +39,11 @@
   }
 </script>
 
-<div data-slot="cycle-select" class="flex min-w-0 shrink items-center gap-1">
+<div data-slot="cycle-select" class="bc-cycle-select">
   <Button
     variant="ghost"
     size="icon"
-    class="size-8 overflow-hidden rounded-md"
+    class="bc-cycle-select__button"
     aria-label="Previous {label.toLowerCase()}"
     disabled={shiftDisabled}
     onclick={() => shift(-1)}
@@ -64,7 +64,7 @@
   <Button
     variant="ghost"
     size="icon"
-    class="size-8 overflow-hidden rounded-md"
+    class="bc-cycle-select__button"
     aria-label="Next {label.toLowerCase()}"
     disabled={shiftDisabled}
     onclick={() => shift(1)}
@@ -74,6 +74,21 @@
 </div>
 
 <style>
+  .bc-cycle-select {
+    display: flex;
+    min-width: 0;
+    flex: 0 1 auto;
+    align-items: center;
+    gap: var(--ui-beancount-space-1);
+  }
+
+  :global(.bc-cycle-select__button) {
+    width: var(--ui-beancount-compact-control-height);
+    height: var(--ui-beancount-compact-control-height);
+    overflow: hidden;
+    border-radius: var(--radius-md);
+  }
+
   .cycle-select-picker {
     display: flex;
     min-width: 0;
@@ -86,16 +101,18 @@
   .cycle-select-picker :global(.ui-filter-command-picker__trigger:hover),
   .cycle-select-picker
     :global(.ui-filter-command-picker__trigger:focus-visible) {
-    border-radius: 0.375rem;
+    border-radius: var(--radius-md);
     overflow: hidden;
   }
 
   .cycle-select-picker :global(.ui-filter-command-picker__trigger) {
     width: 100%;
-    height: 2rem;
-    min-height: 2rem;
-    min-width: 5rem;
-    max-width: 9rem;
+    height: var(--ui-beancount-compact-control-height);
+    min-height: var(--ui-beancount-compact-control-height);
+    min-width: calc(var(--ui-beancount-space-5) * 2);
+    max-width: calc(
+      var(--ui-beancount-space-5) * 3 + var(--ui-beancount-space-4)
+    );
     flex: 1 1 auto;
     border: 0;
     background: transparent;
@@ -112,7 +129,7 @@
   .cycle-select-picker :global(.ui-filter-command-picker__trigger:hover),
   .cycle-select-picker
     :global(.ui-filter-command-picker__trigger:focus-visible) {
-    background: var(--accent);
-    color: var(--accent-foreground);
+    background: var(--ui-beancount-sidebar-accent);
+    color: var(--ui-beancount-sidebar-accent-foreground);
   }
 </style>

@@ -63,7 +63,7 @@
   }}
 >
   {#snippet template()}
-    <div class="max-w-3xl p-5">
+    <div class="bc-saved-query-history-story">
       <SavedQueryHistory
         {queries}
         {selectedId}
@@ -84,14 +84,16 @@
         }}
       >
         {#snippet details(query)}
-          <div class="bg-background rounded-lg border p-3 text-sm">
+          <div class="bc-saved-query-history-story__details">
             {query.id === "recent-expenses"
               ? "42 matching postings"
               : "6 matching transactions"}
           </div>
         {/snippet}
       </SavedQueryHistory>
-      <output class="sr-only" aria-live="polite">{status}</output>
+      <output class="bc-saved-query-history-story__status" aria-live="polite"
+        >{status}</output
+      >
     </div>
   {/snippet}
 </Story>
@@ -114,7 +116,7 @@
   }}
 >
   {#snippet template()}
-    <div class="max-w-3xl p-5">
+    <div class="bc-saved-query-history-story">
       <SavedQueryHistory
         queries={queries.slice(-1)}
         {selectedId}
@@ -127,7 +129,33 @@
           status = `Deleted ${query.label}`;
         }}
       />
-      <output class="sr-only" aria-live="polite">{status}</output>
+      <output class="bc-saved-query-history-story__status" aria-live="polite"
+        >{status}</output
+      >
     </div>
   {/snippet}
 </Story>
+
+<style>
+  .bc-saved-query-history-story {
+    max-width: 48rem;
+    padding: var(--ui-beancount-space-5);
+  }
+
+  .bc-saved-query-history-story__details {
+    border: 1px solid var(--ui-beancount-border);
+    border-radius: var(--radius-lg);
+    background: var(--ui-beancount-surface);
+    padding: var(--ui-beancount-space-3);
+    font-size: var(--text-sm);
+  }
+
+  .bc-saved-query-history-story__status {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+</style>

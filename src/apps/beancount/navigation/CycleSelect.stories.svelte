@@ -39,7 +39,7 @@
   }}
 >
   {#snippet template()}
-    <div class="flex max-w-sm flex-col gap-3">
+    <div class="bc-cycle-select-story">
       <CycleSelect
         value={period}
         options={periods}
@@ -48,7 +48,7 @@
           period = value;
         }}
       />
-      <output class="text-muted-foreground text-sm" aria-live="polite">
+      <output class="bc-cycle-select-story__status" aria-live="polite">
         Viewing: {periods.find((item) => item.value === period)?.label}
       </output>
     </div>
@@ -66,3 +66,17 @@
     />
   {/snippet}
 </Story>
+
+<style>
+  .bc-cycle-select-story {
+    display: flex;
+    max-width: 24rem;
+    flex-direction: column;
+    gap: var(--ui-beancount-space-3);
+  }
+
+  .bc-cycle-select-story__status {
+    color: var(--ui-beancount-muted-foreground);
+    font-size: var(--text-sm);
+  }
+</style>

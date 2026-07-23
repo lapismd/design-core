@@ -4,7 +4,6 @@
   import Trash from "@lucide/svelte/icons/trash";
   import * as Accordion from "@stevejuma/ui/shadcn/accordion";
   import { Button } from "@stevejuma/ui/shadcn/button";
-  import { cn } from "../../../lib/utils.js";
 
   /** A saved query presented in the workspace history. */
   export type SavedQueryHistoryItem = {
@@ -64,7 +63,7 @@
 
 {#if queries.length}
   <Accordion.Root
-    class="flex w-full flex-col gap-3 pt-3"
+    class="bc-saved-query-history"
     type="multiple"
     value={[...expandedIds]}
     onValueChange={updateExpansion}
@@ -73,27 +72,21 @@
     {#each queries as query (query.id)}
       <Accordion.Item
         value={query.id}
-        class={cn(
-          "bg-card text-card-foreground data-[state=open]:bg-muted/50 overflow-hidden rounded-xl border shadow-sm",
-          selectedId === query.id && "ring-primary/30 ring-1",
-        )}
+        class="bc-saved-query-history__item"
+        data-selected={selectedId === query.id ? "" : undefined}
       >
-        <div
-          class="group hover:bg-muted/50 flex min-h-14 items-stretch gap-3 transition-colors"
-        >
-          <div class="flex min-w-0 flex-1">
+        <div class="bc-saved-query-history__summary">
+          <div class="bc-saved-query-history__trigger-wrap">
             <Accordion.Trigger
-              class="h-full w-full min-w-0 gap-3 py-0 pl-4 text-left text-xs hover:no-underline"
+              class="bc-saved-query-history__trigger"
               onclick={() => onSelect?.(query)}
             >
-              <code
-                class="min-w-0 flex-1 font-mono text-xs leading-relaxed break-words"
-              >
+              <code class="bc-saved-query-history__query">
                 {query.label ?? query.query}
               </code>
             </Accordion.Trigger>
           </div>
-          <div class="flex shrink-0 items-center gap-1 pr-4">
+          <div class="bc-saved-query-history__actions">
             <Button
               type="button"
               variant="ghost"
@@ -118,8 +111,8 @@
             </Button>
           </div>
         </div>
-        <Accordion.Content class="bg-muted/20 border-t [&>div]:p-0">
-          <div class="px-4 pb-4">
+        <Accordion.Content class="bc-saved-query-history__content">
+          <div class="bc-saved-query-history__details">
             {@render details?.(query)}
           </div>
         </Accordion.Content>
@@ -127,5 +120,118 @@
     {/each}
   </Accordion.Root>
 {:else}
-  <p class="text-muted-foreground px-2 py-3 text-sm">{emptyLabel}</p>
+  <p class="bc-saved-query-history__empty">{emptyLabel}</p>
 {/if}
+
+<style>
+  :global(.bc-saved-query-history) {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    gap: var(--ui-beancount-space-3);
+    padding-block-start: var(--ui-beancount-space-3);
+  }
+
+  :global(.bc-saved-query-history__item) {
+    overflow: hidden;
+    border: 1px solid var(--ui-beancount-border);
+    border-radius: var(--ui-beancount-radius-panel);
+    background: var(--card);
+    color: var(--card-foreground);
+    box-shadow: var(--ui-beancount-shadow-panel);
+  }
+
+  :global(.bc-saved-query-history__item[data-state="open"]) {
+    background: color-mix(
+      in srgb,
+      var(--ui-beancount-surface-muted) 50%,
+      transparent
+    );
+  }
+
+  :global(.bc-saved-query-history__item[data-selected]) {
+    outline: 1px solid color-mix(in srgb, var(--primary) 30%, transparent);
+  }
+
+  .bc-saved-query-history__summary {
+    display: flex;
+    min-height: calc(
+      var(--ui-beancount-space-5) * 2 + var(--ui-beancount-space-1)
+    );
+    align-items: stretch;
+    gap: var(--ui-beancount-space-3);
+    transition: background-color 150ms ease;
+  }
+
+  .bc-saved-query-history__summary:hover {
+    background: color-mix(
+      in srgb,
+      var(--ui-beancount-surface-muted) 50%,
+      transparent
+    );
+  }
+
+  .bc-saved-query-history__trigger-wrap {
+    display: flex;
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+
+  :global(.bc-saved-query-history__trigger) {
+    width: 100%;
+    min-width: 0;
+    height: 100%;
+    gap: var(--ui-beancount-space-3);
+    padding-block: 0;
+    padding-inline-start: var(--ui-beancount-space-4);
+    color: inherit;
+    font-size: var(--text-xs);
+    text-align: start;
+  }
+
+  :global(.bc-saved-query-history__trigger:hover) {
+    text-decoration: none;
+  }
+
+  .bc-saved-query-history__query {
+    min-width: 0;
+    flex: 1 1 auto;
+    overflow-wrap: anywhere;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    line-height: var(--leading-relaxed);
+  }
+
+  .bc-saved-query-history__actions {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: var(--ui-beancount-space-1);
+    padding-inline-end: var(--ui-beancount-space-4);
+  }
+
+  :global(.bc-saved-query-history__content) {
+    border-block-start: 1px solid var(--ui-beancount-border);
+    background: color-mix(
+      in srgb,
+      var(--ui-beancount-surface-muted) 20%,
+      transparent
+    );
+  }
+
+  :global(.bc-saved-query-history__content > div) {
+    padding: 0;
+  }
+
+  .bc-saved-query-history__details {
+    padding-inline: var(--ui-beancount-space-4);
+    padding-block-end: var(--ui-beancount-space-4);
+  }
+
+  .bc-saved-query-history__empty {
+    margin: 0;
+    padding: var(--ui-beancount-space-3) var(--ui-beancount-space-2);
+    color: var(--ui-beancount-muted-foreground);
+    font-size: var(--text-sm);
+  }
+</style>
