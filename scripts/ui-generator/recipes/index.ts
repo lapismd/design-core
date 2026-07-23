@@ -346,6 +346,38 @@ const recipes: Record<string, ComponentRecipe> = {
     shotSelector: '[data-ui-part="resizable-handle"]',
     viewport: { width: 480, height: 200 },
   }),
+  table: lightCompound("table", "Shadcn/Data/Table", {
+    tag: "table",
+    attrs: { "data-slot": "table" },
+    shotSelector: '[data-ui-component="table"]',
+    viewport: { width: 480, height: 200 },
+    referenceInnerHtml:
+      '<thead data-slot="table-header"><tr data-slot="table-row"><th data-slot="table-head">Name</th></tr></thead><tbody data-slot="table-body"><tr data-slot="table-row"><td data-slot="table-cell">Ada</td></tr></tbody>',
+    semanticInnerHtml:
+      '<thead data-ui-component="table" data-ui-part="table-header" data-slot="table-header"><tr data-ui-component="table" data-ui-part="table-row" data-slot="table-row"><th data-ui-component="table" data-ui-part="table-head" data-slot="table-head">Name</th></tr></thead><tbody data-ui-component="table" data-ui-part="table-body" data-slot="table-body"><tr data-ui-component="table" data-ui-part="table-row" data-slot="table-row"><td data-ui-component="table" data-ui-part="table-cell" data-slot="table-cell">Ada</td></tr></tbody>',
+  }),
+  pagination: lightCompound("pagination", "Shadcn/Navigation/Pagination", {
+    tag: "nav",
+    attrs: {
+      role: "navigation",
+      "aria-label": "pagination",
+      "data-slot": "pagination",
+    },
+    shotSelector: '[data-ui-component="pagination"]',
+    viewport: { width: 400, height: 80 },
+  }),
+  breadcrumb: lightCompound("breadcrumb", "Shadcn/Navigation/Breadcrumb", {
+    tag: "nav",
+    attrs: { "aria-label": "breadcrumb", "data-slot": "breadcrumb" },
+    shotSelector: '[data-ui-component="breadcrumb"]',
+    viewport: { width: 400, height: 60 },
+  }),
+  "button-group": lightCompound("button-group", "Shadcn/Actions/Button Group", {
+    tag: "div",
+    attrs: { role: "group", "data-slot": "button-group" },
+    shotSelector: '[data-ui-component="button-group"]',
+    viewport: { width: 320, height: 80 },
+  }),
 };
 
 export function getRecipe(component: string): ComponentRecipe | undefined {
