@@ -26,8 +26,15 @@
   }}
 >
   {#snippet template()}
-    <div class="max-w-4xl p-4">
+    <div class="bc-reconciliation-review-skeleton-story">
       <ReconciliationReviewSkeleton />
     </div>
   {/snippet}
 </Story>
+
+<style>
+  .bc-reconciliation-review-skeleton-story {
+    max-width: 56rem;
+    padding: var(--ui-beancount-space-4);
+  }
+</style>
