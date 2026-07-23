@@ -23,7 +23,16 @@ const config: StorybookConfig = {
     "@storybook/addon-themes",
     // Absolute local preset → package `src/` (not node_modules package name).
     // viteFinal lives in the addon (middleware + baseline inject + src watch).
-    import.meta.resolve("./visual-delta-preset.ts"),
+    {
+      name: import.meta.resolve("./visual-delta-preset.ts"),
+      options: {
+        visualDelta: {
+          baselinePathMode: "nested-import",
+          visualServerPort: 6007,
+          visualTestArgs: ["exec", "playwright", "test"],
+        },
+      },
+    },
     "storybook-addon-tag-badges",
   ],
   staticDirs: [
