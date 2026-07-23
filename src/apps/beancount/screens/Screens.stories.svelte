@@ -178,6 +178,7 @@
   let statisticsPerspective = $state("postings-by-account");
   let statisticsPage = $state(1);
   let statisticsQueryRequested = $state(false);
+  let recordsAccountsRequested = $state(false);
 
   const holdingsPageSize = 10;
   const visibleHoldingRows = $derived(
@@ -950,18 +951,31 @@
   parameters={{ visualDelta: visualDeltaForScreen("records") }}
   play={async ({ canvas }) => {
     await expect(
-      canvas.getByText("No proposals are waiting in this queue."),
+      canvas.getByRole("heading", { name: "No imports to review" }),
     ).toBeVisible();
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Open Accounts" }),
+    );
+    await expect(canvas.getByRole("status")).toHaveTextContent(
+      "Accounts requested",
+    );
   }}
 >
   {#snippet template()}
-    <ScreenFrame pageTitle="Review imports">
+    <ScreenFrame pageTitle="Records">
       <ContentScrollArea>
         <div class="bc-screen-story__page">
           <IngestionReviewTable
             groups={[]}
             counts={{ review: 0, ready: 0, duplicates: 0 }}
+            emptyVariant="fava-records"
+            onEmptyAction={() => {
+              recordsAccountsRequested = true;
+            }}
           />
+          <output class="bc-screen-story__status" aria-live="polite">
+            {recordsAccountsRequested ? "Accounts requested" : ""}
+          </output>
         </div>
       </ContentScrollArea>
     </ScreenFrame>

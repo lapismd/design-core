@@ -2,9 +2,13 @@
   import { untrack } from "svelte";
   import ChevronDown from "@lucide/svelte/icons/chevron-down";
   import ChevronUp from "@lucide/svelte/icons/chevron-up";
+  import ExternalLink from "@lucide/svelte/icons/external-link";
+  import Landmark from "@lucide/svelte/icons/landmark";
   import { SegmentedControl } from "@stevejuma/ui/forms";
+  import { Button } from "@stevejuma/ui/shadcn/button";
 
   export type IngestionReviewFilter = "review" | "ready";
+  export type IngestionReviewEmptyVariant = "standard" | "fava-records";
 
   export type IngestionReviewPosting = {
     account: string;
@@ -45,9 +49,14 @@
     selectedIds = [],
     ariaLabel = "Import review queue",
     emptyLabel = "No proposals are waiting in this queue.",
+    emptyVariant = "standard",
+    emptyTitle = "No imports to review",
+    emptyDescription = "Sync from Accounts, then review proposals here.",
+    emptyActionLabel = "Open Accounts",
     onFilterChange = () => {},
     onSelectedIdsChange = () => {},
     onOpenRow,
+    onEmptyAction,
   }: {
     groups: readonly IngestionReviewGroup[];
     counts: IngestionReviewCounts;
@@ -55,9 +64,16 @@
     selectedIds?: readonly string[];
     ariaLabel?: string;
     emptyLabel?: string;
+    /** A route-level empty panel matching Fava's Records screen. */
+    emptyVariant?: IngestionReviewEmptyVariant;
+    emptyTitle?: string;
+    emptyDescription?: string;
+    emptyActionLabel?: string;
     onFilterChange?: (filter: IngestionReviewFilter) => void;
     onSelectedIdsChange?: (ids: string[]) => void;
     onOpenRow?: (row: IngestionReviewRow) => void;
+    /** Requests the host's Accounts view; routing stays outside this component. */
+    onEmptyAction?: () => void;
   } = $props();
 
   let expandedGroupIds = $state<Set<string>>(
@@ -151,228 +167,245 @@
   }
 </script>
 
-<section class="bc-ingestion-review" aria-label={ariaLabel}>
-  <header class="bc-ingestion-review__toolbar">
-    <div class="bc-ingestion-review__counts" role="status">
-      <span
-        class="bc-ingestion-review__count bc-ingestion-review__count--ready"
-      >
-        <span class="bc-ingestion-review__count-value">{counts.ready}</span> ready
-      </span>
-      <span
-        class="bc-ingestion-review__count bc-ingestion-review__count--review"
-      >
-        <span class="bc-ingestion-review__count-value">{counts.review}</span> need review
-      </span>
-      <span
-        class="bc-ingestion-review__count bc-ingestion-review__count--duplicate"
-      >
-        <span class="bc-ingestion-review__count-value">{counts.duplicates}</span> duplicates
-      </span>
-    </div>
-    <SegmentedControl
-      value={filter}
-      options={["review", "ready"]}
-      labels={{
-        review: `Review (${counts.review})`,
-        ready: `Ready (${counts.ready})`,
-      }}
-      ariaLabel="Import review content"
-      onChange={(value) => onFilterChange(value as IngestionReviewFilter)}
-    />
-  </header>
-
-  <div
-    class="review-grid review-grid--header bc-ingestion-review__table-header"
+{#if !groups.length && emptyVariant === "fava-records"}
+  <section
+    class="bc-ingestion-review bc-ingestion-review--fava-empty"
+    aria-label={ariaLabel}
   >
-    <input
-      type="checkbox"
-      checked={allSelected}
-      use:setIndeterminate={someSelected}
-      class="bc-ingestion-review__checkbox"
-      aria-label="Select visible review items"
-      disabled={!selectableIds.length}
-      onchange={(event) =>
-        toggleAll((event.currentTarget as HTMLInputElement).checked)}
-    />
-    <span>Proposal</span>
-    <span class="bc-ingestion-review__amount-heading">Amount</span>
-  </div>
+    <div class="bc-ingestion-review__fava-empty">
+      <div class="bc-ingestion-review__fava-empty-icon" aria-hidden="true">
+        <Landmark class="bc-ingestion-review__fava-empty-icon-glyph" />
+      </div>
+      <div class="bc-ingestion-review__fava-empty-copy">
+        <h2>{emptyTitle}</h2>
+        <p>{emptyDescription}</p>
+      </div>
+      {#if onEmptyAction}
+        <Button
+          onclick={onEmptyAction}
+          class="bc-ingestion-review__fava-empty-action"
+        >
+          {emptyActionLabel}
+          <ExternalLink data-icon="inline-end" aria-hidden="true" />
+        </Button>
+      {/if}
+    </div>
+  </section>
+{:else}
+  <section class="bc-ingestion-review" aria-label={ariaLabel}>
+    <header class="bc-ingestion-review__toolbar">
+      <div class="bc-ingestion-review__counts" role="status">
+        <span
+          class="bc-ingestion-review__count bc-ingestion-review__count--ready"
+        >
+          <span class="bc-ingestion-review__count-value">{counts.ready}</span> ready
+        </span>
+        <span
+          class="bc-ingestion-review__count bc-ingestion-review__count--review"
+        >
+          <span class="bc-ingestion-review__count-value">{counts.review}</span> need
+          review
+        </span>
+        <span
+          class="bc-ingestion-review__count bc-ingestion-review__count--duplicate"
+        >
+          <span class="bc-ingestion-review__count-value"
+            >{counts.duplicates}</span
+          > duplicates
+        </span>
+      </div>
+      <SegmentedControl
+        value={filter}
+        options={["review", "ready"]}
+        labels={{
+          review: `Review (${counts.review})`,
+          ready: `Ready (${counts.ready})`,
+        }}
+        ariaLabel="Import review content"
+        onChange={(value) => onFilterChange(value as IngestionReviewFilter)}
+      />
+    </header>
 
-  {#if groups.length}
-    <div class="bc-ingestion-review__groups">
-      {#each groups as group (group.id)}
-        {@const expanded = expandedGroupIds.has(group.id)}
-        {@const selection = groupSelection(group)}
-        {@const groupRows = selectableRows(group)}
-        <section class="bc-ingestion-review__group">
-          <div
-            class="review-grid review-grid--header bc-ingestion-review__group-header"
-          >
-            <input
-              type="checkbox"
-              checked={selection === "checked"}
-              use:setIndeterminate={selection === "indeterminate"}
-              class="bc-ingestion-review__checkbox"
-              aria-label={`Select actionable items from ${group.label}`}
-              disabled={!groupRows.length}
-              onchange={(event) =>
-                toggleGroup(
-                  group,
-                  (event.currentTarget as HTMLInputElement).checked,
-                )}
-            />
-            <button
-              type="button"
-              class="bc-ingestion-review__group-toggle"
-              aria-expanded={expanded}
-              aria-controls={`${group.id}-rows`}
-              aria-label={`${expanded ? "Collapse" : "Expand"} ${group.label}`}
-              onclick={() => toggleDisclosure(group.id)}
-            >
-              <span
-                class="bc-ingestion-review__group-title"
-              >
-                {group.label}
-                <span class="bc-ingestion-review__group-count"
-                  >· {group.rows.length}</span
-                >
-              </span>
-              <span
-                class="bc-ingestion-review__group-icon"
-                aria-hidden="true"
-              >
-                {#if expanded}
-                  <ChevronUp class="bc-ingestion-review__icon" />
-                {:else}
-                  <ChevronDown class="bc-ingestion-review__icon" />
-                {/if}
-              </span>
-            </button>
-          </div>
+    <div
+      class="review-grid review-grid--header bc-ingestion-review__table-header"
+    >
+      <input
+        type="checkbox"
+        checked={allSelected}
+        use:setIndeterminate={someSelected}
+        class="bc-ingestion-review__checkbox"
+        aria-label="Select visible review items"
+        disabled={!selectableIds.length}
+        onchange={(event) =>
+          toggleAll((event.currentTarget as HTMLInputElement).checked)}
+      />
+      <span>Proposal</span>
+      <span class="bc-ingestion-review__amount-heading">Amount</span>
+    </div>
 
-          {#if expanded}
+    {#if groups.length}
+      <div class="bc-ingestion-review__groups">
+        {#each groups as group (group.id)}
+          {@const expanded = expandedGroupIds.has(group.id)}
+          {@const selection = groupSelection(group)}
+          {@const groupRows = selectableRows(group)}
+          <section class="bc-ingestion-review__group">
             <div
-              id={`${group.id}-rows`}
-              class="bc-ingestion-review__group-rows"
+              class="review-grid review-grid--header bc-ingestion-review__group-header"
             >
-              {#each group.rows as row (row.id)}
-                {@const selectable = row.selectable !== false}
-                <div
-                  class="review-grid review-grid--row bc-ingestion-review__row"
+              <input
+                type="checkbox"
+                checked={selection === "checked"}
+                use:setIndeterminate={selection === "indeterminate"}
+                class="bc-ingestion-review__checkbox"
+                aria-label={`Select actionable items from ${group.label}`}
+                disabled={!groupRows.length}
+                onchange={(event) =>
+                  toggleGroup(
+                    group,
+                    (event.currentTarget as HTMLInputElement).checked,
+                  )}
+              />
+              <button
+                type="button"
+                class="bc-ingestion-review__group-toggle"
+                aria-expanded={expanded}
+                aria-controls={`${group.id}-rows`}
+                aria-label={`${expanded ? "Collapse" : "Expand"} ${group.label}`}
+                onclick={() => toggleDisclosure(group.id)}
+              >
+                <span class="bc-ingestion-review__group-title">
+                  {group.label}
+                  <span class="bc-ingestion-review__group-count"
+                    >· {group.rows.length}</span
+                  >
+                </span>
+                <span
+                  class="bc-ingestion-review__group-icon"
+                  aria-hidden="true"
                 >
-                  <input
-                    type="checkbox"
-                    checked={selectedIdSet.has(row.id)}
-                    class="bc-ingestion-review__checkbox"
-                    aria-label={`Select ${row.title}`}
-                    disabled={!selectable}
-                    onchange={(event) =>
-                      toggleRow(
-                        row,
-                        (event.currentTarget as HTMLInputElement).checked,
-                      )}
-                  />
-                  <div class="bc-ingestion-review__proposal">
-                    {#if row.imageUrl}
-                      <img
-                        class="bc-ingestion-review__avatar-image"
-                        src={row.imageUrl}
-                        alt=""
-                      />
-                    {:else}
-                      <div
-                        class="bc-ingestion-review__avatar-fallback"
-                        aria-hidden="true"
-                      >
-                        {row.initial ?? row.title.slice(0, 1).toUpperCase()}
-                      </div>
-                    {/if}
-                    {#if onOpenRow}
-                      <button
-                        type="button"
-                        class="bc-ingestion-review__row-action"
-                        aria-label={`Review ${row.title}`}
-                        onclick={() => onOpenRow(row)}
-                      >
-                        <span
-                          class="bc-ingestion-review__row-title"
-                          >{row.title}</span
-                        >
-                        {#if row.detail}
-                          <span
-                            class="bc-ingestion-review__row-detail"
-                            >{row.detail}</span
-                          >
-                        {/if}
-                        <span
-                          class={`bc-ingestion-review__status ${statusClass(row.status)}`}
-                        >
-                          {statusLabel(row)}
-                        </span>
-                      </button>
-                    {:else}
-                      <div class="bc-ingestion-review__row-copy">
-                        <span
-                          class="bc-ingestion-review__row-title"
-                          >{row.title}</span
-                        >
-                        {#if row.detail}
-                          <span
-                            class="bc-ingestion-review__row-detail"
-                            >{row.detail}</span
-                          >
-                        {/if}
-                        <span
-                          class={`bc-ingestion-review__status ${statusClass(row.status)}`}
-                        >
-                          {statusLabel(row)}
-                        </span>
-                      </div>
-                    {/if}
-                  </div>
-                  <div class="bc-ingestion-review__amounts">
-                    {#if row.postings?.length}
-                      {#each row.postings as posting (posting.account)}
+                  {#if expanded}
+                    <ChevronUp class="bc-ingestion-review__icon" />
+                  {:else}
+                    <ChevronDown class="bc-ingestion-review__icon" />
+                  {/if}
+                </span>
+              </button>
+            </div>
+
+            {#if expanded}
+              <div
+                id={`${group.id}-rows`}
+                class="bc-ingestion-review__group-rows"
+              >
+                {#each group.rows as row (row.id)}
+                  {@const selectable = row.selectable !== false}
+                  <div
+                    class="review-grid review-grid--row bc-ingestion-review__row"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={selectedIdSet.has(row.id)}
+                      class="bc-ingestion-review__checkbox"
+                      aria-label={`Select ${row.title}`}
+                      disabled={!selectable}
+                      onchange={(event) =>
+                        toggleRow(
+                          row,
+                          (event.currentTarget as HTMLInputElement).checked,
+                        )}
+                    />
+                    <div class="bc-ingestion-review__proposal">
+                      {#if row.imageUrl}
+                        <img
+                          class="bc-ingestion-review__avatar-image"
+                          src={row.imageUrl}
+                          alt=""
+                        />
+                      {:else}
                         <div
-                          class="bc-ingestion-review__posting"
+                          class="bc-ingestion-review__avatar-fallback"
+                          aria-hidden="true"
                         >
-                          <span
-                            class="bc-ingestion-review__posting-account"
-                            >{posting.account}</span
-                          >
-                          <span class="bc-ingestion-review__posting-amount"
-                            >{posting.amount}</span
-                          >
+                          {row.initial ?? row.title.slice(0, 1).toUpperCase()}
                         </div>
-                      {/each}
-                    {:else}
-                      {#if row.account}
-                        <span
-                          class="bc-ingestion-review__account"
-                          >{row.account}</span
+                      {/if}
+                      {#if onOpenRow}
+                        <button
+                          type="button"
+                          class="bc-ingestion-review__row-action"
+                          aria-label={`Review ${row.title}`}
+                          onclick={() => onOpenRow(row)}
+                        >
+                          <span class="bc-ingestion-review__row-title"
+                            >{row.title}</span
+                          >
+                          {#if row.detail}
+                            <span class="bc-ingestion-review__row-detail"
+                              >{row.detail}</span
+                            >
+                          {/if}
+                          <span
+                            class={`bc-ingestion-review__status ${statusClass(row.status)}`}
+                          >
+                            {statusLabel(row)}
+                          </span>
+                        </button>
+                      {:else}
+                        <div class="bc-ingestion-review__row-copy">
+                          <span class="bc-ingestion-review__row-title"
+                            >{row.title}</span
+                          >
+                          {#if row.detail}
+                            <span class="bc-ingestion-review__row-detail"
+                              >{row.detail}</span
+                            >
+                          {/if}
+                          <span
+                            class={`bc-ingestion-review__status ${statusClass(row.status)}`}
+                          >
+                            {statusLabel(row)}
+                          </span>
+                        </div>
+                      {/if}
+                    </div>
+                    <div class="bc-ingestion-review__amounts">
+                      {#if row.postings?.length}
+                        {#each row.postings as posting (posting.account)}
+                          <div class="bc-ingestion-review__posting">
+                            <span class="bc-ingestion-review__posting-account"
+                              >{posting.account}</span
+                            >
+                            <span class="bc-ingestion-review__posting-amount"
+                              >{posting.amount}</span
+                            >
+                          </div>
+                        {/each}
+                      {:else}
+                        {#if row.account}
+                          <span class="bc-ingestion-review__account"
+                            >{row.account}</span
+                          >
+                        {/if}
+                        <span class="bc-ingestion-review__amount"
+                          >{row.amount ?? "—"}</span
                         >
                       {/if}
-                      <span class="bc-ingestion-review__amount"
-                        >{row.amount ?? "—"}</span
-                      >
-                    {/if}
+                    </div>
                   </div>
-                </div>
-              {/each}
-            </div>
-          {/if}
-        </section>
-      {/each}
-    </div>
-  {:else}
-    <div
-      class="bc-ingestion-review__empty"
-    >
-      {emptyLabel}
-    </div>
-  {/if}
-</section>
+                {/each}
+              </div>
+            {/if}
+          </section>
+        {/each}
+      </div>
+    {:else}
+      <div class="bc-ingestion-review__empty">
+        {emptyLabel}
+      </div>
+    {/if}
+  </section>
+{/if}
 
 <style>
   .review-grid {
@@ -389,6 +422,58 @@
     width: 100%;
     flex-direction: column;
     gap: var(--ui-beancount-space-4);
+  }
+
+  .bc-ingestion-review--fava-empty {
+    min-height: 23rem;
+    justify-content: center;
+    border: 1px solid var(--ui-beancount-border);
+    background: var(--ui-beancount-surface);
+  }
+
+  .bc-ingestion-review__fava-empty {
+    display: grid;
+    justify-items: center;
+    gap: var(--ui-beancount-space-4);
+    padding: calc(var(--ui-beancount-space-5) * 2);
+    text-align: center;
+  }
+
+  .bc-ingestion-review__fava-empty-icon {
+    display: inline-flex;
+    width: calc(var(--ui-beancount-space-5) * 3);
+    height: calc(var(--ui-beancount-space-5) * 3);
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--ui-beancount-radius-panel);
+    background: color-mix(in srgb, var(--ui-beancount-review) 10%, transparent);
+    color: var(--ui-beancount-foreground);
+  }
+
+  :global(.bc-ingestion-review__fava-empty-icon-glyph) {
+    width: calc(var(--ui-beancount-space-5) * 1.5);
+    height: calc(var(--ui-beancount-space-5) * 1.5);
+  }
+
+  .bc-ingestion-review__fava-empty-copy h2,
+  .bc-ingestion-review__fava-empty-copy p {
+    margin: 0;
+  }
+
+  .bc-ingestion-review__fava-empty-copy h2 {
+    color: var(--ui-beancount-foreground);
+    font-size: var(--text-xl);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .bc-ingestion-review__fava-empty-copy p {
+    margin-block-start: var(--ui-beancount-space-2);
+    color: var(--ui-beancount-muted-foreground);
+    font-size: var(--text-base);
+  }
+
+  :global(.bc-ingestion-review__fava-empty-action) {
+    margin-block-start: var(--ui-beancount-space-2);
   }
 
   .bc-ingestion-review__toolbar {
@@ -417,7 +502,8 @@
 
   .bc-ingestion-review__count {
     gap: calc(var(--ui-beancount-space-3) / 2);
-    padding: var(--ui-beancount-space-1) calc(var(--ui-beancount-space-2) + 0.125rem);
+    padding: var(--ui-beancount-space-1)
+      calc(var(--ui-beancount-space-2) + 0.125rem);
   }
 
   .bc-ingestion-review__count-value,
@@ -428,25 +514,45 @@
 
   .bc-ingestion-review__count--ready,
   .bc-ingestion-review__status--ready {
-    background-color: color-mix(in srgb, var(--ui-beancount-positive) 15%, transparent);
+    background-color: color-mix(
+      in srgb,
+      var(--ui-beancount-positive) 15%,
+      transparent
+    );
   }
 
   .bc-ingestion-review__count--review,
   .bc-ingestion-review__status--needs-review {
-    background-color: color-mix(in srgb, var(--ui-beancount-review) 15%, transparent);
+    background-color: color-mix(
+      in srgb,
+      var(--ui-beancount-review) 15%,
+      transparent
+    );
   }
 
   .bc-ingestion-review__count--duplicate,
   .bc-ingestion-review__status--duplicate {
-    background-color: color-mix(in srgb, var(--ui-beancount-negative) 15%, transparent);
+    background-color: color-mix(
+      in srgb,
+      var(--ui-beancount-negative) 15%,
+      transparent
+    );
   }
 
   .bc-ingestion-review__status--held {
-    background-color: color-mix(in srgb, var(--ui-beancount-held) 20%, transparent);
+    background-color: color-mix(
+      in srgb,
+      var(--ui-beancount-held) 20%,
+      transparent
+    );
   }
 
   .bc-ingestion-review__status--accepted {
-    background-color: color-mix(in srgb, var(--ui-beancount-accepted) 15%, transparent);
+    background-color: color-mix(
+      in srgb,
+      var(--ui-beancount-accepted) 15%,
+      transparent
+    );
   }
 
   .bc-ingestion-review__table-header {
@@ -491,7 +597,11 @@
   .bc-ingestion-review__group {
     overflow: hidden;
     border-radius: var(--radius-2xl);
-    background-color: color-mix(in srgb, var(--ui-beancount-surface-muted) 80%, transparent);
+    background-color: color-mix(
+      in srgb,
+      var(--ui-beancount-surface-muted) 80%,
+      transparent
+    );
   }
 
   .bc-ingestion-review__group-header {

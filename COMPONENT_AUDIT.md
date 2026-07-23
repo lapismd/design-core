@@ -284,7 +284,8 @@ No filesystem, ledger, or route access — props and callbacks only.
 - `ImportMappingTable` — controlled, presentation-only import mapping table
   with categorized/uncategorized tabs over forms `FilterCommandPicker`
 - `IngestionReviewTable` — model-driven queue for grouped import proposals
-  with selection, disclosure, and forms `SegmentedControl` filters
+  with selection, disclosure, forms `SegmentedControl` filters, and a
+  callback-only Fava Records no-imports panel
 - `HoldingsTable` — controlled Fava-style holdings display, with account
   avatars, locally sortable display columns, and `PagePagination`
 - `IntervalTreeTable` — display-model-driven multi-period account comparison

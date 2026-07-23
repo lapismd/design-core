@@ -74,6 +74,7 @@
   let filter = $state<"review" | "ready">("review");
   let selectedIds = $state<string[]>([]);
   let openedTitle = $state("");
+  let emptyActionCount = $state(0);
   const groups = $derived(filter === "review" ? reviewGroups : readyGroups);
 </script>
 
@@ -121,6 +122,37 @@
         {openedTitle
           ? `Opened ${openedTitle}`
           : `${selectedIds.length} proposal${selectedIds.length === 1 ? "" : "s"} selected`}
+      </output>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Frames the Fava Records empty state"
+  play={async ({ canvas }) => {
+    await expect(
+      canvas.getByRole("heading", { name: "No imports to review" }),
+    ).toBeVisible();
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Open Accounts" }),
+    );
+    await expect(canvas.getByRole("status")).toHaveTextContent(
+      "Accounts requested",
+    );
+  }}
+>
+  {#snippet template()}
+    <div class="bc-ingestion-review-story">
+      <IngestionReviewTable
+        groups={[]}
+        counts={{ review: 0, ready: 0, duplicates: 0 }}
+        emptyVariant="fava-records"
+        onEmptyAction={() => {
+          emptyActionCount += 1;
+        }}
+      />
+      <output class="bc-ingestion-review-story__status" aria-live="polite">
+        {emptyActionCount ? "Accounts requested" : ""}
       </output>
     </div>
   {/snippet}
