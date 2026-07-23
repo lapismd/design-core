@@ -64,8 +64,7 @@
     onClosed?: () => void;
   } = $props();
 
-  const sectionTitleClass =
-    "text-xs font-semibold uppercase tracking-wide text-muted-foreground";
+  const sectionTitleClass = "bc-account-bulk-sheet__section-title";
 
   let openSections = $state<Record<"replace" | "duplicates", boolean>>({
     replace: true,
@@ -108,7 +107,7 @@
   <Sheet.Root {open} onOpenChange={handleOpenChange}>
     <Sheet.Content
       side="right"
-      class="flex w-full flex-col gap-0 p-0 sm:max-w-2xl [&>button.absolute]:hidden"
+      class="bc-account-bulk-sheet"
       data-account-bulk-action-sheet
       onOpenAutoFocus={(event) => {
         event.preventDefault();
@@ -116,27 +115,27 @@
       }}
     >
       <Sheet.Header
-        class="border-border flex h-11 shrink-0 flex-row items-center gap-2 space-y-0 border-b px-3 text-left"
+        class="bc-account-bulk-sheet__header"
       >
-        <div class="flex min-w-0 flex-1 items-center gap-1.5">
+        <div class="bc-account-bulk-sheet__heading">
           <Sheet.Title
             bind:ref={sheetTitleEl}
             tabindex={-1}
-            class="account-bulk-sheet-title min-w-0 truncate leading-none outline-none"
+            class="bc-account-bulk-sheet__title"
           >
             Bulk actions
           </Sheet.Title>
           <span
-            class="bg-muted text-muted-foreground inline-flex h-5 min-w-5 shrink-0 items-center justify-center rounded-full px-1.5 text-[11px] font-medium tabular-nums"
+            class="bc-account-bulk-sheet__count"
             >{recordCount}</span
           >
         </div>
-        <Sheet.Description class="sr-only">
+        <Sheet.Description class="bc-account-bulk-sheet__description">
           Bulk actions on {recordCount} selected record{recordCount === 1
             ? ""
             : "s"}.
         </Sheet.Description>
-        <div class="ml-auto flex shrink-0 items-center gap-1">
+        <div class="bc-account-bulk-sheet__actions">
           <Tooltip.Root>
             <Tooltip.Trigger>
               {#snippet child({ props })}
@@ -145,16 +144,22 @@
                   type="button"
                   variant="ghost"
                   size="icon"
-                  class="size-8"
+                  class="bc-account-bulk-sheet__icon-button"
                   aria-label={sectionsCollapsedAll
                     ? "Expand all"
                     : "Collapse all"}
                   onclick={toggleCollapseAll}
                 >
                   {#if sectionsCollapsedAll}
-                    <ChevronsUpDown class="size-4" aria-hidden="true" />
+                    <ChevronsUpDown
+                      class="bc-account-bulk-sheet__icon"
+                      aria-hidden="true"
+                    />
                   {:else}
-                    <ChevronsDownUp class="size-4" aria-hidden="true" />
+                    <ChevronsDownUp
+                      class="bc-account-bulk-sheet__icon"
+                      aria-hidden="true"
+                    />
                   {/if}
                 </Button>
               {/snippet}
@@ -168,11 +173,11 @@
               {#snippet child({ props })}
                 <Sheet.Close
                   {...props}
-                  class="text-muted-foreground hover:bg-accent hover:text-accent-foreground focus-visible:ring-ring inline-flex size-8 items-center justify-center rounded-md transition-colors focus-visible:ring-2 focus-visible:outline-none"
+                  class="bc-account-bulk-sheet__close"
                   aria-label="Close"
                 >
-                  <X class="size-4" aria-hidden="true" />
-                  <span class="sr-only">Close</span>
+                  <X class="bc-account-bulk-sheet__icon" aria-hidden="true" />
+                  <span class="bc-account-bulk-sheet__close-label">Close</span>
                 </Sheet.Close>
               {/snippet}
             </Tooltip.Trigger>
@@ -181,25 +186,25 @@
         </div>
       </Sheet.Header>
 
-      <div class="min-h-0 flex-1 overflow-y-auto px-3 py-3">
+      <div class="bc-account-bulk-sheet__body">
         {#if errors.length}
-          <Alert.Root variant="destructive" class="mb-3">
+          <Alert.Root variant="destructive" class="bc-account-bulk-sheet__alert">
             <CircleAlert />
             <Alert.Title>Could not apply bulk action</Alert.Title>
-            <Alert.Description class="whitespace-pre-wrap"
+            <Alert.Description class="bc-account-bulk-sheet__alert-description"
               >{errors.join("\n")}</Alert.Description
             >
           </Alert.Root>
         {/if}
 
         {#if status}
-          <p class="text-muted-foreground mb-3 text-sm" role="status">
+          <p class="bc-account-bulk-sheet__status" role="status">
             {status}
           </p>
         {/if}
 
-        <div class="account-bulk-form flex min-w-0 flex-col gap-6 pl-6">
-          <section class="flex flex-col gap-2">
+        <div class="bc-account-bulk-sheet__form">
+          <section class="bc-account-bulk-sheet__section">
             <FormSectionHeader
               title="Replace"
               index={0}
@@ -244,7 +249,7 @@
                   </FormField>
                 </div>
                 {#if fromAccount && toAccount && fromAccount !== toAccount}
-                  <p class="text-muted-foreground text-xs">
+                  <p class="bc-account-bulk-sheet__summary">
                     {replacement.changedCount} record{replacement.changedCount ===
                     1
                       ? ""
@@ -263,7 +268,7 @@
             {/if}
           </section>
 
-          <section class="flex flex-col gap-2">
+          <section class="bc-account-bulk-sheet__section">
             <FormSectionHeader
               title="Delete duplicates"
               index={1}
@@ -278,7 +283,7 @@
             />
             {#if isSectionOpen("duplicates")}
               <div class="account-bulk-section-body">
-                <p class="text-muted-foreground text-xs">
+                <p class="bc-account-bulk-sheet__summary">
                   {#if duplicates.groupCount === 0}
                     No duplicates found in the selection. Matching uses a source
                     fingerprint when present, otherwise the record identity and
@@ -313,7 +318,154 @@
 </Tooltip.Provider>
 
 <style>
-  .account-bulk-form :global(.ui-structured-form) {
+  :global(.bc-account-bulk-sheet) {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    gap: 0;
+    padding: 0;
+  }
+
+  :global(.bc-account-bulk-sheet > button.absolute) {
+    display: none;
+  }
+
+  :global(.bc-account-bulk-sheet__header) {
+    display: flex;
+    height: 2.75rem;
+    flex-shrink: 0;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--ui-beancount-space-2);
+    border-block-end: 1px solid var(--ui-beancount-border);
+    padding-inline: var(--ui-beancount-space-3);
+    text-align: left;
+  }
+
+  .bc-account-bulk-sheet__heading {
+    display: flex;
+    min-width: 0;
+    flex: 1;
+    align-items: center;
+    gap: calc(var(--ui-beancount-space-3) / 2);
+  }
+
+  :global(.bc-account-bulk-sheet__title) {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: 1;
+    outline: none;
+  }
+
+  .bc-account-bulk-sheet__count {
+    display: inline-flex;
+    min-width: var(--ui-beancount-space-5);
+    height: var(--ui-beancount-space-5);
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background-color: var(--ui-beancount-surface-muted);
+    padding-inline: calc(var(--ui-beancount-space-3) / 2);
+    color: var(--ui-beancount-muted-foreground);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
+
+  :global(.bc-account-bulk-sheet__description),
+  .bc-account-bulk-sheet__close-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .bc-account-bulk-sheet__actions {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: var(--ui-beancount-space-1);
+    margin-inline-start: auto;
+  }
+
+  :global(.bc-account-bulk-sheet__icon-button),
+  :global(.bc-account-bulk-sheet__close) {
+    display: inline-flex;
+    width: var(--ui-beancount-compact-control-height);
+    height: var(--ui-beancount-compact-control-height);
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-md);
+    color: var(--ui-beancount-muted-foreground);
+    outline: none;
+    transition: color 150ms ease, background-color 150ms ease;
+  }
+
+  :global(.bc-account-bulk-sheet__icon-button:hover),
+  :global(.bc-account-bulk-sheet__close:hover) {
+    background-color: var(--accent);
+    color: var(--accent-foreground);
+  }
+
+  :global(.bc-account-bulk-sheet__icon-button:focus-visible),
+  :global(.bc-account-bulk-sheet__close:focus-visible) {
+    outline: 2px solid var(--ui-beancount-focus-ring);
+  }
+
+  :global(.bc-account-bulk-sheet__icon) {
+    width: var(--ui-beancount-space-4);
+    height: var(--ui-beancount-space-4);
+  }
+
+  .bc-account-bulk-sheet__body {
+    min-height: 0;
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--ui-beancount-space-3);
+  }
+
+  :global(.bc-account-bulk-sheet__alert),
+  .bc-account-bulk-sheet__status {
+    margin-block-end: var(--ui-beancount-space-3);
+  }
+
+  :global(.bc-account-bulk-sheet__alert-description) {
+    white-space: pre-wrap;
+  }
+
+  .bc-account-bulk-sheet__status,
+  .bc-account-bulk-sheet__summary {
+    color: var(--ui-beancount-muted-foreground);
+  }
+
+  .bc-account-bulk-sheet__status {
+    font-size: 0.875rem;
+  }
+
+  .bc-account-bulk-sheet__form {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: calc(var(--ui-beancount-space-3) * 2);
+    padding-inline-start: calc(var(--ui-beancount-space-3) * 2);
+  }
+
+  .bc-account-bulk-sheet__section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ui-beancount-space-2);
+  }
+
+  .bc-account-bulk-sheet__summary {
+    font-size: 0.75rem;
+  }
+
+  .bc-account-bulk-sheet__form :global(.ui-structured-form) {
     min-width: 0;
   }
 
@@ -325,12 +477,23 @@
     padding-left: 0.5rem;
   }
 
-  :global(.account-bulk-sheet-title),
-  .account-bulk-form :global(.cv-form-section-title-toggle),
-  .account-bulk-form :global(.cv-form-section-title-row h3) {
+  :global(.bc-account-bulk-sheet__title),
+  :global(.bc-account-bulk-sheet__section-title),
+  .bc-account-bulk-sheet__form :global(.cv-form-section-title-toggle),
+  .bc-account-bulk-sheet__form :global(.cv-form-section-title-row h3) {
     font-size: 0.75rem;
     font-weight: 600;
     letter-spacing: 0.05em;
     text-transform: uppercase;
+  }
+
+  :global(.bc-account-bulk-sheet__section-title) {
+    color: var(--ui-beancount-muted-foreground);
+  }
+
+  @media (min-width: 640px) {
+    :global(.bc-account-bulk-sheet) {
+      max-width: 42rem;
+    }
   }
 </style>

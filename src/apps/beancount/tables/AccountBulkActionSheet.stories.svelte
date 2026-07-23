@@ -54,9 +54,7 @@
   }}
 >
   {#snippet template()}
-    <div
-      class="bg-background h-[42rem] overflow-hidden rounded-xl border shadow-sm"
-    >
+    <div class="bc-account-bulk-sheet-story">
       <AccountBulkActionSheet
         bind:open
         recordCount={6}
@@ -82,3 +80,14 @@
     </div>
   {/snippet}
 </Story>
+
+<style>
+  .bc-account-bulk-sheet-story {
+    height: 42rem;
+    overflow: hidden;
+    border: 1px solid var(--ui-beancount-border);
+    border-radius: var(--ui-beancount-radius-panel);
+    background-color: var(--ui-beancount-surface);
+    box-shadow: var(--ui-beancount-shadow-panel);
+  }
+</style>
