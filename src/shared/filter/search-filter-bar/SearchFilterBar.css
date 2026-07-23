@@ -132,50 +132,106 @@
   padding: 0;
 }
 
-.cv-search-filter-bar__editor .cm-tooltip-autocomplete {
-  border-color: var(--ui-form-border);
-  border-radius: 0.5rem;
-  background: var(--ui-form-background);
-  color: var(--ui-form-foreground);
-  box-shadow: 0 0.75rem 1.5rem
-    color-mix(in srgb, var(--foreground) 14%, transparent);
+/*
+ * Filter-query completions use CodeMirror’s tooltip DOM, but should read like
+ * shadcn Command / Popover (tokens from theme.css). CM’s baseTheme forces
+ * monospace + blue selected rows — override with matching specificity / !important.
+ */
+.cv-search-filter-bar__editor .cm-tooltip.cm-tooltip-autocomplete {
+  z-index: 80;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) * 1.4);
+  background: var(--popover);
+  color: var(--popover-foreground);
+  box-shadow:
+    0 4px 6px -1px color-mix(in srgb, var(--foreground) 10%, transparent),
+    0 2px 4px -2px color-mix(in srgb, var(--foreground) 8%, transparent);
+  padding: var(--spacing, 0.25rem);
 }
 
-.cv-search-filter-bar__editor .cm-tooltip-autocomplete ul {
+.cv-search-filter-bar__editor .cm-tooltip.cm-tooltip-autocomplete > ul {
   min-width: min(18rem, 88vw);
   max-width: min(26rem, 88vw);
-  margin: 0;
-  padding: 0.2rem;
+  max-height: min(18rem, 45vh);
+  margin: 0 !important;
+  padding: 0 !important;
   list-style: none;
+  font-family: inherit !important;
+  font-size: var(--text-sm, 0.875rem);
+  line-height: var(--text-sm--line-height, 1.25rem);
+  white-space: nowrap;
 }
 
-.cv-search-filter-bar__editor .cm-tooltip-autocomplete ul > li {
+.cv-search-filter-bar__editor .cm-tooltip.cm-tooltip-autocomplete ul > li {
   display: flex;
   min-width: 0;
-  align-items: baseline;
-  gap: 0;
-  border-radius: 0.3rem;
-  padding: 0.3rem 0.45rem;
+  align-items: center;
+  gap: calc(var(--spacing, 0.25rem) * 2);
+  border-radius: calc(var(--radius) * 0.6);
+  padding: calc(var(--spacing, 0.25rem) * 1.5)
+    calc(var(--spacing, 0.25rem) * 2) !important;
   color: inherit;
+  cursor: pointer;
+  font-family: inherit !important;
+  font-size: inherit;
+  font-weight: 400;
+  line-height: inherit !important;
+  outline: none;
 }
 
-.cv-search-filter-bar__editor .cm-tooltip-autocomplete ul > li[aria-selected] {
-  background: var(--ui-form-selection);
-  color: var(--ui-form-accent);
+.cv-search-filter-bar__editor
+  .cm-tooltip.cm-tooltip-autocomplete
+  ul
+  > li:hover,
+.cv-search-filter-bar__editor
+  .cm-tooltip.cm-tooltip-autocomplete
+  ul
+  > li:focus-visible {
+  background: var(--accent) !important;
+  color: var(--accent-foreground) !important;
+}
+
+.cv-search-filter-bar__editor
+  .cm-tooltip.cm-tooltip-autocomplete
+  ul
+  > li[aria-selected],
+.cv-search-filter-bar__editor
+  .cm-editor
+  .cm-tooltip-autocomplete
+  ul
+  li[aria-selected] {
+  background: var(--accent) !important;
+  color: var(--accent-foreground) !important;
+}
+
+.cv-search-filter-bar__editor
+  .cm-tooltip.cm-tooltip-autocomplete
+  ul
+  > completion-section {
+  border-bottom: 1px solid var(--border);
+  color: var(--muted-foreground);
+  font-size: var(--text-xs, 0.75rem);
+  font-weight: 500;
+  opacity: 1;
+  padding: calc(var(--spacing, 0.25rem) * 1.5)
+    calc(var(--spacing, 0.25rem) * 2) !important;
 }
 
 .cv-search-filter-bar__editor .cm-completionLabel {
   min-width: max-content;
-  padding-right: 0.75rem;
-  font-weight: 750;
+  padding-right: calc(var(--spacing, 0.25rem) * 3);
+  font-weight: 500;
 }
 
 .cv-search-filter-bar__editor .cm-completionDetail {
   min-width: 0;
-  margin-left: 0;
+  margin-left: auto;
   overflow: hidden;
-  color: var(--ui-form-muted);
+  color: var(--muted-foreground);
   font-style: normal;
+  font-size: var(--text-xs, 0.75rem);
+  letter-spacing: var(--tracking-widest, 0.05em);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -193,6 +249,7 @@
   width: 100%;
   max-height: none !important;
   overflow: visible !important;
+  font-family: inherit !important;
 }
 
 .cv-search-filter-bar__autocomplete-scrollbar {

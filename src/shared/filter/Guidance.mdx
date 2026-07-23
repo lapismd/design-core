@@ -26,7 +26,9 @@ Offline agent summary: `pnpm ui guide layers`. Catalog component:
 
 - **`plain` (default)** — normal `<input type="search">` for free-text search
 - **`filter-query`** — single-line CodeMirror editor with syntax highlighting;
-  pass `filterSyntax` for autocomplete and the expandable syntax help panel
+  pass `filterSyntax` for autocomplete and the expandable syntax help panel.
+  Completion tooltips reuse shadcn Command / Popover tokens (`--popover`,
+  `--accent`, `--radius`, …), not CodeMirror’s default monospace/blue chrome.
 
 ## Filter query language
 
