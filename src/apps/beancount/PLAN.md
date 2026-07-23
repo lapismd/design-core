@@ -78,7 +78,7 @@ Tailwind utilities before a `fava-beta` adapter consumes the app layer.
 | ------------ | ---------------: | --------------------------------------------------------------------------------------- | ----------------------------------------------- |
 | `charts`     |               73 | Chart containers and legends remain app-specific; use normalized chart/surface tokens   | ⬜                                              |
 | `dashboard`  |              149 | Reuse Card, Button, Badge, and Table; keep financial layout app-specific                | ⬜                                              |
-| `feedback`   |              205 | Replace hand-built loading, status, and empty states with Skeleton, Alert, Empty, Badge | 🟡 Resource preview and validation states done  |
+| `feedback`   |              205 | Replace hand-built loading, status, and empty states with Skeleton, Alert, Empty, Badge | ✅ primitives + skeletons; guard passes         |
 | `layout`     |               81 | Reuse ScrollArea, Resizable, Separator, and shared shell controls                       | ✅ semantic selectors + focused story tests     |
 | `navigation` |              124 | Reuse Button, Tabs, Tooltip, Sidebar/ScrollArea where suitable                          | ✅ all source + stories semantic; focused tests |
 | `pickers`    |               50 | Reuse Input, Popover, Command, Avatar, and Button                                       | ⬜                                              |
@@ -91,7 +91,9 @@ Tailwind utilities before a `fava-beta` adapter consumes the app layer.
    chart semantics, and financial status; do not duplicate raw theme values.
 2. Replace every Tailwind utility class in components **and stories** with a
    shared shadcn component or component-local semantic selector.
-3. Add a static guard for `src/apps/beancount` so utility strings cannot return.
+3. ✅ `pnpm beancount:tailwind:check [family]` rejects utility strings in
+   components and stories. It becomes a passing all-app gate once every
+   migration row is complete.
 4. Retake reviewed component baselines only after each family passes its story
    and a11y tests; Fava reference PNGs remain untouched.
 
