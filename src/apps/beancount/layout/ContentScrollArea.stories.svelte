@@ -36,12 +36,11 @@
 >
   {#snippet template()}
     <section
-      class="bg-card h-48 max-w-xl overflow-hidden rounded-lg border"
+      class="bc-content-scroll-area-story"
       aria-label="Ledger source preview"
     >
-      <ContentScrollArea contentClass="p-4">
-        <pre
-          class="text-foreground m-0 font-mono text-xs leading-6">{Array.from(
+      <ContentScrollArea contentClass="bc-content-scroll-area-story__content">
+        <pre class="bc-content-scroll-area-story__source">{Array.from(
             { length: 4 },
             () => ledgerLines,
           )
@@ -51,3 +50,26 @@
     </section>
   {/snippet}
 </Story>
+
+<style>
+  .bc-content-scroll-area-story {
+    max-width: 36rem;
+    height: 12rem;
+    overflow: hidden;
+    border: 1px solid var(--ui-beancount-border);
+    border-radius: var(--radius-lg);
+    background: var(--card);
+  }
+
+  :global(.bc-content-scroll-area-story__content) {
+    padding: var(--ui-beancount-space-4);
+  }
+
+  .bc-content-scroll-area-story__source {
+    margin: 0;
+    color: var(--ui-beancount-foreground);
+    font-family: var(--studio-font-mono);
+    font-size: var(--text-xs);
+    line-height: 1.5rem;
+  }
+</style>

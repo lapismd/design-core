@@ -17,9 +17,21 @@
 
 <ScrollArea.Root
   data-content-scroll-area
-  class={cn("h-full min-h-0 min-w-0", className)}
+  class={cn("bc-content-scroll-area", className)}
 >
-  <div class={cn("min-w-0", contentClass)}>
+  <div class={cn("bc-content-scroll-area__content", contentClass)}>
     {@render children?.()}
   </div>
 </ScrollArea.Root>
+
+<style>
+  :global(.bc-content-scroll-area) {
+    min-width: 0;
+    min-height: 0;
+    height: 100%;
+  }
+
+  .bc-content-scroll-area__content {
+    min-width: 0;
+  }
+</style>

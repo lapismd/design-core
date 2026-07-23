@@ -19,22 +19,17 @@
   } = $props();
 </script>
 
-<div class="flex items-center gap-2 group-data-[collapsible=icon]:hidden">
-  <div
-    class="bg-primary text-primary-foreground grid size-8 place-items-center rounded-md font-semibold"
-    aria-hidden="true"
-  >
-    B
-  </div>
-  <div class="min-w-0 flex-1">
-    <p class="truncate text-sm leading-tight font-semibold">Beancount Studio</p>
-    <p class="text-muted-foreground truncate text-xs">{projectName}</p>
+<div class="bc-studio-shell-header">
+  <div class="bc-studio-shell-header__brand" aria-hidden="true">B</div>
+  <div class="bc-studio-shell-header__identity">
+    <p class="bc-studio-shell-header__title">Beancount Studio</p>
+    <p class="bc-studio-shell-header__project">{projectName}</p>
   </div>
   <Button
     type="button"
     variant="ghost"
     size="icon"
-    class="size-8 shrink-0"
+    class="bc-studio-shell-header__settings"
     aria-label="Ledger settings"
     title="Ledger settings"
     aria-pressed={settingsOpen}
@@ -47,7 +42,7 @@
       type="button"
       variant="ghost"
       size="icon"
-      class="size-8 md:hidden"
+      class="bc-studio-shell-header__close"
       aria-label="Close sidebar"
       title="Close sidebar"
       onclick={onCloseSidebar}
@@ -56,3 +51,72 @@
     </Button>
   {/if}
 </div>
+
+<style>
+  .bc-studio-shell-header {
+    display: flex;
+    align-items: center;
+    gap: var(--ui-beancount-space-2);
+  }
+
+  .bc-studio-shell-header__brand {
+    display: grid;
+    width: var(--ui-beancount-compact-control-height);
+    height: var(--ui-beancount-compact-control-height);
+    flex: none;
+    border-radius: var(--radius-md);
+    background: var(--primary);
+    color: var(--primary-foreground);
+    font-weight: var(--font-weight-semibold);
+    place-items: center;
+  }
+
+  .bc-studio-shell-header__identity {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .bc-studio-shell-header__title,
+  .bc-studio-shell-header__project {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .bc-studio-shell-header__title {
+    margin: 0;
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-semibold);
+    line-height: 1.25;
+  }
+
+  .bc-studio-shell-header__project {
+    margin: 0;
+    color: var(--ui-beancount-muted-foreground);
+    font-size: var(--text-xs);
+  }
+
+  :global(.bc-studio-shell-header__settings),
+  :global(.bc-studio-shell-header__close) {
+    width: var(--ui-beancount-compact-control-height);
+    height: var(--ui-beancount-compact-control-height);
+  }
+
+  :global(.bc-studio-shell-header__settings) {
+    flex: none;
+  }
+
+  :global(.bc-studio-shell-header) {
+    display: flex;
+  }
+
+  :global([data-collapsible="icon"] .bc-studio-shell-header) {
+    display: none;
+  }
+
+  @media (min-width: 48rem) {
+    :global(.bc-studio-shell-header__close) {
+      display: none;
+    }
+  }
+</style>

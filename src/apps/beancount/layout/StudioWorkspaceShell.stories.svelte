@@ -71,7 +71,7 @@
   }}
 >
   {#snippet template()}
-    <div class="border-border h-[42rem] overflow-hidden rounded-xl border">
+    <div class="bc-studio-workspace-shell-story">
       <StudioWorkspaceShell
         pageTitle={activeWorkspaceView}
         height="container"
@@ -92,12 +92,15 @@
       >
         {#snippet sidebarTabContent(tab)}
           {#if tab === "workspace"}
-            <nav class="grid gap-1 px-2" aria-label="Ledger workspace">
+            <nav
+              class="bc-studio-workspace-shell-story__workspace-navigation"
+              aria-label="Ledger workspace"
+            >
               {#each ["Overview", "Transactions", "Accounts"] as item}
                 <Button
                   type="button"
                   variant={activeWorkspaceView === item ? "secondary" : "ghost"}
-                  class="justify-start"
+                  class="bc-studio-workspace-shell-story__workspace-item"
                   aria-current={activeWorkspaceView === item
                     ? "page"
                     : undefined}
@@ -110,7 +113,7 @@
               {/each}
             </nav>
           {:else if tab === "search"}
-            <div class="text-muted-foreground px-2 text-sm">
+            <div class="bc-studio-workspace-shell-story__sidebar-copy">
               Search filters and results are supplied by the application.
             </div>
           {/if}
@@ -133,29 +136,35 @@
         {#snippet status()}
           {#if syncInProgress}
             <div
-              class="border-border bg-muted/40 text-muted-foreground flex items-center gap-2 border-b px-3 py-2 text-xs"
+              class="bc-studio-workspace-shell-story__sync-status"
               role="status"
             >
-              <span class="bg-primary size-2 animate-pulse rounded-full"></span>
+              <span class="bc-studio-workspace-shell-story__sync-indicator"
+              ></span>
               Syncing {currentProject?.name}…
             </div>
           {/if}
         {/snippet}
 
         <section
-          class="h-full overflow-auto p-5"
+          class="bc-studio-workspace-shell-story__content"
           aria-label={`${activeWorkspaceView} content`}
         >
-          <p class="text-muted-foreground text-sm">
+          <p class="bc-studio-workspace-shell-story__detail">
             {currentProject?.detail}
           </p>
-          <h1 class="mt-1 text-xl font-semibold">{activeWorkspaceView}</h1>
-          <div class="border-border mt-5 rounded-lg border p-4 text-sm">
+          <h1 class="bc-studio-workspace-shell-story__title">
+            {activeWorkspaceView}
+          </h1>
+          <div class="bc-studio-workspace-shell-story__route-content">
             This is application-owned route content.
           </div>
         </section>
       </StudioWorkspaceShell>
-      <output class="sr-only" aria-live="polite">
+      <output
+        class="bc-studio-workspace-shell-story__announcement"
+        aria-live="polite"
+      >
         Sidebar: {sidebarTabs.find((tab) => tab.id === activeSidebarTab)
           ?.label}. Project: {currentProject?.name}. Open project requested {addRequests}
         {addRequests === 1 ? "time" : "times"}.
@@ -166,7 +175,7 @@
 
 <Story name="Explains an empty project workspace">
   {#snippet template()}
-    <div class="border-border h-[42rem] overflow-hidden rounded-xl border">
+    <div class="bc-studio-workspace-shell-story">
       <StudioWorkspaceShell
         pageTitle="Welcome"
         height="container"
@@ -178,12 +187,113 @@
         emptyProjectLabel="No projects have been opened yet."
         onAddProject={() => {}}
       >
-        <div
-          class="text-muted-foreground grid h-full place-items-center p-5 text-sm"
-        >
+        <div class="bc-studio-workspace-shell-story__empty">
           Open a ledger project to start working.
         </div>
       </StudioWorkspaceShell>
     </div>
   {/snippet}
 </Story>
+
+<style>
+  .bc-studio-workspace-shell-story {
+    height: 42rem;
+    overflow: hidden;
+    border: 1px solid var(--ui-beancount-border);
+    border-radius: var(--ui-beancount-radius-panel);
+  }
+
+  .bc-studio-workspace-shell-story__workspace-navigation {
+    display: grid;
+    gap: var(--ui-beancount-space-1);
+    padding-inline: var(--ui-beancount-space-2);
+  }
+
+  :global(.bc-studio-workspace-shell-story__workspace-item) {
+    justify-content: flex-start;
+  }
+
+  .bc-studio-workspace-shell-story__sidebar-copy {
+    padding-inline: var(--ui-beancount-space-2);
+    color: var(--ui-beancount-muted-foreground);
+    font-size: var(--text-sm);
+  }
+
+  .bc-studio-workspace-shell-story__sync-status {
+    display: flex;
+    align-items: center;
+    gap: var(--ui-beancount-space-2);
+    border-bottom: 1px solid var(--ui-beancount-border);
+    background: color-mix(
+      in srgb,
+      var(--ui-beancount-surface-muted) 40%,
+      transparent
+    );
+    color: var(--ui-beancount-muted-foreground);
+    padding: var(--ui-beancount-space-2) var(--ui-beancount-space-3);
+    font-size: var(--text-xs);
+  }
+
+  .bc-studio-workspace-shell-story__sync-indicator {
+    width: var(--ui-beancount-space-2);
+    height: var(--ui-beancount-space-2);
+    border-radius: 999px;
+    background: var(--primary);
+    animation: bc-studio-workspace-shell-story-pulse 1s ease-in-out infinite
+      alternate;
+  }
+
+  .bc-studio-workspace-shell-story__content {
+    height: 100%;
+    overflow: auto;
+    padding: var(--ui-beancount-space-5);
+  }
+
+  .bc-studio-workspace-shell-story__detail,
+  .bc-studio-workspace-shell-story__title {
+    margin: 0;
+  }
+
+  .bc-studio-workspace-shell-story__detail {
+    color: var(--ui-beancount-muted-foreground);
+    font-size: var(--text-sm);
+  }
+
+  .bc-studio-workspace-shell-story__title {
+    margin-block-start: var(--ui-beancount-space-1);
+    font-size: var(--text-xl);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .bc-studio-workspace-shell-story__route-content {
+    margin-block-start: var(--ui-beancount-space-5);
+    border: 1px solid var(--ui-beancount-border);
+    border-radius: var(--radius-lg);
+    padding: var(--ui-beancount-space-4);
+    font-size: var(--text-sm);
+  }
+
+  .bc-studio-workspace-shell-story__announcement {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .bc-studio-workspace-shell-story__empty {
+    display: grid;
+    height: 100%;
+    color: var(--ui-beancount-muted-foreground);
+    padding: var(--ui-beancount-space-5);
+    font-size: var(--text-sm);
+    place-items: center;
+  }
+
+  @keyframes bc-studio-workspace-shell-story-pulse {
+    to {
+      opacity: 0.4;
+    }
+  }
+</style>

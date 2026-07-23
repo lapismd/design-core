@@ -34,9 +34,7 @@
   }}
 >
   {#snippet template()}
-    <div
-      class="bg-sidebar text-sidebar-foreground max-w-sm rounded-xl border p-3"
-    >
+    <div class="bc-studio-shell-header-story">
       <StudioShellHeader
         projectName="northstar-ledger"
         {settingsOpen}
@@ -45,9 +43,26 @@
           settingsOpen = !settingsOpen;
         }}
       />
-      <output class="text-sidebar-foreground mt-3 block text-sm">
+      <output class="bc-studio-shell-header-story__status">
         Ledger settings {settingsOpen ? "open" : "closed"}
       </output>
     </div>
   {/snippet}
 </Story>
+
+<style>
+  .bc-studio-shell-header-story {
+    max-width: 24rem;
+    border: 1px solid var(--ui-beancount-border);
+    border-radius: var(--ui-beancount-radius-panel);
+    background: var(--ui-beancount-sidebar);
+    color: var(--ui-beancount-sidebar-foreground);
+    padding: var(--ui-beancount-space-3);
+  }
+
+  .bc-studio-shell-header-story__status {
+    display: block;
+    margin-block-start: var(--ui-beancount-space-3);
+    font-size: var(--text-sm);
+  }
+</style>

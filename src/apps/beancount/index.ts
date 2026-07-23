@@ -1,4 +1,5 @@
 /** Beancount-specific UI components. Domain surfaces for Storybook / app reuse. */
+export * from "./beancount.tokens.js";
 export * from "./charts";
 export * from "./dashboard";
 export * from "./feedback";

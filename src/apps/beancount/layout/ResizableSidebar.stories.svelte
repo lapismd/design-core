@@ -32,20 +32,61 @@
   }}
 >
   {#snippet template()}
-    <div
-      class="bg-background flex h-72 max-w-3xl overflow-hidden rounded-xl border"
-    >
+    <div class="bc-resizable-sidebar-story">
       <ResizableSidebar bind:width>
-        <div class="flex h-full flex-col gap-3 p-4">
-          <p class="text-sm font-semibold">Northstar Ledger</p>
-          <p class="text-muted-foreground text-sm">Workspace navigation</p>
+        <div class="bc-resizable-sidebar-story__sidebar-content">
+          <p class="bc-resizable-sidebar-story__title">Northstar Ledger</p>
+          <p class="bc-resizable-sidebar-story__detail">Workspace navigation</p>
         </div>
       </ResizableSidebar>
-      <div
-        class="text-muted-foreground flex min-w-0 flex-1 items-center justify-center p-6 text-sm"
-      >
+      <div class="bc-resizable-sidebar-story__workspace">
         <output aria-live="polite">Sidebar width: {width} pixels</output>
       </div>
     </div>
   {/snippet}
 </Story>
+
+<style>
+  .bc-resizable-sidebar-story {
+    display: flex;
+    max-width: 48rem;
+    height: 18rem;
+    overflow: hidden;
+    border: 1px solid var(--ui-beancount-border);
+    border-radius: var(--ui-beancount-radius-panel);
+    background: var(--ui-beancount-surface);
+  }
+
+  .bc-resizable-sidebar-story__sidebar-content {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    gap: var(--ui-beancount-space-3);
+    padding: var(--ui-beancount-space-4);
+  }
+
+  .bc-resizable-sidebar-story__title,
+  .bc-resizable-sidebar-story__detail {
+    margin: 0;
+    font-size: var(--text-sm);
+  }
+
+  .bc-resizable-sidebar-story__title {
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .bc-resizable-sidebar-story__detail,
+  .bc-resizable-sidebar-story__workspace {
+    color: var(--ui-beancount-muted-foreground);
+  }
+
+  .bc-resizable-sidebar-story__workspace {
+    display: flex;
+    min-width: 0;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    padding: calc(var(--ui-beancount-space-3) * 2);
+    font-size: var(--text-sm);
+  }
+</style>

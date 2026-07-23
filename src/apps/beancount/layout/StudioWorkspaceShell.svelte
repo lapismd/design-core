@@ -85,16 +85,16 @@
 </script>
 
 <Sidebar.Provider
-  class={`${height === "viewport" ? "h-screen" : "h-full"} overflow-hidden`}
+  class={height === "viewport"
+    ? "bc-studio-workspace-shell bc-studio-workspace-shell--viewport"
+    : "bc-studio-workspace-shell"}
 >
   <AppShell {pageTitle} {height} hasSidebar>
     <svelte:fragment slot="sidebar">
       <Sidebar.Root collapsible="icon">
-        <div class="relative flex h-full min-h-0 flex-col">
-          <div
-            class="flex min-h-0 flex-1 flex-col group-data-[collapsible=icon]:hidden"
-          >
-            <Sidebar.Header class="gap-3">
+        <div class="bc-studio-workspace-shell__sidebar">
+          <div class="bc-studio-workspace-shell__expanded-sidebar">
+            <Sidebar.Header class="bc-studio-workspace-shell__sidebar-header">
               <StudioShellHeader
                 {projectName}
                 {settingsOpen}
@@ -116,8 +116,8 @@
                       variant="ghost"
                       size="icon"
                       class={activeSidebarTab === tab.id
-                        ? "border-sidebar-border bg-background text-sidebar-accent-foreground hover:bg-background h-8 w-full border shadow-sm"
-                        : "text-muted-foreground hover:text-sidebar-foreground h-8 w-full border border-transparent"}
+                        ? "bc-studio-workspace-shell__sidebar-tab bc-studio-workspace-shell__sidebar-tab--active"
+                        : "bc-studio-workspace-shell__sidebar-tab"}
                       aria-label={tab.label}
                       aria-pressed={activeSidebarTab === tab.id}
                       title={tab.label}
@@ -131,7 +131,10 @@
               {/if}
             </Sidebar.Header>
 
-            <Sidebar.Content class="px-2 pb-3" aria-label={ariaLabel}>
+            <Sidebar.Content
+              class="bc-studio-workspace-shell__sidebar-content"
+              aria-label={ariaLabel}
+            >
               {#if activeSidebarTab === projectTabId}
                 <ProjectSwitcher
                   {projects}
@@ -143,36 +146,34 @@
                   onAdd={onAddProject}
                 />
               {:else if sidebarTabContent}
-                <div class="flex min-h-0 flex-1 flex-col">
+                <div class="bc-studio-workspace-shell__sidebar-tab-content">
                   {@render sidebarTabContent(activeSidebarTab)}
                 </div>
               {:else}
-                <p class="text-muted-foreground px-2 text-sm">
+                <p class="bc-studio-workspace-shell__sidebar-empty">
                   Select a workspace section.
                 </p>
               {/if}
             </Sidebar.Content>
           </div>
 
-          <div
-            class="hidden h-full min-h-0 flex-col items-center gap-2 px-1.5 py-2 group-data-[collapsible=icon]:flex"
-          >
+          <div class="bc-studio-workspace-shell__collapsed-sidebar">
             <Sidebar.Trigger
-              class="size-8"
+              class="bc-studio-workspace-shell__expand-trigger"
               aria-label="Expand sidebar"
               title="Expand sidebar"
             >
               <ChevronRight aria-hidden="true" />
-              <span class="sr-only">Expand sidebar</span>
+              <span class="bc-studio-workspace-shell__visually-hidden">
+                Expand sidebar
+              </span>
             </Sidebar.Trigger>
             <Sidebar.Trigger
-              class="text-sidebar-foreground hover:border-sidebar-border hover:bg-sidebar-accent hover:text-sidebar-accent-foreground flex min-h-0 flex-1 items-center justify-center rounded-md border border-transparent px-1 py-2"
+              class="bc-studio-workspace-shell__project-rail"
               aria-label="Expand project rail"
               title={projectName}
             >
-              <span
-                class="max-h-full truncate text-[12px] font-semibold [writing-mode:vertical-rl]"
-              >
+              <span class="bc-studio-workspace-shell__project-rail-label">
                 {projectName}
               </span>
             </Sidebar.Trigger>
@@ -183,7 +184,7 @@
 
     <svelte:fragment slot="mobile-navigation-trigger">
       <Sidebar.Trigger
-        class="md:hidden"
+        class="bc-studio-workspace-shell__mobile-trigger"
         aria-label="Show navigation"
         title="Show navigation"
       />
@@ -191,7 +192,7 @@
 
     <svelte:fragment slot="desktop-sidebar-trigger">
       <Sidebar.Trigger
-        class="hidden size-8 md:inline-flex"
+        class="bc-studio-workspace-shell__desktop-trigger"
         aria-label="Collapse sidebar to project rail"
         title="Collapse sidebar"
       />
@@ -222,6 +223,40 @@
 </Sidebar.Provider>
 
 <style>
+  :global(.bc-studio-workspace-shell) {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  :global(.bc-studio-workspace-shell--viewport) {
+    height: 100vh;
+  }
+
+  .bc-studio-workspace-shell__sidebar {
+    position: relative;
+    display: flex;
+    min-height: 0;
+    height: 100%;
+    flex-direction: column;
+  }
+
+  .bc-studio-workspace-shell__expanded-sidebar {
+    display: flex;
+    min-height: 0;
+    flex: 1;
+    flex-direction: column;
+  }
+
+  :global(
+      [data-collapsible="icon"] .bc-studio-workspace-shell__expanded-sidebar
+    ) {
+    display: none;
+  }
+
+  :global(.bc-studio-workspace-shell__sidebar-header) {
+    gap: var(--ui-beancount-space-3);
+  }
+
   .studio-workspace-sidebar-tabs {
     display: grid;
     width: 100%;
@@ -229,10 +264,131 @@
       var(--studio-workspace-tab-count),
       minmax(0, 1fr)
     );
-    gap: 0.25rem;
-    border: 1px solid hsl(var(--sidebar-border));
-    border-radius: 0.375rem;
-    background: hsl(var(--sidebar-accent) / 0.5);
-    padding: 0.25rem;
+    gap: var(--ui-beancount-space-1);
+    border: 1px solid var(--ui-beancount-border);
+    border-radius: var(--radius-sm);
+    background: color-mix(
+      in srgb,
+      var(--ui-beancount-sidebar-accent) 50%,
+      transparent
+    );
+    padding: var(--ui-beancount-space-1);
+  }
+
+  :global(.bc-studio-workspace-shell__sidebar-tab) {
+    width: 100%;
+    height: var(--ui-beancount-compact-control-height);
+    border: 1px solid transparent;
+    color: var(--ui-beancount-muted-foreground);
+  }
+
+  :global(.bc-studio-workspace-shell__sidebar-tab:hover) {
+    color: var(--ui-beancount-sidebar-foreground);
+  }
+
+  :global(.bc-studio-workspace-shell__sidebar-tab--active),
+  :global(.bc-studio-workspace-shell__sidebar-tab--active:hover) {
+    border-color: var(--ui-beancount-border);
+    background: var(--ui-beancount-surface);
+    color: var(--ui-beancount-sidebar-accent-foreground);
+    box-shadow: var(--ui-beancount-shadow-panel);
+  }
+
+  :global(.bc-studio-workspace-shell__sidebar-content) {
+    padding-inline: var(--ui-beancount-space-2);
+    padding-block-end: var(--ui-beancount-space-3);
+  }
+
+  .bc-studio-workspace-shell__sidebar-tab-content {
+    display: flex;
+    min-height: 0;
+    flex: 1;
+    flex-direction: column;
+  }
+
+  .bc-studio-workspace-shell__sidebar-empty {
+    margin: 0;
+    padding-inline: var(--ui-beancount-space-2);
+    color: var(--ui-beancount-muted-foreground);
+    font-size: var(--text-sm);
+  }
+
+  .bc-studio-workspace-shell__collapsed-sidebar {
+    display: none;
+    min-height: 0;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--ui-beancount-space-2);
+    padding: var(--ui-beancount-space-2)
+      calc(var(--ui-beancount-space-2) * 0.75);
+  }
+
+  :global(
+      [data-collapsible="icon"] .bc-studio-workspace-shell__collapsed-sidebar
+    ) {
+    display: flex;
+  }
+
+  :global(.bc-studio-workspace-shell__expand-trigger) {
+    width: var(--ui-beancount-compact-control-height);
+    height: var(--ui-beancount-compact-control-height);
+  }
+
+  :global(.bc-studio-workspace-shell__project-rail) {
+    display: flex;
+    min-height: 0;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+    padding: var(--ui-beancount-space-2) var(--ui-beancount-space-1);
+    color: var(--ui-beancount-sidebar-foreground);
+  }
+
+  :global(.bc-studio-workspace-shell__project-rail:hover) {
+    border-color: var(--ui-beancount-border);
+    background: var(--ui-beancount-sidebar-accent);
+    color: var(--ui-beancount-sidebar-accent-foreground);
+  }
+
+  .bc-studio-workspace-shell__project-rail-label {
+    max-height: 100%;
+    overflow: hidden;
+    font-size: 0.75rem;
+    font-weight: var(--font-weight-semibold);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    writing-mode: vertical-rl;
+  }
+
+  .bc-studio-workspace-shell__visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  :global(.bc-studio-workspace-shell__mobile-trigger) {
+    display: inline-flex;
+  }
+
+  :global(.bc-studio-workspace-shell__desktop-trigger) {
+    display: none;
+  }
+
+  @media (min-width: 48rem) {
+    :global(.bc-studio-workspace-shell__mobile-trigger) {
+      display: none;
+    }
+
+    :global(.bc-studio-workspace-shell__desktop-trigger) {
+      display: inline-flex;
+      width: var(--ui-beancount-compact-control-height);
+      height: var(--ui-beancount-compact-control-height);
+    }
   }
 </style>

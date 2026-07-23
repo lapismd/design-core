@@ -79,7 +79,7 @@
 </script>
 
 <aside
-  class="border-sidebar-border bg-sidebar text-sidebar-foreground relative flex h-full min-h-0 shrink-0 flex-col border-r"
+  class="bc-resizable-sidebar"
   style={`width: ${width}px`}
   data-resizable-sidebar
 >
@@ -87,7 +87,7 @@
   <div
     role="slider"
     tabindex="0"
-    class="absolute top-4 -right-1.5 bottom-4 z-20 hidden w-3 cursor-col-resize items-stretch justify-center rounded-full bg-transparent outline-none md:flex"
+    class="bc-resizable-sidebar__handle"
     aria-label={ariaLabel}
     aria-orientation="horizontal"
     aria-valuemin={minWidth}
@@ -101,10 +101,61 @@
     onblur={() => (hovering = false)}
   >
     <span
-      class:bg-primary={resizing || hovering}
-      class:opacity-60={resizing || hovering}
-      class="my-2.5 w-px bg-transparent transition-colors"
+      class={resizing || hovering
+        ? "bc-resizable-sidebar__indicator bc-resizable-sidebar__indicator--active"
+        : "bc-resizable-sidebar__indicator"}
       aria-hidden="true"
     ></span>
   </div>
 </aside>
+
+<style>
+  .bc-resizable-sidebar {
+    position: relative;
+    display: flex;
+    min-height: 0;
+    height: 100%;
+    flex: none;
+    flex-direction: column;
+    border-inline-end: 1px solid var(--ui-beancount-border);
+    background: var(--ui-beancount-sidebar);
+    color: var(--ui-beancount-sidebar-foreground);
+  }
+
+  .bc-resizable-sidebar__handle {
+    position: absolute;
+    inset-block: var(--ui-beancount-space-4);
+    inset-inline-end: calc(var(--ui-beancount-space-2) * -0.75);
+    z-index: 20;
+    display: none;
+    width: calc(var(--spacing) * 3);
+    align-items: stretch;
+    justify-content: center;
+    border-radius: 999px;
+    outline: none;
+    cursor: col-resize;
+  }
+
+  .bc-resizable-sidebar__handle:focus-visible {
+    outline: 2px solid var(--ui-beancount-focus-ring);
+    outline-offset: 2px;
+  }
+
+  .bc-resizable-sidebar__indicator {
+    width: 1px;
+    margin-block: calc(var(--ui-beancount-space-2) * 1.25);
+    background: transparent;
+    transition: background-color 150ms ease;
+  }
+
+  .bc-resizable-sidebar__indicator--active {
+    background: var(--primary);
+    opacity: 0.6;
+  }
+
+  @media (min-width: 48rem) {
+    .bc-resizable-sidebar__handle {
+      display: flex;
+    }
+  }
+</style>

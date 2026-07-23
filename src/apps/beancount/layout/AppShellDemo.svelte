@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { Badge } from "@stevejuma/ui/shadcn/badge";
+  import { Button } from "@stevejuma/ui/shadcn/button";
   import AppShell from "./AppShell.svelte";
 
   const navigationItems = ["Overview", "Transactions", "Accounts", "Reports"];
@@ -11,97 +13,239 @@
   };
 </script>
 
-<div class="border-border h-[42rem] overflow-hidden rounded-lg border">
+<div class="bc-app-shell-demo">
   <AppShell pageTitle={activeView} height="container" hasSidebar>
     <svelte:fragment slot="sidebar">
-      <aside
-        aria-label="Ledger navigation"
-        class="border-sidebar-border bg-sidebar text-sidebar-foreground flex h-full w-64 shrink-0 flex-col border-r p-3"
-      >
-        <div class="border-sidebar-border border-b pb-3">
-          <p class="text-sm font-semibold">Northstar Ledger</p>
-          <p class="text-muted-foreground mt-1 text-xs">
+      <aside aria-label="Ledger navigation" class="bc-app-shell-demo__sidebar">
+        <div class="bc-app-shell-demo__sidebar-heading">
+          <p class="bc-app-shell-demo__sidebar-title">Northstar Ledger</p>
+          <p class="bc-app-shell-demo__sidebar-detail">
             personal-2026.beancount
           </p>
         </div>
-        <nav class="mt-4 flex flex-col gap-1" aria-label="Workspace">
+        <nav class="bc-app-shell-demo__navigation" aria-label="Workspace">
           {#each navigationItems as item}
-            <button
+            <Button
               type="button"
-              class={activeView === item
-                ? "border-sidebar-border bg-background rounded-md border px-2 py-2 text-left text-sm font-medium shadow-sm"
-                : "text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground rounded-md px-2 py-2 text-left text-sm"}
+              variant={activeView === item ? "secondary" : "ghost"}
+              size="sm"
+              class="bc-app-shell-demo__navigation-item"
               aria-current={activeView === item ? "page" : undefined}
               onclick={() => selectView(item)}
             >
               {item}
-            </button>
+            </Button>
           {/each}
         </nav>
-        <div class="border-sidebar-border mt-auto border-t pt-3">
-          <p class="text-muted-foreground px-2 text-xs">Last synced just now</p>
+        <div class="bc-app-shell-demo__sidebar-footer">
+          <p class="bc-app-shell-demo__sidebar-status">Last synced just now</p>
         </div>
       </aside>
     </svelte:fragment>
 
     <svelte:fragment slot="title-trailing">
       {#if activeView === "Transactions"}
-        <span
-          class="bg-muted text-muted-foreground ml-1.5 inline-flex h-5 min-w-5 shrink-0 items-center justify-center rounded-full px-1.5 text-[11px] font-medium tabular-nums"
-          >3</span
-        >
+        <Badge variant="secondary" class="bc-app-shell-demo__count">3</Badge>
       {/if}
     </svelte:fragment>
 
     <svelte:fragment slot="header-actions">
-      <button
+      <Button
         type="button"
-        class="text-muted-foreground hover:bg-accent hover:text-accent-foreground rounded-md px-2 py-1 text-xs font-medium"
+        variant="ghost"
+        size="xs"
         onclick={() => (syncInProgress = !syncInProgress)}
       >
         {syncInProgress ? "Pause sync" : "Sync ledger"}
-      </button>
-      <button
+      </Button>
+      <Button
         type="button"
-        class="bg-primary text-primary-foreground hover:bg-primary/90 rounded-md px-2.5 py-1 text-xs font-medium"
+        size="xs"
         onclick={() => selectView("Transactions")}
       >
         New transaction
-      </button>
+      </Button>
     </svelte:fragment>
 
     <svelte:fragment slot="status">
       {#if syncInProgress}
-        <div
-          class="border-border bg-muted/40 text-muted-foreground flex items-center gap-2 border-b px-3 py-2 text-xs"
-          role="status"
-        >
-          <span class="bg-primary size-2 animate-pulse rounded-full"></span>
+        <div class="bc-app-shell-demo__sync-status" role="status">
+          <span class="bc-app-shell-demo__sync-indicator"></span>
           Syncing Barclays checking account…
         </div>
       {/if}
     </svelte:fragment>
 
     <section
-      class="h-full overflow-auto p-5"
+      class="bc-app-shell-demo__content"
       aria-label={`${activeView} content`}
     >
-      <p class="text-muted-foreground text-sm">Viewing</p>
-      <h1 class="mt-1 text-xl font-semibold">{activeView}</h1>
-      <div class="border-border mt-5 overflow-hidden rounded-lg border">
-        <div
-          class="border-border bg-muted text-muted-foreground grid grid-cols-[8rem_minmax(0,1fr)_7rem] border-b px-3 py-2 text-xs font-medium"
-        >
+      <p class="bc-app-shell-demo__eyebrow">Viewing</p>
+      <h1 class="bc-app-shell-demo__title">{activeView}</h1>
+      <div class="bc-app-shell-demo__table">
+        <div class="bc-app-shell-demo__table-heading">
           <span>Date</span>
           <span>Description</span>
-          <span class="text-right">Amount</span>
+          <span class="bc-app-shell-demo__numeric">Amount</span>
         </div>
-        <div class="grid grid-cols-[8rem_minmax(0,1fr)_7rem] px-3 py-3 text-sm">
+        <div class="bc-app-shell-demo__table-row">
           <span>18 Jul 2026</span>
           <span>Groceries</span>
-          <span class="text-right tabular-nums">£42.17</span>
+          <span class="bc-app-shell-demo__numeric">£42.17</span>
         </div>
       </div>
     </section>
   </AppShell>
 </div>
+
+<style>
+  .bc-app-shell-demo {
+    height: 42rem;
+    overflow: hidden;
+    border: 1px solid var(--ui-beancount-border);
+    border-radius: var(--radius-lg);
+  }
+
+  .bc-app-shell-demo__sidebar {
+    display: flex;
+    width: 16rem;
+    height: 100%;
+    flex: none;
+    flex-direction: column;
+    border-inline-end: 1px solid var(--ui-beancount-border);
+    background: var(--ui-beancount-sidebar);
+    color: var(--ui-beancount-sidebar-foreground);
+    padding: var(--ui-beancount-space-3);
+  }
+
+  .bc-app-shell-demo__sidebar-heading {
+    border-bottom: 1px solid var(--ui-beancount-border);
+    padding-block-end: var(--ui-beancount-space-3);
+  }
+
+  .bc-app-shell-demo__sidebar-title,
+  .bc-app-shell-demo__sidebar-detail,
+  .bc-app-shell-demo__eyebrow,
+  .bc-app-shell-demo__title,
+  .bc-app-shell-demo__sidebar-status {
+    margin: 0;
+  }
+
+  .bc-app-shell-demo__sidebar-title {
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .bc-app-shell-demo__sidebar-detail {
+    margin-block-start: var(--ui-beancount-space-1);
+    color: var(--ui-beancount-muted-foreground);
+    font-size: var(--text-xs);
+  }
+
+  .bc-app-shell-demo__navigation {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ui-beancount-space-1);
+    margin-block-start: var(--ui-beancount-space-4);
+  }
+
+  :global(.bc-app-shell-demo__navigation-item) {
+    justify-content: flex-start;
+  }
+
+  .bc-app-shell-demo__sidebar-footer {
+    margin-block-start: auto;
+    border-top: 1px solid var(--ui-beancount-border);
+    padding-block-start: var(--ui-beancount-space-3);
+  }
+
+  .bc-app-shell-demo__sidebar-status {
+    padding-inline: var(--ui-beancount-space-2);
+    color: var(--ui-beancount-muted-foreground);
+    font-size: var(--text-xs);
+  }
+
+  :global(.bc-app-shell-demo__count) {
+    min-width: calc(var(--spacing) * 5);
+    margin-inline-start: calc(var(--ui-beancount-space-2) * 0.75);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .bc-app-shell-demo__sync-status {
+    display: flex;
+    align-items: center;
+    gap: var(--ui-beancount-space-2);
+    border-bottom: 1px solid var(--ui-beancount-border);
+    background: color-mix(
+      in srgb,
+      var(--ui-beancount-surface-muted) 40%,
+      transparent
+    );
+    color: var(--ui-beancount-muted-foreground);
+    padding: var(--ui-beancount-space-2) var(--ui-beancount-space-3);
+    font-size: var(--text-xs);
+  }
+
+  .bc-app-shell-demo__sync-indicator {
+    width: var(--ui-beancount-space-2);
+    height: var(--ui-beancount-space-2);
+    border-radius: 999px;
+    background: var(--primary);
+    animation: bc-app-shell-demo-pulse 1s ease-in-out infinite alternate;
+  }
+
+  .bc-app-shell-demo__content {
+    height: 100%;
+    overflow: auto;
+    padding: var(--ui-beancount-space-5);
+  }
+
+  .bc-app-shell-demo__eyebrow {
+    color: var(--ui-beancount-muted-foreground);
+    font-size: var(--text-sm);
+  }
+
+  .bc-app-shell-demo__title {
+    margin-block-start: var(--ui-beancount-space-1);
+    font-size: var(--text-xl);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .bc-app-shell-demo__table {
+    margin-block-start: var(--ui-beancount-space-5);
+    overflow: hidden;
+    border: 1px solid var(--ui-beancount-border);
+    border-radius: var(--radius-lg);
+  }
+
+  .bc-app-shell-demo__table-heading,
+  .bc-app-shell-demo__table-row {
+    display: grid;
+    grid-template-columns: 8rem minmax(0, 1fr) 7rem;
+  }
+
+  .bc-app-shell-demo__table-heading {
+    border-bottom: 1px solid var(--ui-beancount-border);
+    background: var(--ui-beancount-surface-muted);
+    color: var(--ui-beancount-muted-foreground);
+    padding: var(--ui-beancount-space-2) var(--ui-beancount-space-3);
+    font-size: var(--text-xs);
+    font-weight: var(--font-weight-medium);
+  }
+
+  .bc-app-shell-demo__table-row {
+    padding: var(--ui-beancount-space-3);
+    font-size: var(--text-sm);
+  }
+
+  .bc-app-shell-demo__numeric {
+    text-align: end;
+    font-variant-numeric: tabular-nums;
+  }
+
+  @keyframes bc-app-shell-demo-pulse {
+    to {
+      opacity: 0.4;
+    }
+  }
+</style>

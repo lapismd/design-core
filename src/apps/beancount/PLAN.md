@@ -74,16 +74,16 @@ Svelte files. They are existing Tailwind utility strings, not shared shadcn
 token selectors. This table is a removal checklist; every row must reach zero
 Tailwind utilities before a `fava-beta` adapter consumes the app layer.
 
-| Area         | Class attributes | Shared control decision                                                                 | Status |
-| ------------ | ---------------: | --------------------------------------------------------------------------------------- | ------ |
-| `charts`     |               73 | Chart containers and legends remain app-specific; use normalized chart/surface tokens   | ⬜     |
-| `dashboard`  |              149 | Reuse Card, Button, Badge, and Table; keep financial layout app-specific                | ⬜     |
-| `feedback`   |              205 | Replace hand-built loading, status, and empty states with Skeleton, Alert, Empty, Badge | ⬜     |
-| `layout`     |               81 | Reuse ScrollArea, Resizable, Separator, and shared shell controls                       | ⬜     |
-| `navigation` |              124 | Reuse Button, Tabs, Tooltip, Sidebar/ScrollArea where suitable                          | ⬜     |
-| `pickers`    |               50 | Reuse Input, Popover, Command, Avatar, and Button                                       | ⬜     |
-| `screens`    |               24 | Compose shell and report bodies with semantic screen selectors                          | ⬜     |
-| `tables`     |              265 | Reuse shared Table, Button, Badge, Checkbox, and semantic table-state tokens            | ⬜     |
+| Area         | Class attributes | Shared control decision                                                                 | Status                                      |
+| ------------ | ---------------: | --------------------------------------------------------------------------------------- | ------------------------------------------- |
+| `charts`     |               73 | Chart containers and legends remain app-specific; use normalized chart/surface tokens   | ⬜                                          |
+| `dashboard`  |              149 | Reuse Card, Button, Badge, and Table; keep financial layout app-specific                | ⬜                                          |
+| `feedback`   |              205 | Replace hand-built loading, status, and empty states with Skeleton, Alert, Empty, Badge | ⬜                                          |
+| `layout`     |               81 | Reuse ScrollArea, Resizable, Separator, and shared shell controls                       | ✅ semantic selectors + focused story tests |
+| `navigation` |              124 | Reuse Button, Tabs, Tooltip, Sidebar/ScrollArea where suitable                          | ⬜                                          |
+| `pickers`    |               50 | Reuse Input, Popover, Command, Avatar, and Button                                       | ⬜                                          |
+| `screens`    |               24 | Compose shell and report bodies with semantic screen selectors                          | ⬜                                          |
+| `tables`     |              265 | Reuse shared Table, Button, Badge, Checkbox, and semantic table-state tokens            | ⬜                                          |
 
 ### Styling exit criteria
 
