@@ -2,22 +2,49 @@
   import { Skeleton } from "@stevejuma/ui/shadcn/skeleton";
 </script>
 
-<div
-  class="flex flex-1 flex-col gap-4 p-1"
-  data-ai-dock-skeleton
-  aria-busy="true"
->
+<div class="bc-ai-dock-skeleton" data-ai-dock-skeleton aria-busy="true">
   {#each Array.from({ length: 4 }, (_, index) => index) as row (row)}
     <div
-      class="flex flex-col gap-2"
-      class:items-end={row % 2 === 1}
-      class:items-start={row % 2 === 0}
+      class="bc-ai-dock-skeleton__row"
+      class:bc-ai-dock-skeleton__row--end={row % 2 === 1}
     >
       <Skeleton
         class={row % 2 === 0
-          ? "h-16 w-48 max-w-[85%] rounded-2xl"
-          : "h-16 w-56 max-w-[85%] rounded-2xl"}
+          ? "bc-ai-dock-skeleton__bubble"
+          : "bc-ai-dock-skeleton__bubble bc-ai-dock-skeleton__bubble--wide"}
       />
     </div>
   {/each}
 </div>
+
+<style>
+  .bc-ai-dock-skeleton {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: var(--ui-beancount-space-4);
+    padding: var(--ui-beancount-space-1);
+  }
+
+  .bc-ai-dock-skeleton__row {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--ui-beancount-space-2);
+  }
+
+  .bc-ai-dock-skeleton__row--end {
+    align-items: flex-end;
+  }
+
+  :global(.bc-ai-dock-skeleton__bubble) {
+    width: 12rem;
+    max-width: 85%;
+    height: 4rem;
+    border-radius: var(--radius-2xl);
+  }
+
+  :global(.bc-ai-dock-skeleton__bubble--wide) {
+    width: 14rem;
+  }
+</style>

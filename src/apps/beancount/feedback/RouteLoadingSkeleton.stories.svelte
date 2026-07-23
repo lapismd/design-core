@@ -27,7 +27,7 @@
   }}
 >
   {#snippet template()}
-    <div class="bg-background h-[34rem] overflow-hidden rounded-xl border">
+    <div class="bc-route-loading-skeleton-story__frame">
       <RouteLoadingSkeleton routePath="/journal" />
     </div>
   {/snippet}
@@ -43,8 +43,18 @@
   }}
 >
   {#snippet template()}
-    <div class="bg-background h-[34rem] overflow-hidden rounded-xl border">
+    <div class="bc-route-loading-skeleton-story__frame">
       <RouteLoadingSkeleton routePath="/query?query=balance" />
     </div>
   {/snippet}
 </Story>
+
+<style>
+  .bc-route-loading-skeleton-story__frame {
+    height: 34rem;
+    overflow: hidden;
+    border: 1px solid var(--ui-beancount-border);
+    border-radius: var(--ui-beancount-radius-panel);
+    background: var(--ui-beancount-surface);
+  }
+</style>

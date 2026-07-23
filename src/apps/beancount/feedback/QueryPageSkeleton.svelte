@@ -3,57 +3,54 @@
 </script>
 
 <div
-  class="flex h-full min-w-0 flex-col p-4"
+  class="bc-query-page-skeleton"
   data-route-loading-skeleton
   data-query-page-skeleton
   role="status"
   aria-busy="true"
   aria-label="Loading query page"
 >
-  <div
-    class="bg-muted/35 flex h-10 w-full items-center rounded-md border shadow-sm"
-  >
-    <Skeleton class="ml-3 size-4 shrink-0 rounded-full" />
-    <Skeleton class="mx-3 h-3.5 min-w-0 flex-1" />
-    <Skeleton class="mr-1 h-7 w-20 shrink-0 rounded-sm" />
+  <div class="bc-query-page-skeleton__search">
+    <Skeleton class="bc-query-page-skeleton__search-icon" />
+    <Skeleton class="bc-query-page-skeleton__search-text" />
+    <Skeleton class="bc-query-page-skeleton__search-action" />
   </div>
 
-  <div class="flex flex-col gap-3 pt-3">
+  <div class="bc-query-page-skeleton__queries">
     {#each Array.from({ length: 2 }, (_, index) => index) as query (query)}
-      <article
-        class="bg-card text-card-foreground overflow-hidden rounded-xl border shadow-sm"
-      >
-        <div class="flex min-h-14 items-stretch gap-3">
-          <div class="flex min-w-0 flex-1">
-            <div class="flex h-full w-full items-center gap-3 pl-4">
-              <Skeleton class="size-3 shrink-0 rounded-sm" />
-              <Skeleton class="h-3.5 w-80 max-w-[55%]" />
+      <article class="bc-query-page-skeleton__query">
+        <div class="bc-query-page-skeleton__query-header">
+          <div class="bc-query-page-skeleton__query-summary">
+            <div class="bc-query-page-skeleton__query-copy">
+              <Skeleton class="bc-query-page-skeleton__query-marker" />
+              <Skeleton class="bc-query-page-skeleton__query-title" />
             </div>
           </div>
-          <div class="flex shrink-0 items-center gap-1 pr-4">
-            <Skeleton class="size-8 rounded-md" />
-            <Skeleton class="size-8 rounded-md" />
+          <div class="bc-query-page-skeleton__query-actions">
+            <Skeleton class="bc-query-page-skeleton__query-action" />
+            <Skeleton class="bc-query-page-skeleton__query-action" />
           </div>
         </div>
 
         {#if query === 0}
-          <div class="bg-muted/20 border-t p-4" data-query-skeleton-result>
-            <div class="bg-card overflow-hidden rounded-xl border shadow-sm">
-              <div
-                class="bg-muted grid grid-cols-[minmax(0,1fr)_5rem_4rem] gap-3 border-b px-4 py-3"
-              >
-                <Skeleton class="h-3 w-24" />
-                <Skeleton class="h-3 w-full" />
-                <Skeleton class="h-3 w-full" />
+          <div
+            class="bc-query-page-skeleton__result"
+            data-query-skeleton-result
+          >
+            <div class="bc-query-page-skeleton__result-table">
+              <div class="bc-query-page-skeleton__result-header">
+                <Skeleton class="bc-query-page-skeleton__result-label" />
+                <Skeleton class="bc-query-page-skeleton__result-cell" />
+                <Skeleton class="bc-query-page-skeleton__result-cell" />
               </div>
               {#each Array.from({ length: 3 }, (_, index) => index) as row (row)}
                 <div
-                  class="grid grid-cols-[minmax(0,1fr)_5rem_4rem] gap-3 border-b px-4 py-3 last:border-b-0"
+                  class="bc-query-page-skeleton__result-row"
                   data-query-skeleton-row
                 >
-                  <Skeleton class="h-3.5 w-3/4" />
-                  <Skeleton class="h-3.5 w-full" />
-                  <Skeleton class="h-3.5 w-full" />
+                  <Skeleton class="bc-query-page-skeleton__result-primary" />
+                  <Skeleton class="bc-query-page-skeleton__result-cell" />
+                  <Skeleton class="bc-query-page-skeleton__result-cell" />
                 </div>
               {/each}
             </div>
@@ -63,3 +60,172 @@
     {/each}
   </div>
 </div>
+
+<style>
+  .bc-query-page-skeleton {
+    display: flex;
+    height: 100%;
+    min-width: 0;
+    flex-direction: column;
+    padding: var(--ui-beancount-space-4);
+  }
+
+  .bc-query-page-skeleton__search {
+    display: flex;
+    width: 100%;
+    height: calc(var(--spacing) * 10);
+    align-items: center;
+    border: 1px solid var(--ui-beancount-border);
+    border-radius: var(--radius-md);
+    background: color-mix(
+      in srgb,
+      var(--ui-beancount-surface-muted) 35%,
+      transparent
+    );
+    box-shadow: var(--ui-beancount-shadow-panel);
+  }
+
+  :global(.bc-query-page-skeleton__search-icon) {
+    width: var(--ui-beancount-space-4);
+    height: var(--ui-beancount-space-4);
+    flex: 0 0 auto;
+    margin-inline-start: var(--ui-beancount-space-3);
+    border-radius: 999px;
+  }
+
+  :global(.bc-query-page-skeleton__search-text) {
+    min-width: 0;
+    height: calc(var(--spacing) * 3.5);
+    flex: 1 1 auto;
+    margin-inline: var(--ui-beancount-space-3);
+  }
+
+  :global(.bc-query-page-skeleton__search-action) {
+    width: 5rem;
+    height: calc(var(--spacing) * 7);
+    flex: 0 0 auto;
+    margin-inline-end: var(--ui-beancount-space-1);
+    border-radius: var(--radius-sm);
+  }
+
+  .bc-query-page-skeleton__queries {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ui-beancount-space-3);
+    padding-block-start: var(--ui-beancount-space-3);
+  }
+
+  .bc-query-page-skeleton__query {
+    overflow: hidden;
+    border: 1px solid var(--ui-beancount-border);
+    border-radius: var(--ui-beancount-radius-panel);
+    background: var(--card);
+    color: var(--card-foreground);
+    box-shadow: var(--ui-beancount-shadow-panel);
+  }
+
+  .bc-query-page-skeleton__query-header {
+    display: flex;
+    min-height: calc(var(--spacing) * 14);
+    align-items: stretch;
+    gap: var(--ui-beancount-space-3);
+  }
+
+  .bc-query-page-skeleton__query-summary {
+    display: flex;
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+
+  .bc-query-page-skeleton__query-copy {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    gap: var(--ui-beancount-space-3);
+    padding-inline-start: var(--ui-beancount-space-4);
+  }
+
+  :global(.bc-query-page-skeleton__query-marker) {
+    width: var(--ui-beancount-space-3);
+    height: var(--ui-beancount-space-3);
+    flex: 0 0 auto;
+    border-radius: var(--radius-sm);
+  }
+
+  :global(.bc-query-page-skeleton__query-title) {
+    width: 20rem;
+    max-width: 55%;
+    height: calc(var(--spacing) * 3.5);
+  }
+
+  .bc-query-page-skeleton__query-actions {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: var(--ui-beancount-space-1);
+    padding-inline-end: var(--ui-beancount-space-4);
+  }
+
+  :global(.bc-query-page-skeleton__query-action) {
+    width: var(--ui-beancount-compact-control-height);
+    height: var(--ui-beancount-compact-control-height);
+    border-radius: var(--radius-md);
+  }
+
+  .bc-query-page-skeleton__result {
+    border-block-start: 1px solid var(--ui-beancount-border);
+    background: color-mix(
+      in srgb,
+      var(--ui-beancount-surface-muted) 20%,
+      transparent
+    );
+    padding: var(--ui-beancount-space-4);
+  }
+
+  .bc-query-page-skeleton__result-table {
+    overflow: hidden;
+    border: 1px solid var(--ui-beancount-border);
+    border-radius: var(--ui-beancount-radius-panel);
+    background: var(--card);
+    box-shadow: var(--ui-beancount-shadow-panel);
+  }
+
+  .bc-query-page-skeleton__result-header,
+  .bc-query-page-skeleton__result-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 5rem 4rem;
+    gap: var(--ui-beancount-space-3);
+    border-block-end: 1px solid var(--ui-beancount-border);
+    padding: var(--ui-beancount-space-3) var(--ui-beancount-space-4);
+  }
+
+  .bc-query-page-skeleton__result-header {
+    background: var(--ui-beancount-surface-muted);
+  }
+
+  .bc-query-page-skeleton__result-row:last-child {
+    border-block-end: 0;
+  }
+
+  :global(.bc-query-page-skeleton__result-label),
+  :global(.bc-query-page-skeleton__result-cell) {
+    width: 100%;
+    height: var(--ui-beancount-space-3);
+  }
+
+  :global(.bc-query-page-skeleton__result-label) {
+    width: 6rem;
+  }
+
+  :global(.bc-query-page-skeleton__result-primary) {
+    width: 75%;
+    height: calc(var(--spacing) * 3.5);
+  }
+
+  :global(
+      .bc-query-page-skeleton__result-row .bc-query-page-skeleton__result-cell
+    ) {
+    height: calc(var(--spacing) * 3.5);
+  }
+</style>
