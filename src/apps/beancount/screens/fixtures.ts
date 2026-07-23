@@ -827,6 +827,51 @@ export const statisticsRows = [
   },
 ];
 
+export const connectedSources = [
+  {
+    id: "lunch-flow",
+    name: "Lunch Flow",
+    initials: "L",
+    sourceCount: 0,
+    syncLabel: "Not synced yet",
+    statusLabel: "Needs setup",
+    tone: "negative" as const,
+  },
+];
+
+export const availableSources = [
+  {
+    id: "monzo",
+    name: "Monzo Bank",
+    initials: "MO",
+    badgeLabel: "Beta",
+    locationLabel: "United Kingdom · Bank",
+    description:
+      "Import settled transactions from your Monzo accounts using the Developer API.",
+    tone: "negative" as const,
+  },
+  {
+    id: "starling",
+    name: "Starling Bank",
+    initials: "ST",
+    badgeLabel: "Beta",
+    locationLabel: "United Kingdom · Bank",
+    description:
+      "Import settled transactions from your Starling accounts using the public API.",
+    tone: "primary" as const,
+  },
+  {
+    id: "example-bank",
+    name: "Example bank",
+    initials: "EX",
+    badgeLabel: "Sample",
+    locationLabel: "Global · Bank",
+    description:
+      "Sample JSON API bank feed with mapping, pagination, and a grocery rule.",
+    tone: "positive" as const,
+  },
+];
+
 export const validationErrors = [
   {
     id: "duplicate-open",

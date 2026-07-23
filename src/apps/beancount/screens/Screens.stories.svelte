@@ -18,13 +18,16 @@
   import IngestionReviewTable from "../tables/IngestionReviewTable.svelte";
   import ValidationErrorTable from "../feedback/ValidationErrorTable.svelte";
   import ContentScrollArea from "../layout/ContentScrollArea.svelte";
+  import SourceConnectionCatalog from "../sources/SourceConnectionCatalog.svelte";
   import QueryComposer from "./QueryComposer.svelte";
   import {
     accountDetailGroups,
     accountDetailLineSeries,
+    availableSources,
     balanceSheetContributions,
     balanceSheetLineSeries,
     balanceSheetNodes,
+    connectedSources,
     holdingColumns,
     holdingRows,
     incomeStatementChartGroups,
@@ -179,6 +182,7 @@
   let statisticsPage = $state(1);
   let statisticsQueryRequested = $state(false);
   let recordsAccountsRequested = $state(false);
+  let sourceAction = $state("");
 
   const holdingsPageSize = 10;
   const visibleHoldingRows = $derived(
@@ -986,20 +990,32 @@
   name="Settings"
   parameters={{ visualDelta: visualDeltaForScreen("settings") }}
   play={async ({ canvas }) => {
-    await expect(
-      canvas.getByText(/Ingestion config editors remain in Fava/),
-    ).toBeVisible();
+    await expect(canvas.getByText("Your connections · 1")).toBeVisible();
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Connect Monzo Bank" }),
+    );
+    await expect(canvas.getByRole("status")).toHaveTextContent(
+      "Connect Monzo Bank",
+    );
   }}
 >
   {#snippet template()}
     <ScreenFrame pageTitle="Sources">
       <ContentScrollArea>
-        <div class="bc-screen-story__placeholder">
-          <p class="bc-screen-story__placeholder-title">Sources</p>
-          <p>
-            Ingestion config editors remain in Fava (forms stay out of this
-            catalog migration). Shell chrome is framed for Visual Delta.
-          </p>
+        <div class="bc-screen-story__page bc-screen-story__sources">
+          <SourceConnectionCatalog
+            {connectedSources}
+            {availableSources}
+            onOpenConnection={(source) => {
+              sourceAction = `Open ${source.name}`;
+            }}
+            onConnect={(source) => {
+              sourceAction = `Connect ${source.name}`;
+            }}
+          />
+          <output class="bc-screen-story__status" aria-live="polite">
+            {sourceAction}
+          </output>
         </div>
       </ContentScrollArea>
     </ScreenFrame>
@@ -1067,6 +1083,11 @@
   .bc-screen-story__statistics-query-row {
     display: flex;
     justify-content: flex-end;
+  }
+
+  .bc-screen-story__sources {
+    max-width: 70rem;
+    margin-inline: auto;
   }
 
   :global(.bc-screen-story__holdings-query) {

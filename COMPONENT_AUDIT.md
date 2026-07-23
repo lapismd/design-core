@@ -309,6 +309,12 @@ rewritten on migration).
 `MerchantPicker` is implemented under `pickers/` (see above). Still reserved:
 filter semantics.
 
+**Sources (`sources/`)** — `Apps/Beancount/Sources/*`:
+
+- `SourceConnectionCatalog` — controlled connected/available bank-source cards
+  with host-owned open/setup callbacks; no sync, source configuration, or
+  routing state
+
 ### Screens + Fava capture harness
 
 **Screens (`screens/`)** — `Apps/Beancount/Screens/*`:
