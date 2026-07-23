@@ -26,7 +26,7 @@
   });
 </script>
 
-<div class="overflow-hidden rounded-md border">
+<div class="bc-data-table">
   <Table.Root>
     <Table.Header>
       {#each table.getHeaderGroups() as headerGroup (headerGroup.id)}
@@ -58,7 +58,7 @@
         </Table.Row>
       {:else}
         <Table.Row>
-          <Table.Cell colspan={columns.length} class="h-24 text-center">
+          <Table.Cell colspan={columns.length} class="bc-data-table__empty">
             {emptyLabel}
           </Table.Cell>
         </Table.Row>
@@ -66,3 +66,16 @@
     </Table.Body>
   </Table.Root>
 </div>
+
+<style>
+  .bc-data-table {
+    overflow: hidden;
+    border: 1px solid var(--ui-beancount-border);
+    border-radius: var(--radius-md);
+  }
+
+  :global(.bc-data-table__empty) {
+    height: 6rem;
+    text-align: center;
+  }
+</style>

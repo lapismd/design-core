@@ -59,7 +59,7 @@
   }}
 >
   {#snippet template()}
-    <div class="max-w-3xl">
+    <div class="bc-data-table-story">
       <DataTable data={transactions} {columns} />
     </div>
   {/snippet}
@@ -72,8 +72,14 @@
   }}
 >
   {#snippet template()}
-    <div class="max-w-3xl">
+    <div class="bc-data-table-story">
       <DataTable data={[]} {columns} emptyLabel="No matching transactions." />
     </div>
   {/snippet}
 </Story>
+
+<style>
+  .bc-data-table-story {
+    max-width: 48rem;
+  }
+</style>
