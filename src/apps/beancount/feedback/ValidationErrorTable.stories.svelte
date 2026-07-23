@@ -48,14 +48,17 @@
   }}
 >
   {#snippet template()}
-    <div class="max-w-5xl p-5">
+    <div class="bc-validation-error-table-story">
       <ValidationErrorTable
         {errors}
         onNavigate={(error) => {
           selectedLine = error.line;
         }}
       />
-      <output class="sr-only" aria-live="polite">
+      <output
+        class="bc-validation-error-table-story__status"
+        aria-live="polite"
+      >
         {selectedLine ? `Opening line ${selectedLine}` : "No error selected"}
       </output>
     </div>
@@ -69,8 +72,24 @@
   }}
 >
   {#snippet template()}
-    <div class="max-w-5xl p-5">
+    <div class="bc-validation-error-table-story">
       <ValidationErrorTable errors={[]} />
     </div>
   {/snippet}
 </Story>
+
+<style>
+  .bc-validation-error-table-story {
+    max-width: 64rem;
+    padding: var(--ui-beancount-space-5);
+  }
+
+  .bc-validation-error-table-story__status {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+</style>

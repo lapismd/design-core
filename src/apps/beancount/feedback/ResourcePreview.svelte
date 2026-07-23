@@ -1,6 +1,7 @@
 <script lang="ts">
   import ExternalLink from "@lucide/svelte/icons/external-link";
   import FileWarning from "@lucide/svelte/icons/file-warning";
+  import * as Alert from "@stevejuma/ui/shadcn/alert";
   import { Button } from "@stevejuma/ui/shadcn/button";
   import * as ScrollArea from "@stevejuma/ui/shadcn/scroll-area";
   import ResourceViewerSkeleton from "./ResourceViewerSkeleton.svelte";
@@ -54,14 +55,14 @@
 </script>
 
 <section
-  class="flex h-full min-h-0 flex-col gap-3 p-4"
+  class="bc-resource-preview"
   aria-label={accessibleLabel}
   aria-busy={loading}
 >
-  <div class="flex items-center justify-between gap-3">
-    <div class="min-w-0">
-      <p class="truncate text-sm font-medium">{resource?.path ?? "Resource"}</p>
-      <p class="text-muted-foreground text-xs">
+  <div class="bc-resource-preview__header">
+    <div class="bc-resource-preview__identity">
+      <p class="bc-resource-preview__path">{resource?.path ?? "Resource"}</p>
+      <p class="bc-resource-preview__mime">
         {resource?.mimeType ?? "Unavailable"}
       </p>
     </div>
@@ -72,29 +73,26 @@
         size="sm"
         onclick={() => onOpen(resource!)}
       >
-        <ExternalLink class="size-4" aria-hidden="true" />
+        <ExternalLink data-icon="inline-start" aria-hidden="true" />
         Open
       </Button>
     {/if}
   </div>
 
   {#if message}
-    <div
-      class="border-destructive/30 text-destructive flex items-center gap-2 rounded-md border p-3 text-sm"
-      role="alert"
-    >
-      <FileWarning class="size-4 shrink-0" aria-hidden="true" />
-      <span>{message}</span>
-    </div>
+    <Alert.Root variant="destructive" class="bc-resource-preview__alert">
+      <FileWarning aria-hidden="true" />
+      <Alert.Description>{message}</Alert.Description>
+    </Alert.Root>
   {:else if loading || !resource || !resource.url}
     <ResourceViewerSkeleton />
   {:else if isImage}
-    <ScrollArea.Root class="bg-muted min-h-0 flex-1 rounded-md border">
-      <div class="p-3">
+    <ScrollArea.Root class="bc-resource-preview__viewer">
+      <div class="bc-resource-preview__image-wrap">
         <img
           src={resource.url}
           alt={resource.path}
-          class="mx-auto max-w-full"
+          class="bc-resource-preview__image"
         />
       </div>
     </ScrollArea.Root>
@@ -102,14 +100,83 @@
     <iframe
       title={resource.path}
       src={resource.url}
-      class="bg-muted min-h-0 flex-1 rounded-md border"
+      class="bc-resource-preview__viewer"
     ></iframe>
   {:else if isText && resource.text !== undefined}
-    <ScrollArea.Root class="bg-muted min-h-0 flex-1 rounded-md border">
-      <pre
-        class="p-3 font-mono text-sm break-words whitespace-pre-wrap">{resource.text}</pre>
+    <ScrollArea.Root class="bc-resource-preview__viewer">
+      <pre class="bc-resource-preview__text">{resource.text}</pre>
     </ScrollArea.Root>
   {:else}
     <ResourceViewerSkeleton />
   {/if}
 </section>
+
+<style>
+  .bc-resource-preview {
+    display: flex;
+    height: 100%;
+    min-height: 0;
+    flex-direction: column;
+    gap: var(--ui-beancount-space-3);
+    padding: var(--ui-beancount-space-4);
+  }
+
+  .bc-resource-preview__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--ui-beancount-space-3);
+  }
+
+  .bc-resource-preview__identity {
+    min-width: 0;
+  }
+
+  .bc-resource-preview__path {
+    margin: 0;
+    overflow: hidden;
+    color: var(--ui-beancount-foreground);
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-medium);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .bc-resource-preview__mime {
+    margin: 0;
+    color: var(--ui-beancount-muted-foreground);
+    font-size: var(--text-xs);
+  }
+
+  :global(.bc-resource-preview__alert) {
+    flex: 0 0 auto;
+  }
+
+  :global(.bc-resource-preview__viewer) {
+    min-height: 0;
+    flex: 1 1 auto;
+    overflow: hidden;
+    border: 1px solid var(--ui-beancount-border);
+    border-radius: var(--radius-md);
+    background: var(--ui-beancount-surface-muted);
+  }
+
+  .bc-resource-preview__image-wrap {
+    padding: var(--ui-beancount-space-3);
+  }
+
+  .bc-resource-preview__image {
+    display: block;
+    max-width: 100%;
+    margin-inline: auto;
+  }
+
+  .bc-resource-preview__text {
+    margin: 0;
+    padding: var(--ui-beancount-space-3);
+    overflow-wrap: anywhere;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    white-space: pre-wrap;
+  }
+</style>

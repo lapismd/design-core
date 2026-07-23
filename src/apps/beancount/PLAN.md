@@ -78,7 +78,7 @@ Tailwind utilities before a `fava-beta` adapter consumes the app layer.
 | ------------ | ---------------: | --------------------------------------------------------------------------------------- | ----------------------------------------------- |
 | `charts`     |               73 | Chart containers and legends remain app-specific; use normalized chart/surface tokens   | ⬜                                              |
 | `dashboard`  |              149 | Reuse Card, Button, Badge, and Table; keep financial layout app-specific                | ⬜                                              |
-| `feedback`   |              205 | Replace hand-built loading, status, and empty states with Skeleton, Alert, Empty, Badge | ⬜                                              |
+| `feedback`   |              205 | Replace hand-built loading, status, and empty states with Skeleton, Alert, Empty, Badge | 🟡 Resource preview and validation states done  |
 | `layout`     |               81 | Reuse ScrollArea, Resizable, Separator, and shared shell controls                       | ✅ semantic selectors + focused story tests     |
 | `navigation` |              124 | Reuse Button, Tabs, Tooltip, Sidebar/ScrollArea where suitable                          | ✅ all source + stories semantic; focused tests |
 | `pickers`    |               50 | Reuse Input, Popover, Command, Avatar, and Button                                       | ⬜                                              |

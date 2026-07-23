@@ -3,9 +3,26 @@
 </script>
 
 <div
-  class="flex min-h-0 flex-1 flex-col gap-3"
+  class="bc-resource-viewer-skeleton"
   data-resource-viewer-skeleton
   aria-busy="true"
 >
-  <Skeleton class="min-h-48 w-full flex-1 rounded-md" />
+  <Skeleton class="bc-resource-viewer-skeleton__surface" />
 </div>
+
+<style>
+  .bc-resource-viewer-skeleton {
+    display: flex;
+    min-height: 0;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: var(--ui-beancount-space-3);
+  }
+
+  :global(.bc-resource-viewer-skeleton__surface) {
+    width: 100%;
+    min-height: calc(var(--spacing) * 48);
+    flex: 1 1 auto;
+    border-radius: var(--radius-md);
+  }
+</style>

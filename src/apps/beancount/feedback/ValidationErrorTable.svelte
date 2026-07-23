@@ -1,5 +1,6 @@
 <script lang="ts">
   import * as Table from "@stevejuma/ui/shadcn/table";
+  import * as Empty from "@stevejuma/ui/shadcn/empty";
 
   export type ValidationErrorRow = {
     id: string;
@@ -30,24 +31,22 @@
 </script>
 
 {#if errors.length}
-  <div
-    class="border-border/80 bg-card overflow-x-auto rounded-xl border shadow-sm"
-  >
-    <Table.Root aria-label={ariaLabel} class="min-w-[42rem]">
+  <div class="bc-validation-error-table">
+    <Table.Root aria-label={ariaLabel} class="bc-validation-error-table__table">
       <Table.Header>
-        <Table.Row class="bg-muted/65 hover:bg-muted/65">
+        <Table.Row class="bc-validation-error-table__header-row">
           <Table.Head
-            class="w-20 px-4 py-2 text-xs font-semibold tracking-[0.12em] uppercase"
+            class="bc-validation-error-table__head bc-validation-error-table__head--line"
           >
             Line
           </Table.Head>
           <Table.Head
-            class="min-w-72 px-4 py-2 text-xs font-semibold tracking-[0.12em] uppercase"
+            class="bc-validation-error-table__head bc-validation-error-table__head--message"
           >
             Message
           </Table.Head>
           <Table.Head
-            class="min-w-80 px-4 py-2 text-xs font-semibold tracking-[0.12em] uppercase"
+            class="bc-validation-error-table__head bc-validation-error-table__head--context"
           >
             Source context
           </Table.Head>
@@ -56,11 +55,13 @@
       <Table.Body>
         {#each errors as error (error.id)}
           <Table.Row>
-            <Table.Cell class="px-4 py-3 font-mono text-xs tabular-nums">
+            <Table.Cell
+              class="bc-validation-error-table__cell bc-validation-error-table__cell--line"
+            >
               {#if error.href}
                 <a
                   href={error.href}
-                  class="text-primary focus-visible:ring-ring font-medium underline-offset-4 hover:underline focus-visible:ring-2 focus-visible:outline-none"
+                  class="bc-validation-error-table__line-link"
                   onclick={(event) => navigate(error, event)}
                   >{error.line ?? "—"}</a
                 >
@@ -68,17 +69,20 @@
                 {error.line ?? "—"}
               {/if}
             </Table.Cell>
-            <Table.Cell class="text-destructive px-4 py-3 align-top text-sm">
+            <Table.Cell
+              class="bc-validation-error-table__cell bc-validation-error-table__cell--message"
+            >
               {error.message}
             </Table.Cell>
-            <Table.Cell class="px-4 py-3 align-top">
+            <Table.Cell
+              class="bc-validation-error-table__cell bc-validation-error-table__cell--context"
+            >
               {#if error.entity}
-                <code
-                  class="text-muted-foreground block font-mono text-xs leading-relaxed break-words whitespace-pre-wrap"
+                <code class="bc-validation-error-table__entity"
                   >{error.entity}</code
                 >
               {:else}
-                <span class="text-muted-foreground text-sm">—</span>
+                <span class="bc-validation-error-table__missing">—</span>
               {/if}
             </Table.Cell>
           </Table.Row>
@@ -87,11 +91,121 @@
     </Table.Root>
   </div>
 {:else}
-  <section
-    class="border-border/80 bg-card rounded-xl border border-dashed px-5 py-8 text-center shadow-sm"
-    aria-label={ariaLabel}
-  >
-    <h3 class="text-sm font-semibold">{emptyTitle}</h3>
-    <p class="text-muted-foreground mt-1 text-sm">{emptyDescription}</p>
-  </section>
+  <Empty.Root class="bc-validation-error-table__empty" aria-label={ariaLabel}>
+    <Empty.Header>
+      <Empty.Title>{emptyTitle}</Empty.Title>
+      <Empty.Description>{emptyDescription}</Empty.Description>
+    </Empty.Header>
+  </Empty.Root>
 {/if}
+
+<style>
+  .bc-validation-error-table {
+    overflow-x: auto;
+    border: 1px solid
+      color-mix(in srgb, var(--ui-beancount-border) 80%, transparent);
+    border-radius: var(--ui-beancount-radius-panel);
+    background: var(--card);
+    box-shadow: var(--ui-beancount-shadow-panel);
+  }
+
+  :global(.bc-validation-error-table__table) {
+    min-width: 42rem;
+  }
+
+  :global(.bc-validation-error-table__header-row) {
+    background: color-mix(
+      in srgb,
+      var(--ui-beancount-surface-muted) 65%,
+      transparent
+    );
+  }
+
+  :global(.bc-validation-error-table__header-row:hover) {
+    background: color-mix(
+      in srgb,
+      var(--ui-beancount-surface-muted) 65%,
+      transparent
+    );
+  }
+
+  :global(.bc-validation-error-table__head) {
+    padding: var(--ui-beancount-space-2) var(--ui-beancount-space-4);
+    font-size: var(--text-xs);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  :global(.bc-validation-error-table__head--line) {
+    width: 5rem;
+  }
+
+  :global(.bc-validation-error-table__head--message) {
+    min-width: 18rem;
+  }
+
+  :global(.bc-validation-error-table__head--context) {
+    min-width: 20rem;
+  }
+
+  :global(.bc-validation-error-table__cell) {
+    padding: var(--ui-beancount-space-3) var(--ui-beancount-space-4);
+  }
+
+  :global(.bc-validation-error-table__cell--line) {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-variant-numeric: tabular-nums;
+  }
+
+  :global(.bc-validation-error-table__cell--message) {
+    vertical-align: top;
+    color: var(--destructive);
+    font-size: var(--text-sm);
+  }
+
+  :global(.bc-validation-error-table__cell--context) {
+    vertical-align: top;
+  }
+
+  .bc-validation-error-table__line-link {
+    color: var(--primary);
+    font-weight: var(--font-weight-medium);
+    text-underline-offset: 4px;
+  }
+
+  .bc-validation-error-table__line-link:hover {
+    text-decoration: underline;
+  }
+
+  .bc-validation-error-table__line-link:focus-visible {
+    outline: 2px solid var(--ui-beancount-focus-ring);
+    outline-offset: 2px;
+  }
+
+  .bc-validation-error-table__entity {
+    display: block;
+    overflow-wrap: anywhere;
+    color: var(--ui-beancount-muted-foreground);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    line-height: var(--leading-relaxed);
+    white-space: pre-wrap;
+  }
+
+  .bc-validation-error-table__missing {
+    color: var(--ui-beancount-muted-foreground);
+    font-size: var(--text-sm);
+  }
+
+  :global(.bc-validation-error-table__empty) {
+    border-color: color-mix(
+      in srgb,
+      var(--ui-beancount-border) 80%,
+      transparent
+    );
+    background: var(--card);
+    box-shadow: var(--ui-beancount-shadow-panel);
+  }
+</style>

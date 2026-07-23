@@ -48,7 +48,7 @@ accounts:
 >
   {#snippet template()}
     <div
-      class="bg-card h-80 max-w-2xl overflow-hidden rounded-xl border shadow-sm"
+      class="bc-resource-preview-story__frame bc-resource-preview-story__frame--wide"
     >
       <ResourcePreview
         resource={textResource}
@@ -57,7 +57,9 @@ accounts:
         }}
       />
     </div>
-    <output class="sr-only" aria-live="polite">{openedPath}</output>
+    <output class="bc-resource-preview-story__status" aria-live="polite"
+      >{openedPath}</output
+    >
   {/snippet}
 </Story>
 
@@ -71,11 +73,15 @@ accounts:
   }}
 >
   {#snippet template()}
-    <div class="grid max-w-5xl gap-4 md:grid-cols-2">
-      <div class="bg-card h-72 overflow-hidden rounded-xl border shadow-sm">
+    <div class="bc-resource-preview-story__grid">
+      <div
+        class="bc-resource-preview-story__frame bc-resource-preview-story__frame--medium"
+      >
         <ResourcePreview resource={imageResource} />
       </div>
-      <div class="bg-card h-72 overflow-hidden rounded-xl border shadow-sm">
+      <div
+        class="bc-resource-preview-story__frame bc-resource-preview-story__frame--medium"
+      >
         <ResourcePreview
           resource={{
             path: "statements/july.pdf",
@@ -100,11 +106,15 @@ accounts:
   }}
 >
   {#snippet template()}
-    <div class="grid max-w-5xl gap-4 md:grid-cols-2">
-      <div class="bg-card h-56 overflow-hidden rounded-xl border shadow-sm">
+    <div class="bc-resource-preview-story__grid">
+      <div
+        class="bc-resource-preview-story__frame bc-resource-preview-story__frame--small"
+      >
         <ResourcePreview />
       </div>
-      <div class="bg-card h-56 overflow-hidden rounded-xl border shadow-sm">
+      <div
+        class="bc-resource-preview-story__frame bc-resource-preview-story__frame--small"
+      >
         <ResourcePreview
           resource={{
             path: "imports/pending.csv",
@@ -117,3 +127,47 @@ accounts:
     </div>
   {/snippet}
 </Story>
+
+<style>
+  .bc-resource-preview-story__frame {
+    overflow: hidden;
+    border: 1px solid var(--ui-beancount-border);
+    border-radius: var(--ui-beancount-radius-panel);
+    background: var(--card);
+    box-shadow: var(--ui-beancount-shadow-panel);
+  }
+
+  .bc-resource-preview-story__frame--wide {
+    max-width: 42rem;
+    height: 20rem;
+  }
+
+  .bc-resource-preview-story__frame--medium {
+    height: 18rem;
+  }
+
+  .bc-resource-preview-story__frame--small {
+    height: 14rem;
+  }
+
+  .bc-resource-preview-story__grid {
+    display: grid;
+    max-width: 64rem;
+    gap: var(--ui-beancount-space-4);
+  }
+
+  .bc-resource-preview-story__status {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  @media (min-width: 768px) {
+    .bc-resource-preview-story__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>
