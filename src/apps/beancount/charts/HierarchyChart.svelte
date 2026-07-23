@@ -31,12 +31,15 @@
   let {
     root,
     mode = "treemap",
+    height = 320,
     ariaLabel = "Hierarchy chart",
     emptyLabel = "No hierarchy data is available.",
     onNodeFocus = () => {},
   }: {
     root: HierarchyChartNode;
     mode?: HierarchyChartMode;
+    /** SVG canvas height for report surfaces that need more vertical allocation context. */
+    height?: number;
     ariaLabel?: string;
     emptyLabel?: string;
     /** Report a hovered, focused, or activated hierarchy node to the application. */
@@ -44,9 +47,8 @@
   } = $props();
 
   const width = 800;
-  const height = 320;
   const padding = 3;
-  const radius = Math.min(width, height) / 2 - 12;
+  const radius = $derived(Math.min(width, height) / 2 - 12);
 
   let activeNode = $state<HierarchyChartNode | null>(null);
 
@@ -276,7 +278,8 @@
 
   .bc-hierarchy-chart__canvas {
     overflow-x: auto;
-    border: 1px solid color-mix(in srgb, var(--ui-beancount-border) 80%, transparent);
+    border: 1px solid
+      color-mix(in srgb, var(--ui-beancount-border) 80%, transparent);
     border-radius: var(--ui-beancount-radius-panel);
     background-color: var(--ui-beancount-surface);
     padding: var(--ui-beancount-space-3);

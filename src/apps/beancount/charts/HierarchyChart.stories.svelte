@@ -97,6 +97,18 @@
   {/snippet}
 </Story>
 
+<Story name="Frames a taller report allocation">
+  {#snippet template()}
+    <div class="bc-hierarchy-chart-story">
+      <HierarchyChart
+        {root}
+        height={480}
+        ariaLabel="Taller allocation hierarchy"
+      />
+    </div>
+  {/snippet}
+</Story>
+
 <style>
   .bc-hierarchy-chart-story {
     max-width: 64rem;

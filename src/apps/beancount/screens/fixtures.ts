@@ -344,6 +344,153 @@ export const balanceSheetLineSeries = [
   },
 ];
 
+export const trialBalanceHierarchy = {
+  id: "trial-balance",
+  label: "Trial Balance",
+  color: "var(--ui-beancount-accepted)",
+  children: [
+    {
+      id: "trial-balance-salary",
+      label: "Salary",
+      value: 217181.6,
+      valueLabel: "217181.60 GBP",
+      color: "var(--ui-beancount-accepted)",
+    },
+  ],
+};
+
+export const trialBalanceNodes = [
+  {
+    id: "trial-assets",
+    label: "Assets",
+    values: { gbp: "24921.78" },
+    weight: "5.3%",
+    color: "var(--ui-beancount-accepted)",
+  },
+  {
+    id: "trial-equity",
+    label: "Equity:Opening-Balances",
+    values: { gbp: "55944.45" },
+    weight: "12.0%",
+    color: "var(--ui-beancount-review)",
+  },
+  {
+    id: "trial-income",
+    label: "Income:Starling",
+    values: { gbp: "−213145.48" },
+    weight: "45.5%",
+    color: "var(--ui-beancount-positive)",
+  },
+];
+
+export const trialBalanceContributions = [
+  {
+    id: "assets-cash",
+    label: "Assets:Cash",
+    percentage: 0.0,
+    amount: "70.00 GBP",
+    color: "var(--ui-beancount-positive)",
+  },
+  {
+    id: "assets-checking",
+    label: "Assets:Checking",
+    percentage: 5.3,
+    amount: "24851.78 GBP",
+    color: "var(--ui-beancount-accepted)",
+  },
+  {
+    id: "equity-opening-balances",
+    label: "Equity:Opening-Balances",
+    percentage: 12.0,
+    amount: "55944.45 GBP",
+    color: "var(--ui-beancount-review)",
+  },
+  {
+    id: "expenses-food",
+    label: "Expenses:Food",
+    percentage: 0.0,
+    amount: "7.39 GBP",
+    color: "var(--ui-beancount-accepted)",
+  },
+  {
+    id: "expenses-health",
+    label: "Expenses:Health",
+    percentage: 0.2,
+    amount: "1047.04 GBP",
+    color: "var(--ui-beancount-positive)",
+  },
+  {
+    id: "expenses-home",
+    label: "Expenses:Home",
+    percentage: 0.4,
+    amount: "1917.81 GBP",
+    color: "var(--ui-beancount-positive)",
+  },
+  {
+    id: "expenses-insurance",
+    label: "Expenses:Insurance",
+    percentage: 0.0,
+    amount: "111.98 GBP",
+    color: "var(--ui-beancount-review)",
+  },
+  {
+    id: "expenses-interest",
+    label: "Expenses:Interest",
+    percentage: 0.2,
+    amount: "1132.78 GBP",
+    color: "var(--ui-beancount-review)",
+  },
+  {
+    id: "expenses-joint",
+    label: "Expenses:Joint",
+    percentage: 15.3,
+    amount: "71500.00 GBP",
+    color: "var(--ui-beancount-review)",
+  },
+  {
+    id: "expenses-subscriptions",
+    label: "Expenses:Subscriptions",
+    percentage: 0.1,
+    amount: "272.79 GBP",
+    color: "var(--ui-beancount-accepted)",
+  },
+  {
+    id: "expenses-taxes",
+    label: "Expenses:Taxes",
+    percentage: 16.4,
+    amount: "76527.22 GBP",
+    color: "var(--ui-beancount-positive)",
+  },
+  {
+    id: "expenses-tech",
+    label: "Expenses:Tech",
+    percentage: 0.0,
+    amount: "62.79 GBP",
+    color: "var(--ui-beancount-positive)",
+  },
+  {
+    id: "income-starling",
+    label: "Income:Starling",
+    percentage: 45.5,
+    amount: "−213145.48 GBP",
+    color: "var(--ui-beancount-positive)",
+  },
+  {
+    id: "liabilities-credit-card",
+    label: "Liabilities:CreditCard",
+    percentage: 0.1,
+    amount: "567.68 GBP",
+    color: "var(--ui-beancount-positive)",
+  },
+  {
+    id: "liabilities-loan",
+    label: "Liabilities:Loan",
+    percentage: 4.5,
+    amount: "−20868.23 GBP",
+    color: "var(--ui-beancount-positive)",
+  },
+];
+
 export const queryColumns = [
   { id: "date", label: "Date", sortable: true },
   { id: "description", label: "Description", sortable: true },

@@ -6,6 +6,7 @@
   import BarChart from "../charts/BarChart.svelte";
   import ChartPanel from "../charts/ChartPanel.svelte";
   import ChartSwitcher from "../charts/ChartSwitcher.svelte";
+  import HierarchyChart from "../charts/HierarchyChart.svelte";
   import LineChart from "../charts/LineChart.svelte";
   import FinancialDashboard from "../dashboard/FinancialDashboard.svelte";
   import LedgerActivityTable from "../tables/LedgerActivityTable.svelte";
@@ -25,6 +26,9 @@
     journalGroups,
     statementColumns,
     statementNodes,
+    trialBalanceContributions,
+    trialBalanceHierarchy,
+    trialBalanceNodes,
     queryColumns,
     queryRows,
     validationErrors,
@@ -156,6 +160,8 @@
   let incomePerspective = $state("net-profit");
   let balanceSheetChartMode = $state<"line" | "area">("line");
   let balanceSheetPerspective = $state("net-worth");
+  let trialBalanceChartMode = $state<"treemap" | "sunburst">("treemap");
+  let trialBalancePerspective = $state("income");
 
   const formatReportAxisAmount = (value: number) =>
     `${value < 0 ? "−" : ""}${(Math.abs(value) / 1000).toFixed(1)}k`;
@@ -457,19 +463,95 @@
   name="Trial balance"
   parameters={{ visualDelta: visualDeltaForScreen("trial-balance") }}
   play={async ({ canvas }) => {
-    await expect(canvas.getByText("Expenses")).toBeVisible();
+    await expect(
+      canvas.getByRole("group", { name: "Trial balance allocation" }),
+    ).toBeVisible();
+    await userEvent.click(canvas.getByRole("tab", { name: "Sunburst" }));
+    await expect(canvas.getByRole("tab", { name: "Sunburst" })).toHaveAttribute(
+      "data-state",
+      "active",
+    );
+    await userEvent.click(canvas.getByRole("tab", { name: "Treemap" }));
+    await expect(canvas.getByRole("tab", { name: "Treemap" })).toHaveAttribute(
+      "data-state",
+      "active",
+    );
+    await expect(canvas.getByText("Equity:Opening-Balances")).toBeVisible();
   }}
 >
   {#snippet template()}
     <ScreenFrame pageTitle="Trial balance">
       <ContentScrollArea>
-        <div class="bc-screen-story__page">
-          <StatementSummaryTreeTable
-            title="Trial balance"
-            columns={statementColumns}
-            nodes={statementNodes}
-            contributions={[]}
-          />
+        <div class="bc-screen-story__page bc-screen-story__page--report">
+          <ChartPanel
+            ariaLabel="Trial balance controls"
+            legend={{
+              items: [
+                {
+                  id: "gbp",
+                  label: "GBP",
+                  color: "var(--ui-beancount-accepted)",
+                },
+              ],
+              selection: "single",
+              selectedIds: ["gbp"],
+            }}
+            conversion={{
+              ariaLabel: "Valuation",
+              value: "cost",
+              options: [{ value: "cost", label: "At Cost" }],
+            }}
+            interval={{
+              ariaLabel: "Interval",
+              value: "month",
+              options: [{ value: "month", label: "Monthly" }],
+            }}
+            modes={{
+              value: trialBalanceChartMode,
+              options: [
+                { value: "treemap", label: "Treemap" },
+                { value: "sunburst", label: "Sunburst" },
+              ],
+              ariaLabel: "Trial balance chart representation",
+              onChange: (value) => {
+                trialBalanceChartMode = value as "treemap" | "sunburst";
+              },
+            }}
+          >
+            {#snippet children()}
+              <HierarchyChart
+                root={trialBalanceHierarchy}
+                mode={trialBalanceChartMode}
+                height={480}
+                ariaLabel="Trial balance allocation"
+              />
+            {/snippet}
+          </ChartPanel>
+          <ChartSwitcher
+            charts={[
+              { id: "income", label: "Income" },
+              { id: "expenses", label: "Expenses" },
+              { id: "assets", label: "Assets" },
+              { id: "liabilities", label: "Liabilities" },
+              { id: "equity", label: "Equity" },
+            ]}
+            activeChartId={trialBalancePerspective}
+            ariaLabel="Trial balance sections"
+            tabsPlacement="top"
+            onActiveChartChange={(value) => {
+              trialBalancePerspective = value;
+            }}
+          >
+            {#snippet children()}
+              <StatementSummaryTreeTable
+                title="Trial Balance"
+                total="0.00 GBP"
+                columns={statementColumns}
+                nodes={trialBalanceNodes}
+                contributions={trialBalanceContributions}
+              />
+            {/snippet}
+          </ChartSwitcher>
         </div>
       </ContentScrollArea>
     </ScreenFrame>
@@ -699,6 +781,22 @@
     overflow: hidden;
     clip: rect(0 0 0 0);
     white-space: nowrap;
+  }
+
+  :global(.bc-screen-story__page--report .bc-hierarchy-chart__summary) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  :global(.bc-screen-story__page--report .bc-hierarchy-chart__canvas) {
+    border: 0;
+    border-radius: 0;
+    padding: 0;
+    box-shadow: none;
   }
 
   .bc-screen-story__section-title,
