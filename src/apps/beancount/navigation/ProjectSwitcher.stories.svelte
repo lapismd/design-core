@@ -59,9 +59,7 @@
   }}
 >
   {#snippet template()}
-    <div
-      class="border-sidebar-border bg-sidebar text-sidebar-foreground w-72 rounded-xl border p-3"
-    >
+    <div class="bc-project-switcher-story">
       <ProjectSwitcher
         {projects}
         {currentProjectId}
@@ -72,7 +70,10 @@
           addCount += 1;
         }}
       />
-      <output class="sr-only" aria-live="polite">
+      <output
+        class="bc-project-switcher-story__announcement"
+        aria-live="polite"
+      >
         Current project: {projects.find(
           (project) => project.id === currentProjectId,
         )?.name}. Open project requested {addCount}
@@ -84,9 +85,7 @@
 
 <Story name="Explains a workspace without saved projects">
   {#snippet template()}
-    <div
-      class="border-sidebar-border bg-sidebar text-sidebar-foreground w-72 rounded-xl border p-3"
-    >
+    <div class="bc-project-switcher-story">
       <ProjectSwitcher
         projects={[]}
         emptyLabel="No projects have been opened yet."
@@ -95,3 +94,23 @@
     </div>
   {/snippet}
 </Story>
+
+<style>
+  .bc-project-switcher-story {
+    width: 18rem;
+    border: 1px solid var(--ui-beancount-border);
+    border-radius: var(--ui-beancount-radius-panel);
+    background: var(--ui-beancount-sidebar);
+    color: var(--ui-beancount-sidebar-foreground);
+    padding: var(--ui-beancount-space-3);
+  }
+
+  .bc-project-switcher-story__announcement {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+</style>

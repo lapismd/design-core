@@ -80,7 +80,7 @@ Tailwind utilities before a `fava-beta` adapter consumes the app layer.
 | `dashboard`  |              149 | Reuse Card, Button, Badge, and Table; keep financial layout app-specific                | ⬜                                          |
 | `feedback`   |              205 | Replace hand-built loading, status, and empty states with Skeleton, Alert, Empty, Badge | ⬜                                          |
 | `layout`     |               81 | Reuse ScrollArea, Resizable, Separator, and shared shell controls                       | ✅ semantic selectors + focused story tests |
-| `navigation` |              124 | Reuse Button, Tabs, Tooltip, Sidebar/ScrollArea where suitable                          | ⬜                                          |
+| `navigation` |              124 | Reuse Button, Tabs, Tooltip, Sidebar/ScrollArea where suitable                          | 🟡 core shell navigation converted          |
 | `pickers`    |               50 | Reuse Input, Popover, Command, Avatar, and Button                                       | ⬜                                          |
 | `screens`    |               24 | Compose shell and report bodies with semantic screen selectors                          | ⬜                                          |
 | `tables`     |              265 | Reuse shared Table, Button, Badge, Checkbox, and semantic table-state tokens            | ⬜                                          |

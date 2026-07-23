@@ -171,9 +171,7 @@
   }}
 >
   {#snippet template()}
-    <div
-      class="border-sidebar-border bg-sidebar text-sidebar-foreground flex h-[42rem] w-80 flex-col overflow-hidden rounded-xl border p-3 shadow-sm"
-    >
+    <div class="bc-ledger-workspace-story">
       <LedgerWorkspaceNavigation
         {ledgerItems}
         {folderItems}
@@ -227,7 +225,7 @@
         }}
       />
     </div>
-    <output class="sr-only" aria-live="polite">
+    <output class="bc-ledger-workspace-story__announcement" aria-live="polite">
       Active destination: {activeLedgerId}. Tags: {selectedTagIds.join(", ") ||
         "none"}. Account: {selectedAccount}. Resource: {openedResource ||
         "none"}.
@@ -251,9 +249,7 @@
   }}
 >
   {#snippet template()}
-    <div
-      class="border-sidebar-border bg-sidebar text-sidebar-foreground flex h-[32rem] w-80 flex-col overflow-hidden rounded-xl border p-3 shadow-sm"
-    >
+    <div class="bc-ledger-workspace-story bc-ledger-workspace-story--compact">
       <LedgerWorkspaceNavigation
         {ledgerItems}
         {folderItems}
@@ -272,8 +268,37 @@
         }}
       />
     </div>
-    <output class="sr-only" aria-live="polite"
+    <output class="bc-ledger-workspace-story__announcement" aria-live="polite"
       >{flatSelectedTagIds.join(", ") || "none"}</output
     >
   {/snippet}
 </Story>
+
+<style>
+  .bc-ledger-workspace-story {
+    display: flex;
+    width: 20rem;
+    height: 42rem;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid var(--ui-beancount-border);
+    border-radius: var(--ui-beancount-radius-panel);
+    background: var(--ui-beancount-sidebar);
+    color: var(--ui-beancount-sidebar-foreground);
+    padding: var(--ui-beancount-space-3);
+    box-shadow: var(--ui-beancount-shadow-panel);
+  }
+
+  .bc-ledger-workspace-story--compact {
+    height: 32rem;
+  }
+
+  .bc-ledger-workspace-story__announcement {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+</style>

@@ -45,9 +45,7 @@
   }}
 >
   {#snippet template()}
-    <div
-      class="border-sidebar-border bg-sidebar text-sidebar-foreground w-64 rounded-lg border py-3"
-    >
+    <div class="bc-sidebar-navigation-story">
       <SidebarNavigation
         {items}
         {activeHref}
@@ -55,7 +53,10 @@
           activeHref = href;
         }}
       />
-      <output class="sr-only" aria-live="polite">
+      <output
+        class="bc-sidebar-navigation-story__announcement"
+        aria-live="polite"
+      >
         {items.find((item) => item.href === activeHref)?.label}
       </output>
     </div>
@@ -64,9 +65,7 @@
 
 <Story name="Shows a disabled destination">
   {#snippet template()}
-    <div
-      class="border-sidebar-border bg-sidebar text-sidebar-foreground w-64 rounded-lg border py-3"
-    >
+    <div class="bc-sidebar-navigation-story">
       <SidebarNavigation
         activeHref="/overview"
         items={[
@@ -83,3 +82,23 @@
     </div>
   {/snippet}
 </Story>
+
+<style>
+  .bc-sidebar-navigation-story {
+    width: 16rem;
+    border: 1px solid var(--ui-beancount-border);
+    border-radius: var(--radius-lg);
+    background: var(--ui-beancount-sidebar);
+    color: var(--ui-beancount-sidebar-foreground);
+    padding-block: var(--ui-beancount-space-3);
+  }
+
+  .bc-sidebar-navigation-story__announcement {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+</style>

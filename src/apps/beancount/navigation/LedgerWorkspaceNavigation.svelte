@@ -211,11 +211,11 @@
   }
 </script>
 
-<section class="flex min-h-0 flex-1 flex-col gap-3" aria-label={ariaLabel}>
-  <div class="flex items-center justify-between gap-2 px-2">
-    <p class="text-muted-foreground text-xs font-medium uppercase">{title}</p>
+<section class="bc-ledger-workspace" aria-label={ariaLabel}>
+  <div class="bc-ledger-workspace__heading-row">
+    <p class="bc-ledger-workspace__heading">{title}</p>
     <span
-      class="bg-sidebar-accent text-muted-foreground inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-[11px] font-medium tabular-nums"
+      class="bc-ledger-workspace__count"
       aria-label={`${ledgerCount} ${title.toLocaleLowerCase()}`}
       >{ledgerCount}</span
     >
@@ -231,25 +231,32 @@
 
   {#if selectedTags.length}
     <div
-      class="border-sidebar-border bg-background/55 text-muted-foreground relative flex flex-wrap items-center gap-1.5 rounded-md border py-1.5 pr-9 pl-2 text-xs"
+      class="bc-ledger-workspace__selected-tags"
       aria-label="Selected tag filters"
     >
       {#each selectedTags as tag (tag.id)}
-        <button
+        <Button
           type="button"
-          class="border-primary/20 bg-primary/10 text-primary hover:bg-primary/15 inline-flex max-w-full min-w-0 items-center gap-1 rounded-full border px-2 py-1 text-[11px] leading-none font-semibold"
+          variant="secondary"
+          size="xs"
+          class="bc-ledger-workspace__selected-tag"
           aria-label={`Remove ${tag.label} filter`}
           onclick={() => toggleTag(tag.id)}
         >
-          <Hash class="h-3 w-3 shrink-0" aria-hidden="true" />
-          <span class="min-w-0 truncate">{tag.label}</span>
-        </button>
+          <Hash
+            class="bc-ledger-workspace__selected-tag-icon"
+            aria-hidden="true"
+          />
+          <span class="bc-ledger-workspace__selected-tag-label"
+            >{tag.label}</span
+          >
+        </Button>
       {/each}
       <Button
         type="button"
         variant="ghost"
         size="icon-sm"
-        class="text-muted-foreground hover:bg-background hover:text-sidebar-foreground absolute top-1/2 right-1.5 size-6 -translate-y-1/2 rounded-full"
+        class="bc-ledger-workspace__clear-tags"
         aria-label="Clear tag filters"
         title="Clear tag filters"
         disabled={!onSelectedTagIdsChange}
@@ -261,24 +268,24 @@
   {/if}
 
   {#if view === "ledgers"}
-    <div class="flex items-center gap-1">
-      <label class="relative min-w-0 flex-1">
-        <span class="sr-only">Search ledgers</span>
+    <div class="bc-ledger-workspace__search-row">
+      <label class="bc-ledger-workspace__search-field">
+        <span class="bc-ledger-workspace__visually-hidden">Search ledgers</span>
         <ListFilter
-          class="text-muted-foreground pointer-events-none absolute top-1/2 left-2.5 size-3.5 -translate-y-1/2"
+          class="bc-ledger-workspace__search-icon"
           aria-hidden="true"
         />
         <Input
           bind:value={ledgerSearch}
           placeholder="Search ledgers"
-          class="bg-sidebar h-8 pl-8 text-xs"
+          class="bc-ledger-workspace__search-input"
         />
       </label>
       <Button
         type="button"
         variant="ghost"
         size="icon-sm"
-        class="size-7"
+        class="bc-ledger-workspace__expand-button"
         aria-label={visibleLedgerExpandableIds.some(
           (id) => !ledgerExpandedIds.includes(id),
         )
@@ -306,7 +313,7 @@
       </Button>
     </div>
 
-    <div class="min-h-0 flex-1 overflow-auto pr-1">
+    <div class="bc-ledger-workspace__tree-scroll">
       <WorkspaceTreeNavigation
         items={visibleLedgerItems}
         activeId={activeLedgerId}
@@ -321,16 +328,12 @@
       />
 
       {#if queryPicker || accountPicker || resources.length}
-        <div
-          class="border-sidebar-border mt-2 flex flex-col gap-2 border-t px-2 pt-3"
-        >
-          <p class="text-muted-foreground text-xs font-medium uppercase">
-            Ledger tools
-          </p>
+        <div class="bc-ledger-workspace__tools">
+          <p class="bc-ledger-workspace__tools-heading">Ledger tools</p>
           {#if queryPicker || accountPicker}
-            <div class="flex flex-wrap gap-2">
+            <div class="bc-ledger-workspace__tool-pickers">
               {#if queryPicker}
-                <div class="min-w-0 flex-[1_1_8rem]">
+                <div class="bc-ledger-workspace__tool-picker">
                   <FilterCommandPicker
                     fullWidth
                     label={queryPicker.label}
@@ -343,7 +346,7 @@
                 </div>
               {/if}
               {#if accountPicker}
-                <div class="min-w-0 flex-[1_1_8rem]">
+                <div class="bc-ledger-workspace__tool-picker">
                   <FilterCommandPicker
                     fullWidth
                     label={accountPicker.label}
@@ -363,36 +366,41 @@
               type="button"
               variant="ghost"
               size="sm"
-              class="w-full justify-start"
+              class="bc-ledger-workspace__resource"
               disabled={resource.disabled || !onResourceSelect}
               onclick={() => onResourceSelect?.(resource.id)}
             >
-              <Icon class="size-4 shrink-0" aria-hidden="true" />
-              <span class="truncate">{resource.label}</span>
+              <Icon
+                class="bc-ledger-workspace__resource-icon"
+                aria-hidden="true"
+              />
+              <span class="bc-ledger-workspace__resource-label"
+                >{resource.label}</span
+              >
             </Button>
           {/each}
         </div>
       {/if}
     </div>
   {:else if view === "folders"}
-    <div class="flex items-center gap-1">
-      <label class="relative min-w-0 flex-1">
-        <span class="sr-only">Search folders</span>
+    <div class="bc-ledger-workspace__search-row">
+      <label class="bc-ledger-workspace__search-field">
+        <span class="bc-ledger-workspace__visually-hidden">Search folders</span>
         <ListFilter
-          class="text-muted-foreground pointer-events-none absolute top-1/2 left-2.5 size-3.5 -translate-y-1/2"
+          class="bc-ledger-workspace__search-icon"
           aria-hidden="true"
         />
         <Input
           bind:value={folderSearch}
           placeholder="Search folders"
-          class="bg-sidebar h-8 pl-8 text-xs"
+          class="bc-ledger-workspace__search-input"
         />
       </label>
       <Button
         type="button"
         variant="ghost"
         size="icon-sm"
-        class="size-7"
+        class="bc-ledger-workspace__expand-button"
         aria-label={visibleFolderExpandableIds.some(
           (id) => !folderExpandedIds.includes(id),
         )
@@ -420,7 +428,7 @@
       </Button>
     </div>
 
-    <div class="min-h-0 flex-1 overflow-auto pr-1">
+    <div class="bc-ledger-workspace__tree-scroll">
       <WorkspaceTreeNavigation
         items={visibleFolderItems}
         expandedIds={folderExpandedIds}
@@ -432,24 +440,24 @@
       />
     </div>
   {:else}
-    <div class="flex items-center gap-1">
-      <label class="relative min-w-0 flex-1">
-        <span class="sr-only">Search tags</span>
+    <div class="bc-ledger-workspace__search-row">
+      <label class="bc-ledger-workspace__search-field">
+        <span class="bc-ledger-workspace__visually-hidden">Search tags</span>
         <ListFilter
-          class="text-muted-foreground pointer-events-none absolute top-1/2 left-2.5 size-3.5 -translate-y-1/2"
+          class="bc-ledger-workspace__search-icon"
           aria-hidden="true"
         />
         <Input
           bind:value={tagSearch}
           placeholder="Search tags"
-          class="bg-sidebar h-8 pl-8 text-xs"
+          class="bc-ledger-workspace__search-input"
         />
       </label>
       <Button
         type="button"
         variant="ghost"
         size="icon-sm"
-        class="border-sidebar-border bg-background hover:bg-background size-7 shrink-0 border shadow-sm"
+        class="bc-ledger-workspace__presentation-toggle"
         aria-label={tagsPresentation === "tree"
           ? "Showing tag hierarchy. Switch to flat tags."
           : "Showing flat tags. Switch to tag hierarchy."}
@@ -471,7 +479,7 @@
       </Button>
     </div>
 
-    <div class="min-h-0 flex-1 overflow-auto pr-1">
+    <div class="bc-ledger-workspace__tree-scroll">
       {#if tagsPresentation === "tree"}
         <WorkspaceTreeNavigation
           items={visibleTagItems}
@@ -483,31 +491,268 @@
           onExpandedIdsChange={onTagExpandedIdsChange}
         />
       {:else if flatTagItems.length}
-        <div class="grid gap-1 px-2" aria-label="Flat ledger tags">
+        <div
+          class="bc-ledger-workspace__flat-tags"
+          aria-label="Flat ledger tags"
+        >
           {#each flatTagItems as tag (tag.id)}
             <Button
               type="button"
               variant="ghost"
               size="sm"
-              class="text-muted-foreground hover:bg-background hover:text-sidebar-foreground h-8 w-full min-w-0 justify-start gap-2 px-2 text-xs"
+              class="bc-ledger-workspace__flat-tag"
               aria-pressed={selectedTagIds.includes(tag.id)}
               title={tag.label}
               disabled={tag.disabled || !onSelectedTagIdsChange}
               onclick={() => toggleTag(tag.id)}
             >
-              <Hash class="size-3.5 shrink-0" aria-hidden="true" />
-              <span class="min-w-0 flex-1 truncate text-left">{tag.label}</span>
+              <Hash
+                class="bc-ledger-workspace__flat-tag-icon"
+                aria-hidden="true"
+              />
+              <span class="bc-ledger-workspace__flat-tag-label"
+                >{tag.label}</span
+              >
               {#if tag.badge}
-                <span class="text-[10px] tabular-nums">{tag.badge}</span>
+                <span class="bc-ledger-workspace__flat-tag-badge">
+                  {tag.badge}
+                </span>
               {/if}
             </Button>
           {/each}
         </div>
       {:else}
-        <p class="text-muted-foreground px-2 py-1 text-xs">
+        <p class="bc-ledger-workspace__empty">
           No tags match the current filter.
         </p>
       {/if}
     </div>
   {/if}
 </section>
+
+<style>
+  .bc-ledger-workspace {
+    display: flex;
+    min-height: 0;
+    flex: 1;
+    flex-direction: column;
+    gap: var(--ui-beancount-space-3);
+  }
+
+  .bc-ledger-workspace__heading-row,
+  .bc-ledger-workspace__search-row {
+    display: flex;
+    align-items: center;
+    gap: var(--ui-beancount-space-2);
+    padding-inline: var(--ui-beancount-space-2);
+  }
+
+  .bc-ledger-workspace__heading-row {
+    justify-content: space-between;
+  }
+
+  .bc-ledger-workspace__heading,
+  .bc-ledger-workspace__tools-heading,
+  .bc-ledger-workspace__empty {
+    margin: 0;
+    color: var(--ui-beancount-muted-foreground);
+    font-size: var(--text-xs);
+  }
+
+  .bc-ledger-workspace__heading,
+  .bc-ledger-workspace__tools-heading {
+    font-weight: var(--font-weight-medium);
+    text-transform: uppercase;
+  }
+
+  .bc-ledger-workspace__count {
+    display: inline-flex;
+    min-width: calc(var(--spacing) * 5);
+    height: calc(var(--spacing) * 5);
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: var(--ui-beancount-sidebar-accent);
+    color: var(--ui-beancount-muted-foreground);
+    padding-inline: calc(var(--ui-beancount-space-1) * 1.5);
+    font-size: 0.6875rem;
+    font-weight: var(--font-weight-medium);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .bc-ledger-workspace__selected-tags {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: calc(var(--ui-beancount-space-1) * 1.5);
+    border: 1px solid var(--ui-beancount-border);
+    border-radius: var(--radius-md);
+    background: color-mix(
+      in srgb,
+      var(--ui-beancount-surface) 55%,
+      transparent
+    );
+    color: var(--ui-beancount-muted-foreground);
+    padding: calc(var(--ui-beancount-space-1) * 1.5)
+      calc(var(--ui-beancount-space-3) * 1.5)
+      calc(var(--ui-beancount-space-1) * 1.5) var(--ui-beancount-space-2);
+    font-size: var(--text-xs);
+  }
+
+  :global(.bc-ledger-workspace__selected-tag) {
+    display: inline-flex;
+    min-width: 0;
+    max-width: 100%;
+    gap: var(--ui-beancount-space-1);
+    border-radius: 999px;
+  }
+
+  :global(.bc-ledger-workspace__selected-tag-icon) {
+    width: 0.75rem;
+    height: 0.75rem;
+    flex: none;
+  }
+
+  .bc-ledger-workspace__selected-tag-label,
+  .bc-ledger-workspace__resource-label,
+  .bc-ledger-workspace__flat-tag-label {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  :global(.bc-ledger-workspace__clear-tags) {
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-end: calc(var(--ui-beancount-space-1) * 1.5);
+    width: calc(var(--spacing) * 6);
+    height: calc(var(--spacing) * 6);
+    border-radius: 999px;
+    color: var(--ui-beancount-muted-foreground);
+    transform: translateY(-50%);
+  }
+
+  .bc-ledger-workspace__search-field {
+    position: relative;
+    min-width: 0;
+    flex: 1;
+  }
+
+  .bc-ledger-workspace__visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  :global(.bc-ledger-workspace__search-icon) {
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: calc(var(--ui-beancount-space-2) * 1.25);
+    width: 0.875rem;
+    height: 0.875rem;
+    color: var(--ui-beancount-muted-foreground);
+    pointer-events: none;
+    transform: translateY(-50%);
+  }
+
+  :global(.bc-ledger-workspace__search-input) {
+    width: 100%;
+    height: var(--ui-beancount-compact-control-height);
+    background: var(--ui-beancount-sidebar);
+    padding-inline-start: calc(var(--ui-beancount-space-4) * 2);
+    font-size: var(--text-xs);
+  }
+
+  :global(.bc-ledger-workspace__expand-button),
+  :global(.bc-ledger-workspace__presentation-toggle) {
+    width: calc(var(--spacing) * 7);
+    height: calc(var(--spacing) * 7);
+    flex: none;
+  }
+
+  :global(.bc-ledger-workspace__presentation-toggle) {
+    border-color: var(--ui-beancount-border);
+    background: var(--ui-beancount-surface);
+    box-shadow: var(--ui-beancount-shadow-panel);
+  }
+
+  .bc-ledger-workspace__tree-scroll {
+    min-height: 0;
+    flex: 1;
+    overflow: auto;
+    padding-inline-end: var(--ui-beancount-space-1);
+  }
+
+  .bc-ledger-workspace__tools {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ui-beancount-space-2);
+    margin-block-start: var(--ui-beancount-space-2);
+    border-top: 1px solid var(--ui-beancount-border);
+    padding: var(--ui-beancount-space-3) var(--ui-beancount-space-2) 0;
+  }
+
+  .bc-ledger-workspace__tool-pickers {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ui-beancount-space-2);
+  }
+
+  .bc-ledger-workspace__tool-picker {
+    min-width: 0;
+    flex: 1 1 8rem;
+  }
+
+  :global(.bc-ledger-workspace__resource) {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  :global(.bc-ledger-workspace__resource-icon),
+  :global(.bc-ledger-workspace__flat-tag-icon) {
+    width: 1rem;
+    height: 1rem;
+    flex: none;
+  }
+
+  .bc-ledger-workspace__flat-tags {
+    display: grid;
+    gap: var(--ui-beancount-space-1);
+    padding-inline: var(--ui-beancount-space-2);
+  }
+
+  :global(.bc-ledger-workspace__flat-tag) {
+    min-width: 0;
+    width: 100%;
+    height: var(--ui-beancount-compact-control-height);
+    justify-content: flex-start;
+    gap: var(--ui-beancount-space-2);
+    color: var(--ui-beancount-muted-foreground);
+    padding-inline: var(--ui-beancount-space-2);
+    font-size: var(--text-xs);
+  }
+
+  :global(.bc-ledger-workspace__flat-tag:hover) {
+    background: var(--ui-beancount-surface);
+    color: var(--ui-beancount-sidebar-foreground);
+  }
+
+  .bc-ledger-workspace__flat-tag-label {
+    flex: 1;
+    text-align: start;
+  }
+
+  .bc-ledger-workspace__flat-tag-badge {
+    font-size: 0.625rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .bc-ledger-workspace__empty {
+    padding: var(--ui-beancount-space-1) var(--ui-beancount-space-2);
+  }
+</style>

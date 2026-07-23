@@ -1,8 +1,6 @@
 <script lang="ts">
   import type { Icon } from "@lucide/svelte";
   import * as Tooltip from "@stevejuma/ui/shadcn/tooltip";
-  import { buttonVariants } from "@stevejuma/ui/shadcn/button";
-  import { cn } from "../../../lib/utils.js";
 
   export type SidebarNavigationItem = {
     label: string;
@@ -35,7 +33,7 @@
 </script>
 
 <Tooltip.Provider>
-  <nav class="grid gap-1 px-2" aria-label={ariaLabel}>
+  <nav class="bc-sidebar-navigation" aria-label={ariaLabel}>
     {#each items as item (item.href)}
       {@const active = item.href === activeHref}
       {@const Icon = item.icon}
@@ -47,43 +45,119 @@
               href={item.href}
               aria-current={active ? "page" : undefined}
               aria-disabled={item.disabled || undefined}
-              class={cn(
-                buttonVariants({
-                  variant: "ghost",
-                  size: "sm",
-                }),
-                "w-full justify-start border group-data-[collapsible=icon]:size-9 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0",
-                active
-                  ? "border-sidebar-border bg-background text-sidebar-accent-foreground hover:bg-background shadow-sm"
-                  : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground border-transparent",
-                item.disabled && "pointer-events-none opacity-50",
-              )}
+              class={active
+                ? "bc-sidebar-navigation__link bc-sidebar-navigation__link--active"
+                : "bc-sidebar-navigation__link"}
               onclick={(event) => navigate(item, event)}
             >
-              <Icon
-                class="mr-2 size-4 group-data-[collapsible=icon]:mr-0"
-                aria-hidden="true"
-              />
-              <span class="group-data-[collapsible=icon]:hidden"
-                >{item.label}</span
-              >
+              <Icon class="bc-sidebar-navigation__icon" aria-hidden="true" />
+              <span class="bc-sidebar-navigation__label">{item.label}</span>
               {#if item.badge}
-                <span
-                  class="text-muted-foreground ml-auto group-data-[collapsible=icon]:hidden"
-                >
+                <span class="bc-sidebar-navigation__badge">
                   {item.badge}
                 </span>
               {/if}
             </a>
           {/snippet}
         </Tooltip.Trigger>
-        <Tooltip.Content side="right" class="flex items-center gap-4">
+        <Tooltip.Content side="right" class="bc-sidebar-navigation__tooltip">
           {item.label}
           {#if item.badge}
-            <span class="text-muted-foreground ml-auto">{item.badge}</span>
+            <span class="bc-sidebar-navigation__tooltip-badge">
+              {item.badge}
+            </span>
           {/if}
         </Tooltip.Content>
       </Tooltip.Root>
     {/each}
   </nav>
 </Tooltip.Provider>
+
+<style>
+  .bc-sidebar-navigation {
+    display: grid;
+    gap: var(--ui-beancount-space-1);
+    padding-inline: var(--ui-beancount-space-2);
+  }
+
+  .bc-sidebar-navigation__link {
+    display: flex;
+    width: 100%;
+    height: var(--ui-beancount-compact-control-height);
+    align-items: center;
+    justify-content: flex-start;
+    gap: var(--ui-beancount-space-2);
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+    color: var(--ui-beancount-sidebar-foreground);
+    padding-inline: var(--ui-beancount-space-2);
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-medium);
+    text-decoration: none;
+  }
+
+  .bc-sidebar-navigation__link:hover {
+    background: var(--ui-beancount-sidebar-accent);
+    color: var(--ui-beancount-sidebar-accent-foreground);
+  }
+
+  .bc-sidebar-navigation__link:focus-visible {
+    outline: 2px solid var(--ui-beancount-focus-ring);
+    outline-offset: 2px;
+  }
+
+  .bc-sidebar-navigation__link[aria-disabled="true"] {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  .bc-sidebar-navigation__link--active,
+  .bc-sidebar-navigation__link--active:hover {
+    border-color: var(--ui-beancount-border);
+    background: var(--ui-beancount-surface);
+    color: var(--ui-beancount-sidebar-accent-foreground);
+    box-shadow: var(--ui-beancount-shadow-panel);
+  }
+
+  .bc-sidebar-navigation__icon {
+    width: 1rem;
+    height: 1rem;
+    flex: none;
+  }
+
+  .bc-sidebar-navigation__label,
+  .bc-sidebar-navigation__badge {
+    min-width: 0;
+  }
+
+  .bc-sidebar-navigation__badge {
+    margin-inline-start: auto;
+    color: var(--ui-beancount-muted-foreground);
+  }
+
+  :global(.bc-sidebar-navigation__tooltip) {
+    display: flex;
+    align-items: center;
+    gap: var(--ui-beancount-space-4);
+  }
+
+  .bc-sidebar-navigation__tooltip-badge {
+    margin-inline-start: auto;
+    color: var(--ui-beancount-muted-foreground);
+  }
+
+  :global([data-collapsible="icon"] .bc-sidebar-navigation__link) {
+    width: var(--ui-beancount-control-height);
+    justify-content: center;
+    padding-inline: 0;
+  }
+
+  :global([data-collapsible="icon"] .bc-sidebar-navigation__icon) {
+    margin: 0;
+  }
+
+  :global([data-collapsible="icon"] .bc-sidebar-navigation__label),
+  :global([data-collapsible="icon"] .bc-sidebar-navigation__badge) {
+    display: none;
+  }
+</style>

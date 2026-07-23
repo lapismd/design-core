@@ -89,9 +89,7 @@
   }}
 >
   {#snippet template()}
-    <div
-      class="border-sidebar-border bg-sidebar text-sidebar-foreground w-72 rounded-lg border py-3"
-    >
+    <div class="bc-workspace-tree-story">
       <WorkspaceTreeNavigation
         {items}
         {expandedIds}
@@ -103,7 +101,7 @@
           activeId = id;
         }}
       />
-      <output class="sr-only" aria-live="polite">
+      <output class="bc-workspace-tree-story__announcement" aria-live="polite">
         {items
           .flatMap((item) => [item, ...(item.children ?? [])])
           .find((item) => item.id === activeId)?.label}
@@ -127,9 +125,7 @@
   }}
 >
   {#snippet template()}
-    <div
-      class="border-sidebar-border bg-sidebar text-sidebar-foreground w-72 rounded-lg border py-3"
-    >
+    <div class="bc-workspace-tree-story">
       <WorkspaceTreeNavigation
         {items}
         expandedIds={expandAllIds}
@@ -145,9 +141,7 @@
 
 <Story name="Explains an empty workspace">
   {#snippet template()}
-    <div
-      class="border-sidebar-border bg-sidebar text-sidebar-foreground w-72 rounded-lg border py-3"
-    >
+    <div class="bc-workspace-tree-story">
       <WorkspaceTreeNavigation
         items={[]}
         emptyLabel="No ledgers match the current filter."
@@ -156,3 +150,23 @@
     </div>
   {/snippet}
 </Story>
+
+<style>
+  .bc-workspace-tree-story {
+    width: 18rem;
+    border: 1px solid var(--ui-beancount-border);
+    border-radius: var(--radius-lg);
+    background: var(--ui-beancount-sidebar);
+    color: var(--ui-beancount-sidebar-foreground);
+    padding-block: var(--ui-beancount-space-3);
+  }
+
+  .bc-workspace-tree-story__announcement {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+</style>
