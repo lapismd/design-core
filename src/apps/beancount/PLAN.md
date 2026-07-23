@@ -74,16 +74,16 @@ Svelte files. They are existing Tailwind utility strings, not shared shadcn
 token selectors. This table is a removal checklist; every row must reach zero
 Tailwind utilities before a `fava-beta` adapter consumes the app layer.
 
-| Area         | Class attributes | Shared control decision                                                                 | Status                                          |
-| ------------ | ---------------: | --------------------------------------------------------------------------------------- | ----------------------------------------------- |
-| `charts`     |               73 | Chart containers and legends remain app-specific; use normalized chart/surface tokens   | ✅ all source + stories semantic; guard passes  |
-| `dashboard`  |              149 | Reuse Card, Button, Badge, and Table; keep financial layout app-specific                | ✅ all source + stories semantic; guard passes  |
-| `feedback`   |              205 | Replace hand-built loading, status, and empty states with Skeleton, Alert, Empty, Badge | ✅ primitives + skeletons; guard passes         |
-| `layout`     |               81 | Reuse ScrollArea, Resizable, Separator, and shared shell controls                       | ✅ semantic selectors + focused story tests     |
-| `navigation` |              124 | Reuse Button, Tabs, Tooltip, Sidebar/ScrollArea where suitable                          | ✅ all source + stories semantic; focused tests |
-| `pickers`    |               50 | Reuse Input, Popover, Command, Avatar, and Button                                       | ✅ all source + stories semantic; guard passes  |
-| `screens`    |               24 | Compose shell and report bodies with semantic screen selectors                          | 🟡 shell/story framing semantic; bodies pending |
-| `tables`     |              265 | Reuse shared Table, Button, Badge, Checkbox, and semantic table-state tokens            | ✅ all source + stories semantic; guard passes  |
+| Area         | Class attributes | Shared control decision                                                                 | Status                                           |
+| ------------ | ---------------: | --------------------------------------------------------------------------------------- | ------------------------------------------------ |
+| `charts`     |               73 | Chart containers and legends remain app-specific; use normalized chart/surface tokens   | ✅ all source + stories semantic; guard passes   |
+| `dashboard`  |              149 | Reuse Card, Button, Badge, and Table; keep financial layout app-specific                | ✅ all source + stories semantic; guard passes   |
+| `feedback`   |              205 | Replace hand-built loading, status, and empty states with Skeleton, Alert, Empty, Badge | ✅ primitives + skeletons; guard passes          |
+| `layout`     |               81 | Reuse ScrollArea, Resizable, Separator, and shared shell controls                       | ✅ semantic selectors + focused story tests      |
+| `navigation` |              124 | Reuse Button, Tabs, Tooltip, Sidebar/ScrollArea where suitable                          | ✅ all source + stories semantic; focused tests  |
+| `pickers`    |               50 | Reuse Input, Popover, Command, Avatar, and Button                                       | ✅ all source + stories semantic; guard passes   |
+| `screens`    |               24 | Compose shell and report bodies with semantic screen selectors                          | ✅ all source + stories semantic; bodies pending |
+| `tables`     |              265 | Reuse shared Table, Button, Badge, Checkbox, and semantic table-state tokens            | ✅ all source + stories semantic; guard passes   |
 
 ### Styling exit criteria
 
@@ -92,8 +92,8 @@ Tailwind utilities before a `fava-beta` adapter consumes the app layer.
 2. Replace every Tailwind utility class in components **and stories** with a
    shared shadcn component or component-local semantic selector.
 3. ✅ `pnpm beancount:tailwind:check [family]` rejects utility strings in
-   components and stories. It becomes a passing all-app gate once every
-   migration row is complete.
+   components and stories. `pnpm beancount:tailwind:check` now passes for the
+   complete app; screen-body parity remains tracked separately above.
 4. Retake reviewed component baselines only after each family passes its story
    and a11y tests; Fava reference PNGs remain untouched.
 
@@ -101,9 +101,9 @@ Tailwind utilities before a `fava-beta` adapter consumes the app layer.
 
 1. **Reference safety and health** — deterministic loaded-state fixture,
    existing Storybook failures, and provenance guard maintenance.
-2. **Token and primitive migration** — introduce app-level normalized tokens;
-   remove Tailwind utilities by family, beginning with shared layout,
-   navigation, feedback, and table primitives. Complete the static guard.
+2. **Token and primitive migration** — ✅ normalized tokens are in place and
+   the all-app Tailwind guard passes. Continue to use the guard for every new
+   Beancount source or story while completing visual parity.
 3. **Shared shell** — `ScreenFrame`, `StudioWorkspaceShell`, project header,
    ledger navigation, and deterministic sample-ledger fixtures. The candidate
    now composes the actual project header and ledger navigation against all 15
