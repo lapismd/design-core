@@ -33,6 +33,8 @@
     journalGroups,
     statementColumns,
     statementNodes,
+    statisticsColumns,
+    statisticsRows,
     trialBalanceContributions,
     trialBalanceHierarchy,
     trialBalanceNodes,
@@ -173,6 +175,9 @@
   let holdingsPerspective = $state("holdings");
   let holdingsPage = $state(1);
   let holdingsQueryRequested = $state(false);
+  let statisticsPerspective = $state("postings-by-account");
+  let statisticsPage = $state(1);
+  let statisticsQueryRequested = $state(false);
 
   const holdingsPageSize = 10;
   const visibleHoldingRows = $derived(
@@ -186,6 +191,19 @@
       holdingsPage * holdingsPageSize,
       holdingRows.length,
     )} of ${holdingRows.length}`,
+  );
+  const statisticsPageSize = 10;
+  const visibleStatisticsRows = $derived(
+    statisticsRows.slice(
+      (statisticsPage - 1) * statisticsPageSize,
+      statisticsPage * statisticsPageSize,
+    ),
+  );
+  const statisticsResultLabel = $derived(
+    `Showing ${(statisticsPage - 1) * statisticsPageSize + 1}–${Math.min(
+      statisticsPage * statisticsPageSize,
+      statisticsRows.length,
+    )} of ${statisticsRows.length}`,
   );
 
   const formatReportAxisAmount = (value: number) =>
@@ -808,19 +826,77 @@
   name="Statistics"
   parameters={{ visualDelta: visualDeltaForScreen("statistics") }}
   play={async ({ canvas }) => {
+    await expect(canvas.getByText("Liabilities:CreditCard:MbNa")).toBeVisible();
+    await userEvent.click(canvas.getByRole("tab", { name: "Update Activity" }));
     await expect(
-      canvas.getByText(
-        "Preset statistics views stay Fava-owned until extracted.",
-      ),
-    ).toBeVisible();
+      canvas.getByRole("tab", { name: "Update Activity" }),
+    ).toHaveAttribute("data-state", "active");
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Open statistics query" }),
+    );
+    await expect(
+      canvas.getByRole("button", { name: "Open statistics query" }),
+    ).toHaveAttribute("aria-pressed", "true");
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Open statistics query" }),
+    );
+    await userEvent.click(
+      canvas.getByRole("tab", { name: "Postings per Account" }),
+    );
   }}
 >
   {#snippet template()}
     <ScreenFrame pageTitle="Statistics">
       <ContentScrollArea>
-        <div class="bc-screen-story__placeholder">
-          <p class="bc-screen-story__placeholder-title">Statistics</p>
-          <p>Preset statistics views stay Fava-owned until extracted.</p>
+        <div class="bc-screen-story__page bc-screen-story__statistics">
+          <Tabs.Root
+            value={statisticsPerspective}
+            onValueChange={(next) => {
+              if (next) statisticsPerspective = next;
+            }}
+          >
+            <Tabs.List aria-label="Statistics perspectives">
+              <Tabs.Trigger value="postings-by-account"
+                >Postings per Account</Tabs.Trigger
+              >
+              <Tabs.Trigger value="update-activity"
+                >Update Activity</Tabs.Trigger
+              >
+              <Tabs.Trigger value="entries-by-type"
+                >Entries Per Type</Tabs.Trigger
+              >
+            </Tabs.List>
+          </Tabs.Root>
+          <div class="bc-screen-story__statistics-query-row">
+            <Button
+              variant="outline"
+              aria-label="Open statistics query"
+              aria-pressed={statisticsQueryRequested}
+              onclick={() => {
+                statisticsQueryRequested = !statisticsQueryRequested;
+              }}
+            >
+              Query
+            </Button>
+          </div>
+          <HoldingsTable
+            ariaLabel="Posting statistics"
+            columns={statisticsColumns}
+            rows={visibleStatisticsRows}
+            pagination={{
+              page: statisticsPage,
+              pageCount: Math.ceil(statisticsRows.length / statisticsPageSize),
+              resultLabel: statisticsResultLabel,
+              pageSize: statisticsPageSize,
+              pageSizes: [10, 20, 50],
+            }}
+            onPageChange={(page) => {
+              statisticsPage = page;
+            }}
+          />
+          <output class="bc-screen-story__status" aria-live="polite">
+            {statisticsQueryRequested ? "Query controls requested" : ""}
+          </output>
         </div>
       </ContentScrollArea>
     </ScreenFrame>
@@ -967,6 +1043,16 @@
   .bc-screen-story__holdings {
     display: grid;
     gap: var(--ui-beancount-space-3);
+  }
+
+  .bc-screen-story__statistics {
+    display: grid;
+    gap: var(--ui-beancount-space-3);
+  }
+
+  .bc-screen-story__statistics-query-row {
+    display: flex;
+    justify-content: flex-end;
   }
 
   :global(.bc-screen-story__holdings-query) {

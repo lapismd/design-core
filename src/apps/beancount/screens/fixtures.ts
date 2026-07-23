@@ -684,6 +684,149 @@ export const holdingRows = [
   },
 ];
 
+export const statisticsColumns = [
+  { id: "account", label: "account" },
+  { id: "count", label: "count(account)", align: "right" as const },
+];
+
+export const statisticsRows = [
+  {
+    id: "credit-card-mbna",
+    account: "Liabilities:CreditCard:MbNa",
+    values: { count: { label: "23", sortValue: 23 } },
+  },
+  {
+    id: "opening-balances",
+    account: "Equity:Opening-Balances",
+    values: { count: { label: "11", sortValue: 11 } },
+  },
+  {
+    id: "credit-card-paypal",
+    account: "Liabilities:CreditCard:PayPal",
+    values: { count: { label: "1", sortValue: 1 } },
+  },
+  {
+    id: "loan-plata-principal",
+    account: "Liabilities:Loan:Plata:Principal",
+    values: { count: { label: "22", sortValue: 22 } },
+  },
+  {
+    id: "loan-plata-interest",
+    account: "Liabilities:Loan:Plata:Interest",
+    values: { count: { label: "22", sortValue: 22 } },
+  },
+  {
+    id: "loan-miriam",
+    account: "Liabilities:Loan:Miriam",
+    values: { count: { label: "23", sortValue: 23 } },
+  },
+  {
+    id: "cash",
+    account: "Assets:Cash",
+    values: { count: { label: "1", sortValue: 1 } },
+  },
+  {
+    id: "starling",
+    account: "Assets:Checking:Starling",
+    values: { count: { label: "286", sortValue: 286 } },
+  },
+  {
+    id: "monzo",
+    account: "Assets:Checking:Monzo",
+    values: { count: { label: "66", sortValue: 66 } },
+  },
+  {
+    id: "credit-card-amex",
+    account: "Liabilities:CreditCard:Amex",
+    values: { count: { label: "23", sortValue: 23 } },
+  },
+  {
+    id: "credit-card-barclays",
+    account: "Liabilities:CreditCard:Barclays",
+    values: { count: { label: "17", sortValue: 17 } },
+  },
+  {
+    id: "credit-card-natwest",
+    account: "Liabilities:CreditCard:Natwest",
+    values: { count: { label: "9", sortValue: 9 } },
+  },
+  {
+    id: "loan-novuna",
+    account: "Liabilities:Loan:Novuna",
+    values: { count: { label: "12", sortValue: 12 } },
+  },
+  {
+    id: "loan-mortgage",
+    account: "Liabilities:Loan:Mortgage",
+    values: { count: { label: "48", sortValue: 48 } },
+  },
+  {
+    id: "income-salary",
+    account: "Income:Salary",
+    values: { count: { label: "24", sortValue: 24 } },
+  },
+  {
+    id: "expenses-food",
+    account: "Expenses:Food",
+    values: { count: { label: "98", sortValue: 98 } },
+  },
+  {
+    id: "expenses-housing",
+    account: "Expenses:Housing",
+    values: { count: { label: "30", sortValue: 30 } },
+  },
+  {
+    id: "expenses-health",
+    account: "Expenses:Health",
+    values: { count: { label: "13", sortValue: 13 } },
+  },
+  {
+    id: "expenses-insurance",
+    account: "Expenses:Insurance",
+    values: { count: { label: "9", sortValue: 9 } },
+  },
+  {
+    id: "expenses-interest",
+    account: "Expenses:Interest",
+    values: { count: { label: "16", sortValue: 16 } },
+  },
+  {
+    id: "expenses-joint",
+    account: "Expenses:Joint",
+    values: { count: { label: "35", sortValue: 35 } },
+  },
+  {
+    id: "expenses-subscriptions",
+    account: "Expenses:Subscriptions",
+    values: { count: { label: "19", sortValue: 19 } },
+  },
+  {
+    id: "expenses-taxes",
+    account: "Expenses:Taxes",
+    values: { count: { label: "21", sortValue: 21 } },
+  },
+  {
+    id: "expenses-tech",
+    account: "Expenses:Tech",
+    values: { count: { label: "8", sortValue: 8 } },
+  },
+  {
+    id: "assets-savings",
+    account: "Assets:Savings",
+    values: { count: { label: "6", sortValue: 6 } },
+  },
+  {
+    id: "assets-investments",
+    account: "Assets:Investments",
+    values: { count: { label: "15", sortValue: 15 } },
+  },
+  {
+    id: "equity-retained-earnings",
+    account: "Equity:Retained-Earnings",
+    values: { count: { label: "4", sortValue: 4 } },
+  },
+];
+
 export const validationErrors = [
   {
     id: "duplicate-open",
