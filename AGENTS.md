@@ -152,8 +152,10 @@ Local Playwright screenshots live under
 - Playwright baselines are served at `/visual-baselines` for live compare via
   the workspace `storybook-addon-visual-delta` package
   (`packages/storybook-addon-visual-delta/src`; see `VENDOR.md`). A Vite inject
-  wires `parameters.visualDelta` for `Shadcn/*` stories that are not
-  `skip-visual`. Open the **Visual Delta** panel for overlay / heatmap;
+  wires `parameters.visualDelta` for catalog stories that are not
+  `skip-visual` when a matching PNG exists under the snapshot dir (Shadcn,
+  UI Forms, Apps, and Tasks title/path rules — see README Visual Delta
+  setup). Open the **Visual Delta** panel for overlay / heatmap;
   the first baseline auto-selects and pins to the story subject (component
   clip). Device-scale PNGs are displayed at CSS size in the overlay.
 - In Storybook dev, the testing module includes a **Visual tests** target that
