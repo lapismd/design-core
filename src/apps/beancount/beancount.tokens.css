@@ -19,6 +19,9 @@
   --ui-beancount-focus-ring: var(--ring);
   --ui-beancount-positive: oklch(0.448 0.119 151.328);
   --ui-beancount-negative: var(--destructive);
+  --ui-beancount-review: oklch(0.541 0.179 288.033);
+  --ui-beancount-held: oklch(0.666 0.179 58.318);
+  --ui-beancount-accepted: oklch(0.588 0.158 241.966);
   --ui-beancount-control-height: calc(var(--spacing) * 9);
   --ui-beancount-compact-control-height: calc(var(--spacing) * 8);
   --ui-beancount-space-1: calc(var(--spacing) * 1);
@@ -31,4 +34,7 @@
 .dark {
   --ui-beancount-shadow-panel: 0 2px 8px rgb(0 0 0 / 0.5);
   --ui-beancount-positive: oklch(0.765 0.177 163.223);
+  --ui-beancount-review: oklch(0.811 0.111 293.571);
+  --ui-beancount-held: oklch(0.828 0.189 84.429);
+  --ui-beancount-accepted: oklch(0.746 0.16 232.661);
 }

@@ -140,18 +140,7 @@
   }
 
   function statusClass(status: IngestionReviewRow["status"]) {
-    switch (status) {
-      case "ready":
-        return "bg-emerald-500/15";
-      case "held":
-        return "bg-amber-500/20";
-      case "duplicate":
-        return "bg-rose-500/15";
-      case "accepted":
-        return "bg-sky-500/15";
-      default:
-        return "bg-violet-500/15";
-    }
+    return `bc-ingestion-review__status--${status}`;
   }
 
   function statusLabel(row: IngestionReviewRow) {
@@ -162,25 +151,23 @@
   }
 </script>
 
-<section class="flex w-full flex-col gap-4" aria-label={ariaLabel}>
-  <header
-    class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
-  >
-    <div class="flex flex-wrap items-center gap-2" role="status">
+<section class="bc-ingestion-review" aria-label={ariaLabel}>
+  <header class="bc-ingestion-review__toolbar">
+    <div class="bc-ingestion-review__counts" role="status">
       <span
-        class="text-foreground inline-flex items-center gap-1.5 rounded-full bg-emerald-500/15 px-2.5 py-1 text-xs font-medium"
+        class="bc-ingestion-review__count bc-ingestion-review__count--ready"
       >
-        <span class="tabular-nums">{counts.ready}</span> ready
+        <span class="bc-ingestion-review__count-value">{counts.ready}</span> ready
       </span>
       <span
-        class="text-foreground inline-flex items-center gap-1.5 rounded-full bg-violet-500/15 px-2.5 py-1 text-xs font-medium"
+        class="bc-ingestion-review__count bc-ingestion-review__count--review"
       >
-        <span class="tabular-nums">{counts.review}</span> need review
+        <span class="bc-ingestion-review__count-value">{counts.review}</span> need review
       </span>
       <span
-        class="text-foreground inline-flex items-center gap-1.5 rounded-full bg-rose-500/15 px-2.5 py-1 text-xs font-medium"
+        class="bc-ingestion-review__count bc-ingestion-review__count--duplicate"
       >
-        <span class="tabular-nums">{counts.duplicates}</span> duplicates
+        <span class="bc-ingestion-review__count-value">{counts.duplicates}</span> duplicates
       </span>
     </div>
     <SegmentedControl
@@ -196,37 +183,37 @@
   </header>
 
   <div
-    class="review-grid review-grid--header bg-muted text-muted-foreground items-center gap-4 rounded-2xl px-5 py-4 text-xs font-semibold tracking-wide uppercase"
+    class="review-grid review-grid--header bc-ingestion-review__table-header"
   >
     <input
       type="checkbox"
       checked={allSelected}
       use:setIndeterminate={someSelected}
-      class="border-input accent-primary focus-visible:ring-ring size-4 rounded focus-visible:ring-2 focus-visible:outline-none"
+      class="bc-ingestion-review__checkbox"
       aria-label="Select visible review items"
       disabled={!selectableIds.length}
       onchange={(event) =>
         toggleAll((event.currentTarget as HTMLInputElement).checked)}
     />
     <span>Proposal</span>
-    <span class="text-right">Amount</span>
+    <span class="bc-ingestion-review__amount-heading">Amount</span>
   </div>
 
   {#if groups.length}
-    <div class="flex flex-col gap-3">
+    <div class="bc-ingestion-review__groups">
       {#each groups as group (group.id)}
         {@const expanded = expandedGroupIds.has(group.id)}
         {@const selection = groupSelection(group)}
         {@const groupRows = selectableRows(group)}
-        <section class="bg-muted/80 overflow-hidden rounded-2xl">
+        <section class="bc-ingestion-review__group">
           <div
-            class="review-grid review-grid--header items-center gap-3 px-5 py-4"
+            class="review-grid review-grid--header bc-ingestion-review__group-header"
           >
             <input
               type="checkbox"
               checked={selection === "checked"}
               use:setIndeterminate={selection === "indeterminate"}
-              class="border-input accent-primary focus-visible:ring-ring size-4 rounded focus-visible:ring-2 focus-visible:outline-none"
+              class="bc-ingestion-review__checkbox"
               aria-label={`Select actionable items from ${group.label}`}
               disabled={!groupRows.length}
               onchange={(event) =>
@@ -237,28 +224,28 @@
             />
             <button
               type="button"
-              class="hover:text-primary focus-visible:ring-ring col-span-2 flex min-w-0 items-center justify-between gap-3 rounded-md text-left outline-none focus-visible:ring-2"
+              class="bc-ingestion-review__group-toggle"
               aria-expanded={expanded}
               aria-controls={`${group.id}-rows`}
               aria-label={`${expanded ? "Collapse" : "Expand"} ${group.label}`}
               onclick={() => toggleDisclosure(group.id)}
             >
               <span
-                class="text-foreground truncate text-sm font-semibold tracking-wide"
+                class="bc-ingestion-review__group-title"
               >
                 {group.label}
-                <span class="text-muted-foreground ml-2"
+                <span class="bc-ingestion-review__group-count"
                   >· {group.rows.length}</span
                 >
               </span>
               <span
-                class="text-muted-foreground group-hover:bg-accent group-hover:text-accent-foreground inline-flex size-8 shrink-0 items-center justify-center rounded-md"
+                class="bc-ingestion-review__group-icon"
                 aria-hidden="true"
               >
                 {#if expanded}
-                  <ChevronUp class="size-4" />
+                  <ChevronUp class="bc-ingestion-review__icon" />
                 {:else}
-                  <ChevronDown class="size-4" />
+                  <ChevronDown class="bc-ingestion-review__icon" />
                 {/if}
               </span>
             </button>
@@ -267,17 +254,17 @@
           {#if expanded}
             <div
               id={`${group.id}-rows`}
-              class="bg-card mx-1 mb-1 overflow-hidden rounded-xl border shadow-sm"
+              class="bc-ingestion-review__group-rows"
             >
               {#each group.rows as row (row.id)}
                 {@const selectable = row.selectable !== false}
                 <div
-                  class="review-grid review-grid--row hover:bg-accent/60 items-center gap-3 border-b px-[15px] py-4 last:border-b-0"
+                  class="review-grid review-grid--row bc-ingestion-review__row"
                 >
                   <input
                     type="checkbox"
                     checked={selectedIdSet.has(row.id)}
-                    class="border-input accent-primary focus-visible:ring-ring size-4 rounded focus-visible:ring-2 focus-visible:outline-none"
+                    class="bc-ingestion-review__checkbox"
                     aria-label={`Select ${row.title}`}
                     disabled={!selectable}
                     onchange={(event) =>
@@ -286,16 +273,16 @@
                         (event.currentTarget as HTMLInputElement).checked,
                       )}
                   />
-                  <div class="flex min-w-0 items-center gap-3">
+                  <div class="bc-ingestion-review__proposal">
                     {#if row.imageUrl}
                       <img
-                        class="size-10 shrink-0 rounded-full border object-contain"
+                        class="bc-ingestion-review__avatar-image"
                         src={row.imageUrl}
                         alt=""
                       />
                     {:else}
                       <div
-                        class="bg-muted text-muted-foreground flex size-10 shrink-0 items-center justify-center rounded-full border text-sm font-semibold"
+                        class="bc-ingestion-review__avatar-fallback"
                         aria-hidden="true"
                       >
                         {row.initial ?? row.title.slice(0, 1).toUpperCase()}
@@ -304,57 +291,57 @@
                     {#if onOpenRow}
                       <button
                         type="button"
-                        class="focus-visible:ring-ring min-w-0 rounded-md text-left outline-none focus-visible:ring-2"
+                        class="bc-ingestion-review__row-action"
                         aria-label={`Review ${row.title}`}
                         onclick={() => onOpenRow(row)}
                       >
                         <span
-                          class="block text-sm font-semibold break-words sm:truncate"
+                          class="bc-ingestion-review__row-title"
                           >{row.title}</span
                         >
                         {#if row.detail}
                           <span
-                            class="text-muted-foreground mt-1 block truncate text-xs"
+                            class="bc-ingestion-review__row-detail"
                             >{row.detail}</span
                           >
                         {/if}
                         <span
-                          class={`text-foreground mt-2 inline-flex min-w-20 justify-center rounded-full px-2 py-0.5 text-xs font-medium ${statusClass(row.status)}`}
+                          class={`bc-ingestion-review__status ${statusClass(row.status)}`}
                         >
                           {statusLabel(row)}
                         </span>
                       </button>
                     {:else}
-                      <div class="min-w-0">
+                      <div class="bc-ingestion-review__row-copy">
                         <span
-                          class="block text-sm font-semibold break-words sm:truncate"
+                          class="bc-ingestion-review__row-title"
                           >{row.title}</span
                         >
                         {#if row.detail}
                           <span
-                            class="text-muted-foreground mt-1 block truncate text-xs"
+                            class="bc-ingestion-review__row-detail"
                             >{row.detail}</span
                           >
                         {/if}
                         <span
-                          class={`text-foreground mt-2 inline-flex min-w-20 justify-center rounded-full px-2 py-0.5 text-xs font-medium ${statusClass(row.status)}`}
+                          class={`bc-ingestion-review__status ${statusClass(row.status)}`}
                         >
                           {statusLabel(row)}
                         </span>
                       </div>
                     {/if}
                   </div>
-                  <div class="min-w-0 text-right">
+                  <div class="bc-ingestion-review__amounts">
                     {#if row.postings?.length}
                       {#each row.postings as posting (posting.account)}
                         <div
-                          class="grid min-w-0 grid-cols-[minmax(0,1fr)_8rem] items-center gap-3"
+                          class="bc-ingestion-review__posting"
                         >
                           <span
-                            class="text-muted-foreground truncate text-left font-mono text-xs"
+                            class="bc-ingestion-review__posting-account"
                             >{posting.account}</span
                           >
-                          <span class="text-sm font-semibold tabular-nums"
+                          <span class="bc-ingestion-review__posting-amount"
                             >{posting.amount}</span
                           >
                         </div>
@@ -362,11 +349,11 @@
                     {:else}
                       {#if row.account}
                         <span
-                          class="text-muted-foreground block truncate font-mono text-xs"
+                          class="bc-ingestion-review__account"
                           >{row.account}</span
                         >
                       {/if}
-                      <span class="text-sm font-semibold tabular-nums"
+                      <span class="bc-ingestion-review__amount"
                         >{row.amount ?? "—"}</span
                       >
                     {/if}
@@ -380,7 +367,7 @@
     </div>
   {:else}
     <div
-      class="bg-card text-muted-foreground rounded-2xl border p-8 text-center text-sm"
+      class="bc-ingestion-review__empty"
     >
       {emptyLabel}
     </div>
@@ -395,6 +382,316 @@
 
   .review-grid--header {
     grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+
+  .bc-ingestion-review {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    gap: var(--ui-beancount-space-4);
+  }
+
+  .bc-ingestion-review__toolbar {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ui-beancount-space-4);
+  }
+
+  .bc-ingestion-review__counts {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--ui-beancount-space-2);
+  }
+
+  .bc-ingestion-review__count,
+  .bc-ingestion-review__status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    color: var(--ui-beancount-foreground);
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+
+  .bc-ingestion-review__count {
+    gap: calc(var(--ui-beancount-space-3) / 2);
+    padding: var(--ui-beancount-space-1) calc(var(--ui-beancount-space-2) + 0.125rem);
+  }
+
+  .bc-ingestion-review__count-value,
+  .bc-ingestion-review__posting-amount,
+  .bc-ingestion-review__amount {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .bc-ingestion-review__count--ready,
+  .bc-ingestion-review__status--ready {
+    background-color: color-mix(in srgb, var(--ui-beancount-positive) 15%, transparent);
+  }
+
+  .bc-ingestion-review__count--review,
+  .bc-ingestion-review__status--needs-review {
+    background-color: color-mix(in srgb, var(--ui-beancount-review) 15%, transparent);
+  }
+
+  .bc-ingestion-review__count--duplicate,
+  .bc-ingestion-review__status--duplicate {
+    background-color: color-mix(in srgb, var(--ui-beancount-negative) 15%, transparent);
+  }
+
+  .bc-ingestion-review__status--held {
+    background-color: color-mix(in srgb, var(--ui-beancount-held) 20%, transparent);
+  }
+
+  .bc-ingestion-review__status--accepted {
+    background-color: color-mix(in srgb, var(--ui-beancount-accepted) 15%, transparent);
+  }
+
+  .bc-ingestion-review__table-header {
+    align-items: center;
+    gap: var(--ui-beancount-space-4);
+    border-radius: var(--radius-2xl);
+    background-color: var(--ui-beancount-surface-muted);
+    padding: var(--ui-beancount-space-4) var(--ui-beancount-space-5);
+    color: var(--ui-beancount-muted-foreground);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.025em;
+    text-transform: uppercase;
+  }
+
+  .bc-ingestion-review__checkbox {
+    width: var(--ui-beancount-space-4);
+    height: var(--ui-beancount-space-4);
+    border-color: var(--input);
+    accent-color: var(--primary);
+    border-radius: var(--radius-sm);
+    outline: none;
+  }
+
+  .bc-ingestion-review__checkbox:focus-visible,
+  .bc-ingestion-review__group-toggle:focus-visible,
+  .bc-ingestion-review__row-action:focus-visible {
+    outline: 2px solid var(--ui-beancount-focus-ring);
+  }
+
+  .bc-ingestion-review__amount-heading,
+  .bc-ingestion-review__amounts {
+    text-align: right;
+  }
+
+  .bc-ingestion-review__groups {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ui-beancount-space-3);
+  }
+
+  .bc-ingestion-review__group {
+    overflow: hidden;
+    border-radius: var(--radius-2xl);
+    background-color: color-mix(in srgb, var(--ui-beancount-surface-muted) 80%, transparent);
+  }
+
+  .bc-ingestion-review__group-header {
+    align-items: center;
+    gap: var(--ui-beancount-space-3);
+    padding: var(--ui-beancount-space-4) var(--ui-beancount-space-5);
+  }
+
+  .bc-ingestion-review__group-toggle {
+    display: flex;
+    min-width: 0;
+    grid-column: span 2;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--ui-beancount-space-3);
+    border-radius: var(--radius-md);
+    outline: none;
+    text-align: left;
+  }
+
+  .bc-ingestion-review__group-toggle:hover {
+    color: var(--primary);
+  }
+
+  .bc-ingestion-review__group-title {
+    overflow: hidden;
+    color: var(--ui-beancount-foreground);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.025em;
+  }
+
+  .bc-ingestion-review__group-count {
+    margin-inline-start: var(--ui-beancount-space-2);
+    color: var(--ui-beancount-muted-foreground);
+  }
+
+  .bc-ingestion-review__group-icon {
+    display: inline-flex;
+    width: var(--ui-beancount-compact-control-height);
+    height: var(--ui-beancount-compact-control-height);
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-md);
+    color: var(--ui-beancount-muted-foreground);
+  }
+
+  .bc-ingestion-review__group-toggle:hover .bc-ingestion-review__group-icon {
+    background-color: var(--accent);
+    color: var(--accent-foreground);
+  }
+
+  :global(.bc-ingestion-review__icon) {
+    width: var(--ui-beancount-space-4);
+    height: var(--ui-beancount-space-4);
+  }
+
+  .bc-ingestion-review__group-rows {
+    overflow: hidden;
+    margin-inline: var(--ui-beancount-space-1);
+    margin-block-end: var(--ui-beancount-space-1);
+    border: 1px solid var(--ui-beancount-border);
+    border-radius: var(--ui-beancount-radius-panel);
+    background-color: var(--ui-beancount-surface);
+    box-shadow: var(--ui-beancount-shadow-panel);
+  }
+
+  .bc-ingestion-review__row {
+    align-items: center;
+    gap: var(--ui-beancount-space-3);
+    border-block-end: 1px solid var(--ui-beancount-border);
+    padding: var(--ui-beancount-space-4) 15px;
+  }
+
+  .bc-ingestion-review__row:last-child {
+    border-block-end: 0;
+  }
+
+  .bc-ingestion-review__row:hover {
+    background-color: color-mix(in srgb, var(--accent) 60%, transparent);
+  }
+
+  .bc-ingestion-review__proposal {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: var(--ui-beancount-space-3);
+  }
+
+  .bc-ingestion-review__avatar-image,
+  .bc-ingestion-review__avatar-fallback {
+    width: 2.5rem;
+    height: 2.5rem;
+    flex-shrink: 0;
+    border: 1px solid var(--ui-beancount-border);
+    border-radius: 999px;
+  }
+
+  .bc-ingestion-review__avatar-image {
+    object-fit: contain;
+  }
+
+  .bc-ingestion-review__avatar-fallback {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--ui-beancount-surface-muted);
+    color: var(--ui-beancount-muted-foreground);
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+
+  .bc-ingestion-review__row-action,
+  .bc-ingestion-review__row-copy {
+    min-width: 0;
+  }
+
+  .bc-ingestion-review__row-action {
+    border-radius: var(--radius-md);
+    outline: none;
+    text-align: left;
+  }
+
+  .bc-ingestion-review__row-title {
+    display: block;
+    overflow-wrap: break-word;
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+
+  .bc-ingestion-review__row-detail,
+  .bc-ingestion-review__account,
+  .bc-ingestion-review__posting-account {
+    overflow: hidden;
+    color: var(--ui-beancount-muted-foreground);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+  }
+
+  .bc-ingestion-review__row-detail {
+    display: block;
+    margin-block-start: var(--ui-beancount-space-1);
+    font-family: inherit;
+  }
+
+  .bc-ingestion-review__status {
+    min-width: 5rem;
+    margin-block-start: var(--ui-beancount-space-2);
+    padding: calc(var(--ui-beancount-space-1) / 2) var(--ui-beancount-space-2);
+  }
+
+  .bc-ingestion-review__posting {
+    display: grid;
+    min-width: 0;
+    grid-template-columns: minmax(0, 1fr) 8rem;
+    align-items: center;
+    gap: var(--ui-beancount-space-3);
+  }
+
+  .bc-ingestion-review__posting-account {
+    text-align: left;
+  }
+
+  .bc-ingestion-review__posting-amount,
+  .bc-ingestion-review__amount {
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+
+  .bc-ingestion-review__account {
+    display: block;
+  }
+
+  .bc-ingestion-review__empty {
+    border: 1px solid var(--ui-beancount-border);
+    border-radius: var(--radius-2xl);
+    background-color: var(--ui-beancount-surface);
+    padding: calc(var(--ui-beancount-space-4) * 2);
+    color: var(--ui-beancount-muted-foreground);
+    text-align: center;
+    font-size: 0.875rem;
+  }
+
+  @media (min-width: 640px) {
+    .bc-ingestion-review__toolbar {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .bc-ingestion-review__row-title {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
   }
 
   @media (max-width: 640px) {

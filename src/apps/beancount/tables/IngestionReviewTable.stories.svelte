@@ -97,7 +97,7 @@
   }}
 >
   {#snippet template()}
-    <div class="max-w-6xl p-5">
+    <div class="bc-ingestion-review-story">
       <IngestionReviewTable
         {groups}
         counts={{ review: 2, ready: 1, duplicates: 1 }}
@@ -115,7 +115,7 @@
         }}
       />
       <output
-        class="text-muted-foreground mt-3 block text-sm"
+        class="bc-ingestion-review-story__status"
         aria-label="Selection status"
       >
         {openedTitle
@@ -135,7 +135,7 @@
   }}
 >
   {#snippet template()}
-    <div class="max-w-6xl p-5">
+    <div class="bc-ingestion-review-story">
       <IngestionReviewTable
         groups={[]}
         counts={{ review: 0, ready: 0, duplicates: 0 }}
@@ -144,3 +144,17 @@
     </div>
   {/snippet}
 </Story>
+
+<style>
+  .bc-ingestion-review-story {
+    max-width: 72rem;
+    padding: var(--ui-beancount-space-5);
+  }
+
+  .bc-ingestion-review-story__status {
+    display: block;
+    margin-block-start: var(--ui-beancount-space-3);
+    color: var(--ui-beancount-muted-foreground);
+    font-size: 0.875rem;
+  }
+</style>
