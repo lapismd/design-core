@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "component": "pagination",
+  "scope": "shared",
+  "upstream": {
+    "project": "shadcn-svelte",
+    "registry": "https://shadcn-svelte.com/registry",
+    "cliVersion": "1.4.2",
+    "item": "pagination",
+    "fetchedAt": "2026-07-23T17:57:14.746Z",
+    "sourceFiles": [
+      {
+        "path": "src/lib/components/ui/pagination/index.ts",
+        "sha256": "b93cc887d283b8f1bdd2177ea7139b2141a333fd4f1600899846a2545b6b2ec4"
+      },
+      {
+        "path": "src/lib/components/ui/pagination/pagination-content.svelte",
+        "sha256": "05e5539c25558333dd21074ea7f903d404de040046b4be2bca0f753a6620b0f7"
+      },
+      {
+        "path": "src/lib/components/ui/pagination/pagination-ellipsis.svelte",
+        "sha256": "38cdb091fd4e55492667dc3cd70d160f32625a033322503cd9088f341f26b754"
+      },
+      {
+        "path": "src/lib/components/ui/pagination/pagination-item.svelte",
+        "sha256": "a863369842c10e5f753bee8d319fda13db140b1b234e75a951439bf8d3f79cca"
+      },
+      {
+        "path": "src/lib/components/ui/pagination/pagination-link.svelte",
+        "sha256": "7d1389e4cfda276f4ae88ee4a49dd1e1c1fdb2d667e01ef67f3280d467ab1d29"
+      },
+      {
+        "path": "src/lib/components/ui/pagination/pagination-next-button.svelte",
+        "sha256": "4051b31640152bd01a4853891df0e22ad54e7f019fb9575cc695e65a8c8593ac"
+      },
+      {
+        "path": "src/lib/components/ui/pagination/pagination-next.svelte",
+        "sha256": "b1c65ccbd3bd7b36d031f1d935a940ceed61b10291b0d82a617ff78ef431c462"
+      },
+      {
+        "path": "src/lib/components/ui/pagination/pagination-prev-button.svelte",
+        "sha256": "2bbbe83b3f496f79a2a7a32f4c5d87eaf018e924a419886417fba2c8602c75bc"
+      },
+      {
+        "path": "src/lib/components/ui/pagination/pagination-previous.svelte",
+        "sha256": "4de8572e4515c141549c4cf25fa62452dac872f21e6cc1fb6eedde36ead091e7"
+      },
+      {
+        "path": "src/lib/components/ui/pagination/pagination.svelte",
+        "sha256": "71bb6191fd86a98db65743a488f920c575b18f45c5ab3cfdb5202ce121695552"
+      }
+    ],
+    "docsUrl": "https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/pagination.md",
+    "docsFetchedAt": "2026-07-23T17:57:14.764Z",
+    "docsSha256": "79e9b9023849284a9f8c30df391c259f39ddbbbf252e4b580d70274a92e06ca4",
+    "docsCommit": "bf4f461d88526359d0e96e1950f637912bbeebe7",
+    "docsRef": "shadcn-svelte@1.4.2",
+    "docsVendorPath": "vendor/shadcn-svelte-docs",
+    "examplesIncluded": [
+      "Preview"
+    ],
+    "examplesSkipped": []
+  },
+  "converter": {
+    "version": "2.0.0",
+    "irSchemaVersion": 1,
+    "tokenSchemaVersion": 1
+  },
+  "recipe": {
+    "name": "pagination",
+    "version": 1,
+    "tier": "lightCompound"
+  }
+}

@@ -122,5 +122,230 @@ CV domain composition for Storybook / app reuse (`@stevejuma/ui/apps/cv`):
 
 ## App-specific — `src/apps/beancount/`
 
-Reserved for beancount domain UI (`MerchantPicker`, `AccountAvatar`, filter
-semantics, charts/tables/dashboard). Empty placeholder barrel only.
+Beancount Studio domain composition for Storybook / app reuse
+(`@stevejuma/ui/apps/beancount`), migrated from `beancount-js-studio`'s
+`@beancount-js/ui` package. Props/callbacks only — no filesystem, routing, or
+persistence in these components.
+
+**Layout (`layout/`)** — `Apps/Beancount/Layout/*`:
+
+- `AppShell` (+ `AppShellDemo` story fixture) — the application frame; slots
+  for sidebar, header actions/leading/trailing, status, and AI rail
+- `ContentScrollArea` — bounded scroll viewport wrapping shadcn Scroll Area
+- `ResizableSidebar` — controlled pointer/keyboard sidebar resize rail
+- `StudioShellHeader` — project identity header for a Studio sidebar
+- `StudioWorkspaceShell` — full reusable frame composing `AppShell`,
+  shadcn `Sidebar`, `StudioShellHeader`, and `ProjectSwitcher`
+
+**Navigation (`navigation/`)** — `Apps/Beancount/Navigation/*`:
+
+- `AccountNavigationLink` — uses `AccountAvatar` from the colocated
+  `pickers/` module (see below); not re-exported from `navigation/` to avoid a
+  duplicate export
+- `CycleSelect` — previous/next cycling wrapper around forms
+  `FilterCommandPicker`
+- `LedgerWorkspaceNavigation` — ledgers/folders/tags composition over
+  `WorkspaceTreeNavigation`, forms `FilterCommandPicker`, and `SegmentedControl`
+- `PagePagination` — wraps shadcn `Pagination`
+- `ProjectSwitcher`, `SavedQueryHistory`, `SidebarNavigation`,
+  `WorkspaceTreeNavigation`
+
+**Host reuse:** shadcn `button`, `input`, `scroll-area`, `sidebar`, `separator`,
+`accordion`, `tooltip`, `pagination`; forms `FilterCommandPicker`,
+`SegmentedControl`; `pickers` `AccountAvatar`. Icons use `@lucide/svelte`
+(studio source used `lucide-svelte`; rewritten on migration).
+
+**Feedback (`feedback/`)** — `Apps/Beancount/Feedback/*`:
+
+Loading, empty, and error surfaces migrated from the studio's
+`components/feedback/`:
+
+- `AccountsPageSkeleton`, `AiDockSkeleton`, `BrandSettingsSkeleton`,
+  `MerchantsPageSkeleton`, `QueryPageSkeleton`, `ReconciliationReviewSkeleton`,
+  `ReviewImportsSkeleton`, `RulesPageSkeleton`, `SourcesPageSkeleton` — route-
+  and surface-specific loading compositions built on shadcn `Skeleton`, kept
+  narrow to their target layout rather than a generic placeholder
+- `RouteLoadingSkeleton` — route-boundary skeleton that selects
+  `QueryPageSkeleton` for the query route; converted from the source's Svelte
+  4 `export let` / `$:` syntax to Svelte 5 `$props()` / `$derived` on migration
+- `ResourceViewerSkeleton` — minimal skeleton reused by `ResourcePreview`
+- `ResourcePreview` (+ `ResourcePreviewItem` type) — display-model workspace
+  resource preview (image/PDF/text) over shadcn `Button` and `ScrollArea`;
+  applications resolve/revoke URLs and load text
+- `ValidationErrorTable` (+ `ValidationErrorRow` type) — actionable ledger
+  validation table over shadcn `Table`, with a calm empty state
+
+**Host reuse (feedback):** shadcn `skeleton`, `table`, `button`, `scroll-area`.
+Icons use `@lucide/svelte` (studio source used `lucide-svelte`; rewritten on
+migration). Props and callbacks only — no filesystem, ledger, or route access.
+
+**Pickers (`pickers/`)** — `Apps/Beancount/Pickers/*`:
+
+Domain-specific selection and appearance-editing controls migrated from the
+studio's `components/forms/` (these are Beancount domain pickers, not generic
+form primitives, so they live outside `@stevejuma/ui/forms`):
+
+- `AccountAvatar` (+ colocated `account-appearance-icons` /
+  `account-avatar` / `appearance-color` helpers) — moved here from
+  `navigation/` (the earlier migration pass placed it there; it is a picker
+  concern shared by `AccountNavigationLink`, `IconColorPicker`, and
+  `AccountPicker`/`MerchantPicker` call sites, so it now has a single home)
+  and its display fallback/appearance logic
+- `AccountPicker` — data-driven account selector; thin adapter over forms
+  `FilterCommandPicker`
+- `MerchantPicker` (+ `MerchantPickerMerchant` / `MerchantPickerEmptyOption`
+  types) — data-driven saved-merchant selector with an optional
+  application-owned "create from search" action; thin adapter over forms
+  `FilterCommandPicker`
+- `IconColorPicker` — the account-appearance editor (colour swatches + a
+  searchable icon grid) with icon-contrast protection; its icon search is a
+  local weighted-field ranker (same scoring approach as forms'
+  `filterCommandOptions`) over the colocated `account-appearance-icons`
+  options — the source studio version depended on `@beancount-js/filters`'
+  Fuse-backed `fuzzySearch`, which is not a dependency of this package and was
+  not added; no `fuse.js`/`@beancount-js/filters` dependency was introduced
+
+**Host reuse (pickers):** shadcn `scroll-area`; forms `FilterCommandPicker`
+and its `FilterCommandOption`/`FilterCommandSearchAction` types; `bits-ui`
+`Popover`. Icons use `@lucide/svelte` (studio source used `lucide-svelte`;
+rewritten on migration). The studio's `picker-options.ts`/`picker-search.ts`
+helpers were **not** copied: `FilterCommandOption`, `FilterCommandSearchAction`,
+and `filterCommandOptions` already exist (and were already reimplemented
+without Fuse) under `@stevejuma/ui/forms`, so `MerchantPicker`/`AccountPicker`
+import them directly instead of duplicating a second copy.
+
+**Known gaps from the source studio version** (destination shadcn primitives
+don't yet support these — cosmetic only, not blocking):
+
+- `Sidebar.Root`'s `showBorder` prop doesn't exist on the catalog's `sidebar`
+  family; dropped from `StudioWorkspaceShell`.
+- `Accordion.Trigger`'s `indicatorPosition` prop doesn't exist on the catalog's
+  `accordion` family; dropped from `SavedQueryHistory` (chevron always
+  trails instead of leading).
+- `buttonVariants()` is a deprecated no-op (returns `""`) in this catalog's
+  `button` family, so `SidebarNavigation`'s anchor-as-button styling relies
+  only on the extra classes layered on top — matches the same pattern already
+  used in the catalog's own Tooltip preview example.
+
+**Charts (`charts/`)** — `Apps/Beancount/Charts/*`:
+
+- `BarChart` — responsive grouped or diverging-stacked bar chart (single vs
+  stacked account/category series), with budget marker support
+- `ChartLegend` — interactive series legend (multi- or single-selection
+  `ToggleGroup`) for hiding or focusing chart series
+- `ChartModeSwitch` — controlled tab list for a chart's alternate visual
+  representations (e.g. line vs area)
+- `ChartPanel` — controlled toolbar/frame combining legend, compact-display
+  selects, and mode switch around a model-driven chart `children` snippet
+- `ChartSwitcher` — responsive, controlled perspective selector for related
+  charts, with horizontal-overflow tab strip
+- `HierarchyChart` — model-driven allocation chart with treemap and sunburst
+  views
+- `LineChart` — responsive time-series renderer (line or area) with
+  accessible point focus
+- `ScatterPlot` — model-driven ledger-event plot with accessible point focus
+
+**Dashboard (`dashboard/`)** — `Apps/Beancount/Dashboard/*`:
+
+- `FinancialDashboard` — the canonical financial-dashboard page composition:
+  period/currency/valuation controls, summary metrics, cash flow, outflows,
+  balance sheet, and net-worth sections
+- `DashboardSection` — controlled disclosure card wrapping a dashboard insight
+- `DashboardFlow` (+ colocated `dashboard-flow.ts` balancing/layout helpers
+  and spec) — cash-flow Sankey-style renderer with keyboard-explorable streams
+- `DashboardDonut` — model-driven category donut with centre feedback
+- `DashboardLine` — keyboard-explorable trend line/area with pointer and
+  keyboard exploration
+- `DashboardTreeTable` (+ colocated `DashboardTreeRow` and
+  `dashboard-tree-table.ts` contribution/collapse helpers and spec) —
+  expandable account summary with contribution legend and weight meters
+- `DashboardChartTooltip` — shared positioned tooltip used by `DashboardFlow`
+  and `DashboardLine`
+
+**Host reuse (charts/dashboard):** shadcn `toggle-group`, `tabs`, `select`,
+`scroll-area`; forms `SegmentedControl`; `d3-scale` and `d3-shape` (added as
+direct dependencies for `DashboardLine`'s scales/generators). Icons use
+`@lucide/svelte` (studio source used `lucide-svelte`; rewritten on migration).
+No filesystem, ledger, or route access — props and callbacks only.
+
+**Tables (`tables/`)** — `Apps/Beancount/Tables/*`:
+
+- `AccountBulkActionSheet` — presentational bulk-action sheet for selected
+  ledger records (account replacement + duplicate deletion), built on forms
+  `FilterCommandPicker`, `FormField`, `FormSectionHeader`
+- `AccountTreeTable` — controlled-data account hierarchy with per-column
+  values and accessible row disclosure
+- `DataTable` (+ colocated `data-table-adapter.svelte.ts`,
+  `data-table-flex-render.svelte`, `data-table-render-helpers.ts` TanStack
+  Table Svelte adapter — the shadcn-svelte "data-table" recipe is unsupported
+  by this catalog's `ui:add` pipeline, so the generic adapter is colocated
+  here instead of under `shared/shadcn/`) — typed TanStack Table composition
+  for fixed-column collections
+- `ImportMappingTable` — controlled, presentation-only import mapping table
+  with categorized/uncategorized tabs over forms `FilterCommandPicker`
+- `IngestionReviewTable` — model-driven queue for grouped import proposals
+  with selection, disclosure, and forms `SegmentedControl` filters
+- `IntervalTreeTable` — display-model-driven multi-period account comparison
+  with budget variance and an `accountCell` snippet slot
+- `LedgerActivityTable` — model-driven ledger activity surface with grouping,
+  disclosure, selection, multi-posting breakdowns, and forms `SegmentedControl`
+  timeframes
+- `QueryResultsTable` — formatted, client-sortable query result table wrapping
+  `PagePagination`
+- `StatementSummaryTreeRow` (+ `StatementSummaryTreeTable`) — financial
+  statement hierarchy with contribution bar/legend, weight meters, and
+  multi-currency values
+
+**Host reuse (tables):** shadcn `table`, `alert`, `alert-dialog`, `button`,
+`select`, `sheet`, `tabs`, `tooltip`; forms `FilterCommandPicker`, `FormField`,
+`FormSectionHeader`, `SegmentedControl`; navigation `PagePagination`;
+`@tanstack/table-core` (added as a direct dependency for `DataTable`'s
+adapter). Icons use `@lucide/svelte` (studio source used `lucide-svelte`;
+rewritten on migration).
+
+`MerchantPicker` is implemented under `pickers/` (see above). Still reserved:
+filter semantics.
+
+### Fava leftovers (keep in `packages/fava` for now)
+
+After migrating `@beancount-js/ui` into `@stevejuma/ui/apps/beancount`, these
+Fava surfaces remain app-coupled (router, stores, `useContext`, ingestion APIs,
+Codemirror, or ledger/core types). Do **not** move them until a clear
+props/callbacks boundary exists. Prefer thin Fava adapters that map domain
+data into the display models already exported from `apps/beancount`.
+
+**Already covered by renamed catalog components** (Fava should rewire later):
+
+| Fava / local name | Catalog target |
+| --- | --- |
+| `ActivityTable` / journal activity chrome | `LedgerActivityTable` |
+| `TreeTable` / `TreeTableNode` | `AccountTreeTable` |
+| `IntervalTreeTable` (thin wrapper) | `IntervalTreeTable` |
+| `QueryTable` | `QueryResultsTable` |
+| `ModeSwitch` | `ChartModeSwitch` |
+| `HierarchyContainer` / treemap+sunburst | `HierarchyChart` |
+| `StudioShell` (partial) | `AppShell` / `StudioWorkspaceShell` |
+| `ContentScrollArea`, `PagePagination`, `CycleSelect` | same names under layout/navigation |
+| Dashboard widgets | `FinancialDashboard` + `Dashboard*` |
+| Page skeletons / `ResourcePreview` | `feedback/*` |
+| `MerchantPicker` / `AccountLink` avatar | `pickers/*` |
+
+**Keep in Fava — route / workspace adapters:**
+
+- Shell: `StudioShell`, `StudioShellHeader` (Fava-wired), `Nav`, `FavaNavigation`,
+  `Search`, `Main` layout
+- Reports: `AccountDetails`, `BalanceSheet`, `IncomeStatement`, `TrialBalance`,
+  `StatementReport`, `Holdings`, `Statistics`, `PresetQueryView`
+- Journal / query: `JournalTable`, `AccountActivityTable`, `Query`, `QueryBox`,
+  `Editor`, Codemirror widgets (`Highlighter`, find/replace, etc.)
+- Ingestion / rules: `Ingestion*`, `MerchantEditSheet`, `LocalMerchantMatchPicker`,
+  `RulesSettings`, `RuleEditorSheet`, `RuleConditionRow`, `AiDock`,
+  `AiUnifiedReviewDiff`, `JournalEditorSheet`, `JournalRecordRouteSheet`
+- Form field adapters tied to `@beancount-js/forms` registry:
+  `AccountComboField`, `MerchantComboField`, `SecretField`, `SwitchField`
+- Low-level tree parts still used by Fava wrappers: `AccountCell`,
+  `AccountCellHeader`, `Diff`, `Errors`
+
+**Follow-up (beancount-js-studio):** point Fava imports at
+`@stevejuma/ui/apps/beancount` (+ host shadcn/forms/filter) and delete the
+paused `@beancount-js/ui` catalog once parity is confirmed.

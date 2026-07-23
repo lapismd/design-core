@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "component": "button-group",
+  "scope": "shared",
+  "upstream": {
+    "project": "shadcn-svelte",
+    "registry": "https://shadcn-svelte.com/registry",
+    "cliVersion": "1.4.2",
+    "item": "button-group",
+    "fetchedAt": "2026-07-23T17:57:23.475Z",
+    "sourceFiles": [
+      {
+        "path": "src/lib/components/ui/button-group/button-group-separator.svelte",
+        "sha256": "899e1e8fb9b4b95da2c6772189747bfe20df6e2eb4fce2144d94c15481764eec"
+      },
+      {
+        "path": "src/lib/components/ui/button-group/button-group-text.svelte",
+        "sha256": "3d49b288e1df6075785620f72aa7d5a76420403bd77edd5226825b2c012a6d17"
+      },
+      {
+        "path": "src/lib/components/ui/button-group/button-group.svelte",
+        "sha256": "362d71ed14b865bc8510e7b15ff53aff996bf40775812dd9d931fbd977ae7934"
+      },
+      {
+        "path": "src/lib/components/ui/button-group/index.ts",
+        "sha256": "17f980162e046ccc19d4804aec14a7c29370eb50ab40ce78a954c0d37c7b66d3"
+      }
+    ],
+    "docsUrl": "https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/button-group.md",
+    "docsFetchedAt": "2026-07-23T17:57:23.485Z",
+    "docsSha256": "cc0c0fbda17fefa06285a2a0d2db856dd01175f24364dbda87e478ef5ae089f9",
+    "docsCommit": "bf4f461d88526359d0e96e1950f637912bbeebe7",
+    "docsRef": "shadcn-svelte@1.4.2",
+    "docsVendorPath": "vendor/shadcn-svelte-docs",
+    "examplesIncluded": [
+      "Preview",
+      "Orientation",
+      "Size",
+      "Nested",
+      "Separator",
+      "Split",
+      "Input",
+      "Input Group",
+      "Dropdown Menu",
+      "Select",
+      "Popover"
+    ],
+    "examplesSkipped": []
+  },
+  "converter": {
+    "version": "2.0.0",
+    "irSchemaVersion": 1,
+    "tokenSchemaVersion": 1
+  },
+  "recipe": {
+    "name": "button-group",
+    "version": 1,
+    "tier": "lightCompound"
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "component": "table",
+  "scope": "shared",
+  "upstream": {
+    "project": "shadcn-svelte",
+    "registry": "https://shadcn-svelte.com/registry",
+    "cliVersion": "1.4.2",
+    "item": "table",
+    "fetchedAt": "2026-07-23T17:56:14.360Z",
+    "sourceFiles": [
+      {
+        "path": "src/lib/components/ui/table/index.ts",
+        "sha256": "45cf1acd6467c786ebb822046c225567a006a38268fdacce56114732540a4042"
+      },
+      {
+        "path": "src/lib/components/ui/table/table-body.svelte",
+        "sha256": "e3ec1611effda1f3e4c3adfafa3b309aa0b025d7e0d7f27d57a151ea0080413d"
+      },
+      {
+        "path": "src/lib/components/ui/table/table-caption.svelte",
+        "sha256": "833673985bccdd540589c920ee98a0ea00b20b2e31da0f99c2dedf4856956092"
+      },
+      {
+        "path": "src/lib/components/ui/table/table-cell.svelte",
+        "sha256": "74106aa62ac91587aee22c13566f492a548f5f2ae36955eeff733047390a6a76"
+      },
+      {
+        "path": "src/lib/components/ui/table/table-footer.svelte",
+        "sha256": "32a2b703dfda48031ec87496f02e3b22a0429ca67a0ef17ec8fd69984f311130"
+      },
+      {
+        "path": "src/lib/components/ui/table/table-head.svelte",
+        "sha256": "d3c793b0e6d0884c4aa09be6889be65ac28c280f4f3c54ee5ac989a0aa3531b1"
+      },
+      {
+        "path": "src/lib/components/ui/table/table-header.svelte",
+        "sha256": "a5a1add2ce67ab43c67ea86359e36d44866177c522a49ff308c0640ee4ab51fd"
+      },
+      {
+        "path": "src/lib/components/ui/table/table-row.svelte",
+        "sha256": "b1e6bb4f2b88d1793eac9ac23972e49143f01c25f6cfd50c30679f0fdc61c732"
+      },
+      {
+        "path": "src/lib/components/ui/table/table.svelte",
+        "sha256": "ac2604605cc58b479f18ddc543aa01f6259964caa935bc1b77131ff1210547bc"
+      }
+    ],
+    "docsUrl": "https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/table.md",
+    "docsFetchedAt": "2026-07-23T17:56:14.373Z",
+    "docsSha256": "e59d506f51cf8ab8a39218e09b78f09340da5796de65374cbc47d4a09addb0c3",
+    "docsCommit": "bf4f461d88526359d0e96e1950f637912bbeebe7",
+    "docsRef": "shadcn-svelte@1.4.2",
+    "docsVendorPath": "vendor/shadcn-svelte-docs",
+    "examplesIncluded": [
+      "Preview"
+    ],
+    "examplesSkipped": []
+  },
+  "converter": {
+    "version": "2.0.0",
+    "irSchemaVersion": 1,
+    "tokenSchemaVersion": 1
+  },
+  "recipe": {
+    "name": "table",
+    "version": 1,
+    "tier": "lightCompound"
+  }
+}

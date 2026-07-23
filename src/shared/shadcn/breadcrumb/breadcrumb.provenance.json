@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "component": "breadcrumb",
+  "scope": "shared",
+  "upstream": {
+    "project": "shadcn-svelte",
+    "registry": "https://shadcn-svelte.com/registry",
+    "cliVersion": "1.4.2",
+    "item": "breadcrumb",
+    "fetchedAt": "2026-07-23T17:57:19.809Z",
+    "sourceFiles": [
+      {
+        "path": "src/lib/components/ui/breadcrumb/breadcrumb-ellipsis.svelte",
+        "sha256": "2bb7094d305992b0f2f70894ef45818f316e37c330aa4afaac4b83cdf95c2da7"
+      },
+      {
+        "path": "src/lib/components/ui/breadcrumb/breadcrumb-item.svelte",
+        "sha256": "efed3ddc52f62c87d7d7f884968ee7bc02888df6415ad8704860117d66ca00e8"
+      },
+      {
+        "path": "src/lib/components/ui/breadcrumb/breadcrumb-link.svelte",
+        "sha256": "37b2c0994e9e8dce02fd00b645fc4c54de6a57c2ab369bfe11b98b06716fed65"
+      },
+      {
+        "path": "src/lib/components/ui/breadcrumb/breadcrumb-list.svelte",
+        "sha256": "274bef62954e00226bcca2dc57722cfb4e70c32cee6a16137b58e1eda33af0bc"
+      },
+      {
+        "path": "src/lib/components/ui/breadcrumb/breadcrumb-page.svelte",
+        "sha256": "46047ee0df7768dda934feff8ec2f3281d1d76843eb6d762dfa8ef3313cfb569"
+      },
+      {
+        "path": "src/lib/components/ui/breadcrumb/breadcrumb-separator.svelte",
+        "sha256": "5f54360c56a298101de420d6c86b22f1d01e94af5457498a896977e13d201333"
+      },
+      {
+        "path": "src/lib/components/ui/breadcrumb/breadcrumb.svelte",
+        "sha256": "cfd6e4f4109f71198003dfd02447fc17f08fbee136df54d9e78563c56e0011ff"
+      },
+      {
+        "path": "src/lib/components/ui/breadcrumb/index.ts",
+        "sha256": "860f8a6b37a488153f2dd369901de1ab935e7857b61c88b6fd0e3cac46a038d6"
+      }
+    ],
+    "docsUrl": "https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/breadcrumb.md",
+    "docsFetchedAt": "2026-07-23T17:57:19.839Z",
+    "docsSha256": "176afa2a7a27a6fa96657a0b54a023ce203c880eddde54f17d834fcbd72e8f0a",
+    "docsCommit": "bf4f461d88526359d0e96e1950f637912bbeebe7",
+    "docsRef": "shadcn-svelte@1.4.2",
+    "docsVendorPath": "vendor/shadcn-svelte-docs",
+    "examplesIncluded": [
+      "Preview",
+      "Custom separator",
+      "Dropdown",
+      "Collapsed",
+      "Link component"
+    ],
+    "examplesSkipped": [
+      {
+        "name": "Responsive",
+        "reason": "unsupported-hook",
+        "detail": "Example contains a bare bind: that is not valid Svelte"
+      }
+    ]
+  },
+  "converter": {
+    "version": "2.0.0",
+    "irSchemaVersion": 1,
+    "tokenSchemaVersion": 1
+  },
+  "recipe": {
+    "name": "breadcrumb",
+    "version": 1,
+    "tier": "lightCompound"
+  }
+}
