@@ -872,6 +872,22 @@ export const availableSources = [
   },
 ];
 
+export const sourceAccountSource = {
+  id: "lunch-flow",
+  name: "Lunch Flow",
+  initials: "L",
+  credentialLabel: "Credential available · Discovering accounts...",
+  syncLabel: "Last sync: Not synced yet",
+  tone: "negative" as const,
+};
+
+export const unassignedAccountGroup = {
+  id: "other-accounts",
+  label: "Other Accounts",
+  description: "Ledger accounts not assigned to a sync configuration",
+  count: 45,
+};
+
 export const validationErrors = [
   {
     id: "duplicate-open",

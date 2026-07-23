@@ -38,7 +38,7 @@ Studio revision, fixture digest, viewport, and per-image digest.
 | ------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Matrix integrity          | ✅     | `pnpm beancount:screens:verify` finds 15 stories and PNGs                                                                                                                 |
 | Reference provenance      | ✅     | 2026-07-23 capture: Studio `191dae81…`, sample fixture digest, 15 image digests                                                                                           |
-| Loaded route capture      | 🟡     | The unseeded sample project holds Records, Import accounts, and Rules in real loading states; add a deterministic ingestion/rules fixture before making loaded references |
+| Loaded route capture      | 🟡     | Records and Rules still need deterministic populated fixtures; the current Import Accounts capture is a usable static source-account result, but its source state is not yet deterministic |
 | Fava overwrite guard      | ✅     | Normal visual updater and Playwright snapshot updates reject reference-tagged stories                                                                                     |
 | Screen story health       | ✅     | Holdings, Statistics, Settings queries are unambiguous; Dashboard uses one top-level main landmark                                                                        |
 | Component regression PNGs | ⬜     | 94 Beancount visual candidates still need reviewed, family-by-family baselines                                                                                            |
@@ -64,7 +64,7 @@ Visual Delta at or below 0.1% before removing `skip-visual`.
 | Errors           | ✅                  | 🟡 partial             | Fava no-records panel complete; add deterministic validation-failure fixture and navigation adapter, then review Visual Delta ≤0.1%                                                           |
 | Records          | ✅ empty queue      | 🟡 partial             | Fava no-imports panel and Accounts action complete; deterministic loaded review fixture, record toolbar, and workflow actions still need capture/alignment                                    |
 | Sources          | ✅                  | 🟡 partial             | Fava connected/available source cards and setup callbacks complete; align source toolbar, expanded connection details, and live sync adapters, then review Visual Delta ≤0.1%                 |
-| Import accounts  | ✅ loaded           | 🟡 shell + placeholder | Source-account rows, disclosure, and account-setup display adapters                                                                                                                           |
+| Import accounts  | ✅ loaded           | 🟡 partial             | Fava source-account and unassigned-account rows complete; align account details, source menus, Sync all, and account-setup adapters, then review Visual Delta ≤0.1%                           |
 | Rules            | 🟡 recapture loaded | 🟡 shell + placeholder | Rules list and run-history adapters                                                                                                                                                           |
 
 ## Styling migration inventory

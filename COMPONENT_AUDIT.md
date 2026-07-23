@@ -314,6 +314,8 @@ filter semantics.
 - `SourceConnectionCatalog` — controlled connected/available bank-source cards
   with host-owned open/setup callbacks; no sync, source configuration, or
   routing state
+- `SourceAccountGroups` — controlled source-account and unassigned-account
+  rows with host-owned disclosure/setup callbacks
 
 ### Screens + Fava capture harness
 

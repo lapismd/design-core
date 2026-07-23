@@ -18,6 +18,7 @@
   import IngestionReviewTable from "../tables/IngestionReviewTable.svelte";
   import ValidationErrorTable from "../feedback/ValidationErrorTable.svelte";
   import ContentScrollArea from "../layout/ContentScrollArea.svelte";
+  import SourceAccountGroups from "../sources/SourceAccountGroups.svelte";
   import SourceConnectionCatalog from "../sources/SourceConnectionCatalog.svelte";
   import QueryComposer from "./QueryComposer.svelte";
   import {
@@ -38,9 +39,11 @@
     statementNodes,
     statisticsColumns,
     statisticsRows,
+    sourceAccountSource,
     trialBalanceContributions,
     trialBalanceHierarchy,
     trialBalanceNodes,
+    unassignedAccountGroup,
   } from "./fixtures.js";
 
   const { Story } = defineMeta({
@@ -183,6 +186,7 @@
   let statisticsQueryRequested = $state(false);
   let recordsAccountsRequested = $state(false);
   let sourceAction = $state("");
+  let sourceAccountAction = $state("");
 
   const holdingsPageSize = 10;
   const visibleHoldingRows = $derived(
@@ -1026,15 +1030,40 @@
   name="Settings accounts"
   parameters={{ visualDelta: visualDeltaForScreen("settings-accounts") }}
   play={async ({ canvas }) => {
-    await expect(canvas.getByText("Import accounts")).toBeVisible();
+    await expect(
+      canvas.getByText("Credential available · Discovering accounts..."),
+    ).toBeVisible();
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Open Lunch Flow accounts" }),
+    );
+    await expect(canvas.getByRole("status")).toHaveTextContent(
+      "Open Lunch Flow",
+    );
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Open Other Accounts" }),
+    );
+    await expect(canvas.getByRole("status")).toHaveTextContent(
+      "Open Other Accounts",
+    );
   }}
 >
   {#snippet template()}
-    <ScreenFrame pageTitle="Import accounts">
+    <ScreenFrame pageTitle="Accounts">
       <ContentScrollArea>
-        <div class="bc-screen-story__placeholder">
-          <p class="bc-screen-story__placeholder-title">Import accounts</p>
-          <p>Account setup sheets remain Fava-owned for now.</p>
+        <div class="bc-screen-story__page bc-screen-story__source-accounts">
+          <SourceAccountGroups
+            source={sourceAccountSource}
+            otherAccounts={unassignedAccountGroup}
+            onOpenSource={(source) => {
+              sourceAccountAction = `Open ${source.name}`;
+            }}
+            onOpenOtherAccounts={(group) => {
+              sourceAccountAction = `Open ${group.label}`;
+            }}
+          />
+          <output class="bc-screen-story__status" aria-live="polite">
+            {sourceAccountAction}
+          </output>
         </div>
       </ContentScrollArea>
     </ScreenFrame>
@@ -1086,6 +1115,11 @@
   }
 
   .bc-screen-story__sources {
+    max-width: 70rem;
+    margin-inline: auto;
+  }
+
+  .bc-screen-story__source-accounts {
     max-width: 70rem;
     margin-inline: auto;
   }
