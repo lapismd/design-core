@@ -306,6 +306,23 @@ rewritten on migration).
 `MerchantPicker` is implemented under `pickers/` (see above). Still reserved:
 filter semantics.
 
+### Screens + Fava capture harness
+
+**Screens (`screens/`)** — `Apps/Beancount/Screens/*`:
+
+Full-viewport compositions (1280×900) for aligning catalog UI against live Fava
+captures. Tagged `fava-reference-visual` + `skip-visual` until bodies are
+honest enough for Playwright regression. Visual Delta reads the same PNGs the
+capture harness writes.
+
+**Harness** (`scripts/beancount-screens/`):
+
+- `FAVA_SCREEN_CAPTURE=1 pnpm beancount:screens:capture` starts local Fava
+  (via `BEANCOUNT_JS_STUDIO_ROOT`) and writes PNGs directly to
+  `tests/visual/storybook.spec.ts-snapshots/apps/beancount/screens/`.
+- `pnpm beancount:screens:verify` checks matrix ↔ stories ↔ baseline files.
+- Do **not** refresh these with `test:visual:update`.
+
 ### Fava leftovers (keep in `packages/fava` for now)
 
 After migrating `@beancount-js/ui` into `@stevejuma/ui/apps/beancount`, these
@@ -316,19 +333,19 @@ data into the display models already exported from `apps/beancount`.
 
 **Already covered by renamed catalog components** (Fava should rewire later):
 
-| Fava / local name | Catalog target |
-| --- | --- |
-| `ActivityTable` / journal activity chrome | `LedgerActivityTable` |
-| `TreeTable` / `TreeTableNode` | `AccountTreeTable` |
-| `IntervalTreeTable` (thin wrapper) | `IntervalTreeTable` |
-| `QueryTable` | `QueryResultsTable` |
-| `ModeSwitch` | `ChartModeSwitch` |
-| `HierarchyContainer` / treemap+sunburst | `HierarchyChart` |
-| `StudioShell` (partial) | `AppShell` / `StudioWorkspaceShell` |
-| `ContentScrollArea`, `PagePagination`, `CycleSelect` | same names under layout/navigation |
-| Dashboard widgets | `FinancialDashboard` + `Dashboard*` |
-| Page skeletons / `ResourcePreview` | `feedback/*` |
-| `MerchantPicker` / `AccountLink` avatar | `pickers/*` |
+| Fava / local name                                    | Catalog target                      |
+| ---------------------------------------------------- | ----------------------------------- |
+| `ActivityTable` / journal activity chrome            | `LedgerActivityTable`               |
+| `TreeTable` / `TreeTableNode`                        | `AccountTreeTable`                  |
+| `IntervalTreeTable` (thin wrapper)                   | `IntervalTreeTable`                 |
+| `QueryTable`                                         | `QueryResultsTable`                 |
+| `ModeSwitch`                                         | `ChartModeSwitch`                   |
+| `HierarchyContainer` / treemap+sunburst              | `HierarchyChart`                    |
+| `StudioShell` (partial)                              | `AppShell` / `StudioWorkspaceShell` |
+| `ContentScrollArea`, `PagePagination`, `CycleSelect` | same names under layout/navigation  |
+| Dashboard widgets                                    | `FinancialDashboard` + `Dashboard*` |
+| Page skeletons / `ResourcePreview`                   | `feedback/*`                        |
+| `MerchantPicker` / `AccountLink` avatar              | `pickers/*`                         |
 
 **Keep in Fava — route / workspace adapters:**
 

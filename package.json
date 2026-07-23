@@ -31,7 +31,9 @@
     "fmt": "prettier . --write",
     "fmt:check": "prettier . --check",
     "checks": "pnpm fmt:check && pnpm check && pnpm test:unit && pnpm test:storybook && pnpm build-storybook && pnpm test:visual",
-    "filter:grammar": "node scripts/generate-filter-query-parser.mjs"
+    "filter:grammar": "node scripts/generate-filter-query-parser.mjs",
+    "beancount:screens:capture": "tsx scripts/beancount-screens/capture.ts",
+    "beancount:screens:verify": "tsx scripts/beancount-screens/verify.ts"
   },
   "peerDependencies": {
     "svelte": "^5.0.0"

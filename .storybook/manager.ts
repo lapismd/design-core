@@ -97,6 +97,7 @@ const TAG_ICONS: Record<string, string> = {
   "visual-approved": "⛨",
   "visual-failed": "✕",
   "tasks-reference-visual": "☰",
+  "fava-reference-visual": "☰",
   new: "✦",
   alpha: "α",
   beta: "β",
@@ -254,6 +255,14 @@ addons.setConfig({
         text: "Tasks ref",
         style: "purple",
         tooltip: "Tasks vs Superlist reference baselines",
+      },
+    },
+    {
+      tags: "fava-reference-visual",
+      badge: {
+        text: "Fava ref",
+        style: "purple",
+        tooltip: "Beancount screens vs live Fava captures",
       },
     },
     // Defaults after custom matchers so repo tags win priority.

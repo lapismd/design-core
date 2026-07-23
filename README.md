@@ -277,6 +277,7 @@ Visual Delta panel).
 | `upstream-example` | `↑` | `↑ Upstream` | `#157dac` / `#0a5070` |
 | `visual-state` | `◉` | `◉ Visual` | `#12826c` / `#0a5344` |
 | `tasks-reference-visual` | `☰` | `☰ Tasks ref` | `#5d22c3` / `#3d1386` |
+| `fava-reference-visual` | `☰` | `☰ Fava ref` | `#5d22c3` / `#3d1386` |
 
 Chip styling (manager config, not CSS files):
 
@@ -618,6 +619,7 @@ Visual Delta review/skip chips (icons, colors, stacking): see
 | `visual-approved` | Baseline reviewed and accepted (Visual Delta) |
 | `visual-failed` | Baseline review failed or rejected (Visual Delta) |
 | `tasks-reference-visual` | Tasks vs Superlist reference baselines |
+| `fava-reference-visual` | Beancount screens vs live Fava captures |
 
 Review tags (`visual-failed` / `visual-pending` / `visual-approved`) are
 mutually exclusive; CSF patchers keep a single review tag. Skipping visual
