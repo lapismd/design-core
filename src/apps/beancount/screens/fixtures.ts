@@ -881,6 +881,21 @@ export const sourceAccountSource = {
   tone: "negative" as const,
 };
 
+export const testRule = {
+  id: "test-rule",
+  name: "Test Rule",
+  clauses: [
+    { id: "condition", kind: "IF" as const, text: "amount > 20" },
+    {
+      id: "action",
+      kind: "THEN" as const,
+      text: "Set transaction category to Assets:Checking:Starling",
+    },
+    { id: "schedule", kind: "FOR" as const, text: "Starting from 2027-03-16" },
+  ],
+  active: true,
+};
+
 export const unassignedAccountGroup = {
   id: "other-accounts",
   label: "Other Accounts",

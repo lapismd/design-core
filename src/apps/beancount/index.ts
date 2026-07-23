@@ -6,6 +6,7 @@ export * from "./feedback";
 export * from "./layout";
 export * from "./navigation";
 export * from "./pickers";
+export * from "./rules";
 export * from "./screens";
 export * from "./sources";
 export * from "./tables";

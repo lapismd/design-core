@@ -34,14 +34,14 @@ Studio revision, fixture digest, viewport, and per-image digest.
 
 ## Current baseline health
 
-| Check                     | Status | Evidence / next action                                                                                                                                                    |
-| ------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Matrix integrity          | ✅     | `pnpm beancount:screens:verify` finds 15 stories and PNGs                                                                                                                 |
-| Reference provenance      | ✅     | 2026-07-23 capture: Studio `191dae81…`, sample fixture digest, 15 image digests                                                                                           |
+| Check                     | Status | Evidence / next action                                                                                                                                                                     |
+| ------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Matrix integrity          | ✅     | `pnpm beancount:screens:verify` finds 15 stories and PNGs                                                                                                                                  |
+| Reference provenance      | ✅     | 2026-07-23 capture: Studio `191dae81…`, sample fixture digest, 15 image digests                                                                                                            |
 | Loaded route capture      | 🟡     | Records and Rules still need deterministic populated fixtures; the current Import Accounts capture is a usable static source-account result, but its source state is not yet deterministic |
-| Fava overwrite guard      | ✅     | Normal visual updater and Playwright snapshot updates reject reference-tagged stories                                                                                     |
-| Screen story health       | ✅     | Holdings, Statistics, Settings queries are unambiguous; Dashboard uses one top-level main landmark                                                                        |
-| Component regression PNGs | ⬜     | 94 Beancount visual candidates still need reviewed, family-by-family baselines                                                                                            |
+| Fava overwrite guard      | ✅     | Normal visual updater and Playwright snapshot updates reject reference-tagged stories                                                                                                      |
+| Screen story health       | ✅     | Holdings, Statistics, Settings queries are unambiguous; Dashboard uses one top-level main landmark                                                                                         |
+| Component regression PNGs | ⬜     | 94 Beancount visual candidates still need reviewed, family-by-family baselines                                                                                                             |
 
 ## Screen tracker
 
@@ -49,23 +49,23 @@ Legend: `⬜` not started, `🟡` composing/reviewing, `✅` near-pixel approved
 Promotion requires a genuine screen body, passing Storybook/a11y checks, and
 Visual Delta at or below 0.1% before removing `skip-visual`.
 
-| Screen           | Reference           | Story composition      | Next alignment slice                                                                                                                                                                          |
-| ---------------- | ------------------- | ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Editor           | ✅                  | 🟡 shell + placeholder | Catalog editor chrome only                                                                                                                                                                    |
-| Dashboard        | ✅                  | 🟡 partial             | Fava metrics + cash-flow fixture complete; align outflows, balance sheet, net worth, then review Visual Delta ≤0.1%                                                                           |
-| Journal          | ✅                  | 🟡 partial             | Fava transactions fixture, postings, and timeframe control complete; align record density and Upcoming data, then review Visual Delta ≤0.1%                                                   |
-| Income statement | ✅                  | 🟡 partial             | Fava toolbar, historical stacked bars, perspective tabs, and Income hierarchy complete; align chart cadence/colors and remaining statement sections, then review Visual Delta ≤0.1%           |
-| Balance sheet    | ✅                  | 🟡 partial             | Fava toolbar, net-worth history, perspective tabs, and Assets hierarchy complete; align time-series cadence, liabilities/equity sections, then review Visual Delta ≤0.1%                      |
-| Trial balance    | ✅                  | 🟡 partial             | Fava toolbar, tall treemap, perspective tabs, and contribution ledger complete; align palette and lower table section, then review Visual Delta ≤0.1%                                         |
-| Account detail   | ✅                  | 🟡 partial             | Fava breadcrumb, stepped balance history and axes, nested report tabs, and account-activity fixture complete; align activity density and full account history, then review Visual Delta ≤0.1% |
-| Holdings         | ✅                  | 🟡 partial             | Fava perspectives, Query action, and a paged holdings table fixture complete; align table density and any valuation/result controls, then review Visual Delta ≤0.1%                           |
-| Statistics       | ✅                  | 🟡 partial             | Fava posting counts, perspectives, Query action, and paged account statistics fixture complete; align other statistic display models and review Visual Delta ≤0.1%                            |
-| Query            | ✅                  | 🟡 partial             | Fava empty BQL command bar and execution affordance complete; await deterministic executed-result fixture and result controls, then review Visual Delta ≤0.1%                                 |
-| Errors           | ✅                  | 🟡 partial             | Fava no-records panel complete; add deterministic validation-failure fixture and navigation adapter, then review Visual Delta ≤0.1%                                                           |
-| Records          | ✅ empty queue      | 🟡 partial             | Fava no-imports panel and Accounts action complete; deterministic loaded review fixture, record toolbar, and workflow actions still need capture/alignment                                    |
-| Sources          | ✅                  | 🟡 partial             | Fava connected/available source cards and setup callbacks complete; align source toolbar, expanded connection details, and live sync adapters, then review Visual Delta ≤0.1%                 |
-| Import accounts  | ✅ loaded           | 🟡 partial             | Fava source-account and unassigned-account rows complete; align account details, source menus, Sync all, and account-setup adapters, then review Visual Delta ≤0.1%                           |
-| Rules            | 🟡 recapture loaded | 🟡 shell + placeholder | Rules list and run-history adapters                                                                                                                                                           |
+| Screen           | Reference      | Story composition      | Next alignment slice                                                                                                                                                                          |
+| ---------------- | -------------- | ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Editor           | ✅             | 🟡 shell + placeholder | Catalog editor chrome only                                                                                                                                                                    |
+| Dashboard        | ✅             | 🟡 partial             | Fava metrics + cash-flow fixture complete; align outflows, balance sheet, net worth, then review Visual Delta ≤0.1%                                                                           |
+| Journal          | ✅             | 🟡 partial             | Fava transactions fixture, postings, and timeframe control complete; align record density and Upcoming data, then review Visual Delta ≤0.1%                                                   |
+| Income statement | ✅             | 🟡 partial             | Fava toolbar, historical stacked bars, perspective tabs, and Income hierarchy complete; align chart cadence/colors and remaining statement sections, then review Visual Delta ≤0.1%           |
+| Balance sheet    | ✅             | 🟡 partial             | Fava toolbar, net-worth history, perspective tabs, and Assets hierarchy complete; align time-series cadence, liabilities/equity sections, then review Visual Delta ≤0.1%                      |
+| Trial balance    | ✅             | 🟡 partial             | Fava toolbar, tall treemap, perspective tabs, and contribution ledger complete; align palette and lower table section, then review Visual Delta ≤0.1%                                         |
+| Account detail   | ✅             | 🟡 partial             | Fava breadcrumb, stepped balance history and axes, nested report tabs, and account-activity fixture complete; align activity density and full account history, then review Visual Delta ≤0.1% |
+| Holdings         | ✅             | 🟡 partial             | Fava perspectives, Query action, and a paged holdings table fixture complete; align table density and any valuation/result controls, then review Visual Delta ≤0.1%                           |
+| Statistics       | ✅             | 🟡 partial             | Fava posting counts, perspectives, Query action, and paged account statistics fixture complete; align other statistic display models and review Visual Delta ≤0.1%                            |
+| Query            | ✅             | 🟡 partial             | Fava empty BQL command bar and execution affordance complete; await deterministic executed-result fixture and result controls, then review Visual Delta ≤0.1%                                 |
+| Errors           | ✅             | 🟡 partial             | Fava no-records panel complete; add deterministic validation-failure fixture and navigation adapter, then review Visual Delta ≤0.1%                                                           |
+| Records          | ✅ empty queue | 🟡 partial             | Fava no-imports panel and Accounts action complete; deterministic loaded review fixture, record toolbar, and workflow actions still need capture/alignment                                    |
+| Sources          | ✅             | 🟡 partial             | Fava connected/available source cards and setup callbacks complete; align source toolbar, expanded connection details, and live sync adapters, then review Visual Delta ≤0.1%                 |
+| Import accounts  | ✅ loaded      | 🟡 partial             | Fava source-account and unassigned-account rows complete; align account details, source menus, Sync all, and account-setup adapters, then review Visual Delta ≤0.1%                           |
+| Rules            | ✅ loaded      | 🟡 partial             | Fava rule list, active-state callback, and empty run-history display complete; add deterministic rules data, action menu, and run-history adapters, then review Visual Delta ≤0.1%            |
 
 ## Styling migration inventory
 

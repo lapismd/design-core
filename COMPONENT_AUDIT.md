@@ -317,6 +317,11 @@ filter semantics.
 - `SourceAccountGroups` — controlled source-account and unassigned-account
   rows with host-owned disclosure/setup callbacks
 
+**Rules (`rules/`)** — `Apps/Beancount/Rules/*`:
+
+- `RuleList` — controlled rule-list card, active-state request, and empty
+  run-history display; host owns rule persistence, action menus, and navigation
+
 ### Screens + Fava capture harness
 
 **Screens (`screens/`)** — `Apps/Beancount/Screens/*`:

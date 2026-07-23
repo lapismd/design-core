@@ -18,6 +18,7 @@
   import IngestionReviewTable from "../tables/IngestionReviewTable.svelte";
   import ValidationErrorTable from "../feedback/ValidationErrorTable.svelte";
   import ContentScrollArea from "../layout/ContentScrollArea.svelte";
+  import RuleList from "../rules/RuleList.svelte";
   import SourceAccountGroups from "../sources/SourceAccountGroups.svelte";
   import SourceConnectionCatalog from "../sources/SourceConnectionCatalog.svelte";
   import QueryComposer from "./QueryComposer.svelte";
@@ -40,6 +41,7 @@
     statisticsColumns,
     statisticsRows,
     sourceAccountSource,
+    testRule,
     trialBalanceContributions,
     trialBalanceHierarchy,
     trialBalanceNodes,
@@ -187,6 +189,8 @@
   let recordsAccountsRequested = $state(false);
   let sourceAction = $state("");
   let sourceAccountAction = $state("");
+  let ruleActive = $state(true);
+  let ruleAction = $state("");
 
   const holdingsPageSize = 10;
   const visibleHoldingRows = $derived(
@@ -1074,15 +1078,35 @@
   name="Settings rules"
   parameters={{ visualDelta: visualDeltaForScreen("settings-rules") }}
   play={async ({ canvas }) => {
-    await expect(canvas.getByText("Rules")).toBeVisible();
+    await expect(canvas.getByText("Test Rule")).toBeVisible();
+    await userEvent.click(
+      canvas.getByRole("switch", { name: "Set Test Rule active" }),
+    );
+    await expect(canvas.getByRole("status")).toHaveTextContent(
+      "Test Rule inactive",
+    );
   }}
 >
   {#snippet template()}
     <ScreenFrame pageTitle="Rules">
       <ContentScrollArea>
-        <div class="bc-screen-story__placeholder">
-          <p class="bc-screen-story__placeholder-title">Rules</p>
-          <p>Rules settings remain Fava-owned for now.</p>
+        <div class="bc-screen-story__page bc-screen-story__rules">
+          <RuleList
+            rule={{ ...testRule, active: ruleActive }}
+            onOpenRule={(rule) => {
+              ruleAction = `Open ${rule.name}`;
+            }}
+            onActiveChange={(rule, active) => {
+              ruleActive = active;
+              ruleAction = `${rule.name} ${active ? "active" : "inactive"}`;
+            }}
+            onMoreActions={(rule) => {
+              ruleAction = `More actions for ${rule.name}`;
+            }}
+          />
+          <output class="bc-screen-story__status" aria-live="polite"
+            >{ruleAction}</output
+          >
         </div>
       </ContentScrollArea>
     </ScreenFrame>
@@ -1121,6 +1145,11 @@
 
   .bc-screen-story__source-accounts {
     max-width: 70rem;
+    margin-inline: auto;
+  }
+
+  .bc-screen-story__rules {
+    max-width: 96rem;
     margin-inline: auto;
   }
 
