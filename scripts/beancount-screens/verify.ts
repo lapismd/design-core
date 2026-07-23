@@ -1,6 +1,7 @@
 /**
  * Verify capture-matrix entries have matching screen stories and baseline files.
  */
+import { createHash } from "node:crypto";
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -13,6 +14,23 @@ const screensStories = path.join(
   packageRoot,
   "src/apps/beancount/screens/Screens.stories.svelte",
 );
+const referenceManifestPath = path.join(
+  snapshotRoot,
+  "apps/beancount/screens/manifest.json",
+);
+
+type ReferenceManifest = {
+  schemaVersion: number;
+  entries: Array<{
+    id: string;
+    outputPath: string;
+    sha256: string;
+  }>;
+};
+
+function sha256(pathname: string): string {
+  return createHash("sha256").update(readFileSync(pathname)).digest("hex");
+}
 
 function slugifyStoryName(name: string): string {
   return name
@@ -60,12 +78,47 @@ function main() {
   }
 
   if (!skipBaselines) {
+    let manifest: ReferenceManifest | undefined;
+    if (!existsSync(referenceManifestPath)) {
+      errors.push(
+        `Missing reference manifest ${referenceManifestPath} (run FAVA_SCREEN_CAPTURE=1 pnpm beancount:screens:capture)`,
+      );
+    } else {
+      try {
+        manifest = JSON.parse(
+          readFileSync(referenceManifestPath, "utf8"),
+        ) as ReferenceManifest;
+        if (manifest.schemaVersion !== 1) {
+          errors.push(
+            `Unsupported reference manifest schema ${manifest.schemaVersion}; expected 1`,
+          );
+        }
+      } catch (error) {
+        errors.push(
+          `Could not parse reference manifest ${referenceManifestPath}: ${String(error)}`,
+        );
+      }
+    }
+
     for (const entry of matrix.entries) {
       const outAbs = path.join(snapshotRoot, entry.outputPath);
       if (!existsSync(outAbs)) {
         errors.push(
           `${entry.id}: missing baseline ${entry.outputPath} (run FAVA_SCREEN_CAPTURE=1 pnpm beancount:screens:capture)`,
         );
+        continue;
+      }
+      const manifestEntry = manifest?.entries.find(
+        (candidate) =>
+          candidate.id === entry.id &&
+          candidate.outputPath === entry.outputPath,
+      );
+      if (!manifestEntry) {
+        errors.push(
+          `${entry.id}: missing manifest entry for ${entry.outputPath}`,
+        );
+      } else if (manifestEntry.sha256 !== sha256(outAbs)) {
+        errors.push(`${entry.id}: baseline digest does not match manifest`);
       }
     }
   }

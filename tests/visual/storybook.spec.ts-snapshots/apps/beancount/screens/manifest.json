@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 1,
+  "capturedAt": "2026-07-23T20:20:11.273Z",
+  "source": {
+    "studioRevision": "191dae81ec0a33abb0f6f4cb9299cc3e01bfdc7b",
+    "entryFile": "sample.beancount",
+    "entryFileSha256": "bb93591f5ef5440eb9f585d45a1578be5ed1de4c26bddc372dafef84cd3ced0d"
+  },
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "deviceScaleFactor": 3,
+  "colorScheme": "light",
+  "entries": [
+    {
+      "id": "account-detail",
+      "storyId": "apps-beancount-screens--account-detail",
+      "viewPath": "/account/Assets:Checking",
+      "outputPath": "apps/beancount/screens/account-detail-chromium-darwin.png",
+      "bytes": 485605,
+      "sha256": "0caedca01ba74da35349e3ed705f072b431de93f97268a0a9086ecddacc29f75"
+    },
+    {
+      "id": "balance-sheet",
+      "storyId": "apps-beancount-screens--balance-sheet",
+      "viewPath": "/balance_sheet",
+      "outputPath": "apps/beancount/screens/balance-sheet-chromium-darwin.png",
+      "bytes": 424124,
+      "sha256": "bd294458303e4ab495e91b9a6bd226dd79d697e71827ecfe5ff1ab330fda519e"
+    },
+    {
+      "id": "dashboard",
+      "storyId": "apps-beancount-screens--dashboard",
+      "viewPath": "/dashboard",
+      "outputPath": "apps/beancount/screens/dashboard-chromium-darwin.png",
+      "bytes": 921420,
+      "sha256": "a3f915b9f0d09c66dce82c0ff85faf66d013d0446cfab00a9ef19f1b41c67a7c"
+    },
+    {
+      "id": "editor",
+      "storyId": "apps-beancount-screens--editor",
+      "viewPath": "/editor",
+      "outputPath": "apps/beancount/screens/editor-chromium-darwin.png",
+      "bytes": 639471,
+      "sha256": "7091ca7120c37102c484d03617abcb4496e435dc441e5a766b32e69bc2548057"
+    },
+    {
+      "id": "errors",
+      "storyId": "apps-beancount-screens--errors",
+      "viewPath": "/errors",
+      "outputPath": "apps/beancount/screens/errors-chromium-darwin.png",
+      "bytes": 220793,
+      "sha256": "2b3ce3cd179511052c8444eab5f7d921980a28321eb09afdb5dd203460723e5c"
+    },
+    {
+      "id": "holdings",
+      "storyId": "apps-beancount-screens--holdings",
+      "viewPath": "/holdings",
+      "outputPath": "apps/beancount/screens/holdings-chromium-darwin.png",
+      "bytes": 458584,
+      "sha256": "5de6b1091f82e269b8ab10967f069ef3352899915922590f490e4c76b34c2f1d"
+    },
+    {
+      "id": "income-statement",
+      "storyId": "apps-beancount-screens--income-statement",
+      "viewPath": "/income_statement",
+      "outputPath": "apps/beancount/screens/income-statement-chromium-darwin.png",
+      "bytes": 418375,
+      "sha256": "8b1a5efa451a565ca5c208d2ca46e575c737e650923c0e43dc6738ef3d91b463"
+    },
+    {
+      "id": "journal",
+      "storyId": "apps-beancount-screens--journal",
+      "viewPath": "/journal",
+      "outputPath": "apps/beancount/screens/journal-chromium-darwin.png",
+      "bytes": 472289,
+      "sha256": "ba53c0bb7463e14cb35b7be373a540e19cccd92abb982491df8d244cd492bb43"
+    },
+    {
+      "id": "query",
+      "storyId": "apps-beancount-screens--query",
+      "viewPath": "/query",
+      "outputPath": "apps/beancount/screens/query-chromium-darwin.png",
+      "bytes": 143940,
+      "sha256": "4ae1baa04471cd8ca4cf4f6b9c1533d65131c6f187c062fff91b4523e1e0e4ca"
+    },
+    {
+      "id": "records",
+      "storyId": "apps-beancount-screens--records",
+      "viewPath": "/records",
+      "outputPath": "apps/beancount/screens/records-chromium-darwin.png",
+      "bytes": 169645,
+      "sha256": "84f7e39efb04c859ca6f1b1249eaf182067e2cb3c9d76299879343ce32f9b87e"
+    },
+    {
+      "id": "settings",
+      "storyId": "apps-beancount-screens--settings",
+      "viewPath": "/import/editor",
+      "outputPath": "apps/beancount/screens/settings-chromium-darwin.png",
+      "bytes": 266081,
+      "sha256": "b6e0d119652bf76953245e7c6954cc11af26dce4c6ab0311ecf3d4fb5ebfa6e2"
+    },
+    {
+      "id": "settings-accounts",
+      "storyId": "apps-beancount-screens--settings-accounts",
+      "viewPath": "/import/accounts",
+      "outputPath": "apps/beancount/screens/settings-accounts-chromium-darwin.png",
+      "bytes": 184412,
+      "sha256": "d8ac53d008be499d511629a81822d39ef78377b219022320676e8cf8b8aeb784"
+    },
+    {
+      "id": "settings-rules",
+      "storyId": "apps-beancount-screens--settings-rules",
+      "viewPath": "/settings/rules",
+      "outputPath": "apps/beancount/screens/settings-rules-chromium-darwin.png",
+      "bytes": 174661,
+      "sha256": "3739680ca1dd4f72efa20043429b191f06c272d0090b6ab6f9254b77fee52150"
+    },
+    {
+      "id": "statistics",
+      "storyId": "apps-beancount-screens--statistics",
+      "viewPath": "/statistics",
+      "outputPath": "apps/beancount/screens/statistics-chromium-darwin.png",
+      "bytes": 397924,
+      "sha256": "768908285f4075ecdb91c4a6104d9642b566844423a846821372aa715040a175"
+    },
+    {
+      "id": "trial-balance",
+      "storyId": "apps-beancount-screens--trial-balance",
+      "viewPath": "/trial_balance",
+      "outputPath": "apps/beancount/screens/trial-balance-chromium-darwin.png",
+      "bytes": 439794,
+      "sha256": "7536865d855f8076c47e54094d8a9ca431b2be98d0be48b2fbe0272c7db4d416"
+    }
+  ]
+}

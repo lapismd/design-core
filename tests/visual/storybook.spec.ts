@@ -58,6 +58,7 @@ const PORTAL_SELECTORS = [
 const PACKAGE_ROOT = resolve(".");
 const isBaselineUpdate = process.env.PLAYWRIGHT_UPDATE_SNAPSHOTS === "1";
 const TASKS_REFERENCE_VISUAL_TAG = "tasks-reference-visual";
+const FAVA_REFERENCE_VISUAL_TAG = "fava-reference-visual";
 
 const interactionCaptureEnv =
   process.env.PLAYWRIGHT_INTERACTION_CAPTURE?.trim();
@@ -100,6 +101,10 @@ const tasksReferenceExpectationOptions = {
   maxDiffPixelRatio: 0.001,
 };
 
+const favaReferenceExpectationOptions = {
+  maxDiffPixelRatio: 0.001,
+};
+
 function loadCaptureMatrix(): CaptureMatrix {
   return JSON.parse(
     readFileSync(
@@ -118,6 +123,14 @@ const matrixEntryByStoryId = new Map(
 
 function isTasksReferenceVisual(entry: StoryIndexEntry): boolean {
   return (entry.tags ?? []).includes(TASKS_REFERENCE_VISUAL_TAG);
+}
+
+function isFavaReferenceVisual(entry: StoryIndexEntry): boolean {
+  return (entry.tags ?? []).includes(FAVA_REFERENCE_VISUAL_TAG);
+}
+
+function isReferenceVisual(entry: StoryIndexEntry): boolean {
+  return isTasksReferenceVisual(entry) || isFavaReferenceVisual(entry);
 }
 
 function loadVisualStories(): StoryIndexEntry[] {
@@ -350,14 +363,16 @@ async function screenshotStorySubject(
   referenceVisual: boolean;
 }> {
   const storyId = story.id;
-  const referenceVisual = isTasksReferenceVisual(story);
+  const tasksReferenceVisual = isTasksReferenceVisual(story);
+  const favaReferenceVisual = isFavaReferenceVisual(story);
+  const referenceVisual = tasksReferenceVisual || favaReferenceVisual;
   const root = page.locator("#storybook-root");
 
   let subject: Locator | null = null;
   let clip: { x: number; y: number; width: number; height: number } | null =
     null;
 
-  if (referenceVisual) {
+  if (tasksReferenceVisual) {
     const mask = TASKS_REFERENCE_MASK_SELECTORS.map((selector) =>
       page.locator(selector),
     );
@@ -365,6 +380,8 @@ async function screenshotStorySubject(
       ...expectOptions,
       mask,
     });
+  } else if (favaReferenceVisual) {
+    await expect(page).toHaveScreenshot(snapshotPath, expectOptions);
   } else {
     const usePortalClip =
       looksLikePortalStory(storyId) ||
@@ -480,19 +497,24 @@ test.describe("Storybook visual baselines", () => {
 
   for (const story of stories) {
     const storyId = story.id;
-    const referenceVisual = isTasksReferenceVisual(story);
+    const tasksReferenceVisual = isTasksReferenceVisual(story);
+    const favaReferenceVisual = isFavaReferenceVisual(story);
+    const referenceVisual = tasksReferenceVisual || favaReferenceVisual;
     test(storyId, async ({ page }) => {
       if (referenceVisual && isBaselineUpdate) {
+        const instruction = tasksReferenceVisual
+          ? "Re-sync with `pnpm --dir packages/tasks reference:sync-visual-baselines`"
+          : "Run `FAVA_SCREEN_CAPTURE=1 pnpm beancount:screens:capture`";
         throw new Error(
-          `${storyId} uses Superlist reference baselines. Re-sync with ` +
-            "`pnpm --dir packages/tasks reference:sync-visual-baselines` " +
-            "instead of Playwright --update-snapshots.",
+          `${storyId} uses a protected reference baseline. ${instruction} instead of Playwright --update-snapshots.`,
         );
       }
 
-      const viewport = referenceVisual
+      const viewport = tasksReferenceVisual
         ? referenceViewportForStory(storyId)
-        : null;
+        : favaReferenceVisual
+          ? { width: 1280, height: 900 }
+          : null;
       if (viewport) {
         await page.setViewportSize(viewport);
       }
@@ -501,9 +523,11 @@ test.describe("Storybook visual baselines", () => {
       await settleAfterPlay(page, storyId);
 
       const snapshotPath = screenshotRelativePath(story).split("/");
-      const expectOptions = referenceVisual
+      const expectOptions = tasksReferenceVisual
         ? tasksReferenceExpectationOptions
-        : screenshotExpectationOptions;
+        : favaReferenceVisual
+          ? favaReferenceExpectationOptions
+          : screenshotExpectationOptions;
 
       let subject: Locator | null = null;
       let clip: { x: number; y: number; width: number; height: number } | null =

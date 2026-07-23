@@ -89,6 +89,15 @@ export async function runVisualUpdate(options: {
     );
   }
 
+  const favaReferenceTarget = storyId?.startsWith("apps-beancount-screens--");
+  if (favaReferenceTarget) {
+    throw new GeneratorError(
+      "Apps/Beancount/Screens baselines are live Fava references. Do not overwrite them with Playwright --update-snapshots.",
+      EXIT.invalidRequest,
+      "Re-capture with: FAVA_SCREEN_CAPTURE=1 pnpm beancount:screens:capture",
+    );
+  }
+
   const config = loadConfig();
   if (!options.allowDirty) {
     assertCleanGit(config.packageRoot);

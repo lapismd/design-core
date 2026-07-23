@@ -4,8 +4,9 @@
  * Requires FAVA_SCREEN_CAPTURE=1. Writes PNGs only to matrix outputPath entries
  * under tests/visual/storybook.spec.ts-snapshots/ (no staging tree).
  */
-import { spawn, type ChildProcess } from "node:child_process";
-import { existsSync, mkdirSync, writeFileSync } from "node:fs";
+import { execFileSync, spawn, type ChildProcess } from "node:child_process";
+import { createHash } from "node:crypto";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { chromium, type Page } from "playwright";
@@ -17,6 +18,36 @@ const snapshotRoot = path.join(packageRoot, matrix.snapshotRoot);
 const preferredPort = Number(process.env.FAVA_CAPTURE_PORT ?? 5174);
 
 type MatrixEntry = (typeof matrix.entries)[number];
+
+type ReferenceSource = {
+  studioRevision: string;
+  entryFile: string;
+  entryFileSha256: string;
+};
+
+type CapturedEntry = {
+  id: string;
+  storyId: string;
+  viewPath: string;
+  outputPath: string;
+  bytes: number;
+  sha256: string;
+};
+
+type ReferenceManifest = {
+  schemaVersion: 1;
+  capturedAt: string;
+  source: ReferenceSource;
+  viewport: typeof matrix.viewport;
+  deviceScaleFactor: typeof matrix.deviceScaleFactor;
+  colorScheme: "light";
+  entries: CapturedEntry[];
+};
+
+const referenceManifestPath = path.join(
+  snapshotRoot,
+  "apps/beancount/screens/manifest.json",
+);
 
 async function isHealthyFava(origin: string): Promise<boolean> {
   try {
@@ -52,10 +83,78 @@ function studioRoot(): string {
   return path.resolve(packageRoot, "../code/beancount-js-studio");
 }
 
+function commandText(command: string, args: string[], cwd: string): string {
+  try {
+    return execFileSync(command, args, {
+      cwd,
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "pipe"],
+    }).trim();
+  } catch (error) {
+    const detail =
+      error && typeof error === "object" && "stderr" in error
+        ? String(error.stderr).trim()
+        : "";
+    throw new Error(
+      `Could not inspect the Fava reference checkout with ${command}: ${detail || String(error)}`,
+    );
+  }
+}
+
+function sha256(value: Buffer): string {
+  return createHash("sha256").update(value).digest("hex");
+}
+
+/**
+ * A reference capture must be reproducible from a committed Studio tree. This
+ * intentionally rejects unrelated working-copy changes too: any Studio
+ * package can change the rendered Fava screen.
+ */
+function referenceSource(root: string): ReferenceSource {
+  const summary = commandText(
+    "jj",
+    ["--no-pager", "diff", "--summary", "-r", "@"],
+    root,
+  );
+  if (summary) {
+    throw new Error(
+      "Refusing to capture Fava references from a dirty beancount-js-studio checkout. Commit, move, or restore the working-copy changes first.",
+    );
+  }
+
+  const entryFile =
+    process.env.BEANCOUNT_STUDIO_ENTRY_FILE ?? "sample.beancount";
+  const entryPath = path.resolve(root, entryFile);
+  if (!existsSync(entryPath)) {
+    throw new Error(`Fava capture entry file not found: ${entryPath}`);
+  }
+
+  return {
+    studioRevision: commandText(
+      "jj",
+      [
+        "--no-pager",
+        "--color",
+        "never",
+        "log",
+        "-r",
+        "@-",
+        "--no-graph",
+        "-T",
+        'commit_id ++ "\\n"',
+      ],
+      root,
+    ),
+    entryFile,
+    entryFileSha256: sha256(readFileSync(entryPath)),
+  };
+}
+
 function parseIds(argv: string[]): Set<string> | null {
   const idx = argv.indexOf("--ids");
-  if (idx === -1) return null;
-  const raw = argv[idx + 1];
+  const inline = argv.find((argument) => argument.startsWith("--ids="));
+  if (idx === -1 && !inline) return null;
+  const raw = inline ? inline.slice("--ids=".length) : argv[idx + 1];
   if (!raw) {
     throw new Error("--ids requires a comma-separated list");
   }
@@ -150,10 +249,17 @@ async function resolveProjectId(page: Page): Promise<string> {
   return id;
 }
 
-async function gotoStudio(page: Page, projectId: string, viewPath: string) {
-  const url = studioUrl(projectId, viewPath);
+async function gotoStudio(page: Page, projectId: string, entry: MatrixEntry) {
+  const url = studioUrl(projectId, entry.viewPath);
   await page.goto(url);
   await page.waitForSelector(matrix.readySelector, { timeout: 30_000 });
+  if (entry.readyTextAny?.length) {
+    await page.waitForFunction(
+      (texts) => texts.some((text) => document.body.innerText.includes(text)),
+      entry.readyTextAny,
+      { timeout: 30_000 },
+    );
+  }
   // Allow charts / tables a beat to settle before capture.
   await page.waitForTimeout(500);
 }
@@ -235,6 +341,7 @@ async function main() {
       `BEANCOUNT_JS_STUDIO_ROOT not found: ${root}\nSet BEANCOUNT_JS_STUDIO_ROOT to your beancount-js-studio checkout.`,
     );
   }
+  const source = referenceSource(root);
 
   const preferredOrigin = `http://127.0.0.1:${preferredPort}`;
   let favaPort = preferredPort;
@@ -266,20 +373,55 @@ async function main() {
     const page = await context.newPage();
     const projectId = await resolveProjectId(page);
     console.log(`Project: ${projectId}`);
+    const capturedEntries: CapturedEntry[] = [];
 
     for (const entry of entries) {
       const outAbs = path.join(snapshotRoot, entry.outputPath);
       mkdirSync(path.dirname(outAbs), { recursive: true });
       console.log(`Capture ${entry.id} ← ${entry.viewPath}`);
-      await gotoStudio(page, projectId, entry.viewPath);
+      await gotoStudio(page, projectId, entry);
       const buffer = await page.screenshot({
         type: "png",
         fullPage: false,
         scale: "device",
       });
       writeFileSync(outAbs, buffer);
+      capturedEntries.push({
+        id: entry.id,
+        storyId: entry.storyId,
+        viewPath: entry.viewPath,
+        outputPath: entry.outputPath,
+        bytes: buffer.byteLength,
+        sha256: sha256(buffer),
+      });
       console.log(`  → ${entry.outputPath} (${buffer.byteLength} bytes)`);
     }
+
+    const existingEntries = existsSync(referenceManifestPath)
+      ? (
+          JSON.parse(
+            readFileSync(referenceManifestPath, "utf8"),
+          ) as ReferenceManifest
+        ).entries.filter(
+          (existing) => !entries.some((entry) => entry.id === existing.id),
+        )
+      : [];
+    const manifest: ReferenceManifest = {
+      schemaVersion: 1,
+      capturedAt: new Date().toISOString(),
+      source,
+      viewport: matrix.viewport,
+      deviceScaleFactor: matrix.deviceScaleFactor,
+      colorScheme: "light",
+      entries: [...existingEntries, ...capturedEntries].sort((a, b) =>
+        a.id.localeCompare(b.id),
+      ),
+    };
+    mkdirSync(path.dirname(referenceManifestPath), { recursive: true });
+    writeFileSync(
+      referenceManifestPath,
+      `${JSON.stringify(manifest, null, 2)}\n`,
+    );
 
     await browser.close();
     console.log(`Done: ${entries.length} screen(s)`);
