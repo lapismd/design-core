@@ -51,6 +51,11 @@
     color-mix(in srgb, var(--ui-form-accent) 10%, transparent);
 }
 
+.cv-search-filter-bar[data-input-mode="filter-query"]
+  .cv-search-filter-bar__search-pill {
+  width: min(100%, 28rem);
+}
+
 .cv-search-filter-bar__search-pill:focus-within {
   border-color: var(--ui-form-accent);
   box-shadow: 0 0 0 3px
@@ -130,6 +135,185 @@
 
 .cv-search-filter-bar__editor .cm-line {
   padding: 0;
+}
+
+/* Complete TermExpr → one inline chip widget (highlighted label + X). */
+.cv-search-filter-bar__editor .cv-search-filter-bar__predicate-chip {
+  display: inline-flex;
+  max-width: min(100%, 14rem);
+  min-width: 0;
+  align-items: center;
+  gap: 0.15rem;
+  margin: 0 0.2rem 0.2rem;
+  border: 1px solid color-mix(in srgb, var(--ui-form-accent) 22%, transparent);
+  border-radius: 999px;
+  background: color-mix(
+    in srgb,
+    var(--ui-form-accent) 8%,
+    var(--ui-form-background)
+  );
+  color: var(--ui-form-accent);
+  cursor: pointer;
+  padding: 0.06rem 0.12rem 0.06rem 0.42rem;
+  vertical-align: middle;
+  white-space: nowrap;
+  line-height: 1.2;
+}
+
+.cv-search-filter-bar__editor .cv-search-filter-bar__predicate-chip-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: inherit;
+  font-weight: 700;
+}
+
+.cv-search-filter-bar__editor .cv-search-filter-bar__tok-key {
+  color: var(--ui-form-code-function, var(--cv-code-function, #075985));
+}
+
+.cv-search-filter-bar__editor .cv-search-filter-bar__tok-op {
+  color: var(--ui-form-code-operator, var(--ui-form-accent));
+}
+
+.cv-search-filter-bar__editor .cv-search-filter-bar__tok-string {
+  color: var(--ui-form-code-string, var(--cv-code-string, #92400e));
+}
+
+.cv-search-filter-bar__editor .cv-search-filter-bar__tok-number {
+  color: var(--ui-form-code-value, var(--cv-code-constant, #0f766e));
+}
+
+.cv-search-filter-bar__editor .cv-search-filter-bar__tok-tag,
+.cv-search-filter-bar__editor .cv-search-filter-bar__tok-link,
+.cv-search-filter-bar__editor .cv-search-filter-bar__tok-account {
+  color: var(--ui-form-code-property, var(--cv-code-property, #1d4ed8));
+}
+
+.cv-search-filter-bar__editor .cv-search-filter-bar__tok-keyword {
+  color: var(--ui-form-code-keyword, var(--cv-code-keyword, #5b21b6));
+}
+
+.cv-search-filter-bar__editor .cv-search-filter-bar__predicate-chip-delete {
+  display: grid;
+  flex: 0 0 auto;
+  width: 1.05rem;
+  height: 1.05rem;
+  place-items: center;
+  border: 0;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ui-form-accent) 12%, transparent);
+  color: inherit;
+  cursor: pointer;
+  padding: 0;
+}
+
+.cv-search-filter-bar__editor
+  .cv-search-filter-bar__predicate-chip-delete:hover,
+.cv-search-filter-bar__editor
+  .cv-search-filter-bar__predicate-chip-delete:focus-visible {
+  background: color-mix(in srgb, var(--ui-form-accent) 22%, transparent);
+  outline: 0;
+}
+
+.cv-search-filter-bar__editor .cv-search-filter-bar__predicate-chip-delete svg {
+  width: 0.72rem;
+  height: 0.72rem;
+  display: block;
+}
+
+.cv-search-filter-bar__predicate-editor {
+  position: fixed;
+  z-index: 90;
+  display: grid;
+  gap: 0.75rem;
+  min-width: min(28rem, calc(100vw - 1.5rem));
+  border: 1px solid var(--border, var(--ui-form-border));
+  border-radius: calc(var(--radius, 0.5rem) * 1.2);
+  background: var(--popover, var(--ui-form-background));
+  color: var(--popover-foreground, var(--ui-form-foreground));
+  box-shadow:
+    0 10px 15px -3px color-mix(in srgb, var(--foreground, #000) 12%, transparent),
+    0 4px 6px -4px color-mix(in srgb, var(--foreground, #000) 10%, transparent);
+  padding: 0.85rem;
+}
+
+.cv-search-filter-bar__predicate-editor-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.cv-search-filter-bar__predicate-editor-trigger {
+  width: auto;
+  min-width: 6.5rem;
+}
+
+.cv-search-filter-bar__predicate-editor-value {
+  min-width: 9rem;
+  flex: 1 1 8rem;
+}
+
+.cv-search-filter-bar__predicate-editor-boolean {
+  display: inline-flex;
+  min-width: 6rem;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--popover-foreground, var(--ui-form-foreground));
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.cv-search-filter-bar__value-autocomplete {
+  position: relative;
+  min-width: 9rem;
+  flex: 1 1 8rem;
+}
+
+.cv-search-filter-bar__value-autocomplete-input {
+  width: 100%;
+  min-height: 2rem;
+  border: 1px solid var(--border, var(--ui-form-border));
+  border-radius: calc(var(--radius, 0.5rem) * 0.8);
+  background: var(--background, var(--ui-form-background));
+  color: inherit;
+  padding: 0.3rem 0.55rem;
+  font: inherit;
+  font-size: 0.85rem;
+  outline: none;
+}
+
+.cv-search-filter-bar__value-autocomplete-input:focus-visible {
+  border-color: var(--ring, var(--ui-form-accent));
+  box-shadow: 0 0 0 3px
+    color-mix(in srgb, var(--ring, var(--ui-form-accent)) 20%, transparent);
+}
+
+.cv-search-filter-bar__value-autocomplete-menu {
+  position: absolute;
+  z-index: 5;
+  top: calc(100% + 0.25rem);
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  border: 1px solid var(--border, var(--ui-form-border));
+  border-radius: calc(var(--radius, 0.5rem) * 1.1);
+  background: var(--popover, var(--ui-form-background));
+  box-shadow:
+    0 10px 15px -3px color-mix(in srgb, var(--foreground, #000) 12%, transparent),
+    0 4px 6px -4px color-mix(in srgb, var(--foreground, #000) 10%, transparent);
+}
+
+.cv-search-filter-bar__value-autocomplete-menu :global([data-slot="command-list"]) {
+  max-height: 12rem;
+}
+
+.cv-search-filter-bar__predicate-editor-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.35rem;
 }
 
 /*

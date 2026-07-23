@@ -29,6 +29,12 @@ Offline agent summary: `pnpm ui guide layers`. Catalog component:
   pass `filterSyntax` for autocomplete and the expandable syntax help panel.
   Completion tooltips reuse shadcn Command / Popover tokens (`--popover`,
   `--accent`, `--radius`, …), not CodeMirror’s default monospace/blue chrome.
+  Completed `field op value` terms (Lezer `TermExpr`) render as removable
+  inline chips with syntax highlighting once the value is non-empty and the
+  caret is outside the term; click a chip to edit it. Field `valueKind`
+  (`text` | `enum` | `number` | `boolean` | `date`) picks the chip-editor
+  control; optional `ValueEditor` lets the host supply a custom component
+  (forms `DatePicker`, ranges, etc.). Filter does not import forms.
 
 ## Filter query language
 
@@ -70,12 +76,24 @@ const syntax: SearchFilterSyntax = {
       name: "account",
       description: "Any account on the entry.",
       operators: [":", "=", "~"],
+      valueKind: "text",
       values: ["Assets:Cash", "Expenses:Food"],
+    },
+    {
+      name: "amount",
+      description: "Absolute units amount.",
+      operators: [">", ">=", "<", "<=", "="],
+      valueKind: "number",
     },
   ],
   examples: [{ query: "account:Expenses", description: "Expense accounts" }],
 };
 ```
+
+`valueKind` selects the chip-editor control (`text` with autocomplete,
+`enum`, `number`, `boolean`, `date`). Optional per-field `ValueEditor` overrides
+that with a host component (forms DatePicker, custom range, …). Range is not a
+built-in kind — supply `ValueEditor`.
 
 The bar only renders and completes this display model. Field catalogs and
 match/evaluation stay in the app.

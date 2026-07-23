@@ -14,7 +14,11 @@ import * as SearchFilterBarVariations from "./SearchFilterBar.variations.stories
 
 Search chrome with optional filter chips/snippets. Opt into
 `inputMode="filter-query"` for Fava-inspired syntax highlighting and host-supplied
-field / operator / value autocomplete.
+field / operator / value autocomplete. Completed predicates such as
+`amount = 23` render as removable inline chips with syntax-colored
+labels once the value is set and the caret leaves the term; click a chip to
+edit field / operator / value (`valueKind` or host `ValueEditor`). Free text,
+tags, and incomplete typing stay plain.
 
 Import from `@stevejuma/ui/filter`. See [Filter/Guidance](?path=/docs/filter-guidance--docs)
 for the query language.
@@ -75,5 +79,14 @@ Syntax-highlighted query with inline help when filters are expanded.
 
 <Canvas
   of={SearchFilterBarVariations.FilterQueryHighlighted}
+  meta={SearchFilterBarVariations}
+/>
+
+### Filter query predicate chips
+
+Completed `field op value` terms appear as removable inline chips.
+
+<Canvas
+  of={SearchFilterBarVariations.FilterQueryPredicateChips}
   meta={SearchFilterBarVariations}
 />

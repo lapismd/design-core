@@ -5,6 +5,7 @@ import type {
 
 const TEXT_OPS = [":", "=", "!=", ">", ">=", "<", "<=", "~", "!~"] as const;
 const DATE_OPS = [":", "=", ">", ">=", "<", "<="] as const;
+const BOOL_OPS = [":", "=", "!="] as const;
 
 function quoteFilterToken(value: string) {
   if (/^[\w.:/-]+$/.test(value)) return value;
@@ -57,18 +58,21 @@ export function createDemoLedgerFilterSyntax(values?: {
         name: "type",
         description: "Directive type.",
         operators: TEXT_OPS,
+        valueKind: "enum",
         values: filterSyntaxValues(types),
       },
       {
         name: "account",
         description: "Any account on the entry.",
         operators: TEXT_OPS,
+        valueKind: "text",
         values: filterSyntaxValues(accounts),
       },
       {
         name: "payee",
         description: "Transaction payee.",
         operators: TEXT_OPS,
+        valueKind: "text",
         values: filterSyntaxValues(payees),
       },
       {
@@ -76,12 +80,14 @@ export function createDemoLedgerFilterSyntax(values?: {
         description: "Hashtag without the # prefix.",
         operators: [":", "=", "!="],
         aliases: ["tags"],
+        valueKind: "text",
         values: filterSyntaxValues(tags),
       },
       {
         name: "date",
-        description: "Entry date or relative interval.",
+        description: "Entry date (YYYY-MM-DD) or year token.",
         operators: DATE_OPS,
+        valueKind: "date",
         values: filterSyntaxValues(years),
       },
       {
@@ -89,6 +95,13 @@ export function createDemoLedgerFilterSyntax(values?: {
         description: "Absolute units amount.",
         operators: TEXT_OPS,
         aliases: ["units"],
+        valueKind: "number",
+      },
+      {
+        name: "cleared",
+        description: "Whether the entry is cleared.",
+        operators: BOOL_OPS,
+        valueKind: "boolean",
       },
     ],
     examples: [
@@ -112,6 +125,7 @@ export function createDemoLedgerFilterSyntax(values?: {
     notes: [
       "Boolean: space/and/&& for AND; comma/or/|| for OR; -/not for NOT.",
       "Tags and links may also be written as #tag and ^link.",
+      "Chip editor valueKind: text/enum/number/boolean/date; override with ValueEditor for custom controls (e.g. range).",
       "any(...) / all(...) appear in Fava docs but are not in this JS grammar.",
     ],
   };

@@ -1,3 +1,4 @@
+import type { Component } from "svelte";
 import type {
   Completion,
   CompletionContext,
@@ -15,6 +16,20 @@ export type SearchFilterValue = {
   apply?: string;
 };
 
+export type SearchFilterValueKind =
+  | "text"
+  | "enum"
+  | "number"
+  | "boolean"
+  | "date";
+
+export type SearchFilterValueEditorProps = {
+  value: string;
+  field: SearchFilterField;
+  disabled?: boolean;
+  onValueChange: (next: string) => void;
+};
+
 /** A canonical query field and the syntax it accepts in one search context. */
 export type SearchFilterField = {
   name: string;
@@ -22,6 +37,10 @@ export type SearchFilterField = {
   operators: readonly string[];
   aliases?: readonly string[];
   values?: readonly (SearchFilterValue | string)[];
+  /** Value control in the chip editor; defaults to `text`. */
+  valueKind?: SearchFilterValueKind;
+  /** Host component; wins over `valueKind`. Stories may pass forms controls. */
+  ValueEditor?: Component<SearchFilterValueEditorProps>;
 };
 
 export type SearchFilterExample = {
@@ -64,6 +83,34 @@ type OperatorCompletionContext = {
   to?: number;
 };
 
+function uniqueValues(field: SearchFilterField): SearchFilterValue[] {
+  const values = new Map<string, SearchFilterValue>();
+  for (const value of field.values ?? []) {
+    const normalized = typeof value === "string" ? { value } : value;
+    const key = normalized.value.trim().toLocaleLowerCase();
+    if (!key || values.has(key)) continue;
+    values.set(key, normalized);
+  }
+  return [...values.values()]
+    .sort((left, right) =>
+      (left.label ?? left.value).localeCompare(
+        right.label ?? right.value,
+        undefined,
+        {
+          sensitivity: "base",
+        },
+      ),
+    )
+    .slice(0, MAX_VALUE_SUGGESTIONS);
+}
+
+/** Normalized suggestion list for a field (chip editor + completions). */
+export function searchFilterFieldValues(
+  field: SearchFilterField,
+): SearchFilterValue[] {
+  return uniqueValues(field);
+}
+
 function fieldForName(syntax: SearchFilterSyntax, name: string) {
   const normalizedName = name.toLocaleLowerCase();
   return syntax.fields.find(
@@ -73,6 +120,15 @@ function fieldForName(syntax: SearchFilterSyntax, name: string) {
         (alias) => alias.toLocaleLowerCase() === normalizedName,
       ),
   );
+}
+
+/** Resolve a field by name or alias from a syntax model. */
+export function searchFilterFieldByName(
+  syntax: SearchFilterSyntax | undefined,
+  name: string,
+): SearchFilterField | undefined {
+  if (!syntax) return undefined;
+  return fieldForName(syntax, name);
 }
 
 function valueCompletionContext(
@@ -155,27 +211,6 @@ export function searchFilterCompletionStage(
   }
 
   return null;
-}
-
-function uniqueValues(field: SearchFilterField): SearchFilterValue[] {
-  const values = new Map<string, SearchFilterValue>();
-  for (const value of field.values ?? []) {
-    const normalized = typeof value === "string" ? { value } : value;
-    const key = normalized.value.trim().toLocaleLowerCase();
-    if (!key || values.has(key)) continue;
-    values.set(key, normalized);
-  }
-  return [...values.values()]
-    .sort((left, right) =>
-      (left.label ?? left.value).localeCompare(
-        right.label ?? right.value,
-        undefined,
-        {
-          sensitivity: "base",
-        },
-      ),
-    )
-    .slice(0, MAX_VALUE_SUGGESTIONS);
 }
 
 function fieldCompletions(syntax: SearchFilterSyntax): Completion[] {

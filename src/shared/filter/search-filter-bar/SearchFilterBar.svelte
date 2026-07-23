@@ -27,11 +27,17 @@
   import { mount, type Snippet, unmount } from "svelte";
   import { searchFilterHighlightStyle } from "./search-filter-highlight.js";
   import {
+    predicateChipEditHandler,
+    searchFilterPredicateChips,
+    type PredicateChipEditSession,
+  } from "./search-filter-predicate-chips.js";
+  import {
     searchFilterCompletion,
     searchFilterCompletionStage,
     type SearchFilterSyntax,
   } from "./search-filter-syntax.js";
   import SearchFilterAutocompleteScrollArea from "./SearchFilterAutocompleteScrollArea.svelte";
+  import SearchFilterPredicateEditor from "./SearchFilterPredicateEditor.svelte";
 
   let {
     value = "",
@@ -94,6 +100,7 @@
   let editor = $state<EditorView | null>(null);
   let plainInput = $state<HTMLInputElement | null>(null);
   let replacing = false;
+  let chipEditSession = $state<PredicateChipEditSession | null>(null);
   const editableCompartment = new Compartment();
   const placeholderCompartment = new Compartment();
   const autocompleteCompartment = new Compartment();
@@ -230,7 +237,27 @@
     filtersExpanded = !filtersExpanded;
   }
 
+  function openPredicateChipEditor(session: PredicateChipEditSession) {
+    if (disabled) return;
+    chipEditSession = session;
+  }
+
+  function closePredicateChipEditor() {
+    chipEditSession = null;
+  }
+
+  function applyPredicateChipEdit(next: string) {
+    const session = chipEditSession;
+    const view = editor;
+    chipEditSession = null;
+    if (!session || !view) return;
+    view.dispatch({
+      changes: { from: session.from, to: session.to, insert: next },
+    });
+  }
+
   function clearEditor() {
+    chipEditSession = null;
     if (inputMode === "plain") {
       if (value) onValueChange("");
       void onClearSearch();
@@ -258,6 +285,8 @@
         extensions: [
           filterQuery(),
           syntaxHighlighting(searchFilterHighlightStyle, { fallback: true }),
+          searchFilterPredicateChips(),
+          predicateChipEditHandler.of(openPredicateChipEditor),
           history(),
           drawSelection(),
           EditorView.lineWrapping,
@@ -315,6 +344,7 @@
       destroy() {
         view.destroy();
         if (editor === view) editor = null;
+        chipEditSession = null;
       },
     };
   }
@@ -516,4 +546,16 @@
       </p>
     {/if}
   </div>
+
+  {#if chipEditSession}
+    {#key `${chipEditSession.from}:${chipEditSession.to}:${chipEditSession.field}`}
+      <SearchFilterPredicateEditor
+        session={chipEditSession}
+        {filterSyntax}
+        {disabled}
+        onCancel={closePredicateChipEditor}
+        onApply={applyPredicateChipEdit}
+      />
+    {/key}
+  {/if}
 </div>

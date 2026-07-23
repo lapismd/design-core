@@ -2,11 +2,15 @@ export {
   SearchFilterBar,
   searchFilterCompletion,
   searchFilterCompletionStage,
+  searchFilterFieldByName,
+  searchFilterFieldValues,
   type SearchFilterCompletionStage,
   type SearchFilterExample,
   type SearchFilterField,
   type SearchFilterSyntax,
   type SearchFilterValue,
+  type SearchFilterValueEditorProps,
+  type SearchFilterValueKind,
 } from "./search-filter-bar/index.js";
 export { createDemoLedgerFilterSyntax } from "./demo-ledger-filter-syntax.js";
 export {
