@@ -238,7 +238,7 @@
     width: var(--ui-beancount-space-2);
     height: var(--ui-beancount-space-2);
     border-radius: 999px;
-    background: var(--primary);
+    background: var(--ui-beancount-accent);
     animation: bc-studio-workspace-shell-story-pulse 1s ease-in-out infinite
       alternate;
   }

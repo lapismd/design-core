@@ -166,7 +166,7 @@
   }
 
   :global(.bc-app-shell-demo__count) {
-    min-width: calc(var(--spacing) * 5);
+    min-width: var(--ui-beancount-space-5);
     margin-inline-start: calc(var(--ui-beancount-space-2) * 0.75);
     font-variant-numeric: tabular-nums;
   }
@@ -190,7 +190,7 @@
     width: var(--ui-beancount-space-2);
     height: var(--ui-beancount-space-2);
     border-radius: 999px;
-    background: var(--primary);
+    background: var(--ui-beancount-accent);
     animation: bc-app-shell-demo-pulse 1s ease-in-out infinite alternate;
   }
 

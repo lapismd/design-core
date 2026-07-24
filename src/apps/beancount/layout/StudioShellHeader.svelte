@@ -65,8 +65,8 @@
     height: var(--ui-beancount-compact-control-height);
     flex: none;
     border-radius: var(--radius-md);
-    background: var(--primary);
-    color: var(--primary-foreground);
+    background: var(--ui-beancount-accent);
+    color: var(--ui-beancount-accent-foreground);
     font-weight: var(--font-weight-semibold);
     place-items: center;
   }

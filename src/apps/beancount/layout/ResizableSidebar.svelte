@@ -128,7 +128,7 @@
     inset-inline-end: calc(var(--ui-beancount-space-2) * -0.75);
     z-index: 20;
     display: none;
-    width: calc(var(--spacing) * 3);
+    width: var(--ui-beancount-space-3);
     align-items: stretch;
     justify-content: center;
     border-radius: 999px;
@@ -149,7 +149,7 @@
   }
 
   .bc-resizable-sidebar__indicator--active {
-    background: var(--primary);
+    background: var(--ui-beancount-accent);
     opacity: 0.6;
   }
 

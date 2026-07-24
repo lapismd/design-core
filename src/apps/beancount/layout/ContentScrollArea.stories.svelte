@@ -64,7 +64,7 @@
     overflow: hidden;
     border: 1px solid var(--ui-beancount-border);
     border-radius: var(--radius-lg);
-    background: var(--card);
+    background: var(--ui-beancount-surface-raised);
   }
 
   :global(.bc-content-scroll-area-story__content) {
@@ -74,7 +74,7 @@
   .bc-content-scroll-area-story__source {
     margin: 0;
     color: var(--ui-beancount-foreground);
-    font-family: var(--studio-font-mono);
+    font-family: var(--font-mono);
     font-size: var(--text-xs);
     line-height: 1.5rem;
   }

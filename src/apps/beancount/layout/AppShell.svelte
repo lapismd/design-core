@@ -86,7 +86,7 @@
 
   .bc-app-shell__header {
     display: flex;
-    height: calc(var(--spacing) * 11);
+    height: var(--ui-beancount-header-height);
     flex: none;
     align-items: center;
     border-bottom: 1px solid var(--ui-beancount-border);

@@ -106,7 +106,7 @@
               {#if sidebarTabs.length > 1 && !settingsOpen}
                 <div
                   class="studio-workspace-sidebar-tabs"
-                  style={`--studio-workspace-tab-count: ${sidebarTabs.length}`}
+                  style={`--bc-studio-workspace-tab-count: ${sidebarTabs.length}`}
                   aria-label="Workspace sidebar sections"
                 >
                   {#each sidebarTabs as tab (tab.id)}
@@ -261,7 +261,7 @@
     display: grid;
     width: 100%;
     grid-template-columns: repeat(
-      var(--studio-workspace-tab-count),
+      var(--bc-studio-workspace-tab-count),
       minmax(0, 1fr)
     );
     gap: var(--ui-beancount-space-1);
