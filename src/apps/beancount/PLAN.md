@@ -34,14 +34,14 @@ Studio revision, fixture digest, viewport, and per-image digest.
 
 ## Current baseline health
 
-| Check                     | Status | Evidence / next action                                                                                                                                                      |
-| ------------------------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Matrix integrity          | ✅     | `pnpm beancount:screens:verify` finds 15 stories and PNGs                                                                                                                   |
-| Reference provenance      | ✅     | 2026-07-23 capture: Studio `191dae81…`, sample fixture digest, 15 image digests                                                                                             |
-| Loaded route capture      | 🟡     | Records has a deterministic catalog queue, but its Fava reference remains empty; Rules needs a populated fixture and Import Accounts remains a static source-account result |
-| Fava overwrite guard      | ✅     | Normal visual updater and Playwright snapshot updates reject reference-tagged stories                                                                                       |
-| Screen story health       | ✅     | Holdings, Statistics, Settings queries are unambiguous; Dashboard uses one top-level main landmark                                                                          |
-| Component regression PNGs | ⬜     | 94 Beancount visual candidates still need reviewed, family-by-family baselines                                                                                              |
+| Check                     | Status | Evidence / next action                                                                                                                                                       |
+| ------------------------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Matrix integrity          | ✅     | `pnpm beancount:screens:verify` finds 15 stories and PNGs                                                                                                                    |
+| Reference provenance      | ✅     | 2026-07-23 capture: Studio `191dae81…`, sample fixture digest, 15 image digests                                                                                              |
+| Loaded route capture      | 🟡     | Records has a deterministic catalog queue, but its Fava reference remains empty; Rules has a deterministic body but no reference run history; Import Accounts remains static |
+| Fava overwrite guard      | ✅     | Normal visual updater and Playwright snapshot updates reject reference-tagged stories                                                                                        |
+| Screen story health       | ✅     | Holdings, Statistics, Settings queries are unambiguous; Dashboard uses one top-level main landmark                                                                           |
+| Component regression PNGs | ⬜     | 94 Beancount visual candidates still need reviewed, family-by-family baselines                                                                                               |
 
 ## Screen tracker
 
@@ -65,7 +65,7 @@ Visual Delta at or below 0.1% before removing `skip-visual`.
 | Records          | ✅ empty queue | 🟡 partial             | Fava empty panel, header callbacks, and deterministic loaded queue complete; await approved populated Fava capture and production adapters                                                    |
 | Sources          | ✅             | 🟡 partial             | Fava connected/available source cards, source toolbar, and host callbacks complete; align expanded connection details and live sync adapters, then review Visual Delta ≤0.1%                  |
 | Import accounts  | ✅ loaded      | 🟡 partial             | Fava source-account and unassigned rows, Sync all, and source-action callbacks complete; align account details and production setup adapters, then review Visual Delta ≤0.1%                  |
-| Rules            | ✅ loaded      | 🟡 partial             | Fava list, active callback, host menu, and run-history model complete; add production adapters, then review Visual Delta ≤0.1%                                                                |
+| Rules            | ✅ loaded      | 🟡 partial             | Fava list, header apply/add callbacks, active callback, host menu, and run-history model complete; add production adapters, then review Visual Delta ≤0.1%                                    |
 
 ## Styling migration inventory
 

@@ -21,6 +21,7 @@
   import ValidationErrorTable from "../feedback/ValidationErrorTable.svelte";
   import ContentScrollArea from "../layout/ContentScrollArea.svelte";
   import RuleList from "../rules/RuleList.svelte";
+  import RulesToolbar from "../rules/RulesToolbar.svelte";
   import SourceAccountGroups from "../sources/SourceAccountGroups.svelte";
   import SourceConnectionCatalog from "../sources/SourceConnectionCatalog.svelte";
   import ImportAccountsToolbar from "../sources/ImportAccountsToolbar.svelte";
@@ -1468,6 +1469,12 @@
   parameters={{ visualDelta: visualDeltaForScreen("settings-rules") }}
   play={async ({ canvas }) => {
     await expect(canvas.getByText("Test Rule")).toBeVisible();
+    await userEvent.click(canvas.getByRole("button", { name: "Apply all" }));
+    await expect(canvas.getByRole("status")).toHaveTextContent(
+      "Apply all rules",
+    );
+    await userEvent.click(canvas.getByRole("button", { name: "Add rule" }));
+    await expect(canvas.getByRole("status")).toHaveTextContent("Add rule");
     await userEvent.click(
       canvas.getByRole("switch", { name: "Set Test Rule active" }),
     );
@@ -1485,6 +1492,17 @@
 >
   {#snippet template()}
     <ScreenFrame pageTitle="Rules">
+      {#snippet headerActions()}
+        <RulesToolbar
+          canApplyAll={ruleActive}
+          onApplyAll={() => {
+            ruleAction = "Apply all rules";
+          }}
+          onAddRule={() => {
+            ruleAction = "Add rule";
+          }}
+        />
+      {/snippet}
       <ContentScrollArea>
         <div class="bc-screen-story__page bc-screen-story__rules">
           <RuleList

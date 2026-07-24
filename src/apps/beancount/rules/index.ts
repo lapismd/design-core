@@ -7,3 +7,4 @@ export {
   type RuleRun,
   type RuleRunTone,
 } from "./RuleList.svelte";
+export { default as RulesToolbar } from "./RulesToolbar.svelte";
