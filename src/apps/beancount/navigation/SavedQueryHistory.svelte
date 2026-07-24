@@ -136,8 +136,8 @@
     overflow: hidden;
     border: 1px solid var(--ui-beancount-border);
     border-radius: var(--ui-beancount-radius-panel);
-    background: var(--card);
-    color: var(--card-foreground);
+    background: var(--ui-beancount-surface-raised);
+    color: var(--ui-beancount-surface-raised-foreground);
     box-shadow: var(--ui-beancount-shadow-panel);
   }
 
@@ -150,7 +150,8 @@
   }
 
   :global(.bc-saved-query-history__item[data-selected]) {
-    outline: 1px solid color-mix(in srgb, var(--primary) 30%, transparent);
+    outline: 1px solid
+      color-mix(in srgb, var(--ui-beancount-accent) 30%, transparent);
   }
 
   .bc-saved-query-history__summary {

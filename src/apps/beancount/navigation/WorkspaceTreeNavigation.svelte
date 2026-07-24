@@ -210,8 +210,8 @@
 
   :global(.bc-workspace-tree__expand-all-button),
   :global(.bc-workspace-tree__expand-button) {
-    width: calc(var(--spacing) * 7);
-    height: calc(var(--spacing) * 7);
+    width: var(--ui-beancount-space-7);
+    height: var(--ui-beancount-space-7);
     color: var(--ui-beancount-muted-foreground);
   }
 
@@ -293,14 +293,14 @@
   }
 
   .bc-workspace-tree__expand-spacer {
-    width: calc(var(--spacing) * 7);
-    height: calc(var(--spacing) * 7);
+    width: var(--ui-beancount-space-7);
+    height: var(--ui-beancount-space-7);
     flex: none;
   }
 
   :global(.bc-workspace-tree__item-button) {
     min-width: 0;
-    height: calc(var(--spacing) * 7);
+    height: var(--ui-beancount-space-7);
     flex: 1;
     justify-content: flex-start;
     gap: calc(var(--ui-beancount-space-1) * 1.5);
@@ -311,8 +311,8 @@
   }
 
   :global(.bc-workspace-tree__item-icon) {
-    width: calc(var(--spacing) * 3.5);
-    height: calc(var(--spacing) * 3.5);
+    width: var(--ui-beancount-space-3-5);
+    height: var(--ui-beancount-space-3-5);
     flex: none;
   }
 

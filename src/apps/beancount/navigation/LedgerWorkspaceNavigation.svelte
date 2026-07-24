@@ -567,8 +567,8 @@
 
   .bc-ledger-workspace__count {
     display: inline-flex;
-    min-width: calc(var(--spacing) * 5);
-    height: calc(var(--spacing) * 5);
+    min-width: var(--ui-beancount-space-5);
+    height: var(--ui-beancount-space-5);
     align-items: center;
     justify-content: center;
     border-radius: 999px;
@@ -627,8 +627,8 @@
     position: absolute;
     inset-block-start: 50%;
     inset-inline-end: calc(var(--ui-beancount-space-1) * 1.5);
-    width: calc(var(--spacing) * 6);
-    height: calc(var(--spacing) * 6);
+    width: var(--ui-beancount-space-6);
+    height: var(--ui-beancount-space-6);
     border-radius: 999px;
     color: var(--ui-beancount-muted-foreground);
     transform: translateY(-50%);
@@ -670,8 +670,8 @@
 
   :global(.bc-ledger-workspace__expand-button),
   :global(.bc-ledger-workspace__presentation-toggle) {
-    width: calc(var(--spacing) * 7);
-    height: calc(var(--spacing) * 7);
+    width: var(--ui-beancount-space-7);
+    height: var(--ui-beancount-space-7);
     flex: none;
   }
 

@@ -80,7 +80,7 @@
   .bc-account-navigation-story__card {
     border: 1px solid var(--ui-beancount-border);
     border-radius: var(--ui-beancount-radius-panel);
-    background: var(--card);
+    background: var(--ui-beancount-surface-raised);
     padding: var(--ui-beancount-space-5);
   }
 

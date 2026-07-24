@@ -123,7 +123,7 @@ aliases.
 | `dashboard`  |            10 |              10 | 🟡 pending                       |
 | `feedback`   |            13 |              13 | 🟡 pending                       |
 | `layout`     |             7 |               7 | 🟡 pending                       |
-| `navigation` |             5 |               5 | 🟡 pending                       |
+| `navigation` |             5 |               0 | ✅ semantic navigation roles     |
 | `pickers`    |             2 |               2 | 🟡 pending                       |
 | `rules`      |             1 |               0 | ✅ semantic status/surface roles |
 | `sources`    |             2 |               0 | ✅ semantic source-brand roles   |

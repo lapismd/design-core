@@ -71,7 +71,7 @@
   }
 
   .bc-account-navigation-link:hover {
-    color: var(--primary);
+    color: var(--ui-beancount-accent);
   }
 
   .bc-account-navigation-link:focus-visible {

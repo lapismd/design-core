@@ -7,6 +7,7 @@
   --ui-beancount-canvas: var(--sidebar);
   --ui-beancount-surface: var(--background);
   --ui-beancount-surface-raised: var(--card);
+  --ui-beancount-surface-raised-foreground: var(--card-foreground);
   --ui-beancount-surface-muted: var(--muted);
   --ui-beancount-foreground: var(--foreground);
   --ui-beancount-muted-foreground: var(--muted-foreground);
@@ -38,8 +39,11 @@
   --ui-beancount-space-1: calc(var(--spacing) * 1);
   --ui-beancount-space-2: calc(var(--spacing) * 2);
   --ui-beancount-space-3: calc(var(--spacing) * 3);
+  --ui-beancount-space-3-5: calc(var(--spacing) * 3.5);
   --ui-beancount-space-4: calc(var(--spacing) * 4);
   --ui-beancount-space-5: calc(var(--spacing) * 5);
+  --ui-beancount-space-6: calc(var(--spacing) * 6);
+  --ui-beancount-space-7: calc(var(--spacing) * 7);
 }
 
 .dark {
