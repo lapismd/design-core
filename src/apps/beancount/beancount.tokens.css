@@ -6,6 +6,7 @@
 :root {
   --ui-beancount-canvas: var(--sidebar);
   --ui-beancount-surface: var(--background);
+  --ui-beancount-surface-raised: var(--card);
   --ui-beancount-surface-muted: var(--muted);
   --ui-beancount-foreground: var(--foreground);
   --ui-beancount-muted-foreground: var(--muted-foreground);
@@ -18,8 +19,10 @@
   --ui-beancount-shadow-panel: 0 1px 2px rgb(0 0 0 / 0.05);
   --ui-beancount-focus-ring: var(--ring);
   --ui-beancount-accent: var(--primary);
+  --ui-beancount-accent-foreground: var(--primary-foreground);
   --ui-beancount-positive: oklch(0.448 0.119 151.328);
   --ui-beancount-negative: var(--destructive);
+  --ui-beancount-negative-foreground: var(--destructive-foreground);
   --ui-beancount-review: oklch(0.541 0.179 288.033);
   --ui-beancount-held: oklch(0.666 0.179 58.318);
   --ui-beancount-accepted: oklch(0.588 0.158 241.966);

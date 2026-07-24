@@ -357,8 +357,12 @@
     align-items: center;
     justify-content: center;
     border-radius: var(--ui-beancount-radius-panel);
-    background: color-mix(in srgb, var(--primary) 85%, var(--background));
-    color: var(--primary-foreground);
+    background: color-mix(
+      in srgb,
+      var(--ui-beancount-accent) 85%,
+      var(--ui-beancount-surface)
+    );
+    color: var(--ui-beancount-accent-foreground);
     font-size: var(--text-sm);
     font-weight: var(--font-weight-semibold);
   }
@@ -367,7 +371,7 @@
     background: color-mix(
       in srgb,
       var(--ui-beancount-positive) 85%,
-      var(--background)
+      var(--ui-beancount-surface)
     );
     color: var(--ui-beancount-surface);
   }
@@ -376,9 +380,9 @@
     background: color-mix(
       in srgb,
       var(--ui-beancount-negative) 78%,
-      var(--background)
+      var(--ui-beancount-surface)
     );
-    color: var(--destructive-foreground);
+    color: var(--ui-beancount-negative-foreground);
   }
 
   .bc-source-catalog__connected-name,

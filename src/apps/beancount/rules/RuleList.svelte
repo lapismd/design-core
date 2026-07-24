@@ -441,7 +441,7 @@
     overflow-x: auto;
     border: 1px solid var(--ui-beancount-border);
     border-radius: var(--ui-beancount-radius-panel);
-    background: var(--card);
+    background: var(--ui-beancount-surface-raised);
     box-shadow: var(--ui-beancount-shadow-panel);
   }
 
@@ -498,8 +498,12 @@
   }
 
   :global(.bc-rule-list__run-status[data-tone="negative"]) {
-    background: color-mix(in srgb, var(--destructive) 14%, transparent);
-    color: var(--destructive);
+    background: color-mix(
+      in srgb,
+      var(--ui-beancount-negative) 14%,
+      transparent
+    );
+    color: var(--ui-beancount-negative);
   }
 
   @media (max-width: 640px) {

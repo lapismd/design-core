@@ -117,17 +117,17 @@ still use raw shared-theme variables directly rather than the
 token definition file itself is intentionally exempt because it supplies the
 aliases.
 
-| Area         | Initial files | Remaining files | Status                  |
-| ------------ | ------------: | --------------: | ----------------------- |
-| `charts`     |            10 |               0 | ✅ semantic chart roles |
-| `dashboard`  |            10 |              10 | 🟡 pending              |
-| `feedback`   |            13 |              13 | 🟡 pending              |
-| `layout`     |             7 |               7 | 🟡 pending              |
-| `navigation` |             5 |               5 | 🟡 pending              |
-| `pickers`    |             2 |               2 | 🟡 pending              |
-| `rules`      |             1 |               1 | 🟡 pending              |
-| `sources`    |             2 |               2 | 🟡 pending              |
-| `tables`     |             9 |               9 | 🟡 pending              |
+| Area         | Initial files | Remaining files | Status                           |
+| ------------ | ------------: | --------------: | -------------------------------- |
+| `charts`     |            10 |               0 | ✅ semantic chart roles          |
+| `dashboard`  |            10 |              10 | 🟡 pending                       |
+| `feedback`   |            13 |              13 | 🟡 pending                       |
+| `layout`     |             7 |               7 | 🟡 pending                       |
+| `navigation` |             5 |               5 | 🟡 pending                       |
+| `pickers`    |             2 |               2 | 🟡 pending                       |
+| `rules`      |             1 |               0 | ✅ semantic status/surface roles |
+| `sources`    |             2 |               0 | ✅ semantic source-brand roles   |
+| `tables`     |             9 |               9 | 🟡 pending                       |
 
 ## Delivery order
 
