@@ -282,11 +282,18 @@
 <Story
   name="Collapses a date group"
   play={async ({ canvas }) => {
-    await userEvent.click(canvas.getByRole("button", { name: /18 July 2026/ }));
-    await expect(
-      canvas.queryByText("Weekly household shopping"),
-    ).not.toBeInTheDocument();
+    await userEvent.click(
+      canvas.getByRole("button", {
+        name: "Hide balance summary for 18 July 2026",
+      }),
+    );
+    await expect(canvas.getByText("Weekly household shopping")).toBeVisible();
     await expect(canvas.queryByText("Start balance")).not.toBeInTheDocument();
+    await expect(
+      canvas.getByRole("button", {
+        name: "Show balance summary for 18 July 2026",
+      }),
+    ).toHaveAttribute("aria-expanded", "false");
   }}
 >
   {#snippet template()}

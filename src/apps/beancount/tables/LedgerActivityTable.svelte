@@ -1,8 +1,9 @@
 <script lang="ts">
   import { untrack } from "svelte";
   import ChevronDown from "@lucide/svelte/icons/chevron-down";
-  import ChevronRight from "@lucide/svelte/icons/chevron-right";
+  import ChevronUp from "@lucide/svelte/icons/chevron-up";
   import FileText from "@lucide/svelte/icons/file-text";
+  import Info from "@lucide/svelte/icons/info";
   import PagePagination from "../navigation/PagePagination.svelte";
   import { SegmentedControl } from "@stevejuma/ui/forms";
   import { Button } from "@stevejuma/ui/shadcn/button";
@@ -309,7 +310,10 @@
       {#each groups as group (group.id)}
         {@const expanded = expandedGroupIds.has(group.id)}
         {@const groupState = groupSelection(group)}
-        <section class="bc-ledger-activity__group-card">
+        <section
+          class="bc-ledger-activity__group-card"
+          aria-labelledby={`${group.id}-heading`}
+        >
           <div
             class={selectable
               ? "activity-grid activity-grid--selectable bc-ledger-activity__group"
@@ -334,23 +338,18 @@
               class="bc-ledger-activity__group-toggle"
               aria-expanded={expanded}
               aria-controls={`${group.id}-details`}
+              aria-label={`${expanded ? "Collapse" : "Expand"} ${group.date}`}
               onclick={() => toggleGroupDisclosure(group.id)}
             >
-              <span class="bc-ledger-activity__date">{group.date}</span>
+              <span
+                id={`${group.id}-heading`}
+                role="heading"
+                aria-level="2"
+                class="bc-ledger-activity__date">{group.date}</span
+              >
               <span class="bc-ledger-activity__record-count"
                 >· {group.records.length}</span
               >
-              {#if expanded}
-                <ChevronDown
-                  class="bc-ledger-activity__icon"
-                  aria-hidden="true"
-                />
-              {:else}
-                <ChevronRight
-                  class="bc-ledger-activity__icon"
-                  aria-hidden="true"
-                />
-              {/if}
             </button>
             {#if group.balance}
               <span
@@ -361,6 +360,34 @@
             {:else}
               <span aria-hidden="true"></span>
             {/if}
+            <button
+              type="button"
+              class="bc-ledger-activity__balance-description"
+              title={balanceDescription}
+              aria-label="About this date's balance"
+            >
+              <Info class="bc-ledger-activity__icon" aria-hidden="true" />
+            </button>
+            <button
+              type="button"
+              class="bc-ledger-activity__group-disclosure"
+              aria-expanded={expanded}
+              aria-controls={`${group.id}-details`}
+              aria-label={`${expanded ? "Hide" : "Show"} balance summary for ${group.date}`}
+              onclick={() => toggleGroupDisclosure(group.id)}
+            >
+              {#if expanded}
+                <ChevronUp
+                  class="bc-ledger-activity__icon"
+                  aria-hidden="true"
+                />
+              {:else}
+                <ChevronDown
+                  class="bc-ledger-activity__icon"
+                  aria-hidden="true"
+                />
+              {/if}
+            </button>
           </div>
 
           {#if expanded && group.summary}
@@ -611,6 +638,7 @@
   }
   .bc-ledger-activity__checkbox:focus-visible,
   .bc-ledger-activity__group-toggle:focus-visible,
+  .bc-ledger-activity__group-disclosure:focus-visible,
   .bc-ledger-activity__record-action:focus-visible,
   .bc-ledger-activity__posting-link:focus-visible {
     outline: 2px solid var(--ui-beancount-focus-ring);
@@ -640,8 +668,14 @@
   }
   .bc-ledger-activity__group {
     align-items: center;
-    gap: var(--ui-beancount-space-4);
+    gap: var(--ui-beancount-space-3);
     padding: var(--ui-beancount-space-3) var(--ui-beancount-space-5);
+  }
+  .bc-ledger-activity__group.activity-grid--selectable {
+    grid-template-columns: auto minmax(0, 1fr) auto auto auto;
+  }
+  .bc-ledger-activity__group.activity-grid--read-only {
+    grid-template-columns: minmax(0, 1fr) auto auto auto;
   }
   .bc-ledger-activity__group-toggle {
     display: flex;
@@ -665,13 +699,32 @@
     font-weight: 600;
   }
   .bc-ledger-activity__record-count,
-  .bc-ledger-activity__balance {
+  .bc-ledger-activity__balance,
+  .bc-ledger-activity__balance-description {
     color: var(--ui-beancount-muted-foreground);
     font-size: 0.75rem;
   }
   .bc-ledger-activity__balance {
     font-family: var(--font-mono);
+    font-weight: var(--font-weight-semibold);
     font-variant-numeric: tabular-nums;
+  }
+  .bc-ledger-activity__balance-description,
+  .bc-ledger-activity__group-disclosure {
+    display: inline-flex;
+    width: var(--ui-beancount-compact-control-height);
+    height: var(--ui-beancount-compact-control-height);
+    align-items: center;
+    justify-content: center;
+  }
+  .bc-ledger-activity__group-disclosure {
+    border-radius: var(--radius-md);
+    color: var(--ui-beancount-muted-foreground);
+    outline: none;
+  }
+  .bc-ledger-activity__group-disclosure:hover {
+    background: var(--ui-beancount-sidebar-accent);
+    color: var(--ui-beancount-sidebar-accent-foreground);
   }
   .bc-ledger-activity__summary {
     display: grid;

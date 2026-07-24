@@ -294,7 +294,8 @@ No filesystem, ledger, or route access — props and callbacks only.
 - `IntervalTreeTable` — display-model-driven multi-period account comparison
   with budget variance and an `accountCell` snippet slot
 - `LedgerActivityTable` — model-driven ledger activity surface with grouping,
-  Fava-style date-group/record card hierarchy, disclosure, selection,
+  Fava-style date-group/record card hierarchy, separate balance-description
+  and summary-disclosure controls, persistent record cards, selection,
   posting account identities, forms `SegmentedControl` timeframes,
   host-controlled pagination/page sizes, and cross-page selection scope
 - `QueryResultsTable` — formatted, client-sortable query result table wrapping
