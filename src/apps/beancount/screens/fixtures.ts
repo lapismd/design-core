@@ -1150,14 +1150,21 @@ export const emptyReviewGroups: readonly {
   rows: readonly never[];
 }[] = [];
 
-/** Tokenized Fava sample-ledger excerpt for the display-only Editor surface. */
+/**
+ * Tokenized Fava sample-ledger excerpt for the display-only Editor surface.
+ * Only `## Options` is source-comment text; later section labels are editor
+ * folding headings supplied by Fava's display layer.
+ */
 export const editorPreviewLines = [
   {
     id: "editor-line-1",
     number: 1,
     heading: true,
     section: "options",
-    tokens: [{ value: "## ", tone: "comment" }, { value: "Options" }],
+    tokens: [
+      { value: "## ", tone: "comment" },
+      { value: "Options", tone: "comment" },
+    ],
   },
   { id: "editor-line-2", number: 2, section: "options", tokens: [] },
   {
@@ -1298,7 +1305,7 @@ export const editorPreviewLines = [
     number: 16,
     heading: true,
     section: "general-accounts",
-    tokens: [{ value: "## ", tone: "comment" }, { value: "General Accounts" }],
+    tokens: [{ value: "General Accounts" }],
   },
   {
     id: "editor-line-17",
@@ -1375,7 +1382,7 @@ export const editorPreviewLines = [
     number: 26,
     heading: true,
     section: "queries",
-    tokens: [{ value: "## ", tone: "comment" }, { value: "Queries" }],
+    tokens: [{ value: "Queries" }],
   },
   { id: "editor-line-27", number: 27, section: "queries", tokens: [] },
   {
@@ -1398,7 +1405,7 @@ export const editorPreviewLines = [
     number: 30,
     heading: true,
     section: "events",
-    tokens: [{ value: "## ", tone: "comment" }, { value: "Events" }],
+    tokens: [{ value: "Events" }],
   },
   { id: "editor-line-31", number: 31, section: "events", tokens: [] },
   {
@@ -1424,7 +1431,7 @@ export const editorPreviewLines = [
     number: 34,
     heading: true,
     section: "accounts",
-    tokens: [{ value: "## ", tone: "comment" }, { value: "Accounts" }],
+    tokens: [{ value: "Accounts" }],
   },
   { id: "editor-line-35", number: 35, section: "accounts", tokens: [] },
   {
