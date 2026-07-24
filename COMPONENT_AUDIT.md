@@ -319,7 +319,8 @@ filter semantics.
   host-owned callbacks retain all sync, source configuration, secret, and
   routing state
 - `SourceAccountGroups` — controlled source-account and unassigned-account
-  rows with host-owned disclosure/setup callbacks
+  rows with display-only expanded linked-account groups and host-owned
+  disclosure, account, and setup callbacks
 - `ImportAccountsToolbar` — controlled Fava Import Accounts Sync all request
 - `SourceToolbar` — controlled Sync all, YAML mode, edit, and history requests;
   the host owns each operation and source state

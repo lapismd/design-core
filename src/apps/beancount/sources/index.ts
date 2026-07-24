@@ -11,6 +11,10 @@ export {
   default as SourceAccountGroups,
   type SourceAccountSource,
   type SourceAccountAction,
+  type SourceAccountDetails,
+  type SourceLinkedAccount,
+  type SourceLinkedAccountAction,
+  type SourceLinkedAccountGroup,
   type UnassignedAccountGroup,
 } from "./SourceAccountGroups.svelte";
 export { default as ImportAccountsToolbar } from "./ImportAccountsToolbar.svelte";

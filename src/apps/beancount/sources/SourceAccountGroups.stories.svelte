@@ -10,6 +10,33 @@
     credentialLabel: "Credential available · Discovering accounts...",
     syncLabel: "Last sync: Not synced yet",
     tone: "negative" as const,
+    details: {
+      groups: [
+        {
+          id: "cash",
+          label: "Cash",
+          totalLabel: "1,250.00 GBP",
+          accounts: [
+            {
+              id: "lunch-flow-personal",
+              name: "Lunch Flow personal",
+              account: "Assets:Bank:Lunch-Flow",
+              accountTypeLabel: "Checking",
+              institutionLabel: "Lunch Flow",
+              balanceLabel: "1,250.00 GBP",
+              actions: [
+                { id: "edit", label: "Edit" },
+                {
+                  id: "unlink",
+                  label: "Unlink account",
+                  destructive: true,
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
   };
 
   const otherAccounts = {
@@ -41,6 +68,7 @@
 
 <script lang="ts">
   let opened = $state("");
+  let expandedSourceId = $state<string | undefined>();
 </script>
 
 <Story
@@ -51,6 +79,24 @@
     );
     await expect(canvas.getByRole("status")).toHaveTextContent(
       "Opened Lunch Flow",
+    );
+    await expect(
+      canvas.getByRole("region", { name: "Lunch Flow account details" }),
+    ).toBeVisible();
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Open Assets:Bank:Lunch-Flow" }),
+    );
+    await expect(canvas.getByRole("status")).toHaveTextContent(
+      "Opened Assets:Bank:Lunch-Flow",
+    );
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Lunch Flow personal actions" }),
+    );
+    await userEvent.click(
+      within(document.body).getByRole("menuitem", { name: "Edit" }),
+    );
+    await expect(canvas.getByRole("status")).toHaveTextContent(
+      "Edit Lunch Flow personal",
     );
     await userEvent.click(
       canvas.getByRole("button", { name: "Open Other Accounts" }),
@@ -75,8 +121,18 @@
         {source}
         {otherAccounts}
         {sourceActions}
+        {expandedSourceId}
         onOpenSource={(item) => {
           opened = `Opened ${item.name}`;
+        }}
+        onExpandedSourceChange={(item) => {
+          expandedSourceId = item?.id;
+        }}
+        onOpenLinkedAccount={(_source, account) => {
+          opened = `Opened ${account.account}`;
+        }}
+        onLinkedAccountAction={(_source, account, action) => {
+          opened = `${action.label} ${account.name}`;
         }}
         onOpenOtherAccounts={(item) => {
           opened = `Opened ${item.label}`;

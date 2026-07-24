@@ -974,6 +974,9 @@ export const sourceAccountSource = {
   credentialLabel: "Credential available · Discovering accounts...",
   syncLabel: "Last sync: Not synced yet",
   tone: "negative" as const,
+  details: {
+    emptyLabel: "Discovering accounts…",
+  },
 };
 
 export const sourceAccountActions = [

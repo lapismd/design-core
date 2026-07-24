@@ -317,6 +317,7 @@
   let sourceExpandedId = $state<string | undefined>();
   let sourceFieldValues = $state<Record<string, string>>({});
   let sourceAccountAction = $state("");
+  let sourceAccountExpandedId = $state<string | undefined>();
   let ruleActive = $state(true);
   let ruleAction = $state("");
 
@@ -1485,6 +1486,9 @@
     await expect(canvas.getByRole("status")).toHaveTextContent(
       "Open Lunch Flow",
     );
+    await expect(
+      canvas.getByRole("region", { name: "Lunch Flow account details" }),
+    ).toBeVisible();
     await userEvent.click(
       canvas.getByRole("button", { name: "Open Other Accounts" }),
     );
@@ -1521,8 +1525,12 @@
             source={sourceAccountSource}
             otherAccounts={unassignedAccountGroup}
             sourceActions={sourceAccountActions}
+            expandedSourceId={sourceAccountExpandedId}
             onOpenSource={(source) => {
               sourceAccountAction = `Open ${source.name}`;
+            }}
+            onExpandedSourceChange={(source) => {
+              sourceAccountExpandedId = source?.id;
             }}
             onOpenOtherAccounts={(group) => {
               sourceAccountAction = `Open ${group.label}`;
