@@ -20,8 +20,16 @@ export const journalGroups = [
         amount: "−11.16 GBP",
         avatar: { fallback: "N" },
         postings: [
-          { account: "Assets:Checking:Starling", amount: "−11.16 GBP" },
-          { account: "Expenses:Health:Prescription", amount: "11.16 GBP" },
+          {
+            account: "Assets:Checking:Starling",
+            amount: "−11.16 GBP",
+            avatar: { fallback: "A" },
+          },
+          {
+            account: "Expenses:Health:Prescription",
+            amount: "11.16 GBP",
+            avatar: { fallback: "E" },
+          },
         ],
       },
     ],
@@ -38,8 +46,16 @@ export const journalGroups = [
         amount: "−12.99 GBP",
         avatar: { fallback: "P" },
         postings: [
-          { account: "Assets:Checking:Monzo", amount: "−12.99 GBP" },
-          { account: "Expenses:Home:Lifestyle", amount: "12.99 GBP" },
+          {
+            account: "Assets:Checking:Monzo",
+            amount: "−12.99 GBP",
+            avatar: { fallback: "A" },
+          },
+          {
+            account: "Expenses:Home:Lifestyle",
+            amount: "12.99 GBP",
+            avatar: { fallback: "E" },
+          },
         ],
       },
     ],
@@ -56,8 +72,16 @@ export const journalGroups = [
         amount: "−72.66 GBP",
         avatar: { fallback: "E" },
         postings: [
-          { account: "Assets:Checking:Starling", amount: "−72.66 GBP" },
-          { account: "Expenses:Home:Phone", amount: "72.66 GBP" },
+          {
+            account: "Assets:Checking:Starling",
+            amount: "−72.66 GBP",
+            avatar: { fallback: "A" },
+          },
+          {
+            account: "Expenses:Home:Phone",
+            amount: "72.66 GBP",
+            avatar: { fallback: "E" },
+          },
         ],
       },
     ],
@@ -74,8 +98,16 @@ export const journalGroups = [
         amount: "−23.86 GBP",
         avatar: { fallback: "J" },
         postings: [
-          { account: "Assets:Checking:Starling", amount: "−23.86 GBP" },
-          { account: "Assets:Checking:Joint", amount: "23.86 GBP" },
+          {
+            account: "Assets:Checking:Starling",
+            amount: "−23.86 GBP",
+            avatar: { fallback: "A" },
+          },
+          {
+            account: "Assets:Checking:Joint",
+            amount: "23.86 GBP",
+            avatar: { fallback: "A" },
+          },
         ],
       },
     ],
@@ -96,8 +128,16 @@ export const journalUpcomingGroups = [
         amount: "−1300.00 GBP",
         avatar: { fallback: "R" },
         postings: [
-          { account: "Assets:Checking:Starling", amount: "−1300.00 GBP" },
-          { account: "Expenses:Home:Rent", amount: "1300.00 GBP" },
+          {
+            account: "Assets:Checking:Starling",
+            amount: "−1300.00 GBP",
+            avatar: { fallback: "A" },
+          },
+          {
+            account: "Expenses:Home:Rent",
+            amount: "1300.00 GBP",
+            avatar: { fallback: "E" },
+          },
         ],
       },
     ],
@@ -114,8 +154,16 @@ export const journalUpcomingGroups = [
         amount: "3400.00 GBP",
         avatar: { fallback: "S" },
         postings: [
-          { account: "Assets:Checking:Starling", amount: "3400.00 GBP" },
-          { account: "Income:Salary", amount: "−3400.00 GBP" },
+          {
+            account: "Assets:Checking:Starling",
+            amount: "3400.00 GBP",
+            avatar: { fallback: "A" },
+          },
+          {
+            account: "Income:Salary",
+            amount: "−3400.00 GBP",
+            avatar: { fallback: "I" },
+          },
         ],
       },
     ],

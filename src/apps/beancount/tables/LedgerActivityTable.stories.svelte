@@ -43,8 +43,13 @@
               account: "Expenses:Groceries",
               amount: "£42.17",
               href: "/account/Expenses:Groceries",
+              avatar: { fallback: "E" },
             },
-            { account: "Assets:Cash", amount: "−£42.17" },
+            {
+              account: "Assets:Cash",
+              amount: "−£42.17",
+              avatar: { fallback: "A" },
+            },
           ],
         },
         {
@@ -54,8 +59,16 @@
           amount: "+£3,200.00",
           avatar: { fallback: "S" },
           postings: [
-            { account: "Assets:Cash", amount: "+£3,200.00" },
-            { account: "Income:Salary", amount: "−£3,200.00" },
+            {
+              account: "Assets:Cash",
+              amount: "+£3,200.00",
+              avatar: { fallback: "A" },
+            },
+            {
+              account: "Income:Salary",
+              amount: "−£3,200.00",
+              avatar: { fallback: "I" },
+            },
           ],
         },
       ],
@@ -89,8 +102,16 @@
           amount: "−£1,300.00",
           avatar: { fallback: "R" },
           postings: [
-            { account: "Assets:Cash", amount: "−£1,300.00" },
-            { account: "Expenses:Rent", amount: "£1,300.00" },
+            {
+              account: "Assets:Cash",
+              amount: "−£1,300.00",
+              avatar: { fallback: "A" },
+            },
+            {
+              account: "Expenses:Rent",
+              amount: "£1,300.00",
+              avatar: { fallback: "E" },
+            },
           ],
         },
       ],
@@ -345,9 +366,7 @@
 >
   {#snippet template()}
     <div class="bc-ledger-activity-workflow">
-      <div
-        class="bc-ledger-activity-workflow__header"
-      >
+      <div class="bc-ledger-activity-workflow__header">
         <span class="bc-ledger-activity-workflow__title">Journal actions</span>
         <Button
           type="button"
@@ -397,10 +416,43 @@
 </Story>
 
 <style>
-  .bc-ledger-activity-story { max-width: 64rem; padding: var(--ui-beancount-space-5); }
-  .bc-ledger-activity-story__status { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-  .bc-ledger-activity-workflow { max-width: 64rem; overflow: hidden; border: 1px solid var(--ui-beancount-border); border-radius: var(--ui-beancount-radius-panel); background: var(--ui-beancount-surface); box-shadow: var(--ui-beancount-shadow-panel); }
-  .bc-ledger-activity-workflow__header { display: flex; align-items: center; justify-content: space-between; border-block-end: 1px solid var(--ui-beancount-border); background: color-mix(in srgb, var(--ui-beancount-surface-muted) 30%, transparent); padding: var(--ui-beancount-space-2) var(--ui-beancount-space-4); }
-  .bc-ledger-activity-workflow__title { font-size: var(--text-sm); font-weight: 500; }
-  .bc-ledger-activity-workflow__body { padding: var(--ui-beancount-space-5); }
+  .bc-ledger-activity-story {
+    max-width: 64rem;
+    padding: var(--ui-beancount-space-5);
+  }
+  .bc-ledger-activity-story__status {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+  .bc-ledger-activity-workflow {
+    max-width: 64rem;
+    overflow: hidden;
+    border: 1px solid var(--ui-beancount-border);
+    border-radius: var(--ui-beancount-radius-panel);
+    background: var(--ui-beancount-surface);
+    box-shadow: var(--ui-beancount-shadow-panel);
+  }
+  .bc-ledger-activity-workflow__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-block-end: 1px solid var(--ui-beancount-border);
+    background: color-mix(
+      in srgb,
+      var(--ui-beancount-surface-muted) 30%,
+      transparent
+    );
+    padding: var(--ui-beancount-space-2) var(--ui-beancount-space-4);
+  }
+  .bc-ledger-activity-workflow__title {
+    font-size: var(--text-sm);
+    font-weight: 500;
+  }
+  .bc-ledger-activity-workflow__body {
+    padding: var(--ui-beancount-space-5);
+  }
 </style>

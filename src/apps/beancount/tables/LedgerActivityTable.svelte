@@ -26,6 +26,8 @@
     account: string;
     amount?: string;
     href?: string;
+    /** Optional account identity shown beside the posting label. */
+    avatar?: LedgerActivityAvatar;
   };
 
   export type LedgerActivityRecord = {
@@ -275,7 +277,8 @@
   {#if selectable && showSelectionScope}
     <div class="bc-ledger-activity__selection-scope" role="status">
       {#if allMatchingSelected}
-        All {totalMatchingRecordCount} {selectionRecordLabel()} selected.
+        All {totalMatchingRecordCount}
+        {selectionRecordLabel()} selected.
         <Button
           type="button"
           variant="link"
@@ -294,7 +297,8 @@
           class="bc-ledger-activity__selection-action"
           onclick={onRequestSelectAllMatching}
         >
-          Select all {totalMatchingRecordCount} {selectionRecordLabel()}
+          Select all {totalMatchingRecordCount}
+          {selectionRecordLabel()}
         </Button>
       {/if}
     </div>
@@ -306,58 +310,58 @@
         {@const expanded = expandedGroupIds.has(group.id)}
         {@const groupState = groupSelection(group)}
         <section class="bc-ledger-activity__group-card">
-            <div
-              class={selectable
-                ? "activity-grid activity-grid--selectable bc-ledger-activity__group"
-                : "activity-grid activity-grid--read-only bc-ledger-activity__group"}
+          <div
+            class={selectable
+              ? "activity-grid activity-grid--selectable bc-ledger-activity__group"
+              : "activity-grid activity-grid--read-only bc-ledger-activity__group"}
+          >
+            {#if selectable}
+              <input
+                type="checkbox"
+                checked={groupState === "checked"}
+                use:setIndeterminate={groupState === "indeterminate"}
+                class="bc-ledger-activity__checkbox"
+                aria-label={`Select records on ${group.date}`}
+                onchange={(event) =>
+                  toggleGroup(
+                    group,
+                    (event.currentTarget as HTMLInputElement).checked,
+                  )}
+              />
+            {/if}
+            <button
+              type="button"
+              class="bc-ledger-activity__group-toggle"
+              aria-expanded={expanded}
+              aria-controls={`${group.id}-details`}
+              onclick={() => toggleGroupDisclosure(group.id)}
             >
-              {#if selectable}
-                <input
-                  type="checkbox"
-                  checked={groupState === "checked"}
-                  use:setIndeterminate={groupState === "indeterminate"}
-                  class="bc-ledger-activity__checkbox"
-                  aria-label={`Select records on ${group.date}`}
-                  onchange={(event) =>
-                    toggleGroup(
-                      group,
-                      (event.currentTarget as HTMLInputElement).checked,
-                    )}
+              <span class="bc-ledger-activity__date">{group.date}</span>
+              <span class="bc-ledger-activity__record-count"
+                >· {group.records.length}</span
+              >
+              {#if expanded}
+                <ChevronDown
+                  class="bc-ledger-activity__icon"
+                  aria-hidden="true"
+                />
+              {:else}
+                <ChevronRight
+                  class="bc-ledger-activity__icon"
+                  aria-hidden="true"
                 />
               {/if}
-              <button
-                type="button"
-                class="bc-ledger-activity__group-toggle"
-                aria-expanded={expanded}
-                aria-controls={`${group.id}-details`}
-                onclick={() => toggleGroupDisclosure(group.id)}
+            </button>
+            {#if group.balance}
+              <span
+                class="bc-ledger-activity__balance"
+                aria-label={`${balanceDescription}: ${group.balance}`}
+                >{group.balance}</span
               >
-                <span class="bc-ledger-activity__date">{group.date}</span>
-                <span class="bc-ledger-activity__record-count"
-                  >· {group.records.length}</span
-                >
-                {#if expanded}
-                  <ChevronDown
-                    class="bc-ledger-activity__icon"
-                    aria-hidden="true"
-                  />
-                {:else}
-                  <ChevronRight
-                    class="bc-ledger-activity__icon"
-                    aria-hidden="true"
-                  />
-                {/if}
-              </button>
-              {#if group.balance}
-                <span
-                  class="bc-ledger-activity__balance"
-                  aria-label={`${balanceDescription}: ${group.balance}`}
-                  >{group.balance}</span
-                >
-              {:else}
-                <span aria-hidden="true"></span>
-              {/if}
-            </div>
+            {:else}
+              <span aria-hidden="true"></span>
+            {/if}
+          </div>
 
           {#if expanded && group.summary}
             <div
@@ -377,78 +381,94 @@
               </span>
               <span>Final balance</span>
               <span class="bc-ledger-activity__summary-rule"></span>
-              <span class="bc-ledger-activity__summary-value bc-ledger-activity__summary-value--final">
+              <span
+                class="bc-ledger-activity__summary-value bc-ledger-activity__summary-value--final"
+              >
                 {group.summary.final}
               </span>
             </div>
           {/if}
           <div class="bc-ledger-activity__records">
             <ul>
-                  {#each group.records as record (record.id)}
-                    <li
-                      class={selectable
-                        ? "activity-grid activity-grid--selectable bc-ledger-activity__record"
-                        : "activity-grid activity-grid--read-only bc-ledger-activity__record"}
+              {#each group.records as record (record.id)}
+                <li
+                  class={selectable
+                    ? "activity-grid activity-grid--selectable bc-ledger-activity__record"
+                    : "activity-grid activity-grid--read-only bc-ledger-activity__record"}
+                >
+                  {#if selectable}
+                    <input
+                      type="checkbox"
+                      checked={selectedIdSet.has(record.id)}
+                      aria-label={`Select ${record.description}`}
+                      class="bc-ledger-activity__checkbox bc-ledger-activity__checkbox--record"
+                      onchange={(event) =>
+                        toggleRecord(
+                          record.id,
+                          (event.currentTarget as HTMLInputElement).checked,
+                        )}
+                    />
+                  {/if}
+                  {#if onOpenRecord}
+                    <button
+                      type="button"
+                      class="bc-ledger-activity__record-action"
+                      onclick={() => onOpenRecord(record)}
                     >
-                      {#if selectable}
-                        <input
-                          type="checkbox"
-                          checked={selectedIdSet.has(record.id)}
-                          aria-label={`Select ${record.description}`}
-                          class="bc-ledger-activity__checkbox bc-ledger-activity__checkbox--record"
-                          onchange={(event) =>
-                            toggleRecord(
-                              record.id,
-                              (event.currentTarget as HTMLInputElement).checked,
-                            )}
-                        />
-                      {/if}
-                      {#if onOpenRecord}
-                        <button
-                          type="button"
-                          class="bc-ledger-activity__record-action"
-                          onclick={() => onOpenRecord(record)}
-                        >
-                          {@render ActivityRecord(record, true)}
-                        </button>
-                      {:else}
-                        <div class="bc-ledger-activity__record-copy">
-                          {@render ActivityRecord(record)}
-                        </div>
-                      {/if}
-                      {#if record.postings?.length}
-                        <div class="bc-ledger-activity__postings">
-                          {#each record.postings as posting, index (`${record.id}-${posting.id ?? posting.account}-${index}`)}
-                            <div
-                              class="bc-ledger-activity__posting"
-                            >
-                              {#if posting.href}
-                                <a
-                                  href={posting.href}
-                                  class="bc-ledger-activity__posting-link"
-                                  >{posting.account}</a
-                                >
-                              {:else}
-                                <span
-                                  class="bc-ledger-activity__posting-account"
-                                  title={posting.account}
-                                  >{posting.account}</span
-                                >
-                              {/if}
+                      {@render ActivityRecord(record, true)}
+                    </button>
+                  {:else}
+                    <div class="bc-ledger-activity__record-copy">
+                      {@render ActivityRecord(record)}
+                    </div>
+                  {/if}
+                  {#if record.postings?.length}
+                    <div class="bc-ledger-activity__postings">
+                      {#each record.postings as posting, index (`${record.id}-${posting.id ?? posting.account}-${index}`)}
+                        <div class="bc-ledger-activity__posting">
+                          <span class="bc-ledger-activity__posting-identity">
+                            {#if posting.avatar?.imageUrl}
+                              <img
+                                src={posting.avatar.imageUrl}
+                                alt={posting.avatar.alt ?? ""}
+                                class="bc-ledger-activity__posting-avatar-image"
+                              />
+                            {:else if posting.avatar?.fallback}
                               <span
-                                class="bc-ledger-activity__posting-amount"
-                                >{posting.amount ?? "—"}</span
+                                class="bc-ledger-activity__posting-avatar-fallback"
+                                aria-hidden="true"
                               >
-                            </div>
-                          {/each}
+                                {posting.avatar.fallback
+                                  .slice(0, 1)
+                                  .toUpperCase()}
+                              </span>
+                            {/if}
+                            {#if posting.href}
+                              <a
+                                href={posting.href}
+                                class="bc-ledger-activity__posting-link"
+                                >{posting.account}</a
+                              >
+                            {:else}
+                              <span
+                                class="bc-ledger-activity__posting-account"
+                                title={posting.account}>{posting.account}</span
+                              >
+                            {/if}
+                          </span>
+                          <span class="bc-ledger-activity__posting-amount"
+                            >{posting.amount ?? "—"}</span
+                          >
                         </div>
-                      {:else}
-                        <div class="bc-ledger-activity__amount">
-                          {record.amount}
-                        </div>
-                      {/if}
-                    </li>
-                  {/each}
+                      {/each}
+                    </div>
+                  {:else}
+                    <div class="bc-ledger-activity__amount">
+                      {record.amount}
+                    </div>
+                  {/if}
+                </li>
+              {/each}
             </ul>
           </div>
         </section>
@@ -518,10 +538,7 @@
         class="bc-ledger-activity__avatar-image"
       />
     {:else}
-      <span
-        class="bc-ledger-activity__avatar-fallback"
-        aria-hidden="true"
-      >
+      <span class="bc-ledger-activity__avatar-fallback" aria-hidden="true">
         {#if avatar.fallback}
           {avatar.fallback.slice(0, 1).toUpperCase()}
         {:else}
@@ -537,10 +554,7 @@
         {record.description}
       </span>
       {#if record.account}
-        <span
-          class="bc-ledger-activity__record-account"
-          >{record.account}</span
-        >
+        <span class="bc-ledger-activity__record-account">{record.account}</span>
       {/if}
       {#if record.detail}
         <span class="bc-ledger-activity__record-detail">
@@ -564,55 +578,363 @@
     grid-template-columns: minmax(0, 1fr) auto;
   }
 
-  .bc-ledger-activity { width: 100%; }
-  .bc-ledger-activity__timeframes { margin-block-end: var(--ui-beancount-space-3); }
-  .bc-ledger-activity__header { align-items: center; gap: var(--ui-beancount-space-4); border-radius: var(--radius-2xl); background: color-mix(in srgb, var(--ui-beancount-surface-muted) 80%, transparent); padding: var(--ui-beancount-space-3) var(--ui-beancount-space-5); color: var(--ui-beancount-muted-foreground); font-size: .75rem; font-weight: 600; letter-spacing: .025em; text-transform: uppercase; }
-  .bc-ledger-activity__checkbox { width: var(--ui-beancount-space-4); height: var(--ui-beancount-space-4); flex-shrink: 0; border-color: var(--input); border-radius: var(--radius-sm); accent-color: var(--primary); outline: none; }
-  .bc-ledger-activity__checkbox:focus-visible, .bc-ledger-activity__group-toggle:focus-visible, .bc-ledger-activity__record-action:focus-visible, .bc-ledger-activity__posting-link:focus-visible { outline: 2px solid var(--ui-beancount-focus-ring); }
-  .bc-ledger-activity__checkbox--record { margin-block-start: calc(var(--ui-beancount-space-1) / 2); }
-  .bc-ledger-activity__amount-heading, .bc-ledger-activity__balance, .bc-ledger-activity__amount, .bc-ledger-activity__postings { text-align: right; }
-  .bc-ledger-activity__groups { display: grid; gap: var(--ui-beancount-space-3); margin-block-start: var(--ui-beancount-space-3); }
-  .bc-ledger-activity__group-card { overflow: hidden; border-radius: var(--radius-2xl); background: color-mix(in srgb, var(--ui-beancount-surface-muted) 80%, transparent); }
-  .bc-ledger-activity__group { align-items: center; gap: var(--ui-beancount-space-4); padding: var(--ui-beancount-space-3) var(--ui-beancount-space-5); }
-  .bc-ledger-activity__group-toggle { display: flex; min-width: 0; align-items: center; gap: var(--ui-beancount-space-2); outline: none; text-align: left; }
-  :global(.bc-ledger-activity__icon) { width: var(--ui-beancount-space-4); height: var(--ui-beancount-space-4); flex-shrink: 0; color: var(--ui-beancount-muted-foreground); }
-  .bc-ledger-activity__date { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .875rem; font-weight: 600; }
-  .bc-ledger-activity__record-count, .bc-ledger-activity__balance { color: var(--ui-beancount-muted-foreground); font-size: .75rem; }
-  .bc-ledger-activity__balance { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
-  .bc-ledger-activity__summary { display: grid; gap: var(--ui-beancount-space-2) var(--ui-beancount-space-4); border-block-start: 1px dashed color-mix(in srgb, var(--ui-beancount-border) 80%, transparent); padding: var(--ui-beancount-space-4) var(--ui-beancount-space-5); font-size: .875rem; }
-  .bc-ledger-activity__summary-rule { display: none; border-block-start: 1px dashed color-mix(in srgb, var(--ui-beancount-border) 80%, transparent); align-self: center; }
-  .bc-ledger-activity__summary-value { text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; }
-  .bc-ledger-activity__summary-value--final { font-weight: 700; }
-  .bc-ledger-activity__records { margin: var(--ui-beancount-space-1); overflow: hidden; border: 1px solid color-mix(in srgb, var(--ui-beancount-border) 80%, transparent); border-radius: var(--ui-beancount-radius-panel); background: var(--ui-beancount-surface); box-shadow: var(--ui-beancount-shadow-panel); }
-  .bc-ledger-activity__records ul { margin: 0; padding: 0; list-style: none; }
-  .bc-ledger-activity__record { align-items: flex-start; gap: var(--ui-beancount-space-4); border-block-end: 1px solid color-mix(in srgb, var(--ui-beancount-border) 70%, transparent); padding: var(--ui-beancount-space-3) var(--ui-beancount-space-5); transition: background-color 150ms ease; }
-  .bc-ledger-activity__record:last-child { border-block-end: 0; }
-  .bc-ledger-activity__record:hover { background: color-mix(in srgb, var(--ui-beancount-surface-muted) 45%, transparent); }
-  .bc-ledger-activity__record-action, .bc-ledger-activity__record-copy { min-width: 0; outline: none; text-align: left; }
-  .bc-ledger-activity__postings { display: flex; min-width: 0; flex-direction: column; gap: var(--ui-beancount-space-1); }
-  .bc-ledger-activity__posting { display: grid; min-width: 0; grid-template-columns: minmax(0,1fr) auto; align-items: center; gap: var(--ui-beancount-space-3); }
-  .bc-ledger-activity__posting-link, .bc-ledger-activity__posting-account { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: left; font-size: .75rem; }
-  .bc-ledger-activity__posting-link { color: var(--primary); outline: none; text-underline-offset: 4px; }
-  .bc-ledger-activity__posting-link:hover, .bc-ledger-activity__record-description--interactive:hover { text-decoration: underline; }
-  .bc-ledger-activity__posting-account { color: var(--ui-beancount-muted-foreground); }
-  .bc-ledger-activity__posting-amount, .bc-ledger-activity__amount { font-family: var(--font-mono); font-size: .875rem; font-weight: 600; font-variant-numeric: tabular-nums; }
-  .bc-ledger-activity__amount { font-weight: 400; }
-  .bc-ledger-activity__empty { margin-block-start: var(--ui-beancount-space-3); border: 1px solid color-mix(in srgb, var(--ui-beancount-border) 80%, transparent); border-radius: var(--radius-2xl); background: var(--ui-beancount-surface); padding: calc(var(--ui-beancount-space-3) * 4) var(--ui-beancount-space-5); color: var(--ui-beancount-muted-foreground); text-align: center; font-size: .875rem; }
-  .bc-ledger-activity__selection-scope { margin-block: var(--ui-beancount-space-3); border: 1px solid color-mix(in srgb, var(--ui-beancount-border) 80%, transparent); border-radius: var(--ui-beancount-radius-panel); background: var(--ui-beancount-surface-muted); padding: var(--ui-beancount-space-3) var(--ui-beancount-space-4); color: var(--ui-beancount-muted-foreground); font-size: var(--text-sm); }
-  :global(.bc-ledger-activity__selection-action) { height: auto; padding: 0; color: var(--primary); vertical-align: baseline; }
-  .bc-ledger-activity__pagination { display: flex; flex-direction: column; gap: var(--ui-beancount-space-3); margin-block-start: var(--ui-beancount-space-3); border: 1px solid color-mix(in srgb, var(--ui-beancount-border) 80%, transparent); border-radius: var(--ui-beancount-radius-panel); background: var(--ui-beancount-surface); padding: var(--ui-beancount-space-3) var(--ui-beancount-space-4); box-shadow: var(--ui-beancount-shadow-panel); }
-  .bc-ledger-activity__result-label, .bc-ledger-activity__page-size-label { color: var(--ui-beancount-muted-foreground); font-size: var(--text-sm); }
-  .bc-ledger-activity__pagination-controls { display: flex; min-width: 0; flex-direction: column; gap: var(--ui-beancount-space-3); }
-  .bc-ledger-activity__page-size { display: none; align-items: center; gap: var(--ui-beancount-space-2); }
-  :global(.bc-ledger-activity__page-size-select) { width: auto; min-width: calc(var(--ui-beancount-space-5) * 2); }
-  .bc-ledger-activity__identity { display: flex; min-width: 0; align-items: flex-start; gap: var(--ui-beancount-space-2); }
-  .bc-ledger-activity__avatar-image, .bc-ledger-activity__avatar-fallback { width: 2.5rem; height: 2.5rem; flex-shrink: 0; margin-block-start: calc(var(--ui-beancount-space-1) / 2); border: 1px solid color-mix(in srgb, var(--ui-beancount-border) 70%, transparent); border-radius: 999px; }
-  .bc-ledger-activity__avatar-image { object-fit: contain; }
-  .bc-ledger-activity__avatar-fallback { display: flex; align-items: center; justify-content: center; background: var(--ui-beancount-surface-muted); color: var(--ui-beancount-muted-foreground); font-size: .875rem; font-weight: 600; }
-  .bc-ledger-activity__identity-copy { min-width: 0; }
-  .bc-ledger-activity__record-description { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .875rem; font-weight: 500; }
-  .bc-ledger-activity__record-account, .bc-ledger-activity__record-detail { display: block; overflow: hidden; color: var(--ui-beancount-muted-foreground); text-overflow: ellipsis; white-space: nowrap; font-size: .75rem; }
-  .bc-ledger-activity__record-account { margin-block-start: calc(var(--ui-beancount-space-1) / 2); font-family: var(--font-mono); }
-  .bc-ledger-activity__record-detail { margin-block-start: var(--ui-beancount-space-1); }
-  @media (min-width: 640px) { .bc-ledger-activity__summary { grid-template-columns: auto minmax(0,1fr) auto; } .bc-ledger-activity__summary-rule { display: block; } .bc-ledger-activity__pagination { flex-direction: row; align-items: center; justify-content: space-between; } .bc-ledger-activity__pagination-controls { flex-direction: row; align-items: center; } .bc-ledger-activity__page-size { display: flex; } }
+  .bc-ledger-activity {
+    width: 100%;
+  }
+  .bc-ledger-activity__timeframes {
+    margin-block-end: var(--ui-beancount-space-3);
+  }
+  .bc-ledger-activity__header {
+    align-items: center;
+    gap: var(--ui-beancount-space-4);
+    border-radius: var(--radius-2xl);
+    background: color-mix(
+      in srgb,
+      var(--ui-beancount-surface-muted) 80%,
+      transparent
+    );
+    padding: var(--ui-beancount-space-3) var(--ui-beancount-space-5);
+    color: var(--ui-beancount-muted-foreground);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.025em;
+    text-transform: uppercase;
+  }
+  .bc-ledger-activity__checkbox {
+    width: var(--ui-beancount-space-4);
+    height: var(--ui-beancount-space-4);
+    flex-shrink: 0;
+    border-color: var(--input);
+    border-radius: var(--radius-sm);
+    accent-color: var(--primary);
+    outline: none;
+  }
+  .bc-ledger-activity__checkbox:focus-visible,
+  .bc-ledger-activity__group-toggle:focus-visible,
+  .bc-ledger-activity__record-action:focus-visible,
+  .bc-ledger-activity__posting-link:focus-visible {
+    outline: 2px solid var(--ui-beancount-focus-ring);
+  }
+  .bc-ledger-activity__checkbox--record {
+    margin-block-start: calc(var(--ui-beancount-space-1) / 2);
+  }
+  .bc-ledger-activity__amount-heading,
+  .bc-ledger-activity__balance,
+  .bc-ledger-activity__amount,
+  .bc-ledger-activity__postings {
+    text-align: right;
+  }
+  .bc-ledger-activity__groups {
+    display: grid;
+    gap: var(--ui-beancount-space-3);
+    margin-block-start: var(--ui-beancount-space-3);
+  }
+  .bc-ledger-activity__group-card {
+    overflow: hidden;
+    border-radius: var(--radius-2xl);
+    background: color-mix(
+      in srgb,
+      var(--ui-beancount-surface-muted) 80%,
+      transparent
+    );
+  }
+  .bc-ledger-activity__group {
+    align-items: center;
+    gap: var(--ui-beancount-space-4);
+    padding: var(--ui-beancount-space-3) var(--ui-beancount-space-5);
+  }
+  .bc-ledger-activity__group-toggle {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: var(--ui-beancount-space-2);
+    outline: none;
+    text-align: left;
+  }
+  :global(.bc-ledger-activity__icon) {
+    width: var(--ui-beancount-space-4);
+    height: var(--ui-beancount-space-4);
+    flex-shrink: 0;
+    color: var(--ui-beancount-muted-foreground);
+  }
+  .bc-ledger-activity__date {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+  .bc-ledger-activity__record-count,
+  .bc-ledger-activity__balance {
+    color: var(--ui-beancount-muted-foreground);
+    font-size: 0.75rem;
+  }
+  .bc-ledger-activity__balance {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+  .bc-ledger-activity__summary {
+    display: grid;
+    gap: var(--ui-beancount-space-2) var(--ui-beancount-space-4);
+    border-block-start: 1px dashed
+      color-mix(in srgb, var(--ui-beancount-border) 80%, transparent);
+    padding: var(--ui-beancount-space-4) var(--ui-beancount-space-5);
+    font-size: 0.875rem;
+  }
+  .bc-ledger-activity__summary-rule {
+    display: none;
+    border-block-start: 1px dashed
+      color-mix(in srgb, var(--ui-beancount-border) 80%, transparent);
+    align-self: center;
+  }
+  .bc-ledger-activity__summary-value {
+    text-align: right;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+  .bc-ledger-activity__summary-value--final {
+    font-weight: 700;
+  }
+  .bc-ledger-activity__records {
+    margin: var(--ui-beancount-space-1);
+    overflow: hidden;
+    border: 1px solid
+      color-mix(in srgb, var(--ui-beancount-border) 80%, transparent);
+    border-radius: var(--ui-beancount-radius-panel);
+    background: var(--ui-beancount-surface);
+    box-shadow: var(--ui-beancount-shadow-panel);
+  }
+  .bc-ledger-activity__records ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .bc-ledger-activity__record {
+    align-items: flex-start;
+    gap: var(--ui-beancount-space-4);
+    border-block-end: 1px solid
+      color-mix(in srgb, var(--ui-beancount-border) 70%, transparent);
+    padding: var(--ui-beancount-space-3) var(--ui-beancount-space-5);
+    transition: background-color 150ms ease;
+  }
+  .bc-ledger-activity__record:last-child {
+    border-block-end: 0;
+  }
+  .bc-ledger-activity__record:hover {
+    background: color-mix(
+      in srgb,
+      var(--ui-beancount-surface-muted) 45%,
+      transparent
+    );
+  }
+  .bc-ledger-activity__record-action,
+  .bc-ledger-activity__record-copy {
+    min-width: 0;
+    outline: none;
+    text-align: left;
+  }
+  .bc-ledger-activity__postings {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: var(--ui-beancount-space-1);
+  }
+  .bc-ledger-activity__posting {
+    display: grid;
+    min-width: 0;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--ui-beancount-space-3);
+  }
+  .bc-ledger-activity__posting-identity {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: var(--ui-beancount-space-2);
+  }
+  .bc-ledger-activity__posting-link,
+  .bc-ledger-activity__posting-account {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: left;
+    font-size: 0.75rem;
+  }
+  .bc-ledger-activity__posting-link {
+    color: var(--primary);
+    outline: none;
+    text-underline-offset: 4px;
+  }
+  .bc-ledger-activity__posting-link:hover,
+  .bc-ledger-activity__record-description--interactive:hover {
+    text-decoration: underline;
+  }
+  .bc-ledger-activity__posting-account {
+    color: var(--ui-beancount-muted-foreground);
+  }
+  .bc-ledger-activity__posting-avatar-image,
+  .bc-ledger-activity__posting-avatar-fallback {
+    width: var(--ui-beancount-space-4);
+    height: var(--ui-beancount-space-4);
+    flex: none;
+    border: 1px solid
+      color-mix(in srgb, var(--ui-beancount-border) 70%, transparent);
+    border-radius: 999px;
+  }
+  .bc-ledger-activity__posting-avatar-image {
+    object-fit: contain;
+  }
+  .bc-ledger-activity__posting-avatar-fallback {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--ui-beancount-surface-muted);
+    color: var(--ui-beancount-muted-foreground);
+    font-size: var(--text-xs);
+    font-weight: var(--font-weight-semibold);
+  }
+  .bc-ledger-activity__posting-amount,
+  .bc-ledger-activity__amount {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+  .bc-ledger-activity__amount {
+    font-weight: 400;
+  }
+  .bc-ledger-activity__empty {
+    margin-block-start: var(--ui-beancount-space-3);
+    border: 1px solid
+      color-mix(in srgb, var(--ui-beancount-border) 80%, transparent);
+    border-radius: var(--radius-2xl);
+    background: var(--ui-beancount-surface);
+    padding: calc(var(--ui-beancount-space-3) * 4) var(--ui-beancount-space-5);
+    color: var(--ui-beancount-muted-foreground);
+    text-align: center;
+    font-size: 0.875rem;
+  }
+  .bc-ledger-activity__selection-scope {
+    margin-block: var(--ui-beancount-space-3);
+    border: 1px solid
+      color-mix(in srgb, var(--ui-beancount-border) 80%, transparent);
+    border-radius: var(--ui-beancount-radius-panel);
+    background: var(--ui-beancount-surface-muted);
+    padding: var(--ui-beancount-space-3) var(--ui-beancount-space-4);
+    color: var(--ui-beancount-muted-foreground);
+    font-size: var(--text-sm);
+  }
+  :global(.bc-ledger-activity__selection-action) {
+    height: auto;
+    padding: 0;
+    color: var(--primary);
+    vertical-align: baseline;
+  }
+  .bc-ledger-activity__pagination {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ui-beancount-space-3);
+    margin-block-start: var(--ui-beancount-space-3);
+    border: 1px solid
+      color-mix(in srgb, var(--ui-beancount-border) 80%, transparent);
+    border-radius: var(--ui-beancount-radius-panel);
+    background: var(--ui-beancount-surface);
+    padding: var(--ui-beancount-space-3) var(--ui-beancount-space-4);
+    box-shadow: var(--ui-beancount-shadow-panel);
+  }
+  .bc-ledger-activity__result-label,
+  .bc-ledger-activity__page-size-label {
+    color: var(--ui-beancount-muted-foreground);
+    font-size: var(--text-sm);
+  }
+  .bc-ledger-activity__pagination-controls {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: var(--ui-beancount-space-3);
+  }
+  .bc-ledger-activity__page-size {
+    display: none;
+    align-items: center;
+    gap: var(--ui-beancount-space-2);
+  }
+  :global(.bc-ledger-activity__page-size-select) {
+    width: auto;
+    min-width: calc(var(--ui-beancount-space-5) * 2);
+  }
+  .bc-ledger-activity__identity {
+    display: flex;
+    min-width: 0;
+    align-items: flex-start;
+    gap: var(--ui-beancount-space-2);
+  }
+  .bc-ledger-activity__avatar-image,
+  .bc-ledger-activity__avatar-fallback {
+    width: 2.5rem;
+    height: 2.5rem;
+    flex-shrink: 0;
+    margin-block-start: calc(var(--ui-beancount-space-1) / 2);
+    border: 1px solid
+      color-mix(in srgb, var(--ui-beancount-border) 70%, transparent);
+    border-radius: 999px;
+  }
+  .bc-ledger-activity__avatar-image {
+    object-fit: contain;
+  }
+  .bc-ledger-activity__avatar-fallback {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--ui-beancount-surface-muted);
+    color: var(--ui-beancount-muted-foreground);
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+  .bc-ledger-activity__identity-copy {
+    min-width: 0;
+  }
+  .bc-ledger-activity__record-description {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+  .bc-ledger-activity__record-account,
+  .bc-ledger-activity__record-detail {
+    display: block;
+    overflow: hidden;
+    color: var(--ui-beancount-muted-foreground);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.75rem;
+  }
+  .bc-ledger-activity__record-account {
+    margin-block-start: calc(var(--ui-beancount-space-1) / 2);
+    font-family: var(--font-mono);
+  }
+  .bc-ledger-activity__record-detail {
+    margin-block-start: var(--ui-beancount-space-1);
+  }
+  @media (min-width: 640px) {
+    .bc-ledger-activity__summary {
+      grid-template-columns: auto minmax(0, 1fr) auto;
+    }
+    .bc-ledger-activity__summary-rule {
+      display: block;
+    }
+    .bc-ledger-activity__pagination {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .bc-ledger-activity__pagination-controls {
+      flex-direction: row;
+      align-items: center;
+    }
+    .bc-ledger-activity__page-size {
+      display: flex;
+    }
+  }
 </style>
