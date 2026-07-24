@@ -725,6 +725,7 @@
                       -50000, -45000, -40000, -35000, -30000, -25000, -20000,
                       -15000, -10000, -5000, 0, 5000,
                     ]}
+                    gridOpacity={0.2}
                     ariaLabel="Balance sheet net worth history"
                     valueFormatter={formatBalanceSheetAxisAmount}
                   />
@@ -942,7 +943,14 @@
                     mode={accountDetailChartMode}
                     interpolation="step"
                     xTickCount={7}
-                    yTickCount={15}
+                    chartWidth={900}
+                    chartHeight={250}
+                    valueDomain={{ min: -3200, max: 27400 }}
+                    yTickValues={[
+                      -2000, 0, 2000, 4000, 6000, 8000, 10000, 12000, 14000,
+                      16000, 18000, 20000, 22000, 24000, 26000,
+                    ]}
+                    gridOpacity={0.2}
                     ariaLabel="Assets Checking balance history"
                     valueFormatter={formatReportAxisAmount}
                   />

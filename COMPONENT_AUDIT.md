@@ -249,7 +249,7 @@ don't yet support these — cosmetic only, not blocking):
   views
 - `LineChart` — responsive time-series renderer (line or area) with
   accessible point focus, ledger step interpolation, optional adapter-supplied
-  report axis, and empty-state support
+  report axis/grid treatment, and empty-state support
 - `ScatterPlot` — model-driven ledger-event plot with accessible point focus
 
 **Dashboard (`dashboard/`)** — `Apps/Beancount/Dashboard/*`:

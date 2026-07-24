@@ -617,7 +617,7 @@ export const accountDetailLineSeries = [
   {
     id: "account-balance",
     label: "Assets:Checking",
-    color: "var(--ui-beancount-accepted)",
+    color: "var(--ui-beancount-report-balance-primary)",
     points: accountDetailValues.map((value, index) => {
       const date = new Date(
         accountDetailChartStart +

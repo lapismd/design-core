@@ -153,9 +153,12 @@
 
 <Story
   name="Uses a report axis for stepped balance history"
-  play={async ({ canvas }) => {
+  play={async ({ canvas, canvasElement }) => {
     await expect(canvas.getByText("−600")).toBeVisible();
     await expect(canvas.getAllByText("October")).toHaveLength(2);
+    await expect(
+      canvasElement.querySelector(".bc-line-chart__grid-line"),
+    ).toHaveAttribute("stroke-opacity", "0.2");
     await expect(
       canvas.getByRole("group", { name: "Stepped report balance" }),
     ).toBeVisible();
@@ -171,6 +174,7 @@
         xTickCount={3}
         valueDomain={{ min: -600, max: 600 }}
         yTickValues={[-600, -300, 0, 300, 600]}
+        gridOpacity={0.2}
         valueFormatter={(value) => `${value < 0 ? "−" : ""}${Math.abs(value)}`}
         ariaLabel="Stepped report balance"
       />

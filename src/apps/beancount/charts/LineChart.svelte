@@ -33,6 +33,7 @@
     chartHeight = 280,
     valueDomain,
     yTickValues,
+    gridOpacity = 1,
     valueFormatter = (value) => String(value),
     onPointFocus = () => {},
   }: {
@@ -54,6 +55,8 @@
     valueDomain?: { min: number; max: number };
     /** Optional display-ready y-axis ticks supplied by the report adapter. */
     yTickValues?: readonly number[];
+    /** Opacity for horizontal report grid lines. */
+    gridOpacity?: number;
     valueFormatter?: (value: number) => string;
     /** Report a hovered, focused, or activated point to the application. */
     onPointFocus?: (point: LineChartPoint, series: LineChartSeries) => void;
@@ -124,6 +127,7 @@
   const baseline = $derived(Math.max(minValue, Math.min(maxValue, 0)));
   const resolvedXTickCount = $derived(Math.max(2, Math.floor(xTickCount)));
   const resolvedYTickCount = $derived(Math.max(2, Math.floor(yTickCount)));
+  const resolvedGridOpacity = $derived(Math.max(0, Math.min(gridOpacity, 1)));
   const yTicks = $derived(
     yTickValues?.filter(
       (value) =>
@@ -224,6 +228,8 @@
                 x1="0"
                 x2={innerWidth}
                 stroke="var(--ui-beancount-border)"
+                stroke-opacity={resolvedGridOpacity}
+                class="bc-line-chart__grid-line"
               />
               <text
                 x="-10"
