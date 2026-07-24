@@ -301,7 +301,8 @@ No filesystem, ledger, or route access — props and callbacks only.
 - `LedgerActivityTable` — model-driven ledger activity surface with grouping,
   Fava-style date-group/record card hierarchy, separate balance-description
   and summary-disclosure controls, persistent record cards, selection,
-  posting account identities, forms `SegmentedControl` timeframes,
+  optional account-derived posting avatars with host-resolved appearance metadata,
+  forms `SegmentedControl` timeframes,
   host-controlled pagination/page sizes, and cross-page selection scope
 - `QueryResultsTable` — formatted, client-sortable query result table wrapping
   `PagePagination`

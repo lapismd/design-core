@@ -518,6 +518,7 @@
         <div class="bc-screen-story__page">
           <LedgerActivityTable
             groups={activeJournalGroups}
+            showAccountAvatars
             timeframes={[
               { id: "transactions", label: "Transactions" },
               { id: "upcoming", label: "Upcoming" },
@@ -951,6 +952,7 @@
             {#snippet children()}
               <LedgerActivityTable
                 groups={accountDetailGroups}
+                showAccountAvatars
                 ariaLabel="Assets Checking activity"
                 amountHeading="Balance"
                 timeframes={[

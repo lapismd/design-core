@@ -41,6 +41,7 @@ export {
 } from "./IntervalTreeTable.svelte";
 export {
   default as LedgerActivityTable,
+  type LedgerActivityAccountAppearance,
   type LedgerActivityAvatar,
   type LedgerActivityGroup,
   type LedgerActivityMerchant,

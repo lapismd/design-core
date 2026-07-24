@@ -142,7 +142,10 @@
 
 <Story
   name="Selects records and opens their details"
-  play={async ({ canvas }) => {
+  play={async ({ canvas, canvasElement }) => {
+    await expect(
+      canvasElement.querySelectorAll(".beancount-account-avatar"),
+    ).toHaveLength(4);
     await userEvent.click(
       canvas.getByRole("checkbox", { name: "Select Groceries" }),
     );
@@ -160,6 +163,7 @@
     <div class="bc-ledger-activity-story">
       <LedgerActivityTable
         {groups}
+        showAccountAvatars
         {selectedIds}
         onSelectedIdsChange={(ids) => {
           selectedIds = ids;

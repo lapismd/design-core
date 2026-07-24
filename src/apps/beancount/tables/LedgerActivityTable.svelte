@@ -5,6 +5,7 @@
   import FileText from "@lucide/svelte/icons/file-text";
   import Info from "@lucide/svelte/icons/info";
   import PagePagination from "../navigation/PagePagination.svelte";
+  import AccountAvatar from "../pickers/AccountAvatar.svelte";
   import { SegmentedControl } from "@stevejuma/ui/forms";
   import { Button } from "@stevejuma/ui/shadcn/button";
   import * as Select from "@stevejuma/ui/shadcn/select";
@@ -22,6 +23,13 @@
     alt: string;
   };
 
+  /** Display-ready visual metadata for an account-derived posting avatar. */
+  export type LedgerActivityAccountAppearance = {
+    color?: string;
+    icon?: string;
+    merchantLogoUrl?: string;
+  };
+
   export type LedgerActivityPosting = {
     id?: string;
     account: string;
@@ -29,6 +37,8 @@
     href?: string;
     /** Optional account identity shown beside the posting label. */
     avatar?: LedgerActivityAvatar;
+    /** Optional host-resolved account appearance for account-avatar mode. */
+    appearance?: LedgerActivityAccountAppearance;
   };
 
   export type LedgerActivityRecord = {
@@ -89,6 +99,7 @@
     amountHeading = "Amount",
     balanceDescription = "Running balance",
     emptyMessage = "No dated records match the current filter.",
+    showAccountAvatars = false,
     timeframes = [],
     timeframe,
     pagination,
@@ -109,6 +120,11 @@
     amountHeading?: string;
     balanceDescription?: string;
     emptyMessage?: string;
+    /**
+     * Renders posting accounts with their deterministic Beancount account
+     * identity. The host still supplies optional account routes in `href`.
+     */
+    showAccountAvatars?: boolean;
     /** Two or three display modes, such as posted and upcoming activity. */
     timeframes?: readonly LedgerActivityTimeframe[];
     timeframe?: string;
@@ -454,7 +470,16 @@
                       {#each record.postings as posting, index (`${record.id}-${posting.id ?? posting.account}-${index}`)}
                         <div class="bc-ledger-activity__posting">
                           <span class="bc-ledger-activity__posting-identity">
-                            {#if posting.avatar?.imageUrl}
+                            {#if showAccountAvatars}
+                              <AccountAvatar
+                                account={posting.account}
+                                color={posting.appearance?.color}
+                                icon={posting.appearance?.icon}
+                                merchantLogoUrl={posting.appearance
+                                  ?.merchantLogoUrl}
+                                size="sm"
+                              />
+                            {:else if posting.avatar?.imageUrl}
                               <img
                                 src={posting.avatar.imageUrl}
                                 alt={posting.avatar.alt ?? ""}
@@ -474,11 +499,13 @@
                               <a
                                 href={posting.href}
                                 class="bc-ledger-activity__posting-link"
+                                class:bc-ledger-activity__posting-link--identified={showAccountAvatars}
                                 >{posting.account}</a
                               >
                             {:else}
                               <span
                                 class="bc-ledger-activity__posting-account"
+                                class:bc-ledger-activity__posting-account--identified={showAccountAvatars}
                                 title={posting.account}>{posting.account}</span
                               >
                             {/if}
@@ -818,12 +845,18 @@
     outline: none;
     text-underline-offset: 4px;
   }
+  .bc-ledger-activity__posting-link--identified {
+    color: var(--ui-beancount-foreground);
+  }
   .bc-ledger-activity__posting-link:hover,
   .bc-ledger-activity__record-description--interactive:hover {
     text-decoration: underline;
   }
   .bc-ledger-activity__posting-account {
     color: var(--ui-beancount-muted-foreground);
+  }
+  .bc-ledger-activity__posting-account--identified {
+    color: var(--ui-beancount-foreground);
   }
   .bc-ledger-activity__posting-avatar-image,
   .bc-ledger-activity__posting-avatar-fallback {
