@@ -10,7 +10,7 @@
       docs: {
         description: {
           component:
-            "A controlled source-connection catalog based on Fava's Sources screen. Hosts supply source display models and own all setup, navigation, and sync operations.",
+            "A controlled source-connection catalog based on Fava's Sources screen. Hosts supply collapsed and expanded display models, and own every field value, setup, navigation, sync, and update operation.",
         },
       },
     },
@@ -25,6 +25,36 @@
       syncLabel: "Not synced yet",
       statusLabel: "Needs setup",
       tone: "negative" as const,
+      details: {
+        setupSteps: [
+          "Create an API key in the Lunch Flow developer console.",
+          "Paste the key and base URL below, then update the connection.",
+          "Return to Import Accounts to discover available accounts.",
+        ],
+        fields: [
+          {
+            id: "api-key",
+            label: "API key",
+            value: "",
+            type: "password" as const,
+            placeholder: "Paste API key",
+          },
+          {
+            id: "base-url",
+            label: "Base URL",
+            value: "https://api.lunch-flow.example/v1",
+            type: "url" as const,
+          },
+        ],
+        linkedAccounts: [
+          {
+            id: "lunch-flow-main",
+            name: "Lunch Flow personal",
+            account: "Assets:Bank:Lunch-Flow",
+            currency: "GBP",
+          },
+        ],
+      },
     },
   ];
 
@@ -64,6 +94,23 @@
 
 <script lang="ts">
   let action = $state("");
+  let openedSourceId = $state<string | undefined>();
+  let expandedSourceId = $state<string | undefined>("lunch-flow");
+  let apiKey = $state("");
+
+  const sourcesWithEditableDetails = $derived(
+    connectedSources.map((source) => ({
+      ...source,
+      details: source.details
+        ? {
+            ...source.details,
+            fields: source.details.fields?.map((field) =>
+              field.id === "api-key" ? { ...field, value: apiKey } : field,
+            ),
+          }
+        : undefined,
+    })),
+  );
 </script>
 
 <Story
@@ -75,6 +122,9 @@
     await expect(canvas.getByRole("status")).toHaveTextContent(
       "Opened Lunch Flow",
     );
+    await expect(
+      canvas.getByRole("region", { name: "Lunch Flow connection details" }),
+    ).toBeVisible();
     await userEvent.click(
       canvas.getByRole("button", { name: "Connect Monzo Bank" }),
     );
@@ -88,11 +138,63 @@
       <SourceConnectionCatalog
         {connectedSources}
         {availableSources}
+        expandedSourceId={openedSourceId}
         onOpenConnection={(source) => {
           action = `Opened ${source.name}`;
         }}
+        onExpandedSourceChange={(source) => {
+          openedSourceId = source?.id;
+        }}
         onConnect={(source) => {
           action = `Connect ${source.name}`;
+        }}
+      />
+      <output class="bc-source-catalog-story__status" aria-live="polite"
+        >{action}</output
+      >
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Edits controlled expanded connection details"
+  play={async ({ canvas }) => {
+    await userEvent.type(canvas.getByLabelText("API key"), "secret-token");
+    await expect(canvas.getByRole("status")).toHaveTextContent(
+      "API key updated",
+    );
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Open Assets:Bank:Lunch-Flow" }),
+    );
+    await expect(canvas.getByRole("status")).toHaveTextContent(
+      "Open Assets:Bank:Lunch-Flow",
+    );
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Update connection" }),
+    );
+    await expect(canvas.getByRole("status")).toHaveTextContent(
+      "Update Lunch Flow",
+    );
+  }}
+>
+  {#snippet template()}
+    <div class="bc-source-catalog-story">
+      <SourceConnectionCatalog
+        connectedSources={sourcesWithEditableDetails}
+        availableSources={[]}
+        {expandedSourceId}
+        onExpandedSourceChange={(source) => {
+          expandedSourceId = source?.id;
+        }}
+        onConnectionFieldChange={(_source, field, value) => {
+          if (field.id === "api-key") apiKey = value;
+          action = `${field.label} updated`;
+        }}
+        onOpenLinkedAccount={(_source, account) => {
+          action = `Open ${account.account}`;
+        }}
+        onUpdateConnection={(source) => {
+          action = `Update ${source.name}`;
         }}
       />
       <output class="bc-source-catalog-story__status" aria-live="polite"

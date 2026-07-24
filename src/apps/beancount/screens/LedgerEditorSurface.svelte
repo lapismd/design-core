@@ -52,7 +52,7 @@
   );
 </script>
 
-<section class="bc-ledger-editor-surface" aria-label={ariaLabel} tabindex="0">
+<section class="bc-ledger-editor-surface" aria-label={ariaLabel}>
   <ol class="bc-ledger-editor-surface__lines">
     {#each visibleLines as line (line.id)}
       <li
@@ -98,11 +98,6 @@
     overflow: hidden;
     background: var(--ui-beancount-surface);
     color: var(--ui-beancount-foreground);
-  }
-
-  .bc-ledger-editor-surface:focus-visible {
-    outline: 2px solid var(--ui-beancount-focus-ring);
-    outline-offset: calc(var(--ui-beancount-space-1) * -1);
   }
 
   .bc-ledger-editor-surface__lines {

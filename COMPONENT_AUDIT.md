@@ -315,7 +315,8 @@ filter semantics.
 **Sources (`sources/`)** — `Apps/Beancount/Sources/*`:
 
 - `SourceConnectionCatalog` — controlled connected/available bank-source cards
-  with host-owned open/setup callbacks; no sync, source configuration, or
+  and expanded display-only setup, credential, account, and update details;
+  host-owned callbacks retain all sync, source configuration, secret, and
   routing state
 - `SourceAccountGroups` — controlled source-account and unassigned-account
   rows with host-owned disclosure/setup callbacks

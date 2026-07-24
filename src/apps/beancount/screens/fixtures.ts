@@ -907,6 +907,30 @@ export const connectedSources = [
     syncLabel: "Not synced yet",
     statusLabel: "Needs setup",
     tone: "negative" as const,
+    details: {
+      setupSteps: [
+        "Create an API key in the Lunch Flow developer console.",
+        "Paste the key and base URL below, then update the connection.",
+        "Return to Import Accounts to discover available accounts.",
+      ],
+      fields: [
+        {
+          id: "api-key",
+          label: "API key",
+          value: "",
+          type: "password" as const,
+          placeholder: "Paste API key",
+          description: "The host stores this credential outside the UI layer.",
+        },
+        {
+          id: "base-url",
+          label: "Base URL",
+          value: "https://api.lunch-flow.example/v1",
+          type: "url" as const,
+        },
+      ],
+      updateLabel: "Update connection",
+    },
   },
 ];
 

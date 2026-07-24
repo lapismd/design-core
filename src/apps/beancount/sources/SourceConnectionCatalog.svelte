@@ -1,11 +1,45 @@
 <script lang="ts">
   import ArrowRight from "@lucide/svelte/icons/arrow-right";
-  import ChevronRight from "@lucide/svelte/icons/chevron-right";
+  import ChevronDown from "@lucide/svelte/icons/chevron-down";
   import { Badge } from "@stevejuma/ui/shadcn/badge";
   import { Button } from "@stevejuma/ui/shadcn/button";
   import * as Card from "@stevejuma/ui/shadcn/card";
+  import * as Field from "@stevejuma/ui/shadcn/field";
+  import { Input } from "@stevejuma/ui/shadcn/input";
 
   export type SourceBrandTone = "primary" | "positive" | "negative";
+
+  /** A host-owned field value ready to display in a source connection form. */
+  export type SourceConnectionField = {
+    id: string;
+    label: string;
+    value: string;
+    type?: "password" | "text" | "url";
+    placeholder?: string;
+    description?: string;
+    disabled?: boolean;
+  };
+
+  /** A linked ledger account ready to open through a host callback. */
+  export type SourceConnectionAccount = {
+    id: string;
+    name: string;
+    account: string;
+    currency?: string;
+  };
+
+  /**
+   * Display-only detail model for the expanded Fava source-connection card.
+   * The adapter owns all field values, validation, secret storage, and saves.
+   */
+  export type SourceConnectionDetails = {
+    setupLabel?: string;
+    setupSteps?: readonly string[];
+    fields?: readonly SourceConnectionField[];
+    linkedAccounts?: readonly SourceConnectionAccount[];
+    updateLabel?: string;
+    updateDisabled?: boolean;
+  };
 
   export type ConnectedSource = {
     id: string;
@@ -15,6 +49,7 @@
     syncLabel: string;
     statusLabel: string;
     tone?: SourceBrandTone;
+    details?: SourceConnectionDetails;
   };
 
   export type AvailableSource = {
@@ -30,18 +65,53 @@
   let {
     connectedSources = [],
     availableSources = [],
+    expandedSourceId,
     ariaLabel = "Source connections",
     onOpenConnection,
+    onExpandedSourceChange,
+    onConnectionFieldChange,
+    onOpenLinkedAccount,
+    onUpdateConnection,
     onConnect = () => {},
   }: {
     connectedSources?: readonly ConnectedSource[];
     availableSources?: readonly AvailableSource[];
+    /** The ID of the connected source whose display-ready details are visible. */
+    expandedSourceId?: string;
     ariaLabel?: string;
     /** Requests that the host open the selected connected source. */
     onOpenConnection?: (source: ConnectedSource) => void;
+    /** Requests the next controlled expanded source, or closes the current one. */
+    onExpandedSourceChange?: (source: ConnectedSource | undefined) => void;
+    /** Sends a display field edit back to the host without storing it locally. */
+    onConnectionFieldChange?: (
+      source: ConnectedSource,
+      field: SourceConnectionField,
+      value: string,
+    ) => void;
+    /** Requests navigation to a linked ledger account. */
+    onOpenLinkedAccount?: (
+      source: ConnectedSource,
+      account: SourceConnectionAccount,
+    ) => void;
+    /** Requests that the host persist the displayed connection settings. */
+    onUpdateConnection?: (source: ConnectedSource) => void;
     /** Requests that the host start setup for an available source. */
     onConnect?: (source: AvailableSource) => void;
   } = $props();
+
+  function detailsId(source: ConnectedSource) {
+    return `source-connection-details-${source.id}`;
+  }
+
+  function isExpanded(source: ConnectedSource) {
+    return Boolean(source.details && source.id === expandedSourceId);
+  }
+
+  function toggleDetails(source: ConnectedSource) {
+    onOpenConnection?.(source);
+    onExpandedSourceChange?.(isExpanded(source) ? undefined : source);
+  }
 </script>
 
 <section class="bc-source-catalog" aria-label={ariaLabel}>
@@ -56,10 +126,13 @@
             type="button"
             class="bc-source-catalog__connected-action"
             aria-label={`Open ${source.name}`}
-            onclick={() => onOpenConnection?.(source)}
+            aria-controls={source.details ? detailsId(source) : undefined}
+            aria-expanded={source.details ? isExpanded(source) : undefined}
+            onclick={() => toggleDetails(source)}
           >
-            <ChevronRight
+            <ChevronDown
               class="bc-source-catalog__connected-chevron"
+              data-expanded={isExpanded(source)}
               aria-hidden="true"
             />
             <span
@@ -76,6 +149,91 @@
               <Badge variant="secondary">{source.statusLabel}</Badge>
             </span>
           </button>
+          {#if isExpanded(source) && source.details}
+            <section
+              class="bc-source-catalog__connection-details"
+              id={detailsId(source)}
+              aria-label={`${source.name} connection details`}
+            >
+              {#if source.details.setupSteps?.length}
+                <div class="bc-source-catalog__setup">
+                  <h3>{source.details.setupLabel ?? "Setup"}</h3>
+                  <ol>
+                    {#each source.details.setupSteps as step (step)}
+                      <li>{step}</li>
+                    {/each}
+                  </ol>
+                </div>
+              {/if}
+
+              {#if source.details.fields?.length}
+                <Field.Set class="bc-source-catalog__field-set">
+                  <Field.Group>
+                    {#each source.details.fields as field (`${source.id}-${field.id}`)}
+                      {@const fieldId = `source-${source.id}-${field.id}`}
+                      <Field.Field>
+                        <Field.Label for={fieldId}>{field.label}</Field.Label>
+                        {#if field.description}
+                          <Field.Description
+                            >{field.description}</Field.Description
+                          >
+                        {/if}
+                        <Input
+                          id={fieldId}
+                          type={field.type ?? "text"}
+                          value={field.value}
+                          placeholder={field.placeholder}
+                          disabled={field.disabled || !onConnectionFieldChange}
+                          oninput={(event) =>
+                            onConnectionFieldChange?.(
+                              source,
+                              field,
+                              (event.currentTarget as HTMLInputElement).value,
+                            )}
+                        />
+                      </Field.Field>
+                    {/each}
+                  </Field.Group>
+                </Field.Set>
+              {/if}
+
+              {#if source.details.linkedAccounts?.length}
+                <div class="bc-source-catalog__linked-accounts">
+                  <h3>Linked accounts</h3>
+                  <ul>
+                    {#each source.details.linkedAccounts as account (account.id)}
+                      <li>
+                        <button
+                          type="button"
+                          aria-label={`Open ${account.account}`}
+                          disabled={!onOpenLinkedAccount}
+                          onclick={() => onOpenLinkedAccount?.(source, account)}
+                        >
+                          <span>
+                            <strong>{account.name}</strong>
+                            <span>{account.account}</span>
+                          </span>
+                          {#if account.currency}
+                            <span>{account.currency}</span>
+                          {/if}
+                        </button>
+                      </li>
+                    {/each}
+                  </ul>
+                </div>
+              {/if}
+
+              {#if onUpdateConnection}
+                <Button
+                  class="bc-source-catalog__update"
+                  disabled={source.details.updateDisabled}
+                  onclick={() => onUpdateConnection(source)}
+                >
+                  {source.details.updateLabel ?? "Update connection"}
+                </Button>
+              {/if}
+            </section>
+          {/if}
         </Card.Root>
       {:else}
         <p class="bc-source-catalog__empty">No connections configured.</p>
@@ -183,6 +341,12 @@
     width: var(--ui-beancount-space-5);
     height: var(--ui-beancount-space-5);
     color: var(--ui-beancount-muted-foreground);
+    transition: transform 150ms ease;
+    transform: rotate(-90deg);
+  }
+
+  :global(.bc-source-catalog__connected-chevron[data-expanded="true"]) {
+    transform: rotate(0deg);
   }
 
   .bc-source-catalog__brand {
@@ -231,6 +395,104 @@
     color: var(--ui-beancount-muted-foreground);
     font-size: var(--text-sm);
     white-space: nowrap;
+  }
+
+  .bc-source-catalog__connection-details {
+    display: grid;
+    gap: var(--ui-beancount-space-4);
+    border-top: 1px solid var(--ui-beancount-border);
+    padding: var(--ui-beancount-space-4);
+  }
+
+  .bc-source-catalog__setup {
+    border-radius: var(--ui-beancount-radius-panel);
+    background: color-mix(
+      in srgb,
+      var(--ui-beancount-muted) 66%,
+      var(--ui-beancount-surface)
+    );
+    padding: var(--ui-beancount-space-3);
+    color: var(--ui-beancount-muted-foreground);
+  }
+
+  .bc-source-catalog__setup h3,
+  .bc-source-catalog__linked-accounts h3 {
+    margin: 0;
+    color: var(--ui-beancount-foreground);
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .bc-source-catalog__setup ol {
+    display: grid;
+    gap: var(--ui-beancount-space-1);
+    margin: var(--ui-beancount-space-2) 0 0;
+    padding-inline-start: calc(var(--ui-beancount-space-4) * 1.5);
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+  }
+
+  :global(.bc-source-catalog__field-set) {
+    gap: var(--ui-beancount-space-3);
+  }
+
+  .bc-source-catalog__linked-accounts,
+  .bc-source-catalog__linked-accounts ul {
+    display: grid;
+    gap: var(--ui-beancount-space-2);
+  }
+
+  .bc-source-catalog__linked-accounts ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .bc-source-catalog__linked-accounts button {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--ui-beancount-space-3);
+    border: 1px solid var(--ui-beancount-border);
+    border-radius: var(--ui-beancount-radius-panel);
+    padding: var(--ui-beancount-space-3);
+    color: var(--ui-beancount-foreground);
+    text-align: left;
+  }
+
+  .bc-source-catalog__linked-accounts button:hover:not(:disabled) {
+    background: var(--ui-beancount-muted);
+  }
+
+  .bc-source-catalog__linked-accounts button:focus-visible {
+    outline: 2px solid var(--ui-beancount-focus-ring);
+    outline-offset: 2px;
+  }
+
+  .bc-source-catalog__linked-accounts button:disabled {
+    cursor: default;
+  }
+
+  .bc-source-catalog__linked-accounts button > span:first-child {
+    display: grid;
+    min-width: 0;
+    gap: var(--ui-beancount-space-1);
+  }
+
+  .bc-source-catalog__linked-accounts strong {
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-medium);
+  }
+
+  .bc-source-catalog__linked-accounts strong + span,
+  .bc-source-catalog__linked-accounts button > span:last-child {
+    color: var(--ui-beancount-muted-foreground);
+    font-size: var(--text-xs);
+  }
+
+  :global(.bc-source-catalog__update) {
+    width: 100%;
   }
 
   .bc-source-catalog__available-grid {

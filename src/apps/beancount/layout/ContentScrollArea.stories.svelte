@@ -32,6 +32,9 @@
   name="Contains a long ledger note"
   play={async ({ canvas }) => {
     await expect(canvas.getByLabelText("Ledger source preview")).toBeVisible();
+    await expect(
+      canvas.getByRole("region", { name: "Ledger source content" }),
+    ).toHaveAttribute("tabindex", "0");
   }}
 >
   {#snippet template()}
@@ -39,7 +42,10 @@
       class="bc-content-scroll-area-story"
       aria-label="Ledger source preview"
     >
-      <ContentScrollArea contentClass="bc-content-scroll-area-story__content">
+      <ContentScrollArea
+        ariaLabel="Ledger source content"
+        contentClass="bc-content-scroll-area-story__content"
+      >
         <pre class="bc-content-scroll-area-story__source">{Array.from(
             { length: 4 },
             () => ledgerLines,

@@ -2,6 +2,9 @@ export {
   default as SourceConnectionCatalog,
   type AvailableSource,
   type ConnectedSource,
+  type SourceConnectionAccount,
+  type SourceConnectionDetails,
+  type SourceConnectionField,
   type SourceBrandTone,
 } from "./SourceConnectionCatalog.svelte";
 export {

@@ -314,6 +314,8 @@
   let validationErrorNavigation = $state("");
   let sourceAction = $state("");
   let sourceYamlMode = $state(false);
+  let sourceExpandedId = $state<string | undefined>();
+  let sourceFieldValues = $state<Record<string, string>>({});
   let sourceAccountAction = $state("");
   let ruleActive = $state(true);
   let ruleAction = $state("");
@@ -330,6 +332,21 @@
   );
   const visibleReviewGroups = $derived(
     recordsFilter === "review" ? reviewGroups : readyReviewGroups,
+  );
+  const sourceConnectionModels = $derived(
+    connectedSources.map((source) => ({
+      ...source,
+      details: source.details
+        ? {
+            ...source.details,
+            fields: source.details.fields?.map((field) => ({
+              ...field,
+              value:
+                sourceFieldValues[`${source.id}:${field.id}`] ?? field.value,
+            })),
+          }
+        : undefined,
+    })),
   );
   const holdingsResultLabel = $derived(
     `Showing ${(holdingsPage - 1) * holdingsPageSize + 1}–${Math.min(
@@ -393,7 +410,10 @@
           }}
         />
       {/snippet}
-      <ContentScrollArea contentClass="bc-screen-story__editor-content">
+      <ContentScrollArea
+        ariaLabel="Ledger source content"
+        contentClass="bc-screen-story__editor-content"
+      >
         <LedgerEditorSurface
           lines={editorPreviewLines}
           headersCollapsedAll={editorHeadersCollapsedAll}
@@ -1384,6 +1404,16 @@
       canvas.getByRole("switch", { name: "Use YAML source configuration" }),
     );
     await expect(canvas.getByRole("status")).toHaveTextContent("YAML enabled");
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Open Lunch Flow" }),
+    );
+    await expect(
+      canvas.getByRole("region", { name: "Lunch Flow connection details" }),
+    ).toBeVisible();
+    await userEvent.type(canvas.getByLabelText("API key"), "secret-token");
+    await expect(canvas.getByRole("status")).toHaveTextContent(
+      "Update API key",
+    );
   }}
 >
   {#snippet template()}
@@ -1410,10 +1440,24 @@
       <ContentScrollArea>
         <div class="bc-screen-story__page bc-screen-story__sources">
           <SourceConnectionCatalog
-            {connectedSources}
+            connectedSources={sourceConnectionModels}
             {availableSources}
+            expandedSourceId={sourceExpandedId}
             onOpenConnection={(source) => {
               sourceAction = `Open ${source.name}`;
+            }}
+            onExpandedSourceChange={(source) => {
+              sourceExpandedId = source?.id;
+            }}
+            onConnectionFieldChange={(source, field, value) => {
+              sourceFieldValues = {
+                ...sourceFieldValues,
+                [`${source.id}:${field.id}`]: value,
+              };
+              sourceAction = `Update ${field.label}`;
+            }}
+            onUpdateConnection={(source) => {
+              sourceAction = `Update ${source.name}`;
             }}
             onConnect={(source) => {
               sourceAction = `Connect ${source.name}`;
