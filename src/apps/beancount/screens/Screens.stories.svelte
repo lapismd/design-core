@@ -1722,8 +1722,7 @@
   }
 
   .bc-screen-story__rules {
-    max-width: 96rem;
-    margin-inline: auto;
+    padding: var(--ui-beancount-space-6);
   }
 
   .bc-screen-story__status {

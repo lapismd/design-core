@@ -180,7 +180,7 @@
                   {...props}
                   class="bc-rule-list__more"
                   variant="ghost"
-                  size="icon"
+                  size="icon-sm"
                   aria-label={`More actions for ${rule.name}`}
                 >
                   <MoreHorizontal aria-hidden="true" />
@@ -291,8 +291,8 @@
 <style>
   .bc-rule-list {
     display: grid;
-    gap: var(--ui-beancount-space-7);
-    width: min(100%, 96rem);
+    gap: var(--ui-beancount-space-6);
+    width: min(100%, 56rem);
     margin-inline: auto;
   }
 
@@ -300,25 +300,21 @@
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
-    gap: var(--ui-beancount-space-4);
-    min-height: calc(var(--ui-beancount-space-8) * 1.75);
-    padding: var(--ui-beancount-space-4) var(--ui-beancount-space-5);
-    border-radius: var(--ui-beancount-radius-lg);
-    background: color-mix(
-      in srgb,
-      var(--ui-beancount-review) 9%,
-      var(--ui-beancount-surface)
-    );
+    gap: var(--ui-beancount-space-3);
+    padding: var(--ui-beancount-space-4);
+    border-radius: var(--ui-beancount-radius-panel);
+    background: var(--ui-beancount-surface-muted);
     color: var(--ui-beancount-muted-foreground);
   }
 
   .bc-rule-list__sort-button {
     display: inline-flex;
     align-items: center;
-    gap: var(--ui-beancount-space-2);
+    gap: calc(var(--ui-beancount-space-1) * 1.5);
     border-radius: var(--ui-beancount-radius-sm);
     color: inherit;
-    font-size: var(--text-lg);
+    font-size: var(--text-xs);
+    line-height: var(--text-xs--line-height);
     font-weight: var(--font-weight-semibold);
   }
 
@@ -336,8 +332,8 @@
   }
 
   :global(.bc-rule-list__sort-button svg) {
-    width: var(--ui-beancount-space-5);
-    height: var(--ui-beancount-space-5);
+    width: calc(var(--ui-beancount-space-1) * 3.5);
+    height: calc(var(--ui-beancount-space-1) * 3.5);
   }
 
   :global(.bc-rule-list__rules-card) {
@@ -351,7 +347,7 @@
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto auto;
     align-items: center;
-    gap: var(--ui-beancount-space-4);
+    gap: var(--ui-beancount-space-3);
     border-bottom: 1px solid var(--ui-beancount-border);
     background: var(--ui-beancount-surface);
   }
@@ -364,9 +360,9 @@
     display: grid;
     width: 100%;
     min-width: 0;
-    gap: var(--ui-beancount-space-3);
-    padding: var(--ui-beancount-space-4) 0 var(--ui-beancount-space-4)
-      var(--ui-beancount-space-5);
+    gap: calc(var(--ui-beancount-space-1) * 1.5);
+    padding: var(--ui-beancount-space-3) 0 var(--ui-beancount-space-3)
+      var(--ui-beancount-space-4);
     color: var(--ui-beancount-foreground);
     text-align: left;
   }
@@ -383,7 +379,8 @@
   .bc-rule-list__rule-name {
     overflow: hidden;
     color: var(--ui-beancount-foreground);
-    font-size: var(--text-lg);
+    font-size: var(--text-sm);
+    line-height: var(--text-sm--line-height);
     font-weight: var(--font-weight-semibold);
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -396,16 +393,17 @@
   }
 
   :global(.bc-rule-list__more) {
-    margin-inline-end: var(--ui-beancount-space-3);
+    margin-inline-end: var(--ui-beancount-space-4);
     color: var(--ui-beancount-foreground);
   }
 
   :global(.bc-rule-list__clause) {
-    min-height: calc(var(--ui-beancount-space-7) * 0.9);
+    min-height: calc(var(--ui-beancount-space-6) - var(--ui-beancount-space-1));
     max-width: 100%;
-    padding-inline: var(--ui-beancount-space-3);
+    padding-inline: var(--ui-beancount-space-2);
     color: var(--ui-beancount-muted-foreground);
-    font-size: var(--text-base);
+    font-size: var(--text-xs);
+    line-height: var(--text-xs--line-height);
     font-weight: var(--font-weight-normal);
   }
 
