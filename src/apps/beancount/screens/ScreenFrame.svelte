@@ -12,11 +12,20 @@
    */
   let {
     pageTitle,
+    sidebarLedgerItems,
+    sidebarLedgerCount,
+    showLedgerTools = true,
     headerLeading,
     headerActions,
     children,
   }: {
     pageTitle: string;
+    /** Optional reference-specific ledger fixture for the sidebar. */
+    sidebarLedgerItems?: readonly WorkspaceTreeNavigationItem[];
+    /** Optional display count paired with a reference-specific sidebar fixture. */
+    sidebarLedgerCount?: number;
+    /** Hides app-owned ledger tools for reference routes without a loaded ledger. */
+    showLedgerTools?: boolean;
     /** Optional controlled route controls rendered beside the page title. */
     headerLeading?: Snippet;
     /** Optional controlled route actions rendered in the shared shell header. */
@@ -97,22 +106,26 @@
     {#snippet sidebarTabContent(tabId)}
       {#if tabId === "workspace"}
         <LedgerWorkspaceNavigation
-          {ledgerItems}
-          ledgerCount={5}
+          ledgerItems={sidebarLedgerItems ?? ledgerItems}
+          ledgerCount={sidebarLedgerCount ?? 5}
           {activeLedgerId}
           ledgerExpandedIds={["account-ledger"]}
-          queryPicker={{
-            label: "Query",
-            value: "",
-            placeholder: "Select query",
-            options: [{ value: "", label: "Select query" }],
-          }}
-          accountPicker={{
-            label: "Account",
-            value: "",
-            placeholder: "Select account",
-            options: [{ value: "", label: "Select account" }],
-          }}
+          queryPicker={showLedgerTools
+            ? {
+                label: "Query",
+                value: "",
+                placeholder: "Select query",
+                options: [{ value: "", label: "Select query" }],
+              }
+            : undefined}
+          accountPicker={showLedgerTools
+            ? {
+                label: "Account",
+                value: "",
+                placeholder: "Select account",
+                options: [{ value: "", label: "Select account" }],
+              }
+            : undefined}
           onLedgerSelect={() => {}}
           onLedgerExpandedIdsChange={() => {}}
           onViewChange={() => {}}

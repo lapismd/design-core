@@ -1165,10 +1165,19 @@
     const queryInput = canvas.getByRole("textbox", { name: "BQL query" });
     await expect(queryInput).toBeVisible();
     await expect(queryInput).toHaveValue("");
+    await expect(canvas.getByText("No ledger files found.")).toBeVisible();
+    await expect(
+      canvas.queryByRole("button", { name: "Select query" }),
+    ).not.toBeInTheDocument();
   }}
 >
   {#snippet template()}
-    <ScreenFrame pageTitle="Query">
+    <ScreenFrame
+      pageTitle="Query"
+      sidebarLedgerItems={[]}
+      sidebarLedgerCount={0}
+      showLedgerTools={false}
+    >
       <QueryWorkspace />
     </ScreenFrame>
   {/snippet}
