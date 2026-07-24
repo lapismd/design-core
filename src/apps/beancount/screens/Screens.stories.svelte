@@ -16,7 +16,6 @@
   import LineChart from "../charts/LineChart.svelte";
   import FinancialDashboard from "../dashboard/FinancialDashboard.svelte";
   import LedgerActivityTable from "../tables/LedgerActivityTable.svelte";
-  import QueryResultsTable from "../tables/QueryResultsTable.svelte";
   import StatementSummaryTreeTable from "../tables/StatementSummaryTreeTable.svelte";
   import IngestionReviewTable from "../tables/IngestionReviewTable.svelte";
   import IngestionReviewToolbar from "../tables/IngestionReviewToolbar.svelte";
@@ -45,8 +44,6 @@
     incomeStatementNodes,
     journalGroups,
     journalUpcomingGroups,
-    queryResultColumns,
-    queryResultRows,
     readyReviewGroups,
     reviewGroups,
     reviewSourceOptions,
@@ -78,14 +75,6 @@
       layout: "fullscreen",
     },
   });
-
-  function formatQuerySource(value: string) {
-    return value
-      .trim()
-      .replace(/\s+/g, " ")
-      .replace(/^select\s+/i, "SELECT ")
-      .replace(/\s+from\s+/i, " FROM ");
-  }
 </script>
 
 <script lang="ts">
@@ -291,9 +280,6 @@
   const formatDashboardAmount = (value: number) => `${value.toFixed(2)} GBP`;
   let journalTimeframe = $state("transactions");
   let journalRecordAction = $state("");
-  let queryText = $state("");
-  let queryExecuted = $state(false);
-  let queryAction = $state("");
   let editorHeadersCollapsedAll = $state(false);
   let editorAction = $state("");
   let dashboardAction = $state("");
@@ -1112,36 +1098,14 @@
   play={async ({ canvas }) => {
     const queryInput = canvas.getByRole("textbox", { name: "BQL query" });
     await expect(queryInput).toBeVisible();
-    await userEvent.type(queryInput, "select account from open");
-    await userEvent.click(canvas.getByRole("button", { name: "Format query" }));
-    await expect(queryInput).toHaveValue("SELECT account FROM open");
-    await userEvent.click(canvas.getByRole("button", { name: "Execute" }));
-    await expect(canvas.getByText("Groceries")).toBeVisible();
+    await expect(queryInput).toHaveValue("");
   }}
 >
   {#snippet template()}
     <ScreenFrame pageTitle="Query">
       <ContentScrollArea>
         <div class="bc-screen-story__page">
-          <QueryComposer
-            bind:value={queryText}
-            onExecute={(value) => {
-              queryExecuted = Boolean(value.trim());
-              queryAction = `Executed ${value}`;
-            }}
-            onFormat={(value) => {
-              queryText = formatQuerySource(value);
-            }}
-          />
-          {#if queryExecuted}
-            <QueryResultsTable
-              columns={queryResultColumns}
-              rows={queryResultRows}
-            />
-          {/if}
-          <output class="bc-screen-story__status" aria-live="polite"
-            >{queryAction}</output
-          >
+          <QueryComposer />
         </div>
       </ContentScrollArea>
     </ScreenFrame>
