@@ -424,6 +424,7 @@ Preview overlay edits HMR via Vite; manager/panel need a full process restart
 # Catalog
 pnpm storybook              # UI + Docs MCP/llms on :9009; restarts on Visual Delta src edits
 pnpm storybook:ui           # same server entry (UI-focused workflow)
+pnpm storybook:stop         # kill Storybook listeners (:9009 + extras)
 pnpm storybook:restart      # kill + restart Storybook on :9009
 pnpm build-storybook        # static build → storybook-static/
 pnpm storybook:check        # story tests + build + visual compare
