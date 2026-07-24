@@ -1,6 +1,6 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, userEvent } from "storybook/test";
+  import { expect, userEvent, within } from "storybook/test";
   import SourceAccountGroups from "./SourceAccountGroups.svelte";
 
   const source = {
@@ -18,6 +18,12 @@
     description: "Ledger accounts not assigned to a sync configuration",
     count: 45,
   };
+
+  const sourceActions = [
+    { id: "update-logo", label: "Update logo" },
+    { id: "sync", label: "Sync" },
+    { id: "remove", label: "Remove connection", destructive: true },
+  ];
 
   const { Story } = defineMeta({
     title: "Apps/Beancount/Sources/Source Account Groups",
@@ -52,6 +58,15 @@
     await expect(canvas.getByRole("status")).toHaveTextContent(
       "Opened Other Accounts",
     );
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Lunch Flow actions" }),
+    );
+    await userEvent.click(
+      within(document.body).getByRole("menuitem", { name: "Sync" }),
+    );
+    await expect(canvas.getByRole("status")).toHaveTextContent(
+      "Sync Lunch Flow",
+    );
   }}
 >
   {#snippet template()}
@@ -59,11 +74,15 @@
       <SourceAccountGroups
         {source}
         {otherAccounts}
+        {sourceActions}
         onOpenSource={(item) => {
           opened = `Opened ${item.name}`;
         }}
         onOpenOtherAccounts={(item) => {
           opened = `Opened ${item.label}`;
+        }}
+        onSourceAction={(item, action) => {
+          opened = `${action.label} ${item.name}`;
         }}
       />
       <output class="bc-source-account-groups-story__status" aria-live="polite"

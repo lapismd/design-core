@@ -950,6 +950,12 @@ export const sourceAccountSource = {
   tone: "negative" as const,
 };
 
+export const sourceAccountActions = [
+  { id: "update-logo", label: "Update logo" },
+  { id: "sync", label: "Sync" },
+  { id: "remove", label: "Remove connection", destructive: true },
+];
+
 export const testRule = {
   id: "test-rule",
   name: "Test Rule",

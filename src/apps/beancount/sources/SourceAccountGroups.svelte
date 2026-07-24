@@ -1,8 +1,10 @@
 <script lang="ts">
   import ChevronRight from "@lucide/svelte/icons/chevron-right";
   import Landmark from "@lucide/svelte/icons/landmark";
+  import MoreVertical from "@lucide/svelte/icons/more-vertical";
   import { Badge } from "@stevejuma/ui/shadcn/badge";
   import * as Card from "@stevejuma/ui/shadcn/card";
+  import * as DropdownMenu from "@stevejuma/ui/shadcn/dropdown-menu";
   import type { SourceBrandTone } from "./SourceConnectionCatalog.svelte";
 
   export type SourceAccountSource = {
@@ -21,48 +23,96 @@
     count: number;
   };
 
+  /** A host-owned action for the source connection row. */
+  export type SourceAccountAction = {
+    id: string;
+    label: string;
+    destructive?: boolean;
+    disabled?: boolean;
+  };
+
   let {
     source,
     otherAccounts,
+    sourceActions = [],
     ariaLabel = "Import accounts",
     onOpenSource = () => {},
     onOpenOtherAccounts = () => {},
+    onSourceAction = () => {},
   }: {
     source: SourceAccountSource;
     otherAccounts: UnassignedAccountGroup;
+    /** Available source-connection actions supplied by the host. */
+    sourceActions?: readonly SourceAccountAction[];
     ariaLabel?: string;
     /** Requests that the host open source-account setup. */
     onOpenSource?: (source: SourceAccountSource) => void;
     /** Requests that the host open ledger accounts without a sync source. */
     onOpenOtherAccounts?: (group: UnassignedAccountGroup) => void;
+    /** Requests a host-owned source-connection action. */
+    onSourceAction?: (
+      source: SourceAccountSource,
+      action: SourceAccountAction,
+    ) => void;
   } = $props();
 </script>
 
 <section class="bc-source-account-groups" aria-label={ariaLabel}>
   <Card.Root class="bc-source-account-groups__card">
-    <button
-      type="button"
-      class="bc-source-account-groups__source-action"
-      aria-label={`Open ${source.name} accounts`}
-      onclick={() => onOpenSource(source)}
-    >
-      <ChevronRight
-        class="bc-source-account-groups__chevron"
-        aria-hidden="true"
-      />
-      <span
-        class="bc-source-account-groups__brand"
-        data-tone={source.tone ?? "primary"}
-        aria-hidden="true"
+    <div class="bc-source-account-groups__source-row">
+      <button
+        type="button"
+        class="bc-source-account-groups__source-action"
+        aria-label={`Open ${source.name} accounts`}
+        onclick={() => onOpenSource(source)}
       >
-        {source.initials}
-      </span>
-      <span class="bc-source-account-groups__source-copy">
-        <span class="bc-source-account-groups__name">{source.name}</span>
-        <span>{source.credentialLabel}</span>
-        <span>{source.syncLabel}</span>
-      </span>
-    </button>
+        <ChevronRight
+          class="bc-source-account-groups__chevron"
+          aria-hidden="true"
+        />
+        <span
+          class="bc-source-account-groups__brand"
+          data-tone={source.tone ?? "primary"}
+          aria-hidden="true"
+        >
+          {source.initials}
+        </span>
+        <span class="bc-source-account-groups__source-copy">
+          <span class="bc-source-account-groups__name">{source.name}</span>
+          <span>{source.credentialLabel}</span>
+          <span>{source.syncLabel}</span>
+        </span>
+      </button>
+      {#if sourceActions.length}
+        <DropdownMenu.Root>
+          <DropdownMenu.Trigger>
+            {#snippet child({ props })}
+              <button
+                {...props}
+                type="button"
+                class="bc-source-account-groups__source-menu-trigger"
+                aria-label={`${source.name} actions`}
+              >
+                <MoreVertical aria-hidden="true" />
+              </button>
+            {/snippet}
+          </DropdownMenu.Trigger>
+          <DropdownMenu.Content align="end">
+            <DropdownMenu.Group>
+              {#each sourceActions as action (action.id)}
+                <DropdownMenu.Item
+                  disabled={action.disabled}
+                  variant={action.destructive ? "destructive" : "default"}
+                  onSelect={() => onSourceAction(source, action)}
+                >
+                  {action.label}
+                </DropdownMenu.Item>
+              {/each}
+            </DropdownMenu.Group>
+          </DropdownMenu.Content>
+        </DropdownMenu.Root>
+      {/if}
+    </div>
   </Card.Root>
 
   <Card.Root class="bc-source-account-groups__card">
@@ -114,6 +164,43 @@
 
   .bc-source-account-groups__source-action {
     grid-template-columns: auto auto minmax(0, 1fr);
+  }
+
+  .bc-source-account-groups__source-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+  }
+
+  .bc-source-account-groups__source-row
+    .bc-source-account-groups__source-action {
+    width: 100%;
+  }
+
+  .bc-source-account-groups__source-menu-trigger {
+    display: inline-flex;
+    width: calc(var(--ui-beancount-space-5) * 2);
+    height: calc(var(--ui-beancount-space-5) * 2);
+    align-items: center;
+    justify-content: center;
+    margin-inline-end: var(--ui-beancount-space-3);
+    border-radius: var(--ui-beancount-radius-sm);
+    color: var(--ui-beancount-muted-foreground);
+  }
+
+  .bc-source-account-groups__source-menu-trigger:hover {
+    background: var(--ui-beancount-surface-muted);
+    color: var(--ui-beancount-foreground);
+  }
+
+  .bc-source-account-groups__source-menu-trigger:focus-visible {
+    outline: 2px solid var(--ui-beancount-focus-ring);
+    outline-offset: 2px;
+  }
+
+  :global(.bc-source-account-groups__source-menu-trigger svg) {
+    width: var(--ui-beancount-space-5);
+    height: var(--ui-beancount-space-5);
   }
 
   .bc-source-account-groups__other-action {

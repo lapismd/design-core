@@ -22,6 +22,7 @@
   import RuleList from "../rules/RuleList.svelte";
   import SourceAccountGroups from "../sources/SourceAccountGroups.svelte";
   import SourceConnectionCatalog from "../sources/SourceConnectionCatalog.svelte";
+  import ImportAccountsToolbar from "../sources/ImportAccountsToolbar.svelte";
   import SourceToolbar from "../sources/SourceToolbar.svelte";
   import QueryComposer from "./QueryComposer.svelte";
   import {
@@ -46,6 +47,7 @@
     statisticsColumns,
     statisticsRows,
     sourceAccountSource,
+    sourceAccountActions,
     testRule,
     testRuleActions,
     trialBalanceContributions,
@@ -1238,20 +1240,44 @@
     await expect(canvas.getByRole("status")).toHaveTextContent(
       "Open Other Accounts",
     );
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Sync all connections" }),
+    );
+    await expect(canvas.getByRole("status")).toHaveTextContent("Sync all");
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Lunch Flow actions" }),
+    );
+    await userEvent.click(
+      within(document.body).getByRole("menuitem", { name: "Sync" }),
+    );
+    await expect(canvas.getByRole("status")).toHaveTextContent(
+      "Sync Lunch Flow",
+    );
   }}
 >
   {#snippet template()}
     <ScreenFrame pageTitle="Accounts">
+      {#snippet headerActions()}
+        <ImportAccountsToolbar
+          onSyncAll={() => {
+            sourceAccountAction = "Sync all";
+          }}
+        />
+      {/snippet}
       <ContentScrollArea>
         <div class="bc-screen-story__page bc-screen-story__source-accounts">
           <SourceAccountGroups
             source={sourceAccountSource}
             otherAccounts={unassignedAccountGroup}
+            sourceActions={sourceAccountActions}
             onOpenSource={(source) => {
               sourceAccountAction = `Open ${source.name}`;
             }}
             onOpenOtherAccounts={(group) => {
               sourceAccountAction = `Open ${group.label}`;
+            }}
+            onSourceAction={(source, action) => {
+              sourceAccountAction = `${action.label} ${source.name}`;
             }}
           />
           <output class="bc-screen-story__status" aria-live="polite">
