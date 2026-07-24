@@ -3,6 +3,8 @@
   import FileText from "@lucide/svelte/icons/file-text";
   import FolderOpen from "@lucide/svelte/icons/folder-open";
   import Landmark from "@lucide/svelte/icons/landmark";
+  import Sun from "@lucide/svelte/icons/sun";
+  import { Button } from "@stevejuma/ui/shadcn/button";
   import StudioWorkspaceShell from "../layout/StudioWorkspaceShell.svelte";
   import LedgerWorkspaceNavigation from "../navigation/LedgerWorkspaceNavigation.svelte";
   import type { WorkspaceTreeNavigationItem } from "../navigation/WorkspaceTreeNavigation.svelte";
@@ -18,6 +20,8 @@
     headerLeading,
     titleTrailing,
     headerActions,
+    showThemeToggle = true,
+    onThemeToggle = () => {},
     sidebarContent,
     children,
   }: {
@@ -34,6 +38,10 @@
     titleTrailing?: Snippet;
     /** Optional controlled route actions rendered in the shared shell header. */
     headerActions?: Snippet;
+    /** Whether this screen renders the host-owned Fava theme control. */
+    showThemeToggle?: boolean;
+    /** Requests that the host toggles its colour mode. */
+    onThemeToggle?: () => void;
     /** Optional route-specific sidebar body, such as ledger settings navigation. */
     sidebarContent?: Snippet;
     children?: Snippet;
@@ -92,6 +100,23 @@
   });
 </script>
 
+{#snippet screenHeaderActions()}
+  {@render headerActions?.()}
+  {#if showThemeToggle}
+    <Button
+      type="button"
+      variant="ghost"
+      size="icon-sm"
+      class="bc-screen-frame__theme-toggle"
+      aria-label="Toggle theme"
+      title="Toggle theme"
+      onclick={onThemeToggle}
+    >
+      <Sun class="bc-screen-frame__theme-icon" aria-hidden="true" />
+    </Button>
+  {/if}
+{/snippet}
+
 <div
   class="bc-screen-frame"
   style="width: 1280px; height: 900px;"
@@ -108,7 +133,7 @@
     projectTabId="projects"
     {titleTrailing}
     {headerLeading}
-    {headerActions}
+    headerActions={screenHeaderActions}
   >
     {#snippet sidebarTabContent(tabId)}
       {#if tabId === "workspace"}
@@ -156,5 +181,14 @@
     height: 900px;
     overflow: hidden;
     background: var(--ui-beancount-surface);
+  }
+
+  :global(.bc-screen-frame__theme-toggle) {
+    flex: none;
+  }
+
+  :global(.bc-screen-frame__theme-icon) {
+    width: var(--ui-beancount-space-5);
+    height: var(--ui-beancount-space-5);
   }
 </style>

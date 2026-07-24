@@ -43,6 +43,9 @@ Studio revision, fixture digest, viewport, and per-image digest.
 | Screen story health       | ✅     | The shared Studio shell now exposes Fava's controlled 220–520px resize rail and 48px collapsed project rail; Holdings and Statistics share `PresetQueryReport`; Dashboard uses one top-level main landmark; and Settings routes can replace the ledger-tree fixture with the controlled `LedgerSettingsNavigation`. The Fava screen stories remove only Storybook's normal preview inset and the candidate frame has no extra outer border, so its fixed 1280×900 content begins at the same viewport origin as the reference. All 15 Fava-reference stories restore their initial controlled state, page scroll position, and focus before end-of-play visual capture. |
 | Component regression PNGs | 🟡     | The 2026-07-24 compare-only full run reached real screenshots (136 passed); 208 catalog stories failed because their committed PNG is absent, including the 94 Beancount candidates. This is baseline coverage, not an approved pixel delta. Establish reviewed family batches before using this lane as a parity gate.                                                                                                                                                                                                                                                                                                                                                 |
 
+The shared `ScreenFrame` includes Fava's trailing sun control as a host-owned
+theme-toggle request; it does not introduce application theme state.
+
 ## Screen tracker
 
 Legend: `⬜` not started, `🟡` composing/reviewing, `✅` near-pixel approved.
