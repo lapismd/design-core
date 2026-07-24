@@ -35,6 +35,11 @@
     { id: "account-ledger-top", label: "Account Ledger", icon: FileText },
     { id: "off-by-one", label: "off-by-one", icon: FileText },
     {
+      id: "example-with-budgets",
+      label: "Example with budgets",
+      icon: FileText,
+    },
+    {
       id: "account-ledger",
       label: "Account Ledger",
       icon: FileText,

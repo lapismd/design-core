@@ -392,6 +392,9 @@
   play={async ({ canvas }) => {
     await expect(canvas.getByText("Options")).toBeVisible();
     await expect(canvas.getByText('"Account Ledger"')).toBeVisible();
+    await expect(
+      canvas.getByRole("button", { name: "Example with budgets" }),
+    ).toBeVisible();
     await userEvent.click(
       canvas.getByRole("button", { name: "Collapse all headings" }),
     );
