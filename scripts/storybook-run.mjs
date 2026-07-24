@@ -18,7 +18,13 @@ import path from "node:path";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const port = process.env.STORYBOOK_PORT ?? "9009";
-const extraPorts = (process.env.STORYBOOK_EXTRA_PORTS ?? "9010 9999")
+const storybookPortNum = Number(port);
+const visualPort =
+  process.env.VISUAL_SERVER_PORT ??
+  process.env.VISUAL_DELTA_SERVER_PORT ??
+  (Number.isFinite(storybookPortNum) ? String(storybookPortNum + 1) : "9010");
+// Visual static (Storybook+1) plus a spare debug Storybook port.
+const extraPorts = (process.env.STORYBOOK_EXTRA_PORTS ?? `${visualPort} 9999`)
   .trim()
   .split(/\s+/)
   .filter(Boolean);
@@ -170,6 +176,8 @@ async function startStorybook() {
         cwd: root,
         env: {
           ...process.env,
+          STORYBOOK_PORT: port,
+          VISUAL_SERVER_PORT: visualPort,
           WATCHPACK_POLLING: process.env.WATCHPACK_POLLING ?? "250",
         },
         stdio: "inherit",
@@ -250,6 +258,6 @@ for (const sig of ["SIGINT", "SIGTERM"]) {
 }
 
 console.log(
-  `[storybook-run] watching Visual Delta manager/panel + related .storybook files; UI at http://localhost:${port}`,
+  `[storybook-run] watching Visual Delta manager/panel + related .storybook files; UI at http://localhost:${port}; visual static :${visualPort}`,
 );
 void startStorybook();

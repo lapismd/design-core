@@ -4,8 +4,10 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 PORT="${STORYBOOK_PORT:-9009}"
-# Extra ports this repo has used for temporary/debug Storybook instances.
-EXTRA_PORTS="${STORYBOOK_EXTRA_PORTS:-9010 9999}"
+# Visual static defaults to Storybook port + 1 (same as resolveVisualServerPort).
+VISUAL_PORT="${VISUAL_SERVER_PORT:-${VISUAL_DELTA_SERVER_PORT:-$((PORT + 1))}}"
+# Extra ports: warm static server + a spare debug Storybook instance.
+EXTRA_PORTS="${STORYBOOK_EXTRA_PORTS:-$VISUAL_PORT 9999}"
 
 kill_port() {
   local port="$1"

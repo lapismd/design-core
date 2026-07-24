@@ -131,7 +131,7 @@ function usage(): string {
   return `Usage:
   pnpm ui guide [topic] [--json] [--color always|never|auto]
   pnpm ui components [name] [--layer <layer>] [--json] [--color always|never|auto]
-  pnpm ui mcp [--host 127.0.0.1] [--port 9010] [--no-cache]
+  pnpm ui mcp [--host 127.0.0.1] [--port 9011] [--no-cache]
   pnpm ui:doctor
   pnpm ui:inspect <component>
   pnpm ui:add <component> [--overwrite] [--dry-run] [--keep-worktree] [--skip-visual] [--skip-parity]
@@ -148,7 +148,7 @@ function usage(): string {
 Agent conventions: pnpm ui guide
 Component docs:    pnpm ui components
 Docs MCP / llms:   via Storybook → http://localhost:9009/docs-mcp and /llms.txt
-                   (fallback: pnpm ui mcp on :9010)
+                   (fallback: pnpm ui mcp on :9011)
 CLI help:          pnpm ui guide --help | pnpm ui components --help | pnpm ui visual:tag --help
 `;
 }
@@ -281,7 +281,7 @@ async function main() {
           ? Number(flags.get("port"))
           : process.env.UI_DOCS_PORT
             ? Number(process.env.UI_DOCS_PORT)
-            : 9010;
+            : 9011;
       const baseUrl =
         typeof flags.get("base-url") === "string"
           ? String(flags.get("base-url"))

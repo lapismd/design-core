@@ -28,8 +28,8 @@ const config: StorybookConfig = {
       options: {
         visualDelta: {
           // Catalog layout + generator CLIs (package defaults are story-id + visual-delta bin).
+          // visualServerPort defaults to Storybook port + 1 (see resolveVisualServerPort).
           baselinePathMode: "nested-import",
-          visualServerPort: 6007,
           visualTestArgs: ["exec", "playwright", "test"],
           visualUpdateArgs: [
             "exec",

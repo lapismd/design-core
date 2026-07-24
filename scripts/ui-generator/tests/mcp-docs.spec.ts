@@ -101,7 +101,7 @@ describe("docs cache", () => {
 describe("llms docs service", () => {
   const service = createDocsService({
     packageRoot,
-    baseUrl: "http://127.0.0.1:9010",
+    baseUrl: "http://127.0.0.1:9011",
     noCache: true,
   });
 
@@ -110,14 +110,14 @@ describe("llms docs service", () => {
     expect(index).toContain("# @stevejuma/ui");
     expect(index).toContain("## shadcn");
     expect(index).toContain(
-      "[Button](http://127.0.0.1:9010/llms/shadcn/button.md)",
+      "[Button](http://127.0.0.1:9011/llms/shadcn/button.md)",
     );
     expect(index).toContain(
-      "([txt](http://127.0.0.1:9010/llms/shadcn/button.txt))",
+      "([txt](http://127.0.0.1:9011/llms/shadcn/button.txt))",
     );
     expect(index).toContain("## forms");
     expect(index).toContain(
-      "[FormField](http://127.0.0.1:9010/llms/forms/form-field.md)",
+      "[FormField](http://127.0.0.1:9011/llms/forms/form-field.md)",
     );
     expect(index).toContain("## guide");
     expect(index).toMatch(/llms\/guide\/layers\.md/);
@@ -158,7 +158,7 @@ describe("llms docs service", () => {
     expect(indexMd.contentType).toBe("text/html; charset=utf-8");
     expect(indexMd.body).toContain("<h1>@stevejuma/ui</h1>");
     expect(indexMd.body).toContain(
-      'href="http://127.0.0.1:9010/llms/shadcn/button.md"',
+      'href="http://127.0.0.1:9011/llms/shadcn/button.md"',
     );
   });
 

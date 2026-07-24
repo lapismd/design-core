@@ -31,7 +31,7 @@ interactive story work and live docs; keep the CLI for offline / scripted use.
 | ------------------------------------------ | ----------------------------------------- |
 | `pnpm ui guide [topic]`                    | Agent conventions from `docs/agent/`      |
 | `pnpm ui components [name] [--layer …]`    | Catalog list / show (all layers)          |
-| `pnpm ui mcp [--port 9010] [--no-cache]`   | Standalone Docs MCP + llms (no Storybook) |
+| `pnpm ui mcp [--port 9011] [--no-cache]`   | Standalone Docs MCP + llms (no Storybook) |
 | `pnpm ui:add` / `ui:inspect` / `ui:doctor` | Generator pipeline (see README)           |
 
 ## Docs MCP and llms.txt
@@ -53,7 +53,7 @@ Cursor (`.cursor/mcp.json`):
 - `stevejuma-ui-docs` → `http://localhost:9009/docs-mcp`
 
 Optional standalone fallback when Storybook is down: `pnpm ui mcp` (alias
-`pnpm ui:mcp`) on `:9010` with the same Docs MCP + llms routes. Offline CLI:
+`pnpm ui:mcp`) on `:9011` with the same Docs MCP + llms routes. Offline CLI:
 `pnpm ui guide` / `pnpm ui components`. Cache under `.cache/ui-docs/`
 (content-hash invalidation); bypass with `UI_DOCS_CACHE=0` or
 `pnpm ui mcp --no-cache`.

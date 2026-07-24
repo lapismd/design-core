@@ -9,6 +9,11 @@ import { fileURLToPath } from "node:url";
  *
  * Same pattern as Storybook's addon-kit `local-preset`, but pointing at
  * `src/` instead of a built `dist/`.
+ *
+ * Manager/preview must be listed here: registering this file path (not the
+ * package name) skips Storybook 10's auto-load of `./manager` + `./preview`.
+ * The packaged preset intentionally omits those hooks so bare
+ * `addons: ["storybook-addon-visual-delta"]` does not double-register them.
  */
 const addonSrc = (entry: string) =>
   fileURLToPath(

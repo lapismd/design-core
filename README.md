@@ -81,7 +81,7 @@ polling and (for Visual Delta) manager restarts.
 | [`.storybook/manager.ts`](./.storybook/manager.ts)                                       | Tag-badge config, color-mode toolbar tool, stacked sidebar labels          |
 | [`.storybook/manager-stacked-badges.ts`](./.storybook/manager-stacked-badges.ts)         | Sidebar tag chips pinned clear of Storybook status glyphs                  |
 | [`.storybook/manager-color-mode-toggle.tsx`](./.storybook/manager-color-mode-toggle.tsx) | Sun/moon light/dark tool (`colorMode` global)                              |
-| [`.storybook/visual-delta-preset.ts`](./.storybook/visual-delta-preset.ts)               | Loads Visual Delta from package `src/` (manager + preview + `viteFinal`)   |
+| [`.storybook/visual-delta-preset.ts`](./.storybook/visual-delta-preset.ts)               | Local preset: absolute manager/preview + package `staticDirs`/`viteFinal`  |
 | [`.storybook/ui-docs-middleware.ts`](./.storybook/ui-docs-middleware.ts)                 | Host Vite plugin: Docs MCP + `llms.txt` on the Storybook server            |
 | [`.storybook/vitest.setup.ts`](./.storybook/vitest.setup.ts)                             | Storybook Vitest project annotations                                       |
 | [`.storybook/focus-prototype-guard.ts`](./.storybook/focus-prototype-guard.ts)           | Local patch for Storybook 10.5 Docs `Illegal invocation` (see below)       |
@@ -236,7 +236,7 @@ Full options table: addon README. Host overrides used here:
 | ----------------------------- | ------------------------------------------------------------------------------------ |
 | `baselinePathMode`            | `nested-import`                                                                      |
 | `snapshotDir`                 | `tests/visual/storybook.spec.ts-snapshots` (addon default)                           |
-| `visualServerPort`            | `6007` (warm static server for Playwright)                                           |
+| `visualServerPort`            | Storybook port + 1 (warm static; `:9010` when UI is on `:9009`)                       |
 | `visualTestArgs`              | `pnpm exec playwright test`                                                          |
 | `visualUpdateArgs`            | `… cli.ts visual-update --allow-dirty --approved --skip-build`                       |
 | `visualInteractionUpdateArgs` | `… visual-interaction-update --allow-dirty --approved --skip-build`                  |
@@ -383,11 +383,12 @@ middleware `visual-interaction-update` CLI (or invoke the CLI directly).
 - v1 capture: light mode only, Chromium, **1280×900** CSS viewport,
   `deviceScaleFactor: 3`, `toHaveScreenshot` `scale: "device"`
 - Static Storybook served for Playwright via **complete** `storybook-static/`
-  (`index.json` **and** `iframe.html`) on warm port `:6007`. Incomplete static
-  builds hang every visual test on 404s — the build gate rebuilds when the
-  index is missing, iframe is missing, sources are stale, skip-visual was
-  removed, or `--rebuild` is passed. `--skip-build` still rebuilds when that
-  gate says the tree is unsafe to reuse
+  (`index.json` **and** `iframe.html`) on warm port **Storybook + 1** (default
+  `:9010` when `STORYBOOK_PORT=9009`; override with `VISUAL_SERVER_PORT`).
+  Incomplete static builds hang every visual test on 404s — the build gate
+  rebuilds when the index is missing, iframe is missing, sources are stale,
+  skip-visual was removed, or `--rebuild` is passed. `--skip-build` still
+  rebuilds when that gate says the tree is unsafe to reuse
 - Sidecar `.json` files next to PNGs feed Live Diff / Testing Module
 - Host policy: Apps/Beancount and Tasks catalog stories are `skip-visual`
   (Tasks shell/pages may still carry `tasks-reference-visual` for reference
@@ -411,6 +412,7 @@ middleware `visual-interaction-update` CLI (or invoke the CLI directly).
 | `PLAYWRIGHT_INTERACTION_CAPTURE`           | JSON `{ storyId, stepId, stepLabel? }` mid-play capture                  |
 | `WATCHPACK_POLLING=250`                    | Reliable story source detection under `pnpm storybook`                   |
 | `STORYBOOK_PORT` / `STORYBOOK_EXTRA_PORTS` | `storybook-run.mjs` ports                                                |
+| `VISUAL_SERVER_PORT`                       | Warm `storybook-static` port (default `STORYBOOK_PORT + 1`)              |
 
 CLI also refuses `--component *|all` and refuses overwriting Tasks Shell
 Superlist reference baselines.
@@ -483,7 +485,7 @@ pnpm ui:guide [topic]       # alias
 pnpm ui components [name]   # list/show catalog usage + examples
 pnpm ui:components [name]   # alias
 pnpm ui components --layer forms
-pnpm ui mcp                 # standalone Docs MCP + llms on :9010 (Storybook off)
+pnpm ui mcp                 # standalone Docs MCP + llms on :9011 (Storybook off)
 pnpm ui:mcp                 # alias
 pnpm ui visual:tag skip|include --component <name>   # bulk skip-visual
 pnpm ui visual:tag review --status ready --component <name>
@@ -535,7 +537,8 @@ Cursor project MCP ([`.cursor/mcp.json`](./.cursor/mcp.json)):
 - `stevejuma-ui-docs` → `http://localhost:9009/docs-mcp`
 
 When Storybook is down, `pnpm ui mcp` serves Docs MCP + llms on
-`http://127.0.0.1:9010`. Cache: `.cache/ui-docs/` (content-hash); bypass with
+`http://127.0.0.1:9011` (kept off visual static `:9010` when UI is on
+`:9009`). Cache: `.cache/ui-docs/` (content-hash); bypass with
 `UI_DOCS_CACHE=0` or `pnpm ui mcp --no-cache`.
 
 ---

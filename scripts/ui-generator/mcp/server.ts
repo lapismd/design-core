@@ -14,7 +14,7 @@ export type McpServerOptions = {
 
 function parseServerArgs(argv: string[]) {
   let host = "127.0.0.1";
-  let port = 9010;
+  let port = 9011;
   let noCache = false;
   let baseUrl: string | undefined;
   for (let i = 0; i < argv.length; i++) {
@@ -44,7 +44,7 @@ function parseServerArgs(argv: string[]) {
 /** Standalone docs server (fallback when Storybook is not running). */
 export async function startDocsMcpServer(options: McpServerOptions) {
   const host = options.host ?? "127.0.0.1";
-  const port = options.port ?? 9010;
+  const port = options.port ?? 9011;
   const baseUrl = options.baseUrl ?? `http://${host}:${port}`;
   const handler = await createDocsHttpHandler({
     packageRoot: options.packageRoot,
