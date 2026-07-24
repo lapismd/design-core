@@ -350,7 +350,7 @@
 
 <style>
   .positive {
-    --bc-dashboard-series: var(--chart-2);
+    --bc-dashboard-series: var(--ui-beancount-dashboard-trend-positive);
   }
 
   .bc-dashboard-line {

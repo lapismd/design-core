@@ -27,7 +27,10 @@
     valueLabel: string;
     /** Use a direction only when the value itself communicates a trend. */
     trend?: "up" | "down";
+    /** Colour the financial value itself when it communicates a trend. */
     tone?: DashboardTrendTone;
+    /** Colour a period comparison without changing the financial value tone. */
+    changeTone?: DashboardTrendTone;
     changeLabel?: string;
     changeDescription?: string;
   };
@@ -252,10 +255,10 @@
           </p>
           {#if metric.changeLabel}
             <p
-              class:bc-financial-dashboard__positive={metric.tone ===
-                "positive"}
-              class:bc-financial-dashboard__negative={metric.tone ===
-                "negative"}
+              class:bc-financial-dashboard__positive={(metric.changeTone ??
+                metric.tone) === "positive"}
+              class:bc-financial-dashboard__negative={(metric.changeTone ??
+                metric.tone) === "negative"}
               class="bc-financial-dashboard__metric-change"
             >
               {metric.changeLabel}

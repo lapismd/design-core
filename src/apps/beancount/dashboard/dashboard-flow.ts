@@ -53,7 +53,7 @@ export function balanceDashboardFlow(
         ...targets,
         {
           id: dashboardFlowSurplusId,
-          color: "var(--chart-2)",
+          color: "var(--ui-beancount-dashboard-flow-positive)",
           label: "Surplus",
           value: cashFlow,
         },

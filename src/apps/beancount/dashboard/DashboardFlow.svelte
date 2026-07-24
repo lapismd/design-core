@@ -59,7 +59,7 @@
   );
   const cashFlowColor = $derived(
     flow.cashFlow > 0
-      ? "var(--chart-2)"
+      ? "var(--ui-beancount-dashboard-flow-positive)"
       : flow.cashFlow < 0
         ? "var(--ui-beancount-negative)"
         : "var(--ui-beancount-accent)",

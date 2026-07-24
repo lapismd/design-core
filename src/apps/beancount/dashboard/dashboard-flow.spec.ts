@@ -8,7 +8,12 @@ import {
 } from "./dashboard-flow";
 
 function category(label: string, value: number): DashboardFlowCategory {
-  return { id: `account-${label}`, color: "var(--chart-1)", label, value };
+  return {
+    id: `account-${label}`,
+    color: "var(--ui-beancount-dashboard-series-orange)",
+    label,
+    value,
+  };
 }
 
 describe("dashboard flow geometry", () => {

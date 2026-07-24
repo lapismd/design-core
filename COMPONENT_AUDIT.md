@@ -255,11 +255,13 @@ don't yet support these — cosmetic only, not blocking):
 **Dashboard (`dashboard/`)** — `Apps/Beancount/Dashboard/*`:
 
 - `FinancialDashboard` — the canonical financial-dashboard page composition:
-  period/currency/valuation controls, summary metrics, cash flow, outflows,
-  balance sheet, and net-worth sections
+  period/currency/valuation controls, summary metrics (including independent
+  value and comparison tones), cash flow, outflows, balance sheet, and
+  net-worth sections
 - `DashboardSection` — controlled disclosure card wrapping a dashboard insight
 - `DashboardFlow` (+ colocated `dashboard-flow.ts` balancing/layout helpers
   and spec) — cash-flow Sankey-style renderer with keyboard-explorable streams
+  and normalized Fava-reference category/positive-flow palette roles
 - `DashboardDonut` — model-driven category donut with centre feedback
 - `DashboardLine` — keyboard-explorable trend line/area with pointer and
   keyboard exploration

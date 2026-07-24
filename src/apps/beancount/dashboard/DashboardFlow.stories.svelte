@@ -21,13 +21,13 @@
       id: "income-salary",
       label: "Salary",
       value: 3400,
-      color: "var(--chart-2)",
+      color: "var(--ui-beancount-dashboard-series-indigo)",
     },
     {
       id: "income-refunds",
       label: "Refunds",
       value: 120,
-      color: "var(--chart-1)",
+      color: "var(--ui-beancount-dashboard-series-orange)",
     },
   ];
 
@@ -36,13 +36,13 @@
       id: "expenses-groceries",
       label: "Groceries",
       value: 420,
-      color: "var(--chart-5)",
+      color: "var(--ui-beancount-dashboard-series-cyan)",
     },
     {
       id: "expenses-rent",
       label: "Rent",
       value: 1300,
-      color: "var(--chart-4)",
+      color: "var(--ui-beancount-dashboard-series-green)",
     },
   ];
 </script>
@@ -77,7 +77,12 @@
           selectedCategory = `Selected: ${category.label}`;
         }}
       />
-      <p class="bc-dashboard-flow-story__status" data-testid="selected-category">{selectedCategory}</p>
+      <p
+        class="bc-dashboard-flow-story__status"
+        data-testid="selected-category"
+      >
+        {selectedCategory}
+      </p>
     </div>
   {/snippet}
 </Story>
@@ -98,6 +103,19 @@
 </Story>
 
 <style>
-  .bc-dashboard-flow-story { max-width:64rem; border:1px solid var(--ui-beancount-border); border-radius:var(--ui-beancount-radius-panel); background:var(--ui-beancount-surface); box-shadow:var(--ui-beancount-shadow-panel); }
-  .bc-dashboard-flow-story__status { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+  .bc-dashboard-flow-story {
+    max-width: 64rem;
+    border: 1px solid var(--ui-beancount-border);
+    border-radius: var(--ui-beancount-radius-panel);
+    background: var(--ui-beancount-surface);
+    box-shadow: var(--ui-beancount-shadow-panel);
+  }
+  .bc-dashboard-flow-story__status {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
 </style>

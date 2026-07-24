@@ -47,7 +47,7 @@
       valueLabel: "£14,120.00",
       changeLabel: "+£1,480.00",
       changeDescription: " this period",
-      tone: "positive" as const,
+      changeTone: "positive" as const,
     },
   ];
 
@@ -58,7 +58,7 @@
       value: 420,
       valueLabel: "£420.00",
       shareLabel: "20.6%",
-      color: "var(--chart-1)",
+      color: "var(--ui-beancount-dashboard-series-orange)",
     },
     {
       id: "housing",
@@ -66,7 +66,7 @@
       value: 1300,
       valueLabel: "£1,300.00",
       shareLabel: "63.7%",
-      color: "var(--chart-4)",
+      color: "var(--ui-beancount-dashboard-series-green)",
     },
     {
       id: "transport",
@@ -74,7 +74,7 @@
       value: 320,
       valueLabel: "£320.00",
       shareLabel: "15.7%",
-      color: "var(--chart-5)",
+      color: "var(--ui-beancount-dashboard-series-cyan)",
     },
   ];
 
@@ -94,13 +94,13 @@
               id: "assets-cash",
               label: "Cash",
               value: 2120,
-              color: "var(--chart-2)",
+              color: "var(--ui-beancount-dashboard-series-indigo)",
             },
             {
               id: "assets-investments",
               label: "Investments",
               value: 15000,
-              color: "var(--chart-1)",
+              color: "var(--ui-beancount-dashboard-series-orange)",
             },
           ],
         },
@@ -204,13 +204,13 @@
             id: "income-salary",
             label: "Salary",
             value: 3400,
-            color: "var(--chart-2)",
+            color: "var(--ui-beancount-dashboard-series-indigo)",
           },
           {
             id: "income-refunds",
             label: "Refunds",
             value: 120,
-            color: "var(--chart-1)",
+            color: "var(--ui-beancount-dashboard-series-orange)",
           },
         ]}
         {outflows}

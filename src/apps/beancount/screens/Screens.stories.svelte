@@ -94,7 +94,7 @@
       valueLabel: "1755.89 GBP",
       changeLabel: "16345.93 GBP",
       changeDescription: " in this period",
-      tone: "positive" as const,
+      changeTone: "positive" as const,
     },
   ];
 
@@ -103,7 +103,7 @@
       id: "salary",
       label: "Salary",
       value: 59224.98,
-      color: "var(--chart-4)",
+      color: "var(--ui-beancount-dashboard-series-indigo)",
     },
   ];
 
@@ -114,7 +114,7 @@
       value: 19500,
       valueLabel: "19500.00 GBP",
       shareLabel: "45.5%",
-      color: "var(--chart-3)",
+      color: "var(--ui-beancount-dashboard-series-indigo)",
     },
     {
       id: "paye",
@@ -122,7 +122,7 @@
       value: 18703.56,
       valueLabel: "18703.56 GBP",
       shareLabel: "43.6%",
-      color: "var(--chart-1)",
+      color: "var(--ui-beancount-dashboard-series-gold)",
     },
     {
       id: "nic",
@@ -130,7 +130,7 @@
       value: 2167.5,
       valueLabel: "2167.50 GBP",
       shareLabel: "5.1%",
-      color: "var(--chart-5)",
+      color: "var(--ui-beancount-dashboard-series-cyan)",
     },
     {
       id: "pension",
@@ -138,7 +138,7 @@
       value: 1100.76,
       valueLabel: "1100.76 GBP",
       shareLabel: "2.6%",
-      color: "var(--chart-2)",
+      color: "var(--ui-beancount-dashboard-series-indigo)",
     },
     {
       id: "phone",
@@ -146,7 +146,7 @@
       value: 508.62,
       valueLabel: "508.62 GBP",
       shareLabel: "1.2%",
-      color: "var(--chart-4)",
+      color: "var(--ui-beancount-dashboard-series-green)",
     },
     {
       id: "interest",
@@ -154,7 +154,7 @@
       value: 369.43,
       valueLabel: "369.43 GBP",
       shareLabel: "0.9%",
-      color: "var(--chart-2)",
+      color: "var(--ui-beancount-dashboard-series-indigo)",
     },
     {
       id: "insurance",
@@ -162,7 +162,7 @@
       value: 221.64,
       valueLabel: "221.64 GBP",
       shareLabel: "0.5%",
-      color: "var(--chart-1)",
+      color: "var(--ui-beancount-dashboard-series-violet)",
     },
     {
       id: "lifestyle",
@@ -170,7 +170,7 @@
       value: 90.93,
       valueLabel: "90.93 GBP",
       shareLabel: "0.2%",
-      color: "var(--chart-2)",
+      color: "var(--ui-beancount-dashboard-series-indigo)",
     },
     {
       id: "other",
@@ -178,7 +178,7 @@
       value: 216.61,
       valueLabel: "216.61 GBP",
       shareLabel: "0.5%",
-      color: "var(--chart-5)",
+      color: "var(--ui-beancount-dashboard-series-other)",
     },
   ];
 
@@ -192,19 +192,19 @@
           id: "assets-root",
           label: "Assets",
           value: 6155.89,
-          color: "var(--chart-3)",
+          color: "var(--ui-beancount-dashboard-series-orange)",
           children: [
             {
               id: "assets-cash",
               label: "Cash",
               value: 3725.89,
-              color: "var(--chart-4)",
+              color: "var(--ui-beancount-dashboard-series-indigo)",
             },
             {
               id: "assets-pension",
               label: "Pension",
               value: 2430,
-              color: "var(--chart-2)",
+              color: "var(--ui-beancount-dashboard-series-indigo)",
             },
           ],
         },
@@ -219,13 +219,13 @@
           id: "liabilities-root",
           label: "Liabilities",
           value: 4400,
-          color: "var(--chart-1)",
+          color: "var(--ui-beancount-dashboard-series-red)",
           children: [
             {
               id: "liabilities-card",
               label: "Credit card",
               value: 4400,
-              color: "var(--chart-1)",
+              color: "var(--ui-beancount-dashboard-series-red)",
             },
           ],
         },
@@ -240,7 +240,7 @@
           id: "equity-root",
           label: "Equity",
           value: 0,
-          color: "var(--chart-5)",
+          color: "var(--ui-beancount-dashboard-series-teal)",
         },
       ],
     },

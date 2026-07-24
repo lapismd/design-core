@@ -10,7 +10,7 @@
       docs: {
         description: {
           component:
-            "A model-driven category donut. The application supplies categories, shared-theme colours, display-ready values, and any navigation action; this component owns the proportional arcs, centre feedback, focus interaction, and empty state.",
+            "A model-driven category donut. The application supplies categories, normalized Beancount colour roles, display-ready values, and any navigation action; this component owns the proportional arcs, centre feedback, focus interaction, and empty state.",
         },
       },
     },
@@ -22,14 +22,14 @@
       label: "Groceries",
       value: 420,
       valueLabel: "£420.00",
-      color: "var(--chart-1)",
+      color: "var(--ui-beancount-dashboard-series-orange)",
     },
     {
       id: "utilities",
       label: "Utilities",
       value: 180,
       valueLabel: "£180.00",
-      color: "var(--chart-2)",
+      color: "var(--ui-beancount-dashboard-series-blue)",
     },
   ];
 </script>
@@ -68,5 +68,11 @@
 </Story>
 
 <style>
-  .bc-dashboard-donut-story { max-width:28rem; border:1px solid var(--ui-beancount-border); border-radius:var(--ui-beancount-radius-panel); background:var(--ui-beancount-surface); box-shadow:var(--ui-beancount-shadow-panel); }
+  .bc-dashboard-donut-story {
+    max-width: 28rem;
+    border: 1px solid var(--ui-beancount-border);
+    border-radius: var(--ui-beancount-radius-panel);
+    background: var(--ui-beancount-surface);
+    box-shadow: var(--ui-beancount-shadow-panel);
+  }
 </style>
