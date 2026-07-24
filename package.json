@@ -16,6 +16,7 @@
     "test:visual": "playwright test",
     "test:visual:update": "tsx scripts/ui-generator/cli.ts visual-update",
     "test:visual:report": "playwright show-report",
+    "visual-delta": "node packages/storybook-addon-visual-delta/dist/node/cli.js",
     "ui": "tsx scripts/ui-generator/cli.ts",
     "ui:guide": "tsx scripts/ui-generator/cli.ts guide",
     "ui:components": "tsx scripts/ui-generator/cli.ts components",

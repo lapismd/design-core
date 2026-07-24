@@ -1,3 +1,8 @@
+/**
+ * Catalog visual suite (nested-import paths, Tasks/Fava reference stories,
+ * sidecars). Portable hosts should use `defineVisualSuite()` from
+ * `storybook-addon-visual-delta/playwright` instead — see `visual-delta init`.
+ */
 import { expect, test, type Locator, type Page } from "@playwright/test";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";

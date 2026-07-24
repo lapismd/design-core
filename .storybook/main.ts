@@ -53,11 +53,8 @@ const config: StorybookConfig = {
     },
     "storybook-addon-tag-badges",
   ],
+  // `/visual-baselines` comes from the Visual Delta preset `staticDirs`.
   staticDirs: [
-    {
-      from: "../tests/visual/storybook.spec.ts-snapshots",
-      to: "/visual-baselines",
-    },
     {
       from: "../packages/tasks/reference/superlist/2026-07-20",
       to: "/tasks-reference/2026-07-20",
