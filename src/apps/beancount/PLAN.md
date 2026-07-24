@@ -115,7 +115,9 @@ The Tailwind guard covers utility classes. A second audit tracks app files that
 still use raw shared-theme variables directly rather than the
 `--ui-beancount-*` role layer. File counts are the initial inventory; the
 token definition file itself is intentionally exempt because it supplies the
-aliases.
+aliases. Component-owned display values use the distinct `--bc-*` prefix and
+are not shared-theme variables; typography, radius, and chart primitives remain
+explicit exceptions.
 
 | Area         | Initial files | Remaining files | Status                           |
 | ------------ | ------------: | --------------: | -------------------------------- |
@@ -124,7 +126,7 @@ aliases.
 | `feedback`   |            13 |              13 | 🟡 pending                       |
 | `layout`     |             7 |               7 | 🟡 pending                       |
 | `navigation` |             5 |               0 | ✅ semantic navigation roles     |
-| `pickers`    |             2 |               2 | 🟡 pending                       |
+| `pickers`    |             2 |               0 | ✅ semantic picker roles         |
 | `rules`      |             1 |               0 | ✅ semantic status/surface roles |
 | `sources`    |             2 |               0 | ✅ semantic source-brand roles   |
 | `tables`     |             9 |               9 | 🟡 pending                       |

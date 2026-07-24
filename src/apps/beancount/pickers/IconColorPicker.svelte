@@ -173,7 +173,7 @@
       >
         <span
           class="beancount-icon-color-picker__preview"
-          style={`--appearance-color: ${currentColor}; --appearance-foreground: ${currentForeground}`}
+          style={`--bc-appearance-color: ${currentColor}; --bc-appearance-foreground: ${currentForeground}`}
           aria-hidden="true"
         >
           <SelectedIcon
@@ -206,7 +206,7 @@
               type="button"
               class="beancount-icon-color-picker__color"
               class:selected={currentColor === optionColor}
-              style={`--appearance-color: ${optionColor}`}
+              style={`--bc-appearance-color: ${optionColor}`}
               aria-label={`Use ${optionColor} colour`}
               aria-pressed={currentColor === optionColor}
               onclick={() => chooseColor(optionColor)}
@@ -215,7 +215,7 @@
           <label
             class="beancount-icon-color-picker__color beancount-icon-color-picker__custom-color"
             class:selected={!colors.includes(currentColor)}
-            style={`--appearance-color: ${currentColor}`}
+            style={`--bc-appearance-color: ${currentColor}`}
           >
             <span class="beancount-icon-color-picker__screen-reader-text"
               >Choose a custom colour</span
@@ -275,7 +275,7 @@
                   type="button"
                   class="beancount-icon-color-picker__icon"
                   class:selected={icon === option.value}
-                  style={`--appearance-color: ${currentColor}; --appearance-foreground: ${currentForeground}`}
+                  style={`--bc-appearance-color: ${currentColor}; --bc-appearance-foreground: ${currentForeground}`}
                   aria-label={`Use ${option.label} icon`}
                   aria-pressed={icon === option.value}
                   aria-describedby={needsContrastCorrection
@@ -315,7 +315,7 @@
     border: 0;
     border-radius: 0.5rem;
     background: transparent;
-    color: var(--foreground);
+    color: var(--ui-beancount-foreground);
     cursor: pointer;
     font: inherit;
     padding: 0.15rem 0.35rem 0.15rem 0;
@@ -324,12 +324,12 @@
 
   .beancount-icon-color-picker__trigger:hover,
   .beancount-icon-color-picker__trigger:focus-visible {
-    color: var(--primary);
+    color: var(--ui-beancount-accent);
     outline: 0;
   }
 
   .beancount-icon-color-picker__trigger:focus-visible {
-    box-shadow: 0 0 0 2px var(--ring);
+    box-shadow: 0 0 0 2px var(--ui-beancount-focus-ring);
   }
 
   .beancount-icon-color-picker__preview {
@@ -339,8 +339,8 @@
     align-items: center;
     justify-content: center;
     border-radius: 999px;
-    background: color-mix(in srgb, var(--appearance-color) 10%, transparent);
-    color: var(--appearance-foreground);
+    background: color-mix(in srgb, var(--bc-appearance-color) 10%, transparent);
+    color: var(--bc-appearance-foreground);
   }
 
   :global(.beancount-icon-color-picker__preview-icon),
@@ -350,8 +350,8 @@
   }
 
   :global(.beancount-icon-color-picker__trigger-icon) {
-    width: calc(var(--spacing) * 3.5);
-    height: calc(var(--spacing) * 3.5);
+    width: var(--ui-beancount-space-3-5);
+    height: var(--ui-beancount-space-3-5);
   }
 
   :global(.beancount-icon-color-picker__search-icon) {
@@ -375,11 +375,11 @@
 
   :global(.beancount-icon-color-picker__content) {
     width: min(22rem, calc(100vw - 2rem));
-    border: 1px solid var(--border);
+    border: 1px solid var(--ui-beancount-border);
     border-radius: 0.875rem;
-    background: var(--popover, var(--card));
+    background: var(--ui-beancount-surface-floating);
     box-shadow: 0 12px 32px color-mix(in srgb, #080319 18%, transparent);
-    color: var(--popover-foreground, var(--foreground));
+    color: var(--ui-beancount-surface-floating-foreground);
     padding: 1rem;
   }
 
@@ -390,7 +390,7 @@
 
   .beancount-icon-color-picker__heading {
     margin: 0 0 0.6rem;
-    color: var(--muted-foreground);
+    color: var(--ui-beancount-muted-foreground);
     font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
@@ -410,7 +410,7 @@
   }
 
   .beancount-icon-color-picker__icon-count {
-    color: var(--muted-foreground);
+    color: var(--ui-beancount-muted-foreground);
     font-size: 0.75rem;
     font-variant-numeric: tabular-nums;
   }
@@ -429,7 +429,7 @@
     justify-self: center;
     border: 0;
     border-radius: 999px;
-    background: var(--appearance-color);
+    background: var(--bc-appearance-color);
     cursor: pointer;
     padding: 0;
   }
@@ -448,7 +448,7 @@
   .beancount-icon-color-picker__color:focus-visible::after,
   .beancount-icon-color-picker__custom-color:focus-within::after,
   .beancount-icon-color-picker__color.selected::after {
-    border-color: var(--ring);
+    border-color: var(--ui-beancount-focus-ring);
   }
 
   .beancount-icon-color-picker__color:focus-visible,
@@ -457,7 +457,7 @@
   }
 
   .beancount-icon-color-picker__custom-color {
-    border: 2px solid var(--popover, var(--card));
+    border: 2px solid var(--ui-beancount-surface-floating);
     background: conic-gradient(
       from 0deg,
       #ef4444,
@@ -474,7 +474,7 @@
 
   .beancount-icon-color-picker__custom-color.selected::after {
     inset: -0.3rem;
-    border-color: var(--appearance-color);
+    border-color: var(--bc-appearance-color);
     border-width: 3px;
   }
 
@@ -513,10 +513,10 @@
     align-items: center;
     gap: 0.45rem;
     margin-bottom: 0.55rem;
-    border: 1px solid var(--border);
+    border: 1px solid var(--ui-beancount-border);
     border-radius: 0.5rem;
-    background: var(--background);
-    color: var(--muted-foreground);
+    background: var(--ui-beancount-surface);
+    color: var(--ui-beancount-muted-foreground);
     padding: 0 0.65rem;
   }
 
@@ -525,21 +525,21 @@
     min-width: 0;
     border: 0;
     background: transparent;
-    color: var(--foreground);
+    color: var(--ui-beancount-foreground);
     font: inherit;
     font-size: 0.8125rem;
     outline: 0;
   }
 
   .beancount-icon-color-picker__search:focus-within {
-    border-color: var(--ring);
-    box-shadow: 0 0 0 1px var(--ring);
+    border-color: var(--ui-beancount-focus-ring);
+    box-shadow: 0 0 0 1px var(--ui-beancount-focus-ring);
   }
 
   .beancount-icon-color-picker__empty-icons {
     margin: 0;
     padding: 1.5rem 0.5rem;
-    color: var(--muted-foreground);
+    color: var(--ui-beancount-muted-foreground);
     font-size: 0.8125rem;
     text-align: center;
   }
@@ -554,20 +554,20 @@
     border: 0;
     border-radius: 999px;
     background: transparent;
-    color: var(--muted-foreground);
+    color: var(--ui-beancount-muted-foreground);
     cursor: pointer;
     padding: 0;
   }
 
   .beancount-icon-color-picker__icon:hover,
   .beancount-icon-color-picker__icon:focus-visible {
-    background: color-mix(in srgb, var(--primary) 10%, transparent);
-    color: var(--primary);
+    background: color-mix(in srgb, var(--ui-beancount-accent) 10%, transparent);
+    color: var(--ui-beancount-accent);
   }
 
   .beancount-icon-color-picker__icon.selected {
-    background: color-mix(in srgb, var(--appearance-color) 10%, transparent);
-    color: var(--appearance-foreground);
+    background: color-mix(in srgb, var(--bc-appearance-color) 10%, transparent);
+    color: var(--bc-appearance-foreground);
   }
 
   .beancount-icon-color-picker__icon:disabled {
@@ -577,17 +577,17 @@
 
   .beancount-icon-color-picker__icon:disabled:hover {
     background: transparent;
-    color: var(--muted-foreground);
+    color: var(--ui-beancount-muted-foreground);
   }
 
   .beancount-icon-color-picker__icon.selected:disabled {
-    background: color-mix(in srgb, var(--appearance-color) 10%, transparent);
-    color: var(--appearance-foreground);
+    background: color-mix(in srgb, var(--bc-appearance-color) 10%, transparent);
+    color: var(--bc-appearance-foreground);
   }
 
   .beancount-icon-color-picker__icon:focus-visible::after,
   .beancount-icon-color-picker__icon.selected::after {
-    border-color: var(--ring);
+    border-color: var(--ui-beancount-focus-ring);
   }
 
   .beancount-icon-color-picker__contrast-warning {
@@ -595,7 +595,7 @@
     align-items: center;
     gap: 0.35rem;
     margin-top: 0.75rem;
-    color: var(--destructive);
+    color: var(--ui-beancount-negative);
     font-size: 0.75rem;
     line-height: 1.2;
   }
@@ -613,7 +613,7 @@
 
   .beancount-icon-color-picker__contrast-warning button:focus-visible {
     border-radius: 0.2rem;
-    outline: 2px solid var(--ring);
+    outline: 2px solid var(--ui-beancount-focus-ring);
     outline-offset: 2px;
   }
 </style>

@@ -54,7 +54,7 @@
 <span
   class="beancount-account-avatar"
   data-size={size}
-  style={`--account-avatar-color: ${avatarColor}; --account-avatar-foreground: ${avatarForeground}`}
+  style={`--bc-account-avatar-color: ${avatarColor}; --bc-account-avatar-foreground: ${avatarForeground}`}
   aria-hidden="true"
 >
   {#if showsMerchantLogo}
@@ -86,10 +86,10 @@
     border-radius: 999px;
     background: color-mix(
       in srgb,
-      var(--account-avatar-color) 10%,
+      var(--bc-account-avatar-color) 10%,
       transparent
     );
-    color: var(--account-avatar-foreground);
+    color: var(--bc-account-avatar-foreground);
     font-size: 0.875rem;
     font-weight: 600;
     line-height: 1;
@@ -130,7 +130,7 @@
     height: 100%;
     padding: 0.25rem;
     border-radius: inherit;
-    background: var(--background);
+    background: var(--ui-beancount-surface);
     object-fit: contain;
   }
 

@@ -8,6 +8,8 @@
   --ui-beancount-surface: var(--background);
   --ui-beancount-surface-raised: var(--card);
   --ui-beancount-surface-raised-foreground: var(--card-foreground);
+  --ui-beancount-surface-floating: var(--popover);
+  --ui-beancount-surface-floating-foreground: var(--popover-foreground);
   --ui-beancount-surface-muted: var(--muted);
   --ui-beancount-foreground: var(--foreground);
   --ui-beancount-muted-foreground: var(--muted-foreground);
