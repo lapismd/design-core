@@ -1,5 +1,10 @@
 <script lang="ts">
-  import { ArrowDownUp, MoreHorizontal } from "@lucide/svelte";
+  import {
+    ArrowDownUp,
+    ArrowDownWideNarrow,
+    ArrowUpNarrowWide,
+    MoreHorizontal,
+  } from "@lucide/svelte";
   import { Badge } from "@stevejuma/ui/shadcn/badge";
   import { Button } from "@stevejuma/ui/shadcn/button";
   import * as Card from "@stevejuma/ui/shadcn/card";
@@ -20,6 +25,16 @@
     name: string;
     clauses: readonly RuleClause[];
     active: boolean;
+  };
+
+  export type RuleSortKey = "name" | "active";
+
+  export type RuleSortDirection = "asc" | "desc";
+
+  /** The host-controlled sort state displayed in the Fava rule columns. */
+  export type RuleSort = {
+    key: RuleSortKey;
+    direction: RuleSortDirection;
   };
 
   /** A host-owned action exposed from a rule's contextual menu. */
@@ -48,8 +63,9 @@
   };
 
   let {
-    rule,
+    rules,
     ariaLabel = "Rules",
+    sort,
     recentRunsLabel = "Recent runs",
     emptyRecentRunsLabel = "No rule runs yet.",
     actions = [],
@@ -57,11 +73,14 @@
     onOpenRule = () => {},
     onActiveChange = () => {},
     onActionSelect = () => {},
+    onSortRequest = () => {},
   }: {
-    /** The rule content belongs to the host's rules adapter. */
-    rule: AutomationRule;
+    /** Display-ready rules in the order supplied by the host adapter. */
+    rules: readonly AutomationRule[];
     /** Accessible name for the controlled rules list. */
     ariaLabel?: string;
+    /** Host-controlled visual sort state; the host owns the resulting order. */
+    sort?: RuleSort;
     /** Label above host-owned rule execution history. */
     recentRunsLabel?: string;
     /** Copy when the host reports no rule executions. */
@@ -76,36 +95,81 @@
     onActiveChange?: (rule: AutomationRule, active: boolean) => void;
     /** Requests a host-owned contextual action for this rule. */
     onActionSelect?: (rule: AutomationRule, action: RuleAction) => void;
+    /** Requests that the host cycle ordering for a Fava rule-list column. */
+    onSortRequest?: (key: RuleSortKey) => void;
   } = $props();
+
+  function ariaSortFor(key: RuleSortKey) {
+    if (sort?.key !== key) {
+      return "none";
+    }
+
+    return sort.direction === "asc" ? "ascending" : "descending";
+  }
 </script>
 
 <section class="bc-rule-list" aria-label={ariaLabel}>
   <header class="bc-rule-list__header" aria-label="Rules columns">
-    <span class="bc-rule-list__column-title">
+    <button
+      type="button"
+      class="bc-rule-list__sort-button"
+      aria-label="Sort by rule name"
+      aria-pressed={sort?.key === "name"}
+      data-sort={ariaSortFor("name")}
+      onclick={() => onSortRequest("name")}
+    >
       Rule
-      <ArrowDownUp aria-hidden="true" />
-    </span>
-    <span class="bc-rule-list__column-title">
+      {#if sort?.key === "name" && sort.direction === "asc"}
+        <ArrowUpNarrowWide aria-hidden="true" />
+      {:else if sort?.key === "name" && sort.direction === "desc"}
+        <ArrowDownWideNarrow aria-hidden="true" />
+      {:else}
+        <ArrowDownUp aria-hidden="true" />
+      {/if}
+    </button>
+    <button
+      type="button"
+      class="bc-rule-list__sort-button"
+      aria-label="Sort by active status"
+      aria-pressed={sort?.key === "active"}
+      data-sort={ariaSortFor("active")}
+      onclick={() => onSortRequest("active")}
+    >
       Active
-      <ArrowDownUp aria-hidden="true" />
-    </span>
+      {#if sort?.key === "active" && sort.direction === "asc"}
+        <ArrowUpNarrowWide aria-hidden="true" />
+      {:else if sort?.key === "active" && sort.direction === "desc"}
+        <ArrowDownWideNarrow aria-hidden="true" />
+      {:else}
+        <ArrowDownUp aria-hidden="true" />
+      {/if}
+    </button>
   </header>
 
-  <Card.Root class="bc-rule-list__rule-card">
-    <Card.Header class="bc-rule-list__rule-header">
-      <h3 class="bc-rule-list__rule-heading">
-        <Button
+  <Card.Root class="bc-rule-list__rules-card">
+    {#each rules as rule (rule.id)}
+      <article class="bc-rule-list__rule-row">
+        <button
+          type="button"
           class="bc-rule-list__open"
-          variant="ghost"
+          aria-label={`Edit rule ${rule.name}`}
           onclick={() => onOpenRule(rule)}
         >
-          {rule.name}
-        </Button>
-      </h3>
-      <Card.Action class="bc-rule-list__rule-actions">
+          <span class="bc-rule-list__rule-name">{rule.name}</span>
+          <span class="bc-rule-list__clauses">
+            {#each rule.clauses as clause (clause.id)}
+              <Badge class="bc-rule-list__clause" variant="secondary">
+                <strong>{clause.kind}</strong>
+                <span>{clause.text}</span>
+              </Badge>
+            {/each}
+          </span>
+        </button>
         <Switch
           checked={rule.active}
-          aria-label={`Set ${rule.name} active`}
+          aria-label={rule.active
+            ? `Deactivate ${rule.name}`
+            : `Activate ${rule.name}`}
           onCheckedChange={(active) => onActiveChange(rule, active)}
         />
         {#if actions.length}
@@ -138,16 +202,8 @@
             </DropdownMenu.Content>
           </DropdownMenu.Root>
         {/if}
-      </Card.Action>
-    </Card.Header>
-    <Card.Content class="bc-rule-list__clauses">
-      {#each rule.clauses as clause (clause.id)}
-        <Badge class="bc-rule-list__clause" variant="secondary">
-          <strong>{clause.kind}</strong>
-          <span>{clause.text}</span>
-        </Badge>
-      {/each}
-    </Card.Content>
+      </article>
+    {/each}
   </Card.Root>
 
   <div class="bc-rule-list__runs">
@@ -256,70 +312,92 @@
     color: var(--ui-beancount-muted-foreground);
   }
 
-  .bc-rule-list__column-title {
+  .bc-rule-list__sort-button {
     display: inline-flex;
     align-items: center;
     gap: var(--ui-beancount-space-2);
+    border-radius: var(--ui-beancount-radius-sm);
+    color: inherit;
     font-size: var(--text-lg);
     font-weight: var(--font-weight-semibold);
   }
 
-  .bc-rule-list__column-title:last-child {
+  .bc-rule-list__sort-button:last-child {
     justify-self: end;
   }
 
-  :global(.bc-rule-list__column-title svg) {
+  .bc-rule-list__sort-button:hover {
+    color: var(--ui-beancount-foreground);
+  }
+
+  .bc-rule-list__sort-button:focus-visible {
+    outline: 2px solid var(--ui-beancount-focus-ring);
+    outline-offset: 2px;
+  }
+
+  :global(.bc-rule-list__sort-button svg) {
     width: var(--ui-beancount-space-5);
     height: var(--ui-beancount-space-5);
   }
 
-  :global(.bc-rule-list__rule-card) {
+  :global(.bc-rule-list__rules-card) {
+    overflow: hidden;
     border: 1px solid var(--ui-beancount-border);
     box-shadow: var(--ui-beancount-shadow-panel);
-  }
-
-  :global(.bc-rule-list__rule-header) {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: center;
-    gap: var(--ui-beancount-space-4);
-    padding: var(--ui-beancount-space-5) var(--ui-beancount-space-6) 0;
-  }
-
-  .bc-rule-list__rule-heading {
-    margin: 0;
-  }
-
-  :global(.bc-rule-list__open) {
-    height: auto;
     padding: 0;
-    color: var(--ui-beancount-foreground);
-    font-size: var(--text-2xl);
-    font-weight: var(--font-weight-semibold);
-    text-decoration: none;
   }
 
-  :global(.bc-rule-list__open:hover) {
-    background: transparent;
-    color: var(--ui-beancount-primary);
-  }
-
-  :global(.bc-rule-list__rule-actions) {
-    display: inline-flex;
+  .bc-rule-list__rule-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
     align-items: center;
     gap: var(--ui-beancount-space-4);
+    border-bottom: 1px solid var(--ui-beancount-border);
+    background: var(--ui-beancount-surface);
   }
 
-  :global(.bc-rule-list__more) {
+  .bc-rule-list__rule-row:last-child {
+    border-bottom: 0;
+  }
+
+  .bc-rule-list__open {
+    display: grid;
+    width: 100%;
+    min-width: 0;
+    gap: var(--ui-beancount-space-3);
+    padding: var(--ui-beancount-space-4) 0 var(--ui-beancount-space-4)
+      var(--ui-beancount-space-5);
     color: var(--ui-beancount-foreground);
+    text-align: left;
   }
 
-  :global(.bc-rule-list__clauses) {
+  .bc-rule-list__open:hover {
+    background: color-mix(in srgb, var(--ui-beancount-muted) 70%, transparent);
+  }
+
+  .bc-rule-list__open:focus-visible {
+    outline: 2px solid var(--ui-beancount-focus-ring);
+    outline-offset: -2px;
+  }
+
+  .bc-rule-list__rule-name {
+    overflow: hidden;
+    color: var(--ui-beancount-foreground);
+    font-size: var(--text-lg);
+    font-weight: var(--font-weight-semibold);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .bc-rule-list__clauses {
     display: flex;
     flex-wrap: wrap;
     gap: var(--ui-beancount-space-2);
-    padding: var(--ui-beancount-space-4) var(--ui-beancount-space-6)
-      var(--ui-beancount-space-5);
+  }
+
+  :global(.bc-rule-list__more) {
+    margin-inline-end: var(--ui-beancount-space-3);
+    color: var(--ui-beancount-foreground);
   }
 
   :global(.bc-rule-list__clause) {

@@ -327,8 +327,9 @@ filter semantics.
 
 **Rules (`rules/`)** — `Apps/Beancount/Rules/*`:
 
-- `RuleList` — controlled rule-list card, active-state request, and empty
-  run-history display; host owns rule persistence, action menus, and navigation
+- `RuleList` — controlled sortable rule collection, active-state requests, and
+  display-ready run history; host owns ordering, rule persistence, action
+  menus, and navigation
 - `RulesToolbar` — controlled Fava Rules apply-all and add-rule header requests
 
 ### Screens + Fava capture harness

@@ -1560,7 +1560,7 @@
     await userEvent.click(canvas.getByRole("button", { name: "Add rule" }));
     await expect(canvas.getByRole("status")).toHaveTextContent("Add rule");
     await userEvent.click(
-      canvas.getByRole("switch", { name: "Set Test Rule active" }),
+      canvas.getByRole("switch", { name: "Deactivate Test Rule" }),
     );
     await expect(canvas.getByRole("status")).toHaveTextContent(
       "Test Rule inactive",
@@ -1590,7 +1590,7 @@
       <ContentScrollArea>
         <div class="bc-screen-story__page bc-screen-story__rules">
           <RuleList
-            rule={{ ...testRule, active: ruleActive }}
+            rules={[{ ...testRule, active: ruleActive }]}
             actions={testRuleActions}
             onOpenRule={(rule) => {
               ruleAction = `Open ${rule.name}`;

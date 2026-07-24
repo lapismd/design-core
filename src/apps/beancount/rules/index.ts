@@ -6,5 +6,8 @@ export {
   type RuleAction,
   type RuleRun,
   type RuleRunTone,
+  type RuleSort,
+  type RuleSortDirection,
+  type RuleSortKey,
 } from "./RuleList.svelte";
 export { default as RulesToolbar } from "./RulesToolbar.svelte";
