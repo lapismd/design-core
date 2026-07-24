@@ -92,6 +92,15 @@
 
 <style>
   .bc-ledger-editor-surface {
+    /* Match Fava's display-only CodeMirror rhythm without taking ownership of
+     * the editor runtime, parser, or dynamic ruler calculation. */
+    --bc-ledger-editor-source-size: 0.85rem;
+    --bc-ledger-editor-source-line-height: 1.5;
+    --bc-ledger-editor-heading-size: calc(
+      var(--bc-ledger-editor-source-size) * 1.602
+    );
+    --bc-ledger-editor-heading-line-height: 1.2;
+
     position: relative;
     min-width: max-content;
     min-height: 100%;
@@ -109,12 +118,14 @@
   .bc-ledger-editor-surface__line {
     display: grid;
     grid-template-columns: calc(var(--ui-beancount-space-5) * 2) max-content;
-    min-height: 1.375rem;
+    min-height: calc(
+      var(--bc-ledger-editor-source-size) *
+        var(--bc-ledger-editor-source-line-height)
+    );
     padding-inline-end: var(--ui-beancount-space-5);
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-      "Liberation Mono", "Courier New", monospace;
-    font-size: 0.875rem;
-    line-height: 1.375rem;
+    font-family: var(--font-mono);
+    font-size: var(--bc-ledger-editor-source-size);
+    line-height: var(--bc-ledger-editor-source-line-height);
     white-space: pre;
   }
 
@@ -123,16 +134,21 @@
   }
 
   .bc-ledger-editor-surface__line[data-heading="true"] {
-    min-height: calc(var(--ui-beancount-space-5) * 3);
-    font-family: inherit;
-    font-size: 1.875rem;
-    font-weight: 700;
-    line-height: calc(var(--ui-beancount-space-5) * 3);
+    min-height: 0;
+    padding-block-start: var(--ui-beancount-space-4);
+    font-family: var(--font-sans);
+    font-size: var(--bc-ledger-editor-heading-size);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--bc-ledger-editor-heading-line-height);
   }
 
   .bc-ledger-editor-surface__gutter {
+    align-self: center;
     padding-inline-end: var(--ui-beancount-space-3);
     color: var(--ui-beancount-muted-foreground);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    line-height: 1;
     text-align: end;
     user-select: none;
   }
