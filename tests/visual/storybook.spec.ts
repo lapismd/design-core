@@ -24,6 +24,13 @@ import {
   VISUAL_CAPTURE_READY_ATTR,
   VISUAL_CAPTURE_UNTIL_PARAM,
 } from "../../packages/storybook-addon-visual-delta/src/shared/interaction-capture.js";
+import {
+  VISUAL_DELTA_CROP_ATTR,
+  VISUAL_DELTA_DELAY_ATTR,
+  VISUAL_DELTA_IGNORE_ATTR_LIST,
+  VISUAL_DELTA_PASS_THRESHOLD_ATTR,
+} from "../../packages/storybook-addon-visual-delta/src/shared/capture-params-attrs.js";
+import { resolveIgnoreSelectors } from "../../packages/storybook-addon-visual-delta/src/shared/ignore.js";
 
 type StorybookIndex = {
   entries: Record<string, StoryIndexEntry>;
@@ -350,6 +357,40 @@ async function settleAfterPlay(page: Page, storyId: string): Promise<void> {
     const active = document.activeElement;
     if (active instanceof HTMLElement) active.blur();
   });
+
+  // CSF `parameters.visualDelta.delay` published by the Visual Delta preview decorator.
+  const delayMs = await page.evaluate((attr) => {
+    const raw = document.documentElement.getAttribute(attr);
+    const n = raw ? Number(raw) : 0;
+    return Number.isFinite(n) && n > 0 ? n : 0;
+  }, VISUAL_DELTA_DELAY_ATTR);
+  if (delayMs > 0) await page.waitForTimeout(delayMs);
+}
+
+async function visualDeltaCaptureOptions(page: Page): Promise<{
+  maskSelectors: string[];
+  cropToViewport: boolean;
+  passThresholdPercent: number | null;
+}> {
+  return page.evaluate(
+    (attrs: { ignore: string; crop: string; pass: string }) => {
+      const root = document.documentElement;
+      const ignoreRaw = root.getAttribute(attrs.ignore);
+      const passRaw = root.getAttribute(attrs.pass);
+      const pass = passRaw ? Number(passRaw) : NaN;
+      return {
+        maskSelectors: ignoreRaw ? ignoreRaw.split("\n").filter(Boolean) : [],
+        cropToViewport: root.getAttribute(attrs.crop) === "1",
+        passThresholdPercent:
+          Number.isFinite(pass) && pass >= 0 ? pass : null,
+      };
+    },
+    {
+      ignore: VISUAL_DELTA_IGNORE_ATTR_LIST,
+      crop: VISUAL_DELTA_CROP_ATTR,
+      pass: VISUAL_DELTA_PASS_THRESHOLD_ATTR,
+    },
+  );
 }
 
 async function screenshotStorySubject(
@@ -367,21 +408,41 @@ async function screenshotStorySubject(
   const favaReferenceVisual = isFavaReferenceVisual(story);
   const referenceVisual = tasksReferenceVisual || favaReferenceVisual;
   const root = page.locator("#storybook-root");
+  const vdOptions = await visualDeltaCaptureOptions(page);
+  const csfMask = resolveIgnoreSelectors(vdOptions.maskSelectors).map(
+    (selector) => page.locator(selector),
+  );
+  const passRatio =
+    vdOptions.passThresholdPercent != null && !isBaselineUpdate
+      ? { maxDiffPixelRatio: vdOptions.passThresholdPercent / 100 }
+      : {};
+  const mergedExpect = { ...expectOptions, ...passRatio };
 
   let subject: Locator | null = null;
   let clip: { x: number; y: number; width: number; height: number } | null =
     null;
 
   if (tasksReferenceVisual) {
-    const mask = TASKS_REFERENCE_MASK_SELECTORS.map((selector) =>
-      page.locator(selector),
-    );
+    const mask = [
+      ...TASKS_REFERENCE_MASK_SELECTORS.map((selector) =>
+        page.locator(selector),
+      ),
+      ...csfMask,
+    ];
     await expect(page).toHaveScreenshot(snapshotPath, {
-      ...expectOptions,
+      ...mergedExpect,
       mask,
     });
   } else if (favaReferenceVisual) {
-    await expect(page).toHaveScreenshot(snapshotPath, expectOptions);
+    await expect(page).toHaveScreenshot(snapshotPath, {
+      ...mergedExpect,
+      ...(csfMask.length > 0 ? { mask: csfMask } : {}),
+    });
+  } else if (vdOptions.cropToViewport) {
+    await expect(page).toHaveScreenshot(snapshotPath, {
+      ...mergedExpect,
+      ...(csfMask.length > 0 ? { mask: csfMask } : {}),
+    });
   } else {
     const usePortalClip =
       looksLikePortalStory(storyId) ||
@@ -395,10 +456,14 @@ async function screenshotStorySubject(
     if (clip) {
       await expect(page).toHaveScreenshot(snapshotPath, {
         clip,
-        ...expectOptions,
+        ...mergedExpect,
+        ...(csfMask.length > 0 ? { mask: csfMask } : {}),
       });
     } else {
-      await expect(subject!).toHaveScreenshot(snapshotPath, expectOptions);
+      await expect(subject!).toHaveScreenshot(snapshotPath, {
+        ...mergedExpect,
+        ...(csfMask.length > 0 ? { mask: csfMask } : {}),
+      });
     }
   }
 
