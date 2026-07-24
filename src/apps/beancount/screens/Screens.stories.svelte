@@ -5,6 +5,7 @@
   import { Button } from "@stevejuma/ui/shadcn/button";
   import * as Tabs from "@stevejuma/ui/shadcn/tabs";
   import EditorToolbar from "./EditorToolbar.svelte";
+  import LedgerEditorSurface from "./LedgerEditorSurface.svelte";
   import ScreenFrame from "./ScreenFrame.svelte";
   import { visualDeltaForScreen } from "./visual-delta.js";
   import BarChart from "../charts/BarChart.svelte";
@@ -36,6 +37,7 @@
     balanceSheetLineSeries,
     balanceSheetNodes,
     connectedSources,
+    editorPreviewLines,
     holdingColumns,
     holdingRows,
     incomeStatementChartGroups,
@@ -357,13 +359,18 @@
   name="Editor"
   parameters={{ visualDelta: visualDeltaForScreen("editor") }}
   play={async ({ canvas }) => {
-    await expect(canvas.getByText("Beancount editor")).toBeVisible();
+    await expect(canvas.getByText("Options")).toBeVisible();
+    await expect(canvas.getByText('"Account Ledger"')).toBeVisible();
     await userEvent.click(
       canvas.getByRole("button", { name: "Collapse all headings" }),
     );
     await expect(canvas.getByRole("status")).toHaveTextContent(
       "Collapse headings requested",
     );
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Expand all headings" }),
+    );
+    await expect(canvas.getByText('"Account Ledger"')).toBeVisible();
     await userEvent.click(canvas.getByRole("button", { name: "Save ledger" }));
     await expect(canvas.getByRole("status")).toHaveTextContent(
       "Save ledger requested",
@@ -386,17 +393,12 @@
           }}
         />
       {/snippet}
-      <ContentScrollArea>
-        <div
-          class="bc-screen-story__placeholder bc-screen-story__placeholder--code"
-        >
-          <p class="bc-screen-story__placeholder-title">Beancount editor</p>
-          <p>
-            CodeMirror ledger editing remains in Fava until a catalog editor
-            surface lands. This screen story frames the Studio shell for Visual
-            Delta chrome alignment.
-          </p>
-        </div>
+      <ContentScrollArea contentClass="bc-screen-story__editor-content">
+        <LedgerEditorSurface
+          lines={editorPreviewLines}
+          headersCollapsedAll={editorHeadersCollapsedAll}
+          activeLineNumber={1}
+        />
       </ContentScrollArea>
       <output class="bc-screen-story__status" aria-live="polite">
         {editorAction}
@@ -1568,6 +1570,10 @@
     gap: calc(var(--ui-beancount-space-4) * 2);
   }
 
+  :global(.bc-screen-story__editor-content) {
+    height: 100%;
+  }
+
   .bc-screen-story__holdings {
     display: grid;
     gap: var(--ui-beancount-space-3);
@@ -1645,32 +1651,7 @@
     box-shadow: none;
   }
 
-  .bc-screen-story__placeholder-title {
-    margin: 0;
-    color: var(--ui-beancount-foreground);
-    font-size: var(--text-base);
-    font-weight: var(--font-weight-medium);
-  }
-
   :global(.bc-screen-story__breadcrumbs) {
     margin-block-end: var(--ui-beancount-space-2);
-  }
-
-  .bc-screen-story__placeholder {
-    color: var(--ui-beancount-muted-foreground);
-    padding: calc(var(--ui-beancount-space-3) * 2);
-    font-size: var(--text-sm);
-  }
-
-  .bc-screen-story__placeholder-title {
-    margin-block-end: var(--ui-beancount-space-2);
-  }
-
-  .bc-screen-story__placeholder--code {
-    font-family: var(--studio-font-mono);
-  }
-
-  .bc-screen-story__placeholder--code .bc-screen-story__placeholder-title {
-    font-family: var(--font-sans);
   }
 </style>

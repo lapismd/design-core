@@ -22,6 +22,13 @@
   --ui-beancount-review: oklch(0.541 0.179 288.033);
   --ui-beancount-held: oklch(0.666 0.179 58.318);
   --ui-beancount-accepted: oklch(0.588 0.158 241.966);
+  --ui-beancount-code-active-line: oklch(0.953 0.024 222.627);
+  --ui-beancount-code-comment: oklch(0.55 0.014 264.521);
+  --ui-beancount-code-keyword: oklch(0.549 0.188 344.091);
+  --ui-beancount-code-string: oklch(0.514 0.126 151.784);
+  --ui-beancount-code-value: oklch(0.53 0.126 202.932);
+  --ui-beancount-code-property: oklch(0.557 0.118 83.539);
+  --ui-beancount-code-punctuation: var(--ui-beancount-foreground);
   --ui-beancount-control-height: calc(var(--spacing) * 9);
   --ui-beancount-compact-control-height: calc(var(--spacing) * 8);
   --ui-beancount-space-1: calc(var(--spacing) * 1);
@@ -37,4 +44,10 @@
   --ui-beancount-review: oklch(0.811 0.111 293.571);
   --ui-beancount-held: oklch(0.828 0.189 84.429);
   --ui-beancount-accepted: oklch(0.746 0.16 232.661);
+  --ui-beancount-code-active-line: oklch(0.246 0.02 222.627);
+  --ui-beancount-code-comment: oklch(0.703 0.015 264.521);
+  --ui-beancount-code-keyword: oklch(0.759 0.138 344.091);
+  --ui-beancount-code-string: oklch(0.748 0.119 151.784);
+  --ui-beancount-code-value: oklch(0.748 0.097 202.932);
+  --ui-beancount-code-property: oklch(0.795 0.098 83.539);
 }

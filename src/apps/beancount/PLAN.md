@@ -51,7 +51,7 @@ Visual Delta at or below 0.1% before removing `skip-visual`.
 
 | Screen           | Reference      | Story composition      | Next alignment slice                                                                                                                                                                          |
 | ---------------- | -------------- | ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Editor           | ✅             | 🟡 shell + placeholder | Fava collapse/save callbacks compose; File/Edit and CodeMirror remain host-owned. Add a display-ready editor body, then review Visual Delta ≤0.1%.                                            |
+| Editor           | ✅             | 🟡 source preview body | Fava header controls and a tokenized display-only ledger body now compose; File/Edit and CodeMirror remain host-owned. Add editor adapter contracts, then review Visual Delta ≤0.1%.          |
 | Dashboard        | ✅             | 🟡 partial             | Fava metrics, cash-flow, outflows, balance-sheet, net-worth display models, and host callbacks complete; align data density and review Visual Delta ≤0.1%                                     |
 | Journal          | ✅             | 🟡 partial             | Fava transaction groups, postings, timeframe control, record-open callback, and deterministic Upcoming lane complete; align production data adapter and review Visual Delta ≤0.1%             |
 | Income statement | ✅             | 🟡 partial             | Fava toolbar, historical stacked bars, perspective tabs, and Income hierarchy complete; align chart cadence/colors and remaining statement sections, then review Visual Delta ≤0.1%           |
@@ -75,7 +75,7 @@ and screen-level alignment status.
 
 | Inventory lane  | Current evidence                                                                                                                           | Exit condition                                                                            |
 | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------- |
-| Catalog surface | 69 Beancount components and 56 colocated story modules                                                                                     | Every promoted surface has a display-model contract and a tested story                    |
+| Catalog surface | 70 Beancount components and 57 colocated story modules                                                                                     | Every promoted surface has a display-model contract and a tested story                    |
 | Fava mapping    | Reusable presentation components map to the catalog; route, persistence, CodeMirror, and ingestion adapters stay in Fava until `fava-beta` | `fava-beta` adapters consume the catalog without changing `packages/fava`                 |
 | Styling         | `pnpm beancount:tailwind:check` passes across all Beancount sources and stories                                                            | Keep the guard green for every slice; no Tailwind utility strings may enter the app layer |
 

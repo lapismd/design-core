@@ -1,5 +1,7 @@
 /** Shared display fixtures for Apps/Beancount/Screens stories. */
 
+import type { LedgerEditorLine } from "./LedgerEditorSurface.svelte";
+
 export const journalGroups = [
   {
     id: "2026-07-23",
@@ -1059,3 +1061,310 @@ export const emptyReviewGroups: readonly {
   label: string;
   rows: readonly never[];
 }[] = [];
+
+/** Tokenized Fava sample-ledger excerpt for the display-only Editor surface. */
+export const editorPreviewLines = [
+  {
+    id: "editor-line-1",
+    number: 1,
+    heading: true,
+    section: "options",
+    tokens: [{ value: "Options" }],
+  },
+  { id: "editor-line-2", number: 2, section: "options", tokens: [] },
+  {
+    id: "editor-line-3",
+    number: 3,
+    section: "options",
+    tokens: [
+      { value: "option", tone: "keyword" },
+      { value: " " },
+      { value: '"title"', tone: "string" },
+      { value: " " },
+      { value: '"Account Ledger"', tone: "string" },
+    ],
+  },
+  {
+    id: "editor-line-4",
+    number: 4,
+    section: "options",
+    tokens: [
+      { value: "option", tone: "keyword" },
+      { value: " " },
+      { value: '"operating_currency"', tone: "string" },
+      { value: " " },
+      { value: '"GBP"', tone: "string" },
+    ],
+  },
+  {
+    id: "editor-line-5",
+    number: 5,
+    section: "options",
+    tokens: [
+      { value: "option", tone: "keyword" },
+      { value: " " },
+      { value: '"inferred_tolerance_multiplier"', tone: "string" },
+      { value: " " },
+      { value: '"0.5"', tone: "string" },
+    ],
+  },
+  { id: "editor-line-6", number: 6, section: "options", tokens: [] },
+  {
+    id: "editor-line-7",
+    number: 7,
+    section: "options",
+    tokens: [
+      { value: "2024-10-25", tone: "value" },
+      { value: " " },
+      { value: "custom", tone: "keyword" },
+      { value: " " },
+      { value: '"ledger-option"', tone: "string" },
+      { value: " " },
+      { value: '"dashboard_collapsed"', tone: "string" },
+      { value: " " },
+      { value: '"false"', tone: "string" },
+    ],
+  },
+  {
+    id: "editor-line-8",
+    number: 8,
+    section: "options",
+    tokens: [
+      { value: "2024-10-25", tone: "value" },
+      { value: " " },
+      { value: "custom", tone: "keyword" },
+      { value: " " },
+      { value: '"fava-option"', tone: "string" },
+      { value: " " },
+      { value: '"default-page"', tone: "string" },
+      { value: " " },
+      { value: '"/account/Assets:Checking:Starling"', tone: "string" },
+    ],
+  },
+  {
+    id: "editor-line-9",
+    number: 9,
+    section: "options",
+    tokens: [
+      { value: "2024-10-25", tone: "value" },
+      { value: " " },
+      { value: "custom", tone: "keyword" },
+      { value: " " },
+      { value: '"fava-option"', tone: "string" },
+      { value: " " },
+      { value: '"show-accounts-with-zero-transactions"', tone: "string" },
+      { value: " " },
+      { value: '"false"', tone: "string" },
+    ],
+  },
+  {
+    id: "editor-line-10",
+    number: 10,
+    section: "options",
+    tokens: [
+      { value: "2024-10-12", tone: "value" },
+      { value: " " },
+      { value: "custom", tone: "keyword" },
+      { value: " " },
+      { value: '"ledger-option"', tone: "string" },
+      { value: " " },
+      { value: '"plugins"', tone: "string" },
+      { value: " " },
+      { value: '"', tone: "string" },
+    ],
+  },
+  {
+    id: "editor-line-11",
+    number: 11,
+    section: "options",
+    tokens: [{ value: "  beancount.plugins.forecast:" }],
+  },
+  {
+    id: "editor-line-12",
+    number: 12,
+    section: "options",
+    tokens: [
+      { value: "    end", tone: "property" },
+      { value: ": (month)-10", tone: "punctuation" },
+    ],
+  },
+  {
+    id: "editor-line-13",
+    number: 13,
+    section: "options",
+    tokens: [{ value: '"', tone: "string" }],
+  },
+  { id: "editor-line-14", number: 14, section: "options", tokens: [] },
+  {
+    id: "editor-line-15",
+    number: 15,
+    section: "options",
+    tokens: [
+      { value: "plugin", tone: "keyword" },
+      { value: " " },
+      { value: '"beancount.plugins.forecast"', tone: "string" },
+    ],
+  },
+  {
+    id: "editor-line-16",
+    number: 16,
+    heading: true,
+    section: "general-accounts",
+    tokens: [{ value: "General Accounts" }],
+  },
+  {
+    id: "editor-line-17",
+    number: 17,
+    section: "general-accounts",
+    tokens: [],
+  },
+  {
+    id: "editor-line-18",
+    number: 18,
+    section: "general-accounts",
+    tokens: [
+      {
+        value:
+          ";; We need to declare a few general accounts that we will use below.",
+        tone: "comment",
+      },
+    ],
+  },
+  { id: "editor-line-19", number: 19, section: "general-accounts", tokens: [] },
+  {
+    id: "editor-line-20",
+    number: 20,
+    section: "general-accounts",
+    tokens: [
+      {
+        value:
+          ";; Declare some sort of account to use as the source for padding",
+        tone: "comment",
+      },
+    ],
+  },
+  {
+    id: "editor-line-21",
+    number: 21,
+    section: "general-accounts",
+    tokens: [
+      {
+        value:
+          ";; entries (see below). Use your birth date... that's when you began",
+        tone: "comment",
+      },
+    ],
+  },
+  {
+    id: "editor-line-22",
+    number: 22,
+    section: "general-accounts",
+    tokens: [{ value: ";; accumulating equity!", tone: "comment" }],
+  },
+  {
+    id: "editor-line-23",
+    number: 23,
+    section: "general-accounts",
+    tokens: [{ value: ";;", tone: "comment" }],
+  },
+  { id: "editor-line-24", number: 24, section: "general-accounts", tokens: [] },
+  {
+    id: "editor-line-25",
+    number: 25,
+    section: "general-accounts",
+    tokens: [
+      { value: "1987-05-15", tone: "value" },
+      { value: " " },
+      { value: "open", tone: "keyword" },
+      { value: "     " },
+      { value: "Equity:Opening-Balances", tone: "property" },
+      { value: " " },
+      { value: "; inline comment", tone: "comment" },
+    ],
+  },
+  {
+    id: "editor-line-26",
+    number: 26,
+    heading: true,
+    section: "queries",
+    tokens: [{ value: "Queries" }],
+  },
+  { id: "editor-line-27", number: 27, section: "queries", tokens: [] },
+  {
+    id: "editor-line-28",
+    number: 28,
+    section: "queries",
+    tokens: [
+      { value: "2014-07-23", tone: "value" },
+      { value: " " },
+      { value: "query", tone: "keyword" },
+      { value: " " },
+      { value: '"position-by-account"', tone: "string" },
+      { value: " " },
+      { value: '"SELECT account, sum(position)"', tone: "string" },
+    ],
+  },
+  { id: "editor-line-29", number: 29, section: "queries", tokens: [] },
+  {
+    id: "editor-line-30",
+    number: 30,
+    heading: true,
+    section: "events",
+    tokens: [{ value: "Events" }],
+  },
+  { id: "editor-line-31", number: 31, section: "events", tokens: [] },
+  {
+    id: "editor-line-32",
+    number: 32,
+    section: "events",
+    tokens: [
+      { value: "2024-11-24", tone: "value" },
+      { value: " " },
+      { value: "event", tone: "keyword" },
+      { value: " " },
+      { value: '"address"', tone: "string" },
+      { value: " " },
+      {
+        value: '"19 Discovery Drive, Ashford, Middlesex, TN23 3TR"',
+        tone: "string",
+      },
+    ],
+  },
+  { id: "editor-line-33", number: 33, section: "events", tokens: [] },
+  {
+    id: "editor-line-34",
+    number: 34,
+    heading: true,
+    section: "accounts",
+    tokens: [{ value: "Accounts" }],
+  },
+  { id: "editor-line-35", number: 35, section: "accounts", tokens: [] },
+  {
+    id: "editor-line-36",
+    number: 36,
+    section: "accounts",
+    tokens: [
+      { value: "2022-09-01", tone: "value" },
+      { value: " " },
+      { value: "open", tone: "keyword" },
+      { value: "     " },
+      { value: "Assets:Cash", tone: "property" },
+      { value: "                                " },
+      { value: "GBP", tone: "keyword" },
+    ],
+  },
+  {
+    id: "editor-line-37",
+    number: 37,
+    section: "accounts",
+    tokens: [
+      { value: "2024-10-26", tone: "value" },
+      { value: " " },
+      { value: "pad", tone: "keyword" },
+      { value: "      " },
+      { value: "Assets:Cash", tone: "property" },
+      { value: "                       " },
+      { value: "Equity:Opening-Balances", tone: "property" },
+    ],
+  },
+] satisfies readonly LedgerEditorLine[];

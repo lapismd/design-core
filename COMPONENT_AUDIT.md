@@ -341,6 +341,8 @@ capture harness writes.
 - `EditorToolbar` — controlled Fava-aligned collapse/expand headings and save
   header actions; the host owns the editor runtime, File/Edit menus, persistence,
   and CodeMirror integration
+- `LedgerEditorSurface` — display-ready, tokenized Fava ledger source preview;
+  the host owns parsing, source edits, selections, persistence, and CodeMirror
 
 **Harness** (`scripts/beancount-screens/`):
 
