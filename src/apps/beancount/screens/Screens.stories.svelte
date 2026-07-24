@@ -78,6 +78,14 @@
       layout: "fullscreen",
     },
   });
+
+  function formatQuerySource(value: string) {
+    return value
+      .trim()
+      .replace(/\s+/g, " ")
+      .replace(/^select\s+/i, "SELECT ")
+      .replace(/\s+from\s+/i, " FROM ");
+  }
 </script>
 
 <script lang="ts">
@@ -1142,15 +1150,11 @@
   play={async ({ canvas }) => {
     const queryInput = canvas.getByRole("textbox", { name: "BQL query" });
     await expect(queryInput).toBeVisible();
-    await userEvent.type(queryInput, "SELECT account, sum(position)");
+    await userEvent.type(queryInput, "select account from open");
+    await userEvent.click(canvas.getByRole("button", { name: "Format query" }));
+    await expect(queryInput).toHaveValue("SELECT account FROM open");
     await userEvent.click(canvas.getByRole("button", { name: "Execute" }));
     await expect(canvas.getByText("Groceries")).toBeVisible();
-    await userEvent.click(
-      canvas.getByRole("button", { name: "Query display options" }),
-    );
-    await expect(canvas.getByRole("status")).toHaveTextContent(
-      "Query display options requested",
-    );
   }}
 >
   {#snippet template()}
@@ -1163,8 +1167,8 @@
               queryExecuted = Boolean(value.trim());
               queryAction = `Executed ${value}`;
             }}
-            onOptions={() => {
-              queryAction = "Query display options requested";
+            onFormat={(value) => {
+              queryText = formatQuerySource(value);
             }}
           />
           {#if queryExecuted}

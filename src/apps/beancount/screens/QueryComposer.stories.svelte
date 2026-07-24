@@ -10,7 +10,7 @@
       docs: {
         description: {
           component:
-            "A presentational BQL command bar. Hosts bind the query text and supply the evaluator/options callbacks; this component does not parse BQL, load saved queries, or own route state.",
+            "A presentational BQL command bar. Hosts bind the query text and supply evaluator/format callbacks; this component does not parse BQL, load saved queries, or own route state.",
         },
       },
     },
@@ -20,7 +20,14 @@
 <script lang="ts">
   let query = $state("");
   let executed = $state("");
-  let optionsOpened = $state(false);
+
+  function formatQuery(value: string) {
+    return value
+      .trim()
+      .replace(/\s+/g, " ")
+      .replace(/^select\s+/i, "SELECT ")
+      .replace(/\s+from\s+/i, " FROM ");
+  }
 </script>
 
 <Story
@@ -28,17 +35,16 @@
   play={async ({ canvas }) => {
     await userEvent.type(
       canvas.getByRole("textbox", { name: "BQL query" }),
-      "SELECT account, sum(position) WHERE account ~ 'Assets'",
+      "select account from open",
     );
+    await userEvent.click(canvas.getByRole("button", { name: "Format query" }));
+    await expect(
+      canvas.getByRole("textbox", { name: "BQL query" }),
+    ).toHaveValue("SELECT account FROM open");
     await userEvent.click(canvas.getByRole("button", { name: "Execute" }));
     await expect(canvas.getByRole("status")).toHaveTextContent(
       "SELECT account",
     );
-
-    await userEvent.click(
-      canvas.getByRole("button", { name: "Query display options" }),
-    );
-    await expect(canvas.getByText("Options opened")).toBeVisible();
   }}
 >
   {#snippet template()}
@@ -48,16 +54,13 @@
         onExecute={(value) => {
           executed = value;
         }}
-        onOptions={() => {
-          optionsOpened = true;
+        onFormat={(value) => {
+          query = formatQuery(value);
         }}
       />
       <output class="bc-query-composer-story__result" aria-live="polite">
         {executed || "No query executed"}
       </output>
-      {#if optionsOpened}
-        <p>Options opened</p>
-      {/if}
     </div>
   {/snippet}
 </Story>

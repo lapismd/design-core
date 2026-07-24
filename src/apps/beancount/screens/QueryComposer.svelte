@@ -1,7 +1,6 @@
 <script lang="ts">
   import ChevronRight from "@lucide/svelte/icons/chevron-right";
   import Search from "@lucide/svelte/icons/search";
-  import SlidersHorizontal from "@lucide/svelte/icons/sliders-horizontal";
   import { Button } from "@stevejuma/ui/shadcn/button";
   import { Input } from "@stevejuma/ui/shadcn/input";
 
@@ -11,7 +10,7 @@
     ariaLabel = "BQL query",
     executeLabel = "Execute",
     onExecute = () => {},
-    onOptions = () => {},
+    onFormat = () => {},
   }: {
     value?: string;
     placeholder?: string;
@@ -19,8 +18,8 @@
     executeLabel?: string;
     /** The adapter owns query evaluation and receives the entered BQL source. */
     onExecute?: (value: string) => void;
-    /** Lets an adapter open presentation options without coupling this control to state. */
-    onOptions?: () => void;
+    /** The adapter owns BQL formatting and replaces the bound source when requested. */
+    onFormat?: (value: string) => void;
   } = $props();
 
   function execute() {
@@ -49,11 +48,11 @@
       variant="ghost"
       size="icon-sm"
       class="bc-query-composer__options"
-      aria-label="Query display options"
-      title="Query display options"
-      onclick={onOptions}
+      aria-label="Format query"
+      title="Format query"
+      onclick={() => onFormat(value)}
     >
-      <SlidersHorizontal aria-hidden="true" />
+      <span class="bc-query-composer__format-glyph" aria-hidden="true">A≡</span>
     </Button>
     <Button
       type="submit"
@@ -113,6 +112,14 @@
   :global(.bc-query-composer__options) {
     border-radius: 0;
     border-inline-end: 1px solid var(--ui-beancount-border);
+  }
+
+  .bc-query-composer__format-glyph {
+    color: var(--ui-beancount-foreground);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: -0.08em;
   }
 
   :global(.bc-query-composer__execute) {
