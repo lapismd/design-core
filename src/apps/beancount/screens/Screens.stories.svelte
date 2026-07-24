@@ -928,7 +928,9 @@
   name="Account detail"
   parameters={{ visualDelta: visualDeltaForScreen("account-detail") }}
   play={async ({ canvas }) => {
-    await expect(canvas.getByText("Assets:Checking")).toBeVisible();
+    await expect(
+      canvas.getByRole("link", { name: "Assets:Checking" }),
+    ).toBeVisible();
     await userEvent.click(canvas.getByRole("tab", { name: "Area Map" }));
     await expect(canvas.getByRole("tab", { name: "Area Map" })).toHaveAttribute(
       "data-state",
@@ -948,130 +950,142 @@
 >
   {#snippet template()}
     <ScreenFrame pageTitle="Account: Assets:Checking">
-      <ContentScrollArea>
-        <div
-          class="bc-screen-story__page bc-screen-story__page--report bc-screen-story__page--account-report"
+      <div class="bc-screen-story__account-detail">
+        <Breadcrumb.Root class="bc-screen-story__account-breadcrumbs">
+          <Breadcrumb.List>
+            <Breadcrumb.Item>
+              <Breadcrumb.Link href="/journal">Journal</Breadcrumb.Link>
+            </Breadcrumb.Item>
+            <Breadcrumb.Separator />
+            <Breadcrumb.Item>
+              <Breadcrumb.Link href="/accounts/Assets">Assets</Breadcrumb.Link>
+            </Breadcrumb.Item>
+            <Breadcrumb.Separator />
+            <Breadcrumb.Item>
+              <Breadcrumb.Page>Assets:Checking</Breadcrumb.Page>
+            </Breadcrumb.Item>
+          </Breadcrumb.List>
+        </Breadcrumb.Root>
+        <ContentScrollArea
+          class="bc-screen-story__account-content"
+          contentClass="bc-screen-story__report-scroll"
         >
-          <Breadcrumb.Root class="bc-screen-story__breadcrumbs">
-            <Breadcrumb.List>
-              <Breadcrumb.Item>
-                <Breadcrumb.Link href="/journal">Journal</Breadcrumb.Link>
-              </Breadcrumb.Item>
-              <Breadcrumb.Separator />
-              <Breadcrumb.Item>
-                <Breadcrumb.Link href="/accounts/Assets">Assets</Breadcrumb.Link
-                >
-              </Breadcrumb.Item>
-              <Breadcrumb.Separator />
-              <Breadcrumb.Item>
-                <Breadcrumb.Page>Assets:Checking</Breadcrumb.Page>
-              </Breadcrumb.Item>
-            </Breadcrumb.List>
-          </Breadcrumb.Root>
-          <ChartSwitcher
-            charts={[
-              { id: "account-balance", label: "Account Balance" },
-              { id: "changes", label: "Changes" },
-              { id: "checking", label: "Assets:Checking" },
-              { id: "august-2026", label: "Aug 2026" },
-              { id: "july-2026", label: "Jul 2026" },
-              { id: "june-2026", label: "Jun 2026" },
-            ]}
-            activeChartId={accountDetailPerspective}
-            ariaLabel="Account report sections"
-            onActiveChartChange={(value) => {
-              accountDetailPerspective = value;
-            }}
+          <div
+            class="bc-screen-story__report-chart bc-screen-story__account-report-chart"
           >
-            {#snippet children()}
-              <ChartPanel
-                ariaLabel="Account balance controls"
-                legend={{
-                  items: [
-                    {
-                      id: "gbp",
-                      label: "GBP",
-                      color: "var(--ui-beancount-accepted)",
+            <ChartSwitcher
+              charts={[
+                { id: "account-balance", label: "Account Balance" },
+                { id: "changes", label: "Changes" },
+                { id: "checking", label: "Assets:Checking" },
+                { id: "august-2026", label: "Aug 2026" },
+                { id: "july-2026", label: "Jul 2026" },
+                { id: "june-2026", label: "Jun 2026" },
+              ]}
+              activeChartId={accountDetailPerspective}
+              ariaLabel="Account report sections"
+              onActiveChartChange={(value) => {
+                accountDetailPerspective = value;
+              }}
+            >
+              {#snippet children()}
+                <ChartPanel
+                  ariaLabel="Account balance controls"
+                  legend={{
+                    items: [
+                      {
+                        id: "gbp",
+                        label: "GBP",
+                        color: "var(--ui-beancount-accepted)",
+                      },
+                    ],
+                    selection: "single",
+                    selectedIds: ["gbp"],
+                  }}
+                  conversion={{
+                    ariaLabel: "Valuation",
+                    value: "cost",
+                    options: [{ value: "cost", label: "At Cost" }],
+                  }}
+                  interval={{
+                    ariaLabel: "Interval",
+                    value: "month",
+                    options: [{ value: "month", label: "Monthly" }],
+                  }}
+                  modes={{
+                    value: accountDetailChartMode,
+                    options: [
+                      { value: "line", label: "Line Chart" },
+                      { value: "area", label: "Area Map" },
+                    ],
+                    ariaLabel: "Account balance chart representation",
+                    onChange: (value) => {
+                      accountDetailChartMode = value as "line" | "area";
                     },
-                  ],
-                  selection: "single",
-                  selectedIds: ["gbp"],
-                }}
-                conversion={{
-                  ariaLabel: "Valuation",
-                  value: "cost",
-                  options: [{ value: "cost", label: "At Cost" }],
-                }}
-                interval={{
-                  ariaLabel: "Interval",
-                  value: "month",
-                  options: [{ value: "month", label: "Monthly" }],
-                }}
-                modes={{
-                  value: accountDetailChartMode,
-                  options: [
-                    { value: "line", label: "Line Chart" },
-                    { value: "area", label: "Area Map" },
-                  ],
-                  ariaLabel: "Account balance chart representation",
-                  onChange: (value) => {
-                    accountDetailChartMode = value as "line" | "area";
-                  },
-                }}
-              >
-                {#snippet children()}
-                  <LineChart
-                    series={accountDetailLineSeries}
-                    mode={accountDetailChartMode}
-                    interpolation="step"
-                    xTickCount={7}
-                    chartWidth={900}
-                    chartHeight={250}
-                    valueDomain={{ min: -3200, max: 27400 }}
-                    yTickValues={[
-                      -2000, 0, 2000, 4000, 6000, 8000, 10000, 12000, 14000,
-                      16000, 18000, 20000, 22000, 24000, 26000,
-                    ]}
-                    gridOpacity={0.2}
-                    ariaLabel="Assets Checking balance history"
-                    valueFormatter={formatReportAxisAmount}
-                  />
-                {/snippet}
-              </ChartPanel>
-            {/snippet}
-          </ChartSwitcher>
-          <ChartSwitcher
-            charts={[
-              { id: "account-table", label: "Account Table" },
-              { id: "changes-monthly", label: "Changes (Monthly)" },
-              { id: "balances-monthly", label: "Balances (Monthly)" },
-            ]}
-            activeChartId={accountDetailTablePerspective}
-            ariaLabel="Account table sections"
-            tabsPlacement="top"
-            onActiveChartChange={(value) => {
-              accountDetailTablePerspective = value;
-            }}
-          >
-            {#snippet children()}
-              <LedgerActivityTable
-                groups={accountDetailGroups}
-                showAccountAvatars
-                ariaLabel="Assets Checking activity"
-                amountHeading="Balance"
-                timeframes={[
-                  { id: "transactions", label: "Transactions" },
-                  { id: "upcoming", label: "Upcoming" },
-                ]}
-                timeframe={accountDetailTimeframe}
-                onTimeframeChange={(value) => {
-                  accountDetailTimeframe = value;
-                }}
-              />
-            {/snippet}
-          </ChartSwitcher>
-        </div>
-      </ContentScrollArea>
+                  }}
+                >
+                  {#snippet children()}
+                    <LineChart
+                      series={accountDetailLineSeries}
+                      mode={accountDetailChartMode}
+                      interpolation="step"
+                      xTickCount={7}
+                      chartWidth={982}
+                      chartHeight={250}
+                      chartMargins={{
+                        top: 10,
+                        right: 10,
+                        bottom: 30,
+                        left: 40,
+                      }}
+                      valueDomain={{ min: -2634, max: 26834 }}
+                      yTickValues={[
+                        -2000, 0, 2000, 4000, 6000, 8000, 10000, 12000, 14000,
+                        16000, 18000, 20000, 22000, 24000, 26000,
+                      ]}
+                      gridOpacity={0.2}
+                      ariaLabel="Assets Checking balance history"
+                      valueFormatter={formatReportAxisAmount}
+                    />
+                  {/snippet}
+                </ChartPanel>
+              {/snippet}
+            </ChartSwitcher>
+          </div>
+          <div class="bc-screen-story__account-report-table">
+            <ChartSwitcher
+              charts={[
+                { id: "account-table", label: "Account Table" },
+                { id: "changes-monthly", label: "Changes (Monthly)" },
+                { id: "balances-monthly", label: "Balances (Monthly)" },
+              ]}
+              activeChartId={accountDetailTablePerspective}
+              ariaLabel="Account table sections"
+              tabsPlacement="top"
+              onActiveChartChange={(value) => {
+                accountDetailTablePerspective = value;
+              }}
+            >
+              {#snippet children()}
+                <LedgerActivityTable
+                  groups={accountDetailGroups}
+                  showAccountAvatars
+                  ariaLabel="Assets Checking activity"
+                  amountHeading="Balance"
+                  timeframes={[
+                    { id: "transactions", label: "Transactions" },
+                    { id: "upcoming", label: "Upcoming" },
+                  ]}
+                  timeframe={accountDetailTimeframe}
+                  onTimeframeChange={(value) => {
+                    accountDetailTimeframe = value;
+                  }}
+                />
+              {/snippet}
+            </ChartSwitcher>
+          </div>
+        </ContentScrollArea>
+      </div>
     </ScreenFrame>
   {/snippet}
 </Story>
@@ -1760,10 +1774,6 @@
     gap: var(--ui-beancount-space-4);
   }
 
-  .bc-screen-story__page--account-report {
-    gap: var(--ui-beancount-space-2);
-  }
-
   :global(.bc-screen-story__report-scroll) {
     min-height: 100%;
     padding-top: var(--ui-beancount-space-2);
@@ -1810,6 +1820,32 @@
     display: grid;
     gap: calc(var(--ui-beancount-space-4) * 2);
     padding: var(--ui-beancount-space-4);
+  }
+
+  .bc-screen-story__account-detail {
+    display: flex;
+    min-height: 0;
+    height: 100%;
+    flex-direction: column;
+  }
+
+  :global(.bc-screen-story__account-breadcrumbs) {
+    flex: none;
+    padding: var(--ui-beancount-space-3);
+  }
+
+  :global(.bc-screen-story__account-content) {
+    min-height: 0;
+    flex: 1;
+  }
+
+  .bc-screen-story__account-report-chart,
+  .bc-screen-story__account-report-table {
+    padding: var(--ui-beancount-space-2);
+  }
+
+  :global(.bc-screen-story__account-report-table .bc-chart-switcher__tabs) {
+    margin-inline: 0;
   }
 
   .bc-screen-story__statement-section {
