@@ -35,7 +35,8 @@ export type PredicateChipEditSession = PredicateEditSession & {
 
 /** Host opens the chip editor when a chip (not its delete control) is clicked. */
 export const predicateChipEditHandler = Facet.define<
-  (session: PredicateChipEditSession) => void
+  (session: PredicateChipEditSession) => void,
+  ((session: PredicateChipEditSession) => void) | undefined
 >({
   combine: (values) => values[0],
 });

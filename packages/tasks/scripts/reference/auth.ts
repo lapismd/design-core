@@ -57,13 +57,20 @@ async function waitForSession(page: Page): Promise<string> {
 
   const saveNow = (async () => {
     await ensureDirectory(path.dirname(saveNowPath));
-    const watcher = watch(path.dirname(saveNowPath));
+    const ac = new AbortController();
     try {
+      const watcher = watch(path.dirname(saveNowPath), { signal: ac.signal });
       for await (const event of watcher) {
         if (event.filename === "save-now") return "save-now";
       }
+    } catch (error) {
+      if (error instanceof Error && error.name === "AbortError") {
+        /* cancelled in finally */
+      } else {
+        throw error;
+      }
     } finally {
-      await watcher.close().catch(() => undefined);
+      ac.abort();
     }
     throw new Error("save-now watcher ended");
   })();

@@ -68,7 +68,8 @@
       const listId = activeNavId.slice("list:".length);
       const list = fixture.lists.find((item) => item.id === listId);
       if (list) {
-        return fixture.tasks.filter((task) => list.taskIds.includes(task.id));
+        const listTaskIds = new Set<string>(list.taskIds);
+        return fixture.tasks.filter((task) => listTaskIds.has(task.id));
       }
     }
     return fixture.tasks;

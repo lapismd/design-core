@@ -192,7 +192,8 @@ function StackedSidebarLabel({ item }: { item: HashEntry }) {
               {
                 key: entry.tag,
                 style,
-                "data-tag": entry.tag,
+                // Storybook styled.div props omit data-* keys.
+                ...({ "data-tag": entry.tag } as Record<string, string>),
               },
               entry.badge.text,
             );

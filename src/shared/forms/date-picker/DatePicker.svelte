@@ -58,7 +58,7 @@
 
   const normalizedValue = $derived(normalizeDateOnly(value));
   const formatter = $derived(
-    new DateFormatter(locale ?? undefined, { dateStyle: "medium" }),
+    new DateFormatter(locale ?? "en-US", { dateStyle: "medium" }),
   );
   const displayValue = $derived.by(() => {
     if (!normalizedValue) return placeholder;
