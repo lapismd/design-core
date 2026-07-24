@@ -120,3 +120,34 @@
     />
   {/snippet}
 </Story>
+
+<Story
+  name="Running progress"
+  play={async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const shell = await waitFor(() => canvas.getByTestId("testing-module-shell"));
+    const scope = within(shell);
+
+    await expect(
+      scope.getByText("✓ shadcn-disclosure-accordion--opens-a-section (1/2)"),
+    ).toBeInTheDocument();
+    await expect(scope.getByTestId("compare-row-progress")).toHaveTextContent(
+      "1/2",
+    );
+    await expect(scope.getByTestId("baseline-row-progress")).toHaveTextContent(
+      "1/1",
+    );
+    await expect(scope.getByTestId("status-row-progress")).toHaveTextContent(
+      "0/2",
+    );
+  }}
+>
+  {#snippet template()}
+    <ReactThemeHost
+      element={React.createElement(TestingModuleShell, {
+        variant: "context",
+        seedRunningProgress: true,
+      })}
+    />
+  {/snippet}
+</Story>
