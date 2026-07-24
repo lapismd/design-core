@@ -1,9 +1,8 @@
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import {
-  VISUAL_REVIEW_APPROVED_TAG,
-  VISUAL_REVIEW_PENDING_TAG,
   VISUAL_REVIEW_TAGS,
+  visualReviewStatusFromTags,
   visualReviewTagFor,
   type VisualReviewStatus,
 } from "../../../packages/storybook-addon-visual-delta/src/constants.js";
@@ -229,14 +228,15 @@ export function listStoryIdsForPrefix(
 /**
  * Mark stories as `visual-pending` for review.
  *
- * - Create-missing: skips stories that are already approved or pending.
- * - Rewrite/update: pass `resetApproved: true` so `visual-approved` is cleared
- *   and the component loses its approved badge after new pixels land.
+ * - Create-missing: skips stories that are already approved, ready, or pending
+ *   (failed still resets to pending when a new baseline is wired).
+ * - Rewrite/update: pass `resetApproved: true` so approved/ready/failed clear
+ *   to `visual-pending` after new pixels land.
  */
 export function markCreatedStoriesPending(options: {
   packageRoot: string;
   storyIds: string[];
-  /** When true, also reset `visual-approved` → `visual-pending`. */
+  /** When true, reset non-pending review tags → `visual-pending`. */
   resetApproved?: boolean;
 }): { marked: string[]; skipped: string[] } {
   const marked: string[] = [];
@@ -251,20 +251,15 @@ export function markCreatedStoriesPending(options: {
       skipped.push(storyId);
       continue;
     }
-    const tags = entry.tags ?? [];
-    if (!resetApproved && tags.includes(VISUAL_REVIEW_APPROVED_TAG)) {
-      skipped.push(storyId);
-      continue;
-    }
-    if (!resetApproved && tags.includes(VISUAL_REVIEW_PENDING_TAG)) {
-      skipped.push(storyId);
-      continue;
-    }
+    const status = visualReviewStatusFromTags(entry.tags);
     if (
-      resetApproved &&
-      tags.includes(VISUAL_REVIEW_PENDING_TAG) &&
-      !tags.includes(VISUAL_REVIEW_APPROVED_TAG)
+      !resetApproved &&
+      (status === "approved" || status === "pending" || status === "ready")
     ) {
+      skipped.push(storyId);
+      continue;
+    }
+    if (resetApproved && status === "pending") {
       skipped.push(storyId);
       continue;
     }

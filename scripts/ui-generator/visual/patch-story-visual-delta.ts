@@ -1,5 +1,6 @@
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
+import { VISUAL_REVIEW_TAGS } from "../../../packages/storybook-addon-visual-delta/src/constants.js";
 import {
   baselineUrlForStory,
   visualBaselineVisualDeltaParameter,
@@ -82,11 +83,7 @@ export function removeSkipVisualFromStoryOpenTag(openTag: string): string {
  * visual review tags — review status cannot apply while skipped.
  */
 export function addSkipVisualToStoryOpenTag(openTag: string): string {
-  const reviewTagSet = new Set([
-    "visual-pending",
-    "visual-approved",
-    "visual-failed",
-  ]);
+  const reviewTagSet = new Set<string>(VISUAL_REVIEW_TAGS);
   const tagsMatch = openTag.match(/\btags=\{\[([\s\S]*?)\]\}/);
   if (tagsMatch) {
     const full = tagsMatch[0];

@@ -270,6 +270,7 @@ Visual Delta panel).
 | Tag | Sidebar icon | Toolbar / MDX label | Fill / border |
 | --- | ------------ | ------------------- | ------------- |
 | `visual-failed` | `✕` | `✕ Failed` | `#c52020` / `#8a1414` |
+| `visual-ready` | `⚑` | `⚑ Ready` | `#157dac` / `#0a5070` |
 | `visual-pending` | `⏱` | `⏱ Pending review` | `#c2540a` / `#8a3a05` |
 | `visual-approved` | `⛨` | `⛨ Approved` | `#15843e` / `#0c5a29` |
 | `skip-visual` | `⊘` | `⊘ Skip visual` | `#a66707` / `#734603` |
@@ -287,12 +288,13 @@ Chip styling (manager config, not CSS files):
 - Stack layout: status slot `28px`, gap `8px`, chip overlap `-6px`, ring via
   `--tag-stack-ring` (Storybook theme `background.content` / `background.app`)
 
-**Config order:** review tags (`visual-failed` → `visual-pending` →
-`visual-approved`) are registered **before** other catalog tags so the stacked
-avatar group leads with review status. Review tags use a broad `display` so they
-show on story/docs/component/group with `skipInherited: false` (a parent
-Approved does not hide leaf badges). Then `...defaultConfig` from
-`storybook-addon-tag-badges` (new/beta/… with host icon overrides).
+**Config order:** review tags (`visual-failed` → `visual-ready` →
+`visual-pending` → `visual-approved`) are registered **before** other catalog
+tags so the stacked avatar group leads with review status. Review tags use a
+broad `display` so they show on story/docs/component/group with
+`skipInherited: false` (a parent Approved does not hide leaf badges). Then
+`...defaultConfig` from `storybook-addon-tag-badges` (new/beta/… with host icon
+overrides).
 
 `collectSidebarBadges()` walks **all** matching tag configs (not first-match
 only) so multiple chips can stack.
@@ -618,13 +620,15 @@ Visual Delta review/skip chips (icons, colors, stacking): see
 | `visual-state` | Explicit visual-state story |
 | `visual-pending` | Baseline exists; awaiting human approval (Visual Delta) |
 | `visual-approved` | Baseline reviewed and accepted (Visual Delta) |
+| `visual-ready` | Agent/dev marked baseline ready for human review (Visual Delta) |
 | `visual-failed` | Baseline review failed or rejected (Visual Delta) |
 | `tasks-reference-visual` | Tasks vs Superlist reference baselines |
 | `fava-reference-visual` | Beancount screens vs live Fava captures |
 
-Review tags (`visual-failed` / `visual-pending` / `visual-approved`) are
-mutually exclusive; CSF patchers keep a single review tag. Skipping visual
-clears review tags.
+Review tags (`visual-failed` / `visual-ready` / `visual-pending` /
+`visual-approved`) are mutually exclusive; CSF patchers keep a single review
+tag. Accept/Unaccept set approved/pending; the panel pad toggles ready/failed.
+Skipping visual clears review tags.
 
 ## Native CSS generator
 

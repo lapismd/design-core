@@ -249,6 +249,15 @@ describe("patchStoryOpenTagWithReviewStatus", () => {
     expect(next).not.toContain("visual-approved");
   });
 
+  it("swaps pending for ready", () => {
+    const next = patchStoryOpenTagWithReviewStatus(
+      `<Story name="Default" tags={["visual-pending"]}>`,
+      "ready",
+    );
+    expect(next).toContain('"visual-ready"');
+    expect(next).not.toContain("visual-pending");
+  });
+
   it("is idempotent when the status tag is already present", () => {
     const tag = `<Story name="Default" tags={["visual-approved"]}>`;
     expect(patchStoryOpenTagWithReviewStatus(tag, "approved")).toBe(tag);

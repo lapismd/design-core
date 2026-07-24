@@ -95,6 +95,7 @@ const TAG_ICONS: Record<string, string> = {
   "visual-state": "◉",
   "visual-pending": "⏱",
   "visual-approved": "⛨",
+  "visual-ready": "⚑",
   "visual-failed": "✕",
   "tasks-reference-visual": "☰",
   "fava-reference-visual": "☰",
@@ -212,6 +213,15 @@ addons.setConfig({
         text: "Failed",
         style: "red",
         tooltip: "Baseline review failed or rejected",
+      },
+      display: { sidebar: REVIEW_SIDEBAR_DISPLAY, toolbar: ["docs", "story"] },
+    },
+    {
+      tags: "visual-ready",
+      badge: {
+        text: "Ready",
+        style: "blue",
+        tooltip: "Agent/dev marked baseline ready for human review",
       },
       display: { sidebar: REVIEW_SIDEBAR_DISPLAY, toolbar: ["docs", "story"] },
     },
