@@ -1157,7 +1157,7 @@ export const editorPreviewLines = [
     number: 1,
     heading: true,
     section: "options",
-    tokens: [{ value: "Options" }],
+    tokens: [{ value: "## ", tone: "comment" }, { value: "Options" }],
   },
   { id: "editor-line-2", number: 2, section: "options", tokens: [] },
   {
@@ -1298,7 +1298,7 @@ export const editorPreviewLines = [
     number: 16,
     heading: true,
     section: "general-accounts",
-    tokens: [{ value: "General Accounts" }],
+    tokens: [{ value: "## ", tone: "comment" }, { value: "General Accounts" }],
   },
   {
     id: "editor-line-17",
@@ -1375,7 +1375,7 @@ export const editorPreviewLines = [
     number: 26,
     heading: true,
     section: "queries",
-    tokens: [{ value: "Queries" }],
+    tokens: [{ value: "## ", tone: "comment" }, { value: "Queries" }],
   },
   { id: "editor-line-27", number: 27, section: "queries", tokens: [] },
   {
@@ -1398,7 +1398,7 @@ export const editorPreviewLines = [
     number: 30,
     heading: true,
     section: "events",
-    tokens: [{ value: "Events" }],
+    tokens: [{ value: "## ", tone: "comment" }, { value: "Events" }],
   },
   { id: "editor-line-31", number: 31, section: "events", tokens: [] },
   {
@@ -1424,7 +1424,7 @@ export const editorPreviewLines = [
     number: 34,
     heading: true,
     section: "accounts",
-    tokens: [{ value: "Accounts" }],
+    tokens: [{ value: "## ", tone: "comment" }, { value: "Accounts" }],
   },
   { id: "editor-line-35", number: 35, section: "accounts", tokens: [] },
   {

@@ -12,10 +12,13 @@
    */
   let {
     pageTitle,
+    headerLeading,
     headerActions,
     children,
   }: {
     pageTitle: string;
+    /** Optional controlled route controls rendered beside the page title. */
+    headerLeading?: Snippet;
     /** Optional controlled route actions rendered in the shared shell header. */
     headerActions?: Snippet;
     children?: Snippet;
@@ -83,6 +86,7 @@
     {sidebarTabs}
     activeSidebarTab="workspace"
     projectTabId="projects"
+    {headerLeading}
     {headerActions}
   >
     {#snippet sidebarTabContent(tabId)}

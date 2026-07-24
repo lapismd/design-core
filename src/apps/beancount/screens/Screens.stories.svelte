@@ -4,6 +4,7 @@
   import * as Breadcrumb from "@stevejuma/ui/shadcn/breadcrumb";
   import { Button } from "@stevejuma/ui/shadcn/button";
   import * as Tabs from "@stevejuma/ui/shadcn/tabs";
+  import EditorMenuBar, { type EditorMenuAction } from "./EditorMenuBar.svelte";
   import EditorToolbar from "./EditorToolbar.svelte";
   import LedgerEditorSurface from "./LedgerEditorSurface.svelte";
   import PresetQueryReport from "./PresetQueryReport.svelte";
@@ -281,6 +282,7 @@
   let journalTimeframe = $state("transactions");
   let journalRecordAction = $state("");
   let editorHeadersCollapsedAll = $state(false);
+  let editorFormatOnSave = $state(true);
   let editorAction = $state("");
   let dashboardAction = $state("");
   let incomeChartMode = $state<"single" | "stacked">("stacked");
@@ -369,6 +371,17 @@
     Math.abs(value) < 1000
       ? `${value < 0 ? "−" : ""}${Math.abs(value).toFixed(2)}`
       : `${value < 0 ? "−" : ""}${(Math.abs(value) / 1000).toFixed(2)}k`;
+
+  const editorSources = [{ id: "account-ledger", label: "Account Ledger" }];
+  const editorActionLabels: Record<EditorMenuAction, string> = {
+    "ask-ai": "Ask AI about selection requested",
+    "close-all-folds": "Close all folds requested",
+    find: "Find requested",
+    format: "Format requested",
+    "go-to-line": "Go to line requested",
+    "open-all-folds": "Open all folds requested",
+    "toggle-comment": "Toggle comment requested",
+  };
 </script>
 
 <Story
@@ -391,10 +404,34 @@
     await expect(canvas.getByRole("status")).toHaveTextContent(
       "Save ledger requested",
     );
+    await userEvent.click(canvas.getByRole("button", { name: "File" }));
+    await userEvent.click(
+      within(document.body).getByRole("menuitem", { name: "Go to line…" }),
+    );
+    await expect(canvas.getByRole("status")).toHaveTextContent(
+      "Go to line requested",
+    );
   }}
 >
   {#snippet template()}
     <ScreenFrame pageTitle="Editor">
+      {#snippet headerLeading()}
+        <EditorMenuBar
+          sources={editorSources}
+          activeSourceId="account-ledger"
+          formatOnSave={editorFormatOnSave}
+          onSourceSelect={(source) => {
+            editorAction = `Open ${source.label} requested`;
+          }}
+          onFormatOnSaveChange={(formatOnSave) => {
+            editorFormatOnSave = formatOnSave;
+            editorAction = `Format on save ${formatOnSave ? "enabled" : "disabled"}`;
+          }}
+          onAction={(action) => {
+            editorAction = editorActionLabels[action];
+          }}
+        />
+      {/snippet}
       {#snippet headerActions()}
         <EditorToolbar
           headersCollapsedAll={editorHeadersCollapsedAll}

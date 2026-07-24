@@ -353,9 +353,11 @@ captures. Tagged `fava-reference-visual` + `skip-visual` until bodies are
 honest enough for Playwright regression. Visual Delta reads the same PNGs the
 capture harness writes.
 
+- `EditorMenuBar` — controlled Fava-aligned File/Edit menu chrome over shared
+  DropdownMenu; the host owns source selection, format-on-save, editor commands,
+  AI requests, and CodeMirror integration
 - `EditorToolbar` — controlled Fava-aligned collapse/expand headings and save
-  header actions; the host owns the editor runtime, File/Edit menus, persistence,
-  and CodeMirror integration
+  header actions; the host owns the editor runtime and persistence
 - `LedgerEditorSurface` — display-ready, tokenized Fava ledger source preview;
   the host owns parsing, source edits, selections, persistence, and CodeMirror
 - `PresetQueryReport` — controlled Fava `PresetQueryView` composition over
