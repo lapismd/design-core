@@ -370,6 +370,11 @@ capture harness writes.
   `tests/visual/storybook.spec.ts-snapshots/apps/beancount/screens/`.
 - `pnpm beancount:screens:verify` checks matrix ↔ stories ↔ baseline files.
 - Do **not** refresh these with `test:visual:update`.
+- The 2026-07-24 full `pnpm test:visual` run reached real Storybook captures:
+  136 stories passed and 208 failed solely because their component regression
+  PNG was not committed. The 94 Beancount candidates therefore remain
+  unapproved coverage work; this does not permit changing the Fava reference
+  captures or removing `skip-visual` from full-screen Fava comparisons.
 
 ### Fava leftovers (keep in `packages/fava` for now)
 

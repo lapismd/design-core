@@ -34,14 +34,14 @@ Studio revision, fixture digest, viewport, and per-image digest.
 
 ## Current baseline health
 
-| Check                     | Status | Evidence / next action                                                                                                                                                                                                                       |
-| ------------------------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Matrix integrity          | ✅     | `pnpm beancount:screens:verify` finds 15 stories and PNGs                                                                                                                                                                                    |
-| Reference provenance      | ✅     | 2026-07-23 capture: Studio `191dae81…`, sample fixture digest, 15 image digests                                                                                                                                                              |
-| Loaded route capture      | 🟡     | Records has a deterministic catalog queue, but its Fava reference remains empty; Rules has a deterministic body but no reference run history; Import Accounts remains static                                                                 |
-| Fava overwrite guard      | ✅     | Normal visual updater and Playwright snapshot updates reject reference-tagged stories                                                                                                                                                        |
-| Screen story health       | ✅     | The shared Studio shell now exposes Fava's controlled 220–520px resize rail and 48px collapsed project rail; Holdings and Statistics share `PresetQueryReport`; Settings queries are unambiguous; Dashboard uses one top-level main landmark |
-| Component regression PNGs | ⬜     | 94 Beancount visual candidates still need reviewed, family-by-family baselines                                                                                                                                                               |
+| Check                     | Status | Evidence / next action                                                                                                                                                                                                                                                                                                  |
+| ------------------------- | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Matrix integrity          | ✅     | `pnpm beancount:screens:verify` finds 15 stories and PNGs                                                                                                                                                                                                                                                               |
+| Reference provenance      | ✅     | 2026-07-23 capture: Studio `191dae81…`, sample fixture digest, 15 image digests                                                                                                                                                                                                                                         |
+| Loaded route capture      | 🟡     | Records has a deterministic catalog queue, but its Fava reference remains empty; Rules has a deterministic body but no reference run history; Import Accounts remains static                                                                                                                                            |
+| Fava overwrite guard      | ✅     | Normal visual updater and Playwright snapshot updates reject reference-tagged stories                                                                                                                                                                                                                                   |
+| Screen story health       | ✅     | The shared Studio shell now exposes Fava's controlled 220–520px resize rail and 48px collapsed project rail; Holdings and Statistics share `PresetQueryReport`; Settings queries are unambiguous; Dashboard uses one top-level main landmark                                                                            |
+| Component regression PNGs | 🟡     | The 2026-07-24 compare-only full run reached real screenshots (136 passed); 208 catalog stories failed because their committed PNG is absent, including the 94 Beancount candidates. This is baseline coverage, not an approved pixel delta. Establish reviewed family batches before using this lane as a parity gate. |
 
 ## Screen tracker
 
@@ -153,7 +153,9 @@ explicit exceptions.
    Editor chrome. Use shared forms/filter primitives with app-owned callbacks;
    do not copy Fava forms or CodeMirror integration.
 6. **Regression coverage** — establish component baselines in reviewed family
-   batches. Completion requires every non-skipped Beancount story to have one.
+   batches. The 2026-07-24 full compare demonstrated that the runner is
+   functional but lacks the required PNGs; completion requires every
+   non-skipped Beancount story to have one.
 7. **`fava-beta`** — clone a clean Fava revision into
    `packages/fava-beta`, name it `@beancount-js/fava-beta`, and link
    `@stevejuma/ui` using `link:../../../../ui`. Configure Vite/Tailwind for the
@@ -171,6 +173,9 @@ pnpm beancount:tokens:check
 
 # Catalog iteration
 pnpm storybook
+# Wait for the production build to finish and emit storybook-static/iframe.html
+# (the command wrapper can return before the child Vite build completes).
+pnpm build-storybook
 pnpm test:visual
 pnpm checks
 ```
