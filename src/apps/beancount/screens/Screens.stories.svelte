@@ -279,6 +279,19 @@
   };
 
   const formatDashboardAmount = (value: number) => `${value.toFixed(2)} GBP`;
+
+  /**
+   * Full-screen Fava references capture the initial route state. Interaction
+   * stories restore that state before Storybook's end-of-play visual capture
+   * so keyboard focus and transient controlled values do not become baseline
+   * candidates.
+   */
+  function restoreReferenceFocus() {
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
+  }
+
   let journalTimeframe = $state("transactions");
   let journalRecordAction = $state("");
   let editorHeadersCollapsedAll = $state(false);
@@ -1252,6 +1265,7 @@
     await expect(canvas.getByRole("status")).toHaveTextContent(
       "Accounts requested",
     );
+    restoreReferenceFocus();
   }}
 >
   {#snippet template()}
@@ -1406,13 +1420,16 @@
   parameters={{ visualDelta: visualDeltaForScreen("settings") }}
   play={async ({ canvas }) => {
     await expect(canvas.getByText("Your connections · 1")).toBeVisible();
-    await userEvent.click(
-      canvas.getByRole("switch", { name: "Use YAML source configuration" }),
-    );
+    const yamlSwitch = canvas.getByRole("switch", {
+      name: "Use YAML source configuration",
+    });
+    const lunchFlowButton = canvas.getByRole("button", {
+      name: "Open Lunch Flow",
+    });
+
+    await userEvent.click(yamlSwitch);
     await expect(canvas.getByRole("status")).toHaveTextContent("YAML enabled");
-    await userEvent.click(
-      canvas.getByRole("button", { name: "Open Lunch Flow" }),
-    );
+    await userEvent.click(lunchFlowButton);
     await expect(
       canvas.getByRole("region", { name: "Lunch Flow connection details" }),
     ).toBeVisible();
@@ -1420,6 +1437,13 @@
     await expect(canvas.getByRole("status")).toHaveTextContent(
       "Update API key",
     );
+    await userEvent.click(lunchFlowButton);
+    await expect(
+      canvas.queryByRole("region", { name: "Lunch Flow connection details" }),
+    ).not.toBeInTheDocument();
+    await userEvent.click(yamlSwitch);
+    await expect(yamlSwitch).toHaveAttribute("aria-checked", "false");
+    restoreReferenceFocus();
   }}
 >
   {#snippet template()}
@@ -1485,18 +1509,21 @@
     await expect(
       canvas.getByText("Credential available · Discovering accounts..."),
     ).toBeVisible();
-    await userEvent.click(
-      canvas.getByRole("button", { name: "Open Lunch Flow accounts" }),
-    );
+    const lunchFlowButton = canvas.getByRole("button", {
+      name: "Open Lunch Flow accounts",
+    });
+    const otherAccountsButton = canvas.getByRole("button", {
+      name: "Open Other Accounts",
+    });
+
+    await userEvent.click(lunchFlowButton);
     await expect(canvas.getByRole("status")).toHaveTextContent(
       "Open Lunch Flow",
     );
     await expect(
       canvas.getByRole("region", { name: "Lunch Flow account details" }),
     ).toBeVisible();
-    await userEvent.click(
-      canvas.getByRole("button", { name: "Open Other Accounts" }),
-    );
+    await userEvent.click(otherAccountsButton);
     await expect(canvas.getByRole("status")).toHaveTextContent(
       "Open Other Accounts",
     );
@@ -1513,6 +1540,11 @@
     await expect(canvas.getByRole("status")).toHaveTextContent(
       "Sync Lunch Flow",
     );
+    await userEvent.click(lunchFlowButton);
+    await expect(
+      canvas.queryByRole("region", { name: "Lunch Flow account details" }),
+    ).not.toBeInTheDocument();
+    restoreReferenceFocus();
   }}
 >
   {#snippet template()}
@@ -1577,6 +1609,13 @@
       within(document.body).getByRole("menuitem", { name: "Run…" }),
     );
     await expect(canvas.getByRole("status")).toHaveTextContent("Run Test Rule");
+    await userEvent.click(
+      canvas.getByRole("switch", { name: "Activate Test Rule" }),
+    );
+    await expect(
+      canvas.getByRole("switch", { name: "Deactivate Test Rule" }),
+    ).toBeChecked();
+    restoreReferenceFocus();
   }}
 >
   {#snippet template()}
