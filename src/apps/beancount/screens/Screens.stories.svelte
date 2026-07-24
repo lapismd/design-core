@@ -1501,30 +1501,32 @@
       {/snippet}
       <ContentScrollArea>
         <div class="bc-screen-story__page bc-screen-story__sources">
-          <SourceConnectionCatalog
-            connectedSources={sourceConnectionModels}
-            {availableSources}
-            expandedSourceId={sourceExpandedId}
-            onOpenConnection={(source) => {
-              sourceAction = `Open ${source.name}`;
-            }}
-            onExpandedSourceChange={(source) => {
-              sourceExpandedId = source?.id;
-            }}
-            onConnectionFieldChange={(source, field, value) => {
-              sourceFieldValues = {
-                ...sourceFieldValues,
-                [`${source.id}:${field.id}`]: value,
-              };
-              sourceAction = `Update ${field.label}`;
-            }}
-            onUpdateConnection={(source) => {
-              sourceAction = `Update ${source.name}`;
-            }}
-            onConnect={(source) => {
-              sourceAction = `Connect ${source.name}`;
-            }}
-          />
+          <div class="bc-screen-story__sources-content">
+            <SourceConnectionCatalog
+              connectedSources={sourceConnectionModels}
+              {availableSources}
+              expandedSourceId={sourceExpandedId}
+              onOpenConnection={(source) => {
+                sourceAction = `Open ${source.name}`;
+              }}
+              onExpandedSourceChange={(source) => {
+                sourceExpandedId = source?.id;
+              }}
+              onConnectionFieldChange={(source, field, value) => {
+                sourceFieldValues = {
+                  ...sourceFieldValues,
+                  [`${source.id}:${field.id}`]: value,
+                };
+                sourceAction = `Update ${field.label}`;
+              }}
+              onUpdateConnection={(source) => {
+                sourceAction = `Update ${source.name}`;
+              }}
+              onConnect={(source) => {
+                sourceAction = `Connect ${source.name}`;
+              }}
+            />
+          </div>
           <output class="bc-screen-story__status" aria-live="polite">
             {sourceAction}
           </output>
@@ -1757,7 +1759,11 @@
   }
 
   .bc-screen-story__sources {
-    max-width: 70rem;
+    padding: var(--ui-beancount-space-6);
+  }
+
+  .bc-screen-story__sources-content {
+    max-width: 48rem;
     margin-inline: auto;
   }
 

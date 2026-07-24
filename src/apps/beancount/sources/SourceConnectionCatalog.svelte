@@ -136,7 +136,7 @@
               aria-hidden="true"
             />
             <span
-              class="bc-source-catalog__brand"
+              class="bc-source-catalog__brand bc-source-catalog__brand--connected"
               data-tone={source.tone ?? "primary"}
               aria-hidden="true"
             >
@@ -250,7 +250,7 @@
         <Card.Root class="bc-source-catalog__available-card">
           <div class="bc-source-catalog__available-header">
             <span
-              class="bc-source-catalog__brand"
+              class="bc-source-catalog__brand bc-source-catalog__brand--available"
               data-tone={source.tone ?? "primary"}
               aria-hidden="true"
             >
@@ -294,19 +294,19 @@
   }
 
   .bc-source-catalog {
-    gap: calc(var(--ui-beancount-space-5) * 2);
+    gap: calc(var(--ui-beancount-space-4) * 2);
   }
 
   .bc-source-catalog__section {
-    gap: var(--ui-beancount-space-3);
+    gap: var(--ui-beancount-space-4);
   }
 
   .bc-source-catalog__heading {
     margin: 0;
     color: var(--ui-beancount-muted-foreground);
-    font-size: var(--text-sm);
+    font-size: var(--text-xs);
     font-weight: var(--font-weight-medium);
-    letter-spacing: 0.04em;
+    letter-spacing: 0.025em;
     text-transform: uppercase;
   }
 
@@ -323,10 +323,11 @@
   .bc-source-catalog__connected-action {
     display: grid;
     width: 100%;
+    min-height: calc(var(--ui-beancount-space-4) * 4);
     grid-template-columns: auto auto minmax(0, 1fr) auto;
     align-items: center;
     gap: var(--ui-beancount-space-3);
-    padding: calc(var(--ui-beancount-space-4) * 1.25);
+    padding: var(--ui-beancount-space-3) var(--ui-beancount-space-4);
     color: var(--ui-beancount-foreground);
     text-align: left;
   }
@@ -338,8 +339,8 @@
   }
 
   :global(.bc-source-catalog__connected-chevron) {
-    width: var(--ui-beancount-space-5);
-    height: var(--ui-beancount-space-5);
+    width: var(--ui-beancount-space-4);
+    height: var(--ui-beancount-space-4);
     color: var(--ui-beancount-muted-foreground);
     transition: transform 150ms ease;
     transform: rotate(-90deg);
@@ -351,12 +352,11 @@
 
   .bc-source-catalog__brand {
     display: inline-flex;
-    width: calc(var(--ui-beancount-space-5) * 2.75);
-    height: calc(var(--ui-beancount-space-5) * 2.75);
+    width: calc(var(--ui-beancount-space-3) * 3);
+    height: calc(var(--ui-beancount-space-3) * 3);
     flex: none;
     align-items: center;
     justify-content: center;
-    border-radius: var(--ui-beancount-radius-panel);
     background: color-mix(
       in srgb,
       var(--ui-beancount-accent) 85%,
@@ -365,6 +365,23 @@
     color: var(--ui-beancount-accent-foreground);
     font-size: var(--text-sm);
     font-weight: var(--font-weight-semibold);
+  }
+
+  .bc-source-catalog__brand--connected {
+    border-radius: 999px;
+  }
+
+  .bc-source-catalog__brand.bc-source-catalog__brand--connected[data-tone="negative"] {
+    background: color-mix(
+      in srgb,
+      var(--ui-beancount-negative) 24%,
+      var(--ui-beancount-surface)
+    );
+    color: var(--ui-beancount-negative);
+  }
+
+  .bc-source-catalog__brand--available {
+    border-radius: var(--ui-beancount-radius-panel);
   }
 
   .bc-source-catalog__brand[data-tone="positive"] {
@@ -388,7 +405,7 @@
   .bc-source-catalog__connected-name,
   .bc-source-catalog__available-name-row h3 {
     color: var(--ui-beancount-foreground);
-    font-size: var(--text-lg);
+    font-size: var(--text-sm);
     font-weight: var(--font-weight-semibold);
   }
 
@@ -506,9 +523,10 @@
   }
 
   :global(.bc-source-catalog__available-card) {
-    min-height: 17.75rem;
+    min-height: calc(var(--ui-beancount-space-4) * 11);
+    gap: var(--ui-beancount-space-3);
     justify-content: space-between;
-    padding: calc(var(--ui-beancount-space-4) * 1.5);
+    padding: var(--ui-beancount-space-4);
   }
 
   .bc-source-catalog__available-header {
@@ -546,14 +564,15 @@
   .bc-source-catalog__available-description,
   .bc-source-catalog__empty {
     color: var(--ui-beancount-muted-foreground);
-    font-size: var(--text-sm);
+    font-size: var(--text-xs);
   }
 
   .bc-source-catalog__available-identity p {
-    margin-block-start: var(--ui-beancount-space-1);
+    margin-block-start: calc(var(--ui-beancount-space-1) / 2);
   }
 
   .bc-source-catalog__available-description {
+    font-size: var(--text-sm);
     line-height: var(--leading-relaxed);
   }
 
