@@ -50,6 +50,9 @@
   --ui-beancount-space-5: calc(var(--spacing) * 5);
   --ui-beancount-space-6: calc(var(--spacing) * 6);
   --ui-beancount-space-7: calc(var(--spacing) * 7);
+  --ui-beancount-space-10: calc(var(--spacing) * 10);
+  --ui-beancount-space-14: calc(var(--spacing) * 14);
+  --ui-beancount-space-48: calc(var(--spacing) * 48);
 }
 
 .dark {

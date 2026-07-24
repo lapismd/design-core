@@ -68,7 +68,7 @@
 
   :global(.bc-review-imports-skeleton__subtitle) {
     width: 12rem;
-    height: calc(var(--spacing) * 3.5);
+    height: var(--ui-beancount-space-3-5);
   }
 
   :global(.bc-review-imports-skeleton__filter) {
@@ -81,7 +81,7 @@
     overflow: hidden;
     border: 1px solid var(--ui-beancount-border);
     border-radius: var(--ui-beancount-radius-panel);
-    background: var(--card);
+    background: var(--ui-beancount-surface-raised);
     box-shadow: var(--ui-beancount-shadow-panel);
   }
 
@@ -114,7 +114,7 @@
 
   :global(.bc-review-imports-skeleton__group-title) {
     width: 9rem;
-    height: calc(var(--spacing) * 3.5);
+    height: var(--ui-beancount-space-3-5);
   }
 
   :global(.bc-review-imports-skeleton__count) {
@@ -141,7 +141,7 @@
 
   :global(.bc-review-imports-skeleton__row-title) {
     width: 13rem;
-    height: calc(var(--spacing) * 3.5);
+    height: var(--ui-beancount-space-3-5);
   }
 
   :global(.bc-review-imports-skeleton__row-subtitle) {
@@ -152,13 +152,13 @@
   :global(.bc-review-imports-skeleton__row-amount) {
     grid-column: 2;
     width: 5rem;
-    height: calc(var(--spacing) * 3.5);
+    height: var(--ui-beancount-space-3-5);
   }
 
   :global(.bc-review-imports-skeleton__row-status) {
     display: none;
     width: 4rem;
-    height: calc(var(--spacing) * 3.5);
+    height: var(--ui-beancount-space-3-5);
   }
 
   @media (min-width: 640px) {

@@ -61,7 +61,7 @@
 
   :global(.bc-reconciliation-review-skeleton__toolbar) {
     width: 100%;
-    height: calc(var(--spacing) * 10);
+    height: var(--ui-beancount-space-10);
     border-radius: var(--radius-lg);
   }
 
@@ -145,7 +145,7 @@
     margin-block-end: var(--ui-beancount-space-1);
     border: 1px solid var(--ui-beancount-border);
     border-radius: var(--ui-beancount-radius-panel);
-    background: var(--card);
+    background: var(--ui-beancount-surface-raised);
   }
 
   .bc-reconciliation-review-skeleton__candidate {
@@ -162,8 +162,8 @@
   }
 
   :global(.bc-reconciliation-review-skeleton__avatar) {
-    width: calc(var(--spacing) * 10);
-    height: calc(var(--spacing) * 10);
+    width: var(--ui-beancount-space-10);
+    height: var(--ui-beancount-space-10);
     border-radius: 999px;
   }
 
@@ -177,7 +177,7 @@
   :global(.bc-reconciliation-review-skeleton__candidate-title) {
     width: 10rem;
     max-width: 100%;
-    height: calc(var(--spacing) * 3.5);
+    height: var(--ui-beancount-space-3-5);
   }
 
   :global(.bc-reconciliation-review-skeleton__candidate-subtitle) {
@@ -189,7 +189,7 @@
   :global(.bc-reconciliation-review-skeleton__candidate-value) {
     grid-column: 2;
     width: 6rem;
-    height: calc(var(--spacing) * 3.5);
+    height: var(--ui-beancount-space-3-5);
   }
 
   @media (min-width: 640px) {

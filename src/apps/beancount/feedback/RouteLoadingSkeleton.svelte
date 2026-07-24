@@ -81,7 +81,7 @@
     overflow: hidden;
     border: 1px solid var(--ui-beancount-border);
     border-radius: var(--ui-beancount-radius-panel);
-    background: var(--card);
+    background: var(--ui-beancount-surface-raised);
     box-shadow: var(--ui-beancount-shadow-panel);
   }
 
@@ -98,7 +98,7 @@
   }
 
   :global(.bc-route-loading-skeleton__cell) {
-    height: calc(var(--spacing) * 3.5);
+    height: var(--ui-beancount-space-3-5);
   }
 
   :global(.bc-route-loading-skeleton__cell--date) {

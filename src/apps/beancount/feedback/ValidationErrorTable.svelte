@@ -114,7 +114,7 @@
     border: 1px solid
       color-mix(in srgb, var(--ui-beancount-border) 80%, transparent);
     border-radius: var(--ui-beancount-radius-panel);
-    background: var(--card);
+    background: var(--ui-beancount-surface-raised);
     box-shadow: var(--ui-beancount-shadow-panel);
   }
 
@@ -170,7 +170,7 @@
 
   :global(.bc-validation-error-table__cell--message) {
     vertical-align: top;
-    color: var(--destructive);
+    color: var(--ui-beancount-negative);
     font-size: var(--text-sm);
   }
 
@@ -179,7 +179,7 @@
   }
 
   .bc-validation-error-table__line-link {
-    color: var(--primary);
+    color: var(--ui-beancount-accent);
     font-weight: var(--font-weight-medium);
     text-underline-offset: 4px;
   }
@@ -214,7 +214,7 @@
       var(--ui-beancount-border) 80%,
       transparent
     );
-    background: var(--card);
+    background: var(--ui-beancount-surface-raised);
     box-shadow: var(--ui-beancount-shadow-panel);
   }
 

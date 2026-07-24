@@ -73,7 +73,7 @@
   .bc-query-page-skeleton__search {
     display: flex;
     width: 100%;
-    height: calc(var(--spacing) * 10);
+    height: var(--ui-beancount-space-10);
     align-items: center;
     border: 1px solid var(--ui-beancount-border);
     border-radius: var(--radius-md);
@@ -95,14 +95,14 @@
 
   :global(.bc-query-page-skeleton__search-text) {
     min-width: 0;
-    height: calc(var(--spacing) * 3.5);
+    height: var(--ui-beancount-space-3-5);
     flex: 1 1 auto;
     margin-inline: var(--ui-beancount-space-3);
   }
 
   :global(.bc-query-page-skeleton__search-action) {
     width: 5rem;
-    height: calc(var(--spacing) * 7);
+    height: var(--ui-beancount-space-7);
     flex: 0 0 auto;
     margin-inline-end: var(--ui-beancount-space-1);
     border-radius: var(--radius-sm);
@@ -119,14 +119,14 @@
     overflow: hidden;
     border: 1px solid var(--ui-beancount-border);
     border-radius: var(--ui-beancount-radius-panel);
-    background: var(--card);
-    color: var(--card-foreground);
+    background: var(--ui-beancount-surface-raised);
+    color: var(--ui-beancount-surface-raised-foreground);
     box-shadow: var(--ui-beancount-shadow-panel);
   }
 
   .bc-query-page-skeleton__query-header {
     display: flex;
-    min-height: calc(var(--spacing) * 14);
+    min-height: var(--ui-beancount-space-14);
     align-items: stretch;
     gap: var(--ui-beancount-space-3);
   }
@@ -156,7 +156,7 @@
   :global(.bc-query-page-skeleton__query-title) {
     width: 20rem;
     max-width: 55%;
-    height: calc(var(--spacing) * 3.5);
+    height: var(--ui-beancount-space-3-5);
   }
 
   .bc-query-page-skeleton__query-actions {
@@ -187,7 +187,7 @@
     overflow: hidden;
     border: 1px solid var(--ui-beancount-border);
     border-radius: var(--ui-beancount-radius-panel);
-    background: var(--card);
+    background: var(--ui-beancount-surface-raised);
     box-shadow: var(--ui-beancount-shadow-panel);
   }
 
@@ -220,12 +220,12 @@
 
   :global(.bc-query-page-skeleton__result-primary) {
     width: 75%;
-    height: calc(var(--spacing) * 3.5);
+    height: var(--ui-beancount-space-3-5);
   }
 
   :global(
       .bc-query-page-skeleton__result-row .bc-query-page-skeleton__result-cell
     ) {
-    height: calc(var(--spacing) * 3.5);
+    height: var(--ui-beancount-space-3-5);
   }
 </style>

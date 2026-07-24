@@ -33,7 +33,7 @@
     overflow: hidden;
     border: 1px solid var(--ui-beancount-border);
     border-radius: var(--ui-beancount-radius-panel);
-    background: var(--card);
+    background: var(--ui-beancount-surface-raised);
     box-shadow: var(--ui-beancount-shadow-panel);
   }
 

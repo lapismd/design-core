@@ -40,7 +40,7 @@
     overflow: hidden;
     border: 1px solid var(--ui-beancount-border);
     border-radius: var(--ui-beancount-radius-panel);
-    background: var(--card);
+    background: var(--ui-beancount-surface-raised);
     padding: var(--ui-beancount-space-4);
     box-shadow: var(--ui-beancount-shadow-panel);
   }
@@ -98,7 +98,7 @@
 
   :global(.bc-sources-page-skeleton__field-label) {
     width: 100%;
-    height: calc(var(--spacing) * 3.5);
+    height: var(--ui-beancount-space-3-5);
   }
 
   :global(.bc-sources-page-skeleton__field-control) {

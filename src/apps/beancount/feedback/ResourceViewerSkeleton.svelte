@@ -21,7 +21,7 @@
 
   :global(.bc-resource-viewer-skeleton__surface) {
     width: 100%;
-    min-height: calc(var(--spacing) * 48);
+    min-height: var(--ui-beancount-space-48);
     flex: 1 1 auto;
     border-radius: var(--radius-md);
   }

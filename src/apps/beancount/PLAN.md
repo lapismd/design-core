@@ -123,7 +123,7 @@ explicit exceptions.
 | ------------ | ------------: | --------------: | -------------------------------- |
 | `charts`     |            10 |               0 | ✅ semantic chart roles          |
 | `dashboard`  |            10 |              10 | 🟡 pending                       |
-| `feedback`   |            13 |              13 | 🟡 pending                       |
+| `feedback`   |            13 |               0 | ✅ semantic feedback roles       |
 | `layout`     |             7 |               0 | ✅ semantic shell roles          |
 | `navigation` |             5 |               0 | ✅ semantic navigation roles     |
 | `pickers`    |             2 |               0 | ✅ semantic picker roles         |
