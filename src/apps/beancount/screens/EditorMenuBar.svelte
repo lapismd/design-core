@@ -1,4 +1,7 @@
 <script lang="ts">
+  import FoldVertical from "@lucide/svelte/icons/fold-vertical";
+  import Sparkles from "@lucide/svelte/icons/sparkles";
+  import UnfoldVertical from "@lucide/svelte/icons/unfold-vertical";
   import { Button } from "@stevejuma/ui/shadcn/button";
   import * as DropdownMenu from "@stevejuma/ui/shadcn/dropdown-menu";
 
@@ -119,9 +122,17 @@
         </DropdownMenu.Item>
         <DropdownMenu.Separator />
         <DropdownMenu.Item onSelect={() => onAction("open-all-folds")}>
+          <UnfoldVertical
+            class="bc-editor-menu-bar__item-icon"
+            aria-hidden="true"
+          />
           Open all folds
         </DropdownMenu.Item>
         <DropdownMenu.Item onSelect={() => onAction("close-all-folds")}>
+          <FoldVertical
+            class="bc-editor-menu-bar__item-icon"
+            aria-hidden="true"
+          />
           Close all folds
         </DropdownMenu.Item>
         <DropdownMenu.Separator />
@@ -139,7 +150,9 @@
             >
           </DropdownMenu.SubContent>
         </DropdownMenu.Sub>
+        <DropdownMenu.Separator />
         <DropdownMenu.Item onSelect={() => onAction("ask-ai")}>
+          <Sparkles class="bc-editor-menu-bar__item-icon" aria-hidden="true" />
           Ask AI about selection
         </DropdownMenu.Item>
       </DropdownMenu.Group>
@@ -165,5 +178,12 @@
 
   :global(.bc-editor-menu-bar__content) {
     min-inline-size: 12rem;
+  }
+
+  :global(.bc-editor-menu-bar__item-icon) {
+    flex: none;
+    width: 1rem;
+    height: 1rem;
+    margin-inline-end: var(--ui-beancount-space-2);
   }
 </style>
