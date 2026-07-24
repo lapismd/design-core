@@ -6,6 +6,7 @@
   import * as Tabs from "@stevejuma/ui/shadcn/tabs";
   import EditorToolbar from "./EditorToolbar.svelte";
   import LedgerEditorSurface from "./LedgerEditorSurface.svelte";
+  import PresetQueryReport from "./PresetQueryReport.svelte";
   import ScreenFrame from "./ScreenFrame.svelte";
   import { visualDeltaForScreen } from "./visual-delta.js";
   import BarChart from "../charts/BarChart.svelte";
@@ -15,7 +16,6 @@
   import LineChart from "../charts/LineChart.svelte";
   import FinancialDashboard from "../dashboard/FinancialDashboard.svelte";
   import LedgerActivityTable from "../tables/LedgerActivityTable.svelte";
-  import HoldingsTable from "../tables/HoldingsTable.svelte";
   import QueryResultsTable from "../tables/QueryResultsTable.svelte";
   import StatementSummaryTreeTable from "../tables/StatementSummaryTreeTable.svelte";
   import IngestionReviewTable from "../tables/IngestionReviewTable.svelte";
@@ -1009,56 +1009,38 @@
 >
   {#snippet template()}
     <ScreenFrame pageTitle="Holdings">
-      <ContentScrollArea>
-        <div class="bc-screen-story__page bc-screen-story__holdings">
-          <Tabs.Root
-            value={holdingsPerspective}
-            onValueChange={(next) => {
-              if (next) holdingsPerspective = next;
-            }}
-          >
-            <Tabs.List aria-label="Holdings perspectives">
-              <Tabs.Trigger value="holdings">Holdings</Tabs.Trigger>
-              <Tabs.Trigger value="by-account">Holdings by Account</Tabs.Trigger
-              >
-              <Tabs.Trigger value="by-currency"
-                >Holdings by Currency</Tabs.Trigger
-              >
-              <Tabs.Trigger value="by-cost-currency"
-                >Holdings by Cost currency</Tabs.Trigger
-              >
-            </Tabs.List>
-          </Tabs.Root>
-          <Button
-            variant="outline"
-            class="bc-screen-story__holdings-query"
-            aria-label="Open holdings query"
-            aria-pressed={holdingsQueryRequested}
-            onclick={() => {
-              holdingsQueryRequested = !holdingsQueryRequested;
-            }}
-          >
-            Query
-          </Button>
-          <HoldingsTable
-            columns={holdingColumns}
-            rows={visibleHoldingRows}
-            pagination={{
-              page: holdingsPage,
-              pageCount: Math.ceil(holdingRows.length / holdingsPageSize),
-              resultLabel: holdingsResultLabel,
-              pageSize: holdingsPageSize,
-              pageSizes: [10, 20, 50],
-            }}
-            onPageChange={(page) => {
-              holdingsPage = page;
-            }}
-          />
-          <output class="bc-screen-story__status" aria-live="polite">
-            {holdingsQueryRequested ? "Query controls requested" : ""}
-          </output>
-        </div>
-      </ContentScrollArea>
+      <PresetQueryReport
+        perspectives={[
+          { value: "holdings", label: "Holdings" },
+          { value: "by-account", label: "Holdings by Account" },
+          { value: "by-currency", label: "Holdings by Currency" },
+          { value: "by-cost-currency", label: "Holdings by Cost currency" },
+        ]}
+        perspective={holdingsPerspective}
+        columns={holdingColumns}
+        rows={visibleHoldingRows}
+        ariaLabel="Holdings"
+        tabListLabel="Holdings perspectives"
+        queryActionAriaLabel="Open holdings query"
+        queryActionPressed={holdingsQueryRequested}
+        statusText={holdingsQueryRequested ? "Query controls requested" : ""}
+        pagination={{
+          page: holdingsPage,
+          pageCount: Math.ceil(holdingRows.length / holdingsPageSize),
+          resultLabel: holdingsResultLabel,
+          pageSize: holdingsPageSize,
+          pageSizes: [10, 20, 50],
+        }}
+        onPerspectiveChange={(next) => {
+          holdingsPerspective = next;
+        }}
+        onQueryAction={() => {
+          holdingsQueryRequested = !holdingsQueryRequested;
+        }}
+        onPageChange={(page) => {
+          holdingsPage = page;
+        }}
+      />
     </ScreenFrame>
   {/snippet}
 </Story>
@@ -1088,58 +1070,38 @@
 >
   {#snippet template()}
     <ScreenFrame pageTitle="Statistics">
-      <ContentScrollArea>
-        <div class="bc-screen-story__page bc-screen-story__statistics">
-          <Tabs.Root
-            value={statisticsPerspective}
-            onValueChange={(next) => {
-              if (next) statisticsPerspective = next;
-            }}
-          >
-            <Tabs.List aria-label="Statistics perspectives">
-              <Tabs.Trigger value="postings-by-account"
-                >Postings per Account</Tabs.Trigger
-              >
-              <Tabs.Trigger value="update-activity"
-                >Update Activity</Tabs.Trigger
-              >
-              <Tabs.Trigger value="entries-by-type"
-                >Entries Per Type</Tabs.Trigger
-              >
-            </Tabs.List>
-          </Tabs.Root>
-          <div class="bc-screen-story__statistics-query-row">
-            <Button
-              variant="outline"
-              aria-label="Open statistics query"
-              aria-pressed={statisticsQueryRequested}
-              onclick={() => {
-                statisticsQueryRequested = !statisticsQueryRequested;
-              }}
-            >
-              Query
-            </Button>
-          </div>
-          <HoldingsTable
-            ariaLabel="Posting statistics"
-            columns={statisticsColumns}
-            rows={visibleStatisticsRows}
-            pagination={{
-              page: statisticsPage,
-              pageCount: Math.ceil(statisticsRows.length / statisticsPageSize),
-              resultLabel: statisticsResultLabel,
-              pageSize: statisticsPageSize,
-              pageSizes: [10, 20, 50],
-            }}
-            onPageChange={(page) => {
-              statisticsPage = page;
-            }}
-          />
-          <output class="bc-screen-story__status" aria-live="polite">
-            {statisticsQueryRequested ? "Query controls requested" : ""}
-          </output>
-        </div>
-      </ContentScrollArea>
+      <PresetQueryReport
+        perspectives={[
+          { value: "postings-by-account", label: "Postings per Account" },
+          { value: "update-activity", label: "Update Activity" },
+          { value: "entries-by-type", label: "Entries Per Type" },
+        ]}
+        perspective={statisticsPerspective}
+        columns={statisticsColumns}
+        rows={visibleStatisticsRows}
+        ariaLabel="Posting statistics"
+        tabListLabel="Statistics perspectives"
+        queryActionAriaLabel="Open statistics query"
+        queryActionAlign="end"
+        queryActionPressed={statisticsQueryRequested}
+        statusText={statisticsQueryRequested ? "Query controls requested" : ""}
+        pagination={{
+          page: statisticsPage,
+          pageCount: Math.ceil(statisticsRows.length / statisticsPageSize),
+          resultLabel: statisticsResultLabel,
+          pageSize: statisticsPageSize,
+          pageSizes: [10, 20, 50],
+        }}
+        onPerspectiveChange={(next) => {
+          statisticsPerspective = next;
+        }}
+        onQueryAction={() => {
+          statisticsQueryRequested = !statisticsQueryRequested;
+        }}
+        onPageChange={(page) => {
+          statisticsPage = page;
+        }}
+      />
     </ScreenFrame>
   {/snippet}
 </Story>
@@ -1643,21 +1605,6 @@
     height: 100%;
   }
 
-  .bc-screen-story__holdings {
-    display: grid;
-    gap: var(--ui-beancount-space-3);
-  }
-
-  .bc-screen-story__statistics {
-    display: grid;
-    gap: var(--ui-beancount-space-3);
-  }
-
-  .bc-screen-story__statistics-query-row {
-    display: flex;
-    justify-content: flex-end;
-  }
-
   .bc-screen-story__sources {
     max-width: 70rem;
     margin-inline: auto;
@@ -1671,10 +1618,6 @@
   .bc-screen-story__rules {
     max-width: 96rem;
     margin-inline: auto;
-  }
-
-  :global(.bc-screen-story__holdings-query) {
-    width: max-content;
   }
 
   .bc-screen-story__status {

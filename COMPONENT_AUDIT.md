@@ -351,6 +351,9 @@ capture harness writes.
   and CodeMirror integration
 - `LedgerEditorSurface` — display-ready, tokenized Fava ledger source preview;
   the host owns parsing, source edits, selections, persistence, and CodeMirror
+- `PresetQueryReport` — controlled Fava `PresetQueryView` composition over
+  shared shadcn Tabs, Button, ScrollArea, and `HoldingsTable`; hosts own BQL
+  definitions/execution, route navigation, and selected perspective state
 
 **Harness** (`scripts/beancount-screens/`):
 

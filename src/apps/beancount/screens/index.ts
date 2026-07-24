@@ -6,6 +6,10 @@ export {
   type LedgerEditorToken,
   type LedgerEditorTokenTone,
 } from "./LedgerEditorSurface.svelte";
+export {
+  default as PresetQueryReport,
+  type PresetQueryPerspective,
+} from "./PresetQueryReport.svelte";
 export { default as ScreenFrame } from "./ScreenFrame.svelte";
 export {
   favaBaselineUrl,
