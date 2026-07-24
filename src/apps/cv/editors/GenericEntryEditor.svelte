@@ -16,6 +16,7 @@
     OneLineEntry,
     PublicationEntry,
   } from "../types";
+  import "../cv-shared.css";
   import EducationEditor from "./EducationEditor.svelte";
   import ExperienceEditor from "./ExperienceEditor.svelte";
 
@@ -193,8 +194,6 @@
 {/if}
 
 <style>
-  @import "../cv-shared.css";
-
   .cv-generic-entry-editor__hint {
     color: var(--muted-foreground);
     font-size: 0.875rem;

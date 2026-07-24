@@ -24,8 +24,10 @@ with the catalog — do not invent props or skip visual compare.
 4. **Visual compare** — `pnpm test:visual` (compare only; never writes
    baselines). Inspect expected/actual/diff or `pnpm test:visual:report` on
    failure.
-5. **Before commit** — `pnpm checks` (fmt, svelte-check including warnings, unit,
-   storybook, static build, visual). Shorter: `pnpm storybook:check`.
+5. **Before commit** — `pnpm checks` (fmt, `svelte-check --fail-on-warnings`,
+   unit, storybook, static build, visual). Shorter: `pnpm storybook:check`.
+   Vite / Storybook also fail transforms on Svelte compiler warnings
+   (`svelte.config.js` `onwarn`).
 6. **Commit** — record the verified slice immediately (see `pnpm ui guide vcs`).
    Prefer `jj commit` when Jujutsu is available; otherwise use Git.
 

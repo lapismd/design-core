@@ -1,5 +1,6 @@
 <script lang="ts">
   import { Switch } from "@stevejuma/ui/shadcn/switch";
+  import "../cv-shared.css";
 
   let {
     label,
@@ -29,8 +30,6 @@
 </label>
 
 <style>
-  @import "../cv-shared.css";
-
   .cv-switch-control {
     display: flex;
     align-items: center;

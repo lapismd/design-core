@@ -6,6 +6,7 @@
     textField,
   } from "@stevejuma/ui/forms";
   import type { EducationEntry } from "../types";
+  import "../cv-shared.css";
 
   let {
     education,
@@ -77,7 +78,3 @@
     onChange={(highlights) => onUpdate({ ...education, highlights })}
   />
 </div>
-
-<style>
-  @import "../cv-shared.css";
-</style>

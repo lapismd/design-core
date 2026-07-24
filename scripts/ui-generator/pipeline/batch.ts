@@ -99,7 +99,13 @@ export async function runBatch(options: {
     log.step("Running static checks");
     await execa(
       "pnpm",
-      ["exec", "svelte-check", "--tsconfig", "./tsconfig.json"],
+      [
+        "exec",
+        "svelte-check",
+        "--tsconfig",
+        "./tsconfig.json",
+        "--fail-on-warnings",
+      ],
       {
         cwd: worktree.path,
         stdio: "inherit",

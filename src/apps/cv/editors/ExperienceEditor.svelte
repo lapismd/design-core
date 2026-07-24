@@ -14,6 +14,7 @@
     ExperienceExtraDetail,
     ExperienceRoleHistoryEntry,
   } from "../types";
+  import "../cv-shared.css";
 
   let {
     experience,
@@ -247,8 +248,6 @@
 </div>
 
 <style>
-  @import "../cv-shared.css";
-
   .cv-experience-editor__subsection {
     display: flex;
     flex-direction: column;

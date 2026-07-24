@@ -1,5 +1,6 @@
 <script lang="ts">
   import { Button } from "@stevejuma/ui/shadcn/button";
+  import "../cv-shared.css";
 
   let {
     label,
@@ -35,8 +36,6 @@
 </div>
 
 <style>
-  @import "../cv-shared.css";
-
   .cv-option-button-group {
     display: flex;
     flex-direction: column;

@@ -1,4 +1,6 @@
 <script lang="ts">
+  import "../cv-shared.css";
+
   let {
     label,
     value = "#000000",
@@ -62,8 +64,6 @@
 </label>
 
 <style>
-  @import "../cv-shared.css";
-
   .cv-color-control {
     display: flex;
     min-width: 0;
