@@ -99,12 +99,16 @@
         <g transform={`translate(${margin.left},${margin.top})`}>
           {#each categories as category}
             <g transform={`translate(0,${yFor(category)})`}>
-              <line x1="0" x2={innerWidth} stroke="var(--border)" />
+              <line
+                x1="0"
+                x2={innerWidth}
+                stroke="var(--ui-beancount-border)"
+              />
               <text
                 x="-12"
                 y="4"
                 text-anchor="end"
-                fill="var(--muted-foreground)"
+                fill="var(--ui-beancount-muted-foreground)"
                 class="bc-scatter-plot__axis-label"
               >
                 {category}
@@ -118,7 +122,7 @@
                 : ((time - minTime) / (maxTime - minTime)) * innerWidth}
               y={innerHeight + 26}
               text-anchor="middle"
-              fill="var(--muted-foreground)"
+              fill="var(--ui-beancount-muted-foreground)"
               class="bc-scatter-plot__axis-label"
             >
               {label}
@@ -168,7 +172,8 @@
 
   .bc-scatter-plot__canvas {
     overflow-x: auto;
-    border: 1px solid color-mix(in srgb, var(--ui-beancount-border) 80%, transparent);
+    border: 1px solid
+      color-mix(in srgb, var(--ui-beancount-border) 80%, transparent);
     border-radius: var(--ui-beancount-radius-panel);
     background-color: var(--ui-beancount-surface);
     padding: var(--ui-beancount-space-3);

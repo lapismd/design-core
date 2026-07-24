@@ -190,12 +190,16 @@
         <g transform={`translate(${margin.left},${margin.top})`}>
           {#each yTicks as tick}
             <g transform={`translate(0,${yFor(tick)})`}>
-              <line x1="0" x2={innerWidth} stroke="var(--border)" />
+              <line
+                x1="0"
+                x2={innerWidth}
+                stroke="var(--ui-beancount-border)"
+              />
               <text
                 x="-10"
                 y="4"
                 text-anchor="end"
-                fill="var(--muted-foreground)"
+                fill="var(--ui-beancount-muted-foreground)"
                 class="bc-line-chart__axis-label"
               >
                 {valueFormatter(tick)}
@@ -207,7 +211,7 @@
             x2={innerWidth}
             y1={yFor(baseline)}
             y2={yFor(baseline)}
-            stroke="var(--muted-foreground)"
+            stroke="var(--ui-beancount-muted-foreground)"
             opacity="0.6"
           />
           {#each xTicks as [time, label] (time)}
@@ -217,7 +221,7 @@
                 : ((time - minTime) / (maxTime - minTime)) * innerWidth}
               y={innerHeight + 26}
               text-anchor="middle"
-              fill="var(--muted-foreground)"
+              fill="var(--ui-beancount-muted-foreground)"
               class="bc-line-chart__axis-label"
             >
               {label}

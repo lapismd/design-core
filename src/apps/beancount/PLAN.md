@@ -109,6 +109,26 @@ Tailwind utilities before a `fava-beta` adapter consumes the app layer.
 4. Retake reviewed component baselines only after each family passes its story
    and a11y tests; Fava reference PNGs remain untouched.
 
+### Normalized-token audit
+
+The Tailwind guard covers utility classes. A second audit tracks app files that
+still use raw shared-theme variables directly rather than the
+`--ui-beancount-*` role layer. File counts are the initial inventory; the
+token definition file itself is intentionally exempt because it supplies the
+aliases.
+
+| Area         | Initial files | Remaining files | Status                  |
+| ------------ | ------------: | --------------: | ----------------------- |
+| `charts`     |            10 |               0 | ✅ semantic chart roles |
+| `dashboard`  |            10 |              10 | 🟡 pending              |
+| `feedback`   |            13 |              13 | 🟡 pending              |
+| `layout`     |             7 |               7 | 🟡 pending              |
+| `navigation` |             5 |               5 | 🟡 pending              |
+| `pickers`    |             2 |               2 | 🟡 pending              |
+| `rules`      |             1 |               1 | 🟡 pending              |
+| `sources`    |             2 |               2 | 🟡 pending              |
+| `tables`     |             9 |               9 | 🟡 pending              |
+
 ## Delivery order
 
 1. **Reference safety and health** — deterministic loaded-state fixture,

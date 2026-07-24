@@ -24,7 +24,7 @@
       category: "Transaction",
       label: "Groceries",
       detail: "£42.17 at Northstar Market",
-      color: "var(--primary)",
+      color: "var(--ui-beancount-accent)",
     },
     {
       id: "utility",
@@ -33,7 +33,7 @@
       category: "Transaction",
       label: "Utility bill",
       detail: "£86.00 recurring payment",
-      color: "var(--primary)",
+      color: "var(--ui-beancount-accent)",
     },
     {
       id: "document",

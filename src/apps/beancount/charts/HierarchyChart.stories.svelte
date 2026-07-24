@@ -21,7 +21,7 @@
     id: "assets",
     label: "Assets",
     valueLabel: "£1,510",
-    color: "var(--primary)",
+    color: "var(--ui-beancount-accent)",
     children: [
       {
         id: "cash",
@@ -35,7 +35,7 @@
         label: "Assets:Bank",
         value: 1000,
         valueLabel: "£1,000",
-        color: "var(--primary)",
+        color: "var(--ui-beancount-accent)",
       },
     ],
   };
@@ -90,7 +90,11 @@
   {#snippet template()}
     <div class="bc-hierarchy-chart-story">
       <HierarchyChart
-        root={{ id: "assets", label: "Assets", color: "var(--primary)" }}
+        root={{
+          id: "assets",
+          label: "Assets",
+          color: "var(--ui-beancount-accent)",
+        }}
         emptyLabel="No balances match these filters."
       />
     </div>

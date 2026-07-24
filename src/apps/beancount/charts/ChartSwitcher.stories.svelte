@@ -66,7 +66,7 @@
     max-width: 56rem;
     border: 1px solid var(--ui-beancount-border);
     border-radius: var(--ui-beancount-radius-panel);
-    background: var(--card);
+    background: var(--ui-beancount-surface);
     padding: var(--ui-beancount-space-4);
     box-shadow: var(--ui-beancount-shadow-panel);
   }

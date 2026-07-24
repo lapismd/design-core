@@ -21,7 +21,7 @@
     {
       id: "net-worth",
       label: "Net worth",
-      color: "var(--primary)",
+      color: "var(--ui-beancount-accent)",
       points: [
         {
           id: "may",

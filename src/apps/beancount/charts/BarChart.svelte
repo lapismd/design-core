@@ -168,12 +168,16 @@
         <g transform={`translate(${margin.left},${margin.top})`}>
           {#each yTicks as tick}
             <g transform={`translate(0,${yFor(tick)})`}>
-              <line x1="0" x2={innerWidth} stroke="var(--border)" />
+              <line
+                x1="0"
+                x2={innerWidth}
+                stroke="var(--ui-beancount-border)"
+              />
               <text
                 x="-10"
                 y="4"
                 text-anchor="end"
-                fill="var(--muted-foreground)"
+                fill="var(--ui-beancount-muted-foreground)"
                 class="bc-bar-chart__axis-label"
               >
                 {valueFormatter(tick)}
@@ -185,7 +189,7 @@
             x2={innerWidth}
             y1={yFor(baseline)}
             y2={yFor(baseline)}
-            stroke="var(--muted-foreground)"
+            stroke="var(--ui-beancount-muted-foreground)"
             opacity="0.6"
           />
           {#each groups as group, groupIndex (group.id)}
@@ -193,7 +197,7 @@
               x={groupX(groupIndex) + usableGroupWidth / 2}
               y={innerHeight + 26}
               text-anchor="middle"
-              fill="var(--muted-foreground)"
+              fill="var(--ui-beancount-muted-foreground)"
               class="bc-bar-chart__axis-label"
             >
               {group.label}
@@ -243,7 +247,7 @@
                       x2={x + 2 + barWidth}
                       y1={yFor(value.budget)}
                       y2={yFor(value.budget)}
-                      stroke="var(--foreground)"
+                      stroke="var(--ui-beancount-foreground)"
                       stroke-width="2"
                       opacity="0.6"
                       aria-label={`Budget for ${value.label}: ${value.budgetLabel ?? valueFormatter(value.budget)}`}
@@ -281,7 +285,8 @@
 
   .bc-bar-chart__canvas {
     overflow-x: auto;
-    border: 1px solid color-mix(in srgb, var(--ui-beancount-border) 80%, transparent);
+    border: 1px solid
+      color-mix(in srgb, var(--ui-beancount-border) 80%, transparent);
     border-radius: var(--ui-beancount-radius-panel);
     background-color: var(--ui-beancount-surface);
     padding: var(--ui-beancount-space-3);

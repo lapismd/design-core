@@ -209,7 +209,7 @@
                   x={(tile.width - 2 * padding) / 2}
                   y={(tile.height - 2 * padding) / 2}
                   text-anchor="middle"
-                  fill="var(--foreground)"
+                  fill="var(--ui-beancount-foreground)"
                   class="bc-hierarchy-chart__treemap-label"
                 >
                   {tile.node.label}
@@ -236,7 +236,7 @@
             x={width / 2}
             y={height / 2 - 4}
             text-anchor="middle"
-            fill="var(--foreground)"
+            fill="var(--ui-beancount-foreground)"
             class="bc-hierarchy-chart__sunburst-label"
           >
             {(activeNode ?? root).label}
@@ -245,7 +245,7 @@
             x={width / 2}
             y={height / 2 + 16}
             text-anchor="middle"
-            fill="var(--muted-foreground)"
+            fill="var(--ui-beancount-muted-foreground)"
             class="bc-hierarchy-chart__sunburst-value"
           >
             {(activeNode ?? root).valueLabel ?? totalValue(activeNode ?? root)}

@@ -29,7 +29,7 @@
           valueLabel: "−£420",
           budget: -400,
           budgetLabel: "−£400 budget",
-          color: "var(--primary)",
+          color: "var(--ui-beancount-accent)",
         },
         {
           id: "eur",
@@ -45,7 +45,7 @@
           label: "Expenses:Groceries",
           value: -300,
           valueLabel: "−£300",
-          color: "var(--primary)",
+          color: "var(--ui-beancount-accent)",
         },
         {
           id: "utilities-may",
@@ -67,7 +67,7 @@
           valueLabel: "−£385",
           budget: -400,
           budgetLabel: "−£400 budget",
-          color: "var(--primary)",
+          color: "var(--ui-beancount-accent)",
         },
         {
           id: "eur-june",
@@ -83,7 +83,7 @@
           label: "Expenses:Groceries",
           value: -275,
           valueLabel: "−£275",
-          color: "var(--primary)",
+          color: "var(--ui-beancount-accent)",
         },
         {
           id: "utilities-june",

@@ -17,6 +17,7 @@
   --ui-beancount-radius-panel: var(--radius-xl);
   --ui-beancount-shadow-panel: 0 1px 2px rgb(0 0 0 / 0.05);
   --ui-beancount-focus-ring: var(--ring);
+  --ui-beancount-accent: var(--primary);
   --ui-beancount-positive: oklch(0.448 0.119 151.328);
   --ui-beancount-negative: var(--destructive);
   --ui-beancount-review: oklch(0.541 0.179 288.033);
