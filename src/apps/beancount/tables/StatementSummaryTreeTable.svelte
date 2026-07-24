@@ -14,6 +14,13 @@
     title?: string;
   };
 
+  /** Resolved optional account identity for a presentation-only statement row. */
+  export type StatementSummaryAccountAppearance = {
+    color?: string;
+    icon?: string;
+    merchantLogoUrl?: string;
+  };
+
   export type StatementSummaryTreeNode = {
     id: string;
     label: string;
@@ -22,6 +29,7 @@
     otherValues?: readonly StatementSummaryOtherValue[];
     href?: string;
     color?: string;
+    appearance?: StatementSummaryAccountAppearance;
     children?: readonly StatementSummaryTreeNode[];
   };
 

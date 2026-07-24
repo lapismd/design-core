@@ -558,7 +558,7 @@
   }}
 >
   {#snippet template()}
-    <ScreenFrame pageTitle="Income statement">
+    <ScreenFrame pageTitle="Income Statement">
       <ContentScrollArea>
         <div class="bc-screen-story__page bc-screen-story__page--report">
           <ChartSwitcher
@@ -579,7 +579,7 @@
               <ChartPanel
                 ariaLabel="Income statement controls"
                 legend={{
-                  items: [{ id: "gbp", label: "GBP", color: "var(--chart-4)" }],
+                  items: [{ id: "gbp", label: "GBP" }],
                   selection: "single",
                   selectedIds: ["gbp"],
                 }}
@@ -610,6 +610,13 @@
                     groups={incomeStatementChartGroups}
                     mode={incomeChartMode}
                     ariaLabel="Income statement historical performance"
+                    chartWidth={900}
+                    chartHeight={250}
+                    minXLabelSpacing={68}
+                    valueDomain={{ min: -10500, max: 7500 }}
+                    yTickValues={[
+                      -10000, -8000, -6000, -4000, -2000, 0, 2000, 4000, 6000,
+                    ]}
                     valueFormatter={formatReportAxisAmount}
                   />
                 {/snippet}

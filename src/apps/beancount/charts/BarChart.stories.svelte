@@ -95,6 +95,29 @@
       ],
     },
   ];
+
+  const crowdedGroups = Array.from({ length: 8 }, (_, index) => ({
+    id: `month-${index}`,
+    label: [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+    ][index]!,
+    values: [
+      {
+        id: `gbp-${index}`,
+        label: "GBP spending",
+        value: -420,
+        valueLabel: "−£420",
+        color: "var(--ui-beancount-accent)",
+      },
+    ],
+  }));
 </script>
 
 <script lang="ts">
@@ -138,6 +161,31 @@
         {groups}
         {mode}
         valueFormatter={(value) => `${value < 0 ? "−" : ""}${Math.abs(value)}`}
+      />
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Uses a report axis and filters crowded interval labels"
+  play={async ({ canvas }) => {
+    await expect(canvas.getByText("January")).toBeVisible();
+    await expect(canvas.getByText("April")).toBeVisible();
+    await expect(canvas.getByText("July")).toBeVisible();
+    await expect(canvas.queryByText("February")).not.toBeInTheDocument();
+    await expect(canvas.getByText("−600")).toBeVisible();
+  }}
+>
+  {#snippet template()}
+    <div class="bc-bar-chart-story">
+      <BarChart
+        groups={crowdedGroups}
+        chartWidth={560}
+        chartHeight={240}
+        minXLabelSpacing={140}
+        valueDomain={{ min: -600, max: 600 }}
+        yTickValues={[-600, -300, 0, 300, 600]}
+        valueFormatter={(value) => String(value)}
       />
     </div>
   {/snippet}

@@ -35,6 +35,11 @@
     mode = "single",
     ariaLabel = "Bar chart",
     emptyLabel = "No chart data is available.",
+    chartWidth = 800,
+    chartHeight = 280,
+    valueDomain,
+    yTickValues,
+    minXLabelSpacing = 70,
     valueFormatter = (value) => String(value),
     onBarFocus = () => {},
   }: {
@@ -42,16 +47,28 @@
     mode?: BarChartMode;
     ariaLabel?: string;
     emptyLabel?: string;
+    /** Viewbox width for a measured report chart; the SVG remains responsive. */
+    chartWidth?: number;
+    /** Viewbox height for a measured report chart; the SVG remains responsive. */
+    chartHeight?: number;
+    /** Optional display-ready y-axis extent supplied by the report adapter. */
+    valueDomain?: { min: number; max: number };
+    /** Optional display-ready y-axis ticks supplied by the report adapter. */
+    yTickValues?: readonly number[];
+    /** Minimum viewbox spacing between interval labels before labels are skipped. */
+    minXLabelSpacing?: number;
     valueFormatter?: (value: number) => string;
     /** Report a hovered, focused, or activated value to the application. */
     onBarFocus?: (value: BarChartValue, group: BarChartGroup) => void;
   } = $props();
 
-  const width = 800;
-  const height = 280;
+  const width = $derived(Math.max(chartWidth, 1));
+  const height = $derived(Math.max(chartHeight, 1));
   const margin = { top: 18, right: 20, bottom: 42, left: 64 };
-  const innerWidth = width - margin.left - margin.right;
-  const innerHeight = height - margin.top - margin.bottom;
+  const innerWidth = $derived(Math.max(width - margin.left - margin.right, 1));
+  const innerHeight = $derived(
+    Math.max(height - margin.top - margin.bottom, 1),
+  );
 
   let activeBar = $state<{
     value: BarChartValue;
@@ -90,12 +107,37 @@
       ? Math.max(Math.abs(rawMinValue) * 0.1, 1)
       : (rawMaxValue - rawMinValue) * 0.05,
   );
-  const minValue = $derived(rawMinValue - valuePadding);
-  const maxValue = $derived(rawMaxValue + valuePadding);
+  const hasValidValueDomain = $derived(
+    Boolean(
+      valueDomain &&
+        Number.isFinite(valueDomain.min) &&
+        Number.isFinite(valueDomain.max) &&
+        valueDomain.min < valueDomain.max,
+    ),
+  );
+  const minValue = $derived(
+    hasValidValueDomain ? valueDomain!.min : rawMinValue - valuePadding,
+  );
+  const maxValue = $derived(
+    hasValidValueDomain ? valueDomain!.max : rawMaxValue + valuePadding,
+  );
   const baseline = $derived(Math.max(minValue, Math.min(maxValue, 0)));
   const yTicks = $derived(
-    [0, 1, 2, 3, 4].map(
-      (index) => minValue + ((maxValue - minValue) * index) / 4,
+    yTickValues?.filter(
+      (value) =>
+        Number.isFinite(value) && value >= minValue && value <= maxValue,
+    ) ??
+      [0, 1, 2, 3, 4].map(
+        (index) => minValue + ((maxValue - minValue) * index) / 4,
+      ),
+  );
+  const xLabelStride = $derived(
+    Math.max(
+      1,
+      Math.ceil(
+        groups.length /
+          Math.max(Math.floor(innerWidth / Math.max(minXLabelSpacing, 1)), 1),
+      ),
     ),
   );
   const groupWidth = $derived(innerWidth / Math.max(groups.length, 1));
@@ -130,6 +172,10 @@
 
   function groupX(index: number) {
     return index * groupWidth + groupGap / 2;
+  }
+
+  function shouldShowGroupLabel(index: number, label: string) {
+    return Boolean(label) && index % xLabelStride === 0;
   }
 
   function activateBar(value: BarChartValue, group: BarChartGroup) {
@@ -193,15 +239,17 @@
             opacity="0.6"
           />
           {#each groups as group, groupIndex (group.id)}
-            <text
-              x={groupX(groupIndex) + usableGroupWidth / 2}
-              y={innerHeight + 26}
-              text-anchor="middle"
-              fill="var(--ui-beancount-muted-foreground)"
-              class="bc-bar-chart__axis-label"
-            >
-              {group.label}
-            </text>
+            {#if shouldShowGroupLabel(groupIndex, group.label)}
+              <text
+                x={groupX(groupIndex) + usableGroupWidth / 2}
+                y={innerHeight + 26}
+                text-anchor="middle"
+                fill="var(--ui-beancount-muted-foreground)"
+                class="bc-bar-chart__axis-label"
+              >
+                {group.label}
+              </text>
+            {/if}
             {#if mode === "stacked"}
               {#each segmentsFor(group) as segment (segment.value.id)}
                 {@const value = segment.value}

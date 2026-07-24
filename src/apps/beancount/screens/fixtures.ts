@@ -239,7 +239,7 @@ export const incomeStatementNodes = [
     href: "/accounts/Income",
     values: { gbp: "−213145.48" },
     weight: "96.4%",
-    color: "var(--chart-4)",
+    color: "var(--ui-beancount-accent)",
     children: [
       {
         id: "income-starling",
@@ -247,21 +247,23 @@ export const incomeStatementNodes = [
         href: "/accounts/Income:Starling",
         values: { gbp: "−213145.48" },
         weight: "96.4%",
-        color: "var(--chart-4)",
+        color: "var(--chart-2)",
         children: [
           {
             id: "income-starling-pension",
             label: "Pension",
             values: { gbp: "4036.12" },
             weight: "1.8%",
-            color: "var(--chart-3)",
+            color: "var(--chart-2)",
+            appearance: {},
           },
           {
             id: "income-starling-salary",
             label: "Salary",
             values: { gbp: "−217181.60" },
             weight: "98.2%",
-            color: "var(--chart-4)",
+            color: "var(--chart-2)",
+            appearance: {},
           },
         ],
       },
@@ -275,7 +277,7 @@ export const incomeStatementContributions = [
     label: "Income:Starling",
     percentage: 100,
     amount: "−213145.48 GBP",
-    color: "var(--chart-4)",
+    color: "var(--chart-2)",
   },
 ];
 
@@ -301,6 +303,7 @@ const incomeStatementMonths = [
   "Apr 2026",
   "",
   "Jun 2026",
+  "",
   "Aug 2026",
 ];
 
@@ -323,21 +326,28 @@ export const incomeStatementChartGroups = incomeStatementMonths.map(
         label: "Income:Starling:Salary",
         value: 3500,
         valueLabel: "3500.00 GBP",
-        color: "var(--chart-4)",
+        color: "var(--ui-beancount-report-income-gold)",
       },
       {
         id: "pension",
         label: "Income:Starling:Pension",
-        value: 3600,
-        valueLabel: "3600.00 GBP",
-        color: "var(--chart-3)",
+        value: 300,
+        valueLabel: "300.00 GBP",
+        color: "var(--ui-beancount-report-income-secondary)",
+      },
+      {
+        id: "other-income",
+        label: "Income:Starling",
+        value: 3300,
+        valueLabel: "3300.00 GBP",
+        color: "var(--ui-beancount-report-income-positive)",
       },
       {
         id: "expenses",
         label: "Expenses",
         value: -10000,
         valueLabel: "−10000.00 GBP",
-        color: "var(--chart-2)",
+        color: "var(--ui-beancount-report-income-negative)",
       },
     ],
   }),

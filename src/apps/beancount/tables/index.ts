@@ -61,6 +61,7 @@ export {
 export { default as StatementSummaryTreeRow } from "./StatementSummaryTreeRow.svelte";
 export {
   default as StatementSummaryTreeTable,
+  type StatementSummaryAccountAppearance,
   type StatementSummaryColumn,
   type StatementSummaryContribution,
   type StatementSummaryOtherValue,

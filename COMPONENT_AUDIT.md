@@ -232,8 +232,9 @@ don't yet support these — cosmetic only, not blocking):
 **Charts (`charts/`)** — `Apps/Beancount/Charts/*`:
 
 - `BarChart` — responsive grouped or diverging-stacked bar chart (single vs
-  stacked account/category series), with budget marker support and unframed
-  Fava-report presentation supplied by its app screen
+  stacked account/category series), with budget marker support, optional
+  adapter-supplied axis extent/ticks and label cadence, and unframed Fava-report
+  presentation supplied by its app screen
 - `ChartLegend` — interactive series legend (multi- or single-selection
   `ToggleGroup`) for hiding or focusing chart series
 - `ChartModeSwitch` — controlled tab list for a chart's alternate visual
@@ -307,8 +308,8 @@ No filesystem, ledger, or route access — props and callbacks only.
 - `QueryResultsTable` — formatted, client-sortable query result table wrapping
   `PagePagination`
 - `StatementSummaryTreeRow` (+ `StatementSummaryTreeTable`) — financial
-  statement hierarchy with contribution bar/legend, weight meters, and
-  multi-currency values
+  statement hierarchy with contribution bar/legend, weight meters,
+  multi-currency values, and optional resolved account identities
 
 **Host reuse (tables):** shadcn `table`, `alert`, `alert-dialog`, `button`,
 `select`, `sheet`, `tabs`, `tooltip`; forms `FilterCommandPicker`, `FormField`,

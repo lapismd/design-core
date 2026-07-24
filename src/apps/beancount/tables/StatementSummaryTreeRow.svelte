@@ -1,5 +1,6 @@
 <script lang="ts">
   import ChevronDown from "@lucide/svelte/icons/chevron-down";
+  import AccountAvatar from "../pickers/AccountAvatar.svelte";
   import type { StatementSummaryTreeNode } from "./StatementSummaryTreeTable.svelte";
   import Self from "./StatementSummaryTreeRow.svelte";
 
@@ -56,6 +57,15 @@
       {:else}
         <span class="bj-statement-summary-disclosure-spacer" aria-hidden="true"
         ></span>
+      {/if}
+      {#if node.appearance}
+        <AccountAvatar
+          account={node.label}
+          color={node.appearance.color}
+          icon={node.appearance.icon}
+          merchantLogoUrl={node.appearance.merchantLogoUrl}
+          size="sm"
+        />
       {/if}
       {#if node.href}
         <a
@@ -190,10 +200,11 @@
   }
 
   .bj-statement-summary-account-link {
-    color: var(--ui-beancount-accent);
+    color: var(--ui-beancount-foreground);
   }
 
   .bj-statement-summary-account-link:hover {
+    color: var(--ui-beancount-accent);
     text-decoration: underline;
   }
 

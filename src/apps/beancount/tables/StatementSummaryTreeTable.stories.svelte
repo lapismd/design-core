@@ -20,6 +20,7 @@
           values: { gbp: "£510.00" },
           weight: "33.8%",
           color: "var(--chart-2)",
+          appearance: {},
         },
         {
           id: "assets-bank",
@@ -125,6 +126,26 @@
           ? `Selected ${selectedAccount}`
           : "No account selected"}
       </output>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Renders provided account identities"
+  play={async ({ canvasElement }) => {
+    const avatar = canvasElement.querySelector(".beancount-account-avatar");
+    await expect(avatar).toHaveTextContent("C");
+  }}
+>
+  {#snippet template()}
+    <div class="bj-statement-summary-story">
+      <StatementSummaryTreeTable
+        title="Assets"
+        total="£1,510.00"
+        {nodes}
+        {columns}
+        {contributions}
+      />
     </div>
   {/snippet}
 </Story>

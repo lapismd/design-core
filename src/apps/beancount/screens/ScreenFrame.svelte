@@ -60,7 +60,7 @@
       Holdings: "holdings",
       Journal: "journal",
       Query: "query",
-      "Income statement": "income-statement",
+      "Income Statement": "income-statement",
       "Balance sheet": "balance-sheet",
       "Trial balance": "trial-balance",
       Statistics: "statistics",
