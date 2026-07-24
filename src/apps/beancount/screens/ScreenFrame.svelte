@@ -62,7 +62,7 @@
       Query: "query",
       "Income Statement": "income-statement",
       "Balance Sheet": "balance-sheet",
-      "Trial balance": "trial-balance",
+      "Trial Balance": "trial-balance",
       Statistics: "statistics",
     };
     return pageIds[pageTitle] ?? "account-ledger";

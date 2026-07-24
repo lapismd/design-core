@@ -769,7 +769,7 @@
   }}
 >
   {#snippet template()}
-    <ScreenFrame pageTitle="Trial balance">
+    <ScreenFrame pageTitle="Trial Balance">
       <ContentScrollArea>
         <div class="bc-screen-story__page bc-screen-story__page--report">
           <ChartSwitcher
@@ -790,13 +790,7 @@
               <ChartPanel
                 ariaLabel="Trial balance controls"
                 legend={{
-                  items: [
-                    {
-                      id: "gbp",
-                      label: "GBP",
-                      color: "var(--ui-beancount-accepted)",
-                    },
-                  ],
+                  items: [{ id: "gbp", label: "GBP" }],
                   selection: "single",
                   selectedIds: ["gbp"],
                 }}
@@ -826,7 +820,7 @@
                   <HierarchyChart
                     root={trialBalanceHierarchy}
                     mode={trialBalanceChartMode}
-                    height={480}
+                    height={320}
                     ariaLabel="Trial balance allocation"
                   />
                 {/snippet}

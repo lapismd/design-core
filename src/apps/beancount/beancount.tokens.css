@@ -36,6 +36,13 @@
   --ui-beancount-report-income-negative: oklch(0.7 0.14 234);
   --ui-beancount-report-balance-primary: oklch(0.72 0.11 250);
   --ui-beancount-report-balance-cash: oklch(0.69 0.14 198);
+  --ui-beancount-report-trial-treemap: oklch(0.79 0.09 260);
+  --ui-beancount-report-trial-primary: oklch(0.68 0.14 250);
+  --ui-beancount-report-trial-cyan: oklch(0.69 0.15 210);
+  --ui-beancount-report-trial-teal: oklch(0.68 0.13 178);
+  --ui-beancount-report-trial-violet: oklch(0.67 0.16 300);
+  --ui-beancount-report-trial-indigo: oklch(0.65 0.16 280);
+  --ui-beancount-report-trial-green: oklch(0.67 0.15 160);
   --ui-beancount-review: oklch(0.541 0.179 288.033);
   --ui-beancount-held: oklch(0.666 0.179 58.318);
   --ui-beancount-accepted: oklch(0.588 0.158 241.966);
