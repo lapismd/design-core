@@ -17,6 +17,13 @@ function onwarn(warning, _defaultHandler) {
     return;
   }
 
+  // Bits-ui / shadcn root wrappers often have no native HTML in the template
+  // while still owning intentional `:global { [data-ui-component=…] }` CSS from
+  // the generator. That is expected; do not fail the Vite transform over it.
+  if (warning.code === "vite-plugin-svelte-css-no-scopable-elements") {
+    return;
+  }
+
   const loc = warning.filename
     ? `${warning.filename}:${warning.start?.line ?? 0}:${warning.start?.column ?? 0}`
     : "svelte";
