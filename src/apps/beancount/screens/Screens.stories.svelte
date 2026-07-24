@@ -1675,6 +1675,16 @@
 </Story>
 
 <style>
+  /*
+   * Fava captures are full 1280×900 browser viewports. Keep the fixed screen
+   * frame at the Storybook viewport origin instead of inheriting the catalog's
+   * normal preview padding, which would crop the candidate on its right and
+   * lower edges before Visual Delta can compare it to the reference.
+   */
+  :global(#storybook-root:has([data-fava-screen-frame])) {
+    padding: 0;
+  }
+
   .bc-screen-story__page {
     padding: var(--ui-beancount-space-4);
   }
