@@ -219,18 +219,20 @@
   }
 
   .bc-validation-error-table__compact-empty {
-    display: flex;
-    min-height: calc(var(--ui-beancount-space-4) * 4);
-    align-items: center;
+    margin-block-start: var(--ui-beancount-space-4);
     border: 1px solid var(--ui-beancount-border);
-    border-radius: var(--ui-beancount-radius-panel);
+    border-radius: calc(
+      var(--ui-beancount-radius-panel) - var(--ui-beancount-space-1)
+    );
     background: var(--ui-beancount-surface);
-    padding-inline: calc(var(--ui-beancount-space-4) * 1.5);
+    padding: var(--ui-beancount-space-3) var(--ui-beancount-space-4);
     color: var(--ui-beancount-foreground);
-    font-size: var(--text-base);
+    font-size: var(--text-sm);
+    line-height: var(--text-sm--line-height);
   }
 
   .bc-validation-error-table__compact-empty p {
     margin: 0;
+    line-height: var(--text-sm--line-height);
   }
 </style>

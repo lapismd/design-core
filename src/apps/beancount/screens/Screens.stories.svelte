@@ -1224,7 +1224,7 @@
   {#snippet template()}
     <ScreenFrame pageTitle="Errors">
       <ContentScrollArea>
-        <div class="bc-screen-story__page">
+        <div class="bc-screen-story__page bc-screen-story__page--errors">
           <ValidationErrorTable
             errors={[]}
             emptyVariant="compact"
@@ -1251,7 +1251,7 @@
   {#snippet template()}
     <ScreenFrame pageTitle="Errors">
       <ContentScrollArea>
-        <div class="bc-screen-story__page">
+        <div class="bc-screen-story__page bc-screen-story__page--errors">
           <ValidationErrorTable
             errors={validationErrors}
             onNavigate={(error) => {
@@ -1687,6 +1687,10 @@
 
   .bc-screen-story__page {
     padding: var(--ui-beancount-space-4);
+  }
+
+  .bc-screen-story__page--errors {
+    padding: var(--ui-beancount-space-2);
   }
 
   .bc-screen-story__page--report {
