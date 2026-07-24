@@ -144,7 +144,6 @@
     width: 1280px;
     height: 900px;
     overflow: hidden;
-    border: 1px solid var(--ui-beancount-border);
     background: var(--ui-beancount-surface);
   }
 </style>

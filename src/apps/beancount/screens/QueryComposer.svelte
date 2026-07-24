@@ -1,5 +1,6 @@
 <script lang="ts">
-  import ChevronRight from "@lucide/svelte/icons/chevron-right";
+  import LetterText from "@lucide/svelte/icons/letter-text";
+  import Play from "@lucide/svelte/icons/play";
   import Search from "@lucide/svelte/icons/search";
   import X from "@lucide/svelte/icons/x";
   import { Button } from "@stevejuma/ui/shadcn/button";
@@ -60,14 +61,14 @@
   <div class="bc-query-composer__actions">
     <Button
       type="button"
-      variant="ghost"
+      variant="secondary"
       size="icon-sm"
       class="bc-query-composer__options"
       aria-label="Format query"
       title="Format query"
       onclick={() => onFormat(value)}
     >
-      <span class="bc-query-composer__format-glyph" aria-hidden="true">A≡</span>
+      <LetterText class="bc-query-composer__format-icon" aria-hidden="true" />
     </Button>
     {#if value.trim()}
       <Button
@@ -84,15 +85,12 @@
     {/if}
     <Button
       type="submit"
-      variant="ghost"
-      size="sm"
+      variant="secondary"
+      size="xs"
       class="bc-query-composer__execute"
     >
       {executeLabel}
-      <ChevronRight
-        class="bc-query-composer__execute-icon"
-        aria-hidden="true"
-      />
+      <Play class="bc-query-composer__execute-icon" aria-hidden="true" />
     </Button>
   </div>
 </form>
@@ -102,17 +100,25 @@
     display: grid;
     grid-template-columns: auto minmax(0, 1fr) auto;
     align-items: center;
-    min-height: calc(var(--ui-beancount-space-5) * 2.5);
+    min-height: calc(
+      var(--ui-beancount-compact-control-height) + var(--ui-beancount-space-2) -
+        2px
+    );
     border: 1px solid var(--ui-beancount-border);
     border-radius: var(--ui-beancount-radius-panel);
-    background: var(--ui-beancount-surface);
-    padding-inline: var(--ui-beancount-space-3);
+    background: color-mix(
+      in srgb,
+      var(--ui-beancount-surface-muted) 35%,
+      transparent
+    );
+    padding-inline: 0;
     box-shadow: var(--ui-beancount-shadow-panel);
   }
 
   :global(.bc-query-composer__search-icon) {
-    width: var(--ui-beancount-space-5);
-    height: var(--ui-beancount-space-5);
+    width: var(--ui-beancount-space-4);
+    height: var(--ui-beancount-space-4);
+    margin-inline-start: var(--ui-beancount-space-3);
     margin-inline-end: var(--ui-beancount-space-2);
     color: var(--ui-beancount-muted-foreground);
   }
@@ -134,30 +140,48 @@
   .bc-query-composer__actions {
     display: flex;
     align-items: center;
-    margin-inline-start: var(--ui-beancount-space-3);
+    align-self: end;
+    overflow: hidden;
+    margin-inline: 0 var(--ui-beancount-space-1);
+    margin-block-end: var(--ui-beancount-space-1);
+    border-radius: var(--radius-md);
+  }
+
+  :global(.bc-query-composer__options),
+  :global(.bc-query-composer__clear) {
+    width: calc(
+      var(--ui-beancount-compact-control-height) - var(--ui-beancount-space-1)
+    );
+    min-width: calc(
+      var(--ui-beancount-compact-control-height) - var(--ui-beancount-space-1)
+    );
+    height: calc(
+      var(--ui-beancount-compact-control-height) - var(--ui-beancount-space-1)
+    );
+    border-radius: 0;
   }
 
   :global(.bc-query-composer__options) {
-    border-radius: 0;
     border-inline-end: 1px solid var(--ui-beancount-border);
   }
 
-  :global(.bc-query-composer__clear) {
-    border-radius: 0;
-  }
-
-  .bc-query-composer__format-glyph {
+  :global(.bc-query-composer__format-icon) {
+    width: var(--ui-beancount-space-4);
+    height: var(--ui-beancount-space-4);
     color: var(--ui-beancount-foreground);
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: -0.08em;
   }
 
   :global(.bc-query-composer__execute) {
     border-radius: 0;
-    padding-inline: var(--ui-beancount-space-3);
+    min-height: calc(
+      var(--ui-beancount-compact-control-height) - var(--ui-beancount-space-1)
+    );
+    height: calc(
+      var(--ui-beancount-compact-control-height) - var(--ui-beancount-space-1)
+    );
+    padding-inline: var(--ui-beancount-space-2);
     color: var(--ui-beancount-foreground);
+    font-size: var(--text-xs);
     font-weight: var(--font-weight-medium);
   }
 
