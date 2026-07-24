@@ -27,9 +27,27 @@ const config: StorybookConfig = {
       name: import.meta.resolve("./visual-delta-preset.ts"),
       options: {
         visualDelta: {
+          // Catalog layout + generator CLIs (package defaults are story-id + visual-delta bin).
           baselinePathMode: "nested-import",
           visualServerPort: 6007,
           visualTestArgs: ["exec", "playwright", "test"],
+          visualUpdateArgs: [
+            "exec",
+            "tsx",
+            "scripts/ui-generator/cli.ts",
+            "visual-update",
+            "--allow-dirty",
+            "--approved",
+          ],
+          visualInteractionUpdateArgs: [
+            "exec",
+            "tsx",
+            "scripts/ui-generator/cli.ts",
+            "visual-interaction-update",
+            "--allow-dirty",
+            "--approved",
+            "--skip-build",
+          ],
         },
       },
     },

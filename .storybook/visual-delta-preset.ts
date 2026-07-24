@@ -26,6 +26,7 @@ export function managerEntries(entry: string[] = []) {
 }
 
 export {
+  staticDirs,
   viteFinal,
   webpack,
 } from "../packages/storybook-addon-visual-delta/src/preset.js";
