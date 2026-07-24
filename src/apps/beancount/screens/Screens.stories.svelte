@@ -54,6 +54,7 @@
     trialBalanceHierarchy,
     trialBalanceNodes,
     unassignedAccountGroup,
+    validationErrors,
   } from "./fixtures.js";
 
   const { Story } = defineMeta({
@@ -295,6 +296,7 @@
   let statisticsPage = $state(1);
   let statisticsQueryRequested = $state(false);
   let recordsAccountsRequested = $state(false);
+  let validationErrorNavigation = $state("");
   let sourceAction = $state("");
   let sourceYamlMode = $state(false);
   let sourceAccountAction = $state("");
@@ -1126,6 +1128,37 @@
             emptyVariant="compact"
             emptyTitle="No records"
           />
+        </div>
+      </ContentScrollArea>
+    </ScreenFrame>
+  {/snippet}
+</Story>
+
+<Story
+  name="Errors with validation failure"
+  play={async ({ canvas }) => {
+    await expect(
+      canvas.getByText("Duplicate open directive for Assets:Cash"),
+    ).toBeVisible();
+    await userEvent.click(canvas.getByRole("link", { name: "3" }));
+    await expect(canvas.getByRole("status")).toHaveTextContent(
+      "Open editor at line 3",
+    );
+  }}
+>
+  {#snippet template()}
+    <ScreenFrame pageTitle="Errors">
+      <ContentScrollArea>
+        <div class="bc-screen-story__page">
+          <ValidationErrorTable
+            errors={validationErrors}
+            onNavigate={(error) => {
+              validationErrorNavigation = `Open editor at line ${error.line}`;
+            }}
+          />
+          <output class="bc-screen-story__status" aria-live="polite">
+            {validationErrorNavigation}
+          </output>
         </div>
       </ContentScrollArea>
     </ScreenFrame>
