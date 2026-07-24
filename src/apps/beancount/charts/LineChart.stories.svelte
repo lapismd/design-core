@@ -49,7 +49,7 @@
     {
       id: "savings",
       label: "Savings",
-      color: "var(--chart-2)",
+      color: "var(--ui-beancount-chart-series-comparison)",
       points: [
         {
           id: "may-savings",

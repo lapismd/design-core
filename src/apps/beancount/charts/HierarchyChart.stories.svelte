@@ -28,7 +28,7 @@
         label: "Assets:Cash",
         value: 510,
         valueLabel: "£510",
-        color: "var(--chart-2)",
+        color: "var(--ui-beancount-chart-series-comparison)",
       },
       {
         id: "bank",

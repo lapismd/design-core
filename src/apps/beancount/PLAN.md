@@ -107,7 +107,9 @@ Tailwind utilities before a `fava-beta` adapter consumes the app layer.
    components and stories. `pnpm beancount:tailwind:check` now passes for the
    complete app; `pnpm beancount:tokens:check [family]` rejects raw shared
    theme variables outside the documented role and local-value namespaces.
-   Screen-body parity remains tracked separately above.
+   As of 2026-07-24, Beancount source and stories have no raw
+   `var(--chart-*)` references; generic chart aliases live only in the app
+   token module. Screen-body parity remains tracked separately above.
 4. Retake reviewed component baselines only after each family passes its story
    and a11y tests; Fava reference PNGs remain untouched.
 

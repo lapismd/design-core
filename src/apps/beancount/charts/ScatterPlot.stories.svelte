@@ -42,7 +42,7 @@
       category: "Document",
       label: "Statement imported",
       detail: "Northstar Card",
-      color: "var(--chart-2)",
+      color: "var(--ui-beancount-chart-series-comparison)",
     },
   ];
 </script>

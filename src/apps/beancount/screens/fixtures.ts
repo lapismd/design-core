@@ -247,14 +247,14 @@ export const incomeStatementNodes = [
         href: "/accounts/Income:Starling",
         values: { gbp: "−213145.48" },
         weight: "96.4%",
-        color: "var(--chart-2)",
+        color: "var(--ui-beancount-chart-series-comparison)",
         children: [
           {
             id: "income-starling-pension",
             label: "Pension",
             values: { gbp: "4036.12" },
             weight: "1.8%",
-            color: "var(--chart-2)",
+            color: "var(--ui-beancount-chart-series-comparison)",
             appearance: {},
           },
           {
@@ -262,7 +262,7 @@ export const incomeStatementNodes = [
             label: "Salary",
             values: { gbp: "−217181.60" },
             weight: "98.2%",
-            color: "var(--chart-2)",
+            color: "var(--ui-beancount-chart-series-comparison)",
             appearance: {},
           },
         ],
@@ -277,7 +277,7 @@ export const incomeStatementContributions = [
     label: "Income:Starling",
     percentage: 100,
     amount: "−213145.48 GBP",
-    color: "var(--chart-2)",
+    color: "var(--ui-beancount-chart-series-comparison)",
   },
 ];
 
@@ -317,7 +317,7 @@ export const incomeStatementChartGroups = incomeStatementMonths.map(
         label: "Net profit",
         value: -6250,
         valueLabel: "−6250.00 GBP",
-        color: "var(--chart-1)",
+        color: "var(--ui-beancount-chart-series-contrast)",
       },
     ],
     stacks: [

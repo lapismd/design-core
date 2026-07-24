@@ -19,7 +19,7 @@
           href: "/accounts/Assets:Cash",
           values: { gbp: "£510.00" },
           weight: "33.8%",
-          color: "var(--chart-2)",
+          color: "var(--ui-beancount-chart-series-comparison)",
           appearance: {},
         },
         {
@@ -28,7 +28,7 @@
           href: "/accounts/Assets:Bank",
           values: { gbp: "£1,000.00" },
           weight: "66.2%",
-          color: "var(--chart-3)",
+          color: "var(--ui-beancount-chart-series-reference)",
           otherValues: [{ label: "USD", value: "$50.00", title: "US dollars" }],
         },
       ],
@@ -41,14 +41,14 @@
       label: "Assets:Cash",
       percentage: 33.8,
       amount: "£510.00",
-      color: "var(--chart-2)",
+      color: "var(--ui-beancount-chart-series-comparison)",
     },
     {
       id: "bank",
       label: "Assets:Bank",
       percentage: 66.2,
       amount: "£1,000.00",
-      color: "var(--chart-3)",
+      color: "var(--ui-beancount-chart-series-reference)",
     },
   ];
 
