@@ -248,7 +248,8 @@ don't yet support these — cosmetic only, not blocking):
 - `HierarchyChart` — model-driven allocation chart with treemap and sunburst
   views
 - `LineChart` — responsive time-series renderer (line or area) with
-  accessible point focus
+  accessible point focus, ledger step interpolation, optional adapter-supplied
+  report axis, and empty-state support
 - `ScatterPlot` — model-driven ledger-event plot with accessible point focus
 
 **Dashboard (`dashboard/`)** — `Apps/Beancount/Dashboard/*`:

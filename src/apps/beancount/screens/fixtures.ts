@@ -360,14 +360,15 @@ export const balanceSheetNodes = [
     href: "/accounts/Assets",
     values: { gbp: "24921.78" },
     weight: "100.0%",
-    color: "var(--ui-beancount-accepted)",
+    color: "var(--ui-beancount-report-balance-primary)",
     children: [
       {
         id: "assets-cash",
         label: "Cash",
         values: { gbp: "70.00" },
         weight: "0.3%",
-        color: "var(--ui-beancount-positive)",
+        color: "var(--ui-beancount-report-balance-cash)",
+        appearance: {},
       },
       {
         id: "assets-checking",
@@ -375,21 +376,23 @@ export const balanceSheetNodes = [
         href: "/accounts/Assets:Checking",
         values: { gbp: "24851.78" },
         weight: "99.7%",
-        color: "var(--ui-beancount-accepted)",
+        color: "var(--ui-beancount-report-balance-primary)",
         children: [
           {
             id: "assets-checking-monzo",
             label: "Monzo",
             values: { gbp: "7637.59" },
             weight: "30.6%",
-            color: "var(--ui-beancount-accepted)",
+            color: "var(--ui-beancount-report-balance-primary)",
+            appearance: {},
           },
           {
             id: "assets-checking-starling",
             label: "Starling",
             values: { gbp: "17214.19" },
             weight: "69.1%",
-            color: "var(--ui-beancount-accepted)",
+            color: "var(--ui-beancount-report-balance-primary)",
+            appearance: {},
           },
         ],
       },
@@ -403,14 +406,14 @@ export const balanceSheetContributions = [
     label: "Assets:Cash",
     percentage: 0.3,
     amount: "70.00 GBP",
-    color: "var(--ui-beancount-positive)",
+    color: "var(--ui-beancount-report-balance-cash)",
   },
   {
     id: "assets-checking",
     label: "Assets:Checking",
     percentage: 99.7,
     amount: "24851.78 GBP",
-    color: "var(--ui-beancount-accepted)",
+    color: "var(--ui-beancount-report-balance-primary)",
   },
 ];
 
@@ -425,14 +428,14 @@ export const balanceSheetLineSeries = [
   {
     id: "net-worth",
     label: "Net worth",
-    color: "var(--ui-beancount-accepted)",
+    color: "var(--ui-beancount-report-balance-primary)",
     points: balanceSheetValues.map((value, index) => {
       const date = new Date(Date.UTC(2024, 9 + index, 1));
       return {
         id: `net-worth-${index}`,
         date: date.toISOString(),
         label:
-          index === 0 || index === 10 || index === 20 || index === 30
+          index % 6 === 0
             ? date.toLocaleString("en-GB", { month: "long" })
             : "",
         value,

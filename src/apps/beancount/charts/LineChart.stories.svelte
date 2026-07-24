@@ -75,6 +75,34 @@
       ],
     },
   ];
+
+  const reportSeries = [
+    {
+      id: "balance",
+      label: "Balance",
+      color: "var(--ui-beancount-accent)",
+      points: [
+        {
+          id: "october",
+          date: "2024-10-01",
+          label: "October",
+          value: -480,
+        },
+        {
+          id: "april",
+          date: "2025-04-01",
+          label: "April",
+          value: -220,
+        },
+        {
+          id: "october-next",
+          date: "2025-10-01",
+          label: "October",
+          value: 300,
+        },
+      ],
+    },
+  ];
 </script>
 
 <script lang="ts">
@@ -118,6 +146,33 @@
         {mode}
         valueFormatter={(value) =>
           `£${Math.round(value).toLocaleString("en-GB")}`}
+      />
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Uses a report axis for stepped balance history"
+  play={async ({ canvas }) => {
+    await expect(canvas.getByText("−600")).toBeVisible();
+    await expect(canvas.getAllByText("October")).toHaveLength(2);
+    await expect(
+      canvas.getByRole("group", { name: "Stepped report balance" }),
+    ).toBeVisible();
+  }}
+>
+  {#snippet template()}
+    <div class="bc-line-chart-story">
+      <LineChart
+        series={reportSeries}
+        interpolation="step"
+        chartWidth={560}
+        chartHeight={240}
+        xTickCount={3}
+        valueDomain={{ min: -600, max: 600 }}
+        yTickValues={[-600, -300, 0, 300, 600]}
+        valueFormatter={(value) => `${value < 0 ? "−" : ""}${Math.abs(value)}`}
+        ariaLabel="Stepped report balance"
       />
     </div>
   {/snippet}

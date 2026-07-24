@@ -29,6 +29,10 @@
     yTickCount = 5,
     ariaLabel = "Time series chart",
     emptyLabel = "No chart data is available.",
+    chartWidth = 800,
+    chartHeight = 280,
+    valueDomain,
+    yTickValues,
     valueFormatter = (value) => String(value),
     onPointFocus = () => {},
   }: {
@@ -42,16 +46,26 @@
     yTickCount?: number;
     ariaLabel?: string;
     emptyLabel?: string;
+    /** Viewbox width for a measured report chart; the SVG remains responsive. */
+    chartWidth?: number;
+    /** Viewbox height for a measured report chart; the SVG remains responsive. */
+    chartHeight?: number;
+    /** Optional display-ready y-axis extent supplied by the report adapter. */
+    valueDomain?: { min: number; max: number };
+    /** Optional display-ready y-axis ticks supplied by the report adapter. */
+    yTickValues?: readonly number[];
     valueFormatter?: (value: number) => string;
     /** Report a hovered, focused, or activated point to the application. */
     onPointFocus?: (point: LineChartPoint, series: LineChartSeries) => void;
   } = $props();
 
-  const width = 800;
-  const height = 280;
+  const width = $derived(Math.max(chartWidth, 1));
+  const height = $derived(Math.max(chartHeight, 1));
   const margin = { top: 18, right: 20, bottom: 42, left: 64 };
-  const innerWidth = width - margin.left - margin.right;
-  const innerHeight = height - margin.top - margin.bottom;
+  const innerWidth = $derived(Math.max(width - margin.left - margin.right, 1));
+  const innerHeight = $derived(
+    Math.max(height - margin.top - margin.bottom, 1),
+  );
 
   let activePoint = $state<{
     point: LineChartPoint;
@@ -85,25 +99,41 @@
   const valuePadding = $derived(
     rawMinValue === rawMaxValue ? Math.max(Math.abs(rawMinValue) * 0.1, 1) : 0,
   );
+  const hasValidValueDomain = $derived(
+    Boolean(
+      valueDomain &&
+        Number.isFinite(valueDomain.min) &&
+        Number.isFinite(valueDomain.max) &&
+        valueDomain.min < valueDomain.max,
+    ),
+  );
   const minValue = $derived(
-    mode === "area"
-      ? Math.min(0, rawMinValue) - valuePadding
-      : rawMinValue - valuePadding,
+    hasValidValueDomain
+      ? valueDomain!.min
+      : mode === "area"
+        ? Math.min(0, rawMinValue) - valuePadding
+        : rawMinValue - valuePadding,
   );
   const maxValue = $derived(
-    mode === "area"
-      ? Math.max(0, rawMaxValue) + valuePadding
-      : rawMaxValue + valuePadding,
+    hasValidValueDomain
+      ? valueDomain!.max
+      : mode === "area"
+        ? Math.max(0, rawMaxValue) + valuePadding
+        : rawMaxValue + valuePadding,
   );
   const baseline = $derived(Math.max(minValue, Math.min(maxValue, 0)));
   const resolvedXTickCount = $derived(Math.max(2, Math.floor(xTickCount)));
   const resolvedYTickCount = $derived(Math.max(2, Math.floor(yTickCount)));
   const yTicks = $derived(
-    Array.from(
-      { length: resolvedYTickCount },
-      (_, index) =>
-        minValue + ((maxValue - minValue) * index) / (resolvedYTickCount - 1),
-    ),
+    yTickValues?.filter(
+      (value) =>
+        Number.isFinite(value) && value >= minValue && value <= maxValue,
+    ) ??
+      Array.from(
+        { length: resolvedYTickCount },
+        (_, index) =>
+          minValue + ((maxValue - minValue) * index) / (resolvedYTickCount - 1),
+      ),
   );
   const xTicks = $derived.by(() => {
     const labels = new Map<number, string>();

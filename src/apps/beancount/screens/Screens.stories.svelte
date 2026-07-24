@@ -365,6 +365,10 @@
 
   const formatReportAxisAmount = (value: number) =>
     `${value < 0 ? "−" : ""}${(Math.abs(value) / 1000).toFixed(1)}k`;
+  const formatBalanceSheetAxisAmount = (value: number) =>
+    Math.abs(value) < 1000
+      ? `${value < 0 ? "−" : ""}${Math.abs(value).toFixed(2)}`
+      : `${value < 0 ? "−" : ""}${(Math.abs(value) / 1000).toFixed(2)}k`;
 </script>
 
 <Story
@@ -656,7 +660,7 @@
   }}
 >
   {#snippet template()}
-    <ScreenFrame pageTitle="Balance sheet">
+    <ScreenFrame pageTitle="Balance Sheet">
       <ContentScrollArea>
         <div class="bc-screen-story__page bc-screen-story__page--report">
           <ChartSwitcher
@@ -712,8 +716,17 @@
                   <LineChart
                     series={balanceSheetLineSeries}
                     mode={balanceSheetChartMode}
+                    interpolation="step"
+                    xTickCount={6}
+                    chartWidth={900}
+                    chartHeight={250}
+                    valueDomain={{ min: -56500, max: 8000 }}
+                    yTickValues={[
+                      -50000, -45000, -40000, -35000, -30000, -25000, -20000,
+                      -15000, -10000, -5000, 0, 5000,
+                    ]}
                     ariaLabel="Balance sheet net worth history"
-                    valueFormatter={formatReportAxisAmount}
+                    valueFormatter={formatBalanceSheetAxisAmount}
                   />
                 {/snippet}
               </ChartPanel>

@@ -61,7 +61,7 @@
       Journal: "journal",
       Query: "query",
       "Income Statement": "income-statement",
-      "Balance sheet": "balance-sheet",
+      "Balance Sheet": "balance-sheet",
       "Trial balance": "trial-balance",
       Statistics: "statistics",
     };
