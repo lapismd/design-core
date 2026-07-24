@@ -22,10 +22,13 @@
   },
   "include": [
     ".storybook/**/*.ts",
+    ".storybook/**/*.tsx",
     "src/**/*.ts",
     "src/**/*.svelte",
     "packages/tasks/src/**/*.ts",
     "packages/tasks/scripts/**/*.ts",
+    "packages/storybook-addon-visual-delta/src/**/*.ts",
+    "packages/storybook-addon-visual-delta/src/**/*.tsx",
     "vite.config.ts",
     "vitest.config.ts"
   ]
