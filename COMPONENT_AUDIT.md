@@ -360,6 +360,8 @@ capture harness writes.
   header actions; the host owns the editor runtime and persistence
 - `LedgerEditorSurface` — display-ready, tokenized Fava ledger source preview;
   the host owns parsing, source edits, selections, persistence, and CodeMirror
+- `LedgerWorkspaceNavigation` — includes the controlled Fava search-sidebar
+  launch affordance; the host still owns the Search route, queries, and results
 - `PresetQueryReport` — controlled Fava `PresetQueryView` composition over
   shared shadcn Tabs, Button, ScrollArea, and `HoldingsTable`; hosts own BQL
   definitions/execution, route navigation, and selected perspective state

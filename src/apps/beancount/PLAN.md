@@ -145,8 +145,9 @@ explicit exceptions.
 3. **Shared shell** — `ScreenFrame`, `StudioWorkspaceShell`, project header,
    ledger navigation, and deterministic sample-ledger fixtures. The candidate
    now composes Fava's full five-ledger fixture (including Example with budgets),
-   default 256px sidebar, controlled 220–520px resize rail, and 48px collapsed
-   project rail across all 15 screen frames; the host owns
+   default 256px sidebar, controlled search-sidebar launch affordance,
+   controlled 220–520px resize rail, and 48px collapsed project rail across all
+   15 screen frames; the host owns
    persisted width preferences. The first Visual Delta review remains
    intentionally non-approved because Fava's fixture tree and every screen body
    still differ. Recheck all 15 overlays after each shell adjustment.

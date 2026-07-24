@@ -118,6 +118,7 @@
           onViewChange={() => {}}
           onQueryChange={() => {}}
           onAccountChange={() => {}}
+          onSearchRequest={() => {}}
         />
       {/if}
     {/snippet}

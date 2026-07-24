@@ -125,6 +125,7 @@
   let selectedQuery = $state("all");
   let selectedAccount = $state("all");
   let openedResource = $state("");
+  let searchRequested = $state(false);
   let flatSelectedTagIds = $state(["home"]);
   let flatTagsPresentation = $state<"tree" | "flat">("flat");
 </script>
@@ -140,6 +141,13 @@
       canvas.queryByRole("button", { name: /personal-2026/ }),
     ).not.toBeInTheDocument();
     await userEvent.clear(ledgerSearch);
+
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Show search sidebar" }),
+    );
+    await expect(canvas.getByRole("status")).toHaveTextContent(
+      "Search: requested.",
+    );
 
     await userEvent.click(
       canvas.getByRole("button", { name: "Expand shared-2026.beancount" }),
@@ -223,12 +231,15 @@
         onResourceSelect={(id) => {
           openedResource = id;
         }}
+        onSearchRequest={() => {
+          searchRequested = true;
+        }}
       />
     </div>
     <output class="bc-ledger-workspace-story__announcement" aria-live="polite">
       Active destination: {activeLedgerId}. Tags: {selectedTagIds.join(", ") ||
         "none"}. Account: {selectedAccount}. Resource: {openedResource ||
-        "none"}.
+        "none"}. Search: {searchRequested ? "requested" : "idle"}.
     </output>
   {/snippet}
 </Story>

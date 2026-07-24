@@ -7,6 +7,7 @@
   import Hash from "@lucide/svelte/icons/hash";
   import List from "@lucide/svelte/icons/list";
   import ListFilter from "@lucide/svelte/icons/list-filter";
+  import SearchIcon from "@lucide/svelte/icons/search";
   import Sparkles from "@lucide/svelte/icons/sparkles";
   import { Button } from "@stevejuma/ui/shadcn/button";
   import { Input } from "@stevejuma/ui/shadcn/input";
@@ -75,6 +76,7 @@
     onQueryChange,
     onAccountChange,
     onResourceSelect,
+    onSearchRequest,
   }: {
     /** A ledger tree, usually a ledger file with page destinations as children. */
     ledgerItems: readonly WorkspaceTreeNavigationItem[];
@@ -109,6 +111,8 @@
     onQueryChange?: (value: string) => void;
     onAccountChange?: (value: string) => void;
     onResourceSelect?: (id: string) => void;
+    /** Requests that the host open its application-owned search sidebar. */
+    onSearchRequest?: () => void;
   } = $props();
 
   let ledgerSearch = $state("");
@@ -221,13 +225,27 @@
     >
   </div>
 
-  <SegmentedControl
-    value={view}
-    options={["ledgers", "folders", "tags"]}
-    labels={{ ledgers: "Ledgers", folders: "Folders", tags: "Tags" }}
-    ariaLabel="Ledger navigation views"
-    onChange={(nextView) => onViewChange?.(nextView as LedgerWorkspaceView)}
-  />
+  <div class="bc-ledger-workspace__view-row">
+    <SegmentedControl
+      value={view}
+      options={["ledgers", "folders", "tags"]}
+      labels={{ ledgers: "Ledgers", folders: "Folders", tags: "Tags" }}
+      ariaLabel="Ledger navigation views"
+      onChange={(nextView) => onViewChange?.(nextView as LedgerWorkspaceView)}
+    />
+    <Button
+      type="button"
+      variant="ghost"
+      size="icon-sm"
+      class="bc-ledger-workspace__search-sidebar"
+      aria-label="Show search sidebar"
+      title="Search ledgers"
+      disabled={!onSearchRequest}
+      onclick={() => onSearchRequest?.()}
+    >
+      <SearchIcon aria-hidden="true" />
+    </Button>
+  </div>
 
   {#if selectedTags.length}
     <div
@@ -549,6 +567,30 @@
 
   .bc-ledger-workspace__heading-row {
     justify-content: space-between;
+  }
+
+  .bc-ledger-workspace__view-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) var(--ui-beancount-space-7);
+    align-items: center;
+    gap: var(--ui-beancount-space-1);
+    padding-inline: var(--ui-beancount-space-2);
+  }
+
+  :global(.bc-ledger-workspace__view-row .cv-form-segmented-root),
+  :global(.bc-ledger-workspace__view-row .cv-form-segmented) {
+    width: 100%;
+  }
+
+  :global(.bc-ledger-workspace__view-row .cv-form-segmented button) {
+    flex: 1;
+    min-width: 0;
+    padding-inline: var(--ui-beancount-space-2);
+  }
+
+  :global(.bc-ledger-workspace__search-sidebar) {
+    width: var(--ui-beancount-space-7);
+    height: var(--ui-beancount-space-7);
   }
 
   .bc-ledger-workspace__heading,
