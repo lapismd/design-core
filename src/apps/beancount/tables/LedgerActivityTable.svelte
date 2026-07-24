@@ -82,6 +82,7 @@
     selectedIds = [],
     selectable = true,
     ariaLabel = "Ledger activity",
+    dateHeading = "Date",
     amountHeading = "Amount",
     balanceDescription = "Running balance",
     emptyMessage = "No dated records match the current filter.",
@@ -100,6 +101,8 @@
     selectedIds?: readonly string[];
     selectable?: boolean;
     ariaLabel?: string;
+    /** Column heading for the activity date group. */
+    dateHeading?: string;
     amountHeading?: string;
     balanceDescription?: string;
     emptyMessage?: string;
@@ -250,62 +253,59 @@
     </div>
   {/if}
   <div
-    class="bc-ledger-activity__panel"
+    class={selectable
+      ? "activity-grid activity-grid--selectable bc-ledger-activity__header"
+      : "activity-grid activity-grid--read-only bc-ledger-activity__header"}
   >
-    <div
-      class={selectable
-        ? "activity-grid activity-grid--selectable bc-ledger-activity__header"
-        : "activity-grid activity-grid--read-only bc-ledger-activity__header"}
-    >
-      {#if selectable}
-        <input
-          type="checkbox"
-          checked={allSelected}
-          use:setIndeterminate={someSelected}
-          class="bc-ledger-activity__checkbox"
-          aria-label="Select all visible records"
-          onchange={(event) =>
-            toggleAll((event.currentTarget as HTMLInputElement).checked)}
-        />
-      {/if}
-      <span>Date and record</span>
-      <span class="bc-ledger-activity__amount-heading">{amountHeading}</span>
-    </div>
-
-    {#if selectable && showSelectionScope}
-      <div class="bc-ledger-activity__selection-scope" role="status">
-        {#if allMatchingSelected}
-          All {totalMatchingRecordCount} {selectionRecordLabel()} selected.
-          <Button
-            type="button"
-            variant="link"
-            size="sm"
-            class="bc-ledger-activity__selection-action"
-            onclick={clearSelection}
-          >
-            Clear selection
-          </Button>
-        {:else}
-          All {recordIds.length} records on this page are selected.
-          <Button
-            type="button"
-            variant="link"
-            size="sm"
-            class="bc-ledger-activity__selection-action"
-            onclick={onRequestSelectAllMatching}
-          >
-            Select all {totalMatchingRecordCount} {selectionRecordLabel()}
-          </Button>
-        {/if}
-      </div>
+    {#if selectable}
+      <input
+        type="checkbox"
+        checked={allSelected}
+        use:setIndeterminate={someSelected}
+        class="bc-ledger-activity__checkbox"
+        aria-label="Select all visible records"
+        onchange={(event) =>
+          toggleAll((event.currentTarget as HTMLInputElement).checked)}
+      />
     {/if}
+    <span>{dateHeading}</span>
+    <span class="bc-ledger-activity__amount-heading">{amountHeading}</span>
+  </div>
 
-    {#if groups.length}
-      <div class="bc-ledger-activity__groups">
-        {#each groups as group (group.id)}
-          {@const expanded = expandedGroupIds.has(group.id)}
-          {@const groupState = groupSelection(group)}
-          <section>
+  {#if selectable && showSelectionScope}
+    <div class="bc-ledger-activity__selection-scope" role="status">
+      {#if allMatchingSelected}
+        All {totalMatchingRecordCount} {selectionRecordLabel()} selected.
+        <Button
+          type="button"
+          variant="link"
+          size="sm"
+          class="bc-ledger-activity__selection-action"
+          onclick={clearSelection}
+        >
+          Clear selection
+        </Button>
+      {:else}
+        All {recordIds.length} records on this page are selected.
+        <Button
+          type="button"
+          variant="link"
+          size="sm"
+          class="bc-ledger-activity__selection-action"
+          onclick={onRequestSelectAllMatching}
+        >
+          Select all {totalMatchingRecordCount} {selectionRecordLabel()}
+        </Button>
+      {/if}
+    </div>
+  {/if}
+
+  {#if groups.length}
+    <div class="bc-ledger-activity__groups">
+      {#each groups as group (group.id)}
+        {@const expanded = expandedGroupIds.has(group.id)}
+        {@const groupState = groupSelection(group)}
+        <section class="bc-ledger-activity__group-card">
             <div
               class={selectable
                 ? "activity-grid activity-grid--selectable bc-ledger-activity__group"
@@ -332,6 +332,10 @@
                 aria-controls={`${group.id}-details`}
                 onclick={() => toggleGroupDisclosure(group.id)}
               >
+                <span class="bc-ledger-activity__date">{group.date}</span>
+                <span class="bc-ledger-activity__record-count"
+                  >· {group.records.length}</span
+                >
                 {#if expanded}
                   <ChevronDown
                     class="bc-ledger-activity__icon"
@@ -343,12 +347,6 @@
                     aria-hidden="true"
                   />
                 {/if}
-                <span class="bc-ledger-activity__date">{group.date}</span>
-                <span class="bc-ledger-activity__record-count"
-                  >{group.records.length} record{group.records.length === 1
-                    ? ""
-                    : "s"}</span
-                >
               </button>
               {#if group.balance}
                 <span
@@ -361,37 +359,31 @@
               {/if}
             </div>
 
-            {#if expanded}
-              <div id={`${group.id}-details`} class="bc-ledger-activity__details">
-                {#if group.summary}
-                  <div
-                    class="bc-ledger-activity__summary"
-                    aria-label={`Balance summary for ${group.date}`}
-                  >
-                    <span>Start balance</span>
-                    <span
-                      class="bc-ledger-activity__summary-rule"
-                    ></span>
-                    <span class="bc-ledger-activity__summary-value">
-                      {group.summary.start}
-                    </span>
-                    <span>Net cash flow</span>
-                    <span
-                      class="bc-ledger-activity__summary-rule"
-                    ></span>
-                    <span class="bc-ledger-activity__summary-value">
-                      {group.summary.change}
-                    </span>
-                    <span>Final balance</span>
-                    <span
-                      class="bc-ledger-activity__summary-rule"
-                    ></span>
-                    <span class="bc-ledger-activity__summary-value bc-ledger-activity__summary-value--final">
-                      {group.summary.final}
-                    </span>
-                  </div>
-                {/if}
-                <ul>
+          {#if expanded && group.summary}
+            <div
+              id={`${group.id}-details`}
+              class="bc-ledger-activity__summary"
+              aria-label={`Balance summary for ${group.date}`}
+            >
+              <span>Start balance</span>
+              <span class="bc-ledger-activity__summary-rule"></span>
+              <span class="bc-ledger-activity__summary-value">
+                {group.summary.start}
+              </span>
+              <span>Net cash flow</span>
+              <span class="bc-ledger-activity__summary-rule"></span>
+              <span class="bc-ledger-activity__summary-value">
+                {group.summary.change}
+              </span>
+              <span>Final balance</span>
+              <span class="bc-ledger-activity__summary-rule"></span>
+              <span class="bc-ledger-activity__summary-value bc-ledger-activity__summary-value--final">
+                {group.summary.final}
+              </span>
+            </div>
+          {/if}
+          <div class="bc-ledger-activity__records">
+            <ul>
                   {#each group.records as record (record.id)}
                     <li
                       class={selectable
@@ -457,18 +449,16 @@
                       {/if}
                     </li>
                   {/each}
-                </ul>
-              </div>
-            {/if}
-          </section>
-        {/each}
-      </div>
-    {:else}
-      <div class="bc-ledger-activity__empty">
-        {emptyMessage}
-      </div>
-    {/if}
-  </div>
+            </ul>
+          </div>
+        </section>
+      {/each}
+    </div>
+  {:else}
+    <div class="bc-ledger-activity__empty">
+      {emptyMessage}
+    </div>
+  {/if}
 
   {#if pagination && pagination.pageCount > 1}
     <div class="bc-ledger-activity__pagination" data-activity-pagination>
@@ -576,26 +566,27 @@
 
   .bc-ledger-activity { width: 100%; }
   .bc-ledger-activity__timeframes { margin-block-end: var(--ui-beancount-space-3); }
-  .bc-ledger-activity__panel { overflow: hidden; border: 1px solid color-mix(in srgb, var(--ui-beancount-border) 80%, transparent); border-radius: var(--radius-2xl); background: var(--ui-beancount-surface); box-shadow: var(--ui-beancount-shadow-panel); }
-  .bc-ledger-activity__header { align-items: center; gap: var(--ui-beancount-space-4); background: color-mix(in srgb, var(--ui-beancount-surface-muted) 65%, transparent); padding: var(--ui-beancount-space-3) var(--ui-beancount-space-5); color: var(--ui-beancount-muted-foreground); font-size: .75rem; font-weight: 600; letter-spacing: .025em; text-transform: uppercase; }
+  .bc-ledger-activity__header { align-items: center; gap: var(--ui-beancount-space-4); border-radius: var(--radius-2xl); background: color-mix(in srgb, var(--ui-beancount-surface-muted) 80%, transparent); padding: var(--ui-beancount-space-3) var(--ui-beancount-space-5); color: var(--ui-beancount-muted-foreground); font-size: .75rem; font-weight: 600; letter-spacing: .025em; text-transform: uppercase; }
   .bc-ledger-activity__checkbox { width: var(--ui-beancount-space-4); height: var(--ui-beancount-space-4); flex-shrink: 0; border-color: var(--input); border-radius: var(--radius-sm); accent-color: var(--primary); outline: none; }
   .bc-ledger-activity__checkbox:focus-visible, .bc-ledger-activity__group-toggle:focus-visible, .bc-ledger-activity__record-action:focus-visible, .bc-ledger-activity__posting-link:focus-visible { outline: 2px solid var(--ui-beancount-focus-ring); }
   .bc-ledger-activity__checkbox--record { margin-block-start: calc(var(--ui-beancount-space-1) / 2); }
   .bc-ledger-activity__amount-heading, .bc-ledger-activity__balance, .bc-ledger-activity__amount, .bc-ledger-activity__postings { text-align: right; }
-  .bc-ledger-activity__groups { border-block-start: 1px solid color-mix(in srgb, var(--ui-beancount-border) 80%, transparent); }
-  .bc-ledger-activity__groups > section { border-block-end: 1px solid color-mix(in srgb, var(--ui-beancount-border) 80%, transparent); }
+  .bc-ledger-activity__groups { display: grid; gap: var(--ui-beancount-space-3); margin-block-start: var(--ui-beancount-space-3); }
+  .bc-ledger-activity__group-card { overflow: hidden; border-radius: var(--radius-2xl); background: color-mix(in srgb, var(--ui-beancount-surface-muted) 80%, transparent); }
   .bc-ledger-activity__group { align-items: center; gap: var(--ui-beancount-space-4); padding: var(--ui-beancount-space-3) var(--ui-beancount-space-5); }
   .bc-ledger-activity__group-toggle { display: flex; min-width: 0; align-items: center; gap: var(--ui-beancount-space-2); outline: none; text-align: left; }
   :global(.bc-ledger-activity__icon) { width: var(--ui-beancount-space-4); height: var(--ui-beancount-space-4); flex-shrink: 0; color: var(--ui-beancount-muted-foreground); }
   .bc-ledger-activity__date { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .875rem; font-weight: 600; }
   .bc-ledger-activity__record-count, .bc-ledger-activity__balance { color: var(--ui-beancount-muted-foreground); font-size: .75rem; }
   .bc-ledger-activity__balance { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
-  .bc-ledger-activity__details { border-block-start: 1px solid color-mix(in srgb, var(--ui-beancount-border) 70%, transparent); }
-  .bc-ledger-activity__summary { display: grid; gap: var(--ui-beancount-space-2) var(--ui-beancount-space-4); border-block-end: 1px dashed color-mix(in srgb, var(--ui-beancount-border) 80%, transparent); padding: var(--ui-beancount-space-4) var(--ui-beancount-space-5); font-size: .875rem; }
+  .bc-ledger-activity__summary { display: grid; gap: var(--ui-beancount-space-2) var(--ui-beancount-space-4); border-block-start: 1px dashed color-mix(in srgb, var(--ui-beancount-border) 80%, transparent); padding: var(--ui-beancount-space-4) var(--ui-beancount-space-5); font-size: .875rem; }
   .bc-ledger-activity__summary-rule { display: none; border-block-start: 1px dashed color-mix(in srgb, var(--ui-beancount-border) 80%, transparent); align-self: center; }
   .bc-ledger-activity__summary-value { text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; }
   .bc-ledger-activity__summary-value--final { font-weight: 700; }
-  .bc-ledger-activity__record { align-items: flex-start; gap: var(--ui-beancount-space-4); padding: var(--ui-beancount-space-3) var(--ui-beancount-space-5); transition: background-color 150ms ease; }
+  .bc-ledger-activity__records { margin: var(--ui-beancount-space-1); overflow: hidden; border: 1px solid color-mix(in srgb, var(--ui-beancount-border) 80%, transparent); border-radius: var(--ui-beancount-radius-panel); background: var(--ui-beancount-surface); box-shadow: var(--ui-beancount-shadow-panel); }
+  .bc-ledger-activity__records ul { margin: 0; padding: 0; list-style: none; }
+  .bc-ledger-activity__record { align-items: flex-start; gap: var(--ui-beancount-space-4); border-block-end: 1px solid color-mix(in srgb, var(--ui-beancount-border) 70%, transparent); padding: var(--ui-beancount-space-3) var(--ui-beancount-space-5); transition: background-color 150ms ease; }
+  .bc-ledger-activity__record:last-child { border-block-end: 0; }
   .bc-ledger-activity__record:hover { background: color-mix(in srgb, var(--ui-beancount-surface-muted) 45%, transparent); }
   .bc-ledger-activity__record-action, .bc-ledger-activity__record-copy { min-width: 0; outline: none; text-align: left; }
   .bc-ledger-activity__postings { display: flex; min-width: 0; flex-direction: column; gap: var(--ui-beancount-space-1); }
@@ -606,7 +597,7 @@
   .bc-ledger-activity__posting-account { color: var(--ui-beancount-muted-foreground); }
   .bc-ledger-activity__posting-amount, .bc-ledger-activity__amount { font-family: var(--font-mono); font-size: .875rem; font-weight: 600; font-variant-numeric: tabular-nums; }
   .bc-ledger-activity__amount { font-weight: 400; }
-  .bc-ledger-activity__empty { padding: calc(var(--ui-beancount-space-3) * 4) var(--ui-beancount-space-5); color: var(--ui-beancount-muted-foreground); text-align: center; font-size: .875rem; }
+  .bc-ledger-activity__empty { margin-block-start: var(--ui-beancount-space-3); border: 1px solid color-mix(in srgb, var(--ui-beancount-border) 80%, transparent); border-radius: var(--radius-2xl); background: var(--ui-beancount-surface); padding: calc(var(--ui-beancount-space-3) * 4) var(--ui-beancount-space-5); color: var(--ui-beancount-muted-foreground); text-align: center; font-size: .875rem; }
   .bc-ledger-activity__selection-scope { margin-block: var(--ui-beancount-space-3); border: 1px solid color-mix(in srgb, var(--ui-beancount-border) 80%, transparent); border-radius: var(--ui-beancount-radius-panel); background: var(--ui-beancount-surface-muted); padding: var(--ui-beancount-space-3) var(--ui-beancount-space-4); color: var(--ui-beancount-muted-foreground); font-size: var(--text-sm); }
   :global(.bc-ledger-activity__selection-action) { height: auto; padding: 0; color: var(--primary); vertical-align: baseline; }
   .bc-ledger-activity__pagination { display: flex; flex-direction: column; gap: var(--ui-beancount-space-3); margin-block-start: var(--ui-beancount-space-3); border: 1px solid color-mix(in srgb, var(--ui-beancount-border) 80%, transparent); border-radius: var(--ui-beancount-radius-panel); background: var(--ui-beancount-surface); padding: var(--ui-beancount-space-3) var(--ui-beancount-space-4); box-shadow: var(--ui-beancount-shadow-panel); }
