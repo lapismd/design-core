@@ -857,7 +857,9 @@
   {#snippet template()}
     <ScreenFrame pageTitle="Account: Assets:Checking">
       <ContentScrollArea>
-        <div class="bc-screen-story__page bc-screen-story__page--report">
+        <div
+          class="bc-screen-story__page bc-screen-story__page--report bc-screen-story__page--account-report"
+        >
           <Breadcrumb.Root class="bc-screen-story__breadcrumbs">
             <Breadcrumb.List>
               <Breadcrumb.Item>
@@ -874,53 +876,6 @@
               </Breadcrumb.Item>
             </Breadcrumb.List>
           </Breadcrumb.Root>
-          <ChartPanel
-            ariaLabel="Account balance controls"
-            legend={{
-              items: [
-                {
-                  id: "gbp",
-                  label: "GBP",
-                  color: "var(--ui-beancount-accepted)",
-                },
-              ],
-              selection: "single",
-              selectedIds: ["gbp"],
-            }}
-            conversion={{
-              ariaLabel: "Valuation",
-              value: "cost",
-              options: [{ value: "cost", label: "At Cost" }],
-            }}
-            interval={{
-              ariaLabel: "Interval",
-              value: "month",
-              options: [{ value: "month", label: "Monthly" }],
-            }}
-            modes={{
-              value: accountDetailChartMode,
-              options: [
-                { value: "line", label: "Line Chart" },
-                { value: "area", label: "Area Map" },
-              ],
-              ariaLabel: "Account balance chart representation",
-              onChange: (value) => {
-                accountDetailChartMode = value as "line" | "area";
-              },
-            }}
-          >
-            {#snippet children()}
-              <LineChart
-                series={accountDetailLineSeries}
-                mode={accountDetailChartMode}
-                interpolation="step"
-                xTickCount={7}
-                yTickCount={15}
-                ariaLabel="Assets Checking balance history"
-                valueFormatter={formatReportAxisAmount}
-              />
-            {/snippet}
-          </ChartPanel>
           <ChartSwitcher
             charts={[
               { id: "account-balance", label: "Account Balance" },
@@ -932,41 +887,87 @@
             ]}
             activeChartId={accountDetailPerspective}
             ariaLabel="Account report sections"
-            tabsPlacement="top"
             onActiveChartChange={(value) => {
               accountDetailPerspective = value;
             }}
           >
             {#snippet children()}
-              <ChartSwitcher
-                charts={[
-                  { id: "account-table", label: "Account Table" },
-                  { id: "changes-monthly", label: "Changes (Monthly)" },
-                  { id: "balances-monthly", label: "Balances (Monthly)" },
-                ]}
-                activeChartId={accountDetailTablePerspective}
-                ariaLabel="Account table sections"
-                tabsPlacement="top"
-                onActiveChartChange={(value) => {
-                  accountDetailTablePerspective = value;
+              <ChartPanel
+                ariaLabel="Account balance controls"
+                legend={{
+                  items: [
+                    {
+                      id: "gbp",
+                      label: "GBP",
+                      color: "var(--ui-beancount-accepted)",
+                    },
+                  ],
+                  selection: "single",
+                  selectedIds: ["gbp"],
+                }}
+                conversion={{
+                  ariaLabel: "Valuation",
+                  value: "cost",
+                  options: [{ value: "cost", label: "At Cost" }],
+                }}
+                interval={{
+                  ariaLabel: "Interval",
+                  value: "month",
+                  options: [{ value: "month", label: "Monthly" }],
+                }}
+                modes={{
+                  value: accountDetailChartMode,
+                  options: [
+                    { value: "line", label: "Line Chart" },
+                    { value: "area", label: "Area Map" },
+                  ],
+                  ariaLabel: "Account balance chart representation",
+                  onChange: (value) => {
+                    accountDetailChartMode = value as "line" | "area";
+                  },
                 }}
               >
                 {#snippet children()}
-                  <LedgerActivityTable
-                    groups={accountDetailGroups}
-                    ariaLabel="Assets Checking activity"
-                    amountHeading="Balance"
-                    timeframes={[
-                      { id: "transactions", label: "Transactions" },
-                      { id: "upcoming", label: "Upcoming" },
-                    ]}
-                    timeframe={accountDetailTimeframe}
-                    onTimeframeChange={(value) => {
-                      accountDetailTimeframe = value;
-                    }}
+                  <LineChart
+                    series={accountDetailLineSeries}
+                    mode={accountDetailChartMode}
+                    interpolation="step"
+                    xTickCount={7}
+                    yTickCount={15}
+                    ariaLabel="Assets Checking balance history"
+                    valueFormatter={formatReportAxisAmount}
                   />
                 {/snippet}
-              </ChartSwitcher>
+              </ChartPanel>
+            {/snippet}
+          </ChartSwitcher>
+          <ChartSwitcher
+            charts={[
+              { id: "account-table", label: "Account Table" },
+              { id: "changes-monthly", label: "Changes (Monthly)" },
+              { id: "balances-monthly", label: "Balances (Monthly)" },
+            ]}
+            activeChartId={accountDetailTablePerspective}
+            ariaLabel="Account table sections"
+            tabsPlacement="top"
+            onActiveChartChange={(value) => {
+              accountDetailTablePerspective = value;
+            }}
+          >
+            {#snippet children()}
+              <LedgerActivityTable
+                groups={accountDetailGroups}
+                ariaLabel="Assets Checking activity"
+                amountHeading="Balance"
+                timeframes={[
+                  { id: "transactions", label: "Transactions" },
+                  { id: "upcoming", label: "Upcoming" },
+                ]}
+                timeframe={accountDetailTimeframe}
+                onTimeframeChange={(value) => {
+                  accountDetailTimeframe = value;
+                }}
+              />
             {/snippet}
           </ChartSwitcher>
         </div>
@@ -1623,6 +1624,10 @@
   .bc-screen-story__page--report {
     display: grid;
     gap: calc(var(--ui-beancount-space-4) * 2);
+  }
+
+  .bc-screen-story__page--account-report {
+    gap: var(--ui-beancount-space-2);
   }
 
   .bc-screen-story__statement-section {

@@ -240,7 +240,8 @@ don't yet support these — cosmetic only, not blocking):
   compact-display selects, and mode switch around a model-driven chart
   `children` snippet
 - `ChartSwitcher` — responsive, controlled perspective selector for related
-  charts, with a horizontal-overflow tab strip that can follow chart history
+  charts, with a horizontal-overflow tab strip that can follow chart history;
+  account reports keep their downstream table tabs as a separate composition
 - `HierarchyChart` — model-driven allocation chart with treemap and sunburst
   views
 - `LineChart` — responsive time-series renderer (line or area) with
