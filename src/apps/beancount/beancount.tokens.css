@@ -39,7 +39,7 @@
   --ui-beancount-report-income-negative: oklch(0.7 0.14 234);
   --ui-beancount-report-balance-primary: oklch(0.72 0.11 250);
   --ui-beancount-report-balance-cash: oklch(0.69 0.14 198);
-  --ui-beancount-report-trial-treemap: oklch(0.79 0.09 260);
+  --ui-beancount-report-trial-treemap: #adc8fe;
   --ui-beancount-report-trial-primary: oklch(0.68 0.14 250);
   --ui-beancount-report-trial-cyan: oklch(0.69 0.15 210);
   --ui-beancount-report-trial-teal: oklch(0.68 0.13 178);
