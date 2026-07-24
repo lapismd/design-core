@@ -68,7 +68,7 @@ export function balanceDashboardFlow(
         ...sources,
         {
           id: dashboardFlowDeficitId,
-          color: "var(--destructive)",
+          color: "var(--ui-beancount-negative)",
           label: "Deficit",
           value: -cashFlow,
         },

@@ -61,8 +61,8 @@
     flow.cashFlow > 0
       ? "var(--chart-2)"
       : flow.cashFlow < 0
-        ? "var(--destructive)"
-        : "var(--primary)",
+        ? "var(--ui-beancount-negative)"
+        : "var(--ui-beancount-accent)",
   );
   const flowAriaLabel = $derived(
     ariaLabel ??
@@ -175,9 +175,7 @@
 </script>
 
 {#if isEmpty}
-  <div
-    class="bc-dashboard-flow__empty"
-  >
+  <div class="bc-dashboard-flow__empty">
     {emptyLabel}
   </div>
 {:else}
@@ -354,19 +352,35 @@
 {/if}
 
 <style>
-  .bc-dashboard-flow__empty { display:grid; min-height:15rem; place-items:center; padding-inline:calc(var(--ui-beancount-space-3) * 2); color:var(--ui-beancount-muted-foreground); text-align:center; font-size:.875rem; }
-  .bc-dashboard-flow__scroll { overflow-x:auto; padding:var(--ui-beancount-space-4) var(--ui-beancount-space-3); }
-  .bc-dashboard-flow__chart { position:relative; min-width:45rem; }
-  .bc-dashboard-flow__svg { width:100%; }
+  .bc-dashboard-flow__empty {
+    display: grid;
+    min-height: 15rem;
+    place-items: center;
+    padding-inline: calc(var(--ui-beancount-space-3) * 2);
+    color: var(--ui-beancount-muted-foreground);
+    text-align: center;
+    font-size: 0.875rem;
+  }
+  .bc-dashboard-flow__scroll {
+    overflow-x: auto;
+    padding: var(--ui-beancount-space-4) var(--ui-beancount-space-3);
+  }
+  .bc-dashboard-flow__chart {
+    position: relative;
+    min-width: 45rem;
+  }
+  .bc-dashboard-flow__svg {
+    width: 100%;
+  }
   .label {
-    fill: var(--foreground);
+    fill: var(--ui-beancount-foreground);
     font-family: "DM Sans Variable", sans-serif;
     font-size: 13px;
     font-weight: 600;
   }
 
   .amount {
-    fill: var(--muted-foreground);
+    fill: var(--ui-beancount-muted-foreground);
     font-family: "Source Code Pro", monospace;
     font-size: 11px;
   }

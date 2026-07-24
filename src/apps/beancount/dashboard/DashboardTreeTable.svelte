@@ -203,7 +203,7 @@
   }
   .bc-dashboard-tree-table__view-all {
     border-radius: calc(var(--ui-beancount-radius-panel) / 2);
-    color: var(--primary);
+    color: var(--ui-beancount-accent);
     font-size: 0.75rem;
     font-weight: 500;
     outline: none;

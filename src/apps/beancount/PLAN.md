@@ -105,7 +105,9 @@ Tailwind utilities before a `fava-beta` adapter consumes the app layer.
    shared shadcn component or component-local semantic selector.
 3. ✅ `pnpm beancount:tailwind:check [family]` rejects utility strings in
    components and stories. `pnpm beancount:tailwind:check` now passes for the
-   complete app; screen-body parity remains tracked separately above.
+   complete app; `pnpm beancount:tokens:check [family]` rejects raw shared
+   theme variables outside the documented role and local-value namespaces.
+   Screen-body parity remains tracked separately above.
 4. Retake reviewed component baselines only after each family passes its story
    and a11y tests; Fava reference PNGs remain untouched.
 
@@ -122,7 +124,7 @@ explicit exceptions.
 | Area         | Initial files | Remaining files | Status                           |
 | ------------ | ------------: | --------------: | -------------------------------- |
 | `charts`     |            10 |               0 | ✅ semantic chart roles          |
-| `dashboard`  |            10 |              10 | 🟡 pending                       |
+| `dashboard`  |            10 |               0 | ✅ semantic dashboard roles      |
 | `feedback`   |            13 |               0 | ✅ semantic feedback roles       |
 | `layout`     |             7 |               0 | ✅ semantic shell roles          |
 | `navigation` |             5 |               0 | ✅ semantic navigation roles     |
@@ -163,6 +165,8 @@ explicit exceptions.
 # Fava reference capture and integrity
 FAVA_SCREEN_CAPTURE=1 pnpm beancount:screens:capture
 pnpm beancount:screens:verify
+pnpm beancount:tailwind:check
+pnpm beancount:tokens:check
 
 # Catalog iteration
 pnpm storybook

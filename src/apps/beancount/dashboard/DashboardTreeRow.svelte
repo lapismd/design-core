@@ -14,7 +14,7 @@
     gridTemplate,
     collapsed,
     depth = 0,
-    branchColor = "var(--primary)",
+    branchColor = "var(--ui-beancount-accent)",
     valueFormatter = (value) => String(value),
     onNodeSelect = () => {},
     onToggle = () => {},
@@ -90,7 +90,7 @@
       <span
         class:is-hidden={!amount}
         class="bc-dashboard-tree-row__weight-meter"
-        style={`--meter-color: ${color}`}
+        style={`--bc-meter-color: ${color}`}
         data-dashboard-weight-meter
         aria-hidden="true"
       >
@@ -189,7 +189,7 @@
     min-inline-size: 0;
     overflow: hidden;
     border-radius: calc(var(--ui-beancount-radius-panel) / 2);
-    color: var(--primary);
+    color: var(--ui-beancount-accent);
     font-weight: 500;
     outline: none;
     text-align: start;
@@ -214,7 +214,7 @@
     text-align: end;
   }
   .bc-dashboard-tree-row__dimmed {
-    color: var(--muted-foreground);
+    color: var(--ui-beancount-muted-foreground);
   }
 
   .bc-dashboard-tree-row__weight-meter {
@@ -223,7 +223,7 @@
     gap: 0.14rem;
     height: 0.85rem;
     align-items: stretch;
-    color: var(--meter-color);
+    color: var(--bc-meter-color);
   }
 
   .bc-dashboard-tree-row__weight-meter > span {

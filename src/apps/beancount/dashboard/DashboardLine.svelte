@@ -258,12 +258,12 @@
         <linearGradient id={areaGradientId} x1="0" x2="0" y1="0" y2="1">
           <stop
             offset="0"
-            stop-color="var(--dashboard-series)"
+            stop-color="var(--bc-dashboard-series)"
             stop-opacity="0.2"
           />
           <stop
             offset="1"
-            stop-color="var(--dashboard-series)"
+            stop-color="var(--bc-dashboard-series)"
             stop-opacity="0.01"
           />
         </linearGradient>
@@ -338,9 +338,7 @@
     />
   </div>
 {:else}
-  <div
-    class="bc-dashboard-line__empty"
-  >
+  <div class="bc-dashboard-line__empty">
     {emptyLabel}
     {#if orderedPoints.length}
       <span class="bc-dashboard-line__empty-value"
@@ -352,21 +350,46 @@
 
 <style>
   .positive {
-    --dashboard-series: var(--chart-2);
+    --bc-dashboard-series: var(--chart-2);
   }
 
-  .bc-dashboard-line { position:relative; border-radius:var(--radius-md); padding:var(--ui-beancount-space-3) var(--ui-beancount-space-5) var(--ui-beancount-space-4); outline:none; }
-  .bc-dashboard-line:focus-visible { outline:2px solid var(--ui-beancount-focus-ring); outline-offset:2px; }
-  .bc-dashboard-line__svg { width:100%; }
-  .bc-dashboard-line__empty { display:grid; min-height:13rem; place-items:center; padding-inline:calc(var(--ui-beancount-space-3) * 2); color:var(--ui-beancount-muted-foreground); text-align:center; font-size:.875rem; }
-  .bc-dashboard-line__empty-value { display:block; margin-block-start:var(--ui-beancount-space-1); color:var(--ui-beancount-foreground); font-family:var(--font-mono); font-size:.75rem; }
+  .bc-dashboard-line {
+    position: relative;
+    border-radius: var(--radius-md);
+    padding: var(--ui-beancount-space-3) var(--ui-beancount-space-5)
+      var(--ui-beancount-space-4);
+    outline: none;
+  }
+  .bc-dashboard-line:focus-visible {
+    outline: 2px solid var(--ui-beancount-focus-ring);
+    outline-offset: 2px;
+  }
+  .bc-dashboard-line__svg {
+    width: 100%;
+  }
+  .bc-dashboard-line__empty {
+    display: grid;
+    min-height: 13rem;
+    place-items: center;
+    padding-inline: calc(var(--ui-beancount-space-3) * 2);
+    color: var(--ui-beancount-muted-foreground);
+    text-align: center;
+    font-size: 0.875rem;
+  }
+  .bc-dashboard-line__empty-value {
+    display: block;
+    margin-block-start: var(--ui-beancount-space-1);
+    color: var(--ui-beancount-foreground);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+  }
 
   .negative {
-    --dashboard-series: var(--destructive);
+    --bc-dashboard-series: var(--ui-beancount-negative);
   }
 
   .neutral {
-    --dashboard-series: var(--primary);
+    --bc-dashboard-series: var(--ui-beancount-accent);
   }
 
   .line {
@@ -380,27 +403,35 @@
   }
 
   .series-line {
-    stroke: var(--dashboard-series);
+    stroke: var(--bc-dashboard-series);
   }
 
   .muted-line {
-    stroke: color-mix(in oklch, var(--muted-foreground) 62%, transparent);
+    stroke: color-mix(
+      in oklch,
+      var(--ui-beancount-muted-foreground) 62%,
+      transparent
+    );
   }
 
   .crosshair {
-    stroke: color-mix(in oklch, var(--muted-foreground) 45%, transparent);
+    stroke: color-mix(
+      in oklch,
+      var(--ui-beancount-muted-foreground) 45%,
+      transparent
+    );
     stroke-dasharray: 3 4;
     stroke-width: 1;
   }
 
   .active-dot {
-    fill: var(--dashboard-series);
-    stroke: var(--background);
+    fill: var(--bc-dashboard-series);
+    stroke: var(--ui-beancount-surface);
     stroke-width: 2.5;
   }
 
   .axis {
-    fill: var(--muted-foreground);
+    fill: var(--ui-beancount-muted-foreground);
     font-family: "Source Code Pro", monospace;
     font-size: 10px;
   }

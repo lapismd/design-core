@@ -49,7 +49,7 @@ export function dashboardTreeContributions(
       id: node.id,
       label: node.label,
       value: node.value,
-      color: node.color ?? "var(--primary)",
+      color: node.color ?? "var(--ui-beancount-accent)",
       percentage: total ? (Math.abs(node.value) / total) * 100 : 0,
     }));
 }

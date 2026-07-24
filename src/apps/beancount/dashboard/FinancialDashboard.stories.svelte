@@ -88,7 +88,7 @@
           id: "assets",
           label: "Assets",
           value: 17120,
-          color: "var(--primary)",
+          color: "var(--ui-beancount-accent)",
           children: [
             {
               id: "assets-cash",
@@ -115,13 +115,13 @@
           id: "liabilities",
           label: "Liabilities",
           value: 3000,
-          color: "var(--destructive)",
+          color: "var(--ui-beancount-negative)",
           children: [
             {
               id: "liabilities-card",
               label: "Card",
               value: 3000,
-              color: "var(--destructive)",
+              color: "var(--ui-beancount-negative)",
             },
           ],
         },

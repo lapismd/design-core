@@ -91,11 +91,7 @@
   }
 </script>
 
-<section
-  class="bc-dashboard-donut"
-  aria-label={ariaLabel}
-  data-dashboard-donut
->
+<section class="bc-dashboard-donut" aria-label={ariaLabel} data-dashboard-donut>
   {#if total}
     <svg
       viewBox="-116 -116 232 232"
@@ -108,7 +104,7 @@
           d={pathFor(arc)}
           fill={arc.category.color}
           stroke={activeCategory?.id === arc.category.id
-            ? "var(--foreground)"
+            ? "var(--ui-beancount-foreground)"
             : "transparent"}
           stroke-width={activeCategory?.id === arc.category.id ? 2 : 0}
           opacity={activeCategory && activeCategory.id !== arc.category.id
@@ -127,7 +123,7 @@
       <text
         text-anchor="middle"
         y="-7"
-        fill="var(--muted-foreground)"
+        fill="var(--ui-beancount-muted-foreground)"
         class="bc-dashboard-donut__label"
       >
         {activeCategory?.label ?? title}
@@ -135,7 +131,7 @@
       <text
         text-anchor="middle"
         y="16"
-        fill="var(--foreground)"
+        fill="var(--ui-beancount-foreground)"
         class="bc-dashboard-donut__value"
       >
         {activeCategory?.valueLabel ??
@@ -148,10 +144,32 @@
 </section>
 
 <style>
-  .bc-dashboard-donut { display:grid; min-height:16rem; place-items:center; padding:var(--ui-beancount-space-4); }
-  .bc-dashboard-donut__svg { width:14rem; height:14rem; }
-  .bc-dashboard-donut__arc { cursor:pointer; outline:none; transition:opacity 150ms ease; }
-  .bc-dashboard-donut__label { font-size:.8125rem; font-weight:600; }
-  .bc-dashboard-donut__value { font-family:var(--font-mono); font-size:.8125rem; font-weight:600; }
-  .bc-dashboard-donut__empty { color:var(--ui-beancount-muted-foreground); font-size:.875rem; }
+  .bc-dashboard-donut {
+    display: grid;
+    min-height: 16rem;
+    place-items: center;
+    padding: var(--ui-beancount-space-4);
+  }
+  .bc-dashboard-donut__svg {
+    width: 14rem;
+    height: 14rem;
+  }
+  .bc-dashboard-donut__arc {
+    cursor: pointer;
+    outline: none;
+    transition: opacity 150ms ease;
+  }
+  .bc-dashboard-donut__label {
+    font-size: 0.8125rem;
+    font-weight: 600;
+  }
+  .bc-dashboard-donut__value {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    font-weight: 600;
+  }
+  .bc-dashboard-donut__empty {
+    color: var(--ui-beancount-muted-foreground);
+    font-size: 0.875rem;
+  }
 </style>

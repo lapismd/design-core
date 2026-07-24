@@ -34,7 +34,8 @@
     "filter:grammar": "node scripts/generate-filter-query-parser.mjs",
     "beancount:screens:capture": "tsx scripts/beancount-screens/capture.ts",
     "beancount:screens:verify": "tsx scripts/beancount-screens/verify.ts",
-    "beancount:tailwind:check": "tsx scripts/check-beancount-no-tailwind.ts"
+    "beancount:tailwind:check": "tsx scripts/check-beancount-no-tailwind.ts",
+    "beancount:tokens:check": "tsx scripts/check-beancount-normalized-tokens.ts"
   },
   "peerDependencies": {
     "svelte": "^5.0.0"

@@ -21,7 +21,7 @@
       id: "assets",
       label: "Assets",
       value: 14120,
-      color: "var(--primary)",
+      color: "var(--ui-beancount-accent)",
       children: [
         {
           id: "assets-cash",
