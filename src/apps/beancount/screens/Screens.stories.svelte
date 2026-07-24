@@ -1578,6 +1578,8 @@
     await expect(
       canvas.queryByRole("region", { name: "Lunch Flow account details" }),
     ).not.toBeInTheDocument();
+    sourceAccountExpandedId = undefined;
+    sourceAccountAction = "";
     restoreReferenceCapture();
   }}
 >
@@ -1604,24 +1606,26 @@
       {/snippet}
       <ContentScrollArea>
         <div class="bc-screen-story__page bc-screen-story__source-accounts">
-          <SourceAccountGroups
-            source={sourceAccountSource}
-            otherAccounts={unassignedAccountGroup}
-            sourceActions={sourceAccountActions}
-            expandedSourceId={sourceAccountExpandedId}
-            onOpenSource={(source) => {
-              sourceAccountAction = `Open ${source.name}`;
-            }}
-            onExpandedSourceChange={(source) => {
-              sourceAccountExpandedId = source?.id;
-            }}
-            onOpenOtherAccounts={(group) => {
-              sourceAccountAction = `Open ${group.label}`;
-            }}
-            onSourceAction={(source, action) => {
-              sourceAccountAction = `${action.label} ${source.name}`;
-            }}
-          />
+          <div class="bc-screen-story__source-accounts-content">
+            <SourceAccountGroups
+              source={sourceAccountSource}
+              otherAccounts={unassignedAccountGroup}
+              sourceActions={sourceAccountActions}
+              expandedSourceId={sourceAccountExpandedId}
+              onOpenSource={(source) => {
+                sourceAccountAction = `Open ${source.name}`;
+              }}
+              onExpandedSourceChange={(source) => {
+                sourceAccountExpandedId = source?.id;
+              }}
+              onOpenOtherAccounts={(group) => {
+                sourceAccountAction = `Open ${group.label}`;
+              }}
+              onSourceAction={(source, action) => {
+                sourceAccountAction = `${action.label} ${source.name}`;
+              }}
+            />
+          </div>
           <output class="bc-screen-story__status" aria-live="polite">
             {sourceAccountAction}
           </output>
@@ -1768,7 +1772,11 @@
   }
 
   .bc-screen-story__source-accounts {
-    max-width: 70rem;
+    padding: var(--ui-beancount-space-6);
+  }
+
+  .bc-screen-story__source-accounts-content {
+    max-width: 48rem;
     margin-inline: auto;
   }
 

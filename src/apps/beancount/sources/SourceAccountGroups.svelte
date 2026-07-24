@@ -319,7 +319,7 @@
 <style>
   .bc-source-account-groups {
     display: grid;
-    gap: var(--ui-beancount-space-4);
+    gap: var(--ui-beancount-space-6);
   }
 
   :global(.bc-source-account-groups__card) {
@@ -332,9 +332,10 @@
   .bc-source-account-groups__other-action {
     display: grid;
     width: 100%;
+    min-height: calc(var(--ui-beancount-space-4) * 4);
     align-items: center;
     gap: var(--ui-beancount-space-3);
-    padding: calc(var(--ui-beancount-space-4) * 1.25);
+    padding: var(--ui-beancount-space-3) var(--ui-beancount-space-4);
     color: var(--ui-beancount-foreground);
     text-align: left;
   }
@@ -356,11 +357,11 @@
 
   .bc-source-account-groups__source-menu-trigger {
     display: inline-flex;
-    width: calc(var(--ui-beancount-space-5) * 2);
-    height: calc(var(--ui-beancount-space-5) * 2);
+    width: calc(var(--ui-beancount-space-4) * 2);
+    height: calc(var(--ui-beancount-space-4) * 2);
     align-items: center;
     justify-content: center;
-    margin-inline-end: var(--ui-beancount-space-3);
+    margin-inline-end: var(--ui-beancount-space-4);
     border-radius: var(--ui-beancount-radius-sm);
     color: var(--ui-beancount-muted-foreground);
   }
@@ -391,8 +392,8 @@
   }
 
   :global(.bc-source-account-groups__chevron) {
-    width: var(--ui-beancount-space-5);
-    height: var(--ui-beancount-space-5);
+    width: var(--ui-beancount-space-4);
+    height: var(--ui-beancount-space-4);
     color: var(--ui-beancount-muted-foreground);
     transition: transform 150ms ease;
     transform: rotate(-90deg);
@@ -405,8 +406,8 @@
   .bc-source-account-groups__brand,
   .bc-source-account-groups__other-icon {
     display: inline-flex;
-    width: calc(var(--ui-beancount-space-5) * 2.75);
-    height: calc(var(--ui-beancount-space-5) * 2.75);
+    width: calc(var(--ui-beancount-space-3) * 3);
+    height: calc(var(--ui-beancount-space-3) * 3);
     flex: none;
     align-items: center;
     justify-content: center;
@@ -436,10 +437,10 @@
   .bc-source-account-groups__brand[data-tone="negative"] {
     background: color-mix(
       in srgb,
-      var(--ui-beancount-negative) 78%,
+      var(--ui-beancount-negative) 24%,
       var(--ui-beancount-surface)
     );
-    color: var(--ui-beancount-negative-foreground);
+    color: var(--ui-beancount-negative);
   }
 
   .bc-source-account-groups__other-icon {
@@ -458,12 +459,12 @@
     min-width: 0;
     gap: calc(var(--ui-beancount-space-1) / 2);
     color: var(--ui-beancount-muted-foreground);
-    font-size: var(--text-sm);
+    font-size: var(--text-xs);
   }
 
   .bc-source-account-groups__name {
     color: var(--ui-beancount-foreground);
-    font-size: var(--text-lg);
+    font-size: var(--text-sm);
     font-weight: var(--font-weight-semibold);
   }
 
