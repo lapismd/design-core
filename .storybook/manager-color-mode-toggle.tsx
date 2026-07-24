@@ -1,6 +1,6 @@
 import React, { memo, useCallback } from "react";
 import { MoonIcon, SunIcon } from "@storybook/icons";
-import { IconButton } from "storybook/internal/components";
+import { ToggleButton } from "storybook/internal/components";
 import { addons, types, useGlobals } from "storybook/manager-api";
 
 const ADDON_ID = "ui-color-mode-toggle";
@@ -17,15 +17,18 @@ const ColorModeToggle = memo(function ColorModeToggle() {
   const label = isDark ? "Switch to light mode" : "Switch to dark mode";
 
   return (
-    <IconButton
+    <ToggleButton
       key={TOOL_ID}
-      active={isDark}
+      size="small"
+      variant="ghost"
+      padding="small"
+      pressed={isDark}
       title={label}
       ariaLabel={label}
       onClick={toggle}
     >
       {isDark ? <MoonIcon /> : <SunIcon />}
-    </IconButton>
+    </ToggleButton>
   );
 });
 
