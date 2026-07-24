@@ -81,7 +81,7 @@
       }
       [data-ui-component="alert"][data-ui-part="alert"][data-variant="default"],
       [data-ui-component="alert"][data-ui-part="alert"][data-variant="destructive"] {
-        background-color: var(--card);
+        background-color: var(--ui-alert-background, var(--card));
       }
       [data-ui-component="alert"][data-ui-part="alert"] {
         padding-inline: calc(var(--spacing) * 4);
@@ -105,7 +105,7 @@
         text-wrap: balance;
       }
       [data-ui-component="alert"][data-ui-part="alert"][data-variant="default"] {
-        color: var(--card-foreground);
+        color: var(--ui-alert-foreground, var(--card-foreground));
       }
       [data-ui-component="alert"][data-ui-part="alert"][data-variant="destructive"] {
         color: var(--destructive);

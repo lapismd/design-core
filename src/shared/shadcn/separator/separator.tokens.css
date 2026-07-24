@@ -1,0 +1,13 @@
+/**
+ * Default separator token bindings → theme tokens.
+ * Override --ui-separator-* on :root or any ancestor (forms pattern).
+ * Do not rebind these names on [data-ui-component="separator"] hosts — that
+ * blocks ancestor customization.
+ */
+:root {
+  --ui-separator-background: var(--border);
+  --ui-separator-foreground: var(--border);
+  --ui-separator-border-color: var(--border);
+  --ui-separator-radius: 0;
+  --ui-separator-focus-ring-color: var(--ring);
+}

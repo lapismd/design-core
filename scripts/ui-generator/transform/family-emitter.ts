@@ -11,8 +11,13 @@ import {
   isMarkerCandidate,
   type StyleSite,
 } from "../analysis/style-sites.js";
-import { publicTokenName } from "./token-names.js";
 import { emitLockedDataUiAttrOrder } from "./data-ui-host-gate.js";
+import {
+  FAMILY_TOKEN_SPECS,
+  buildTokensCss,
+  buildTokensTs,
+  rewritePaintToTokens,
+} from "./token-wiring.js";
 
 function constName(component: string, axis: string): string {
   const base = component.replace(/-/g, "_").toUpperCase();
@@ -1009,33 +1014,6 @@ export function rewritePartSource(args: {
   return source;
 }
 
-function buildTokensTs(component: string): string {
-  const tokenEntries = [
-    ["background", "background"],
-    ["foreground", "foreground"],
-    ["borderColor", "border-color"],
-    ["radius", "radius"],
-    ["focusRingColor", "focus-ring-color"],
-  ] as const;
-
-  const typeBase = component
-    .split("-")
-    .map((p) => p[0]!.toUpperCase() + p.slice(1))
-    .join("");
-
-  return `export const ${component.replace(/-/g, "_")}TokenNames = {
-${tokenEntries
-  .map(
-    ([key, slug]) => `  ${key}: "${publicTokenName("ui", component, [slug])}",`,
-  )
-  .join("\n")}
-} as const;
-
-export type ${typeBase}Token =
-  (typeof ${component.replace(/-/g, "_")}TokenNames)[keyof typeof ${component.replace(/-/g, "_")}TokenNames];
-`;
-}
-
 /** Stamp ownership attrs on styleless Bits pass-through families. */
 export function emitPassthroughFamily(args: {
   targetDir: string;
@@ -1072,9 +1050,16 @@ export function emitPassthroughFamily(args: {
     written.push(full);
   }
 
+  const spec = FAMILY_TOKEN_SPECS[component];
   const tokensPath = path.join(targetDir, `${component}.tokens.ts`);
-  writeFileSync(tokensPath, buildTokensTs(component));
+  writeFileSync(tokensPath, buildTokensTs(component, spec));
   written.push(tokensPath);
+
+  if (spec) {
+    const tokensCssPath = path.join(targetDir, `${component}.tokens.css`);
+    writeFileSync(tokensCssPath, buildTokensCss(component, spec));
+    written.push(tokensCssPath);
+  }
 
   const provenancePath = path.join(targetDir, `${component}.provenance.json`);
   writeFileSync(provenancePath, `${JSON.stringify(provenance, null, 2)}\n`);
@@ -1096,9 +1081,14 @@ export function emitFamily(args: {
   const rootPart =
     family.parts.find((p) => p.part === family.component) ?? family.parts[0]!;
 
+  const spec = FAMILY_TOKEN_SPECS[family.component];
+  let css = remappedCss;
+  if (spec) {
+    css = rewritePaintToTokens(family.component, remappedCss, spec);
+  }
+
   for (const part of family.parts) {
-    const injectCss =
-      part.fileName === rootPart.fileName ? remappedCss : undefined;
+    const injectCss = part.fileName === rootPart.fileName ? css : undefined;
     const next = rewritePartSource({
       part,
       component: family.component,
@@ -1110,8 +1100,17 @@ export function emitFamily(args: {
   }
 
   const tokensPath = path.join(targetDir, `${family.component}.tokens.ts`);
-  writeFileSync(tokensPath, buildTokensTs(family.component));
+  writeFileSync(tokensPath, buildTokensTs(family.component, spec));
   written.push(tokensPath);
+
+  if (spec) {
+    const tokensCssPath = path.join(
+      targetDir,
+      `${family.component}.tokens.css`,
+    );
+    writeFileSync(tokensCssPath, buildTokensCss(family.component, spec));
+    written.push(tokensCssPath);
+  }
 
   const provenancePath = path.join(
     targetDir,

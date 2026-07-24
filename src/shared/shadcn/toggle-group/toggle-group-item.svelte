@@ -130,8 +130,8 @@
     }
 
     [data-ui-component="toggle-group"][data-ui-part="toggle-group-item"]:focus-visible {
-      border-color: var(--ring);
-      --tw-ring-color: var(--ring);
+      border-color: var(--ui-toggle-group-focus-ring-color, var(--ring));
+      --tw-ring-color: var(--ui-toggle-group-focus-ring-color, var(--ring));
       --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0
         calc(3px + var(--tw-ring-offset-width, 0px))
         var(--tw-ring-color, currentcolor);

@@ -68,7 +68,7 @@
         border-radius: calc(var(--radius) * 0.8);
       }
       [data-ui-component="popover"][data-ui-part="popover-content"] {
-        background-color: var(--popover);
+        background-color: var(--ui-popover-background, var(--popover));
       }
       [data-ui-component="popover"][data-ui-part="popover-content"] {
         padding: calc(var(--spacing) * 4);
@@ -86,7 +86,7 @@
         color: var(--muted-foreground);
       }
       [data-ui-component="popover"][data-ui-part="popover-content"] {
-        color: var(--popover-foreground);
+        color: var(--ui-popover-foreground, var(--popover-foreground));
       }
       [data-ui-component="popover"][data-ui-part="popover-content"] {
         --tw-shadow: 0 4px 6px -1px var(--tw-shadow-color, #0000001a),

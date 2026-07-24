@@ -31,3 +31,5 @@ export {
   Description as DialogDescription,
   Close as DialogClose,
 };
+
+export { dialogTokenNames, type DialogToken } from "./dialog.tokens.js";

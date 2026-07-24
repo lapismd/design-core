@@ -153,7 +153,7 @@
         }
       }
       [data-ui-component="command"][data-ui-part="command"] {
-        background-color: var(--popover);
+        background-color: var(--ui-command-background, var(--popover));
       }
       [data-ui-component="command"][data-ui-part="command-content"] {
         padding: 0;
@@ -207,7 +207,7 @@
         color: var(--muted-foreground);
       }
       [data-ui-component="command"][data-ui-part="command"] {
-        color: var(--popover-foreground);
+        color: var(--ui-command-foreground, var(--popover-foreground));
       }
       [data-ui-component="command"][data-ui-part="command-check-icon"] {
         opacity: 0;

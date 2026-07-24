@@ -1,0 +1,13 @@
+/**
+ * Default dropdown-menu token bindings → theme tokens.
+ * Override --ui-dropdown-menu-* on :root or any ancestor (forms pattern).
+ * Do not rebind these names on [data-ui-component="dropdown-menu"] hosts — that
+ * blocks ancestor customization.
+ */
+:root {
+  --ui-dropdown-menu-background: var(--popover);
+  --ui-dropdown-menu-foreground: var(--popover-foreground);
+  --ui-dropdown-menu-border-color: var(--border);
+  --ui-dropdown-menu-radius: var(--radius-md, calc(var(--radius) * 0.8));
+  --ui-dropdown-menu-focus-ring-color: var(--ring);
+}

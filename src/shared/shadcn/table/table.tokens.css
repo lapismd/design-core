@@ -1,0 +1,13 @@
+/**
+ * Default table token bindings → theme tokens.
+ * Override --ui-table-* on :root or any ancestor (forms pattern).
+ * Do not rebind these names on [data-ui-component="table"] hosts — that
+ * blocks ancestor customization.
+ */
+:root {
+  --ui-table-background: var(--background);
+  --ui-table-foreground: var(--foreground);
+  --ui-table-border-color: var(--border);
+  --ui-table-radius: var(--radius-md, calc(var(--radius) * 0.8));
+  --ui-table-focus-ring-color: var(--ring);
+}

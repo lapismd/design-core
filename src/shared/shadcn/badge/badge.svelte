@@ -101,7 +101,7 @@
         background-color: var(--destructive);
       }
       [data-ui-component="badge"][data-variant="default"] {
-        background-color: var(--primary);
+        background-color: var(--ui-badge-background, var(--primary));
       }
       [data-ui-component="badge"][data-variant="secondary"] {
         background-color: var(--secondary);
@@ -130,7 +130,7 @@
         color: var(--primary);
       }
       [data-ui-component="badge"][data-variant="default"] {
-        color: var(--primary-foreground);
+        color: var(--ui-badge-foreground, var(--primary-foreground));
       }
       [data-ui-component="badge"][data-variant="secondary"] {
         color: var(--secondary-foreground);
@@ -177,7 +177,7 @@
         }
       }
       [data-ui-component="badge"]:focus-visible {
-        border-color: var(--ring);
+        border-color: var(--ui-badge-focus-ring-color, var(--ring));
       }
       [data-ui-component="badge"]:focus-visible {
         --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0
@@ -199,11 +199,15 @@
         }
       }
       [data-ui-component="badge"]:focus-visible {
-        --tw-ring-color: var(--ring);
+        --tw-ring-color: var(--ui-badge-focus-ring-color, var(--ring));
       }
       @supports (color: color-mix(in lab, red, red)) {
         [data-ui-component="badge"]:focus-visible {
-          --tw-ring-color: color-mix(in oklab, var(--ring) 50%, transparent);
+          --tw-ring-color: color-mix(
+            in oklab,
+            var(--ui-badge-focus-ring-color, var(--ring)) 50%,
+            transparent
+          );
         }
       }
       [data-ui-component="badge"]:has([data-icon="inline-end"]) {
@@ -290,13 +294,13 @@
           background-color: var(--muted);
         }
         [data-ui-component="badge"][data-variant="default"]:is(a):hover {
-          background-color: var(--primary);
+          background-color: var(--ui-badge-background, var(--primary));
         }
         @supports (color: color-mix(in lab, red, red)) {
           [data-ui-component="badge"][data-variant="default"]:is(a):hover {
             background-color: color-mix(
               in oklab,
-              var(--primary) 80%,
+              var(--ui-badge-background, var(--primary)) 80%,
               transparent
             );
           }

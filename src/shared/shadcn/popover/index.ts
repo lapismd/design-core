@@ -26,3 +26,5 @@ export {
   Close as PopoverClose,
   Portal as PopoverPortal,
 };
+
+export { popoverTokenNames, type PopoverToken } from "./popover.tokens.js";

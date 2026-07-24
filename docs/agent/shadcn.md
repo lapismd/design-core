@@ -22,11 +22,15 @@ colocated stories, tokens, provenance, and docs artifacts.
   shared UI package tree.
 - Treat unsupported conversion or parity failure as a failed addition — do not
   bypass by copying files by hand.
-- Keep `data-ui-component`, `data-ui-part`, `data-slot`, token metadata, and
-  `*.provenance.json` intact.
+- Keep `data-ui-component`, `data-ui-part`, `data-slot`, token metadata
+  (`*.tokens.ts` / `*.tokens.css`), and `*.provenance.json` intact.
 - Classify new visual form-adjacent exports in `COMPONENT_AUDIT.md` first when
   the boundary is unclear.
 - Import from `@stevejuma/ui/shadcn/<family>` only.
+- Restyle via `--ui-<family>-*` CSS variables (forms pattern), not Tailwind
+  `cn()` utility merges. Defaults ship in `<family>.tokens.css`.
+- Do not reintroduce Tailwind utility class strings into converted components or
+  Beancount app sources. `pnpm check:no-tailwind` (in `pnpm checks`) fails closed.
 
 ## Workflow
 
@@ -39,15 +43,16 @@ colocated stories, tokens, provenance, and docs artifacts.
    Refresh the pin with `pnpm ui docs:vendor --ref shadcn-svelte@1.4.2`.
 4. **Stories** — colocated `*.stories.svelte` under `Shadcn/<Family>/…` with
    real interactive play coverage where the control is interactive.
-5. **Verify** — see `pnpm ui guide testing`.
+5. **Verify** — see `pnpm ui guide testing` (includes `pnpm check:no-tailwind`).
 6. **Lookup usage** — `pnpm ui components <name>` or `pnpm ui components shadcn/<name>`
    (or `--json`) composes local docs/examples. Use `--layer` to filter; forms/AI/
    apps/tasks use the same command with `forms/…`, `ai/…`, `apps/…`, `tasks/…`
    keys.
 
 `ui:add` runs in a detached git worktree: shadcn intake → Tailwind expand →
-scoped CSS + tokens + provenance → reference/candidate parity → optional visual
-baselines for the component being added (only after parity passes).
+scoped CSS + `--ui-*` token bindings + provenance → reference/candidate parity →
+optional visual baselines for the component being added (only after parity
+passes).
 
 ## Catalog
 

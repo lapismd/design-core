@@ -138,7 +138,7 @@
         color: var(--foreground);
       }
       [data-ui-component="empty"][data-ui-part="empty-description"] {
-        color: var(--muted-foreground);
+        color: var(--ui-empty-foreground, var(--muted-foreground));
       }
       [data-ui-component="empty"][data-ui-part="empty-media"] svg {
         pointer-events: none;

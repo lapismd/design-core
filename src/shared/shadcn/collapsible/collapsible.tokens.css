@@ -1,0 +1,13 @@
+/**
+ * Default collapsible token bindings → theme tokens.
+ * Override --ui-collapsible-* on :root or any ancestor (forms pattern).
+ * Do not rebind these names on [data-ui-component="collapsible"] hosts — that
+ * blocks ancestor customization.
+ */
+:root {
+  --ui-collapsible-background: transparent;
+  --ui-collapsible-foreground: var(--foreground);
+  --ui-collapsible-border-color: transparent;
+  --ui-collapsible-radius: 0;
+  --ui-collapsible-focus-ring-color: var(--ring);
+}

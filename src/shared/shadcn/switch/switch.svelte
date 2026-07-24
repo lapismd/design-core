@@ -144,7 +144,7 @@
         inset-block: calc(var(--spacing) * -2);
       }
       [data-ui-component="switch"][data-ui-part="switch"]:focus-visible {
-        border-color: var(--ring);
+        border-color: var(--ui-switch-focus-ring-color, var(--ring));
       }
       [data-ui-component="switch"][data-ui-part="switch"]:focus-visible {
         --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0
@@ -154,11 +154,15 @@
           var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
       }
       [data-ui-component="switch"][data-ui-part="switch"]:focus-visible {
-        --tw-ring-color: var(--ring);
+        --tw-ring-color: var(--ui-switch-focus-ring-color, var(--ring));
       }
       @supports (color: color-mix(in lab, red, red)) {
         [data-ui-component="switch"][data-ui-part="switch"]:focus-visible {
-          --tw-ring-color: color-mix(in oklab, var(--ring) 50%, transparent);
+          --tw-ring-color: color-mix(
+            in oklab,
+            var(--ui-switch-focus-ring-color, var(--ring)) 50%,
+            transparent
+          );
         }
       }
       [data-ui-component="switch"][data-ui-part="switch"][aria-invalid="true"] {
@@ -284,7 +288,7 @@
       [data-ui-component="switch"][data-ui-part="switch"]:where(
           [data-unchecked]:not([data-unchecked="false"])
         ) {
-        background-color: var(--input);
+        background-color: var(--ui-switch-background, var(--input));
       }
       [data-ui-component="switch"][data-ui-part="switch-thumb"]:is(
           :where(
@@ -327,7 +331,7 @@
       [data-ui-component="switch"][data-ui-part="switch"]:is(
           :global(.dark) *
         ):where([data-unchecked]:not([data-unchecked="false"])) {
-        background-color: var(--input);
+        background-color: var(--ui-switch-background, var(--input));
       }
       @supports (color: color-mix(in lab, red, red)) {
         [data-ui-component="switch"][data-ui-part="switch"]:is(
@@ -336,7 +340,11 @@
         [data-ui-component="switch"][data-ui-part="switch"]:is(
             :global(.dark) *
           ):where([data-unchecked]:not([data-unchecked="false"])) {
-          background-color: color-mix(in oklab, var(--input) 80%, transparent);
+          background-color: color-mix(
+            in oklab,
+            var(--ui-switch-background, var(--input)) 80%,
+            transparent
+          );
         }
       }
       [data-ui-component="switch"][data-ui-part="switch"]:where(

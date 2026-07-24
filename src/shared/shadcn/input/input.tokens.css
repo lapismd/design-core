@@ -1,0 +1,13 @@
+/**
+ * Default input token bindings → theme tokens.
+ * Override --ui-input-* on :root or any ancestor (forms pattern).
+ * Do not rebind these names on [data-ui-component="input"] hosts — that
+ * blocks ancestor customization.
+ */
+:root {
+  --ui-input-background: transparent;
+  --ui-input-foreground: var(--foreground);
+  --ui-input-border-color: var(--input);
+  --ui-input-radius: var(--radius-md, calc(var(--radius) * 0.8));
+  --ui-input-focus-ring-color: var(--ring);
+}

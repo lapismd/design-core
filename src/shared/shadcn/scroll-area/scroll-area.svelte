@@ -82,7 +82,7 @@
         border-radius: 3.40282e38px;
       }
       [data-ui-component="scroll-area"][data-ui-part="scroll-area-thumb"] {
-        background-color: var(--border);
+        background-color: var(--ui-scroll-area-foreground, var(--border));
       }
       [data-ui-component="scroll-area"][data-ui-part="scroll-area-scrollbar"] {
         padding: 1px;

@@ -1,0 +1,13 @@
+/**
+ * Default alert-dialog token bindings → theme tokens.
+ * Override --ui-alert-dialog-* on :root or any ancestor (forms pattern).
+ * Do not rebind these names on [data-ui-component="alert-dialog"] hosts — that
+ * blocks ancestor customization.
+ */
+:root {
+  --ui-alert-dialog-background: var(--popover);
+  --ui-alert-dialog-foreground: var(--popover-foreground);
+  --ui-alert-dialog-border-color: var(--border);
+  --ui-alert-dialog-radius: var(--radius-xl, calc(var(--radius) * 1.4));
+  --ui-alert-dialog-focus-ring-color: var(--ring);
+}

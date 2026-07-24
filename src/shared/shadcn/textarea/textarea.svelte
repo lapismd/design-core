@@ -56,7 +56,7 @@
         border-width: 1px;
       }
       [data-ui-component="textarea"] {
-        border-color: var(--input);
+        border-color: var(--ui-textarea-border-color, var(--input));
       }
       [data-ui-component="textarea"] {
         background-color: #0000;
@@ -95,7 +95,7 @@
         color: var(--muted-foreground);
       }
       [data-ui-component="textarea"]:focus-visible {
-        border-color: var(--ring);
+        border-color: var(--ui-textarea-focus-ring-color, var(--ring));
       }
       [data-ui-component="textarea"]:focus-visible {
         --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0
@@ -105,11 +105,15 @@
           var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
       }
       [data-ui-component="textarea"]:focus-visible {
-        --tw-ring-color: var(--ring);
+        --tw-ring-color: var(--ui-textarea-focus-ring-color, var(--ring));
       }
       @supports (color: color-mix(in lab, red, red)) {
         [data-ui-component="textarea"]:focus-visible {
-          --tw-ring-color: color-mix(in oklab, var(--ring) 50%, transparent);
+          --tw-ring-color: color-mix(
+            in oklab,
+            var(--ui-textarea-focus-ring-color, var(--ring)) 50%,
+            transparent
+          );
         }
       }
       [data-ui-component="textarea"]:disabled {

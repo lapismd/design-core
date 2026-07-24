@@ -1,6 +1,6 @@
 <script lang="ts">
   import * as Sheet from "../sheet/index.js";
-  import { cn, type WithElementRef } from "../../../lib/utils.js";
+  import { type WithElementRef } from "../../../lib/utils.js";
   import type { HTMLAttributes } from "svelte/elements";
   import { SIDEBAR_WIDTH_MOBILE } from "./constants.js";
   import { useSidebar } from "./context.svelte.js";
@@ -84,11 +84,7 @@
       data-ui-component="sidebar"
       data-ui-part="sidebar-container"
       data-slot="sidebar-container"
-      class={cn(
-        side === "left" ? "start-0" : "end-0",
-        variant === "floating" || variant === "inset" ? "p-2" : null,
-        className,
-      )}
+      class={className}
     >
       <div
         data-sidebar="sidebar"
@@ -548,6 +544,20 @@
         --tw-duration,
         var(--default-transition-duration)
       );
+    }
+    @media (min-width: 768px) {
+      [data-ui-component="sidebar"][data-ui-part="sidebar-menu-action"][data-show-on-hover="true"] {
+        opacity: 0;
+      }
+      :where(
+          [data-ui-component="sidebar"][data-ui-part="sidebar-menu-item"]:hover
+            [data-ui-component="sidebar"][data-ui-part="sidebar-menu-action"][data-show-on-hover="true"],
+          [data-ui-component="sidebar"][data-ui-part="sidebar-menu-item"]:focus-within
+            [data-ui-component="sidebar"][data-ui-part="sidebar-menu-action"][data-show-on-hover="true"],
+          [data-ui-component="sidebar"][data-ui-part="sidebar-menu-action"][data-show-on-hover="true"][data-open]
+        ) {
+        opacity: 1;
+      }
     }
     [data-ui-component="sidebar"][data-ui-part="sidebar-group-label"],
     [data-ui-component="sidebar"][data-ui-part="sidebar-gap"],

@@ -1,0 +1,13 @@
+/**
+ * Default checkbox token bindings → theme tokens.
+ * Override --ui-checkbox-* on :root or any ancestor (forms pattern).
+ * Do not rebind these names on [data-ui-component="checkbox"] hosts — that
+ * blocks ancestor customization.
+ */
+:root {
+  --ui-checkbox-background: var(--primary);
+  --ui-checkbox-foreground: var(--primary-foreground);
+  --ui-checkbox-border-color: var(--input);
+  --ui-checkbox-radius: var(--radius-sm, calc(var(--radius) * 0.6));
+  --ui-checkbox-focus-ring-color: var(--ring);
+}

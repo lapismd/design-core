@@ -191,7 +191,7 @@
       [data-ui-component="select"][data-ui-part="select-content"],
       [data-ui-component="select"][data-ui-part="select-scroll-down-button"],
       [data-ui-component="select"][data-ui-part="select-scroll-up-button"] {
-        background-color: var(--popover);
+        background-color: var(--ui-select-background, var(--popover));
       }
       [data-ui-component="select"][data-ui-part="select-trigger"] {
         background-color: #0000;
@@ -247,7 +247,7 @@
         color: var(--muted-foreground);
       }
       [data-ui-component="select"][data-ui-part="select-content"] {
-        color: var(--popover-foreground);
+        color: var(--ui-select-foreground, var(--popover-foreground));
       }
       [data-ui-component="select"][data-ui-part="select-content"] {
         --tw-shadow: 0 4px 6px -1px var(--tw-shadow-color, #0000001a),
@@ -325,7 +325,7 @@
         color: var(--accent-foreground);
       }
       [data-ui-component="select"][data-ui-part="select-trigger"]:focus-visible {
-        border-color: var(--ring);
+        border-color: var(--ui-select-focus-ring-color, var(--ring));
       }
       [data-ui-component="select"][data-ui-part="select-trigger"]:focus-visible {
         --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0
@@ -335,11 +335,15 @@
           var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
       }
       [data-ui-component="select"][data-ui-part="select-trigger"]:focus-visible {
-        --tw-ring-color: var(--ring);
+        --tw-ring-color: var(--ui-select-focus-ring-color, var(--ring));
       }
       @supports (color: color-mix(in lab, red, red)) {
         [data-ui-component="select"][data-ui-part="select-trigger"]:focus-visible {
-          --tw-ring-color: color-mix(in oklab, var(--ring) 50%, transparent);
+          --tw-ring-color: color-mix(
+            in oklab,
+            var(--ui-select-focus-ring-color, var(--ring)) 50%,
+            transparent
+          );
         }
       }
       [data-ui-component="select"][data-ui-part="select-trigger"]:disabled {

@@ -1,0 +1,13 @@
+/**
+ * Default resizable token bindings → theme tokens.
+ * Override --ui-resizable-* on :root or any ancestor (forms pattern).
+ * Do not rebind these names on [data-ui-component="resizable"] hosts — that
+ * blocks ancestor customization.
+ */
+:root {
+  --ui-resizable-background: var(--border);
+  --ui-resizable-foreground: var(--muted-foreground);
+  --ui-resizable-border-color: var(--border);
+  --ui-resizable-radius: 0;
+  --ui-resizable-focus-ring-color: var(--ring);
+}

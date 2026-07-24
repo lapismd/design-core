@@ -1,0 +1,13 @@
+/**
+ * Default skeleton token bindings → theme tokens.
+ * Override --ui-skeleton-* on :root or any ancestor (forms pattern).
+ * Do not rebind these names on [data-ui-component="skeleton"] hosts — that
+ * blocks ancestor customization.
+ */
+:root {
+  --ui-skeleton-background: var(--accent);
+  --ui-skeleton-foreground: var(--accent-foreground);
+  --ui-skeleton-border-color: transparent;
+  --ui-skeleton-radius: var(--radius-md, calc(var(--radius) * 0.8));
+  --ui-skeleton-focus-ring-color: var(--ring);
+}

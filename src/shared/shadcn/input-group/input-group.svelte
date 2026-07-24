@@ -128,7 +128,7 @@
         border-width: 0;
       }
       [data-ui-component="input-group"][data-ui-part="input-group"] {
-        border-color: var(--input);
+        border-color: var(--ui-input-group-border-color, var(--input));
       }
       [data-ui-part="input-group-input"][data-slot="input-group-control"],
       [data-ui-part="input-group-textarea"][data-slot="input-group-control"] {
@@ -263,7 +263,7 @@
       [data-ui-component="input-group"][data-ui-part="input-group"]:has(
           [data-slot="input-group-control"]:focus-visible
         ) {
-        border-color: var(--ring);
+        border-color: var(--ui-input-group-focus-ring-color, var(--ring));
       }
       [data-ui-component="input-group"][data-ui-part="input-group"]:has(
           [data-slot="input-group-control"]:focus-visible
@@ -277,13 +277,17 @@
       [data-ui-component="input-group"][data-ui-part="input-group"]:has(
           [data-slot="input-group-control"]:focus-visible
         ) {
-        --tw-ring-color: var(--ring);
+        --tw-ring-color: var(--ui-input-group-focus-ring-color, var(--ring));
       }
       @supports (color: color-mix(in lab, red, red)) {
         [data-ui-component="input-group"][data-ui-part="input-group"]:has(
             [data-slot="input-group-control"]:focus-visible
           ) {
-          --tw-ring-color: color-mix(in oklab, var(--ring) 50%, transparent);
+          --tw-ring-color: color-mix(
+            in oklab,
+            var(--ui-input-group-focus-ring-color, var(--ring)) 50%,
+            transparent
+          );
         }
       }
       [data-ui-component="input-group"][data-ui-part="input-group"]:has(

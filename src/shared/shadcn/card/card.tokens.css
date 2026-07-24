@@ -1,0 +1,13 @@
+/**
+ * Default card token bindings → theme tokens.
+ * Override --ui-card-* on :root or any ancestor (forms pattern).
+ * Do not rebind these names on [data-ui-component="card"] hosts — that
+ * blocks ancestor customization.
+ */
+:root {
+  --ui-card-background: var(--card);
+  --ui-card-foreground: var(--card-foreground);
+  --ui-card-border-color: var(--border);
+  --ui-card-radius: var(--radius-xl, calc(var(--radius) * 1.4));
+  --ui-card-focus-ring-color: var(--ring);
+}

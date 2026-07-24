@@ -52,3 +52,8 @@ export {
   SubTrigger,
   Trigger,
 };
+
+export {
+  dropdown_menuTokenNames,
+  type DropdownMenuToken,
+} from "./dropdown-menu.tokens.js";

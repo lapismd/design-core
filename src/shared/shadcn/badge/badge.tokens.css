@@ -1,0 +1,13 @@
+/**
+ * Default badge token bindings → theme tokens.
+ * Override --ui-badge-* on :root or any ancestor (forms pattern).
+ * Do not rebind these names on [data-ui-component="badge"] hosts — that
+ * blocks ancestor customization.
+ */
+:root {
+  --ui-badge-background: var(--primary);
+  --ui-badge-foreground: var(--primary-foreground);
+  --ui-badge-border-color: transparent;
+  --ui-badge-radius: var(--radius-md, calc(var(--radius) * 0.8));
+  --ui-badge-focus-ring-color: var(--ring);
+}

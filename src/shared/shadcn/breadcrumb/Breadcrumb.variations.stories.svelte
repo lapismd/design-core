@@ -45,7 +45,8 @@
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "Use a custom component in the `slot` of `` to create a custom separator.",
+        story:
+          "Use a custom component in the `slot` of `` to create a custom separator.",
       },
       source: {
         code: exampleSources.CustomSeparator,
@@ -70,7 +71,8 @@
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "You can compose `` with a `` to create a dropdown in the breadcrumb.",
+        story:
+          "You can compose `` with a `` to create a dropdown in the breadcrumb.",
       },
       source: {
         code: exampleSources.Dropdown,
@@ -95,7 +97,8 @@
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "We provide a `` component to show a collapsed state when the breadcrumb is too long.",
+        story:
+          "We provide a `` component to show a collapsed state when the breadcrumb is too long.",
       },
       source: {
         code: exampleSources.Collapsed,

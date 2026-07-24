@@ -1,0 +1,13 @@
+/**
+ * Default field token bindings → theme tokens.
+ * Override --ui-field-* on :root or any ancestor (forms pattern).
+ * Do not rebind these names on [data-ui-component="field"] hosts — that
+ * blocks ancestor customization.
+ */
+:root {
+  --ui-field-background: transparent;
+  --ui-field-foreground: var(--foreground);
+  --ui-field-border-color: var(--border);
+  --ui-field-radius: var(--radius-md, calc(var(--radius) * 0.8));
+  --ui-field-focus-ring-color: var(--ring);
+}

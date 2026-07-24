@@ -1,0 +1,13 @@
+/**
+ * Default dialog token bindings → theme tokens.
+ * Override --ui-dialog-* on :root or any ancestor (forms pattern).
+ * Do not rebind these names on [data-ui-component="dialog"] hosts — that
+ * blocks ancestor customization.
+ */
+:root {
+  --ui-dialog-background: var(--popover);
+  --ui-dialog-foreground: var(--popover-foreground);
+  --ui-dialog-border-color: var(--border);
+  --ui-dialog-radius: var(--radius-xl, calc(var(--radius) * 1.4));
+  --ui-dialog-focus-ring-color: var(--ring);
+}

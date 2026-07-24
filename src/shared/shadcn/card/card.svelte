@@ -96,7 +96,7 @@
         border-bottom-left-radius: calc(var(--radius) * 1.4);
       }
       [data-ui-component="card"][data-ui-part="card"] {
-        background-color: var(--card);
+        background-color: var(--ui-card-background, var(--card));
       }
       [data-ui-component="card"][data-ui-part="card-content"],
       [data-ui-component="card"][data-ui-part="card-footer"],
@@ -124,7 +124,7 @@
         font-weight: var(--font-weight-medium);
       }
       [data-ui-component="card"][data-ui-part="card"] {
-        color: var(--card-foreground);
+        color: var(--ui-card-foreground, var(--card-foreground));
       }
       [data-ui-component="card"][data-ui-part="card-description"] {
         color: var(--muted-foreground);

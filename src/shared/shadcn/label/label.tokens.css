@@ -1,0 +1,13 @@
+/**
+ * Default label token bindings → theme tokens.
+ * Override --ui-label-* on :root or any ancestor (forms pattern).
+ * Do not rebind these names on [data-ui-component="label"] hosts — that
+ * blocks ancestor customization.
+ */
+:root {
+  --ui-label-background: transparent;
+  --ui-label-foreground: var(--foreground);
+  --ui-label-border-color: transparent;
+  --ui-label-radius: 0;
+  --ui-label-focus-ring-color: var(--ring);
+}

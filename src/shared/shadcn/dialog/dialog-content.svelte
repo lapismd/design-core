@@ -154,7 +154,7 @@
         }
       }
       [data-ui-component="dialog"][data-ui-part="dialog-content"] {
-        background-color: var(--popover);
+        background-color: var(--ui-dialog-background, var(--popover));
       }
       [data-ui-component="dialog"][data-ui-part="dialog-content"] {
         padding: calc(var(--spacing) * 6);
@@ -176,7 +176,7 @@
         color: var(--muted-foreground);
       }
       [data-ui-component="dialog"][data-ui-part="dialog-content"] {
-        color: var(--popover-foreground);
+        color: var(--ui-dialog-foreground, var(--popover-foreground));
       }
       [data-ui-component="dialog"][data-ui-part="dialog-content"] {
         --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0
@@ -328,7 +328,7 @@
         :is(
             [data-ui-component="dialog"][data-ui-part="dialog-description"] > *
           ):is(a):hover {
-          color: var(--foreground);
+          color: var(--ui-dialog-foreground, var(--foreground));
         }
       }
     }

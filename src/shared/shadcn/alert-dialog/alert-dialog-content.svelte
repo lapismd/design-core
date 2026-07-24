@@ -138,7 +138,7 @@
         background-color: var(--muted);
       }
       [data-ui-component="alert-dialog"][data-ui-part="alert-dialog-content"] {
-        background-color: var(--popover);
+        background-color: var(--ui-alert-dialog-background, var(--popover));
       }
       [data-ui-component="alert-dialog"][data-ui-part="alert-dialog-content"] {
         padding: calc(var(--spacing) * 6);
@@ -165,7 +165,7 @@
         color: var(--muted-foreground);
       }
       [data-ui-component="alert-dialog"][data-ui-part="alert-dialog-content"] {
-        color: var(--popover-foreground);
+        color: var(--ui-alert-dialog-foreground, var(--popover-foreground));
       }
       [data-ui-component="alert-dialog"][data-ui-part="alert-dialog-content"] {
         --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0
@@ -400,7 +400,7 @@
             [data-ui-component="alert-dialog"][data-ui-part="alert-dialog-description"]
               > *
           ):is(a):hover {
-          color: var(--foreground);
+          color: var(--ui-alert-dialog-foreground, var(--foreground));
         }
       }
       :is(

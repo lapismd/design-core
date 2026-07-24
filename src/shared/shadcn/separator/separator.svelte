@@ -40,7 +40,7 @@
         flex-shrink: 0;
       }
       [data-ui-component="separator"] {
-        background-color: var(--border);
+        background-color: var(--ui-separator-background, var(--border));
       }
       [data-ui-component="separator"][data-orientation="horizontal"] {
         height: 1px;

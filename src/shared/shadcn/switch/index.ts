@@ -5,3 +5,5 @@ export {
   //
   Root as Switch,
 };
+
+export { switchTokenNames, type SwitchToken } from "./switch.tokens.js";

@@ -1,0 +1,13 @@
+/**
+ * Default breadcrumb token bindings → theme tokens.
+ * Override --ui-breadcrumb-* on :root or any ancestor (forms pattern).
+ * Do not rebind these names on [data-ui-component="breadcrumb"] hosts — that
+ * blocks ancestor customization.
+ */
+:root {
+  --ui-breadcrumb-background: transparent;
+  --ui-breadcrumb-foreground: var(--muted-foreground);
+  --ui-breadcrumb-border-color: transparent;
+  --ui-breadcrumb-radius: 0;
+  --ui-breadcrumb-focus-ring-color: var(--ring);
+}

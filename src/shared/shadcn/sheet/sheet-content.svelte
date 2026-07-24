@@ -145,7 +145,7 @@
         font-weight: var(--font-weight-medium);
       }
       [data-ui-component="sheet"][data-ui-part="sheet-title"] {
-        color: var(--foreground);
+        color: var(--ui-sheet-foreground, var(--foreground));
       }
       [data-ui-component="sheet"][data-ui-part="sheet-description"] {
         color: var(--muted-foreground);

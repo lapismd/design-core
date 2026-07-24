@@ -1,0 +1,13 @@
+/**
+ * Default alert token bindings → theme tokens.
+ * Override --ui-alert-* on :root or any ancestor (forms pattern).
+ * Do not rebind these names on [data-ui-component="alert"] hosts — that
+ * blocks ancestor customization.
+ */
+:root {
+  --ui-alert-background: var(--card);
+  --ui-alert-foreground: var(--card-foreground);
+  --ui-alert-border-color: var(--border);
+  --ui-alert-radius: var(--radius-lg, var(--radius));
+  --ui-alert-focus-ring-color: var(--ring);
+}

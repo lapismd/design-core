@@ -40,6 +40,8 @@ import {
 } from "../transform/data-ui-host-gate.js";
 import { writeJson } from "../reports/report.js";
 import { syncUpstreamDocs } from "../docs/sync-upstream-docs.js";
+import { findTailwindUtilitiesInSource } from "../../lib/no-tailwind-utilities.js";
+import { TOKEN_SCHEMA_VERSION } from "../transform/token-wiring.js";
 
 export type ConvertFamilyResult = {
   component: string;
@@ -298,7 +300,7 @@ export async function convertFamilyInWorktree(args: {
       converter: {
         version: "2.0.0",
         irSchemaVersion: 1,
-        tokenSchemaVersion: 1,
+        tokenSchemaVersion: TOKEN_SCHEMA_VERSION,
       },
       recipe: {
         name: recipe.component,
@@ -460,7 +462,7 @@ export async function convertFamilyInWorktree(args: {
     converter: {
       version: "2.0.0",
       irSchemaVersion: 1,
-      tokenSchemaVersion: 1,
+      tokenSchemaVersion: TOKEN_SCHEMA_VERSION,
     },
     recipe: {
       name: recipe.component,
@@ -605,47 +607,26 @@ export async function convertFamilyInWorktree(args: {
     }
   }
 
-  // Forbidden style engines in rewritten parts
+  // Forbidden style engines / leftover utilities in rewritten parts
   for (const file of written.filter((f) => f.endsWith(".svelte"))) {
     const text = readFileSync(file, "utf8");
-    if (
-      text.includes("tailwind-variants") ||
-      /\btv\s*\(/.test(text) ||
-      looksLikeTailwindSource(text)
-    ) {
-      // looksLikeTailwindSource may still match data-[attrs] in script comments —
-      // only fail on tv / remaining utility-heavy cn strings
-      if (text.includes("tailwind-variants") || /\btv\s*\(/.test(text)) {
-        throw new GeneratorError(
-          `Generated ${path.basename(file)} still references tailwind-variants/tv()`,
-          EXIT.generation,
-        );
-      }
-      if (/class=\{cn\(\s*["'`]/.test(text)) {
-        throw new GeneratorError(
-          `Generated ${path.basename(file)} still has Tailwind cn() string literals`,
-          EXIT.generation,
-        );
-      }
-      // Static utility classes should have been extracted (allow cn-* markers only).
-      const staticClass = /class="([^"]*)"/g;
-      let sm: RegExpExecArray | null;
-      while ((sm = staticClass.exec(text))) {
-        const tokens = sm[1]!.split(/\s+/).filter(Boolean);
-        const leftover = tokens.filter(
-          (t) =>
-            !/^cn-[a-z0-9-]+$/i.test(t) &&
-            /\b(flex|bg-|text-|size-|rounded-|absolute|relative|translate|gap-|p-|m-|w-|h-|items-|justify-|shadow-|ring-|border-|overflow-|pointer-events-|shrink-|min-w-|max-w-|whitespace-|dark:|data-|group-)/.test(
-              t,
-            ),
-        );
-        if (leftover.length) {
-          throw new GeneratorError(
-            `Generated ${path.basename(file)} still has static Tailwind utilities: ${leftover.join(", ")}`,
-            EXIT.generation,
-          );
-        }
-      }
+    const relative = path.relative(worktreePath, file);
+    const leftovers = findTailwindUtilitiesInSource(text, relative).filter(
+      (f) => f.token !== "tailwind-variants",
+    );
+    if (text.includes("tailwind-variants") || /\btv\s*\(/.test(text)) {
+      throw new GeneratorError(
+        `Generated ${path.basename(file)} still references tailwind-variants/tv()`,
+        EXIT.generation,
+      );
+    }
+    if (leftovers.length) {
+      throw new GeneratorError(
+        `Generated ${path.basename(file)} still has Tailwind utilities: ${leftovers
+          .map((f) => f.token)
+          .join(", ")}`,
+        EXIT.generation,
+      );
     }
   }
 

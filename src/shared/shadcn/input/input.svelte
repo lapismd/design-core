@@ -79,7 +79,7 @@
         border-width: 1px;
       }
       [data-ui-component="input"] {
-        border-color: var(--input);
+        border-color: var(--ui-input-border-color, var(--input));
       }
       [data-ui-component="input"] {
         background-color: #0000;
@@ -136,13 +136,13 @@
         font-weight: var(--font-weight-medium);
       }
       [data-ui-component="input"]::file-selector-button {
-        color: var(--foreground);
+        color: var(--ui-input-foreground, var(--foreground));
       }
       [data-ui-component="input"]::placeholder {
         color: var(--muted-foreground);
       }
       [data-ui-component="input"]:focus-visible {
-        border-color: var(--ring);
+        border-color: var(--ui-input-focus-ring-color, var(--ring));
       }
       [data-ui-component="input"]:focus-visible {
         --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0
@@ -152,11 +152,15 @@
           var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
       }
       [data-ui-component="input"]:focus-visible {
-        --tw-ring-color: var(--ring);
+        --tw-ring-color: var(--ui-input-focus-ring-color, var(--ring));
       }
       @supports (color: color-mix(in lab, red, red)) {
         [data-ui-component="input"]:focus-visible {
-          --tw-ring-color: color-mix(in oklab, var(--ring) 50%, transparent);
+          --tw-ring-color: color-mix(
+            in oklab,
+            var(--ui-input-focus-ring-color, var(--ring)) 50%,
+            transparent
+          );
         }
       }
       [data-ui-component="input"]:disabled {

@@ -8,3 +8,8 @@ export {
   Root as ScrollArea,
   Scrollbar as ScrollAreaScrollbar,
 };
+
+export {
+  scroll_areaTokenNames,
+  type ScrollAreaToken,
+} from "./scroll-area.tokens.js";

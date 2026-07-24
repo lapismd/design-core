@@ -1,0 +1,13 @@
+/**
+ * Default select token bindings → theme tokens.
+ * Override --ui-select-* on :root or any ancestor (forms pattern).
+ * Do not rebind these names on [data-ui-component="select"] hosts — that
+ * blocks ancestor customization.
+ */
+:root {
+  --ui-select-background: var(--popover);
+  --ui-select-foreground: var(--popover-foreground);
+  --ui-select-border-color: var(--border);
+  --ui-select-radius: var(--radius-md, calc(var(--radius) * 0.8));
+  --ui-select-focus-ring-color: var(--ring);
+}

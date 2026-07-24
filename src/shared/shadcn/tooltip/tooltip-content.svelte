@@ -99,7 +99,7 @@
       }
       [data-ui-component="tooltip"][data-ui-part="tooltip-content"],
       [data-ui-component="tooltip"][data-ui-part="tooltip-content-anon-0"] {
-        background-color: var(--foreground);
+        background-color: var(--ui-tooltip-background, var(--foreground));
       }
       [data-ui-component="tooltip"][data-ui-part="tooltip-content-anon-0"] {
         fill: var(--foreground);
@@ -115,7 +115,7 @@
         line-height: var(--tw-leading, var(--text-xs--line-height));
       }
       [data-ui-component="tooltip"][data-ui-part="tooltip-content"] {
-        color: var(--background);
+        color: var(--ui-tooltip-foreground, var(--background));
       }
       [data-ui-component="tooltip"][data-ui-part="tooltip-content"]:has(
           [data-slot="kbd"]

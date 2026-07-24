@@ -17,3 +17,5 @@ export {
   Provider as TooltipProvider,
   Portal as TooltipPortal,
 };
+
+export { tooltipTokenNames, type TooltipToken } from "./tooltip.tokens.js";

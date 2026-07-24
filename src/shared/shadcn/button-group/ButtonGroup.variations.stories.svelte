@@ -76,7 +76,8 @@
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "Control the size of buttons using the `size` prop on individual buttons.",
+        story:
+          "Control the size of buttons using the `size` prop on individual buttons.",
       },
       source: {
         code: exampleSources.Size,
@@ -101,7 +102,8 @@
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "Nest `ButtonGroup` components to create button groups with spacing.",
+        story:
+          "Nest `ButtonGroup` components to create button groups with spacing.",
       },
       source: {
         code: exampleSources.Nested,
@@ -126,7 +128,8 @@
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "The `ButtonGroupSeparator` component visually divides buttons within a group.\n\nButtons with variant `outline` do not need a separator since they have a border. For other variants, a separator is recommended to improve the visual hierarchy.",
+        story:
+          "The `ButtonGroupSeparator` component visually divides buttons within a group.\n\nButtons with variant `outline` do not need a separator since they have a border. For other variants, a separator is recommended to improve the visual hierarchy.",
       },
       source: {
         code: exampleSources.Separator,
@@ -151,7 +154,8 @@
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "Create a split button group by adding two buttons separated by a `ButtonGroupSeparator`.",
+        story:
+          "Create a split button group by adding two buttons separated by a `ButtonGroupSeparator`.",
       },
       source: {
         code: exampleSources.Split,
@@ -201,7 +205,8 @@
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "Wrap an `InputGroup` component to create complex input layouts.",
+        story:
+          "Wrap an `InputGroup` component to create complex input layouts.",
       },
       source: {
         code: exampleSources.InputGroup,

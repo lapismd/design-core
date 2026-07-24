@@ -1,0 +1,13 @@
+/**
+ * Default sheet token bindings → theme tokens.
+ * Override --ui-sheet-* on :root or any ancestor (forms pattern).
+ * Do not rebind these names on [data-ui-component="sheet"] hosts — that
+ * blocks ancestor customization.
+ */
+:root {
+  --ui-sheet-background: var(--background);
+  --ui-sheet-foreground: var(--foreground);
+  --ui-sheet-border-color: var(--border);
+  --ui-sheet-radius: var(--radius-lg, var(--radius));
+  --ui-sheet-focus-ring-color: var(--ring);
+}

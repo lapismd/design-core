@@ -1,0 +1,13 @@
+/**
+ * Default textarea token bindings → theme tokens.
+ * Override --ui-textarea-* on :root or any ancestor (forms pattern).
+ * Do not rebind these names on [data-ui-component="textarea"] hosts — that
+ * blocks ancestor customization.
+ */
+:root {
+  --ui-textarea-background: transparent;
+  --ui-textarea-foreground: var(--foreground);
+  --ui-textarea-border-color: var(--input);
+  --ui-textarea-radius: var(--radius-md, calc(var(--radius) * 0.8));
+  --ui-textarea-focus-ring-color: var(--ring);
+}

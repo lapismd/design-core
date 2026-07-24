@@ -1,0 +1,13 @@
+/**
+ * Default button-group token bindings → theme tokens.
+ * Override --ui-button-group-* on :root or any ancestor (forms pattern).
+ * Do not rebind these names on [data-ui-component="button-group"] hosts — that
+ * blocks ancestor customization.
+ */
+:root {
+  --ui-button-group-background: transparent;
+  --ui-button-group-foreground: var(--foreground);
+  --ui-button-group-border-color: var(--border);
+  --ui-button-group-radius: calc(var(--radius) * 0.8);
+  --ui-button-group-focus-ring-color: var(--ring);
+}

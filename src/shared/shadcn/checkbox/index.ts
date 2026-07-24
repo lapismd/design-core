@@ -4,3 +4,5 @@ export {
   //
   Root as Checkbox,
 };
+
+export { checkboxTokenNames, type CheckboxToken } from "./checkbox.tokens.js";

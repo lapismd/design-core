@@ -24,7 +24,9 @@
   name="Navigates pages"
   play={async ({ canvas }) => {
     await expect(canvas.getByLabelText("pagination")).toBeVisible();
-    await userEvent.click(canvas.getByRole("button", { name: "Go to next page" }));
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Go to next page" }),
+    );
     await expect(canvas.getByText("Page 3 of 10")).toBeVisible();
   }}
   tags={["visual-approved"]}

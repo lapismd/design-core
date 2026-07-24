@@ -83,7 +83,7 @@
         border-width: 1px;
       }
       [data-ui-component="checkbox"][data-ui-part="checkbox"] {
-        border-color: var(--input);
+        border-color: var(--ui-checkbox-border-color, var(--input));
       }
       [data-ui-component="checkbox"][data-ui-part="checkbox-indicator"] {
         color: currentColor;
@@ -129,7 +129,7 @@
         inset-block: calc(var(--spacing) * -2);
       }
       [data-ui-component="checkbox"][data-ui-part="checkbox"]:focus-visible {
-        border-color: var(--ring);
+        border-color: var(--ui-checkbox-focus-ring-color, var(--ring));
       }
       [data-ui-component="checkbox"][data-ui-part="checkbox"]:focus-visible {
         --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0
@@ -139,11 +139,15 @@
           var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
       }
       [data-ui-component="checkbox"][data-ui-part="checkbox"]:focus-visible {
-        --tw-ring-color: var(--ring);
+        --tw-ring-color: var(--ui-checkbox-focus-ring-color, var(--ring));
       }
       @supports (color: color-mix(in lab, red, red)) {
         [data-ui-component="checkbox"][data-ui-part="checkbox"]:focus-visible {
-          --tw-ring-color: color-mix(in oklab, var(--ring) 50%, transparent);
+          --tw-ring-color: color-mix(
+            in oklab,
+            var(--ui-checkbox-focus-ring-color, var(--ring)) 50%,
+            transparent
+          );
         }
       }
       [data-ui-component="checkbox"][data-ui-part="checkbox"]:disabled {
@@ -235,7 +239,7 @@
       [data-ui-component="checkbox"][data-ui-part="checkbox"]:where(
           [data-checked]:not([data-checked="false"])
         ) {
-        background-color: var(--primary);
+        background-color: var(--ui-checkbox-background, var(--primary));
       }
       [data-ui-component="checkbox"][data-ui-part="checkbox"]:where(
           [data-state="checked"]
@@ -251,7 +255,7 @@
       [data-ui-component="checkbox"][data-ui-part="checkbox"]:is(
           :global(.dark) *
         ):where([data-checked]:not([data-checked="false"])) {
-        background-color: var(--primary);
+        background-color: var(--ui-checkbox-background, var(--primary));
       }
       [data-ui-component="checkbox"][data-ui-part="checkbox-indicator"] > svg {
         width: calc(var(--spacing) * 3.5);

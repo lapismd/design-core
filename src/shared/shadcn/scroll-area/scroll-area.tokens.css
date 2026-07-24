@@ -1,0 +1,13 @@
+/**
+ * Default scroll-area token bindings → theme tokens.
+ * Override --ui-scroll-area-* on :root or any ancestor (forms pattern).
+ * Do not rebind these names on [data-ui-component="scroll-area"] hosts — that
+ * blocks ancestor customization.
+ */
+:root {
+  --ui-scroll-area-background: transparent;
+  --ui-scroll-area-foreground: var(--border);
+  --ui-scroll-area-border-color: var(--border);
+  --ui-scroll-area-radius: 9999px;
+  --ui-scroll-area-focus-ring-color: var(--ring);
+}

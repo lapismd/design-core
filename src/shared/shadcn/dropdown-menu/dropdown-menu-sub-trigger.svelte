@@ -23,5 +23,5 @@
   {...restProps}
 >
   {@render children?.()}
-  <ChevronRightIcon class="ml-auto" />
+  <ChevronRightIcon data-ui-part="dropdown-menu-sub-trigger-icon" />
 </DropdownMenuPrimitive.SubTrigger>

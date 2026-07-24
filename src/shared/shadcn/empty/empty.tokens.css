@@ -1,0 +1,13 @@
+/**
+ * Default empty token bindings → theme tokens.
+ * Override --ui-empty-* on :root or any ancestor (forms pattern).
+ * Do not rebind these names on [data-ui-component="empty"] hosts — that
+ * blocks ancestor customization.
+ */
+:root {
+  --ui-empty-background: transparent;
+  --ui-empty-foreground: var(--muted-foreground);
+  --ui-empty-border-color: var(--border);
+  --ui-empty-radius: var(--radius-lg, var(--radius));
+  --ui-empty-focus-ring-color: var(--ring);
+}

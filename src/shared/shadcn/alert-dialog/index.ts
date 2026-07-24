@@ -37,3 +37,8 @@ export {
   Description as AlertDialogDescription,
   Media as AlertDialogMedia,
 };
+
+export {
+  alert_dialogTokenNames,
+  type AlertDialogToken,
+} from "./alert-dialog.tokens.js";

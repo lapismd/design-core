@@ -6,5 +6,4 @@ export const tableTokenNames = {
   focusRingColor: "--ui-table-focus-ring-color",
 } as const;
 
-export type TableToken =
-  (typeof tableTokenNames)[keyof typeof tableTokenNames];
+export type TableToken = (typeof tableTokenNames)[keyof typeof tableTokenNames];

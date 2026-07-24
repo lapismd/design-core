@@ -30,7 +30,7 @@
   "converter": {
     "version": "2.0.0",
     "irSchemaVersion": 1,
-    "tokenSchemaVersion": 1
+    "tokenSchemaVersion": 2
   },
   "recipe": {
     "name": "badge",

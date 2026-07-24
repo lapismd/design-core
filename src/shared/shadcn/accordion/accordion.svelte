@@ -222,7 +222,7 @@
       @media (hover: hover) {
         [data-ui-component="accordion"][data-ui-part="accordion-content-anon-0"]
           a:hover {
-          color: var(--foreground);
+          color: var(--ui-accordion-foreground, var(--foreground));
         }
       }
       [data-ui-component="accordion"][data-ui-part="accordion-content-anon-0"]

@@ -5,3 +5,5 @@ export {
   //
   Root as Label,
 };
+
+export { labelTokenNames, type LabelToken } from "./label.tokens.js";

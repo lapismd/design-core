@@ -5,3 +5,5 @@ export {
   //
   Root as Input,
 };
+
+export { inputTokenNames, type InputToken } from "./input.tokens.js";

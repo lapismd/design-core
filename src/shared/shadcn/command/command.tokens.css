@@ -1,0 +1,13 @@
+/**
+ * Default command token bindings → theme tokens.
+ * Override --ui-command-* on :root or any ancestor (forms pattern).
+ * Do not rebind these names on [data-ui-component="command"] hosts — that
+ * blocks ancestor customization.
+ */
+:root {
+  --ui-command-background: var(--popover);
+  --ui-command-foreground: var(--popover-foreground);
+  --ui-command-border-color: var(--border);
+  --ui-command-radius: var(--radius-md, calc(var(--radius) * 0.8));
+  --ui-command-focus-ring-color: var(--ring);
+}

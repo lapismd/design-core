@@ -49,7 +49,7 @@
   "converter": {
     "version": "1.0.0",
     "irSchemaVersion": 1,
-    "tokenSchemaVersion": 1
+    "tokenSchemaVersion": 2
   },
   "recipe": {
     "name": "button",

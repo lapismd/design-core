@@ -23,3 +23,5 @@ export {
   Title as CardTitle,
   Action as CardAction,
 };
+
+export { cardTokenNames, type CardToken } from "./card.tokens.js";

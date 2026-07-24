@@ -82,7 +82,7 @@
         border-color: #0000;
       }
       [data-ui-component="tabs"][data-ui-part="tabs-list"][data-variant="default"] {
-        background-color: var(--muted);
+        background-color: var(--ui-tabs-background, var(--muted));
       }
       [data-ui-component="tabs"][data-ui-part="tabs-list"][data-variant="line"] {
         background-color: #0000;
@@ -109,11 +109,15 @@
         white-space: nowrap;
       }
       [data-ui-component="tabs"][data-ui-part="tabs-trigger"] {
-        color: var(--foreground);
+        color: var(--ui-tabs-foreground, var(--foreground));
       }
       @supports (color: color-mix(in lab, red, red)) {
         [data-ui-component="tabs"][data-ui-part="tabs-trigger"] {
-          color: color-mix(in oklab, var(--foreground) 60%, transparent);
+          color: color-mix(
+            in oklab,
+            var(--ui-tabs-foreground, var(--foreground)) 60%,
+            transparent
+          );
         }
       }
       [data-ui-component="tabs"][data-ui-part="tabs-list"] {
@@ -298,11 +302,11 @@
       }
       @media (hover: hover) {
         [data-ui-component="tabs"][data-ui-part="tabs-trigger"]:hover {
-          color: var(--foreground);
+          color: var(--ui-tabs-foreground, var(--foreground));
         }
       }
       [data-ui-component="tabs"][data-ui-part="tabs-trigger"]:focus-visible {
-        border-color: var(--ring);
+        border-color: var(--ui-tabs-focus-ring-color, var(--ring));
       }
       [data-ui-component="tabs"][data-ui-part="tabs-trigger"]:focus-visible {
         --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0
@@ -312,11 +316,15 @@
           var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
       }
       [data-ui-component="tabs"][data-ui-part="tabs-trigger"]:focus-visible {
-        --tw-ring-color: var(--ring);
+        --tw-ring-color: var(--ui-tabs-focus-ring-color, var(--ring));
       }
       @supports (color: color-mix(in lab, red, red)) {
         [data-ui-component="tabs"][data-ui-part="tabs-trigger"]:focus-visible {
-          --tw-ring-color: color-mix(in oklab, var(--ring) 50%, transparent);
+          --tw-ring-color: color-mix(
+            in oklab,
+            var(--ui-tabs-focus-ring-color, var(--ring)) 50%,
+            transparent
+          );
         }
       }
       [data-ui-component="tabs"][data-ui-part="tabs-trigger"]:focus-visible {
@@ -357,7 +365,7 @@
         [data-ui-component="tabs"][data-ui-part="tabs-trigger"]:is(
             :global(.dark) *
           ):hover {
-          color: var(--foreground);
+          color: var(--ui-tabs-foreground, var(--foreground));
         }
       }
       [data-ui-component="tabs"][data-ui-part="tabs-trigger"]:where(
@@ -374,7 +382,7 @@
       [data-ui-component="tabs"][data-ui-part="tabs-trigger"]:where(
           [data-active]:not([data-active="false"])
         ) {
-        color: var(--foreground);
+        color: var(--ui-tabs-foreground, var(--foreground));
       }
       [data-ui-component="tabs"][data-ui-part="tabs-trigger"]:is(
           :where(.group\/tabs-list)[data-variant="default"] *
@@ -498,7 +506,7 @@
       [data-ui-component="tabs"][data-ui-part="tabs-trigger"]:is(
           :global(.dark) *
         ):where([data-active]:not([data-active="false"])) {
-        color: var(--foreground);
+        color: var(--ui-tabs-foreground, var(--foreground));
       }
       [data-ui-component="tabs"][data-ui-part="tabs-trigger"]:is(
           :global(.dark) *

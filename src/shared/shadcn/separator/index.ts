@@ -5,3 +5,8 @@ export {
   //
   Root as Separator,
 };
+
+export {
+  separatorTokenNames,
+  type SeparatorToken,
+} from "./separator.tokens.js";

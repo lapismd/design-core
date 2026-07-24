@@ -8,3 +8,8 @@ export {
   Root as ToggleGroup,
   Item as ToggleGroupItem,
 };
+
+export {
+  toggle_groupTokenNames,
+  type ToggleGroupToken,
+} from "./toggle-group.tokens.js";

@@ -110,7 +110,7 @@
         height: calc(var(--spacing) * 8);
       }
       [data-ui-component="button"][data-size="default"] {
-        height: calc(var(--spacing) * 9);
+        height: var(--ui-button-height, calc(var(--spacing) * 9));
       }
       [data-ui-component="button"][data-size="lg"] {
         height: calc(var(--spacing) * 10);
@@ -130,7 +130,7 @@
       }
       [data-ui-component="button"][data-size="default"],
       [data-ui-component="button"][data-size="lg"] {
-        gap: calc(var(--spacing) * 1.5);
+        gap: var(--ui-button-gap, calc(var(--spacing) * 1.5));
       }
       [data-ui-component="button"][data-size="xs"],
       [data-ui-component="button"][data-size="icon-xs"] {
@@ -141,7 +141,7 @@
         border-radius: min(var(--radius-md), 10px);
       }
       [data-ui-component="button"] {
-        border-radius: calc(var(--radius) * 0.8);
+        border-radius: var(--ui-button-radius, calc(var(--radius) * 0.8));
       }
       [data-ui-component="button"] {
         border-style: var(--tw-border-style);
@@ -160,7 +160,7 @@
         background-color: var(--destructive);
       }
       [data-ui-component="button"][data-variant="default"] {
-        background-color: var(--primary);
+        background-color: var(--ui-button-background, var(--primary));
       }
       [data-ui-component="button"][data-variant="secondary"] {
         background-color: var(--secondary);
@@ -174,7 +174,10 @@
       [data-ui-component="button"][data-size="default"],
       [data-ui-component="button"][data-size="sm"],
       [data-ui-component="button"][data-size="lg"] {
-        padding-inline: calc(var(--spacing) * 2.5);
+        padding-inline: var(
+          --ui-button-padding-inline,
+          calc(var(--spacing) * 2.5)
+        );
       }
       [data-ui-component="button"] {
         font-size: var(--text-sm);
@@ -195,7 +198,7 @@
         color: var(--primary);
       }
       [data-ui-component="button"][data-variant="default"] {
-        color: var(--primary-foreground);
+        color: var(--ui-button-foreground, var(--primary-foreground));
       }
       [data-ui-component="button"][data-variant="secondary"] {
         color: var(--secondary-foreground);
@@ -248,13 +251,13 @@
           background-color: var(--muted);
         }
         [data-ui-component="button"][data-variant="default"]:hover {
-          background-color: var(--primary);
+          background-color: var(--ui-button-background, var(--primary));
         }
         @supports (color: color-mix(in lab, red, red)) {
           [data-ui-component="button"][data-variant="default"]:hover {
             background-color: color-mix(
               in oklab,
-              var(--primary) 80%,
+              var(--ui-button-background, var(--primary)) 80%,
               transparent
             );
           }
@@ -292,7 +295,7 @@
         }
       }
       [data-ui-component="button"]:focus-visible {
-        border-color: var(--ring);
+        border-color: var(--ui-button-focus-ring-color, var(--ring));
       }
       [data-ui-component="button"]:focus-visible {
         --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0
@@ -314,11 +317,15 @@
         }
       }
       [data-ui-component="button"]:focus-visible {
-        --tw-ring-color: var(--ring);
+        --tw-ring-color: var(--ui-button-focus-ring-color, var(--ring));
       }
       @supports (color: color-mix(in lab, red, red)) {
         [data-ui-component="button"]:focus-visible {
-          --tw-ring-color: color-mix(in oklab, var(--ring) 50%, transparent);
+          --tw-ring-color: color-mix(
+            in oklab,
+            var(--ui-button-focus-ring-color, var(--ring)) 50%,
+            transparent
+          );
         }
       }
       [data-ui-component="button"]:active:not([aria-haspopup]) {
@@ -515,8 +522,8 @@
         height: calc(var(--spacing) * 3);
       }
       [data-ui-component="button"] svg:not([class*="size-"]) {
-        width: calc(var(--spacing) * 4);
-        height: calc(var(--spacing) * 4);
+        width: var(--ui-button-icon-size, calc(var(--spacing) * 4));
+        height: var(--ui-button-icon-size, calc(var(--spacing) * 4));
       }
     }
     @property --tw-animation-delay {

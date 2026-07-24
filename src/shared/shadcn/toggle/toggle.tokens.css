@@ -1,0 +1,13 @@
+/**
+ * Default toggle token bindings → theme tokens.
+ * Override --ui-toggle-* on :root or any ancestor (forms pattern).
+ * Do not rebind these names on [data-ui-component="toggle"] hosts — that
+ * blocks ancestor customization.
+ */
+:root {
+  --ui-toggle-background: transparent;
+  --ui-toggle-foreground: var(--foreground);
+  --ui-toggle-border-color: var(--border);
+  --ui-toggle-radius: var(--radius-md, calc(var(--radius) * 0.8));
+  --ui-toggle-focus-ring-color: var(--ring);
+}

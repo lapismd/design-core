@@ -14,3 +14,8 @@ export {
   Item as AccordionItem,
   Trigger as AccordionTrigger,
 };
+
+export {
+  accordionTokenNames,
+  type AccordionToken,
+} from "./accordion.tokens.js";

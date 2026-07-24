@@ -1,0 +1,13 @@
+/**
+ * Default tooltip token bindings → theme tokens.
+ * Override --ui-tooltip-* on :root or any ancestor (forms pattern).
+ * Do not rebind these names on [data-ui-component="tooltip"] hosts — that
+ * blocks ancestor customization.
+ */
+:root {
+  --ui-tooltip-background: var(--foreground);
+  --ui-tooltip-foreground: var(--background);
+  --ui-tooltip-border-color: transparent;
+  --ui-tooltip-radius: var(--radius-md, calc(var(--radius) * 0.8));
+  --ui-tooltip-focus-ring-color: var(--ring);
+}

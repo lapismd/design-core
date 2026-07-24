@@ -20,3 +20,8 @@ export {
   Text as InputGroupText,
   Textarea as InputGroupTextarea,
 };
+
+export {
+  input_groupTokenNames,
+  type InputGroupToken,
+} from "./input-group.tokens.js";

@@ -11,3 +11,8 @@ export {
   Pane as ResizablePane,
   Handle as ResizableHandle,
 };
+
+export {
+  resizableTokenNames,
+  type ResizableToken,
+} from "./resizable.tokens.js";

@@ -1,0 +1,13 @@
+/**
+ * Default accordion token bindings → theme tokens.
+ * Override --ui-accordion-* on :root or any ancestor (forms pattern).
+ * Do not rebind these names on [data-ui-component="accordion"] hosts — that
+ * blocks ancestor customization.
+ */
+:root {
+  --ui-accordion-background: transparent;
+  --ui-accordion-foreground: var(--foreground);
+  --ui-accordion-border-color: var(--border);
+  --ui-accordion-radius: 0;
+  --ui-accordion-focus-ring-color: var(--ring);
+}

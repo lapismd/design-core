@@ -81,7 +81,7 @@
       }
       [data-ui-component="resizable"][data-ui-part="resizable-handle"],
       [data-ui-component="resizable"][data-ui-part="resizable-handle-anon-0"] {
-        background-color: var(--border);
+        background-color: var(--ui-resizable-background, var(--border));
       }
       [data-ui-component="resizable"][data-ui-part="resizable-handle"]:after {
         content: var(--tw-content);

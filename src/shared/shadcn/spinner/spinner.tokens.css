@@ -1,0 +1,13 @@
+/**
+ * Default spinner token bindings → theme tokens.
+ * Override --ui-spinner-* on :root or any ancestor (forms pattern).
+ * Do not rebind these names on [data-ui-component="spinner"] hosts — that
+ * blocks ancestor customization.
+ */
+:root {
+  --ui-spinner-background: transparent;
+  --ui-spinner-foreground: currentColor;
+  --ui-spinner-border-color: transparent;
+  --ui-spinner-radius: 9999px;
+  --ui-spinner-focus-ring-color: var(--ring);
+}

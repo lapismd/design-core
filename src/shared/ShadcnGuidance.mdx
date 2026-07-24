@@ -16,6 +16,24 @@ For the form decision guide, see **UI Forms/Guidance**.
 - Shared visual language and `--ui-<family>-*` tokens across apps
 - Controls composed inside forms (Select, Switch, Command + Popover, Field)
 
+## Customization (multi-app)
+
+Converted families paint from **CSS custom properties**, not Tailwind `cn()` /
+utility class merges (those were compile-time inputs to `ui:add`).
+
+1. **Theme** — override shared `--primary`, `--radius`, etc. in `theme.css` or on
+   a host ancestor for global brand.
+2. **Family tokens** — override `--ui-<family>-*` (defaults in
+   `<family>.tokens.css`, names in `<family>.tokens.ts`). Example: set
+   `--ui-button-background` on a subtree to restyle primary buttons without
+   changing `--primary` for the whole app. Import maps from
+   `@stevejuma/ui/shadcn/<family>` or `@stevejuma/ui/shadcn/button/tokens`.
+3. **Do not** reintroduce Tailwind utility class strings into app or converted
+   component sources. `pnpm check:no-tailwind` (part of `pnpm checks`) enforces
+   this for Beancount + shadcn components. Prefer tokens / scoped CSS.
+
+Same override idea as forms (`--ui-form-*` / `form.tokens.css`).
+
 ## When not to use shadcn alone
 
 - Schema-shaped editing / label-value form rows → `@stevejuma/ui/forms`

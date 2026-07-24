@@ -1,0 +1,13 @@
+/**
+ * Default switch token bindings → theme tokens.
+ * Override --ui-switch-* on :root or any ancestor (forms pattern).
+ * Do not rebind these names on [data-ui-component="switch"] hosts — that
+ * blocks ancestor customization.
+ */
+:root {
+  --ui-switch-background: var(--input);
+  --ui-switch-foreground: var(--background);
+  --ui-switch-border-color: transparent;
+  --ui-switch-radius: 9999px;
+  --ui-switch-focus-ring-color: var(--ring);
+}
