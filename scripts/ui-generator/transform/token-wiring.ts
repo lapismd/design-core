@@ -445,15 +445,15 @@ export const FAMILY_TOKEN_SPECS: Record<string, FamilyTokenSpec> = {
   skeleton: {
     keys: CURATED_FIVE,
     defaults: {
-      background: "var(--accent)",
-      foreground: "var(--accent-foreground)",
+      background: "var(--muted)",
+      foreground: "var(--muted-foreground)",
       borderColor: "transparent",
-      radius: "var(--radius-md, calc(var(--radius) * 0.8))",
+      radius: "calc(var(--radius) * 0.8)",
       focusRingColor: "var(--ring)",
     },
     paintRewrites: [
       {
-        themeVar: "--accent",
+        themeVar: "--muted",
         token: "background",
         properties: ["background-color"],
       },
@@ -564,17 +564,22 @@ export const FAMILY_TOKEN_SPECS: Record<string, FamilyTokenSpec> = {
   "button-group": {
     keys: CURATED_FIVE,
     defaults: {
-      background: "transparent",
+      background: "var(--muted)",
       foreground: "var(--foreground)",
-      borderColor: "var(--border)",
+      borderColor: "var(--input)",
       radius: "calc(var(--radius) * 0.8)",
       focusRingColor: "var(--ring)",
     },
     paintRewrites: [
       {
-        themeVar: "--border",
+        themeVar: "--muted",
+        token: "background",
+        properties: ["background-color"],
+      },
+      {
+        themeVar: "--input",
         token: "borderColor",
-        properties: ["border-color"],
+        properties: ["background-color", "border-color"],
       },
     ],
   },
@@ -709,18 +714,32 @@ export const FAMILY_TOKEN_SPECS: Record<string, FamilyTokenSpec> = {
   field: {
     keys: CURATED_FIVE,
     defaults: {
-      background: "transparent",
-      foreground: "var(--foreground)",
-      borderColor: "var(--border)",
-      radius: "var(--radius-md, calc(var(--radius) * 0.8))",
-      focusRingColor: "var(--ring)",
+      background: "var(--background)",
+      foreground: "var(--muted-foreground)",
+      borderColor: "var(--primary)",
+      radius: "calc(var(--radius) * 0.8)",
+      focusRingColor: "var(--primary)",
     },
     paintRewrites: [
-      { themeVar: "--foreground", token: "foreground", properties: ["color"] },
       {
-        themeVar: "--border",
+        themeVar: "--background",
+        token: "background",
+        properties: ["background-color"],
+      },
+      {
+        themeVar: "--muted-foreground",
+        token: "foreground",
+        properties: ["color"],
+      },
+      {
+        themeVar: "--primary",
         token: "borderColor",
         properties: ["border-color"],
+      },
+      {
+        themeVar: "--primary",
+        token: "focusRingColor",
+        properties: ["background-color", "color"],
       },
     ],
   },
@@ -922,6 +941,20 @@ export function rewritePaintToTokens(
     out = out.replace(
       /(\[data-ui-component="button"\] \{\s*)border-radius: calc\(var\(--radius\) \* 0\.8\);/g,
       `$1border-radius: var(--ui-button-radius, calc(var(--radius) * 0.8));`,
+    );
+  }
+
+  // Prefer public radius token for the common shadcn radius calc.
+  if (spec.defaults.radius) {
+    const radiusToken = tokenCssName(family, "radius");
+    out = out.replace(
+      /border-radius:\s*calc\(var\(--radius\) \* 0\.8\)/g,
+      `border-radius: var(${radiusToken}, calc(var(--radius) * 0.8))`,
+    );
+    // Undo accidental wrap inside calc from a --radius paint rewrite.
+    out = out.replaceAll(
+      `calc(var(${radiusToken}, var(--radius)) * 0.8)`,
+      `var(${radiusToken}, calc(var(--radius) * 0.8))`,
     );
   }
 

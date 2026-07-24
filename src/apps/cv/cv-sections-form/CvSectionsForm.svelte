@@ -217,7 +217,7 @@
   }
 </script>
 
-<div class="flex flex-col gap-6" data-ui-part="cv-sections-form">
+<div class="cv-sections-form" data-ui-part="cv-sections-form">
   <StructuredForm
     {value}
     config={profileConfig}
@@ -238,7 +238,7 @@
 
   {#each value.sections as section, sectionIndex (section.id)}
     {@const open = isOpen(section.id)}
-    <section class="flex flex-col gap-3">
+    <section class="cv-sections-form__section">
       <FormSectionHeader
         title={section.title}
         index={sectionIndex}
@@ -289,7 +289,7 @@
             </EntryActions>
           {/each}
         {:else if isSimpleListEntryType(section.entry_type)}
-          <div class="flex flex-col">
+          <div class="cv-sections-form__simple-list">
             {#each section.entries as entry, entryIndex (`${section.id}-${entryIndex}`)}
               <SortableArrayItem
                 id={`${section.id}-${entryIndex}`}
@@ -327,7 +327,7 @@
         {:else}
           <Accordion.Root
             type="single"
-            class="w-full"
+            class="cv-sections-form__accordion"
             value={`${section.id}-0`}
           >
             {#each section.entries as entry, entryIndex (entryIndex)}
@@ -360,7 +360,7 @@
           type="button"
           variant="ghost"
           size="sm"
-          class="text-muted-foreground hover:text-foreground w-fit"
+          class="cv-sections-form__add-entry"
           onclick={() => addEntry(sectionIndex)}
         >
           <PlusIcon />
@@ -387,3 +387,35 @@
     onChoose={chooseSection}
   />
 </div>
+
+<style>
+  .cv-sections-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .cv-sections-form__section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .cv-sections-form__simple-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  :global(.cv-sections-form__accordion) {
+    width: 100%;
+  }
+
+  :global(.cv-sections-form__add-entry) {
+    width: fit-content;
+    color: var(--muted-foreground);
+  }
+
+  :global(.cv-sections-form__add-entry:hover) {
+    color: var(--foreground);
+  }
+</style>

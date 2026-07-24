@@ -75,7 +75,10 @@
   }
 </script>
 
-<div class="cv-control-row-group gap-0" data-ui-part="social-networks-editor">
+<div
+  class="cv-control-row-group cv-social-networks-editor"
+  data-ui-part="social-networks-editor"
+>
   <div class="cv-control-action-row">
     <span class="cv-control-action-row__label">Social Networks</span>
     <div class="cv-control-action-row__control">
@@ -83,7 +86,7 @@
         type="button"
         variant="ghost"
         size="xs"
-        class="text-muted-foreground hover:text-foreground h-5 gap-1 px-0 text-xs font-normal hover:bg-transparent [&_svg]:size-3"
+        class="cv-social-networks-editor__add-button"
         onclick={add}
       >
         <PlusIcon data-icon="inline-start" />
@@ -92,10 +95,10 @@
     </div>
   </div>
 
-  <div class="col-span-full flex flex-col">
+  <div class="cv-social-networks-editor__list">
     {#each items as item, index (index)}
-      <div class="group/social-network relative border-b last:border-b-0">
-        <div class="pl-4">
+      <div class="cv-social-networks-editor__item">
+        <div class="cv-social-networks-editor__item-content">
           <StructuredForm
             value={item}
             config={socialNetworkFormConfig}
@@ -106,7 +109,7 @@
           type="button"
           variant="ghost"
           size="icon-sm"
-          class="text-muted-foreground/70 hover:text-foreground absolute top-1/2 -right-5 size-5 -translate-y-1/2 rounded-sm opacity-0 transition-opacity group-focus-within/social-network:opacity-100 group-hover/social-network:opacity-100 hover:bg-transparent focus-visible:opacity-100 [&_svg]:size-3.5"
+          class="cv-social-networks-editor__remove"
           aria-label="Delete social network"
           onclick={() => remove(index)}
         >
@@ -116,3 +119,78 @@
     {/each}
   </div>
 </div>
+
+<style>
+  .cv-social-networks-editor.cv-control-row-group {
+    row-gap: 0;
+  }
+
+  .cv-social-networks-editor__list {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  :global(.cv-social-networks-editor__add-button) {
+    height: 1.25rem;
+    gap: 0.25rem;
+    padding-inline: 0;
+    color: var(--muted-foreground);
+    font-size: 0.75rem;
+    font-weight: 400;
+  }
+
+  :global(.cv-social-networks-editor__add-button:hover) {
+    color: var(--foreground);
+    background: transparent;
+  }
+
+  :global(.cv-social-networks-editor__add-button svg) {
+    width: 0.75rem;
+    height: 0.75rem;
+  }
+
+  .cv-social-networks-editor__item {
+    position: relative;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .cv-social-networks-editor__item:last-child {
+    border-bottom: 0;
+  }
+
+  .cv-social-networks-editor__item-content {
+    padding-left: 1rem;
+  }
+
+  :global(.cv-social-networks-editor__remove) {
+    position: absolute;
+    top: 50%;
+    right: -1.25rem;
+    width: 1.25rem;
+    height: 1.25rem;
+    transform: translateY(-50%);
+    border-radius: calc(var(--radius) - 4px);
+    color: color-mix(in srgb, var(--muted-foreground) 70%, transparent);
+    opacity: 0;
+    transition: opacity 150ms ease;
+  }
+
+  .cv-social-networks-editor__item:hover
+    :global(.cv-social-networks-editor__remove),
+  .cv-social-networks-editor__item:focus-within
+    :global(.cv-social-networks-editor__remove),
+  :global(.cv-social-networks-editor__remove:focus-visible) {
+    opacity: 1;
+  }
+
+  :global(.cv-social-networks-editor__remove:hover) {
+    color: var(--foreground);
+    background: transparent;
+  }
+
+  :global(.cv-social-networks-editor__remove svg) {
+    width: 0.875rem;
+    height: 0.875rem;
+  }
+</style>

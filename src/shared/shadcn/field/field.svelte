@@ -143,7 +143,7 @@
         gap: calc(var(--spacing) * 7);
       }
       [data-ui-component="field"][data-ui-part="field-separator-content"] {
-        background-color: var(--background);
+        background-color: var(--ui-field-background, var(--background));
       }
       [data-ui-component="field"][data-ui-part="field-separator-content"] {
         padding-inline: calc(var(--spacing) * 2);
@@ -182,7 +182,7 @@
       }
       [data-ui-component="field"][data-ui-part="field-description"],
       [data-ui-component="field"][data-ui-part="field-separator-content"] {
-        color: var(--muted-foreground);
+        color: var(--ui-field-foreground, var(--muted-foreground));
       }
       [data-ui-component="field"][data-ui-part="field-description"]:is(
           :where(.group\/field):has([data-orientation="horizontal"]) *
@@ -221,28 +221,36 @@
           :where([data-state="checked"]),
           :where([data-checked]:not([data-checked="false"]))
         ) {
-        border-color: var(--primary);
+        border-color: var(--ui-field-border-color, var(--primary));
       }
       @supports (color: color-mix(in lab, red, red)) {
         [data-ui-component="field"][data-ui-part="field-label"]:has(
             :where([data-state="checked"]),
             :where([data-checked]:not([data-checked="false"]))
           ) {
-          border-color: color-mix(in oklab, var(--primary) 30%, transparent);
+          border-color: color-mix(
+            in oklab,
+            var(--ui-field-border-color, var(--primary)) 30%,
+            transparent
+          );
         }
       }
       [data-ui-component="field"][data-ui-part="field-label"]:has(
           :where([data-state="checked"]),
           :where([data-checked]:not([data-checked="false"]))
         ) {
-        background-color: var(--primary);
+        background-color: var(--ui-field-focus-ring-color, var(--primary));
       }
       @supports (color: color-mix(in lab, red, red)) {
         [data-ui-component="field"][data-ui-part="field-label"]:has(
             :where([data-state="checked"]),
             :where([data-checked]:not([data-checked="false"]))
           ) {
-          background-color: color-mix(in oklab, var(--primary) 5%, transparent);
+          background-color: color-mix(
+            in oklab,
+            var(--ui-field-focus-ring-color, var(--primary)) 5%,
+            transparent
+          );
         }
       }
       [data-ui-component="field"][data-ui-part="field-set"]:has(
@@ -268,7 +276,7 @@
       [data-ui-component="field"][data-ui-part="field-label"]:has(
           > [data-slot="field"]
         ) {
-        border-radius: calc(var(--radius) * 0.8);
+        border-radius: var(--ui-field-radius, calc(var(--radius) * 0.8));
       }
       [data-ui-component="field"][data-ui-part="field-label"]:has(
           > [data-slot="field"]
@@ -329,7 +337,7 @@
           :where([data-state="checked"]),
           :where([data-checked]:not([data-checked="false"]))
         ) {
-        border-color: var(--primary);
+        border-color: var(--ui-field-border-color, var(--primary));
       }
       @supports (color: color-mix(in lab, red, red)) {
         [data-ui-component="field"][data-ui-part="field-label"]:is(
@@ -338,7 +346,11 @@
             :where([data-state="checked"]),
             :where([data-checked]:not([data-checked="false"]))
           ) {
-          border-color: color-mix(in oklab, var(--primary) 20%, transparent);
+          border-color: color-mix(
+            in oklab,
+            var(--ui-field-border-color, var(--primary)) 20%,
+            transparent
+          );
         }
       }
       [data-ui-component="field"][data-ui-part="field-label"]:is(
@@ -347,7 +359,7 @@
           :where([data-state="checked"]),
           :where([data-checked]:not([data-checked="false"]))
         ) {
-        background-color: var(--primary);
+        background-color: var(--ui-field-focus-ring-color, var(--primary));
       }
       @supports (color: color-mix(in lab, red, red)) {
         [data-ui-component="field"][data-ui-part="field-label"]:is(
@@ -358,7 +370,7 @@
           ) {
           background-color: color-mix(
             in oklab,
-            var(--primary) 10%,
+            var(--ui-field-focus-ring-color, var(--primary)) 10%,
             transparent
           );
         }
@@ -420,7 +432,7 @@
         text-underline-offset: 4px;
       }
       [data-ui-component="field"][data-ui-part="field-description"] > a:hover {
-        color: var(--primary);
+        color: var(--ui-field-focus-ring-color, var(--primary));
       }
       [data-variant="legend"]
         + [data-ui-component="field"][data-ui-part="field-description"] {

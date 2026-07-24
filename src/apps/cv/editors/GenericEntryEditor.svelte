@@ -153,7 +153,7 @@
   <EducationEditor education={entry as EducationEntry} {onUpdate} />
 {:else if entryType === "PublicationEntry"}
   {@const publication = entry as PublicationEntry}
-  <div class="flex flex-col gap-4">
+  <div class="cv-entry-editor">
     <StructuredForm
       value={publication}
       config={publicationConfig}
@@ -174,10 +174,10 @@
   />
 {:else if entryType === "BulletEntry" || entryType === "NumberedEntry" || entryType === "ReversedNumberedEntry"}
   <!-- Handled by CvSectionsForm simple-list branch -->
-  <p class="text-muted-foreground text-sm">Use the section list editor.</p>
+  <p class="cv-generic-entry-editor__hint">Use the section list editor.</p>
 {:else}
   {@const normal = entry as NormalEntry}
-  <div class="flex flex-col gap-4">
+  <div class="cv-entry-editor">
     <StructuredForm
       value={normal}
       config={normalConfig}
@@ -191,3 +191,12 @@
     />
   </div>
 {/if}
+
+<style>
+  @import "../cv-shared.css";
+
+  .cv-generic-entry-editor__hint {
+    color: var(--muted-foreground);
+    font-size: 0.875rem;
+  }
+</style>

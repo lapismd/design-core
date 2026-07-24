@@ -5,9 +5,9 @@
  * blocks ancestor customization.
  */
 :root {
-  --ui-button-group-background: transparent;
+  --ui-button-group-background: var(--muted);
   --ui-button-group-foreground: var(--foreground);
-  --ui-button-group-border-color: var(--border);
+  --ui-button-group-border-color: var(--input);
   --ui-button-group-radius: calc(var(--radius) * 0.8);
   --ui-button-group-focus-ring-color: var(--ring);
 }

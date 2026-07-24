@@ -77,17 +77,17 @@
       align-self: stretch;
     }
     [data-ui-component="button-group"][data-ui-part="button-group-text"] {
-      border-radius: calc(var(--radius) * 0.8);
+      border-radius: var(--ui-button-group-radius, calc(var(--radius) * 0.8));
     }
     [data-ui-component="button-group"][data-ui-part="button-group-text"] {
       border-style: var(--tw-border-style);
       border-width: 1px;
     }
     [data-ui-part="button-group-separator"][data-slot="button-group-separator"] {
-      background-color: var(--input);
+      background-color: var(--ui-button-group-border-color, var(--input));
     }
     [data-ui-component="button-group"][data-ui-part="button-group-text"] {
-      background-color: var(--muted);
+      background-color: var(--ui-button-group-background, var(--muted));
     }
     [data-ui-component="button-group"][data-ui-part="button-group-text"] {
       padding-inline: calc(var(--spacing) * 2.5);

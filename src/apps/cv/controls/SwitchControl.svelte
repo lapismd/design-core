@@ -14,9 +14,9 @@
   } = $props();
 </script>
 
-<label class="flex items-center gap-2">
+<label class="cv-switch-control">
   {#if showLabel}
-    <span class="text-muted-foreground text-xs font-medium">{label}</span>
+    <span class="cv-control-label">{label}</span>
   {/if}
   <Switch
     bind:checked
@@ -27,3 +27,13 @@
     }}
   />
 </label>
+
+<style>
+  @import "../cv-shared.css";
+
+  .cv-switch-control {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+</style>

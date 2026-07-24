@@ -7,6 +7,7 @@
     SegmentedControl,
   } from "@stevejuma/ui/forms";
   import type { CvEvidence, EvidenceStory } from "../types";
+  import "../cv-shared.css";
 
   let {
     value = { technologies: [], skills: [], stories: [] },
@@ -46,10 +47,7 @@
   }
 </script>
 
-<div
-  class="flex max-w-[646px] flex-col gap-6 py-4 pr-11 pl-10"
-  data-ui-part="cv-evidence-tab"
->
+<div class="cv-tab-panel" data-ui-part="cv-evidence-tab">
   <ListEditor
     label="Technologies"
     items={value.technologies ?? []}
@@ -65,7 +63,7 @@
 
   {#each value.stories ?? [] as story, index (story.id)}
     {@const open = storyOpen[story.id] ?? true}
-    <section class="flex flex-col gap-3">
+    <section class="cv-evidence-tab__story">
       <FormSectionHeader
         title={story.title}
         {index}
@@ -292,3 +290,11 @@
     </section>
   {/each}
 </div>
+
+<style>
+  .cv-evidence-tab__story {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+</style>

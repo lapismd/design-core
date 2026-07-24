@@ -3,6 +3,7 @@
   import type { CvDesign } from "../types";
   import TextControl from "../controls/TextControl.svelte";
   import ColorControl from "../controls/ColorControl.svelte";
+  import "../cv-shared.css";
 
   let {
     value = {},
@@ -25,12 +26,9 @@
   }
 </script>
 
-<div
-  class="flex max-w-[646px] flex-col gap-6 py-4 pr-11 pl-10"
-  data-ui-part="cv-design-tab"
->
-  <section class="flex flex-col gap-2">
-    <h3 class="text-base font-semibold">Page</h3>
+<div class="cv-tab-panel" data-ui-part="cv-design-tab">
+  <section class="cv-tab-section">
+    <h3 class="cv-tab-section__title">Page</h3>
     <div class="cv-structured-form">
       <FormField as="div" label="Size">
         <TextControl
@@ -59,8 +57,8 @@
     </div>
   </section>
 
-  <section class="flex flex-col gap-2">
-    <h3 class="text-base font-semibold">Colors</h3>
+  <section class="cv-tab-section">
+    <h3 class="cv-tab-section__title">Colors</h3>
     <div class="cv-structured-form">
       <FormField as="div" label="Text" align="center">
         <ColorControl
@@ -89,8 +87,8 @@
     </div>
   </section>
 
-  <section class="flex flex-col gap-2">
-    <h3 class="text-base font-semibold">Typography</h3>
+  <section class="cv-tab-section">
+    <h3 class="cv-tab-section__title">Typography</h3>
     <div class="cv-structured-form">
       <FormField as="div" label="Font family">
         <TextControl

@@ -11,6 +11,7 @@
   import CvLocaleTab from "../tabs/CvLocaleTab.svelte";
   import CvSettingsTab from "../tabs/CvSettingsTab.svelte";
   import type { CvSource } from "../types";
+  import "../cv-shared.css";
 
   let {
     tab = $bindable("cv"),
@@ -69,9 +70,9 @@
 
 <div data-testid="cv-workspace-form" data-ui-part="cv-workspace-form">
   <Tabs.Root bind:value={tab}>
-    <div class="border-b px-3 pt-1.5">
-      <div class="flex items-center justify-between gap-3">
-        <Tabs.List variant="line" class="justify-start overflow-visible">
+    <div class="cv-workspace-form__header">
+      <div class="cv-workspace-form__header-row">
+        <Tabs.List variant="line" class="cv-workspace-form__tabs-list">
           <Tabs.Trigger value="cv">CV</Tabs.Trigger>
           <Tabs.Trigger value="evidence">Evidence</Tabs.Trigger>
           <Tabs.Trigger value="design">Design</Tabs.Trigger>
@@ -79,7 +80,7 @@
           <Tabs.Trigger value="settings">Settings</Tabs.Trigger>
         </Tabs.List>
         {#if tab === "cv"}
-          <Label class="text-muted-foreground flex items-center gap-2 text-xs">
+          <Label class="cv-workspace-form__yaml-label">
             YAML
             <Switch
               checked={yamlMode}
@@ -93,9 +94,9 @@
 
     <Tabs.Content value="cv">
       {#if yamlMode}
-        <div class="flex max-w-[720px] flex-col gap-2 py-4 pr-11 pl-10">
+        <div class="cv-workspace-form__yaml-panel">
           {#if yamlError}
-            <p class="text-destructive text-sm" role="alert">{yamlError}</p>
+            <p class="cv-workspace-form__error" role="alert">{yamlError}</p>
           {/if}
           <YamlEditor
             value={yamlText}
@@ -104,7 +105,7 @@
           />
         </div>
       {:else}
-        <div class="max-w-[646px] py-4 pr-11 pl-10">
+        <div class="cv-workspace-form__content">
           <CvSectionsForm
             value={value.cv}
             {collapseAll}
@@ -143,3 +144,48 @@
     </Tabs.Content>
   </Tabs.Root>
 </div>
+
+<style>
+  .cv-workspace-form__header {
+    border-bottom: 1px solid var(--border);
+    padding: 0.375rem 0.75rem 0;
+  }
+
+  .cv-workspace-form__header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  :global(.cv-workspace-form__tabs-list) {
+    justify-content: flex-start;
+    overflow: visible;
+  }
+
+  :global(.cv-workspace-form__yaml-label) {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--muted-foreground);
+    font-size: 0.75rem;
+  }
+
+  .cv-workspace-form__yaml-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-width: 720px;
+    padding: 1rem 2.75rem 1rem 2.5rem;
+  }
+
+  .cv-workspace-form__error {
+    color: var(--destructive);
+    font-size: 0.875rem;
+  }
+
+  .cv-workspace-form__content {
+    max-width: 646px;
+    padding: 1rem 2.75rem 1rem 2.5rem;
+  }
+</style>

@@ -5,9 +5,9 @@
  * blocks ancestor customization.
  */
 :root {
-  --ui-field-background: transparent;
-  --ui-field-foreground: var(--foreground);
-  --ui-field-border-color: var(--border);
-  --ui-field-radius: var(--radius-md, calc(var(--radius) * 0.8));
-  --ui-field-focus-ring-color: var(--ring);
+  --ui-field-background: var(--background);
+  --ui-field-foreground: var(--muted-foreground);
+  --ui-field-border-color: var(--primary);
+  --ui-field-radius: calc(var(--radius) * 0.8);
+  --ui-field-focus-ring-color: var(--primary);
 }

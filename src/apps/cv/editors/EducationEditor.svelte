@@ -64,7 +64,7 @@
   });
 </script>
 
-<div class="flex flex-col gap-4" data-ui-part="education-editor">
+<div class="cv-entry-editor" data-ui-part="education-editor">
   <StructuredForm
     value={education}
     {config}
@@ -77,3 +77,7 @@
     onChange={(highlights) => onUpdate({ ...education, highlights })}
   />
 </div>
+
+<style>
+  @import "../cv-shared.css";
+</style>

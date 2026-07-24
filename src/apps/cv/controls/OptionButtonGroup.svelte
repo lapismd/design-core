@@ -16,11 +16,11 @@
   } = $props();
 </script>
 
-<div class="flex flex-col gap-1" data-ui-part="option-button-group">
+<div class="cv-option-button-group" data-ui-part="option-button-group">
   {#if showLabel}
-    <span class="text-muted-foreground text-xs font-medium">{label}</span>
+    <span class="cv-control-label">{label}</span>
   {/if}
-  <div class="flex flex-wrap gap-1" role="group" aria-label={label}>
+  <div class="cv-option-button-group__options" role="group" aria-label={label}>
     {#each options as option (option.value)}
       <Button
         type="button"
@@ -33,3 +33,19 @@
     {/each}
   </div>
 </div>
+
+<style>
+  @import "../cv-shared.css";
+
+  .cv-option-button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .cv-option-button-group__options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+</style>

@@ -128,16 +128,16 @@
   }
 </script>
 
-<div class="flex flex-col gap-4" data-ui-part="experience-editor">
+<div class="cv-entry-editor" data-ui-part="experience-editor">
   <StructuredForm
     value={experience}
     config={detailsConfig}
     onChange={(next) => onUpdate(next as ExperienceEntry)}
   />
 
-  <section class="flex flex-col gap-2">
-    <div class="flex items-center justify-between">
-      <h4 class="text-sm font-medium">Role history</h4>
+  <section class="cv-experience-editor__subsection">
+    <div class="cv-experience-editor__subsection-header">
+      <h4 class="cv-experience-editor__subsection-title">Role history</h4>
       <Button type="button" variant="ghost" size="xs" onclick={addRole}>
         Add role
       </Button>
@@ -187,9 +187,9 @@
     {/each}
   </section>
 
-  <section class="flex flex-col gap-2">
-    <div class="flex items-center justify-between">
-      <h4 class="text-sm font-medium">Extra details</h4>
+  <section class="cv-experience-editor__subsection">
+    <div class="cv-experience-editor__subsection-header">
+      <h4 class="cv-experience-editor__subsection-title">Extra details</h4>
       <Button type="button" variant="ghost" size="xs" onclick={addExtra}>
         Add detail
       </Button>
@@ -245,3 +245,24 @@
     onChange={(highlights) => patch({ highlights })}
   />
 </div>
+
+<style>
+  @import "../cv-shared.css";
+
+  .cv-experience-editor__subsection {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .cv-experience-editor__subsection-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .cv-experience-editor__subsection-title {
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+</style>

@@ -37,10 +37,10 @@
         animation: var(--animate-pulse);
       }
       [data-ui-component="skeleton"] {
-        border-radius: calc(var(--radius) * 0.8);
+        border-radius: var(--ui-skeleton-radius, calc(var(--radius) * 0.8));
       }
       [data-ui-component="skeleton"] {
-        background-color: var(--muted);
+        background-color: var(--ui-skeleton-background, var(--muted));
       }
     }
     @property --tw-animation-delay {

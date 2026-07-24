@@ -41,19 +41,19 @@
   }
 </script>
 
-<label class="flex min-w-0 items-center gap-2">
+<label class="cv-color-control">
   {#if showLabel}
-    <span class="text-muted-foreground text-xs font-medium">{label}</span>
+    <span class="cv-control-label">{label}</span>
   {/if}
   <input
     type="color"
     value={pickerValue}
     aria-label={`${label} color picker`}
-    class="focus-visible:ring-ring size-7 shrink-0 cursor-pointer appearance-none rounded-full border-0 bg-transparent p-0 shadow-none focus-visible:ring-2 focus-visible:ring-offset-2"
+    class="cv-color-control__picker"
     oninput={(event) => onChange(event.currentTarget.value)}
   />
   <input
-    class="min-w-0 flex-1 border-0 bg-transparent px-0 py-0.5 font-mono text-sm outline-none"
+    class="cv-color-control__hex"
     aria-label={`${label} hex`}
     {value}
     {placeholder}
@@ -62,26 +62,58 @@
 </label>
 
 <style>
-  input[type="color"] {
+  @import "../cv-shared.css";
+
+  .cv-color-control {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .cv-color-control__picker {
+    width: 1.75rem;
+    height: 1.75rem;
+    flex-shrink: 0;
+    cursor: pointer;
+    appearance: none;
     border: 0;
     border-radius: 9999px;
     background: transparent;
+    padding: 0;
+    box-shadow: none;
     overflow: hidden;
   }
 
-  input[type="color"]::-webkit-color-swatch-wrapper {
+  .cv-color-control__picker:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  .cv-color-control__picker::-webkit-color-swatch-wrapper {
     border: 0;
     border-radius: 9999px;
     padding: 0;
   }
 
-  input[type="color"]::-webkit-color-swatch {
+  .cv-color-control__picker::-webkit-color-swatch {
     border: 0;
     border-radius: 9999px;
   }
 
-  input[type="color"]::-moz-color-swatch {
+  .cv-color-control__picker::-moz-color-swatch {
     border: 0;
     border-radius: 9999px;
+  }
+
+  .cv-color-control__hex {
+    min-width: 0;
+    flex: 1;
+    border: 0;
+    background: transparent;
+    padding: 0.125rem 0;
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 0.875rem;
+    outline: none;
   }
 </style>

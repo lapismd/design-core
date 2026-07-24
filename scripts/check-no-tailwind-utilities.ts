@@ -1,9 +1,7 @@
 /**
  * Fail if Tailwind utility class strings appear in native-CSS surfaces.
  *
- * Default roots: Beancount app + converted shadcn component sources.
- * CV app still contains Tailwind layout utilities — check explicitly with
- * `pnpm check:no-tailwind src/apps/cv` until that surface is migrated.
+ * Default roots: Beancount + CV apps + converted shadcn component sources.
  * Storybook story wrappers still use host Tailwind for layout demos and are
  * excluded (`*.stories.svelte`, `*.variations.stories.svelte`, `examples/`).
  *
@@ -16,7 +14,11 @@ import { readdirSync, readFileSync, statSync } from "node:fs";
 import { relative, resolve } from "node:path";
 import { findTailwindUtilitiesInSource } from "./lib/no-tailwind-utilities.js";
 
-const DEFAULT_ROOTS = ["src/apps/beancount", "src/shared/shadcn"] as const;
+const DEFAULT_ROOTS = [
+  "src/apps/beancount",
+  "src/apps/cv",
+  "src/shared/shadcn",
+] as const;
 
 const requested = process.argv.slice(2);
 const roots = (requested.length ? requested : [...DEFAULT_ROOTS]).map((r) =>
