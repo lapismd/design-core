@@ -55,6 +55,7 @@
     const uncleared = canvas.getByRole("button", {
       name: /^Uncleared transactions/,
     });
+    await expect(uncleared).toHaveAttribute("data-state", "closed");
     await userEvent.click(uncleared);
     await expect(uncleared).toHaveAttribute("data-state", "open");
     await expect(canvas.getByRole("status")).toHaveTextContent(

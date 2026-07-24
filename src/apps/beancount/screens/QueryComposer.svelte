@@ -1,6 +1,7 @@
 <script lang="ts">
   import ChevronRight from "@lucide/svelte/icons/chevron-right";
   import Search from "@lucide/svelte/icons/search";
+  import X from "@lucide/svelte/icons/x";
   import { Button } from "@stevejuma/ui/shadcn/button";
   import { Input } from "@stevejuma/ui/shadcn/input";
 
@@ -9,21 +10,35 @@
     placeholder = "...enter a BQL query. 'help' to list available commands",
     ariaLabel = "BQL query",
     executeLabel = "Execute",
+    clearAfterExecute = false,
     onExecute = () => {},
     onFormat = () => {},
+    onClear = () => {},
   }: {
     value?: string;
     placeholder?: string;
     ariaLabel?: string;
     executeLabel?: string;
+    /** Fava's full Query workspace clears the command after an execution. */
+    clearAfterExecute?: boolean;
     /** The adapter owns query evaluation and receives the entered BQL source. */
     onExecute?: (value: string) => void;
     /** The adapter owns BQL formatting and replaces the bound source when requested. */
     onFormat?: (value: string) => void;
+    /** Receives the previous text when the controlled command is cleared. */
+    onClear?: (value: string) => void;
   } = $props();
 
   function execute() {
-    onExecute(value);
+    const submitted = value;
+    onExecute(submitted);
+    if (clearAfterExecute && submitted.trim()) value = "";
+  }
+
+  function clear() {
+    const previous = value;
+    value = "";
+    onClear(previous);
   }
 </script>
 
@@ -54,6 +69,19 @@
     >
       <span class="bc-query-composer__format-glyph" aria-hidden="true">A≡</span>
     </Button>
+    {#if value.trim()}
+      <Button
+        type="button"
+        variant="ghost"
+        size="icon-sm"
+        class="bc-query-composer__clear"
+        aria-label="Clear query"
+        title="Clear query"
+        onclick={clear}
+      >
+        <X aria-hidden="true" />
+      </Button>
+    {/if}
     <Button
       type="submit"
       variant="ghost"
@@ -112,6 +140,10 @@
   :global(.bc-query-composer__options) {
     border-radius: 0;
     border-inline-end: 1px solid var(--ui-beancount-border);
+  }
+
+  :global(.bc-query-composer__clear) {
+    border-radius: 0;
   }
 
   .bc-query-composer__format-glyph {

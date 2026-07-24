@@ -44,8 +44,15 @@
     details?: Snippet<[SavedQueryHistoryItem]>;
   } = $props();
 
+  let accordionValue = $state<string[]>([]);
+
+  $effect(() => {
+    accordionValue = [...expandedIds];
+  });
+
   function updateExpansion(items: string[] | undefined): void {
-    onExpandedIdsChange?.(items ?? []);
+    accordionValue = items ?? [];
+    onExpandedIdsChange?.(accordionValue);
   }
 
   function handleCopy(event: MouseEvent, query: SavedQueryHistoryItem): void {
@@ -65,7 +72,7 @@
   <Accordion.Root
     class="bc-saved-query-history"
     type="multiple"
-    value={[...expandedIds]}
+    value={accordionValue}
     onValueChange={updateExpansion}
     aria-label={ariaLabel}
   >

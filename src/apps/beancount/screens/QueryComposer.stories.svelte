@@ -20,6 +20,7 @@
 <script lang="ts">
   let query = $state("");
   let executed = $state("");
+  let cleared = $state("");
 
   function formatQuery(value: string) {
     return value
@@ -41,6 +42,17 @@
     await expect(
       canvas.getByRole("textbox", { name: "BQL query" }),
     ).toHaveValue("SELECT account FROM open");
+    await userEvent.click(canvas.getByRole("button", { name: "Clear query" }));
+    await expect(
+      canvas.getByRole("textbox", { name: "BQL query" }),
+    ).toHaveValue("");
+    await expect(canvas.getByRole("status")).toHaveTextContent(
+      "Cleared SELECT account FROM open",
+    );
+    await userEvent.type(
+      canvas.getByRole("textbox", { name: "BQL query" }),
+      "SELECT account FROM open",
+    );
     await userEvent.click(canvas.getByRole("button", { name: "Execute" }));
     await expect(canvas.getByRole("status")).toHaveTextContent(
       "SELECT account",
@@ -57,9 +69,12 @@
         onFormat={(value) => {
           query = formatQuery(value);
         }}
+        onClear={(value) => {
+          cleared = `Cleared ${value}`;
+        }}
       />
       <output class="bc-query-composer-story__result" aria-live="polite">
-        {executed || "No query executed"}
+        {executed || cleared || "No query executed"}
       </output>
     </div>
   {/snippet}

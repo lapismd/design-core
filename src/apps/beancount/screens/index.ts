@@ -10,6 +10,7 @@ export {
   default as PresetQueryReport,
   type PresetQueryPerspective,
 } from "./PresetQueryReport.svelte";
+export { default as QueryWorkspace } from "./QueryWorkspace.svelte";
 export { default as ScreenFrame } from "./ScreenFrame.svelte";
 export {
   favaBaselineUrl,

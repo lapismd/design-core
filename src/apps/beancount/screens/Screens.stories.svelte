@@ -7,6 +7,7 @@
   import EditorToolbar from "./EditorToolbar.svelte";
   import LedgerEditorSurface from "./LedgerEditorSurface.svelte";
   import PresetQueryReport from "./PresetQueryReport.svelte";
+  import QueryWorkspace from "./QueryWorkspace.svelte";
   import ScreenFrame from "./ScreenFrame.svelte";
   import { visualDeltaForScreen } from "./visual-delta.js";
   import BarChart from "../charts/BarChart.svelte";
@@ -27,7 +28,6 @@
   import SourceConnectionCatalog from "../sources/SourceConnectionCatalog.svelte";
   import ImportAccountsToolbar from "../sources/ImportAccountsToolbar.svelte";
   import SourceToolbar from "../sources/SourceToolbar.svelte";
-  import QueryComposer from "./QueryComposer.svelte";
   import {
     accountDetailGroups,
     accountDetailLineSeries,
@@ -1103,11 +1103,7 @@
 >
   {#snippet template()}
     <ScreenFrame pageTitle="Query">
-      <ContentScrollArea>
-        <div class="bc-screen-story__page">
-          <QueryComposer />
-        </div>
-      </ContentScrollArea>
+      <QueryWorkspace />
     </ScreenFrame>
   {/snippet}
 </Story>

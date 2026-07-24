@@ -356,6 +356,9 @@ capture harness writes.
 - `PresetQueryReport` — controlled Fava `PresetQueryView` composition over
   shared shadcn Tabs, Button, ScrollArea, and `HoldingsTable`; hosts own BQL
   definitions/execution, route navigation, and selected perspective state
+- `QueryWorkspace` — controlled Fava Query composition over `QueryComposer`,
+  error feedback, and `SavedQueryHistory`; hosts own BQL execution, history,
+  route state, persistence, and query-specific result rendering
 
 **Harness** (`scripts/beancount-screens/`):
 
