@@ -136,9 +136,7 @@
   <Table.Root aria-label={ariaLabel} class="bc-interval-tree-table__table">
     <Table.Header>
       <Table.Row class="bc-interval-tree-table__header-row">
-        <Table.Head
-          class="bc-interval-tree-table__account-heading"
-        >
+        <Table.Head class="bc-interval-tree-table__account-heading">
           <span class="bc-interval-tree-table__heading-content">
             {#if collapsibleIds.length}
               <button
@@ -246,15 +244,18 @@
                 : "bc-interval-tree-table__amount-cell"}
             >
               {#each displayedCell?.values ?? [] as amount, index (index)}
-                <span class="bc-interval-tree-table__amount" title={amount.title}>
+                <span
+                  class="bc-interval-tree-table__amount"
+                  title={amount.title}
+                >
                   {amount.value}
                   {#if amount.difference}
                     <span
                       class="bc-interval-tree-table__difference"
-                      class:bc-interval-tree-table__difference--positive={amount.difference
-                        .tone === "positive"}
-                      class:bc-interval-tree-table__difference--negative={amount.difference
-                        .tone === "negative"}
+                      class:bc-interval-tree-table__difference--positive={amount
+                        .difference.tone === "positive"}
+                      class:bc-interval-tree-table__difference--negative={amount
+                        .difference.tone === "negative"}
                       title={amount.difference.title}
                     >
                       {amount.difference.value}
@@ -275,7 +276,8 @@
 <style>
   .bc-interval-tree-table {
     overflow-x: auto;
-    border: 1px solid color-mix(in srgb, var(--ui-beancount-border) 80%, transparent);
+    border: 1px solid
+      color-mix(in srgb, var(--ui-beancount-border) 80%, transparent);
     border-radius: var(--ui-beancount-radius-panel);
     background-color: var(--ui-beancount-surface);
     box-shadow: var(--ui-beancount-shadow-panel);
@@ -329,7 +331,7 @@
 
   .bc-interval-tree-table__column-link,
   .bc-interval-tree-table__account-link {
-    color: var(--primary);
+    color: var(--ui-beancount-accent);
   }
 
   .bc-interval-tree-table__column-link:hover,

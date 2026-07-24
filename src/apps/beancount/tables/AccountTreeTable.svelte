@@ -97,9 +97,7 @@
   <Table.Root aria-label={ariaLabel} class="bc-account-tree-table__table">
     <Table.Header>
       <Table.Row class="bc-account-tree-table__header-row">
-        <Table.Head
-          class="bc-account-tree-table__account-heading"
-        >
+        <Table.Head class="bc-account-tree-table__account-heading">
           <span class="bc-account-tree-table__heading-content">
             {#if collapsibleIds.length}
               <button
@@ -181,9 +179,7 @@
             </div>
           </Table.Cell>
           {#each columns as column (column.id)}
-            <Table.Cell
-              class="bc-account-tree-table__amount-cell"
-            >
+            <Table.Cell class="bc-account-tree-table__amount-cell">
               {formatValue(node.values[column.id], column, node)}
             </Table.Cell>
           {/each}
@@ -196,7 +192,8 @@
 <style>
   .bc-account-tree-table {
     overflow-x: auto;
-    border: 1px solid color-mix(in srgb, var(--ui-beancount-border) 80%, transparent);
+    border: 1px solid
+      color-mix(in srgb, var(--ui-beancount-border) 80%, transparent);
     border-radius: var(--ui-beancount-radius-panel);
     background-color: var(--ui-beancount-surface);
     box-shadow: var(--ui-beancount-shadow-panel);
@@ -298,7 +295,7 @@
   }
 
   .bc-account-tree-table__account-link {
-    color: var(--primary);
+    color: var(--ui-beancount-accent);
   }
 
   .bc-account-tree-table__account-link:hover {

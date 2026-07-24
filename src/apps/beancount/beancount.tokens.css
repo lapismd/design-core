@@ -11,9 +11,12 @@
   --ui-beancount-surface-floating: var(--popover);
   --ui-beancount-surface-floating-foreground: var(--popover-foreground);
   --ui-beancount-surface-muted: var(--muted);
+  --ui-beancount-surface-interactive: var(--accent);
+  --ui-beancount-surface-interactive-foreground: var(--accent-foreground);
   --ui-beancount-foreground: var(--foreground);
   --ui-beancount-muted-foreground: var(--muted-foreground);
   --ui-beancount-border: var(--border);
+  --ui-beancount-input-border: var(--input);
   --ui-beancount-sidebar: var(--sidebar);
   --ui-beancount-sidebar-foreground: var(--sidebar-foreground);
   --ui-beancount-sidebar-accent: var(--sidebar-accent);

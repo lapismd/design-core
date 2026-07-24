@@ -114,9 +114,7 @@
         sheetTitleEl?.focus();
       }}
     >
-      <Sheet.Header
-        class="bc-account-bulk-sheet__header"
-      >
+      <Sheet.Header class="bc-account-bulk-sheet__header">
         <div class="bc-account-bulk-sheet__heading">
           <Sheet.Title
             bind:ref={sheetTitleEl}
@@ -125,10 +123,7 @@
           >
             Bulk actions
           </Sheet.Title>
-          <span
-            class="bc-account-bulk-sheet__count"
-            >{recordCount}</span
-          >
+          <span class="bc-account-bulk-sheet__count">{recordCount}</span>
         </div>
         <Sheet.Description class="bc-account-bulk-sheet__description">
           Bulk actions on {recordCount} selected record{recordCount === 1
@@ -188,7 +183,10 @@
 
       <div class="bc-account-bulk-sheet__body">
         {#if errors.length}
-          <Alert.Root variant="destructive" class="bc-account-bulk-sheet__alert">
+          <Alert.Root
+            variant="destructive"
+            class="bc-account-bulk-sheet__alert"
+          >
             <CircleAlert />
             <Alert.Title>Could not apply bulk action</Alert.Title>
             <Alert.Description class="bc-account-bulk-sheet__alert-description"
@@ -403,13 +401,15 @@
     border-radius: var(--radius-md);
     color: var(--ui-beancount-muted-foreground);
     outline: none;
-    transition: color 150ms ease, background-color 150ms ease;
+    transition:
+      color 150ms ease,
+      background-color 150ms ease;
   }
 
   :global(.bc-account-bulk-sheet__icon-button:hover),
   :global(.bc-account-bulk-sheet__close:hover) {
-    background-color: var(--accent);
-    color: var(--accent-foreground);
+    background-color: var(--ui-beancount-surface-interactive);
+    color: var(--ui-beancount-surface-interactive-foreground);
   }
 
   :global(.bc-account-bulk-sheet__icon-button:focus-visible),

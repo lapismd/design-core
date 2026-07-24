@@ -32,7 +32,7 @@
 <li>
   <div
     class="bj-statement-summary-row"
-    style={`--statement-depth: ${depth}; --statement-color: ${node.color ?? "var(--primary)"}`}
+    style={`--bc-statement-depth: ${depth}; --bc-statement-color: ${node.color ?? "var(--ui-beancount-accent)"}`}
   >
     <div class="bj-statement-summary-name">
       {#if hasChildren}
@@ -54,9 +54,7 @@
           </span>
         </button>
       {:else}
-        <span
-          class="bj-statement-summary-disclosure-spacer"
-          aria-hidden="true"
+        <span class="bj-statement-summary-disclosure-spacer" aria-hidden="true"
         ></span>
       {/if}
       {#if node.href}
@@ -117,7 +115,7 @@
     display: grid;
     grid-template-columns:
       minmax(16rem, 2fr) 4.5rem 5.5rem repeat(
-        var(--statement-column-count),
+        var(--bc-statement-column-count),
         minmax(8rem, 1fr)
       )
       minmax(11rem, 1fr);
@@ -143,7 +141,8 @@
     min-width: 0;
     align-items: center;
     gap: 0.25rem;
-    padding: 0.5rem 1rem 0.5rem calc(0.9rem + var(--statement-depth) * 1.2rem);
+    padding: 0.5rem 1rem 0.5rem
+      calc(0.9rem + var(--bc-statement-depth) * 1.2rem);
   }
 
   .bj-statement-summary-disclosure {
@@ -191,7 +190,7 @@
   }
 
   .bj-statement-summary-account-link {
-    color: var(--primary);
+    color: var(--ui-beancount-accent);
   }
 
   .bj-statement-summary-account-link:hover {
@@ -209,7 +208,7 @@
 
   .bj-statement-summary-meter > span {
     border-radius: 999px;
-    background: var(--statement-color);
+    background: var(--bc-statement-color);
   }
 
   .bj-statement-summary-row > span:not(.bj-statement-summary-meter) {

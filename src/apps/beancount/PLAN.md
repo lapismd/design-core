@@ -129,7 +129,7 @@ explicit exceptions.
 | `pickers`    |             2 |               0 | ✅ semantic picker roles         |
 | `rules`      |             1 |               0 | ✅ semantic status/surface roles |
 | `sources`    |             2 |               0 | ✅ semantic source-brand roles   |
-| `tables`     |             9 |               9 | 🟡 pending                       |
+| `tables`     |             9 |               0 | ✅ semantic table roles          |
 
 ## Delivery order
 

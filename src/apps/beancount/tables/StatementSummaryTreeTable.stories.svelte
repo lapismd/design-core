@@ -11,7 +11,7 @@
       href: "/accounts/Assets",
       values: { gbp: "£1,510.00" },
       weight: "100.0%",
-      color: "var(--primary)",
+      color: "var(--ui-beancount-accent)",
       children: [
         {
           id: "assets-cash",

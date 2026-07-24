@@ -129,7 +129,7 @@
   <div class="bj-statement-summary-scroll">
     <ol
       class="bj-statement-summary-table"
-      style={`--statement-column-count: ${columns.length}`}
+      style={`--bc-statement-column-count: ${columns.length}`}
     >
       <li class="bj-statement-summary-header">
         <span>
@@ -202,7 +202,7 @@
   }
 
   .bj-statement-summary-link {
-    color: var(--primary);
+    color: var(--ui-beancount-accent);
     font-size: 0.75rem;
     font-weight: 500;
     text-decoration: none;
@@ -291,7 +291,7 @@
     display: grid;
     grid-template-columns:
       minmax(16rem, 2fr) 4.5rem 5.5rem repeat(
-        var(--statement-column-count),
+        var(--bc-statement-column-count),
         minmax(8rem, 1fr)
       )
       minmax(11rem, 1fr);

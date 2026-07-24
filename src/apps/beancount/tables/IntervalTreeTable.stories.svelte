@@ -160,20 +160,15 @@
 
 {#snippet accountCell(node: IntervalTreeNode)}
   {#snippet contents()}
-    <span
-      class="bc-interval-tree-table-story__account-mark"
-      aria-hidden="true"
-    >
+    <span class="bc-interval-tree-table-story__account-mark" aria-hidden="true">
       {node.label.slice(0, 1)}
     </span>
-    <span class="bc-interval-tree-table-story__account-label">{node.label}</span>
+    <span class="bc-interval-tree-table-story__account-label">{node.label}</span
+    >
   {/snippet}
 
   {#if node.href}
-    <a
-      href={node.href}
-      class="bc-interval-tree-table-story__account-link"
-    >
+    <a href={node.href} class="bc-interval-tree-table-story__account-link">
       {@render contents()}
     </a>
   {:else}
@@ -254,8 +249,12 @@
     flex-shrink: 0;
     place-items: center;
     border-radius: 999px;
-    background-color: color-mix(in srgb, var(--primary) 15%, transparent);
-    color: var(--primary);
+    background-color: color-mix(
+      in srgb,
+      var(--ui-beancount-accent) 15%,
+      transparent
+    );
+    color: var(--ui-beancount-accent);
     font-size: 0.55rem;
   }
 
@@ -280,7 +279,7 @@
   }
 
   .bc-interval-tree-table-story__account-link:hover {
-    color: var(--primary);
+    color: var(--ui-beancount-accent);
   }
 
   .bc-interval-tree-table-story__status {

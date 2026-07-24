@@ -571,8 +571,8 @@
   .bc-ingestion-review__checkbox {
     width: var(--ui-beancount-space-4);
     height: var(--ui-beancount-space-4);
-    border-color: var(--input);
-    accent-color: var(--primary);
+    border-color: var(--ui-beancount-input-border);
+    accent-color: var(--ui-beancount-accent);
     border-radius: var(--radius-sm);
     outline: none;
   }
@@ -623,7 +623,7 @@
   }
 
   .bc-ingestion-review__group-toggle:hover {
-    color: var(--primary);
+    color: var(--ui-beancount-accent);
   }
 
   .bc-ingestion-review__group-title {
@@ -653,8 +653,8 @@
   }
 
   .bc-ingestion-review__group-toggle:hover .bc-ingestion-review__group-icon {
-    background-color: var(--accent);
-    color: var(--accent-foreground);
+    background-color: var(--ui-beancount-surface-interactive);
+    color: var(--ui-beancount-surface-interactive-foreground);
   }
 
   :global(.bc-ingestion-review__icon) {
@@ -684,7 +684,11 @@
   }
 
   .bc-ingestion-review__row:hover {
-    background-color: color-mix(in srgb, var(--accent) 60%, transparent);
+    background-color: color-mix(
+      in srgb,
+      var(--ui-beancount-surface-interactive) 60%,
+      transparent
+    );
   }
 
   .bc-ingestion-review__proposal {

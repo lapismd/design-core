@@ -631,9 +631,9 @@
     width: var(--ui-beancount-space-4);
     height: var(--ui-beancount-space-4);
     flex-shrink: 0;
-    border-color: var(--input);
+    border-color: var(--ui-beancount-input-border);
     border-radius: var(--radius-sm);
-    accent-color: var(--primary);
+    accent-color: var(--ui-beancount-accent);
     outline: none;
   }
   .bc-ledger-activity__checkbox:focus-visible,
@@ -814,7 +814,7 @@
     font-size: 0.75rem;
   }
   .bc-ledger-activity__posting-link {
-    color: var(--primary);
+    color: var(--ui-beancount-accent);
     outline: none;
     text-underline-offset: 4px;
   }
@@ -880,7 +880,7 @@
   :global(.bc-ledger-activity__selection-action) {
     height: auto;
     padding: 0;
-    color: var(--primary);
+    color: var(--ui-beancount-accent);
     vertical-align: baseline;
   }
   .bc-ledger-activity__pagination {
