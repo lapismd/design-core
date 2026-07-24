@@ -21,7 +21,7 @@ const ColorModeToggle = memo(function ColorModeToggle() {
       key={TOOL_ID}
       active={isDark}
       title={label}
-      aria-label={label}
+      ariaLabel={label}
       onClick={toggle}
     >
       {isDark ? <MoonIcon /> : <SunIcon />}
