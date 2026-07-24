@@ -17,6 +17,7 @@
     showLedgerTools = true,
     headerLeading,
     headerActions,
+    sidebarContent,
     children,
   }: {
     pageTitle: string;
@@ -30,6 +31,8 @@
     headerLeading?: Snippet;
     /** Optional controlled route actions rendered in the shared shell header. */
     headerActions?: Snippet;
+    /** Optional route-specific sidebar body, such as ledger settings navigation. */
+    sidebarContent?: Snippet;
     children?: Snippet;
   } = $props();
 
@@ -105,34 +108,38 @@
   >
     {#snippet sidebarTabContent(tabId)}
       {#if tabId === "workspace"}
-        <LedgerWorkspaceNavigation
-          ledgerItems={sidebarLedgerItems ?? ledgerItems}
-          ledgerCount={sidebarLedgerCount ?? 5}
-          {activeLedgerId}
-          ledgerExpandedIds={["account-ledger"]}
-          queryPicker={showLedgerTools
-            ? {
-                label: "Query",
-                value: "",
-                placeholder: "Select query",
-                options: [{ value: "", label: "Select query" }],
-              }
-            : undefined}
-          accountPicker={showLedgerTools
-            ? {
-                label: "Account",
-                value: "",
-                placeholder: "Select account",
-                options: [{ value: "", label: "Select account" }],
-              }
-            : undefined}
-          onLedgerSelect={() => {}}
-          onLedgerExpandedIdsChange={() => {}}
-          onViewChange={() => {}}
-          onQueryChange={() => {}}
-          onAccountChange={() => {}}
-          onSearchOpenChange={() => {}}
-        />
+        {#if sidebarContent}
+          {@render sidebarContent()}
+        {:else}
+          <LedgerWorkspaceNavigation
+            ledgerItems={sidebarLedgerItems ?? ledgerItems}
+            ledgerCount={sidebarLedgerCount ?? 5}
+            {activeLedgerId}
+            ledgerExpandedIds={["account-ledger"]}
+            queryPicker={showLedgerTools
+              ? {
+                  label: "Query",
+                  value: "",
+                  placeholder: "Select query",
+                  options: [{ value: "", label: "Select query" }],
+                }
+              : undefined}
+            accountPicker={showLedgerTools
+              ? {
+                  label: "Account",
+                  value: "",
+                  placeholder: "Select account",
+                  options: [{ value: "", label: "Select account" }],
+                }
+              : undefined}
+            onLedgerSelect={() => {}}
+            onLedgerExpandedIdsChange={() => {}}
+            onViewChange={() => {}}
+            onQueryChange={() => {}}
+            onAccountChange={() => {}}
+            onSearchOpenChange={() => {}}
+          />
+        {/if}
       {/if}
     {/snippet}
     {@render children?.()}

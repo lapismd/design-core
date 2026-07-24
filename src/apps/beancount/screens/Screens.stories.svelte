@@ -23,6 +23,7 @@
   import IngestionReviewToolbar from "../tables/IngestionReviewToolbar.svelte";
   import ValidationErrorTable from "../feedback/ValidationErrorTable.svelte";
   import ContentScrollArea from "../layout/ContentScrollArea.svelte";
+  import LedgerSettingsNavigation from "../navigation/LedgerSettingsNavigation.svelte";
   import RuleList from "../rules/RuleList.svelte";
   import RulesToolbar from "../rules/RulesToolbar.svelte";
   import SourceAccountGroups from "../sources/SourceAccountGroups.svelte";
@@ -1466,6 +1467,18 @@
 >
   {#snippet template()}
     <ScreenFrame pageTitle="Sources">
+      {#snippet sidebarContent()}
+        <LedgerSettingsNavigation
+          activeId="bank-sync"
+          onBack={() => {
+            sourceAction = "Back";
+          }}
+          onNavigate={(destination) => {
+            sourceAction = destination;
+          }}
+          onBankSyncExpandedChange={() => {}}
+        />
+      {/snippet}
       {#snippet headerActions()}
         <SourceToolbar
           syncAllDisabled={true}
@@ -1567,6 +1580,18 @@
 >
   {#snippet template()}
     <ScreenFrame pageTitle="Accounts">
+      {#snippet sidebarContent()}
+        <LedgerSettingsNavigation
+          activeId="accounts"
+          onBack={() => {
+            sourceAccountAction = "Back";
+          }}
+          onNavigate={(destination) => {
+            sourceAccountAction = destination;
+          }}
+          onBankSyncExpandedChange={() => {}}
+        />
+      {/snippet}
       {#snippet headerActions()}
         <ImportAccountsToolbar
           onSyncAll={() => {
@@ -1638,6 +1663,18 @@
 >
   {#snippet template()}
     <ScreenFrame pageTitle="Rules">
+      {#snippet sidebarContent()}
+        <LedgerSettingsNavigation
+          activeId="rules"
+          onBack={() => {
+            ruleAction = "Back";
+          }}
+          onNavigate={(destination) => {
+            ruleAction = destination;
+          }}
+          onBankSyncExpandedChange={() => {}}
+        />
+      {/snippet}
       {#snippet headerActions()}
         <RulesToolbar
           canApplyAll={ruleActive}

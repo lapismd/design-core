@@ -147,6 +147,8 @@ persistence in these components.
   `FilterCommandPicker`
 - `LedgerWorkspaceNavigation` — ledgers/folders/tags composition over
   `WorkspaceTreeNavigation`, forms `FilterCommandPicker`, and `SegmentedControl`
+- `LedgerSettingsNavigation` — controlled Fava-style settings destinations and
+  Bank Sync disclosure; host adapters retain routing and persisted state
 - `PagePagination` — wraps shadcn `Pagination`
 - `ProjectSwitcher`, `SavedQueryHistory`, `SidebarNavigation`,
   `WorkspaceTreeNavigation`

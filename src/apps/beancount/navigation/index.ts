@@ -14,6 +14,10 @@ export {
   type LedgerWorkspaceResource,
   type LedgerWorkspaceView,
 } from "./LedgerWorkspaceNavigation.svelte";
+export {
+  default as LedgerSettingsNavigation,
+  type LedgerSettingsDestination,
+} from "./LedgerSettingsNavigation.svelte";
 export { default as PagePagination } from "./PagePagination.svelte";
 export {
   default as ProjectSwitcher,
