@@ -5,6 +5,7 @@
   import FileText from "@lucide/svelte/icons/file-text";
   import PagePagination from "../navigation/PagePagination.svelte";
   import { SegmentedControl } from "@stevejuma/ui/forms";
+  import { Button } from "@stevejuma/ui/shadcn/button";
   import * as Select from "@stevejuma/ui/shadcn/select";
 
   export type LedgerActivityAvatar = {
@@ -69,6 +70,13 @@
     pageSizes?: readonly number[];
   };
 
+  export type LedgerActivitySelectionScope = {
+    /** The total matching count calculated by the host, across all pages. */
+    totalRecordCount: number;
+    /** Plural display noun, for example “journal records”. */
+    recordLabel?: string;
+  };
+
   let {
     groups,
     selectedIds = [],
@@ -80,11 +88,13 @@
     timeframes = [],
     timeframe,
     pagination,
+    selectionScope,
     onSelectedIdsChange = () => {},
     onOpenRecord,
     onTimeframeChange = () => {},
     onPageChange = () => {},
     onPageSizeChange = () => {},
+    onRequestSelectAllMatching = () => {},
   }: {
     groups: readonly LedgerActivityGroup[];
     selectedIds?: readonly string[];
@@ -101,11 +111,18 @@
      * this component does not derive pages from the complete activity set.
      */
     pagination?: LedgerActivityPagination;
+    /**
+     * Enables the cross-page selection prompt when this page's records are
+     * selected. The host supplies the total matching count and performs the
+     * all-matching selection when requested.
+     */
+    selectionScope?: LedgerActivitySelectionScope;
     onSelectedIdsChange?: (ids: string[]) => void;
     onOpenRecord?: (record: LedgerActivityRecord) => void;
     onTimeframeChange?: (timeframe: string) => void;
     onPageChange?: (page: number) => void;
     onPageSizeChange?: (pageSize: number) => void;
+    onRequestSelectAllMatching?: () => void;
   } = $props();
 
   let expandedGroupIds = $state<Set<string>>(
@@ -133,6 +150,20 @@
   const someSelected = $derived(
     !allSelected && recordIds.some((id) => selectedIdSet.has(id)),
   );
+  const totalMatchingRecordCount = $derived(
+    Math.max(0, selectionScope?.totalRecordCount ?? recordIds.length),
+  );
+  const allMatchingSelected = $derived(
+    Boolean(selectionScope) &&
+      totalMatchingRecordCount > 0 &&
+      selectedIdSet.size === totalMatchingRecordCount,
+  );
+  const showSelectionScope = $derived(
+    Boolean(selectionScope) &&
+      totalMatchingRecordCount > recordIds.length &&
+      recordIds.length > 0 &&
+      (allSelected || allMatchingSelected),
+  );
 
   function updateSelection(ids: Iterable<string>) {
     onSelectedIdsChange([...new Set(ids)]);
@@ -156,6 +187,10 @@
 
   function toggleAll(checked: boolean) {
     updateSelection(checked ? recordIds : []);
+  }
+
+  function clearSelection() {
+    updateSelection([]);
   }
 
   function toggleGroupDisclosure(id: string) {
@@ -193,6 +228,10 @@
     if (pagination?.pageSizes?.includes(pageSize)) {
       onPageSizeChange(pageSize);
     }
+  }
+
+  function selectionRecordLabel() {
+    return selectionScope?.recordLabel?.trim() || "records";
   }
 </script>
 
@@ -232,6 +271,34 @@
       <span>Date and record</span>
       <span class="bc-ledger-activity__amount-heading">{amountHeading}</span>
     </div>
+
+    {#if selectable && showSelectionScope}
+      <div class="bc-ledger-activity__selection-scope" role="status">
+        {#if allMatchingSelected}
+          All {totalMatchingRecordCount} {selectionRecordLabel()} selected.
+          <Button
+            type="button"
+            variant="link"
+            size="sm"
+            class="bc-ledger-activity__selection-action"
+            onclick={clearSelection}
+          >
+            Clear selection
+          </Button>
+        {:else}
+          All {recordIds.length} records on this page are selected.
+          <Button
+            type="button"
+            variant="link"
+            size="sm"
+            class="bc-ledger-activity__selection-action"
+            onclick={onRequestSelectAllMatching}
+          >
+            Select all {totalMatchingRecordCount} {selectionRecordLabel()}
+          </Button>
+        {/if}
+      </div>
+    {/if}
 
     {#if groups.length}
       <div class="bc-ledger-activity__groups">
@@ -540,6 +607,8 @@
   .bc-ledger-activity__posting-amount, .bc-ledger-activity__amount { font-family: var(--font-mono); font-size: .875rem; font-weight: 600; font-variant-numeric: tabular-nums; }
   .bc-ledger-activity__amount { font-weight: 400; }
   .bc-ledger-activity__empty { padding: calc(var(--ui-beancount-space-3) * 4) var(--ui-beancount-space-5); color: var(--ui-beancount-muted-foreground); text-align: center; font-size: .875rem; }
+  .bc-ledger-activity__selection-scope { margin-block: var(--ui-beancount-space-3); border: 1px solid color-mix(in srgb, var(--ui-beancount-border) 80%, transparent); border-radius: var(--ui-beancount-radius-panel); background: var(--ui-beancount-surface-muted); padding: var(--ui-beancount-space-3) var(--ui-beancount-space-4); color: var(--ui-beancount-muted-foreground); font-size: var(--text-sm); }
+  :global(.bc-ledger-activity__selection-action) { height: auto; padding: 0; color: var(--primary); vertical-align: baseline; }
   .bc-ledger-activity__pagination { display: flex; flex-direction: column; gap: var(--ui-beancount-space-3); margin-block-start: var(--ui-beancount-space-3); border: 1px solid color-mix(in srgb, var(--ui-beancount-border) 80%, transparent); border-radius: var(--ui-beancount-radius-panel); background: var(--ui-beancount-surface); padding: var(--ui-beancount-space-3) var(--ui-beancount-space-4); box-shadow: var(--ui-beancount-shadow-panel); }
   .bc-ledger-activity__result-label, .bc-ledger-activity__page-size-label { color: var(--ui-beancount-muted-foreground); font-size: var(--text-sm); }
   .bc-ledger-activity__pagination-controls { display: flex; min-width: 0; flex-direction: column; gap: var(--ui-beancount-space-3); }

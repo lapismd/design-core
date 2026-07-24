@@ -107,6 +107,7 @@
   let activityTimeframe = $state("posted");
   let pagedActivityPage = $state(1);
   let pagedActivityPageSize = $state(25);
+  let scopedSelectionIds = $state<string[]>([]);
   const activityGroups = $derived(
     activityTimeframe === "upcoming" ? upcomingGroups : groups,
   );
@@ -150,6 +151,64 @@
         {openedRecord
           ? `Opened ${openedRecord}`
           : `${selectedIds.length} record${selectedIds.length === 1 ? "" : "s"} selected`}
+      </output>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Extends a page selection across matching activity"
+  play={async ({ canvas }) => {
+    await userEvent.click(
+      canvas.getByRole("checkbox", { name: "Select all visible records" }),
+    );
+    await expect(
+      canvas.getByText("All 3 records on this page are selected."),
+    ).toBeVisible();
+
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Select all 4 records" }),
+    );
+    await expect(
+      canvas.getByRole("status", { name: "Matching activity status" }),
+    ).toHaveTextContent("All matching records selected");
+
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Clear selection" }),
+    );
+    await expect(
+      canvas.getByRole("status", { name: "Matching activity status" }),
+    ).toHaveTextContent("No records selected");
+  }}
+>
+  {#snippet template()}
+    <div class="bc-ledger-activity-story">
+      <LedgerActivityTable
+        {groups}
+        selectedIds={scopedSelectionIds}
+        selectionScope={{ totalRecordCount: 4 }}
+        onSelectedIdsChange={(ids) => {
+          scopedSelectionIds = ids;
+        }}
+        onRequestSelectAllMatching={() => {
+          scopedSelectionIds = [
+            ...groups.flatMap((group) =>
+              group.records.map((record) => record.id),
+            ),
+            "off-page-record",
+          ];
+        }}
+      />
+      <output
+        class="bc-ledger-activity-story__status"
+        aria-label="Matching activity status"
+        aria-live="polite"
+      >
+        {scopedSelectionIds.length === 4
+          ? "All matching records selected"
+          : scopedSelectionIds.length
+            ? `${scopedSelectionIds.length} records selected`
+            : "No records selected"}
       </output>
     </div>
   {/snippet}

@@ -295,7 +295,8 @@ No filesystem, ledger, or route access — props and callbacks only.
   with budget variance and an `accountCell` snippet slot
 - `LedgerActivityTable` — model-driven ledger activity surface with grouping,
   disclosure, selection, multi-posting breakdowns, forms `SegmentedControl`
-  timeframes, and host-controlled pagination/page sizes
+  timeframes, host-controlled pagination/page sizes, and cross-page selection
+  scope
 - `QueryResultsTable` — formatted, client-sortable query result table wrapping
   `PagePagination`
 - `StatementSummaryTreeRow` (+ `StatementSummaryTreeTable`) — financial

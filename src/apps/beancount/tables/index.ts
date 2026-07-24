@@ -47,6 +47,7 @@ export {
   type LedgerActivityPagination,
   type LedgerActivityPosting,
   type LedgerActivityRecord,
+  type LedgerActivitySelectionScope,
   type LedgerActivityTimeframe,
 } from "./LedgerActivityTable.svelte";
 export {
