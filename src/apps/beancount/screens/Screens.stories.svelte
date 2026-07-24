@@ -283,10 +283,17 @@
   /**
    * Full-screen Fava references capture the initial route state. Interaction
    * stories restore that state before Storybook's end-of-play visual capture
-   * so keyboard focus and transient controlled values do not become baseline
-   * candidates.
+   * so controlled values, keyboard focus, and scroll position do not become
+   * baseline candidates.
    */
-  function restoreReferenceFocus() {
+  function restoreReferenceCapture() {
+    for (const viewport of document.querySelectorAll<HTMLElement>(
+      '[data-fava-screen-frame] [data-content-scroll-area] [data-slot="scroll-area-viewport"]',
+    )) {
+      viewport.scrollTop = 0;
+      viewport.scrollLeft = 0;
+    }
+
     if (document.activeElement instanceof HTMLElement) {
       document.activeElement.blur();
     }
@@ -429,6 +436,7 @@
     await expect(canvas.getByRole("status")).toHaveTextContent(
       "Go to line requested",
     );
+    restoreReferenceCapture();
   }}
 >
   {#snippet template()}
@@ -503,6 +511,7 @@
     await expect(canvas.getByRole("status")).toHaveTextContent(
       "Open Credit card in Liabilities",
     );
+    restoreReferenceCapture();
   }}
 >
   {#snippet template()}
@@ -569,6 +578,7 @@
       canvas.getByRole("button", { name: "Transactions" }),
     ).toHaveAttribute("aria-pressed", "true");
     await expect(canvas.getByText("NHS")).toBeVisible();
+    restoreReferenceCapture();
   }}
 >
   {#snippet template()}
@@ -614,6 +624,7 @@
     ).toHaveAttribute("data-state", "active");
     await userEvent.click(canvas.getByRole("tab", { name: "Stacked Bars" }));
     await expect(canvas.getByText("Income:Starling")).toBeVisible();
+    restoreReferenceCapture();
   }}
 >
   {#snippet template()}
@@ -712,6 +723,7 @@
     );
     await userEvent.click(canvas.getByRole("tab", { name: "Line Chart" }));
     await expect(canvas.getByText("Assets:Checking")).toBeVisible();
+    restoreReferenceCapture();
   }}
 >
   {#snippet template()}
@@ -822,6 +834,7 @@
       "active",
     );
     await expect(canvas.getByText("Equity:Opening-Balances")).toBeVisible();
+    restoreReferenceCapture();
   }}
 >
   {#snippet template()}
@@ -917,6 +930,7 @@
     await expect(
       canvas.getByRole("button", { name: "Transactions" }),
     ).toHaveAttribute("aria-pressed", "true");
+    restoreReferenceCapture();
   }}
 >
   {#snippet template()}
@@ -1070,6 +1084,7 @@
       canvas.getByRole("button", { name: "Open holdings query" }),
     );
     await userEvent.click(canvas.getByRole("tab", { name: "Holdings" }));
+    restoreReferenceCapture();
   }}
 >
   {#snippet template()}
@@ -1131,6 +1146,7 @@
     await userEvent.click(
       canvas.getByRole("tab", { name: "Postings per Account" }),
     );
+    restoreReferenceCapture();
   }}
 >
   {#snippet template()}
@@ -1182,6 +1198,7 @@
     await expect(
       canvas.queryByRole("button", { name: "Select query" }),
     ).not.toBeInTheDocument();
+    restoreReferenceCapture();
   }}
 >
   {#snippet template()}
@@ -1201,6 +1218,7 @@
   parameters={{ visualDelta: visualDeltaForScreen("errors") }}
   play={async ({ canvas }) => {
     await expect(canvas.getByText("No records")).toBeVisible();
+    restoreReferenceCapture();
   }}
 >
   {#snippet template()}
@@ -1265,7 +1283,7 @@
     await expect(canvas.getByRole("status")).toHaveTextContent(
       "Accounts requested",
     );
-    restoreReferenceFocus();
+    restoreReferenceCapture();
   }}
 >
   {#snippet template()}
@@ -1443,7 +1461,7 @@
     ).not.toBeInTheDocument();
     await userEvent.click(yamlSwitch);
     await expect(yamlSwitch).toHaveAttribute("aria-checked", "false");
-    restoreReferenceFocus();
+    restoreReferenceCapture();
   }}
 >
   {#snippet template()}
@@ -1544,7 +1562,7 @@
     await expect(
       canvas.queryByRole("region", { name: "Lunch Flow account details" }),
     ).not.toBeInTheDocument();
-    restoreReferenceFocus();
+    restoreReferenceCapture();
   }}
 >
   {#snippet template()}
@@ -1615,7 +1633,7 @@
     await expect(
       canvas.getByRole("switch", { name: "Deactivate Test Rule" }),
     ).toBeChecked();
-    restoreReferenceFocus();
+    restoreReferenceCapture();
   }}
 >
   {#snippet template()}
