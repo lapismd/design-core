@@ -6,6 +6,7 @@
   import ProjectSwitcher, {
     type ProjectSwitcherItem,
   } from "../navigation/ProjectSwitcher.svelte";
+  import ResizableSidebar from "./ResizableSidebar.svelte";
   import { Button } from "@stevejuma/ui/shadcn/button";
   import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
   import StudioShellHeader from "./StudioShellHeader.svelte";
@@ -22,6 +23,9 @@
     pageTitle,
     height = "viewport",
     projectName = "No project",
+    sidebarWidth = 256,
+    sidebarWidthMin = 220,
+    sidebarWidthMax = 520,
     projects,
     currentProjectId,
     sidebarTabs,
@@ -34,6 +38,7 @@
     emptyProjectLabel,
     ariaLabel = "Studio workspace",
     onActiveSidebarTabChange = () => {},
+    onSidebarWidthChange = () => {},
     onProjectSelect,
     onAddProject,
     onOpenSettings = () => {},
@@ -49,6 +54,10 @@
     pageTitle: string;
     height?: "viewport" | "container";
     projectName?: string;
+    /** Controlled desktop sidebar width. The application may persist it. */
+    sidebarWidth?: number;
+    sidebarWidthMin?: number;
+    sidebarWidthMax?: number;
     /** Display-ready projects. Project discovery and storage remain application-owned. */
     projects: readonly ProjectSwitcherItem[];
     currentProjectId?: string;
@@ -64,6 +73,7 @@
     emptyProjectLabel?: string;
     ariaLabel?: string;
     onActiveSidebarTabChange?: (id: string) => void;
+    onSidebarWidthChange?: (width: number) => void;
     onProjectSelect?: (project: ProjectSwitcherItem) => void;
     onAddProject?: () => void;
     onOpenSettings?: () => void;
@@ -91,95 +101,103 @@
 >
   <AppShell {pageTitle} {height} hasSidebar>
     <svelte:fragment slot="sidebar">
-      <Sidebar.Root collapsible="icon">
-        <div class="bc-studio-workspace-shell__sidebar">
-          <div class="bc-studio-workspace-shell__expanded-sidebar">
-            <Sidebar.Header class="bc-studio-workspace-shell__sidebar-header">
-              <StudioShellHeader
-                {projectName}
-                {settingsOpen}
-                {showCloseSidebar}
-                onOpenLedgerSettings={onOpenSettings}
-                {onCloseSidebar}
-              />
-
-              {#if sidebarTabs.length > 1 && !settingsOpen}
-                <div
-                  class="studio-workspace-sidebar-tabs"
-                  style={`--bc-studio-workspace-tab-count: ${sidebarTabs.length}`}
-                  aria-label="Workspace sidebar sections"
-                >
-                  {#each sidebarTabs as tab (tab.id)}
-                    {@const Icon = tab.icon}
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="icon"
-                      class={activeSidebarTab === tab.id
-                        ? "bc-studio-workspace-shell__sidebar-tab bc-studio-workspace-shell__sidebar-tab--active"
-                        : "bc-studio-workspace-shell__sidebar-tab"}
-                      aria-label={tab.label}
-                      aria-pressed={activeSidebarTab === tab.id}
-                      title={tab.label}
-                      disabled={tab.disabled}
-                      onclick={() => selectTab(tab)}
-                    >
-                      <Icon aria-hidden="true" />
-                    </Button>
-                  {/each}
-                </div>
-              {/if}
-            </Sidebar.Header>
-
-            <Sidebar.Content
-              class="bc-studio-workspace-shell__sidebar-content"
-              aria-label={ariaLabel}
-            >
-              {#if activeSidebarTab === projectTabId}
-                <ProjectSwitcher
-                  {projects}
-                  {currentProjectId}
-                  addLabel={addProjectLabel}
-                  addPending={addProjectPending}
-                  emptyLabel={emptyProjectLabel}
-                  onSelect={onProjectSelect}
-                  onAdd={onAddProject}
+      <ResizableSidebar
+        width={sidebarWidth}
+        minWidth={sidebarWidthMin}
+        maxWidth={sidebarWidthMax}
+        showBorder={false}
+        onWidthChange={onSidebarWidthChange}
+      >
+        <Sidebar.Root collapsible="icon">
+          <div class="bc-studio-workspace-shell__sidebar">
+            <div class="bc-studio-workspace-shell__expanded-sidebar">
+              <Sidebar.Header class="bc-studio-workspace-shell__sidebar-header">
+                <StudioShellHeader
+                  {projectName}
+                  {settingsOpen}
+                  {showCloseSidebar}
+                  onOpenLedgerSettings={onOpenSettings}
+                  {onCloseSidebar}
                 />
-              {:else if sidebarTabContent}
-                <div class="bc-studio-workspace-shell__sidebar-tab-content">
-                  {@render sidebarTabContent(activeSidebarTab)}
-                </div>
-              {:else}
-                <p class="bc-studio-workspace-shell__sidebar-empty">
-                  Select a workspace section.
-                </p>
-              {/if}
-            </Sidebar.Content>
-          </div>
 
-          <div class="bc-studio-workspace-shell__collapsed-sidebar">
-            <Sidebar.Trigger
-              class="bc-studio-workspace-shell__expand-trigger"
-              aria-label="Expand sidebar"
-              title="Expand sidebar"
-            >
-              <ChevronRight aria-hidden="true" />
-              <span class="bc-studio-workspace-shell__visually-hidden">
-                Expand sidebar
-              </span>
-            </Sidebar.Trigger>
-            <Sidebar.Trigger
-              class="bc-studio-workspace-shell__project-rail"
-              aria-label="Expand project rail"
-              title={projectName}
-            >
-              <span class="bc-studio-workspace-shell__project-rail-label">
-                {projectName}
-              </span>
-            </Sidebar.Trigger>
+                {#if sidebarTabs.length > 1 && !settingsOpen}
+                  <div
+                    class="studio-workspace-sidebar-tabs"
+                    style={`--bc-studio-workspace-tab-count: ${sidebarTabs.length}`}
+                    aria-label="Workspace sidebar sections"
+                  >
+                    {#each sidebarTabs as tab (tab.id)}
+                      {@const Icon = tab.icon}
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        class={activeSidebarTab === tab.id
+                          ? "bc-studio-workspace-shell__sidebar-tab bc-studio-workspace-shell__sidebar-tab--active"
+                          : "bc-studio-workspace-shell__sidebar-tab"}
+                        aria-label={tab.label}
+                        aria-pressed={activeSidebarTab === tab.id}
+                        title={tab.label}
+                        disabled={tab.disabled}
+                        onclick={() => selectTab(tab)}
+                      >
+                        <Icon aria-hidden="true" />
+                      </Button>
+                    {/each}
+                  </div>
+                {/if}
+              </Sidebar.Header>
+
+              <Sidebar.Content
+                class="bc-studio-workspace-shell__sidebar-content"
+                aria-label={ariaLabel}
+              >
+                {#if activeSidebarTab === projectTabId}
+                  <ProjectSwitcher
+                    {projects}
+                    {currentProjectId}
+                    addLabel={addProjectLabel}
+                    addPending={addProjectPending}
+                    emptyLabel={emptyProjectLabel}
+                    onSelect={onProjectSelect}
+                    onAdd={onAddProject}
+                  />
+                {:else if sidebarTabContent}
+                  <div class="bc-studio-workspace-shell__sidebar-tab-content">
+                    {@render sidebarTabContent(activeSidebarTab)}
+                  </div>
+                {:else}
+                  <p class="bc-studio-workspace-shell__sidebar-empty">
+                    Select a workspace section.
+                  </p>
+                {/if}
+              </Sidebar.Content>
+            </div>
+
+            <div class="bc-studio-workspace-shell__collapsed-sidebar">
+              <Sidebar.Trigger
+                class="bc-studio-workspace-shell__expand-trigger"
+                aria-label="Expand sidebar"
+                title="Expand sidebar"
+              >
+                <ChevronRight aria-hidden="true" />
+                <span class="bc-studio-workspace-shell__visually-hidden">
+                  Expand sidebar
+                </span>
+              </Sidebar.Trigger>
+              <Sidebar.Trigger
+                class="bc-studio-workspace-shell__project-rail"
+                aria-label="Expand project rail"
+                title={projectName}
+              >
+                <span class="bc-studio-workspace-shell__project-rail-label">
+                  {projectName}
+                </span>
+              </Sidebar.Trigger>
+            </div>
           </div>
-        </div>
-      </Sidebar.Root>
+        </Sidebar.Root>
+      </ResizableSidebar>
     </svelte:fragment>
 
     <svelte:fragment slot="mobile-navigation-trigger">
@@ -226,6 +244,13 @@
   :global(.bc-studio-workspace-shell) {
     height: 100%;
     overflow: hidden;
+  }
+
+  :global(
+      [data-resizable-sidebar]
+        [data-ui-component="sidebar"][data-ui-part="sidebar-container"]
+    ) {
+    border-inline-end-width: 0;
   }
 
   :global(.bc-studio-workspace-shell--viewport) {

@@ -5,7 +5,9 @@
     width = $bindable(256),
     minWidth = 220,
     maxWidth = 520,
+    collapsedWidth = 48,
     ariaLabel = "Resize sidebar",
+    showBorder = true,
     children,
     onWidthChange = () => {},
   }: {
@@ -13,7 +15,11 @@
     width?: number;
     minWidth?: number;
     maxWidth?: number;
+    /** Desktop rail width supplied by the shell when its sidebar is collapsed. */
+    collapsedWidth?: number;
     ariaLabel?: string;
+    /** Shells that render their own adjacent edge can suppress this divider. */
+    showBorder?: boolean;
     children?: Snippet;
     onWidthChange?: (width: number) => void;
   } = $props();
@@ -80,7 +86,8 @@
 
 <aside
   class="bc-resizable-sidebar"
-  style={`width: ${width}px`}
+  data-show-border={showBorder ? "true" : "false"}
+  style={`--sidebar-width: ${width}px; --bc-resizable-sidebar-collapsed-width: ${collapsedWidth}px; width: ${width}px`}
   data-resizable-sidebar
 >
   {@render children?.()}
@@ -117,9 +124,16 @@
     height: 100%;
     flex: none;
     flex-direction: column;
-    border-inline-end: 1px solid var(--ui-beancount-border);
     background: var(--ui-beancount-sidebar);
     color: var(--ui-beancount-sidebar-foreground);
+  }
+
+  .bc-resizable-sidebar[data-show-border="true"] {
+    border-inline-end: 1px solid var(--ui-beancount-border);
+  }
+
+  :global(.bc-resizable-sidebar:has([data-collapsible="icon"])) {
+    width: var(--bc-resizable-sidebar-collapsed-width) !important;
   }
 
   .bc-resizable-sidebar__handle {
@@ -157,5 +171,12 @@
     .bc-resizable-sidebar__handle {
       display: flex;
     }
+  }
+
+  :global(
+      .bc-resizable-sidebar:has([data-collapsible="icon"])
+        .bc-resizable-sidebar__handle
+    ) {
+    display: none;
   }
 </style>

@@ -46,6 +46,7 @@
   let activeWorkspaceView = $state("Transactions");
   let syncInProgress = $state(false);
   let addRequests = $state(0);
+  let sidebarWidth = $state(256);
 
   const currentProject = $derived(
     projects.find((project) => project.id === currentProjectId),
@@ -68,6 +69,16 @@
 
     await userEvent.click(canvas.getByRole("button", { name: "Sync ledger" }));
     await expect(canvas.getByText(/Syncing Travel fund/)).toBeVisible();
+
+    const resizeSlider = canvas.getByRole("slider", {
+      name: "Resize sidebar",
+    });
+    resizeSlider.focus();
+    await userEvent.keyboard("{ArrowRight}");
+    await expect(resizeSlider).toHaveAttribute("aria-valuenow", "272");
+    await expect(canvas.getByRole("status")).toHaveTextContent(
+      "Sidebar width: 272px",
+    );
   }}
 >
   {#snippet template()}
@@ -76,12 +87,16 @@
         pageTitle={activeWorkspaceView}
         height="container"
         projectName={currentProject?.name ?? "No project"}
+        {sidebarWidth}
         {projects}
         {currentProjectId}
         {sidebarTabs}
         {activeSidebarTab}
         onActiveSidebarTabChange={(tab) => {
           activeSidebarTab = tab;
+        }}
+        onSidebarWidthChange={(width) => {
+          sidebarWidth = width;
         }}
         onProjectSelect={(project) => {
           currentProjectId = project.id;
@@ -166,7 +181,8 @@
         aria-live="polite"
       >
         Sidebar: {sidebarTabs.find((tab) => tab.id === activeSidebarTab)
-          ?.label}. Project: {currentProject?.name}. Open project requested {addRequests}
+          ?.label}. Project: {currentProject?.name}. Sidebar width: {sidebarWidth}px.
+        Open project requested {addRequests}
         {addRequests === 1 ? "time" : "times"}.
       </output>
     </div>

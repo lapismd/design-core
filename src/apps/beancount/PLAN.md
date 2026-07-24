@@ -34,14 +34,14 @@ Studio revision, fixture digest, viewport, and per-image digest.
 
 ## Current baseline health
 
-| Check                     | Status | Evidence / next action                                                                                                                                                       |
-| ------------------------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Matrix integrity          | ✅     | `pnpm beancount:screens:verify` finds 15 stories and PNGs                                                                                                                    |
-| Reference provenance      | ✅     | 2026-07-23 capture: Studio `191dae81…`, sample fixture digest, 15 image digests                                                                                              |
-| Loaded route capture      | 🟡     | Records has a deterministic catalog queue, but its Fava reference remains empty; Rules has a deterministic body but no reference run history; Import Accounts remains static |
-| Fava overwrite guard      | ✅     | Normal visual updater and Playwright snapshot updates reject reference-tagged stories                                                                                        |
-| Screen story health       | ✅     | Holdings and Statistics share the controlled `PresetQueryReport`; Settings queries are unambiguous; Dashboard uses one top-level main landmark                               |
-| Component regression PNGs | ⬜     | 94 Beancount visual candidates still need reviewed, family-by-family baselines                                                                                               |
+| Check                     | Status | Evidence / next action                                                                                                                                                                                                                       |
+| ------------------------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Matrix integrity          | ✅     | `pnpm beancount:screens:verify` finds 15 stories and PNGs                                                                                                                                                                                    |
+| Reference provenance      | ✅     | 2026-07-23 capture: Studio `191dae81…`, sample fixture digest, 15 image digests                                                                                                                                                              |
+| Loaded route capture      | 🟡     | Records has a deterministic catalog queue, but its Fava reference remains empty; Rules has a deterministic body but no reference run history; Import Accounts remains static                                                                 |
+| Fava overwrite guard      | ✅     | Normal visual updater and Playwright snapshot updates reject reference-tagged stories                                                                                                                                                        |
+| Screen story health       | ✅     | The shared Studio shell now exposes Fava's controlled 220–520px resize rail and 48px collapsed project rail; Holdings and Statistics share `PresetQueryReport`; Settings queries are unambiguous; Dashboard uses one top-level main landmark |
+| Component regression PNGs | ⬜     | 94 Beancount visual candidates still need reviewed, family-by-family baselines                                                                                                                                                               |
 
 ## Screen tracker
 
@@ -142,10 +142,11 @@ explicit exceptions.
    Beancount source or story while completing visual parity.
 3. **Shared shell** — `ScreenFrame`, `StudioWorkspaceShell`, project header,
    ledger navigation, and deterministic sample-ledger fixtures. The candidate
-   now composes the actual project header and ledger navigation against all 15
-   screen frames; the first Visual Delta review remains intentionally
-   non-approved because Fava's fixture tree and every screen body still differ.
-   Recheck all 15 overlays after each shell adjustment.
+   now composes Fava's default 256px sidebar, controlled 220–520px resize rail,
+   and 48px collapsed project rail across all 15 screen frames; the host owns
+   persisted width preferences. The first Visual Delta review remains
+   intentionally non-approved because Fava's fixture tree and every screen body
+   still differ. Recheck all 15 overlays after each shell adjustment.
 4. **Core reports** — Journal; the three statements; Dashboard and Account
    detail; then Query, Errors, Holdings, and Statistics.
 5. **Workflow screens** — Records, Sources, Import accounts, Rules, and

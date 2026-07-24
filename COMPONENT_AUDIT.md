@@ -132,7 +132,8 @@ persistence in these components.
 - `AppShell` (+ `AppShellDemo` story fixture) — the application frame; slots
   for sidebar, header actions/leading/trailing, status, and AI rail
 - `ContentScrollArea` — bounded scroll viewport wrapping shadcn Scroll Area
-- `ResizableSidebar` — controlled pointer/keyboard sidebar resize rail
+- `ResizableSidebar` — controlled pointer/keyboard sidebar resize rail; used
+  by `StudioWorkspaceShell` while the host owns persisted width preferences
 - `StudioShellHeader` — project identity header for a Studio sidebar
 - `StudioWorkspaceShell` — full reusable frame composing `AppShell`,
   shadcn `Sidebar`, `StudioShellHeader`, and `ProjectSwitcher`
@@ -218,7 +219,8 @@ import them directly instead of duplicating a second copy.
 don't yet support these — cosmetic only, not blocking):
 
 - `Sidebar.Root`'s `showBorder` prop doesn't exist on the catalog's `sidebar`
-  family; dropped from `StudioWorkspaceShell`.
+  family; `StudioWorkspaceShell` suppresses its standard divider locally at the
+  Fava shell boundary instead.
 - `Accordion.Trigger`'s `indicatorPosition` prop doesn't exist on the catalog's
   `accordion` family; dropped from `SavedQueryHistory` (chevron always
   trails instead of leading).
