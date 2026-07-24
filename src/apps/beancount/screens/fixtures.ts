@@ -994,6 +994,66 @@ export const validationErrors = [
   },
 ];
 
+/** Deterministic queue data for the Records populated-state composition. */
+export const reviewSourceOptions = [
+  { value: "all", label: "All connections" },
+  { value: "lunch-flow", label: "Lunch Flow" },
+];
+
+export const reviewGroups = [
+  {
+    id: "2026-07-18",
+    label: "July 18, 2026",
+    rows: [
+      {
+        id: "northstar-cafe",
+        title: "Northstar Cafe",
+        detail: "Lunch near the office",
+        status: "needs-review" as const,
+        statusLabel: "Needs review",
+        postings: [
+          { account: "Liabilities:Northstar:Card", amount: "−£15.50" },
+          { account: "Expenses:Dining", amount: "+£15.50" },
+        ],
+      },
+      {
+        id: "cash-withdrawal",
+        title: "Cash withdrawal",
+        detail: "Choose an account before approving this proposal",
+        status: "held" as const,
+        amount: "−£40.00",
+        selectable: false,
+      },
+    ],
+  },
+];
+
+export const readyReviewGroups = [
+  {
+    id: "2026-07-18-ready",
+    label: "July 18, 2026",
+    rows: [
+      {
+        id: "grocerly",
+        title: "Grocerly",
+        detail: "Food and household shopping",
+        status: "ready" as const,
+        postings: [
+          { account: "Liabilities:Northstar:Card", amount: "−£42.17" },
+          { account: "Expenses:Groceries", amount: "+£42.17" },
+        ],
+      },
+      {
+        id: "duplicate-coffee",
+        title: "Duplicate coffee transaction",
+        detail: "Matches a previously imported transaction",
+        status: "duplicate" as const,
+        amount: "−£3.20",
+      },
+    ],
+  },
+];
+
 export const emptyReviewGroups: readonly {
   id: string;
   label: string;

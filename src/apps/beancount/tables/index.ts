@@ -24,6 +24,7 @@ export {
   type IngestionReviewPosting,
   type IngestionReviewRow,
 } from "./IngestionReviewTable.svelte";
+export { default as IngestionReviewToolbar } from "./IngestionReviewToolbar.svelte";
 export {
   default as HoldingsTable,
   type HoldingColumn,

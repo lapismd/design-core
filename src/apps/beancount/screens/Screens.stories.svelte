@@ -17,6 +17,7 @@
   import QueryResultsTable from "../tables/QueryResultsTable.svelte";
   import StatementSummaryTreeTable from "../tables/StatementSummaryTreeTable.svelte";
   import IngestionReviewTable from "../tables/IngestionReviewTable.svelte";
+  import IngestionReviewToolbar from "../tables/IngestionReviewToolbar.svelte";
   import ValidationErrorTable from "../feedback/ValidationErrorTable.svelte";
   import ContentScrollArea from "../layout/ContentScrollArea.svelte";
   import RuleList from "../rules/RuleList.svelte";
@@ -42,6 +43,9 @@
     journalUpcomingGroups,
     queryResultColumns,
     queryResultRows,
+    readyReviewGroups,
+    reviewGroups,
+    reviewSourceOptions,
     statementColumns,
     statementNodes,
     statisticsColumns,
@@ -296,6 +300,11 @@
   let statisticsPage = $state(1);
   let statisticsQueryRequested = $state(false);
   let recordsAccountsRequested = $state(false);
+  let recordsFilter = $state<"review" | "ready">("review");
+  let recordsSelectedIds = $state<string[]>([]);
+  let recordsSourceId = $state("all");
+  let recordsGroupsCollapsedAll = $state(false);
+  let recordsAction = $state("");
   let validationErrorNavigation = $state("");
   let sourceAction = $state("");
   let sourceYamlMode = $state(false);
@@ -312,6 +321,9 @@
       (holdingsPage - 1) * holdingsPageSize,
       holdingsPage * holdingsPageSize,
     ),
+  );
+  const visibleReviewGroups = $derived(
+    recordsFilter === "review" ? reviewGroups : readyReviewGroups,
   );
   const holdingsResultLabel = $derived(
     `Showing ${(holdingsPage - 1) * holdingsPageSize + 1}–${Math.min(
@@ -1169,11 +1181,14 @@
   name="Records"
   parameters={{ visualDelta: visualDeltaForScreen("records") }}
   play={async ({ canvas }) => {
-    await expect(
-      canvas.getByRole("heading", { name: "No imports to review" }),
-    ).toBeVisible();
+    const emptyHeading = canvas.getByRole("heading", {
+      name: "No imports to review",
+    });
+    await expect(emptyHeading).toBeVisible();
+    const emptyPanel = emptyHeading.closest("section");
+    if (!emptyPanel) throw new Error("Records empty panel was not rendered");
     await userEvent.click(
-      canvas.getByRole("button", { name: "Open Accounts" }),
+      within(emptyPanel).getByRole("button", { name: "Open Accounts" }),
     );
     await expect(canvas.getByRole("status")).toHaveTextContent(
       "Accounts requested",
@@ -1182,6 +1197,41 @@
 >
   {#snippet template()}
     <ScreenFrame pageTitle="Records">
+      {#snippet headerActions()}
+        <IngestionReviewToolbar
+          sourceId={recordsSourceId}
+          sourceOptions={reviewSourceOptions}
+          canRerunAi={true}
+          onOpenLedger={() => {
+            recordsAction = "Open active review ledger";
+          }}
+          onSourceChange={(sourceId) => {
+            recordsSourceId = sourceId;
+            recordsAction = `Source ${sourceId}`;
+          }}
+          onToggleCollapseGroups={() => {
+            recordsGroupsCollapsedAll = !recordsGroupsCollapsedAll;
+            recordsAction = recordsGroupsCollapsedAll
+              ? "Collapse all date groups"
+              : "Expand all date groups";
+          }}
+          onOpenMerchants={() => {
+            recordsAction = "Review merchants";
+          }}
+          onOpenAccounts={() => {
+            recordsAccountsRequested = true;
+          }}
+          onForceRefetch={() => {
+            recordsAction = "Force re-fetch";
+          }}
+          onRerunAi={() => {
+            recordsAction = "Re-run AI enrichment";
+          }}
+          onEditSources={() => {
+            recordsAction = "Edit sources";
+          }}
+        />
+      {/snippet}
       <ContentScrollArea>
         <div class="bc-screen-story__page">
           <IngestionReviewTable
@@ -1194,6 +1244,97 @@
           />
           <output class="bc-screen-story__status" aria-live="polite">
             {recordsAccountsRequested ? "Accounts requested" : ""}
+          </output>
+        </div>
+      </ContentScrollArea>
+    </ScreenFrame>
+  {/snippet}
+</Story>
+
+<Story
+  name="Records with populated review queue"
+  play={async ({ canvas }) => {
+    await expect(canvas.getByText("Northstar Cafe")).toBeVisible();
+    await userEvent.click(
+      canvas.getByRole("checkbox", { name: "Select Northstar Cafe" }),
+    );
+    await expect(canvas.getByRole("status")).toHaveTextContent(
+      "1 proposal selected",
+    );
+    await userEvent.click(canvas.getByRole("button", { name: "Ready (1)" }));
+    await expect(canvas.getByText("Grocerly")).toBeVisible();
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Review Grocerly" }),
+    );
+    await expect(canvas.getByRole("status")).toHaveTextContent("Open Grocerly");
+  }}
+>
+  {#snippet template()}
+    <ScreenFrame pageTitle="Records">
+      {#snippet headerActions()}
+        <IngestionReviewToolbar
+          acceptCount={1}
+          canAccept={true}
+          canOpenLedger={true}
+          sourceId={recordsSourceId}
+          sourceOptions={reviewSourceOptions}
+          groupsCollapsedAll={recordsGroupsCollapsedAll}
+          canForceRefetch={true}
+          canRerunAi={true}
+          onAccept={() => {
+            recordsAction = "Accept 1 ready transaction";
+          }}
+          onOpenLedger={() => {
+            recordsAction = "Open active review ledger";
+          }}
+          onSourceChange={(sourceId) => {
+            recordsSourceId = sourceId;
+            recordsAction = `Source ${sourceId}`;
+          }}
+          onToggleCollapseGroups={() => {
+            recordsGroupsCollapsedAll = !recordsGroupsCollapsedAll;
+            recordsAction = recordsGroupsCollapsedAll
+              ? "Collapse all date groups"
+              : "Expand all date groups";
+          }}
+          onOpenMerchants={() => {
+            recordsAction = "Review merchants";
+          }}
+          onOpenAccounts={() => {
+            recordsAction = "Open Accounts";
+          }}
+          onForceRefetch={() => {
+            recordsAction = "Force re-fetch";
+          }}
+          onRerunAi={() => {
+            recordsAction = "Re-run AI enrichment";
+          }}
+          onEditSources={() => {
+            recordsAction = "Edit sources";
+          }}
+        />
+      {/snippet}
+      <ContentScrollArea>
+        <div class="bc-screen-story__page">
+          <IngestionReviewTable
+            groups={visibleReviewGroups}
+            counts={{ review: 2, ready: 1, duplicates: 1 }}
+            filter={recordsFilter}
+            selectedIds={recordsSelectedIds}
+            onFilterChange={(filter) => {
+              recordsFilter = filter;
+              recordsSelectedIds = [];
+            }}
+            onSelectedIdsChange={(ids) => {
+              recordsSelectedIds = ids;
+              recordsAction = `${ids.length} proposal${ids.length === 1 ? "" : "s"} selected`;
+            }}
+            onOpenRow={(row) => {
+              recordsAction = `Open ${row.title}`;
+            }}
+          />
+          <output class="bc-screen-story__status" aria-live="polite">
+            {recordsAction}
           </output>
         </div>
       </ContentScrollArea>
