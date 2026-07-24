@@ -44,6 +44,7 @@ export {
   type LedgerActivityAvatar,
   type LedgerActivityGroup,
   type LedgerActivityMerchant,
+  type LedgerActivityPagination,
   type LedgerActivityPosting,
   type LedgerActivityRecord,
   type LedgerActivityTimeframe,

@@ -3,7 +3,9 @@
   import ChevronDown from "@lucide/svelte/icons/chevron-down";
   import ChevronRight from "@lucide/svelte/icons/chevron-right";
   import FileText from "@lucide/svelte/icons/file-text";
+  import PagePagination from "../navigation/PagePagination.svelte";
   import { SegmentedControl } from "@stevejuma/ui/forms";
+  import * as Select from "@stevejuma/ui/shadcn/select";
 
   export type LedgerActivityAvatar = {
     imageUrl?: string;
@@ -58,6 +60,15 @@
     label: string;
   };
 
+  export type LedgerActivityPagination = {
+    page: number;
+    pageCount: number;
+    /** A fully formatted summary, for example “2 of 4”. */
+    resultLabel: string;
+    pageSize?: number;
+    pageSizes?: readonly number[];
+  };
+
   let {
     groups,
     selectedIds = [],
@@ -68,9 +79,12 @@
     emptyMessage = "No dated records match the current filter.",
     timeframes = [],
     timeframe,
+    pagination,
     onSelectedIdsChange = () => {},
     onOpenRecord,
     onTimeframeChange = () => {},
+    onPageChange = () => {},
+    onPageSizeChange = () => {},
   }: {
     groups: readonly LedgerActivityGroup[];
     selectedIds?: readonly string[];
@@ -82,9 +96,16 @@
     /** Two or three display modes, such as posted and upcoming activity. */
     timeframes?: readonly LedgerActivityTimeframe[];
     timeframe?: string;
+    /**
+     * Controlled page information. Supply only the current page's groups;
+     * this component does not derive pages from the complete activity set.
+     */
+    pagination?: LedgerActivityPagination;
     onSelectedIdsChange?: (ids: string[]) => void;
     onOpenRecord?: (record: LedgerActivityRecord) => void;
     onTimeframeChange?: (timeframe: string) => void;
+    onPageChange?: (page: number) => void;
+    onPageSizeChange?: (pageSize: number) => void;
   } = $props();
 
   let expandedGroupIds = $state<Set<string>>(
@@ -165,6 +186,13 @@
 
   function avatarFor(record: LedgerActivityRecord): LedgerActivityAvatar {
     return record.avatar ?? record.merchant ?? {};
+  }
+
+  function setPageSize(value: string | undefined) {
+    const pageSize = Number(value);
+    if (pagination?.pageSizes?.includes(pageSize)) {
+      onPageSizeChange(pageSize);
+    }
   }
 </script>
 
@@ -374,6 +402,53 @@
       </div>
     {/if}
   </div>
+
+  {#if pagination && pagination.pageCount > 1}
+    <div class="bc-ledger-activity__pagination" data-activity-pagination>
+      <span class="bc-ledger-activity__result-label" role="status"
+        >{pagination.resultLabel}</span
+      >
+      <div class="bc-ledger-activity__pagination-controls">
+        {#if pagination.pageSize && pagination.pageSizes?.length}
+          <div class="bc-ledger-activity__page-size">
+            <span class="bc-ledger-activity__page-size-label"
+              >Records per page</span
+            >
+            <Select.Root
+              type="single"
+              value={String(pagination.pageSize)}
+              onValueChange={setPageSize}
+            >
+              <Select.Trigger
+                aria-label="Records per page"
+                class="bc-ledger-activity__page-size-select"
+              >
+                {pagination.pageSize}
+              </Select.Trigger>
+              <Select.Content>
+                <Select.Group>
+                  {#each pagination.pageSizes as pageSize (pageSize)}
+                    <Select.Item
+                      value={String(pageSize)}
+                      label={`${pageSize} records`}
+                    >
+                      {pageSize}
+                    </Select.Item>
+                  {/each}
+                </Select.Group>
+              </Select.Content>
+            </Select.Root>
+          </div>
+        {/if}
+        <PagePagination
+          page={pagination.page}
+          pageCount={pagination.pageCount}
+          ariaLabel={`${ariaLabel} pages`}
+          {onPageChange}
+        />
+      </div>
+    </div>
+  {/if}
 </section>
 
 {#snippet ActivityRecord(record: LedgerActivityRecord, interactive = false)}
@@ -465,6 +540,11 @@
   .bc-ledger-activity__posting-amount, .bc-ledger-activity__amount { font-family: var(--font-mono); font-size: .875rem; font-weight: 600; font-variant-numeric: tabular-nums; }
   .bc-ledger-activity__amount { font-weight: 400; }
   .bc-ledger-activity__empty { padding: calc(var(--ui-beancount-space-3) * 4) var(--ui-beancount-space-5); color: var(--ui-beancount-muted-foreground); text-align: center; font-size: .875rem; }
+  .bc-ledger-activity__pagination { display: flex; flex-direction: column; gap: var(--ui-beancount-space-3); margin-block-start: var(--ui-beancount-space-3); border: 1px solid color-mix(in srgb, var(--ui-beancount-border) 80%, transparent); border-radius: var(--ui-beancount-radius-panel); background: var(--ui-beancount-surface); padding: var(--ui-beancount-space-3) var(--ui-beancount-space-4); box-shadow: var(--ui-beancount-shadow-panel); }
+  .bc-ledger-activity__result-label, .bc-ledger-activity__page-size-label { color: var(--ui-beancount-muted-foreground); font-size: var(--text-sm); }
+  .bc-ledger-activity__pagination-controls { display: flex; min-width: 0; flex-direction: column; gap: var(--ui-beancount-space-3); }
+  .bc-ledger-activity__page-size { display: none; align-items: center; gap: var(--ui-beancount-space-2); }
+  :global(.bc-ledger-activity__page-size-select) { width: auto; min-width: calc(var(--ui-beancount-space-5) * 2); }
   .bc-ledger-activity__identity { display: flex; min-width: 0; align-items: flex-start; gap: var(--ui-beancount-space-2); }
   .bc-ledger-activity__avatar-image, .bc-ledger-activity__avatar-fallback { width: 2.5rem; height: 2.5rem; flex-shrink: 0; margin-block-start: calc(var(--ui-beancount-space-1) / 2); border: 1px solid color-mix(in srgb, var(--ui-beancount-border) 70%, transparent); border-radius: 999px; }
   .bc-ledger-activity__avatar-image { object-fit: contain; }
@@ -474,5 +554,5 @@
   .bc-ledger-activity__record-account, .bc-ledger-activity__record-detail { display: block; overflow: hidden; color: var(--ui-beancount-muted-foreground); text-overflow: ellipsis; white-space: nowrap; font-size: .75rem; }
   .bc-ledger-activity__record-account { margin-block-start: calc(var(--ui-beancount-space-1) / 2); font-family: var(--font-mono); }
   .bc-ledger-activity__record-detail { margin-block-start: var(--ui-beancount-space-1); }
-  @media (min-width: 640px) { .bc-ledger-activity__summary { grid-template-columns: auto minmax(0,1fr) auto; } .bc-ledger-activity__summary-rule { display: block; } }
+  @media (min-width: 640px) { .bc-ledger-activity__summary { grid-template-columns: auto minmax(0,1fr) auto; } .bc-ledger-activity__summary-rule { display: block; } .bc-ledger-activity__pagination { flex-direction: row; align-items: center; justify-content: space-between; } .bc-ledger-activity__pagination-controls { flex-direction: row; align-items: center; } .bc-ledger-activity__page-size { display: flex; } }
 </style>

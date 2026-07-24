@@ -105,8 +105,13 @@
   let selectedIds = $state<string[]>([]);
   let openedRecord = $state("");
   let activityTimeframe = $state("posted");
+  let pagedActivityPage = $state(1);
+  let pagedActivityPageSize = $state(25);
   const activityGroups = $derived(
     activityTimeframe === "upcoming" ? upcomingGroups : groups,
+  );
+  const pagedActivityGroups = $derived(
+    pagedActivityPage === 1 ? groups : upcomingGroups,
   );
   let bulkSelectedIds = $state<string[]>([]);
   let bulkSheetOpen = $state(false);
@@ -145,6 +150,50 @@
         {openedRecord
           ? `Opened ${openedRecord}`
           : `${selectedIds.length} record${selectedIds.length === 1 ? "" : "s"} selected`}
+      </output>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Requests a new activity page and page size"
+  play={async ({ canvas }) => {
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Go to next page" }),
+    );
+    await expect(canvas.getByText("Scheduled rent")).toBeVisible();
+    await expect(canvas.getByRole("status")).toHaveTextContent("2 of 2");
+
+    await userEvent.click(
+      canvas.getByRole("combobox", { name: "Records per page" }),
+    );
+    await userEvent.click(screen.getByRole("option", { name: "50 records" }));
+    await expect(canvas.getByRole("status")).toHaveTextContent(
+      "50 records per page",
+    );
+  }}
+>
+  {#snippet template()}
+    <div class="bc-ledger-activity-story">
+      <LedgerActivityTable
+        groups={pagedActivityGroups}
+        selectable={false}
+        pagination={{
+          page: pagedActivityPage,
+          pageCount: 2,
+          resultLabel: `${pagedActivityPage} of 2`,
+          pageSize: pagedActivityPageSize,
+          pageSizes: [25, 50, 100],
+        }}
+        onPageChange={(page) => {
+          pagedActivityPage = page;
+        }}
+        onPageSizeChange={(pageSize) => {
+          pagedActivityPageSize = pageSize;
+        }}
+      />
+      <output class="bc-ledger-activity-story__status" aria-live="polite">
+        {pagedActivityPage} of 2; {pagedActivityPageSize} records per page
       </output>
     </div>
   {/snippet}
@@ -293,6 +342,6 @@
   .bc-ledger-activity-story__status { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   .bc-ledger-activity-workflow { max-width: 64rem; overflow: hidden; border: 1px solid var(--ui-beancount-border); border-radius: var(--ui-beancount-radius-panel); background: var(--ui-beancount-surface); box-shadow: var(--ui-beancount-shadow-panel); }
   .bc-ledger-activity-workflow__header { display: flex; align-items: center; justify-content: space-between; border-block-end: 1px solid var(--ui-beancount-border); background: color-mix(in srgb, var(--ui-beancount-surface-muted) 30%, transparent); padding: var(--ui-beancount-space-2) var(--ui-beancount-space-4); }
-  .bc-ledger-activity-workflow__title { font-size: .875rem; font-weight: 500; }
+  .bc-ledger-activity-workflow__title { font-size: var(--text-sm); font-weight: 500; }
   .bc-ledger-activity-workflow__body { padding: var(--ui-beancount-space-5); }
 </style>
