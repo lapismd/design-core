@@ -230,15 +230,17 @@ don't yet support these — cosmetic only, not blocking):
 **Charts (`charts/`)** — `Apps/Beancount/Charts/*`:
 
 - `BarChart` — responsive grouped or diverging-stacked bar chart (single vs
-  stacked account/category series), with budget marker support
+  stacked account/category series), with budget marker support and unframed
+  Fava-report presentation supplied by its app screen
 - `ChartLegend` — interactive series legend (multi- or single-selection
   `ToggleGroup`) for hiding or focusing chart series
 - `ChartModeSwitch` — controlled tab list for a chart's alternate visual
   representations (e.g. line vs area)
-- `ChartPanel` — controlled toolbar/frame combining legend, compact-display
-  selects, and mode switch around a model-driven chart `children` snippet
+- `ChartPanel` — controlled Fava-style toolbar combining legend,
+  compact-display selects, and mode switch around a model-driven chart
+  `children` snippet
 - `ChartSwitcher` — responsive, controlled perspective selector for related
-  charts, with horizontal-overflow tab strip
+  charts, with a horizontal-overflow tab strip that can follow chart history
 - `HierarchyChart` — model-driven allocation chart with treemap and sunburst
   views
 - `LineChart` — responsive time-series renderer (line or area) with

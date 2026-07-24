@@ -566,44 +566,6 @@
     <ScreenFrame pageTitle="Income statement">
       <ContentScrollArea>
         <div class="bc-screen-story__page bc-screen-story__page--report">
-          <ChartPanel
-            ariaLabel="Income statement controls"
-            legend={{
-              items: [{ id: "gbp", label: "GBP", color: "var(--chart-4)" }],
-              selection: "single",
-              selectedIds: ["gbp"],
-            }}
-            conversion={{
-              ariaLabel: "Valuation",
-              value: "cost",
-              options: [{ value: "cost", label: "At Cost" }],
-            }}
-            interval={{
-              ariaLabel: "Interval",
-              value: "month",
-              options: [{ value: "month", label: "Monthly" }],
-            }}
-            modes={{
-              value: incomeChartMode,
-              options: [
-                { value: "stacked", label: "Stacked Bars" },
-                { value: "single", label: "Single Bars" },
-              ],
-              ariaLabel: "Income statement chart representation",
-              onChange: (value) => {
-                incomeChartMode = value as "single" | "stacked";
-              },
-            }}
-          >
-            {#snippet children()}
-              <BarChart
-                groups={incomeStatementChartGroups}
-                mode={incomeChartMode}
-                ariaLabel="Income statement historical performance"
-                valueFormatter={formatReportAxisAmount}
-              />
-            {/snippet}
-          </ChartPanel>
           <ChartSwitcher
             charts={[
               { id: "net-profit", label: "Net Profit" },
@@ -614,22 +576,61 @@
             ]}
             activeChartId={incomePerspective}
             ariaLabel="Income statement sections"
-            tabsPlacement="top"
             onActiveChartChange={(value) => {
               incomePerspective = value;
             }}
           >
             {#snippet children()}
-              <StatementSummaryTreeTable
-                title="Income"
-                total="−213145.48 GBP"
-                href="/accounts/Income"
-                columns={statementColumns}
-                nodes={incomeStatementNodes}
-                contributions={incomeStatementContributions}
-              />
+              <ChartPanel
+                ariaLabel="Income statement controls"
+                legend={{
+                  items: [{ id: "gbp", label: "GBP", color: "var(--chart-4)" }],
+                  selection: "single",
+                  selectedIds: ["gbp"],
+                }}
+                conversion={{
+                  ariaLabel: "Valuation",
+                  value: "cost",
+                  options: [{ value: "cost", label: "At Cost" }],
+                }}
+                interval={{
+                  ariaLabel: "Interval",
+                  value: "month",
+                  options: [{ value: "month", label: "Monthly" }],
+                }}
+                modes={{
+                  value: incomeChartMode,
+                  options: [
+                    { value: "stacked", label: "Stacked Bars" },
+                    { value: "single", label: "Single Bars" },
+                  ],
+                  ariaLabel: "Income statement chart representation",
+                  onChange: (value) => {
+                    incomeChartMode = value as "single" | "stacked";
+                  },
+                }}
+              >
+                {#snippet children()}
+                  <BarChart
+                    groups={incomeStatementChartGroups}
+                    mode={incomeChartMode}
+                    ariaLabel="Income statement historical performance"
+                    valueFormatter={formatReportAxisAmount}
+                  />
+                {/snippet}
+              </ChartPanel>
             {/snippet}
           </ChartSwitcher>
+          <div class="bc-screen-story__statement-section">
+            <StatementSummaryTreeTable
+              title="Income"
+              total="−213145.48 GBP"
+              href="/accounts/Income"
+              columns={statementColumns}
+              nodes={incomeStatementNodes}
+              contributions={incomeStatementContributions}
+            />
+          </div>
         </div>
       </ContentScrollArea>
     </ScreenFrame>
@@ -656,50 +657,6 @@
     <ScreenFrame pageTitle="Balance sheet">
       <ContentScrollArea>
         <div class="bc-screen-story__page bc-screen-story__page--report">
-          <ChartPanel
-            ariaLabel="Balance sheet controls"
-            legend={{
-              items: [
-                {
-                  id: "gbp",
-                  label: "GBP",
-                  color: "var(--ui-beancount-accepted)",
-                },
-              ],
-              selection: "single",
-              selectedIds: ["gbp"],
-            }}
-            conversion={{
-              ariaLabel: "Valuation",
-              value: "cost",
-              options: [{ value: "cost", label: "At Cost" }],
-            }}
-            interval={{
-              ariaLabel: "Interval",
-              value: "month",
-              options: [{ value: "month", label: "Monthly" }],
-            }}
-            modes={{
-              value: balanceSheetChartMode,
-              options: [
-                { value: "line", label: "Line Chart" },
-                { value: "area", label: "Area Map" },
-              ],
-              ariaLabel: "Balance sheet chart representation",
-              onChange: (value) => {
-                balanceSheetChartMode = value as "line" | "area";
-              },
-            }}
-          >
-            {#snippet children()}
-              <LineChart
-                series={balanceSheetLineSeries}
-                mode={balanceSheetChartMode}
-                ariaLabel="Balance sheet net worth history"
-                valueFormatter={formatReportAxisAmount}
-              />
-            {/snippet}
-          </ChartPanel>
           <ChartSwitcher
             charts={[
               { id: "net-worth", label: "Net Worth" },
@@ -709,22 +666,67 @@
             ]}
             activeChartId={balanceSheetPerspective}
             ariaLabel="Balance sheet sections"
-            tabsPlacement="top"
             onActiveChartChange={(value) => {
               balanceSheetPerspective = value;
             }}
           >
             {#snippet children()}
-              <StatementSummaryTreeTable
-                title="Assets"
-                total="24921.78 GBP"
-                href="/accounts/Assets"
-                columns={statementColumns}
-                nodes={balanceSheetNodes}
-                contributions={balanceSheetContributions}
-              />
+              <ChartPanel
+                ariaLabel="Balance sheet controls"
+                legend={{
+                  items: [
+                    {
+                      id: "gbp",
+                      label: "GBP",
+                      color: "var(--ui-beancount-accepted)",
+                    },
+                  ],
+                  selection: "single",
+                  selectedIds: ["gbp"],
+                }}
+                conversion={{
+                  ariaLabel: "Valuation",
+                  value: "cost",
+                  options: [{ value: "cost", label: "At Cost" }],
+                }}
+                interval={{
+                  ariaLabel: "Interval",
+                  value: "month",
+                  options: [{ value: "month", label: "Monthly" }],
+                }}
+                modes={{
+                  value: balanceSheetChartMode,
+                  options: [
+                    { value: "line", label: "Line Chart" },
+                    { value: "area", label: "Area Map" },
+                  ],
+                  ariaLabel: "Balance sheet chart representation",
+                  onChange: (value) => {
+                    balanceSheetChartMode = value as "line" | "area";
+                  },
+                }}
+              >
+                {#snippet children()}
+                  <LineChart
+                    series={balanceSheetLineSeries}
+                    mode={balanceSheetChartMode}
+                    ariaLabel="Balance sheet net worth history"
+                    valueFormatter={formatReportAxisAmount}
+                  />
+                {/snippet}
+              </ChartPanel>
             {/snippet}
           </ChartSwitcher>
+          <div class="bc-screen-story__statement-section">
+            <StatementSummaryTreeTable
+              title="Assets"
+              total="24921.78 GBP"
+              href="/accounts/Assets"
+              columns={statementColumns}
+              nodes={balanceSheetNodes}
+              contributions={balanceSheetContributions}
+            />
+          </div>
         </div>
       </ContentScrollArea>
     </ScreenFrame>
@@ -755,50 +757,6 @@
     <ScreenFrame pageTitle="Trial balance">
       <ContentScrollArea>
         <div class="bc-screen-story__page bc-screen-story__page--report">
-          <ChartPanel
-            ariaLabel="Trial balance controls"
-            legend={{
-              items: [
-                {
-                  id: "gbp",
-                  label: "GBP",
-                  color: "var(--ui-beancount-accepted)",
-                },
-              ],
-              selection: "single",
-              selectedIds: ["gbp"],
-            }}
-            conversion={{
-              ariaLabel: "Valuation",
-              value: "cost",
-              options: [{ value: "cost", label: "At Cost" }],
-            }}
-            interval={{
-              ariaLabel: "Interval",
-              value: "month",
-              options: [{ value: "month", label: "Monthly" }],
-            }}
-            modes={{
-              value: trialBalanceChartMode,
-              options: [
-                { value: "treemap", label: "Treemap" },
-                { value: "sunburst", label: "Sunburst" },
-              ],
-              ariaLabel: "Trial balance chart representation",
-              onChange: (value) => {
-                trialBalanceChartMode = value as "treemap" | "sunburst";
-              },
-            }}
-          >
-            {#snippet children()}
-              <HierarchyChart
-                root={trialBalanceHierarchy}
-                mode={trialBalanceChartMode}
-                height={480}
-                ariaLabel="Trial balance allocation"
-              />
-            {/snippet}
-          </ChartPanel>
           <ChartSwitcher
             charts={[
               { id: "income", label: "Income" },
@@ -809,21 +767,66 @@
             ]}
             activeChartId={trialBalancePerspective}
             ariaLabel="Trial balance sections"
-            tabsPlacement="top"
             onActiveChartChange={(value) => {
               trialBalancePerspective = value;
             }}
           >
             {#snippet children()}
-              <StatementSummaryTreeTable
-                title="Trial Balance"
-                total="0.00 GBP"
-                columns={statementColumns}
-                nodes={trialBalanceNodes}
-                contributions={trialBalanceContributions}
-              />
+              <ChartPanel
+                ariaLabel="Trial balance controls"
+                legend={{
+                  items: [
+                    {
+                      id: "gbp",
+                      label: "GBP",
+                      color: "var(--ui-beancount-accepted)",
+                    },
+                  ],
+                  selection: "single",
+                  selectedIds: ["gbp"],
+                }}
+                conversion={{
+                  ariaLabel: "Valuation",
+                  value: "cost",
+                  options: [{ value: "cost", label: "At Cost" }],
+                }}
+                interval={{
+                  ariaLabel: "Interval",
+                  value: "month",
+                  options: [{ value: "month", label: "Monthly" }],
+                }}
+                modes={{
+                  value: trialBalanceChartMode,
+                  options: [
+                    { value: "treemap", label: "Treemap" },
+                    { value: "sunburst", label: "Sunburst" },
+                  ],
+                  ariaLabel: "Trial balance chart representation",
+                  onChange: (value) => {
+                    trialBalanceChartMode = value as "treemap" | "sunburst";
+                  },
+                }}
+              >
+                {#snippet children()}
+                  <HierarchyChart
+                    root={trialBalanceHierarchy}
+                    mode={trialBalanceChartMode}
+                    height={480}
+                    ariaLabel="Trial balance allocation"
+                  />
+                {/snippet}
+              </ChartPanel>
             {/snippet}
           </ChartSwitcher>
+          <div class="bc-screen-story__statement-section">
+            <StatementSummaryTreeTable
+              title="Trial Balance"
+              total="0.00 GBP"
+              columns={statementColumns}
+              nodes={trialBalanceNodes}
+              contributions={trialBalanceContributions}
+            />
+          </div>
         </div>
       </ContentScrollArea>
     </ScreenFrame>
@@ -1622,6 +1625,11 @@
     gap: calc(var(--ui-beancount-space-4) * 2);
   }
 
+  .bc-screen-story__statement-section {
+    display: grid;
+    gap: calc(var(--ui-beancount-space-4) * 2);
+  }
+
   :global(.bc-screen-story__editor-content) {
     height: 100%;
   }
@@ -1699,8 +1707,23 @@
   :global(.bc-screen-story__page--report .bc-hierarchy-chart__canvas) {
     border: 0;
     border-radius: 0;
+    background-color: transparent;
     padding: 0;
     box-shadow: none;
+  }
+
+  :global(.bc-screen-story__page--report .bc-bar-chart__canvas),
+  :global(.bc-screen-story__page--report .bc-line-chart__canvas) {
+    border: 0;
+    border-radius: 0;
+    background-color: transparent;
+    padding: 0;
+    box-shadow: none;
+  }
+
+  :global(.bc-screen-story__page--report .bc-chart-panel__toolbar) {
+    border-block-end: 0;
+    padding-block-end: var(--ui-beancount-space-2);
   }
 
   :global(.bc-screen-story__breadcrumbs) {
