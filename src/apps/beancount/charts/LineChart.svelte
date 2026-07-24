@@ -31,6 +31,7 @@
     emptyLabel = "No chart data is available.",
     chartWidth = 800,
     chartHeight = 280,
+    chartMargins = { top: 18, right: 20, bottom: 42, left: 64 },
     valueDomain,
     yTickValues,
     gridOpacity = 1,
@@ -51,6 +52,8 @@
     chartWidth?: number;
     /** Viewbox height for a measured report chart; the SVG remains responsive. */
     chartHeight?: number;
+    /** Plot insets for a source-compatible report chart. */
+    chartMargins?: { top: number; right: number; bottom: number; left: number };
     /** Optional display-ready y-axis extent supplied by the report adapter. */
     valueDomain?: { min: number; max: number };
     /** Optional display-ready y-axis ticks supplied by the report adapter. */
@@ -64,7 +67,7 @@
 
   const width = $derived(Math.max(chartWidth, 1));
   const height = $derived(Math.max(chartHeight, 1));
-  const margin = { top: 18, right: 20, bottom: 42, left: 64 };
+  const margin = $derived(chartMargins);
   const innerWidth = $derived(Math.max(width - margin.left - margin.right, 1));
   const innerHeight = $derived(
     Math.max(height - margin.top - margin.bottom, 1),
@@ -232,7 +235,7 @@
                 class="bc-line-chart__grid-line"
               />
               <text
-                x="-10"
+                x="-6"
                 y="4"
                 text-anchor="end"
                 fill="var(--ui-beancount-muted-foreground)"
@@ -276,7 +279,7 @@
               d={linePath(item)}
               fill="none"
               stroke={item.color}
-              stroke-width="2.5"
+              stroke-width="2"
               stroke-linejoin="round"
               stroke-linecap="round"
             />
@@ -288,7 +291,7 @@
                   r={activePoint?.point.id === point.id &&
                   activePoint.series.id === item.id
                     ? 5
-                    : 3.5}
+                    : 2}
                   fill={item.color}
                   class="bc-line-chart__point"
                   role="button"
@@ -344,7 +347,8 @@
   }
 
   .bc-line-chart__axis-label {
-    font-size: 0.6875rem;
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 0.625rem;
   }
 
   .bc-line-chart__point {

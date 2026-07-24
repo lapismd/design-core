@@ -74,6 +74,7 @@
   --ui-beancount-compact-control-height: calc(var(--spacing) * 8);
   --ui-beancount-header-height: calc(var(--spacing) * 11);
   --ui-beancount-space-1: calc(var(--spacing) * 1);
+  --ui-beancount-space-1-5: calc(var(--spacing) * 1.5);
   --ui-beancount-space-2: calc(var(--spacing) * 2);
   --ui-beancount-space-3: calc(var(--spacing) * 3);
   --ui-beancount-space-3-5: calc(var(--spacing) * 3.5);

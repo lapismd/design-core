@@ -418,10 +418,30 @@ export const balanceSheetContributions = [
 ];
 
 const balanceSheetValues = [
-  -8500, -8500, -8500, -8500, -8500, -8500, -8500, -8500, -8500, -8500, -8500,
-  -53500, -51000, -48000, -45000, -42000, -39000, -36000, -33000, -30000,
-  -27000, -24000, -21000, -18000, -15000, -12000, -9000, -6000, -3000, 0, 3500,
+  ...Array.from({ length: 26 }, () => -8014.14),
+  -53500,
+  -50771.77,
+  -47983.18,
+  -45194.59,
+  -42406.01,
+  -39617.42,
+  -36828.83,
+  -34040.24,
+  -31251.65,
+  -28463.06,
+  -25674.47,
+  -22885.89,
+  -20097.3,
+  -17308.71,
+  -14520.12,
+  -11731.53,
+  -8942.94,
+  -6154.35,
+  -3365.77,
+  -577.18,
+  2211.41,
   5000,
+  4942.68,
 ];
 
 export const balanceSheetLineSeries = [
@@ -430,12 +450,12 @@ export const balanceSheetLineSeries = [
     label: "Net worth",
     color: "var(--ui-beancount-report-balance-primary)",
     points: balanceSheetValues.map((value, index) => {
-      const date = new Date(Date.UTC(2024, 9 + index, 1));
+      const date = new Date(Date.UTC(2024, 8 + index, 1));
       return {
         id: `net-worth-${index}`,
         date: date.toISOString(),
         label:
-          index % 6 === 0
+          (index - 1) % 6 === 0 && index < balanceSheetValues.length - 5
             ? date.toLocaleString("en-GB", { month: "long" })
             : "",
         value,

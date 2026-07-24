@@ -392,7 +392,9 @@
   const formatBalanceSheetAxisAmount = (value: number) =>
     Math.abs(value) < 1000
       ? `${value < 0 ? "−" : ""}${Math.abs(value).toFixed(2)}`
-      : `${value < 0 ? "−" : ""}${(Math.abs(value) / 1000).toFixed(2)}k`;
+      : `${value < 0 ? "−" : ""}${(Math.abs(value) / 1000).toFixed(
+          Math.abs(value) >= 10_000 ? 1 : 2,
+        )}k`;
 
   const editorSources = [{ id: "account-ledger", label: "Account Ledger" }];
   const editorActionLabels: Record<EditorMenuAction, string> = {
@@ -731,8 +733,8 @@
 >
   {#snippet template()}
     <ScreenFrame pageTitle="Balance Sheet">
-      <ContentScrollArea>
-        <div class="bc-screen-story__page bc-screen-story__page--report">
+      <ContentScrollArea contentClass="bc-screen-story__report-scroll">
+        <div class="bc-screen-story__report-chart">
           <ChartSwitcher
             charts={[
               { id: "net-worth", label: "Net Worth" },
@@ -787,10 +789,11 @@
                     series={balanceSheetLineSeries}
                     mode={balanceSheetChartMode}
                     interpolation="step"
-                    xTickCount={6}
-                    chartWidth={900}
+                    xTickCount={8}
+                    chartWidth={966}
                     chartHeight={250}
-                    valueDomain={{ min: -56500, max: 8000 }}
+                    chartMargins={{ top: 10, right: 10, bottom: 30, left: 40 }}
+                    valueDomain={{ min: -55255, max: 6755 }}
                     yTickValues={[
                       -50000, -45000, -40000, -35000, -30000, -25000, -20000,
                       -15000, -10000, -5000, 0, 5000,
@@ -803,16 +806,23 @@
               </ChartPanel>
             {/snippet}
           </ChartSwitcher>
-          <div class="bc-screen-story__statement-section">
-            <StatementSummaryTreeTable
-              title="Assets"
-              total="24921.78 GBP"
-              href="/accounts/Assets"
-              columns={statementColumns}
-              nodes={balanceSheetNodes}
-              contributions={balanceSheetContributions}
-            />
-          </div>
+        </div>
+        <div class="bc-screen-story__report-statements">
+          <StatementSummaryTreeTable
+            title="Assets"
+            total="24921.78 GBP"
+            href="/accounts/Assets"
+            columns={statementColumns}
+            nodes={balanceSheetNodes}
+            contributions={balanceSheetContributions}
+          />
+          <StatementSummaryTreeTable
+            title="Liabilities"
+            total="−20300.55 GBP"
+            href="/accounts/Liabilities"
+            columns={statementColumns}
+            nodes={[]}
+          />
         </div>
       </ContentScrollArea>
     </ScreenFrame>
@@ -1752,6 +1762,54 @@
 
   .bc-screen-story__page--account-report {
     gap: var(--ui-beancount-space-2);
+  }
+
+  :global(.bc-screen-story__report-scroll) {
+    min-height: 100%;
+    padding-top: var(--ui-beancount-space-2);
+    padding-right: var(--ui-beancount-space-4);
+    padding-bottom: 50vh;
+  }
+
+  .bc-screen-story__report-chart {
+    padding: var(--ui-beancount-space-4);
+  }
+
+  :global(.bc-screen-story__report-chart .bc-chart-switcher) {
+    margin-top: var(--ui-beancount-space-2);
+    gap: 0;
+  }
+
+  :global(.bc-screen-story__report-chart .bc-chart-panel) {
+    gap: 0;
+  }
+
+  :global(.bc-screen-story__report-chart .bc-line-chart__summary) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  :global(.bc-screen-story__report-chart .bc-line-chart__canvas) {
+    border: 0;
+    border-radius: 0;
+    background-color: transparent;
+    padding: 0;
+    box-shadow: none;
+  }
+
+  :global(.bc-screen-story__report-chart .bc-chart-panel__toolbar) {
+    border-block-end: 0;
+    padding-block-end: var(--ui-beancount-space-1-5);
+  }
+
+  .bc-screen-story__report-statements {
+    display: grid;
+    gap: calc(var(--ui-beancount-space-4) * 2);
+    padding: var(--ui-beancount-space-4);
   }
 
   .bc-screen-story__statement-section {
