@@ -1,6 +1,7 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent, within } from "storybook/test";
+  import { Badge } from "@stevejuma/ui/shadcn/badge";
   import * as Breadcrumb from "@stevejuma/ui/shadcn/breadcrumb";
   import { Button } from "@stevejuma/ui/shadcn/button";
   import * as Tabs from "@stevejuma/ui/shadcn/tabs";
@@ -1633,6 +1634,9 @@
   parameters={{ visualDelta: visualDeltaForScreen("settings-rules") }}
   play={async ({ canvas }) => {
     await expect(canvas.getByText("Test Rule")).toBeVisible();
+    await expect(
+      canvas.getByText("1", { selector: ".bc-screen-story__rules-count" }),
+    ).toBeVisible();
     await userEvent.click(canvas.getByRole("button", { name: "Apply all" }));
     await expect(canvas.getByRole("status")).toHaveTextContent(
       "Apply all rules",
@@ -1663,6 +1667,10 @@
 >
   {#snippet template()}
     <ScreenFrame pageTitle="Rules">
+      {#snippet titleTrailing()}
+        <Badge class="bc-screen-story__rules-count" variant="secondary">1</Badge
+        >
+      {/snippet}
       {#snippet sidebarContent()}
         <LedgerSettingsNavigation
           activeId="rules"
@@ -1760,6 +1768,18 @@
 
   .bc-screen-story__rules {
     padding: var(--ui-beancount-space-6);
+  }
+
+  :global(.bc-screen-story__rules-count) {
+    display: inline-flex;
+    min-width: var(--ui-beancount-space-5);
+    height: var(--ui-beancount-space-5);
+    justify-content: center;
+    border-radius: 999px;
+    padding: 0 var(--ui-beancount-space-1);
+    color: var(--ui-beancount-muted-foreground);
+    font-size: var(--text-xs);
+    font-variant-numeric: tabular-nums;
   }
 
   .bc-screen-story__status {

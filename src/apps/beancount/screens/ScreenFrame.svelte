@@ -16,6 +16,7 @@
     sidebarLedgerCount,
     showLedgerTools = true,
     headerLeading,
+    titleTrailing,
     headerActions,
     sidebarContent,
     children,
@@ -29,6 +30,8 @@
     showLedgerTools?: boolean;
     /** Optional controlled route controls rendered beside the page title. */
     headerLeading?: Snippet;
+    /** Optional controlled metadata rendered immediately after the page title. */
+    titleTrailing?: Snippet;
     /** Optional controlled route actions rendered in the shared shell header. */
     headerActions?: Snippet;
     /** Optional route-specific sidebar body, such as ledger settings navigation. */
@@ -103,6 +106,7 @@
     {sidebarTabs}
     activeSidebarTab="workspace"
     projectTabId="projects"
+    {titleTrailing}
     {headerLeading}
     {headerActions}
   >
