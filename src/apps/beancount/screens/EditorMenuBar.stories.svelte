@@ -31,6 +31,8 @@
     "ask-ai": "Ask AI about selection requested",
     "close-all-folds": "Close all folds requested",
     find: "Find requested",
+    "find-next": "Find next requested",
+    "find-previous": "Find previous requested",
     format: "Format requested",
     "go-to-line": "Go to line requested",
     "open-all-folds": "Open all folds requested",
@@ -43,7 +45,12 @@
   play={async ({ canvas }) => {
     await userEvent.click(canvas.getByRole("button", { name: "File" }));
     await userEvent.click(
-      within(document.body).getByRole("menuitem", { name: "notes.beancount" }),
+      within(document.body).getByRole("menuitem", { name: "Open source" }),
+    );
+    await userEvent.click(
+      within(document.body).getByRole("menuitemcheckbox", {
+        name: "notes.beancount",
+      }),
     );
     await expect(canvas.getByRole("status")).toHaveTextContent(
       "Opened notes.beancount",
@@ -52,7 +59,7 @@
     await userEvent.click(canvas.getByRole("button", { name: "File" }));
     await userEvent.click(
       within(document.body).getByRole("menuitemcheckbox", {
-        name: "Format on save",
+        name: "Format on Save",
       }),
     );
     await expect(canvas.getByRole("status")).toHaveTextContent(
@@ -85,6 +92,34 @@
         onAction={(next) => {
           action = actionLabels[next];
         }}
+      />
+      <output class="bc-editor-menu-bar-story__status" aria-live="polite">
+        {action}
+      </output>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Requests nested Find commands"
+  play={async ({ canvas }) => {
+    await userEvent.click(canvas.getByRole("button", { name: "Edit" }));
+    await userEvent.click(
+      within(document.body).getByRole("menuitem", { name: "Find" }),
+    );
+    await userEvent.click(
+      within(document.body).getByRole("menuitem", { name: "Find Next" }),
+    );
+    await expect(canvas.getByRole("status")).toHaveTextContent(
+      "Find next requested",
+    );
+  }}
+>
+  {#snippet template()}
+    <div class="bc-editor-menu-bar-story">
+      <EditorMenuBar
+        {sources}
+        onAction={(next) => (action = actionLabels[next])}
       />
       <output class="bc-editor-menu-bar-story__status" aria-live="polite">
         {action}

@@ -377,6 +377,8 @@
     "ask-ai": "Ask AI about selection requested",
     "close-all-folds": "Close all folds requested",
     find: "Find requested",
+    "find-next": "Find next requested",
+    "find-previous": "Find previous requested",
     format: "Format requested",
     "go-to-line": "Go to line requested",
     "open-all-folds": "Open all folds requested",
@@ -406,7 +408,7 @@
     );
     await userEvent.click(canvas.getByRole("button", { name: "File" }));
     await userEvent.click(
-      within(document.body).getByRole("menuitem", { name: "Go to line…" }),
+      within(document.body).getByRole("menuitem", { name: "Go To Line" }),
     );
     await expect(canvas.getByRole("status")).toHaveTextContent(
       "Go to line requested",

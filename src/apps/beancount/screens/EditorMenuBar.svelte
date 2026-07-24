@@ -13,6 +13,8 @@
     | "ask-ai"
     | "close-all-folds"
     | "find"
+    | "find-next"
+    | "find-previous"
     | "format"
     | "go-to-line"
     | "open-all-folds"
@@ -58,28 +60,34 @@
     </DropdownMenu.Trigger>
     <DropdownMenu.Content align="start" class="bc-editor-menu-bar__content">
       <DropdownMenu.Group>
-        <DropdownMenu.Label>File</DropdownMenu.Label>
-        {#each sources as source (source.id)}
-          <DropdownMenu.Item
-            data-active={source.id === activeSourceId}
-            onSelect={() => onSourceSelect(source)}
-          >
-            {source.label}
-          </DropdownMenu.Item>
+        {#if sources.length}
+          <DropdownMenu.Sub>
+            <DropdownMenu.SubTrigger>Open source</DropdownMenu.SubTrigger>
+            <DropdownMenu.SubContent>
+              {#each sources as source (source.id)}
+                <DropdownMenu.CheckboxItem
+                  checked={source.id === activeSourceId}
+                  onCheckedChange={() => onSourceSelect(source)}
+                >
+                  {source.label}
+                </DropdownMenu.CheckboxItem>
+              {/each}
+            </DropdownMenu.SubContent>
+          </DropdownMenu.Sub>
         {:else}
           <DropdownMenu.Item disabled
             >No source files available.</DropdownMenu.Item
           >
-        {/each}
+        {/if}
         <DropdownMenu.Separator />
         <DropdownMenu.CheckboxItem
           checked={formatOnSave}
           onCheckedChange={onFormatOnSaveChange}
         >
-          Format on save
+          Format on Save
         </DropdownMenu.CheckboxItem>
         <DropdownMenu.Item onSelect={() => onAction("go-to-line")}>
-          Go to line…
+          Go To Line
         </DropdownMenu.Item>
       </DropdownMenu.Group>
     </DropdownMenu.Content>
@@ -101,14 +109,13 @@
     </DropdownMenu.Trigger>
     <DropdownMenu.Content align="start" class="bc-editor-menu-bar__content">
       <DropdownMenu.Group>
-        <DropdownMenu.Label>Edit</DropdownMenu.Label>
         <DropdownMenu.Item onSelect={() => onAction("format")}>
           Format
-          <DropdownMenu.Shortcut>⌘ D</DropdownMenu.Shortcut>
+          <DropdownMenu.Shortcut>⌘ + D</DropdownMenu.Shortcut>
         </DropdownMenu.Item>
         <DropdownMenu.Item onSelect={() => onAction("toggle-comment")}>
           Toggle comment
-          <DropdownMenu.Shortcut>⌘ /</DropdownMenu.Shortcut>
+          <DropdownMenu.Shortcut>⌘ + /</DropdownMenu.Shortcut>
         </DropdownMenu.Item>
         <DropdownMenu.Separator />
         <DropdownMenu.Item onSelect={() => onAction("open-all-folds")}>
@@ -118,9 +125,20 @@
           Close all folds
         </DropdownMenu.Item>
         <DropdownMenu.Separator />
-        <DropdownMenu.Item onSelect={() => onAction("find")}>
-          Find…
-        </DropdownMenu.Item>
+        <DropdownMenu.Sub>
+          <DropdownMenu.SubTrigger>Find</DropdownMenu.SubTrigger>
+          <DropdownMenu.SubContent>
+            <DropdownMenu.Item onSelect={() => onAction("find")}
+              >Find...</DropdownMenu.Item
+            >
+            <DropdownMenu.Item onSelect={() => onAction("find-next")}
+              >Find Next</DropdownMenu.Item
+            >
+            <DropdownMenu.Item onSelect={() => onAction("find-previous")}
+              >Find Previous</DropdownMenu.Item
+            >
+          </DropdownMenu.SubContent>
+        </DropdownMenu.Sub>
         <DropdownMenu.Item onSelect={() => onAction("ask-ai")}>
           Ask AI about selection
         </DropdownMenu.Item>
