@@ -425,14 +425,16 @@
 
   .bc-rule-list__runs h3 {
     color: var(--ui-beancount-muted-foreground);
-    font-size: var(--text-xl);
+    font-size: var(--text-xs);
+    line-height: var(--text-xs--line-height);
     font-weight: var(--font-weight-semibold);
-    letter-spacing: 0.04em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
   }
 
   .bc-rule-list__runs p {
-    font-size: var(--text-xl);
+    font-size: var(--text-sm);
+    line-height: var(--text-sm--line-height);
   }
 
   .bc-rule-list__runs-table-wrap {
