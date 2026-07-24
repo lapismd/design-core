@@ -27,6 +27,8 @@
     await userEvent.click(canvas.getByRole("button", { name: "Move down" }));
     await expect(canvas.getByRole("status")).toHaveTextContent("down");
   }}
+
+  tags={["visual-ready"]}
 >
   {#snippet template()}
     <div class="max-w-xl">

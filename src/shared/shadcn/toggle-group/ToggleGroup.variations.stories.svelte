@@ -20,7 +20,7 @@
 <Story
   name="Spacing"
   exportName="Spacing"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-ready"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -42,7 +42,7 @@
 <Story
   name="Outline"
   exportName="Outline"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-ready"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -64,7 +64,7 @@
 <Story
   name="Single"
   exportName="Single"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-ready"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -86,7 +86,7 @@
 <Story
   name="Small"
   exportName="Small"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-ready"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -108,7 +108,7 @@
 <Story
   name="Large"
   exportName="Large"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-ready"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -130,7 +130,7 @@
 <Story
   name="Disabled"
   exportName="Disabled"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-ready"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -152,7 +152,7 @@
 <Story
   name="Spacing"
   exportName="Spacing2"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-ready"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {

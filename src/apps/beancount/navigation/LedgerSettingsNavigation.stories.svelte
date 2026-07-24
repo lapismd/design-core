@@ -6,6 +6,7 @@
   } from "./LedgerSettingsNavigation.svelte";
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Navigation/Ledger Settings Navigation",
     component: LedgerSettingsNavigation,
     parameters: {

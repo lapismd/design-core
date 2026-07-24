@@ -28,6 +28,8 @@
     await userEvent.type(canvas.getByLabelText("Work email"), "dev@ju.ma");
     await expect(canvas.getByRole("status")).toHaveTextContent("dev@ju.ma");
   }}
+
+  tags={["visual-ready"]}
 >
   {#snippet template()}
     <Field.FieldGroup class="max-w-sm">

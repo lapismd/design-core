@@ -10,6 +10,7 @@
   } from "./WorkspaceTreeNavigation.svelte";
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Navigation/Workspace Tree Navigation",
     component: WorkspaceTreeNavigation,
     parameters: {
@@ -139,7 +140,8 @@
   {/snippet}
 </Story>
 
-<Story name="Explains an empty workspace">
+<Story name="Explains an empty workspace"
+>
   {#snippet template()}
     <div class="bc-workspace-tree-story">
       <WorkspaceTreeNavigation

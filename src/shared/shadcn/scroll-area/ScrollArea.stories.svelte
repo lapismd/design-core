@@ -23,7 +23,7 @@
   play={async ({ canvas }) => {
     await expect(canvas.getByRole("link", { name: "Item 1" })).toBeVisible();
   }}
-  tags={["visual-approved"]}
+  tags={["visual-ready"]}
 >
   {#snippet template()}
     <ScrollArea.Root

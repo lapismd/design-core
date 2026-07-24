@@ -4,6 +4,7 @@
   import ResizableSidebar from "./ResizableSidebar.svelte";
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Layout/Resizable Sidebar",
     component: ResizableSidebar,
     parameters: {
@@ -29,6 +30,10 @@
     await userEvent.keyboard("{ArrowRight}{ArrowRight}");
     await expect(slider).toHaveAttribute("aria-valuenow", "288");
     await expect(canvas.getByRole("status")).toHaveTextContent("288 pixels");
+  }}
+
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/apps/beancount/layout/resizes-with-keyboard-controls-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
   }}
 >
   {#snippet template()}

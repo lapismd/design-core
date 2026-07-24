@@ -23,7 +23,7 @@
     await expect(canvas.getByText("Workspace settings")).toBeVisible();
     await expect(canvas.getByRole("button", { name: "Save" })).toBeVisible();
   }}
-  tags={["visual-approved"]}
+  tags={["visual-ready"]}
 >
   {#snippet template()}
     <Card.Root class="max-w-md">

@@ -4,6 +4,7 @@
   import AccountNavigationLink from "./AccountNavigationLink.svelte";
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Navigation/Account Navigation Link",
     component: AccountNavigationLink,
     parameters: {
@@ -64,7 +65,8 @@
   {/snippet}
 </Story>
 
-<Story name="Makes an unavailable account inert">
+<Story name="Makes an unavailable account inert"
+>
   {#snippet template()}
     <div class="bc-account-navigation-story__card">
       <AccountNavigationLink

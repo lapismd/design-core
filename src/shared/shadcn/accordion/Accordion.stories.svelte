@@ -23,7 +23,11 @@
     await userEvent.click(canvas.getByRole("button", { name: "Shipping" }));
     await expect(canvas.getByText("Arrives in 2-3 days")).toBeVisible();
   }}
-  tags={["visual-approved"]}
+  tags={["visual-ready"]}
+
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/accordion/opens-a-section-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
+  }}
 >
   {#snippet template()}
     <Accordion.Root type="single" class="max-w-md">

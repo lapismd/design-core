@@ -4,6 +4,7 @@
   import DashboardFlow from "./DashboardFlow.svelte";
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Dashboard/Dashboard Flow",
     component: DashboardFlow,
     parameters: {

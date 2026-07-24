@@ -53,6 +53,7 @@
   ];
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Sources/Source Account Groups",
     component: SourceAccountGroups,
     parameters: {

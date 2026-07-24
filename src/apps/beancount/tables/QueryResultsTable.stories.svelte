@@ -4,6 +4,7 @@
   import QueryResultsTable from "./QueryResultsTable.svelte";
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Tables/Query Results Table",
     component: QueryResultsTable,
     parameters: {

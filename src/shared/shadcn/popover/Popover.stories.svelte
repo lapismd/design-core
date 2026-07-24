@@ -45,7 +45,7 @@
       passThresholdPercent: 0.1,
     },
   }}
-  tags={["visual-approved"]}
+  tags={["visual-ready"]}
 >
   {#snippet template()}
     <div class="flex flex-col gap-3">
@@ -68,7 +68,7 @@
 
 <Story
   name="Open panel"
-  tags={["visual-state", "visual-approved"]}
+  tags={["visual-state", "visual-ready"]}
   play={async ({ canvas }) => {
     await userEvent.click(canvas.getByRole("button", { name: "Filters" }));
     await expect(

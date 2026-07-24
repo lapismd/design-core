@@ -4,6 +4,7 @@
   import StudioWorkspaceShell from "./StudioWorkspaceShell.svelte";
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Layout/Studio Workspace Shell",
     component: StudioWorkspaceShell,
     parameters: {
@@ -189,7 +190,8 @@
   {/snippet}
 </Story>
 
-<Story name="Explains an empty project workspace">
+<Story name="Explains an empty project workspace"
+>
   {#snippet template()}
     <div class="bc-studio-workspace-shell-story">
       <StudioWorkspaceShell

@@ -22,7 +22,7 @@
 <Story
   name="Preview"
   exportName="Preview"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-failed"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -44,7 +44,7 @@
 <Story
   name="Input"
   exportName="Input"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-ready"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -66,7 +66,7 @@
 <Story
   name="Textarea"
   exportName="Textarea"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-ready"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -88,7 +88,7 @@
 <Story
   name="Select"
   exportName="Select"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-ready"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -110,7 +110,7 @@
 <Story
   name="Fieldset"
   exportName="Fieldset"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-ready"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -132,7 +132,7 @@
 <Story
   name="Checkbox"
   exportName="Checkbox"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-failed"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -154,7 +154,7 @@
 <Story
   name="Switch"
   exportName="Switch"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-ready"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -176,7 +176,7 @@
 <Story
   name="Field Group"
   exportName="FieldGroup"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-failed"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -202,7 +202,7 @@
 <Story
   name="Responsive Layout"
   exportName="ResponsiveLayout"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-ready"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {

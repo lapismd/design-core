@@ -43,7 +43,7 @@
   parameters={{
     visualDelta: {"images":["/visual-baselines/forms/add-section-chooser/chooses-a-section-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1,"interactions":[{"id":"chooses-projects","label":"Chooses Projects","src":"/visual-baselines/forms/add-section-chooser/chooses-a-section--chooses-projects-chromium-darwin.png"},{"id":"opens-chooser","label":"Opens chooser","src":"/visual-baselines/forms/add-section-chooser/chooses-a-section--opens-chooser-chromium-darwin.png"}]},
   }}
-  tags={["visual-pending"]}
+  tags={["visual-ready"]}
 >
   {#snippet template()}
     <div class="flex flex-col gap-2">

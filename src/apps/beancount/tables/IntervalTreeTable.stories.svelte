@@ -141,6 +141,7 @@
   ] satisfies readonly IntervalTreeNode[];
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Tables/Interval Tree Table",
     component: IntervalTreeTable,
     parameters: {
@@ -203,7 +204,8 @@
   {/snippet}
 </Story>
 
-<Story name="Supports contextual account links">
+<Story name="Supports contextual account links"
+>
   {#snippet template()}
     <div class="bc-interval-tree-table-story">
       <IntervalTreeTable {nodes} {columns} {accountCell} />

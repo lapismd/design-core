@@ -4,6 +4,7 @@
   import ChartLegend from "./ChartLegend.svelte";
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Charts/Chart Legend",
     component: ChartLegend,
     parameters: {

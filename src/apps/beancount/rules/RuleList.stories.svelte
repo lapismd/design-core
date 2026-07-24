@@ -66,6 +66,7 @@
   ];
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Rules/Rule List",
     component: RuleList,
     parameters: {

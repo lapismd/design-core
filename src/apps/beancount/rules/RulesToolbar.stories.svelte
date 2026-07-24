@@ -4,6 +4,7 @@
   import RulesToolbar from "./RulesToolbar.svelte";
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Rules/Rules Toolbar",
     component: RulesToolbar,
     parameters: {
@@ -52,7 +53,8 @@
   {/snippet}
 </Story>
 
-<Story name="Disables unavailable application">
+<Story name="Disables unavailable application"
+>
   {#snippet template()}
     <div class="bc-rules-toolbar-story">
       <RulesToolbar onApplyAll={() => {}} onAddRule={() => {}} />

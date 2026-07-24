@@ -4,6 +4,7 @@
   import IconColorPicker from "./IconColorPicker.svelte";
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Pickers/Icon & Colour Picker",
     component: IconColorPicker,
     parameters: {

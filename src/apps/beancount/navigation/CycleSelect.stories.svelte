@@ -4,6 +4,7 @@
   import CycleSelect from "./CycleSelect.svelte";
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Navigation/Cycle Select",
     component: CycleSelect,
     parameters: {
@@ -55,7 +56,8 @@
   {/snippet}
 </Story>
 
-<Story name="Disables unavailable navigation">
+<Story name="Disables unavailable navigation"
+>
   {#snippet template()}
     <CycleSelect
       value="week"

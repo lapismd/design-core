@@ -21,6 +21,7 @@
   ];
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Pickers/Merchant Picker",
     component: MerchantPicker,
     parameters: {
@@ -111,7 +112,8 @@
   {/snippet}
 </Story>
 
-<Story name="Shows the selected merchant in read-only mode">
+<Story name="Shows the selected merchant in read-only mode"
+>
   {#snippet template()}
     <div class="bc-merchant-picker-story__read-only">
       <MerchantPicker {merchants} value="northstar-cafe" readOnly />

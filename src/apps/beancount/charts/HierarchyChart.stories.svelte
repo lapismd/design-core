@@ -5,6 +5,7 @@
   import HierarchyChart from "./HierarchyChart.svelte";
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Charts/Hierarchy Chart",
     component: HierarchyChart,
     parameters: {
@@ -101,7 +102,8 @@
   {/snippet}
 </Story>
 
-<Story name="Frames a taller report allocation">
+<Story name="Frames a taller report allocation"
+>
   {#snippet template()}
     <div class="bc-hierarchy-chart-story">
       <HierarchyChart

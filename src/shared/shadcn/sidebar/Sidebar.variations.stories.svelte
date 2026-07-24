@@ -25,7 +25,7 @@
 <Story
   name="Your First Sidebar"
   exportName="YourFirstSidebar"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-failed"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -51,7 +51,7 @@
 <Story
   name="Sidebar.Header"
   exportName="SidebarHeader"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-failed"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -77,7 +77,7 @@
 <Story
   name="Sidebar.Footer"
   exportName="SidebarFooter"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-failed"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -103,7 +103,7 @@
 <Story
   name="Sidebar.Group"
   exportName="SidebarGroup"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-failed"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -129,7 +129,7 @@
 <Story
   name="Collapsible Sidebar.Group"
   exportName="CollapsibleSidebarGroup"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-failed"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -155,7 +155,7 @@
 <Story
   name="Sidebar.GroupAction"
   exportName="SidebarGroupaction"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-failed"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -181,7 +181,7 @@
 <Story
   name="Sidebar.Menu"
   exportName="SidebarMenu"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-failed"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -207,7 +207,7 @@
 <Story
   name="DropdownMenu"
   exportName="Dropdownmenu"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-failed"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -233,7 +233,7 @@
 <Story
   name="Sidebar.MenuSub"
   exportName="SidebarMenusub"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-failed"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -259,7 +259,7 @@
 <Story
   name="Collapsible Sidebar.Menu"
   exportName="CollapsibleSidebarMenu"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-failed"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -285,7 +285,7 @@
 <Story
   name="Sidebar.MenuBadge"
   exportName="SidebarMenubadge"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-failed"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -311,7 +311,7 @@
 <Story
   name="Controlled Sidebar"
   exportName="ControlledSidebar"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-failed"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {

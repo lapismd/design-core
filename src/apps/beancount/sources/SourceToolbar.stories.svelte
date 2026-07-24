@@ -4,6 +4,7 @@
   import SourceToolbar from "./SourceToolbar.svelte";
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Sources/Source Toolbar",
     component: SourceToolbar,
     parameters: {

@@ -4,6 +4,7 @@
   import AccountBulkActionSheet from "./AccountBulkActionSheet.svelte";
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Tables/Account Bulk Action Sheet",
     component: AccountBulkActionSheet,
     parameters: {

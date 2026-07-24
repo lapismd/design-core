@@ -67,6 +67,8 @@
       ).toBeInTheDocument();
     });
   }}
+
+  tags={["visual-failed"]}
 >
   {#snippet template()}
     <div class="max-w-2xl">
@@ -133,6 +135,8 @@
       canvas.queryByRole("button", { name: "Edit type filter" }),
     ).not.toBeInTheDocument();
   }}
+
+  tags={["visual-failed"]}
 >
   {#snippet template()}
     <div class="max-w-2xl">

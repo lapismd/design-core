@@ -4,6 +4,7 @@
   import IngestionReviewToolbar from "./IngestionReviewToolbar.svelte";
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Tables/Ingestion Review Toolbar",
     component: IngestionReviewToolbar,
     parameters: {
@@ -114,7 +115,8 @@
   {/snippet}
 </Story>
 
-<Story name="Explains unavailable record actions">
+<Story name="Explains unavailable record actions"
+>
   {#snippet template()}
     <div class="bc-ingestion-review-toolbar-story">
       <IngestionReviewToolbar

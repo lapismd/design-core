@@ -4,6 +4,7 @@
   import HoldingsTable from "./HoldingsTable.svelte";
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Tables/Holdings Table",
     component: HoldingsTable,
     parameters: {

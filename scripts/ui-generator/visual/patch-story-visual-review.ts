@@ -191,11 +191,15 @@ export function patchStoryVisualReviewStatus(options: {
 
   const changed = patchStoriesFileForEntry(storiesPath, entry, options.status);
   if (!changed) {
-    // Idempotent: already had the tag (or open tag not matched).
-    const already = (entry.tags ?? []).includes(
-      visualReviewTagFor(options.status),
+    // Idempotent only when the desired tag is already the sole review tag.
+    const desired = visualReviewTagFor(options.status);
+    const presentReviewTags = (entry.tags ?? []).filter((tag) =>
+      (VISUAL_REVIEW_TAGS as readonly string[]).includes(tag),
     );
-    if (already) {
+    if (
+      presentReviewTags.length === 1 &&
+      presentReviewTags[0] === desired
+    ) {
       return { ok: true, storyId, status: options.status };
     }
     return {

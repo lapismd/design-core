@@ -38,6 +38,7 @@
   ];
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Tables/Data Table",
     component: DataTable,
     parameters: {

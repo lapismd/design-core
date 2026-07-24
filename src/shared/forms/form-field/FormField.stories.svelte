@@ -41,7 +41,7 @@
       passThresholdPercent: 0.1,
     },
   }}
-  tags={["visual-approved"]}
+  tags={["visual-failed"]}
 >
   {#snippet template()}
     <div class="cv-structured-form max-w-xl">

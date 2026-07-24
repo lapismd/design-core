@@ -4,6 +4,7 @@
   import ReconciliationReviewSkeleton from "./ReconciliationReviewSkeleton.svelte";
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Feedback/Reconciliation Review Skeleton",
     component: ReconciliationReviewSkeleton,
     parameters: {

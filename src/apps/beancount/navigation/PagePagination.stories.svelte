@@ -4,6 +4,7 @@
   import PagePagination from "./PagePagination.svelte";
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Navigation/Page Pagination",
     component: PagePagination,
     parameters: {
@@ -47,7 +48,8 @@
   {/snippet}
 </Story>
 
-<Story name="Prevents navigation while disabled">
+<Story name="Prevents navigation while disabled"
+>
   {#snippet template()}
     <PagePagination
       page={2}

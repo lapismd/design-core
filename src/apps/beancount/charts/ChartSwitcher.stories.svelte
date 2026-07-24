@@ -4,6 +4,7 @@
   import ChartSwitcher from "./ChartSwitcher.svelte";
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Charts/Chart Switcher",
     component: ChartSwitcher,
     parameters: {

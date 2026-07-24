@@ -4,6 +4,7 @@
   import ImportAccountsToolbar from "./ImportAccountsToolbar.svelte";
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Sources/Import Accounts Toolbar",
     component: ImportAccountsToolbar,
     parameters: {

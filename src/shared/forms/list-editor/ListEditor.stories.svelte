@@ -29,6 +29,8 @@
     await userEvent.type(input, "Platform");
     await expect(canvas.getByLabelText("Roles 1")).toHaveValue("Platform");
   }}
+
+  tags={["visual-failed"]}
 >
   {#snippet template()}
     <div class="cv-structured-form max-w-xl">

@@ -28,6 +28,8 @@
     await userEvent.type(area, "Updated notes");
     await expect(canvas.getByRole("status")).toHaveTextContent("Updated notes");
   }}
+
+  tags={["visual-ready"]}
 >
   {#snippet template()}
     <div class="flex max-w-md flex-col gap-2">

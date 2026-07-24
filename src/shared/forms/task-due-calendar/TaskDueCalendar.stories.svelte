@@ -26,6 +26,8 @@
   play={async ({ canvas }) => {
     await expect(canvas.getByRole("grid")).toBeVisible();
   }}
+
+  tags={["visual-ready"]}
 >
   {#snippet template()}
     <TaskDueCalendar bind:value />

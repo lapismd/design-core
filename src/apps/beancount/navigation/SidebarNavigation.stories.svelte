@@ -7,6 +7,7 @@
   import SidebarNavigation from "./SidebarNavigation.svelte";
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Navigation/Sidebar Navigation",
     component: SidebarNavigation,
     parameters: {
@@ -63,7 +64,8 @@
   {/snippet}
 </Story>
 
-<Story name="Shows a disabled destination">
+<Story name="Shows a disabled destination"
+>
   {#snippet template()}
     <div class="bc-sidebar-navigation-story">
       <SidebarNavigation

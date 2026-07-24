@@ -33,7 +33,7 @@
       description: { story: "Standard start-aligned text field row." },
     },
   }}
-  tags={["visual-approved"]}
+  tags={["visual-failed"]}
 >
   {#snippet template()}
     <div class="cv-structured-form max-w-xl">
@@ -64,7 +64,7 @@
       },
     },
   }}
-  tags={["visual-approved"]}
+  tags={["visual-ready"]}
 >
   {#snippet template()}
     <div class="cv-structured-form max-w-xl">
@@ -96,7 +96,7 @@
       },
     },
   }}
-  tags={["visual-approved"]}
+  tags={["visual-failed"]}
 >
   {#snippet template()}
     <div class="cv-structured-form max-w-xl">

@@ -4,6 +4,7 @@
   import ResourcePreview from "./ResourcePreview.svelte";
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Feedback/Resource Preview",
     component: ResourcePreview,
     parameters: {

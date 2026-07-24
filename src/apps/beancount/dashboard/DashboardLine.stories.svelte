@@ -4,6 +4,7 @@
   import DashboardLine from "./DashboardLine.svelte";
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Dashboard/Dashboard Line",
     component: DashboardLine,
     parameters: {

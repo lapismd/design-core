@@ -4,6 +4,7 @@
   import IngestionReviewTable from "./IngestionReviewTable.svelte";
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Tables/Ingestion Review Table",
     component: IngestionReviewTable,
     parameters: {

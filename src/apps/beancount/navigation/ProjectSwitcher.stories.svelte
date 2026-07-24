@@ -4,6 +4,7 @@
   import ProjectSwitcher from "./ProjectSwitcher.svelte";
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Navigation/Project Switcher",
     component: ProjectSwitcher,
     parameters: {
@@ -83,7 +84,8 @@
   {/snippet}
 </Story>
 
-<Story name="Explains a workspace without saved projects">
+<Story name="Explains a workspace without saved projects"
+>
   {#snippet template()}
     <div class="bc-project-switcher-story">
       <ProjectSwitcher

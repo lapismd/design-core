@@ -7,6 +7,7 @@
   import type { WorkspaceTreeNavigationItem } from "./WorkspaceTreeNavigation.svelte";
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Navigation/Ledger Workspace Navigation",
     component: LedgerWorkspaceNavigation,
     parameters: {

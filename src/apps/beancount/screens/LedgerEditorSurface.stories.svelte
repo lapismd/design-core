@@ -5,6 +5,7 @@
   import { editorPreviewLines } from "./fixtures.js";
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Screens/Ledger Editor Surface",
     component: LedgerEditorSurface,
     parameters: {

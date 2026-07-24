@@ -22,7 +22,7 @@
     await expect(canvas.getByLabelText("breadcrumb")).toBeVisible();
     await expect(canvas.getByText("Expenses")).toBeVisible();
   }}
-  tags={["visual-approved"]}
+  tags={["visual-failed"]}
 >
   {#snippet template()}
     <Breadcrumb.Root>

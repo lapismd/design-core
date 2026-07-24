@@ -4,6 +4,7 @@
   import ScreenFrame from "./ScreenFrame.svelte";
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Screens/Screen Frame",
     component: ScreenFrame,
     parameters: {

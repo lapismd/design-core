@@ -29,7 +29,7 @@
     );
     await expect(canvas.getByText("Page 3 of 10")).toBeVisible();
   }}
-  tags={["visual-approved"]}
+  tags={["visual-failed"]}
 >
   {#snippet template()}
     <div class="flex flex-col items-center gap-3">

@@ -4,6 +4,7 @@
   import PresetQueryReport from "./PresetQueryReport.svelte";
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Screens/Preset Query Report",
     component: PresetQueryReport,
     parameters: {

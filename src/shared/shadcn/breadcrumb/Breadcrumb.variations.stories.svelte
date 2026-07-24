@@ -18,7 +18,7 @@
 <Story
   name="Preview"
   exportName="Preview"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-failed"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -40,7 +40,7 @@
 <Story
   name="Custom separator"
   exportName="CustomSeparator"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-failed"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -66,7 +66,7 @@
 <Story
   name="Dropdown"
   exportName="Dropdown"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-failed"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -92,7 +92,7 @@
 <Story
   name="Collapsed"
   exportName="Collapsed"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-failed"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -118,7 +118,7 @@
 <Story
   name="Link component"
   exportName="LinkComponent"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-failed"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {

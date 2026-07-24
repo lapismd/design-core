@@ -27,7 +27,7 @@
     await userEvent.click(canvas.getByRole("button", { name: "Archive" }));
     await expect(canvas.getByRole("status")).toHaveTextContent("Archive");
   }}
-  tags={["visual-approved"]}
+  tags={["visual-failed"]}
 >
   {#snippet template()}
     <div class="flex flex-col gap-3">

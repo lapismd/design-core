@@ -4,6 +4,7 @@
   import RouteLoadingSkeleton from "./RouteLoadingSkeleton.svelte";
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Feedback/Route Loading Skeleton",
     component: RouteLoadingSkeleton,
     parameters: {

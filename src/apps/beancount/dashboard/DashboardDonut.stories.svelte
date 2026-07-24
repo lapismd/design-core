@@ -4,6 +4,7 @@
   import DashboardDonut from "./DashboardDonut.svelte";
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Dashboard/Dashboard Donut",
     component: DashboardDonut,
     parameters: {

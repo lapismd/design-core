@@ -56,7 +56,9 @@
   {/snippet}
 </Story>
 
-<Story name="CV tab">
+<Story name="CV tab"
+  tags={["visual-failed"]}
+>
   {#snippet template()}
     <div class="bg-background min-h-[720px]">
       <CvWorkspaceForm />

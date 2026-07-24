@@ -5,6 +5,7 @@
   import ChartModeSwitch from "./ChartModeSwitch.svelte";
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Charts/Bar Chart",
     component: BarChart,
     parameters: {

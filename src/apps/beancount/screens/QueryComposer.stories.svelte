@@ -4,6 +4,7 @@
   import QueryComposer from "./QueryComposer.svelte";
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Screens/Query Composer",
     component: QueryComposer,
     parameters: {

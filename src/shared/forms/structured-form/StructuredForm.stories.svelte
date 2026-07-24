@@ -77,6 +77,8 @@
       "Studio uses manual",
     );
   }}
+
+  tags={["visual-failed"]}
 >
   {#snippet template()}
     <div class="max-w-2xl">

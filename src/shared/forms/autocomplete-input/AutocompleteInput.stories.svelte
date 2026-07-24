@@ -40,7 +40,7 @@
       passThresholdPercent: 0.1,
     },
   }}
-  tags={["visual-pending"]}
+  tags={["visual-ready"]}
 >
   {#snippet template()}
     <div class="flex max-w-sm flex-col gap-2">
@@ -62,7 +62,7 @@
 
 <Story
   name="Open list active and hover"
-  tags={["visual-state", "visual-pending"]}
+  tags={["visual-state", "visual-failed"]}
   play={async ({ canvas, canvasElement }) => {
     // Suggestions portal into document.body via shadcn Popover.
     const options = within(canvasElement.ownerDocument.body).getAllByRole(

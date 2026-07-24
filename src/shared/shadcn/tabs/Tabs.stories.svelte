@@ -26,7 +26,7 @@
     await userEvent.click(canvas.getByRole("tab", { name: "Details" }));
     await expect(canvas.getByText("Details panel")).toBeVisible();
   }}
-  tags={["visual-approved"]}
+  tags={["visual-ready"]}
 >
   {#snippet template()}
     <Tabs.Root bind:value class="max-w-md">

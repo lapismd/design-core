@@ -12,6 +12,7 @@
   import SourcesPageSkeleton from "./SourcesPageSkeleton.svelte";
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Feedback/Page Loading Skeletons",
     component: AccountsPageSkeleton,
     parameters: {

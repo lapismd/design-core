@@ -21,7 +21,7 @@
   play={async ({ canvas }) => {
     await expect(canvas.getByText("Sync complete")).toBeVisible();
   }}
-  tags={["visual-approved"]}
+  tags={["visual-ready"]}
   parameters={{
     visualDelta: {
       images: [

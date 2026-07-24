@@ -38,7 +38,7 @@
       passThresholdPercent: 0.1,
     },
   }}
-  tags={["visual-approved"]}
+  tags={["visual-ready"]}
 >
   {#snippet template()}
     <Tooltip.Provider delayDuration={0}>

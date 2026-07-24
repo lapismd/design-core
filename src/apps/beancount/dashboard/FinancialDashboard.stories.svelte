@@ -4,6 +4,7 @@
   import FinancialDashboard from "./FinancialDashboard.svelte";
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Dashboard/Financial Dashboard",
     component: FinancialDashboard,
     parameters: {

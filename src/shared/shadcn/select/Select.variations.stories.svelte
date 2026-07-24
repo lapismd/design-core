@@ -14,7 +14,7 @@
 <Story
   name="Scrollable"
   exportName="Scrollable"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-ready"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {

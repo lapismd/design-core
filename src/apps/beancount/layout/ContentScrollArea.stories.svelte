@@ -4,6 +4,7 @@
   import ContentScrollArea from "./ContentScrollArea.svelte";
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Layout/Content Scroll Area",
     component: ContentScrollArea,
     parameters: {
@@ -35,6 +36,10 @@
     await expect(
       canvas.getByRole("region", { name: "Ledger source content" }),
     ).toHaveAttribute("tabindex", "0");
+  }}
+
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/apps/beancount/layout/contains-a-long-ledger-note-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
   }}
 >
   {#snippet template()}

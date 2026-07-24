@@ -3,6 +3,7 @@
   import AccountAvatar from "./AccountAvatar.svelte";
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Pickers/Account Avatar",
     component: AccountAvatar,
     parameters: {
@@ -16,7 +17,8 @@
   });
 </script>
 
-<Story name="Shows fallback, configured, and merchant appearances">
+<Story name="Shows fallback, configured, and merchant appearances"
+>
   {#snippet template()}
     <div class="bc-account-avatar-story">
       <div class="bc-account-avatar-story__item">

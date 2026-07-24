@@ -4,6 +4,7 @@
   import QueryWorkspace from "./QueryWorkspace.svelte";
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Screens/Query Workspace",
     component: QueryWorkspace,
     parameters: {
@@ -89,7 +90,8 @@
   {/snippet}
 </Story>
 
-<Story name="Shows a host-provided query failure">
+<Story name="Shows a host-provided query failure"
+>
   {#snippet template()}
     <div class="bc-query-workspace-story">
       <QueryWorkspace

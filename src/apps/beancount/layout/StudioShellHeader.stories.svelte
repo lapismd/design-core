@@ -4,6 +4,7 @@
   import StudioShellHeader from "./StudioShellHeader.svelte";
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Layout/Studio Shell Header",
     component: StudioShellHeader,
     parameters: {

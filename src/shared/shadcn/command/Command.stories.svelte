@@ -29,7 +29,7 @@
     await userEvent.click(canvas.getByRole("option", { name: "Calendar" }));
     await expect(canvas.getByRole("status")).toHaveTextContent("Calendar");
   }}
-  tags={["visual-approved"]}
+  tags={["visual-ready"]}
 >
   {#snippet template()}
     <div class="flex max-w-md flex-col gap-2">

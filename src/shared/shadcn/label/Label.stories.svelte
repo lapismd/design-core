@@ -27,6 +27,8 @@
     await userEvent.type(canvas.getByLabelText("Email"), "a@b.co");
     await expect(canvas.getByRole("status")).toHaveTextContent("a@b.co");
   }}
+
+  tags={["visual-ready"]}
 >
   {#snippet template()}
     <div class="flex max-w-sm flex-col gap-2">

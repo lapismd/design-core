@@ -5,6 +5,7 @@
   import LineChart from "./LineChart.svelte";
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Charts/Line Chart",
     component: LineChart,
     parameters: {

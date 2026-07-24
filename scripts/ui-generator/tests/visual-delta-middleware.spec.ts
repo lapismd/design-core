@@ -271,6 +271,29 @@ describe("patchStoryOpenTagWithReviewStatus", () => {
     expect(next).not.toContain("visual-pending");
   });
 
+  it("swaps visual-failed for visual-ready (and the reverse)", () => {
+    const ready = patchStoryOpenTagWithReviewStatus(
+      `<Story name="Default" tags={["visual-failed", "upstream-example"]}>`,
+      "ready",
+    );
+    expect(ready).toContain('"visual-ready"');
+    expect(ready).toContain('"upstream-example"');
+    expect(ready).not.toContain("visual-failed");
+
+    const failed = patchStoryOpenTagWithReviewStatus(ready, "failed");
+    expect(failed).toContain('"visual-failed"');
+    expect(failed).toContain('"upstream-example"');
+    expect(failed).not.toContain("visual-ready");
+  });
+
+  it("collapses leaked dual review tags down to one", () => {
+    const next = patchStoryOpenTagWithReviewStatus(
+      `<Story name="Default" tags={["visual-ready", "visual-failed"]}>`,
+      "ready",
+    );
+    expect(next).toBe(`<Story name="Default" tags={["visual-ready"]}>`);
+  });
+
   it("is idempotent when the status tag is already present", () => {
     const tag = `<Story name="Default" tags={["visual-approved"]}>`;
     expect(patchStoryOpenTagWithReviewStatus(tag, "approved")).toBe(tag);

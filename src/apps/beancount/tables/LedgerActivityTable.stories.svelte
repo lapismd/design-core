@@ -4,6 +4,7 @@
   import LedgerActivityTable from "./LedgerActivityTable.svelte";
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Tables/Ledger Activity Table",
     component: LedgerActivityTable,
     parameters: {

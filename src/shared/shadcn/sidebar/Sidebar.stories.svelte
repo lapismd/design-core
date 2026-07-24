@@ -30,6 +30,8 @@
     );
     await expect(canvas.getByRole("status")).toHaveTextContent("closed");
   }}
+
+  tags={["visual-failed"]}
 >
   {#snippet template()}
     <Sidebar.Provider bind:open class="min-h-[240px]">

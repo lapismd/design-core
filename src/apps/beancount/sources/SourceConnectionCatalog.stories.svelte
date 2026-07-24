@@ -4,6 +4,7 @@
   import SourceConnectionCatalog from "./SourceConnectionCatalog.svelte";
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Sources/Source Connection Catalog",
     component: SourceConnectionCatalog,
     parameters: {

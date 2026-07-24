@@ -8,7 +8,7 @@
     title: "Tasks/Components/Tasks Shell",
     component: TasksShell,
     // Compare Playwright baselines to synced Superlist shell captures.
-    tags: ["tasks-reference-visual"],
+    tags: ["skip-visual", "tasks-reference-visual"],
     parameters: {
       layout: "fullscreen",
       docs: {

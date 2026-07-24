@@ -4,6 +4,7 @@
   import EditorToolbar from "./EditorToolbar.svelte";
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Screens/Editor Toolbar",
     component: EditorToolbar,
     parameters: {
@@ -61,7 +62,8 @@
   {/snippet}
 </Story>
 
-<Story name="Disables unavailable save">
+<Story name="Disables unavailable save"
+>
   {#snippet template()}
     <div class="bc-editor-toolbar-story">
       <EditorToolbar

@@ -24,7 +24,7 @@
 <Story
   name="Preview"
   exportName="Preview"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-failed"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -46,7 +46,7 @@
 <Story
   name="Orientation"
   exportName="Orientation"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-failed"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -71,7 +71,7 @@
 <Story
   name="Size"
   exportName="Size"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-failed"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -97,7 +97,7 @@
 <Story
   name="Nested"
   exportName="Nested"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-failed"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -123,7 +123,7 @@
 <Story
   name="Separator"
   exportName="Separator"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-failed"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -149,7 +149,7 @@
 <Story
   name="Split"
   exportName="Split"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-failed"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -175,7 +175,7 @@
 <Story
   name="Input"
   exportName="Input"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-failed"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -200,7 +200,7 @@
 <Story
   name="Input Group"
   exportName="InputGroup"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-failed"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -226,7 +226,7 @@
 <Story
   name="Dropdown Menu"
   exportName="DropdownMenu"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-failed"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -251,7 +251,7 @@
 <Story
   name="Select"
   exportName="Select"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-failed"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -276,7 +276,7 @@
 <Story
   name="Popover"
   exportName="Popover"
-  tags={["upstream-example"]}
+  tags={["upstream-example", "visual-failed"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {

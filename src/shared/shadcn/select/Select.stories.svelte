@@ -62,7 +62,7 @@
 
 <Story
   name="Open menu"
-  tags={["visual-state"]}
+  tags={["visual-state", "visual-ready"]}
   parameters={{
     a11y: {
       // bits-ui sets aria-activedescendant on the open listbox; axe flags it.

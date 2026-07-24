@@ -4,6 +4,7 @@
   import AppShellDemo from "./AppShellDemo.svelte";
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Layout/App Shell",
     component: AppShellDemo,
     parameters: {
@@ -29,5 +30,9 @@
     await expect(canvas.getByRole("status")).toHaveTextContent(
       "Syncing Barclays checking account…",
     );
+  }}
+
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/apps/beancount/layout/ledger-workspace-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
   }}
 />

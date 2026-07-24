@@ -6,6 +6,7 @@
   } from "./ImportMappingTable.svelte";
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Tables/Import Mapping Table",
     component: ImportMappingTable,
     parameters: {

@@ -22,7 +22,7 @@
   let accepted = $state(false);
 </script>
 
-<Story name="Default" tags={["visual-state"]}>
+<Story name="Default" tags={["visual-state", "visual-failed"]}>
   {#snippet template()}
     <div class="flex items-center gap-3">
       <Checkbox id="terms-default" checked={true} aria-label="Accept terms" />

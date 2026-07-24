@@ -5,6 +5,7 @@
   import type { SavedQueryHistoryItem } from "./SavedQueryHistory.svelte";
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Navigation/Saved Query History",
     component: SavedQueryHistory,
     parameters: {

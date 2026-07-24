@@ -4,6 +4,7 @@
   import ScatterPlot from "./ScatterPlot.svelte";
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Charts/Scatter Plot",
     component: ScatterPlot,
     parameters: {

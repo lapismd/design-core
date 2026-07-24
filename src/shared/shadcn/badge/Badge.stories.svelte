@@ -22,7 +22,7 @@
     await expect(canvas.getByText("Default")).toBeVisible();
     await expect(canvas.getByText("Secondary")).toBeVisible();
   }}
-  tags={["visual-approved"]}
+  tags={["visual-ready"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/badge/variants-chromium-darwin.png"],

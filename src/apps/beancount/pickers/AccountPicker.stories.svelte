@@ -7,6 +7,7 @@
   const accounts = ["Assets:Cash", "Assets:Bank:Current", "Expenses:Groceries"];
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Pickers/Account Picker",
     component: AccountPicker,
     parameters: {
@@ -58,7 +59,8 @@
   {/snippet}
 </Story>
 
-<Story name="Shows an account in read-only mode">
+<Story name="Shows an account in read-only mode"
+>
   {#snippet template()}
     <div class="beancount-structured-form bc-account-picker-story__form">
       <FormField label="Source account" as="div" align="center">

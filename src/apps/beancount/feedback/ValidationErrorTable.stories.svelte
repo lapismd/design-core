@@ -4,6 +4,7 @@
   import ValidationErrorTable from "./ValidationErrorTable.svelte";
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Feedback/Validation Error Table",
     component: ValidationErrorTable,
     parameters: {

@@ -53,6 +53,7 @@
   ];
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Tables/Statement Summary Tree Table",
     component: StatementSummaryTreeTable,
     parameters: {

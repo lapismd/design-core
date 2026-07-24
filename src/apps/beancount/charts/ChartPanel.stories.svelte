@@ -4,6 +4,7 @@
   import ChartPanel from "./ChartPanel.svelte";
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Charts/Chart Panel",
     component: ChartPanel,
     parameters: {
@@ -192,7 +193,8 @@
   {/snippet}
 </Story>
 
-<Story name="Frames a focused chart without controls">
+<Story name="Frames a focused chart without controls"
+>
   {#snippet template()}
     <div class="bc-chart-panel-story">
       <ChartPanel ariaLabel="Focused net worth chart">

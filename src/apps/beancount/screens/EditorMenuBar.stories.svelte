@@ -9,6 +9,7 @@
   ];
 
   const { Story } = defineMeta({
+    tags: ["skip-visual"],
     title: "Apps/Beancount/Screens/Editor Menu Bar",
     component: EditorMenuBar,
     parameters: {

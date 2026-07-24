@@ -26,7 +26,7 @@
       canvas.getByRole("button", { name: "Create document" }),
     ).toBeVisible();
   }}
-  tags={["visual-approved"]}
+  tags={["visual-ready"]}
 >
   {#snippet template()}
     <Empty.Root class="max-w-md border">
