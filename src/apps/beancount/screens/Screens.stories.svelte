@@ -682,8 +682,9 @@
                     groups={incomeStatementChartGroups}
                     mode={incomeChartMode}
                     ariaLabel="Income statement historical performance"
-                    chartWidth={900}
+                    chartWidth={982}
                     chartHeight={250}
+                    chartMargins={{ top: 10, right: 10, bottom: 30, left: 40 }}
                     minXLabelSpacing={68}
                     valueDomain={{ min: -10500, max: 7500 }}
                     yTickValues={[
@@ -1746,7 +1747,7 @@
 
   .bc-screen-story__page--report {
     display: grid;
-    gap: calc(var(--ui-beancount-space-4) * 2);
+    gap: var(--ui-beancount-space-4);
   }
 
   .bc-screen-story__page--account-report {

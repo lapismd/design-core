@@ -37,6 +37,7 @@
     emptyLabel = "No chart data is available.",
     chartWidth = 800,
     chartHeight = 280,
+    chartMargins = { top: 18, right: 20, bottom: 42, left: 64 },
     valueDomain,
     yTickValues,
     minXLabelSpacing = 70,
@@ -51,6 +52,8 @@
     chartWidth?: number;
     /** Viewbox height for a measured report chart; the SVG remains responsive. */
     chartHeight?: number;
+    /** Plot insets for a source-compatible report chart. */
+    chartMargins?: { top: number; right: number; bottom: number; left: number };
     /** Optional display-ready y-axis extent supplied by the report adapter. */
     valueDomain?: { min: number; max: number };
     /** Optional display-ready y-axis ticks supplied by the report adapter. */
@@ -64,7 +67,7 @@
 
   const width = $derived(Math.max(chartWidth, 1));
   const height = $derived(Math.max(chartHeight, 1));
-  const margin = { top: 18, right: 20, bottom: 42, left: 64 };
+  const margin = $derived(chartMargins);
   const innerWidth = $derived(Math.max(width - margin.left - margin.right, 1));
   const innerHeight = $derived(
     Math.max(height - margin.top - margin.bottom, 1),
