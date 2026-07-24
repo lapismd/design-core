@@ -38,6 +38,7 @@ const config: StorybookConfig = {
             "visual-update",
             "--allow-dirty",
             "--approved",
+            "--skip-build",
           ],
           visualInteractionUpdateArgs: [
             "exec",

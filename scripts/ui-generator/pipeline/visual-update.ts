@@ -14,7 +14,7 @@ import {
   storyIdPrefixFromStoryId,
   storyIdPrefixFromTitle,
 } from "../visual/snapshot-paths.js";
-import { ensurePlaywrightWebServerPort } from "../visual/ensure-playwright-webserver.js";
+import { ensureWarmStaticStorybookServer } from "../visual/ensure-playwright-webserver.js";
 import {
   listSkipVisualStoryIdsForPrefix,
   patchStoriesVisualDeltaImages,
@@ -24,6 +24,7 @@ import {
   listStoryIdsForPrefix,
   markCreatedStoriesPending,
 } from "../visual/patch-story-visual-review.js";
+import { decideStorybookStaticBuild } from "../visual/storybook-static-build.js";
 import {
   createRunContext,
   writeJson,
@@ -37,8 +38,14 @@ export async function runVisualUpdate(options: {
   approved?: boolean;
   /** Skip clean-tree gate (Storybook Visual Delta panel). */
   allowDirty?: boolean;
-  /** Skip `build-storybook` when static assets are already fresh. */
+  /**
+   * Prefer reusing `storybook-static` (interaction-update semantics).
+   * Still rebuilds when the index is missing (unless set), sources are stale,
+   * skip-visual was removed, or `--rebuild` is passed.
+   */
   skipBuild?: boolean;
+  /** Always run `build-storybook` before Playwright. */
+  rebuild?: boolean;
   /**
    * Create missing baseline PNGs only (`updateSnapshots: "missing"`).
    * Does not overwrite existing files. Patches story visualDelta.images after.
@@ -142,7 +149,10 @@ export async function runVisualUpdate(options: {
     : storyIdPrefixFromTitle(recipe!.storyTitle);
   log.info(`Playwright filter: -g ${JSON.stringify(grep)}`);
 
-  let skipBuild = Boolean(options.skipBuild);
+  let forceRebuild = Boolean(options.rebuild);
+  let forceReason: "unskip" | "explicit-rebuild" | undefined = options.rebuild
+    ? "explicit-rebuild"
+    : undefined;
   if (createOnly) {
     // Opt every skip-visual story under the component prefix into capture
     // (sidebar "create for component" only passes one leaf story id).
@@ -164,19 +174,30 @@ export async function runVisualUpdate(options: {
         `Removed skip-visual from ${unskipped.length} stor${unskipped.length === 1 ? "y" : "ies"} before create:\n${unskipped.map((id) => `  - ${id}`).join("\n")}`,
       );
       // Index must refresh so Playwright no longer filters the stories out.
-      skipBuild = false;
+      forceRebuild = true;
+      forceReason = "unskip";
     }
   }
 
-  if (!skipBuild) {
-    // Build Storybook first so the visual suite has static assets.
+  const buildDecision = decideStorybookStaticBuild({
+    packageRoot: config.packageRoot,
+    skipBuild: Boolean(options.skipBuild),
+    forceRebuild,
+    forceReason,
+    storyIdPrefix: grep,
+  });
+  if (buildDecision.reason === "skip-build-missing") {
+    throw new GeneratorError(buildDecision.message, EXIT.invalidRequest);
+  }
+  log.info(buildDecision.message);
+  if (buildDecision.shouldBuild) {
     execFileSync("pnpm", ["build-storybook"], {
       cwd: config.packageRoot,
       stdio: "inherit",
     });
   }
 
-  await ensurePlaywrightWebServerPort();
+  await ensureWarmStaticStorybookServer(config.packageRoot);
 
   execFileSync(
     "pnpm",

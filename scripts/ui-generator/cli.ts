@@ -36,6 +36,8 @@ const BOOLEAN_FLAGS = new Set([
   "skip-parity",
   "skip-visual",
   "skip-build",
+  "rebuild",
+  "create-only",
   "approved",
   "allow-dirty",
   "fixture",
@@ -309,6 +311,7 @@ async function main() {
         approved: asBooleanFlag(flags, "approved"),
         allowDirty: asBooleanFlag(flags, "allow-dirty"),
         skipBuild: asBooleanFlag(flags, "skip-build"),
+        rebuild: asBooleanFlag(flags, "rebuild"),
         createOnly: asBooleanFlag(flags, "create-only"),
       });
       break;

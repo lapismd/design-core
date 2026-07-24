@@ -5,13 +5,14 @@ import { loadConfig } from "../config.js";
 import { EXIT, GeneratorError } from "../errors.js";
 import { log } from "../logger.js";
 import { assertCleanGit } from "../adapters/git.js";
-import { ensurePlaywrightWebServerPort } from "../visual/ensure-playwright-webserver.js";
+import { ensureWarmStaticStorybookServer } from "../visual/ensure-playwright-webserver.js";
 import {
   interactionBaselinePngPath,
   interactionBaselineUrl,
   visualDeltaInteractionEntry,
 } from "../visual/interaction-baselines.js";
 import { patchStoryVisualDeltaInteraction } from "../visual/patch-story-visual-delta.js";
+import { isStorybookStaticComplete } from "../visual/storybook-static-build.js";
 import { slugifyStepLabel } from "../../../packages/storybook-addon-visual-delta/src/shared/interaction-capture.js";
 import type { StoryIndexEntry } from "../visual/snapshot-paths.js";
 
@@ -77,24 +78,20 @@ export async function runVisualInteractionUpdate(options: {
     assertCleanGit(config.packageRoot);
   }
 
-  const staticIndex = path.join(
-    config.packageRoot,
-    "storybook-static",
-    "index.json",
-  );
   // Prefer an existing static build while Storybook is running — a full
   // `build-storybook` cleans storybook-static and can drop the streamed panel
-  // response. Rebuild only when missing or explicitly requested.
-  const shouldBuild = !options.skipBuild && !existsSync(staticIndex);
+  // response. Rebuild only when missing/incomplete or explicitly requested.
+  const staticComplete = isStorybookStaticComplete(config.packageRoot);
+  const shouldBuild = !options.skipBuild && !staticComplete;
   if (shouldBuild) {
     log.info("Building storybook-static for interaction capture…");
     execFileSync("pnpm", ["build-storybook"], {
       cwd: config.packageRoot,
       stdio: "inherit",
     });
-  } else if (!existsSync(staticIndex)) {
+  } else if (!staticComplete) {
     throw new GeneratorError(
-      "storybook-static/index.json missing — run `pnpm build-storybook` once",
+      "storybook-static incomplete (need index.json + iframe.html) — run `pnpm build-storybook` once",
       EXIT.invalidRequest,
     );
   } else if (!options.skipBuild) {
@@ -123,7 +120,7 @@ export async function runVisualInteractionUpdate(options: {
     return;
   }
 
-  await ensurePlaywrightWebServerPort();
+  await ensureWarmStaticStorybookServer(config.packageRoot);
 
   const capturePayload = JSON.stringify({
     storyId,
