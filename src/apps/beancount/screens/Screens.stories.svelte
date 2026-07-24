@@ -4,6 +4,7 @@
   import * as Breadcrumb from "@stevejuma/ui/shadcn/breadcrumb";
   import { Button } from "@stevejuma/ui/shadcn/button";
   import * as Tabs from "@stevejuma/ui/shadcn/tabs";
+  import EditorToolbar from "./EditorToolbar.svelte";
   import ScreenFrame from "./ScreenFrame.svelte";
   import { visualDeltaForScreen } from "./visual-delta.js";
   import BarChart from "../charts/BarChart.svelte";
@@ -283,6 +284,8 @@
   let queryText = $state("");
   let queryExecuted = $state(false);
   let queryAction = $state("");
+  let editorHeadersCollapsedAll = $state(false);
+  let editorAction = $state("");
   let dashboardAction = $state("");
   let incomeChartMode = $state<"single" | "stacked">("stacked");
   let incomePerspective = $state("net-profit");
@@ -355,10 +358,34 @@
   parameters={{ visualDelta: visualDeltaForScreen("editor") }}
   play={async ({ canvas }) => {
     await expect(canvas.getByText("Beancount editor")).toBeVisible();
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Collapse all headings" }),
+    );
+    await expect(canvas.getByRole("status")).toHaveTextContent(
+      "Collapse headings requested",
+    );
+    await userEvent.click(canvas.getByRole("button", { name: "Save ledger" }));
+    await expect(canvas.getByRole("status")).toHaveTextContent(
+      "Save ledger requested",
+    );
   }}
 >
   {#snippet template()}
     <ScreenFrame pageTitle="Editor">
+      {#snippet headerActions()}
+        <EditorToolbar
+          headersCollapsedAll={editorHeadersCollapsedAll}
+          onToggleHeadings={() => {
+            editorHeadersCollapsedAll = !editorHeadersCollapsedAll;
+            editorAction = editorHeadersCollapsedAll
+              ? "Collapse headings requested"
+              : "Expand headings requested";
+          }}
+          onSave={() => {
+            editorAction = "Save ledger requested";
+          }}
+        />
+      {/snippet}
       <ContentScrollArea>
         <div
           class="bc-screen-story__placeholder bc-screen-story__placeholder--code"
@@ -371,6 +398,9 @@
           </p>
         </div>
       </ContentScrollArea>
+      <output class="bc-screen-story__status" aria-live="polite">
+        {editorAction}
+      </output>
     </ScreenFrame>
   {/snippet}
 </Story>
