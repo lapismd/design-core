@@ -199,19 +199,37 @@ export async function runVisualUpdate(options: {
 
   await ensureWarmStaticStorybookServer(config.packageRoot);
 
-  execFileSync(
-    "pnpm",
-    ["exec", "playwright", "test", "--update-snapshots", "-g", grep],
-    {
-      cwd: config.packageRoot,
-      stdio: "inherit",
-      env: {
-        ...process.env,
-        PLAYWRIGHT_UPDATE_SNAPSHOTS: "1",
-        ...(createOnly ? { PLAYWRIGHT_UPDATE_MODE: "missing" } : {}),
+  // CLI `--update-snapshots` defaults to "all" and overrides config — always
+  // pass an explicit mode so create-only cannot rewrite existing PNGs.
+  // Create-only may still exit non-zero when *existing* baselines mismatch;
+  // continue so newly written PNGs still get CSF wiring.
+  try {
+    execFileSync(
+      "pnpm",
+      [
+        "exec",
+        "playwright",
+        "test",
+        `--update-snapshots=${createOnly ? "missing" : "all"}`,
+        "-g",
+        grep,
+      ],
+      {
+        cwd: config.packageRoot,
+        stdio: "inherit",
+        env: {
+          ...process.env,
+          PLAYWRIGHT_UPDATE_SNAPSHOTS: "1",
+          ...(createOnly ? { PLAYWRIGHT_UPDATE_MODE: "missing" } : {}),
+        },
       },
-    },
-  );
+    );
+  } catch (error) {
+    if (!createOnly) throw error;
+    log.warn(
+      "Playwright exited non-zero during create-only (often existing baseline diffs). Continuing CSF wiring for any new PNGs.",
+    );
+  }
 
   let patchResult: {
     patched: string[];
@@ -226,11 +244,11 @@ export async function runVisualUpdate(options: {
     log.info(
       `Story visualDelta patch: ${patchResult.patched.length} updated, ${patchResult.alreadyWired.length} already wired, ${patchResult.skipped.length} skipped`,
     );
-    const toMarkPending = [...patchResult.patched, ...patchResult.alreadyWired];
-    if (toMarkPending.length) {
+    // Only newly wired stories — do not reset review tags on already-wired ones.
+    if (patchResult.patched.length) {
       const pending = markCreatedStoriesPending({
         packageRoot: config.packageRoot,
-        storyIds: toMarkPending,
+        storyIds: patchResult.patched,
       });
       log.info(
         `Story review pending: ${pending.marked.length} marked, ${pending.skipped.length} skipped`,

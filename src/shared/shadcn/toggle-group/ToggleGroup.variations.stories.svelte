@@ -22,6 +22,16 @@
   exportName="Spacing"
   tags={["upstream-example", "visual-ready"]}
   parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/shadcn/toggle-group/spacing-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
     a11y: { test: "todo" },
     docs: {
       source: {
@@ -44,6 +54,16 @@
   exportName="Outline"
   tags={["upstream-example", "visual-ready"]}
   parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/shadcn/toggle-group/outline-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
     a11y: { test: "todo" },
     docs: {
       source: {
@@ -66,6 +86,16 @@
   exportName="Single"
   tags={["upstream-example", "visual-ready"]}
   parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/shadcn/toggle-group/single-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
     a11y: { test: "todo" },
     docs: {
       source: {
@@ -88,6 +118,16 @@
   exportName="Small"
   tags={["upstream-example", "visual-ready"]}
   parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/shadcn/toggle-group/small-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
     a11y: { test: "todo" },
     docs: {
       source: {
@@ -110,6 +150,16 @@
   exportName="Large"
   tags={["upstream-example", "visual-ready"]}
   parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/shadcn/toggle-group/large-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
     a11y: { test: "todo" },
     docs: {
       source: {
@@ -132,6 +182,16 @@
   exportName="Disabled"
   tags={["upstream-example", "visual-ready"]}
   parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/shadcn/toggle-group/disabled-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
     a11y: { test: "todo" },
     docs: {
       source: {
@@ -150,10 +210,20 @@
 </Story>
 
 <Story
-  name="Spacing"
+  name="Spacing 2"
   exportName="Spacing2"
   tags={["upstream-example", "visual-ready"]}
   parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/shadcn/toggle-group/spacing-2-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
     a11y: { test: "todo" },
     docs: {
       description: {

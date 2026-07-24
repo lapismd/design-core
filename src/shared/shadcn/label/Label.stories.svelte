@@ -29,6 +29,10 @@
   }}
 
   tags={["visual-ready"]}
+
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/label/associates-with-an-input-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
+  }}
 >
   {#snippet template()}
     <div class="flex max-w-sm flex-col gap-2">

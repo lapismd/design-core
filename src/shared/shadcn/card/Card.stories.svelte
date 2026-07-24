@@ -24,6 +24,10 @@
     await expect(canvas.getByRole("button", { name: "Save" })).toBeVisible();
   }}
   tags={["visual-ready"]}
+
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/card/header-content-and-footer-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
+  }}
 >
   {#snippet template()}
     <Card.Root class="max-w-md">

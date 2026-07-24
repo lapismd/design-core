@@ -22,7 +22,11 @@
   let accepted = $state(false);
 </script>
 
-<Story name="Default" tags={["visual-state", "visual-failed"]}>
+<Story name="Default" tags={["visual-state", "visual-pending"]}
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/checkbox/default-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
+  }}
+>
   {#snippet template()}
     <div class="flex items-center gap-3">
       <Checkbox id="terms-default" checked={true} aria-label="Accept terms" />
@@ -33,7 +37,6 @@
 
 <Story
   name="Toggles a boolean setting"
-  tags={["skip-visual"]}
   play={async ({ canvas }) => {
     const box = canvas.getByRole("checkbox", { name: "Accept terms" });
     await expect(box).not.toBeChecked();
@@ -41,6 +44,12 @@
     await expect(box).toBeChecked();
     await expect(canvas.getByRole("status")).toHaveTextContent("accepted");
   }}
+
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/checkbox/toggles-a-boolean-setting-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
+  }}
+
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <div class="flex flex-col gap-3">

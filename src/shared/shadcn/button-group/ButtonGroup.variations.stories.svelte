@@ -24,8 +24,9 @@
 <Story
   name="Preview"
   exportName="Preview"
-  tags={["upstream-example", "visual-failed"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/button-group/preview-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
     a11y: { test: "todo" },
     docs: {
       source: {
@@ -46,8 +47,9 @@
 <Story
   name="Orientation"
   exportName="Orientation"
-  tags={["upstream-example", "visual-failed"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/button-group/orientation-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
     a11y: { test: "todo" },
     docs: {
       description: {
@@ -71,8 +73,9 @@
 <Story
   name="Size"
   exportName="Size"
-  tags={["upstream-example", "visual-failed"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/button-group/size-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
     a11y: { test: "todo" },
     docs: {
       description: {
@@ -97,8 +100,9 @@
 <Story
   name="Nested"
   exportName="Nested"
-  tags={["upstream-example", "visual-failed"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/button-group/nested-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
     a11y: { test: "todo" },
     docs: {
       description: {
@@ -123,8 +127,9 @@
 <Story
   name="Separator"
   exportName="Separator"
-  tags={["upstream-example", "visual-failed"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/button-group/separator-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
     a11y: { test: "todo" },
     docs: {
       description: {
@@ -149,8 +154,9 @@
 <Story
   name="Split"
   exportName="Split"
-  tags={["upstream-example", "visual-failed"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/button-group/split-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
     a11y: { test: "todo" },
     docs: {
       description: {
@@ -175,8 +181,9 @@
 <Story
   name="Input"
   exportName="Input"
-  tags={["upstream-example", "visual-failed"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/button-group/input-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
     a11y: { test: "todo" },
     docs: {
       description: {
@@ -200,8 +207,9 @@
 <Story
   name="Input Group"
   exportName="InputGroup"
-  tags={["upstream-example", "visual-failed"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/button-group/input-group-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
     a11y: { test: "todo" },
     docs: {
       description: {
@@ -226,8 +234,9 @@
 <Story
   name="Dropdown Menu"
   exportName="DropdownMenu"
-  tags={["upstream-example", "visual-failed"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/button-group/dropdown-menu-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
     a11y: { test: "todo" },
     docs: {
       description: {
@@ -251,8 +260,9 @@
 <Story
   name="Select"
   exportName="Select"
-  tags={["upstream-example", "visual-failed"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/button-group/select-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
     a11y: { test: "todo" },
     docs: {
       description: {
@@ -276,8 +286,9 @@
 <Story
   name="Popover"
   exportName="Popover"
-  tags={["upstream-example", "visual-failed"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/button-group/popover-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
     a11y: { test: "todo" },
     docs: {
       description: {

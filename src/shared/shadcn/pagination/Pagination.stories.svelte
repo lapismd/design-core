@@ -29,7 +29,11 @@
     );
     await expect(canvas.getByText("Page 3 of 10")).toBeVisible();
   }}
-  tags={["visual-failed"]}
+  tags={["visual-pending"]}
+
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/pagination/navigates-pages-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
+  }}
 >
   {#snippet template()}
     <div class="flex flex-col items-center gap-3">

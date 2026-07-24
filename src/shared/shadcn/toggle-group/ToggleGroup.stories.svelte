@@ -27,6 +27,10 @@
     await expect(canvas.getByRole("status")).toHaveTextContent("center");
   }}
   tags={["visual-ready"]}
+
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/toggle-group/selects-an-alignment-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
+  }}
 >
   {#snippet template()}
     <div class="flex flex-col gap-2">

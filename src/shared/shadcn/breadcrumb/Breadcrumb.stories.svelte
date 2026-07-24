@@ -22,7 +22,11 @@
     await expect(canvas.getByLabelText("breadcrumb")).toBeVisible();
     await expect(canvas.getByText("Expenses")).toBeVisible();
   }}
-  tags={["visual-failed"]}
+  tags={["visual-pending"]}
+
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/breadcrumb/account-path-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
+  }}
 >
   {#snippet template()}
     <Breadcrumb.Root>

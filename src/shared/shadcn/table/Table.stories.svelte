@@ -22,7 +22,11 @@
     await expect(canvas.getByText("INV001")).toBeVisible();
     await expect(canvas.getByText("$250.00")).toBeVisible();
   }}
-  tags={["visual-failed"]}
+  tags={["visual-pending"]}
+
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/table/invoice-rows-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
+  }}
 >
   {#snippet template()}
     <Table.Root>

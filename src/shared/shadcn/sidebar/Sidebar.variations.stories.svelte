@@ -25,8 +25,9 @@
 <Story
   name="Your First Sidebar"
   exportName="YourFirstSidebar"
-  tags={["upstream-example", "visual-failed"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/sidebar/your-first-sidebar-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
     a11y: { test: "todo" },
     docs: {
       description: {
@@ -53,6 +54,7 @@
   exportName="SidebarHeader"
   tags={["upstream-example", "visual-failed"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/sidebar/sidebar-header-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
     a11y: { test: "todo" },
     docs: {
       description: {
@@ -79,6 +81,7 @@
   exportName="SidebarFooter"
   tags={["upstream-example", "visual-failed"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/sidebar/sidebar-footer-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
     a11y: { test: "todo" },
     docs: {
       description: {
@@ -105,6 +108,7 @@
   exportName="SidebarGroup"
   tags={["upstream-example", "visual-failed"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/sidebar/sidebar-group-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
     a11y: { test: "todo" },
     docs: {
       description: {
@@ -131,6 +135,7 @@
   exportName="CollapsibleSidebarGroup"
   tags={["upstream-example", "visual-failed"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/sidebar/collapsible-sidebar-group-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
     a11y: { test: "todo" },
     docs: {
       description: {
@@ -157,6 +162,7 @@
   exportName="SidebarGroupaction"
   tags={["upstream-example", "visual-failed"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/sidebar/sidebar-groupaction-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
     a11y: { test: "todo" },
     docs: {
       description: {
@@ -183,6 +189,7 @@
   exportName="SidebarMenu"
   tags={["upstream-example", "visual-failed"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/sidebar/sidebar-menu-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
     a11y: { test: "todo" },
     docs: {
       description: {
@@ -207,8 +214,9 @@
 <Story
   name="DropdownMenu"
   exportName="Dropdownmenu"
-  tags={["upstream-example", "visual-failed"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/sidebar/dropdownmenu-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
     a11y: { test: "todo" },
     docs: {
       description: {
@@ -235,6 +243,7 @@
   exportName="SidebarMenusub"
   tags={["upstream-example", "visual-failed"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/sidebar/sidebar-menusub-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
     a11y: { test: "todo" },
     docs: {
       description: {
@@ -261,6 +270,7 @@
   exportName="CollapsibleSidebarMenu"
   tags={["upstream-example", "visual-failed"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/sidebar/collapsible-sidebar-menu-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
     a11y: { test: "todo" },
     docs: {
       description: {
@@ -287,6 +297,7 @@
   exportName="SidebarMenubadge"
   tags={["upstream-example", "visual-failed"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/sidebar/sidebar-menubadge-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
     a11y: { test: "todo" },
     docs: {
       description: {
@@ -311,8 +322,9 @@
 <Story
   name="Controlled Sidebar"
   exportName="ControlledSidebar"
-  tags={["upstream-example", "visual-failed"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/sidebar/controlled-sidebar-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
     a11y: { test: "todo" },
     docs: {
       description: {

@@ -30,6 +30,10 @@
   }}
 
   tags={["visual-ready"]}
+
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/field/labeled-input-with-description-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
+  }}
 >
   {#snippet template()}
     <Field.FieldGroup class="max-w-sm">

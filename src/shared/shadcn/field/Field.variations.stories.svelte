@@ -22,8 +22,9 @@
 <Story
   name="Preview"
   exportName="Preview"
-  tags={["upstream-example", "visual-failed"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/field/preview-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
     a11y: { test: "todo" },
     docs: {
       source: {
@@ -46,6 +47,7 @@
   exportName="Input"
   tags={["upstream-example", "visual-ready"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/field/input-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
     a11y: { test: "todo" },
     docs: {
       source: {
@@ -68,6 +70,7 @@
   exportName="Textarea"
   tags={["upstream-example", "visual-ready"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/field/textarea-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
     a11y: { test: "todo" },
     docs: {
       source: {
@@ -90,6 +93,7 @@
   exportName="Select"
   tags={["upstream-example", "visual-ready"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/field/select-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
     a11y: { test: "todo" },
     docs: {
       source: {
@@ -112,6 +116,7 @@
   exportName="Fieldset"
   tags={["upstream-example", "visual-ready"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/field/fieldset-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
     a11y: { test: "todo" },
     docs: {
       source: {
@@ -132,8 +137,9 @@
 <Story
   name="Checkbox"
   exportName="Checkbox"
-  tags={["upstream-example", "visual-failed"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/field/checkbox-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
     a11y: { test: "todo" },
     docs: {
       source: {
@@ -156,6 +162,7 @@
   exportName="Switch"
   tags={["upstream-example", "visual-ready"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/field/switch-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
     a11y: { test: "todo" },
     docs: {
       source: {
@@ -176,8 +183,9 @@
 <Story
   name="Field Group"
   exportName="FieldGroup"
-  tags={["upstream-example", "visual-failed"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/field/field-group-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
     a11y: { test: "todo" },
     docs: {
       description: {
@@ -204,6 +212,7 @@
   exportName="ResponsiveLayout"
   tags={["upstream-example", "visual-ready"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/field/responsive-layout-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
     a11y: { test: "todo" },
     docs: {
       description: {

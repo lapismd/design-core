@@ -18,8 +18,9 @@
 <Story
   name="Preview"
   exportName="Preview"
-  tags={["upstream-example", "visual-failed"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/breadcrumb/preview-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
     a11y: { test: "todo" },
     docs: {
       source: {
@@ -40,8 +41,9 @@
 <Story
   name="Custom separator"
   exportName="CustomSeparator"
-  tags={["upstream-example", "visual-failed"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/breadcrumb/custom-separator-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
     a11y: { test: "todo" },
     docs: {
       description: {
@@ -66,8 +68,9 @@
 <Story
   name="Dropdown"
   exportName="Dropdown"
-  tags={["upstream-example", "visual-failed"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/breadcrumb/dropdown-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
     a11y: { test: "todo" },
     docs: {
       description: {
@@ -92,8 +95,9 @@
 <Story
   name="Collapsed"
   exportName="Collapsed"
-  tags={["upstream-example", "visual-failed"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/breadcrumb/collapsed-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
     a11y: { test: "todo" },
     docs: {
       description: {
@@ -118,8 +122,9 @@
 <Story
   name="Link component"
   exportName="LinkComponent"
-  tags={["upstream-example", "visual-failed"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/breadcrumb/link-component-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
     a11y: { test: "todo" },
     docs: {
       description: {

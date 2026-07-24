@@ -41,8 +41,10 @@ Provide **one** of:
 | `--component <name>` | Recipe story-title prefix when known (e.g. `button`), otherwise treat as story-id head (`shadcn-button` → `shadcn-button--`) |
 | `--prefix <p>`       | All leaf stories whose id starts with the normalized prefix                                                                  |
 
-Refuse `*` / `all` for `--component`. Prefer the Visual Delta panel for
-interactive one-off edits; use this CLI for bulk / scripted tag updates.
+Refuse `*` / `all` for `--component`. Prefer the Visual Delta panel header (**Skip visual tests** / **Include in
+visual tests**) for interactive one-off edits; use this CLI for bulk /
+scripted tag updates. The packaged addon CLI mirrors skip/include:
+`pnpm exec visual-delta skip|include --story-id <id>`.
 
 ## Examples
 

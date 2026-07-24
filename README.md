@@ -417,11 +417,13 @@ Superlist reference baselines.
 
 ### `skip-visual` and review tags from Visual Delta / CLI
 
-Panel **More → Skip visual tests** / **Include in visual tests** patches the
-current story’s CSF via `POST /__visual-delta/skip-visual`. Prefer that over
-hand-editing tags when excluding flake. Document permanent skips in the story.
-Adding `skip-visual` clears review tags; review / Update baselines stay disabled
-while skipped.
+With **no baseline**, the Visual Delta header shows **Skip visual tests** next
+to Create visual; when already skipped it shows **Include in visual tests**.
+Stories that already have baselines keep skip/include under **More**. Both patch
+CSF via `POST /__visual-delta/skip-visual`. Prefer that over hand-editing tags
+when excluding flake. Document permanent skips in the story. Adding
+`skip-visual` clears review tags; review / Update baselines stay disabled while
+skipped.
 
 For bulk / scripted tag updates (component or prefix scope), use the host CLI:
 
@@ -657,7 +659,7 @@ Visual Delta review/skip chips (icons, colors, stacking): see
 | Tag                      | Meaning                                                                                                                                                                    |
 | ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `skip-test`              | Exclude from Storybook Vitest (document reason)                                                                                                                            |
-| `skip-visual`            | Exclude from Playwright visual suite (document reason). Toggle from Visual Delta panel **More → Skip visual tests** / **Include in visual tests**, or `pnpm ui visual:tag` |
+| `skip-visual`            | Exclude from Playwright visual suite (document reason). Toggle from Visual Delta header (empty / skipped stories) or **More**, or `pnpm ui visual:tag` / `visual-delta skip` / `include` |
 | `upstream-example`       | Generated from upstream docs examples                                                                                                                                      |
 | `visual-state`           | Explicit visual-state story                                                                                                                                                |
 | `visual-pending`         | Baseline exists; awaiting human approval (Visual Delta)                                                                                                                    |
