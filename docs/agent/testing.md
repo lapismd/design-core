@@ -56,8 +56,13 @@ Committed under `tests/visual/storybook.spec.ts-snapshots/`.
 - Tag `skip-visual` only when pixel flake cannot be stabilized (document why).
   Prefer Visual Delta panel **More → Skip visual tests** /
   **Include in visual tests** (`POST /__visual-delta/skip-visual`) over
-  hand-editing CSF. Adding skip clears review tags; skipped stories are
-  excluded from Playwright / Testing Module runs.
+  hand-editing CSF. For bulk updates: `pnpm ui visual:tag skip|include|review
+…` (see `pnpm ui visual:tag --help`). Adding skip clears review tags; skipped
+  stories are excluded from Playwright / Testing Module runs. Review tags are
+  mutually exclusive.
+- Visual runs need a **complete** `storybook-static` (`index.json` +
+  `iframe.html`). Incomplete static hangs Playwright on 404s; `--skip-build`
+  still rebuilds when the build gate says reuse is unsafe.
 - v1 suite: light mode only, Chromium 1280×900 CSS viewport, deviceScaleFactor 3.
 
 ## Fava screen baselines (`Apps/Beancount/Screens`)

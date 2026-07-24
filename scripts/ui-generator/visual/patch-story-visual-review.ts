@@ -10,8 +10,12 @@ import {
   findStoryOpenTagEnd,
   sanitizeStoryName,
 } from "storybook-addon-visual-delta/node";
+import { baselinePngExistsForStoryId } from "../../../packages/storybook-addon-visual-delta/src/node/visual-sidecars.js";
+import { loadConfig } from "../config.js";
 import { log } from "../logger.js";
 import type { StoryIndexEntry } from "./snapshot-paths.js";
+
+const NO_BASELINE_FAILED_ERROR = "Cannot mark failed — no baseline screenshot";
 
 /** Prefer `name` over `exportName` — story ids use the human title slug. */
 function storyNameCandidates(attrs: string): string[] {
@@ -179,6 +183,28 @@ export function patchStoryVisualReviewStatus(options: {
     };
   }
 
+  if (options.status === "failed") {
+    const config = loadConfig(options.packageRoot);
+    const snapshotDir = path.isAbsolute(config.visual.snapshotDir)
+      ? config.visual.snapshotDir
+      : path.join(options.packageRoot, config.visual.snapshotDir);
+    if (
+      !baselinePngExistsForStoryId(
+        storyId,
+        options.packageRoot,
+        snapshotDir,
+        "nested-import",
+      )
+    ) {
+      return {
+        ok: false,
+        storyId,
+        status: options.status,
+        error: NO_BASELINE_FAILED_ERROR,
+      };
+    }
+  }
+
   const storiesPath = resolveStoriesPath(options.packageRoot, entry.importPath);
   if (!storiesPath) {
     return {
@@ -196,10 +222,7 @@ export function patchStoryVisualReviewStatus(options: {
     const presentReviewTags = (entry.tags ?? []).filter((tag) =>
       (VISUAL_REVIEW_TAGS as readonly string[]).includes(tag),
     );
-    if (
-      presentReviewTags.length === 1 &&
-      presentReviewTags[0] === desired
-    ) {
+    if (presentReviewTags.length === 1 && presentReviewTags[0] === desired) {
       return { ok: true, storyId, status: options.status };
     }
     return {
@@ -218,12 +241,15 @@ export function patchStoryVisualReviewStatus(options: {
 export function listStoryIdsForPrefix(
   packageRoot: string,
   storyIdPrefix: string,
+  options?: { includeSkipVisual?: boolean },
 ): string[] {
   const prefix = storyIdPrefix.trim();
   if (!prefix) return [];
+  const includeSkipVisual = Boolean(options?.includeSkipVisual);
   return loadStoryIndex(packageRoot)
     .filter((entry) => {
       if (!entry.id.startsWith(prefix)) return false;
+      if (includeSkipVisual) return true;
       return !(entry.tags ?? []).includes("skip-visual");
     })
     .map((entry) => entry.id);

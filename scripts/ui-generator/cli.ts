@@ -141,12 +141,15 @@ function usage(): string {
   pnpm ui docs:vendor [--ref shadcn-svelte@1.4.2]
   pnpm ui:refresh <component>
   pnpm test:visual:update --component <name>   # requires VISUAL_UPDATE_APPROVED=1
+  pnpm ui visual:tag skip|include --component <name>|--story-id <id>|--prefix <p>
+  pnpm ui visual:tag review --status pending|ready|approved|failed \\
+       --component <name>|--story-id <id>|--prefix <p>
 
 Agent conventions: pnpm ui guide
 Component docs:    pnpm ui components
 Docs MCP / llms:   via Storybook → http://localhost:9009/docs-mcp and /llms.txt
                    (fallback: pnpm ui mcp on :9010)
-CLI help:          pnpm ui guide --help | pnpm ui components --help
+CLI help:          pnpm ui guide --help | pnpm ui components --help | pnpm ui visual:tag --help
 `;
 }
 
@@ -164,6 +167,11 @@ function printGuideHelp(packageRoot: string): void {
 
 function printComponentsHelp(packageRoot: string): void {
   const help = loadCliHelp(packageRoot, "components");
+  console.log(help ?? usage());
+}
+
+function printVisualTagHelp(packageRoot: string): void {
+  const help = loadCliHelp(packageRoot, "visual-tag");
   console.log(help ?? usage());
 }
 
@@ -337,6 +345,59 @@ async function main() {
         skipBuild: asBooleanFlag(flags, "skip-build"),
         createOnly: asBooleanFlag(flags, "create-only"),
       });
+      break;
+    }
+    case "visual:tag":
+    case "visual-tag": {
+      if (help) {
+        if (json) {
+          printJson(
+            jsonOk("visual:tag", {
+              help: loadCliHelp(packageRoot, "visual-tag") ?? usage(),
+            }),
+          );
+        } else {
+          printVisualTagHelp(packageRoot);
+        }
+        return;
+      }
+
+      const actionRaw = positionals[0]?.trim();
+      if (
+        actionRaw !== "skip" &&
+        actionRaw !== "include" &&
+        actionRaw !== "review"
+      ) {
+        throw new GeneratorError(
+          "visual:tag requires action skip|include|review (see pnpm ui visual:tag --help)",
+          EXIT.invalidRequest,
+        );
+      }
+
+      const { runVisualTags } = await import("./pipeline/visual-tags.js");
+      const result = runVisualTags({
+        packageRoot,
+        action: actionRaw,
+        status:
+          typeof flags.get("status") === "string"
+            ? String(flags.get("status"))
+            : undefined,
+        component:
+          typeof flags.get("component") === "string"
+            ? String(flags.get("component"))
+            : undefined,
+        storyId:
+          typeof flags.get("story-id") === "string"
+            ? String(flags.get("story-id"))
+            : undefined,
+        prefix:
+          typeof flags.get("prefix") === "string"
+            ? String(flags.get("prefix"))
+            : undefined,
+      });
+      if (json) {
+        printJson(jsonOk("visual:tag", result));
+      }
       break;
     }
     case "inspect":
