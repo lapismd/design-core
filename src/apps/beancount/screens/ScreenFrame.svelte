@@ -54,7 +54,9 @@
       Account: "account-ledger",
       Dashboard: "dashboard",
       Editor: "editor",
-      Errors: "query",
+      // Fava's Errors route keeps its parent ledger selected; Query remains a
+      // sibling workspace navigation item rather than the active route.
+      Errors: "account-ledger",
       Holdings: "holdings",
       Journal: "journal",
       Query: "query",
