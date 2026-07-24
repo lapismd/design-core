@@ -125,6 +125,7 @@
   let selectedQuery = $state("all");
   let selectedAccount = $state("all");
   let openedResource = $state("");
+  let searchOpen = $state(false);
   let searchRequested = $state(false);
   let flatSelectedTagIds = $state(["home"]);
   let flatTagsPresentation = $state<"tree" | "flat">("flat");
@@ -148,6 +149,9 @@
     await expect(canvas.getByRole("status")).toHaveTextContent(
       "Search: requested.",
     );
+    await expect(
+      canvas.getByRole("button", { name: "Show ledger sidebar" }),
+    ).toHaveAttribute("aria-pressed", "true");
 
     await userEvent.click(
       canvas.getByRole("button", { name: "Expand shared-2026.beancount" }),
@@ -193,6 +197,7 @@
         {selectedTagIds}
         queryPicker={{ ...queryPicker, value: selectedQuery }}
         accountPicker={{ ...accountPicker, value: selectedAccount }}
+        {searchOpen}
         resources={[
           {
             id: "receipt",
@@ -231,8 +236,9 @@
         onResourceSelect={(id) => {
           openedResource = id;
         }}
-        onSearchRequest={() => {
-          searchRequested = true;
+        onSearchOpenChange={(open) => {
+          searchOpen = open;
+          searchRequested = open;
         }}
       />
     </div>

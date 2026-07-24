@@ -63,6 +63,7 @@
     queryPicker,
     accountPicker,
     resources = [],
+    searchOpen = false,
     ariaLabel = "Ledger workspace navigation",
     onViewChange,
     onLedgerSelect,
@@ -76,7 +77,7 @@
     onQueryChange,
     onAccountChange,
     onResourceSelect,
-    onSearchRequest,
+    onSearchOpenChange,
   }: {
     /** A ledger tree, usually a ledger file with page destinations as children. */
     ledgerItems: readonly WorkspaceTreeNavigationItem[];
@@ -98,6 +99,8 @@
     queryPicker?: LedgerWorkspacePicker;
     accountPicker?: LedgerWorkspacePicker;
     resources?: readonly LedgerWorkspaceResource[];
+    /** Host-owned search sidebar visibility. Its contents stay outside the catalog. */
+    searchOpen?: boolean;
     ariaLabel?: string;
     onViewChange?: (view: LedgerWorkspaceView) => void;
     onLedgerSelect?: (id: string) => void;
@@ -111,8 +114,8 @@
     onQueryChange?: (value: string) => void;
     onAccountChange?: (value: string) => void;
     onResourceSelect?: (id: string) => void;
-    /** Requests that the host open its application-owned search sidebar. */
-    onSearchRequest?: () => void;
+    /** Requests host-owned search sidebar visibility without importing Search. */
+    onSearchOpenChange?: (open: boolean) => void;
   } = $props();
 
   let ledgerSearch = $state("");
@@ -238,10 +241,11 @@
       variant="ghost"
       size="icon-sm"
       class="bc-ledger-workspace__search-sidebar"
-      aria-label="Show search sidebar"
-      title="Search ledgers"
-      disabled={!onSearchRequest}
-      onclick={() => onSearchRequest?.()}
+      aria-label={searchOpen ? "Show ledger sidebar" : "Show search sidebar"}
+      aria-pressed={searchOpen}
+      title={searchOpen ? "Show ledgers" : "Search ledgers"}
+      disabled={!onSearchOpenChange}
+      onclick={() => onSearchOpenChange?.(!searchOpen)}
     >
       <SearchIcon aria-hidden="true" />
     </Button>
