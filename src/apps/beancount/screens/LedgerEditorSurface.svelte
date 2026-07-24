@@ -34,6 +34,7 @@
     lines,
     headersCollapsedAll = false,
     activeLineNumber,
+    rulerColumn = 48,
     ariaLabel = "Ledger source preview",
   }: {
     /** Display-ready source lines; parsing and editing stay in the application adapter. */
@@ -42,6 +43,11 @@
     headersCollapsedAll?: boolean;
     /** Highlights the host-owned active line without creating an editor selection. */
     activeLineNumber?: number;
+    /**
+     * Zero-based source character offset before which the host wants a ruler.
+     * Supply `0` when the current display model has no currency alignment.
+     */
+    rulerColumn?: number;
     ariaLabel?: string;
   } = $props();
 
@@ -87,7 +93,12 @@
       </li>
     {/each}
   </ol>
-  <span class="bc-ledger-editor-surface__ruler" aria-hidden="true"></span>
+  <span
+    class="bc-ledger-editor-surface__ruler"
+    data-visible={rulerColumn > 0}
+    style={`--bc-ledger-editor-ruler-column: ${rulerColumn};`}
+    aria-hidden="true"
+  ></span>
 </section>
 
 <style>
@@ -162,6 +173,7 @@
     display: flex;
     align-items: baseline;
     min-width: 0;
+    padding-inline-start: var(--ui-beancount-space-5);
     font: inherit;
   }
 
@@ -200,10 +212,15 @@
     position: absolute;
     inset-block: 0;
     inset-inline-start: calc(
-      (var(--ui-beancount-space-5) * 2) + var(--ui-beancount-space-2) + 55ch
+      (var(--ui-beancount-space-5) * 2) + var(--ui-beancount-space-2) +
+        (var(--bc-ledger-editor-ruler-column) * 1ch)
     );
     border-inline-end: 1px dotted var(--ui-beancount-code-comment);
     opacity: 0.5;
     pointer-events: none;
+  }
+
+  .bc-ledger-editor-surface__ruler[data-visible="false"] {
+    display: none;
   }
 </style>

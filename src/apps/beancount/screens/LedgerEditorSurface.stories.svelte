@@ -20,32 +20,46 @@
 
 <Story
   name="Displays tokenized ledger source"
-  play={async ({ canvas }) => {
+  play={async ({ canvas, canvasElement }) => {
     await expect(canvas.getByText("Options")).toBeVisible();
     await expect(canvas.getByText('"Account Ledger"')).toBeVisible();
     await expect(canvas.getByText("Equity:Opening-Balances")).toBeVisible();
+    await expect(
+      canvasElement.querySelector(".bc-ledger-editor-surface__ruler"),
+    ).toHaveAttribute("data-visible", "true");
   }}
 >
   {#snippet template()}
     <div class="bc-ledger-editor-surface-story">
-      <LedgerEditorSurface lines={editorPreviewLines} activeLineNumber={1} />
+      <LedgerEditorSurface
+        lines={editorPreviewLines}
+        activeLineNumber={1}
+        rulerColumn={48}
+      />
     </div>
   {/snippet}
 </Story>
 
 <Story
-  name="Shows collapsed source headings"
-  play={async ({ canvas }) => {
+  name="Shows collapsed headings without a currency ruler"
+  play={async ({ canvas, canvasElement }) => {
     await expect(canvas.getByText("Options")).toBeVisible();
     await expect(canvas.getByText("Accounts")).toBeVisible();
     await expect(
       canvas.queryByText('"Account Ledger"'),
     ).not.toBeInTheDocument();
+    await expect(
+      canvasElement.querySelector(".bc-ledger-editor-surface__ruler"),
+    ).toHaveAttribute("data-visible", "false");
   }}
 >
   {#snippet template()}
     <div class="bc-ledger-editor-surface-story">
-      <LedgerEditorSurface lines={editorPreviewLines} headersCollapsedAll />
+      <LedgerEditorSurface
+        lines={editorPreviewLines}
+        headersCollapsedAll
+        rulerColumn={0}
+      />
     </div>
   {/snippet}
 </Story>
