@@ -8,7 +8,7 @@ import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
  * @param {{ code?: string, message: string, filename?: string, start?: { line: number, column: number } }} warning
  * @param {(warning: typeof warning) => void} _defaultHandler
  */
-function onwarn(warning, _defaultHandler) {
+function onwarn(warning, defaultHandler) {
   // vite-plugin-svelte may inject a global `*` selector; ignore that noise.
   if (
     warning.code === "css_unused_selector" &&
@@ -24,8 +24,16 @@ function onwarn(warning, _defaultHandler) {
     return;
   }
 
-  const loc = warning.filename
-    ? `${warning.filename}:${warning.start?.line ?? 0}:${warning.start?.column ?? 0}`
+  // Dependency packages (e.g. @storybook/addon-svelte-csf) can emit Svelte 5
+  // warnings we cannot patch; log them but do not fail the transform/build.
+  const file = warning.filename ?? "";
+  if (file.includes("node_modules") || file.includes(".pnpm")) {
+    defaultHandler(warning);
+    return;
+  }
+
+  const loc = file
+    ? `${file}:${warning.start?.line ?? 0}:${warning.start?.column ?? 0}`
     : "svelte";
   throw new Error(`[svelte] ${warning.code} at ${loc}: ${warning.message}`);
 }

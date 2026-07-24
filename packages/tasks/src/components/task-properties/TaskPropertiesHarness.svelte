@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { untrack } from "svelte";
   import type {
     TaskListReference,
     TaskPropertyMutation,
@@ -16,8 +17,8 @@
     currentListId?: string | null;
   } = $props();
 
-  let task = $state(initialTask);
-  let currentListId = $state(initialCurrentListId);
+  let task = $state(untrack(() => initialTask));
+  let currentListId = $state(untrack(() => initialCurrentListId));
   let lastChange = $state<TaskPropertyMutation | null>(null);
 
   function handlePropertyChange(

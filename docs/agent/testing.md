@@ -26,10 +26,10 @@ with the catalog — do not invent props or skip visual compare.
    failure.
 5. **Before commit** — `pnpm checks` (fmt, `svelte-check --fail-on-warnings`,
    unit, storybook, static build, visual). Shorter: `pnpm storybook:check`.
-   Vite / Storybook also fail transforms on Svelte compiler warnings
-   (`svelte.config.js` `onwarn`), except known-safe noise (`*` unused
-   selectors; global-only styles on bits-ui/shadcn wrappers with no
-   scopable HTML).
+   Vite / Storybook also fail transforms on first-party Svelte compiler
+   warnings (`svelte.config.js` `onwarn`), except known-safe noise (`*`
+   unused selectors; global-only styles on bits-ui/shadcn wrappers with
+   no scopable HTML). Warnings from `node_modules` are logged only.
 6. **Commit** — record the verified slice immediately (see `pnpm ui guide vcs`).
    Prefer `jj commit` when Jujutsu is available; otherwise use Git.
 
