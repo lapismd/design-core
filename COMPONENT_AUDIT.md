@@ -286,6 +286,9 @@ No filesystem, ledger, or route access — props and callbacks only.
 - `IngestionReviewTable` — model-driven queue for grouped import proposals
   with selection, disclosure, forms `SegmentedControl` filters, and a
   callback-only Fava Records no-imports panel
+- `IngestionReviewToolbar` — controlled Fava Records header actions; the host
+  owns review-ledger routing, acceptance, source selection, group state, AI,
+  and source configuration operations
 - `HoldingsTable` — controlled Fava-style holdings display, with account
   avatars, locally sortable display columns, and `PagePagination`
 - `IntervalTreeTable` — display-model-driven multi-period account comparison
@@ -316,6 +319,7 @@ filter semantics.
   routing state
 - `SourceAccountGroups` — controlled source-account and unassigned-account
   rows with host-owned disclosure/setup callbacks
+- `ImportAccountsToolbar` — controlled Fava Import Accounts Sync all request
 - `SourceToolbar` — controlled Sync all, YAML mode, edit, and history requests;
   the host owns each operation and source state
 
@@ -323,6 +327,7 @@ filter semantics.
 
 - `RuleList` — controlled rule-list card, active-state request, and empty
   run-history display; host owns rule persistence, action menus, and navigation
+- `RulesToolbar` — controlled Fava Rules apply-all and add-rule header requests
 
 ### Screens + Fava capture harness
 
@@ -332,6 +337,10 @@ Full-viewport compositions (1280×900) for aligning catalog UI against live Fava
 captures. Tagged `fava-reference-visual` + `skip-visual` until bodies are
 honest enough for Playwright regression. Visual Delta reads the same PNGs the
 capture harness writes.
+
+- `EditorToolbar` — controlled Fava-aligned collapse/expand headings and save
+  header actions; the host owns the editor runtime, File/Edit menus, persistence,
+  and CodeMirror integration
 
 **Harness** (`scripts/beancount-screens/`):
 
@@ -381,6 +390,8 @@ data into the display models already exported from `apps/beancount`.
 - Low-level tree parts still used by Fava wrappers: `AccountCell`,
   `AccountCellHeader`, `Diff`, `Errors`
 
-**Follow-up (beancount-js-studio):** point Fava imports at
-`@stevejuma/ui/apps/beancount` (+ host shadcn/forms/filter) and delete the
-paused `@beancount-js/ui` catalog once parity is confirmed.
+**Follow-up (`fava-beta` only):** after the Plan's component, visual, and
+integration gates are met, clone a clean Fava revision into `packages/fava-beta`
+and point its presentation adapters at `@stevejuma/ui/apps/beancount` (+ host
+shadcn/forms/filter). Keep `packages/fava` unchanged and runnable as the
+side-by-side reference; do not rewire or delete it.

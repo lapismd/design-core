@@ -67,6 +67,18 @@ Visual Delta at or below 0.1% before removing `skip-visual`.
 | Import accounts  | ✅ loaded      | 🟡 partial             | Fava source-account and unassigned rows, Sync all, and source-action callbacks complete; align account details and production setup adapters, then review Visual Delta ≤0.1%                  |
 | Rules            | ✅ loaded      | 🟡 partial             | Fava list, header apply/add callbacks, active callback, host menu, and run-history model complete; add production adapters, then review Visual Delta ≤0.1%                                    |
 
+## Component inventory
+
+The detailed component-to-Fava inventory and destination classification lives in
+[`COMPONENT_AUDIT.md`](../../../COMPONENT_AUDIT.md); this plan tracks its gates
+and screen-level alignment status.
+
+| Inventory lane  | Current evidence                                                                                                                           | Exit condition                                                                            |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------- |
+| Catalog surface | 69 Beancount components and 56 colocated story modules                                                                                     | Every promoted surface has a display-model contract and a tested story                    |
+| Fava mapping    | Reusable presentation components map to the catalog; route, persistence, CodeMirror, and ingestion adapters stay in Fava until `fava-beta` | `fava-beta` adapters consume the catalog without changing `packages/fava`                 |
+| Styling         | `pnpm beancount:tailwind:check` passes across all Beancount sources and stories                                                            | Keep the guard green for every slice; no Tailwind utility strings may enter the app layer |
+
 ## Styling migration inventory
 
 The first audit found **971** class attributes across **102 of 105** Beancount
