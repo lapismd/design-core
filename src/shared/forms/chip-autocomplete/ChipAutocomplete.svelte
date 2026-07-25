@@ -115,7 +115,7 @@
                 removeItem(item);
               }}
             >
-              <XIcon />
+              <XIcon size={12} strokeWidth={2} aria-hidden="true" />
             </button>
           </span>
           <Tooltip.Content

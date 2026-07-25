@@ -77,6 +77,7 @@
   width: 1.05rem;
   height: 1.05rem;
   place-items: center;
+  overflow: hidden;
   border: 0;
   border-radius: 999px;
   background: color-mix(in srgb, var(--ui-form-accent) 12%, transparent);
@@ -85,9 +86,11 @@
   padding: 0;
 }
 
-.chip :global(svg) {
+.chip button svg {
   width: 0.72rem;
   height: 0.72rem;
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .chip-input {
@@ -105,14 +108,14 @@
     color-mix(in srgb, var(--destructive, #dc2626) 55%, transparent);
 }
 
-.chip-input :global(input) {
+.chip-input input {
   border: 0 !important;
   box-shadow: none !important;
   outline: 0;
   padding: 0.2rem;
 }
 
-.chip-autocomplete.is-embedded .chip-input :global(input) {
+.chip-autocomplete.is-embedded .chip-input input {
   padding: 0;
 }
 
