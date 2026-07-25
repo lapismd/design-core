@@ -1,7 +1,12 @@
 @import "../form.tokens.css";
 
+/*
+ * Plain CSS (imported, not Svelte-scoped): do not wrap selectors in :global() —
+ * browsers drop those rules, so the month grid never paints.
+ */
 .task-due-calendar {
   width: 100%;
+  max-width: 16.5rem;
   padding: 0;
 }
 
@@ -11,21 +16,21 @@
   width: 100%;
 }
 
-.task-due-calendar :global(.task-due-calendar__header) {
+.task-due-calendar__header {
   display: grid;
   grid-template-columns: 1.75rem minmax(0, 1fr) 1.75rem;
   align-items: center;
   gap: 0.25rem;
 }
 
-.task-due-calendar :global(.task-due-calendar__heading) {
+.task-due-calendar__heading {
   text-align: center;
   font-size: 0.82rem;
   font-weight: 700;
   color: var(--foreground);
 }
 
-.task-due-calendar :global(.task-due-calendar__nav) {
+.task-due-calendar__nav {
   display: inline-grid;
   place-items: center;
   width: 1.75rem;
@@ -38,30 +43,30 @@
   padding: 0;
 }
 
-.task-due-calendar :global(.task-due-calendar__nav:hover),
-.task-due-calendar :global(.task-due-calendar__nav:focus-visible) {
+.task-due-calendar__nav:hover,
+.task-due-calendar__nav:focus-visible {
   background: color-mix(in srgb, var(--border) 55%, transparent);
   color: var(--foreground);
   outline: 0;
 }
 
-.task-due-calendar :global(.task-due-calendar__nav svg) {
+.task-due-calendar__nav svg {
   width: 0.9rem;
   height: 0.9rem;
 }
 
-.task-due-calendar :global(.task-due-calendar__grid) {
+.task-due-calendar__grid {
   width: 100%;
 }
 
-.task-due-calendar :global(.task-due-calendar__weekdays),
-.task-due-calendar :global(.task-due-calendar__week) {
+.task-due-calendar__weekdays,
+.task-due-calendar__week {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 0.1rem;
 }
 
-.task-due-calendar :global(.task-due-calendar__weekday) {
+.task-due-calendar__weekday {
   text-align: center;
   font-size: 0.68rem;
   font-weight: 650;
@@ -69,13 +74,13 @@
   padding: 0.15rem 0;
 }
 
-.task-due-calendar :global(.task-due-calendar__cell) {
+.task-due-calendar__cell {
   display: grid;
   place-items: center;
   padding: 0;
 }
 
-.task-due-calendar :global(.task-due-calendar__day) {
+.task-due-calendar__day {
   display: inline-grid;
   place-items: center;
   width: 1.65rem;
@@ -90,24 +95,23 @@
   padding: 0;
 }
 
-.task-due-calendar :global(.task-due-calendar__day:hover),
-.task-due-calendar :global(.task-due-calendar__day:focus-visible) {
+.task-due-calendar__day:hover,
+.task-due-calendar__day:focus-visible {
   background: color-mix(in srgb, var(--border) 55%, transparent);
   outline: 0;
 }
 
-.task-due-calendar :global([data-selected] .task-due-calendar__day) {
+.task-due-calendar [data-selected] .task-due-calendar__day {
   background: color-mix(in srgb, var(--primary) 88%, transparent);
   color: var(--background);
   font-weight: 700;
 }
 
-.task-due-calendar
-  :global([data-today]:not([data-selected]) .task-due-calendar__day) {
+.task-due-calendar [data-today]:not([data-selected]) .task-due-calendar__day {
   box-shadow: inset 0 0 0 1px
     color-mix(in srgb, var(--primary) 45%, transparent);
 }
 
-.task-due-calendar :global([data-outside-month] .task-due-calendar__day) {
+.task-due-calendar [data-outside-month] .task-due-calendar__day {
   color: color-mix(in srgb, var(--muted-foreground) 72%, transparent);
 }
