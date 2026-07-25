@@ -176,8 +176,13 @@
 .ui-filter-command-picker__group {
   display: grid;
   min-width: 0;
-  gap: 0.125rem;
   padding: 0.25rem;
+}
+
+.ui-filter-command-picker__group-items {
+  display: grid;
+  gap: 0.25rem;
+  min-width: 0;
 }
 
 .ui-filter-command-picker__heading {

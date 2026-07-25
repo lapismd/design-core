@@ -356,7 +356,9 @@
                 value="references"
                 forceMount
               >
-                <CommandPrimitive.GroupItems>
+                <CommandPrimitive.GroupItems
+                  class="cv-reference-command-group-items"
+                >
                   {#each references as reference (reference.ref)}
                     <CommandPrimitive.Item
                       class={[
@@ -403,7 +405,9 @@
                 value="create"
                 forceMount
               >
-                <CommandPrimitive.GroupItems>
+                <CommandPrimitive.GroupItems
+                  class="cv-reference-command-group-items"
+                >
                   <CommandPrimitive.Item
                     class={[
                       "cv-reference-command-item",

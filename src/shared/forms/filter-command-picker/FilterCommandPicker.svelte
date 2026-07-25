@@ -249,7 +249,9 @@
                 >
                   {label}
                 </CommandPrimitive.GroupHeading>
-                <CommandPrimitive.GroupItems>
+                <CommandPrimitive.GroupItems
+                  class="ui-filter-command-picker__group-items"
+                >
                   {#each filteredOptions as option (option.value)}
                     <CommandPrimitive.Item
                       class="ui-filter-command-picker__item"
@@ -316,7 +318,9 @@
                 >
                   {searchActionGroupLabel}
                 </CommandPrimitive.GroupHeading>
-                <CommandPrimitive.GroupItems>
+                <CommandPrimitive.GroupItems
+                  class="ui-filter-command-picker__group-items"
+                >
                   <CommandPrimitive.Item
                     class="ui-filter-command-picker__item ui-filter-command-picker__item--create"
                     value={`__search_action__:${trimmedSearch}`}
@@ -344,7 +348,9 @@
                 value="create"
                 forceMount
               >
-                <CommandPrimitive.GroupItems>
+                <CommandPrimitive.GroupItems
+                  class="ui-filter-command-picker__group-items"
+                >
                   <CommandPrimitive.Item
                     class="ui-filter-command-picker__item ui-filter-command-picker__item--create"
                     value={`__create__:${trimmedSearch}`}

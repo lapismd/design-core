@@ -367,8 +367,13 @@
 .cv-reference-command-group {
   display: grid;
   min-width: 0;
-  gap: 0.125rem;
   padding: 0.25rem;
+}
+
+.cv-reference-command-group-items {
+  display: grid;
+  gap: 0.25rem;
+  min-width: 0;
 }
 
 .cv-reference-command-item {
