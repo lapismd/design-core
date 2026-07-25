@@ -1,8 +1,10 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, userEvent, waitFor } from "storybook/test";
+  import { expect, userEvent, waitFor, within } from "storybook/test";
+  import OverlayChipDemo from "storybook-addon-visual-delta/src/stories/OverlayChipDemo.svelte";
   import OverlaySessionDemo from "storybook-addon-visual-delta/src/stories/OverlaySessionDemo.svelte";
   import SplitInsetDemo from "storybook-addon-visual-delta/src/stories/SplitInsetDemo.svelte";
+  import { isPreviewChipVisible } from "storybook-addon-visual-delta/src/shared/preview-chip.js";
 
   const { Story } = defineMeta({
     title: "Visual Delta/Compare Alignment",
@@ -88,5 +90,43 @@
 >
   {#snippet template()}
     <OverlaySessionDemo />
+  {/snippet}
+</Story>
+
+<!--
+  Baseline chip must sit on the overlay image for left/right/above/below
+  (split) and center — same helper the preview overlay uses.
+-->
+<Story
+  name="Baseline chip on overlay placements"
+  play={async ({ canvas }) => {
+    const demo = await waitFor(() => canvas.getByTestId("overlay-chip-demo"));
+    const scope = within(demo);
+
+    await waitFor(() => {
+      expect(demo.getAttribute("data-visible-chips")).toBe("5");
+    });
+    await expect(scope.getByTestId("visible-chip-count")).toHaveTextContent(
+      "5",
+    );
+
+    for (const placement of ["above", "left", "center", "right", "below"]) {
+      const cell = scope.getByTestId(`chip-placement-${placement}`);
+      const overlay = within(cell).getByTestId(`demo-overlay-${placement}`);
+      const chip = within(overlay).getByTestId("baseline-overlay-chip");
+      await expect(chip).toHaveTextContent("Baseline");
+      expect(chip.parentElement).toBe(overlay);
+      expect(isPreviewChipVisible(chip)).toBe(true);
+      if (placement !== "center") {
+        const pane = within(cell).getByTestId(
+          `demo-baseline-pane-${placement}`,
+        );
+        expect(pane.contains(overlay)).toBe(true);
+      }
+    }
+  }}
+>
+  {#snippet template()}
+    <OverlayChipDemo />
   {/snippet}
 </Story>
