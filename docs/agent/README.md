@@ -16,6 +16,7 @@ pnpm ui:components <name>     # alias
 
 Topics live in this directory as markdown with YAML frontmatter (`id`, `title`,
 `summary`, `sources`). They compose `AGENTS.md`, `README.md`, `FORMS.md`,
+[`styles.md`](../../styles.md) (shared native-CSS / token policy),
 `COMPONENT_AUDIT.md`, and Storybook guidance MDX rather than replacing them.
 
 Per-component docs are not topics here — use `pnpm ui components`.

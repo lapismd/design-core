@@ -8,8 +8,9 @@ recreate a similar Storybook catalog (addons, Visual Delta, sidebar review
 badges, scripts, MCP). The [Visual Delta setup](#visual-delta-setup-this-host)
 section plus the [recreate recipe](#recipe-recreate-a-similar-storybook-setup)
 are the single source of truth for that workflow. For package layers and
-day-to-day UI conventions, also use `pnpm ui guide` and
-[`AGENTS.md`](./AGENTS.md). Deep addon API:
+day-to-day UI conventions, also use `pnpm ui guide`,
+[`AGENTS.md`](./AGENTS.md), and [`styles.md`](./styles.md) (tokens + native CSS
+policy). Deep addon API:
 [`packages/storybook-addon-visual-delta/README.md`](./packages/storybook-addon-visual-delta/README.md).
 
 ## Layout

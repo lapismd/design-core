@@ -9,12 +9,13 @@ tests to validate the change. Human-oriented package overview and command list:
 Before inventing workflows, load package conventions offline via the CLI:
 
 1. `pnpm ui guide` — topic index and reading order
-2. `pnpm ui guide layers` — shadcn vs forms vs filter vs apps vs tasks
-3. `pnpm ui guide shadcn` — `ui:add` / inspect / docs sync (never raw shadcn CLI)
-4. `pnpm ui guide forms` — structured forms vs shadcn controls
-5. `pnpm ui guide testing` — stories, checks, and visual baselines after a change
-6. `pnpm ui guide vcs` — commit after each verified change (prefer `jj` when available)
-7. `pnpm ui components` / `pnpm ui components <layer/id>` — list or show local
+2. [`styles.md`](./styles.md) — native CSS, tokens, no Tailwind in sources
+3. `pnpm ui guide layers` — shadcn vs forms vs filter vs apps vs tasks
+4. `pnpm ui guide shadcn` — `ui:add` / inspect / docs sync (never raw shadcn CLI)
+5. `pnpm ui guide forms` — structured forms vs shadcn controls
+6. `pnpm ui guide testing` — stories, checks, and visual baselines after a change
+7. `pnpm ui guide vcs` — commit after each verified change (prefer `jj` when available)
+8. `pnpm ui components` / `pnpm ui components <layer/id>` — list or show local
    usage and examples across shadcn, forms, filter, AI, apps, and
    `@stevejuma/tasks` (filter with `--layer`)
 
