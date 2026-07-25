@@ -5,8 +5,6 @@
     SearchFilterBar,
     createDemoLedgerFilterSyntax,
   } from "@stevejuma/ui/filter";
-  import FormField from "../form-field/FormField.svelte";
-  import FormSectionHeader from "../form-section-header/FormSectionHeader.svelte";
   import {
     FilterCommandPicker,
     type FilterCommandOption,
@@ -18,7 +16,7 @@
       docs: {
         description: {
           component:
-            "Composition example: `@stevejuma/ui/filter` SearchFilterBar inside form chrome. The bar is owned by the filter layer — forms only compose it.",
+            "Composition example: `@stevejuma/ui/filter` SearchFilterBar with toolbar FilterCommandPicker pills (no FormField wrapper).",
         },
       },
     },
@@ -52,16 +50,7 @@
   }}
 >
   {#snippet template()}
-    <div class="cv-structured-form mx-auto max-w-2xl rounded-md border p-4">
-      <FormSectionHeader
-        title="Inbox"
-        index={0}
-        total={1}
-        editable={false}
-        movable={false}
-        removable={false}
-        titleToggleable
-      />
+    <div class="mx-auto max-w-3xl p-4">
       <SearchFilterBar
         value={query}
         inputMode="filter-query"
@@ -86,21 +75,19 @@
         }}
       >
         {#snippet filters()}
-          <FormField label="Status" as="div" align="middle">
-            <FilterCommandPicker
-              label="Status"
-              ariaLabel="Status"
-              options={STATUS_OPTIONS}
-              value={status}
-              onChange={(next) => {
-                status = next;
-                if (next && next !== "all") query = `status:${next}`;
-              }}
-            />
-          </FormField>
+          <FilterCommandPicker
+            label="Status"
+            ariaLabel="Filter by status"
+            options={STATUS_OPTIONS}
+            value={status}
+            onChange={(next) => {
+              status = next;
+              if (next && next !== "all") query = `status:${next}`;
+            }}
+          />
         {/snippet}
       </SearchFilterBar>
-      <output class="text-muted-foreground mt-3 block text-sm">
+      <output class="text-muted-foreground mt-3 block text-center text-sm">
         Query: {query || "(empty)"}
       </output>
     </div>

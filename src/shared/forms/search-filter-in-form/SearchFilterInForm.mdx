@@ -1,31 +1,37 @@
-import { Meta, Canvas, Source } from "@storybook/addon-docs/blocks";
+import { Meta, Canvas, Controls, Primary, Source } from "@storybook/addon-docs/blocks";
 import * as Stories from "./SearchFilterInForm.stories.svelte";
 
 <Meta of={Stories} />
 
-# Search filter in a form
+# Search Filter in a Form
 
 Composition-only example. `SearchFilterBar` and the filter-query language live
-in `@stevejuma/ui/filter`. Forms supply row chrome (`FormField`,
-`FormSectionHeader`) and facet pickers (`FilterCommandPicker`).
+in `@stevejuma/ui/filter`. Forms supply toolbar filter pills via
+`FilterCommandPicker` (no `FormField` wrapper — same as Applications board
+filters).
 
-See [Filter/Guidance](?path=/docs/filter-guidance--docs) and
-[Filter/Search Filter Bar](?path=/docs/filter-search-filter-bar--docs).
+## When to use
+
+- Toolbar search above a list or board that also has structured filter controls.
+
+## When not to use
+
+- Do not wrap toolbar filter pills in `FormField`.
 
 ## Usage
 
 <Source
   language="ts"
   code={`import { SearchFilterBar } from "@stevejuma/ui/filter";
-import { FormField, FilterCommandPicker } from "@stevejuma/ui/forms";
+import { FilterCommandPicker } from "@stevejuma/ui/forms";
 
 <SearchFilterBar inputMode="filter-query" filterSyntax={syntax} value={query} …>
   {#snippet filters()}
-    <FormField label="Status" as="div" align="middle">
-      <FilterCommandPicker … />
-    </FormField>
+    <FilterCommandPicker label="Status" options={statusOptions} value={status} onChange={…} />
   {/snippet}
 </SearchFilterBar>`}
 />
 
-<Canvas of={Stories.ToolbarSearch} meta={Stories} />
+<Primary />
+<Controls />
+<Canvas of={Stories.ToolbarSearch} />
