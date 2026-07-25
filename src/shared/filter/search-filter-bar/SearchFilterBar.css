@@ -718,6 +718,52 @@
   display: contents !important;
 }
 
+/*
+ * FormField is form-row chrome (underline, 1rem column gap, tall center label).
+ * Inside the filter toolbar it must read as an inline labelled chip, not a row.
+ */
+.cv-search-filter-bar__filters > .cv-form-field,
+.cv-search-filter-bar__collapsed-filters > .cv-form-field {
+  display: inline-grid;
+  width: auto;
+  grid-template-columns: max-content max-content;
+  align-items: center;
+  column-gap: 0.4rem;
+  border-bottom: 0;
+}
+
+.cv-search-filter-bar__filters > .cv-form-field > span,
+.cv-search-filter-bar__collapsed-filters > .cv-form-field > span {
+  display: flex;
+  min-height: 2rem;
+  align-items: center;
+  padding-top: 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.cv-search-filter-bar__filters > .cv-form-field > .cv-form-field-control,
+.cv-search-filter-bar__collapsed-filters > .cv-form-field > .cv-form-field-control {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+}
+
+/* Kanban headers center the bar; form chrome keeps it start-aligned. */
+.cv-structured-form > .cv-search-filter-bar,
+.ui-structured-form > .cv-search-filter-bar {
+  justify-content: flex-start;
+  padding-inline: 0;
+}
+
+.cv-structured-form > .cv-search-filter-bar > .cv-search-filter-bar__content,
+.ui-structured-form > .cv-search-filter-bar > .cv-search-filter-bar__content {
+  justify-content: flex-start;
+  width: 100%;
+  max-width: none;
+}
+
 .cv-search-filter-bar__collapsed-filters [data-active="true"],
 .cv-search-filter-bar__filters [data-active="true"] {
   border-color: color-mix(

@@ -86,7 +86,7 @@
         }}
       >
         {#snippet filters()}
-          <FormField label="Status" as="div" align="center">
+          <FormField label="Status" as="div" align="middle">
             <FilterCommandPicker
               label="Status"
               ariaLabel="Status"
