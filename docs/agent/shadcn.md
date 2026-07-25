@@ -30,7 +30,8 @@ colocated stories, tokens, provenance, and docs artifacts.
 - Restyle via `--ui-<family>-*` CSS variables (forms pattern), not Tailwind
   `cn()` utility merges. Defaults ship in `<family>.tokens.css`.
 - Do not reintroduce Tailwind utility class strings into converted components or
-  Beancount/CV app sources. `pnpm check:no-tailwind` (in `pnpm checks`) fails
+  Beancount/CV app sources, shared forms/filter/AI, and tasks.
+  `pnpm check:no-tailwind` (in `pnpm checks`) fails
   closed.
 
 ## Workflow
