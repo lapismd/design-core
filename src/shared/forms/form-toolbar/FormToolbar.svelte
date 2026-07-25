@@ -1,4 +1,5 @@
 <script lang="ts">
+  import "./FormToolbar.css";
   import ChevronsDownUpIcon from "@lucide/svelte/icons/chevrons-down-up";
   import ChevronsUpDownIcon from "@lucide/svelte/icons/chevrons-up-down";
   import type { Snippet } from "svelte";
@@ -56,53 +57,3 @@
     </div>
   {/if}
 </div>
-
-<style>
-  .ui-form-toolbar {
-    display: flex;
-    min-width: 0;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.75rem;
-    padding-inline: 0.15rem;
-  }
-
-  .ui-form-toolbar-leading {
-    display: flex;
-    min-width: 0;
-    align-items: center;
-    gap: 0.35rem;
-  }
-
-  .ui-form-toolbar-collapse {
-    display: grid;
-    width: 1.5rem;
-    height: 1.5rem;
-    place-items: center;
-    flex-shrink: 0;
-    border: 0;
-    border-radius: 0.25rem;
-    background: transparent;
-    color: var(--ui-form-muted);
-    cursor: pointer;
-    padding: 0;
-  }
-
-  .ui-form-toolbar-collapse:hover,
-  .ui-form-toolbar-collapse:focus-visible {
-    color: var(--ui-form-foreground);
-    outline: 0;
-  }
-
-  .ui-form-toolbar-collapse :global(svg) {
-    width: 1rem;
-    height: 1rem;
-  }
-
-  .ui-form-toolbar-actions {
-    display: flex;
-    min-width: 0;
-    align-items: center;
-    gap: 0.35rem;
-  }
-</style>

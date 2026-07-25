@@ -1,0 +1,72 @@
+@import "../form.tokens.css";
+
+.cv-form-entry-actions {
+  position: relative;
+}
+
+.cv-form-entry-content {
+  min-width: 0;
+}
+
+.cv-form-entry-move {
+  position: absolute;
+  top: 50%;
+  left: -1.35rem;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  translate: 0 -50%;
+  opacity: 0;
+  transition: opacity 140ms ease;
+}
+
+.cv-form-entry-actions:hover .cv-form-entry-move,
+.cv-form-entry-actions:focus-within .cv-form-entry-move,
+.cv-form-entry-actions:hover .cv-form-entry-remove,
+.cv-form-entry-actions:focus-within .cv-form-entry-remove {
+  opacity: 1;
+}
+
+.cv-form-entry-move button,
+.cv-form-entry-remove {
+  display: grid;
+  width: 1rem;
+  height: 1rem;
+  place-items: center;
+  border: 0;
+  border-radius: 0.25rem;
+  background: transparent;
+  color: var(--ui-form-muted);
+  cursor: pointer;
+  padding: 0;
+}
+
+.cv-form-entry-move button:disabled {
+  cursor: default;
+  opacity: 0.28;
+}
+
+.cv-form-entry-move button:hover,
+.cv-form-entry-remove:hover,
+.cv-form-entry-move button:focus-visible,
+.cv-form-entry-remove:focus-visible {
+  color: var(--ui-form-foreground);
+  outline: 0;
+}
+
+.cv-form-entry-move :global(svg),
+.cv-form-entry-remove :global(svg) {
+  width: 0.75rem;
+  height: 0.75rem;
+}
+
+.cv-form-entry-remove {
+  position: absolute;
+  top: 50%;
+  right: -1.35rem;
+  translate: 0 -50%;
+  opacity: 0;
+  transition: opacity 140ms ease;
+}

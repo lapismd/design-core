@@ -1,4 +1,5 @@
 <script lang="ts">
+  import "./JsonBackedForm.css";
   import type { Snippet } from "svelte";
 
   import CodeEditor from "../code-editor/CodeEditor.svelte";
@@ -70,6 +71,8 @@
   <div
     class="ui-json-backed-form"
     class:ui-json-backed-form--framed={jsonFramed}
+    data-ui-component="json-backed-form"
+    data-ui-part="json-backed-form"
   >
     <CodeEditor
       bind:value={jsonText}
@@ -101,56 +104,3 @@
     {onChange}
   />
 {/if}
-
-<style>
-  .ui-json-backed-form {
-    display: grid;
-    gap: 0.75rem;
-    min-width: 0;
-  }
-
-  .ui-json-backed-form--framed {
-    border: 1px solid var(--ui-form-border);
-    border-radius: 0.35rem;
-    background: var(--ui-form-panel-background);
-    padding: 0.75rem;
-  }
-
-  .ui-json-backed-form-error {
-    margin: 0;
-    color: var(--destructive);
-    font-size: 0.8rem;
-  }
-
-  .ui-json-backed-form-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 0.5rem;
-  }
-
-  .ui-json-backed-form-actions button {
-    min-height: 2rem;
-    border: 1px solid var(--ui-form-border);
-    border-radius: 0.25rem;
-    background: transparent;
-    color: var(--ui-form-foreground);
-    cursor: pointer;
-    font: inherit;
-    font-size: 0.8rem;
-    padding: 0 0.75rem;
-  }
-
-  .ui-json-backed-form-actions button.primary {
-    border-color: color-mix(
-      in srgb,
-      var(--ui-form-accent) 45%,
-      var(--ui-form-border)
-    );
-    color: var(--ui-form-accent);
-  }
-
-  .ui-json-backed-form--framed .ui-json-backed-form-actions button.primary {
-    background: var(--ui-form-accent);
-    color: var(--ui-form-primary-foreground);
-  }
-</style>

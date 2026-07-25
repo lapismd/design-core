@@ -1,10 +1,4 @@
-import {
-  Meta,
-  Canvas,
-  Controls,
-  Primary,
-  Source,
-} from "@storybook/addon-docs/blocks";
+import { Meta, Canvas, Controls, Primary, Source } from "@storybook/addon-docs/blocks";
 import * as EntryActionsStories from "./EntryActions.stories.svelte";
 import * as EntryActionsVariations from "./EntryActions.variations.stories.svelte";
 
@@ -14,8 +8,7 @@ import * as EntryActionsVariations from "./EntryActions.variations.stories.svelt
 
 Move/remove chrome for a single repeated entry. Up/down controls sit in a left hover rail; remove on the right.
 
-Children render normally (no dotted outline). For Docs stories that need a
-sample body instead of real fields, wrap stub copy in `FormPlaceholder`.
+Entry content is outlined with a dotted border so spacing against the section header is visible.
 
 ## Guidance
 
@@ -41,6 +34,17 @@ See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and the shared
 
 <Controls />
 
+## Style
+
+Colocated CSS: `EntryActions.css`. Paint with package tokens from
+`@stevejuma/ui/forms/tokens` (defaults in `form.tokens.css`). Stories may
+still use host Tailwind for demo layout.
+
+| Token | Default |
+| --- | --- |
+| `--ui-form-foreground` | `var(--foreground)` |
+| `--ui-form-muted` | `var(--muted-foreground)` |
+
 ## Examples
 
 ### Single entry
@@ -54,3 +58,4 @@ First and only entry (move disabled).
 Reorderable middle item.
 
 <Canvas of={EntryActionsVariations.MiddleEntry} meta={EntryActionsVariations} />
+

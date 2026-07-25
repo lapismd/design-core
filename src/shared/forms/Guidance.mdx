@@ -51,11 +51,35 @@ arbitrary flex rows for labelled fields.
 
 ## Tokens
 
-Forms use `--ui-form-*` CSS variables (see `formTokenNames` /
+Forms use `--ui-form-*` CSS variables (`formTokenNames` / `formTokenDefaults` /
 `@stevejuma/ui/forms/tokens`), with defaults in `form.tokens.css` mapped to
-theme tokens. Override accent, border, muted text, editors, etc. on `:root`
-or a form ancestor — same idea as wired shadcn `--ui-<family>-*` maps
-(`<family>.tokens.css` + paint rules; not metadata-only).
+theme tokens. Paint via colocated component CSS — no Tailwind utilities in form
+sources. Override on `:root` or a form ancestor — same idea as wired shadcn
+`--ui-<family>-*` maps. Each component Docs page includes a **Style** table of
+the tokens that family reads.
+
+| Token | Default |
+| --- | --- |
+| `--ui-form-background` | `var(--background)` |
+| `--ui-form-foreground` | `var(--foreground)` |
+| `--ui-form-muted` | `var(--muted-foreground)` |
+| `--ui-form-muted-surface` | `var(--muted)` |
+| `--ui-form-border` | `var(--border)` |
+| `--ui-form-border-muted` | `color-mix(in srgb, var(--border) 70%, transparent)` |
+| `--ui-form-accent` | `var(--primary)` |
+| `--ui-form-primary-foreground` | `var(--primary-foreground)` |
+| `--ui-form-selection` | `color-mix(in srgb, var(--primary) 12%, transparent)` |
+| `--ui-form-selection-strong` | `color-mix(in srgb, var(--primary) 30%, transparent)` |
+| `--ui-form-active-line` | `color-mix(in srgb, var(--primary) 9%, transparent)` |
+| `--ui-form-gutter` | `color-mix(in srgb, var(--muted) 34%, transparent)` |
+| `--ui-form-popover` | `var(--popover, var(--card))` |
+| `--ui-form-panel-background` | `var(--ui-form-background)` |
+| `--ui-form-shadow` | `rgb(15 23 42 / 22%)` |
+| `--ui-form-mono` | `var(--font-mono, ui-monospace, monospace)` |
+| `--ui-form-code-background` | `color-mix(in srgb, var(--muted) 34%, transparent)` |
+| `--ui-form-code-gutter` | `color-mix(in srgb, var(--muted) 52%, transparent)` |
+| `--ui-form-column-gap` | `1rem` |
+| `--ui-form-radius` | `var(--radius, 0.625rem)` |
 
 ## Sections and repeatable groups
 

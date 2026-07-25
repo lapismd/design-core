@@ -28,4 +28,31 @@ export const formTokenNames = {
   radius: "--ui-form-radius",
 } as const;
 
-export type FormToken = (typeof formTokenNames)[keyof typeof formTokenNames];
+export type FormTokenKey = keyof typeof formTokenNames;
+export type FormToken = (typeof formTokenNames)[FormTokenKey];
+
+/**
+ * Default bindings from `form.tokens.css`. Keep in sync when changing defaults.
+ */
+export const formTokenDefaults: Record<FormTokenKey, string> = {
+  background: "var(--background)",
+  foreground: "var(--foreground)",
+  muted: "var(--muted-foreground)",
+  mutedSurface: "var(--muted)",
+  border: "var(--border)",
+  borderMuted: "color-mix(in srgb, var(--border) 70%, transparent)",
+  accent: "var(--primary)",
+  primaryForeground: "var(--primary-foreground)",
+  selection: "color-mix(in srgb, var(--primary) 12%, transparent)",
+  selectionStrong: "color-mix(in srgb, var(--primary) 30%, transparent)",
+  activeLine: "color-mix(in srgb, var(--primary) 9%, transparent)",
+  gutter: "color-mix(in srgb, var(--muted) 34%, transparent)",
+  popover: "var(--popover, var(--card))",
+  panelBackground: "var(--ui-form-background)",
+  shadow: "rgb(15 23 42 / 22%)",
+  mono: "var(--font-mono, ui-monospace, monospace)",
+  codeBackground: "color-mix(in srgb, var(--muted) 34%, transparent)",
+  codeGutter: "color-mix(in srgb, var(--muted) 52%, transparent)",
+  columnGap: "1rem",
+  radius: "var(--radius, 0.625rem)",
+};

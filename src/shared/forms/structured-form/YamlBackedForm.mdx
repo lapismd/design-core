@@ -1,10 +1,4 @@
-import {
-  Meta,
-  Canvas,
-  Controls,
-  Primary,
-  Source,
-} from "@storybook/addon-docs/blocks";
+import { Meta, Canvas, Controls, Primary, Source } from "@storybook/addon-docs/blocks";
 import * as YamlBackedFormStories from "./YamlBackedForm.stories.svelte";
 import * as YamlBackedFormVariations from "./YamlBackedForm.variations.stories.svelte";
 
@@ -29,12 +23,7 @@ See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and the shared
 
 ## Usage
 
-<Source
-  language="html"
-  code={
-    "<YamlBackedForm\n  value={data}\n  config={config}\n  yamlMode={yamlMode}\n  bind:yamlText\n  onChange={...}\n/>"
-  }
-/>
+<Source language="html" code={"<YamlBackedForm\n  value={data}\n  config={config}\n  yamlMode={yamlMode}\n  bind:yamlText\n  onChange={...}\n/>"} />
 
 <Primary />
 
@@ -42,13 +31,25 @@ See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and the shared
 
 <Controls />
 
+## Style
+
+Colocated CSS: `YamlBackedForm.css`. Paint with package tokens from
+`@stevejuma/ui/forms/tokens` (defaults in `form.tokens.css`). Stories may
+still use host Tailwind for demo layout.
+
+| Token | Default |
+| --- | --- |
+| `--ui-form-accent` | `var(--primary)` |
+| `--ui-form-border` | `var(--border)` |
+| `--ui-form-foreground` | `var(--foreground)` |
+| `--ui-form-panel-background` | `var(--ui-form-background)` |
+| `--ui-form-primary-foreground` | `var(--primary-foreground)` |
+
 ## Examples
 
 ### Structured mode
 
 Default structured editing surface.
 
-<Canvas
-  of={YamlBackedFormVariations.StructuredMode}
-  meta={YamlBackedFormVariations}
-/>
+<Canvas of={YamlBackedFormVariations.StructuredMode} meta={YamlBackedFormVariations} />
+

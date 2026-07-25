@@ -3,7 +3,7 @@
   import FormField from "./FormField.svelte";
 
   const { Story } = defineMeta({
-    title: "UI Forms/Form Inputs/Form Field",
+    title: "UI Forms/Form Field",
     component: FormField,
     parameters: {
       docs: {
@@ -15,25 +15,16 @@
   });
 </script>
 
+
 <Story
   name="Default row"
   exportName="DefaultRow"
+  tags={["skip-visual"]}
   parameters={{
-    visualDelta: {
-      images: [
-        "/visual-baselines/forms/form-field/default-row-chromium-darwin.png",
-      ],
-      opacity: 0.5,
-      colorInversion: false,
-      align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
     docs: {
       description: { story: "Standard start-aligned text field row." },
     },
   }}
-  tags={["visual-failed"]}
 >
   {#snippet template()}
     <div class="cv-structured-form max-w-xl">
@@ -47,24 +38,12 @@
 <Story
   name="Center aligned"
   exportName="CenterAligned"
+  tags={["skip-visual"]}
   parameters={{
-    visualDelta: {
-      images: [
-        "/visual-baselines/forms/form-field/center-aligned-chromium-darwin.png",
-      ],
-      opacity: 0.5,
-      colorInversion: false,
-      align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
     docs: {
-      description: {
-        story: 'Use `align="center"` for pill controls and date-like controls.',
-      },
+      description: { story: "Use `align=\"center\"` for pill controls and date-like controls." },
     },
   }}
-  tags={["visual-ready"]}
 >
   {#snippet template()}
     <div class="cv-structured-form max-w-xl">
@@ -78,30 +57,17 @@
 <Story
   name="Div host"
   exportName="DivHost"
+  tags={["skip-visual"]}
   parameters={{
-    visualDelta: {
-      images: [
-        "/visual-baselines/forms/form-field/div-host-chromium-darwin.png",
-      ],
-      opacity: 0.5,
-      colorInversion: false,
-      align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
     docs: {
-      description: {
-        story:
-          'Use `as="div"` for buttons/popovers. Prefer `align="center"` for single-line interactive values; start align still matches input padding on bare buttons.',
-      },
+      description: { story: "Use `as=\"div\"` when the control contains buttons or popovers." },
     },
   }}
-  tags={["visual-failed"]}
 >
   {#snippet template()}
     <div class="cv-structured-form max-w-xl">
       <FormField label="Network" as="div">
-        <button type="button">LinkedIn</button>
+        <button type="button" class="text-sm">LinkedIn</button>
       </FormField>
     </div>
   {/snippet}

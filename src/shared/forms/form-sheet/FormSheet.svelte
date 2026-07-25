@@ -1,11 +1,11 @@
 <script lang="ts">
+  import "./FormSheet.css";
   import ChevronsDownUpIcon from "@lucide/svelte/icons/chevrons-down-up";
   import ChevronsUpDownIcon from "@lucide/svelte/icons/chevrons-up-down";
   import XIcon from "@lucide/svelte/icons/x";
   import type { Snippet } from "svelte";
   import { Button } from "@stevejuma/ui/shadcn/button";
   import * as Sheet from "@stevejuma/ui/shadcn/sheet";
-  import { cn } from "../../../lib/utils.js";
 
   let {
     open = $bindable(false),
@@ -17,7 +17,7 @@
     titleLeading,
     titleSuffix,
     actions,
-    bodyClass = "px-6 py-5",
+    bodyDensity = "default",
     class: className,
     children,
   }: {
@@ -39,8 +39,8 @@
     titleSuffix?: Snippet;
     /** Optional workflow-specific controls placed before collapse and close. */
     actions?: Snippet;
-    /** Padding for the scrollable body; use only for a deliberate dense layout. */
-    bodyClass?: string;
+    /** Body padding density. Prefer CSS tokens over custom class overrides. */
+    bodyDensity?: "default" | "dense";
     class?: string;
     children: Snippet;
   } = $props();
@@ -62,23 +62,24 @@
     <Sheet.Content
       side="right"
       showCloseButton={false}
-      class={cn("flex w-full flex-col gap-0 p-0 sm:max-w-2xl", className)}
+      class={className}
       onOpenAutoFocus={(event) => {
         event.preventDefault();
         titleElement?.focus();
       }}
     >
-      <Sheet.Header
-        class="border-border flex h-11 shrink-0 flex-row items-center gap-2 space-y-0 border-b px-3 text-left sm:text-left"
-      >
-        <div class="flex min-w-0 flex-1 items-center gap-1.5">
+      <Sheet.Header>
+        <div
+          data-ui-component="form-sheet"
+          data-ui-part="form-sheet-title-group"
+        >
           {#if titleLeading}
             {@render titleLeading()}
           {/if}
           <Sheet.Title
             bind:ref={titleElement}
             tabindex={-1}
-            class="form-sheet-title min-w-0 truncate leading-none outline-none"
+            class="form-sheet-title"
           >
             {title}
           </Sheet.Title>
@@ -87,7 +88,10 @@
           {/if}
         </div>
         <Sheet.Description class="sr-only">{description}</Sheet.Description>
-        <div class="ml-auto flex shrink-0 items-center gap-1">
+        <div
+          data-ui-component="form-sheet"
+          data-ui-part="form-sheet-actions"
+        >
           {#if actions}
             {@render actions()}
           {/if}
@@ -96,32 +100,33 @@
               type="button"
               variant="ghost"
               size="icon"
-              class="size-8"
+              class="ui-form-sheet__icon-button"
               aria-label={collapseLabel}
               title={collapseLabel}
               onclick={onToggleCollapse}
             >
               {#if collapsedAll}
-                <ChevronsUpDownIcon class="size-4" aria-hidden="true" />
+                <ChevronsUpDownIcon aria-hidden="true" />
               {:else}
-                <ChevronsDownUpIcon class="size-4" aria-hidden="true" />
+                <ChevronsDownUpIcon aria-hidden="true" />
               {/if}
             </Button>
           {/if}
           <Sheet.Close
-            class="text-muted-foreground hover:bg-accent hover:text-accent-foreground focus-visible:ring-ring inline-flex size-8 items-center justify-center rounded-md transition-colors focus-visible:ring-2 focus-visible:outline-none"
+            class="ui-form-sheet__close"
             aria-label="Close"
             title="Close"
           >
-            <XIcon class="size-4" />
+            <XIcon aria-hidden="true" />
             <span class="sr-only">Close</span>
           </Sheet.Close>
         </div>
       </Sheet.Header>
 
       <div
-        class={cn("min-h-0 flex-1 overflow-y-auto", bodyClass)}
+        data-ui-component="form-sheet"
         data-ui-part="form-sheet-body"
+        data-density={bodyDensity}
       >
         {@render children()}
       </div>

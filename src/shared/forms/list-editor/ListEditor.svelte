@@ -1,4 +1,5 @@
 <script lang="ts">
+  import "./ListEditor.css";
   import "../form-control-row/FormControlRow.css";
   import PlusIcon from "@lucide/svelte/icons/plus";
   import { onDestroy } from "svelte";
@@ -40,6 +41,20 @@
   } = $props();
 
   let draggingIndex = $state<number | null>(null);
+
+  const isInline = $derived(variant === "inline");
+  const isFieldHeader = $derived(headerVariant === "field");
+  const useControlRowChrome = $derived(isInline && isFieldHeader);
+  const hostClass = $derived(isInline ? "cv-control-row-group" : undefined);
+  const headerClass = $derived(
+    useControlRowChrome ? "cv-control-action-row" : undefined,
+  );
+  const labelClass = $derived(
+    useControlRowChrome ? "cv-control-action-row__label" : undefined,
+  );
+  const controlClass = $derived(
+    useControlRowChrome ? "cv-control-action-row__control" : undefined,
+  );
 
   function reviewForIndex(index: number) {
     return reviewItems[index] ?? null;
@@ -118,43 +133,36 @@
 </script>
 
 <div
-  class={variant === "inline"
-    ? "cv-control-row-group gap-0"
-    : "flex flex-col gap-2"}
+  class={hostClass}
+  data-ui-component="list-editor"
   data-ui-part="list-editor"
+  data-variant={variant}
+  data-header-variant={headerVariant}
   data-readonly={readonly ? "" : undefined}
   data-invalid={error ? "" : undefined}
 >
   <div
-    class={headerVariant === "section"
-      ? "border-muted-foreground/40 flex items-center justify-between gap-3 border-b pb-0.5"
-      : variant === "inline"
-        ? "cv-control-action-row"
-        : "flex items-center justify-between gap-3"}
+    class={headerClass}
+    data-ui-component="list-editor"
+    data-ui-part="list-editor-header"
   >
     <span
-      class={headerVariant === "section"
-        ? "text-foreground text-base font-semibold"
-        : variant === "inline"
-          ? "cv-control-action-row__label"
-          : "text-muted-foreground text-xs font-medium"}
+      class={labelClass}
+      data-ui-component="list-editor"
+      data-ui-part="list-editor-label"
     >
       {label}
     </span>
     {#if !readonly}
-      <div class={variant === "inline" ? "cv-control-action-row__control" : ""}>
+      <div class={controlClass}>
         <Button
           type="button"
           variant="ghost"
           size="xs"
-          class={headerVariant === "section"
-            ? "text-muted-foreground hover:text-foreground h-4 gap-1 px-0 text-xs font-normal hover:bg-transparent [&_svg]:size-3"
-            : variant === "inline"
-              ? "text-muted-foreground hover:text-foreground h-5 gap-1 px-0 text-xs font-normal hover:bg-transparent [&_svg]:size-3"
-              : "text-muted-foreground hover:text-foreground h-5 gap-1 px-0 text-xs font-normal hover:bg-transparent [&_svg]:size-3"}
+          class="ui-list-editor__add"
           onclick={add}
         >
-          <PlusIcon data-icon="inline-start" />
+          <PlusIcon data-icon="inline-start" aria-hidden="true" />
           {addLabel}
         </Button>
       </div>
@@ -162,9 +170,8 @@
   </div>
 
   <div
-    class={variant === "inline"
-      ? "col-span-full flex flex-col"
-      : "list-editor-items flex flex-col gap-2"}
+    data-ui-component="list-editor"
+    data-ui-part="list-editor-items"
   >
     {#each items as item, index (`${label}-${index}`)}
       {@const review = reviewForIndex(index)}
@@ -179,7 +186,10 @@
           ? undefined
           : () => onChange(items.filter((_, itemIndex) => itemIndex !== index))}
       >
-        <div class="flex min-w-0 flex-col">
+        <div
+          data-ui-component="list-editor"
+          data-ui-part="list-editor-item-body"
+        >
           {#if review}
             <UnifiedReviewDiff before={review.removedValue} after={item} />
             <FieldReviewActions
@@ -189,11 +199,9 @@
             />
           {:else}
             <textarea
-              class={variant === "inline"
-                ? "min-h-5 w-full resize-none overflow-hidden border-0 bg-transparent px-0 py-0 text-sm leading-5 break-words whitespace-pre-wrap [color:var(--ui-form-foreground)] shadow-none outline-none"
-                : multiline
-                  ? "border-input bg-background min-h-20 w-full resize-none overflow-hidden rounded-md border px-2 py-1.5 text-sm outline-none"
-                  : "border-input bg-background min-h-9 w-full resize-none overflow-hidden rounded-md border px-2 py-1.5 text-sm outline-none"}
+              data-ui-component="list-editor"
+              data-ui-part="list-editor-input"
+              data-multiline={variant !== "inline" && multiline ? "" : undefined}
               rows={variant === "inline" ||
               !multiline ||
               multilineSize === "compact"
@@ -212,16 +220,12 @@
   </div>
 
   {#if error}
-    <p class="ui-form-control-error col-span-full" role="alert">{error}</p>
+    <p
+      data-ui-component="list-editor"
+      data-ui-part="list-editor-error"
+      role="alert"
+    >
+      {error}
+    </p>
   {/if}
 </div>
-
-<style>
-  .ui-form-control-error {
-    margin: 0;
-    color: var(--destructive, #dc2626);
-    font-size: 0.75rem;
-    font-weight: 500;
-    line-height: 1.3;
-  }
-</style>

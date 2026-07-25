@@ -1,4 +1,5 @@
 <script lang="ts">
+  import "./YamlBackedForm.css";
   import YamlEditor, {
     type YamlReviewDiff,
   } from "../yaml-editor/YamlEditor.svelte";
@@ -75,6 +76,8 @@
   <div
     class="cv-yaml-backed-form"
     class:cv-yaml-backed-form--framed={yamlFramed}
+    data-ui-component="yaml-backed-form"
+    data-ui-part="yaml-backed-form"
   >
     <YamlEditor
       bind:value={yamlText}
@@ -107,56 +110,3 @@
     {onChange}
   />
 {/if}
-
-<style>
-  .cv-yaml-backed-form {
-    display: grid;
-    gap: 0.75rem;
-    min-width: 0;
-  }
-
-  .cv-yaml-backed-form--framed {
-    border: 1px solid var(--ui-form-border);
-    border-radius: 0.35rem;
-    background: var(--ui-form-panel-background);
-    padding: 0.75rem;
-  }
-
-  .cv-yaml-backed-form-error {
-    margin: 0;
-    color: var(--destructive);
-    font-size: 0.8rem;
-  }
-
-  .cv-yaml-backed-form-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 0.5rem;
-  }
-
-  .cv-yaml-backed-form-actions button {
-    min-height: 2rem;
-    border: 1px solid var(--ui-form-border);
-    border-radius: 0.25rem;
-    background: transparent;
-    color: var(--ui-form-foreground);
-    cursor: pointer;
-    font: inherit;
-    font-size: 0.8rem;
-    padding: 0 0.75rem;
-  }
-
-  .cv-yaml-backed-form-actions button.primary {
-    border-color: color-mix(
-      in srgb,
-      var(--ui-form-accent) 45%,
-      var(--ui-form-border)
-    );
-    color: var(--ui-form-accent);
-  }
-
-  .cv-yaml-backed-form--framed .cv-yaml-backed-form-actions button.primary {
-    background: var(--ui-form-accent);
-    color: var(--ui-form-primary-foreground);
-  }
-</style>

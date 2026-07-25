@@ -1,4 +1,5 @@
 <script lang="ts">
+  import "./AutocompleteInput.css";
   import * as Popover from "@stevejuma/ui/shadcn/popover";
 
   let {
@@ -148,7 +149,7 @@
   }
 </script>
 
-<div class="ui-autocomplete-input">
+<div class="ui-autocomplete-input" data-ui-component="autocomplete-input" data-ui-part="autocomplete-input">
   <Popover.Root open={listVisible} onOpenChange={setPopoverOpen}>
     <Popover.Trigger>
       {#snippet child({ props })}
@@ -209,85 +210,3 @@
     <p class="ui-form-control-error" role="alert">{error}</p>
   {/if}
 </div>
-
-<style>
-  .ui-autocomplete-input {
-    position: relative;
-    display: grid;
-    min-width: 0;
-    gap: 0.25rem;
-  }
-
-  .ui-autocomplete-input :global(input) {
-    width: 100%;
-    min-width: 0;
-    border: 0;
-    background: transparent;
-    color: inherit;
-    font: inherit;
-    outline: none;
-  }
-
-  :global(.ui-autocomplete-input__popover) {
-    z-index: 80;
-    width: min(18rem, 80vw);
-    min-width: 14rem;
-    gap: 0;
-    overflow: hidden;
-    border: 1px solid var(--ui-form-border);
-    border-radius: 0.75rem;
-    background: var(--ui-form-popover, var(--ui-form-background));
-    color: var(--ui-form-foreground);
-    padding: 0;
-    box-shadow: 0 1rem 2rem rgb(15 23 42 / 12%);
-    outline: 0;
-  }
-
-  .ui-autocomplete-input__list {
-    display: grid;
-    gap: 0.125rem;
-    max-height: 14rem;
-    overflow: auto;
-    outline: 0;
-    padding: 0.25rem;
-  }
-
-  .ui-autocomplete-input__item {
-    display: flex;
-    min-width: 0;
-    align-items: center;
-    border: 0;
-    border-radius: 0.25rem;
-    background: transparent;
-    color: inherit;
-    cursor: pointer;
-    font: inherit;
-    font-size: 0.8125rem;
-    font-weight: 600;
-    padding: 0.375rem 0.5rem;
-    text-align: left;
-    outline: 0;
-    user-select: none;
-  }
-
-  .ui-autocomplete-input__item:hover,
-  .ui-autocomplete-input__item:focus-visible,
-  .ui-autocomplete-input__item.active,
-  .ui-autocomplete-input__item.force-hover {
-    background: color-mix(
-      in srgb,
-      var(--ui-form-accent) 9%,
-      var(--ui-form-muted-surface, var(--ui-form-background))
-    );
-    color: var(--ui-form-foreground);
-    outline: 0;
-  }
-
-  .ui-form-control-error {
-    margin: 0;
-    color: var(--destructive, #dc2626);
-    font-size: 0.75rem;
-    font-weight: 500;
-    line-height: 1.3;
-  }
-</style>

@@ -1,10 +1,9 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import YamlBackedForm from "./YamlBackedForm.svelte";
-  import { createFormConfig, textField } from "../core/core";
 
   const { Story } = defineMeta({
-    title: "UI Forms/Orchestrators/YAML Backed Form",
+    title: "UI Forms/YAML Backed Form",
     component: YamlBackedForm,
     parameters: {
       docs: {
@@ -17,6 +16,8 @@
 </script>
 
 <script lang="ts">
+  import { createFormConfig, textField } from "../core/core";
+
   type Profile = { name: string };
 
   const config = createFormConfig<Profile>({
@@ -35,6 +36,7 @@
   let yamlMode = $state(false);
   let yamlText = $state("name: Jane Doe\n");
 </script>
+
 
 <Story
   name="Structured mode"

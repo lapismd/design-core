@@ -41,19 +41,47 @@ If a composite keeps its own `max-content | 1fr` tracks instead of
 rows — the recurring misalignment regression.
 
 Inline `ListEditor` lists (Roles, Tags, …) are **full-bleed**, not value-column
-fields: items use `col-span-full` so borders span the row, `SortableArrayItem`
-`pl-5` for the drag gutter, and `text-sm leading-5` values (CV Tags parity).
-Do not put the items wrapper in column 2 to “match” FormField values — that
-truncates borders and breaks the Tags layout.
+fields: items span the full label/value grid (`data-ui-part="list-editor-items"`),
+`SortableArrayItem` uses its normal inset for the drag gutter, and value text
+matches the shared form control sizing (CV Tags parity). Do not put the items
+wrapper in column 2 to “match” FormField values — that truncates borders and
+breaks the Tags layout.
 
 ## Tokens
 
 Forms expose a public token map like shadcn families:
 
-- `formTokenNames` / `@stevejuma/ui/forms/tokens` — `--ui-form-*` names
+- `formTokenNames` / `formTokenDefaults` / `@stevejuma/ui/forms/tokens`
 - `form.tokens.css` — default bindings to theme tokens (`--border`, `--primary`, …)
 
+Paint via colocated component CSS (no Tailwind utility classes in form sources).
+Story wrappers may still use host Tailwind for demo layout. Each component Docs
+page lists only the tokens that family reads, with defaults.
+
 Override on `:root` or a form ancestor, e.g. `--ui-form-accent: oklch(...)`.
+
+| Token | Default |
+| --- | --- |
+| `--ui-form-background` | `var(--background)` |
+| `--ui-form-foreground` | `var(--foreground)` |
+| `--ui-form-muted` | `var(--muted-foreground)` |
+| `--ui-form-muted-surface` | `var(--muted)` |
+| `--ui-form-border` | `var(--border)` |
+| `--ui-form-border-muted` | `color-mix(in srgb, var(--border) 70%, transparent)` |
+| `--ui-form-accent` | `var(--primary)` |
+| `--ui-form-primary-foreground` | `var(--primary-foreground)` |
+| `--ui-form-selection` | `color-mix(in srgb, var(--primary) 12%, transparent)` |
+| `--ui-form-selection-strong` | `color-mix(in srgb, var(--primary) 30%, transparent)` |
+| `--ui-form-active-line` | `color-mix(in srgb, var(--primary) 9%, transparent)` |
+| `--ui-form-gutter` | `color-mix(in srgb, var(--muted) 34%, transparent)` |
+| `--ui-form-popover` | `var(--popover, var(--card))` |
+| `--ui-form-panel-background` | `var(--ui-form-background)` |
+| `--ui-form-shadow` | `rgb(15 23 42 / 22%)` |
+| `--ui-form-mono` | `var(--font-mono, ui-monospace, monospace)` |
+| `--ui-form-code-background` | `color-mix(in srgb, var(--muted) 34%, transparent)` |
+| `--ui-form-code-gutter` | `color-mix(in srgb, var(--muted) 52%, transparent)` |
+| `--ui-form-column-gap` | `1rem` |
+| `--ui-form-radius` | `var(--radius, 0.625rem)` |
 
 ## Canonical primitives
 

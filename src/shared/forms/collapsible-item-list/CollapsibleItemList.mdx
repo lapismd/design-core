@@ -1,10 +1,4 @@
-import {
-  Meta,
-  Canvas,
-  Controls,
-  Primary,
-  Source,
-} from "@storybook/addon-docs/blocks";
+import { Meta, Canvas, Controls, Primary, Source } from "@storybook/addon-docs/blocks";
 import * as CollapsibleItemListStories from "./CollapsibleItemList.stories.svelte";
 import * as CollapsibleItemListVariations from "./CollapsibleItemList.variations.stories.svelte";
 
@@ -14,9 +8,7 @@ import * as CollapsibleItemListVariations from "./CollapsibleItemList.variations
 
 Expandable list where the header owns collapse state and an item count pill.
 
-Add action stays in the section footer below the item content. Children render
-normally (no dotted outline). For Docs stories with stub bodies, wrap sample
-copy in `FormPlaceholder`.
+Add action stays in the section footer (below the dotted content outline).
 
 ## Guidance
 
@@ -41,31 +33,37 @@ See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and the shared
 
 <Controls />
 
+## Style
+
+Colocated CSS: `CollapsibleItemList.css`. Paint with package tokens from
+`@stevejuma/ui/forms/tokens` (defaults in `form.tokens.css`). Stories may
+still use host Tailwind for demo layout.
+
+| Token | Default |
+| --- | --- |
+| `--ui-form-accent` | `var(--primary)` |
+| `--ui-form-border` | `var(--border)` |
+| `--ui-form-foreground` | `var(--foreground)` |
+| `--ui-form-muted` | `var(--muted-foreground)` |
+| `--ui-form-selection` | `color-mix(in srgb, var(--primary) 12%, transparent)` |
+
 ## Examples
 
 ### With items
 
 Open list with two items.
 
-<Canvas
-  of={CollapsibleItemListVariations.WithItems}
-  meta={CollapsibleItemListVariations}
-/>
+<Canvas of={CollapsibleItemListVariations.WithItems} meta={CollapsibleItemListVariations} />
 
 ### Empty open
 
 Open empty list — add affordance only, no filler copy.
 
-<Canvas
-  of={CollapsibleItemListVariations.EmptyOpen}
-  meta={CollapsibleItemListVariations}
-/>
+<Canvas of={CollapsibleItemListVariations.EmptyOpen} meta={CollapsibleItemListVariations} />
 
 ### Collapsed
 
 Collapsed header with count.
 
-<Canvas
-  of={CollapsibleItemListVariations.Collapsed}
-  meta={CollapsibleItemListVariations}
-/>
+<Canvas of={CollapsibleItemListVariations.Collapsed} meta={CollapsibleItemListVariations} />
+

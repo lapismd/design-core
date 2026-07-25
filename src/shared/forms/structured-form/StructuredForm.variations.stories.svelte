@@ -3,7 +3,7 @@
   import StructuredForm from "./StructuredForm.svelte";
 
   const { Story } = defineMeta({
-    title: "UI Forms/Orchestrators/Structured Form",
+    title: "UI Forms/Structured Form",
     component: StructuredForm,
     parameters: {
       docs: {
@@ -64,15 +64,14 @@
   });
 </script>
 
+
 <Story
   name="Schema fields"
   exportName="SchemaFields"
   tags={["skip-visual"]}
   parameters={{
     docs: {
-      description: {
-        story: "Text, segmented, and boolean fields from a typed config.",
-      },
+      description: { story: "Text, segmented, and boolean fields from a typed config." },
     },
   }}
 >

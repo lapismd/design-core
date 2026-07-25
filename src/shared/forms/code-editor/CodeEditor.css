@@ -1,0 +1,14 @@
+@import "../form.tokens.css";
+
+.cvstudio-code-editor {
+  min-width: 0;
+  margin: 2px;
+  overflow: hidden;
+  border: 1px solid var(--ui-form-border);
+  border-radius: 0.4rem;
+  background: var(--ui-form-code-background);
+}
+
+:global(.cvstudio-code-editor .cm-editor) {
+  height: auto;
+}

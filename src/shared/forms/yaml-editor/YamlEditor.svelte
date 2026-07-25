@@ -1,4 +1,5 @@
 <script lang="ts" module>
+  import "./YamlEditor.css";
   import { foldEffect, foldable, unfoldAll } from "@codemirror/language";
   import { EditorSelection } from "@codemirror/state";
   import type { EditorView as CodeMirrorEditorView } from "@codemirror/view";
@@ -602,47 +603,7 @@
   class:frameless
   class:fill={fillParent}
   class="cvstudio-yaml-editor"
+  data-ui-component="yaml-editor"
+  data-ui-part="yaml-editor"
   aria-label={ariaLabel}
 ></div>
-
-<style>
-  .cvstudio-yaml-editor {
-    overflow: hidden;
-    border: 1px solid var(--ui-form-border);
-    border-radius: 0.35rem;
-    background: transparent;
-  }
-
-  .cvstudio-yaml-editor.frameless {
-    border: 0;
-    border-radius: 0;
-  }
-
-  /* Size comes from a flex parent (e.g. docs YAML pane); keep min-height: 0 so
-     the CodeMirror scroller can shrink and scroll instead of growing forever. */
-  .cvstudio-yaml-editor.fill {
-    display: flex;
-    min-height: 0;
-    flex: 1 1 auto;
-    flex-direction: column;
-    align-self: stretch;
-  }
-
-  .cvstudio-yaml-editor.fill :global(.cm-editor) {
-    flex: 1 1 auto;
-    min-height: 0;
-  }
-
-  .cvstudio-yaml-editor.error {
-    border-color: var(--destructive, rgb(220 38 38));
-  }
-
-  :global(.cvstudio-yaml-editor:not(.fill) .cm-editor) {
-    height: auto;
-  }
-
-  :global(.cvstudio-yaml-editor.fill .cm-editor) {
-    height: 100%;
-    min-height: 0;
-  }
-</style>

@@ -1,7 +1,7 @@
 /**
  * Fail if Tailwind utility class strings appear in native-CSS surfaces.
  *
- * Default roots: Beancount + CV apps + converted shadcn component sources.
+ * Default roots: Beancount + CV apps + shared forms + converted shadcn sources.
  * Storybook story wrappers still use host Tailwind for layout demos and are
  * excluded (`*.stories.svelte`, `*.variations.stories.svelte`, `examples/`).
  *
@@ -17,6 +17,7 @@ import { findTailwindUtilitiesInSource } from "./lib/no-tailwind-utilities.js";
 const DEFAULT_ROOTS = [
   "src/apps/beancount",
   "src/apps/cv",
+  "src/shared/forms",
   "src/shared/shadcn",
 ] as const;
 

@@ -26,7 +26,6 @@
     label,
     error = null,
     addOpen = $bindable(false),
-    addButtonClass = "",
     addLabel = "Add Reference",
     addHeading = "Reference",
     searchPlaceholder = "Search references...",
@@ -50,7 +49,6 @@
     /** Validation message shown under the list. */
     error?: string | null;
     addOpen?: boolean;
-    addButtonClass?: string;
     addLabel?: string;
     addHeading?: string;
     searchPlaceholder?: string;
@@ -182,12 +180,16 @@
     query = "";
     setAddOpen(false);
   }
+
+  const hostClass = $derived(
+    label ? "cv-reference-picker cv-control-row-group" : "cv-reference-picker",
+  );
+  const listClass = $derived(label ? "cv-reference-list" : undefined);
 </script>
 
 <div
-  class={["cv-reference-picker", label ? "cv-control-row-group gap-0" : ""]
-    .filter(Boolean)
-    .join(" ")}
+  class={hostClass}
+  data-ui-component="reference-picker"
   data-ui-part="reference-picker"
   data-invalid={error ? "" : undefined}
 >
@@ -199,13 +201,13 @@
           type="button"
           variant="ghost"
           size="xs"
-          class="text-muted-foreground hover:text-foreground h-5 gap-1 px-0 text-xs font-normal hover:bg-transparent [&_svg]:size-3"
+          class="ui-reference-picker__header-action"
           onclick={() => setAddOpen(!addOpen)}
         >
           {#if addOpen}
             Cancel
           {:else}
-            <PlusIcon data-icon="inline-start" />
+            <PlusIcon data-icon="inline-start" aria-hidden="true" />
             {addLabel}
           {/if}
         </Button>
@@ -213,7 +215,7 @@
     </div>
   {/if}
 
-  <div class={label ? "col-span-full flex flex-col" : undefined}>
+  <div class={listClass}>
     {#each selectedRefs() as ref (ref)}
       {@const resolved = resolveReferenceTarget(referenceIndex, ref)}
       {@const duplicates = duplicateCount(ref)}
@@ -286,12 +288,12 @@
             type="button"
             variant="ghost"
             size="icon-xs"
-            class="cv-reference-remove text-muted-foreground/70 hover:text-foreground size-5 rounded-sm hover:bg-transparent focus-visible:opacity-100 [&_svg]:size-3.5"
+            class="cv-reference-remove"
             aria-label={`Remove ${ref}`}
             onclick={(event) =>
               handleButtonClick(event, () => removeReference(ref))}
           >
-            <XIcon class="size-3.5" />
+            <XIcon aria-hidden="true" />
           </Button>
         </div>
         {#if resolved && expanded && hasPreview(resolved)}
@@ -434,7 +436,7 @@
         {/if}
       </section>
     {:else if !label}
-      <div class={addButtonClass || undefined}>
+      <div class="cv-reference-add-trigger">
         <FormAddButton label={addLabel} onclick={() => setAddOpen(true)} />
       </div>
     {/if}

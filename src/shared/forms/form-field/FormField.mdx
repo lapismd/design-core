@@ -1,10 +1,4 @@
-import {
-  Meta,
-  Canvas,
-  Controls,
-  Primary,
-  Source,
-} from "@storybook/addon-docs/blocks";
+import { Meta, Canvas, Controls, Primary, Source } from "@storybook/addon-docs/blocks";
 import * as FormFieldStories from "./FormField.stories.svelte";
 import * as FormFieldVariations from "./FormField.variations.stories.svelte";
 
@@ -33,18 +27,26 @@ See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and the shared
 
 ## Usage
 
-<Source
-  language="html"
-  code={
-    '<script lang="ts">\n  import { FormField } from "@stevejuma/ui/forms";\n</script>\n\n<div class="cv-structured-form">\n  <FormField label="Name">\n    <input bind:value={name} />\n  </FormField>\n</div>'
-  }
-/>
+<Source language="html" code={"<script lang=\"ts\">\n  import { FormField } from \"@stevejuma/ui/forms\";\n</script>\n\n<div class=\"cv-structured-form\">\n  <FormField label=\"Name\">\n    <input bind:value={name} />\n  </FormField>\n</div>"} />
 
 <Primary />
 
 ## Properties
 
 <Controls />
+
+## Style
+
+Colocated CSS: `FormField.css`. Paint with package tokens from
+`@stevejuma/ui/forms/tokens` (defaults in `form.tokens.css`). Stories may
+still use host Tailwind for demo layout.
+
+| Token | Default |
+| --- | --- |
+| `--ui-form-border` | `var(--border)` |
+| `--ui-form-column-gap` | `1rem` |
+| `--ui-form-foreground` | `var(--foreground)` |
+| `--ui-form-muted` | `var(--muted-foreground)` |
 
 ## Examples
 
@@ -65,3 +67,4 @@ Use `align="center"` for pill controls and date-like controls.
 Use `as="div"` when the control contains buttons or popovers.
 
 <Canvas of={FormFieldVariations.DivHost} meta={FormFieldVariations} />
+

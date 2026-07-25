@@ -1,4 +1,5 @@
 <script lang="ts">
+  import "./CodeEditor.css";
   import { java } from "@codemirror/lang-java";
   import { javascript } from "@codemirror/lang-javascript";
   import { json } from "@codemirror/lang-json";
@@ -300,19 +301,4 @@
   });
 </script>
 
-<div bind:this={host} class="cvstudio-code-editor" aria-label={ariaLabel}></div>
-
-<style>
-  .cvstudio-code-editor {
-    min-width: 0;
-    margin: 2px;
-    overflow: hidden;
-    border: 1px solid var(--ui-form-border);
-    border-radius: 0.4rem;
-    background: var(--ui-form-code-background);
-  }
-
-  :global(.cvstudio-code-editor .cm-editor) {
-    height: auto;
-  }
-</style>
+<div bind:this={host} class="cvstudio-code-editor" data-ui-component="code-editor" data-ui-part="code-editor" aria-label={ariaLabel}></div>

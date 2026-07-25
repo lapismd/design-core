@@ -1,7 +1,9 @@
 <script lang="ts">
+  import "./AddSectionChooser.css";
   import PlusIcon from "@lucide/svelte/icons/plus";
   import XIcon from "@lucide/svelte/icons/x";
   import { tick } from "svelte";
+  import { Button } from "@stevejuma/ui/shadcn/button";
 
   export type AddSectionOption = {
     value: string;
@@ -34,11 +36,6 @@
     onChoose: (value: string) => void;
   } = $props();
 
-  const addChoiceButtonClass =
-    "h-7 rounded-md border border-border bg-transparent px-2 text-xs font-normal text-muted-foreground/80 hover:bg-muted/60 hover:text-foreground";
-  const addSectionButtonClass =
-    "my-2 inline-flex h-auto min-h-11 w-full items-center justify-center gap-2 rounded-lg border border-dashed border-border bg-transparent py-3 text-sm font-normal text-foreground/80 hover:bg-muted/40 hover:text-foreground [&_svg]:size-4";
-
   let titleInput = $state<HTMLInputElement | null>(null);
   let focusedOpen = $state(false);
 
@@ -56,48 +53,66 @@
 </script>
 
 {#if open}
-  <section class="relative">
+  <section data-ui-component="add-section-chooser" data-ui-part="open">
     <div
-      class="border-primary grid grid-cols-[minmax(0,1fr)_auto] items-center gap-1 border-b pb-0.5"
+      data-ui-component="add-section-chooser"
+      data-ui-part="add-section-chooser-title-row"
     >
       <input
         bind:this={titleInput}
+        data-ui-component="add-section-chooser"
+        data-ui-part="add-section-chooser-title"
         aria-label={inputLabel}
-        class="h-8 w-full rounded-none border-0 bg-transparent px-0 py-0 text-2xl font-semibold shadow-none outline-none focus-visible:ring-0"
         value={title}
         oninput={(event) => onTitleChange(event.currentTarget.value)}
       />
-      <button
+      <Button
         type="button"
-        class="text-muted-foreground/70 hover:text-foreground inline-grid size-5 shrink-0 place-items-center rounded-sm border-0 bg-transparent transition-colors hover:bg-transparent [&_svg]:size-3.5"
+        variant="ghost"
+        size="icon-xs"
+        class="ui-add-section-chooser__cancel"
         aria-label={cancelLabel}
         onclick={onCancel}
       >
-        <XIcon class="size-3.5" />
-      </button>
+        <XIcon aria-hidden="true" />
+      </Button>
     </div>
-    <div class="flex flex-col gap-3 px-4 py-5">
+    <div
+      data-ui-component="add-section-chooser"
+      data-ui-part="add-section-chooser-body"
+    >
       <p
-        class="text-muted-foreground text-xs font-medium tracking-wide uppercase"
+        data-ui-component="add-section-chooser"
+        data-ui-part="add-section-chooser-option-label"
       >
         {optionLabel}
       </p>
-      <div class="flex flex-wrap gap-2">
+      <div
+        data-ui-component="add-section-chooser"
+        data-ui-part="add-section-chooser-options"
+      >
         {#each options as option (option.value)}
-          <button
+          <Button
             type="button"
-            class={addChoiceButtonClass}
+            variant="outline"
+            size="xs"
+            class="ui-add-section-chooser__choice"
             onclick={() => onChoose(option.value)}
           >
             {option.label}
-          </button>
+          </Button>
         {/each}
       </div>
     </div>
   </section>
 {:else}
-  <button type="button" class={addSectionButtonClass} onclick={onOpen}>
-    <PlusIcon data-icon="inline-start" />
+  <button
+    type="button"
+    data-ui-component="add-section-chooser"
+    data-ui-part="cta"
+    onclick={onOpen}
+  >
+    <PlusIcon data-icon="inline-start" aria-hidden="true" />
     {addLabel}
   </button>
 {/if}

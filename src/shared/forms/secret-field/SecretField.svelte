@@ -1,4 +1,5 @@
 <script lang="ts">
+  import "./SecretField.css";
   import { Input } from "@stevejuma/ui/shadcn/input";
 
   import FilterCommandPicker from "../filter-command-picker/FilterCommandPicker.svelte";
@@ -52,11 +53,11 @@
 </script>
 
 {#if readOnly}
-  <output>
+  <output data-ui-component="secret-field" data-ui-part="secret-field">
     {mode === "env" ? value || " " : value ? "••••••••" : " "}
   </output>
 {:else}
-  <div class="ui-secret-field" data-invalid={error ? "" : undefined}>
+  <div class="ui-secret-field" data-ui-component="secret-field" data-ui-part="secret-field" data-invalid={error ? "" : undefined}>
     <SegmentedControl
       value={mode}
       options={["env", "inline"]}
@@ -93,33 +94,3 @@
     {/if}
   </div>
 {/if}
-
-<style>
-  .ui-secret-field {
-    display: flex;
-    width: 100%;
-    min-width: 0;
-    box-sizing: border-box;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
-    padding-block: 0.5rem;
-  }
-
-  .ui-secret-field :global(input) {
-    width: 100%;
-  }
-
-  .ui-secret-field :global(.ui-filter-command-picker__trigger) {
-    width: auto;
-    max-width: 100%;
-  }
-
-  .ui-form-control-error {
-    margin: 0;
-    color: var(--destructive, #dc2626);
-    font-size: 0.75rem;
-    font-weight: 500;
-    line-height: 1.3;
-  }
-</style>

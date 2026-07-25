@@ -1,4 +1,5 @@
 <script lang="ts">
+  import "./SegmentedControl.css";
   let {
     value,
     options,
@@ -17,7 +18,7 @@
   } = $props();
 </script>
 
-<div class="cv-form-segmented-root">
+<div class="cv-form-segmented-root" data-ui-component="segmented-control" data-ui-part="segmented-control">
   <div
     class="cv-form-segmented"
     aria-label={ariaLabel}
@@ -38,66 +39,3 @@
     <p class="ui-form-control-error" role="alert">{error}</p>
   {/if}
 </div>
-
-<style>
-  .cv-form-segmented-root {
-    display: grid;
-    width: fit-content;
-    max-width: 100%;
-    gap: 0.25rem;
-  }
-
-  .cv-form-segmented {
-    display: inline-flex;
-    width: fit-content;
-    max-width: 100%;
-    overflow: hidden;
-    border: 1px solid var(--ui-form-border);
-    border-radius: 999px;
-    background: transparent;
-  }
-
-  .cv-form-segmented[data-invalid] {
-    border-color: color-mix(
-      in srgb,
-      var(--destructive, #dc2626) 55%,
-      var(--ui-form-border)
-    );
-  }
-
-  .ui-form-control-error {
-    margin: 0;
-    color: var(--destructive, #dc2626);
-    font-size: 0.75rem;
-    font-weight: 500;
-    line-height: 1.3;
-  }
-
-  .cv-form-segmented button {
-    min-height: 1.65rem;
-    border: 0;
-    border-right: 1px solid var(--ui-form-border);
-    background: transparent;
-    color: var(--ui-form-muted);
-    cursor: pointer;
-    font: inherit;
-    font-size: 0.75rem;
-    font-weight: 650;
-    padding: 0 0.65rem;
-  }
-
-  .cv-form-segmented button:last-child {
-    border-right: 0;
-  }
-
-  .cv-form-segmented button:hover,
-  .cv-form-segmented button:focus-visible {
-    color: var(--ui-form-foreground);
-    outline: 0;
-  }
-
-  .cv-form-segmented button.active {
-    background: var(--ui-form-selection);
-    color: var(--ui-form-accent);
-  }
-</style>

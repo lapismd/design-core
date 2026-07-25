@@ -3,7 +3,7 @@
  * Generates UI Forms MDX docs + variation stories (shadcn-like Docs pages).
  * Run: node scripts/generate-form-docs.mjs
  */
-import { writeFileSync, existsSync } from "node:fs";
+import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
 
 const root = new URL("..", import.meta.url).pathname;
@@ -18,6 +18,8 @@ const root = new URL("..", import.meta.url).pathname;
  *   mdxFile?: string;
  *   variationsFile?: string;
  *   variationsImport?: string;
+ *   cssFile?: string;
+ *   tokens?: string[];
  *   importBlock: string;
  *   instanceScript?: string;
  *   component?: string;
@@ -28,6 +30,107 @@ const root = new URL("..", import.meta.url).pathname;
  *   variations: { name: string; exportName: string; description: string; markup: string }[];
  * }} DocSpec
  */
+
+/** @returns {Map<string, { key: string, name: string, defaultValue: string }>} */
+function loadFormTokenCatalog() {
+  const tokensPath = join(root, "src/shared/forms/form.tokens.ts");
+  const source = readFileSync(tokensPath, "utf8");
+  /** @type {Map<string, string>} */
+  const names = new Map();
+  const namesBlock = source.match(
+    /export const formTokenNames = \{([\s\S]*?)\} as const/,
+  )?.[1];
+  if (namesBlock) {
+    for (const match of namesBlock.matchAll(
+      /(\w+)\s*:\s*["'](--ui-form-[a-z0-9-]+)["']/g,
+    )) {
+      names.set(match[1], match[2]);
+    }
+  }
+  /** @type {Map<string, string>} */
+  const defaults = new Map();
+  const defaultsBlock = source.match(
+    /export const formTokenDefaults[\s\S]*?= \{([\s\S]*?)\};/,
+  )?.[1];
+  if (defaultsBlock) {
+    for (const match of defaultsBlock.matchAll(
+      /(\w+)\s*:\s*["']([^"']+)["']/g,
+    )) {
+      defaults.set(match[1], match[2]);
+    }
+  }
+  /** @type {Map<string, { key: string, name: string, defaultValue: string }>} */
+  const catalog = new Map();
+  for (const [key, name] of names) {
+    catalog.set(key, {
+      key,
+      name,
+      defaultValue: defaults.get(key) ?? "",
+    });
+  }
+  return catalog;
+}
+
+const formTokenCatalog = loadFormTokenCatalog();
+
+/**
+ * @param {string} cssPath
+ * @param {string[] | undefined} explicitKeys
+ */
+function resolveStyleTokens(cssPath, explicitKeys) {
+  /** @type {string[]} */
+  let keys;
+  if (explicitKeys?.length) {
+    keys = explicitKeys;
+  } else if (!existsSync(cssPath)) {
+    keys = [];
+  } else {
+    const css = readFileSync(cssPath, "utf8");
+    keys = [...formTokenCatalog.keys()].filter((key) => {
+      const name = formTokenCatalog.get(key)?.name;
+      return Boolean(name && css.includes(name));
+    });
+  }
+  return keys
+    .map((key) => formTokenCatalog.get(key))
+    .filter(Boolean)
+    .sort((a, b) => a.name.localeCompare(b.name));
+}
+
+/**
+ * @param {DocSpec} spec
+ * @param {string} baseDir
+ */
+function writeStyleSection(spec, baseDir) {
+  const cssFile = spec.cssFile ?? `${spec.heading}.css`;
+  const cssPath = join(baseDir, cssFile);
+  if (!existsSync(cssPath) && !spec.tokens?.length) return "";
+
+  const tokens = resolveStyleTokens(cssPath, spec.tokens);
+  if (tokens.length === 0) {
+    return `
+## Style
+
+Colocated CSS: \`${cssFile}\`.
+`;
+  }
+
+  const rows = tokens
+    .map((token) => `| \`${token.name}\` | \`${token.defaultValue}\` |`)
+    .join("\n");
+
+  return `
+## Style
+
+Colocated CSS: \`${cssFile}\`. Paint with package tokens from
+\`@stevejuma/ui/forms/tokens\` (defaults in \`form.tokens.css\`). Stories may
+still use host Tailwind for demo layout.
+
+| Token | Default |
+| --- | --- |
+${rows}
+`;
+}
 
 /** @type {DocSpec[]} */
 const specs = [
@@ -278,6 +381,7 @@ const specs = [
     storiesImport: "StructuredFormStories",
     title: "Structured Form",
     heading: "StructuredForm",
+    cssFile: "structured-form.css",
     importBlock: `import StructuredForm from "./StructuredForm.svelte";`,
     instanceScript: `import {
     booleanField,
@@ -709,43 +813,6 @@ const specs = [
     ],
   },
   {
-    dir: "search-filter-bar",
-    storiesFile: "SearchFilterBar.stories.svelte",
-    storiesImport: "SearchFilterBarStories",
-    title: "Search Filter Bar",
-    heading: "SearchFilterBar",
-    importBlock: `import SearchFilterBar from "./SearchFilterBar.svelte";`,
-    component: "SearchFilterBar",
-    guidance: [
-      "Search chrome with optional filter chips/snippets — not a labelled form row.",
-      "Filter semantics stay in the app; this package owns layout and expand/collapse chrome.",
-    ],
-    when: [
-      "Workspace sidebars and list filters",
-      "Search + chip filters with a clear control",
-    ],
-    whenNot: ["Schema field rows — use `FormField` / StructuredForm"],
-    usage: `<SearchFilterBar
-  bind:value={query}
-  placeholder="Search..."
-  onClear={...}
-/>`,
-    variations: [
-      {
-        name: "Empty",
-        exportName: "Empty",
-        description: "Idle search pill.",
-        markup: `<SearchFilterBar value="" placeholder="Search..." />`,
-      },
-      {
-        name: "With query",
-        exportName: "WithQuery",
-        description: "Populated search value.",
-        markup: `<SearchFilterBar value="design system" placeholder="Search..." />`,
-      },
-    ],
-  },
-  {
     dir: "reference-picker",
     storiesFile: "ReferencePicker.stories.svelte",
     storiesImport: "ReferencePickerStories",
@@ -1002,6 +1069,8 @@ function writeMdx(/** @type {DocSpec} */ spec) {
   const whenNot = spec.whenNot?.length
     ? `\n### When not to use\n\n${spec.whenNot.map((w) => `- ${w}`).join("\n")}\n`
     : "";
+  const baseDir = join(root, "src/shared/forms", spec.dir);
+  const styleSection = writeStyleSection(spec, baseDir);
 
   const exampleBlocks = spec.variations
     .map(
@@ -1041,7 +1110,7 @@ See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and the shared
 ## Properties
 
 <Controls />
-
+${styleSection}
 ## Examples
 
 ${exampleBlocks}

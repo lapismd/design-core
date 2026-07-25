@@ -1,4 +1,5 @@
 <script lang="ts">
+  import "./ChipAutocomplete.css";
   import XIcon from "@lucide/svelte/icons/x";
 
   import * as Tooltip from "../../shadcn/tooltip/index.js";
@@ -84,6 +85,8 @@
 <Tooltip.Provider delayDuration={200}>
   <div
     class={`chip-autocomplete ${embedded ? "is-embedded" : ""} ${uppercase ? "" : "is-normal-case"}`}
+    data-ui-component="chip-autocomplete"
+    data-ui-part="chip-autocomplete"
   >
     {#if showLabel}
       <label for={inputId}>{label}</label>
@@ -142,135 +145,3 @@
     </div>
   </div>
 </Tooltip.Provider>
-
-<style>
-  .chip-autocomplete {
-    display: grid;
-    min-width: 0;
-    gap: 0.25rem;
-    color: var(--ui-form-accent);
-    font-size: 0.72rem;
-    font-weight: 950;
-    text-transform: uppercase;
-  }
-
-  .chip-autocomplete label {
-    width: fit-content;
-    cursor: pointer;
-  }
-
-  .chip-autocomplete-box {
-    position: relative;
-    display: flex;
-    min-height: 2.45rem;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 0.35rem;
-    border: 0;
-    border-radius: 0.25rem;
-    background: var(--ui-form-background);
-    padding: 0.32rem 0.4rem;
-  }
-
-  .chip-autocomplete.is-embedded .chip-autocomplete-box {
-    min-height: 0;
-    border: 0;
-    border-radius: 0;
-    background: transparent;
-    padding: 0.15rem 0;
-  }
-
-  .chip {
-    display: inline-flex;
-    max-width: 12rem;
-    min-width: 0;
-    align-items: center;
-    gap: 0.25rem;
-    flex-shrink: 1;
-    border: 1px solid color-mix(in srgb, var(--ui-form-accent) 22%, transparent);
-    border-radius: 999px;
-    background: color-mix(
-      in srgb,
-      var(--ui-form-accent) 8%,
-      var(--ui-form-background)
-    );
-    color: var(--ui-form-accent);
-    font-size: 0.72rem;
-    font-weight: 900;
-    line-height: 1;
-    padding: 0.27rem 0.32rem 0.27rem 0.55rem;
-    text-transform: uppercase;
-  }
-
-  .chip-label {
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .chip-autocomplete.is-normal-case .chip {
-    font-size: 0.78rem;
-    font-weight: 700;
-    text-transform: none;
-  }
-
-  .chip button {
-    display: grid;
-    flex: 0 0 auto;
-    width: 1.05rem;
-    height: 1.05rem;
-    place-items: center;
-    border: 0;
-    border-radius: 999px;
-    background: color-mix(in srgb, var(--ui-form-accent) 12%, transparent);
-    color: inherit;
-    cursor: pointer;
-    padding: 0;
-  }
-
-  .chip :global(svg) {
-    width: 0.72rem;
-    height: 0.72rem;
-  }
-
-  .chip-input {
-    min-width: 8rem;
-    flex: 1;
-    color: var(--ui-form-foreground);
-    font-size: 0.9rem;
-    font-weight: 400;
-    line-height: 1.2;
-    text-transform: none;
-  }
-
-  .chip-autocomplete-box[data-invalid] {
-    box-shadow: 0 0 0 1px
-      color-mix(in srgb, var(--destructive, #dc2626) 55%, transparent);
-  }
-
-  .chip-input :global(input) {
-    border: 0 !important;
-    box-shadow: none !important;
-    outline: 0;
-    padding: 0.2rem;
-  }
-
-  .chip-autocomplete.is-embedded .chip-input :global(input) {
-    padding: 0;
-  }
-
-  .chip-tooltip-content {
-    z-index: 50;
-    max-width: min(22rem, calc(100vw - 2rem));
-    border-radius: 0.375rem;
-    background: var(--foreground);
-    color: var(--background);
-    font-size: 0.75rem;
-    font-weight: 700;
-    line-height: 1.25;
-    overflow-wrap: anywhere;
-    padding: 0.38rem 0.65rem;
-    text-transform: none;
-  }
-</style>

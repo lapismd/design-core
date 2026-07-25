@@ -1,0 +1,54 @@
+@import "../form.tokens.css";
+
+[data-ui-component="code-highlighter"] {
+  width: 100%;
+}
+
+[data-ui-part="code-highlighter-pre"] {
+  min-width: 100%;
+  margin: 0;
+  border: 1px solid var(--ui-form-border);
+  border-radius: var(--ui-form-radius);
+  background: var(--ui-form-code-background);
+  color: var(--ui-form-foreground);
+  font-family: var(--ui-form-mono, ui-monospace, monospace);
+  font-size: 0.75rem;
+  line-height: 1.625;
+  padding: 0.75rem;
+}
+
+[data-ui-part="code-highlighter-pre"] .ui-form-code-comment {
+  color: var(--ui-form-muted);
+}
+
+[data-ui-part="code-highlighter-pre"] .ui-form-code-keyword {
+  color: var(--ui-form-code-keyword, #5b21b6);
+}
+
+[data-ui-part="code-highlighter-pre"] .ui-form-code-string {
+  color: var(--ui-form-code-string, #92400e);
+}
+
+[data-ui-part="code-highlighter-pre"] .ui-form-code-value {
+  color: var(--ui-form-code-value, #0f766e);
+}
+
+[data-ui-part="code-highlighter-pre"] .ui-form-code-function {
+  color: var(--ui-form-code-function, #075985);
+}
+
+[data-ui-part="code-highlighter-pre"] .ui-form-code-property {
+  color: var(--ui-form-code-property, #1d4ed8);
+}
+
+[data-ui-part="code-highlighter-pre"] .ui-form-code-operator {
+  color: var(--ui-form-code-operator, var(--ui-form-foreground));
+}
+
+[data-ui-part="code-highlighter-pre"] .ui-form-code-punctuation {
+  color: var(--ui-form-code-punctuation, var(--ui-form-muted));
+}
+
+[data-ui-part="code-highlighter-pre"] .ui-form-code-invalid {
+  color: var(--destructive);
+}

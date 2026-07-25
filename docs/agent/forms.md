@@ -48,9 +48,14 @@ This topic summarizes the package contract. Full decision guide:
 
 ## Tokens
 
-Forms use `--ui-form-*` (`formTokenNames` / `@stevejuma/ui/forms/tokens`),
-defaults in `form.tokens.css`. Same override idea as shadcn `--ui-<family>-*`
-maps.
+Forms use `--ui-form-*` (`formTokenNames` / `formTokenDefaults` /
+`@stevejuma/ui/forms/tokens`), defaults in `form.tokens.css`. Same override
+idea as shadcn `--ui-<family>-*` maps.
+
+Paint via colocated `ComponentName.css` — no Tailwind utilities in form
+sources (`pnpm check:no-tailwind` includes `src/shared/forms`). Each Docs page
+has a **Style** table of Token / Default for the subset that component reads.
+Stories may still use host Tailwind for demo layout.
 
 ## Before adding a form export
 

@@ -1,10 +1,4 @@
-import {
-  Meta,
-  Canvas,
-  Controls,
-  Primary,
-  Source,
-} from "@storybook/addon-docs/blocks";
+import { Meta, Canvas, Controls, Primary, Source } from "@storybook/addon-docs/blocks";
 import * as ReferencePickerStories from "./ReferencePicker.stories.svelte";
 import * as ReferencePickerVariations from "./ReferencePicker.variations.stories.svelte";
 
@@ -31,12 +25,7 @@ See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and the shared
 
 ## Usage
 
-<Source
-  language="html"
-  code={
-    "<ReferencePicker\n  refs={refs}\n  referenceIndex={index}\n  onChange={...}\n/>"
-  }
-/>
+<Source language="html" code={"<ReferencePicker\n  refs={refs}\n  referenceIndex={index}\n  onChange={...}\n/>"} />
 
 <Primary />
 
@@ -44,19 +33,37 @@ See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and the shared
 
 <Controls />
 
+## Style
+
+Colocated CSS: `ReferencePicker.css`. Paint with package tokens from
+`@stevejuma/ui/forms/tokens` (defaults in `form.tokens.css`). Stories may
+still use host Tailwind for demo layout.
+
+| Token | Default |
+| --- | --- |
+| `--ui-form-accent` | `var(--primary)` |
+| `--ui-form-background` | `var(--background)` |
+| `--ui-form-border` | `var(--border)` |
+| `--ui-form-border-muted` | `color-mix(in srgb, var(--border) 70%, transparent)` |
+| `--ui-form-foreground` | `var(--foreground)` |
+| `--ui-form-mono` | `var(--font-mono, ui-monospace, monospace)` |
+| `--ui-form-muted` | `var(--muted-foreground)` |
+| `--ui-form-muted-surface` | `var(--muted)` |
+| `--ui-form-popover` | `var(--popover, var(--card))` |
+| `--ui-form-radius` | `var(--radius, 0.625rem)` |
+| `--ui-form-selection` | `color-mix(in srgb, var(--primary) 12%, transparent)` |
+
 ## Examples
 
 ### With selection
 
 Selected reference plus add affordance.
 
-<Canvas
-  of={ReferencePickerVariations.WithSelection}
-  meta={ReferencePickerVariations}
-/>
+<Canvas of={ReferencePickerVariations.WithSelection} meta={ReferencePickerVariations} />
 
 ### Empty
 
 No refs selected yet.
 
 <Canvas of={ReferencePickerVariations.Empty} meta={ReferencePickerVariations} />
+

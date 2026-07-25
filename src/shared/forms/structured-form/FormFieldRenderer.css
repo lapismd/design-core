@@ -1,0 +1,76 @@
+@import "../form.tokens.css";
+
+.cv-forms-preview-value {
+  display: block;
+  min-height: 1.25rem;
+  padding: 0;
+  color: var(--ui-form-foreground);
+  font: inherit;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.cv-forms-field-issues {
+  display: grid;
+  gap: 0.15rem;
+  color: var(--destructive);
+  font-size: 0.75rem;
+  padding: 0 0 0.35rem;
+}
+
+.cv-forms-field-issues p {
+  margin: 0;
+}
+
+.cv-forms-switch {
+  display: inline-grid;
+  width: fit-content;
+  min-height: 1.6rem;
+  align-items: center;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+}
+
+.cv-forms-switch-track {
+  position: relative;
+  display: inline-flex;
+  width: 2rem;
+  height: 1.15rem;
+  align-items: center;
+  border: 1px solid var(--ui-form-border);
+  border-radius: 999px;
+  background: var(--ui-form-muted-surface);
+  transition:
+    background 140ms ease,
+    border-color 140ms ease;
+}
+
+.cv-forms-switch-thumb {
+  position: absolute;
+  left: 0.13rem;
+  width: 0.82rem;
+  height: 0.82rem;
+  border-radius: 999px;
+  background: var(--ui-form-background);
+  box-shadow: 0 1px 2px var(--ui-form-shadow);
+  transition: translate 140ms ease;
+}
+
+.cv-forms-switch[aria-checked="true"] .cv-forms-switch-track {
+  border-color: color-mix(in srgb, var(--ui-form-accent) 55%, transparent);
+  background: color-mix(in srgb, var(--ui-form-accent) 10%, transparent);
+}
+
+.cv-forms-switch[aria-checked="true"] .cv-forms-switch-thumb {
+  background: var(--ui-form-accent);
+  translate: 0.82rem 0;
+}
+
+.cv-forms-switch:hover,
+.cv-forms-switch:focus-visible {
+  outline: 0;
+}

@@ -3,7 +3,7 @@
   import CodeEditor from "./CodeEditor.svelte";
 
   const { Story } = defineMeta({
-    title: "UI Forms/Editors/Code Editor",
+    title: "UI Forms/Code Editor",
     component: CodeEditor,
     parameters: {
       docs: {
@@ -14,6 +14,7 @@
     },
   });
 </script>
+
 
 <Story
   name="TypeScript"
@@ -26,6 +27,10 @@
   }}
 >
   {#snippet template()}
-    <CodeEditor value={"const answer = 42;\n"} language="ts" minHeight="8rem" />
+    <CodeEditor
+      value={"const answer = 42;\n"}
+      language="ts"
+      minHeight="8rem"
+    />
   {/snippet}
 </Story>
