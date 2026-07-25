@@ -62,7 +62,7 @@
         gap: var(--spacing);
       }
       [data-ui-component="popover"][data-ui-part="popover-content"] {
-        gap: calc(var(--spacing) * 4);
+        gap: var(--ui-popover-gap, calc(var(--spacing) * 4));
       }
       [data-ui-component="popover"][data-ui-part="popover-content"] {
         border-radius: calc(var(--radius) * 0.8);
@@ -71,7 +71,7 @@
         background-color: var(--ui-popover-background, var(--popover));
       }
       [data-ui-component="popover"][data-ui-part="popover-content"] {
-        padding: calc(var(--spacing) * 4);
+        padding: var(--ui-popover-padding, calc(var(--spacing) * 4));
       }
       [data-ui-component="popover"][data-ui-part="popover-content"],
       [data-ui-component="popover"][data-ui-part="popover-header"] {

@@ -17,10 +17,12 @@
   font-weight: 400;
 }
 
-:global(.ui-date-picker__content) {
+/* Plain CSS: no :global() — set popover density tokens on the Content class. */
+.ui-date-picker__content {
+  --ui-popover-gap: 0;
+  --ui-popover-padding: 0;
   width: auto;
   min-width: 15rem;
-  padding: 0;
   border: 1px solid var(--ui-form-border);
   border-radius: var(--ui-form-radius);
   background: var(--ui-form-popover, var(--ui-form-background));

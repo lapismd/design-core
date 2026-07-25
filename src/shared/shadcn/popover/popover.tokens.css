@@ -10,4 +10,7 @@
   --ui-popover-border-color: var(--border);
   --ui-popover-radius: var(--radius-md, calc(var(--radius) * 0.8));
   --ui-popover-focus-ring-color: var(--ring);
+  /* Menu / list popovers set these to 0 on the Content class. */
+  --ui-popover-gap: calc(var(--spacing) * 4);
+  --ui-popover-padding: calc(var(--spacing) * 4);
 }

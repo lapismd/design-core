@@ -4,6 +4,8 @@ export const popoverTokenNames = {
   borderColor: "--ui-popover-border-color",
   radius: "--ui-popover-radius",
   focusRingColor: "--ui-popover-focus-ring-color",
+  gap: "--ui-popover-gap",
+  padding: "--ui-popover-padding",
 } as const;
 
 export type PopoverToken =
