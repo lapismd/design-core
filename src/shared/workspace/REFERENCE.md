@@ -30,6 +30,11 @@ part of the target migration.
 
 ## Immutable reference assets
 
+The target-owned copies live under
+`reference/lapis/workspace-shell/` and are served in Storybook from
+`/lapis-reference`. The source package is no longer required to inspect these
+captures.
+
 | Asset                       | SHA-256                                                            |
 | --------------------------- | ------------------------------------------------------------------ |
 | `workspace-shell-light.png` | `612902f9da1b729f94a94e15057296cad752cafeab26435f2bed017a6735a28e` |

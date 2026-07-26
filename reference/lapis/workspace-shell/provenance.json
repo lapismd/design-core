@@ -1,0 +1,412 @@
+{
+  "source": "Lapis workspace application",
+  "sourceRevision": "a371198e495d9e4e465c2960a04b3a4fd11f4023",
+  "referenceRoute": "http://127.0.0.1:4173",
+  "candidateRoute": "http://127.0.0.1:4174/?scenario=desktop",
+  "viewport": { "width": 1440, "height": 960 },
+  "deviceScaleFactor": 1,
+  "browser": "Playwright pinned Chromium",
+  "themes": ["light", "dark"],
+  "layoutFixture": "workspace-shell-canonical with every open leaf setViewState({ type: 'empty', state: {} })",
+  "policy": "reference:update is explicit; normal validation is read-only, checks stored reference dimensions, and compares the live Lapis reference with the candidate at zero differing pixels",
+  "visualDelta": {
+    "candidateViewport": { "width": 1280, "height": 900 },
+    "candidateDeviceScaleFactor": 3,
+    "candidateSnapshotPathMode": "story-id",
+    "candidatePublicPath": "/visual-baselines",
+    "canonicalPublicPath": "/lapis-reference",
+    "canonicalImmutable": true,
+    "policy": "test:visual compares only; candidate updates require VISUAL_UPDATE_APPROVED=1 and an exact target; reference/lapis remains controlled only by reference:update"
+  },
+  "sourceContracts": [
+    {
+      "surface": "workspace model and controller",
+      "sourcePath": "packages/api/src/lib/workspace.svelte.ts",
+      "sha256": "ab05399aac7265e262e79572739b3365b68c97ed6f81985a3ef7e95abd56f3be",
+      "candidatePaths": [
+        "app-shell/src/lib/core/app-shell-controller.svelte.ts",
+        "app-shell/src/lib/core/app-workspace.ts"
+      ],
+      "adapter": "A non-global AppShellController and AppWorkspace expose portable leaf, split, sidebar, group, floating, and active identity operations over the extracted renderer."
+    },
+    {
+      "surface": "workspace layout wire shape",
+      "sourcePath": "packages/api/src/lib/workspace-layout-normalizer.ts",
+      "sha256": "29d5811021cc5e6d4ec04f28fa23bdd262114bfee9a2227da715252eda92192c",
+      "candidatePaths": ["app-shell/src/lib/core/workspace-json.ts"],
+      "adapter": "The Lapis main/left/right/floating/active JSON shape is public; the former extracted V2 shape is accepted as a compatibility migration input."
+    },
+    {
+      "surface": "class-based view lifecycle",
+      "sourcePath": "packages/api/src/lib/view.svelte.ts",
+      "sha256": "1e5a5a140b16e0dbd8ea0d9a4da8566122818e682f9848166b003f24c17b3eb0",
+      "candidatePaths": ["app-shell/src/lib/core/workspace-view.ts"],
+      "adapter": "Editor, file, history, localization, and global App dependencies are removed while state/open/close/menu lifecycle is retained."
+    },
+    {
+      "surface": "configuration registry",
+      "sourcePath": "packages/api/src/lib/configuration.svelte.ts",
+      "sha256": "19a4cf53d6aef27be5e9abc462453d9086156e576fe624e6b227444ae577a871",
+      "candidatePaths": [
+        "app-shell/src/lib/settings/configuration.ts",
+        "app-shell/src/lib/settings/settings-controller.svelte.ts"
+      ],
+      "adapter": "Generic sections, option sources, validation, and injected persistence replace app.json, plugin data, vault, and filesystem behavior."
+    },
+    {
+      "surface": "editor view registry and association resolution",
+      "sourcePath": "packages/api/src/lib/editor-view-registry.ts",
+      "sha256": "0984a12c3750b6ff1ea3d3213c78ca380d676f77e7aa4d2ac5d25a9964a76f1c",
+      "candidatePaths": [
+        "app-shell/src/lib/core/editor-view-registry.ts",
+        "app-shell/src/lib/core/app-workspace.ts"
+      ],
+      "adapter": "Serializable editor metadata and Lapis priority, pattern, and explicit-association rules are retained while filesystem access and application-global state are excluded."
+    },
+    {
+      "surface": "built-in appearance configuration",
+      "sourcePath": "packages/workspace/src/lib/config/appearence.schema.json",
+      "sha256": "cdbb41e3928b1dac1d146e003c74cc8b9092f406ba6a7500baf08dcdc601a866",
+      "candidatePaths": [
+        "app-shell/src/lib/core/built-in-settings.svelte.ts",
+        "app-shell/src/lib/ui/app-shell-surface.svelte"
+      ],
+      "adapter": "Lapis IDs, defaults, labels, descriptions, and ranges drive scoped shell theme, accent, font, zoom, ribbon, header, and inline-title behavior."
+    },
+    {
+      "surface": "built-in workspace and mobile configuration",
+      "sourcePath": "packages/workspace/src/lib/config/workspace.schema.json",
+      "sha256": "210bc2d87c01c304f7a65626f9f30b07f0a719938acd484a2d6c6fea4a261085",
+      "candidatePaths": [
+        "app-shell/src/lib/core/built-in-settings.svelte.ts",
+        "app-shell/src/lib/ui/workspace-mobile.svelte"
+      ],
+      "adapter": "Portable mobile and editor-association settings are retained; file-explorer behavior remains consumer-owned."
+    },
+    {
+      "surface": "portable commands and keymaps",
+      "sourcePath": "packages/api/src/lib/command.svelte.ts",
+      "sha256": "13c0740af5698cc93ba960fb14ebdb08e0789a15782ebeefcbd65d08cf8b9483",
+      "candidatePaths": [
+        "app-shell/src/lib/core/command-manager.svelte.ts",
+        "app-shell/src/lib/ui/app-shell-command-palette.svelte"
+      ],
+      "adapter": "Editor callbacks and filesystem search are replaced by active leaf/view context and generic palette providers."
+    },
+    {
+      "surface": "application about dialog",
+      "sourcePath": "packages/workspace/src/lib/feature/app/about-app-dialog.svelte",
+      "sha256": "f37d3acd49e91270c6ea052299390db1a498d97ad34620f8d80077b28069cdd2",
+      "candidatePaths": [
+        "app-shell/src/lib/ui/workspace-about-dialog.svelte",
+        "app-shell/src/lib/ui/app-shell-about-dialog.svelte"
+      ],
+      "adapter": "Application metadata is supplied through AppShellControllerOptions instead of Lapis build globals or the native desktop bridge; copy feedback uses the controller-owned Notice manager."
+    },
+    {
+      "surface": "static plugin lifecycle",
+      "sourcePath": "packages/api/src/lib/plugin.ts",
+      "sha256": "9e2f157475fd8ecf12f675b458a6647faaed327617df63716aac80545b975123",
+      "candidatePaths": ["app-shell/src/lib/core/plugin-manager.svelte.ts"],
+      "adapter": "Only host-supplied in-process plugin classes, transactional registration cleanup, and persisted enablement are retained; discovery and dynamic evaluation are excluded."
+    },
+    {
+      "surface": "app-shell F-Mode lifecycle and input",
+      "sourcePath": "packages/plugins/plugin-fmode/src/fmode-plugin.ts",
+      "sha256": "0ad0ab017579a609b3bbfe9bc95190f9f897b3ae7add151343fb2c1d3510accb",
+      "candidatePaths": [
+        "app-shell/plugins/fmode/src/lib/fmode-plugin.ts",
+        "app-shell/plugins/fmode/src/lib/fmode-session.svelte.ts",
+        "app-shell/plugins/fmode/src/lib/hint-labels.ts",
+        "app-shell/plugins/fmode/src/lib/settings.ts"
+      ],
+      "adapter": "The application global, plugin manifest, context keys, and captured document listener are replaced by the non-global controller UI registry, static descriptor, Notice facade, and modal keymap scope."
+    },
+    {
+      "surface": "app-shell F-Mode presentation",
+      "sourcePath": "packages/plugins/plugin-fmode/src/styles.css",
+      "sha256": "8f556904fd0441c6f1d0667d2c15c5713b6c2b79f5925138a9537b1b94c15d97",
+      "candidatePaths": [
+        "app-shell/plugins/fmode/src/lib/fmode-overlay.svelte",
+        "app-shell/plugins/fmode/src/lib/styles.css"
+      ],
+      "adapter": "The shell-scoped overlay renders through the active surface portal and packages semantic light/dark styles without importing the Lapis UI stylesheet."
+    },
+    {
+      "surface": "app-shell notification plugin lifecycle",
+      "sourcePath": "packages/plugins/plugin-notifications/src/notifications-plugin.ts",
+      "sha256": "40a85bcdbf70461c900f6e4cd20cc6e41752314326b19a9ad8b4aea51f6ec0b4",
+      "candidatePaths": [
+        "app-shell/src/lib/core/notification-manager.svelte.ts",
+        "app-shell/plugins/notifications/src/lib/notifications-plugin.ts",
+        "app-shell/plugins/notifications/src/lib/notification-status-model.ts"
+      ],
+      "adapter": "The controller owns generic history/progress persistence while the optional static plugin leases presentation and registers overlay, status, and command contributions; native desktop mirroring is excluded."
+    },
+    {
+      "surface": "app-shell notification center",
+      "sourcePath": "packages/plugins/plugin-notifications/src/notification-center.svelte",
+      "sha256": "c09c13a0d0f62ea64a73dac086d04ea68cc80ca9f2ee319f5e1be64d3ffd8010",
+      "candidatePaths": [
+        "app-shell/plugins/notifications/src/lib/notification-center.svelte",
+        "app-shell/plugins/notifications/src/lib/notification-toasts.svelte",
+        "app-shell/plugins/notifications/src/lib/notification-status.svelte",
+        "app-shell/plugins/notifications/src/lib/styles.css"
+      ],
+      "adapter": "Package-local composable presentation uses shell semantic tokens and the public notification manager instead of Lapis API, UI, database, native, and sonner dependencies."
+    },
+    {
+      "surface": "top tabs",
+      "sourcePath": "packages/workspace/src/lib/components/tabs/tabs-top.svelte",
+      "sha256": "5f7bc6ca45027354bafbd01419effdb5823d2e16078b10bb8b08e3b5ec99dd3b",
+      "candidatePaths": [
+        "app-shell/src/lib/ui/workspace-pane.svelte",
+        "app-shell/src/lib/ui/workspace-tab-strip.svelte"
+      ],
+      "adapter": "WorkspaceTabsNode and WorkspaceShellController replace Lapis application state. Standalone accessible names and a crowded-row minimum width preserve nonvisual usability and hidden-scrollbar overflow without changing ordinary source geometry."
+    },
+    {
+      "surface": "sidebar tabs and grouped panels",
+      "sourcePath": "packages/workspace/src/lib/components/tabs/tabs-sidebar.svelte",
+      "sha256": "b26bc1b1563ae311ac4519a47c00dbcda29ebeff944e185b14edbc56e6fc2d0e",
+      "candidatePaths": [
+        "app-shell/src/lib/ui/workspace-tab-strip.svelte",
+        "app-shell/src/lib/ui/workspace-sidebar-group.svelte"
+      ],
+      "adapter": "Generic tabs replace WorkspaceLeaf and application-specific group actions are omitted."
+    },
+    {
+      "surface": "stacked tabs",
+      "sourcePath": "packages/workspace/src/lib/components/tabs/tabs-stacked.svelte",
+      "sha256": "ddb07dd3f42fece4bb3927e624f455d40cf423c397a7c47fabbcd03d8793174a",
+      "candidatePaths": ["app-shell/src/lib/ui/workspace-stacked-pane.svelte"],
+      "adapter": "Generic view hosts replace Lapis leaves."
+    },
+    {
+      "surface": "recursive splits",
+      "sourcePath": "packages/workspace/src/lib/components/tabs/tabs-split.svelte",
+      "sha256": "c55dda8502a63acf527e0c99e1ab17a3df80c581609f02756f6369e98ac62623",
+      "candidatePaths": [
+        "app-shell/src/lib/ui/workspace-tree.svelte",
+        "app-shell/src/lib/ui/workspace-sidebar-empty.svelte"
+      ],
+      "adapter": "WorkspaceSplitNode replaces WorkspaceSplit. Empty sidebar roots retain the source Alert and dock-toggle structure."
+    },
+    {
+      "surface": "tab body drop overlay",
+      "sourcePath": "packages/workspace/src/lib/components/tabs/tabs-drop.svelte",
+      "sha256": "21928974132bdc0dba9431f1ff372d04f215fecbbe47758d8d5a034c9c587878",
+      "candidatePaths": [
+        "app-shell/src/lib/ui/workspace-tabs-drop.svelte",
+        "app-shell/src/lib/ui/workspace-tabs-drop.ts"
+      ],
+      "adapter": "Generic tab payloads replace leaf and file payloads."
+    },
+    {
+      "surface": "tab reorder target",
+      "sourcePath": "packages/workspace/src/lib/components/tabs/tabs-move.svelte",
+      "sha256": "7e75366b975b542af81a5ba5183c3ad19c87d6a09a82046e104743137fbec817",
+      "candidatePaths": ["app-shell/src/lib/ui/workspace-tabs-move.svelte"],
+      "adapter": "Generic insertion mutations replace WorkspaceLeaf moves."
+    },
+    {
+      "surface": "pointer drag input policy",
+      "sourcePath": "packages/workspace/src/lib/hooks/pointer-drag-policy.ts",
+      "sha256": "d5dbc5e3f42a661445c1af9674b8e66869b748411c9cbc25f00fa2ba7d8ae6d0",
+      "candidatePaths": [
+        "app-shell/src/lib/ui/workspace-drag.svelte.ts",
+        "app-shell/src/lib/ui/workspace-pointer-drag-policy.ts"
+      ],
+      "adapter": "The automatic fine/coarse input selection is retained so desktop tab clicks use the native HTML5 path while touch, pen, and coarse pointers use registered pointer targets."
+    },
+    {
+      "surface": "settings",
+      "sourcePath": "packages/workspace/src/lib/components/configuration/configuration.svelte",
+      "sha256": "ee0b15864a3b1ea5f671d38555a38d9c5e00418747ec4733bfbb9d134b4a8ea4",
+      "candidatePaths": [
+        "app-shell/src/lib/settings/workspace-settings-surface.svelte",
+        "app-shell/src/lib/settings/workspace-setting-field.svelte",
+        "app-shell/src/lib/settings/workspace-setting-select.svelte",
+        "app-shell/src/lib/settings/workspace-setting-list.svelte"
+      ],
+      "adapter": "Declarative generic schemas replace plugins, vault settings, and raw configuration files."
+    },
+    {
+      "surface": "settings schema sections",
+      "sourcePath": "packages/workspace/src/lib/components/configuration/configuration.ts",
+      "sha256": "c41b64d3bb61272505bcda166112ac83310f01164b192c6865934d518ee2c3d5",
+      "candidatePaths": [
+        "app-shell/src/lib/settings/workspace-settings-surface.svelte",
+        "app-shell/src/lib/settings/workspace-setting-field.svelte"
+      ],
+      "adapter": "Declarative field groups replace ConfigProperty groups while retaining sibling section, heading, body, and setting-item structure."
+    },
+    {
+      "surface": "settings select controls",
+      "sourcePath": "packages/api/src/lib/components/select/select.svelte",
+      "sha256": "e5b2bba1c1cf6e2faabcc88be2e6bea2b842a11675ac22f92e7770087a34d500",
+      "candidatePaths": [
+        "app-shell/src/lib/settings/workspace-setting-select.svelte"
+      ],
+      "adapter": "Package-local shadcn select primitives replace the Lapis UI import while retaining single and multiple selection markup."
+    },
+    {
+      "surface": "settings primitive lists",
+      "sourcePath": "packages/api/src/lib/components/configuration/list-setting.svelte",
+      "sha256": "7ee655e22b2e4cdb8b5ddbc7a038c336c9be041df621f6c4e6e06deae71648c3",
+      "candidatePaths": [
+        "app-shell/src/lib/settings/workspace-setting-list.svelte"
+      ],
+      "adapter": "Package-local controls and declarative disabled/maximum metadata replace Lapis API component wrappers."
+    },
+    {
+      "surface": "settings editor association table",
+      "sourcePath": "packages/api/src/lib/components/configuration/object-map-setting.svelte",
+      "sha256": "8b15515f514e9e6bb423e3c16bb4f565002d7eeb379f304e55ba57ada4a93d3e",
+      "candidatePaths": [
+        "app-shell/src/lib/settings/workspace-setting-key-value.svelte",
+        "app-shell/src/lib/settings/workspace-setting-key-value-row.svelte"
+      ],
+      "adapter": "The source Pattern, Editor, Actions table and add/edit/remove flow use package-local shadcn controls and the generic option-source registry."
+    },
+    {
+      "surface": "hotkey settings page",
+      "sourcePath": "packages/workspace/src/lib/components/configuration/hotkeys-settings.svelte",
+      "sha256": "a7dabe4f9f102cee9f2efb2cb164e43eaf38eb2176813a27452860724cf38271",
+      "candidatePaths": [
+        "app-shell/src/lib/ui/app-shell-hotkey-settings.svelte"
+      ],
+      "adapter": "Search, assigned filtering, multiple bindings, conflict display, explicit unbinding, and reset are retained over the portable command manager."
+    },
+    {
+      "surface": "core plugins settings page",
+      "sourcePath": "packages/workspace/src/lib/components/configuration/core-plugins.ts",
+      "sha256": "e04f99abe4afeb00bc603557d4538156d767ccf533599e2c116f83b991c7ee61",
+      "candidatePaths": [
+        "app-shell/src/lib/ui/app-shell-core-plugins-settings.svelte"
+      ],
+      "adapter": "Static descriptors replace manifests and dynamic discovery; source settings navigation and toggles are supplemented with portable status and error details."
+    },
+    {
+      "surface": "view header and pane actions",
+      "sourcePath": "packages/workspace/src/lib/components/view-header/view-header.svelte",
+      "sha256": "815600683eff9d56d48a04fae5cf3473ea2bf19c9e8cab065adae1829f7db680",
+      "candidatePaths": ["app-shell/src/lib/ui/workspace-view-header.svelte"],
+      "adapter": "Generic breadcrumbs, navigation callbacks, header actions, and WorkspaceMenu contributions replace file history and application commands; standalone aria-label attributes name hint-only icon buttons."
+    },
+    {
+      "surface": "empty and missing view",
+      "sourcePath": "packages/workspace/src/lib/views/empty/empty-view.svelte",
+      "sha256": "b8c5daa70ad6b8f5c4f6f31dd761956d7f23f0e9387bade766f09ae70b367b2c",
+      "candidatePaths": ["app-shell/src/lib/ui/workspace-empty.svelte"],
+      "adapter": "Consumer-supplied WorkspaceAction records replace application commands and localized copy; the missing-view close action uses normal text colour to meet standalone contrast validation."
+    },
+    {
+      "surface": "workspace shell styles",
+      "sourcePath": "packages/workspace/src/lib/styles/workspace-shell.css",
+      "sha256": "d0db7c4bad662d616341bd74e4b64ea46ffe3aca207a3aee6cfee82e9803ef1b",
+      "candidatePaths": [
+        "app-shell/src/lib/lapis-workspace-shell.css",
+        "app-shell/src/lib/styles.css"
+      ],
+      "adapter": "Canonical shell rules are retained in source order; the companion stylesheet contains only package adapters, settings, stories, and public shell variables."
+    },
+    {
+      "surface": "setting rows",
+      "sourcePath": "packages/workspace/src/lib/styles/app.css",
+      "sha256": "ebf766ec329bf96249f275a012ee1e5ebd34045654ba0d8b350a33d41fcf2195",
+      "candidatePaths": ["app-shell/src/lib/styles.css"],
+      "adapter": "Only the setting-item foundation is retained."
+    },
+    {
+      "surface": "desktop shell frame",
+      "sourcePath": "packages/workspace/src/lib/components/app/desktop-workspace-shell.svelte",
+      "sha256": "9abc4149697b4d070b466b78e1c0692f9f1869579f1d90c7ba3d7b96cd6c3be3",
+      "candidatePaths": ["app-shell/src/lib/ui/workspace-shell.svelte"],
+      "adapter": "Generic controller registries replace application services while preserving the source frame."
+    },
+    {
+      "surface": "left ribbon and sidebar footer",
+      "sourcePath": "packages/workspace/src/lib/components/sidebar/sidebar-left.svelte",
+      "sha256": "d821a42b6a74ff968c3bf0833b8dc40209508d43d79972be70de03e9100ba483",
+      "candidatePaths": [
+        "app-shell/src/lib/ui/workspace-ribbon.svelte",
+        "app-shell/src/lib/ui/workspace-shell.svelte"
+      ],
+      "adapter": "Consumer ribbon and settings registries replace application plugins and vault switching."
+    },
+    {
+      "surface": "right sidebar frame",
+      "sourcePath": "packages/workspace/src/lib/components/sidebar/sidebar-right.svelte",
+      "sha256": "124090288c0a9671fede2d750958b0a65670a7575b59d2e511f5cf400ae2d9c0",
+      "candidatePaths": ["app-shell/src/lib/ui/workspace-shell.svelte"],
+      "adapter": "The generic right WorkspaceSidebarState replaces the application sidedock."
+    },
+    {
+      "surface": "status bar",
+      "sourcePath": "packages/workspace/src/lib/components/status-bar/status-bar.svelte",
+      "sha256": "9fac2898beb42fc5e97bf426ad611b03c86ea47379529f0a39fb0b7536e9753c",
+      "candidatePaths": ["app-shell/src/lib/ui/workspace-status-bar.svelte"],
+      "adapter": "Controller-managed status items replace plugin-owned DOM targets."
+    },
+    {
+      "surface": "floating and popout window chrome",
+      "sourceDirectory": "packages/workspace/src/lib/components/sidebar",
+      "sha256": "e97ce5f1baca92a2097a8ec731fa20481188d450575960017174512b4b640af1",
+      "candidatePaths": [
+        "app-shell/src/lib/ui/workspace-floating-window.svelte",
+        "app-shell/src/lib/ui/workspace-popout-surface.svelte"
+      ],
+      "adapter": "Generic window models and popout hosts replace application keyboard and command services."
+    },
+    {
+      "surface": "mobile workspace surfaces",
+      "sourceDirectory": "packages/workspace/src/lib/components/app",
+      "sha256": "b85085c4942c4dbe2d479693aa69bed0fba26f9ebc83c21ee62696f2939c96a5",
+      "candidatePaths": [
+        "app-shell/src/lib/ui/workspace-mobile.svelte",
+        "app-shell/src/lib/ui/workspace-mobile-actions-drawer.svelte",
+        "app-shell/src/lib/ui/workspace-mobile-dock.svelte",
+        "app-shell/src/lib/ui/workspace-mobile-sidebar-panel.svelte",
+        "app-shell/src/lib/ui/workspace-mobile-tab-tile.svelte",
+        "app-shell/src/lib/ui/workspace-mobile-tabs-actions.svelte",
+        "app-shell/src/lib/ui/workspace-mobile-tabs-page.svelte",
+        "app-shell/src/lib/ui/workspace-mobile-view-actions.svelte"
+      ],
+      "adapter": "Generic tabs, menus, settings callbacks, and views replace application commands and leaves."
+    },
+    {
+      "surface": "theme foundation",
+      "sourceDirectory": "packages/ui/src/lib/styles/theme",
+      "sha256": "d1f2a47426dc7f096b8c07db000e4916f2cf2ea5d0867d35cff131c01f9fdf54",
+      "candidatePaths": [
+        "app-shell/src/app.css",
+        "app-shell/src/package.css",
+        "app-shell/src/lib/lapis-workspace-shell.css",
+        "app-shell/src/lib/styles.css"
+      ],
+      "adapter": "Theme variables and compiled Tailwind utilities are scoped to the shell root and packaged locally."
+    },
+    {
+      "surface": "settings sidebar primitives",
+      "sourceDirectory": "packages/ui/src/lib/components/ui/sidebar-custom",
+      "sha256": "8b33f2e1dd1e6686f1c7c2a40a9f695fc35c6028ad7d7aa579d46cc5c549d0de",
+      "candidatePaths": ["app-shell/src/lib/components/ui/sidebar-custom"],
+      "adapter": "Direct package-local copy with no application imports."
+    },
+    {
+      "surface": "settings search primitive",
+      "sourceDirectory": "packages/ui/src/lib/components/ui/search",
+      "sha256": "2abba0a096028cd6660ff473e5da63253ca5de8388ab1f4ad4d91edc76c735ae",
+      "candidatePaths": ["app-shell/src/lib/components/ui/search"],
+      "adapter": "Only package-local Input and Button import paths are adapted."
+    },
+    {
+      "surface": "empty sidebar alert primitive",
+      "sourceDirectory": "packages/ui/src/lib/components/ui/alert",
+      "sha256": "7f17d627e25f13fbfd1ff5633c589e670ab0469e2071b33f859061bbba01083c",
+      "candidatePaths": ["app-shell/src/lib/components/ui/alert"],
+      "adapter": "Direct package-local copy with only the local utility import path adapted."
+    }
+  ]
+}
