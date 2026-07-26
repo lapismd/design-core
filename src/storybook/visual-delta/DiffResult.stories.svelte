@@ -1,7 +1,7 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import React from "react";
-  import { expect, within } from "storybook/test";
+  import { expect, userEvent, waitFor, within } from "storybook/test";
   import { DiffResultFixture } from "storybook-addon-visual-delta/src/stories/DiffResultFixture";
   import ReactThemeHost from "storybook-addon-visual-delta/src/stories/ReactThemeHost.svelte";
 
@@ -18,16 +18,47 @@
     },
   });
 
-  const play = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
-    const canvas = within(canvasElement);
-    await expect(
-      await canvas.findByLabelText(/Visual compare/),
-    ).toBeInTheDocument();
-    await expect(canvas.getByText("Capture diagnostics")).toBeInTheDocument();
-  };
+  const play =
+    (expectsOverflow: boolean) =>
+    async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+      const canvas = within(canvasElement);
+      await expect(
+        await canvas.findByLabelText(/Visual compare/),
+      ).toBeInTheDocument();
+      await expect(canvas.getByText("Capture diagnostics")).toBeInTheDocument();
+      const compare = canvas.getByLabelText(/Visual compare/);
+      await expect(compare).toHaveAttribute("data-zoom-mode", "fit");
+      await userEvent.click(
+        canvas.getByRole("switch", {
+          name: "Show compare view at 100%",
+        }),
+      );
+      await expect(compare).toHaveAttribute("data-zoom-mode", "custom");
+      await expect(compare).toHaveAttribute("data-zoom-scale", "1.0000");
+      if (expectsOverflow) {
+        const viewport = canvas.getByTestId("compare-scroll-viewport");
+        await waitFor(() => {
+          expect(viewport.scrollWidth).toBeGreaterThan(viewport.clientWidth);
+        });
+      }
+      await userEvent.click(
+        canvas.getByRole("switch", { name: "Zoom in compare view" }),
+      );
+      await expect(compare).toHaveAttribute("data-zoom-scale", "1.1000");
+      for (const tab of ["Swipe", "Diff", "Focus", "Blink", "2-up"]) {
+        await userEvent.click(canvas.getByRole("tab", { name: tab }));
+        await expect(compare).toHaveAttribute("data-zoom-scale", "1.1000");
+      }
+      await userEvent.click(
+        canvas.getByRole("switch", {
+          name: /Fit compare view/,
+        }),
+      );
+      await expect(compare).toHaveAttribute("data-zoom-mode", "fit");
+    };
 </script>
 
-<Story name="Component clipped result" {play}>
+<Story name="Component clipped result" play={play(false)}>
   {#snippet template()}
     <ReactThemeHost
       element={React.createElement(DiffResultFixture, {
@@ -39,7 +70,7 @@
   {/snippet}
 </Story>
 
-<Story name="Full viewport result" {play}>
+<Story name="Full viewport result" play={play(true)}>
   {#snippet template()}
     <ReactThemeHost
       element={React.createElement(DiffResultFixture, {
@@ -51,7 +82,7 @@
   {/snippet}
 </Story>
 
-<Story name="Wide result" {play}>
+<Story name="Wide result" play={play(true)}>
   {#snippet template()}
     <ReactThemeHost
       element={React.createElement(DiffResultFixture, {
@@ -63,7 +94,7 @@
   {/snippet}
 </Story>
 
-<Story name="Tall result" {play}>
+<Story name="Tall result" play={play(true)}>
   {#snippet template()}
     <ReactThemeHost
       element={React.createElement(DiffResultFixture, {

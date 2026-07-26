@@ -201,6 +201,33 @@
 </Story>
 
 <Story
+  name="Baseline geometry mismatch"
+  play={async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const warning = await canvas.findByRole("alert", {
+      name: /Baseline geometry mismatch/i,
+    });
+    await expect(warning).toHaveTextContent(
+      "Baseline 1232×187 CSS px; live component 264×187 CSS px",
+    );
+    await expect(warning).toHaveTextContent("1280×900 capture viewport");
+  }}
+>
+  {#snippet template()}
+    <ReactThemeHost
+      element={React.createElement(PanelShell, {
+        backend: createMockVisualBackend(),
+        baselineGeometryMismatch: {
+          baselineCss: { width: 1232, height: 187 },
+          liveCss: { width: 264, height: 187 },
+          captureViewport: { width: 1280, height: 900 },
+        },
+      })}
+    />
+  {/snippet}
+</Story>
+
+<Story
   name="Configuration warnings"
   play={async ({ canvasElement }) => {
     const canvas = within(canvasElement);
