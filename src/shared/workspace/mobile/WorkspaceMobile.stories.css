@@ -1,0 +1,19 @@
+.ui-workspace-mobile-story-canvas {
+  display: grid;
+  min-height: 100svh;
+  place-content: center;
+  padding: 1rem;
+  background: var(--ui-workspace-muted);
+}
+
+.ui-workspace-mobile-story-frame {
+  width: 26rem;
+  max-width: calc(100vw - 2rem);
+  height: min(52rem, calc(100svh - 2rem));
+  min-height: 36rem;
+  overflow: hidden;
+  border: 1px solid var(--ui-workspace-border);
+  border-radius: 1.5rem;
+  background: var(--ui-workspace-background);
+  box-shadow: var(--ui-workspace-shadow);
+}

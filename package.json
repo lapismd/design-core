@@ -192,6 +192,7 @@
     "./workspace/floating-window": "./src/shared/workspace/floating-window/index.ts",
     "./workspace/icon": "./src/shared/workspace/icon/index.ts",
     "./workspace/menu": "./src/shared/workspace/menu/index.ts",
+    "./workspace/mobile": "./src/shared/workspace/mobile/index.ts",
     "./workspace/ribbon": "./src/shared/workspace/ribbon/index.ts",
     "./workspace/settings": "./src/shared/workspace/settings/index.ts",
     "./workspace/sidebar": "./src/shared/workspace/sidebar/index.ts",

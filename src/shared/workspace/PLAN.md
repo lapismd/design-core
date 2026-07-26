@@ -82,7 +82,7 @@ Compatibility aliases are removed only through an explicit reviewed slice.
 | Sidebars and groups              | sidebar modules                                            | component families         | In progress         | Pass    | Partial  | Pending | Pending |
 | View chrome and menus            | view header, empty, menus                                  | component families         | Complete            | Pass    | Pass     | Pending | Pending |
 | Windows and overlays             | window and drop modules                                    | component families         | In progress         | Pass    | Partial  | Pending | Pending |
-| Mobile shell                     | mobile modules                                             | component families         | Pending             | Pending | Pending  | Pending | Pending |
+| Mobile shell                     | mobile modules                                             | component families         | In progress         | Pass    | Partial  | Pending | Pending |
 | Ribbon and status                | ribbon/status modules                                      | component families         | Complete            | Pass    | Pass     | Pending | Pending |
 | Settings presentation            | settings Svelte components                                 | component families         | Pending             | Pending | Pending  | Pending | Pending |
 | Compound AppShell                | `app-shell-*` modules                                      | component families         | In progress         | Pass    | Partial  | Pending | Pending |
@@ -298,6 +298,27 @@ workflow.
   the JJ workspace. Supplemental focused execution remains green.
 - `pnpm check:no-tailwind`: pass.
 - `pnpm check`: pass with zero Svelte errors or warnings.
+- Visual Delta candidate baselines remain pending explicit human approval; no
+  committed baseline image was created or replaced in this slice.
+
+### Mobile shell
+
+- Added a full-height, container-responsive mobile renderer with editor,
+  left/right sidebar, open-tab overview, floating dock, and compact action
+  presentation.
+- `AppShell.Surface` now resolves `always`, `never`, and live `auto` display
+  modes and reads the controller's breakpoint, default page, bottom-navigation,
+  sidebar-inclusion, and floating-inclusion settings. Explicit surface props
+  retain precedence.
+- Mobile tab activation, close, undo close, creation, and sidebar selection
+  use the existing controller mutation and persistence paths.
+- Focused Storybook interaction and accessibility execution: 2 files and 6
+  stories pass through the repository's Storybook Vitest project.
+- The required MCP focused run was invoked and returned no per-story result in
+  the JJ workspace. Supplemental focused execution remains green.
+- `pnpm check:no-tailwind`: pass.
+- `pnpm check`: pass with zero Svelte errors or warnings.
+- Pointer-swipe settling and mobile action-drawer parity remain in progress.
 - Visual Delta candidate baselines remain pending explicit human approval; no
   committed baseline image was created or replaced in this slice.
 

@@ -201,6 +201,7 @@
 
   const composedApp = createDemoApp();
   const surfaceApp = createDemoApp();
+  const mobileApp = createDemoApp();
 </script>
 
 <Story
@@ -235,6 +236,18 @@
       <AppShell.Root controller={surfaceApp} theme="inherit">
         <AppShell.Surface />
       </AppShell.Root>
+    </div>
+  {/snippet}
+</Story>
+
+<Story name="Mobile surface" tags={["visual-pending"]}>
+  {#snippet template()}
+    <div class="ui-app-shell-story-mobile-canvas">
+      <div class="ui-app-shell-story-mobile-frame">
+        <AppShell.Root controller={mobileApp} theme="inherit">
+          <AppShell.Surface displayMode="mobile" />
+        </AppShell.Root>
+      </div>
     </div>
   {/snippet}
 </Story>

@@ -1,0 +1,24 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+import * as Stories from "./WorkspaceMobile.stories.svelte";
+
+<Meta of={Stories} />
+
+# Mobile Shell
+
+The mobile renderer presents the same serializable workspace as a full-height
+single-page editor, revealable sidebars, and an open-tab overview.
+
+## Settings
+
+- `defaultPage` chooses the editor or tab overview on mount.
+- `showBottomNav` controls the floating dock.
+- `includeSidebarsInTabs` includes sidebar leaves in the overview.
+- `includeFloatingInTabs` includes floating and popout leaves.
+
+`AppShell.Surface` reads these values from `AppShellController.mobile` unless a
+surface prop explicitly overrides them.
+
+## Behavior
+
+Tab activation, close, undo close, creation, and sidebar selection use the same
+controller mutation and persistence path as desktop rendering.
