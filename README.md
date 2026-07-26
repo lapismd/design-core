@@ -156,6 +156,13 @@ Never update baselines unless a human explicitly requests it. Ordinary
 `pnpm test:visual` is compare-only and Playwright is configured with
 `updateSnapshots: "none"`.
 
+`pnpm test:visual` always runs the complete suite and seeds the ignored local
+affected cache. `pnpm test:visual:affected` uses Storybook's generated
+dependency stats to skip unchanged stories, while conservatively falling back
+to all stories for global-risk or unresolved changes. Inspect a decision
+without capturing with
+`pnpm visual-delta test --affected --dry-run --explain`.
+
 ### Review tags
 
 | Tag                | Meaning                                                 |
@@ -203,6 +210,7 @@ pnpm test:storybook
 pnpm test:storybook:watch
 pnpm test:visual-delta-panel
 pnpm test:visual
+pnpm test:visual:affected
 pnpm test:visual:report
 pnpm checks
 

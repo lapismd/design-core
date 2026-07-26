@@ -33,6 +33,9 @@ const config: StorybookConfig = {
           // visualServerPort defaults to Storybook port + 1 (see resolveVisualServerPort).
           baselinePathMode: "nested-import",
           visualTestArgs: ["exec", "playwright", "test"],
+          affectedTests: {
+            externals: ["vendor/shadcn-svelte-docs/static/**"],
+          },
           visualUpdateArgs: [
             "exec",
             "tsx",

@@ -32,6 +32,21 @@
     const canvas = within(canvasElement);
     await waitFor(() => canvas.getByTestId("panel-shell"));
     await expect(canvas.getByTestId("panel-shell")).toBeInTheDocument();
+    await userEvent.click(
+      canvas.getByRole("button", {
+        name: "Choose Story, Component, Affected, or All",
+      }),
+    );
+    await userEvent.click(
+      within(canvasElement.ownerDocument.body).getByRole("button", {
+        name: "Use Affected",
+      }),
+    );
+    await expect(
+      canvas.getByRole("button", {
+        name: "Run only affected visual tests",
+      }),
+    ).toBeInTheDocument();
   }}
 >
   {#snippet template()}
@@ -724,7 +739,7 @@
     // Split chevron: accessible name is the mode list, title is "Choose action".
     await userEvent.click(
       scope.getByRole("button", {
-        name: /Choose Story, Component, or All/i,
+        name: /Choose Story, Component, Affected, or All/i,
       }),
     );
     await userEvent.click(
