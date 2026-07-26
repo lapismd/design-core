@@ -8,6 +8,7 @@
     createWorkspaceTabs,
   } from "../core/layout.js";
   import { AppShellController } from "../core/app-shell-controller.svelte.js";
+  import { AppShellPlugin } from "../core/plugin-manager.svelte.js";
   import { WorkspaceView, type WorkspaceLeaf } from "../core/workspace-view.js";
   import type { WorkspaceSidebarGroup } from "../core/types.js";
   import { AppShell, AppShellRoot } from "./index.js";
@@ -61,6 +62,8 @@
       this.containerEl.replaceChildren();
     }
   }
+
+  class DemoStaticPlugin extends AppShellPlugin {}
 
   function demoTab(
     id: string,
@@ -183,6 +186,16 @@
     const app = new AppShellController({
       layout,
       application: { name: "Workspace demo", version: "1.0.0" },
+      plugins: [
+        {
+          id: "demo-static-plugin",
+          name: "Demo extension",
+          description: "A statically configured application plugin.",
+          icon: "puzzle",
+          plugin: DemoStaticPlugin,
+          enabled: true,
+        },
+      ],
       views: [
         {
           type: "demo",
@@ -202,6 +215,10 @@
   const composedApp = createDemoApp();
   const surfaceApp = createDemoApp();
   const mobileApp = createDemoApp();
+  const utilityApp = createDemoApp();
+  const adapterApp = createDemoApp();
+  const hotkeysApp = createDemoApp();
+  const pluginsApp = createDemoApp();
 </script>
 
 <Story
@@ -248,6 +265,65 @@
           <AppShell.Surface displayMode="mobile" />
         </AppShell.Root>
       </div>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Explicit utility layers"
+  tags={["visual-pending"]}
+  play={async ({ canvas }) => {
+    utilityApp.commands.openPalette();
+    await expect(
+      await canvas.findByRole("dialog", { name: "Command Palette" }),
+    ).toBeVisible();
+  }}
+>
+  {#snippet template()}
+    <div class="ui-app-shell-story-frame">
+      <AppShell.Root
+        controller={utilityApp}
+        renderOverlays={false}
+        renderPopouts={false}
+        theme="inherit"
+      >
+        <AppShell.Workspace />
+        <AppShell.CommandPalette />
+        <AppShell.About />
+        <AppShell.Notices />
+        <AppShell.PluginLayer />
+      </AppShell.Root>
+    </div>
+  {/snippet}
+</Story>
+
+<Story name="Low-level sidebar and tabs adapters" tags={["visual-pending"]}>
+  {#snippet template()}
+    <div class="ui-app-shell-story-frame">
+      <AppShell.Root controller={adapterApp} theme="inherit">
+        <AppShell.Sidebar side="left" />
+        <AppShell.Tabs paneId="app-shell-main-left" />
+      </AppShell.Root>
+    </div>
+  {/snippet}
+</Story>
+
+<Story name="Composable hotkey settings" tags={["visual-pending"]}>
+  {#snippet template()}
+    <div class="ui-app-shell-story-frame ui-app-shell-story-frame--settings">
+      <AppShell.Root controller={hotkeysApp} theme="inherit">
+        <AppShell.HotkeySettings />
+      </AppShell.Root>
+    </div>
+  {/snippet}
+</Story>
+
+<Story name="Composable core plugin settings" tags={["visual-pending"]}>
+  {#snippet template()}
+    <div class="ui-app-shell-story-frame ui-app-shell-story-frame--settings">
+      <AppShell.Root controller={pluginsApp} theme="inherit">
+        <AppShell.CorePluginsSettings />
+      </AppShell.Root>
     </div>
   {/snippet}
 </Story>

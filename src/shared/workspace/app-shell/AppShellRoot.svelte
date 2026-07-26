@@ -18,6 +18,8 @@
     fontSize,
     zoomLevel,
     popoutHost,
+    renderOverlays = true,
+    renderPopouts = true,
     class: className = "",
   }: {
     controller: AppShellController;
@@ -29,6 +31,8 @@
     fontSize?: number;
     zoomLevel?: number;
     popoutHost?: WorkspacePopoutHost | null;
+    renderOverlays?: boolean;
+    renderPopouts?: boolean;
     class?: string;
   } = $props();
 
@@ -85,8 +89,10 @@
   onkeydown={(event) => void controller.commands.handleKeydown(event)}
 >
   {@render children?.()}
-  <AppShellPopoutLayer host={popoutHost} theme={resolvedTheme} />
-  {#if root}
+  {#if renderPopouts}
+    <AppShellPopoutLayer host={popoutHost} theme={resolvedTheme} />
+  {/if}
+  {#if renderOverlays && root}
     <AppShellOverlayLayer portalTarget={root} />
   {/if}
 </div>

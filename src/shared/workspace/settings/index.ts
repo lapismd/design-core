@@ -34,4 +34,6 @@ export const AppSettings = {
   Content: AppSettingsContent,
   Section: AppSettingsSection,
   Item: WorkspaceSettingField,
+  DialogSurface: WorkspaceSettingsSurface,
+  Surface: WorkspaceSettingsSurface,
 } as const;

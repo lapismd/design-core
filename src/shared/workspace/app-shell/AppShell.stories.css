@@ -5,6 +5,12 @@
   overflow: hidden;
 }
 
+.ui-app-shell-story-frame--settings {
+  overflow: auto;
+  padding: 2rem;
+  background: var(--ui-workspace-background);
+}
+
 .ui-app-shell-story-view {
   display: grid;
   height: 100%;

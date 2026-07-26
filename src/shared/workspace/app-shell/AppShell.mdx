@@ -6,8 +6,9 @@ import * as Stories from "./AppShell.stories.svelte";
 # App Shell
 
 `AppShell.Root` installs controller context, application lifecycle, keyboard
-dispatch, drag state, theme overrides, and active-surface tracking. It does not
-choose which visual surfaces an application includes.
+dispatch, drag state, theme overrides, and active-surface tracking. Its
+infrastructure overlays and popout host are enabled by default and can be
+disabled with `renderOverlays` or `renderPopouts` for explicit composition.
 
 ## Structure
 
@@ -16,11 +17,16 @@ Use `AppShell.Surface` for the default desktop composition, or place
 `StatusBar` independently under the root. Omitting or replacing a surface does
 not change controller behavior.
 
+Utility surfaces are also composable: `About`, `CommandPalette`, `Notices`,
+`PluginLayer`, `Tabs`, `Sidebar`, `HotkeySettings`, and
+`CorePluginsSettings`.
+
 ## API
 
 - `Root` requires an `AppShellController` and optionally starts or disposes it.
 - `Workspace` accepts an optional serializable tab factory.
 - `Surface` composes the current default desktop surfaces.
+- `Root` accepts an injectable popout host and explicit utility-layer toggles.
 - Every lower-level component remains available through its own Workspace
   subpath.
 
