@@ -31,6 +31,7 @@ export function managerEntries(entry: string[] = []) {
 }
 
 export {
+  managerHead,
   staticDirs,
   viteFinal,
   webpack,

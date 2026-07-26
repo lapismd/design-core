@@ -235,6 +235,7 @@ Full options table: addon README. Host overrides used here:
 
 | Option                        | Value in this repo                                                                   |
 | ----------------------------- | ------------------------------------------------------------------------------------ |
+| `showToolbarStatusLabels`     | `true` (addon default; sidebar status remains visible when disabled)                 |
 | `baselinePathMode`            | `nested-import`                                                                      |
 | `snapshotDir`                 | `tests/visual/storybook.spec.ts-snapshots` (addon default)                           |
 | `visualServerPort`            | Storybook port + 1 (warm static; `:9010` when UI is on `:9009`)                      |
