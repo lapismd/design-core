@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import path from "node:path";
 import { loadDocsMcpConfig } from "../config.js";
+import type { DocsMcpEntryKind, DocsMcpGetFormat } from "../discovery.js";
 import { createDocsService } from "../service.js";
 import { inspectDocsService } from "./doctor.js";
 import { initializeDocsMcp, type ClientTransport } from "./init.js";
@@ -19,6 +20,11 @@ type Args = {
   noCache: boolean;
   json: boolean;
   live: boolean;
+  positionals: string[];
+  kinds: DocsMcpEntryKind[];
+  limit?: number;
+  section?: string;
+  format?: DocsMcpGetFormat;
 };
 
 function envValue(primary: string, legacy: string): string | undefined {
@@ -40,6 +46,11 @@ function parseArgs(argv: string[]): Args {
   );
   let json = false;
   let live = false;
+  const positionals: string[] = [];
+  const kinds: DocsMcpEntryKind[] = [];
+  let limit: number | undefined;
+  let section: string | undefined;
+  let format: DocsMcpGetFormat | undefined;
   for (let index = 1; index < argv.length; index++) {
     const token = argv[index]!;
     const value = argv[index + 1];
@@ -59,9 +70,36 @@ function parseArgs(argv: string[]): Args {
     } else if (token === "--no-cache") noCache = true;
     else if (token === "--json") json = true;
     else if (token === "--live") live = true;
+    else if (token === "--kind" && value) {
+      const requested = value.split(",") as DocsMcpEntryKind[];
+      for (const kind of requested) {
+        if (!["component", "guide", "template", "block"].includes(kind)) {
+          throw new Error(`Unknown documentation kind "${kind}".`);
+        }
+        kinds.push(kind);
+      }
+      index += 1;
+    } else if (token === "--limit" && value) {
+      limit = Number(argv[++index]);
+    } else if (token === "--section" && value) {
+      section = argv[++index]!;
+    } else if (token === "--format" && value) {
+      if (!["bounded", "full", "dense"].includes(value)) {
+        throw new Error(`Unknown get format "${value}".`);
+      }
+      format = value as DocsMcpGetFormat;
+      index += 1;
+    } else if (token.startsWith("--")) {
+      throw new Error(`Unknown option "${token}".`);
+    } else {
+      positionals.push(token);
+    }
   }
   if (port !== undefined && (!Number.isInteger(port) || port < 0)) {
     throw new Error(`Invalid port: ${port}`);
+  }
+  if (limit !== undefined && (!Number.isInteger(limit) || limit < 1)) {
+    throw new Error(`Invalid limit: ${limit}`);
   }
   return {
     command,
@@ -75,6 +113,11 @@ function parseArgs(argv: string[]): Args {
     noCache,
     json,
     live,
+    positionals,
+    kinds,
+    limit,
+    section,
+    format,
   };
 }
 
@@ -86,6 +129,8 @@ Usage:
   docs-mcp stdio [--root .] [--config .storybook/docs-mcp.config.ts]
   docs-mcp serve [--host 127.0.0.1] [--port 9011] [--no-cache]
   docs-mcp doctor [--json] [--live]
+  docs-mcp search "<query>" [--kind component|guide|template|block] [--limit 8] [--json]
+  docs-mcp get <id> [--section id] [--format bounded|full|dense] [--json]
 
 stdio is the default command and the default generated client transport.
 DOCS_MCP_* environment variables take precedence over legacy UI_DOCS_* aliases.
@@ -119,6 +164,66 @@ async function main(): Promise<void> {
     return;
   }
   const loaded = await loadDocsMcpConfig(args.root, args.config);
+  if (args.command === "search") {
+    const query = args.positionals.join(" ").trim();
+    if (!query) throw new Error("search requires a query.");
+    const service = createDocsService({
+      root: loaded.root,
+      config: loaded.config,
+      noCache: args.noCache,
+    });
+    const result = service.search({
+      query,
+      ...(args.kinds.length ? { kinds: args.kinds } : {}),
+      limit: args.limit,
+    });
+    process.stdout.write(
+      args.json
+        ? `${JSON.stringify(result)}\n`
+        : result.results.length
+          ? [
+              `Matches for "${query}":`,
+              ...result.results.map(
+                (entry) =>
+                  `${entry.id}\t${entry.kind}\t${entry.score}\t${entry.reason}\t${entry.importPath ?? entry.path}\n  ${entry.summary}`,
+              ),
+              "",
+            ].join("\n")
+          : `No confident documentation matches for "${query}".\n`,
+    );
+    return;
+  }
+  if (args.command === "get") {
+    const id = args.positionals.join(" ").trim();
+    if (!id) throw new Error("get requires an exact documentation ID.");
+    const service = createDocsService({
+      root: loaded.root,
+      config: loaded.config,
+      noCache: args.noCache,
+    });
+    const result = service.get({
+      id,
+      section: args.section,
+      format: args.format,
+    });
+    process.stdout.write(
+      args.json
+        ? `${JSON.stringify(result)}\n`
+        : result.status === "ok"
+          ? (result.markdown ?? "")
+          : [
+              `${result.status === "ambiguous" ? "Ambiguous" : "Unknown"} documentation: ${id}`,
+              ...(result.candidates ?? []).map(
+                (candidate) =>
+                  `- ${candidate.id} [${candidate.kind}] — ${candidate.name}`,
+              ),
+              result.hint ?? "",
+              "",
+            ].join("\n"),
+    );
+    if (result.status !== "ok") process.exitCode = 1;
+    return;
+  }
   if (args.command === "stdio") {
     await startDocsMcpStdio({
       root: loaded.root,
@@ -163,6 +268,7 @@ async function main(): Promise<void> {
       root: loaded.root,
       components: service.getCatalog().components.length,
       documents: service.getCatalog().documents.length,
+      artifacts: service.getCatalog().artifacts?.length ?? 0,
       issues,
     };
     process.stdout.write(
@@ -171,7 +277,7 @@ async function main(): Promise<void> {
         : [
             result.ok ? "Docs MCP doctor passed." : "Docs MCP doctor failed.",
             `Provider: ${result.provider}`,
-            `Catalog: ${result.components} components, ${result.documents} documents`,
+            `Catalog: ${result.components} components, ${result.documents} documents, ${result.artifacts} artifacts`,
             ...issues.map(
               (issue) => `${issue.level.toUpperCase()}: ${issue.message}`,
             ),

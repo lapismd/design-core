@@ -6,7 +6,26 @@ export type DocsMcpStory = {
   snippet?: string;
 };
 
-export type DocsMcpComponent = {
+export type DocsMcpSection = {
+  /** Stable slug derived from the authored Markdown heading. */
+  id: string;
+  title: string;
+  /** Complete authored Markdown for this section, including its heading. */
+  markdown: string;
+};
+
+export type DocsMcpEntryMetadata = {
+  /** Authored retrieval terms. These rank above inferred prose matches. */
+  keywords?: string[];
+  /** Stable Markdown sections. Providers may author these or let the service parse them. */
+  sections?: DocsMcpSection[];
+  /** Exact IDs that are useful follow-up reading. */
+  relatedIds?: string[];
+  /** Optional provider-authored compact representation. */
+  denseMarkdown?: string;
+};
+
+export type DocsMcpComponent = DocsMcpEntryMetadata & {
   /** Stable MCP manifest id. */
   id: string;
   /** URL grouping used by `/llms/<group>/<slug>`. */
@@ -22,7 +41,7 @@ export type DocsMcpComponent = {
   sourceFiles: string[];
 };
 
-export type DocsMcpDocument = {
+export type DocsMcpDocument = DocsMcpEntryMetadata & {
   id: string;
   group: string;
   slug: string;
@@ -34,13 +53,36 @@ export type DocsMcpDocument = {
   sourceFiles: string[];
 };
 
+export type DocsMcpArtifact = DocsMcpEntryMetadata & {
+  id: string;
+  kind: "template" | "block";
+  group: string;
+  slug: string;
+  name: string;
+  summary: string;
+  path: string;
+  /** Human-readable provenance, for example a story or maintained recipe. */
+  source: string;
+  componentIds: string[];
+  documentation: string;
+  sourceFiles: string[];
+};
+
+export type DocsMcpProjectGuidance = {
+  setup?: string[];
+  readingOrder?: string[];
+  rules?: string[];
+};
+
 export type DocsMcpCatalog = {
   project: {
     title: string;
     description?: string;
+    guidance?: DocsMcpProjectGuidance;
   };
   components: DocsMcpComponent[];
   documents: DocsMcpDocument[];
+  artifacts?: DocsMcpArtifact[];
   warnings?: string[];
 };
 
@@ -62,6 +104,16 @@ export type DocsMcpConfig = {
   manifestsPrefix?: string;
   cacheDir?: string;
   clientName?: string;
+  search?: {
+    /** Groups of interchangeable terms, or a canonical term mapped to aliases. */
+    synonyms?: string[][] | Record<string, string[]>;
+    defaultLimit?: number;
+    maxLimit?: number;
+  };
+  retrieval?: {
+    /** Character budget for the default bounded `get` response. */
+    maxChars?: number;
+  };
 };
 
 export function defineDocsMcpConfig(config: DocsMcpConfig): DocsMcpConfig {

@@ -1,5 +1,7 @@
 import type { IncomingMessage, ServerResponse } from "node:http";
-import { createStorybookMcpHandler } from "@storybook/mcp";
+import type { StorybookContext } from "@storybook/mcp";
+import { HttpTransport } from "@tmcp/transport-http";
+import { createDocsMcpServer } from "./mcp-server.js";
 import {
   createDocsService,
   type DocsService,
@@ -58,8 +60,9 @@ export async function createDocsHttpHandler(
     ...options,
     baseUrl: options.baseUrl ?? (() => lastOrigin),
   });
-  const mcpHandler = await createStorybookMcpHandler({
-    manifestProvider: service.manifestProvider,
+  const mcpServer = await createDocsMcpServer(service);
+  const mcpTransport = new HttpTransport<StorybookContext>(mcpServer, {
+    path: null,
   });
   const manifestsPrefix =
     options.manifestsPrefix ??
@@ -101,7 +104,16 @@ export async function createDocsHttpHandler(
             // @ts-expect-error Node fetch requires duplex for request bodies.
             duplex: body && body.length > 0 ? "half" : undefined,
           });
-          await writeFetchResponse(res, await mcpHandler(request));
+          const response = await mcpTransport.respond(request, {
+            manifestProvider: service.manifestProvider,
+            request,
+          });
+          if (response) {
+            await writeFetchResponse(res, response);
+          } else {
+            res.writeHead(202);
+            res.end();
+          }
           return true;
         }
         if (pathname === `${manifestsPrefix}/components.json`) {
@@ -116,6 +128,13 @@ export async function createDocsHttpHandler(
             "content-type": "application/json; charset=utf-8",
           });
           res.end(JSON.stringify(service.buildDocsManifest(), null, 2));
+          return true;
+        }
+        if (pathname === `${manifestsPrefix}/artifacts.json`) {
+          res.writeHead(200, {
+            "content-type": "application/json; charset=utf-8",
+          });
+          res.end(JSON.stringify(service.buildArtifactsManifest(), null, 2));
           return true;
         }
         if (
@@ -143,6 +162,7 @@ export async function createDocsHttpHandler(
               `MCP: ${origin}${service.mcpPath}`,
               `llms: ${origin}/llms.txt`,
               `manifests: ${origin}${manifestsPrefix}/components.json`,
+              `artifacts: ${origin}${manifestsPrefix}/artifacts.json`,
               "",
             ].join("\n"),
           );

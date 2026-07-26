@@ -264,6 +264,9 @@ importers:
       '@tmcp/adapter-valibot':
         specifier: ^0.1.6
         version: 0.1.6(tmcp@1.19.4(typescript@5.9.3))(valibot@1.2.0(typescript@5.9.3))
+      '@tmcp/transport-http':
+        specifier: ^0.8.6
+        version: 0.8.6(tmcp@1.19.4(typescript@5.9.3))
       '@tmcp/transport-stdio':
         specifier: ^0.4.3
         version: 0.4.3(tmcp@1.19.4(typescript@5.9.3))

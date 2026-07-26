@@ -1,5 +1,6 @@
 export * from "../cache.js";
 export * from "../config.js";
+export * from "../discovery.js";
 export * from "../http-handler.js";
 export * from "../service.js";
 export * from "../types.js";
