@@ -388,6 +388,24 @@ workflow.
 - Visual Delta candidate baselines remain pending explicit human approval; no
   committed baseline image was created or replaced in this slice.
 
+### Popout presentation
+
+- Added an independently importable popout surface and controller-context
+  popout layer. `AppShell.Root` installs the browser host by default and accepts
+  `null` or a consumer-provided desktop/native adapter.
+- Runtime popouts mount the same recursive tree, view registry, drag state,
+  theme tokens, and controller identity into the returned document; closing or
+  removing a popout unmounts its Svelte tree.
+- Focused Storybook interaction and accessibility execution: the popout
+  component story and affected default AppShell story pass through the
+  repository's Storybook Vitest project.
+- The required MCP focused run was invoked and returned no per-story result in
+  the JJ workspace. Supplemental focused execution remains green.
+- `pnpm check:no-tailwind`: pass.
+- `pnpm check`: pass with zero Svelte errors or warnings.
+- Visual Delta candidate baselines remain pending explicit human approval; no
+  committed baseline image was created or replaced in this slice.
+
 ### Mobile shell
 
 - Added a full-height, container-responsive mobile renderer with editor,

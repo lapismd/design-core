@@ -1,0 +1,17 @@
+.ui-workspace-popout-story {
+  display: grid;
+  min-height: 100vh;
+  place-content: center;
+  padding: 2rem;
+  background: var(--ui-workspace-muted);
+}
+
+.ui-workspace-popout-story__frame {
+  width: min(48rem, calc(100vw - 4rem));
+  height: min(32rem, calc(100vh - 4rem));
+  overflow: hidden;
+  border: 1px solid var(--ui-workspace-border);
+  border-radius: var(--ui-workspace-radius-large);
+  background: var(--ui-workspace-background);
+  box-shadow: var(--ui-workspace-shadow);
+}

@@ -17,6 +17,7 @@ export * from "./floating-window/index.js";
 export * from "./icon/index.js";
 export * from "./menu/index.js";
 export * from "./mobile/index.js";
+export * from "./popout/index.js";
 export * from "./ribbon/index.js";
 export * from "./settings/index.js";
 export * from "./sidebar/index.js";

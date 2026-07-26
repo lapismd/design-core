@@ -1,8 +1,9 @@
 <script lang="ts">
   import { onMount, untrack, type Snippet } from "svelte";
   import type { AppShellController } from "../core/app-shell-controller.svelte.js";
-  import type { WorkspaceTheme } from "../core/types.js";
+  import type { WorkspacePopoutHost, WorkspaceTheme } from "../core/types.js";
   import { WorkspaceDragState } from "../drag/workspace-drag.svelte.js";
+  import AppShellPopoutLayer from "../popout/AppShellPopoutLayer.svelte";
   import { setAppShellContext } from "./app-shell-context.svelte.js";
   import AppShellOverlayLayer from "./AppShellOverlayLayer.svelte";
   import "./AppShellRoot.css";
@@ -16,6 +17,7 @@
     accentColor,
     fontSize,
     zoomLevel,
+    popoutHost,
     class: className = "",
   }: {
     controller: AppShellController;
@@ -26,6 +28,7 @@
     accentColor?: string;
     fontSize?: number;
     zoomLevel?: number;
+    popoutHost?: WorkspacePopoutHost | null;
     class?: string;
   } = $props();
 
@@ -82,6 +85,7 @@
   onkeydown={(event) => void controller.commands.handleKeydown(event)}
 >
   {@render children?.()}
+  <AppShellPopoutLayer host={popoutHost} theme={resolvedTheme} />
   {#if root}
     <AppShellOverlayLayer portalTarget={root} />
   {/if}

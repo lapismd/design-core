@@ -1,0 +1,16 @@
+import { Meta, Canvas } from "@storybook/addon-docs/blocks";
+import * as Stories from "./WorkspacePopoutSurface.stories.svelte";
+
+<Meta of={Stories} />
+
+# Popout Surface
+
+`AppShell.Root` installs an injectable popout host and mounts each runtime
+popout tree into the returned document. Applications can pass `null` to disable
+browser popouts or provide a desktop/native adapter implementing the same
+public host contract.
+
+The detached surface reuses the controller, view registry, drag state, tabs,
+splits, and theme tokens rather than creating a second application singleton.
+
+<Canvas of={Stories.DetachedWorkspaceTree} />
