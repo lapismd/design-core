@@ -123,9 +123,25 @@
   name="Running result"
   play={async ({ canvasElement }) => {
     const canvas = within(canvasElement);
+    const shell = await canvas.findByTestId("panel-shell");
+    const scope = within(shell);
     await expect(
-      await canvas.findByRole("status", { name: /Visual test running/i }),
+      scope.getByRole("status", { name: /Visual test running/i }),
     ).toHaveAttribute("data-result-state", "running");
+    await expect(
+      scope.getByRole("progressbar", {
+        name: "Visual Delta check progress",
+      }),
+    ).toHaveAttribute("aria-valuenow", "7");
+    await expect(
+      scope.getByRole("progressbar", {
+        name: "Visual Delta check progress",
+      }),
+    ).toHaveAttribute("aria-valuemax", "12");
+    const progressLog = scope.getByRole("button", {
+      name: /Progress: ✓ filter-search--with-query \(7\/12\)/i,
+    });
+    await expect(progressLog).toBeInTheDocument();
   }}
 >
   {#snippet template()}
@@ -133,6 +149,9 @@
       element={React.createElement(PanelShell, {
         backend: createMockVisualBackend(),
         initialState: "running",
+        initialProgress: { completed: 7, total: 12 },
+        initialStatusLog:
+          "Starting visual checks\n✓ shadcn-button--default (6/12)\n✓ filter-search--with-query (7/12)\n",
       })}
     />
   {/snippet}
