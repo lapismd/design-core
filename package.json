@@ -180,6 +180,7 @@
     "./filter/filter-query": "./src/shared/filter/filter-query/index.ts",
     "./filter/SearchFilterBar.svelte": "./src/shared/filter/search-filter-bar/SearchFilterBar.svelte",
     "./workspace": "./src/shared/workspace/index.ts",
+    "./workspace/core": "./src/shared/workspace/core/index.ts",
     "./workspace/tokens": "./src/shared/workspace/workspace.tokens.ts",
     "./workspace/workspace.tokens.css": "./src/shared/workspace/workspace.tokens.css"
   }

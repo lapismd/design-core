@@ -71,8 +71,8 @@ Compatibility aliases are removed only through an explicit reviewed slice.
 | Slice                            | Source                                                     | Target                     | Code                | Unit    | Stories  | Visual  | Review  |
 | -------------------------------- | ---------------------------------------------------------- | -------------------------- | ------------------- | ------- | -------- | ------- | ------- |
 | Layer contract and tokens        | package/spec                                               | `workspace/`               | Complete            | Pass    | Guidance | N/A     | Pending |
-| Controller and events            | `core/app-shell-controller*`, `event-dispatcher.ts`        | `core/controller/`         | Pending             | Pending | Pending  | N/A     | Pending |
-| Layout and persistence           | `core/layout*`, `workspace-json*`, `persistence.ts`        | `core/layout/`             | Pending             | Pending | Pending  | N/A     | Pending |
+| Controller and events            | `core/app-shell-controller*`, `event-dispatcher.ts`        | `core/controller/`         | Events migrated     | Pending | Pending  | N/A     | Pending |
+| Layout and persistence           | `core/layout*`, `workspace-json*`, `persistence.ts`        | `core/layout/`             | Complete            | Pass    | N/A      | N/A     | Pending |
 | Views and editor associations    | `core/view*`, `workspace-view.ts`, `editor-view-registry*` | `core/views/`              | Pending             | Pending | Pending  | N/A     | Pending |
 | Commands and keymaps             | `core/command-*`                                           | `core/commands/`           | Pending             | Pending | Pending  | N/A     | Pending |
 | Configuration and settings model | `settings/*.ts`, `core/built-in-settings*`                 | `core/settings/`           | Pending             | Pending | Pending  | N/A     | Pending |
@@ -118,6 +118,14 @@ workflow.
   failure affecting 167 files outside `src/shared/workspace`.
 - `pnpm test:unit`: reaches pre-existing data-ui, generated-doc, and Node
   `localStorage` failures. The diagnostics do not include Workspace files.
+
+### Serializable layout foundation
+
+- Focused Workspace unit tests: 3 files and 7 tests pass.
+- `pnpm check:no-tailwind`: pass.
+- `pnpm check`: pass with zero Svelte errors or warnings.
+- Public exports cover events, normalized V2 layout, Lapis-compatible
+  `WorkspaceJson`, persistence, popout contracts, menus, and view definitions.
 
 ## Completion gate
 
