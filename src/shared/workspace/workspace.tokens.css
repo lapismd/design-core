@@ -22,6 +22,13 @@
   --ui-workspace-selection: color-mix(in srgb, var(--primary) 14%, transparent);
   --ui-workspace-destructive: var(--destructive);
   --ui-workspace-focus-ring: var(--ring);
+  --ui-workspace-font-mono: var(
+    --font-mono,
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace
+  );
   --ui-workspace-radius-small: calc(var(--radius, 0.625rem) * 0.6);
   --ui-workspace-radius-medium: calc(var(--radius, 0.625rem) * 0.8);
   --ui-workspace-radius-large: var(--radius, 0.625rem);

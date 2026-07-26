@@ -193,6 +193,7 @@
     "./workspace/icon": "./src/shared/workspace/icon/index.ts",
     "./workspace/menu": "./src/shared/workspace/menu/index.ts",
     "./workspace/mobile": "./src/shared/workspace/mobile/index.ts",
+    "./workspace/plugins/fmode": "./src/shared/workspace/plugins/f-mode/index.ts",
     "./workspace/ribbon": "./src/shared/workspace/ribbon/index.ts",
     "./workspace/settings": "./src/shared/workspace/settings/index.ts",
     "./workspace/sidebar": "./src/shared/workspace/sidebar/index.ts",

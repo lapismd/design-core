@@ -86,7 +86,7 @@ Compatibility aliases are removed only through an explicit reviewed slice.
 | Ribbon and status                | ribbon/status modules                                      | component families         | Complete            | Pass    | Pass     | Pending | Pending |
 | Settings presentation            | settings Svelte components                                 | component families         | Complete            | Pass    | Pass     | Pending | Pending |
 | Compound AppShell                | `app-shell-*` modules                                      | component families         | In progress         | Pass    | Partial  | Pending | Pending |
-| F-Mode                           | optional plugin package                                    | `plugins/f-mode/`          | Pending             | Pending | Pending  | Pending | Pending |
+| F-Mode                           | optional plugin package                                    | `plugins/f-mode/`          | Complete            | Pass    | Pass     | Pending | Pending |
 | Notifications                    | optional plugin package                                    | `plugins/notifications/`   | Pending             | Pending | Pending  | Pending | Pending |
 | Demo and reference               | demos, stories, references                                 | `demo/`, `reference/`      | Pending             | Pending | Pending  | Pending | Pending |
 | Lapis source removal             | `lapis-notes/app-shell`                                    | separate Changeyard change | Blocked on approval | N/A     | N/A      | N/A     | Pending |
@@ -319,6 +319,27 @@ workflow.
   stories pass through the repository's Storybook Vitest project.
 - The required MCP focused run was invoked and returned no per-story result in
   the JJ workspace. Supplemental focused execution remains green.
+- `pnpm check:no-tailwind`: pass.
+- `pnpm check`: pass with zero Svelte errors or warnings.
+- Visual Delta candidate baselines remain pending explicit human approval; no
+  committed baseline image was created or replaced in this slice.
+
+### Optional F-Mode plugin
+
+- Added `@stevejuma/ui/workspace/plugins/fmode` with the static
+  `fModePlugin()` descriptor, prefix-free hint generation, target-group
+  settings, modal key capture, typed session model, and composable overlay.
+- `AppShell.Root` now renders controller-registered overlay contributions
+  inside its own surface. Plugin enable/disable continues to own registration
+  and reverse-order cleanup through the existing transactional manager.
+- The overlay uses native CSS, public Workspace tokens, clipping-aware target
+  geometry, resize/scroll repositioning, detailed/compact/minimal HUD modes,
+  and light/dark inheritance.
+- Focused F-Mode and modal-keymap unit execution: 4 files and 6 tests pass.
+- Focused Storybook interaction and accessibility execution: 1 file and 6
+  stories pass, including real keyboard query and exact-target activation.
+- The required MCP focused runs were invoked and returned no per-story result
+  in the JJ workspace. Supplemental focused execution remains green.
 - `pnpm check:no-tailwind`: pass.
 - `pnpm check`: pass with zero Svelte errors or warnings.
 - Visual Delta candidate baselines remain pending explicit human approval; no

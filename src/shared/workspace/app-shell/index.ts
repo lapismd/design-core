@@ -1,5 +1,6 @@
 import AppShellFloatingLayer from "./AppShellFloatingLayer.svelte";
 import AppShellLeftSidebar from "./AppShellLeftSidebar.svelte";
+import AppShellOverlayLayer from "./AppShellOverlayLayer.svelte";
 import AppShellRibbon from "./AppShellRibbon.svelte";
 import AppShellRightSidebar from "./AppShellRightSidebar.svelte";
 import AppShellRoot from "./AppShellRoot.svelte";
@@ -11,6 +12,7 @@ import AppShellWorkspace from "./AppShellWorkspace.svelte";
 export {
   AppShellFloatingLayer,
   AppShellLeftSidebar,
+  AppShellOverlayLayer,
   AppShellRibbon,
   AppShellRightSidebar,
   AppShellRoot,

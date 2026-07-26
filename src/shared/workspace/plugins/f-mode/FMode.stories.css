@@ -1,0 +1,70 @@
+.ui-workspace-fmode-story {
+  box-sizing: border-box;
+  min-height: 100vh;
+  padding: 2rem;
+  background: var(--ui-workspace-muted);
+}
+
+.ui-workspace-fmode-story__frame {
+  width: min(60rem, 100%);
+  min-height: 34rem;
+  margin-inline: auto;
+  overflow: hidden;
+  border: 1px solid var(--ui-workspace-border);
+  border-radius: var(--ui-workspace-radius-large);
+  background: var(--ui-workspace-background);
+  box-shadow: var(--ui-workspace-shadow);
+}
+
+.ui-workspace-fmode-story__surface {
+  display: flex;
+  min-height: 34rem;
+  flex-direction: column;
+  gap: 4rem;
+  padding: 3rem;
+}
+
+.ui-workspace-fmode-story__surface header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.ui-workspace-fmode-story__surface header span,
+.ui-workspace-fmode-story__surface output {
+  color: var(--ui-workspace-muted-foreground);
+  font-size: 0.8125rem;
+}
+
+.ui-workspace-fmode-story__surface h1 {
+  margin: 0.25rem 0 0;
+  font-size: 1.5rem;
+}
+
+.ui-workspace-fmode-story__surface section {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.ui-workspace-fmode-story__surface button {
+  min-height: 7rem;
+  border: 1px solid var(--ui-workspace-border);
+  border-radius: var(--ui-workspace-radius-large);
+  padding: 1rem;
+  color: var(--ui-workspace-foreground);
+  background: var(--ui-workspace-panel);
+  font: inherit;
+  font-weight: 600;
+}
+
+.ui-workspace-fmode-story__surface button:hover {
+  border-color: var(--ui-workspace-border-strong);
+  background: var(--ui-workspace-selection);
+}
+
+.ui-workspace-fmode-story__surface button:focus-visible {
+  outline: 2px solid var(--ui-workspace-focus-ring);
+  outline-offset: 2px;
+}

@@ -1,0 +1,31 @@
+import { Meta, Canvas } from "@storybook/addon-docs/blocks";
+import * as Stories from "./FMode.stories.svelte";
+
+<Meta of={Stories} />
+
+# F-Mode
+
+F-Mode is an optional static AppShell plugin. It discovers visible
+`data-hint-*` targets on the active controller-owned surface, assigns
+prefix-free labels, and captures keyboard input through the modal command
+scope.
+
+```ts
+const app = new AppShellController({
+  plugins: [fModePlugin()],
+});
+```
+
+The plugin contributes its command, declarative settings, and overlay
+transactionally. Disabling it removes every contribution and closes the active
+session.
+
+<Canvas of={Stories.ActiveHints} />
+
+## Target groups
+
+Built-in groups cover tabs, view headers, sidebars, ribbon actions, and status
+items. Application content can opt in with the same public `data-hint-*`
+attributes and custom group IDs.
+
+<Canvas of={Stories.FilteredTargetGroups} />

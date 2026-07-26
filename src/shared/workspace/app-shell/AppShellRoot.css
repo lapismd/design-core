@@ -12,6 +12,10 @@
   font-family: inherit;
 }
 
+.ui-app-shell__overlay-layer {
+  display: contents;
+}
+
 .ui-app-shell *,
 .ui-app-shell *::before,
 .ui-app-shell *::after {

@@ -4,6 +4,7 @@
   import type { WorkspaceTheme } from "../core/types.js";
   import { WorkspaceDragState } from "../drag/workspace-drag.svelte.js";
   import { setAppShellContext } from "./app-shell-context.svelte.js";
+  import AppShellOverlayLayer from "./AppShellOverlayLayer.svelte";
   import "./AppShellRoot.css";
 
   let {
@@ -81,4 +82,7 @@
   onkeydown={(event) => void controller.commands.handleKeydown(event)}
 >
   {@render children?.()}
+  {#if root}
+    <AppShellOverlayLayer portalTarget={root} />
+  {/if}
 </div>
