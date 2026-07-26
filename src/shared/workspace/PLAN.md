@@ -204,6 +204,25 @@ workflow.
 - Visual Delta candidate baselines remain pending explicit human approval; no
   committed baseline image was created or replaced in this slice.
 
+### Sidebar surfaces
+
+- Added individually importable left/right sidebar surfaces with icon tabs,
+  grouped-panel and leaf rendering, source-shaped empty-container treatment,
+  close controls, and top/bottom-only leaf drop targets.
+- Selecting a sidebar icon updates the live controller identity; closing the
+  sidebar uses the same controller mutation path as programmatic changes.
+- Focused Storybook interaction and accessibility execution: 1 file and 2
+  stories pass through the repository's Storybook Vitest project.
+- The required MCP focused run was also invoked; it broadened into the target
+  repository's pre-existing Visual Delta manager failures after the base
+  Storybook process reclaimed the shared port. Workspace-specific focused
+  validation remains green.
+- Both stories are indexed and previewable in the target Storybook.
+- `pnpm check:no-tailwind`: pass.
+- `pnpm check`: pass with zero Svelte errors or warnings.
+- Visual Delta candidate baselines remain pending explicit human approval; no
+  committed baseline image was created or replaced in this slice.
+
 ## Completion gate
 
 The migration is complete only when:

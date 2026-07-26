@@ -189,6 +189,7 @@
     "./workspace/empty": "./src/shared/workspace/empty/index.ts",
     "./workspace/icon": "./src/shared/workspace/icon/index.ts",
     "./workspace/settings": "./src/shared/workspace/settings/index.ts",
+    "./workspace/sidebar": "./src/shared/workspace/sidebar/index.ts",
     "./workspace/sidebar-empty": "./src/shared/workspace/sidebar-empty/index.ts",
     "./workspace/sidebar-group": "./src/shared/workspace/sidebar-group/index.ts",
     "./workspace/sidebar-toggle": "./src/shared/workspace/sidebar-toggle/index.ts",

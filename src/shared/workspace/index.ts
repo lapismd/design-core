@@ -11,6 +11,7 @@ export * from "./drop-overlay/index.js";
 export * from "./empty/index.js";
 export * from "./icon/index.js";
 export * from "./settings/index.js";
+export * from "./sidebar/index.js";
 export * from "./sidebar-empty/index.js";
 export {
   WorkspaceSidebarGroup as WorkspaceSidebarGroupComponent,

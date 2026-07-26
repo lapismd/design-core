@@ -1,0 +1,15 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as Stories from "./WorkspaceSidebar.stories.svelte";
+
+<Meta of={Stories} />
+
+# WorkspaceSidebar
+
+`WorkspaceSidebar` composes the reusable icon tab bar, grouped panels, regular
+view bodies, empty container, drop targets, and close control for either side.
+
+<Canvas of={Stories.IconTabsAndGroupedPanels} />
+
+<Canvas of={Stories.EmptyRightSidebar} />
+
+<Controls of={Stories.IconTabsAndGroupedPanels} />
