@@ -15,6 +15,7 @@
   import WorkspaceEmpty from "../empty/WorkspaceEmpty.svelte";
   import WorkspaceIcon from "../icon/WorkspaceIcon.svelte";
   import WorkspaceSidebarToggle from "../sidebar-toggle/WorkspaceSidebarToggle.svelte";
+  import WorkspaceViewHeader from "../view-header/WorkspaceViewHeader.svelte";
   import WorkspaceViewHost from "../view-host/WorkspaceViewHost.svelte";
   import WorkspaceTabsMove from "./WorkspaceTabsMove.svelte";
   import "./WorkspaceTabs.css";
@@ -365,6 +366,7 @@
     {#each pane.items as item (item.id)}
       <Tabs.Content value={item.id} class="ui-workspace-tabs__panel">
         {#if item.kind === "tab"}
+          {@const definition = controller.registry.resolve(item.view.type)}
           <WorkspaceTabsDrop
             {controller}
             drag={dragState}
@@ -376,12 +378,22 @@
               data-ui-part="leaf-content"
               onpointerdown={() => controller.selectTab(item.id)}
             >
-              <WorkspaceViewHost
-                {controller}
-                tab={item}
-                {hostId}
-                paneId={pane.id}
-              />
+              {#if controller.showTabTitleBar && item.view.type !== "empty" && definition?.showHeader !== false}
+                <WorkspaceViewHeader
+                  {controller}
+                  tab={item}
+                  {hostId}
+                  paneId={pane.id}
+                />
+              {/if}
+              <div class="ui-workspace-tabs__view-content">
+                <WorkspaceViewHost
+                  {controller}
+                  tab={item}
+                  {hostId}
+                  paneId={pane.id}
+                />
+              </div>
             </div>
           </WorkspaceTabsDrop>
         {:else}

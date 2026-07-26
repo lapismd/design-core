@@ -15,6 +15,7 @@
   import WorkspaceTabsDrop from "../drop-overlay/WorkspaceTabsDrop.svelte";
   import WorkspaceIcon from "../icon/WorkspaceIcon.svelte";
   import WorkspaceSidebarToggle from "../sidebar-toggle/WorkspaceSidebarToggle.svelte";
+  import WorkspaceViewHeader from "../view-header/WorkspaceViewHeader.svelte";
   import WorkspaceViewHost from "../view-host/WorkspaceViewHost.svelte";
   import "./WorkspaceStackedTabs.css";
 
@@ -215,6 +216,9 @@
   >
     {#each pane.items as item, index (item.id)}
       {@const tab = tabFor(item)}
+      {@const definition = tab
+        ? controller.registry.resolve(tab.view.type)
+        : undefined}
       {@const active = pane.activeItemId === item.id}
       <button
         type="button"
@@ -275,7 +279,24 @@
             parent={pane}
             class="ui-workspace-stacked-tabs__drop-target"
           >
-            <WorkspaceViewHost {controller} {tab} {hostId} paneId={pane.id} />
+            <div class="ui-workspace-stacked-tabs__leaf-content">
+              {#if controller.showTabTitleBar && tab.view.type !== "empty" && definition?.showHeader !== false}
+                <WorkspaceViewHeader
+                  {controller}
+                  {tab}
+                  {hostId}
+                  paneId={pane.id}
+                />
+              {/if}
+              <div class="ui-workspace-stacked-tabs__view-content">
+                <WorkspaceViewHost
+                  {controller}
+                  {tab}
+                  {hostId}
+                  paneId={pane.id}
+                />
+              </div>
+            </div>
           </WorkspaceTabsDrop>
         {/if}
       </div>

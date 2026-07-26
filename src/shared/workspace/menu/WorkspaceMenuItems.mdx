@@ -1,0 +1,15 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as Stories from "./WorkspaceMenuItems.stories.svelte";
+
+<Meta of={Stories} />
+
+# Workspace menu
+
+`WorkspaceMenuItems` renders the serializable, fluent `WorkspaceMenu` model
+without coupling applications to a shadcn wrapper. Items, separators, checked
+state, disabled state, and nested menus use direct Bits UI behavior and public
+Workspace tokens.
+
+<Canvas of={Stories.ItemsSubmenusAndDisabledState} />
+
+<Controls of={Stories.ItemsSubmenusAndDisabledState} />

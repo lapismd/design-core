@@ -80,7 +80,7 @@ Compatibility aliases are removed only through an explicit reviewed slice.
 | Notifications model              | notice and notification managers                           | `core/notifications/`      | Complete            | Pass    | Pending  | N/A     | Pending |
 | Tabs and splits                  | tab, pane, tree, drag modules                              | component families         | In progress         | Pass    | Partial  | Pending | Pending |
 | Sidebars and groups              | sidebar modules                                            | component families         | In progress         | Pass    | Partial  | Pending | Pending |
-| View chrome and menus            | view header, empty, menus                                  | component families         | In progress         | Pass    | Partial  | Pending | Pending |
+| View chrome and menus            | view header, empty, menus                                  | component families         | Complete            | Pass    | Pass     | Pending | Pending |
 | Windows and overlays             | window and drop modules                                    | component families         | In progress         | Pass    | Partial  | Pending | Pending |
 | Mobile shell                     | mobile modules                                             | component families         | Pending             | Pending | Pending  | Pending | Pending |
 | Ribbon and status                | ribbon/status modules                                      | component families         | Pending             | Pending | Pending  | Pending | Pending |
@@ -218,6 +218,24 @@ workflow.
   Storybook process reclaimed the shared port. Workspace-specific focused
   validation remains green.
 - Both stories are indexed and previewable in the target Storybook.
+- `pnpm check:no-tailwind`: pass.
+- `pnpm check`: pass with zero Svelte errors or warnings.
+- Visual Delta candidate baselines remain pending explicit human approval; no
+  committed baseline image was created or replaced in this slice.
+
+### View header and declarative menus
+
+- Added a direct-Bits renderer for the controller-owned `WorkspaceMenu` model,
+  including items, separators, disabled and checked states, and nested menus.
+- Added the source-shaped view header with history actions, breadcrumbs, title,
+  view-contributed actions, and the shared pane menu.
+- Top and stacked leaf bodies now render the header through the same
+  `WorkspaceViewDefinition.getChrome()` contract while sidebar views retain
+  their compact source presentation.
+- Focused Storybook interaction and accessibility execution: 5 files and 7
+  stories pass through the repository's Storybook Vitest project.
+- The required MCP focused run was invoked; it returned no per-story result in
+  the JJ workspace. Supplemental focused execution remains green.
 - `pnpm check:no-tailwind`: pass.
 - `pnpm check`: pass with zero Svelte errors or warnings.
 - Visual Delta candidate baselines remain pending explicit human approval; no

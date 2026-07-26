@@ -1,0 +1,14 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as Stories from "./WorkspaceViewHeader.stories.svelte";
+
+<Meta of={Stories} />
+
+# Workspace view header
+
+The view header consumes `WorkspaceViewDefinition.getChrome()` and the shared
+pane-menu builder. Applications contribute serializable breadcrumbs, history
+callbacks, header actions, and menu items without owning shell markup.
+
+<Canvas of={Stories.BreadcrumbsActionsAndPaneMenu} />
+
+<Controls of={Stories.BreadcrumbsActionsAndPaneMenu} />

@@ -355,6 +355,14 @@
   outline: none;
 }
 
+.ui-workspace-tabs__view-content {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  flex: 1 1 auto;
+}
+
 .ui-workspace-tabs__insertion-marker {
   position: absolute;
   z-index: var(--ui-workspace-overlay-z-index);

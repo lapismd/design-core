@@ -188,6 +188,7 @@
     "./workspace/drop-overlay": "./src/shared/workspace/drop-overlay/index.ts",
     "./workspace/empty": "./src/shared/workspace/empty/index.ts",
     "./workspace/icon": "./src/shared/workspace/icon/index.ts",
+    "./workspace/menu": "./src/shared/workspace/menu/index.ts",
     "./workspace/settings": "./src/shared/workspace/settings/index.ts",
     "./workspace/sidebar": "./src/shared/workspace/sidebar/index.ts",
     "./workspace/sidebar-empty": "./src/shared/workspace/sidebar-empty/index.ts",
@@ -197,6 +198,7 @@
     "./workspace/stacked-tabs": "./src/shared/workspace/stacked-tabs/index.ts",
     "./workspace/tabs": "./src/shared/workspace/tabs/index.ts",
     "./workspace/tree": "./src/shared/workspace/tree/index.ts",
+    "./workspace/view-header": "./src/shared/workspace/view-header/index.ts",
     "./workspace/tokens": "./src/shared/workspace/workspace.tokens.ts",
     "./workspace/view-host": "./src/shared/workspace/view-host/index.ts",
     "./workspace/workspace.tokens.css": "./src/shared/workspace/workspace.tokens.css"

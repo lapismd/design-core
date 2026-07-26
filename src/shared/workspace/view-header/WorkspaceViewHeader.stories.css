@@ -1,0 +1,6 @@
+.ui-workspace-view-header-story-frame {
+  width: 100%;
+  min-height: 18rem;
+  color: var(--ui-workspace-foreground);
+  background: var(--ui-workspace-background);
+}
