@@ -5,7 +5,8 @@ blocked by unrelated concurrent AI catalog changes recorded below.
 
 ## Phase 2: AI-oriented discovery and evaluation
 
-Status: in progress.
+Status: implemented; focused acceptance complete. Broad Storybook acceptance is
+blocked by unrelated concurrent AI catalog changes recorded below.
 
 This phase keeps the existing Storybook documentation tools compatible while
 adding the discovery workflow and evaluation discipline described in ASTRYX's
@@ -39,7 +40,7 @@ neutral.
 - [x] Add an opt-in external `eval-agent` runner with fresh consumer sandboxes,
       identical hidden-answer prompts, objective MCP/CLI logs, repeated trials,
       and reports beneath `.cache/docs-mcp/evals/`.
-- [ ] Verify provider compatibility, response budgets, MCP/CLI parity, managed
+- [x] Verify provider compatibility, response budgets, MCP/CLI parity, managed
       block safety/idempotence, cache invalidation, dual stdio instances,
       standalone HTTP, alternate Storybook ports, static build, and package
       typecheck without updating visual baselines.
@@ -106,22 +107,28 @@ neutral.
 
 ## Verification record
 
-- [x] Original 7 Docs MCP tests pass after extraction.
-- [x] Package provider, init, HTTP, and dual-stdio tests pass.
+- [x] Package discovery, retrieval, provider, init, agent-docs, evaluation,
+      HTTP, and dual-stdio tests pass: 10 files and 20 tests.
 - [x] Package typecheck and distributable Node build pass.
-- [x] `docs-mcp doctor --live --json` reports 70 components, 6 documents, and
-      no issues.
+- [x] `docs-mcp doctor --live --json --no-cache` reports 90 components, 6
+      documents, 2 curated blocks, and no issues.
+- [x] The 8-case relevance fixture reports 0.8571 top-1 accuracy, 1.0 hit-at-5,
+      0.9286 mean reciprocal rank, 1.0 no-result correctness, and full
+      component, guide, and block coverage.
 - [x] Two concurrent stdio processes initialize independently, expose the
       expected tools, answer tool calls, and emit JSON-RPC only on stdout.
-- [x] Standalone HTTP on 9111 serves health, llms, and all 70 components.
+- [x] Standalone HTTP on 9111 serves health, llms, search/get MCP calls, all 90
+      components, and both curated blocks.
 - [x] Storybook on 9109 advertises and serves `/docs-mcp` and llms URLs on
       9109; the official addon still serves `/mcp`; port 5173 is not listening.
-- [x] Full unit suite passes: 97 files and 494 tests.
-- [x] Static Storybook build passes, as do the 35 Visual Delta panel tests.
-- [ ] `pnpm checks` reaches the Storybook suite but is blocked by 42 unrelated
-      failures: existing React-backed Visual Delta stories hit duplicate React
-      invalid-hook errors, while concurrently added AI chat stories have play
+- [x] Full unit suite passes: 104 files and 511 tests. Root `svelte-check`
+      reports zero errors and zero warnings.
+- [x] Static Storybook build passes.
+- [ ] `pnpm checks` is blocked at formatting by concurrently edited AI chat
+      source and story files outside this slice. A direct Storybook interaction
+      run separately reports 40 failed tests and 1 failed suite from existing
+      React-backed Visual Delta invalid-hook errors and concurrent AI story play
       failures.
-- [ ] Visual comparison passes 194 existing baselines; its 28 failures are all
+- [ ] Visual comparison passes 194 existing baselines; its 64 failures are all
       unrelated, concurrently added `AI/Chat` stories without baselines. No
       snapshots were updated.
