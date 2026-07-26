@@ -1,0 +1,28 @@
+.ui-app-shell-story-frame {
+  width: 100%;
+  height: 100svh;
+  min-height: 36rem;
+  overflow: hidden;
+}
+
+.ui-app-shell-story-view {
+  display: grid;
+  height: 100%;
+  place-content: center;
+  gap: 0.5rem;
+  padding: 2rem;
+  text-align: center;
+}
+
+.ui-app-shell-story-view h2 {
+  margin: 0;
+  color: var(--ui-workspace-foreground);
+  font-size: 1.25rem;
+  font-weight: 650;
+}
+
+.ui-app-shell-story-view p {
+  max-width: 30rem;
+  margin: 0;
+  color: var(--ui-workspace-muted-foreground);
+}

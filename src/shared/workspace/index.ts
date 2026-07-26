@@ -5,6 +5,7 @@ export {
   type WorkspaceTokenKey,
 } from "./workspace.tokens.js";
 
+export * from "./app-shell/index.js";
 export * from "./core/index.js";
 export * from "./drag/index.js";
 export * from "./drop-overlay/index.js";

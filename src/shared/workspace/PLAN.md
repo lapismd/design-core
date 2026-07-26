@@ -85,7 +85,7 @@ Compatibility aliases are removed only through an explicit reviewed slice.
 | Mobile shell                     | mobile modules                                             | component families         | Pending             | Pending | Pending  | Pending | Pending |
 | Ribbon and status                | ribbon/status modules                                      | component families         | Complete            | Pass    | Pass     | Pending | Pending |
 | Settings presentation            | settings Svelte components                                 | component families         | Pending             | Pending | Pending  | Pending | Pending |
-| Compound AppShell                | `app-shell-*` modules                                      | component families         | Pending             | Pending | Pending  | Pending | Pending |
+| Compound AppShell                | `app-shell-*` modules                                      | component families         | In progress         | Pass    | Partial  | Pending | Pending |
 | F-Mode                           | optional plugin package                                    | `plugins/f-mode/`          | Pending             | Pending | Pending  | Pending | Pending |
 | Notifications                    | optional plugin package                                    | `plugins/notifications/`   | Pending             | Pending | Pending  | Pending | Pending |
 | Demo and reference               | demos, stories, references                                 | `demo/`, `reference/`      | Pending             | Pending | Pending  | Pending | Pending |
@@ -276,6 +276,26 @@ workflow.
   stories pass through the repository's Storybook Vitest project.
 - The required MCP focused runs were invoked and returned no per-story result
   in the JJ workspace. Supplemental focused execution remains green.
+- `pnpm check:no-tailwind`: pass.
+- `pnpm check`: pass with zero Svelte errors or warnings.
+- Visual Delta candidate baselines remain pending explicit human approval; no
+  committed baseline image was created or replaced in this slice.
+
+### Compound application shell
+
+- Added the public `AppShell.Root` context and lifecycle component plus
+  independently composable `Ribbon`, `LeftSidebar`, `Workspace`,
+  `RightSidebar`, `FloatingLayer`, and `StatusBar` surfaces.
+- `AppShell.Surface` provides the current default desktop composition without
+  hiding the lower-level components or installing a global controller.
+- All surfaces share one controller-owned drag state and active-surface
+  registration. Closed-sidebar toggles are assigned to the same leading and
+  top-right main panes as the source shell.
+- Focused Storybook interaction and accessibility execution: 2 App Shell
+  stories and the affected floating-layer story pass through the repository's
+  Storybook Vitest project.
+- The required MCP focused run was invoked and returned no per-story result in
+  the JJ workspace. Supplemental focused execution remains green.
 - `pnpm check:no-tailwind`: pass.
 - `pnpm check`: pass with zero Svelte errors or warnings.
 - Visual Delta candidate baselines remain pending explicit human approval; no

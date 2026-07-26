@@ -1,0 +1,28 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+import * as Stories from "./AppShell.stories.svelte";
+
+<Meta of={Stories} />
+
+# App Shell
+
+`AppShell.Root` installs controller context, application lifecycle, keyboard
+dispatch, drag state, theme overrides, and active-surface tracking. It does not
+choose which visual surfaces an application includes.
+
+## Structure
+
+Use `AppShell.Surface` for the default desktop composition, or place
+`Ribbon`, `LeftSidebar`, `Workspace`, `RightSidebar`, `FloatingLayer`, and
+`StatusBar` independently under the root. Omitting or replacing a surface does
+not change controller behavior.
+
+## API
+
+- `Root` requires an `AppShellController` and optionally starts or disposes it.
+- `Workspace` accepts an optional serializable tab factory.
+- `Surface` composes the current default desktop surfaces.
+- Every lower-level component remains available through its own Workspace
+  subpath.
+
+All application state stays on the supplied controller; no global value is
+installed.

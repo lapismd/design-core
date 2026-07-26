@@ -9,14 +9,17 @@
     controller,
     createTab,
     boundsRoot,
+    drag,
   }: {
     controller: WorkspaceShellController;
     createTab?: (paneId: string) => WorkspaceTab;
     boundsRoot?: HTMLElement | null;
+    drag?: WorkspaceDragState;
   } = $props();
 
   const createDrag = () => new WorkspaceDragState(controller);
-  const drag = createDrag();
+  const internalDrag = createDrag();
+  let dragState = $derived(drag ?? internalDrag);
   let windows = $derived(
     controller.layout.windows.filter((entry) => entry.mode === "floating"),
   );
@@ -37,7 +40,7 @@
       <WorkspaceFloatingWindow
         {controller}
         window={workspaceWindow}
-        {drag}
+        drag={dragState}
         {createTab}
         {boundsRoot}
       />
@@ -53,7 +56,7 @@
           <WorkspaceFloatingWindow
             {controller}
             window={workspaceWindow}
-            {drag}
+            drag={dragState}
             {createTab}
             {boundsRoot}
             dockMode="minimized"
