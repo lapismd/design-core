@@ -169,10 +169,7 @@
     {/if}
   </div>
 
-  <div
-    data-ui-component="list-editor"
-    data-ui-part="list-editor-items"
-  >
+  <div data-ui-component="list-editor" data-ui-part="list-editor-items">
     {#each items as item, index (`${label}-${index}`)}
       {@const review = reviewForIndex(index)}
       <SortableArrayItem
@@ -201,7 +198,9 @@
             <textarea
               data-ui-component="list-editor"
               data-ui-part="list-editor-input"
-              data-multiline={variant !== "inline" && multiline ? "" : undefined}
+              data-multiline={variant !== "inline" && multiline
+                ? ""
+                : undefined}
               rows={variant === "inline" ||
               !multiline ||
               multilineSize === "compact"

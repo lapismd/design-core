@@ -14,8 +14,8 @@ pnpm ui:add button-group
 
 ```html
 <ButtonGroup.Root>
-  <Button>Button 1</Button>
-  <Button>Button 2</Button>
+  <button>Button 1</button>
+  <button>Button 2</button>
 </ButtonGroup.Root>
 ```
 
@@ -27,8 +27,8 @@ pnpm ui:add button-group
 
 ```html
 <ButtonGroup aria-label="Button group">
-  <Button>Button 1</Button>
-  <Button>Button 2</Button>
+  <button>Button 1</button>
+  <button>Button 2</button>
 </ButtonGroup>
 ```
 
@@ -56,12 +56,12 @@ Set the `orientation` prop to change the button group layout.
   aria-label="Media controls"
   class="h-fit"
 >
-  <Button variant="outline" size="icon">
+  <button variant="outline" size="icon">
     <Plus />
-  </Button>
-  <Button variant="outline" size="icon">
+  </button>
+  <button variant="outline" size="icon">
     <Minus />
-  </Button>
+  </button>
 </ButtonGroup.Root>
 ```
 
@@ -78,28 +78,28 @@ Control the size of buttons using the `size` prop on individual buttons.
 
 <div class="flex flex-col items-start gap-8">
   <ButtonGroup.Root>
-    <Button variant="outline" size="sm">Small</Button>
-    <Button variant="outline" size="sm">Button</Button>
-    <Button variant="outline" size="sm">Group</Button>
-    <Button variant="outline" size="icon-sm">
+    <button variant="outline" size="sm">Small</button>
+    <button variant="outline" size="sm">Button</button>
+    <button variant="outline" size="sm">Group</button>
+    <button variant="outline" size="icon-sm">
       <Plus />
-    </Button>
+    </button>
   </ButtonGroup.Root>
   <ButtonGroup.Root>
-    <Button variant="outline">Default</Button>
-    <Button variant="outline">Button</Button>
-    <Button variant="outline">Group</Button>
-    <Button variant="outline" size="icon">
+    <button variant="outline">Default</button>
+    <button variant="outline">Button</button>
+    <button variant="outline">Group</button>
+    <button variant="outline" size="icon">
       <Plus />
-    </Button>
+    </button>
   </ButtonGroup.Root>
   <ButtonGroup.Root>
-    <Button variant="outline" size="lg">Large</Button>
-    <Button variant="outline" size="lg">Button</Button>
-    <Button variant="outline" size="lg">Group</Button>
-    <Button variant="outline" size="icon-lg">
+    <button variant="outline" size="lg">Large</button>
+    <button variant="outline" size="lg">Button</button>
+    <button variant="outline" size="lg">Group</button>
+    <button variant="outline" size="icon-lg">
       <Plus />
-    </Button>
+    </button>
   </ButtonGroup.Root>
 </div>
 ```
@@ -118,19 +118,19 @@ Nest `ButtonGroup` components to create button groups with spacing.
 
 <ButtonGroup.Root>
   <ButtonGroup.Root>
-    <Button variant="outline" size="sm">1</Button>
-    <Button variant="outline" size="sm">2</Button>
-    <Button variant="outline" size="sm">3</Button>
-    <Button variant="outline" size="sm">4</Button>
-    <Button variant="outline" size="sm">5</Button>
+    <button variant="outline" size="sm">1</button>
+    <button variant="outline" size="sm">2</button>
+    <button variant="outline" size="sm">3</button>
+    <button variant="outline" size="sm">4</button>
+    <button variant="outline" size="sm">5</button>
   </ButtonGroup.Root>
   <ButtonGroup.Root>
-    <Button variant="outline" size="icon-sm" aria-label="Previous">
+    <button variant="outline" size="icon-sm" aria-label="Previous">
       <ArrowLeft />
-    </Button>
-    <Button variant="outline" size="icon-sm" aria-label="Next">
+    </button>
+    <button variant="outline" size="icon-sm" aria-label="Next">
       <ArrowRight />
-    </Button>
+    </button>
   </ButtonGroup.Root>
 </ButtonGroup.Root>
 ```
@@ -148,9 +148,9 @@ Buttons with variant `outline` do not need a separator since they have a border.
 </script>
 
 <ButtonGroup.Root>
-  <Button variant="secondary" size="sm">Copy</Button>
+  <button variant="secondary" size="sm">Copy</button>
   <ButtonGroup.Separator />
-  <Button variant="secondary" size="sm">Paste</Button>
+  <button variant="secondary" size="sm">Paste</button>
 </ButtonGroup.Root>
 ```
 
@@ -166,11 +166,11 @@ Create a split button group by adding two buttons separated by a `ButtonGroupSep
 </script>
 
 <ButtonGroup.Root>
-  <Button variant="secondary">Button</Button>
+  <button variant="secondary">Button</button>
   <ButtonGroup.Separator />
-  <Button variant="secondary" size="icon">
+  <button variant="secondary" size="icon">
     <Plus />
-  </Button>
+  </button>
 </ButtonGroup.Root>
 ```
 
@@ -187,10 +187,10 @@ Wrap an `Input` component with buttons.
 </script>
 
 <ButtonGroup.Root>
-  <Input placeholder="Search..." />
-  <Button variant="outline" size="icon" aria-label="Search">
-    <Search />
-  </Button>
+  <input placeholder="Search..." />
+  <button variant="outline" size="icon" aria-label="Search">
+    <search />
+  </button>
 </ButtonGroup.Root>
 ```
 
@@ -270,13 +270,13 @@ Create a split button group with a `DropdownMenu` component.
 </script>
 
 <ButtonGroup.Root>
-  <Button variant="outline">Follow</Button>
+  <button variant="outline">Follow</button>
   <DropdownMenu.Root>
     <DropdownMenu.Trigger>
       {#snippet child({ props })}
-        <Button {...props} variant="outline" class="!ps-2">
-          <ChevronDown />
-        </Button>
+      <button {...props} variant="outline" class="!ps-2">
+        <ChevronDown />
+      </button>
       {/snippet}
     </DropdownMenu.Trigger>
     <DropdownMenu.Content align="end" class="[--radius:1rem]">
@@ -350,25 +350,23 @@ Pair with a `Select` component.
 
 <ButtonGroup.Root>
   <ButtonGroup.Root>
-    <Select.Root type="single" bind:value={currency}>
-      <Select.Trigger class="font-mono">
-        {currency}
-      </Select.Trigger>
+    <Select.Root type="single" bind:value="{currency}">
+      <Select.Trigger class="font-mono"> {currency} </Select.Trigger>
       <Select.Content class="min-w-24">
         {#each CURRENCIES as currencyOption (currencyOption.value)}
-          <Select.Item value={currencyOption.value}>
-            {currencyOption.value}
-            <span class="text-muted-foreground">{currencyOption.label}</span>
-          </Select.Item>
+        <Select.Item value="{currencyOption.value}">
+          {currencyOption.value}
+          <span class="text-muted-foreground">{currencyOption.label}</span>
+        </Select.Item>
         {/each}
       </Select.Content>
     </Select.Root>
-    <Input placeholder="10.00" pattern="[0-9]*" />
+    <input placeholder="10.00" pattern="[0-9]*" />
   </ButtonGroup.Root>
   <ButtonGroup.Root>
-    <Button aria-label="Send" size="icon" variant="outline">
+    <button aria-label="Send" size="icon" variant="outline">
       <ArrowRight />
-    </Button>
+    </button>
   </ButtonGroup.Root>
 </ButtonGroup.Root>
 ```
@@ -389,21 +387,21 @@ Use with a `Popover` component.
 </script>
 
 <ButtonGroup.Root>
-  <Button variant="outline" size="sm">
+  <button variant="outline" size="sm">
     <Bot />
     Copilot
-  </Button>
+  </button>
   <Popover.Root>
     <Popover.Trigger>
       {#snippet child({ props })}
-        <Button
-          {...props}
-          variant="outline"
-          size="icon-sm"
-          aria-label="Open Popover"
-        >
-          <ChevronDown />
-        </Button>
+      <button
+        {...props}
+        variant="outline"
+        size="icon-sm"
+        aria-label="Open Popover"
+      >
+        <ChevronDown />
+      </button>
       {/snippet}
     </Popover.Trigger>
     <Popover.Content align="end" class="rounded-xl p-0 text-sm">
@@ -412,7 +410,7 @@ Use with a `Popover` component.
       </div>
       <Separator />
       <div class="p-4 text-sm *:[p:not(:last-child)]:mb-2">
-        <Textarea
+        <textarea
           placeholder="Describe your task in natural language."
           class="mb-4 resize-none"
         />

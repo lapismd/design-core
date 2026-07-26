@@ -57,7 +57,12 @@
     {mode === "env" ? value || " " : value ? "••••••••" : " "}
   </output>
 {:else}
-  <div class="ui-secret-field" data-ui-component="secret-field" data-ui-part="secret-field" data-invalid={error ? "" : undefined}>
+  <div
+    class="ui-secret-field"
+    data-ui-component="secret-field"
+    data-ui-part="secret-field"
+    data-invalid={error ? "" : undefined}
+  >
     <SegmentedControl
       value={mode}
       options={["env", "inline"]}

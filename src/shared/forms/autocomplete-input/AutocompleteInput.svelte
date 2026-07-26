@@ -149,7 +149,11 @@
   }
 </script>
 
-<div class="ui-autocomplete-input" data-ui-component="autocomplete-input" data-ui-part="autocomplete-input">
+<div
+  class="ui-autocomplete-input"
+  data-ui-component="autocomplete-input"
+  data-ui-part="autocomplete-input"
+>
   <Popover.Root open={listVisible} onOpenChange={setPopoverOpen}>
     <Popover.Trigger>
       {#snippet child({ props })}

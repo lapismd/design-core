@@ -1,4 +1,11 @@
-import { Meta, Canvas, Controls, Primary, Source, Markdown } from "@storybook/addon-docs/blocks";
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+  Markdown,
+} from "@storybook/addon-docs/blocks";
 import * as ButtonGroupStories from "./ButtonGroup.stories.svelte";
 import * as ButtonGroupVariations from "./ButtonGroup.variations.stories.svelte";
 import docsBody from "./button-group.docs-body.md?raw";
@@ -17,7 +24,12 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 
 ## Usage
 
-<Source language="html" code={"<script lang=\"ts\">\n  import * as ButtonGroup from \"@stevejuma/ui/shadcn/button-group\";\n</script>\n\n<ButtonGroup.Root>\n  <Button>Button 1</Button>\n  <Button>Button 2</Button>\n</ButtonGroup.Root>"} />
+<Source
+  language="html"
+  code={
+    '<script lang="ts">\n  import * as ButtonGroup from "@stevejuma/ui/shadcn/button-group";\n</script>\n\n<ButtonGroup.Root>\n  <Button>Button 1</Button>\n  <Button>Button 2</Button>\n</ButtonGroup.Root>'
+  }
+/>
 
 <Primary />
 
@@ -26,7 +38,6 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 ## Examples
 
 ### Preview
-
 
 <Canvas of={ButtonGroupVariations.Preview} meta={ButtonGroupVariations} />
 
@@ -91,4 +102,3 @@ Pair with a `Select` component.
 Use with a `Popover` component.
 
 <Canvas of={ButtonGroupVariations.Popover} meta={ButtonGroupVariations} />
-

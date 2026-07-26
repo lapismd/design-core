@@ -21,7 +21,6 @@
   let value = $state(new CalendarDate(2026, 7, 19));
 </script>
 
-
 <Story
   name="Selected day"
   exportName="SelectedDay"

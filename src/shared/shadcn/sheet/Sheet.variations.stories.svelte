@@ -16,7 +16,14 @@
   exportName="Preview"
   tags={["upstream-example", "visual-pending"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/sheet/preview-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
+    visualDelta: {
+      images: ["/visual-baselines/shadcn/sheet/preview-chromium-darwin.png"],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
     a11y: { test: "todo" },
     docs: {
       source: {

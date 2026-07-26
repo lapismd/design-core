@@ -1,4 +1,10 @@
-import { Meta, Canvas, Controls, Primary, Source } from "@storybook/addon-docs/blocks";
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+} from "@storybook/addon-docs/blocks";
 import * as AutocompleteInputStories from "./AutocompleteInput.stories.svelte";
 import * as AutocompleteInputVariations from "./AutocompleteInput.variations.stories.svelte";
 
@@ -23,7 +29,12 @@ See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and the shared
 
 ## Usage
 
-<Source language="html" code={"<AutocompleteInput\n  bind:value\n  suggestions={[\"typescript\", \"svelte\"]}\n  placeholder=\"Add item...\"\n  onCommit={...}\n/>"} />
+<Source
+  language="html"
+  code={
+    '<AutocompleteInput\n  bind:value\n  suggestions={["typescript", "svelte"]}\n  placeholder="Add item..."\n  onCommit={...}\n/>'
+  }
+/>
 
 <Primary />
 
@@ -37,15 +48,15 @@ Colocated CSS: `AutocompleteInput.css`. Paint with package tokens from
 `@stevejuma/ui/forms/tokens` (defaults in `form.tokens.css`). Stories may
 still use host Tailwind for demo layout.
 
-| Token | Default |
-| --- | --- |
-| `--ui-form-accent` | `var(--primary)` |
-| `--ui-form-background` | `var(--background)` |
-| `--ui-form-border` | `var(--border)` |
-| `--ui-form-foreground` | `var(--foreground)` |
-| `--ui-form-muted` | `var(--muted-foreground)` |
-| `--ui-form-muted-surface` | `var(--muted)` |
-| `--ui-form-popover` | `var(--popover, var(--card))` |
+| Token                     | Default                       |
+| ------------------------- | ----------------------------- |
+| `--ui-form-accent`        | `var(--primary)`              |
+| `--ui-form-background`    | `var(--background)`           |
+| `--ui-form-border`        | `var(--border)`               |
+| `--ui-form-foreground`    | `var(--foreground)`           |
+| `--ui-form-muted`         | `var(--muted-foreground)`     |
+| `--ui-form-muted-surface` | `var(--muted)`                |
+| `--ui-form-popover`       | `var(--popover, var(--card))` |
 
 ## Examples
 
@@ -53,5 +64,7 @@ still use host Tailwind for demo layout.
 
 Focus the field in the canvas to open suggestions.
 
-<Canvas of={AutocompleteInputVariations.WithValue} meta={AutocompleteInputVariations} />
-
+<Canvas
+  of={AutocompleteInputVariations.WithValue}
+  meta={AutocompleteInputVariations}
+/>

@@ -22,9 +22,18 @@
   let accepted = $state(false);
 </script>
 
-<Story name="Default" tags={["visual-state", "visual-pending"]}
+<Story
+  name="Default"
+  tags={["visual-state", "visual-pending"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/checkbox/default-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
+    visualDelta: {
+      images: ["/visual-baselines/shadcn/checkbox/default-chromium-darwin.png"],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
   }}
 >
   {#snippet template()}
@@ -44,11 +53,18 @@
     await expect(box).toBeChecked();
     await expect(canvas.getByRole("status")).toHaveTextContent("accepted");
   }}
-
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/checkbox/toggles-a-boolean-setting-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
+    visualDelta: {
+      images: [
+        "/visual-baselines/shadcn/checkbox/toggles-a-boolean-setting-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
   }}
-
   tags={["visual-pending"]}
 >
   {#snippet template()}

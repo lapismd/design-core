@@ -18,7 +18,11 @@
   } = $props();
 </script>
 
-<div class="cv-form-segmented-root" data-ui-component="segmented-control" data-ui-part="segmented-control">
+<div
+  class="cv-form-segmented-root"
+  data-ui-component="segmented-control"
+  data-ui-part="segmented-control"
+>
   <div
     class="cv-form-segmented"
     aria-label={ariaLabel}

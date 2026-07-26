@@ -64,14 +64,15 @@
   });
 </script>
 
-
 <Story
   name="Schema fields"
   exportName="SchemaFields"
   tags={["skip-visual"]}
   parameters={{
     docs: {
-      description: { story: "Text, segmented, and boolean fields from a typed config." },
+      description: {
+        story: "Text, segmented, and boolean fields from a typed config.",
+      },
     },
   }}
 >

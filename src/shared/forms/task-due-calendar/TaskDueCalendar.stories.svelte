@@ -26,7 +26,6 @@
   play={async ({ canvas }) => {
     await expect(canvas.getByRole("grid")).toBeVisible();
   }}
-
   tags={["visual-failed"]}
 >
   {#snippet template()}

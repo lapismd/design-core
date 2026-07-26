@@ -20,7 +20,14 @@
   exportName="Preview"
   tags={["upstream-example", "visual-ready"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/card/preview-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
+    visualDelta: {
+      images: ["/visual-baselines/shadcn/card/preview-chromium-darwin.png"],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
     a11y: { test: "todo" },
     docs: {
       source: {
@@ -43,7 +50,14 @@
   exportName="Preview2"
   tags={["upstream-example", "visual-ready"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/card/preview-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
+    visualDelta: {
+      images: ["/visual-baselines/shadcn/card/preview-chromium-darwin.png"],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
     a11y: { test: "todo" },
     docs: {
       source: {
@@ -66,7 +80,14 @@
   exportName="Spacing"
   tags={["upstream-example", "visual-ready"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/card/spacing-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
+    visualDelta: {
+      images: ["/visual-baselines/shadcn/card/spacing-chromium-darwin.png"],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
     a11y: { test: "todo" },
     docs: {
       description: {
@@ -93,7 +114,14 @@
   exportName="Spacing2"
   tags={["upstream-example", "visual-ready"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/card/spacing-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
+    visualDelta: {
+      images: ["/visual-baselines/shadcn/card/spacing-chromium-darwin.png"],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
     a11y: { test: "todo" },
     docs: {
       description: {
@@ -120,7 +148,14 @@
   exportName="Image"
   tags={["upstream-example", "visual-ready"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/card/image-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
+    visualDelta: {
+      images: ["/visual-baselines/shadcn/card/image-chromium-darwin.png"],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
     a11y: { test: "todo" },
     docs: {
       description: {

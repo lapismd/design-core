@@ -28,7 +28,6 @@
     await userEvent.type(area, "Updated notes");
     await expect(canvas.getByRole("status")).toHaveTextContent("Updated notes");
   }}
-
   tags={["visual-ready"]}
 >
   {#snippet template()}

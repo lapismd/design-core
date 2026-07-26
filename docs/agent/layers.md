@@ -27,6 +27,7 @@ existing family already covers the need.
    Import from
    `@stevejuma/ui/filter`. Catalog: `Filter/...`. Guidance: `Filter/Guidance`.
 4. **AI** (`src/shared/ai/`) — shared AI panel primitives. Catalog: `AI/...`.
+
 ## Dependency rules
 
 - `shared/shadcn` must not import forms, filter, or AI.

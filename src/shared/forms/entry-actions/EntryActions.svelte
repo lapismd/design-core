@@ -22,7 +22,12 @@
   } = $props();
 </script>
 
-<div class="cv-form-entry-actions" data-ui-component="entry-actions" data-ui-part="entry-actions" data-testid="entry-header">
+<div
+  class="cv-form-entry-actions"
+  data-ui-component="entry-actions"
+  data-ui-part="entry-actions"
+  data-testid="entry-header"
+>
   <div class="cv-form-entry-move" data-testid="entry-actions-move">
     <button
       type="button"

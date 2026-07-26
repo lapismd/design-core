@@ -20,7 +20,11 @@
   }
 </script>
 
-<section class="cv-reference-preview-group" data-ui-component="reference-preview" data-ui-part="reference-preview">
+<section
+  class="cv-reference-preview-group"
+  data-ui-component="reference-preview"
+  data-ui-part="reference-preview"
+>
   {#if title || meta}
     <header>
       {#if title}

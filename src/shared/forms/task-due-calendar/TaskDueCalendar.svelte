@@ -14,7 +14,11 @@
   } = $props();
 </script>
 
-<div class="task-due-calendar" data-ui-component="task-due-calendar" data-ui-part="task-due-calendar">
+<div
+  class="task-due-calendar"
+  data-ui-component="task-due-calendar"
+  data-ui-part="task-due-calendar"
+>
   <Calendar.Root
     bind:value={value as never}
     type="single"

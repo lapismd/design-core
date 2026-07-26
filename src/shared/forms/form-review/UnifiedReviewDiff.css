@@ -36,11 +36,7 @@
 }
 
 .unified-review-diff__line[data-line-type="added"] {
-  background: color-mix(
-    in oklab,
-    #166534 8%,
-    var(--ui-form-background, #fff)
-  );
+  background: color-mix(in oklab, #166534 8%, var(--ui-form-background, #fff));
   color: color-mix(in oklab, #166534 88%, var(--ui-form-foreground, #111));
 }
 

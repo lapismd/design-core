@@ -1,4 +1,11 @@
-import { Meta, Canvas, Controls, Primary, Source, Markdown } from "@storybook/addon-docs/blocks";
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+  Markdown,
+} from "@storybook/addon-docs/blocks";
 import * as PaginationStories from "./Pagination.stories.svelte";
 import * as PaginationVariations from "./Pagination.variations.stories.svelte";
 import docsBody from "./pagination.docs-body.md?raw";
@@ -17,7 +24,12 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 
 ## Usage
 
-<Source language="html" code={"<script lang=\"ts\">\n  import * as Pagination from \"@stevejuma/ui/shadcn/pagination\";\n</script>\n\n<Pagination.Root count={100} perPage={10}>\n  {#snippet children({ pages, currentPage })}\n    <Pagination.Content>\n      <Pagination.Item>\n        <Pagination.Previous />\n      </Pagination.Item>\n      {#each pages as page (page.key)}\n        {#if page.type === \"ellipsis\"}\n          <Pagination.Item>\n            <Pagination.Ellipsis />\n          </Pagination.Item>\n        {:else}\n          <Pagination.Item>\n            <Pagination.Link {page} isActive={currentPage === page.value}>\n              {page.value}\n            </Pagination.Link>\n          </Pagination.Item>\n        {/if}\n      {/each}\n      <Pagination.Item>\n        <Pagination.Next />\n      </Pagination.Item>\n    </Pagination.Content>\n  {/snippet}\n</Pagination.Root>"} />
+<Source
+  language="html"
+  code={
+    '<script lang="ts">\n  import * as Pagination from "@stevejuma/ui/shadcn/pagination";\n</script>\n\n<Pagination.Root count={100} perPage={10}>\n  {#snippet children({ pages, currentPage })}\n    <Pagination.Content>\n      <Pagination.Item>\n        <Pagination.Previous />\n      </Pagination.Item>\n      {#each pages as page (page.key)}\n        {#if page.type === "ellipsis"}\n          <Pagination.Item>\n            <Pagination.Ellipsis />\n          </Pagination.Item>\n        {:else}\n          <Pagination.Item>\n            <Pagination.Link {page} isActive={currentPage === page.value}>\n              {page.value}\n            </Pagination.Link>\n          </Pagination.Item>\n        {/if}\n      {/each}\n      <Pagination.Item>\n        <Pagination.Next />\n      </Pagination.Item>\n    </Pagination.Content>\n  {/snippet}\n</Pagination.Root>'
+  }
+/>
 
 <Primary />
 
@@ -27,6 +39,4 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 
 ### Preview
 
-
 <Canvas of={PaginationVariations.Preview} meta={PaginationVariations} />
-

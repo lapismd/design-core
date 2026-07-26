@@ -27,7 +27,6 @@
     await userEvent.type(input, "svelte{Enter}");
     await expect(canvas.getByText(/svelte/i)).toBeVisible();
   }}
-
   tags={["visual-failed"]}
 >
   {#snippet template()}

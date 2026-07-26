@@ -28,9 +28,17 @@
     await expect(canvas.getByRole("status")).toHaveTextContent("Archive");
   }}
   tags={["visual-pending"]}
-
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/button-group/grouped-actions-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
+    visualDelta: {
+      images: [
+        "/visual-baselines/shadcn/button-group/grouped-actions-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
   }}
 >
   {#snippet template()}

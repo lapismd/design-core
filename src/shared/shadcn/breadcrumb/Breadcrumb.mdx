@@ -1,4 +1,11 @@
-import { Meta, Canvas, Controls, Primary, Source, Markdown } from "@storybook/addon-docs/blocks";
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+  Markdown,
+} from "@storybook/addon-docs/blocks";
 import * as BreadcrumbStories from "./Breadcrumb.stories.svelte";
 import * as BreadcrumbVariations from "./Breadcrumb.variations.stories.svelte";
 import docsBody from "./breadcrumb.docs-body.md?raw";
@@ -17,7 +24,12 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 
 ## Usage
 
-<Source language="html" code={"<script lang=\"ts\">\n  import * as Breadcrumb from \"@stevejuma/ui/shadcn/breadcrumb\";\n</script>\n\n<Breadcrumb.Root>\n  <Breadcrumb.List>\n    <Breadcrumb.Item>\n      <Breadcrumb.Link href=\"/\">Home</Breadcrumb.Link>\n    </Breadcrumb.Item>\n    <Breadcrumb.Separator />\n    <Breadcrumb.Item>\n      <Breadcrumb.Link href=\"/components\">Components</Breadcrumb.Link>\n    </Breadcrumb.Item>\n    <Breadcrumb.Separator />\n    <Breadcrumb.Item>\n      <Breadcrumb.Page>Breadcrumb</Breadcrumb.Page>\n    </Breadcrumb.Item>\n  </Breadcrumb.List>\n</Breadcrumb.Root>"} />
+<Source
+  language="html"
+  code={
+    '<script lang="ts">\n  import * as Breadcrumb from "@stevejuma/ui/shadcn/breadcrumb";\n</script>\n\n<Breadcrumb.Root>\n  <Breadcrumb.List>\n    <Breadcrumb.Item>\n      <Breadcrumb.Link href="/">Home</Breadcrumb.Link>\n    </Breadcrumb.Item>\n    <Breadcrumb.Separator />\n    <Breadcrumb.Item>\n      <Breadcrumb.Link href="/components">Components</Breadcrumb.Link>\n    </Breadcrumb.Item>\n    <Breadcrumb.Separator />\n    <Breadcrumb.Item>\n      <Breadcrumb.Page>Breadcrumb</Breadcrumb.Page>\n    </Breadcrumb.Item>\n  </Breadcrumb.List>\n</Breadcrumb.Root>'
+  }
+/>
 
 <Primary />
 
@@ -26,7 +38,6 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 ## Examples
 
 ### Preview
-
 
 <Canvas of={BreadcrumbVariations.Preview} meta={BreadcrumbVariations} />
 
@@ -38,7 +49,7 @@ Use a custom component in the `slot` of `` to create a custom separator.
 
 ### Dropdown
 
-You can compose `` with a `` to create a dropdown in the breadcrumb.
+You can compose `with a` to create a dropdown in the breadcrumb.
 
 <Canvas of={BreadcrumbVariations.Dropdown} meta={BreadcrumbVariations} />
 
@@ -53,4 +64,3 @@ We provide a `` component to show a collapsed state when the breadcrumb is too l
 To use a link just add the `href` prop to ``.
 
 <Canvas of={BreadcrumbVariations.LinkComponent} meta={BreadcrumbVariations} />
-

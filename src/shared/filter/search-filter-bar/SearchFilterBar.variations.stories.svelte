@@ -115,15 +115,15 @@
         within(body).getByRole("combobox", { name: "Value" }),
       ).toBeInTheDocument();
     });
-    await userEvent.clear(within(body).getByRole("combobox", { name: "Value" }));
+    await userEvent.clear(
+      within(body).getByRole("combobox", { name: "Value" }),
+    );
     await waitFor(() => {
       expect(
         within(body).getByRole("button", { name: "Apply" }),
       ).toBeDisabled();
     });
-    await userEvent.click(
-      within(body).getByRole("button", { name: "Cancel" }),
-    );
+    await userEvent.click(within(body).getByRole("button", { name: "Cancel" }));
     await waitFor(() => {
       expect(
         body.querySelector('[role="dialog"][aria-label="Edit filter"]'),

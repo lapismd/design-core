@@ -125,13 +125,21 @@ describe("decideStorybookStaticBuild", () => {
       },
     });
     const now = Date.now() / 1000;
-    utimesSync(path.join(root, "storybook-static", "index.json"), now - 100, now - 100);
-    utimesSync(path.join(root, "storybook-static", "iframe.html"), now - 100, now - 100);
+    utimesSync(
+      path.join(root, "storybook-static", "index.json"),
+      now - 100,
+      now - 100,
+    );
+    utimesSync(
+      path.join(root, "storybook-static", "iframe.html"),
+      now - 100,
+      now - 100,
+    );
     utimesSync(storyPath, now, now);
 
-    expect(
-      storySourcesNewerThanIndex(root, "shadcn-button--default"),
-    ).toBe(true);
+    expect(storySourcesNewerThanIndex(root, "shadcn-button--default")).toBe(
+      true,
+    );
     const decision = decideStorybookStaticBuild({
       packageRoot: root,
       skipBuild: true,

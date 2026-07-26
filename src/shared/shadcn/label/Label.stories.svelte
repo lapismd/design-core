@@ -27,11 +27,18 @@
     await userEvent.type(canvas.getByLabelText("Email"), "a@b.co");
     await expect(canvas.getByRole("status")).toHaveTextContent("a@b.co");
   }}
-
   tags={["visual-ready"]}
-
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/label/associates-with-an-input-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
+    visualDelta: {
+      images: [
+        "/visual-baselines/shadcn/label/associates-with-an-input-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
   }}
 >
   {#snippet template()}

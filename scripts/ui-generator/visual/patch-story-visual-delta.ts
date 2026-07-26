@@ -147,7 +147,9 @@ export function patchStorySkipVisual(options: {
   const index = JSON.parse(readFileSync(indexPath, "utf8")) as {
     entries?: Record<string, StoryIndexEntry>;
   };
-  const entry = Object.values(index.entries ?? {}).find((e) => e.id === storyId);
+  const entry = Object.values(index.entries ?? {}).find(
+    (e) => e.id === storyId,
+  );
   if (!entry || entry.type !== "story" || !entry.importPath) {
     return {
       ok: false,
@@ -189,9 +191,7 @@ export function patchStorySkipVisual(options: {
     };
   }
 
-  log.info(
-    `${options.skip ? "Added" : "Removed"} skip-visual on ${storyId}`,
-  );
+  log.info(`${options.skip ? "Added" : "Removed"} skip-visual on ${storyId}`);
   return { ok: true, storyId, skip: options.skip };
 }
 

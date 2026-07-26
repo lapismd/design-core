@@ -36,7 +36,6 @@
   };
 </script>
 
-
 <Story
   name="With selection"
   exportName="WithSelection"

@@ -50,9 +50,8 @@
       data-ui-part="code-highlighter-pre"
       class="ui-code-highlighter"
       role="region"
-      aria-label={ariaLabel}
-    >{#each segments as segment, index (index)}{#if segment.className}<span
-          class={segment.className}>{segment.text}</span
-        >{:else}{segment.text}{/if}{/each}</pre>
+      aria-label={ariaLabel}>{#each segments as segment, index (index)}{#if segment.className}<span
+            class={segment.className}>{segment.text}</span
+          >{:else}{segment.text}{/if}{/each}</pre>
   </ScrollArea.Root>
 </div>

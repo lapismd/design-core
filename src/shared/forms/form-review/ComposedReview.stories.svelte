@@ -40,7 +40,6 @@
     await userEvent.click(canvas.getByRole("button", { name: "Keep" }));
     await expect(canvas.getByRole("status")).toHaveTextContent("kept");
   }}
-
   tags={["visual-failed"]}
 >
   {#snippet template()}

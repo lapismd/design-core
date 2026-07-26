@@ -60,28 +60,28 @@ page lists only the tokens that family reads, with defaults.
 
 Override on `:root` or a form ancestor, e.g. `--ui-form-accent: oklch(...)`.
 
-| Token | Default |
-| --- | --- |
-| `--ui-form-background` | `var(--background)` |
-| `--ui-form-foreground` | `var(--foreground)` |
-| `--ui-form-muted` | `var(--muted-foreground)` |
-| `--ui-form-muted-surface` | `var(--muted)` |
-| `--ui-form-border` | `var(--border)` |
-| `--ui-form-border-muted` | `color-mix(in srgb, var(--border) 70%, transparent)` |
-| `--ui-form-accent` | `var(--primary)` |
-| `--ui-form-primary-foreground` | `var(--primary-foreground)` |
-| `--ui-form-selection` | `color-mix(in srgb, var(--primary) 12%, transparent)` |
-| `--ui-form-selection-strong` | `color-mix(in srgb, var(--primary) 30%, transparent)` |
-| `--ui-form-active-line` | `color-mix(in srgb, var(--primary) 9%, transparent)` |
-| `--ui-form-gutter` | `color-mix(in srgb, var(--muted) 34%, transparent)` |
-| `--ui-form-popover` | `var(--popover, var(--card))` |
-| `--ui-form-panel-background` | `var(--ui-form-background)` |
-| `--ui-form-shadow` | `rgb(15 23 42 / 22%)` |
-| `--ui-form-mono` | `var(--font-mono, ui-monospace, monospace)` |
-| `--ui-form-code-background` | `color-mix(in srgb, var(--muted) 34%, transparent)` |
-| `--ui-form-code-gutter` | `color-mix(in srgb, var(--muted) 52%, transparent)` |
-| `--ui-form-column-gap` | `1rem` |
-| `--ui-form-radius` | `var(--radius, 0.625rem)` |
+| Token                          | Default                                               |
+| ------------------------------ | ----------------------------------------------------- |
+| `--ui-form-background`         | `var(--background)`                                   |
+| `--ui-form-foreground`         | `var(--foreground)`                                   |
+| `--ui-form-muted`              | `var(--muted-foreground)`                             |
+| `--ui-form-muted-surface`      | `var(--muted)`                                        |
+| `--ui-form-border`             | `var(--border)`                                       |
+| `--ui-form-border-muted`       | `color-mix(in srgb, var(--border) 70%, transparent)`  |
+| `--ui-form-accent`             | `var(--primary)`                                      |
+| `--ui-form-primary-foreground` | `var(--primary-foreground)`                           |
+| `--ui-form-selection`          | `color-mix(in srgb, var(--primary) 12%, transparent)` |
+| `--ui-form-selection-strong`   | `color-mix(in srgb, var(--primary) 30%, transparent)` |
+| `--ui-form-active-line`        | `color-mix(in srgb, var(--primary) 9%, transparent)`  |
+| `--ui-form-gutter`             | `color-mix(in srgb, var(--muted) 34%, transparent)`   |
+| `--ui-form-popover`            | `var(--popover, var(--card))`                         |
+| `--ui-form-panel-background`   | `var(--ui-form-background)`                           |
+| `--ui-form-shadow`             | `rgb(15 23 42 / 22%)`                                 |
+| `--ui-form-mono`               | `var(--font-mono, ui-monospace, monospace)`           |
+| `--ui-form-code-background`    | `color-mix(in srgb, var(--muted) 34%, transparent)`   |
+| `--ui-form-code-gutter`        | `color-mix(in srgb, var(--muted) 52%, transparent)`   |
+| `--ui-form-column-gap`         | `1rem`                                                |
+| `--ui-form-radius`             | `var(--radius, 0.625rem)`                             |
 
 ## Canonical primitives
 

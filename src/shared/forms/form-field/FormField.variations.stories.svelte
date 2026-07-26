@@ -15,7 +15,6 @@
   });
 </script>
 
-
 <Story
   name="Default row"
   exportName="DefaultRow"
@@ -41,7 +40,9 @@
   tags={["skip-visual"]}
   parameters={{
     docs: {
-      description: { story: "Use `align=\"center\"` for pill controls and date-like controls." },
+      description: {
+        story: 'Use `align="center"` for pill controls and date-like controls.',
+      },
     },
   }}
 >
@@ -60,7 +61,9 @@
   tags={["skip-visual"]}
   parameters={{
     docs: {
-      description: { story: "Use `as=\"div\"` when the control contains buttons or popovers." },
+      description: {
+        story: 'Use `as="div"` when the control contains buttons or popovers.',
+      },
     },
   }}
 >

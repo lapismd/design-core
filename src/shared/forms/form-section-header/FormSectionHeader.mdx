@@ -1,4 +1,10 @@
-import { Meta, Canvas, Controls, Primary, Source } from "@storybook/addon-docs/blocks";
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+} from "@storybook/addon-docs/blocks";
 import * as FormSectionHeaderStories from "./FormSectionHeader.stories.svelte";
 import * as FormSectionHeaderVariations from "./FormSectionHeader.variations.stories.svelte";
 
@@ -27,7 +33,12 @@ See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and the shared
 
 ## Usage
 
-<Source language="html" code={"<script lang=\"ts\">\n  import { FormSectionHeader } from \"@stevejuma/ui/forms\";\n</script>\n\n<FormSectionHeader\n  title=\"Experience\"\n  index={0}\n  total={1}\n  titleToggleable\n  open={open}\n  onToggle={() => (open = !open)}\n/>"} />
+<Source
+  language="html"
+  code={
+    '<script lang="ts">\n  import { FormSectionHeader } from "@stevejuma/ui/forms";\n</script>\n\n<FormSectionHeader\n  title="Experience"\n  index={0}\n  total={1}\n  titleToggleable\n  open={open}\n  onToggle={() => (open = !open)}\n/>'
+  }
+/>
 
 <Primary />
 
@@ -41,12 +52,12 @@ Colocated CSS: `FormSectionHeader.css`. Paint with package tokens from
 `@stevejuma/ui/forms/tokens` (defaults in `form.tokens.css`). Stories may
 still use host Tailwind for demo layout.
 
-| Token | Default |
-| --- | --- |
-| `--ui-form-border` | `var(--border)` |
+| Token                    | Default                                              |
+| ------------------------ | ---------------------------------------------------- |
+| `--ui-form-border`       | `var(--border)`                                      |
 | `--ui-form-border-muted` | `color-mix(in srgb, var(--border) 70%, transparent)` |
-| `--ui-form-foreground` | `var(--foreground)` |
-| `--ui-form-muted` | `var(--muted-foreground)` |
+| `--ui-form-foreground`   | `var(--foreground)`                                  |
+| `--ui-form-muted`        | `var(--muted-foreground)`                            |
 
 ## Examples
 
@@ -54,17 +65,25 @@ still use host Tailwind for demo layout.
 
 Collapsed disclosure with title-row toggle.
 
-<Canvas of={FormSectionHeaderVariations.Collapsed} meta={FormSectionHeaderVariations} />
+<Canvas
+  of={FormSectionHeaderVariations.Collapsed}
+  meta={FormSectionHeaderVariations}
+/>
 
 ### Expanded with body
 
 Open section with placeholder body for spacing.
 
-<Canvas of={FormSectionHeaderVariations.ExpandedWithBody} meta={FormSectionHeaderVariations} />
+<Canvas
+  of={FormSectionHeaderVariations.ExpandedWithBody}
+  meta={FormSectionHeaderVariations}
+/>
 
 ### Multiple entries
 
 Index/total for reorderable section lists.
 
-<Canvas of={FormSectionHeaderVariations.MultipleEntries} meta={FormSectionHeaderVariations} />
-
+<Canvas
+  of={FormSectionHeaderVariations.MultipleEntries}
+  meta={FormSectionHeaderVariations}
+/>

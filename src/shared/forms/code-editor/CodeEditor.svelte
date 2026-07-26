@@ -301,4 +301,10 @@
   });
 </script>
 
-<div bind:this={host} class="cvstudio-code-editor" data-ui-component="code-editor" data-ui-part="code-editor" aria-label={ariaLabel}></div>
+<div
+  bind:this={host}
+  class="cvstudio-code-editor"
+  data-ui-component="code-editor"
+  data-ui-part="code-editor"
+  aria-label={ariaLabel}
+></div>

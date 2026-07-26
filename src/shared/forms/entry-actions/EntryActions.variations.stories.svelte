@@ -15,7 +15,6 @@
   });
 </script>
 
-
 <Story
   name="Single entry"
   exportName="SingleEntry"

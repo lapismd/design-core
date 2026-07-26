@@ -15,7 +15,6 @@
   });
 </script>
 
-
 <Story
   name="Valid document"
   exportName="ValidDocument"
@@ -27,9 +26,6 @@
   }}
 >
   {#snippet template()}
-    <YamlEditor
-      value={"name: Jane\nrole: Designer\n"}
-      minHeight="10rem"
-    />
+    <YamlEditor value={"name: Jane\nrole: Designer\n"} minHeight="10rem" />
   {/snippet}
 </Story>

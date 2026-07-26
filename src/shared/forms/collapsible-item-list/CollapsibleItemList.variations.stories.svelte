@@ -15,7 +15,6 @@
   });
 </script>
 
-
 <Story
   name="With items"
   exportName="WithItems"
@@ -42,7 +41,9 @@
   tags={["skip-visual"]}
   parameters={{
     docs: {
-      description: { story: "Open empty list — add affordance only, no filler copy." },
+      description: {
+        story: "Open empty list — add affordance only, no filler copy.",
+      },
     },
   }}
 >

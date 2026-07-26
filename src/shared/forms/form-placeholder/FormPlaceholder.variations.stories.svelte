@@ -15,7 +15,6 @@
   });
 </script>
 
-
 <Story
   name="Basic"
   exportName="Basic"

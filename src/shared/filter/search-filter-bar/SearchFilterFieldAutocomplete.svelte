@@ -152,7 +152,7 @@
       style={`--ps-field-name-cols: ${maxNameLen}ch`}
     >
       {#key value}
-        <Command.Root shouldFilter={false} value={value}>
+        <Command.Root shouldFilter={false} {value}>
           <Command.List aria-label="Field options">
             <Command.Empty>No matching fields</Command.Empty>
             <Command.Group>

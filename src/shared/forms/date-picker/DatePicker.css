@@ -11,8 +11,7 @@
   color: var(--ui-form-muted);
 }
 
-.ui-date-picker
-  :global([data-ui-component="button"].ui-date-picker__trigger) {
+.ui-date-picker :global([data-ui-component="button"].ui-date-picker__trigger) {
   justify-content: flex-start;
   font-weight: 400;
 }

@@ -54,7 +54,9 @@
   cursor: grab;
   opacity: 0;
   padding: 0;
-  transition: opacity 0.15s ease, color 0.15s ease;
+  transition:
+    opacity 0.15s ease,
+    color 0.15s ease;
 }
 
 [data-ui-component="sortable-array-item"][data-inset="flush"]
@@ -108,7 +110,9 @@
   border-radius: calc(var(--ui-form-radius) * 0.35);
   color: color-mix(in srgb, var(--ui-form-muted) 70%, transparent);
   opacity: 0;
-  transition: opacity 0.15s ease, color 0.15s ease;
+  transition:
+    opacity 0.15s ease,
+    color 0.15s ease;
 }
 
 [data-ui-component="sortable-array-item"]:hover

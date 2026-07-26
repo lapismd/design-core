@@ -15,14 +15,15 @@
   });
 </script>
 
-
 <Story
   name="With value"
   exportName="WithValue"
   tags={["skip-visual"]}
   parameters={{
     docs: {
-      description: { story: "Focus the field in the canvas to open suggestions." },
+      description: {
+        story: "Focus the field in the canvas to open suggestions.",
+      },
     },
   }}
 >

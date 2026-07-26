@@ -9,13 +9,16 @@ import { patchStoryOpenTagWithInteraction } from "./patch-story-visual-delta.js"
 
 describe("mergeInteractionRows", () => {
   it("always surfaces CSF-wired interactions even with no live steps", () => {
-    const rows = mergeInteractionRows([], [
-      {
-        id: "opens-chooser",
-        label: "Opens chooser",
-        src: "/visual-baselines/x--opens-chooser-chromium-darwin.png",
-      },
-    ]);
+    const rows = mergeInteractionRows(
+      [],
+      [
+        {
+          id: "opens-chooser",
+          label: "Opens chooser",
+          src: "/visual-baselines/x--opens-chooser-chromium-darwin.png",
+        },
+      ],
+    );
     expect(rows).toHaveLength(1);
     expect(rows[0]?.stepId).toBe("opens-chooser");
     expect(rows[0]?.fromCsf).toBe(true);

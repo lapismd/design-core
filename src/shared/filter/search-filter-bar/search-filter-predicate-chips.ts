@@ -1,9 +1,5 @@
 import { syntaxTree } from "@codemirror/language";
-import {
-  Facet,
-  RangeSetBuilder,
-  type Extension,
-} from "@codemirror/state";
+import { Facet, RangeSetBuilder, type Extension } from "@codemirror/state";
 import {
   Decoration,
   EditorView,

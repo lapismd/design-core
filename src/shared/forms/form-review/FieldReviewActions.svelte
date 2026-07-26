@@ -14,7 +14,11 @@
   } = $props();
 </script>
 
-<div class="field-review-actions" data-ui-component="field-review-actions" data-ui-part="field-review-actions">
+<div
+  class="field-review-actions"
+  data-ui-component="field-review-actions"
+  data-ui-part="field-review-actions"
+>
   <Button
     type="button"
     variant="outline"

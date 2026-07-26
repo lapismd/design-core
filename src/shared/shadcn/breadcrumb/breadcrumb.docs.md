@@ -134,16 +134,16 @@ To use a link just add the `href` prop to `<Breadcrumb.Link />`.
 
 ```html
 <script lang="ts">
- import * as Breadcrumb from "@stevejuma/ui/shadcn/breadcrumb";
+  import * as Breadcrumb from "@stevejuma/ui/shadcn/breadcrumb";
 </script>
 
 <Breadcrumb.Root>
- <Breadcrumb.List>
-  <Breadcrumb.Item>
-   <Breadcrumb.Link href="/">Home</Breadcrumb.Link>
-  </Breadcrumb.Item>
+  <Breadcrumb.List>
+    <Breadcrumb.Item>
+      <Breadcrumb.Link href="/">Home</Breadcrumb.Link>
+    </Breadcrumb.Item>
     {/* ... */}
- </Breadcrumb.List>
+  </Breadcrumb.List>
 </Breadcrumb.Root>
 ```
 

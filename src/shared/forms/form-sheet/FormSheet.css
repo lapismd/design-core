@@ -68,7 +68,9 @@
   justify-content: center;
   border-radius: calc(var(--ui-form-radius) * 0.55);
   color: var(--ui-form-muted);
-  transition: color 0.15s ease, background-color 0.15s ease;
+  transition:
+    color 0.15s ease,
+    background-color 0.15s ease;
 }
 
 [data-ui-component="form-sheet"] :global(.ui-form-sheet__close:hover),

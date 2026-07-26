@@ -5,7 +5,9 @@
  *
  * Why not rely on Vite HMR alone: Storybook's manager builder is a one-shot
  * esbuild bundle with no watch. Preview overlay edits still HMR via Vite
- * (see watchVisualDeltaSourcePlugin in .storybook/main.ts).
+ * (see watchVisualDeltaSourcePlugin in .storybook/main.ts). Visual Delta's
+ * development runtime watcher reloads the open manager after this wrapper
+ * finishes restarting the server.
  *
  * The catalog loads the addon from package `src/` via
  * `.storybook/visual-delta-preset.ts` (not the node_modules package name).

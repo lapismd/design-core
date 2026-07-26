@@ -23,7 +23,11 @@
   } = $props();
 </script>
 
-<section class="cv-form-item-list" data-ui-component="collapsible-item-list" data-ui-part="collapsible-item-list">
+<section
+  class="cv-form-item-list"
+  data-ui-component="collapsible-item-list"
+  data-ui-part="collapsible-item-list"
+>
   <header>
     <button
       type="button"

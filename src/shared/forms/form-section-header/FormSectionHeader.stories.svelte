@@ -30,7 +30,6 @@
     );
     await expect(canvas.getByRole("status")).toHaveTextContent("collapsed");
   }}
-
   tags={["visual-ready"]}
 >
   {#snippet template()}

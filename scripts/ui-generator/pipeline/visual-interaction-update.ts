@@ -95,7 +95,9 @@ export async function runVisualInteractionUpdate(options: {
       EXIT.invalidRequest,
     );
   } else if (!options.skipBuild) {
-    log.info("Using existing storybook-static (pass without --skip-build only rebuilds when missing)");
+    log.info(
+      "Using existing storybook-static (pass without --skip-build only rebuilds when missing)",
+    );
   }
 
   const entry = loadStoryEntry(config.packageRoot, storyId);

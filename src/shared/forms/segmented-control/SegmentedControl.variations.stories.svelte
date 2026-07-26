@@ -15,7 +15,6 @@
   });
 </script>
 
-
 <Story
   name="Two options"
   exportName="TwoOptions"

@@ -1,4 +1,10 @@
-import { Meta, Canvas, Controls, Primary, Source } from "@storybook/addon-docs/blocks";
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+} from "@storybook/addon-docs/blocks";
 import * as ChipAutocompleteStories from "./ChipAutocomplete.stories.svelte";
 import * as ChipAutocompleteVariations from "./ChipAutocomplete.variations.stories.svelte";
 
@@ -25,7 +31,12 @@ See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and the shared
 
 ## Usage
 
-<Source language="html" code={"<ChipAutocomplete\n  value={roles}\n  suggestions={[\"Frontend\", \"Design\"]}\n  label=\"Target Roles\"\n  showLabel={false}\n  embedded\n  uppercase={false}\n  onChange={...}\n/>"} />
+<Source
+  language="html"
+  code={
+    '<ChipAutocomplete\n  value={roles}\n  suggestions={["Frontend", "Design"]}\n  label="Target Roles"\n  showLabel={false}\n  embedded\n  uppercase={false}\n  onChange={...}\n/>'
+  }
+/>
 
 <Primary />
 
@@ -39,11 +50,11 @@ Colocated CSS: `ChipAutocomplete.css`. Paint with package tokens from
 `@stevejuma/ui/forms/tokens` (defaults in `form.tokens.css`). Stories may
 still use host Tailwind for demo layout.
 
-| Token | Default |
-| --- | --- |
-| `--ui-form-accent` | `var(--primary)` |
+| Token                  | Default             |
+| ---------------------- | ------------------- |
+| `--ui-form-accent`     | `var(--primary)`    |
 | `--ui-form-background` | `var(--background)` |
-| `--ui-form-border` | `var(--border)` |
+| `--ui-form-border`     | `var(--border)`     |
 | `--ui-form-foreground` | `var(--foreground)` |
 
 ## Examples
@@ -52,17 +63,25 @@ still use host Tailwind for demo layout.
 
 Populated chip list.
 
-<Canvas of={ChipAutocompleteVariations.WithChips} meta={ChipAutocompleteVariations} />
+<Canvas
+  of={ChipAutocompleteVariations.WithChips}
+  meta={ChipAutocompleteVariations}
+/>
 
 ### Embedded in row
 
 Row-embedded chrome for StructuredForm / FormField.
 
-<Canvas of={ChipAutocompleteVariations.EmbeddedInRow} meta={ChipAutocompleteVariations} />
+<Canvas
+  of={ChipAutocompleteVariations.EmbeddedInRow}
+  meta={ChipAutocompleteVariations}
+/>
 
 ### Empty
 
 Placeholder-only state.
 
-<Canvas of={ChipAutocompleteVariations.Empty} meta={ChipAutocompleteVariations} />
-
+<Canvas
+  of={ChipAutocompleteVariations.Empty}
+  meta={ChipAutocompleteVariations}
+/>

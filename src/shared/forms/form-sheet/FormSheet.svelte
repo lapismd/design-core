@@ -88,10 +88,7 @@
           {/if}
         </div>
         <Sheet.Description class="sr-only">{description}</Sheet.Description>
-        <div
-          data-ui-component="form-sheet"
-          data-ui-part="form-sheet-actions"
-        >
+        <div data-ui-component="form-sheet" data-ui-part="form-sheet-actions">
           {#if actions}
             {@render actions()}
           {/if}

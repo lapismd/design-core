@@ -25,12 +25,12 @@ and the Storybook Guidance pages.
 
 ## Token layers
 
-| Layer | Prefix | Defaults |
-| ----- | ------ | -------- |
-| Theme | `--background`, `--primary`, … | [`src/theme.css`](./src/theme.css) |
-| Shadcn family | `--ui-<family>-*` | `<family>.tokens.css` |
-| Forms | `--ui-form-*` | [`form.tokens.css`](./src/shared/forms/form.tokens.css) |
-| Filter and AI | `--ui-*` / `--ui-ai-*` | colocated CSS and token maps |
+| Layer         | Prefix                         | Defaults                                                |
+| ------------- | ------------------------------ | ------------------------------------------------------- |
+| Theme         | `--background`, `--primary`, … | [`src/theme.css`](./src/theme.css)                      |
+| Shadcn family | `--ui-<family>-*`              | `<family>.tokens.css`                                   |
+| Forms         | `--ui-form-*`                  | [`form.tokens.css`](./src/shared/forms/form.tokens.css) |
+| Filter and AI | `--ui-*` / `--ui-ai-*`         | colocated CSS and token maps                            |
 
 Set public tokens on `:root` or an appropriate shared ancestor such as
 `.ui-structured-form`. Do not rebind a token on the same component host that

@@ -15,7 +15,6 @@
   });
 </script>
 
-
 <Story
   name="Closed"
   exportName="Closed"

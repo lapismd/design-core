@@ -37,7 +37,6 @@
   let yamlText = $state("name: Jane Doe\n");
 </script>
 
-
 <Story
   name="Structured mode"
   exportName="StructuredMode"

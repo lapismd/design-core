@@ -39,14 +39,14 @@ scripts/
 
 ## Imports and layer boundaries
 
-| Path                            | Purpose                          |
-| ------------------------------- | -------------------------------- |
-| `@stevejuma/ui/shadcn/<family>` | shadcn family barrel             |
-| `@stevejuma/ui/forms`           | structured forms barrel          |
-| `@stevejuma/ui/forms/core`      | form builders, types, registry   |
-| `@stevejuma/ui/filter`          | search and filter-query barrel   |
-| `@stevejuma/ui/ai`              | reusable AI presentation barrel  |
-| `@stevejuma/ui/styles.css`      | package styles entry             |
+| Path                            | Purpose                         |
+| ------------------------------- | ------------------------------- |
+| `@stevejuma/ui/shadcn/<family>` | shadcn family barrel            |
+| `@stevejuma/ui/forms`           | structured forms barrel         |
+| `@stevejuma/ui/forms/core`      | form builders, types, registry  |
+| `@stevejuma/ui/filter`          | search and filter-query barrel  |
+| `@stevejuma/ui/ai`              | reusable AI presentation barrel |
+| `@stevejuma/ui/styles.css`      | package styles entry            |
 
 - `shared/shadcn` contains generated controls and must not depend on higher
   layers.
@@ -67,14 +67,14 @@ and restart the manager when Visual Delta source changes.
 
 ### Host file map
 
-| File | Role |
-| ---- | ---- |
-| [`.storybook/main.ts`](./.storybook/main.ts) | Story globs, addons, static baseline mount, aliases, Docs MCP |
-| [`.storybook/preview.ts`](./.storybook/preview.ts) | Global tags, theme, light/dark, a11y, docs, layout |
-| [`.storybook/manager.ts`](./.storybook/manager.ts) | Tag badges and catalog toolbar |
-| [`.storybook/visual-delta-preset.ts`](./.storybook/visual-delta-preset.ts) | Local addon manager, preview, middleware, and Vite wiring |
-| [`.storybook/ui-docs-middleware.ts`](./.storybook/ui-docs-middleware.ts) | Docs MCP and `llms.txt` routes |
-| [`.storybook/vitest.setup.ts`](./.storybook/vitest.setup.ts) | Storybook Vitest annotations |
+| File                                                                       | Role                                                          |
+| -------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| [`.storybook/main.ts`](./.storybook/main.ts)                               | Story globs, addons, static baseline mount, aliases, Docs MCP |
+| [`.storybook/preview.ts`](./.storybook/preview.ts)                         | Global tags, theme, light/dark, a11y, docs, layout            |
+| [`.storybook/manager.ts`](./.storybook/manager.ts)                         | Tag badges and catalog toolbar                                |
+| [`.storybook/visual-delta-preset.ts`](./.storybook/visual-delta-preset.ts) | Local addon manager, preview, middleware, and Vite wiring     |
+| [`.storybook/ui-docs-middleware.ts`](./.storybook/ui-docs-middleware.ts)   | Docs MCP and `llms.txt` routes                                |
+| [`.storybook/vitest.setup.ts`](./.storybook/vitest.setup.ts)               | Storybook Vitest annotations                                  |
 
 Registered addons:
 
@@ -96,11 +96,11 @@ own surfaces.
 
 [`vitest.config.ts`](./vitest.config.ts) defines:
 
-| Project | Coverage |
-| ------- | -------- |
-| `unit` | Node unit specs in `src/` and `scripts/ui-generator/` |
-| `visual-delta` | jsdom and React Testing Library specs for the addon |
-| `storybook` | browser story tests through `@storybook/addon-vitest` |
+| Project        | Coverage                                              |
+| -------------- | ----------------------------------------------------- |
+| `unit`         | Node unit specs in `src/` and `scripts/ui-generator/` |
+| `visual-delta` | jsdom and React Testing Library specs for the addon   |
+| `storybook`    | browser story tests through `@storybook/addon-vitest` |
 
 ## Visual Delta setup
 
@@ -111,20 +111,20 @@ host-integration details live in
 
 The boundary is:
 
-| Addon owns | This host owns |
-| ---------- | -------------- |
-| Panel, overlay, testing UI, run events | Playwright suite and committed PNGs |
-| Dev middleware and baseline CSF injection | Baseline-write and tag CLIs |
-| Generic shared and workspace snapshot mapping | Host story selection and sidecars |
-| Portable Playwright helpers | Approval gates and compare-only defaults |
+| Addon owns                                    | This host owns                           |
+| --------------------------------------------- | ---------------------------------------- |
+| Panel, overlay, testing UI, run events        | Playwright suite and committed PNGs      |
+| Dev middleware and baseline CSF injection     | Baseline-write and tag CLIs              |
+| Generic shared and workspace snapshot mapping | Host story selection and sidecars        |
+| Portable Playwright helpers                   | Approval gates and compare-only defaults |
 
 Committed baselines are mounted at `/visual-baselines` from
 `tests/visual/storybook.spec.ts-snapshots`. Current host mappings are:
 
-| Catalog title | Source heuristic | Snapshot directory |
-| ------------- | ---------------- | ------------------ |
-| `Shadcn/...` | `src/shared/shadcn/` | `shadcn/<family>` |
-| `UI Forms/...` | `src/shared/forms/<family>/` | `forms/<family>` |
+| Catalog title  | Source heuristic             | Snapshot directory |
+| -------------- | ---------------------------- | ------------------ |
+| `Shadcn/...`   | `src/shared/shadcn/`         | `shadcn/<family>`  |
+| `UI Forms/...` | `src/shared/forms/<family>/` | `forms/<family>`   |
 
 The reusable addon also supports `packages/workspace/src/lib/` mapped to
 `workspace/` for consumer catalogs.
@@ -140,31 +140,31 @@ Never update baselines unless a human explicitly requests it. Ordinary
 
 ### Review tags
 
-| Tag | Meaning |
-| --- | ------- |
-| `skip-test` | Excluded from Storybook Vitest with a documented reason |
-| `skip-visual` | Excluded from the Playwright visual suite |
-| `upstream-example` | Generated from upstream documentation |
-| `visual-state` | Explicit visual-state story |
-| `visual-pending` | Baseline awaits review |
-| `visual-approved` | Baseline accepted |
-| `visual-ready` | Baseline ready for human review |
-| `visual-failed` | Review rejected or comparison failed |
+| Tag                | Meaning                                                 |
+| ------------------ | ------------------------------------------------------- |
+| `skip-test`        | Excluded from Storybook Vitest with a documented reason |
+| `skip-visual`      | Excluded from the Playwright visual suite               |
+| `upstream-example` | Generated from upstream documentation                   |
+| `visual-state`     | Explicit visual-state story                             |
+| `visual-pending`   | Baseline awaits review                                  |
+| `visual-approved`  | Baseline accepted                                       |
+| `visual-ready`     | Baseline ready for human review                         |
+| `visual-failed`    | Review rejected or comparison failed                    |
 
 Review tags are mutually exclusive. Adding `skip-visual` clears review state.
 The Visual Delta panel and `pnpm ui visual:tag` both patch colocated CSF.
 
 ### Baseline write gates
 
-| Gate | Effect |
-| ---- | ------ |
-| `VISUAL_UPDATE_APPROVED=1` or `--approved` | Required to write baselines |
-| `--create-only` | Creates missing PNGs without replacing existing files |
-| `--allow-dirty` | Skips the writer's clean-tree check |
-| `--skip-build` | Reuses a complete, fresh static Storybook when possible |
-| `--rebuild` | Forces a static Storybook rebuild |
-| `PLAYWRIGHT_UPDATE_SNAPSHOTS=0` | Compare-only |
-| `PLAYWRIGHT_UPDATE_SNAPSHOTS=1` | Enables writes inside gated commands |
+| Gate                                       | Effect                                                  |
+| ------------------------------------------ | ------------------------------------------------------- |
+| `VISUAL_UPDATE_APPROVED=1` or `--approved` | Required to write baselines                             |
+| `--create-only`                            | Creates missing PNGs without replacing existing files   |
+| `--allow-dirty`                            | Skips the writer's clean-tree check                     |
+| `--skip-build`                             | Reuses a complete, fresh static Storybook when possible |
+| `--rebuild`                                | Forces a static Storybook rebuild                       |
+| `PLAYWRIGHT_UPDATE_SNAPSHOTS=0`            | Compare-only                                            |
+| `PLAYWRIGHT_UPDATE_SNAPSHOTS=1`            | Enables writes inside gated commands                    |
 
 The CLI rejects broad `--component *` and `--component all` updates.
 
@@ -215,12 +215,12 @@ machine-readable output. Install Chromium once with
 
 With Storybook running on port 9009:
 
-| Surface | URL | Purpose |
-| ------- | --- | ------- |
-| Storybook MCP | `http://localhost:9009/mcp` | Story instructions, previews, story tests |
-| Docs MCP | `http://localhost:9009/docs-mcp` | Component and story documentation |
-| LLM index | `http://localhost:9009/llms.txt` | Markdown catalog index |
-| HTML index | `http://localhost:9009/llms.md` | Browser-readable catalog index |
+| Surface       | URL                              | Purpose                                   |
+| ------------- | -------------------------------- | ----------------------------------------- |
+| Storybook MCP | `http://localhost:9009/mcp`      | Story instructions, previews, story tests |
+| Docs MCP      | `http://localhost:9009/docs-mcp` | Component and story documentation         |
+| LLM index     | `http://localhost:9009/llms.txt` | Markdown catalog index                    |
+| HTML index    | `http://localhost:9009/llms.md`  | Browser-readable catalog index            |
 
 Component pages use `/llms/<layer>/<id>.txt`; guide pages use
 `/llms/guide/<topic>.txt`. When Storybook is down, `pnpm ui mcp` serves the
@@ -238,11 +238,11 @@ native selectors, and no Tailwind utility classes in component sources.
 
 ## Further reading
 
-| Resource | Use |
-| -------- | --- |
-| [`AGENTS.md`](./AGENTS.md) | Primary agent workflow |
-| `pnpm ui guide layers` | Layer selection and dependency boundaries |
-| `pnpm ui guide testing` | Verification sequence |
-| [`COMPONENT_AUDIT.md`](./COMPONENT_AUDIT.md) | Retained component inventory |
-| [`packages/storybook-addon-visual-delta/README.md`](./packages/storybook-addon-visual-delta/README.md) | Addon API and integration |
-| [`packages/storybook-addon-visual-delta/VENDOR.md`](./packages/storybook-addon-visual-delta/VENDOR.md) | Addon provenance and boundary |
+| Resource                                                                                               | Use                                       |
+| ------------------------------------------------------------------------------------------------------ | ----------------------------------------- |
+| [`AGENTS.md`](./AGENTS.md)                                                                             | Primary agent workflow                    |
+| `pnpm ui guide layers`                                                                                 | Layer selection and dependency boundaries |
+| `pnpm ui guide testing`                                                                                | Verification sequence                     |
+| [`COMPONENT_AUDIT.md`](./COMPONENT_AUDIT.md)                                                           | Retained component inventory              |
+| [`packages/storybook-addon-visual-delta/README.md`](./packages/storybook-addon-visual-delta/README.md) | Addon API and integration                 |
+| [`packages/storybook-addon-visual-delta/VENDOR.md`](./packages/storybook-addon-visual-delta/VENDOR.md) | Addon provenance and boundary             |

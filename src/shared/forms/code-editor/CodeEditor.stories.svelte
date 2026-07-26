@@ -28,7 +28,6 @@
       canvas.getByRole("textbox", { name: "Source editor" }),
     ).toBeVisible();
   }}
-
   tags={["visual-ready"]}
 >
   {#snippet template()}

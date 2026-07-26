@@ -53,7 +53,6 @@
       canvas.getByRole("textbox", { name: "YAML editor" }),
     ).toBeVisible();
   }}
-
   tags={["visual-ready"]}
 >
   {#snippet template()}

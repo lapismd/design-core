@@ -1,4 +1,10 @@
-import { Meta, Canvas, Controls, Primary, Source } from "@storybook/addon-docs/blocks";
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+} from "@storybook/addon-docs/blocks";
 import * as AddSectionChooserStories from "./AddSectionChooser.stories.svelte";
 import * as AddSectionChooserVariations from "./AddSectionChooser.variations.stories.svelte";
 
@@ -25,7 +31,12 @@ See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and the shared
 
 ## Usage
 
-<Source language="html" code={"<AddSectionChooser\n  open={open}\n  title={title}\n  options={[{ value: \"experience\", label: \"Experience\" }]}\n  onOpen={...}\n  onCancel={...}\n  onTitleChange={...}\n  onChoose={...}\n/>"} />
+<Source
+  language="html"
+  code={
+    '<AddSectionChooser\n  open={open}\n  title={title}\n  options={[{ value: "experience", label: "Experience" }]}\n  onOpen={...}\n  onCancel={...}\n  onTitleChange={...}\n  onChoose={...}\n/>'
+  }
+/>
 
 <Primary />
 
@@ -39,14 +50,14 @@ Colocated CSS: `AddSectionChooser.css`. Paint with package tokens from
 `@stevejuma/ui/forms/tokens` (defaults in `form.tokens.css`). Stories may
 still use host Tailwind for demo layout.
 
-| Token | Default |
-| --- | --- |
-| `--ui-form-accent` | `var(--primary)` |
-| `--ui-form-border` | `var(--border)` |
-| `--ui-form-foreground` | `var(--foreground)` |
-| `--ui-form-muted` | `var(--muted-foreground)` |
-| `--ui-form-muted-surface` | `var(--muted)` |
-| `--ui-form-radius` | `var(--radius, 0.625rem)` |
+| Token                     | Default                   |
+| ------------------------- | ------------------------- |
+| `--ui-form-accent`        | `var(--primary)`          |
+| `--ui-form-border`        | `var(--border)`           |
+| `--ui-form-foreground`    | `var(--foreground)`       |
+| `--ui-form-muted`         | `var(--muted-foreground)` |
+| `--ui-form-muted-surface` | `var(--muted)`            |
+| `--ui-form-radius`        | `var(--radius, 0.625rem)` |
 
 ## Examples
 
@@ -54,11 +65,16 @@ still use host Tailwind for demo layout.
 
 Dashed add button idle state.
 
-<Canvas of={AddSectionChooserVariations.Closed} meta={AddSectionChooserVariations} />
+<Canvas
+  of={AddSectionChooserVariations.Closed}
+  meta={AddSectionChooserVariations}
+/>
 
 ### Open chooser
 
 Title field + type chips after opening add.
 
-<Canvas of={AddSectionChooserVariations.OpenChooser} meta={AddSectionChooserVariations} />
-
+<Canvas
+  of={AddSectionChooserVariations.OpenChooser}
+  meta={AddSectionChooserVariations}
+/>

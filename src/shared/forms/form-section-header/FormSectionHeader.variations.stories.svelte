@@ -16,7 +16,6 @@
   });
 </script>
 
-
 <Story
   name="Collapsed"
   exportName="Collapsed"
@@ -76,8 +75,22 @@
 >
   {#snippet template()}
     <div class="flex max-w-xl flex-col gap-3">
-      <FormSectionHeader title="Experience" index={0} total={2} editable={false} titleToggleable open={true} />
-      <FormSectionHeader title="Education" index={1} total={2} editable={false} titleToggleable open={false} />
+      <FormSectionHeader
+        title="Experience"
+        index={0}
+        total={2}
+        editable={false}
+        titleToggleable
+        open={true}
+      />
+      <FormSectionHeader
+        title="Education"
+        index={1}
+        total={2}
+        editable={false}
+        titleToggleable
+        open={false}
+      />
     </div>
   {/snippet}
 </Story>

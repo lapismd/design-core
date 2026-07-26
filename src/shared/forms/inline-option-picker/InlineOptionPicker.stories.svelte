@@ -27,7 +27,6 @@
     await userEvent.click(canvas.getByRole("option", { name: "Published" }));
     await expect(canvas.getByRole("status")).toHaveTextContent("published");
   }}
-
   tags={["visual-ready"]}
 >
   {#snippet template()}

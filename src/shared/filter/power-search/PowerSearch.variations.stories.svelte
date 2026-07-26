@@ -33,9 +33,7 @@
   let contentTokens = $state<PowerSearchToken[]>([]);
 </script>
 
-<Story name="With seeded tokens"
-  tags={["visual-failed"]}
->
+<Story name="With seeded tokens" tags={["visual-failed"]}>
   {#snippet template()}
     <div class="max-w-2xl">
       <PowerSearch
@@ -65,7 +63,6 @@
     });
     expect(canvas.getByText("groceries")).toBeInTheDocument();
   }}
-
   tags={["visual-failed"]}
 >
   {#snippet template()}
@@ -83,9 +80,7 @@
   {/snippet}
 </Story>
 
-<Story name="Disabled"
-  tags={["visual-failed"]}
->
+<Story name="Disabled" tags={["visual-failed"]}>
   {#snippet template()}
     <div class="max-w-2xl">
       <PowerSearch

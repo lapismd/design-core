@@ -15,7 +15,6 @@
   });
 </script>
 
-
 <Story
   name="TypeScript"
   exportName="TypeScript"
@@ -27,10 +26,6 @@
   }}
 >
   {#snippet template()}
-    <CodeEditor
-      value={"const answer = 42;\n"}
-      language="ts"
-      minHeight="8rem"
-    />
+    <CodeEditor value={"const answer = 42;\n"} language="ts" minHeight="8rem" />
   {/snippet}
 </Story>

@@ -29,7 +29,6 @@
     await userEvent.type(input, "250");
     await expect(canvas.getByRole("status")).toHaveTextContent("250");
   }}
-
   tags={["visual-ready"]}
 >
   {#snippet template()}

@@ -26,7 +26,16 @@
   exportName="Preview"
   tags={["upstream-example", "visual-pending"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/button-group/preview-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
+    visualDelta: {
+      images: [
+        "/visual-baselines/shadcn/button-group/preview-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
     a11y: { test: "todo" },
     docs: {
       source: {
@@ -49,7 +58,16 @@
   exportName="Orientation"
   tags={["upstream-example", "visual-pending"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/button-group/orientation-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
+    visualDelta: {
+      images: [
+        "/visual-baselines/shadcn/button-group/orientation-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
     a11y: { test: "todo" },
     docs: {
       description: {
@@ -75,7 +93,16 @@
   exportName="Size"
   tags={["upstream-example", "visual-pending"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/button-group/size-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
+    visualDelta: {
+      images: [
+        "/visual-baselines/shadcn/button-group/size-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
     a11y: { test: "todo" },
     docs: {
       description: {
@@ -102,7 +129,16 @@
   exportName="Nested"
   tags={["upstream-example", "visual-pending"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/button-group/nested-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
+    visualDelta: {
+      images: [
+        "/visual-baselines/shadcn/button-group/nested-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
     a11y: { test: "todo" },
     docs: {
       description: {
@@ -129,7 +165,16 @@
   exportName="Separator"
   tags={["upstream-example", "visual-pending"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/button-group/separator-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
+    visualDelta: {
+      images: [
+        "/visual-baselines/shadcn/button-group/separator-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
     a11y: { test: "todo" },
     docs: {
       description: {
@@ -156,7 +201,16 @@
   exportName="Split"
   tags={["upstream-example", "visual-pending"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/button-group/split-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
+    visualDelta: {
+      images: [
+        "/visual-baselines/shadcn/button-group/split-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
     a11y: { test: "todo" },
     docs: {
       description: {
@@ -183,7 +237,16 @@
   exportName="Input"
   tags={["upstream-example", "visual-pending"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/button-group/input-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
+    visualDelta: {
+      images: [
+        "/visual-baselines/shadcn/button-group/input-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
     a11y: { test: "todo" },
     docs: {
       description: {
@@ -209,7 +272,16 @@
   exportName="InputGroup"
   tags={["upstream-example", "visual-pending"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/button-group/input-group-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
+    visualDelta: {
+      images: [
+        "/visual-baselines/shadcn/button-group/input-group-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
     a11y: { test: "todo" },
     docs: {
       description: {
@@ -236,7 +308,16 @@
   exportName="DropdownMenu"
   tags={["upstream-example", "visual-pending"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/button-group/dropdown-menu-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
+    visualDelta: {
+      images: [
+        "/visual-baselines/shadcn/button-group/dropdown-menu-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
     a11y: { test: "todo" },
     docs: {
       description: {
@@ -262,7 +343,16 @@
   exportName="Select"
   tags={["upstream-example", "visual-pending"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/button-group/select-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
+    visualDelta: {
+      images: [
+        "/visual-baselines/shadcn/button-group/select-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
     a11y: { test: "todo" },
     docs: {
       description: {
@@ -288,7 +378,16 @@
   exportName="Popover"
   tags={["upstream-example", "visual-pending"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/button-group/popover-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
+    visualDelta: {
+      images: [
+        "/visual-baselines/shadcn/button-group/popover-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
     a11y: { test: "todo" },
     docs: {
       description: {

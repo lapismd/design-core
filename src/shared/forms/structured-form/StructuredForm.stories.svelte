@@ -77,7 +77,6 @@
       "Studio uses manual",
     );
   }}
-
   tags={["visual-failed"]}
 >
   {#snippet template()}

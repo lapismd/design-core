@@ -147,8 +147,7 @@ export function decideStorybookStaticBuild(options: {
     return {
       shouldBuild: true,
       reason: "stale-source",
-      message:
-        "Rebuilding storybook-static — story source newer than index",
+      message: "Rebuilding storybook-static — story source newer than index",
     };
   }
 

@@ -1,4 +1,10 @@
-import { Meta, Canvas, Controls, Primary, Source } from "@storybook/addon-docs/blocks";
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+} from "@storybook/addon-docs/blocks";
 import * as YamlEditorStories from "./YamlEditor.stories.svelte";
 import * as YamlEditorVariations from "./YamlEditor.variations.stories.svelte";
 
@@ -40,8 +46,8 @@ Colocated CSS: `YamlEditor.css`. Paint with package tokens from
 `@stevejuma/ui/forms/tokens` (defaults in `form.tokens.css`). Stories may
 still use host Tailwind for demo layout.
 
-| Token | Default |
-| --- | --- |
+| Token              | Default         |
+| ------------------ | --------------- |
 | `--ui-form-border` | `var(--border)` |
 
 ## Examples
@@ -51,4 +57,3 @@ still use host Tailwind for demo layout.
 Simple YAML document.
 
 <Canvas of={YamlEditorVariations.ValidDocument} meta={YamlEditorVariations} />
-

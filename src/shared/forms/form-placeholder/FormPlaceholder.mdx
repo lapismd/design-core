@@ -1,4 +1,10 @@
-import { Meta, Canvas, Controls, Primary, Source } from "@storybook/addon-docs/blocks";
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+} from "@storybook/addon-docs/blocks";
 import * as FormPlaceholderStories from "./FormPlaceholder.stories.svelte";
 import * as FormPlaceholderVariations from "./FormPlaceholder.variations.stories.svelte";
 
@@ -25,7 +31,10 @@ See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and the shared
 
 ## Usage
 
-<Source language="html" code={"<FormPlaceholder>Section body</FormPlaceholder>"} />
+<Source
+  language="html"
+  code={"<FormPlaceholder>Section body</FormPlaceholder>"}
+/>
 
 <Primary />
 
@@ -39,10 +48,10 @@ Colocated CSS: `FormPlaceholder.css`. Paint with package tokens from
 `@stevejuma/ui/forms/tokens` (defaults in `form.tokens.css`). Stories may
 still use host Tailwind for demo layout.
 
-| Token | Default |
-| --- | --- |
-| `--ui-form-border` | `var(--border)` |
-| `--ui-form-muted` | `var(--muted-foreground)` |
+| Token              | Default                   |
+| ------------------ | ------------------------- |
+| `--ui-form-border` | `var(--border)`           |
+| `--ui-form-muted`  | `var(--muted-foreground)` |
 
 ## Examples
 
@@ -56,5 +65,7 @@ Basic placeholder copy.
 
 Taller stub to judge vertical rhythm.
 
-<Canvas of={FormPlaceholderVariations.TallBody} meta={FormPlaceholderVariations} />
-
+<Canvas
+  of={FormPlaceholderVariations.TallBody}
+  meta={FormPlaceholderVariations}
+/>

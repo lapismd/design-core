@@ -26,7 +26,6 @@
     await userEvent.click(canvas.getByRole("button", { name: "Preview" }));
     await expect(canvas.getByRole("status")).toHaveTextContent("preview");
   }}
-
   tags={["visual-ready"]}
 >
   {#snippet template()}

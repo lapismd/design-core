@@ -16,7 +16,6 @@
   });
 </script>
 
-
 <Story
   name="With chips"
   exportName="WithChips"
@@ -43,7 +42,9 @@
   tags={["skip-visual"]}
   parameters={{
     docs: {
-      description: { story: "Row-embedded chrome for StructuredForm / FormField." },
+      description: {
+        story: "Row-embedded chrome for StructuredForm / FormField.",
+      },
     },
   }}
 >
