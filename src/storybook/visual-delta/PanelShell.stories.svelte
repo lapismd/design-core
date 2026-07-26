@@ -261,8 +261,10 @@
     await expect(
       canvas.getByRole("tab", { name: "Defaults", selected: true }),
     ).toBeInTheDocument();
+    await expect(canvas.getAllByRole("slider")).toHaveLength(6);
     await userEvent.clear(threshold);
     await userEvent.type(threshold, "1.5");
+    await userEvent.tab();
     await userEvent.click(canvas.getByRole("button", { name: "Save" }));
     await expect(
       await canvas.findByText(/Project defaults saved/),
@@ -286,6 +288,7 @@
     const opacity = await canvas.findByLabelText("Overlay opacity");
     await userEvent.clear(opacity);
     await userEvent.type(opacity, "0.7");
+    await userEvent.tab();
     await userEvent.click(canvas.getByRole("button", { name: "Save" }));
     await expect(await canvas.findByRole("alert")).toHaveTextContent(
       "Configuration file is read-only.",

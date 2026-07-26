@@ -55,6 +55,32 @@
         }),
       );
       await expect(compare).toHaveAttribute("data-zoom-mode", "fit");
+
+      await userEvent.click(canvas.getByRole("tab", { name: "Blink" }));
+      const blinkLabel = canvas.getByTestId("blink-label-row");
+      await expect(blinkLabel.nextElementSibling).toHaveAttribute(
+        "aria-label",
+        expect.stringMatching(/blink image full size/),
+      );
+
+      await userEvent.click(canvas.getByRole("tab", { name: "Diff" }));
+      await userEvent.click(
+        canvas.getByRole("button", { name: "Open Diff full image" }),
+      );
+      const documentScope = within(canvasElement.ownerDocument.body);
+      await expect(
+        await documentScope.findByRole("dialog", { name: "Diff full image" }),
+      ).toBeVisible();
+      const imageZoom = documentScope.getByLabelText("Image zoom percentage");
+      await userEvent.clear(imageZoom);
+      await userEvent.type(imageZoom, "137{Enter}");
+      await expect(documentScope.getByTestId("image-lightbox")).toHaveAttribute(
+        "data-zoom-scale",
+        "1.3700",
+      );
+      await userEvent.click(
+        documentScope.getByRole("button", { name: "Close modal" }),
+      );
     };
 </script>
 

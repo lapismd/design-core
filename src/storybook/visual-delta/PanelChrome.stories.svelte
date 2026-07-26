@@ -107,7 +107,7 @@
     await expect(scope.getByTestId("fixture-live-visible")).toHaveTextContent(
       "false",
     );
-    await expect(scope.getByText("Image only")).toBeInTheDocument();
+    await expect(scope.queryByText("Image only")).not.toBeInTheDocument();
   }}
 >
   {#snippet template()}
