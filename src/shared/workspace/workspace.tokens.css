@@ -21,6 +21,7 @@
   --ui-workspace-accent-foreground: var(--primary-foreground);
   --ui-workspace-selection: color-mix(in srgb, var(--primary) 14%, transparent);
   --ui-workspace-destructive: var(--destructive);
+  --ui-workspace-warning: var(--warning, #f97316);
   --ui-workspace-focus-ring: var(--ring);
   --ui-workspace-font-mono: var(
     --font-mono,

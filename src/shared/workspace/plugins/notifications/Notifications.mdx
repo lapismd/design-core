@@ -1,0 +1,46 @@
+import { Meta, Canvas } from "@storybook/addon-docs/blocks";
+import * as Stories from "./Notifications.stories.svelte";
+
+<Meta of={Stories} />
+
+# Notifications
+
+`AppShellController` always owns the notification service. Applications can
+publish transient notices, durable history, and cancellable progress without
+installing a presentation plugin.
+
+```ts
+const app = new AppShellController({
+  plugins: [notificationsPlugin()],
+  persistence: {
+    notifications: createLocalStorageNotificationPersistence(
+      "application.notifications",
+    ),
+  },
+});
+```
+
+The optional plugin contributes toasts, a status item, and the notification
+center transactionally. Disabling it removes those contributions without
+replaying old transient messages through the fallback presenter.
+
+<Canvas of={Stories.ToastSeverities} />
+
+## Durable history and progress
+
+Persistent records are normalised and saved through the injected adapter.
+Progress handles report determinate or indeterminate work, expose an abort
+signal, and can be cancelled from the notification center.
+
+<Canvas of={Stories.PopulatedHistory} />
+
+<Canvas of={Stories.ProgressAndCancellation} />
+
+## Compatibility and composition
+
+The Lapis-compatible `Notice` API routes through the same controller service.
+Without the plugin, `AppShell.Root` renders a lightweight transient fallback.
+`NotificationToasts`, `NotificationCenter`, and `NotificationStatus` are also
+exported as individually composable components.
+
+<Canvas of={Stories.NoticeCompatibility} />

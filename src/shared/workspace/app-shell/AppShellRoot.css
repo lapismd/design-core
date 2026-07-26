@@ -16,6 +16,84 @@
   display: contents;
 }
 
+.ui-app-shell__notice-toasts {
+  pointer-events: none;
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: var(--ui-workspace-overlay-z-index);
+  display: grid;
+  width: min(24rem, calc(100% - 1.5rem));
+  gap: 0.5rem;
+}
+
+.ui-app-shell__notice-toast {
+  pointer-events: auto;
+  display: grid;
+  grid-template-columns: 0.25rem minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 0.75rem;
+  border: 1px solid var(--ui-workspace-border);
+  border-radius: var(--ui-workspace-radius-medium);
+  padding: 0.75rem;
+  color: var(--ui-workspace-popover-foreground);
+  background: var(--ui-workspace-popover);
+  box-shadow: var(--ui-workspace-shadow);
+}
+
+.ui-app-shell__notice-toast > span {
+  width: 0.25rem;
+  min-height: 100%;
+  border-radius: 999px;
+  background: var(--ui-workspace-accent);
+}
+
+.ui-app-shell__notice-toast[data-severity="warning"] > span {
+  background: var(--ui-workspace-warning);
+}
+
+.ui-app-shell__notice-toast[data-severity="error"] > span {
+  background: var(--ui-workspace-destructive);
+}
+
+.ui-app-shell__notice-toast > div {
+  display: grid;
+  min-width: 0;
+  gap: 0.125rem;
+  font-size: 0.875rem;
+  line-height: 1.35;
+}
+
+.ui-app-shell__notice-toast > div span {
+  color: var(--ui-workspace-muted-foreground);
+  overflow-wrap: anywhere;
+}
+
+.ui-app-shell__notice-toast button {
+  display: grid;
+  width: 1.75rem;
+  height: 1.75rem;
+  place-content: center;
+  border: 0;
+  border-radius: var(--ui-workspace-radius-small);
+  color: inherit;
+  background: transparent;
+}
+
+.ui-app-shell__notice-toast button:hover {
+  background: var(--ui-workspace-muted);
+}
+
+.ui-app-shell__notice-toast button:focus-visible {
+  outline: 2px solid var(--ui-workspace-focus-ring);
+  outline-offset: 2px;
+}
+
+.ui-app-shell__notice-toast button svg {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
 .ui-app-shell *,
 .ui-app-shell *::before,
 .ui-app-shell *::after {

@@ -382,6 +382,7 @@ export class NotificationManager {
       this.presentationOwners = this.presentationOwners.filter(
         (id) => id !== ownerId,
       );
+      if (this.presentationOwners.length === 0) this.clearTransient();
     };
   }
 

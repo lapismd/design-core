@@ -71,6 +71,21 @@ describe("NotificationManager", () => {
     expect(manager.transient).toEqual([]);
   });
 
+  it("does not replay plugin-owned transients through the fallback presenter", () => {
+    const manager = new NotificationManager();
+    const releasePresentation = manager.claimPresentation("plugin");
+
+    manager.notify({ message: "Plugin owned", duration: 0 });
+    expect(manager.transient).toHaveLength(1);
+
+    releasePresentation();
+    expect(manager.hasCustomPresenter).toBe(false);
+    expect(manager.transient).toEqual([]);
+
+    manager.notify({ message: "Fallback owned", duration: 0 });
+    expect(manager.transient[0]?.message).toBe("Fallback owned");
+  });
+
   it("tracks progress, cancellation, completion, and errors", async () => {
     const manager = new NotificationManager();
     const progress = manager.createProgress({

@@ -1,0 +1,56 @@
+.ui-workspace-notifications-story {
+  box-sizing: border-box;
+  min-height: 100vh;
+  padding: 2rem;
+  background: var(--ui-workspace-muted);
+}
+
+.ui-workspace-notifications-story__frame {
+  width: min(64rem, 100%);
+  height: 38rem;
+  margin-inline: auto;
+  overflow: hidden;
+  border: 1px solid var(--ui-workspace-border);
+  border-radius: var(--ui-workspace-radius-large);
+  background: var(--ui-workspace-background);
+  box-shadow: var(--ui-workspace-shadow);
+}
+
+.ui-workspace-notifications-story__surface {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  min-height: 0;
+  flex-direction: column;
+}
+
+.ui-workspace-notifications-story__surface main {
+  display: grid;
+  min-height: 0;
+  flex: 1;
+  place-content: center;
+  padding: 3rem;
+  text-align: center;
+}
+
+.ui-workspace-notifications-story__surface main span {
+  color: var(--ui-workspace-muted-foreground);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.ui-workspace-notifications-story__surface h1 {
+  margin: 0.5rem 0 0;
+  font-size: 1.5rem;
+}
+
+.ui-workspace-notifications-story__surface p {
+  max-width: 34rem;
+  margin: 0.75rem auto 0;
+  color: var(--ui-workspace-muted-foreground);
+  font-size: 0.875rem;
+  line-height: 1.55;
+}
