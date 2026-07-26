@@ -158,3 +158,42 @@
     />
   {/snippet}
 </Story>
+
+<Story
+  name="Sidebar filters"
+  play={async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const page = within(canvasElement.ownerDocument.body);
+    const shell = await waitFor(() =>
+      canvas.getByTestId("testing-module-shell"),
+    );
+    const scope = within(shell);
+
+    await userEvent.click(
+      scope.getByRole("button", { name: "Filter visual stories" }),
+    );
+    await expect(
+      page.getByRole("dialog", { name: "Visual story filters" }),
+    ).toBeInTheDocument();
+    await userEvent.click(
+      page.getByRole("button", { name: "Needs attention" }),
+    );
+    await expect(scope.getByTestId("fixture-visual-filters")).toHaveTextContent(
+      "quick.needs-attention",
+    );
+    await expect(
+      scope.getByRole("button", {
+        name: "Filter visual stories, 1 active",
+      }),
+    ).toBeInTheDocument();
+  }}
+>
+  {#snippet template()}
+    <ReactThemeHost
+      element={React.createElement(TestingModuleShell, {
+        variant: "global",
+        seedFilters: true,
+      })}
+    />
+  {/snippet}
+</Story>
