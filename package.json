@@ -190,6 +190,7 @@
     "./workspace/icon": "./src/shared/workspace/icon/index.ts",
     "./workspace/settings": "./src/shared/workspace/settings/index.ts",
     "./workspace/sidebar-empty": "./src/shared/workspace/sidebar-empty/index.ts",
+    "./workspace/sidebar-group": "./src/shared/workspace/sidebar-group/index.ts",
     "./workspace/sidebar-toggle": "./src/shared/workspace/sidebar-toggle/index.ts",
     "./workspace/split": "./src/shared/workspace/split/index.ts",
     "./workspace/stacked-tabs": "./src/shared/workspace/stacked-tabs/index.ts",

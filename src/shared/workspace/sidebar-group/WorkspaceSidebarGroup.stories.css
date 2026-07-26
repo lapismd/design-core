@@ -1,0 +1,6 @@
+.ui-workspace-sidebar-group-story-frame {
+  width: 20rem;
+  height: 36rem;
+  overflow: hidden;
+  border-left: 1px solid var(--ui-workspace-border);
+}

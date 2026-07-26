@@ -1,0 +1,17 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as Stories from "./WorkspaceSidebarGroup.stories.svelte";
+
+<Meta of={Stories} />
+
+# WorkspaceSidebarGroup
+
+`WorkspaceSidebarGroup` renders one grouped sidebar item as a measured vertical
+panel stack. Its collapsed size is always the source 32px header converted into
+the measured stack percentage.
+
+The full panel header owns activation, collapse and drag behavior. Registered
+drop targets expose only top and bottom insertion positions.
+
+<Canvas of={Stories.PartiallyCollapsedPanels} />
+
+<Controls of={Stories.PartiallyCollapsedPanels} />

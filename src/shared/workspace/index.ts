@@ -12,6 +12,13 @@ export * from "./empty/index.js";
 export * from "./icon/index.js";
 export * from "./settings/index.js";
 export * from "./sidebar-empty/index.js";
+export {
+  WorkspaceSidebarGroup as WorkspaceSidebarGroupComponent,
+  DEFAULT_COLLAPSED_PANEL_SIZE,
+  WORKSPACE_SIDEBAR_PANEL_HEADER_PX,
+  collapsedSidebarPanelSize,
+  sidebarPanelDefaultSizes,
+} from "./sidebar-group/index.js";
 export * from "./sidebar-toggle/index.js";
 export * from "./split/index.js";
 export * from "./stacked-tabs/index.js";
