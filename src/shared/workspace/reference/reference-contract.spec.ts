@@ -11,6 +11,7 @@ const repoRoot = path.resolve(
 );
 const referenceRoot = path.join(repoRoot, "reference/lapis/workspace-shell");
 const storybookReferenceRoot = path.join(referenceRoot, "storybook");
+const storybookV2ReferenceRoot = path.join(referenceRoot, "storybook-v2");
 
 const expectedHashes = {
   "provenance.json":
@@ -165,5 +166,79 @@ describe("canonical Lapis workspace reference", () => {
     await expect(storybookInventorySha256()).resolves.toBe(
       provenance.inventorySha256,
     );
+  });
+
+  it("retains the guarded CY-0004 v2 parity inventory and complete crosswalk", async () => {
+    const [provenance, manifest, crosswalk, packageJson] = await Promise.all([
+      readFile(
+        path.join(storybookV2ReferenceRoot, "provenance.json"),
+        "utf8",
+      ).then(JSON.parse),
+      readFile(
+        path.join(storybookV2ReferenceRoot, "manifest.json"),
+        "utf8",
+      ).then(JSON.parse),
+      readFile(
+        path.join(storybookV2ReferenceRoot, "crosswalk.json"),
+        "utf8",
+      ).then(JSON.parse),
+      readFile(path.join(repoRoot, "package.json"), "utf8"),
+    ]);
+    const files = (
+      await Promise.all(
+        ["light", "dark"].map(async (mode) =>
+          (await readdir(path.join(storybookV2ReferenceRoot, mode)))
+            .filter((file) => file.endsWith(".png"))
+            .map((file) => `${mode}/${file}`),
+        ),
+      )
+    )
+      .flat()
+      .sort();
+    const inventory = await Promise.all(
+      files.map(async (file) => {
+        const bytes = await readFile(path.join(storybookV2ReferenceRoot, file));
+        return `${createHash("sha256").update(bytes).digest("hex")}  ${file}`;
+      }),
+    );
+    const inventoryHash = createHash("sha256")
+      .update(`${inventory.join("\n")}\n`)
+      .digest("hex");
+
+    expect(files).toHaveLength(104);
+    expect(inventoryHash).toBe(
+      "1d6acbaa063bb387095624205d87cb8bf7e12b4e11ea29b9581efffb7fbd620e",
+    );
+    expect(provenance).toMatchObject({
+      sourceSnapshotRevision: "b06d1e3f58c3",
+      assetCount: 104,
+      inventorySha256: inventoryHash,
+      v1CanonicalImmutable: true,
+      updateGuard: "CY0004_REFERENCE_UPDATE=1",
+      capture: {
+        viewport: { width: 1280, height: 900 },
+        deviceScaleFactor: 3,
+        colourModes: ["light", "dark"],
+        storyFinished: "required",
+        scope: "explicit per story",
+      },
+    });
+    expect(manifest).toMatchObject({
+      sourceSnapshotRevision: "b06d1e3f58c3",
+      canonicalStoryCount: 52,
+      interactionOnlyStoryCount: 27,
+    });
+    expect(manifest.stories).toHaveLength(104);
+    expect(crosswalk).toMatchObject({
+      sourceSnapshotRevision: "b06d1e3f58c3",
+      sourceStoryCount: 79,
+    });
+    expect(crosswalk.entries).toHaveLength(79);
+    expect(
+      crosswalk.entries.filter(
+        (entry: { coverage: string }) => entry.coverage === "new-parity-story",
+      ),
+    ).toHaveLength(52);
+    expect(packageJson).toContain("CY0004_REFERENCE_UPDATE=1");
   });
 });

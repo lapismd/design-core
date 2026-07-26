@@ -1,0 +1,639 @@
+{
+  "schemaVersion": 1,
+  "sourceSnapshotRevision": "b06d1e3f58c3",
+  "sourceStoryCount": 79,
+  "entries": [
+    {
+      "sourceStoryId": "workspace-shell-components-composable-settings--composition",
+      "sourceTitle": "Workspace shell/Components/Composable settings",
+      "sourceName": "Composition",
+      "coverage": "new-parity-story",
+      "targetStoryId": "workspace-parity-cy-0004--components-composable-settings-composition",
+      "reason": "Canonical v2 visual scene rendered through the public Workspace API."
+    },
+    {
+      "sourceStoryId": "workspace-shell-components-declarative-settings--all-supported-controls",
+      "sourceTitle": "Workspace shell/Components/Declarative settings",
+      "sourceName": "All Supported Controls",
+      "coverage": "new-parity-story",
+      "targetStoryId": "workspace-parity-cy-0004--components-declarative-settings-all-supported-controls",
+      "reason": "Canonical v2 visual scene rendered through the public Workspace API."
+    },
+    {
+      "sourceStoryId": "workspace-shell-components-declarative-settings--settings",
+      "sourceTitle": "Workspace shell/Components/Declarative settings",
+      "sourceName": "Settings",
+      "coverage": "new-parity-story",
+      "targetStoryId": "workspace-parity-cy-0004--components-declarative-settings-settings",
+      "reason": "Canonical v2 visual scene rendered through the public Workspace API."
+    },
+    {
+      "sourceStoryId": "workspace-shell-components-declarative-settings--settings-mobile",
+      "sourceTitle": "Workspace shell/Components/Declarative settings",
+      "sourceName": "Settings Mobile",
+      "coverage": "new-parity-story",
+      "targetStoryId": "workspace-parity-cy-0004--components-declarative-settings-settings-mobile",
+      "reason": "Canonical v2 visual scene rendered through the public Workspace API."
+    },
+    {
+      "sourceStoryId": "workspace-shell-components-drag-and-drop-overlays--bottom",
+      "sourceTitle": "Workspace shell/Components/Drag and drop overlays",
+      "sourceName": "Bottom",
+      "coverage": "new-parity-story",
+      "targetStoryId": "workspace-parity-cy-0004--components-drag-and-drop-overlays-bottom",
+      "reason": "Canonical v2 visual scene rendered through the public Workspace API."
+    },
+    {
+      "sourceStoryId": "workspace-shell-components-drag-and-drop-overlays--canceled-overlay",
+      "sourceTitle": "Workspace shell/Components/Drag and drop overlays",
+      "sourceName": "Canceled Overlay",
+      "coverage": "new-parity-story",
+      "targetStoryId": "workspace-parity-cy-0004--components-drag-and-drop-overlays-canceled-overlay",
+      "reason": "Canonical v2 visual scene rendered through the public Workspace API."
+    },
+    {
+      "sourceStoryId": "workspace-shell-components-drag-and-drop-overlays--centre",
+      "sourceTitle": "Workspace shell/Components/Drag and drop overlays",
+      "sourceName": "Centre",
+      "coverage": "new-parity-story",
+      "targetStoryId": "workspace-parity-cy-0004--components-drag-and-drop-overlays-centre",
+      "reason": "Canonical v2 visual scene rendered through the public Workspace API."
+    },
+    {
+      "sourceStoryId": "workspace-shell-components-drag-and-drop-overlays--disallowed-edge-falls-back-to-centre",
+      "sourceTitle": "Workspace shell/Components/Drag and drop overlays",
+      "sourceName": "Disallowed Edge Falls Back To Centre",
+      "coverage": "new-parity-story",
+      "targetStoryId": "workspace-parity-cy-0004--components-drag-and-drop-overlays-disallowed-edge-falls-back-to-centre",
+      "reason": "Canonical v2 visual scene rendered through the public Workspace API."
+    },
+    {
+      "sourceStoryId": "workspace-shell-components-drag-and-drop-overlays--empty-target",
+      "sourceTitle": "Workspace shell/Components/Drag and drop overlays",
+      "sourceName": "Empty Target",
+      "coverage": "new-parity-story",
+      "targetStoryId": "workspace-parity-cy-0004--components-drag-and-drop-overlays-empty-target",
+      "reason": "Canonical v2 visual scene rendered through the public Workspace API."
+    },
+    {
+      "sourceStoryId": "workspace-shell-components-drag-and-drop-overlays--floating-fallback",
+      "sourceTitle": "Workspace shell/Components/Drag and drop overlays",
+      "sourceName": "Floating Fallback",
+      "coverage": "new-parity-story",
+      "targetStoryId": "workspace-parity-cy-0004--components-drag-and-drop-overlays-floating-fallback",
+      "reason": "Canonical v2 visual scene rendered through the public Workspace API."
+    },
+    {
+      "sourceStoryId": "workspace-shell-components-drag-and-drop-overlays--insertion-marker",
+      "sourceTitle": "Workspace shell/Components/Drag and drop overlays",
+      "sourceName": "Insertion Marker",
+      "coverage": "new-parity-story",
+      "targetStoryId": "workspace-parity-cy-0004--components-drag-and-drop-overlays-insertion-marker",
+      "reason": "Canonical v2 visual scene rendered through the public Workspace API."
+    },
+    {
+      "sourceStoryId": "workspace-shell-components-drag-and-drop-overlays--left",
+      "sourceTitle": "Workspace shell/Components/Drag and drop overlays",
+      "sourceName": "Left",
+      "coverage": "new-parity-story",
+      "targetStoryId": "workspace-parity-cy-0004--components-drag-and-drop-overlays-left",
+      "reason": "Canonical v2 visual scene rendered through the public Workspace API."
+    },
+    {
+      "sourceStoryId": "workspace-shell-components-drag-and-drop-overlays--right",
+      "sourceTitle": "Workspace shell/Components/Drag and drop overlays",
+      "sourceName": "Right",
+      "coverage": "new-parity-story",
+      "targetStoryId": "workspace-parity-cy-0004--components-drag-and-drop-overlays-right",
+      "reason": "Canonical v2 visual scene rendered through the public Workspace API."
+    },
+    {
+      "sourceStoryId": "workspace-shell-components-drag-and-drop-overlays--top",
+      "sourceTitle": "Workspace shell/Components/Drag and drop overlays",
+      "sourceName": "Top",
+      "coverage": "new-parity-story",
+      "targetStoryId": "workspace-parity-cy-0004--components-drag-and-drop-overlays-top",
+      "reason": "Canonical v2 visual scene rendered through the public Workspace API."
+    },
+    {
+      "sourceStoryId": "workspace-shell-components-empty-and-missing-views--empty-sidebars",
+      "sourceTitle": "Workspace shell/Components/Empty and missing views",
+      "sourceName": "Empty Sidebars",
+      "coverage": "new-parity-story",
+      "targetStoryId": "workspace-parity-cy-0004--components-empty-and-missing-views-empty-sidebars",
+      "reason": "Canonical v2 visual scene rendered through the public Workspace API."
+    },
+    {
+      "sourceStoryId": "workspace-shell-components-empty-and-missing-views--empty-view",
+      "sourceTitle": "Workspace shell/Components/Empty and missing views",
+      "sourceName": "Empty View",
+      "coverage": "new-parity-story",
+      "targetStoryId": "workspace-parity-cy-0004--components-empty-and-missing-views-empty-view",
+      "reason": "Canonical v2 visual scene rendered through the public Workspace API."
+    },
+    {
+      "sourceStoryId": "workspace-shell-components-empty-and-missing-views--missing-view",
+      "sourceTitle": "Workspace shell/Components/Empty and missing views",
+      "sourceName": "Missing View",
+      "coverage": "new-parity-story",
+      "targetStoryId": "workspace-parity-cy-0004--components-empty-and-missing-views-missing-view",
+      "reason": "Canonical v2 visual scene rendered through the public Workspace API."
+    },
+    {
+      "sourceStoryId": "workspace-shell-components-floating-windows--maximized",
+      "sourceTitle": "Workspace shell/Components/Floating windows",
+      "sourceName": "Maximized",
+      "coverage": "new-parity-story",
+      "targetStoryId": "workspace-parity-cy-0004--components-floating-windows-maximized",
+      "reason": "Canonical v2 visual scene rendered through the public Workspace API."
+    },
+    {
+      "sourceStoryId": "workspace-shell-components-floating-windows--states",
+      "sourceTitle": "Workspace shell/Components/Floating windows",
+      "sourceName": "States",
+      "coverage": "new-parity-story",
+      "targetStoryId": "workspace-parity-cy-0004--components-floating-windows-states",
+      "reason": "Canonical v2 visual scene rendered through the public Workspace API."
+    },
+    {
+      "sourceStoryId": "workspace-shell-components-public-framework--about",
+      "sourceTitle": "Workspace shell/Components/Public framework",
+      "sourceName": "About",
+      "coverage": "new-parity-story",
+      "targetStoryId": "workspace-parity-cy-0004--components-public-framework-about",
+      "reason": "Canonical v2 visual scene rendered through the public Workspace API."
+    },
+    {
+      "sourceStoryId": "workspace-shell-components-public-framework--command-palette",
+      "sourceTitle": "Workspace shell/Components/Public framework",
+      "sourceName": "Command Palette",
+      "coverage": "new-parity-story",
+      "targetStoryId": "workspace-parity-cy-0004--components-public-framework-command-palette",
+      "reason": "Canonical v2 visual scene rendered through the public Workspace API."
+    },
+    {
+      "sourceStoryId": "workspace-shell-components-public-framework--core-plugins-settings",
+      "sourceTitle": "Workspace shell/Components/Public framework",
+      "sourceName": "Core Plugins Settings",
+      "coverage": "new-parity-story",
+      "targetStoryId": "workspace-parity-cy-0004--components-public-framework-core-plugins-settings",
+      "reason": "Canonical v2 visual scene rendered through the public Workspace API."
+    },
+    {
+      "sourceStoryId": "workspace-shell-components-public-framework--floating-layer",
+      "sourceTitle": "Workspace shell/Components/Public framework",
+      "sourceName": "Floating Layer",
+      "coverage": "new-parity-story",
+      "targetStoryId": "workspace-parity-cy-0004--components-public-framework-floating-layer",
+      "reason": "Canonical v2 visual scene rendered through the public Workspace API."
+    },
+    {
+      "sourceStoryId": "workspace-shell-components-public-framework--hotkey-settings",
+      "sourceTitle": "Workspace shell/Components/Public framework",
+      "sourceName": "Hotkey Settings",
+      "coverage": "new-parity-story",
+      "targetStoryId": "workspace-parity-cy-0004--components-public-framework-hotkey-settings",
+      "reason": "Canonical v2 visual scene rendered through the public Workspace API."
+    },
+    {
+      "sourceStoryId": "workspace-shell-components-public-framework--left-sidebar",
+      "sourceTitle": "Workspace shell/Components/Public framework",
+      "sourceName": "Left Sidebar",
+      "coverage": "new-parity-story",
+      "targetStoryId": "workspace-parity-cy-0004--components-public-framework-left-sidebar",
+      "reason": "Canonical v2 visual scene rendered through the public Workspace API."
+    },
+    {
+      "sourceStoryId": "workspace-shell-components-public-framework--notices",
+      "sourceTitle": "Workspace shell/Components/Public framework",
+      "sourceName": "Notices",
+      "coverage": "new-parity-story",
+      "targetStoryId": "workspace-parity-cy-0004--components-public-framework-notices",
+      "reason": "Canonical v2 visual scene rendered through the public Workspace API."
+    },
+    {
+      "sourceStoryId": "workspace-shell-components-public-framework--ribbon",
+      "sourceTitle": "Workspace shell/Components/Public framework",
+      "sourceName": "Ribbon",
+      "coverage": "new-parity-story",
+      "targetStoryId": "workspace-parity-cy-0004--components-public-framework-ribbon",
+      "reason": "Canonical v2 visual scene rendered through the public Workspace API."
+    },
+    {
+      "sourceStoryId": "workspace-shell-components-public-framework--right-sidebar",
+      "sourceTitle": "Workspace shell/Components/Public framework",
+      "sourceName": "Right Sidebar",
+      "coverage": "new-parity-story",
+      "targetStoryId": "workspace-parity-cy-0004--components-public-framework-right-sidebar",
+      "reason": "Canonical v2 visual scene rendered through the public Workspace API."
+    },
+    {
+      "sourceStoryId": "workspace-shell-components-public-framework--settings",
+      "sourceTitle": "Workspace shell/Components/Public framework",
+      "sourceName": "Settings",
+      "coverage": "new-parity-story",
+      "targetStoryId": "workspace-parity-cy-0004--components-public-framework-settings",
+      "reason": "Canonical v2 visual scene rendered through the public Workspace API."
+    },
+    {
+      "sourceStoryId": "workspace-shell-components-public-framework--status-bar",
+      "sourceTitle": "Workspace shell/Components/Public framework",
+      "sourceName": "Status Bar",
+      "coverage": "new-parity-story",
+      "targetStoryId": "workspace-parity-cy-0004--components-public-framework-status-bar",
+      "reason": "Canonical v2 visual scene rendered through the public Workspace API."
+    },
+    {
+      "sourceStoryId": "workspace-shell-components-public-framework--tabs",
+      "sourceTitle": "Workspace shell/Components/Public framework",
+      "sourceName": "Tabs",
+      "coverage": "new-parity-story",
+      "targetStoryId": "workspace-parity-cy-0004--components-public-framework-tabs",
+      "reason": "Canonical v2 visual scene rendered through the public Workspace API."
+    },
+    {
+      "sourceStoryId": "workspace-shell-components-public-framework--workspace",
+      "sourceTitle": "Workspace shell/Components/Public framework",
+      "sourceName": "Workspace",
+      "coverage": "new-parity-story",
+      "targetStoryId": "workspace-parity-cy-0004--components-public-framework-workspace",
+      "reason": "Canonical v2 visual scene rendered through the public Workspace API."
+    },
+    {
+      "sourceStoryId": "workspace-shell-components-ribbon-and-status-bar--chrome",
+      "sourceTitle": "Workspace shell/Components/Ribbon and status bar",
+      "sourceName": "Chrome",
+      "coverage": "new-parity-story",
+      "targetStoryId": "workspace-parity-cy-0004--components-ribbon-and-status-bar-chrome",
+      "reason": "Canonical v2 visual scene rendered through the public Workspace API."
+    },
+    {
+      "sourceStoryId": "workspace-shell-components-sidebar-groups--fully-collapsed",
+      "sourceTitle": "Workspace shell/Components/Sidebar groups",
+      "sourceName": "Fully Collapsed",
+      "coverage": "new-parity-story",
+      "targetStoryId": "workspace-parity-cy-0004--components-sidebar-groups-fully-collapsed",
+      "reason": "Canonical v2 visual scene rendered through the public Workspace API."
+    },
+    {
+      "sourceStoryId": "workspace-shell-components-sidebar-groups--group-and-ungroup",
+      "sourceTitle": "Workspace shell/Components/Sidebar groups",
+      "sourceName": "Group And Ungroup",
+      "coverage": "new-parity-story",
+      "targetStoryId": "workspace-parity-cy-0004--components-sidebar-groups-group-and-ungroup",
+      "reason": "Canonical v2 visual scene rendered through the public Workspace API."
+    },
+    {
+      "sourceStoryId": "workspace-shell-components-sidebar-groups--grouped",
+      "sourceTitle": "Workspace shell/Components/Sidebar groups",
+      "sourceName": "Grouped",
+      "coverage": "new-parity-story",
+      "targetStoryId": "workspace-parity-cy-0004--components-sidebar-groups-grouped",
+      "reason": "Canonical v2 visual scene rendered through the public Workspace API."
+    },
+    {
+      "sourceStoryId": "workspace-shell-components-sidebar-groups--partially-collapsed",
+      "sourceTitle": "Workspace shell/Components/Sidebar groups",
+      "sourceName": "Partially Collapsed",
+      "coverage": "new-parity-story",
+      "targetStoryId": "workspace-parity-cy-0004--components-sidebar-groups-partially-collapsed",
+      "reason": "Canonical v2 visual scene rendered through the public Workspace API."
+    },
+    {
+      "sourceStoryId": "workspace-shell-components-tabs--close-hover",
+      "sourceTitle": "Workspace shell/Components/Tabs",
+      "sourceName": "Close Hover",
+      "coverage": "new-parity-story",
+      "targetStoryId": "workspace-parity-cy-0004--components-tabs-close-hover",
+      "reason": "Canonical v2 visual scene rendered through the public Workspace API."
+    },
+    {
+      "sourceStoryId": "workspace-shell-components-tabs--constrained",
+      "sourceTitle": "Workspace shell/Components/Tabs",
+      "sourceName": "Constrained",
+      "coverage": "new-parity-story",
+      "targetStoryId": "workspace-parity-cy-0004--components-tabs-constrained",
+      "reason": "Canonical v2 visual scene rendered through the public Workspace API."
+    },
+    {
+      "sourceStoryId": "workspace-shell-components-tabs--empty-split-is-pruned",
+      "sourceTitle": "Workspace shell/Components/Tabs",
+      "sourceName": "Empty Split Is Pruned",
+      "coverage": "new-parity-story",
+      "targetStoryId": "workspace-parity-cy-0004--components-tabs-empty-split-is-pruned",
+      "reason": "Canonical v2 visual scene rendered through the public Workspace API."
+    },
+    {
+      "sourceStoryId": "workspace-shell-components-tabs--right-sidebar-toggle-uses-top-right-pane",
+      "sourceTitle": "Workspace shell/Components/Tabs",
+      "sourceName": "Right Sidebar Toggle Uses Top Right Pane",
+      "coverage": "new-parity-story",
+      "targetStoryId": "workspace-parity-cy-0004--components-tabs-right-sidebar-toggle-uses-top-right-pane",
+      "reason": "Canonical v2 visual scene rendered through the public Workspace API."
+    },
+    {
+      "sourceStoryId": "workspace-shell-components-tabs--single",
+      "sourceTitle": "Workspace shell/Components/Tabs",
+      "sourceName": "Single",
+      "coverage": "new-parity-story",
+      "targetStoryId": "workspace-parity-cy-0004--components-tabs-single",
+      "reason": "Canonical v2 visual scene rendered through the public Workspace API."
+    },
+    {
+      "sourceStoryId": "workspace-shell-components-tabs--stacked",
+      "sourceTitle": "Workspace shell/Components/Tabs",
+      "sourceName": "Stacked",
+      "coverage": "new-parity-story",
+      "targetStoryId": "workspace-parity-cy-0004--components-tabs-stacked",
+      "reason": "Canonical v2 visual scene rendered through the public Workspace API."
+    },
+    {
+      "sourceStoryId": "workspace-shell-components-tabs--top",
+      "sourceTitle": "Workspace shell/Components/Tabs",
+      "sourceName": "Top",
+      "coverage": "new-parity-story",
+      "targetStoryId": "workspace-parity-cy-0004--components-tabs-top",
+      "reason": "Canonical v2 visual scene rendered through the public Workspace API."
+    },
+    {
+      "sourceStoryId": "workspace-shell-components-view-header-and-menus--header-and-menu",
+      "sourceTitle": "Workspace shell/Components/View header and menus",
+      "sourceName": "Header And Menu",
+      "coverage": "new-parity-story",
+      "targetStoryId": "workspace-parity-cy-0004--components-view-header-and-menus-header-and-menu",
+      "reason": "Canonical v2 visual scene rendered through the public Workspace API."
+    },
+    {
+      "sourceStoryId": "workspace-shell-demo-reusable-framework--about-dialog-interaction",
+      "sourceTitle": "Workspace shell/Demo/Reusable framework",
+      "sourceName": "About dialog interaction",
+      "coverage": "interaction-only",
+      "targetStoryId": null,
+      "reason": "Source story has interaction coverage but no immutable v1 visual."
+    },
+    {
+      "sourceStoryId": "workspace-shell-demo-reusable-framework--appearance-settings",
+      "sourceTitle": "Workspace shell/Demo/Reusable framework",
+      "sourceName": "Appearance Settings",
+      "coverage": "interaction-only",
+      "targetStoryId": null,
+      "reason": "Source story has interaction coverage but no immutable v1 visual."
+    },
+    {
+      "sourceStoryId": "workspace-shell-demo-reusable-framework--constrained-desktop-tab-actions",
+      "sourceTitle": "Workspace shell/Demo/Reusable framework",
+      "sourceName": "Constrained Desktop Tab Actions",
+      "coverage": "interaction-only",
+      "targetStoryId": null,
+      "reason": "Source story has interaction coverage but no immutable v1 visual."
+    },
+    {
+      "sourceStoryId": "workspace-shell-demo-reusable-framework--core-plugins-settings",
+      "sourceTitle": "Workspace shell/Demo/Reusable framework",
+      "sourceName": "Core Plugins Settings",
+      "coverage": "interaction-only",
+      "targetStoryId": null,
+      "reason": "Source story has interaction coverage but no immutable v1 visual."
+    },
+    {
+      "sourceStoryId": "workspace-shell-demo-reusable-framework--desktop-tab-interaction",
+      "sourceTitle": "Workspace shell/Demo/Reusable framework",
+      "sourceName": "Desktop Tab Interaction",
+      "coverage": "interaction-only",
+      "targetStoryId": null,
+      "reason": "Source story has interaction coverage but no immutable v1 visual."
+    },
+    {
+      "sourceStoryId": "workspace-shell-demo-reusable-framework--hotkeys-settings",
+      "sourceTitle": "Workspace shell/Demo/Reusable framework",
+      "sourceName": "Hotkeys Settings",
+      "coverage": "interaction-only",
+      "targetStoryId": null,
+      "reason": "Source story has interaction coverage but no immutable v1 visual."
+    },
+    {
+      "sourceStoryId": "workspace-shell-demo-reusable-framework--mobile-always",
+      "sourceTitle": "Workspace shell/Demo/Reusable framework",
+      "sourceName": "Mobile Always",
+      "coverage": "interaction-only",
+      "targetStoryId": null,
+      "reason": "Source story has interaction coverage but no immutable v1 visual."
+    },
+    {
+      "sourceStoryId": "workspace-shell-demo-reusable-framework--mobile-auto-at-custom-breakpoint",
+      "sourceTitle": "Workspace shell/Demo/Reusable framework",
+      "sourceName": "Mobile Auto At Custom Breakpoint",
+      "coverage": "interaction-only",
+      "targetStoryId": null,
+      "reason": "Source story has interaction coverage but no immutable v1 visual."
+    },
+    {
+      "sourceStoryId": "workspace-shell-demo-reusable-framework--mobile-minimal-navigation",
+      "sourceTitle": "Workspace shell/Demo/Reusable framework",
+      "sourceName": "Mobile Minimal Navigation",
+      "coverage": "interaction-only",
+      "targetStoryId": null,
+      "reason": "Source story has interaction coverage but no immutable v1 visual."
+    },
+    {
+      "sourceStoryId": "workspace-shell-demo-reusable-framework--mobile-settings-transition",
+      "sourceTitle": "Workspace shell/Demo/Reusable framework",
+      "sourceName": "Mobile Settings Transition",
+      "coverage": "interaction-only",
+      "targetStoryId": null,
+      "reason": "Source story has interaction coverage but no immutable v1 visual."
+    },
+    {
+      "sourceStoryId": "workspace-shell-demo-reusable-framework--mobile-tab-interaction",
+      "sourceTitle": "Workspace shell/Demo/Reusable framework",
+      "sourceName": "Mobile Tab Interaction",
+      "coverage": "interaction-only",
+      "targetStoryId": null,
+      "reason": "Source story has interaction coverage but no immutable v1 visual."
+    },
+    {
+      "sourceStoryId": "workspace-shell-demo-reusable-framework--mobile-without-floating-entries",
+      "sourceTitle": "Workspace shell/Demo/Reusable framework",
+      "sourceName": "Mobile Without Floating Entries",
+      "coverage": "interaction-only",
+      "targetStoryId": null,
+      "reason": "Source story has interaction coverage but no immutable v1 visual."
+    },
+    {
+      "sourceStoryId": "workspace-shell-demo-reusable-framework--mobile-without-sidebar-entries",
+      "sourceTitle": "Workspace shell/Demo/Reusable framework",
+      "sourceName": "Mobile Without Sidebar Entries",
+      "coverage": "interaction-only",
+      "targetStoryId": null,
+      "reason": "Source story has interaction coverage but no immutable v1 visual."
+    },
+    {
+      "sourceStoryId": "workspace-shell-demo-reusable-framework--overview",
+      "sourceTitle": "Workspace shell/Demo/Reusable framework",
+      "sourceName": "Overview",
+      "coverage": "new-parity-story",
+      "targetStoryId": "workspace-parity-cy-0004--demo-reusable-framework-overview",
+      "reason": "Canonical v2 visual scene rendered through the public Workspace API."
+    },
+    {
+      "sourceStoryId": "workspace-shell-demo-reusable-framework--plugin-lifecycle-interaction",
+      "sourceTitle": "Workspace shell/Demo/Reusable framework",
+      "sourceName": "Plugin lifecycle interaction",
+      "coverage": "interaction-only",
+      "targetStoryId": null,
+      "reason": "Source story has interaction coverage but no immutable v1 visual."
+    },
+    {
+      "sourceStoryId": "workspace-shell-demo-reusable-framework--workspace-associations",
+      "sourceTitle": "Workspace shell/Demo/Reusable framework",
+      "sourceName": "Workspace Associations",
+      "coverage": "interaction-only",
+      "targetStoryId": null,
+      "reason": "Source story has interaction coverage but no immutable v1 visual."
+    },
+    {
+      "sourceStoryId": "workspace-shell-plugins-f-mode--active",
+      "sourceTitle": "Workspace shell/Plugins/F-Mode",
+      "sourceName": "Active",
+      "coverage": "new-parity-story",
+      "targetStoryId": "workspace-parity-cy-0004--plugins-f-mode-active",
+      "reason": "Canonical v2 visual scene rendered through the public Workspace API."
+    },
+    {
+      "sourceStoryId": "workspace-shell-plugins-f-mode--filtered-groups",
+      "sourceTitle": "Workspace shell/Plugins/F-Mode",
+      "sourceName": "Filtered Groups",
+      "coverage": "interaction-only",
+      "targetStoryId": null,
+      "reason": "Source story has interaction coverage but no immutable v1 visual."
+    },
+    {
+      "sourceStoryId": "workspace-shell-plugins-f-mode--idle",
+      "sourceTitle": "Workspace shell/Plugins/F-Mode",
+      "sourceName": "Idle",
+      "coverage": "interaction-only",
+      "targetStoryId": null,
+      "reason": "Source story has interaction coverage but no immutable v1 visual."
+    },
+    {
+      "sourceStoryId": "workspace-shell-plugins-f-mode--invalid-query",
+      "sourceTitle": "Workspace shell/Plugins/F-Mode",
+      "sourceName": "Invalid Query",
+      "coverage": "interaction-only",
+      "targetStoryId": null,
+      "reason": "Source story has interaction coverage but no immutable v1 visual."
+    },
+    {
+      "sourceStoryId": "workspace-shell-plugins-f-mode--keyboard-activation",
+      "sourceTitle": "Workspace shell/Plugins/F-Mode",
+      "sourceName": "Keyboard Activation",
+      "coverage": "interaction-only",
+      "targetStoryId": null,
+      "reason": "Source story has interaction coverage but no immutable v1 visual."
+    },
+    {
+      "sourceStoryId": "workspace-shell-plugins-f-mode--partial-query",
+      "sourceTitle": "Workspace shell/Plugins/F-Mode",
+      "sourceName": "Partial Query",
+      "coverage": "interaction-only",
+      "targetStoryId": null,
+      "reason": "Source story has interaction coverage but no immutable v1 visual."
+    },
+    {
+      "sourceStoryId": "workspace-shell-plugins-f-mode-no-targets--notice",
+      "sourceTitle": "Workspace shell/Plugins/F-Mode/No targets",
+      "sourceName": "Notice",
+      "coverage": "interaction-only",
+      "targetStoryId": null,
+      "reason": "Source story has interaction coverage but no immutable v1 visual."
+    },
+    {
+      "sourceStoryId": "workspace-shell-plugins-notifications--cancellation",
+      "sourceTitle": "Workspace shell/Plugins/Notifications",
+      "sourceName": "Cancellation",
+      "coverage": "interaction-only",
+      "targetStoryId": null,
+      "reason": "Source story has interaction coverage but no immutable v1 visual."
+    },
+    {
+      "sourceStoryId": "workspace-shell-plugins-notifications--disabled-presentation",
+      "sourceTitle": "Workspace shell/Plugins/Notifications",
+      "sourceName": "Disabled Presentation",
+      "coverage": "interaction-only",
+      "targetStoryId": null,
+      "reason": "Source story has interaction coverage but no immutable v1 visual."
+    },
+    {
+      "sourceStoryId": "workspace-shell-plugins-notifications--empty-history",
+      "sourceTitle": "Workspace shell/Plugins/Notifications",
+      "sourceName": "Empty History",
+      "coverage": "interaction-only",
+      "targetStoryId": null,
+      "reason": "Source story has interaction coverage but no immutable v1 visual."
+    },
+    {
+      "sourceStoryId": "workspace-shell-plugins-notifications--persistence-failure",
+      "sourceTitle": "Workspace shell/Plugins/Notifications",
+      "sourceName": "Persistence Failure",
+      "coverage": "interaction-only",
+      "targetStoryId": null,
+      "reason": "Source story has interaction coverage but no immutable v1 visual."
+    },
+    {
+      "sourceStoryId": "workspace-shell-plugins-notifications--populated-history",
+      "sourceTitle": "Workspace shell/Plugins/Notifications",
+      "sourceName": "Populated History",
+      "coverage": "new-parity-story",
+      "targetStoryId": "workspace-parity-cy-0004--plugins-notifications-populated-history",
+      "reason": "Canonical v2 visual scene rendered through the public Workspace API."
+    },
+    {
+      "sourceStoryId": "workspace-shell-plugins-notifications--progress",
+      "sourceTitle": "Workspace shell/Plugins/Notifications",
+      "sourceName": "Progress",
+      "coverage": "interaction-only",
+      "targetStoryId": null,
+      "reason": "Source story has interaction coverage but no immutable v1 visual."
+    },
+    {
+      "sourceStoryId": "workspace-shell-plugins-notifications--toast-severities",
+      "sourceTitle": "Workspace shell/Plugins/Notifications",
+      "sourceName": "Toast Severities",
+      "coverage": "new-parity-story",
+      "targetStoryId": "workspace-parity-cy-0004--plugins-notifications-toast-severities",
+      "reason": "Canonical v2 visual scene rendered through the public Workspace API."
+    },
+    {
+      "sourceStoryId": "workspace-shell-plugins-notifications--unread-state",
+      "sourceTitle": "Workspace shell/Plugins/Notifications",
+      "sourceName": "Unread State",
+      "coverage": "interaction-only",
+      "targetStoryId": null,
+      "reason": "Source story has interaction coverage but no immutable v1 visual."
+    },
+    {
+      "sourceStoryId": "workspace-shell-reference-parity--shell",
+      "sourceTitle": "Workspace shell/Reference parity",
+      "sourceName": "Shell",
+      "coverage": "new-parity-story",
+      "targetStoryId": "workspace-parity-cy-0004--reference-parity-shell",
+      "reason": "Canonical v2 visual scene rendered through the public Workspace API."
+    },
+    {
+      "sourceStoryId": "workspace-shell-shell-full-shell--desktop",
+      "sourceTitle": "Workspace shell/Shell/Full shell",
+      "sourceName": "Desktop",
+      "coverage": "new-parity-story",
+      "targetStoryId": "workspace-parity-cy-0004--shell-full-shell-desktop",
+      "reason": "Canonical v2 visual scene rendered through the public Workspace API."
+    },
+    {
+      "sourceStoryId": "workspace-shell-shell-full-shell--mobile",
+      "sourceTitle": "Workspace shell/Shell/Full shell",
+      "sourceName": "Mobile",
+      "coverage": "new-parity-story",
+      "targetStoryId": "workspace-parity-cy-0004--shell-full-shell-mobile",
+      "reason": "Canonical v2 visual scene rendered through the public Workspace API."
+    }
+  ]
+}

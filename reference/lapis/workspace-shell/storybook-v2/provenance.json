@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 2,
+  "source": "Standalone CY-0004 workspace-shell Storybook",
+  "sourceSnapshotRevision": "b06d1e3f58c3",
+  "sourceUrl": "http://127.0.0.1:6006",
+  "capture": {
+    "chromiumVersion": "149.0.7827.55",
+    "viewport": {
+      "width": 1280,
+      "height": 900
+    },
+    "deviceScaleFactor": 3,
+    "colourModes": [
+      "light",
+      "dark"
+    ],
+    "fixedTime": "2026-07-26T10:30:00.000Z",
+    "animations": "disabled",
+    "fonts": "awaited",
+    "storyFinished": "required",
+    "scope": "explicit per story"
+  },
+  "injectedCssHashes": {
+    "fmode": "199e510cc408093dc7354e32df3ec8f4496f070910af0ce8e010bf1bd2c746db",
+    "notifications": "b97e3821b735d470362c888a10726b8ddf4370a3f16076403abd31acbf6a75cc"
+  },
+  "assetCount": 104,
+  "inventorySha256": "1d6acbaa063bb387095624205d87cb8bf7e12b4e11ea29b9581efffb7fbd620e",
+  "v1CanonicalImmutable": true,
+  "updateGuard": "CY0004_REFERENCE_UPDATE=1"
+}
