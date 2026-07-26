@@ -68,6 +68,10 @@
     await expect(
       await canvas.findByRole("tab", { name: "2-up" }),
     ).toHaveAttribute("aria-selected", "true");
+    await expect(canvas.getByLabelText(/Visual compare/)).toHaveAttribute(
+      "data-zoom-scale",
+      "1.0000",
+    );
     await userEvent.click(canvas.getByRole("tab", { name: "Diff" }));
     await expect(canvas.getByRole("tab", { name: "Diff" })).toHaveAttribute(
       "aria-selected",

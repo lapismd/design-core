@@ -27,24 +27,51 @@
       ).toBeInTheDocument();
       await expect(canvas.getByText("Capture diagnostics")).toBeInTheDocument();
       const compare = canvas.getByLabelText(/Visual compare/);
-      await expect(compare).toHaveAttribute("data-zoom-mode", "fit");
-      await userEvent.click(
-        canvas.getByRole("switch", {
-          name: "Show compare view at 100%",
-        }),
-      );
       await expect(compare).toHaveAttribute("data-zoom-mode", "custom");
       await expect(compare).toHaveAttribute("data-zoom-scale", "1.0000");
+      const viewport = canvas.getByTestId("compare-scroll-viewport");
+      await expect(
+        Number.parseFloat(getComputedStyle(viewport).minHeight),
+      ).toBeGreaterThanOrEqual(300);
+      const baselinePane = canvas.getByTestId("compare-baseline-scroll");
+      const newPane = canvas.getByTestId("compare-new-scroll");
+      await waitFor(() => {
+        expect(
+          Math.abs(baselinePane.clientWidth - newPane.clientWidth),
+        ).toBeLessThanOrEqual(1);
+        expect(baselinePane.clientWidth).toBeGreaterThan(0);
+      });
       if (expectsOverflow) {
-        const viewport = canvas.getByTestId("compare-scroll-viewport");
         await waitFor(() => {
-          expect(viewport.scrollWidth).toBeGreaterThan(viewport.clientWidth);
+          expect(baselinePane.scrollWidth).toBeGreaterThan(
+            baselinePane.clientWidth,
+          );
+        });
+        const nextLeft = Math.min(
+          80,
+          baselinePane.scrollWidth - baselinePane.clientWidth,
+        );
+        baselinePane.scrollLeft = nextLeft;
+        const EventConstructor = canvasElement.ownerDocument.defaultView?.Event;
+        if (!EventConstructor) throw new Error("Story window is unavailable");
+        baselinePane.dispatchEvent(new EventConstructor("scroll"));
+        await waitFor(() => {
+          expect(newPane.scrollLeft).toBe(nextLeft);
+          expect(canvas.getByTestId("compare-shared-scroll-x").scrollLeft).toBe(
+            nextLeft,
+          );
         });
       }
       await userEvent.click(
         canvas.getByRole("switch", { name: "Zoom in compare view" }),
       );
       await expect(compare).toHaveAttribute("data-zoom-scale", "1.1000");
+      await waitFor(() => {
+        expect(
+          Math.abs(baselinePane.clientWidth - newPane.clientWidth),
+        ).toBeLessThanOrEqual(1);
+        expect(baselinePane.clientWidth).toBeGreaterThan(0);
+      });
       for (const tab of ["Swipe", "Diff", "Focus", "Blink", "2-up"]) {
         await userEvent.click(canvas.getByRole("tab", { name: tab }));
         await expect(compare).toHaveAttribute("data-zoom-scale", "1.1000");
@@ -71,6 +98,14 @@
       await expect(
         await documentScope.findByRole("dialog", { name: "Diff full image" }),
       ).toBeVisible();
+      await expect(documentScope.getByTestId("image-lightbox")).toHaveAttribute(
+        "data-zoom-mode",
+        "custom",
+      );
+      await expect(documentScope.getByTestId("image-lightbox")).toHaveAttribute(
+        "data-zoom-scale",
+        "1.0000",
+      );
       const imageZoom = documentScope.getByLabelText("Image zoom percentage");
       await userEvent.clear(imageZoom);
       await userEvent.type(imageZoom, "137{Enter}");
