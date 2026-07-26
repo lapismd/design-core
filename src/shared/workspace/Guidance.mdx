@@ -1,0 +1,38 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="Workspace/Guidance" />
+
+# Workspace
+
+The Workspace layer provides a reusable application shell with recursive tabs
+and splits, sidebars, floating windows, mobile presentation, settings,
+commands, static plugins, and controller-owned persistence.
+
+## Boundary
+
+Workspace is a framework, not an application. Consumers provide views,
+resources, persistence adapters, commands, and statically configured plugins.
+The layer does not own routes, filesystems, vaults, editors, or dynamic plugin
+discovery.
+
+## Imports
+
+```ts
+import {
+  AppShell,
+  AppShellController,
+  WorkspaceView,
+} from "@stevejuma/ui/workspace";
+```
+
+## Styling
+
+Workspace components use colocated native CSS and public
+`--ui-workspace-*` tokens. Override tokens on an ancestor. Do not pass Tailwind
+utility strings to component props.
+
+## Development status
+
+The framework is being migrated from the standalone Lapis app-shell package.
+See `src/shared/workspace/PLAN.md` for the audited slice matrix and
+`src/shared/workspace/REFERENCE.md` for source provenance.

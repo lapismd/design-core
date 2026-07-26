@@ -25,7 +25,8 @@ Per-component docs are not topics here — use `pnpm ui components`.
 
 | Topic             | File                 | Purpose                                   |
 | ----------------- | -------------------- | ----------------------------------------- |
-| `layers`          | `layers.md`          | shadcn vs forms vs filter vs AI           |
+| `layers`          | `layers.md`          | shared package-layer boundaries           |
+| `workspace`       | `workspace.md`       | workspace framework boundary and migration |
 | `shadcn`          | `shadcn.md`          | `ui:add` / inspect / docs sync            |
 | `forms`           | `forms.md`           | structured forms contract                 |
 | `testing`         | `testing.md`         | stories, checks, visual baselines         |

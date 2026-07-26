@@ -10,14 +10,16 @@ Before inventing workflows, load package conventions offline via the CLI:
 
 1. `pnpm ui guide` — topic index and reading order
 2. [`styles.md`](./styles.md) — native CSS, tokens, no Tailwind in sources
-3. `pnpm ui guide layers` — shadcn vs forms vs filter vs AI
-4. `pnpm ui guide shadcn` — `ui:add` / inspect / docs sync (never raw shadcn CLI)
-5. `pnpm ui guide forms` — structured forms vs shadcn controls
-6. `pnpm ui guide testing` — stories, checks, and visual baselines after a change
-7. `pnpm ui guide vcs` — commit after each verified change (prefer `jj` when available)
-8. `pnpm ui components` / `pnpm ui components <layer/id>` — list or show local
-   usage and examples across shadcn, forms, filter, and AI (filter with
-   `--layer`)
+3. `pnpm ui guide layers` — shadcn vs forms vs filter vs AI vs workspace
+4. [`src/shared/workspace/PLAN.md`](./src/shared/workspace/PLAN.md) — workspace
+   framework migration boundary and slice tracker
+5. `pnpm ui guide shadcn` — `ui:add` / inspect / docs sync (never raw shadcn CLI)
+6. `pnpm ui guide forms` — structured forms vs shadcn controls
+7. `pnpm ui guide testing` — stories, checks, and visual baselines after a change
+8. `pnpm ui guide vcs` — commit after each verified change (prefer `jj` when available)
+9. `pnpm ui components` / `pnpm ui components <layer/id>` — list or show local
+   usage and examples across shadcn, forms, filter, AI, and workspace (filter
+   with `--layer`)
 
 Use `--json` for machine-readable output (`pnpm ui guide testing --json`,
 `pnpm ui components button --json`). Aliases: `pnpm ui:guide`,

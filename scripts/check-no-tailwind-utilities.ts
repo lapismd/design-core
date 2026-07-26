@@ -18,6 +18,7 @@ const DEFAULT_ROOTS = [
   "src/shared/filter",
   "src/shared/forms",
   "src/shared/shadcn",
+  "src/shared/workspace",
 ] as const;
 
 const requested = process.argv.slice(2);

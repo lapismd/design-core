@@ -1,7 +1,7 @@
 ---
 id: layers
 title: Package layers
-summary: Choose shadcn, forms, filter, or AI.
+summary: Choose shadcn, forms, filter, AI, or workspace.
 sources:
   - README.md
   - COMPONENT_AUDIT.md
@@ -27,6 +27,10 @@ existing family already covers the need.
    Import from
    `@stevejuma/ui/filter`. Catalog: `Filter/...`. Guidance: `Filter/Guidance`.
 4. **AI** (`src/shared/ai/`) — shared AI panel primitives. Catalog: `AI/...`.
+5. **Workspace** (`src/shared/workspace/`) — application-independent workspace
+   framework, controller, layout, views, shell components, settings, and static
+   plugin presentation. Import from `@stevejuma/ui/workspace`. Catalog:
+   `Workspace/...`. It uses native CSS and does not import the shadcn layer.
 
 ## Dependency rules
 
@@ -36,6 +40,8 @@ existing family already covers the need.
 - `shared/forms` may import shadcn and filter.
 - `shared/ai` may compose generic shared controls but must remain
   host-controlled and reusable.
+- `shared/workspace` may use headless Bits UI and Paneforge directly; it must
+  not import shadcn, forms, filter, AI, or application-specific surfaces.
 
 ## Classification
 
