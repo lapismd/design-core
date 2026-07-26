@@ -1,4 +1,9 @@
 export { default as WorkspaceMobile } from "./WorkspaceMobile.svelte";
+export { default as WorkspaceMobileActionSheet } from "./WorkspaceMobileActionSheet.svelte";
+export { default as WorkspaceMobileActionsDrawer } from "./WorkspaceMobileActionsDrawer.svelte";
 export { default as WorkspaceMobileDock } from "./WorkspaceMobileDock.svelte";
 export { default as WorkspaceMobileSidebar } from "./WorkspaceMobileSidebar.svelte";
+export { default as WorkspaceMobileTabTile } from "./WorkspaceMobileTabTile.svelte";
 export { default as WorkspaceMobileTabs } from "./WorkspaceMobileTabs.svelte";
+export { default as WorkspaceMobileTabsActions } from "./WorkspaceMobileTabsActions.svelte";
+export { default as WorkspaceMobileViewActions } from "./WorkspaceMobileViewActions.svelte";

@@ -22,3 +22,25 @@ surface prop explicitly overrides them.
 
 Tab activation, close, undo close, creation, and sidebar selection use the same
 controller mutation and persistence path as desktop rendering.
+
+The editor stage supports Lapis-shaped horizontal pan gestures with a movement
+threshold, vertical-axis cancellation, velocity settling, and nearest-page
+snapping. The view actions and open-tabs controls use shell-scoped bottom action
+sheets, so the presentation remains inside the active `AppShell.Root`.
+
+## Composable pieces
+
+Applications may use the complete `WorkspaceMobile` renderer or compose its
+public pieces:
+
+- `WorkspaceMobileActionSheet` provides the accessible native-CSS bottom sheet.
+- `WorkspaceMobileActionsDrawer` renders quick and pane-menu actions.
+- `WorkspaceMobileViewActions` renders up to two view actions and the drawer
+  trigger.
+- `WorkspaceMobileDock` renders the floating editor navigation.
+- `WorkspaceMobileTabs`, `WorkspaceMobileTabTile`, and
+  `WorkspaceMobileTabsActions` compose the open-tab overview.
+- `WorkspaceMobileSidebar` renders a selectable sidebar surface.
+
+Every piece receives public controller, tab, or sidebar handles; none requires a
+global application value or private drag state.

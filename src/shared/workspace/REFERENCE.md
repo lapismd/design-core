@@ -53,3 +53,33 @@ replacing that implementation with:
 
 Any markup deviation required by this adaptation must be recorded beside the
 component in `PLAN.md` and covered by behavior and visual tests.
+
+## Component migration audit
+
+The audit treats source component families as the contract. Target filenames are
+allowed to change to follow this repository's one-family-per-folder convention,
+but retained behavior must have a public target component and colocated story
+coverage.
+
+| Source app-shell family                                                                                                         | Target Workspace family                                                                                    | Status   |
+| ------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | -------- |
+| `app-shell-{root,surface,ribbon,left-sidebar,right-sidebar,workspace,floating-layer,status-bar}.svelte`                         | `app-shell/` compound components                                                                           | Complete |
+| `app-shell-{about-dialog,command-palette,settings,hotkey-settings,core-plugins-settings,notice-host,plugin-layer}.svelte`       | `app-shell/`, `about-dialog/`, `command-palette/`, `settings/`                                             | Complete |
+| `workspace-{tab-strip,tabs-move}.svelte` and top-tab rendering from `workspace-pane.svelte`                                     | `tabs/WorkspaceTabs.svelte`, `tabs/WorkspaceTabsMove.svelte`                                               | Complete |
+| `workspace-stacked-pane.svelte`                                                                                                 | `stacked-tabs/WorkspaceStackedTabs.svelte`                                                                 | Complete |
+| `workspace-{pane,tree}.svelte` split recursion                                                                                  | `split/WorkspaceSplit.svelte`, `tree/WorkspaceTree.svelte`                                                 | Complete |
+| `workspace-{sidebar,sidebar-empty,sidebar-group,sidebar-toggle}.svelte`                                                         | `sidebar/`, `sidebar-empty/`, `sidebar-group/`, `sidebar-toggle/`                                          | Complete |
+| `workspace-{view-header,view-host,imperative-view,empty,icon}.svelte`                                                           | `view-header/`, `view-host/`, `empty/`, `icon/`                                                            | Complete |
+| `workspace-context-menu-items.svelte`, `workspace-menu-items.svelte`                                                            | `menu/WorkspaceMenuItems.svelte`                                                                           | Complete |
+| `workspace-drag.svelte.ts`, `workspace-pointer-drag-policy.ts`, `workspace-tabs-drop.{svelte,ts}`, `workspace-tabs-move.svelte` | `drag/`, `drop-overlay/`, `tabs/WorkspaceTabsMove.svelte`                                                  | Complete |
+| `workspace-{floating-window,popout-surface}.svelte`, shell floating and popout layers                                           | `floating-window/`, `floating-layer/`, `popout/`                                                           | Complete |
+| `workspace-{ribbon,status-bar,status-item}.svelte`                                                                              | `ribbon/`, `status-bar/`, `status-item/`                                                                   | Complete |
+| `workspace-mobile.svelte` and all seven `workspace-mobile-*` helper components                                                  | `mobile/WorkspaceMobile*.svelte` public component family                                                   | Complete |
+| `app-settings-*`, `workspace-setting-*`, `workspace-settings-surface.svelte`                                                    | `settings/` native-CSS compound components                                                                 | Complete |
+| F-Mode and Notifications package components                                                                                     | `plugins/f-mode/`, `plugins/notifications/`                                                                | Complete |
+| Source shell, framework, component, settings, overlay, and reference stories                                                    | Colocated `*.stories.svelte` and `*.mdx` files across each target family                                   | Complete |
+| Copied shadcn components and generated Tailwind utility wrappers                                                                | Not migrated; replaced by semantic HTML, direct Bits UI where needed, Paneforge, native CSS, and UI tokens | Excluded |
+
+The remaining migration gate is visual evidence rather than unimplemented
+component ownership: candidate baselines and the immutable Lapis reference
+matrix are tracked separately and require explicit review before approval.

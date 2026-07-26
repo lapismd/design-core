@@ -83,6 +83,16 @@
       kind: "svelte",
       type: "mobile-example",
       component: ExampleWorkspaceView,
+      getChrome: () => ({
+        actions: [
+          {
+            id: "reload",
+            label: "Reload view",
+            icon: "rotate-ccw",
+            onSelect: () => undefined,
+          },
+        ],
+      }),
     });
     controller.openWindow(
       tab("mobile-floating", "Floating inspector", "scan-search"),
@@ -95,6 +105,8 @@
   const overviewController = createFixture();
   const filteredController = createFixture();
   const panController = createFixture();
+  const actionsController = createFixture();
+  const tabActionsController = createFixture();
 </script>
 
 <Story
@@ -128,10 +140,13 @@
     await expect(
       canvas.queryByRole("button", { name: "Open Notes" }),
     ).not.toBeInTheDocument();
-    await userEvent.click(canvas.getByRole("button", { name: "Undo close" }));
-    await expect(
-      canvas.getByRole("button", { name: "Open Notes" }),
-    ).toBeVisible();
+    await userEvent.click(
+      canvas.getByRole("button", { name: /Open tab actions/ }),
+    );
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Undo close tab" }),
+    );
+    await expect(canvas.getByRole("region", { name: "Notes" })).toBeVisible();
   }}
 >
   {#snippet template()}
@@ -169,6 +184,72 @@
     <div class="ui-workspace-mobile-story-canvas">
       <div class="ui-workspace-mobile-story-frame">
         <WorkspaceMobile controller={panController} />
+      </div>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="View actions drawer"
+  tags={["visual-pending"]}
+  play={async ({ canvas }) => {
+    await expect(
+      canvas.getByRole("button", { name: "Reload view" }),
+    ).toBeVisible();
+    await userEvent.click(
+      canvas.getAllByRole("button", { name: "Open more actions" })[0]!,
+    );
+    await expect(
+      canvas.getByRole("dialog", { name: "More actions" }),
+    ).toBeVisible();
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Open right sidebar" }),
+    );
+    await expect(
+      canvas.getByLabelText("Select right sidebar tab"),
+    ).toBeVisible();
+  }}
+>
+  {#snippet template()}
+    <div class="ui-workspace-mobile-story-canvas">
+      <div class="ui-workspace-mobile-story-frame">
+        <WorkspaceMobile
+          controller={actionsController}
+          onOpenSettings={() => undefined}
+        />
+      </div>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Open tabs actions drawer"
+  tags={["visual-pending"]}
+  play={async ({ canvas }) => {
+    await userEvent.click(
+      canvas.getByRole("button", { name: /Open tab actions/ }),
+    );
+    await expect(
+      canvas.getByRole("dialog", { name: "7 open tabs" }),
+    ).toBeVisible();
+    await expect(
+      canvas.getByRole("button", { name: "Close tabs" }),
+    ).toBeVisible();
+    await userEvent.keyboard("{Escape}");
+    await expect(
+      canvas.queryByRole("dialog", { name: "7 open tabs" }),
+    ).not.toBeInTheDocument();
+  }}
+>
+  {#snippet template()}
+    <div class="ui-workspace-mobile-story-canvas">
+      <div class="ui-workspace-mobile-story-frame">
+        <WorkspaceMobile
+          controller={tabActionsController}
+          defaultPage="tabs"
+          includeSidebarsInTabs={true}
+          includeFloatingInTabs={true}
+        />
       </div>
     </div>
   {/snippet}

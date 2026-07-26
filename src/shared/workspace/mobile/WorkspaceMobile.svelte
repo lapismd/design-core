@@ -4,9 +4,11 @@
   import type { WorkspaceShellController } from "../core/workspace-controller.svelte.js";
   import WorkspaceIcon from "../icon/WorkspaceIcon.svelte";
   import WorkspaceViewHost from "../view-host/WorkspaceViewHost.svelte";
+  import WorkspaceMobileActionsDrawer from "./WorkspaceMobileActionsDrawer.svelte";
   import WorkspaceMobileDock from "./WorkspaceMobileDock.svelte";
   import WorkspaceMobileSidebar from "./WorkspaceMobileSidebar.svelte";
   import WorkspaceMobileTabs from "./WorkspaceMobileTabs.svelte";
+  import WorkspaceMobileViewActions from "./WorkspaceMobileViewActions.svelte";
   import "./WorkspaceMobile.css";
 
   let {
@@ -87,9 +89,6 @@
         )
       : []),
   ]);
-  let paneMenu = $derived(
-    activeTab ? controller.createPaneMenu(activeTab.id) : null,
-  );
   let stageDragging = $derived(Boolean(panGesture?.dragging));
   let stageOffset = $derived(
     panGesture?.dragging ? `${panGesture.currentOffset}px` : offsetFor(reveal),
@@ -130,6 +129,12 @@
         : entry?.origin === "right"
           ? "right"
           : "center";
+  }
+
+  function addTab() {
+    const paneId = controller.activePaneId;
+    if (!createTab || !paneId) return;
+    controller.addTab(paneId, createTab(paneId), true);
   }
 
   function sidebarWidth(): number {
@@ -345,15 +350,11 @@
             <WorkspaceIcon name="panel-left" />
           </button>
 
-          <button
-            type="button"
-            class="ui-workspace-mobile__menu-toggle"
-            data-mobile-stage-control
-            aria-label="Open more actions"
-            onclick={() => (menuOpen = !menuOpen)}
-          >
-            <WorkspaceIcon name="ellipsis" />
-          </button>
+          <WorkspaceMobileViewActions
+            {controller}
+            {activeTab}
+            onOpenMenu={() => (menuOpen = true)}
+          />
 
           {#if activeTab}
             <WorkspaceViewHost
@@ -380,56 +381,6 @@
               aria-label="Close sidebar"
               onclick={() => (reveal = "center")}
             ></button>
-          {/if}
-
-          {#if menuOpen}
-            <div
-              class="ui-workspace-mobile__menu"
-              data-mobile-stage-control
-              role="dialog"
-            >
-              <header>
-                <h2>More actions</h2>
-                <button
-                  type="button"
-                  aria-label="Close more actions"
-                  onclick={() => (menuOpen = false)}
-                >
-                  <WorkspaceIcon name="x" />
-                </button>
-              </header>
-              <button type="button" onclick={() => (reveal = "right")}>
-                <WorkspaceIcon name="panel-right" />
-                Open right sidebar
-              </button>
-              {#if onOpenSettings}
-                <button type="button" onclick={onOpenSettings}>
-                  <WorkspaceIcon name="settings-2" />
-                  Open settings
-                </button>
-              {/if}
-              {#if paneMenu}
-                {#each paneMenu.entries as entry, index (`${entry.kind}-${index}`)}
-                  {#if entry.kind === "separator"}
-                    <hr />
-                  {:else if entry.kind === "item"}
-                    <button
-                      type="button"
-                      disabled={entry.disabled}
-                      onclick={async (event) => {
-                        await entry.callback?.(event);
-                        if (entry.closeOnSelect) menuOpen = false;
-                      }}
-                    >
-                      {#if entry.icon}
-                        <WorkspaceIcon name={entry.icon} />
-                      {/if}
-                      {entry.title}
-                    </button>
-                  {/if}
-                {/each}
-              {/if}
-            </div>
           {/if}
 
           {#if showBottomNav}
@@ -461,4 +412,13 @@
       </div>
     </div>
   {/if}
+
+  <WorkspaceMobileActionsDrawer
+    {controller}
+    {activeTab}
+    bind:open={menuOpen}
+    onNewTab={addTab}
+    onOpenRightSidebar={() => (reveal = "right")}
+    {onOpenSettings}
+  />
 </div>

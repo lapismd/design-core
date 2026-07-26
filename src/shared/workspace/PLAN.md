@@ -78,11 +78,11 @@ Compatibility aliases are removed only through an explicit reviewed slice.
 | Configuration and settings model | `settings/*.ts`, `core/built-in-settings*`                 | `core/settings/`           | Complete            | Pass | Pending  | N/A     | Pending |
 | Plugin lifecycle                 | `core/plugin-manager*`, UI registry                        | `core/plugins/`            | Complete            | Pass | Pending  | N/A     | Pending |
 | Notifications model              | notice and notification managers                           | `core/notifications/`      | Complete            | Pass | Pending  | N/A     | Pending |
-| Tabs and splits                  | tab, pane, tree, drag modules                              | component families         | In progress         | Pass | Pass     | Pending | Pending |
-| Sidebars and groups              | sidebar modules                                            | component families         | In progress         | Pass | Pass     | Pending | Pending |
+| Tabs and splits                  | tab, pane, tree, drag modules                              | component families         | Complete            | Pass | Pass     | Pending | Pending |
+| Sidebars and groups              | sidebar modules                                            | component families         | Complete            | Pass | Pass     | Pending | Pending |
 | View chrome and menus            | view header, empty, menus                                  | component families         | Complete            | Pass | Pass     | Pending | Pending |
-| Windows and overlays             | window and drop modules                                    | component families         | In progress         | Pass | Pass     | Pending | Pending |
-| Mobile shell                     | mobile modules                                             | component families         | In progress         | Pass | Pass     | Pending | Pending |
+| Windows and overlays             | window and drop modules                                    | component families         | Complete            | Pass | Pass     | Pending | Pending |
+| Mobile shell                     | mobile modules                                             | component families         | Complete            | Pass | Pass     | Pending | Pending |
 | Ribbon and status                | ribbon/status modules                                      | component families         | Complete            | Pass | Pass     | Pending | Pending |
 | Settings presentation            | settings Svelte components                                 | component families         | Complete            | Pass | Pass     | Pending | Pending |
 | Compound AppShell                | `app-shell-*` modules                                      | component families         | Complete            | Pass | Pass     | Pending | Pending |
@@ -441,7 +441,11 @@ workflow.
 - Restored the source mobile pan threshold, axis cancellation, pointer capture,
   velocity settling, measured sidebar width, nearest-page snapping, and
   close-panel behavior.
-- Focused Storybook interaction and accessibility execution: 2 files and 9
+- Extracted the source action sheet, view actions, tab tile, tab-actions drawer,
+  dock, and sidebar renderers as individually importable public components.
+- Replaced the reconstructed inline mobile menus with shell-scoped source-shaped
+  bottom sheets for quick actions, pane actions, and open-tab operations.
+- Focused Storybook interaction and accessibility execution: 2 files and 11
   stories pass through the repository's Storybook Vitest project.
 - The required MCP focused run was invoked against the standard checkout on
   port `9009`; it correctly found no matching workspace-only stories. The
@@ -449,7 +453,6 @@ workflow.
 - `pnpm check:no-tailwind`: pass.
 - `pnpm check`: pass with zero Svelte errors or warnings.
 - Real Chromium pointer coverage verifies mobile pan reveal and dismissal.
-- Mobile action-drawer parity remains in progress.
 - Visual Delta candidate baselines remain pending explicit human approval; no
   committed baseline image was created or replaced in this slice.
 

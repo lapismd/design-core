@@ -1,0 +1,101 @@
+.ui-workspace-mobile-sheet {
+  position: absolute;
+  z-index: calc(var(--ui-workspace-overlay-z-index) + 10);
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: rgb(0 0 0 / 36%);
+}
+
+.ui-workspace-mobile-sheet__dialog {
+  width: min(100%, 36rem);
+  max-height: 78svh;
+  overflow: auto;
+  border: 1px solid var(--ui-workspace-border);
+  border-bottom: 0;
+  border-radius: 2rem 2rem 0 0;
+  padding: 0.5rem 1rem calc(1.5rem + env(safe-area-inset-bottom, 0));
+  color: var(--ui-workspace-popover-foreground);
+  background: var(--ui-workspace-popover);
+  box-shadow: 0 -1rem 3rem rgb(0 0 0 / 18%);
+}
+
+.ui-workspace-mobile-sheet__handle {
+  width: 2.5rem;
+  height: 0.25rem;
+  border-radius: 999px;
+  margin: 0.25rem auto 1rem;
+  background: var(--ui-workspace-border);
+}
+
+.ui-workspace-mobile-sheet__sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
+
+.ui-workspace-mobile-sheet__group {
+  overflow: hidden;
+  border: 1px solid var(--ui-workspace-border);
+  border-radius: 1.75rem;
+  background: color-mix(
+    in srgb,
+    var(--ui-workspace-background) 95%,
+    transparent
+  );
+  box-shadow: 0 1px 2px rgb(0 0 0 / 6%);
+}
+
+.ui-workspace-mobile-sheet__groups {
+  display: grid;
+  gap: 1rem;
+}
+
+.ui-workspace-mobile-sheet__action {
+  display: flex;
+  width: 100%;
+  min-height: 3.5rem;
+  align-items: center;
+  gap: 1rem;
+  border: 0;
+  padding: 0.75rem 1.25rem;
+  color: inherit;
+  background: transparent;
+  font: inherit;
+  font-size: 1rem;
+  text-align: left;
+}
+
+.ui-workspace-mobile-sheet__action:hover:not(:disabled) {
+  background: var(--ui-workspace-muted);
+}
+
+.ui-workspace-mobile-sheet__action:focus-visible {
+  outline: 2px solid var(--ui-workspace-focus-ring);
+  outline-offset: -2px;
+}
+
+.ui-workspace-mobile-sheet__action:disabled {
+  opacity: 0.5;
+}
+
+.ui-workspace-mobile-sheet__action[data-variant="destructive"] {
+  color: var(--ui-workspace-destructive);
+}
+
+.ui-workspace-mobile-sheet__action svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  flex: 0 0 1.5rem;
+}
+
+.ui-workspace-mobile-sheet__separator {
+  height: 1px;
+  margin: 0 1.25rem;
+  background: var(--ui-workspace-border);
+}

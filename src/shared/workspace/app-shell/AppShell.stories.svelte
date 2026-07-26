@@ -8,6 +8,7 @@
     createWorkspaceTabs,
   } from "../core/layout.js";
   import { AppShellController } from "../core/app-shell-controller.svelte.js";
+  import { APP_SHELL_SETTING_IDS } from "../core/built-in-settings.svelte.js";
   import { AppShellPlugin } from "../core/plugin-manager.svelte.js";
   import { WorkspaceView, type WorkspaceLeaf } from "../core/workspace-view.js";
   import type { WorkspaceSidebarGroup } from "../core/types.js";
@@ -186,6 +187,9 @@
     const app = new AppShellController({
       layout,
       application: { name: "Workspace demo", version: "1.0.0" },
+      configuration: {
+        values: { [APP_SHELL_SETTING_IDS.mobileMode]: "never" },
+      },
       plugins: [
         {
           id: "demo-static-plugin",
