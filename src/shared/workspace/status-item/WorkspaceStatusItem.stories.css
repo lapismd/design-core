@@ -1,0 +1,11 @@
+.ui-workspace-status-item-story-frame {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  border: 1px solid var(--ui-workspace-border);
+  border-radius: var(--ui-workspace-radius-small);
+  padding: 0.25rem;
+  color: var(--ui-workspace-muted-foreground);
+  background: var(--ui-workspace-panel);
+  font-size: 0.75rem;
+}

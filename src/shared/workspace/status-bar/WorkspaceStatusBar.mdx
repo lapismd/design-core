@@ -1,0 +1,14 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as Stories from "./WorkspaceStatusBar.stories.svelte";
+
+<Meta of={Stories} />
+
+# Workspace status bar
+
+The status bar renders controller contributions in the compact fixed
+bottom-right Lapis surface. Applications can omit or replace the surface while
+retaining the same status registry.
+
+<Canvas of={Stories.LeftAndRightContributions} />
+
+<Controls of={Stories.LeftAndRightContributions} />

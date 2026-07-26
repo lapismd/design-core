@@ -1,0 +1,14 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as Stories from "./WorkspaceRibbon.stories.svelte";
+
+<Meta of={Stories} />
+
+# Workspace ribbon
+
+The ribbon renders `WorkspaceShellController.ribbon` contributions. Consumers
+register typed items and may omit or replace the entire surface without
+changing controller behavior.
+
+<Canvas of={Stories.TopAndBottomControllerItems} />
+
+<Controls of={Stories.TopAndBottomControllerItems} />

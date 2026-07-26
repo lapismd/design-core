@@ -1,0 +1,6 @@
+.ui-workspace-ribbon-story-frame {
+  width: 16rem;
+  height: 32rem;
+  color: var(--ui-workspace-foreground);
+  background: var(--ui-workspace-background);
+}

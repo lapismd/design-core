@@ -83,7 +83,7 @@ Compatibility aliases are removed only through an explicit reviewed slice.
 | View chrome and menus            | view header, empty, menus                                  | component families         | Complete            | Pass    | Pass     | Pending | Pending |
 | Windows and overlays             | window and drop modules                                    | component families         | In progress         | Pass    | Partial  | Pending | Pending |
 | Mobile shell                     | mobile modules                                             | component families         | Pending             | Pending | Pending  | Pending | Pending |
-| Ribbon and status                | ribbon/status modules                                      | component families         | Pending             | Pending | Pending  | Pending | Pending |
+| Ribbon and status                | ribbon/status modules                                      | component families         | Complete            | Pass    | Pass     | Pending | Pending |
 | Settings presentation            | settings Svelte components                                 | component families         | Pending             | Pending | Pending  | Pending | Pending |
 | Compound AppShell                | `app-shell-*` modules                                      | component families         | Pending             | Pending | Pending  | Pending | Pending |
 | F-Mode                           | optional plugin package                                    | `plugins/f-mode/`          | Pending             | Pending | Pending  | Pending | Pending |
@@ -236,6 +236,27 @@ workflow.
   stories pass through the repository's Storybook Vitest project.
 - The required MCP focused run was invoked; it returned no per-story result in
   the JJ workspace. Supplemental focused execution remains green.
+- `pnpm check:no-tailwind`: pass.
+- `pnpm check`: pass with zero Svelte errors or warnings.
+- Visual Delta candidate baselines remain pending explicit human approval; no
+  committed baseline image was created or replaced in this slice.
+
+### Ribbon and status surfaces
+
+- Added independently importable ribbon, status-item, and status-bar component
+  families, each with colocated native CSS, documentation, and interaction
+  stories.
+- Both surfaces consume the existing controller registries, retain source
+  geometry and hint targets, and can be omitted or replaced by an application.
+- Status items support direct actions, icons, segments, busy state, and shared
+  declarative menus.
+- Focused Storybook interaction and accessibility execution: 3 files and 3
+  stories pass through the repository's Storybook Vitest project.
+- The required MCP focused run was invoked. Its first attempt broadened into
+  the target repository's pre-existing Visual Delta manager failures and lost
+  the MCP transport; after the semantic landmark fix, a second focused request
+  completed without returning per-story results. Supplemental focused
+  execution remains green.
 - `pnpm check:no-tailwind`: pass.
 - `pnpm check`: pass with zero Svelte errors or warnings.
 - Visual Delta candidate baselines remain pending explicit human approval; no

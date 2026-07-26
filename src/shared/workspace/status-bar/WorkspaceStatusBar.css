@@ -1,0 +1,39 @@
+.ui-workspace-status-bar {
+  position: fixed;
+  z-index: var(--ui-workspace-overlay-z-index);
+  right: 0;
+  bottom: 0;
+  display: flex;
+  max-width: 90svw;
+  min-height: var(--ui-workspace-status-height);
+  align-items: center;
+  gap: 0.25rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  border: 1px solid var(--ui-workspace-border);
+  border-bottom: 0;
+  border-radius: var(--ui-workspace-radius-small) 0 0 0;
+  padding: 0.125rem 0.5rem 0.125rem 0.25rem;
+  color: var(--ui-workspace-muted-foreground);
+  background: var(--ui-workspace-panel);
+  font-size: 0.75rem;
+  flex-wrap: nowrap;
+  scrollbar-width: none;
+  user-select: none;
+}
+
+.ui-workspace-status-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.ui-workspace-status-bar__items {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.ui-workspace-status-bar__spacer {
+  min-width: 0;
+  flex: 1 1 auto;
+}

@@ -1,0 +1,14 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as Stories from "./WorkspaceStatusItem.stories.svelte";
+
+<Meta of={Stories} />
+
+# Workspace status item
+
+Status items support text, segments, icons, busy state, direct actions, and the
+shared declarative menu model. Plugin and application contributions therefore
+share one renderer.
+
+<Canvas of={Stories.ActionAndMenuItems} />
+
+<Controls of={Stories.ActionAndMenuItems} />

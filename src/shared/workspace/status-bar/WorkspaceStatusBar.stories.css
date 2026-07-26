@@ -1,0 +1,11 @@
+.ui-workspace-status-bar-story-frame {
+  position: relative;
+  width: 100%;
+  height: 16rem;
+  color: var(--ui-workspace-foreground);
+  background: var(--ui-workspace-background);
+}
+
+.ui-workspace-status-bar-story-frame .ui-workspace-status-bar {
+  position: absolute;
+}

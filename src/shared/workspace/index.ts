@@ -11,6 +11,7 @@ export * from "./drop-overlay/index.js";
 export * from "./empty/index.js";
 export * from "./icon/index.js";
 export * from "./menu/index.js";
+export * from "./ribbon/index.js";
 export * from "./settings/index.js";
 export * from "./sidebar/index.js";
 export * from "./sidebar-empty/index.js";
@@ -24,6 +25,8 @@ export {
 export * from "./sidebar-toggle/index.js";
 export * from "./split/index.js";
 export * from "./stacked-tabs/index.js";
+export * from "./status-bar/index.js";
+export { WorkspaceStatusItem as WorkspaceStatusItemComponent } from "./status-item/index.js";
 export * from "./tabs/index.js";
 export * from "./tree/index.js";
 export * from "./view-header/index.js";

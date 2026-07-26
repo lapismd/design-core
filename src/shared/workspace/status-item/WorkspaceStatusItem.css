@@ -1,0 +1,62 @@
+.ui-workspace-status-item {
+  display: inline-flex;
+  min-width: max-content;
+  min-height: 1.25rem;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 0.25rem;
+  border: 0;
+  border-radius: var(--ui-workspace-radius-small);
+  padding: 0.1875rem 0.5rem;
+  color: inherit;
+  background: transparent;
+  font: inherit;
+  line-height: 1;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.ui-workspace-status-item:hover:not(:disabled) {
+  color: var(--ui-workspace-panel-foreground);
+  background: var(--ui-workspace-muted);
+}
+
+.ui-workspace-status-item:disabled {
+  opacity: 0.5;
+}
+
+.ui-workspace-status-item:focus-visible {
+  outline: 2px solid var(--ui-workspace-focus-ring);
+  outline-offset: 1px;
+}
+
+.ui-workspace-status-item__icon {
+  display: inline-flex;
+  width: 0.875rem;
+  height: 0.875rem;
+  flex: 0 0 0.875rem;
+}
+
+.ui-workspace-status-item__icon[data-busy="true"] {
+  animation: ui-workspace-status-spin 1s linear infinite;
+}
+
+.ui-workspace-status-item__segment {
+  margin-inline-end: 0.5rem;
+}
+
+.ui-workspace-status-item__segment:last-child {
+  margin-inline-end: 0;
+}
+
+@keyframes ui-workspace-status-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-workspace-status-item__icon[data-busy="true"] {
+    animation: none;
+  }
+}
