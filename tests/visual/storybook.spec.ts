@@ -31,11 +31,14 @@ import {
 } from "../../packages/storybook-addon-visual-delta/src/shared/interaction-capture.js";
 import {
   VISUAL_DELTA_CROP_ATTR,
-  VISUAL_DELTA_DELAY_ATTR,
   VISUAL_DELTA_IGNORE_ATTR_LIST,
   VISUAL_DELTA_PASS_THRESHOLD_ATTR,
 } from "../../packages/storybook-addon-visual-delta/src/shared/capture-params-attrs.js";
 import { resolveIgnoreSelectors } from "../../packages/storybook-addon-visual-delta/src/shared/ignore.js";
+import {
+  settleVisualStoryPage,
+  waitForVisualStoryFinished,
+} from "../../packages/storybook-addon-visual-delta/src/playwright/readiness.js";
 
 type StorybookIndex = {
   entries: Record<string, StoryIndexEntry>;
@@ -318,11 +321,9 @@ async function prepareStoryPage(
 
   const root = page.locator("#storybook-root");
   await expect(root).toBeVisible();
-  await page.evaluate(async () => {
-    if (document.fonts?.ready) {
-      await document.fonts.ready;
-    }
-  });
+  if (!options?.visualCaptureUntil) {
+    await waitForVisualStoryFinished(page, storyId);
+  }
 }
 
 async function settleAfterPlay(page: Page, storyId: string): Promise<void> {
@@ -356,20 +357,7 @@ async function settleAfterPlay(page: Page, storyId: string): Promise<void> {
       /* stories without overlays still screenshot */
     });
 
-  await page.waitForTimeout(100);
-
-  await page.evaluate(() => {
-    const active = document.activeElement;
-    if (active instanceof HTMLElement) active.blur();
-  });
-
-  // CSF `parameters.visualDelta.delay` published by the Visual Delta preview decorator.
-  const delayMs = await page.evaluate((attr) => {
-    const raw = document.documentElement.getAttribute(attr);
-    const n = raw ? Number(raw) : 0;
-    return Number.isFinite(n) && n > 0 ? n : 0;
-  }, VISUAL_DELTA_DELAY_ATTR);
-  if (delayMs > 0) await page.waitForTimeout(delayMs);
+  await settleVisualStoryPage(page);
 }
 
 async function visualDeltaCaptureOptions(page: Page): Promise<{
@@ -386,8 +374,7 @@ async function visualDeltaCaptureOptions(page: Page): Promise<{
       return {
         maskSelectors: ignoreRaw ? ignoreRaw.split("\n").filter(Boolean) : [],
         cropToViewport: root.getAttribute(attrs.crop) === "1",
-        passThresholdPercent:
-          Number.isFinite(pass) && pass >= 0 ? pass : null,
+        passThresholdPercent: Number.isFinite(pass) && pass >= 0 ? pass : null,
       };
     },
     {
