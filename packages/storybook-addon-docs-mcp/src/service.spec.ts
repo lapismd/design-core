@@ -14,7 +14,7 @@ afterEach(() => {
 });
 
 describe("Docs service normalization and cache", () => {
-  it("keeps legacy providers source-compatible and invalidates normalized metadata by source content", () => {
+  it("keeps legacy providers source-compatible and invalidates normalized metadata by source content", async () => {
     const root = mkdtempSync(path.join(tmpdir(), "docs-mcp-service-"));
     roots.push(root);
     const source = path.join(root, "Button.md");
@@ -48,8 +48,9 @@ describe("Docs service normalization and cache", () => {
       sections: [{ id: "usage", title: "Usage" }],
     });
     writeFileSync(source, "Updated summary");
+    await new Promise((resolve) => setTimeout(resolve, 1_050));
     expect(service.getCatalog().components[0]!.summary).toBe("Updated summary");
-  });
+  }, 5_000);
 
   it("publishes retrieval metadata and curated artifacts in manifests", () => {
     const config: DocsMcpConfig = {

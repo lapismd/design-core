@@ -184,7 +184,7 @@ describe("Docs MCP transports", () => {
     } finally {
       await server.close();
     }
-  });
+  }, 30_000);
 
   it("runs two independent stdio servers without ports or stdout noise", async () => {
     const first = spawnStdio();

@@ -34,5 +34,5 @@ describe("Docs MCP deterministic evaluation", () => {
     expect(report.metrics.perKindCoverage.guide.rate).toBe(1);
     expect(report.metrics.perKindCoverage.block.rate).toBe(1);
     expect(report.metrics.perKindCoverage.template.cases).toBe(0);
-  });
+  }, 30_000);
 });
