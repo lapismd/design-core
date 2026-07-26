@@ -237,7 +237,7 @@ Full options table: addon README. Host overrides used here:
 | ----------------------------- | ------------------------------------------------------------------------------------ |
 | `baselinePathMode`            | `nested-import`                                                                      |
 | `snapshotDir`                 | `tests/visual/storybook.spec.ts-snapshots` (addon default)                           |
-| `visualServerPort`            | Storybook port + 1 (warm static; `:9010` when UI is on `:9009`)                       |
+| `visualServerPort`            | Storybook port + 1 (warm static; `:9010` when UI is on `:9009`)                      |
 | `visualTestArgs`              | `pnpm exec playwright test`                                                          |
 | `visualUpdateArgs`            | `… cli.ts visual-update --allow-dirty --approved --skip-build`                       |
 | `visualInteractionUpdateArgs` | `… visual-interaction-update --allow-dirty --approved --skip-build`                  |
@@ -445,8 +445,14 @@ other review tags on that story).
 ### Optional catalog fixtures
 
 `src/storybook/visual-delta/*` stories exercise panel chrome (typically tagged
-`skip-visual`). Useful when developing the addon; not required for a consumer
-host that only wants Live Diff on product stories.
+`skip-visual`). Canonical real-panel stories also carry
+`visual-delta-self-test` and are protected by the dedicated
+`test:visual-delta-panel` Playwright lane; they do not enter the product visual
+suite. That lane covers the real panel at bottom/right sizes, component and
+full-viewport overlay baselines at above/left/right/below placements, and the
+development-only Storybook sidebar Testing Module/context menus. Useful when
+developing the addon; not required for a consumer host that only wants Live
+Diff on product stories.
 
 ### `storybook-run` restart watch (manager does not HMR)
 
@@ -474,6 +480,8 @@ pnpm storybook:check        # story tests + build + visual compare
 pnpm test:unit              # node unit + visual-delta package specs
 pnpm test:storybook         # headless story Vitest once
 pnpm test:storybook:watch   # story Vitest watch
+pnpm test:visual-delta-panel # panel + overlay + sidebar manager compare (never writes)
+VISUAL_UPDATE_APPROVED=1 pnpm test:visual-delta-panel:update # gated panel-only update
 pnpm test:visual            # screenshot compare (never writes baselines)
 pnpm test:visual:update --component <name>  # gated baseline update
 pnpm test:visual:report     # open Playwright HTML report
@@ -660,18 +668,18 @@ extra wiring. Global tags `autodocs` and `test` are not badged.
 Visual Delta review/skip chips (icons, colors, stacking): see
 [Sidebar and toolbar Visual Delta labels](#sidebar-and-toolbar-visual-delta-labels).
 
-| Tag                      | Meaning                                                                                                                                                                    |
-| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `skip-test`              | Exclude from Storybook Vitest (document reason)                                                                                                                            |
+| Tag                      | Meaning                                                                                                                                                                                  |
+| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `skip-test`              | Exclude from Storybook Vitest (document reason)                                                                                                                                          |
 | `skip-visual`            | Exclude from Playwright visual suite (document reason). Toggle from Visual Delta header (empty / skipped stories) or **More**, or `pnpm ui visual:tag` / `visual-delta skip` / `include` |
-| `upstream-example`       | Generated from upstream docs examples                                                                                                                                      |
-| `visual-state`           | Explicit visual-state story                                                                                                                                                |
-| `visual-pending`         | Baseline exists; awaiting human approval (Visual Delta)                                                                                                                    |
-| `visual-approved`        | Baseline reviewed and accepted (Visual Delta)                                                                                                                              |
-| `visual-ready`           | Agent/dev marked baseline ready for human review (Visual Delta)                                                                                                            |
-| `visual-failed`          | Baseline review failed or rejected (Visual Delta)                                                                                                                          |
-| `tasks-reference-visual` | Tasks vs Superlist reference baselines                                                                                                                                     |
-| `fava-reference-visual`  | Beancount screens vs live Fava captures                                                                                                                                    |
+| `upstream-example`       | Generated from upstream docs examples                                                                                                                                                    |
+| `visual-state`           | Explicit visual-state story                                                                                                                                                              |
+| `visual-pending`         | Baseline exists; awaiting human approval (Visual Delta)                                                                                                                                  |
+| `visual-approved`        | Baseline reviewed and accepted (Visual Delta)                                                                                                                                            |
+| `visual-ready`           | Agent/dev marked baseline ready for human review (Visual Delta)                                                                                                                          |
+| `visual-failed`          | Baseline review failed or rejected (Visual Delta)                                                                                                                                        |
+| `tasks-reference-visual` | Tasks vs Superlist reference baselines                                                                                                                                                   |
+| `fava-reference-visual`  | Beancount screens vs live Fava captures                                                                                                                                                  |
 
 Review tags (`visual-failed` / `visual-ready` / `visual-pending` /
 `visual-approved`) are mutually exclusive; CSF patchers keep a single review
