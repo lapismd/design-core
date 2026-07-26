@@ -8,11 +8,12 @@
     "storybook:ui": "WATCHPACK_POLLING=250 node scripts/storybook-run.mjs",
     "storybook:stop": "bash scripts/storybook-stop.sh",
     "storybook:restart": "bash scripts/storybook-restart.sh",
-    "storybook:check": "pnpm test:storybook && pnpm build-storybook && pnpm test:visual-delta-panel && pnpm test:visual",
+    "storybook:check": "pnpm test:storybook && pnpm test:workspace:pointer && pnpm build-storybook && pnpm test:visual-delta-panel && pnpm test:visual",
     "build-storybook": "storybook build",
     "test:unit": "vitest run --project unit --project visual-delta",
     "test:storybook": "vitest run --project storybook",
     "test:storybook:watch": "vitest --project storybook",
+    "test:workspace:pointer": "playwright test -c playwright.workspace.config.ts",
     "test:visual": "playwright test",
     "test:ai-chat-browser": "playwright test -c playwright.ai-chat.config.ts",
     "test:visual-delta-panel": "playwright test -c packages/storybook-addon-visual-delta/playwright.panel.config.ts",
@@ -41,7 +42,7 @@
     "fmt": "prettier . --write",
     "fmt:check": "prettier . --check",
     "check:no-tailwind": "tsx scripts/check-no-tailwind-utilities.ts",
-    "checks": "pnpm fmt:check && pnpm check && pnpm check:visual-delta && pnpm check:docs-mcp && pnpm check:no-tailwind && pnpm test:unit && pnpm test:storybook && pnpm build-storybook && pnpm test:ai-chat-browser && pnpm test:visual-delta-panel && pnpm test:visual",
+    "checks": "pnpm fmt:check && pnpm check && pnpm check:visual-delta && pnpm check:docs-mcp && pnpm check:no-tailwind && pnpm test:unit && pnpm test:storybook && pnpm test:workspace:pointer && pnpm build-storybook && pnpm test:ai-chat-browser && pnpm test:visual-delta-panel && pnpm test:visual",
     "filter:grammar": "node scripts/generate-filter-query-parser.mjs"
   },
   "peerDependencies": {

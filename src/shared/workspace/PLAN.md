@@ -78,11 +78,11 @@ Compatibility aliases are removed only through an explicit reviewed slice.
 | Configuration and settings model | `settings/*.ts`, `core/built-in-settings*`                 | `core/settings/`           | Complete            | Pass | Pending  | N/A     | Pending |
 | Plugin lifecycle                 | `core/plugin-manager*`, UI registry                        | `core/plugins/`            | Complete            | Pass | Pending  | N/A     | Pending |
 | Notifications model              | notice and notification managers                           | `core/notifications/`      | Complete            | Pass | Pending  | N/A     | Pending |
-| Tabs and splits                  | tab, pane, tree, drag modules                              | component families         | In progress         | Pass | Partial  | Pending | Pending |
-| Sidebars and groups              | sidebar modules                                            | component families         | In progress         | Pass | Partial  | Pending | Pending |
+| Tabs and splits                  | tab, pane, tree, drag modules                              | component families         | In progress         | Pass | Pass     | Pending | Pending |
+| Sidebars and groups              | sidebar modules                                            | component families         | In progress         | Pass | Pass     | Pending | Pending |
 | View chrome and menus            | view header, empty, menus                                  | component families         | Complete            | Pass | Pass     | Pending | Pending |
-| Windows and overlays             | window and drop modules                                    | component families         | In progress         | Pass | Partial  | Pending | Pending |
-| Mobile shell                     | mobile modules                                             | component families         | In progress         | Pass | Partial  | Pending | Pending |
+| Windows and overlays             | window and drop modules                                    | component families         | In progress         | Pass | Pass     | Pending | Pending |
+| Mobile shell                     | mobile modules                                             | component families         | In progress         | Pass | Pass     | Pending | Pending |
 | Ribbon and status                | ribbon/status modules                                      | component families         | Complete            | Pass | Pass     | Pending | Pending |
 | Settings presentation            | settings Svelte components                                 | component families         | Complete            | Pass | Pass     | Pending | Pending |
 | Compound AppShell                | `app-shell-*` modules                                      | component families         | Complete            | Pass | Pass     | Pending | Pending |
@@ -438,13 +438,18 @@ workflow.
   retain precedence.
 - Mobile tab activation, close, undo close, creation, and sidebar selection
   use the existing controller mutation and persistence paths.
-- Focused Storybook interaction and accessibility execution: 2 files and 6
+- Restored the source mobile pan threshold, axis cancellation, pointer capture,
+  velocity settling, measured sidebar width, nearest-page snapping, and
+  close-panel behavior.
+- Focused Storybook interaction and accessibility execution: 2 files and 9
   stories pass through the repository's Storybook Vitest project.
-- The required MCP focused run was invoked and returned no per-story result in
-  the JJ workspace. Supplemental focused execution remains green.
+- The required MCP focused run was invoked against the standard checkout on
+  port `9009`; it correctly found no matching workspace-only stories. The
+  isolated workspace uses supplemental focused execution on port `9109`.
 - `pnpm check:no-tailwind`: pass.
 - `pnpm check`: pass with zero Svelte errors or warnings.
-- Pointer-swipe settling and mobile action-drawer parity remain in progress.
+- Real Chromium pointer coverage verifies mobile pan reveal and dismissal.
+- Mobile action-drawer parity remains in progress.
 - Visual Delta candidate baselines remain pending explicit human approval; no
   committed baseline image was created or replaced in this slice.
 
@@ -469,6 +474,23 @@ workflow.
 - Visual Delta candidate baselines and immutable reference mapping remain
   pending explicit human approval; no committed baseline image was created or
   replaced in this slice.
+
+### Real pointer parity
+
+- Added a dedicated Playwright project that defaults to isolated Storybook
+  `9209` and Visual Delta `9210`, while accepting the active migration workspace
+  ports through environment variables.
+- Seven real Chromium mouse/pointer tests pass against Storybook `9109`:
+  mobile pan reveal/dismiss, centre move, proportional edge split, insertion
+  marker and reorder, sidebar-group top drop, floating fallback, and redock.
+- Centre and edge tests pause before release and assert the visible target,
+  bounds, background, medium radius, and `0.5` opacity. Sidebar-group tests
+  similarly assert the source-shaped 2px top insertion indicator.
+- `test:workspace:pointer` is included in `storybook:check` and the repository
+  `checks` orchestration without changing the main checkout's Storybook ports.
+- `pnpm check:no-tailwind src/shared/workspace`: pass.
+- `pnpm check`: pass with zero Svelte errors or warnings.
+- No Visual Delta baseline or immutable Lapis reference was created or changed.
 
 ## Completion gate
 

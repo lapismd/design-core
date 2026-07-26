@@ -7,6 +7,7 @@
   const overview = createFrameworkDemo();
   const interaction = createFrameworkDemo({ includeFloating: false });
   const pluginLifecycle = createFrameworkDemo({ includeFloating: false });
+  const pointer = createFrameworkDemo({ includeFloating: false });
   const mobile = createFrameworkDemo({
     includeFloating: true,
     mobileMode: "always",
@@ -101,5 +102,11 @@
 <Story name="Mobile composition" tags={["visual-pending"]}>
   {#snippet template()}
     <ReusableFrameworkDemo app={mobile.app} displayMode="mobile" />
+  {/snippet}
+</Story>
+
+<Story name="Pointer drag surface" tags={["visual-pending"]}>
+  {#snippet template()}
+    <ReusableFrameworkDemo app={pointer.app} />
   {/snippet}
 </Story>

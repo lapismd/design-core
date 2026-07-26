@@ -94,6 +94,7 @@
   const editorController = createFixture();
   const overviewController = createFixture();
   const filteredController = createFixture();
+  const panController = createFixture();
 </script>
 
 <Story
@@ -158,6 +159,16 @@
           includeSidebarsInTabs={false}
           includeFloatingInTabs={false}
         />
+      </div>
+    </div>
+  {/snippet}
+</Story>
+
+<Story name="Pan gesture surface" tags={["visual-pending"]}>
+  {#snippet template()}
+    <div class="ui-workspace-mobile-story-canvas">
+      <div class="ui-workspace-mobile-story-frame">
+        <WorkspaceMobile controller={panController} />
       </div>
     </div>
   {/snippet}

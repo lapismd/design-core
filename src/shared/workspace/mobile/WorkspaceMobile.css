@@ -28,6 +28,12 @@
     var(--ui-workspace-mobile-sidebar-width) minmax(0, 100cqw)
     var(--ui-workspace-mobile-sidebar-width);
   transition: transform 180ms ease;
+  will-change: transform;
+}
+
+.ui-workspace-mobile__stage[data-mobile-stage-dragging="true"]
+  .ui-workspace-mobile__track {
+  transition: none;
 }
 
 .ui-workspace-mobile__track[data-reveal="left"] {
@@ -89,6 +95,15 @@
 
 .ui-workspace-mobile__menu-toggle {
   right: 1rem;
+}
+
+.ui-workspace-mobile__close-panel {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  border: 0;
+  cursor: default;
+  background: transparent;
 }
 
 .ui-workspace-mobile__sidebar-toggle svg,
