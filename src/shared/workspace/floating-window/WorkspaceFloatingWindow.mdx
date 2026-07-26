@@ -1,0 +1,15 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as Stories from "./WorkspaceFloatingWindow.stories.svelte";
+
+<Meta of={Stories} />
+
+# Workspace floating window
+
+Floating windows use the same recursive workspace tree and controller mutation
+path as the main surface. Window state and bounds remain serializable.
+
+<Canvas of={Stories.WindowControls} />
+
+<Canvas of={Stories.MinimizedWindow} />
+
+<Controls of={Stories.WindowControls} />

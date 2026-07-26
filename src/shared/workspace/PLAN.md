@@ -262,6 +262,25 @@ workflow.
 - Visual Delta candidate baselines remain pending explicit human approval; no
   committed baseline image was created or replaced in this slice.
 
+### Floating windows and layer
+
+- Added independently importable floating-window and floating-layer component
+  families with the source window chrome, serialized bounds, and normal,
+  collapsed, minimized, and maximized presentation states.
+- Window controls use controller mutations for focus, collapse, minimize,
+  maximize, redock, and close; pointer movement and all eight resize handles
+  share the persisted bounds path.
+- Free windows reuse `WorkspaceTree`; minimized windows render in the centered
+  source dock. Popout hosting remains the existing runtime adapter.
+- Focused Storybook interaction and accessibility execution: 2 files and 3
+  stories pass through the repository's Storybook Vitest project.
+- The required MCP focused runs were invoked and returned no per-story result
+  in the JJ workspace. Supplemental focused execution remains green.
+- `pnpm check:no-tailwind`: pass.
+- `pnpm check`: pass with zero Svelte errors or warnings.
+- Visual Delta candidate baselines remain pending explicit human approval; no
+  committed baseline image was created or replaced in this slice.
+
 ## Completion gate
 
 The migration is complete only when:

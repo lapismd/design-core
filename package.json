@@ -187,6 +187,8 @@
     "./workspace/drag": "./src/shared/workspace/drag/index.ts",
     "./workspace/drop-overlay": "./src/shared/workspace/drop-overlay/index.ts",
     "./workspace/empty": "./src/shared/workspace/empty/index.ts",
+    "./workspace/floating-layer": "./src/shared/workspace/floating-layer/index.ts",
+    "./workspace/floating-window": "./src/shared/workspace/floating-window/index.ts",
     "./workspace/icon": "./src/shared/workspace/icon/index.ts",
     "./workspace/menu": "./src/shared/workspace/menu/index.ts",
     "./workspace/ribbon": "./src/shared/workspace/ribbon/index.ts",

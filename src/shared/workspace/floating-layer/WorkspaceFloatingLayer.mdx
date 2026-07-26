@@ -1,0 +1,13 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as Stories from "./WorkspaceFloatingLayer.stories.svelte";
+
+<Meta of={Stories} />
+
+# Workspace floating layer
+
+The floating layer renders every controller window whose mode is `floating`.
+Popouts remain runtime-hosted and are not duplicated in this DOM layer.
+
+<Canvas of={Stories.FreeAndMinimizedWindows} />
+
+<Controls of={Stories.FreeAndMinimizedWindows} />

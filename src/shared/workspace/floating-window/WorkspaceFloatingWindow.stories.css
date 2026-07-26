@@ -1,0 +1,17 @@
+.ui-workspace-floating-window-story-frame {
+  position: relative;
+  width: 100%;
+  height: 36rem;
+  overflow: hidden;
+  color: var(--ui-workspace-foreground);
+  background: var(--ui-workspace-muted);
+}
+
+.ui-workspace-floating-window-story-minimized {
+  display: grid;
+  width: 100%;
+  min-height: 16rem;
+  place-items: center;
+  color: var(--ui-workspace-foreground);
+  background: var(--ui-workspace-muted);
+}

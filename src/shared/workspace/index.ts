@@ -9,6 +9,8 @@ export * from "./core/index.js";
 export * from "./drag/index.js";
 export * from "./drop-overlay/index.js";
 export * from "./empty/index.js";
+export * from "./floating-layer/index.js";
+export * from "./floating-window/index.js";
 export * from "./icon/index.js";
 export * from "./menu/index.js";
 export * from "./ribbon/index.js";

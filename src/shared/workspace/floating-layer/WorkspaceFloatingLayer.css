@@ -1,0 +1,19 @@
+.ui-workspace-floating-layer {
+  position: fixed;
+  z-index: calc(var(--ui-workspace-overlay-z-index) - 5);
+  inset: 0;
+  pointer-events: none;
+}
+
+.ui-workspace-floating-layer__minimized {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  display: flex;
+  max-width: calc(100svw - 2rem);
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  transform: translateX(-50%);
+  pointer-events: none;
+}

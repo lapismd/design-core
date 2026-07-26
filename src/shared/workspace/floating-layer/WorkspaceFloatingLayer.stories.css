@@ -1,0 +1,6 @@
+.ui-workspace-floating-layer-story-frame {
+  position: fixed;
+  inset: 0;
+  color: var(--ui-workspace-foreground);
+  background: var(--ui-workspace-muted);
+}
