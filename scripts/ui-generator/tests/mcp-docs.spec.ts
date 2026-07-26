@@ -102,7 +102,6 @@ describe("llms docs service", () => {
   const service = createDocsService({
     packageRoot,
     baseUrl: "http://127.0.0.1:9011",
-    noCache: true,
   });
 
   it("builds an llms.txt index with layered component links", () => {

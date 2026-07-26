@@ -196,6 +196,7 @@ VISUAL_UPDATE_APPROVED=1 pnpm test:visual-delta-panel:update
 pnpm ui guide [topic]
 pnpm ui components [name]
 pnpm ui components --layer shadcn|forms|filter|ai
+pnpm ui:mcp:stdio
 pnpm ui mcp
 pnpm ui visual:tag skip|include --component <name>
 pnpm ui visual:tag review --status ready --component <name>
@@ -213,7 +214,19 @@ machine-readable output. Install Chromium once with
 
 ## MCP and `llms.txt`
 
-With Storybook running on port 9009:
+The preferred docs transport is stdio because each project gets its own
+process, so multiple Storybooks do not need unique MCP ports:
+
+```sh
+pnpm ui:mcp:stdio
+```
+
+The Cursor entry in `.cursor/mcp.json` uses this command. The standalone
+`storybook-addon-docs-mcp` package also provides `docs-mcp init`, `stdio`,
+`serve`, and `doctor`; see its
+[`README.md`](./packages/storybook-addon-docs-mcp/README.md).
+
+With Storybook running on port 9009, HTTP remains available:
 
 | Surface       | URL                              | Purpose                                   |
 | ------------- | -------------------------------- | ----------------------------------------- |
@@ -224,7 +237,9 @@ With Storybook running on port 9009:
 
 Component pages use `/llms/<layer>/<id>.txt`; guide pages use
 `/llms/guide/<topic>.txt`. When Storybook is down, `pnpm ui mcp` serves the
-Docs MCP and LLM routes on `http://127.0.0.1:9011`.
+Docs MCP and LLM routes on `http://127.0.0.1:9011`. The Storybook mount uses
+the public Storybook server port; Vite's internal 5173 default is not
+advertised.
 
 ## Generator and CSS
 

@@ -105,7 +105,6 @@ describe("Docs MCP transports", () => {
       root: loaded.root,
       config: loaded.config,
       port: 0,
-      noCache: true,
     });
     try {
       expect(server.port).toBeGreaterThan(0);

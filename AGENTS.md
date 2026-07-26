@@ -32,12 +32,16 @@ interactive story work and live docs; keep the CLI for offline / scripted use.
 | ------------------------------------------ | ----------------------------------------- |
 | `pnpm ui guide [topic]`                    | Agent conventions from `docs/agent/`      |
 | `pnpm ui components [name] [--layer …]`    | Catalog list / show (all layers)          |
+| `pnpm ui:mcp:stdio`                        | Docs MCP over stdio (preferred)           |
 | `pnpm ui mcp [--port 9011] [--no-cache]`   | Standalone Docs MCP + llms (no Storybook) |
 | `pnpm ui:add` / `ui:inspect` / `ui:doctor` | Generator pipeline (see README)           |
 
 ## Docs MCP and llms.txt
 
-Docs MCP is mounted on the Storybook Vite server (starts/restarts with
+Docs MCP comes from the standalone `storybook-addon-docs-mcp` workspace
+package. Prefer `pnpm ui:mcp:stdio`: it reads the configured provider directly,
+works while Storybook is down, and lets multiple catalogs run without port
+coordination. It is also mounted on the Storybook server (starts/restarts with
 `pnpm storybook`) at a path separate from the core Storybook MCP:
 
 | Surface        | URL                                                                      | Use for                                                                                             |
@@ -51,12 +55,13 @@ Docs MCP is mounted on the Storybook Vite server (starts/restarts with
 Cursor (`.cursor/mcp.json`):
 
 - `stevejuma-ui-storybook` → `http://localhost:9009/mcp`
-- `stevejuma-ui-docs` → `http://localhost:9009/docs-mcp`
+- `stevejuma-ui-docs` → `pnpm … docs-mcp stdio --config …`
 
 Optional standalone fallback when Storybook is down: `pnpm ui mcp` (alias
 `pnpm ui:mcp`) on `:9011` with the same Docs MCP + llms routes. Offline CLI:
 `pnpm ui guide` / `pnpm ui components`. Cache under `.cache/ui-docs/`
-(content-hash invalidation); bypass with `UI_DOCS_CACHE=0` or
+(content-hash invalidation); bypass with `DOCS_MCP_CACHE=0` (or the legacy
+`UI_DOCS_CACHE=0`) or
 `pnpm ui mcp --no-cache`.
 
 In-catalog decision pages: `UI Forms/Guidance`, `Shadcn/Guidance`. Deferred

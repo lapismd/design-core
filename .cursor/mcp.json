@@ -4,7 +4,16 @@
       "url": "http://localhost:9009/mcp"
     },
     "stevejuma-ui-docs": {
-      "url": "http://localhost:9009/docs-mcp"
+      "command": "pnpm",
+      "args": [
+        "--dir",
+        "/Users/stevejuma/ui",
+        "exec",
+        "docs-mcp",
+        "stdio",
+        "--config",
+        "/Users/stevejuma/ui/.storybook/docs-mcp.config.ts"
+      ]
     }
   }
 }

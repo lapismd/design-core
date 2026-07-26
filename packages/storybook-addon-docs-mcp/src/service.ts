@@ -33,6 +33,12 @@ export function createDocsService(options: DocsServiceOptions) {
         ? undefined
         : path.resolve(root, options.config.cacheDir ?? ".cache/docs-mcp"),
     });
+  let recentCatalog:
+    | {
+        value: DocsMcpCatalog;
+        readAt: number;
+      }
+    | undefined;
 
   function getBaseUrl(): string {
     const value =
@@ -43,11 +49,25 @@ export function createDocsService(options: DocsServiceOptions) {
   }
 
   function getCatalog(): DocsMcpCatalog {
+    const now = Date.now();
+    if (
+      !options.noCache &&
+      recentCatalog &&
+      now - recentCatalog.readAt < 1_000
+    ) {
+      return recentCatalog.value;
+    }
     const context = { root };
     const files = options.config.provider.sourceFiles(context);
-    return cache.get(`catalog:${options.config.provider.name}`, files, () =>
-      options.config.provider.load(context),
+    const value = cache.get(
+      `catalog:${options.config.provider.name}`,
+      files,
+      () => options.config.provider.load(context),
     ).value;
+    if (!options.noCache) {
+      recentCatalog = { value, readAt: now };
+    }
+    return value;
   }
 
   function buildComponentsManifest() {

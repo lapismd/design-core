@@ -132,6 +132,7 @@ function usage(): string {
   pnpm ui guide [topic] [--json] [--color always|never|auto]
   pnpm ui components [name] [--layer <layer>] [--json] [--color always|never|auto]
   pnpm ui mcp [--host 127.0.0.1] [--port 9011] [--no-cache]
+  pnpm ui:mcp:stdio
   pnpm ui:doctor
   pnpm ui:inspect <component>
   pnpm ui:add <component> [--overwrite] [--dry-run] [--keep-worktree] [--skip-visual] [--skip-parity]
@@ -147,8 +148,9 @@ function usage(): string {
 
 Agent conventions: pnpm ui guide
 Component docs:    pnpm ui components
-Docs MCP / llms:   via Storybook → http://localhost:9009/docs-mcp and /llms.txt
-                   (fallback: pnpm ui mcp on :9011)
+Docs MCP / llms:   stdio → pnpm ui:mcp:stdio (preferred for multiple catalogs)
+                   Storybook → http://localhost:9009/docs-mcp and /llms.txt
+                   HTTP fallback → pnpm ui mcp on :9011
 CLI help:          pnpm ui guide --help | pnpm ui components --help | pnpm ui visual:tag --help
 `;
 }
@@ -275,17 +277,19 @@ async function main() {
       const host =
         typeof flags.get("host") === "string"
           ? String(flags.get("host"))
-          : (process.env.UI_DOCS_HOST ?? "127.0.0.1");
+          : (process.env.DOCS_MCP_HOST ??
+            process.env.UI_DOCS_HOST ??
+            "127.0.0.1");
       const port =
         typeof flags.get("port") === "string"
           ? Number(flags.get("port"))
-          : process.env.UI_DOCS_PORT
-            ? Number(process.env.UI_DOCS_PORT)
+          : (process.env.DOCS_MCP_PORT ?? process.env.UI_DOCS_PORT)
+            ? Number(process.env.DOCS_MCP_PORT ?? process.env.UI_DOCS_PORT)
             : 9011;
       const baseUrl =
         typeof flags.get("base-url") === "string"
           ? String(flags.get("base-url"))
-          : process.env.UI_DOCS_BASE_URL;
+          : (process.env.DOCS_MCP_BASE_URL ?? process.env.UI_DOCS_BASE_URL);
       const started = await startDocsMcpServer({
         packageRoot,
         host,
