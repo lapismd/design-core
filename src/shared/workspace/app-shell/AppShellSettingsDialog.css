@@ -4,7 +4,7 @@
   z-index: calc(var(--ui-workspace-overlay-z-index) + 30);
   display: grid;
   place-items: center;
-  background: rgb(0 0 0 / 42%);
+  background: rgb(0 0 0 / 50%);
 }
 
 .ui-app-shell-settings-dialog__content {
@@ -17,6 +17,11 @@
   color: var(--ui-workspace-popover-foreground);
   background: var(--ui-workspace-popover);
   box-shadow: var(--ui-workspace-shadow);
+}
+
+.ui-app-shell-settings-dialog__content:focus,
+.ui-app-shell-settings-dialog__content:focus-visible {
+  outline: none;
 }
 
 .ui-app-shell-settings-dialog__header {
@@ -50,8 +55,7 @@
   background: var(--ui-workspace-muted);
 }
 
-.ui-app-shell-settings-dialog__close:focus-visible,
-.ui-app-shell-settings-dialog__content:focus-visible {
+.ui-app-shell-settings-dialog__close:focus-visible {
   outline: 2px solid var(--ui-workspace-focus-ring);
   outline-offset: -2px;
 }
@@ -67,10 +71,10 @@
   }
 
   .ui-app-shell-settings-dialog__content {
-    width: min(90vw, 68.75rem);
-    height: 85vh;
+    width: min(90vw, var(--ui-workspace-settings-dialog-max-width));
+    height: var(--ui-workspace-settings-dialog-height);
     max-height: calc(100% - 2rem);
     border: 1px solid var(--ui-workspace-border);
-    border-radius: var(--ui-workspace-radius-large);
+    border-radius: var(--ui-workspace-settings-dialog-radius);
   }
 }

@@ -14,8 +14,12 @@
 }
 
 .ui-workspace-sidebar-toggle[data-size="small"] {
-  width: 1.75rem;
-  padding-inline: 0.25rem;
+  width: 2.25rem;
+  padding-inline: 0.625rem;
+}
+
+.ui-workspace-sidebar-toggle[data-size="small"][data-side="left"] {
+  margin-inline-end: 0.1875rem;
 }
 
 .ui-workspace-sidebar-toggle:hover {

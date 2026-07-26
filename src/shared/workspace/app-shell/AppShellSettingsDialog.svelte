@@ -16,6 +16,7 @@
   } = $props();
 
   const { controller } = getAppShellContext();
+  let overlay = $state<HTMLDivElement | null>(null);
   let dialog = $state<HTMLDivElement | null>(null);
   let restoreFocus = $state<HTMLElement | null>(null);
 
@@ -35,10 +36,38 @@
         : null;
     void tick().then(() => dialog?.focus());
   });
+
+  $effect(() => {
+    if (!open || !overlay?.parentElement) return;
+    const background = [...overlay.parentElement.children].filter(
+      (element): element is HTMLElement =>
+        element instanceof HTMLElement && element !== overlay,
+    );
+    const previous = background.map((element) => ({
+      element,
+      inert: element.inert,
+      ariaHidden: element.getAttribute("aria-hidden"),
+    }));
+    for (const element of background) {
+      element.inert = true;
+      element.setAttribute("aria-hidden", "true");
+    }
+    return () => {
+      for (const state of previous) {
+        state.element.inert = state.inert;
+        if (state.ariaHidden === null) {
+          state.element.removeAttribute("aria-hidden");
+        } else {
+          state.element.setAttribute("aria-hidden", state.ariaHidden);
+        }
+      }
+    };
+  });
 </script>
 
 {#if open}
   <div
+    bind:this={overlay}
     class="ui-app-shell-settings-dialog"
     data-ui-component="app-shell-settings-dialog"
     data-ui-part="overlay"

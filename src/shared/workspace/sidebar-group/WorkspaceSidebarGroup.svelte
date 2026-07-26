@@ -208,7 +208,10 @@
                 minSize={collapsed ? collapsedSize : 12}
                 class="ui-workspace-sidebar-group__pane"
               >
-                <Collapsible.Root open={!collapsed}>
+                <Collapsible.Root
+                  open={!collapsed}
+                  class="ui-workspace-sidebar-group__collapsible"
+                >
                   <div
                     class="ui-workspace-sidebar-group__panel"
                     data-ui-part="panel"

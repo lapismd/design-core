@@ -609,6 +609,38 @@ workflow.
 - The review tags remain `visual-pending`; baseline creation approval does not
   imply per-story visual approval.
 
+### CY-0004 parity close-out review
+
+- Added 52 one-to-one `Workspace/Parity/CY-0004` fixtures built only through
+  public Workspace APIs. The source crosswalk now accounts for all 79 CY
+  stories: 52 canonical visual scenes and 27 interaction-only cases.
+- Added guarded v2 source capture and compare-only Playwright projects. Source
+  capture freezes time, awaits Storybook completion and fonts, injects the
+  exact hashed plugin CSS, isolates every scene in its own Chromium process,
+  and median-samples three same-context screenshots.
+- Restored source geometry and tokens across top tabs, settings, empty views,
+  shell chrome, F-Mode, and Notifications while retaining the target
+  repository's semantic markup and native-CSS boundary.
+- Focused validation is clean: 21 Workspace/reference/plugin unit tests, 72
+  Storybook interaction/accessibility tests, `pnpm check:no-tailwind`, and
+  `pnpm check`.
+- The compare-only zero-pixel gate retains source, target, diff, DOM, state, and
+  Playwright trace artifacts. The current manual-review scenes still have
+  non-zero pixels:
+  - top tabs: 86,427 light / 114,978 dark;
+  - Settings search: 205,220 light / 214,324 dark;
+  - active F-Mode: 243,987 light / 216,997 dark;
+  - notification centre: 211,823 light / 254,453 dark;
+  - notification toasts: 120,969 light / 130,608 dark.
+- Repeated guarded source regeneration can still move a handful of isolated
+  antialias pixels between unrelated dark scenes. No comparison tolerance has
+  been introduced; approving one requires explicit manual review.
+- The parity Storybook remains isolated on `9110` with Visual Delta on `9111`.
+  The Storybook MCP remains bound to the standard checkout, so focused parity
+  execution uses the same repository Storybook Vitest project directly.
+- The broad Storybook, visual, and repository gates remain intentionally
+  paused until the manual Visual Delta review.
+
 ## Completion gate
 
 The migration is complete only when:

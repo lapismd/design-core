@@ -12,6 +12,7 @@
 .ui-workspace-sidebar-group__stack,
 .ui-workspace-sidebar-group__pane-group,
 .ui-workspace-sidebar-group__pane,
+.ui-workspace-sidebar-group__collapsible,
 .ui-workspace-sidebar-group__panel {
   width: 100%;
   height: 100%;

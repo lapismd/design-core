@@ -13,10 +13,11 @@
   border: 1px solid var(--ui-workspace-border);
   border-bottom: 0;
   border-radius: var(--ui-workspace-radius-small) 0 0 0;
-  padding: 0.125rem 0.5rem 0.125rem 0.25rem;
+  padding: 0.25rem 0.5rem 0.25rem 0.25rem;
   color: var(--ui-workspace-muted-foreground);
   background: var(--ui-workspace-panel);
   font-size: 0.75rem;
+  line-height: 1.428575;
   flex-wrap: nowrap;
   scrollbar-width: none;
   user-select: none;

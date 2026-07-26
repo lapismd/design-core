@@ -72,22 +72,43 @@
   --ui-workspace-destructive: #e93147;
   --ui-workspace-warning: #ec7500;
   --ui-workspace-focus-ring: var(--lapis-accent);
+  --ui-workspace-font-sans: ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --ui-workspace-radius-small: 4px;
   --ui-workspace-radius-medium: 8px;
   --ui-workspace-radius-large: 12px;
   --ui-workspace-shadow: none;
+  --ui-workspace-fmode-default-accent: #000000;
+  --ui-workspace-fmode-font-mono: monospace;
+  --ui-workspace-notifications-primary: #000000;
+  --ui-workspace-notifications-warning: #f97316;
+  --ui-workspace-notifications-card: #fafafa;
+  --ui-workspace-notifications-shadow: 0 10px 15px -3px rgb(0 0 0 / 10%),
+    0 4px 6px -4px rgb(0 0 0 / 10%);
   --ui-workspace-tab-height: 40px;
+  --ui-workspace-tab-active-height: 36px;
   --ui-workspace-tab-width: 200px;
   --ui-workspace-tab-max-width: 320px;
-  --ui-workspace-tab-curve: 6px;
+  --ui-workspace-tab-curve: 4px;
   --ui-workspace-tab-active-background: #ffffff;
   --ui-workspace-tab-container-background: #f6f6f6;
-  --ui-workspace-tab-divider: #d4d4d4;
+  --ui-workspace-tab-divider: #e0e0e0;
   --ui-workspace-stacked-shadow: -8px 0 8px rgb(0 0 0 / 5%);
   --ui-workspace-stacked-pane-width: 700px;
   --ui-workspace-sidebar-header-height: 32px;
-  --ui-workspace-ribbon-width: 44px;
+  --ui-workspace-ribbon-width: 49px;
   --ui-workspace-status-height: 24px;
+  --ui-workspace-settings-heading-size: 16px;
+  --ui-workspace-settings-heading-weight: 400;
+  --ui-workspace-settings-label-size: 15px;
+  --ui-workspace-settings-description-size: 12px;
+  --ui-workspace-settings-navigation-row-height: 32px;
+  --ui-workspace-settings-navigation-active-background: #e3e3e3;
+  --ui-workspace-settings-control-height: 30px;
+  --ui-workspace-settings-control-radius: 6px;
+  --ui-workspace-settings-dialog-radius: 8px;
+  --ui-workspace-settings-dialog-max-width: 1100px;
+  --ui-workspace-settings-dialog-height: 85vh;
 }
 
 [data-ui-theme="lapis"].dark,
@@ -148,8 +169,10 @@
   --ui-workspace-destructive: #fb464c;
   --ui-workspace-warning: #e9973f;
   --ui-workspace-focus-ring: var(--lapis-accent-hover);
+  --ui-workspace-notifications-card: #242424;
   --ui-workspace-tab-active-background: #1e1e1e;
   --ui-workspace-tab-container-background: #262626;
   --ui-workspace-tab-divider: #3f3f3f;
+  --ui-workspace-settings-navigation-active-background: #363636;
   --ui-workspace-stacked-shadow: -8px 0 8px rgb(0 0 0 / 20%);
 }

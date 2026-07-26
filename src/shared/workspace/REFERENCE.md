@@ -71,7 +71,9 @@ pnpm workspace:lapis-reference:update
 requires the pinned CY-0004 revision, writes to a temporary capture directory,
 and replaces v2 only after every image and manifest succeeds. It records
 Chromium, viewport, device scale, frozen time, per-story capture scope, and
-injected F-Mode/Notifications CSS hashes. The 79-story crosswalk classifies
+injected F-Mode/Notifications CSS hashes. Each scene uses an isolated Chromium
+process and stores the per-channel median of three same-context screenshots to
+reduce renderer-cache and single-paint noise. The 79-story crosswalk classifies
 each source story as a canonical parity scene or interaction-only coverage.
 
 The target parity catalog is under `Workspace/Parity/CY-0004`. Its 52 stories

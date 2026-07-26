@@ -16,23 +16,32 @@
   align-items: start;
   gap: 0.75rem;
   border: 1px solid var(--ui-workspace-border);
-  border-radius: var(--ui-workspace-radius-medium);
+  border-radius: 6px;
   padding: 0.75rem;
   color: var(--ui-workspace-popover-foreground);
   background: var(--ui-workspace-popover);
-  box-shadow: var(--ui-workspace-shadow);
+  box-shadow: var(
+    --ui-workspace-notifications-shadow,
+    var(--ui-workspace-shadow)
+  );
 }
 
 .ui-workspace-notifications__severity {
   width: 0.25rem;
   min-height: 100%;
   border-radius: 999px;
-  background: var(--ui-workspace-accent);
+  background: var(
+    --ui-workspace-notifications-primary,
+    var(--ui-workspace-accent)
+  );
 }
 
 .ui-workspace-notifications__toast[data-severity="warning"]
   .ui-workspace-notifications__severity {
-  background: var(--ui-workspace-warning);
+  background: var(
+    --ui-workspace-notifications-warning,
+    var(--ui-workspace-warning)
+  );
 }
 
 .ui-workspace-notifications__toast[data-severity="error"]
@@ -64,10 +73,13 @@
   max-height: min(38rem, calc(100% - 3.5rem));
   overflow: hidden;
   border: 1px solid var(--ui-workspace-border);
-  border-radius: var(--ui-workspace-radius-medium);
+  border-radius: 6px;
   color: var(--ui-workspace-popover-foreground);
   background: var(--ui-workspace-popover);
-  box-shadow: var(--ui-workspace-shadow);
+  box-shadow: var(
+    --ui-workspace-notifications-shadow,
+    var(--ui-workspace-shadow)
+  );
 }
 
 .ui-workspace-notifications__center-header,
@@ -130,8 +142,8 @@
   gap: 0.5rem;
   padding: 0.75rem;
   border: 1px solid var(--ui-workspace-border);
-  border-radius: var(--ui-workspace-radius-medium);
-  background: var(--ui-workspace-panel);
+  border-radius: 6px;
+  background: var(--ui-workspace-notifications-card, var(--ui-workspace-panel));
 }
 
 .ui-workspace-notifications__row--unread::before {
@@ -141,7 +153,10 @@
   width: 0.375rem;
   height: 0.375rem;
   border-radius: 999px;
-  background: var(--ui-workspace-accent);
+  background: var(
+    --ui-workspace-notifications-primary,
+    var(--ui-workspace-accent)
+  );
   content: "";
 }
 
@@ -172,7 +187,10 @@
   overflow: hidden;
   border: 0;
   border-radius: 999px;
-  accent-color: var(--ui-workspace-accent);
+  accent-color: var(
+    --ui-workspace-notifications-primary,
+    var(--ui-workspace-accent)
+  );
   background: var(--ui-workspace-muted);
 }
 
@@ -183,7 +201,10 @@
 
 .ui-workspace-notifications__row progress::-webkit-progress-value {
   border-radius: 999px;
-  background: var(--ui-workspace-accent);
+  background: var(
+    --ui-workspace-notifications-primary,
+    var(--ui-workspace-accent)
+  );
 }
 
 .ui-workspace-notifications__indeterminate-progress {
@@ -199,7 +220,10 @@
   inset: 0;
   width: 40%;
   border-radius: inherit;
-  background: var(--ui-workspace-accent);
+  background: var(
+    --ui-workspace-notifications-primary,
+    var(--ui-workspace-accent)
+  );
   animation: ui-workspace-notifications-progress 1.2s ease-in-out infinite;
   content: "";
 }

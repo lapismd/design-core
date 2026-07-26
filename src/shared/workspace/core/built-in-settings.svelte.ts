@@ -54,9 +54,9 @@ export class AppShellAppearanceSettings {
     const value = getValue(
       this.configuration,
       APP_SHELL_SETTING_IDS.appearanceAccent,
-      "#000000",
+      "#9873f7",
     );
-    return /^#[\da-f]{6}$/iu.test(value) ? value : "#000000";
+    return /^#[\da-f]{6}$/iu.test(value) ? value : "#9873f7";
   }
 
   get fontSize(): number {
@@ -295,17 +295,17 @@ export function createBuiltInSettingsSections(): WorkspaceSettingsSection[] {
         {
           id: APP_SHELL_SETTING_IDS.appearanceAccent,
           type: "string",
-          title: "Accent color",
+          title: "Accent colour",
           presentation: "color",
-          default: "#000000",
-          description: "Choose the accent color used throughout the app.",
+          default: "#9873f7",
+          description: "Choose the accent colour used throughout the app.",
         },
         {
           id: APP_SHELL_SETTING_IDS.appearanceTheme,
           type: "enum",
-          title: "Base color scheme",
+          title: "Base colour scheme",
           default: "system",
-          description: "Choose the default color scheme.",
+          description: "Choose the default colour scheme.",
           options: [
             { value: "dark", label: "Dark" },
             { value: "light", label: "Light" },

@@ -34,6 +34,8 @@ contains 52 canonical scenes in both light and dark Lapis modes:
 - an explicit viewport or component capture scope for every scene;
 - the exact hashed CY F-Mode and Notifications CSS injected only by the
   external capture harness.
+- one isolated Chromium process per story and colour mode;
+- per-channel median sampling from three same-context screenshots.
 
 `storybook-v2/crosswalk.json` accounts for all 79 CY stories. The 52 v1-backed
 stories are canonical visual scenes; the remaining 27 retain interaction-only

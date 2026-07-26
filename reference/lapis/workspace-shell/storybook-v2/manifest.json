@@ -10,7 +10,7 @@
       "file": "dark/workspace-shell-components-composable-settings--composition-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "ce0b3612a3afdc1c28f26c6b1b8bfdfc1af8b5bf583f0ba60574ea7a223a6454"
+      "sha256": "a32872348398de615f8044df4617e88e9016fef17dcb758f721d2698e2977aad"
     },
     {
       "storyId": "workspace-shell-components-declarative-settings--all-supported-controls",
@@ -18,7 +18,7 @@
       "file": "dark/workspace-shell-components-declarative-settings--all-supported-controls-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "6ea83c8bd229e4572eeae2bcc95e1c796f7701abf7c798410f20ab0dd2d25486"
+      "sha256": "f84cb0bc5d7f6924942634582664fd0f0b9bd33012f826dfd53068a5ace0ac35"
     },
     {
       "storyId": "workspace-shell-components-declarative-settings--settings",
@@ -26,7 +26,7 @@
       "file": "dark/workspace-shell-components-declarative-settings--settings-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "b6db275498a30e99f050b0d753fb1e9ba4e796da1d2311528ad46c523d368fe2"
+      "sha256": "b37b10c01cbbc2ea4c72c4f8b5c2b5818b342730eeeeb5c2c3b75b837455d569"
     },
     {
       "storyId": "workspace-shell-components-declarative-settings--settings-mobile",
@@ -34,7 +34,7 @@
       "file": "dark/workspace-shell-components-declarative-settings--settings-mobile-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "ffbc56605ecfa1d34014f93cc78b7f5b48322116820babbcb6f7adf8e4bda0fa"
+      "sha256": "ea3f982376a2f3bf71b3cd13cdd89117ab347d0b908425736bb77f98f4fd5d6a"
     },
     {
       "storyId": "workspace-shell-components-drag-and-drop-overlays--bottom",
@@ -42,7 +42,7 @@
       "file": "dark/workspace-shell-components-drag-and-drop-overlays--bottom-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "78c4ca776f2669f007b2d037d73b19b7433bdd22df86e479b8540a0088b7adb2"
+      "sha256": "923d916ffe69e91525df4251f4ab4c0b110eaf84012ae29f53962958dffffae9"
     },
     {
       "storyId": "workspace-shell-components-drag-and-drop-overlays--canceled-overlay",
@@ -50,7 +50,7 @@
       "file": "dark/workspace-shell-components-drag-and-drop-overlays--canceled-overlay-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "0050ae66463bf82dc43b3e4ec94482d5ccfb6f24725a6b9e4e4515db556a48bd"
+      "sha256": "58d09ac5425c676266d6596a699f5d3de8d70d7c9d2f6189f6a24ecb40ca9b0d"
     },
     {
       "storyId": "workspace-shell-components-drag-and-drop-overlays--centre",
@@ -58,7 +58,7 @@
       "file": "dark/workspace-shell-components-drag-and-drop-overlays--centre-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "772015194f673633571a8ea09a4c229de47dc3e966af37d4262d6d21376ddf70"
+      "sha256": "f24058494a0b87f5fb5dee7b6ee14847f475f9d5238622f4f55115466684abe2"
     },
     {
       "storyId": "workspace-shell-components-drag-and-drop-overlays--disallowed-edge-falls-back-to-centre",
@@ -66,7 +66,7 @@
       "file": "dark/workspace-shell-components-drag-and-drop-overlays--disallowed-edge-falls-back-to-centre-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "c613851f7a39aa72d528e45ddeb5c92620758248cfb7625eb43646bc82344c68"
+      "sha256": "01a83a63786696410422b207711de8ba89f0f292b458dc9694b3765a2c688645"
     },
     {
       "storyId": "workspace-shell-components-drag-and-drop-overlays--empty-target",
@@ -74,7 +74,7 @@
       "file": "dark/workspace-shell-components-drag-and-drop-overlays--empty-target-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "65017a66d06f2335b16a89e025082e63e5a77123ab4951ab95a2d409974e4331"
+      "sha256": "80eccf207a67ca5fe9a12863b4478d73c169b74f89765c83e756bdac0c29d5e4"
     },
     {
       "storyId": "workspace-shell-components-drag-and-drop-overlays--floating-fallback",
@@ -82,7 +82,7 @@
       "file": "dark/workspace-shell-components-drag-and-drop-overlays--floating-fallback-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "e31d08f6a7ab73c04dfb691219229435c8064a0eba13bc9742b030d941396d26"
+      "sha256": "01c6a28c114b7fc3463b43c348103ca7c2dacb23c5e58c82bf59dc03990243b6"
     },
     {
       "storyId": "workspace-shell-components-drag-and-drop-overlays--insertion-marker",
@@ -90,7 +90,7 @@
       "file": "dark/workspace-shell-components-drag-and-drop-overlays--insertion-marker-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "0050ae66463bf82dc43b3e4ec94482d5ccfb6f24725a6b9e4e4515db556a48bd"
+      "sha256": "58d09ac5425c676266d6596a699f5d3de8d70d7c9d2f6189f6a24ecb40ca9b0d"
     },
     {
       "storyId": "workspace-shell-components-drag-and-drop-overlays--left",
@@ -98,7 +98,7 @@
       "file": "dark/workspace-shell-components-drag-and-drop-overlays--left-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "274e671fc1db18fddcded55293df36d0f3ca0c35c1a1b42ee8bfe78a169b7c19"
+      "sha256": "8803f404d702e790d05f279c23e5841fb7738f02a225ca8004f3eab83742bdce"
     },
     {
       "storyId": "workspace-shell-components-drag-and-drop-overlays--right",
@@ -106,7 +106,7 @@
       "file": "dark/workspace-shell-components-drag-and-drop-overlays--right-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "af066021e84e481db77337aef438ccc4d78d031e581fe6bd7b3b4a827aa95bc1"
+      "sha256": "177a6fe5a72688be4d1ce5bb2b1d7b39a7291b4f5ce000095f77a9dc346254b5"
     },
     {
       "storyId": "workspace-shell-components-drag-and-drop-overlays--top",
@@ -114,7 +114,7 @@
       "file": "dark/workspace-shell-components-drag-and-drop-overlays--top-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "012ff877c545f01088c72e2e8657e8453c8bdc5a6ae273f0d8d80794bc1e5230"
+      "sha256": "8053d8cee1c3d7ea401ececeb4ad92f1af3e36c1987de0d822ebbf6d9248b248"
     },
     {
       "storyId": "workspace-shell-components-empty-and-missing-views--empty-sidebars",
@@ -122,7 +122,7 @@
       "file": "dark/workspace-shell-components-empty-and-missing-views--empty-sidebars-chromium-darwin.png",
       "scope": "component",
       "injectedCss": null,
-      "sha256": "b165811ea213f13beb8209fb0ebf32387c206ed2ae4ff0408ddfde75ce2f1d58"
+      "sha256": "8cc2b1daadeb70afddd9cde54a029996ba3abca45194690711282691f4d1ff25"
     },
     {
       "storyId": "workspace-shell-components-empty-and-missing-views--empty-view",
@@ -130,7 +130,7 @@
       "file": "dark/workspace-shell-components-empty-and-missing-views--empty-view-chromium-darwin.png",
       "scope": "component",
       "injectedCss": null,
-      "sha256": "42babca041f4c79d0311ec6eb2e38da46cfbb0979221e852e25d72ba6a972a7f"
+      "sha256": "02d9ee2a1f497c5972321b4400138f273d20e36b6266863af5fd41f57ba0ec90"
     },
     {
       "storyId": "workspace-shell-components-empty-and-missing-views--missing-view",
@@ -138,7 +138,7 @@
       "file": "dark/workspace-shell-components-empty-and-missing-views--missing-view-chromium-darwin.png",
       "scope": "component",
       "injectedCss": null,
-      "sha256": "cf99c79a06092887a9f19a65db490208899198f952aad22ed9274667abe0daa6"
+      "sha256": "ef358b7c29c6227b15d17cca67dc3a37d5bf162956a3c12f30d3048c954d2d67"
     },
     {
       "storyId": "workspace-shell-components-floating-windows--maximized",
@@ -146,7 +146,7 @@
       "file": "dark/workspace-shell-components-floating-windows--maximized-chromium-darwin.png",
       "scope": "component",
       "injectedCss": null,
-      "sha256": "cfdcbbf1143596225515a492470f8d7a478ba826bd4ac2ba2e7160e61a7c90b9"
+      "sha256": "53e61f48e5cf3351641d96bb7ebe386c4e5f555febdf0f80db67ced35c3b2267"
     },
     {
       "storyId": "workspace-shell-components-floating-windows--states",
@@ -154,7 +154,7 @@
       "file": "dark/workspace-shell-components-floating-windows--states-chromium-darwin.png",
       "scope": "component",
       "injectedCss": null,
-      "sha256": "527d06d387a19c02a561f14e21a40dfe668c09ac2ef632c1314eb72373be1bde"
+      "sha256": "1b4bfbf69e2a226d1433655e6878cfeec03befeee4f92c24b2c5896626f90092"
     },
     {
       "storyId": "workspace-shell-components-public-framework--about",
@@ -162,7 +162,7 @@
       "file": "dark/workspace-shell-components-public-framework--about-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "e5d18ebd6441bf2d63e90d19f047dc6344b2fff88ed313843c65de7113e8540f"
+      "sha256": "b961dbb77b0b42d5b9364eb30615d0769d9fded6a60289666de48a0176b25eb2"
     },
     {
       "storyId": "workspace-shell-components-public-framework--command-palette",
@@ -170,7 +170,7 @@
       "file": "dark/workspace-shell-components-public-framework--command-palette-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "4cf765d83e35734654d78259d7716b304f8a41bdb85319b0fe23dcc836f5f98e"
+      "sha256": "83c076457ea27d66682fba368c5aff0d9f03eb662746bcebaf0682da74988f3a"
     },
     {
       "storyId": "workspace-shell-components-public-framework--core-plugins-settings",
@@ -178,7 +178,7 @@
       "file": "dark/workspace-shell-components-public-framework--core-plugins-settings-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "b688d32973b0de198bae121c1647ebc51fc32067d74e6c1a55832c6186555f1d"
+      "sha256": "b862d41b43dddc6921669a2a1a013ab53d54699b48397807f5df3578b815e370"
     },
     {
       "storyId": "workspace-shell-components-public-framework--floating-layer",
@@ -186,7 +186,7 @@
       "file": "dark/workspace-shell-components-public-framework--floating-layer-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "2e7b90ce7d326678ee32d4b0ff93fb4144a1cf479319c2ff599efc832b0cb646"
+      "sha256": "d7629ba0dac5df1905bb243b38ac4390b529e43a5f629e11656b17e03b03bceb"
     },
     {
       "storyId": "workspace-shell-components-public-framework--hotkey-settings",
@@ -194,7 +194,7 @@
       "file": "dark/workspace-shell-components-public-framework--hotkey-settings-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "6a89549251468e49fe3b67d47a888f430fb3bcdc6be0e32859e7f94d923d7520"
+      "sha256": "cbc9766cf7c287dcf187792fb8eb994dabf4f63ddc97e390dc8aa70f9800ec22"
     },
     {
       "storyId": "workspace-shell-components-public-framework--left-sidebar",
@@ -202,7 +202,7 @@
       "file": "dark/workspace-shell-components-public-framework--left-sidebar-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "616bbac41ca00fcccef93d28fbb84d6af0910aef0a8eebbdefc00a7547f3e168"
+      "sha256": "1ebdd79db830184c6600c677ed81c86e93dd4259c58ca5a7c8ce81c62f92743b"
     },
     {
       "storyId": "workspace-shell-components-public-framework--notices",
@@ -210,7 +210,7 @@
       "file": "dark/workspace-shell-components-public-framework--notices-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "33ade7e5a65a2c8287fde6fe1bc919adb645c7b7ee5ec51d301b3f9fad31dfe7"
+      "sha256": "f7426469b96f4a83245bc8df759b3481cca408744b46bcce8b4f52a33c8c7c51"
     },
     {
       "storyId": "workspace-shell-components-public-framework--ribbon",
@@ -218,7 +218,7 @@
       "file": "dark/workspace-shell-components-public-framework--ribbon-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "52048f3c820abd7d17012fe2f601afc2b803d571ec6ddae388351e1bf5b138b6"
+      "sha256": "392da9d9803e23026cb5256d998ed5857993d87ca17109fffc257f64c99518c1"
     },
     {
       "storyId": "workspace-shell-components-public-framework--right-sidebar",
@@ -226,7 +226,7 @@
       "file": "dark/workspace-shell-components-public-framework--right-sidebar-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "0d52f99fc37010708a915f56ed1c238cd6facb16e0f7e435f5ead37ac9a4284b"
+      "sha256": "746ab1bf63abf9f1e43548e604890ec962829c344a9cabd5730a6200192f95a8"
     },
     {
       "storyId": "workspace-shell-components-public-framework--settings",
@@ -234,7 +234,7 @@
       "file": "dark/workspace-shell-components-public-framework--settings-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "c1ccef76bb686ab5c574e5f038dad6f206832ae21bb9f8e9c82005f13fdec44f"
+      "sha256": "2a3a548fcc9a63374c076b82ac399a955962ba5e5bc5f14306e4922a7f946d44"
     },
     {
       "storyId": "workspace-shell-components-public-framework--status-bar",
@@ -242,7 +242,7 @@
       "file": "dark/workspace-shell-components-public-framework--status-bar-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "f7bc9a8be617a17584dc1bc14cb9863e610adab68fdb2f7b944e7add78e01b90"
+      "sha256": "d51a9819b2d04ac1c89c7ac3b3f3af465e18892092f95c95e29bc22e7fc7078b"
     },
     {
       "storyId": "workspace-shell-components-public-framework--tabs",
@@ -250,7 +250,7 @@
       "file": "dark/workspace-shell-components-public-framework--tabs-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "3cdd150bb4c204caf56525c6c522f9ea31e8028dfbcd7bd8c112821291831966"
+      "sha256": "d01930753cde670a2bf80732bc75e15cfb33684925f10ffa253bce980130d60e"
     },
     {
       "storyId": "workspace-shell-components-public-framework--workspace",
@@ -258,7 +258,7 @@
       "file": "dark/workspace-shell-components-public-framework--workspace-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "3cdd150bb4c204caf56525c6c522f9ea31e8028dfbcd7bd8c112821291831966"
+      "sha256": "d01930753cde670a2bf80732bc75e15cfb33684925f10ffa253bce980130d60e"
     },
     {
       "storyId": "workspace-shell-components-ribbon-and-status-bar--chrome",
@@ -266,7 +266,7 @@
       "file": "dark/workspace-shell-components-ribbon-and-status-bar--chrome-chromium-darwin.png",
       "scope": "component",
       "injectedCss": null,
-      "sha256": "034363fb234b332ff3745d403b20ef2e42a343026fd2f6caaac9980c6169c7ed"
+      "sha256": "85c957d65891b95fe1ee187718c43830e1fb241e8f277fa733fe2d0cbdbf905f"
     },
     {
       "storyId": "workspace-shell-components-sidebar-groups--fully-collapsed",
@@ -274,7 +274,7 @@
       "file": "dark/workspace-shell-components-sidebar-groups--fully-collapsed-chromium-darwin.png",
       "scope": "component",
       "injectedCss": null,
-      "sha256": "38f36c7fcc0e3d52d7a87ca7aa63ba7846f6f32084521453f20ecdc53708af17"
+      "sha256": "e876875662a5f8380d2161bca9e72988ebe97dd645839cc929aee650451bf10b"
     },
     {
       "storyId": "workspace-shell-components-sidebar-groups--group-and-ungroup",
@@ -282,7 +282,7 @@
       "file": "dark/workspace-shell-components-sidebar-groups--group-and-ungroup-chromium-darwin.png",
       "scope": "component",
       "injectedCss": null,
-      "sha256": "498aefdcbd9b12a612257f265fee2de122d9aec989e582526a80d6001c209ce8"
+      "sha256": "089fc5554e044c654f59330736392f65141a8304d6f98ff6410abb473c143087"
     },
     {
       "storyId": "workspace-shell-components-sidebar-groups--grouped",
@@ -290,7 +290,7 @@
       "file": "dark/workspace-shell-components-sidebar-groups--grouped-chromium-darwin.png",
       "scope": "component",
       "injectedCss": null,
-      "sha256": "de0847935058fb1d1908230b94534c1f5b4643850f9cd4f866eb95f091421200"
+      "sha256": "b04571bd9845372145c9db2480d18883e9937ba473d64beb2f058c54f95655de"
     },
     {
       "storyId": "workspace-shell-components-sidebar-groups--partially-collapsed",
@@ -298,7 +298,7 @@
       "file": "dark/workspace-shell-components-sidebar-groups--partially-collapsed-chromium-darwin.png",
       "scope": "component",
       "injectedCss": null,
-      "sha256": "de0847935058fb1d1908230b94534c1f5b4643850f9cd4f866eb95f091421200"
+      "sha256": "b04571bd9845372145c9db2480d18883e9937ba473d64beb2f058c54f95655de"
     },
     {
       "storyId": "workspace-shell-components-tabs--close-hover",
@@ -306,7 +306,7 @@
       "file": "dark/workspace-shell-components-tabs--close-hover-chromium-darwin.png",
       "scope": "component",
       "injectedCss": null,
-      "sha256": "7febcd9ce6c7e1d5e223fe490414655ebb7c5048b83f47e912bddd4ec61e0658"
+      "sha256": "d2000e7a1d36fec4073efa9ccb2fabf997b82c415635150aeb828d3053d68b04"
     },
     {
       "storyId": "workspace-shell-components-tabs--constrained",
@@ -314,7 +314,7 @@
       "file": "dark/workspace-shell-components-tabs--constrained-chromium-darwin.png",
       "scope": "component",
       "injectedCss": null,
-      "sha256": "24dcfce5c8f2c268461d3e969455a4dacc4dd9e5ef3dbd353749d525f45e25be"
+      "sha256": "d062f2ee7a35887a896ac7d35eceb8b167d69accf2ab729a68b84c109b1d1c79"
     },
     {
       "storyId": "workspace-shell-components-tabs--empty-split-is-pruned",
@@ -322,7 +322,7 @@
       "file": "dark/workspace-shell-components-tabs--empty-split-is-pruned-chromium-darwin.png",
       "scope": "component",
       "injectedCss": null,
-      "sha256": "96ef075949472c989d2251ef07ee93328101257909a1f12c2998ea6637c58cb7"
+      "sha256": "f75914f39697df9749a85bf922ddf38e014c8f6df2c1f9024ae10ba9e462c8d7"
     },
     {
       "storyId": "workspace-shell-components-tabs--right-sidebar-toggle-uses-top-right-pane",
@@ -330,7 +330,7 @@
       "file": "dark/workspace-shell-components-tabs--right-sidebar-toggle-uses-top-right-pane-chromium-darwin.png",
       "scope": "component",
       "injectedCss": null,
-      "sha256": "c01ddb3b0fcf16bd5e95a6e9c978c9aab7056fed80032cc4dca9ec27687d2b14"
+      "sha256": "deebc84fc4b8c6042155dacd87670257ef95a0ce0a49c4648553f3c6e14dd045"
     },
     {
       "storyId": "workspace-shell-components-tabs--single",
@@ -338,7 +338,7 @@
       "file": "dark/workspace-shell-components-tabs--single-chromium-darwin.png",
       "scope": "component",
       "injectedCss": null,
-      "sha256": "ea68047f4ed3e025b253602a5983abe9a44258cb3e16206a7b720582ebea0ad1"
+      "sha256": "823c33f6daeb9e2c99a5099cff2f79f852954b9cbdb75118c2cc1b29c73d8c54"
     },
     {
       "storyId": "workspace-shell-components-tabs--stacked",
@@ -346,7 +346,7 @@
       "file": "dark/workspace-shell-components-tabs--stacked-chromium-darwin.png",
       "scope": "component",
       "injectedCss": null,
-      "sha256": "a7168ea3d31b868d766fc2d21e19be5267a4188ee4933e1bee8ee53f90cfec6e"
+      "sha256": "046f75683035b17d9d75ed41555f0f2c8d13295147d957dfc47467ed7d350df5"
     },
     {
       "storyId": "workspace-shell-components-tabs--top",
@@ -354,7 +354,7 @@
       "file": "dark/workspace-shell-components-tabs--top-chromium-darwin.png",
       "scope": "component",
       "injectedCss": null,
-      "sha256": "c9ed36a4164654b62ac161493895b011aca670a3cda2f342c30838a55088d7fc"
+      "sha256": "9b4a228d3653a06783917dc4cb62d6b646ad660c5afd74143ca831d88554b272"
     },
     {
       "storyId": "workspace-shell-components-view-header-and-menus--header-and-menu",
@@ -362,7 +362,7 @@
       "file": "dark/workspace-shell-components-view-header-and-menus--header-and-menu-chromium-darwin.png",
       "scope": "component",
       "injectedCss": null,
-      "sha256": "51c9c2460f6e30d1b883e18cbab4590c3c3d51a0dc5e18ba54f144efdf721bcd"
+      "sha256": "5796d588f2d90611d5a74dd8da7ec2f669b5db5675f209e7f665bfdc2184a52d"
     },
     {
       "storyId": "workspace-shell-demo-reusable-framework--overview",
@@ -370,7 +370,7 @@
       "file": "dark/workspace-shell-demo-reusable-framework--overview-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "ce9efd23b79c69753c04d55ddbb49fb26ae52f0728f900284b154d0caa3cd775"
+      "sha256": "427cb769ddfe5783ef39124d18f485ba6dd77feb6b2b805fdbc463623aa9fceb"
     },
     {
       "storyId": "workspace-shell-plugins-f-mode--active",
@@ -378,7 +378,7 @@
       "file": "dark/workspace-shell-plugins-f-mode--active-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": "fmode",
-      "sha256": "525cbdc8c02aa34e2542f148b646d690773d0213af810904382d4a8981bee3a6"
+      "sha256": "9bbb2a8a85de71653c4fe432a375fa715685e15d004ce9e28222d0912c21d436"
     },
     {
       "storyId": "workspace-shell-plugins-notifications--populated-history",
@@ -386,7 +386,7 @@
       "file": "dark/workspace-shell-plugins-notifications--populated-history-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": "notifications",
-      "sha256": "cdca1c3d272e964e7c4824f285f2013fef91a5d2c0d919f440b094fee00060bc"
+      "sha256": "65bfe4a12d5445009efcf61f75a83fd0b8a259646064636e1211be17259c7b86"
     },
     {
       "storyId": "workspace-shell-plugins-notifications--toast-severities",
@@ -394,7 +394,7 @@
       "file": "dark/workspace-shell-plugins-notifications--toast-severities-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": "notifications",
-      "sha256": "a9aa1823d703b649732b33ced0bc0fc207a98a3e647b45183af6ea43416c0bea"
+      "sha256": "0a76f1dd7cfc057c3e85e21d20ea5bcbee1fcefdd8a01d577de33a610f09ab9f"
     },
     {
       "storyId": "workspace-shell-reference-parity--shell",
@@ -402,7 +402,7 @@
       "file": "dark/workspace-shell-reference-parity--shell-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "42babca041f4c79d0311ec6eb2e38da46cfbb0979221e852e25d72ba6a972a7f"
+      "sha256": "02d9ee2a1f497c5972321b4400138f273d20e36b6266863af5fd41f57ba0ec90"
     },
     {
       "storyId": "workspace-shell-shell-full-shell--desktop",
@@ -410,7 +410,7 @@
       "file": "dark/workspace-shell-shell-full-shell--desktop-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "da255be182dd1c5919dcf1336e085f542cc99617f4bcff10a37c647ccb0c7589"
+      "sha256": "03e85a8ea3cb93465762537147e3bab54b82b3ac05931c898b8563d6a62dbcb9"
     },
     {
       "storyId": "workspace-shell-shell-full-shell--mobile",
@@ -418,7 +418,7 @@
       "file": "dark/workspace-shell-shell-full-shell--mobile-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "67adc96de037add514eefe7503846733ffc8151f4378a884d0ad997a8e4e5e47"
+      "sha256": "247e30497bafea884dee237c6815a4a4883eb94719234c06ac2f984278e4210f"
     },
     {
       "storyId": "workspace-shell-components-composable-settings--composition",
@@ -426,7 +426,7 @@
       "file": "light/workspace-shell-components-composable-settings--composition-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "b1242e7ff6e9a035bbb51d6c1c649072efc36cdfc5d4ea246691596ef88e6066"
+      "sha256": "787d8a216bdc8b0249f645a0cf6217024b12933516711619a1ba928cccf8edf8"
     },
     {
       "storyId": "workspace-shell-components-declarative-settings--all-supported-controls",
@@ -434,7 +434,7 @@
       "file": "light/workspace-shell-components-declarative-settings--all-supported-controls-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "ded661c36bc3fcd2f267144207c3a06168ca30f1081b660b10b38646b9b15351"
+      "sha256": "ba54aef56dc49bed70c7a81f0c5996923ad46d7110ccf54f69d1b51e3379cef5"
     },
     {
       "storyId": "workspace-shell-components-declarative-settings--settings",
@@ -442,7 +442,7 @@
       "file": "light/workspace-shell-components-declarative-settings--settings-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "bc398f0badedac781a43f159abff0bed67aad1eb8898b088bf0b12b80dc1cc94"
+      "sha256": "9af21eeb35c8aaac872bf33dbf8f0732e42118eb31907a0c027065866309af9a"
     },
     {
       "storyId": "workspace-shell-components-declarative-settings--settings-mobile",
@@ -450,7 +450,7 @@
       "file": "light/workspace-shell-components-declarative-settings--settings-mobile-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "a487ecfedaeb87cbd1a6760dec63edb1f639a89e0e151418b318520886591583"
+      "sha256": "0f05f5c105dfe2ebd3d259d6cc3c5a20b5228f1520a45736f52a15c4e03f4100"
     },
     {
       "storyId": "workspace-shell-components-drag-and-drop-overlays--bottom",
@@ -458,7 +458,7 @@
       "file": "light/workspace-shell-components-drag-and-drop-overlays--bottom-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "cf625504e6169a6e0b6340e15980c5dc0f84f703c3a45f80fea39483ccf9a164"
+      "sha256": "7a37c22fc177e2b40e5604268451187dd0fc2e96e41c129ddbde4229a8afe49b"
     },
     {
       "storyId": "workspace-shell-components-drag-and-drop-overlays--canceled-overlay",
@@ -466,7 +466,7 @@
       "file": "light/workspace-shell-components-drag-and-drop-overlays--canceled-overlay-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "4690444ee32b9f1bfbeecdf34f189083e71404c93ed2e7fa9d9c3e66c06b68b2"
+      "sha256": "653cf0891ca3362da30c109ab4618dbb4a24bdb45c887f4f62f7a75074b0fc09"
     },
     {
       "storyId": "workspace-shell-components-drag-and-drop-overlays--centre",
@@ -474,7 +474,7 @@
       "file": "light/workspace-shell-components-drag-and-drop-overlays--centre-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "1e937c2d00a6ea5c24f75f859942bc3dfff069d418daa297dee21821097b96e0"
+      "sha256": "b01c0dc28a7d02acb044b24b0c7d273ba771cc5147de79c6aefe7dc4357e7f6a"
     },
     {
       "storyId": "workspace-shell-components-drag-and-drop-overlays--disallowed-edge-falls-back-to-centre",
@@ -482,7 +482,7 @@
       "file": "light/workspace-shell-components-drag-and-drop-overlays--disallowed-edge-falls-back-to-centre-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "22d6bf29009fc3dbf2ead358fe2cc9a50ab20d468e9a7d1e5b1f83a0d334538a"
+      "sha256": "b7f006fd1910566e817deecbf4cfc6b11047810b48a94c4092d2b7d256bc84b0"
     },
     {
       "storyId": "workspace-shell-components-drag-and-drop-overlays--empty-target",
@@ -490,7 +490,7 @@
       "file": "light/workspace-shell-components-drag-and-drop-overlays--empty-target-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "ef292c375583661a7a2b9b99b94e8b910502f38f8c049c45062302e636adba45"
+      "sha256": "ebe262269549b7f90175ede842b65a6fb11a40c0b6ea40d3c2d08e076a5f733d"
     },
     {
       "storyId": "workspace-shell-components-drag-and-drop-overlays--floating-fallback",
@@ -498,7 +498,7 @@
       "file": "light/workspace-shell-components-drag-and-drop-overlays--floating-fallback-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "b73d6d2a148b94be33bc11df8daccfe4c77c154fcf247e98351f26a8e37e0adf"
+      "sha256": "b19b8a7ff641410fac79a70b743d12855d3eda032440ddd12b40e49369394b67"
     },
     {
       "storyId": "workspace-shell-components-drag-and-drop-overlays--insertion-marker",
@@ -506,7 +506,7 @@
       "file": "light/workspace-shell-components-drag-and-drop-overlays--insertion-marker-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "4690444ee32b9f1bfbeecdf34f189083e71404c93ed2e7fa9d9c3e66c06b68b2"
+      "sha256": "653cf0891ca3362da30c109ab4618dbb4a24bdb45c887f4f62f7a75074b0fc09"
     },
     {
       "storyId": "workspace-shell-components-drag-and-drop-overlays--left",
@@ -514,7 +514,7 @@
       "file": "light/workspace-shell-components-drag-and-drop-overlays--left-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "634e1246e61096ef5d5be91037e63bc730b662dbb559ad453aaaaf864f445e5b"
+      "sha256": "c848ab82548a7abefa7e06acbee0424b11a75654fe08942c214cb3400defc105"
     },
     {
       "storyId": "workspace-shell-components-drag-and-drop-overlays--right",
@@ -522,7 +522,7 @@
       "file": "light/workspace-shell-components-drag-and-drop-overlays--right-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "17e4bf4abfa1f8a4033044d1d143b54b4dd7b08c75a7497f8e943e3d72055835"
+      "sha256": "4d45c0ad62180bdeabfc76829e7548650c76fb86fe0197a52389e07641c875df"
     },
     {
       "storyId": "workspace-shell-components-drag-and-drop-overlays--top",
@@ -530,7 +530,7 @@
       "file": "light/workspace-shell-components-drag-and-drop-overlays--top-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "d0a0cc6526b143628239834834daee82cdd57fa7370af1bd8fa7b72f07ce1692"
+      "sha256": "3ba6b8868ad3dee6c5767527737e94c6e914be32e40f767225f5daa5770dfa8c"
     },
     {
       "storyId": "workspace-shell-components-empty-and-missing-views--empty-sidebars",
@@ -538,7 +538,7 @@
       "file": "light/workspace-shell-components-empty-and-missing-views--empty-sidebars-chromium-darwin.png",
       "scope": "component",
       "injectedCss": null,
-      "sha256": "7e7a05dd6b8d8f063f77671b8c792d7e4adcdad5020bf8585521b4e9fbf4fda8"
+      "sha256": "1bee81f9d5734134cc0a1708d0dafec5eb52afa1b343c393b14074ab7fc021d1"
     },
     {
       "storyId": "workspace-shell-components-empty-and-missing-views--empty-view",
@@ -546,7 +546,7 @@
       "file": "light/workspace-shell-components-empty-and-missing-views--empty-view-chromium-darwin.png",
       "scope": "component",
       "injectedCss": null,
-      "sha256": "9a07600a4d037a79efe388e9fce7ecaf396540e503e784b5624f5b8886cbf348"
+      "sha256": "850a748c8e5af7d474c0520242a91eb1680070d1415dfde5d4bb11504d217282"
     },
     {
       "storyId": "workspace-shell-components-empty-and-missing-views--missing-view",
@@ -554,7 +554,7 @@
       "file": "light/workspace-shell-components-empty-and-missing-views--missing-view-chromium-darwin.png",
       "scope": "component",
       "injectedCss": null,
-      "sha256": "4f229bd6fb651b5accb3c8a3888f738d2a6700b7ed78566ac8cf6362f5204147"
+      "sha256": "ffdc56cf8c7b4f2e8150bc5871cab78f5e7f537deb66e9f3858bfbc753fa6b49"
     },
     {
       "storyId": "workspace-shell-components-floating-windows--maximized",
@@ -562,7 +562,7 @@
       "file": "light/workspace-shell-components-floating-windows--maximized-chromium-darwin.png",
       "scope": "component",
       "injectedCss": null,
-      "sha256": "b029df606072af6cee9cf6ae28a7f5d1e59e9f77fb8bf6e53be71ec61760478d"
+      "sha256": "bae84c0d114c4c3c6cd5de06ac39c9d6a15232af4534e85e709702878506d72b"
     },
     {
       "storyId": "workspace-shell-components-floating-windows--states",
@@ -570,7 +570,7 @@
       "file": "light/workspace-shell-components-floating-windows--states-chromium-darwin.png",
       "scope": "component",
       "injectedCss": null,
-      "sha256": "5f745013aae8883c3fa0d7213318ef6b710949cadca4d6e16ca5bb9ebdd08786"
+      "sha256": "d41c9f61997a565d6bdae6ba8aa5979c26f9282d1e9d132ce2b1520e40b35e7e"
     },
     {
       "storyId": "workspace-shell-components-public-framework--about",
@@ -578,7 +578,7 @@
       "file": "light/workspace-shell-components-public-framework--about-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "adfa0b8f608276e91c539ddcdaf8fecddb4a387975203352917f60c62b204422"
+      "sha256": "1f84051226ae24c7a196ac8227421eb764f194305b0761c05b223a470aef4ac6"
     },
     {
       "storyId": "workspace-shell-components-public-framework--command-palette",
@@ -586,7 +586,7 @@
       "file": "light/workspace-shell-components-public-framework--command-palette-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "4cf765d83e35734654d78259d7716b304f8a41bdb85319b0fe23dcc836f5f98e"
+      "sha256": "83c076457ea27d66682fba368c5aff0d9f03eb662746bcebaf0682da74988f3a"
     },
     {
       "storyId": "workspace-shell-components-public-framework--core-plugins-settings",
@@ -594,7 +594,7 @@
       "file": "light/workspace-shell-components-public-framework--core-plugins-settings-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "4ee2582269e61dee5495bdc8dad9d12587a901bda975c016a9398cc372b777a0"
+      "sha256": "d24a24efcc2441f61cd1c6efb120302ec527f53ee9245658a390ea1e5174e121"
     },
     {
       "storyId": "workspace-shell-components-public-framework--floating-layer",
@@ -602,7 +602,7 @@
       "file": "light/workspace-shell-components-public-framework--floating-layer-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "c62b31e5f8fb3475f674654e02c72c124d957faf8eb521e22e7e00744b863876"
+      "sha256": "bdc021614bd11ac37ec5914b7ed43e19904898aab99c726d907ba179461c3f20"
     },
     {
       "storyId": "workspace-shell-components-public-framework--hotkey-settings",
@@ -610,7 +610,7 @@
       "file": "light/workspace-shell-components-public-framework--hotkey-settings-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "150d689edf7f9313ce4478d11798d48037ebaf6bd8efe31f03f68704a7ac1a9b"
+      "sha256": "265f12099559e92e3eafb6b413e95636d7f45b242c3534584e2183182e00463a"
     },
     {
       "storyId": "workspace-shell-components-public-framework--left-sidebar",
@@ -618,7 +618,7 @@
       "file": "light/workspace-shell-components-public-framework--left-sidebar-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "14a352cf23cc4ab028b41ad59538db6493f8a7f0d22d90402ea8b90433370620"
+      "sha256": "96a9a56e82d37327c7e7704e4fa22d3c9ef6e9af5a16eb864329ff510e42e241"
     },
     {
       "storyId": "workspace-shell-components-public-framework--notices",
@@ -626,7 +626,7 @@
       "file": "light/workspace-shell-components-public-framework--notices-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "3313623bd659dc93b764fa08e03e2820d1899bc56185e9fe17fd19b75ac67d7a"
+      "sha256": "a63da451366cf9a9a51f63124b4816f69d005c6ee202ef5988720020b213c73e"
     },
     {
       "storyId": "workspace-shell-components-public-framework--ribbon",
@@ -634,7 +634,7 @@
       "file": "light/workspace-shell-components-public-framework--ribbon-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "a8125d59fd63e14c3161db54a401afc81310dc09ebe7412ab7b39723d00af8eb"
+      "sha256": "daf6187b2203084209bc5e6fca270e69c303e95b6e588e1c4463eabd8b0e30c8"
     },
     {
       "storyId": "workspace-shell-components-public-framework--right-sidebar",
@@ -642,7 +642,7 @@
       "file": "light/workspace-shell-components-public-framework--right-sidebar-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "f22710d21c3c72082fb54f465786785fb4efe0b3d4612f8555f84c267bf836b0"
+      "sha256": "09777030fa071a425a45f5c561d55ee490abc238d9972f1a7e650fe6ecf51648"
     },
     {
       "storyId": "workspace-shell-components-public-framework--settings",
@@ -650,7 +650,7 @@
       "file": "light/workspace-shell-components-public-framework--settings-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "6d089358942a6b0d7c21de9dda46fdbb837e8dc03a74790ebf8c579cb2dd9af3"
+      "sha256": "0debeb843a17d5e26d1423ae85752033ff35510273ef1d3ad6dd704d50d5c3c6"
     },
     {
       "storyId": "workspace-shell-components-public-framework--status-bar",
@@ -658,7 +658,7 @@
       "file": "light/workspace-shell-components-public-framework--status-bar-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "ab291f9874cb3ea689afb1ff4116ca12a9b999d7a7015c6511168103625e8d93"
+      "sha256": "96ece7a7c73b4aabc66b36ad21b87279dad6b498da5b52d4182e679250312a4a"
     },
     {
       "storyId": "workspace-shell-components-public-framework--tabs",
@@ -666,7 +666,7 @@
       "file": "light/workspace-shell-components-public-framework--tabs-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "ea77bb3e203f57c814e0a9c3a8e96043d3862cb4b2311cabec47b1efc4673a5a"
+      "sha256": "28b84392122279bc7b2a2d1c73ad07edd6125c22f239be7571c75039b8469a44"
     },
     {
       "storyId": "workspace-shell-components-public-framework--workspace",
@@ -674,7 +674,7 @@
       "file": "light/workspace-shell-components-public-framework--workspace-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "ea77bb3e203f57c814e0a9c3a8e96043d3862cb4b2311cabec47b1efc4673a5a"
+      "sha256": "28b84392122279bc7b2a2d1c73ad07edd6125c22f239be7571c75039b8469a44"
     },
     {
       "storyId": "workspace-shell-components-ribbon-and-status-bar--chrome",
@@ -682,7 +682,7 @@
       "file": "light/workspace-shell-components-ribbon-and-status-bar--chrome-chromium-darwin.png",
       "scope": "component",
       "injectedCss": null,
-      "sha256": "43c3512318f8a94412d1f5bcfba282bd5d85dd7ae93189b85a57d5bb5070c05d"
+      "sha256": "fd20c7233dd2641fa844b99046ea210cd8a5cba42d942a1896a8184cb1cf4034"
     },
     {
       "storyId": "workspace-shell-components-sidebar-groups--fully-collapsed",
@@ -690,7 +690,7 @@
       "file": "light/workspace-shell-components-sidebar-groups--fully-collapsed-chromium-darwin.png",
       "scope": "component",
       "injectedCss": null,
-      "sha256": "cbd20da631695d4c2dd920a49ac38cd20101bf861f3d51df290fea67b86bea39"
+      "sha256": "bbcca64d8a0b7270d0ff9f2c5f38b448c591556c84760342a4ecee697a8e2f56"
     },
     {
       "storyId": "workspace-shell-components-sidebar-groups--group-and-ungroup",
@@ -698,7 +698,7 @@
       "file": "light/workspace-shell-components-sidebar-groups--group-and-ungroup-chromium-darwin.png",
       "scope": "component",
       "injectedCss": null,
-      "sha256": "13e2a5a66dcc815f854054f713d44322ae759891d8bbd12faf78ddb77607a01b"
+      "sha256": "d40c2907bf5cc874d78c6653ad3a15de507ac6b9733c9ffa3b40792e14f99b02"
     },
     {
       "storyId": "workspace-shell-components-sidebar-groups--grouped",
@@ -706,7 +706,7 @@
       "file": "light/workspace-shell-components-sidebar-groups--grouped-chromium-darwin.png",
       "scope": "component",
       "injectedCss": null,
-      "sha256": "79ff6839f83344c67e9242358881ec93bb9a2dbd5cdd7fadb51acbed47a9c68b"
+      "sha256": "3a3108ec90aebfbd09e01eeba5993acdc3beecac57a0f96d387ffdd1bcc6329c"
     },
     {
       "storyId": "workspace-shell-components-sidebar-groups--partially-collapsed",
@@ -714,7 +714,7 @@
       "file": "light/workspace-shell-components-sidebar-groups--partially-collapsed-chromium-darwin.png",
       "scope": "component",
       "injectedCss": null,
-      "sha256": "79ff6839f83344c67e9242358881ec93bb9a2dbd5cdd7fadb51acbed47a9c68b"
+      "sha256": "3a3108ec90aebfbd09e01eeba5993acdc3beecac57a0f96d387ffdd1bcc6329c"
     },
     {
       "storyId": "workspace-shell-components-tabs--close-hover",
@@ -722,7 +722,7 @@
       "file": "light/workspace-shell-components-tabs--close-hover-chromium-darwin.png",
       "scope": "component",
       "injectedCss": null,
-      "sha256": "c3aa69410be6321a4d0a38209215ec5c0a1a49c6584459e9b27dbc296b7b5709"
+      "sha256": "7d8ba02f58a924e901c95cfd89ac2a7a03f662496371533f833085595d883af2"
     },
     {
       "storyId": "workspace-shell-components-tabs--constrained",
@@ -730,7 +730,7 @@
       "file": "light/workspace-shell-components-tabs--constrained-chromium-darwin.png",
       "scope": "component",
       "injectedCss": null,
-      "sha256": "896295827767ef5ac2ef24b2645f161d9376a6487010a668fe0defe9b6627988"
+      "sha256": "5ffda33ac4a93ef9a0bc476f4a25ef6f601c398b9b28ebfbabd903baaffa661f"
     },
     {
       "storyId": "workspace-shell-components-tabs--empty-split-is-pruned",
@@ -738,7 +738,7 @@
       "file": "light/workspace-shell-components-tabs--empty-split-is-pruned-chromium-darwin.png",
       "scope": "component",
       "injectedCss": null,
-      "sha256": "284e94c4aa5139c22bcbaa92ea60049ad0ae9ce2c6352109b9e26c6bf6349e69"
+      "sha256": "959de365ce88aa2a5473753c1d416951ec8a924415a5b7ead46652ab7282e70e"
     },
     {
       "storyId": "workspace-shell-components-tabs--right-sidebar-toggle-uses-top-right-pane",
@@ -746,7 +746,7 @@
       "file": "light/workspace-shell-components-tabs--right-sidebar-toggle-uses-top-right-pane-chromium-darwin.png",
       "scope": "component",
       "injectedCss": null,
-      "sha256": "895ee1fd2781aec9ceec693f2ff83f075a67ca6e0d237f00c2a5df86f3f83f76"
+      "sha256": "db498eec15e57ed813dcd0fc37e3c84a9a73d0214a1d92ad7d5b752c82b60c41"
     },
     {
       "storyId": "workspace-shell-components-tabs--single",
@@ -754,7 +754,7 @@
       "file": "light/workspace-shell-components-tabs--single-chromium-darwin.png",
       "scope": "component",
       "injectedCss": null,
-      "sha256": "faeb008ac4178544aded8a475a24cfdab7db39fb81431be2adbeda5bcdd5301c"
+      "sha256": "344630a6055a8beae6eeb7ad4c9556cabf4bdbbee8b51719eed628fd2a52f6ee"
     },
     {
       "storyId": "workspace-shell-components-tabs--stacked",
@@ -762,7 +762,7 @@
       "file": "light/workspace-shell-components-tabs--stacked-chromium-darwin.png",
       "scope": "component",
       "injectedCss": null,
-      "sha256": "6263cff4251459c89ccb6a30ca17ec2c28eaab7430a2c2cdb855a4afe6065c71"
+      "sha256": "edd1926a0f12f52afcf35e7d8f82340a67314ef847bddf1912699ebdb3fadad5"
     },
     {
       "storyId": "workspace-shell-components-tabs--top",
@@ -770,7 +770,7 @@
       "file": "light/workspace-shell-components-tabs--top-chromium-darwin.png",
       "scope": "component",
       "injectedCss": null,
-      "sha256": "4fbee6c5fd60c49a2bdc7df8abbdf72608d4ffbd0f246e7f3eb7f4bcce59fac8"
+      "sha256": "2da6e08554dc7863737383f3bdc9f2b4d11dd9eaaff59273bbcb194ea5ed1e9a"
     },
     {
       "storyId": "workspace-shell-components-view-header-and-menus--header-and-menu",
@@ -778,7 +778,7 @@
       "file": "light/workspace-shell-components-view-header-and-menus--header-and-menu-chromium-darwin.png",
       "scope": "component",
       "injectedCss": null,
-      "sha256": "adcc5e325da169e931d21873d2356a1a3f2e9553258ac2a28dc3a6beeb1457dd"
+      "sha256": "d2cb69033eb29cfb275ff24dbdcba070d534d785e0fea01be2e89f8cf5f7f735"
     },
     {
       "storyId": "workspace-shell-demo-reusable-framework--overview",
@@ -786,7 +786,7 @@
       "file": "light/workspace-shell-demo-reusable-framework--overview-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "050bafa03378b14edbe2ba521662540f377eb92144ec68bb487c470dac78dc0a"
+      "sha256": "d030d71a724f0864bf9160789ce45d35045ce9f7dc19f0904faa84c7a5e6230a"
     },
     {
       "storyId": "workspace-shell-plugins-f-mode--active",
@@ -794,7 +794,7 @@
       "file": "light/workspace-shell-plugins-f-mode--active-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": "fmode",
-      "sha256": "5cf56b065f304f7b9a5840ccc4654347445e51daa540af2aa1da9143eedc3617"
+      "sha256": "5ea945496be40e9c2599fbb2af85463d0fe557e81a5d0e64f682e26ed54d3099"
     },
     {
       "storyId": "workspace-shell-plugins-notifications--populated-history",
@@ -802,7 +802,7 @@
       "file": "light/workspace-shell-plugins-notifications--populated-history-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": "notifications",
-      "sha256": "44720fab224e3cc44801e5d375ed675ad32d7804efd4eec6acbfd955d1fef035"
+      "sha256": "fa1666a9a395288458ecb9d2ac569fba69faa7df58e12bb0e7c2fb449f7694f2"
     },
     {
       "storyId": "workspace-shell-plugins-notifications--toast-severities",
@@ -810,7 +810,7 @@
       "file": "light/workspace-shell-plugins-notifications--toast-severities-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": "notifications",
-      "sha256": "1b9df10b822076ac4f1f7632b8e88b09f2db64fb101f29efa31056e7de70ca13"
+      "sha256": "d37d2fa8089a8d44e18f5dfb1a4c13a94bd62be62575b0ff59e10f3937d332d0"
     },
     {
       "storyId": "workspace-shell-reference-parity--shell",
@@ -818,7 +818,7 @@
       "file": "light/workspace-shell-reference-parity--shell-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "9a07600a4d037a79efe388e9fce7ecaf396540e503e784b5624f5b8886cbf348"
+      "sha256": "850a748c8e5af7d474c0520242a91eb1680070d1415dfde5d4bb11504d217282"
     },
     {
       "storyId": "workspace-shell-shell-full-shell--desktop",
@@ -826,7 +826,7 @@
       "file": "light/workspace-shell-shell-full-shell--desktop-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "8af058dd1ee9dfc3d66047f7d21c428fcc581ab934fc8dbd51f6a37c1c77c355"
+      "sha256": "065553e1f6b91b0cd79e4451940d241be3d939116282605dee543996e1b1f9fe"
     },
     {
       "storyId": "workspace-shell-shell-full-shell--mobile",
@@ -834,7 +834,7 @@
       "file": "light/workspace-shell-shell-full-shell--mobile-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
-      "sha256": "7180f65b2b272f658a1075dea5c4ec9af944bfd6b3cbcf26e4e7618a77799b80"
+      "sha256": "9985624d73f5adc0ad4cf5296916711936576a713c40a147b0583ebc4ef3e4fe"
     }
   ]
 }

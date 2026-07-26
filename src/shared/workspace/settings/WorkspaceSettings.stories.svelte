@@ -148,7 +148,7 @@
           id: "demo.color",
           type: "string",
           presentation: "color",
-          title: "Accent color",
+          title: "Accent colour",
           default: "#7c3aed",
         },
         {
@@ -203,7 +203,7 @@
     },
     {
       id: "collections",
-      title: "Collections and extensions",
+      title: "Host integration",
       description:
         "Lists, structured values, associations, custom renderers, and fallbacks.",
       icon: "list-plus",
@@ -331,6 +331,16 @@
 <Story
   name="Controller-owned workspace settings"
   tags={["visual-pending", "lapis-reference-visual"]}
+  play={async ({ canvas }) => {
+    const search = canvas.getByRole("searchbox", {
+      name: "Search settings",
+    });
+    await userEvent.type(search, "colour");
+    await expect(search).toHaveValue("colour");
+    await expect(
+      canvas.getByRole("heading", { name: "Settings Search Results" }),
+    ).toBeVisible();
+  }}
   parameters={{
     visualDelta: withLapisStorybookReference(
       "/visual-baselines/workspace/settings/controller-owned-workspace-settings-chromium-darwin.png",
@@ -358,7 +368,7 @@
   tags={["visual-pending"]}
   play={async ({ canvas }) => {
     await userEvent.click(canvas.getByRole("button", { name: "Appearance" }));
-    const scheme = canvas.getByLabelText("Base color scheme");
+    const scheme = canvas.getByLabelText("Base colour scheme");
     await userEvent.selectOptions(scheme, "dark");
     await expect(scheme).toHaveValue("dark");
     await expect(
@@ -412,9 +422,15 @@
     });
     await userEvent.type(search, "custom renderer");
     await expect(
-      canvas.getByRole("heading", { name: "Settings search results" }),
+      canvas.getByRole("heading", { name: "Settings Search Results" }),
     ).toBeVisible();
     await userEvent.clear(search);
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Host integration" }),
+    );
+    await expect(
+      canvas.getByRole("heading", { name: "Host integration" }),
+    ).toBeVisible();
   }}
   parameters={{
     visualDelta: withLapisStorybookReference(
@@ -448,7 +464,7 @@
   tags={["visual-pending"]}
   play={async ({ canvas }) => {
     await userEvent.click(
-      canvas.getByRole("button", { name: "Collections and extensions" }),
+      canvas.getByRole("button", { name: "Host integration" }),
     );
     await expect(canvas.getByLabelText("Tags item 1")).toHaveValue("framework");
     await expect(canvas.getByRole("note")).toHaveTextContent(

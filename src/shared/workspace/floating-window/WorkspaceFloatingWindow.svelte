@@ -243,7 +243,7 @@
     onpointerdown={() => controller.focusWindow(workspaceWindow.id)}
   >
     <!-- svelte-ignore a11y_no_static_element_interactions -->
-    <header
+    <div
       class="ui-workspace-floating-window__header"
       data-ui-part="header"
       data-floating-pane-header="true"
@@ -321,7 +321,7 @@
           <Close aria-hidden="true" />
         </button>
       </div>
-    </header>
+    </div>
 
     {#if !isCollapsed}
       <div class="ui-workspace-floating-window__body" data-ui-part="body">

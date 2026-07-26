@@ -1,6 +1,5 @@
 <script lang="ts">
   import type { AppShellController } from "../../core/app-shell-controller.svelte.js";
-  import WorkspaceIcon from "../../icon/WorkspaceIcon.svelte";
   import "./Notifications.css";
 
   let { app }: { app: AppShellController } = $props();
@@ -35,7 +34,7 @@
         aria-label={`Dismiss ${record.title ?? record.message}`}
         onclick={() => app.notifications.dismiss(record.id)}
       >
-        <WorkspaceIcon name="x" />
+        <span aria-hidden="true">×</span>
       </button>
     </section>
   {/each}

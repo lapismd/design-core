@@ -133,7 +133,7 @@
           aria-label="Close notification center"
           onclick={() => presentation.close()}
         >
-          <WorkspaceIcon name="x" />
+          <span aria-hidden="true">×</span>
         </button>
       </div>
     </header>
@@ -209,7 +209,7 @@
                     aria-label={`Clear ${record.title ?? record.message}`}
                     onclick={() => void app.notifications.clear(record.id)}
                   >
-                    <WorkspaceIcon name="x" />
+                    <span aria-hidden="true">×</span>
                   </button>
                 </div>
                 <time datetime={new Date(record.updatedAt).toISOString()}>

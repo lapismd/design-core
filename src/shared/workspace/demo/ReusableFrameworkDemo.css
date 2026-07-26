@@ -6,25 +6,47 @@
 }
 
 .ui-workspace-framework-demo__view {
-  display: grid;
+  display: flex;
   height: 100%;
-  place-content: center;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   gap: 0.5rem;
-  padding: 2rem;
   text-align: center;
 }
 
-.ui-workspace-framework-demo__view h2 {
+.ui-workspace-framework-demo__view--home h2 {
   margin: 0;
   color: var(--ui-workspace-foreground);
-  font-size: 1.25rem;
-  font-weight: 650;
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.75rem;
 }
 
-.ui-workspace-framework-demo__view p {
-  max-width: 30rem;
+.ui-workspace-framework-demo__view--home p {
+  max-width: 28rem;
   margin: 0;
   color: var(--ui-workspace-muted-foreground);
   font-size: 0.875rem;
-  line-height: 1.5;
+  line-height: 1.25rem;
+}
+
+.ui-workspace-framework-demo__view--panel {
+  padding-inline: 1rem;
+}
+
+.ui-workspace-framework-demo__view--panel h3 {
+  margin: 0;
+  color: var(--ui-workspace-foreground);
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.25rem;
+}
+
+.ui-workspace-framework-demo__view--panel p {
+  max-width: 24rem;
+  margin: 0;
+  color: var(--ui-workspace-muted-foreground);
+  font-size: 0.75rem;
+  line-height: 1rem;
 }

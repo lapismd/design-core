@@ -9,7 +9,7 @@
   overflow: hidden;
   color: var(--ui-workspace-foreground);
   background: var(--ui-workspace-background);
-  font-family: inherit;
+  font-family: var(--ui-workspace-font-sans);
 }
 
 .ui-app-shell__overlay-layer {

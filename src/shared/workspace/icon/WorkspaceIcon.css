@@ -1,7 +1,7 @@
 [data-ui-component="workspace-icon"] {
   display: inline-flex;
-  width: 1em;
-  height: 1em;
+  width: var(--ui-workspace-icon-size, 1rem);
+  height: var(--ui-workspace-icon-size, 1rem);
   flex: 0 0 auto;
   align-items: center;
   justify-content: center;

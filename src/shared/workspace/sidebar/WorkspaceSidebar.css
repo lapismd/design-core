@@ -12,6 +12,7 @@
 }
 
 .ui-workspace-sidebar[data-workspace-sidebar-side="left"] {
+  margin-inline-end: -1px;
   border-right: 1px solid var(--ui-workspace-border);
 }
 

@@ -207,7 +207,7 @@ describe("canonical Lapis workspace reference", () => {
 
     expect(files).toHaveLength(104);
     expect(inventoryHash).toBe(
-      "76dc05493ebeae2cf8635efef77d8c5735dcb1a7453838091e44a0f50e89d78e",
+      "0c52a4a4881d651d98b5d26220ed34568153712d601c36c592014600c658ea63",
     );
     expect(provenance).toMatchObject({
       sourceSnapshotRevision: "b06d1e3f58c3",

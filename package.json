@@ -15,6 +15,7 @@
     "test:storybook": "vitest run --project storybook",
     "test:storybook:watch": "vitest --project storybook",
     "test:workspace:pointer": "node scripts/with-storybook-env.mjs playwright test -c playwright.workspace.config.ts",
+    "test:workspace-lapis-parity": "node scripts/with-storybook-env.mjs playwright test -c playwright.workspace-lapis-parity.config.ts",
     "test:shell:pointer": "node scripts/with-storybook-env.mjs playwright test -c playwright.shell.config.ts",
     "test:visual": "pnpm --filter storybook-addon-visual-delta build:node && pnpm visual-delta test --all --baseline-path-mode nested-import --external 'vendor/shadcn-svelte-docs/static/**'",
     "test:visual:affected": "pnpm --filter storybook-addon-visual-delta build:node && pnpm visual-delta test --affected --baseline-path-mode nested-import --external 'vendor/shadcn-svelte-docs/static/**'",

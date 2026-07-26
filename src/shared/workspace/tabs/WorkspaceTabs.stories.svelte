@@ -184,6 +184,7 @@
 <Story
   name="Constrained hidden-scrollbar row"
   tags={["visual-pending", "lapis-reference-visual"]}
+  globals={{ theme: "lapis", colorMode: "light" }}
   play={async ({ canvasElement }) => {
     const row = canvasElement.querySelector<HTMLElement>(
       ".ui-workspace-tabs__list",
@@ -191,6 +192,8 @@
     await expect(row).not.toBeNull();
     await expect(row!.scrollWidth).toBeGreaterThan(row!.clientWidth);
     await expect(getComputedStyle(row!).scrollbarWidth).toBe("none");
+    await expect(getComputedStyle(row!).margin).toBe("6px -5px -1px");
+    await expect(getComputedStyle(row!).padding).toBe("1px 15px 0px");
     const active = canvasElement.querySelector<HTMLElement>(
       '.ui-workspace-tab[data-active="true"]',
     );
@@ -200,6 +203,18 @@
     );
     await expect(icon).not.toBeNull();
     await expect(close).not.toBeNull();
+    await expect(active!.getBoundingClientRect().height).toBe(36);
+    await expect(getComputedStyle(active!).padding).toBe("4px 8px");
+    await expect(getComputedStyle(active!).borderRadius).toBe("4px");
+    await expect(getComputedStyle(active!).boxShadow).toContain(
+      "rgb(224, 224, 224) 0px 0px 0px 1px",
+    );
+    const inner = active!.querySelector<HTMLElement>(
+      ".ui-workspace-tab__inner",
+    );
+    await expect(inner).not.toBeNull();
+    await expect(inner!.getBoundingClientRect().height).toBe(28);
+    await expect(getComputedStyle(inner!).padding).toBe("0px 3px 0px 6px");
     await expect(icon!.getBoundingClientRect().right).toBeLessThanOrEqual(
       close!.getBoundingClientRect().left,
     );

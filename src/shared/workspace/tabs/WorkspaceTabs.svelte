@@ -1,5 +1,6 @@
 <script lang="ts">
   import ChevronDown from "@lucide/svelte/icons/chevron-down";
+  import Check from "@lucide/svelte/icons/check";
   import Plus from "@lucide/svelte/icons/plus";
   import Close from "@lucide/svelte/icons/x";
   import { DropdownMenu, Tabs } from "bits-ui";
@@ -185,53 +186,59 @@
               data-active={active}
               activate={() => select(item)}
             >
-              <Tabs.Trigger
-                value={item.id}
-                class="ui-workspace-tab__trigger"
-                data-hint-target="tab"
-                data-hint-group="tabs"
-                data-hint-action="click"
-                data-hint-target-id={`tab:${tab?.id ?? item.id}`}
-                data-hint-label={item.title}
-                draggable={Boolean(tab)}
-                aria-keyshortcuts={item.kind === "tab" &&
-                item.closable !== false
-                  ? "Delete"
-                  : undefined}
-                onpointerdown={(event) =>
-                  tab && dragState.startPointer(event, tab.id)}
-                ondragstart={(event) =>
-                  tab && dragState.startHtml5(event, tab.id)}
-                ondragend={(event) => tab && dragState.endHtml5(event)}
-                onclick={(event) => handleTabClick(event, item)}
-                onkeydown={(event) => handleTabKeydown(event, item)}
-              >
-                <span
-                  class="workspace-tab-header-inner-icon ui-workspace-tab__icon"
-                  data-ui-part="tab-icon"
+              <div class="ui-workspace-tab__button">
+                <Tabs.Trigger
+                  value={item.id}
+                  class="ui-workspace-tab__trigger"
+                  data-hint-target="tab"
+                  data-hint-group="tabs"
+                  data-hint-action="click"
+                  data-hint-target-id={`tab:${tab?.id ?? item.id}`}
+                  data-hint-label={item.title}
+                  draggable={Boolean(tab)}
+                  aria-keyshortcuts={item.kind === "tab" &&
+                  item.closable !== false
+                    ? "Delete"
+                    : undefined}
+                  onpointerdown={(event) =>
+                    tab && dragState.startPointer(event, tab.id)}
+                  ondragstart={(event) =>
+                    tab && dragState.startHtml5(event, tab.id)}
+                  ondragend={(event) => tab && dragState.endHtml5(event)}
+                  onclick={(event) => handleTabClick(event, item)}
+                  onkeydown={(event) => handleTabKeydown(event, item)}
                 >
-                  <WorkspaceIcon name={item.icon ?? tab?.icon ?? "file"} />
-                </span>
-                <span class="ui-workspace-tab__title" data-ui-part="tab-title">
-                  {item.title}
-                </span>
-
-                {#if item.kind === "tab" && item.closable !== false}
                   <span
-                    class="workspace-tab-header-inner-close-button ui-workspace-tab__close"
-                    data-ui-part="tab-close"
-                    data-hint-target="tab-close"
-                    data-hint-group="tabs"
-                    data-hint-action="click"
-                    data-hint-target-id={`tab:${item.id}:close`}
-                    data-hint-label={`Close ${item.title}`}
-                    aria-hidden="true"
-                    title={`Close ${item.title}`}
+                    class="workspace-tab-header-inner-icon ui-workspace-tab__icon"
+                    data-ui-part="tab-icon"
                   >
-                    <Close aria-hidden="true" />
+                    <WorkspaceIcon name={item.icon ?? tab?.icon ?? "file"} />
                   </span>
-                {/if}
-              </Tabs.Trigger>
+                  <span
+                    class="ui-workspace-tab__title"
+                    data-ui-part="tab-title"
+                  >
+                    {item.title}
+                  </span>
+
+                  {#if item.kind === "tab" && item.closable !== false}
+                    <span
+                      class="workspace-tab-header-inner-close-button ui-workspace-tab__close"
+                      data-ui-part="tab-close"
+                      data-hint-target="tab-close"
+                      data-hint-group="tabs"
+                      data-hint-action="click"
+                      data-hint-target-id={`tab:${item.id}:close`}
+                      data-hint-label={`Close ${item.title}`}
+                      role="button"
+                      aria-label={`Close ${item.title}`}
+                      title={`Close ${item.title}`}
+                    >
+                      <Close aria-hidden="true" />
+                    </span>
+                  {/if}
+                </Tabs.Trigger>
+              </div>
             </WorkspaceTabsMove>
           </div>
         {/each}
@@ -334,6 +341,14 @@
                   checked={pane.activeItemId === item.id}
                   onclick={() => select(item)}
                 >
+                  <span
+                    class="ui-workspace-tabs__menu-check"
+                    aria-hidden="true"
+                  >
+                    {#if pane.activeItemId === item.id}
+                      <Check />
+                    {/if}
+                  </span>
                   {item.title}
                 </DropdownMenu.CheckboxItem>
               {/each}

@@ -1,5 +1,8 @@
 .ui-workspace-fmode {
-  --ui-workspace-fmode-accent: var(--ui-workspace-accent);
+  --ui-workspace-fmode-accent: var(
+    --ui-workspace-fmode-default-accent,
+    var(--ui-workspace-accent)
+  );
   --ui-workspace-fmode-surface: color-mix(
     in srgb,
     var(--ui-workspace-background) 92%,
@@ -49,7 +52,10 @@
 }
 
 .ui-workspace-fmode__query {
-  font-family: var(--ui-workspace-font-mono);
+  font-family: var(
+    --ui-workspace-fmode-font-mono,
+    var(--ui-workspace-font-mono)
+  );
   font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -92,7 +98,10 @@
     var(--ui-workspace-fmode-accent) 18%,
     transparent
   );
-  font-family: var(--ui-workspace-font-mono);
+  font-family: var(
+    --ui-workspace-fmode-font-mono,
+    var(--ui-workspace-font-mono)
+  );
   font-size: 0.72rem;
   font-weight: 800;
   letter-spacing: 0.08em;

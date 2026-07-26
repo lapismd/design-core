@@ -12,6 +12,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { execFileSync } from "node:child_process";
 import { chromium, type Page } from "@playwright/test";
+import { PNG } from "pngjs";
 
 type StoryIndexEntry = {
   id: string;
@@ -81,6 +82,34 @@ function assertGuard(): void {
 
 function sha256(bytes: string | Buffer): string {
   return createHash("sha256").update(bytes).digest("hex");
+}
+
+async function captureMedianPng(
+  capture: () => Promise<Buffer>,
+): Promise<Buffer> {
+  const samples: PNG[] = [];
+  for (let index = 0; index < 3; index += 1) {
+    samples.push(PNG.sync.read(await capture()));
+  }
+  const [first] = samples;
+  for (const sample of samples.slice(1)) {
+    if (sample.width !== first.width || sample.height !== first.height) {
+      throw new Error("CY-0004 screenshot samples changed geometry.");
+    }
+  }
+  const median = new PNG({ width: first.width, height: first.height });
+  for (let offset = 0; offset < median.data.length; offset += 1) {
+    const left = samples[0].data[offset];
+    const middle = samples[1].data[offset];
+    const right = samples[2].data[offset];
+    median.data[offset] =
+      left +
+      middle +
+      right -
+      Math.min(left, middle, right) -
+      Math.max(left, middle, right);
+  }
+  return PNG.sync.write(median);
 }
 
 function sourceIdFromV1File(file: string): string {
@@ -229,8 +258,7 @@ async function main(): Promise<void> {
     ),
   );
 
-  const browser = await chromium.launch();
-  const chromiumVersion = browser.version();
+  let chromiumVersion = "";
   const captures: Array<{
     storyId: string;
     colourMode: ColourMode;
@@ -240,96 +268,139 @@ async function main(): Promise<void> {
     sha256: string;
   }> = [];
 
-  try {
-    for (const colourMode of ["light", "dark"] as const) {
-      const context = await browser.newContext({
-        viewport: VIEWPORT,
-        deviceScaleFactor: DEVICE_SCALE_FACTOR,
-        colorScheme: colourMode,
-        locale: "en-GB",
-        timezoneId: "Europe/London",
-      });
-      const page = await context.newPage();
-      await page.addInitScript(
-        ({ fixedTime }) => {
-          const NativeDate = Date;
-          const fixed = new NativeDate(fixedTime).valueOf();
-          class FrozenDate extends NativeDate {
-            constructor(...args: ConstructorParameters<typeof Date>) {
-              super(...(args.length === 0 ? [fixed] : args));
-            }
-            static now() {
-              return fixed;
-            }
+  for (const colourMode of ["light", "dark"] as const) {
+    for (const storyId of [...canonicalIds].sort()) {
+      const browser = await chromium.launch();
+      chromiumVersion ||= browser.version();
+      try {
+        const context = await browser.newContext({
+          viewport: VIEWPORT,
+          deviceScaleFactor: DEVICE_SCALE_FACTOR,
+          colorScheme: colourMode,
+          locale: "en-GB",
+          timezoneId: "Europe/London",
+        });
+        try {
+          const page = await context.newPage();
+          const fixedTime = Date.parse(FIXED_TIME);
+          await page.addInitScript({
+            content: `
+              (() => {
+                const NativeDate = Date;
+                const fixed = ${fixedTime};
+                class FrozenDate extends NativeDate {
+                  constructor(...args) {
+                    super(...(args.length === 0 ? [fixed] : args));
+                  }
+                  static now() {
+                    return fixed;
+                  }
+                }
+                Object.defineProperty(globalThis, "Date", { value: FrozenDate });
+                Object.defineProperty(globalThis, "__CY0004_FIXED_TIME__", {
+                  value: fixed,
+                });
+                const style = document.createElement("style");
+                style.dataset.cy0004Capture = "true";
+                style.textContent = ${JSON.stringify(`
+                *, *::before, *::after {
+                  animation-duration: 0s !important;
+                  animation-delay: 0s !important;
+                  transition-duration: 0s !important;
+                  transition-delay: 0s !important;
+                  caret-color: transparent !important;
+                }
+              `)};
+                document.documentElement.append(style);
+              })();
+            `,
+          });
+          const scope = captureScope(storyId);
+          const styleKey = injectedStyle(storyId);
+          const params = new URLSearchParams({
+            id: storyId,
+            viewMode: "story",
+            globals: `colorMode:${colourMode}`,
+            args: `theme:${colourMode}`,
+          });
+          await page.goto(`${SOURCE_URL}/iframe.html?${params}`, {
+            waitUntil: "networkidle",
+          });
+          if (styleKey) {
+            await page.addStyleTag({
+              content: injectedCss[styleKey],
+            });
           }
-          Object.defineProperty(globalThis, "Date", { value: FrozenDate });
-          const style = document.createElement("style");
-          style.dataset.cy0004Capture = "true";
-          style.textContent = `
-            *, *::before, *::after {
-              animation-duration: 0s !important;
-              animation-delay: 0s !important;
-              transition-duration: 0s !important;
-              transition-delay: 0s !important;
-              caret-color: transparent !important;
-            }
-          `;
-          document.documentElement.append(style);
-        },
-        { fixedTime: FIXED_TIME },
-      );
-
-      for (const storyId of [...canonicalIds].sort()) {
-        const scope = captureScope(storyId);
-        const styleKey = injectedStyle(storyId);
-        const params = new URLSearchParams({
-          id: storyId,
-          viewMode: "story",
-          globals: `colorMode:${colourMode}`,
-          args: `theme:${colourMode}`,
-        });
-        await page.goto(`${SOURCE_URL}/iframe.html?${params}`, {
-          waitUntil: "networkidle",
-        });
-        if (styleKey) {
-          await page.addStyleTag({
-            content: injectedCss[styleKey],
-          });
-        }
-        await waitForStory(page, storyId);
-        await applySourceTheme(page, colourMode);
-        const fileName = `${storyId}-chromium-darwin.png`;
-        const output = path.join(captureRoot, colourMode, fileName);
-        if (scope === "viewport") {
-          await page.screenshot({
-            path: output,
-            animations: "disabled",
-            caret: "hide",
-          });
-        } else {
-          const root = page.locator("#storybook-root > *").first();
-          if (!(await root.isVisible())) {
-            throw new Error(`Component root is not visible for ${storyId}.`);
+          await waitForStory(page, storyId);
+          await applySourceTheme(page, colourMode);
+          const observedClock = await page.evaluate(() => ({
+            observedTime: Date.now(),
+            expectedMarker: (
+              globalThis as typeof globalThis & {
+                __CY0004_FIXED_TIME__?: number;
+              }
+            ).__CY0004_FIXED_TIME__,
+            dateName: Date.name,
+          }));
+          const expectedTime = Date.parse(FIXED_TIME);
+          if (
+            observedClock.observedTime !== expectedTime ||
+            observedClock.expectedMarker !== expectedTime
+          ) {
+            throw new Error(
+              `CY-0004 fixed-time guard failed for ${storyId}: expected ${expectedTime}, received ${JSON.stringify(observedClock)}.`,
+            );
           }
-          await root.screenshot({
-            path: output,
-            animations: "disabled",
-            caret: "hide",
+          if (styleKey) {
+            await page.evaluate(
+              () =>
+                new Promise<void>((resolve) => {
+                  window.dispatchEvent(new Event("resize"));
+                  requestAnimationFrame(() =>
+                    requestAnimationFrame(() => resolve()),
+                  );
+                }),
+            );
+          }
+          await page.waitForTimeout(100);
+          const fileName = `${storyId}-chromium-darwin.png`;
+          const output = path.join(captureRoot, colourMode, fileName);
+          let screenshot: Buffer;
+          if (scope === "viewport") {
+            screenshot = await captureMedianPng(() =>
+              page.screenshot({
+                animations: "disabled",
+                caret: "hide",
+              }),
+            );
+          } else {
+            const root = page.locator("#storybook-root > *").first();
+            if (!(await root.isVisible())) {
+              throw new Error(`Component root is not visible for ${storyId}.`);
+            }
+            screenshot = await captureMedianPng(() =>
+              root.screenshot({
+                animations: "disabled",
+                caret: "hide",
+              }),
+            );
+          }
+          await writeFile(output, screenshot);
+          captures.push({
+            storyId,
+            colourMode,
+            file: `${colourMode}/${fileName}`,
+            scope,
+            injectedCss: styleKey,
+            sha256: sha256(screenshot),
           });
+        } finally {
+          await context.close();
         }
-        captures.push({
-          storyId,
-          colourMode,
-          file: `${colourMode}/${fileName}`,
-          scope,
-          injectedCss: styleKey,
-          sha256: sha256(await readFile(output)),
-        });
+      } finally {
+        await browser.close();
       }
-      await context.close();
     }
-  } finally {
-    await browser.close();
   }
 
   const crosswalk = sourceStories.map((story) => {
@@ -381,6 +452,8 @@ async function main(): Promise<void> {
       fonts: "awaited",
       storyFinished: "required",
       scope: "explicit per story",
+      browserIsolation: "one Chromium process per story and colour mode",
+      rasterSampling: "per-channel median of three same-context screenshots",
     },
     injectedCssHashes,
     assetCount: captures.length,

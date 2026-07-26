@@ -24,8 +24,8 @@
   width: 100%;
   flex-direction: column;
   align-items: center;
-  gap: 0.25rem;
-  padding: 0.25rem;
+  gap: 0;
+  padding: 0.5rem;
 }
 
 .ui-workspace-ribbon__actions--bottom {
@@ -35,13 +35,13 @@
 
 .ui-workspace-ribbon__action {
   display: inline-flex;
-  width: 2.25rem;
-  height: 2.25rem;
-  flex: 0 0 2.25rem;
+  width: 2rem;
+  height: 2rem;
+  flex: 0 0 2rem;
   align-items: center;
   justify-content: center;
   border: 0;
-  border-radius: var(--ui-workspace-radius-small);
+  border-radius: 6px;
   padding: 0.5rem;
   color: inherit;
   background: transparent;
@@ -53,8 +53,12 @@
 }
 
 .ui-workspace-ribbon__action[data-active="true"] {
-  color: var(--ui-workspace-accent);
-  background: var(--ui-workspace-selection);
+  color: var(--ui-workspace-panel-foreground);
+  background: color-mix(
+    in srgb,
+    var(--ui-workspace-panel) 92%,
+    var(--ui-workspace-panel-foreground)
+  );
 }
 
 .ui-workspace-ribbon__action[aria-disabled="true"] {

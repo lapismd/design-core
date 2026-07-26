@@ -19,14 +19,16 @@
     "animations": "disabled",
     "fonts": "awaited",
     "storyFinished": "required",
-    "scope": "explicit per story"
+    "scope": "explicit per story",
+    "browserIsolation": "one Chromium process per story and colour mode",
+    "rasterSampling": "per-channel median of three same-context screenshots"
   },
   "injectedCssHashes": {
     "fmode": "199e510cc408093dc7354e32df3ec8f4496f070910af0ce8e010bf1bd2c746db",
     "notifications": "b97e3821b735d470362c888a10726b8ddf4370a3f16076403abd31acbf6a75cc"
   },
   "assetCount": 104,
-  "inventorySha256": "76dc05493ebeae2cf8635efef77d8c5735dcb1a7453838091e44a0f50e89d78e",
+  "inventorySha256": "0c52a4a4881d651d98b5d26220ed34568153712d601c36c592014600c658ea63",
   "v1CanonicalImmutable": true,
   "updateGuard": "CY0004_REFERENCE_UPDATE=1"
 }

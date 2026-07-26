@@ -12,9 +12,14 @@
   } = $props();
 
   const { controller, drag } = getAppShellContext();
+  let width = $derived(
+    controller.appearance.showRibbon
+      ? `calc(${controller.renderer.layout.left.size}px - var(--ui-workspace-ribbon-width) + 1px)`
+      : `${controller.renderer.layout.left.size}px`,
+  );
 </script>
 
-<WorkspaceSidebar controller={controller.renderer} side="left" {drag}>
+<WorkspaceSidebar controller={controller.renderer} side="left" {drag} {width}>
   {#snippet footer()}
     {#if onOpenSettings}
       <footer
@@ -33,11 +38,6 @@
         <button
           type="button"
           class="ui-workspace-sidebar__settings-trigger"
-          data-hint-target="sidebar-control"
-          data-hint-group="sidebar"
-          data-hint-action="click"
-          data-hint-target-id="sidebar:settings"
-          data-hint-label="Open settings"
           aria-label="Open settings"
           title="Open settings"
           onclick={onOpenSettings}

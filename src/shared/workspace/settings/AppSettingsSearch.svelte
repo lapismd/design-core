@@ -8,7 +8,6 @@
 
 <label class="ui-workspace-settings__search" data-ui-part="search">
   <WorkspaceIcon name="search" />
-  <span class="sr-only">{placeholder}</span>
   <input
     type="search"
     bind:value={state.query}
@@ -16,4 +15,16 @@
     aria-label={placeholder}
     data-testid="settings-search-input"
   />
+  {#if state.query}
+    <button
+      type="button"
+      class="ui-workspace-settings__search-clear"
+      aria-label="Clear settings search"
+      onclick={() => {
+        state.query = "";
+      }}
+    >
+      <WorkspaceIcon name="x" />
+    </button>
+  {/if}
 </label>

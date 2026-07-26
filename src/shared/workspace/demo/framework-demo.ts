@@ -17,24 +17,63 @@ import { fModePlugin } from "../plugins/f-mode/index.js";
 import { notificationsPlugin } from "../plugins/notifications/index.js";
 
 interface DemoViewState extends Record<string, unknown> {
-  heading?: string;
-  description?: string;
+  message?: string;
 }
 
-class FrameworkDemoView extends WorkspaceView<DemoViewState> {
+class FrameworkHomeView extends WorkspaceView<DemoViewState> {
   getViewType(): string {
-    return "framework-demo";
+    return "framework-home";
+  }
+
+  getDisplayText(): string {
+    return "Framework home";
+  }
+
+  getIcon(): string {
+    return "panels-top-left";
   }
 
   onOpen(): void {
-    const state = this.getState();
     const view = document.createElement("section");
     const heading = document.createElement("h2");
     const description = document.createElement("p");
-    view.className = "ui-workspace-framework-demo__view";
-    heading.textContent = state.heading ?? this.getDisplayText();
+    view.className =
+      "ui-workspace-framework-demo__view ui-workspace-framework-demo__view--home";
+    heading.textContent = "Reusable application shell";
     description.textContent =
-      state.description ?? "Rendered by a registered WorkspaceView.";
+      this.getState().message ??
+      "This view was registered by a statically configured plugin.";
+    view.append(heading, description);
+    this.containerEl.replaceChildren(view);
+  }
+
+  onClose(): void {
+    this.containerEl.replaceChildren();
+  }
+}
+
+class FrameworkPanelView extends WorkspaceView<DemoViewState> {
+  getViewType(): string {
+    return "framework-panel";
+  }
+
+  getDisplayText(): string {
+    return this.leaf.title;
+  }
+
+  getIcon(): string {
+    return this.leaf.icon || "panel-top";
+  }
+
+  onOpen(): void {
+    const view = document.createElement("section");
+    const heading = document.createElement("h3");
+    const description = document.createElement("p");
+    view.className =
+      "ui-workspace-framework-demo__view ui-workspace-framework-demo__view--panel";
+    heading.textContent = this.leaf.title;
+    description.textContent =
+      this.getState().message ?? "A second registered framework view.";
     view.append(heading, description);
     this.containerEl.replaceChildren(view);
   }
@@ -47,9 +86,14 @@ class FrameworkDemoView extends WorkspaceView<DemoViewState> {
 class FrameworkDemoPlugin extends AppShellPlugin {
   onload(): void {
     this.registerView(
-      "framework-demo",
-      (leaf: WorkspaceLeaf) => new FrameworkDemoView(leaf),
+      "framework-home",
+      (leaf: WorkspaceLeaf) => new FrameworkHomeView(leaf),
       { icon: "panels-top-left", showHeader: true },
+    );
+    this.registerView(
+      "framework-panel",
+      (leaf: WorkspaceLeaf) => new FrameworkPanelView(leaf),
+      { icon: "panel-top", showHeader: true },
     );
     this.addCommand({
       id: "framework-demo:split-right",
@@ -74,10 +118,9 @@ class FrameworkDemoPlugin extends AppShellPlugin {
           providerId: "framework-demo-actions",
           run: () => {
             this.app.workspace.openLeaf(
-              "framework-demo",
+              "framework-home",
               {
-                heading: "Provider view",
-                description: "Created by an application palette provider.",
+                message: "Created from a command-palette provider.",
               },
               { title: "Provider view", icon: "panels-top-left" },
             );
@@ -106,7 +149,7 @@ class FrameworkDemoPlugin extends AppShellPlugin {
       ],
     });
     this.addRibbonItem({
-      id: "framework-demo-notice",
+      id: "framework-notice",
       label: "Show framework notice",
       icon: "bell",
       section: "top",
@@ -115,7 +158,7 @@ class FrameworkDemoPlugin extends AppShellPlugin {
       },
     });
     this.addStatusBarItem({
-      id: "framework-demo-ready",
+      id: "framework-status",
       label: "Framework ready",
       icon: "circle-check",
       align: "right",
@@ -129,8 +172,8 @@ function tab(id: string, title: string, icon: string, description: string) {
     title,
     icon,
     view: {
-      type: "framework-demo",
-      state: { heading: title, description },
+      type: id === "framework-home" ? "framework-home" : "framework-panel",
+      state: { message: description },
     },
   });
 }
@@ -140,19 +183,19 @@ function createLayout(includeFloating: boolean): WorkspaceLayoutV2 {
     "framework-home",
     "Framework home",
     "panels-top-left",
-    "Rendered by a reusable WorkspaceView registered from a static plugin.",
+    "Rendered by a reusable WorkspaceView class.",
   );
   const plan = tab(
     "framework-plan",
     "Plan",
     "list-checks",
-    "Tabs, splits, drag targets, and persistence share one controller.",
+    "A second tab in the primary pane.",
   );
   const activity = tab(
     "framework-activity",
     "Activity",
     "activity",
-    "The primary pane remains overflow-ready at constrained widths.",
+    "A third tab demonstrating overflow-ready tab composition.",
   );
   const reference = tab(
     "framework-reference",
@@ -164,51 +207,51 @@ function createLayout(includeFloating: boolean): WorkspaceLayoutV2 {
     "framework-details",
     "Details",
     "panel-bottom",
-    "The lower-right pane can be split, moved, floated, or redocked.",
+    "The lower-right pane can be split, moved, or floated.",
   );
   const files = tab(
     "framework-files",
     "Files",
     "files",
-    "Sidebar leaves use the registered view lifecycle.",
+    "Sidebar leaves use the same registered view lifecycle.",
   );
   const search = tab(
     "framework-search",
     "Search",
     "search",
-    "Grouped sidebar panels collapse and resize.",
+    "Grouped sidebar panels can collapse and resize.",
   );
   const outline = tab(
     "framework-outline",
     "Outline",
     "list-tree",
-    "Right-sidebar groups expose top and bottom drop targets.",
+    "Right-sidebar groups support the same reusable controls.",
   );
   const links = tab(
     "framework-links",
     "Links",
     "link",
-    "Groups can be collapsed, grouped, and ungrouped.",
+    "Drag tabs here to exercise sidebar drop targets.",
   );
   const leftGroup: WorkspaceSidebarGroup = {
     kind: "sidebar-group",
-    id: "framework-left-group",
+    id: "framework-explorer-group",
     title: "Explorer",
     icon: "files",
     tabs: [files, search],
     hiddenTabIds: [],
     collapsedByTabId: { [files.id]: false, [search.id]: true },
-    panelSizesByTabId: { [files.id]: 70, [search.id]: 30 },
+    panelSizesByTabId: { [files.id]: 320, [search.id]: 180 },
   };
   const rightGroup: WorkspaceSidebarGroup = {
     kind: "sidebar-group",
-    id: "framework-right-group",
+    id: "framework-context-group",
     title: "Context",
     icon: "panel-right",
     tabs: [outline, links],
     hiddenTabIds: [],
     collapsedByTabId: { [outline.id]: false, [links.id]: false },
-    panelSizesByTabId: { [outline.id]: 50, [links.id]: 50 },
+    panelSizesByTabId: { [outline.id]: 260, [links.id]: 260 },
   };
   const primary = createWorkspaceTabs([home, plan, activity], {
     id: "framework-primary-pane",
@@ -230,7 +273,7 @@ function createLayout(includeFloating: boolean): WorkspaceLayoutV2 {
         [50, 50],
       ),
     ],
-    [55, 45],
+    [52, 48],
   );
   layout.left = {
     open: true,
@@ -242,7 +285,7 @@ function createLayout(includeFloating: boolean): WorkspaceLayoutV2 {
   };
   layout.right = {
     open: true,
-    size: 272,
+    size: 256,
     root: createWorkspaceTabs([rightGroup], {
       id: "framework-right-sidebar",
       activeItemId: rightGroup.id,
@@ -285,6 +328,8 @@ export interface FrameworkDemoTracker {
 export function createFrameworkDemo(
   options: {
     includeFloating?: boolean;
+    includeFMode?: boolean;
+    includeNotifications?: boolean;
     mobileMode?: "always" | "never" | "auto";
   } = {},
 ): {
@@ -304,17 +349,22 @@ export function createFrameworkDemo(
       plugin: FrameworkDemoPlugin,
       enabled: true,
     },
-    fModePlugin(),
-    notificationsPlugin(),
   ];
+  if (options.includeFMode ?? true) {
+    plugins.push(fModePlugin());
+  }
+  if (options.includeNotifications ?? true) {
+    plugins.push(notificationsPlugin());
+  }
   const app = new AppShellController({
     layout,
     application: {
       name: "Workspace Shell Demo",
       version: "1.12.3",
-      icon: "panels-top-left",
-      commitHash: "a371198e495d9e4e",
-      buildTime: "2026-07-26T10:30:00.000Z",
+      icon: "book-open",
+      commitHash: "8dc49957a2c1",
+      buildTime: "2026-07-23T11:41:00.000Z",
+      copyright: "Copyright © Workspace Shell contributors.",
     },
     plugins,
     configuration: {
@@ -337,8 +387,9 @@ export function createFrameworkDemo(
     },
   });
   app.status.addItem({
-    id: "framework-demo-plugins",
+    id: "framework-plugin-manager",
     label: "Plugins",
+    tooltip: "Manage demo plugin",
     icon: "puzzle",
     align: "right",
     buildMenu(menu) {

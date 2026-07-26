@@ -23,12 +23,14 @@
     state,
     drag,
     footer,
+    width,
   }: {
     controller: WorkspaceShellController;
     side: WorkspaceSide;
     state?: WorkspaceSidebarState;
     drag?: WorkspaceDragState;
     footer?: Snippet;
+    width?: string;
   } = $props();
 
   const createInternalDrag = () => new WorkspaceDragState(controller);
@@ -62,14 +64,11 @@
     data-ui-part="sidebar"
     data-app-shell-sidebar={side}
     data-workspace-sidebar-side={side}
-    style={`width: ${sidebar.size}px`}
+    style={`width: ${width ?? `${sidebar.size}px`}`}
     aria-label={`${side === "left" ? "Left" : "Right"} sidebar`}
   >
     {#if pane}
-      <header
-        class="ui-workspace-sidebar__tab-bar"
-        data-ui-part="sidebar-tab-bar"
-      >
+      <div class="ui-workspace-sidebar__tab-bar" data-ui-part="sidebar-tab-bar">
         <div
           class="ui-workspace-sidebar__tab-list"
           role="tablist"
@@ -91,11 +90,6 @@
               draggable={Boolean(tab)}
               data-workspace-tab-id={tab?.id}
               data-workspace-item-id={item.id}
-              data-hint-target="sidebar-tab"
-              data-hint-group="sidebar"
-              data-hint-action="click"
-              data-hint-target-id={`sidebar:${side}:${item.id}`}
-              data-hint-label={item.title}
               onpointerdown={(event) =>
                 tab && dragState.startPointer(event, tab.id)}
               ondragstart={(event) =>
@@ -117,7 +111,7 @@
           label={`Close ${side} sidebar`}
           onSelect={() => controller.setSidebarOpen(side, false)}
         />
-      </header>
+      </div>
 
       <div
         class="ui-workspace-sidebar__body"
