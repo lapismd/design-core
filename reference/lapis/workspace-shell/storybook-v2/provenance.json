@@ -14,6 +14,7 @@
       "light",
       "dark"
     ],
+    "themeApplication": "Storybook colorMode plus explicit source shell light/dark classes",
     "fixedTime": "2026-07-26T10:30:00.000Z",
     "animations": "disabled",
     "fonts": "awaited",
@@ -25,7 +26,7 @@
     "notifications": "b97e3821b735d470362c888a10726b8ddf4370a3f16076403abd31acbf6a75cc"
   },
   "assetCount": 104,
-  "inventorySha256": "1d6acbaa063bb387095624205d87cb8bf7e12b4e11ea29b9581efffb7fbd620e",
+  "inventorySha256": "76dc05493ebeae2cf8635efef77d8c5735dcb1a7453838091e44a0f50e89d78e",
   "v1CanonicalImmutable": true,
   "updateGuard": "CY0004_REFERENCE_UPDATE=1"
 }

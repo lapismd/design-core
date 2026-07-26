@@ -59,6 +59,32 @@ story classification and snapshot ownership. After candidate creation is
 approved, `pnpm workspace:visual:verify` additionally requires a candidate
 baseline for every non-skipped Workspace story.
 
+The original 52-image set remains immutable as v1 provenance. Corrected v2
+references live in `reference/lapis/workspace-shell/storybook-v2/` and contain
+both light and dark Lapis captures for every canonical scene. The guarded
+capture command:
+
+```bash
+pnpm workspace:lapis-reference:update
+```
+
+requires the pinned CY-0004 revision, writes to a temporary capture directory,
+and replaces v2 only after every image and manifest succeeds. It records
+Chromium, viewport, device scale, frozen time, per-story capture scope, and
+injected F-Mode/Notifications CSS hashes. The 79-story crosswalk classifies
+each source story as a canonical parity scene or interaction-only coverage.
+
+The target parity catalog is under `Workspace/Parity/CY-0004`. Its 52 stories
+are rendered only through public Workspace APIs and linked to the corresponding
+v2 light and dark references. Compare-only zero-pixel verification is:
+
+```bash
+pnpm test:workspace-lapis-parity
+```
+
+Failures retain source, target, diff, DOM, and controller-state artifacts under
+`test-results/workspace-lapis-parity/`.
+
 ## Styling adaptation
 
 The source shell used copied shadcn-svelte components and generated Tailwind

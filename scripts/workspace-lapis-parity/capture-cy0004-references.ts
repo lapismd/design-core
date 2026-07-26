@@ -1,6 +1,13 @@
 #!/usr/bin/env tsx
 import { createHash } from "node:crypto";
-import { mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises";
+import {
+  mkdir,
+  readFile,
+  readdir,
+  rename,
+  rm,
+  writeFile,
+} from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { execFileSync } from "node:child_process";
@@ -36,6 +43,7 @@ const repoRoot = path.resolve(
 const referenceRoot = path.join(repoRoot, "reference/lapis/workspace-shell");
 const v1Root = path.join(referenceRoot, "storybook");
 const v2Root = path.join(referenceRoot, "storybook-v2");
+const captureRoot = path.join(referenceRoot, "storybook-v2.capture");
 const pluginStyles = {
   fmode: path.join(sourceRoot, "app-shell/plugins/fmode/src/lib/styles.css"),
   notifications: path.join(
@@ -88,12 +96,13 @@ function parityStoryId(sourceStoryId: string): string {
 
 function captureScope(storyId: string): CaptureScope {
   if (
-    storyId.includes("-shell-") ||
+    storyId.includes("-shell-full-shell-") ||
     storyId.includes("-demo-") ||
     storyId.includes("-settings") ||
     storyId.includes("-drag-and-drop-overlays-") ||
     storyId.includes("-plugins-") ||
-    storyId.includes("-reference-parity-")
+    storyId.includes("-reference-parity-") ||
+    storyId.includes("-public-framework--")
   ) {
     return "viewport";
   }
@@ -147,6 +156,31 @@ async function waitForStory(page: Page, storyId: string): Promise<void> {
   });
 }
 
+async function applySourceTheme(
+  page: Page,
+  colourMode: ColourMode,
+): Promise<void> {
+  await page.evaluate((mode) => {
+    document.documentElement.classList.toggle("dark", mode === "dark");
+    document.documentElement.classList.toggle("light", mode === "light");
+    for (const root of document.querySelectorAll<HTMLElement>(
+      "[data-workspace-theme], .workspace-shell",
+    )) {
+      root.classList.toggle("dark", mode === "dark");
+      root.classList.toggle("theme-dark", mode === "dark");
+      root.classList.toggle("light", mode === "light");
+      root.classList.toggle("theme-light", mode === "light");
+      root.setAttribute("data-workspace-theme", mode);
+    }
+  }, colourMode);
+  await page.evaluate(
+    () =>
+      new Promise<void>((resolve) =>
+        requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+      ),
+  );
+}
+
 async function writeJson(file: string, value: unknown): Promise<void> {
   await writeFile(file, `${JSON.stringify(value, null, 2)}\n`);
 }
@@ -188,10 +222,10 @@ async function main(): Promise<void> {
     notifications: sha256(notificationsCss),
   };
 
-  await rm(v2Root, { recursive: true, force: true });
+  await rm(captureRoot, { recursive: true, force: true });
   await Promise.all(
     (["light", "dark"] as const).map((mode) =>
-      mkdir(path.join(v2Root, mode), { recursive: true }),
+      mkdir(path.join(captureRoot, mode), { recursive: true }),
     ),
   );
 
@@ -252,6 +286,7 @@ async function main(): Promise<void> {
           id: storyId,
           viewMode: "story",
           globals: `colorMode:${colourMode}`,
+          args: `theme:${colourMode}`,
         });
         await page.goto(`${SOURCE_URL}/iframe.html?${params}`, {
           waitUntil: "networkidle",
@@ -262,8 +297,9 @@ async function main(): Promise<void> {
           });
         }
         await waitForStory(page, storyId);
+        await applySourceTheme(page, colourMode);
         const fileName = `${storyId}-chromium-darwin.png`;
-        const output = path.join(v2Root, colourMode, fileName);
+        const output = path.join(captureRoot, colourMode, fileName);
         if (scope === "viewport") {
           await page.screenshot({
             path: output,
@@ -321,14 +357,14 @@ async function main(): Promise<void> {
     interactionOnlyStoryCount: sourceStories.length - canonicalIds.size,
     stories: captures,
   };
-  await writeJson(path.join(v2Root, "manifest.json"), manifest);
-  await writeJson(path.join(v2Root, "crosswalk.json"), {
+  await writeJson(path.join(captureRoot, "manifest.json"), manifest);
+  await writeJson(path.join(captureRoot, "crosswalk.json"), {
     schemaVersion: 1,
     sourceSnapshotRevision: EXPECTED_SOURCE_REVISION,
     sourceStoryCount: sourceStories.length,
     entries: crosswalk,
   });
-  await writeJson(path.join(v2Root, "provenance.json"), {
+  await writeJson(path.join(captureRoot, "provenance.json"), {
     schemaVersion: 2,
     source: "Standalone CY-0004 workspace-shell Storybook",
     sourceSnapshotRevision: EXPECTED_SOURCE_REVISION,
@@ -338,6 +374,8 @@ async function main(): Promise<void> {
       viewport: VIEWPORT,
       deviceScaleFactor: DEVICE_SCALE_FACTOR,
       colourModes: ["light", "dark"],
+      themeApplication:
+        "Storybook colorMode plus explicit source shell light/dark classes",
       fixedTime: FIXED_TIME,
       animations: "disabled",
       fonts: "awaited",
@@ -350,6 +388,8 @@ async function main(): Promise<void> {
     v1CanonicalImmutable: true,
     updateGuard: "CY0004_REFERENCE_UPDATE=1",
   });
+  await rm(v2Root, { recursive: true, force: true });
+  await rename(captureRoot, v2Root);
 
   console.log(
     `Captured ${captures.length} v2 references from ${canonicalIds.size} stories.`,

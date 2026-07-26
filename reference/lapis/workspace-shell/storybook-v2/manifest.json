@@ -6,6 +6,422 @@
   "stories": [
     {
       "storyId": "workspace-shell-components-composable-settings--composition",
+      "colourMode": "dark",
+      "file": "dark/workspace-shell-components-composable-settings--composition-chromium-darwin.png",
+      "scope": "viewport",
+      "injectedCss": null,
+      "sha256": "ce0b3612a3afdc1c28f26c6b1b8bfdfc1af8b5bf583f0ba60574ea7a223a6454"
+    },
+    {
+      "storyId": "workspace-shell-components-declarative-settings--all-supported-controls",
+      "colourMode": "dark",
+      "file": "dark/workspace-shell-components-declarative-settings--all-supported-controls-chromium-darwin.png",
+      "scope": "viewport",
+      "injectedCss": null,
+      "sha256": "6ea83c8bd229e4572eeae2bcc95e1c796f7701abf7c798410f20ab0dd2d25486"
+    },
+    {
+      "storyId": "workspace-shell-components-declarative-settings--settings",
+      "colourMode": "dark",
+      "file": "dark/workspace-shell-components-declarative-settings--settings-chromium-darwin.png",
+      "scope": "viewport",
+      "injectedCss": null,
+      "sha256": "b6db275498a30e99f050b0d753fb1e9ba4e796da1d2311528ad46c523d368fe2"
+    },
+    {
+      "storyId": "workspace-shell-components-declarative-settings--settings-mobile",
+      "colourMode": "dark",
+      "file": "dark/workspace-shell-components-declarative-settings--settings-mobile-chromium-darwin.png",
+      "scope": "viewport",
+      "injectedCss": null,
+      "sha256": "ffbc56605ecfa1d34014f93cc78b7f5b48322116820babbcb6f7adf8e4bda0fa"
+    },
+    {
+      "storyId": "workspace-shell-components-drag-and-drop-overlays--bottom",
+      "colourMode": "dark",
+      "file": "dark/workspace-shell-components-drag-and-drop-overlays--bottom-chromium-darwin.png",
+      "scope": "viewport",
+      "injectedCss": null,
+      "sha256": "78c4ca776f2669f007b2d037d73b19b7433bdd22df86e479b8540a0088b7adb2"
+    },
+    {
+      "storyId": "workspace-shell-components-drag-and-drop-overlays--canceled-overlay",
+      "colourMode": "dark",
+      "file": "dark/workspace-shell-components-drag-and-drop-overlays--canceled-overlay-chromium-darwin.png",
+      "scope": "viewport",
+      "injectedCss": null,
+      "sha256": "0050ae66463bf82dc43b3e4ec94482d5ccfb6f24725a6b9e4e4515db556a48bd"
+    },
+    {
+      "storyId": "workspace-shell-components-drag-and-drop-overlays--centre",
+      "colourMode": "dark",
+      "file": "dark/workspace-shell-components-drag-and-drop-overlays--centre-chromium-darwin.png",
+      "scope": "viewport",
+      "injectedCss": null,
+      "sha256": "772015194f673633571a8ea09a4c229de47dc3e966af37d4262d6d21376ddf70"
+    },
+    {
+      "storyId": "workspace-shell-components-drag-and-drop-overlays--disallowed-edge-falls-back-to-centre",
+      "colourMode": "dark",
+      "file": "dark/workspace-shell-components-drag-and-drop-overlays--disallowed-edge-falls-back-to-centre-chromium-darwin.png",
+      "scope": "viewport",
+      "injectedCss": null,
+      "sha256": "c613851f7a39aa72d528e45ddeb5c92620758248cfb7625eb43646bc82344c68"
+    },
+    {
+      "storyId": "workspace-shell-components-drag-and-drop-overlays--empty-target",
+      "colourMode": "dark",
+      "file": "dark/workspace-shell-components-drag-and-drop-overlays--empty-target-chromium-darwin.png",
+      "scope": "viewport",
+      "injectedCss": null,
+      "sha256": "65017a66d06f2335b16a89e025082e63e5a77123ab4951ab95a2d409974e4331"
+    },
+    {
+      "storyId": "workspace-shell-components-drag-and-drop-overlays--floating-fallback",
+      "colourMode": "dark",
+      "file": "dark/workspace-shell-components-drag-and-drop-overlays--floating-fallback-chromium-darwin.png",
+      "scope": "viewport",
+      "injectedCss": null,
+      "sha256": "e31d08f6a7ab73c04dfb691219229435c8064a0eba13bc9742b030d941396d26"
+    },
+    {
+      "storyId": "workspace-shell-components-drag-and-drop-overlays--insertion-marker",
+      "colourMode": "dark",
+      "file": "dark/workspace-shell-components-drag-and-drop-overlays--insertion-marker-chromium-darwin.png",
+      "scope": "viewport",
+      "injectedCss": null,
+      "sha256": "0050ae66463bf82dc43b3e4ec94482d5ccfb6f24725a6b9e4e4515db556a48bd"
+    },
+    {
+      "storyId": "workspace-shell-components-drag-and-drop-overlays--left",
+      "colourMode": "dark",
+      "file": "dark/workspace-shell-components-drag-and-drop-overlays--left-chromium-darwin.png",
+      "scope": "viewport",
+      "injectedCss": null,
+      "sha256": "274e671fc1db18fddcded55293df36d0f3ca0c35c1a1b42ee8bfe78a169b7c19"
+    },
+    {
+      "storyId": "workspace-shell-components-drag-and-drop-overlays--right",
+      "colourMode": "dark",
+      "file": "dark/workspace-shell-components-drag-and-drop-overlays--right-chromium-darwin.png",
+      "scope": "viewport",
+      "injectedCss": null,
+      "sha256": "af066021e84e481db77337aef438ccc4d78d031e581fe6bd7b3b4a827aa95bc1"
+    },
+    {
+      "storyId": "workspace-shell-components-drag-and-drop-overlays--top",
+      "colourMode": "dark",
+      "file": "dark/workspace-shell-components-drag-and-drop-overlays--top-chromium-darwin.png",
+      "scope": "viewport",
+      "injectedCss": null,
+      "sha256": "012ff877c545f01088c72e2e8657e8453c8bdc5a6ae273f0d8d80794bc1e5230"
+    },
+    {
+      "storyId": "workspace-shell-components-empty-and-missing-views--empty-sidebars",
+      "colourMode": "dark",
+      "file": "dark/workspace-shell-components-empty-and-missing-views--empty-sidebars-chromium-darwin.png",
+      "scope": "component",
+      "injectedCss": null,
+      "sha256": "b165811ea213f13beb8209fb0ebf32387c206ed2ae4ff0408ddfde75ce2f1d58"
+    },
+    {
+      "storyId": "workspace-shell-components-empty-and-missing-views--empty-view",
+      "colourMode": "dark",
+      "file": "dark/workspace-shell-components-empty-and-missing-views--empty-view-chromium-darwin.png",
+      "scope": "component",
+      "injectedCss": null,
+      "sha256": "42babca041f4c79d0311ec6eb2e38da46cfbb0979221e852e25d72ba6a972a7f"
+    },
+    {
+      "storyId": "workspace-shell-components-empty-and-missing-views--missing-view",
+      "colourMode": "dark",
+      "file": "dark/workspace-shell-components-empty-and-missing-views--missing-view-chromium-darwin.png",
+      "scope": "component",
+      "injectedCss": null,
+      "sha256": "cf99c79a06092887a9f19a65db490208899198f952aad22ed9274667abe0daa6"
+    },
+    {
+      "storyId": "workspace-shell-components-floating-windows--maximized",
+      "colourMode": "dark",
+      "file": "dark/workspace-shell-components-floating-windows--maximized-chromium-darwin.png",
+      "scope": "component",
+      "injectedCss": null,
+      "sha256": "cfdcbbf1143596225515a492470f8d7a478ba826bd4ac2ba2e7160e61a7c90b9"
+    },
+    {
+      "storyId": "workspace-shell-components-floating-windows--states",
+      "colourMode": "dark",
+      "file": "dark/workspace-shell-components-floating-windows--states-chromium-darwin.png",
+      "scope": "component",
+      "injectedCss": null,
+      "sha256": "527d06d387a19c02a561f14e21a40dfe668c09ac2ef632c1314eb72373be1bde"
+    },
+    {
+      "storyId": "workspace-shell-components-public-framework--about",
+      "colourMode": "dark",
+      "file": "dark/workspace-shell-components-public-framework--about-chromium-darwin.png",
+      "scope": "viewport",
+      "injectedCss": null,
+      "sha256": "e5d18ebd6441bf2d63e90d19f047dc6344b2fff88ed313843c65de7113e8540f"
+    },
+    {
+      "storyId": "workspace-shell-components-public-framework--command-palette",
+      "colourMode": "dark",
+      "file": "dark/workspace-shell-components-public-framework--command-palette-chromium-darwin.png",
+      "scope": "viewport",
+      "injectedCss": null,
+      "sha256": "4cf765d83e35734654d78259d7716b304f8a41bdb85319b0fe23dcc836f5f98e"
+    },
+    {
+      "storyId": "workspace-shell-components-public-framework--core-plugins-settings",
+      "colourMode": "dark",
+      "file": "dark/workspace-shell-components-public-framework--core-plugins-settings-chromium-darwin.png",
+      "scope": "viewport",
+      "injectedCss": null,
+      "sha256": "b688d32973b0de198bae121c1647ebc51fc32067d74e6c1a55832c6186555f1d"
+    },
+    {
+      "storyId": "workspace-shell-components-public-framework--floating-layer",
+      "colourMode": "dark",
+      "file": "dark/workspace-shell-components-public-framework--floating-layer-chromium-darwin.png",
+      "scope": "viewport",
+      "injectedCss": null,
+      "sha256": "2e7b90ce7d326678ee32d4b0ff93fb4144a1cf479319c2ff599efc832b0cb646"
+    },
+    {
+      "storyId": "workspace-shell-components-public-framework--hotkey-settings",
+      "colourMode": "dark",
+      "file": "dark/workspace-shell-components-public-framework--hotkey-settings-chromium-darwin.png",
+      "scope": "viewport",
+      "injectedCss": null,
+      "sha256": "6a89549251468e49fe3b67d47a888f430fb3bcdc6be0e32859e7f94d923d7520"
+    },
+    {
+      "storyId": "workspace-shell-components-public-framework--left-sidebar",
+      "colourMode": "dark",
+      "file": "dark/workspace-shell-components-public-framework--left-sidebar-chromium-darwin.png",
+      "scope": "viewport",
+      "injectedCss": null,
+      "sha256": "616bbac41ca00fcccef93d28fbb84d6af0910aef0a8eebbdefc00a7547f3e168"
+    },
+    {
+      "storyId": "workspace-shell-components-public-framework--notices",
+      "colourMode": "dark",
+      "file": "dark/workspace-shell-components-public-framework--notices-chromium-darwin.png",
+      "scope": "viewport",
+      "injectedCss": null,
+      "sha256": "33ade7e5a65a2c8287fde6fe1bc919adb645c7b7ee5ec51d301b3f9fad31dfe7"
+    },
+    {
+      "storyId": "workspace-shell-components-public-framework--ribbon",
+      "colourMode": "dark",
+      "file": "dark/workspace-shell-components-public-framework--ribbon-chromium-darwin.png",
+      "scope": "viewport",
+      "injectedCss": null,
+      "sha256": "52048f3c820abd7d17012fe2f601afc2b803d571ec6ddae388351e1bf5b138b6"
+    },
+    {
+      "storyId": "workspace-shell-components-public-framework--right-sidebar",
+      "colourMode": "dark",
+      "file": "dark/workspace-shell-components-public-framework--right-sidebar-chromium-darwin.png",
+      "scope": "viewport",
+      "injectedCss": null,
+      "sha256": "0d52f99fc37010708a915f56ed1c238cd6facb16e0f7e435f5ead37ac9a4284b"
+    },
+    {
+      "storyId": "workspace-shell-components-public-framework--settings",
+      "colourMode": "dark",
+      "file": "dark/workspace-shell-components-public-framework--settings-chromium-darwin.png",
+      "scope": "viewport",
+      "injectedCss": null,
+      "sha256": "c1ccef76bb686ab5c574e5f038dad6f206832ae21bb9f8e9c82005f13fdec44f"
+    },
+    {
+      "storyId": "workspace-shell-components-public-framework--status-bar",
+      "colourMode": "dark",
+      "file": "dark/workspace-shell-components-public-framework--status-bar-chromium-darwin.png",
+      "scope": "viewport",
+      "injectedCss": null,
+      "sha256": "f7bc9a8be617a17584dc1bc14cb9863e610adab68fdb2f7b944e7add78e01b90"
+    },
+    {
+      "storyId": "workspace-shell-components-public-framework--tabs",
+      "colourMode": "dark",
+      "file": "dark/workspace-shell-components-public-framework--tabs-chromium-darwin.png",
+      "scope": "viewport",
+      "injectedCss": null,
+      "sha256": "3cdd150bb4c204caf56525c6c522f9ea31e8028dfbcd7bd8c112821291831966"
+    },
+    {
+      "storyId": "workspace-shell-components-public-framework--workspace",
+      "colourMode": "dark",
+      "file": "dark/workspace-shell-components-public-framework--workspace-chromium-darwin.png",
+      "scope": "viewport",
+      "injectedCss": null,
+      "sha256": "3cdd150bb4c204caf56525c6c522f9ea31e8028dfbcd7bd8c112821291831966"
+    },
+    {
+      "storyId": "workspace-shell-components-ribbon-and-status-bar--chrome",
+      "colourMode": "dark",
+      "file": "dark/workspace-shell-components-ribbon-and-status-bar--chrome-chromium-darwin.png",
+      "scope": "component",
+      "injectedCss": null,
+      "sha256": "034363fb234b332ff3745d403b20ef2e42a343026fd2f6caaac9980c6169c7ed"
+    },
+    {
+      "storyId": "workspace-shell-components-sidebar-groups--fully-collapsed",
+      "colourMode": "dark",
+      "file": "dark/workspace-shell-components-sidebar-groups--fully-collapsed-chromium-darwin.png",
+      "scope": "component",
+      "injectedCss": null,
+      "sha256": "38f36c7fcc0e3d52d7a87ca7aa63ba7846f6f32084521453f20ecdc53708af17"
+    },
+    {
+      "storyId": "workspace-shell-components-sidebar-groups--group-and-ungroup",
+      "colourMode": "dark",
+      "file": "dark/workspace-shell-components-sidebar-groups--group-and-ungroup-chromium-darwin.png",
+      "scope": "component",
+      "injectedCss": null,
+      "sha256": "498aefdcbd9b12a612257f265fee2de122d9aec989e582526a80d6001c209ce8"
+    },
+    {
+      "storyId": "workspace-shell-components-sidebar-groups--grouped",
+      "colourMode": "dark",
+      "file": "dark/workspace-shell-components-sidebar-groups--grouped-chromium-darwin.png",
+      "scope": "component",
+      "injectedCss": null,
+      "sha256": "de0847935058fb1d1908230b94534c1f5b4643850f9cd4f866eb95f091421200"
+    },
+    {
+      "storyId": "workspace-shell-components-sidebar-groups--partially-collapsed",
+      "colourMode": "dark",
+      "file": "dark/workspace-shell-components-sidebar-groups--partially-collapsed-chromium-darwin.png",
+      "scope": "component",
+      "injectedCss": null,
+      "sha256": "de0847935058fb1d1908230b94534c1f5b4643850f9cd4f866eb95f091421200"
+    },
+    {
+      "storyId": "workspace-shell-components-tabs--close-hover",
+      "colourMode": "dark",
+      "file": "dark/workspace-shell-components-tabs--close-hover-chromium-darwin.png",
+      "scope": "component",
+      "injectedCss": null,
+      "sha256": "7febcd9ce6c7e1d5e223fe490414655ebb7c5048b83f47e912bddd4ec61e0658"
+    },
+    {
+      "storyId": "workspace-shell-components-tabs--constrained",
+      "colourMode": "dark",
+      "file": "dark/workspace-shell-components-tabs--constrained-chromium-darwin.png",
+      "scope": "component",
+      "injectedCss": null,
+      "sha256": "24dcfce5c8f2c268461d3e969455a4dacc4dd9e5ef3dbd353749d525f45e25be"
+    },
+    {
+      "storyId": "workspace-shell-components-tabs--empty-split-is-pruned",
+      "colourMode": "dark",
+      "file": "dark/workspace-shell-components-tabs--empty-split-is-pruned-chromium-darwin.png",
+      "scope": "component",
+      "injectedCss": null,
+      "sha256": "96ef075949472c989d2251ef07ee93328101257909a1f12c2998ea6637c58cb7"
+    },
+    {
+      "storyId": "workspace-shell-components-tabs--right-sidebar-toggle-uses-top-right-pane",
+      "colourMode": "dark",
+      "file": "dark/workspace-shell-components-tabs--right-sidebar-toggle-uses-top-right-pane-chromium-darwin.png",
+      "scope": "component",
+      "injectedCss": null,
+      "sha256": "c01ddb3b0fcf16bd5e95a6e9c978c9aab7056fed80032cc4dca9ec27687d2b14"
+    },
+    {
+      "storyId": "workspace-shell-components-tabs--single",
+      "colourMode": "dark",
+      "file": "dark/workspace-shell-components-tabs--single-chromium-darwin.png",
+      "scope": "component",
+      "injectedCss": null,
+      "sha256": "ea68047f4ed3e025b253602a5983abe9a44258cb3e16206a7b720582ebea0ad1"
+    },
+    {
+      "storyId": "workspace-shell-components-tabs--stacked",
+      "colourMode": "dark",
+      "file": "dark/workspace-shell-components-tabs--stacked-chromium-darwin.png",
+      "scope": "component",
+      "injectedCss": null,
+      "sha256": "a7168ea3d31b868d766fc2d21e19be5267a4188ee4933e1bee8ee53f90cfec6e"
+    },
+    {
+      "storyId": "workspace-shell-components-tabs--top",
+      "colourMode": "dark",
+      "file": "dark/workspace-shell-components-tabs--top-chromium-darwin.png",
+      "scope": "component",
+      "injectedCss": null,
+      "sha256": "c9ed36a4164654b62ac161493895b011aca670a3cda2f342c30838a55088d7fc"
+    },
+    {
+      "storyId": "workspace-shell-components-view-header-and-menus--header-and-menu",
+      "colourMode": "dark",
+      "file": "dark/workspace-shell-components-view-header-and-menus--header-and-menu-chromium-darwin.png",
+      "scope": "component",
+      "injectedCss": null,
+      "sha256": "51c9c2460f6e30d1b883e18cbab4590c3c3d51a0dc5e18ba54f144efdf721bcd"
+    },
+    {
+      "storyId": "workspace-shell-demo-reusable-framework--overview",
+      "colourMode": "dark",
+      "file": "dark/workspace-shell-demo-reusable-framework--overview-chromium-darwin.png",
+      "scope": "viewport",
+      "injectedCss": null,
+      "sha256": "ce9efd23b79c69753c04d55ddbb49fb26ae52f0728f900284b154d0caa3cd775"
+    },
+    {
+      "storyId": "workspace-shell-plugins-f-mode--active",
+      "colourMode": "dark",
+      "file": "dark/workspace-shell-plugins-f-mode--active-chromium-darwin.png",
+      "scope": "viewport",
+      "injectedCss": "fmode",
+      "sha256": "525cbdc8c02aa34e2542f148b646d690773d0213af810904382d4a8981bee3a6"
+    },
+    {
+      "storyId": "workspace-shell-plugins-notifications--populated-history",
+      "colourMode": "dark",
+      "file": "dark/workspace-shell-plugins-notifications--populated-history-chromium-darwin.png",
+      "scope": "viewport",
+      "injectedCss": "notifications",
+      "sha256": "cdca1c3d272e964e7c4824f285f2013fef91a5d2c0d919f440b094fee00060bc"
+    },
+    {
+      "storyId": "workspace-shell-plugins-notifications--toast-severities",
+      "colourMode": "dark",
+      "file": "dark/workspace-shell-plugins-notifications--toast-severities-chromium-darwin.png",
+      "scope": "viewport",
+      "injectedCss": "notifications",
+      "sha256": "a9aa1823d703b649732b33ced0bc0fc207a98a3e647b45183af6ea43416c0bea"
+    },
+    {
+      "storyId": "workspace-shell-reference-parity--shell",
+      "colourMode": "dark",
+      "file": "dark/workspace-shell-reference-parity--shell-chromium-darwin.png",
+      "scope": "viewport",
+      "injectedCss": null,
+      "sha256": "42babca041f4c79d0311ec6eb2e38da46cfbb0979221e852e25d72ba6a972a7f"
+    },
+    {
+      "storyId": "workspace-shell-shell-full-shell--desktop",
+      "colourMode": "dark",
+      "file": "dark/workspace-shell-shell-full-shell--desktop-chromium-darwin.png",
+      "scope": "viewport",
+      "injectedCss": null,
+      "sha256": "da255be182dd1c5919dcf1336e085f542cc99617f4bcff10a37c647ccb0c7589"
+    },
+    {
+      "storyId": "workspace-shell-shell-full-shell--mobile",
+      "colourMode": "dark",
+      "file": "dark/workspace-shell-shell-full-shell--mobile-chromium-darwin.png",
+      "scope": "viewport",
+      "injectedCss": null,
+      "sha256": "67adc96de037add514eefe7503846733ffc8151f4378a884d0ad997a8e4e5e47"
+    },
+    {
+      "storyId": "workspace-shell-components-composable-settings--composition",
       "colourMode": "light",
       "file": "light/workspace-shell-components-composable-settings--composition-chromium-darwin.png",
       "scope": "viewport",
@@ -120,7 +536,7 @@
       "storyId": "workspace-shell-components-empty-and-missing-views--empty-sidebars",
       "colourMode": "light",
       "file": "light/workspace-shell-components-empty-and-missing-views--empty-sidebars-chromium-darwin.png",
-      "scope": "viewport",
+      "scope": "component",
       "injectedCss": null,
       "sha256": "7e7a05dd6b8d8f063f77671b8c792d7e4adcdad5020bf8585521b4e9fbf4fda8"
     },
@@ -128,7 +544,7 @@
       "storyId": "workspace-shell-components-empty-and-missing-views--empty-view",
       "colourMode": "light",
       "file": "light/workspace-shell-components-empty-and-missing-views--empty-view-chromium-darwin.png",
-      "scope": "viewport",
+      "scope": "component",
       "injectedCss": null,
       "sha256": "9a07600a4d037a79efe388e9fce7ecaf396540e503e784b5624f5b8886cbf348"
     },
@@ -136,7 +552,7 @@
       "storyId": "workspace-shell-components-empty-and-missing-views--missing-view",
       "colourMode": "light",
       "file": "light/workspace-shell-components-empty-and-missing-views--missing-view-chromium-darwin.png",
-      "scope": "viewport",
+      "scope": "component",
       "injectedCss": null,
       "sha256": "4f229bd6fb651b5accb3c8a3888f738d2a6700b7ed78566ac8cf6362f5204147"
     },
@@ -144,7 +560,7 @@
       "storyId": "workspace-shell-components-floating-windows--maximized",
       "colourMode": "light",
       "file": "light/workspace-shell-components-floating-windows--maximized-chromium-darwin.png",
-      "scope": "viewport",
+      "scope": "component",
       "injectedCss": null,
       "sha256": "b029df606072af6cee9cf6ae28a7f5d1e59e9f77fb8bf6e53be71ec61760478d"
     },
@@ -152,7 +568,7 @@
       "storyId": "workspace-shell-components-floating-windows--states",
       "colourMode": "light",
       "file": "light/workspace-shell-components-floating-windows--states-chromium-darwin.png",
-      "scope": "viewport",
+      "scope": "component",
       "injectedCss": null,
       "sha256": "5f745013aae8883c3fa0d7213318ef6b710949cadca4d6e16ca5bb9ebdd08786"
     },
@@ -264,7 +680,7 @@
       "storyId": "workspace-shell-components-ribbon-and-status-bar--chrome",
       "colourMode": "light",
       "file": "light/workspace-shell-components-ribbon-and-status-bar--chrome-chromium-darwin.png",
-      "scope": "viewport",
+      "scope": "component",
       "injectedCss": null,
       "sha256": "43c3512318f8a94412d1f5bcfba282bd5d85dd7ae93189b85a57d5bb5070c05d"
     },
@@ -272,7 +688,7 @@
       "storyId": "workspace-shell-components-sidebar-groups--fully-collapsed",
       "colourMode": "light",
       "file": "light/workspace-shell-components-sidebar-groups--fully-collapsed-chromium-darwin.png",
-      "scope": "viewport",
+      "scope": "component",
       "injectedCss": null,
       "sha256": "cbd20da631695d4c2dd920a49ac38cd20101bf861f3d51df290fea67b86bea39"
     },
@@ -280,7 +696,7 @@
       "storyId": "workspace-shell-components-sidebar-groups--group-and-ungroup",
       "colourMode": "light",
       "file": "light/workspace-shell-components-sidebar-groups--group-and-ungroup-chromium-darwin.png",
-      "scope": "viewport",
+      "scope": "component",
       "injectedCss": null,
       "sha256": "13e2a5a66dcc815f854054f713d44322ae759891d8bbd12faf78ddb77607a01b"
     },
@@ -288,7 +704,7 @@
       "storyId": "workspace-shell-components-sidebar-groups--grouped",
       "colourMode": "light",
       "file": "light/workspace-shell-components-sidebar-groups--grouped-chromium-darwin.png",
-      "scope": "viewport",
+      "scope": "component",
       "injectedCss": null,
       "sha256": "79ff6839f83344c67e9242358881ec93bb9a2dbd5cdd7fadb51acbed47a9c68b"
     },
@@ -296,7 +712,7 @@
       "storyId": "workspace-shell-components-sidebar-groups--partially-collapsed",
       "colourMode": "light",
       "file": "light/workspace-shell-components-sidebar-groups--partially-collapsed-chromium-darwin.png",
-      "scope": "viewport",
+      "scope": "component",
       "injectedCss": null,
       "sha256": "79ff6839f83344c67e9242358881ec93bb9a2dbd5cdd7fadb51acbed47a9c68b"
     },
@@ -304,7 +720,7 @@
       "storyId": "workspace-shell-components-tabs--close-hover",
       "colourMode": "light",
       "file": "light/workspace-shell-components-tabs--close-hover-chromium-darwin.png",
-      "scope": "viewport",
+      "scope": "component",
       "injectedCss": null,
       "sha256": "c3aa69410be6321a4d0a38209215ec5c0a1a49c6584459e9b27dbc296b7b5709"
     },
@@ -312,7 +728,7 @@
       "storyId": "workspace-shell-components-tabs--constrained",
       "colourMode": "light",
       "file": "light/workspace-shell-components-tabs--constrained-chromium-darwin.png",
-      "scope": "viewport",
+      "scope": "component",
       "injectedCss": null,
       "sha256": "896295827767ef5ac2ef24b2645f161d9376a6487010a668fe0defe9b6627988"
     },
@@ -320,7 +736,7 @@
       "storyId": "workspace-shell-components-tabs--empty-split-is-pruned",
       "colourMode": "light",
       "file": "light/workspace-shell-components-tabs--empty-split-is-pruned-chromium-darwin.png",
-      "scope": "viewport",
+      "scope": "component",
       "injectedCss": null,
       "sha256": "284e94c4aa5139c22bcbaa92ea60049ad0ae9ce2c6352109b9e26c6bf6349e69"
     },
@@ -328,7 +744,7 @@
       "storyId": "workspace-shell-components-tabs--right-sidebar-toggle-uses-top-right-pane",
       "colourMode": "light",
       "file": "light/workspace-shell-components-tabs--right-sidebar-toggle-uses-top-right-pane-chromium-darwin.png",
-      "scope": "viewport",
+      "scope": "component",
       "injectedCss": null,
       "sha256": "895ee1fd2781aec9ceec693f2ff83f075a67ca6e0d237f00c2a5df86f3f83f76"
     },
@@ -336,7 +752,7 @@
       "storyId": "workspace-shell-components-tabs--single",
       "colourMode": "light",
       "file": "light/workspace-shell-components-tabs--single-chromium-darwin.png",
-      "scope": "viewport",
+      "scope": "component",
       "injectedCss": null,
       "sha256": "faeb008ac4178544aded8a475a24cfdab7db39fb81431be2adbeda5bcdd5301c"
     },
@@ -344,7 +760,7 @@
       "storyId": "workspace-shell-components-tabs--stacked",
       "colourMode": "light",
       "file": "light/workspace-shell-components-tabs--stacked-chromium-darwin.png",
-      "scope": "viewport",
+      "scope": "component",
       "injectedCss": null,
       "sha256": "6263cff4251459c89ccb6a30ca17ec2c28eaab7430a2c2cdb855a4afe6065c71"
     },
@@ -352,7 +768,7 @@
       "storyId": "workspace-shell-components-tabs--top",
       "colourMode": "light",
       "file": "light/workspace-shell-components-tabs--top-chromium-darwin.png",
-      "scope": "viewport",
+      "scope": "component",
       "injectedCss": null,
       "sha256": "4fbee6c5fd60c49a2bdc7df8abbdf72608d4ffbd0f246e7f3eb7f4bcce59fac8"
     },
@@ -360,7 +776,7 @@
       "storyId": "workspace-shell-components-view-header-and-menus--header-and-menu",
       "colourMode": "light",
       "file": "light/workspace-shell-components-view-header-and-menus--header-and-menu-chromium-darwin.png",
-      "scope": "viewport",
+      "scope": "component",
       "injectedCss": null,
       "sha256": "adcc5e325da169e931d21873d2356a1a3f2e9553258ac2a28dc3a6beeb1457dd"
     },
@@ -386,7 +802,7 @@
       "file": "light/workspace-shell-plugins-notifications--populated-history-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": "notifications",
-      "sha256": "08954ca468daf0b0fb2dd714b276cc60f721ddab4af4e5e5ca80869675a1df1b"
+      "sha256": "44720fab224e3cc44801e5d375ed675ad32d7804efd4eec6acbfd955d1fef035"
     },
     {
       "storyId": "workspace-shell-plugins-notifications--toast-severities",
@@ -416,422 +832,6 @@
       "storyId": "workspace-shell-shell-full-shell--mobile",
       "colourMode": "light",
       "file": "light/workspace-shell-shell-full-shell--mobile-chromium-darwin.png",
-      "scope": "viewport",
-      "injectedCss": null,
-      "sha256": "7180f65b2b272f658a1075dea5c4ec9af944bfd6b3cbcf26e4e7618a77799b80"
-    },
-    {
-      "storyId": "workspace-shell-components-composable-settings--composition",
-      "colourMode": "dark",
-      "file": "dark/workspace-shell-components-composable-settings--composition-chromium-darwin.png",
-      "scope": "viewport",
-      "injectedCss": null,
-      "sha256": "a985a524d3fe9ab4f1463f6ac1218f2d77aec55e4d96f7f60c77a1bfc43a7ad8"
-    },
-    {
-      "storyId": "workspace-shell-components-declarative-settings--all-supported-controls",
-      "colourMode": "dark",
-      "file": "dark/workspace-shell-components-declarative-settings--all-supported-controls-chromium-darwin.png",
-      "scope": "viewport",
-      "injectedCss": null,
-      "sha256": "e63be3bda18ebab46d9954fb21b91fc5449157d86aec85e4686bc30b26d3002a"
-    },
-    {
-      "storyId": "workspace-shell-components-declarative-settings--settings",
-      "colourMode": "dark",
-      "file": "dark/workspace-shell-components-declarative-settings--settings-chromium-darwin.png",
-      "scope": "viewport",
-      "injectedCss": null,
-      "sha256": "bc398f0badedac781a43f159abff0bed67aad1eb8898b088bf0b12b80dc1cc94"
-    },
-    {
-      "storyId": "workspace-shell-components-declarative-settings--settings-mobile",
-      "colourMode": "dark",
-      "file": "dark/workspace-shell-components-declarative-settings--settings-mobile-chromium-darwin.png",
-      "scope": "viewport",
-      "injectedCss": null,
-      "sha256": "a487ecfedaeb87cbd1a6760dec63edb1f639a89e0e151418b318520886591583"
-    },
-    {
-      "storyId": "workspace-shell-components-drag-and-drop-overlays--bottom",
-      "colourMode": "dark",
-      "file": "dark/workspace-shell-components-drag-and-drop-overlays--bottom-chromium-darwin.png",
-      "scope": "viewport",
-      "injectedCss": null,
-      "sha256": "cf625504e6169a6e0b6340e15980c5dc0f84f703c3a45f80fea39483ccf9a164"
-    },
-    {
-      "storyId": "workspace-shell-components-drag-and-drop-overlays--canceled-overlay",
-      "colourMode": "dark",
-      "file": "dark/workspace-shell-components-drag-and-drop-overlays--canceled-overlay-chromium-darwin.png",
-      "scope": "viewport",
-      "injectedCss": null,
-      "sha256": "4690444ee32b9f1bfbeecdf34f189083e71404c93ed2e7fa9d9c3e66c06b68b2"
-    },
-    {
-      "storyId": "workspace-shell-components-drag-and-drop-overlays--centre",
-      "colourMode": "dark",
-      "file": "dark/workspace-shell-components-drag-and-drop-overlays--centre-chromium-darwin.png",
-      "scope": "viewport",
-      "injectedCss": null,
-      "sha256": "1e937c2d00a6ea5c24f75f859942bc3dfff069d418daa297dee21821097b96e0"
-    },
-    {
-      "storyId": "workspace-shell-components-drag-and-drop-overlays--disallowed-edge-falls-back-to-centre",
-      "colourMode": "dark",
-      "file": "dark/workspace-shell-components-drag-and-drop-overlays--disallowed-edge-falls-back-to-centre-chromium-darwin.png",
-      "scope": "viewport",
-      "injectedCss": null,
-      "sha256": "22d6bf29009fc3dbf2ead358fe2cc9a50ab20d468e9a7d1e5b1f83a0d334538a"
-    },
-    {
-      "storyId": "workspace-shell-components-drag-and-drop-overlays--empty-target",
-      "colourMode": "dark",
-      "file": "dark/workspace-shell-components-drag-and-drop-overlays--empty-target-chromium-darwin.png",
-      "scope": "viewport",
-      "injectedCss": null,
-      "sha256": "ef292c375583661a7a2b9b99b94e8b910502f38f8c049c45062302e636adba45"
-    },
-    {
-      "storyId": "workspace-shell-components-drag-and-drop-overlays--floating-fallback",
-      "colourMode": "dark",
-      "file": "dark/workspace-shell-components-drag-and-drop-overlays--floating-fallback-chromium-darwin.png",
-      "scope": "viewport",
-      "injectedCss": null,
-      "sha256": "b73d6d2a148b94be33bc11df8daccfe4c77c154fcf247e98351f26a8e37e0adf"
-    },
-    {
-      "storyId": "workspace-shell-components-drag-and-drop-overlays--insertion-marker",
-      "colourMode": "dark",
-      "file": "dark/workspace-shell-components-drag-and-drop-overlays--insertion-marker-chromium-darwin.png",
-      "scope": "viewport",
-      "injectedCss": null,
-      "sha256": "4690444ee32b9f1bfbeecdf34f189083e71404c93ed2e7fa9d9c3e66c06b68b2"
-    },
-    {
-      "storyId": "workspace-shell-components-drag-and-drop-overlays--left",
-      "colourMode": "dark",
-      "file": "dark/workspace-shell-components-drag-and-drop-overlays--left-chromium-darwin.png",
-      "scope": "viewport",
-      "injectedCss": null,
-      "sha256": "634e1246e61096ef5d5be91037e63bc730b662dbb559ad453aaaaf864f445e5b"
-    },
-    {
-      "storyId": "workspace-shell-components-drag-and-drop-overlays--right",
-      "colourMode": "dark",
-      "file": "dark/workspace-shell-components-drag-and-drop-overlays--right-chromium-darwin.png",
-      "scope": "viewport",
-      "injectedCss": null,
-      "sha256": "17e4bf4abfa1f8a4033044d1d143b54b4dd7b08c75a7497f8e943e3d72055835"
-    },
-    {
-      "storyId": "workspace-shell-components-drag-and-drop-overlays--top",
-      "colourMode": "dark",
-      "file": "dark/workspace-shell-components-drag-and-drop-overlays--top-chromium-darwin.png",
-      "scope": "viewport",
-      "injectedCss": null,
-      "sha256": "d0a0cc6526b143628239834834daee82cdd57fa7370af1bd8fa7b72f07ce1692"
-    },
-    {
-      "storyId": "workspace-shell-components-empty-and-missing-views--empty-sidebars",
-      "colourMode": "dark",
-      "file": "dark/workspace-shell-components-empty-and-missing-views--empty-sidebars-chromium-darwin.png",
-      "scope": "viewport",
-      "injectedCss": null,
-      "sha256": "7e7a05dd6b8d8f063f77671b8c792d7e4adcdad5020bf8585521b4e9fbf4fda8"
-    },
-    {
-      "storyId": "workspace-shell-components-empty-and-missing-views--empty-view",
-      "colourMode": "dark",
-      "file": "dark/workspace-shell-components-empty-and-missing-views--empty-view-chromium-darwin.png",
-      "scope": "viewport",
-      "injectedCss": null,
-      "sha256": "9a07600a4d037a79efe388e9fce7ecaf396540e503e784b5624f5b8886cbf348"
-    },
-    {
-      "storyId": "workspace-shell-components-empty-and-missing-views--missing-view",
-      "colourMode": "dark",
-      "file": "dark/workspace-shell-components-empty-and-missing-views--missing-view-chromium-darwin.png",
-      "scope": "viewport",
-      "injectedCss": null,
-      "sha256": "4f229bd6fb651b5accb3c8a3888f738d2a6700b7ed78566ac8cf6362f5204147"
-    },
-    {
-      "storyId": "workspace-shell-components-floating-windows--maximized",
-      "colourMode": "dark",
-      "file": "dark/workspace-shell-components-floating-windows--maximized-chromium-darwin.png",
-      "scope": "viewport",
-      "injectedCss": null,
-      "sha256": "b029df606072af6cee9cf6ae28a7f5d1e59e9f77fb8bf6e53be71ec61760478d"
-    },
-    {
-      "storyId": "workspace-shell-components-floating-windows--states",
-      "colourMode": "dark",
-      "file": "dark/workspace-shell-components-floating-windows--states-chromium-darwin.png",
-      "scope": "viewport",
-      "injectedCss": null,
-      "sha256": "5f745013aae8883c3fa0d7213318ef6b710949cadca4d6e16ca5bb9ebdd08786"
-    },
-    {
-      "storyId": "workspace-shell-components-public-framework--about",
-      "colourMode": "dark",
-      "file": "dark/workspace-shell-components-public-framework--about-chromium-darwin.png",
-      "scope": "viewport",
-      "injectedCss": null,
-      "sha256": "c4fc36e556d5d653822e3d0d06e1f619532b850ed76b899489bf9aee64647500"
-    },
-    {
-      "storyId": "workspace-shell-components-public-framework--command-palette",
-      "colourMode": "dark",
-      "file": "dark/workspace-shell-components-public-framework--command-palette-chromium-darwin.png",
-      "scope": "viewport",
-      "injectedCss": null,
-      "sha256": "4cf765d83e35734654d78259d7716b304f8a41bdb85319b0fe23dcc836f5f98e"
-    },
-    {
-      "storyId": "workspace-shell-components-public-framework--core-plugins-settings",
-      "colourMode": "dark",
-      "file": "dark/workspace-shell-components-public-framework--core-plugins-settings-chromium-darwin.png",
-      "scope": "viewport",
-      "injectedCss": null,
-      "sha256": "4ee2582269e61dee5495bdc8dad9d12587a901bda975c016a9398cc372b777a0"
-    },
-    {
-      "storyId": "workspace-shell-components-public-framework--floating-layer",
-      "colourMode": "dark",
-      "file": "dark/workspace-shell-components-public-framework--floating-layer-chromium-darwin.png",
-      "scope": "viewport",
-      "injectedCss": null,
-      "sha256": "c62b31e5f8fb3475f674654e02c72c124d957faf8eb521e22e7e00744b863876"
-    },
-    {
-      "storyId": "workspace-shell-components-public-framework--hotkey-settings",
-      "colourMode": "dark",
-      "file": "dark/workspace-shell-components-public-framework--hotkey-settings-chromium-darwin.png",
-      "scope": "viewport",
-      "injectedCss": null,
-      "sha256": "150d689edf7f9313ce4478d11798d48037ebaf6bd8efe31f03f68704a7ac1a9b"
-    },
-    {
-      "storyId": "workspace-shell-components-public-framework--left-sidebar",
-      "colourMode": "dark",
-      "file": "dark/workspace-shell-components-public-framework--left-sidebar-chromium-darwin.png",
-      "scope": "viewport",
-      "injectedCss": null,
-      "sha256": "14a352cf23cc4ab028b41ad59538db6493f8a7f0d22d90402ea8b90433370620"
-    },
-    {
-      "storyId": "workspace-shell-components-public-framework--notices",
-      "colourMode": "dark",
-      "file": "dark/workspace-shell-components-public-framework--notices-chromium-darwin.png",
-      "scope": "viewport",
-      "injectedCss": null,
-      "sha256": "3313623bd659dc93b764fa08e03e2820d1899bc56185e9fe17fd19b75ac67d7a"
-    },
-    {
-      "storyId": "workspace-shell-components-public-framework--ribbon",
-      "colourMode": "dark",
-      "file": "dark/workspace-shell-components-public-framework--ribbon-chromium-darwin.png",
-      "scope": "viewport",
-      "injectedCss": null,
-      "sha256": "a8125d59fd63e14c3161db54a401afc81310dc09ebe7412ab7b39723d00af8eb"
-    },
-    {
-      "storyId": "workspace-shell-components-public-framework--right-sidebar",
-      "colourMode": "dark",
-      "file": "dark/workspace-shell-components-public-framework--right-sidebar-chromium-darwin.png",
-      "scope": "viewport",
-      "injectedCss": null,
-      "sha256": "f22710d21c3c72082fb54f465786785fb4efe0b3d4612f8555f84c267bf836b0"
-    },
-    {
-      "storyId": "workspace-shell-components-public-framework--settings",
-      "colourMode": "dark",
-      "file": "dark/workspace-shell-components-public-framework--settings-chromium-darwin.png",
-      "scope": "viewport",
-      "injectedCss": null,
-      "sha256": "b26e8de5221573337a3ae9525d00e76d25adc03349bbe1ba21700ee040ea16c6"
-    },
-    {
-      "storyId": "workspace-shell-components-public-framework--status-bar",
-      "colourMode": "dark",
-      "file": "dark/workspace-shell-components-public-framework--status-bar-chromium-darwin.png",
-      "scope": "viewport",
-      "injectedCss": null,
-      "sha256": "ab291f9874cb3ea689afb1ff4116ca12a9b999d7a7015c6511168103625e8d93"
-    },
-    {
-      "storyId": "workspace-shell-components-public-framework--tabs",
-      "colourMode": "dark",
-      "file": "dark/workspace-shell-components-public-framework--tabs-chromium-darwin.png",
-      "scope": "viewport",
-      "injectedCss": null,
-      "sha256": "ea77bb3e203f57c814e0a9c3a8e96043d3862cb4b2311cabec47b1efc4673a5a"
-    },
-    {
-      "storyId": "workspace-shell-components-public-framework--workspace",
-      "colourMode": "dark",
-      "file": "dark/workspace-shell-components-public-framework--workspace-chromium-darwin.png",
-      "scope": "viewport",
-      "injectedCss": null,
-      "sha256": "ea77bb3e203f57c814e0a9c3a8e96043d3862cb4b2311cabec47b1efc4673a5a"
-    },
-    {
-      "storyId": "workspace-shell-components-ribbon-and-status-bar--chrome",
-      "colourMode": "dark",
-      "file": "dark/workspace-shell-components-ribbon-and-status-bar--chrome-chromium-darwin.png",
-      "scope": "viewport",
-      "injectedCss": null,
-      "sha256": "43c3512318f8a94412d1f5bcfba282bd5d85dd7ae93189b85a57d5bb5070c05d"
-    },
-    {
-      "storyId": "workspace-shell-components-sidebar-groups--fully-collapsed",
-      "colourMode": "dark",
-      "file": "dark/workspace-shell-components-sidebar-groups--fully-collapsed-chromium-darwin.png",
-      "scope": "viewport",
-      "injectedCss": null,
-      "sha256": "cbd20da631695d4c2dd920a49ac38cd20101bf861f3d51df290fea67b86bea39"
-    },
-    {
-      "storyId": "workspace-shell-components-sidebar-groups--group-and-ungroup",
-      "colourMode": "dark",
-      "file": "dark/workspace-shell-components-sidebar-groups--group-and-ungroup-chromium-darwin.png",
-      "scope": "viewport",
-      "injectedCss": null,
-      "sha256": "13e2a5a66dcc815f854054f713d44322ae759891d8bbd12faf78ddb77607a01b"
-    },
-    {
-      "storyId": "workspace-shell-components-sidebar-groups--grouped",
-      "colourMode": "dark",
-      "file": "dark/workspace-shell-components-sidebar-groups--grouped-chromium-darwin.png",
-      "scope": "viewport",
-      "injectedCss": null,
-      "sha256": "79ff6839f83344c67e9242358881ec93bb9a2dbd5cdd7fadb51acbed47a9c68b"
-    },
-    {
-      "storyId": "workspace-shell-components-sidebar-groups--partially-collapsed",
-      "colourMode": "dark",
-      "file": "dark/workspace-shell-components-sidebar-groups--partially-collapsed-chromium-darwin.png",
-      "scope": "viewport",
-      "injectedCss": null,
-      "sha256": "79ff6839f83344c67e9242358881ec93bb9a2dbd5cdd7fadb51acbed47a9c68b"
-    },
-    {
-      "storyId": "workspace-shell-components-tabs--close-hover",
-      "colourMode": "dark",
-      "file": "dark/workspace-shell-components-tabs--close-hover-chromium-darwin.png",
-      "scope": "viewport",
-      "injectedCss": null,
-      "sha256": "c3aa69410be6321a4d0a38209215ec5c0a1a49c6584459e9b27dbc296b7b5709"
-    },
-    {
-      "storyId": "workspace-shell-components-tabs--constrained",
-      "colourMode": "dark",
-      "file": "dark/workspace-shell-components-tabs--constrained-chromium-darwin.png",
-      "scope": "viewport",
-      "injectedCss": null,
-      "sha256": "896295827767ef5ac2ef24b2645f161d9376a6487010a668fe0defe9b6627988"
-    },
-    {
-      "storyId": "workspace-shell-components-tabs--empty-split-is-pruned",
-      "colourMode": "dark",
-      "file": "dark/workspace-shell-components-tabs--empty-split-is-pruned-chromium-darwin.png",
-      "scope": "viewport",
-      "injectedCss": null,
-      "sha256": "284e94c4aa5139c22bcbaa92ea60049ad0ae9ce2c6352109b9e26c6bf6349e69"
-    },
-    {
-      "storyId": "workspace-shell-components-tabs--right-sidebar-toggle-uses-top-right-pane",
-      "colourMode": "dark",
-      "file": "dark/workspace-shell-components-tabs--right-sidebar-toggle-uses-top-right-pane-chromium-darwin.png",
-      "scope": "viewport",
-      "injectedCss": null,
-      "sha256": "895ee1fd2781aec9ceec693f2ff83f075a67ca6e0d237f00c2a5df86f3f83f76"
-    },
-    {
-      "storyId": "workspace-shell-components-tabs--single",
-      "colourMode": "dark",
-      "file": "dark/workspace-shell-components-tabs--single-chromium-darwin.png",
-      "scope": "viewport",
-      "injectedCss": null,
-      "sha256": "faeb008ac4178544aded8a475a24cfdab7db39fb81431be2adbeda5bcdd5301c"
-    },
-    {
-      "storyId": "workspace-shell-components-tabs--stacked",
-      "colourMode": "dark",
-      "file": "dark/workspace-shell-components-tabs--stacked-chromium-darwin.png",
-      "scope": "viewport",
-      "injectedCss": null,
-      "sha256": "6263cff4251459c89ccb6a30ca17ec2c28eaab7430a2c2cdb855a4afe6065c71"
-    },
-    {
-      "storyId": "workspace-shell-components-tabs--top",
-      "colourMode": "dark",
-      "file": "dark/workspace-shell-components-tabs--top-chromium-darwin.png",
-      "scope": "viewport",
-      "injectedCss": null,
-      "sha256": "4fbee6c5fd60c49a2bdc7df8abbdf72608d4ffbd0f246e7f3eb7f4bcce59fac8"
-    },
-    {
-      "storyId": "workspace-shell-components-view-header-and-menus--header-and-menu",
-      "colourMode": "dark",
-      "file": "dark/workspace-shell-components-view-header-and-menus--header-and-menu-chromium-darwin.png",
-      "scope": "viewport",
-      "injectedCss": null,
-      "sha256": "adcc5e325da169e931d21873d2356a1a3f2e9553258ac2a28dc3a6beeb1457dd"
-    },
-    {
-      "storyId": "workspace-shell-demo-reusable-framework--overview",
-      "colourMode": "dark",
-      "file": "dark/workspace-shell-demo-reusable-framework--overview-chromium-darwin.png",
-      "scope": "viewport",
-      "injectedCss": null,
-      "sha256": "050bafa03378b14edbe2ba521662540f377eb92144ec68bb487c470dac78dc0a"
-    },
-    {
-      "storyId": "workspace-shell-plugins-f-mode--active",
-      "colourMode": "dark",
-      "file": "dark/workspace-shell-plugins-f-mode--active-chromium-darwin.png",
-      "scope": "viewport",
-      "injectedCss": "fmode",
-      "sha256": "5cf56b065f304f7b9a5840ccc4654347445e51daa540af2aa1da9143eedc3617"
-    },
-    {
-      "storyId": "workspace-shell-plugins-notifications--populated-history",
-      "colourMode": "dark",
-      "file": "dark/workspace-shell-plugins-notifications--populated-history-chromium-darwin.png",
-      "scope": "viewport",
-      "injectedCss": "notifications",
-      "sha256": "e09b1d5c2df69728228f469f0744bc80406909fc7d6a78e2c305e1c17653835e"
-    },
-    {
-      "storyId": "workspace-shell-plugins-notifications--toast-severities",
-      "colourMode": "dark",
-      "file": "dark/workspace-shell-plugins-notifications--toast-severities-chromium-darwin.png",
-      "scope": "viewport",
-      "injectedCss": "notifications",
-      "sha256": "1b9df10b822076ac4f1f7632b8e88b09f2db64fb101f29efa31056e7de70ca13"
-    },
-    {
-      "storyId": "workspace-shell-reference-parity--shell",
-      "colourMode": "dark",
-      "file": "dark/workspace-shell-reference-parity--shell-chromium-darwin.png",
-      "scope": "viewport",
-      "injectedCss": null,
-      "sha256": "9a07600a4d037a79efe388e9fce7ecaf396540e503e784b5624f5b8886cbf348"
-    },
-    {
-      "storyId": "workspace-shell-shell-full-shell--desktop",
-      "colourMode": "dark",
-      "file": "dark/workspace-shell-shell-full-shell--desktop-chromium-darwin.png",
-      "scope": "viewport",
-      "injectedCss": null,
-      "sha256": "8af058dd1ee9dfc3d66047f7d21c428fcc581ab934fc8dbd51f6a37c1c77c355"
-    },
-    {
-      "storyId": "workspace-shell-shell-full-shell--mobile",
-      "colourMode": "dark",
-      "file": "dark/workspace-shell-shell-full-shell--mobile-chromium-darwin.png",
       "scope": "viewport",
       "injectedCss": null,
       "sha256": "7180f65b2b272f658a1075dea5c4ec9af944bfd6b3cbcf26e4e7618a77799b80"

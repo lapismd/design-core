@@ -207,7 +207,7 @@ describe("canonical Lapis workspace reference", () => {
 
     expect(files).toHaveLength(104);
     expect(inventoryHash).toBe(
-      "1d6acbaa063bb387095624205d87cb8bf7e12b4e11ea29b9581efffb7fbd620e",
+      "76dc05493ebeae2cf8635efef77d8c5735dcb1a7453838091e44a0f50e89d78e",
     );
     expect(provenance).toMatchObject({
       sourceSnapshotRevision: "b06d1e3f58c3",
@@ -229,6 +229,28 @@ describe("canonical Lapis workspace reference", () => {
       interactionOnlyStoryCount: 27,
     });
     expect(manifest.stories).toHaveLength(104);
+    const captureScopes = new Map(
+      manifest.stories.map(
+        (story: {
+          storyId: string;
+          colourMode: string;
+          scope: "component" | "viewport";
+        }) => [`${story.storyId}:${story.colourMode}`, story.scope],
+      ),
+    );
+    expect(
+      captureScopes.get("workspace-shell-components-tabs--top:light"),
+    ).toBe("component");
+    expect(
+      captureScopes.get(
+        "workspace-shell-components-declarative-settings--settings:light",
+      ),
+    ).toBe("viewport");
+    expect(
+      captureScopes.get(
+        "workspace-shell-components-public-framework--tabs:light",
+      ),
+    ).toBe("viewport");
     expect(crosswalk).toMatchObject({
       sourceSnapshotRevision: "b06d1e3f58c3",
       sourceStoryCount: 79,
