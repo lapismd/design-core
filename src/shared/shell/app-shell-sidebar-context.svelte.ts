@@ -1,11 +1,16 @@
 import { getContext, setContext } from "svelte";
-import type { AppShellSide } from "./app-shell-controller.svelte.js";
+import type {
+  AppShellSide,
+  AppShellSidebarController,
+} from "./app-shell-controller.svelte.js";
 
 const APP_SHELL_SIDEBAR_CONTEXT = Symbol("ui-minimal-app-shell-sidebar");
 
 export interface AppShellSidebarContext {
   readonly side: AppShellSide;
   readonly closeable: boolean;
+  readonly controller: AppShellSidebarController;
+  readonly dismissOverlay: () => void;
 }
 
 export function setAppShellSidebarContext(

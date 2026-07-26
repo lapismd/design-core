@@ -49,6 +49,7 @@ export const AppShell = {
 
 export * from "./app-shell-context.svelte.js";
 export * from "./app-shell-controller.svelte.js";
+export * from "./app-shell-persistence.js";
 export {
   shellTokenDefaults,
   shellTokenNames,

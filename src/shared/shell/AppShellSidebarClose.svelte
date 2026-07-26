@@ -2,7 +2,6 @@
   import XIcon from "@lucide/svelte/icons/x";
   import type { HTMLButtonAttributes } from "svelte/elements";
   import { Button } from "../shadcn/button/index.js";
-  import { useAppShell } from "./app-shell-context.svelte.js";
   import { useAppShellSidebar } from "./app-shell-sidebar-context.svelte.js";
 
   let {
@@ -17,9 +16,8 @@
     label?: string;
   } = $props();
 
-  const controller = useAppShell();
   const context = useAppShellSidebar();
-  let sidebar = $derived(controller.getSidebar(context.side));
+  let sidebar = $derived(context.controller);
   let accessibleLabel = $derived(label ?? `Close ${context.side} sidebar`);
 </script>
 
@@ -38,6 +36,7 @@
     title={accessibleLabel}
     onclick={(event) => {
       sidebar.close();
+      context.dismissOverlay();
       onclick?.(event);
     }}
   >

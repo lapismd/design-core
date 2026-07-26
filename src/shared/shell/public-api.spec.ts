@@ -4,6 +4,8 @@ import {
   APP_SHELL_DEFAULT_SIDEBAR_MAX_WIDTH,
   APP_SHELL_DEFAULT_SIDEBAR_MIN_WIDTH,
   APP_SHELL_DEFAULT_SIDEBAR_WIDTH,
+  APP_SHELL_DEFAULT_STORAGE_KEY,
+  APP_SHELL_LAYOUT_VERSION,
   AppShell,
   AppShellBody,
   AppShellMain,
@@ -25,6 +27,7 @@ import {
   SidebarHeader,
   SidebarToggle,
   Toolbar,
+  createLocalStorageAppShellLayoutPersistence,
   shellTokenDefaults,
   shellTokenNames,
 } from "./index.js";
@@ -68,15 +71,24 @@ describe("@stevejuma/ui/shell public API", () => {
     expect(shellTokenNames.collapsedSidebarWidth).toBe(
       "--ui-shell-collapsed-sidebar-width",
     );
+    expect(shellTokenNames.sidebarToggleIndicatorWidth).toBe(
+      "--ui-shell-sidebar-toggle-indicator-width",
+    );
     expect(APP_SHELL_DEFAULT_SIDEBAR_WIDTH).toBe(288);
     expect(APP_SHELL_DEFAULT_SIDEBAR_MIN_WIDTH).toBe(220);
     expect(APP_SHELL_DEFAULT_SIDEBAR_MAX_WIDTH).toBe(520);
+    expect(APP_SHELL_LAYOUT_VERSION).toBe(1);
+    expect(APP_SHELL_DEFAULT_STORAGE_KEY).toBe(
+      "@stevejuma/ui/app-shell-layout",
+    );
+    expect(createLocalStorageAppShellLayoutPersistence).toBeTypeOf("function");
     expect(shellTokenDefaults).toEqual({
       height: "100vh",
       leftSidebarWidth: "18rem",
       rightSidebarWidth: "18rem",
       rightSidebarGap: "0.5rem",
       collapsedSidebarWidth: "3rem",
+      sidebarToggleIndicatorWidth: "24%",
       toolbarHeight: "3rem",
       mainBlockInset: "0.5rem",
       mainRadius: "0.875rem",

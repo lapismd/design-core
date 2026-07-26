@@ -117,6 +117,18 @@
             ]}
           />
         </Message>
+        <Message sender="user">
+          <MessageBubble>
+            Keep the shared shell independent from routing and persistence.
+          </MessageBubble>
+        </Message>
+        <Message sender="assistant">
+          <MessageBubble variant="ghost">
+            The shell now owns only geometry and sidebar state. Project
+            selection, file navigation, and message submission remain with the
+            host application.
+          </MessageBubble>
+        </Message>
         {#if submitted}
           <Message sender="user">
             <MessageBubble>{submitted}</MessageBubble>

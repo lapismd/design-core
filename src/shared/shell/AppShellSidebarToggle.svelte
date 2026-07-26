@@ -1,26 +1,44 @@
 <script lang="ts">
+  import { onDestroy } from "svelte";
   import type { HTMLButtonAttributes } from "svelte/elements";
   import { Button } from "../shadcn/button/index.js";
   import { useAppShell } from "./app-shell-context.svelte.js";
-  import type { AppShellSide } from "./app-shell-controller.svelte.js";
+  import type {
+    AppShellSide,
+    AppShellSidebarController,
+  } from "./app-shell-controller.svelte.js";
 
   let {
     ref = $bindable(null),
     side,
+    sidebarController,
     label,
+    previewOnHover = false,
+    previewDelay = 600,
+    previewDismissDelay = 120,
     class: className,
     onclick,
+    onmouseenter,
+    onmouseleave,
     ...restProps
   }: HTMLButtonAttributes & {
     ref?: HTMLButtonElement | null;
     /** Sidebar controlled by this toolbar action. */
     side: AppShellSide;
+    /** Optional independent sidebar controller for repeated same-side layouts. */
+    sidebarController?: AppShellSidebarController;
     /** Accessible action name. Defaults from the current sidebar state. */
     label?: string;
+    /** Preview a collapsed or closed sidebar as an overlay after pointer hover. */
+    previewOnHover?: boolean;
+    /** Delay before the optional sidebar preview opens, in milliseconds. */
+    previewDelay?: number;
+    /** Grace period before the optional collapsed preview closes. */
+    previewDismissDelay?: number;
   } = $props();
 
   const controller = useAppShell();
-  let sidebar = $derived(controller.getSidebar(side));
+  let sidebar = $derived(sidebarController ?? controller.getSidebar(side));
   let accessibleLabel = $derived(
     label ??
       (sidebar.closed
@@ -29,6 +47,8 @@
           ? `Expand ${side} sidebar`
           : `Collapse ${side} sidebar`),
   );
+
+  onDestroy(() => sidebar.dismissPreview());
 </script>
 
 <Button
@@ -43,9 +63,18 @@
   data-side={side}
   data-state={sidebar.state}
   aria-label={accessibleLabel}
-  aria-expanded={!sidebar.closed && !sidebar.collapsed}
+  aria-expanded={sidebar.previewed || (!sidebar.closed && !sidebar.collapsed)}
   title={accessibleLabel}
+  onmouseenter={(event) => {
+    if (previewOnHover) sidebar.schedulePreview(previewDelay);
+    onmouseenter?.(event);
+  }}
+  onmouseleave={(event) => {
+    if (previewOnHover) sidebar.schedulePreviewDismiss(previewDismissDelay);
+    onmouseleave?.(event);
+  }}
   onclick={(event) => {
+    sidebar.dismissPreview();
     sidebar.toggle();
     onclick?.(event);
   }}
@@ -64,14 +93,16 @@
     aria-hidden="true"
   >
     <rect x="1" y="2" width="22" height="20" rx="4"></rect>
-    <rect
-      x={side === "left" ? "4" : "18"}
-      y="5"
-      width="2"
-      height="14"
-      rx="2"
-      fill="currentColor"
-      data-ui-part="sidebar-toggle-indicator"
-    ></rect>
+    <g transform={side === "right" ? "translate(24 0) scale(-1 1)" : undefined}>
+      <rect
+        x="4"
+        y="5"
+        width="2"
+        height="14"
+        rx="2"
+        fill="currentColor"
+        data-ui-part="sidebar-toggle-indicator"
+      ></rect>
+    </g>
   </svg>
 </Button>

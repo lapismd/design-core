@@ -29,10 +29,14 @@ existing family already covers the need.
 4. **AI** (`src/shared/ai/`) — shared AI panel primitives. Catalog: `AI/...`.
 5. **Shell** (`src/shared/shell/`) — bounded structural application chrome with
    independently controlled collapsible, closeable, and resizable left/right
-   rails, fixed sidebar regions, a toolbar, and shadcn Scroll Areas for main and
-   sidebar bodies. Import from `@stevejuma/ui/shell`. Catalog:
+   rails, optional same-side nesting, a full-height outer variant with
+   collapsed/closed edge and delayed toggle-hover previews, fixed sidebar
+   regions, a toolbar, and shadcn
+   Scroll Areas for main and sidebar bodies. Its injected versioned adapter may
+   persist sidebar state and widths, including named same-side panels. Import from
+   `@stevejuma/ui/shell`. Catalog:
    `Shell/App Shell`. It owns geometry plus Toggle/Close actions; consumers own
-   navigation, other actions, content, and persistence.
+   navigation selection, other actions, content, and non-layout persistence.
 6. **Workspace** (`src/shared/workspace/`) — application-independent workspace
    framework, controller, layout, views, shell components, settings, and static
    plugin presentation. Import from `@stevejuma/ui/workspace`. Catalog:

@@ -45,14 +45,61 @@ every `AppShell.Sidebar.Body` install their own shadcn Scroll Area and vertical
 scrollbar. The main toolbar and each sidebar header and footer therefore remain
 fixed while the three body regions scroll independently. A collapsed sidebar
 keeps the same scrollable viewport for its icon rail but hides the scrollbar.
+Its inline header and footer separators are also removed; a temporary expanded
+overlay restores them. Built-in `Sidebar.Toggle` and `Sidebar.Close` actions in
+a collapsed header share the main toolbar's vertical action baseline.
 
 Expanded sidebars include an accessible resize slider by default. Pointer
 dragging follows the sidebar edge; arrow keys move it by 16px, Shift+Arrow by
 32px, and Home/End move to the configured bounds. Set `resizable={false}` on a
 sidebar to omit its handle.
 
+Pass `sidebarController` to `Sidebar` or `Sidebar.Toggle` when a layout needs
+more than one independently controlled surface on the same side. Create a named
+panel through the root controller when its state should participate in layout
+persistence:
+
+```svelte
+<script lang="ts">
+  const shell = new AppShellController();
+  const projectSidebar = shell.createSidebar("projects", "left");
+</script>
+
+<AppShell.Sidebar
+  side="left"
+  sidebarController={projectSidebar}
+  variant="outer"
+  closeable
+  revealOnEdgeHover
+>
+  ...
+</AppShell.Sidebar>
+
+<AppShell.Sidebar side="left">
+  <AppShell.Sidebar.Header>
+    <AppShell.Sidebar.Toggle side="left" sidebarController={projectSidebar} />
+    ...
+  </AppShell.Sidebar.Header>
+  ...
+</AppShell.Sidebar>
+```
+
+`variant="outer"` paints a full-height bounded surface. When
+`revealOnEdgeHover` is enabled, collapsing or closing that sidebar installs a
+narrow page-edge control. Pointer hover or keyboard focus previews the sidebar
+as an overlay without moving the rail, file sidebar, or main column; clicking
+the edge control expands it inline. The same accessible resize handle remains
+available on the preview, and its controller width is retained when the sidebar
+next opens inline. This is a desktop affordance, not the Workspace mobile sheet.
+
 `Sidebar.Toggle` is the shared toolbar action for either side. It collapses an
 expanded sidebar, expands a collapsed sidebar, and opens a closed sidebar.
+Set `previewOnHover` when a toggle in adjacent chrome should preview its
+collapsed or closed sidebar as an expanded overlay. The default 600ms opening
+delay is configurable with `previewDelay`; leaving before it elapses cancels the
+preview, and moving into the overlay keeps it open without moving adjacent
+columns. Overlay width always resolves from the expanded sidebar width even
+when the retained controller state is collapsed.
 `closeable` enables a nested `Sidebar.Close` action. Put that action in
 `Sidebar.Header`; its automatic inline margin places it at the far edge. Closing
 removes the sidebar from layout completely so `Main` reclaims its width and
@@ -69,31 +116,72 @@ shared bounds with `sidebarMinWidth` and `sidebarMaxWidth`. `useAppShell()` give
 consumer components access to the nearest root controller without installing
 global application state.
 
+The transient `previewed` state is managed through `schedulePreview()`,
+`schedulePreviewDismiss()`, `keepPreview()`, and `dismissPreview()`. It does not
+change `state`, so an expanded overlay can preview a collapsed rail without
+changing consumer-owned collapse state or adjacent geometry.
+
 Collapsed sidebars remain mounted as persistent icon rails. Consumer controls
 should retain accessible names when their visible labels are omitted.
 
+## Layout persistence
+
+Inject an `AppShellLayoutPersistence` adapter to restore and automatically save
+the durable state of every registered panel: `collapsed`, `closed`, and its
+explicit expanded `width`. The package includes a JSON `localStorage` adapter:
+
+```ts
+import {
+  AppShellController,
+  createLocalStorageAppShellLayoutPersistence,
+} from "@stevejuma/ui/shell";
+
+const shell = new AppShellController({
+  persistence: createLocalStorageAppShellLayoutPersistence(
+    "cv-studio.app-shell",
+  ),
+  saveDebounceMs: 200,
+});
+
+const projects = shell.createSidebar("projects", "left");
+```
+
+`AppShell.Root` calls `restoreLayout()` when it mounts and flushes a pending
+save when it unmounts. Controller-only hosts may call `restoreLayout()` and
+`flushSave()` directly. The serialized `AppShellLayoutV1` is versioned and
+JSON-safe; invalid panels and saved side mismatches are ignored, while restored
+widths are clamped to the receiving controller's bounds.
+
+The local adapter defaults to the
+`@stevejuma/ui/app-shell-layout` storage key when no key is supplied. Applications
+with multiple shells should provide a stable application-specific key. A custom
+adapter may save to desktop settings, a database, or another host-owned store
+without changing shell components.
+
 ## Tokens
 
-| Token                                | Default                | Purpose                     |
-| ------------------------------------ | ---------------------- | --------------------------- |
-| `--ui-shell-height`                  | `100vh`                | Root application height     |
-| `--ui-shell-left-sidebar-width`      | `18rem`                | Expanded left sidebar       |
-| `--ui-shell-right-sidebar-width`     | `18rem`                | Expanded right sidebar      |
-| `--ui-shell-right-sidebar-gap`       | `0.5rem`               | Gap before right sidebar    |
-| `--ui-shell-collapsed-sidebar-width` | `3rem`                 | Either collapsed icon rail  |
-| `--ui-shell-toolbar-height`          | `3rem`                 | Top chrome divider baseline |
-| `--ui-shell-main-block-inset`        | `0.5rem`               | Main top and bottom inset   |
-| `--ui-shell-main-radius`             | `0.875rem`             | Main surface radius         |
-| `--ui-shell-main-shadow`             | `shadow-sm` equivalent | Main surface depth          |
+| Token                                       | Default                | Purpose                     |
+| ------------------------------------------- | ---------------------- | --------------------------- |
+| `--ui-shell-height`                         | `100vh`                | Root application height     |
+| `--ui-shell-left-sidebar-width`             | `18rem`                | Expanded left sidebar       |
+| `--ui-shell-right-sidebar-width`            | `18rem`                | Expanded right sidebar      |
+| `--ui-shell-right-sidebar-gap`              | `0.5rem`               | Gap before right sidebar    |
+| `--ui-shell-collapsed-sidebar-width`        | `3rem`                 | Either collapsed icon rail  |
+| `--ui-shell-sidebar-toggle-indicator-width` | `24%`                  | Expanded toggle panel mark  |
+| `--ui-shell-toolbar-height`                 | `3rem`                 | Top chrome divider baseline |
+| `--ui-shell-main-block-inset`               | `0.5rem`               | Main top and bottom inset   |
+| `--ui-shell-main-radius`                    | `0.875rem`             | Main surface radius         |
+| `--ui-shell-main-shadow`                    | `shadow-sm` equivalent | Main surface depth          |
 
 Override tokens on `:root` or the shell root. Colors continue to come from the
 shared semantic theme. Left and right width tokens remain authoritative until
-the corresponding controller receives an explicit resize. Width persistence is
-consumer-owned.
+the corresponding controller receives an explicit resize or restores one
+through its layout adapter.
 
 ## Shell or Workspace?
 
 Choose `@stevejuma/ui/shell` for structural application chrome with
 consumer-owned content. Choose `@stevejuma/ui/workspace` when the application
-needs registered views, tabs, recursive splits, persistence adapters, commands,
-settings, plugins, mobile presentation, windows, or overlays.
+needs registered views, tabs, recursive splits, general workspace persistence,
+commands, settings, plugins, mobile presentation, windows, or general-purpose
+overlays. Shell persistence is intentionally limited to sidebar geometry.

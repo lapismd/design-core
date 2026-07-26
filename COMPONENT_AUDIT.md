@@ -102,9 +102,14 @@ Bounded application chrome in `src/shared/shell/`:
 - Viewport-height root with overrideable structural geometry tokens
 - Independent reactive left and right expanded/collapsed/closed and width
   controllers
+- Optional standalone sidebar controllers for repeated same-side layouts
+- Full-height outer sidebar variant with an opt-in collapsed/closed edge preview
+- Opt-in delayed toggle-hover preview for a collapsed or closed sidebar
 - Accessible pointer and keyboard resize handles baked into expanded sidebars
+- Versioned built-in/named panel layout persistence with an injected adapter
+  and default localStorage implementation
 - Fixed chrome around shadcn Scroll Areas in main and sidebar bodies
-- Consumer-owned navigation, actions, content, and persistence
+- Consumer-owned navigation, actions, content, and non-layout persistence
 
 Import: `@stevejuma/ui/shell`. Catalog: `Shell/App Shell`. Production Shell
 sources use native CSS and `--ui-shell-*` geometry tokens. They compose the
@@ -114,7 +119,7 @@ demonstrate consumer ownership.
 
 Choose Shell for structural application chrome. Choose Workspace when an
 application needs registered views, tabs, splits, commands, persistence,
-plugins, settings, windows, mobile presentation, or overlays.
+plugins, settings, windows, mobile presentation, or general-purpose overlays.
 
 ## Shared — workspace
 

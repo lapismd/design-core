@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { untrack } from "svelte";
+  import { onDestroy, onMount, untrack } from "svelte";
   import type { HTMLAttributes } from "svelte/elements";
   import type { WithElementRef } from "../../lib/utils.js";
   import { setAppShellContext } from "./app-shell-context.svelte.js";
@@ -20,6 +20,14 @@
 
   const rootController = untrack(() => controller);
   setAppShellContext(rootController);
+
+  onMount(() => {
+    void rootController.restoreLayout();
+  });
+
+  onDestroy(() => {
+    void rootController.flushSave();
+  });
 </script>
 
 <div

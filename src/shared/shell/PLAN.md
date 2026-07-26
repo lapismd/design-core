@@ -8,24 +8,42 @@ workspace behavior are not copied.
 
 - `AppShell.Root` installs an `AppShellController`.
 - `AppShell.Sidebar` renders either the left or right bounded sidebar.
+- A sidebar may receive an independent `AppShellSidebarController` so repeated
+  same-side surfaces can compose nested navigation layouts.
 - `AppShell.Sidebar.Toggle` controls collapse/expand/open from shared chrome.
+- A toggle may opt into a delayed expanded hover preview for its collapsed or
+  closed sidebar.
 - A `closeable` sidebar enables `AppShell.Sidebar.Close` in its header.
+- An `outer` sidebar may opt into a collapsed/closed edge preview that overlays
+  the shell without moving its icon rail or adjacent layout.
 - `AppShell.Main`, `AppShell.Toolbar`, and `AppShell.Body` compose the center.
 - `useAppShell()` exposes the nearest root controller to consumer components.
 - Left and right sidebars collapse independently to persistent icon rails.
+- Collapsed inline rails omit header/footer separators; expanded overlays
+  restore them.
+- Built-in header Toggle/Close actions align to the main toolbar baseline in
+  collapsed rails.
 - Closed sidebars leave layout completely and return their space to main.
 - Expanded sidebars resize independently through accessible built-in handles.
+- An edge-preview overlay retains the sidebar's resize handle and controller
+  width.
+- The root controller serializes built-in and named panels through an injected
+  layout adapter; a package adapter provides versioned JSON in localStorage.
 
 ## Boundaries
 
-- Desktop only; no mobile sheet or off-canvas behavior.
+- Desktop only; no responsive mobile sheet or off-canvas mode. The opt-in edge
+  preview is a pointer/focus affordance for a closed desktop outer sidebar.
 - Root fills `100vh` by default and remains non-fixed; bounded catalog hosts
   may override `--ui-shell-height`.
-- No width persistence, global shortcuts, routing, plugins, or views.
+- No global shortcuts, routing, plugins, views, or consumer-content
+  persistence. Shell persistence is limited to sidebar state and width.
 - Resize handles support pointer drag plus focused Arrow, Shift+Arrow, Home,
   and End keys; configured controller bounds own width clamping.
 - Sidebar contents and toolbar composition remain consumer-owned; Shell
   provides only its stateful Toggle and Close actions.
+- Project selection, file navigation, and the decision to open a dependent
+  sidebar remain consumer-owned.
 - Shell containers do not scroll; main and sidebar body regions compose the
   shared shadcn Scroll Area.
 - Shell may compose shadcn Button for its Toggle and Close actions.
@@ -34,10 +52,12 @@ workspace behavior are not copied.
 
 ## Slices
 
-| Slice                             | Code     | Unit | Stories | Catalog | Validation |
-| --------------------------------- | -------- | ---- | ------- | ------- | ---------- |
-| Controller, context, and tokens   | Complete | Pass | N/A     | N/A     | Pass       |
-| Compound surfaces and package API | Complete | Pass | Pass    | Pass    | Pass\*     |
+| Slice                               | Code     | Unit | Stories | Catalog | Validation |
+| ----------------------------------- | -------- | ---- | ------- | ------- | ---------- |
+| Controller, context, and tokens     | Complete | Pass | N/A     | N/A     | Pass       |
+| Compound surfaces and package API   | Complete | Pass | Pass    | Pass    | Pass\*     |
+| Nested left layout and edge preview | Complete | Pass | Pass    | Pass    | Pass\*     |
+| Layout adapter and localStorage     | Complete | Pass | Pass    | Pass    | Pass\*     |
 
 ## Validation
 
@@ -48,7 +68,8 @@ workspace behavior are not copied.
 5. `pnpm checks` before handoff.
 
 \* Focused unit, Storybook interaction/accessibility, source, and static build
-checks pass. Compare-only visual capture remains pending human approval and
-currently stops before comparison because the catalog readiness marker is not
-published for Shell and existing Workspace stories. No baselines were created
-or updated.
+checks pass. Compare-only visual capture remains pending human approval. The
+full catalog run currently reports missing baselines for existing AI stories
+and serves a catalog that cannot resolve the Shell and Workspace story ids, so
+those captures time out before comparison. No baselines were created or
+updated.
