@@ -1,27 +1,142 @@
 # storybook-addon-docs-mcp
 
-A provider-driven Storybook documentation companion with two transports:
+Use this addon to expose Storybook documentation to Model Context Protocol (MCP) clients. The recommended standard input/output (`stdio`) transport reads project files without starting Storybook. You can also mount Hypertext Transfer Protocol (HTTP) routes in Storybook or run the standalone HTTP server.
 
-- `stdio` for MCP clients. It reads source files directly and does not start or
-  connect to Storybook.
-- HTTP routes mounted on Storybook, or served by the standalone `serve`
-  command.
+The addon leaves Storybook's official `@storybook/addon-mcp` at `/mcp`. Its separate documentation endpoint is `/docs-mcp`.
 
-It intentionally leaves Storybook's official `@storybook/addon-mcp` at `/mcp`.
-The companion endpoint is `/docs-mcp`.
+## Prerequisites
 
-## Install
+Before you initialize the addon:
+
+- Install Node.js and pnpm
+- Run commands from the Storybook project root, which should contain `package.json`
+- Create `.storybook/main.ts`, `.storybook/main.js`, `.storybook/main.mjs`, or `.storybook/main.cjs` if you want `init` to register the Storybook HTTP addon
+- Let Cursor or VS Code create its MCP configuration file before `init` if you want that file updated automatically
+
+The current initializer invokes pnpm for Storybook registration and writes pnpm-based commands into generated `stdio` client entries.
+
+## Install and initialize
+
+Install the addon in the Storybook project:
 
 ```sh
 pnpm add -D storybook-addon-docs-mcp
+```
+
+Initialize the recommended `stdio` setup:
+
+```sh
+pnpm exec docs-mcp init --root . --transport stdio
+```
+
+Both `--root .` and `--transport stdio` are defaults, so this shorter command creates the same setup:
+
+```sh
 pnpm exec docs-mcp init
 ```
 
-`init` adds the addon through Storybook's CLI, creates
-`.storybook/docs-mcp.config.ts`, adds a `docs:mcp` script, and merges a stdio
-entry into detected Cursor, MCP, and VS Code client files. It preserves JSONC
-comments and existing entries. A same-name entry with a different definition
-is reported as a conflict instead of being overwritten.
+Validate the generated configuration and load the live catalog:
+
+```sh
+pnpm exec docs-mcp doctor --live
+```
+
+Reload the MCP client after initialization so it reads the updated project configuration. The client starts its own `stdio` process, so the recommended setup does not require a terminal or a reserved port.
+
+Test discovery without connecting an MCP client:
+
+```sh
+pnpm exec docs-mcp search "searchable filter toolbar"
+pnpm exec docs-mcp get exact-id-from-search
+```
+
+### Files changed by `init`
+
+`init` makes the following idempotent changes:
+
+| Target                          | Change                                                                              |
+| ------------------------------- | ----------------------------------------------------------------------------------- |
+| `.storybook/docs-mcp.config.ts` | Creates the generic Svelte provider config when the file does not exist             |
+| `package.json`                  | Adds `"docs:mcp": "docs-mcp stdio --config .storybook/docs-mcp.config.ts"`          |
+| `.storybook/main.*`             | Uses `storybook add` to register the addon when a supported Storybook config exists |
+| `.cursor/mcp.json`              | Adds the generated server under `mcpServers` when the file already exists           |
+| `.mcp.json`                     | Adds the generated server under `mcpServers` when the file already exists           |
+| `.vscode/mcp.json`              | Adds the generated server under `servers` when the file already exists              |
+
+The initializer updates every supported client file that already exists. If none exists, it creates `.mcp.json` and adds the server there. Client files must contain valid JSON with Comments (JSONC). Existing comments, unrelated servers, and matching entries remain unchanged.
+
+The default client name comes from the project package name. For example, `@acme/catalog` becomes `acme-catalog-docs`. A same-name entry with different settings causes an error. Choose another name or update the existing entry explicitly:
+
+```sh
+pnpm exec docs-mcp init --client-name acme-catalog-docs-local
+```
+
+`init` can register the HTTP addon only when `.storybook/main.*` exists. If you create the Storybook config later, rerun `init`. The recommended `stdio` transport works without Storybook registration.
+
+### Initialize another project root
+
+Run the installed binary from the target project and pass the same absolute root to `init`:
+
+```sh
+pnpm --dir /absolute/path/to/storybook_project exec docs-mcp init \
+  --root /absolute/path/to/storybook_project
+```
+
+Use a custom config path when the project does not use `.storybook/docs-mcp.config.ts`:
+
+```sh
+pnpm exec docs-mcp init \
+  --config config/docs-mcp.config.ts
+```
+
+The config path resolves from `--root`.
+
+### Configure HTTP instead of `stdio`
+
+HTTP setup requires a server process. `init` writes the client URL but does not start that server.
+
+To use the standalone server on port `9011`, initialize the client entry:
+
+```sh
+pnpm exec docs-mcp init \
+  --transport http \
+  --port 9011 \
+  --client-name acme-catalog-docs-http
+```
+
+Then keep the standalone server running in another terminal:
+
+```sh
+pnpm exec docs-mcp serve --port 9011
+```
+
+To use the Storybook-mounted endpoint, pass Storybook's public port during initialization and start Storybook:
+
+```sh
+pnpm exec docs-mcp init \
+  --transport http \
+  --port 6006 \
+  --client-name acme-catalog-docs-http
+pnpm storybook
+```
+
+Replace `pnpm storybook` with the project's Storybook start command. This example generates `http://localhost:6006/docs-mcp`. Use a different `--client-name` when retaining both `stdio` and HTTP entries.
+
+### `init` option reference
+
+| Option                               | Default                         | Purpose                                                            |
+| ------------------------------------ | ------------------------------- | ------------------------------------------------------------------ |
+| `--root path`                        | Current directory               | Select the project root                                            |
+| `--config path`                      | `.storybook/docs-mcp.config.ts` | Select the provider config relative to the project root            |
+| `--transport stdio\|http`            | `stdio`                         | Choose the generated MCP client transport                          |
+| `--port number`                      | `9011`                          | Set the HTTP client URL port; it does not start a server           |
+| `--client-name name`                 | Derived from `package.json`     | Set the key written to client configuration files                  |
+| `--agent-docs`                       | Off                             | Generate marker-managed agent guidance after loading the catalog   |
+| `--agent codex\|cursor\|claude\|all` | `codex`                         | Select managed guidance targets                                    |
+| `--agent-docs-path path`             | Agent-specific path             | Write one managed guidance block to a path inside the project root |
+| `--remove-agent-docs`                | Off                             | Remove only the selected managed guidance blocks                   |
+| `--no-cache`                         | Off                             | Bypass the catalog cache while generating managed guidance         |
+| `--json`                             | Off                             | Print machine-readable initialization results                      |
 
 The generated config uses the generic Svelte provider:
 
@@ -33,7 +148,25 @@ import {
 
 export default defineDocsMcpConfig({
   provider: createSvelteDocsProvider(),
+  mcpPath: "/docs-mcp",
 });
+```
+
+The default config path needs no extra Storybook options. If you selected a custom config path, replace the addon's generated string entry in the existing `addons` array with this object. Keep the other Storybook settings and addons:
+
+```ts
+const config = {
+  addons: [
+    {
+      name: "storybook-addon-docs-mcp",
+      options: {
+        config: "config/docs-mcp.config.ts",
+      },
+    },
+  ],
+};
+
+export default config;
 ```
 
 The scanner follows explicit local `.svelte` imports used by story metadata,
@@ -48,7 +181,12 @@ high-value guidance rules.
 
 ## Commands
 
+Use these commands after initialization:
+
 ```sh
+# Run the generated stdio package script
+pnpm run docs:mcp
+
 # Preferred MCP transport; also the default command
 pnpm exec docs-mcp stdio --config .storybook/docs-mcp.config.ts
 
@@ -62,14 +200,9 @@ pnpm exec docs-mcp doctor --live
 pnpm exec docs-mcp search "review AI form changes" --kind block
 pnpm exec docs-mcp get block-reviewable-form-workflow
 pnpm exec docs-mcp get forms-form-review --section usage
-
-# Generate config/client wiring; HTTP is opt-in
-pnpm exec docs-mcp init --transport http --port 9011
-
-# Opt in to marker-managed project guidance (off by default)
-pnpm exec docs-mcp init --agent-docs --agent codex
-pnpm exec docs-mcp init --remove-agent-docs --agent codex
 ```
+
+The `stdio` commands wait for JSON-RPC messages from an MCP client. Use `doctor`, `search`, or `get` for human-readable terminal checks.
 
 The MCP exposes the same `search` and `get` operations with output schemas and
 matching `structuredContent`. `get` defaults to a 12,000-character bounded
@@ -142,6 +275,46 @@ export default defineDocsMcpConfig({
 is rejected if it escapes the project root, including through symlinks.
 Re-running refreshes the managed block. `doctor` reports stale or malformed
 managed guidance.
+
+Generate guidance for one agent:
+
+```sh
+pnpm exec docs-mcp init --agent-docs --agent codex
+pnpm exec docs-mcp init --agent-docs --agent cursor
+pnpm exec docs-mcp init --agent-docs --agent claude
+```
+
+Generate all three targets:
+
+```sh
+pnpm exec docs-mcp init --agent-docs --agent all
+```
+
+Write a single managed block to a custom project-relative path:
+
+```sh
+pnpm exec docs-mcp init \
+  --agent-docs \
+  --agent codex \
+  --agent-docs-path docs/agents/docs-mcp.md
+```
+
+Combine `--agent-docs-path` with one specific `--agent` value. A custom path always targets one file.
+
+Remove the default managed blocks while preserving surrounding content:
+
+```sh
+pnpm exec docs-mcp init --remove-agent-docs --agent all
+```
+
+Remove a managed block from a custom path:
+
+```sh
+pnpm exec docs-mcp init \
+  --remove-agent-docs \
+  --agent codex \
+  --agent-docs-path docs/agents/docs-mcp.md
+```
 
 ## Evaluation
 
