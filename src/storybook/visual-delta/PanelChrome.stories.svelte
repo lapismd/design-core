@@ -22,10 +22,6 @@
     title: "Visual Delta/Panel Chrome",
     tags: ["skip-visual"],
     parameters: {
-      // Manager chrome inherits Storybook theme badge colors + accordion
-      // summary buttons with nested icon actions — known a11y debt in the
-      // live panel, not product UI. Interaction coverage stays in play fns.
-      a11y: { test: "todo" },
       docs: {
         description: {
           component:
@@ -41,7 +37,9 @@
   play={async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await waitFor(() => canvas.getByTestId("panel-chrome-fixture"));
-    await expect(canvas.getByTestId("panel-chrome-fixture")).toBeInTheDocument();
+    await expect(
+      canvas.getByTestId("panel-chrome-fixture"),
+    ).toBeInTheDocument();
   }}
 >
   {#snippet template()}
@@ -203,7 +201,9 @@
       scope.getByTestId("fixture-section-body-default"),
     ).toHaveTextContent("Body for Default");
 
-    await userEvent.click(scope.getByRole("button", { name: /Opens chooser/i }));
+    await userEvent.click(
+      scope.getByRole("button", { name: /Opens chooser/i }),
+    );
     await expect(scope.getByTestId("fixture-expanded-id")).toHaveTextContent(
       "opens-chooser",
     );

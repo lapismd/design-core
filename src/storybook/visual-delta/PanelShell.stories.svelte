@@ -1,7 +1,8 @@
 <script module lang="ts">
   /**
    * End-to-end Visual Delta panel shell with mocked /__visual-delta backends.
-   * Tagged skip-visual — tooling chrome, not product UI.
+   * Dedicated self-test stories: excluded from product screenshots but retained
+   * in the Storybook test project.
    */
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import React from "react";
@@ -12,9 +13,8 @@
 
   const { Story } = defineMeta({
     title: "Visual Delta/Panel Shell",
-    tags: ["skip-visual"],
+    tags: ["test", "skip-visual", "visual-delta-self-test"],
     parameters: {
-      a11y: { test: "todo" },
       docs: {
         description: {
           component:
@@ -37,6 +37,329 @@
     <ReactThemeHost
       element={React.createElement(PanelShell, {
         backend: createMockVisualBackend(),
+      })}
+    />
+  {/snippet}
+</Story>
+
+<Story
+  name="Setup required"
+  play={async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(
+      await canvas.findByRole("status", { name: /Setup required/i }),
+    ).toHaveAttribute("data-result-state", "setup");
+  }}
+>
+  {#snippet template()}
+    <ReactThemeHost
+      element={React.createElement(PanelShell, {
+        backend: createMockVisualBackend(),
+        seedEmpty: true,
+        initialState: "setup",
+      })}
+    />
+  {/snippet}
+</Story>
+
+<Story
+  name="Skipped result"
+  play={async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(
+      await canvas.findByRole("status", { name: /Visual tests skipped/i }),
+    ).toHaveAttribute("data-result-state", "skipped");
+  }}
+>
+  {#snippet template()}
+    <ReactThemeHost
+      element={React.createElement(PanelShell, {
+        backend: createMockVisualBackend(),
+        initialSkipVisual: true,
+      })}
+    />
+  {/snippet}
+</Story>
+
+<Story
+  name="Failed result"
+  play={async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(
+      await canvas.findByRole("status", { name: /Visual test failed/i }),
+    ).toHaveAttribute("data-result-state", "failed");
+  }}
+>
+  {#snippet template()}
+    <ReactThemeHost
+      element={React.createElement(PanelShell, {
+        backend: createMockVisualBackend(),
+        initialState: "failed",
+      })}
+    />
+  {/snippet}
+</Story>
+
+<Story
+  name="Passed result"
+  play={async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(
+      await canvas.findByRole("status", { name: /Visual test passed/i }),
+    ).toHaveAttribute("data-result-state", "passed");
+  }}
+>
+  {#snippet template()}
+    <ReactThemeHost
+      element={React.createElement(PanelShell, {
+        backend: createMockVisualBackend(),
+        initialState: "passed",
+      })}
+    />
+  {/snippet}
+</Story>
+
+<Story
+  name="Running result"
+  play={async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(
+      await canvas.findByRole("status", { name: /Visual test running/i }),
+    ).toHaveAttribute("data-result-state", "running");
+  }}
+>
+  {#snippet template()}
+    <ReactThemeHost
+      element={React.createElement(PanelShell, {
+        backend: createMockVisualBackend(),
+        initialState: "running",
+      })}
+    />
+  {/snippet}
+</Story>
+
+<Story
+  name="Missing baseline"
+  play={async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(
+      await canvas.findByRole("status", { name: /Baseline missing/i }),
+    ).toHaveAttribute("data-result-state", "missing");
+  }}
+>
+  {#snippet template()}
+    <ReactThemeHost
+      element={React.createElement(PanelShell, {
+        backend: createMockVisualBackend(),
+        seedEmpty: true,
+        initialState: "missing",
+      })}
+    />
+  {/snippet}
+</Story>
+
+<Story
+  name="Capture error"
+  play={async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(
+      await canvas.findByRole("status", { name: /Capture error/i }),
+    ).toHaveAttribute("data-result-state", "error");
+    await expect(
+      canvas.getByText("Chromium could not capture the subject."),
+    ).toBeInTheDocument();
+  }}
+>
+  {#snippet template()}
+    <ReactThemeHost
+      element={React.createElement(PanelShell, {
+        backend: createMockVisualBackend(),
+        captureError: "Chromium could not capture the subject.",
+      })}
+    />
+  {/snippet}
+</Story>
+
+<Story
+  name="Configuration warnings"
+  play={async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(
+      await canvas.findByRole("heading", { name: "Configuration" }),
+    ).toBeInTheDocument();
+    await expect(
+      canvas.getByRole("heading", { name: "Baselines" }),
+    ).toBeInTheDocument();
+    await expect(
+      canvas.getByText("Snapshot directory is mounted at /visual-baselines."),
+    ).toBeInTheDocument();
+  }}
+>
+  {#snippet template()}
+    <ReactThemeHost
+      element={React.createElement(PanelShell, {
+        backend: createMockVisualBackend(),
+        configurationOpen: true,
+      })}
+    />
+  {/snippet}
+</Story>
+
+<Story
+  name="Current run review"
+  play={async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const shell = await canvas.findByTestId("panel-shell");
+    const scope = within(shell);
+    const page = within(document.body);
+
+    await userEvent.click(
+      scope.getByRole("button", {
+        name: /Choose Accept story, component, or current run scope/i,
+      }),
+    );
+    await userEvent.click(
+      await page.findByRole("button", { name: "Current run scope" }),
+    );
+    await userEvent.click(
+      scope.getByRole("button", { name: "Accept current run" }),
+    );
+    await waitFor(() =>
+      expect(scope.getByTestId("fixture-accept-scope")).toHaveTextContent(
+        "run",
+      ),
+    );
+    await expect(scope.getByTestId("fixture-review")).toHaveTextContent(
+      "approved",
+    );
+  }}
+>
+  {#snippet template()}
+    <ReactThemeHost
+      element={React.createElement(PanelShell, {
+        backend: createMockVisualBackend(),
+        runAvailable: true,
+      })}
+    />
+  {/snippet}
+</Story>
+
+<Story
+  name="Mixed mode failure"
+  play={async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const shell = await canvas.findByTestId("panel-shell");
+    const scope = within(shell);
+    const page = within(document.body);
+
+    await expect(
+      scope.getByRole("button", {
+        name: "Visual mode: Default, passed",
+      }),
+    ).toBeInTheDocument();
+    await userEvent.click(
+      scope.getByRole("button", {
+        name: "Visual mode: Default, passed",
+      }),
+    );
+    await userEvent.click(
+      await page.findByRole("button", {
+        name: "Dark desktop mode, failed",
+      }),
+    );
+    await expect(scope.getByTestId("fixture-mode")).toHaveTextContent(
+      "Dark desktop",
+    );
+    await expect(scope.getByText("2 passed · 1 failed")).toBeInTheDocument();
+  }}
+>
+  {#snippet template()}
+    <ReactThemeHost
+      element={React.createElement(PanelShell, {
+        backend: createMockVisualBackend(),
+        initialState: "failed",
+        modeNames: ["Dark desktop", "High contrast"],
+        modeResults: {
+          Default: "passed",
+          "Dark desktop": "failed",
+          "High contrast": "passed",
+        },
+      })}
+    />
+  {/snippet}
+</Story>
+
+<Story
+  name="Manager integration fixture"
+  parameters={{
+    visualDelta: {
+      images: ["/visual-baselines/shadcn/button/default-chromium-darwin.png"],
+      modes: {
+        "Dark desktop": { globals: { colorMode: "dark" } },
+        "Light mobile": {
+          globals: {
+            colorMode: "light",
+            viewport: { value: "mobile1", isRotated: false },
+          },
+        },
+      },
+      ignoreSelectors: ['[data-testid="panel-shell"]'],
+    },
+  }}
+  play={async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(await canvas.findByTestId("panel-shell")).toBeInTheDocument();
+  }}
+>
+  {#snippet template()}
+    <ReactThemeHost
+      element={React.createElement(PanelShell, {
+        backend: createMockVisualBackend(),
+        initialState: "passed",
+      })}
+    />
+  {/snippet}
+</Story>
+
+<Story
+  name="Manager full viewport integration fixture"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/tasks/components/tasks-shell/today-chromium-darwin.png",
+      ],
+      cropToViewport: true,
+    },
+  }}
+  play={async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(await canvas.findByTestId("panel-shell")).toBeInTheDocument();
+  }}
+>
+  {#snippet template()}
+    <ReactThemeHost
+      element={React.createElement(PanelShell, {
+        backend: createMockVisualBackend(),
+        initialState: "passed",
+      })}
+    />
+  {/snippet}
+</Story>
+
+<Story
+  name="Delayed story completion"
+  play={async ({ canvasElement }) => {
+    await new Promise((resolve) => window.setTimeout(resolve, 200));
+    canvasElement.dataset.visualDeltaDelayedPlay = "complete";
+    const canvas = within(canvasElement);
+    await expect(await canvas.findByTestId("panel-shell")).toBeInTheDocument();
+  }}
+>
+  {#snippet template()}
+    <ReactThemeHost
+      element={React.createElement(PanelShell, {
+        backend: createMockVisualBackend(),
+        initialState: "passed",
       })}
     />
   {/snippet}
@@ -105,7 +428,9 @@
         "create-baseline",
       ),
     );
-    await expect(scope.getByLabelText(/Visual status: Pass/i)).toBeInTheDocument();
+    await expect(
+      scope.getByLabelText(/Visual status: Pass/i),
+    ).toBeInTheDocument();
   }}
 >
   {#snippet template()}
@@ -226,9 +551,7 @@
     );
     // Cancel while the mock run is in progress (Stop replaces the play control).
     await userEvent.click(
-      await waitFor(() =>
-        scope.getByRole("button", { name: /Stop/i }),
-      ),
+      await waitFor(() => scope.getByRole("button", { name: /Stop/i })),
     );
     await waitFor(() =>
       expect(scope.getByTestId("fixture-actions")).toHaveTextContent(
@@ -278,7 +601,9 @@
     const shell = await waitFor(() => canvas.getByTestId("panel-shell"));
     const scope = within(shell);
 
-    await userEvent.click(scope.getByRole("button", { name: /Opens chooser/i }));
+    await userEvent.click(
+      scope.getByRole("button", { name: /Opens chooser/i }),
+    );
     await expect(scope.getByTestId("fixture-expanded-id")).toHaveTextContent(
       "opens-chooser",
     );

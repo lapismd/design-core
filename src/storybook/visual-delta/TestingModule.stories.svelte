@@ -13,7 +13,6 @@
     title: "Visual Delta/Testing Module",
     tags: ["skip-visual"],
     parameters: {
-      a11y: { test: "todo" },
       docs: {
         description: {
           component:
@@ -28,7 +27,9 @@
   name="Global defaults"
   play={async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const shell = await waitFor(() => canvas.getByTestId("testing-module-shell"));
+    const shell = await waitFor(() =>
+      canvas.getByTestId("testing-module-shell"),
+    );
     const scope = within(shell);
 
     await expect(scope.getByText("Not run")).toBeInTheDocument();
@@ -64,7 +65,9 @@
   name="Sidebar context menu"
   play={async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const shell = await waitFor(() => canvas.getByTestId("testing-module-shell"));
+    const shell = await waitFor(() =>
+      canvas.getByTestId("testing-module-shell"),
+    );
     const scope = within(shell);
 
     await expect(
@@ -100,7 +103,9 @@
   name="Update baselines mode"
   play={async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const shell = await waitFor(() => canvas.getByTestId("testing-module-shell"));
+    const shell = await waitFor(() =>
+      canvas.getByTestId("testing-module-shell"),
+    );
     const scope = within(shell);
 
     await expect(
@@ -125,7 +130,9 @@
   name="Running progress"
   play={async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const shell = await waitFor(() => canvas.getByTestId("testing-module-shell"));
+    const shell = await waitFor(() =>
+      canvas.getByTestId("testing-module-shell"),
+    );
     const scope = within(shell);
 
     await expect(
