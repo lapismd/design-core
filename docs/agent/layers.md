@@ -1,7 +1,7 @@
 ---
 id: layers
 title: Package layers
-summary: Choose shadcn, forms, filter, AI, or workspace.
+summary: Choose shadcn, forms, filter, AI, shell, or workspace.
 sources:
   - README.md
   - COMPONENT_AUDIT.md
@@ -27,7 +27,13 @@ existing family already covers the need.
    Import from
    `@stevejuma/ui/filter`. Catalog: `Filter/...`. Guidance: `Filter/Guidance`.
 4. **AI** (`src/shared/ai/`) — shared AI panel primitives. Catalog: `AI/...`.
-5. **Workspace** (`src/shared/workspace/`) — application-independent workspace
+5. **Shell** (`src/shared/shell/`) — bounded structural application chrome with
+   independently controlled collapsible, closeable, and resizable left/right
+   rails, fixed sidebar regions, a toolbar, and shadcn Scroll Areas for main and
+   sidebar bodies. Import from `@stevejuma/ui/shell`. Catalog:
+   `Shell/App Shell`. It owns geometry plus Toggle/Close actions; consumers own
+   navigation, other actions, content, and persistence.
+6. **Workspace** (`src/shared/workspace/`) — application-independent workspace
    framework, controller, layout, views, shell components, settings, and static
    plugin presentation. Import from `@stevejuma/ui/workspace`. Catalog:
    `Workspace/...`. It uses native CSS and does not import the shadcn layer.
@@ -40,6 +46,10 @@ existing family already covers the need.
 - `shared/forms` may import shadcn and filter.
 - `shared/ai` may compose generic shared controls but must remain
   host-controlled and reusable.
+- `shared/shell` may compose shadcn Scroll Area for bounded section scrolling
+  and Button for its Toggle/Close actions. It must not import workspace or
+  application state in production sources. Stories may compose other shadcn
+  controls.
 - `shared/workspace` may use headless Bits UI and Paneforge directly; it must
   not import shadcn, forms, filter, AI, or application-specific surfaces.
 

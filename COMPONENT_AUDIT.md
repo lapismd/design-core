@@ -92,6 +92,30 @@ dependency. Storybook: `AI/...`.
 Import: `@stevejuma/ui/ai`, `@stevejuma/ui/ai/chat`, and
 `@stevejuma/ui/ai/chat/experimental`.
 
+## Shared — shell
+
+Bounded application chrome in `src/shared/shell/`:
+
+- Compound `Root`, `Sidebar`, `Sidebar.Header`, `Sidebar.Body`,
+  `Sidebar.Footer`, `Sidebar.Toggle`, `Sidebar.Close`, `Main`, `Toolbar`, and
+  `Body` surfaces
+- Viewport-height root with overrideable structural geometry tokens
+- Independent reactive left and right expanded/collapsed/closed and width
+  controllers
+- Accessible pointer and keyboard resize handles baked into expanded sidebars
+- Fixed chrome around shadcn Scroll Areas in main and sidebar bodies
+- Consumer-owned navigation, actions, content, and persistence
+
+Import: `@stevejuma/ui/shell`. Catalog: `Shell/App Shell`. Production Shell
+sources use native CSS and `--ui-shell-*` geometry tokens. They compose the
+generic shadcn Scroll Area and Button primitives and do not import
+application-specific state; catalog examples compose other shadcn controls to
+demonstrate consumer ownership.
+
+Choose Shell for structural application chrome. Choose Workspace when an
+application needs registered views, tabs, splits, commands, persistence,
+plugins, settings, windows, mobile presentation, or overlays.
+
 ## Shared — workspace
 
 Application-independent workspace framework in `src/shared/workspace/`.

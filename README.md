@@ -26,6 +26,8 @@ src/
     forms/core/          # builders, types, registry (non-visual)
     filter/              # search chrome + filter-query language
     ai/                  # reusable AI presentation primitives
+    shell/               # bounded app chrome + sidebar controller
+    workspace/           # full workspace framework
   storybook/             # catalog-only helpers
 tests/
   visual/                # Playwright suite + committed snapshots
@@ -48,6 +50,8 @@ scripts/
 | `@stevejuma/ui/ai`                   | reusable AI presentation barrel |
 | `@stevejuma/ui/ai/chat`              | stable AI Chat primitives       |
 | `@stevejuma/ui/ai/chat/experimental` | experimental AI Chat primitives |
+| `@stevejuma/ui/shell`                | bounded structural app shell    |
+| `@stevejuma/ui/workspace`            | full workspace framework        |
 | `@stevejuma/ui/styles.css`           | package styles entry            |
 
 - `shared/shadcn` contains generated controls and must not depend on higher
@@ -55,11 +59,18 @@ scripts/
 - `shared/filter` may compose shadcn controls.
 - `shared/forms` may compose shadcn and filter primitives.
 - `shared/ai` contains reusable, host-controlled presentation components.
+- `shared/shell` owns bounded application geometry, fixed chrome, shadcn
+  Scroll Areas, and independent collapsible/closeable/resizable sidebar state;
+  consumer content, non-shell controls, and persistence stay outside the layer.
+- `shared/workspace` owns the full tab, split, view, plugin, and persistence
+  framework.
 - Public components take typed props and callbacks rather than importing host
   routers, persistence, or application context.
 
 Story titles stay under `Shadcn/...`, `UI Forms/...`, `Filter/...`, and
-`AI/...`. Stable story ids are part of the committed visual-baseline contract.
+`AI/...`, with structural and workspace surfaces under `Shell/...` and
+`Workspace/...`. Stable story ids are part of the committed visual-baseline
+contract.
 
 ## Storybook catalog
 

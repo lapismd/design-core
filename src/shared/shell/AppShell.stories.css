@@ -1,0 +1,215 @@
+.ui-shell-story-frame {
+  height: 40rem;
+  min-width: 48rem;
+  padding: 1.5rem;
+  background: var(--muted);
+}
+
+.ui-shell-story-surface {
+  --ui-shell-height: 100%;
+
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 1rem 2.5rem
+    color-mix(in srgb, var(--foreground) 10%, transparent);
+}
+
+.ui-shell-story-sidebar-heading {
+  display: flex;
+  min-height: 2rem;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1rem 0.5rem;
+  white-space: nowrap;
+}
+
+.ui-shell-story-sidebar-heading svg {
+  width: 1rem;
+  height: 1rem;
+  flex: none;
+}
+
+.ui-minimal-app-shell__sidebar[data-state="collapsed"]
+  .ui-shell-story-sidebar-heading {
+  padding-block-start: 1.25rem;
+}
+
+.ui-shell-story-sidebar-body {
+  padding: 0 0.5rem;
+}
+
+.ui-shell-story-sidebar-body nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding-block-end: 0.5rem;
+}
+
+.ui-shell-story-nav-label {
+  padding: 0.75rem 0.75rem 0.25rem;
+  color: var(--muted-foreground);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.ui-shell-story-sidebar-footer {
+  min-height: 3rem;
+  padding: 0.75rem 1rem;
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.ui-shell-story-ai-header {
+  display: flex;
+  min-height: var(--ui-shell-toolbar-height);
+  align-items: center;
+  gap: 0.75rem;
+  padding-inline: 1rem;
+  border-block-end: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.ui-shell-story-ai-header svg {
+  width: 1rem;
+  height: 1rem;
+  flex: none;
+}
+
+.ui-shell-story-ai-header > svg,
+.ui-shell-story-ai-header > strong,
+.ui-shell-story-ai-header > [data-ui-part="sidebar-close"] {
+  transform: translateY(0.25rem);
+}
+
+.ui-minimal-app-shell__sidebar[data-side="right"][data-state="collapsed"]
+  .ui-shell-story-ai-header {
+  min-height: 0;
+  padding: 0.5rem 0.5rem 0;
+  border-block-end: 0;
+}
+
+.ui-shell-story-ai-body
+  > [data-ui-component="scroll-area"]
+  > [data-ui-part="scroll-area-viewport"]
+  > div {
+  height: 100%;
+}
+
+.ui-shell-story-ai-body
+  > [data-ui-component="scroll-area"]
+  > [data-ui-part="scroll-area-viewport"]
+  > div
+  > [data-ui-component="button"] {
+  margin: 0.5rem;
+}
+
+.ui-minimal-app-shell__sidebar[data-side="right"][data-state="collapsed"]
+  .ui-shell-story-ai-body
+  > [data-ui-component="scroll-area"]
+  > [data-ui-part="scroll-area-viewport"]
+  > div
+  > [data-ui-component="button"] {
+  margin-block-start: 0.75rem;
+}
+
+.ui-shell-story-ai-composer {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.ui-shell-story-nav-item {
+  width: 100%;
+  min-width: 0;
+  justify-content: flex-start;
+  overflow: hidden;
+}
+
+.ui-minimal-app-shell__sidebar[data-state="collapsed"]
+  .ui-shell-story-nav-item {
+  justify-content: center;
+}
+
+.ui-shell-story-toolbar-controls {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  align-items: center;
+  gap: 0.5rem;
+  padding-inline: 0.75rem;
+}
+
+.ui-shell-story-toolbar-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ui-shell-story-toolbar-spacer {
+  flex: 1;
+}
+
+.ui-shell-story-body-demo {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  min-height: 48rem;
+  padding: 2rem;
+}
+
+.ui-shell-story-body-demo header {
+  display: flex;
+  max-width: 42rem;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ui-shell-story-body-demo header p,
+.ui-shell-story-body-demo header h2,
+.ui-shell-story-body-demo header span,
+.ui-shell-story-card-grid p {
+  margin: 0;
+}
+
+.ui-shell-story-body-demo header p,
+.ui-shell-story-card-grid span {
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.ui-shell-story-body-demo header h2 {
+  font-size: 1.75rem;
+  line-height: 1.2;
+}
+
+.ui-shell-story-body-demo header > span,
+.ui-shell-story-card-grid p {
+  color: var(--muted-foreground);
+}
+
+.ui-shell-story-card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.ui-shell-story-card-grid section {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) * 0.8);
+  background: var(--card);
+}
+
+.ui-shell-story-card-grid strong {
+  font-size: 1.75rem;
+}

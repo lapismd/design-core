@@ -1,7 +1,7 @@
 /**
  * Fail if Tailwind utility class strings appear in native-CSS surfaces.
  *
- * Default roots: shared UI layers (forms, filter, AI, shadcn).
+ * Default roots: shared UI layers (forms, filter, AI, shell, shadcn, workspace).
  * Storybook story wrappers still use host Tailwind for layout demos and are
  * excluded (`*.stories.svelte`, `*.variations.stories.svelte`, `examples/`).
  *
@@ -18,6 +18,7 @@ const DEFAULT_ROOTS = [
   "src/shared/filter",
   "src/shared/forms",
   "src/shared/shadcn",
+  "src/shared/shell",
   "src/shared/workspace",
 ] as const;
 

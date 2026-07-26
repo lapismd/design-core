@@ -1,0 +1,159 @@
+.ui-minimal-app-shell {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  width: 100%;
+  height: var(--ui-shell-height);
+  min-width: 0;
+  min-height: var(--ui-shell-height);
+  overflow: hidden;
+  color: var(--foreground);
+  background: var(--sidebar, var(--muted));
+}
+
+.ui-minimal-app-shell__sidebar {
+  position: relative;
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  color: var(--foreground);
+  background: transparent;
+}
+
+.ui-minimal-app-shell__sidebar[data-side="left"] {
+  width: var(--ui-shell-sidebar-size, var(--ui-shell-left-sidebar-width));
+}
+
+.ui-minimal-app-shell__sidebar[data-side="right"] {
+  width: var(--ui-shell-sidebar-size, var(--ui-shell-right-sidebar-width));
+  margin-inline-start: var(--ui-shell-right-sidebar-gap);
+  background: var(--background);
+}
+
+.ui-minimal-app-shell__sidebar[data-side="right"][data-state="expanded"] {
+  border-inline-start: 1px solid var(--border);
+}
+
+.ui-minimal-app-shell__sidebar[data-state="collapsed"] {
+  width: var(--ui-shell-collapsed-sidebar-width);
+}
+
+.ui-minimal-app-shell__sidebar-close {
+  margin-inline-start: auto;
+}
+
+.ui-minimal-app-shell__sidebar-toggle > [data-ui-part="sidebar-toggle-icon"] {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.ui-minimal-app-shell__sidebar-close > svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.ui-minimal-app-shell__sidebar-resize-handle {
+  position: absolute;
+  z-index: 10;
+  inset-block: 0.5rem;
+  display: flex;
+  width: 0.75rem;
+  padding: 0;
+  border: 0;
+  touch-action: none;
+  cursor: col-resize;
+  align-items: stretch;
+  justify-content: center;
+  border-radius: 999px;
+  background: transparent;
+  outline: none;
+}
+
+.ui-minimal-app-shell__sidebar-resize-handle[data-side="left"] {
+  inset-inline-end: -0.375rem;
+}
+
+.ui-minimal-app-shell__sidebar-resize-handle[data-side="right"] {
+  inset-inline-start: -0.375rem;
+}
+
+.ui-minimal-app-shell__sidebar-resize-indicator {
+  width: 1px;
+  margin-block: 0.625rem;
+  border-radius: 999px;
+  background: transparent;
+  transition: background-color 120ms ease;
+}
+
+.ui-minimal-app-shell__sidebar-resize-handle:hover
+  > .ui-minimal-app-shell__sidebar-resize-indicator,
+.ui-minimal-app-shell__sidebar-resize-handle:focus-visible
+  > .ui-minimal-app-shell__sidebar-resize-indicator,
+.ui-minimal-app-shell__sidebar[data-resizing]
+  .ui-minimal-app-shell__sidebar-resize-indicator {
+  background: color-mix(in srgb, var(--primary) 55%, transparent);
+}
+
+.ui-minimal-app-shell__main {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  margin-block: var(--ui-shell-main-block-inset);
+  border: 1px solid var(--border);
+  border-radius: var(--ui-shell-main-radius);
+  background: var(--background);
+  box-shadow: var(--ui-shell-main-shadow);
+}
+
+.ui-minimal-app-shell__toolbar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  min-width: 0;
+  min-height: calc(
+    var(--ui-shell-toolbar-height) - var(--ui-shell-main-block-inset) - 1px
+  );
+  border-block-end: 1px solid var(--border);
+}
+
+.ui-minimal-app-shell__body {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.ui-minimal-app-shell__body-scroll-area,
+.ui-minimal-app-shell__sidebar-scroll-area {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+}
+
+.ui-minimal-app-shell__sidebar-header,
+.ui-minimal-app-shell__sidebar-footer {
+  flex: none;
+  min-width: 0;
+}
+
+.ui-minimal-app-shell__sidebar-body {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.ui-minimal-app-shell__sidebar[data-state="collapsed"]
+  > .ui-minimal-app-shell__sidebar-body
+  > .ui-minimal-app-shell__sidebar-scroll-area
+  > [data-ui-part="scroll-area-scrollbar"] {
+  display: none;
+}

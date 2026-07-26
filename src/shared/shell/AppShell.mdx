@@ -1,0 +1,99 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+import * as Stories from "./AppShell.stories.svelte";
+
+<Meta of={Stories} />
+
+# App Shell
+
+`@stevejuma/ui/shell` is a bounded structural layout for applications that own
+their navigation and content. It provides two independently collapsible
+and resizable sidebars, a main column, a toolbar, and a scrolling body.
+
+## Structure
+
+```svelte
+<AppShell.Root {controller}>
+  <AppShell.Sidebar side="left">
+    <AppShell.Sidebar.Header>...</AppShell.Sidebar.Header>
+    <AppShell.Sidebar.Body>...</AppShell.Sidebar.Body>
+    <AppShell.Sidebar.Footer>...</AppShell.Sidebar.Footer>
+  </AppShell.Sidebar>
+  <AppShell.Main>
+    <AppShell.Toolbar>
+      <AppShell.Sidebar.Toggle side="left" />
+      ...
+      <AppShell.Sidebar.Toggle side="right" />
+    </AppShell.Toolbar>
+    <AppShell.Body>...</AppShell.Body>
+  </AppShell.Main>
+  <AppShell.Sidebar side="right" closeable>
+    <AppShell.Sidebar.Header>
+      ...
+      <AppShell.Sidebar.Close />
+    </AppShell.Sidebar.Header>
+    <AppShell.Sidebar.Body>...</AppShell.Sidebar.Body>
+  </AppShell.Sidebar>
+</AppShell.Root>
+```
+
+Every part is optional except `Root`. Omitting either sidebar leaves the main
+column to fill the available bounded container.
+
+`Main` is an inset, bordered surface while both sidebars remain full height.
+The shell containers use `overflow: hidden`; `AppShell.Body` and
+every `AppShell.Sidebar.Body` install their own shadcn Scroll Area and vertical
+scrollbar. The main toolbar and each sidebar header and footer therefore remain
+fixed while the three body regions scroll independently. A collapsed sidebar
+keeps the same scrollable viewport for its icon rail but hides the scrollbar.
+
+Expanded sidebars include an accessible resize slider by default. Pointer
+dragging follows the sidebar edge; arrow keys move it by 16px, Shift+Arrow by
+32px, and Home/End move to the configured bounds. Set `resizable={false}` on a
+sidebar to omit its handle.
+
+`Sidebar.Toggle` is the shared toolbar action for either side. It collapses an
+expanded sidebar, expands a collapsed sidebar, and opens a closed sidebar.
+`closeable` enables a nested `Sidebar.Close` action. Put that action in
+`Sidebar.Header`; its automatic inline margin places it at the far edge. Closing
+removes the sidebar from layout completely so `Main` reclaims its width and
+gap. Collapsing still preserves the icon rail.
+
+## Controller
+
+Create one `AppShellController` per shell. `controller.left` and
+`controller.right` expose `collapsed`, `state`, `setCollapsed()`, `expand()`,
+`collapse()`, `toggle()`, `closed`, `setClosed()`, `open()`, `close()`, `width`,
+`setWidth()`, `resizeBy()`, and `resetWidth()`. `state` is `"expanded"`,
+`"collapsed"`, or `"closed"`. Widths clamp to 220–520px by default; configure
+shared bounds with `sidebarMinWidth` and `sidebarMaxWidth`. `useAppShell()` gives
+consumer components access to the nearest root controller without installing
+global application state.
+
+Collapsed sidebars remain mounted as persistent icon rails. Consumer controls
+should retain accessible names when their visible labels are omitted.
+
+## Tokens
+
+| Token                                | Default                | Purpose                     |
+| ------------------------------------ | ---------------------- | --------------------------- |
+| `--ui-shell-height`                  | `100vh`                | Root application height     |
+| `--ui-shell-left-sidebar-width`      | `18rem`                | Expanded left sidebar       |
+| `--ui-shell-right-sidebar-width`     | `18rem`                | Expanded right sidebar      |
+| `--ui-shell-right-sidebar-gap`       | `0.5rem`               | Gap before right sidebar    |
+| `--ui-shell-collapsed-sidebar-width` | `3rem`                 | Either collapsed icon rail  |
+| `--ui-shell-toolbar-height`          | `3rem`                 | Top chrome divider baseline |
+| `--ui-shell-main-block-inset`        | `0.5rem`               | Main top and bottom inset   |
+| `--ui-shell-main-radius`             | `0.875rem`             | Main surface radius         |
+| `--ui-shell-main-shadow`             | `shadow-sm` equivalent | Main surface depth          |
+
+Override tokens on `:root` or the shell root. Colors continue to come from the
+shared semantic theme. Left and right width tokens remain authoritative until
+the corresponding controller receives an explicit resize. Width persistence is
+consumer-owned.
+
+## Shell or Workspace?
+
+Choose `@stevejuma/ui/shell` for structural application chrome with
+consumer-owned content. Choose `@stevejuma/ui/workspace` when the application
+needs registered views, tabs, recursive splits, persistence adapters, commands,
+settings, plugins, mobile presentation, windows, or overlays.

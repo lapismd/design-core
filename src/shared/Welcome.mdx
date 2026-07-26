@@ -5,7 +5,7 @@ import { Meta } from "@storybook/addon-docs/blocks";
 # `@stevejuma/ui`
 
 Shared Storybook catalog for shadcn primitives, structured forms, filter
-controls, and AI presentation.
+controls, AI presentation, structural shells, and workspace surfaces.
 
 Agent conventions: run `pnpm ui guide` from the package root (JSON:
 `pnpm ui guide <topic> --json`). Decision pages: **Shadcn/Guidance**,
@@ -17,7 +17,11 @@ Agent conventions: run `pnpm ui guide` from the package root (JSON:
 2. **Forms** — config-driven form engine and field controls under `src/shared/forms`
 3. **Filter** — search chrome and filter-query language under `src/shared/filter`
 4. **AI** — reusable assistant presentation under `src/shared/ai`
+5. **Shell** — bounded app chrome, fixed regions, section Scroll Areas, and independently collapsible/closeable/resizable sidebar state under `src/shared/shell`
+6. **Workspace** — tabs, splits, views, and application framework under `src/shared/workspace`
 
 Import shared primitives from `@stevejuma/ui/shadcn/<family>`, forms from
 `@stevejuma/ui/forms`, search/filter from `@stevejuma/ui/filter`, and AI
-presentation from `@stevejuma/ui/ai`.
+presentation from `@stevejuma/ui/ai`. Use `@stevejuma/ui/shell` for structural
+application chrome and `@stevejuma/ui/workspace` for the full workspace
+framework.

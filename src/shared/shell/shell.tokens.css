@@ -3,8 +3,15 @@
  * `AppShell.Root` ancestor without changing component source.
  */
 :root {
+  --ui-shell-height: 100vh;
   --ui-shell-left-sidebar-width: 18rem;
   --ui-shell-right-sidebar-width: 18rem;
+  --ui-shell-right-sidebar-gap: 0.5rem;
   --ui-shell-collapsed-sidebar-width: 3rem;
   --ui-shell-toolbar-height: 3rem;
+  --ui-shell-main-block-inset: 0.5rem;
+  --ui-shell-main-radius: 0.875rem;
+  --ui-shell-main-shadow: 0 1px 3px
+      color-mix(in srgb, var(--foreground) 10%, transparent),
+    0 1px 2px -1px color-mix(in srgb, var(--foreground) 10%, transparent);
 }
