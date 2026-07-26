@@ -19,7 +19,22 @@
   });
 </script>
 
-<Story name="ASTRYX showcase">
+<Story
+  name="ASTRYX showcase"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/message-bubble/astryx-showcase-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <MessageList style="max-width: 37.5rem">
       <Message sender="user">
@@ -43,7 +58,22 @@
   {/snippet}
 </Story>
 
-<Story name="Density">
+<Story
+  name="Density"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/message-bubble/density-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <div data-story="reference-sections" style="max-width: 25rem">
       <section>
@@ -83,7 +113,22 @@
   {/snippet}
 </Story>
 
-<Story name="Grouping">
+<Story
+  name="Grouping"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/message-bubble/grouping-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <MessageList style="max-width: 31.25rem">
       <Message sender="assistant">
@@ -116,7 +161,22 @@
   {/snippet}
 </Story>
 
-<Story name="Metadata">
+<Story
+  name="Metadata"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/message-bubble/metadata-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <MessageList style="max-width: 31.25rem">
       <Message sender="assistant">
@@ -145,7 +205,22 @@
   {/snippet}
 </Story>
 
-<Story name="Variants">
+<Story
+  name="Variants"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/message-bubble/variants-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <div data-story="reference-sections" style="max-width: 31.25rem">
       <section>

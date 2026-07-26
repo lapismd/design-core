@@ -27,7 +27,22 @@
   let panelValue = $state("");
 </script>
 
-<Story name="ASTRYX showcase">
+<Story
+  name="ASTRYX showcase"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/layout/astryx-showcase-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <div data-story="chat-frame" data-size="showcase">
       <Layout>
@@ -66,7 +81,22 @@
   {/snippet}
 </Story>
 
-<Story name="Panel view">
+<Story
+  name="Panel view"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/layout/panel-view-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <div data-story="chat-frame" data-size="panel">
       <Layout density="compact">
@@ -110,7 +140,22 @@
   {/snippet}
 </Story>
 
-<Story name="Empty conversation">
+<Story
+  name="Empty conversation"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/layout/empty-conversation-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <div data-story="chat-frame">
       <Layout isEmpty>
@@ -123,7 +168,22 @@
   {/snippet}
 </Story>
 
-<Story name="Browser scroll surface">
+<Story
+  name="Browser scroll surface"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/layout/browser-scroll-surface-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <div data-story="chat-frame">
       <Layout>

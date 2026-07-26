@@ -33,7 +33,22 @@
   let olderLoaded = $state(false);
 </script>
 
-<Story name="ASTRYX showcase">
+<Story
+  name="ASTRYX showcase"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/message-list/astryx-showcase-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <div data-story="message-list-surface" style="max-width: 37.5rem">
       <MessageList density="balanced">
@@ -66,7 +81,22 @@
   {/snippet}
 </Story>
 
-<Story name="Density">
+<Story
+  name="Density"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/message-list/density-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <div data-story="reference-sections" style="max-width: 31.25rem">
       <section>
@@ -127,7 +157,22 @@
   {/snippet}
 </Story>
 
-<Story name="Full featured">
+<Story
+  name="Full featured"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/message-list/full-featured-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <div data-story="message-list-surface" style="max-width: 31.25rem">
       <MessageList>
@@ -187,6 +232,19 @@
     );
     await expect(canvas.getByText("Earlier context")).toBeVisible();
   }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/message-list/loads-older-messages-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
 >
   {#snippet template()}
     <div data-story="message-list-surface" style="max-width: 30rem">
@@ -208,7 +266,22 @@
   {/snippet}
 </Story>
 
-<Story name="Empty live log">
+<Story
+  name="Empty live log"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/message-list/empty-live-log-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <div data-story="message-list-surface" style="max-width: 30rem">
       <MessageList isEmpty isStreaming={false}>

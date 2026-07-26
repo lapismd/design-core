@@ -24,7 +24,22 @@
   });
 </script>
 
-<Story name="ASTRYX showcase">
+<Story
+  name="ASTRYX showcase"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/message-metadata/astryx-showcase-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <MessageList style="max-width: 37.5rem">
       <Message sender="assistant">
@@ -87,7 +102,22 @@
   {/snippet}
 </Story>
 
-<Story name="Footer actions">
+<Story
+  name="Footer actions"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/message-metadata/footer-actions-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <MessageList style="max-width: 37.5rem">
       <Message sender="user">
@@ -137,7 +167,22 @@
   {/snippet}
 </Story>
 
-<Story name="Status">
+<Story
+  name="Status"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/message-metadata/status-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <MessageList style="max-width: 25rem">
       <Message sender="user">
@@ -184,7 +229,22 @@
   {/snippet}
 </Story>
 
-<Story name="Timestamps">
+<Story
+  name="Timestamps"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/message-metadata/timestamps-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <MessageList style="max-width: 31.25rem">
       <Message sender="user">

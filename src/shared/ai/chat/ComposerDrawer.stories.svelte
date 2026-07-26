@@ -44,7 +44,22 @@
   ];
 </script>
 
-<Story name="ASTRYX showcase">
+<Story
+  name="ASTRYX showcase"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/composer-drawer/astryx-showcase-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <div data-story="drawer-composer">
       <Composer value="" placeholder="Type a message..." onSubmit={() => {}}>
@@ -69,7 +84,22 @@
   {/snippet}
 </Story>
 
-<Story name="Attachments">
+<Story
+  name="Attachments"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/composer-drawer/attachments-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <div data-story="drawer-composer">
       <Composer value="" placeholder="Type a message..." onSubmit={() => {}}>
@@ -89,7 +119,22 @@
   {/snippet}
 </Story>
 
-<Story name="Collapsible">
+<Story
+  name="Collapsible"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/composer-drawer/collapsible-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <div data-story="drawer-composer">
       <Composer value="" onSubmit={() => {}}>
@@ -109,7 +154,22 @@
   {/snippet}
 </Story>
 
-<Story name="Feedback">
+<Story
+  name="Feedback"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/composer-drawer/feedback-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <div data-story="drawer-composer">
       <Composer value="" onSubmit={() => {}}>
@@ -145,7 +205,22 @@
   {/snippet}
 </Story>
 
-<Story name="With progress">
+<Story
+  name="With progress"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/composer-drawer/with-progress-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <div data-story="drawer-composer">
       <Composer value="" onSubmit={() => {}}>
@@ -184,6 +259,19 @@
     );
     await expect(canvas.getByText("release-notes.md")).toBeVisible();
   }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/composer-drawer/expands-attached-context-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
 >
   {#snippet template()}
     <div data-story="drawer-frame">

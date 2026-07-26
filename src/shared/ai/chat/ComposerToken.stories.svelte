@@ -17,7 +17,22 @@
   });
 </script>
 
-<Story name="Badge config">
+<Story
+  name="Badge config"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/composer-token/badge-config-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <p data-story="token-line">
       Assign
@@ -30,7 +45,22 @@
   {/snippet}
 </Story>
 
-<Story name="Custom render">
+<Story
+  name="Custom render"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/composer-token/custom-render-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <p data-story="token-line">
       Review

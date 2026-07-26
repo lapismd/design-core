@@ -16,7 +16,22 @@
   });
 </script>
 
-<Story name="Names active typists">
+<Story
+  name="Names active typists"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/experimental/typing-indicator/names-active-typists-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <div data-story="typing-stack">
       <TypingIndicator names={["Ana"]} />

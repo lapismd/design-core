@@ -26,6 +26,19 @@
     await expect(trigger).toHaveAttribute("aria-expanded", "true");
     await expect(canvas.getByText(/constraints before choosing/)).toBeVisible();
   }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/experimental/reasoning/expands-reasoning-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
 >
   {#snippet template()}
     <div data-story="experimental-frame">
@@ -42,7 +55,22 @@
   {/snippet}
 </Story>
 
-<Story name="Streams reasoning">
+<Story
+  name="Streams reasoning"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/experimental/reasoning/streams-reasoning-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <div data-story="experimental-frame">
       <Reasoning streaming preview="This preview stays hidden while streaming.">
