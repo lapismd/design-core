@@ -64,6 +64,18 @@
       "Manage plugins selected",
     );
   }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/status-item/action-and-menu-items-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
 >
   {#snippet template()}
     <div class="ui-workspace-status-item-story-frame">

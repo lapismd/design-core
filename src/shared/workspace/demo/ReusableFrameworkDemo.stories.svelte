@@ -28,7 +28,20 @@
   });
 </script>
 
-<Story name="Overview" tags={["visual-pending"]}>
+<Story
+  name="Overview"
+  tags={["visual-pending"]}
+  parameters={{
+    visualDelta: {
+      images: ["/visual-baselines/workspace/demo/overview-chromium-darwin.png"],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+>
   {#snippet template()}
     <ReusableFrameworkDemo app={overview.app} />
   {/snippet}
@@ -50,6 +63,18 @@
     await expect(
       canvas.queryByRole("tab", { name: "Plan" }),
     ).not.toBeInTheDocument();
+  }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/demo/controller-and-persistence-interaction-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
   }}
 >
   {#snippet template()}
@@ -93,19 +118,61 @@
       documentCanvas.getByText("Framework demo enabled"),
     ).toBeVisible();
   }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/demo/plugin-lifecycle-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
 >
   {#snippet template()}
     <ReusableFrameworkDemo app={pluginLifecycle.app} />
   {/snippet}
 </Story>
 
-<Story name="Mobile composition" tags={["visual-pending"]}>
+<Story
+  name="Mobile composition"
+  tags={["visual-pending"]}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/demo/mobile-composition-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+>
   {#snippet template()}
     <ReusableFrameworkDemo app={mobile.app} displayMode="mobile" />
   {/snippet}
 </Story>
 
-<Story name="Pointer drag surface" tags={["visual-pending"]}>
+<Story
+  name="Pointer drag surface"
+  tags={["visual-pending"]}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/demo/pointer-drag-surface-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+>
   {#snippet template()}
     <ReusableFrameworkDemo app={pointer.app} />
   {/snippet}

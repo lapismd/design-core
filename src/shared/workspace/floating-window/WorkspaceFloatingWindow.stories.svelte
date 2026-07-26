@@ -75,6 +75,18 @@
       canvas.getByRole("button", { name: "Restore floating pane" }),
     ).toBeVisible();
   }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/floating-window/window-controls-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
 >
   {#snippet template()}
     <div
@@ -91,7 +103,22 @@
   {/snippet}
 </Story>
 
-<Story name="Minimized window" tags={["visual-pending"]}>
+<Story
+  name="Minimized window"
+  tags={["visual-pending"]}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/floating-window/minimized-window-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+>
   {#snippet template()}
     <div class="ui-workspace-floating-window-story-minimized">
       <WorkspaceFloatingWindow

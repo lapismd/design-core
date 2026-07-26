@@ -64,6 +64,18 @@
     await userEvent.click(canvas.getByRole("button", { name: "Count 1" }));
     await expect(canvas.getByRole("button", { name: "Count 2" })).toBeVisible();
   }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/view-host/registered-svelte-view-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
 >
   {#snippet template()}
     <div class="h-[28rem]">
@@ -84,6 +96,18 @@
     await expect(
       canvas.getByRole("heading", { name: "Plugin no longer active" }),
     ).toBeVisible();
+  }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/view-host/missing-view-fallback-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
   }}
 >
   {#snippet template()}

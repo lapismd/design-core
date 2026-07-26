@@ -116,6 +116,18 @@
       ).toHaveLength(3);
     });
   }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/plugins/notifications/toast-severities-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
 >
   {#snippet template()}
     <div class="ui-workspace-notifications-story">
@@ -159,6 +171,18 @@
     await expect(canvas.getByText("Workspace restored")).toBeVisible();
     await expect(canvas.getByText("Sync paused")).toBeVisible();
   }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/plugins/notifications/populated-history-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
 >
   {#snippet template()}
     <div class="ui-workspace-notifications-story">
@@ -179,6 +203,18 @@
     await emptyApp.notifications.clearAll();
     await openCenter(emptyApp, canvasElement);
     await expect(canvas.getByText("No new notifications")).toBeVisible();
+  }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/plugins/notifications/empty-notification-center-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
   }}
 >
   {#snippet template()}
@@ -211,6 +247,18 @@
     await expect(
       canvas.getByRole("button", { name: "Cancelling" }),
     ).toBeDisabled();
+  }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/plugins/notifications/progress-and-cancellation-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
   }}
 >
   {#snippet template()}
@@ -247,6 +295,18 @@
       ).toBeNull();
     });
   }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/plugins/notifications/fallback-toast-presentation-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
 >
   {#snippet template()}
     <div class="ui-workspace-notifications-story">
@@ -275,6 +335,18 @@
     await waitFor(() => {
       expect(canvas.queryByText("Workspace loaded")).not.toBeInTheDocument();
     });
+  }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/plugins/notifications/notice-compatibility-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
   }}
 >
   {#snippet template()}

@@ -42,6 +42,18 @@
     ).toBeVisible();
     await expect(canvas.getByText("Version 1.12.3")).toBeVisible();
   }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/about-dialog/application-information-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
 >
   {#snippet template()}
     <div class="ui-workspace-overlay-story">

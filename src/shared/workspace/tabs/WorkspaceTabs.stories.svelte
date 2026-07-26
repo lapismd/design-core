@@ -123,6 +123,18 @@
       "Saved tab-close",
     );
   }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/tabs/activates-closes-and-persists-tabs-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
 >
   {#snippet template()}
     <div class="ui-workspace-tabs-story-frame">
@@ -147,6 +159,18 @@
     const page = within(document.body);
     await expect(page.getByRole("menu")).toBeVisible();
     await expect(page.getByText("Stack tabs")).toBeVisible();
+  }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/tabs/overflow-menu-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
   }}
 >
   {#snippet template()}
@@ -178,6 +202,18 @@
     await expect(icon!.getBoundingClientRect().right).toBeLessThanOrEqual(
       close!.getBoundingClientRect().left,
     );
+  }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/tabs/constrained-hidden-scrollbar-row-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
   }}
 >
   {#snippet template()}

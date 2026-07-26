@@ -79,6 +79,18 @@
     );
     await expect(canvas.queryByRole("button", { name: "Details" })).toBeNull();
   }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/stacked-tabs/activates-and-closes-vertical-tabs-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
 >
   {#snippet template()}
     <div class="ui-workspace-stacked-tabs-story-frame">

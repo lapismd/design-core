@@ -52,6 +52,18 @@ describe("visual-baseline-design", () => {
     );
   });
 
+  it("maps Workspace stories via importPath", () => {
+    expect(
+      baselineUrlForStory({
+        title: "Workspace/Components/Tabs",
+        id: "workspace-components-tabs--overflow-menu",
+        importPath: "./src/shared/workspace/tabs/WorkspaceTabs.stories.svelte",
+      }),
+    ).toBe(
+      `/visual-baselines/workspace/tabs/overflow-menu${VISUAL_BASELINE_SUFFIX}.png`,
+    );
+  });
+
   it("skips skip-visual stories and unknown trees without importPath", () => {
     expect(
       baselineUrlForStory({

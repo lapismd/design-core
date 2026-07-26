@@ -70,6 +70,18 @@
       }),
     ).toBeVisible();
   }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/floating-layer/free-and-minimized-windows-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
 >
   {#snippet template()}
     <div bind:this={boundsRoot} class="ui-workspace-floating-layer-story-frame">

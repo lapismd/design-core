@@ -59,6 +59,18 @@
       "Split right selected",
     );
   }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/menu/items-submenus-and-disabled-state-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
 >
   {#snippet template()}
     <DropdownMenu.Root>

@@ -104,6 +104,18 @@
     ).toHaveAttribute("aria-expanded", "true");
     await expect(canvas.getByRole("heading", { name: "Links" })).toBeVisible();
   }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/sidebar-group/partially-collapsed-panels-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
 >
   {#snippet template()}
     <div class="ui-workspace-sidebar-group-story-frame">

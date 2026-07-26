@@ -53,6 +53,18 @@
       await canvas.findByRole("dialog", { name: "Command Palette" }),
     ).toBeVisible();
   }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/command-palette/open-palette-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
 >
   {#snippet template()}
     <div class="ui-workspace-overlay-story">
@@ -85,6 +97,18 @@
       ).not.toBeInTheDocument();
     });
   }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/command-palette/searches-and-runs-commands-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
 >
   {#snippet template()}
     <div class="ui-workspace-overlay-story">
@@ -111,6 +135,18 @@
     await userEvent.clear(input);
     await userEvent.type(input, "No matching command");
     await expect(canvas.getByText("No results found.")).toBeVisible();
+  }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/command-palette/empty-search-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
   }}
 >
   {#snippet template()}

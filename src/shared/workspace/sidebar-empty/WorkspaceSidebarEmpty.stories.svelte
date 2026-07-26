@@ -35,6 +35,18 @@
       "Sidebar closed",
     );
   }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/sidebar-empty/empty-left-sidebar-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
 >
   {#snippet template()}
     <div class="h-[28rem] w-80 border">
@@ -55,6 +67,18 @@
     await expect(
       canvasElement.querySelector('[data-workspace-sidebar-empty="right"]'),
     ).not.toBeNull();
+  }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/sidebar-empty/empty-right-sidebar-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
   }}
 >
   {#snippet template()}

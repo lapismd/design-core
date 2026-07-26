@@ -32,6 +32,18 @@
       "Right sidebar selected",
     );
   }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/sidebar-toggle/both-sidebar-directions-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
 >
   {#snippet template()}
     <div class="flex items-center gap-2">

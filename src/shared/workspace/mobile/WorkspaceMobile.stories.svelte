@@ -122,6 +122,18 @@
       canvas.getByLabelText("Select left sidebar tab"),
     ).toBeVisible();
   }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/mobile/editor-with-revealable-sidebars-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
 >
   {#snippet template()}
     <div class="ui-workspace-mobile-story-canvas">
@@ -148,6 +160,18 @@
     );
     await expect(canvas.getByRole("region", { name: "Notes" })).toBeVisible();
   }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/mobile/tab-overview-with-all-entries-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
 >
   {#snippet template()}
     <div class="ui-workspace-mobile-story-canvas">
@@ -163,7 +187,22 @@
   {/snippet}
 </Story>
 
-<Story name="Overview without auxiliary entries" tags={["visual-pending"]}>
+<Story
+  name="Overview without auxiliary entries"
+  tags={["visual-pending"]}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/mobile/overview-without-auxiliary-entries-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+>
   {#snippet template()}
     <div class="ui-workspace-mobile-story-canvas">
       <div class="ui-workspace-mobile-story-frame">
@@ -179,7 +218,22 @@
   {/snippet}
 </Story>
 
-<Story name="Pan gesture surface" tags={["visual-pending"]}>
+<Story
+  name="Pan gesture surface"
+  tags={["visual-pending"]}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/mobile/pan-gesture-surface-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+>
   {#snippet template()}
     <div class="ui-workspace-mobile-story-canvas">
       <div class="ui-workspace-mobile-story-frame">
@@ -208,6 +262,18 @@
     await expect(
       canvas.getByLabelText("Select right sidebar tab"),
     ).toBeVisible();
+  }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/mobile/view-actions-drawer-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
   }}
 >
   {#snippet template()}
@@ -239,6 +305,18 @@
     await expect(
       canvas.queryByRole("dialog", { name: "7 open tabs" }),
     ).not.toBeInTheDocument();
+  }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/mobile/open-tabs-actions-drawer-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
   }}
 >
   {#snippet template()}

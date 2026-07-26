@@ -236,6 +236,18 @@
     await expect(canvas.getByLabelText("Left sidebar")).toBeVisible();
     await expect(canvas.getByLabelText("Right sidebar")).toBeVisible();
   }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/app-shell/composable-surfaces-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
 >
   {#snippet template()}
     <div class="ui-app-shell-story-frame">
@@ -251,7 +263,22 @@
   {/snippet}
 </Story>
 
-<Story name="Default surface" tags={["visual-pending"]}>
+<Story
+  name="Default surface"
+  tags={["visual-pending"]}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/app-shell/default-surface-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+>
   {#snippet template()}
     <div class="ui-app-shell-story-frame">
       <AppShell.Root controller={surfaceApp} theme="inherit">
@@ -261,7 +288,22 @@
   {/snippet}
 </Story>
 
-<Story name="Mobile surface" tags={["visual-pending"]}>
+<Story
+  name="Mobile surface"
+  tags={["visual-pending"]}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/app-shell/mobile-surface-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+>
   {#snippet template()}
     <div class="ui-app-shell-story-mobile-canvas">
       <div class="ui-app-shell-story-mobile-frame">
@@ -282,6 +324,18 @@
       await canvas.findByRole("dialog", { name: "Command Palette" }),
     ).toBeVisible();
   }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/app-shell/explicit-utility-layers-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
 >
   {#snippet template()}
     <div class="ui-app-shell-story-frame">
@@ -301,7 +355,22 @@
   {/snippet}
 </Story>
 
-<Story name="Low-level sidebar and tabs adapters" tags={["visual-pending"]}>
+<Story
+  name="Low-level sidebar and tabs adapters"
+  tags={["visual-pending"]}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/app-shell/low-level-sidebar-and-tabs-adapters-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+>
   {#snippet template()}
     <div class="ui-app-shell-story-frame">
       <AppShell.Root controller={adapterApp} theme="inherit">
@@ -312,7 +381,22 @@
   {/snippet}
 </Story>
 
-<Story name="Composable hotkey settings" tags={["visual-pending"]}>
+<Story
+  name="Composable hotkey settings"
+  tags={["visual-pending"]}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/app-shell/composable-hotkey-settings-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+>
   {#snippet template()}
     <div class="ui-app-shell-story-frame ui-app-shell-story-frame--settings">
       <AppShell.Root controller={hotkeysApp} theme="inherit">
@@ -322,7 +406,22 @@
   {/snippet}
 </Story>
 
-<Story name="Composable core plugin settings" tags={["visual-pending"]}>
+<Story
+  name="Composable core plugin settings"
+  tags={["visual-pending"]}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/app-shell/composable-core-plugin-settings-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+>
   {#snippet template()}
     <div class="ui-app-shell-story-frame ui-app-shell-story-frame--settings">
       <AppShell.Root controller={pluginsApp} theme="inherit">

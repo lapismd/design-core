@@ -92,6 +92,18 @@
       canvas.getByRole("button", { name: "Collapse Outline" }),
     ).toBeVisible();
   }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/sidebar/icon-tabs-and-grouped-panels-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
 >
   {#snippet template()}
     <div class="ui-workspace-sidebar-story-frame">
@@ -100,7 +112,22 @@
   {/snippet}
 </Story>
 
-<Story name="Empty right sidebar" tags={["visual-pending"]}>
+<Story
+  name="Empty right sidebar"
+  tags={["visual-pending"]}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/sidebar/empty-right-sidebar-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+>
   {#snippet template()}
     <div class="ui-workspace-sidebar-story-frame">
       <WorkspaceSidebar controller={emptyController} side="right" />

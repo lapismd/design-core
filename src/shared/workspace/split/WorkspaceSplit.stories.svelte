@@ -57,6 +57,18 @@
     await expect(canvas.getByText("Left pane")).toBeVisible();
     await expect(canvas.getByText("Right pane")).toBeVisible();
   }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/split/horizontal-split-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
 >
   {#snippet template()}
     <div class="ui-workspace-split-story-frame">

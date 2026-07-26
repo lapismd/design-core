@@ -53,6 +53,18 @@
       canvas.getByRole("tab", { name: "Detached view" }),
     ).toHaveAttribute("aria-selected", "true");
   }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/popout/detached-workspace-tree-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
 >
   {#snippet template()}
     <div class="ui-workspace-popout-story">

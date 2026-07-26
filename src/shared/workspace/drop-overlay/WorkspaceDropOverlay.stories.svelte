@@ -25,31 +25,103 @@
       canvasElement.querySelector('[data-drop-position="center"]'),
     ).not.toBeNull();
   }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/drop-overlay/centre-target-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
 >
   {#snippet template()}
     <WorkspaceDropOverlay position="center" />
   {/snippet}
 </Story>
 
-<Story name="Left split target" tags={["visual-pending"]}>
+<Story
+  name="Left split target"
+  tags={["visual-pending"]}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/drop-overlay/left-split-target-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+>
   {#snippet template()}
     <WorkspaceDropOverlay position="left" />
   {/snippet}
 </Story>
 
-<Story name="Right split target" tags={["visual-pending"]}>
+<Story
+  name="Right split target"
+  tags={["visual-pending"]}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/drop-overlay/right-split-target-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+>
   {#snippet template()}
     <WorkspaceDropOverlay position="right" />
   {/snippet}
 </Story>
 
-<Story name="Top split target" tags={["visual-pending"]}>
+<Story
+  name="Top split target"
+  tags={["visual-pending"]}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/drop-overlay/top-split-target-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+>
   {#snippet template()}
     <WorkspaceDropOverlay position="top" />
   {/snippet}
 </Story>
 
-<Story name="Bottom split target" tags={["visual-pending"]}>
+<Story
+  name="Bottom split target"
+  tags={["visual-pending"]}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/drop-overlay/bottom-split-target-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+>
   {#snippet template()}
     <WorkspaceDropOverlay position="bottom" />
   {/snippet}

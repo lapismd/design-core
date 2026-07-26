@@ -327,7 +327,22 @@
   });
 </script>
 
-<Story name="Controller-owned workspace settings" tags={["visual-pending"]}>
+<Story
+  name="Controller-owned workspace settings"
+  tags={["visual-pending"]}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/settings/controller-owned-workspace-settings-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+>
   {#snippet template()}
     <div class="ui-workspace-settings-story-canvas">
       <div class="ui-workspace-settings-story-frame">
@@ -358,6 +373,18 @@
     await userEvent.selectOptions(mobileLayout, "always");
     await expect(mobileLayout).toHaveValue("always");
     await expect(interactionApp.mobile.requestedDisplayMode).toBe("mobile");
+  }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/settings/updates-appearance-and-mobile-configuration-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
   }}
 >
   {#snippet template()}
@@ -392,6 +419,18 @@
       canvas.getByRole("heading", { name: "Settings search results" }),
     ).toBeVisible();
     await userEvent.clear(search);
+  }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/settings/all-supported-controls-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
   }}
 >
   {#snippet template()}
@@ -433,6 +472,18 @@
     await expect(associations).toHaveLength(2);
     await expect(associations[1]).toHaveValue("*.txt");
   }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/settings/collections-and-extension-controls-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
 >
   {#snippet template()}
     <div class="ui-workspace-settings-story-canvas">
@@ -467,6 +518,18 @@
     await expect(
       canvas.getByRole("checkbox", { name: "Enable Backlinks" }),
     ).toBeChecked();
+  }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/settings/composable-app-shell-settings-surface-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
   }}
 >
   {#snippet template()}
