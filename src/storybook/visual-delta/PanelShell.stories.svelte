@@ -10,6 +10,7 @@
   import ReactThemeHost from "storybook-addon-visual-delta/src/stories/ReactThemeHost.svelte";
   import { PanelShell } from "storybook-addon-visual-delta/src/stories/PanelShell";
   import { createMockVisualBackend } from "storybook-addon-visual-delta/src/stories/mock-visual-backend";
+  import ResponsiveViewportCanary from "./ResponsiveViewportCanary.svelte";
 
   const { Story } = defineMeta({
     title: "Visual Delta/Panel Shell",
@@ -442,6 +443,34 @@
         initialState: "passed",
       })}
     />
+  {/snippet}
+</Story>
+
+<Story
+  name="Responsive 1440 viewport canary"
+  parameters={{
+    visualDelta: {
+      images: [
+        {
+          src: "/visual-baselines/tasks/components/tasks-shell/today-chromium-darwin.png",
+          viewport: { width: 1440, height: 960 },
+          deviceScaleFactor: 3,
+          align: "viewport",
+          placement: "right",
+        },
+      ],
+      cropToViewport: true,
+    },
+  }}
+  play={async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(
+      await canvas.findByTestId("responsive-viewport-canary"),
+    ).toBeInTheDocument();
+  }}
+>
+  {#snippet template()}
+    <ResponsiveViewportCanary />
   {/snippet}
 </Story>
 
