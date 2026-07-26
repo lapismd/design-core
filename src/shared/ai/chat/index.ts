@@ -5,6 +5,14 @@ export { default as Message } from "./Message.svelte";
 export { default as MessageBubble } from "./MessageBubble.svelte";
 export { default as MessageMetadata } from "./MessageMetadata.svelte";
 export { default as SystemMessage } from "./SystemMessage.svelte";
+export { default as Composer } from "./Composer.svelte";
+export { default as ComposerInput } from "./ComposerInput.svelte";
+export { default as ComposerDrawer } from "./ComposerDrawer.svelte";
+export { default as SendButton } from "./SendButton.svelte";
+export { default as ComposerToken } from "./ComposerToken.svelte";
+export { default as TokenizedText } from "./TokenizedText.svelte";
+export { default as ToolCalls } from "./ToolCalls.svelte";
+export { default as DictationButton } from "./DictationButton.svelte";
 
 export {
   createStreamScroll,
@@ -40,7 +48,6 @@ export type {
   ComposerInputHandle,
   ComposerSearchSource,
   ComposerStatus,
-  ComposerToken,
   ComposerTokenBadge,
   ComposerTokenCustom,
   ComposerTrigger,
@@ -60,3 +67,4 @@ export type {
   ToolCallItem,
   ToolCallStatus,
 } from "./types.js";
+export type { ComposerToken as ComposerTokenValue } from "./types.js";
