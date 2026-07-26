@@ -74,7 +74,7 @@ Compatibility aliases are removed only through an explicit reviewed slice.
 | Controller and events            | `core/app-shell-controller*`, `event-dispatcher.ts`        | `core/controller/`         | Complete            | Pass    | Pending  | N/A     | Pending |
 | Layout and persistence           | `core/layout*`, `workspace-json*`, `persistence.ts`        | `core/layout/`             | Complete            | Pass    | N/A      | N/A     | Pending |
 | Views and editor associations    | `core/view*`, `workspace-view.ts`, `editor-view-registry*` | `core/views/`              | Complete            | Pass    | Pending  | N/A     | Pending |
-| Commands and keymaps             | `core/command-*`                                           | `core/commands/`           | Complete            | Pass    | Pending  | N/A     | Pending |
+| Commands and keymaps             | `core/command-*`                                           | `core/commands/`           | Complete            | Pass    | Partial  | Pending | Pending |
 | Configuration and settings model | `settings/*.ts`, `core/built-in-settings*`                 | `core/settings/`           | Complete            | Pass    | Pending  | N/A     | Pending |
 | Plugin lifecycle                 | `core/plugin-manager*`, UI registry                        | `core/plugins/`            | Complete            | Pass    | Pending  | N/A     | Pending |
 | Notifications model              | notice and notification managers                           | `core/notifications/`      | Complete            | Pass    | Pending  | N/A     | Pending |
@@ -362,6 +362,25 @@ workflow.
 - Focused Storybook interaction and accessibility execution: 1 file and 6
   stories pass, including status-to-center navigation, toast severities,
   history, cancellation, fallback presentation, and notice dismissal.
+- The required MCP focused runs were invoked and returned no per-story result
+  in the JJ workspace. Supplemental focused execution remains green.
+- `pnpm check:no-tailwind`: pass.
+- `pnpm check`: pass with zero Svelte errors or warnings.
+- Visual Delta candidate baselines remain pending explicit human approval; no
+  committed baseline image was created or replaced in this slice.
+
+### Command palette and application about dialog
+
+- Added individually importable command-palette and about-dialog component
+  families with native CSS, public Workspace tokens, colocated stories, and
+  MDX documentation.
+- `AppShell.Root` now renders both controller-owned overlays by default. The
+  command palette searches and executes the public command registry, while the
+  configurable status-version item opens application metadata without global
+  state.
+- Focused Storybook interaction and accessibility execution: 2 files and 4
+  stories pass, covering open/search/run/empty command states and the status
+  item to about-dialog path.
 - The required MCP focused runs were invoked and returned no per-story result
   in the JJ workspace. Supplemental focused execution remains green.
 - `pnpm check:no-tailwind`: pass.

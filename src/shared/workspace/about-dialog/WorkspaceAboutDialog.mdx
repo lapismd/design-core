@@ -1,0 +1,12 @@
+import { Meta, Canvas } from "@storybook/addon-docs/blocks";
+import * as Stories from "./WorkspaceAboutDialog.stories.svelte";
+
+<Meta of={Stories} />
+
+# About Dialog
+
+Applications provide serializable name, version, logo or icon, build, commit,
+and copyright metadata through `AppShellController`. The default status version
+item opens this dialog without application-global state.
+
+<Canvas of={Stories.ApplicationInformation} />

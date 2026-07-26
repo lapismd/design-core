@@ -1,0 +1,12 @@
+import { Meta, Canvas } from "@storybook/addon-docs/blocks";
+import * as Stories from "./WorkspaceCommandPalette.stories.svelte";
+
+<Meta of={Stories} />
+
+# Command Palette
+
+The command palette renders the controller's available commands and
+application-provided palette results. Search and execution use the same
+context-aware command path as hotkeys and programmatic calls.
+
+<Canvas of={Stories.OpenPalette} />
