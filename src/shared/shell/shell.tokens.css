@@ -1,0 +1,10 @@
+/**
+ * Structural Shell defaults. Consumers may override them on `:root` or an
+ * `AppShell.Root` ancestor without changing component source.
+ */
+:root {
+  --ui-shell-left-sidebar-width: 18rem;
+  --ui-shell-right-sidebar-width: 18rem;
+  --ui-shell-collapsed-sidebar-width: 3rem;
+  --ui-shell-toolbar-height: 3rem;
+}
