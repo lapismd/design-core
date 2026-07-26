@@ -206,6 +206,7 @@
     await expect(
       await canvas.findByRole("heading", { name: "Configuration" }),
     ).toBeInTheDocument();
+    await userEvent.click(canvas.getByRole("tab", { name: "Resolved" }));
     await expect(
       canvas.getByRole("heading", { name: "Baselines" }),
     ).toBeInTheDocument();
@@ -220,6 +221,85 @@
         backend: createMockVisualBackend(),
         configurationOpen: true,
       })}
+    />
+  {/snippet}
+</Story>
+
+<Story
+  name="Configuration defaults"
+  play={async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const threshold = await canvas.findByLabelText("Pass threshold percentage");
+    await expect(
+      canvas.getByRole("tab", { name: "Defaults", selected: true }),
+    ).toBeInTheDocument();
+    await userEvent.clear(threshold);
+    await userEvent.type(threshold, "1.5");
+    await userEvent.click(canvas.getByRole("button", { name: "Save" }));
+    await expect(
+      await canvas.findByText(/Project defaults saved/),
+    ).toBeInTheDocument();
+  }}
+>
+  {#snippet template()}
+    <ReactThemeHost
+      element={React.createElement(PanelShell, {
+        backend: createMockVisualBackend(),
+        configurationOpen: true,
+      })}
+    />
+  {/snippet}
+</Story>
+
+<Story
+  name="Configuration save failure"
+  play={async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const opacity = await canvas.findByLabelText("Overlay opacity");
+    await userEvent.clear(opacity);
+    await userEvent.type(opacity, "0.7");
+    await userEvent.click(canvas.getByRole("button", { name: "Save" }));
+    await expect(await canvas.findByRole("alert")).toHaveTextContent(
+      "Configuration file is read-only.",
+    );
+    await expect(opacity).toHaveValue(0.7);
+  }}
+>
+  {#snippet template()}
+    <ReactThemeHost
+      element={React.createElement(PanelShell, {
+        backend: createMockVisualBackend(),
+        configurationOpen: true,
+        configurationSaveError: "Configuration file is read-only.",
+      })}
+    />
+  {/snippet}
+</Story>
+
+<Story
+  name="Narrow configuration scrolling"
+  play={async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const defaults = await canvas.findByRole("tabpanel", { name: "Defaults" });
+    const scrollSurface = defaults.parentElement;
+    await expect(scrollSurface).not.toBeNull();
+    await waitFor(() =>
+      expect(scrollSurface!.scrollHeight).toBeGreaterThan(
+        scrollSurface!.clientHeight,
+      ),
+    );
+  }}
+>
+  {#snippet template()}
+    <ReactThemeHost
+      element={React.createElement(
+        "div",
+        { style: { width: 360, height: 280 } },
+        React.createElement(PanelShell, {
+          backend: createMockVisualBackend(),
+          configurationOpen: true,
+        }),
+      )}
     />
   {/snippet}
 </Story>

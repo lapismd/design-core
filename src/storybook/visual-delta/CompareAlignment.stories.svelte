@@ -117,6 +117,11 @@
       await expect(chip).toHaveTextContent("Baseline");
       expect(chip.parentElement).toBe(overlay);
       expect(isPreviewChipVisible(chip)).toBe(true);
+      const chipRect = chip.getBoundingClientRect();
+      const imageRect = within(overlay)
+        .getByText("Baseline PNG")
+        .getBoundingClientRect();
+      expect(chipRect.bottom).toBeLessThanOrEqual(imageRect.top);
       if (placement !== "center") {
         const pane = within(cell).getByTestId(
           `demo-baseline-pane-${placement}`,
@@ -128,5 +133,28 @@
 >
   {#snippet template()}
     <OverlayChipDemo />
+  {/snippet}
+</Story>
+
+<Story
+  name="Baseline chip project offsets"
+  play={async ({ canvas }) => {
+    const demo = await waitFor(() => canvas.getByTestId("overlay-chip-demo"));
+    const overlay = within(demo).getByTestId("demo-overlay-right");
+    const chip = within(overlay).getByTestId("baseline-overlay-chip");
+    const image = within(overlay).getByText("Baseline PNG");
+    await waitFor(() => {
+      expect(chip.getBoundingClientRect().bottom).toBeLessThanOrEqual(
+        image.getBoundingClientRect().top,
+      );
+    });
+    await expect(chip).toHaveStyle({ left: "12px" });
+  }}
+>
+  {#snippet template()}
+    <OverlayChipDemo
+      placements={["right"]}
+      baselineLabelOffset={{ x: 12, y: -4 }}
+    />
   {/snippet}
 </Story>
