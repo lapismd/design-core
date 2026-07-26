@@ -43,6 +43,11 @@ captures.
 
 Normal Visual Delta and test commands must never rewrite these assets.
 
+`pnpm workspace:visual:audit` is the read-only development gate for Workspace
+story classification and snapshot ownership. After candidate creation is
+approved, `pnpm workspace:visual:verify` additionally requires a candidate
+baseline for every non-skipped Workspace story.
+
 ## Styling adaptation
 
 The source shell used copied shadcn-svelte components and generated Tailwind

@@ -520,6 +520,29 @@ workflow.
 - Candidate creation or replacement remains paused for explicit human approval;
   no candidate baseline was written.
 
+### Visual and public-surface completion audits
+
+- Added read-only `workspace:visual:audit` and strict
+  `workspace:visual:verify` commands. The audit derives target snapshot paths
+  from the same nested-path helper used by Playwright, validates mutually
+  exclusive review tags, reports missing candidates, and rejects orphan
+  Workspace snapshots.
+- The current pre-approval matrix is explicit: 72 stories, 71
+  `visual-pending`, one `skip-visual`, zero candidate baselines, zero orphan
+  images, and zero contract errors.
+- `storybook:check` and `checks` now run the read-only audit after the production
+  Storybook build. The strict verifier is reserved for the post-approval
+  baseline gate.
+- The public export audit found and fixed four missing individually importable
+  subpaths: `workspace/about-dialog`, `workspace/command-palette`,
+  `workspace/demo`, and `workspace/popout`.
+- A package-manifest contract test now requires every top-level Workspace family
+  with an `index.ts` barrel to have a matching package subpath, and verifies the
+  two documented optional-plugin subpaths.
+- Focused audit and public-subpath unit execution: 2 files and 5 tests pass.
+- `pnpm workspace:visual:audit`: pass.
+- `pnpm check`: pass with zero Svelte errors or warnings.
+
 ## Completion gate
 
 The migration is complete only when:

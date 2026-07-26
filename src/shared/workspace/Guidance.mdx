@@ -23,7 +23,16 @@ import {
   AppShellController,
   WorkspaceView,
 } from "@stevejuma/ui/workspace";
+
+import { WorkspaceCommandPalette } from "@stevejuma/ui/workspace/command-palette";
+import { WorkspacePopoutSurface } from "@stevejuma/ui/workspace/popout";
+import { WorkspaceTabs } from "@stevejuma/ui/workspace/tabs";
 ```
+
+Every top-level Workspace component family with a public barrel has a matching
+package subpath. Optional plugins are available from
+`@stevejuma/ui/workspace/plugins/fmode` and
+`@stevejuma/ui/workspace/plugins/notifications`.
 
 ## Styling
 
@@ -35,4 +44,6 @@ utility strings to component props.
 
 The framework is being migrated from the standalone Lapis app-shell package.
 See `src/shared/workspace/PLAN.md` for the audited slice matrix and
-`src/shared/workspace/REFERENCE.md` for source provenance.
+`src/shared/workspace/REFERENCE.md` for source provenance. The implementation,
+interaction, and canonical-reference slices are complete; candidate Visual
+Delta baselines remain pending manual approval.
