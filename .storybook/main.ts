@@ -11,8 +11,6 @@ const config: StorybookConfig = {
   stories: [
     "../src/**/*.mdx",
     "../src/**/*.stories.@(js|jsx|ts|tsx|svelte)",
-    "../packages/tasks/src/**/*.mdx",
-    "../packages/tasks/src/**/*.stories.@(js|jsx|ts|tsx|svelte)",
   ],
   addons: [
     "@storybook/addon-docs",
@@ -55,10 +53,6 @@ const config: StorybookConfig = {
   ],
   // `/visual-baselines` comes from the Visual Delta preset `staticDirs`.
   staticDirs: [
-    {
-      from: "../packages/tasks/reference/superlist/2026-07-20",
-      to: "/tasks-reference/2026-07-20",
-    },
     // Upstream docs images (`/img/sidebar/…`) vendored with `pnpm ui docs:vendor`.
     {
       from: "../vendor/shadcn-svelte-docs/static",

@@ -1,7 +1,7 @@
 ---
 name: components
 command: ui components
-summary: List or show local component docs across shadcn, forms, AI, apps, and tasks.
+summary: List or show local component docs across shadcn, forms, filter, and AI.
 ---
 
 ## Usage
@@ -23,9 +23,8 @@ Inventories every package surface:
 | -------- | ----------------------------------------------- |
 | `shadcn` | `*.docs.md` + `*.example-sources.ts`            |
 | `forms`  | colocated `*.mdx` (+ variation story templates) |
+| `filter` | stories and filter guidance                     |
 | `ai`     | stories (+ AI overview)                         |
-| `apps`   | app stories under `src/apps/*`                  |
-| `tasks`  | `@stevejuma/tasks` component contracts          |
 
 Keys are `layer/id` (e.g. `shadcn/button`, `forms/form-field`). Bare ids work
 when unique; ambiguous names require the qualified key.
@@ -47,5 +46,5 @@ pnpm ui components
 pnpm ui components --layer forms
 pnpm ui components button
 pnpm ui components forms/form-field
-pnpm ui components tasks/task-row --json
+pnpm ui components filter/search-filter-bar --json
 ```

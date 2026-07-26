@@ -53,9 +53,9 @@ Forms use `--ui-form-*` (`formTokenNames` / `formTokenDefaults` /
 idea as shadcn `--ui-<family>-*` maps.
 
 Paint via colocated `ComponentName.css` — no Tailwind utilities in form
-sources (`pnpm check:no-tailwind` gates forms with apps, filter, AI, shadcn,
-and tasks). Each Docs page
-has a **Style** table of Token / Default for the subset that component reads.
+sources (`pnpm check:no-tailwind` gates forms, filter, AI, and shadcn). Each
+Docs page has a **Style** table of Token / Default for the subset that component
+reads.
 Stories may still use host Tailwind for demo layout.
 
 ## Before adding a form export

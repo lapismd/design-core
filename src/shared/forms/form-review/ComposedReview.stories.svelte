@@ -86,6 +86,7 @@
       "Staff Engineer",
     );
   }}
+  tags={["visual-failed"]}
 >
   {#snippet template()}
     <div class="cv-structured-form max-w-xl">

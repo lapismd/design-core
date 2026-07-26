@@ -13,10 +13,10 @@ For the form decision guide, see **UI Forms/Guidance**.
 ## When to use shadcn
 
 - Buttons, toggles, inputs, selects, dialogs, menus, layout chrome, feedback
-- Shared visual language and `--ui-<family>-*` tokens across apps
+- Shared visual language and `--ui-<family>-*` tokens across consumers
 - Controls composed inside forms (Select, Switch, Command + Popover, Field)
 
-## Customization (multi-app)
+## Customization
 
 Converted families paint from **CSS custom properties**, not Tailwind `cn()` /
 utility class merges (those were compile-time inputs to `ui:add`).
@@ -28,16 +28,15 @@ utility class merges (those were compile-time inputs to `ui:add`).
    `--ui-button-background` on a subtree to restyle primary buttons without
    changing `--primary` for the whole app. Import maps from
    `@stevejuma/ui/shadcn/<family>` or `@stevejuma/ui/shadcn/button/tokens`.
-3. **Do not** reintroduce Tailwind utility class strings into app or converted
-   component sources. `pnpm check:no-tailwind` (part of `pnpm checks`) enforces
-   this for Beancount, CV, and shadcn components. Prefer tokens / scoped CSS.
+3. **Do not** reintroduce Tailwind utility class strings into shared or
+   converted component sources. `pnpm check:no-tailwind` (part of
+   `pnpm checks`) enforces this. Prefer tokens and scoped CSS.
 
 Same override idea as forms (`--ui-form-*` / `form.tokens.css`).
 
 ## When not to use shadcn alone
 
 - Schema-shaped editing / label-value form rows → `@stevejuma/ui/forms`
-- App domain UI → `src/apps/cv` or `src/apps/beancount` (props + callbacks)
 - Shared AI panel chrome → `@stevejuma/ui/ai`
 
 ## Add or convert a family

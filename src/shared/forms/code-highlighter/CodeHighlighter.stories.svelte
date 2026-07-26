@@ -19,7 +19,7 @@
   });
 
   const jsonSource = `{
-  "ledger": "personal-2026.beancount",
+  "ledger": "personal-2026.ledger",
   "enabled": true,
   "sources": 3
 }`;
@@ -37,7 +37,7 @@ enabled: true`;
     const source = canvas.getByRole("region", {
       name: "Ledger source preview",
     });
-    await expect(source).toHaveTextContent("personal-2026.beancount");
+    await expect(source).toHaveTextContent("personal-2026.ledger");
     await expect(source).toHaveTextContent("enabled");
   }}
 >

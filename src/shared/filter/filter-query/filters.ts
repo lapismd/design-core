@@ -172,7 +172,7 @@ export abstract class AbstractFilterVisitor<T> implements FilterVisitor<T> {
       return this.visitBooleanFilter(filter, entity, context);
     }
     throw new Error(
-      `Unrecognized filter value (${filter}). This sometimes happens because multiple instances of @beancount-js/filter are loaded, breaking instanceof checks.`,
+      `Unrecognized filter value (${filter}). This can happen when multiple package instances are loaded, breaking instanceof checks.`,
     );
   }
 }

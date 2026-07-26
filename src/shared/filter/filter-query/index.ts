@@ -11,21 +11,13 @@ export {
 } from "./parser.js";
 export { parseQuery as parseFilterQuery } from "./parser.js";
 
-/** Lezer language for the Fava-inspired filter query syntax. */
+/** Lezer language for the structured filter query syntax. */
 export const filterQueryLanguage = LRLanguage.define({
   name: "filterQuery",
   parser,
 });
 
-/** @deprecated Prefer {@link filterQueryLanguage}. */
-export const beancountFilterLanguage = filterQueryLanguage;
-
 /** CodeMirror language support for filter-query editing. */
 export function filterQuery() {
   return new LanguageSupport(filterQueryLanguage);
-}
-
-/** @deprecated Prefer {@link filterQuery}. */
-export function beancountFilter() {
-  return filterQuery();
 }

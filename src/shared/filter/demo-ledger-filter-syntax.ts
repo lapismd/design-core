@@ -126,7 +126,7 @@ export function createDemoLedgerFilterSyntax(values?: {
       "Boolean: space/and/&& for AND; comma/or/|| for OR; -/not for NOT.",
       "Tags and links may also be written as #tag and ^link.",
       "Chip editor valueKind: text/enum/number/boolean/date; override with ValueEditor for custom controls (e.g. range).",
-      "any(...) / all(...) appear in Fava docs but are not in this JS grammar.",
+      "any(...) / all(...) are not implemented in this grammar.",
     ],
   };
 }

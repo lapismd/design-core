@@ -70,7 +70,7 @@ function ensureStylesImport(family: string): void {
   const importLine = `@import "./shared/shadcn/${family}/${family}.tokens.css";`;
   let styles = readFileSync(stylesCssPath, "utf8");
   if (styles.includes(importLine)) return;
-  // Insert after theme.css import (keep form/beancount after shadcn tokens or before)
+  // Insert after theme.css so family tokens precede layer-specific tokens.
   if (styles.includes('@import "./theme.css";')) {
     styles = styles.replace(
       '@import "./theme.css";',

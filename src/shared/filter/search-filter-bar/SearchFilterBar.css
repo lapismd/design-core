@@ -181,7 +181,7 @@
 }
 
 .cv-search-filter-bar__editor .cv-search-filter-bar__tok-number {
-  color: var(--ui-form-code-value, var(--cv-code-constant, #0f766e));
+  color: var(--ui-form-code-value, var(--cv-code-constant, #0e726a));
 }
 
 .cv-search-filter-bar__editor .cv-search-filter-bar__tok-tag,

@@ -4,7 +4,7 @@ import { Meta } from "@storybook/addon-docs/blocks";
 
 # Filter guidance
 
-Use `@stevejuma/ui/filter` for search chrome and the Fava-inspired filter-query
+Use `@stevejuma/ui/filter` for search chrome and the structured filter-query
 language. Forms still own labelled rows and option pickers
 (`FilterCommandPicker`); compose them with `SearchFilterBar` or `PowerSearch`
 when a list or sidebar needs facets plus structured filters.
@@ -117,10 +117,10 @@ built-in kind — supply `ValueEditor`.
 The bar only renders and completes this display model. Field catalogs and
 match/evaluation stay in the app.
 
-### Known gaps vs Fava Python docs
+### Known grammar gaps
 
-`any(...)` / `all(...)` are documented upstream for posting-level matches but
-are **not** implemented in the JS Lezer grammar shipped here.
+`any(...)` / `all(...)` posting-level matches are not implemented in the
+Lezer grammar shipped here.
 
 ## Stories
 

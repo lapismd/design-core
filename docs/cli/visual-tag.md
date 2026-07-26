@@ -58,8 +58,8 @@ pnpm ui visual:tag skip --story-id shadcn-button--default
 # Re-include a previously skipped component
 pnpm ui visual:tag include --component button
 
-# Bulk skip by story-id prefix (Apps/Beancount)
-pnpm ui visual:tag skip --prefix apps-beancount-
+# Bulk skip by story-id prefix
+pnpm ui visual:tag skip --prefix shadcn-actions-button-
 ```
 
 ## Notes

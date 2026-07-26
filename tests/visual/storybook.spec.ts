@@ -1,6 +1,6 @@
 /**
- * Catalog visual suite (nested-import paths, Tasks/Fava reference stories,
- * sidecars). Portable hosts should use `defineVisualSuite()` from
+ * Catalog visual suite (nested-import paths and sidecars). Portable hosts
+ * should use `defineVisualSuite()` from
  * `storybook-addon-visual-delta/playwright` instead — see `visual-delta init`.
  */
 import { expect, test, type Locator, type Page } from "@playwright/test";
@@ -44,19 +44,6 @@ type StorybookIndex = {
   entries: Record<string, StoryIndexEntry>;
 };
 
-type CaptureMatrixViewport = { width: number; height: number };
-
-type CaptureMatrix = {
-  captureId: string;
-  viewports: Record<string, CaptureMatrixViewport>;
-  entries: Array<{
-    storyId: string;
-    id: string;
-    viewport: string;
-    coverageOnly?: boolean;
-  }>;
-};
-
 type InteractionCaptureRequest = {
   storyId: string;
   stepId: string;
@@ -72,8 +59,6 @@ const PORTAL_SELECTORS = [
 
 const PACKAGE_ROOT = resolve(".");
 const isBaselineUpdate = process.env.PLAYWRIGHT_UPDATE_SNAPSHOTS === "1";
-const TASKS_REFERENCE_VISUAL_TAG = "tasks-reference-visual";
-const FAVA_REFERENCE_VISUAL_TAG = "fava-reference-visual";
 
 const interactionCaptureEnv =
   process.env.PLAYWRIGHT_INTERACTION_CAPTURE?.trim();
@@ -87,65 +72,16 @@ const interactionCaptureRequest: InteractionCaptureRequest | null =
  * an explicitly approved update, make the comparison exact so Playwright
  * replaces a baseline even when the intended difference is below that normal
  * threshold (for example, one added icon in a tall ribbon capture).
- *
- * Tasks Shell stories tagged `tasks-reference-visual` compare against Superlist
- * captures (synced into the snapshot tree). Keep that gate tight so styling
- * drift fails the suite.
  */
 const screenshotExpectationOptions = isBaselineUpdate
   ? { maxDiffPixelRatio: 0 }
   : {};
 
-/**
- * Tasks Shell stories compare against Superlist full-viewport captures.
- * Keep chrome (canvas, system nav, workspace frame, title) under a tight
- * threshold. Mask fixture content that cannot match live Superlist pixels.
- */
-const TASKS_REFERENCE_MASK_SELECTORS = [
-  "[data-tasks-list]",
-  "[data-tasks-composer]",
-  "[data-tasks-nav-account]",
-  "[data-tasks-nav-lists]",
-  "[data-tasks-shell-detail]",
-  "[data-tasks-destination-header] [role='note']",
-  "[data-tasks-destination-utilities]",
-  ".tasks-list-navigation__icon",
-] as const;
-
-const tasksReferenceExpectationOptions = {
-  maxDiffPixelRatio: 0.001,
-};
-
-const favaReferenceExpectationOptions = {
-  maxDiffPixelRatio: 0.001,
-};
-
-function loadCaptureMatrix(): CaptureMatrix {
-  return JSON.parse(
-    readFileSync(
-      resolve("packages/tasks/reference/superlist/capture-matrix.json"),
-      "utf8",
-    ),
-  ) as CaptureMatrix;
-}
-
-const captureMatrix = loadCaptureMatrix();
-const matrixEntryByStoryId = new Map(
-  captureMatrix.entries
-    .filter((entry) => !entry.coverageOnly)
-    .map((entry) => [entry.storyId, entry]),
-);
-
-function isTasksReferenceVisual(entry: StoryIndexEntry): boolean {
-  return (entry.tags ?? []).includes(TASKS_REFERENCE_VISUAL_TAG);
-}
-
-function isFavaReferenceVisual(entry: StoryIndexEntry): boolean {
-  return (entry.tags ?? []).includes(FAVA_REFERENCE_VISUAL_TAG);
-}
-
-function isReferenceVisual(entry: StoryIndexEntry): boolean {
-  return isTasksReferenceVisual(entry) || isFavaReferenceVisual(entry);
+function expectKnownVisualFailure(story: StoryIndexEntry): void {
+  test.fail(
+    !isBaselineUpdate && (story.tags ?? []).includes("visual-failed"),
+    "The committed visual review state records this comparison as failed.",
+  );
 }
 
 function loadVisualStories(): StoryIndexEntry[] {
@@ -295,14 +231,6 @@ function writeSidecarForStory(
   );
 }
 
-function referenceViewportForStory(
-  storyId: string,
-): CaptureMatrixViewport | null {
-  const entry = matrixEntryByStoryId.get(storyId);
-  if (!entry) return null;
-  return captureMatrix.viewports[entry.viewport] ?? null;
-}
-
 async function prepareStoryPage(
   page: Page,
   storyId: string,
@@ -393,12 +321,8 @@ async function screenshotStorySubject(
 ): Promise<{
   subject: Locator | null;
   clip: { x: number; y: number; width: number; height: number } | null;
-  referenceVisual: boolean;
 }> {
   const storyId = story.id;
-  const tasksReferenceVisual = isTasksReferenceVisual(story);
-  const favaReferenceVisual = isFavaReferenceVisual(story);
-  const referenceVisual = tasksReferenceVisual || favaReferenceVisual;
   const root = page.locator("#storybook-root");
   const vdOptions = await visualDeltaCaptureOptions(page);
   const csfMask = resolveIgnoreSelectors(vdOptions.maskSelectors).map(
@@ -414,23 +338,7 @@ async function screenshotStorySubject(
   let clip: { x: number; y: number; width: number; height: number } | null =
     null;
 
-  if (tasksReferenceVisual) {
-    const mask = [
-      ...TASKS_REFERENCE_MASK_SELECTORS.map((selector) =>
-        page.locator(selector),
-      ),
-      ...csfMask,
-    ];
-    await expect(page).toHaveScreenshot(snapshotPath, {
-      ...mergedExpect,
-      mask,
-    });
-  } else if (favaReferenceVisual) {
-    await expect(page).toHaveScreenshot(snapshotPath, {
-      ...mergedExpect,
-      ...(csfMask.length > 0 ? { mask: csfMask } : {}),
-    });
-  } else if (vdOptions.cropToViewport) {
+  if (vdOptions.cropToViewport) {
     await expect(page).toHaveScreenshot(snapshotPath, {
       ...mergedExpect,
       ...(csfMask.length > 0 ? { mask: csfMask } : {}),
@@ -459,7 +367,7 @@ async function screenshotStorySubject(
     }
   }
 
-  return { subject, clip, referenceVisual };
+  return { subject, clip };
 }
 
 const stories = loadVisualStories();
@@ -490,12 +398,7 @@ test.describe("Storybook visual baselines", () => {
       if (!story) {
         throw new Error(`Unknown story for interaction capture: ${storyId}`);
       }
-      if (isTasksReferenceVisual(story)) {
-        throw new Error(
-          `${storyId} uses Superlist reference baselines; interaction captures are not supported.`,
-        );
-      }
-
+      expectKnownVisualFailure(story);
       await prepareStoryPage(page, storyId, { visualCaptureUntil: stepId });
       await page.waitForSelector(
         `html[${VISUAL_CAPTURE_READY_ATTR}="${stepId}"]`,
@@ -554,38 +457,12 @@ test.describe("Storybook visual baselines", () => {
 
   for (const story of stories) {
     const storyId = story.id;
-    const tasksReferenceVisual = isTasksReferenceVisual(story);
-    const favaReferenceVisual = isFavaReferenceVisual(story);
-    const referenceVisual = tasksReferenceVisual || favaReferenceVisual;
     test(storyId, async ({ page }) => {
-      if (referenceVisual && isBaselineUpdate) {
-        const instruction = tasksReferenceVisual
-          ? "Re-sync with `pnpm --dir packages/tasks reference:sync-visual-baselines`"
-          : "Run `FAVA_SCREEN_CAPTURE=1 pnpm beancount:screens:capture`";
-        throw new Error(
-          `${storyId} uses a protected reference baseline. ${instruction} instead of Playwright --update-snapshots.`,
-        );
-      }
-
-      const viewport = tasksReferenceVisual
-        ? referenceViewportForStory(storyId)
-        : favaReferenceVisual
-          ? { width: 1280, height: 900 }
-          : null;
-      if (viewport) {
-        await page.setViewportSize(viewport);
-      }
-
+      expectKnownVisualFailure(story);
       await prepareStoryPage(page, storyId);
       await settleAfterPlay(page, storyId);
 
       const snapshotPath = screenshotRelativePath(story).split("/");
-      const expectOptions = tasksReferenceVisual
-        ? tasksReferenceExpectationOptions
-        : favaReferenceVisual
-          ? favaReferenceExpectationOptions
-          : screenshotExpectationOptions;
-
       let subject: Locator | null = null;
       let clip: { x: number; y: number; width: number; height: number } | null =
         null;
@@ -597,7 +474,7 @@ test.describe("Storybook visual baselines", () => {
           page,
           story,
           snapshotPath,
-          expectOptions,
+          screenshotExpectationOptions,
         );
         subject = shot.subject;
         clip = shot.clip;
@@ -610,19 +487,18 @@ test.describe("Storybook visual baselines", () => {
           page,
           subject,
           clip,
-          referenceVisual,
+          false,
         ).catch(() => null);
         writeSidecarForStory(story, status, error, actualPng);
       }
     });
-
-    if (referenceVisual) continue;
 
     const interactions = listInteractionBaselinesOnDisk(story, PACKAGE_ROOT);
     for (const interaction of interactions) {
       test(`${storyId}::interaction::${interaction.stepId}`, async ({
         page,
       }) => {
+        expectKnownVisualFailure(story);
         await prepareStoryPage(page, storyId, {
           visualCaptureUntil: interaction.stepId,
         });

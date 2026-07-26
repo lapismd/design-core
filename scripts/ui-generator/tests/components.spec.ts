@@ -25,7 +25,7 @@ describe("ui components", () => {
     expect(layers.has("forms")).toBe(true);
     expect(layers.has("filter")).toBe(true);
     expect(layers.has("ai")).toBe(true);
-    expect(layers.has("tasks")).toBe(true);
+    expect(layers).toEqual(new Set(["shadcn", "forms", "filter", "ai"]));
 
     const searchFilter = list.find((c) => c.key === "filter/search-filter-bar");
     expect(searchFilter).toBeDefined();
@@ -103,7 +103,7 @@ Hello
     expect(doc.key).toBe("shadcn/button");
     expect(doc.layer).toBe("shadcn");
     expect(doc.title).toBe("Button");
-    expect(doc.body).toMatch(/## \[Usage\]/);
+    expect(doc.body).toMatch(/## (?:\[Usage\]|Usage)/);
     expect(doc.body).toContain("```svelte");
     expect(doc.examples.length).toBeGreaterThan(0);
 
@@ -125,18 +125,6 @@ Hello
     expect(ai.layer).toBe("ai");
     expect(ai.import).toBe("@stevejuma/ui/ai");
     expect(ai.body).toContain("Import");
-  });
-
-  it("shows Tasks implementation contracts from package-local specs", () => {
-    const taskRow = getComponent(packageRoot, "tasks/task-row");
-    expect(taskRow.layer).toBe("tasks");
-    expect(taskRow.import).toBe("@stevejuma/tasks");
-    expect(taskRow.body).toContain("separate completion and open targets");
-    expect(
-      taskRow.sources.some((source) =>
-        source.endsWith("specs/components/task-row.md"),
-      ),
-    ).toBe(true);
   });
 
   it("runComponents switches between index and show", () => {

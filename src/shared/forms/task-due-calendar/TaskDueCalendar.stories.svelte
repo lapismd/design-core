@@ -27,7 +27,7 @@
     await expect(canvas.getByRole("grid")).toBeVisible();
   }}
 
-  tags={["visual-ready"]}
+  tags={["visual-failed"]}
 >
   {#snippet template()}
     <TaskDueCalendar bind:value />

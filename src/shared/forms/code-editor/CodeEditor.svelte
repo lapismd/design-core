@@ -176,7 +176,7 @@
           },
           {
             tag: [tags.atom, tags.bool, tags.number],
-            color: "var(--cv-code-constant, #0f766e)",
+            color: "var(--cv-code-constant, #0e726a)",
           },
           {
             tag: [tags.string, tags.special(tags.string)],

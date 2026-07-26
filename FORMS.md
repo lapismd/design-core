@@ -119,15 +119,6 @@ Search chrome and filter-query language live in `@stevejuma/ui/filter`
 **UI Forms/Form Inputs/Search Filter in a Form**); do not treat the bar as a
 forms primitive.
 
-## App-specific form work
-
-Custom `*FormField.svelte` renderers and CV/beancount domain editors belong under
-`src/apps/cv` or `src/apps/beancount`, not in shared forms.
-
-The living CV form composition is **`CvWorkspaceForm`** (`Apps/CV/CV Form`): five
-tabs (CV / Evidence / Design / Locale / Settings), section editors, YAML mode,
-and prop-driven fixtures — no host app store.
-
 ## Storybook
 
 `UI Forms/Guidance` is the high-level decision guide. Each form component has a

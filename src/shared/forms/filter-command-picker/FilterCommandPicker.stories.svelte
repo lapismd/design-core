@@ -123,11 +123,9 @@
     );
     const page = within(canvasElement.ownerDocument.body);
     const query = page.getByPlaceholderText("Filter environment variable...");
-    await userEvent.type(query, "BEANCOUNT_FILE");
-    await userEvent.click(page.getByRole("option", { name: /BEANCOUNT_FILE/ }));
-    await expect(canvas.getByRole("status")).toHaveTextContent(
-      "BEANCOUNT_FILE",
-    );
+    await userEvent.type(query, "CONFIG_FILE");
+    await userEvent.click(page.getByRole("option", { name: /CONFIG_FILE/ }));
+    await expect(canvas.getByRole("status")).toHaveTextContent("CONFIG_FILE");
   }}
 >
   {#snippet template()}

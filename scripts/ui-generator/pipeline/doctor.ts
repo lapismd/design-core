@@ -16,7 +16,6 @@ export async function runDoctor(
 
   const requiredPaths = [
     config.sharedRoot,
-    config.appsRoot,
     config.storybook.configDir,
     config.visual.snapshotDir,
     config.shadcn.intakeFixture,

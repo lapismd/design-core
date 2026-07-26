@@ -10,13 +10,7 @@ import {
   getRecipe,
 } from "../recipes/index.js";
 
-export type ComponentLayer =
-  | "shadcn"
-  | "forms"
-  | "filter"
-  | "ai"
-  | "apps"
-  | "tasks";
+export type ComponentLayer = "shadcn" | "forms" | "filter" | "ai";
 
 export type ComponentExample = {
   id: string;
@@ -66,14 +60,7 @@ export type ComponentsOptions = {
   layer?: ComponentLayer;
 };
 
-const LAYERS: ComponentLayer[] = [
-  "shadcn",
-  "forms",
-  "filter",
-  "ai",
-  "apps",
-  "tasks",
-];
+const LAYERS: ComponentLayer[] = ["shadcn", "forms", "filter", "ai"];
 
 const FORMS_SKIP_DIRS = new Set(["core"]);
 const FILTER_SKIP_DIRS = new Set(["filter-query"]);
@@ -194,18 +181,34 @@ export function getCatalogEntry(
  */
 export function parseExampleSources(raw: string): Map<string, string> {
   const out = new Map<string, string>();
-  const re = /export const (\w+)\s*=\s*"((?:\\.|[^"\\])*)"\s*;?/g;
+  const re =
+    /export const (\w+)\s*=\s*("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')\s*;?/g;
   let match: RegExpExecArray | null;
   while ((match = re.exec(raw)) !== null) {
+    const literal = match[2]!;
     try {
-      out.set(match[1]!, JSON.parse(`"${match[2]!}"`) as string);
+      if (literal.startsWith('"')) {
+        out.set(match[1]!, JSON.parse(literal) as string);
+        continue;
+      }
+      out.set(
+        match[1]!,
+        literal
+          .slice(1, -1)
+          .replace(/\\n/g, "\n")
+          .replace(/\\t/g, "\t")
+          .replace(/\\'/g, "'")
+          .replace(/\\\\/g, "\\"),
+      );
     } catch {
       out.set(
         match[1]!,
-        match[2]!
+        literal
+          .slice(1, -1)
           .replace(/\\n/g, "\n")
           .replace(/\\t/g, "\t")
           .replace(/\\"/g, '"')
+          .replace(/\\'/g, "'")
           .replace(/\\\\/g, "\\"),
       );
     }
@@ -493,7 +496,7 @@ function composeFromStories(
 function listDirs(abs: string): string[] {
   if (!existsSync(abs)) return [];
   return readdirSync(abs, { withFileTypes: true })
-    .filter((e) => e.isDirectory())
+    .filter((e) => e.isDirectory() && !e.name.startsWith("."))
     .map((e) => e.name)
     .sort();
 }
@@ -529,6 +532,13 @@ function collectForms(packageRoot: string): CatalogEntry[] {
   const root = path.join(packageRoot, "src", "shared", "forms");
   return listDirs(root)
     .filter((id) => !FORMS_SKIP_DIRS.has(id))
+    .filter((id) => {
+      const dir = path.join(root, id);
+      return (
+        listFiles(dir, ".svelte").length > 0 ||
+        listFiles(dir, ".mdx").length > 0
+      );
+    })
     .map((id) => {
       const dir = path.join(root, id);
       const mdx = listFiles(dir, ".mdx");
@@ -603,81 +613,12 @@ function collectAi(packageRoot: string): CatalogEntry[] {
   });
 }
 
-function collectApps(packageRoot: string): CatalogEntry[] {
-  const root = path.join(packageRoot, "src", "apps");
-  if (!existsSync(root)) return [];
-  const entries: CatalogEntry[] = [];
-  for (const app of listDirs(root)) {
-    const appDir = path.join(root, app);
-    const walk = (abs: string) => {
-      for (const name of readdirSync(abs)) {
-        const full = path.join(abs, name);
-        if (statSync(full).isDirectory()) {
-          walk(full);
-          continue;
-        }
-        if (!name.endsWith(".stories.svelte")) continue;
-        const base = name.replace(/\.stories\.svelte$/, "");
-        const id = `${app}-${kebabFromPascal(base)}`;
-        entries.push({
-          layer: "apps",
-          id,
-          dir: abs,
-          importPath: `@stevejuma/ui/apps/${app}`,
-          docsCandidates: [],
-          storyPaths: [full],
-        });
-      }
-    };
-    walk(appDir);
-  }
-  return entries.sort((a, b) => a.id.localeCompare(b.id));
-}
-
-/**
- * Tasks component contracts remain canonical Markdown so capture verification
- * and the offline agent catalog can consume them. Storybook renders each file
- * directly in Tasks/Component Specs and pairs it with an implementation brief.
- */
-function collectTasksPackage(packageRoot: string): CatalogEntry[] {
-  const dir = path.join(
-    packageRoot,
-    "packages",
-    "tasks",
-    "specs",
-    "components",
-  );
-  if (!existsSync(dir)) return [];
-  const storyPath = path.join(
-    packageRoot,
-    "packages",
-    "tasks",
-    "src",
-    "TasksComponents.stories.svelte",
-  );
-  return listFiles(dir, ".md")
-    .map((full) => {
-      const id = path.basename(full, ".md");
-      return {
-        layer: "tasks" as const,
-        id,
-        dir,
-        importPath: "@stevejuma/tasks",
-        docsCandidates: [full],
-        storyPaths: existsSync(storyPath) ? [storyPath] : [],
-      };
-    })
-    .sort((a, b) => a.id.localeCompare(b.id));
-}
-
 export function collectCatalog(packageRoot: string): CatalogEntry[] {
   return [
     ...collectShadcn(packageRoot),
     ...collectForms(packageRoot),
     ...collectFilter(packageRoot),
     ...collectAi(packageRoot),
-    ...collectApps(packageRoot),
-    ...collectTasksPackage(packageRoot),
   ];
 }
 
@@ -707,11 +648,7 @@ function summarizeEntry(
         readFileSync(entry.exampleSourcesPath, "utf8"),
       ).size;
     }
-  } else if (
-    entry.layer === "forms" ||
-    entry.layer === "filter" ||
-    entry.layer === "tasks"
-  ) {
+  } else if (entry.layer === "forms" || entry.layer === "filter") {
     const mdx = entry.docsCandidates[0];
     if (mdx) {
       const converted = mdxToAgentMarkdown(readFileSync(mdx, "utf8"));
@@ -1036,11 +973,7 @@ export function getComponent(
 ): ComponentDoc {
   const entry = findEntry(packageRoot, name, options);
   if (entry.layer === "shadcn") return showShadcn(packageRoot, entry);
-  if (
-    entry.layer === "forms" ||
-    entry.layer === "filter" ||
-    entry.layer === "tasks"
-  ) {
+  if (entry.layer === "forms" || entry.layer === "filter") {
     return showForms(packageRoot, entry);
   }
   return showStoryDriven(packageRoot, entry);

@@ -40,8 +40,8 @@ describe("svelte props extractor", () => {
     expect(docgen!.props.label).toMatchObject({ required: true });
     expect(docgen!.props.align).toMatchObject({
       required: false,
-      defaultValue: { value: '"start"', computed: false },
-      tsType: { name: '"start" | "center"' },
+      defaultValue: { value: '"middle"', computed: false },
+      tsType: { name: '"start" | "center" | "middle"' },
     });
     expect(docgen!.props.as?.defaultValue?.value).toBe('"label"');
     expect(docgen!.props.children?.tsType.name).toMatch(/Snippet/);

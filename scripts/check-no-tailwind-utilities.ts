@@ -1,27 +1,23 @@
 /**
  * Fail if Tailwind utility class strings appear in native-CSS surfaces.
  *
- * Default roots: apps + shared UI layers (forms, filter, AI, shadcn) + tasks.
+ * Default roots: shared UI layers (forms, filter, AI, shadcn).
  * Storybook story wrappers still use host Tailwind for layout demos and are
  * excluded (`*.stories.svelte`, `*.variations.stories.svelte`, `examples/`).
  *
  * Usage:
  *   pnpm check:no-tailwind
- *   pnpm check:no-tailwind src/apps/cv
- *   pnpm beancount:tailwind:check
+ *   pnpm check:no-tailwind src/shared/forms
  */
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { relative, resolve } from "node:path";
 import { findTailwindUtilitiesInSource } from "./lib/no-tailwind-utilities.js";
 
 const DEFAULT_ROOTS = [
-  "src/apps/beancount",
-  "src/apps/cv",
   "src/shared/ai",
   "src/shared/filter",
   "src/shared/forms",
   "src/shared/shadcn",
-  "packages/tasks",
 ] as const;
 
 const requested = process.argv.slice(2);

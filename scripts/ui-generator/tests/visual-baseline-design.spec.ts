@@ -22,16 +22,16 @@ describe("visual-baseline-design", () => {
     );
   });
 
-  it("maps Tasks stories to their package-local baseline directory", () => {
+  it("maps Workspace stories to their package-local baseline directory", () => {
     expect(
       baselineUrlForStory({
-        title: "Tasks/Components/Task Row",
-        id: "tasks-components-task-row--default",
+        title: "Workspace/Tabs",
+        id: "workspace-tabs--default",
         importPath:
-          "packages/tasks/src/components/task-row/TaskRow.stories.svelte",
+          "packages/workspace/src/lib/tabs/WorkspaceTabs.stories.svelte",
       }),
     ).toBe(
-      `/visual-baselines/tasks/components/task-row/default${VISUAL_BASELINE_SUFFIX}.png`,
+      `/visual-baselines/workspace/tabs/default${VISUAL_BASELINE_SUFFIX}.png`,
     );
   });
 
@@ -130,31 +130,31 @@ describe("visual-baseline-design", () => {
     expect(out).toContain("play={async ({ canvas }) => {");
   });
 
-  it("injects package-local visual baselines when screenshots exist", () => {
+  it("injects workspace visual baselines when screenshots exist", () => {
     const source = `
 <script module lang="ts">
-  const { Story } = defineMeta({ title: "Tasks/Components/Task Row" });
+  const { Story } = defineMeta({ title: "Workspace/Tabs" });
 </script>
 <Story name="Default">{#snippet template()}ok{/snippet}</Story>`;
     const out = injectVisualBaselineVisualDeltas(
       source,
-      "tasks/components/task-row",
+      "workspace/tabs",
       () => true,
     );
     expect(out).toContain(
-      `"images":["/visual-baselines/tasks/components/task-row/default${VISUAL_BASELINE_SUFFIX}.png"]`,
+      `"images":["/visual-baselines/workspace/tabs/default${VISUAL_BASELINE_SUFFIX}.png"]`,
     );
   });
 
   it("does not inject package-local visual baselines for missing committed screenshots", () => {
     const source = `
 <script module lang="ts">
-  const { Story } = defineMeta({ title: "Tasks/Components/Task Row" });
+  const { Story } = defineMeta({ title: "Workspace/Tabs" });
 </script>
 <Story name="Missing shot">{#snippet template()}ok{/snippet}</Story>`;
     const out = injectVisualBaselineVisualDeltas(
       source,
-      "tasks/components/task-row",
+      "workspace/tabs",
       () => false,
     );
     expect(out).not.toContain("visualDelta:");

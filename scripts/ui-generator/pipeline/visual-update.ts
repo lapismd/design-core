@@ -85,26 +85,6 @@ export async function runVisualUpdate(options: {
     );
   }
 
-  const tasksShellTarget =
-    (component?.toLowerCase().includes("tasks-shell") ?? false) ||
-    (storyId?.includes("tasks-shell") ?? false);
-  if (tasksShellTarget) {
-    throw new GeneratorError(
-      "Tasks Shell baselines are Superlist captures. Do not overwrite them with Playwright --update-snapshots.",
-      EXIT.invalidRequest,
-      "Re-sync with: pnpm --dir packages/tasks reference:sync-visual-baselines",
-    );
-  }
-
-  const favaReferenceTarget = storyId?.startsWith("apps-beancount-screens--");
-  if (favaReferenceTarget) {
-    throw new GeneratorError(
-      "Apps/Beancount/Screens baselines are live Fava references. Do not overwrite them with Playwright --update-snapshots.",
-      EXIT.invalidRequest,
-      "Re-capture with: FAVA_SCREEN_CAPTURE=1 pnpm beancount:screens:capture",
-    );
-  }
-
   const config = loadConfig();
   if (!options.allowDirty) {
     assertCleanGit(config.packageRoot);

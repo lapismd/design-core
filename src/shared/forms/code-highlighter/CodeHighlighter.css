@@ -30,7 +30,7 @@
 }
 
 [data-ui-part="code-highlighter-pre"] .ui-form-code-value {
-  color: var(--ui-form-code-value, #0f766e);
+  color: var(--ui-form-code-value, #0e726a);
 }
 
 [data-ui-part="code-highlighter-pre"] .ui-form-code-function {

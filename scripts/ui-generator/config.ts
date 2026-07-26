@@ -6,7 +6,6 @@ import { GeneratorError, EXIT } from "./errors.js";
 const configSchema = z.object({
   packageRoot: z.string(),
   sharedRoot: z.string(),
-  appsRoot: z.string(),
   componentPrefix: z.string(),
   componentAttribute: z.string(),
   partAttribute: z.string(),

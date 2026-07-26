@@ -4,8 +4,8 @@ import { Meta } from "@storybook/addon-docs/blocks";
 
 # `@stevejuma/ui`
 
-Shared Storybook catalog for shadcn primitives, structured forms, and
-app-specific components used by CV Studio and beancount-js-studio.
+Shared Storybook catalog for shadcn primitives, structured forms, filter
+controls, and AI presentation.
 
 Agent conventions: run `pnpm ui guide` from the package root (JSON:
 `pnpm ui guide <topic> --json`). Decision pages: **Shadcn/Guidance**,
@@ -16,7 +16,8 @@ Agent conventions: run `pnpm ui guide` from the package root (JSON:
 1. **Shadcn** — generic primitives under `src/shared/shadcn`
 2. **Forms** — config-driven form engine and field controls under `src/shared/forms`
 3. **Filter** — search chrome and filter-query language under `src/shared/filter`
-4. **App folders** — `src/apps/cv` and `src/apps/beancount` for domain UI
+4. **AI** — reusable assistant presentation under `src/shared/ai`
 
 Import shared primitives from `@stevejuma/ui/shadcn/<family>`, forms from
-`@stevejuma/ui/forms`, and search/filter from `@stevejuma/ui/filter`.
+`@stevejuma/ui/forms`, search/filter from `@stevejuma/ui/filter`, and AI
+presentation from `@stevejuma/ui/ai`.

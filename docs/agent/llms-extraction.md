@@ -14,8 +14,7 @@ Agents should use:
 
 1. `pnpm ui guide` / `pnpm ui guide <topic> [--json]` for conventions
 2. `pnpm ui components` / `pnpm ui components <layer/id> [--json]` for local
-   usage and examples across shadcn (`*.docs.md`), forms (MDX), AI, apps, and
-   tasks
+   usage and examples across shadcn (`*.docs.md`), forms (MDX), filter, and AI
 3. Storybook MCP when the catalog is running for interactive docs and tests
 4. Colocated stories, MDX guidance pages, and `ui:docs` artifacts
 
@@ -37,7 +36,7 @@ Do **not** vendor it into `packages/`.
 
 ## Possible later work
 
-If agents need offline per-component dumps beyond shadcn (forms, apps) without a
+If agents need offline per-component dumps beyond shadcn without a
 running Storybook, prefer a **thin source indexer** over the Playwright build
 extractor:
 

@@ -65,24 +65,6 @@ Committed under `tests/visual/storybook.spec.ts-snapshots/`.
   still rebuilds when the build gate says reuse is unsafe.
 - v1 suite: light mode only, Chromium 1280×900 CSS viewport, deviceScaleFactor 3.
 
-## Fava screen baselines (`Apps/Beancount/Screens`)
-
-Live Fava captures for catalog alignment (not Superlist-style dated refs):
-
-```bash
-FAVA_SCREEN_CAPTURE=1 pnpm beancount:screens:capture
-pnpm beancount:screens:verify
-```
-
-- Matrix + harness: `scripts/beancount-screens/`
-- Writes PNGs **directly** to
-  `tests/visual/storybook.spec.ts-snapshots/apps/beancount/screens/`
-- Stories: `Apps/Beancount/Screens` (tag `fava-reference-visual`, currently
-  `skip-visual` until compositions match). Visual Delta uses `/visual-baselines/...`.
-- Point at studio with `BEANCOUNT_JS_STUDIO_ROOT` (default sibling
-  `../code/beancount-js-studio`).
-- Never refresh these PNGs with `test:visual:update`.
-
 ## Storybook MCP (when catalog is up)
 
 - `get-storybook-story-instructions` before writing/editing stories or UI look

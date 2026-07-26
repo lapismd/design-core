@@ -49,12 +49,11 @@ describe("parseListReporterProgress", () => {
 
   it("parses suite titles with multiple › separators", () => {
     const chunk =
-      "  ✘    3 [chromium] › tests/visual/storybook.spec.ts:573:5 › Storybook visual baselines › apps-beancount-charts-bar-chart--explains-absent-bar-data (1.7s)";
+      "  ✘    3 [chromium] › tests/visual/storybook.spec.ts:573:5 › Storybook visual baselines › shadcn-actions-button--default (1.7s)";
     expect(parseListReporterProgress(chunk)).toEqual([
       {
         index: 3,
-        storyId:
-          "apps-beancount-charts-bar-chart--explains-absent-bar-data",
+        storyId: "shadcn-actions-button--default",
         status: "failed",
       },
     ]);

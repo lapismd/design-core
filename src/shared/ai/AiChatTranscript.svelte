@@ -101,7 +101,7 @@
     background: color-mix(in oklab, var(--destructive) 10%, transparent);
     padding: 0.5rem 0.75rem;
     font-size: 0.875rem;
-    color: var(--destructive);
+    color: color-mix(in oklab, var(--destructive) 92%, black);
   }
 
   :global([data-ui-component="ai-chat-transcript"] [data-ui-part="empty"]) {

@@ -10,14 +10,14 @@ Before inventing workflows, load package conventions offline via the CLI:
 
 1. `pnpm ui guide` — topic index and reading order
 2. [`styles.md`](./styles.md) — native CSS, tokens, no Tailwind in sources
-3. `pnpm ui guide layers` — shadcn vs forms vs filter vs apps vs tasks
+3. `pnpm ui guide layers` — shadcn vs forms vs filter vs AI
 4. `pnpm ui guide shadcn` — `ui:add` / inspect / docs sync (never raw shadcn CLI)
 5. `pnpm ui guide forms` — structured forms vs shadcn controls
 6. `pnpm ui guide testing` — stories, checks, and visual baselines after a change
 7. `pnpm ui guide vcs` — commit after each verified change (prefer `jj` when available)
 8. `pnpm ui components` / `pnpm ui components <layer/id>` — list or show local
-   usage and examples across shadcn, forms, filter, AI, apps, and
-   `@stevejuma/tasks` (filter with `--layer`)
+   usage and examples across shadcn, forms, filter, and AI (filter with
+   `--layer`)
 
 Use `--json` for machine-readable output (`pnpm ui guide testing --json`,
 `pnpm ui components button --json`). Aliases: `pnpm ui:guide`,
@@ -76,21 +76,16 @@ full-repo static `llms.txt` notes: `pnpm ui guide llms-extraction`.
   reusable form primitives back to it.
 - `Shadcn/Guidance` is the catalog's shadcn add/convert decision guide. Link
   new or converted families back to it.
-- Before adding a visual form export, classify it in `COMPONENT_AUDIT.md` as a
-  shared primitive, app-specific component, or deferred item.
+- Before adding a visual export, classify it in `COMPONENT_AUDIT.md` as a
+  shared primitive or deferred item.
 - `Shadcn/` is the UI-owned shadcn-svelte catalog. Source and stories live in
   `src/shared/shadcn`. Import a family from `@stevejuma/ui/shadcn/<family>`.
 - Shared forms live under `src/shared/forms/<family>/`. Import from
   `@stevejuma/ui/forms` or `@stevejuma/ui/forms/core`.
 - Search filter chrome and filter-query language live under
   `src/shared/filter/`. Import from `@stevejuma/ui/filter`.
-- App-specific components belong under `src/apps/cv` or `src/apps/beancount`.
-  They must receive props and callbacks rather than importing application
-  routers or host app context. Story titles for those surfaces: `Apps/CV/...`
-  and `Apps/Beancount/...`.
-- `@stevejuma/tasks` is a clean-room reference/spec package until an implementation
-  slice adds Stories. Follow `pnpm ui guide tasks`; use synthetic fixtures and
-  retain only sanitised capture evidence.
+- Shared AI presentation lives under `src/shared/ai/`. Import it from
+  `@stevejuma/ui/ai`.
 - Interactive examples must be genuinely interactive. Play functions must
   exercise the real control flow and assert a visible or accessible result as
   well as any callback.
@@ -154,9 +149,9 @@ Local Playwright screenshots live under
   the workspace `storybook-addon-visual-delta` package
   (`packages/storybook-addon-visual-delta/src`; see `VENDOR.md`). A Vite inject
   wires `parameters.visualDelta` for catalog stories that are not
-  `skip-visual` when a matching PNG exists under the snapshot dir (Shadcn,
-  UI Forms, Apps, and Tasks title/path rules — see README Visual Delta
-  setup). Open the **Visual Delta** panel for overlay / heatmap;
+  `skip-visual` when a matching PNG exists under the snapshot dir (Shadcn and
+  UI Forms title/path rules — see README Visual Delta setup). Open the
+  **Visual Delta** panel for overlay / heatmap;
   the first baseline auto-selects and pins to the story subject (component
   clip). Device-scale PNGs are displayed at CSS size in the overlay.
 - In Storybook dev, the testing module includes a **Visual tests** target that

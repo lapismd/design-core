@@ -7,7 +7,7 @@ describe("normalizeStoryIdPrefix", () => {
   });
 
   it("keeps trailing - groups as-is when already hyphen-terminated", () => {
-    expect(normalizeStoryIdPrefix("apps-beancount-")).toBe("apps-beancount-");
+    expect(normalizeStoryIdPrefix("shadcn-actions-")).toBe("shadcn-actions-");
   });
 
   it("derives prefix from a full story id", () => {

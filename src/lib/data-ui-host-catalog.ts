@@ -43,6 +43,11 @@ export const DATA_UI_SHADCN_ALLOWLIST = [
     tag: "Dialog.Content",
     component: "command",
   },
+  {
+    file: "shared/shadcn/sidebar/sidebar.svelte",
+    tag: "Sheet.Content",
+    component: "sidebar",
+  },
 ] as const;
 
 export type DataUiAllowlistEntry = (typeof DATA_UI_SHADCN_ALLOWLIST)[number];

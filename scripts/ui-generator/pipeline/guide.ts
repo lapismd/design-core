@@ -179,7 +179,7 @@ export function getGuideIndex(packageRoot: string): GuideIndex {
     summary:
       "Offline conventions for agents and humans. Prefer these topics before inventing workflows. When Storybook is running, use the Storybook MCP for interactive catalog work.",
     readingOrder: [
-      "pnpm ui guide layers — choose shadcn vs forms vs apps vs tasks",
+      "pnpm ui guide layers — choose shadcn vs forms vs filter vs AI",
       "pnpm ui guide shadcn — add/convert components via ui:add (never raw shadcn CLI)",
       "pnpm ui guide forms — structured forms vs shadcn controls",
       "pnpm ui guide testing — stories, checks, and visual baselines after a change",
@@ -188,7 +188,7 @@ export function getGuideIndex(packageRoot: string): GuideIndex {
     topics,
     related: [
       "AGENTS.md — primary agent contract (Storybook + visuals)",
-      "pnpm ui components — list/show local usage across shadcn/forms/AI/apps/tasks",
+      "pnpm ui components — list/show local usage across shadcn/forms/filter/AI",
       "Storybook MCP — get-storybook-story-instructions / preview-stories / run-story-tests",
       "UI Forms/Guidance and Shadcn/Guidance — in-catalog decision pages",
       "docs/agent/llms-extraction.md — deferred catalog extraction notes",

@@ -30,7 +30,7 @@
   tags={["skip-visual"]}
   play={async ({ canvas }) => {
     await userEvent.keyboard("{Escape}");
-    const trigger = canvas.getByRole("button", { name: "Status" });
+    const trigger = canvas.getByRole("combobox", { name: "Status" });
     await expect(trigger).toBeEnabled();
     await userEvent.click(trigger);
     await userEvent.click(
@@ -43,10 +43,14 @@
     <div class="flex max-w-xs flex-col gap-2">
       <span class="text-sm font-medium" id="catalog-status-label">Status</span>
       <Select.Root type="single" bind:value={interactionValue}>
-        <Select.Trigger aria-labelledby="catalog-status-label">
+        <Select.Trigger
+          aria-controls="catalog-status-options"
+          aria-labelledby="catalog-status-label"
+          role="combobox"
+        >
           {labels[interactionValue]}
         </Select.Trigger>
-        <Select.Content aria-label="Status options">
+        <Select.Content id="catalog-status-options" aria-label="Status options">
           <Select.Item value="draft" label="Draft">Draft</Select.Item>
           <Select.Item value="published" label="Published"
             >Published</Select.Item
@@ -63,15 +67,13 @@
 <Story
   name="Open menu"
   tags={["visual-state", "visual-ready"]}
-  parameters={{
-    a11y: {
-      // bits-ui sets aria-activedescendant on the open listbox; axe flags it.
-      test: "todo",
-    },
-  }}
   play={async ({ canvas }) => {
     // Open via interaction so we don't share a sticky bind:open across stories.
-    await userEvent.click(canvas.getByRole("button", { name: "Status" }));
+    await userEvent.keyboard("{Escape}");
+    const trigger = canvas.getByRole("combobox", { name: "Status" });
+    trigger.focus();
+    await expect(trigger).toHaveFocus();
+    await userEvent.keyboard("{Enter}");
     await expect(
       within(document.body).getByRole("listbox", { name: "Status options" }),
     ).toBeVisible();
@@ -83,10 +85,17 @@
         >Status</span
       >
       <Select.Root type="single" value="draft">
-        <Select.Trigger aria-labelledby="catalog-status-label-open">
+        <Select.Trigger
+          aria-controls="catalog-status-options-open"
+          aria-labelledby="catalog-status-label-open"
+          role="combobox"
+        >
           Draft
         </Select.Trigger>
-        <Select.Content aria-label="Status options">
+        <Select.Content
+          id="catalog-status-options-open"
+          aria-label="Status options"
+        >
           <Select.Item value="draft" label="Draft">Draft</Select.Item>
           <Select.Item value="published" label="Published"
             >Published</Select.Item

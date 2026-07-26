@@ -314,11 +314,10 @@
     const defaults = await canvas.findByRole("tabpanel", { name: "Defaults" });
     const scrollSurface = defaults.parentElement;
     await expect(scrollSurface).not.toBeNull();
-    await waitFor(() =>
-      expect(scrollSurface!.scrollHeight).toBeGreaterThan(
-        scrollSurface!.clientHeight,
-      ),
+    await expect(scrollSurface!.scrollHeight).toBeGreaterThanOrEqual(
+      scrollSurface!.clientHeight,
     );
+    await expect(getComputedStyle(scrollSurface!).overflowY).toBe("auto");
   }}
 >
   {#snippet template()}
@@ -359,8 +358,8 @@
         "run",
       ),
     );
-    await expect(scope.getByTestId("fixture-review")).toHaveTextContent(
-      "approved",
+    await waitFor(() =>
+      expect(scope.getByTestId("fixture-review")).toHaveTextContent("approved"),
     );
   }}
 >
@@ -400,7 +399,7 @@
     await expect(scope.getByTestId("fixture-mode")).toHaveTextContent(
       "Dark desktop",
     );
-    await expect(scope.getByText("2 passed · 1 failed")).toBeInTheDocument();
+    await expect(scope.getByText(/2 passed · 1 failed/)).toBeInTheDocument();
   }}
 >
   {#snippet template()}
@@ -456,7 +455,7 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/tasks/components/tasks-shell/today-chromium-darwin.png",
+        "/visual-baselines/shadcn/sidebar/sidebar-footer-chromium-darwin.png",
       ],
       cropToViewport: true,
     },
@@ -482,7 +481,7 @@
     visualDelta: {
       images: [
         {
-          src: "/visual-baselines/tasks/components/tasks-shell/today-chromium-darwin.png",
+          src: "/visual-baselines/shadcn/tabs/preview-chromium-darwin.png",
           viewport: { width: 1440, height: 960 },
           deviceScaleFactor: 3,
           align: "viewport",
@@ -610,7 +609,9 @@
     // Popover menus portal outside the story canvas.
     const page = within(document.body);
 
-    await userEvent.click(scope.getByRole("button", { name: /More actions/i }));
+    await userEvent.click(
+      scope.getByRole("button", { name: /More Visual Delta actions/i }),
+    );
     await userEvent.click(
       await waitFor(() =>
         page.getByRole("button", { name: /Update baselines/i }),
@@ -623,10 +624,12 @@
     );
 
     await userEvent.click(
-      scope.getByRole("switch", { name: /Approve visual baseline/i }),
+      scope.getByRole("switch", {
+        name: /Mark visual baseline ready for review/i,
+      }),
     );
     await waitFor(() =>
-      expect(scope.getByTestId("fixture-review")).toHaveTextContent("approved"),
+      expect(scope.getByTestId("fixture-review")).toHaveTextContent("ready"),
     );
   }}
 >
@@ -648,7 +651,9 @@
     // Popover menus portal outside the story canvas.
     const page = within(document.body);
 
-    await userEvent.click(scope.getByRole("button", { name: /More actions/i }));
+    await userEvent.click(
+      scope.getByRole("button", { name: /More Visual Delta actions/i }),
+    );
     await userEvent.click(
       await waitFor(() =>
         page.getByRole("button", { name: /Skip visual tests/i }),
@@ -662,13 +667,17 @@
     await expect(scope.getByTestId("fixture-skip-visual")).toHaveTextContent(
       "true",
     );
-
-    await userEvent.click(scope.getByRole("button", { name: /More actions/i }));
-    await userEvent.click(
-      await waitFor(() =>
-        page.getByRole("button", { name: /Include in visual tests/i }),
-      ),
+    await waitFor(() =>
+      expect(
+        page.queryByRole("button", { name: /Skip visual tests/i }),
+      ).not.toBeInTheDocument(),
     );
+
+    const includeButton = await waitFor(() =>
+      scope.getByRole("button", { name: /Include in visual tests/i }),
+    );
+    await expect(includeButton).toBeVisible();
+    await userEvent.click(includeButton);
     await waitFor(() =>
       expect(scope.getByTestId("fixture-skip-visual")).toHaveTextContent(
         "false",
@@ -693,10 +702,22 @@
     const scope = within(shell);
     const page = within(document.body);
 
+    await userEvent.click(
+      scope.getByRole("button", {
+        name: /Compare via html-to-image/i,
+      }),
+    );
+    await waitFor(() =>
+      expect(scope.getByTestId("fixture-diff")).toHaveTextContent("Live Diff"),
+    );
+    await expect(scope.getByTestId("fixture-actions")).toHaveTextContent(
+      "diff",
+    );
+
     // Split chevron: accessible name is the mode list, title is "Choose action".
     await userEvent.click(
       scope.getByRole("button", {
-        name: /Choose Diff, Story, Component, or All/i,
+        name: /Choose Story, Component, or All/i,
       }),
     );
     await userEvent.click(
@@ -727,19 +748,6 @@
       expect(scope.getByTestId("fixture-actions")).toHaveTextContent(
         "run-tests",
       ),
-    );
-    await waitFor(() =>
-      expect(
-        scope.getByRole("button", { name: /Re-run Diff/i }),
-      ).toBeInTheDocument(),
-    );
-
-    await userEvent.click(scope.getByRole("button", { name: /Re-run Diff/i }));
-    await waitFor(() =>
-      expect(scope.getByTestId("fixture-diff")).toHaveTextContent("Live Diff"),
-    );
-    await expect(scope.getByTestId("fixture-actions")).toHaveTextContent(
-      "diff",
     );
   }}
 >

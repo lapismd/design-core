@@ -128,10 +128,12 @@
       "none",
     );
     await userEvent.click(
-      scope.getByRole("switch", { name: "Approve visual baseline" }),
+      scope.getByRole("switch", {
+        name: "Mark visual baseline ready for review",
+      }),
     );
     await expect(scope.getByTestId("fixture-review-status")).toHaveTextContent(
-      "approved",
+      "ready",
     );
   }}
 >
@@ -146,10 +148,10 @@
     const canvas = within(canvasElement);
     await waitFor(() => canvas.getByTestId("status-badge-fixture"));
     await expect(
-      canvas.getByLabelText("Visual status: Pass"),
+      canvas.getByLabelText(/^Visual status: Pass\./),
     ).toBeInTheDocument();
     await expect(
-      canvas.getByLabelText("Visual status: Fail"),
+      canvas.getByLabelText(/^Visual status: Fail\./),
     ).toBeInTheDocument();
   }}
 >

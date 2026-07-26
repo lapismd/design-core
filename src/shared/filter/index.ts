@@ -24,8 +24,6 @@ export {
 } from "./power-search/index.js";
 export { createDemoLedgerFilterSyntax } from "./demo-ledger-filter-syntax.js";
 export {
-  beancountFilter,
-  beancountFilterLanguage,
   filterHighlighting,
   filterQuery,
   filterQueryLanguage,

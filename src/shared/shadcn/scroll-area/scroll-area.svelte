@@ -31,6 +31,7 @@
 >
   <ScrollAreaPrimitive.Viewport
     bind:ref={viewportRef}
+    tabindex={0}
     data-ui-component="scroll-area"
     data-ui-part="scroll-area-viewport"
     data-slot="scroll-area-viewport"

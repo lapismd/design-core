@@ -1,7 +1,6 @@
 {
   "packageRoot": ".",
   "sharedRoot": "src/shared/shadcn",
-  "appsRoot": "src/apps",
   "componentPrefix": "ui",
   "componentAttribute": "data-ui-component",
   "partAttribute": "data-ui-part",
@@ -37,7 +36,6 @@
   "worktreesRoot": ".ui-generator/worktrees",
   "pathAllowlist": [
     "src/shared/shadcn/",
-    "src/apps/",
     "tests/visual/storybook.spec.ts-snapshots/",
     "package.json",
     "pnpm-lock.yaml",

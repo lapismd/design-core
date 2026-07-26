@@ -13,7 +13,7 @@ export const searchFilterHighlightStyle = HighlightStyle.define([
   },
   {
     tag: [tags.atom, tags.bool, tags.number],
-    color: "var(--ui-form-code-value, var(--cv-code-constant, #0f766e))",
+    color: "var(--ui-form-code-value, var(--cv-code-constant, #0e726a))",
   },
   {
     tag: [tags.string, tags.regexp, tags.special(tags.string)],

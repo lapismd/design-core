@@ -22,13 +22,9 @@ export function snapshotDirFromImportPath(importPath: string): string {
   const normalized = importPath.replace(/\\/g, "/");
   const stripped = normalized
     .replace(/^\.\//, "")
-    .replace(/^src\/shared\//, "")
-    .replace(/^src\/apps\//, "apps/")
-    .replace(/^packages\/tasks\/src\//, "tasks/");
+    .replace(/^src\/shared\//, "");
   // forms/form-field/FormField.stories.svelte → forms/form-field
   // shadcn/input-group/InputGroup.variations.stories.svelte → shadcn/input-group
-  // apps/cv/cv-form-overview/CvFormOverview.stories.svelte → apps/cv/cv-form-overview
-  // packages/tasks/src/components/task-row/TaskRow.stories.svelte → tasks/components/task-row
   return stripped.replace(/\/[^/]+\.stories\.\w+$/, "");
 }
 
@@ -112,8 +108,6 @@ export function snapshotKeyMatchesComponent(
   const normalized = key.replace(/\\/g, "/");
   if (normalized.includes(`shadcn/${needle}/`)) return true;
   if (normalized.includes(`forms/${needle}/`)) return true;
-  if (normalized.includes(`tasks/components/${needle}/`)) return true;
-  if (normalized.includes(`tasks/${needle}/`)) return true;
   // Legacy flat + explicit recipe prefixes
   for (const inc of extraIncludes) {
     if (normalized.includes(inc)) return true;

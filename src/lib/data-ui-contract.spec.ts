@@ -173,7 +173,7 @@ describe("data-ui host catalog discovery", () => {
     expect(catalog.components["DropdownMenu.Content"]).toBe("dropdown-menu");
     expect(catalog.components["Dialog.Content"]).toBe("dialog");
     expect(catalog.parts["Tooltip.Content"]).toBe("tooltip-content");
-    expect(catalog.parts["Sidebar.Root"]).toBe("sidebar-root");
+    expect(catalog.parts["Sidebar.Root"]).toBeUndefined();
     expect(catalog.parts.ScrollArea).toBe("scroll-area");
     expect(catalog.parts["Dialog.Content"]).toBe("dialog-content");
     // Colliding bare exports must not overwrite leaf hosts
@@ -188,7 +188,6 @@ describe("data-ui-contract source scan", () => {
     const roots = [
       path.join(srcRoot, "shared", "ai"),
       path.join(srcRoot, "shared", "forms"),
-      path.join(srcRoot, "apps"),
     ];
     const files = roots.flatMap((root) => walkSvelteFiles(root));
     expect(files.length).toBeGreaterThan(10);

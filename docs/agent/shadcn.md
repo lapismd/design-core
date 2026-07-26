@@ -29,8 +29,8 @@ colocated stories, tokens, provenance, and docs artifacts.
 - Import from `@stevejuma/ui/shadcn/<family>` only.
 - Restyle via `--ui-<family>-*` CSS variables (forms pattern), not Tailwind
   `cn()` utility merges. Defaults ship in `<family>.tokens.css`.
-- Do not reintroduce Tailwind utility class strings into converted components or
-  Beancount/CV app sources, shared forms/filter/AI, and tasks.
+- Do not reintroduce Tailwind utility class strings into converted components
+  or shared forms/filter/AI sources.
   `pnpm check:no-tailwind` (in `pnpm checks`) fails
   closed.
 
@@ -46,10 +46,10 @@ colocated stories, tokens, provenance, and docs artifacts.
 4. **Stories** — colocated `*.stories.svelte` under `Shadcn/<Family>/…` with
    real interactive play coverage where the control is interactive.
 5. **Verify** — see `pnpm ui guide testing` (includes `pnpm check:no-tailwind`).
-6. **Lookup usage** — `pnpm ui components <name>` or `pnpm ui components shadcn/<name>`
-   (or `--json`) composes local docs/examples. Use `--layer` to filter; forms/AI/
-   apps/tasks use the same command with `forms/…`, `ai/…`, `apps/…`, `tasks/…`
-   keys.
+6. **Lookup usage** — `pnpm ui components <name>` or
+   `pnpm ui components shadcn/<name>` (or `--json`) composes local
+   docs/examples. Use `--layer` to filter; forms, filter, and AI use the same
+   command with qualified keys.
 
 `ui:add` runs in a detached git worktree: shadcn intake → Tailwind expand →
 scoped CSS + `--ui-*` token bindings + provenance → reference/candidate parity →
@@ -61,8 +61,8 @@ passes).
 - Overview: Storybook `Shadcn/Overview`
 - Workflow guidance: Storybook `Shadcn/Guidance`
 - Living docs: autodocs + colocated MDX / `*.docs.md` per family
-- Offline list/show: `pnpm ui components` / `pnpm ui components shadcn/<name>`
-  (all layers: forms, AI, apps, tasks)
+- Offline list/show: `pnpm ui components` /
+  `pnpm ui components shadcn/<name>` (all retained layers)
 
 ## Doctor
 

@@ -5,7 +5,6 @@ import { filterQueryLanguage } from "./index.js";
 const parser = filterQueryLanguage.parser;
 
 /**
- * @see https://beancount.github.io/docs/beancount_language_syntax.html
  */
 const testCases: Record<string, Array<{ input: string; expected: string }>> = {
   "Simple Expressions": [

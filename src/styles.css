@@ -39,7 +39,6 @@
 @import "./shared/shadcn/accordion/accordion.tokens.css";
 @import "./shared/shadcn/button/button.tokens.css";
 @import "./shared/forms/form.tokens.css";
-@import "./apps/beancount/beancount.tokens.css";
 
 @layer base {
   * {
