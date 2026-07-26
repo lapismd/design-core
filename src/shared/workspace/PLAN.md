@@ -84,7 +84,7 @@ Compatibility aliases are removed only through an explicit reviewed slice.
 | Windows and overlays             | window and drop modules                                    | component families         | In progress         | Pass    | Partial  | Pending | Pending |
 | Mobile shell                     | mobile modules                                             | component families         | In progress         | Pass    | Partial  | Pending | Pending |
 | Ribbon and status                | ribbon/status modules                                      | component families         | Complete            | Pass    | Pass     | Pending | Pending |
-| Settings presentation            | settings Svelte components                                 | component families         | Pending             | Pending | Pending  | Pending | Pending |
+| Settings presentation            | settings Svelte components                                 | component families         | Complete            | Pass    | Pass     | Pending | Pending |
 | Compound AppShell                | `app-shell-*` modules                                      | component families         | In progress         | Pass    | Partial  | Pending | Pending |
 | F-Mode                           | optional plugin package                                    | `plugins/f-mode/`          | Pending             | Pending | Pending  | Pending | Pending |
 | Notifications                    | optional plugin package                                    | `plugins/notifications/`   | Pending             | Pending | Pending  | Pending | Pending |
@@ -294,6 +294,29 @@ workflow.
 - Focused Storybook interaction and accessibility execution: 2 App Shell
   stories and the affected floating-layer story pass through the repository's
   Storybook Vitest project.
+- The required MCP focused run was invoked and returned no per-story result in
+  the JJ workspace. Supplemental focused execution remains green.
+- `pnpm check:no-tailwind`: pass.
+- `pnpm check`: pass with zero Svelte errors or warnings.
+- Visual Delta candidate baselines remain pending explicit human approval; no
+  committed baseline image was created or replaced in this slice.
+
+### Declarative settings presentation
+
+- Added the public `AppSettings.Root`, `Search`, `Navigation`, `Content`,
+  `Section`, and `Item` compound components plus the complete
+  `WorkspaceSettingsSurface` and context-bound `AppShell.Settings` surface.
+- Recreated the Lapis settings navigation, schema cards, compact field rows,
+  search results, Hotkeys page, and Core Plugins page with native CSS and
+  public Workspace tokens instead of copied shadcn/Tailwind primitives.
+- The default field renderer covers primitive values, range and choice
+  controls, lists, JSON-safe structured collections, dynamic editor
+  associations, custom renderers, actions, unsupported fallbacks, and
+  restoration through the controller.
+- Focused settings and application-controller unit execution: 2 files and 19
+  tests pass.
+- Focused Storybook interaction and accessibility execution: 1 file and 5
+  stories pass through the repository's Storybook Vitest project.
 - The required MCP focused run was invoked and returned no per-story result in
   the JJ workspace. Supplemental focused execution remains green.
 - `pnpm check:no-tailwind`: pass.

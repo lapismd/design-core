@@ -1,0 +1,491 @@
+<script module lang="ts">
+  import { defineMeta } from "@storybook/addon-svelte-csf";
+  import { expect, userEvent } from "storybook/test";
+  import AppShellRoot from "../app-shell/AppShellRoot.svelte";
+  import { AppShellController } from "../core/app-shell-controller.svelte.js";
+  import { APP_SHELL_SETTING_IDS } from "../core/built-in-settings.svelte.js";
+  import { AppShellPlugin } from "../core/plugin-manager.svelte.js";
+  import AppSettingsContent from "./AppSettingsContent.svelte";
+  import AppSettingsNavigation from "./AppSettingsNavigation.svelte";
+  import AppSettingsRoot from "./AppSettingsRoot.svelte";
+  import AppSettingsSearch from "./AppSettingsSearch.svelte";
+  import WorkspaceSettingsStoryCustomField from "./WorkspaceSettingsStoryCustomField.svelte";
+  import WorkspaceSettingsSurface from "./WorkspaceSettingsSurface.svelte";
+  import { WorkspaceSettingsController } from "./settings-controller.svelte.js";
+  import type { WorkspaceSettingsSection } from "./types.js";
+  import "./WorkspaceSettings.stories.css";
+
+  class RequiredWorkspacePlugin extends AppShellPlugin {}
+  class OptionalWorkspacePlugin extends AppShellPlugin {}
+
+  function createSettingsApp() {
+    return new AppShellController({
+      application: {
+        name: "Workspace UI",
+        version: "1.0.0",
+      },
+      configuration: {
+        values: {
+          [APP_SHELL_SETTING_IDS.mobileMode]: "never",
+          [APP_SHELL_SETTING_IDS.editorAssociations]: {
+            "*.md": "markdown",
+          },
+        },
+      },
+      editorViews: [
+        {
+          id: "markdown",
+          label: "Markdown editor",
+          description: "Rich Markdown document view",
+          filenamePatterns: ["*.md"],
+          priority: "default",
+        },
+        {
+          id: "text",
+          label: "Text editor",
+          description: "Plain text resource view",
+          filenamePatterns: ["*.txt"],
+          priority: "option",
+        },
+      ],
+      plugins: [
+        {
+          id: "workspace-core",
+          name: "Workspace",
+          description: "Core workspace layout and navigation.",
+          icon: "panels-top-left",
+          plugin: RequiredWorkspacePlugin,
+          required: true,
+        },
+        {
+          id: "backlinks",
+          name: "Backlinks",
+          description: "Contributes linked-resource navigation.",
+          icon: "link",
+          plugin: OptionalWorkspacePlugin,
+          enabled: true,
+        },
+      ],
+    });
+  }
+
+  const allControlSections: WorkspaceSettingsSection[] = [
+    {
+      id: "essentials",
+      title: "Essential controls",
+      description:
+        "Primitive values, choices, validation, and action affordances.",
+      icon: "sliders-horizontal",
+      navigationGroupId: "options",
+      fields: [
+        {
+          id: "demo.enabled",
+          type: "boolean",
+          title: "Enabled",
+          description: "A persisted boolean toggle.",
+          default: true,
+        },
+        {
+          id: "demo.name",
+          type: "string",
+          title: "Workspace name",
+          description: "A single-line text value.",
+          default: "Research workspace",
+          placeholder: "Name this workspace",
+        },
+        {
+          id: "demo.summary",
+          type: "string",
+          presentation: "textarea",
+          title: "Summary",
+          description: "A longer multi-line text value.",
+          default: "A reusable application shell.",
+        },
+        {
+          id: "demo.email",
+          type: "string",
+          presentation: "email",
+          title: "Notification email",
+          default: "team@example.com",
+        },
+        {
+          id: "demo.url",
+          type: "string",
+          presentation: "url",
+          title: "Project URL",
+          default: "https://example.com",
+        },
+        {
+          id: "demo.ip",
+          type: "string",
+          presentation: "ip",
+          title: "Sync address",
+          default: "127.0.0.1",
+        },
+        {
+          id: "demo.date",
+          type: "string",
+          presentation: "date",
+          title: "Archive date",
+          default: "2026-07-26",
+        },
+        {
+          id: "demo.time",
+          type: "string",
+          presentation: "time",
+          title: "Daily reminder",
+          default: "09:30",
+        },
+        {
+          id: "demo.icon",
+          type: "string",
+          presentation: "icon",
+          title: "Workspace icon",
+          default: "notebook-tabs",
+        },
+        {
+          id: "demo.color",
+          type: "string",
+          presentation: "color",
+          title: "Accent color",
+          default: "#7c3aed",
+        },
+        {
+          id: "demo.density",
+          type: "enum",
+          title: "Density",
+          default: "comfortable",
+          options: [
+            { value: "compact", label: "Compact" },
+            { value: "comfortable", label: "Comfortable" },
+            { value: "spacious", label: "Spacious" },
+          ],
+        },
+        {
+          id: "demo.sources",
+          type: "multi-enum",
+          title: "Enabled surfaces",
+          default: ["left", "status"],
+          options: [
+            { value: "left", label: "Left sidebar" },
+            { value: "right", label: "Right sidebar" },
+            { value: "status", label: "Status bar" },
+          ],
+        },
+        {
+          id: "demo.retries",
+          type: "integer",
+          title: "Retry limit",
+          default: 3,
+          minimum: 0,
+          maximum: 10,
+        },
+        {
+          id: "demo.zoom",
+          type: "number",
+          title: "Zoom level",
+          default: 16,
+          minimum: 10,
+          maximum: 30,
+          step: 1,
+        },
+        {
+          id: "demo.reset",
+          type: "action",
+          title: "Reset demo",
+          description: "Actions execute without storing a setting value.",
+          label: "Reset now",
+          icon: "rotate-ccw",
+          run: () => undefined,
+        },
+      ],
+    },
+    {
+      id: "collections",
+      title: "Collections and extensions",
+      description:
+        "Lists, structured values, associations, custom renderers, and fallbacks.",
+      icon: "list-plus",
+      navigationGroupId: "advanced",
+      fields: [
+        {
+          id: "demo.tags",
+          type: "list",
+          title: "Tags",
+          default: ["framework", "workspace"],
+          itemType: "string",
+          maximumItems: 5,
+        },
+        {
+          id: "demo.columns",
+          type: "object-array",
+          title: "Table columns",
+          default: [{ id: "title", width: 240 }],
+          properties: [
+            {
+              id: "id",
+              title: "ID",
+              type: "string",
+              required: true,
+            },
+            { id: "width", title: "Width", type: "integer", default: 160 },
+          ],
+        },
+        {
+          id: "demo.cards",
+          type: "object-grid",
+          title: "Dashboard cards",
+          default: [{ title: "Activity", visible: true }],
+          properties: [
+            { id: "title", title: "Title", type: "string", required: true },
+            {
+              id: "visible",
+              title: "Visible",
+              type: "boolean",
+              default: true,
+            },
+          ],
+        },
+        {
+          id: "demo.profiles",
+          type: "object-map",
+          title: "Named profiles",
+          default: { default: { label: "Default", enabled: true } },
+          properties: [
+            { id: "label", title: "Label", type: "string", required: true },
+            {
+              id: "enabled",
+              title: "Enabled",
+              type: "boolean",
+              default: true,
+            },
+          ],
+        },
+        {
+          id: "demo.associations",
+          type: "key-value",
+          title: "Editor associations",
+          default: { "*.md": "markdown" },
+          keyLabel: "Pattern",
+          valueLabel: "View",
+          addLabel: "Add association",
+          valueOptions: [
+            { value: "markdown", label: "Markdown editor" },
+            { value: "text", label: "Text editor" },
+          ],
+        },
+        {
+          id: "demo.custom",
+          type: "custom",
+          title: "Custom renderer",
+          description: "Applications can supply a typed field component.",
+          default: "Application value",
+          component: WorkspaceSettingsStoryCustomField,
+        },
+        {
+          id: "demo.unsupported",
+          type: "unsupported",
+          title: "Future schema value",
+          description:
+            "Unknown schemas remain visible instead of silently disappearing.",
+          schemaType: "binary-resource",
+        },
+      ],
+    },
+  ];
+
+  const builtInApp = createSettingsApp();
+  const interactionApp = createSettingsApp();
+  const compoundApp = createSettingsApp();
+  const allControls = new WorkspaceSettingsController({
+    sections: allControlSections,
+    navigationGroups: [
+      { id: "options", title: "Options", order: 0 },
+      { id: "advanced", title: "Advanced", order: 10 },
+    ],
+  });
+  const collectionControls = new WorkspaceSettingsController({
+    sections: allControlSections,
+    navigationGroups: [
+      { id: "options", title: "Options", order: 0 },
+      { id: "advanced", title: "Advanced", order: 10 },
+    ],
+  });
+
+  const { Story } = defineMeta({
+    title: "Workspace/Components/Settings",
+    component: WorkspaceSettingsSurface,
+    parameters: {
+      layout: "fullscreen",
+      docs: {
+        description: {
+          component:
+            "Native-token settings presentation for controller-owned schemas, application commands, and static plugins. The AppSettings compound parts can be assembled independently.",
+        },
+      },
+    },
+  });
+</script>
+
+<Story name="Controller-owned workspace settings" tags={["visual-pending"]}>
+  {#snippet template()}
+    <div class="ui-workspace-settings-story-canvas">
+      <div class="ui-workspace-settings-story-frame">
+        <AppShellRoot controller={builtInApp} theme="inherit">
+          <WorkspaceSettingsSurface
+            controller={builtInApp.settings}
+            app={builtInApp}
+          />
+        </AppShellRoot>
+      </div>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Updates appearance and mobile configuration"
+  tags={["visual-pending"]}
+  play={async ({ canvas }) => {
+    await userEvent.click(canvas.getByRole("button", { name: "Appearance" }));
+    const scheme = canvas.getByLabelText("Base color scheme");
+    await userEvent.selectOptions(scheme, "dark");
+    await expect(scheme).toHaveValue("dark");
+    await expect(
+      interactionApp.configuration.get(APP_SHELL_SETTING_IDS.appearanceTheme),
+    ).toBe("dark");
+    await userEvent.click(canvas.getByRole("button", { name: "Workspace" }));
+    const mobileLayout = canvas.getByLabelText("Mobile layout");
+    await userEvent.selectOptions(mobileLayout, "always");
+    await expect(mobileLayout).toHaveValue("always");
+    await expect(interactionApp.mobile.requestedDisplayMode).toBe("mobile");
+  }}
+>
+  {#snippet template()}
+    <div class="ui-workspace-settings-story-canvas">
+      <div class="ui-workspace-settings-story-frame">
+        <AppShellRoot controller={interactionApp} theme="inherit">
+          <WorkspaceSettingsSurface
+            controller={interactionApp.settings}
+            app={interactionApp}
+          />
+        </AppShellRoot>
+      </div>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="All supported controls"
+  tags={["visual-pending"]}
+  play={async ({ canvas }) => {
+    const workspaceName = canvas.getByLabelText("Workspace name");
+    await userEvent.clear(workspaceName);
+    await userEvent.type(workspaceName, "Composable shell");
+    await expect(workspaceName).toHaveValue("Composable shell");
+    await expect(allControls.get("demo.name")).toBe("Composable shell");
+
+    const search = canvas.getByRole("searchbox", {
+      name: "Search settings",
+    });
+    await userEvent.type(search, "custom renderer");
+    await expect(
+      canvas.getByRole("heading", { name: "Settings search results" }),
+    ).toBeVisible();
+    await userEvent.clear(search);
+  }}
+>
+  {#snippet template()}
+    <div class="ui-workspace-settings-story-canvas">
+      <div class="ui-workspace-settings-story-frame">
+        <AppSettingsRoot controller={allControls}>
+          <aside
+            class="ui-workspace-settings__sidebar"
+            data-ui-part="settings-sidebar"
+            aria-label="Settings navigation"
+          >
+            <AppSettingsSearch />
+            <AppSettingsNavigation />
+          </aside>
+          <AppSettingsContent />
+        </AppSettingsRoot>
+      </div>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Collections and extension controls"
+  tags={["visual-pending"]}
+  play={async ({ canvas }) => {
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Collections and extensions" }),
+    );
+    await expect(canvas.getByLabelText("Tags item 1")).toHaveValue("framework");
+    await expect(canvas.getByRole("note")).toHaveTextContent(
+      "Unsupported setting",
+    );
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Add association" }),
+    );
+    const associations = canvas.getAllByRole("textbox", {
+      name: "Association pattern",
+    });
+    await expect(associations).toHaveLength(2);
+    await expect(associations[1]).toHaveValue("*.txt");
+  }}
+>
+  {#snippet template()}
+    <div class="ui-workspace-settings-story-canvas">
+      <div class="ui-workspace-settings-story-frame">
+        <AppSettingsRoot controller={collectionControls}>
+          <aside
+            class="ui-workspace-settings__sidebar"
+            data-ui-part="settings-sidebar"
+            aria-label="Settings navigation"
+          >
+            <AppSettingsSearch />
+            <AppSettingsNavigation />
+          </aside>
+          <AppSettingsContent />
+        </AppSettingsRoot>
+      </div>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Composable AppShell settings surface"
+  tags={["visual-pending"]}
+  play={async ({ canvas }) => {
+    await userEvent.click(canvas.getByRole("button", { name: "Core plugins" }));
+    await expect(
+      canvas.getByRole("heading", { name: "Core plugins" }),
+    ).toBeVisible();
+    await expect(
+      canvas.getByRole("checkbox", { name: "Enable Workspace" }),
+    ).toBeDisabled();
+    await expect(
+      canvas.getByRole("checkbox", { name: "Enable Backlinks" }),
+    ).toBeChecked();
+  }}
+>
+  {#snippet template()}
+    <div class="ui-workspace-settings-story-canvas">
+      <div class="ui-workspace-settings-story-frame">
+        <AppShellRoot controller={compoundApp} theme="inherit">
+          <AppSettingsRoot controller={compoundApp.settings} app={compoundApp}>
+            <aside
+              class="ui-workspace-settings__sidebar"
+              data-ui-part="settings-sidebar"
+              aria-label="Settings navigation"
+            >
+              <AppSettingsSearch />
+              <AppSettingsNavigation />
+            </aside>
+            <AppSettingsContent />
+          </AppSettingsRoot>
+        </AppShellRoot>
+      </div>
+    </div>
+  {/snippet}
+</Story>

@@ -1,0 +1,42 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as Stories from "./WorkspaceSettings.stories.svelte";
+
+<Meta of={Stories} />
+
+# Workspace settings
+
+The settings family renders controller-owned configuration schemas using native
+CSS and public Workspace tokens. It does not depend on Tailwind or shadcn
+presentation primitives.
+
+Applications can use the complete `WorkspaceSettingsSurface`, render
+`AppShell.Settings` inside `AppShell.Root`, or assemble the compound parts:
+
+```svelte
+<AppSettings.Root controller={app.settings} {app}>
+  <AppSettings.Search />
+  <AppSettings.Navigation />
+  <AppSettings.Content />
+</AppSettings.Root>
+```
+
+## Controller-owned settings
+
+The built-in application controller contributes Appearance, Workspace,
+Hotkeys, and Core Plugins. Updating a rendered field writes through
+`WorkspaceSettingsController`, emits a typed change event, and requests a
+debounced save through the configured persistence adapter.
+
+<Canvas of={Stories.ControllerOwnedWorkspaceSettings} />
+
+## Supported schema controls
+
+The default renderer covers primitive fields, choices, lists, structured
+collections, key-value associations, custom components, actions, and explicit
+unsupported fallbacks.
+
+<Canvas of={Stories.AllSupportedControls} />
+
+<Canvas of={Stories.CollectionsAndExtensionControls} />
+
+<Controls of={Stories.ControllerOwnedWorkspaceSettings} />
