@@ -1,7 +1,6 @@
 import type { StorybookConfig } from "@storybook/svelte-vite";
 import { fileURLToPath } from "node:url";
 import { mergeConfig } from "vite";
-import { uiDocsMiddlewarePlugin } from "./ui-docs-middleware.js";
 
 const visualDeltaPackageRoot = fileURLToPath(
   new URL("../packages/storybook-addon-visual-delta", import.meta.url),
@@ -15,6 +14,14 @@ const config: StorybookConfig = {
     "@storybook/addon-svelte-csf",
     "@storybook/addon-vitest",
     "@storybook/addon-mcp",
+    {
+      name: import.meta.resolve(
+        "../packages/storybook-addon-docs-mcp/src/preset.ts",
+      ),
+      options: {
+        config: ".storybook/docs-mcp.config.ts",
+      },
+    },
     "@storybook/addon-themes",
     // Absolute local preset → package `src/` (not node_modules package name).
     // viteFinal lives in the addon (middleware + baseline inject + src watch).
@@ -62,8 +69,6 @@ const config: StorybookConfig = {
   },
   viteFinal: async (viteConfig) => {
     // Visual Delta plugins register via the addon preset's viteFinal.
-    const plugins = viteConfig.plugins ?? [];
-    viteConfig.plugins = [uiDocsMiddlewarePlugin(), ...plugins];
     return mergeConfig(viteConfig, {
       resolve: {
         alias: {
