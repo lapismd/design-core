@@ -72,7 +72,7 @@
     await expect(
       canvas.getByRole("heading", { name: "Plugin no longer active" }),
     ).toBeVisible();
-    await expect(canvas.getByText(/demo\\.missing/)).toBeVisible();
+    await expect(canvas.getByText(/demo\.missing/)).toBeVisible();
   }}
 >
   {#snippet template()}

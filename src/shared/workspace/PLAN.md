@@ -543,6 +543,23 @@ workflow.
 - `pnpm workspace:visual:audit`: pass.
 - `pnpm check`: pass with zero Svelte errors or warnings.
 
+### Aggregate Workspace validation
+
+- Complete Workspace unit execution: 22 files and 76 tests pass, including the
+  visual-audit helper.
+- Complete Workspace Storybook interaction and accessibility execution: all 29
+  story files and 72 stories pass.
+- The aggregate story run found and fixed one incorrectly double-escaped
+  missing-view text matcher; the component had rendered the correct
+  `demo.missing` message.
+- Real Chromium interaction execution: all seven pointer scenarios pass.
+- `pnpm workspace:visual:audit`: pass with zero classification errors and zero
+  orphan snapshots.
+- `pnpm check:no-tailwind src/shared/workspace`: pass.
+- `pnpm check`: pass with zero Svelte errors or warnings.
+- The only deliberately incomplete aggregate gate is candidate Visual Delta
+  capture, which remains paused for manual approval.
+
 ## Completion gate
 
 The migration is complete only when:
