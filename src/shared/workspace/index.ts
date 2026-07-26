@@ -9,6 +9,7 @@ export * from "./app-shell/index.js";
 export * from "./about-dialog/index.js";
 export * from "./command-palette/index.js";
 export * from "./core/index.js";
+export * from "./demo/index.js";
 export * from "./drag/index.js";
 export * from "./drop-overlay/index.js";
 export * from "./empty/index.js";

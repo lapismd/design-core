@@ -1,0 +1,32 @@
+import { Meta, Canvas } from "@storybook/addon-docs/blocks";
+import * as Stories from "./ReusableFrameworkDemo.stories.svelte";
+
+<Meta of={Stories} />
+
+# Reusable Framework Demo
+
+This Lapis-like application uses only the public Workspace framework. A static
+plugin contributes views, commands, palette results, settings, ribbon items,
+and status items. F-Mode and Notifications are installed through their public
+optional descriptors.
+
+The controller restores and saves a JSON-safe layout through an asynchronous
+adapter. Tabs, splits, sidebars, grouped panels, floating windows, mobile
+composition, application metadata, and active identity all remain owned by
+that controller.
+
+<Canvas of={Stories.Overview} />
+
+## Controller and persistence
+
+The interaction story selects and closes a tab, flushes the layout adapter,
+and verifies the mutation is persisted.
+
+<Canvas of={Stories.ControllerAndPersistenceInteraction} />
+
+## Static plugin lifecycle
+
+The consumer-owned status menu enables and disables the demo plugin through
+the same transactional manager used by Core Plugins settings.
+
+<Canvas of={Stories.PluginLifecycle} />

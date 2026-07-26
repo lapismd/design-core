@@ -1,0 +1,30 @@
+.ui-workspace-framework-demo {
+  width: 100%;
+  height: 100svh;
+  min-height: 38rem;
+  overflow: hidden;
+}
+
+.ui-workspace-framework-demo__view {
+  display: grid;
+  height: 100%;
+  place-content: center;
+  gap: 0.5rem;
+  padding: 2rem;
+  text-align: center;
+}
+
+.ui-workspace-framework-demo__view h2 {
+  margin: 0;
+  color: var(--ui-workspace-foreground);
+  font-size: 1.25rem;
+  font-weight: 650;
+}
+
+.ui-workspace-framework-demo__view p {
+  max-width: 30rem;
+  margin: 0;
+  color: var(--ui-workspace-muted-foreground);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}

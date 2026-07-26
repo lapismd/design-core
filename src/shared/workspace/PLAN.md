@@ -68,28 +68,28 @@ Compatibility aliases are removed only through an explicit reviewed slice.
 
 ## Progress
 
-| Slice                            | Source                                                     | Target                     | Code                | Unit    | Stories  | Visual  | Review  |
-| -------------------------------- | ---------------------------------------------------------- | -------------------------- | ------------------- | ------- | -------- | ------- | ------- |
-| Layer contract and tokens        | package/spec                                               | `workspace/`               | Complete            | Pass    | Guidance | N/A     | Pending |
-| Controller and events            | `core/app-shell-controller*`, `event-dispatcher.ts`        | `core/controller/`         | Complete            | Pass    | Pending  | N/A     | Pending |
-| Layout and persistence           | `core/layout*`, `workspace-json*`, `persistence.ts`        | `core/layout/`             | Complete            | Pass    | N/A      | N/A     | Pending |
-| Views and editor associations    | `core/view*`, `workspace-view.ts`, `editor-view-registry*` | `core/views/`              | Complete            | Pass    | Pending  | N/A     | Pending |
-| Commands and keymaps             | `core/command-*`                                           | `core/commands/`           | Complete            | Pass    | Partial  | Pending | Pending |
-| Configuration and settings model | `settings/*.ts`, `core/built-in-settings*`                 | `core/settings/`           | Complete            | Pass    | Pending  | N/A     | Pending |
-| Plugin lifecycle                 | `core/plugin-manager*`, UI registry                        | `core/plugins/`            | Complete            | Pass    | Pending  | N/A     | Pending |
-| Notifications model              | notice and notification managers                           | `core/notifications/`      | Complete            | Pass    | Pending  | N/A     | Pending |
-| Tabs and splits                  | tab, pane, tree, drag modules                              | component families         | In progress         | Pass    | Partial  | Pending | Pending |
-| Sidebars and groups              | sidebar modules                                            | component families         | In progress         | Pass    | Partial  | Pending | Pending |
-| View chrome and menus            | view header, empty, menus                                  | component families         | Complete            | Pass    | Pass     | Pending | Pending |
-| Windows and overlays             | window and drop modules                                    | component families         | In progress         | Pass    | Partial  | Pending | Pending |
-| Mobile shell                     | mobile modules                                             | component families         | In progress         | Pass    | Partial  | Pending | Pending |
-| Ribbon and status                | ribbon/status modules                                      | component families         | Complete            | Pass    | Pass     | Pending | Pending |
-| Settings presentation            | settings Svelte components                                 | component families         | Complete            | Pass    | Pass     | Pending | Pending |
-| Compound AppShell                | `app-shell-*` modules                                      | component families         | Complete            | Pass    | Pass     | Pending | Pending |
-| F-Mode                           | optional plugin package                                    | `plugins/f-mode/`          | Complete            | Pass    | Pass     | Pending | Pending |
-| Notifications                    | optional plugin package                                    | `plugins/notifications/`   | Complete            | Pass    | Pass     | Pending | Pending |
-| Demo and reference               | demos, stories, references                                 | `demo/`, `reference/`      | Pending             | Pending | Pending  | Pending | Pending |
-| Lapis source removal             | `lapis-notes/app-shell`                                    | separate Changeyard change | Blocked on approval | N/A     | N/A      | N/A     | Pending |
+| Slice                            | Source                                                     | Target                     | Code                | Unit | Stories  | Visual  | Review  |
+| -------------------------------- | ---------------------------------------------------------- | -------------------------- | ------------------- | ---- | -------- | ------- | ------- |
+| Layer contract and tokens        | package/spec                                               | `workspace/`               | Complete            | Pass | Guidance | N/A     | Pending |
+| Controller and events            | `core/app-shell-controller*`, `event-dispatcher.ts`        | `core/controller/`         | Complete            | Pass | Pending  | N/A     | Pending |
+| Layout and persistence           | `core/layout*`, `workspace-json*`, `persistence.ts`        | `core/layout/`             | Complete            | Pass | N/A      | N/A     | Pending |
+| Views and editor associations    | `core/view*`, `workspace-view.ts`, `editor-view-registry*` | `core/views/`              | Complete            | Pass | Pending  | N/A     | Pending |
+| Commands and keymaps             | `core/command-*`                                           | `core/commands/`           | Complete            | Pass | Partial  | Pending | Pending |
+| Configuration and settings model | `settings/*.ts`, `core/built-in-settings*`                 | `core/settings/`           | Complete            | Pass | Pending  | N/A     | Pending |
+| Plugin lifecycle                 | `core/plugin-manager*`, UI registry                        | `core/plugins/`            | Complete            | Pass | Pending  | N/A     | Pending |
+| Notifications model              | notice and notification managers                           | `core/notifications/`      | Complete            | Pass | Pending  | N/A     | Pending |
+| Tabs and splits                  | tab, pane, tree, drag modules                              | component families         | In progress         | Pass | Partial  | Pending | Pending |
+| Sidebars and groups              | sidebar modules                                            | component families         | In progress         | Pass | Partial  | Pending | Pending |
+| View chrome and menus            | view header, empty, menus                                  | component families         | Complete            | Pass | Pass     | Pending | Pending |
+| Windows and overlays             | window and drop modules                                    | component families         | In progress         | Pass | Partial  | Pending | Pending |
+| Mobile shell                     | mobile modules                                             | component families         | In progress         | Pass | Partial  | Pending | Pending |
+| Ribbon and status                | ribbon/status modules                                      | component families         | Complete            | Pass | Pass     | Pending | Pending |
+| Settings presentation            | settings Svelte components                                 | component families         | Complete            | Pass | Pass     | Pending | Pending |
+| Compound AppShell                | `app-shell-*` modules                                      | component families         | Complete            | Pass | Pass     | Pending | Pending |
+| F-Mode                           | optional plugin package                                    | `plugins/f-mode/`          | Complete            | Pass | Pass     | Pending | Pending |
+| Notifications                    | optional plugin package                                    | `plugins/notifications/`   | Complete            | Pass | Pass     | Pending | Pending |
+| Demo and reference               | demos, stories, references                                 | `demo/`, `reference/`      | Demo complete       | Pass | Pass     | Pending | Pending |
+| Lapis source removal             | `lapis-notes/app-shell`                                    | separate Changeyard change | Blocked on approval | N/A  | N/A      | N/A     | Pending |
 
 ## Validation cadence
 
@@ -447,6 +447,28 @@ workflow.
 - Pointer-swipe settling and mobile action-drawer parity remain in progress.
 - Visual Delta candidate baselines remain pending explicit human approval; no
   committed baseline image was created or replaced in this slice.
+
+### Reusable framework demo
+
+- Added a public-API-only Lapis-like application composed from
+  `AppShellController`, registered `WorkspaceView` classes, serializable
+  layouts, asynchronous persistence, commands, settings, ribbon/status
+  contributions, floating windows, sidebars, and optional F-Mode and
+  Notifications descriptors.
+- The consumer-owned Plugins status menu exercises transactional disable and
+  enable behavior through the same static plugin manager exposed to
+  applications.
+- Focused Storybook interaction and accessibility execution: 1 file and 4
+  stories pass, including tab selection and close persistence, plugin
+  lifecycle, and deterministic mobile composition.
+- `pnpm check:no-tailwind src/shared/workspace`: pass.
+- `pnpm check`: pass with zero Svelte errors or warnings.
+- The migration workspace Storybook is isolated on port `9109` with its Visual
+  Delta static server on `9110`; the target repository's standard
+  `9009`/`9010` ports remain unchanged.
+- Visual Delta candidate baselines and immutable reference mapping remain
+  pending explicit human approval; no committed baseline image was created or
+  replaced in this slice.
 
 ## Completion gate
 
