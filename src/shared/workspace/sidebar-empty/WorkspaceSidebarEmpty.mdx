@@ -1,0 +1,26 @@
+import { Meta, Canvas, Primary, Source } from "@storybook/addon-docs/blocks";
+import * as WorkspaceSidebarEmptyStories from "./WorkspaceSidebarEmpty.stories.svelte";
+
+<Meta of={WorkspaceSidebarEmptyStories} />
+
+# WorkspaceSidebarEmpty
+
+Source-shaped empty sidebar chrome that explains the available drop target and
+retains a close control.
+
+## Usage
+
+<Source
+  language="html"
+  code={'<WorkspaceSidebarEmpty side="left" onClose={closeLeftSidebar} />'}
+/>
+
+<Primary />
+
+## Examples
+
+<Canvas of={WorkspaceSidebarEmptyStories.EmptyRightSidebar} />
+
+## Style
+
+Colocated CSS: `WorkspaceSidebarEmpty.css`.

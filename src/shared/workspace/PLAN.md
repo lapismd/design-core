@@ -80,8 +80,8 @@ Compatibility aliases are removed only through an explicit reviewed slice.
 | Notifications model              | notice and notification managers                           | `core/notifications/`      | Complete            | Pass    | Pending  | N/A     | Pending |
 | Tabs and splits                  | tab, pane, tree, drag modules                              | component families         | Pending             | Pending | Pending  | Pending | Pending |
 | Sidebars and groups              | sidebar modules                                            | component families         | Pending             | Pending | Pending  | Pending | Pending |
-| View chrome and menus            | view header, empty, menus                                  | component families         | Pending             | Pending | Pending  | Pending | Pending |
-| Windows and overlays             | window and drop modules                                    | component families         | Pending             | Pending | Pending  | Pending | Pending |
+| View chrome and menus            | view header, empty, menus                                  | component families         | In progress         | Pass    | Partial  | Pending | Pending |
+| Windows and overlays             | window and drop modules                                    | component families         | In progress         | Pass    | Partial  | Pending | Pending |
 | Mobile shell                     | mobile modules                                             | component families         | Pending             | Pending | Pending  | Pending | Pending |
 | Ribbon and status                | ribbon/status modules                                      | component families         | Pending             | Pending | Pending  | Pending | Pending |
 | Settings presentation            | settings Svelte components                                 | component families         | Pending             | Pending | Pending  | Pending | Pending |
@@ -136,6 +136,19 @@ workflow.
   include the application controller, workspace mutation controller, view and
   editor registries, declarative configuration, commands, hotkeys, static
   plugins, notices, notifications, and persistence adapters.
+
+### Native visual foundations
+
+- Added individually importable icon, empty-view, empty-sidebar,
+  sidebar-toggle, drag state, and tab-body drop-overlay families.
+- Production components use semantic markup, colocated native CSS, public
+  `--ui-workspace-*` tokens, and no shadcn/Tailwind primitives.
+- Focused drag/drop unit tests: 2 files and 6 tests pass.
+- Focused Storybook interaction and accessibility tests: 12 stories pass.
+- `pnpm check:no-tailwind`: pass.
+- `pnpm check`: pass with zero Svelte errors or warnings.
+- Visual Delta candidate baselines remain pending explicit human approval; no
+  committed baseline image was created or replaced in this slice.
 
 ## Completion gate
 

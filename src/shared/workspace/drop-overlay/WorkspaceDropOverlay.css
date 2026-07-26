@@ -1,0 +1,24 @@
+.ui-workspace-drop-preview,
+.ui-workspace-tabs-drop {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--ui-workspace-background);
+}
+
+.ui-workspace-drop-preview {
+  max-width: 100%;
+  border: 1px solid var(--ui-workspace-border);
+}
+
+.workspace-drop-overlay {
+  position: absolute;
+  z-index: var(--ui-workspace-overlay-z-index);
+  border-radius: var(--ui-workspace-radius-medium);
+  background-color: var(--ui-workspace-accent);
+  opacity: 0.5;
+  pointer-events: none;
+  transition: all 100ms ease-in-out;
+  will-change: transform, width, height;
+}

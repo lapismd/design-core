@@ -62,6 +62,8 @@
     "@codemirror/view": "^6.43.6",
     "@fontsource-variable/dm-sans": "^5.2.8",
     "@fontsource-variable/source-code-pro": "^5.2.7",
+    "@iconify-json/lucide": "^1.2.63",
+    "@iconify/utils": "^2.3.0",
     "@internationalized/date": "^3.12.2",
     "@lezer/common": "^1.2.3",
     "@lezer/highlight": "^1.2.3",
@@ -182,7 +184,13 @@
     "./filter/SearchFilterBar.svelte": "./src/shared/filter/search-filter-bar/SearchFilterBar.svelte",
     "./workspace": "./src/shared/workspace/index.ts",
     "./workspace/core": "./src/shared/workspace/core/index.ts",
+    "./workspace/drag": "./src/shared/workspace/drag/index.ts",
+    "./workspace/drop-overlay": "./src/shared/workspace/drop-overlay/index.ts",
+    "./workspace/empty": "./src/shared/workspace/empty/index.ts",
+    "./workspace/icon": "./src/shared/workspace/icon/index.ts",
     "./workspace/settings": "./src/shared/workspace/settings/index.ts",
+    "./workspace/sidebar-empty": "./src/shared/workspace/sidebar-empty/index.ts",
+    "./workspace/sidebar-toggle": "./src/shared/workspace/sidebar-toggle/index.ts",
     "./workspace/tokens": "./src/shared/workspace/workspace.tokens.ts",
     "./workspace/workspace.tokens.css": "./src/shared/workspace/workspace.tokens.css"
   }

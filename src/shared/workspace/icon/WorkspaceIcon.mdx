@@ -1,0 +1,25 @@
+import { Meta, Canvas, Primary, Source } from "@storybook/addon-docs/blocks";
+import * as WorkspaceIconStories from "./WorkspaceIcon.stories.svelte";
+
+<Meta of={WorkspaceIconStories} />
+
+# WorkspaceIcon
+
+Renders a serializable Lucide icon name and supports application-owned icons
+through `registerWorkspaceIcon`. Unknown names use the stable `file` fallback.
+
+## Usage
+
+<Source language="html" code={'<WorkspaceIcon name="panel-left" />'} />
+
+<Primary />
+
+## Examples
+
+<Canvas of={WorkspaceIconStories.UnknownIconFallsBackToFile} />
+
+## Style
+
+Colocated CSS: `WorkspaceIcon.css`. The icon inherits size and colour from its
+host, which keeps it usable inside tabs, buttons, menus, ribbon items, and
+status items without utility-class coupling.

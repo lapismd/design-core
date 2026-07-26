@@ -1,0 +1,33 @@
+.ui-workspace-sidebar-toggle {
+  display: inline-flex;
+  width: 2.25rem;
+  height: 1.75rem;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: var(--ui-workspace-radius-small);
+  padding: 0 0.5rem;
+  color: var(--ui-workspace-foreground);
+  background: transparent;
+  cursor: pointer;
+}
+
+.ui-workspace-sidebar-toggle[data-size="small"] {
+  width: 1.75rem;
+  padding-inline: 0.25rem;
+}
+
+.ui-workspace-sidebar-toggle:hover {
+  background: var(--ui-workspace-muted);
+}
+
+.ui-workspace-sidebar-toggle:focus-visible {
+  outline: 2px solid var(--ui-workspace-focus-ring);
+  outline-offset: 1px;
+}
+
+.ui-workspace-sidebar-toggle__icon {
+  width: 1.25rem;
+  height: 1.25rem;
+}

@@ -1,0 +1,30 @@
+import { Meta, Canvas, Primary, Source } from "@storybook/addon-docs/blocks";
+import * as WorkspaceDropOverlayStories from "./WorkspaceDropOverlay.stories.svelte";
+
+<Meta of={WorkspaceDropOverlayStories} />
+
+# WorkspaceDropOverlay
+
+Visualizes the registered tab-body drop target. Edge regions use the Lapis
+proportions: 25% left/right/top and 35% bottom; the remaining area is centre.
+
+## Usage
+
+<Source
+  language="html"
+  code={
+    "<WorkspaceTabsDrop {controller} {drag} parent={tabs}>{content}</WorkspaceTabsDrop>"
+  }
+/>
+
+<Primary />
+
+## Examples
+
+<Canvas of={WorkspaceDropOverlayStories.LeftSplitTarget} />
+<Canvas of={WorkspaceDropOverlayStories.BottomSplitTarget} />
+
+## Style
+
+Colocated CSS: `WorkspaceDropOverlay.css`. The accent, radius, and z-index are
+public Workspace tokens.

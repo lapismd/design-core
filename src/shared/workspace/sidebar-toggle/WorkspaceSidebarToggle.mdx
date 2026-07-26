@@ -1,0 +1,24 @@
+import { Meta, Primary, Source } from "@storybook/addon-docs/blocks";
+import * as WorkspaceSidebarToggleStories from "./WorkspaceSidebarToggle.stories.svelte";
+
+<Meta of={WorkspaceSidebarToggleStories} />
+
+# WorkspaceSidebarToggle
+
+Shows or hides a left or right workspace sidebar. The indicator stays on the
+matching side of the source-shaped icon.
+
+## Usage
+
+<Source
+  language="html"
+  code={
+    '<WorkspaceSidebarToggle side="right" label="Toggle right sidebar" onSelect={toggleRight} />'
+  }
+/>
+
+<Primary />
+
+## Style
+
+Colocated CSS: `WorkspaceSidebarToggle.css`.

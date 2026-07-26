@@ -1,0 +1,25 @@
+import { Meta, Canvas, Primary, Source } from "@storybook/addon-docs/blocks";
+import * as WorkspaceEmptyStories from "./WorkspaceEmpty.stories.svelte";
+
+<Meta of={WorkspaceEmptyStories} />
+
+# WorkspaceEmpty
+
+Source-aligned empty content for leaves with no resource and for serialized
+views whose registration is unavailable.
+
+## Usage
+
+<Source language="html" code={"<WorkspaceEmpty actions={emptyActions} />"} />
+
+<Primary />
+
+## Examples
+
+<Canvas of={WorkspaceEmptyStories.MissingRegisteredView} />
+
+## Style
+
+Colocated CSS: `WorkspaceEmpty.css`. Paint reads the public
+`--ui-workspace-*` token layer and does not depend on shadcn or Tailwind
+primitives.
