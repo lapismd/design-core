@@ -1,0 +1,21 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as Stories from "./WorkspaceStackedTabs.stories.svelte";
+
+<Meta of={Stories} />
+
+# WorkspaceStackedTabs
+
+`WorkspaceStackedTabs` renders the Lapis stacked-pane geometry while retaining
+the target repository's native CSS and public Workspace tokens.
+
+## Contract
+
+- The supplied pane must be a live `WorkspaceTabsNode` owned by the controller.
+- Tab activation, closing, presentation changes, and drops use the controller.
+- The horizontal viewport scrolls without exposing a browser scrollbar.
+- Close affordances live inside the tab button without nesting interactive
+  controls; the focused tab also supports the `Delete` key.
+
+<Canvas of={Stories.ActivatesAndClosesVerticalTabs} />
+
+<Controls of={Stories.ActivatesAndClosesVerticalTabs} />

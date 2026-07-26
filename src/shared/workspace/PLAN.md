@@ -169,6 +169,23 @@ workflow.
 - Visual Delta candidate baselines remain pending explicit human approval; no
   committed baseline image was created or replaced in this slice.
 
+### Stacked tabs and recursive splits
+
+- Added individually importable `WorkspaceStackedTabs`, `WorkspaceSplit`, and
+  `WorkspaceTree` component families with colocated native CSS, Storybook
+  stories, and MDX documentation.
+- The recursive tree renders top and stacked panes from the live serializable
+  layout; Paneforge resize callbacks write normalized sizes through the
+  controller.
+- Focused Storybook interaction and accessibility execution: 3 files and 3
+  stories pass through the repository's Storybook Vitest project.
+- The required MCP focused run was also invoked; its JJ-workspace story
+  selection limitation remains as documented above.
+- `pnpm check:no-tailwind`: pass.
+- `pnpm check`: pass with zero Svelte errors or warnings.
+- Visual Delta candidate baselines remain pending explicit human approval; no
+  committed baseline image was created or replaced in this slice.
+
 ## Completion gate
 
 The migration is complete only when:

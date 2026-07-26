@@ -1,0 +1,14 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as Stories from "./WorkspaceTree.stories.svelte";
+
+<Meta of={Stories} />
+
+# WorkspaceTree
+
+`WorkspaceTree` recursively renders a serializable `WorkspaceNode`. Applications
+may use it directly for a single workspace host or compose it inside the higher
+level AppShell surfaces.
+
+<Canvas of={Stories.RecursiveTopAndStackedPanes} />
+
+<Controls of={Stories.RecursiveTopAndStackedPanes} />

@@ -1,0 +1,15 @@
+.ui-workspace-split-story-frame {
+  width: 100%;
+  height: 24rem;
+  overflow: hidden;
+}
+
+.ui-workspace-split-story-pane {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  place-items: center;
+  color: var(--ui-workspace-muted-foreground);
+  background: var(--ui-workspace-background);
+  font-size: 0.875rem;
+}

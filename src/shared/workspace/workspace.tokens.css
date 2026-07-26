@@ -36,6 +36,8 @@
     var(--ui-workspace-muted)
   );
   --ui-workspace-tab-divider: var(--border);
+  --ui-workspace-stacked-shadow: -0.5rem 0 0.5rem rgb(0 0 0 / 5%);
+  --ui-workspace-stacked-pane-width: 43.75rem;
   --ui-workspace-sidebar-header-height: 2rem;
   --ui-workspace-ribbon-width: 3rem;
   --ui-workspace-status-height: 1.5rem;

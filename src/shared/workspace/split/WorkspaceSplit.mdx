@@ -1,0 +1,14 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as Stories from "./WorkspaceSplit.stories.svelte";
+
+<Meta of={Stories} />
+
+# WorkspaceSplit
+
+`WorkspaceSplit` is the lower-level recursive resize primitive. It receives a
+live split model and a child snippet, and writes coherent size changes through
+the controller.
+
+<Canvas of={Stories.HorizontalSplit} />
+
+<Controls of={Stories.HorizontalSplit} />

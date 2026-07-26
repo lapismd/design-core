@@ -1,0 +1,68 @@
+.ui-workspace-split,
+.ui-workspace-split__group,
+.ui-workspace-split__pane {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+
+.ui-workspace-split {
+  position: relative;
+  overflow: hidden;
+}
+
+.ui-workspace-split__group {
+  display: flex;
+}
+
+.ui-workspace-split__group[data-direction="horizontal"] {
+  flex-direction: row;
+}
+
+.ui-workspace-split__group[data-direction="vertical"] {
+  flex-direction: column;
+}
+
+.ui-workspace-split__pane {
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  background: var(--ui-workspace-background);
+}
+
+.ui-workspace-split__handle {
+  position: relative;
+  z-index: 3;
+  flex: 0 0 auto;
+  background: var(--ui-workspace-border);
+  outline: none;
+}
+
+.ui-workspace-split__handle[data-direction="horizontal"] {
+  width: 1px;
+  cursor: ew-resize;
+}
+
+.ui-workspace-split__handle[data-direction="vertical"] {
+  height: 1px;
+  cursor: ns-resize;
+}
+
+.ui-workspace-split__handle::after {
+  position: absolute;
+  content: "";
+}
+
+.ui-workspace-split__handle[data-direction="horizontal"]::after {
+  inset: 0 -0.1875rem;
+}
+
+.ui-workspace-split__handle[data-direction="vertical"]::after {
+  inset: -0.1875rem 0;
+}
+
+.ui-workspace-split__handle:focus-visible {
+  background: var(--ui-workspace-focus-ring);
+  box-shadow: 0 0 0 1px var(--ui-workspace-focus-ring);
+}
