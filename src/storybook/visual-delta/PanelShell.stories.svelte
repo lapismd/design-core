@@ -423,6 +423,13 @@
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/button/default-chromium-darwin.png"],
+      interactions: [
+        {
+          id: "opened-state",
+          label: "Opened state",
+          src: "/visual-baselines/shadcn/button/default--opened-state-chromium-darwin.png",
+        },
+      ],
       modes: {
         "Dark desktop": { globals: { colorMode: "dark" } },
         "Light mobile": {

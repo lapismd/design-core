@@ -56,15 +56,23 @@
       await canvas.findByRole("heading", { name: "Default history" }),
     ).toBeInTheDocument();
     await expect(
-      canvas.getByRole("radio", {
+      await canvas.findByRole("radio", {
         name: "Use Tune entry action spacing as Before",
       }),
     ).toBeChecked();
     await expect(
-      canvas.getByRole("radio", {
+      await canvas.findByRole("radio", {
         name: "Use Uncommitted baseline as After",
       }),
     ).toBeChecked();
+    await expect(
+      await canvas.findByRole("tab", { name: "2-up" }),
+    ).toHaveAttribute("aria-selected", "true");
+    await userEvent.click(canvas.getByRole("tab", { name: "Diff" }));
+    await expect(canvas.getByRole("tab", { name: "Diff" })).toHaveAttribute(
+      "aria-selected",
+      "true",
+    );
     await userEvent.click(
       canvas.getByRole("button", { name: "Load more baseline history" }),
     );
