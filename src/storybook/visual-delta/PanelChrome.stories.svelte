@@ -73,6 +73,15 @@
       "aria-selected",
       "true",
     );
+    await expect(
+      await canvas.findByText("Component diff", { selector: "h3" }),
+    ).toBeInTheDocument();
+    await expect(
+      canvas.getByText('− <div class="entry-actions compact">'),
+    ).toBeInTheDocument();
+    await expect(
+      canvas.getByText('+ <div class="entry-actions comfortable">'),
+    ).toBeInTheDocument();
     await userEvent.click(
       canvas.getByRole("button", { name: "Load more baseline history" }),
     );
@@ -241,6 +250,15 @@
     await expect(
       scope.getByTestId("fixture-section-body-default"),
     ).toHaveTextContent("Body for Default");
+
+    await userEvent.click(
+      scope.getByRole("button", {
+        name: "Open Default baseline history",
+      }),
+    );
+    await expect(scope.getByTestId("fixture-history-opened")).toHaveTextContent(
+      "Default",
+    );
 
     await userEvent.click(
       scope.getByRole("button", { name: /Opens chooser/i }),
