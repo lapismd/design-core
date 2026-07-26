@@ -39,14 +39,16 @@ scripts/
 
 ## Imports and layer boundaries
 
-| Path                            | Purpose                         |
-| ------------------------------- | ------------------------------- |
-| `@stevejuma/ui/shadcn/<family>` | shadcn family barrel            |
-| `@stevejuma/ui/forms`           | structured forms barrel         |
-| `@stevejuma/ui/forms/core`      | form builders, types, registry  |
-| `@stevejuma/ui/filter`          | search and filter-query barrel  |
-| `@stevejuma/ui/ai`              | reusable AI presentation barrel |
-| `@stevejuma/ui/styles.css`      | package styles entry            |
+| Path                                 | Purpose                         |
+| ------------------------------------ | ------------------------------- |
+| `@stevejuma/ui/shadcn/<family>`      | shadcn family barrel            |
+| `@stevejuma/ui/forms`                | structured forms barrel         |
+| `@stevejuma/ui/forms/core`           | form builders, types, registry  |
+| `@stevejuma/ui/filter`               | search and filter-query barrel  |
+| `@stevejuma/ui/ai`                   | reusable AI presentation barrel |
+| `@stevejuma/ui/ai/chat`              | stable AI Chat primitives       |
+| `@stevejuma/ui/ai/chat/experimental` | experimental AI Chat primitives |
+| `@stevejuma/ui/styles.css`           | package styles entry            |
 
 - `shared/shadcn` contains generated controls and must not depend on higher
   layers.

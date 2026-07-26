@@ -41,11 +41,11 @@ status stays `pending-review` until a human reviews the Storybook previews.
 | `ChatTokenizedText`        | `Chat.TokenizedText`               | stable       | implemented | passing | pending-review |
 | `ChatToolCalls`            | `Chat.ToolCalls`                   | stable       | implemented | passing | pending-review |
 | `ChatDictationButton`      | `Chat.DictationButton`             | stable       | implemented | passing | pending-review |
-| `ChatReasoning`            | `ExperimentalChat.Reasoning`       | experimental | planned     | planned | pending-review |
-| `ChatReactionBar`          | `ExperimentalChat.ReactionBar`     | experimental | planned     | planned | pending-review |
-| `ChatEmojiPicker`          | `ExperimentalChat.EmojiPicker`     | experimental | planned     | planned | pending-review |
-| `ChatTypingIndicator`      | `ExperimentalChat.TypingIndicator` | experimental | planned     | planned | pending-review |
-| `ChatUnreadDivider`        | `ExperimentalChat.UnreadDivider`   | experimental | planned     | planned | pending-review |
+| `ChatReasoning`            | `ExperimentalChat.Reasoning`       | experimental | implemented | passing | pending-review |
+| `ChatReactionBar`          | `ExperimentalChat.ReactionBar`     | experimental | implemented | passing | pending-review |
+| `ChatEmojiPicker`          | `ExperimentalChat.EmojiPicker`     | experimental | implemented | passing | pending-review |
+| `ChatTypingIndicator`      | `ExperimentalChat.TypingIndicator` | experimental | implemented | passing | pending-review |
+| `ChatUnreadDivider`        | `ExperimentalChat.UnreadDivider`   | experimental | implemented | passing | pending-review |
 
 The package subpaths are:
 
@@ -63,14 +63,23 @@ The root `@stevejuma/ui/ai` barrel exposes the same families as `Chat` and
 | ------------------------- | ------------------------------------------------------------------------ | ----------- |
 | `createStreamScroll`      | lock thresholds, reduced-motion-aware spring scrolling, resize lifecycle | tested      |
 | `createNewMessages`       | new-message state, content observation, dismissal                        | tested      |
-| `createComposerTokens`    | token DOM lifecycle, selection boundaries, serialization                 | implemented |
+| `createComposerTokens`    | token DOM lifecycle, selection boundaries, serialization                 | tested      |
 | `createPasteAsToken`      | long-paste conversion with configurable threshold                        | tested      |
 | `createSpeechRecognition` | progressive Web Speech/Web Audio adapter and cleanup                     | tested      |
-| `createDictation`         | composer-aware dictation orchestration                                   | implemented |
+| `createDictation`         | composer-aware dictation orchestration                                   | tested      |
 | `useLayoutContext`        | custom message-list composition                                          | implemented |
 | `useComposerContext`      | custom composer/input composition                                        | implemented |
 
 Trigger-menu internals are intentionally private.
+
+## Compatibility composites
+
+- `AiChatTranscript` now renders its legacy message and review props through
+  `MessageList`, `Message`, `MessageBubble`, and `SystemMessage`.
+- `AiPromptInput` now renders its legacy bindable value and `onSend` callback
+  through `Composer` and `ComposerInput`.
+- `AiChatPanel` remains a host-controlled composition with no networking,
+  persistence, routing, model SDK, or application store.
 
 ## Required acceptance
 

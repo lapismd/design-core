@@ -12,3 +12,5 @@ export type {
 } from "./types.js";
 export { aiTokenNames, type AiToken } from "./ai.tokens.js";
 export { sampleAiMessages, sampleReviewChanges } from "./fixtures.js";
+export * as Chat from "./chat/index.js";
+export * as ExperimentalChat from "./chat/experimental/index.js";

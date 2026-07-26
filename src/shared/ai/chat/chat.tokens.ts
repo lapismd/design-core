@@ -13,6 +13,11 @@ export const chatTokenNames = {
   composerBackground: "--ui-ai-chat-composer-background",
   dockBackground: "--ui-ai-chat-dock-background",
   triggerWidth: "--ui-ai-chat-trigger-width",
+  reasoningAccent: "--ui-ai-chat-reasoning-accent",
+  reactionBackground: "--ui-ai-chat-reaction-background",
+  reactionSelectedBackground: "--ui-ai-chat-reaction-selected-background",
+  reactionSelectedBorder: "--ui-ai-chat-reaction-selected-border",
+  unreadColor: "--ui-ai-chat-unread-color",
 } as const;
 
 export type ChatToken = (typeof chatTokenNames)[keyof typeof chatTokenNames];

@@ -593,24 +593,46 @@ function collectFilter(packageRoot: string): CatalogEntry[] {
 }
 
 function collectAi(packageRoot: string): CatalogEntry[] {
-  const dir = path.join(packageRoot, "src", "shared", "ai");
-  if (!existsSync(dir)) return [];
-  const components = readdirSync(dir)
-    .filter((name) => name.endsWith(".svelte") && !name.includes(".stories."))
-    .map((name) => name.replace(/\.svelte$/, ""));
-  return components.map((pascal) => {
-    const id = kebabFromPascal(pascal);
-    const storyPath = path.join(dir, `${pascal}.stories.svelte`);
-    const overview = path.join(dir, "Ai.mdx");
-    return {
-      layer: "ai" as const,
-      id,
-      dir,
-      importPath: "@stevejuma/ui/ai",
-      docsCandidates: existsSync(overview) ? [overview] : [],
-      storyPaths: existsSync(storyPath) ? [storyPath] : [],
-    };
-  });
+  const root = path.join(packageRoot, "src", "shared", "ai");
+  if (!existsSync(root)) return [];
+  const overview = path.join(root, "Ai.mdx");
+
+  function collectDirectory(
+    dir: string,
+    importPath: string,
+    idPrefix = "",
+  ): CatalogEntry[] {
+    if (!existsSync(dir)) return [];
+    const components = readdirSync(dir)
+      .filter((name) => name.endsWith(".svelte") && !name.includes(".stories."))
+      .map((name) => name.replace(/\.svelte$/, ""));
+    return components.map((pascal) => {
+      const id = `${idPrefix}${kebabFromPascal(pascal)}`;
+      const storyPath = path.join(dir, `${pascal}.stories.svelte`);
+      return {
+        layer: "ai" as const,
+        id,
+        dir,
+        importPath,
+        docsCandidates: existsSync(overview) ? [overview] : [],
+        storyPaths: existsSync(storyPath) ? [storyPath] : [],
+      };
+    });
+  }
+
+  return [
+    ...collectDirectory(root, "@stevejuma/ui/ai"),
+    ...collectDirectory(
+      path.join(root, "chat"),
+      "@stevejuma/ui/ai/chat",
+      "chat-",
+    ),
+    ...collectDirectory(
+      path.join(root, "chat", "experimental"),
+      "@stevejuma/ui/ai/chat/experimental",
+      "chat-experimental-",
+    ),
+  ].sort((a, b) => a.id.localeCompare(b.id));
 }
 
 export function collectCatalog(packageRoot: string): CatalogEntry[] {

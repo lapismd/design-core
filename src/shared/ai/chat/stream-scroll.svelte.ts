@@ -157,8 +157,11 @@ export function createStreamScroll(
   }
 
   function handleScroll(): void {
-    if (frame) stopAnimation();
     update();
+  }
+
+  function handleUserScrollIntent(): void {
+    if (frame) stopAnimation();
   }
 
   function attach(next: HTMLElement | null): void {
@@ -166,6 +169,15 @@ export function createStreamScroll(
     cleanup();
     element = next;
     element?.addEventListener("scroll", handleScroll, { passive: true });
+    element?.addEventListener("wheel", handleUserScrollIntent, {
+      passive: true,
+    });
+    element?.addEventListener("touchstart", handleUserScrollIntent, {
+      passive: true,
+    });
+    element?.addEventListener("pointerdown", handleUserScrollIntent, {
+      passive: true,
+    });
     if (element && enabled) {
       raf(() => {
         if (element === next) jumpToBottom();
@@ -175,6 +187,9 @@ export function createStreamScroll(
 
   function cleanup(): void {
     element?.removeEventListener("scroll", handleScroll);
+    element?.removeEventListener("wheel", handleUserScrollIntent);
+    element?.removeEventListener("touchstart", handleUserScrollIntent);
+    element?.removeEventListener("pointerdown", handleUserScrollIntent);
     stopAnimation();
     element = null;
   }

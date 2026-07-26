@@ -20,8 +20,10 @@ import type {
 
 function fakeElement(properties: Partial<HTMLElement> = {}): HTMLElement & {
   emitScroll: () => void;
+  emitWheel: () => void;
 } {
   let scroll: (() => void) | undefined;
+  let wheel: (() => void) | undefined;
   return {
     scrollHeight: 600,
     clientHeight: 200,
@@ -35,17 +37,27 @@ function fakeElement(properties: Partial<HTMLElement> = {}): HTMLElement & {
           typeof listener === "function"
             ? (listener as () => void)
             : () => listener.handleEvent(new Event("scroll"));
+      } else if (type === "wheel") {
+        wheel =
+          typeof listener === "function"
+            ? (listener as () => void)
+            : () => listener.handleEvent(new Event("wheel"));
       }
     },
-    removeEventListener() {
-      scroll = undefined;
+    removeEventListener(type: string) {
+      if (type === "scroll") scroll = undefined;
+      if (type === "wheel") wheel = undefined;
     },
     querySelector: () => null,
     querySelectorAll: () => [] as unknown as NodeListOf<HTMLElement>,
     getBoundingClientRect: () => ({ top: 0 }) as DOMRect,
     emitScroll: () => scroll?.(),
+    emitWheel: () => wheel?.(),
     ...properties,
-  } as unknown as HTMLElement & { emitScroll: () => void };
+  } as unknown as HTMLElement & {
+    emitScroll: () => void;
+    emitWheel: () => void;
+  };
 }
 
 describe("createStreamScroll", () => {
@@ -81,6 +93,33 @@ describe("createStreamScroll", () => {
     scroll.attach(element);
     scroll.scrollToBottom({ behavior: "spring" });
     expect(element.scrollTop).toBe(400);
+  });
+
+  it("does not cancel a spring on its own scroll event", () => {
+    const frames: FrameRequestCallback[] = [];
+    const cancelAnimationFrame = vi.fn();
+    const element = fakeElement();
+    const scroll = createStreamScroll({
+      requestAnimationFrame(callback) {
+        frames.push(callback);
+        return frames.length;
+      },
+      cancelAnimationFrame,
+      prefersReducedMotion: () => false,
+    });
+    scroll.attach(element);
+    frames.shift()?.(0);
+    element.scrollTop = 0;
+    element.emitScroll();
+
+    scroll.scrollToBottom();
+    frames.shift()?.(16);
+    expect(element.scrollTop).toBeGreaterThan(0);
+    element.emitScroll();
+    expect(cancelAnimationFrame).not.toHaveBeenCalled();
+
+    element.emitWheel();
+    expect(cancelAnimationFrame).toHaveBeenCalledOnce();
   });
 });
 

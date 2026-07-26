@@ -64,6 +64,28 @@
   {/snippet}
 </Story>
 
+<Story name="Browser scroll surface">
+  {#snippet template()}
+    <div data-story="chat-frame">
+      <Layout>
+        {#snippet composer()}
+          <div data-story="composer">Ask the assistant…</div>
+        {/snippet}
+        <MessageList latestMessageId="message-30">
+          {#each Array.from({ length: 30 }) as _, index (index)}
+            <Message sender={index % 2 === 0 ? "assistant" : "user"}>
+              <MessageBubble>
+                Message {index + 1}: enough content to exercise native wheel
+                scrolling in the chat viewport.
+              </MessageBubble>
+            </Message>
+          {/each}
+        </MessageList>
+      </Layout>
+    </div>
+  {/snippet}
+</Story>
+
 <style>
   :global([data-story="chat-frame"]) {
     width: min(30rem, 90vw);

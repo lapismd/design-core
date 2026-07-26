@@ -6,8 +6,19 @@ import { Meta } from "@storybook/addon-docs/blocks";
 
 Shared presentational AI chat components in `@stevejuma/ui/ai`.
 
-They sit on top of shared shadcn primitives (`Button`, `Textarea`, `ScrollArea`) and
-are **prop-driven** — no Studio store, no live `/api/ai`.
+They sit on top of the shared shadcn primitives and are **prop-driven** — no
+application store, networking, persistence, routing, or model SDK.
+
+```ts
+import { AiChatPanel, Chat, ExperimentalChat } from "@stevejuma/ui/ai";
+import * as AiChat from "@stevejuma/ui/ai/chat";
+import * as ExperimentalAiChat from "@stevejuma/ui/ai/chat/experimental";
+```
+
+The stable Chat surface adapts the anatomy and behavior of
+[facebook/astryx at `25def2f`](https://github.com/facebook/astryx/tree/25def2f10d28ad135760fc594e817a55a86a1144)
+to Svelte 5 and the local design system. The Lab-derived subpath is marked
+`@experimental`.
 
 | Component                                                             | Role                                        |
 | --------------------------------------------------------------------- | ------------------------------------------- |
@@ -19,3 +30,36 @@ are **prop-driven** — no Studio store, no live `/api/ai`.
 
 Hosts compose these prop-driven surfaces with their own forms, routing, and
 persistence.
+
+## Stable Chat family
+
+| Component                                                              | Role                                      |
+| ---------------------------------------------------------------------- | ----------------------------------------- |
+| [Layout](?path=/docs/ai-chat-layout--docs)                             | Scroll area, composer dock, recovery      |
+| [Layout Scroll Button](?path=/docs/ai-chat-layout-scroll-button--docs) | New-message recovery                      |
+| [Message List](?path=/docs/ai-chat-message-list--docs)                 | Live log, empty state, older pagination   |
+| [Message](?path=/docs/ai-chat-message--docs)                           | Sender, avatar, name, metadata context    |
+| [Message Bubble](?path=/docs/ai-chat-message-bubble--docs)             | Filled/ghost and grouped bubbles          |
+| [Message Metadata](?path=/docs/ai-chat-message-metadata--docs)         | Time and delivery state                   |
+| [System Message](?path=/docs/ai-chat-system-message--docs)             | Neutral note or divider                   |
+| [Composer](?path=/docs/ai-chat-composer--docs)                         | Rich input shell and send/stop state      |
+| [Composer Input](?path=/docs/ai-chat-composer-input--docs)             | Contenteditable tokens, history, triggers |
+| [Composer Drawer](?path=/docs/ai-chat-composer-drawer--docs)           | Collapsible context                       |
+| [Send Button](?path=/docs/ai-chat-send-button--docs)                   | Send/stop action                          |
+| [Composer Token](?path=/docs/ai-chat-composer-token--docs)             | Non-editable serialized token             |
+| [Tokenized Text](?path=/docs/ai-chat-tokenized-text--docs)             | Read-only token rendering                 |
+| [Tool Calls](?path=/docs/ai-chat-tool-calls--docs)                     | Tool status and details                   |
+| [Dictation Button](?path=/docs/ai-chat-dictation-button--docs)         | Progressive speech input                  |
+
+## Experimental Chat family
+
+| Component                                                                   | Role                              |
+| --------------------------------------------------------------------------- | --------------------------------- |
+| [Reasoning](?path=/docs/ai-chat-experimental-reasoning--docs)               | Streaming reasoning disclosure    |
+| [Reaction Bar](?path=/docs/ai-chat-experimental-reaction-bar--docs)         | Independently pressed reactions   |
+| [Emoji Picker](?path=/docs/ai-chat-experimental-emoji-picker--docs)         | Searchable keyboard emoji popover |
+| [Typing Indicator](?path=/docs/ai-chat-experimental-typing-indicator--docs) | Live name-aware typing label      |
+| [Unread Divider](?path=/docs/ai-chat-experimental-unread-divider--docs)     | First-unread separator            |
+
+Browser APIs are capability-detected and SSR-safe. Markdown, code, citations,
+and other response content remain consumer-supplied snippets.

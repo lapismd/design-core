@@ -127,6 +127,18 @@ Hello
     expect(ai.body).toContain("Import");
   });
 
+  it("lists the complete stable and experimental AI Chat catalog", () => {
+    const ai = listComponents(packageRoot, { layer: "ai" });
+    expect(ai).toHaveLength(25);
+    expect(ai.find((entry) => entry.id === "chat-composer-input")?.import).toBe(
+      "@stevejuma/ui/ai/chat",
+    );
+    expect(
+      ai.find((entry) => entry.id === "chat-experimental-emoji-picker")?.import,
+    ).toBe("@stevejuma/ui/ai/chat/experimental");
+    expect(ai.every((entry) => entry.hasDocs)).toBe(true);
+  });
+
   it("runComponents switches between index and show", () => {
     const index = runComponents(packageRoot);
     expect(index.kind).toBe("index");

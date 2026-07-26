@@ -10,7 +10,7 @@
       docs: {
         description: {
           component:
-            "Presentational message list built on shadcn ScrollArea. Controlled via `messages` — no networking.",
+            "Compatibility transcript composed from the AI Chat message primitives and shadcn ScrollArea. Controlled via `messages` — no networking.",
         },
       },
     },

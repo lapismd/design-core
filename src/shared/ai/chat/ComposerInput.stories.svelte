@@ -51,6 +51,8 @@
   let handle = $state<ComposerInputHandle | null>(null);
   let insertedTokenId = $state<string | undefined>();
   let fileResult = $state("No files");
+  let browserValue = $state("");
+  let browserFileResult = $state("No browser files");
 </script>
 
 <Story
@@ -162,6 +164,23 @@
         }}
       />
       <output>{fileResult}</output>
+    </div>
+  {/snippet}
+</Story>
+
+<Story name="Browser acceptance surface">
+  {#snippet template()}
+    <div data-story="input-frame">
+      <ComposerInput
+        bind:value={browserValue}
+        label="Browser acceptance composer"
+        pasteThreshold={20}
+        onFiles={(files, source) => {
+          browserFileResult = `${source}: ${files.map((file) => file.name).join(", ")}`;
+        }}
+      />
+      <output data-browser-value>{browserValue || "Empty"}</output>
+      <output data-browser-files>{browserFileResult}</output>
     </div>
   {/snippet}
 </Story>

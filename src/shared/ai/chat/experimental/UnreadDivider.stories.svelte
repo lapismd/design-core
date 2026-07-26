@@ -1,0 +1,31 @@
+<script module lang="ts">
+  import { defineMeta } from "@storybook/addon-svelte-csf";
+  import UnreadDivider from "./UnreadDivider.svelte";
+
+  const { Story } = defineMeta({
+    title: "AI/Chat/Experimental/Unread Divider",
+    component: UnreadDivider,
+    parameters: {
+      docs: {
+        description: {
+          component:
+            "Experimental semantic separator marking the first unread message.",
+        },
+      },
+    },
+  });
+</script>
+
+<Story name="Marks unread messages">
+  {#snippet template()}
+    <div data-story="unread-frame">
+      <UnreadDivider label="Unread" />
+    </div>
+  {/snippet}
+</Story>
+
+<style>
+  :global([data-story="unread-frame"]) {
+    width: min(36rem, 90vw);
+  }
+</style>

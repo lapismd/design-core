@@ -16,7 +16,7 @@
       docs: {
         description: {
           component:
-            "Presentational AI chat panel: composes Dock + Transcript + Prompt + Settings on shadcn Button, Textarea, and ScrollArea. Prop-driven — no `/api/ai` or Studio store.",
+            "Presentational AI chat panel: composes Dock + compatibility Transcript + rich Composer + Settings. Prop-driven — no `/api/ai` or Studio store.",
         },
       },
       layout: "fullscreen",
@@ -47,7 +47,7 @@
   exportName="InteractivePanel"
   tags={["skip-visual"]}
   play={async ({ canvas }) => {
-    const box = canvas.getByPlaceholderText("Ask the assistant…");
+    const box = canvas.getByRole("combobox", { name: "Message" });
     await userEvent.type(box, "Reorder experience");
     await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
     await expect(canvas.getByText("Reorder experience")).toBeVisible();

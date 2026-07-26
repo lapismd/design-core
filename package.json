@@ -14,6 +14,7 @@
     "test:storybook": "vitest run --project storybook",
     "test:storybook:watch": "vitest --project storybook",
     "test:visual": "playwright test",
+    "test:ai-chat-browser": "playwright test -c playwright.ai-chat.config.ts",
     "test:visual-delta-panel": "playwright test -c packages/storybook-addon-visual-delta/playwright.panel.config.ts",
     "test:visual-delta-panel:update": "tsx scripts/visual-delta-panel-update.ts",
     "test:visual:update": "tsx scripts/ui-generator/cli.ts visual-update",
@@ -40,7 +41,7 @@
     "fmt": "prettier . --write",
     "fmt:check": "prettier . --check",
     "check:no-tailwind": "tsx scripts/check-no-tailwind-utilities.ts",
-    "checks": "pnpm fmt:check && pnpm check && pnpm check:visual-delta && pnpm check:docs-mcp && pnpm check:no-tailwind && pnpm test:unit && pnpm test:storybook && pnpm build-storybook && pnpm test:visual-delta-panel && pnpm test:visual",
+    "checks": "pnpm fmt:check && pnpm check && pnpm check:visual-delta && pnpm check:docs-mcp && pnpm check:no-tailwind && pnpm test:unit && pnpm test:storybook && pnpm build-storybook && pnpm test:ai-chat-browser && pnpm test:visual-delta-panel && pnpm test:visual",
     "filter:grammar": "node scripts/generate-filter-query-parser.mjs"
   },
   "peerDependencies": {
@@ -174,6 +175,7 @@
     "./ai/tokens": "./src/shared/ai/ai.tokens.ts",
     "./ai/chat": "./src/shared/ai/chat/index.ts",
     "./ai/chat/tokens": "./src/shared/ai/chat/chat.tokens.ts",
+    "./ai/chat/experimental": "./src/shared/ai/chat/experimental/index.ts",
     "./filter": "./src/shared/filter/index.ts",
     "./filter/filter-query": "./src/shared/filter/filter-query/index.ts",
     "./filter/SearchFilterBar.svelte": "./src/shared/filter/search-filter-bar/SearchFilterBar.svelte"

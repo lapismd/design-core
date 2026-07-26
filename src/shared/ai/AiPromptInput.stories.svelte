@@ -10,7 +10,7 @@
       docs: {
         description: {
           component:
-            "Composer built on shadcn Textarea + Button. Calls `onSend` with the trimmed text; no fetch.",
+            "Compatibility composer built on the rich AI Chat primitives. Calls `onSend` with trimmed text; no fetch.",
         },
       },
     },
@@ -26,7 +26,7 @@
   name="Sends a message"
   tags={["skip-visual"]}
   play={async ({ canvas }) => {
-    const box = canvas.getByPlaceholderText("Ask the assistant…");
+    const box = canvas.getByRole("combobox", { name: "Message" });
     await userEvent.type(box, "Shorten the summary");
     await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
     await expect(canvas.getByRole("status")).toHaveTextContent(

@@ -82,11 +82,11 @@ dependency. Storybook: `AI/...`.
 - `AiPromptInput` — composer and `onSend`.
 - `AiChatPanelSettings` — placement and collapse controls.
 - `AiChatPanel` — dock, transcript, and prompt composition.
-- `chat/` — reusable ASTRYX-inspired message/layout, composer, token,
+- `chat/` — 15 reusable ASTRYX-inspired message/layout, composer, token,
   dictation, and tool-call primitives. Stable imports use
   `@stevejuma/ui/ai/chat`.
-- `chat/experimental/` — Lab-derived reasoning, reaction, emoji, typing, and
-  unread primitives. Every export is marked `@experimental`; import from
+- `chat/experimental/` — five Lab-derived reasoning, reaction, emoji, typing,
+  and unread primitives. Every export is marked `@experimental`; import from
   `@stevejuma/ui/ai/chat/experimental`.
 
 Import: `@stevejuma/ui/ai`, `@stevejuma/ui/ai/chat`, and
