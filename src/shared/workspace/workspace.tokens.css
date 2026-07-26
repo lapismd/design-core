@@ -26,7 +26,16 @@
   --ui-workspace-radius-medium: calc(var(--radius, 0.625rem) * 0.8);
   --ui-workspace-radius-large: var(--radius, 0.625rem);
   --ui-workspace-shadow: 0 12px 32px rgb(15 23 42 / 24%);
-  --ui-workspace-tab-height: 2.25rem;
+  --ui-workspace-tab-height: 2.5rem;
+  --ui-workspace-tab-width: 12.5rem;
+  --ui-workspace-tab-max-width: 20rem;
+  --ui-workspace-tab-curve: 0.375rem;
+  --ui-workspace-tab-active-background: var(--background);
+  --ui-workspace-tab-container-background: var(
+    --sidebar,
+    var(--ui-workspace-muted)
+  );
+  --ui-workspace-tab-divider: var(--border);
   --ui-workspace-sidebar-header-height: 2rem;
   --ui-workspace-ribbon-width: 3rem;
   --ui-workspace-status-height: 1.5rem;

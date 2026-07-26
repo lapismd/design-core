@@ -1,0 +1,41 @@
+import { Meta, Canvas, Primary, Source } from "@storybook/addon-docs/blocks";
+import * as WorkspaceTabsStories from "./WorkspaceTabs.stories.svelte";
+
+<Meta of={WorkspaceTabsStories} />
+
+# WorkspaceTabs
+
+Controller-backed top tabs adapted from the Lapis workspace renderer. Header
+and content containers remain direct children of the raw Bits UI root.
+
+## Usage
+
+<Source
+  language="html"
+  code={
+    '<WorkspaceTabs {controller} {pane} sidebarToggleSides={["left", "right"]} />'
+  }
+/>
+
+<Primary />
+
+## Behaviour
+
+- Selecting, adding, and closing tabs mutates the controller and schedules a
+  layout save.
+- Five or more tabs preserve a usable minimum size and overflow horizontally
+  with no visible scrollbar.
+- The close action never shrinks; the title and decorative icon yield in
+  constrained split panes.
+- Pointer and HTML5 movement share the registered insertion and body-drop
+  targets.
+
+## Examples
+
+<Canvas of={WorkspaceTabsStories.OverflowMenu} />
+<Canvas of={WorkspaceTabsStories.ConstrainedHiddenScrollbarRow} />
+
+## Style
+
+Colocated CSS: `WorkspaceTabs.css`. Tab geometry uses public
+`--ui-workspace-tab-*` tokens and retains the source active-tab curves.

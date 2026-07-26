@@ -1,0 +1,10 @@
+.ui-workspace-tabs-story-frame {
+  width: 100%;
+  height: 32rem;
+  overflow: hidden;
+}
+
+.ui-workspace-tabs-story-frame--constrained {
+  width: 30rem;
+  border: 1px solid var(--ui-workspace-border);
+}

@@ -191,7 +191,9 @@
     "./workspace/settings": "./src/shared/workspace/settings/index.ts",
     "./workspace/sidebar-empty": "./src/shared/workspace/sidebar-empty/index.ts",
     "./workspace/sidebar-toggle": "./src/shared/workspace/sidebar-toggle/index.ts",
+    "./workspace/tabs": "./src/shared/workspace/tabs/index.ts",
     "./workspace/tokens": "./src/shared/workspace/workspace.tokens.ts",
+    "./workspace/view-host": "./src/shared/workspace/view-host/index.ts",
     "./workspace/workspace.tokens.css": "./src/shared/workspace/workspace.tokens.css"
   }
 }

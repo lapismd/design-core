@@ -1,0 +1,29 @@
+import { Meta, Canvas, Primary, Source } from "@storybook/addon-docs/blocks";
+import * as WorkspaceViewHostStories from "./WorkspaceViewHost.stories.svelte";
+
+<Meta of={WorkspaceViewHostStories} />
+
+# WorkspaceViewHost
+
+Connects a serialized tab to the controller-owned view registry. Applications
+register view factories once; leaves retain only JSON-safe type and state.
+
+## Usage
+
+<Source
+  language="html"
+  code={
+    '<WorkspaceViewHost {controller} {tab} hostId="root" paneId={pane.id} />'
+  }
+/>
+
+<Primary />
+
+## Examples
+
+<Canvas of={WorkspaceViewHostStories.MissingViewFallback} />
+
+## Style
+
+Colocated CSS: `WorkspaceViewHost.css`. View content owns its own paint while
+the host supplies full-size clipping and Workspace surface tokens.

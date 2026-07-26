@@ -78,7 +78,7 @@ Compatibility aliases are removed only through an explicit reviewed slice.
 | Configuration and settings model | `settings/*.ts`, `core/built-in-settings*`                 | `core/settings/`           | Complete            | Pass    | Pending  | N/A     | Pending |
 | Plugin lifecycle                 | `core/plugin-manager*`, UI registry                        | `core/plugins/`            | Complete            | Pass    | Pending  | N/A     | Pending |
 | Notifications model              | notice and notification managers                           | `core/notifications/`      | Complete            | Pass    | Pending  | N/A     | Pending |
-| Tabs and splits                  | tab, pane, tree, drag modules                              | component families         | Pending             | Pending | Pending  | Pending | Pending |
+| Tabs and splits                  | tab, pane, tree, drag modules                              | component families         | In progress         | Pass    | Partial  | Pending | Pending |
 | Sidebars and groups              | sidebar modules                                            | component families         | Pending             | Pending | Pending  | Pending | Pending |
 | View chrome and menus            | view header, empty, menus                                  | component families         | In progress         | Pass    | Partial  | Pending | Pending |
 | Windows and overlays             | window and drop modules                                    | component families         | In progress         | Pass    | Partial  | Pending | Pending |
@@ -144,7 +144,26 @@ workflow.
 - Production components use semantic markup, colocated native CSS, public
   `--ui-workspace-*` tokens, and no shadcn/Tailwind primitives.
 - Focused drag/drop unit tests: 2 files and 6 tests pass.
-- Focused Storybook interaction and accessibility tests: 12 stories pass.
+- The stories are indexed and previewed in the target Storybook. The MCP
+  runner's focused Svelte-CSF selection currently reports them as skipped in
+  this JJ workspace because Storybook change detection expects Git metadata.
+  Supplemental focused execution through the same Storybook Vitest project is
+  recorded per component slice below.
+- `pnpm check:no-tailwind`: pass.
+- `pnpm check`: pass with zero Svelte errors or warnings.
+- Visual Delta candidate baselines remain pending explicit human approval; no
+  committed baseline image was created or replaced in this slice.
+
+### Controller-backed tabs and view host
+
+- Added source-shaped top tabs, hidden-scrollbar overflow, priority close
+  geometry, controller-owned add/select/close mutations, registered drop
+  targets, a Svelte view host, and missing-view fallback.
+- Replaced inert Tailwind fixture classes with native Storybook fixture CSS.
+- Focused Storybook interaction and accessibility execution: 2 files and 5
+  stories pass through the repository's Storybook Vitest project.
+- The required MCP focused run was also invoked; its JJ-workspace story
+  selection limitation remains as documented above.
 - `pnpm check:no-tailwind`: pass.
 - `pnpm check`: pass with zero Svelte errors or warnings.
 - Visual Delta candidate baselines remain pending explicit human approval; no

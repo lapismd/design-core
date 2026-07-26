@@ -13,3 +13,5 @@ export * from "./icon/index.js";
 export * from "./settings/index.js";
 export * from "./sidebar-empty/index.js";
 export * from "./sidebar-toggle/index.js";
+export * from "./tabs/index.js";
+export * from "./view-host/index.js";
