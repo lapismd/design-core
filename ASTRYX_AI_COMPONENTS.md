@@ -24,28 +24,28 @@ from the local Svelte 5 implementation and its verification status.
 Status values are `planned`, `implemented`, `tested`, and `reviewed`. Visual
 status stays `pending-review` until a human reviews the Storybook previews.
 
-| Upstream component         | Local export                       | Stability    | Story   | Tests   | Visual         |
-| -------------------------- | ---------------------------------- | ------------ | ------- | ------- | -------------- |
-| `ChatLayout`               | `Chat.Layout`                      | stable       | planned | planned | pending-review |
-| `ChatLayoutScrollButton`   | `Chat.LayoutScrollButton`          | stable       | planned | planned | pending-review |
-| `ChatMessageList`          | `Chat.MessageList`                 | stable       | planned | planned | pending-review |
-| `ChatMessage`              | `Chat.Message`                     | stable       | planned | planned | pending-review |
-| `ChatMessageBubble`        | `Chat.MessageBubble`               | stable       | planned | planned | pending-review |
-| `ChatMessageMetadata`      | `Chat.MessageMetadata`             | stable       | planned | planned | pending-review |
-| `ChatSystemMessage`        | `Chat.SystemMessage`               | stable       | planned | planned | pending-review |
-| `ChatComposer`             | `Chat.Composer`                    | stable       | planned | planned | pending-review |
-| `ChatComposerInput`        | `Chat.ComposerInput`               | stable       | planned | planned | pending-review |
-| `ChatComposerDrawer`       | `Chat.ComposerDrawer`              | stable       | planned | planned | pending-review |
-| `ChatSendButton`           | `Chat.SendButton`                  | stable       | planned | planned | pending-review |
-| `ChatComposerTokenElement` | `Chat.ComposerToken`               | stable       | planned | planned | pending-review |
-| `ChatTokenizedText`        | `Chat.TokenizedText`               | stable       | planned | planned | pending-review |
-| `ChatToolCalls`            | `Chat.ToolCalls`                   | stable       | planned | planned | pending-review |
-| `ChatDictationButton`      | `Chat.DictationButton`             | stable       | planned | planned | pending-review |
-| `ChatReasoning`            | `ExperimentalChat.Reasoning`       | experimental | planned | planned | pending-review |
-| `ChatReactionBar`          | `ExperimentalChat.ReactionBar`     | experimental | planned | planned | pending-review |
-| `ChatEmojiPicker`          | `ExperimentalChat.EmojiPicker`     | experimental | planned | planned | pending-review |
-| `ChatTypingIndicator`      | `ExperimentalChat.TypingIndicator` | experimental | planned | planned | pending-review |
-| `ChatUnreadDivider`        | `ExperimentalChat.UnreadDivider`   | experimental | planned | planned | pending-review |
+| Upstream component         | Local export                       | Stability    | Story       | Tests   | Visual         |
+| -------------------------- | ---------------------------------- | ------------ | ----------- | ------- | -------------- |
+| `ChatLayout`               | `Chat.Layout`                      | stable       | implemented | passing | pending-review |
+| `ChatLayoutScrollButton`   | `Chat.LayoutScrollButton`          | stable       | implemented | passing | pending-review |
+| `ChatMessageList`          | `Chat.MessageList`                 | stable       | implemented | passing | pending-review |
+| `ChatMessage`              | `Chat.Message`                     | stable       | implemented | passing | pending-review |
+| `ChatMessageBubble`        | `Chat.MessageBubble`               | stable       | implemented | passing | pending-review |
+| `ChatMessageMetadata`      | `Chat.MessageMetadata`             | stable       | implemented | passing | pending-review |
+| `ChatSystemMessage`        | `Chat.SystemMessage`               | stable       | implemented | passing | pending-review |
+| `ChatComposer`             | `Chat.Composer`                    | stable       | planned     | planned | pending-review |
+| `ChatComposerInput`        | `Chat.ComposerInput`               | stable       | planned     | planned | pending-review |
+| `ChatComposerDrawer`       | `Chat.ComposerDrawer`              | stable       | planned     | planned | pending-review |
+| `ChatSendButton`           | `Chat.SendButton`                  | stable       | planned     | planned | pending-review |
+| `ChatComposerTokenElement` | `Chat.ComposerToken`               | stable       | planned     | planned | pending-review |
+| `ChatTokenizedText`        | `Chat.TokenizedText`               | stable       | planned     | planned | pending-review |
+| `ChatToolCalls`            | `Chat.ToolCalls`                   | stable       | planned     | planned | pending-review |
+| `ChatDictationButton`      | `Chat.DictationButton`             | stable       | planned     | planned | pending-review |
+| `ChatReasoning`            | `ExperimentalChat.Reasoning`       | experimental | planned     | planned | pending-review |
+| `ChatReactionBar`          | `ExperimentalChat.ReactionBar`     | experimental | planned     | planned | pending-review |
+| `ChatEmojiPicker`          | `ExperimentalChat.EmojiPicker`     | experimental | planned     | planned | pending-review |
+| `ChatTypingIndicator`      | `ExperimentalChat.TypingIndicator` | experimental | planned     | planned | pending-review |
+| `ChatUnreadDivider`        | `ExperimentalChat.UnreadDivider`   | experimental | planned     | planned | pending-review |
 
 The package subpaths are:
 
@@ -59,16 +59,16 @@ The root `@stevejuma/ui/ai` barrel exposes the same families as `Chat` and
 
 ## Svelte controllers and composition
 
-| Public API                | Purpose                                                                  | Status  |
-| ------------------------- | ------------------------------------------------------------------------ | ------- |
-| `createStreamScroll`      | lock thresholds, reduced-motion-aware spring scrolling, resize lifecycle | planned |
-| `createNewMessages`       | new-message state, content observation, dismissal                        | planned |
-| `createComposerTokens`    | token DOM lifecycle, selection boundaries, serialization                 | planned |
-| `createPasteAsToken`      | long-paste conversion with configurable threshold                        | planned |
-| `createSpeechRecognition` | progressive Web Speech/Web Audio adapter and cleanup                     | planned |
-| `createDictation`         | composer-aware dictation orchestration                                   | planned |
-| `useLayoutContext`        | custom message-list composition                                          | planned |
-| `useComposerContext`      | custom composer/input composition                                        | planned |
+| Public API                | Purpose                                                                  | Status      |
+| ------------------------- | ------------------------------------------------------------------------ | ----------- |
+| `createStreamScroll`      | lock thresholds, reduced-motion-aware spring scrolling, resize lifecycle | tested      |
+| `createNewMessages`       | new-message state, content observation, dismissal                        | tested      |
+| `createComposerTokens`    | token DOM lifecycle, selection boundaries, serialization                 | implemented |
+| `createPasteAsToken`      | long-paste conversion with configurable threshold                        | tested      |
+| `createSpeechRecognition` | progressive Web Speech/Web Audio adapter and cleanup                     | tested      |
+| `createDictation`         | composer-aware dictation orchestration                                   | implemented |
+| `useLayoutContext`        | custom message-list composition                                          | implemented |
+| `useComposerContext`      | custom composer/input composition                                        | implemented |
 
 Trigger-menu internals are intentionally private.
 
