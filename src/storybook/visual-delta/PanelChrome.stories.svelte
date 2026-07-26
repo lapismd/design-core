@@ -10,6 +10,7 @@
   import ReactThemeHost from "storybook-addon-visual-delta/src/stories/ReactThemeHost.svelte";
   import {
     BaselineAccordionFixture,
+    BaselineHistoryViewFixture,
     ImageGalleryFixture,
     LiveVisibilityFixture,
     PanelChromeFixture,
@@ -44,6 +45,36 @@
 >
   {#snippet template()}
     <ReactThemeHost element={React.createElement(PanelChromeFixture)} />
+  {/snippet}
+</Story>
+
+<Story
+  name="Baseline history"
+  play={async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(
+      await canvas.findByRole("heading", { name: "Default history" }),
+    ).toBeInTheDocument();
+    await expect(
+      canvas.getByRole("radio", {
+        name: "Use Tune entry action spacing as Before",
+      }),
+    ).toBeChecked();
+    await expect(
+      canvas.getByRole("radio", {
+        name: "Use Uncommitted baseline as After",
+      }),
+    ).toBeChecked();
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Load more baseline history" }),
+    );
+    await expect(
+      await canvas.findByText("Create entry actions baseline"),
+    ).toBeInTheDocument();
+  }}
+>
+  {#snippet template()}
+    <ReactThemeHost element={React.createElement(BaselineHistoryViewFixture)} />
   {/snippet}
 </Story>
 
