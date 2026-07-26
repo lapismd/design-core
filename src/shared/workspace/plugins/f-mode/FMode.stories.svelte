@@ -4,6 +4,7 @@
   import AppShellRoot from "../../app-shell/AppShellRoot.svelte";
   import { AppShellController } from "../../core/app-shell-controller.svelte.js";
   import { APP_SHELL_SETTING_IDS } from "../../core/built-in-settings.svelte.js";
+  import { withLapisStorybookReference } from "../../reference/lapis-visual-delta.js";
   import FModeStorySurface from "./FModeStorySurface.svelte";
   import { fModePlugin } from "./f-mode-plugin.js";
   import { FMODE_SETTING_IDS } from "./settings.js";
@@ -87,7 +88,7 @@
 
 <Story
   name="Active hints"
-  tags={["visual-pending"]}
+  tags={["visual-pending", "lapis-reference-visual"]}
   play={async ({ canvas, canvasElement }) => {
     canvas.getByRole("button", { name: "Open note" }).focus();
     await openFMode(activeApp);
@@ -97,16 +98,10 @@
     await expect(canvas.getByText("4 targets")).toBeVisible();
   }}
   parameters={{
-    visualDelta: {
-      images: [
-        "/visual-baselines/workspace/plugins/f-mode/active-hints-chromium-darwin.png",
-      ],
-      opacity: 0.5,
-      colorInversion: false,
-      align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
+    visualDelta: withLapisStorybookReference(
+      "/visual-baselines/workspace/plugins/f-mode/active-hints-chromium-darwin.png",
+      "workspace-shell-plugins-f-mode--active-chromium-darwin.png",
+    ),
   }}
 >
   {#snippet template()}

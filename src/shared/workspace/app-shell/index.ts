@@ -12,6 +12,7 @@ import AppShellRibbon from "./AppShellRibbon.svelte";
 import AppShellRightSidebar from "./AppShellRightSidebar.svelte";
 import AppShellRoot from "./AppShellRoot.svelte";
 import AppShellSettings from "./AppShellSettings.svelte";
+import AppShellSettingsDialog from "./AppShellSettingsDialog.svelte";
 import AppShellSidebar from "./AppShellSidebar.svelte";
 import AppShellStatusBar from "./AppShellStatusBar.svelte";
 import AppShellSurface from "./AppShellSurface.svelte";
@@ -33,6 +34,7 @@ export {
   AppShellRightSidebar,
   AppShellRoot,
   AppShellSettings,
+  AppShellSettingsDialog,
   AppShellSidebar,
   AppShellStatusBar,
   AppShellSurface,
@@ -58,5 +60,6 @@ export const AppShell = {
   FloatingLayer: AppShellFloatingLayer,
   StatusBar: AppShellStatusBar,
   Settings: AppShellSettings,
+  SettingsDialog: AppShellSettingsDialog,
   Surface: AppShellSurface,
 } as const;

@@ -266,6 +266,22 @@
 <Story
   name="Default surface"
   tags={["visual-pending"]}
+  play={async ({ canvas }) => {
+    const settingsButton = canvas.getByRole("button", {
+      name: "Open settings",
+    });
+    await userEvent.click(settingsButton);
+    await expect(
+      canvas.getByRole("dialog", { name: "Settings" }),
+    ).toBeVisible();
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Close settings" }),
+    );
+    await expect(
+      canvas.queryByRole("dialog", { name: "Settings" }),
+    ).not.toBeInTheDocument();
+    await expect(settingsButton).toHaveFocus();
+  }}
   parameters={{
     visualDelta: {
       images: [
@@ -282,7 +298,7 @@
   {#snippet template()}
     <div class="ui-app-shell-story-frame">
       <AppShell.Root controller={surfaceApp} theme="inherit">
-        <AppShell.Surface />
+        <AppShell.Surface workspaceLabel="Workspace demo" />
       </AppShell.Root>
     </div>
   {/snippet}

@@ -1,6 +1,7 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect } from "storybook/test";
+  import { withLapisStorybookReference } from "../reference/lapis-visual-delta.js";
   import WorkspaceDropOverlay from "./WorkspaceDropOverlay.svelte";
 
   const { Story } = defineMeta({
@@ -19,23 +20,17 @@
 
 <Story
   name="Centre target"
-  tags={["visual-pending"]}
+  tags={["visual-pending", "lapis-reference-visual"]}
   play={async ({ canvasElement }) => {
     await expect(
       canvasElement.querySelector('[data-drop-position="center"]'),
     ).not.toBeNull();
   }}
   parameters={{
-    visualDelta: {
-      images: [
-        "/visual-baselines/workspace/drop-overlay/centre-target-chromium-darwin.png",
-      ],
-      opacity: 0.5,
-      colorInversion: false,
-      align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
+    visualDelta: withLapisStorybookReference(
+      "/visual-baselines/workspace/drop-overlay/centre-target-chromium-darwin.png",
+      "workspace-shell-components-drag-and-drop-overlays--centre-chromium-darwin.png",
+    ),
   }}
 >
   {#snippet template()}
@@ -45,18 +40,12 @@
 
 <Story
   name="Left split target"
-  tags={["visual-pending"]}
+  tags={["visual-pending", "lapis-reference-visual"]}
   parameters={{
-    visualDelta: {
-      images: [
-        "/visual-baselines/workspace/drop-overlay/left-split-target-chromium-darwin.png",
-      ],
-      opacity: 0.5,
-      colorInversion: false,
-      align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
+    visualDelta: withLapisStorybookReference(
+      "/visual-baselines/workspace/drop-overlay/left-split-target-chromium-darwin.png",
+      "workspace-shell-components-drag-and-drop-overlays--left-chromium-darwin.png",
+    ),
   }}
 >
   {#snippet template()}
@@ -66,18 +55,12 @@
 
 <Story
   name="Right split target"
-  tags={["visual-pending"]}
+  tags={["visual-pending", "lapis-reference-visual"]}
   parameters={{
-    visualDelta: {
-      images: [
-        "/visual-baselines/workspace/drop-overlay/right-split-target-chromium-darwin.png",
-      ],
-      opacity: 0.5,
-      colorInversion: false,
-      align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
+    visualDelta: withLapisStorybookReference(
+      "/visual-baselines/workspace/drop-overlay/right-split-target-chromium-darwin.png",
+      "workspace-shell-components-drag-and-drop-overlays--right-chromium-darwin.png",
+    ),
   }}
 >
   {#snippet template()}
@@ -87,18 +70,12 @@
 
 <Story
   name="Top split target"
-  tags={["visual-pending"]}
+  tags={["visual-pending", "lapis-reference-visual"]}
   parameters={{
-    visualDelta: {
-      images: [
-        "/visual-baselines/workspace/drop-overlay/top-split-target-chromium-darwin.png",
-      ],
-      opacity: 0.5,
-      colorInversion: false,
-      align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
+    visualDelta: withLapisStorybookReference(
+      "/visual-baselines/workspace/drop-overlay/top-split-target-chromium-darwin.png",
+      "workspace-shell-components-drag-and-drop-overlays--top-chromium-darwin.png",
+    ),
   }}
 >
   {#snippet template()}
@@ -108,18 +85,12 @@
 
 <Story
   name="Bottom split target"
-  tags={["visual-pending"]}
+  tags={["visual-pending", "lapis-reference-visual"]}
   parameters={{
-    visualDelta: {
-      images: [
-        "/visual-baselines/workspace/drop-overlay/bottom-split-target-chromium-darwin.png",
-      ],
-      opacity: 0.5,
-      colorInversion: false,
-      align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
+    visualDelta: withLapisStorybookReference(
+      "/visual-baselines/workspace/drop-overlay/bottom-split-target-chromium-darwin.png",
+      "workspace-shell-components-drag-and-drop-overlays--bottom-chromium-darwin.png",
+    ),
   }}
 >
   {#snippet template()}

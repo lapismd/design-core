@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "source": "Standalone Lapis workspace-shell Storybook",
+  "sourcePackage": "@lapis-notes/workspace-shell",
+  "sourceSnapshotRevision": "b06d1e3f58c3",
+  "sourceLapisRevision": "a371198e495d9e4e465c2960a04b3a4fd11f4023",
+  "sourcePath": "app-shell/tests/visual/storybook.spec.ts-snapshots",
+  "capture": {
+    "browser": "Playwright pinned Chromium",
+    "viewport": { "width": 1280, "height": 900 },
+    "deviceScaleFactor": 3,
+    "scale": "device",
+    "subject": "Story root, or page when a shell-scoped portal is visible",
+    "animations": "disabled",
+    "fonts": "awaited"
+  },
+  "assetCount": 52,
+  "inventorySha256": "9a8556f6cd124460b0026a7e605f7d98dd5ff57085cd694d0b1fc9e52bcdeb83",
+  "publicBasePath": "/lapis-reference/storybook",
+  "canonicalImmutable": true,
+  "policy": "These source-story references are read-only. Normal UI visual tests and baseline updates may only write candidate images under tests/visual/storybook.spec.ts-snapshots.",
+  "wiredComparisons": [
+    {
+      "source": "workspace-shell-demo-reusable-framework--overview-chromium-darwin.png",
+      "targetStoryId": "workspace-demo-reusable-framework--overview"
+    },
+    {
+      "source": "workspace-shell-shell-full-shell--mobile-chromium-darwin.png",
+      "targetStoryId": "workspace-demo-reusable-framework--mobile-composition"
+    },
+    {
+      "source": "workspace-shell-components-tabs--constrained-chromium-darwin.png",
+      "targetStoryId": "workspace-components-tabs--constrained-hidden-scrollbar-row"
+    },
+    {
+      "source": "workspace-shell-components-tabs--stacked-chromium-darwin.png",
+      "targetStoryId": "workspace-components-stacked-tabs--activates-and-closes-vertical-tabs"
+    },
+    {
+      "source": "workspace-shell-components-sidebar-groups--grouped-chromium-darwin.png",
+      "targetStoryId": "workspace-components-sidebar--icon-tabs-and-grouped-panels"
+    },
+    {
+      "source": "workspace-shell-components-sidebar-groups--partially-collapsed-chromium-darwin.png",
+      "targetStoryId": "workspace-components-sidebar-group--partially-collapsed-panels"
+    },
+    {
+      "source": "workspace-shell-components-drag-and-drop-overlays--centre-chromium-darwin.png",
+      "targetStoryId": "workspace-components-drop-overlay--centre-target"
+    },
+    {
+      "source": "workspace-shell-components-drag-and-drop-overlays--left-chromium-darwin.png",
+      "targetStoryId": "workspace-components-drop-overlay--left-split-target"
+    },
+    {
+      "source": "workspace-shell-components-drag-and-drop-overlays--right-chromium-darwin.png",
+      "targetStoryId": "workspace-components-drop-overlay--right-split-target"
+    },
+    {
+      "source": "workspace-shell-components-drag-and-drop-overlays--top-chromium-darwin.png",
+      "targetStoryId": "workspace-components-drop-overlay--top-split-target"
+    },
+    {
+      "source": "workspace-shell-components-drag-and-drop-overlays--bottom-chromium-darwin.png",
+      "targetStoryId": "workspace-components-drop-overlay--bottom-split-target"
+    },
+    {
+      "source": "workspace-shell-components-declarative-settings--settings-chromium-darwin.png",
+      "targetStoryId": "workspace-components-settings--controller-owned-workspace-settings"
+    },
+    {
+      "source": "workspace-shell-components-declarative-settings--all-supported-controls-chromium-darwin.png",
+      "targetStoryId": "workspace-components-settings--all-supported-controls"
+    },
+    {
+      "source": "workspace-shell-components-floating-windows--states-chromium-darwin.png",
+      "targetStoryId": "workspace-components-floating-layer--free-and-minimized-windows"
+    },
+    {
+      "source": "workspace-shell-components-view-header-and-menus--header-and-menu-chromium-darwin.png",
+      "targetStoryId": "workspace-components-view-header--breadcrumbs-actions-and-pane-menu"
+    },
+    {
+      "source": "workspace-shell-components-empty-and-missing-views--empty-view-chromium-darwin.png",
+      "targetStoryId": "workspace-components-empty-view--empty-leaf-actions"
+    },
+    {
+      "source": "workspace-shell-components-empty-and-missing-views--missing-view-chromium-darwin.png",
+      "targetStoryId": "workspace-components-view-host--missing-view-fallback"
+    },
+    {
+      "source": "workspace-shell-plugins-f-mode--active-chromium-darwin.png",
+      "targetStoryId": "workspace-plugins-f-mode--active-hints"
+    },
+    {
+      "source": "workspace-shell-plugins-notifications--populated-history-chromium-darwin.png",
+      "targetStoryId": "workspace-plugins-notifications--populated-history"
+    },
+    {
+      "source": "workspace-shell-plugins-notifications--toast-severities-chromium-darwin.png",
+      "targetStoryId": "workspace-plugins-notifications--toast-severities"
+    }
+  ]
+}

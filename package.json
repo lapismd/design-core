@@ -177,6 +177,7 @@
     "./forms/UnifiedReviewDiff.svelte": "./src/shared/forms/form-review/UnifiedReviewDiff.svelte",
     "./forms/FieldReviewActions.svelte": "./src/shared/forms/form-review/FieldReviewActions.svelte",
     "./styles.css": "./src/styles.css",
+    "./themes/lapis.css": "./src/themes/lapis.css",
     "./ai": "./src/shared/ai/index.ts",
     "./ai/tokens": "./src/shared/ai/ai.tokens.ts",
     "./ai/chat": "./src/shared/ai/chat/index.ts",

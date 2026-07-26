@@ -43,6 +43,17 @@ captures.
 
 Normal Visual Delta and test commands must never rewrite these assets.
 
+The complete standalone Storybook snapshot set is retained separately at
+`reference/lapis/workspace-shell/storybook/`. Its provenance manifest pins 52
+source-story captures to validated app-shell slice `b06d1e3f58c3`, records the
+1280 × 900 / 3× capture contract and inventory digest, and maps equivalent
+target stories. Mapped Visual Delta stories expose a **Lapis source** mode:
+
+- the committed target candidate remains the normal first baseline;
+- the reference image always comes from the immutable source snapshot tree;
+- the live target story switches to `theme: "lapis"` for source comparison;
+- normal candidate update commands cannot write the reference tree.
+
 `pnpm workspace:visual:audit` is the read-only development gate for Workspace
 story classification and snapshot ownership. After candidate creation is
 approved, `pnpm workspace:visual:verify` additionally requires a candidate
@@ -60,6 +71,11 @@ replacing that implementation with:
 - component-local native CSS;
 - public `--ui-workspace-*` tokens;
 - `data-ui-component` and `data-ui-part` ownership markers.
+
+The optional `@stevejuma/ui/themes/lapis.css` brand theme maps the pinned Lapis
+light/dark palette, shape, and shell geometry onto the host and Workspace token
+contracts. It is selected independently from the Storybook light/dark toolbar,
+so either Lapis colour mode can be reviewed without changing component code.
 
 Any markup deviation required by this adaptation must be recorded beside the
 component in `PLAN.md` and covered by behavior and visual tests.

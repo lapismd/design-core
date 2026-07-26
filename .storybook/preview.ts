@@ -9,13 +9,15 @@ installFocusPrototypeGuard();
 const preview: Preview = {
   tags: ["autodocs", "test"],
   globalTypes: {
-    // addon-themes hides its switcher when only one brand exists; keep a
-    // paintbrush toolbar so "default" is selectable (and extensible) today.
+    // Brand selection is independent from the light/dark colour mode.
     theme: {
       description: "Brand theme",
       toolbar: {
         icon: "paintbrush",
-        items: [{ value: "default", title: "default" }],
+        items: [
+          { value: "default", title: "Default" },
+          { value: "lapis", title: "Lapis" },
+        ],
         dynamicTitle: true,
       },
     },
@@ -30,6 +32,7 @@ const preview: Preview = {
     withThemeByDataAttribute({
       themes: {
         default: "default",
+        lapis: "lapis",
       },
       defaultTheme: "default",
       attributeName: "data-ui-theme",

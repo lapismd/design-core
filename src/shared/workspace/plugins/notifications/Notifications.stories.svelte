@@ -5,6 +5,7 @@
   import { AppShellController } from "../../core/app-shell-controller.svelte.js";
   import { APP_SHELL_SETTING_IDS } from "../../core/built-in-settings.svelte.js";
   import type { NotificationProgressHandle } from "../../core/notification-manager.svelte.js";
+  import { withLapisStorybookReference } from "../../reference/lapis-visual-delta.js";
   import NotificationsStorySurface from "./NotificationsStorySurface.svelte";
   import {
     NOTIFICATIONS_PLUGIN_ID,
@@ -80,7 +81,7 @@
 
 <Story
   name="Toast severities"
-  tags={["visual-pending"]}
+  tags={["visual-pending", "lapis-reference-visual"]}
   play={async ({ canvas, canvasElement }) => {
     await waitForPlugin(toastApp);
     toastApp.notifications.clearTransient();
@@ -117,16 +118,10 @@
     });
   }}
   parameters={{
-    visualDelta: {
-      images: [
-        "/visual-baselines/workspace/plugins/notifications/toast-severities-chromium-darwin.png",
-      ],
-      opacity: 0.5,
-      colorInversion: false,
-      align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
+    visualDelta: withLapisStorybookReference(
+      "/visual-baselines/workspace/plugins/notifications/toast-severities-chromium-darwin.png",
+      "workspace-shell-plugins-notifications--toast-severities-chromium-darwin.png",
+    ),
   }}
 >
   {#snippet template()}
@@ -142,7 +137,7 @@
 
 <Story
   name="Populated history"
-  tags={["visual-pending"]}
+  tags={["visual-pending", "lapis-reference-visual"]}
   play={async ({ canvas, canvasElement }) => {
     await waitForPlugin(historyApp);
     await historyApp.notifications.clearAll();
@@ -172,16 +167,10 @@
     await expect(canvas.getByText("Sync paused")).toBeVisible();
   }}
   parameters={{
-    visualDelta: {
-      images: [
-        "/visual-baselines/workspace/plugins/notifications/populated-history-chromium-darwin.png",
-      ],
-      opacity: 0.5,
-      colorInversion: false,
-      align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
+    visualDelta: withLapisStorybookReference(
+      "/visual-baselines/workspace/plugins/notifications/populated-history-chromium-darwin.png",
+      "workspace-shell-plugins-notifications--populated-history-chromium-darwin.png",
+    ),
   }}
 >
   {#snippet template()}

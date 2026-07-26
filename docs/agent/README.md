@@ -23,15 +23,15 @@ Per-component docs are not topics here — use `pnpm ui components`.
 
 ## Topic list
 
-| Topic             | File                 | Purpose                                   |
-| ----------------- | -------------------- | ----------------------------------------- |
-| `layers`          | `layers.md`          | shared package-layer boundaries           |
+| Topic             | File                 | Purpose                                    |
+| ----------------- | -------------------- | ------------------------------------------ |
+| `layers`          | `layers.md`          | shared package-layer boundaries            |
 | `workspace`       | `workspace.md`       | workspace framework boundary and migration |
-| `shadcn`          | `shadcn.md`          | `ui:add` / inspect / docs sync            |
-| `forms`           | `forms.md`           | structured forms contract                 |
-| `testing`         | `testing.md`         | stories, checks, visual baselines         |
-| `vcs`             | `vcs.md`             | commit after verified changes (prefer jj) |
-| `llms-extraction` | `llms-extraction.md` | deferred catalog extraction notes         |
+| `shadcn`          | `shadcn.md`          | `ui:add` / inspect / docs sync             |
+| `forms`           | `forms.md`           | structured forms contract                  |
+| `testing`         | `testing.md`         | stories, checks, visual baselines          |
+| `vcs`             | `vcs.md`             | commit after verified changes (prefer jj)  |
+| `llms-extraction` | `llms-extraction.md` | deferred catalog extraction notes          |
 
 ## Storybook
 

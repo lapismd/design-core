@@ -8,6 +8,7 @@
   } from "../core/layout.js";
   import type { WorkspaceLayoutChangeEvent } from "../core/types.js";
   import { WorkspaceShellController } from "../core/workspace-controller.svelte.js";
+  import { withLapisStorybookReference } from "../reference/lapis-visual-delta.js";
   import WorkspaceTabs from "./WorkspaceTabs.svelte";
   import "./WorkspaceTabs.stories.css";
 
@@ -182,7 +183,7 @@
 
 <Story
   name="Constrained hidden-scrollbar row"
-  tags={["visual-pending"]}
+  tags={["visual-pending", "lapis-reference-visual"]}
   play={async ({ canvasElement }) => {
     const row = canvasElement.querySelector<HTMLElement>(
       ".ui-workspace-tabs__list",
@@ -204,16 +205,10 @@
     );
   }}
   parameters={{
-    visualDelta: {
-      images: [
-        "/visual-baselines/workspace/tabs/constrained-hidden-scrollbar-row-chromium-darwin.png",
-      ],
-      opacity: 0.5,
-      colorInversion: false,
-      align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
+    visualDelta: withLapisStorybookReference(
+      "/visual-baselines/workspace/tabs/constrained-hidden-scrollbar-row-chromium-darwin.png",
+      "workspace-shell-components-tabs--constrained-chromium-darwin.png",
+    ),
   }}
 >
   {#snippet template()}

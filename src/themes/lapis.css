@@ -1,0 +1,155 @@
+/**
+ * Lapis brand theme adapted to the @stevejuma/ui token contract.
+ *
+ * Source: lapis-notes/packages/ui/src/lib/styles/theme/{light,dark,aliases}.css
+ * Source revision: a371198e495d9e4e465c2960a04b3a4fd11f4023
+ *
+ * The theme deliberately supplies host-level semantic tokens as well as the
+ * public Workspace tokens. Components continue to depend only on the target
+ * repository's token contracts.
+ */
+[data-ui-theme="lapis"] {
+  --radius: 0.5rem;
+  --lapis-accent-h: 258;
+  --lapis-accent-s: 88%;
+  --lapis-accent-l: 66%;
+  --lapis-accent-hsl: var(--lapis-accent-h), var(--lapis-accent-s),
+    var(--lapis-accent-l);
+  --lapis-accent: hsl(var(--lapis-accent-hsl));
+  --lapis-accent-hover: hsl(
+    calc(var(--lapis-accent-h) - 1),
+    calc(var(--lapis-accent-s) * 1.01),
+    calc(var(--lapis-accent-l) * 1.075)
+  );
+  --lapis-accent-subtle: hsl(
+    calc(var(--lapis-accent-h) - 3),
+    calc(var(--lapis-accent-s) * 1.02),
+    calc(var(--lapis-accent-l) * 1.15)
+  );
+
+  --background: #ffffff;
+  --foreground: #222222;
+  --card: #fafafa;
+  --card-foreground: #222222;
+  --popover: #ffffff;
+  --popover-foreground: #222222;
+  --primary: var(--lapis-accent-hover);
+  --primary-foreground: #ffffff;
+  --secondary: #f6f6f6;
+  --secondary-foreground: #222222;
+  --muted: #f6f6f6;
+  --muted-foreground: #5c5c5c;
+  --accent: #f6f6f6;
+  --accent-foreground: #222222;
+  --destructive: #e93147;
+  --warning: #ec7500;
+  --success: #08b94e;
+  --border: #e0e0e0;
+  --input: #d4d4d4;
+  --ring: var(--lapis-accent);
+  --sidebar: #f6f6f6;
+  --sidebar-foreground: #222222;
+  --sidebar-primary: var(--lapis-accent-hover);
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #e3e3e3;
+  --sidebar-accent-foreground: #222222;
+  --sidebar-border: #e0e0e0;
+  --sidebar-ring: var(--lapis-accent);
+
+  --ui-workspace-background: #ffffff;
+  --ui-workspace-foreground: #222222;
+  --ui-workspace-panel: #f6f6f6;
+  --ui-workspace-panel-foreground: #222222;
+  --ui-workspace-muted: #f6f6f6;
+  --ui-workspace-muted-foreground: #5c5c5c;
+  --ui-workspace-popover: #ffffff;
+  --ui-workspace-popover-foreground: #222222;
+  --ui-workspace-border: #e0e0e0;
+  --ui-workspace-border-strong: #d4d4d4;
+  --ui-workspace-accent: var(--lapis-accent-hover);
+  --ui-workspace-accent-foreground: #ffffff;
+  --ui-workspace-selection: hsla(var(--lapis-accent-hsl), 0.2);
+  --ui-workspace-destructive: #e93147;
+  --ui-workspace-warning: #ec7500;
+  --ui-workspace-focus-ring: var(--lapis-accent);
+  --ui-workspace-radius-small: 4px;
+  --ui-workspace-radius-medium: 8px;
+  --ui-workspace-radius-large: 12px;
+  --ui-workspace-shadow: none;
+  --ui-workspace-tab-height: 40px;
+  --ui-workspace-tab-width: 200px;
+  --ui-workspace-tab-max-width: 320px;
+  --ui-workspace-tab-curve: 6px;
+  --ui-workspace-tab-active-background: #ffffff;
+  --ui-workspace-tab-container-background: #f6f6f6;
+  --ui-workspace-tab-divider: #d4d4d4;
+  --ui-workspace-stacked-shadow: -8px 0 8px rgb(0 0 0 / 5%);
+  --ui-workspace-stacked-pane-width: 700px;
+  --ui-workspace-sidebar-header-height: 32px;
+  --ui-workspace-ribbon-width: 44px;
+  --ui-workspace-status-height: 24px;
+}
+
+[data-ui-theme="lapis"].dark,
+.dark [data-ui-theme="lapis"] {
+  --lapis-accent-hover: hsl(
+    calc(var(--lapis-accent-h) - 3),
+    calc(var(--lapis-accent-s) * 1.02),
+    calc(var(--lapis-accent-l) * 1.15)
+  );
+  --lapis-accent-subtle: hsl(
+    calc(var(--lapis-accent-h) - 5),
+    calc(var(--lapis-accent-s) * 1.05),
+    calc(var(--lapis-accent-l) * 1.29)
+  );
+
+  --background: #1e1e1e;
+  --foreground: #dadada;
+  --card: #242424;
+  --card-foreground: #dadada;
+  --popover: #262626;
+  --popover-foreground: #dadada;
+  --primary: var(--lapis-accent);
+  --primary-foreground: #ffffff;
+  --secondary: #262626;
+  --secondary-foreground: #dadada;
+  --muted: #262626;
+  --muted-foreground: #b3b3b3;
+  --accent: #363636;
+  --accent-foreground: #dadada;
+  --destructive: #fb464c;
+  --warning: #e9973f;
+  --success: #44cf6e;
+  --border: #363636;
+  --input: #3f3f3f;
+  --ring: var(--lapis-accent-hover);
+  --sidebar: #262626;
+  --sidebar-foreground: #dadada;
+  --sidebar-primary: var(--lapis-accent);
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #363636;
+  --sidebar-accent-foreground: #dadada;
+  --sidebar-border: #363636;
+  --sidebar-ring: var(--lapis-accent-hover);
+
+  --ui-workspace-background: #1e1e1e;
+  --ui-workspace-foreground: #dadada;
+  --ui-workspace-panel: #262626;
+  --ui-workspace-panel-foreground: #dadada;
+  --ui-workspace-muted: #262626;
+  --ui-workspace-muted-foreground: #b3b3b3;
+  --ui-workspace-popover: #262626;
+  --ui-workspace-popover-foreground: #dadada;
+  --ui-workspace-border: #363636;
+  --ui-workspace-border-strong: #3f3f3f;
+  --ui-workspace-accent: var(--lapis-accent);
+  --ui-workspace-accent-foreground: #ffffff;
+  --ui-workspace-selection: hsla(var(--lapis-accent-hsl), 0.33);
+  --ui-workspace-destructive: #fb464c;
+  --ui-workspace-warning: #e9973f;
+  --ui-workspace-focus-ring: var(--lapis-accent-hover);
+  --ui-workspace-tab-active-background: #1e1e1e;
+  --ui-workspace-tab-container-background: #262626;
+  --ui-workspace-tab-divider: #3f3f3f;
+  --ui-workspace-stacked-shadow: -8px 0 8px rgb(0 0 0 / 20%);
+}

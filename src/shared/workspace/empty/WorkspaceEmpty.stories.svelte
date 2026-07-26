@@ -1,6 +1,7 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent } from "storybook/test";
+  import { withLapisStorybookReference } from "../reference/lapis-visual-delta.js";
   import WorkspaceEmpty from "./WorkspaceEmpty.svelte";
 
   const { Story } = defineMeta({
@@ -47,7 +48,7 @@
 
 <Story
   name="Empty leaf actions"
-  tags={["visual-pending"]}
+  tags={["visual-pending", "lapis-reference-visual"]}
   play={async ({ canvas }) => {
     await userEvent.click(
       canvas.getByRole("button", { name: "Create new note (⌘ N)" }),
@@ -57,16 +58,10 @@
     );
   }}
   parameters={{
-    visualDelta: {
-      images: [
-        "/visual-baselines/workspace/empty/empty-leaf-actions-chromium-darwin.png",
-      ],
-      opacity: 0.5,
-      colorInversion: false,
-      align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
+    visualDelta: withLapisStorybookReference(
+      "/visual-baselines/workspace/empty/empty-leaf-actions-chromium-darwin.png",
+      "workspace-shell-components-empty-and-missing-views--empty-view-chromium-darwin.png",
+    ),
   }}
 >
   {#snippet template()}

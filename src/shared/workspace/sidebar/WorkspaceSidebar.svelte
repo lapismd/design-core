@@ -1,4 +1,5 @@
 <script lang="ts">
+  import type { Snippet } from "svelte";
   import type {
     WorkspaceSide,
     WorkspaceSidebarState,
@@ -21,11 +22,13 @@
     side,
     state,
     drag,
+    footer,
   }: {
     controller: WorkspaceShellController;
     side: WorkspaceSide;
     state?: WorkspaceSidebarState;
     drag?: WorkspaceDragState;
+    footer?: Snippet;
   } = $props();
 
   const createInternalDrag = () => new WorkspaceDragState(controller);
@@ -161,5 +164,6 @@
         onClose={() => controller.setSidebarOpen(side, false)}
       />
     {/if}
+    {@render footer?.()}
   </aside>
 {/if}

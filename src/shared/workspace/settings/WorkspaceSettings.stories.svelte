@@ -5,6 +5,7 @@
   import { AppShellController } from "../core/app-shell-controller.svelte.js";
   import { APP_SHELL_SETTING_IDS } from "../core/built-in-settings.svelte.js";
   import { AppShellPlugin } from "../core/plugin-manager.svelte.js";
+  import { withLapisStorybookReference } from "../reference/lapis-visual-delta.js";
   import AppSettingsContent from "./AppSettingsContent.svelte";
   import AppSettingsNavigation from "./AppSettingsNavigation.svelte";
   import AppSettingsRoot from "./AppSettingsRoot.svelte";
@@ -329,18 +330,13 @@
 
 <Story
   name="Controller-owned workspace settings"
-  tags={["visual-pending"]}
+  tags={["visual-pending", "lapis-reference-visual"]}
   parameters={{
-    visualDelta: {
-      images: [
-        "/visual-baselines/workspace/settings/controller-owned-workspace-settings-chromium-darwin.png",
-      ],
-      opacity: 0.5,
-      colorInversion: false,
-      align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
+    visualDelta: withLapisStorybookReference(
+      "/visual-baselines/workspace/settings/controller-owned-workspace-settings-chromium-darwin.png",
+      "workspace-shell-components-declarative-settings--settings-chromium-darwin.png",
+      "viewport",
+    ),
   }}
 >
   {#snippet template()}
@@ -403,7 +399,7 @@
 
 <Story
   name="All supported controls"
-  tags={["visual-pending"]}
+  tags={["visual-pending", "lapis-reference-visual"]}
   play={async ({ canvas }) => {
     const workspaceName = canvas.getByLabelText("Workspace name");
     await userEvent.clear(workspaceName);
@@ -421,16 +417,11 @@
     await userEvent.clear(search);
   }}
   parameters={{
-    visualDelta: {
-      images: [
-        "/visual-baselines/workspace/settings/all-supported-controls-chromium-darwin.png",
-      ],
-      opacity: 0.5,
-      colorInversion: false,
-      align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
+    visualDelta: withLapisStorybookReference(
+      "/visual-baselines/workspace/settings/all-supported-controls-chromium-darwin.png",
+      "workspace-shell-components-declarative-settings--all-supported-controls-chromium-darwin.png",
+      "viewport",
+    ),
   }}
 >
   {#snippet template()}

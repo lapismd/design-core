@@ -40,6 +40,7 @@
 @import "./shared/shadcn/button/button.tokens.css";
 @import "./shared/forms/form.tokens.css";
 @import "./shared/workspace/workspace.tokens.css";
+@import "./themes/lapis.css";
 
 @layer base {
   * {

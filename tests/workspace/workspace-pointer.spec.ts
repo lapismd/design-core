@@ -315,7 +315,9 @@ test.describe("Workspace real pointer behavior", () => {
       },
       {
         x: targetBounds.x + targetBounds.width / 2,
-        y: targetBounds.y + targetBounds.height / 2,
+        // Keep the pointer in the centre drop zone while avoiding the
+        // floating window that overlaps the geometric centre of this pane.
+        y: targetBounds.y + targetBounds.height * 0.68,
       },
     );
     const overlay = target.locator(".workspace-drop-overlay");

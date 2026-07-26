@@ -3,6 +3,7 @@
   import { expect, userEvent, within } from "storybook/test";
   import { createDefaultWorkspaceLayout } from "../core/layout.js";
   import { WorkspaceShellController } from "../core/workspace-controller.svelte.js";
+  import { withLapisStorybookReference } from "../reference/lapis-visual-delta.js";
   import WorkspaceViewHeader from "./WorkspaceViewHeader.svelte";
   import "./WorkspaceViewHeader.stories.css";
 
@@ -70,7 +71,7 @@
 
 <Story
   name="Breadcrumbs, actions, and pane menu"
-  tags={["visual-pending"]}
+  tags={["visual-pending", "lapis-reference-visual"]}
   play={async ({ canvas }) => {
     await userEvent.click(canvas.getByRole("button", { name: "Refresh view" }));
     await expect(canvas.getByRole("status")).toHaveTextContent(
@@ -86,16 +87,10 @@
     ).toBeVisible();
   }}
   parameters={{
-    visualDelta: {
-      images: [
-        "/visual-baselines/workspace/view-header/breadcrumbs-actions-and-pane-menu-chromium-darwin.png",
-      ],
-      opacity: 0.5,
-      colorInversion: false,
-      align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
+    visualDelta: withLapisStorybookReference(
+      "/visual-baselines/workspace/view-header/breadcrumbs-actions-and-pane-menu-chromium-darwin.png",
+      "workspace-shell-components-view-header-and-menus--header-and-menu-chromium-darwin.png",
+    ),
   }}
 >
   {#snippet template()}

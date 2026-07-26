@@ -22,6 +22,24 @@ connects it to the immutable Lapis light and dark captures.
 
 ## Theme review
 
-The default candidate is light. Select the Visual Delta **Dark** mode to apply
-the global `colorMode: dark` value and inspect the corresponding dark candidate
-and canonical image.
+Use the paintbrush toolbar to select the **Lapis** brand theme. The separate
+sun/moon control changes its light/dark colour mode. This theme maps the pinned
+Lapis palette and shell geometry onto the target repository's host and
+`--ui-workspace-*` token contracts.
+
+The canonical shell story retains its **Dark** Visual Delta mode for the
+1440 × 960 application captures.
+
+## Component references
+
+The immutable `reference/lapis/workspace-shell/storybook/` inventory contains
+all 52 captures from validated standalone workspace-shell slice `b06d1e3f58c3`.
+Mapped component stories expose a **Lapis source** Visual Delta mode that:
+
+1. applies the Lapis brand theme to the live target story;
+2. overlays its corresponding source Storybook snapshot;
+3. keeps the ordinary target candidate baseline separate.
+
+The provenance manifest records the complete inventory digest and the explicit
+source-to-target story mappings. Candidate update actions cannot write this
+reference tree.

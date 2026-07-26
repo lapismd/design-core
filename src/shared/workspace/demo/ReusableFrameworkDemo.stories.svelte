@@ -1,6 +1,7 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent, waitFor, within } from "storybook/test";
+  import { withLapisStorybookReference } from "../reference/lapis-visual-delta.js";
   import ReusableFrameworkDemo from "./ReusableFrameworkDemo.svelte";
   import { createFrameworkDemo } from "./framework-demo.js";
 
@@ -30,16 +31,32 @@
 
 <Story
   name="Overview"
-  tags={["visual-pending"]}
+  tags={["visual-pending", "lapis-reference-visual"]}
+  play={async ({ canvas }) => {
+    await waitFor(() => expect(overview.app.ready).toBe(true));
+    const settingsButton = canvas.getByRole("button", {
+      name: "Open settings",
+    });
+    await userEvent.click(settingsButton);
+    const dialog = canvas.getByRole("dialog", { name: "Settings" });
+    await expect(dialog).toBeVisible();
+    await expect(
+      within(dialog).getByRole("complementary", {
+        name: "Settings navigation",
+      }),
+    ).toBeVisible();
+    await userEvent.click(
+      within(dialog).getByRole("button", { name: "Close settings" }),
+    );
+    await expect(dialog).not.toBeInTheDocument();
+    await expect(settingsButton).toHaveFocus();
+  }}
   parameters={{
-    visualDelta: {
-      images: ["/visual-baselines/workspace/demo/overview-chromium-darwin.png"],
-      opacity: 0.5,
-      colorInversion: false,
-      align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
+    visualDelta: withLapisStorybookReference(
+      "/visual-baselines/workspace/demo/overview-chromium-darwin.png",
+      "workspace-shell-demo-reusable-framework--overview-chromium-darwin.png",
+      "viewport",
+    ),
   }}
 >
   {#snippet template()}
@@ -138,18 +155,13 @@
 
 <Story
   name="Mobile composition"
-  tags={["visual-pending"]}
+  tags={["visual-pending", "lapis-reference-visual"]}
   parameters={{
-    visualDelta: {
-      images: [
-        "/visual-baselines/workspace/demo/mobile-composition-chromium-darwin.png",
-      ],
-      opacity: 0.5,
-      colorInversion: false,
-      align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
+    visualDelta: withLapisStorybookReference(
+      "/visual-baselines/workspace/demo/mobile-composition-chromium-darwin.png",
+      "workspace-shell-shell-full-shell--mobile-chromium-darwin.png",
+      "viewport",
+    ),
   }}
 >
   {#snippet template()}

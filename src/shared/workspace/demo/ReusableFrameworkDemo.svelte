@@ -14,6 +14,6 @@
 
 <div class="ui-workspace-framework-demo">
   <AppShell.Root controller={app} theme="inherit">
-    <AppShell.Surface {displayMode} />
+    <AppShell.Surface {displayMode} workspaceLabel="Framework demo" />
   </AppShell.Root>
 </div>

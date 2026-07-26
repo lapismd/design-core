@@ -18,14 +18,19 @@ Use `AppShell.Surface` for the default desktop composition, or place
 not change controller behavior.
 
 Utility surfaces are also composable: `About`, `CommandPalette`, `Notices`,
-`PluginLayer`, `Tabs`, `Sidebar`, `HotkeySettings`, and
+`PluginLayer`, `Tabs`, `Sidebar`, `Settings`, `SettingsDialog`, `HotkeySettings`, and
 `CorePluginsSettings`.
 
 ## API
 
 - `Root` requires an `AppShellController` and optionally starts or disposes it.
 - `Workspace` accepts an optional serializable tab factory.
-- `Surface` composes the current default desktop surfaces.
+- `Surface` composes the current default desktop surfaces, a workspace footer
+  with the settings trigger, and the controller-backed settings dialog.
+- `Surface` accepts `workspaceLabel` and `settingsTitle` to configure that
+  integrated application chrome.
+- `Settings` renders the controller-owned settings surface directly;
+  `SettingsDialog` provides its reusable modal presentation.
 - `Root` accepts an injectable popout host and explicit utility-layer toggles.
 - Every lower-level component remains available through its own Workspace
   subpath.

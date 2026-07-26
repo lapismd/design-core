@@ -10,6 +10,7 @@
   import AppShellLeftSidebar from "./AppShellLeftSidebar.svelte";
   import AppShellRibbon from "./AppShellRibbon.svelte";
   import AppShellRightSidebar from "./AppShellRightSidebar.svelte";
+  import AppShellSettingsDialog from "./AppShellSettingsDialog.svelte";
   import AppShellStatusBar from "./AppShellStatusBar.svelte";
   import AppShellWorkspace from "./AppShellWorkspace.svelte";
 
@@ -22,6 +23,8 @@
     mobileIncludeSidebars,
     mobileIncludeFloating,
     onOpenSettings,
+    settingsTitle = "Settings",
+    workspaceLabel = "Workspace",
   }: {
     createTab?: (paneId: string) => WorkspaceTab;
     displayMode?: WorkspaceRequestedDisplayMode;
@@ -31,9 +34,12 @@
     mobileIncludeSidebars?: boolean;
     mobileIncludeFloating?: boolean;
     onOpenSettings?: () => void;
+    settingsTitle?: string;
+    workspaceLabel?: string;
   } = $props();
 
   const context = getAppShellContext();
+  let settingsOpen = $state(false);
   let observedWidth = $state(Number.POSITIVE_INFINITY);
   let requestedMode = $derived(
     displayMode ?? context.controller.mobile.requestedDisplayMode,
@@ -50,6 +56,11 @@
   );
 
   $effect(() => context.controller.renderer.setDisplayMode(resolvedMode));
+
+  function openSettings() {
+    settingsOpen = true;
+    onOpenSettings?.();
+  }
 
   onMount(() => {
     const root = context.root;
@@ -75,13 +86,15 @@
       context.controller.mobile.includeSidebarsInTabs}
     includeFloatingInTabs={mobileIncludeFloating ??
       context.controller.mobile.includeFloatingInTabs}
-    {onOpenSettings}
+    onOpenSettings={openSettings}
   />
 {:else}
   <AppShellRibbon />
-  <AppShellLeftSidebar />
+  <AppShellLeftSidebar {workspaceLabel} onOpenSettings={openSettings} />
   <AppShellWorkspace {createTab} />
   <AppShellRightSidebar />
   <AppShellFloatingLayer {createTab} />
   <AppShellStatusBar />
 {/if}
+
+<AppShellSettingsDialog bind:open={settingsOpen} title={settingsTitle} />

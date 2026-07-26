@@ -14,6 +14,19 @@ The exact capture metadata is in `provenance.json`. Normal Storybook and Visual
 Delta commands must not update these PNGs. Candidate snapshots live separately
 under `tests/visual/storybook.spec.ts-snapshots/workspace/`.
 
+## Source Storybook references
+
+`storybook/` contains all 52 reviewed snapshots from the validated standalone
+workspace-shell slice `b06d1e3f58c3`. They use the UI catalog's 1280 × 900 CSS
+viewport and device scale factor 3, so mapped component stories can be compared
+without resampling.
+
+`storybook/provenance.json` records the capture contract, complete inventory
+hash, and the first set of explicit target-story mappings. Visual Delta exposes
+those mappings through its **Lapis source** mode, which renders the target story
+with the `lapis` brand theme. These files are immutable reference evidence and
+are never candidate baseline update targets.
+
 Expected SHA-256 digests:
 
 | File                        | SHA-256                                                            |

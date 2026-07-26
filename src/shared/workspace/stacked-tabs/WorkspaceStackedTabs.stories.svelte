@@ -7,6 +7,7 @@
     createWorkspaceTabs,
   } from "../core/layout.js";
   import { WorkspaceShellController } from "../core/workspace-controller.svelte.js";
+  import { withLapisStorybookReference } from "../reference/lapis-visual-delta.js";
   import WorkspaceStackedTabs from "./WorkspaceStackedTabs.svelte";
   import "./WorkspaceStackedTabs.stories.css";
 
@@ -67,7 +68,7 @@
 
 <Story
   name="Activates and closes vertical tabs"
-  tags={["visual-pending"]}
+  tags={["visual-pending", "lapis-reference-visual"]}
   play={async ({ canvas }) => {
     const reference = canvas.getByRole("button", { name: "Reference" });
     await userEvent.click(reference);
@@ -80,16 +81,10 @@
     await expect(canvas.queryByRole("button", { name: "Details" })).toBeNull();
   }}
   parameters={{
-    visualDelta: {
-      images: [
-        "/visual-baselines/workspace/stacked-tabs/activates-and-closes-vertical-tabs-chromium-darwin.png",
-      ],
-      opacity: 0.5,
-      colorInversion: false,
-      align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
+    visualDelta: withLapisStorybookReference(
+      "/visual-baselines/workspace/stacked-tabs/activates-and-closes-vertical-tabs-chromium-darwin.png",
+      "workspace-shell-components-tabs--stacked-chromium-darwin.png",
+    ),
   }}
 >
   {#snippet template()}

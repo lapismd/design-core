@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { readFile } from "node:fs/promises";
+import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { PNG } from "pngjs";
@@ -10,6 +10,7 @@ const repoRoot = path.resolve(
   "../../../..",
 );
 const referenceRoot = path.join(repoRoot, "reference/lapis/workspace-shell");
+const storybookReferenceRoot = path.join(referenceRoot, "storybook");
 
 const expectedHashes = {
   "provenance.json":
@@ -23,6 +24,21 @@ const expectedHashes = {
 async function sha256(file: string): Promise<string> {
   const bytes = await readFile(path.join(referenceRoot, file));
   return createHash("sha256").update(bytes).digest("hex");
+}
+
+async function storybookInventorySha256(): Promise<string> {
+  const files = (await readdir(storybookReferenceRoot))
+    .filter((file) => file.endsWith(".png"))
+    .sort();
+  const inventory = await Promise.all(
+    files.map(async (file) => {
+      const bytes = await readFile(path.join(storybookReferenceRoot, file));
+      return `${createHash("sha256").update(bytes).digest("hex")}  ${file}`;
+    }),
+  );
+  return createHash("sha256")
+    .update(`${inventory.join("\n")}\n`)
+    .digest("hex");
 }
 
 describe("canonical Lapis workspace reference", () => {
@@ -84,6 +100,70 @@ describe("canonical Lapis workspace reference", () => {
     expect(story).toContain("/lapis-reference/workspace-shell-dark.png");
     expect(story).toContain(
       "/visual-baselines/workspace/reference/shell-chromium-darwin.png",
+    );
+  });
+
+  it("retains the immutable source Storybook snapshot inventory", async () => {
+    const provenance = JSON.parse(
+      await readFile(
+        path.join(storybookReferenceRoot, "provenance.json"),
+        "utf8",
+      ),
+    ) as {
+      sourceSnapshotRevision: string;
+      capture: {
+        viewport: { width: number; height: number };
+        deviceScaleFactor: number;
+      };
+      assetCount: number;
+      inventorySha256: string;
+      canonicalImmutable: boolean;
+      wiredComparisons: Array<{ source: string; targetStoryId: string }>;
+    };
+    const files = (await readdir(storybookReferenceRoot)).filter((file) =>
+      file.endsWith(".png"),
+    );
+
+    expect(files).toHaveLength(52);
+    expect(provenance).toMatchObject({
+      sourceSnapshotRevision: "b06d1e3f58c3",
+      capture: {
+        viewport: { width: 1280, height: 900 },
+        deviceScaleFactor: 3,
+      },
+      assetCount: 52,
+      inventorySha256:
+        "9a8556f6cd124460b0026a7e605f7d98dd5ff57085cd694d0b1fc9e52bcdeb83",
+      canonicalImmutable: true,
+    });
+    expect(provenance.wiredComparisons).toHaveLength(20);
+    const storySources = (
+      await Promise.all(
+        [
+          "demo/ReusableFrameworkDemo.stories.svelte",
+          "drop-overlay/WorkspaceDropOverlay.stories.svelte",
+          "empty/WorkspaceEmpty.stories.svelte",
+          "floating-layer/WorkspaceFloatingLayer.stories.svelte",
+          "plugins/f-mode/FMode.stories.svelte",
+          "plugins/notifications/Notifications.stories.svelte",
+          "settings/WorkspaceSettings.stories.svelte",
+          "sidebar/WorkspaceSidebar.stories.svelte",
+          "sidebar-group/WorkspaceSidebarGroup.stories.svelte",
+          "stacked-tabs/WorkspaceStackedTabs.stories.svelte",
+          "tabs/WorkspaceTabs.stories.svelte",
+          "view-header/WorkspaceViewHeader.stories.svelte",
+          "view-host/WorkspaceViewHost.stories.svelte",
+        ].map((file) =>
+          readFile(path.join(repoRoot, "src/shared/workspace", file), "utf8"),
+        ),
+      )
+    ).join("\n");
+    for (const mapping of provenance.wiredComparisons) {
+      expect(files).toContain(mapping.source);
+      expect(storySources).toContain(mapping.source);
+    }
+    await expect(storybookInventorySha256()).resolves.toBe(
+      provenance.inventorySha256,
     );
   });
 });
