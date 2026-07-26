@@ -1,6 +1,7 @@
 <script module lang="ts">
   /**
-   * Visual Delta Testing Module checklist (global + sidebar context variants).
+   * Visual Delta Testing Module checklist, including active filter chrome
+   * and the scrollable filter menu (global + sidebar context variants).
    * Tagged skip-visual — tooling chrome, not product UI.
    */
   import { defineMeta } from "@storybook/addon-svelte-csf";
@@ -172,9 +173,11 @@
     await userEvent.click(
       scope.getByRole("button", { name: "Filter visual stories" }),
     );
+    const dialog = page.getByRole("dialog", { name: "Visual story filters" });
+    await expect(dialog).toBeInTheDocument();
     await expect(
-      page.getByRole("dialog", { name: "Visual story filters" }),
-    ).toBeInTheDocument();
+      dialog.closest("[data-radix-scroll-area-viewport]"),
+    ).not.toBeNull();
     await userEvent.click(
       page.getByRole("button", { name: "Needs attention" }),
     );
@@ -186,6 +189,9 @@
         name: "Filter visual stories, 1 active",
       }),
     ).toBeInTheDocument();
+    await expect(scope.getByTestId("visual-filter-count")).toHaveTextContent(
+      "1",
+    );
   }}
 >
   {#snippet template()}
