@@ -1,5 +1,4 @@
 <script lang="ts">
-  import ChevronDownIcon from "@lucide/svelte/icons/chevron-down";
   import * as Collapsible from "@stevejuma/ui/shadcn/collapsible";
   import { Badge } from "@stevejuma/ui/shadcn/badge";
   import type { Snippet } from "svelte";
@@ -23,7 +22,10 @@
     children: Snippet;
   } = $props();
 
+  const canCollapse = $derived(count != null);
+
   function setOpen(open: boolean): void {
+    if (!canCollapse) return;
     collapsed = !open;
     onCollapsedChange(collapsed);
   }
@@ -36,17 +38,22 @@
   data-ui-part="root"
   data-collapsed={collapsed}
 >
-  <Collapsible.Root open={!collapsed} onOpenChange={setOpen}>
-    <Collapsible.Trigger
-      data-ai-chat-part="drawer-trigger"
-      aria-label={`${collapsed ? "Expand" : "Collapse"} ${label}`}
-    >
-      <span>{label}</span>
-      {#if count != null}
-        <Badge variant="secondary">{count}</Badge>
-      {/if}
-      <ChevronDownIcon aria-hidden="true" />
-    </Collapsible.Trigger>
+  <Collapsible.Root open={!canCollapse || !collapsed} onOpenChange={setOpen}>
+    {#if canCollapse}
+      <Collapsible.Trigger
+        data-ai-chat-part="drawer-trigger"
+        aria-label={`${collapsed ? "Expand" : "Collapse"} ${label}`}
+      >
+        {#if collapsed}
+          <span data-ui-part="drawer-summary">
+            <Badge variant="secondary">{count}</Badge>
+            <span>{label}</span>
+          </span>
+        {:else}
+          <span data-ui-part="drawer-handle" aria-hidden="true"></span>
+        {/if}
+      </Collapsible.Trigger>
+    {/if}
     <Collapsible.Content data-ai-chat-part="drawer-content">
       {@render children()}
     </Collapsible.Content>

@@ -36,6 +36,12 @@
   const density = $derived(densityProp ?? message?.density ?? "balanced");
 </script>
 
+{#if name}
+  <div data-ui-part="bubble-name-row" data-chat-name>
+    {@render name()}
+  </div>
+{/if}
+
 <div
   bind:this={ref}
   {...restProps}
@@ -46,15 +52,11 @@
   data-variant={variant}
   data-group={group}
 >
-  {#if name}
-    <span data-ui-part="bubble-name">
-      {@render name()}
-    </span>
-  {/if}
-  <div data-ui-part="bubble-content">
-    {@render children()}
-  </div>
-  {#if metadata}
-    {@render metadata()}
-  {/if}
+  {@render children()}
 </div>
+
+{#if metadata}
+  <div data-ui-part="bubble-metadata">
+    {@render metadata()}
+  </div>
+{/if}

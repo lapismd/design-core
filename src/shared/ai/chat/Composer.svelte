@@ -112,66 +112,78 @@
   data-disabled={disabled}
   onclick={handleShellClick}
 >
+  {#if status && statusPosition === "top"}
+    <div
+      data-ui-part="status"
+      data-position="top"
+      data-status={status.type}
+      role={status.type === "error" ? "alert" : "status"}
+    >
+      <TriangleAlertIcon aria-hidden="true" />
+      <span>{status.message ?? status.type}</span>
+    </div>
+  {/if}
+
   {#if drawer}
     <div data-ui-part="drawer">
       {@render drawer()}
     </div>
   {/if}
 
-  {#if status && statusPosition === "top"}
-    <div data-ui-part="status" data-status={status.type} role="status">
-      <TriangleAlertIcon aria-hidden="true" />
-      <span>{status.message ?? status.type}</span>
-    </div>
-  {/if}
-
-  {#if headerContext || headerActions}
-    <div data-ui-part="header">
-      <div data-ui-part="header-context">
-        {@render headerContext?.()}
+  <div data-ui-part="body">
+    {#if headerContext || headerActions}
+      <div data-ui-part="header">
+        <div data-ui-part="header-actions">
+          {@render headerActions?.()}
+        </div>
+        <div data-ui-part="header-context">
+          {@render headerContext?.()}
+        </div>
       </div>
-      <div data-ui-part="header-actions">
-        {@render headerActions?.()}
-      </div>
-    </div>
-  {/if}
-
-  <div data-ui-part="input-area">
-    {#if input}
-      {@render input()}
-    {:else}
-      <ComposerInput
-        bind:value
-        bind:handle={inputHandle}
-        {placeholder}
-        {disabled}
-        {triggers}
-        onSubmit={submit}
-      />
     {/if}
-  </div>
 
-  <div data-ui-part="footer">
-    <div data-ui-part="footer-actions">
-      {@render footerActions?.()}
-    </div>
-    <div data-ui-part="send-actions">
-      {@render sendActions?.()}
-      {#if sendButton}
-        {@render sendButton({ canSend, submit, stop })}
+    <div data-ui-part="input-area">
+      {#if input}
+        {@render input()}
       {:else}
-        <SendButton
-          isDisabled={!canSend}
-          {isStopShown}
-          onSend={submit}
-          onStop={stop}
+        <ComposerInput
+          bind:value
+          bind:handle={inputHandle}
+          {placeholder}
+          {disabled}
+          {triggers}
+          onSubmit={submit}
         />
       {/if}
+    </div>
+
+    <div data-ui-part="footer">
+      <div data-ui-part="footer-actions">
+        {@render footerActions?.()}
+      </div>
+      <div data-ui-part="send-actions">
+        {@render sendActions?.()}
+        {#if sendButton}
+          {@render sendButton({ canSend, submit, stop })}
+        {:else}
+          <SendButton
+            isDisabled={!canSend}
+            {isStopShown}
+            onSend={submit}
+            onStop={stop}
+          />
+        {/if}
+      </div>
     </div>
   </div>
 
   {#if status && statusPosition === "bottom"}
-    <div data-ui-part="status" data-status={status.type} role="status">
+    <div
+      data-ui-part="status"
+      data-position="bottom"
+      data-status={status.type}
+      role={status.type === "error" ? "alert" : "status"}
+    >
       <TriangleAlertIcon aria-hidden="true" />
       <span>{status.message ?? status.type}</span>
     </div>

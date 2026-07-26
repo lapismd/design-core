@@ -20,6 +20,16 @@ The stable Chat surface adapts the anatomy and behavior of
 to Svelte 5 and the local design system. The Lab-derived subpath is marked
 `@experimental`.
 
+Every stable component page includes an **ASTRYX showcase** and the documented
+upstream variants using the pinned example text, token values, tool calls,
+statuses, and dimensions. These are reference fixtures for anatomy and
+interaction, not copied React/StyleX implementations.
+
+The fixtures intentionally retain the local shadcn theme. ASTRYX brand colors
+and Figtree typography are not imported, so geometry can be compared without
+changing the package's theme contract. The live comparison record and baseline
+boundary are documented in `ASTRYX_AI_VISUAL_PARITY.md`.
+
 | Component                                                             | Role                                        |
 | --------------------------------------------------------------------- | ------------------------------------------- |
 | [AI Chat Panel](?path=/docs/ai-ai-chat-panel--docs)                   | Full dock + transcript + prompt composition |

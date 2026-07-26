@@ -57,10 +57,16 @@
       {/if}
     </span>
   {/if}
+  {#if timestamp && (footer || status)}
+    <span data-ui-part="separator" aria-hidden="true">·</span>
+  {/if}
   {#if footer}
     <span data-ui-part="footer">
       {@render footer()}
     </span>
+  {/if}
+  {#if footer && status}
+    <span data-ui-part="separator" aria-hidden="true">·</span>
   {/if}
   {#if status}
     <span

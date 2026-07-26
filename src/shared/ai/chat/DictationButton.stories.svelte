@@ -1,6 +1,7 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent } from "storybook/test";
+  import Composer from "./Composer.svelte";
   import DictationButton from "./DictationButton.svelte";
   import type { SpeechRecognitionController } from "./types.js";
 
@@ -50,6 +51,8 @@
 
 <script lang="ts">
   let toggles = $state(0);
+  let showcaseValue = $state("");
+  let basicValue = $state("");
   const interactive: SpeechRecognitionController = {
     ...listening,
     isListening: false,
@@ -58,7 +61,57 @@
       toggles += 1;
     },
   };
+
+  const idle: SpeechRecognitionController = {
+    ...listening,
+    isListening: false,
+    isSpeaking: false,
+    volume: 0,
+    bands: [0, 0, 0, 0, 0],
+    rawBands: [0, 0, 0, 0, 0],
+    interimTranscript: "",
+  };
 </script>
+
+<Story name="ASTRYX showcase">
+  {#snippet template()}
+    <div data-story="dictation-showcase">
+      <p>
+        Click the microphone to start dictating. Speech is transcribed into the
+        input.
+      </p>
+      <Composer
+        bind:value={showcaseValue}
+        placeholder="Type a message..."
+        onSubmit={() => {
+          showcaseValue = "";
+        }}
+      >
+        {#snippet sendActions()}
+          <DictationButton dictation={idle} />
+        {/snippet}
+      </Composer>
+    </div>
+  {/snippet}
+</Story>
+
+<Story name="Basic">
+  {#snippet template()}
+    <div data-story="dictation-composer">
+      <Composer
+        bind:value={basicValue}
+        placeholder="Type a message..."
+        onSubmit={() => {
+          basicValue = "";
+        }}
+      >
+        {#snippet sendActions()}
+          <DictationButton dictation={idle} />
+        {/snippet}
+      </Composer>
+    </div>
+  {/snippet}
+</Story>
 
 <Story
   name="Invokes injected dictation"
@@ -103,5 +156,22 @@
     display: flex;
     align-items: center;
     gap: 0.75rem;
+  }
+
+  :global([data-story="dictation-showcase"]) {
+    display: flex;
+    width: min(28.125rem, 90vw);
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  :global([data-story="dictation-showcase"] p) {
+    margin: 0;
+    color: var(--muted-foreground);
+    font-size: 0.875rem;
+  }
+
+  :global([data-story="dictation-composer"]) {
+    width: min(28.125rem, 90vw);
   }
 </style>

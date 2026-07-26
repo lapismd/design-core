@@ -21,31 +21,34 @@ from the local Svelte 5 implementation and its verification status.
 
 ## Component matrix
 
-Status values are `planned`, `implemented`, `tested`, and `reviewed`. Visual
-status stays `pending-review` until a human reviews the Storybook previews.
+Implementation status values are `planned`, `implemented`, `tested`, and
+`reviewed`. Visual reference status is `live-compared` for stable public
+components and `source-compared` for Lab-only components. Baseline approval
+stays pending until a human reviews the Storybook previews. See
+[`ASTRYX_AI_VISUAL_PARITY.md`](./ASTRYX_AI_VISUAL_PARITY.md).
 
-| Upstream component         | Local export                       | Stability    | Story       | Tests   | Visual         |
-| -------------------------- | ---------------------------------- | ------------ | ----------- | ------- | -------------- |
-| `ChatLayout`               | `Chat.Layout`                      | stable       | implemented | passing | pending-review |
-| `ChatLayoutScrollButton`   | `Chat.LayoutScrollButton`          | stable       | implemented | passing | pending-review |
-| `ChatMessageList`          | `Chat.MessageList`                 | stable       | implemented | passing | pending-review |
-| `ChatMessage`              | `Chat.Message`                     | stable       | implemented | passing | pending-review |
-| `ChatMessageBubble`        | `Chat.MessageBubble`               | stable       | implemented | passing | pending-review |
-| `ChatMessageMetadata`      | `Chat.MessageMetadata`             | stable       | implemented | passing | pending-review |
-| `ChatSystemMessage`        | `Chat.SystemMessage`               | stable       | implemented | passing | pending-review |
-| `ChatComposer`             | `Chat.Composer`                    | stable       | implemented | passing | pending-review |
-| `ChatComposerInput`        | `Chat.ComposerInput`               | stable       | implemented | passing | pending-review |
-| `ChatComposerDrawer`       | `Chat.ComposerDrawer`              | stable       | implemented | passing | pending-review |
-| `ChatSendButton`           | `Chat.SendButton`                  | stable       | implemented | passing | pending-review |
-| `ChatComposerTokenElement` | `Chat.ComposerToken`               | stable       | implemented | passing | pending-review |
-| `ChatTokenizedText`        | `Chat.TokenizedText`               | stable       | implemented | passing | pending-review |
-| `ChatToolCalls`            | `Chat.ToolCalls`                   | stable       | implemented | passing | pending-review |
-| `ChatDictationButton`      | `Chat.DictationButton`             | stable       | implemented | passing | pending-review |
-| `ChatReasoning`            | `ExperimentalChat.Reasoning`       | experimental | implemented | passing | pending-review |
-| `ChatReactionBar`          | `ExperimentalChat.ReactionBar`     | experimental | implemented | passing | pending-review |
-| `ChatEmojiPicker`          | `ExperimentalChat.EmojiPicker`     | experimental | implemented | passing | pending-review |
-| `ChatTypingIndicator`      | `ExperimentalChat.TypingIndicator` | experimental | implemented | passing | pending-review |
-| `ChatUnreadDivider`        | `ExperimentalChat.UnreadDivider`   | experimental | implemented | passing | pending-review |
+| Upstream component         | Local export                       | Stability    | Story       | Tests   | Visual          |
+| -------------------------- | ---------------------------------- | ------------ | ----------- | ------- | --------------- |
+| `ChatLayout`               | `Chat.Layout`                      | stable       | implemented | passing | live-compared   |
+| `ChatLayoutScrollButton`   | `Chat.LayoutScrollButton`          | stable       | implemented | passing | live-compared   |
+| `ChatMessageList`          | `Chat.MessageList`                 | stable       | implemented | passing | live-compared   |
+| `ChatMessage`              | `Chat.Message`                     | stable       | implemented | passing | live-compared   |
+| `ChatMessageBubble`        | `Chat.MessageBubble`               | stable       | implemented | passing | live-compared   |
+| `ChatMessageMetadata`      | `Chat.MessageMetadata`             | stable       | implemented | passing | live-compared   |
+| `ChatSystemMessage`        | `Chat.SystemMessage`               | stable       | implemented | passing | live-compared   |
+| `ChatComposer`             | `Chat.Composer`                    | stable       | implemented | passing | live-compared   |
+| `ChatComposerInput`        | `Chat.ComposerInput`               | stable       | implemented | passing | live-compared   |
+| `ChatComposerDrawer`       | `Chat.ComposerDrawer`              | stable       | implemented | passing | live-compared   |
+| `ChatSendButton`           | `Chat.SendButton`                  | stable       | implemented | passing | live-compared   |
+| `ChatComposerTokenElement` | `Chat.ComposerToken`               | stable       | implemented | passing | live-compared   |
+| `ChatTokenizedText`        | `Chat.TokenizedText`               | stable       | implemented | passing | live-compared   |
+| `ChatToolCalls`            | `Chat.ToolCalls`                   | stable       | implemented | passing | live-compared   |
+| `ChatDictationButton`      | `Chat.DictationButton`             | stable       | implemented | passing | live-compared   |
+| `ChatReasoning`            | `ExperimentalChat.Reasoning`       | experimental | implemented | passing | source-compared |
+| `ChatReactionBar`          | `ExperimentalChat.ReactionBar`     | experimental | implemented | passing | source-compared |
+| `ChatEmojiPicker`          | `ExperimentalChat.EmojiPicker`     | experimental | implemented | passing | source-compared |
+| `ChatTypingIndicator`      | `ExperimentalChat.TypingIndicator` | experimental | implemented | passing | source-compared |
+| `ChatUnreadDivider`        | `ExperimentalChat.UnreadDivider`   | experimental | implemented | passing | source-compared |
 
 The package subpaths are:
 

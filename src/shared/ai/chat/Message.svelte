@@ -27,6 +27,9 @@
 
   const list = useListContext();
   const density = $derived(densityProp ?? list?.getDensity() ?? "balanced");
+  const computedAriaLabel = $derived(
+    ariaLabel ?? (name ? undefined : `Message from ${sender}`),
+  );
 
   setMessageContext({
     get sender() {
@@ -45,7 +48,7 @@
   data-ui-part="root"
   data-sender={sender}
   data-density={density}
-  aria-label={ariaLabel}
+  aria-label={computedAriaLabel}
 >
   {#if sender !== "system" && avatar}
     <div data-ui-part="avatar">

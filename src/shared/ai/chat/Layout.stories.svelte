@@ -1,11 +1,12 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
+  import Composer from "./Composer.svelte";
   import Layout from "./Layout.svelte";
   import MessageList from "./MessageList.svelte";
   import Message from "./Message.svelte";
   import MessageBubble from "./MessageBubble.svelte";
-  import MessageMetadata from "./MessageMetadata.svelte";
   import SystemMessage from "./SystemMessage.svelte";
+  import TokenizedText from "./TokenizedText.svelte";
 
   const { Story } = defineMeta({
     title: "AI/Chat/Layout",
@@ -21,28 +22,86 @@
   });
 </script>
 
-<Story name="Complete conversation">
+<script lang="ts">
+  let showcaseValue = $state("");
+  let panelValue = $state("");
+</script>
+
+<Story name="ASTRYX showcase">
   {#snippet template()}
-    <div data-story="chat-frame">
+    <div data-story="chat-frame" data-size="showcase">
       <Layout>
         {#snippet composer()}
-          <div data-story="composer">Ask the assistant…</div>
+          <Composer
+            bind:value={showcaseValue}
+            placeholder="Ask something..."
+            onSubmit={() => {
+              showcaseValue = "";
+            }}
+          />
         {/snippet}
         <MessageList>
-          <SystemMessage variant="divider">Today</SystemMessage>
-          <Message sender="assistant">
-            <MessageBubble>Hello. How can I help?</MessageBubble>
-          </Message>
           <Message sender="user">
-            <MessageBubble>Summarize the release notes.</MessageBubble>
-            {#snippet metadata()}
-              <MessageMetadata timestamp="10:42" status="read" />
-            {/snippet}
+            <MessageBubble>
+              <TokenizedText
+                text="/review the changes in this file"
+                tokens={[
+                  {
+                    value: "/review",
+                    label: "/review",
+                    variant: "secondary",
+                  },
+                ]}
+              />
+            </MessageBubble>
           </Message>
           <Message sender="assistant">
-            <MessageBubble variant="ghost">
-              The release focuses on faster navigation and a smaller application
-              bundle.
+            <MessageBubble variant="ghost"
+              >Reading the file now...</MessageBubble
+            >
+          </Message>
+        </MessageList>
+      </Layout>
+    </div>
+  {/snippet}
+</Story>
+
+<Story name="Panel view">
+  {#snippet template()}
+    <div data-story="chat-frame" data-size="panel">
+      <Layout density="compact">
+        {#snippet composer()}
+          <Composer
+            bind:value={panelValue}
+            density="compact"
+            placeholder="Ask something..."
+            onSubmit={() => {
+              panelValue = "";
+            }}
+          />
+        {/snippet}
+        <MessageList density="compact">
+          <SystemMessage variant="divider">Today</SystemMessage>
+          <Message sender="user" density="compact">
+            <MessageBubble density="compact">
+              Can you review the Button component and fix the focus ring?
+            </MessageBubble>
+          </Message>
+          <Message sender="assistant" density="compact">
+            <MessageBubble density="compact" variant="ghost">
+              I&apos;ll check the Button component now. Found the issue — the
+              border radius was hardcoded. Replaced with the theme token.
+            </MessageBubble>
+          </Message>
+          <Message sender="user" density="compact">
+            <MessageBubble density="compact">
+              Nice, can you also check the Card component?
+            </MessageBubble>
+          </Message>
+          <Message sender="assistant" density="compact">
+            <MessageBubble density="compact" variant="ghost">
+              Checking the component now. Found the issue — the border radius
+              was hardcoded. Replaced with the theme token.
             </MessageBubble>
           </Message>
         </MessageList>
@@ -56,7 +115,7 @@
     <div data-story="chat-frame">
       <Layout isEmpty>
         {#snippet composer()}
-          <div data-story="composer">Ask the assistant…</div>
+          <Composer value="" onSubmit={() => {}} />
         {/snippet}
         <span>Unused while empty</span>
       </Layout>
@@ -69,7 +128,7 @@
     <div data-story="chat-frame">
       <Layout>
         {#snippet composer()}
-          <div data-story="composer">Ask the assistant…</div>
+          <Composer value="" onSubmit={() => {}} />
         {/snippet}
         <MessageList latestMessageId="message-30">
           {#each Array.from({ length: 30 }) as _, index (index)}
@@ -88,20 +147,14 @@
 
 <style>
   :global([data-story="chat-frame"]) {
-    width: min(30rem, 90vw);
-    height: 28rem;
+    width: min(28.125rem, 90vw);
+    height: 32rem;
     overflow: hidden;
     border: 1px solid var(--border);
     border-radius: 1rem;
   }
 
-  :global([data-story="composer"]) {
-    min-height: 3.5rem;
-    border: 1px solid var(--border);
-    border-radius: 1rem;
-    background: var(--background);
-    padding: 1rem;
-    color: var(--muted-foreground);
-    box-shadow: var(--shadow-sm);
+  :global([data-story="chat-frame"][data-size="panel"]) {
+    height: 37.5rem;
   }
 </style>

@@ -21,6 +21,46 @@
   let recovered = $state(false);
 </script>
 
+<Story name="States">
+  {#snippet template()}
+    <div data-story="scroll-button-stack">
+      <div data-story="scroll-button-state">
+        <span>Hidden (user is at bottom)</span>
+        <LayoutScrollButton isVisible={false} onClick={() => {}} />
+      </div>
+      <div data-story="scroll-button-state">
+        <span>Visible (user scrolled up)</span>
+        <LayoutScrollButton isVisible onClick={() => {}} />
+      </div>
+      <div data-story="scroll-button-state">
+        <span>Expanded with label (new messages arrived)</span>
+        <LayoutScrollButton isVisible label="New messages" onClick={() => {}} />
+      </div>
+    </div>
+  {/snippet}
+</Story>
+
+<Story name="Labels">
+  {#snippet template()}
+    <div data-story="scroll-button-stack">
+      <p>Labels expand the button to give context</p>
+      <div data-story="scroll-button-state">
+        <LayoutScrollButton isVisible onClick={() => {}} />
+      </div>
+      <div data-story="scroll-button-state">
+        <LayoutScrollButton isVisible label="New messages" onClick={() => {}} />
+      </div>
+      <div data-story="scroll-button-state">
+        <LayoutScrollButton
+          isVisible
+          label="3 unread replies"
+          onClick={() => {}}
+        />
+      </div>
+    </div>
+  {/snippet}
+</Story>
+
 <Story
   name="Recovers new messages"
   play={async ({ canvas }) => {
@@ -59,6 +99,39 @@
     place-items: center;
     border: 1px solid var(--border);
     border-radius: 0.75rem;
+  }
+
+  :global([data-story="scroll-button-stack"]) {
+    display: flex;
+    width: min(24rem, 90vw);
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  :global([data-story="scroll-button-stack"] p),
+  :global([data-story="scroll-button-state"] > span) {
+    margin: 0;
+    color: var(--muted-foreground);
+    font-size: 0.75rem;
+  }
+
+  :global([data-story="scroll-button-state"]) {
+    position: relative;
+    display: flex;
+    min-height: 3rem;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  :global(
+      [data-story="scroll-button-state"]
+        [data-ui-component="ai-chat-layout-scroll-button"]
+    ) {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    translate: 0;
   }
 
   :global([data-story="scroll-button-frame"] output) {

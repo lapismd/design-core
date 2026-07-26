@@ -1,5 +1,5 @@
 <script lang="ts">
-  import ArrowDownIcon from "@lucide/svelte/icons/arrow-down";
+  import ChevronDownIcon from "@lucide/svelte/icons/chevron-down";
   import { Button } from "@stevejuma/ui/shadcn/button";
   import "./chat.css";
 
@@ -22,6 +22,7 @@
   const resolvedLabel = $derived(
     label ?? (hasNewMessages ? "New messages" : "Scroll to latest"),
   );
+  const isExpanded = $derived(Boolean(label || hasNewMessages));
 </script>
 
 <div
@@ -34,13 +35,13 @@
 >
   <Button
     type="button"
-    size={hasNewMessages ? "sm" : "icon-sm"}
-    variant="outline"
+    size={isExpanded ? "sm" : "icon-sm"}
+    variant="ghost"
     aria-label={resolvedLabel}
     onclick={onClick}
   >
-    <ArrowDownIcon aria-hidden="true" />
-    {#if hasNewMessages}
+    <ChevronDownIcon aria-hidden="true" />
+    {#if isExpanded}
       <span>{resolvedLabel}</span>
     {/if}
   </Button>

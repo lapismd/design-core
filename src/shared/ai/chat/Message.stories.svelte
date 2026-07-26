@@ -2,6 +2,7 @@
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import Message from "./Message.svelte";
   import MessageBubble from "./MessageBubble.svelte";
+  import MessageList from "./MessageList.svelte";
   import MessageMetadata from "./MessageMetadata.svelte";
 
   const { Story } = defineMeta({
@@ -11,48 +12,160 @@
       docs: {
         description: {
           component:
-            "Sender-aware message anatomy with optional avatar, name, grouped bubbles, and metadata.",
+            "Sender context wrapper for avatar, name, message content, metadata, and role-based alignment. The stories reproduce the ASTRYX ChatMessage showcase and documented variants.",
         },
       },
     },
   });
 </script>
 
-<Story name="Named assistant with avatar">
+<Story name="ASTRYX showcase">
   {#snippet template()}
-    <div data-story="message-frame">
-      <Message sender="assistant" aria-label="Message from Mira">
-        {#snippet avatar()}
-          <span aria-hidden="true">M</span>
-        {/snippet}
-        {#snippet name()}Mira{/snippet}
-        <MessageBubble group="first">I found two related notes.</MessageBubble>
-        <MessageBubble group="last">
-          Would you like a combined summary?
+    <MessageList style="max-width: 37.5rem">
+      <Message sender="user">
+        <MessageBubble group="first">
+          I just pushed the refactored auth module.
         </MessageBubble>
-        {#snippet metadata()}
-          <MessageMetadata timestamp="Now" />
-        {/snippet}
+        <MessageBubble group="last">
+          {#snippet metadata()}
+            <MessageMetadata timestamp="14:30" status="read" />
+          {/snippet}
+          Can you review the token validation changes?
+        </MessageBubble>
       </Message>
-    </div>
+      <Message sender="assistant">
+        <MessageBubble variant="ghost">
+          {#snippet metadata()}
+            <MessageMetadata timestamp="14:31">
+              {#snippet footer()}Claude Opus 4.6{/snippet}
+            </MessageMetadata>
+          {/snippet}
+          Looks good — the refresh token rotation is solid and the error handling
+          covers all the edge cases. Ship it.
+        </MessageBubble>
+      </Message>
+    </MessageList>
   {/snippet}
 </Story>
 
-<Story name="User message">
+<Story name="Avatar and name">
   {#snippet template()}
-    <div data-story="message-frame">
-      <Message sender="user" aria-label="Your message">
-        <MessageBubble>Yes, combine them.</MessageBubble>
+    <MessageList style="max-width: 31.25rem">
+      <Message sender="assistant">
+        {#snippet avatar()}
+          <span data-story-avatar role="img" aria-label="Agent">A</span>
+        {/snippet}
+        <MessageBubble>
+          {#snippet name()}Agent{/snippet}
+          {#snippet metadata()}<MessageMetadata timestamp="10:15" />{/snippet}
+          I reviewed the pull request. The changes look solid — clean code and good
+          test coverage.
+        </MessageBubble>
       </Message>
-    </div>
+      <Message sender="user">
+        <MessageBubble>
+          {#snippet metadata()}
+            <MessageMetadata timestamp="10:16" status="read" />
+          {/snippet}
+          Thanks! Merging it now.
+        </MessageBubble>
+      </Message>
+      <Message sender="assistant">
+        {#snippet avatar()}
+          <span data-story-avatar role="img" aria-label="Agent">A</span>
+        {/snippet}
+        <MessageBubble>
+          {#snippet name()}Agent{/snippet}
+          {#snippet metadata()}<MessageMetadata timestamp="10:17" />{/snippet}
+          I can run the deployment pipeline once it lands. Just let me know.
+        </MessageBubble>
+      </Message>
+    </MessageList>
+  {/snippet}
+</Story>
+
+<Story name="Ghost">
+  {#snippet template()}
+    <MessageList style="max-width: 31.25rem">
+      <Message sender="assistant">
+        <MessageBubble variant="ghost">
+          {#snippet metadata()}
+            <MessageMetadata timestamp="9:45">
+              {#snippet footer()}Claude Opus 4.6{/snippet}
+            </MessageMetadata>
+          {/snippet}
+          Here is an analysis of your production metrics from last week. Traffic
+          peaked at 12,400 requests per second on Wednesday, with a p99 latency of
+          45ms. Error rate stayed below 0.1% across all endpoints.
+        </MessageBubble>
+      </Message>
+      <Message sender="user">
+        <MessageBubble>
+          That looks great. Can you compare it to the week before?
+        </MessageBubble>
+      </Message>
+      <Message sender="assistant">
+        <MessageBubble variant="ghost">
+          {#snippet metadata()}
+            <MessageMetadata timestamp="9:46">
+              {#snippet footer()}Claude Opus 4.6{/snippet}
+            </MessageMetadata>
+          {/snippet}
+          Compared to the previous week, traffic is up 8% and latency improved by
+          3ms. The deployment on Tuesday seems to have helped.
+        </MessageBubble>
+      </Message>
+    </MessageList>
+  {/snippet}
+</Story>
+
+<Story name="Multi-bubble">
+  {#snippet template()}
+    <MessageList style="max-width: 31.25rem">
+      <Message sender="user">
+        <MessageBubble group="first">
+          I have a couple of questions about the new API.
+        </MessageBubble>
+        <MessageBubble group="middle">
+          First, how should we handle pagination?
+        </MessageBubble>
+        <MessageBubble group="last">
+          {#snippet metadata()}
+            <MessageMetadata timestamp="11:00" status="delivered" />
+          {/snippet}
+          And second, what's the rate limit?
+        </MessageBubble>
+      </Message>
+      <Message sender="assistant">
+        {#snippet avatar()}
+          <span data-story-avatar role="img" aria-label="Agent">A</span>
+        {/snippet}
+        <MessageBubble group="first">
+          {#snippet name()}Agent{/snippet}
+          Great questions! For pagination, use cursor-based with a limit parameter.
+          The response includes a nextCursor field.
+        </MessageBubble>
+        <MessageBubble group="last">
+          {#snippet metadata()}<MessageMetadata timestamp="11:01" />{/snippet}
+          Rate limit is 100 requests per minute per API key. You'll get a 429 response
+          with a Retry-After header if you exceed it.
+        </MessageBubble>
+      </Message>
+    </MessageList>
   {/snippet}
 </Story>
 
 <style>
-  :global([data-story="message-frame"]) {
-    width: min(34rem, 90vw);
+  :global([data-story-avatar]) {
+    display: grid;
+    width: 2.25rem;
+    height: 2.25rem;
+    overflow: hidden;
+    place-items: center;
     border: 1px solid var(--border);
-    border-radius: 0.75rem;
-    padding: 1rem;
+    border-radius: 50%;
+    background: var(--muted);
+    color: var(--muted-foreground);
+    font-size: 0.75rem;
   }
 </style>

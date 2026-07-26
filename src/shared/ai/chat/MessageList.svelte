@@ -34,13 +34,14 @@
   } = $props();
 
   const layout = useLayoutContext();
+  let innerRef = $state<HTMLDivElement | null>(null);
   let loadingOlder = $state(false);
   let loadError = $state<string | null>(null);
 
   setListContext({ getDensity: () => density });
 
   $effect(() => {
-    layout?.setContent(ref);
+    layout?.setContent(innerRef);
     return () => layout?.setContent(null);
   });
 
@@ -75,55 +76,58 @@
   data-ui-component="ai-chat-message-list"
   data-ui-part="root"
   data-density={density}
-  style:gap
   role="log"
   aria-label={ariaLabel}
   aria-live="polite"
   aria-relevant="additions text"
   aria-busy={isStreaming || loadingOlder}
 >
-  {#if scrollToTopAction}
-    <div data-ui-part="top-sentinel">
-      <Button
-        type="button"
-        size="xs"
-        variant="ghost"
-        disabled={loadingOlder}
-        aria-describedby={loadError ? "ai-chat-load-older-error" : undefined}
-        onclick={loadOlder}
-      >
-        {#if loadingOlder}
-          <Spinner />
-          Loading older messages
-        {:else}
-          Load older messages
-        {/if}
-      </Button>
-    </div>
-    {#if loadError}
-      <p id="ai-chat-load-older-error" role="alert">{loadError}</p>
-    {/if}
-  {/if}
-
-  {#if isEmpty}
-    <div data-ui-part="empty">
-      {#if emptyState}
-        {@render emptyState()}
-      {:else}
-        <Empty.Root>
-          <Empty.Header>
-            <Empty.Media variant="icon">
-              <SparklesIcon aria-hidden="true" />
-            </Empty.Media>
-            <Empty.Title>No messages yet</Empty.Title>
-            <Empty.Description>
-              The conversation will appear here.
-            </Empty.Description>
-          </Empty.Header>
-        </Empty.Root>
+  <div bind:this={innerRef} data-ui-part="list-inner" style:gap>
+    {#if scrollToTopAction}
+      <div data-ui-part="top-sentinel">
+        <Button
+          type="button"
+          size="xs"
+          variant="ghost"
+          disabled={loadingOlder}
+          aria-describedby={loadError ? "ai-chat-load-older-error" : undefined}
+          onclick={loadOlder}
+        >
+          {#if loadingOlder}
+            <Spinner />
+            Loading older messages
+          {:else}
+            Load older messages
+          {/if}
+        </Button>
+      </div>
+      {#if loadError}
+        <p id="ai-chat-load-older-error" role="alert">{loadError}</p>
       {/if}
-    </div>
-  {:else}
-    {@render children()}
-  {/if}
+    {/if}
+
+    <div data-ui-part="list-spacer" aria-hidden="true"></div>
+
+    {#if isEmpty}
+      <div data-ui-part="empty">
+        {#if emptyState}
+          {@render emptyState()}
+        {:else}
+          <Empty.Root>
+            <Empty.Header>
+              <Empty.Media variant="icon">
+                <SparklesIcon aria-hidden="true" />
+              </Empty.Media>
+              <Empty.Title>No messages yet</Empty.Title>
+              <Empty.Description>
+                The conversation will appear here.
+              </Empty.Description>
+            </Empty.Header>
+          </Empty.Root>
+        {/if}
+      </div>
+    {:else}
+      {@render children()}
+    {/if}
+  </div>
 </div>

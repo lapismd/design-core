@@ -1,5 +1,8 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
+  import Message from "./Message.svelte";
+  import MessageBubble from "./MessageBubble.svelte";
+  import MessageList from "./MessageList.svelte";
   import TokenizedText from "./TokenizedText.svelte";
 
   const { Story } = defineMeta({
@@ -16,17 +19,59 @@
   });
 </script>
 
-<Story name="Mentions in a response">
+<Story name="ASTRYX showcase">
   {#snippet template()}
-    <p data-story="tokenized-line">
-      <TokenizedText
-        text="@ada reviewed /release and approved it."
-        tokens={[
-          { value: "@ada", label: "@Ada", variant: "secondary" },
-          { value: "/release", label: "release", variant: "outline" },
-        ]}
-      />
-    </p>
+    <MessageList style="max-width: 37.5rem">
+      <Message sender="system">
+        <MessageBubble>
+          <TokenizedText
+            text="@cindy filed #bug and #feat for the sprint"
+            tokens={[
+              { value: "@cindy", label: "@Cindy", variant: "secondary" },
+              { value: "#bug", label: "#bug", variant: "destructive" },
+              { value: "#feat", label: "#feature", variant: "outline" },
+            ]}
+          />
+        </MessageBubble>
+      </Message>
+    </MessageList>
+  {/snippet}
+</Story>
+
+<Story name="Basic">
+  {#snippet template()}
+    <MessageList style="max-width: 37.5rem">
+      <Message sender="system">
+        <MessageBubble>
+          <TokenizedText
+            text="Assign @cindy and @alex as reviewers."
+            tokens={[
+              { value: "@cindy", label: "@Cindy", variant: "secondary" },
+              { value: "@alex", label: "@Alex", variant: "secondary" },
+            ]}
+          />
+        </MessageBubble>
+      </Message>
+    </MessageList>
+  {/snippet}
+</Story>
+
+<Story name="Colors">
+  {#snippet template()}
+    <MessageList style="max-width: 37.5rem">
+      <Message sender="system">
+        <MessageBubble>
+          <TokenizedText
+            text="@cindy filed #bug and #feat for the sprint"
+            tokens={[
+              { value: "@cindy", label: "@Cindy", variant: "secondary" },
+              { value: "#bug", label: "#bug", variant: "destructive" },
+              { value: "#feat", label: "#feature", variant: "outline" },
+            ]}
+          />
+        </MessageBubble>
+      </Message>
+    </MessageList>
   {/snippet}
 </Story>
 

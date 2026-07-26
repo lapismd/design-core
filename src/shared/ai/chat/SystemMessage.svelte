@@ -24,7 +24,7 @@
   data-ui-component="ai-chat-system-message"
   data-ui-part="root"
   data-variant={variant}
-  role="note"
+  role="status"
 >
   {#if variant === "divider"}
     <Separator />

@@ -1,8 +1,36 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent, waitFor } from "storybook/test";
+  import Composer from "./Composer.svelte";
   import ComposerInput from "./ComposerInput.svelte";
   import type { ComposerInputHandle, ComposerTrigger } from "./types.js";
+
+  const people = [
+    { id: "cindy", label: "Cindy Zhang", description: "Design Systems" },
+    { id: "alex", label: "Alex Johnson", description: "Frontend" },
+    { id: "sam", label: "Sam Rivera", description: "Backend" },
+    { id: "jordan", label: "Jordan Lee", description: "Product" },
+  ];
+
+  const commands = [
+    {
+      id: "summarize",
+      label: "summarize",
+      description: "Summarize the conversation",
+    },
+    {
+      id: "translate",
+      label: "translate",
+      description: "Translate text to another language",
+    },
+    {
+      id: "search",
+      label: "search",
+      description: "Search the web or documents",
+    },
+    { id: "code", label: "code", description: "Generate or explain code" },
+    { id: "help", label: "help", description: "Show available commands" },
+  ];
 
   const mentionTrigger: ComposerTrigger = {
     character: "@",
@@ -10,27 +38,34 @@
     searchSource: async (query, signal) => {
       await Promise.resolve();
       if (signal.aborted) return [];
-      return [
-        {
-          id: "ada",
-          label: "Ada Lovelace",
-          value: "@ada",
-          description: query ? `Matches “${query}”` : "Engineer",
-        },
-        {
-          id: "grace",
-          label: "Grace Hopper",
-          value: "@grace",
-          description: "Admiral",
-        },
-      ];
+      return people.filter((person) =>
+        person.label.toLowerCase().includes(query.toLowerCase()),
+      );
     },
     onSelect: (item) => ({
-      value: item.value ?? `@${item.id}`,
-      label: `@${item.label.split(" ")[0]}`,
+      value: `@${item.id}`,
+      label: item.label,
       variant: "secondary",
     }),
   };
+
+  const commandTrigger: ComposerTrigger = {
+    character: "/",
+    menuLabel: "Commands",
+    searchSource: async (query) =>
+      commands.filter((command) =>
+        command.label.toLowerCase().includes(query.toLowerCase()),
+      ),
+    onSelect: (item) => ({
+      value: `/${item.label}`,
+      label: `/${item.label}`,
+      variant: "outline",
+    }),
+  };
+
+  const mentionTriggers = [mentionTrigger];
+  const commandTriggers = [commandTrigger];
+  const allTriggers = [mentionTrigger, commandTrigger];
 
   const { Story } = defineMeta({
     title: "AI/Chat/Composer Input",
@@ -53,19 +88,130 @@
   let fileResult = $state("No files");
   let browserValue = $state("");
   let browserFileResult = $state("No browser files");
+  let showcaseValue = $state("");
+  let controlledValue = $state("This value is controlled");
+  let mentionValue = $state("");
+  let multiTriggerValue = $state("");
+  let slashValue = $state("");
 </script>
+
+<Story name="ASTRYX showcase">
+  {#snippet template()}
+    <div data-story="composer-input-showcase">
+      <Composer
+        bind:value={showcaseValue}
+        onSubmit={() => {
+          showcaseValue = "";
+        }}
+      >
+        {#snippet input()}
+          <ComposerInput
+            bind:value={showcaseValue}
+            placeholder="Ask me anything about Astryx..."
+          />
+        {/snippet}
+      </Composer>
+    </div>
+  {/snippet}
+</Story>
+
+<Story name="Controlled">
+  {#snippet template()}
+    <div data-story="composer-input-stack">
+      <Composer
+        bind:value={controlledValue}
+        elevation="none"
+        onSubmit={() => {}}
+      >
+        {#snippet input()}
+          <ComposerInput
+            bind:value={controlledValue}
+            placeholder="Type a message..."
+          />
+        {/snippet}
+      </Composer>
+      <p>Value: {controlledValue || "(empty)"}</p>
+    </div>
+  {/snippet}
+</Story>
+
+<Story name="Disabled">
+  {#snippet template()}
+    <div data-story="composer-input-showcase">
+      <Composer disabled value="" onSubmit={() => {}}>
+        {#snippet input()}
+          <ComposerInput disabled placeholder="Input is disabled" />
+        {/snippet}
+      </Composer>
+    </div>
+  {/snippet}
+</Story>
+
+<Story name="Mentions">
+  {#snippet template()}
+    <div data-story="composer-input-stack">
+      <p>Type <code>@</code> to mention a teammate.</p>
+      <Composer bind:value={mentionValue} elevation="none" onSubmit={() => {}}>
+        {#snippet input()}
+          <ComposerInput
+            bind:value={mentionValue}
+            triggers={mentionTriggers}
+            placeholder="Type @ to mention someone..."
+          />
+        {/snippet}
+      </Composer>
+    </div>
+  {/snippet}
+</Story>
+
+<Story name="Multiple triggers">
+  {#snippet template()}
+    <div data-story="composer-input-stack">
+      <p>Type <code>@</code> for people or <code>/</code> for commands.</p>
+      <Composer
+        bind:value={multiTriggerValue}
+        elevation="none"
+        onSubmit={() => {}}
+      >
+        {#snippet input()}
+          <ComposerInput
+            bind:value={multiTriggerValue}
+            triggers={allTriggers}
+            placeholder="Type @ or / ..."
+          />
+        {/snippet}
+      </Composer>
+    </div>
+  {/snippet}
+</Story>
+
+<Story name="Slash commands">
+  {#snippet template()}
+    <div data-story="composer-input-stack">
+      <Composer bind:value={slashValue} elevation="none" onSubmit={() => {}}>
+        {#snippet input()}
+          <ComposerInput
+            bind:value={slashValue}
+            triggers={commandTriggers}
+            placeholder="Type / for commands..."
+          />
+        {/snippet}
+      </Composer>
+    </div>
+  {/snippet}
+</Story>
 
 <Story
   name="Selects an async trigger result"
   play={async ({ canvas }) => {
     const input = canvas.getByRole("combobox", { name: "Mention someone" });
     await userEvent.click(input);
-    await userEvent.type(input, "@a");
+    await userEvent.type(input, "@c");
     await expect(
-      await canvas.findByRole("option", { name: /Ada Lovelace/ }),
+      await canvas.findByRole("option", { name: /Cindy Zhang/ }),
     ).toBeVisible();
     await userEvent.keyboard("{Enter}");
-    await expect(canvas.getByRole("status")).toHaveTextContent("@ada");
+    await expect(canvas.getByRole("status")).toHaveTextContent("@cindy");
   }}
 >
   {#snippet template()}
@@ -73,7 +219,7 @@
       <ComposerInput
         bind:value
         label="Mention someone"
-        triggers={[mentionTrigger]}
+        triggers={mentionTriggers}
         debounceMs={0}
       />
       <output>{value || "Empty"}</output>
@@ -186,6 +332,23 @@
 </Story>
 
 <style>
+  :global([data-story="composer-input-showcase"]) {
+    width: min(28.125rem, 90vw);
+  }
+
+  :global([data-story="composer-input-stack"]) {
+    display: flex;
+    width: min(30rem, 90vw);
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  :global([data-story="composer-input-stack"] p) {
+    margin: 0;
+    color: var(--muted-foreground);
+    font-size: 0.875rem;
+  }
+
   :global([data-story="input-frame"]) {
     display: flex;
     width: min(36rem, 90vw);
