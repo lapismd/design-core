@@ -92,6 +92,10 @@ export type DocsMcpProviderContext = {
 
 export type DocsMcpProvider = {
   name: string;
+  /** Provider or catalog adapter version recorded in managed agent guidance. */
+  version?: string;
+  /** Stable cache discriminator for provider options that are not source files. */
+  cacheKey?: string;
   /** Files whose content invalidates the normalized catalog cache. */
   sourceFiles(context: DocsMcpProviderContext): string[];
   load(context: DocsMcpProviderContext): DocsMcpCatalog;

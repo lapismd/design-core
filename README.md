@@ -200,6 +200,9 @@ pnpm ui components [name]
 pnpm ui components --layer shadcn|forms|filter|ai
 pnpm ui:mcp:stdio
 pnpm ui mcp
+pnpm docs-mcp search "<intent>"
+pnpm docs-mcp get <exact-id> [--section <id>]
+pnpm docs-mcp eval --cases packages/storybook-addon-docs-mcp/eval/ui-relevance-cases.json
 pnpm ui visual:tag skip|include --component <name>
 pnpm ui visual:tag review --status ready --component <name>
 
@@ -224,9 +227,14 @@ pnpm ui:mcp:stdio
 ```
 
 The Cursor entry in `.cursor/mcp.json` uses this command. The standalone
-`storybook-addon-docs-mcp` package also provides `docs-mcp init`, `stdio`,
-`serve`, and `doctor`; see its
+`storybook-addon-docs-mcp` package also provides `search` → `get` discovery,
+`init`, `stdio`, `serve`, `doctor`, deterministic `eval`, and opt-in
+`eval-agent`; see its
 [`README.md`](./packages/storybook-addon-docs-mcp/README.md).
+
+Use `pnpm docs-mcp search "<intent>"` to rank components, guides, and curated
+blocks, then `pnpm docs-mcp get <exact-id>` for bounded documentation. The same
+tools and structured results are available through stdio and HTTP MCP.
 
 With Storybook running on port 9009, HTTP remains available:
 

@@ -8,6 +8,7 @@ import {
   type DocsMcpGetFormat,
 } from "./discovery.js";
 import { markdownToHtmlDocument } from "./markdown-html.js";
+import { DOCS_MCP_VERSION } from "./version.js";
 import type {
   DocsMcpArtifact,
   DocsMcpCatalog,
@@ -23,6 +24,7 @@ export type DocsServiceOptions = {
   mcpPath?: string;
   cache?: DocsCache;
   noCache?: boolean;
+  configPath?: string;
 };
 
 function normalizedPath(value: string): string {
@@ -42,12 +44,6 @@ export function createDocsService(options: DocsServiceOptions) {
         ? undefined
         : path.resolve(root, options.config.cacheDir ?? ".cache/docs-mcp"),
     });
-  let recentCatalog:
-    | {
-        value: DocsMcpCatalog;
-        readAt: number;
-      }
-    | undefined;
 
   function getBaseUrl(): string {
     const value =
@@ -58,24 +54,19 @@ export function createDocsService(options: DocsServiceOptions) {
   }
 
   function getCatalog(): DocsMcpCatalog {
-    const now = Date.now();
-    if (
-      !options.noCache &&
-      recentCatalog &&
-      now - recentCatalog.readAt < 1_000
-    ) {
-      return recentCatalog.value;
-    }
     const context = { root };
     const files = options.config.provider.sourceFiles(context);
     const value = cache.get(
-      `catalog:${options.config.provider.name}`,
+      [
+        "catalog",
+        DOCS_MCP_VERSION,
+        options.config.provider.name,
+        options.config.provider.version ?? "unversioned",
+        options.config.provider.cacheKey ?? "default",
+      ].join(":"),
       files,
       () => normalizeCatalog(options.config.provider.load(context)),
     ).value;
-    if (!options.noCache) {
-      recentCatalog = { value, readAt: now };
-    }
     return value;
   }
 
@@ -376,6 +367,8 @@ export function createDocsService(options: DocsServiceOptions) {
 
   return {
     root,
+    config: options.config,
+    configPath: options.configPath,
     mcpPath,
     cache,
     getBaseUrl,

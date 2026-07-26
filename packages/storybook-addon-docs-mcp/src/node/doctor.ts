@@ -1,5 +1,6 @@
 import { existsSync } from "node:fs";
 import type { DocsService } from "../service.js";
+import { inspectManagedAgentDocs } from "./agent-docs.js";
 
 export type DoctorIssue = {
   level: "error" | "warning";
@@ -54,6 +55,19 @@ export function inspectDocsService(service: DocsService): DoctorIssue[] {
   }
   for (const warning of catalog.warnings ?? []) {
     issues.push({ level: "warning", message: warning });
+  }
+  for (const managed of inspectManagedAgentDocs(service)) {
+    if (managed.status === "stale") {
+      issues.push({
+        level: "warning",
+        message: `Stale managed Docs MCP guidance: ${managed.filePath}. Re-run init --agent-docs.`,
+      });
+    } else if (managed.status === "invalid") {
+      issues.push({
+        level: "error",
+        message: `Invalid managed Docs MCP guidance in ${managed.filePath}: ${managed.message}`,
+      });
+    }
   }
   if (
     catalog.components.length === 0 &&

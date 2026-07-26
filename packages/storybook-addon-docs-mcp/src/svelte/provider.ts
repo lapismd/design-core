@@ -11,6 +11,7 @@ import {
   extractPropsFromSvelteFile,
   formatPropsMarkdown,
 } from "./svelte-props.js";
+import { DOCS_MCP_VERSION } from "../version.js";
 
 export type SvelteDocsProviderOptions = {
   title?: string;
@@ -161,6 +162,8 @@ export function createSvelteDocsProvider(
 
   return {
     name: "svelte-stories",
+    version: DOCS_MCP_VERSION,
+    cacheKey: JSON.stringify(options),
     sourceFiles: ({ root }) => sourceFiles(root),
     load: ({ root }): DocsMcpCatalog => {
       const warnings: string[] = [];

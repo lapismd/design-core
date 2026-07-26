@@ -10,6 +10,7 @@ import { McpServer } from "tmcp";
 import * as v from "valibot";
 import type { DocsMcpEntryKind, DocsMcpGetFormat } from "./discovery.js";
 import type { DocsService } from "./service.js";
+import { DOCS_MCP_VERSION } from "./version.js";
 
 export const DOCS_MCP_INSTRUCTIONS = `${STORYBOOK_MCP_INSTRUCTIONS}
 
@@ -95,7 +96,7 @@ export async function createDocsMcpServer(service: DocsService) {
   const server = new McpServer(
     {
       name: "storybook-addon-docs-mcp",
-      version: "0.1.0",
+      version: DOCS_MCP_VERSION,
       description: "Documentation generated from Storybook project sources.",
     },
     {

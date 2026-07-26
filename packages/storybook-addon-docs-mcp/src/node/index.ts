@@ -8,3 +8,6 @@ export * from "./server.js";
 export * from "./stdio.js";
 export * from "./doctor.js";
 export * from "./init.js";
+export * from "./agent-docs.js";
+export * from "./eval.js";
+export * from "./eval-agent.js";

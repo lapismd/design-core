@@ -5,6 +5,7 @@ import type { DocsMcpConfig } from "../types.js";
 export type DocsHttpServerOptions = {
   root: string;
   config: DocsMcpConfig;
+  configPath?: string;
   host?: string;
   port?: number;
   baseUrl?: string;
@@ -18,6 +19,7 @@ export async function startDocsMcpHttpServer(options: DocsHttpServerOptions) {
   const handler = await createDocsHttpHandler({
     root: options.root,
     config: options.config,
+    configPath: options.configPath,
     baseUrl,
     mcpPath: options.config.mcpPath ?? "/docs-mcp",
     alsoAcceptLegacyMcpPath: true,

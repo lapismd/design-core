@@ -34,6 +34,8 @@ interactive story work and live docs; keep the CLI for offline / scripted use.
 | `pnpm ui components [name] [--layer …]`    | Catalog list / show (all layers)          |
 | `pnpm ui:mcp:stdio`                        | Docs MCP over stdio (preferred)           |
 | `pnpm ui mcp [--port 9011] [--no-cache]`   | Standalone Docs MCP + llms (no Storybook) |
+| `pnpm docs-mcp search "<intent>"`          | Rank components, guides, and blocks       |
+| `pnpm docs-mcp get <exact-id>`             | Bounded docs or one stable section        |
 | `pnpm ui:add` / `ui:inspect` / `ui:doctor` | Generator pipeline (see README)           |
 
 ## Docs MCP and llms.txt
@@ -44,13 +46,13 @@ works while Storybook is down, and lets multiple catalogs run without port
 coordination. It is also mounted on the Storybook server (starts/restarts with
 `pnpm storybook`) at a path separate from the core Storybook MCP:
 
-| Surface        | URL                                                                      | Use for                                                                                             |
-| -------------- | ------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------- |
-| Storybook MCP  | `http://localhost:9009/mcp`                                              | Story instructions, previews, changed stories, `run-story-tests`                                    |
-| Docs MCP       | `http://localhost:9009/docs-mcp`                                         | `list-all-documentation`, `get-documentation`, `get-documentation-for-story` (Svelte props + usage) |
-| llms index     | `http://localhost:9009/llms.txt` (markdown) / `/llms.md` (HTML)          | Bulk LLM/markdown index by layer                                                                    |
-| Component page | `http://localhost:9009/llms/<layer>/<id>.md` (HTML) / `.txt` (markdown)  | Full props + examples for one component                                                             |
-| Guide topic    | `http://localhost:9009/llms/guide/<topic>.md` (HTML) / `.txt` (markdown) | Same content as `pnpm ui guide <topic>`                                                             |
+| Surface        | URL                                                                      | Use for                                                                 |
+| -------------- | ------------------------------------------------------------------------ | ----------------------------------------------------------------------- |
+| Storybook MCP  | `http://localhost:9009/mcp`                                              | Story instructions, previews, changed stories, `run-story-tests`        |
+| Docs MCP       | `http://localhost:9009/docs-mcp`                                         | Prefer `search` → `get`; legacy exhaustive/story tools remain available |
+| llms index     | `http://localhost:9009/llms.txt` (markdown) / `/llms.md` (HTML)          | Bulk LLM/markdown index by layer                                        |
+| Component page | `http://localhost:9009/llms/<layer>/<id>.md` (HTML) / `.txt` (markdown)  | Full props + examples for one component                                 |
+| Guide topic    | `http://localhost:9009/llms/guide/<topic>.md` (HTML) / `.txt` (markdown) | Same content as `pnpm ui guide <topic>`                                 |
 
 Cursor (`.cursor/mcp.json`):
 
@@ -59,7 +61,8 @@ Cursor (`.cursor/mcp.json`):
 
 Optional standalone fallback when Storybook is down: `pnpm ui mcp` (alias
 `pnpm ui:mcp`) on `:9011` with the same Docs MCP + llms routes. Offline CLI:
-`pnpm ui guide` / `pnpm ui components`. Cache under `.cache/ui-docs/`
+`pnpm ui guide` / `pnpm ui components`; use `pnpm docs-mcp search` → `get` for
+the same discovery workflow without an MCP client. Cache under `.cache/ui-docs/`
 (content-hash invalidation); bypass with `DOCS_MCP_CACHE=0` (or the legacy
 `UI_DOCS_CACHE=0`) or
 `pnpm ui mcp --no-cache`.

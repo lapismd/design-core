@@ -140,11 +140,14 @@ export async function createDocsHttpHandler(
         if (
           options.alsoAcceptLegacyMcpPath &&
           (pathname === "/manifests/components.json" ||
-            pathname === "/manifests/docs.json")
+            pathname === "/manifests/docs.json" ||
+            pathname === "/manifests/artifacts.json")
         ) {
           const manifest = pathname.includes("components")
             ? service.buildComponentsManifest()
-            : service.buildDocsManifest();
+            : pathname.includes("artifacts")
+              ? service.buildArtifactsManifest()
+              : service.buildDocsManifest();
           res.writeHead(200, {
             "content-type": "application/json; charset=utf-8",
           });

@@ -539,19 +539,11 @@ function boundedMarkdown(
     return { markdown: entry.markdown, truncated: false };
   }
   const hint = `Call get with id "${entry.id}", section "<section-id>" for one section, or format "full" for all authored prose.`;
-  const index = [
-    "",
-    "## Section index",
-    "",
-    ...entry.sections.map(
-      (section) => `- \`${section.id}\` — ${section.title}`,
-    ),
-    "",
-    `> ${hint}`,
-    "",
-  ].join("\n");
+  const sectionLines = entry.sections.map(
+    (section) => `- \`${section.id}\` — ${section.title}`,
+  );
   const overview = overviewMarkdown(entry.markdown);
-  const header = [
+  let header = [
     `# ${entry.name}`,
     "",
     entry.summary,
@@ -559,6 +551,36 @@ function boundedMarkdown(
     `ID: \`${entry.id}\``,
     "",
   ].join("\n");
+  const fixedIndex = `\n## Section index\n\n`;
+  const suffix = `\n> ${hint}\n`;
+  if (header.length + fixedIndex.length + suffix.length > budget) {
+    header = `# ${entry.name}\n\nID: \`${entry.id}\`\n`;
+  }
+  const selectedSections: string[] = [];
+  for (const line of sectionLines) {
+    const omitted =
+      selectedSections.length + 1 < sectionLines.length
+        ? `\n- … ${sectionLines.length - selectedSections.length - 1} additional sections; use \`format: "full"\` for the complete index.\n`
+        : "\n";
+    const candidate = [...selectedSections, line].join("\n");
+    if (
+      header.length +
+        fixedIndex.length +
+        candidate.length +
+        omitted.length +
+        suffix.length >
+      budget
+    ) {
+      break;
+    }
+    selectedSections.push(line);
+  }
+  const omittedCount = sectionLines.length - selectedSections.length;
+  const omitted =
+    omittedCount > 0
+      ? `\n- … ${omittedCount} additional sections; use \`format: "full"\` for the complete index.\n`
+      : "\n";
+  const index = `${fixedIndex}${selectedSections.join("\n")}${omitted}${suffix}`;
   const allowance = Math.max(0, budget - header.length - index.length);
   const paragraphs = overview
     .split(/\n\s*\n/)
@@ -574,7 +596,7 @@ function boundedMarkdown(
   }
   const body = selected.length ? `${selected.join("\n\n")}\n` : "";
   return {
-    markdown: `${header}${body}${index}`.slice(0, budget),
+    markdown: `${header}${body}${index}`,
     truncated: true,
     hint,
   };

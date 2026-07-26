@@ -7,11 +7,13 @@ import type { DocsMcpConfig } from "../types.js";
 export async function startDocsMcpStdio(options: {
   root: string;
   config: DocsMcpConfig;
+  configPath?: string;
   noCache?: boolean;
 }): Promise<void> {
   const service = createDocsService({
     root: options.root,
     config: options.config,
+    configPath: options.configPath,
     noCache: options.noCache,
   });
   const server = await createDocsMcpServer(service);

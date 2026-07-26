@@ -3,7 +3,14 @@ import path from "node:path";
 import { loadDocsMcpConfig } from "../config.js";
 import type { DocsMcpEntryKind, DocsMcpGetFormat } from "../discovery.js";
 import { createDocsService } from "../service.js";
+import {
+  removeManagedAgentDocs,
+  writeManagedAgentDocs,
+  type DocsMcpAgentSelection,
+} from "./agent-docs.js";
 import { inspectDocsService } from "./doctor.js";
+import { runAgentEval, type AgentEvalCondition } from "./eval-agent.js";
+import { runDeterministicEval } from "./eval.js";
 import { initializeDocsMcp, type ClientTransport } from "./init.js";
 import { startDocsMcpHttpServer } from "./server.js";
 import { startDocsMcpStdio } from "./stdio.js";
@@ -25,6 +32,17 @@ type Args = {
   limit?: number;
   section?: string;
   format?: DocsMcpGetFormat;
+  agentDocs: boolean;
+  removeAgentDocs: boolean;
+  agent: DocsMcpAgentSelection;
+  agentDocsPath?: string;
+  casesPath?: string;
+  k?: number;
+  runner?: string;
+  repetitions?: number;
+  conditions: AgentEvalCondition[];
+  outputDir?: string;
+  timeoutMs?: number;
 };
 
 function envValue(primary: string, legacy: string): string | undefined {
@@ -51,6 +69,17 @@ function parseArgs(argv: string[]): Args {
   let limit: number | undefined;
   let section: string | undefined;
   let format: DocsMcpGetFormat | undefined;
+  let agentDocs = false;
+  let removeAgentDocs = false;
+  let agent: DocsMcpAgentSelection = "codex";
+  let agentDocsPath: string | undefined;
+  let casesPath: string | undefined;
+  let k: number | undefined;
+  let runner: string | undefined;
+  let repetitions: number | undefined;
+  const conditions: AgentEvalCondition[] = [];
+  let outputDir: string | undefined;
+  let timeoutMs: number | undefined;
   for (let index = 1; index < argv.length; index++) {
     const token = argv[index]!;
     const value = argv[index + 1];
@@ -89,6 +118,38 @@ function parseArgs(argv: string[]): Args {
       }
       format = value as DocsMcpGetFormat;
       index += 1;
+    } else if (token === "--agent-docs") {
+      agentDocs = true;
+    } else if (token === "--remove-agent-docs") {
+      removeAgentDocs = true;
+    } else if (token === "--agent" && value) {
+      if (!["codex", "cursor", "claude", "all"].includes(value)) {
+        throw new Error(`Unknown agent "${value}".`);
+      }
+      agent = value as DocsMcpAgentSelection;
+      index += 1;
+    } else if (token === "--agent-docs-path" && value) {
+      agentDocsPath = argv[++index]!;
+    } else if (token === "--cases" && value) {
+      casesPath = argv[++index]!;
+    } else if (token === "--k" && value) {
+      k = Number(argv[++index]);
+    } else if (token === "--runner" && value) {
+      runner = argv[++index]!;
+    } else if (token === "--repetitions" && value) {
+      repetitions = Number(argv[++index]);
+    } else if (token === "--condition" && value) {
+      for (const condition of value.split(",") as AgentEvalCondition[]) {
+        if (!["bare", "mcp", "mcp-agent-docs"].includes(condition)) {
+          throw new Error(`Unknown eval-agent condition "${condition}".`);
+        }
+        conditions.push(condition);
+      }
+      index += 1;
+    } else if (token === "--out" && value) {
+      outputDir = argv[++index]!;
+    } else if (token === "--timeout-ms" && value) {
+      timeoutMs = Number(argv[++index]);
     } else if (token.startsWith("--")) {
       throw new Error(`Unknown option "${token}".`);
     } else {
@@ -100,6 +161,21 @@ function parseArgs(argv: string[]): Args {
   }
   if (limit !== undefined && (!Number.isInteger(limit) || limit < 1)) {
     throw new Error(`Invalid limit: ${limit}`);
+  }
+  if (k !== undefined && (!Number.isInteger(k) || k < 1 || k > 20)) {
+    throw new Error(`Invalid evaluation k: ${k}`);
+  }
+  if (
+    repetitions !== undefined &&
+    (!Number.isInteger(repetitions) || repetitions < 1)
+  ) {
+    throw new Error(`Invalid repetitions: ${repetitions}`);
+  }
+  if (
+    timeoutMs !== undefined &&
+    (!Number.isInteger(timeoutMs) || timeoutMs < 1_000)
+  ) {
+    throw new Error(`Invalid timeout: ${timeoutMs}`);
   }
   return {
     command,
@@ -118,6 +194,17 @@ function parseArgs(argv: string[]): Args {
     limit,
     section,
     format,
+    agentDocs,
+    removeAgentDocs,
+    agent,
+    agentDocsPath,
+    casesPath,
+    k,
+    runner,
+    repetitions,
+    conditions,
+    outputDir,
+    timeoutMs,
   };
 }
 
@@ -126,11 +213,18 @@ function help(): string {
 
 Usage:
   docs-mcp init [--root .] [--transport stdio|http] [--client-name name]
+                [--agent-docs] [--agent codex|cursor|claude|all]
+                [--agent-docs-path relative/path]
+  docs-mcp init --remove-agent-docs [--agent codex|cursor|claude|all]
   docs-mcp stdio [--root .] [--config .storybook/docs-mcp.config.ts]
   docs-mcp serve [--host 127.0.0.1] [--port 9011] [--no-cache]
   docs-mcp doctor [--json] [--live]
   docs-mcp search "<query>" [--kind component|guide|template|block] [--limit 8] [--json]
   docs-mcp get <id> [--section id] [--format bounded|full|dense] [--json]
+  docs-mcp eval --cases <file> [--k 5] [--json]
+  docs-mcp eval-agent --cases <file> --runner "command {cwd} {promptFile}"
+                      [--repetitions 5] [--condition bare|mcp|mcp-agent-docs]
+                      [--out .cache/docs-mcp/evals/name] [--json]
 
 stdio is the default command and the default generated client transport.
 DOCS_MCP_* environment variables take precedence over legacy UI_DOCS_* aliases.
@@ -144,6 +238,25 @@ async function main(): Promise<void> {
     return;
   }
   if (args.command === "init") {
+    if (args.removeAgentDocs) {
+      const agentDocs = removeManagedAgentDocs({
+        root: args.root,
+        agent: args.agent,
+        agentDocsPath: args.agentDocsPath,
+      });
+      process.stdout.write(
+        args.json
+          ? `${JSON.stringify({ agentDocs })}\n`
+          : [
+              ...agentDocs.map(
+                (entry) =>
+                  `${entry.action === "removed" ? "Removed" : "No managed block in"}: ${entry.filePath}`,
+              ),
+              "",
+            ].join("\n"),
+      );
+      return;
+    }
     const result = initializeDocsMcp({
       root: args.root,
       configPath: args.config,
@@ -151,13 +264,33 @@ async function main(): Promise<void> {
       transport: args.transport,
       port: args.port,
     });
+    let agentDocs: ReturnType<typeof writeManagedAgentDocs> | undefined;
+    if (args.agentDocs) {
+      const loaded = await loadDocsMcpConfig(args.root, result.configPath);
+      const service = createDocsService({
+        root: loaded.root,
+        config: loaded.config,
+        configPath: loaded.configPath,
+        noCache: args.noCache,
+      });
+      agentDocs = writeManagedAgentDocs({
+        service,
+        agent: args.agent,
+        agentDocsPath: args.agentDocsPath,
+      });
+    }
+    const output = { ...result, ...(agentDocs ? { agentDocs } : {}) };
     process.stdout.write(
       args.json
-        ? `${JSON.stringify(result)}\n`
+        ? `${JSON.stringify(output)}\n`
         : [
             `Docs MCP initialized as "${result.clientName}" (transport: ${args.transport ?? "stdio"}).`,
             `Config: ${result.configPath}`,
             ...result.clientFiles.map((file) => `Client: ${file}`),
+            ...(agentDocs ?? []).map(
+              (entry) =>
+                `Agent docs: ${entry.filePath}${entry.changed ? "" : " (unchanged)"}`,
+            ),
             "",
           ].join("\n"),
     );
@@ -170,6 +303,7 @@ async function main(): Promise<void> {
     const service = createDocsService({
       root: loaded.root,
       config: loaded.config,
+      configPath: loaded.configPath,
       noCache: args.noCache,
     });
     const result = service.search({
@@ -199,6 +333,7 @@ async function main(): Promise<void> {
     const service = createDocsService({
       root: loaded.root,
       config: loaded.config,
+      configPath: loaded.configPath,
       noCache: args.noCache,
     });
     const result = service.get({
@@ -224,10 +359,91 @@ async function main(): Promise<void> {
     if (result.status !== "ok") process.exitCode = 1;
     return;
   }
+  if (args.command === "eval") {
+    if (!args.casesPath) throw new Error("eval requires --cases <file>.");
+    const service = createDocsService({
+      root: loaded.root,
+      config: loaded.config,
+      configPath: loaded.configPath,
+      noCache: args.noCache,
+    });
+    const report = runDeterministicEval({
+      service,
+      casesPath: args.casesPath,
+      k: args.k,
+    });
+    process.stdout.write(
+      args.json
+        ? `${JSON.stringify(report)}\n`
+        : [
+            report.ok
+              ? "Docs MCP relevance evaluation passed."
+              : "Docs MCP relevance evaluation failed.",
+            `Cases: ${report.caseCount}`,
+            `Top-1: ${report.metrics.top1Accuracy}`,
+            `Hit@${report.metrics.k}: ${report.metrics.hitAtK}`,
+            `MRR: ${report.metrics.meanReciprocalRank}`,
+            `No-result correctness: ${report.metrics.noResultCorrectness}`,
+            ...report.cases
+              .filter((entry) => !entry.passed)
+              .map(
+                (entry) =>
+                  `FAIL ${entry.id}: expected ${entry.expectedIds.join(", ") || "no results"} within rank ${entry.maxRank}; got ${entry.topIds.join(", ") || "no results"}`,
+              ),
+            "",
+          ].join("\n"),
+    );
+    if (!report.ok) process.exitCode = 1;
+    return;
+  }
+  if (args.command === "eval-agent") {
+    if (!args.casesPath) {
+      throw new Error("eval-agent requires --cases <file>.");
+    }
+    if (!args.runner) {
+      throw new Error(
+        'eval-agent requires --runner "command {cwd} {promptFile}".',
+      );
+    }
+    const service = createDocsService({
+      root: loaded.root,
+      config: loaded.config,
+      configPath: loaded.configPath,
+      noCache: true,
+    });
+    const report = runAgentEval({
+      service,
+      casesPath: args.casesPath,
+      runner: args.runner,
+      repetitions: args.repetitions,
+      conditions: args.conditions.length ? args.conditions : undefined,
+      outputDir: args.outputDir,
+      timeoutMs: args.timeoutMs,
+    });
+    process.stdout.write(
+      args.json
+        ? `${JSON.stringify(report)}\n`
+        : [
+            report.ok
+              ? "Docs MCP agent experiment completed."
+              : "Docs MCP agent experiment completed with runner or validity failures.",
+            `Report: ${path.join(report.reportRoot, "report.json")}`,
+            `Trials: ${report.trials.length}`,
+            ...report.conditions.map((condition) => {
+              const metrics = report.metrics[condition];
+              return `${condition}: MCP ${metrics.mcpDiscoveryRate}, search→get ${metrics.searchGetCompletionRate}, recall ${metrics.expectedIdRecall}, typecheck ${metrics.fixtureTypecheckRate}`;
+            }),
+            "",
+          ].join("\n"),
+    );
+    if (!report.ok) process.exitCode = 1;
+    return;
+  }
   if (args.command === "stdio") {
     await startDocsMcpStdio({
       root: loaded.root,
       config: loaded.config,
+      configPath: loaded.configPath,
       noCache: args.noCache,
     });
     return;
@@ -236,6 +452,7 @@ async function main(): Promise<void> {
     const started = await startDocsMcpHttpServer({
       root: loaded.root,
       config: loaded.config,
+      configPath: loaded.configPath,
       host: args.host,
       port: args.port,
       baseUrl: args.baseUrl,
@@ -255,12 +472,14 @@ async function main(): Promise<void> {
     const service = createDocsService({
       root: loaded.root,
       config: loaded.config,
+      configPath: loaded.configPath,
       noCache: args.noCache,
     });
     const issues = inspectDocsService(service);
     if (args.live) {
       await service.manifestProvider(undefined, "components.json");
       await service.manifestProvider(undefined, "docs.json");
+      await service.manifestProvider(undefined, "artifacts.json");
     }
     const result = {
       ok: !issues.some((issue) => issue.level === "error"),

@@ -1,4 +1,5 @@
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import type {
   DocsMcpCatalog,
   DocsMcpProvider,
@@ -77,6 +78,7 @@ function resolveSvelte(entry: CatalogEntry, title: string) {
 export function createUiDocsProvider(): DocsMcpProvider {
   return {
     name: "stevejuma-ui",
+    version: "0.1.0",
     sourceFiles: ({ root }) => {
       const componentFiles = collectCatalog(root).flatMap((entry) => {
         const doc = getComponent(root, catalogEntryKey(entry));
@@ -90,6 +92,7 @@ export function createUiDocsProvider(): DocsMcpProvider {
         (topic) => getGuideTopic(root, topic.id).path,
       );
       return [
+        fileURLToPath(import.meta.url),
         ...componentFiles,
         ...guideFiles,
         path.resolve(root, REVIEW_BLOCK_SOURCE),

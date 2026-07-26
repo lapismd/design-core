@@ -14,29 +14,29 @@ neutral.
 
 ### Discovery and retrieval
 
-- [ ] Extend catalog entries with authored keywords, parsed sections, related
+- [x] Extend catalog entries with authored keywords, parsed sections, related
       IDs, optional dense Markdown, project guidance, and curated artifacts.
-- [ ] Add one deterministic retrieval engine shared by MCP, CLI, HTTP
+- [x] Add one deterministic retrieval engine shared by MCP, CLI, HTTP
       manifests, and evaluation.
-- [ ] Rank exact names, authored keywords, typo-tolerant names, keyword
+- [x] Rank exact names, authored keywords, typo-tolerant names, keyword
       proximity, descriptions, and section prose; normalize stopwords, stems,
       and provider synonyms; reject low-confidence noise.
-- [ ] Add additive MCP and CLI `search` and `get` interfaces with structured
+- [x] Add additive MCP and CLI `search` and `get` interfaces with structured
       output, exact follow-up IDs, bounded retrieval, and section selection.
-- [ ] Include artifacts and retrieval metadata in llms output, manifests,
+- [x] Include artifacts and retrieval metadata in llms output, manifests,
       cache invalidation, and doctor duplicate checks.
-- [ ] Seed only two curated UI blocks: the reviewable form workflow and the
+- [x] Seed only two curated UI blocks: the reviewable form workflow and the
       filterable-list toolbar. Do not publish a page template until a
       reference-quality full-page example exists.
 
 ### Managed guidance and evaluation
 
-- [ ] Add opt-in, marker-managed Codex, Cursor, and Claude project guidance
+- [x] Add opt-in, marker-managed Codex, Cursor, and Claude project guidance
       without replacing surrounding repository instructions.
-- [ ] Add deterministic relevance fixtures and `docs-mcp eval` metrics for
+- [x] Add deterministic relevance fixtures and `docs-mcp eval` metrics for
       exact-name, synonym, typo, multi-concept, guide, block, ambiguity, and
       nonsense cases.
-- [ ] Add an opt-in external `eval-agent` runner with fresh consumer sandboxes,
+- [x] Add an opt-in external `eval-agent` runner with fresh consumer sandboxes,
       identical hidden-answer prompts, objective MCP/CLI logs, repeated trials,
       and reports beneath `.cache/docs-mcp/evals/`.
 - [ ] Verify provider compatibility, response budgets, MCP/CLI parity, managed
