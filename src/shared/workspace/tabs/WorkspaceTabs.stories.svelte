@@ -109,7 +109,28 @@
 <Story
   name="Activates, closes, and persists tabs"
   tags={["visual-pending"]}
-  play={async ({ canvas }) => {
+  play={async ({ canvas, canvasElement }) => {
+    const headerMain = canvasElement.querySelector(
+      ".ui-workspace-tabs__header-main",
+    );
+    const leftToggle = canvasElement.querySelector(
+      ".ui-workspace-tabs__left-toggle",
+    );
+    const rightToggle = canvasElement.querySelector(
+      ".ui-workspace-tabs__right-toggle",
+    );
+
+    await expect(headerMain).not.toBeNull();
+    await expect(leftToggle).not.toBeNull();
+    await expect(rightToggle).not.toBeNull();
+    await expect(
+      parseFloat(getComputedStyle(headerMain!).borderBottomWidth),
+    ).toBeCloseTo(1);
+    await expect(getComputedStyle(leftToggle!).borderBottomWidth).toBe("0px");
+    await expect(
+      parseFloat(getComputedStyle(rightToggle!).borderBottomWidth),
+    ).toBeCloseTo(1);
+
     const tab = canvas.getByRole("tab", { name: "Today.md" });
     await userEvent.click(tab);
     await expect(tab).toHaveAttribute("aria-selected", "true");

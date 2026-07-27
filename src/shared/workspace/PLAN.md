@@ -632,9 +632,11 @@ workflow.
   and reserve a status-safe area below a collapsed final right panel.
 - Restored the source shell seams and controls: sidebar and top-tab dividers
   share one continuous horizontal edge, expanded sidebars retain their outer
-  boundary, ribbon masking stops at the header, sidebar toggles expose their
-  expanded geometry, and every top-tab group receives a default serializable
-  New tab action through the existing controller persistence path.
+  boundary, ribbon masking stops at the header, the collapsed left toggle
+  inherits the main header divider instead of painting a second adjacent edge,
+  the external right toggle retains its own divider, sidebar toggles expose
+  their expanded geometry, and every top-tab group receives a default
+  serializable New tab action through the existing controller persistence path.
 - Focused validation is clean: 21 Workspace/reference/plugin unit tests, 72
   Storybook interaction/accessibility tests, `pnpm check:no-tailwind`, and
   `pnpm check`.

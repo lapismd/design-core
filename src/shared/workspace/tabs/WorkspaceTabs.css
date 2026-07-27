@@ -42,6 +42,10 @@
   height: 100%;
   flex: 0 0 auto;
   align-items: center;
+}
+
+.ui-workspace-tabs__right-toggle,
+.ui-workspace-tabs__overflow {
   border-bottom: var(--workspace-tab-outline-width) solid
     var(--ui-workspace-tab-divider);
 }
