@@ -929,6 +929,8 @@
     const mainBody = canvas.getByRole("main", { name: "Markdown document" });
     await expect(mainBody).toHaveAttribute("data-layout", "regions");
     await expect(mainBody).toHaveStyle("overflow: hidden");
+    const storyFrame = mainBody.closest<HTMLElement>(".ui-shell-story-frame");
+    await expect(storyFrame).toBeInTheDocument();
     const leftBodyToggle = canvas.getByRole("button", {
       name: "Show table of contents on left",
     });
@@ -1026,9 +1028,15 @@
     });
     await userEvent.click(showRightButton);
     await expect(showRightButton).toHaveFocus();
-    await expect(
-      canvas.getByRole("complementary", { name: "Table of contents" }),
-    ).toHaveAttribute("data-side", "right");
+    const openRightToc = canvas.getByRole("complementary", {
+      name: "Table of contents",
+    });
+    await expect(openRightToc).toHaveAttribute("data-side", "right");
+    const activeRightButton = canvas.getByRole("button", {
+      name: "Hide table of contents on right",
+    });
+    await expect(activeRightButton).toHaveAttribute("aria-pressed", "true");
+    await expect(activeRightButton).toHaveAttribute("data-variant", "ghost");
   }}
 >
   {#snippet template()}

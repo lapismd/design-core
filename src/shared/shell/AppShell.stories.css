@@ -1,8 +1,17 @@
+#storybook-root:has(.ui-shell-story-frame) {
+  height: 100vh;
+}
+
 .ui-shell-story-frame {
-  height: 40rem;
+  height: 100%;
   min-width: 48rem;
   padding: 1.5rem;
   background: var(--muted);
+}
+
+/* Detached interaction-test renderers do not provide the Storybook root height. */
+.ui-shell-story-frame:not(:where(#storybook-root *)) {
+  height: 40rem;
 }
 
 .ui-shell-story-surface {
