@@ -1,6 +1,9 @@
 import { defineConfig, devices } from "@playwright/test";
 
-const port = Number(process.env.WORKSPACE_STORYBOOK_PORT ?? "9209");
+const storybookPort = Number(process.env.STORYBOOK_PORT ?? "9009");
+const port = Number(
+  process.env.WORKSPACE_STORYBOOK_PORT ?? storybookPort + 200,
+);
 const visualPort = Number(process.env.WORKSPACE_VISUAL_SERVER_PORT ?? port + 1);
 const baseURL = `http://127.0.0.1:${port}`;
 

@@ -25,8 +25,13 @@ const visualPort =
   process.env.VISUAL_SERVER_PORT ??
   process.env.VISUAL_DELTA_SERVER_PORT ??
   (Number.isFinite(storybookPortNum) ? String(storybookPortNum + 1) : "9010");
-// Visual static (Storybook+1) plus a spare debug Storybook port.
-const extraPorts = (process.env.STORYBOOK_EXTRA_PORTS ?? `${visualPort} 9999`)
+// Visual static (Storybook+1) plus a checkout-local spare debug port.
+const debugPort = Number.isFinite(storybookPortNum)
+  ? String(storybookPortNum + 90)
+  : "9099";
+const extraPorts = (
+  process.env.STORYBOOK_EXTRA_PORTS ?? `${visualPort} ${debugPort}`
+)
   .trim()
   .split(/\s+/)
   .filter(Boolean);

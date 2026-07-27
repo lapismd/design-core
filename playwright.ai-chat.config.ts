@@ -1,6 +1,8 @@
 import { defineConfig, devices } from "@playwright/test";
 
-const baseURL = process.env.AI_CHAT_STORYBOOK_URL ?? "http://127.0.0.1:9009";
+const storybookPort = process.env.STORYBOOK_PORT ?? "9009";
+const baseURL =
+  process.env.AI_CHAT_STORYBOOK_URL ?? `http://127.0.0.1:${storybookPort}`;
 
 export default defineConfig({
   testDir: "./tests/ai-chat",

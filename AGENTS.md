@@ -27,6 +27,8 @@ Use `--json` for machine-readable output (`pnpm ui guide testing --json`,
 
 When Storybook is running (`pnpm storybook`), prefer the MCP endpoints below for
 interactive story work and live docs; keep the CLI for offline / scripted use.
+The HTTP URLs below show the default workspace port. Use the current checkout's
+`STORYBOOK_PORT` when `.env.storybook.local` selects another port.
 
 ## CLI quick reference
 
@@ -108,6 +110,25 @@ full-repo static `llms.txt` notes: `pnpm ui guide llms-extraction`.
   detected reliably.
 - Restart only after changing Storybook startup configuration such as
   `.storybook/main.ts`, addons, or the Vite configuration.
+
+## Parallel workspaces and ports
+
+- The default workspace uses Storybook port 9009. Before starting Storybook or
+  browser/visual tests in another jj workspace, copy
+  `.env.storybook.local.example` to the ignored `.env.storybook.local` and set
+  an unused `STORYBOOK_PORT`.
+- Do not edit tracked Storybook, Playwright, or package configuration for a
+  workspace-specific port. Do not stop another workspace's listener to reclaim
+  its port.
+- Package scripts automatically load `.env.storybook.local`. The visual static,
+  panel, AI acceptance, pointer-test, and spare debug ports derive from
+  `STORYBOOK_PORT`; the README records the offsets. An explicit environment
+  variable on the command line takes precedence for a one-off run.
+- Run `pnpm storybook:stop` from the same workspace that started the catalog.
+  It loads that checkout's port file and leaves the default/main catalog alone.
+- Prefer `pnpm ui:mcp:stdio` for docs because it needs no port. For Storybook or
+  Docs MCP over HTTP, use the current checkout's `STORYBOOK_PORT`, not the
+  default 9009 URL shown above.
 
 ## Verification
 

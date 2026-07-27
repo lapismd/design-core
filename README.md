@@ -80,8 +80,50 @@ contract.
 ## Storybook catalog
 
 Stack: Storybook 10, `@storybook/svelte-vite`, Vite 6, and Svelte 5. The
-catalog runs on port 9009. Use the package scripts because they enable polling
-and restart the manager when Visual Delta source changes.
+catalog runs on port 9009 by default. Use the package scripts because they
+enable polling, load checkout-local port settings, and restart the manager when
+Visual Delta source changes.
+
+### Parallel workspaces and ports
+
+Do not edit tracked Storybook or Playwright configuration to give a jj
+workspace a different port. Each additional workspace should copy the example
+to the ignored checkout-local file and choose an unused base port:
+
+```bash
+cp .env.storybook.local.example .env.storybook.local
+```
+
+```dotenv
+STORYBOOK_PORT=9309
+```
+
+The package scripts automatically load `.env.storybook.local`. An explicit
+shell variable still takes precedence for a one-off run:
+
+```bash
+STORYBOOK_PORT=9409 pnpm storybook
+```
+
+Setting only `STORYBOOK_PORT` allocates the related lanes from the same base:
+
+| Lane                         | Derived port |
+| ---------------------------- | ------------ |
+| Storybook and AI acceptance  | base         |
+| Visual Delta static server   | base + 1     |
+| Visual Delta panel static    | base + 3     |
+| Visual Delta panel Storybook | base + 4     |
+| Visual Delta panel visual    | base + 5     |
+| Spare debug/cleanup port     | base + 90    |
+| Workspace pointer Storybook  | base + 200   |
+| Workspace pointer visual     | base + 201   |
+
+`pnpm storybook`, `storybook:stop`, `storybook:restart`, the browser suites,
+the Visual Delta CLI, and the visual audit all use the checkout-local file.
+This keeps start, test, and cleanup commands scoped to the same workspace.
+`VISUAL_SERVER_PORT`, `STORYBOOK_EXTRA_PORTS`, `AI_CHAT_STORYBOOK_URL`, and the
+suite-specific port variables remain available as advanced overrides, but a
+normal secondary workspace only needs `STORYBOOK_PORT`.
 
 ### Host file map
 
@@ -260,7 +302,8 @@ Use `pnpm docs-mcp search "<intent>"` to rank components, guides, and curated
 blocks, then `pnpm docs-mcp get <exact-id>` for bounded documentation. The same
 tools and structured results are available through stdio and HTTP MCP.
 
-With Storybook running on port 9009, HTTP remains available:
+With Storybook running on its default port 9009, HTTP remains available. In a
+secondary workspace, replace 9009 with that checkout's `STORYBOOK_PORT`:
 
 | Surface       | URL                              | Purpose                                   |
 | ------------- | -------------------------------- | ----------------------------------------- |

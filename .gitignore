@@ -13,6 +13,8 @@ blob-report/
 .ui-generator/
 .cache/ui-docs/
 .cache/visual-delta/
+# Per-checkout Storybook/visual-test port allocation
+.env.storybook.local
 # Ephemeral visual-diff artifacts written by Playwright visual runs
 tests/visual/storybook.spec.ts-snapshots/**/*.json
 tests/visual/storybook.spec.ts-snapshots/**/*.actual.png
