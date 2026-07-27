@@ -38,6 +38,10 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  border-bottom: 0;
+}
+
+.ui-workspace-sidebar-group__panel[data-last-panel="true"] {
   border-bottom: 1px solid var(--ui-workspace-border);
 }
 
@@ -179,6 +183,18 @@
 
 .ui-workspace-sidebar-group__spacer {
   min-height: 0;
+}
+
+.ui-workspace-sidebar-group__status-safe-area {
+  display: none;
+}
+
+.ui-app-shell:has([data-workspace-status-bar])
+  .ui-workspace-sidebar-group__status-safe-area {
+  display: block;
+  height: calc(var(--ui-workspace-status-height) + 0.25rem);
+  flex: 0 0 calc(var(--ui-workspace-status-height) + 0.25rem);
+  background: var(--ui-workspace-panel);
 }
 
 .ui-workspace-sidebar-group__empty {

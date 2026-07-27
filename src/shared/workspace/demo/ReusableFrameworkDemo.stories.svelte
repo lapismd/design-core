@@ -32,7 +32,7 @@
 <Story
   name="Overview"
   tags={["visual-pending", "lapis-reference-visual"]}
-  play={async ({ canvas }) => {
+  play={async ({ canvas, canvasElement }) => {
     await waitFor(() => expect(overview.app.ready).toBe(true));
     const settingsButton = canvas.getByRole("button", {
       name: "Open settings",
@@ -50,6 +50,26 @@
     );
     await expect(dialog).not.toBeInTheDocument();
     await expect(settingsButton).toHaveFocus();
+
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Collapse Links" }),
+    );
+    const expandLinks = canvas.getByRole("button", { name: "Expand Links" });
+    const statusBar = canvas.getByLabelText("Workspace status");
+    const statusSafeArea = canvasElement.querySelector<HTMLElement>(
+      '[data-ui-part="status-safe-area"]',
+    );
+    await expect(statusSafeArea).toBeInTheDocument();
+    await expect(getComputedStyle(statusSafeArea!).display).toBe("block");
+    await waitFor(() =>
+      expect(expandLinks.getBoundingClientRect().bottom).toBeLessThanOrEqual(
+        statusBar.getBoundingClientRect().top,
+      ),
+    );
+    await userEvent.click(expandLinks);
+    await expect(
+      canvas.getByRole("button", { name: "Collapse Links" }),
+    ).toBeVisible();
   }}
   parameters={{
     visualDelta: withLapisStorybookReference(

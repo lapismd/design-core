@@ -44,6 +44,10 @@
   let visibleTabs = $derived(
     group.tabs.filter((tab) => !group.hiddenTabIds.includes(tab.id)),
   );
+  let lastVisibleTab = $derived(visibleTabs[visibleTabs.length - 1]);
+  let lastPanelCollapsed = $derived(
+    lastVisibleTab ? group.collapsedByTabId[lastVisibleTab.id] === true : false,
+  );
   let collapsedSize = $derived(
     collapsedSidebarPanelSize(groupedPanelStackHeight, visibleTabs.length),
   );
@@ -216,6 +220,7 @@
                     class="ui-workspace-sidebar-group__panel"
                     data-ui-part="panel"
                     data-sidebar-group-panel-id={tab.id}
+                    data-last-panel={panelIndex === visibleTabs.length - 1}
                     data-active={controller.activeTabId === tab.id}
                     role="group"
                     aria-label={`${tab.title} panel`}
@@ -290,6 +295,13 @@
         {/key}
       {/if}
     </div>
+    {#if side === "right" && lastPanelCollapsed}
+      <div
+        class="ui-workspace-sidebar-group__status-safe-area"
+        data-ui-part="status-safe-area"
+        aria-hidden="true"
+      ></div>
+    {/if}
   {:else}
     <div class="ui-workspace-sidebar-group__empty">
       <WorkspaceIcon name="panel-top-open" />

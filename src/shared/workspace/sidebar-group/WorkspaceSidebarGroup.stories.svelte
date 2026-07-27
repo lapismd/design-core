@@ -96,7 +96,21 @@
 <Story
   name="Partially collapsed panels"
   tags={["visual-pending", "lapis-reference-visual"]}
-  play={async ({ canvas }) => {
+  play={async ({ canvas, canvasElement }) => {
+    const panels = Array.from(
+      canvasElement.querySelectorAll<HTMLElement>(
+        ".ui-workspace-sidebar-group__panel",
+      ),
+    );
+    const resizer = canvasElement.querySelector<HTMLElement>(
+      ".ui-workspace-sidebar-group__resizer",
+    );
+    await expect(panels).toHaveLength(3);
+    await expect(getComputedStyle(panels[0]).borderBottomWidth).toBe("0px");
+    await expect(getComputedStyle(panels[1]).borderBottomWidth).toBe("0px");
+    await expect(getComputedStyle(panels[2]).borderBottomWidth).toBe("1px");
+    await expect(getComputedStyle(resizer!, "::before").height).toBe("1px");
+
     const expand = canvas.getByRole("button", { name: "Expand Links" });
     await expect(expand).toHaveAttribute("aria-expanded", "false");
     await userEvent.click(expand);
