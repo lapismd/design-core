@@ -20,7 +20,7 @@
   let enabled = $state(true);
 </script>
 
-<Story name="Default" tags={["visual-state", "visual-failed"]}>
+<Story name="Default" tags={["visual-state", "visual-ready"]}>
   {#snippet template()}
     <div class="flex items-center gap-3">
       <Switch checked={true} aria-label="Enable notifications" />

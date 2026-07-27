@@ -31,7 +31,7 @@
       passThresholdPercent: 0.1,
     },
   }}
-  tags={["visual-failed"]}
+  tags={["visual-ready"]}
 >
   {#snippet template()}
     <p data-story="token-line">
@@ -59,7 +59,7 @@
       passThresholdPercent: 0.1,
     },
   }}
-  tags={["visual-failed"]}
+  tags={["visual-ready"]}
 >
   {#snippet template()}
     <p data-story="token-line">

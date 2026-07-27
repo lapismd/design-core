@@ -22,7 +22,7 @@
 <Story
   name="Preview"
   exportName="Preview"
-  tags={["upstream-example", "visual-failed"]}
+  tags={["upstream-example", "visual-ready"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/field/preview-chromium-darwin.png"],
@@ -172,7 +172,7 @@
 <Story
   name="Checkbox"
   exportName="Checkbox"
-  tags={["upstream-example", "visual-failed"]}
+  tags={["upstream-example", "visual-ready"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/field/checkbox-chromium-darwin.png"],
@@ -202,7 +202,7 @@
 <Story
   name="Switch"
   exportName="Switch"
-  tags={["upstream-example", "visual-failed"]}
+  tags={["upstream-example", "visual-ready"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/field/switch-chromium-darwin.png"],
@@ -232,7 +232,7 @@
 <Story
   name="Field Group"
   exportName="FieldGroup"
-  tags={["upstream-example", "visual-failed"]}
+  tags={["upstream-example", "visual-ready"]}
   parameters={{
     visualDelta: {
       images: [
@@ -268,7 +268,7 @@
 <Story
   name="Responsive Layout"
   exportName="ResponsiveLayout"
-  tags={["upstream-example", "visual-failed"]}
+  tags={["upstream-example", "visual-ready"]}
   parameters={{
     visualDelta: {
       images: [

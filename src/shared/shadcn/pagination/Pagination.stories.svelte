@@ -29,7 +29,7 @@
     );
     await expect(canvas.getByText("Page 3 of 10")).toBeVisible();
   }}
-  tags={["visual-failed"]}
+  tags={["visual-ready"]}
   parameters={{
     visualDelta: {
       images: [

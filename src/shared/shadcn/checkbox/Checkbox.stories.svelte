@@ -24,7 +24,7 @@
 
 <Story
   name="Default"
-  tags={["visual-state", "visual-failed"]}
+  tags={["visual-state", "visual-ready"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/checkbox/default-chromium-darwin.png"],
@@ -65,7 +65,7 @@
       passThresholdPercent: 0.1,
     },
   }}
-  tags={["visual-failed"]}
+  tags={["visual-ready"]}
 >
   {#snippet template()}
     <div class="flex flex-col gap-3">

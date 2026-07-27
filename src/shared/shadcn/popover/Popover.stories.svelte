@@ -45,7 +45,7 @@
       passThresholdPercent: 0.1,
     },
   }}
-  tags={["visual-pending"]}
+  tags={["visual-ready"]}
 >
   {#snippet template()}
     <div class="flex flex-col gap-3">

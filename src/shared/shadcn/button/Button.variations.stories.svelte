@@ -73,7 +73,7 @@
 <Story
   name="Default"
   exportName="Default"
-  tags={["upstream-example", "visual-failed"]}
+  tags={["upstream-example", "visual-ready"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -161,7 +161,7 @@
 <Story
   name="Destructive"
   exportName="Destructive"
-  tags={["upstream-example", "visual-failed"]}
+  tags={["upstream-example", "visual-ready"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {

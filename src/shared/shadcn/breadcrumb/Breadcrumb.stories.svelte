@@ -22,7 +22,7 @@
     await expect(canvas.getByLabelText("breadcrumb")).toBeVisible();
     await expect(canvas.getByText("Expenses")).toBeVisible();
   }}
-  tags={["visual-failed"]}
+  tags={["visual-ready"]}
   parameters={{
     visualDelta: {
       images: [
