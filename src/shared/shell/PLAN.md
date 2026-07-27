@@ -7,6 +7,8 @@ workspace behavior are not copied.
 ## Public contract
 
 - `AppShell.Root` installs an `AppShellController`.
+- `AppShell.Root` resolves `auto`, `desktop`, or `mobile` presentation from its
+  own bounded width. Consumers compose the compound parts once for both modes.
 - `AppShell.Sidebar` renders either the left or right bounded sidebar.
 - A sidebar may receive an independent `AppShellSidebarController` so repeated
   same-side surfaces can compose nested navigation layouts.
@@ -21,8 +23,11 @@ workspace behavior are not copied.
   sidebar is absent.
 - `AppShell.Body` supports a regions layout with independently scrolling
   `Body.Sidebar` and `Body.Content` parts for consumer-owned document chrome.
+- `AppShell.Body.Sidebar` registers an optional stable panel id and remains
+  consumer-controlled on desktop while joining the corresponding mobile lane.
 - `AppShell.Body.Toggle` places consumer-controlled sidebar actions at the
-  corresponding top-left or top-right body corner.
+  corresponding top-left or top-right body corner and may target a registered
+  mobile body panel.
 - `useAppShell()` exposes the nearest root controller to consumer components.
 - Left and right sidebars collapse independently to persistent icon rails.
 - Collapsed inline rails omit header/footer separators; expanded overlays
@@ -38,11 +43,19 @@ workspace behavior are not copied.
   boundary.
 - The root controller serializes built-in and named panels through an injected
   layout adapter; a package adapter provides versioned JSON in localStorage.
+- `controller.mobile` owns transient resolved mode, left/main/right stage, and
+  the active panel for each mobile edge. Mobile state is never serialized.
+- Mobile uses one full-height lane per edge. A shadcn selector switches between
+  multiple registered panels on the same edge.
 
 ## Boundaries
 
-- Desktop only; no responsive mobile sheet or off-canvas mode. The opt-in edge
-  preview is a pointer/focus affordance for a closed desktop outer sidebar.
+- Desktop retains the bounded inline layout and opt-in edge previews.
+- Mobile presentation uses a Workspace-inspired off-canvas three-stage track
+  selected by root container width, explicit mode, toolbar actions, or touch
+  gestures.
+- Desktop collapse, close, and width state is retained while mobile is active.
+  Mobile dismissal never mutates that durable layout.
 - Root fills `100vh` by default and remains non-fixed; bounded catalog hosts
   may override `--ui-shell-height`.
 - No global shortcuts, routing, plugins, views, or consumer-content
@@ -53,10 +66,10 @@ workspace behavior are not copied.
   provides only its stateful Toggle and Close actions.
 - Project selection, file navigation, and the decision to open a dependent
   sidebar remain consumer-owned.
-- Document-local sidebars are conditionally mounted by consumers and do not
-  participate in root sidebar collapse, resize, or persistence state.
-- Body toggles expose pressed state and placement only; their click behavior
-  remains consumer-owned.
+- Document-local sidebar openness remains consumer-owned and is not persisted
+  by the shell controller. Mounted body panels may register with mobile lanes.
+- Body toggles retain consumer-owned desktop openness and use transient mobile
+  presentation when their target is registered.
 - Shell containers do not scroll; main and sidebar body regions compose the
   shared shadcn Scroll Area.
 - Shell may compose shadcn Button for its Toggle and Close actions.
@@ -72,6 +85,10 @@ workspace behavior are not copied.
 | Nested left layout and edge preview | Complete | Pass | Pass    | Pass    | Pass\*     |
 | Layout adapter and localStorage     | Complete | Pass | Pass    | Pass    | Pass\*     |
 | Body content and local sidebars     | Complete | Pass | Pass    | Pass    | Pass\*     |
+| Mobile controller and mode contract | Planned  | N/A  | N/A     | N/A     | N/A        |
+| Single-composition mobile lanes     | Planned  | N/A  | N/A     | N/A     | N/A        |
+| Mobile gestures and accessibility   | Planned  | N/A  | N/A     | N/A     | N/A        |
+| Mobile catalog and documentation    | Planned  | N/A  | N/A     | N/A     | N/A        |
 
 ## Validation
 
@@ -83,7 +100,8 @@ workspace behavior are not copied.
 
 The `Complete shell composition` story combines the outer project selector,
 files sidebar, document body sidebar, main content, and right AI panel in one
-interactive fixture.
+interactive fixture. Forced desktop, tablet, and mobile stories must reuse that
+single composition rather than maintaining parallel shell markup.
 
 \* Focused Shell interaction/accessibility and source checks pass, as do all
 620 unit tests, the static Storybook build, the visual audit, and the live

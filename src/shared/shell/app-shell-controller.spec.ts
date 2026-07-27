@@ -101,6 +101,104 @@ describe("AppShellController", () => {
     expect(controller.getSidebar("right")).toBe(controller.right);
     expect(controller.left).toBeInstanceOf(AppShellSidebarController);
     expect(controller.right).toBeInstanceOf(AppShellSidebarController);
+    expect(controller.getPanelId(controller.left)).toBe("left");
+    expect(controller.getPanelId(controller.right)).toBe("right");
+  });
+
+  it("owns transient mobile mode, stage, and active edge panels", () => {
+    const controller = new AppShellController({
+      leftCollapsed: true,
+      rightClosed: true,
+      leftWidth: 320,
+      rightWidth: 404,
+    });
+    const unregisterProjects = controller.mobile.registerPanel({
+      id: "projects",
+      side: "left",
+      label: "Projects",
+      kind: "sidebar",
+    });
+    controller.mobile.registerPanel({
+      id: "files",
+      side: "left",
+      label: "Files",
+      kind: "sidebar",
+    });
+    controller.mobile.registerPanel({
+      id: "assistant",
+      side: "right",
+      label: "Assistant",
+      kind: "sidebar",
+    });
+
+    expect(controller.mobile.resolvedMode).toBe("desktop");
+    expect(controller.mobile.stage).toBe("main");
+    expect(controller.mobile.activeLeftPanelId).toBe("projects");
+    expect(controller.mobile.activeRightPanelId).toBe("assistant");
+
+    controller.mobile.setResolvedMode("mobile");
+    controller.mobile.show("left", "files");
+    expect(controller.mobile.stage).toBe("left");
+    expect(controller.mobile.activeLeftPanelId).toBe("files");
+
+    controller.mobile.selectPanel("left", "projects");
+    expect(controller.mobile.activeLeftPanelId).toBe("projects");
+
+    unregisterProjects();
+    expect(controller.mobile.activeLeftPanelId).toBe("files");
+    controller.mobile.showMain();
+    expect(controller.mobile.stage).toBe("main");
+
+    expect(controller.left.getLayout()).toEqual({
+      side: "left",
+      collapsed: true,
+      closed: false,
+      width: 320,
+    });
+    expect(controller.right.getLayout()).toEqual({
+      side: "right",
+      collapsed: false,
+      closed: true,
+      width: 404,
+    });
+  });
+
+  it("keeps mobile presentation out of durable layout snapshots", () => {
+    const controller = new AppShellController();
+    const projects = controller.createSidebar("projects", "left", {
+      width: 312,
+    });
+    controller.mobile.registerPanel({
+      id: "projects",
+      side: "left",
+      label: "Projects",
+      kind: "sidebar",
+    });
+    controller.mobile.setResolvedMode("mobile");
+    controller.mobile.show("left", "projects");
+
+    expect(controller.getPanelId(projects)).toBe("projects");
+    expect(controller.getLayout()).toEqual({
+      version: APP_SHELL_LAYOUT_VERSION,
+      panels: {
+        left: {
+          side: "left",
+          collapsed: false,
+          closed: false,
+        },
+        right: {
+          side: "right",
+          collapsed: false,
+          closed: false,
+        },
+        projects: {
+          side: "left",
+          collapsed: false,
+          closed: false,
+          width: 312,
+        },
+      },
+    });
   });
 
   it("supports an independent same-side controller for nested layouts", () => {

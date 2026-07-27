@@ -10,6 +10,26 @@ import {
 
 export type AppShellSide = "left" | "right";
 export type AppShellSidebarState = "expanded" | "collapsed" | "closed";
+export type AppShellDisplayMode = "auto" | "desktop" | "mobile";
+export type AppShellResolvedDisplayMode = Exclude<
+  AppShellDisplayMode,
+  "auto"
+>;
+export type AppShellMobileStage = "left" | "main" | "right";
+export type AppShellMobilePanelKind = "sidebar" | "body-sidebar";
+
+export interface AppShellMobilePanelRegistration {
+  /** Stable id used by mobile selectors and targeted toggle actions. */
+  readonly id: string;
+  /** Edge lane that owns this panel. */
+  readonly side: AppShellSide;
+  /** Human-readable selector and landmark label. */
+  readonly label: string;
+  /** Whether the panel comes from the outer shell or the document body. */
+  readonly kind: AppShellMobilePanelKind;
+  /** Current panel landmark, when mounted in a browser. */
+  readonly element?: HTMLElement | null;
+}
 
 export const APP_SHELL_DEFAULT_SIDEBAR_WIDTH = 288;
 export const APP_SHELL_DEFAULT_SIDEBAR_MIN_WIDTH = 220;
@@ -55,6 +75,163 @@ export interface AppShellRegisteredSidebarOptions
   collapsed?: boolean;
   /** Start the registered panel completely closed. */
   closed?: boolean;
+}
+
+/**
+ * Owns transient mobile presentation without mutating durable desktop layout.
+ *
+ * Panel registration order determines the order of the mobile edge selector.
+ */
+export class AppShellMobileController {
+  resolvedMode = $state<AppShellResolvedDisplayMode>("desktop");
+  stage = $state<AppShellMobileStage>("main");
+  activeLeftPanelId = $state<string | undefined>(undefined);
+  activeRightPanelId = $state<string | undefined>(undefined);
+
+  #panels = $state<AppShellMobilePanelRegistration[]>([]);
+  #leftPanelHost = $state<HTMLElement | null>(null);
+  #rightPanelHost = $state<HTMLElement | null>(null);
+  #mainHost = $state<HTMLElement | null>(null);
+  #mainElement = $state<HTMLElement | null>(null);
+  #rootElement = $state<HTMLElement | null>(null);
+  #returnFocus: HTMLElement | null = null;
+
+  get panels(): readonly AppShellMobilePanelRegistration[] {
+    return this.#panels;
+  }
+
+  panelsFor(side: AppShellSide): readonly AppShellMobilePanelRegistration[] {
+    return this.#panels.filter((panel) => panel.side === side);
+  }
+
+  activePanelId(side: AppShellSide): string | undefined {
+    return side === "left"
+      ? this.activeLeftPanelId
+      : this.activeRightPanelId;
+  }
+
+  activePanel(
+    side: AppShellSide,
+  ): AppShellMobilePanelRegistration | undefined {
+    const activeId = this.activePanelId(side);
+    return this.#panels.find(
+      (panel) => panel.side === side && panel.id === activeId,
+    );
+  }
+
+  setResolvedMode(mode: AppShellResolvedDisplayMode): void {
+    if (this.resolvedMode === mode) return;
+    this.resolvedMode = mode;
+    this.showMain(false);
+  }
+
+  registerPanel(
+    registration: AppShellMobilePanelRegistration,
+  ): () => void {
+    const id = registration.id.trim();
+    if (!id) {
+      throw new TypeError("App Shell mobile panel ids must not be empty.");
+    }
+    const existing = this.#panels.find((panel) => panel.id === id);
+    if (existing) {
+      if (existing === registration) return () => undefined;
+      throw new Error(`App Shell mobile panel "${id}" is already registered.`);
+    }
+
+    const panel =
+      id === registration.id ? registration : { ...registration, id };
+    this.#panels = [...this.#panels, panel];
+    this.#ensureActivePanel(panel.side);
+
+    return () => {
+      if (!this.#panels.includes(panel)) return;
+      this.#panels = this.#panels.filter((candidate) => candidate !== panel);
+      this.#ensureActivePanel(panel.side);
+      if (
+        this.stage === panel.side &&
+        this.panelsFor(panel.side).length === 0
+      ) {
+        this.showMain();
+      }
+    };
+  }
+
+  selectPanel(side: AppShellSide, panelId: string): void {
+    const panel = this.#panels.find(
+      (candidate) => candidate.side === side && candidate.id === panelId,
+    );
+    if (!panel) {
+      throw new Error(
+        `App Shell mobile ${side} panel "${panelId}" is not registered.`,
+      );
+    }
+    if (side === "left") this.activeLeftPanelId = panel.id;
+    else this.activeRightPanelId = panel.id;
+  }
+
+  show(
+    side: AppShellSide,
+    panelId?: string,
+    returnFocus?: HTMLElement | null,
+  ): void {
+    const panels = this.panelsFor(side);
+    if (panels.length === 0) return;
+    if (panelId) this.selectPanel(side, panelId);
+    else this.#ensureActivePanel(side);
+    if (returnFocus) this.#returnFocus = returnFocus;
+    this.#rootElement?.focus({ preventScroll: true });
+    this.stage = side;
+    queueMicrotask(() => this.activePanel(side)?.element?.focus());
+  }
+
+  showMain(restoreFocus = true): void {
+    const focusTarget = this.#returnFocus ?? this.#mainElement;
+    this.#rootElement?.focus({ preventScroll: true });
+    this.stage = "main";
+    if (restoreFocus) queueMicrotask(() => focusTarget?.focus());
+    this.#returnFocus = null;
+  }
+
+  /** @internal Install the current root's mobile panel lane host. */
+  setPanelHost(side: AppShellSide, element: HTMLElement | null): void {
+    if (side === "left") this.#leftPanelHost = element;
+    else this.#rightPanelHost = element;
+  }
+
+  /** @internal Return the mounted lane host for a compound panel. */
+  getPanelHost(side: AppShellSide): HTMLElement | null {
+    return side === "left" ? this.#leftPanelHost : this.#rightPanelHost;
+  }
+
+  /** @internal Install the current root's mobile main lane host. */
+  setMainHost(element: HTMLElement | null): void {
+    this.#mainHost = element;
+  }
+
+  /** @internal Return the mounted main lane host. */
+  getMainHost(): HTMLElement | null {
+    return this.#mainHost;
+  }
+
+  /** @internal Register the main landmark as the mobile focus fallback. */
+  setMainElement(element: HTMLElement | null): void {
+    this.#mainElement = element;
+  }
+
+  /** @internal Register the root as a safe focus waypoint between lanes. */
+  setRootElement(element: HTMLElement | null): void {
+    this.#rootElement = element;
+  }
+
+  #ensureActivePanel(side: AppShellSide): void {
+    const panels = this.panelsFor(side);
+    const current = this.activePanelId(side);
+    const next = panels.some((panel) => panel.id === current)
+      ? current
+      : panels[0]?.id;
+    if (side === "left") this.activeLeftPanelId = next;
+    else this.activeRightPanelId = next;
+  }
 }
 
 type AppShellSidebarLayoutChangeSource = Exclude<
@@ -280,12 +457,14 @@ export class AppShellSidebarController {
 export class AppShellController {
   readonly left: AppShellSidebarController;
   readonly right: AppShellSidebarController;
+  readonly mobile = new AppShellMobileController();
   layoutReady = $state(false);
 
   readonly #persistence?: AppShellLayoutPersistence;
   readonly #saveDebounceMs: number;
   readonly #onPersistenceError?: (event: AppShellPersistenceErrorEvent) => void;
   readonly #panels = new Map<string, AppShellSidebarController>();
+  readonly #panelIds = new Map<AppShellSidebarController, string>();
   readonly #panelDisposers = new Map<string, () => void>();
   #restoredPanels = new Map<string, AppShellSidebarLayout>();
   #hydrating = false;
@@ -334,6 +513,11 @@ export class AppShellController {
     return this.#panels.get(id);
   }
 
+  /** Return the stable registered id for a built-in or named sidebar. */
+  getPanelId(sidebar: AppShellSidebarController): string | undefined {
+    return this.#panelIds.get(sidebar);
+  }
+
   /** Create and register an independently persisted same-side panel. */
   createSidebar(
     id: string,
@@ -374,6 +558,7 @@ export class AppShellController {
       this.#panelDisposers.get(panelId)?.();
       this.#panelDisposers.delete(panelId);
       this.#panels.delete(panelId);
+      this.#panelIds.delete(sidebar);
       this.#requestSave({ source: "unregister", panelId });
     };
   }
@@ -429,10 +614,12 @@ export class AppShellController {
     for (const dispose of this.#panelDisposers.values()) dispose();
     this.#panelDisposers.clear();
     this.#panels.clear();
+    this.#panelIds.clear();
   }
 
   #attachPanel(id: string, sidebar: AppShellSidebarController): void {
     this.#panels.set(id, sidebar);
+    this.#panelIds.set(sidebar, id);
     this.#panelDisposers.set(
       id,
       sidebar.onLayoutChange((source) => {

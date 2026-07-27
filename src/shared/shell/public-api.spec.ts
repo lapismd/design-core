@@ -92,6 +92,9 @@ describe("@stevejuma/ui/shell public API", () => {
     expect(shellTokenNames.bodySidebarWidth).toBe(
       "--ui-shell-body-sidebar-width",
     );
+    expect(shellTokenNames.mobileSidebarWidth).toBe(
+      "--ui-shell-mobile-sidebar-width",
+    );
     expect(APP_SHELL_DEFAULT_SIDEBAR_WIDTH).toBe(288);
     expect(APP_SHELL_DEFAULT_SIDEBAR_MIN_WIDTH).toBe(220);
     expect(APP_SHELL_DEFAULT_SIDEBAR_MAX_WIDTH).toBe(520);
@@ -107,6 +110,7 @@ describe("@stevejuma/ui/shell public API", () => {
       rightSidebarGap: "0.5rem",
       collapsedSidebarWidth: "3rem",
       bodySidebarWidth: "14rem",
+      mobileSidebarWidth: "min(22rem, 86cqw)",
       sidebarToggleIndicatorWidth: "24%",
       toolbarHeight: "3rem",
       mainBlockInset: "0.5rem",
