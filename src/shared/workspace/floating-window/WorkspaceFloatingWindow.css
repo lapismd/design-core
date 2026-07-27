@@ -19,6 +19,10 @@
   border-radius: 0;
 }
 
+.ui-workspace-floating-window[data-floating-window-state="collapsed"] {
+  min-height: 2.25rem;
+}
+
 .ui-workspace-floating-window--minimized {
   position: relative;
   width: 18rem;

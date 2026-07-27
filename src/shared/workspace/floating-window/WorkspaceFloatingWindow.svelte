@@ -85,7 +85,10 @@
     if (isMaximized) {
       return "left: 0; top: 0; width: 100%; height: 100%; z-index: calc(var(--ui-workspace-overlay-z-index) + 2);";
     }
-    return `left: ${workspaceWindow.bounds.x}px; top: ${workspaceWindow.bounds.y}px; width: ${workspaceWindow.bounds.width}px; height: ${isCollapsed ? 44 : workspaceWindow.bounds.height}px; z-index: ${index + 1};`;
+    const height = isCollapsed
+      ? "2.25rem"
+      : `${workspaceWindow.bounds.height}px`;
+    return `left: ${workspaceWindow.bounds.x}px; top: ${workspaceWindow.bounds.y}px; width: ${workspaceWindow.bounds.width}px; height: ${height}; z-index: ${index + 1};`;
   });
 
   function clamp(bounds: WorkspaceWindowBounds): WorkspaceWindowBounds {

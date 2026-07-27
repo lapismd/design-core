@@ -637,6 +637,9 @@ workflow.
   the external right toggle retains its own divider, sidebar toggles expose
   their expanded geometry, and every top-tab group receives a default
   serializable New tab action through the existing controller persistence path.
+- Collapsed floating windows now end with their 2.25rem toolbar instead of
+  retaining the source extraction's unused 0.5rem body strip; normal, maximized,
+  and minimized window geometry remains unchanged.
 - Focused validation is clean: 21 Workspace/reference/plugin unit tests, 72
   Storybook interaction/accessibility tests, `pnpm check:no-tailwind`, and
   `pnpm check`.

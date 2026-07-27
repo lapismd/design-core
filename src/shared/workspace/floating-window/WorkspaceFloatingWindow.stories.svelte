@@ -67,13 +67,29 @@
 <Story
   name="Window controls"
   tags={["visual-pending"]}
-  play={async ({ canvas }) => {
+  play={async ({ canvas, canvasElement }) => {
     await userEvent.click(
       canvas.getByRole("button", { name: "Collapse floating pane" }),
     );
     await expect(
       canvas.getByRole("button", { name: "Restore floating pane" }),
     ).toBeVisible();
+
+    const floatingWindow = canvasElement.querySelector(
+      '[data-floating-window-state="collapsed"]',
+    );
+    const header = floatingWindow?.querySelector(
+      ".ui-workspace-floating-window__header",
+    );
+    await expect(floatingWindow).not.toBeNull();
+    await expect(header).not.toBeNull();
+
+    const windowBounds = floatingWindow!.getBoundingClientRect();
+    const headerBounds = header!.getBoundingClientRect();
+    await expect(windowBounds.height).toBeCloseTo(headerBounds.height);
+    await expect(Math.max(0, windowBounds.bottom - headerBounds.bottom)).toBe(
+      0,
+    );
   }}
   parameters={{
     visualDelta: {
