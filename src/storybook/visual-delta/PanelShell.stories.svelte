@@ -527,8 +527,14 @@
 
 <Story
   name="Delayed story completion"
+  parameters={{
+    visualDelta: {
+      images: ["/visual-baselines/shadcn/button/default-chromium-darwin.png"],
+    },
+  }}
   play={async ({ canvasElement }) => {
-    await new Promise((resolve) => window.setTimeout(resolve, 200));
+    canvasElement.dataset.visualDeltaDelayedPlay = "pending";
+    await new Promise((resolve) => window.setTimeout(resolve, 1_500));
     canvasElement.dataset.visualDeltaDelayedPlay = "complete";
     const canvas = within(canvasElement);
     await expect(await canvas.findByTestId("panel-shell")).toBeInTheDocument();

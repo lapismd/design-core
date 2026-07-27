@@ -121,7 +121,8 @@
       const imageRect = within(overlay)
         .getByText("Baseline PNG")
         .getBoundingClientRect();
-      expect(chipRect.bottom).toBeLessThanOrEqual(imageRect.top);
+      expect(chipRect.top).toBeGreaterThanOrEqual(imageRect.top);
+      expect(chipRect.bottom).toBeLessThanOrEqual(imageRect.bottom);
       if (placement !== "center") {
         const pane = within(cell).getByTestId(
           `demo-baseline-pane-${placement}`,
@@ -144,11 +145,11 @@
     const chip = within(overlay).getByTestId("baseline-overlay-chip");
     const image = within(overlay).getByText("Baseline PNG");
     await waitFor(() => {
-      expect(chip.getBoundingClientRect().bottom).toBeLessThanOrEqual(
+      expect(chip.getBoundingClientRect().top).toBeGreaterThanOrEqual(
         image.getBoundingClientRect().top,
       );
     });
-    await expect(chip).toHaveStyle({ left: "12px" });
+    await expect(chip).toHaveStyle({ left: "18px" });
   }}
 >
   {#snippet template()}
