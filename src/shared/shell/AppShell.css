@@ -197,6 +197,15 @@
   box-shadow: var(--ui-shell-main-shadow);
 }
 
+.ui-minimal-app-shell:not(
+    :has(
+        > .ui-minimal-app-shell__sidebar[data-side="right"][data-presentation="inline"]
+      )
+  )
+  > .ui-minimal-app-shell__main {
+  margin-inline-end: var(--ui-shell-main-block-inset);
+}
+
 .ui-minimal-app-shell__toolbar {
   display: flex;
   flex: none;

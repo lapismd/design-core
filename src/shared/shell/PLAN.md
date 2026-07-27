@@ -17,6 +17,8 @@ workspace behavior are not copied.
 - An `outer` sidebar may opt into a collapsed/closed edge preview that overlays
   the shell without moving its icon rail or adjacent layout.
 - `AppShell.Main`, `AppShell.Toolbar`, and `AppShell.Body` compose the center.
+- Main reuses its bottom inset at the trailing edge when an inline right shell
+  sidebar is absent.
 - `AppShell.Body` supports a regions layout with independently scrolling
   `Body.Sidebar` and `Body.Content` parts for consumer-owned document chrome.
 - `AppShell.Body.Toggle` places consumer-controlled sidebar actions at the
@@ -84,4 +86,6 @@ workspace behavior are not copied.
 browser placement check. The repository-wide Storybook stage currently stops
 at the unrelated Emoji Picker focus assertion: focus remains on `Search emoji`
 instead of moving to `React with thumbs up`. The body-sidebar story remains
-`visual-pending`; no baselines were created or updated.
+`visual-pending`. A focused compare-only run against fresh static output on
+isolated ports reaches the three selected Shell stories and reports their
+missing pending baselines. No baselines were created or updated.

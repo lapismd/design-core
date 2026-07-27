@@ -258,10 +258,17 @@
       "aria-label",
       "Open right sidebar",
     );
+    const closedMainRect = mainSurface!.getBoundingClientRect();
+    const closedRootRect = root!.getBoundingClientRect();
+    const closedTrailingInset = closedRootRect.right - closedMainRect.right;
+    const closedBottomInset = closedRootRect.bottom - closedMainRect.bottom;
     await expect(
-      Math.round(mainSurface!.getBoundingClientRect().width),
-    ).toBeGreaterThanOrEqual(
-      Math.round(mainWidthBeforeClose + reclaimedSidebarWidth) - 1,
+      Math.abs(closedTrailingInset - closedBottomInset),
+    ).toBeLessThanOrEqual(0.5);
+    await expect(Math.round(closedMainRect.width)).toBeGreaterThanOrEqual(
+      Math.round(
+        mainWidthBeforeClose + reclaimedSidebarWidth - closedTrailingInset,
+      ) - 1,
     );
 
     await userEvent.click(rightToggle);
@@ -1207,9 +1214,18 @@
     await expect(
       canvas.queryByLabelText("Right sidebar"),
     ).not.toBeInTheDocument();
-    await expect(
-      canvas.getByRole("main", { name: "Workspace content" }),
-    ).toBeVisible();
+    const mainBody = canvas.getByRole("main", { name: "Workspace content" });
+    await expect(mainBody).toBeVisible();
+    const mainSurface = mainBody.closest<HTMLElement>('[data-ui-part="main"]');
+    const shellRoot = mainBody.closest<HTMLElement>('[data-ui-part="root"]');
+    await expect(mainSurface).toBeInTheDocument();
+    await expect(shellRoot).toBeInTheDocument();
+    const mainSurfaceRect = mainSurface!.getBoundingClientRect();
+    const shellRootRect = shellRoot!.getBoundingClientRect();
+    const bottomInset = shellRootRect.bottom - mainSurfaceRect.bottom;
+    const rightInset = shellRootRect.right - mainSurfaceRect.right;
+    await expect(rightInset).toBeGreaterThan(0);
+    await expect(Math.abs(rightInset - bottomInset)).toBeLessThanOrEqual(0.5);
     await expect(
       canvas.queryByRole("button", { name: "Collapse right sidebar" }),
     ).not.toBeInTheDocument();

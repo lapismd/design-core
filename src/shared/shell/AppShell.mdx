@@ -230,7 +230,10 @@ without changing shell components.
 Override tokens on `:root` or the shell root. Colors continue to come from the
 shared semantic theme. Left and right width tokens remain authoritative until
 the corresponding controller receives an explicit resize or restores one
-through its layout adapter.
+through its layout adapter. When no inline right shell sidebar is mounted, the
+main surface also uses the block inset at its trailing edge, keeping its right
+gap equal to its bottom gap. Body-local sidebars do not suppress this outer
+spacing.
 
 ## Shell or Workspace?
 
