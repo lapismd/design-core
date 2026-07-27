@@ -3,6 +3,7 @@
   import { Button } from "@stevejuma/ui/shadcn/button";
   import { Input } from "@stevejuma/ui/shadcn/input";
   import { Switch } from "@stevejuma/ui/shadcn/switch";
+  import * as Table from "@stevejuma/ui/shadcn/table";
   import { Textarea } from "@stevejuma/ui/shadcn/textarea";
   import type {
     WorkspaceKeyValueSetting,
@@ -89,6 +90,15 @@
     return field.type;
   }
 
+  function controlLayout() {
+    return field.type === "key-value" ||
+      field.type === "object-array" ||
+      field.type === "object-grid" ||
+      field.type === "object-map"
+      ? "stacked"
+      : "row";
+  }
+
   function updateStructured(raw: string) {
     try {
       controller.update(field.id, JSON.parse(raw));
@@ -151,6 +161,7 @@
     data-ui-part="setting-item"
     data-setting-id={field.id}
     data-setting-control-kind={controlKind()}
+    data-setting-layout={controlLayout()}
     data-invalid={Boolean(error)}
   >
     <div class="ui-workspace-setting-item__info">
@@ -284,18 +295,18 @@
         />
       {:else if field.type === "key-value"}
         <div class="ui-workspace-setting-key-value">
-          <table>
-            <thead>
-              <tr>
-                <th>{field.keyLabel ?? "Pattern"}</th>
-                <th>{field.valueLabel ?? "Value"}</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
+          <Table.Root>
+            <Table.Header>
+              <Table.Row>
+                <Table.Head>{field.keyLabel ?? "Pattern"}</Table.Head>
+                <Table.Head>{field.valueLabel ?? "Value"}</Table.Head>
+                <Table.Head>Actions</Table.Head>
+              </Table.Row>
+            </Table.Header>
+            <Table.Body>
               {#each Object.entries(keyValue(field)) as [key, entry] (key)}
-                <tr>
-                  <td>
+                <Table.Row>
+                  <Table.Cell>
                     <Input
                       aria-label="Association pattern"
                       value={key}
@@ -308,8 +319,8 @@
                           entry,
                         )}
                     />
-                  </td>
-                  <td>
+                  </Table.Cell>
+                  <Table.Cell>
                     <WorkspaceSettingSelect
                       ariaLabel="Associated editor view"
                       items={keyValueOptions}
@@ -317,8 +328,8 @@
                       onValueChange={(next: string) =>
                         updateKeyValue(field, key, key, next)}
                     />
-                  </td>
-                  <td>
+                  </Table.Cell>
+                  <Table.Cell>
                     <Button
                       variant="ghost"
                       size="icon-sm"
@@ -331,13 +342,13 @@
                     >
                       <WorkspaceIcon name="trash-2" />
                     </Button>
-                  </td>
-                </tr>
+                  </Table.Cell>
+                </Table.Row>
               {/each}
-            </tbody>
-          </table>
+            </Table.Body>
+          </Table.Root>
           <Button
-            variant="ghost"
+            variant="outline"
             size="sm"
             onclick={() =>
               controller.update(field.id, {

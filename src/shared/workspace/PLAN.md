@@ -626,8 +626,10 @@ workflow.
   navigates to and briefly highlights the selected field, sidebar content uses
   the shadcn ScrollArea, and split/sidebar rails use the shadcn resizable
   primitive with a one-pixel resting line and two-pixel accent-painted active
-  line. Stacked groups assign each internal divider solely to that one-pixel
-  resizer and reserve a status-safe area below a collapsed final right panel.
+  line. Structured data settings leave the two-column field grid and place
+  their shadcn Table or collection control in a dedicated full-width row.
+  Stacked groups assign each internal divider solely to that one-pixel resizer
+  and reserve a status-safe area below a collapsed final right panel.
 - Restored the source shell seams and controls: sidebar and top-tab dividers
   share one continuous horizontal edge, expanded sidebars retain their outer
   boundary, ribbon masking stops at the header, sidebar toggles expose their

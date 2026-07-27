@@ -535,7 +535,7 @@
 <Story
   name="Collections and extension controls"
   tags={["visual-pending"]}
-  play={async ({ canvas }) => {
+  play={async ({ canvas, canvasElement }) => {
     await userEvent.click(
       canvas.getByRole("button", { name: "Host integration" }),
     );
@@ -551,6 +551,25 @@
     });
     await expect(associations).toHaveLength(2);
     await expect(associations[1]).toHaveValue("*.txt");
+
+    const associationSetting = canvasElement.querySelector<HTMLElement>(
+      '[data-setting-id="demo.associations"]',
+    );
+    const associationInfo = associationSetting?.querySelector<HTMLElement>(
+      ".ui-workspace-setting-item__info",
+    );
+    const associationControl = associationSetting?.querySelector<HTMLElement>(
+      ".ui-workspace-setting-item__control",
+    );
+    await expect(associationSetting).toHaveAttribute(
+      "data-setting-layout",
+      "stacked",
+    );
+    await expect(associationInfo).not.toBeNull();
+    await expect(associationControl).not.toBeNull();
+    await expect(
+      associationControl!.getBoundingClientRect().top,
+    ).toBeGreaterThanOrEqual(associationInfo!.getBoundingClientRect().bottom);
   }}
   parameters={{
     visualDelta: {
