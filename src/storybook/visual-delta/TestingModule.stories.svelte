@@ -173,6 +173,39 @@
 </Story>
 
 <Story
+  name="Global preflight"
+  play={async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const shell = await waitFor(() =>
+      canvas.getByTestId("testing-module-shell"),
+    );
+    const scope = within(shell);
+
+    await expect(
+      scope.getByText("Rebuilding Storybook static… 12s"),
+    ).toBeInTheDocument();
+    await expect(
+      scope.queryByTestId("compare-row-progress"),
+    ).not.toBeInTheDocument();
+    await expect(
+      scope.getByRole("button", { name: "Run tests to see results" }),
+    ).toBeInTheDocument();
+    await expect(
+      scope.getByRole("button", { name: "Stop visual run" }),
+    ).toBeInTheDocument();
+  }}
+>
+  {#snippet template()}
+    <ReactThemeHost
+      element={React.createElement(TestingModuleShell, {
+        variant: "global",
+        seedPreflightProgress: true,
+      })}
+    />
+  {/snippet}
+</Story>
+
+<Story
   name="Sidebar filters"
   play={async ({ canvasElement }) => {
     const canvas = within(canvasElement);
