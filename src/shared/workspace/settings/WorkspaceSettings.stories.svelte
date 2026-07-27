@@ -1,6 +1,6 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, userEvent } from "storybook/test";
+  import { expect, userEvent, waitFor, within } from "storybook/test";
   import AppShellRoot from "../app-shell/AppShellRoot.svelte";
   import { AppShellController } from "../core/app-shell-controller.svelte.js";
   import { APP_SHELL_SETTING_IDS } from "../core/built-in-settings.svelte.js";
@@ -297,6 +297,7 @@
 
   const builtInApp = createSettingsApp();
   const interactionApp = createSettingsApp();
+  const searchInteractionApp = createSettingsApp();
   const compoundApp = createSettingsApp();
   const allControls = new WorkspaceSettingsController({
     sections: allControlSections,
@@ -368,16 +369,39 @@
   tags={["visual-pending"]}
   play={async ({ canvas }) => {
     await userEvent.click(canvas.getByRole("button", { name: "Appearance" }));
-    const scheme = canvas.getByLabelText("Base colour scheme");
-    await userEvent.selectOptions(scheme, "dark");
-    await expect(scheme).toHaveValue("dark");
+    const scheme = canvas.getByRole("combobox", {
+      name: "Base colour scheme",
+    });
+    await userEvent.click(scheme);
+    await userEvent.click(
+      within(document.body).getByRole("option", { name: "Dark" }),
+    );
+    await waitFor(() => {
+      expect(
+        within(document.body).queryByRole("option", { name: "Dark" }),
+      ).not.toBeInTheDocument();
+    });
+    await expect(scheme).toHaveTextContent("Dark");
     await expect(
       interactionApp.configuration.get(APP_SHELL_SETTING_IDS.appearanceTheme),
     ).toBe("dark");
-    await userEvent.click(canvas.getByRole("button", { name: "Workspace" }));
-    const mobileLayout = canvas.getByLabelText("Mobile layout");
-    await userEvent.selectOptions(mobileLayout, "always");
-    await expect(mobileLayout).toHaveValue("always");
+    const workspaceNavigation = canvas.getByRole("button", {
+      name: "Workspace",
+    });
+    await waitFor(() => {
+      expect(getComputedStyle(workspaceNavigation).pointerEvents).not.toBe(
+        "none",
+      );
+    });
+    await userEvent.click(workspaceNavigation);
+    const mobileLayout = canvas.getByRole("combobox", {
+      name: "Mobile layout",
+    });
+    await userEvent.click(mobileLayout);
+    await userEvent.click(
+      within(document.body).getByRole("option", { name: "Always" }),
+    );
+    await expect(mobileLayout).toHaveTextContent("Always");
     await expect(interactionApp.mobile.requestedDisplayMode).toBe("mobile");
   }}
   parameters={{
@@ -400,6 +424,55 @@
           <WorkspaceSettingsSurface
             controller={interactionApp.settings}
             app={interactionApp}
+          />
+        </AppShellRoot>
+      </div>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Search navigation and transient highlight interaction"
+  tags={["skip-visual"]}
+  play={async ({ canvas, canvasElement }) => {
+    await userEvent.click(canvas.getByRole("button", { name: "Appearance" }));
+    const viewport = canvasElement.querySelector<HTMLElement>(
+      ".ui-workspace-settings__content-viewport",
+    );
+    await expect(viewport).not.toBeNull();
+    if (!viewport) return;
+    viewport.scrollTop = viewport.scrollHeight;
+    await expect(viewport.scrollTop).toBeGreaterThan(0);
+
+    const search = canvas.getByRole("searchbox", {
+      name: "Search settings",
+    });
+    await userEvent.type(search, "accent colour");
+    await waitFor(() => expect(viewport.scrollTop).toBe(0));
+
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Open Accent colour" }),
+    );
+    let target: HTMLElement | null = null;
+    await waitFor(() => {
+      target = canvasElement.querySelector<HTMLElement>(
+        '[data-setting-id="appearence.accentColor"]',
+      );
+      expect(target).toHaveClass("ui-workspace-settings__search-hit");
+    });
+    await waitFor(
+      () => expect(target).not.toHaveClass("ui-workspace-settings__search-hit"),
+      { timeout: 2_000 },
+    );
+  }}
+>
+  {#snippet template()}
+    <div class="ui-workspace-settings-story-canvas">
+      <div class="ui-workspace-settings-story-frame">
+        <AppShellRoot controller={searchInteractionApp} theme="inherit">
+          <WorkspaceSettingsSurface
+            controller={searchInteractionApp.settings}
+            app={searchInteractionApp}
           />
         </AppShellRoot>
       </div>
@@ -467,7 +540,7 @@
       canvas.getByRole("button", { name: "Host integration" }),
     );
     await expect(canvas.getByLabelText("Tags item 1")).toHaveValue("framework");
-    await expect(canvas.getByRole("note")).toHaveTextContent(
+    await expect(canvas.getByRole("alert")).toHaveTextContent(
       "Unsupported setting",
     );
     await userEvent.click(
@@ -520,10 +593,10 @@
       canvas.getByRole("heading", { name: "Core plugins" }),
     ).toBeVisible();
     await expect(
-      canvas.getByRole("checkbox", { name: "Enable Workspace" }),
+      canvas.getByRole("switch", { name: "Enable Workspace" }),
     ).toBeDisabled();
     await expect(
-      canvas.getByRole("checkbox", { name: "Enable Backlinks" }),
+      canvas.getByRole("switch", { name: "Enable Backlinks" }),
     ).toBeChecked();
   }}
   parameters={{

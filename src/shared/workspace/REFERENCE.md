@@ -94,6 +94,8 @@ utilities. The target retains the accessible behavior and Lapis geometry while
 replacing that implementation with:
 
 - direct semantic HTML where sufficient;
+- repository shadcn primitives for settings controls, scroll areas, and
+  resizable panels;
 - direct Bits UI primitives where managed focus or popup semantics are needed;
 - Paneforge for recursive resizing;
 - component-local native CSS;

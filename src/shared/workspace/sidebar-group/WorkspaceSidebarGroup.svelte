@@ -1,7 +1,7 @@
 <script lang="ts">
   import ChevronRight from "@lucide/svelte/icons/chevron-right";
+  import * as Resizable from "@stevejuma/ui/shadcn/resizable";
   import { Collapsible } from "bits-ui";
-  import * as Panes from "paneforge";
   import { onMount } from "svelte";
   import type {
     WorkspaceSidebarGroup as WorkspaceSidebarGroupModel,
@@ -190,20 +190,20 @@
     >
       {#if groupedPanelStackHeight !== undefined}
         {#key layoutKey}
-          <Panes.PaneGroup
+          <Resizable.PaneGroup
             direction="vertical"
             class="ui-workspace-sidebar-group__pane-group"
             {onLayoutChange}
           >
             {#each visibleTabs as tab, panelIndex (tab.id)}
               {#if panelIndex > 0}
-                <Panes.PaneResizer
+                <Resizable.Handle
                   class="ui-workspace-sidebar-group__resizer"
                   aria-orientation="horizontal"
                 />
               {/if}
               {@const collapsed = group.collapsedByTabId[tab.id] === true}
-              <Panes.Pane
+              <Resizable.Pane
                 defaultSize={defaultSizes[panelIndex]}
                 minSize={collapsed ? collapsedSize : 12}
                 class="ui-workspace-sidebar-group__pane"
@@ -277,16 +277,16 @@
                     </Collapsible.Content>
                   </div>
                 </Collapsible.Root>
-              </Panes.Pane>
+              </Resizable.Pane>
             {/each}
             {#if allCollapsed && collapsedSpacerSize > 0}
-              <Panes.Pane
+              <Resizable.Pane
                 defaultSize={collapsedSpacerSize}
                 minSize={0}
                 class="ui-workspace-sidebar-group__spacer"
               />
             {/if}
-          </Panes.PaneGroup>
+          </Resizable.PaneGroup>
         {/key}
       {/if}
     </div>

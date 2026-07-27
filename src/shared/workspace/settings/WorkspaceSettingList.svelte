@@ -1,4 +1,7 @@
 <script lang="ts">
+  import { Button } from "@stevejuma/ui/shadcn/button";
+  import { Input } from "@stevejuma/ui/shadcn/input";
+  import { Switch } from "@stevejuma/ui/shadcn/switch";
   import WorkspaceIcon from "../icon/WorkspaceIcon.svelte";
 
   let {
@@ -39,15 +42,14 @@
   {#each value as item, index (index)}
     <div>
       {#if itemType === "boolean"}
-        <input
-          type="checkbox"
+        <Switch
           aria-label={`${label} item ${index + 1}`}
           checked={Boolean(item)}
           {disabled}
-          onchange={(event) => update(index, event.currentTarget.checked)}
+          onCheckedChange={(checked) => update(index, checked)}
         />
       {:else}
-        <input
+        <Input
           type={itemType === "string" ? "text" : "number"}
           step={itemType === "integer" ? 1 : "any"}
           aria-label={`${label} item ${index + 1}`}
@@ -62,19 +64,21 @@
             )}
         />
       {/if}
-      <button
-        type="button"
+      <Button
+        variant="ghost"
+        size="icon-sm"
         aria-label={`Remove ${label} item ${index + 1}`}
         {disabled}
         onclick={() =>
           onValueChange(value.filter((_, itemIndex) => itemIndex !== index))}
       >
         <WorkspaceIcon name="x" />
-      </button>
+      </Button>
     </div>
   {/each}
-  <button
-    type="button"
+  <Button
+    variant="ghost"
+    size="sm"
     class="ui-workspace-setting-list__add"
     disabled={disabled ||
       (maximumItems !== undefined && value.length >= maximumItems)}
@@ -82,5 +86,5 @@
   >
     <WorkspaceIcon name="plus" />
     Add item
-  </button>
+  </Button>
 </div>

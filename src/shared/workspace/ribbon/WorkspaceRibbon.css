@@ -1,4 +1,5 @@
 .ui-workspace-ribbon {
+  position: relative;
   display: flex;
   width: var(--ui-workspace-ribbon-width);
   height: 100%;
@@ -12,11 +13,41 @@
 }
 
 .ui-workspace-ribbon[data-side="left"] {
-  border-right: 1px solid var(--ui-workspace-border);
+  border-right: 0;
 }
 
 .ui-workspace-ribbon[data-side="right"] {
-  border-left: 1px solid var(--ui-workspace-border);
+  border-left: 0;
+}
+
+.ui-workspace-ribbon::before,
+.ui-workspace-ribbon::after {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+  background: var(--ui-workspace-border);
+  content: "";
+}
+
+.ui-workspace-ribbon::before {
+  top: calc(var(--ui-workspace-tab-height) - 1px);
+  right: 0;
+  left: 0;
+  height: 1px;
+}
+
+.ui-workspace-ribbon::after {
+  top: var(--ui-workspace-tab-height);
+  bottom: 0;
+  width: 1px;
+}
+
+.ui-workspace-ribbon[data-side="left"]::after {
+  right: 0;
+}
+
+.ui-workspace-ribbon[data-side="right"]::after {
+  left: 0;
 }
 
 .ui-workspace-ribbon__actions {

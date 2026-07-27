@@ -7,11 +7,13 @@
     label,
     onSelect,
     size = "default",
+    expanded = false,
   }: {
     side: WorkspaceSide;
     label: string;
     onSelect: (event: MouseEvent) => void;
     size?: "small" | "default";
+    expanded?: boolean;
   } = $props();
 </script>
 
@@ -20,6 +22,7 @@
   data-ui-component="workspace-sidebar-toggle"
   data-size={size}
   data-side={side}
+  data-state={expanded ? "expanded" : "collapsed"}
   data-workspace-sidebar-toggle={side}
   type="button"
   aria-label={label}
@@ -55,6 +58,7 @@
       rx="2"
       fill="currentColor"
       data-ui-part="indicator"
+      class="ui-workspace-sidebar-toggle__indicator"
     ></rect>
   </svg>
   <span class="sr-only">{label}</span>

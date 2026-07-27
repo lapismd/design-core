@@ -49,6 +49,9 @@
   --ui-workspace-stacked-shadow: -0.5rem 0 0.5rem rgb(0 0 0 / 5%);
   --ui-workspace-stacked-pane-width: 43.75rem;
   --ui-workspace-sidebar-header-height: 2rem;
+  --ui-workspace-sidebar-tab-header-inline-padding: 0.5rem;
+  --ui-workspace-resize-handle-size: 1px;
+  --ui-workspace-resize-handle-active-size: 4px;
   --ui-workspace-ribbon-width: 3rem;
   --ui-workspace-status-height: 1.5rem;
   --ui-workspace-settings-heading-size: 1rem;

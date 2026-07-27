@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { Switch } from "@stevejuma/ui/shadcn/switch";
   import type { AppShellController } from "../core/app-shell-controller.svelte.js";
   import WorkspaceIcon from "../icon/WorkspaceIcon.svelte";
 
@@ -34,13 +35,11 @@
           {#if plugin.error}<span role="alert">{String(plugin.error)}</span
             >{/if}
         </div>
-        <input
-          class="ui-workspace-setting-toggle"
-          type="checkbox"
+        <Switch
           aria-label={`Enable ${plugin.name}`}
           checked={plugin.enabled}
           disabled={plugin.required || busy === plugin.id}
-          onchange={() => toggle(plugin.id, plugin.enabled)}
+          onCheckedChange={() => toggle(plugin.id, plugin.enabled)}
         />
       </article>
     {/each}

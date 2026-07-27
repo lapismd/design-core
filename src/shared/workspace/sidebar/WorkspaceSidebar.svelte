@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { ScrollArea } from "@stevejuma/ui/shadcn/scroll-area";
   import type { Snippet } from "svelte";
   import type {
     WorkspaceSide,
@@ -20,10 +21,11 @@
   let {
     controller,
     side,
-    state,
+    state: suppliedState,
     drag,
     footer,
     width,
+    resizable = true,
   }: {
     controller: WorkspaceShellController;
     side: WorkspaceSide;
@@ -31,17 +33,21 @@
     drag?: WorkspaceDragState;
     footer?: Snippet;
     width?: string;
+    resizable?: boolean;
   } = $props();
 
   const createInternalDrag = () => new WorkspaceDragState(controller);
   const internalDrag = createInternalDrag();
   let dragState = $derived(drag ?? internalDrag);
-  let sidebar = $derived(state ?? controller.layout[side]);
+  let sidebar = $derived(suppliedState ?? controller.layout[side]);
   let pane = $derived(sidebar.root.kind === "tabs" ? sidebar.root : undefined);
   let activeItem = $derived(
     pane?.items.find((item) => item.id === pane?.activeItemId) ??
       pane?.items[0],
   );
+  let resizing = $state(false);
+  let resizeStartX = 0;
+  let resizeStartWidth = 0;
 
   function tabFor(item: WorkspaceTabItem): WorkspaceTab | undefined {
     return item.kind === "tab" ? item : item.tabs[0];
@@ -54,6 +60,28 @@
 
   function isSelected(item: WorkspaceTabItem) {
     return pane?.activeItemId === item.id;
+  }
+
+  function startResize(event: MouseEvent) {
+    if (!resizable) return;
+    resizing = true;
+    resizeStartX = event.clientX;
+    resizeStartWidth = sidebar.size;
+    event.preventDefault();
+    const resize = (moveEvent: MouseEvent) => {
+      const direction = side === "left" ? 1 : -1;
+      controller.setSidebarSize(
+        side,
+        resizeStartWidth + (moveEvent.clientX - resizeStartX) * direction,
+      );
+    };
+    const endResize = () => {
+      resizing = false;
+      window.removeEventListener("mousemove", resize);
+      window.removeEventListener("mouseup", endResize);
+    };
+    window.addEventListener("mousemove", resize);
+    window.addEventListener("mouseup", endResize);
   }
 </script>
 
@@ -108,50 +136,54 @@
         <WorkspaceSidebarToggle
           {side}
           size="small"
+          expanded
           label={`Close ${side} sidebar`}
           onSelect={() => controller.setSidebarOpen(side, false)}
         />
       </div>
 
-      <div
-        class="ui-workspace-sidebar__body"
-        data-ui-part="sidebar-body"
-        id={`workspace-sidebar-panel-${side}`}
-        role="tabpanel"
-        aria-labelledby={activeItem
-          ? `workspace-sidebar-tab-${side}-${activeItem.id}`
-          : undefined}
-      >
-        {#if activeItem?.kind === "sidebar-group"}
-          <WorkspaceSidebarGroup
-            {controller}
-            group={activeItem}
-            {pane}
-            {side}
-            drag={dragState}
-          />
-        {:else if activeItem?.kind === "tab"}
-          <WorkspaceTabsDrop
-            {controller}
-            drag={dragState}
-            parent={pane}
-            dropZones={["top", "bottom"]}
-            class="ui-workspace-sidebar__drop-target"
-          >
-            <WorkspaceViewHost
+      <ScrollArea class="ui-workspace-sidebar__body">
+        <div
+          class="ui-workspace-sidebar__body-content"
+          data-ui-part="sidebar-body"
+          data-content-kind={activeItem?.kind ?? "empty"}
+          id={`workspace-sidebar-panel-${side}`}
+          role="tabpanel"
+          aria-labelledby={activeItem
+            ? `workspace-sidebar-tab-${side}-${activeItem.id}`
+            : undefined}
+        >
+          {#if activeItem?.kind === "sidebar-group"}
+            <WorkspaceSidebarGroup
               {controller}
-              tab={activeItem}
-              hostId="root"
-              paneId={pane.id}
+              group={activeItem}
+              {pane}
+              {side}
+              drag={dragState}
             />
-          </WorkspaceTabsDrop>
-        {:else}
-          <WorkspaceSidebarEmpty
-            {side}
-            onClose={() => controller.setSidebarOpen(side, false)}
-          />
-        {/if}
-      </div>
+          {:else if activeItem?.kind === "tab"}
+            <WorkspaceTabsDrop
+              {controller}
+              drag={dragState}
+              parent={pane}
+              dropZones={["top", "bottom"]}
+              class="ui-workspace-sidebar__drop-target"
+            >
+              <WorkspaceViewHost
+                {controller}
+                tab={activeItem}
+                hostId="root"
+                paneId={pane.id}
+              />
+            </WorkspaceTabsDrop>
+          {:else}
+            <WorkspaceSidebarEmpty
+              {side}
+              onClose={() => controller.setSidebarOpen(side, false)}
+            />
+          {/if}
+        </div>
+      </ScrollArea>
     {:else}
       <WorkspaceSidebarEmpty
         {side}
@@ -159,5 +191,17 @@
       />
     {/if}
     {@render footer?.()}
+    {#if resizable}
+      <button
+        type="button"
+        class="ui-workspace-sidebar__resize-rail"
+        data-ui-part="sidebar-resize-rail"
+        data-side={side}
+        data-resizing={resizing}
+        aria-label={`Resize ${side} sidebar`}
+        title={`Resize ${side} sidebar`}
+        onmousedown={startResize}
+      ></button>
+    {/if}
   </aside>
 {/if}

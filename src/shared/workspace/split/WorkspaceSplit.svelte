@@ -1,5 +1,5 @@
 <script lang="ts">
-  import * as Panes from "paneforge";
+  import * as Resizable from "@stevejuma/ui/shadcn/resizable";
   import { onMount, type Snippet } from "svelte";
   import type { WorkspaceNode, WorkspaceSplitNode } from "../core/types.js";
   import type { WorkspaceShellController } from "../core/workspace-controller.svelte.js";
@@ -34,7 +34,7 @@
   data-workspace-split-id={split.id}
   data-workspace-split-direction={split.direction}
 >
-  <Panes.PaneGroup
+  <Resizable.PaneGroup
     direction={split.direction}
     class="ui-workspace-split__group"
     data-ui-part="split-group"
@@ -43,7 +43,7 @@
   >
     {#each split.children as child, index (child.id)}
       {#if index > 0}
-        <Panes.PaneResizer
+        <Resizable.Handle
           class="ui-workspace-split__handle"
           data-ui-part="split-handle"
           data-direction={split.direction}
@@ -52,14 +52,14 @@
             : "horizontal"}
         />
       {/if}
-      <Panes.Pane
+      <Resizable.Pane
         defaultSize={split.sizes[index] ?? 100 / split.children.length}
         minSize={10}
         class="ui-workspace-split__pane"
         data-ui-part="split-pane"
       >
         {@render children(child, index)}
-      </Panes.Pane>
+      </Resizable.Pane>
     {/each}
-  </Panes.PaneGroup>
+  </Resizable.PaneGroup>
 </div>

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { Input } from "@stevejuma/ui/shadcn/input";
   import type { WorkspaceCustomSettingProps } from "./types.js";
 
   let { id, value, disabled, update }: WorkspaceCustomSettingProps = $props();
@@ -6,7 +7,7 @@
 
 <label class="ui-workspace-settings-story-custom">
   <span>Custom renderer value</span>
-  <input
+  <Input
     {id}
     type="text"
     value={String(value ?? "")}

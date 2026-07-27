@@ -115,24 +115,48 @@
 }
 
 .ui-workspace-sidebar-group__resizer {
+  --ui-resizable-background: transparent;
   position: relative;
   z-index: 3;
   width: 100%;
   height: 1px;
   flex: 0 0 1px;
-  background: var(--ui-workspace-border);
+  background: transparent;
   cursor: ns-resize;
   outline: none;
 }
 
 .ui-workspace-sidebar-group__resizer::after {
   position: absolute;
-  inset: -0.1875rem 0;
+  inset: -0.125rem 0;
   content: "";
 }
 
+.ui-workspace-sidebar-group__resizer::before {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  right: 0;
+  left: 0;
+  height: var(--ui-workspace-resize-handle-size);
+  background: var(--ui-workspace-border);
+  content: "";
+  transform: translateY(-50%);
+  transition:
+    height 150ms ease,
+    background-color 150ms ease;
+}
+
+.ui-workspace-sidebar-group__resizer:hover::before,
+.ui-workspace-sidebar-group__resizer:focus-visible::before,
+.ui-workspace-sidebar-group__resizer[data-resize-handle-active]::before {
+  height: var(--ui-workspace-resize-handle-active-size);
+  background: var(--ui-workspace-accent);
+}
+
 .ui-workspace-sidebar-group__resizer:focus-visible {
-  background: var(--ui-workspace-focus-ring);
+  outline: none;
+  box-shadow: none;
 }
 
 .ui-workspace-sidebar-group__drop-indicator {

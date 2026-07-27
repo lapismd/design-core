@@ -621,6 +621,16 @@ workflow.
 - Restored source geometry and tokens across top tabs, settings, empty views,
   shell chrome, F-Mode, and Notifications while retaining the target
   repository's semantic markup and native-CSS boundary.
+- Aligned the interactive shell fixture with the source ownership model:
+  settings fields use the repository shadcn primitives, settings search
+  navigates to and briefly highlights the selected field, sidebar content uses
+  the shadcn ScrollArea, and split/sidebar rails use the shadcn resizable
+  primitive with a one-pixel resting line and accent-painted active line.
+- Restored the source shell seams and controls: sidebar and top-tab dividers
+  share one continuous horizontal edge, expanded sidebars retain their outer
+  boundary, ribbon masking stops at the header, sidebar toggles expose their
+  expanded geometry, and every top-tab group receives a default serializable
+  New tab action through the existing controller persistence path.
 - Focused validation is clean: 21 Workspace/reference/plugin unit tests, 72
   Storybook interaction/accessibility tests, `pnpm check:no-tailwind`, and
   `pnpm check`.

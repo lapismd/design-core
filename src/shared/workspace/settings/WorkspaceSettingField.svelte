@@ -1,4 +1,9 @@
 <script lang="ts">
+  import * as Alert from "@stevejuma/ui/shadcn/alert";
+  import { Button } from "@stevejuma/ui/shadcn/button";
+  import { Input } from "@stevejuma/ui/shadcn/input";
+  import { Switch } from "@stevejuma/ui/shadcn/switch";
+  import { Textarea } from "@stevejuma/ui/shadcn/textarea";
   import type {
     WorkspaceKeyValueSetting,
     WorkspaceSettingField as SettingDefinition,
@@ -8,6 +13,7 @@
   import WorkspaceIcon from "../icon/WorkspaceIcon.svelte";
   import WorkspaceSettingFieldRecursive from "./WorkspaceSettingField.svelte";
   import WorkspaceSettingList from "./WorkspaceSettingList.svelte";
+  import WorkspaceSettingSelect from "./WorkspaceSettingSelect.svelte";
 
   let {
     controller,
@@ -158,17 +164,14 @@
 
     <div class="ui-workspace-setting-item__control">
       {#if field.type === "boolean"}
-        <input
-          class="ui-workspace-setting-toggle"
+        <Switch
           id={`setting-${field.id}`}
-          type="checkbox"
           checked={value === true}
           disabled={field.disabled}
-          onchange={(event) =>
-            controller.update(field.id, event.currentTarget.checked)}
+          onCheckedChange={(checked) => controller.update(field.id, checked)}
         />
       {:else if field.type === "string" && field.presentation === "textarea"}
-        <textarea
+        <Textarea
           id={`setting-${field.id}`}
           value={String(value ?? "")}
           placeholder={field.placeholder}
@@ -176,21 +179,19 @@
           aria-invalid={Boolean(error)}
           oninput={(event) =>
             controller.update(field.id, event.currentTarget.value)}
-        ></textarea>
+        />
       {:else if field.type === "string" && (field.presentation === "combobox" || field.optionsSource)}
-        <select
+        <WorkspaceSettingSelect
           id={`setting-${field.id}`}
+          items={options}
           value={String(value ?? field.default)}
           disabled={field.disabled}
-          onchange={(event) =>
-            controller.update(field.id, event.currentTarget.value)}
-        >
-          {#each options as option (option.value)}
-            <option value={option.value}>{option.label}</option>
-          {/each}
-        </select>
+          ariaLabel={field.title}
+          placeholder={field.placeholder}
+          onValueChange={(next: string) => controller.update(field.id, next)}
+        />
       {:else if field.type === "string"}
-        <input
+        <Input
           id={`setting-${field.id}`}
           type={field.presentation === "email"
             ? "email"
@@ -212,7 +213,7 @@
         />
       {:else if (field.type === "number" || field.type === "integer") && field.minimum !== undefined && field.maximum !== undefined}
         <div class="ui-workspace-setting-range">
-          <input
+          <Input
             id={`setting-${field.id}`}
             type="range"
             value={Number(value ?? field.default)}
@@ -228,7 +229,7 @@
           >
         </div>
       {:else if field.type === "number" || field.type === "integer"}
-        <input
+        <Input
           id={`setting-${field.id}`}
           type="number"
           value={Number(value ?? field.default)}
@@ -240,38 +241,29 @@
             controller.update(field.id, event.currentTarget.valueAsNumber)}
         />
       {:else if field.type === "enum"}
-        <select
+        <WorkspaceSettingSelect
           id={`setting-${field.id}`}
+          items={options}
           value={String(value ?? field.default)}
           disabled={field.disabled}
-          onchange={(event) =>
-            controller.update(field.id, event.currentTarget.value)}
-        >
-          {#each options as option (option.value)}
-            <option value={option.value}>{option.label}</option>
-          {/each}
-        </select>
+          ariaLabel={field.title}
+          onValueChange={(next: string) => controller.update(field.id, next)}
+        />
       {:else if field.type === "multi-enum"}
-        <select
+        <WorkspaceSettingSelect
           id={`setting-${field.id}`}
-          multiple
+          type="multiple"
+          items={options}
+          value={Array.isArray(value)
+            ? value.filter(
+                (entry): entry is string => typeof entry === "string",
+              )
+            : field.default}
           disabled={field.disabled}
-          onchange={(event) =>
-            controller.update(
-              field.id,
-              Array.from(event.currentTarget.selectedOptions).map(
-                (option) => option.value,
-              ),
-            )}
-        >
-          {#each options as option (option.value)}
-            <option
-              value={option.value}
-              selected={Array.isArray(value) && value.includes(option.value)}
-              >{option.label}</option
-            >
-          {/each}
-        </select>
+          ariaLabel={field.title}
+          placeholder="Select options..."
+          onValueChange={(next: string[]) => controller.update(field.id, next)}
+        />
       {:else if field.type === "list"}
         <WorkspaceSettingList
           itemType={field.itemType}
@@ -282,14 +274,14 @@
           onValueChange={(next) => controller.update(field.id, next)}
         />
       {:else if field.type === "object-array" || field.type === "object-grid" || field.type === "object-map"}
-        <textarea
+        <Textarea
           id={`setting-${field.id}`}
           class="ui-workspace-setting-structured"
           value={JSON.stringify(value ?? field.default, null, 2)}
           disabled={field.disabled}
           aria-invalid={Boolean(error)}
           onchange={(event) => updateStructured(event.currentTarget.value)}
-        ></textarea>
+        />
       {:else if field.type === "key-value"}
         <div class="ui-workspace-setting-key-value">
           <table>
@@ -304,7 +296,7 @@
               {#each Object.entries(keyValue(field)) as [key, entry] (key)}
                 <tr>
                   <td>
-                    <input
+                    <Input
                       aria-label="Association pattern"
                       value={key}
                       placeholder={field.keyPlaceholder}
@@ -318,25 +310,18 @@
                     />
                   </td>
                   <td>
-                    <select
-                      aria-label="Associated editor view"
+                    <WorkspaceSettingSelect
+                      ariaLabel="Associated editor view"
+                      items={keyValueOptions}
                       value={entry}
-                      onchange={(event) =>
-                        updateKeyValue(
-                          field,
-                          key,
-                          key,
-                          event.currentTarget.value,
-                        )}
-                    >
-                      {#each keyValueOptions as option (option.value)}
-                        <option value={option.value}>{option.label}</option>
-                      {/each}
-                    </select>
+                      onValueChange={(next: string) =>
+                        updateKeyValue(field, key, key, next)}
+                    />
                   </td>
                   <td>
-                    <button
-                      type="button"
+                    <Button
+                      variant="ghost"
+                      size="icon-sm"
                       aria-label={`Remove ${key}`}
                       onclick={() => {
                         const next = { ...keyValue(field) };
@@ -345,14 +330,15 @@
                       }}
                     >
                       <WorkspaceIcon name="trash-2" />
-                    </button>
+                    </Button>
                   </td>
                 </tr>
               {/each}
             </tbody>
           </table>
-          <button
-            type="button"
+          <Button
+            variant="ghost"
+            size="sm"
             onclick={() =>
               controller.update(field.id, {
                 ...keyValue(field),
@@ -361,7 +347,7 @@
           >
             <WorkspaceIcon name="plus" />
             {field.addLabel ?? "Add entry"}
-          </button>
+          </Button>
         </div>
       {:else if field.type === "custom"}
         {@const CustomComponent = field.component}
@@ -372,38 +358,38 @@
           update={(next) => controller.update(field.id, next)}
         />
       {:else if field.type === "unsupported"}
-        <div class="ui-workspace-setting-unsupported" role="note">
-          <strong>Unsupported setting</strong>
-          <span>
+        <Alert.Root class="ui-workspace-setting-unsupported">
+          <Alert.Title>Unsupported setting</Alert.Title>
+          <Alert.Description>
             {field.schemaType
               ? `The ${field.schemaType} schema type is not available.`
               : "This setting cannot be edited by the default renderer."}
-          </span>
-        </div>
+          </Alert.Description>
+        </Alert.Root>
       {:else if field.type === "action"}
-        <button
+        <Button
           id={`setting-${field.id}`}
-          type="button"
-          data-variant={field.variant ?? "outline"}
+          variant={field.variant ?? "outline"}
           disabled={field.disabled}
           onclick={() => controller.runAction(field.id)}
         >
           {#if field.icon}<WorkspaceIcon name={field.icon} />{/if}
           {field.label}
-        </button>
+        </Button>
       {/if}
 
       {#if field.type !== "action"}
-        <button
-          type="button"
+        <Button
           class="ui-workspace-setting-restore"
+          variant="ghost"
+          size="icon-sm"
           aria-label={`Restore ${field.title} default`}
           title="Restore default"
           disabled={field.disabled}
           onclick={() => controller.restoreDefault(field.id)}
         >
           <WorkspaceIcon name="rotate-ccw" />
-        </button>
+        </Button>
       {/if}
     </div>
   </div>

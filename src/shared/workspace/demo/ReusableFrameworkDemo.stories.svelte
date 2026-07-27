@@ -69,6 +69,17 @@
   tags={["visual-pending"]}
   play={async ({ canvas }) => {
     await waitFor(() => expect(interaction.app.ready).toBe(true));
+    const savesBeforeAdd = interaction.tracker.saveCount;
+    await userEvent.click(
+      canvas.getAllByRole("button", { name: "New tab" })[0],
+    );
+    const newTab = canvas.getByRole("tab", { name: "New Tab" });
+    await expect(newTab).toHaveAttribute("aria-selected", "true");
+    await interaction.app.workspace.flushSave();
+    await waitFor(() =>
+      expect(interaction.tracker.saveCount).toBeGreaterThan(savesBeforeAdd),
+    );
+
     const plan = canvas.getByRole("tab", { name: "Plan" });
     await userEvent.click(plan);
     await expect(plan).toHaveAttribute("aria-selected", "true");
@@ -105,7 +116,9 @@
   play={async ({ canvas, canvasElement }) => {
     await waitFor(() => expect(pluginLifecycle.app.ready).toBe(true));
     const documentCanvas = within(canvasElement.ownerDocument.body);
-    const pluginsButton = canvas.getByRole("button", { name: "Plugins" });
+    const pluginsButton = canvas.getByRole("button", {
+      name: "Manage demo plugin",
+    });
     await userEvent.click(pluginsButton);
     await userEvent.click(
       documentCanvas.getByRole("menuitem", {
@@ -120,7 +133,7 @@
       expect(pluginsButton).toHaveAttribute("aria-expanded", "false"),
     );
     const enabledPluginsButton = canvas.getByRole("button", {
-      name: "Plugins",
+      name: "Manage demo plugin",
     });
     await waitFor(() =>
       expect(getComputedStyle(enabledPluginsButton).pointerEvents).toBe("auto"),

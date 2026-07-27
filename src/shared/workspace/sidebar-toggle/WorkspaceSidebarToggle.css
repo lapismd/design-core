@@ -32,6 +32,42 @@
 }
 
 .ui-workspace-sidebar-toggle__icon {
+  width: 1rem;
+  height: 1rem;
+  transition:
+    width 150ms ease,
+    height 150ms ease;
+}
+
+.ui-workspace-sidebar-toggle[data-state="expanded"]
+  .ui-workspace-sidebar-toggle__icon {
   width: 1.25rem;
   height: 1.25rem;
+}
+
+.ui-workspace-sidebar-toggle__indicator {
+  width: 8.3333%;
+  transition:
+    width 150ms ease,
+    x 150ms ease;
+}
+
+.ui-workspace-sidebar-toggle[data-state="expanded"]
+  .ui-workspace-sidebar-toggle__indicator {
+  width: 24%;
+}
+
+.ui-workspace-sidebar-toggle[data-side="left"]
+  .ui-workspace-sidebar-toggle__indicator {
+  x: 16.6667%;
+}
+
+.ui-workspace-sidebar-toggle[data-side="right"]
+  .ui-workspace-sidebar-toggle__indicator {
+  x: 75%;
+}
+
+.ui-workspace-sidebar-toggle[data-side="right"][data-state="expanded"]
+  .ui-workspace-sidebar-toggle__indicator {
+  x: 59.3333%;
 }

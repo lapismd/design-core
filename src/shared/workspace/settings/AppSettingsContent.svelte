@@ -1,9 +1,12 @@
 <script lang="ts">
+  import { Button } from "@stevejuma/ui/shadcn/button";
   import { onMount, tick } from "svelte";
+  import WorkspaceIcon from "../icon/WorkspaceIcon.svelte";
   import AppSettingsSection from "./AppSettingsSection.svelte";
   import AppShellHotkeySettings from "./AppShellHotkeySettings.svelte";
   import AppShellPluginsSettings from "./AppShellPluginsSettings.svelte";
   import { getAppSettingsContext } from "./app-settings-context.svelte.js";
+  import type { WorkspaceSettingsSearchResult } from "./types.js";
 
   const settingsState = getAppSettingsContext();
   let selected = $derived(
@@ -16,6 +19,8 @@
   let showScrollbar = $state(false);
   let scrollbarTop = $state(0);
   let scrollbarHeight = $state(0);
+  let wasSearching = false;
+  let highlightTimeout: ReturnType<typeof setTimeout> | null = null;
 
   function updateScrollbar() {
     if (!viewport) return;
@@ -37,11 +42,64 @@
     void tick().then(updateScrollbar);
   });
 
+  $effect(() => {
+    const searching = settingsState.query.trim().length > 0;
+    if (searching && !wasSearching) {
+      void tick().then(() => {
+        viewport?.scrollTo({ top: 0 });
+        updateScrollbar();
+      });
+    }
+    wasSearching = searching;
+  });
+
+  function resultSelector(result: WorkspaceSettingsSearchResult): string {
+    const id = CSS.escape(result.fieldId ?? result.sectionId);
+    return result.fieldId
+      ? `[data-setting-id="${id}"]`
+      : `[data-settings-schema-section-id="${id}"]`;
+  }
+
+  function markSearchTarget(element: HTMLElement) {
+    if (highlightTimeout) clearTimeout(highlightTimeout);
+    element.classList.add("ui-workspace-settings__search-hit");
+    highlightTimeout = setTimeout(() => {
+      element.classList.remove("ui-workspace-settings__search-hit");
+      highlightTimeout = null;
+    }, 1400);
+  }
+
+  async function openSearchResult(result: WorkspaceSettingsSearchResult) {
+    settingsState.controller.selectSection(result.sectionId);
+    settingsState.query = "";
+    await tick();
+    await tick();
+    requestAnimationFrame(() => {
+      const element = viewport?.querySelector<HTMLElement>(
+        resultSelector(result),
+      );
+      if (!viewport || !element) return;
+      const viewportRect = viewport.getBoundingClientRect();
+      const elementRect = element.getBoundingClientRect();
+      viewport.scrollTo({
+        top: Math.max(
+          0,
+          viewport.scrollTop + elementRect.top - viewportRect.top - 12,
+        ),
+      });
+      markSearchTarget(element);
+      updateScrollbar();
+    });
+  }
+
   onMount(() => {
     const observer = new ResizeObserver(updateScrollbar);
     if (viewport) observer.observe(viewport);
     updateScrollbar();
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      if (highlightTimeout) clearTimeout(highlightTimeout);
+    };
   });
 </script>
 
@@ -76,10 +134,7 @@
                   <button
                     type="button"
                     class="ui-workspace-settings__search-result-main"
-                    onclick={() => {
-                      settingsState.controller.selectSection(result.sectionId);
-                      settingsState.query = "";
-                    }}
+                    onclick={() => void openSearchResult(result)}
                   >
                     <span class="ui-workspace-settings__search-result-title">
                       {result.title}
@@ -95,6 +150,18 @@
                       </span>
                     {/if}
                   </button>
+                  <div class="ui-workspace-settings__search-result-actions">
+                    <Button
+                      variant="ghost"
+                      size="icon-sm"
+                      class="ui-workspace-settings__search-result-open"
+                      aria-label={`Open ${result.title}`}
+                      title={`Open ${result.title}`}
+                      onclick={() => void openSearchResult(result)}
+                    >
+                      <WorkspaceIcon name="arrow-up-right" />
+                    </Button>
+                  </div>
                 </article>
               {/each}
             </div>

@@ -1,6 +1,6 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, userEvent } from "storybook/test";
+  import { expect, userEvent, waitFor } from "storybook/test";
   import {
     createDefaultWorkspaceLayout,
     createWorkspaceSplit,
@@ -222,6 +222,7 @@
   const utilityApp = createDemoApp();
   const adapterApp = createDemoApp();
   const hotkeysApp = createDemoApp();
+  const hotkeysInteractionApp = createDemoApp();
   const pluginsApp = createDemoApp();
 </script>
 
@@ -416,6 +417,36 @@
   {#snippet template()}
     <div class="ui-app-shell-story-frame ui-app-shell-story-frame--settings">
       <AppShell.Root controller={hotkeysApp} theme="inherit">
+        <AppShell.HotkeySettings />
+      </AppShell.Root>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Hotkey search and capture interaction"
+  tags={["skip-visual"]}
+  play={async ({ canvas }) => {
+    const keyboardFilter = canvas.getByTestId("hotkeys-keyboard-filter");
+    await userEvent.click(keyboardFilter);
+    await userEvent.keyboard("{Meta>}p{/Meta}");
+    await waitFor(() =>
+      expect(canvas.getAllByTestId("hotkey-row")).toHaveLength(1),
+    );
+    await userEvent.click(canvas.getByTestId("hotkeys-clear-keyboard-filter"));
+    await userEvent.click(
+      canvas.getByRole("button", {
+        name: "Add hotkey for About Workspace demo",
+      }),
+    );
+    await userEvent.keyboard("{Meta>}i{/Meta}");
+    await userEvent.click(canvas.getByRole("button", { name: "Save hotkey" }));
+    await expect(canvas.getByText("⌘I")).toBeVisible();
+  }}
+>
+  {#snippet template()}
+    <div class="ui-app-shell-story-frame ui-app-shell-story-frame--settings">
+      <AppShell.Root controller={hotkeysInteractionApp} theme="inherit">
         <AppShell.HotkeySettings />
       </AppShell.Root>
     </div>

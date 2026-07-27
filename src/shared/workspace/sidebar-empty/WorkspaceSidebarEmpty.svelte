@@ -33,6 +33,7 @@
           {side}
           label={`Close ${side} sidebar`}
           size="small"
+          expanded
           onSelect={onClose}
         />
       </div>

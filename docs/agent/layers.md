@@ -44,7 +44,8 @@ existing family already covers the need.
 6. **Workspace** (`src/shared/workspace/`) — application-independent workspace
    framework, controller, layout, views, shell components, settings, and static
    plugin presentation. Import from `@stevejuma/ui/workspace`. Catalog:
-   `Workspace/...`. It uses native CSS and does not import the shadcn layer.
+   `Workspace/...`. Its shell geometry uses native CSS; declarative settings
+   and other generic controls compose UI-owned shadcn primitives.
 
 ## Dependency rules
 
@@ -58,8 +59,9 @@ existing family already covers the need.
   Button for Toggle/Close actions, and Select for a mobile edge with multiple
   registered panels. It must not import workspace or application state in
   production sources. Stories may compose other shadcn controls.
-- `shared/workspace` may use headless Bits UI and Paneforge directly; it must
-  not import shadcn, forms, filter, AI, or application-specific surfaces.
+- `shared/workspace` may import generic controls from `shared/shadcn` and may
+  use headless Bits UI and Paneforge directly for workspace-specific geometry.
+  It must not import forms, filter, AI, or application-specific surfaces.
 
 ## Classification
 

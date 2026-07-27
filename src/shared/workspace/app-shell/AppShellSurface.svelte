@@ -4,6 +4,7 @@
     WorkspaceRequestedDisplayMode,
     WorkspaceTab,
   } from "../core/types.js";
+  import { createWorkspaceTab } from "../core/layout.js";
   import WorkspaceMobile from "../mobile/WorkspaceMobile.svelte";
   import { getAppShellContext } from "./app-shell-context.svelte.js";
   import AppShellFloatingLayer from "./AppShellFloatingLayer.svelte";
@@ -39,6 +40,13 @@
   } = $props();
 
   const context = getAppShellContext();
+  const createEmptyTab = () =>
+    createWorkspaceTab({
+      title: "New Tab",
+      icon: "ghost",
+      view: { type: "empty", state: {} },
+    });
+  let resolvedCreateTab = $derived(createTab ?? createEmptyTab);
   let settingsOpen = $state(false);
   let observedWidth = $state(Number.POSITIVE_INFINITY);
   let requestedMode = $derived(
@@ -78,7 +86,7 @@
 {#if resolvedMode === "mobile"}
   <WorkspaceMobile
     controller={context.controller.renderer}
-    {createTab}
+    createTab={resolvedCreateTab}
     defaultPage={mobileDefaultPage ?? context.controller.mobile.defaultPage}
     showBottomNav={mobileShowBottomNav ??
       context.controller.mobile.showBottomNav}
@@ -91,9 +99,9 @@
 {:else}
   <AppShellRibbon />
   <AppShellLeftSidebar {workspaceLabel} onOpenSettings={openSettings} />
-  <AppShellWorkspace {createTab} />
+  <AppShellWorkspace createTab={resolvedCreateTab} />
   <AppShellRightSidebar />
-  <AppShellFloatingLayer {createTab} />
+  <AppShellFloatingLayer createTab={resolvedCreateTab} />
   <AppShellStatusBar />
 {/if}
 

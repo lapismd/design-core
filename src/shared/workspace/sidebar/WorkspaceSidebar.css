@@ -1,5 +1,8 @@
 .ui-workspace-sidebar {
+  position: relative;
+  z-index: 2;
   display: flex;
+  box-sizing: border-box;
   height: 100%;
   min-width: 11.25rem;
   min-height: 0;
@@ -12,12 +15,35 @@
 }
 
 .ui-workspace-sidebar[data-workspace-sidebar-side="left"] {
-  margin-inline-end: -1px;
-  border-right: 1px solid var(--ui-workspace-border);
+  margin-inline-end: 0;
+  border-right: 0;
+  border-bottom: 1px solid var(--ui-workspace-border);
 }
 
 .ui-workspace-sidebar[data-workspace-sidebar-side="right"] {
-  border-left: 1px solid var(--ui-workspace-border);
+  margin-inline-start: 0;
+  margin-inline-end: 0;
+  border-left: 0;
+}
+
+.ui-workspace-sidebar[data-workspace-sidebar-side="left"]::after,
+.ui-workspace-sidebar[data-workspace-sidebar-side="right"]::before {
+  position: absolute;
+  z-index: 8;
+  top: 0;
+  bottom: 0;
+  width: var(--ui-workspace-resize-handle-size);
+  pointer-events: none;
+  background: var(--ui-workspace-border);
+  content: "";
+}
+
+.ui-workspace-sidebar[data-workspace-sidebar-side="left"]::after {
+  right: 0;
+}
+
+.ui-workspace-sidebar[data-workspace-sidebar-side="right"]::before {
+  left: 0;
 }
 
 .ui-workspace-sidebar__tab-bar {
@@ -28,9 +54,19 @@
   flex: 0 0 var(--ui-workspace-tab-height);
   align-items: center;
   gap: 0.25rem;
+  border-bottom: 1px solid var(--ui-workspace-tab-divider);
   padding: 0 0.25rem;
-  border-bottom: 1px solid var(--ui-workspace-border);
   background: var(--ui-workspace-tab-container-background);
+}
+
+.ui-workspace-sidebar[data-workspace-sidebar-side="left"]
+  .ui-workspace-sidebar__tab-bar {
+  padding-inline-start: var(--ui-workspace-sidebar-tab-header-inline-padding);
+}
+
+.ui-workspace-sidebar[data-workspace-sidebar-side="right"]
+  .ui-workspace-sidebar__tab-bar {
+  padding-inline-end: var(--ui-workspace-sidebar-tab-header-inline-padding);
 }
 
 .ui-workspace-sidebar__tab-list {
@@ -71,7 +107,6 @@
 .ui-workspace-sidebar__tab[data-state="on"] {
   color: var(--ui-workspace-accent);
   background: var(--ui-workspace-selection);
-  box-shadow: inset 0 -1px var(--ui-workspace-accent);
 }
 
 .ui-workspace-sidebar__tab:focus-visible {
@@ -96,7 +131,93 @@
 }
 
 .ui-workspace-sidebar__body {
+  --ui-scroll-area-foreground: var(--ui-workspace-border-strong);
   background: var(--ui-workspace-background);
+}
+
+.ui-workspace-sidebar__body
+  [data-ui-component="scroll-area"][data-ui-part="scroll-area-viewport"] {
+  min-width: 0;
+  min-height: 0;
+}
+
+.ui-workspace-sidebar__body
+  [data-ui-component="scroll-area"][data-ui-part="scroll-area-scrollbar"][data-orientation="vertical"] {
+  width: 0.5rem;
+}
+
+.ui-workspace-sidebar__body-content {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  min-height: 100%;
+  flex-direction: column;
+}
+
+.ui-workspace-sidebar__body-content[data-content-kind="sidebar-group"] {
+  height: 100%;
+}
+
+.ui-workspace-sidebar__body-content
+  > :is(
+    .ui-workspace-sidebar-group,
+    .ui-workspace-sidebar__drop-target,
+    .ui-workspace-sidebar-empty
+  ) {
+  flex: 1 1 auto;
+}
+
+.ui-workspace-sidebar__resize-rail {
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  bottom: 0;
+  width: 0.5rem;
+  margin: 0;
+  border: 0;
+  padding: 0;
+  cursor: ew-resize;
+  touch-action: none;
+  background: transparent;
+}
+
+.ui-workspace-sidebar__resize-rail[data-side="left"] {
+  right: 0;
+}
+
+.ui-workspace-sidebar__resize-rail[data-side="right"] {
+  left: 0;
+}
+
+.ui-workspace-sidebar__resize-rail::after {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: var(--ui-workspace-resize-handle-size);
+  background: var(--ui-workspace-border);
+  content: "";
+  transition:
+    width 150ms ease,
+    background-color 150ms ease;
+}
+
+.ui-workspace-sidebar__resize-rail[data-side="left"]::after {
+  right: 0;
+}
+
+.ui-workspace-sidebar__resize-rail[data-side="right"]::after {
+  left: 0;
+}
+
+.ui-workspace-sidebar__resize-rail:hover::after,
+.ui-workspace-sidebar__resize-rail:focus-visible::after,
+.ui-workspace-sidebar__resize-rail[data-resizing="true"]::after {
+  width: var(--ui-workspace-resize-handle-active-size);
+  background: var(--ui-workspace-accent);
+}
+
+.ui-workspace-sidebar__resize-rail:focus-visible {
+  outline: none;
 }
 
 .ui-workspace-sidebar__footer {
