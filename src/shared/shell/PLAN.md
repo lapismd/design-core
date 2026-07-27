@@ -81,6 +81,10 @@ workspace behavior are not copied.
 4. Compare-only visual tests; new stories remain `visual-pending`.
 5. `pnpm checks` before handoff.
 
+The `Complete shell composition` story combines the outer project selector,
+files sidebar, document body sidebar, main content, and right AI panel in one
+interactive fixture.
+
 \* Focused Shell interaction/accessibility and source checks pass, as do all
 620 unit tests, the static Storybook build, the visual audit, and the live
 browser placement check. The repository-wide Storybook stage currently stops

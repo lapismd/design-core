@@ -24,6 +24,10 @@
     color-mix(in srgb, var(--foreground) 10%, transparent);
 }
 
+.ui-shell-story-complete {
+  --ui-shell-body-sidebar-width: 10rem;
+}
+
 .ui-shell-story-sidebar-heading {
   display: flex;
   min-height: 2rem;
