@@ -19,7 +19,22 @@
   });
 </script>
 
-<Story name="ASTRYX showcase">
+<Story
+  name="ASTRYX showcase"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/tokenized-text/astryx-showcase-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <MessageList style="max-width: 37.5rem">
       <Message sender="system">
@@ -38,7 +53,22 @@
   {/snippet}
 </Story>
 
-<Story name="Basic">
+<Story
+  name="Basic"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/tokenized-text/basic-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <MessageList style="max-width: 37.5rem">
       <Message sender="system">
@@ -56,7 +86,22 @@
   {/snippet}
 </Story>
 
-<Story name="Colors">
+<Story
+  name="Colors"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/tokenized-text/colors-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <MessageList style="max-width: 37.5rem">
       <Message sender="system">

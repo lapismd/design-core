@@ -36,12 +36,38 @@ export function storySlugFromId(storyId: string): string {
   return parts.slice(1).join("--");
 }
 
+function slugifyPathPart(value: string): string {
+  return value
+    .replace(/([a-z0-9])([A-Z])/g, "$1-$2")
+    .replace(/[^a-zA-Z0-9]+/g, "-")
+    .replace(/^-|-$/g, "")
+    .toLowerCase();
+}
+
+function collisionSafeSnapshotDir(entry: StoryIndexEntry): string {
+  const directory = snapshotDirFromImportPath(entry.importPath!);
+  const normalized = entry.importPath!.replace(/\\/g, "/");
+  const match = normalized.match(/\/([^/]+)\.stories\.\w+$/);
+  if (!match) return directory;
+
+  const parts = directory.split("/");
+  const storyFile = slugifyPathPart(match[1]!);
+  const directoryLeaf = slugifyPathPart(parts.at(-1) ?? "");
+  if (parts.length < 2 || storyFile === directoryLeaf) return directory;
+
+  const storyPrefix = entry.id.split("--")[0] ?? "";
+  const directoryPrefix = parts.map(slugifyPathPart).join("-");
+  return storyPrefix.startsWith(`${directoryPrefix}-`)
+    ? `${directory}/${storyFile}`
+    : directory;
+}
+
 /** Relative path passed to `toHaveScreenshot` (no project/platform suffix). */
 export function screenshotRelativePath(entry: StoryIndexEntry): string {
   if (!entry.importPath) {
     throw new Error(`Story ${entry.id} is missing importPath`);
   }
-  const dir = snapshotDirFromImportPath(entry.importPath);
+  const dir = collisionSafeSnapshotDir(entry);
   const slug = storySlugFromId(entry.id);
   return `${dir}/${slug}.png`;
 }

@@ -73,7 +73,22 @@
   };
 </script>
 
-<Story name="ASTRYX showcase">
+<Story
+  name="ASTRYX showcase"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/dictation-button/astryx-showcase-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <div data-story="dictation-showcase">
       <p>
@@ -95,7 +110,22 @@
   {/snippet}
 </Story>
 
-<Story name="Basic">
+<Story
+  name="Basic"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/dictation-button/basic-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <div data-story="dictation-composer">
       <Composer
@@ -121,6 +151,19 @@
     );
     await expect(canvas.getByRole("status")).toHaveTextContent("1 toggle");
   }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/dictation-button/invokes-injected-dictation-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
 >
   {#snippet template()}
     <div data-story="dictation-row">
@@ -130,7 +173,22 @@
   {/snippet}
 </Story>
 
-<Story name="Listening bands">
+<Story
+  name="Listening bands"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/dictation-button/listening-bands-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <DictationButton dictation={listening} />
   {/snippet}
@@ -145,6 +203,19 @@
       }),
     ).toBeDisabled();
   }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/dictation-button/unsupported-browser-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
 >
   {#snippet template()}
     <DictationButton dictation={unsupported} />

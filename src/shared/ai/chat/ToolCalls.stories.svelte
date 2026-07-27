@@ -39,7 +39,22 @@ Time:        1.8s`;
   });
 </script>
 
-<Story name="ASTRYX showcase">
+<Story
+  name="ASTRYX showcase"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/tool-calls/astryx-showcase-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <ToolCalls
       defaultExpanded
@@ -69,7 +84,22 @@ Time:        1.8s`;
   {/snippet}
 </Story>
 
-<Story name="Statuses">
+<Story
+  name="Statuses"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/tool-calls/statuses-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <ToolCalls
       defaultExpanded
@@ -103,7 +133,22 @@ Time:        1.8s`;
   {/snippet}
 </Story>
 
-<Story name="Simple">
+<Story
+  name="Simple"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/tool-calls/simple-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <div data-story="tool-stack">
       <ToolCalls
@@ -146,7 +191,22 @@ Time:        1.8s`;
   {/snippet}
 </Story>
 
-<Story name="Expandable">
+<Story
+  name="Expandable"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/tool-calls/expandable-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     {#snippet editDiff()}
       <pre data-story="tool-code">{editDiffText}</pre>
@@ -194,6 +254,19 @@ Time:        1.8s`;
     );
     await expect(canvas.getByText("Loaded 84 lines")).toBeVisible();
   }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/tool-calls/expands-call-details-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
 >
   {#snippet template()}
     {#snippet readDetail()}
@@ -228,7 +301,22 @@ Time:        1.8s`;
   {/snippet}
 </Story>
 
-<Story name="Collapsed summary">
+<Story
+  name="Collapsed summary"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/tool-calls/collapsed-summary-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <ToolCalls
       calls={[

@@ -95,7 +95,22 @@
   let slashValue = $state("");
 </script>
 
-<Story name="ASTRYX showcase">
+<Story
+  name="ASTRYX showcase"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/composer-input/astryx-showcase-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <div data-story="composer-input-showcase">
       <Composer
@@ -115,7 +130,22 @@
   {/snippet}
 </Story>
 
-<Story name="Controlled">
+<Story
+  name="Controlled"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/composer-input/controlled-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <div data-story="composer-input-stack">
       <Composer
@@ -135,7 +165,22 @@
   {/snippet}
 </Story>
 
-<Story name="Disabled">
+<Story
+  name="Disabled"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/composer-input/disabled-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <div data-story="composer-input-showcase">
       <Composer disabled value="" onSubmit={() => {}}>
@@ -147,7 +192,22 @@
   {/snippet}
 </Story>
 
-<Story name="Mentions">
+<Story
+  name="Mentions"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/composer-input/mentions-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <div data-story="composer-input-stack">
       <p>Type <code>@</code> to mention a teammate.</p>
@@ -164,7 +224,22 @@
   {/snippet}
 </Story>
 
-<Story name="Multiple triggers">
+<Story
+  name="Multiple triggers"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/composer-input/multiple-triggers-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <div data-story="composer-input-stack">
       <p>Type <code>@</code> for people or <code>/</code> for commands.</p>
@@ -185,7 +260,22 @@
   {/snippet}
 </Story>
 
-<Story name="Slash commands">
+<Story
+  name="Slash commands"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/composer-input/slash-commands-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <div data-story="composer-input-stack">
       <Composer bind:value={slashValue} elevation="none" onSubmit={() => {}}>
@@ -213,6 +303,19 @@
     await userEvent.keyboard("{Enter}");
     await expect(canvas.getByRole("status")).toHaveTextContent("@cindy");
   }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/composer-input/selects-an-async-trigger-result-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
 >
   {#snippet template()}
     <div data-story="input-frame">
@@ -241,6 +344,19 @@
       "Expanded source text",
     );
   }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/composer-input/inserts-and-expands-a-token-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
 >
   {#snippet template()}
     <div data-story="input-frame">
@@ -300,6 +416,19 @@
       expect(canvas.getByRole("status")).toHaveTextContent("drop: brief.txt"),
     );
   }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/composer-input/handles-long-paste-and-file-drop-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
 >
   {#snippet template()}
     <div data-story="input-frame">
@@ -314,7 +443,22 @@
   {/snippet}
 </Story>
 
-<Story name="Browser acceptance surface">
+<Story
+  name="Browser acceptance surface"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/composer-input/browser-acceptance-surface-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <div data-story="input-frame">
       <ComposerInput

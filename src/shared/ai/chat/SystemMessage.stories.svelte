@@ -23,7 +23,22 @@
   });
 </script>
 
-<Story name="ASTRYX showcase">
+<Story
+  name="ASTRYX showcase"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/system-message/astryx-showcase-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <MessageList style="max-width: 31.25rem">
       <SystemMessage variant="divider">March 15, 2026</SystemMessage>
@@ -35,7 +50,22 @@
   {/snippet}
 </Story>
 
-<Story name="Status updates">
+<Story
+  name="Status updates"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/system-message/status-updates-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <MessageList style="max-width: 31.25rem">
       <SystemMessage variant="divider">March 14, 2026</SystemMessage>
@@ -58,7 +88,22 @@
   {/snippet}
 </Story>
 
-<Story name="Variants">
+<Story
+  name="Variants"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/system-message/variants-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <div data-story="reference-sections" style="max-width: 31.25rem">
       <section>
@@ -79,7 +124,22 @@
   {/snippet}
 </Story>
 
-<Story name="With icon">
+<Story
+  name="With icon"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/system-message/with-icon-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <div data-story="reference-sections" style="max-width: 31.25rem">
       <p>Icons reinforce the message type</p>

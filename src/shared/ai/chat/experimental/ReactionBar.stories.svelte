@@ -53,6 +53,19 @@
     );
     await expect(canvas.getByRole("status")).toHaveTextContent("Added 🔥");
   }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/experimental/reaction-bar/toggles-and-adds-reactions-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
 >
   {#snippet template()}
     <div data-story="reaction-frame">

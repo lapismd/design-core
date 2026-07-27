@@ -19,7 +19,22 @@
   });
 </script>
 
-<Story name="ASTRYX showcase">
+<Story
+  name="ASTRYX showcase"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/message/astryx-showcase-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <MessageList style="max-width: 37.5rem">
       <Message sender="user">
@@ -48,7 +63,22 @@
   {/snippet}
 </Story>
 
-<Story name="Avatar and name">
+<Story
+  name="Avatar and name"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/message/avatar-and-name-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <MessageList style="max-width: 31.25rem">
       <Message sender="assistant">
@@ -84,7 +114,20 @@
   {/snippet}
 </Story>
 
-<Story name="Ghost">
+<Story
+  name="Ghost"
+  parameters={{
+    visualDelta: {
+      images: ["/visual-baselines/ai/chat/message/ghost-chromium-darwin.png"],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <MessageList style="max-width: 31.25rem">
       <Message sender="assistant">
@@ -119,7 +162,22 @@
   {/snippet}
 </Story>
 
-<Story name="Multi-bubble">
+<Story
+  name="Multi-bubble"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/message/multi-bubble-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <MessageList style="max-width: 31.25rem">
       <Message sender="user">

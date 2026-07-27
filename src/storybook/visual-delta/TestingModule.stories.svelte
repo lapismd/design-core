@@ -43,6 +43,12 @@
     await expect(
       scope.getByRole("checkbox", { name: /update status/i }),
     ).not.toBeChecked();
+    await expect(
+      scope.getByRole("checkbox", { name: /affected only/i }),
+    ).toBeChecked();
+    await expect(scope.getByTestId("affected-run-summary")).toHaveTextContent(
+      "Up to date",
+    );
     await expect(scope.getByTestId("fixture-baseline-mode")).toHaveTextContent(
       "create",
     );
@@ -52,6 +58,12 @@
     );
     await expect(scope.getByTestId("fixture-last-action")).toHaveTextContent(
       "compare",
+    );
+    await userEvent.click(
+      scope.getByRole("checkbox", { name: /affected only/i }),
+    );
+    await expect(scope.getByTestId("fixture-affected-only")).toHaveTextContent(
+      "all",
     );
   }}
 >

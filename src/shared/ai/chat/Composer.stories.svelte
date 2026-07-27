@@ -52,7 +52,22 @@
   </Button>
 {/snippet}
 
-<Story name="ASTRYX showcase">
+<Story
+  name="ASTRYX showcase"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/composer/astryx-showcase-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <div data-story="composer-reference">
       <Composer placeholder="Type a message…" onSubmit={() => {}} />
@@ -60,7 +75,22 @@
   {/snippet}
 </Story>
 
-<Story name="Attachments">
+<Story
+  name="Attachments"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/composer/attachments-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <div data-story="composer-reference">
       <Composer onSubmit={() => {}}>
@@ -79,7 +109,20 @@
   {/snippet}
 </Story>
 
-<Story name="Flat">
+<Story
+  name="Flat"
+  parameters={{
+    visualDelta: {
+      images: ["/visual-baselines/ai/chat/composer/flat-chromium-darwin.png"],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <div data-story="composer-reference" data-with-label>
       <p>
@@ -97,7 +140,22 @@
   {/snippet}
 </Story>
 
-<Story name="Footer actions">
+<Story
+  name="Footer actions"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/composer/footer-actions-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <div data-story="composer-reference" data-with-label>
       <p>Model selector and settings dropdowns</p>
@@ -113,7 +171,22 @@
   {/snippet}
 </Story>
 
-<Story name="Full featured">
+<Story
+  name="Full featured"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/composer/full-featured-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <div data-story="composer-reference" data-with-label>
       <p>All slots populated</p>
@@ -165,7 +238,20 @@
   {/snippet}
 </Story>
 
-<Story name="Simple">
+<Story
+  name="Simple"
+  parameters={{
+    visualDelta: {
+      images: ["/visual-baselines/ai/chat/composer/simple-chromium-darwin.png"],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <div data-story="composer-reference">
       <Composer onSubmit={() => {}} />
@@ -173,7 +259,22 @@
   {/snippet}
 </Story>
 
-<Story name="Streaming">
+<Story
+  name="Streaming"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/composer/streaming-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <div data-story="composer-reference" data-with-label>
       <p>
@@ -196,7 +297,22 @@
   {/snippet}
 </Story>
 
-<Story name="Validation">
+<Story
+  name="Validation"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/composer/validation-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <div data-story="composer-validation">
       <section>
@@ -234,6 +350,19 @@
       "Ship the release notes",
     );
   }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/composer/submits-from-the-keyboard-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
 >
   {#snippet template()}
     <div data-story="composer-reference" data-with-label>

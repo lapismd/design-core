@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { waitForVisualStoryFinished } from "../../packages/storybook-addon-visual-delta/src/playwright/readiness.js";
 
 const storyUrl = (id: string) =>
   `/iframe.html?id=${encodeURIComponent(id)}&viewMode=story`;
@@ -14,6 +15,10 @@ test.describe("AI Chat browser acceptance", () => {
   }) => {
     await page.goto(
       storyUrl("ai-chat-composer-input--browser-acceptance-surface"),
+    );
+    await waitForVisualStoryFinished(
+      page,
+      "ai-chat-composer-input--browser-acceptance-surface",
     );
     const input = page.getByRole("combobox", {
       name: "Browser acceptance composer",
@@ -73,6 +78,10 @@ test.describe("AI Chat browser acceptance", () => {
     page,
   }) => {
     await page.goto(storyUrl("ai-chat-layout--browser-scroll-surface"));
+    await waitForVisualStoryFinished(
+      page,
+      "ai-chat-layout--browser-scroll-surface",
+    );
     const viewport = page.locator(
       '[data-ui-component="scroll-area"][data-ui-part="scroll-area-viewport"]',
     );

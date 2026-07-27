@@ -16,7 +16,22 @@
   });
 </script>
 
-<Story name="Marks unread messages">
+<Story
+  name="Marks unread messages"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/experimental/unread-divider/marks-unread-messages-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <div data-story="unread-frame">
       <UnreadDivider label="Unread" />

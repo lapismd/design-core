@@ -42,6 +42,19 @@
     await userEvent.keyboard("{Enter}");
     await expect(canvas.getByText("Create the release summary")).toBeVisible();
   }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/conversation/complete-ai-conversation-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
 >
   {#snippet template()}
     {#snippet inspectDetail()}

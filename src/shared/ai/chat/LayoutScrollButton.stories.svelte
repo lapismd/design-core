@@ -21,7 +21,22 @@
   let recovered = $state(false);
 </script>
 
-<Story name="States">
+<Story
+  name="States"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/layout-scroll-button/states-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <div data-story="scroll-button-stack">
       <div data-story="scroll-button-state">
@@ -40,7 +55,22 @@
   {/snippet}
 </Story>
 
-<Story name="Labels">
+<Story
+  name="Labels"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/layout-scroll-button/labels-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <div data-story="scroll-button-stack">
       <p>Labels expand the button to give context</p>
@@ -67,6 +97,19 @@
     await userEvent.click(canvas.getByRole("button", { name: "New messages" }));
     await expect(canvas.getByRole("status")).toHaveTextContent("Recovered");
   }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/layout-scroll-button/recovers-new-messages-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
 >
   {#snippet template()}
     <div data-story="scroll-button-frame">
@@ -82,7 +125,22 @@
   {/snippet}
 </Story>
 
-<Story name="Hidden">
+<Story
+  name="Hidden"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/layout-scroll-button/hidden-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <div data-story="scroll-button-frame">
       <LayoutScrollButton isVisible={false} onClick={() => {}} />

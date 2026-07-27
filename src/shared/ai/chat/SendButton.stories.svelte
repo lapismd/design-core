@@ -25,7 +25,22 @@
   let composerValue = $state("");
 </script>
 
-<Story name="ASTRYX showcase">
+<Story
+  name="ASTRYX showcase"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/send-button/astryx-showcase-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <div data-story="send-frame">
       <SendButton isDisabled={false} onSend={() => {}} />
@@ -37,7 +52,22 @@
   {/snippet}
 </Story>
 
-<Story name="States">
+<Story
+  name="States"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/send-button/states-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <div data-story="send-stack">
       <span>Send disabled</span>
@@ -50,7 +80,22 @@
   {/snippet}
 </Story>
 
-<Story name="Custom icons">
+<Story
+  name="Custom icons"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/send-button/custom-icons-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <div data-story="send-stack" data-direction="row">
       <SendButton isDisabled={false} onSend={() => {}}>
@@ -69,7 +114,22 @@
   {/snippet}
 </Story>
 
-<Story name="In composer">
+<Story
+  name="In composer"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/send-button/in-composer-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <div data-story="send-composer">
       <Composer
@@ -89,6 +149,19 @@
     await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
     await expect(canvas.getByRole("status")).toHaveTextContent("Sent");
   }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/send-button/sends-a-message-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
 >
   {#snippet template()}
     <div data-story="send-frame">
@@ -98,7 +171,22 @@
   {/snippet}
 </Story>
 
-<Story name="Stops a response">
+<Story
+  name="Stops a response"
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/send-button/stops-a-response-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
+>
   {#snippet template()}
     <div data-story="send-frame">
       <SendButton isStopShown onStop={() => (action = "Stopped")} />

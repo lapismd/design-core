@@ -42,6 +42,19 @@
       canvas.queryByRole("textbox", { name: "Search emoji" }),
     ).not.toBeInTheDocument();
   }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/experimental/emoji-picker/searches-and-selects-an-emoji-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
 >
   {#snippet template()}
     <div data-story="emoji-frame">
@@ -77,6 +90,19 @@
     await userEvent.keyboard("{ArrowRight}");
     await expect(second).toHaveFocus();
   }}
+  parameters={{
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/chat/experimental/emoji-picker/navigates-the-emoji-grid-chromium-darwin.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
+  }}
+  tags={["visual-ready"]}
 >
   {#snippet template()}
     <EmojiPicker onSelect={() => {}} />
