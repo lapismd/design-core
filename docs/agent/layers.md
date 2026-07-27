@@ -31,10 +31,14 @@ existing family already covers the need.
    independently controlled collapsible, closeable, and resizable left/right
    rails, optional same-side nesting, a full-height outer variant with
    collapsed/closed edge and delayed toggle-hover previews, fixed sidebar
-   regions, a toolbar, and shadcn
-   Scroll Areas for main and sidebar bodies. Its injected versioned adapter may
-   persist sidebar state and widths, including named same-side panels. Import from
-   `@stevejuma/ui/shell`. Catalog:
+   regions, a toolbar, and shadcn Scroll Areas for main and sidebar bodies. One
+   compound composition resolves desktop or a transient left/main/right mobile
+   track from the bounded root width; multiple panels on an edge use shadcn
+   Select. Auto mode is the default. Constrained desktop protects a minimum
+   main width by presenting lower-priority outer panels as overlays without
+   mutating durable layout. Its injected versioned adapter persists desktop sidebar state and
+   widths, including named same-side panels, but not transient mobile state.
+   Import from `@stevejuma/ui/shell`. Catalog:
    `Shell/App Shell`. It owns geometry plus Toggle/Close actions; consumers own
    navigation selection, other actions, content, and non-layout persistence.
 6. **Workspace** (`src/shared/workspace/`) — application-independent workspace
@@ -50,10 +54,10 @@ existing family already covers the need.
 - `shared/forms` may import shadcn and filter.
 - `shared/ai` may compose generic shared controls but must remain
   host-controlled and reusable.
-- `shared/shell` may compose shadcn Scroll Area for bounded section scrolling
-  and Button for its Toggle/Close actions. It must not import workspace or
-  application state in production sources. Stories may compose other shadcn
-  controls.
+- `shared/shell` may compose shadcn Scroll Area for bounded section scrolling,
+  Button for Toggle/Close actions, and Select for a mobile edge with multiple
+  registered panels. It must not import workspace or application state in
+  production sources. Stories may compose other shadcn controls.
 - `shared/workspace` may use headless Bits UI and Paneforge directly; it must
   not import shadcn, forms, filter, AI, or application-specific surfaces.
 

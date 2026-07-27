@@ -4,6 +4,7 @@
   import NotebookTabsIcon from "@lucide/svelte/icons/notebook-tabs";
   import PanelsTopLeftIcon from "@lucide/svelte/icons/panels-top-left";
   import type { AppShellSidebarController } from "../app-shell-controller.svelte.js";
+  import { useAppShell } from "../app-shell-context.svelte.js";
   import { AppShell } from "../index.js";
   import * as Select from "../../shadcn/select/index.js";
 
@@ -35,12 +36,16 @@
     },
   ];
 
+  const controller = useAppShell();
   let selectedProjectLabel = $derived(
     projects.find((project) => project.id === selectedProject)?.label ??
       "Choose a project",
   );
   let compact = $derived(
-    sidebar.collapsed && !sidebar.closed && !sidebar.previewed,
+    controller.mobile.resolvedMode === "desktop" &&
+      sidebar.collapsed &&
+      !sidebar.closed &&
+      !sidebar.previewed,
   );
 </script>
 

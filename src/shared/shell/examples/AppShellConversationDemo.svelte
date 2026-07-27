@@ -33,7 +33,7 @@
 {/snippet}
 
 <AppShell.Sidebar.Header class="ui-shell-story-ai-header">
-  {#if !controller.right.collapsed}
+  {#if controller.mobile.resolvedMode === "mobile" || !controller.right.collapsed}
     <SparklesIcon aria-hidden="true" />
     <strong>AI conversation</strong>
   {/if}
@@ -41,7 +41,7 @@
 </AppShell.Sidebar.Header>
 
 <AppShell.Sidebar.Body class="ui-shell-story-ai-body">
-  {#if controller.right.collapsed}
+  {#if controller.mobile.resolvedMode === "desktop" && controller.right.collapsed}
     <Button
       variant="ghost"
       size="icon-sm"

@@ -1,14 +1,18 @@
 <script lang="ts">
-  import { onDestroy } from "svelte";
+  import { onDestroy, untrack } from "svelte";
   import type { HTMLAttributes } from "svelte/elements";
   import type { WithElementRef } from "../../lib/utils.js";
   import { useAppShell } from "./app-shell-context.svelte.js";
+  import { appShellTeleport } from "./app-shell-teleport.js";
   import {
     APP_SHELL_DEFAULT_SIDEBAR_WIDTH,
     type AppShellSide,
     type AppShellSidebarController,
   } from "./app-shell-controller.svelte.js";
-  import { setAppShellSidebarContext } from "./app-shell-sidebar-context.svelte.js";
+  import {
+    APP_SHELL_SIDEBAR_LAYOUT_SYNC_EVENT,
+    setAppShellSidebarContext,
+  } from "./app-shell-sidebar-context.svelte.js";
 
   let {
     ref = $bindable(null),
@@ -21,6 +25,8 @@
     revealOnEdgeHover = false,
     edgeRevealLabel,
     resizeLabel,
+    mobileLabel,
+    tabindex: _tabindex,
     style,
     class: className,
     children,
@@ -44,10 +50,25 @@
     edgeRevealLabel?: string;
     /** Accessible resize-handle name. Defaults from `side`. */
     resizeLabel?: string;
+    /** Mobile edge selector label. Defaults to the accessible landmark label. */
+    mobileLabel?: string;
   } = $props();
 
   const controller = useAppShell();
-  let sidebar = $derived(sidebarController ?? controller.getSidebar(side));
+  const sidebar = untrack(
+    () => sidebarController ?? controller.getSidebar(side),
+  );
+  let sidebarCollapsed = $state(sidebar.collapsed);
+  let sidebarClosed = $state(sidebar.closed);
+  let sidebarState = $state(sidebar.state);
+  let sidebarWidth = $state<number | undefined>(sidebar.width);
+  function syncLayout(): void {
+    sidebarCollapsed = sidebar.collapsed;
+    sidebarClosed = sidebar.closed;
+    sidebarState = sidebar.state;
+    sidebarWidth = sidebar.width;
+  }
+  const unsubscribeLayout = sidebar.onLayoutChange(syncLayout);
   setAppShellSidebarContext({
     get side() {
       return side;
@@ -77,40 +98,95 @@
     edgeRevealLabel ??
       (side === "left" ? "Preview left sidebar" : "Preview right sidebar"),
   );
-  let presentation = $derived(sidebar.previewed ? "overlay" : "inline");
-  let renderSidebar = $derived(!sidebar.closed || sidebar.previewed);
+  let mobilePanelId = $derived(controller.getPanelId(sidebar));
+  let mobileMode = $derived(controller.mobile.resolvedMode === "mobile");
+  let mobileActive = $derived(
+    !mobileMode ||
+      (mobilePanelId !== undefined &&
+        controller.mobile.activePanelId(side) === mobilePanelId),
+  );
+  let presentation = $derived(
+    mobileMode ? "mobile" : sidebar.previewed ? "overlay" : "inline",
+  );
+  let renderSidebar = $derived(
+    mobileMode
+      ? mobilePanelId !== undefined
+      : !sidebarClosed || sidebar.previewed,
+  );
   let preserveCollapsedRail = $derived(
-    !sidebar.closed && sidebar.collapsed && sidebar.previewed,
+    !mobileMode && !sidebarClosed && sidebarCollapsed && sidebar.previewed,
   );
   let sidebarStyle = $derived(
     [
       style,
-      sidebar.width === undefined
+      sidebarWidth === undefined
         ? undefined
-        : `--ui-shell-sidebar-size: ${sidebar.width}px`,
+        : `--ui-shell-sidebar-size: ${sidebarWidth}px`,
     ]
       .filter(Boolean)
       .join("; "),
   );
 
   $effect(() => {
-    if (!ref) return;
+    const panelId = mobilePanelId;
+    if (!panelId) {
+      if (mobileMode) {
+        throw new Error(
+          "AppShell.Sidebar requires a controller-registered sidebar in mobile mode.",
+        );
+      }
+      return;
+    }
+    const registration = {
+      id: panelId,
+      side,
+      kind: "sidebar" as const,
+      get label() {
+        return mobileLabel ?? accessibleLabel;
+      },
+      get element() {
+        return ref;
+      },
+    };
+    return untrack(() => controller.mobile.registerPanel(registration));
+  });
 
+  $effect(() => {
+    const sidebarElement = ref;
+    if (!sidebarElement) return;
+
+    sidebarElement.addEventListener(
+      APP_SHELL_SIDEBAR_LAYOUT_SYNC_EVENT,
+      syncLayout,
+    );
     const updateRenderedWidth = () => {
-      if (ref) renderedWidth = Math.round(ref.getBoundingClientRect().width);
+      renderedWidth = Math.round(sidebarElement.getBoundingClientRect().width);
     };
     updateRenderedWidth();
 
-    if (typeof ResizeObserver === "undefined") return;
+    if (typeof ResizeObserver === "undefined") {
+      return () =>
+        sidebarElement.removeEventListener(
+          APP_SHELL_SIDEBAR_LAYOUT_SYNC_EVENT,
+          syncLayout,
+        );
+    }
     const observer = new ResizeObserver(updateRenderedWidth);
-    observer.observe(ref);
-    return () => observer.disconnect();
+    observer.observe(sidebarElement);
+    return () => {
+      observer.disconnect();
+      sidebarElement.removeEventListener(
+        APP_SHELL_SIDEBAR_LAYOUT_SYNC_EVENT,
+        syncLayout,
+      );
+    };
   });
 
   $effect(() => {
     if (
       !renderSidebar ||
-      (sidebar.collapsed && presentation !== "overlay") ||
+      mobileMode ||
+      (sidebarCollapsed && presentation !== "overlay") ||
       !resizable
     ) {
       stopResize();
@@ -118,7 +194,9 @@
   });
 
   $effect(() => {
-    if (typeof document === "undefined" || !sidebar.previewed) return;
+    if (typeof document === "undefined" || mobileMode || !sidebar.previewed) {
+      return;
+    }
 
     const handleDocumentPointerOver = (event: PointerEvent) => {
       if (isSidebarInteractionTarget(event.target)) {
@@ -148,13 +226,35 @@
   });
 
   onDestroy(() => {
+    unsubscribeLayout();
     stopResize();
     sidebar.dismissPreview();
   });
 
-  function revealFromEdge(): void {
-    if (!revealOnEdgeHover || (!sidebar.collapsed && !sidebar.closed)) return;
+  function revealFromEdge(element?: Element | null): void {
+    if (
+      !revealOnEdgeHover ||
+      (!isDesktopOverlayOnly(element) && !sidebarCollapsed && !sidebarClosed)
+    ) {
+      return;
+    }
+    if (isDesktopOverlayOnly(element)) {
+      ref?.setAttribute("data-desktop-overlay-preview", "");
+      queueMicrotask(() => ref?.focus({ preventScroll: true }));
+      return;
+    }
     sidebar.preview();
+  }
+
+  function isDesktopOverlayOnly(element?: Element | null): boolean {
+    if (!mobilePanelId) return false;
+    return (
+      (element ?? ref)
+        ?.closest("[data-shell-root]")
+        ?.getAttribute("data-desktop-overlay-panels")
+        ?.split(/\s+/)
+        .includes(mobilePanelId) ?? false
+    );
   }
 
   function dismissOverlay(): void {
@@ -221,7 +321,7 @@
 
   function startResize(event: PointerEvent): void {
     if (
-      (sidebar.collapsed && presentation !== "overlay") ||
+      (sidebarCollapsed && presentation !== "overlay") ||
       !resizable ||
       event.button !== 0
     ) {
@@ -232,7 +332,7 @@
     resizeStartX = event.clientX;
     resizeStartWidth =
       ref?.getBoundingClientRect().width ??
-      sidebar.width ??
+      sidebarWidth ??
       APP_SHELL_DEFAULT_SIDEBAR_WIDTH;
     previousBodyCursor = document.body.style.cursor;
     previousBodyUserSelect = document.body.style.userSelect;
@@ -266,13 +366,13 @@
   }
 
   function handleResizeKeydown(event: KeyboardEvent): void {
-    if ((sidebar.collapsed && presentation !== "overlay") || !resizable) {
+    if ((sidebarCollapsed && presentation !== "overlay") || !resizable) {
       return;
     }
     const step = event.shiftKey ? 32 : 16;
     const currentWidth =
       ref?.getBoundingClientRect().width ??
-      sidebar.width ??
+      sidebarWidth ??
       APP_SHELL_DEFAULT_SIDEBAR_WIDTH;
 
     if (event.key === "Home") {
@@ -295,20 +395,27 @@
   }
 </script>
 
-{#if (sidebar.closed || sidebar.collapsed) && revealOnEdgeHover}
+{#if !mobileMode && revealOnEdgeHover}
   <button
     type="button"
     class="ui-minimal-app-shell__sidebar-edge-trigger"
     data-ui-component="app-shell"
     data-ui-part="sidebar-edge-trigger"
     data-side={side}
+    data-state={sidebarState}
+    data-variant={variant}
     aria-label={accessibleEdgeRevealLabel}
     aria-expanded={sidebar.previewed}
     title={accessibleEdgeRevealLabel}
-    onmouseenter={revealFromEdge}
-    onfocus={revealFromEdge}
+    onmouseenter={(event) => revealFromEdge(event.currentTarget)}
+    onfocus={(event) => revealFromEdge(event.currentTarget)}
     onblur={handleOverlayBlur}
-    onclick={() => sidebar.toggle()}
+    onclick={(event) => {
+      if (isDesktopOverlayOnly(event.currentTarget)) {
+        ref?.setAttribute("data-desktop-overlay-preview", "");
+        queueMicrotask(() => ref?.focus({ preventScroll: true }));
+      } else sidebar.toggle();
+    }}
   ></button>
 {/if}
 
@@ -325,7 +432,12 @@
 {#if renderSidebar}
   <aside
     bind:this={ref}
+    use:appShellTeleport={{
+      enabled: mobileMode,
+      target: controller.mobile.getPanelHost(side),
+    }}
     {...restProps}
+    tabindex="-1"
     style={sidebarStyle || undefined}
     class={["ui-minimal-app-shell__sidebar", className]
       .filter(Boolean)
@@ -333,14 +445,18 @@
     data-ui-component="app-shell"
     data-ui-part="sidebar"
     data-side={side}
-    data-state={sidebar.state}
+    data-state={sidebarState}
     data-variant={variant}
     data-presentation={presentation}
-    data-collapsed={sidebar.collapsed || undefined}
+    data-collapsed={sidebarCollapsed || undefined}
     data-closeable={closeable || undefined}
     data-previewed={sidebar.previewed || undefined}
+    data-mobile-panel-id={mobilePanelId}
+    data-mobile-panel-active={mobileActive || undefined}
     data-resizing={resizing || undefined}
     aria-label={accessibleLabel}
+    aria-hidden={mobileMode && !mobileActive}
+    inert={mobileMode && !mobileActive}
     onmouseenter={keepOverlay}
     onmouseleave={presentation === "overlay"
       ? handleOverlayPointerLeave
@@ -349,7 +465,7 @@
     onfocusout={presentation === "overlay" ? handleOverlayBlur : undefined}
   >
     {@render children?.()}
-    {#if resizable && (!sidebar.collapsed || presentation === "overlay")}
+    {#if !mobileMode && resizable && (!sidebarCollapsed || presentation === "overlay")}
       <div
         role="slider"
         tabindex="0"
@@ -361,7 +477,7 @@
         aria-orientation="vertical"
         aria-valuemin={sidebar.minWidth}
         aria-valuemax={sidebar.maxWidth}
-        aria-valuenow={sidebar.width ?? renderedWidth}
+        aria-valuenow={sidebarWidth ?? renderedWidth}
         title={accessibleResizeLabel}
         onpointerdown={startResize}
         onkeydown={handleResizeKeydown}

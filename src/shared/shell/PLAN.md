@@ -7,8 +7,11 @@ workspace behavior are not copied.
 ## Public contract
 
 - `AppShell.Root` installs an `AppShellController`.
-- `AppShell.Root` resolves `auto`, `desktop`, or `mobile` presentation from its
-  own bounded width. Consumers compose the compound parts once for both modes.
+- `AppShell.Root` defaults to `displayMode="auto"` and resolves desktop or
+  mobile presentation from its own bounded width at a default 1024px
+  breakpoint. Consumers compose the compound parts once for both modes.
+- Explicit `desktop` and `mobile` modes remain reactive so applications and
+  deterministic tests may override automatic presentation.
 - `AppShell.Sidebar` renders either the left or right bounded sidebar.
 - A sidebar may receive an independent `AppShellSidebarController` so repeated
   same-side surfaces can compose nested navigation layouts.
@@ -47,10 +50,15 @@ workspace behavior are not copied.
   the active panel for each mobile edge. Mobile state is never serialized.
 - Mobile uses one full-height lane per edge. A shadcn selector switches between
   multiple registered panels on the same edge.
+- Constrained desktop protects a configurable minimum main width. Lower
+  priority outer sidebars become transient overlays without changing their
+  persisted collapsed, closed, or width state.
 
 ## Boundaries
 
 - Desktop retains the bounded inline layout and opt-in edge previews.
+- Desktop prioritizes the main body before moving the right, named outer-left,
+  and finally built-in left sidebar out of inline flow.
 - Mobile presentation uses a Workspace-inspired off-canvas three-stage track
   selected by root container width, explicit mode, toolbar actions, or touch
   gestures.
@@ -85,10 +93,11 @@ workspace behavior are not copied.
 | Nested left layout and edge preview | Complete | Pass | Pass    | Pass    | Pass\*     |
 | Layout adapter and localStorage     | Complete | Pass | Pass    | Pass    | Pass\*     |
 | Body content and local sidebars     | Complete | Pass | Pass    | Pass    | Pass\*     |
-| Mobile controller and mode contract | Planned  | N/A  | N/A     | N/A     | N/A        |
-| Single-composition mobile lanes     | Planned  | N/A  | N/A     | N/A     | N/A        |
-| Mobile gestures and accessibility   | Planned  | N/A  | N/A     | N/A     | N/A        |
-| Mobile catalog and documentation    | Planned  | N/A  | N/A     | N/A     | N/A        |
+| Mobile controller and mode contract | Complete | Pass | Pass    | Pass    | Pass       |
+| Single-composition mobile lanes     | Complete | Pass | Pass    | Pass    | Pass       |
+| Mobile gestures and accessibility   | Complete | Pass | Pass    | Pass    | Pass       |
+| Mobile catalog and documentation    | Complete | Pass | Pass    | Pass    | Pass\*     |
+| Constrained desktop presentation    | Complete | Pass | Pass    | Pass    | Pass       |
 
 ## Validation
 
@@ -103,11 +112,10 @@ files sidebar, document body sidebar, main content, and right AI panel in one
 interactive fixture. Forced desktop, tablet, and mobile stories must reuse that
 single composition rather than maintaining parallel shell markup.
 
-\* Focused Shell interaction/accessibility and source checks pass, as do all
-620 unit tests, the static Storybook build, the visual audit, and the live
-browser placement check. The repository-wide Storybook stage currently stops
-at the unrelated Emoji Picker focus assertion: focus remains on `Search emoji`
-instead of moving to `React with thumbs up`. The body-sidebar story remains
-`visual-pending`. A focused compare-only run against fresh static output on
-isolated ports reaches the three selected Shell stories and reports their
-missing pending baselines. No baselines were created or updated.
+\* Current validation passes 15 focused controller/public API tests, all 10
+Shell Storybook interaction and accessibility tests, both real pointer gesture
+tests, all 499 repository Storybook tests, `pnpm check`, the no-Tailwind source
+gate, and the static Storybook build. Compare-only visual validation passes 350
+existing baselines; the 10 `visual-pending` Shell stories remain deliberately
+unbaselined (five missing-baseline results and five 15-second readiness limits
+on long-play fixtures). No baselines were created or updated.

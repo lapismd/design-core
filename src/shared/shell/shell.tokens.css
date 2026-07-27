@@ -10,6 +10,7 @@
   --ui-shell-collapsed-sidebar-width: 3rem;
   --ui-shell-body-sidebar-width: 14rem;
   --ui-shell-mobile-sidebar-width: min(22rem, 86cqw);
+  --ui-shell-desktop-min-main-width: 36rem;
   --ui-shell-sidebar-toggle-indicator-width: 24%;
   --ui-shell-toolbar-height: 3rem;
   --ui-shell-main-block-inset: 0.5rem;

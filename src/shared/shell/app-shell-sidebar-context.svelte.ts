@@ -5,6 +5,8 @@ import type {
 } from "./app-shell-controller.svelte.js";
 
 const APP_SHELL_SIDEBAR_CONTEXT = Symbol("ui-minimal-app-shell-sidebar");
+export const APP_SHELL_SIDEBAR_LAYOUT_SYNC_EVENT =
+  "ui-shell-sidebar-layout-sync";
 
 export interface AppShellSidebarContext {
   readonly side: AppShellSide;

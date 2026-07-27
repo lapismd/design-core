@@ -6,13 +6,14 @@ import * as Stories from "./AppShell.stories.svelte";
 # App Shell
 
 `@stevejuma/ui/shell` is a bounded structural layout for applications that own
-their navigation and content. It provides two independently collapsible
-and resizable sidebars, a main column, a toolbar, and a scrolling body.
+their navigation and content. Consumers compose its compound parts once; the
+root presents them as independently collapsible and resizable desktop sidebars
+or as a container-aware mobile track.
 
 ## Structure
 
 ```svelte
-<AppShell.Root {controller}>
+<AppShell.Root {controller} displayMode="auto" mobileBreakpoint={1024}>
   <AppShell.Sidebar side="left">
     <AppShell.Sidebar.Header>...</AppShell.Sidebar.Header>
     <AppShell.Sidebar.Body>...</AppShell.Sidebar.Body>
@@ -37,7 +38,12 @@ and resizable sidebars, a main column, a toolbar, and a scrolling body.
 ```
 
 Every part is optional except `Root`. Omitting either sidebar leaves the main
-column to fill the available bounded container.
+column to fill the available bounded container. `displayMode` defaults to
+`"auto"` and resolves from the root's own observed width, switching below the
+default `mobileBreakpoint={1024}`. Use `"desktop"` or `"mobile"` for an
+explicit, reactive presentation without duplicating the child composition.
+Stories that test one layout pin that mode; application demos may expose all
+three values as ordinary programmatic state.
 
 For document-local navigation, switch the body to independently scrolling
 regions and mount a consumer-controlled sidebar on either side:
@@ -46,46 +52,92 @@ regions and mount a consumer-controlled sidebar on either side:
 <AppShell.Body layout="regions" label="Markdown document">
   <AppShell.Body.Toggle
     side="left"
+    target="document-contents"
     pressed={tableOfContentsSide === "left"}
     onclick={() => toggleTableOfContents("left")}
   />
   <AppShell.Body.Toggle
     side="right"
+    target="document-contents"
     pressed={tableOfContentsSide === "right"}
     onclick={() => toggleTableOfContents("right")}
   />
 
-  {#if tableOfContentsSide === "left"}
-    <AppShell.Body.Sidebar side="left" label="Table of contents">
-      ...
-    </AppShell.Body.Sidebar>
-  {/if}
+  <AppShell.Body.Sidebar
+    panelId="document-contents"
+    mobileLabel="Document contents"
+    side={tableOfContentsSide ?? "right"}
+    bind:open={tableOfContentsOpen}
+    label="Table of contents"
+  >
+    ...
+  </AppShell.Body.Sidebar>
 
   <AppShell.Body.Content label="README content">
     <article>...</article>
   </AppShell.Body.Content>
-
-  {#if tableOfContentsSide === "right"}
-    <AppShell.Body.Sidebar side="right" label="Table of contents">
-      ...
-    </AppShell.Body.Sidebar>
-  {/if}
 </AppShell.Body>
 ```
 
 The default `layout="scroll"` remains the compact one-region body. In
 `layout="regions"`, every `Body.Sidebar` and `Body.Content` installs its own
 shadcn Scroll Area. The body itself remains fixed and non-scrolling, and the
-consumer owns whether the local sidebar is mounted and which side it occupies.
+consumer owns the local sidebar's `open` value and which side it occupies.
 This makes table-of-contents state easy to derive from a selected Markdown file
 without registering another application-level sidebar.
 
 `Body.Toggle` is an icon-sized shadcn Button positioned inside the body:
 top-left for `side="left"` and top-right for `side="right"`. It exposes
-`aria-pressed` but does not own application state; consumers pass `pressed`, an
-accessible `label` when the defaults are not specific enough, and their own
-click handler. The toggle remains mounted when its sidebar closes, so focus is
-retained and the body reclaims the sidebar width.
+`aria-pressed`; consumers pass `pressed`, an accessible `label` when the
+defaults are not specific enough, and their own click handler. A `target`
+connects it to a mounted `Body.Sidebar` for mobile presentation. The toggle
+remains mounted when its desktop sidebar closes, so focus is retained and the
+body reclaims the sidebar width.
+
+## Mobile presentation
+
+Mobile mode keeps one composition and presents it as left, main, and right
+stages. Outer sidebars and registered body sidebars join the matching edge
+lane. When an edge has more than one panel, an internal shadcn Select chooses
+the active one using `mobileLabel` (or the accessible `label` by default).
+
+`Sidebar.Toggle` reveals its mobile panel and `Sidebar.Close` returns to main
+without changing persisted desktop collapse, closed, or width values.
+`Body.Toggle` reveals its `target`. A horizontal swipe from main reveals an
+available edge; swiping toward main, tapping the exposed stage, or pressing
+Escape dismisses it. Vertical intent, interactive controls, and genuine
+horizontal scrollers retain their native interaction. Offstage lanes are
+`inert` and `aria-hidden`, and button-triggered dismissal restores focus to the
+opening control.
+
+`controller.mobile` exposes transient `resolvedMode`, `stage`,
+`activeLeftPanelId`, and `activeRightPanelId`, plus `show()`, `showMain()`, and
+`selectPanel()`. This state is presentation-only and never appears in layout
+snapshots:
+
+```ts
+shell.mobile.show("left", "projects");
+shell.mobile.selectPanel("right", "document-contents");
+shell.mobile.showMain();
+```
+
+Repeated outer sidebars must use a controller created with
+`shell.createSidebar(id, side)` so mobile mode has a stable panel identity.
+
+## Constrained desktop presentation
+
+Desktop keeps the main stage usable before allowing inline sidebars to consume
+all available width. Its protected width comes from
+`--ui-shell-desktop-min-main-width` (`36rem`) or the
+`desktopMinMainWidth` root prop. When the bounded root cannot fit that stage,
+the shell removes outer panels from inline flow in this order: right sidebar,
+named outer-left sidebars, then the built-in left sidebar. Their existing
+toggle or edge action opens them as an overlay.
+
+This is presentation-only. Collapsed, closed, and resized controller values
+remain unchanged, and the same panels return inline when the container grows.
+It is distinct from mobile mode: the desktop toolbar, body geometry, hover
+previews, and resize affordances remain available.
 
 `Main` is an inset, bordered surface while both sidebars remain full height.
 The shell containers use `overflow: hidden`; the default `AppShell.Body`,
@@ -174,6 +226,10 @@ The transient `previewed` state is managed through `schedulePreview()`,
 change `state`, so an expanded overlay can preview a collapsed rail without
 changing consumer-owned collapse state or adjacent geometry.
 
+`controller.mobile` is an `AppShellMobileController`. It is deliberately
+excluded from `AppShellLayoutV1`; switching between desktop and mobile restores
+the exact durable sidebar geometry that was present before the mode change.
+
 Collapsed sidebars remain mounted as persistent icon rails. Consumer controls
 should retain accessible names when their visible labels are omitted.
 
@@ -213,19 +269,21 @@ without changing shell components.
 
 ## Tokens
 
-| Token                                       | Default                | Purpose                     |
-| ------------------------------------------- | ---------------------- | --------------------------- |
-| `--ui-shell-height`                         | `100vh`                | Root application height     |
-| `--ui-shell-left-sidebar-width`             | `18rem`                | Expanded left sidebar       |
-| `--ui-shell-right-sidebar-width`            | `18rem`                | Expanded right sidebar      |
-| `--ui-shell-right-sidebar-gap`              | `0.5rem`               | Gap before right sidebar    |
-| `--ui-shell-collapsed-sidebar-width`        | `3rem`                 | Either collapsed icon rail  |
-| `--ui-shell-body-sidebar-width`             | `14rem`                | Local body sidebar width    |
-| `--ui-shell-sidebar-toggle-indicator-width` | `24%`                  | Expanded toggle panel mark  |
-| `--ui-shell-toolbar-height`                 | `3rem`                 | Top chrome divider baseline |
-| `--ui-shell-main-block-inset`               | `0.5rem`               | Main top and bottom inset   |
-| `--ui-shell-main-radius`                    | `0.875rem`             | Main surface radius         |
-| `--ui-shell-main-shadow`                    | `shadow-sm` equivalent | Main surface depth          |
+| Token                                       | Default                | Purpose                      |
+| ------------------------------------------- | ---------------------- | ---------------------------- |
+| `--ui-shell-height`                         | `100vh`                | Root application height      |
+| `--ui-shell-left-sidebar-width`             | `18rem`                | Expanded left sidebar        |
+| `--ui-shell-right-sidebar-width`            | `18rem`                | Expanded right sidebar       |
+| `--ui-shell-right-sidebar-gap`              | `0.5rem`               | Gap before right sidebar     |
+| `--ui-shell-collapsed-sidebar-width`        | `3rem`                 | Either collapsed icon rail   |
+| `--ui-shell-body-sidebar-width`             | `14rem`                | Local body sidebar width     |
+| `--ui-shell-mobile-sidebar-width`           | `min(22rem, 86cqw)`    | Mobile edge lane width       |
+| `--ui-shell-desktop-min-main-width`         | `36rem`                | Protected desktop main width |
+| `--ui-shell-sidebar-toggle-indicator-width` | `24%`                  | Expanded toggle panel mark   |
+| `--ui-shell-toolbar-height`                 | `3rem`                 | Top chrome divider baseline  |
+| `--ui-shell-main-block-inset`               | `0.5rem`               | Main top and bottom inset    |
+| `--ui-shell-main-radius`                    | `0.875rem`             | Main surface radius          |
+| `--ui-shell-main-shadow`                    | `shadow-sm` equivalent | Main surface depth           |
 
 Override tokens on `:root` or the shell root. Colors continue to come from the
 shared semantic theme. Left and right width tokens remain authoritative until
@@ -240,5 +298,7 @@ spacing.
 Choose `@stevejuma/ui/shell` for structural application chrome with
 consumer-owned content. Choose `@stevejuma/ui/workspace` when the application
 needs registered views, tabs, recursive splits, general workspace persistence,
-commands, settings, plugins, mobile presentation, windows, or general-purpose
-overlays. Shell persistence is intentionally limited to sidebar geometry.
+commands, settings, plugins, windows, or general-purpose overlays. Both can
+present mobile navigation, but Shell remains a small geometry/controller layer;
+Workspace owns the full view lifecycle. Shell persistence is intentionally
+limited to desktop sidebar geometry.

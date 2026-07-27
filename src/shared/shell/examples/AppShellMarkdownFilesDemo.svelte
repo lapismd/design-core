@@ -21,12 +21,8 @@
 
   const files = ["README.md", "architecture.md", "contributing.md"];
   let sidebar = $derived(controller.left);
-  let projectToggleLabel = $derived(
-    projectSidebar?.closed
-      ? "Open projects sidebar"
-      : projectSidebar?.collapsed
-        ? "Expand projects sidebar"
-        : "Collapse projects sidebar",
+  let compact = $derived(
+    controller.mobile.resolvedMode === "desktop" && sidebar.collapsed,
   );
 </script>
 
@@ -35,14 +31,14 @@
     <AppShell.Sidebar.Toggle
       side="left"
       sidebarController={projectSidebar}
-      label={projectToggleLabel}
+      sidebarName="projects"
       previewOnHover
     />
   {:else}
     <AppShell.Sidebar.Toggle side="left" />
   {/if}
   <FolderOpenIcon aria-hidden="true" />
-  {#if !sidebar.collapsed}
+  {#if !compact}
     <strong>Markdown files</strong>
   {/if}
 </AppShell.Sidebar.Header>
@@ -58,14 +54,14 @@
         onclick={() => onSelectFile(file)}
       >
         <FileTextIcon aria-hidden="true" />
-        {#if !sidebar.collapsed}<span>{file}</span>{/if}
+        {#if !compact}<span>{file}</span>{/if}
       </button>
     {/each}
   </nav>
 </AppShell.Sidebar.Body>
 
 <AppShell.Sidebar.Footer class="ui-shell-story-files-footer">
-  {#if !sidebar.collapsed}
+  {#if !compact}
     <span>Documentation</span>
   {/if}
 </AppShell.Sidebar.Footer>

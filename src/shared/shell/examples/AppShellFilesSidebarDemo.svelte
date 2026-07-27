@@ -27,20 +27,13 @@
         ? "UI Catalog"
         : "CV Studio",
   );
-  let projectToggleLabel = $derived(
-    projectSidebar.closed
-      ? "Open projects sidebar"
-      : projectSidebar.collapsed
-        ? "Expand projects sidebar"
-        : "Collapse projects sidebar",
-  );
 </script>
 
 <AppShell.Sidebar.Header class="ui-shell-story-files-header">
   <AppShell.Sidebar.Toggle
     side="left"
     sidebarController={projectSidebar}
-    label={projectToggleLabel}
+    sidebarName="projects"
     previewOnHover
   />
   <FolderOpenIcon aria-hidden="true" />

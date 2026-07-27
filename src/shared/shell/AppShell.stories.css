@@ -9,6 +9,29 @@
   background: var(--muted);
 }
 
+.ui-shell-story-frame-tablet,
+.ui-shell-story-frame-mobile {
+  width: 100%;
+  min-width: 0;
+  margin-inline: auto;
+}
+
+.ui-shell-story-frame-tablet {
+  max-width: 56rem;
+}
+
+.ui-shell-story-frame-mobile {
+  max-width: 30rem;
+  padding: 0.5rem;
+}
+
+.ui-shell-story-frame-constrained-desktop {
+  width: 62rem;
+  min-width: 0;
+  max-width: 62rem;
+  margin-inline: auto;
+}
+
 /* Detached interaction-test renderers do not provide the Storybook root height. */
 .ui-shell-story-frame:not(:where(#storybook-root *)) {
   height: 40rem;
@@ -26,6 +49,30 @@
 
 .ui-shell-story-complete {
   --ui-shell-body-sidebar-width: 10rem;
+}
+
+.ui-shell-story-mode-demo {
+  position: relative;
+  height: 100%;
+}
+
+.ui-shell-story-mode-controls {
+  position: absolute;
+  z-index: 50;
+  inset-block-end: 1rem;
+  inset-inline-start: 50%;
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--background);
+  box-shadow: var(--ui-shell-main-shadow);
+  transform: translateX(-50%);
+}
+
+.ui-shell-story-mode-controls button {
+  text-transform: capitalize;
 }
 
 .ui-shell-story-sidebar-heading {

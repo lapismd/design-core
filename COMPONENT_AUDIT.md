@@ -108,6 +108,13 @@ Bounded application chrome in `src/shared/shell/`:
 - Accessible pointer and keyboard resize handles baked into expanded sidebars
 - Versioned built-in/named panel layout persistence with an injected adapter
   and default localStorage implementation
+- Container-aware single-composition desktop/mobile presentation with a
+  transient left/main/right stage controller
+- Default auto mode plus constrained-desktop overlay fallback that protects a
+  public minimum main width without changing durable sidebar layout
+- Workspace-inspired horizontal gestures, inert offstage lanes, focus
+  restoration, and shadcn Select panel switching when an edge has multiple
+  registered panels
 - Fixed chrome around shadcn Scroll Areas in main, body-local, and outer
   sidebar regions
 - Body-local corner toggles composed from the shadcn icon Button
@@ -115,13 +122,13 @@ Bounded application chrome in `src/shared/shell/`:
 
 Import: `@stevejuma/ui/shell`. Catalog: `Shell/App Shell`. Production Shell
 sources use native CSS and `--ui-shell-*` geometry tokens. They compose the
-generic shadcn Scroll Area and Button primitives and do not import
+generic shadcn Scroll Area, Button, and Select primitives and do not import
 application-specific state; catalog examples compose other shadcn controls to
 demonstrate consumer ownership.
 
 Choose Shell for structural application chrome. Choose Workspace when an
-application needs registered views, tabs, splits, commands, persistence,
-plugins, settings, windows, mobile presentation, or general-purpose overlays.
+application needs registered views, tabs, splits, commands, full workspace
+persistence, plugins, settings, windows, or general-purpose overlays.
 
 ## Shared — workspace
 

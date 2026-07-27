@@ -8,12 +8,13 @@
     "storybook:ui": "WATCHPACK_POLLING=250 node scripts/with-storybook-env.mjs node scripts/storybook-run.mjs",
     "storybook:stop": "node scripts/with-storybook-env.mjs bash scripts/storybook-stop.sh",
     "storybook:restart": "node scripts/with-storybook-env.mjs bash scripts/storybook-restart.sh",
-    "storybook:check": "pnpm test:storybook && pnpm test:workspace:pointer && pnpm build-storybook && pnpm workspace:visual:audit && pnpm test:visual-delta-panel && pnpm test:visual",
+    "storybook:check": "pnpm test:storybook && pnpm test:workspace:pointer && pnpm test:shell:pointer && pnpm build-storybook && pnpm workspace:visual:audit && pnpm test:visual-delta-panel && pnpm test:visual",
     "build-storybook": "node -e \"require('node:fs').mkdirSync('.cache/visual-delta',{recursive:true})\" && storybook build --stats-json .cache/visual-delta",
     "test:unit": "vitest run --project unit --project visual-delta",
     "test:storybook": "vitest run --project storybook",
     "test:storybook:watch": "vitest --project storybook",
     "test:workspace:pointer": "node scripts/with-storybook-env.mjs playwright test -c playwright.workspace.config.ts",
+    "test:shell:pointer": "node scripts/with-storybook-env.mjs playwright test -c playwright.shell.config.ts",
     "test:visual": "pnpm --filter storybook-addon-visual-delta build:node && pnpm visual-delta test --all --baseline-path-mode nested-import --external 'vendor/shadcn-svelte-docs/static/**'",
     "test:visual:affected": "pnpm --filter storybook-addon-visual-delta build:node && pnpm visual-delta test --affected --baseline-path-mode nested-import --external 'vendor/shadcn-svelte-docs/static/**'",
     "test:ai-chat-browser": "node scripts/with-storybook-env.mjs playwright test -c playwright.ai-chat.config.ts",
@@ -45,7 +46,7 @@
     "fmt": "prettier . --write",
     "fmt:check": "prettier . --check",
     "check:no-tailwind": "tsx scripts/check-no-tailwind-utilities.ts",
-    "checks": "pnpm fmt:check && pnpm check && pnpm check:visual-delta && pnpm check:docs-mcp && pnpm check:no-tailwind && pnpm test:unit && pnpm test:storybook && pnpm test:workspace:pointer && pnpm build-storybook && pnpm workspace:visual:audit && pnpm test:ai-chat-browser && pnpm test:visual-delta-panel && pnpm test:visual",
+    "checks": "pnpm fmt:check && pnpm check && pnpm check:visual-delta && pnpm check:docs-mcp && pnpm check:no-tailwind && pnpm test:unit && pnpm test:storybook && pnpm test:workspace:pointer && pnpm test:shell:pointer && pnpm build-storybook && pnpm workspace:visual:audit && pnpm test:ai-chat-browser && pnpm test:visual-delta-panel && pnpm test:visual",
     "filter:grammar": "node scripts/generate-filter-query-parser.mjs"
   },
   "peerDependencies": {

@@ -46,6 +46,7 @@
 <AppShell.Body layout="regions" label="Markdown document">
   <AppShell.Body.Toggle
     side="left"
+    target="document-table-of-contents"
     pressed={sidebarSide === "left"}
     label={sidebarSide === "left"
       ? "Hide table of contents on left"
@@ -54,6 +55,7 @@
   />
   <AppShell.Body.Toggle
     side="right"
+    target="document-table-of-contents"
     pressed={sidebarSide === "right"}
     label={sidebarSide === "right"
       ? "Hide table of contents on right"
@@ -61,11 +63,15 @@
     onclick={() => onToggleSidebar("right")}
   />
 
-  {#if sidebarSide === "left"}
-    <AppShell.Body.Sidebar side="left" label="Table of contents">
-      {@render tableOfContents()}
-    </AppShell.Body.Sidebar>
-  {/if}
+  <AppShell.Body.Sidebar
+    panelId="document-table-of-contents"
+    side={sidebarSide ?? "right"}
+    open={sidebarSide !== undefined}
+    label="Table of contents"
+    mobileLabel="Document contents"
+  >
+    {@render tableOfContents()}
+  </AppShell.Body.Sidebar>
 
   <AppShell.Body.Content label={file ? `${file} content` : "Document content"}>
     {#if file}
@@ -103,10 +109,4 @@
       </div>
     {/if}
   </AppShell.Body.Content>
-
-  {#if sidebarSide === "right"}
-    <AppShell.Body.Sidebar side="right" label="Table of contents">
-      {@render tableOfContents()}
-    </AppShell.Body.Sidebar>
-  {/if}
 </AppShell.Body>

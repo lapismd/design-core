@@ -11,10 +11,7 @@ import {
 export type AppShellSide = "left" | "right";
 export type AppShellSidebarState = "expanded" | "collapsed" | "closed";
 export type AppShellDisplayMode = "auto" | "desktop" | "mobile";
-export type AppShellResolvedDisplayMode = Exclude<
-  AppShellDisplayMode,
-  "auto"
->;
+export type AppShellResolvedDisplayMode = Exclude<AppShellDisplayMode, "auto">;
 export type AppShellMobileStage = "left" | "main" | "right";
 export type AppShellMobilePanelKind = "sidebar" | "body-sidebar";
 
@@ -105,14 +102,10 @@ export class AppShellMobileController {
   }
 
   activePanelId(side: AppShellSide): string | undefined {
-    return side === "left"
-      ? this.activeLeftPanelId
-      : this.activeRightPanelId;
+    return side === "left" ? this.activeLeftPanelId : this.activeRightPanelId;
   }
 
-  activePanel(
-    side: AppShellSide,
-  ): AppShellMobilePanelRegistration | undefined {
+  activePanel(side: AppShellSide): AppShellMobilePanelRegistration | undefined {
     const activeId = this.activePanelId(side);
     return this.#panels.find(
       (panel) => panel.side === side && panel.id === activeId,
@@ -125,16 +118,13 @@ export class AppShellMobileController {
     this.showMain(false);
   }
 
-  registerPanel(
-    registration: AppShellMobilePanelRegistration,
-  ): () => void {
+  registerPanel(registration: AppShellMobilePanelRegistration): () => void {
     const id = registration.id.trim();
     if (!id) {
       throw new TypeError("App Shell mobile panel ids must not be empty.");
     }
     const existing = this.#panels.find((panel) => panel.id === id);
     if (existing) {
-      if (existing === registration) return () => undefined;
       throw new Error(`App Shell mobile panel "${id}" is already registered.`);
     }
 
@@ -144,8 +134,8 @@ export class AppShellMobileController {
     this.#ensureActivePanel(panel.side);
 
     return () => {
-      if (!this.#panels.includes(panel)) return;
-      this.#panels = this.#panels.filter((candidate) => candidate !== panel);
+      if (!this.#panels.some((candidate) => candidate.id === id)) return;
+      this.#panels = this.#panels.filter((candidate) => candidate.id !== id);
       this.#ensureActivePanel(panel.side);
       if (
         this.stage === panel.side &&

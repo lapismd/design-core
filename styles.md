@@ -38,6 +38,10 @@ Set public tokens on `:root` or an appropriate shared ancestor such as
 `.ui-structured-form`. Do not rebind a token on the same component host that
 consumes it; that blocks ancestor overrides. Defaults belong on `:root` or the
 layer ancestor, while paint rules read `var(--ui-…, fallback)`.
+Shell geometry includes `--ui-shell-mobile-sidebar-width`; its
+`min(22rem, 86cqw)` default follows the bounded shell container rather than the
+global viewport. `--ui-shell-desktop-min-main-width` protects the center stage
+before constrained desktop moves lower-priority sidebars into overlays.
 
 Add a public token only when existing semantic tokens cannot express the
 paint. Document the subset each component reads.

@@ -6,6 +6,7 @@
   import {
     setAppShellBodyContext,
     type AppShellBodyLayout,
+    type AppShellBodyPanelRegistration,
   } from "./app-shell-body-context.svelte.js";
 
   let {
@@ -26,9 +27,28 @@
   } = $props();
 
   useAppShell();
+  let panels = $state<AppShellBodyPanelRegistration[]>([]);
   setAppShellBodyContext({
     get layout() {
       return layout;
+    },
+    get panels() {
+      return panels;
+    },
+    registerPanel(panel) {
+      const existing = panels.find((candidate) => candidate.id === panel.id);
+      if (existing) {
+        throw new Error(
+          `App Shell body panel "${panel.id}" is already registered.`,
+        );
+      }
+      panels = [...panels, panel];
+      return () => {
+        panels = panels.filter((candidate) => candidate.id !== panel.id);
+      };
+    },
+    getPanel(id) {
+      return panels.find((panel) => panel.id === id);
     },
   });
 </script>

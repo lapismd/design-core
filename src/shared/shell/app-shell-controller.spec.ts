@@ -163,6 +163,32 @@ describe("AppShellController", () => {
     });
   });
 
+  it("keys mobile panel registration and cleanup by stable id", () => {
+    const controller = new AppShellController();
+    const unregister = controller.mobile.registerPanel({
+      id: "projects",
+      side: "left",
+      label: "Projects",
+      kind: "sidebar",
+    });
+
+    expect(() =>
+      controller.mobile.registerPanel({
+        id: "projects",
+        side: "left",
+        label: "Duplicate projects",
+        kind: "sidebar",
+      }),
+    ).toThrow('App Shell mobile panel "projects" is already registered.');
+
+    unregister();
+    expect(controller.mobile.panelsFor("left")).toEqual([]);
+    expect(controller.mobile.activeLeftPanelId).toBeUndefined();
+    expect(() => controller.mobile.selectPanel("left", "projects")).toThrow(
+      'App Shell mobile left panel "projects" is not registered.',
+    );
+  });
+
   it("keeps mobile presentation out of durable layout snapshots", () => {
     const controller = new AppShellController();
     const projects = controller.createSidebar("projects", "left", {

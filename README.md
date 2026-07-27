@@ -63,10 +63,16 @@ scripts/
   Scroll Areas, independent collapsible/closeable/resizable sidebar state, and
   optional same-side nesting with collapsed/closed edge and delayed toggle
   previews, plus injected sidebar-layout persistence with a default
-  localStorage adapter. Its body regions support consumer-mounted left or right
-  sidebars such as a Markdown table of contents, with controlled toggles fixed
-  to the matching body corner; consumer content, navigation selection,
-  non-shell controls, and non-layout persistence stay outside the layer.
+  localStorage adapter. Its single compound composition resolves desktop or
+  mobile presentation from the bounded root width; mobile uses transient
+  left/main/right stages while retaining desktop layout state. Auto mode is
+  the default. Constrained desktop protects the main body and moves
+  lower-priority sidebars into transient overlays without mutating their saved
+  layout. Body regions
+  support consumer-controlled left or right sidebars such as a Markdown table
+  of contents, with targeted toggles fixed to the matching body corner.
+  Consumer content, navigation selection, non-shell controls, and non-layout
+  persistence stay outside the layer.
 - `shared/workspace` owns the full tab, split, view, plugin, and persistence
   framework.
 - Public components take typed props and callbacks rather than importing host
