@@ -224,12 +224,14 @@ without capturing with
 | `visual-ready`     | Baseline ready for human review                         |
 | `visual-failed`    | Review rejected or comparison failed                    |
 
-Review tags are mutually exclusive. Adding `skip-visual` clears review state.
-The Visual Delta panel and `pnpm ui visual:tag` both patch colocated CSF.
+Review tags are mutually exclusive and independent of `skip-visual`.
+Skip/include preserves the current review state while making the story
+ineligible/eligible for comparison. The Visual Delta panel and
+`pnpm ui visual:tag` both patch colocated CSF.
 Each baseline accordion has a kebab for History, exact-story Update baseline,
 and Delete screenshot. Delete removes the matching CSF image/interaction,
-clears stale review state, and deletes only that PNG and its derived local diff
-artifacts.
+invalidates its comparison evidence, and deletes only that PNG and its derived
+local diff artifacts; review state is unchanged.
 
 ### Baseline write gates
 

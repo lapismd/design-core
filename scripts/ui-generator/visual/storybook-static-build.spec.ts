@@ -5,6 +5,10 @@ import path from "node:path";
 import { describe, expect, it } from "vitest";
 import {
   decideStorybookStaticBuild,
+  invalidateStorybookStaticFreshness,
+  markStorybookStaticFresh,
+  previewModulesNewerThanIndex,
+  runStaticBuildSingleFlight,
   storySourcesNewerThanIndex,
 } from "./storybook-static-build.js";
 
@@ -149,5 +153,89 @@ describe("decideStorybookStaticBuild", () => {
       shouldBuild: true,
       reason: "stale-source",
     });
+  });
+
+  it("rebuilds when an imported preview module is newer than the index", () => {
+    const root = mkdtempSync(path.join(tmpdir(), "vd-static-"));
+    const sourcePath = path.join(root, "src", "Button.svelte");
+    const statsPath = path.join(
+      root,
+      ".cache",
+      "visual-delta",
+      "preview-stats.json",
+    );
+    mkdirSync(path.dirname(sourcePath), { recursive: true });
+    mkdirSync(path.dirname(statsPath), { recursive: true });
+    writeFileSync(sourcePath, "<button />\n", "utf8");
+    writeFileSync(
+      statsPath,
+      JSON.stringify({ modules: [{ id: "./src/Button.svelte" }] }),
+      "utf8",
+    );
+    writeIndex(root, {});
+    const now = Date.now() / 1000;
+    utimesSync(
+      path.join(root, "storybook-static", "index.json"),
+      now - 10,
+      now - 10,
+    );
+    utimesSync(sourcePath, now, now);
+
+    expect(previewModulesNewerThanIndex(root)).toBe(true);
+    expect(
+      decideStorybookStaticBuild({
+        packageRoot: root,
+        skipBuild: false,
+        storyIdPrefix: "",
+      }),
+    ).toMatchObject({ shouldBuild: true, reason: "stale-source" });
+  });
+
+  it("reuses the freshness token between affected preflight and its run", () => {
+    const root = mkdtempSync(path.join(tmpdir(), "vd-static-"));
+    writeIndex(root, {});
+    markStorybookStaticFresh(root);
+
+    expect(
+      decideStorybookStaticBuild({
+        packageRoot: root,
+        skipBuild: false,
+        forceRebuild: true,
+        forceReason: "affected-plan",
+        storyIdPrefix: "",
+      }),
+    ).toMatchObject({ shouldBuild: false, reason: "reuse" });
+
+    invalidateStorybookStaticFreshness(root);
+    expect(
+      decideStorybookStaticBuild({
+        packageRoot: root,
+        skipBuild: false,
+        forceRebuild: true,
+        forceReason: "affected-plan",
+        storyIdPrefix: "",
+      }),
+    ).toMatchObject({ shouldBuild: true, reason: "affected-plan" });
+  });
+
+  it("single-flights concurrent static builds and releases the lock", async () => {
+    const root = mkdtempSync(path.join(tmpdir(), "vd-static-"));
+    let builds = 0;
+    let release!: () => void;
+    const gate = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    const build = () =>
+      runStaticBuildSingleFlight(root, async () => {
+        builds += 1;
+        await gate;
+        return builds;
+      });
+    const first = build();
+    const second = build();
+    expect(builds).toBe(1);
+    release();
+    await expect(Promise.all([first, second])).resolves.toEqual([1, 1]);
+    await expect(build()).resolves.toBe(2);
   });
 });

@@ -92,11 +92,7 @@ export function auditWorkspaceVisualCoverage({
     const tags = entry.tags ?? [];
     const reviewTags = REVIEW_TAGS.filter((tag) => tags.includes(tag));
     const skipped = tags.includes("skip-visual");
-    if (skipped && reviewTags.length) {
-      errors.push(
-        `${entry.id} combines skip-visual with ${reviewTags.join(", ")}`,
-      );
-    } else if (!skipped && reviewTags.length !== 1) {
+    if (!skipped && reviewTags.length !== 1) {
       errors.push(
         reviewTags.length
           ? `${entry.id} has multiple review tags: ${reviewTags.join(", ")}`

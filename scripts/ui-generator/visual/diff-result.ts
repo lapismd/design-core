@@ -1,6 +1,7 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import {
+  isVisualDiffSidecar,
   PLAYWRIGHT_PASS_THRESHOLD_PERCENT,
   type VisualDiffSidecar,
   type VisualDiffSidecarStatus,
@@ -93,11 +94,12 @@ export function buildSidecarBase(
   | "diffRel"
 > {
   return {
-    version: 1,
+    version: 2,
     storyId: entry.id,
     title: entry.title,
     snapshotRel: screenshotRelativePath(entry),
     status,
+    runnerStatus: status,
     ...(error ? { error } : {}),
     generatedAt: new Date().toISOString(),
     tool: "playwright",
@@ -109,9 +111,8 @@ export function readVisualDiffSidecar(
 ): VisualDiffSidecar | null {
   try {
     const raw = readFileSync(filePath, "utf8");
-    const data = JSON.parse(raw) as VisualDiffSidecar;
-    if (data?.version !== 1 || !data.storyId) return null;
-    return data;
+    const data = JSON.parse(raw) as unknown;
+    return isVisualDiffSidecar(data) ? data : null;
   } catch {
     return null;
   }

@@ -4,18 +4,13 @@
  * `storybook-addon-visual-delta/playwright` instead — see `visual-delta init`.
  */
 import { expect, test, type Locator, type Page } from "@playwright/test";
-import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { compareBaselineToActualPng } from "../../scripts/ui-generator/visual/compare-pixels.js";
 import {
-  actualPngPath,
   baselinePngPath,
-  buildSidecarBase,
-  diffPngPath,
-  sidecarJsonPath,
-  snapshotPublicRel,
-  writeVisualDiffSidecar,
+  VISUAL_SNAPSHOT_DIR,
 } from "../../scripts/ui-generator/visual/diff-result.js";
+import { writeDiffArtifactsForBaseline } from "../../packages/storybook-addon-visual-delta/src/playwright/write-diff-artifacts.js";
 import {
   interactionBaselinePngPath,
   listInteractionBaselinesOnDisk,
@@ -30,8 +25,12 @@ import {
   VISUAL_CAPTURE_UNTIL_PARAM,
 } from "../../packages/storybook-addon-visual-delta/src/shared/interaction-capture.js";
 import {
+  VISUAL_DELTA_ALIGN_ATTR,
   VISUAL_DELTA_CROP_ATTR,
+  VISUAL_DELTA_DELAY_ATTR,
+  VISUAL_DELTA_DIFF_THRESHOLD_ATTR,
   VISUAL_DELTA_IGNORE_ATTR_LIST,
+  VISUAL_DELTA_INCLUDE_AA_ATTR,
   VISUAL_DELTA_PASS_THRESHOLD_ATTR,
 } from "../../packages/storybook-addon-visual-delta/src/shared/capture-params-attrs.js";
 import { resolveIgnoreSelectors } from "../../packages/storybook-addon-visual-delta/src/shared/ignore.js";
@@ -39,6 +38,7 @@ import {
   settleVisualStoryPage,
   waitForVisualStoryFinished,
 } from "../../packages/storybook-addon-visual-delta/src/playwright/readiness.js";
+import { readVisualDeltaProjectConfig } from "../../packages/storybook-addon-visual-delta/src/node/project-config.js";
 
 type StorybookIndex = {
   entries: Record<string, StoryIndexEntry>;
@@ -58,6 +58,7 @@ const PORTAL_SELECTORS = [
 ].join(", ");
 
 const PACKAGE_ROOT = resolve(".");
+const PROJECT_DEFAULTS = readVisualDeltaProjectConfig(PACKAGE_ROOT).defaults;
 const isBaselineUpdate = process.env.PLAYWRIGHT_UPDATE_SNAPSHOTS === "1";
 
 const interactionCaptureEnv =
@@ -76,13 +77,6 @@ const interactionCaptureRequest: InteractionCaptureRequest | null =
 const screenshotExpectationOptions = isBaselineUpdate
   ? { maxDiffPixelRatio: 0 }
   : {};
-
-function expectKnownVisualFailure(story: StoryIndexEntry): void {
-  test.fail(
-    !isBaselineUpdate && (story.tags ?? []).includes("visual-failed"),
-    "The committed visual review state records this comparison as failed.",
-  );
-}
 
 function loadVisualStories(): StoryIndexEntry[] {
   const indexPath = resolve("storybook-static/index.json");
@@ -188,32 +182,26 @@ function writeSidecarForBaseline(
   status: "passed" | "failed",
   error: string | undefined,
   actualPng: Buffer | null,
-): void {
-  const outPath = sidecarJsonPath(baselinePath);
-  const base = buildSidecarBase(story, status, error);
-  if (!actualPng || !existsSync(baselinePath)) {
-    writeVisualDiffSidecar(outPath, base);
-    return;
-  }
-  try {
-    const {
-      actualPng: fittedActual,
-      diffPng,
-      ...metrics
-    } = compareBaselineToActualPng(baselinePath, actualPng);
-    const actualPath = actualPngPath(baselinePath);
-    const heatmapPath = diffPngPath(baselinePath);
-    writeFileSync(actualPath, fittedActual);
-    writeFileSync(heatmapPath, diffPng);
-    writeVisualDiffSidecar(outPath, {
-      ...base,
-      ...metrics,
-      actualRel: snapshotPublicRel(actualPath, PACKAGE_ROOT),
-      diffRel: snapshotPublicRel(heatmapPath, PACKAGE_ROOT),
-    });
-  } catch {
-    writeVisualDiffSidecar(outPath, base);
-  }
+  captureConfig: EffectiveCaptureOptions,
+) {
+  return writeDiffArtifactsForBaseline({
+    entry: story,
+    packageRoot: PACKAGE_ROOT,
+    snapshotDir: VISUAL_SNAPSHOT_DIR,
+    mode: "nested-import",
+    baselinePngAbsPath: baselinePath,
+    status,
+    error,
+    actualPng,
+    passThresholdPercent: captureConfig.passThresholdPercent,
+    diffThreshold: captureConfig.diffThreshold,
+    includeAntiAliasing: captureConfig.includeAntiAliasing,
+    captureConfig: {
+      ...captureConfig,
+      viewport: { width: 1280, height: 900 },
+      deviceScaleFactor: 3,
+    },
+  });
 }
 
 function writeSidecarForStory(
@@ -221,13 +209,15 @@ function writeSidecarForStory(
   status: "passed" | "failed",
   error: string | undefined,
   actualPng: Buffer | null,
-): void {
-  writeSidecarForBaseline(
+  captureConfig: EffectiveCaptureOptions,
+) {
+  return writeSidecarForBaseline(
     story,
     baselinePngPath(story, PACKAGE_ROOT),
     status,
     error,
     actualPng,
+    captureConfig,
   );
 }
 
@@ -285,32 +275,85 @@ async function settleAfterPlay(page: Page, storyId: string): Promise<void> {
       /* stories without overlays still screenshot */
     });
 
-  await settleVisualStoryPage(page);
+  const options = await visualDeltaCaptureOptions(page);
+  await settleVisualStoryPage(page, { delay: options.delay });
 }
 
-async function visualDeltaCaptureOptions(page: Page): Promise<{
+type EffectiveCaptureOptions = {
   maskSelectors: string[];
   cropToViewport: boolean;
-  passThresholdPercent: number | null;
-}> {
-  return page.evaluate(
-    (attrs: { ignore: string; crop: string; pass: string }) => {
+  passThresholdPercent: number;
+  diffThreshold: number;
+  includeAntiAliasing: boolean;
+  delay: number;
+  align: "viewport" | "canvas";
+};
+
+function defaultCaptureOptions(): EffectiveCaptureOptions {
+  return {
+    maskSelectors: [],
+    cropToViewport: PROJECT_DEFAULTS.cropToViewport,
+    passThresholdPercent: PROJECT_DEFAULTS.passThresholdPercent,
+    diffThreshold: PROJECT_DEFAULTS.diffThreshold,
+    includeAntiAliasing: PROJECT_DEFAULTS.diffIncludeAntiAliasing,
+    delay: PROJECT_DEFAULTS.delay,
+    align: "viewport",
+  };
+}
+
+async function visualDeltaCaptureOptions(
+  page: Page,
+): Promise<EffectiveCaptureOptions> {
+  const raw = await page.evaluate(
+    (attrs: {
+      ignore: string;
+      crop: string;
+      pass: string;
+      diff: string;
+      includeAA: string;
+      delay: string;
+      align: string;
+    }) => {
       const root = document.documentElement;
-      const ignoreRaw = root.getAttribute(attrs.ignore);
-      const passRaw = root.getAttribute(attrs.pass);
-      const pass = passRaw ? Number(passRaw) : NaN;
       return {
-        maskSelectors: ignoreRaw ? ignoreRaw.split("\n").filter(Boolean) : [],
-        cropToViewport: root.getAttribute(attrs.crop) === "1",
-        passThresholdPercent: Number.isFinite(pass) && pass >= 0 ? pass : null,
+        ignore: root.getAttribute(attrs.ignore),
+        crop: root.getAttribute(attrs.crop),
+        pass: root.getAttribute(attrs.pass),
+        diff: root.getAttribute(attrs.diff),
+        includeAA: root.getAttribute(attrs.includeAA),
+        delay: root.getAttribute(attrs.delay),
+        align: root.getAttribute(attrs.align),
       };
     },
     {
       ignore: VISUAL_DELTA_IGNORE_ATTR_LIST,
       crop: VISUAL_DELTA_CROP_ATTR,
       pass: VISUAL_DELTA_PASS_THRESHOLD_ATTR,
+      diff: VISUAL_DELTA_DIFF_THRESHOLD_ATTR,
+      includeAA: VISUAL_DELTA_INCLUDE_AA_ATTR,
+      delay: VISUAL_DELTA_DELAY_ATTR,
+      align: VISUAL_DELTA_ALIGN_ATTR,
     },
   );
+  return {
+    maskSelectors: raw.ignore ? raw.ignore.split("\n").filter(Boolean) : [],
+    cropToViewport:
+      raw.crop == null
+        ? PROJECT_DEFAULTS.cropToViewport
+        : raw.crop === "1" || raw.crop === "true",
+    passThresholdPercent:
+      raw.pass == null
+        ? PROJECT_DEFAULTS.passThresholdPercent
+        : Number(raw.pass),
+    diffThreshold:
+      raw.diff == null ? PROJECT_DEFAULTS.diffThreshold : Number(raw.diff),
+    includeAntiAliasing:
+      raw.includeAA == null
+        ? PROJECT_DEFAULTS.diffIncludeAntiAliasing
+        : raw.includeAA === "1" || raw.includeAA === "true",
+    delay: raw.delay == null ? PROJECT_DEFAULTS.delay : Number(raw.delay),
+    align: raw.align === "canvas" ? "canvas" : "viewport",
+  };
 }
 
 async function screenshotStorySubject(
@@ -318,6 +361,10 @@ async function screenshotStorySubject(
   story: StoryIndexEntry,
   snapshotPath: string[],
   expectOptions: { maxDiffPixelRatio?: number },
+  target: {
+    subject: Locator | null;
+    clip: { x: number; y: number; width: number; height: number } | null;
+  },
 ): Promise<{
   subject: Locator | null;
   clip: { x: number; y: number; width: number; height: number } | null;
@@ -328,15 +375,17 @@ async function screenshotStorySubject(
   const csfMask = resolveIgnoreSelectors(vdOptions.maskSelectors).map(
     (selector) => page.locator(selector),
   );
-  const passRatio =
-    vdOptions.passThresholdPercent != null && !isBaselineUpdate
-      ? { maxDiffPixelRatio: vdOptions.passThresholdPercent / 100 }
-      : {};
-  const mergedExpect = { ...expectOptions, ...passRatio };
+  const passRatio = !isBaselineUpdate
+    ? { maxDiffPixelRatio: vdOptions.passThresholdPercent / 100 }
+    : {};
+  const mergedExpect = {
+    ...expectOptions,
+    ...passRatio,
+    threshold: vdOptions.diffThreshold,
+  };
 
-  let subject: Locator | null = null;
-  let clip: { x: number; y: number; width: number; height: number } | null =
-    null;
+  target.subject = null;
+  target.clip = null;
 
   if (vdOptions.cropToViewport) {
     await expect(page).toHaveScreenshot(snapshotPath, {
@@ -347,27 +396,28 @@ async function screenshotStorySubject(
     const usePortalClip =
       looksLikePortalStory(storyId) ||
       (await page.locator(PORTAL_SELECTORS).count()) > 0;
-    clip = usePortalClip ? await portalUnionClip(page) : null;
-    if (!clip) {
+    target.clip = usePortalClip ? await portalUnionClip(page) : null;
+    if (!target.clip) {
       const childCount = await root.locator(":scope > *").count();
-      subject = childCount > 0 ? root.locator(":scope > *").first() : root;
-      await expect(subject).toBeVisible();
+      target.subject =
+        childCount > 0 ? root.locator(":scope > *").first() : root;
+      await expect(target.subject).toBeVisible();
     }
-    if (clip) {
+    if (target.clip) {
       await expect(page).toHaveScreenshot(snapshotPath, {
-        clip,
+        clip: target.clip,
         ...mergedExpect,
         ...(csfMask.length > 0 ? { mask: csfMask } : {}),
       });
     } else {
-      await expect(subject!).toHaveScreenshot(snapshotPath, {
+      await expect(target.subject!).toHaveScreenshot(snapshotPath, {
         ...mergedExpect,
         ...(csfMask.length > 0 ? { mask: csfMask } : {}),
       });
     }
   }
 
-  return { subject, clip };
+  return target;
 }
 
 const stories = loadVisualStories();
@@ -398,40 +448,38 @@ test.describe("Storybook visual baselines", () => {
       if (!story) {
         throw new Error(`Unknown story for interaction capture: ${storyId}`);
       }
-      expectKnownVisualFailure(story);
       await prepareStoryPage(page, storyId, { visualCaptureUntil: stepId });
       await page.waitForSelector(
         `html[${VISUAL_CAPTURE_READY_ATTR}="${stepId}"]`,
         { timeout: 30_000 },
       );
-      await page.waitForTimeout(100);
-      await page.evaluate(() => {
-        const active = document.activeElement;
-        if (active instanceof HTMLElement) active.blur();
-      });
+      const captureOptions = await visualDeltaCaptureOptions(page);
+      await settleVisualStoryPage(page, { delay: captureOptions.delay });
 
       const snapshotPath = interactionScreenshotRelativePath(
         story,
         stepId,
       ).split("/");
-      let subject: Locator | null = null;
-      let clip: {
-        x: number;
-        y: number;
-        width: number;
-        height: number;
-      } | null = null;
+      const target: {
+        subject: Locator | null;
+        clip: {
+          x: number;
+          y: number;
+          width: number;
+          height: number;
+        } | null;
+      } = { subject: null, clip: null };
       let status: "passed" | "failed" = "passed";
       let error: string | undefined;
+      let classificationError: string | null = null;
       try {
-        const shot = await screenshotStorySubject(
+        await screenshotStorySubject(
           page,
           story,
           snapshotPath,
           screenshotExpectationOptions,
+          target,
         );
-        subject = shot.subject;
-        clip = shot.clip;
       } catch (err) {
         status = "failed";
         error = err instanceof Error ? err.message : String(err);
@@ -439,18 +487,25 @@ test.describe("Storybook visual baselines", () => {
       } finally {
         const actualPng = await captureActualPng(
           page,
-          subject,
-          clip,
+          target.subject,
+          target.clip,
           false,
         ).catch(() => null);
-        writeSidecarForBaseline(
+        const sidecar = writeSidecarForBaseline(
           story,
           interactionBaselinePngPath(story, stepId, PACKAGE_ROOT),
           status,
           error,
           actualPng,
+          captureOptions,
         );
+        if (status === "passed" && !sidecar.passed) {
+          classificationError =
+            sidecar.error ??
+            `Visual comparison outcome: ${sidecar.outcome ?? "mismatch"}`;
+        }
       }
+      if (classificationError) throw new Error(classificationError);
     });
     return;
   }
@@ -458,26 +513,26 @@ test.describe("Storybook visual baselines", () => {
   for (const story of stories) {
     const storyId = story.id;
     test(storyId, async ({ page }) => {
-      expectKnownVisualFailure(story);
       await prepareStoryPage(page, storyId);
       await settleAfterPlay(page, storyId);
 
       const snapshotPath = screenshotRelativePath(story).split("/");
-      let subject: Locator | null = null;
-      let clip: { x: number; y: number; width: number; height: number } | null =
-        null;
+      const target: {
+        subject: Locator | null;
+        clip: { x: number; y: number; width: number; height: number } | null;
+      } = { subject: null, clip: null };
 
       let status: "passed" | "failed" = "passed";
       let error: string | undefined;
+      let classificationError: string | null = null;
       try {
-        const shot = await screenshotStorySubject(
+        await screenshotStorySubject(
           page,
           story,
           snapshotPath,
           screenshotExpectationOptions,
+          target,
         );
-        subject = shot.subject;
-        clip = shot.clip;
       } catch (err) {
         status = "failed";
         error = err instanceof Error ? err.message : String(err);
@@ -485,12 +540,27 @@ test.describe("Storybook visual baselines", () => {
       } finally {
         const actualPng = await captureActualPng(
           page,
-          subject,
-          clip,
+          target.subject,
+          target.clip,
           false,
         ).catch(() => null);
-        writeSidecarForStory(story, status, error, actualPng);
+        const vdOptions = await visualDeltaCaptureOptions(page).catch(() =>
+          defaultCaptureOptions(),
+        );
+        const sidecar = writeSidecarForStory(
+          story,
+          status,
+          error,
+          actualPng,
+          vdOptions,
+        );
+        if (status === "passed" && !sidecar.passed) {
+          classificationError =
+            sidecar.error ??
+            `Visual comparison outcome: ${sidecar.outcome ?? "mismatch"}`;
+        }
       }
+      if (classificationError) throw new Error(classificationError);
     });
 
     const interactions = listInteractionBaselinesOnDisk(story, PACKAGE_ROOT);
@@ -498,7 +568,6 @@ test.describe("Storybook visual baselines", () => {
       test(`${storyId}::interaction::${interaction.stepId}`, async ({
         page,
       }) => {
-        expectKnownVisualFailure(story);
         await prepareStoryPage(page, storyId, {
           visualCaptureUntil: interaction.stepId,
         });
@@ -506,11 +575,8 @@ test.describe("Storybook visual baselines", () => {
           `html[${VISUAL_CAPTURE_READY_ATTR}="${interaction.stepId}"]`,
           { timeout: 30_000 },
         );
-        await page.waitForTimeout(100);
-        await page.evaluate(() => {
-          const active = document.activeElement;
-          if (active instanceof HTMLElement) active.blur();
-        });
+        const captureOptions = await visualDeltaCaptureOptions(page);
+        await settleVisualStoryPage(page, { delay: captureOptions.delay });
 
         const snapshotPath = interaction.screenshotRel.split("/");
         let subject: Locator | null = null;
@@ -522,6 +588,7 @@ test.describe("Storybook visual baselines", () => {
         } | null = null;
         let status: "passed" | "failed" = "passed";
         let error: string | undefined;
+        let classificationError: string | null = null;
         try {
           const shot = await screenshotStorySubject(
             page,
@@ -542,14 +609,21 @@ test.describe("Storybook visual baselines", () => {
             clip,
             false,
           ).catch(() => null);
-          writeSidecarForBaseline(
+          const sidecar = writeSidecarForBaseline(
             story,
             interaction.pngAbs,
             status,
             error,
             actualPng,
+            captureOptions,
           );
+          if (status === "passed" && !sidecar.passed) {
+            classificationError =
+              sidecar.error ??
+              `Visual comparison outcome: ${sidecar.outcome ?? "mismatch"}`;
+          }
         }
+        if (classificationError) throw new Error(classificationError);
       });
     }
   }

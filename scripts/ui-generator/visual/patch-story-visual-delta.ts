@@ -1,6 +1,5 @@
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
-import { VISUAL_REVIEW_TAGS } from "../../../packages/storybook-addon-visual-delta/src/constants.js";
 import {
   baselineUrlForStory,
   visualBaselineVisualDeltaParameter,
@@ -79,18 +78,15 @@ export function removeSkipVisualFromStoryOpenTag(openTag: string): string {
 
 /**
  * Ensure `skip-visual` is present on a Story open tag (opts the story out of
- * Playwright visual suite / Visual Delta runs). Clears mutually exclusive
- * visual review tags — review status cannot apply while skipped.
+ * Playwright visual suite / Visual Delta runs). Review metadata is independent:
+ * it remains present while review controls are temporarily ineligible.
  */
 export function addSkipVisualToStoryOpenTag(openTag: string): string {
-  const reviewTagSet = new Set<string>(VISUAL_REVIEW_TAGS);
   const tagsMatch = openTag.match(/\btags=\{\[([\s\S]*?)\]\}/);
   if (tagsMatch) {
     const full = tagsMatch[0];
     const inside = tagsMatch[1] ?? "";
-    const tags = parseTagsArrayLiteral(inside).filter(
-      (t) => !reviewTagSet.has(t),
-    );
+    const tags = parseTagsArrayLiteral(inside);
     if (!tags.includes("skip-visual")) tags.push("skip-visual");
     const literal = tags.map((t) => JSON.stringify(t)).join(", ");
     return openTag.replace(full, `tags={[${literal}]}`);

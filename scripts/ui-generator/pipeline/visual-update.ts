@@ -27,6 +27,7 @@ import {
   markCreatedStoriesPending,
 } from "../visual/patch-story-visual-review.js";
 import { decideStorybookStaticBuild } from "../visual/storybook-static-build.js";
+import { invalidateVisualResultArtifacts } from "../../../packages/storybook-addon-visual-delta/src/node/visual-sidecars.js";
 import {
   createRunContext,
   writeJson,
@@ -227,11 +228,31 @@ export async function runVisualUpdate(options: {
       },
     );
   } catch (error) {
-    if (!createOnly) throw error;
+    if (!createOnly) {
+      invalidateVisualResultArtifacts({
+        packageRoot: config.packageRoot,
+        snapshotDir,
+        mode: "nested-import",
+        storyIds: storyIds.length
+          ? storyIds
+          : listStoryIdsForPrefix(config.packageRoot, grep),
+      });
+      throw error;
+    }
     log.warn(
       "Playwright exited non-zero during create-only (often existing baseline diffs). Continuing CSF wiring for any new PNGs.",
     );
   }
+
+  const selectedStoryIds = storyIds.length
+    ? storyIds
+    : listStoryIdsForPrefix(config.packageRoot, grep);
+  invalidateVisualResultArtifacts({
+    packageRoot: config.packageRoot,
+    snapshotDir,
+    mode: "nested-import",
+    storyIds: selectedStoryIds,
+  });
 
   let patchResult: {
     patched: string[];
@@ -260,9 +281,7 @@ export async function runVisualUpdate(options: {
     }
   } else {
     // Overwrite: drop approved badges so rewritten baselines need re-review.
-    const toReset = storyIds.length
-      ? storyIds
-      : listStoryIdsForPrefix(config.packageRoot, grep);
+    const toReset = selectedStoryIds;
     if (toReset.length) {
       const pending = markCreatedStoriesPending({
         packageRoot: config.packageRoot,

@@ -280,13 +280,13 @@ describe("addSkipVisualToStoryOpenTag", () => {
     expect(next).toContain('tags={["skip-visual"]}');
   });
 
-  it("adds skip-visual and clears review tags", () => {
+  it("adds skip-visual and preserves independent review metadata", () => {
     const next = addSkipVisualToStoryOpenTag(
       `<Story name="Default" tags={["visual-approved", "visual-state"]}>`,
     );
     expect(next).toContain('"skip-visual"');
     expect(next).toContain('"visual-state"');
-    expect(next).not.toContain("visual-approved");
+    expect(next).toContain("visual-approved");
   });
 
   it("is idempotent when skip-visual already present", () => {

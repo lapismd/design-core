@@ -27,7 +27,7 @@ Single `--story-id` still needs the index so the CSF file can be resolved.
 
 | Action    | Effect                                                                                                          |
 | --------- | --------------------------------------------------------------------------------------------------------------- |
-| `skip`    | Add `skip-visual` on matching stories (clears review tags)                                                      |
+| `skip`    | Add `skip-visual` on matching stories while preserving review metadata                                          |
 | `include` | Remove `skip-visual`                                                                                            |
 | `review`  | Set exactly one of `visual-pending` / `visual-ready` / `visual-approved` / `visual-failed` (mutually exclusive) |
 

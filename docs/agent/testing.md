@@ -57,9 +57,9 @@ Committed under `tests/visual/storybook.spec.ts-snapshots/`.
   Prefer Visual Delta panel **More → Skip visual tests** /
   **Include in visual tests** (`POST /__visual-delta/skip-visual`) over
   hand-editing CSF. For bulk updates: `pnpm ui visual:tag skip|include|review
-…` (see `pnpm ui visual:tag --help`). Adding skip clears review tags; skipped
-  stories are excluded from Playwright / Testing Module runs. Review tags are
-  mutually exclusive.
+…` (see `pnpm ui visual:tag --help`). Skip/include preserves independent
+  review metadata; skipped stories are excluded from Playwright / Testing
+  Module runs. Review tags are mutually exclusive with one another.
 - Visual runs need a **complete** `storybook-static` (`index.json` +
   `iframe.html`). Incomplete static hangs Playwright on 404s; `--skip-build`
   still rebuilds when the build gate says reuse is unsafe.
