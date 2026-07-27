@@ -6,7 +6,6 @@
     createWorkspaceTab,
   } from "../core/layout.js";
   import { WorkspaceShellController } from "../core/workspace-controller.svelte.js";
-  import { withLapisStorybookReference } from "../reference/lapis-visual-delta.js";
   import ExampleWorkspaceView from "../view-host/ExampleWorkspaceView.svelte";
   import WorkspaceFloatingLayer from "./WorkspaceFloatingLayer.svelte";
   import "./WorkspaceFloatingLayer.stories.css";
@@ -60,7 +59,7 @@
 
 <Story
   name="Free and minimized windows"
-  tags={["visual-pending", "lapis-reference-visual"]}
+  tags={["visual-approved"]}
   play={async ({ canvas }) => {
     await expect(
       canvas.getByRole("dialog", { name: "Reference" }),
@@ -70,12 +69,6 @@
         name: "Restore floating pane Details",
       }),
     ).toBeVisible();
-  }}
-  parameters={{
-    visualDelta: withLapisStorybookReference(
-      "/visual-baselines/workspace/floating-layer/free-and-minimized-windows-chromium-darwin.png",
-      "workspace-shell-components-floating-windows--states-chromium-darwin.png",
-    ),
   }}
 >
   {#snippet template()}

@@ -45,7 +45,7 @@
 
 <Story
   name="Open palette"
-  tags={["visual-pending"]}
+  tags={["visual-approved"]}
   play={async ({ canvas }) => {
     await waitFor(() => expect(previewApp.ready).toBe(true));
     previewApp.commands.openPalette();
@@ -81,7 +81,7 @@
 
 <Story
   name="Searches and runs commands"
-  tags={["visual-pending"]}
+  tags={["visual-approved"]}
   play={async ({ canvas }) => {
     await waitFor(() => expect(searchApp.ready).toBe(true));
     searchApp.commands.openPalette();
@@ -125,7 +125,7 @@
 
 <Story
   name="Empty search"
-  tags={["visual-pending"]}
+  tags={["visual-approved"]}
   play={async ({ canvas }) => {
     await waitFor(() => expect(emptyApp.ready).toBe(true));
     emptyApp.commands.openPalette();

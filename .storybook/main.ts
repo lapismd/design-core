@@ -60,10 +60,6 @@ const config: StorybookConfig = {
   ],
   // `/visual-baselines` comes from the Visual Delta preset `staticDirs`.
   staticDirs: [
-    {
-      from: "../reference/lapis/workspace-shell",
-      to: "/lapis-reference",
-    },
     // Upstream docs images (`/img/sidebar/…`) vendored with `pnpm ui docs:vendor`.
     {
       from: "../vendor/shadcn-svelte-docs/static",

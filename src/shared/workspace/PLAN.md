@@ -529,15 +529,14 @@ workflow.
 - `pnpm check`: pass with zero Svelte errors or warnings.
 - No Visual Delta baseline or immutable Lapis reference was created or changed.
 
-### Canonical reference bridge
+### Historical canonical reference bridge
 
 - Copied the reviewed Lapis light and dark shell captures plus provenance into
   `reference/lapis/workspace-shell` without changing their SHA-256 digests.
-- Storybook serves those immutable assets from `/lapis-reference`, independently
-  of candidate images under `/visual-baselines`.
-- Added `Workspace/Reference/Canonical Lapis / Shell`, assembled only through
-  the target public API and tagged `lapis-reference-visual` plus
-  `visual-pending`.
+- Storybook originally served those immutable assets from `/lapis-reference`,
+  independently of candidate images under `/visual-baselines`.
+- The historical `Workspace/Reference/Canonical Lapis / Shell` story was
+  assembled only through the target public API.
 - Visual Delta receives independent viewport and device-scale metadata for the
   1280 × 900 DSF-3 candidate and 1440 × 960 DSF-1 canonical captures. The Dark
   visual mode uses the same story rather than adding a duplicate dark variant.
@@ -551,8 +550,8 @@ workflow.
   The isolated target preview on `9109` was inspected in light and dark mode.
 - The live target index now contains 72 Workspace stories: 71
   `visual-pending` and one intentionally `skip-visual` icon fallback.
-- Candidate creation or replacement remains paused for explicit human approval;
-  no candidate baseline was written.
+- This bridge was retired after explicit human approval of the migrated
+  component catalog. The assets remain offline provenance.
 
 ### Visual and public-surface completion audits
 
@@ -671,6 +670,34 @@ workflow.
   execution uses the same repository Storybook Vitest project directly.
 - The broad Storybook, visual, and repository gates remain intentionally
   paused until the manual Visual Delta review.
+
+### Approved target baseline close-out
+
+- Rebasing brought the migration stack onto the main UI workspace revision
+  `f3890f7a6acc` while preserving the accepted Workspace behavior.
+- Manual review accepted the current target rendering as the source of truth.
+  The 52 parity-only CY-0004 stories, the canonical review story, the source
+  capture command, the static `/lapis-reference` route, and the compare-only
+  Playwright project were retired.
+- Reusable component, plugin, settings, mobile, and full-demo stories remain
+  the active Storybook catalog. Every non-skipped Workspace story is classified
+  `visual-approved` and owns a deterministic candidate under
+  `tests/visual/storybook.spec.ts-snapshots/workspace/`.
+- Lapis v1 and v2 images, manifests, hashes, and crosswalks remain unchanged as
+  offline migration provenance. Normal tests and approved target baseline
+  updates do not serve or rewrite that archive.
+- The active catalog contains 74 Workspace stories: 70 `visual-approved`
+  stories with committed candidates and four interaction-only `skip-visual`
+  stories. The coverage audit reports zero pending, failed, missing, orphaned,
+  or contract-error entries.
+- The guarded update recreated all 70 active candidates from the accepted
+  rendering. A fresh production Storybook build and compare-only Chromium run
+  then passed all 70 candidates with no differing pixels.
+- Focused close-out validation passes: 21 Workspace/reference/plugin unit files
+  with 76 tests, 28 Workspace Storybook files with 74 interaction/accessibility
+  tests, seven real-pointer Workspace scenarios, the full 180-file Storybook
+  interaction suite with 501 tests, formatting, Svelte diagnostics, and the
+  production Storybook build.
 
 ## Completion gate
 

@@ -68,6 +68,7 @@
   --ui-workspace-border-strong: #d4d4d4;
   --ui-workspace-accent: var(--lapis-accent-hover);
   --ui-workspace-accent-foreground: #ffffff;
+  --ui-workspace-about-primary-foreground: #241733;
   --ui-workspace-selection: hsla(var(--lapis-accent-hsl), 0.2);
   --ui-workspace-destructive: #e93147;
   --ui-workspace-warning: #ec7500;

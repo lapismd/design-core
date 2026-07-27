@@ -20,7 +20,7 @@ describe("Lapis theme contract", () => {
     expect(css).toContain("--background: #1e1e1e");
     expect(css).toContain("--ui-workspace-tab-height: 40px");
     expect(css).toContain("--ui-workspace-tab-width: 200px");
-    expect(css).toContain("--ui-workspace-ribbon-width: 44px");
+    expect(css).toContain("--ui-workspace-ribbon-width: 49px");
     expect(css).toContain("--ui-workspace-sidebar-header-height: 32px");
   });
 

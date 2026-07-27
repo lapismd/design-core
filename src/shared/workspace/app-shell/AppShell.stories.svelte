@@ -228,7 +228,7 @@
 
 <Story
   name="Composable surfaces"
-  tags={["visual-pending"]}
+  tags={["visual-approved"]}
   play={async ({ canvas }) => {
     const notes = canvas.getByRole("tab", { name: "Notes" });
     await userEvent.click(notes);
@@ -266,7 +266,7 @@
 
 <Story
   name="Default surface"
-  tags={["visual-pending"]}
+  tags={["visual-approved"]}
   play={async ({ canvas }) => {
     const settingsButton = canvas.getByRole("button", {
       name: "Open settings",
@@ -307,7 +307,7 @@
 
 <Story
   name="Mobile surface"
-  tags={["visual-pending"]}
+  tags={["visual-approved"]}
   parameters={{
     visualDelta: {
       images: [
@@ -334,7 +334,7 @@
 
 <Story
   name="Explicit utility layers"
-  tags={["visual-pending"]}
+  tags={["visual-approved"]}
   play={async ({ canvas }) => {
     utilityApp.commands.openPalette();
     await expect(
@@ -374,7 +374,7 @@
 
 <Story
   name="Low-level sidebar and tabs adapters"
-  tags={["visual-pending"]}
+  tags={["visual-approved"]}
   parameters={{
     visualDelta: {
       images: [
@@ -400,7 +400,7 @@
 
 <Story
   name="Composable hotkey settings"
-  tags={["visual-pending"]}
+  tags={["visual-approved"]}
   parameters={{
     visualDelta: {
       images: [
@@ -455,7 +455,7 @@
 
 <Story
   name="Composable core plugin settings"
-  tags={["visual-pending"]}
+  tags={["visual-approved"]}
   parameters={{
     visualDelta: {
       images: [

@@ -19,6 +19,11 @@
   );
   --ui-workspace-accent: var(--primary);
   --ui-workspace-accent-foreground: var(--primary-foreground);
+  --ui-workspace-about-primary-foreground: color-mix(
+    in srgb,
+    var(--ui-workspace-accent) 15%,
+    #000
+  );
   --ui-workspace-selection: color-mix(in srgb, var(--primary) 14%, transparent);
   --ui-workspace-destructive: var(--destructive);
   --ui-workspace-warning: var(--warning, #f97316);

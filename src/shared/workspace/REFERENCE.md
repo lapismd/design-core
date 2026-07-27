@@ -28,12 +28,11 @@ tree.
 The copied `components/ui` tree is recorded for audit purposes only. It is not
 part of the target migration.
 
-## Immutable reference assets
+## Archived source reference assets
 
-The target-owned copies live under
-`reference/lapis/workspace-shell/` and are served in Storybook from
-`/lapis-reference`. The source package is no longer required to inspect these
-captures.
+The target-owned copies live under `reference/lapis/workspace-shell/`. They are
+retained as read-only migration provenance and are no longer served by
+Storybook or used by the active component catalog.
 
 | Asset                       | SHA-256                                                            |
 | --------------------------- | ------------------------------------------------------------------ |
@@ -46,13 +45,8 @@ Normal Visual Delta and test commands must never rewrite these assets.
 The complete standalone Storybook snapshot set is retained separately at
 `reference/lapis/workspace-shell/storybook/`. Its provenance manifest pins 52
 source-story captures to validated app-shell slice `b06d1e3f58c3`, records the
-1280 × 900 / 3× capture contract and inventory digest, and maps equivalent
-target stories. Mapped Visual Delta stories expose a **Lapis source** mode:
-
-- the committed target candidate remains the normal first baseline;
-- the reference image always comes from the immutable source snapshot tree;
-- the live target story switches to `theme: "lapis"` for source comparison;
-- normal candidate update commands cannot write the reference tree.
+1280 × 900 / 3× capture contract and inventory digest, and records the
+historical source-to-target mappings.
 
 `pnpm workspace:visual:audit` is the read-only development gate for Workspace
 story classification and snapshot ownership. After candidate creation is
@@ -61,31 +55,17 @@ baseline for every non-skipped Workspace story.
 
 The original 52-image set remains immutable as v1 provenance. Corrected v2
 references live in `reference/lapis/workspace-shell/storybook-v2/` and contain
-both light and dark Lapis captures for every canonical scene. The guarded
-capture command:
+both light and dark Lapis captures for every canonical scene. The recorded
+metadata includes Chromium, viewport, device scale, frozen time, per-story
+capture scope, and injected F-Mode/Notifications CSS hashes. The 79-story
+crosswalk remains an audit record.
 
-```bash
-pnpm workspace:lapis-reference:update
-```
-
-requires the pinned CY-0004 revision, writes to a temporary capture directory,
-and replaces v2 only after every image and manifest succeeds. It records
-Chromium, viewport, device scale, frozen time, per-story capture scope, and
-injected F-Mode/Notifications CSS hashes. Each scene uses an isolated Chromium
-process and stores the per-channel median of three same-context screenshots to
-reduce renderer-cache and single-paint noise. The 79-story crosswalk classifies
-each source story as a canonical parity scene or interaction-only coverage.
-
-The target parity catalog is under `Workspace/Parity/CY-0004`. Its 52 stories
-are rendered only through public Workspace APIs and linked to the corresponding
-v2 light and dark references. Compare-only zero-pixel verification is:
-
-```bash
-pnpm test:workspace-lapis-parity
-```
-
-Failures retain source, target, diff, DOM, and controller-state artifacts under
-`test-results/workspace-lapis-parity/`.
+After manual acceptance of the migrated UI, the parity-only stories, source
+capture command, source route, and compare-only Playwright project were retired.
+The committed Workspace component snapshots under
+`tests/visual/storybook.spec.ts-snapshots/workspace/` are now the visual source
+of truth. They are updated only through the repository's explicitly approved
+Visual Delta workflow and compared read-only during normal tests.
 
 ## Styling adaptation
 
@@ -136,6 +116,6 @@ coverage.
 | Source shell, framework, component, settings, overlay, and reference stories                                                    | Colocated `*.stories.svelte` and `*.mdx` files across each target family                                   | Complete |
 | Copied shadcn components and generated Tailwind utility wrappers                                                                | Not migrated; replaced by semantic HTML, direct Bits UI where needed, Paneforge, native CSS, and UI tokens | Excluded |
 
-The remaining migration gate is visual evidence rather than unimplemented
-component ownership: candidate baselines and the immutable Lapis reference
-matrix are tracked separately and require explicit review before approval.
+The active Workspace visual contract is the approved component-story baseline
+catalog. The immutable Lapis inventories remain available only for historical
+provenance.

@@ -221,7 +221,7 @@ function createSandbox(options: {
     )}\n`,
   );
   linkPackage(directory, packageName, service.root);
-  for (const dependency of ["svelte"]) {
+  for (const dependency of ["svelte", "tsx"]) {
     const target = path.join(service.root, "node_modules", dependency);
     if (existsSync(target)) linkPackage(directory, dependency, target);
   }

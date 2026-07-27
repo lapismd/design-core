@@ -6,7 +6,6 @@
   "scripts": {
     "storybook": "WATCHPACK_POLLING=250 node scripts/with-storybook-env.mjs node scripts/storybook-run.mjs",
     "storybook:ui": "WATCHPACK_POLLING=250 node scripts/with-storybook-env.mjs node scripts/storybook-run.mjs",
-    "storybook:workspace-parity": "STORYBOOK_PORT=9110 VISUAL_SERVER_PORT=9111 WATCHPACK_POLLING=250 node scripts/storybook-run.mjs",
     "storybook:stop": "node scripts/with-storybook-env.mjs bash scripts/storybook-stop.sh",
     "storybook:restart": "node scripts/with-storybook-env.mjs bash scripts/storybook-restart.sh",
     "storybook:check": "pnpm test:storybook && pnpm test:workspace:pointer && pnpm test:shell:pointer && pnpm build-storybook && pnpm workspace:visual:audit && pnpm test:visual-delta-panel && pnpm test:visual",
@@ -15,7 +14,6 @@
     "test:storybook": "vitest run --project storybook",
     "test:storybook:watch": "vitest --project storybook",
     "test:workspace:pointer": "node scripts/with-storybook-env.mjs playwright test -c playwright.workspace.config.ts",
-    "test:workspace-lapis-parity": "node scripts/with-storybook-env.mjs playwright test -c playwright.workspace-lapis-parity.config.ts",
     "test:shell:pointer": "node scripts/with-storybook-env.mjs playwright test -c playwright.shell.config.ts",
     "test:visual": "pnpm --filter storybook-addon-visual-delta build:node && pnpm visual-delta test --all --baseline-path-mode nested-import --external 'vendor/shadcn-svelte-docs/static/**'",
     "test:visual:affected": "pnpm --filter storybook-addon-visual-delta build:node && pnpm visual-delta test --affected --baseline-path-mode nested-import --external 'vendor/shadcn-svelte-docs/static/**'",
@@ -26,7 +24,6 @@
     "test:visual:report": "playwright show-report",
     "workspace:visual:audit": "node scripts/with-storybook-env.mjs tsx scripts/workspace-visual-audit.ts",
     "workspace:visual:verify": "node scripts/with-storybook-env.mjs tsx scripts/workspace-visual-audit.ts --require-baselines",
-    "workspace:lapis-reference:update": "CY0004_REFERENCE_UPDATE=1 tsx scripts/workspace-lapis-parity/capture-cy0004-references.ts",
     "visual-delta": "node scripts/with-storybook-env.mjs tsx packages/storybook-addon-visual-delta/src/node/cli.ts",
     "docs-mcp": "node packages/storybook-addon-docs-mcp/dist/node/cli.js",
     "ui": "tsx scripts/ui-generator/cli.ts",

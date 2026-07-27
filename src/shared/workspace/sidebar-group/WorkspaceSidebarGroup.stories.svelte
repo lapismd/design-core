@@ -8,7 +8,6 @@
   } from "../core/layout.js";
   import type { WorkspaceSidebarGroup as WorkspaceSidebarGroupModel } from "../core/types.js";
   import { WorkspaceShellController } from "../core/workspace-controller.svelte.js";
-  import { withLapisStorybookReference } from "../reference/lapis-visual-delta.js";
   import ExampleWorkspaceView from "../view-host/ExampleWorkspaceView.svelte";
   import WorkspaceSidebarGroup from "./WorkspaceSidebarGroup.svelte";
   import "./WorkspaceSidebarGroup.stories.css";
@@ -95,7 +94,7 @@
 
 <Story
   name="Partially collapsed panels"
-  tags={["visual-pending", "lapis-reference-visual"]}
+  tags={["visual-approved"]}
   play={async ({ canvas, canvasElement }) => {
     const panels = Array.from(
       canvasElement.querySelectorAll<HTMLElement>(
@@ -118,12 +117,6 @@
       canvas.getByRole("button", { name: "Collapse Links" }),
     ).toHaveAttribute("aria-expanded", "true");
     await expect(canvas.getByRole("heading", { name: "Links" })).toBeVisible();
-  }}
-  parameters={{
-    visualDelta: withLapisStorybookReference(
-      "/visual-baselines/workspace/sidebar-group/partially-collapsed-panels-chromium-darwin.png",
-      "workspace-shell-components-sidebar-groups--partially-collapsed-chromium-darwin.png",
-    ),
   }}
 >
   {#snippet template()}

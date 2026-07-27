@@ -47,7 +47,7 @@
 
 <Story
   name="Action and menu items"
-  tags={["visual-pending"]}
+  tags={["visual-approved"]}
   play={async ({ canvas }) => {
     await userEvent.click(
       canvas.getByRole("button", { name: "Workspace framework ready" }),

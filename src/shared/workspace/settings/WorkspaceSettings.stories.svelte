@@ -5,7 +5,6 @@
   import { AppShellController } from "../core/app-shell-controller.svelte.js";
   import { APP_SHELL_SETTING_IDS } from "../core/built-in-settings.svelte.js";
   import { AppShellPlugin } from "../core/plugin-manager.svelte.js";
-  import { withLapisStorybookReference } from "../reference/lapis-visual-delta.js";
   import AppSettingsContent from "./AppSettingsContent.svelte";
   import AppSettingsNavigation from "./AppSettingsNavigation.svelte";
   import AppSettingsRoot from "./AppSettingsRoot.svelte";
@@ -331,7 +330,7 @@
 
 <Story
   name="Controller-owned workspace settings"
-  tags={["visual-pending", "lapis-reference-visual"]}
+  tags={["visual-approved"]}
   play={async ({ canvas }) => {
     const search = canvas.getByRole("searchbox", {
       name: "Search settings",
@@ -341,13 +340,6 @@
     await expect(
       canvas.getByRole("heading", { name: "Settings Search Results" }),
     ).toBeVisible();
-  }}
-  parameters={{
-    visualDelta: withLapisStorybookReference(
-      "/visual-baselines/workspace/settings/controller-owned-workspace-settings-chromium-darwin.png",
-      "workspace-shell-components-declarative-settings--settings-chromium-darwin.png",
-      "viewport",
-    ),
   }}
 >
   {#snippet template()}
@@ -366,7 +358,7 @@
 
 <Story
   name="Updates appearance and mobile configuration"
-  tags={["visual-pending"]}
+  tags={["visual-approved"]}
   play={async ({ canvas }) => {
     await userEvent.click(canvas.getByRole("button", { name: "Appearance" }));
     const scheme = canvas.getByRole("combobox", {
@@ -482,7 +474,7 @@
 
 <Story
   name="All supported controls"
-  tags={["visual-pending", "lapis-reference-visual"]}
+  tags={["visual-approved"]}
   play={async ({ canvas }) => {
     const workspaceName = canvas.getByLabelText("Workspace name");
     await userEvent.clear(workspaceName);
@@ -504,13 +496,6 @@
     await expect(
       canvas.getByRole("heading", { name: "Host integration" }),
     ).toBeVisible();
-  }}
-  parameters={{
-    visualDelta: withLapisStorybookReference(
-      "/visual-baselines/workspace/settings/all-supported-controls-chromium-darwin.png",
-      "workspace-shell-components-declarative-settings--all-supported-controls-chromium-darwin.png",
-      "viewport",
-    ),
   }}
 >
   {#snippet template()}
@@ -534,7 +519,7 @@
 
 <Story
   name="Collections and extension controls"
-  tags={["visual-pending"]}
+  tags={["visual-approved"]}
   play={async ({ canvas, canvasElement }) => {
     await userEvent.click(
       canvas.getByRole("button", { name: "Host integration" }),
@@ -605,7 +590,7 @@
 
 <Story
   name="Composable AppShell settings surface"
-  tags={["visual-pending"]}
+  tags={["visual-approved"]}
   play={async ({ canvas }) => {
     await userEvent.click(canvas.getByRole("button", { name: "Core plugins" }));
     await expect(

@@ -103,7 +103,7 @@
 
 .ui-workspace-about__actions button[data-variant="primary"] {
   border-color: var(--ui-workspace-accent);
-  color: var(--ui-workspace-accent-foreground);
+  color: var(--ui-workspace-about-primary-foreground);
   background: var(--ui-workspace-accent);
 }
 

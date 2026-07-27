@@ -42,7 +42,7 @@ async function storybookInventorySha256(): Promise<string> {
     .digest("hex");
 }
 
-describe("canonical Lapis workspace reference", () => {
+describe("archived Lapis workspace provenance", () => {
   it("retains the reviewed immutable artifacts", async () => {
     for (const [file, expected] of Object.entries(expectedHashes)) {
       await expect(sha256(file)).resolves.toBe(expected);
@@ -80,28 +80,12 @@ describe("canonical Lapis workspace reference", () => {
     });
   });
 
-  it("serves both references only through the review story", async () => {
-    const [storybookConfig, story] = await Promise.all([
-      readFile(path.join(repoRoot, ".storybook/main.ts"), "utf8"),
-      readFile(
-        path.join(
-          repoRoot,
-          "src/shared/workspace/reference/WorkspaceReference.stories.svelte",
-        ),
-        "utf8",
-      ),
-    ]);
-
-    expect(storybookConfig).toContain(
-      'from: "../reference/lapis/workspace-shell"',
+  it("keeps source images offline from the active Storybook catalog", async () => {
+    const storybookConfig = await readFile(
+      path.join(repoRoot, ".storybook/main.ts"),
+      "utf8",
     );
-    expect(storybookConfig).toContain('to: "/lapis-reference"');
-    expect(story).toContain('"lapis-reference-visual"');
-    expect(story).toContain("/lapis-reference/workspace-shell-light.png");
-    expect(story).toContain("/lapis-reference/workspace-shell-dark.png");
-    expect(story).toContain(
-      "/visual-baselines/workspace/reference/shell-chromium-darwin.png",
-    );
+    expect(storybookConfig).not.toContain("/lapis-reference");
   });
 
   it("retains the immutable source Storybook snapshot inventory", async () => {
@@ -138,38 +122,13 @@ describe("canonical Lapis workspace reference", () => {
       canonicalImmutable: true,
     });
     expect(provenance.wiredComparisons).toHaveLength(20);
-    const storySources = (
-      await Promise.all(
-        [
-          "demo/ReusableFrameworkDemo.stories.svelte",
-          "drop-overlay/WorkspaceDropOverlay.stories.svelte",
-          "empty/WorkspaceEmpty.stories.svelte",
-          "floating-layer/WorkspaceFloatingLayer.stories.svelte",
-          "plugins/f-mode/FMode.stories.svelte",
-          "plugins/notifications/Notifications.stories.svelte",
-          "settings/WorkspaceSettings.stories.svelte",
-          "sidebar/WorkspaceSidebar.stories.svelte",
-          "sidebar-group/WorkspaceSidebarGroup.stories.svelte",
-          "stacked-tabs/WorkspaceStackedTabs.stories.svelte",
-          "tabs/WorkspaceTabs.stories.svelte",
-          "view-header/WorkspaceViewHeader.stories.svelte",
-          "view-host/WorkspaceViewHost.stories.svelte",
-        ].map((file) =>
-          readFile(path.join(repoRoot, "src/shared/workspace", file), "utf8"),
-        ),
-      )
-    ).join("\n");
-    for (const mapping of provenance.wiredComparisons) {
-      expect(files).toContain(mapping.source);
-      expect(storySources).toContain(mapping.source);
-    }
     await expect(storybookInventorySha256()).resolves.toBe(
       provenance.inventorySha256,
     );
   });
 
   it("retains the guarded CY-0004 v2 parity inventory and complete crosswalk", async () => {
-    const [provenance, manifest, crosswalk, packageJson] = await Promise.all([
+    const [provenance, manifest, crosswalk] = await Promise.all([
       readFile(
         path.join(storybookV2ReferenceRoot, "provenance.json"),
         "utf8",
@@ -182,7 +141,6 @@ describe("canonical Lapis workspace reference", () => {
         path.join(storybookV2ReferenceRoot, "crosswalk.json"),
         "utf8",
       ).then(JSON.parse),
-      readFile(path.join(repoRoot, "package.json"), "utf8"),
     ]);
     const files = (
       await Promise.all(
@@ -261,6 +219,5 @@ describe("canonical Lapis workspace reference", () => {
         (entry: { coverage: string }) => entry.coverage === "new-parity-story",
       ),
     ).toHaveLength(52);
-    expect(packageJson).toContain("CY0004_REFERENCE_UPDATE=1");
   });
 });

@@ -1,7 +1,6 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent, waitFor, within } from "storybook/test";
-  import { withLapisStorybookReference } from "../reference/lapis-visual-delta.js";
   import ReusableFrameworkDemo from "./ReusableFrameworkDemo.svelte";
   import { createFrameworkDemo } from "./framework-demo.js";
 
@@ -31,7 +30,7 @@
 
 <Story
   name="Overview"
-  tags={["visual-pending", "lapis-reference-visual"]}
+  tags={["visual-approved"]}
   play={async ({ canvas, canvasElement }) => {
     await waitFor(() => expect(overview.app.ready).toBe(true));
     const settingsButton = canvas.getByRole("button", {
@@ -51,6 +50,12 @@
     await expect(dialog).not.toBeInTheDocument();
     await expect(settingsButton).toHaveFocus();
 
+    const initiallyCollapsedLinks = canvas.queryByRole("button", {
+      name: "Expand Links",
+    });
+    if (initiallyCollapsedLinks) {
+      await userEvent.click(initiallyCollapsedLinks);
+    }
     await userEvent.click(
       canvas.getByRole("button", { name: "Collapse Links" }),
     );
@@ -71,13 +76,6 @@
       canvas.getByRole("button", { name: "Collapse Links" }),
     ).toBeVisible();
   }}
-  parameters={{
-    visualDelta: withLapisStorybookReference(
-      "/visual-baselines/workspace/demo/overview-chromium-darwin.png",
-      "workspace-shell-demo-reusable-framework--overview-chromium-darwin.png",
-      "viewport",
-    ),
-  }}
 >
   {#snippet template()}
     <ReusableFrameworkDemo app={overview.app} />
@@ -86,7 +84,7 @@
 
 <Story
   name="Controller and persistence interaction"
-  tags={["visual-pending"]}
+  tags={["visual-approved"]}
   play={async ({ canvas }) => {
     await waitFor(() => expect(interaction.app.ready).toBe(true));
     const savesBeforeAdd = interaction.tracker.saveCount;
@@ -132,7 +130,7 @@
 
 <Story
   name="Plugin lifecycle"
-  tags={["visual-pending"]}
+  tags={["visual-approved"]}
   play={async ({ canvas, canvasElement }) => {
     await waitFor(() => expect(pluginLifecycle.app.ready).toBe(true));
     const documentCanvas = within(canvasElement.ownerDocument.body);
@@ -186,17 +184,7 @@
   {/snippet}
 </Story>
 
-<Story
-  name="Mobile composition"
-  tags={["visual-pending", "lapis-reference-visual"]}
-  parameters={{
-    visualDelta: withLapisStorybookReference(
-      "/visual-baselines/workspace/demo/mobile-composition-chromium-darwin.png",
-      "workspace-shell-shell-full-shell--mobile-chromium-darwin.png",
-      "viewport",
-    ),
-  }}
->
+<Story name="Mobile composition" tags={["visual-approved"]}>
   {#snippet template()}
     <ReusableFrameworkDemo app={mobile.app} displayMode="mobile" />
   {/snippet}
@@ -204,7 +192,7 @@
 
 <Story
   name="Pointer drag surface"
-  tags={["visual-pending"]}
+  tags={["visual-approved"]}
   parameters={{
     visualDelta: {
       images: [

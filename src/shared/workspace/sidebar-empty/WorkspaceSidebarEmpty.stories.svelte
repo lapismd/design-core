@@ -23,7 +23,7 @@
 
 <Story
   name="Empty left sidebar"
-  tags={["visual-pending"]}
+  tags={["visual-approved"]}
   play={async ({ canvas }) => {
     await expect(
       canvas.getByRole("heading", { name: "Heads up!" }),
@@ -62,7 +62,7 @@
 
 <Story
   name="Empty right sidebar"
-  tags={["visual-pending"]}
+  tags={["visual-approved"]}
   play={async ({ canvasElement }) => {
     await expect(
       canvasElement.querySelector('[data-workspace-sidebar-empty="right"]'),

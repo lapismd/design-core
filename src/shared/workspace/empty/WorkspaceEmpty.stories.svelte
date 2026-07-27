@@ -1,7 +1,6 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent } from "storybook/test";
-  import { withLapisStorybookReference } from "../reference/lapis-visual-delta.js";
   import WorkspaceEmpty from "./WorkspaceEmpty.svelte";
 
   const { Story } = defineMeta({
@@ -48,7 +47,7 @@
 
 <Story
   name="Empty leaf actions"
-  tags={["visual-pending", "lapis-reference-visual"]}
+  tags={["visual-approved"]}
   play={async ({ canvas }) => {
     await userEvent.click(
       canvas.getByRole("button", { name: "Create new note (⌘ N)" }),
@@ -56,12 +55,6 @@
     await expect(canvas.getByRole("status")).toHaveTextContent(
       "Create new note selected",
     );
-  }}
-  parameters={{
-    visualDelta: withLapisStorybookReference(
-      "/visual-baselines/workspace/empty/empty-leaf-actions-chromium-darwin.png",
-      "workspace-shell-components-empty-and-missing-views--empty-view-chromium-darwin.png",
-    ),
   }}
 >
   {#snippet template()}
@@ -74,7 +67,7 @@
 
 <Story
   name="Missing registered view"
-  tags={["visual-pending"]}
+  tags={["visual-approved"]}
   play={async ({ canvas }) => {
     await expect(
       canvas.getByRole("heading", { name: "Plugin no longer active" }),

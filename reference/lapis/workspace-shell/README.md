@@ -1,7 +1,8 @@
 # Lapis workspace-shell reference
 
-These captures are immutable visual evidence for the reusable Workspace
-renderer.
+These captures are an immutable historical record of the Workspace migration.
+They are no longer served by Storybook or used as the active visual acceptance
+authority.
 
 - Source application: Lapis workspace
 - Source revision: `a371198e495d9e4e465c2960a04b3a4fd11f4023`
@@ -11,8 +12,9 @@ renderer.
 - Browser: Playwright pinned Chromium
 
 The exact capture metadata is in `provenance.json`. Normal Storybook and Visual
-Delta commands must not update these PNGs. Candidate snapshots live separately
-under `tests/visual/storybook.spec.ts-snapshots/workspace/`.
+Delta commands must not update these PNGs. The approved component snapshots
+under `tests/visual/storybook.spec.ts-snapshots/workspace/` are the current
+visual source of truth.
 
 ## Source Storybook references
 
@@ -24,8 +26,8 @@ workspace-shell slice `b06d1e3f58c3`.
 hash, and the initial manual mappings. It remains available for provenance and
 must never be rewritten.
 
-`storybook-v2/` is the corrected parity authority pending manual approval. It
-contains 52 canonical scenes in both light and dark Lapis modes:
+`storybook-v2/` is the final corrected parity archive. It contains 52 canonical
+scenes in both light and dark Lapis modes:
 
 - 1280 × 900 CSS viewport and device scale factor 3;
 - the target repository's pinned Chromium build;
@@ -42,16 +44,9 @@ stories are canonical visual scenes; the remaining 27 retain interaction-only
 coverage. `manifest.json` and `provenance.json` record every asset hash and the
 complete inventory hash.
 
-Normal tests are compare-only. The only command allowed to replace v2 is the
-explicitly guarded capture:
-
-```bash
-CY0004_STORYBOOK_URL=http://127.0.0.1:6006 \
-  pnpm workspace:lapis-reference:update
-```
-
-The command also verifies that the read-only source workspace remains pinned to
-`b06d1e3f58c3`. It never writes v1.
+The capture harness and parity-only stories were retired after manual approval
+of the migrated component catalog. Both v1 and v2 are read-only provenance and
+must not be regenerated.
 
 Expected SHA-256 digests:
 
@@ -62,4 +57,4 @@ Expected SHA-256 digests:
 | `provenance.json`           | `853b8fe4e84fa1915018c3055ea8ed88796aaabec944782fafcff423e70ec5b2` |
 
 The v2 inventory SHA-256 is
-`1d6acbaa063bb387095624205d87cb8bf7e12b4e11ea29b9581efffb7fbd620e`.
+`0c52a4a4881d651d98b5d26220ed34568153712d601c36c592014600c658ea63`.

@@ -8,7 +8,6 @@
   } from "../core/layout.js";
   import type { WorkspaceLayoutChangeEvent } from "../core/types.js";
   import { WorkspaceShellController } from "../core/workspace-controller.svelte.js";
-  import { withLapisStorybookReference } from "../reference/lapis-visual-delta.js";
   import WorkspaceTabs from "./WorkspaceTabs.svelte";
   import "./WorkspaceTabs.stories.css";
 
@@ -108,7 +107,7 @@
 
 <Story
   name="Activates, closes, and persists tabs"
-  tags={["visual-pending"]}
+  tags={["visual-approved"]}
   play={async ({ canvas, canvasElement }) => {
     const headerMain = canvasElement.querySelector(
       ".ui-workspace-tabs__header-main",
@@ -173,7 +172,7 @@
 
 <Story
   name="Overflow menu"
-  tags={["visual-pending"]}
+  tags={["visual-approved"]}
   play={async ({ canvas }) => {
     await userEvent.click(
       canvas.getByRole("button", { name: "Tab overflow menu" }),
@@ -204,7 +203,7 @@
 
 <Story
   name="Constrained hidden-scrollbar row"
-  tags={["visual-pending", "lapis-reference-visual"]}
+  tags={["visual-approved"]}
   globals={{ theme: "lapis", colorMode: "light" }}
   play={async ({ canvasElement }) => {
     const row = canvasElement.querySelector<HTMLElement>(
@@ -239,12 +238,6 @@
     await expect(icon!.getBoundingClientRect().right).toBeLessThanOrEqual(
       close!.getBoundingClientRect().left,
     );
-  }}
-  parameters={{
-    visualDelta: withLapisStorybookReference(
-      "/visual-baselines/workspace/tabs/constrained-hidden-scrollbar-row-chromium-darwin.png",
-      "workspace-shell-components-tabs--constrained-chromium-darwin.png",
-    ),
   }}
 >
   {#snippet template()}

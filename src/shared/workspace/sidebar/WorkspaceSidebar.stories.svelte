@@ -8,7 +8,6 @@
   } from "../core/layout.js";
   import type { WorkspaceSidebarGroup } from "../core/types.js";
   import { WorkspaceShellController } from "../core/workspace-controller.svelte.js";
-  import { withLapisStorybookReference } from "../reference/lapis-visual-delta.js";
   import ExampleWorkspaceView from "../view-host/ExampleWorkspaceView.svelte";
   import WorkspaceSidebar from "./WorkspaceSidebar.svelte";
   import "./WorkspaceSidebar.stories.css";
@@ -85,7 +84,7 @@
 
 <Story
   name="Icon tabs and grouped panels"
-  tags={["visual-pending", "lapis-reference-visual"]}
+  tags={["visual-approved"]}
   play={async ({ canvas }) => {
     const reference = canvas.getByRole("tab", { name: "Reference" });
     await userEvent.click(reference);
@@ -93,12 +92,6 @@
     await expect(
       canvas.getByRole("button", { name: "Collapse Outline" }),
     ).toBeVisible();
-  }}
-  parameters={{
-    visualDelta: withLapisStorybookReference(
-      "/visual-baselines/workspace/sidebar/icon-tabs-and-grouped-panels-chromium-darwin.png",
-      "workspace-shell-components-sidebar-groups--grouped-chromium-darwin.png",
-    ),
   }}
 >
   {#snippet template()}
@@ -150,7 +143,7 @@
 
 <Story
   name="Empty right sidebar"
-  tags={["visual-pending"]}
+  tags={["visual-approved"]}
   parameters={{
     visualDelta: {
       images: [

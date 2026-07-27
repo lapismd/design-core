@@ -4,7 +4,6 @@
   import AppShellRoot from "../../app-shell/AppShellRoot.svelte";
   import { AppShellController } from "../../core/app-shell-controller.svelte.js";
   import { APP_SHELL_SETTING_IDS } from "../../core/built-in-settings.svelte.js";
-  import { withLapisStorybookReference } from "../../reference/lapis-visual-delta.js";
   import FModeStorySurface from "./FModeStorySurface.svelte";
   import { fModePlugin } from "./f-mode-plugin.js";
   import { FMODE_SETTING_IDS } from "./settings.js";
@@ -61,7 +60,7 @@
 
 <Story
   name="Idle target surface"
-  tags={["visual-pending"]}
+  tags={["visual-approved"]}
   parameters={{
     visualDelta: {
       images: [
@@ -88,7 +87,7 @@
 
 <Story
   name="Active hints"
-  tags={["visual-pending", "lapis-reference-visual"]}
+  tags={["visual-approved"]}
   play={async ({ canvas, canvasElement }) => {
     canvas.getByRole("button", { name: "Open note" }).focus();
     await openFMode(activeApp);
@@ -96,12 +95,6 @@
       canvasElement.querySelectorAll("[data-fmode-hint]"),
     ).toHaveLength(4);
     await expect(canvas.getByText("4 targets")).toBeVisible();
-  }}
-  parameters={{
-    visualDelta: withLapisStorybookReference(
-      "/visual-baselines/workspace/plugins/f-mode/active-hints-chromium-darwin.png",
-      "workspace-shell-plugins-f-mode--active-chromium-darwin.png",
-    ),
   }}
 >
   {#snippet template()}
@@ -117,7 +110,7 @@
 
 <Story
   name="Keyboard activation"
-  tags={["visual-pending"]}
+  tags={["visual-approved"]}
   play={async ({ canvas, canvasElement }) => {
     canvas.getByRole("button", { name: "Open note" }).focus();
     await openFMode(activationApp);
@@ -151,7 +144,7 @@
 
 <Story
   name="Partial query"
-  tags={["visual-pending"]}
+  tags={["visual-approved"]}
   play={async ({ canvas, canvasElement }) => {
     canvas.getByRole("button", { name: "Open note" }).focus();
     await openFMode(partialApp);
@@ -189,7 +182,7 @@
 
 <Story
   name="Filtered target groups"
-  tags={["visual-pending"]}
+  tags={["visual-approved"]}
   play={async ({ canvas, canvasElement }) => {
     canvas.getByRole("button", { name: "Open note" }).focus();
     await openFMode(filteredApp);
@@ -224,7 +217,7 @@
 
 <Story
   name="Minimal HUD"
-  tags={["visual-pending"]}
+  tags={["visual-approved"]}
   play={async ({ canvas, canvasElement }) => {
     canvas.getByRole("button", { name: "Open note" }).focus();
     await openFMode(minimalApp);

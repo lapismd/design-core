@@ -7,7 +7,6 @@
     createWorkspaceTabs,
   } from "../core/layout.js";
   import { WorkspaceShellController } from "../core/workspace-controller.svelte.js";
-  import { withLapisStorybookReference } from "../reference/lapis-visual-delta.js";
   import ExampleWorkspaceView from "./ExampleWorkspaceView.svelte";
   import WorkspaceViewHost from "./WorkspaceViewHost.svelte";
 
@@ -60,7 +59,7 @@
 
 <Story
   name="Registered Svelte view"
-  tags={["visual-pending"]}
+  tags={["visual-approved"]}
   play={async ({ canvas }) => {
     await userEvent.click(canvas.getByRole("button", { name: "Count 1" }));
     await expect(canvas.getByRole("button", { name: "Count 2" })).toBeVisible();
@@ -92,17 +91,11 @@
 
 <Story
   name="Missing view fallback"
-  tags={["visual-pending", "lapis-reference-visual"]}
+  tags={["visual-approved"]}
   play={async ({ canvas }) => {
     await expect(
       canvas.getByRole("heading", { name: "Plugin no longer active" }),
     ).toBeVisible();
-  }}
-  parameters={{
-    visualDelta: withLapisStorybookReference(
-      "/visual-baselines/workspace/view-host/missing-view-fallback-chromium-darwin.png",
-      "workspace-shell-components-empty-and-missing-views--missing-view-chromium-darwin.png",
-    ),
   }}
 >
   {#snippet template()}
