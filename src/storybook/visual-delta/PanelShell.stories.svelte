@@ -638,11 +638,11 @@
     const page = within(document.body);
 
     await userEvent.click(
-      scope.getByRole("button", { name: /More Visual Delta actions/i }),
+      scope.getByRole("button", { name: /More Default baseline actions/i }),
     );
     await userEvent.click(
       await waitFor(() =>
-        page.getByRole("button", { name: /Update baselines/i }),
+        page.getByRole("button", { name: /Update Default baseline/i }),
       ),
     );
     await waitFor(() =>

@@ -256,9 +256,14 @@
     ).toHaveTextContent("Body for Default");
 
     await userEvent.click(
-      scope.getByRole("button", {
-        name: "Open Default baseline history",
-      }),
+      scope.getByRole("button", { name: "More Default baseline actions" }),
+    );
+    await userEvent.click(
+      await waitFor(() =>
+        within(document.body).getByRole("button", {
+          name: "Open Default baseline history",
+        }),
+      ),
     );
     await expect(scope.getByTestId("fixture-history-opened")).toHaveTextContent(
       "Default",

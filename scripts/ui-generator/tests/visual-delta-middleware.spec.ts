@@ -74,20 +74,25 @@ describe("grepFromStoryIds", () => {
     expect(grepFromStoryIds([])).toBeUndefined();
   });
 
-  it("escapes a single story id and anchors the full leaf title", () => {
+  it("escapes a single story id and anchors its unique title suffix", () => {
     expect(
       grepFromStoryIds(["shadcn-disclosure-accordion--opens-a-section"]),
-    ).toBe("(?:^| › )shadcn-disclosure-accordion--opens-a-section$");
+    ).toBe("(?:^|\\s)shadcn-disclosure-accordion--opens-a-section$");
   });
 
   it("ORs exact ids even when they share a component", () => {
-    expect(
-      grepFromStoryIds([
-        "shadcn-disclosure-accordion--opens-a-section",
-        "shadcn-disclosure-accordion--default",
-      ]),
-    ).toBe(
-      "(?:^| › )(?:shadcn-disclosure-accordion--opens-a-section|shadcn-disclosure-accordion--default)$",
+    const grep = grepFromStoryIds([
+      "shadcn-disclosure-accordion--opens-a-section",
+      "shadcn-disclosure-accordion--default",
+    ]);
+    expect(grep).toBe(
+      "(?:^|\\s)(?:shadcn-disclosure-accordion--opens-a-section|shadcn-disclosure-accordion--default)$",
+    );
+    const playwrightTitle =
+      "Storybook visual baselines shadcn-disclosure-accordion--opens-a-section";
+    expect(new RegExp(grep!).test(playwrightTitle)).toBe(true);
+    expect(new RegExp(grep!).test(`${playwrightTitle}-with-extra-suffix`)).toBe(
+      false,
     );
   });
 
@@ -98,8 +103,17 @@ describe("grepFromStoryIds", () => {
         "shadcn-disclosure-accordion--default",
       ]),
     ).toBe(
-      "(?:^| › )(?:shadcn-actions-button--default|shadcn-disclosure-accordion--default)$",
+      "(?:^|\\s)(?:shadcn-actions-button--default|shadcn-disclosure-accordion--default)$",
     );
+  });
+
+  it("does not select a different story whose id merely shares the suffix", () => {
+    const grep = grepFromStoryIds(["shadcn-actions-button--default"]);
+    expect(
+      new RegExp(grep!).test(
+        "Storybook visual baselines other-shadcn-actions-button--default",
+      ),
+    ).toBe(false);
   });
 });
 
@@ -111,7 +125,7 @@ describe("exactStoryIdGrep", () => {
         "shadcn-overlays-dropdown-menu--checkboxes",
       ]),
     ).toBe(
-      "(?:^| › )(?:shadcn-overlays-dropdown-menu--chooses-a-menu-item|shadcn-overlays-dropdown-menu--checkboxes)$",
+      "(?:^|\\s)(?:shadcn-overlays-dropdown-menu--chooses-a-menu-item|shadcn-overlays-dropdown-menu--checkboxes)$",
     );
   });
 });

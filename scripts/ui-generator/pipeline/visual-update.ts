@@ -369,5 +369,5 @@ export function exactStoryIdGrep(storyIds: readonly string[]): string {
     throw new Error("At least one exact story id is required");
   }
   const leaf = exact.length === 1 ? exact[0] : `(?:${exact.join("|")})`;
-  return `(?:^| › )${leaf}$`;
+  return `(?:^|\\s)${leaf}$`;
 }
