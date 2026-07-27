@@ -1,3 +1,4 @@
+import { spawnSync } from "node:child_process";
 import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
@@ -59,5 +60,27 @@ describe("storybook local environment", () => {
     const env: Record<string, string> = {};
     expect(loadStorybookLocalEnv({ root: temporaryRoot(), env })).toEqual([]);
     expect(env).toEqual({});
+  });
+
+  it("keeps wrapped host commands on the main 9009 lane by default", () => {
+    const env = { ...process.env };
+    delete env.STORYBOOK_PORT;
+    const result = spawnSync(
+      process.execPath,
+      [
+        path.resolve("scripts/with-storybook-env.mjs"),
+        process.execPath,
+        "-e",
+        "process.stdout.write(process.env.STORYBOOK_PORT ?? '')",
+      ],
+      {
+        cwd: temporaryRoot(),
+        env,
+        encoding: "utf8",
+      },
+    );
+
+    expect(result.status).toBe(0);
+    expect(result.stdout).toBe("9009");
   });
 });

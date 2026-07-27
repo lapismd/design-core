@@ -13,8 +13,13 @@
   padding: 1.5rem;
 }
 
-/* Storybook applies its fullscreen body class to Docs as well as Canvas. */
-body.sb-main-fullscreen #storybook-root {
+/*
+ * Workspace and shell stories are application surfaces, so they deliberately
+ * occupy the complete capture viewport. Regular catalog stories retain the
+ * longstanding 1.5rem root inset above; widening every fullscreen story here
+ * changes a 1232px component capture into 1280px.
+ */
+body.sb-main-fullscreen[data-ui-catalog-full-viewport] #storybook-root {
   width: 100%;
   height: 100vh;
   min-height: 0;

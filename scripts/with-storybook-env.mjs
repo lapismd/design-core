@@ -3,6 +3,11 @@ import { spawn } from "node:child_process";
 import { loadStorybookLocalEnv } from "./storybook-local-env.mjs";
 
 loadStorybookLocalEnv();
+// Keep every host command on the same default lane as storybook-run.mjs.
+// The portable addon defaults to 6006/6007, but this catalog's main lane is
+// 9009/9010; leaving STORYBOOK_PORT unset can reuse another checkout's static
+// server and produce misleading comparisons.
+process.env.STORYBOOK_PORT ??= "9009";
 
 const [command, ...args] = process.argv.slice(2);
 if (!command) {

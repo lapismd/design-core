@@ -1,6 +1,7 @@
 import type { Preview } from "@storybook/svelte-vite";
 import { withThemeByDataAttribute } from "@storybook/addon-themes";
 import "../src/storybook.css";
+import { syncCatalogStoryLayout } from "../src/storybook/catalog-layout.js";
 import { installFocusPrototypeGuard } from "./focus-prototype-guard";
 
 // Guard Storybook 10.5 focus instrumentation before Docs/react-aria wraps it.
@@ -41,6 +42,7 @@ const preview: Preview = {
       // Re-apply if Storybook installed its accessor after the first attempt.
       installFocusPrototypeGuard();
       if (typeof document !== "undefined") {
+        syncCatalogStoryLayout(document, context);
         document.documentElement.classList.toggle(
           "dark",
           context.globals.colorMode === "dark",
