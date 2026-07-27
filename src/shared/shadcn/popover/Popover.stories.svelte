@@ -45,7 +45,7 @@
       passThresholdPercent: 0.1,
     },
   }}
-  tags={["visual-ready"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <div class="flex flex-col gap-3">
@@ -76,16 +76,7 @@
     ).toBeVisible();
   }}
   parameters={{
-    visualDelta: {
-      images: [
-        "/visual-baselines/shadcn/popover/open-panel-chromium-darwin.png",
-      ],
-      opacity: 0.5,
-      colorInversion: false,
-      align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
+    visualDelta: {"images":["/visual-baselines/shadcn/popover/open-panel-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"viewport","placement":"right","passThresholdPercent":0.1},
   }}
 >
   {#snippet template()}
