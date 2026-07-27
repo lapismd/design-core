@@ -116,7 +116,7 @@
 <Story
   name="Textarea"
   exportName="Textarea"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-failed"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -218,7 +218,7 @@
 <Story
   name="Custom Input"
   exportName="CustomInput"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-failed"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {

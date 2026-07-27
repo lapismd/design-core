@@ -24,7 +24,7 @@
 <Story
   name="Preview"
   exportName="Preview"
-  tags={["upstream-example", "visual-pending"]}
+  tags={["upstream-example", "visual-ready"]}
   parameters={{
     visualDelta: {
       images: [
@@ -56,7 +56,7 @@
 <Story
   name="Orientation"
   exportName="Orientation"
-  tags={["upstream-example", "visual-pending"]}
+  tags={["upstream-example", "visual-ready"]}
   parameters={{
     visualDelta: {
       images: [
@@ -91,7 +91,7 @@
 <Story
   name="Size"
   exportName="Size"
-  tags={["upstream-example", "visual-pending"]}
+  tags={["upstream-example", "visual-ready"]}
   parameters={{
     visualDelta: {
       images: [
@@ -127,7 +127,7 @@
 <Story
   name="Nested"
   exportName="Nested"
-  tags={["upstream-example", "visual-pending"]}
+  tags={["upstream-example", "visual-ready"]}
   parameters={{
     visualDelta: {
       images: [
@@ -163,7 +163,7 @@
 <Story
   name="Separator"
   exportName="Separator"
-  tags={["upstream-example", "visual-pending"]}
+  tags={["upstream-example", "visual-ready"]}
   parameters={{
     visualDelta: {
       images: [
@@ -199,7 +199,7 @@
 <Story
   name="Split"
   exportName="Split"
-  tags={["upstream-example", "visual-pending"]}
+  tags={["upstream-example", "visual-ready"]}
   parameters={{
     visualDelta: {
       images: [
@@ -235,7 +235,7 @@
 <Story
   name="Input"
   exportName="Input"
-  tags={["upstream-example", "visual-pending"]}
+  tags={["upstream-example", "visual-ready"]}
   parameters={{
     visualDelta: {
       images: [
@@ -270,7 +270,7 @@
 <Story
   name="Input Group"
   exportName="InputGroup"
-  tags={["upstream-example", "visual-pending"]}
+  tags={["upstream-example", "visual-ready"]}
   parameters={{
     visualDelta: {
       images: [
@@ -306,7 +306,7 @@
 <Story
   name="Dropdown Menu"
   exportName="DropdownMenu"
-  tags={["upstream-example", "visual-pending"]}
+  tags={["upstream-example", "visual-ready"]}
   parameters={{
     visualDelta: {
       images: [
@@ -341,7 +341,7 @@
 <Story
   name="Select"
   exportName="Select"
-  tags={["upstream-example", "visual-pending"]}
+  tags={["upstream-example", "visual-ready"]}
   parameters={{
     visualDelta: {
       images: [
@@ -376,7 +376,7 @@
 <Story
   name="Popover"
   exportName="Popover"
-  tags={["upstream-example", "visual-pending"]}
+  tags={["upstream-example", "visual-ready"]}
   parameters={{
     visualDelta: {
       images: [

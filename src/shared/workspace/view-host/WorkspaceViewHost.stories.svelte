@@ -59,7 +59,7 @@
 
 <Story
   name="Registered Svelte view"
-  tags={["visual-approved"]}
+  tags={["visual-ready"]}
   play={async ({ canvas }) => {
     await userEvent.click(canvas.getByRole("button", { name: "Count 1" }));
     await expect(canvas.getByRole("button", { name: "Count 2" })).toBeVisible();
@@ -91,7 +91,7 @@
 
 <Story
   name="Missing view fallback"
-  tags={["visual-approved"]}
+  tags={["visual-ready"]}
   play={async ({ canvas }) => {
     await expect(
       canvas.getByRole("heading", { name: "Plugin no longer active" }),

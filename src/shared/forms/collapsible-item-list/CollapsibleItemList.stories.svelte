@@ -28,7 +28,7 @@
     await userEvent.click(canvas.getByRole("button", { name: "Add item" }));
     await expect(canvas.getByText("Gamma")).toBeVisible();
   }}
-  tags={["visual-failed"]}
+  tags={["visual-ready"]}
 >
   {#snippet template()}
     <CollapsibleItemList

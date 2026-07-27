@@ -129,7 +129,7 @@
 <Story
   name="With Button"
   exportName="WithButton"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-failed"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {

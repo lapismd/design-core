@@ -66,7 +66,7 @@
 
 <Story
   name="Window controls"
-  tags={["visual-approved"]}
+  tags={["visual-ready"]}
   play={async ({ canvas, canvasElement }) => {
     await userEvent.click(
       canvas.getByRole("button", { name: "Collapse floating pane" }),
@@ -121,7 +121,7 @@
 
 <Story
   name="Minimized window"
-  tags={["visual-approved"]}
+  tags={["visual-ready"]}
   parameters={{
     visualDelta: {
       images: [

@@ -111,7 +111,7 @@
 
 <Story
   name="Editor with revealable sidebars"
-  tags={["visual-approved"]}
+  tags={["visual-ready"]}
   play={async ({ canvas }) => {
     await userEvent.click(
       canvas.getByRole("button", { name: "Open left sidebar" }),
@@ -146,7 +146,7 @@
 
 <Story
   name="Tab overview with all entries"
-  tags={["visual-approved"]}
+  tags={["visual-ready"]}
   play={async ({ canvas }) => {
     await userEvent.click(canvas.getByRole("button", { name: "Close Notes" }));
     await expect(
@@ -189,7 +189,7 @@
 
 <Story
   name="Overview without auxiliary entries"
-  tags={["visual-approved"]}
+  tags={["visual-ready"]}
   parameters={{
     visualDelta: {
       images: [
@@ -220,7 +220,7 @@
 
 <Story
   name="Pan gesture surface"
-  tags={["visual-approved"]}
+  tags={["visual-ready"]}
   parameters={{
     visualDelta: {
       images: [
@@ -245,7 +245,7 @@
 
 <Story
   name="View actions drawer"
-  tags={["visual-approved"]}
+  tags={["visual-ready"]}
   play={async ({ canvas }) => {
     await expect(
       canvas.getByRole("button", { name: "Reload view" }),
@@ -290,7 +290,7 @@
 
 <Story
   name="Open tabs actions drawer"
-  tags={["visual-approved"]}
+  tags={["visual-ready"]}
   play={async ({ canvas }) => {
     await userEvent.click(
       canvas.getByRole("button", { name: /Open tab actions/ }),

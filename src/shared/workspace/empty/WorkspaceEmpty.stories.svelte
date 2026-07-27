@@ -47,7 +47,7 @@
 
 <Story
   name="Empty leaf actions"
-  tags={["visual-approved"]}
+  tags={["visual-ready"]}
   play={async ({ canvas }) => {
     await userEvent.click(
       canvas.getByRole("button", { name: "Create new note (⌘ N)" }),
@@ -67,7 +67,7 @@
 
 <Story
   name="Missing registered view"
-  tags={["visual-approved"]}
+  tags={["visual-ready"]}
   play={async ({ canvas }) => {
     await expect(
       canvas.getByRole("heading", { name: "Plugin no longer active" }),

@@ -22,7 +22,7 @@
     await expect(canvas.getByText("INV001")).toBeVisible();
     await expect(canvas.getByText("$250.00")).toBeVisible();
   }}
-  tags={["visual-pending"]}
+  tags={["visual-failed"]}
   parameters={{
     visualDelta: {
       images: [

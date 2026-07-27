@@ -107,7 +107,7 @@
 
 <Story
   name="Activates, closes, and persists tabs"
-  tags={["visual-approved"]}
+  tags={["visual-ready"]}
   play={async ({ canvas, canvasElement }) => {
     const headerMain = canvasElement.querySelector(
       ".ui-workspace-tabs__header-main",
@@ -172,7 +172,7 @@
 
 <Story
   name="Overflow menu"
-  tags={["visual-approved"]}
+  tags={["visual-ready"]}
   play={async ({ canvas }) => {
     await userEvent.click(
       canvas.getByRole("button", { name: "Tab overflow menu" }),
@@ -203,7 +203,7 @@
 
 <Story
   name="Constrained hidden-scrollbar row"
-  tags={["visual-approved"]}
+  tags={["visual-ready"]}
   globals={{ theme: "lapis", colorMode: "light" }}
   play={async ({ canvasElement }) => {
     const row = canvasElement.querySelector<HTMLElement>(

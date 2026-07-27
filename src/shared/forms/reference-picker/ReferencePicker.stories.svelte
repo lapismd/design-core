@@ -32,7 +32,7 @@
       canvas.getByPlaceholderText(/Search references/i),
     ).toBeVisible();
   }}
-  tags={["visual-failed"]}
+  tags={["visual-ready"]}
 >
   {#snippet template()}
     <ReferencePicker

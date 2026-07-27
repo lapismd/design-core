@@ -27,7 +27,7 @@
     await userEvent.click(canvas.getByRole("button", { name: "Archive" }));
     await expect(canvas.getByRole("status")).toHaveTextContent("Archive");
   }}
-  tags={["visual-pending"]}
+  tags={["visual-ready"]}
   parameters={{
     visualDelta: {
       images: [

@@ -18,7 +18,7 @@
 <Story
   name="Preview"
   exportName="Preview"
-  tags={["upstream-example", "visual-pending"]}
+  tags={["upstream-example", "visual-ready"]}
   parameters={{
     visualDelta: {
       images: [
@@ -50,7 +50,7 @@
 <Story
   name="Custom separator"
   exportName="CustomSeparator"
-  tags={["upstream-example", "visual-pending"]}
+  tags={["upstream-example", "visual-ready"]}
   parameters={{
     visualDelta: {
       images: [
@@ -86,7 +86,7 @@
 <Story
   name="Dropdown"
   exportName="Dropdown"
-  tags={["upstream-example", "visual-pending"]}
+  tags={["upstream-example", "visual-ready"]}
   parameters={{
     visualDelta: {
       images: [
@@ -122,7 +122,7 @@
 <Story
   name="Collapsed"
   exportName="Collapsed"
-  tags={["upstream-example", "visual-pending"]}
+  tags={["upstream-example", "visual-ready"]}
   parameters={{
     visualDelta: {
       images: [
@@ -158,7 +158,7 @@
 <Story
   name="Link component"
   exportName="LinkComponent"
-  tags={["upstream-example", "visual-pending"]}
+  tags={["upstream-example", "visual-ready"]}
   parameters={{
     visualDelta: {
       images: [

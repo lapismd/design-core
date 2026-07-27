@@ -31,7 +31,7 @@
 
 <Story
   name="Application information"
-  tags={["visual-approved"]}
+  tags={["visual-ready"]}
   play={async ({ canvas }) => {
     await waitFor(() => expect(aboutApp.ready).toBe(true));
     await userEvent.click(

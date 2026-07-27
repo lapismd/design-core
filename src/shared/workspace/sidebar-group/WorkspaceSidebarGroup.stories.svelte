@@ -94,7 +94,7 @@
 
 <Story
   name="Partially collapsed panels"
-  tags={["visual-approved"]}
+  tags={["visual-ready"]}
   play={async ({ canvas, canvasElement }) => {
     const panels = Array.from(
       canvasElement.querySelectorAll<HTMLElement>(

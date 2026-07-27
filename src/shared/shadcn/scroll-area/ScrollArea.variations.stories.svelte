@@ -37,7 +37,7 @@
 <Story
   name="Horizontal Scrolling"
   exportName="HorizontalScrolling"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-failed"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
