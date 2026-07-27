@@ -17,8 +17,10 @@ const app = new AppShellController({
 ```
 
 The plugin contributes its command, declarative settings, and overlay
-transactionally. Disabling it removes every contribution and closes the active
-session.
+transactionally. The primary stories exercise those contributions through the
+complete reusable shell so tabs, view headers, sidebars, ribbon actions, and
+status items are all genuine hint targets. Disabling the plugin removes every
+contribution and closes the active session.
 
 <Canvas of={Stories.ActiveHints} />
 

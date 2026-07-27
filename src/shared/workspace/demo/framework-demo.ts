@@ -330,6 +330,7 @@ export function createFrameworkDemo(
     includeFloating?: boolean;
     includeFMode?: boolean;
     includeNotifications?: boolean;
+    initialConfiguration?: Record<string, unknown>;
     mobileMode?: "always" | "never" | "auto";
   } = {},
 ): {
@@ -371,6 +372,7 @@ export function createFrameworkDemo(
       values: {
         "workspace.mobile.mode": options.mobileMode ?? "never",
         "workspace.mobile.breakpointPx": 768,
+        ...options.initialConfiguration,
       },
     },
     persistence: {

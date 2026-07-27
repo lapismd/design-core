@@ -1,57 +1,82 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, userEvent, waitFor } from "storybook/test";
-  import AppShellRoot from "../../app-shell/AppShellRoot.svelte";
-  import { AppShellController } from "../../core/app-shell-controller.svelte.js";
-  import { APP_SHELL_SETTING_IDS } from "../../core/built-in-settings.svelte.js";
-  import FModeStorySurface from "./FModeStorySurface.svelte";
-  import { fModePlugin } from "./f-mode-plugin.js";
+  import { expect, fireEvent, waitFor } from "storybook/test";
+  import type { AppShellController } from "../../core/app-shell-controller.svelte.js";
+  import ReusableFrameworkDemo from "../../demo/ReusableFrameworkDemo.svelte";
+  import { createFrameworkDemo } from "../../demo/framework-demo.js";
   import { FMODE_SETTING_IDS } from "./settings.js";
   import "./FMode.stories.css";
 
-  function createFModeApp(
+  function createFModeDemo(
     values: Record<string, unknown> = {},
-  ): AppShellController {
-    return new AppShellController({
-      plugins: [fModePlugin()],
-      configuration: {
-        values: {
-          [APP_SHELL_SETTING_IDS.mobileMode]: "never",
-          [FMODE_SETTING_IDS.alphabet]: "ab",
-          [FMODE_SETTING_IDS.showTargetDescriptions]: true,
-          ...values,
-        },
-      },
+  ): ReturnType<typeof createFrameworkDemo> {
+    return createFrameworkDemo({
+      includeFloating: false,
+      includeFMode: true,
+      includeNotifications: false,
+      mobileMode: "never",
+      initialConfiguration: values,
     });
   }
 
-  const idleApp = createFModeApp();
-  const activeApp = createFModeApp();
-  const activationApp = createFModeApp();
-  const partialApp = createFModeApp();
-  const filteredApp = createFModeApp({
+  const idle = createFModeDemo();
+  const active = createFModeDemo();
+  const activation = createFModeDemo();
+  const partial = createFModeDemo({
+    [FMODE_SETTING_IDS.alphabet]: "ab",
+  });
+  const filtered = createFModeDemo({
     [FMODE_SETTING_IDS.enabledSurfaces]: ["tabs"],
   });
-  const minimalApp = createFModeApp({
+  const minimal = createFModeDemo({
     [FMODE_SETTING_IDS.hudMode]: "minimal",
   });
 
-  async function openFMode(app: AppShellController) {
+  async function openFMode(
+    app: AppShellController,
+    canvasElement: HTMLElement,
+  ): Promise<void> {
     await waitFor(() => {
+      expect(app.ready).toBe(true);
       expect(app.commands.getCommand("toggle-fmode")).not.toBeNull();
     });
+    if (canvasElement.querySelector("[data-fmode-root]")) {
+      await app.commands.execute("toggle-fmode");
+      await waitFor(() =>
+        expect(canvasElement.querySelector("[data-fmode-root]")).toBeNull(),
+      );
+    }
     await app.commands.execute("toggle-fmode");
+  }
+
+  async function sendFModeKeys(
+    canvasElement: HTMLElement,
+    keys: string,
+  ): Promise<void> {
+    const root = canvasElement.querySelector<HTMLElement>(
+      "[data-app-shell-root]",
+    );
+    await expect(root).not.toBeNull();
+    for (const key of keys) {
+      await fireEvent.keyDown(root!, { key });
+    }
+  }
+
+  async function expectActive(canvasElement: HTMLElement): Promise<void> {
+    await waitFor(() =>
+      expect(canvasElement.querySelector("[data-fmode-root]")).not.toBeNull(),
+    );
   }
 
   const { Story } = defineMeta({
     title: "Workspace/Plugins/F-Mode",
-    component: FModeStorySurface,
+    component: ReusableFrameworkDemo,
     parameters: {
       layout: "fullscreen",
       docs: {
         description: {
           component:
-            "Optional keyboard-hint plugin built on the public AppShell overlay, hint-target, command, settings, and modal keymap contracts.",
+            "Optional keyboard-hint plugin exercised through the complete reusable Workspace shell, including tabs, view headers, sidebars, ribbon, and status targets.",
         },
       },
     },
@@ -60,7 +85,7 @@
 
 <Story
   name="Idle target surface"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   parameters={{
     visualDelta: {
       images: [
@@ -76,47 +101,49 @@
 >
   {#snippet template()}
     <div class="ui-workspace-fmode-story">
-      <div class="ui-workspace-fmode-story__frame">
-        <AppShellRoot controller={idleApp} theme="inherit">
-          <FModeStorySurface />
-        </AppShellRoot>
-      </div>
+      <ReusableFrameworkDemo app={idle.app} />
     </div>
   {/snippet}
 </Story>
 
 <Story
   name="Active hints"
-  tags={["visual-approved"]}
-  play={async ({ canvas, canvasElement }) => {
-    canvas.getByRole("button", { name: "Open note" }).focus();
-    await openFMode(activeApp);
+  tags={["visual-pending"]}
+  play={async ({ canvasElement }) => {
+    await openFMode(active.app, canvasElement);
+    await expectActive(canvasElement);
+    const hints = canvasElement.querySelectorAll("[data-fmode-hint]");
+    await expect(hints.length).toBeGreaterThan(10);
     await expect(
-      canvasElement.querySelectorAll("[data-fmode-hint]"),
-    ).toHaveLength(4);
-    await expect(canvas.getByText("4 targets")).toBeVisible();
+      canvasElement.querySelector(".ui-workspace-fmode__summary"),
+    ).toHaveTextContent(`${hints.length} targets`);
   }}
 >
   {#snippet template()}
     <div class="ui-workspace-fmode-story">
-      <div class="ui-workspace-fmode-story__frame">
-        <AppShellRoot controller={activeApp} theme="inherit">
-          <FModeStorySurface />
-        </AppShellRoot>
-      </div>
+      <ReusableFrameworkDemo app={active.app} />
     </div>
   {/snippet}
 </Story>
 
 <Story
   name="Keyboard activation"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   play={async ({ canvas, canvasElement }) => {
-    canvas.getByRole("button", { name: "Open note" }).focus();
-    await openFMode(activationApp);
-    await userEvent.keyboard("aa");
-    await expect(canvas.getByText("Open note activated")).toBeVisible();
-    await expect(canvasElement.querySelector("[data-fmode-root]")).toBeNull();
+    const tabsBefore = canvas.getAllByRole("tab").length;
+    await openFMode(activation.app, canvasElement);
+    await expectActive(canvasElement);
+    const addHint = Array.from(
+      canvasElement.querySelectorAll<HTMLElement>("[data-fmode-hint]"),
+    ).find((hint) => hint.dataset.fmodeTargetId?.match(/^tabs:.+:add$/u));
+    await expect(addHint).toBeDefined();
+    await sendFModeKeys(canvasElement, addHint!.dataset.fmodeHint!);
+    await waitFor(() =>
+      expect(canvasElement.querySelector("[data-fmode-root]")).toBeNull(),
+    );
+    await waitFor(() =>
+      expect(canvas.getAllByRole("tab")).toHaveLength(tabsBefore + 1),
+    );
   }}
   parameters={{
     visualDelta: {
@@ -133,28 +160,33 @@
 >
   {#snippet template()}
     <div class="ui-workspace-fmode-story">
-      <div class="ui-workspace-fmode-story__frame">
-        <AppShellRoot controller={activationApp} theme="inherit">
-          <FModeStorySurface />
-        </AppShellRoot>
-      </div>
+      <ReusableFrameworkDemo app={activation.app} />
     </div>
   {/snippet}
 </Story>
 
 <Story
   name="Partial query"
-  tags={["visual-approved"]}
-  play={async ({ canvas, canvasElement }) => {
-    canvas.getByRole("button", { name: "Open note" }).focus();
-    await openFMode(partialApp);
-    await userEvent.keyboard("b");
-    await expect(canvas.getByText("2 matches")).toBeVisible();
+  tags={["visual-pending"]}
+  play={async ({ canvasElement }) => {
+    await openFMode(partial.app, canvasElement);
+    await expectActive(canvasElement);
+    const partialHint = Array.from(
+      canvasElement.querySelectorAll<HTMLElement>("[data-fmode-hint]"),
+    ).find((hint) => (hint.dataset.fmodeHint?.length ?? 0) > 1);
+    await expect(partialHint).toBeDefined();
+    const prefix = partialHint!.dataset.fmodeHint![0]!;
+    await sendFModeKeys(canvasElement, prefix);
+    const visibleHints = Array.from(
+      canvasElement.querySelectorAll<HTMLElement>("[data-fmode-hint]"),
+    ).filter((hint) => !hint.hidden);
+    await expect(visibleHints.length).toBeGreaterThan(1);
     await expect(
-      Array.from(
-        canvasElement.querySelectorAll<HTMLElement>("[data-fmode-hint]"),
-      ).filter((hint) => !hint.hidden),
-    ).toHaveLength(2);
+      canvasElement.querySelector(".ui-workspace-fmode__query"),
+    ).toHaveTextContent(prefix.toUpperCase());
+    await expect(
+      canvasElement.querySelector(".ui-workspace-fmode__summary"),
+    ).toHaveTextContent(`${visibleHints.length} matches`);
   }}
   parameters={{
     visualDelta: {
@@ -171,25 +203,24 @@
 >
   {#snippet template()}
     <div class="ui-workspace-fmode-story">
-      <div class="ui-workspace-fmode-story__frame">
-        <AppShellRoot controller={partialApp} theme="inherit">
-          <FModeStorySurface />
-        </AppShellRoot>
-      </div>
+      <ReusableFrameworkDemo app={partial.app} />
     </div>
   {/snippet}
 </Story>
 
 <Story
   name="Filtered target groups"
-  tags={["visual-approved"]}
-  play={async ({ canvas, canvasElement }) => {
-    canvas.getByRole("button", { name: "Open note" }).focus();
-    await openFMode(filteredApp);
-    await expect(
-      canvasElement.querySelectorAll("[data-fmode-hint]"),
-    ).toHaveLength(2);
-    await expect(canvas.getByText("2 targets")).toBeVisible();
+  tags={["visual-pending"]}
+  play={async ({ canvasElement }) => {
+    await openFMode(filtered.app, canvasElement);
+    await expectActive(canvasElement);
+    const hints = Array.from(
+      canvasElement.querySelectorAll<HTMLElement>("[data-fmode-hint]"),
+    );
+    await expect(hints.length).toBeGreaterThan(0);
+    for (const hint of hints) {
+      await expect(hint.dataset.fmodeTargetId).toMatch(/^tabs?:/u);
+    }
   }}
   parameters={{
     visualDelta: {
@@ -206,21 +237,17 @@
 >
   {#snippet template()}
     <div class="ui-workspace-fmode-story">
-      <div class="ui-workspace-fmode-story__frame">
-        <AppShellRoot controller={filteredApp} theme="inherit">
-          <FModeStorySurface />
-        </AppShellRoot>
-      </div>
+      <ReusableFrameworkDemo app={filtered.app} />
     </div>
   {/snippet}
 </Story>
 
 <Story
   name="Minimal HUD"
-  tags={["visual-approved"]}
-  play={async ({ canvas, canvasElement }) => {
-    canvas.getByRole("button", { name: "Open note" }).focus();
-    await openFMode(minimalApp);
+  tags={["visual-pending"]}
+  play={async ({ canvasElement }) => {
+    await openFMode(minimal.app, canvasElement);
+    await expectActive(canvasElement);
     await expect(
       canvasElement.querySelector("[data-fmode-hud-mode='minimal']"),
     ).not.toBeNull();
@@ -240,11 +267,7 @@
 >
   {#snippet template()}
     <div class="ui-workspace-fmode-story">
-      <div class="ui-workspace-fmode-story__frame">
-        <AppShellRoot controller={minimalApp} theme="inherit">
-          <FModeStorySurface />
-        </AppShellRoot>
-      </div>
+      <ReusableFrameworkDemo app={minimal.app} />
     </div>
   {/snippet}
 </Story>
