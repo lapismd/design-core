@@ -1,18 +1,20 @@
 import { execFileSync } from "node:child_process";
+import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { loadConfig } from "../config.js";
 import { EXIT, GeneratorError } from "../errors.js";
 import { log } from "../logger.js";
 import { assertCleanGit } from "../adapters/git.js";
-import { componentFromStoryId, requireRecipe } from "../recipes/index.js";
+import { requireRecipe } from "../recipes/index.js";
 import {
   buildSnapshotManifest,
   listComponentSnapshotFiles,
   writeSnapshotManifest,
 } from "../visual/snapshot-manifest.js";
 import {
-  storyIdPrefixFromStoryId,
+  nestedSnapshotFileName,
   storyIdPrefixFromTitle,
+  type StoryIndexEntry,
 } from "../visual/snapshot-paths.js";
 import { ensureWarmStaticStorybookServer } from "../visual/ensure-playwright-webserver.js";
 import {
@@ -33,8 +35,8 @@ import {
 
 export async function runVisualUpdate(options: {
   component?: string;
-  /** When set, derive the Playwright `-g` prefix from this story id. */
-  storyId?: string;
+  /** Exact story ids; repeated CLI flags are captured in one Playwright run. */
+  storyIds?: string[];
   approved?: boolean;
   /** Skip clean-tree gate (Storybook Visual Delta panel). */
   allowDirty?: boolean;
@@ -52,17 +54,23 @@ export async function runVisualUpdate(options: {
    */
   createOnly?: boolean;
 }) {
-  const storyId = options.storyId?.trim();
-  let component = options.component?.trim();
+  const storyIds = [
+    ...new Set(
+      (options.storyIds ?? []).map((storyId) => storyId.trim()).filter(Boolean),
+    ),
+  ];
+  const component = options.component?.trim();
   const createOnly = Boolean(options.createOnly);
 
-  if (storyId && !component) {
-    component = componentFromStoryId(storyId);
-  }
-
-  if (!component && !storyId) {
+  if (!component && !storyIds.length) {
     throw new GeneratorError(
       "test:visual:update requires --component <name> or --story-id <id>",
+      EXIT.invalidRequest,
+    );
+  }
+  if (component && storyIds.length) {
+    throw new GeneratorError(
+      "Choose exact --story-id values or one explicit --component, not both",
       EXIT.invalidRequest,
     );
   }
@@ -91,7 +99,9 @@ export async function runVisualUpdate(options: {
   }
 
   const recipe = component ? requireRecipe(component) : undefined;
-  const label = component ?? storyId ?? "unknown";
+  const label =
+    component ??
+    (storyIds.length === 1 ? storyIds[0]! : `${storyIds.length}-stories`);
   const run = createRunContext(
     config,
     createOnly ? "visual-create" : "visual-update",
@@ -104,15 +114,31 @@ export async function runVisualUpdate(options: {
     before,
   );
 
-  const targets =
-    component && recipe
-      ? listComponentSnapshotFiles(
-          snapshotDir,
-          component,
-          recipe.snapshotKeyIncludes,
-        )
-      : [];
-  if (component && recipe && !targets.length) {
+  const targetStoryIds = new Set(storyIds);
+  const indexPath = path.join(
+    config.packageRoot,
+    "storybook-static/index.json",
+  );
+  const indexEntries = existsSync(indexPath)
+    ? Object.values(
+        (
+          JSON.parse(readFileSync(indexPath, "utf8")) as {
+            entries?: Record<string, StoryIndexEntry>;
+          }
+        ).entries ?? {},
+      ).filter((entry) => entry.type === "story")
+    : [];
+  const targets = component
+    ? listComponentSnapshotFiles(
+        snapshotDir,
+        component,
+        recipe!.snapshotKeyIncludes,
+      )
+    : indexEntries
+        .filter((entry) => targetStoryIds.has(entry.id))
+        .map((entry) => nestedSnapshotFileName(entry))
+        .filter((relative) => existsSync(path.join(snapshotDir, relative)));
+  if (component && !targets.length) {
     log.warn(
       createOnly
         ? `No existing snapshots for "${component}". Playwright will create missing ones only.`
@@ -124,8 +150,8 @@ export async function runVisualUpdate(options: {
     );
   }
 
-  const grep = storyId
-    ? storyIdPrefixFromStoryId(storyId)
+  const grep = storyIds.length
+    ? exactStoryIdGrep(storyIds)
     : storyIdPrefixFromTitle(recipe!.storyTitle);
   log.info(`Playwright filter: -g ${JSON.stringify(grep)}`);
 
@@ -134,17 +160,12 @@ export async function runVisualUpdate(options: {
     ? "explicit-rebuild"
     : undefined;
   if (createOnly) {
-    // Opt every skip-visual story under the component prefix into capture
-    // (sidebar "create for component" only passes one leaf story id).
-    const unskipIds = [
-      ...new Set([
-        ...(storyId ? [storyId] : []),
-        ...listSkipVisualStoryIdsForPrefix({
+    const unskipIds = storyIds.length
+      ? storyIds
+      : listSkipVisualStoryIdsForPrefix({
           packageRoot: config.packageRoot,
           storyIdPrefix: grep,
-        }),
-      ]),
-    ];
+        });
     const unskipped = removeSkipVisualFromStories({
       packageRoot: config.packageRoot,
       storyIds: unskipIds,
@@ -165,6 +186,7 @@ export async function runVisualUpdate(options: {
     forceRebuild,
     forceReason,
     storyIdPrefix: grep,
+    storyIds: storyIds.length ? storyIds : undefined,
   });
   if (buildDecision.reason === "skip-build-missing") {
     throw new GeneratorError(buildDecision.message, EXIT.invalidRequest);
@@ -216,10 +238,11 @@ export async function runVisualUpdate(options: {
     alreadyWired: string[];
     skipped: string[];
   } | null = null;
+  let reviewReset: { marked: string[]; skipped: string[] } | null = null;
   if (createOnly) {
     patchResult = patchStoriesVisualDeltaImages({
       packageRoot: config.packageRoot,
-      storyIdPrefix: grep,
+      ...(storyIds.length ? { storyIds } : { storyIdPrefix: grep }),
     });
     log.info(
       `Story visualDelta patch: ${patchResult.patched.length} updated, ${patchResult.alreadyWired.length} already wired, ${patchResult.skipped.length} skipped`,
@@ -230,19 +253,23 @@ export async function runVisualUpdate(options: {
         packageRoot: config.packageRoot,
         storyIds: patchResult.patched,
       });
+      reviewReset = pending;
       log.info(
         `Story review pending: ${pending.marked.length} marked, ${pending.skipped.length} skipped`,
       );
     }
   } else {
     // Overwrite: drop approved badges so rewritten baselines need re-review.
-    const toReset = listStoryIdsForPrefix(config.packageRoot, grep);
+    const toReset = storyIds.length
+      ? storyIds
+      : listStoryIdsForPrefix(config.packageRoot, grep);
     if (toReset.length) {
       const pending = markCreatedStoriesPending({
         packageRoot: config.packageRoot,
         storyIds: toReset,
         resetApproved: true,
       });
+      reviewReset = pending;
       log.info(
         `Story review pending (rewrite): ${pending.marked.length} marked, ${pending.skipped.length} skipped`,
       );
@@ -256,7 +283,8 @@ export async function runVisualUpdate(options: {
   );
   writeJson(path.join(run.reportDir, "report.json"), {
     component: component ?? null,
-    storyId: storyId ?? null,
+    storyId: storyIds.length === 1 ? storyIds[0] : null,
+    storyIds,
     createOnly,
     targets,
     grep,
@@ -264,6 +292,8 @@ export async function runVisualUpdate(options: {
     afterCount: Object.keys(after).length,
     patchedStories: patchResult?.patched ?? [],
     alreadyWiredStories: patchResult?.alreadyWired ?? [],
+    reviewResetStoryIds: reviewReset?.marked ?? [],
+    reviewResetSkippedStoryIds: reviewReset?.skipped ?? [],
   });
   writeReportMarkdown(
     run.reportDir,
@@ -275,7 +305,7 @@ export async function runVisualUpdate(options: {
       },
       {
         heading: "Story id",
-        body: storyId ?? "(none)",
+        body: storyIds.length ? storyIds.join("\n") : "(none)",
       },
       {
         heading: "Mode",
@@ -301,6 +331,16 @@ export async function runVisualUpdate(options: {
             },
           ]
         : []),
+      ...(reviewReset
+        ? [
+            {
+              heading: "Review tags reset",
+              body: reviewReset.marked.length
+                ? reviewReset.marked.join("\n")
+                : "(none)",
+            },
+          ]
+        : []),
     ],
   );
 
@@ -308,10 +348,26 @@ export async function runVisualUpdate(options: {
     createOnly
       ? component
         ? `Created missing visual baselines for ${component}`
-        : `Created missing visual baselines for ${grep}`
+        : `Created missing visual baselines for ${storyIds.length} ${storyIds.length === 1 ? "story" : "stories"}`
       : component
         ? `Updated visual baselines for ${component}`
-        : `Updated visual baselines for ${grep}`,
+        : `Updated visual baselines for ${storyIds.length} ${storyIds.length === 1 ? "story" : "stories"}`,
   );
   log.info(`Report: ${run.reportDir}`);
+}
+
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+/** One escaped Playwright selector that matches only the supplied story IDs. */
+export function exactStoryIdGrep(storyIds: readonly string[]): string {
+  const exact = [...new Set(storyIds.map((storyId) => storyId.trim()))]
+    .filter(Boolean)
+    .map(escapeRegExp);
+  if (!exact.length) {
+    throw new Error("At least one exact story id is required");
+  }
+  const leaf = exact.length === 1 ? exact[0] : `(?:${exact.join("|")})`;
+  return `(?:^| › )${leaf}$`;
 }

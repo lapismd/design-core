@@ -50,6 +50,8 @@ type ParsedArgs = {
   command: string | undefined;
   positionals: string[];
   flags: Map<string, string | boolean>;
+  /** Every value supplied for repeatable flags, in command-line order. */
+  multiFlags: Map<string, string[]>;
   json: boolean;
   color: ColorChoice;
   help: boolean;
@@ -65,7 +67,16 @@ function asBooleanFlag(
 
 function parseArgs(argv: string[]): ParsedArgs {
   const flags = new Map<string, string | boolean>();
+  const multiFlags = new Map<string, string[]>();
   const tokens: string[] = [];
+
+  const setFlag = (key: string, value: string | boolean) => {
+    flags.set(key, value);
+    if (typeof value !== "string") return;
+    const values = multiFlags.get(key) ?? [];
+    values.push(value);
+    multiFlags.set(key, values);
+  };
 
   for (let i = 0; i < argv.length; i++) {
     const token = argv[i]!;
@@ -83,7 +94,7 @@ function parseArgs(argv: string[]): ParsedArgs {
     if (!key) continue;
 
     if (eq !== -1) {
-      flags.set(key, token.slice(eq + 1));
+      setFlag(key, token.slice(eq + 1));
       continue;
     }
 
@@ -94,7 +105,7 @@ function parseArgs(argv: string[]): ParsedArgs {
 
     const next = argv[i + 1];
     if (next && !next.startsWith("--") && !next.startsWith("-")) {
-      flags.set(key, next);
+      setFlag(key, next);
       i++;
     } else {
       flags.set(key, true);
@@ -121,6 +132,7 @@ function parseArgs(argv: string[]): ParsedArgs {
     command,
     positionals,
     flags,
+    multiFlags,
     json: asBooleanFlag(flags, "json"),
     color,
     help: asBooleanFlag(flags, "help"),
@@ -180,7 +192,7 @@ function printVisualTagHelp(packageRoot: string): void {
 async function main() {
   const args = parseArgs(process.argv.slice(2));
   const packageRoot = process.cwd();
-  const { command, positionals, flags, json, color, help } = args;
+  const { command, positionals, flags, multiFlags, json, color, help } = args;
 
   if (help && (command === undefined || command === "help")) {
     if (json) {
@@ -316,10 +328,7 @@ async function main() {
           typeof flags.get("component") === "string"
             ? String(flags.get("component"))
             : positionals[0],
-        storyId:
-          typeof flags.get("story-id") === "string"
-            ? String(flags.get("story-id"))
-            : undefined,
+        storyIds: multiFlags.get("story-id"),
         approved: asBooleanFlag(flags, "approved"),
         allowDirty: asBooleanFlag(flags, "allow-dirty"),
         skipBuild: asBooleanFlag(flags, "skip-build"),

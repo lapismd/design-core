@@ -61,6 +61,7 @@ function resolveImportPath(
 export function storySourcesNewerThanIndex(
   packageRoot: string,
   storyIdPrefix: string,
+  storyIds?: string[],
 ): boolean {
   const indexPath = path.join(packageRoot, "storybook-static", "index.json");
   if (!existsSync(indexPath)) return false;
@@ -72,7 +73,9 @@ export function storySourcesNewerThanIndex(
   }
 
   const prefix = storyIdPrefix.trim();
+  const exactIds = storyIds?.length ? new Set(storyIds) : undefined;
   const entries = loadStoryEntries(packageRoot).filter((entry) => {
+    if (exactIds) return exactIds.has(entry.id);
     if (!prefix) return true;
     return entry.id === prefix || entry.id.startsWith(prefix);
   });
@@ -103,6 +106,8 @@ export function decideStorybookStaticBuild(options: {
   forceReason?: Extract<StaticBuildReason, "unskip" | "explicit-rebuild">;
   /** Playwright `-g` prefix; scopes staleness checks. */
   storyIdPrefix: string;
+  /** Exact story ids take precedence over the legacy prefix staleness scope. */
+  storyIds?: string[];
 }): StaticBuildDecision {
   const indexPath = path.join(
     options.packageRoot,
@@ -143,7 +148,13 @@ export function decideStorybookStaticBuild(options: {
     };
   }
 
-  if (storySourcesNewerThanIndex(options.packageRoot, options.storyIdPrefix)) {
+  if (
+    storySourcesNewerThanIndex(
+      options.packageRoot,
+      options.storyIdPrefix,
+      options.storyIds,
+    )
+  ) {
     return {
       shouldBuild: true,
       reason: "stale-source",

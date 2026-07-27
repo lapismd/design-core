@@ -1,4 +1,7 @@
 import { describe, expect, it } from "vitest";
+import { mkdtempSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import path from "node:path";
 import {
   attachSidecars,
   countVisualStories,
@@ -12,7 +15,12 @@ import {
   removeSkipVisualFromStoryOpenTag,
   storyOpenTagMatchesIdSlug,
 } from "../visual/patch-story-visual-delta.js";
-import { patchStoryOpenTagWithReviewStatus } from "../visual/patch-story-visual-review.js";
+import {
+  markCreatedStoriesPending,
+  patchStoryOpenTagWithReviewStatus,
+  patchStoryVisualReviewStatus,
+} from "../visual/patch-story-visual-review.js";
+import { exactStoryIdGrep } from "../pipeline/visual-update.js";
 
 describe("parseListReporterProgress", () => {
   it("parses passed and failed list-reporter lines", () => {
@@ -66,19 +74,21 @@ describe("grepFromStoryIds", () => {
     expect(grepFromStoryIds([])).toBeUndefined();
   });
 
-  it("escapes a single story id and anchors only at the end", () => {
+  it("escapes a single story id and anchors the full leaf title", () => {
     expect(
       grepFromStoryIds(["shadcn-disclosure-accordion--opens-a-section"]),
-    ).toBe("shadcn-disclosure-accordion--opens-a-section$");
+    ).toBe("(?:^| › )shadcn-disclosure-accordion--opens-a-section$");
   });
 
-  it("uses a shared title prefix for one component", () => {
+  it("ORs exact ids even when they share a component", () => {
     expect(
       grepFromStoryIds([
         "shadcn-disclosure-accordion--opens-a-section",
         "shadcn-disclosure-accordion--default",
       ]),
-    ).toBe("shadcn-disclosure-accordion--");
+    ).toBe(
+      "(?:^| › )(?:shadcn-disclosure-accordion--opens-a-section|shadcn-disclosure-accordion--default)$",
+    );
   });
 
   it("ORs distinct story ids across components", () => {
@@ -88,7 +98,87 @@ describe("grepFromStoryIds", () => {
         "shadcn-disclosure-accordion--default",
       ]),
     ).toBe(
-      "(shadcn-actions-button--default|shadcn-disclosure-accordion--default)$",
+      "(?:^| › )(?:shadcn-actions-button--default|shadcn-disclosure-accordion--default)$",
+    );
+  });
+});
+
+describe("exactStoryIdGrep", () => {
+  it("keeps repeated host CLI story ids exact", () => {
+    expect(
+      exactStoryIdGrep([
+        "shadcn-overlays-dropdown-menu--chooses-a-menu-item",
+        "shadcn-overlays-dropdown-menu--checkboxes",
+      ]),
+    ).toBe(
+      "(?:^| › )(?:shadcn-overlays-dropdown-menu--chooses-a-menu-item|shadcn-overlays-dropdown-menu--checkboxes)$",
+    );
+  });
+});
+
+describe("exact baseline review resets", () => {
+  it("does not reset an accepted sibling when a later story is updated", () => {
+    const root = mkdtempSync(path.join(tmpdir(), "visual-delta-scope-"));
+    const storiesPath = path.join(root, "src/Menu.stories.svelte");
+    mkdirSync(path.dirname(storiesPath), { recursive: true });
+    mkdirSync(path.join(root, "storybook-static"), { recursive: true });
+    writeFileSync(
+      storiesPath,
+      [
+        '<Story name="Chooses an item" tags={["visual-approved"]}>',
+        '<Story name="Checkboxes" tags={["visual-approved"]}>',
+      ].join("\n"),
+    );
+    writeFileSync(
+      path.join(root, "storybook-static/index.json"),
+      JSON.stringify({
+        entries: {
+          "menu--chooses-an-item": {
+            id: "menu--chooses-an-item",
+            type: "story",
+            name: "Chooses an item",
+            importPath: "./src/Menu.stories.svelte",
+            tags: ["visual-approved"],
+          },
+          "menu--checkboxes": {
+            id: "menu--checkboxes",
+            type: "story",
+            name: "Checkboxes",
+            importPath: "./src/Menu.stories.svelte",
+            tags: ["visual-approved"],
+          },
+        },
+      }),
+    );
+
+    expect(
+      markCreatedStoriesPending({
+        packageRoot: root,
+        storyIds: ["menu--chooses-an-item"],
+        resetApproved: true,
+      }).marked,
+    ).toEqual(["menu--chooses-an-item"]);
+    expect(
+      patchStoryVisualReviewStatus({
+        packageRoot: root,
+        storyId: "menu--chooses-an-item",
+        status: "approved",
+      }).ok,
+    ).toBe(true);
+    expect(
+      markCreatedStoriesPending({
+        packageRoot: root,
+        storyIds: ["menu--checkboxes"],
+        resetApproved: true,
+      }).marked,
+    ).toEqual(["menu--checkboxes"]);
+
+    const source = readFileSync(storiesPath, "utf8");
+    expect(source).toContain(
+      '<Story name="Chooses an item" tags={["visual-approved"]}>',
+    );
+    expect(source).toContain(
+      '<Story name="Checkboxes" tags={["visual-pending"]}>',
     );
   });
 });
