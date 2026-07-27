@@ -13,15 +13,12 @@
   padding: 1.5rem;
 }
 
-body.sb-main-fullscreen,
+/* Storybook applies its fullscreen body class to Docs as well as Canvas. */
 body.sb-main-fullscreen #storybook-root {
   width: 100%;
   height: 100vh;
   min-height: 0;
   overflow: hidden;
-}
-
-body.sb-main-fullscreen #storybook-root {
   padding: 0;
 }
 
