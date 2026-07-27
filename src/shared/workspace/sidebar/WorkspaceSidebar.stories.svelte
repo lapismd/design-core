@@ -1,6 +1,6 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, userEvent } from "storybook/test";
+  import { expect, userEvent, within } from "storybook/test";
   import {
     createDefaultWorkspaceLayout,
     createWorkspaceTab,
@@ -21,7 +21,7 @@
       docs: {
         description: {
           component:
-            "Composable left/right sidebar chrome with icon tabs, grouped panels, top/bottom drop targets, source empty state, and controller-owned close behavior.",
+            "Composable left/right sidebar chrome with icon tabs, grouped panels, source context menus, group metadata editing, top/bottom drop targets, empty state, and controller-owned close behavior.",
         },
       },
     },
@@ -79,6 +79,7 @@
   }
 
   const controller = createController();
+  const contextMenuController = createController();
   const emptyController = createController(false);
 </script>
 
@@ -103,6 +104,46 @@
   {#snippet template()}
     <div class="ui-workspace-sidebar-story-frame">
       <WorkspaceSidebar {controller} side="right" />
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Group context menu editing"
+  tags={["skip-visual"]}
+  play={async ({ canvas, canvasElement }) => {
+    const page = within(canvasElement.ownerDocument.body);
+    const reference = canvas.getByRole("tab", { name: "Reference" });
+    await userEvent.click(reference);
+    await userEvent.pointer({ keys: "[MouseRight]", target: reference });
+    await userEvent.click(
+      await page.findByRole("menuitem", { name: "Rename group" }),
+    );
+
+    const name = await page.findByRole("textbox", { name: "Name" });
+    await userEvent.clear(name);
+    await userEvent.type(name, "Research");
+    await userEvent.click(
+      page.getByRole("option", { name: "Use folder-tree icon" }),
+    );
+    await userEvent.click(page.getByRole("button", { name: "Save" }));
+
+    await expect(canvas.getByRole("tab", { name: "Research" })).toBeVisible();
+
+    const outline = canvas.getByRole("button", {
+      name: "Collapse Outline",
+    });
+    await userEvent.pointer({ keys: "[MouseRight]", target: outline });
+    await expect(
+      await page.findByRole("menuitem", {
+        name: "Move to normal sidebar tabs",
+      }),
+    ).toBeVisible();
+  }}
+>
+  {#snippet template()}
+    <div class="ui-workspace-sidebar-story-frame">
+      <WorkspaceSidebar controller={contextMenuController} side="right" />
     </div>
   {/snippet}
 </Story>

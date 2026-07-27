@@ -1,7 +1,7 @@
 <script lang="ts">
   import ChevronRight from "@lucide/svelte/icons/chevron-right";
   import * as Resizable from "@stevejuma/ui/shadcn/resizable";
-  import { Collapsible } from "bits-ui";
+  import { Collapsible, ContextMenu } from "bits-ui";
   import { onMount } from "svelte";
   import type {
     WorkspaceSidebarGroup as WorkspaceSidebarGroupModel,
@@ -11,6 +11,7 @@
   import type { WorkspaceShellController } from "../core/workspace-controller.svelte.js";
   import { WorkspaceDragState } from "../drag/workspace-drag.svelte.js";
   import WorkspaceIcon from "../icon/WorkspaceIcon.svelte";
+  import WorkspaceContextMenuItems from "../menu/WorkspaceContextMenuItems.svelte";
   import WorkspaceViewHost from "../view-host/WorkspaceViewHost.svelte";
   import {
     collapsedSidebarPanelSize,
@@ -207,6 +208,10 @@
                 />
               {/if}
               {@const collapsed = group.collapsedByTabId[tab.id] === true}
+              {@const panelMenu = controller.createPaneMenu(
+                tab.id,
+                "sidebar-group-panel",
+              )}
               <Resizable.Pane
                 defaultSize={defaultSizes[panelIndex]}
                 minSize={collapsed ? collapsedSize : 12}
@@ -237,37 +242,54 @@
                         data-sidebar-group-drop-position={panelDropIndicator.position}
                       ></div>
                     {/if}
-                    <button
-                      type="button"
-                      class="ui-workspace-sidebar-group__header"
-                      data-ui-part="panel-header"
-                      draggable="true"
-                      aria-expanded={!collapsed}
-                      aria-label={`${collapsed ? "Expand" : "Collapse"} ${tab.title}`}
-                      data-hint-target="sidebar-group"
-                      data-hint-group="sidebar"
-                      data-hint-action="click"
-                      data-hint-target-id={`sidebar-group:${group.id}:${tab.id}`}
-                      data-hint-label={`${collapsed ? "Expand" : "Collapse"} ${tab.title}`}
-                      onpointerdown={(event) =>
-                        dragState.startPointer(event, tab.id)}
-                      ondragstart={(event) =>
-                        dragState.startHtml5(event, tab.id)}
-                      ondragend={(event) => dragState.endHtml5(event)}
-                      onclick={() => toggle(tab.id, collapsed)}
-                    >
-                      <ChevronRight
-                        class="ui-workspace-sidebar-group__chevron"
-                        data-expanded={!collapsed}
-                        aria-hidden="true"
-                      />
-                      <span class="ui-workspace-sidebar-group__icon">
-                        <WorkspaceIcon name={tab.icon ?? "file"} />
-                      </span>
-                      <span class="ui-workspace-sidebar-group__title">
-                        {tab.title}
-                      </span>
-                    </button>
+                    <ContextMenu.Root>
+                      <ContextMenu.Trigger>
+                        {#snippet child({ props })}
+                          <button
+                            {...props}
+                            type="button"
+                            class="ui-workspace-sidebar-group__header"
+                            data-ui-part="panel-header"
+                            draggable="true"
+                            aria-expanded={!collapsed}
+                            aria-label={`${collapsed ? "Expand" : "Collapse"} ${tab.title}`}
+                            data-hint-target="sidebar-group"
+                            data-hint-group="sidebar"
+                            data-hint-action="click"
+                            data-hint-target-id={`sidebar-group:${group.id}:${tab.id}`}
+                            data-hint-label={`${collapsed ? "Expand" : "Collapse"} ${tab.title}`}
+                            onpointerdown={(event) =>
+                              dragState.startPointer(event, tab.id)}
+                            ondragstart={(event) =>
+                              dragState.startHtml5(event, tab.id)}
+                            ondragend={(event) => dragState.endHtml5(event)}
+                            onclick={() => toggle(tab.id, collapsed)}
+                          >
+                            <ChevronRight
+                              class="ui-workspace-sidebar-group__chevron"
+                              data-expanded={!collapsed}
+                              aria-hidden="true"
+                            />
+                            <span class="ui-workspace-sidebar-group__icon">
+                              <WorkspaceIcon name={tab.icon ?? "file"} />
+                            </span>
+                            <span class="ui-workspace-sidebar-group__title">
+                              {tab.title}
+                            </span>
+                          </button>
+                        {/snippet}
+                      </ContextMenu.Trigger>
+                      <ContextMenu.Portal>
+                        <ContextMenu.Content
+                          class="ui-workspace-menu__content"
+                          data-ui-component="workspace-menu"
+                          data-ui-part="content"
+                          sideOffset={4}
+                        >
+                          <WorkspaceContextMenuItems menu={panelMenu} />
+                        </ContextMenu.Content>
+                      </ContextMenu.Portal>
+                    </ContextMenu.Root>
                     <Collapsible.Content
                       class="ui-workspace-sidebar-group__content"
                     >

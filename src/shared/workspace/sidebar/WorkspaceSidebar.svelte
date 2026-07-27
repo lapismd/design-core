@@ -1,5 +1,6 @@
 <script lang="ts">
   import { ScrollArea } from "@stevejuma/ui/shadcn/scroll-area";
+  import { ContextMenu } from "bits-ui";
   import type { Snippet } from "svelte";
   import type {
     WorkspaceSide,
@@ -8,12 +9,16 @@
     WorkspaceTabItem,
     WorkspaceTabsNode,
   } from "../core/types.js";
+  import { WorkspaceMenu } from "../core/workspace-menu.js";
   import type { WorkspaceShellController } from "../core/workspace-controller.svelte.js";
   import { WorkspaceDragState } from "../drag/workspace-drag.svelte.js";
   import WorkspaceTabsDrop from "../drop-overlay/WorkspaceTabsDrop.svelte";
   import WorkspaceIcon from "../icon/WorkspaceIcon.svelte";
+  import WorkspaceContextMenuItems from "../menu/WorkspaceContextMenuItems.svelte";
   import WorkspaceSidebarEmpty from "../sidebar-empty/WorkspaceSidebarEmpty.svelte";
   import WorkspaceSidebarGroup from "../sidebar-group/WorkspaceSidebarGroup.svelte";
+  import WorkspaceSidebarGroupEditor from "../sidebar-group/WorkspaceSidebarGroupEditor.svelte";
+  import WorkspaceSidebarGroupVisibilityDialog from "../sidebar-group/WorkspaceSidebarGroupVisibilityDialog.svelte";
   import WorkspaceSidebarToggle from "../sidebar-toggle/WorkspaceSidebarToggle.svelte";
   import WorkspaceViewHost from "../view-host/WorkspaceViewHost.svelte";
   import "./WorkspaceSidebar.css";
@@ -46,6 +51,16 @@
       pane?.items[0],
   );
   let resizing = $state(false);
+  let editingGroup = $state<Extract<
+    WorkspaceTabItem,
+    { kind: "sidebar-group" }
+  > | null>(null);
+  let editingGroupOpen = $state(false);
+  let visibilityGroup = $state<Extract<
+    WorkspaceTabItem,
+    { kind: "sidebar-group" }
+  > | null>(null);
+  let visibilityGroupOpen = $state(false);
   let resizeStartX = 0;
   let resizeStartWidth = 0;
 
@@ -60,6 +75,66 @@
 
   function isSelected(item: WorkspaceTabItem) {
     return pane?.activeItemId === item.id;
+  }
+
+  function createItemMenu(
+    item: WorkspaceTabItem,
+    tab: WorkspaceTab | undefined,
+  ): WorkspaceMenu {
+    if (item.kind === "tab") {
+      return tab ? controller.createPaneMenu(tab.id) : new WorkspaceMenu();
+    }
+
+    const hasHiddenPanels = item.hiddenTabIds.length > 0;
+    return new WorkspaceMenu().addGroups([
+      (menu) =>
+        menu
+          .addItem((entry) =>
+            entry
+              .setTitle("Rename group")
+              .setIcon("pencil")
+              .onClick(() => {
+                editingGroup = item;
+                editingGroupOpen = true;
+              }),
+          )
+          .addItem((entry) =>
+            entry
+              .setTitle("Manage visible panels")
+              .setIcon("eye")
+              .onClick(() => {
+                visibilityGroup = item;
+                visibilityGroupOpen = true;
+              }),
+          ),
+      (menu) =>
+        menu
+          .addItem((entry) =>
+            entry
+              .setTitle("Ungroup into sidebar tabs")
+              .setIcon("panel-top-open")
+              .onClick(() => {
+                controller.ungroupSidebarGroup(item.id);
+              }),
+          )
+          .addItem((entry) =>
+            entry
+              .setTitle("Close hidden panels")
+              .setIcon("eye-off")
+              .setDisabled(!hasHiddenPanels)
+              .onClick(() => {
+                controller.closeHiddenSidebarPanels(item.id);
+              }),
+          )
+          .addItem((entry) =>
+            entry
+              .setTitle("Close group")
+              .setIcon("x")
+              .onClick(() => {
+                controller.closeSidebarGroup(item.id);
+              }),
+          ),
+    ]);
   }
 
   function startResize(event: MouseEvent) {
@@ -104,30 +179,48 @@
         >
           {#each pane.items as item (item.id)}
             {@const tab = tabFor(item)}
-            <button
-              type="button"
-              role="tab"
-              class="ui-workspace-sidebar__tab"
-              data-ui-part="sidebar-tab"
-              data-state={isSelected(item) ? "on" : "off"}
-              aria-selected={isSelected(item)}
-              aria-controls={`workspace-sidebar-panel-${side}`}
-              id={`workspace-sidebar-tab-${side}-${item.id}`}
-              aria-label={item.title}
-              title={item.title}
-              draggable={Boolean(tab)}
-              data-workspace-tab-id={tab?.id}
-              data-workspace-item-id={item.id}
-              onpointerdown={(event) =>
-                tab && dragState.startPointer(event, tab.id)}
-              ondragstart={(event) =>
-                tab && dragState.startHtml5(event, tab.id)}
-              ondragend={(event) => tab && dragState.endHtml5(event)}
-              onclick={() => select(item)}
-            >
-              <WorkspaceIcon name={item.icon ?? tab?.icon ?? "file"} />
-              <span class="sr-only">{item.title}</span>
-            </button>
+            {@const menu = createItemMenu(item, tab)}
+            <ContextMenu.Root>
+              <ContextMenu.Trigger>
+                {#snippet child({ props })}
+                  <button
+                    {...props}
+                    type="button"
+                    role="tab"
+                    class="ui-workspace-sidebar__tab"
+                    data-ui-part="sidebar-tab"
+                    data-state={isSelected(item) ? "on" : "off"}
+                    aria-selected={isSelected(item)}
+                    aria-controls={`workspace-sidebar-panel-${side}`}
+                    id={`workspace-sidebar-tab-${side}-${item.id}`}
+                    aria-label={item.title}
+                    title={item.title}
+                    draggable={Boolean(tab)}
+                    data-workspace-tab-id={tab?.id}
+                    data-workspace-item-id={item.id}
+                    onpointerdown={(event) =>
+                      tab && dragState.startPointer(event, tab.id)}
+                    ondragstart={(event) =>
+                      tab && dragState.startHtml5(event, tab.id)}
+                    ondragend={(event) => tab && dragState.endHtml5(event)}
+                    onclick={() => select(item)}
+                  >
+                    <WorkspaceIcon name={item.icon ?? tab?.icon ?? "file"} />
+                    <span class="sr-only">{item.title}</span>
+                  </button>
+                {/snippet}
+              </ContextMenu.Trigger>
+              <ContextMenu.Portal>
+                <ContextMenu.Content
+                  class="ui-workspace-menu__content"
+                  data-ui-component="workspace-menu"
+                  data-ui-part="content"
+                  sideOffset={4}
+                >
+                  <WorkspaceContextMenuItems {menu} />
+                </ContextMenu.Content>
+              </ContextMenu.Portal>
+            </ContextMenu.Root>
           {/each}
         </div>
 
@@ -204,4 +297,24 @@
       ></button>
     {/if}
   </aside>
+{/if}
+
+{#if editingGroup}
+  {#key editingGroup.id}
+    <WorkspaceSidebarGroupEditor
+      {controller}
+      group={editingGroup}
+      bind:open={editingGroupOpen}
+    />
+  {/key}
+{/if}
+
+{#if visibilityGroup}
+  {#key visibilityGroup.id}
+    <WorkspaceSidebarGroupVisibilityDialog
+      {controller}
+      group={visibilityGroup}
+      bind:open={visibilityGroupOpen}
+    />
+  {/key}
 {/if}

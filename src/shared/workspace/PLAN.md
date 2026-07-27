@@ -33,8 +33,9 @@ The source package currently contains:
 
 - Production files below `src/shared/workspace` use native CSS and public
   `--ui-workspace-*` tokens.
-- Workspace sources do not import `@stevejuma/ui/shadcn`, `shadcn-svelte`,
-  `tailwind-merge`, or `tailwind-variants`.
+- Workspace sources may compose repository-owned `@stevejuma/ui/shadcn`
+  primitives, but do not import `shadcn-svelte`, `tailwind-merge`, or
+  `tailwind-variants`, and do not reconstruct an existing shadcn family.
 - Workspace sources do not contain Tailwind utility strings or `cn()` class
   composition.
 - Accessible behavior may use headless Bits UI primitives directly.
@@ -213,6 +214,11 @@ workflow.
 - Added the measured grouped-panel layout, native Paneforge stack,
   click-to-collapse headers, live view bodies, coherent size persistence, and
   registered top/bottom insertion targets.
+- Restored source context menus on grouped panel headers, with panel-specific
+  hide and move-to-normal-tabs actions plus the shared close, window, and
+  view-contributed pane actions.
+- Focused controller tests cover metadata persistence and moving a grouped
+  panel back to normal sidebar tabs.
 - Focused layout unit tests: 1 file and 2 tests pass.
 - Focused Storybook interaction and accessibility execution: 1 file and 1
   story passes through the repository's Storybook Vitest project.
@@ -231,10 +237,16 @@ workflow.
 - Added individually importable left/right sidebar surfaces with icon tabs,
   grouped-panel and leaf rendering, source-shaped empty-container treatment,
   close controls, and top/bottom-only leaf drop targets.
+- Restored the outer group-icon context menu with controller-persisted title
+  and icon updates, shadcn-backed edit and visibility dialogs, ungrouping,
+  hidden-panel cleanup, and group close actions.
 - Selecting a sidebar icon updates the live controller identity; closing the
   sidebar uses the same controller mutation path as programmatic changes.
-- Focused Storybook interaction and accessibility execution: 1 file and 2
+- Focused Storybook interaction and accessibility execution: 1 file and 3
   stories pass through the repository's Storybook Vitest project.
+- Live Storybook verification confirms the context-menu trigger leaves sidebar
+  icon tabs and grouped panel headers as direct `button` elements, and the
+  edit interaction updates the rendered group identity.
 - The required MCP focused run was also invoked; it broadened into the target
   repository's pre-existing Visual Delta manager failures after the base
   Storybook process reclaimed the shared port. Workspace-specific focused

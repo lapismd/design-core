@@ -25,6 +25,8 @@ export * from "./sidebar/index.js";
 export * from "./sidebar-empty/index.js";
 export {
   WorkspaceSidebarGroup as WorkspaceSidebarGroupComponent,
+  WorkspaceSidebarGroupEditor,
+  WorkspaceSidebarGroupVisibilityDialog,
   DEFAULT_COLLAPSED_PANEL_SIZE,
   WORKSPACE_SIDEBAR_PANEL_HEADER_PX,
   collapsedSidebarPanelSize,

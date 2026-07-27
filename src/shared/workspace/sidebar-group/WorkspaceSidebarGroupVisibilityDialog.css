@@ -1,0 +1,18 @@
+.ui-workspace-sidebar-group-visibility {
+  width: min(26rem, calc(100vw - 2rem));
+}
+
+.ui-workspace-sidebar-group-visibility__form {
+  max-height: min(24rem, 55vh);
+  overflow: auto;
+}
+
+.ui-workspace-sidebar-group-visibility__field {
+  justify-content: flex-start;
+  border-bottom: 1px solid var(--ui-workspace-border);
+  padding-block: 0.625rem;
+}
+
+.ui-workspace-sidebar-group-visibility__field:last-child {
+  border-bottom: 0;
+}

@@ -26,6 +26,7 @@ import type {
   WorkspaceLayoutChangeEvent,
   WorkspaceLayoutDropEvent,
   WorkspaceLayoutV2,
+  WorkspaceIconName,
   WorkspaceNode,
   WorkspacePopoutHandle,
   WorkspacePopoutHost,
@@ -572,6 +573,31 @@ export class WorkspaceShellController {
     return true;
   }
 
+  updateSidebarGroup(
+    groupId: string,
+    changes: { title?: string; icon?: WorkspaceIconName | null },
+  ): boolean {
+    const group = this.#findSidebarGroup(groupId);
+    if (!group) return false;
+
+    const title =
+      changes.title === undefined
+        ? group.title
+        : changes.title.trim() || group.id;
+    const icon =
+      "icon" in changes ? changes.icon?.trim() || undefined : group.icon;
+    if (title === group.title && icon === group.icon) return true;
+
+    group.title = title;
+    group.icon = icon;
+    this.#commit({
+      source: "sidebar-group",
+      id: groupId,
+      operation: "metadata",
+    });
+    return true;
+  }
+
   groupSidebarTabs(
     side: WorkspaceSide,
     tabIds: string[],
@@ -657,6 +683,60 @@ export class WorkspaceShellController {
       operation: "ungroup",
     });
     return tabs;
+  }
+
+  moveSidebarPanelToTabs(groupId: string, tabId: string): boolean {
+    const location = this.#findSidebarGroupLocation(groupId);
+    if (!location) return false;
+    const { group, pane } = location;
+    const tabIndex = group.tabs.findIndex((tab) => tab.id === tabId);
+    const groupIndex = pane.items.findIndex((item) => item.id === groupId);
+    if (tabIndex < 0 || groupIndex < 0) return false;
+
+    const [tab] = group.tabs.splice(tabIndex, 1);
+    if (!tab) return false;
+    group.hiddenTabIds = group.hiddenTabIds.filter((id) => id !== tabId);
+    delete group.collapsedByTabId[tabId];
+    delete group.panelSizesByTabId[tabId];
+
+    if (group.tabs.length) {
+      pane.items.splice(groupIndex + 1, 0, tab);
+    } else {
+      pane.items.splice(groupIndex, 1, tab);
+    }
+    pane.activeItemId = tab.id;
+    this.layout.active = {
+      hostId: "root",
+      paneId: pane.id,
+      tabId: tab.id,
+    };
+    this.#events.trigger("active-tab-change", tab);
+    this.#commit({
+      source: "sidebar-group",
+      id: groupId,
+      operation: "move-panel",
+    });
+    return true;
+  }
+
+  closeHiddenSidebarPanels(groupId: string): number {
+    const group = this.#findSidebarGroup(groupId);
+    if (!group) return 0;
+    const hiddenIds = [...group.hiddenTabIds];
+    return hiddenIds.reduce(
+      (closed, tabId) => closed + Number(this.closeTab(tabId)),
+      0,
+    );
+  }
+
+  closeSidebarGroup(groupId: string): number {
+    const group = this.#findSidebarGroup(groupId);
+    if (!group) return 0;
+    const tabIds = group.tabs.map((tab) => tab.id);
+    return tabIds.reduce(
+      (closed, tabId) => closed + Number(this.closeTab(tabId)),
+      0,
+    );
   }
 
   setSidebarPanelSize(groupId: string, tabId: string, size: number): boolean {
@@ -863,7 +943,10 @@ export class WorkspaceShellController {
     return this.#popoutHandles.get(windowId) ?? null;
   }
 
-  createPaneMenu(tabId: string): WorkspaceMenu {
+  createPaneMenu(
+    tabId: string,
+    context: "pane" | "sidebar-group-panel" = "pane",
+  ): WorkspaceMenu {
     const location = findWorkspaceTab(this.layout, tabId);
     const menu = new WorkspaceMenu();
     if (!location) return menu;
@@ -928,11 +1011,25 @@ export class WorkspaceShellController {
     if (sidebarSide) {
       menu.addSeparator();
       if (location.group) {
-        menu.addItem((item) =>
-          item.setTitle("Ungroup into sidebar tabs").onClick(() => {
-            this.ungroupSidebarGroup(location.group!.id);
-          }),
-        );
+        if (context === "sidebar-group-panel") {
+          menu
+            .addItem((item) =>
+              item.setTitle("Hide this panel").onClick(() => {
+                this.setSidebarPanelHidden(location.group!.id, tabId, true);
+              }),
+            )
+            .addItem((item) =>
+              item.setTitle("Move to normal sidebar tabs").onClick(() => {
+                this.moveSidebarPanelToTabs(location.group!.id, tabId);
+              }),
+            );
+        } else {
+          menu.addItem((item) =>
+            item.setTitle("Ungroup into sidebar tabs").onClick(() => {
+              this.ungroupSidebarGroup(location.group!.id);
+            }),
+          );
+        }
       } else {
         menu.addItem((item) =>
           item.setTitle("Convert to sidebar group").onClick(() => {

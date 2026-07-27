@@ -158,6 +158,81 @@ describe("WorkspaceShellController", () => {
     ).toBe(true);
   });
 
+  it("updates persisted sidebar-group metadata and exposes panel actions", async () => {
+    const files = createWorkspaceTab({ id: "files", title: "Files" });
+    const search = createWorkspaceTab({ id: "search", title: "Search" });
+    const layout = splitLayout();
+    layout.left = {
+      open: true,
+      size: 300,
+      root: createWorkspaceTabs([files, search], { id: "left-sidebar" }),
+    };
+    const save = vi.fn<
+      (
+        layout: WorkspaceLayoutV2,
+        event: WorkspaceLayoutChangeEvent,
+      ) => Promise<void>
+    >(async () => undefined);
+    const controller = new WorkspaceShellController({
+      layout,
+      persistence: { load: async () => null, save },
+      saveDebounceMs: 0,
+    });
+    const group = controller.groupSidebarTabs("left", ["files", "search"], {
+      id: "explorer",
+      title: "Explorer",
+      icon: "files",
+    })!;
+    await controller.flushSave();
+    save.mockClear();
+
+    expect(
+      controller.updateSidebarGroup(group.id, {
+        title: "Project",
+        icon: "folder-tree",
+      }),
+    ).toBe(true);
+    await controller.flushSave();
+    expect(group).toMatchObject({
+      title: "Project",
+      icon: "folder-tree",
+    });
+    expect(save).toHaveBeenCalledTimes(1);
+    expect(save.mock.calls[0]?.[0].left.root).toMatchObject({
+      items: [
+        {
+          id: "explorer",
+          title: "Project",
+          icon: "folder-tree",
+        },
+      ],
+    });
+    expect(save.mock.calls[0]?.[1]).toMatchObject({
+      source: "sidebar-group",
+      id: "explorer",
+      operation: "metadata",
+    });
+
+    const panelMenu = controller.createPaneMenu("files", "sidebar-group-panel");
+    expect(
+      panelMenu.entries
+        .filter((entry) => entry.kind === "item")
+        .map((entry) => entry.title),
+    ).toEqual(
+      expect.arrayContaining([
+        "Hide this panel",
+        "Move to normal sidebar tabs",
+      ]),
+    );
+    expect(controller.moveSidebarPanelToTabs("explorer", "files")).toBe(true);
+    expect(findWorkspaceTab(controller.layout, "files")?.group).toBeUndefined();
+    expect(
+      controller.layout.left.root.kind === "tabs"
+        ? controller.layout.left.root.items.map((item) => item.id)
+        : [],
+    ).toEqual(["explorer", "files"]);
+  });
+
   it("allows sidebar edge drops to create recursive sidebar splits", () => {
     const sidebar = createWorkspaceTab({ id: "files", title: "Files" });
     const layout = splitLayout();
