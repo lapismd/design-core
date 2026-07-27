@@ -562,16 +562,23 @@
 }
 
 .ui-workspace-settings__search-hit {
-  outline: 2px solid var(--ui-workspace-accent);
-  outline-offset: 2px;
+  border-radius: var(--ui-workspace-radius-medium);
+  color: var(--ui-workspace-foreground);
   background: color-mix(
     in srgb,
-    var(--ui-workspace-accent) 12%,
-    var(--ui-workspace-background)
+    var(--ui-workspace-accent) 22%,
+    var(--ui-workspace-panel)
   );
+  box-shadow: 0 0.35rem 1.1rem
+    color-mix(in srgb, var(--ui-workspace-accent) 22%, transparent);
   transition:
     background-color 150ms ease,
-    outline-color 150ms ease;
+    box-shadow 150ms ease,
+    color 150ms ease;
+}
+
+.ui-workspace-settings__search-hit .ui-workspace-setting-item__info p {
+  color: color-mix(in srgb, var(--ui-workspace-foreground) 78%, transparent);
 }
 
 .ui-workspace-hotkeys {

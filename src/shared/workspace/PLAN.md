@@ -625,7 +625,8 @@ workflow.
   settings fields use the repository shadcn primitives, settings search
   navigates to and briefly highlights the selected field, sidebar content uses
   the shadcn ScrollArea, and split/sidebar rails use the shadcn resizable
-  primitive with a one-pixel resting line and accent-painted active line.
+  primitive with a one-pixel resting line and two-pixel accent-painted active
+  line.
 - Restored the source shell seams and controls: sidebar and top-tab dividers
   share one continuous horizontal edge, expanded sidebars retain their outer
   boundary, ribbon masking stops at the header, sidebar toggles expose their
