@@ -820,6 +820,32 @@
       "data-state",
       "expanded",
     );
+
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Collapse projects sidebar" }),
+    );
+    await userEvent.hover(
+      canvas.getByRole("button", { name: "Preview projects sidebar" }),
+    );
+    const popupPreview = canvas.getByLabelText("Projects sidebar");
+    const popupProjectSelector = canvas.getByRole("combobox", {
+      name: "Project selector",
+    });
+    await userEvent.click(popupProjectSelector);
+    const popupProjectOption = within(document.body).getByRole("option", {
+      name: "UI Catalog",
+    });
+    await userEvent.hover(popupProjectOption);
+    await new Promise<void>((resolve) => {
+      setTimeout(resolve, 160);
+    });
+    await expect(popupPreview).toHaveAttribute("data-presentation", "overlay");
+    await userEvent.click(popupProjectOption);
+    await new Promise<void>((resolve) => {
+      setTimeout(resolve, 160);
+    });
+    await expect(popupProjectSelector).toHaveTextContent("UI Catalog");
+    await expect(popupPreview).toHaveAttribute("data-presentation", "overlay");
   }}
 >
   {#snippet template()}

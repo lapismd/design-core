@@ -117,6 +117,36 @@
     }
   });
 
+  $effect(() => {
+    if (typeof document === "undefined" || !sidebar.previewed) return;
+
+    const handleDocumentPointerOver = (event: PointerEvent) => {
+      if (isSidebarInteractionTarget(event.target)) {
+        keepOverlay();
+        return;
+      }
+      scheduleOverlayDismiss();
+    };
+    const handleDocumentFocusIn = (event: FocusEvent) => {
+      if (isSidebarInteractionTarget(event.target)) {
+        keepOverlay();
+        return;
+      }
+      scheduleOverlayDismiss();
+    };
+
+    document.addEventListener("pointerover", handleDocumentPointerOver, true);
+    document.addEventListener("focusin", handleDocumentFocusIn, true);
+    return () => {
+      document.removeEventListener(
+        "pointerover",
+        handleDocumentPointerOver,
+        true,
+      );
+      document.removeEventListener("focusin", handleDocumentFocusIn, true);
+    };
+  });
+
   onDestroy(() => {
     stopResize();
     sidebar.dismissPreview();
@@ -140,11 +170,50 @@
     sidebar.schedulePreviewDismiss();
   }
 
+  function isSidebarInteractionTarget(target: EventTarget | null): boolean {
+    if (!(target instanceof Node) || !ref) return false;
+    if (ref.contains(target)) return true;
+
+    const controlIds = new Set<string>();
+    for (const owner of ref.querySelectorAll<HTMLElement>(
+      "[aria-controls], [aria-owns]",
+    )) {
+      for (const attribute of ["aria-controls", "aria-owns"] as const) {
+        for (const id of owner.getAttribute(attribute)?.split(/\s+/) ?? []) {
+          if (id) controlIds.add(id);
+        }
+      }
+    }
+
+    for (const id of controlIds) {
+      const controlledElement = document.getElementById(id);
+      if (controlledElement?.contains(target)) return true;
+    }
+
+    if (!(target instanceof Element)) return false;
+    const hasOpenPopupOwner = ref.querySelector(
+      '[aria-haspopup][aria-expanded="true"], [role="combobox"][aria-expanded="true"]',
+    );
+    if (!hasOpenPopupOwner) return false;
+
+    return Boolean(
+      target.closest(
+        '[role="dialog"], [role="grid"], [role="listbox"], [role="menu"], [role="tooltip"], [role="tree"]',
+      ),
+    );
+  }
+
   function handleOverlayBlur(event: FocusEvent): void {
-    if (
-      event.relatedTarget instanceof Node &&
-      ref?.contains(event.relatedTarget)
-    ) {
+    if (isSidebarInteractionTarget(event.relatedTarget)) {
+      keepOverlay();
+      return;
+    }
+    scheduleOverlayDismiss();
+  }
+
+  function handleOverlayPointerLeave(event: MouseEvent): void {
+    if (isSidebarInteractionTarget(event.relatedTarget)) {
+      keepOverlay();
       return;
     }
     scheduleOverlayDismiss();
@@ -274,7 +343,7 @@
     aria-label={accessibleLabel}
     onmouseenter={keepOverlay}
     onmouseleave={presentation === "overlay"
-      ? scheduleOverlayDismiss
+      ? handleOverlayPointerLeave
       : undefined}
     onfocusin={keepOverlay}
     onfocusout={presentation === "overlay" ? handleOverlayBlur : undefined}

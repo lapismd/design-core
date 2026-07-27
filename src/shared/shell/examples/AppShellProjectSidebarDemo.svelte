@@ -77,11 +77,13 @@
           id="ui-shell-story-project-options"
           aria-label="Project options"
         >
-          {#each projects as project}
-            <Select.Item value={project.id} label={project.label}>
-              {project.label}
-            </Select.Item>
-          {/each}
+          <Select.Group>
+            {#each projects as project}
+              <Select.Item value={project.id} label={project.label}>
+                {project.label}
+              </Select.Item>
+            {/each}
+          </Select.Group>
         </Select.Content>
       </Select.Root>
     </div>

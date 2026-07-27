@@ -99,7 +99,11 @@ collapsed or closed sidebar as an expanded overlay. The default 600ms opening
 delay is configurable with `previewDelay`; leaving before it elapses cancels the
 preview, and moving into the overlay keeps it open without moving adjacent
 columns. Overlay width always resolves from the expanded sidebar width even
-when the retained controller state is collapsed.
+when the retained controller state is collapsed. Portalled popup content also
+counts as part of the preview while it is linked through `aria-controls` or
+`aria-owns`, or is opened by an accessible `combobox`/`aria-haspopup` trigger
+inside the sidebar. This lets Select, Popover, and menu options remain
+interactive without pinning the sidebar open permanently.
 `closeable` enables a nested `Sidebar.Close` action. Put that action in
 `Sidebar.Header`; its automatic inline margin places it at the far edge. Closing
 removes the sidebar from layout completely so `Main` reclaims its width and

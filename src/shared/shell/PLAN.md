@@ -27,6 +27,9 @@ workspace behavior are not copied.
 - Expanded sidebars resize independently through accessible built-in handles.
 - An edge-preview overlay retains the sidebar's resize handle and controller
   width.
+- Portalled popup content linked through `aria-controls`/`aria-owns` or opened
+  by an accessible popup trigger remains inside the preview interaction
+  boundary.
 - The root controller serializes built-in and named panels through an injected
   layout adapter; a package adapter provides versioned JSON in localStorage.
 
@@ -67,9 +70,9 @@ workspace behavior are not copied.
 4. Compare-only visual tests; new stories remain `visual-pending`.
 5. `pnpm checks` before handoff.
 
-\* Focused unit, Storybook interaction/accessibility, source, and static build
-checks pass. Compare-only visual capture remains pending human approval. The
-full catalog run currently reports missing baselines for existing AI stories
-and serves a catalog that cannot resolve the Shell and Workspace story ids, so
-those captures time out before comparison. No baselines were created or
-updated.
+\* Focused Shell interaction/accessibility and source checks pass, as do the
+unit suite, static Storybook build, and visual audit. The full repository gate
+currently stops at the unrelated AI Emoji Picker keyboard-focus story before
+the later browser and compare-only visual stages. The previous compare-only run
+also reported missing AI baselines and unresolved Shell/Workspace story ids. No
+baselines were created or updated.
