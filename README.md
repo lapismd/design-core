@@ -64,9 +64,9 @@ scripts/
   optional same-side nesting with collapsed/closed edge and delayed toggle
   previews, plus injected sidebar-layout persistence with a default
   localStorage adapter. Its body regions support consumer-mounted left or right
-  sidebars such as a Markdown table of contents; consumer content, navigation
-  selection, non-shell controls, and non-layout persistence stay outside the
-  layer.
+  sidebars such as a Markdown table of contents, with controlled toggles fixed
+  to the matching body corner; consumer content, navigation selection,
+  non-shell controls, and non-layout persistence stay outside the layer.
 - `shared/workspace` owns the full tab, split, view, plugin, and persistence
   framework.
 - Public components take typed props and callbacks rather than importing host

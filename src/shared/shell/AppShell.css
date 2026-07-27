@@ -209,11 +209,26 @@
 }
 
 .ui-minimal-app-shell__body {
+  position: relative;
   display: flex;
   flex: 1;
   min-width: 0;
   min-height: 0;
   overflow: hidden;
+}
+
+.ui-minimal-app-shell__body-toggle {
+  position: absolute;
+  z-index: 2;
+  inset-block-start: 0.5rem;
+}
+
+.ui-minimal-app-shell__body-toggle[data-side="left"] {
+  inset-inline-start: 0.5rem;
+}
+
+.ui-minimal-app-shell__body-toggle[data-side="right"] {
+  inset-inline-end: 0.5rem;
 }
 
 .ui-minimal-app-shell__body[data-layout="regions"] {

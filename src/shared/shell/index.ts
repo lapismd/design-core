@@ -1,6 +1,7 @@
 import AppShellBody from "./AppShellBody.svelte";
 import AppShellBodyContent from "./AppShellBodyContent.svelte";
 import AppShellBodySidebar from "./AppShellBodySidebar.svelte";
+import AppShellBodyToggle from "./AppShellBodyToggle.svelte";
 import AppShellMain from "./AppShellMain.svelte";
 import AppShellRoot from "./AppShellRoot.svelte";
 import AppShellSidebar from "./AppShellSidebar.svelte";
@@ -22,12 +23,14 @@ export const Sidebar = Object.assign(AppShellSidebar, {
 export const Body = Object.assign(AppShellBody, {
   Content: AppShellBodyContent,
   Sidebar: AppShellBodySidebar,
+  Toggle: AppShellBodyToggle,
 });
 
 export {
   AppShellBody,
   AppShellBodyContent,
   AppShellBodySidebar,
+  AppShellBodyToggle,
   AppShellMain,
   AppShellRoot,
   AppShellSidebar,
@@ -39,6 +42,7 @@ export {
   AppShellToolbar,
   AppShellBodyContent as BodyContent,
   AppShellBodySidebar as BodySidebar,
+  AppShellBodyToggle as BodyToggle,
   AppShellMain as Main,
   AppShellRoot as Root,
   AppShellSidebarBody as SidebarBody,

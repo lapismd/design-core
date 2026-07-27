@@ -6,9 +6,11 @@
   let {
     file,
     sidebarSide,
+    onToggleSidebar,
   }: {
     file: string;
     sidebarSide?: AppShellSide;
+    onToggleSidebar: (side: AppShellSide) => void;
   } = $props();
 
   const sections = [
@@ -42,6 +44,23 @@
 {/snippet}
 
 <AppShell.Body layout="regions" label="Markdown document">
+  <AppShell.Body.Toggle
+    side="left"
+    pressed={sidebarSide === "left"}
+    label={sidebarSide === "left"
+      ? "Hide table of contents on left"
+      : "Show table of contents on left"}
+    onclick={() => onToggleSidebar("left")}
+  />
+  <AppShell.Body.Toggle
+    side="right"
+    pressed={sidebarSide === "right"}
+    label={sidebarSide === "right"
+      ? "Hide table of contents on right"
+      : "Show table of contents on right"}
+    onclick={() => onToggleSidebar("right")}
+  />
+
   {#if sidebarSide === "left"}
     <AppShell.Body.Sidebar side="left" label="Table of contents">
       {@render tableOfContents()}

@@ -1,10 +1,6 @@
 <script module lang="ts">
-  import PanelLeftOpenIcon from "@lucide/svelte/icons/panel-left-open";
-  import PanelRightOpenIcon from "@lucide/svelte/icons/panel-right-open";
-  import XIcon from "@lucide/svelte/icons/x";
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent, within } from "storybook/test";
-  import { Button } from "../shadcn/button/index.js";
   import AppShellBodyDemo from "./examples/AppShellBodyDemo.svelte";
   import AppShellConversationDemo from "./examples/AppShellConversationDemo.svelte";
   import AppShellFilesSidebarDemo from "./examples/AppShellFilesSidebarDemo.svelte";
@@ -60,9 +56,9 @@
     bodySidebarSide = "left";
   }
 
-  function showBodySidebar(side: "left" | "right"): void {
+  function toggleBodySidebar(side: "left" | "right"): void {
     if (!selectedMarkdownFile) selectedMarkdownFile = "README.md";
-    bodySidebarSide = side;
+    bodySidebarSide = bodySidebarSide === side ? undefined : side;
   }
 </script>
 
@@ -926,6 +922,29 @@
     const mainBody = canvas.getByRole("main", { name: "Markdown document" });
     await expect(mainBody).toHaveAttribute("data-layout", "regions");
     await expect(mainBody).toHaveStyle("overflow: hidden");
+    const leftBodyToggle = canvas.getByRole("button", {
+      name: "Show table of contents on left",
+    });
+    const rightBodyToggle = canvas.getByRole("button", {
+      name: "Show table of contents on right",
+    });
+    await expect(mainBody).toContainElement(leftBodyToggle);
+    await expect(mainBody).toContainElement(rightBodyToggle);
+    const bodyRect = mainBody.getBoundingClientRect();
+    const leftToggleRect = leftBodyToggle.getBoundingClientRect();
+    const rightToggleRect = rightBodyToggle.getBoundingClientRect();
+    await expect(
+      Math.abs(leftToggleRect.left - (bodyRect.left + 8)),
+    ).toBeLessThanOrEqual(0.5);
+    await expect(
+      Math.abs(rightToggleRect.right - (bodyRect.right - 8)),
+    ).toBeLessThanOrEqual(0.5);
+    await expect(
+      Math.abs(leftToggleRect.top - (bodyRect.top + 8)),
+    ).toBeLessThanOrEqual(0.5);
+    await expect(
+      Math.abs(rightToggleRect.top - (bodyRect.top + 8)),
+    ).toBeLessThanOrEqual(0.5);
     await expect(
       canvas.queryByRole("complementary", { name: "Table of contents" }),
     ).not.toBeInTheDocument();
@@ -937,6 +956,11 @@
     await userEvent.click(readmeButton);
     await expect(readmeButton).toHaveFocus();
     await expect(readmeButton).toHaveAttribute("aria-pressed", "true");
+    await expect(
+      canvas.getByRole("button", {
+        name: "Hide table of contents on left",
+      }),
+    ).toHaveAttribute("aria-pressed", "true");
 
     const leftToc = canvas.getByRole("complementary", {
       name: "Table of contents",
@@ -978,10 +1002,11 @@
     });
     await expect(rightToc).toHaveAttribute("data-side", "right");
 
-    const closeButton = canvas.getByRole("button", {
-      name: "Close table of contents",
+    const hideRightButton = canvas.getByRole("button", {
+      name: "Hide table of contents on right",
     });
-    await userEvent.click(closeButton);
+    await userEvent.click(hideRightButton);
+    await expect(hideRightButton).toHaveFocus();
     await expect(
       canvas.queryByRole("complementary", { name: "Table of contents" }),
     ).not.toBeInTheDocument();
@@ -989,8 +1014,11 @@
       contentWidthWithSidebar,
     );
 
-    await userEvent.click(rightButton);
-    await expect(rightButton).toHaveFocus();
+    const showRightButton = canvas.getByRole("button", {
+      name: "Show table of contents on right",
+    });
+    await userEvent.click(showRightButton);
+    await expect(showRightButton).toHaveFocus();
     await expect(
       canvas.getByRole("complementary", { name: "Table of contents" }),
     ).toHaveAttribute("data-side", "right");
@@ -1018,40 +1046,13 @@
                 {selectedMarkdownFile || "Document viewer"}
               </strong>
               <span class="ui-shell-story-toolbar-spacer"></span>
-              <Button
-                variant="ghost"
-                size="icon-sm"
-                aria-label="Show table of contents on left"
-                aria-pressed={bodySidebarSide === "left"}
-                onclick={() => showBodySidebar("left")}
-              >
-                <PanelLeftOpenIcon aria-hidden="true" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon-sm"
-                aria-label="Show table of contents on right"
-                aria-pressed={bodySidebarSide === "right"}
-                onclick={() => showBodySidebar("right")}
-              >
-                <PanelRightOpenIcon aria-hidden="true" />
-              </Button>
-              {#if bodySidebarSide}
-                <Button
-                  variant="ghost"
-                  size="icon-sm"
-                  aria-label="Close table of contents"
-                  onclick={() => (bodySidebarSide = undefined)}
-                >
-                  <XIcon aria-hidden="true" />
-                </Button>
-              {/if}
             </div>
           </AppShell.Toolbar>
 
           <AppShellMarkdownDocumentDemo
             file={selectedMarkdownFile}
             sidebarSide={bodySidebarSide}
+            onToggleSidebar={toggleBodySidebar}
           />
         </AppShell.Main>
       </AppShell.Root>

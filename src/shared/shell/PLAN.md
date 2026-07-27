@@ -19,6 +19,8 @@ workspace behavior are not copied.
 - `AppShell.Main`, `AppShell.Toolbar`, and `AppShell.Body` compose the center.
 - `AppShell.Body` supports a regions layout with independently scrolling
   `Body.Sidebar` and `Body.Content` parts for consumer-owned document chrome.
+- `AppShell.Body.Toggle` places consumer-controlled sidebar actions at the
+  corresponding top-left or top-right body corner.
 - `useAppShell()` exposes the nearest root controller to consumer components.
 - Left and right sidebars collapse independently to persistent icon rails.
 - Collapsed inline rails omit header/footer separators; expanded overlays
@@ -51,6 +53,8 @@ workspace behavior are not copied.
   sidebar remain consumer-owned.
 - Document-local sidebars are conditionally mounted by consumers and do not
   participate in root sidebar collapse, resize, or persistence state.
+- Body toggles expose pressed state and placement only; their click behavior
+  remains consumer-owned.
 - Shell containers do not scroll; main and sidebar body regions compose the
   shared shadcn Scroll Area.
 - Shell may compose shadcn Button for its Toggle and Close actions.
@@ -75,9 +79,9 @@ workspace behavior are not copied.
 4. Compare-only visual tests; new stories remain `visual-pending`.
 5. `pnpm checks` before handoff.
 
-\* Focused Shell interaction/accessibility and source checks pass, as do the
-full unit and Storybook suites, workspace pointer tests, static Storybook build,
-visual audit, AI browser checks, and the Visual Delta panel suite. The
-compare-only visual stage reports pre-existing missing baselines plus the
-expected missing baseline for the new `visual-pending` body-sidebar story. No
-baselines were created or updated.
+\* Focused Shell interaction/accessibility and source checks pass, as do all
+620 unit tests, the static Storybook build, the visual audit, and the live
+browser placement check. The repository-wide Storybook stage currently stops
+at the unrelated Emoji Picker focus assertion: focus remains on `Search emoji`
+instead of moving to `React with thumbs up`. The body-sidebar story remains
+`visual-pending`; no baselines were created or updated.

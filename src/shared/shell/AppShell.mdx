@@ -44,6 +44,17 @@ regions and mount a consumer-controlled sidebar on either side:
 
 ```svelte
 <AppShell.Body layout="regions" label="Markdown document">
+  <AppShell.Body.Toggle
+    side="left"
+    pressed={tableOfContentsSide === "left"}
+    onclick={() => toggleTableOfContents("left")}
+  />
+  <AppShell.Body.Toggle
+    side="right"
+    pressed={tableOfContentsSide === "right"}
+    onclick={() => toggleTableOfContents("right")}
+  />
+
   {#if tableOfContentsSide === "left"}
     <AppShell.Body.Sidebar side="left" label="Table of contents">
       ...
@@ -68,6 +79,13 @@ shadcn Scroll Area. The body itself remains fixed and non-scrolling, and the
 consumer owns whether the local sidebar is mounted and which side it occupies.
 This makes table-of-contents state easy to derive from a selected Markdown file
 without registering another application-level sidebar.
+
+`Body.Toggle` is an icon-sized shadcn Button positioned inside the body:
+top-left for `side="left"` and top-right for `side="right"`. It exposes
+`aria-pressed` but does not own application state; consumers pass `pressed`, an
+accessible `label` when the defaults are not specific enough, and their own
+click handler. The toggle remains mounted when its sidebar closes, so focus is
+retained and the body reclaims the sidebar width.
 
 `Main` is an inset, bordered surface while both sidebars remain full height.
 The shell containers use `overflow: hidden`; the default `AppShell.Body`,

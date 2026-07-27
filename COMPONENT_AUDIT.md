@@ -98,7 +98,7 @@ Bounded application chrome in `src/shared/shell/`:
 
 - Compound `Root`, `Sidebar`, `Sidebar.Header`, `Sidebar.Body`,
   `Sidebar.Footer`, `Sidebar.Toggle`, `Sidebar.Close`, `Main`, `Toolbar`, and
-  `Body`, `Body.Content`, and `Body.Sidebar` surfaces
+  `Body`, `Body.Content`, `Body.Sidebar`, and `Body.Toggle` surfaces
 - Viewport-height root with overrideable structural geometry tokens
 - Independent reactive left and right expanded/collapsed/closed and width
   controllers
@@ -110,6 +110,7 @@ Bounded application chrome in `src/shared/shell/`:
   and default localStorage implementation
 - Fixed chrome around shadcn Scroll Areas in main, body-local, and outer
   sidebar regions
+- Body-local corner toggles composed from the shadcn icon Button
 - Consumer-owned navigation, actions, content, and non-layout persistence
 
 Import: `@stevejuma/ui/shell`. Catalog: `Shell/App Shell`. Production Shell

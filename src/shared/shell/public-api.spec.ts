@@ -10,6 +10,7 @@ import {
   AppShellBody,
   AppShellBodyContent,
   AppShellBodySidebar,
+  AppShellBodyToggle,
   AppShellMain,
   AppShellRoot,
   AppShellSidebar,
@@ -22,6 +23,7 @@ import {
   Body,
   BodyContent,
   BodySidebar,
+  BodyToggle,
   Main,
   Root,
   Sidebar,
@@ -50,6 +52,7 @@ describe("@stevejuma/ui/shell public API", () => {
     expect(AppShell.Body).toBe(AppShellBody);
     expect(AppShell.Body.Content).toBe(AppShellBodyContent);
     expect(AppShell.Body.Sidebar).toBe(AppShellBodySidebar);
+    expect(AppShell.Body.Toggle).toBe(AppShellBodyToggle);
     expect(Root).toBe(AppShellRoot);
     expect(Sidebar).toBe(AppShellSidebar);
     expect(SidebarHeader).toBe(AppShellSidebarHeader);
@@ -62,8 +65,10 @@ describe("@stevejuma/ui/shell public API", () => {
     expect(Body).toBe(AppShellBody);
     expect(Body.Content).toBe(AppShellBodyContent);
     expect(Body.Sidebar).toBe(AppShellBodySidebar);
+    expect(Body.Toggle).toBe(AppShellBodyToggle);
     expect(BodyContent).toBe(AppShellBodyContent);
     expect(BodySidebar).toBe(AppShellBodySidebar);
+    expect(BodyToggle).toBe(AppShellBodyToggle);
   });
 
   it("publishes the shell subpaths and documented token defaults", () => {

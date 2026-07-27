@@ -326,7 +326,7 @@
   min-width: 0;
   flex-direction: column;
   gap: 0.25rem;
-  padding: 1rem 0.75rem;
+  padding: 3rem 0.75rem 1rem;
 }
 
 .ui-shell-story-document-toc > span {
