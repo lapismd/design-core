@@ -216,7 +216,43 @@
   overflow: hidden;
 }
 
+.ui-minimal-app-shell__body[data-layout="regions"] {
+  align-items: stretch;
+}
+
+.ui-minimal-app-shell__body-content,
+.ui-minimal-app-shell__body-sidebar {
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.ui-minimal-app-shell__body-content {
+  order: 1;
+  flex: 1;
+}
+
+.ui-minimal-app-shell__body-sidebar {
+  flex: none;
+  width: var(--ui-shell-body-sidebar-width);
+  color: var(--foreground);
+  background: var(--muted);
+}
+
+.ui-minimal-app-shell__body-sidebar[data-side="left"] {
+  order: 0;
+  border-inline-end: 1px solid var(--border);
+}
+
+.ui-minimal-app-shell__body-sidebar[data-side="right"] {
+  order: 2;
+  border-inline-start: 1px solid var(--border);
+}
+
 .ui-minimal-app-shell__body-scroll-area,
+.ui-minimal-app-shell__body-content-scroll-area,
+.ui-minimal-app-shell__body-sidebar-scroll-area,
 .ui-minimal-app-shell__sidebar-scroll-area {
   flex: 1;
   min-width: 0;

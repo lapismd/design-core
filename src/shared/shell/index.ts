@@ -1,4 +1,6 @@
 import AppShellBody from "./AppShellBody.svelte";
+import AppShellBodyContent from "./AppShellBodyContent.svelte";
+import AppShellBodySidebar from "./AppShellBodySidebar.svelte";
 import AppShellMain from "./AppShellMain.svelte";
 import AppShellRoot from "./AppShellRoot.svelte";
 import AppShellSidebar from "./AppShellSidebar.svelte";
@@ -17,8 +19,15 @@ export const Sidebar = Object.assign(AppShellSidebar, {
   Toggle: AppShellSidebarToggle,
 });
 
+export const Body = Object.assign(AppShellBody, {
+  Content: AppShellBodyContent,
+  Sidebar: AppShellBodySidebar,
+});
+
 export {
   AppShellBody,
+  AppShellBodyContent,
+  AppShellBodySidebar,
   AppShellMain,
   AppShellRoot,
   AppShellSidebar,
@@ -28,7 +37,8 @@ export {
   AppShellSidebarHeader,
   AppShellSidebarToggle,
   AppShellToolbar,
-  AppShellBody as Body,
+  AppShellBodyContent as BodyContent,
+  AppShellBodySidebar as BodySidebar,
   AppShellMain as Main,
   AppShellRoot as Root,
   AppShellSidebarBody as SidebarBody,
@@ -44,9 +54,10 @@ export const AppShell = {
   Sidebar,
   Main: AppShellMain,
   Toolbar: AppShellToolbar,
-  Body: AppShellBody,
+  Body,
 } as const;
 
+export * from "./app-shell-body-context.svelte.js";
 export * from "./app-shell-context.svelte.js";
 export * from "./app-shell-controller.svelte.js";
 export * from "./app-shell-persistence.js";

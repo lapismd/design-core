@@ -321,6 +321,106 @@
   flex: 1;
 }
 
+.ui-shell-story-document-toc {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 1rem 0.75rem;
+}
+
+.ui-shell-story-document-toc > span {
+  padding: 0 0.5rem 0.5rem;
+  color: var(--muted-foreground);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.ui-shell-story-document-toc a {
+  overflow: hidden;
+  border-radius: calc(var(--radius) * 0.75);
+  padding: 0.375rem 0.5rem;
+  color: var(--muted-foreground);
+  font-size: 0.8125rem;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ui-shell-story-document-toc a:hover,
+.ui-shell-story-document-toc a:focus-visible,
+.ui-shell-story-document-toc a[aria-current] {
+  color: var(--foreground);
+  background: var(--accent);
+}
+
+.ui-shell-story-document-toc a:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 1px;
+}
+
+.ui-shell-story-document {
+  max-width: 50rem;
+  padding: 2rem clamp(1.5rem, 5vw, 4rem) 4rem;
+  margin-inline: auto;
+}
+
+.ui-shell-story-document header {
+  margin-block-end: 2.5rem;
+}
+
+.ui-shell-story-document header > span {
+  color: var(--muted-foreground);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.ui-shell-story-document h2 {
+  margin: 0.375rem 0 0.75rem;
+  font-size: 2rem;
+}
+
+.ui-shell-story-document h3 {
+  margin: 0 0 0.625rem;
+  font-size: 1.125rem;
+}
+
+.ui-shell-story-document p {
+  margin: 0 0 0.75rem;
+  color: var(--muted-foreground);
+  line-height: 1.65;
+}
+
+.ui-shell-story-document section {
+  scroll-margin-block-start: 1rem;
+  padding-block: 1.25rem;
+  border-block-start: 1px solid var(--border);
+}
+
+.ui-shell-story-document-empty {
+  display: grid;
+  height: 100%;
+  place-content: center;
+  justify-items: center;
+  gap: 0.5rem;
+  padding: 2rem;
+  color: var(--muted-foreground);
+  text-align: center;
+}
+
+.ui-shell-story-document-empty > svg {
+  width: 2rem;
+  height: 2rem;
+}
+
+.ui-shell-story-document-empty strong {
+  color: var(--foreground);
+}
+
 .ui-shell-story-body-demo {
   container-type: inline-size;
   display: flex;

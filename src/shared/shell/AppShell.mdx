@@ -39,11 +39,42 @@ and resizable sidebars, a main column, a toolbar, and a scrolling body.
 Every part is optional except `Root`. Omitting either sidebar leaves the main
 column to fill the available bounded container.
 
+For document-local navigation, switch the body to independently scrolling
+regions and mount a consumer-controlled sidebar on either side:
+
+```svelte
+<AppShell.Body layout="regions" label="Markdown document">
+  {#if tableOfContentsSide === "left"}
+    <AppShell.Body.Sidebar side="left" label="Table of contents">
+      ...
+    </AppShell.Body.Sidebar>
+  {/if}
+
+  <AppShell.Body.Content label="README content">
+    <article>...</article>
+  </AppShell.Body.Content>
+
+  {#if tableOfContentsSide === "right"}
+    <AppShell.Body.Sidebar side="right" label="Table of contents">
+      ...
+    </AppShell.Body.Sidebar>
+  {/if}
+</AppShell.Body>
+```
+
+The default `layout="scroll"` remains the compact one-region body. In
+`layout="regions"`, every `Body.Sidebar` and `Body.Content` installs its own
+shadcn Scroll Area. The body itself remains fixed and non-scrolling, and the
+consumer owns whether the local sidebar is mounted and which side it occupies.
+This makes table-of-contents state easy to derive from a selected Markdown file
+without registering another application-level sidebar.
+
 `Main` is an inset, bordered surface while both sidebars remain full height.
-The shell containers use `overflow: hidden`; `AppShell.Body` and
-every `AppShell.Sidebar.Body` install their own shadcn Scroll Area and vertical
-scrollbar. The main toolbar and each sidebar header and footer therefore remain
-fixed while the three body regions scroll independently. A collapsed sidebar
+The shell containers use `overflow: hidden`; the default `AppShell.Body`,
+each body region, and every `AppShell.Sidebar.Body` install their own shadcn
+Scroll Area and vertical scrollbar. The main toolbar and each sidebar header
+and footer therefore remain fixed while content regions scroll independently.
+A collapsed sidebar
 keeps the same scrollable viewport for its icon rail but hides the scrollbar.
 Its inline header and footer separators are also removed; a temporary expanded
 overlay restores them. Built-in `Sidebar.Toggle` and `Sidebar.Close` actions in
@@ -171,6 +202,7 @@ without changing shell components.
 | `--ui-shell-right-sidebar-width`            | `18rem`                | Expanded right sidebar      |
 | `--ui-shell-right-sidebar-gap`              | `0.5rem`               | Gap before right sidebar    |
 | `--ui-shell-collapsed-sidebar-width`        | `3rem`                 | Either collapsed icon rail  |
+| `--ui-shell-body-sidebar-width`             | `14rem`                | Local body sidebar width    |
 | `--ui-shell-sidebar-toggle-indicator-width` | `24%`                  | Expanded toggle panel mark  |
 | `--ui-shell-toolbar-height`                 | `3rem`                 | Top chrome divider baseline |
 | `--ui-shell-main-block-inset`               | `0.5rem`               | Main top and bottom inset   |

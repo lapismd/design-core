@@ -98,7 +98,7 @@ Bounded application chrome in `src/shared/shell/`:
 
 - Compound `Root`, `Sidebar`, `Sidebar.Header`, `Sidebar.Body`,
   `Sidebar.Footer`, `Sidebar.Toggle`, `Sidebar.Close`, `Main`, `Toolbar`, and
-  `Body` surfaces
+  `Body`, `Body.Content`, and `Body.Sidebar` surfaces
 - Viewport-height root with overrideable structural geometry tokens
 - Independent reactive left and right expanded/collapsed/closed and width
   controllers
@@ -108,7 +108,8 @@ Bounded application chrome in `src/shared/shell/`:
 - Accessible pointer and keyboard resize handles baked into expanded sidebars
 - Versioned built-in/named panel layout persistence with an injected adapter
   and default localStorage implementation
-- Fixed chrome around shadcn Scroll Areas in main and sidebar bodies
+- Fixed chrome around shadcn Scroll Areas in main, body-local, and outer
+  sidebar regions
 - Consumer-owned navigation, actions, content, and non-layout persistence
 
 Import: `@stevejuma/ui/shell`. Catalog: `Shell/App Shell`. Production Shell

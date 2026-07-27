@@ -17,6 +17,8 @@ workspace behavior are not copied.
 - An `outer` sidebar may opt into a collapsed/closed edge preview that overlays
   the shell without moving its icon rail or adjacent layout.
 - `AppShell.Main`, `AppShell.Toolbar`, and `AppShell.Body` compose the center.
+- `AppShell.Body` supports a regions layout with independently scrolling
+  `Body.Sidebar` and `Body.Content` parts for consumer-owned document chrome.
 - `useAppShell()` exposes the nearest root controller to consumer components.
 - Left and right sidebars collapse independently to persistent icon rails.
 - Collapsed inline rails omit header/footer separators; expanded overlays
@@ -47,6 +49,8 @@ workspace behavior are not copied.
   provides only its stateful Toggle and Close actions.
 - Project selection, file navigation, and the decision to open a dependent
   sidebar remain consumer-owned.
+- Document-local sidebars are conditionally mounted by consumers and do not
+  participate in root sidebar collapse, resize, or persistence state.
 - Shell containers do not scroll; main and sidebar body regions compose the
   shared shadcn Scroll Area.
 - Shell may compose shadcn Button for its Toggle and Close actions.
@@ -61,6 +65,7 @@ workspace behavior are not copied.
 | Compound surfaces and package API   | Complete | Pass | Pass    | Pass    | Pass\*     |
 | Nested left layout and edge preview | Complete | Pass | Pass    | Pass    | Pass\*     |
 | Layout adapter and localStorage     | Complete | Pass | Pass    | Pass    | Pass\*     |
+| Body content and local sidebars     | Complete | Pass | Pass    | Pass    | Pass\*     |
 
 ## Validation
 
@@ -71,8 +76,8 @@ workspace behavior are not copied.
 5. `pnpm checks` before handoff.
 
 \* Focused Shell interaction/accessibility and source checks pass, as do the
-unit suite, static Storybook build, and visual audit. The full repository gate
-currently stops at the unrelated AI Emoji Picker keyboard-focus story before
-the later browser and compare-only visual stages. The previous compare-only run
-also reported missing AI baselines and unresolved Shell/Workspace story ids. No
+full unit and Storybook suites, workspace pointer tests, static Storybook build,
+visual audit, AI browser checks, and the Visual Delta panel suite. The
+compare-only visual stage reports pre-existing missing baselines plus the
+expected missing baseline for the new `visual-pending` body-sidebar story. No
 baselines were created or updated.

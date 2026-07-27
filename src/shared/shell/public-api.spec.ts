@@ -8,6 +8,8 @@ import {
   APP_SHELL_LAYOUT_VERSION,
   AppShell,
   AppShellBody,
+  AppShellBodyContent,
+  AppShellBodySidebar,
   AppShellMain,
   AppShellRoot,
   AppShellSidebar,
@@ -18,6 +20,8 @@ import {
   AppShellSidebarToggle,
   AppShellToolbar,
   Body,
+  BodyContent,
+  BodySidebar,
   Main,
   Root,
   Sidebar,
@@ -44,6 +48,8 @@ describe("@stevejuma/ui/shell public API", () => {
     expect(AppShell.Main).toBe(AppShellMain);
     expect(AppShell.Toolbar).toBe(AppShellToolbar);
     expect(AppShell.Body).toBe(AppShellBody);
+    expect(AppShell.Body.Content).toBe(AppShellBodyContent);
+    expect(AppShell.Body.Sidebar).toBe(AppShellBodySidebar);
     expect(Root).toBe(AppShellRoot);
     expect(Sidebar).toBe(AppShellSidebar);
     expect(SidebarHeader).toBe(AppShellSidebarHeader);
@@ -54,6 +60,10 @@ describe("@stevejuma/ui/shell public API", () => {
     expect(Main).toBe(AppShellMain);
     expect(Toolbar).toBe(AppShellToolbar);
     expect(Body).toBe(AppShellBody);
+    expect(Body.Content).toBe(AppShellBodyContent);
+    expect(Body.Sidebar).toBe(AppShellBodySidebar);
+    expect(BodyContent).toBe(AppShellBodyContent);
+    expect(BodySidebar).toBe(AppShellBodySidebar);
   });
 
   it("publishes the shell subpaths and documented token defaults", () => {
@@ -74,6 +84,9 @@ describe("@stevejuma/ui/shell public API", () => {
     expect(shellTokenNames.sidebarToggleIndicatorWidth).toBe(
       "--ui-shell-sidebar-toggle-indicator-width",
     );
+    expect(shellTokenNames.bodySidebarWidth).toBe(
+      "--ui-shell-body-sidebar-width",
+    );
     expect(APP_SHELL_DEFAULT_SIDEBAR_WIDTH).toBe(288);
     expect(APP_SHELL_DEFAULT_SIDEBAR_MIN_WIDTH).toBe(220);
     expect(APP_SHELL_DEFAULT_SIDEBAR_MAX_WIDTH).toBe(520);
@@ -88,6 +101,7 @@ describe("@stevejuma/ui/shell public API", () => {
       rightSidebarWidth: "18rem",
       rightSidebarGap: "0.5rem",
       collapsedSidebarWidth: "3rem",
+      bodySidebarWidth: "14rem",
       sidebarToggleIndicatorWidth: "24%",
       toolbarHeight: "3rem",
       mainBlockInset: "0.5rem",

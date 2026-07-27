@@ -1,9 +1,15 @@
 <script module lang="ts">
+  import PanelLeftOpenIcon from "@lucide/svelte/icons/panel-left-open";
+  import PanelRightOpenIcon from "@lucide/svelte/icons/panel-right-open";
+  import XIcon from "@lucide/svelte/icons/x";
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent, within } from "storybook/test";
+  import { Button } from "../shadcn/button/index.js";
   import AppShellBodyDemo from "./examples/AppShellBodyDemo.svelte";
   import AppShellConversationDemo from "./examples/AppShellConversationDemo.svelte";
   import AppShellFilesSidebarDemo from "./examples/AppShellFilesSidebarDemo.svelte";
+  import AppShellMarkdownDocumentDemo from "./examples/AppShellMarkdownDocumentDemo.svelte";
+  import AppShellMarkdownFilesDemo from "./examples/AppShellMarkdownFilesDemo.svelte";
   import AppShellProjectSidebarDemo from "./examples/AppShellProjectSidebarDemo.svelte";
   import AppShellSidebarDemo from "./examples/AppShellSidebarDemo.svelte";
   import AppShellToolbarDemo from "./examples/AppShellToolbarDemo.svelte";
@@ -31,11 +37,14 @@
   const interactiveController = new AppShellController();
   const minimalController = new AppShellController();
   const nestedController = new AppShellController({ leftClosed: true });
+  const documentController = new AppShellController();
   const projectSidebarController = nestedController.createSidebar(
     "projects",
     "left",
   );
   let nestedSelectedProject = $state("");
+  let selectedMarkdownFile = $state("");
+  let bodySidebarSide = $state<"left" | "right" | undefined>();
 
   function selectNestedProject(projectId: string): void {
     nestedSelectedProject = projectId;
@@ -44,6 +53,16 @@
     } else {
       nestedController.left.close();
     }
+  }
+
+  function openMarkdownFile(file: string): void {
+    selectedMarkdownFile = file;
+    bodySidebarSide = "left";
+  }
+
+  function showBodySidebar(side: "left" | "right"): void {
+    if (!selectedMarkdownFile) selectedMarkdownFile = "README.md";
+    bodySidebarSide = side;
   }
 </script>
 
@@ -890,6 +909,151 @@
         <AppShell.Sidebar side="right" closeable>
           <AppShellConversationDemo controller={nestedController} />
         </AppShell.Sidebar>
+      </AppShell.Root>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Markdown document body sidebars"
+  tags={["visual-pending"]}
+  play={async ({ canvas }) => {
+    documentController.left.expand();
+    documentController.left.resetWidth();
+    selectedMarkdownFile = "";
+    bodySidebarSide = undefined;
+
+    const mainBody = canvas.getByRole("main", { name: "Markdown document" });
+    await expect(mainBody).toHaveAttribute("data-layout", "regions");
+    await expect(mainBody).toHaveStyle("overflow: hidden");
+    await expect(
+      canvas.queryByRole("complementary", { name: "Table of contents" }),
+    ).not.toBeInTheDocument();
+    await expect(canvas.getByText("Select a Markdown file")).toBeVisible();
+
+    const readmeButton = canvas.getByRole("button", {
+      name: "Open README.md",
+    });
+    await userEvent.click(readmeButton);
+    await expect(readmeButton).toHaveFocus();
+    await expect(readmeButton).toHaveAttribute("aria-pressed", "true");
+
+    const leftToc = canvas.getByRole("complementary", {
+      name: "Table of contents",
+    });
+    const markdownContent = canvas.getByRole("region", {
+      name: "README.md content",
+    });
+    await expect(leftToc).toHaveAttribute("data-side", "left");
+    await expect(markdownContent).toBeVisible();
+    await expect(
+      canvas.getByRole("navigation", { name: "Document sections" }),
+    ).toBeVisible();
+
+    const tocViewport = leftToc.querySelector<HTMLElement>(
+      '[data-ui-part="scroll-area-viewport"]',
+    );
+    const contentViewport = markdownContent.querySelector<HTMLElement>(
+      '[data-ui-part="scroll-area-viewport"]',
+    );
+    await expect(tocViewport).toBeInTheDocument();
+    await expect(contentViewport).toBeInTheDocument();
+    await expect(getComputedStyle(tocViewport!).overflowY).toBe("scroll");
+    await expect(getComputedStyle(contentViewport!).overflowY).toBe("scroll");
+    await expect(contentViewport!.scrollHeight).toBeGreaterThan(
+      contentViewport!.clientHeight,
+    );
+    await expect(mainBody.scrollHeight).toBe(mainBody.clientHeight);
+    const contentWidthWithSidebar =
+      markdownContent.getBoundingClientRect().width;
+
+    const rightButton = canvas.getByRole("button", {
+      name: "Show table of contents on right",
+    });
+    await userEvent.click(rightButton);
+    await expect(rightButton).toHaveFocus();
+    await expect(rightButton).toHaveAttribute("aria-pressed", "true");
+    const rightToc = canvas.getByRole("complementary", {
+      name: "Table of contents",
+    });
+    await expect(rightToc).toHaveAttribute("data-side", "right");
+
+    const closeButton = canvas.getByRole("button", {
+      name: "Close table of contents",
+    });
+    await userEvent.click(closeButton);
+    await expect(
+      canvas.queryByRole("complementary", { name: "Table of contents" }),
+    ).not.toBeInTheDocument();
+    await expect(markdownContent.getBoundingClientRect().width).toBeGreaterThan(
+      contentWidthWithSidebar,
+    );
+
+    await userEvent.click(rightButton);
+    await expect(rightButton).toHaveFocus();
+    await expect(
+      canvas.getByRole("complementary", { name: "Table of contents" }),
+    ).toHaveAttribute("data-side", "right");
+  }}
+>
+  {#snippet template()}
+    <div class="ui-shell-story-frame">
+      <AppShell.Root
+        controller={documentController}
+        class="ui-shell-story-surface"
+      >
+        <AppShell.Sidebar side="left" label="Markdown files sidebar">
+          <AppShellMarkdownFilesDemo
+            controller={documentController}
+            selectedFile={selectedMarkdownFile}
+            onSelectFile={openMarkdownFile}
+          />
+        </AppShell.Sidebar>
+
+        <AppShell.Main>
+          <AppShell.Toolbar>
+            <div class="ui-shell-story-toolbar-controls">
+              <AppShell.Sidebar.Toggle side="left" />
+              <strong class="ui-shell-story-toolbar-title">
+                {selectedMarkdownFile || "Document viewer"}
+              </strong>
+              <span class="ui-shell-story-toolbar-spacer"></span>
+              <Button
+                variant="ghost"
+                size="icon-sm"
+                aria-label="Show table of contents on left"
+                aria-pressed={bodySidebarSide === "left"}
+                onclick={() => showBodySidebar("left")}
+              >
+                <PanelLeftOpenIcon aria-hidden="true" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon-sm"
+                aria-label="Show table of contents on right"
+                aria-pressed={bodySidebarSide === "right"}
+                onclick={() => showBodySidebar("right")}
+              >
+                <PanelRightOpenIcon aria-hidden="true" />
+              </Button>
+              {#if bodySidebarSide}
+                <Button
+                  variant="ghost"
+                  size="icon-sm"
+                  aria-label="Close table of contents"
+                  onclick={() => (bodySidebarSide = undefined)}
+                >
+                  <XIcon aria-hidden="true" />
+                </Button>
+              {/if}
+            </div>
+          </AppShell.Toolbar>
+
+          <AppShellMarkdownDocumentDemo
+            file={selectedMarkdownFile}
+            sidebarSide={bodySidebarSide}
+          />
+        </AppShell.Main>
       </AppShell.Root>
     </div>
   {/snippet}
