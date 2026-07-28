@@ -157,9 +157,9 @@ Local Playwright screenshots live under
 `tests/visual/storybook.spec.ts-snapshots/` and are committed.
 
 - Before changing Visual Delta behavior, read the normative
-  [`Visual Delta system specification`](./packages/storybook-addon-visual-delta/specs/index.md).
+  [`Visual Delta system specification`](./packages/storybook-addon-visual-delta/spec/src/index.md).
   Update the relevant stable requirement and
-  [`verification map`](./packages/storybook-addon-visual-delta/specs/verification.md)
+  [`verification map`](./packages/storybook-addon-visual-delta/spec/src/verification.md)
   before or with an intentional behavior change. Source, tests, READMEs,
   provenance notes, parity notes, and completed plans are implementation
   evidence, not competing contracts.

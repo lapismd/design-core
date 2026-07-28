@@ -14,6 +14,8 @@ blob-report/
 .cache/ui-docs/
 .cache/visual-delta/
 .cache/storybook/
+# Generated Visual Delta mdBook output
+packages/storybook-addon-visual-delta/spec/book/
 # Per-checkout Storybook/visual-test port allocation
 .env.storybook.local
 # Ephemeral visual-diff artifacts written by Playwright visual runs
