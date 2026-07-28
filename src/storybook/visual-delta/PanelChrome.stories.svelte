@@ -270,7 +270,7 @@
     );
 
     await userEvent.click(
-      scope.getByRole("button", { name: /Opens chooser/i }),
+      scope.getByRole("button", { name: /^Opens chooser(?:\s|$)/i }),
     );
     await expect(scope.getByTestId("fixture-expanded-id")).toHaveTextContent(
       "opens-chooser",
