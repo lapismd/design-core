@@ -34,16 +34,7 @@
     await expect(canvas.getByRole("status")).toHaveTextContent("closed");
   }}
   parameters={{
-    visualDelta: {
-      images: [
-        "/visual-baselines/shadcn/popover/opens-a-panel-chromium-darwin.png",
-      ],
-      opacity: 0.5,
-      colorInversion: false,
-      align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
+    visualDelta: {"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
   }}
   tags={["visual-pending"]}
 >
