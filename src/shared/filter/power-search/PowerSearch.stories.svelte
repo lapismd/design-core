@@ -134,7 +134,7 @@
       canvas.queryByRole("button", { name: "Edit type filter" }),
     ).not.toBeInTheDocument();
   }}
-  tags={["visual-failed"]}
+  tags={["visual-approved"]}
 
   parameters={{
     visualDelta: {"interactions":[{"id":"interaction-23-findByRole","label":"findByRole(\"option\")","src":"/visual-baselines/filter/power-search/edit-remove-and-clear--interaction-23-findByRole-chromium-darwin.png"}]},
