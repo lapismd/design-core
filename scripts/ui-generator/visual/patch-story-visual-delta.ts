@@ -532,6 +532,30 @@ export function patchStoryOpenTagWithInteraction(
 
   const range = findVisualDeltaObjectRange(openTag);
   if (!range) {
+    // Do not guess how to rewrite a non-literal visualDelta expression.
+    if (/\bvisualDelta\s*:/.test(openTag)) return openTag;
+
+    const literal = JSON.stringify({ interactions: [interaction] });
+    const paramsKey = "parameters={{";
+    const paramsIdx = openTag.indexOf(paramsKey);
+    if (paramsIdx !== -1) {
+      const braceStart = paramsIdx + "parameters=".length;
+      if (endOfDoubleBraceObject(openTag, braceStart) === -1) return openTag;
+      const insertAt = paramsIdx + paramsKey.length;
+      return (
+        openTag.slice(0, insertAt) +
+        `\n    visualDelta: ${literal},` +
+        openTag.slice(insertAt)
+      );
+    }
+
+    const parametersAttr = `\n  parameters={{\n    visualDelta: ${literal},\n  }}`;
+    if (openTag.endsWith("/>")) {
+      return `${openTag.slice(0, -2)}${parametersAttr}\n/>`;
+    }
+    if (openTag.endsWith(">")) {
+      return `${openTag.slice(0, -1)}${parametersAttr}\n>`;
+    }
     return openTag;
   }
 

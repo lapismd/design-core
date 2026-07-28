@@ -34,6 +34,17 @@
     await expect(canvas.getByRole("status")).toHaveTextContent("closed");
   }}
   tags={["visual-failed"]}
+  parameters={{
+    visualDelta: {
+      interactions: [
+        {
+          id: "interaction-5-toHaveAttribute",
+          label: 'toHaveAttribute("data-state", "open")',
+          src: "/visual-baselines/shadcn/dialog/opens-and-closes--interaction-5-toHaveAttribute-chromium-darwin.png",
+        },
+      ],
+    },
+  }}
 >
   {#snippet template()}
     <div class="flex flex-col gap-3">
