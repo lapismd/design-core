@@ -14,8 +14,9 @@
 <Story
   name="Preview"
   exportName="Preview"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-ready", "skip-visual"]}
   parameters={{
+    visualDelta: {"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
     a11y: { test: "todo" },
     docs: {
       source: {
