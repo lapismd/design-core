@@ -14,7 +14,7 @@ import {
 import { patchStoryVisualDeltaInteraction } from "../visual/patch-story-visual-delta.js";
 import { isStorybookStaticComplete } from "../visual/storybook-static-build.js";
 import {
-  interactionSnapshotUpdateMode,
+  captureInteractionWithCreateVerification,
   slugifyStepLabel,
 } from "../../../packages/storybook-addon-visual-delta/src/shared/interaction-capture.js";
 import type { StoryIndexEntry } from "../visual/snapshot-paths.js";
@@ -140,28 +140,38 @@ export async function runVisualInteractionUpdate(options: {
   // PLAYWRIGHT_INTERACTION_CAPTURE registers only this one test in storybook.spec.ts.
   // Do not use `-g`: Playwright titles include the describe prefix and the
   // anchored pattern matched nothing ("No tests found").
-  const updateMode = interactionSnapshotUpdateMode(options.createOnly);
-  execFileSync(
-    "pnpm",
-    [
-      "exec",
-      "playwright",
-      "test",
-      "tests/visual/storybook.spec.ts",
-      `--update-snapshots=${updateMode}`,
-    ],
-    {
-      cwd: config.packageRoot,
-      stdio: "inherit",
-      env: {
-        ...process.env,
-        VISUAL_UPDATE_APPROVED: "1",
-        PLAYWRIGHT_UPDATE_SNAPSHOTS: "1",
-        PLAYWRIGHT_UPDATE_MODE: updateMode,
-        PLAYWRIGHT_INTERACTION_CAPTURE: capturePayload,
-      },
+  captureInteractionWithCreateVerification({
+    createOnly: options.createOnly,
+    baselineExists: () => existsSync(pngPath),
+    onVerifyCreated: () => {
+      log.info(
+        "Playwright created the missing interaction snapshot; verifying the exact capture with updates disabled…",
+      );
     },
-  );
+    capture: (updateMode) => {
+      execFileSync(
+        "pnpm",
+        [
+          "exec",
+          "playwright",
+          "test",
+          "tests/visual/storybook.spec.ts",
+          `--update-snapshots=${updateMode}`,
+        ],
+        {
+          cwd: config.packageRoot,
+          stdio: "inherit",
+          env: {
+            ...process.env,
+            VISUAL_UPDATE_APPROVED: "1",
+            PLAYWRIGHT_UPDATE_SNAPSHOTS: updateMode === "none" ? "0" : "1",
+            PLAYWRIGHT_UPDATE_MODE: updateMode,
+            PLAYWRIGHT_INTERACTION_CAPTURE: capturePayload,
+          },
+        },
+      );
+    },
+  });
 
   if (!existsSync(pngPath)) {
     throw new GeneratorError(
