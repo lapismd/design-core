@@ -185,7 +185,9 @@ Local Playwright screenshots live under
   `deviceScaleFactor: 3`, `toHaveScreenshot` `scale: "device"`).
 - Playwright baselines are served at `/visual-baselines` for live compare via
   the workspace `storybook-addon-visual-delta` package
-  (`packages/storybook-addon-visual-delta/src`; see `VENDOR.md`). A Vite inject
+  (`packages/storybook-addon-visual-delta/src`; see the
+  [canonical specification](./packages/storybook-addon-visual-delta/spec/src/index.md)).
+  A Vite inject
   wires `parameters.visualDelta` for catalog stories that are not
   `skip-visual` when a matching PNG exists under the snapshot dir (Shadcn and
   UI Forms title/path rules — see README Visual Delta setup). Open the

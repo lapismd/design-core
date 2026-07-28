@@ -364,4 +364,3 @@ native selectors, and no Tailwind utility classes in component sources.
 | [`COMPONENT_AUDIT.md`](./COMPONENT_AUDIT.md)                                                                           | Retained component inventory              |
 | [`packages/storybook-addon-visual-delta/spec/src/index.md`](./packages/storybook-addon-visual-delta/spec/src/index.md) | Normative Visual Delta system contract    |
 | [`packages/storybook-addon-visual-delta/README.md`](./packages/storybook-addon-visual-delta/README.md)                 | Addon API and integration                 |
-| [`packages/storybook-addon-visual-delta/VENDOR.md`](./packages/storybook-addon-visual-delta/VENDOR.md)                 | Addon provenance and boundary             |
