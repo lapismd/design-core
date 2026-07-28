@@ -20,7 +20,13 @@ describe("ui guide", () => {
   it("lists curated topics in reading order", () => {
     const topics = listGuideTopics(packageRoot);
     const ids = topics.map((t) => t.id);
-    expect(ids.slice(0, 4)).toEqual(["layers", "shadcn", "forms", "testing"]);
+    expect(ids.slice(0, 5)).toEqual([
+      "layers",
+      "shadcn",
+      "forms",
+      "shell",
+      "testing",
+    ]);
     expect(ids).toContain("llms-extraction");
   });
 
@@ -40,6 +46,15 @@ describe("ui guide", () => {
     expect(topic.sources).toContain("AGENTS.md");
     const text = renderGuideTopic(topic, createColors(false));
     expect(text).toContain(topic.summary);
+  });
+
+  it("loads the shell composition contract", () => {
+    const topic = getGuideTopic(packageRoot, "shell");
+    expect(topic.title).toMatch(/App shell/i);
+    expect(topic.body).toMatch(/Toggle placement/);
+    expect(topic.body).toMatch(/Sidebar\.Header/);
+    expect(topic.body).toMatch(/collapsed/);
+    expect(topic.sources).toContain("src/shared/shell/Guidance.mdx");
   });
 
   it("runGuide switches between index and topic", () => {

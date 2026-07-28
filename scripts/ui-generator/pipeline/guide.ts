@@ -22,7 +22,14 @@ export type GuideIndex = {
   related: string[];
 };
 
-const TOPIC_ORDER = ["layers", "shadcn", "forms", "testing", "vcs"] as const;
+const TOPIC_ORDER = [
+  "layers",
+  "shadcn",
+  "forms",
+  "shell",
+  "testing",
+  "vcs",
+] as const;
 
 const FRONTMATTER_RE = /^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/;
 
@@ -182,6 +189,7 @@ export function getGuideIndex(packageRoot: string): GuideIndex {
       "pnpm ui guide layers — choose shadcn vs forms vs filter vs AI",
       "pnpm ui guide shadcn — add/convert components via ui:add (never raw shadcn CLI)",
       "pnpm ui guide forms — structured forms vs shadcn controls",
+      "pnpm ui guide shell — canonical AppShell topology, toggles, headers, and collapsed rails",
       "pnpm ui guide testing — stories, checks, and visual baselines after a change",
       "pnpm ui guide vcs — commit after each verified change (prefer jj when available)",
     ],
@@ -190,7 +198,7 @@ export function getGuideIndex(packageRoot: string): GuideIndex {
       "AGENTS.md — primary agent contract (Storybook + visuals)",
       "pnpm ui components — list/show local usage across shadcn/forms/filter/AI",
       "Storybook MCP — get-storybook-story-instructions / preview-stories / run-story-tests",
-      "UI Forms/Guidance and Shadcn/Guidance — in-catalog decision pages",
+      "UI Forms/Guidance, Shadcn/Guidance, and Shell/Guidance — in-catalog decision pages",
       "docs/agent/llms-extraction.md — deferred catalog extraction notes",
     ],
   };

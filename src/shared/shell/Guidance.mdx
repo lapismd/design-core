@@ -1,0 +1,380 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="Shell/Guidance" />
+
+# App shell composition guidance
+
+Use `@stevejuma/ui/shell` for bounded application chrome: application
+sidebars, a main toolbar, and a scrolling main surface. The shell owns geometry,
+collapse/close/resize behavior, responsive presentation, and focus management.
+The application still owns routes, selected navigation items, documents,
+messages, commands, and the persistence adapter it chooses to inject.
+
+This page is the canonical composition contract. Start from these structures
+and the **Shell/App Shell** examples instead of replacing the compound parts
+with application-specific layout markup.
+
+## Choose the right surface
+
+- **Application navigation, files, inspector, AI, or another full-height
+  rail:** a direct `AppShell.Sidebar` child of `AppShell.Root`.
+- **Main-column title, global actions, and application-sidebar toggles:**
+  `AppShell.Toolbar` inside `AppShell.Main`.
+- **Table of contents or another panel local to one document/body:**
+  `AppShell.Body layout="regions"` with `Body.Sidebar` and `Body.Toggle`.
+- **Registered views, tabs, recursive splits, commands, settings, or
+  plugins:** `@stevejuma/ui/workspace`, not Shell.
+
+Do not put a document-local table of contents in the root sidebar lane, and do
+not turn application navigation into a body-local panel. Their responsive and
+persistence lifecycles are different.
+
+## Canonical root composition
+
+Keep root sidebars and main as siblings. Within each sidebar, keep fixed header
+and footer chrome outside `Sidebar.Body`; within main, keep `Toolbar` outside
+the scrolling `Body`.
+
+```svelte
+<script lang="ts">
+  import { AppShell, AppShellController } from "@stevejuma/ui/shell";
+
+  const shell = new AppShellController();
+  let leftCompact = $derived(
+    shell.mobile.resolvedMode === "desktop" &&
+      shell.left.collapsed &&
+      !shell.left.previewed,
+  );
+  let rightCompact = $derived(
+    shell.mobile.resolvedMode === "desktop" &&
+      shell.right.collapsed &&
+      !shell.right.previewed,
+  );
+</script>
+
+<AppShell.Root controller={shell}>
+  <AppShell.Sidebar side="left" label="Files sidebar">
+    <AppShell.Sidebar.Header class="app-sidebar-header">
+      <FilesIcon aria-hidden="true" />
+      {#if !leftCompact}<strong>Files</strong>{/if}
+    </AppShell.Sidebar.Header>
+
+    <AppShell.Sidebar.Body>
+      <nav aria-label="Files">...</nav>
+    </AppShell.Sidebar.Body>
+
+    <AppShell.Sidebar.Footer>...</AppShell.Sidebar.Footer>
+  </AppShell.Sidebar>
+
+  <AppShell.Main>
+    <AppShell.Toolbar>
+      <div class="app-toolbar-row">
+        <AppShell.Sidebar.Toggle side="left" sidebarName="files" />
+        <strong>Application workspace</strong>
+        <span class="app-toolbar-spacer"></span>
+        <AppShell.Sidebar.Toggle side="right" />
+      </div>
+    </AppShell.Toolbar>
+
+    <AppShell.Body label="Workspace content">...</AppShell.Body>
+  </AppShell.Main>
+
+  <AppShell.Sidebar side="right" label="Inspector sidebar" closeable>
+    <AppShell.Sidebar.Header class="app-sidebar-header">
+      <InfoIcon aria-hidden="true" />
+      {#if !rightCompact}<strong>Inspector</strong>{/if}
+      <AppShell.Sidebar.Close />
+    </AppShell.Sidebar.Header>
+
+    <AppShell.Sidebar.Body>...</AppShell.Sidebar.Body>
+  </AppShell.Sidebar>
+</AppShell.Root>
+```
+
+Every compound part is optional, but do not replace a part with a generic
+`div` that performs the same job. The parts provide the structural selectors,
+scroll boundaries, accessible regions, responsive teleport targets, and
+alignment hooks the shell needs.
+
+## Toggle placement
+
+A sidebar toggle belongs in the nearest chrome that remains available when the
+target sidebar is collapsed or closed.
+
+- **Primary left root sidebar:** first action in the main `Toolbar`, using
+  `Sidebar.Toggle side="left"`.
+- **Primary right root sidebar:** last action in the main `Toolbar`, using
+  `Sidebar.Toggle side="right"`.
+- **Additional outer-left sidebar:** first action in the adjacent inner left
+  sidebar’s `Sidebar.Header`, using `Sidebar.Toggle` with its
+  `sidebarController`.
+- **Body-local left or right panel:** matching top corner of the same `Body`,
+  using `Body.Toggle` with the panel `target`.
+- **Closeable root sidebar:** far edge of that sidebar’s own `Sidebar.Header`,
+  using `Sidebar.Close`.
+
+This placement makes every root column read as one aligned header row: outer
+sidebar header, inner sidebar header, main toolbar, and right sidebar header.
+It also leaves a control outside the target panel so a closed panel can be
+opened again.
+
+Do not:
+
+- put the only toggle inside the sidebar it controls;
+- add a second bespoke collapse button next to `Sidebar.Toggle`;
+- move application-sidebar toggles into the scrolling body;
+- use `Sidebar.Close` as a collapse action;
+- use a root `Sidebar.Toggle` for a body-local panel.
+
+`Sidebar.Toggle` already derives “Open”, “Expand”, or “Collapse” from the
+current presentation. Pass `sidebarName` when the default side-only label would
+be ambiguous. Pass `sidebarController` for a named/repeated sidebar; do not
+manually mutate a different controller in `onclick`.
+
+## Same-side and nested sidebars
+
+Create a stable named controller for each additional sidebar on an edge. Put
+the outer panel first, its adjacent inner panel second, and main third. The
+inner header owns the outer panel’s toggle; the main toolbar owns the inner
+panel’s toggle.
+
+```svelte
+<script lang="ts">
+  const shell = new AppShellController();
+  const projects = shell.createSidebar("projects", "left");
+</script>
+
+<AppShell.Sidebar
+  side="left"
+  sidebarController={projects}
+  label="Projects sidebar"
+  mobileLabel="Projects"
+  variant="outer"
+  closeable
+  revealOnEdgeHover
+>
+  <AppShell.Sidebar.Header>
+    <strong>Projects</strong>
+    <AppShell.Sidebar.Close />
+  </AppShell.Sidebar.Header>
+  <AppShell.Sidebar.Body>...</AppShell.Sidebar.Body>
+</AppShell.Sidebar>
+
+<AppShell.Sidebar side="left" label="Files sidebar" mobileLabel="Files">
+  <AppShell.Sidebar.Header>
+    <AppShell.Sidebar.Toggle
+      side="left"
+      sidebarController={projects}
+      sidebarName="projects"
+      previewOnHover
+    />
+    <strong>Files</strong>
+  </AppShell.Sidebar.Header>
+  <AppShell.Sidebar.Body>...</AppShell.Sidebar.Body>
+</AppShell.Sidebar>
+
+<AppShell.Main>
+  <AppShell.Toolbar>
+    <AppShell.Sidebar.Toggle side="left" sidebarName="files" />
+    ...
+  </AppShell.Toolbar>
+  <AppShell.Body>...</AppShell.Body>
+</AppShell.Main>
+```
+
+The **Nested project and file sidebars** and **Complete shell composition**
+stories are the reference for this topology. `previewOnHover` previews a
+collapsed/closed adjacent panel without changing its durable state or moving
+the other columns.
+
+## Headers are structural
+
+Always use:
+
+- `Sidebar.Header` for the fixed top region of every root sidebar;
+- `Toolbar` for the fixed top region of main;
+- `Sidebar.Footer` for fixed sidebar status/actions;
+- `Sidebar.Body` and `Body` for the independently scrolling regions.
+
+Do not put headings or toggles at the top of `Sidebar.Body` and then compensate
+with custom sticky positioning. Do not render the main title in an unbounded
+wrapper above `AppShell.Main`. Those alternatives break the shared divider and
+action baseline across columns and usually create competing scroll containers.
+
+Use the public geometry tokens when styling consumer header content:
+
+```css
+.app-sidebar-header {
+  display: flex;
+  min-width: 0;
+  min-height: var(--ui-shell-toolbar-height);
+  align-items: center;
+  gap: 0.5rem;
+  padding-inline: 0.5rem;
+  border-block-end: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.app-toolbar-row {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  align-items: center;
+  gap: 0.5rem;
+  padding-inline: 0.75rem;
+}
+
+.app-toolbar-spacer {
+  flex: 1;
+}
+```
+
+The shell accounts for the inset main surface when aligning its built-in
+collapsed-header actions. Keep the shared `--ui-shell-toolbar-height` and
+`--ui-shell-main-block-inset` tokens authoritative instead of hard-coding a
+different height per column. A header may add a second row, such as the project
+selector in **Complete shell composition**, but its first action/title row
+should retain the shared baseline.
+
+## Expanded, collapsed, and closed
+
+These states are intentionally different:
+
+- **`expanded`:** full configured width with icons, labels, headings, fields,
+  footer content, and a resize handle.
+- **`collapsed`:** persistent icon rail with essential accessible icon actions
+  and no resize handle.
+- **`closed`:** removed from inline layout so main reclaims the width; reopened
+  from the adjacent toggle or edge affordance.
+- **`previewed`:** temporary expanded overlay without changing durable state.
+
+When collapsed, keep `Sidebar.Header`, `Sidebar.Body`, and `Sidebar.Footer`
+mounted. Hide expanded-only labels, section captions, inputs, and verbose
+footer content; keep useful icon actions. The shell removes inline
+header/footer separators, hides the rail scrollbar, keeps its scrollable
+viewport, and aligns built-in header actions to the main toolbar.
+
+Do not condition the whole sidebar tree on `collapsed`. That destroys scroll
+position, focus continuity, mobile presentation, and the stable regions used
+by the shell.
+
+Each icon-only action must retain `aria-label` and usually `title`. Do not leave
+text visually clipped into a narrow rail.
+
+Compact rendering is a desktop presentation decision. Durable desktop state
+can still say “collapsed” while the panel is fully presented on mobile or in a
+temporary preview:
+
+```svelte
+<script lang="ts">
+  let compact = $derived(
+    shell.mobile.resolvedMode === "desktop" &&
+      sidebar.collapsed &&
+      !sidebar.previewed,
+  );
+</script>
+
+<Button
+  size={compact ? "icon-sm" : "default"}
+  aria-label="Applications"
+  title="Applications"
+>
+  <FileTextIcon aria-hidden="true" />
+  {#if !compact}<span>Applications</span>{/if}
+</Button>
+```
+
+Do not derive compact markup from `sidebar.collapsed` alone. Mobile stage
+changes must not mutate desktop collapse/close/width state.
+
+## Body-local sidebars
+
+Use body regions when a panel belongs to one main document or view:
+
+```svelte
+<AppShell.Body layout="regions" label="Markdown document">
+  <AppShell.Body.Toggle
+    side="right"
+    target="document-contents"
+    pressed={tableOfContentsOpen}
+    onclick={toggleTableOfContents}
+  />
+
+  <AppShell.Body.Content label="README content">...</AppShell.Body.Content>
+
+  <AppShell.Body.Sidebar
+    panelId="document-contents"
+    side="right"
+    bind:open={tableOfContentsOpen}
+    label="Table of contents"
+    mobileLabel="Document contents"
+  >
+    ...
+  </AppShell.Body.Sidebar>
+</AppShell.Body>
+```
+
+The application owns `open` and which side the local panel occupies. The shell
+owns the independent scroll regions and adds registered body panels to the
+matching mobile edge. The **Markdown document body sidebars** story is the
+reference.
+
+## Responsive behavior
+
+Compose the children once. `displayMode="auto"` (the default) resolves from the
+bounded root width; use explicit `"desktop"` or `"mobile"` only for a deliberate
+host mode or a focused story.
+
+On mobile:
+
+- toggles reveal the target edge lane instead of mutating durable collapse;
+- close returns to main and restores focus to the opening control;
+- multiple registered panels on one edge use the built-in selector;
+- offstage lanes remain `inert` and `aria-hidden`;
+- desktop resize handles and icon-rail compaction are absent.
+
+On constrained desktop, lower-priority sidebars may become overlays so main
+keeps `--ui-shell-desktop-min-main-width`. This also does not mutate durable
+sidebar state. Do not add a second media-query shell or duplicate mobile
+markup around the compound composition.
+
+## Ownership boundary
+
+The shell owns:
+
+- column and body-region geometry;
+- root sidebar collapse, close, resize, preview, and responsive presentation;
+- mobile stage selection, focus restoration, inertness, and gestures;
+- optional versioned persistence of desktop sidebar geometry.
+
+The consumer owns:
+
+- navigation selection, routes, documents, and domain state;
+- icons, labels, header content, navigation items, and body content;
+- whether a body-local panel is open and which side it occupies;
+- persistence adapter selection and application-specific storage keys;
+- application commands other than the provided toggle/close actions.
+
+Do not put routers, APIs, vaults, plugins, document state, or domain persistence
+inside shared Shell components.
+
+## Review checklist
+
+Before accepting an application shell:
+
+1. Root sidebars and main are direct siblings using the compound parts.
+2. Every root column has fixed top chrome: `Sidebar.Header` or `Toolbar`.
+3. Left and right root toggles sit at the matching edges of adjacent persistent
+   chrome; named same-side toggles target the correct `sidebarController`.
+4. Closeable panels put `Sidebar.Close` at the far edge of their own header.
+5. Body-local panels use `Body.Sidebar` and `Body.Toggle`, not root toggles.
+6. Collapsed rails keep their structural regions mounted and show accessible
+   icon actions without clipped labels.
+7. Compact rendering is desktop-only and yields to mobile/preview presentation.
+8. Fixed headers/footers stay outside independently scrolling bodies.
+9. One composition handles desktop, constrained desktop, and mobile.
+10. Routing, persistence policy, and domain state remain in the consumer.
+
+Validate against **Complete shell composition**, **Independent icon rails**,
+**Mobile edge panels**, and **Markdown document body sidebars** in
+**Shell/App Shell**.

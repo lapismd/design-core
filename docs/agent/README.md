@@ -23,17 +23,19 @@ Per-component docs are not topics here — use `pnpm ui components`.
 
 ## Topic list
 
-| Topic             | File                 | Purpose                                    |
-| ----------------- | -------------------- | ------------------------------------------ |
-| `layers`          | `layers.md`          | shared package-layer boundaries            |
-| `workspace`       | `workspace.md`       | workspace framework boundary and migration |
-| `shadcn`          | `shadcn.md`          | `ui:add` / inspect / docs sync             |
-| `forms`           | `forms.md`           | structured forms contract                  |
-| `testing`         | `testing.md`         | stories, checks, visual baselines          |
-| `vcs`             | `vcs.md`             | commit after verified changes (prefer jj)  |
-| `llms-extraction` | `llms-extraction.md` | deferred catalog extraction notes          |
+| Topic             | File                 | Purpose                                     |
+| ----------------- | -------------------- | ------------------------------------------- |
+| `layers`          | `layers.md`          | shared package-layer boundaries             |
+| `workspace`       | `workspace.md`       | workspace framework boundary and migration  |
+| `shadcn`          | `shadcn.md`          | `ui:add` / inspect / docs sync              |
+| `forms`           | `forms.md`           | structured forms contract                   |
+| `shell`           | `shell.md`           | AppShell topology and interaction placement |
+| `testing`         | `testing.md`         | stories, checks, visual baselines           |
+| `vcs`             | `vcs.md`             | commit after verified changes (prefer jj)   |
+| `llms-extraction` | `llms-extraction.md` | deferred catalog extraction notes           |
 
 ## Storybook
 
-When the catalog is up, use Storybook MCP for interactive instructions, previews,
-and story tests. In-catalog decision pages: `UI Forms/Guidance`, `Shadcn/Guidance`.
+When the catalog is up, use Storybook MCP for interactive instructions,
+previews, and story tests. In-catalog decision pages: `UI Forms/Guidance`,
+`Shadcn/Guidance`, and `Shell/Guidance`.

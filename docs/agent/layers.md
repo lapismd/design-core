@@ -39,8 +39,10 @@ existing family already covers the need.
    mutating durable layout. Its injected versioned adapter persists desktop sidebar state and
    widths, including named same-side panels, but not transient mobile state.
    Import from `@stevejuma/ui/shell`. Catalog:
-   `Shell/App Shell`. It owns geometry plus Toggle/Close actions; consumers own
-   navigation selection, other actions, content, and non-layout persistence.
+   `Shell/App Shell`. Guidance: `Shell/Guidance` and
+   `pnpm ui guide shell`. It owns geometry plus Toggle/Close actions; consumers
+   own navigation selection, other actions, content, and non-layout
+   persistence.
 6. **Workspace** (`src/shared/workspace/`) — application-independent workspace
    framework, controller, layout, views, shell components, settings, and static
    plugin presentation. Import from `@stevejuma/ui/workspace`. Catalog:
@@ -72,4 +74,5 @@ deferred. Prefer extending an audited family over a one-off.
 
 - `pnpm ui guide shadcn` — add/convert shadcn families
 - `pnpm ui guide forms` — forms vs shadcn controls
+- `pnpm ui guide shell` — canonical shell topology and interaction placement
 - `pnpm ui guide testing` — verify after changing a core component

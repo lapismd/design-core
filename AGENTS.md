@@ -15,11 +15,13 @@ Before inventing workflows, load package conventions offline via the CLI:
    framework migration boundary and slice tracker
 5. `pnpm ui guide shadcn` — `ui:add` / inspect / docs sync (never raw shadcn CLI)
 6. `pnpm ui guide forms` — structured forms vs shadcn controls
-7. `pnpm ui guide testing` — stories, checks, and visual baselines after a change
-8. `pnpm ui guide vcs` — commit after each verified change (prefer `jj` when available)
-9. `pnpm ui components` / `pnpm ui components <layer/id>` — list or show local
-   usage and examples across shadcn, forms, filter, AI, and workspace (filter
-   with `--layer`)
+7. `pnpm ui guide shell` — canonical AppShell topology, toggles, headers, and
+   collapsed rails
+8. `pnpm ui guide testing` — stories, checks, and visual baselines after a change
+9. `pnpm ui guide vcs` — commit after each verified change (prefer `jj` when available)
+10. `pnpm ui components` / `pnpm ui components <layer/id>` — list or show local
+    usage and examples across shadcn, forms, filter, AI, and workspace (filter
+    with `--layer`)
 
 Use `--json` for machine-readable output (`pnpm ui guide testing --json`,
 `pnpm ui components button --json`). Aliases: `pnpm ui:guide`,
@@ -78,6 +80,9 @@ full-repo static `llms.txt` notes: `pnpm ui guide llms-extraction`.
 
 - `@storybook/addon-docs` is enabled and the shared preview applies the
   `autodocs` tag. Stories are the living documentation.
+- `Shell/Guidance` is the canonical AppShell composition guide. Use its
+  topology, toggle placement, header alignment, and collapsed-rail rules rather
+  than inventing application-specific shell markup.
 - Add or update a colocated `ComponentName.stories.svelte` in the same change
   as every visual component. Point `defineMeta` at the actual component, give
   the story group a clear catalog title, and give each story a human-readable
