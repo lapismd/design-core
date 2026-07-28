@@ -156,6 +156,13 @@ full-repo static `llms.txt` notes: `pnpm ui guide llms-extraction`.
 Local Playwright screenshots live under
 `tests/visual/storybook.spec.ts-snapshots/` and are committed.
 
+- Before changing Visual Delta behavior, read the normative
+  [`Visual Delta system specification`](./packages/storybook-addon-visual-delta/specs/index.md).
+  Update the relevant stable requirement and
+  [`verification map`](./packages/storybook-addon-visual-delta/specs/verification.md)
+  before or with an intentional behavior change. Source, tests, READMEs,
+  provenance notes, parity notes, and completed plans are implementation
+  evidence, not competing contracts.
 - **Never** update visual baselines unless the user explicitly asks. Do not pass
   `--update-snapshots` from `storybook`, `test:storybook`, `storybook:check`,
   or `checks`.

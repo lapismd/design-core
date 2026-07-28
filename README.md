@@ -181,6 +181,8 @@ Visual Delta compares the live story canvas with committed Playwright PNGs and
 provides overlay, heatmap, create/update, and review controls. The addon API and
 host-integration details live in
 [`packages/storybook-addon-visual-delta/README.md`](./packages/storybook-addon-visual-delta/README.md).
+The normative behavior and acceptance criteria live in the
+[`Visual Delta system specification`](./packages/storybook-addon-visual-delta/specs/index.md).
 
 The boundary is:
 
@@ -349,11 +351,12 @@ native selectors, and no Tailwind utility classes in component sources.
 
 ## Further reading
 
-| Resource                                                                                               | Use                                       |
-| ------------------------------------------------------------------------------------------------------ | ----------------------------------------- |
-| [`AGENTS.md`](./AGENTS.md)                                                                             | Primary agent workflow                    |
-| `pnpm ui guide layers`                                                                                 | Layer selection and dependency boundaries |
-| `pnpm ui guide testing`                                                                                | Verification sequence                     |
-| [`COMPONENT_AUDIT.md`](./COMPONENT_AUDIT.md)                                                           | Retained component inventory              |
-| [`packages/storybook-addon-visual-delta/README.md`](./packages/storybook-addon-visual-delta/README.md) | Addon API and integration                 |
-| [`packages/storybook-addon-visual-delta/VENDOR.md`](./packages/storybook-addon-visual-delta/VENDOR.md) | Addon provenance and boundary             |
+| Resource                                                                                                         | Use                                       |
+| ---------------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
+| [`AGENTS.md`](./AGENTS.md)                                                                                       | Primary agent workflow                    |
+| `pnpm ui guide layers`                                                                                           | Layer selection and dependency boundaries |
+| `pnpm ui guide testing`                                                                                          | Verification sequence                     |
+| [`COMPONENT_AUDIT.md`](./COMPONENT_AUDIT.md)                                                                     | Retained component inventory              |
+| [`packages/storybook-addon-visual-delta/specs/index.md`](./packages/storybook-addon-visual-delta/specs/index.md) | Normative Visual Delta system contract    |
+| [`packages/storybook-addon-visual-delta/README.md`](./packages/storybook-addon-visual-delta/README.md)           | Addon API and integration                 |
+| [`packages/storybook-addon-visual-delta/VENDOR.md`](./packages/storybook-addon-visual-delta/VENDOR.md)           | Addon provenance and boundary             |
