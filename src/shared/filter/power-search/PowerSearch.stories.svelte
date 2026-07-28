@@ -67,7 +67,7 @@
       ).toBeInTheDocument();
     });
   }}
-  tags={["visual-failed"]}
+  tags={["visual-approved"]}
 >
   {#snippet template()}
     <div class="max-w-2xl">
