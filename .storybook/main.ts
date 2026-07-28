@@ -32,6 +32,7 @@ const config: StorybookConfig = {
           // Catalog layout + generator CLIs (package defaults are story-id + visual-delta bin).
           // visualServerPort defaults to Storybook port + 1 (see resolveVisualServerPort).
           baselinePathMode: "nested-import",
+          allowVcsWrites: true,
           visualTestArgs: ["exec", "playwright", "test"],
           affectedTests: {
             externals: ["vendor/shadcn-svelte-docs/static/**"],

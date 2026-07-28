@@ -33,7 +33,7 @@
     await userEvent.keyboard("{Escape}");
     await expect(canvas.getByRole("status")).toHaveTextContent("closed");
   }}
-  tags={["visual-failed"]}
+  tags={["visual-approved"]}
   parameters={{
     visualDelta: {
       interactions: [
