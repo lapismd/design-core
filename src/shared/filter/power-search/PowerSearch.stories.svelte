@@ -135,6 +135,10 @@
     ).not.toBeInTheDocument();
   }}
   tags={["visual-failed"]}
+
+  parameters={{
+    visualDelta: {"interactions":[{"id":"interaction-23-findByRole","label":"findByRole(\"option\")","src":"/visual-baselines/filter/power-search/edit-remove-and-clear--interaction-23-findByRole-chromium-darwin.png"}]},
+  }}
 >
   {#snippet template()}
     <div class="max-w-2xl">
