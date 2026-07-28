@@ -1,4 +1,5 @@
 <script lang="ts">
+  import "./SearchFilterBar.css";
   import { untrack } from "svelte";
   import { Button } from "../../shadcn/button/index.js";
   import { Input } from "../../shadcn/input/index.js";

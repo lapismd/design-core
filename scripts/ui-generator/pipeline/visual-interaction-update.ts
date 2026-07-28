@@ -12,7 +12,7 @@ import {
   visualDeltaInteractionEntry,
 } from "../visual/interaction-baselines.js";
 import { patchStoryVisualDeltaInteraction } from "../visual/patch-story-visual-delta.js";
-import { isStorybookStaticComplete } from "../visual/storybook-static-build.js";
+import { decideStorybookStaticBuild } from "../visual/storybook-static-build.js";
 import {
   captureInteractionWithCreateVerification,
   slugifyStepLabel,
@@ -83,26 +83,21 @@ export async function runVisualInteractionUpdate(options: {
     assertCleanGit(config.packageRoot);
   }
 
-  // Prefer an existing static build while Storybook is running — a full
-  // `build-storybook` cleans storybook-static and can drop the streamed panel
-  // response. Rebuild only when missing/incomplete or explicitly requested.
-  const staticComplete = isStorybookStaticComplete(config.packageRoot);
-  const shouldBuild = !options.skipBuild && !staticComplete;
-  if (shouldBuild) {
-    log.info("Building storybook-static for interaction capture…");
+  const buildDecision = decideStorybookStaticBuild({
+    packageRoot: config.packageRoot,
+    skipBuild: Boolean(options.skipBuild),
+    storyIdPrefix: storyId,
+    storyIds: [storyId],
+  });
+  if (buildDecision.reason === "skip-build-missing") {
+    throw new GeneratorError(buildDecision.message, EXIT.invalidRequest);
+  }
+  log.info(buildDecision.message);
+  if (buildDecision.shouldBuild) {
     execFileSync("pnpm", ["build-storybook"], {
       cwd: config.packageRoot,
       stdio: "inherit",
     });
-  } else if (!staticComplete) {
-    throw new GeneratorError(
-      "storybook-static incomplete (need index.json + iframe.html) — run `pnpm build-storybook` once",
-      EXIT.invalidRequest,
-    );
-  } else if (!options.skipBuild) {
-    log.info(
-      "Using existing storybook-static (pass without --skip-build only rebuilds when missing)",
-    );
   }
 
   const entry = loadStoryEntry(config.packageRoot, storyId);

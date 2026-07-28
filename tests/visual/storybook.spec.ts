@@ -27,6 +27,10 @@ import {
   instrumenterCallIdForInteraction,
 } from "../../packages/storybook-addon-visual-delta/src/shared/interaction-capture.js";
 import {
+  VISUAL_CAPTURE_SURFACE_SELECTORS,
+  measureVisualCaptureClip,
+} from "../../packages/storybook-addon-visual-delta/src/shared/capture-target.js";
+import {
   VISUAL_DELTA_ALIGN_ATTR,
   VISUAL_DELTA_CROP_ATTR,
   VISUAL_DELTA_DELAY_ATTR,
@@ -52,13 +56,6 @@ type InteractionCaptureRequest = {
   stepLabel?: string;
   captureCallId?: string;
 };
-
-const PORTAL_SELECTORS = [
-  '[role="dialog"]',
-  '[role="listbox"]',
-  '[role="menu"]',
-  '[data-state="open"]',
-].join(", ");
 
 const PACKAGE_ROOT = resolve(".");
 const PROJECT_DEFAULTS = readVisualDeltaProjectConfig(PACKAGE_ROOT).defaults;
@@ -98,46 +95,6 @@ function looksLikePortalStory(storyId: string): boolean {
     storyId.includes("dialog") ||
     storyId.includes("popover")
   );
-}
-
-/**
- * Union clip of #storybook-root and visible portals (menus/dialogs rendered
- * outside the root). Returns null when the tight first-child shot is enough.
- */
-async function portalUnionClip(
-  page: Page,
-): Promise<{ x: number; y: number; width: number; height: number } | null> {
-  return page.evaluate((portalSelector) => {
-    const root = document.querySelector("#storybook-root");
-    if (!root) return null;
-    const rects: DOMRect[] = [root.getBoundingClientRect()];
-    for (const el of document.querySelectorAll(portalSelector)) {
-      if (!(el instanceof HTMLElement)) continue;
-      if (root.contains(el)) continue;
-      const r = el.getBoundingClientRect();
-      if (r.width < 1 || r.height < 1) continue;
-      const style = getComputedStyle(el);
-      if (style.visibility === "hidden" || style.display === "none") continue;
-      rects.push(r);
-    }
-    if (rects.length < 2) return null;
-    let left = Infinity;
-    let top = Infinity;
-    let right = -Infinity;
-    let bottom = -Infinity;
-    for (const r of rects) {
-      left = Math.min(left, r.left);
-      top = Math.min(top, r.top);
-      right = Math.max(right, r.right);
-      bottom = Math.max(bottom, r.bottom);
-    }
-    const x = Math.max(0, Math.floor(left));
-    const y = Math.max(0, Math.floor(top));
-    const width = Math.ceil(right - left);
-    const height = Math.ceil(bottom - top);
-    if (width < 1 || height < 1) return null;
-    return { x, y, width, height };
-  }, PORTAL_SELECTORS);
 }
 
 async function captureActualPng(
@@ -406,8 +363,13 @@ async function screenshotStorySubject(
   } else {
     const usePortalClip =
       looksLikePortalStory(storyId) ||
-      (await page.locator(PORTAL_SELECTORS).count()) > 0;
-    target.clip = usePortalClip ? await portalUnionClip(page) : null;
+      (await page.locator(VISUAL_CAPTURE_SURFACE_SELECTORS).count()) > 0;
+    target.clip = usePortalClip
+      ? await page.evaluate(
+          measureVisualCaptureClip,
+          VISUAL_CAPTURE_SURFACE_SELECTORS,
+        )
+      : null;
     if (!target.clip) {
       const childCount = await root.locator(":scope > *").count();
       target.subject =
