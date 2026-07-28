@@ -268,6 +268,7 @@ pnpm build-storybook
 pnpm storybook:check
 
 # Verification
+pnpm visual-delta:spec:check
 pnpm test:unit
 pnpm test:storybook
 pnpm test:storybook:watch
@@ -276,6 +277,10 @@ pnpm test:visual
 pnpm test:visual:affected
 pnpm test:visual:report
 pnpm checks
+
+# Canonical Visual Delta specification
+pnpm visual-delta:spec:build
+pnpm visual-delta:spec:serve
 
 # Explicitly approved baseline writes
 VISUAL_UPDATE_APPROVED=1 pnpm test:visual:update --component <name>
