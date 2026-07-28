@@ -21,8 +21,10 @@ import {
   type StoryIndexEntry,
 } from "../../scripts/ui-generator/visual/snapshot-paths.js";
 import {
+  VISUAL_CAPTURE_CALL_PARAM,
   VISUAL_CAPTURE_READY_ATTR,
   VISUAL_CAPTURE_UNTIL_PARAM,
+  instrumenterCallIdForInteraction,
 } from "../../packages/storybook-addon-visual-delta/src/shared/interaction-capture.js";
 import {
   VISUAL_DELTA_ALIGN_ATTR,
@@ -48,6 +50,7 @@ type InteractionCaptureRequest = {
   storyId: string;
   stepId: string;
   stepLabel?: string;
+  captureCallId?: string;
 };
 
 const PORTAL_SELECTORS = [
@@ -224,7 +227,10 @@ function writeSidecarForStory(
 async function prepareStoryPage(
   page: Page,
   storyId: string,
-  options?: { visualCaptureUntil?: string },
+  options?: {
+    visualCaptureUntil?: string;
+    visualCaptureCallId?: string;
+  },
 ): Promise<void> {
   const params = new URLSearchParams({
     id: storyId,
@@ -232,6 +238,10 @@ async function prepareStoryPage(
   });
   if (options?.visualCaptureUntil) {
     params.set(VISUAL_CAPTURE_UNTIL_PARAM, options.visualCaptureUntil);
+  }
+  if (options?.visualCaptureCallId) {
+    params.set(VISUAL_CAPTURE_CALL_PARAM, options.visualCaptureCallId);
+    params.set("instrument", "true");
   }
   await page.goto(`/iframe.html?${params.toString()}`, {
     waitUntil: "networkidle",
@@ -448,7 +458,10 @@ test.describe("Storybook visual baselines", () => {
       if (!story) {
         throw new Error(`Unknown story for interaction capture: ${storyId}`);
       }
-      await prepareStoryPage(page, storyId, { visualCaptureUntil: stepId });
+      await prepareStoryPage(page, storyId, {
+        visualCaptureUntil: stepId,
+        visualCaptureCallId: interactionCaptureRequest.captureCallId,
+      });
       await page.waitForSelector(
         `html[${VISUAL_CAPTURE_READY_ATTR}="${stepId}"]`,
         { timeout: 30_000 },
@@ -570,6 +583,9 @@ test.describe("Storybook visual baselines", () => {
       }) => {
         await prepareStoryPage(page, storyId, {
           visualCaptureUntil: interaction.stepId,
+          visualCaptureCallId:
+            instrumenterCallIdForInteraction(storyId, interaction.stepId) ??
+            undefined,
         });
         await page.waitForSelector(
           `html[${VISUAL_CAPTURE_READY_ATTR}="${interaction.stepId}"]`,

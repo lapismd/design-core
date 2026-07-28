@@ -353,6 +353,10 @@ async function main() {
           typeof flags.get("step-id") === "string"
             ? String(flags.get("step-id"))
             : undefined,
+        captureCallId:
+          typeof flags.get("capture-call-id") === "string"
+            ? String(flags.get("capture-call-id"))
+            : undefined,
         approved: asBooleanFlag(flags, "approved"),
         allowDirty: asBooleanFlag(flags, "allow-dirty"),
         skipBuild: asBooleanFlag(flags, "skip-build"),

@@ -40,14 +40,16 @@ function loadStoryEntry(packageRoot: string, storyId: string): StoryIndexEntry {
 }
 
 /**
- * Create or overwrite one mid-play interaction baseline for a story step.
- * Parks play at `?visualCaptureUntil=<stepId>` via preview `runStep`.
+ * Create or overwrite one mid-play interaction baseline. Named steps park at
+ * `?visualCaptureUntil=<stepId>`; ordinary Storybook Interactions rows replay
+ * through the exact deterministic instrumenter call selected by the user.
  */
 export async function runVisualInteractionUpdate(options: {
   storyId: string;
   /** Step label as written in `step("…")` (or already-slugified id). */
   stepLabel: string;
   stepId?: string;
+  captureCallId?: string;
   approved?: boolean;
   allowDirty?: boolean;
   skipBuild?: boolean;
@@ -128,6 +130,7 @@ export async function runVisualInteractionUpdate(options: {
     storyId,
     stepId,
     stepLabel,
+    captureCallId: options.captureCallId?.trim() || undefined,
   });
 
   log.info(`Capturing interaction "${stepLabel}" (${stepId}) for ${storyId}…`);
