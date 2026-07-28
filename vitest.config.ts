@@ -19,7 +19,7 @@ export default mergeConfig(
             environment: "node",
             include: [
               "src/**/*.spec.ts",
-              "scripts/storybook-local-env.spec.ts",
+              "scripts/storybook-*.spec.ts",
               "scripts/ui-generator/**/*.spec.ts",
               "packages/storybook-addon-docs-mcp/src/**/*.spec.ts",
             ],

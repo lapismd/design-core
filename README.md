@@ -127,6 +127,13 @@ Setting only `STORYBOOK_PORT` allocates the related lanes from the same base:
 `pnpm storybook`, `storybook:stop`, `storybook:restart`, the browser suites,
 the Visual Delta CLI, and the visual audit all use the checkout-local file.
 This keeps start, test, and cleanup commands scoped to the same workspace.
+The dev command owns one supervisor per checkout and base port: a duplicate
+`pnpm storybook` reports the existing process and exits successfully.
+`pnpm storybook:restart` explicitly replaces that owner, while
+`pnpm storybook:stop` terminates its descendants and matching legacy
+supervisors before cleaning up checkout-owned listeners. Preview addon edits
+use Vite HMR; Visual Delta manager, shared, and node edits are debounced into
+one server restart and the runtime's single manager reload.
 `VISUAL_SERVER_PORT`, `STORYBOOK_EXTRA_PORTS`, `AI_CHAT_STORYBOOK_URL`, and the
 suite-specific port variables remain available as advanced overrides, but a
 normal secondary workspace only needs `STORYBOOK_PORT`.

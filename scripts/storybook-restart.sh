@@ -8,4 +8,4 @@ PORT="${STORYBOOK_PORT:-9009}"
 bash "$ROOT/scripts/storybook-stop.sh"
 
 echo "starting Storybook on http://localhost:$PORT"
-exec env WATCHPACK_POLLING=250 STORYBOOK_PORT="$PORT" node "$ROOT/scripts/storybook-run.mjs" --no-open
+exec env STORYBOOK_REPLACE=1 WATCHPACK_POLLING=250 STORYBOOK_PORT="$PORT" node "$ROOT/scripts/storybook-run.mjs" --no-open

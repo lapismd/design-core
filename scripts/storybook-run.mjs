@@ -1,49 +1,75 @@
 #!/usr/bin/env node
 /**
- * Start Storybook and restart it when Visual Delta manager/panel source
- * (or related .storybook Vite plugins) change.
- *
- * Why not rely on Vite HMR alone: Storybook's manager builder is a one-shot
- * esbuild bundle with no watch. Preview overlay edits still HMR via Vite
- * (see watchVisualDeltaSourcePlugin in .storybook/main.ts). Visual Delta's
- * development runtime watcher reloads the open manager after this wrapper
- * finishes restarting the server.
- *
- * The catalog loads the addon from package `src/` via
- * `.storybook/visual-delta-preset.ts` (not the node_modules package name).
+ * Own one Storybook process per checkout and port, and restart it when Visual
+ * Delta manager/shared/node sources require a new manager bundle.
  */
-import { spawn, execSync } from "node:child_process";
-import { watch, readFileSync, existsSync, statSync } from "node:fs";
+import { spawn } from "node:child_process";
+import {
+  watch,
+  readFileSync,
+  existsSync,
+  readdirSync,
+  statSync,
+} from "node:fs";
 import { createHash } from "node:crypto";
-import { fileURLToPath } from "node:url";
 import path from "node:path";
+import {
+  acquireSupervisorOwnership,
+  cleanupCheckoutListeners,
+  partitionForeignListeners,
+  releaseSupervisorOwnership,
+  resolveStorybookLane,
+  storybookStartupMode,
+  stopStorybookLane,
+  terminateProcessTrees,
+  updateSupervisorOwnership,
+} from "./storybook-process.mjs";
 
-const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const port = process.env.STORYBOOK_PORT ?? "9009";
-const storybookPortNum = Number(port);
-const visualPort =
-  process.env.VISUAL_SERVER_PORT ??
-  process.env.VISUAL_DELTA_SERVER_PORT ??
-  (Number.isFinite(storybookPortNum) ? String(storybookPortNum + 1) : "9010");
-// Visual static (Storybook+1) plus a checkout-local spare debug port.
-const debugPort = Number.isFinite(storybookPortNum)
-  ? String(storybookPortNum + 90)
-  : "9099";
-const extraPorts = (
-  process.env.STORYBOOK_EXTRA_PORTS ?? `${visualPort} ${debugPort}`
-)
-  .trim()
-  .split(/\s+/)
-  .filter(Boolean);
-
+const lane = resolveStorybookLane();
+const { root, port, visualPort, serverPorts } = lane;
 const RESTART_DEBOUNCE_MS = 500;
-/** Ignore watch events while Storybook is still booting (avoids FSEvents noise). */
-const STARTUP_GRACE_MS = 10000;
+const STARTUP_GRACE_MS = 10_000;
+
+if (storybookStartupMode() === "replace") {
+  await stopStorybookLane(lane);
+}
+
+const ownership = acquireSupervisorOwnership(lane);
+if (!ownership.acquired) {
+  const child = ownership.owner.childPid
+    ? ` (Storybook ${ownership.owner.childPid})`
+    : "";
+  console.log(
+    `[storybook-run] already running for ${root} :${port} as supervisor ${ownership.owner.supervisorPid}${child}`,
+  );
+  process.exit(0);
+}
+
+const foreignListeners = await cleanupCheckoutListeners(lane, serverPorts);
+const { storybookPort: storybookPortConflicts, auxiliaryPorts } =
+  partitionForeignListeners(lane, foreignListeners);
+if (storybookPortConflicts.length > 0) {
+  releaseSupervisorOwnership(lane);
+  const details = storybookPortConflicts
+    .map(
+      ({ port: listenerPort, pid, cwd }) =>
+        `:${listenerPort} pid ${pid}${cwd ? ` (${cwd})` : ""}`,
+    )
+    .join(", ");
+  console.error(
+    `[storybook-run] refusing to replace another checkout's listener: ${details}`,
+  );
+  process.exit(1);
+}
+for (const listener of auxiliaryPorts) {
+  console.warn(
+    `[storybook-run] retained foreign auxiliary listener ${listener.pid} on :${listener.port}${listener.cwd ? ` (${listener.cwd})` : ""}`,
+  );
+}
 
 /**
- * Paths whose edits require a full Storybook process restart (manager /
- * middleware). Do not watch `.storybook/main.ts` — loading it can emit
- * spurious FSEvents on macOS and loop restarts.
+ * Paths whose edits require a new Storybook manager/middleware bundle.
+ * Preview-only source remains under Vite HMR.
  */
 const restartWatchPaths = [
   path.join(root, "packages/storybook-addon-visual-delta/src/manager.tsx"),
@@ -62,7 +88,6 @@ const restartWatchPaths = [
   path.join(root, ".storybook/manager.ts"),
 ];
 
-/** @type {Map<string, string>} */
 const contentHashes = new Map();
 
 function fileHash(filePath) {
@@ -76,88 +101,67 @@ function fileHash(filePath) {
 
 function seedHashes(dirOrFile) {
   try {
-    const st = statSync(dirOrFile);
-    if (st.isFile()) {
-      const h = fileHash(dirOrFile);
-      if (h) contentHashes.set(dirOrFile, h);
+    const stats = statSync(dirOrFile);
+    if (stats.isFile()) {
+      const hash = fileHash(dirOrFile);
+      if (hash) contentHashes.set(dirOrFile, hash);
       return;
     }
-    if (!st.isDirectory()) return;
+    if (stats.isDirectory()) {
+      for (const entry of readdirSync(dirOrFile, { withFileTypes: true })) {
+        seedHashes(path.join(dirOrFile, entry.name));
+      }
+    }
   } catch {
-    return;
+    /* path may not exist in portable hosts */
   }
-  // Lazy: only hash on first event for files under dirs.
 }
 
 function contentChanged(filePath) {
   const next = fileHash(filePath);
   if (next === null) return false;
-  const prev = contentHashes.get(filePath);
-  if (prev === next) return false;
+  const previous = contentHashes.get(filePath);
+  if (previous === next) return false;
   contentHashes.set(filePath, next);
-  return prev !== undefined; // ignore first observation after seed miss
+  return previous !== undefined;
 }
 
-function killPort(p) {
-  try {
-    const pids = execSync(`lsof -tiTCP:${p} -sTCP:LISTEN`, {
-      encoding: "utf8",
-      stdio: ["ignore", "pipe", "ignore"],
-    }).trim();
-    if (!pids) return;
-    for (const pid of pids.split("\n")) {
-      try {
-        process.kill(Number(pid), "SIGTERM");
-      } catch {
-        /* already gone */
-      }
-    }
-  } catch {
-    /* nothing listening */
-  }
-}
-
-function freeStorybookPorts() {
-  for (const p of [port, ...extraPorts]) {
-    killPort(p);
-  }
-}
-
-/** @type {import("node:child_process").ChildProcess | null} */
 let child = null;
 let starting = false;
-let restartTimer = /** @type {ReturnType<typeof setTimeout> | null} */ (null);
+let restartTimer = null;
 let shuttingDown = false;
+let shutdownPromise = null;
 let graceUntil = 0;
+let watchers = [];
 
-function stopChild() {
-  if (!child || child.killed) {
-    child = null;
-    return Promise.resolve();
-  }
+async function stopChild() {
   const current = child;
   child = null;
-  return new Promise((resolve) => {
-    let settled = false;
-    const done = () => {
-      if (settled) return;
-      settled = true;
-      resolve();
-    };
-    current.once("exit", done);
-    current.kill("SIGTERM");
-    setTimeout(() => {
-      if (!current.killed) {
-        try {
-          current.kill("SIGKILL");
-        } catch {
-          /* ignore */
-        }
-      }
-      freeStorybookPorts();
-      done();
-    }, 1500);
+  if (!current || current.exitCode !== null || current.signalCode !== null) {
+    updateSupervisorOwnership(lane, { childPid: null });
+    return;
+  }
+  await terminateProcessTrees([current.pid]);
+  await cleanupCheckoutListeners(lane, serverPorts);
+  updateSupervisorOwnership(lane, { childPid: null });
+}
+
+function closeWatchers() {
+  if (restartTimer) clearTimeout(restartTimer);
+  restartTimer = null;
+  for (const watcher of watchers) watcher?.close();
+  watchers = [];
+}
+
+async function shutdown(exitCode = 0) {
+  if (shutdownPromise) return shutdownPromise;
+  shuttingDown = true;
+  closeWatchers();
+  shutdownPromise = stopChild().finally(() => {
+    releaseSupervisorOwnership(lane);
+    process.exit(exitCode);
   });
+  return shutdownPromise;
 }
 
 async function startStorybook() {
@@ -165,9 +169,6 @@ async function startStorybook() {
   starting = true;
   try {
     await stopChild();
-    freeStorybookPorts();
-    await new Promise((r) => setTimeout(r, 400));
-
     child = spawn(
       process.execPath,
       [
@@ -189,18 +190,28 @@ async function startStorybook() {
         stdio: "inherit",
       },
     );
+    const current = child;
+    updateSupervisorOwnership(lane, { childPid: current.pid });
     graceUntil = Date.now() + STARTUP_GRACE_MS;
 
-    child.on("exit", (code, signal) => {
-      if (child === null) return; // intentional stop for restart
+    current.once("error", (error) => {
+      if (child !== current || shuttingDown) return;
+      console.error(
+        `[storybook-run] could not start Storybook: ${error.message}`,
+      );
       child = null;
-      if (shuttingDown) {
-        process.exit(code ?? (signal ? 1 : 0));
-      }
-      if (signal) {
-        console.error(`[storybook-run] Storybook exited from signal ${signal}`);
-      } else if (code) {
-        console.error(`[storybook-run] Storybook exited with code ${code}`);
+      void shutdown(1);
+    });
+    current.once("exit", (code, signal) => {
+      if (child !== current) return;
+      child = null;
+      updateSupervisorOwnership(lane, { childPid: null });
+      if (!shuttingDown) {
+        const outcome = signal ? `signal ${signal}` : `code ${code ?? 0}`;
+        console.error(
+          `[storybook-run] Storybook exited unexpectedly (${outcome}); releasing supervisor ownership`,
+        );
+        void shutdown(code ?? (signal ? 1 : 0));
       }
     });
   } finally {
@@ -215,7 +226,6 @@ function scheduleRestart(reason) {
   restartTimer = setTimeout(() => {
     restartTimer = null;
     if (starting || shuttingDown) return;
-    // Still in grace (nested start): wait out the remainder.
     if (Date.now() < graceUntil) {
       scheduleRestart(reason);
       return;
@@ -225,45 +235,38 @@ function scheduleRestart(reason) {
   }, delay);
 }
 
-for (const watchPath of restartWatchPaths) {
-  seedHashes(watchPath);
-}
-
-const watchers = restartWatchPaths.map((watchPath) => {
+for (const watchPath of restartWatchPaths) seedHashes(watchPath);
+watchers = restartWatchPaths.map((watchPath) => {
   try {
-    const isDir = existsSync(watchPath) && statSync(watchPath).isDirectory();
-    return watch(watchPath, { recursive: isDir }, (_event, filename) => {
+    const isDirectory =
+      existsSync(watchPath) && statSync(watchPath).isDirectory();
+    return watch(watchPath, { recursive: isDirectory }, (_event, filename) => {
       const changedPath = filename
-        ? isDir
+        ? isDirectory
           ? path.join(watchPath, filename)
           : watchPath
         : watchPath;
-      // Skip editor junk / non-source.
       if (/(^|[\\/])(\.DS_Store|.*~|\.swp|\.tmp)$/i.test(changedPath)) {
         return;
       }
-      if (!contentChanged(changedPath)) return;
-      scheduleRestart(path.relative(root, changedPath));
+      if (contentChanged(changedPath)) {
+        scheduleRestart(path.relative(root, changedPath));
+      }
     });
-  } catch (err) {
+  } catch (error) {
     console.warn(
       `[storybook-run] could not watch ${path.relative(root, watchPath)}:`,
-      err instanceof Error ? err.message : err,
+      error instanceof Error ? error.message : error,
     );
     return null;
   }
 });
 
-for (const sig of ["SIGINT", "SIGTERM"]) {
-  process.on(sig, () => {
-    shuttingDown = true;
-    if (restartTimer) clearTimeout(restartTimer);
-    for (const w of watchers) w?.close();
-    void stopChild().finally(() => process.exit(0));
-  });
+for (const signal of ["SIGINT", "SIGTERM"]) {
+  process.once(signal, () => void shutdown(0));
 }
 
 console.log(
-  `[storybook-run] watching Visual Delta manager/panel + related .storybook files; UI at http://localhost:${port}; visual static :${visualPort}`,
+  `[storybook-run] supervisor ${process.pid} owns ${root} :${port}; manager/shared/node edits restart once, preview edits use Vite HMR`,
 );
-void startStorybook();
+await startStorybook();
