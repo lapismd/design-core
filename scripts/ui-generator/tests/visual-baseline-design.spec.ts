@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   baselineUrlForStory,
   familyFromTitle,
+  injectNestedImportVisualDeltas,
   injectVisualBaselineVisualDeltas,
   sanitizeStoryName,
   storySlugFromId,
@@ -49,6 +50,19 @@ describe("visual-baseline-design", () => {
       }),
     ).toBe(
       `/visual-baselines/forms/add-section-chooser/chooses-a-section${VISUAL_BASELINE_SUFFIX}.png`,
+    );
+  });
+
+  it("maps Filter stories via importPath", () => {
+    expect(
+      baselineUrlForStory({
+        title: "Filter/Power Search",
+        id: "filter-power-search--add-filter-via-combobox",
+        importPath:
+          "./src/shared/filter/power-search/PowerSearch.stories.svelte",
+      }),
+    ).toBe(
+      `/visual-baselines/filter/power-search/add-filter-via-combobox${VISUAL_BASELINE_SUFFIX}.png`,
     );
   });
 
@@ -155,6 +169,23 @@ describe("visual-baseline-design", () => {
     );
     expect(out).toContain(
       `"images":["/visual-baselines/workspace/tabs/default${VISUAL_BASELINE_SUFFIX}.png"]`,
+    );
+  });
+
+  it("injects nested filter baselines using the same path as the writer", () => {
+    const source = `
+<script module lang="ts">
+  const { Story } = defineMeta({ title: "Filter/Power Search" });
+</script>
+<Story name="Add filter via combobox">ok</Story>`;
+    const out = injectNestedImportVisualDeltas(
+      source,
+      "Filter/Power Search",
+      "./src/shared/filter/power-search/PowerSearch.stories.svelte",
+      () => true,
+    );
+    expect(out).toContain(
+      `"images":["/visual-baselines/filter/power-search/add-filter-via-combobox${VISUAL_BASELINE_SUFFIX}.png"]`,
     );
   });
 
