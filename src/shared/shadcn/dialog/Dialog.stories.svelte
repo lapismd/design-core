@@ -42,6 +42,11 @@
           label: 'toHaveAttribute("data-state", "open")',
           src: "/visual-baselines/shadcn/dialog/opens-and-closes--interaction-5-toHaveAttribute-chromium-darwin.png",
         },
+        {
+          id: "interaction-1-click",
+          label: "userEvent.click",
+          src: "/visual-baselines/shadcn/dialog/opens-and-closes--interaction-1-click-chromium-darwin.png",
+        },
       ],
     },
   }}

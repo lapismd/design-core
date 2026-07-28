@@ -13,7 +13,10 @@ import {
 } from "../visual/interaction-baselines.js";
 import { patchStoryVisualDeltaInteraction } from "../visual/patch-story-visual-delta.js";
 import { isStorybookStaticComplete } from "../visual/storybook-static-build.js";
-import { slugifyStepLabel } from "../../../packages/storybook-addon-visual-delta/src/shared/interaction-capture.js";
+import {
+  interactionSnapshotUpdateMode,
+  slugifyStepLabel,
+} from "../../../packages/storybook-addon-visual-delta/src/shared/interaction-capture.js";
 import type { StoryIndexEntry } from "../visual/snapshot-paths.js";
 
 function loadStoryEntry(packageRoot: string, storyId: string): StoryIndexEntry {
@@ -137,9 +140,16 @@ export async function runVisualInteractionUpdate(options: {
   // PLAYWRIGHT_INTERACTION_CAPTURE registers only this one test in storybook.spec.ts.
   // Do not use `-g`: Playwright titles include the describe prefix and the
   // anchored pattern matched nothing ("No tests found").
+  const updateMode = interactionSnapshotUpdateMode(options.createOnly);
   execFileSync(
     "pnpm",
-    ["exec", "playwright", "test", "tests/visual/storybook.spec.ts"],
+    [
+      "exec",
+      "playwright",
+      "test",
+      "tests/visual/storybook.spec.ts",
+      `--update-snapshots=${updateMode}`,
+    ],
     {
       cwd: config.packageRoot,
       stdio: "inherit",
@@ -147,6 +157,7 @@ export async function runVisualInteractionUpdate(options: {
         ...process.env,
         VISUAL_UPDATE_APPROVED: "1",
         PLAYWRIGHT_UPDATE_SNAPSHOTS: "1",
+        PLAYWRIGHT_UPDATE_MODE: updateMode,
         PLAYWRIGHT_INTERACTION_CAPTURE: capturePayload,
       },
     },

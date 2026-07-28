@@ -3,6 +3,7 @@ import { mkdtempSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import {
+  interactionSnapshotUpdateMode,
   interactionScreenshotRelativePath,
   slugifyStepLabel,
   stepIdFromInteractionSnapshotName,
@@ -75,6 +76,12 @@ describe("interaction capture helpers", () => {
         "chooses-a-section",
       ),
     ).toBeNull();
+  });
+
+  it("preserves existing snapshots during create-only interaction capture", () => {
+    expect(interactionSnapshotUpdateMode(true)).toBe("missing");
+    expect(interactionSnapshotUpdateMode(false)).toBe("all");
+    expect(interactionSnapshotUpdateMode(undefined)).toBe("all");
   });
 });
 
@@ -152,6 +159,80 @@ describe("patchStoryOpenTagWithInteraction", () => {
     expect(next).toContain('"align":"canvas"');
   });
 
+  it("patches existing interactions whose labels use single-quoted JS strings", () => {
+    const open = `<Story
+  name="Opens and closes"
+  parameters={{
+    visualDelta: {
+      interactions: [
+        {
+          id: "interaction-5-toHaveAttribute",
+          label: 'toHaveAttribute("data-state", "open")',
+          src: "/visual-baselines/shadcn/dialog/opens-and-closes--interaction-5-toHaveAttribute-chromium-darwin.png",
+        },
+        {
+          id: "interaction-6-keyboard",
+          label: 'userEvent.keyboard("{Escape}")',
+          src: "/visual-baselines/shadcn/dialog/opens-and-closes--interaction-6-keyboard-chromium-darwin.png",
+        },
+      ],
+    },
+  }}
+>`;
+    const next = patchStoryOpenTagWithInteraction(open, {
+      id: "interaction-1-click",
+      label: "userEvent.click",
+      src: "/visual-baselines/shadcn/dialog/opens-and-closes--interaction-1-click-chromium-darwin.png",
+    });
+
+    expect(next).toContain('"interaction-1-click"');
+    expect(next).toContain('"interaction-5-toHaveAttribute"');
+    expect(next).toContain('toHaveAttribute(\\"data-state\\", \\"open\\")');
+    expect(next).toContain('userEvent.keyboard(\\"{Escape}\\")');
+  });
+
+  it("leaves an already-wired prettier interaction unchanged", () => {
+    const open = `<Story
+  name="Opens and closes"
+  parameters={{
+    visualDelta: {
+      interactions: [
+        {
+          id: "interaction-1-click",
+          label: "userEvent.click",
+          src: "/visual-baselines/shadcn/dialog/opens-and-closes--interaction-1-click-chromium-darwin.png",
+        },
+      ],
+    },
+  }}
+>`;
+    const next = patchStoryOpenTagWithInteraction(open, {
+      id: "interaction-1-click",
+      label: "userEvent.click",
+      src: "/visual-baselines/shadcn/dialog/opens-and-closes--interaction-1-click-chromium-darwin.png",
+    });
+
+    expect(next).toBe(open);
+  });
+
+  it("does not execute or rewrite dynamic visualDelta expressions", () => {
+    const open = `<Story
+  name="Dynamic"
+  parameters={{
+    visualDelta: {
+      interactions: getVisualInteractions(),
+    },
+  }}
+>`;
+    const next = patchStoryOpenTagWithInteraction(open, {
+      id: "interaction-1-click",
+      label: "userEvent.click",
+      src: "/visual-baselines/dynamic--interaction-1-click-chromium-darwin.png",
+    });
+
+    expect(next).toBe(open);
+  });
+
   it("patches the matching Story file when the story has no parameters", () => {
     const root = mkdtempSync(path.join(tmpdir(), "visual-interaction-patch-"));
     const storiesPath = path.join(root, "src/Dialog.stories.svelte");
@@ -193,5 +274,62 @@ describe("patchStoryOpenTagWithInteraction", () => {
     expect(source).toContain("visualDelta:");
     expect(source).toContain('"interaction-5-toHaveAttribute"');
     expect(source).toContain('tags={["visual-failed"]}');
+  });
+
+  it("patches a matching Story file that already has prettier interactions", () => {
+    const root = mkdtempSync(path.join(tmpdir(), "visual-interaction-patch-"));
+    const storiesPath = path.join(root, "src/Dialog.stories.svelte");
+    mkdirSync(path.dirname(storiesPath), { recursive: true });
+    mkdirSync(path.join(root, "storybook-static"), { recursive: true });
+    writeFileSync(
+      storiesPath,
+      `<Story
+  name="Opens and closes"
+  parameters={{
+    visualDelta: {
+      interactions: [
+        {
+          id: "interaction-5-toHaveAttribute",
+          label: 'toHaveAttribute("data-state", "open")',
+          src: "/visual-baselines/shadcn/dialog/opens-and-closes--interaction-5-toHaveAttribute-chromium-darwin.png",
+        },
+      ],
+    },
+  }}
+>
+  Dialog
+</Story>
+`,
+    );
+    writeFileSync(
+      path.join(root, "storybook-static/index.json"),
+      JSON.stringify({
+        entries: {
+          "shadcn-overlays-dialog--opens-and-closes": {
+            id: "shadcn-overlays-dialog--opens-and-closes",
+            type: "story",
+            name: "Opens and closes",
+            importPath: "./src/Dialog.stories.svelte",
+            tags: [],
+          },
+        },
+      }),
+    );
+
+    expect(
+      patchStoryVisualDeltaInteraction({
+        packageRoot: root,
+        storyId: "shadcn-overlays-dialog--opens-and-closes",
+        interaction: {
+          id: "interaction-1-click",
+          label: "userEvent.click",
+          src: "/visual-baselines/shadcn/dialog/opens-and-closes--interaction-1-click-chromium-darwin.png",
+        },
+      }),
+    ).toEqual({ ok: true, changed: true });
+    const source = readFileSync(storiesPath, "utf8");
+    expect(source).toContain('"interaction-1-click"');
+    expect(source).toContain('"interaction-5-toHaveAttribute"');
+    expect(source).toContain('toHaveAttribute(\\"data-state\\", \\"open\\")');
   });
 });

@@ -1,5 +1,6 @@
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
+import ts from "typescript";
 import {
   baselineUrlForStory,
   visualBaselineVisualDeltaParameter,
@@ -514,14 +515,96 @@ export function parseVisualDeltaObjectLiteral(
   } catch {
     /* fall through — prettier JS object */
   }
-  try {
-    const normalized = objectText
-      .replace(/([{\[,]\s*)([A-Za-z_][A-Za-z0-9_]*)\s*:/g, '$1"$2":')
-      .replace(/,(\s*[}\]])/g, "$1");
-    return JSON.parse(normalized) as Record<string, unknown>;
-  } catch {
-    return null;
+  const source = ts.createSourceFile(
+    "visual-delta-literal.ts",
+    `const visualDelta = ${objectText};`,
+    ts.ScriptTarget.Latest,
+    false,
+    ts.ScriptKind.TS,
+  );
+  const diagnostics = (
+    source as ts.SourceFile & { parseDiagnostics?: readonly ts.Diagnostic[] }
+  ).parseDiagnostics;
+  if (diagnostics?.length) return null;
+  const statement = source.statements[0];
+  if (!statement || !ts.isVariableStatement(statement)) return null;
+  const initializer = statement.declarationList.declarations[0]?.initializer;
+  if (!initializer) return null;
+  const value = staticLiteralValue(initializer);
+  return isPlainRecord(value) ? value : null;
+}
+
+const UNSAFE_OBJECT_KEYS = new Set(["__proto__", "constructor", "prototype"]);
+
+function isPlainRecord(value: unknown): value is Record<string, unknown> {
+  return value != null && typeof value === "object" && !Array.isArray(value);
+}
+
+function staticPropertyName(name: ts.PropertyName): string | null {
+  if (
+    ts.isIdentifier(name) ||
+    ts.isStringLiteral(name) ||
+    ts.isNumericLiteral(name)
+  ) {
+    return name.text;
   }
+  return null;
+}
+
+/**
+ * Evaluate only JSON-shaped TypeScript literals. This accepts normal
+ * Prettier-authored object syntax (unquoted keys, single quotes, comments, and
+ * trailing commas) without executing arbitrary CSF expressions.
+ */
+function staticLiteralValue(node: ts.Expression): unknown {
+  if (
+    ts.isParenthesizedExpression(node) ||
+    ts.isAsExpression(node) ||
+    ts.isSatisfiesExpression(node)
+  ) {
+    return staticLiteralValue(node.expression);
+  }
+  if (ts.isStringLiteral(node) || ts.isNoSubstitutionTemplateLiteral(node)) {
+    return node.text;
+  }
+  if (ts.isNumericLiteral(node)) return Number(node.text);
+  if (node.kind === ts.SyntaxKind.TrueKeyword) return true;
+  if (node.kind === ts.SyntaxKind.FalseKeyword) return false;
+  if (node.kind === ts.SyntaxKind.NullKeyword) return null;
+  if (
+    ts.isPrefixUnaryExpression(node) &&
+    (node.operator === ts.SyntaxKind.MinusToken ||
+      node.operator === ts.SyntaxKind.PlusToken) &&
+    ts.isNumericLiteral(node.operand)
+  ) {
+    const value = Number(node.operand.text);
+    return node.operator === ts.SyntaxKind.MinusToken ? -value : value;
+  }
+  if (ts.isArrayLiteralExpression(node)) {
+    const values: unknown[] = [];
+    for (const element of node.elements) {
+      if (ts.isSpreadElement(element) || ts.isOmittedExpression(element)) {
+        return undefined;
+      }
+      const value = staticLiteralValue(element);
+      if (value === undefined) return undefined;
+      values.push(value);
+    }
+    return values;
+  }
+  if (ts.isObjectLiteralExpression(node)) {
+    const value: Record<string, unknown> = Object.create(null);
+    for (const property of node.properties) {
+      if (!ts.isPropertyAssignment(property)) return undefined;
+      const name = staticPropertyName(property.name);
+      if (!name || UNSAFE_OBJECT_KEYS.has(name)) return undefined;
+      const propertyValue = staticLiteralValue(property.initializer);
+      if (propertyValue === undefined) return undefined;
+      value[name] = propertyValue;
+    }
+    return value;
+  }
+  return undefined;
 }
 
 export function patchStoryOpenTagWithInteraction(
@@ -567,6 +650,10 @@ export function patchStoryOpenTagWithInteraction(
   const existing = Array.isArray(parsed.interactions)
     ? (parsed.interactions as Array<Record<string, unknown>>)
     : [];
+  const current = existing.find((item) => item?.id === interaction.id);
+  if (current?.label === interaction.label && current.src === interaction.src) {
+    return openTag;
+  }
   const without = existing.filter((item) => item?.id !== interaction.id);
   without.push({
     id: interaction.id,
