@@ -87,6 +87,7 @@ function loadVisualStories(): StoryIndexEntry[] {
   return Object.values(index.entries)
     .filter((entry) => entry.type === "story")
     .filter((entry) => !(entry.tags ?? []).includes("skip-visual"))
+    .filter((entry) => !(entry.tags ?? []).includes("visual-delta-self-test"))
     .sort((a, b) => a.id.localeCompare(b.id));
 }
 
