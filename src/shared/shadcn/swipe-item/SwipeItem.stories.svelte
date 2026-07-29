@@ -1,6 +1,6 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, userEvent } from "storybook/test";
+  import { expect, userEvent, waitFor } from "storybook/test";
   import ArchiveIcon from "@lucide/svelte/icons/archive";
   import EllipsisIcon from "@lucide/svelte/icons/ellipsis";
   import StarIcon from "@lucide/svelte/icons/star";
@@ -42,26 +42,16 @@
     fullSwipeResult = "Waiting for full swipe";
   }
 
-  function dispatchTouch(
-    target: EventTarget,
-    type: "pointerdown" | "pointermove" | "pointerup",
-    options: {
-      pointerId: number;
-      clientX: number;
-      clientY: number;
-    },
+  async function waitForSwipeMeasurements(
+    content: HTMLElement,
+    actions: HTMLElement,
   ) {
-    target.dispatchEvent(
-      new PointerEvent(type, {
-        bubbles: true,
-        cancelable: true,
-        pointerId: options.pointerId,
-        pointerType: "touch",
-        isPrimary: true,
-        button: 0,
-        clientX: options.clientX,
-        clientY: options.clientY,
-      }),
+    await waitFor(() => {
+      expect(content.getBoundingClientRect().width).toBeGreaterThan(0);
+      expect(actions.getBoundingClientRect().width).toBeGreaterThan(0);
+    });
+    await new Promise<void>((resolve) =>
+      requestAnimationFrame(() => resolve()),
     );
   }
 </script>
@@ -278,28 +268,37 @@
   tags={["visual-ready"]}
   play={async ({ canvas }) => {
     const content = canvas.getByTestId("full-swipe-content");
+    const actions = content
+      .closest('[data-ui-part="root"]')
+      ?.querySelector<HTMLElement>('[data-ui-part="actions"][data-side="end"]');
+    await expect(actions).not.toBeNull();
+    await waitForSwipeMeasurements(content, actions!);
     const bounds = content.getBoundingClientRect();
-    const pointerId = 81;
     const startX = bounds.left + bounds.width * 0.7;
     const y = bounds.top + bounds.height / 2;
-    dispatchTouch(content, "pointerdown", {
-      pointerId,
-      clientX: startX,
-      clientY: y,
-    });
-    dispatchTouch(document, "pointermove", {
-      pointerId,
-      clientX: startX - bounds.width * 1.5,
-      clientY: y,
-    });
-    await expect(canvas.getByRole("status")).toHaveTextContent(
-      "Waiting for full swipe",
-    );
-    dispatchTouch(document, "pointerup", {
-      pointerId,
-      clientX: startX - bounds.width * 1.5,
-      clientY: y,
-    });
+    await userEvent.pointer([
+      {
+        keys: "[TouchA>]",
+        target: content,
+        coords: { clientX: startX, clientY: y },
+      },
+      {
+        pointerName: "TouchA",
+        target: content,
+        coords: {
+          clientX: startX - bounds.width * 1.5,
+          clientY: y,
+        },
+      },
+      {
+        keys: "[/TouchA]",
+        target: content,
+        coords: {
+          clientX: startX - bounds.width * 1.5,
+          clientY: y,
+        },
+      },
+    ]);
     await expect(canvas.getByRole("status")).toHaveTextContent(
       "Committed end with touch (1)",
     );
@@ -427,20 +426,29 @@
   tags={["visual-state", "visual-ready"]}
   play={async ({ canvas }) => {
     const content = canvas.getByTestId("armed-content");
+    const actions = content
+      .closest('[data-ui-part="root"]')
+      ?.querySelector<HTMLElement>('[data-ui-part="actions"][data-side="end"]');
+    await expect(actions).not.toBeNull();
+    await waitForSwipeMeasurements(content, actions!);
     const bounds = content.getBoundingClientRect();
-    const pointerId = 82;
     const startX = bounds.left + bounds.width * 0.7;
     const y = bounds.top + bounds.height / 2;
-    dispatchTouch(content, "pointerdown", {
-      pointerId,
-      clientX: startX,
-      clientY: y,
-    });
-    dispatchTouch(document, "pointermove", {
-      pointerId,
-      clientX: startX - bounds.width * 1.5,
-      clientY: y,
-    });
+    await userEvent.pointer([
+      {
+        keys: "[TouchA>]",
+        target: content,
+        coords: { clientX: startX, clientY: y },
+      },
+      {
+        pointerName: "TouchA",
+        target: content,
+        coords: {
+          clientX: startX - bounds.width * 1.5,
+          clientY: y,
+        },
+      },
+    ]);
     await expect(content.closest('[data-ui-part="root"]')).toHaveAttribute(
       "data-armed-side",
       "end",

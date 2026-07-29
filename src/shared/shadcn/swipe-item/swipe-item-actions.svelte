@@ -19,18 +19,16 @@
   } = $props();
 
   const swipeItem = useSwipeItemState();
-  let width = $state(0);
 
   $effect(() => {
     if (!ref) return;
+    const fullSwipeCallback = onFullSwipe;
     const measure = () => {
-      width = ref?.getBoundingClientRect().width ?? 0;
+      swipeItem.setActionsWidth(side, ref?.getBoundingClientRect().width ?? 0);
     };
     measure();
     const unregister = swipeItem.registerActions(side, {
-      id: swipeItem.actionsId(side),
-      width: () => width,
-      onFullSwipe: () => onFullSwipe,
+      onFullSwipe: fullSwipeCallback,
     });
     if (typeof ResizeObserver === "undefined") return unregister;
     const observer = new ResizeObserver(measure);

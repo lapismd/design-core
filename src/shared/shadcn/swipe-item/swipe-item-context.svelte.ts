@@ -26,11 +26,7 @@ interface SwipeItemStateProps {
 }
 
 interface SwipeItemActionsRegistration {
-  readonly id: string;
-  readonly width: Getter<number>;
-  readonly onFullSwipe: Getter<
-    ((event: SwipeItemFullSwipeEvent) => void) | undefined
-  >;
+  readonly onFullSwipe: ((event: SwipeItemFullSwipeEvent) => void) | undefined;
 }
 
 interface SwipeGesture {
@@ -56,12 +52,12 @@ export class SwipeItemState {
   readonly open = $derived.by(() => this.props.open());
   readonly disabled = $derived.by(() => this.props.disabled());
   readonly widths = $derived.by(() => ({
-    start: this.#actions.start?.width() ?? 0,
-    end: this.#actions.end?.width() ?? 0,
+    start: this.#actionWidths.start,
+    end: this.#actionWidths.end,
   }));
   readonly fullSwipe = $derived.by(() => ({
-    start: Boolean(this.#actions.start?.onFullSwipe()),
-    end: Boolean(this.#actions.end?.onFullSwipe()),
+    start: this.#fullSwipeAvailable.start,
+    end: this.#fullSwipeAvailable.end,
   }));
   readonly stableOffset = $derived.by(() =>
     swipeItemStableOffset(this.open, this.direction, this.widths),
@@ -88,12 +84,18 @@ export class SwipeItemState {
 
   #root: HTMLDivElement | null = null;
   #content: HTMLDivElement | null = null;
-  #actions = $state<Record<SwipeItemSide, SwipeItemActionsRegistration | null>>(
-    {
-      start: null,
-      end: null,
-    },
-  );
+  #actions: Record<SwipeItemSide, SwipeItemActionsRegistration | null> = {
+    start: null,
+    end: null,
+  };
+  #actionWidths = $state<Record<SwipeItemSide, number>>({
+    start: 0,
+    end: 0,
+  });
+  #fullSwipeAvailable = $state<Record<SwipeItemSide, boolean>>({
+    start: false,
+    end: false,
+  });
   #triggers: Record<SwipeItemSide, HTMLButtonElement | null> = {
     start: null,
     end: null,
@@ -142,11 +144,18 @@ export class SwipeItemState {
     registration: SwipeItemActionsRegistration,
   ): () => void {
     this.#actions[side] = registration;
+    this.#fullSwipeAvailable[side] = Boolean(registration.onFullSwipe);
     return () => {
       if (this.#actions[side] === registration) {
         this.#actions[side] = null;
+        this.#actionWidths[side] = 0;
+        this.#fullSwipeAvailable[side] = false;
       }
     };
+  }
+
+  setActionsWidth(side: SwipeItemSide, width: number): void {
+    this.#actionWidths[side] = Math.max(0, width);
   }
 
   registerTrigger(
@@ -303,7 +312,7 @@ export class SwipeItemState {
     this.#clearGesture();
 
     if (result.kind === "commit") {
-      this.#actions[result.side]?.onFullSwipe()?.({
+      this.#actions[result.side]?.onFullSwipe?.({
         side: result.side,
         pointerType: gesture.pointerType,
       });
