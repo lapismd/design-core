@@ -110,7 +110,7 @@ open item remeasures and preserves the logical state rather than stale pixels.
 - [x] Pure gesture math and unit tests.
 - [x] Compound component family and public tokens.
 - [x] Storybook docs and interaction stories.
-- [ ] Real mouse and touch-pointer Playwright coverage.
+- [x] Real mouse and touch-pointer Playwright coverage.
 - [ ] Focused checks and full repository validation.
 - [x] Live visual review; baseline creation only after explicit approval.
 
@@ -125,5 +125,9 @@ checks must remain distinct from any later approved baseline write.
 - `pnpm check`: pass with zero Svelte errors or warnings.
 - Storybook MCP `run-story-tests`: pass for all 7 Swipe Item stories,
   including accessibility checks.
+- `pnpm test:shadcn:pointer`: pass, 4 Chromium tests covering real mouse drags,
+  touch axis locking and cancellation, full-swipe release semantics, click
+  suppression, outside dismissal, RTL, focus restoration, reduced motion, and
+  disabled behavior.
 - Live Storybook review: closed, start-open, end-open, and full-swipe-armed
   states inspected at the checkout's port. No baseline was created or updated.
