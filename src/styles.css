@@ -11,6 +11,7 @@
 @import "./shared/shadcn/tabs/tabs.tokens.css";
 @import "./shared/shadcn/table/table.tokens.css";
 @import "./shared/shadcn/switch/switch.tokens.css";
+@import "./shared/shadcn/swipe-item/swipe-item.tokens.css";
 @import "./shared/shadcn/spinner/spinner.tokens.css";
 @import "./shared/shadcn/skeleton/skeleton.tokens.css";
 @import "./shared/shadcn/sheet/sheet.tokens.css";

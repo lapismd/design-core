@@ -7,7 +7,8 @@ Implementation contract and progress record for the project-authored
 
 - Layer: generic shared primitive under `src/shared/shadcn/swipe-item`.
 - Source: project-authored native Svelte and CSS.
-- Dependencies: the existing shared Button family only.
+- Dependencies: the existing shared Button family and Bits UI's SSR-safe ID
+  helper.
 - Registry status: the pinned shadcn-svelte registry has no `swipe-item` or
   `swipeable` item. The unrelated upstream `item` family is unsupported by the
   local converter. This component does not copy those sources and must not be
@@ -106,8 +107,8 @@ open item remeasures and preserves the logical state rather than stale pixels.
 
 - [x] Contract and research recorded.
 - [x] Component classified in `COMPONENT_AUDIT.md`.
-- [ ] Pure gesture math and unit tests.
-- [ ] Compound component family and public tokens.
+- [x] Pure gesture math and unit tests.
+- [x] Compound component family and public tokens.
 - [ ] Storybook docs and interaction stories.
 - [ ] Real mouse and touch-pointer Playwright coverage.
 - [ ] Focused checks and full repository validation.
@@ -117,3 +118,8 @@ open item remeasures and preserves the logical state rather than stale pixels.
 
 Record exact commands and outcomes here as slices land. Compare-only visual
 checks must remain distinct from any later approved baseline write.
+
+- `pnpm exec vitest run --project unit src/shared/shadcn/swipe-item`: pass,
+  1 file and 6 tests.
+- `pnpm check:no-tailwind`: pass.
+- `pnpm check`: pass with zero Svelte errors or warnings.

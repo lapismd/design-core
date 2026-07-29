@@ -1,0 +1,15 @@
+/**
+ * Default SwipeItem bindings → public theme tokens.
+ * Override --ui-swipe-item-* on :root or a shared ancestor.
+ */
+:root {
+  --ui-swipe-item-background: var(--muted);
+  --ui-swipe-item-content-background: var(--background);
+  --ui-swipe-item-action-background: var(--muted);
+  --ui-swipe-item-border-color: var(--border);
+  --ui-swipe-item-radius: var(--radius-md);
+  --ui-swipe-item-action-min-width: 3.5rem;
+  --ui-swipe-item-focus-ring-color: var(--ring);
+  --ui-swipe-item-armed-ring-color: var(--primary);
+  --ui-swipe-item-settle-duration: 180ms;
+}
