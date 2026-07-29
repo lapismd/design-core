@@ -103,6 +103,10 @@ retains the shared baseline.
 Do not put a fake header inside `Sidebar.Body`, add custom sticky chrome, or
 render the main title outside `AppShell.Main`.
 
+Omit `border-block-end` on the outer / first project sidebar header
+(`variant="outer"`), including when expanded or previewed. Keep the usual
+header separator on inner Files rails and the right AI/inspector header.
+
 ## Collapsed behavior
 
 - Expanded: full width, labels and fields visible, resize handle available.

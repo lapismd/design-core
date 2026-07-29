@@ -130,7 +130,6 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.625rem 0.75rem 0.75rem;
-  border-block-end: 1px solid var(--border);
 }
 
 .ui-shell-story-project-app {
@@ -185,7 +184,6 @@
   .ui-shell-story-project-header {
   justify-content: center;
   padding: 0.5rem;
-  border-block-end: 0;
 }
 
 .ui-minimal-app-shell__sidebar[data-state="collapsed"][data-presentation="inline"]

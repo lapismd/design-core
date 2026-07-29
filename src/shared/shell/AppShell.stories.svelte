@@ -383,6 +383,13 @@
       "data-presentation",
       "inline",
     );
+    const expandedProjectHeader = projectsSidebar.querySelector<HTMLElement>(
+      '[data-ui-part="sidebar-header"]',
+    );
+    await expect(expandedProjectHeader).toBeInTheDocument();
+    await expect(
+      getComputedStyle(expandedProjectHeader!).borderBlockEndWidth,
+    ).toBe("0px");
     await expect(
       canvas.queryByLabelText("Files sidebar"),
     ).not.toBeInTheDocument();
@@ -672,7 +679,7 @@
     ).toBeVisible();
     await expect(
       getComputedStyle(collapsedProjectHeader!).borderBlockEndWidth,
-    ).toBe("1px");
+    ).toBe("0px");
     await expect(
       getComputedStyle(collapsedProjectFooter!).borderBlockStartWidth,
     ).toBe("1px");

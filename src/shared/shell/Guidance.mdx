@@ -256,6 +256,13 @@ Use the public geometry tokens when styling consumer header content:
 }
 ```
 
+Omit the header bottom border on the outer / first project sidebar
+(`variant="outer"`). That full-height rail should not draw a
+`border-block-end` under its header, including when expanded or previewed.
+Keep the usual header separator on inner rails such as Files and on the right
+AI/inspector header. Collapsed inline rails still strip header/footer
+separators automatically via the shell.
+
 The shell accounts for the inset main surface when aligning its built-in
 collapsed-header actions. Keep the shared `--ui-shell-toolbar-height` and
 `--ui-shell-main-block-inset` tokens authoritative instead of hard-coding a
@@ -393,19 +400,21 @@ Before accepting an application shell:
 
 1. Root sidebars and main are direct siblings using the compound parts.
 2. Every root column has fixed top chrome: `Sidebar.Header` or `Toolbar`.
-3. Left and right root toggles sit at the matching edges of adjacent persistent
+3. The outer / first project sidebar header omits `border-block-end`; inner and
+   right headers keep their separators when expanded.
+4. Left and right root toggles sit at the matching edges of adjacent persistent
    chrome; named same-side toggles target the correct `sidebarController`.
-4. Closeable panels put `Sidebar.Close` at the far edge of their own header.
-5. Body-local panels use `Body.Sidebar` and `Body.Toggle`, not root toggles.
-6. Collapsed rails keep their structural regions mounted and show accessible
+5. Closeable panels put `Sidebar.Close` at the far edge of their own header.
+6. Body-local panels use `Body.Sidebar` and `Body.Toggle`, not root toggles.
+7. Collapsed rails keep their structural regions mounted and show accessible
    icon actions without clipped labels.
-7. Nested outer sidebars that support collapse/close also opt into
+8. Nested outer sidebars that support collapse/close also opt into
    `previewOnHover` on the adjacent toggle and `revealOnEdgeHover` on the
    outer panel (with `edgeRevealLabel`).
-8. Compact rendering is desktop-only and yields to mobile/preview presentation.
-9. Fixed headers/footers stay outside independently scrolling bodies.
-10. One composition handles desktop, constrained desktop, and mobile.
-11. Routing, persistence policy, and domain state remain in the consumer.
+9. Compact rendering is desktop-only and yields to mobile/preview presentation.
+10. Fixed headers/footers stay outside independently scrolling bodies.
+11. One composition handles desktop, constrained desktop, and mobile.
+12. Routing, persistence policy, and domain state remain in the consumer.
 
 Validate against **Complete shell composition**, **Nested project and file
 sidebars**, **Independent icon rails**, **Mobile edge panels**, and

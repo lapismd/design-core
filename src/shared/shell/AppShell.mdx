@@ -152,7 +152,9 @@ and footer therefore remain fixed while content regions scroll independently.
 A collapsed sidebar
 keeps the same scrollable viewport for its icon rail but hides the scrollbar.
 Its inline header and footer separators are also removed; a temporary expanded
-overlay restores them. Built-in `Sidebar.Toggle` and `Sidebar.Close` actions in
+overlay restores consumer separators that remain defined. Outer / first project
+sidebar headers should omit `border-block-end` entirely (see
+**Shell/Guidance**). Built-in `Sidebar.Toggle` and `Sidebar.Close` actions in
 a collapsed header share the main toolbar's vertical action baseline.
 
 Expanded sidebars include an accessible resize slider by default. Pointer
