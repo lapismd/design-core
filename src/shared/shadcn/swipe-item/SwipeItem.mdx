@@ -1,0 +1,69 @@
+import { Meta, Primary, Controls, Source } from "@storybook/addon-docs/blocks";
+import * as SwipeItemStories from "./SwipeItem.stories.svelte";
+
+<Meta of={SwipeItemStories} />
+
+# Swipe Item
+
+Reveal logical start or end actions by translating an item's content with touch
+or mouse input. The stable open position uses the measured action-pane width,
+while an optional full swipe runs a side callback only after pointer release.
+
+This is a project-authored native-CSS family. It composes the shared Button and
+does not copy the unrelated upstream shadcn Item family.
+
+## Usage
+
+<Source
+  language="html"
+  code={`<script lang="ts">
+  import * as SwipeItem from "@stevejuma/ui/shadcn/swipe-item";
+</script>
+
+<SwipeItem.Root>
+  <SwipeItem.Actions side="end" onFullSwipe={archive}>
+    <SwipeItem.Action onclick={archive}>Archive</SwipeItem.Action>
+    <SwipeItem.Action variant="destructive" onclick={remove}>
+      Delete
+    </SwipeItem.Action>
+  </SwipeItem.Actions>
+
+  <SwipeItem.Content>
+    <span>Quarterly planning</span>
+    <SwipeItem.Trigger side="end" aria-label="Show message actions">
+      ...
+    </SwipeItem.Trigger>
+  </SwipeItem.Content>
+</SwipeItem.Root>`}
+/>
+
+<Primary />
+
+<Controls />
+
+## Interaction contract
+
+- `start` and `end` follow the rendered writing direction.
+- Dragging begins after 10 pixels of horizontal intent and preserves vertical
+  scrolling through static `touch-action: pan-y`.
+- Releasing past half the measured action width opens that pane. A 0.45px/ms
+  fling may open or close, but velocity alone never runs the full-swipe action.
+- A full-swipe callback runs once, on release past 75% of the item width.
+- Escape, a tap on open Content, or an outside pointer press closes the item.
+- Add `data-swipe-item-gesture-ignore` to nested editors or custom interaction
+  regions that must own their pointer stream.
+
+## Accessibility
+
+Swipe is an enhancement, not the only route to an action. Provide a visible
+`SwipeItem.Trigger` for each action side or an equivalent tap/click control in
+the same screen. The Trigger exposes `aria-expanded` and `aria-controls`; closed
+action panes remain `inert` and hidden from assistive technology.
+
+Every icon-only Trigger and Action requires an accessible label. Consumers own
+confirmation, undo, and error feedback for destructive or asynchronous work.
+
+## Styling
+
+Override `--ui-swipe-item-*` tokens on an ancestor. Production sources use
+native CSS; action and trigger controls compose the shared Button family.

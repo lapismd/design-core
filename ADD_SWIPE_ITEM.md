@@ -109,10 +109,10 @@ open item remeasures and preserves the logical state rather than stale pixels.
 - [x] Component classified in `COMPONENT_AUDIT.md`.
 - [x] Pure gesture math and unit tests.
 - [x] Compound component family and public tokens.
-- [ ] Storybook docs and interaction stories.
+- [x] Storybook docs and interaction stories.
 - [ ] Real mouse and touch-pointer Playwright coverage.
 - [ ] Focused checks and full repository validation.
-- [ ] Live visual review; baseline creation only after explicit approval.
+- [x] Live visual review; baseline creation only after explicit approval.
 
 ## Validation evidence
 
@@ -123,3 +123,7 @@ checks must remain distinct from any later approved baseline write.
   1 file and 6 tests.
 - `pnpm check:no-tailwind`: pass.
 - `pnpm check`: pass with zero Svelte errors or warnings.
+- Storybook MCP `run-story-tests`: pass for all 7 Swipe Item stories,
+  including accessibility checks.
+- Live Storybook review: closed, start-open, end-open, and full-swipe-armed
+  states inspected at the checkout's port. No baseline was created or updated.
