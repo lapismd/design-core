@@ -68,8 +68,29 @@ duplicate it with a bespoke button, move it into scrolling content, or use
 `Sidebar.Close` as collapse.
 
 For multiple panels on one side, create each stable controller with
-`controller.createSidebar(id, side)`. The **Nested project and file sidebars**
-and **Complete shell composition** stories are canonical.
+`controller.createSidebar(id, side)`. Put the outer panel first with
+`variant="outer"`, `revealOnEdgeHover`, and `edgeRevealLabel`; put its toggle
+in the adjacent inner `Sidebar.Header` with `previewOnHover`. The **Nested
+project and file sidebars** and **Complete shell composition** stories are
+canonical.
+
+## Desktop preview overlays
+
+When an outer same-side sidebar is collapsed or closed, desktop may preview it
+as a temporary expanded overlay without durable state changes or shifting
+adjacent columns:
+
+- **`previewOnHover`** on the adjacent `Sidebar.Toggle` (usually in the inner
+  sidebar header): delayed hover preview (default 600ms via `previewDelay`).
+- **`revealOnEdgeHover`** on the outer `Sidebar`: narrow edge control at the
+  shell’s leading edge. When the outer panel is collapsed or closed, that
+  control sits against the visible edge of the next column (typically the
+  inner sidebar). Hover or focus previews; click expands/opens inline.
+
+Both set transient `previewed` only. Portalled Select/Popover/menu content
+linked from the sidebar remains inside the preview interaction boundary. Do
+not invent a custom flyout for these affordances. Desktop-only; mobile uses
+the edge-stage track.
 
 ## Headers and alignment
 
@@ -90,6 +111,8 @@ render the main title outside `AppShell.Main`.
 - Closed: removed from inline layout; adjacent toggle or edge affordance
   reopens it.
 - Previewed: temporary expanded overlay without durable state changes.
+  Desktop entry points are `previewOnHover` (adjacent toggle) and
+  `revealOnEdgeHover` (edge control); see **Desktop preview overlays**.
 
 Keep `Sidebar.Header`, `Sidebar.Body`, and `Sidebar.Footer` mounted when
 collapsed. Hide only expanded labels, section captions, inputs, and verbose
@@ -126,6 +149,7 @@ inside the shared shell.
 - Storybook guidance: `Shell/Guidance`
 - Full API and behavior: `Shell/App Shell/Docs`
 - Composition: `Complete shell composition`
+- Nested previews: `Nested project and file sidebars`
 - Collapse: `Independent icon rails`
 - Responsive edges: `Mobile edge panels`
 - Local panels: `Markdown document body sidebars`

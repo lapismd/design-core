@@ -183,9 +183,36 @@ panel’s toggle.
 ```
 
 The **Nested project and file sidebars** and **Complete shell composition**
-stories are the reference for this topology. `previewOnHover` previews a
-collapsed/closed adjacent panel without changing its durable state or moving
-the other columns.
+stories are the reference for this topology.
+
+## Desktop preview overlays
+
+When an outer same-side sidebar is collapsed or closed, desktop may show it as
+a temporary expanded overlay without changing durable `collapsed` / `closed`
+state or shifting the adjacent rail and main column. Opt into both entry points
+together for nested left layouts:
+
+1. **`previewOnHover` on the adjacent `Sidebar.Toggle`** — usually the outer
+   panel’s toggle in the inner sidebar’s `Sidebar.Header`. After the default
+   600ms delay (`previewDelay`), hovering the toggle previews the target panel
+   as an overlay. Leaving before the delay cancels it; moving into the overlay
+   keeps it open.
+2. **`revealOnEdgeHover` on the outer `Sidebar`** — installs a narrow edge
+   control at the shell’s leading edge. When the outer panel is collapsed or
+   closed, that control sits against the visible edge of the next column
+   (typically the inner sidebar). Pointer hover or keyboard focus previews the
+   outer panel as an overlay; clicking the edge control expands or opens it
+   inline. Pass `edgeRevealLabel` for a clear accessible name.
+
+Both paths set transient `previewed` presentation only. Overlay width always
+comes from the expanded sidebar width. Portalled popup content (Select,
+Popover, menus) linked through `aria-controls` / `aria-owns` or opened by an
+accessible popup trigger inside the sidebar stays inside the preview
+interaction boundary so options remain usable without pinning the panel open.
+
+Do not invent a custom flyout, second collapse button, or application popover
+for these affordances. Use `previewOnHover` and `revealOnEdgeHover`. They are
+desktop-only; mobile uses the edge-stage track instead.
 
 ## Headers are structural
 
@@ -247,6 +274,8 @@ These states are intentionally different:
 - **`closed`:** removed from inline layout so main reclaims the width; reopened
   from the adjacent toggle or edge affordance.
 - **`previewed`:** temporary expanded overlay without changing durable state.
+  Entered on desktop via `previewOnHover` (adjacent toggle) and/or
+  `revealOnEdgeHover` (edge control); see **Desktop preview overlays**.
 
 When collapsed, keep `Sidebar.Header`, `Sidebar.Body`, and `Sidebar.Footer`
 mounted. Hide expanded-only labels, section captions, inputs, and verbose
@@ -370,11 +399,14 @@ Before accepting an application shell:
 5. Body-local panels use `Body.Sidebar` and `Body.Toggle`, not root toggles.
 6. Collapsed rails keep their structural regions mounted and show accessible
    icon actions without clipped labels.
-7. Compact rendering is desktop-only and yields to mobile/preview presentation.
-8. Fixed headers/footers stay outside independently scrolling bodies.
-9. One composition handles desktop, constrained desktop, and mobile.
-10. Routing, persistence policy, and domain state remain in the consumer.
+7. Nested outer sidebars that support collapse/close also opt into
+   `previewOnHover` on the adjacent toggle and `revealOnEdgeHover` on the
+   outer panel (with `edgeRevealLabel`).
+8. Compact rendering is desktop-only and yields to mobile/preview presentation.
+9. Fixed headers/footers stay outside independently scrolling bodies.
+10. One composition handles desktop, constrained desktop, and mobile.
+11. Routing, persistence policy, and domain state remain in the consumer.
 
-Validate against **Complete shell composition**, **Independent icon rails**,
-**Mobile edge panels**, and **Markdown document body sidebars** in
-**Shell/App Shell**.
+Validate against **Complete shell composition**, **Nested project and file
+sidebars**, **Independent icon rails**, **Mobile edge panels**, and
+**Markdown document body sidebars** in **Shell/App Shell**.
