@@ -86,7 +86,7 @@
 <Story
   name="Dropdown"
   exportName="Dropdown"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     visualDelta: {
       images: [
