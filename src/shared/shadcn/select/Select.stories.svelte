@@ -27,7 +27,6 @@
 <!-- Interaction story first so vitest doesn't inherit an open portal from the visual story. -->
 <Story
   name="Chooses an option"
-  tags={["skip-visual"]}
   play={async ({ canvas }) => {
     await userEvent.keyboard("{Escape}");
     const trigger = canvas.getByRole("combobox", { name: "Status" });
