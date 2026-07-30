@@ -39,7 +39,6 @@
 <Story
   name="With query"
   exportName="WithQuery"
-  tags={["skip-visual"]}
   parameters={{
     docs: {
       description: { story: "Populated plain search value." },
