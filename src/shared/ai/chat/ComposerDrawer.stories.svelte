@@ -288,27 +288,31 @@
     await expect(canvas.getByText("release-notes.md")).toBeVisible();
   }}
   parameters={{
-    visualDelta: {"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
+    visualDelta: {
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+      passThresholdPercent: 0.1,
+    },
   }}
   tags={["visual-approved"]}
 >
   {#snippet template()}
-    <div data-story="drawer-frame">
-      <ComposerDrawer bind:collapsed count={2}>
-        <p>release-notes.md</p>
-        <p>changelog.md</p>
-      </ComposerDrawer>
+    <div data-story="drawer-composer">
+      <Composer value="" placeholder="Type a message..." onSubmit={() => {}}>
+        {#snippet drawer()}
+          <ComposerDrawer bind:collapsed count={2}>
+            <Badge variant="secondary">release-notes.md ×</Badge>
+            <Badge variant="secondary">changelog.md ×</Badge>
+          </ComposerDrawer>
+        {/snippet}
+      </Composer>
     </div>
   {/snippet}
 </Story>
 
 <style>
-  :global([data-story="drawer-frame"]) {
-    width: min(34rem, 90vw);
-    border: 1px solid var(--border);
-    border-radius: 0.75rem;
-  }
-
   :global([data-story="drawer-composer"]) {
     width: min(30rem, 90vw);
   }
@@ -359,10 +363,5 @@
 
   :global([data-story="feedback-list"] button[data-selected="true"]) {
     background: var(--accent);
-  }
-
-  :global([data-story="drawer-frame"] p) {
-    margin: 0.25rem 0;
-    font-size: 0.75rem;
   }
 </style>
