@@ -163,8 +163,9 @@
 
 <Story
   name="Opens dialog from menu"
-  tags={["visual-state", "visual-failed"]}
+  tags={["visual-state", "visual-pending"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/dropdown-menu/opens-dialog-from-menu-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
     a11y: { test: "todo" },
   }}
   play={async ({ canvas }) => {
