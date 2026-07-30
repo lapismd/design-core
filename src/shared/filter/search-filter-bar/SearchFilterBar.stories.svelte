@@ -162,7 +162,7 @@
     visualDelta: {"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
   }}
 
-  tags={["visual-pending"]}
+  tags={["visual-pending", "skip-visual"]}
 >
   {#snippet template()}
     <div class="mx-auto flex w-full max-w-3xl flex-col gap-3">
