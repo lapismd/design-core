@@ -553,6 +553,10 @@
       canvas.getByRole("button", { name: "Show open end actions" }),
     ).toHaveAttribute("aria-expanded", "true");
   }}
+
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/swipe-item/end-actions-open-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
+  }}
 >
   {#snippet template()}
     <div class="w-full max-w-md">
