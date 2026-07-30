@@ -53,10 +53,10 @@ import * as SwipeItem from "@stevejuma/ui/shadcn/swipe-item";
   can settle a pane open or closed but never commits by itself. Wheel full
   swipes report `pointerType: "wheel"`.
 - Escape, a tap on open Content, or an outside pointer press closes the item.
-- Add `data-swipe-item-gesture-ignore` to nested interaction regions that must
-  own their pointer stream. Plain clicks on nested buttons and links inside
-  closed Content still activate those controls; pointer capture begins only
-  after the horizontal activation distance is crossed.
+- Nested buttons, links, form controls, and editors never start a swipe
+  gesture; use `data-swipe-item-gesture-ignore` for other custom hit targets
+  that must own their pointer stream. Pointer capture begins only after the
+  horizontal activation distance is crossed on non-interactive Content.
 
 ## Accessibility
 

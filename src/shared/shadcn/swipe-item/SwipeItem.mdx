@@ -56,10 +56,10 @@ does not copy the unrelated upstream shadcn Item family.
 - A full-swipe callback runs once, on release past 75% of the item width
   (`pointerType: "wheel"` for trackpad settles).
 - Escape, a tap on open Content, or an outside pointer press closes the item.
-- Add `data-swipe-item-gesture-ignore` to nested editors or custom interaction
-  regions that must own their pointer stream. Nested buttons and links in closed
-  Content still receive clicks; pointer capture starts only after horizontal
-  activation.
+- Nested buttons, links, form controls, and editors never start a swipe
+  gesture. Add `data-swipe-item-gesture-ignore` for other custom interaction
+  regions that must own their pointer stream. Pointer capture starts only after
+  horizontal activation on non-interactive Content.
 
 ## Accessibility
 

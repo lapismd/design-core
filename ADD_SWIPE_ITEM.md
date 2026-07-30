@@ -71,8 +71,9 @@ Defaults:
 
 ## Gesture state machine
 
-1. Ignore disabled, non-primary, non-left-button, action-pane, trigger, form,
-   editor, and `[data-swipe-item-gesture-ignore]` starts.
+1. Ignore disabled, non-primary, non-left-button, action-pane, trigger, nested
+   buttons/links/form controls, editors, and `[data-swipe-item-gesture-ignore]`
+   starts so Content controls keep tap/click without accidentally arming swipe.
 2. Record the stable open side and pointer origin. Touch uses document listeners
    matching the existing Shell pattern. Mouse/stylus stay pending without
    pointer capture so nested Content controls still receive click.
