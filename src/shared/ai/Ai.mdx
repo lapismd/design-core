@@ -10,7 +10,7 @@ They sit on top of the shared shadcn primitives and are **prop-driven** — no
 application store, networking, persistence, routing, or model SDK.
 
 ```ts
-import { AiChatPanel, Chat, ExperimentalChat } from "@stevejuma/ui/ai";
+import { Chat, ExperimentalChat } from "@stevejuma/ui/ai";
 import * as AiChat from "@stevejuma/ui/ai/chat";
 import * as ExperimentalAiChat from "@stevejuma/ui/ai/chat/experimental";
 ```
@@ -29,14 +29,6 @@ The fixtures intentionally retain the local shadcn theme. ASTRYX brand colors
 and Figtree typography are not imported, so geometry can be compared without
 changing the package's theme contract. The live comparison record and baseline
 boundary are documented in `ASTRYX_AI_VISUAL_PARITY.md`.
-
-| Component                                                             | Role                                        |
-| --------------------------------------------------------------------- | ------------------------------------------- |
-| [AI Chat Panel](?path=/docs/ai-ai-chat-panel--docs)                   | Full dock + transcript + prompt composition |
-| [AI Chat Dock](?path=/docs/ai-ai-chat-dock--docs)                     | Placement / visibility chrome               |
-| [AI Chat Transcript](?path=/docs/ai-ai-chat-transcript--docs)         | Message list                                |
-| [AI Prompt Input](?path=/docs/ai-ai-prompt-input--docs)               | Composer + send                             |
-| [AI Chat Panel Settings](?path=/docs/ai-ai-chat-panel-settings--docs) | Dock / float / collapse controls            |
 
 Hosts compose these prop-driven surfaces with their own forms, routing, and
 persistence.

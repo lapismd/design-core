@@ -58,7 +58,7 @@ import * as ExperimentalAiChat from "@stevejuma/ui/ai/chat/experimental";
 ```
 
 The root `@stevejuma/ui/ai` barrel exposes the same families as `Chat` and
-`ExperimentalChat`. Existing AI exports remain compatible.
+`ExperimentalChat`.
 
 ## Svelte controllers and composition
 
@@ -75,30 +75,21 @@ The root `@stevejuma/ui/ai` barrel exposes the same families as `Chat` and
 
 Trigger-menu internals are intentionally private.
 
-## Compatibility composites
-
-- `AiChatTranscript` now renders its legacy message and review props through
-  `MessageList`, `Message`, `MessageBubble`, and `SystemMessage`.
-- `AiPromptInput` now renders its legacy bindable value and `onSend` callback
-  through `Composer` and `ComposerInput`.
-- `AiChatPanel` remains a host-controlled composition with no networking,
-  persistence, routing, model SDK, or application store.
-
 ## Required acceptance
 
 - Unit: token serialization and boundary deletion, paste threshold, history and
   IME behavior, async trigger cancellation, scroll locking/reduced motion,
   pagination deduplication, and injected speech/audio adapters.
 - Storybook: one colocated entry per public component plus complete conversation
-  and compatibility stories. Interaction tests cover submission, triggers,
-  tokens, paste/drop, pagination, scroll recovery, tools, reactions, emoji
-  keyboard navigation, reasoning, and unsupported dictation.
+  stories. Interaction tests cover submission, triggers, tokens, paste/drop,
+  pagination, scroll recovery, tools, reactions, emoji keyboard navigation,
+  reasoning, and unsupported dictation.
 - Browser: real `contenteditable` keyboard/selection, clipboard/drop, and
   mouse-wheel scroll acceptance.
 - Final commands: no-Tailwind gate, type checking, unit tests, Storybook tests,
   static build, browser acceptance, visual comparison, and `pnpm checks`.
-- Catalog: `pnpm ui components --layer ai` lists the existing five components
-  and these twenty additions with docs.
+- Catalog: `pnpm ui components --layer ai` lists the twenty Chat-family
+  components with docs.
 - Visual: remove unjustified AI `skip-visual` tags and create only
   component-scoped baselines after explicit human review. Do not rewrite
   unrelated baselines.
@@ -113,5 +104,3 @@ Trigger-menu internals are intentionally private.
 - Markdown, code blocks, and citation rendering stay consumer-supplied through
   Svelte snippets.
 - Browser APIs are SSR-safe, capability-detected, and progressively enhanced.
-- `AiChatPanel` remains host-controlled. Existing consumers require no
-  migration.

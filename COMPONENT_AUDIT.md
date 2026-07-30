@@ -76,14 +76,9 @@ forms barrel.
 
 ## Shared — AI
 
-Presentational AI chat chrome in `src/shared/ai/`, with no network or host-store
-dependency. Storybook: `AI/...`.
+Presentational AI chat primitives in `src/shared/ai/`, with no network or
+host-store dependency. Storybook: `AI/...`.
 
-- `AiChatDock` — placement and visibility.
-- `AiChatTranscript` — message list and optional review summary.
-- `AiPromptInput` — composer and `onSend`.
-- `AiChatPanelSettings` — placement and collapse controls.
-- `AiChatPanel` — dock, transcript, and prompt composition.
 - `chat/` — 15 reusable ASTRYX-inspired message/layout, composer, token,
   dictation, and tool-call primitives. Stable imports use
   `@stevejuma/ui/ai/chat`.

@@ -45,10 +45,10 @@ describe("data-ui-contract analyzer", () => {
     const source = [
       '<div data-ui-part="root" data-placement="right"></div>',
       styleOpen,
-      ':global([data-ui-component="ai-chat-dock"][data-ui-part="root"]) { position: absolute; }',
+      ':global([data-ui-component="example-dock"][data-ui-part="root"]) { position: absolute; }',
       STYLE_CLOSE,
     ].join("\n");
-    const violations = analyzeSvelteSource(source, "AiChatDock.svelte");
+    const violations = analyzeSvelteSource(source, "ExampleDock.svelte");
     expect(violations.some((v) => v.kind === "missing-component-on-part")).toBe(
       true,
     );
