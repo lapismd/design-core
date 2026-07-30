@@ -31,7 +31,7 @@
     },
   }}
 
-  tags={["visual-pending"]}
+  tags={["visual-approved"]}
 >
   {#snippet template()}
     <SearchFilterBar value="" placeholder="Search..." />
