@@ -18,7 +18,7 @@
 <Story
   name="Preview"
   exportName="Preview"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/card/preview-chromium-darwin.png"],
@@ -48,7 +48,7 @@
 <Story
   name="Preview"
   exportName="Preview2"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/card/preview-chromium-darwin.png"],
@@ -78,7 +78,7 @@
 <Story
   name="Spacing"
   exportName="Spacing"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/card/spacing-chromium-darwin.png"],
@@ -112,7 +112,7 @@
 <Story
   name="Spacing"
   exportName="Spacing2"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/card/spacing-chromium-darwin.png"],
@@ -146,7 +146,7 @@
 <Story
   name="Image"
   exportName="Image"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/card/image-chromium-darwin.png"],

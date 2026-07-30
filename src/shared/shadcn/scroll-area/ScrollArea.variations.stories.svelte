@@ -15,7 +15,7 @@
 <Story
   name="Preview"
   exportName="Preview"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -37,7 +37,7 @@
 <Story
   name="Horizontal Scrolling"
   exportName="HorizontalScrolling"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
