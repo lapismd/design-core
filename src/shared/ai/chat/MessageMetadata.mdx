@@ -1,0 +1,62 @@
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+} from "@storybook/addon-docs/blocks";
+import * as MessageMetadataStories from "./MessageMetadata.stories.svelte";
+
+<Meta of={MessageMetadataStories} />
+
+# Message Metadata
+
+Composable metadata row for chat messages. Renders timestamp, footer
+content, and delivery status in a single row. Direction reverses for
+user sender. Renders nothing if all props are empty.
+
+Adapted from
+[Astryx ChatMessageMetadata](https://astryx.atmeta.com/components/ChatMessageMetadata).
+
+## Usage
+
+<Source
+  language="ts"
+  code={'import { MessageMetadata } from "@stevejuma/ui/ai/chat";'}
+/>
+
+<Primary />
+
+## Properties
+
+<Controls />
+
+## Examples
+
+Common configurations, variations, and states.
+
+### Footer actions
+
+Assistant message with footer actions: copy, retry, thumbs up/down, and
+model label. Use for AI responses that need feedback or utility
+controls.
+
+<Canvas
+  of={MessageMetadataStories.FooterActions}
+  meta={MessageMetadataStories}
+/>
+
+### Status
+
+All 5 delivery statuses (sending, sent, delivered, read, and error),
+each with a timestamp. Use to show message delivery progress or surface
+failures.
+
+<Canvas of={MessageMetadataStories.Status} meta={MessageMetadataStories} />
+
+### Timestamps
+
+Timestamp-only metadata on user and assistant messages. Supports
+absolute time and relative formats via Timestamp.
+
+<Canvas of={MessageMetadataStories.Timestamps} meta={MessageMetadataStories} />

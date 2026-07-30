@@ -1,0 +1,58 @@
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+} from "@storybook/addon-docs/blocks";
+import * as MessageStories from "./Message.stories.svelte";
+
+<Meta of={MessageStories} />
+
+# Message
+
+Sender context wrapper: handles avatar, name, metadata, and alignment
+based on sender role.
+
+Adapted from
+[Astryx ChatMessage](https://astryx.atmeta.com/components/ChatMessage).
+
+## Usage
+
+<Source
+  language="ts"
+  code={'import { Message } from "@stevejuma/ui/ai/chat";'}
+/>
+
+<Primary />
+
+## Properties
+
+<Controls />
+
+## Examples
+
+Common configurations, variations, and states.
+
+### Avatar and name
+
+Messages with avatars and sender names. Place the name on the bubble
+when using bubbles, or on the message wrapper for raw content.
+
+<Canvas of={MessageStories.AvatarAndName} meta={MessageStories} />
+
+### Ghost
+
+Ghost variant for messages without visible bubble boundaries. Keeps
+padding for alignment but renders a transparent background, useful for
+AI-style responses.
+
+<Canvas of={MessageStories.Ghost} meta={MessageStories} />
+
+### Multi-bubble
+
+Grouped bubbles using the group prop for corner radius reduction. Use
+first, middle, and last to visually connect related bubbles from the
+same sender.
+
+<Canvas of={MessageStories.MultiBubble} meta={MessageStories} />

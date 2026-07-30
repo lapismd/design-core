@@ -1,0 +1,53 @@
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+} from "@storybook/addon-docs/blocks";
+import * as TokenizedTextStories from "./TokenizedText.stories.svelte";
+
+<Meta of={TokenizedTextStories} />
+
+# Tokenized Text
+
+Renders a text string with token patterns replaced by inline Badge
+components. Wrap any message body inside ChatMessageBubble to turn raw
+@mentions, #tags, or /commands into styled badges. When no tokens match
+or none are provided, the text renders as-is: so you can use
+ChatTokenizedText unconditionally on every message.
+
+Adapted from
+[Astryx ChatTokenizedText](https://astryx.atmeta.com/components/ChatTokenizedText).
+
+## Usage
+
+<Source
+  language="ts"
+  code={'import { TokenizedText } from "@stevejuma/ui/ai/chat";'}
+/>
+
+<Primary />
+
+## Properties
+
+<Controls />
+
+## Examples
+
+Common configurations, variations, and states.
+
+### Basic
+
+A message with @mention tokens. Each matching pattern is replaced with
+its display name badge.
+
+<Canvas of={TokenizedTextStories.Basic} meta={TokenizedTextStories} />
+
+### Colors
+
+Tokens with different color variants to distinguish mentions, bugs, and
+features. Use variant colors to create a visual taxonomy: blue for
+people, red for bugs, green for features.
+
+<Canvas of={TokenizedTextStories.Colors} meta={TokenizedTextStories} />

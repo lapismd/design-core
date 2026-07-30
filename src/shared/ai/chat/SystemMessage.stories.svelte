@@ -16,7 +16,7 @@
       docs: {
         description: {
           component:
-            "Centered, non-sender status content with optional icon or shadcn Separator divider. These fixtures reproduce ASTRYX’s showcase and documented variants.",
+            "Centered system message for non-sender content like date separators, membership changes, and status notices. It is not a chat bubble; it has no avatar, no alignment, and no sender context. Use the divider variant for temporal breaks and default for inline status updates.",
         },
       },
     },
@@ -52,7 +52,14 @@
 
 <Story
   name="Status updates"
+  exportName="StatusUpdates"
   parameters={{
+    docs: {
+      description: {
+        story:
+          "Realistic status messages in a conversation flow showing membership changes, timestamps, and resolution notices.",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/ai/chat/system-message/status-updates-chromium-darwin.png",
@@ -90,7 +97,14 @@
 
 <Story
   name="Variants"
+  exportName="Variants"
   parameters={{
+    docs: {
+      description: {
+        story:
+          "Default and divider variants side by side. Use default for inline status updates and divider for date separators or section breaks.",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/ai/chat/system-message/variants-chromium-darwin.png",
@@ -126,7 +140,14 @@
 
 <Story
   name="With icon"
+  exportName="WithIcon"
   parameters={{
+    docs: {
+      description: {
+        story:
+          "System messages with a leading icon that reinforces the message type. Use icons to help users scan and identify message categories at a glance.",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/ai/chat/system-message/with-icon-chromium-darwin.png",

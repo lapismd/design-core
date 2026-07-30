@@ -1,0 +1,47 @@
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+} from "@storybook/addon-docs/blocks";
+import * as LayoutStories from "./Layout.stories.svelte";
+
+<Meta of={LayoutStories} />
+
+# Layout
+
+ChatLayout is the layout shell for full-page chat interfaces. It renders
+messages in normal page flow and docks the composer to the bottom with a
+frosted glass blur layer. Density adapts automatically via container
+width observation. Use it to wrap ChatMessageList and ChatComposer for a
+complete chat experience with built-in auto-scroll and a
+scroll-to-bottom button.
+
+Adapted from
+[Astryx ChatLayout](https://astryx.atmeta.com/components/ChatLayout).
+
+## Usage
+
+<Source
+  language="ts"
+  code={'import { Layout } from "@stevejuma/ui/ai/chat";'}
+/>
+
+<Primary />
+
+## Properties
+
+<Controls />
+
+## Examples
+
+Common configurations, variations, and states.
+
+### Panel view
+
+Narrow sidebar chat in a constrained container that triggers compact
+density. Use for side panels, drawers, or embedded chat widgets where
+horizontal space is limited.
+
+<Canvas of={LayoutStories.PanelView} meta={LayoutStories} />

@@ -15,7 +15,7 @@
       docs: {
         description: {
           component:
-            "Scrollable chat shell with a sticky composer dock, empty state, and new-message recovery.",
+            "ChatLayout is the layout shell for full-page chat interfaces. It renders messages in normal page flow and docks the composer to the bottom with a frosted glass blur layer. Density adapts automatically via container width observation. Use it to wrap ChatMessageList and ChatComposer for a complete chat experience with built-in auto-scroll and a scroll-to-bottom button.",
         },
       },
     },
@@ -83,7 +83,14 @@
 
 <Story
   name="Panel view"
+  exportName="PanelView"
   parameters={{
+    docs: {
+      description: {
+        story:
+          "Narrow sidebar chat in a constrained container that triggers compact density. Use for side panels, drawers, or embedded chat widgets where horizontal space is limited.",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/ai/chat/layout/panel-view-chromium-darwin.png",

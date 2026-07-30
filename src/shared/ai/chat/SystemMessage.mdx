@@ -1,0 +1,59 @@
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+} from "@storybook/addon-docs/blocks";
+import * as SystemMessageStories from "./SystemMessage.stories.svelte";
+
+<Meta of={SystemMessageStories} />
+
+# System Message
+
+Centered system message for non-sender content like date separators,
+membership changes, and status notices. It is not a chat bubble; it has
+no avatar, no alignment, and no sender context. Use the divider variant
+for temporal breaks and default for inline status updates.
+
+Adapted from
+[Astryx ChatSystemMessage](https://astryx.atmeta.com/components/ChatSystemMessage).
+
+## Usage
+
+<Source
+  language="ts"
+  code={'import { SystemMessage } from "@stevejuma/ui/ai/chat";'}
+/>
+
+<Primary />
+
+## Properties
+
+<Controls />
+
+## Examples
+
+Common configurations, variations, and states.
+
+### Status updates
+
+Realistic status messages in a conversation flow showing membership
+changes, timestamps, and resolution notices.
+
+<Canvas of={SystemMessageStories.StatusUpdates} meta={SystemMessageStories} />
+
+### Variants
+
+Default and divider variants side by side. Use default for inline status
+updates and divider for date separators or section breaks.
+
+<Canvas of={SystemMessageStories.Variants} meta={SystemMessageStories} />
+
+### With icon
+
+System messages with a leading icon that reinforces the message type.
+Use icons to help users scan and identify message categories at a
+glance.
+
+<Canvas of={SystemMessageStories.WithIcon} meta={SystemMessageStories} />

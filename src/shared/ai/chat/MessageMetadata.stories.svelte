@@ -17,7 +17,7 @@
       docs: {
         description: {
           component:
-            "Composable timestamp, footer, and delivery-status row. User messages reverse the row direction. These fixtures reproduce ASTRYX’s showcase and documented variants.",
+            "Composable metadata row for chat messages. Renders timestamp, footer content, and delivery status in a single row. Direction reverses for user sender. Renders nothing if all props are empty.",
         },
       },
     },
@@ -104,7 +104,14 @@
 
 <Story
   name="Footer actions"
+  exportName="FooterActions"
   parameters={{
+    docs: {
+      description: {
+        story:
+          "Assistant message with footer actions: copy, retry, thumbs up/down, and model label. Use for AI responses that need feedback or utility controls.",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/ai/chat/message-metadata/footer-actions-chromium-darwin.png",
@@ -169,7 +176,14 @@
 
 <Story
   name="Status"
+  exportName="Status"
   parameters={{
+    docs: {
+      description: {
+        story:
+          "All 5 delivery statuses (sending, sent, delivered, read, and error), each with a timestamp. Use to show message delivery progress or surface failures.",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/ai/chat/message-metadata/status-chromium-darwin.png",
@@ -231,7 +245,14 @@
 
 <Story
   name="Timestamps"
+  exportName="Timestamps"
   parameters={{
+    docs: {
+      description: {
+        story:
+          "Timestamp-only metadata on user and assistant messages. Supports absolute time and relative formats via Timestamp.",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/ai/chat/message-metadata/timestamps-chromium-darwin.png",

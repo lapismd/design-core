@@ -1,0 +1,51 @@
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+} from "@storybook/addon-docs/blocks";
+import * as ComposerTokenStories from "./ComposerToken.stories.svelte";
+
+<Meta of={ComposerTokenStories} />
+
+# Composer Token
+
+Renders a single token chip outside the contentEditable input. Wraps a
+badge config or custom render function in the correct data-astryx-token
+span so the token serializes properly and stays visually consistent with
+tokens inside the composer.
+
+Adapted from
+[Astryx ChatComposerTokenElement](https://astryx.atmeta.com/components/ChatComposerTokenElement).
+
+## Usage
+
+<Source
+  language="ts"
+  code={'import { ComposerToken } from "@stevejuma/ui/ai/chat";'}
+/>
+
+<Primary />
+
+## Properties
+
+<Controls />
+
+## Examples
+
+Common configurations, variations, and states.
+
+### Badge config
+
+Token chip rendered from a badge config so serialization and visual
+chrome stay consistent with tokens inside the composer input.
+
+<Canvas of={ComposerTokenStories.BadgeConfig} meta={ComposerTokenStories} />
+
+### Custom render
+
+Token chip with a custom render function, still wrapped in the token
+span required for serialization and consistent styling.
+
+<Canvas of={ComposerTokenStories.CustomRender} meta={ComposerTokenStories} />

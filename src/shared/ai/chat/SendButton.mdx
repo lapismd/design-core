@@ -1,0 +1,63 @@
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+} from "@storybook/addon-docs/blocks";
+import * as SendButtonStories from "./SendButton.stories.svelte";
+
+<Meta of={SendButtonStories} />
+
+# Send Button
+
+Circular send/stop toggle button for the chat composer. Place it inside
+ChatComposer where it reads context automatically: no wiring needed.
+When streaming starts, the button switches from a primary send icon to a
+secondary stop icon. Override any context value via props for standalone
+or custom usage.
+
+Adapted from
+[Astryx ChatSendButton](https://astryx.atmeta.com/components/ChatSendButton).
+
+## Usage
+
+<Source
+  language="ts"
+  code={'import { SendButton } from "@stevejuma/ui/ai/chat";'}
+/>
+
+<Primary />
+
+## Properties
+
+<Controls />
+
+## Examples
+
+Common configurations, variations, and states.
+
+### States
+
+Disabled, ready, and streaming states at both sizes. The button
+automatically toggles between send (primary) and stop (secondary) based
+on streaming state.
+
+<Canvas of={SendButtonStories.States} meta={SendButtonStories} />
+
+### Custom icons
+
+Send buttons with custom icons via sendIcon and stopIcon props. Use to
+match the personality of the chat experience: a paper airplane for
+messaging, sparkles for AI generation, or a check mark for confirmation
+flows.
+
+<Canvas of={SendButtonStories.CustomIcons} meta={SendButtonStories} />
+
+### In composer
+
+Send button inside ChatComposer, where it reads state from context
+automatically. No wiring needed; the button enables when the input has
+content.
+
+<Canvas of={SendButtonStories.InComposer} meta={SendButtonStories} />

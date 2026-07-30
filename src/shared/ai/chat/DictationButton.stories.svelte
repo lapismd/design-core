@@ -42,7 +42,7 @@
       docs: {
         description: {
           component:
-            "Progressively enhanced microphone control with unsupported and live volume-band states.",
+            "ChatDictationButton is a toggle button that starts and stops voice dictation inside a chat composer. It pairs with useChatDictation to show a microphone icon when idle and animated frequency bars when listening. Place it in the sendActions slot of ChatComposer.",
         },
       },
     },
@@ -112,7 +112,14 @@
 
 <Story
   name="Basic"
+  exportName="Basic"
   parameters={{
+    docs: {
+      description: {
+        story:
+          "A dictation button wired to useChatDictation and placed in the sendActions slot of a ChatComposer. Click the microphone to transcribe speech into the input.",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/ai/chat/dictation-button/basic-chromium-darwin.png",

@@ -1,0 +1,45 @@
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+} from "@storybook/addon-docs/blocks";
+import * as DictationButtonStories from "./DictationButton.stories.svelte";
+
+<Meta of={DictationButtonStories} />
+
+# Dictation Button
+
+ChatDictationButton is a toggle button that starts and stops voice
+dictation inside a chat composer. It pairs with useChatDictation to show
+a microphone icon when idle and animated frequency bars when listening.
+Place it in the sendActions slot of ChatComposer.
+
+Adapted from
+[Astryx ChatDictationButton](https://astryx.atmeta.com/components/ChatDictationButton).
+
+## Usage
+
+<Source
+  language="ts"
+  code={'import { DictationButton } from "@stevejuma/ui/ai/chat";'}
+/>
+
+<Primary />
+
+## Properties
+
+<Controls />
+
+## Examples
+
+Common configurations, variations, and states.
+
+### Basic
+
+A dictation button wired to useChatDictation and placed in the
+sendActions slot of a ChatComposer. Click the microphone to transcribe
+speech into the input.
+
+<Canvas of={DictationButtonStories.Basic} meta={DictationButtonStories} />

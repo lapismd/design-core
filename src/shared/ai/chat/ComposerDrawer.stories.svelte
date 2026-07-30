@@ -15,7 +15,7 @@
       docs: {
         description: {
           component:
-            "Controlled or bindable shadcn Collapsible drawer for attached composer context.",
+            "Collapsible drawer panel that sits above the chat input inside ChatComposer. Pass it to the composer's drawer slot to show attachments, context chips, or any supplementary content. When count is provided the drawer gains a collapse toggle: collapsed state shows a badge and label, expanded state shows all children.",
         },
       },
     },
@@ -86,7 +86,14 @@
 
 <Story
   name="Attachments"
+  exportName="Attachments"
   parameters={{
+    docs: {
+      description: {
+        story:
+          "Drawer with two rows: a scrollable carousel of image thumbnails and a row of removable file tokens. Omit count to keep the drawer always expanded.",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/ai/chat/composer-drawer/attachments-chromium-darwin.png",
@@ -121,7 +128,14 @@
 
 <Story
   name="Collapsible"
+  exportName="Collapsible"
   parameters={{
+    docs: {
+      description: {
+        story:
+          "Drawer with many items and a collapse toggle. Pass count to enable the toggle; collapsed state shows a badge with the total count and a label.",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/ai/chat/composer-drawer/collapsible-chromium-darwin.png",
@@ -156,7 +170,14 @@
 
 <Story
   name="Feedback"
+  exportName="Feedback"
   parameters={{
+    docs: {
+      description: {
+        story:
+          "Chat composer drawer with a feedback prompt and selectable lettered options. Use for user confirmation workflows that require explicit action before proceeding.",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/ai/chat/composer-drawer/feedback-chromium-darwin.png",
@@ -207,7 +228,14 @@
 
 <Story
   name="With progress"
+  exportName="WithProgress"
   parameters={{
+    docs: {
+      description: {
+        story:
+          "Drawer paired with a context progress bar in the header. Show context window usage when attachments consume part of the available token budget.",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/ai/chat/composer-drawer/with-progress-chromium-darwin.png",

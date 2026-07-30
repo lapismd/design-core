@@ -74,7 +74,7 @@
       docs: {
         description: {
           component:
-            "Contenteditable input with imperative insertion, token boundaries, history, IME-safe submit, files, and private trigger menus.",
+            "Rich text input for the chat composer. Supports trigger menus (type @ or / to open a typeahead), inline tokens rendered as badges, message history recall with ArrowUp/Down, paste/drop file handling, and a 16px touch-device font-size floor to prevent iOS input zoom. Pass it to ChatComposer's input slot when you need more than a plain textarea.",
         },
       },
     },
@@ -132,7 +132,14 @@
 
 <Story
   name="Controlled"
+  exportName="Controlled"
   parameters={{
+    docs: {
+      description: {
+        story:
+          "Controlled chat input with live value display. Use controlled mode when you need to read or transform the input value outside the composer.",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/ai/chat/composer-input/controlled-chromium-darwin.png",
@@ -167,7 +174,14 @@
 
 <Story
   name="Disabled"
+  exportName="Disabled"
   parameters={{
+    docs: {
+      description: {
+        story:
+          "Composer in a disabled state. Use when the input should be visible but not interactive, such as during streaming or when a prerequisite is unmet.",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/ai/chat/composer-input/disabled-chromium-darwin.png",
@@ -194,7 +208,14 @@
 
 <Story
   name="Mentions"
+  exportName="Mentions"
   parameters={{
+    docs: {
+      description: {
+        story:
+          "Chat input with an @ trigger that opens a typeahead menu for mentioning users. Selected names appear as inline tokens.",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/ai/chat/composer-input/mentions-chromium-darwin.png",
@@ -226,7 +247,14 @@
 
 <Story
   name="Multiple triggers"
+  exportName="MultipleTriggers"
   parameters={{
+    docs: {
+      description: {
+        story:
+          "Chat input with both @ mentions and / commands. Each trigger type renders tokens in a distinct color so users can tell them apart at a glance.",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/ai/chat/composer-input/multiple-triggers-chromium-darwin.png",
@@ -262,7 +290,14 @@
 
 <Story
   name="Slash commands"
+  exportName="SlashCommands"
   parameters={{
+    docs: {
+      description: {
+        story:
+          "Chat input with a / trigger for command selection. Use for AI assistants or bots that support structured commands.",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/ai/chat/composer-input/slash-commands-chromium-darwin.png",

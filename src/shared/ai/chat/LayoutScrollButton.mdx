@@ -1,0 +1,59 @@
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+} from "@storybook/addon-docs/blocks";
+import * as LayoutScrollButtonStories from "./LayoutScrollButton.stories.svelte";
+
+<Meta of={LayoutScrollButtonStories} />
+
+# Layout Scroll Button
+
+Floating scroll-to-bottom button that appears when the user scrolls away
+from the latest messages. It fades in as a compact icon button and
+expands to show a label when new messages arrive. ChatLayout renders
+this by default: pass a custom element to the scrollButton prop to
+override, or null to hide it entirely.
+
+Adapted from
+[Astryx ChatLayoutScrollButton](https://astryx.atmeta.com/components/ChatLayoutScrollButton).
+
+## Usage
+
+<Source
+  language="ts"
+  code={'import { LayoutScrollButton } from "@stevejuma/ui/ai/chat";'}
+/>
+
+<Primary />
+
+## Properties
+
+<Controls />
+
+## Examples
+
+Common configurations, variations, and states.
+
+### States
+
+Scroll button visibility and expansion states. The control fades in when
+the transcript is not pinned to the latest messages and expands when a
+label is provided.
+
+<Canvas
+  of={LayoutScrollButtonStories.States}
+  meta={LayoutScrollButtonStories}
+/>
+
+### Labels
+
+Scroll button with different labels for context-specific notifications
+like new messages, unread replies, or a generic scroll prompt.
+
+<Canvas
+  of={LayoutScrollButtonStories.Labels}
+  meta={LayoutScrollButtonStories}
+/>

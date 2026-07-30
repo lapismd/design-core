@@ -1,0 +1,59 @@
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+} from "@storybook/addon-docs/blocks";
+import * as ToolCallsStories from "./ToolCalls.stories.svelte";
+
+<Meta of={ToolCallsStories} />
+
+# Tool Calls
+
+ChatToolCalls displays tool or function call invocations from an LLM
+response. Pass an array of calls and the component handles the rest: a
+single call renders inline, while multiple calls collapse into a summary
+with the latest call visible at the surface. Use it anywhere an AI agent
+shows what actions it took.
+
+Adapted from
+[Astryx ChatToolCalls](https://astryx.atmeta.com/components/ChatToolCalls).
+
+## Usage
+
+<Source
+  language="ts"
+  code={'import { ToolCalls } from "@stevejuma/ui/ai/chat";'}
+/>
+
+<Primary />
+
+## Properties
+
+<Controls />
+
+## Examples
+
+Common configurations, variations, and states.
+
+### Expandable
+
+Tool calls with expandable result details showing diffs and command
+output in code blocks. Click a row to reveal its result.
+
+<Canvas of={ToolCallsStories.Expandable} meta={ToolCallsStories} />
+
+### Statuses
+
+All four status states (pending, running, complete, and error) shown
+together in a single group.
+
+<Canvas of={ToolCallsStories.Statuses} meta={ToolCallsStories} />
+
+### Simple
+
+A single inline tool call above a collapsible multi-call group with diff
+stats. Shows both layouts side by side.
+
+<Canvas of={ToolCallsStories.Simple} meta={ToolCallsStories} />

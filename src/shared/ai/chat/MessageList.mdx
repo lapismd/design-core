@@ -1,0 +1,54 @@
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+} from "@storybook/addon-docs/blocks";
+import * as MessageListStories from "./MessageList.stories.svelte";
+
+<Meta of={MessageListStories} />
+
+# Message List
+
+Presentational message container with density context and infinite
+scroll support. Provides role="log" with aria-live="polite" for
+accessibility. A flex spacer pushes messages to the bottom when the list
+isn't full.
+
+Adapted from
+[Astryx ChatMessageList](https://astryx.atmeta.com/components/ChatMessageList).
+
+## Usage
+
+<Source
+  language="ts"
+  code={'import { MessageList } from "@stevejuma/ui/ai/chat";'}
+/>
+
+<Primary />
+
+## Properties
+
+<Controls />
+
+## Examples
+
+Common configurations, variations, and states.
+
+### Density
+
+Side-by-side comparison of compact, balanced, and spacious densities.
+Use compact in sidebars or panels, balanced for most full-page chat, and
+spacious for long-form reading. Use gap when row spacing needs to differ
+from density.
+
+<Canvas of={MessageListStories.Density} meta={MessageListStories} />
+
+### Full featured
+
+Conversation showcasing system messages, multi-bubble grouping,
+markdown, code blocks, and metadata. Combines date dividers, ghost
+bubbles, grouped messages, and rich content in a single example.
+
+<Canvas of={MessageListStories.FullFeatured} meta={MessageListStories} />

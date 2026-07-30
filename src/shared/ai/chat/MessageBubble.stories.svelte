@@ -12,7 +12,7 @@
       docs: {
         description: {
           component:
-            "Styled chat content with sender-aware filled and ghost variants, density, sibling name/metadata slots, and grouped corners. The stories reproduce ASTRYX’s documented fixtures.",
+            'Styled content container for the chat "bubble." Reads sender from parent ChatMessage context to auto-style the background. Use filled for standard messages and ghost when content needs alignment without a visible boundary. Supports name/metadata slots aligned with bubble padding, and multi-bubble grouping via the group prop for consecutive messages from the same sender.',
         },
       },
     },
@@ -60,7 +60,14 @@
 
 <Story
   name="Density"
+  exportName="Density"
   parameters={{
+    docs: {
+      description: {
+        story:
+          "Compact, balanced, and spacious density modes side by side. Density controls bubble padding, corner radius, and spacing between grouped bubbles.",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/ai/chat/message-bubble/density-chromium-darwin.png",
@@ -115,7 +122,14 @@
 
 <Story
   name="Grouping"
+  exportName="Grouping"
   parameters={{
+    docs: {
+      description: {
+        story:
+          "Multi-bubble messages using first, middle, and last group positions. Grouped bubbles tighten corner radius on the sender side for a continuous visual flow.",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/ai/chat/message-bubble/grouping-chromium-darwin.png",
@@ -163,7 +177,14 @@
 
 <Story
   name="Metadata"
+  exportName="Metadata"
   parameters={{
+    docs: {
+      description: {
+        story:
+          "Bubbles with name and metadata slots aligned to bubble padding. Put name on the first bubble and metadata on the last bubble in a message.",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/ai/chat/message-bubble/metadata-chromium-darwin.png",
@@ -207,7 +228,14 @@
 
 <Story
   name="Variants"
+  exportName="Variants"
   parameters={{
+    docs: {
+      description: {
+        story:
+          "Filled and ghost bubble variants for both user and assistant senders. Use filled for standard messages and ghost when content needs alignment without a visual boundary.",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/ai/chat/message-bubble/variants-chromium-darwin.png",

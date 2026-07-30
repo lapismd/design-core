@@ -32,7 +32,7 @@ Time:        1.8s`;
       docs: {
         description: {
           component:
-            "Bindable shadcn Collapsible tool group with pending, running, complete, error, stats, and per-call details.",
+            "ChatToolCalls displays tool or function call invocations from an LLM response. Pass an array of calls and the component handles the rest: a single call renders inline, while multiple calls collapse into a summary with the latest call visible at the surface. Use it anywhere an AI agent shows what actions it took.",
         },
       },
     },
@@ -86,7 +86,14 @@ Time:        1.8s`;
 
 <Story
   name="Statuses"
+  exportName="Statuses"
   parameters={{
+    docs: {
+      description: {
+        story:
+          "All four status states (pending, running, complete, and error) shown together in a single group.",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/ai/chat/tool-calls/statuses-chromium-darwin.png",
@@ -135,7 +142,14 @@ Time:        1.8s`;
 
 <Story
   name="Simple"
+  exportName="Simple"
   parameters={{
+    docs: {
+      description: {
+        story:
+          "A single inline tool call above a collapsible multi-call group with diff stats. Shows both layouts side by side.",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/ai/chat/tool-calls/simple-chromium-darwin.png",
@@ -193,7 +207,14 @@ Time:        1.8s`;
 
 <Story
   name="Expandable"
+  exportName="Expandable"
   parameters={{
+    docs: {
+      description: {
+        story:
+          "Tool calls with expandable result details showing diffs and command output in code blocks. Click a row to reveal its result.",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/ai/chat/tool-calls/expandable-chromium-darwin.png",

@@ -1,0 +1,78 @@
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+} from "@storybook/addon-docs/blocks";
+import * as ComposerInputStories from "./ComposerInput.stories.svelte";
+
+<Meta of={ComposerInputStories} />
+
+# Composer Input
+
+Rich text input for the chat composer. Supports trigger menus (type @ or
+/ to open a typeahead), inline tokens rendered as badges, message
+history recall with ArrowUp/Down, paste/drop file handling, and a 16px
+touch-device font-size floor to prevent iOS input zoom. Pass it to
+ChatComposer's input slot when you need more than a plain textarea.
+
+Adapted from
+[Astryx ChatComposerInput](https://astryx.atmeta.com/components/ChatComposerInput).
+
+## Usage
+
+<Source
+  language="ts"
+  code={'import { ComposerInput } from "@stevejuma/ui/ai/chat";'}
+/>
+
+<Primary />
+
+## Properties
+
+<Controls />
+
+## Examples
+
+Common configurations, variations, and states.
+
+### Controlled
+
+Controlled chat input with live value display. Use controlled mode when
+you need to read or transform the input value outside the composer.
+
+<Canvas of={ComposerInputStories.Controlled} meta={ComposerInputStories} />
+
+### Disabled
+
+Composer in a disabled state. Use when the input should be visible but
+not interactive, such as during streaming or when a prerequisite is
+unmet.
+
+<Canvas of={ComposerInputStories.Disabled} meta={ComposerInputStories} />
+
+### Mentions
+
+Chat input with an @ trigger that opens a typeahead menu for mentioning
+users. Selected names appear as inline tokens.
+
+<Canvas of={ComposerInputStories.Mentions} meta={ComposerInputStories} />
+
+### Multiple triggers
+
+Chat input with both @ mentions and / commands. Each trigger type
+renders tokens in a distinct color so users can tell them apart at a
+glance.
+
+<Canvas
+  of={ComposerInputStories.MultipleTriggers}
+  meta={ComposerInputStories}
+/>
+
+### Slash commands
+
+Chat input with a / trigger for command selection. Use for AI assistants
+or bots that support structured commands.
+
+<Canvas of={ComposerInputStories.SlashCommands} meta={ComposerInputStories} />

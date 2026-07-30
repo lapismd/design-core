@@ -12,7 +12,7 @@
       docs: {
         description: {
           component:
-            "Sender context wrapper for avatar, name, message content, metadata, and role-based alignment. The stories reproduce the ASTRYX ChatMessage showcase and documented variants.",
+            "Sender context wrapper: handles avatar, name, metadata, and alignment based on sender role.",
         },
       },
     },
@@ -65,7 +65,14 @@
 
 <Story
   name="Avatar and name"
+  exportName="AvatarAndName"
   parameters={{
+    docs: {
+      description: {
+        story:
+          "Messages with avatars and sender names. Place the name on the bubble when using bubbles, or on the message wrapper for raw content.",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/ai/chat/message/avatar-and-name-chromium-darwin.png",
@@ -116,7 +123,14 @@
 
 <Story
   name="Ghost"
+  exportName="Ghost"
   parameters={{
+    docs: {
+      description: {
+        story:
+          "Ghost variant for messages without visible bubble boundaries. Keeps padding for alignment but renders a transparent background, useful for AI-style responses.",
+      },
+    },
     visualDelta: {
       images: ["/visual-baselines/ai/chat/message/ghost-chromium-darwin.png"],
       opacity: 0.5,
@@ -164,7 +178,14 @@
 
 <Story
   name="Multi-bubble"
+  exportName="MultiBubble"
   parameters={{
+    docs: {
+      description: {
+        story:
+          "Grouped bubbles using the group prop for corner radius reduction. Use first, middle, and last to visually connect related bubbles from the same sender.",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/ai/chat/message/multi-bubble-chromium-darwin.png",

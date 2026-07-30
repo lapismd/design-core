@@ -1,0 +1,70 @@
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+} from "@storybook/addon-docs/blocks";
+import * as MessageBubbleStories from "./MessageBubble.stories.svelte";
+
+<Meta of={MessageBubbleStories} />
+
+# Message Bubble
+
+Styled content container for the chat "bubble." Reads sender from parent
+ChatMessage context to auto-style the background. Use filled for
+standard messages and ghost when content needs alignment without a
+visible boundary. Supports name/metadata slots aligned with bubble
+padding, and multi-bubble grouping via the group prop for consecutive
+messages from the same sender.
+
+Adapted from
+[Astryx ChatMessageBubble](https://astryx.atmeta.com/components/ChatMessageBubble).
+
+## Usage
+
+<Source
+  language="ts"
+  code={'import { MessageBubble } from "@stevejuma/ui/ai/chat";'}
+/>
+
+<Primary />
+
+## Properties
+
+<Controls />
+
+## Examples
+
+Common configurations, variations, and states.
+
+### Density
+
+Compact, balanced, and spacious density modes side by side. Density
+controls bubble padding, corner radius, and spacing between grouped
+bubbles.
+
+<Canvas of={MessageBubbleStories.Density} meta={MessageBubbleStories} />
+
+### Grouping
+
+Multi-bubble messages using first, middle, and last group positions.
+Grouped bubbles tighten corner radius on the sender side for a
+continuous visual flow.
+
+<Canvas of={MessageBubbleStories.Grouping} meta={MessageBubbleStories} />
+
+### Metadata
+
+Bubbles with name and metadata slots aligned to bubble padding. Put name
+on the first bubble and metadata on the last bubble in a message.
+
+<Canvas of={MessageBubbleStories.Metadata} meta={MessageBubbleStories} />
+
+### Variants
+
+Filled and ghost bubble variants for both user and assistant senders.
+Use filled for standard messages and ghost when content needs alignment
+without a visual boundary.
+
+<Canvas of={MessageBubbleStories.Variants} meta={MessageBubbleStories} />

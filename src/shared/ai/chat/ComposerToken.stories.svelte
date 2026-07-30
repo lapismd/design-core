@@ -10,7 +10,7 @@
       docs: {
         description: {
           component:
-            "Non-editable serialized token rendered with the local shadcn Badge primitive.",
+            "Renders a single token chip outside the contentEditable input. Wraps a badge config or custom render function in the correct data-astryx-token span so the token serializes properly and stays visually consistent with tokens inside the composer.",
         },
       },
     },
@@ -19,7 +19,14 @@
 
 <Story
   name="Badge config"
+  exportName="BadgeConfig"
   parameters={{
+    docs: {
+      description: {
+        story:
+          "Token chip rendered from a badge config so serialization and visual chrome stay consistent with tokens inside the composer input.",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/ai/chat/composer-token/badge-config-chromium-darwin.png",
@@ -47,7 +54,14 @@
 
 <Story
   name="Custom render"
+  exportName="CustomRender"
   parameters={{
+    docs: {
+      description: {
+        story:
+          "Token chip with a custom render function, still wrapped in the token span required for serialization and consistent styling.",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/ai/chat/composer-token/custom-render-chromium-darwin.png",

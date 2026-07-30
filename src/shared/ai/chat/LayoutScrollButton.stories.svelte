@@ -10,7 +10,7 @@
       docs: {
         description: {
           component:
-            "Recovery control shown when a conversation is scrolled away from the latest message.",
+            "Floating scroll-to-bottom button that appears when the user scrolls away from the latest messages. It fades in as a compact icon button and expands to show a label when new messages arrive. ChatLayout renders this by default: pass a custom element to the scrollButton prop to override, or null to hide it entirely.",
         },
       },
     },
@@ -23,7 +23,14 @@
 
 <Story
   name="States"
+  exportName="States"
   parameters={{
+    docs: {
+      description: {
+        story:
+          "Scroll button visibility and expansion states. The control fades in when the transcript is not pinned to the latest messages and expands when a label is provided.",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/ai/chat/layout-scroll-button/states-chromium-darwin.png",
@@ -57,7 +64,14 @@
 
 <Story
   name="Labels"
+  exportName="Labels"
   parameters={{
+    docs: {
+      description: {
+        story:
+          "Scroll button with different labels for context-specific notifications like new messages, unread replies, or a generic scroll prompt.",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/ai/chat/layout-scroll-button/labels-chromium-darwin.png",

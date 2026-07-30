@@ -12,7 +12,7 @@
       docs: {
         description: {
           component:
-            "Deterministic plain-text renderer that replaces serialized values with shared composer tokens.",
+            "Renders a text string with token patterns replaced by inline Badge components. Wrap any message body inside ChatMessageBubble to turn raw @mentions, #tags, or /commands into styled badges. When no tokens match or none are provided, the text renders as-is: so you can use ChatTokenizedText unconditionally on every message.",
         },
       },
     },
@@ -55,7 +55,14 @@
 
 <Story
   name="Basic"
+  exportName="Basic"
   parameters={{
+    docs: {
+      description: {
+        story:
+          "A message with @mention tokens. Each matching pattern is replaced with its display name badge.",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/ai/chat/tokenized-text/basic-chromium-darwin.png",
@@ -88,7 +95,14 @@
 
 <Story
   name="Colors"
+  exportName="Colors"
   parameters={{
+    docs: {
+      description: {
+        story:
+          "Tokens with different color variants to distinguish mentions, bugs, and features. Use variant colors to create a visual taxonomy: blue for people, red for bugs, green for features.",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/ai/chat/tokenized-text/colors-chromium-darwin.png",
