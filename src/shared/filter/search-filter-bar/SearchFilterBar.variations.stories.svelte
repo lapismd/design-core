@@ -156,7 +156,7 @@
     });
   }}
 
-  tags={["visual-pending"]}
+  tags={["visual-approved"]}
 >
   {#snippet template()}
     <div class="max-w-2xl">
