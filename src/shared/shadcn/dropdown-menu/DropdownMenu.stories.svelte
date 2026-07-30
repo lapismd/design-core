@@ -138,7 +138,7 @@
 
 <Story
   name="Open radio group menu"
-  tags={["visual-state", "visual-failed"]}
+  tags={["visual-state", "visual-pending"]}
   play={async ({ canvas }) => {
     await dismissOverlays();
     const trigger = canvas.getByRole("button", { name: "Open" });
@@ -148,6 +148,10 @@
     await expect(
       within(document.body).getByRole("menuitemradio", { name: "Bottom" }),
     ).toBeVisible();
+  }}
+
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/dropdown-menu/open-radio-group-menu-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
   }}
 >
   {#snippet template()}
