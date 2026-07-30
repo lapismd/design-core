@@ -67,7 +67,7 @@
     });
     expect(canvas.getByText("groceries")).toBeInTheDocument();
   }}
-  tags={["visual-pending"]}
+  tags={["visual-approved"]}
 
   parameters={{
     visualDelta: {"images":["/visual-baselines/filter/power-search/content-search-enter-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
