@@ -42,7 +42,7 @@
       passThresholdPercent: 0.1,
     },
   }}
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
 >
   {#snippet template()}
     <div data-story="scroll-button-stack">
@@ -83,7 +83,7 @@
       passThresholdPercent: 0.1,
     },
   }}
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
 >
   {#snippet template()}
     <div data-story="scroll-button-stack">
@@ -123,7 +123,7 @@
       passThresholdPercent: 0.1,
     },
   }}
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
 >
   {#snippet template()}
     <div data-story="scroll-button-frame">
@@ -153,7 +153,7 @@
       passThresholdPercent: 0.1,
     },
   }}
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
 >
   {#snippet template()}
     <div data-story="scroll-button-frame">
