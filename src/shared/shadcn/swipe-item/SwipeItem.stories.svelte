@@ -151,7 +151,7 @@
 
 <Story
   name="Leading and trailing actions"
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
   play={async ({ canvas }) => {
     const startTrigger = canvas.getByRole("button", {
       name: "Show priority actions",
