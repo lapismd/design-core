@@ -20,7 +20,7 @@
 <Story
   name="Customization"
   exportName="Customization"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
