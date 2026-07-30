@@ -137,7 +137,7 @@
   tags={["visual-approved"]}
 
   parameters={{
-    visualDelta: {"interactions":[{"id":"interaction-23-findByRole","label":"findByRole(\"option\")","src":"/visual-baselines/filter/power-search/edit-remove-and-clear--interaction-23-findByRole-chromium-darwin.png"}],"align":"canvas","delay":5125},
+    visualDelta: {"align":"canvas","delay":5125},
   }}
 >
   {#snippet template()}
