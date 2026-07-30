@@ -1,8 +1,9 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, userEvent, within } from "storybook/test";
+  import { expect, userEvent, waitFor, within } from "storybook/test";
   import { Button } from "../button/index.js";
   import * as Popover from "./index.js";
+  import PreviewExample from "./examples/preview.svelte";
 
   const { Story } = defineMeta({
     title: "Shadcn/Overlays/Popover",
@@ -16,6 +17,26 @@
       },
     },
   });
+
+  /** Clear portals left by a prior open overlay story. */
+  async function dismissOverlays() {
+    for (let i = 0; i < 3; i++) {
+      await userEvent.keyboard("{Escape}");
+    }
+    document
+      .querySelectorAll('[data-slot="popover-content"]')
+      .forEach((node) => node.remove());
+    document.body.style.pointerEvents = "";
+    document.body.style.overflow = "";
+    await waitFor(() => {
+      expect(
+        document.querySelector(
+          '[data-slot="popover-content"][data-state="open"]',
+        ),
+      ).toBeNull();
+      expect(document.body.style.pointerEvents).not.toBe("none");
+    });
+  }
 </script>
 
 <script lang="ts">
@@ -26,6 +47,7 @@
 <Story
   name="Opens a panel"
   play={async ({ canvas }) => {
+    await dismissOverlays();
     const trigger = canvas.getByRole("button", { name: "Filters" });
     await userEvent.click(trigger);
     await expect(trigger).toHaveAttribute("aria-expanded", "true");
@@ -33,10 +55,7 @@
     await userEvent.keyboard("{Escape}");
     await expect(canvas.getByRole("status")).toHaveTextContent("closed");
   }}
-  parameters={{
-    visualDelta: {"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
-  }}
-  tags={["visual-ready"]}
+  tags={["skip-visual"]}
 >
   {#snippet template()}
     <div class="flex flex-col gap-3">
@@ -61,27 +80,14 @@
   name="Open panel"
   tags={["visual-state", "visual-failed"]}
   play={async ({ canvas }) => {
-    await userEvent.click(canvas.getByRole("button", { name: "Filters" }));
-    await expect(
-      within(document.body).getByText("Active filters"),
-    ).toBeVisible();
-  }}
-  parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/popover/open-panel-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"viewport","placement":"right","passThresholdPercent":0.1},
+    await dismissOverlays();
+    await userEvent.click(canvas.getByRole("button", { name: "Open popover" }));
+    await expect(within(document.body).getByText("Dimensions")).toBeVisible();
   }}
 >
   {#snippet template()}
-    <div class="flex flex-col gap-3 p-4">
-      <Popover.Root>
-        <Popover.Trigger>
-          {#snippet child({ props })}
-            <Button {...props} variant="outline">Filters</Button>
-          {/snippet}
-        </Popover.Trigger>
-        <Popover.Content class="w-56 p-3 text-sm"
-          >Active filters</Popover.Content
-        >
-      </Popover.Root>
+    <div class="p-4">
+      <PreviewExample />
     </div>
   {/snippet}
 </Story>

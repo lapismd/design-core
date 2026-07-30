@@ -14,7 +14,7 @@
 <Story
   name="Preview"
   exportName="Preview"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "skip-visual"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/sheet/preview-chromium-darwin.png"],

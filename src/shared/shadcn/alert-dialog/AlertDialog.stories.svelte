@@ -1,8 +1,9 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, userEvent, within } from "storybook/test";
+  import { expect, userEvent, waitFor, within } from "storybook/test";
   import { Button } from "../button/index.js";
   import * as AlertDialog from "./index.js";
+  import PreviewExample from "./examples/preview.svelte";
 
   const { Story } = defineMeta({
     title: "Shadcn/Overlays/Alert Dialog",
@@ -16,6 +17,27 @@
       },
     },
   });
+
+  /** Clear portals / scroll-lock left by a prior open overlay story. */
+  async function dismissOverlays() {
+    for (let i = 0; i < 3; i++) {
+      await userEvent.keyboard("{Escape}");
+    }
+    document
+      .querySelectorAll(
+        '[data-slot="alert-dialog-overlay"], [data-slot="alert-dialog-content"]',
+      )
+      .forEach((node) => node.remove());
+    document.body.style.pointerEvents = "";
+    document.body.style.overflow = "";
+    document.body.removeAttribute("data-scroll-locked");
+    await waitFor(() => {
+      expect(
+        document.querySelector('[role="alertdialog"][data-state="open"]'),
+      ).toBeNull();
+      expect(document.body.style.pointerEvents).not.toBe("none");
+    });
+  }
 </script>
 
 <script lang="ts">
@@ -23,9 +45,11 @@
   let confirmed = $state(false);
 </script>
 
+<!-- Interaction story first so vitest doesn't inherit an open portal from the visual stories. -->
 <Story
   name="Confirms a destructive action"
   play={async ({ canvas }) => {
+    await dismissOverlays();
     await userEvent.click(canvas.getByRole("button", { name: "Delete item" }));
     const dialog = await within(document.body).findByRole("alertdialog");
     await expect(
@@ -35,11 +59,6 @@
       within(dialog).getByRole("button", { name: "Delete" }),
     );
     await expect(canvas.getByRole("status")).toHaveTextContent("confirmed");
-  }}
-  tags={["visual-approved"]}
-
-  parameters={{
-    visualDelta: {"align":"viewport"},
   }}
 >
   {#snippet template()}
@@ -68,6 +87,27 @@
       <output class="text-muted-foreground text-sm">
         {confirmed ? "confirmed" : "idle"}
       </output>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Open alert dialog"
+  tags={["visual-state", "visual-failed"]}
+  play={async ({ canvas }) => {
+    await dismissOverlays();
+    await userEvent.click(canvas.getByRole("button", { name: "Show Dialog" }));
+    const dialog = await within(document.body).findByRole("alertdialog");
+    await expect(
+      within(dialog).getByRole("heading", {
+        name: "Are you absolutely sure?",
+      }),
+    ).toBeVisible();
+  }}
+>
+  {#snippet template()}
+    <div class="p-4">
+      <PreviewExample />
     </div>
   {/snippet}
 </Story>

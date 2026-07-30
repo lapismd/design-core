@@ -15,7 +15,7 @@
 <Story
   name="Preview"
   exportName="Preview"
-  tags={["upstream-example", "visual-ready", "skip-visual"]}
+  tags={["upstream-example", "skip-visual"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -37,7 +37,7 @@
 <Story
   name="Custom close button"
   exportName="CustomCloseButton"
-  tags={["upstream-example", "visual-failed", "skip-visual"]}
+  tags={["upstream-example", "skip-visual"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {

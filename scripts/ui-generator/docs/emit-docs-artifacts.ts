@@ -415,10 +415,17 @@ function emitExamplesStories(args: {
   const wrapperClass = args.component === "sidebar" ? "h-[480px] p-0" : "p-4";
   // Closed overlay triggers are not useful visual subjects. Open-state coverage
   // lives in hand-written `${pascal}.stories.svelte` (survives ui:docs regen).
-  const exampleTags =
-    args.component === "dropdown-menu"
-      ? '["upstream-example", "skip-visual"]'
-      : '["upstream-example"]';
+  const overlaySkipVisualExamples = new Set([
+    "alert-dialog",
+    "dialog",
+    "dropdown-menu",
+    "popover",
+    "sheet",
+    "tooltip",
+  ]);
+  const exampleTags = overlaySkipVisualExamples.has(args.component)
+    ? '["upstream-example", "skip-visual"]'
+    : '["upstream-example"]';
 
   const stories = examples
     .map((ex) => {
