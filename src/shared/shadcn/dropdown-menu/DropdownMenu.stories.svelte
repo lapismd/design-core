@@ -30,7 +30,7 @@
     );
     await expect(canvas.getByRole("status")).toHaveTextContent("Duplicate");
   }}
-  tags={["visual-failed"]}
+  tags={["visual-pending"]}
 
   parameters={{
     visualDelta: {"interactions":[{"id":"interaction-1-click","label":"userEvent.click","src":"/visual-baselines/shadcn/dropdown-menu/chooses-a-menu-item--interaction-1-click-chromium-darwin.png"}]},
