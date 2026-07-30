@@ -24,7 +24,16 @@
     if (!ref) return;
     const fullSwipeCallback = onFullSwipe;
     const measure = () => {
-      swipeItem.setActionsWidth(side, ref?.getBoundingClientRect().width ?? 0);
+      if (!ref) return;
+      const rectWidth = ref.getBoundingClientRect().width;
+      const minWidthPx = Number.parseFloat(getComputedStyle(ref).minWidth);
+      // If the pane sets min-width as its rest/open size (e.g. growing reveal
+      // UIs), prefer that over the live rect so settle thresholds stay stable.
+      // Do not read gesture/drag state here — that re-runs this effect mid-drag
+      // and unregister() resets the measured width to 0.
+      const width =
+        Number.isFinite(minWidthPx) && minWidthPx > 0 ? minWidthPx : rectWidth;
+      swipeItem.setActionsWidth(side, width);
     };
     measure();
     const unregister = swipeItem.registerActions(side, {

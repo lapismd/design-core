@@ -6,8 +6,8 @@ import {
   swipeItemOffsetDeltaFromWheel,
   swipeItemSideForOffset,
   swipeItemStableOffset,
-  type SwipeItemDirection,
 } from "./swipe-item-gesture.js";
+import type { SwipeItemDirection } from "./swipe-item-gesture.js";
 import type {
   SwipeItemFullSwipeEvent,
   SwipeItemOpen,
