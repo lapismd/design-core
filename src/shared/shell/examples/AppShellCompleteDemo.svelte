@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { untrack } from "svelte";
   import type {
     AppShellController,
     AppShellDisplayMode,
@@ -19,6 +20,7 @@
     mobileBreakpoint = 1024,
     desktopMinMainWidth,
     frameClass,
+    showBodySidebar = true,
   }: {
     controller: AppShellController;
     projectSidebar: AppShellSidebarController;
@@ -26,11 +28,15 @@
     mobileBreakpoint?: number;
     desktopMinMainWidth?: number;
     frameClass?: string;
+    /** Whether the document TOC body sidebar starts open on the right. */
+    showBodySidebar?: boolean;
   } = $props();
 
   let selectedProject = $state("lapis-notes");
   let selectedMarkdownFile = $state("README.md");
-  let bodySidebarSide = $state<AppShellSide | undefined>("right");
+  let bodySidebarSide = $state<AppShellSide | undefined>(
+    untrack(() => (showBodySidebar ? "right" : undefined)),
+  );
 
   function selectProject(projectId: string): void {
     selectedProject = projectId;

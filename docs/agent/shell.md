@@ -136,6 +136,18 @@ Do not derive compact markup from `sidebar.collapsed` alone. Durable desktop
 collapse can coexist with full mobile or preview presentation, and mobile stage
 changes must not mutate desktop collapse/close/width state.
 
+## Constrained desktop overlays
+
+When the desktop root cannot protect `--ui-shell-desktop-min-main-width`
+(`36rem`, or `desktopMinMainWidth`), lower-priority rails leave inline flow in
+order: right → named outer-left → built-in left. Durable collapse/close/width
+are unchanged. Overlayed panels reopen through adjacent toggles or edge
+affordance as full-height overlay previews (`data-desktop-overlay-preview`),
+not shadcn Popovers and not `previewOnHover` (which needs collapsed/closed
+state). Do not set `desktopMinMainWidth={0}` unless intentionally disabling
+protection. References: **Complete shell composition**, **Constrained desktop
+overlays**.
+
 ## Body and ownership boundaries
 
 Use `AppShell.Body layout="regions"` plus `Body.Sidebar`, `Body.Content`, and
@@ -153,6 +165,7 @@ inside the shared shell.
 - Storybook guidance: `Shell/Guidance`
 - Full API and behavior: `Shell/App Shell/Docs`
 - Composition: `Complete shell composition`
+- Constrained desktop: `Constrained desktop overlays`
 - Nested previews: `Nested project and file sidebars`
 - Collapse: `Independent icon rails`
 - Responsive edges: `Mobile edge panels`

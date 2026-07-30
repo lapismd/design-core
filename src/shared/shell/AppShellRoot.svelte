@@ -161,8 +161,10 @@
     const updateWidth = () => {
       if (ref) observedWidth = ref.getBoundingClientRect().width;
       if (desktopMinMainProbe) {
-        measuredDesktopMinMainWidth =
-          desktopMinMainProbe.getBoundingClientRect().width;
+        const probeWidth = desktopMinMainProbe.getBoundingClientRect().width;
+        if (probeWidth > 0) {
+          measuredDesktopMinMainWidth = probeWidth;
+        }
       }
     };
     const observer = new ResizeObserver(updateWidth);

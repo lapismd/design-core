@@ -369,10 +369,30 @@ On mobile:
 - offstage lanes remain `inert` and `aria-hidden`;
 - desktop resize handles and icon-rail compaction are absent.
 
-On constrained desktop, lower-priority sidebars may become overlays so main
-keeps `--ui-shell-desktop-min-main-width`. This also does not mutate durable
-sidebar state. Do not add a second media-query shell or duplicate mobile
-markup around the compound composition.
+### Constrained desktop overlays
+
+Desktop keeps `--ui-shell-desktop-min-main-width` (`36rem`, or the
+`desktopMinMainWidth` root prop) usable before inline rails consume the root.
+When the bounded root is too narrow, the shell removes lower-priority panels
+from inline flow in this order: right sidebar, named outer-left sidebars, then
+the built-in left sidebar. Their durable `collapsed` / `closed` / `width`
+values stay unchanged.
+
+Overlayed panels are hidden from layout until their adjacent toggle or edge
+affordance opens a temporary full-height **overlay preview**
+(`data-desktop-overlay-preview`). That is not a shadcn Popover and not the
+collapsed/closed `previewOnHover` / `revealOnEdgeHover` path—those require
+durable collapsed or closed state. Constrained toggles read as Open/Close and
+flip the DOM preview only.
+
+Do not set `desktopMinMainWidth={0}` in application shells unless you
+intentionally disable this protection (focused stories sometimes do). Prefer
+one composition for wide desktop, constrained desktop, and mobile.
+**Complete shell composition** and **Constrained desktop overlays** are the
+references.
+
+Do not add a second media-query shell or duplicate mobile markup around the
+compound composition.
 
 ## Ownership boundary
 
@@ -416,6 +436,7 @@ Before accepting an application shell:
 11. One composition handles desktop, constrained desktop, and mobile.
 12. Routing, persistence policy, and domain state remain in the consumer.
 
-Validate against **Complete shell composition**, **Nested project and file
-sidebars**, **Independent icon rails**, **Mobile edge panels**, and
-**Markdown document body sidebars** in **Shell/App Shell**.
+Validate against **Complete shell composition**, **Constrained desktop
+overlays**, **Nested project and file sidebars**, **Independent icon rails**,
+**Mobile edge panels**, and **Markdown document body sidebars** in
+**Shell/App Shell**.

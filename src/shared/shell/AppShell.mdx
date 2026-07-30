@@ -137,7 +137,10 @@ all available width. Its protected width comes from
 `desktopMinMainWidth` root prop. When the bounded root cannot fit that stage,
 the shell removes outer panels from inline flow in this order: right sidebar,
 named outer-left sidebars, then the built-in left sidebar. Their existing
-toggle or edge action opens them as an overlay.
+toggle or edge action opens a temporary full-height overlay preview
+(`data-desktop-overlay-preview`), not a Popover and not collapsed/closed
+`previewOnHover`. See **Complete shell composition** and **Constrained
+desktop overlays**.
 
 This is presentation-only. Collapsed, closed, and resized controller values
 remain unchanged, and the same panels return inline when the container grows.
