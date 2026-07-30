@@ -498,7 +498,7 @@
 
 <Story
   name="Start actions open"
-  tags={["visual-state", "visual-ready"]}
+  tags={["visual-state", "visual-approved"]}
   play={async ({ canvas }) => {
     await expect(
       canvas.getByRole("group", { name: "Open start actions" }),
