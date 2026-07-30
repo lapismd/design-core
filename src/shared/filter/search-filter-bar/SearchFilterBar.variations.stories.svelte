@@ -77,7 +77,6 @@
 <Story
   name="Filter query predicate chips"
   exportName="FilterQueryPredicateChips"
-  tags={["skip-visual"]}
   parameters={{
     docs: {
       description: {
