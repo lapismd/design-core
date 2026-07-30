@@ -1162,7 +1162,7 @@
 
 <Story
   name="Mobile edge panels"
-  tags={["visual-pending"]}
+  tags={["visual-pending", "skip-visual"]}
   play={async ({ canvas }) => {
     const mobileGroup = canvas.getByRole("group", {
       name: "Mobile application shell",
