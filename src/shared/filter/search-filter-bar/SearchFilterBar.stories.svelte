@@ -159,7 +159,7 @@
   }}
 
   parameters={{
-    visualDelta: {"images":["/visual-baselines/filter/search-filter-bar/ledger-search-demo-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
+    visualDelta: {"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
   }}
 
   tags={["visual-pending"]}
