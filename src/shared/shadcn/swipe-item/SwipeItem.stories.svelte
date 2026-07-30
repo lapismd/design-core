@@ -409,6 +409,8 @@
   parameters={{
     visualDelta: {"interactions":[{"id":"interaction-9-toHaveAttribute","label":"toHaveAttribute(\"aria-expanded\", \"true\")","src":"/visual-baselines/shadcn/swipe-item/trackpad-wheel-reveals-end-actions--interaction-9-toHaveAttribute-chromium-darwin.png"},{"id":"interaction-6-toHaveAttribute","label":"not.toHaveAttribute(\"aria-hidden\", \"true\")","src":"/visual-baselines/shadcn/swipe-item/trackpad-wheel-reveals-end-actions--interaction-6-toHaveAttribute-chromium-darwin.png"}]},
   }}
+
+  tags={["visual-approved"]}
 >
   {#snippet template()}
     <div class="w-full max-w-md">
