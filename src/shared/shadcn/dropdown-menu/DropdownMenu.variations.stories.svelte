@@ -17,7 +17,7 @@
 <Story
   name="Preview"
   exportName="Preview"
-  tags={["upstream-example", "visual-failed", "skip-visual"]}
+  tags={["upstream-example", "visual-failed"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
