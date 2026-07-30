@@ -233,7 +233,7 @@
 
 <Story
   name="Controlled and disabled states"
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
   play={async ({ canvas }) => {
     const closeButton = canvas.getByRole("button", {
       name: "Close controlled item",
