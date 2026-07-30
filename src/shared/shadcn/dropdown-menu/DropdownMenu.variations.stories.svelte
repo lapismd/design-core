@@ -17,7 +17,7 @@
 <Story
   name="Preview"
   exportName="Preview"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-failed"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -39,7 +39,7 @@
 <Story
   name="Checkboxes"
   exportName="Checkboxes"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-failed"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -61,7 +61,7 @@
 <Story
   name="Radio Group"
   exportName="RadioGroup"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-failed"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -83,7 +83,7 @@
 <Story
   name="Dialog"
   exportName="Dialog"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-failed"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {

@@ -172,7 +172,7 @@
 
 <Story
   name="Overflow menu"
-  tags={["visual-ready"]}
+  tags={["visual-failed"]}
   play={async ({ canvas }) => {
     await userEvent.click(
       canvas.getByRole("button", { name: "Tab overflow menu" }),

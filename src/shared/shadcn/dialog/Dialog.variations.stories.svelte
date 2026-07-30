@@ -37,7 +37,7 @@
 <Story
   name="Custom close button"
   exportName="CustomCloseButton"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-failed"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {

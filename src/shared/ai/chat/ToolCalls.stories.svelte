@@ -53,7 +53,7 @@ Time:        1.8s`;
       passThresholdPercent: 0.1,
     },
   }}
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
 >
   {#snippet template()}
     <ToolCalls
@@ -105,7 +105,7 @@ Time:        1.8s`;
       passThresholdPercent: 0.1,
     },
   }}
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
 >
   {#snippet template()}
     <ToolCalls
@@ -161,7 +161,7 @@ Time:        1.8s`;
       passThresholdPercent: 0.1,
     },
   }}
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
 >
   {#snippet template()}
     <div data-story="tool-stack">
@@ -226,7 +226,7 @@ Time:        1.8s`;
       passThresholdPercent: 0.1,
     },
   }}
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
 >
   {#snippet template()}
     {#snippet editDiff()}
@@ -287,7 +287,7 @@ Time:        1.8s`;
       passThresholdPercent: 0.1,
     },
   }}
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
 >
   {#snippet template()}
     {#snippet readDetail()}
@@ -336,7 +336,7 @@ Time:        1.8s`;
       passThresholdPercent: 0.1,
     },
   }}
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
 >
   {#snippet template()}
     <ToolCalls

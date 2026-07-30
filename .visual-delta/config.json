@@ -10,7 +10,7 @@
     "x": 0,
     "y": 0
   },
-  "previewSplitZoomDefault": "fit",
+  "previewSplitZoomDefault": "100%",
   "diffResultZoomDefault": "100%",
   "workflow": {
     "autoAcceptLiveStoryComparisons": true,

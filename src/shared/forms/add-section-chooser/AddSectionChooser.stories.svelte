@@ -64,7 +64,7 @@
       ],
     },
   }}
-  tags={["visual-ready"]}
+  tags={["visual-failed"]}
 >
   {#snippet template()}
     <div class="flex flex-col gap-2">

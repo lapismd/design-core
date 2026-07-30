@@ -66,7 +66,7 @@
 
 <Story
   name="Open menu"
-  tags={["visual-state", "visual-ready"]}
+  tags={["visual-state", "visual-failed"]}
   play={async ({ canvas }) => {
     // Open via interaction so we don't share a sticky bind:open across stories.
     await userEvent.keyboard("{Escape}");

@@ -46,7 +46,7 @@
     await userEvent.type(input, "Resume");
     await expect(canvas.getByRole("status")).toHaveTextContent("Resume");
   }}
-  tags={["visual-ready"]}
+  tags={["visual-failed"]}
 >
   {#snippet template()}
     <div class="max-w-xl">
