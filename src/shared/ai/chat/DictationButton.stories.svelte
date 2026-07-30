@@ -87,7 +87,7 @@
       passThresholdPercent: 0.1,
     },
   }}
-  tags={["visual-ready"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <div data-story="dictation-showcase">
@@ -131,7 +131,7 @@
       passThresholdPercent: 0.1,
     },
   }}
-  tags={["visual-ready"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <div data-story="dictation-composer">
@@ -170,7 +170,7 @@
       passThresholdPercent: 0.1,
     },
   }}
-  tags={["visual-ready"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <div data-story="dictation-row">
@@ -194,7 +194,7 @@
       passThresholdPercent: 0.1,
     },
   }}
-  tags={["visual-ready"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <DictationButton dictation={listening} />
@@ -222,7 +222,7 @@
       passThresholdPercent: 0.1,
     },
   }}
-  tags={["visual-ready"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <DictationButton dictation={unsupported} />
