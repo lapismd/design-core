@@ -157,6 +157,12 @@
       /AccountFilter|FieldFilter|ok/i,
     );
   }}
+
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/filter/search-filter-bar/ledger-search-demo-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
+  }}
+
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <div class="mx-auto flex w-full max-w-3xl flex-col gap-3">
