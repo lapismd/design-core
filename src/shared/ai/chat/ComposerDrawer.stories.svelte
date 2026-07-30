@@ -105,7 +105,7 @@
       passThresholdPercent: 0.1,
     },
   }}
-  tags={["visual-ready"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <div data-story="drawer-composer">
@@ -147,7 +147,7 @@
       passThresholdPercent: 0.1,
     },
   }}
-  tags={["visual-ready"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <div data-story="drawer-composer">
@@ -189,7 +189,7 @@
       passThresholdPercent: 0.1,
     },
   }}
-  tags={["visual-ready"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <div data-story="drawer-composer">
@@ -247,7 +247,7 @@
       passThresholdPercent: 0.1,
     },
   }}
-  tags={["visual-ready"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <div data-story="drawer-composer">
@@ -299,7 +299,7 @@
       passThresholdPercent: 0.1,
     },
   }}
-  tags={["visual-ready"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <div data-story="drawer-frame">
