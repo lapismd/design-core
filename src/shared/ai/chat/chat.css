@@ -534,14 +534,19 @@
 
 [data-ui-component="ai-chat-composer"][data-elevation="low"]
   [data-ui-part="body"] {
-  box-shadow: var(--shadow-md);
+  /* Match Astryx --shadow-low: drop shadow + 1px inset ring so the top edge reads. */
+  box-shadow:
+    var(--shadow-md),
+    inset 0 0 0 1px var(--border);
 }
 
 [data-ui-component="ai-chat-composer"][data-elevation="low"]
   [data-ui-part="body"]:hover,
 [data-ui-component="ai-chat-composer"][data-elevation="low"]
   [data-ui-part="body"]:focus-within {
-  box-shadow: var(--shadow-lg);
+  box-shadow:
+    var(--shadow-lg),
+    inset 0 0 0 1px var(--border);
 }
 
 [data-ui-component="ai-chat-composer"][data-elevation="none"]
@@ -665,6 +670,10 @@
 
 [data-ui-component="ai-chat-composer"] [data-ui-part="input-area"] {
   min-width: 0;
+}
+
+[data-ui-component="button"][data-ui-part="send-button"] {
+  border-radius: 999px;
 }
 
 [data-ui-component="ai-chat-composer"] [data-ui-part="send-button"] svg {
