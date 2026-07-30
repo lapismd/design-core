@@ -754,18 +754,39 @@
 }
 
 [data-ui-component="ai-chat-composer-input"]
+  [data-ui-part="trigger-menu"]
+  [data-ui-part="command-item"] {
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 0.125rem;
+  min-width: 0;
+  height: auto;
+  white-space: normal;
+}
+
+[data-ui-component="ai-chat-composer-input"]
+  [data-ui-part="trigger-menu"]
+  [data-ui-part="command-check-icon"] {
+  display: none;
+}
+
+[data-ui-component="ai-chat-composer-input"]
   [data-ui-part="trigger-item-label"] {
   min-width: 0;
-  flex: 1 1 auto;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  width: 100%;
+  overflow-wrap: anywhere;
+  white-space: normal;
 }
 
 [data-ui-component="ai-chat-composer-input"]
   [data-ui-part="trigger-item-description"] {
-  flex: 0 0 auto;
+  min-width: 0;
+  width: 100%;
   color: var(--muted-foreground);
-  font-size: 0.75rem;
+  font-size: var(--text-xs, 0.75rem);
+  line-height: var(--text-xs--line-height, 1rem);
+  overflow-wrap: anywhere;
+  white-space: normal;
 }
 
 [data-ui-component="ai-chat-composer-token"] {

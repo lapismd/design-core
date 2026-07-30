@@ -4,7 +4,6 @@
 
 <script lang="ts">
   import * as Command from "@stevejuma/ui/shadcn/command";
-  import { Spinner } from "@stevejuma/ui/shadcn/spinner";
   import type { HTMLAttributes } from "svelte/elements";
   import {
     createComposerTokens,
@@ -92,6 +91,10 @@
   let menuTop = $state(0);
   let composing = false;
   let syncingDom = false;
+  const triggerMenuOpen = $derived(
+    activeTrigger != null &&
+      !(searchState.loading && searchState.items.length === 0),
+  );
 
   function emitChange(): void {
     if (!editableRef) return;
@@ -229,6 +232,12 @@
     highlightedIndex = 0;
     updateMenuPosition(range.cloneRange());
     triggerSearch.search(match.trigger, match.query, (state) => {
+      // Keep prior suggestions while a search is in flight so the menu never
+      // flashes a loading state (Astryx only paints results once ready).
+      if (state.loading) {
+        searchState = { ...state, items: searchState.items };
+        return;
+      }
       searchState = state;
       highlightedIndex = Math.min(
         highlightedIndex,
@@ -406,9 +415,10 @@
     aria-label={label}
     aria-autocomplete={triggers.length > 0 ? "list" : "none"}
     aria-haspopup={triggers.length > 0 ? "listbox" : undefined}
-    aria-controls={activeTrigger ? menuId : undefined}
-    aria-expanded={activeTrigger != null}
-    aria-activedescendant={activeTrigger && searchState.items[highlightedIndex]
+    aria-controls={triggerMenuOpen ? menuId : undefined}
+    aria-expanded={triggerMenuOpen}
+    aria-activedescendant={triggerMenuOpen &&
+    searchState.items[highlightedIndex]
       ? `${menuId}-option-${highlightedIndex}`
       : undefined}
     aria-disabled={disabled}
@@ -436,7 +446,7 @@
     }}
   ></div>
 
-  {#if activeTrigger}
+  {#if triggerMenuOpen && activeTrigger}
     <div
       data-ui-part="trigger-menu"
       role="presentation"
@@ -449,12 +459,7 @@
           id={menuId}
           aria-label={activeTrigger.menuLabel ?? "Suggestions"}
         >
-          {#if searchState.loading}
-            <Command.Loading>
-              <Spinner />
-              {activeTrigger.loadingText ?? "Searching…"}
-            </Command.Loading>
-          {:else if searchState.items.length === 0}
+          {#if searchState.items.length === 0}
             <Command.Empty>
               {activeTrigger.emptySearchResultsText ?? "No results found."}
             </Command.Empty>

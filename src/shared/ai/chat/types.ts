@@ -44,7 +44,6 @@ export type ComposerTrigger = {
   onSelect: (item: ComposerTriggerItem) => string | ComposerToken;
   deserialize?: (value: string) => ComposerToken | null;
   emptySearchResultsText?: string;
-  loadingText?: string;
   menuLabel?: string;
 };
 
