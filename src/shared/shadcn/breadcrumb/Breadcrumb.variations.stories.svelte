@@ -122,7 +122,7 @@
 <Story
   name="Collapsed"
   exportName="Collapsed"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     visualDelta: {
       images: [
