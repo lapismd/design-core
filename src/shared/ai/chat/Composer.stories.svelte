@@ -19,7 +19,7 @@
       docs: {
         description: {
           component:
-            "Rich Svelte 5 composer shell with the same drawer, header, input, footer, send, elevation, streaming, and validation variants documented by ASTRYX.",
+            "Layout shell for a chat composer. Arranges named slots (drawer, header, input, footer, send) with page-radius container, hover/focus shadows, and concentric inner radius for child elements.",
         },
       },
     },
@@ -54,7 +54,14 @@
 
 <Story
   name="ASTRYX showcase"
+  exportName="AstryxShowcase"
   parameters={{
+    docs: {
+      description: {
+        story:
+          "Pinned ASTRYX reference fixture for anatomy comparison. See AI/Overview and ASTRYX_AI_VISUAL_PARITY.md.",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/ai/chat/composer/astryx-showcase-chromium-darwin.png",
@@ -77,7 +84,14 @@
 
 <Story
   name="Attachments"
+  exportName="Attachments"
   parameters={{
+    docs: {
+      description: {
+        story:
+          "Chat composer with removable file tokens in a collapsible drawer. Use when users can attach files or context to their message.",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/ai/chat/composer/attachments-chromium-darwin.png",
@@ -111,7 +125,14 @@
 
 <Story
   name="Flat"
+  exportName="Flat"
   parameters={{
+    docs: {
+      description: {
+        story:
+          'The composer is raised by default (elevation="low"). Set elevation="none" to flatten it; it then draws a border with the same rest / hover / focus treatment as a text input.',
+      },
+    },
     visualDelta: {
       images: ["/visual-baselines/ai/chat/composer/flat-chromium-darwin.png"],
       opacity: 0.5,
@@ -142,7 +163,14 @@
 
 <Story
   name="Footer actions"
+  exportName="FooterActions"
   parameters={{
+    docs: {
+      description: {
+        story:
+          "Chat composer with dropdown menus for a model selector and settings in the footer, and a mic button in the send actions slot.",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/ai/chat/composer/footer-actions-chromium-darwin.png",
@@ -173,7 +201,14 @@
 
 <Story
   name="Full featured"
+  exportName="FullFeatured"
   parameters={{
+    docs: {
+      description: {
+        story:
+          "Chat composer with all slots populated: collapsible attachment drawer, header actions, context progress bar, footer dropdown menus, and mic button. Shows the maximum composer configuration.",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/ai/chat/composer/full-featured-chromium-darwin.png",
@@ -240,7 +275,14 @@
 
 <Story
   name="Simple"
+  exportName="Simple"
   parameters={{
+    docs: {
+      description: {
+        story:
+          "Minimal chat composer with a placeholder and submit handler. The simplest way to drop a message input into a page.",
+      },
+    },
     visualDelta: {
       images: ["/visual-baselines/ai/chat/composer/simple-chromium-darwin.png"],
       opacity: 0.5,
@@ -261,7 +303,14 @@
 
 <Story
   name="Streaming"
+  exportName="Streaming"
   parameters={{
+    docs: {
+      description: {
+        story:
+          "Chat composer with streaming state and a stop button. Use when the assistant is generating a response and the user can cancel.",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/ai/chat/composer/streaming-chromium-darwin.png",
@@ -299,7 +348,14 @@
 
 <Story
   name="Validation"
+  exportName="Validation"
   parameters={{
+    docs: {
+      description: {
+        story:
+          "Chat composer with error and warning status messages. Status can appear above or below the composer to surface validation or system feedback.",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/ai/chat/composer/validation-chromium-darwin.png",
