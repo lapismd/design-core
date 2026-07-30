@@ -33,7 +33,7 @@
   let contentTokens = $state<PowerSearchToken[]>([]);
 </script>
 
-<Story name="With seeded tokens" tags={["visual-pending"]}
+<Story name="With seeded tokens" tags={["visual-approved"]}
   parameters={{
     visualDelta: {"images":["/visual-baselines/filter/power-search/with-seeded-tokens-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
   }}
