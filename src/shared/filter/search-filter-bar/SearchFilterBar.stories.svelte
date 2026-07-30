@@ -95,7 +95,6 @@
 
 <Story
   name="Filter query autocomplete"
-  tags={["skip-visual"]}
   play={async ({ canvas, canvasElement }) => {
     const box = canvas.getByRole("searchbox", { name: "Filter ledger" });
     await userEvent.click(box);
