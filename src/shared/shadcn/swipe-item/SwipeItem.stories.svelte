@@ -7,6 +7,7 @@
   import Trash2Icon from "@lucide/svelte/icons/trash-2";
   import { Button } from "../button/index.js";
   import * as SwipeItem from "./index.js";
+  import { SWIPE_ITEM_WHEEL_IDLE_MS } from "./swipe-item-gesture.js";
   import type { SwipeItemOpen } from "./types.js";
 
   const { Story } = defineMeta({
@@ -16,7 +17,7 @@
       docs: {
         description: {
           component:
-            "Touch- and mouse-friendly item that translates its content to reveal logical-edge actions, with an accessible click trigger and optional release-only full swipe.",
+            "Touch-, mouse-, and trackpad-friendly item that translates its content to reveal logical-edge actions, with an accessible click trigger and optional release-only full swipe.",
         },
       },
     },
@@ -32,6 +33,8 @@
   let fullSwipeOpen = $state<SwipeItemOpen>(null);
   let fullSwipeResult = $state("Waiting for full swipe");
   let fullSwipeCount = $state(0);
+  let wheelOpen = $state<SwipeItemOpen>(null);
+  let wheelVerticalOpen = $state<SwipeItemOpen>(null);
   let visualStartOpen = $state<SwipeItemOpen>("start");
   let visualEndOpen = $state<SwipeItemOpen>("end");
   let armedOpen = $state<SwipeItemOpen>(null);
@@ -52,6 +55,25 @@
     });
     await new Promise<void>((resolve) =>
       requestAnimationFrame(() => resolve()),
+    );
+  }
+
+  async function dispatchWheelSequence(
+    content: HTMLElement,
+    deltas: Array<{ deltaX?: number; deltaY?: number }>,
+  ) {
+    for (const delta of deltas) {
+      content.dispatchEvent(
+        new WheelEvent("wheel", {
+          deltaX: delta.deltaX ?? 0,
+          deltaY: delta.deltaY ?? 0,
+          bubbles: true,
+          cancelable: true,
+        }),
+      );
+    }
+    await new Promise<void>((resolve) =>
+      setTimeout(resolve, SWIPE_ITEM_WHEEL_IDLE_MS + 50),
     );
   }
 </script>
@@ -336,6 +358,120 @@
       <Button class="mt-3" variant="outline" onclick={resetFullSwipe}>
         Reset full swipe
       </Button>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Trackpad wheel reveals end actions"
+  play={async ({ canvas }) => {
+    const content = canvas.getByTestId("wheel-content");
+    const actions = content
+      .closest('[data-ui-part="root"]')
+      ?.querySelector<HTMLElement>('[data-ui-part="actions"][data-side="end"]');
+    await expect(actions).not.toBeNull();
+    await waitForSwipeMeasurements(content, actions!);
+    const revealDistance = Math.max(
+      96,
+      actions!.getBoundingClientRect().width * 0.6,
+    );
+    await dispatchWheelSequence(
+      content,
+      Array.from({ length: 8 }, () => ({
+        deltaX: revealDistance / 8,
+        deltaY: 0,
+      })),
+    );
+    await expect(
+      canvas.getByRole("group", { name: "Wheel end actions" }),
+    ).not.toHaveAttribute("aria-hidden", "true");
+    await expect(
+      canvas.getByRole("button", { name: "Show wheel actions" }),
+    ).toHaveAttribute("aria-expanded", "true");
+    await expect(content.closest('[data-ui-part="root"]')).toHaveAttribute(
+      "data-open-side",
+      "end",
+    );
+  }}
+>
+  {#snippet template()}
+    <div class="w-full max-w-md">
+      <SwipeItem.Root bind:open={wheelOpen}>
+        <SwipeItem.Actions side="end" aria-label="Wheel end actions">
+          <SwipeItem.Action aria-label="Archive">
+            <ArchiveIcon data-icon="inline-start" />
+            Archive
+          </SwipeItem.Action>
+        </SwipeItem.Actions>
+        <SwipeItem.Content data-testid="wheel-content">
+          <div class="flex min-h-16 items-center gap-3 px-4 py-3">
+            <div class="min-w-0 flex-1">
+              <div class="font-medium">Trackpad swipe target</div>
+              <div class="text-muted-foreground text-sm">
+                Horizontal wheel reveals end actions.
+              </div>
+            </div>
+            <SwipeItem.Trigger side="end" aria-label="Show wheel actions">
+              <EllipsisIcon />
+            </SwipeItem.Trigger>
+          </div>
+        </SwipeItem.Content>
+      </SwipeItem.Root>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Vertical wheel does not reveal actions"
+  play={async ({ canvas }) => {
+    const content = canvas.getByTestId("wheel-vertical-content");
+    const actions = content
+      .closest('[data-ui-part="root"]')
+      ?.querySelector<HTMLElement>('[data-ui-part="actions"][data-side="end"]');
+    await expect(actions).not.toBeNull();
+    await waitForSwipeMeasurements(content, actions!);
+    await dispatchWheelSequence(
+      content,
+      Array.from({ length: 8 }, () => ({
+        deltaX: 2,
+        deltaY: 24,
+      })),
+    );
+    await expect(
+      canvas.getByRole("button", { name: "Show vertical wheel actions" }),
+    ).toHaveAttribute("aria-expanded", "false");
+    await expect(content.closest('[data-ui-part="root"]')).toHaveAttribute(
+      "data-state",
+      "closed",
+    );
+  }}
+>
+  {#snippet template()}
+    <div class="w-full max-w-md">
+      <SwipeItem.Root bind:open={wheelVerticalOpen}>
+        <SwipeItem.Actions side="end" aria-label="Vertical wheel actions">
+          <SwipeItem.Action aria-label="Archive">
+            <ArchiveIcon data-icon="inline-start" />
+            Archive
+          </SwipeItem.Action>
+        </SwipeItem.Actions>
+        <SwipeItem.Content data-testid="wheel-vertical-content">
+          <div class="flex min-h-16 items-center gap-3 px-4 py-3">
+            <div class="min-w-0 flex-1">
+              <div class="font-medium">Vertical scroll target</div>
+              <div class="text-muted-foreground text-sm">
+                Vertical-dominant wheel leaves the item closed.
+              </div>
+            </div>
+            <SwipeItem.Trigger
+              side="end"
+              aria-label="Show vertical wheel actions"
+            >
+              <EllipsisIcon />
+            </SwipeItem.Trigger>
+          </div>
+        </SwipeItem.Content>
+      </SwipeItem.Root>
     </div>
   {/snippet}
 </Story>

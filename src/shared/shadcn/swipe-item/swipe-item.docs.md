@@ -1,8 +1,9 @@
 # Swipe Item
 
 Reveal logical start or end actions by translating and clipping an item's
-foreground content. Swipe Item supports touch, mouse, and stylus pointers,
-visible click triggers, and optional release-only full-swipe callbacks.
+foreground content. Swipe Item supports touch, mouse, and stylus pointer
+drags, trackpad / horizontal wheel swipes, visible click triggers, and
+optional release-only full-swipe callbacks.
 
 This is a project-authored native-CSS family. It composes the shared Button and
 does not copy the unrelated upstream shadcn Item family.
@@ -42,10 +43,15 @@ import * as SwipeItem from "@stevejuma/ui/shadcn/swipe-item";
 
 - `start` and `end` follow the rendered writing direction.
 - A 10-pixel horizontal activation distance preserves vertical scrolling with
-  static `touch-action: pan-y`.
+  static `touch-action: pan-y`. The same threshold applies to trackpad /
+  horizontal `wheel` gestures before the item claims the stream.
+- Vertical-dominant wheel input is left to the page; horizontal-dominant wheel
+  follows the content live and settles after a short idle gap using the same
+  open / close / full-swipe rules as pointer release.
 - Releasing past half the measured action width opens the pane.
 - A full-swipe callback fires once, on release past 75% of item width. Velocity
-  can settle a pane open or closed but never commits by itself.
+  can settle a pane open or closed but never commits by itself. Wheel full
+  swipes report `pointerType: "wheel"`.
 - Escape, a tap on open Content, or an outside pointer press closes the item.
 - Add `data-swipe-item-gesture-ignore` to nested interaction regions that must
   own their pointer stream.

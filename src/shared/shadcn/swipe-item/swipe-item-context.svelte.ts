@@ -1,7 +1,9 @@
 import { getContext, setContext, tick } from "svelte";
 import {
+  SWIPE_ITEM_WHEEL_IDLE_MS,
   constrainSwipeItemOffset,
   resolveSwipeItemSettle,
+  swipeItemOffsetDeltaFromWheel,
   swipeItemSideForOffset,
   swipeItemStableOffset,
   type SwipeItemDirection,
@@ -41,6 +43,18 @@ interface SwipeGesture {
   dragging: boolean;
   captured: boolean;
   ownerDocument: Document;
+}
+
+interface SwipeWheelSession {
+  startOffset: number;
+  rawOffset: number;
+  absDeltaX: number;
+  absDeltaY: number;
+  active: boolean;
+  lastTime: number;
+  velocityX: number;
+  ownerDocument: Document;
+  idleTimer: number | null;
 }
 
 export class SwipeItemState {
@@ -101,6 +115,7 @@ export class SwipeItemState {
     end: null,
   };
   #gesture: SwipeGesture | null = null;
+  #wheelSession: SwipeWheelSession | null = null;
   #suppressClick = false;
   #suppressClickTimer: number | null = null;
 
@@ -134,7 +149,11 @@ export class SwipeItemState {
 
   bindContent(element: HTMLDivElement | null): () => void {
     this.#content = element;
+    if (!element) return () => {};
+
+    element.addEventListener("wheel", this.handleWheel, { passive: false });
     return () => {
+      element.removeEventListener("wheel", this.handleWheel);
       if (this.#content === element) this.#content = null;
     };
   }
@@ -221,6 +240,9 @@ export class SwipeItemState {
       return;
     }
 
+    const startOffset = this.dragOffset ?? this.stableOffset;
+    this.#clearWheelSession({ settle: false, clearOffset: false });
+
     this.direction =
       this.#root && getComputedStyle(this.#root).direction === "rtl"
         ? "rtl"
@@ -232,7 +254,7 @@ export class SwipeItemState {
       pointerType: event.pointerType,
       startX: event.clientX,
       startY: event.clientY,
-      startOffset: this.stableOffset,
+      startOffset,
       lastX: event.clientX,
       lastTime: event.timeStamp,
       velocityX: 0,
@@ -290,7 +312,8 @@ export class SwipeItemState {
     const gesture = this.#gesture;
     if (!gesture || gesture.pointerId !== event.pointerId) return;
 
-    if (!gesture.dragging) {
+    // Settle when the pointer dragged, or when it took over a live wheel offset.
+    if (!gesture.dragging && this.dragOffset === null) {
       this.#clearGesture();
       return;
     }
@@ -299,7 +322,7 @@ export class SwipeItemState {
     const result = resolveSwipeItemSettle({
       offset,
       startOffset: gesture.startOffset,
-      velocityX: gesture.velocityX,
+      velocityX: gesture.dragging ? gesture.velocityX : 0,
       direction: this.direction,
       widths: this.widths,
       fullSwipe: this.fullSwipe,
@@ -376,8 +399,76 @@ export class SwipeItemState {
     }
   };
 
+  handleWheel = (event: WheelEvent): void => {
+    if (this.disabled || this.#gesture || this.#isIgnoredStart(event.target)) {
+      return;
+    }
+
+    const deltaX = event.deltaX;
+    const deltaY = event.deltaY;
+    if (deltaX === 0 && deltaY === 0) return;
+
+    let session = this.#wheelSession;
+    if (!session) {
+      this.direction =
+        this.#root && getComputedStyle(this.#root).direction === "rtl"
+          ? "rtl"
+          : "ltr";
+      session = {
+        startOffset: this.stableOffset,
+        rawOffset: this.stableOffset,
+        absDeltaX: 0,
+        absDeltaY: 0,
+        active: false,
+        lastTime: event.timeStamp,
+        velocityX: 0,
+        ownerDocument:
+          this.#content?.ownerDocument ?? this.#root?.ownerDocument ?? document,
+        idleTimer: null,
+      };
+      this.#wheelSession = session;
+    }
+
+    session.absDeltaX += Math.abs(deltaX);
+    session.absDeltaY += Math.abs(deltaY);
+
+    if (!session.active) {
+      const distance = Math.max(
+        0,
+        Number.isFinite(this.props.activationDistance())
+          ? this.props.activationDistance()
+          : 10,
+      );
+      if (session.absDeltaX < distance && session.absDeltaY < distance) {
+        this.#scheduleWheelIdle(session);
+        return;
+      }
+      if (session.absDeltaX <= session.absDeltaY) {
+        this.#clearWheelSession({ settle: false, clearOffset: true });
+        return;
+      }
+      session.active = true;
+    }
+
+    event.preventDefault();
+    const offsetDelta = swipeItemOffsetDeltaFromWheel(deltaX);
+    const elapsed = Math.max(1, event.timeStamp - session.lastTime);
+    session.velocityX = offsetDelta / elapsed;
+    session.lastTime = event.timeStamp;
+    session.rawOffset += offsetDelta;
+    this.dragOffset = constrainSwipeItemOffset({
+      rawOffset: session.rawOffset,
+      direction: this.direction,
+      widths: this.widths,
+      fullSwipe: this.fullSwipe,
+      itemWidth: this.itemWidth,
+    });
+    this.#scheduleWheelIdle(session);
+  };
+
   destroy(): void {
     this.#clearGesture();
+    this.#clearWheelSession({ settle: false, clearOffset: true });
     if (this.#suppressClickTimer !== null && this.#root) {
       this.#root.ownerDocument.defaultView?.clearTimeout(
         this.#suppressClickTimer,
@@ -396,6 +487,69 @@ export class SwipeItemState {
       this.#suppressClick = false;
       this.#suppressClickTimer = null;
     }, 0);
+  }
+
+  #scheduleWheelIdle(session: SwipeWheelSession): void {
+    const ownerWindow = session.ownerDocument.defaultView;
+    if (!ownerWindow) return;
+    if (session.idleTimer !== null) {
+      ownerWindow.clearTimeout(session.idleTimer);
+    }
+    session.idleTimer = ownerWindow.setTimeout(() => {
+      if (this.#wheelSession !== session) return;
+      if (session.active) {
+        this.#settleWheelSession(session);
+      } else {
+        this.#clearWheelSession({ settle: false, clearOffset: true });
+      }
+    }, SWIPE_ITEM_WHEEL_IDLE_MS);
+  }
+
+  #settleWheelSession(session: SwipeWheelSession): void {
+    const offset = this.dragOffset ?? session.rawOffset;
+    const result = resolveSwipeItemSettle({
+      offset,
+      startOffset: session.startOffset,
+      velocityX: session.velocityX,
+      direction: this.direction,
+      widths: this.widths,
+      fullSwipe: this.fullSwipe,
+      itemWidth: this.itemWidth,
+      revealThreshold: this.props.revealThreshold(),
+      fullSwipeThreshold: this.props.fullSwipeThreshold(),
+      velocityThreshold: this.props.velocityThreshold(),
+    });
+    this.#clearWheelSession({ settle: false, clearOffset: true });
+
+    if (result.kind === "commit") {
+      this.#actions[result.side]?.onFullSwipe?.({
+        side: result.side,
+        pointerType: "wheel",
+      });
+      this.setOpen(null);
+    } else {
+      this.setOpen(result.kind === "open" ? result.side : null);
+    }
+  }
+
+  #clearWheelSession(options: { settle: boolean; clearOffset: boolean }): void {
+    const session = this.#wheelSession;
+    if (!session) {
+      if (options.clearOffset && !this.#gesture) this.dragOffset = null;
+      return;
+    }
+
+    if (options.settle && session.active) {
+      this.#settleWheelSession(session);
+      return;
+    }
+
+    const ownerWindow = session.ownerDocument.defaultView;
+    if (session.idleTimer !== null && ownerWindow) {
+      ownerWindow.clearTimeout(session.idleTimer);
+    }
+    this.#wheelSession = null;
+    if (options.clearOffset && !this.#gesture) this.dragOffset = null;
   }
 
   #clearGesture(): void {

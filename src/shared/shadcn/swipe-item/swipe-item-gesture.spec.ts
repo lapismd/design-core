@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   constrainSwipeItemOffset,
   resolveSwipeItemSettle,
+  swipeItemOffsetDeltaFromWheel,
   swipeItemPhysicalSign,
   swipeItemSideForOffset,
   swipeItemStableOffset,
@@ -11,6 +12,11 @@ const widths = { start: 96, end: 144 };
 const fullSwipe = { start: true, end: true };
 
 describe("SwipeItem gesture math", () => {
+  it("maps wheel deltaX into pointer-equivalent physical offset", () => {
+    expect(swipeItemOffsetDeltaFromWheel(40)).toBe(-40);
+    expect(swipeItemOffsetDeltaFromWheel(-40)).toBe(40);
+  });
+
   it("maps logical sides through LTR and RTL", () => {
     expect(swipeItemPhysicalSign("start", "ltr")).toBe(1);
     expect(swipeItemPhysicalSign("end", "ltr")).toBe(-1);

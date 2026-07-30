@@ -2,9 +2,20 @@ import type { SwipeItemOpen, SwipeItemSide } from "./types.js";
 
 export type SwipeItemDirection = "ltr" | "rtl";
 
+/** Idle gap after the last wheel event before settling a trackpad swipe. */
+export const SWIPE_ITEM_WHEEL_IDLE_MS = 100;
+
 export interface SwipeItemWidths {
   start: number;
   end: number;
+}
+
+/**
+ * Map wheel `deltaX` into the same physical offset space as pointer drag.
+ * Positive wheel deltaX scrolls right (content moves left) → negative offset.
+ */
+export function swipeItemOffsetDeltaFromWheel(deltaX: number): number {
+  return -deltaX;
 }
 
 export type SwipeItemSettleResult =

@@ -5,9 +5,10 @@ import * as SwipeItemStories from "./SwipeItem.stories.svelte";
 
 # Swipe Item
 
-Reveal logical start or end actions by translating an item's content with touch
-or mouse input. The stable open position uses the measured action-pane width,
-while an optional full swipe runs a side callback only after pointer release.
+Reveal logical start or end actions by translating an item's content with touch,
+mouse drag, or trackpad / horizontal wheel input. The stable open position uses
+the measured action-pane width, while an optional full swipe runs a side
+callback only after pointer release or wheel idle settle.
 
 This is a project-authored native-CSS family. It composes the shared Button and
 does not copy the unrelated upstream shadcn Item family.
@@ -45,10 +46,15 @@ does not copy the unrelated upstream shadcn Item family.
 
 - `start` and `end` follow the rendered writing direction.
 - Dragging begins after 10 pixels of horizontal intent and preserves vertical
-  scrolling through static `touch-action: pan-y`.
+  scrolling through static `touch-action: pan-y`. Trackpad / horizontal wheel
+  gestures use the same activation distance before claiming the stream.
+- Vertical-dominant wheel input is left to the page; horizontal-dominant wheel
+  follows the content live and settles after a short idle gap with the same
+  thresholds as pointer release.
 - Releasing past half the measured action width opens that pane. A 0.45px/ms
   fling may open or close, but velocity alone never runs the full-swipe action.
-- A full-swipe callback runs once, on release past 75% of the item width.
+- A full-swipe callback runs once, on release past 75% of the item width
+  (`pointerType: "wheel"` for trackpad settles).
 - Escape, a tap on open Content, or an outside pointer press closes the item.
 - Add `data-swipe-item-gesture-ignore` to nested editors or custom interaction
   regions that must own their pointer stream.
