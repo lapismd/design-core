@@ -109,7 +109,7 @@
 
 <Story
   name="Open custom close dialog"
-  tags={["visual-state", "visual-pending"]}
+  tags={["visual-state", "visual-approved"]}
   play={async ({ canvas }) => {
     await dismissOverlays();
     await userEvent.click(canvas.getByRole("button", { name: "Share" }));
