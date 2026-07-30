@@ -73,7 +73,7 @@
       passThresholdPercent: 0.1,
     },
   }}
-  tags={["visual-pending"]}
+  tags={["visual-approved"]}
 >
   {#snippet template()}
     <p data-story="token-line">
