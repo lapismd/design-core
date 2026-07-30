@@ -1,6 +1,7 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent, waitFor } from "storybook/test";
+  import { Button } from "@stevejuma/ui/shadcn/button";
   import Composer from "./Composer.svelte";
   import ComposerInput from "./ComposerInput.svelte";
   import type { ComposerInputHandle, ComposerTrigger } from "./types.js";
@@ -403,8 +404,10 @@
         {/snippet}
       </Composer>
       <div data-story="input-actions">
-        <button
+        <Button
           type="button"
+          size="sm"
+          variant="outline"
           aria-label="Insert context token"
           onclick={() => {
             insertedTokenId = handle?.insertToken({
@@ -412,16 +415,22 @@
               label: "14 lines, 420 chars",
               variant: "outline",
             });
-          }}>Insert token</button
+          }}
         >
-        <button
+          Insert token
+        </Button>
+        <Button
           type="button"
+          size="sm"
+          variant="secondary"
           aria-label="Expand context token"
           disabled={!insertedTokenId}
           onclick={() => {
             if (insertedTokenId) handle?.expandToken(insertedTokenId);
-          }}>Expand token</button
+          }}
         >
+          Expand token
+        </Button>
       </div>
     </div>
   {/snippet}
@@ -546,14 +555,7 @@
 
   :global([data-story="input-actions"]) {
     display: flex;
+    flex-wrap: wrap;
     gap: 0.5rem;
-  }
-
-  :global([data-story="input-actions"] button) {
-    border: 1px solid var(--border);
-    border-radius: 0.5rem;
-    background: var(--background);
-    padding: 0.375rem 0.625rem;
-    color: var(--foreground);
   }
 </style>
