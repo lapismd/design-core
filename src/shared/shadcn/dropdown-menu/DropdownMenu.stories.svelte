@@ -59,7 +59,6 @@
     );
     await expect(canvas.getByRole("status")).toHaveTextContent("Duplicate");
   }}
-  tags={["skip-visual"]}
 >
   {#snippet template()}
     <div class="flex flex-col gap-2">
