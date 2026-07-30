@@ -73,7 +73,7 @@
       passThresholdPercent: 0.1,
     },
   }}
-  tags={["visual-ready"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <div data-story="composer-reference">
@@ -103,7 +103,7 @@
       passThresholdPercent: 0.1,
     },
   }}
-  tags={["visual-ready"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <div data-story="composer-reference">
@@ -142,7 +142,7 @@
       passThresholdPercent: 0.1,
     },
   }}
-  tags={["visual-ready"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <div data-story="composer-reference" data-with-label>
@@ -182,7 +182,7 @@
       passThresholdPercent: 0.1,
     },
   }}
-  tags={["visual-ready"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <div data-story="composer-reference" data-with-label>
@@ -220,7 +220,7 @@
       passThresholdPercent: 0.1,
     },
   }}
-  tags={["visual-ready"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <div data-story="composer-reference" data-with-label>
@@ -292,7 +292,7 @@
       passThresholdPercent: 0.1,
     },
   }}
-  tags={["visual-ready"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <div data-story="composer-reference">
@@ -322,7 +322,7 @@
       passThresholdPercent: 0.1,
     },
   }}
-  tags={["visual-ready"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <div data-story="composer-reference" data-with-label>
@@ -367,7 +367,7 @@
       passThresholdPercent: 0.1,
     },
   }}
-  tags={["visual-ready"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <div data-story="composer-validation">
@@ -418,7 +418,7 @@
       passThresholdPercent: 0.1,
     },
   }}
-  tags={["visual-ready"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <div data-story="composer-reference" data-with-label>
