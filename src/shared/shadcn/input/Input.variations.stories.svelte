@@ -19,7 +19,7 @@
 <Story
   name="Preview"
   exportName="Preview"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -41,7 +41,7 @@
 <Story
   name="Default"
   exportName="Default"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -63,7 +63,7 @@
 <Story
   name="File"
   exportName="File"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -85,7 +85,7 @@
 <Story
   name="Disabled"
   exportName="Disabled"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -107,7 +107,7 @@
 <Story
   name="With Label"
   exportName="WithLabel"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -129,7 +129,7 @@
 <Story
   name="With Button"
   exportName="WithButton"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {

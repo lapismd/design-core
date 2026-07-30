@@ -29,7 +29,7 @@
     await userEvent.type(input, "250");
     await expect(canvas.getByRole("status")).toHaveTextContent("250");
   }}
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
 >
   {#snippet template()}
     <div class="flex max-w-sm flex-col gap-2">
@@ -44,7 +44,7 @@
 
 <Story
   name="Focused control"
-  tags={["visual-state", "visual-ready"]}
+  tags={["visual-state", "visual-approved"]}
   play={async ({ canvas }) => {
     const input = canvas.getByLabelText("Amount");
     await userEvent.click(input);

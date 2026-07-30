@@ -22,7 +22,7 @@
 <Story
   name="Preview"
   exportName="Preview"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -44,7 +44,7 @@
 <Story
   name="Icon"
   exportName="Icon"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -66,7 +66,7 @@
 <Story
   name="Text"
   exportName="Text"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -91,7 +91,7 @@
 <Story
   name="Tooltip"
   exportName="Tooltip"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -116,7 +116,7 @@
 <Story
   name="Textarea"
   exportName="Textarea"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -142,7 +142,7 @@
 <Story
   name="Spinner"
   exportName="Spinner"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -167,7 +167,7 @@
 <Story
   name="Label"
   exportName="Label"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -192,7 +192,7 @@
 <Story
   name="Dropdown"
   exportName="Dropdown"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
@@ -218,7 +218,7 @@
 <Story
   name="Custom Input"
   exportName="CustomInput"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {

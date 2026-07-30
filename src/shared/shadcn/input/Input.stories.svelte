@@ -29,7 +29,7 @@
     await userEvent.type(input, "Personal");
     await expect(canvas.getByRole("status")).toHaveTextContent("Personal");
   }}
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
 >
   {#snippet template()}
     <div class="flex max-w-sm flex-col gap-2">

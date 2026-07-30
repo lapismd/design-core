@@ -22,7 +22,7 @@
 <Story
   name="Preview"
   exportName="Preview"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/field/preview-chromium-darwin.png"],
@@ -52,7 +52,7 @@
 <Story
   name="Input"
   exportName="Input"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/field/input-chromium-darwin.png"],
@@ -82,7 +82,7 @@
 <Story
   name="Textarea"
   exportName="Textarea"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/field/textarea-chromium-darwin.png"],
@@ -112,7 +112,7 @@
 <Story
   name="Select"
   exportName="Select"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/field/select-chromium-darwin.png"],
@@ -142,7 +142,7 @@
 <Story
   name="Fieldset"
   exportName="Fieldset"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/field/fieldset-chromium-darwin.png"],
@@ -172,7 +172,7 @@
 <Story
   name="Checkbox"
   exportName="Checkbox"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/field/checkbox-chromium-darwin.png"],
@@ -202,7 +202,7 @@
 <Story
   name="Switch"
   exportName="Switch"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/field/switch-chromium-darwin.png"],
@@ -232,7 +232,7 @@
 <Story
   name="Field Group"
   exportName="FieldGroup"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     visualDelta: {
       images: [
@@ -268,7 +268,7 @@
 <Story
   name="Responsive Layout"
   exportName="ResponsiveLayout"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     visualDelta: {
       images: [

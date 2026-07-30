@@ -28,7 +28,7 @@
     await userEvent.type(canvas.getByLabelText("Work email"), "dev@ju.ma");
     await expect(canvas.getByRole("status")).toHaveTextContent("dev@ju.ma");
   }}
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
   parameters={{
     visualDelta: {
       images: [
