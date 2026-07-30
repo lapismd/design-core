@@ -98,7 +98,7 @@
 <Story
   name="Button"
   exportName="Button"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
