@@ -81,7 +81,7 @@
   {/snippet}
 </Story>
 
-<Story name="Shows an error" tags={["skip-visual"]}>
+<Story name="Shows an error">
   {#snippet template()}
     <div class="max-w-xl">
       <SearchFilterBar
