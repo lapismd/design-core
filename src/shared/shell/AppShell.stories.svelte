@@ -1095,6 +1095,13 @@
     await expect(
       canvas.queryByRole("slider", { name: "Resize files sidebar" }),
     ).not.toBeInTheDocument();
+    const tabletMain = root!.querySelector<HTMLElement>(
+      '[data-ui-part="main"]',
+    )!;
+    await expect(getComputedStyle(tabletMain).marginTop).toBe("0px");
+    await expect(getComputedStyle(tabletMain).marginBottom).toBe("0px");
+    await expect(getComputedStyle(frame).paddingTop).toBe("0px");
+    await expect(getComputedStyle(frame).paddingBottom).toBe("0px");
 
     frame.style.width = "1100px";
     frame.style.maxWidth = "none";
@@ -1169,6 +1176,12 @@
     await expect(
       canvas.queryByRole("slider", { name: /Resize/ }),
     ).not.toBeInTheDocument();
+    const mobileMain = root.querySelector<HTMLElement>('[data-ui-part="main"]')!;
+    const mobileFrame = root.closest<HTMLElement>(".ui-shell-story-frame")!;
+    await expect(getComputedStyle(mobileMain).marginTop).toBe("0px");
+    await expect(getComputedStyle(mobileMain).marginBottom).toBe("0px");
+    await expect(getComputedStyle(mobileFrame).paddingTop).toBe("0px");
+    await expect(getComputedStyle(mobileFrame).paddingBottom).toBe("0px");
 
     const filesToggle = canvas.getByRole("button", {
       name: "Open files sidebar",

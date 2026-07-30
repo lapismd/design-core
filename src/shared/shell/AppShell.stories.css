@@ -14,6 +14,8 @@
   width: 100%;
   min-width: 0;
   margin-inline: auto;
+  /* Large-mobile and below: flush the shell to the viewport top/bottom. */
+  padding-block: 0;
 }
 
 .ui-shell-story-frame-tablet {
@@ -22,7 +24,7 @@
 
 .ui-shell-story-frame-mobile {
   max-width: 30rem;
-  padding: 0.5rem;
+  padding-inline: 0.5rem;
 }
 
 .ui-shell-story-frame-constrained-desktop {
