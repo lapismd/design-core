@@ -24,7 +24,6 @@
 <Story
   name="Empty"
   exportName="Empty"
-  tags={["skip-visual"]}
   parameters={{
     docs: {
       description: { story: "Idle plain search pill." },
