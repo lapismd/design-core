@@ -81,7 +81,13 @@
   {/snippet}
 </Story>
 
-<Story name="Shows an error">
+<Story name="Shows an error"
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/filter/search-filter-bar/shows-an-error-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
+  }}
+
+  tags={["visual-pending"]}
+>
   {#snippet template()}
     <div class="max-w-xl">
       <SearchFilterBar
