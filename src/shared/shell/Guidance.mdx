@@ -385,11 +385,16 @@ collapsed/closed `previewOnHover` / `revealOnEdgeHover` path—those require
 durable collapsed or closed state. Constrained toggles read as Open/Close and
 flip the DOM preview only.
 
+For a usable constrained layout, keep the remaining inline left rail as a
+**collapsed icon rail** so main fills the rest of the root; do not leave an
+expanded Files column that crowds the body. **Constrained desktop overlays**
+rests that way (collapsed Files, Projects/AI overlay-hidden). **Complete shell
+composition** ends in the same resting presentation after its constrained
+checks.
+
 Do not set `desktopMinMainWidth={0}` in application shells unless you
 intentionally disable this protection (focused stories sometimes do). Prefer
 one composition for wide desktop, constrained desktop, and mobile.
-**Complete shell composition** and **Constrained desktop overlays** are the
-references.
 
 Do not add a second media-query shell or duplicate mobile markup around the
 compound composition.

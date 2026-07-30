@@ -57,6 +57,7 @@
     rightWidth: 256,
   });
   const constrainedDesktopController = new AppShellController({
+    leftCollapsed: true,
     leftWidth: 220,
     rightWidth: 240,
   });
@@ -797,7 +798,7 @@
     docs: {
       description: {
         story:
-          "Full nested shell topology on a wide desktop frame, then the same composition under constrained desktop overlays (right → projects → files). Overlay toggles open full-height previews without changing durable sidebar state. Rests constrained.",
+          "Full nested shell topology on a wide desktop frame, then the same composition under constrained desktop overlays. Rests with Files as a collapsed icon rail, Projects/AI overlay-hidden, and main filling the remaining panel width.",
       },
     },
   }}
@@ -1003,14 +1004,11 @@
       canvas.queryByRole("complementary", { name: "Table of contents" }),
     ).not.toBeInTheDocument();
 
-    frame.style.width = "62rem";
-    frame.style.maxWidth = "62rem";
+    frame.classList.add("ui-shell-story-frame-constrained-desktop");
+    frame.style.width = "";
+    frame.style.maxWidth = "";
     await waitFor(() =>
       expect(root).toHaveAttribute("data-desktop-constrained", "true"),
-    );
-    await expect(canvas.getByLabelText("Files sidebar")).toHaveAttribute(
-      "data-presentation",
-      "inline",
     );
     await expect(canvas.getByLabelText("Projects sidebar")).not.toBeVisible();
     await expect(canvas.getByLabelText("AI sidebar")).not.toBeVisible();
@@ -1036,7 +1034,8 @@
       name: "Open projects sidebar",
     });
     await userEvent.click(constrainedProjectsToggle);
-    const constrainedProjectsSidebar = canvas.getByLabelText("Projects sidebar");
+    const constrainedProjectsSidebar =
+      canvas.getByLabelText("Projects sidebar");
     await expect(constrainedProjectsSidebar).toHaveAttribute(
       "data-desktop-overlay-preview",
       "",
@@ -1048,6 +1047,28 @@
       }),
     );
     await expect(canvas.getByLabelText("Projects sidebar")).not.toBeVisible();
+
+    completeController.left.collapse();
+    await waitFor(() =>
+      expect(canvas.getByLabelText("Files sidebar")).toHaveAttribute(
+        "data-state",
+        "collapsed",
+      ),
+    );
+    const restingFiles = canvas.getByLabelText("Files sidebar");
+    const restingMain = root.querySelector<HTMLElement>(
+      '[data-ui-part="main"]',
+    )!;
+    await expect(restingFiles).toHaveAttribute("data-presentation", "inline");
+    await expect(canvas.getByLabelText("Projects sidebar")).not.toBeVisible();
+    await expect(canvas.getByLabelText("AI sidebar")).not.toBeVisible();
+    await expect(
+      restingMain.getBoundingClientRect().width,
+    ).toBeGreaterThanOrEqual(
+      root.getBoundingClientRect().width -
+        restingFiles.getBoundingClientRect().width -
+        24,
+    );
   }}
 >
   {#snippet template()}
@@ -1286,14 +1307,14 @@
     docs: {
       description: {
         story:
-          "When the desktop root cannot protect the min main width, lower-priority rails leave inline flow (right → named outer-left → left). Toggles open full-height overlay previews without mutating durable state. At 62rem, Files may remain inline; Projects and AI overlay.",
+          "When the desktop root cannot protect the min main width, lower-priority rails leave inline flow (right → named outer-left → left). Toggles open full-height overlay previews without mutating durable state. This demo rests with Files as a collapsed icon rail, Projects/AI overlay-hidden, and main filling the remaining width inside the Storybook panel.",
       },
     },
   }}
   play={async ({ canvas }) => {
     constrainedDesktopProjectSidebarController.expand();
     constrainedDesktopProjectSidebarController.setWidth(220);
-    constrainedDesktopController.left.expand();
+    constrainedDesktopController.left.collapse();
     constrainedDesktopController.left.setWidth(220);
     constrainedDesktopController.right.expand();
     constrainedDesktopController.right.setWidth(240);
@@ -1310,18 +1331,19 @@
       expect(root).toHaveAttribute("data-desktop-constrained", "true"),
     );
     await expect(root).toHaveAttribute("data-display-mode", "desktop");
-    await expect(main.getBoundingClientRect().width).toBeGreaterThanOrEqual(
-      576,
-    );
-    await expect(canvas.getByLabelText("Files sidebar")).toHaveAttribute(
-      "data-presentation",
-      "inline",
-    );
+    const filesSidebar = canvas.getByLabelText("Files sidebar");
+    await expect(filesSidebar).toHaveAttribute("data-state", "collapsed");
+    await expect(filesSidebar).toHaveAttribute("data-presentation", "inline");
     await expect(canvas.getByLabelText("Projects sidebar")).not.toBeVisible();
     await expect(canvas.getByLabelText("AI sidebar")).not.toBeVisible();
     await expect(
       canvas.queryByRole("complementary", { name: "Table of contents" }),
     ).not.toBeInTheDocument();
+    await expect(main.getBoundingClientRect().width).toBeGreaterThanOrEqual(
+      root.getBoundingClientRect().width -
+        filesSidebar.getBoundingClientRect().width -
+        24,
+    );
 
     const rightToggle = canvas.getByRole("button", {
       name: "Open right sidebar",
@@ -1370,6 +1392,7 @@
       "data-presentation",
       "inline",
     );
+    await expect(constrainedDesktopController.left.state).toBe("collapsed");
     await expect(constrainedDesktopController.left.width).toBe(220);
     await expect(constrainedDesktopController.right.width).toBe(240);
     await expect(constrainedDesktopProjectSidebarController.width).toBe(220);
@@ -1379,11 +1402,21 @@
     await waitFor(() =>
       expect(root).toHaveAttribute("data-desktop-constrained", "true"),
     );
+    constrainedDesktopController.left.collapse();
     await expect(canvas.getByLabelText("Projects sidebar")).not.toBeVisible();
     await expect(canvas.getByLabelText("AI sidebar")).not.toBeVisible();
     await expect(canvas.getByLabelText("Files sidebar")).toHaveAttribute(
+      "data-state",
+      "collapsed",
+    );
+    await expect(canvas.getByLabelText("Files sidebar")).toHaveAttribute(
       "data-presentation",
       "inline",
+    );
+    await expect(main.getBoundingClientRect().width).toBeGreaterThanOrEqual(
+      root.getBoundingClientRect().width -
+        canvas.getByLabelText("Files sidebar").getBoundingClientRect().width -
+        24,
     );
   }}
 >

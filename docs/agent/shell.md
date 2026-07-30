@@ -144,7 +144,8 @@ order: right → named outer-left → built-in left. Durable collapse/close/widt
 are unchanged. Overlayed panels reopen through adjacent toggles or edge
 affordance as full-height overlay previews (`data-desktop-overlay-preview`),
 not shadcn Popovers and not `previewOnHover` (which needs collapsed/closed
-state). Do not set `desktopMinMainWidth={0}` unless intentionally disabling
+state). Keep any remaining inline left rail collapsed so main stays fully
+visible. Do not set `desktopMinMainWidth={0}` unless intentionally disabling
 protection. References: **Complete shell composition**, **Constrained desktop
 overlays**.
 

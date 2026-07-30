@@ -26,9 +26,12 @@
 }
 
 .ui-shell-story-frame-constrained-desktop {
-  width: 62rem;
+  box-sizing: border-box;
+  width: 100%;
   min-width: 0;
-  max-width: 62rem;
+  /* Narrow enough that Projects + AI overlay while a collapsed Files rail
+     can remain inline and leave the main column fully visible. */
+  max-width: 56rem;
   margin-inline: auto;
 }
 
