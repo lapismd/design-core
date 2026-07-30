@@ -95,7 +95,7 @@
 
 <Story
   name="Open alert dialog"
-  tags={["visual-state", "visual-failed"]}
+  tags={["visual-state", "visual-pending"]}
   play={async ({ canvas }) => {
     await dismissOverlays();
     await userEvent.click(canvas.getByRole("button", { name: "Show Dialog" }));
@@ -105,6 +105,10 @@
         name: "Are you absolutely sure?",
       }),
     ).toBeVisible();
+  }}
+
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/alert-dialog/open-alert-dialog-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
   }}
 >
   {#snippet template()}
