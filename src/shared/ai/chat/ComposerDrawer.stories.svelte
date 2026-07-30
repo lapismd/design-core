@@ -58,7 +58,7 @@
       passThresholdPercent: 0.1,
     },
   }}
-  tags={["visual-pending"]}
+  tags={["visual-approved"]}
 >
   {#snippet template()}
     <div data-story="drawer-composer">
