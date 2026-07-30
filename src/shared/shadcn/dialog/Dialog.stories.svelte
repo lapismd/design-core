@@ -87,13 +87,17 @@
 
 <Story
   name="Open dialog"
-  tags={["visual-state", "visual-failed"]}
+  tags={["visual-state", "visual-pending"]}
   play={async ({ canvas }) => {
     await dismissOverlays();
     await userEvent.click(canvas.getByRole("button", { name: "Open Dialog" }));
     await expect(
       within(document.body).getByRole("dialog", { name: "Edit profile" }),
     ).toBeVisible();
+  }}
+
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/dialog/open-dialog-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
   }}
 >
   {#snippet template()}
