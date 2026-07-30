@@ -30,7 +30,7 @@
     );
     await expect(canvas.getByRole("status")).toHaveTextContent("closed");
   }}
-  tags={["visual-pending"]}
+  tags={["visual-approved"]}
   parameters={{
     visualDelta: {
       images: [
