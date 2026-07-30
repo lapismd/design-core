@@ -587,7 +587,7 @@
 
 <Story
   name="Full swipe armed"
-  tags={["visual-state", "visual-ready"]}
+  tags={["visual-state", "visual-approved"]}
   play={async ({ canvas }) => {
     const content = canvas.getByTestId("armed-content");
     const actions = content
