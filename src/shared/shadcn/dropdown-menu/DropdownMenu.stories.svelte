@@ -111,7 +111,7 @@
 
 <Story
   name="Open checkboxes menu"
-  tags={["visual-state", "visual-failed"]}
+  tags={["visual-state", "visual-pending"]}
   play={async ({ canvas }) => {
     await dismissOverlays();
     const trigger = canvas.getByRole("button", { name: "Open" });
@@ -123,6 +123,10 @@
         name: "Status Bar",
       }),
     ).toBeVisible();
+  }}
+
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/dropdown-menu/open-checkboxes-menu-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
   }}
 >
   {#snippet template()}
