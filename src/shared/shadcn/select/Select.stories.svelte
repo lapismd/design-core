@@ -42,7 +42,7 @@
     visualDelta: {"images":["/visual-baselines/shadcn/select/chooses-an-option-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
   }}
 
-  tags={["visual-pending"]}
+  tags={["visual-approved"]}
 >
   {#snippet template()}
     <div class="flex max-w-xs flex-col gap-2">
