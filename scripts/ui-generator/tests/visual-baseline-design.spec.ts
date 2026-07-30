@@ -43,8 +43,8 @@ describe("visual-baseline-design", () => {
   it("maps UI Forms stories via importPath", () => {
     expect(
       baselineUrlForStory({
-        title: "UI Forms/Add Section Chooser",
-        id: "ui-forms-add-section-chooser--chooses-a-section",
+        title: "UI Forms/Layout/Add Section Chooser",
+        id: "ui-forms-layout-add-section-chooser--chooses-a-section",
         importPath:
           "./src/shared/forms/add-section-chooser/AddSectionChooser.stories.svelte",
       }),
@@ -81,8 +81,8 @@ describe("visual-baseline-design", () => {
   it("skips skip-visual stories and unknown trees without importPath", () => {
     expect(
       baselineUrlForStory({
-        title: "UI Forms/Form Field",
-        id: "ui-forms-form-field--text-input",
+        title: "UI Forms/Form Inputs/Form Field",
+        id: "ui-forms-form-inputs-form-field--text-input",
       }),
     ).toBeUndefined();
     expect(

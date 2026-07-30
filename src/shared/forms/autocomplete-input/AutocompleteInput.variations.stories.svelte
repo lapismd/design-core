@@ -3,7 +3,7 @@
   import AutocompleteInput from "./AutocompleteInput.svelte";
 
   const { Story } = defineMeta({
-    title: "UI Forms/Autocomplete Input",
+    title: "UI Forms/Form Inputs/Autocomplete Input",
     component: AutocompleteInput,
     parameters: {
       docs: {

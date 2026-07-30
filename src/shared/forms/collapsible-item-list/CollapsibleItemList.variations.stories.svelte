@@ -3,7 +3,7 @@
   import CollapsibleItemList from "./CollapsibleItemList.svelte";
 
   const { Story } = defineMeta({
-    title: "UI Forms/Collapsible Item List",
+    title: "UI Forms/Layout/Collapsible Item List",
     component: CollapsibleItemList,
     parameters: {
       docs: {

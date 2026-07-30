@@ -302,7 +302,7 @@ describe("baselineUrlForStoryRef (panel hydrate)", () => {
       "../../../packages/storybook-addon-visual-delta/src/shared/baseline-url.ts"
     );
     const story = {
-      id: "ui-forms-form-field--center-aligned",
+      id: "ui-forms-form-inputs-form-field--center-aligned",
       importPath:
         "./src/shared/forms/form-field/FormField.variations.stories.svelte",
       tags: ["skip-visual"],
@@ -324,7 +324,7 @@ describe("storyOpenTagMatchesIdSlug", () => {
   tags={["skip-visual"]}
 >`;
     expect(
-      storyOpenTagMatchesIdSlug(tag, "ui-forms-form-field--default-row"),
+      storyOpenTagMatchesIdSlug(tag, "ui-forms-form-inputs-form-field--default-row"),
     ).toBe(true);
     expect(storyOpenTagMatchesIdSlug(tag, "default-row")).toBe(true);
     expect(storyOpenTagMatchesIdSlug(tag, "defaultrow")).toBe(true);

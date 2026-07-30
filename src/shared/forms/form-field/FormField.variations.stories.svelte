@@ -3,7 +3,7 @@
   import FormField from "./FormField.svelte";
 
   const { Story } = defineMeta({
-    title: "UI Forms/Form Field",
+    title: "UI Forms/Form Inputs/Form Field",
     component: FormField,
     parameters: {
       docs: {

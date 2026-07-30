@@ -3,7 +3,7 @@
   import EntryActions from "./EntryActions.svelte";
 
   const { Story } = defineMeta({
-    title: "UI Forms/Entry Actions",
+    title: "UI Forms/Layout/Entry Actions",
     component: EntryActions,
     parameters: {
       docs: {

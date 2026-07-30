@@ -3,7 +3,7 @@
   import AddSectionChooser from "./AddSectionChooser.svelte";
 
   const { Story } = defineMeta({
-    title: "UI Forms/Add Section Chooser",
+    title: "UI Forms/Layout/Add Section Chooser",
     component: AddSectionChooser,
     parameters: {
       docs: {

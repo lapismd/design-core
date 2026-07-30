@@ -4,7 +4,7 @@
   import FormField from "../form-field/FormField.svelte";
 
   const { Story } = defineMeta({
-    title: "UI Forms/Chip Autocomplete",
+    title: "UI Forms/Form Inputs/Chip Autocomplete",
     component: ChipAutocomplete,
     parameters: {
       docs: {

@@ -3,7 +3,7 @@
   import YamlEditor from "./YamlEditor.svelte";
 
   const { Story } = defineMeta({
-    title: "UI Forms/YAML Editor",
+    title: "UI Forms/Editors/YAML Editor",
     component: YamlEditor,
     parameters: {
       docs: {

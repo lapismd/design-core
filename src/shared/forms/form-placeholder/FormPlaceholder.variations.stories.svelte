@@ -3,7 +3,7 @@
   import FormPlaceholder from "./FormPlaceholder.svelte";
 
   const { Story } = defineMeta({
-    title: "UI Forms/Form Placeholder",
+    title: "UI Forms/Layout/Form Placeholder",
     component: FormPlaceholder,
     parameters: {
       docs: {
