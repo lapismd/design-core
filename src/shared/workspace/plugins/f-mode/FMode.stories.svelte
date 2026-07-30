@@ -85,7 +85,7 @@
 
 <Story
   name="Idle target surface"
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
   parameters={{
     visualDelta: {
       images: [
@@ -108,7 +108,7 @@
 
 <Story
   name="Active hints"
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
   play={async ({ canvasElement }) => {
     await openFMode(active.app, canvasElement);
     await expectActive(canvasElement);
@@ -128,7 +128,7 @@
 
 <Story
   name="Keyboard activation"
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
   play={async ({ canvas, canvasElement }) => {
     const tabsBefore = canvas.getAllByRole("tab").length;
     await openFMode(activation.app, canvasElement);
@@ -167,7 +167,7 @@
 
 <Story
   name="Partial query"
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
   play={async ({ canvasElement }) => {
     await openFMode(partial.app, canvasElement);
     await expectActive(canvasElement);
@@ -210,7 +210,7 @@
 
 <Story
   name="Filtered target groups"
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
   play={async ({ canvasElement }) => {
     await openFMode(filtered.app, canvasElement);
     await expectActive(canvasElement);
@@ -244,7 +244,7 @@
 
 <Story
   name="Minimal HUD"
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
   play={async ({ canvasElement }) => {
     await openFMode(minimal.app, canvasElement);
     await expectActive(canvasElement);

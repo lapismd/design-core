@@ -63,7 +63,7 @@
 
 <Story
   name="Invalid query"
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
   play={async ({ canvasElement }) => {
     await openFMode(invalid.app, canvasElement);
     const root = canvasElement.querySelector<HTMLElement>(
@@ -87,7 +87,7 @@
 
 <Story
   name="No targets"
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
   play={async ({ canvas, canvasElement }) => {
     await openFMode(noTargetsApp, canvasElement);
     await expect(canvas.getByText("No hint targets available")).toBeVisible();

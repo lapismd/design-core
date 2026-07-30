@@ -80,7 +80,7 @@
 
 <Story
   name="Toast severities"
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
   play={async ({ canvas, canvasElement }) => {
     await waitForPlugin(toastApp);
     toastApp.notifications.clearTransient();
@@ -130,7 +130,7 @@
 
 <Story
   name="Populated history"
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
   play={async ({ canvas, canvasElement }) => {
     await waitForPlugin(historyApp);
     await historyApp.notifications.clearAll();
@@ -173,7 +173,7 @@
 
 <Story
   name="Empty notification center"
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
   play={async ({ canvas, canvasElement }) => {
     await waitForPlugin(emptyApp);
     await emptyApp.notifications.clearAll();
@@ -206,7 +206,7 @@
 
 <Story
   name="Progress and cancellation"
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
   play={async ({ canvas, canvasElement }) => {
     await waitForPlugin(progressApp);
     progressHandle?.cancelled();
@@ -250,7 +250,7 @@
 
 <Story
   name="Fallback toast presentation"
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
   play={async ({ canvas, canvasElement }) => {
     await waitForPlugin(fallbackApp);
     fallbackApp.notifications.clearTransient();
@@ -297,7 +297,7 @@
 
 <Story
   name="Notice compatibility"
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
   play={async ({ canvas }) => {
     noticeApp.notifications.clearTransient();
     const notice = noticeApp.notices.show("Loading workspace", 0);
