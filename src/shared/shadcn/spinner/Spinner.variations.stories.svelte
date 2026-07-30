@@ -174,7 +174,7 @@
 <Story
   name="Empty"
   exportName="Empty"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     a11y: { test: "todo" },
     docs: {
