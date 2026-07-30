@@ -30,7 +30,7 @@
 
 <Story
   name="Overview"
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
   play={async ({ canvas, canvasElement }) => {
     await waitFor(() => expect(overview.app.ready).toBe(true));
     const settingsButton = canvas.getByRole("button", {
@@ -84,7 +84,7 @@
 
 <Story
   name="Controller and persistence interaction"
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
   play={async ({ canvas }) => {
     await waitFor(() => expect(interaction.app.ready).toBe(true));
     const savesBeforeAdd = interaction.tracker.saveCount;
@@ -130,7 +130,7 @@
 
 <Story
   name="Plugin lifecycle"
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
   play={async ({ canvas, canvasElement }) => {
     await waitFor(() => expect(pluginLifecycle.app.ready).toBe(true));
     const documentCanvas = within(canvasElement.ownerDocument.body);
@@ -184,7 +184,7 @@
   {/snippet}
 </Story>
 
-<Story name="Mobile composition" tags={["visual-ready"]}>
+<Story name="Mobile composition" tags={["visual-approved"]}>
   {#snippet template()}
     <ReusableFrameworkDemo app={mobile.app} displayMode="mobile" />
   {/snippet}
@@ -192,7 +192,7 @@
 
 <Story
   name="Pointer drag surface"
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
   parameters={{
     visualDelta: {
       images: [
