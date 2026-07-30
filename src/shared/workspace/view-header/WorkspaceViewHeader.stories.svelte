@@ -70,7 +70,7 @@
 
 <Story
   name="Breadcrumbs, actions, and pane menu"
-  tags={["visual-pending"]}
+  tags={["visual-approved"]}
   play={async ({ canvas }) => {
     await userEvent.click(canvas.getByRole("button", { name: "Refresh view" }));
     await expect(canvas.getByRole("status")).toHaveTextContent(
