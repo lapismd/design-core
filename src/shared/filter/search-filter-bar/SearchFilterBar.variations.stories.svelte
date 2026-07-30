@@ -25,10 +25,13 @@
   name="Empty"
   exportName="Empty"
   parameters={{
+    visualDelta: {"images":["/visual-baselines/filter/search-filter-bar/empty-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
     docs: {
       description: { story: "Idle plain search pill." },
     },
   }}
+
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <SearchFilterBar value="" placeholder="Search..." />
