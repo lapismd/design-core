@@ -48,7 +48,7 @@
 
 <Story
   name="Open tooltip"
-  tags={["visual-state", "visual-pending"]}
+  tags={["visual-state", "visual-approved"]}
   play={async ({ canvas }) => {
     const trigger = canvas.getByRole("button", { name: "Hover" });
     trigger.focus();
