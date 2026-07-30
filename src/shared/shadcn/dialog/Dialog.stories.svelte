@@ -109,13 +109,17 @@
 
 <Story
   name="Open custom close dialog"
-  tags={["visual-state", "visual-failed"]}
+  tags={["visual-state", "visual-pending"]}
   play={async ({ canvas }) => {
     await dismissOverlays();
     await userEvent.click(canvas.getByRole("button", { name: "Share" }));
     await expect(
       within(document.body).getByRole("dialog", { name: "Share link" }),
     ).toBeVisible();
+  }}
+
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/dialog/open-custom-close-dialog-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
   }}
 >
   {#snippet template()}
