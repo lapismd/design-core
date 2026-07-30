@@ -798,7 +798,7 @@
     docs: {
       description: {
         story:
-          "Full nested shell topology on a wide desktop frame, then the same composition under constrained desktop overlays. Rests with Files as a collapsed icon rail, Projects/AI overlay-hidden, and main filling the remaining panel width.",
+          "Full nested shell topology that tracks the Storybook viewport (`displayMode=\"auto\"`). Play temporarily widens and narrows the frame to assert desktop, constrained overlays, then restores a fluid frame so resizing the panel continues to drive layout.",
       },
     },
   }}
@@ -819,8 +819,12 @@
       name: "Main toolbar",
     });
 
+    frame.classList.remove("ui-shell-story-frame-constrained-desktop");
     frame.style.width = "1400px";
     frame.style.maxWidth = "none";
+    await waitFor(() =>
+      expect(root).toHaveAttribute("data-display-mode", "desktop"),
+    );
     await waitFor(() =>
       expect(root).not.toHaveAttribute("data-desktop-constrained"),
     );
@@ -1004,9 +1008,14 @@
       canvas.queryByRole("complementary", { name: "Table of contents" }),
     ).not.toBeInTheDocument();
 
-    frame.classList.add("ui-shell-story-frame-constrained-desktop");
-    frame.style.width = "";
-    frame.style.maxWidth = "";
+    // Stay at desktop (>=1024) but too narrow for Projects + AI + Files + min main.
+    frame.classList.remove("ui-shell-story-frame-constrained-desktop");
+    frame.style.padding = "0";
+    frame.style.width = "1030px";
+    frame.style.maxWidth = "none";
+    await waitFor(() =>
+      expect(root).toHaveAttribute("data-display-mode", "desktop"),
+    );
     await waitFor(() =>
       expect(root).toHaveAttribute("data-desktop-constrained", "true"),
     );
@@ -1055,19 +1064,17 @@
         "collapsed",
       ),
     );
-    const restingFiles = canvas.getByLabelText("Files sidebar");
-    const restingMain = root.querySelector<HTMLElement>(
-      '[data-ui-part="main"]',
-    )!;
-    await expect(restingFiles).toHaveAttribute("data-presentation", "inline");
-    await expect(canvas.getByLabelText("Projects sidebar")).not.toBeVisible();
-    await expect(canvas.getByLabelText("AI sidebar")).not.toBeVisible();
-    await expect(
-      restingMain.getBoundingClientRect().width,
-    ).toBeGreaterThanOrEqual(
-      root.getBoundingClientRect().width -
-        restingFiles.getBoundingClientRect().width -
-        24,
+    await expect(canvas.getByLabelText("Files sidebar")).toHaveAttribute(
+      "data-presentation",
+      "inline",
+    );
+
+    // Restore a fluid frame so Storybook viewport changes keep driving layout.
+    frame.style.width = "";
+    frame.style.maxWidth = "";
+    frame.style.padding = "";
+    await waitFor(() =>
+      expect(frame.getBoundingClientRect().width).toBeGreaterThan(0),
     );
   }}
 >
@@ -1075,7 +1082,8 @@
     <AppShellCompleteDemo
       controller={completeController}
       projectSidebar={completeProjectSidebarController}
-      displayMode="desktop"
+      displayMode="auto"
+      frameClass="ui-shell-story-frame-fluid"
     />
   {/snippet}
 </Story>

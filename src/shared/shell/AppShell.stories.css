@@ -9,6 +9,18 @@
   background: var(--muted);
 }
 
+/* Fill the Storybook canvas so ResizeObserver tracks the real viewport. */
+.ui-shell-story-frame-fluid {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+}
+
+.ui-shell-story-frame-fluid:has([data-display-mode="mobile"]) {
+  padding-block: 0;
+}
+
 .ui-shell-story-frame-tablet,
 .ui-shell-story-frame-mobile {
   width: 100%;
