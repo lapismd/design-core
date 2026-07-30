@@ -138,7 +138,7 @@
 
 <Story
   name="Open radio group menu"
-  tags={["visual-state", "visual-pending"]}
+  tags={["visual-state", "visual-approved"]}
   play={async ({ canvas }) => {
     await dismissOverlays();
     const trigger = canvas.getByRole("button", { name: "Open" });
