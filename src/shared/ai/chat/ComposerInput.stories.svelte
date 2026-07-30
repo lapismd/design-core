@@ -112,7 +112,7 @@
       passThresholdPercent: 0.1,
     },
   }}
-  tags={["visual-ready"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <div data-story="composer-input-showcase">
@@ -154,7 +154,7 @@
       passThresholdPercent: 0.1,
     },
   }}
-  tags={["visual-ready"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <div data-story="composer-input-stack">
@@ -192,7 +192,7 @@
       passThresholdPercent: 0.1,
     },
   }}
-  tags={["visual-ready"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <div data-story="composer-input-showcase">
@@ -226,7 +226,7 @@
       passThresholdPercent: 0.1,
     },
   }}
-  tags={["visual-ready"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <div data-story="composer-input-stack">
@@ -265,7 +265,7 @@
       passThresholdPercent: 0.1,
     },
   }}
-  tags={["visual-ready"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <div data-story="composer-input-stack">
@@ -304,7 +304,7 @@
       passThresholdPercent: 0.1,
     },
   }}
-  tags={["visual-ready"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <div data-story="composer-input-stack">
@@ -345,7 +345,7 @@
       passThresholdPercent: 0.1,
     },
   }}
-  tags={["visual-ready"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <div data-story="composer-input-stack">
@@ -390,7 +390,7 @@
       passThresholdPercent: 0.1,
     },
   }}
-  tags={["visual-ready"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <div data-story="composer-input-stack">
@@ -478,7 +478,7 @@
       passThresholdPercent: 0.1,
     },
   }}
-  tags={["visual-ready"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <div data-story="composer-input-stack">
@@ -512,7 +512,7 @@
       passThresholdPercent: 0.1,
     },
   }}
-  tags={["visual-ready"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <div data-story="composer-input-stack">
