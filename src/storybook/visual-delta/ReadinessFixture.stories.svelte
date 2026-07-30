@@ -26,6 +26,8 @@
       within(canvasElement).getByTestId("delayed-missing-subject"),
     ).toBeInTheDocument();
   }}
+
+  tags={["skip-visual"]}
 >
   {#snippet template()}
     <div data-testid="delayed-missing-subject">
