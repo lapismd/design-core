@@ -168,6 +168,10 @@
     await userEvent.click(canvas.getByRole("button", { name: "Delete task" }));
     await expect(canvas.getByRole("status")).toHaveTextContent("Deleted");
   }}
+
+  parameters={{
+    visualDelta: {"interactions":[{"id":"interaction-12-toHaveAttribute","label":"toHaveAttribute(\"aria-expanded\", \"true\")","src":"/visual-baselines/shadcn/swipe-item/leading-and-trailing-actions--interaction-12-toHaveAttribute-chromium-darwin.png"}]},
+  }}
 >
   {#snippet template()}
     <div class="w-full max-w-md">
