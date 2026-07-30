@@ -137,7 +137,6 @@
 
 <Story
   name="Ledger search demo"
-  tags={["skip-visual"]}
   play={async ({ canvas }) => {
     await expect(
       canvas.getByRole("searchbox", { name: "Ledger search" }),
