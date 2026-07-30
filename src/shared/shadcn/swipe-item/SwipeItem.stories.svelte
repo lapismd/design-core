@@ -249,6 +249,10 @@
       canvas.getByRole("button", { name: "Show disabled actions" }),
     ).toBeDisabled();
   }}
+
+  parameters={{
+    visualDelta: {"interactions":[{"id":"interaction-3-toHaveAttribute","label":"not.toHaveAttribute(\"aria-hidden\", \"true\")","src":"/visual-baselines/shadcn/swipe-item/controlled-and-disabled-states--interaction-3-toHaveAttribute-chromium-darwin.png"}]},
+  }}
 >
   {#snippet template()}
     <div class="flex w-full max-w-md flex-col gap-4">
