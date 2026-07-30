@@ -73,10 +73,12 @@ Defaults:
 
 1. Ignore disabled, non-primary, non-left-button, action-pane, trigger, form,
    editor, and `[data-swipe-item-gesture-ignore]` starts.
-2. Record the stable open side and pointer origin. Mouse/stylus use pointer
-   capture; touch uses document listeners matching the existing Shell pattern.
+2. Record the stable open side and pointer origin. Touch uses document listeners
+   matching the existing Shell pattern. Mouse/stylus stay pending without
+   pointer capture so nested Content controls still receive click.
 3. Stay pending until the activation distance is crossed. Abort when vertical
    movement wins; `touch-action: pan-y` remains static for the entire gesture.
+   Once horizontal drag activates, mouse/stylus capture on Content.
 4. Translate Content within the available logical-edge bounds. Permit resisted
    overswipe only where that side has an `onFullSwipe` callback.
 5. On pointer release:

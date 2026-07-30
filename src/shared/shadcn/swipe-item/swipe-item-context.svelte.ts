@@ -247,8 +247,9 @@ export class SwipeItemState {
       this.#root && getComputedStyle(this.#root).direction === "rtl"
         ? "rtl"
         : "ltr";
-    const captured = event.pointerType !== "touch";
-    if (captured) event.currentTarget.setPointerCapture?.(event.pointerId);
+    // Defer mouse/stylus capture until the gesture activates. Capturing on
+    // pointerdown retargets pointerup/click to Content and breaks nested
+    // button/link activation on closed items.
     this.#gesture = {
       pointerId: event.pointerId,
       pointerType: event.pointerType,
@@ -259,7 +260,7 @@ export class SwipeItemState {
       lastTime: event.timeStamp,
       velocityX: 0,
       dragging: false,
-      captured,
+      captured: false,
       ownerDocument: event.currentTarget.ownerDocument,
     };
 
@@ -292,6 +293,10 @@ export class SwipeItemState {
         return;
       }
       gesture.dragging = true;
+      if (gesture.pointerType !== "touch" && this.#content) {
+        this.#content.setPointerCapture?.(gesture.pointerId);
+        gesture.captured = true;
+      }
     }
 
     event.preventDefault();

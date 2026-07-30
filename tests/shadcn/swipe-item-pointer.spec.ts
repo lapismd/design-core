@@ -143,6 +143,28 @@ test.describe("Swipe Item pointer acceptance", () => {
     await expect(content).toHaveAttribute("data-browser-click-count", "1");
   });
 
+  test("closed content preserves nested button clicks before drag activation", async ({
+    page,
+  }) => {
+    await openStory(page, leadingStoryId);
+    const content = page.locator('[data-ui-part="content"]');
+    await content.evaluate((element) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.dataset.testid = "nested-content-button";
+      button.textContent = "Nested action";
+      button.dataset.clicked = "false";
+      button.addEventListener("click", () => {
+        button.dataset.clicked = "true";
+      });
+      element.append(button);
+    });
+
+    const nested = page.getByTestId("nested-content-button");
+    await nested.click();
+    await expect(nested).toHaveAttribute("data-clicked", "true");
+  });
+
   test("touch axis locking preserves vertical intent, ignored regions, and cancellation state", async ({
     page,
   }) => {

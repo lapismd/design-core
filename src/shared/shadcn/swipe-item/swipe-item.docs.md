@@ -54,7 +54,9 @@ import * as SwipeItem from "@stevejuma/ui/shadcn/swipe-item";
   swipes report `pointerType: "wheel"`.
 - Escape, a tap on open Content, or an outside pointer press closes the item.
 - Add `data-swipe-item-gesture-ignore` to nested interaction regions that must
-  own their pointer stream.
+  own their pointer stream. Plain clicks on nested buttons and links inside
+  closed Content still activate those controls; pointer capture begins only
+  after the horizontal activation distance is crossed.
 
 ## Accessibility
 

@@ -57,7 +57,9 @@ does not copy the unrelated upstream shadcn Item family.
   (`pointerType: "wheel"` for trackpad settles).
 - Escape, a tap on open Content, or an outside pointer press closes the item.
 - Add `data-swipe-item-gesture-ignore` to nested editors or custom interaction
-  regions that must own their pointer stream.
+  regions that must own their pointer stream. Nested buttons and links in closed
+  Content still receive clicks; pointer capture starts only after horizontal
+  activation.
 
 ## Accessibility
 
