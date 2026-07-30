@@ -94,6 +94,10 @@
     await expect(canvas.getByRole("status")).toHaveTextContent("Archived");
     await expect(trigger).toHaveAttribute("aria-expanded", "false");
   }}
+
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/swipe-item/reveals-end-actions-by-click-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
+  }}
 >
   {#snippet template()}
     <div class="w-full max-w-md">
