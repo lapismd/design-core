@@ -463,6 +463,8 @@
       "closed",
     );
   }}
+
+  tags={["skip-visual"]}
 >
   {#snippet template()}
     <div class="w-full max-w-md">
