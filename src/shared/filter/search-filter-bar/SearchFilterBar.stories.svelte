@@ -125,7 +125,7 @@
     visualDelta: {"images":["/visual-baselines/filter/search-filter-bar/filter-query-autocomplete-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
   }}
 
-  tags={["visual-pending"]}
+  tags={["visual-approved"]}
 >
   {#snippet template()}
     <div class="max-w-2xl">
