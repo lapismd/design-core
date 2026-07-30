@@ -285,7 +285,7 @@
     await userEvent.click(
       canvas.getByRole("button", { name: "Expand Attached context" }),
     );
-    await expect(canvas.getByText("release-notes.md")).toBeVisible();
+    await expect(canvas.getByText(/release-notes\.md/)).toBeVisible();
   }}
   parameters={{
     visualDelta: {
