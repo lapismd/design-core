@@ -36,7 +36,7 @@
     );
     await expect(canvas.getByRole("status")).toHaveTextContent("confirmed");
   }}
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
 
   parameters={{
     visualDelta: {"align":"viewport"},
