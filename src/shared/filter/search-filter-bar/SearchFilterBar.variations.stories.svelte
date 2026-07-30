@@ -52,7 +52,6 @@
 <Story
   name="Filter query highlighted"
   exportName="FilterQueryHighlighted"
-  tags={["skip-visual"]}
   parameters={{
     docs: {
       description: {
