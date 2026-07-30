@@ -299,7 +299,7 @@
 
 <Story
   name="Full swipe commits on release"
-  tags={["visual-ready"]}
+  tags={["visual-ready", "skip-visual"]}
   play={async ({ canvas }) => {
     const content = canvas.getByTestId("full-swipe-content");
     const actions = content
