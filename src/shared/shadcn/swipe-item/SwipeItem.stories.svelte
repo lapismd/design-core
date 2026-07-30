@@ -405,6 +405,10 @@
       "end",
     );
   }}
+
+  parameters={{
+    visualDelta: {"interactions":[{"id":"interaction-9-toHaveAttribute","label":"toHaveAttribute(\"aria-expanded\", \"true\")","src":"/visual-baselines/shadcn/swipe-item/trackpad-wheel-reveals-end-actions--interaction-9-toHaveAttribute-chromium-darwin.png"}]},
+  }}
 >
   {#snippet template()}
     <div class="w-full max-w-md">
