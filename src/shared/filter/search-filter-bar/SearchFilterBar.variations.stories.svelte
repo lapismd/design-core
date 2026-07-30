@@ -85,6 +85,7 @@
   name="Filter query predicate chips"
   exportName="FilterQueryPredicateChips"
   parameters={{
+    visualDelta: {"images":["/visual-baselines/filter/search-filter-bar/filter-query-predicate-chips-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
     docs: {
       description: {
         story:
@@ -154,6 +155,8 @@
       expect(remaining).toHaveLength(1);
     });
   }}
+
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <div class="max-w-2xl">
