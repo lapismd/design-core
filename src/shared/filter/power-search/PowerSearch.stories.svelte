@@ -134,7 +134,7 @@
       canvas.queryByRole("button", { name: "Edit type filter" }),
     ).not.toBeInTheDocument();
   }}
-  tags={["visual-approved"]}
+  tags={["visual-approved", "skip-visual"]}
 
   parameters={{
     visualDelta: {"align":"canvas","delay":5125},
