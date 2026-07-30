@@ -50,7 +50,7 @@
 <Story
   name="Custom separator"
   exportName="CustomSeparator"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     visualDelta: {
       images: [
