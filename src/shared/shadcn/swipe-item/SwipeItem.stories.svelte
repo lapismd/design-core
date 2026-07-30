@@ -80,7 +80,7 @@
 
 <Story
   name="Reveals end actions by click"
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
   play={async ({ canvas }) => {
     const trigger = canvas.getByRole("button", {
       name: "Show message actions",
