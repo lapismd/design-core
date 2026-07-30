@@ -42,10 +42,13 @@
   name="With query"
   exportName="WithQuery"
   parameters={{
+    visualDelta: {"images":["/visual-baselines/filter/search-filter-bar/with-query-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
     docs: {
       description: { story: "Populated plain search value." },
     },
   }}
+
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <SearchFilterBar value="design system" placeholder="Search..." />
