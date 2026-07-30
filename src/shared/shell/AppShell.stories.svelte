@@ -115,7 +115,7 @@
 
 <Story
   name="Two expanded sidebars"
-  tags={["visual-pending"]}
+  tags={["visual-approved"]}
   play={async ({ canvas }) => {
     expandedController.left.expand();
     expandedController.right.expand();
@@ -359,7 +359,7 @@
 
 <Story
   name="Nested project and file sidebars"
-  tags={["visual-pending"]}
+  tags={["visual-approved"]}
   play={async ({ canvas }) => {
     nestedSelectedProject = "";
     projectSidebarController.expand();
@@ -793,7 +793,7 @@
 
 <Story
   name="Complete shell composition"
-  tags={["visual-pending"]}
+  tags={["visual-approved"]}
   parameters={{
     docs: {
       description: {
@@ -1090,7 +1090,7 @@
 
 <Story
   name="Automatic tablet composition"
-  tags={["visual-pending"]}
+  tags={["visual-approved"]}
   play={async ({ canvas }) => {
     const root = canvas.getByRole("group", {
       name: "Mobile application shell",
@@ -1280,7 +1280,7 @@
 
 <Story
   name="Programmatic display modes"
-  tags={["visual-pending"]}
+  tags={["visual-approved"]}
   play={async ({ canvas }) => {
     const root = canvas
       .getByRole("main", {
@@ -1323,7 +1323,7 @@
 
 <Story
   name="Constrained desktop overlays"
-  tags={["visual-pending"]}
+  tags={["visual-approved"]}
   parameters={{
     docs: {
       description: {
@@ -1454,7 +1454,7 @@
 
 <Story
   name="Markdown document body sidebars"
-  tags={["visual-pending"]}
+  tags={["visual-approved"]}
   play={async ({ canvas }) => {
     documentController.left.expand();
     documentController.left.resetWidth();
@@ -1614,7 +1614,7 @@
 
 <Story
   name="Independent icon rails"
-  tags={["visual-pending"]}
+  tags={["visual-approved"]}
   play={async ({ canvas }) => {
     interactiveController.left.expand();
     interactiveController.right.expand();
@@ -1752,7 +1752,7 @@
 
 <Story
   name="Single sidebar composition"
-  tags={["visual-pending"]}
+  tags={["visual-approved"]}
   play={async ({ canvas }) => {
     minimalController.left.expand();
     minimalController.left.resetWidth();
