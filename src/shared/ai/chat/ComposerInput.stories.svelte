@@ -83,9 +83,11 @@
 
 <script lang="ts">
   let value = $state("");
+  let tokenValue = $state("");
   let handle = $state<ComposerInputHandle | null>(null);
   let insertedTokenId = $state<string | undefined>();
   let fileResult = $state("No files");
+  let pasteValue = $state("");
   let browserValue = $state("");
   let browserFileResult = $state("No browser files");
   let showcaseValue = $state("");
@@ -155,11 +157,7 @@
 >
   {#snippet template()}
     <div data-story="composer-input-stack">
-      <Composer
-        bind:value={controlledValue}
-        elevation="none"
-        onSubmit={() => {}}
-      >
+      <Composer bind:value={controlledValue} onSubmit={() => {}}>
         {#snippet input()}
           <ComposerInput
             bind:value={controlledValue}
@@ -232,7 +230,7 @@
   {#snippet template()}
     <div data-story="composer-input-stack">
       <p>Type <code>@</code> to mention a teammate.</p>
-      <Composer bind:value={mentionValue} elevation="none" onSubmit={() => {}}>
+      <Composer bind:value={mentionValue} onSubmit={() => {}}>
         {#snippet input()}
           <ComposerInput
             bind:value={mentionValue}
@@ -271,11 +269,7 @@
   {#snippet template()}
     <div data-story="composer-input-stack">
       <p>Type <code>@</code> for people or <code>/</code> for commands.</p>
-      <Composer
-        bind:value={multiTriggerValue}
-        elevation="none"
-        onSubmit={() => {}}
-      >
+      <Composer bind:value={multiTriggerValue} onSubmit={() => {}}>
         {#snippet input()}
           <ComposerInput
             bind:value={multiTriggerValue}
@@ -313,7 +307,7 @@
 >
   {#snippet template()}
     <div data-story="composer-input-stack">
-      <Composer bind:value={slashValue} elevation="none" onSubmit={() => {}}>
+      <Composer bind:value={slashValue} onSubmit={() => {}}>
         {#snippet input()}
           <ComposerInput
             bind:value={slashValue}
@@ -353,13 +347,17 @@
   tags={["visual-ready"]}
 >
   {#snippet template()}
-    <div data-story="input-frame">
-      <ComposerInput
-        bind:value
-        label="Mention someone"
-        triggers={mentionTriggers}
-        debounceMs={0}
-      />
+    <div data-story="composer-input-stack">
+      <Composer bind:value onSubmit={() => {}}>
+        {#snippet input()}
+          <ComposerInput
+            bind:value
+            label="Mention someone"
+            triggers={mentionTriggers}
+            debounceMs={0}
+          />
+        {/snippet}
+      </Composer>
       <output>{value || "Empty"}</output>
     </div>
   {/snippet}
@@ -394,8 +392,16 @@
   tags={["visual-ready"]}
 >
   {#snippet template()}
-    <div data-story="input-frame">
-      <ComposerInput bind:value bind:handle label="Token composer" />
+    <div data-story="composer-input-stack">
+      <Composer bind:value={tokenValue} onSubmit={() => {}}>
+        {#snippet input()}
+          <ComposerInput
+            bind:value={tokenValue}
+            bind:handle
+            label="Token composer"
+          />
+        {/snippet}
+      </Composer>
       <div data-story="input-actions">
         <button
           type="button"
@@ -466,13 +472,18 @@
   tags={["visual-ready"]}
 >
   {#snippet template()}
-    <div data-story="input-frame">
-      <ComposerInput
-        label="Paste or drop"
-        onFiles={(files, source) => {
-          fileResult = `${source}: ${files.map((file) => file.name).join(", ")}`;
-        }}
-      />
+    <div data-story="composer-input-stack">
+      <Composer bind:value={pasteValue} onSubmit={() => {}}>
+        {#snippet input()}
+          <ComposerInput
+            bind:value={pasteValue}
+            label="Paste or drop"
+            onFiles={(files, source) => {
+              fileResult = `${source}: ${files.map((file) => file.name).join(", ")}`;
+            }}
+          />
+        {/snippet}
+      </Composer>
       <output>{fileResult}</output>
     </div>
   {/snippet}
@@ -495,15 +506,19 @@
   tags={["visual-ready"]}
 >
   {#snippet template()}
-    <div data-story="input-frame">
-      <ComposerInput
-        bind:value={browserValue}
-        label="Browser acceptance composer"
-        pasteThreshold={20}
-        onFiles={(files, source) => {
-          browserFileResult = `${source}: ${files.map((file) => file.name).join(", ")}`;
-        }}
-      />
+    <div data-story="composer-input-stack">
+      <Composer bind:value={browserValue} onSubmit={() => {}}>
+        {#snippet input()}
+          <ComposerInput
+            bind:value={browserValue}
+            label="Browser acceptance composer"
+            pasteThreshold={20}
+            onFiles={(files, source) => {
+              browserFileResult = `${source}: ${files.map((file) => file.name).join(", ")}`;
+            }}
+          />
+        {/snippet}
+      </Composer>
       <output data-browser-value>{browserValue || "Empty"}</output>
       <output data-browser-files>{browserFileResult}</output>
     </div>
@@ -522,33 +537,16 @@
     gap: 1rem;
   }
 
-  :global([data-story="composer-input-stack"] p) {
+  :global([data-story="composer-input-stack"] p),
+  :global([data-story="composer-input-stack"] output) {
     margin: 0;
     color: var(--muted-foreground);
     font-size: 0.875rem;
   }
 
-  :global([data-story="input-frame"]) {
-    display: flex;
-    width: min(36rem, 90vw);
-    flex-direction: column;
-    gap: 0.625rem;
-    border: 1px solid var(--border);
-    border-radius: 0.875rem;
-    background: var(--background);
-    padding: 0.25rem;
-  }
-
-  :global([data-story="input-frame"] output) {
-    padding: 0.5rem;
-    color: var(--muted-foreground);
-    font-size: 0.75rem;
-  }
-
   :global([data-story="input-actions"]) {
     display: flex;
     gap: 0.5rem;
-    padding: 0.5rem;
   }
 
   :global([data-story="input-actions"] button) {
