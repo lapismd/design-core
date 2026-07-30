@@ -26,7 +26,7 @@
     await userEvent.click(canvas.getByRole("radio", { name: "Center" }));
     await expect(canvas.getByRole("status")).toHaveTextContent("center");
   }}
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
   parameters={{
     visualDelta: {
       images: [

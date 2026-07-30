@@ -20,7 +20,7 @@
 <Story
   name="Spacing"
   exportName="Spacing"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     visualDelta: {
       images: [
@@ -52,7 +52,7 @@
 <Story
   name="Outline"
   exportName="Outline"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     visualDelta: {
       images: [
@@ -84,7 +84,7 @@
 <Story
   name="Single"
   exportName="Single"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     visualDelta: {
       images: [
@@ -116,7 +116,7 @@
 <Story
   name="Small"
   exportName="Small"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     visualDelta: {
       images: [
@@ -148,7 +148,7 @@
 <Story
   name="Large"
   exportName="Large"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     visualDelta: {
       images: [
@@ -180,7 +180,7 @@
 <Story
   name="Disabled"
   exportName="Disabled"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     visualDelta: {
       images: [
@@ -212,7 +212,7 @@
 <Story
   name="Spacing 2"
   exportName="Spacing2"
-  tags={["upstream-example", "visual-ready"]}
+  tags={["upstream-example", "visual-approved"]}
   parameters={{
     visualDelta: {
       images: [

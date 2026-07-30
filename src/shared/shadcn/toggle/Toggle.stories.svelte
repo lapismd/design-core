@@ -27,7 +27,7 @@
     await userEvent.click(button);
     await expect(button).toHaveAttribute("data-state", "on");
   }}
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
 >
   {#snippet template()}
     <Toggle bind:pressed aria-label="Bold">Bold</Toggle>
