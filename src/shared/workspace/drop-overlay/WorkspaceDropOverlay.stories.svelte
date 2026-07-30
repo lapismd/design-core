@@ -19,7 +19,7 @@
 
 <Story
   name="Centre target"
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
   play={async ({ canvasElement }) => {
     await expect(
       canvasElement.querySelector('[data-drop-position="center"]'),
@@ -31,25 +31,25 @@
   {/snippet}
 </Story>
 
-<Story name="Left split target" tags={["visual-ready"]}>
+<Story name="Left split target" tags={["visual-approved"]}>
   {#snippet template()}
     <WorkspaceDropOverlay position="left" />
   {/snippet}
 </Story>
 
-<Story name="Right split target" tags={["visual-ready"]}>
+<Story name="Right split target" tags={["visual-approved"]}>
   {#snippet template()}
     <WorkspaceDropOverlay position="right" />
   {/snippet}
 </Story>
 
-<Story name="Top split target" tags={["visual-ready"]}>
+<Story name="Top split target" tags={["visual-approved"]}>
   {#snippet template()}
     <WorkspaceDropOverlay position="top" />
   {/snippet}
 </Story>
 
-<Story name="Bottom split target" tags={["visual-ready"]}>
+<Story name="Bottom split target" tags={["visual-approved"]}>
   {#snippet template()}
     <WorkspaceDropOverlay position="bottom" />
   {/snippet}

@@ -107,7 +107,7 @@
 
 <Story
   name="Activates, closes, and persists tabs"
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
   play={async ({ canvas, canvasElement }) => {
     const headerMain = canvasElement.querySelector(
       ".ui-workspace-tabs__header-main",
@@ -203,7 +203,7 @@
 
 <Story
   name="Constrained hidden-scrollbar row"
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
   globals={{ theme: "lapis", colorMode: "light" }}
   play={async ({ canvasElement }) => {
     const row = canvasElement.querySelector<HTMLElement>(

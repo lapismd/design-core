@@ -84,7 +84,7 @@
 
 <Story
   name="Icon tabs and grouped panels"
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
   play={async ({ canvas }) => {
     const reference = canvas.getByRole("tab", { name: "Reference" });
     await userEvent.click(reference);
@@ -143,7 +143,7 @@
 
 <Story
   name="Empty right sidebar"
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
   parameters={{
     visualDelta: {
       images: [

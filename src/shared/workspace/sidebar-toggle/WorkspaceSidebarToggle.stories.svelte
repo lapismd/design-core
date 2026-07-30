@@ -23,7 +23,7 @@
 
 <Story
   name="Both sidebar directions"
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
   play={async ({ canvas }) => {
     await userEvent.click(
       canvas.getByRole("button", { name: "Toggle right sidebar" }),

@@ -19,7 +19,7 @@
 
 <Story
   name="Serializable icon names"
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
   play={async ({ canvas }) => {
     await expect(canvas.getByTestId("workspace-icon-gallery")).toBeVisible();
   }}

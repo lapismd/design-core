@@ -53,7 +53,7 @@
 
 <Story
   name="Top and bottom controller items"
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
   play={async ({ canvas }) => {
     await userEvent.click(canvas.getByRole("button", { name: "Search" }));
     await expect(canvas.getByRole("status")).toHaveTextContent(

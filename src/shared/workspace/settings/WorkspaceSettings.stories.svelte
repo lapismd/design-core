@@ -330,7 +330,7 @@
 
 <Story
   name="Controller-owned workspace settings"
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
   play={async ({ canvas }) => {
     const search = canvas.getByRole("searchbox", {
       name: "Search settings",
@@ -358,7 +358,7 @@
 
 <Story
   name="Updates appearance and mobile configuration"
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
   play={async ({ canvas }) => {
     await userEvent.click(canvas.getByRole("button", { name: "Appearance" }));
     const scheme = canvas.getByRole("combobox", {
@@ -474,7 +474,7 @@
 
 <Story
   name="All supported controls"
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
   play={async ({ canvas }) => {
     const workspaceName = canvas.getByLabelText("Workspace name");
     await userEvent.clear(workspaceName);
@@ -519,7 +519,7 @@
 
 <Story
   name="Collections and extension controls"
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
   play={async ({ canvas, canvasElement }) => {
     await userEvent.click(
       canvas.getByRole("button", { name: "Host integration" }),

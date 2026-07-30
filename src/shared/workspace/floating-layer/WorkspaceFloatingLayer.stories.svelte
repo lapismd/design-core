@@ -59,7 +59,7 @@
 
 <Story
   name="Free and minimized windows"
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
   play={async ({ canvas }) => {
     await expect(
       canvas.getByRole("dialog", { name: "Reference" }),

@@ -42,7 +42,7 @@
 
 <Story
   name="Detached workspace tree"
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
   play={async ({ canvas, canvasElement }) => {
     await expect(
       canvasElement.querySelector(

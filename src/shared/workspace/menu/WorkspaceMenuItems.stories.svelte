@@ -45,7 +45,7 @@
 
 <Story
   name="Items, submenus, and disabled state"
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
   play={async ({ canvas }) => {
     await userEvent.click(
       canvas.getByRole("button", { name: "Open pane menu" }),

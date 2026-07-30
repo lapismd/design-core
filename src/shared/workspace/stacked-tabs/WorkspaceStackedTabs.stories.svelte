@@ -67,7 +67,7 @@
 
 <Story
   name="Activates and closes vertical tabs"
-  tags={["visual-ready"]}
+  tags={["visual-approved"]}
   play={async ({ canvas }) => {
     const reference = canvas.getByRole("button", { name: "Reference" });
     await userEvent.click(reference);
