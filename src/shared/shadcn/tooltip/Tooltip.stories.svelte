@@ -48,7 +48,7 @@
 
 <Story
   name="Open tooltip"
-  tags={["visual-state", "visual-failed"]}
+  tags={["visual-state", "visual-pending"]}
   play={async ({ canvas }) => {
     const trigger = canvas.getByRole("button", { name: "Hover" });
     trigger.focus();
@@ -60,6 +60,10 @@
         within(document.body).getByText("Add to library"),
       ).toBeVisible();
     });
+  }}
+
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/tooltip/open-tooltip-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
   }}
 >
   {#snippet template()}
