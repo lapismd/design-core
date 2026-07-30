@@ -618,6 +618,10 @@
       "end",
     );
   }}
+
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/swipe-item/full-swipe-armed-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
+  }}
 >
   {#snippet template()}
     <div class="w-full max-w-md">
