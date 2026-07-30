@@ -63,7 +63,7 @@
     await userEvent.type(input, "design");
     await expect(canvas.getByRole("status")).toHaveTextContent("design");
   }}
-  tags={["visual-pending"]}
+  tags={["visual-approved"]}
 >
   {#snippet template()}
     <div class="max-w-xl">
