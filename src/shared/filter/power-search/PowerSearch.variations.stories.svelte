@@ -88,7 +88,7 @@
   {/snippet}
 </Story>
 
-<Story name="Disabled" tags={["visual-ready"]}
+<Story name="Disabled" tags={["visual-approved"]}
   parameters={{
     visualDelta: {"images":["/visual-baselines/filter/power-search/disabled-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
   }}
