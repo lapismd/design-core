@@ -27,6 +27,7 @@
   data-ui-part="pagination-link"
   data-slot="pagination-link"
   data-active={isActive}
+  data-variant={isActive ? "outline" : "ghost"}
   data-size={size}
   class={className}
   {...restProps}

@@ -15,6 +15,8 @@
   data-ui-component="pagination"
   data-ui-part="pagination-previous"
   data-slot="pagination-previous"
+  data-variant="ghost"
+  data-size="default"
   class={className}
   {...restProps}
 >
