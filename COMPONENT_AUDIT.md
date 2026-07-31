@@ -7,10 +7,11 @@ components move between shared layers.
 
 Generic primitives in `src/shared/shadcn/`:
 
-accordion, alert, alert-dialog, badge, button, card, collapsible, command,
-dialog, dropdown-menu, empty, field, input, input-group, label, popover,
-resizable, scroll-area, select, separator, sheet, sidebar, skeleton, spinner,
-switch, swipe-item, tabs, textarea, toggle, toggle-group, tooltip
+accordion, alert, alert-dialog, badge, button, card, code, code-block,
+collapsible, command, dialog, dropdown-menu, empty, field, input, input-group,
+label, popover, resizable, scroll-area, select, separator, sheet, sidebar,
+skeleton, spinner, switch, swipe-item, tabs, textarea, toggle, toggle-group,
+tooltip
 
 Import: `@stevejuma/ui/shadcn/<family>`
 
@@ -18,6 +19,9 @@ Registry-backed families are converted to scoped native CSS with token maps and
 provenance files through `pnpm ui:add` / `pnpm ui:add:batch`. `swipe-item` is a
 project-authored native-CSS family because no corresponding registry item
 exists; its contract and research provenance live in `ADD_SWIPE_ITEM.md`.
+`code` and `code-block` are project-authored Astryx-inspired content primitives;
+see `ADD_CODE_BLOCK.md`. Prefer them for inline/fenced presentation. Forms
+`code-highlighter` remains the Lezer/`parser`-driven form-preview path.
 
 Batch commands: `pnpm ui:add:batch a` (simple roots), `b`
 (stateful/light compound), `c` (portals), and `d` (layout/field compounds).

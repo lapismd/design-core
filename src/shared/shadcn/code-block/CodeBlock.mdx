@@ -1,0 +1,27 @@
+import { Meta, Primary, Controls, Source } from "@storybook/addon-docs/blocks";
+import * as CodeBlockStories from "./CodeBlock.stories.svelte";
+
+<Meta of={CodeBlockStories} />
+
+# Code Block
+
+Fenced, syntax-highlighted code with optional header, line numbers, copy,
+collapse, and syntax themes.
+
+Use **Code** for inline prose references. Use **UI Forms / Code Highlighter**
+when a Lezer `parser` is already available for form previews.
+
+<Source
+  language="ts"
+  code={`import {
+  CodeBlock,
+  defineSyntaxTheme,
+  dracula,
+} from "@stevejuma/ui/shadcn/code-block";`}
+/>
+
+Provenance: `ADD_CODE_BLOCK.md` (Astryx-inspired, project-authored).
+
+<Primary />
+
+<Controls />

@@ -1,0 +1,30 @@
+@import "./code.tokens.css";
+
+[data-ui-component="code"] {
+  font-family: var(--ui-code-font-family);
+  font-size: var(--ui-code-font-size);
+  line-height: inherit;
+  background-color: var(--ui-code-background);
+  padding-inline: var(--ui-code-padding-inline);
+  padding-block: var(--ui-code-padding-block);
+  border-radius: var(--ui-code-radius);
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+[data-ui-component="code"][data-color="primary"] {
+  color: var(--ui-code-color);
+}
+
+[data-ui-component="code"][data-color="secondary"] {
+  color: var(--ui-code-color-secondary);
+}
+
+[data-ui-component="code"][data-color="inherit"] {
+  color: inherit;
+}
+
+[data-ui-component="code"][data-size="inherit"] {
+  font-size: inherit;
+  line-height: inherit;
+}

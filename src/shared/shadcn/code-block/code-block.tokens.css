@@ -1,0 +1,29 @@
+@import "./syntax/tokens.css";
+
+/**
+ * Default CodeBlock chrome + syntax bindings.
+ * Override --ui-code-block-* / --ui-code-syntax-* on :root or an ancestor.
+ */
+:root {
+  --ui-code-block-border-color: var(--border);
+  --ui-code-block-border-width: 1px;
+  --ui-code-block-radius: var(--radius);
+  --ui-code-block-font-family: var(--font-mono, ui-monospace, monospace);
+  --ui-code-block-font-size-md: 0.8125rem;
+  --ui-code-block-font-size-sm: 0.75rem;
+  --ui-code-block-line-height: 1.55;
+  --ui-code-block-header-font-size: 0.75rem;
+  --ui-code-block-header-line-height: 1.4;
+  --ui-code-block-padding-inline: 1rem;
+  --ui-code-block-padding-block: 0.75rem;
+  --ui-code-block-header-padding-block: 0.5rem;
+  --ui-code-block-accent-muted: color-mix(
+    in oklab,
+    var(--primary) 12%,
+    transparent
+  );
+  --ui-code-block-focus-ring: var(--ring);
+  --ui-code-block-duration-medium: 200ms;
+  --ui-code-block-duration-fast: 120ms;
+  --ui-code-block-ease: ease;
+}

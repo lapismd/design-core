@@ -1,0 +1,14 @@
+/**
+ * Default Code bindings → public theme tokens.
+ * Override --ui-code-* on :root or a shared ancestor.
+ */
+:root {
+  --ui-code-font-family: var(--font-mono, ui-monospace, monospace);
+  --ui-code-font-size: 0.875em;
+  --ui-code-background: var(--muted);
+  --ui-code-color: var(--foreground);
+  --ui-code-color-secondary: var(--muted-foreground);
+  --ui-code-padding-inline: 0.25rem;
+  --ui-code-padding-block: 0;
+  --ui-code-radius: calc(var(--radius) - 2px);
+}
