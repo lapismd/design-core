@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onDestroy } from "svelte";
   import type { HTMLAttributes } from "svelte/elements";
-  import type { WithElementRef } from "../../lib/utils.js";
+  import type { WithElementRef } from "../../../lib/utils.js";
   import { useAppShell } from "./app-shell-context.svelte.js";
   import { appShellTeleport } from "./app-shell-teleport.js";
 

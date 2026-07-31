@@ -21,13 +21,14 @@ This topic summarizes the package contract. Full decision guide:
 
 ## Choose the right layer
 
-1. **StructuredForm** — schema-shaped data with typed field configs from
-   `createFormConfig` / `textField` / `segmentedField` / etc.
+1. **StructuredForm** (`forms/structured-form/`) — schema-shaped data with typed
+   field configs from `createFormConfig` / `textField` / `segmentedField` / etc.
 2. **Composed primitives** — `FormField`, `FormSectionHeader`,
    `CollapsibleItemList`, `InlineOptionPicker` for one-off layouts.
-3. **YamlBackedForm** — dual structured + YAML source mode over the same draft.
-4. **JsonBackedForm** — dual structured + JSON source mode (prefer YAML for new
-   user-authored config).
+3. **YamlBackedForm** (`forms/yaml-backed-form/`) — dual structured + YAML source
+   mode over the same draft.
+4. **JsonBackedForm** (`forms/json-backed-form/`) — dual structured + JSON source
+   mode (prefer YAML for new user-authored config).
 5. **PatchableForm** — YamlBackedForm + JSON Patch Keep/Undo (`createOrAppendJsonReview`,
    `reviewedTextField` / `reviewedStringListField`, YAML `toYamlDiffs`).
 6. **shadcn** — Select, Switch, Command/Popover pickers, Toggle Group, Field.

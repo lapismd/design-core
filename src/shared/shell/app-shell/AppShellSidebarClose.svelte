@@ -2,7 +2,7 @@
   import XIcon from "@lucide/svelte/icons/x";
   import { flushSync } from "svelte";
   import type { HTMLButtonAttributes } from "svelte/elements";
-  import { Button } from "../shadcn/button/index.js";
+  import { Button } from "../../shadcn/button/index.js";
   import { useAppShell } from "./app-shell-context.svelte.js";
   import {
     APP_SHELL_SIDEBAR_LAYOUT_SYNC_EVENT,

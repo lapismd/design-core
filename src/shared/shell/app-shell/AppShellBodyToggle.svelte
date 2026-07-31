@@ -4,7 +4,7 @@
   import PanelRightCloseIcon from "@lucide/svelte/icons/panel-right-close";
   import PanelRightOpenIcon from "@lucide/svelte/icons/panel-right-open";
   import type { HTMLButtonAttributes } from "svelte/elements";
-  import { Button } from "../shadcn/button/index.js";
+  import { Button } from "../../shadcn/button/index.js";
   import { useAppShellBody } from "./app-shell-body-context.svelte.js";
   import { useAppShell } from "./app-shell-context.svelte.js";
   import type { AppShellSide } from "./app-shell-controller.svelte.js";

@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { HTMLAttributes } from "svelte/elements";
-  import type { WithElementRef } from "../../lib/utils.js";
+  import type { WithElementRef } from "../../../lib/utils.js";
+  import { ScrollArea } from "../../shadcn/scroll-area/index.js";
   import { useAppShell } from "./app-shell-context.svelte.js";
 
   let {
@@ -16,11 +17,13 @@
 <div
   bind:this={ref}
   {...restProps}
-  class={["ui-minimal-app-shell__sidebar-header", className]
+  class={["ui-minimal-app-shell__sidebar-body", className]
     .filter(Boolean)
     .join(" ")}
   data-ui-component="app-shell"
-  data-ui-part="sidebar-header"
+  data-ui-part="sidebar-body"
 >
-  {@render children?.()}
+  <ScrollArea type="auto" class="ui-minimal-app-shell__sidebar-scroll-area">
+    {@render children?.()}
+  </ScrollArea>
 </div>

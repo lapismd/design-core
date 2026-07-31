@@ -6,7 +6,7 @@
   import ListFilterIcon from "@lucide/svelte/icons/list-filter";
   import SearchIcon from "@lucide/svelte/icons/search";
   import SettingsIcon from "@lucide/svelte/icons/settings";
-  import { Button } from "../../shadcn/button/index.js";
+  import { Button } from "../../../shadcn/button/index.js";
   import { AppShell } from "../index.js";
   import type {
     AppShellController,

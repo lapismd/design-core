@@ -6,7 +6,7 @@
   import type { AppShellSidebarController } from "../app-shell-controller.svelte.js";
   import { useAppShell } from "../app-shell-context.svelte.js";
   import { AppShell } from "../index.js";
-  import * as Select from "../../shadcn/select/index.js";
+  import * as Select from "../../../shadcn/select/index.js";
 
   let {
     sidebar,

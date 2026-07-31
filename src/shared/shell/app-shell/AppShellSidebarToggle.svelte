@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onDestroy, untrack } from "svelte";
   import type { HTMLButtonAttributes } from "svelte/elements";
-  import { Button } from "../shadcn/button/index.js";
+  import { Button } from "../../shadcn/button/index.js";
   import { useAppShell } from "./app-shell-context.svelte.js";
   import type {
     AppShellSide,

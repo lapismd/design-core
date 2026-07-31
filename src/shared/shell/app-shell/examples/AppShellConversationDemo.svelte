@@ -9,12 +9,12 @@
     MessageMetadata,
     SystemMessage,
     ToolCalls,
-  } from "../../ai/chat.js";
-  import ReactionBar from "../../ai/experimental/reaction-bar/ReactionBar.svelte";
-  import Reasoning from "../../ai/experimental/reasoning/Reasoning.svelte";
-  import TypingIndicator from "../../ai/experimental/typing-indicator/TypingIndicator.svelte";
-  import UnreadDivider from "../../ai/experimental/unread-divider/UnreadDivider.svelte";
-  import { Button } from "../../shadcn/button/index.js";
+  } from "../../../ai/chat.js";
+  import ReactionBar from "../../../ai/experimental/reaction-bar/ReactionBar.svelte";
+  import Reasoning from "../../../ai/experimental/reasoning/Reasoning.svelte";
+  import TypingIndicator from "../../../ai/experimental/typing-indicator/TypingIndicator.svelte";
+  import UnreadDivider from "../../../ai/experimental/unread-divider/UnreadDivider.svelte";
+  import { Button } from "../../../shadcn/button/index.js";
   import { AppShell } from "../index.js";
   import type { AppShellController } from "../app-shell-controller.svelte.js";
 

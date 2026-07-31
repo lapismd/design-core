@@ -92,7 +92,8 @@ Import: `@stevejuma/ui/ai`, `@stevejuma/ui/ai/chat`, and
 
 ## Shared — shell
 
-Bounded application chrome in `src/shared/shell/`:
+Bounded application chrome in `src/shared/shell/app-shell/` (layer root holds
+guidance, tokens, and the package barrel):
 
 - Compound `Root`, `Sidebar`, `Sidebar.Header`, `Sidebar.Body`,
   `Sidebar.Footer`, `Sidebar.Toggle`, `Sidebar.Close`, `Main`, `Toolbar`, and

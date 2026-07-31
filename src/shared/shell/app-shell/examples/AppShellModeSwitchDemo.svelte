@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Button } from "../../shadcn/button/index.js";
+  import { Button } from "../../../shadcn/button/index.js";
   import type {
     AppShellController,
     AppShellDisplayMode,

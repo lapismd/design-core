@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { HTMLAttributes } from "svelte/elements";
-  import type { WithElementRef } from "../../lib/utils.js";
+  import type { WithElementRef } from "../../../lib/utils.js";
   import { useAppShell } from "./app-shell-context.svelte.js";
 
   let {
@@ -16,11 +16,11 @@
 <div
   bind:this={ref}
   {...restProps}
-  class={["ui-minimal-app-shell__sidebar-footer", className]
+  class={["ui-minimal-app-shell__sidebar-header", className]
     .filter(Boolean)
     .join(" ")}
   data-ui-component="app-shell"
-  data-ui-part="sidebar-footer"
+  data-ui-part="sidebar-header"
 >
   {@render children?.()}
 </div>

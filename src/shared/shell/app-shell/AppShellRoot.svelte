@@ -1,7 +1,7 @@
 <script lang="ts">
   import { flushSync, onDestroy, onMount, untrack } from "svelte";
   import type { HTMLAttributes } from "svelte/elements";
-  import type { WithElementRef } from "../../lib/utils.js";
+  import type { WithElementRef } from "../../../lib/utils.js";
   import { setAppShellContext } from "./app-shell-context.svelte.js";
   import type {
     AppShellController,
@@ -10,7 +10,7 @@
   } from "./app-shell-controller.svelte.js";
   import { APP_SHELL_DEFAULT_SIDEBAR_WIDTH } from "./app-shell-controller.svelte.js";
   import AppShellMobilePanelSelector from "./AppShellMobilePanelSelector.svelte";
-  import "./shell.tokens.css";
+  import "../shell.tokens.css";
   import "./AppShell.css";
 
   let {

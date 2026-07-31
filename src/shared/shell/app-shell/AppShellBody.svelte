@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { HTMLAttributes } from "svelte/elements";
-  import type { WithElementRef } from "../../lib/utils.js";
-  import { ScrollArea } from "../shadcn/scroll-area/index.js";
+  import type { WithElementRef } from "../../../lib/utils.js";
+  import { ScrollArea } from "../../shadcn/scroll-area/index.js";
   import { useAppShell } from "./app-shell-context.svelte.js";
   import {
     setAppShellBodyContext,

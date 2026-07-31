@@ -5,8 +5,8 @@
 <script lang="ts">
   import { untrack } from "svelte";
   import type { HTMLAttributes } from "svelte/elements";
-  import type { WithElementRef } from "../../lib/utils.js";
-  import { ScrollArea } from "../shadcn/scroll-area/index.js";
+  import type { WithElementRef } from "../../../lib/utils.js";
+  import { ScrollArea } from "../../shadcn/scroll-area/index.js";
   import { useAppShell } from "./app-shell-context.svelte.js";
   import { useAppShellBody } from "./app-shell-body-context.svelte.js";
   import type { AppShellSide } from "./app-shell-controller.svelte.js";

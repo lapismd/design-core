@@ -30,22 +30,22 @@ existing family already covers the need.
    folder per component; experimental under `experimental/<component>/`).
    Import from `@stevejuma/ui/ai`, `@stevejuma/ui/ai/chat`, or
    `@stevejuma/ui/ai/experimental`. Catalog: `AI/...`.
-5. **Shell** (`src/shared/shell/`) — bounded structural application chrome with
-   independently controlled collapsible, closeable, and resizable left/right
-   rails, optional same-side nesting, a full-height outer variant with
-   collapsed/closed edge and delayed toggle-hover previews, fixed sidebar
+5. **Shell** (`src/shared/shell/app-shell/`) — bounded structural application
+   chrome with independently controlled collapsible, closeable, and resizable
+   left/right rails, optional same-side nesting, a full-height outer variant
+   with collapsed/closed edge and delayed toggle-hover previews, fixed sidebar
    regions, a toolbar, and shadcn Scroll Areas for main and sidebar bodies. One
    compound composition resolves desktop or a transient left/main/right mobile
    track from the bounded root width; multiple panels on an edge use shadcn
    Select. Auto mode is the default. Constrained desktop protects a minimum
    main width by presenting lower-priority outer panels as overlays without
-   mutating durable layout. Its injected versioned adapter persists desktop sidebar state and
-   widths, including named same-side panels, but not transient mobile state.
-   Import from `@stevejuma/ui/shell`. Catalog:
-   `Shell/App Shell`. Guidance: `Shell/Guidance` and
-   `pnpm ui guide shell`. It owns geometry plus Toggle/Close actions; consumers
-   own navigation selection, other actions, content, and non-layout
-   persistence.
+   mutating durable layout. Its injected versioned adapter persists desktop
+   sidebar state and widths, including named same-side panels, but not
+   transient mobile state. Layer root keeps `Guidance.mdx`, tokens, and the
+   `@stevejuma/ui/shell` re-export barrel. Catalog: `Shell/App Shell`. Guidance:
+   `Shell/Guidance` and `pnpm ui guide shell`. It owns geometry plus
+   Toggle/Close actions; consumers own navigation selection, other actions,
+   content, and non-layout persistence.
 6. **Workspace** (`src/shared/workspace/`) — application-independent workspace
    framework, controller, layout, views, shell components, settings, and static
    plugin presentation. Import from `@stevejuma/ui/workspace`. Catalog:

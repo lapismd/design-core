@@ -4,9 +4,9 @@ title: App shell composition
 summary: Use the canonical compound topology, toggle placement, headers, and collapsed-rail behavior.
 sources:
   - src/shared/shell/Guidance.mdx
-  - src/shared/shell/AppShell.mdx
-  - src/shared/shell/AppShell.stories.svelte
-  - src/shared/shell/examples/AppShellCompleteDemo.svelte
+  - src/shared/shell/app-shell/AppShell.mdx
+  - src/shared/shell/app-shell/AppShell.stories.svelte
+  - src/shared/shell/app-shell/examples/AppShellCompleteDemo.svelte
   - src/shared/shell/index.ts
 ---
 

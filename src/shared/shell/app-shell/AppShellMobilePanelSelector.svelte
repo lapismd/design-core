@@ -1,5 +1,5 @@
 <script lang="ts">
-  import * as Select from "../shadcn/select/index.js";
+  import * as Select from "../../shadcn/select/index.js";
   import { useAppShell } from "./app-shell-context.svelte.js";
   import type { AppShellSide } from "./app-shell-controller.svelte.js";
 
