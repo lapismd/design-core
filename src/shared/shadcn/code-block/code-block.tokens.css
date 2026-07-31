@@ -12,8 +12,8 @@
   --ui-code-block-font-size-md: 0.8125rem;
   --ui-code-block-font-size-sm: 0.75rem;
   --ui-code-block-line-height: 1.55;
-  --ui-code-block-header-font-size: 0.75rem;
-  --ui-code-block-header-line-height: 1.4;
+  --ui-code-block-header-font-size: 0.75rem; /* astryx supporting = 12px */
+  --ui-code-block-header-line-height: 1.6667; /* astryx supporting leading → 20px */
   --ui-code-block-padding-inline: 1rem;
   --ui-code-block-padding-block: 0.75rem;
   --ui-code-block-header-padding-block: 0.5rem;

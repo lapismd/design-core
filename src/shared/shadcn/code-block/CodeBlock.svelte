@@ -410,17 +410,15 @@
           aria-controls={canCollapse ? regionId : undefined}
           onclick={canCollapse ? toggleCollapsed : undefined}
           onkeydown={canCollapse ? onHeaderKeydown : undefined}>
-          <span data-ui-part="code-block-header-title">
-            {#if canCollapse}
-              <span
+          <span data-ui-part="code-block-header-title"
+            >{#if canCollapse}<span
                 data-ui-part="code-block-collapse-chevron"
-                data-expanded={!isCollapsed ? "true" : undefined}>
-                <ChevronRightIcon size={14} aria-hidden="true" />
-              </span>
-            {/if}
-            {title ?? ""}{title && languageLabel ? " — " : ""}{languageLabel ??
-              ""}
-          </span>
+                data-expanded={!isCollapsed ? "true" : undefined}
+                ><ChevronRightIcon size={14} aria-hidden="true" /></span
+              >{/if}{title ?? ""}{title && languageLabel
+              ? " — "
+              : ""}{languageLabel ?? ""}</span
+          >
         </div>
         {@render copyControl("header")}
       </div>

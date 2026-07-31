@@ -41,6 +41,8 @@
   position: sticky;
   top: 0;
   z-index: 1;
+  /* Root is <pre> (UA white-space: pre); keep chrome on one line. */
+  white-space: nowrap;
 }
 
 [data-ui-part="code-block-header-row"][data-divider="true"] {
@@ -79,6 +81,7 @@
 [data-ui-part="code-block-header-title"] {
   display: flex;
   align-items: center;
+  min-width: 0;
   font-size: var(--ui-code-block-header-font-size);
   font-family: var(--ui-code-block-font-family);
   font-weight: 500;
@@ -89,6 +92,9 @@
   );
   margin: 0;
   line-height: var(--ui-code-block-header-line-height);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 [data-ui-part="code-block-collapse-chevron"] {
