@@ -128,8 +128,8 @@ Setting only `STORYBOOK_PORT` allocates the related lanes from the same base:
 | ---------------------------- | ------------ |
 | Storybook and AI acceptance  | base         |
 | Visual Delta static server   | base + 1     |
-| Visual Delta panel static    | base + 3     |
-| Visual Delta panel Storybook | base + 4     |
+| Visual Delta panel static    | base + 3 (package `storybook-static`) |
+| Visual Delta panel Storybook | base + 4 (package self-test Storybook; default standalone `9109` via `pnpm visual-delta:storybook`) |
 | Visual Delta panel visual    | base + 5     |
 | Spare debug/cleanup port     | base + 90    |
 | Workspace pointer Storybook  | base + 200   |
@@ -194,6 +194,11 @@ host-integration details live in
 [`packages/storybook-addon-visual-delta/README.md`](./packages/storybook-addon-visual-delta/README.md).
 The normative behavior and acceptance criteria live in the
 [`Visual Delta system specification`](./packages/storybook-addon-visual-delta/spec/src/index.md).
+
+Addon self-test stories (Panel Shell, Panel Chrome, Testing Module, …) live in
+the package Storybook (`pnpm visual-delta:storybook`), not the UI catalog.
+`pnpm test:visual-delta-panel` boots that package catalog. See
+[`packages/storybook-addon-visual-delta/DEVELOPMENT.md`](./packages/storybook-addon-visual-delta/DEVELOPMENT.md).
 
 The boundary is:
 
@@ -277,6 +282,8 @@ pnpm storybook:stop
 pnpm storybook:restart
 pnpm build-storybook
 pnpm storybook:check
+pnpm visual-delta:storybook
+pnpm visual-delta:build-storybook
 
 # Verification
 pnpm visual-delta:spec:check
@@ -284,6 +291,7 @@ pnpm test:unit
 pnpm test:storybook
 pnpm test:storybook:watch
 pnpm test:visual-delta-panel
+pnpm test:visual-delta-manager
 pnpm test:visual
 pnpm test:visual:affected
 pnpm test:visual:report

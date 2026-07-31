@@ -51,6 +51,9 @@ Committed under `tests/visual/storybook.spec.ts-snapshots/`.
 - Dev create/update/run/review hit addon-owned Vite middleware
   (`/__visual-delta/*` via the Visual Delta preset `viteFinal`); the host still
   owns Playwright writers and `staticDirs` → `/visual-baselines`.
+- Visual Delta self-test CSF lives in the package Storybook
+  (`pnpm visual-delta:storybook`). `pnpm test:visual-delta-panel` boots that
+  catalog, not the UI Storybook.
 - `ui:add` may create/replace baselines only for the component it is adding,
   and only after parity passes.
 - Tag `skip-visual` only when pixel flake cannot be stabilized (document why).

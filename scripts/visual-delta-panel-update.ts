@@ -8,10 +8,15 @@ if (process.env.VISUAL_UPDATE_APPROVED !== "1") {
 }
 
 if (process.env.VISUAL_DELTA_PANEL_SKIP_BUILD !== "1") {
-  const build = spawnSync("pnpm", ["build-storybook"], {
-    stdio: "inherit",
-    env: process.env,
-  });
+  // Panel acceptance hosts the package Storybook, not the UI catalog.
+  const build = spawnSync(
+    "pnpm",
+    ["--filter", "storybook-addon-visual-delta", "build-storybook"],
+    {
+      stdio: "inherit",
+      env: process.env,
+    },
+  );
   if (build.status !== 0) process.exit(build.status ?? 1);
 }
 
@@ -23,6 +28,7 @@ const update = spawnSync(
     "test",
     "-c",
     "packages/storybook-addon-visual-delta/playwright.panel.config.ts",
+    "packages/storybook-addon-visual-delta/tests/panel.spec.ts",
     "--update-snapshots=all",
   ],
   {
@@ -31,6 +37,8 @@ const update = spawnSync(
       ...process.env,
       PLAYWRIGHT_UPDATE_SNAPSHOTS: "1",
       PLAYWRIGHT_UPDATE_MODE: "all",
+      // Static was built above; avoid a second package Storybook build.
+      VISUAL_DELTA_PANEL_SKIP_STATIC_BUILD: "1",
     },
   },
 );
@@ -47,12 +55,14 @@ const verify = spawnSync(
     "test",
     "-c",
     "packages/storybook-addon-visual-delta/playwright.panel.config.ts",
+    "packages/storybook-addon-visual-delta/tests/panel.spec.ts",
   ],
   {
     stdio: "inherit",
     env: {
       ...process.env,
       PLAYWRIGHT_UPDATE_SNAPSHOTS: "0",
+      VISUAL_DELTA_PANEL_SKIP_STATIC_BUILD: "1",
     },
   },
 );

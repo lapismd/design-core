@@ -195,6 +195,9 @@ Local Playwright screenshots live under
   before or with an intentional behavior change. Source, tests, READMEs,
   provenance notes, parity notes, and completed plans are implementation
   evidence, not competing contracts.
+- Visual Delta self-test Storybook and CSF live in
+  `packages/storybook-addon-visual-delta` (`pnpm visual-delta:storybook`). Do
+  not re-host those stories under the UI catalog.
 - **Never** update visual baselines unless the user explicitly asks. Do not pass
   `--update-snapshots` from `storybook`, `test:storybook`, `storybook:check`,
   or `checks`.
