@@ -5,7 +5,7 @@ import {
   PLAYWRIGHT_PASS_THRESHOLD_PERCENT,
   type VisualDiffSidecar,
   type VisualDiffSidecarStatus,
-} from "../../../packages/storybook-addon-visual-delta/src/visual-diff-sidecar.js";
+} from "storybook-addon-visual-delta/src/visual-diff-sidecar.js";
 import {
   nestedSnapshotFileName,
   screenshotRelativePath,

@@ -3,7 +3,7 @@ import {
   ensureWarmStaticStorybookServer as ensureWarm,
   type WarmStaticServerResult,
 } from "storybook-addon-visual-delta/node";
-import { resolveVisualServerPort } from "../../../packages/storybook-addon-visual-delta/src/node/options.js";
+import { resolveVisualServerPort } from "storybook-addon-visual-delta/src/node/options.js";
 
 /** Same resolved port as `playwright.config.ts` webServer. */
 export function playwrightStaticPort(): number {

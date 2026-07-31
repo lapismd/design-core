@@ -299,7 +299,7 @@ describe("baselineUrlForStoryRef (panel hydrate)", () => {
   // Keep import path mapping in sync with panel post-create hydrate.
   it("builds forms/form-field URLs and can ignore stale skip-visual", async () => {
     const { baselineUrlForStoryRef } = await import(
-      "../../../packages/storybook-addon-visual-delta/src/shared/baseline-url.ts"
+      "storybook-addon-visual-delta/src/shared/baseline-url.ts"
     );
     const story = {
       id: "ui-forms-form-inputs-form-field--center-aligned",

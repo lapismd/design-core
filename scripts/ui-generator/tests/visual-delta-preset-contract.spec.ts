@@ -1,11 +1,11 @@
+import { createRequire } from "node:module";
 import { readFileSync } from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 
-const packageRoot = path.resolve(
-  path.dirname(fileURLToPath(import.meta.url)),
-  "../../../packages/storybook-addon-visual-delta",
+const require = createRequire(import.meta.url);
+const packageRoot = path.dirname(
+  require.resolve("storybook-addon-visual-delta/package.json"),
 );
 
 describe("packaged Visual Delta preset (Storybook 10 contract)", () => {

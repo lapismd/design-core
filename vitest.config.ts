@@ -30,22 +30,6 @@ export default mergeConfig(
           resolve: {
             dedupe: ["react", "react-dom"],
           },
-          test: {
-            name: "visual-delta",
-            environment: "jsdom",
-            include: [
-              "packages/storybook-addon-visual-delta/src/**/*.{spec,test}.{ts,tsx}",
-            ],
-            setupFiles: [
-              "./packages/storybook-addon-visual-delta/src/test/setup.ts",
-            ],
-          },
-        },
-        {
-          extends: true,
-          resolve: {
-            dedupe: ["react", "react-dom"],
-          },
           plugins: [
             storybookTest({
               configDir: path.join(dirname, ".storybook"),

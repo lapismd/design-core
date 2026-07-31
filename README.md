@@ -182,23 +182,24 @@ own surfaces.
 
 | Project        | Coverage                                              |
 | -------------- | ----------------------------------------------------- |
-| `unit`         | Node unit specs in `src/` and `scripts/ui-generator/` |
-| `visual-delta` | jsdom and React Testing Library specs for the addon   |
-| `storybook`    | browser story tests through `@storybook/addon-vitest` |
+| `unit`      | Node unit specs in `src/` and `scripts/ui-generator/` |
+| `storybook` | browser story tests through `@storybook/addon-vitest` |
 
 ## Visual Delta setup
 
 Visual Delta compares the live story canvas with committed Playwright PNGs and
-provides overlay, heatmap, create/update, and review controls. The addon API and
-host-integration details live in
-[`packages/storybook-addon-visual-delta/README.md`](./packages/storybook-addon-visual-delta/README.md).
-The normative behavior and acceptance criteria live in the
-[`Visual Delta system specification`](./packages/storybook-addon-visual-delta/spec/src/index.md).
+provides overlay, heatmap, create/update, and review controls. The portable addon
+lives in a sibling checkout at `../storybook-addon-visual-delta` and is consumed
+with `"storybook-addon-visual-delta": "link:../storybook-addon-visual-delta"`.
+The addon API and host-integration details live in that sibling's
+[`README.md`](../storybook-addon-visual-delta/README.md). The normative behavior
+and acceptance criteria live in the
+[`Visual Delta system specification`](../storybook-addon-visual-delta/spec/src/index.md).
 
 Addon self-test stories (Panel Shell, Panel Chrome, Testing Module, …) live in
 the package Storybook (`pnpm visual-delta:storybook`), not the UI catalog.
 `pnpm test:visual-delta-panel` boots that package catalog. See
-[`packages/storybook-addon-visual-delta/DEVELOPMENT.md`](./packages/storybook-addon-visual-delta/DEVELOPMENT.md).
+[`DEVELOPMENT.md`](../storybook-addon-visual-delta/DEVELOPMENT.md).
 
 The boundary is:
 
@@ -418,5 +419,5 @@ shadcn CLI directly against this package. Converted families keep
 | `pnpm ui guide layers`                                                                                                 | Layer selection, folders, dependencies    |
 | `pnpm ui guide testing`                                                                                                | Verification sequence                     |
 | [`COMPONENT_AUDIT.md`](./COMPONENT_AUDIT.md)                                                                           | Retained component inventory              |
-| [`packages/storybook-addon-visual-delta/spec/src/index.md`](./packages/storybook-addon-visual-delta/spec/src/index.md) | Normative Visual Delta system contract    |
-| [`packages/storybook-addon-visual-delta/README.md`](./packages/storybook-addon-visual-delta/README.md)                 | Addon API and integration                 |
+| [`../storybook-addon-visual-delta/spec/src/index.md`](../storybook-addon-visual-delta/spec/src/index.md) | Normative Visual Delta system contract    |
+| [`../storybook-addon-visual-delta/README.md`](../storybook-addon-visual-delta/README.md)                 | Addon API and integration                 |

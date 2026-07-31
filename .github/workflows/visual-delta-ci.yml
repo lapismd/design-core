@@ -3,10 +3,12 @@ name: Visual Delta CI
 on:
   pull_request:
     paths:
-      - "packages/storybook-addon-visual-delta/**"
       - "tests/visual/**"
       - "src/**"
       - ".storybook/**"
+      - "scripts/ui-generator/**"
+      - "scripts/storybook-run.mjs"
+      - "scripts/visual-delta-panel-update.ts"
       - "package.json"
       - "pnpm-lock.yaml"
       - "pnpm-workspace.yaml"
@@ -17,67 +19,25 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  package:
-    name: Package typecheck and unit tests
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    steps:
-      - name: Check out the pull request
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-
-      - name: Set up pnpm
-        run: |
-          corepack enable
-          corepack prepare pnpm@10.32.1 --activate
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Typecheck Visual Delta package
-        run: pnpm check:visual-delta
-
-      - name: Run Visual Delta Vitest project
-        run: pnpm exec vitest run --project visual-delta
-
-  panel:
-    name: Panel browser acceptance
-    runs-on: ubuntu-latest
-    timeout-minutes: 45
-    steps:
-      - name: Check out the pull request
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-
-      - name: Set up pnpm
-        run: |
-          corepack enable
-          corepack prepare pnpm@10.32.1 --activate
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Install Playwright Chromium
-        run: pnpm exec playwright install --with-deps chromium
-
-      - name: Run Visual Delta panel acceptance
-        run: pnpm test:visual-delta-panel
-
   host-visual:
     name: Host catalog visual compare
     runs-on: ubuntu-latest
     timeout-minutes: 90
+    defaults:
+      run:
+        working-directory: ui
     steps:
-      - name: Check out the pull request
+      - name: Check out the UI catalog
         uses: actions/checkout@v4
+        with:
+          path: ui
+
+      - name: Check out Visual Delta sibling
+        uses: actions/checkout@v4
+        with:
+          repository: stevejuma/storybook-addon-visual-delta
+          path: storybook-addon-visual-delta
+          token: ${{ secrets.VISUAL_DELTA_REPO_TOKEN != '' && secrets.VISUAL_DELTA_REPO_TOKEN || github.token }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -89,7 +49,11 @@ jobs:
           corepack enable
           corepack prepare pnpm@10.32.1 --activate
 
-      - name: Install dependencies
+      - name: Install UI catalog dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Visual Delta sibling dependencies
+        working-directory: storybook-addon-visual-delta
         run: pnpm install --frozen-lockfile
 
       - name: Install Playwright Chromium

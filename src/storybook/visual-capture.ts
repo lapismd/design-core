@@ -6,4 +6,4 @@
 export {
   afterPlayStep,
   visualCapture,
-} from "../../packages/storybook-addon-visual-delta/src/shared/visual-capture-step";
+} from "storybook-addon-visual-delta/src/shared/visual-capture-step";

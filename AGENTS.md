@@ -189,15 +189,18 @@ Local Playwright screenshots live under
 `tests/visual/storybook.spec.ts-snapshots/` and are committed.
 
 - Before changing Visual Delta behavior, read the normative
-  [`Visual Delta system specification`](./packages/storybook-addon-visual-delta/spec/src/index.md).
+  [Visual Delta system specification](../storybook-addon-visual-delta/spec/src/index.md)
+  in the sibling checkout (`../storybook-addon-visual-delta`, linked via
+  `"storybook-addon-visual-delta": "link:../storybook-addon-visual-delta"`).
   Update the relevant stable requirement and
-  [`verification map`](./packages/storybook-addon-visual-delta/spec/src/verification.md)
+  [verification map](../storybook-addon-visual-delta/spec/src/verification.md)
   before or with an intentional behavior change. Source, tests, READMEs,
   provenance notes, parity notes, and completed plans are implementation
-  evidence, not competing contracts.
-- Visual Delta self-test Storybook and CSF live in
-  `packages/storybook-addon-visual-delta` (`pnpm visual-delta:storybook`). Do
-  not re-host those stories under the UI catalog.
+  evidence, not competing contracts. Spec First CI lives on the Visual Delta
+  GitHub repo, not this catalog.
+- Visual Delta self-test Storybook and CSF live in the sibling package
+  (`pnpm visual-delta:storybook`). Do not re-host those stories under the UI
+  catalog.
 - **Never** update visual baselines unless the user explicitly asks. Do not pass
   `--update-snapshots` from `storybook`, `test:storybook`, `storybook:check`,
   or `checks`.
@@ -220,9 +223,8 @@ Local Playwright screenshots live under
   project `deviceScaleFactor` (this catalog: `3`),
   `toHaveScreenshot` `scale: "device"`).
 - Playwright baselines are served at `/visual-baselines` for live compare via
-  the workspace `storybook-addon-visual-delta` package
-  (`packages/storybook-addon-visual-delta/src`; see the
-  [canonical specification](./packages/storybook-addon-visual-delta/spec/src/index.md)).
+  the sibling `storybook-addon-visual-delta` package (see the
+  [canonical specification](../storybook-addon-visual-delta/spec/src/index.md)).
   A Vite inject
   wires `parameters.visualDelta` for catalog stories that are not
   `skip-visual` when a matching PNG exists under the snapshot dir (Shadcn and

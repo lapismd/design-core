@@ -1,9 +1,12 @@
 import type { StorybookConfig } from "@storybook/svelte-vite";
+import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
+import path from "node:path";
 import { mergeConfig } from "vite";
 
-const visualDeltaPackageRoot = fileURLToPath(
-  new URL("../packages/storybook-addon-visual-delta", import.meta.url),
+const require = createRequire(import.meta.url);
+const visualDeltaPackageRoot = path.dirname(
+  require.resolve("storybook-addon-visual-delta/package.json"),
 );
 
 const config: StorybookConfig = {

@@ -10,7 +10,7 @@ import {
   baselinePngPath,
   VISUAL_SNAPSHOT_DIR,
 } from "../../scripts/ui-generator/visual/diff-result.js";
-import { writeDiffArtifactsForBaseline } from "../../packages/storybook-addon-visual-delta/src/playwright/write-diff-artifacts.js";
+import { writeDiffArtifactsForBaseline } from "storybook-addon-visual-delta/src/playwright/write-diff-artifacts.js";
 import {
   interactionBaselinePngPath,
   listInteractionBaselinesOnDisk,
@@ -25,11 +25,11 @@ import {
   VISUAL_CAPTURE_READY_ATTR,
   VISUAL_CAPTURE_UNTIL_PARAM,
   instrumenterCallIdForInteraction,
-} from "../../packages/storybook-addon-visual-delta/src/shared/interaction-capture.js";
+} from "storybook-addon-visual-delta/src/shared/interaction-capture.js";
 import {
   VISUAL_CAPTURE_SURFACE_SELECTORS,
   measureVisualCaptureClip,
-} from "../../packages/storybook-addon-visual-delta/src/shared/capture-target.js";
+} from "storybook-addon-visual-delta/src/shared/capture-target.js";
 import {
   VISUAL_DELTA_ALIGN_ATTR,
   VISUAL_DELTA_CROP_ATTR,
@@ -38,13 +38,13 @@ import {
   VISUAL_DELTA_IGNORE_ATTR_LIST,
   VISUAL_DELTA_INCLUDE_AA_ATTR,
   VISUAL_DELTA_PASS_THRESHOLD_ATTR,
-} from "../../packages/storybook-addon-visual-delta/src/shared/capture-params-attrs.js";
-import { resolveIgnoreSelectors } from "../../packages/storybook-addon-visual-delta/src/shared/ignore.js";
+} from "storybook-addon-visual-delta/src/shared/capture-params-attrs.js";
+import { resolveIgnoreSelectors } from "storybook-addon-visual-delta/src/shared/ignore.js";
 import {
   settleVisualStoryPage,
   waitForVisualStoryFinished,
-} from "../../packages/storybook-addon-visual-delta/src/playwright/readiness.js";
-import { readVisualDeltaProjectConfig } from "../../packages/storybook-addon-visual-delta/src/node/project-config.js";
+} from "storybook-addon-visual-delta/src/playwright/readiness.js";
+import { readVisualDeltaProjectConfig } from "storybook-addon-visual-delta/src/node/project-config.js";
 
 type StorybookIndex = {
   entries: Record<string, StoryIndexEntry>;

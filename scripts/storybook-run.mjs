@@ -9,9 +9,11 @@ import {
   readFileSync,
   existsSync,
   readdirSync,
+  realpathSync,
   statSync,
 } from "node:fs";
 import { createHash } from "node:crypto";
+import { createRequire } from "node:module";
 import path from "node:path";
 import {
   acquireSupervisorOwnership,
@@ -27,6 +29,10 @@ import {
 
 const lane = resolveStorybookLane();
 const { root, port, visualPort, serverPorts } = lane;
+const require = createRequire(import.meta.url);
+const visualDeltaPackageRoot = realpathSync(
+  path.dirname(require.resolve("storybook-addon-visual-delta/package.json")),
+);
 const RESTART_DEBOUNCE_MS = 500;
 const STARTUP_GRACE_MS = 10_000;
 
@@ -72,18 +78,15 @@ for (const listener of auxiliaryPorts) {
  * Preview-only source remains under Vite HMR.
  */
 const restartWatchPaths = [
-  path.join(root, "packages/storybook-addon-visual-delta/src/manager.tsx"),
-  path.join(root, "packages/storybook-addon-visual-delta/src/manager"),
-  path.join(root, "packages/storybook-addon-visual-delta/src/panel"),
-  path.join(root, "packages/storybook-addon-visual-delta/src/constants.ts"),
-  path.join(root, "packages/storybook-addon-visual-delta/src/types.ts"),
-  path.join(
-    root,
-    "packages/storybook-addon-visual-delta/src/visual-diff-sidecar.ts",
-  ),
-  path.join(root, "packages/storybook-addon-visual-delta/src/shared"),
-  path.join(root, "packages/storybook-addon-visual-delta/src/preset.ts"),
-  path.join(root, "packages/storybook-addon-visual-delta/src/node"),
+  path.join(visualDeltaPackageRoot, "src/manager.tsx"),
+  path.join(visualDeltaPackageRoot, "src/manager"),
+  path.join(visualDeltaPackageRoot, "src/panel"),
+  path.join(visualDeltaPackageRoot, "src/constants.ts"),
+  path.join(visualDeltaPackageRoot, "src/types.ts"),
+  path.join(visualDeltaPackageRoot, "src/visual-diff-sidecar.ts"),
+  path.join(visualDeltaPackageRoot, "src/shared"),
+  path.join(visualDeltaPackageRoot, "src/preset.ts"),
+  path.join(visualDeltaPackageRoot, "src/node"),
   path.join(root, ".storybook/visual-delta-preset.ts"),
   path.join(root, ".storybook/manager.ts"),
 ];

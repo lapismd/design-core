@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { resolvePaintedBackground } from "../../../packages/storybook-addon-visual-delta/src/shared/preview-background.js";
+import { resolvePaintedBackground } from "storybook-addon-visual-delta/src/shared/preview-background.js";
 
 describe("resolvePaintedBackground", () => {
   it("prefers an opaque preferred element over body", () => {
