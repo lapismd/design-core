@@ -26,7 +26,10 @@ existing family already covers the need.
    (`PowerSearch`, `SearchFilterBar`, `parseFilterQuery`, host `filterSyntax`).
    Import from
    `@stevejuma/ui/filter`. Catalog: `Filter/...`. Guidance: `Filter/Guidance`.
-4. **AI** (`src/shared/ai/`) — shared AI panel primitives. Catalog: `AI/...`.
+4. **AI** (`src/shared/ai/<component>/`) — shared AI chat primitives (one
+   folder per component; experimental under `experimental/<component>/`).
+   Import from `@stevejuma/ui/ai`, `@stevejuma/ui/ai/chat`, or
+   `@stevejuma/ui/ai/experimental`. Catalog: `AI/...`.
 5. **Shell** (`src/shared/shell/`) — bounded structural application chrome with
    independently controlled collapsible, closeable, and resizable left/right
    rails, optional same-side nesting, a full-height outer variant with

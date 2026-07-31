@@ -120,22 +120,23 @@ Hello
     expect(doc.sources.some((s) => s.endsWith("FormField.mdx"))).toBe(true);
   });
 
-  it("shows AI components from stories", () => {
-    const ai = getComponent(packageRoot, "ai/ai-chat-panel");
+  it("shows AI components from colocated MDX", () => {
+    const ai = getComponent(packageRoot, "ai/composer-input");
     expect(ai.layer).toBe("ai");
-    expect(ai.import).toBe("@stevejuma/ui/ai");
+    expect(ai.import).toBe("@stevejuma/ui/ai/chat");
     expect(ai.body).toContain("Import");
   });
 
   it("lists the complete stable and experimental AI Chat catalog", () => {
     const ai = listComponents(packageRoot, { layer: "ai" });
-    expect(ai).toHaveLength(25);
-    expect(ai.find((entry) => entry.id === "chat-composer-input")?.import).toBe(
+    // 15 stable + 5 experimental + overview
+    expect(ai).toHaveLength(21);
+    expect(ai.find((entry) => entry.id === "composer-input")?.import).toBe(
       "@stevejuma/ui/ai/chat",
     );
     expect(
-      ai.find((entry) => entry.id === "chat-experimental-emoji-picker")?.import,
-    ).toBe("@stevejuma/ui/ai/chat/experimental");
+      ai.find((entry) => entry.id === "experimental-emoji-picker")?.import,
+    ).toBe("@stevejuma/ui/ai/experimental");
     expect(ai.every((entry) => entry.hasDocs)).toBe(true);
   });
 

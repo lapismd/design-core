@@ -101,8 +101,9 @@ full-repo static `llms.txt` notes: `pnpm ui guide llms-extraction`.
   `@stevejuma/ui/forms` or `@stevejuma/ui/forms/core`.
 - Search filter chrome and filter-query language live under
   `src/shared/filter/`. Import from `@stevejuma/ui/filter`.
-- Shared AI presentation lives under `src/shared/ai/`. Import it from
-  `@stevejuma/ui/ai`.
+- Shared AI presentation lives under `src/shared/ai/<component>/` (experimental
+  under `src/shared/ai/experimental/<component>/`). Import from
+  `@stevejuma/ui/ai`, `@stevejuma/ui/ai/chat`, or `@stevejuma/ui/ai/experimental`.
 - Interactive examples must be genuinely interactive. Play functions must
   exercise the real control flow and assert a visible or accessible result as
   well as any callback.

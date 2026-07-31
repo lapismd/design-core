@@ -64,6 +64,8 @@ const LAYERS: ComponentLayer[] = ["shadcn", "forms", "filter", "ai"];
 
 const FORMS_SKIP_DIRS = new Set(["core"]);
 const FILTER_SKIP_DIRS = new Set(["filter-query"]);
+/** Non-component folders under `src/shared/ai/`. */
+const AI_SKIP_DIRS = new Set(["experimental", "conversation"]);
 
 export type CatalogEntry = {
   layer: ComponentLayer;
@@ -597,42 +599,63 @@ function collectAi(packageRoot: string): CatalogEntry[] {
   if (!existsSync(root)) return [];
   const overview = path.join(root, "Ai.mdx");
 
-  function collectDirectory(
-    dir: string,
-    importPath: string,
-    idPrefix = "",
-  ): CatalogEntry[] {
-    if (!existsSync(dir)) return [];
-    const components = readdirSync(dir)
-      .filter((name) => name.endsWith(".svelte") && !name.includes(".stories."))
-      .map((name) => name.replace(/\.svelte$/, ""));
-    return components.map((pascal) => {
-      const id = `${idPrefix}${kebabFromPascal(pascal)}`;
-      const storyPath = path.join(dir, `${pascal}.stories.svelte`);
+  const stable = listDirs(root)
+    .filter((id) => !AI_SKIP_DIRS.has(id))
+    .filter((id) => {
+      const dir = path.join(root, id);
+      return listFiles(dir, ".svelte").some(
+        (file) => !path.basename(file).includes(".stories."),
+      );
+    })
+    .map((id) => {
+      const dir = path.join(root, id);
+      const mdx = listFiles(dir, ".mdx");
       return {
         layer: "ai" as const,
         id,
         dir,
-        importPath,
-        docsCandidates: existsSync(overview) ? [overview] : [],
-        storyPaths: existsSync(storyPath) ? [storyPath] : [],
+        importPath: "@stevejuma/ui/ai/chat",
+        docsCandidates: mdx.length
+          ? mdx
+          : existsSync(overview)
+            ? [overview]
+            : [],
+        storyPaths: listFiles(dir, ".stories.svelte"),
       };
+    });
+
+  const experimentalRoot = path.join(root, "experimental");
+  const experimental = listDirs(experimentalRoot).map((id) => {
+    const dir = path.join(experimentalRoot, id);
+    const mdx = listFiles(dir, ".mdx");
+    return {
+      layer: "ai" as const,
+      id: `experimental-${id}`,
+      dir,
+      importPath: "@stevejuma/ui/ai/experimental",
+      docsCandidates: mdx.length
+        ? mdx
+        : existsSync(overview)
+          ? [overview]
+          : [],
+      storyPaths: listFiles(dir, ".stories.svelte"),
+    };
+  });
+
+  if (existsSync(overview)) {
+    stable.push({
+      layer: "ai" as const,
+      id: "overview",
+      dir: root,
+      importPath: "@stevejuma/ui/ai",
+      docsCandidates: [overview],
+      storyPaths: [],
     });
   }
 
-  return [
-    ...collectDirectory(root, "@stevejuma/ui/ai"),
-    ...collectDirectory(
-      path.join(root, "chat"),
-      "@stevejuma/ui/ai/chat",
-      "chat-",
-    ),
-    ...collectDirectory(
-      path.join(root, "chat", "experimental"),
-      "@stevejuma/ui/ai/chat/experimental",
-      "chat-experimental-",
-    ),
-  ].sort((a, b) => a.id.localeCompare(b.id));
+  return [...stable, ...experimental].sort((a, b) =>
+    a.id.localeCompare(b.id),
+  );
 }
 
 export function collectCatalog(packageRoot: string): CatalogEntry[] {

@@ -1,2 +1,2 @@
-export * as Chat from "./chat/index.js";
-export * as ExperimentalChat from "./chat/experimental/index.js";
+export * as Chat from "./chat.js";
+export * as ExperimentalChat from "./experimental/index.js";

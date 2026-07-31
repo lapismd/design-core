@@ -76,18 +76,18 @@ forms barrel.
 
 ## Shared — AI
 
-Presentational AI chat primitives in `src/shared/ai/`, with no network or
-host-store dependency. Storybook: `AI/...`.
+Presentational AI chat primitives in `src/shared/ai/<component>/`, with no
+network or host-store dependency. Storybook: `AI/...`.
 
-- `chat/` — 15 reusable ASTRYX-inspired message/layout, composer, token,
-  dictation, and tool-call primitives. Stable imports use
-  `@stevejuma/ui/ai/chat`.
-- `chat/experimental/` — five Lab-derived reasoning, reaction, emoji, typing,
-  and unread primitives. Every export is marked `@experimental`; import from
-  `@stevejuma/ui/ai/chat/experimental`.
+- One folder per stable component (layout, composer, message, …) — 15
+  ASTRYX-inspired message/layout, composer, token, dictation, and tool-call
+  primitives. Stable imports use `@stevejuma/ui/ai/chat`.
+- `experimental/<component>/` — five Lab-derived reasoning, reaction, emoji,
+  typing, and unread primitives. Every export is marked `@experimental`;
+  import from `@stevejuma/ui/ai/experimental`.
 
 Import: `@stevejuma/ui/ai`, `@stevejuma/ui/ai/chat`, and
-`@stevejuma/ui/ai/chat/experimental`.
+`@stevejuma/ui/ai/experimental`.
 
 ## Shared — shell
 

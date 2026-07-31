@@ -54,11 +54,12 @@ The package subpaths are:
 
 ```ts
 import * as AiChat from "@stevejuma/ui/ai/chat";
-import * as ExperimentalAiChat from "@stevejuma/ui/ai/chat/experimental";
+import * as ExperimentalAiChat from "@stevejuma/ui/ai/experimental";
 ```
 
 The root `@stevejuma/ui/ai` barrel exposes the same families as `Chat` and
-`ExperimentalChat`.
+`ExperimentalChat`. Sources live under `src/shared/ai/<component>/` (and
+`src/shared/ai/experimental/<component>/`).
 
 ## Svelte controllers and composition
 

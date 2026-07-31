@@ -49,7 +49,8 @@ scripts/
 | `@stevejuma/ui/filter`               | search and filter-query barrel  |
 | `@stevejuma/ui/ai`                   | reusable AI presentation barrel |
 | `@stevejuma/ui/ai/chat`              | stable AI Chat primitives       |
-| `@stevejuma/ui/ai/chat/experimental` | experimental AI Chat primitives |
+| `@stevejuma/ui/ai/experimental`      | experimental AI Chat primitives |
+| `@stevejuma/ui/ai/tokens`            | AI Chat design tokens           |
 | `@stevejuma/ui/shell`                | bounded structural app shell    |
 | `@stevejuma/ui/workspace`            | full workspace framework        |
 | `@stevejuma/ui/styles.css`           | package styles entry            |
