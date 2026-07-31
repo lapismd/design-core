@@ -240,6 +240,35 @@
     --ui-code-block-header-color,
     var(--ui-code-syntax-variable, var(--foreground))
   );
+  background-color: transparent;
+  transition:
+    background-color var(--ui-code-block-duration-fast)
+      var(--ui-code-block-ease),
+    color var(--ui-code-block-duration-fast) var(--ui-code-block-ease);
+}
+
+/* Beat Button ghost hover (`background: var(--muted)`), which matches the block. */
+@media (hover: hover) {
+  [data-ui-component="code-block"]
+    [data-ui-component="button"][data-ui-part="code-block-copy"]:hover {
+    background-color: var(--ui-code-block-copy-hover-background);
+    color: var(
+      --ui-code-block-header-color,
+      var(--ui-code-syntax-variable, var(--foreground))
+    );
+  }
+}
+
+[data-ui-component="code-block"]
+  [data-ui-component="button"][data-ui-part="code-block-copy"]:active {
+  background-color: var(--ui-code-block-copy-active-background);
+}
+
+[data-ui-component="code-block"]
+  [data-ui-component="button"][data-ui-part="code-block-copy"]:focus-visible {
+  background-color: var(--ui-code-block-copy-hover-background);
+  outline: 2px solid var(--ui-code-block-focus-ring);
+  outline-offset: 1px;
 }
 
 [data-ui-part="code-block-copy"][data-placement="absolute"] {

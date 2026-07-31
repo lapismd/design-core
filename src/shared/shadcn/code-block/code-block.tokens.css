@@ -22,6 +22,25 @@
     var(--primary) 12%,
     transparent
   );
+  /* Ghost Button hover is --muted (same as syntax background) — invisible here. */
+  --ui-code-block-copy-hover-background: color-mix(
+    in oklab,
+    var(
+        --ui-code-block-header-color,
+        var(--ui-code-syntax-variable, var(--foreground))
+      )
+      12%,
+    transparent
+  );
+  --ui-code-block-copy-active-background: color-mix(
+    in oklab,
+    var(
+        --ui-code-block-header-color,
+        var(--ui-code-syntax-variable, var(--foreground))
+      )
+      18%,
+    transparent
+  );
   --ui-code-block-focus-ring: var(--ring);
   --ui-code-block-duration-medium: 200ms;
   --ui-code-block-duration-fast: 120ms;

@@ -13,6 +13,8 @@ export const codeBlockTokenNames = {
   paddingBlock: "--ui-code-block-padding-block",
   headerPaddingBlock: "--ui-code-block-header-padding-block",
   accentMuted: "--ui-code-block-accent-muted",
+  copyHoverBackground: "--ui-code-block-copy-hover-background",
+  copyActiveBackground: "--ui-code-block-copy-active-background",
   focusRing: "--ui-code-block-focus-ring",
   durationMedium: "--ui-code-block-duration-medium",
   durationFast: "--ui-code-block-duration-fast",
