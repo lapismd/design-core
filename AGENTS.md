@@ -10,7 +10,7 @@ Before inventing workflows, load package conventions offline via the CLI:
 
 1. `pnpm ui guide` — topic index and reading order
 2. [`styles.md`](./styles.md) — native CSS, tokens, no Tailwind in sources
-3. `pnpm ui guide layers` — shadcn vs forms vs filter vs AI vs workspace
+3. `pnpm ui guide layers` — layers, folder layout, and dependency boundaries
 4. [`src/shared/workspace/PLAN.md`](./src/shared/workspace/PLAN.md) — workspace
    framework migration boundary and slice tracker
 5. `pnpm ui guide shadcn` — `ui:add` / inspect / docs sync (never raw shadcn CLI)
@@ -76,6 +76,29 @@ the same discovery workflow without an MCP client. Cache under `.cache/ui-docs/`
 In-catalog decision pages: `UI Forms/Guidance`, `Shadcn/Guidance`. Deferred
 full-repo static `llms.txt` notes: `pnpm ui guide llms-extraction`.
 
+## Source folder layout
+
+One directory owns **one independent Storybook/catalog surface** (or one
+compound family with a single primary title). Do not dump multiple
+independently titled catalog components into one shared folder. Do not split
+multipart compound parts into one folder each.
+
+| Layer | Layout | Rule |
+| ----- | ------ | ---- |
+| Shadcn | `src/shared/shadcn/<family>/` | One folder per **family**; keep multipart parts together (`dialog-content.svelte`, …). |
+| Forms | `src/shared/forms/<family>/` | One folder per **catalog family/component**. Supporting renderers may colocate with their host. |
+| Filter | `src/shared/filter/<family>/` | One folder per public catalog surface; private helpers stay colocated. |
+| AI | `src/shared/ai/<component>/` | One folder per catalog component (`experimental/<component>/` for experimental). |
+| Shell | `src/shared/shell/app-shell/` | One **compound** family; guidance, tokens, and the package barrel stay at `shell/` layer root. |
+| Workspace | `src/shared/workspace/<family>/` | One folder per **visual family**; large compounds are intentional (same rationale as shadcn Dialog). |
+
+When adding a new independently titled story group (for example a second
+orchestrator or review primitive with its own `UI Forms/…` title), give it its
+own folder under the layer. When adding parts of an existing compound API
+(`AppShell.Root` / `Sidebar`, Dialog content/footer), keep them in the family
+folder. Full layer table: `pnpm ui guide layers`. Styling and tokens:
+[`styles.md`](./styles.md) and the README **Styling and tokens** section.
+
 ## Component documentation
 
 - `@storybook/addon-docs` is enabled and the shared preview applies the
@@ -96,7 +119,8 @@ full-repo static `llms.txt` notes: `pnpm ui guide llms-extraction`.
 - Before adding a visual export, classify it in `COMPONENT_AUDIT.md` as a
   shared primitive or deferred item.
 - `Shadcn/` is the UI-owned shadcn-svelte catalog. Source and stories live in
-  `src/shared/shadcn`. Import a family from `@stevejuma/ui/shadcn/<family>`.
+  `src/shared/shadcn/<family>/`. Import a family from
+  `@stevejuma/ui/shadcn/<family>`.
 - Shared forms live under `src/shared/forms/<family>/`. Import from
   `@stevejuma/ui/forms` or `@stevejuma/ui/forms/core`.
 - Search filter chrome and filter-query language live under
@@ -104,6 +128,8 @@ full-repo static `llms.txt` notes: `pnpm ui guide llms-extraction`.
 - Shared AI presentation lives under `src/shared/ai/<component>/` (experimental
   under `src/shared/ai/experimental/<component>/`). Import from
   `@stevejuma/ui/ai`, `@stevejuma/ui/ai/chat`, or `@stevejuma/ui/ai/experimental`.
+- Structural AppShell lives under `src/shared/shell/app-shell/`. Import from
+  `@stevejuma/ui/shell`.
 - Interactive examples must be genuinely interactive. Play functions must
   exercise the real control flow and assert a visible or accessible result as
   well as any callback.

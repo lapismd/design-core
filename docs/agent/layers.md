@@ -68,6 +68,31 @@ existing family already covers the need.
   use headless Bits UI and Paneforge directly for workspace-specific geometry.
   It must not import forms, filter, AI, or application-specific surfaces.
 
+## Folder layout
+
+Layout is driven by **catalog/story identity**, not “one `.svelte` file per
+folder.”
+
+| Layer | Path shape | Keep together | Split apart |
+| ----- | ---------- | ------------- | ----------- |
+| Shadcn | `<family>/` | Multipart parts of one family | Never split Dialog/Sidebar-style parts |
+| Forms / Filter | `<family>/` | Supporting helpers of one catalog surface | Independently titled catalog components |
+| AI | `<component>/` | Internal helpers of that component | Separate catalog components |
+| Shell | `app-shell/` under layer root | All `AppShell.*` parts + controllers | Do not flatten to `shell/*.svelte` |
+| Workspace | `<family>/` | Compound visual families | Only if a family gains multiple primary story titles |
+
+Anti-patterns to avoid:
+
+- Dumping several independently titled Storybook groups into one directory
+  (the old `forms/structured-form` + YAML/JSON orchestrators case).
+- Flattening a compound API across the layer root (the old `shell/AppShell*.svelte`
+  dump).
+- Splitting shadcn or workspace compound parts into one folder per part.
+
+Baselines follow nested import paths (`forms/<family>/…`, `shell/app-shell/…`).
+When you move sources, move snapshot dirs and any hard-coded `visualDelta` URLs
+with them; do not refresh PNG pixels unless visuals change.
+
 ## Classification
 
 Before adding a visual export, update `COMPONENT_AUDIT.md`: shared primitive or

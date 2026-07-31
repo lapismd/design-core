@@ -19,25 +19,35 @@ state, and local capture artifacts so this repository can focus on reusable UI.
 ```text
 src/
   lib/utils.ts
-  styles.css, theme.css, storybook.css
+  styles.css, theme.css, storybook.css   # package entry + theme tokens
   shared/
-    shadcn/<family>/     # generated families + colocated stories
-    forms/<family>/      # structured form primitives + stories
-    forms/core/          # builders, types, registry (non-visual)
-    filter/              # search chrome + filter-query language
-    ai/                  # reusable AI presentation primitives
-    shell/               # bounded app chrome + sidebar controller
-    workspace/           # full workspace framework
-  storybook/             # catalog-only helpers
+    shadcn/<family>/           # one folder per family (multipart parts stay)
+    forms/<family>/            # one folder per catalog family/component
+    forms/core/                # builders, types, registry (non-visual)
+    forms/form.tokens.css      # --ui-form-* defaults
+    filter/<family>/           # search chrome + filter-query language
+    ai/<component>/            # one folder per catalog component
+    ai/experimental/<component>/
+    shell/                     # Guidance, tokens, package barrel
+      app-shell/               # compound AppShell family
+      shell.tokens.css         # --ui-shell-* defaults
+    workspace/<family>/        # one folder per visual family
+      workspace.tokens.css     # --ui-workspace-* defaults
+  storybook/                   # catalog-only helpers
 tests/
-  visual/                # Playwright suite + committed snapshots
+  visual/                      # Playwright suite + committed snapshots
 packages/
   storybook-addon-visual-delta/   # reusable Visual Delta addon
-.storybook/              # Storybook host configuration
+.storybook/                    # Storybook host configuration
 scripts/
-  storybook-run.mjs      # polling/restart-aware Storybook entry
-  ui-generator/          # UI CLI, baseline tooling, Docs MCP
+  storybook-run.mjs            # polling/restart-aware Storybook entry
+  ui-generator/                # UI CLI, baseline tooling, Docs MCP
 ```
+
+Folder layout follows **catalog/story identity**: one directory per independent
+Storybook title (or one compound family with a single primary title). Do not
+split shadcn/workspace multipart compounds into one folder per part. See
+[`AGENTS.md`](./AGENTS.md) **Source folder layout** and `pnpm ui guide layers`.
 
 ## Imports and layer boundaries
 
@@ -345,22 +355,59 @@ Docs MCP and LLM routes on `http://127.0.0.1:9011`. The Storybook mount uses
 the public Storybook server port; Vite's internal 5173 default is not
 advertised.
 
+## Styling and tokens
+
+Normative rules live in [`styles.md`](./styles.md). Summary for package
+consumers and contributors:
+
+1. **Theme first** — global semantics (`--background`, `--primary`, `--border`,
+   `--radius`, …) come from [`src/theme.css`](./src/theme.css).
+2. **Public layer tokens** — hosts restyle by setting `--ui-*` variables, not by
+   merging utility classes onto package components.
+3. **Colocated native CSS** — each visual component paints from a sibling
+   `Component.css` that reads tokens through `var(--…)`.
+4. **No Tailwind in retained sources** — `pnpm check:no-tailwind` gates
+   `shared/{ai,filter,forms,shadcn,shell,workspace}`. Stories may still use host
+   Tailwind for demo layout.
+
+| Layer | Token prefix | Defaults |
+| ----- | ------------ | -------- |
+| Theme | `--background`, `--primary`, … | [`src/theme.css`](./src/theme.css) |
+| Shadcn family | `--ui-<family>-*` | `<family>.tokens.css` next to the family |
+| Forms | `--ui-form-*` | [`src/shared/forms/form.tokens.css`](./src/shared/forms/form.tokens.css) (`@stevejuma/ui/forms/tokens`) |
+| AI | `--ui-ai-*` | colocated maps / `@stevejuma/ui/ai/tokens` |
+| Shell | `--ui-shell-*` | [`src/shared/shell/shell.tokens.css`](./src/shared/shell/shell.tokens.css) |
+| Workspace | `--ui-workspace-*` | [`src/shared/workspace/workspace.tokens.css`](./src/shared/workspace/workspace.tokens.css) |
+
+Import the package stylesheet once from the host:
+
+```ts
+import "@stevejuma/ui/styles.css";
+```
+
+That entry pulls theme tokens plus family token defaults. Override public tokens
+on `:root` or a shared ancestor (for example `.ui-structured-form`); do not
+rebind a token on the same host that consumes it. Prefer typed variant/density
+props over per-call-site class props.
+
+Stamp roots with `data-ui-component` / `data-ui-part` (and shadcn `data-slot`
+where applicable). Document the token subset each Docs page reads.
+
 ## Generator and CSS
 
 `pnpm ui:add` runs the transactional native-CSS conversion pipeline in a
 detached worktree: pinned shadcn ingestion, Tailwind expansion, scoped native
 CSS, reference/candidate parity, then one patch. Do not run the upstream
-shadcn CLI directly against this package.
-
-All retained source CSS follows [`styles.md`](./styles.md): package tokens,
-native selectors, and no Tailwind utility classes in component sources.
+shadcn CLI directly against this package. Converted families keep
+`*.tokens.css` / `*.tokens.ts`, `data-ui-*` metadata, and provenance files.
 
 ## Further reading
 
 | Resource                                                                                                               | Use                                       |
 | ---------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
-| [`AGENTS.md`](./AGENTS.md)                                                                                             | Primary agent workflow                    |
-| `pnpm ui guide layers`                                                                                                 | Layer selection and dependency boundaries |
+| [`AGENTS.md`](./AGENTS.md)                                                                                             | Primary agent workflow + folder layout    |
+| [`styles.md`](./styles.md)                                                                                             | Native CSS and token contract             |
+| `pnpm ui guide layers`                                                                                                 | Layer selection, folders, dependencies    |
 | `pnpm ui guide testing`                                                                                                | Verification sequence                     |
 | [`COMPONENT_AUDIT.md`](./COMPONENT_AUDIT.md)                                                                           | Retained component inventory              |
 | [`packages/storybook-addon-visual-delta/spec/src/index.md`](./packages/storybook-addon-visual-delta/spec/src/index.md) | Normative Visual Delta system contract    |

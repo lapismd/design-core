@@ -59,6 +59,13 @@ Docs page has a **Style** table of Token / Default for the subset that component
 reads.
 Stories may still use host Tailwind for demo layout.
 
+## Folder layout
+
+Each independently titled catalog surface gets its own folder under
+`src/shared/forms/` (for example `structured-form/`, `yaml-backed-form/`,
+`unified-review-diff/`). Supporting pieces that are not separately titled may
+stay colocated with their host. See `pnpm ui guide layers` **Folder layout**.
+
 ## Before adding a form export
 
 Classify in `COMPONENT_AUDIT.md` as shared primitive, app-specific, or deferred.
