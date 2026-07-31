@@ -217,7 +217,8 @@ Local Playwright screenshots live under
   **More → Skip visual tests** / **Include in visual tests** over hand-editing
   CSF (`POST /__visual-delta/skip-visual`).
 - v1 visual suite captures light mode only (Chromium 1280×900 CSS viewport,
-  `deviceScaleFactor: 3`, `toHaveScreenshot` `scale: "device"`).
+  project `deviceScaleFactor` (this catalog: `3`),
+  `toHaveScreenshot` `scale: "device"`).
 - Playwright baselines are served at `/visual-baselines` for live compare via
   the workspace `storybook-addon-visual-delta` package
   (`packages/storybook-addon-visual-delta/src`; see the

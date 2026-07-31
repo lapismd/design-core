@@ -3,6 +3,7 @@
   "diffThreshold": 0.2,
   "diffIncludeAntiAliasing": false,
   "delay": 0,
+  "deviceScaleFactor": 3,
   "cropToViewport": false,
   "placement": "right",
   "opacity": 0.5,
