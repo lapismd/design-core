@@ -325,13 +325,13 @@ importers:
       pixelmatch:
         specifier: ^7.1.0
         version: 7.2.0
-      playwright:
-        specifier: '*'
-        version: 1.61.1
       pngjs:
         specifier: ^7.0.0
         version: 7.0.0
     devDependencies:
+      '@playwright/test':
+        specifier: 1.61.1
+        version: 1.61.1
       '@storybook/addon-a11y':
         specifier: 10.5.2
         version: 10.5.2(storybook@10.5.2(@types/react@19.2.17)(prettier@3.3.3)(react@19.2.8))
@@ -356,9 +356,15 @@ importers:
       '@types/react-dom':
         specifier: ^19.2.3
         version: 19.2.3(@types/react@19.2.17)
+      markdownlint-cli2:
+        specifier: ^0.22.1
+        version: 0.22.1
       mermaid:
         specifier: ^11.16.0
         version: 11.16.0
+      playwright:
+        specifier: ^1.52.0
+        version: 1.61.1
       react:
         specifier: ^19.2.7
         version: 19.2.8
