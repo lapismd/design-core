@@ -28,10 +28,10 @@ Inspect a family with `pnpm ui:inspect <name>`.
 Config-driven form engine and field primitives in
 `src/shared/forms/<family>/`.
 
-**Engine** (`structured-form/`, `core/`): `StructuredForm`,
-`FormFieldRenderer`, `FormViewRenderer`, `YamlBackedForm`, `JsonBackedForm`,
-`PatchableForm`, builders, types, registry, JSON Patch, and review-diff
-utilities.
+**Engine** (`structured-form/`, `yaml-backed-form/`, `json-backed-form/`,
+`core/`): `StructuredForm`, `FormFieldRenderer`, `FormViewRenderer`,
+`YamlBackedForm`, `JsonBackedForm`, `PatchableForm`, builders, types, registry,
+JSON Patch, and review-diff utilities.
 
 **Primitives:** `form-field`, `form-section-header`, `form-toolbar`,
 `form-add-button`, `form-sheet`, `entry-actions`, `collapsible-item-list`,

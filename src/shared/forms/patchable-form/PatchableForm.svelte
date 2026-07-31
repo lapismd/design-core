@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { YamlReviewDiff } from "../yaml-editor/YamlEditor.svelte";
-  import YamlBackedForm from "../structured-form/YamlBackedForm.svelte";
+  import YamlBackedForm from "../yaml-backed-form/YamlBackedForm.svelte";
   import type {
     FormConfig,
     FormValidationIssue,

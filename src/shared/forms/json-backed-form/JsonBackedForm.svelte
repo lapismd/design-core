@@ -8,7 +8,7 @@
     FormValidationIssue,
     FormViewName,
   } from "../core/types";
-  import StructuredForm from "./StructuredForm.svelte";
+  import StructuredForm from "../structured-form/StructuredForm.svelte";
 
   type AnyFormConfig = FormConfig<any, any>;
 

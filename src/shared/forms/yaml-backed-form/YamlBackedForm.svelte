@@ -4,7 +4,7 @@
     type YamlReviewDiff,
   } from "../yaml-editor/YamlEditor.svelte";
 
-  import StructuredForm from "./StructuredForm.svelte";
+  import StructuredForm from "../structured-form/StructuredForm.svelte";
   import type {
     FormConfig,
     FormValidationIssue,

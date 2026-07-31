@@ -46,7 +46,7 @@ export { default as FormSheet } from "./form-sheet/FormSheet.svelte";
 export { default as FormToolbar } from "./form-toolbar/FormToolbar.svelte";
 export { default as FormViewRenderer } from "./structured-form/FormViewRenderer.svelte";
 export { default as InlineOptionPicker } from "./inline-option-picker/InlineOptionPicker.svelte";
-export { default as JsonBackedForm } from "./structured-form/JsonBackedForm.svelte";
+export { default as JsonBackedForm } from "./json-backed-form/JsonBackedForm.svelte";
 export { default as ListEditor } from "./list-editor/ListEditor.svelte";
 export { default as PatchableForm } from "./patchable-form/PatchableForm.svelte";
 export { fieldReviewContextFromReview } from "./patchable-form/field-review-context";
@@ -66,7 +66,7 @@ export { default as SortableArrayItem } from "./sortable-array-item/SortableArra
 export { default as StructuredForm } from "./structured-form/StructuredForm.svelte";
 export { default as TaskDueCalendar } from "./task-due-calendar/TaskDueCalendar.svelte";
 export { default as UnifiedReviewDiff } from "./form-review/UnifiedReviewDiff.svelte";
-export { default as YamlBackedForm } from "./structured-form/YamlBackedForm.svelte";
+export { default as YamlBackedForm } from "./yaml-backed-form/YamlBackedForm.svelte";
 export {
   default as YamlEditor,
   formatActiveYamlSelection,
