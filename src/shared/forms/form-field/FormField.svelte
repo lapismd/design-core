@@ -4,8 +4,8 @@
   // Ensure bare `.cv-structured-form` hosts get the 2-col grid FormField subgrids into.
   import "../structured-form/structured-form.css";
   import type { FieldReview } from "../core/field-review";
-  import FieldReviewActions from "../form-review/FieldReviewActions.svelte";
-  import UnifiedReviewDiff from "../form-review/UnifiedReviewDiff.svelte";
+  import FieldReviewActions from "../field-review-actions/FieldReviewActions.svelte";
+  import UnifiedReviewDiff from "../unified-review-diff/UnifiedReviewDiff.svelte";
 
   let {
     label,

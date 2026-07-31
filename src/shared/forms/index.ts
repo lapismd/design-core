@@ -36,7 +36,7 @@ export {
 export { CodeHighlighter, codeHighlighter } from "./code-highlighter";
 export { default as CollapsibleItemList } from "./collapsible-item-list/CollapsibleItemList.svelte";
 export { default as EntryActions } from "./entry-actions/EntryActions.svelte";
-export { default as FieldReviewActions } from "./form-review/FieldReviewActions.svelte";
+export { default as FieldReviewActions } from "./field-review-actions/FieldReviewActions.svelte";
 export { default as FormAddButton } from "./form-add-button/FormAddButton.svelte";
 export { default as FormField } from "./form-field/FormField.svelte";
 export { default as FormFieldRenderer } from "./structured-form/FormFieldRenderer.svelte";
@@ -65,7 +65,7 @@ export { default as SegmentedControl } from "./segmented-control/SegmentedContro
 export { default as SortableArrayItem } from "./sortable-array-item/SortableArrayItem.svelte";
 export { default as StructuredForm } from "./structured-form/StructuredForm.svelte";
 export { default as TaskDueCalendar } from "./task-due-calendar/TaskDueCalendar.svelte";
-export { default as UnifiedReviewDiff } from "./form-review/UnifiedReviewDiff.svelte";
+export { default as UnifiedReviewDiff } from "./unified-review-diff/UnifiedReviewDiff.svelte";
 export { default as YamlBackedForm } from "./yaml-backed-form/YamlBackedForm.svelte";
 export {
   default as YamlEditor,

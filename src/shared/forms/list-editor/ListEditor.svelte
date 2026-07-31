@@ -5,8 +5,8 @@
   import { onDestroy } from "svelte";
   import { Button } from "@stevejuma/ui/shadcn/button";
   import type { FieldReview } from "../core/field-review";
-  import FieldReviewActions from "../form-review/FieldReviewActions.svelte";
-  import UnifiedReviewDiff from "../form-review/UnifiedReviewDiff.svelte";
+  import FieldReviewActions from "../field-review-actions/FieldReviewActions.svelte";
+  import UnifiedReviewDiff from "../unified-review-diff/UnifiedReviewDiff.svelte";
   import SortableArrayItem from "../sortable-array-item/SortableArrayItem.svelte";
 
   let {

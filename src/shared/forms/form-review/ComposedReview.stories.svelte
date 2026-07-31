@@ -3,8 +3,8 @@
   import { expect, userEvent } from "storybook/test";
   import FormField from "../form-field/FormField.svelte";
   import ListEditor from "../list-editor/ListEditor.svelte";
-  import FieldReviewActions from "./FieldReviewActions.svelte";
-  import UnifiedReviewDiff from "./UnifiedReviewDiff.svelte";
+  import FieldReviewActions from "../field-review-actions/FieldReviewActions.svelte";
+  import UnifiedReviewDiff from "../unified-review-diff/UnifiedReviewDiff.svelte";
 
   const { Story } = defineMeta({
     title: "UI Forms/Review/Composed Review",
