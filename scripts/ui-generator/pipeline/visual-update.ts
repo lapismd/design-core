@@ -214,6 +214,8 @@ export async function runVisualUpdate(options: {
         "playwright",
         "test",
         `--update-snapshots=${createOnly ? "missing" : "all"}`,
+        "--project",
+        "chromium",
         "-g",
         grep,
       ],
@@ -223,7 +225,15 @@ export async function runVisualUpdate(options: {
         env: {
           ...process.env,
           PLAYWRIGHT_UPDATE_SNAPSHOTS: "1",
-          ...(createOnly ? { PLAYWRIGHT_UPDATE_MODE: "missing" } : {}),
+          VISUAL_UPDATE_APPROVED: "1",
+          VISUAL_DELTA_BASELINE_PATH_MODE: "nested-import",
+          VISUAL_DELTA_SNAPSHOT_DIR: snapshotDir,
+          ...(createOnly
+            ? {
+                PLAYWRIGHT_UPDATE_MODE: "missing",
+                VISUAL_DELTA_FAILURE_MODE: "warn",
+              }
+            : {}),
         },
       },
     );

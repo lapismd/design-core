@@ -10,11 +10,7 @@
       docs: {
         description: {
           component:
-            "Special Lapis-aligned fallback for a visible sidebar that has no tabs.",
-        },
-      },
-    },
-  });
+            "Special Lapis-aligned fallback for a visible sidebar that has no tabs."}}}});
 </script>
 
 <script lang="ts">
@@ -38,15 +34,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/workspace/sidebar-empty/empty-left-sidebar-chromium-darwin.png",
+        "/visual-baselines/workspace/sidebar-empty/empty-left-sidebar-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
 >
   {#snippet template()}
     <div class="h-[28rem] w-80 border">
@@ -71,15 +65,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/workspace/sidebar-empty/empty-right-sidebar-chromium-darwin.png",
+        "/visual-baselines/workspace/sidebar-empty/empty-right-sidebar-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
 >
   {#snippet template()}
     <div class="h-[28rem] w-80 border">

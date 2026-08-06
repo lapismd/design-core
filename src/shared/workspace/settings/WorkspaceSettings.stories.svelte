@@ -22,31 +22,25 @@
     return new AppShellController({
       application: {
         name: "Workspace UI",
-        version: "1.0.0",
-      },
+        version: "1.0.0"},
       configuration: {
         values: {
           [APP_SHELL_SETTING_IDS.mobileMode]: "never",
           [APP_SHELL_SETTING_IDS.editorAssociations]: {
-            "*.md": "markdown",
-          },
-        },
-      },
+            "*.md": "markdown"}}},
       editorViews: [
         {
           id: "markdown",
           label: "Markdown editor",
           description: "Rich Markdown document view",
           filenamePatterns: ["*.md"],
-          priority: "default",
-        },
+          priority: "default"},
         {
           id: "text",
           label: "Text editor",
           description: "Plain text resource view",
           filenamePatterns: ["*.txt"],
-          priority: "option",
-        },
+          priority: "option"},
       ],
       plugins: [
         {
@@ -55,18 +49,15 @@
           description: "Core workspace layout and navigation.",
           icon: "panels-top-left",
           plugin: RequiredWorkspacePlugin,
-          required: true,
-        },
+          required: true},
         {
           id: "backlinks",
           name: "Backlinks",
           description: "Contributes linked-resource navigation.",
           icon: "link",
           plugin: OptionalWorkspacePlugin,
-          enabled: true,
-        },
-      ],
-    });
+          enabled: true},
+      ]});
   }
 
   const allControlSections: WorkspaceSettingsSection[] = [
@@ -83,73 +74,63 @@
           type: "boolean",
           title: "Enabled",
           description: "A persisted boolean toggle.",
-          default: true,
-        },
+          default: true},
         {
           id: "demo.name",
           type: "string",
           title: "Workspace name",
           description: "A single-line text value.",
           default: "Research workspace",
-          placeholder: "Name this workspace",
-        },
+          placeholder: "Name this workspace"},
         {
           id: "demo.summary",
           type: "string",
           presentation: "textarea",
           title: "Summary",
           description: "A longer multi-line text value.",
-          default: "A reusable application shell.",
-        },
+          default: "A reusable application shell."},
         {
           id: "demo.email",
           type: "string",
           presentation: "email",
           title: "Notification email",
-          default: "team@example.com",
-        },
+          default: "team@example.com"},
         {
           id: "demo.url",
           type: "string",
           presentation: "url",
           title: "Project URL",
-          default: "https://example.com",
-        },
+          default: "https://example.com"},
         {
           id: "demo.ip",
           type: "string",
           presentation: "ip",
           title: "Sync address",
-          default: "127.0.0.1",
-        },
+          default: "127.0.0.1"},
         {
           id: "demo.date",
           type: "string",
           presentation: "date",
           title: "Archive date",
-          default: "2026-07-26",
-        },
+          default: "2026-07-26"},
         {
           id: "demo.time",
           type: "string",
           presentation: "time",
           title: "Daily reminder",
-          default: "09:30",
-        },
+          default: "09:30"},
         {
           id: "demo.icon",
           type: "string",
           presentation: "icon",
           title: "Workspace icon",
-          default: "notebook-tabs",
-        },
+          default: "notebook-tabs"},
         {
           id: "demo.color",
           type: "string",
           presentation: "color",
           title: "Accent colour",
-          default: "#7c3aed",
-        },
+          default: "#7c3aed"},
         {
           id: "demo.density",
           type: "enum",
@@ -159,8 +140,7 @@
             { value: "compact", label: "Compact" },
             { value: "comfortable", label: "Comfortable" },
             { value: "spacious", label: "Spacious" },
-          ],
-        },
+          ]},
         {
           id: "demo.sources",
           type: "multi-enum",
@@ -170,16 +150,14 @@
             { value: "left", label: "Left sidebar" },
             { value: "right", label: "Right sidebar" },
             { value: "status", label: "Status bar" },
-          ],
-        },
+          ]},
         {
           id: "demo.retries",
           type: "integer",
           title: "Retry limit",
           default: 3,
           minimum: 0,
-          maximum: 10,
-        },
+          maximum: 10},
         {
           id: "demo.zoom",
           type: "number",
@@ -187,8 +165,7 @@
           default: 16,
           minimum: 10,
           maximum: 30,
-          step: 1,
-        },
+          step: 1},
         {
           id: "demo.reset",
           type: "action",
@@ -196,10 +173,8 @@
           description: "Actions execute without storing a setting value.",
           label: "Reset now",
           icon: "rotate-ccw",
-          run: () => undefined,
-        },
-      ],
-    },
+          run: () => undefined},
+      ]},
     {
       id: "collections",
       title: "Host integration",
@@ -214,8 +189,7 @@
           title: "Tags",
           default: ["framework", "workspace"],
           itemType: "string",
-          maximumItems: 5,
-        },
+          maximumItems: 5},
         {
           id: "demo.columns",
           type: "object-array",
@@ -226,11 +200,9 @@
               id: "id",
               title: "ID",
               type: "string",
-              required: true,
-            },
+              required: true},
             { id: "width", title: "Width", type: "integer", default: 160 },
-          ],
-        },
+          ]},
         {
           id: "demo.cards",
           type: "object-grid",
@@ -242,10 +214,8 @@
               id: "visible",
               title: "Visible",
               type: "boolean",
-              default: true,
-            },
-          ],
-        },
+              default: true},
+          ]},
         {
           id: "demo.profiles",
           type: "object-map",
@@ -257,10 +227,8 @@
               id: "enabled",
               title: "Enabled",
               type: "boolean",
-              default: true,
-            },
-          ],
-        },
+              default: true},
+          ]},
         {
           id: "demo.associations",
           type: "key-value",
@@ -272,26 +240,22 @@
           valueOptions: [
             { value: "markdown", label: "Markdown editor" },
             { value: "text", label: "Text editor" },
-          ],
-        },
+          ]},
         {
           id: "demo.custom",
           type: "custom",
           title: "Custom renderer",
           description: "Applications can supply a typed field component.",
           default: "Application value",
-          component: WorkspaceSettingsStoryCustomField,
-        },
+          component: WorkspaceSettingsStoryCustomField},
         {
           id: "demo.unsupported",
           type: "unsupported",
           title: "Future schema value",
           description:
             "Unknown schemas remain visible instead of silently disappearing.",
-          schemaType: "binary-resource",
-        },
-      ],
-    },
+          schemaType: "binary-resource"},
+      ]},
   ];
 
   const builtInApp = createSettingsApp();
@@ -303,15 +267,13 @@
     navigationGroups: [
       { id: "options", title: "Options", order: 0 },
       { id: "advanced", title: "Advanced", order: 10 },
-    ],
-  });
+    ]});
   const collectionControls = new WorkspaceSettingsController({
     sections: allControlSections,
     navigationGroups: [
       { id: "options", title: "Options", order: 0 },
       { id: "advanced", title: "Advanced", order: 10 },
-    ],
-  });
+    ]});
 
   const { Story } = defineMeta({
     title: "Workspace/Components/Settings",
@@ -321,11 +283,7 @@
       docs: {
         description: {
           component:
-            "Native-token settings presentation for controller-owned schemas, application commands, and static plugins. The AppSettings compound parts can be assembled independently.",
-        },
-      },
-    },
-  });
+            "Native-token settings presentation for controller-owned schemas, application commands, and static plugins. The AppSettings compound parts can be assembled independently."}}}});
 </script>
 
 <Story
@@ -333,13 +291,16 @@
   tags={["visual-approved"]}
   play={async ({ canvas }) => {
     const search = canvas.getByRole("searchbox", {
-      name: "Search settings",
-    });
+      name: "Search settings"});
     await userEvent.type(search, "colour");
     await expect(search).toHaveValue("colour");
     await expect(
       canvas.getByRole("heading", { name: "Settings Search Results" }),
     ).toBeVisible();
+  }}
+
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/workspace/settings/controller-owned-workspace-settings-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
   }}
 >
   {#snippet template()}
@@ -362,8 +323,7 @@
   play={async ({ canvas }) => {
     await userEvent.click(canvas.getByRole("button", { name: "Appearance" }));
     const scheme = canvas.getByRole("combobox", {
-      name: "Base colour scheme",
-    });
+      name: "Base colour scheme"});
     await userEvent.click(scheme);
     await userEvent.click(
       within(document.body).getByRole("option", { name: "Dark" }),
@@ -378,8 +338,7 @@
       interactionApp.configuration.get(APP_SHELL_SETTING_IDS.appearanceTheme),
     ).toBe("dark");
     const workspaceNavigation = canvas.getByRole("button", {
-      name: "Workspace",
-    });
+      name: "Workspace"});
     await waitFor(() => {
       expect(getComputedStyle(workspaceNavigation).pointerEvents).not.toBe(
         "none",
@@ -387,8 +346,7 @@
     });
     await userEvent.click(workspaceNavigation);
     const mobileLayout = canvas.getByRole("combobox", {
-      name: "Mobile layout",
-    });
+      name: "Mobile layout"});
     await userEvent.click(mobileLayout);
     await userEvent.click(
       within(document.body).getByRole("option", { name: "Always" }),
@@ -399,15 +357,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/workspace/settings/updates-appearance-and-mobile-configuration-chromium-darwin.png",
+        "/visual-baselines/workspace/settings/updates-appearance-and-mobile-configuration-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
 >
   {#snippet template()}
     <div class="ui-workspace-settings-story-canvas">
@@ -437,8 +393,7 @@
     await expect(viewport.scrollTop).toBeGreaterThan(0);
 
     const search = canvas.getByRole("searchbox", {
-      name: "Search settings",
-    });
+      name: "Search settings"});
     await userEvent.type(search, "accent colour");
     await waitFor(() => expect(viewport.scrollTop).toBe(0));
 
@@ -483,8 +438,7 @@
     await expect(allControls.get("demo.name")).toBe("Composable shell");
 
     const search = canvas.getByRole("searchbox", {
-      name: "Search settings",
-    });
+      name: "Search settings"});
     await userEvent.type(search, "custom renderer");
     await expect(
       canvas.getByRole("heading", { name: "Settings Search Results" }),
@@ -496,6 +450,10 @@
     await expect(
       canvas.getByRole("heading", { name: "Host integration" }),
     ).toBeVisible();
+  }}
+
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/workspace/settings/all-supported-controls-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
   }}
 >
   {#snippet template()}
@@ -532,8 +490,7 @@
       canvas.getByRole("button", { name: "Add association" }),
     );
     const associations = canvas.getAllByRole("textbox", {
-      name: "Association pattern",
-    });
+      name: "Association pattern"});
     await expect(associations).toHaveLength(2);
     await expect(associations[1]).toHaveValue("*.txt");
 
@@ -559,15 +516,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/workspace/settings/collections-and-extension-controls-chromium-darwin.png",
+        "/visual-baselines/workspace/settings/collections-and-extension-controls-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
 >
   {#snippet template()}
     <div class="ui-workspace-settings-story-canvas">
@@ -606,15 +561,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/workspace/settings/composable-app-shell-settings-surface-chromium-darwin.png",
+        "/visual-baselines/workspace/settings/composable-app-shell-settings-surface-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
 >
   {#snippet template()}
     <div class="ui-workspace-settings-story-canvas">

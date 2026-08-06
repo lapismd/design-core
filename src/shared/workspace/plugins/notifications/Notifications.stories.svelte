@@ -8,8 +8,7 @@
   import NotificationsStorySurface from "./NotificationsStorySurface.svelte";
   import {
     NOTIFICATIONS_PLUGIN_ID,
-    notificationsPlugin,
-  } from "./notifications-plugin.js";
+    notificationsPlugin} from "./notifications-plugin.js";
   import "./Notifications.stories.css";
 
   function createNotificationsApp(
@@ -22,10 +21,7 @@
         : [],
       configuration: {
         values: {
-          [APP_SHELL_SETTING_IDS.mobileMode]: "never",
-        },
-      },
-    });
+          [APP_SHELL_SETTING_IDS.mobileMode]: "never"}}});
   }
 
   const emptyApp = createNotificationsApp();
@@ -40,8 +36,7 @@
     await waitFor(() => {
       expect(app.plugins.get(NOTIFICATIONS_PLUGIN_ID)).toMatchObject({
         enabled: true,
-        status: "enabled",
-      });
+        status: "enabled"});
     });
   }
 
@@ -71,11 +66,7 @@
       docs: {
         description: {
           component:
-            "Optional notification presentation over the controller-owned transient, durable history, unread, progress, and cancellation service.",
-        },
-      },
-    },
-  });
+            "Optional notification presentation over the controller-owned transient, durable history, unread, progress, and cancellation service."}}}});
 </script>
 
 <Story
@@ -89,22 +80,19 @@
       title: "Workspace restored",
       message: "Your previous layout is ready.",
       severity: "info",
-      duration: 0,
-    });
+      duration: 0});
     toastApp.notifications.notify({
       id: "toast-warning",
       title: "Sync paused",
       message: "Reconnect to continue.",
       severity: "warning",
-      duration: 0,
-    });
+      duration: 0});
     toastApp.notifications.notify({
       id: "toast-error",
       title: "Export failed",
       message: "The destination could not be written.",
       severity: "error",
-      duration: 0,
-    });
+      duration: 0});
     await waitFor(() => {
       expect(canvas.getByText("Workspace restored")).toBeVisible();
       expect(canvas.getByText("Sync paused")).toBeVisible();
@@ -115,6 +103,10 @@
         ),
       ).toHaveLength(3);
     });
+  }}
+
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/workspace/plugins/notifications/toast-severities-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
   }}
 >
   {#snippet template()}
@@ -139,25 +131,26 @@
         id: "history-warning",
         title: "Sync paused",
         message: "Reconnect to continue.",
-        severity: "warning" as const,
-      },
+        severity: "warning" as const},
       {
         id: "history-info",
         title: "Workspace restored",
         message: "Your previous layout was loaded.",
-        severity: "info" as const,
-      },
+        severity: "info" as const},
     ]) {
       historyApp.notifications.notify({
         ...record,
         persist: true,
-        duration: 0,
-      });
+        duration: 0});
       historyApp.notifications.dismiss(record.id);
     }
     await openCenter(historyApp, canvasElement);
     await expect(canvas.getByText("Workspace restored")).toBeVisible();
     await expect(canvas.getByText("Sync paused")).toBeVisible();
+  }}
+
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/workspace/plugins/notifications/populated-history-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
   }}
 >
   {#snippet template()}
@@ -183,15 +176,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/workspace/plugins/notifications/empty-notification-center-chromium-darwin.png",
+        "/visual-baselines/workspace/plugins/notifications/empty-notification-center-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
 >
   {#snippet template()}
     <div class="ui-workspace-notifications-story">
@@ -214,8 +205,7 @@
       id: "story-index",
       title: "Indexing workspace",
       message: "45 of 100 resources",
-      cancellable: true,
-    });
+      cancellable: true});
     progressHandle.report({ current: 45, total: 100 });
     await openCenter(progressApp, canvasElement);
     await expect(canvas.getByText("Indexing workspace")).toBeVisible();
@@ -227,15 +217,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/workspace/plugins/notifications/progress-and-cancellation-chromium-darwin.png",
+        "/visual-baselines/workspace/plugins/notifications/progress-and-cancellation-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
 >
   {#snippet template()}
     <div class="ui-workspace-notifications-story">
@@ -259,8 +247,7 @@
       title: "Fallback presentation",
       message: "Plugin toasts are disabled.",
       severity: "warning",
-      duration: 0,
-    });
+      duration: 0});
     await waitFor(() => {
       expect(canvas.getByText("Fallback presentation")).toBeVisible();
       expect(
@@ -274,15 +261,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/workspace/plugins/notifications/fallback-toast-presentation-chromium-darwin.png",
+        "/visual-baselines/workspace/plugins/notifications/fallback-toast-presentation-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
 >
   {#snippet template()}
     <div class="ui-workspace-notifications-story">
@@ -315,15 +300,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/workspace/plugins/notifications/notice-compatibility-chromium-darwin.png",
+        "/visual-baselines/workspace/plugins/notifications/notice-compatibility-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
 >
   {#snippet template()}
     <div class="ui-workspace-notifications-story">

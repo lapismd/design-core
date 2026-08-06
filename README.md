@@ -218,10 +218,12 @@ Committed baselines are mounted at `/visual-baselines` from
 The reusable addon also supports `packages/workspace/src/lib/` mapped to
 `workspace/` for consumer catalogs.
 
-The committed filename suffix is `-chromium-darwin`. A story tagged
-`skip-visual` is excluded. If a matching PNG exists, the Vite plugin injects
-`parameters.visualDelta` with a canvas-aligned baseline, 50% opacity, and a
-0.1% pass threshold.
+The committed filename suffix is `-chromium` (browser-only; platform-qualified
+`*-chromium-darwin.png` names are legacy). A story tagged `skip-visual` is
+excluded. If a matching PNG exists, the Vite plugin injects
+`parameters.visualDelta` with a canvas-aligned baseline and 50% opacity.
+Pass/diff thresholds use the Visual Delta built-in defaults (`0.063`) unless
+overridden in `.visual-delta/config.json`.
 
 Never update baselines unless a human explicitly requests it. Ordinary
 `pnpm test:visual` is compare-only and Playwright is configured with

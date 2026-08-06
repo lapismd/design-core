@@ -7,8 +7,7 @@
 
   const { Story } = defineMeta({
     title: "Shadcn/Overlays/Sheet",
-    component: Sheet.Sheet,
-  });
+    component: Sheet.Sheet});
 </script>
 
 <Story
@@ -17,22 +16,18 @@
   tags={["upstream-example", "skip-visual"]}
   parameters={{
     visualDelta: {
-      images: ["/visual-baselines/shadcn/sheet/preview-chromium-darwin.png"],
+      images: ["/visual-baselines/shadcn/sheet/preview-chromium.png"],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
+      placement: "right"
     },
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.Preview,
         language: "html",
-        type: "code",
-      },
-    },
-  }}
+        type: "code"}}}}
 >
   {#snippet template()}
     <div class="p-4">

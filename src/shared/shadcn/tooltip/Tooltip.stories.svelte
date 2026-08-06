@@ -11,11 +11,7 @@
       docs: {
         description: {
           component:
-            "Brief hover/focus hint for icon buttons and dense controls.",
-        },
-      },
-    },
-  });
+            "Brief hover/focus hint for icon buttons and dense controls."}}}});
 </script>
 
 <!-- Interaction story first so vitest doesn't inherit an open portal from the visual story. -->
@@ -63,8 +59,7 @@
   }}
 
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/tooltip/open-tooltip-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
-  }}
+    visualDelta: {"images":["/visual-baselines/shadcn/tooltip/open-tooltip-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"}}}
 >
   {#snippet template()}
     <div class="p-4">

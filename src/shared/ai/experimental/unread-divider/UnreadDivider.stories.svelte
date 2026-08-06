@@ -9,11 +9,7 @@
       docs: {
         description: {
           component:
-            "Experimental semantic separator marking the first unread message.",
-        },
-      },
-    },
-  });
+            "Experimental semantic separator marking the first unread message."}}}});
 </script>
 
 <Story
@@ -21,15 +17,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/ai/experimental/unread-divider/marks-unread-messages-chromium-darwin.png",
+        "/visual-baselines/ai/experimental/unread-divider/marks-unread-messages-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
   tags={["visual-approved"]}
 >
   {#snippet template()}

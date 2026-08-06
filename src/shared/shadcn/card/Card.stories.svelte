@@ -10,11 +10,7 @@
     parameters: {
       docs: {
         description: {
-          component: "Content container with header, body, and footer slots.",
-        },
-      },
-    },
-  });
+          component: "Content container with header, body, and footer slots."}}}});
 </script>
 
 <Story
@@ -27,15 +23,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/shadcn/card/header-content-and-footer-chromium-darwin.png",
+        "/visual-baselines/shadcn/card/header-content-and-footer-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
 >
   {#snippet template()}
     <Card.Root class="max-w-md">

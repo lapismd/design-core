@@ -9,11 +9,7 @@
     parameters: {
       docs: {
         description: {
-          component: "Inline loading indicator for buttons and pending states.",
-        },
-      },
-    },
-  });
+          component: "Inline loading indicator for buttons and pending states."}}}});
 </script>
 
 <Story
@@ -22,6 +18,10 @@
     await expect(canvas.getByLabelText("Loading")).toBeVisible();
   }}
   tags={["visual-approved"]}
+
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/spinner/pending-indicator-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+  }}
 >
   {#snippet template()}
     <div class="text-muted-foreground flex items-center gap-2 text-sm">

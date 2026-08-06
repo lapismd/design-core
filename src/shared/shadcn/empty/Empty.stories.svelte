@@ -11,11 +11,7 @@
       docs: {
         description: {
           component:
-            "Empty-state composition for lists and workspaces with no data.",
-        },
-      },
-    },
-  });
+            "Empty-state composition for lists and workspaces with no data."}}}});
 </script>
 
 <Story
@@ -27,6 +23,10 @@
     ).toBeVisible();
   }}
   tags={["visual-approved"]}
+
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/empty/no-results-state-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+  }}
 >
   {#snippet template()}
     <Empty.Root class="max-w-md border">

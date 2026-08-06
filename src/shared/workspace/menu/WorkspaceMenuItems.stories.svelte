@@ -12,11 +12,7 @@
       docs: {
         description: {
           component:
-            "Renderer-neutral workspace menu entries presented through direct Bits UI primitives and native Workspace tokens.",
-        },
-      },
-    },
-  });
+            "Renderer-neutral workspace menu entries presented through direct Bits UI primitives and native Workspace tokens."}}}});
 </script>
 
 <script lang="ts">
@@ -62,15 +58,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/workspace/menu/items-submenus-and-disabled-state-chromium-darwin.png",
+        "/visual-baselines/workspace/menu/items-submenus-and-disabled-state-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
 >
   {#snippet template()}
     <DropdownMenu.Root>

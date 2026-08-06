@@ -12,11 +12,7 @@
       docs: {
         description: {
           component:
-            'Styled content container for the chat "bubble." Reads sender from parent ChatMessage context to auto-style the background. Use filled for standard messages and ghost when content needs alignment without a visible boundary. Supports name/metadata slots aligned with bubble padding, and multi-bubble grouping via the group prop for consecutive messages from the same sender.',
-        },
-      },
-    },
-  });
+            'Styled content container for the chat "bubble." Reads sender from parent ChatMessage context to auto-style the background. Use filled for standard messages and ghost when content needs alignment without a visible boundary. Supports name/metadata slots aligned with bubble padding, and multi-bubble grouping via the group prop for consecutive messages from the same sender.'}}}});
 </script>
 
 <Story
@@ -24,15 +20,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/ai/message-bubble/astryx-showcase-chromium-darwin.png",
+        "/visual-baselines/ai/message-bubble/astryx-showcase-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -65,20 +59,16 @@
     docs: {
       description: {
         story:
-          "Compact, balanced, and spacious density modes side by side. Density controls bubble padding, corner radius, and spacing between grouped bubbles.",
-      },
-    },
+          "Compact, balanced, and spacious density modes side by side. Density controls bubble padding, corner radius, and spacing between grouped bubbles."}},
     visualDelta: {
       images: [
-        "/visual-baselines/ai/message-bubble/density-chromium-darwin.png",
+        "/visual-baselines/ai/message-bubble/density-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -127,20 +117,16 @@
     docs: {
       description: {
         story:
-          "Multi-bubble messages using first, middle, and last group positions. Grouped bubbles tighten corner radius on the sender side for a continuous visual flow.",
-      },
-    },
+          "Multi-bubble messages using first, middle, and last group positions. Grouped bubbles tighten corner radius on the sender side for a continuous visual flow."}},
     visualDelta: {
       images: [
-        "/visual-baselines/ai/message-bubble/grouping-chromium-darwin.png",
+        "/visual-baselines/ai/message-bubble/grouping-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -182,20 +168,16 @@
     docs: {
       description: {
         story:
-          "Bubbles with name and metadata slots aligned to bubble padding. Put name on the first bubble and metadata on the last bubble in a message.",
-      },
-    },
+          "Bubbles with name and metadata slots aligned to bubble padding. Put name on the first bubble and metadata on the last bubble in a message."}},
     visualDelta: {
       images: [
-        "/visual-baselines/ai/message-bubble/metadata-chromium-darwin.png",
+        "/visual-baselines/ai/message-bubble/metadata-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -233,20 +215,16 @@
     docs: {
       description: {
         story:
-          "Filled and ghost bubble variants for both user and assistant senders. Use filled for standard messages and ghost when content needs alignment without a visual boundary.",
-      },
-    },
+          "Filled and ghost bubble variants for both user and assistant senders. Use filled for standard messages and ghost when content needs alignment without a visual boundary."}},
     visualDelta: {
       images: [
-        "/visual-baselines/ai/message-bubble/variants-chromium-darwin.png",
+        "/visual-baselines/ai/message-bubble/variants-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
   tags={["visual-approved"]}
 >
   {#snippet template()}

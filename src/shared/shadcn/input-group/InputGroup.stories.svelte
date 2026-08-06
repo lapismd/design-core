@@ -10,11 +10,7 @@
       docs: {
         description: {
           component:
-            "Display additional information or actions to an input or textarea. Upstream example variations are adapted from the [shadcn-svelte Input Group docs](https://shadcn-svelte.com/docs/components/input-group.md).",
-        },
-      },
-    },
-  });
+            "Display additional information or actions to an input or textarea. Upstream example variations are adapted from the [shadcn-svelte Input Group docs](https://shadcn-svelte.com/docs/components/input-group.md)."}}}});
 </script>
 
 <script lang="ts">
@@ -30,6 +26,10 @@
     await expect(canvas.getByRole("status")).toHaveTextContent("250");
   }}
   tags={["visual-approved"]}
+
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/input-group/addon-and-input-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+  }}
 >
   {#snippet template()}
     <div class="flex max-w-sm flex-col gap-2">
@@ -50,6 +50,10 @@
     await userEvent.click(input);
     await userEvent.keyboard("1");
     await expect(input).toHaveFocus();
+  }}
+
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/input-group/focused-control-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
   }}
 >
   {#snippet template()}

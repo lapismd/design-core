@@ -9,11 +9,7 @@
     parameters: {
       docs: {
         description: {
-          component: "Page navigation with previous, next, and page links.",
-        },
-      },
-    },
-  });
+          component: "Page navigation with previous, next, and page links."}}}});
 </script>
 
 <script lang="ts">
@@ -33,15 +29,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/shadcn/pagination/navigates-pages-chromium-darwin.png",
+        "/visual-baselines/shadcn/pagination/navigates-pages-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
 >
   {#snippet template()}
     <div class="flex flex-col items-center gap-3">

@@ -10,11 +10,7 @@
       docs: {
         description: {
           component:
-            "Experimental independently pressed reaction pills with an optional emoji picker.",
-        },
-      },
-    },
-  });
+            "Experimental independently pressed reaction pills with an optional emoji picker."}}}});
 </script>
 
 <script lang="ts">
@@ -23,8 +19,7 @@
       emoji: "🎉",
       count: 4,
       selected: true,
-      label: "You and three teammates reacted with tada",
-    },
+      label: "You and three teammates reacted with tada"},
     { emoji: "👀", count: 2 },
   ]);
   let result = $state("No change");
@@ -56,15 +51,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/ai/experimental/reaction-bar/toggles-and-adds-reactions-chromium-darwin.png",
+        "/visual-baselines/ai/experimental/reaction-bar/toggles-and-adds-reactions-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
   tags={["visual-approved"]}
 >
   {#snippet template()}

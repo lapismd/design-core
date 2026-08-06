@@ -9,11 +9,7 @@
     parameters: {
       docs: {
         description: {
-          component: "Command palette list used by searchable pickers.",
-        },
-      },
-    },
-  });
+          component: "Command palette list used by searchable pickers."}}}});
 </script>
 
 <script lang="ts">
@@ -30,6 +26,10 @@
     await expect(canvas.getByRole("status")).toHaveTextContent("Calendar");
   }}
   tags={["visual-approved"]}
+
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/command/filters-and-selects-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+  }}
 >
   {#snippet template()}
     <div class="flex max-w-md flex-col gap-2">

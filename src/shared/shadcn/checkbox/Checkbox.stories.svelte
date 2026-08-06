@@ -11,11 +11,7 @@
       docs: {
         description: {
           component:
-            "UI-owned checkbox for forms and settings. Native CSS conversion via ui:add.",
-        },
-      },
-    },
-  });
+            "UI-owned checkbox for forms and settings. Native CSS conversion via ui:add."}}}});
 </script>
 
 <script lang="ts">
@@ -27,14 +23,12 @@
   tags={["visual-state", "visual-approved"]}
   parameters={{
     visualDelta: {
-      images: ["/visual-baselines/shadcn/checkbox/default-chromium-darwin.png"],
+      images: ["/visual-baselines/shadcn/checkbox/default-chromium.png"],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
 >
   {#snippet template()}
     <div class="flex items-center gap-3">
@@ -56,15 +50,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/shadcn/checkbox/toggles-a-boolean-setting-chromium-darwin.png",
+        "/visual-baselines/shadcn/checkbox/toggles-a-boolean-setting-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
   tags={["visual-approved"]}
 >
   {#snippet template()}

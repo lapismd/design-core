@@ -11,8 +11,7 @@
 
   const { Story } = defineMeta({
     title: "Shadcn/Navigation/Breadcrumb",
-    component: Breadcrumb.Breadcrumb,
-  });
+    component: Breadcrumb.Breadcrumb});
 </script>
 
 <Story
@@ -22,23 +21,19 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/shadcn/breadcrumb/preview-chromium-darwin.png",
+        "/visual-baselines/shadcn/breadcrumb/preview-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
+      placement: "right"
     },
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.Preview,
         language: "html",
-        type: "code",
-      },
-    },
-  }}
+        type: "code"}}}}
 >
   {#snippet template()}
     <div class="p-4">
@@ -54,27 +49,22 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/shadcn/breadcrumb/custom-separator-chromium-darwin.png",
+        "/visual-baselines/shadcn/breadcrumb/custom-separator-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
+      placement: "right"
     },
     a11y: { test: "todo" },
     docs: {
       description: {
         story:
-          "Use a custom component in the `slot` of `` to create a custom separator.",
-      },
+          "Use a custom component in the `slot` of `` to create a custom separator."},
       source: {
         code: exampleSources.CustomSeparator,
         language: "html",
-        type: "code",
-      },
-    },
-  }}
+        type: "code"}}}}
 >
   {#snippet template()}
     <div class="p-4">
@@ -90,27 +80,22 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/shadcn/breadcrumb/dropdown-chromium-darwin.png",
+        "/visual-baselines/shadcn/breadcrumb/dropdown-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
+      placement: "right"
     },
     a11y: { test: "todo" },
     docs: {
       description: {
         story:
-          "You can compose `` with a `` to create a dropdown in the breadcrumb.",
-      },
+          "You can compose `` with a `` to create a dropdown in the breadcrumb."},
       source: {
         code: exampleSources.Dropdown,
         language: "html",
-        type: "code",
-      },
-    },
-  }}
+        type: "code"}}}}
 >
   {#snippet template()}
     <div class="p-4">
@@ -126,27 +111,22 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/shadcn/breadcrumb/collapsed-chromium-darwin.png",
+        "/visual-baselines/shadcn/breadcrumb/collapsed-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
+      placement: "right"
     },
     a11y: { test: "todo" },
     docs: {
       description: {
         story:
-          "We provide a `` component to show a collapsed state when the breadcrumb is too long.",
-      },
+          "We provide a `` component to show a collapsed state when the breadcrumb is too long."},
       source: {
         code: exampleSources.Collapsed,
         language: "html",
-        type: "code",
-      },
-    },
-  }}
+        type: "code"}}}}
 >
   {#snippet template()}
     <div class="p-4">
@@ -162,26 +142,21 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/shadcn/breadcrumb/link-component-chromium-darwin.png",
+        "/visual-baselines/shadcn/breadcrumb/link-component-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
+      placement: "right"
     },
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "To use a link just add the `href` prop to ``.",
-      },
+        story: "To use a link just add the `href` prop to ``."},
       source: {
         code: exampleSources.LinkComponent,
         language: "html",
-        type: "code",
-      },
-    },
-  }}
+        type: "code"}}}}
 >
   {#snippet template()}
     <div class="p-4">

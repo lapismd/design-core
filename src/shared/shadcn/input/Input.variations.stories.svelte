@@ -12,8 +12,7 @@
 
   const { Story } = defineMeta({
     title: "Shadcn/Forms/Input",
-    component: Input.Input,
-  });
+    component: Input.Input});
 </script>
 
 <Story
@@ -21,15 +20,13 @@
   exportName="Preview"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/input/preview-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.Preview,
         language: "html",
-        type: "code",
-      },
-    },
-  }}
+        type: "code"}}}}
 >
   {#snippet template()}
     <div class="p-4">
@@ -43,15 +40,13 @@
   exportName="Default"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/input/default-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.Default,
         language: "html",
-        type: "code",
-      },
-    },
-  }}
+        type: "code"}}}}
 >
   {#snippet template()}
     <div class="p-4">
@@ -65,15 +60,13 @@
   exportName="File"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/input/file-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.File,
         language: "html",
-        type: "code",
-      },
-    },
-  }}
+        type: "code"}}}}
 >
   {#snippet template()}
     <div class="p-4">
@@ -87,15 +80,13 @@
   exportName="Disabled"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/input/disabled-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.Disabled,
         language: "html",
-        type: "code",
-      },
-    },
-  }}
+        type: "code"}}}}
 >
   {#snippet template()}
     <div class="p-4">
@@ -109,15 +100,13 @@
   exportName="WithLabel"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/input/with-label-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.WithLabel,
         language: "html",
-        type: "code",
-      },
-    },
-  }}
+        type: "code"}}}}
 >
   {#snippet template()}
     <div class="p-4">
@@ -131,15 +120,13 @@
   exportName="WithButton"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/input/with-button-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.WithButton,
         language: "html",
-        type: "code",
-      },
-    },
-  }}
+        type: "code"}}}}
 >
   {#snippet template()}
     <div class="p-4">

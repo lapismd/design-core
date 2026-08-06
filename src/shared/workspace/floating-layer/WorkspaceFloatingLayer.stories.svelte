@@ -3,8 +3,7 @@
   import { expect } from "storybook/test";
   import {
     createDefaultWorkspaceLayout,
-    createWorkspaceTab,
-  } from "../core/layout.js";
+    createWorkspaceTab} from "../core/layout.js";
   import { WorkspaceShellController } from "../core/workspace-controller.svelte.js";
   import ExampleWorkspaceView from "../view-host/ExampleWorkspaceView.svelte";
   import WorkspaceFloatingLayer from "./WorkspaceFloatingLayer.svelte";
@@ -18,29 +17,22 @@
       docs: {
         description: {
           component:
-            "Presentation layer for free and minimized floating windows, driven entirely by serialized controller state.",
-        },
-      },
-    },
-  });
+            "Presentation layer for free and minimized floating windows, driven entirely by serialized controller state."}}}});
 </script>
 
 <script lang="ts">
   const controller = new WorkspaceShellController({
-    layout: createDefaultWorkspaceLayout(),
-  });
+    layout: createDefaultWorkspaceLayout()});
   controller.registry.register({
     kind: "svelte",
     type: "floating-layer-example",
     component: ExampleWorkspaceView,
-    showHeader: false,
-  });
+    showHeader: false});
   const normal = controller.openWindow(
     createWorkspaceTab({
       id: "floating-layer-normal",
       title: "Reference",
-      view: { type: "floating-layer-example" },
-    }),
+      view: { type: "floating-layer-example" }}),
     "floating",
     { x: 96, y: 64, width: 480, height: 340 },
   )!;
@@ -48,8 +40,7 @@
     createWorkspaceTab({
       id: "floating-layer-minimized",
       title: "Details",
-      view: { type: "floating-layer-example" },
-    }),
+      view: { type: "floating-layer-example" }}),
     "floating",
     { x: 320, y: 180, width: 420, height: 300 },
   )!;
@@ -66,9 +57,12 @@
     ).toBeVisible();
     await expect(
       canvas.getByRole("button", {
-        name: "Restore floating pane Details",
-      }),
+        name: "Restore floating pane Details"}),
     ).toBeVisible();
+  }}
+
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/workspace/floating-layer/free-and-minimized-windows-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
   }}
 >
   {#snippet template()}

@@ -9,11 +9,7 @@
     parameters: {
       docs: {
         description: {
-          component: "Compact status and category labels.",
-        },
-      },
-    },
-  });
+          component: "Compact status and category labels."}}}});
 </script>
 
 <Story
@@ -25,14 +21,12 @@
   tags={["visual-approved"]}
   parameters={{
     visualDelta: {
-      images: ["/visual-baselines/shadcn/badge/variants-chromium-darwin.png"],
+      images: ["/visual-baselines/shadcn/badge/variants-chromium.png"],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
 >
   {#snippet template()}
     <div class="flex flex-wrap gap-2">

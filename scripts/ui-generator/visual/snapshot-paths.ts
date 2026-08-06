@@ -5,7 +5,8 @@
  *   importPath: ./src/shared/shadcn/input-group/InputGroup.stories.svelte
  *   storyId:    shadcn-forms-input-group--addon-and-input
  *   →           shadcn/input-group/addon-and-input.png
- * Playwright then appends `-chromium-darwin`.
+ * Playwright (Visual Delta `snapshotPathTemplate`) appends `-{project}` →
+ * `…-chromium.png`.
  */
 
 export type StoryIndexEntry = {
@@ -62,7 +63,7 @@ function collisionSafeSnapshotDir(entry: StoryIndexEntry): string {
     : directory;
 }
 
-/** Relative path passed to `toHaveScreenshot` (no project/platform suffix). */
+/** Relative path passed to `toHaveScreenshot` (no project suffix). */
 export function screenshotRelativePath(entry: StoryIndexEntry): string {
   if (!entry.importPath) {
     throw new Error(`Story ${entry.id} is missing importPath`);
@@ -73,8 +74,8 @@ export function screenshotRelativePath(entry: StoryIndexEntry): string {
 }
 
 /**
- * Mid-play interaction baseline path (no project/platform suffix).
- * On disk: `{slug}--{stepId}-chromium-darwin.png`.
+ * Mid-play interaction baseline path (no project suffix).
+ * On disk: `{slug}--{stepId}-chromium.png`.
  */
 export function interactionScreenshotRelativePath(
   entry: StoryIndexEntry,
@@ -88,22 +89,21 @@ export function interactionScreenshotRelativePath(
   return primary.replace(/\.png$/, `--${id}.png`);
 }
 
-/** Flat legacy basename Playwright used before nesting. */
+/** Flat legacy basename (browser-only; platform-qualified names are obsolete). */
 export function legacyFlatSnapshotName(storyId: string): string {
-  return `${storyId}-chromium-darwin.png`;
+  return `${storyId}-chromium.png`;
 }
 
 /**
- * Nested path after Playwright appends `-{project}-{platform}` before `.png`.
- * Defaults match the historical chromium/darwin layout.
+ * Nested on-disk path after Playwright appends `-{project}` before `.png`.
+ * Matches `@lapismd/storybook-addon-visual-delta` `snapshotFileName`.
  */
 export function nestedSnapshotFileName(
   entry: StoryIndexEntry,
   project = "chromium",
-  platform: NodeJS.Platform | string = "darwin",
 ): string {
   const rel = screenshotRelativePath(entry);
-  return rel.replace(/\.png$/, `-${project}-${platform}.png`);
+  return rel.replace(/\.png$/, `-${project}.png`);
 }
 
 /** Storybook story-id prefix for `-g` filtering, e.g. `shadcn-forms-input-group--`. */
@@ -124,7 +124,7 @@ export function storyIdPrefixFromStoryId(storyId: string): string {
   return `${head}--`;
 }
 
-/** Component folder match for nested keys like `shadcn/button/foo-chromium-darwin.png`. */
+/** Component folder match for nested keys like `shadcn/button/foo-chromium.png`. */
 export function snapshotKeyMatchesComponent(
   key: string,
   component: string,
@@ -132,13 +132,6 @@ export function snapshotKeyMatchesComponent(
 ): boolean {
   const needle = component.toLowerCase().replace(/\s+/g, "-");
   const normalized = key.replace(/\\/g, "/");
-  if (normalized.includes(`shadcn/${needle}/`)) return true;
-  if (normalized.includes(`forms/${needle}/`)) return true;
-  // Legacy flat + explicit recipe prefixes
-  for (const inc of extraIncludes) {
-    if (normalized.includes(inc)) return true;
-  }
-  if (normalized.includes(`-${needle}--`)) return true;
-  if (normalized.startsWith(`${needle}-`)) return true;
-  return false;
+  const haystacks = [normalized, ...extraIncludes.map((s) => s.toLowerCase())];
+  return haystacks.some((h) => h.includes(needle));
 }

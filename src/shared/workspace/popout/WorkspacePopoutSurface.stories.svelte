@@ -6,8 +6,7 @@
   import {
     createDefaultWorkspaceLayout,
     createWorkspaceTab,
-    createWorkspaceTabs,
-  } from "../core/layout.js";
+    createWorkspaceTabs} from "../core/layout.js";
   import { WorkspaceDragState } from "../drag/workspace-drag.svelte.js";
   import WorkspacePopoutSurface from "./WorkspacePopoutSurface.svelte";
   import "./WorkspacePopoutSurface.stories.css";
@@ -17,8 +16,7 @@
     id: "popout-story-tab",
     title: "Detached view",
     icon: "picture-in-picture",
-    view: { type: "empty", state: {} },
-  });
+    view: { type: "empty", state: {} }});
   const popoutWindow = {
     id: "popout-story-window",
     mode: "popout" as const,
@@ -26,9 +24,7 @@
     bounds: { x: 120, y: 90, width: 720, height: 480 },
     root: createWorkspaceTabs([tab], {
       id: "popout-story-pane",
-      activeItemId: tab.id,
-    }),
-  };
+      activeItemId: tab.id})};
   layout.windows = [popoutWindow];
   const popoutApp = new AppShellController({ layout });
   const drag = new WorkspaceDragState(popoutApp.renderer);
@@ -36,8 +32,7 @@
   const { Story } = defineMeta({
     title: "Workspace/Components/Popout Surface",
     component: WorkspacePopoutSurface,
-    parameters: { layout: "fullscreen" },
-  });
+    parameters: { layout: "fullscreen" }});
 </script>
 
 <Story
@@ -56,15 +51,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/workspace/popout/detached-workspace-tree-chromium-darwin.png",
+        "/visual-baselines/workspace/popout/detached-workspace-tree-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
 >
   {#snippet template()}
     <div class="ui-workspace-popout-story">

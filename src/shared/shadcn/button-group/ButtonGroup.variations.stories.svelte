@@ -17,8 +17,7 @@
 
   const { Story } = defineMeta({
     title: "Shadcn/Actions/Button Group",
-    component: ButtonGroup.ButtonGroup,
-  });
+    component: ButtonGroup.ButtonGroup});
 </script>
 
 <Story
@@ -28,23 +27,19 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/shadcn/button-group/preview-chromium-darwin.png",
+        "/visual-baselines/shadcn/button-group/preview-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
+      placement: "right"
     },
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.Preview,
         language: "html",
-        type: "code",
-      },
-    },
-  }}
+        type: "code"}}}}
 >
   {#snippet template()}
     <div class="p-4">
@@ -60,26 +55,21 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/shadcn/button-group/orientation-chromium-darwin.png",
+        "/visual-baselines/shadcn/button-group/orientation-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
+      placement: "right"
     },
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "Set the `orientation` prop to change the button group layout.",
-      },
+        story: "Set the `orientation` prop to change the button group layout."},
       source: {
         code: exampleSources.Orientation,
         language: "html",
-        type: "code",
-      },
-    },
-  }}
+        type: "code"}}}}
 >
   {#snippet template()}
     <div class="p-4">
@@ -95,27 +85,22 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/shadcn/button-group/size-chromium-darwin.png",
+        "/visual-baselines/shadcn/button-group/size-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
+      placement: "right"
     },
     a11y: { test: "todo" },
     docs: {
       description: {
         story:
-          "Control the size of buttons using the `size` prop on individual buttons.",
-      },
+          "Control the size of buttons using the `size` prop on individual buttons."},
       source: {
         code: exampleSources.Size,
         language: "html",
-        type: "code",
-      },
-    },
-  }}
+        type: "code"}}}}
 >
   {#snippet template()}
     <div class="p-4">
@@ -131,27 +116,22 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/shadcn/button-group/nested-chromium-darwin.png",
+        "/visual-baselines/shadcn/button-group/nested-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
+      placement: "right"
     },
     a11y: { test: "todo" },
     docs: {
       description: {
         story:
-          "Nest `ButtonGroup` components to create button groups with spacing.",
-      },
+          "Nest `ButtonGroup` components to create button groups with spacing."},
       source: {
         code: exampleSources.Nested,
         language: "html",
-        type: "code",
-      },
-    },
-  }}
+        type: "code"}}}}
 >
   {#snippet template()}
     <div class="p-4">
@@ -167,27 +147,22 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/shadcn/button-group/separator-chromium-darwin.png",
+        "/visual-baselines/shadcn/button-group/separator-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
+      placement: "right"
     },
     a11y: { test: "todo" },
     docs: {
       description: {
         story:
-          "The `ButtonGroupSeparator` component visually divides buttons within a group.\n\nButtons with variant `outline` do not need a separator since they have a border. For other variants, a separator is recommended to improve the visual hierarchy.",
-      },
+          "The `ButtonGroupSeparator` component visually divides buttons within a group.\n\nButtons with variant `outline` do not need a separator since they have a border. For other variants, a separator is recommended to improve the visual hierarchy."},
       source: {
         code: exampleSources.Separator,
         language: "html",
-        type: "code",
-      },
-    },
-  }}
+        type: "code"}}}}
 >
   {#snippet template()}
     <div class="p-4">
@@ -203,27 +178,22 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/shadcn/button-group/split-chromium-darwin.png",
+        "/visual-baselines/shadcn/button-group/split-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
+      placement: "right"
     },
     a11y: { test: "todo" },
     docs: {
       description: {
         story:
-          "Create a split button group by adding two buttons separated by a `ButtonGroupSeparator`.",
-      },
+          "Create a split button group by adding two buttons separated by a `ButtonGroupSeparator`."},
       source: {
         code: exampleSources.Split,
         language: "html",
-        type: "code",
-      },
-    },
-  }}
+        type: "code"}}}}
 >
   {#snippet template()}
     <div class="p-4">
@@ -239,26 +209,21 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/shadcn/button-group/input-chromium-darwin.png",
+        "/visual-baselines/shadcn/button-group/input-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
+      placement: "right"
     },
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "Wrap an `Input` component with buttons.",
-      },
+        story: "Wrap an `Input` component with buttons."},
       source: {
         code: exampleSources.Input,
         language: "html",
-        type: "code",
-      },
-    },
-  }}
+        type: "code"}}}}
 >
   {#snippet template()}
     <div class="p-4">
@@ -274,27 +239,22 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/shadcn/button-group/input-group-chromium-darwin.png",
+        "/visual-baselines/shadcn/button-group/input-group-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
+      placement: "right"
     },
     a11y: { test: "todo" },
     docs: {
       description: {
         story:
-          "Wrap an `InputGroup` component to create complex input layouts.",
-      },
+          "Wrap an `InputGroup` component to create complex input layouts."},
       source: {
         code: exampleSources.InputGroup,
         language: "html",
-        type: "code",
-      },
-    },
-  }}
+        type: "code"}}}}
 >
   {#snippet template()}
     <div class="p-4">
@@ -310,26 +270,21 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/shadcn/button-group/dropdown-menu-chromium-darwin.png",
+        "/visual-baselines/shadcn/button-group/dropdown-menu-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
+      placement: "right"
     },
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "Create a split button group with a `DropdownMenu` component.",
-      },
+        story: "Create a split button group with a `DropdownMenu` component."},
       source: {
         code: exampleSources.DropdownMenu,
         language: "html",
-        type: "code",
-      },
-    },
-  }}
+        type: "code"}}}}
 >
   {#snippet template()}
     <div class="p-4">
@@ -345,26 +300,21 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/shadcn/button-group/select-chromium-darwin.png",
+        "/visual-baselines/shadcn/button-group/select-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
+      placement: "right"
     },
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "Pair with a `Select` component.",
-      },
+        story: "Pair with a `Select` component."},
       source: {
         code: exampleSources.Select,
         language: "html",
-        type: "code",
-      },
-    },
-  }}
+        type: "code"}}}}
 >
   {#snippet template()}
     <div class="p-4">
@@ -380,26 +330,21 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/shadcn/button-group/popover-chromium-darwin.png",
+        "/visual-baselines/shadcn/button-group/popover-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
+      placement: "right"
     },
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "Use with a `Popover` component.",
-      },
+        story: "Use with a `Popover` component."},
       source: {
         code: exampleSources.Popover,
         language: "html",
-        type: "code",
-      },
-    },
-  }}
+        type: "code"}}}}
 >
   {#snippet template()}
     <div class="p-4">

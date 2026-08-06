@@ -10,11 +10,7 @@
       docs: {
         description: {
           component:
-            "Stacked expandable sections for FAQs and grouped details.",
-        },
-      },
-    },
-  });
+            "Stacked expandable sections for FAQs and grouped details."}}}});
 </script>
 
 <Story
@@ -27,15 +23,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/shadcn/accordion/opens-a-section-chromium-darwin.png",
+        "/visual-baselines/shadcn/accordion/opens-a-section-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
 >
   {#snippet template()}
     <Accordion.Root type="single" class="max-w-md">

@@ -10,11 +10,7 @@
       docs: {
         description: {
           component:
-            "Serializable Lucide icon renderer used by tabs, views, sidebars, commands, ribbon items, and status items.",
-        },
-      },
-    },
-  });
+            "Serializable Lucide icon renderer used by tabs, views, sidebars, commands, ribbon items, and status items."}}}});
 </script>
 
 <Story
@@ -26,15 +22,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/workspace/icon/serializable-icon-names-chromium-darwin.png",
+        "/visual-baselines/workspace/icon/serializable-icon-names-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
 >
   {#snippet template()}
     <div
@@ -56,10 +50,7 @@
     docs: {
       description: {
         story:
-          "Unknown serializable names render the stable file fallback. Tagged skip-visual because the named gallery is the visual baseline.",
-      },
-    },
-  }}
+          "Unknown serializable names render the stable file fallback. Tagged skip-visual because the named gallery is the visual baseline."}}}}
   play={async ({ canvasElement }) => {
     await expect(canvasElement.querySelector(".lucide-file")).not.toBeNull();
   }}

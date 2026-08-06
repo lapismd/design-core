@@ -12,11 +12,7 @@
       docs: {
         description: {
           component:
-            "Renders a text string with token patterns replaced by inline Badge components. Wrap any message body inside ChatMessageBubble to turn raw @mentions, #tags, or /commands into styled badges. When no tokens match or none are provided, the text renders as-is: so you can use ChatTokenizedText unconditionally on every message.",
-        },
-      },
-    },
-  });
+            "Renders a text string with token patterns replaced by inline Badge components. Wrap any message body inside ChatMessageBubble to turn raw @mentions, #tags, or /commands into styled badges. When no tokens match or none are provided, the text renders as-is: so you can use ChatTokenizedText unconditionally on every message."}}}});
 </script>
 
 <Story
@@ -24,15 +20,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/ai/tokenized-text/astryx-showcase-chromium-darwin.png",
+        "/visual-baselines/ai/tokenized-text/astryx-showcase-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -60,20 +54,16 @@
     docs: {
       description: {
         story:
-          "A message with @mention tokens. Each matching pattern is replaced with its display name badge.",
-      },
-    },
+          "A message with @mention tokens. Each matching pattern is replaced with its display name badge."}},
     visualDelta: {
       images: [
-        "/visual-baselines/ai/tokenized-text/basic-chromium-darwin.png",
+        "/visual-baselines/ai/tokenized-text/basic-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -100,20 +90,16 @@
     docs: {
       description: {
         story:
-          "Tokens with different color variants to distinguish mentions, bugs, and features. Use variant colors to create a visual taxonomy: blue for people, red for bugs, green for features.",
-      },
-    },
+          "Tokens with different color variants to distinguish mentions, bugs, and features. Use variant colors to create a visual taxonomy: blue for people, red for bugs, green for features."}},
     visualDelta: {
       images: [
-        "/visual-baselines/ai/tokenized-text/colors-chromium-darwin.png",
+        "/visual-baselines/ai/tokenized-text/colors-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
   tags={["visual-approved"]}
 >
   {#snippet template()}

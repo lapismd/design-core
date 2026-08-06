@@ -9,11 +9,7 @@
     parameters: {
       docs: {
         description: {
-          component: "Hierarchical navigation trail for nested locations.",
-        },
-      },
-    },
-  });
+          component: "Hierarchical navigation trail for nested locations."}}}});
 </script>
 
 <Story
@@ -26,15 +22,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/shadcn/breadcrumb/account-path-chromium-darwin.png",
+        "/visual-baselines/shadcn/breadcrumb/account-path-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
 >
   {#snippet template()}
     <Breadcrumb.Root>

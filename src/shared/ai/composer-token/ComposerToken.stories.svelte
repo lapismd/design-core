@@ -10,11 +10,7 @@
       docs: {
         description: {
           component:
-            "Renders a single token chip outside the contentEditable input. Wraps a badge config or custom render function in the correct data-astryx-token span so the token serializes properly and stays visually consistent with tokens inside the composer.",
-        },
-      },
-    },
-  });
+            "Renders a single token chip outside the contentEditable input. Wraps a badge config or custom render function in the correct data-astryx-token span so the token serializes properly and stays visually consistent with tokens inside the composer."}}}});
 </script>
 
 <Story
@@ -24,20 +20,16 @@
     docs: {
       description: {
         story:
-          "Token chip rendered from a badge config so serialization and visual chrome stay consistent with tokens inside the composer input.",
-      },
-    },
+          "Token chip rendered from a badge config so serialization and visual chrome stay consistent with tokens inside the composer input."}},
     visualDelta: {
       images: [
-        "/visual-baselines/ai/composer-token/badge-config-chromium-darwin.png",
+        "/visual-baselines/ai/composer-token/badge-config-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -59,20 +51,16 @@
     docs: {
       description: {
         story:
-          "Token chip with a custom render function, still wrapped in the token span required for serialization and consistent styling.",
-      },
-    },
+          "Token chip with a custom render function, still wrapped in the token span required for serialization and consistent styling."}},
     visualDelta: {
       images: [
-        "/visual-baselines/ai/composer-token/custom-render-chromium-darwin.png",
+        "/visual-baselines/ai/composer-token/custom-render-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -82,8 +70,7 @@
         id="custom-file"
         token={{
           value: "src/lib/auth.ts",
-          render: customToken,
-        }}
+          render: customToken}}
       />
       before merging.
     </p>

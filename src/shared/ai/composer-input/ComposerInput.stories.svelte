@@ -17,18 +17,15 @@
     {
       id: "summarize",
       label: "summarize",
-      description: "Summarize the conversation",
-    },
+      description: "Summarize the conversation"},
     {
       id: "translate",
       label: "translate",
-      description: "Translate text to another language",
-    },
+      description: "Translate text to another language"},
     {
       id: "search",
       label: "search",
-      description: "Search the web or documents",
-    },
+      description: "Search the web or documents"},
     { id: "code", label: "code", description: "Generate or explain code" },
     { id: "help", label: "help", description: "Show available commands" },
   ];
@@ -46,9 +43,7 @@
     onSelect: (item) => ({
       value: `@${item.id}`,
       label: item.label,
-      variant: "secondary",
-    }),
-  };
+      variant: "secondary"})};
 
   const commandTrigger: ComposerTrigger = {
     character: "/",
@@ -60,9 +55,7 @@
     onSelect: (item) => ({
       value: `/${item.label}`,
       label: `/${item.label}`,
-      variant: "outline",
-    }),
-  };
+      variant: "outline"})};
 
   const mentionTriggers = [mentionTrigger];
   const commandTriggers = [commandTrigger];
@@ -75,11 +68,7 @@
       docs: {
         description: {
           component:
-            "Rich text input for the chat composer. Supports trigger menus (type @ or / to open a typeahead), inline tokens rendered as badges, message history recall with ArrowUp/Down, paste/drop file handling, and a 16px touch-device font-size floor to prevent iOS input zoom. Pass it to ChatComposer's input slot when you need more than a plain textarea.",
-        },
-      },
-    },
-  });
+            "Rich text input for the chat composer. Supports trigger menus (type @ or / to open a typeahead), inline tokens rendered as badges, message history recall with ArrowUp/Down, paste/drop file handling, and a 16px touch-device font-size floor to prevent iOS input zoom. Pass it to ChatComposer's input slot when you need more than a plain textarea."}}}});
 </script>
 
 <script lang="ts">
@@ -103,15 +92,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/ai/composer-input/astryx-showcase-chromium-darwin.png",
+        "/visual-baselines/ai/composer-input/astryx-showcase-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -140,20 +127,16 @@
     docs: {
       description: {
         story:
-          "Controlled chat input with live value display. Use controlled mode when you need to read or transform the input value outside the composer.",
-      },
-    },
+          "Controlled chat input with live value display. Use controlled mode when you need to read or transform the input value outside the composer."}},
     visualDelta: {
       images: [
-        "/visual-baselines/ai/composer-input/controlled-chromium-darwin.png",
+        "/visual-baselines/ai/composer-input/controlled-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -178,20 +161,16 @@
     docs: {
       description: {
         story:
-          "Composer in a disabled state. Use when the input should be visible but not interactive, such as during streaming or when a prerequisite is unmet.",
-      },
-    },
+          "Composer in a disabled state. Use when the input should be visible but not interactive, such as during streaming or when a prerequisite is unmet."}},
     visualDelta: {
       images: [
-        "/visual-baselines/ai/composer-input/disabled-chromium-darwin.png",
+        "/visual-baselines/ai/composer-input/disabled-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -212,20 +191,16 @@
     docs: {
       description: {
         story:
-          "Chat input with an @ trigger that opens a typeahead menu for mentioning users. Selected names appear as inline tokens.",
-      },
-    },
+          "Chat input with an @ trigger that opens a typeahead menu for mentioning users. Selected names appear as inline tokens."}},
     visualDelta: {
       images: [
-        "/visual-baselines/ai/composer-input/mentions-chromium-darwin.png",
+        "/visual-baselines/ai/composer-input/mentions-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -251,20 +226,16 @@
     docs: {
       description: {
         story:
-          "Chat input with both @ mentions and / commands. Each trigger type renders tokens in a distinct color so users can tell them apart at a glance.",
-      },
-    },
+          "Chat input with both @ mentions and / commands. Each trigger type renders tokens in a distinct color so users can tell them apart at a glance."}},
     visualDelta: {
       images: [
-        "/visual-baselines/ai/composer-input/multiple-triggers-chromium-darwin.png",
+        "/visual-baselines/ai/composer-input/multiple-triggers-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -290,20 +261,16 @@
     docs: {
       description: {
         story:
-          "Chat input with a / trigger for command selection. Use for AI assistants or bots that support structured commands.",
-      },
-    },
+          "Chat input with a / trigger for command selection. Use for AI assistants or bots that support structured commands."}},
     visualDelta: {
       images: [
-        "/visual-baselines/ai/composer-input/slash-commands-chromium-darwin.png",
+        "/visual-baselines/ai/composer-input/slash-commands-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -336,15 +303,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/ai/composer-input/selects-an-async-trigger-result-chromium-darwin.png",
+        "/visual-baselines/ai/composer-input/selects-an-async-trigger-result-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -381,15 +346,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/ai/composer-input/inserts-and-expands-a-token-chromium-darwin.png",
+        "/visual-baselines/ai/composer-input/inserts-and-expands-a-token-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -413,8 +376,7 @@
             insertedTokenId = handle?.insertToken({
               value: "Expanded source text",
               label: "14 lines, 420 chars",
-              variant: "outline",
-            });
+              variant: "outline"});
           }}
         >
           Insert token
@@ -448,8 +410,7 @@
       new ClipboardEvent("paste", {
         bubbles: true,
         cancelable: true,
-        clipboardData,
-      }),
+        clipboardData}),
     );
     await expect(canvas.getByText("220 chars")).toBeVisible();
     const file = new File(["hello"], "brief.txt", { type: "text/plain" });
@@ -459,8 +420,7 @@
       new DragEvent("drop", {
         bubbles: true,
         cancelable: true,
-        dataTransfer,
-      }),
+        dataTransfer}),
     );
     await waitFor(() =>
       expect(canvas.getByRole("status")).toHaveTextContent("drop: brief.txt"),
@@ -469,15 +429,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/ai/composer-input/handles-long-paste-and-file-drop-chromium-darwin.png",
+        "/visual-baselines/ai/composer-input/handles-long-paste-and-file-drop-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -503,15 +461,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/ai/composer-input/browser-acceptance-surface-chromium-darwin.png",
+        "/visual-baselines/ai/composer-input/browser-acceptance-surface-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
   tags={["visual-approved"]}
 >
   {#snippet template()}

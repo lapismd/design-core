@@ -10,11 +10,7 @@
     parameters: {
       docs: {
         description: {
-          component: "Grouped related actions in a shared control cluster.",
-        },
-      },
-    },
-  });
+          component: "Grouped related actions in a shared control cluster."}}}});
 </script>
 
 <script lang="ts">
@@ -31,15 +27,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/shadcn/button-group/grouped-actions-chromium-darwin.png",
+        "/visual-baselines/shadcn/button-group/grouped-actions-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
 >
   {#snippet template()}
     <div class="flex flex-col gap-3">

@@ -10,11 +10,7 @@
       docs: {
         description: {
           component:
-            "Loading placeholder for content that has not arrived yet.",
-        },
-      },
-    },
-  });
+            "Loading placeholder for content that has not arrived yet."}}}});
 </script>
 
 <Story
@@ -23,6 +19,10 @@
     await expect(canvas.getByRole("status")).toBeVisible();
   }}
   tags={["visual-approved"]}
+
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/skeleton/content-placeholders-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+  }}
 >
   {#snippet template()}
     <div

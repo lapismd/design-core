@@ -11,11 +11,7 @@
       docs: {
         description: {
           component:
-            "Form field composition primitives. Prefer FieldGroup + Field over ad-hoc label/control stacks.",
-        },
-      },
-    },
-  });
+            "Form field composition primitives. Prefer FieldGroup + Field over ad-hoc label/control stacks."}}}});
 </script>
 
 <script lang="ts">
@@ -32,15 +28,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/shadcn/field/labeled-input-with-description-chromium-darwin.png",
+        "/visual-baselines/shadcn/field/labeled-input-with-description-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
 >
   {#snippet template()}
     <Field.FieldGroup class="max-w-sm">

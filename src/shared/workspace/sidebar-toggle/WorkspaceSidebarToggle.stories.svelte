@@ -10,11 +10,7 @@
       docs: {
         description: {
           component:
-            "Source-shaped left and right sidebar visibility control with serializable F-mode hint metadata.",
-        },
-      },
-    },
-  });
+            "Source-shaped left and right sidebar visibility control with serializable F-mode hint metadata."}}}});
 </script>
 
 <script lang="ts">
@@ -35,15 +31,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/workspace/sidebar-toggle/both-sidebar-directions-chromium-darwin.png",
+        "/visual-baselines/workspace/sidebar-toggle/both-sidebar-directions-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
 >
   {#snippet template()}
     <div class="flex items-center gap-2">

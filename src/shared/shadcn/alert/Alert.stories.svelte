@@ -9,11 +9,7 @@
     parameters: {
       docs: {
         description: {
-          component: "Inline callout for status messages and warnings.",
-        },
-      },
-    },
-  });
+          component: "Inline callout for status messages and warnings."}}}});
 </script>
 
 <Story
@@ -25,15 +21,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/shadcn/alert/informational-callout-chromium-darwin.png",
+        "/visual-baselines/shadcn/alert/informational-callout-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
 >
   {#snippet template()}
     <Alert.Root class="max-w-md">

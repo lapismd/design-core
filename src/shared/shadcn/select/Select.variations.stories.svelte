@@ -7,8 +7,7 @@
 
   const { Story } = defineMeta({
     title: "Shadcn/Forms/Select",
-    component: Select.Select,
-  });
+    component: Select.Select});
 </script>
 
 <Story
@@ -16,15 +15,13 @@
   exportName="Scrollable"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/select/scrollable-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.Scrollable,
         language: "html",
-        type: "code",
-      },
-    },
-  }}
+        type: "code"}}}}
 >
   {#snippet template()}
     <div class="p-4">

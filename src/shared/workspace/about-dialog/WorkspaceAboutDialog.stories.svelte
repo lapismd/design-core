@@ -15,18 +15,14 @@
       icon: "blocks",
       buildTime: "2026-07-26T10:30:00.000Z",
       commitHash: "a371198e495d9e4e",
-      copyright: "Copyright 2026 Workspace Studio contributors.",
-    },
+      copyright: "Copyright 2026 Workspace Studio contributors."},
     configuration: {
-      values: { [APP_SHELL_SETTING_IDS.mobileMode]: "never" },
-    },
-  });
+      values: { [APP_SHELL_SETTING_IDS.mobileMode]: "never" }}});
 
   const { Story } = defineMeta({
     title: "Workspace/Components/About Dialog",
     component: WorkspaceAboutDialog,
-    parameters: { layout: "fullscreen" },
-  });
+    parameters: { layout: "fullscreen" }});
 </script>
 
 <Story
@@ -45,15 +41,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/workspace/about-dialog/application-information-chromium-darwin.png",
+        "/visual-baselines/workspace/about-dialog/application-information-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
 >
   {#snippet template()}
     <div class="ui-workspace-overlay-story">

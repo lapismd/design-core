@@ -16,7 +16,7 @@ import { VISUAL_SNAPSHOT_DIR } from "./diff-result.js";
 
 export type DiscoveredInteractionBaseline = {
   stepId: string;
-  /** Relative path for `toHaveScreenshot` (no platform suffix). */
+  /** Relative path for `toHaveScreenshot` (no project suffix). */
   screenshotRel: string;
   /** Absolute on-disk PNG path. */
   pngAbs: string;
@@ -30,10 +30,9 @@ export function interactionBaselinePngPath(
   stepId: string,
   packageRoot: string,
   project = "chromium",
-  platform: NodeJS.Platform = process.platform,
 ): string {
   const rel = interactionScreenshotRelativePath(entry, stepId);
-  const withSuffix = rel.replace(/\.png$/, `-${project}-${platform}.png`);
+  const withSuffix = rel.replace(/\.png$/, `-${project}.png`);
   return path.join(packageRoot, VISUAL_SNAPSHOT_DIR, withSuffix);
 }
 
@@ -42,22 +41,20 @@ export function interactionBaselineUrl(
   entry: StoryIndexEntry,
   stepId: string,
   project = "chromium",
-  platform: NodeJS.Platform | string = "darwin",
 ): string {
   const rel = interactionScreenshotRelativePath(entry, stepId);
-  const withSuffix = rel.replace(/\.png$/, `-${project}-${platform}.png`);
+  const withSuffix = rel.replace(/\.png$/, `-${project}.png`);
   return `/visual-baselines/${withSuffix}`;
 }
 
 /**
  * Discover opted-in interaction baselines already on disk for a story
- * (`{slug}--{stepId}-chromium-darwin.png`).
+ * (`{slug}--{stepId}-chromium.png`).
  */
 export function listInteractionBaselinesOnDisk(
   entry: StoryIndexEntry,
   packageRoot: string,
   project = "chromium",
-  platform: NodeJS.Platform = process.platform,
 ): DiscoveredInteractionBaseline[] {
   if (!entry.importPath) return [];
   const primaryRel = screenshotRelativePath(entry);
@@ -68,7 +65,8 @@ export function listInteractionBaselinesOnDisk(
   const slug = storySlugFromId(entry.id);
   const out: DiscoveredInteractionBaseline[] = [];
   for (const name of readdirSync(dirAbs)) {
-    if (!name.includes(`-${project}-${platform}.png`)) continue;
+    if (!name.endsWith(`-${project}.png`)) continue;
+    if (name.includes(`-${project}-`)) continue; // skip legacy platform-qualified
     const stepId = stepIdFromInteractionSnapshotName(name, slug);
     if (!stepId) continue;
     const pngAbs = path.join(dirAbs, name);
@@ -100,10 +98,9 @@ export function interactionNestedSnapshotFileName(
   entry: StoryIndexEntry,
   stepId: string,
   project = "chromium",
-  platform: NodeJS.Platform | string = process.platform,
 ): string {
-  const primary = nestedSnapshotFileName(entry, project, platform);
-  const suffix = `-${project}-${platform}.png`;
+  const primary = nestedSnapshotFileName(entry, project);
+  const suffix = `-${project}.png`;
   if (!primary.endsWith(suffix)) {
     throw new Error(`Unexpected snapshot name: ${primary}`);
   }

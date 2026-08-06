@@ -94,18 +94,18 @@ describe("sidecar paths", () => {
       id: "shadcn-button--default",
       importPath: "./src/shared/shadcn/button/Button.stories.svelte",
     };
-    expect(nestedSnapshotFileName(entry, "chromium", "darwin")).toBe(
-      "shadcn/button/default-chromium-darwin.png",
+    expect(nestedSnapshotFileName(entry, "chromium")).toBe(
+      "shadcn/button/default-chromium.png",
     );
-    expect(sidecarPathForEntry(entry, "/repo", "chromium", "darwin")).toBe(
+    expect(sidecarPathForEntry(entry, "/repo", "chromium")).toBe(
       path.join(
         "/repo",
         "tests/visual/storybook.spec.ts-snapshots",
-        "shadcn/button/default-chromium-darwin.json",
+        "shadcn/button/default-chromium.json",
       ),
     );
-    expect(baselinePngPath(entry, "/repo", "chromium", "linux")).toContain(
-      "default-chromium-linux.png",
+    expect(baselinePngPath(entry, "/repo", "chromium")).toContain(
+      "default-chromium.png",
     );
   });
 });

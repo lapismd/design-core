@@ -9,19 +9,14 @@
     parameters: {
       docs: {
         description: {
-          component: "Single-value select built on bits-ui.",
-        },
-      },
-    },
-  });
+          component: "Single-value select built on bits-ui."}}}});
 </script>
 
 <script lang="ts">
   let interactionValue = $state("draft");
   const labels: Record<string, string> = {
     draft: "Draft",
-    published: "Published",
-  };
+    published: "Published"};
 </script>
 
 <!-- Interaction story first so vitest doesn't inherit an open portal from the visual story. -->
@@ -39,8 +34,7 @@
   }}
 
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/select/chooses-an-option-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
-  }}
+    visualDelta: {"images":["/visual-baselines/shadcn/select/chooses-an-option-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"}}}
 
   tags={["visual-approved"]}
 >
@@ -82,6 +76,10 @@
     await expect(
       within(document.body).getByRole("listbox", { name: "Status options" }),
     ).toBeVisible();
+  }}
+
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/select/open-menu-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
   }}
 >
   {#snippet template()}

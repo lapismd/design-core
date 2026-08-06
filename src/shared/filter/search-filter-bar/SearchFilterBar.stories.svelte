@@ -6,8 +6,7 @@
   import { parseFilterQuery } from "../filter-query/index.js";
   import {
     FilterCommandPicker,
-    type FilterCommandOption,
-  } from "@lapismd/design-core/forms";
+    type FilterCommandOption} from "@lapismd/design-core/forms";
 
   const { Story } = defineMeta({
     title: "Filter/Search Filter Bar",
@@ -16,11 +15,7 @@
       docs: {
         description: {
           component:
-            "Search chrome with optional filter-query highlighting and host-supplied autocomplete. Import from `@lapismd/design-core/filter`.",
-        },
-      },
-    },
-  });
+            "Search chrome with optional filter-query highlighting and host-supplied autocomplete. Import from `@lapismd/design-core/filter`."}}}});
 
   const demoSyntax = createDemoLedgerFilterSyntax();
 
@@ -51,8 +46,7 @@
     return {
       ok: errors.length === 0,
       type: filter.constructor.name,
-      errors,
-    };
+      errors};
   });
 </script>
 
@@ -64,6 +58,10 @@
     await expect(canvas.getByRole("status")).toHaveTextContent("design");
   }}
   tags={["visual-approved"]}
+
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/filter/search-filter-bar/updates-the-query-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+  }}
 >
   {#snippet template()}
     <div class="max-w-xl">
@@ -83,8 +81,7 @@
 
 <Story name="Shows an error"
   parameters={{
-    visualDelta: {"images":["/visual-baselines/filter/search-filter-bar/shows-an-error-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
-  }}
+    visualDelta: {"images":["/visual-baselines/filter/search-filter-bar/shows-an-error-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"}}}
 
   tags={["visual-approved"]}
 >
@@ -122,8 +119,7 @@
   }}
 
   parameters={{
-    visualDelta: {"images":["/visual-baselines/filter/search-filter-bar/filter-query-autocomplete-chromium-darwin.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
-  }}
+    visualDelta: {"images":["/visual-baselines/filter/search-filter-bar/filter-query-autocomplete-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"}}}
 
   tags={["visual-approved"]}
 >
@@ -159,8 +155,7 @@
   }}
 
   parameters={{
-    visualDelta: {"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right","passThresholdPercent":0.1},
-  }}
+    visualDelta: {"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"}}}
 
   tags={["visual-pending", "skip-visual"]}
 >
@@ -173,8 +168,7 @@
           types: TYPE_OPTIONS.filter((o) => o.value !== "all").map(
             (o) => o.value,
           ),
-          accounts: ACCOUNT_OPTIONS.map((o) => o.value),
-        })}
+          accounts: ACCOUNT_OPTIONS.map((o) => o.value)})}
         ariaLabel="Ledger search"
         placeholder="account:… payee:… #tag"
         showFilterToggle

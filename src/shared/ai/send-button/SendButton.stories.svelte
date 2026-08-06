@@ -14,11 +14,7 @@
       docs: {
         description: {
           component:
-            "Circular send/stop toggle button for the chat composer. Place it inside ChatComposer where it reads context automatically: no wiring needed. When streaming starts, the button switches from a primary send icon to a secondary stop icon. Override any context value via props for standalone or custom usage.",
-        },
-      },
-    },
-  });
+            "Circular send/stop toggle button for the chat composer. Place it inside ChatComposer where it reads context automatically: no wiring needed. When streaming starts, the button switches from a primary send icon to a secondary stop icon. Override any context value via props for standalone or custom usage."}}}});
 </script>
 
 <script lang="ts">
@@ -31,15 +27,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/ai/send-button/astryx-showcase-chromium-darwin.png",
+        "/visual-baselines/ai/send-button/astryx-showcase-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -60,20 +54,16 @@
     docs: {
       description: {
         story:
-          "Disabled, ready, and streaming states at both sizes. The button automatically toggles between send (primary) and stop (secondary) based on streaming state.",
-      },
-    },
+          "Disabled, ready, and streaming states at both sizes. The button automatically toggles between send (primary) and stop (secondary) based on streaming state."}},
     visualDelta: {
       images: [
-        "/visual-baselines/ai/send-button/states-chromium-darwin.png",
+        "/visual-baselines/ai/send-button/states-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -95,20 +85,16 @@
     docs: {
       description: {
         story:
-          "Send buttons with custom icons via sendIcon and stopIcon props. Use to match the personality of the chat experience: a paper airplane for messaging, sparkles for AI generation, or a check mark for confirmation flows.",
-      },
-    },
+          "Send buttons with custom icons via sendIcon and stopIcon props. Use to match the personality of the chat experience: a paper airplane for messaging, sparkles for AI generation, or a check mark for confirmation flows."}},
     visualDelta: {
       images: [
-        "/visual-baselines/ai/send-button/custom-icons-chromium-darwin.png",
+        "/visual-baselines/ai/send-button/custom-icons-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -136,20 +122,16 @@
     docs: {
       description: {
         story:
-          "Send button inside ChatComposer, where it reads state from context automatically. No wiring needed; the button enables when the input has content.",
-      },
-    },
+          "Send button inside ChatComposer, where it reads state from context automatically. No wiring needed; the button enables when the input has content."}},
     visualDelta: {
       images: [
-        "/visual-baselines/ai/send-button/in-composer-chromium-darwin.png",
+        "/visual-baselines/ai/send-button/in-composer-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -174,15 +156,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/ai/send-button/sends-a-message-chromium-darwin.png",
+        "/visual-baselines/ai/send-button/sends-a-message-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -198,15 +178,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/ai/send-button/stops-a-response-chromium-darwin.png",
+        "/visual-baselines/ai/send-button/stops-a-response-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
   tags={["visual-approved"]}
 >
   {#snippet template()}

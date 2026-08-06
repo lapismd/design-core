@@ -15,8 +15,7 @@
 
   const { Story } = defineMeta({
     title: "Shadcn/Forms/Input Group",
-    component: InputGroup.InputGroup,
-  });
+    component: InputGroup.InputGroup});
 </script>
 
 <Story
@@ -24,15 +23,13 @@
   exportName="Preview"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/input-group/preview-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.Preview,
         language: "html",
-        type: "code",
-      },
-    },
-  }}
+        type: "code"}}}}
 >
   {#snippet template()}
     <div class="p-4">
@@ -46,15 +43,13 @@
   exportName="Icon"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/input-group/icon-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.Icon,
         language: "html",
-        type: "code",
-      },
-    },
-  }}
+        type: "code"}}}}
 >
   {#snippet template()}
     <div class="p-4">
@@ -68,18 +63,15 @@
   exportName="Text"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/input-group/text-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "Display additional text information alongside inputs.",
-      },
+        story: "Display additional text information alongside inputs."},
       source: {
         code: exampleSources.Text,
         language: "html",
-        type: "code",
-      },
-    },
-  }}
+        type: "code"}}}}
 >
   {#snippet template()}
     <div class="p-4">
@@ -93,18 +85,15 @@
   exportName="Tooltip"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/input-group/tooltip-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "Add tooltips to provide additional context or help.",
-      },
+        story: "Add tooltips to provide additional context or help."},
       source: {
         code: exampleSources.Tooltip,
         language: "html",
-        type: "code",
-      },
-    },
-  }}
+        type: "code"}}}}
 >
   {#snippet template()}
     <div class="p-4">
@@ -118,19 +107,16 @@
   exportName="Textarea"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/input-group/textarea-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
     a11y: { test: "todo" },
     docs: {
       description: {
         story:
-          "Input groups also work with textarea components. Use `block-start` or `block-end` for alignment.",
-      },
+          "Input groups also work with textarea components. Use `block-start` or `block-end` for alignment."},
       source: {
         code: exampleSources.Textarea,
         language: "html",
-        type: "code",
-      },
-    },
-  }}
+        type: "code"}}}}
 >
   {#snippet template()}
     <div class="p-4">
@@ -144,18 +130,15 @@
   exportName="Spinner"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/input-group/spinner-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "Show loading indicators while processing input.",
-      },
+        story: "Show loading indicators while processing input."},
       source: {
         code: exampleSources.Spinner,
         language: "html",
-        type: "code",
-      },
-    },
-  }}
+        type: "code"}}}}
 >
   {#snippet template()}
     <div class="p-4">
@@ -169,18 +152,15 @@
   exportName="Label"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/input-group/label-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "Add labels within input groups to improve accessibility.",
-      },
+        story: "Add labels within input groups to improve accessibility."},
       source: {
         code: exampleSources.Label,
         language: "html",
-        type: "code",
-      },
-    },
-  }}
+        type: "code"}}}}
 >
   {#snippet template()}
     <div class="p-4">
@@ -194,19 +174,16 @@
   exportName="Dropdown"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/input-group/dropdown-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
     a11y: { test: "todo" },
     docs: {
       description: {
         story:
-          "Pair input groups with dropdown menus for complex interactions.",
-      },
+          "Pair input groups with dropdown menus for complex interactions."},
       source: {
         code: exampleSources.Dropdown,
         language: "html",
-        type: "code",
-      },
-    },
-  }}
+        type: "code"}}}}
 >
   {#snippet template()}
     <div class="p-4">
@@ -220,19 +197,16 @@
   exportName="CustomInput"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/input-group/custom-input-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
     a11y: { test: "todo" },
     docs: {
       description: {
         story:
-          'Add the `data-slot="input-group-control"` attribute to your custom input for automatic behavior and focus state handling.\n\nNo style is applied to the custom input. Apply your own styles using the `class` prop.',
-      },
+          'Add the `data-slot="input-group-control"` attribute to your custom input for automatic behavior and focus state handling.\n\nNo style is applied to the custom input. Apply your own styles using the `class` prop.'},
       source: {
         code: exampleSources.CustomInput,
         language: "html",
-        type: "code",
-      },
-    },
-  }}
+        type: "code"}}}}
 >
   {#snippet template()}
     <div class="p-4">

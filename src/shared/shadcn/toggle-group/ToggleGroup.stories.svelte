@@ -9,11 +9,7 @@
     parameters: {
       docs: {
         description: {
-          component: "Exclusive or multi-select group of toggle options.",
-        },
-      },
-    },
-  });
+          component: "Exclusive or multi-select group of toggle options."}}}});
 </script>
 
 <script lang="ts">
@@ -30,15 +26,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/shadcn/toggle-group/selects-an-alignment-chromium-darwin.png",
+        "/visual-baselines/shadcn/toggle-group/selects-an-alignment-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
 >
   {#snippet template()}
     <div class="flex flex-col gap-2">

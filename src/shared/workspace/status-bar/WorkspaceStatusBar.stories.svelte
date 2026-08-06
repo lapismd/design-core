@@ -13,11 +13,7 @@
       docs: {
         description: {
           component:
-            "Lapis-shaped bottom-right status surface backed by the controller status registry.",
-        },
-      },
-    },
-  });
+            "Lapis-shaped bottom-right status surface backed by the controller status registry."}}}});
 </script>
 
 <script lang="ts">
@@ -29,8 +25,7 @@
     icon: "cloud-check",
     onSelect: () => {
       result = "Sync selected";
-    },
-  });
+    }});
   controller.statusBar.addItem({
     id: "version",
     align: "right",
@@ -38,8 +33,7 @@
     icon: "circle-help",
     onSelect: () => {
       result = "Version selected";
-    },
-  });
+    }});
 </script>
 
 <Story
@@ -55,15 +49,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/workspace/status-bar/left-and-right-contributions-chromium-darwin.png",
+        "/visual-baselines/workspace/status-bar/left-and-right-contributions-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
 >
   {#snippet template()}
     <div class="ui-workspace-status-bar-story-frame">

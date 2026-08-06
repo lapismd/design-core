@@ -7,8 +7,7 @@
 
   const { Story } = defineMeta({
     title: "Shadcn/Disclosure/Tabs",
-    component: Tabs.Tabs,
-  });
+    component: Tabs.Tabs});
 </script>
 
 <Story
@@ -16,15 +15,13 @@
   exportName="Preview"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/tabs/preview-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.Preview,
         language: "html",
-        type: "code",
-      },
-    },
-  }}
+        type: "code"}}}}
 >
   {#snippet template()}
     <div class="p-4">

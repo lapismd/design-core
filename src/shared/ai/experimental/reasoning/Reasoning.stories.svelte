@@ -10,11 +10,7 @@
       docs: {
         description: {
           component:
-            "Experimental compact reasoning disclosure with controlled expansion and streaming state.",
-        },
-      },
-    },
-  });
+            "Experimental compact reasoning disclosure with controlled expansion and streaming state."}}}});
 </script>
 
 <Story
@@ -29,15 +25,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/ai/experimental/reasoning/expands-reasoning-chromium-darwin.png",
+        "/visual-baselines/ai/experimental/reasoning/expands-reasoning-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -60,15 +54,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/ai/experimental/reasoning/streams-reasoning-chromium-darwin.png",
+        "/visual-baselines/ai/experimental/reasoning/streams-reasoning-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
   tags={["visual-approved"]}
 >
   {#snippet template()}

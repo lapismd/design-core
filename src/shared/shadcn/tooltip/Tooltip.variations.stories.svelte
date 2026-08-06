@@ -7,8 +7,7 @@
 
   const { Story } = defineMeta({
     title: "Shadcn/Overlays/Tooltip",
-    component: Tooltip.Tooltip,
-  });
+    component: Tooltip.Tooltip});
 </script>
 
 <Story
@@ -21,10 +20,7 @@
       source: {
         code: exampleSources.Preview,
         language: "html",
-        type: "code",
-      },
-    },
-  }}
+        type: "code"}}}}
 >
   {#snippet template()}
     <div class="p-4">

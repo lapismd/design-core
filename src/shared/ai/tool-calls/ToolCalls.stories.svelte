@@ -32,11 +32,7 @@ Time:        1.8s`;
       docs: {
         description: {
           component:
-            "ChatToolCalls displays tool or function call invocations from an LLM response. Pass an array of calls and the component handles the rest: a single call renders inline, while multiple calls collapse into a summary with the latest call visible at the surface. Use it anywhere an AI agent shows what actions it took.",
-        },
-      },
-    },
-  });
+            "ChatToolCalls displays tool or function call invocations from an LLM response. Pass an array of calls and the component handles the rest: a single call renders inline, while multiple calls collapse into a summary with the latest call visible at the surface. Use it anywhere an AI agent shows what actions it took."}}}});
 </script>
 
 <Story
@@ -44,15 +40,13 @@ Time:        1.8s`;
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/ai/tool-calls/astryx-showcase-chromium-darwin.png",
+        "/visual-baselines/ai/tool-calls/astryx-showcase-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -63,22 +57,19 @@ Time:        1.8s`;
           name: "bash",
           target: "git diff --stat",
           status: "complete",
-          duration: "340ms",
-        },
+          duration: "340ms"},
         {
           name: "read",
           target: "src/utils/formatDate.ts",
           status: "complete",
-          duration: "45ms",
-        },
+          duration: "45ms"},
         {
           name: "edit",
           target: "src/utils/formatDate.ts",
           status: "complete",
           duration: "120ms",
           additions: 12,
-          deletions: 3,
-        },
+          deletions: 3},
       ]}
     />
   {/snippet}
@@ -91,20 +82,16 @@ Time:        1.8s`;
     docs: {
       description: {
         story:
-          "All four status states (pending, running, complete, and error) shown together in a single group.",
-      },
-    },
+          "All four status states (pending, running, complete, and error) shown together in a single group."}},
     visualDelta: {
       images: [
-        "/visual-baselines/ai/tool-calls/statuses-chromium-darwin.png",
+        "/visual-baselines/ai/tool-calls/statuses-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -115,8 +102,7 @@ Time:        1.8s`;
           id: "pending",
           name: "bash",
           target: "yarn build",
-          status: "pending",
-        },
+          status: "pending"},
         { id: "running", name: "bash", target: "yarn test", status: "running" },
         {
           id: "complete",
@@ -125,16 +111,14 @@ Time:        1.8s`;
           status: "complete",
           duration: "120ms",
           additions: 8,
-          deletions: 2,
-        },
+          deletions: 2},
         {
           id: "error",
           name: "bash",
           target: "yarn lint",
           status: "error",
           duration: "0.8s",
-          errorMessage: "3 lint errors found",
-        },
+          errorMessage: "3 lint errors found"},
       ]}
     />
   {/snippet}
@@ -147,20 +131,16 @@ Time:        1.8s`;
     docs: {
       description: {
         story:
-          "A single inline tool call above a collapsible multi-call group with diff stats. Shows both layouts side by side.",
-      },
-    },
+          "A single inline tool call above a collapsible multi-call group with diff stats. Shows both layouts side by side."}},
     visualDelta: {
       images: [
-        "/visual-baselines/ai/tool-calls/simple-chromium-darwin.png",
+        "/visual-baselines/ai/tool-calls/simple-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -171,8 +151,7 @@ Time:        1.8s`;
             name: "bash",
             target: "git status",
             status: "complete",
-            duration: "1.2s",
-          },
+            duration: "1.2s"},
         ]}
       />
       <ToolCalls
@@ -182,23 +161,20 @@ Time:        1.8s`;
             name: "read",
             target: "src/components/DataGrid.tsx",
             status: "complete",
-            duration: "30ms",
-          },
+            duration: "30ms"},
           {
             name: "edit",
             target: "src/components/DataGrid.tsx",
             status: "complete",
             duration: "85ms",
             additions: 24,
-            deletions: 8,
-          },
+            deletions: 8},
           {
             name: "edit",
             target: "src/components/DataGrid.test.tsx",
             status: "complete",
             duration: "60ms",
-            additions: 45,
-          },
+            additions: 45},
         ]}
       />
     </div>
@@ -212,20 +188,16 @@ Time:        1.8s`;
     docs: {
       description: {
         story:
-          "Tool calls with expandable result details showing diffs and command output in code blocks. Click a row to reveal its result.",
-      },
-    },
+          "Tool calls with expandable result details showing diffs and command output in code blocks. Click a row to reveal its result."}},
     visualDelta: {
       images: [
-        "/visual-baselines/ai/tool-calls/expandable-chromium-darwin.png",
+        "/visual-baselines/ai/tool-calls/expandable-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -246,22 +218,19 @@ Time:        1.8s`;
           node: "cli:remote-server",
           additions: 6,
           deletions: 3,
-          detail: editDiff,
-        },
+          detail: editDiff},
         {
           name: "bash",
           target: "yarn test",
           status: "complete",
           duration: "1.8s",
           node: "cli:remote-server",
-          detail: testOutput,
-        },
+          detail: testOutput},
         {
           name: "web_search",
           target: "Intl.DateTimeFormat locale options",
           status: "complete",
-          duration: "1.2s",
-        },
+          duration: "1.2s"},
       ]}
     />
   {/snippet}
@@ -278,15 +247,13 @@ Time:        1.8s`;
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/ai/tool-calls/expands-call-details-chromium-darwin.png",
+        "/visual-baselines/ai/tool-calls/expands-call-details-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -302,21 +269,18 @@ Time:        1.8s`;
           target: "release-notes.md",
           status: "complete",
           duration: "42 ms",
-          detail: readDetail,
-        },
+          detail: readDetail},
         {
           id: "edit",
           name: "Update changelog",
           status: "running",
           additions: 12,
-          deletions: 3,
-        },
+          deletions: 3},
         {
           id: "test",
           name: "Run checks",
           status: "error",
-          errorMessage: "One visual comparison failed.",
-        },
+          errorMessage: "One visual comparison failed."},
       ]}
     />
   {/snippet}
@@ -327,15 +291,13 @@ Time:        1.8s`;
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/ai/tool-calls/collapsed-summary-chromium-darwin.png",
+        "/visual-baselines/ai/tool-calls/collapsed-summary-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
   tags={["visual-approved"]}
 >
   {#snippet template()}

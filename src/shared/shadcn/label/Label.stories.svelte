@@ -10,11 +10,7 @@
     parameters: {
       docs: {
         description: {
-          component: "Accessible label for form controls.",
-        },
-      },
-    },
-  });
+          component: "Accessible label for form controls."}}}});
 </script>
 
 <script lang="ts">
@@ -31,15 +27,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/shadcn/label/associates-with-an-input-chromium-darwin.png",
+        "/visual-baselines/shadcn/label/associates-with-an-input-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
 >
   {#snippet template()}
     <div class="flex max-w-sm flex-col gap-2">

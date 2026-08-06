@@ -10,11 +10,7 @@
       docs: {
         description: {
           component:
-            "Experimental searchable emoji popover with eight-column keyboard navigation.",
-        },
-      },
-    },
-  });
+            "Experimental searchable emoji popover with eight-column keyboard navigation."}}}});
 </script>
 
 <script lang="ts">
@@ -27,12 +23,10 @@
     await userEvent.click(canvas.getByRole("button", { name: "Add reaction" }));
     const popover = within(document.body);
     const search = await popover.findByRole("textbox", {
-      name: "Search emoji",
-    });
+      name: "Search emoji"});
     await userEvent.type(search, "fire");
     const fire = await popover.findByRole("button", {
-      name: "React with fire",
-    });
+      name: "React with fire"});
     fire.focus();
     await userEvent.keyboard("{Enter}");
     await waitFor(() =>
@@ -45,15 +39,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/ai/experimental/emoji-picker/searches-and-selects-an-emoji-chromium-darwin.png",
+        "/visual-baselines/ai/experimental/emoji-picker/searches-and-selects-an-emoji-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -77,8 +69,7 @@
     );
     const popover = within(document.body);
     const first = await popover.findByRole("button", {
-      name: "React with thumbs up",
-    });
+      name: "React with thumbs up"});
     const second = popover.getByRole("button", { name: "React with heart" });
     await waitFor(() =>
       expect(
@@ -93,15 +84,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/ai/experimental/emoji-picker/navigates-the-emoji-grid-chromium-darwin.png",
+        "/visual-baselines/ai/experimental/emoji-picker/navigates-the-emoji-grid-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
   tags={["visual-approved"]}
 >
   {#snippet template()}

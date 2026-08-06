@@ -9,11 +9,7 @@
       docs: {
         description: {
           component:
-            "Experimental reduced-motion-safe typing dots with live grammar-aware labels.",
-        },
-      },
-    },
-  });
+            "Experimental reduced-motion-safe typing dots with live grammar-aware labels."}}}});
 </script>
 
 <Story
@@ -21,15 +17,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/ai/experimental/typing-indicator/names-active-typists-chromium-darwin.png",
+        "/visual-baselines/ai/experimental/typing-indicator/names-active-typists-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
   tags={["visual-approved"]}
 >
   {#snippet template()}

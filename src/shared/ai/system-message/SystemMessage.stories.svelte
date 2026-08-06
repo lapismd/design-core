@@ -16,11 +16,7 @@
       docs: {
         description: {
           component:
-            "Centered system message for non-sender content like date separators, membership changes, and status notices. It is not a chat bubble; it has no avatar, no alignment, and no sender context. Use the divider variant for temporal breaks and default for inline status updates.",
-        },
-      },
-    },
-  });
+            "Centered system message for non-sender content like date separators, membership changes, and status notices. It is not a chat bubble; it has no avatar, no alignment, and no sender context. Use the divider variant for temporal breaks and default for inline status updates."}}}});
 </script>
 
 <Story
@@ -28,15 +24,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/ai/system-message/astryx-showcase-chromium-darwin.png",
+        "/visual-baselines/ai/system-message/astryx-showcase-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -57,20 +51,16 @@
     docs: {
       description: {
         story:
-          "Realistic status messages in a conversation flow showing membership changes, timestamps, and resolution notices.",
-      },
-    },
+          "Realistic status messages in a conversation flow showing membership changes, timestamps, and resolution notices."}},
     visualDelta: {
       images: [
-        "/visual-baselines/ai/system-message/status-updates-chromium-darwin.png",
+        "/visual-baselines/ai/system-message/status-updates-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -102,20 +92,16 @@
     docs: {
       description: {
         story:
-          "Default and divider variants side by side. Use default for inline status updates and divider for date separators or section breaks.",
-      },
-    },
+          "Default and divider variants side by side. Use default for inline status updates and divider for date separators or section breaks."}},
     visualDelta: {
       images: [
-        "/visual-baselines/ai/system-message/variants-chromium-darwin.png",
+        "/visual-baselines/ai/system-message/variants-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -145,20 +131,16 @@
     docs: {
       description: {
         story:
-          "System messages with a leading icon that reinforces the message type. Use icons to help users scan and identify message categories at a glance.",
-      },
-    },
+          "System messages with a leading icon that reinforces the message type. Use icons to help users scan and identify message categories at a glance."}},
     visualDelta: {
       images: [
-        "/visual-baselines/ai/system-message/with-icon-chromium-darwin.png",
+        "/visual-baselines/ai/system-message/with-icon-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
   tags={["visual-approved"]}
 >
   {#snippet template()}

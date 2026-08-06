@@ -10,11 +10,7 @@
       docs: {
         description: {
           component:
-            "UI-owned single-line input. Pair with Field when composing structured forms.",
-        },
-      },
-    },
-  });
+            "UI-owned single-line input. Pair with Field when composing structured forms."}}}});
 </script>
 
 <script lang="ts">
@@ -30,6 +26,10 @@
     await expect(canvas.getByRole("status")).toHaveTextContent("Personal");
   }}
   tags={["visual-approved"]}
+
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/input/edits-a-single-line-value-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+  }}
 >
   {#snippet template()}
     <div class="flex max-w-sm flex-col gap-2">

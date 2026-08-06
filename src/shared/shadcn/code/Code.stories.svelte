@@ -10,11 +10,7 @@
       docs: {
         description: {
           component:
-            "Inline code element with monospace font and muted background. For fenced multi-line snippets with syntax highlighting, use Code Block. Differs from UI Forms Code Highlighter, which requires a Lezer parser for form previews. See ADD_CODE_BLOCK.md and [Shadcn guidance](?path=/docs/shadcn-guidance--docs).",
-        },
-      },
-    },
-  });
+            "Inline code element with monospace font and muted background. For fenced multi-line snippets with syntax highlighting, use Code Block. Differs from UI Forms Code Highlighter, which requires a Lezer parser for form previews. See ADD_CODE_BLOCK.md and [Shadcn guidance](?path=/docs/shadcn-guidance--docs)."}}}});
 </script>
 
 <Story

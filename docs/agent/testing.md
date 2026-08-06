@@ -45,7 +45,7 @@ Committed under `tests/visual/storybook.spec.ts-snapshots/`.
   human review, or Storybook **Visual Delta → Update baselines** (dev; gated,
   `--allow-dirty`).
 - **Primary PNG = end of play** (unchanged). Opt-in mid-play captures are
-  sibling files `{slug}--{stepId}-chromium-darwin.png`, created from the Visual
+  sibling files `{slug}--{stepId}-chromium.png`, created from the Visual
   Delta **Interactions** tab for named `step("…")` / `visualCapture(step, …)`
   rows only. Import `visualCapture` from `src/storybook/visual-capture`.
 - Dev create/update/run/review hit addon-owned Vite middleware

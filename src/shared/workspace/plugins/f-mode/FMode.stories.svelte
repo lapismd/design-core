@@ -15,22 +15,18 @@
       includeFMode: true,
       includeNotifications: false,
       mobileMode: "never",
-      initialConfiguration: values,
-    });
+      initialConfiguration: values});
   }
 
   const idle = createFModeDemo();
   const active = createFModeDemo();
   const activation = createFModeDemo();
   const partial = createFModeDemo({
-    [FMODE_SETTING_IDS.alphabet]: "ab",
-  });
+    [FMODE_SETTING_IDS.alphabet]: "ab"});
   const filtered = createFModeDemo({
-    [FMODE_SETTING_IDS.enabledSurfaces]: ["tabs"],
-  });
+    [FMODE_SETTING_IDS.enabledSurfaces]: ["tabs"]});
   const minimal = createFModeDemo({
-    [FMODE_SETTING_IDS.hudMode]: "minimal",
-  });
+    [FMODE_SETTING_IDS.hudMode]: "minimal"});
 
   async function openFMode(
     app: AppShellController,
@@ -76,11 +72,7 @@
       docs: {
         description: {
           component:
-            "Optional keyboard-hint plugin exercised through the complete reusable Workspace shell, including tabs, view headers, sidebars, ribbon, and status targets.",
-        },
-      },
-    },
-  });
+            "Optional keyboard-hint plugin exercised through the complete reusable Workspace shell, including tabs, view headers, sidebars, ribbon, and status targets."}}}});
 </script>
 
 <Story
@@ -89,15 +81,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/workspace/plugins/f-mode/idle-target-surface-chromium-darwin.png",
+        "/visual-baselines/workspace/plugins/f-mode/idle-target-surface-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
 >
   {#snippet template()}
     <div class="ui-workspace-fmode-story">
@@ -117,6 +107,10 @@
     await expect(
       canvasElement.querySelector(".ui-workspace-fmode__summary"),
     ).toHaveTextContent(`${hints.length} targets`);
+  }}
+
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/workspace/plugins/f-mode/active-hints-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
   }}
 >
   {#snippet template()}
@@ -148,15 +142,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/workspace/plugins/f-mode/keyboard-activation-chromium-darwin.png",
+        "/visual-baselines/workspace/plugins/f-mode/keyboard-activation-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
 >
   {#snippet template()}
     <div class="ui-workspace-fmode-story">
@@ -191,15 +183,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/workspace/plugins/f-mode/partial-query-chromium-darwin.png",
+        "/visual-baselines/workspace/plugins/f-mode/partial-query-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
 >
   {#snippet template()}
     <div class="ui-workspace-fmode-story">
@@ -225,15 +215,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/workspace/plugins/f-mode/filtered-target-groups-chromium-darwin.png",
+        "/visual-baselines/workspace/plugins/f-mode/filtered-target-groups-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
 >
   {#snippet template()}
     <div class="ui-workspace-fmode-story">
@@ -255,15 +243,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/workspace/plugins/f-mode/minimal-hud-chromium-darwin.png",
+        "/visual-baselines/workspace/plugins/f-mode/minimal-hud-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
 >
   {#snippet template()}
     <div class="ui-workspace-fmode-story">

@@ -23,11 +23,7 @@
       docs: {
         description: {
           component:
-            "A bounded structural shell with independently controlled collapsible, closeable, resizable, and persistable sidebars. Applications own navigation, content, and persistence adapter selection.",
-        },
-      },
-    },
-  });
+            "A bounded structural shell with independently controlled collapsible, closeable, resizable, and persistable sidebars. Applications own navigation, content, and persistence adapter selection."}}}});
 </script>
 
 <script lang="ts">
@@ -38,29 +34,24 @@
   const documentController = new AppShellController();
   const completeController = new AppShellController({
     leftWidth: 220,
-    rightWidth: 240,
-  });
+    rightWidth: 240});
   const completeTabletController = new AppShellController({
     leftCollapsed: true,
     rightClosed: true,
     leftWidth: 268,
-    rightWidth: 312,
-  });
+    rightWidth: 312});
   const completeMobileController = new AppShellController({
     leftCollapsed: true,
     rightClosed: true,
     leftWidth: 280,
-    rightWidth: 320,
-  });
+    rightWidth: 320});
   const modeSwitchController = new AppShellController({
     leftWidth: 224,
-    rightWidth: 256,
-  });
+    rightWidth: 256});
   const constrainedDesktopController = new AppShellController({
     leftCollapsed: true,
     leftWidth: 220,
-    rightWidth: 240,
-  });
+    rightWidth: 240});
   const projectSidebarController = nestedController.createSidebar(
     "projects",
     "left",
@@ -73,13 +64,11 @@
   const completeTabletProjectSidebarController =
     completeTabletController.createSidebar("projects", "left", {
       collapsed: true,
-      width: 248,
-    });
+      width: 248});
   const completeMobileProjectSidebarController =
     completeMobileController.createSidebar("projects", "left", {
       closed: true,
-      width: 252,
-    });
+      width: 252});
   const modeSwitchProjectSidebarController = modeSwitchController.createSidebar(
     "projects",
     "left",
@@ -87,8 +76,7 @@
   );
   const constrainedDesktopProjectSidebarController =
     constrainedDesktopController.createSidebar("projects", "left", {
-      width: 220,
-    });
+      width: 220});
   let nestedSelectedProject = $state("");
   let selectedMarkdownFile = $state("");
   let bodySidebarSide = $state<"left" | "right" | undefined>();
@@ -230,19 +218,16 @@
       canvas.getByText("Review the changed files first."),
     ).toBeVisible();
     const rightClose = canvas.getByRole("button", {
-      name: "Close right sidebar",
-    });
+      name: "Close right sidebar"});
     await expect(rightClose).toBeVisible();
     await expect(
       rightHeaderRect.right - rightClose.getBoundingClientRect().right,
     ).toBeLessThanOrEqual(17);
 
     const leftResizeHandle = canvas.getByRole("slider", {
-      name: "Resize left sidebar",
-    });
+      name: "Resize left sidebar"});
     const rightResizeHandle = canvas.getByRole("slider", {
-      name: "Resize right sidebar",
-    });
+      name: "Resize right sidebar"});
     await expect(leftResizeHandle).toHaveAttribute("aria-valuemin", "220");
     await expect(leftResizeHandle).toHaveAttribute("aria-valuemax", "520");
     await expect(rightResizeHandle).toHaveAttribute("aria-valuemin", "220");
@@ -253,20 +238,16 @@
     const leftResizeRect = leftResizeHandle.getBoundingClientRect();
     const resizeStart = {
       clientX: (leftResizeRect.left + leftResizeRect.right) / 2,
-      clientY: (leftResizeRect.top + leftResizeRect.bottom) / 2,
-    };
+      clientY: (leftResizeRect.top + leftResizeRect.bottom) / 2};
     await userEvent.pointer([
       {
         keys: "[MouseLeft>]",
         target: leftResizeHandle,
-        coords: resizeStart,
-      },
+        coords: resizeStart},
       {
         coords: {
           clientX: resizeStart.clientX + 24,
-          clientY: resizeStart.clientY,
-        },
-      },
+          clientY: resizeStart.clientY}},
       "[/MouseLeft]",
     ]);
     await expect(Math.round(leftSidebar.getBoundingClientRect().width)).toBe(
@@ -295,8 +276,7 @@
     const mainWidthBeforeClose = mainSurface!.getBoundingClientRect().width;
     const reclaimedSidebarWidth = rightSidebar.getBoundingClientRect().width;
     const rightToggle = canvas.getByRole("button", {
-      name: "Collapse right sidebar",
-    });
+      name: "Collapse right sidebar"});
     await userEvent.click(rightClose);
     await waitFor(() =>
       expect(canvas.queryByLabelText("Right sidebar")).not.toBeInTheDocument(),
@@ -328,6 +308,10 @@
     await expect(
       canvas.getByRole("button", { name: "Close right sidebar" }),
     ).toBeVisible();
+  }}
+
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/shell/app-shell/two-expanded-sidebars-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
   }}
 >
   {#snippet template()}
@@ -396,15 +380,13 @@
     ).not.toBeInTheDocument();
     const mainToolbar = canvas.getByRole("banner", { name: "Main toolbar" });
     const filesToggle = canvas.getByRole("button", {
-      name: "Open files sidebar",
-    });
+      name: "Open files sidebar"});
     await expect(filesToggle.closest('[data-ui-part="toolbar"]')).toBe(
       mainToolbar,
     );
 
     const projectSelector = canvas.getByRole("combobox", {
-      name: "Project selector",
-    });
+      name: "Project selector"});
     await userEvent.click(projectSelector);
     await userEvent.click(
       within(document.body).getByRole("option", { name: "Lapis Notes" }),
@@ -412,8 +394,7 @@
     await userEvent.keyboard("{Escape}");
     await expect(
       within(document.body).queryByRole("listbox", {
-        name: "Project options",
-      }),
+        name: "Project options"}),
     ).not.toBeInTheDocument();
 
     const filesSidebar = canvas.getByLabelText("Files sidebar");
@@ -473,8 +454,7 @@
       "1px",
     );
     const projectToggle = canvas.getByRole("button", {
-      name: "Collapse projects sidebar",
-    });
+      name: "Collapse projects sidebar"});
     const firstFileIcon = canvas
       .getByRole("button", { name: "Source folder" })
       .querySelector("svg");
@@ -586,8 +566,7 @@
     await expect(collapsedProjectHeader).toBeInTheDocument();
     await expect(collapsedProjectFooter).toBeInTheDocument();
     const collapsedProjectClose = canvas.getByRole("button", {
-      name: "Close left sidebar",
-    });
+      name: "Close left sidebar"});
     const collapsedProjectCloseRect =
       collapsedProjectClose.getBoundingClientRect();
     const currentBodyToggleRect = filesToggle.getBoundingClientRect();
@@ -608,8 +587,7 @@
     const filesLeftBeforePreview = filesSidebar.getBoundingClientRect().left;
     const mainWidthBeforePreview = mainSurface!.getBoundingClientRect().width;
     const collapsedEdgeTrigger = canvas.getByRole("button", {
-      name: "Preview projects sidebar",
-    });
+      name: "Preview projects sidebar"});
     await userEvent.hover(collapsedEdgeTrigger);
     await expect(projectsSidebar).toHaveAttribute(
       "data-presentation",
@@ -685,12 +663,10 @@
       getComputedStyle(collapsedProjectFooter!).borderBlockStartWidth,
     ).toBe("1px");
     const popupProjectSelector = canvas.getByRole("combobox", {
-      name: "Project selector",
-    });
+      name: "Project selector"});
     await userEvent.click(popupProjectSelector);
     const popupProjectOption = within(document.body).getByRole("option", {
-      name: "UI Catalog",
-    });
+      name: "UI Catalog"});
     await userEvent.hover(popupProjectOption);
     await new Promise<void>((resolve) => {
       setTimeout(resolve, 160);
@@ -713,8 +689,7 @@
     );
 
     const expandProjects = canvas.getByRole("button", {
-      name: "Expand projects sidebar",
-    });
+      name: "Expand projects sidebar"});
     expandProjects.focus();
     await userEvent.keyboard("{Enter}");
     await expect(projectsSidebar).toHaveAttribute("data-state", "expanded");
@@ -723,8 +698,7 @@
     const projectsWidth = projectsSidebar.getBoundingClientRect().width;
     const mainWidthBeforeClose = mainSurface!.getBoundingClientRect().width;
     const closeProjects = canvas.getByRole("button", {
-      name: "Close left sidebar",
-    });
+      name: "Close left sidebar"});
     await expect(root).not.toHaveAttribute("data-desktop-overlay-panels");
     closeProjects.focus();
     await userEvent.keyboard("{Enter}");
@@ -740,6 +714,10 @@
     await expect(mainSurface!.getBoundingClientRect().width).toBeGreaterThan(
       mainWidthBeforeClose + projectsWidth - 2,
     );
+  }}
+
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/shell/app-shell/nested-project-and-file-sidebars-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
   }}
 >
   {#snippet template()}
@@ -795,13 +773,11 @@
   name="Complete shell composition"
   tags={["visual-approved"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shell/app-shell/complete-shell-composition-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
     docs: {
       description: {
         story:
-          "Full nested shell topology that tracks the Storybook viewport (`displayMode=\"auto\"`). Play temporarily widens and narrows the frame to assert desktop, constrained overlays, then restores a fluid frame so resizing the panel continues to drive layout.",
-      },
-    },
-  }}
+          "Full nested shell topology that tracks the Storybook viewport (`displayMode=\"auto\"`). Play temporarily widens and narrows the frame to assert desktop, constrained overlays, then restores a fluid frame so resizing the panel continues to drive layout."}}}}
   play={async ({ canvas }) => {
     completeProjectSidebarController.expand();
     completeProjectSidebarController.setWidth(220);
@@ -811,13 +787,11 @@
     completeController.right.setWidth(240);
 
     const mainBody = canvas.getByRole("main", {
-      name: "Markdown document",
-    });
+      name: "Markdown document"});
     const root = mainBody.closest<HTMLElement>("[data-shell-root]")!;
     const frame = root.closest<HTMLElement>(".ui-shell-story-frame")!;
     const mainToolbar = canvas.getByRole("banner", {
-      name: "Main toolbar",
-    });
+      name: "Main toolbar"});
 
     frame.classList.remove("ui-shell-story-frame-constrained-desktop");
     frame.style.width = "1400px";
@@ -833,8 +807,7 @@
     const filesSidebar = canvas.getByLabelText("Files sidebar");
     const aiSidebar = canvas.getByLabelText("AI sidebar");
     let bodySidebar = canvas.getByRole("complementary", {
-      name: "Table of contents",
-    });
+      name: "Table of contents"});
 
     await expect(projectsSidebar).toHaveAttribute("data-state", "expanded");
     await expect(projectsSidebar).toHaveAttribute("data-variant", "outer");
@@ -850,14 +823,11 @@
     ).toHaveTextContent("Lapis Notes");
 
     const projectToggle = canvas.getByRole("button", {
-      name: "Collapse projects sidebar",
-    });
+      name: "Collapse projects sidebar"});
     const filesToggle = canvas.getByRole("button", {
-      name: "Collapse files sidebar",
-    });
+      name: "Collapse files sidebar"});
     const rightToggle = canvas.getByRole("button", {
-      name: "Collapse right sidebar",
-    });
+      name: "Collapse right sidebar"});
     await expect(projectToggle.closest('[data-ui-part="sidebar-header"]')).toBe(
       filesSidebar.querySelector('[data-ui-part="sidebar-header"]'),
     );
@@ -885,14 +855,11 @@
     ).toBeInTheDocument();
 
     const projectResize = canvas.getByRole("slider", {
-      name: "Resize projects sidebar",
-    });
+      name: "Resize projects sidebar"});
     const filesResize = canvas.getByRole("slider", {
-      name: "Resize files sidebar",
-    });
+      name: "Resize files sidebar"});
     const aiResize = canvas.getByRole("slider", {
-      name: "Resize AI sidebar",
-    });
+      name: "Resize AI sidebar"});
     await expect(projectResize).toHaveAttribute("aria-valuenow", "220");
     await expect(filesResize).toHaveAttribute("aria-valuenow", "220");
     await expect(aiResize).toHaveAttribute("aria-valuenow", "240");
@@ -929,21 +896,17 @@
 
     await userEvent.click(
       canvas.getByRole("button", {
-        name: "Show table of contents on left",
-      }),
+        name: "Show table of contents on left"}),
     );
     bodySidebar = canvas.getByRole("complementary", {
-      name: "Table of contents",
-    });
+      name: "Table of contents"});
     await expect(bodySidebar).toHaveAttribute("data-side", "left");
     await userEvent.click(
       canvas.getByRole("button", {
-        name: "Show table of contents on right",
-      }),
+        name: "Show table of contents on right"}),
     );
     bodySidebar = canvas.getByRole("complementary", {
-      name: "Table of contents",
-    });
+      name: "Table of contents"});
     await expect(bodySidebar).toHaveAttribute("data-side", "right");
 
     await userEvent.click(
@@ -968,8 +931,7 @@
     );
     await expect(canvas.queryByLabelText("AI sidebar")).not.toBeInTheDocument();
     const openRight = canvas.getByRole("button", {
-      name: "Open right sidebar",
-    });
+      name: "Open right sidebar"});
     await userEvent.click(openRight);
     await expect(openRight).toHaveFocus();
     await expect(canvas.getByLabelText("AI sidebar")).toHaveAttribute(
@@ -978,8 +940,7 @@
     );
 
     const architectureFile = canvas.getByRole("button", {
-      name: "Open architecture.md",
-    });
+      name: "Open architecture.md"});
     await userEvent.click(architectureFile);
     await expect(architectureFile).toHaveAttribute("aria-pressed", "true");
     await expect(
@@ -1001,8 +962,7 @@
 
     await userEvent.click(
       canvas.getByRole("button", {
-        name: "Hide table of contents on right",
-      }),
+        name: "Hide table of contents on right"}),
     );
     await expect(
       canvas.queryByRole("complementary", { name: "Table of contents" }),
@@ -1023,8 +983,7 @@
     await expect(canvas.getByLabelText("AI sidebar")).not.toBeVisible();
 
     const constrainedRightToggle = canvas.getByRole("button", {
-      name: "Open right sidebar",
-    });
+      name: "Open right sidebar"});
     await userEvent.click(constrainedRightToggle);
     const constrainedAiSidebar = canvas.getByLabelText("AI sidebar");
     await expect(constrainedAiSidebar).toHaveAttribute(
@@ -1034,14 +993,12 @@
     await expect(completeController.right.state).toBe("expanded");
     await userEvent.click(
       within(constrainedAiSidebar).getByRole("button", {
-        name: "Close right sidebar",
-      }),
+        name: "Close right sidebar"}),
     );
     await expect(canvas.getByLabelText("AI sidebar")).not.toBeVisible();
 
     const constrainedProjectsToggle = canvas.getByRole("button", {
-      name: "Open projects sidebar",
-    });
+      name: "Open projects sidebar"});
     await userEvent.click(constrainedProjectsToggle);
     const constrainedProjectsSidebar =
       canvas.getByLabelText("Projects sidebar");
@@ -1052,8 +1009,7 @@
     await expect(completeProjectSidebarController.state).toBe("expanded");
     await userEvent.click(
       within(constrainedProjectsSidebar).getByRole("button", {
-        name: "Close left sidebar",
-      }),
+        name: "Close left sidebar"}),
     );
     await expect(canvas.getByLabelText("Projects sidebar")).not.toBeVisible();
 
@@ -1093,8 +1049,7 @@
   tags={["visual-approved"]}
   play={async ({ canvas }) => {
     const root = canvas.getByRole("group", {
-      name: "Mobile application shell",
-    }).parentElement;
+      name: "Mobile application shell"}).parentElement;
     const frame = root!.closest<HTMLElement>(".ui-shell-story-frame")!;
     await waitFor(() =>
       expect(root).toHaveAttribute("data-display-mode", "mobile"),
@@ -1132,8 +1087,7 @@
     );
 
     const filesToggle = canvas.getByRole("button", {
-      name: "Open files sidebar",
-    });
+      name: "Open files sidebar"});
     await userEvent.click(filesToggle);
     await expect(root).toHaveAttribute("data-mobile-stage", "left");
     await expect(canvas.getByLabelText("Files sidebar")).toHaveFocus();
@@ -1150,6 +1104,10 @@
     await expect(completeTabletController.left.width).toBe(268);
     await expect(completeTabletController.right.width).toBe(312);
   }}
+
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/shell/app-shell/automatic-tablet-composition-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+  }}
 >
   {#snippet template()}
     <AppShellCompleteDemo
@@ -1165,8 +1123,7 @@
   tags={["visual-pending", "skip-visual"]}
   play={async ({ canvas }) => {
     const mobileGroup = canvas.getByRole("group", {
-      name: "Mobile application shell",
-    });
+      name: "Mobile application shell"});
     const root = mobileGroup.parentElement!;
     const mainLane = root.querySelector('[data-ui-part="mobile-main-lane"]');
     const leftLane = root.querySelector(
@@ -1192,8 +1149,7 @@
     await expect(getComputedStyle(mobileFrame).paddingBottom).toBe("0px");
 
     const filesToggle = canvas.getByRole("button", {
-      name: "Open files sidebar",
-    });
+      name: "Open files sidebar"});
     await userEvent.click(filesToggle);
     await expect(root).toHaveAttribute("data-mobile-stage", "left");
     await expect(leftLane).not.toHaveAttribute("inert");
@@ -1209,8 +1165,7 @@
     await expect(projectsSidebar).toHaveAttribute("aria-hidden", "true");
 
     const leftSelector = canvas.getByRole("button", {
-      name: "Choose left sidebar panel",
-    });
+      name: "Choose left sidebar panel"});
     await expect(leftSelector).toHaveTextContent("Files");
     await userEvent.click(leftSelector);
     await userEvent.click(
@@ -1223,8 +1178,7 @@
     await expect(filesSidebar).toHaveAttribute("aria-hidden", "true");
 
     const closeProjects = within(projectsSidebar).getByRole("button", {
-      name: "Close left sidebar",
-    });
+      name: "Close left sidebar"});
     await waitFor(() =>
       expect(getComputedStyle(closeProjects).pointerEvents).toBe("auto"),
     );
@@ -1233,8 +1187,7 @@
     await expect(filesToggle).toHaveFocus();
 
     const rightToggle = canvas.getByRole("button", {
-      name: "Open right sidebar",
-    });
+      name: "Open right sidebar"});
     await userEvent.click(rightToggle);
     await expect(root).toHaveAttribute("data-mobile-stage", "right");
     const aiSidebar = canvas.getByLabelText("AI sidebar");
@@ -1242,14 +1195,12 @@
     await expect(aiSidebar).toHaveFocus();
 
     const rightSelector = canvas.getByRole("button", {
-      name: "Choose right sidebar panel",
-    });
+      name: "Choose right sidebar panel"});
     await expect(rightSelector).toHaveTextContent("AI conversation");
     await userEvent.click(rightSelector);
     await userEvent.click(
       within(document.body).getByRole("option", {
-        name: "Document contents",
-      }),
+        name: "Document contents"}),
     );
     await expect(
       canvas.getByRole("complementary", { name: "Table of contents" }),
@@ -1284,8 +1235,7 @@
   play={async ({ canvas }) => {
     const root = canvas
       .getByRole("main", {
-        name: "Markdown document",
-      })
+        name: "Markdown document"})
       .closest<HTMLElement>("[data-shell-root]")!;
 
     await userEvent.click(canvas.getByRole("button", { name: "desktop" }));
@@ -1312,6 +1262,10 @@
       ),
     );
   }}
+
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/shell/app-shell/programmatic-display-modes-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+  }}
 >
   {#snippet template()}
     <AppShellModeSwitchDemo
@@ -1325,13 +1279,11 @@
   name="Constrained desktop overlays"
   tags={["visual-approved"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shell/app-shell/constrained-desktop-overlays-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
     docs: {
       description: {
         story:
-          "When the desktop root cannot protect the min main width, lower-priority rails leave inline flow (right → named outer-left → left). Toggles open full-height overlay previews without mutating durable state. This demo rests with Files as a collapsed icon rail, Projects/AI overlay-hidden, and main filling the remaining width inside the Storybook panel.",
-      },
-    },
-  }}
+          "When the desktop root cannot protect the min main width, lower-priority rails leave inline flow (right → named outer-left → left). Toggles open full-height overlay previews without mutating durable state. This demo rests with Files as a collapsed icon rail, Projects/AI overlay-hidden, and main filling the remaining width inside the Storybook panel."}}}}
   play={async ({ canvas }) => {
     constrainedDesktopProjectSidebarController.expand();
     constrainedDesktopProjectSidebarController.setWidth(220);
@@ -1342,8 +1294,7 @@
 
     const root = canvas
       .getByRole("main", {
-        name: "Markdown document",
-      })
+        name: "Markdown document"})
       .closest<HTMLElement>("[data-shell-root]")!;
     const frame = root.closest<HTMLElement>(".ui-shell-story-frame")!;
     const main = root.querySelector<HTMLElement>('[data-ui-part="main"]')!;
@@ -1367,23 +1318,20 @@
     );
 
     const rightToggle = canvas.getByRole("button", {
-      name: "Open right sidebar",
-    });
+      name: "Open right sidebar"});
     await userEvent.click(rightToggle);
     const aiSidebar = canvas.getByLabelText("AI sidebar");
     await expect(aiSidebar).toHaveAttribute("data-desktop-overlay-preview", "");
     await expect(aiSidebar).toHaveAttribute("data-state", "expanded");
     await userEvent.click(
       within(aiSidebar).getByRole("button", {
-        name: "Close right sidebar",
-      }),
+        name: "Close right sidebar"}),
     );
     await expect(canvas.getByLabelText("AI sidebar")).not.toBeVisible();
     await expect(constrainedDesktopController.right.state).toBe("expanded");
 
     const projectsToggle = canvas.getByRole("button", {
-      name: "Open projects sidebar",
-    });
+      name: "Open projects sidebar"});
     await userEvent.click(projectsToggle);
     const projectsSidebar = canvas.getByLabelText("Projects sidebar");
     await expect(projectsSidebar).toHaveAttribute(
@@ -1392,8 +1340,7 @@
     );
     await userEvent.click(
       within(projectsSidebar).getByRole("button", {
-        name: "Close left sidebar",
-      }),
+        name: "Close left sidebar"}),
     );
     await expect(canvas.getByLabelText("Projects sidebar")).not.toBeVisible();
     await expect(constrainedDesktopProjectSidebarController.state).toBe(
@@ -1467,11 +1414,9 @@
     const storyFrame = mainBody.closest<HTMLElement>(".ui-shell-story-frame");
     await expect(storyFrame).toBeInTheDocument();
     const leftBodyToggle = canvas.getByRole("button", {
-      name: "Show table of contents on left",
-    });
+      name: "Show table of contents on left"});
     const rightBodyToggle = canvas.getByRole("button", {
-      name: "Show table of contents on right",
-    });
+      name: "Show table of contents on right"});
     await expect(mainBody).toContainElement(leftBodyToggle);
     await expect(mainBody).toContainElement(rightBodyToggle);
     const bodyRect = mainBody.getBoundingClientRect();
@@ -1495,23 +1440,19 @@
     await expect(canvas.getByText("Select a Markdown file")).toBeVisible();
 
     const readmeButton = canvas.getByRole("button", {
-      name: "Open README.md",
-    });
+      name: "Open README.md"});
     await userEvent.click(readmeButton);
     await expect(readmeButton).toHaveFocus();
     await expect(readmeButton).toHaveAttribute("aria-pressed", "true");
     await expect(
       canvas.getByRole("button", {
-        name: "Hide table of contents on left",
-      }),
+        name: "Hide table of contents on left"}),
     ).toHaveAttribute("aria-pressed", "true");
 
     const leftToc = canvas.getByRole("complementary", {
-      name: "Table of contents",
-    });
+      name: "Table of contents"});
     const markdownContent = canvas.getByRole("region", {
-      name: "README.md content",
-    });
+      name: "README.md content"});
     await expect(leftToc).toHaveAttribute("data-side", "left");
     await expect(markdownContent).toBeVisible();
     await expect(
@@ -1536,19 +1477,16 @@
       markdownContent.getBoundingClientRect().width;
 
     const rightButton = canvas.getByRole("button", {
-      name: "Show table of contents on right",
-    });
+      name: "Show table of contents on right"});
     await userEvent.click(rightButton);
     await expect(rightButton).toHaveFocus();
     await expect(rightButton).toHaveAttribute("aria-pressed", "true");
     const rightToc = canvas.getByRole("complementary", {
-      name: "Table of contents",
-    });
+      name: "Table of contents"});
     await expect(rightToc).toHaveAttribute("data-side", "right");
 
     const hideRightButton = canvas.getByRole("button", {
-      name: "Hide table of contents on right",
-    });
+      name: "Hide table of contents on right"});
     await userEvent.click(hideRightButton);
     await expect(hideRightButton).toHaveFocus();
     await expect(
@@ -1559,19 +1497,20 @@
     );
 
     const showRightButton = canvas.getByRole("button", {
-      name: "Show table of contents on right",
-    });
+      name: "Show table of contents on right"});
     await userEvent.click(showRightButton);
     await expect(showRightButton).toHaveFocus();
     const openRightToc = canvas.getByRole("complementary", {
-      name: "Table of contents",
-    });
+      name: "Table of contents"});
     await expect(openRightToc).toHaveAttribute("data-side", "right");
     const activeRightButton = canvas.getByRole("button", {
-      name: "Hide table of contents on right",
-    });
+      name: "Hide table of contents on right"});
     await expect(activeRightButton).toHaveAttribute("aria-pressed", "true");
     await expect(activeRightButton).toHaveAttribute("data-variant", "ghost");
+  }}
+
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/shell/app-shell/markdown-document-body-sidebars-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
   }}
 >
   {#snippet template()}
@@ -1627,8 +1566,7 @@
     await expect(rightSidebar).toHaveAttribute("data-state", "expanded");
 
     const leftToggle = canvas.getByRole("button", {
-      name: "Collapse left sidebar",
-    });
+      name: "Collapse left sidebar"});
     await expect(leftToggle).toHaveAttribute("data-ui-part", "sidebar-toggle");
     await userEvent.click(leftToggle);
     await expect(leftToggle).toHaveFocus();
@@ -1659,8 +1597,7 @@
     }
 
     const rightToggle = canvas.getByRole("button", {
-      name: "Collapse right sidebar",
-    });
+      name: "Collapse right sidebar"});
     await userEvent.click(rightToggle);
     await expect(rightToggle).toHaveFocus();
     await expect(leftSidebar).toHaveAttribute("data-state", "collapsed");
@@ -1722,6 +1659,10 @@
       canvas.getByRole("main", { name: "Workspace content" }),
     ).toBeVisible();
   }}
+
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/shell/app-shell/independent-icon-rails-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+  }}
 >
   {#snippet template()}
     <div class="ui-shell-story-frame">
@@ -1782,6 +1723,10 @@
     await expect(
       canvas.queryByRole("slider", { name: "Resize right sidebar" }),
     ).not.toBeInTheDocument();
+  }}
+
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/shell/app-shell/single-sidebar-composition-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
   }}
 >
   {#snippet template()}

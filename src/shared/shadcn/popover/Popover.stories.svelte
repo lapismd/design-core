@@ -12,11 +12,7 @@
       docs: {
         description: {
           component:
-            "Non-modal floating panel for lightweight editing or menus.",
-        },
-      },
-    },
-  });
+            "Non-modal floating panel for lightweight editing or menus."}}}});
 
   /** Clear portals left by a prior open overlay story. */
   async function dismissOverlays() {
@@ -83,6 +79,10 @@
     await dismissOverlays();
     await userEvent.click(canvas.getByRole("button", { name: "Open popover" }));
     await expect(within(document.body).getByText("Dimensions")).toBeVisible();
+  }}
+
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/popover/open-panel-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
   }}
 >
   {#snippet template()}

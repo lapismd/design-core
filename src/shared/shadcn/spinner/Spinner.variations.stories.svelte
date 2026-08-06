@@ -13,8 +13,7 @@
 
   const { Story } = defineMeta({
     title: "Shadcn/Feedback/Spinner",
-    component: Spinner.Spinner,
-  });
+    component: Spinner.Spinner});
 </script>
 
 <Story
@@ -22,19 +21,16 @@
   exportName="Customization"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/spinner/customization-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
     a11y: { test: "todo" },
     docs: {
       description: {
         story:
-          "You can replace the default spinner icon with any other icon by editing the `Spinner` component.",
-      },
+          "You can replace the default spinner icon with any other icon by editing the `Spinner` component."},
       source: {
         code: exampleSources.Customization,
         language: "html",
-        type: "code",
-      },
-    },
-  }}
+        type: "code"}}}}
 >
   {#snippet template()}
     <div class="p-4">
@@ -48,19 +44,16 @@
   exportName="Size"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/spinner/size-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
     a11y: { test: "todo" },
     docs: {
       description: {
         story:
-          "Use the `size-*` utility class to change the size of the spinner.",
-      },
+          "Use the `size-*` utility class to change the size of the spinner."},
       source: {
         code: exampleSources.Size,
         language: "html",
-        type: "code",
-      },
-    },
-  }}
+        type: "code"}}}}
 >
   {#snippet template()}
     <div class="p-4">
@@ -74,19 +67,16 @@
   exportName="Color"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/spinner/color-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
     a11y: { test: "todo" },
     docs: {
       description: {
         story:
-          "Use the `text-*` utility class to change the color of the spinner.",
-      },
+          "Use the `text-*` utility class to change the color of the spinner."},
       source: {
         code: exampleSources.Color,
         language: "html",
-        type: "code",
-      },
-    },
-  }}
+        type: "code"}}}}
 >
   {#snippet template()}
     <div class="p-4">
@@ -100,19 +90,16 @@
   exportName="Button"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/spinner/button-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
     a11y: { test: "todo" },
     docs: {
       description: {
         story:
-          "Add a spinner to a button to indicate a loading state. The `` will handle the spacing between the spinner and the text.",
-      },
+          "Add a spinner to a button to indicate a loading state. The `` will handle the spacing between the spinner and the text."},
       source: {
         code: exampleSources.Button,
         language: "html",
-        type: "code",
-      },
-    },
-  }}
+        type: "code"}}}}
 >
   {#snippet template()}
     <div class="p-4">
@@ -126,18 +113,15 @@
   exportName="Badge"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/spinner/badge-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "You can also use a spinner inside a badge.",
-      },
+        story: "You can also use a spinner inside a badge."},
       source: {
         code: exampleSources.Badge,
         language: "html",
-        type: "code",
-      },
-    },
-  }}
+        type: "code"}}}}
 >
   {#snippet template()}
     <div class="p-4">
@@ -151,18 +135,15 @@
   exportName="InputGroup"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/spinner/input-group-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "Input Group can have spinners inside `InputGroup.Addon`.",
-      },
+        story: "Input Group can have spinners inside `InputGroup.Addon`."},
       source: {
         code: exampleSources.InputGroup,
         language: "html",
-        type: "code",
-      },
-    },
-  }}
+        type: "code"}}}}
 >
   {#snippet template()}
     <div class="p-4">
@@ -176,15 +157,13 @@
   exportName="Empty"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
+    visualDelta: {"images":["/visual-baselines/shadcn/spinner/empty-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.Empty,
         language: "html",
-        type: "code",
-      },
-    },
-  }}
+        type: "code"}}}}
 >
   {#snippet template()}
     <div class="p-4">

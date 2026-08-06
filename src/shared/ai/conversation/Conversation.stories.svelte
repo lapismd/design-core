@@ -21,11 +21,7 @@
       docs: {
         description: {
           component:
-            "Complete host-controlled conversation composing stable and experimental AI Chat primitives.",
-        },
-      },
-    },
-  });
+            "Complete host-controlled conversation composing stable and experimental AI Chat primitives."}}}});
 </script>
 
 <script lang="ts">
@@ -45,15 +41,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/ai/conversation/complete-ai-conversation-chromium-darwin.png",
+        "/visual-baselines/ai/conversation/complete-ai-conversation-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -108,8 +102,7 @@
                     target: "src/shared/ai",
                     status: "complete",
                     duration: "420ms",
-                    detail: inspectDetail,
-                  },
+                    detail: inspectDetail},
                 ]}
               />
               The release adds reusable Svelte 5 Chat primitives while preserving

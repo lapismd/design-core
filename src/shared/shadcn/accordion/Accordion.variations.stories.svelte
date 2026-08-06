@@ -7,8 +7,7 @@
 
   const { Story } = defineMeta({
     title: "Shadcn/Disclosure/Accordion",
-    component: Accordion.Accordion,
-  });
+    component: Accordion.Accordion});
 </script>
 
 <Story
@@ -18,23 +17,19 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/shadcn/accordion/preview-chromium-darwin.png",
+        "/visual-baselines/shadcn/accordion/preview-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
+      placement: "right"
     },
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.Preview,
         language: "html",
-        type: "code",
-      },
-    },
-  }}
+        type: "code"}}}}
 >
   {#snippet template()}
     <div class="p-4">

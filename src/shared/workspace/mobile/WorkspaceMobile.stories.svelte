@@ -4,8 +4,7 @@
   import {
     createDefaultWorkspaceLayout,
     createWorkspaceTab,
-    createWorkspaceTabs,
-  } from "../core/layout.js";
+    createWorkspaceTabs} from "../core/layout.js";
   import type { WorkspaceSidebarGroup } from "../core/types.js";
   import { WorkspaceShellController } from "../core/workspace-controller.svelte.js";
   import ExampleWorkspaceView from "../view-host/ExampleWorkspaceView.svelte";
@@ -20,19 +19,14 @@
       docs: {
         description: {
           component:
-            "Source-shaped phone shell with full-height editor, sidebars, tab overview, controller-backed tab actions, bottom navigation, and live inclusion settings.",
-        },
-      },
-    },
-  });
+            "Source-shaped phone shell with full-height editor, sidebars, tab overview, controller-backed tab actions, bottom navigation, and live inclusion settings."}}}});
 
   function tab(id: string, title: string, icon: string) {
     return createWorkspaceTab({
       id,
       title,
       icon,
-      view: { type: "mobile-example", state: { title } },
-    });
+      view: { type: "mobile-example", state: { title } }});
   }
 
   function createFixture() {
@@ -50,34 +44,27 @@
       tabs: [outline, links],
       hiddenTabIds: [],
       collapsedByTabId: {},
-      panelSizesByTabId: { [outline.id]: 50, [links.id]: 50 },
-    };
+      panelSizesByTabId: { [outline.id]: 50, [links.id]: 50 }};
     const layout = createDefaultWorkspaceLayout();
     layout.main = createWorkspaceTabs([home, notes], {
       id: "mobile-main",
-      activeItemId: home.id,
-    });
+      activeItemId: home.id});
     layout.left = {
       open: true,
       size: 300,
       root: createWorkspaceTabs([files, search], {
         id: "mobile-left",
-        activeItemId: files.id,
-      }),
-    };
+        activeItemId: files.id})};
     layout.right = {
       open: true,
       size: 300,
       root: createWorkspaceTabs([group], {
         id: "mobile-right",
-        activeItemId: group.id,
-      }),
-    };
+        activeItemId: group.id})};
     layout.active = {
       hostId: "root",
       paneId: "mobile-main",
-      tabId: home.id,
-    };
+      tabId: home.id};
     const controller = new WorkspaceShellController({ layout });
     controller.registry.register({
       kind: "svelte",
@@ -89,11 +76,8 @@
             id: "reload",
             label: "Reload view",
             icon: "rotate-ccw",
-            onSelect: () => undefined,
-          },
-        ],
-      }),
-    });
+            onSelect: () => undefined},
+        ]})});
     controller.openWindow(
       tab("mobile-floating", "Floating inspector", "scan-search"),
       "floating",
@@ -125,15 +109,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/workspace/mobile/editor-with-revealable-sidebars-chromium-darwin.png",
+        "/visual-baselines/workspace/mobile/editor-with-revealable-sidebars-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
 >
   {#snippet template()}
     <div class="ui-workspace-mobile-story-canvas">
@@ -163,15 +145,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/workspace/mobile/tab-overview-with-all-entries-chromium-darwin.png",
+        "/visual-baselines/workspace/mobile/tab-overview-with-all-entries-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
 >
   {#snippet template()}
     <div class="ui-workspace-mobile-story-canvas">
@@ -193,15 +173,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/workspace/mobile/overview-without-auxiliary-entries-chromium-darwin.png",
+        "/visual-baselines/workspace/mobile/overview-without-auxiliary-entries-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
 >
   {#snippet template()}
     <div class="ui-workspace-mobile-story-canvas">
@@ -224,15 +202,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/workspace/mobile/pan-gesture-surface-chromium-darwin.png",
+        "/visual-baselines/workspace/mobile/pan-gesture-surface-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
 >
   {#snippet template()}
     <div class="ui-workspace-mobile-story-canvas">
@@ -266,15 +242,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/workspace/mobile/view-actions-drawer-chromium-darwin.png",
+        "/visual-baselines/workspace/mobile/view-actions-drawer-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
 >
   {#snippet template()}
     <div class="ui-workspace-mobile-story-canvas">
@@ -309,15 +283,13 @@
   parameters={{
     visualDelta: {
       images: [
-        "/visual-baselines/workspace/mobile/open-tabs-actions-drawer-chromium-darwin.png",
+        "/visual-baselines/workspace/mobile/open-tabs-actions-drawer-chromium.png",
       ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right",
-      passThresholdPercent: 0.1,
-    },
-  }}
+      placement: "right"
+    }}}
 >
   {#snippet template()}
     <div class="ui-workspace-mobile-story-canvas">

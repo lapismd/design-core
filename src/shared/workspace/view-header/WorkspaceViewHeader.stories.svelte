@@ -14,11 +14,7 @@
       docs: {
         description: {
           component:
-            "Source-shaped view header with history, breadcrumbs, view actions, and the shared declarative pane menu.",
-        },
-      },
-    },
-  });
+            "Source-shaped view header with history, breadcrumbs, view actions, and the shared declarative pane menu."}}}});
 </script>
 
 <script lang="ts">
@@ -54,8 +50,7 @@
           icon: "refresh-cw",
           onSelect: () => {
             result = "Refresh selected";
-          },
-        },
+          }},
       ],
       buildPaneMenu: (menu) => {
         menu.addItem((item) =>
@@ -63,9 +58,7 @@
             result = "Example view action selected";
           }),
         );
-      },
-    }),
-  });
+      }})});
 </script>
 
 <Story
@@ -84,6 +77,10 @@
     await expect(
       page.getByRole("menuitem", { name: "Example view action" }),
     ).toBeVisible();
+  }}
+
+  parameters={{
+    visualDelta: {"images":["/visual-baselines/workspace/view-header/breadcrumbs-actions-and-pane-menu-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
   }}
 >
   {#snippet template()}
