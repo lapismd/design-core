@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "component": "context-menu",
+  "scope": "shared",
+  "upstream": {
+    "project": "shadcn-svelte",
+    "registry": "https://shadcn-svelte.com/registry",
+    "cliVersion": "1.4.2",
+    "item": "context-menu",
+    "fetchedAt": "2026-08-06T21:54:45.605Z",
+    "sourceFiles": [
+      {
+        "path": "src/lib/components/ui/context-menu/context-menu-checkbox-item.svelte",
+        "sha256": "3fb5c07220e63c14cd69dcf05f26f5f1f0168e04f98999af9e150aba626e46f9"
+      },
+      {
+        "path": "src/lib/components/ui/context-menu/context-menu-content.svelte",
+        "sha256": "af9bf81bf5b7773420790dbe1aab7f171d76d8ad2f59b87705b0746e3d13543e"
+      },
+      {
+        "path": "src/lib/components/ui/context-menu/context-menu-group-heading.svelte",
+        "sha256": "5f3916668f9f3f05f48f570fd7795837583f31ce354ef528f5e3de4f81e862e3"
+      },
+      {
+        "path": "src/lib/components/ui/context-menu/context-menu-group.svelte",
+        "sha256": "0b45789d7c5122e189a3439b26058689e80903b082c42e36c4f4c20df78e5077"
+      },
+      {
+        "path": "src/lib/components/ui/context-menu/context-menu-item.svelte",
+        "sha256": "6f81d2eec2ac6eecfd985bb554339d1d8e46f63c437dcfe37afad45b251534f2"
+      },
+      {
+        "path": "src/lib/components/ui/context-menu/context-menu-label.svelte",
+        "sha256": "3956b421b1497c871936ef6daecb1ef80d2964020429f53b46503783f63480e7"
+      },
+      {
+        "path": "src/lib/components/ui/context-menu/context-menu-portal.svelte",
+        "sha256": "e9adbaa372be1c37bb66e1cd71234964297f29773f6e9d73e2c7bf4528c289ef"
+      },
+      {
+        "path": "src/lib/components/ui/context-menu/context-menu-radio-group.svelte",
+        "sha256": "e7c64034148c15ec226fdd0f28b445c041b1defca18e5ac608a899db65bf5c0f"
+      },
+      {
+        "path": "src/lib/components/ui/context-menu/context-menu-radio-item.svelte",
+        "sha256": "bcc25becee11031f3ca709f9a7dd4734756127ee12253571da93b5aff59c853d"
+      },
+      {
+        "path": "src/lib/components/ui/context-menu/context-menu-separator.svelte",
+        "sha256": "823705ae16f7435600d6127e898dbfb68783a422a56faa6246d353270d43eb51"
+      },
+      {
+        "path": "src/lib/components/ui/context-menu/context-menu-shortcut.svelte",
+        "sha256": "51f0e4d23a7894b0d1c0529762d18d6dfeb4e9a1f8a2763b884e2f724e5d6679"
+      },
+      {
+        "path": "src/lib/components/ui/context-menu/context-menu-sub-content.svelte",
+        "sha256": "1d51206cdfb159a8ead36a5f5e736841f2e8b356658eadb0304e539e6c6b15de"
+      },
+      {
+        "path": "src/lib/components/ui/context-menu/context-menu-sub-trigger.svelte",
+        "sha256": "83b7a17c214ffbd48e345f67c75b190c155feedae9e16ba142c49b86db290535"
+      },
+      {
+        "path": "src/lib/components/ui/context-menu/context-menu-sub.svelte",
+        "sha256": "3efb4787da299f9a01097e779ba794c9cc18d62cd1ab71718a5def0568c1a0e8"
+      },
+      {
+        "path": "src/lib/components/ui/context-menu/context-menu-trigger.svelte",
+        "sha256": "30dbe86267be2262d86df54d9688860171d48d5f0005d3dbbe9949f96d9b2728"
+      },
+      {
+        "path": "src/lib/components/ui/context-menu/context-menu.svelte",
+        "sha256": "00d205bc97aac4ddd81ca701b1b40c0cbcbf59b4a28b616eb117e92e1cd7f48e"
+      },
+      {
+        "path": "src/lib/components/ui/context-menu/index.ts",
+        "sha256": "8b27e1f341d527394302b20931b929d46a17976888f60c3550fbdb76c2a0e235"
+      }
+    ]
+  },
+  "converter": {
+    "version": "2.0.0",
+    "irSchemaVersion": 1,
+    "tokenSchemaVersion": 2
+  },
+  "recipe": {
+    "name": "context-menu",
+    "version": 1,
+    "tier": "portal"
+  }
+}

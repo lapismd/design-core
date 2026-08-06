@@ -1,0 +1,7 @@
+:root {
+  --ui-context-menu-background: var(--popover);
+  --ui-context-menu-foreground: var(--popover-foreground);
+  --ui-context-menu-border-color: var(--border);
+  --ui-context-menu-radius: calc(var(--radius) * 0.8);
+  --ui-context-menu-focus-ring-color: var(--ring);
+}
