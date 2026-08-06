@@ -6,4 +6,4 @@
 export {
   afterPlayStep,
   visualCapture,
-} from "@lapismd/storybook-addon-visual-delta/src/shared/visual-capture-step";
+} from "@lapismd/storybook-addon-visual-delta/visual-capture";
