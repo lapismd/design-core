@@ -9,7 +9,11 @@
     parameters: {
       docs: {
         description: {
-          component: "Pressed/unpressed toggle for formatting and filters."}}}});
+          component: "Pressed/unpressed toggle for formatting and filters.",
+        },
+      },
+    },
+  });
 </script>
 
 <script lang="ts">
@@ -24,9 +28,16 @@
     await expect(button).toHaveAttribute("data-state", "on");
   }}
   tags={["visual-approved"]}
-
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/toggle/toggles-pressed-state-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: [
+        "/visual-baselines/shadcn/toggle/toggles-pressed-state-chromium.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
   }}
 >
   {#snippet template()}

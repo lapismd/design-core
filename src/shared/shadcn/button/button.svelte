@@ -204,7 +204,7 @@
         color: var(--secondary-foreground);
       }
       [data-ui-component="button"][data-variant="destructive"] {
-        color: var(--color-white);
+        color: var(--destructive-foreground, #ffffff);
       }
       [data-ui-component="button"][data-variant="link"] {
         text-underline-offset: 4px;

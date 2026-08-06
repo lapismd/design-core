@@ -9,7 +9,8 @@
 
   const { Story } = defineMeta({
     title: "Shadcn/Layout/Resizable",
-    component: Resizable.PaneGroup});
+    component: Resizable.PaneGroup,
+  });
 </script>
 
 <Story
@@ -17,13 +18,22 @@
   exportName="Preview"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/resizable/preview-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: ["/visual-baselines/shadcn/resizable/preview-chromium.png"],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.Preview,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">
@@ -37,16 +47,26 @@
   exportName="Vertical"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/resizable/vertical-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: ["/visual-baselines/shadcn/resizable/vertical-chromium.png"],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
     a11y: { test: "todo" },
     docs: {
       description: {
         story:
-          "Use the `direction` prop to set the direction of the resizable panels."},
+          "Use the `direction` prop to set the direction of the resizable panels.",
+      },
       source: {
         code: exampleSources.Vertical,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">
@@ -60,16 +80,26 @@
   exportName="Handle"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/resizable/handle-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: ["/visual-baselines/shadcn/resizable/handle-chromium.png"],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
     a11y: { test: "todo" },
     docs: {
       description: {
         story:
-          "You can set or hide the handle by using the `withHandle` prop on the `ResizableHandle` component."},
+          "You can set or hide the handle by using the `withHandle` prop on the `ResizableHandle` component.",
+      },
       source: {
         code: exampleSources.Handle,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">

@@ -74,12 +74,9 @@ describe("Workspace visual coverage audit", () => {
     const directory = path.join(snapshotRoot, "workspace/tabs");
     await mkdir(directory, { recursive: true });
     await Promise.all([
-      writeFile(path.join(directory, "default-chromium-darwin.png"), "primary"),
-      writeFile(
-        path.join(directory, "default--dark-chromium-darwin.png"),
-        "dark",
-      ),
-      writeFile(path.join(directory, "orphan-chromium-darwin.png"), "orphan"),
+      writeFile(path.join(directory, "default-chromium.png"), "primary"),
+      writeFile(path.join(directory, "default--dark-chromium.png"), "dark"),
+      writeFile(path.join(directory, "orphan-chromium.png"), "orphan"),
     ]);
 
     const result = auditWorkspaceVisualCoverage({
@@ -89,7 +86,7 @@ describe("Workspace visual coverage audit", () => {
 
     expect(result.summary.baselines).toBe(1);
     expect(result.orphanBaselines).toEqual([
-      "workspace/tabs/orphan-chromium-darwin.png",
+      "workspace/tabs/orphan-chromium.png",
     ]);
   });
 });

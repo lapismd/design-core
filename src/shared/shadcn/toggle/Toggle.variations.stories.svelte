@@ -13,7 +13,8 @@
 
   const { Story } = defineMeta({
     title: "Shadcn/Actions/Toggle",
-    component: Toggle.Toggle});
+    component: Toggle.Toggle,
+  });
 </script>
 
 <Story
@@ -21,13 +22,22 @@
   exportName="Preview"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/toggle/preview-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: ["/visual-baselines/shadcn/toggle/preview-chromium.png"],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.Preview,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">
@@ -41,13 +51,22 @@
   exportName="Default"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/toggle/default-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: ["/visual-baselines/shadcn/toggle/default-chromium.png"],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.Default,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">
@@ -61,13 +80,22 @@
   exportName="Outline"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/toggle/outline-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: ["/visual-baselines/shadcn/toggle/outline-chromium.png"],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.Outline,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">
@@ -81,13 +109,22 @@
   exportName="WithText"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/toggle/with-text-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: ["/visual-baselines/shadcn/toggle/with-text-chromium.png"],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.WithText,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">
@@ -101,13 +138,22 @@
   exportName="Small"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/toggle/small-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: ["/visual-baselines/shadcn/toggle/small-chromium.png"],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.Small,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">
@@ -121,13 +167,22 @@
   exportName="Large"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/toggle/large-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: ["/visual-baselines/shadcn/toggle/large-chromium.png"],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.Large,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">
@@ -141,13 +196,22 @@
   exportName="Disabled"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/toggle/disabled-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: ["/visual-baselines/shadcn/toggle/disabled-chromium.png"],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.Disabled,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">

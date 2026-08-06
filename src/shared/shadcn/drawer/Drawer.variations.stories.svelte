@@ -42,7 +42,8 @@
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "Use the `direction` prop to set the side of the drawer. Available options are `top`, `right`, `bottom`, and `left`.",
+        story:
+          "Use the `direction` prop to set the side of the drawer. Available options are `top`, `right`, `bottom`, and `left`.",
       },
       source: {
         code: exampleSources.Sides,

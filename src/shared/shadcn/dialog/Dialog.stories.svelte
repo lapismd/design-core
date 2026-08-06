@@ -13,7 +13,11 @@
       docs: {
         description: {
           component:
-            "Modal dialog for focused editing. Always include a descriptive title."}}}});
+            "Modal dialog for focused editing. Always include a descriptive title.",
+        },
+      },
+    },
+  });
 
   /** Clear portals / scroll-lock left by a prior open overlay story. */
   async function dismissOverlays() {
@@ -48,7 +52,8 @@
     await dismissOverlays();
     await userEvent.click(canvas.getByRole("button", { name: "Edit profile" }));
     const dialog = within(document.body).getByRole("dialog", {
-      name: "Edit profile"});
+      name: "Edit profile",
+    });
     await expect(dialog).toHaveAttribute("data-state", "open");
     await userEvent.keyboard("{Escape}");
     await expect(canvas.getByRole("status")).toHaveTextContent("closed");
@@ -90,9 +95,15 @@
       within(document.body).getByRole("dialog", { name: "Edit profile" }),
     ).toBeVisible();
   }}
-
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/dialog/open-dialog-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"}}}
+    visualDelta: {
+      images: ["/visual-baselines/shadcn/dialog/open-dialog-chromium.png"],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">
@@ -111,9 +122,17 @@
       within(document.body).getByRole("dialog", { name: "Share link" }),
     ).toBeVisible();
   }}
-
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/dialog/open-custom-close-dialog-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"}}}
+    visualDelta: {
+      images: [
+        "/visual-baselines/shadcn/dialog/open-custom-close-dialog-chromium.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">

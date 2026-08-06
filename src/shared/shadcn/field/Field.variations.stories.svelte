@@ -15,7 +15,8 @@
 
   const { Story } = defineMeta({
     title: "Shadcn/Forms/Field",
-    component: Field.Field});
+    component: Field.Field,
+  });
 </script>
 
 <Story
@@ -28,14 +29,17 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
+      placement: "right",
     },
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.Preview,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">
@@ -54,14 +58,17 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
+      placement: "right",
     },
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.Input,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">
@@ -80,14 +87,17 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
+      placement: "right",
     },
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.Textarea,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">
@@ -106,14 +116,17 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
+      placement: "right",
     },
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.Select,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">
@@ -132,14 +145,17 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
+      placement: "right",
     },
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.Fieldset,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">
@@ -158,14 +174,17 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
+      placement: "right",
     },
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.Checkbox,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">
@@ -184,14 +203,17 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
+      placement: "right",
     },
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.Switch,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">
@@ -206,23 +228,25 @@
   tags={["upstream-example", "visual-approved"]}
   parameters={{
     visualDelta: {
-      images: [
-        "/visual-baselines/shadcn/field/field-group-chromium.png",
-      ],
+      images: ["/visual-baselines/shadcn/field/field-group-chromium.png"],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
+      placement: "right",
     },
     a11y: { test: "todo" },
     docs: {
       description: {
         story:
-          "Stack `Field` components with `Field.Group`. Add `Field.Separator` to divide them."},
+          "Stack `Field` components with `Field.Group`. Add `Field.Separator` to divide them.",
+      },
       source: {
         code: exampleSources.FieldGroup,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">
@@ -237,23 +261,25 @@
   tags={["upstream-example", "visual-approved"]}
   parameters={{
     visualDelta: {
-      images: [
-        "/visual-baselines/shadcn/field/responsive-layout-chromium.png",
-      ],
+      images: ["/visual-baselines/shadcn/field/responsive-layout-chromium.png"],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
+      placement: "right",
     },
     a11y: { test: "todo" },
     docs: {
       description: {
         story:
-          '- **Vertical fields:** Default orientation stacks label, control, and helper text—ideal for mobile-first layouts.\n- **Horizontal fields:** Set `orientation="horizontal"` on `Field` to align the label and control side-by-side. Pair with `Field.Content` to keep descriptions aligned.\n- **Responsive fields:** Set `orientation="responsive"` for automatic column layouts inside container-aware parents. Apply `@container/field-group` classes on `Field.Group` to switch orientations at specific breakpoints.'},
+          '- **Vertical fields:** Default orientation stacks label, control, and helper text—ideal for mobile-first layouts.\n- **Horizontal fields:** Set `orientation="horizontal"` on `Field` to align the label and control side-by-side. Pair with `Field.Content` to keep descriptions aligned.\n- **Responsive fields:** Set `orientation="responsive"` for automatic column layouts inside container-aware parents. Apply `@container/field-group` classes on `Field.Group` to switch orientations at specific breakpoints.',
+      },
       source: {
         code: exampleSources.ResponsiveLayout,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">

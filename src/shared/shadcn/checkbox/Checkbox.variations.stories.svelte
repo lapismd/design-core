@@ -7,7 +7,8 @@
 
   const { Story } = defineMeta({
     title: "Shadcn/Forms/Checkbox",
-    component: Checkbox.Checkbox});
+    component: Checkbox.Checkbox,
+  });
 </script>
 
 <Story
@@ -20,14 +21,17 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
+      placement: "right",
     },
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.Preview,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">

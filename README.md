@@ -51,19 +51,19 @@ split shadcn/workspace multipart compounds into one folder per part. See
 
 ## Imports and layer boundaries
 
-| Path                                 | Purpose                         |
-| ------------------------------------ | ------------------------------- |
-| `@lapismd/design-core/shadcn/<family>`      | shadcn family barrel            |
-| `@lapismd/design-core/forms`                | structured forms barrel         |
-| `@lapismd/design-core/forms/core`           | form builders, types, registry  |
-| `@lapismd/design-core/filter`               | search and filter-query barrel  |
-| `@lapismd/design-core/ai`                   | reusable AI presentation barrel |
-| `@lapismd/design-core/ai/chat`              | stable AI Chat primitives       |
-| `@lapismd/design-core/ai/experimental`      | experimental AI Chat primitives |
-| `@lapismd/design-core/ai/tokens`            | AI Chat design tokens           |
-| `@lapismd/design-core/shell`                | bounded structural app shell    |
-| `@lapismd/design-core/workspace`            | full workspace framework        |
-| `@lapismd/design-core/styles.css`           | package styles entry            |
+| Path                                   | Purpose                         |
+| -------------------------------------- | ------------------------------- |
+| `@lapismd/design-core/shadcn/<family>` | shadcn family barrel            |
+| `@lapismd/design-core/forms`           | structured forms barrel         |
+| `@lapismd/design-core/forms/core`      | form builders, types, registry  |
+| `@lapismd/design-core/filter`          | search and filter-query barrel  |
+| `@lapismd/design-core/ai`              | reusable AI presentation barrel |
+| `@lapismd/design-core/ai/chat`         | stable AI Chat primitives       |
+| `@lapismd/design-core/ai/experimental` | experimental AI Chat primitives |
+| `@lapismd/design-core/ai/tokens`       | AI Chat design tokens           |
+| `@lapismd/design-core/shell`           | bounded structural app shell    |
+| `@lapismd/design-core/workspace`       | full workspace framework        |
+| `@lapismd/design-core/styles.css`      | package styles entry            |
 
 - `shared/shadcn` contains generated controls and must not depend on higher
   layers.
@@ -124,15 +124,15 @@ STORYBOOK_PORT=9409 pnpm storybook
 
 Setting only `STORYBOOK_PORT` allocates the related lanes from the same base:
 
-| Lane                         | Derived port |
-| ---------------------------- | ------------ |
-| Storybook and AI acceptance  | base         |
-| Visual Delta static server   | base + 1     |
-| Visual Delta panel static    | base + 3 (package `storybook-static`) |
-| Visual Delta panel visual    | base + 5     |
-| Spare debug/cleanup port     | base + 90    |
-| Workspace pointer Storybook  | base + 200   |
-| Workspace pointer visual     | base + 201   |
+| Lane                        | Derived port                          |
+| --------------------------- | ------------------------------------- |
+| Storybook and AI acceptance | base                                  |
+| Visual Delta static server  | base + 1                              |
+| Visual Delta panel static   | base + 3 (package `storybook-static`) |
+| Visual Delta panel visual   | base + 5                              |
+| Spare debug/cleanup port    | base + 90                             |
+| Workspace pointer Storybook | base + 200                            |
+| Workspace pointer visual    | base + 201                            |
 
 `pnpm storybook`, `storybook:stop`, `storybook:restart`, the browser suites,
 the Visual Delta CLI, and the visual audit all use the checkout-local file.
@@ -150,14 +150,14 @@ normal secondary workspace only needs `STORYBOOK_PORT`.
 
 ### Host file map
 
-| File                                                                       | Role                                                          |
-| -------------------------------------------------------------------------- | ------------------------------------------------------------- |
-| [`.storybook/main.ts`](./.storybook/main.ts)                               | Story globs, addons, static baseline mount, aliases, Docs MCP |
-| [`.storybook/preview.ts`](./.storybook/preview.ts)                         | Global tags, theme, light/dark, a11y, docs, layout            |
-| [`.storybook/manager.ts`](./.storybook/manager.ts)                         | Tag badges and catalog toolbar                                |
-| [`.storybook/main.ts`](./.storybook/main.ts) | Registers `@lapismd/storybook-addon-visual-delta` with catalog options |
-| [`.storybook/ui-docs-middleware.ts`](./.storybook/ui-docs-middleware.ts)   | Docs MCP and `llms.txt` routes                                |
-| [`.storybook/vitest.setup.ts`](./.storybook/vitest.setup.ts)               | Storybook Vitest annotations                                  |
+| File                                                                     | Role                                                                   |
+| ------------------------------------------------------------------------ | ---------------------------------------------------------------------- |
+| [`.storybook/main.ts`](./.storybook/main.ts)                             | Story globs, addons, static baseline mount, aliases, Docs MCP          |
+| [`.storybook/preview.ts`](./.storybook/preview.ts)                       | Global tags, theme, light/dark, a11y, docs, layout                     |
+| [`.storybook/manager.ts`](./.storybook/manager.ts)                       | Tag badges and catalog toolbar                                         |
+| [`.storybook/main.ts`](./.storybook/main.ts)                             | Registers `@lapismd/storybook-addon-visual-delta` with catalog options |
+| [`.storybook/ui-docs-middleware.ts`](./.storybook/ui-docs-middleware.ts) | Docs MCP and `llms.txt` routes                                         |
+| [`.storybook/vitest.setup.ts`](./.storybook/vitest.setup.ts)             | Storybook Vitest annotations                                           |
 
 Registered addons:
 
@@ -179,8 +179,8 @@ own surfaces.
 
 [`vitest.config.ts`](./vitest.config.ts) defines:
 
-| Project        | Coverage                                              |
-| -------------- | ----------------------------------------------------- |
+| Project     | Coverage                                              |
+| ----------- | ----------------------------------------------------- |
 | `unit`      | Node unit specs in `src/` and `scripts/ui-generator/` |
 | `storybook` | browser story tests through `@storybook/addon-vitest` |
 
@@ -196,7 +196,6 @@ and registers it in `.storybook/main.ts`. Addon API details live in the package
 
 After upgrades, run `pnpm exec visual-delta doctor` (and `--fix` / `--runner`
 when suggested).
-
 
 The boundary is:
 
@@ -370,14 +369,14 @@ consumers and contributors:
    `shared/{ai,filter,forms,shadcn,shell,workspace}`. Stories may still use host
    Tailwind for demo layout.
 
-| Layer | Token prefix | Defaults |
-| ----- | ------------ | -------- |
-| Theme | `--background`, `--primary`, … | [`src/theme.css`](./src/theme.css) |
-| Shadcn family | `--ui-<family>-*` | `<family>.tokens.css` next to the family |
-| Forms | `--ui-form-*` | [`src/shared/forms/form.tokens.css`](./src/shared/forms/form.tokens.css) (`@lapismd/design-core/forms/tokens`) |
-| AI | `--ui-ai-*` | colocated maps / `@lapismd/design-core/ai/tokens` |
-| Shell | `--ui-shell-*` | [`src/shared/shell/shell.tokens.css`](./src/shared/shell/shell.tokens.css) |
-| Workspace | `--ui-workspace-*` | [`src/shared/workspace/workspace.tokens.css`](./src/shared/workspace/workspace.tokens.css) |
+| Layer         | Token prefix                   | Defaults                                                                                                       |
+| ------------- | ------------------------------ | -------------------------------------------------------------------------------------------------------------- |
+| Theme         | `--background`, `--primary`, … | [`src/theme.css`](./src/theme.css)                                                                             |
+| Shadcn family | `--ui-<family>-*`              | `<family>.tokens.css` next to the family                                                                       |
+| Forms         | `--ui-form-*`                  | [`src/shared/forms/form.tokens.css`](./src/shared/forms/form.tokens.css) (`@lapismd/design-core/forms/tokens`) |
+| AI            | `--ui-ai-*`                    | colocated maps / `@lapismd/design-core/ai/tokens`                                                              |
+| Shell         | `--ui-shell-*`                 | [`src/shared/shell/shell.tokens.css`](./src/shared/shell/shell.tokens.css)                                     |
+| Workspace     | `--ui-workspace-*`             | [`src/shared/workspace/workspace.tokens.css`](./src/shared/workspace/workspace.tokens.css)                     |
 
 Import the package stylesheet once from the host:
 
@@ -403,12 +402,12 @@ shadcn CLI directly against this package. Converted families keep
 
 ## Further reading
 
-| Resource                                                                                                               | Use                                       |
-| ---------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
-| [`AGENTS.md`](./AGENTS.md)                                                                                             | Primary agent workflow + folder layout    |
-| [`styles.md`](./styles.md)                                                                                             | Native CSS and token contract             |
-| `pnpm ui guide layers`                                                                                                 | Layer selection, folders, dependencies    |
-| `pnpm ui guide testing`                                                                                                | Verification sequence                     |
-| [`COMPONENT_AUDIT.md`](./COMPONENT_AUDIT.md)                                                                           | Retained component inventory              |
-| [`Visual Delta system specification`](https://github.com/lapismd/storybook-addon-visual-delta/blob/main/spec/src/index.md) | Normative Visual Delta system contract    |
-| [`@lapismd/storybook-addon-visual-delta`](https://www.npmjs.com/package/@lapismd/storybook-addon-visual-delta) | Addon API and integration                 |
+| Resource                                                                                                                   | Use                                    |
+| -------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
+| [`AGENTS.md`](./AGENTS.md)                                                                                                 | Primary agent workflow + folder layout |
+| [`styles.md`](./styles.md)                                                                                                 | Native CSS and token contract          |
+| `pnpm ui guide layers`                                                                                                     | Layer selection, folders, dependencies |
+| `pnpm ui guide testing`                                                                                                    | Verification sequence                  |
+| [`COMPONENT_AUDIT.md`](./COMPONENT_AUDIT.md)                                                                               | Retained component inventory           |
+| [`Visual Delta system specification`](https://github.com/lapismd/storybook-addon-visual-delta/blob/main/spec/src/index.md) | Normative Visual Delta system contract |
+| [`@lapismd/storybook-addon-visual-delta`](https://www.npmjs.com/package/@lapismd/storybook-addon-visual-delta)             | Addon API and integration              |

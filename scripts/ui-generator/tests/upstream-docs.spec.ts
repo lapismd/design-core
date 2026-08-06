@@ -319,7 +319,9 @@ describe("rewriteExample", () => {
     const source = `import * as InputGroup from "$lib/components/ui/input-group/index.js";
 import * as Tooltip from "$lib/components/ui/tooltip/index.js";`;
     const rewritten = rewritePackageImports(source, "input-group");
-    expect(rewritten).toContain('from "@lapismd/design-core/shadcn/input-group"');
+    expect(rewritten).toContain(
+      'from "@lapismd/design-core/shadcn/input-group"',
+    );
     expect(rewritten).toContain('from "@lapismd/design-core/shadcn/tooltip"');
     expect(rewritten).not.toContain("$lib/components/ui");
     expect(rewritten).not.toContain("./index.js");

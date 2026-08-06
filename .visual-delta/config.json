@@ -11,9 +11,7 @@
   },
   "previewSplitZoomDefault": "100%",
   "diffResultZoomDefault": "100%",
-  "browsers": [
-    "chromium"
-  ],
+  "browsers": ["chromium"],
   "workflow": {
     "autoAcceptLiveStoryComparisons": false,
     "visualTestFailureMode": "warn",

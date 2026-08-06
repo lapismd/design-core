@@ -136,7 +136,7 @@
         color: var(--secondary-foreground);
       }
       [data-ui-component="badge"][data-variant="destructive"] {
-        color: var(--color-white);
+        color: var(--destructive-foreground, #ffffff);
       }
       [data-ui-component="badge"][data-variant="link"] {
         text-underline-offset: 4px;

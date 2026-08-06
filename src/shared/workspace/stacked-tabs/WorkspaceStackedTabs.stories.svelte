@@ -4,7 +4,8 @@
   import {
     createDefaultWorkspaceLayout,
     createWorkspaceTab,
-    createWorkspaceTabs} from "../core/layout.js";
+    createWorkspaceTabs,
+  } from "../core/layout.js";
   import { WorkspaceShellController } from "../core/workspace-controller.svelte.js";
   import WorkspaceStackedTabs from "./WorkspaceStackedTabs.svelte";
   import "./WorkspaceStackedTabs.stories.css";
@@ -17,7 +18,11 @@
       docs: {
         description: {
           component:
-            "Source-shaped stacked workspace tabs with controller-backed activation, closing, overflow actions, drag targets, and hidden-scrollbar pane overflow."}}}});
+            "Source-shaped stacked workspace tabs with controller-backed activation, closing, overflow actions, drag targets, and hidden-scrollbar pane overflow.",
+        },
+      },
+    },
+  });
 </script>
 
 <script lang="ts">
@@ -26,27 +31,32 @@
       createWorkspaceTab({
         id: "stacked-home",
         title: "Framework home",
-        icon: "layout-template"}),
+        icon: "layout-template",
+      }),
       createWorkspaceTab({
         id: "stacked-reference",
         title: "Reference",
-        icon: "book-open"}),
+        icon: "book-open",
+      }),
       createWorkspaceTab({
         id: "stacked-details",
         title: "Details",
-        icon: "panel-right"}),
+        icon: "panel-right",
+      }),
     ],
     {
       id: "stacked-story-pane",
       activeItemId: "stacked-home",
-      presentation: "stacked"},
+      presentation: "stacked",
+    },
   );
   const layout = createDefaultWorkspaceLayout();
   layout.main = initialPane;
   layout.active = {
     hostId: "root",
     paneId: initialPane.id,
-    tabId: "stacked-home"};
+    tabId: "stacked-home",
+  };
   const controller = new WorkspaceShellController({ layout });
   const livePane = $derived(
     controller.layout.main.kind === "tabs"
@@ -69,9 +79,16 @@
     );
     await expect(canvas.queryByRole("button", { name: "Details" })).toBeNull();
   }}
-
   parameters={{
-    visualDelta: {"images":["/visual-baselines/workspace/stacked-tabs/activates-and-closes-vertical-tabs-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/stacked-tabs/activates-and-closes-vertical-tabs-chromium.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
   }}
 >
   {#snippet template()}

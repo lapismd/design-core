@@ -33,7 +33,12 @@
   --card-foreground: #222222;
   --popover: #ffffff;
   --popover-foreground: #222222;
-  --primary: var(--lapis-accent-hover);
+  /* Filled actions use darker AA-safe fills; accent/hover stay for rings + selection. */
+  --primary: hsl(
+    calc(var(--lapis-accent-h) - 1),
+    calc(var(--lapis-accent-s) * 1.01),
+    42%
+  );
   --primary-foreground: #ffffff;
   --secondary: #f6f6f6;
   --secondary-foreground: #222222;
@@ -41,7 +46,8 @@
   --muted-foreground: #5c5c5c;
   --accent: #f6f6f6;
   --accent-foreground: #222222;
-  --destructive: #e93147;
+  --destructive: #c41e34;
+  --destructive-foreground: #ffffff;
   --warning: #ec7500;
   --success: #08b94e;
   --border: #e0e0e0;
@@ -49,8 +55,8 @@
   --ring: var(--lapis-accent);
   --sidebar: #f6f6f6;
   --sidebar-foreground: #222222;
-  --sidebar-primary: var(--lapis-accent-hover);
-  --sidebar-primary-foreground: #ffffff;
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
   --sidebar-accent: #e3e3e3;
   --sidebar-accent-foreground: #222222;
   --sidebar-border: #e0e0e0;
@@ -66,11 +72,11 @@
   --ui-workspace-popover-foreground: #222222;
   --ui-workspace-border: #e0e0e0;
   --ui-workspace-border-strong: #d4d4d4;
-  --ui-workspace-accent: var(--lapis-accent-hover);
-  --ui-workspace-accent-foreground: #ffffff;
+  --ui-workspace-accent: var(--primary);
+  --ui-workspace-accent-foreground: var(--primary-foreground);
   --ui-workspace-about-primary-foreground: #241733;
   --ui-workspace-selection: hsla(var(--lapis-accent-hsl), 0.2);
-  --ui-workspace-destructive: #e93147;
+  --ui-workspace-destructive: var(--destructive);
   --ui-workspace-warning: #ec7500;
   --ui-workspace-focus-ring: var(--lapis-accent);
   --ui-workspace-font-sans: ui-sans-serif, system-ui, sans-serif,
@@ -131,7 +137,11 @@
   --card-foreground: #dadada;
   --popover: #262626;
   --popover-foreground: #dadada;
-  --primary: var(--lapis-accent);
+  --primary: hsl(
+    calc(var(--lapis-accent-h) - 1),
+    calc(var(--lapis-accent-s) * 1.01),
+    55%
+  );
   --primary-foreground: #ffffff;
   --secondary: #262626;
   --secondary-foreground: #dadada;
@@ -139,7 +149,8 @@
   --muted-foreground: #b3b3b3;
   --accent: #363636;
   --accent-foreground: #dadada;
-  --destructive: #fb464c;
+  --destructive: #d92a3f;
+  --destructive-foreground: #ffffff;
   --warning: #e9973f;
   --success: #44cf6e;
   --border: #363636;
@@ -147,8 +158,8 @@
   --ring: var(--lapis-accent-hover);
   --sidebar: #262626;
   --sidebar-foreground: #dadada;
-  --sidebar-primary: var(--lapis-accent);
-  --sidebar-primary-foreground: #ffffff;
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
   --sidebar-accent: #363636;
   --sidebar-accent-foreground: #dadada;
   --sidebar-border: #363636;
@@ -164,10 +175,10 @@
   --ui-workspace-popover-foreground: #dadada;
   --ui-workspace-border: #363636;
   --ui-workspace-border-strong: #3f3f3f;
-  --ui-workspace-accent: var(--lapis-accent);
-  --ui-workspace-accent-foreground: #ffffff;
+  --ui-workspace-accent: var(--primary);
+  --ui-workspace-accent-foreground: var(--primary-foreground);
   --ui-workspace-selection: hsla(var(--lapis-accent-hsl), 0.33);
-  --ui-workspace-destructive: #fb464c;
+  --ui-workspace-destructive: var(--destructive);
   --ui-workspace-warning: #e9973f;
   --ui-workspace-focus-ring: var(--lapis-accent-hover);
   --ui-workspace-notifications-card: #242424;

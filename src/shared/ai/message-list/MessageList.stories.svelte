@@ -21,7 +21,11 @@
       docs: {
         description: {
           component:
-            'Presentational message container with density context and infinite scroll support. Provides role="log" with aria-live="polite" for accessibility. A flex spacer pushes messages to the bottom when the list isn\'t full.'}}}});
+            'Presentational message container with density context and infinite scroll support. Provides role="log" with aria-live="polite" for accessibility. A flex spacer pushes messages to the bottom when the list isn\'t full.',
+        },
+      },
+    },
+  });
 </script>
 
 <script lang="ts">
@@ -38,8 +42,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -81,16 +86,17 @@
     docs: {
       description: {
         story:
-          "Side-by-side comparison of compact, balanced, and spacious densities. Use compact in sidebars or panels, balanced for most full-page chat, and spacious for long-form reading. Use gap when row spacing needs to differ from density."}},
+          "Side-by-side comparison of compact, balanced, and spacious densities. Use compact in sidebars or panels, balanced for most full-page chat, and spacious for long-form reading. Use gap when row spacing needs to differ from density.",
+      },
+    },
     visualDelta: {
-      images: [
-        "/visual-baselines/ai/message-list/density-chromium.png",
-      ],
+      images: ["/visual-baselines/ai/message-list/density-chromium.png"],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -160,16 +166,17 @@
     docs: {
       description: {
         story:
-          "Conversation showcasing system messages, multi-bubble grouping, markdown, code blocks, and metadata. Combines date dividers, ghost bubbles, grouped messages, and rich content in a single example."}},
+          "Conversation showcasing system messages, multi-bubble grouping, markdown, code blocks, and metadata. Combines date dividers, ghost bubbles, grouped messages, and rich content in a single example.",
+      },
+    },
     visualDelta: {
-      images: [
-        "/visual-baselines/ai/message-list/full-featured-chromium.png",
-      ],
+      images: ["/visual-baselines/ai/message-list/full-featured-chromium.png"],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -239,8 +246,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -267,14 +275,13 @@
   name="Empty live log"
   parameters={{
     visualDelta: {
-      images: [
-        "/visual-baselines/ai/message-list/empty-live-log-chromium.png",
-      ],
+      images: ["/visual-baselines/ai/message-list/empty-live-log-chromium.png"],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
   tags={["visual-approved"]}
 >
   {#snippet template()}

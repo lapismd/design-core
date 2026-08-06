@@ -13,7 +13,8 @@
 
   const { Story } = defineMeta({
     title: "Shadcn/Actions/Toggle Group",
-    component: ToggleGroup.ToggleGroup});
+    component: ToggleGroup.ToggleGroup,
+  });
 </script>
 
 <Story
@@ -22,20 +23,21 @@
   tags={["upstream-example", "visual-approved"]}
   parameters={{
     visualDelta: {
-      images: [
-        "/visual-baselines/shadcn/toggle-group/spacing-chromium.png",
-      ],
+      images: ["/visual-baselines/shadcn/toggle-group/spacing-chromium.png"],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
+      placement: "right",
     },
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.Spacing,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">
@@ -50,20 +52,21 @@
   tags={["upstream-example", "visual-approved"]}
   parameters={{
     visualDelta: {
-      images: [
-        "/visual-baselines/shadcn/toggle-group/outline-chromium.png",
-      ],
+      images: ["/visual-baselines/shadcn/toggle-group/outline-chromium.png"],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
+      placement: "right",
     },
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.Outline,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">
@@ -78,20 +81,21 @@
   tags={["upstream-example", "visual-approved"]}
   parameters={{
     visualDelta: {
-      images: [
-        "/visual-baselines/shadcn/toggle-group/single-chromium.png",
-      ],
+      images: ["/visual-baselines/shadcn/toggle-group/single-chromium.png"],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
+      placement: "right",
     },
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.Single,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">
@@ -106,20 +110,21 @@
   tags={["upstream-example", "visual-approved"]}
   parameters={{
     visualDelta: {
-      images: [
-        "/visual-baselines/shadcn/toggle-group/small-chromium.png",
-      ],
+      images: ["/visual-baselines/shadcn/toggle-group/small-chromium.png"],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
+      placement: "right",
     },
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.Small,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">
@@ -134,20 +139,21 @@
   tags={["upstream-example", "visual-approved"]}
   parameters={{
     visualDelta: {
-      images: [
-        "/visual-baselines/shadcn/toggle-group/large-chromium.png",
-      ],
+      images: ["/visual-baselines/shadcn/toggle-group/large-chromium.png"],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
+      placement: "right",
     },
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.Large,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">
@@ -162,20 +168,21 @@
   tags={["upstream-example", "visual-approved"]}
   parameters={{
     visualDelta: {
-      images: [
-        "/visual-baselines/shadcn/toggle-group/disabled-chromium.png",
-      ],
+      images: ["/visual-baselines/shadcn/toggle-group/disabled-chromium.png"],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
+      placement: "right",
     },
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.Disabled,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">
@@ -190,22 +197,24 @@
   tags={["upstream-example", "visual-approved"]}
   parameters={{
     visualDelta: {
-      images: [
-        "/visual-baselines/shadcn/toggle-group/spacing-2-chromium.png",
-      ],
+      images: ["/visual-baselines/shadcn/toggle-group/spacing-2-chromium.png"],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
+      placement: "right",
     },
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "Use `spacing={2}` to add spacing between toggle group items."},
+        story: "Use `spacing={2}` to add spacing between toggle group items.",
+      },
       source: {
         code: exampleSources.Spacing2,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">

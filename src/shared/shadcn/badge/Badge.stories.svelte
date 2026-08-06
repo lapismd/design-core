@@ -9,7 +9,11 @@
     parameters: {
       docs: {
         description: {
-          component: "Compact status and category labels."}}}});
+          component: "Compact status and category labels.",
+        },
+      },
+    },
+  });
 </script>
 
 <Story
@@ -25,8 +29,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <div class="flex flex-wrap gap-2">

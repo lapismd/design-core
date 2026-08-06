@@ -9,7 +9,11 @@
     parameters: {
       docs: {
         description: {
-          component: "Inline callout for status messages and warnings."}}}});
+          component: "Inline callout for status messages and warnings.",
+        },
+      },
+    },
+  });
 </script>
 
 <Story
@@ -26,8 +30,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <Alert.Root class="max-w-md">

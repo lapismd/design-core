@@ -17,7 +17,8 @@
     stop: () => {},
     abort: () => {},
     toggle: async () => {},
-    cleanup: () => {}};
+    cleanup: () => {},
+  };
 
   const listening: SpeechRecognitionController = {
     isSupported: true,
@@ -31,7 +32,8 @@
     stop: () => {},
     abort: () => {},
     toggle: async () => {},
-    cleanup: () => {}};
+    cleanup: () => {},
+  };
 
   const { Story } = defineMeta({
     title: "AI/Chat/Dictation Button",
@@ -40,7 +42,11 @@
       docs: {
         description: {
           component:
-            "ChatDictationButton is a toggle button that starts and stops voice dictation inside a chat composer. It pairs with useChatDictation to show a microphone icon when idle and animated frequency bars when listening. Place it in the sendActions slot of ChatComposer."}}}});
+            "ChatDictationButton is a toggle button that starts and stops voice dictation inside a chat composer. It pairs with useChatDictation to show a microphone icon when idle and animated frequency bars when listening. Place it in the sendActions slot of ChatComposer.",
+        },
+      },
+    },
+  });
 </script>
 
 <script lang="ts">
@@ -53,7 +59,8 @@
     isSpeaking: false,
     toggle: async () => {
       toggles += 1;
-    }};
+    },
+  };
 
   const idle: SpeechRecognitionController = {
     ...listening,
@@ -62,7 +69,8 @@
     volume: 0,
     bands: [0, 0, 0, 0, 0],
     rawBands: [0, 0, 0, 0, 0],
-    interimTranscript: ""};
+    interimTranscript: "",
+  };
 </script>
 
 <Story
@@ -75,8 +83,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -107,16 +116,17 @@
     docs: {
       description: {
         story:
-          "A dictation button wired to useChatDictation and placed in the sendActions slot of a ChatComposer. Click the microphone to transcribe speech into the input."}},
+          "A dictation button wired to useChatDictation and placed in the sendActions slot of a ChatComposer. Click the microphone to transcribe speech into the input.",
+      },
+    },
     visualDelta: {
-      images: [
-        "/visual-baselines/ai/dictation-button/basic-chromium.png",
-      ],
+      images: ["/visual-baselines/ai/dictation-button/basic-chromium.png"],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -152,8 +162,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -174,8 +185,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -188,7 +200,8 @@
   play={async ({ canvas }) => {
     await expect(
       canvas.getByRole("button", {
-        name: "Dictation is not supported in this browser"}),
+        name: "Dictation is not supported in this browser",
+      }),
     ).toBeDisabled();
   }}
   parameters={{
@@ -199,8 +212,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
   tags={["visual-approved"]}
 >
   {#snippet template()}

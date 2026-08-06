@@ -13,7 +13,11 @@
       docs: {
         description: {
           component:
-            "Controller-managed ribbon actions split into top and bottom sections with the source Lapis geometry."}}}});
+            "Controller-managed ribbon actions split into top and bottom sections with the source Lapis geometry.",
+        },
+      },
+    },
+  });
 </script>
 
 <script lang="ts">
@@ -26,14 +30,16 @@
     active: true,
     onSelect: () => {
       result = "Files selected";
-    }});
+    },
+  });
   controller.ribbon.addItem({
     id: "search",
     label: "Search",
     icon: "search",
     onSelect: () => {
       result = "Search selected";
-    }});
+    },
+  });
   controller.ribbon.addItem({
     id: "settings",
     section: "bottom",
@@ -41,7 +47,8 @@
     icon: "settings",
     onSelect: () => {
       result = "Settings selected";
-    }});
+    },
+  });
 </script>
 
 <Story
@@ -65,8 +72,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <div class="ui-workspace-ribbon-story-frame">

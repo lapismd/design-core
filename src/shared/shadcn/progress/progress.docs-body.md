@@ -13,5 +13,5 @@ pnpm ui:add progress
 ```
 
 ```html
-<Progress value={33} />
+<progress value="{33}" />
 ```

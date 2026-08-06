@@ -8,7 +8,8 @@
 
   const { Story } = defineMeta({
     title: "Shadcn/Overlays/Dialog",
-    component: Dialog.Dialog});
+    component: Dialog.Dialog,
+  });
 </script>
 
 <Story
@@ -21,7 +22,10 @@
       source: {
         code: exampleSources.Preview,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">
@@ -40,7 +44,10 @@
       source: {
         code: exampleSources.CustomCloseButton,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">

@@ -10,7 +10,11 @@
     parameters: {
       docs: {
         description: {
-          component: "Content container with header, body, and footer slots."}}}});
+          component: "Content container with header, body, and footer slots.",
+        },
+      },
+    },
+  });
 </script>
 
 <Story
@@ -28,8 +32,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <Card.Root class="max-w-md">

@@ -14,7 +14,11 @@
     parameters: {
       docs: {
         description: {
-          component: "Action menu anchored to a trigger control."}}}});
+          component: "Action menu anchored to a trigger control.",
+        },
+      },
+    },
+  });
 
   /** Clear portals / scroll-lock left by a prior open overlay story. */
   async function dismissOverlays() {
@@ -55,11 +59,17 @@
     );
     await expect(canvas.getByRole("status")).toHaveTextContent("Duplicate");
   }}
-
   tags={["visual-approved"]}
-
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/dropdown-menu/chooses-a-menu-item-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: [
+        "/visual-baselines/shadcn/dropdown-menu/chooses-a-menu-item-chromium.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
   }}
 >
   {#snippet template()}
@@ -97,9 +107,15 @@
       within(document.body).getByRole("menuitem", { name: /Profile/ }),
     ).toBeVisible();
   }}
-
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/dropdown-menu/open-menu-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"}}}
+    visualDelta: {
+      images: ["/visual-baselines/shadcn/dropdown-menu/open-menu-chromium.png"],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">
@@ -119,12 +135,21 @@
     await expect(within(document.body).getByRole("menu")).toBeVisible();
     await expect(
       within(document.body).getByRole("menuitemcheckbox", {
-        name: "Status Bar"}),
+        name: "Status Bar",
+      }),
     ).toBeVisible();
   }}
-
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/dropdown-menu/open-checkboxes-menu-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"}}}
+    visualDelta: {
+      images: [
+        "/visual-baselines/shadcn/dropdown-menu/open-checkboxes-menu-chromium.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">
@@ -146,9 +171,17 @@
       within(document.body).getByRole("menuitemradio", { name: "Bottom" }),
     ).toBeVisible();
   }}
-
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/dropdown-menu/open-radio-group-menu-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"}}}
+    visualDelta: {
+      images: [
+        "/visual-baselines/shadcn/dropdown-menu/open-radio-group-menu-chromium.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">
@@ -161,8 +194,17 @@
   name="Opens dialog from menu"
   tags={["visual-state", "visual-approved"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/dropdown-menu/opens-dialog-from-menu-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
-    a11y: { test: "todo" }}}
+    visualDelta: {
+      images: [
+        "/visual-baselines/shadcn/dropdown-menu/opens-dialog-from-menu-chromium.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
+    a11y: { test: "todo" },
+  }}
   play={async ({ canvas }) => {
     await dismissOverlays();
     await userEvent.click(canvas.getByRole("button"));

@@ -9,7 +9,11 @@
     parameters: {
       docs: {
         description: {
-          component: "Responsive data table with semantic native CSS parts."}}}});
+          component: "Responsive data table with semantic native CSS parts.",
+        },
+      },
+    },
+  });
 </script>
 
 <Story
@@ -21,14 +25,13 @@
   tags={["visual-approved"]}
   parameters={{
     visualDelta: {
-      images: [
-        "/visual-baselines/shadcn/table/invoice-rows-chromium.png",
-      ],
+      images: ["/visual-baselines/shadcn/table/invoice-rows-chromium.png"],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <Table.Root>

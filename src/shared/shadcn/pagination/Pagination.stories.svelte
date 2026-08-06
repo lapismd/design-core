@@ -9,7 +9,11 @@
     parameters: {
       docs: {
         description: {
-          component: "Page navigation with previous, next, and page links."}}}});
+          component: "Page navigation with previous, next, and page links.",
+        },
+      },
+    },
+  });
 </script>
 
 <script lang="ts">
@@ -34,8 +38,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <div class="flex flex-col items-center gap-3">

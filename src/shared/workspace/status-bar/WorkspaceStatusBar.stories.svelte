@@ -13,7 +13,11 @@
       docs: {
         description: {
           component:
-            "Lapis-shaped bottom-right status surface backed by the controller status registry."}}}});
+            "Lapis-shaped bottom-right status surface backed by the controller status registry.",
+        },
+      },
+    },
+  });
 </script>
 
 <script lang="ts">
@@ -25,7 +29,8 @@
     icon: "cloud-check",
     onSelect: () => {
       result = "Sync selected";
-    }});
+    },
+  });
   controller.statusBar.addItem({
     id: "version",
     align: "right",
@@ -33,7 +38,8 @@
     icon: "circle-help",
     onSelect: () => {
       result = "Version selected";
-    }});
+    },
+  });
 </script>
 
 <Story
@@ -54,8 +60,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <div class="ui-workspace-status-bar-story-frame">

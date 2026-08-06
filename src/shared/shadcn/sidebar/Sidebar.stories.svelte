@@ -9,8 +9,12 @@
     parameters: {
       docs: {
         description: {
-          component: "App sidebar shell primitives used by studio workspaces."}},
-      layout: "fullscreen"}});
+          component: "App sidebar shell primitives used by studio workspaces.",
+        },
+      },
+      layout: "fullscreen",
+    },
+  });
 </script>
 
 <script lang="ts">
@@ -35,8 +39,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <Sidebar.Provider bind:open class="min-h-[240px]">

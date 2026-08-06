@@ -5,7 +5,8 @@
     createDefaultWorkspaceLayout,
     createWorkspaceSplit,
     createWorkspaceTab,
-    createWorkspaceTabs} from "../core/layout.js";
+    createWorkspaceTabs,
+  } from "../core/layout.js";
   import { WorkspaceShellController } from "../core/workspace-controller.svelte.js";
   import WorkspaceTree from "./WorkspaceTree.svelte";
   import "./WorkspaceTree.stories.css";
@@ -18,7 +19,11 @@
       docs: {
         description: {
           component:
-            "The recursive renderer for serializable split, top-tab, and stacked-tab workspace nodes."}}}});
+            "The recursive renderer for serializable split, top-tab, and stacked-tab workspace nodes.",
+        },
+      },
+    },
+  });
 </script>
 
 <script lang="ts">
@@ -27,11 +32,13 @@
       createWorkspaceTab({
         id: "tree-home",
         title: "Framework home",
-        icon: "layout-template"}),
+        icon: "layout-template",
+      }),
       createWorkspaceTab({
         id: "tree-notes",
         title: "Notes",
-        icon: "notebook-tabs"}),
+        icon: "notebook-tabs",
+      }),
     ],
     { id: "tree-left", activeItemId: "tree-home" },
   );
@@ -40,16 +47,19 @@
       createWorkspaceTab({
         id: "tree-reference",
         title: "Reference",
-        icon: "book-open"}),
+        icon: "book-open",
+      }),
       createWorkspaceTab({
         id: "tree-details",
         title: "Details",
-        icon: "panel-right"}),
+        icon: "panel-right",
+      }),
     ],
     {
       id: "tree-right",
       activeItemId: "tree-reference",
-      presentation: "stacked"},
+      presentation: "stacked",
+    },
   );
   const root = createWorkspaceSplit("horizontal", [left, right], [55, 45]);
   root.id = "tree-root";
@@ -58,7 +68,8 @@
   layout.active = {
     hostId: "root",
     paneId: left.id,
-    tabId: "tree-home"};
+    tabId: "tree-home",
+  };
   const controller = new WorkspaceShellController({ layout });
 </script>
 
@@ -82,8 +93,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <div class="ui-workspace-tree-story-frame">

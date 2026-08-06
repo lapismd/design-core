@@ -9,7 +9,11 @@
     parameters: {
       docs: {
         description: {
-          component: "UI-owned multiline text control for longer form values."}}}});
+          component: "UI-owned multiline text control for longer form values.",
+        },
+      },
+    },
+  });
 </script>
 
 <script lang="ts">
@@ -25,9 +29,16 @@
     await expect(canvas.getByRole("status")).toHaveTextContent("Updated notes");
   }}
   tags={["visual-approved"]}
-
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/textarea/edits-multiline-text-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: [
+        "/visual-baselines/shadcn/textarea/edits-multiline-text-chromium.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
   }}
 >
   {#snippet template()}

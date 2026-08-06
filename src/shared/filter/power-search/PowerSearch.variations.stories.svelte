@@ -5,11 +5,13 @@
   import { createDemoLedgerFilterSyntax } from "../demo-ledger-filter-syntax.js";
   import {
     createPowerSearchToken,
-    type PowerSearchToken} from "./power-search.js";
+    type PowerSearchToken,
+  } from "./power-search.js";
 
   const { Story } = defineMeta({
     title: "Filter/Power Search",
-    component: PowerSearch});
+    component: PowerSearch,
+  });
 
   const demoSyntax = createDemoLedgerFilterSyntax();
 </script>
@@ -19,19 +21,32 @@
     createPowerSearchToken({
       field: "account",
       operator: ":",
-      value: "Expenses:Food"}),
+      value: "Expenses:Food",
+    }),
     createPowerSearchToken({
       field: "amount",
       operator: ">",
-      value: "20"}),
+      value: "20",
+    }),
   ]);
 
   let contentTokens = $state<PowerSearchToken[]>([]);
 </script>
 
-<Story name="With seeded tokens" tags={["visual-approved"]}
+<Story
+  name="With seeded tokens"
+  tags={["visual-approved"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/filter/power-search/with-seeded-tokens-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"}}}
+    visualDelta: {
+      images: [
+        "/visual-baselines/filter/power-search/with-seeded-tokens-chromium.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <div class="max-w-2xl">
@@ -63,9 +78,17 @@
     expect(canvas.getByText("groceries")).toBeInTheDocument();
   }}
   tags={["visual-approved"]}
-
   parameters={{
-    visualDelta: {"images":["/visual-baselines/filter/power-search/content-search-enter-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"}}}
+    visualDelta: {
+      images: [
+        "/visual-baselines/filter/power-search/content-search-enter-chromium.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <div class="max-w-2xl">
@@ -82,9 +105,18 @@
   {/snippet}
 </Story>
 
-<Story name="Disabled" tags={["visual-approved"]}
+<Story
+  name="Disabled"
+  tags={["visual-approved"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/filter/power-search/disabled-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"}}}
+    visualDelta: {
+      images: ["/visual-baselines/filter/power-search/disabled-chromium.png"],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <div class="max-w-2xl">
@@ -93,7 +125,8 @@
           createPowerSearchToken({
             field: "payee",
             operator: ":",
-            value: "Landlord"}),
+            value: "Landlord",
+          }),
         ]}
         filterSyntax={demoSyntax}
         disabled

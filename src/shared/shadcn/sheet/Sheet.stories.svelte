@@ -12,7 +12,11 @@
       docs: {
         description: {
           component:
-            "Slide-over panel that extends Dialog. Use for complementary forms and mobile sidebars."}}}});
+            "Slide-over panel that extends Dialog. Use for complementary forms and mobile sidebars.",
+        },
+      },
+    },
+  });
 
   /** Clear portals / scroll-lock left by a prior open overlay story. */
   async function dismissOverlays() {
@@ -47,7 +51,8 @@
     await dismissOverlays();
     await userEvent.click(canvas.getByRole("button", { name: "Open sheet" }));
     const sheet = within(document.body).getByRole("dialog", {
-      name: "Edit profile"});
+      name: "Edit profile",
+    });
     await expect(sheet).toHaveAttribute("data-state", "open");
     await userEvent.keyboard("{Escape}");
     await expect(canvas.getByRole("status")).toHaveTextContent("closed");
@@ -91,9 +96,15 @@
       within(document.body).getByRole("dialog", { name: "Edit profile" }),
     ).toBeVisible();
   }}
-
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/sheet/open-sheet-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"}}}
+    visualDelta: {
+      images: ["/visual-baselines/shadcn/sheet/open-sheet-chromium.png"],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">

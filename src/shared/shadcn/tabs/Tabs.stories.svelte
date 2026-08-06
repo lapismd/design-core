@@ -9,7 +9,11 @@
     parameters: {
       docs: {
         description: {
-          component: "Tabbed navigation between related views."}}}});
+          component: "Tabbed navigation between related views.",
+        },
+      },
+    },
+  });
 </script>
 
 <script lang="ts">
@@ -23,9 +27,14 @@
     await expect(canvas.getByText("Details panel")).toBeVisible();
   }}
   tags={["visual-approved"]}
-
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/tabs/switches-panels-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: ["/visual-baselines/shadcn/tabs/switches-panels-chromium.png"],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
   }}
 >
   {#snippet template()}

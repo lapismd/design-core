@@ -12,7 +12,11 @@
       docs: {
         description: {
           component:
-            "Renderer-neutral workspace menu entries presented through direct Bits UI primitives and native Workspace tokens."}}}});
+            "Renderer-neutral workspace menu entries presented through direct Bits UI primitives and native Workspace tokens.",
+        },
+      },
+    },
+  });
 </script>
 
 <script lang="ts">
@@ -63,8 +67,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <DropdownMenu.Root>

@@ -11,30 +11,30 @@ import Trigger from "./drawer-trigger.svelte";
 import Root from "./drawer.svelte";
 
 export {
-	Root,
-	NestedRoot,
-	Content,
-	Description,
-	Overlay,
-	Footer,
-	Header,
-	Title,
-	Trigger,
-	Portal,
-	Close,
+  Root,
+  NestedRoot,
+  Content,
+  Description,
+  Overlay,
+  Footer,
+  Header,
+  Title,
+  Trigger,
+  Portal,
+  Close,
 
-	//
-	Root as Drawer,
-	NestedRoot as DrawerNestedRoot,
-	Content as DrawerContent,
-	Description as DrawerDescription,
-	Overlay as DrawerOverlay,
-	Footer as DrawerFooter,
-	Header as DrawerHeader,
-	Title as DrawerTitle,
-	Trigger as DrawerTrigger,
-	Portal as DrawerPortal,
-	Close as DrawerClose,
+  //
+  Root as Drawer,
+  NestedRoot as DrawerNestedRoot,
+  Content as DrawerContent,
+  Description as DrawerDescription,
+  Overlay as DrawerOverlay,
+  Footer as DrawerFooter,
+  Header as DrawerHeader,
+  Title as DrawerTitle,
+  Trigger as DrawerTrigger,
+  Portal as DrawerPortal,
+  Close as DrawerClose,
 };
 
 export { drawerTokenNames, type DrawerToken } from "./drawer.tokens.js";

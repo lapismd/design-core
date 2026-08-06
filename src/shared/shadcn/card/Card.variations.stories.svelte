@@ -11,7 +11,8 @@
 
   const { Story } = defineMeta({
     title: "Shadcn/Layout/Card",
-    component: Card.Card});
+    component: Card.Card,
+  });
 </script>
 
 <Story
@@ -24,14 +25,17 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
+      placement: "right",
     },
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.Preview,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">
@@ -50,14 +54,17 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
+      placement: "right",
     },
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.Preview2,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">
@@ -76,17 +83,21 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
+      placement: "right",
     },
     a11y: { test: "todo" },
     docs: {
       description: {
         story:
-          "In addition to the `size` prop, you can use the `--card-spacing` CSS variable to control the spacing between sections and the inset of card parts."},
+          "In addition to the `size` prop, you can use the `--card-spacing` CSS variable to control the spacing between sections and the inset of card parts.",
+      },
       source: {
         code: exampleSources.Spacing,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">
@@ -105,17 +116,21 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
+      placement: "right",
     },
     a11y: { test: "todo" },
     docs: {
       description: {
         story:
-          'ComponentPreview name="card-spacing" class="[&_.preview]:h-[34rem]">\n\nUse negative margins with `-mx-(--card-spacing)` to make content go edge to edge while keeping it aligned with the card inset. When the edge-to-edge content sits above a footer, use `-mb-(--card-spacing)` on `CardContent` to remove the section gap.'},
+          'ComponentPreview name="card-spacing" class="[&_.preview]:h-[34rem]">\n\nUse negative margins with `-mx-(--card-spacing)` to make content go edge to edge while keeping it aligned with the card inset. When the edge-to-edge content sits above a footer, use `-mb-(--card-spacing)` on `CardContent` to remove the section gap.',
+      },
       source: {
         code: exampleSources.Spacing2,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">
@@ -134,17 +149,21 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
+      placement: "right",
     },
     a11y: { test: "todo" },
     docs: {
       description: {
         story:
-          "Add an image before the card header to create a card with an image."},
+          "Add an image before the card header to create a card with an image.",
+      },
       source: {
         code: exampleSources.Image,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">

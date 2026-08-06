@@ -13,7 +13,11 @@
       docs: {
         description: {
           component:
-            "Compact status contribution supporting icons, segments, progress, actions, and declarative menus."}}}});
+            "Compact status contribution supporting icons, segments, progress, actions, and declarative menus.",
+        },
+      },
+    },
+  });
 </script>
 
 <script lang="ts">
@@ -25,7 +29,8 @@
     tooltip: "Workspace framework ready",
     onSelect: () => {
       result = "Ready selected";
-    }};
+    },
+  };
   const menuItem: WorkspaceStatusItemModel = {
     id: "plugins",
     icon: "puzzle",
@@ -36,7 +41,8 @@
           result = "Manage plugins selected";
         }),
       );
-    }};
+    },
+  };
 </script>
 
 <Story
@@ -66,8 +72,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <div class="ui-workspace-status-item-story-frame">

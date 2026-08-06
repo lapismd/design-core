@@ -336,7 +336,10 @@ describe("storyOpenTagMatchesIdSlug", () => {
   tags={["skip-visual"]}
 >`;
     expect(
-      storyOpenTagMatchesIdSlug(tag, "ui-forms-form-inputs-form-field--default-row"),
+      storyOpenTagMatchesIdSlug(
+        tag,
+        "ui-forms-form-inputs-form-field--default-row",
+      ),
     ).toBe(true);
     expect(storyOpenTagMatchesIdSlug(tag, "default-row")).toBe(true);
     expect(storyOpenTagMatchesIdSlug(tag, "defaultrow")).toBe(true);

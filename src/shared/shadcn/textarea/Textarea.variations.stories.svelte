@@ -12,7 +12,8 @@
 
   const { Story } = defineMeta({
     title: "Shadcn/Forms/Textarea",
-    component: Textarea.Textarea});
+    component: Textarea.Textarea,
+  });
 </script>
 
 <Story
@@ -20,13 +21,22 @@
   exportName="Preview"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/textarea/preview-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: ["/visual-baselines/shadcn/textarea/preview-chromium.png"],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.Preview,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">
@@ -40,13 +50,22 @@
   exportName="Default"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/textarea/default-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: ["/visual-baselines/shadcn/textarea/default-chromium.png"],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.Default,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">
@@ -60,13 +79,22 @@
   exportName="Disabled"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/textarea/disabled-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: ["/visual-baselines/shadcn/textarea/disabled-chromium.png"],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.Disabled,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">
@@ -80,13 +108,22 @@
   exportName="WithLabel"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/textarea/with-label-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: ["/visual-baselines/shadcn/textarea/with-label-chromium.png"],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.WithLabel,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">
@@ -100,13 +137,22 @@
   exportName="WithText"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/textarea/with-text-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: ["/visual-baselines/shadcn/textarea/with-text-chromium.png"],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.WithText,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">
@@ -120,13 +166,22 @@
   exportName="WithButton"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/textarea/with-button-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: ["/visual-baselines/shadcn/textarea/with-button-chromium.png"],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.WithButton,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">

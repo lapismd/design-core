@@ -9,7 +9,11 @@
     parameters: {
       docs: {
         description: {
-          component: "Resizable pane groups powered by paneforge."}}}});
+          component: "Resizable pane groups powered by paneforge.",
+        },
+      },
+    },
+  });
 </script>
 
 <Story
@@ -19,9 +23,16 @@
     await expect(canvas.getByText("Right pane")).toBeVisible();
   }}
   tags={["visual-approved"]}
-
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/resizable/two-pane-split-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: [
+        "/visual-baselines/shadcn/resizable/two-pane-split-chromium.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
   }}
 >
   {#snippet template()}

@@ -15,7 +15,11 @@
       docs: {
         description: {
           component:
-            "ChatLayout is the layout shell for full-page chat interfaces. It renders messages in normal page flow and docks the composer to the bottom with a frosted glass blur layer. Density adapts automatically via container width observation. Use it to wrap ChatMessageList and ChatComposer for a complete chat experience with built-in auto-scroll and a scroll-to-bottom button."}}}});
+            "ChatLayout is the layout shell for full-page chat interfaces. It renders messages in normal page flow and docks the composer to the bottom with a frosted glass blur layer. Density adapts automatically via container width observation. Use it to wrap ChatMessageList and ChatComposer for a complete chat experience with built-in auto-scroll and a scroll-to-bottom button.",
+        },
+      },
+    },
+  });
 </script>
 
 <script lang="ts">
@@ -27,14 +31,13 @@
   name="ASTRYX showcase"
   parameters={{
     visualDelta: {
-      images: [
-        "/visual-baselines/ai/layout/astryx-showcase-chromium.png",
-      ],
+      images: ["/visual-baselines/ai/layout/astryx-showcase-chromium.png"],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -58,7 +61,8 @@
                   {
                     value: "/review",
                     label: "/review",
-                    variant: "secondary"},
+                    variant: "secondary",
+                  },
                 ]}
               />
             </MessageBubble>
@@ -81,16 +85,17 @@
     docs: {
       description: {
         story:
-          "Narrow sidebar chat in a constrained container that triggers compact density. Use for side panels, drawers, or embedded chat widgets where horizontal space is limited."}},
+          "Narrow sidebar chat in a constrained container that triggers compact density. Use for side panels, drawers, or embedded chat widgets where horizontal space is limited.",
+      },
+    },
     visualDelta: {
-      images: [
-        "/visual-baselines/ai/layout/panel-view-chromium.png",
-      ],
+      images: ["/visual-baselines/ai/layout/panel-view-chromium.png"],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -140,14 +145,13 @@
   name="Empty conversation"
   parameters={{
     visualDelta: {
-      images: [
-        "/visual-baselines/ai/layout/empty-conversation-chromium.png",
-      ],
+      images: ["/visual-baselines/ai/layout/empty-conversation-chromium.png"],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -172,8 +176,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
   tags={["visual-approved"]}
 >
   {#snippet template()}

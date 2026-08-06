@@ -67,7 +67,7 @@ function associatedWithExpected(
 ): boolean {
   return expectedFiles.some((expected) => {
     if (file === expected) return true;
-    const suffix = "-chromium-darwin.png";
+    const suffix = "-chromium.png";
     if (!expected.endsWith(suffix)) return false;
     const prefix = expected.slice(0, -suffix.length);
     return file.startsWith(`${prefix}--`) && file.endsWith(suffix);

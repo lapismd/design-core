@@ -10,7 +10,11 @@
       docs: {
         description: {
           component:
-            "Stacked expandable sections for FAQs and grouped details."}}}});
+            "Stacked expandable sections for FAQs and grouped details.",
+        },
+      },
+    },
+  });
 </script>
 
 <Story
@@ -28,8 +32,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <Accordion.Root type="single" class="max-w-md">

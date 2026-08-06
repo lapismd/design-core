@@ -11,7 +11,11 @@
       docs: {
         description: {
           component:
-            "Show and hide secondary content without leaving the page."}}}});
+            "Show and hide secondary content without leaving the page.",
+        },
+      },
+    },
+  });
 </script>
 
 <script lang="ts">
@@ -27,9 +31,16 @@
     await expect(canvas.getByText("Hidden until expanded")).toBeVisible();
   }}
   tags={["visual-approved"]}
-
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/collapsible/expands-details-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: [
+        "/visual-baselines/shadcn/collapsible/expands-details-chromium.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
   }}
 >
   {#snippet template()}

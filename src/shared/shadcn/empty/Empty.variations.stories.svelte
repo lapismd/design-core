@@ -9,7 +9,8 @@
 
   const { Story } = defineMeta({
     title: "Shadcn/Feedback/Empty",
-    component: Empty.Empty});
+    component: Empty.Empty,
+  });
 </script>
 
 <Story
@@ -17,13 +18,22 @@
   exportName="Preview"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/empty/preview-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: ["/visual-baselines/shadcn/empty/preview-chromium.png"],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.Preview,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">
@@ -37,16 +47,26 @@
   exportName="Outline"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/empty/outline-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: ["/visual-baselines/shadcn/empty/outline-chromium.png"],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
     a11y: { test: "todo" },
     docs: {
       description: {
         story:
-          "Use the `border` utility class to create an outline empty state."},
+          "Use the `border` utility class to create an outline empty state.",
+      },
       source: {
         code: exampleSources.Outline,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">
@@ -60,16 +80,26 @@
   exportName="Background"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/empty/background-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: ["/visual-baselines/shadcn/empty/background-chromium.png"],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
     a11y: { test: "todo" },
     docs: {
       description: {
         story:
-          "Use the `bg-*` and `bg-gradient-*` utilities to add a background to the empty state."},
+          "Use the `bg-*` and `bg-gradient-*` utilities to add a background to the empty state.",
+      },
       source: {
         code: exampleSources.Background,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">

@@ -4,7 +4,8 @@
   import {
     createDefaultWorkspaceLayout,
     createWorkspaceTab,
-    createWorkspaceTabs} from "../core/layout.js";
+    createWorkspaceTabs,
+  } from "../core/layout.js";
   import type { WorkspaceLayoutChangeEvent } from "../core/types.js";
   import { WorkspaceShellController } from "../core/workspace-controller.svelte.js";
   import WorkspaceTabs from "./WorkspaceTabs.svelte";
@@ -18,7 +19,11 @@
       docs: {
         description: {
           component:
-            "Source-shaped top tabs with direct Bits UI tab/list/content structure, hidden-scrollbar overflow, controller-owned mutation, and registered drop targets."}}}});
+            "Source-shaped top tabs with direct Bits UI tab/list/content structure, hidden-scrollbar overflow, controller-owned mutation, and registered drop targets.",
+        },
+      },
+    },
+  });
 </script>
 
 <script lang="ts">
@@ -30,15 +35,18 @@
       createWorkspaceTab({
         id: "welcome",
         title: "Welcome.md",
-        icon: "book-open"}),
+        icon: "book-open",
+      }),
       createWorkspaceTab({
         id: "today",
         title: "Today.md",
-        icon: "calendar-days"}),
+        icon: "calendar-days",
+      }),
       createWorkspaceTab({
         id: "tasks",
         title: "Tasks.md",
-        icon: "list-checks"}),
+        icon: "list-checks",
+      }),
     ],
     { id: "story-tabs", activeItemId: "welcome" },
   );
@@ -47,7 +55,8 @@
   layout.active = {
     hostId: "root",
     paneId: tabs.id,
-    tabId: "welcome"};
+    tabId: "welcome",
+  };
   const controller = new WorkspaceShellController({
     layout,
     saveDebounceMs: 0,
@@ -57,7 +66,9 @@
       },
       async save(_layout, event: WorkspaceLayoutChangeEvent) {
         saveStatus = `Saved ${event.source}`;
-      }}});
+      },
+    },
+  });
   const liveTabs = $derived(
     controller.layout.main.kind === "tabs" ? controller.layout.main : tabs,
   );
@@ -67,7 +78,8 @@
       createWorkspaceTab({
         id: `constrained-${index}`,
         title: `Long document title ${index + 1}.md`,
-        icon: index % 2 === 0 ? "file-text" : "book-open"}),
+        icon: index % 2 === 0 ? "file-text" : "book-open",
+      }),
     ),
     { id: "constrained-tabs", activeItemId: "constrained-0" },
   );
@@ -76,9 +88,11 @@
   constrainedLayout.active = {
     hostId: "root",
     paneId: constrainedTabs.id,
-    tabId: "constrained-0"};
+    tabId: "constrained-0",
+  };
   const constrainedController = new WorkspaceShellController({
-    layout: constrainedLayout});
+    layout: constrainedLayout,
+  });
   const liveConstrainedTabs = $derived(
     constrainedController.layout.main.kind === "tabs"
       ? constrainedController.layout.main
@@ -138,8 +152,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <div class="ui-workspace-tabs-story-frame">
@@ -167,14 +182,13 @@
   }}
   parameters={{
     visualDelta: {
-      images: [
-        "/visual-baselines/workspace/tabs/overflow-menu-chromium.png",
-      ],
+      images: ["/visual-baselines/workspace/tabs/overflow-menu-chromium.png"],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <div class="ui-workspace-tabs-story-frame">
@@ -221,9 +235,16 @@
       close!.getBoundingClientRect().left,
     );
   }}
-
   parameters={{
-    visualDelta: {"images":["/visual-baselines/workspace/tabs/constrained-hidden-scrollbar-row-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/tabs/constrained-hidden-scrollbar-row-chromium.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
   }}
 >
   {#snippet template()}

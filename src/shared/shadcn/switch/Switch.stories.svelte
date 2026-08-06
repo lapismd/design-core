@@ -9,16 +9,28 @@
     parameters: {
       docs: {
         description: {
-          component: "UI-owned boolean switch for settings and form toggles."}}}});
+          component: "UI-owned boolean switch for settings and form toggles.",
+        },
+      },
+    },
+  });
 </script>
 
 <script lang="ts">
   let enabled = $state(true);
 </script>
 
-<Story name="Default" tags={["visual-state", "visual-approved"]}
+<Story
+  name="Default"
+  tags={["visual-state", "visual-approved"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/switch/default-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: ["/visual-baselines/shadcn/switch/default-chromium.png"],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
   }}
 >
   {#snippet template()}

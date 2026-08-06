@@ -17,12 +17,17 @@
     mobileMode: "never",
     initialConfiguration: {
       [FMODE_SETTING_IDS.alphabet]: "ab",
-      [FMODE_SETTING_IDS.invalidInputBehavior]: "flash"}});
+      [FMODE_SETTING_IDS.invalidInputBehavior]: "flash",
+    },
+  });
   const noTargetsApp = new AppShellController({
     plugins: [fModePlugin()],
     configuration: {
       values: {
-        [APP_SHELL_SETTING_IDS.mobileMode]: "never"}}});
+        [APP_SHELL_SETTING_IDS.mobileMode]: "never",
+      },
+    },
+  });
 
   async function openFMode(
     app: AppShellController,
@@ -49,7 +54,11 @@
       docs: {
         description: {
           component:
-            "Error and empty-target behavior for the optional F-Mode plugin. Invalid input runs inside the complete Workspace shell; the no-target fixture is intentionally isolated."}}}});
+            "Error and empty-target behavior for the optional F-Mode plugin. Invalid input runs inside the complete Workspace shell; the no-target fixture is intentionally isolated.",
+        },
+      },
+    },
+  });
 </script>
 
 <Story
@@ -68,9 +77,16 @@
       ).not.toBeNull(),
     );
   }}
-
   parameters={{
-    visualDelta: {"images":["/visual-baselines/workspace/plugins/f-mode/fmode-edge-cases/invalid-query-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/plugins/f-mode/fmode-edge-cases/invalid-query-chromium.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
   }}
 >
   {#snippet template()}
@@ -88,9 +104,16 @@
     await expect(canvas.getByText("No hint targets available")).toBeVisible();
     await expect(canvasElement.querySelector("[data-fmode-root]")).toBeNull();
   }}
-
   parameters={{
-    visualDelta: {"images":["/visual-baselines/workspace/plugins/f-mode/fmode-edge-cases/no-targets-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/plugins/f-mode/fmode-edge-cases/no-targets-chromium.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
   }}
 >
   {#snippet template()}

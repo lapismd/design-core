@@ -10,7 +10,8 @@
 
   const { Story } = defineMeta({
     title: "Shadcn/Overlays/Dropdown Menu",
-    component: DropdownMenu.DropdownMenu});
+    component: DropdownMenu.DropdownMenu,
+  });
 </script>
 
 <Story
@@ -23,7 +24,10 @@
       source: {
         code: exampleSources.Preview,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">
@@ -42,7 +46,10 @@
       source: {
         code: exampleSources.Checkboxes,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">
@@ -61,7 +68,10 @@
       source: {
         code: exampleSources.RadioGroup,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">
@@ -78,11 +88,15 @@
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "This example shows how to open a dialog from a dropdown menu."},
+        story: "This example shows how to open a dialog from a dropdown menu.",
+      },
       source: {
         code: exampleSources.Dialog,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">

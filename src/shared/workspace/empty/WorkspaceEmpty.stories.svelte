@@ -11,7 +11,11 @@
       docs: {
         description: {
           component:
-            "Source-aligned empty leaf and unresolved-view fallback rendered without shadcn or Tailwind primitives."}}}});
+            "Source-aligned empty leaf and unresolved-view fallback rendered without shadcn or Tailwind primitives.",
+        },
+      },
+    },
+  });
 </script>
 
 <script lang="ts">
@@ -22,19 +26,22 @@
       label: "Create new note (⌘ N)",
       onSelect: () => {
         result = "Create new note selected";
-      }},
+      },
+    },
     {
       id: "open",
       label: "Go to file (⌘ O)",
       onSelect: () => {
         result = "Go to file selected";
-      }},
+      },
+    },
     {
       id: "recent",
       label: "See recent files",
       onSelect: () => {
         result = "Recent files selected";
-      }},
+      },
+    },
   ];
 </script>
 
@@ -49,9 +56,16 @@
       "Create new note selected",
     );
   }}
-
   parameters={{
-    visualDelta: {"images":["/visual-baselines/workspace/empty/empty-leaf-actions-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/empty/empty-leaf-actions-chromium.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
   }}
 >
   {#snippet template()}
@@ -79,8 +93,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <div class="bg-background relative h-[28rem] min-h-0">
@@ -92,7 +107,8 @@
             label: "Close",
             onSelect: () => {
               result = "Missing view closed";
-            }},
+            },
+          },
         ]}
       />
     </div>

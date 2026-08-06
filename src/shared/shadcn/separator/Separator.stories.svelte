@@ -9,7 +9,11 @@
     parameters: {
       docs: {
         description: {
-          component: "Visual divider for grouping content."}}}});
+          component: "Visual divider for grouping content.",
+        },
+      },
+    },
+  });
 </script>
 
 <Story
@@ -19,9 +23,16 @@
     await expect(canvas.getByText("Below")).toBeVisible();
   }}
   tags={["visual-approved"]}
-
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/separator/horizontal-divider-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: [
+        "/visual-baselines/shadcn/separator/horizontal-divider-chromium.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
   }}
 >
   {#snippet template()}

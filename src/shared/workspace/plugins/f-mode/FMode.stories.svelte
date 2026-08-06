@@ -2,6 +2,7 @@
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, fireEvent, waitFor } from "storybook/test";
   import type { AppShellController } from "../../core/app-shell-controller.svelte.js";
+  import { APP_SHELL_SETTING_IDS } from "../../core/built-in-settings.svelte.js";
   import ReusableFrameworkDemo from "../../demo/ReusableFrameworkDemo.svelte";
   import { createFrameworkDemo } from "../../demo/framework-demo.js";
   import { FMODE_SETTING_IDS } from "./settings.js";
@@ -15,18 +16,25 @@
       includeFMode: true,
       includeNotifications: false,
       mobileMode: "never",
-      initialConfiguration: values});
+      initialConfiguration: {
+        [APP_SHELL_SETTING_IDS.mobileMode]: "never",
+        ...values,
+      },
+    });
   }
 
   const idle = createFModeDemo();
   const active = createFModeDemo();
   const activation = createFModeDemo();
   const partial = createFModeDemo({
-    [FMODE_SETTING_IDS.alphabet]: "ab"});
+    [FMODE_SETTING_IDS.alphabet]: "ab",
+  });
   const filtered = createFModeDemo({
-    [FMODE_SETTING_IDS.enabledSurfaces]: ["tabs"]});
+    [FMODE_SETTING_IDS.enabledSurfaces]: ["tabs"],
+  });
   const minimal = createFModeDemo({
-    [FMODE_SETTING_IDS.hudMode]: "minimal"});
+    [FMODE_SETTING_IDS.hudMode]: "minimal",
+  });
 
   async function openFMode(
     app: AppShellController,
@@ -72,7 +80,11 @@
       docs: {
         description: {
           component:
-            "Optional keyboard-hint plugin exercised through the complete reusable Workspace shell, including tabs, view headers, sidebars, ribbon, and status targets."}}}});
+            "Optional keyboard-hint plugin exercised through the complete reusable Workspace shell, including tabs, view headers, sidebars, ribbon, and status targets.",
+        },
+      },
+    },
+  });
 </script>
 
 <Story
@@ -86,8 +98,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <div class="ui-workspace-fmode-story">
@@ -108,9 +121,16 @@
       canvasElement.querySelector(".ui-workspace-fmode__summary"),
     ).toHaveTextContent(`${hints.length} targets`);
   }}
-
   parameters={{
-    visualDelta: {"images":["/visual-baselines/workspace/plugins/f-mode/active-hints-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/plugins/f-mode/active-hints-chromium.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
   }}
 >
   {#snippet template()}
@@ -147,8 +167,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <div class="ui-workspace-fmode-story">
@@ -188,8 +209,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <div class="ui-workspace-fmode-story">
@@ -220,8 +242,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <div class="ui-workspace-fmode-story">
@@ -248,8 +271,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <div class="ui-workspace-fmode-story">

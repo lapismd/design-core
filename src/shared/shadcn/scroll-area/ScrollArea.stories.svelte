@@ -9,7 +9,11 @@
     parameters: {
       docs: {
         description: {
-          component: "Custom scrollable region with styled scrollbars."}}}});
+          component: "Custom scrollable region with styled scrollbars.",
+        },
+      },
+    },
+  });
 
   const items = Array.from({ length: 8 }, (_, i) => `Item ${i + 1}`);
 </script>
@@ -20,9 +24,16 @@
     await expect(canvas.getByRole("link", { name: "Item 1" })).toBeVisible();
   }}
   tags={["visual-approved"]}
-
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/scroll-area/scrollable-list-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: [
+        "/visual-baselines/shadcn/scroll-area/scrollable-list-chromium.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
   }}
 >
   {#snippet template()}

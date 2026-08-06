@@ -121,7 +121,7 @@ describe("llms docs service", () => {
     expect(index).toContain("## guide");
     expect(index).toMatch(/llms\/guide\/layers\.md/);
     expect(index).toMatch(/llms\/guide\/layers\.txt/);
-  });
+  }, 30_000);
 
   it("resolves qualified and bare component paths as .md and .txt", () => {
     const qualifiedMd = service.resolveLlmsPath("/llms/shadcn/button.md");

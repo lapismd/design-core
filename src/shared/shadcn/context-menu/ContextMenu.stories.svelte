@@ -23,7 +23,9 @@
     const trigger = canvas.getByText("Right click here");
     await userEvent.pointer({ keys: "[MouseRight]", target: trigger });
     const body = canvasElement.ownerDocument.body;
-    await expect(body.querySelector('[data-slot="context-menu-content"]')).toBeTruthy();
+    await expect(
+      body.querySelector('[data-slot="context-menu-content"]'),
+    ).toBeTruthy();
   }}
 >
   {#snippet template()}

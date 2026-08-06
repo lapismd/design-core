@@ -12,7 +12,11 @@
       docs: {
         description: {
           component:
-            "Confirmation dialog for destructive or irreversible actions."}}}});
+            "Confirmation dialog for destructive or irreversible actions.",
+        },
+      },
+    },
+  });
 
   /** Clear portals / scroll-lock left by a prior open overlay story. */
   async function dismissOverlays() {
@@ -56,11 +60,17 @@
     );
     await expect(canvas.getByRole("status")).toHaveTextContent("confirmed");
   }}
-
   tags={["visual-approved"]}
-
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/alert-dialog/confirms-a-destructive-action-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: [
+        "/visual-baselines/shadcn/alert-dialog/confirms-a-destructive-action-chromium.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
   }}
 >
   {#snippet template()}
@@ -102,12 +112,21 @@
     const dialog = await within(document.body).findByRole("alertdialog");
     await expect(
       within(dialog).getByRole("heading", {
-        name: "Are you absolutely sure?"}),
+        name: "Are you absolutely sure?",
+      }),
     ).toBeVisible();
   }}
-
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/alert-dialog/open-alert-dialog-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"}}}
+    visualDelta: {
+      images: [
+        "/visual-baselines/shadcn/alert-dialog/open-alert-dialog-chromium.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">

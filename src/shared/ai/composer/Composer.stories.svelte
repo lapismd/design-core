@@ -19,7 +19,11 @@
       docs: {
         description: {
           component:
-            "Layout shell for a chat composer. Arranges named slots (drawer, header, input, footer, send) with page-radius container, hover/focus shadows, and concentric inner radius for child elements."}}}});
+            "Layout shell for a chat composer. Arranges named slots (drawer, header, input, footer, send) with page-radius container, hover/focus shadows, and concentric inner radius for child elements.",
+        },
+      },
+    },
+  });
 </script>
 
 <script lang="ts">
@@ -55,16 +59,17 @@
     docs: {
       description: {
         story:
-          "Pinned ASTRYX reference fixture for anatomy comparison. See AI/Overview and ASTRYX_AI_VISUAL_PARITY.md."}},
+          "Pinned ASTRYX reference fixture for anatomy comparison. See AI/Overview and ASTRYX_AI_VISUAL_PARITY.md.",
+      },
+    },
     visualDelta: {
-      images: [
-        "/visual-baselines/ai/composer/astryx-showcase-chromium.png",
-      ],
+      images: ["/visual-baselines/ai/composer/astryx-showcase-chromium.png"],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -81,16 +86,17 @@
     docs: {
       description: {
         story:
-          "Chat composer with removable file tokens in a collapsible drawer. Use when users can attach files or context to their message."}},
+          "Chat composer with removable file tokens in a collapsible drawer. Use when users can attach files or context to their message.",
+      },
+    },
     visualDelta: {
-      images: [
-        "/visual-baselines/ai/composer/attachments-chromium.png",
-      ],
+      images: ["/visual-baselines/ai/composer/attachments-chromium.png"],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -118,14 +124,17 @@
     docs: {
       description: {
         story:
-          'The composer is raised by default (elevation="low"). Set elevation="none" to flatten it; it then draws a border with the same rest / hover / focus treatment as a text input.'}},
+          'The composer is raised by default (elevation="low"). Set elevation="none" to flatten it; it then draws a border with the same rest / hover / focus treatment as a text input.',
+      },
+    },
     visualDelta: {
       images: ["/visual-baselines/ai/composer/flat-chromium.png"],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -152,16 +161,17 @@
     docs: {
       description: {
         story:
-          "Chat composer with dropdown menus for a model selector and settings in the footer, and a mic button in the send actions slot."}},
+          "Chat composer with dropdown menus for a model selector and settings in the footer, and a mic button in the send actions slot.",
+      },
+    },
     visualDelta: {
-      images: [
-        "/visual-baselines/ai/composer/footer-actions-chromium.png",
-      ],
+      images: ["/visual-baselines/ai/composer/footer-actions-chromium.png"],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -186,16 +196,17 @@
     docs: {
       description: {
         story:
-          "Chat composer with all slots populated: collapsible attachment drawer, header actions, context progress bar, footer dropdown menus, and mic button. Shows the maximum composer configuration."}},
+          "Chat composer with all slots populated: collapsible attachment drawer, header actions, context progress bar, footer dropdown menus, and mic button. Shows the maximum composer configuration.",
+      },
+    },
     visualDelta: {
-      images: [
-        "/visual-baselines/ai/composer/full-featured-chromium.png",
-      ],
+      images: ["/visual-baselines/ai/composer/full-featured-chromium.png"],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -256,14 +267,17 @@
     docs: {
       description: {
         story:
-          "Minimal chat composer with a placeholder and submit handler. The simplest way to drop a message input into a page."}},
+          "Minimal chat composer with a placeholder and submit handler. The simplest way to drop a message input into a page.",
+      },
+    },
     visualDelta: {
       images: ["/visual-baselines/ai/composer/simple-chromium.png"],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -280,16 +294,17 @@
     docs: {
       description: {
         story:
-          "Chat composer with streaming state and a stop button. Use when the assistant is generating a response and the user can cancel."}},
+          "Chat composer with streaming state and a stop button. Use when the assistant is generating a response and the user can cancel.",
+      },
+    },
     visualDelta: {
-      images: [
-        "/visual-baselines/ai/composer/streaming-chromium.png",
-      ],
+      images: ["/visual-baselines/ai/composer/streaming-chromium.png"],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -321,16 +336,17 @@
     docs: {
       description: {
         story:
-          "Chat composer with error and warning status messages. Status can appear above or below the composer to surface validation or system feedback."}},
+          "Chat composer with error and warning status messages. Status can appear above or below the composer to surface validation or system feedback.",
+      },
+    },
     visualDelta: {
-      images: [
-        "/visual-baselines/ai/composer/validation-chromium.png",
-      ],
+      images: ["/visual-baselines/ai/composer/validation-chromium.png"],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -341,7 +357,8 @@
           statusPosition="top"
           status={{
             type: "error",
-            message: "Failed to send message. Please try again."}}
+            message: "Failed to send message. Please try again.",
+          }}
           onSubmit={() => {}}
         />
       </section>
@@ -350,7 +367,8 @@
         <Composer
           status={{
             type: "warning",
-            message: "Context window is 90% full."}}
+            message: "Context window is 90% full.",
+          }}
           onSubmit={() => {}}
         />
       </section>
@@ -376,8 +394,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
   tags={["visual-approved"]}
 >
   {#snippet template()}

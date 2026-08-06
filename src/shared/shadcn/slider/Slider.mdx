@@ -1,4 +1,11 @@
-import { Meta, Canvas, Controls, Primary, Source, Markdown } from "@storybook/addon-docs/blocks";
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+  Markdown,
+} from "@storybook/addon-docs/blocks";
 import * as SliderStories from "./Slider.stories.svelte";
 import docsBody from "./slider.docs-body.md?raw";
 
@@ -16,7 +23,12 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 
 ## Usage
 
-<Source language="html" code={"<script lang=\"ts\">\n  import { Slider } from \"@lapismd/design-core/shadcn/slider\";\n  let value = $state(33);\n</script>\n\n<Slider type=\"single\" bind:value max={100} step={1} />"} />
+<Source
+  language="html"
+  code={
+    '<script lang="ts">\n  import { Slider } from "@lapismd/design-core/shadcn/slider";\n  let value = $state(33);\n</script>\n\n<Slider type="single" bind:value max={100} step={1} />'
+  }
+/>
 
 <Primary />
 

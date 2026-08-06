@@ -633,11 +633,7 @@ function collectAi(packageRoot: string): CatalogEntry[] {
       id: `experimental-${id}`,
       dir,
       importPath: "@lapismd/design-core/ai/experimental",
-      docsCandidates: mdx.length
-        ? mdx
-        : existsSync(overview)
-          ? [overview]
-          : [],
+      docsCandidates: mdx.length ? mdx : existsSync(overview) ? [overview] : [],
       storyPaths: listFiles(dir, ".stories.svelte"),
     };
   });
@@ -653,9 +649,7 @@ function collectAi(packageRoot: string): CatalogEntry[] {
     });
   }
 
-  return [...stable, ...experimental].sort((a, b) =>
-    a.id.localeCompare(b.id),
-  );
+  return [...stable, ...experimental].sort((a, b) => a.id.localeCompare(b.id));
 }
 
 export function collectCatalog(packageRoot: string): CatalogEntry[] {

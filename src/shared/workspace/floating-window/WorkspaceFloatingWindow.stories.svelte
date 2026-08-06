@@ -3,7 +3,8 @@
   import { expect, userEvent } from "storybook/test";
   import {
     createDefaultWorkspaceLayout,
-    createWorkspaceTab} from "../core/layout.js";
+    createWorkspaceTab,
+  } from "../core/layout.js";
   import { WorkspaceShellController } from "../core/workspace-controller.svelte.js";
   import { WorkspaceDragState } from "../drag/workspace-drag.svelte.js";
   import ExampleWorkspaceView from "../view-host/ExampleWorkspaceView.svelte";
@@ -18,25 +19,32 @@
       docs: {
         description: {
           component:
-            "Controller-backed floating window with focus, move, resize, collapse, minimize, maximize, close, and redock controls."}}}});
+            "Controller-backed floating window with focus, move, resize, collapse, minimize, maximize, close, and redock controls.",
+        },
+      },
+    },
+  });
 </script>
 
 <script lang="ts">
   function createFixture(state: "normal" | "minimized" = "normal") {
     const controller = new WorkspaceShellController({
-      layout: createDefaultWorkspaceLayout()});
+      layout: createDefaultWorkspaceLayout(),
+    });
     controller.registry.register({
       kind: "svelte",
       type: "floating-example",
       component: ExampleWorkspaceView,
-      showHeader: false});
+      showHeader: false,
+    });
     const openedWindow = controller.openWindow(
       createWorkspaceTab({
         id: `floating-${state}`,
         title:
           state === "normal" ? "Floating reference" : "Minimized reference",
         icon: "panel-top",
-        view: { type: "floating-example" }}),
+        view: { type: "floating-example" },
+      }),
       "floating",
       { x: 72, y: 48, width: 520, height: 360 },
     )!;
@@ -47,7 +55,8 @@
     return {
       controller,
       workspaceWindow,
-      drag: new WorkspaceDragState(controller)};
+      drag: new WorkspaceDragState(controller),
+    };
   }
 
   const normal = createFixture();
@@ -90,8 +99,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <div
@@ -119,8 +129,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <div class="ui-workspace-floating-window-story-minimized">

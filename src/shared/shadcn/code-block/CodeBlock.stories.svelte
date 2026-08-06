@@ -10,7 +10,11 @@
       docs: {
         description: {
           component:
-            "Fenced code block with syntax highlighting, optional line numbers, copy, collapse, and syntax themes. Prefer over UI Forms Code Highlighter when you have a language string rather than a Lezer parser. See ADD_CODE_BLOCK.md."}}}});
+            "Fenced code block with syntax highlighting, optional line numbers, copy, collapse, and syntax themes. Prefer over UI Forms Code Highlighter when you have a language string rather than a Lezer parser. See ADD_CODE_BLOCK.md.",
+        },
+      },
+    },
+  });
 
   const sampleTsx = `import { Button } from '@lapismd/design-core/shadcn/button';
 
@@ -88,7 +92,9 @@ export function App() {
       value: {
         writeText: async () => {
           /* Storybook browser may deny clipboard; stub success. */
-        }}});
+        },
+      },
+    });
     const button = canvas.getByRole("button", { name: "Copy code" });
     await ue.click(button);
     await waitFor(() =>

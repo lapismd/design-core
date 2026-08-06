@@ -18,7 +18,8 @@
 
   const { Story } = defineMeta({
     title: "Shadcn/Layout/Sidebar",
-    component: Sidebar.Provider});
+    component: Sidebar.Provider,
+  });
 </script>
 
 <Story
@@ -33,17 +34,21 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
+      placement: "right",
     },
     a11y: { test: "todo" },
     docs: {
       description: {
         story:
-          "Let's start with the most basic sidebar. A collapsible sidebar with a menu.\n\nAdd a `Sidebar.Provider` and `Sidebar.Trigger` at the root of your application.\n\nCreate a new sidebar component at `src/lib/components/app-sidebar.svelte`.\n\nNow, let's add a `Sidebar.Menu` to the sidebar.\n\nWe'll use the `Sidebar.Menu` component in a `Sidebar.Group`.\n\nYou've created your first sidebar."},
+          "Let's start with the most basic sidebar. A collapsible sidebar with a menu.\n\nAdd a `Sidebar.Provider` and `Sidebar.Trigger` at the root of your application.\n\nCreate a new sidebar component at `src/lib/components/app-sidebar.svelte`.\n\nNow, let's add a `Sidebar.Menu` to the sidebar.\n\nWe'll use the `Sidebar.Menu` component in a `Sidebar.Group`.\n\nYou've created your first sidebar.",
+      },
       source: {
         code: exampleSources.YourFirstSidebar,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="h-[480px] p-0">
@@ -58,23 +63,25 @@
   tags={["upstream-example", "visual-approved"]}
   parameters={{
     visualDelta: {
-      images: [
-        "/visual-baselines/shadcn/sidebar/sidebar-header-chromium.png",
-      ],
+      images: ["/visual-baselines/shadcn/sidebar/sidebar-header-chromium.png"],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
+      placement: "right",
     },
     a11y: { test: "todo" },
     docs: {
       description: {
         story:
-          "Use the `Sidebar.Header` component to add a sticky header to the sidebar.\n\nThe following example adds a `DropdownMenu` to the `Sidebar.Header`."},
+          "Use the `Sidebar.Header` component to add a sticky header to the sidebar.\n\nThe following example adds a `DropdownMenu` to the `Sidebar.Header`.",
+      },
       source: {
         code: exampleSources.SidebarHeader,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="h-[480px] p-0">
@@ -89,23 +96,25 @@
   tags={["upstream-example", "visual-approved"]}
   parameters={{
     visualDelta: {
-      images: [
-        "/visual-baselines/shadcn/sidebar/sidebar-footer-chromium.png",
-      ],
+      images: ["/visual-baselines/shadcn/sidebar/sidebar-footer-chromium.png"],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
+      placement: "right",
     },
     a11y: { test: "todo" },
     docs: {
       description: {
         story:
-          "Use the `Sidebar.Footer` component to add a sticky footer to the sidebar.\n\nThe following example adds a `DropdownMenu` to the `Sidebar.Footer`."},
+          "Use the `Sidebar.Footer` component to add a sticky footer to the sidebar.\n\nThe following example adds a `DropdownMenu` to the `Sidebar.Footer`.",
+      },
       source: {
         code: exampleSources.SidebarFooter,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="h-[480px] p-0">
@@ -120,23 +129,25 @@
   tags={["upstream-example", "visual-approved"]}
   parameters={{
     visualDelta: {
-      images: [
-        "/visual-baselines/shadcn/sidebar/sidebar-group-chromium.png",
-      ],
+      images: ["/visual-baselines/shadcn/sidebar/sidebar-group-chromium.png"],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
+      placement: "right",
     },
     a11y: { test: "todo" },
     docs: {
       description: {
         story:
-          "Use the `Sidebar.Group` component to create a section within the sidebar.\n\nA `Sidebar.Group` has a `Sidebar.GroupLabel`, a `Sidebar.GroupContent` and an optional `Sidebar.GroupAction`."},
+          "Use the `Sidebar.Group` component to create a section within the sidebar.\n\nA `Sidebar.Group` has a `Sidebar.GroupLabel`, a `Sidebar.GroupContent` and an optional `Sidebar.GroupAction`.",
+      },
       source: {
         code: exampleSources.SidebarGroup,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="h-[480px] p-0">
@@ -157,17 +168,21 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
+      placement: "right",
     },
     a11y: { test: "todo" },
     docs: {
       description: {
         story:
-          "To make a `Sidebar.Group` collapsible, wrap it in a `Collapsible`."},
+          "To make a `Sidebar.Group` collapsible, wrap it in a `Collapsible`.",
+      },
       source: {
         code: exampleSources.CollapsibleSidebarGroup,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="h-[480px] p-0">
@@ -188,17 +203,21 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
+      placement: "right",
     },
     a11y: { test: "todo" },
     docs: {
       description: {
         story:
-          "Use the `Sidebar.GroupAction` component to add an action to a `Sidebar.Group`."},
+          "Use the `Sidebar.GroupAction` component to add an action to a `Sidebar.Group`.",
+      },
       source: {
         code: exampleSources.SidebarGroupaction,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="h-[480px] p-0">
@@ -213,23 +232,25 @@
   tags={["upstream-example", "visual-approved"]}
   parameters={{
     visualDelta: {
-      images: [
-        "/visual-baselines/shadcn/sidebar/sidebar-menu-chromium.png",
-      ],
+      images: ["/visual-baselines/shadcn/sidebar/sidebar-menu-chromium.png"],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
+      placement: "right",
     },
     a11y: { test: "todo" },
     docs: {
       description: {
         story:
-          "The `Sidebar.Menu` component is used for building a menu within a `Sidebar.Group`.\n\nA `Sidebar.Menu` is composed of `Sidebar.MenuItem`, `Sidebar.MenuButton`, `Sidebar.MenuAction`, and `Sidebar.MenuSub` components.\n\nHere's an example of a `Sidebar.Menu` component rendering a list of projects."},
+          "The `Sidebar.Menu` component is used for building a menu within a `Sidebar.Group`.\n\nA `Sidebar.Menu` is composed of `Sidebar.MenuItem`, `Sidebar.MenuButton`, `Sidebar.MenuAction`, and `Sidebar.MenuSub` components.\n\nHere's an example of a `Sidebar.Menu` component rendering a list of projects.",
+      },
       source: {
         code: exampleSources.SidebarMenu,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="h-[480px] p-0">
@@ -244,23 +265,25 @@
   tags={["upstream-example", "visual-approved"]}
   parameters={{
     visualDelta: {
-      images: [
-        "/visual-baselines/shadcn/sidebar/dropdownmenu-chromium.png",
-      ],
+      images: ["/visual-baselines/shadcn/sidebar/dropdownmenu-chromium.png"],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
+      placement: "right",
     },
     a11y: { test: "todo" },
     docs: {
       description: {
         story:
-          "Here's an example of a `Sidebar.MenuAction` that renders a `DropdownMenu`."},
+          "Here's an example of a `Sidebar.MenuAction` that renders a `DropdownMenu`.",
+      },
       source: {
         code: exampleSources.Dropdownmenu,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="h-[480px] p-0">
@@ -275,23 +298,25 @@
   tags={["upstream-example", "visual-approved"]}
   parameters={{
     visualDelta: {
-      images: [
-        "/visual-baselines/shadcn/sidebar/sidebar-menusub-chromium.png",
-      ],
+      images: ["/visual-baselines/shadcn/sidebar/sidebar-menusub-chromium.png"],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
+      placement: "right",
     },
     a11y: { test: "todo" },
     docs: {
       description: {
         story:
-          "The `Sidebar.MenuSub` component is used to render a submenu within a `Sidebar.Menu`.\n\nUse `Sidebar.MenuSubItem` and `Sidebar.MenuSubButton` to render a submenu item."},
+          "The `Sidebar.MenuSub` component is used to render a submenu within a `Sidebar.Menu`.\n\nUse `Sidebar.MenuSubItem` and `Sidebar.MenuSubButton` to render a submenu item.",
+      },
       source: {
         code: exampleSources.SidebarMenusub,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="h-[480px] p-0">
@@ -312,17 +337,21 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
+      placement: "right",
     },
     a11y: { test: "todo" },
     docs: {
       description: {
         story:
-          "To make a `Sidebar.Menu` collapsible, wrap it and the `Sidebar.MenuSub` components in a `Collapsible`."},
+          "To make a `Sidebar.Menu` collapsible, wrap it and the `Sidebar.MenuSub` components in a `Collapsible`.",
+      },
       source: {
         code: exampleSources.CollapsibleSidebarMenu,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="h-[480px] p-0">
@@ -343,17 +372,21 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
+      placement: "right",
     },
     a11y: { test: "todo" },
     docs: {
       description: {
         story:
-          "The `Sidebar.MenuBadge` component is used to render a badge within a `Sidebar.MenuItem`."},
+          "The `Sidebar.MenuBadge` component is used to render a badge within a `Sidebar.MenuItem`.",
+      },
       source: {
         code: exampleSources.SidebarMenubadge,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="h-[480px] p-0">
@@ -374,17 +407,21 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
+      placement: "right",
     },
     a11y: { test: "todo" },
     docs: {
       description: {
         story:
-          "Use Svelte's [Function Binding](https://svelte.dev/docs/svelte/bind#Function-bindings) to control the sidebar state."},
+          "Use Svelte's [Function Binding](https://svelte.dev/docs/svelte/bind#Function-bindings) to control the sidebar state.",
+      },
       source: {
         code: exampleSources.ControlledSidebar,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="h-[480px] p-0">

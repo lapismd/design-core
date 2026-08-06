@@ -18,7 +18,8 @@
 
   const { Story } = defineMeta({
     title: "Shadcn/Actions/Button",
-    component: Button.Button});
+    component: Button.Button,
+  });
 </script>
 
 <Story
@@ -26,16 +27,26 @@
   exportName="Preview"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/button/preview-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: ["/visual-baselines/shadcn/button/preview-chromium.png"],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
     a11y: { test: "todo" },
     docs: {
       description: {
         story:
-          "**Updated:** We have updated the button component to add new sizes: `icon-sm` and `icon-lg`. See the\n[changelog](/docs/components/button#changelog) for more details. Follow the\ninstructions to update your project."},
+          "**Updated:** We have updated the button component to add new sizes: `icon-sm` and `icon-lg`. See the\n[changelog](/docs/components/button#changelog) for more details. Follow the\ninstructions to update your project.",
+      },
       source: {
         code: exampleSources.Preview,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">
@@ -49,13 +60,22 @@
   exportName="Size"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/button/size-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: ["/visual-baselines/shadcn/button/size-chromium.png"],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.Size,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">
@@ -69,13 +89,22 @@
   exportName="Default"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/button/default-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: ["/visual-baselines/shadcn/button/default-chromium.png"],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.Default,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">
@@ -89,13 +118,22 @@
   exportName="Outline"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/button/outline-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: ["/visual-baselines/shadcn/button/outline-chromium.png"],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.Outline,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">
@@ -109,13 +147,22 @@
   exportName="Secondary"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/button/secondary-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: ["/visual-baselines/shadcn/button/secondary-chromium.png"],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.Secondary,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">
@@ -129,13 +176,22 @@
   exportName="Ghost"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/button/ghost-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: ["/visual-baselines/shadcn/button/ghost-chromium.png"],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.Ghost,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">
@@ -149,13 +205,22 @@
   exportName="Destructive"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/button/destructive-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: ["/visual-baselines/shadcn/button/destructive-chromium.png"],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.Destructive,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">
@@ -169,13 +234,22 @@
   exportName="Link"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/button/link-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: ["/visual-baselines/shadcn/button/link-chromium.png"],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.Link,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">
@@ -189,13 +263,22 @@
   exportName="Icon"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/button/icon-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: ["/visual-baselines/shadcn/button/icon-chromium.png"],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.Icon,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">
@@ -209,16 +292,26 @@
   exportName="WithIcon"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/button/with-icon-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: ["/visual-baselines/shadcn/button/with-icon-chromium.png"],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
     a11y: { test: "todo" },
     docs: {
       description: {
         story:
-          "The spacing between the icon and the text is automatically adjusted based on the size of the button. You do not need any margin on the icon."},
+          "The spacing between the icon and the text is automatically adjusted based on the size of the button. You do not need any margin on the icon.",
+      },
       source: {
         code: exampleSources.WithIcon,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">
@@ -232,15 +325,25 @@
   exportName="Rounded"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/button/rounded-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: ["/visual-baselines/shadcn/button/rounded-chromium.png"],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
     a11y: { test: "todo" },
     docs: {
       description: {
-        story: "Use the `rounded-full` class to make the button rounded."},
+        story: "Use the `rounded-full` class to make the button rounded.",
+      },
       source: {
         code: exampleSources.Rounded,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">
@@ -254,13 +357,22 @@
   exportName="Spinner"
   tags={["upstream-example", "visual-approved"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/button/spinner-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: ["/visual-baselines/shadcn/button/spinner-chromium.png"],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.Spinner,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">

@@ -10,7 +10,8 @@
   function createPaletteApp(): AppShellController {
     return new AppShellController({
       configuration: {
-        values: { [APP_SHELL_SETTING_IDS.mobileMode]: "never" }},
+        values: { [APP_SHELL_SETTING_IDS.mobileMode]: "never" },
+      },
       commands: [
         {
           id: "workspace:split-right",
@@ -18,14 +19,17 @@
           category: "Workspace",
           icon: "columns-2",
           hotkeys: [{ modifiers: ["Mod"], key: "\\" }],
-          callback: () => true},
+          callback: () => true,
+        },
         {
           id: "workspace:toggle-sidebar",
           title: "Toggle right sidebar",
           category: "Workspace",
           icon: "panel-right",
-          callback: () => true},
-      ]});
+          callback: () => true,
+        },
+      ],
+    });
   }
 
   const searchApp = createPaletteApp();
@@ -35,7 +39,8 @@
   const { Story } = defineMeta({
     title: "Workspace/Components/Command Palette",
     component: WorkspaceCommandPalette,
-    parameters: { layout: "fullscreen" }});
+    parameters: { layout: "fullscreen" },
+  });
 </script>
 
 <Story
@@ -56,8 +61,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <div class="ui-workspace-overlay-story">
@@ -79,7 +85,8 @@
     await waitFor(() => expect(searchApp.ready).toBe(true));
     searchApp.commands.openPalette();
     const input = await canvas.findByRole("textbox", {
-      name: "Search commands"});
+      name: "Search commands",
+    });
     await userEvent.type(input, "split");
     await expect(canvas.getByText("Split pane right")).toBeVisible();
     await userEvent.click(canvas.getByText("Split pane right"));
@@ -97,8 +104,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <div class="ui-workspace-overlay-story">
@@ -120,7 +128,8 @@
     await waitFor(() => expect(emptyApp.ready).toBe(true));
     emptyApp.commands.openPalette();
     const input = await canvas.findByRole("textbox", {
-      name: "Search commands"});
+      name: "Search commands",
+    });
     await userEvent.clear(input);
     await userEvent.type(input, "No matching command");
     await expect(canvas.getByText("No results found.")).toBeVisible();
@@ -133,8 +142,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <div class="ui-workspace-overlay-story">

@@ -7,7 +7,8 @@
 
   const { Story } = defineMeta({
     title: "Shadcn/Overlays/Alert Dialog",
-    component: AlertDialog.AlertDialog});
+    component: AlertDialog.AlertDialog,
+  });
 </script>
 
 <Story
@@ -15,13 +16,21 @@
   exportName="Preview"
   tags={["upstream-example", "skip-visual"]}
   parameters={{
-    visualDelta: {"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.Preview,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">

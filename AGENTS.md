@@ -83,13 +83,13 @@ compound family with a single primary title). Do not dump multiple
 independently titled catalog components into one shared folder. Do not split
 multipart compound parts into one folder each.
 
-| Layer | Layout | Rule |
-| ----- | ------ | ---- |
-| Shadcn | `src/shared/shadcn/<family>/` | One folder per **family**; keep multipart parts together (`dialog-content.svelte`, …). |
-| Forms | `src/shared/forms/<family>/` | One folder per **catalog family/component**. Supporting renderers may colocate with their host. |
-| Filter | `src/shared/filter/<family>/` | One folder per public catalog surface; private helpers stay colocated. |
-| AI | `src/shared/ai/<component>/` | One folder per catalog component (`experimental/<component>/` for experimental). |
-| Shell | `src/shared/shell/app-shell/` | One **compound** family; guidance, tokens, and the package barrel stay at `shell/` layer root. |
+| Layer     | Layout                           | Rule                                                                                                 |
+| --------- | -------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| Shadcn    | `src/shared/shadcn/<family>/`    | One folder per **family**; keep multipart parts together (`dialog-content.svelte`, …).               |
+| Forms     | `src/shared/forms/<family>/`     | One folder per **catalog family/component**. Supporting renderers may colocate with their host.      |
+| Filter    | `src/shared/filter/<family>/`    | One folder per public catalog surface; private helpers stay colocated.                               |
+| AI        | `src/shared/ai/<component>/`     | One folder per catalog component (`experimental/<component>/` for experimental).                     |
+| Shell     | `src/shared/shell/app-shell/`    | One **compound** family; guidance, tokens, and the package barrel stay at `shell/` layer root.       |
 | Workspace | `src/shared/workspace/<family>/` | One folder per **visual family**; large compounds are intentional (same rationale as shadcn Dialog). |
 
 When adding a new independently titled story group (for example a second

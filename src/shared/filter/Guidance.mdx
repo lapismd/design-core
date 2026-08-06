@@ -15,14 +15,14 @@ Offline agent summary: `pnpm ui guide layers`. Catalog components:
 
 ## Layer boundary
 
-| Need                                    | Package                                         |
-| --------------------------------------- | ----------------------------------------------- |
-| Structured multi-field filters, no QL   | `PowerSearch` (`@lapismd/design-core/filter`)          |
-| Search pill, clear chrome, filter slots | `SearchFilterBar` (`@lapismd/design-core/filter`)      |
-| Parse / highlight filter queries        | `parseFilterQuery`, `filterQuery()`             |
-| Field → operator → value completions    | Host `SearchFilterSyntax` + `filterSyntax` prop |
-| Facet pickers (type, account, …)        | forms `FilterCommandPicker`                     |
-| Matching rows against a ledger          | App / domain package (not in this UI package)   |
+| Need                                    | Package                                           |
+| --------------------------------------- | ------------------------------------------------- |
+| Structured multi-field filters, no QL   | `PowerSearch` (`@lapismd/design-core/filter`)     |
+| Search pill, clear chrome, filter slots | `SearchFilterBar` (`@lapismd/design-core/filter`) |
+| Parse / highlight filter queries        | `parseFilterQuery`, `filterQuery()`               |
+| Field → operator → value completions    | Host `SearchFilterSyntax` + `filterSyntax` prop   |
+| Facet pickers (type, account, …)        | forms `FilterCommandPicker`                       |
+| Matching rows against a ledger          | App / domain package (not in this UI package)     |
 
 ## Choosing a search surface
 

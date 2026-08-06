@@ -17,7 +17,11 @@
       docs: {
         description: {
           component:
-            "Composable metadata row for chat messages. Renders timestamp, footer content, and delivery status in a single row. Direction reverses for user sender. Renders nothing if all props are empty."}}}});
+            "Composable metadata row for chat messages. Renders timestamp, footer content, and delivery status in a single row. Direction reverses for user sender. Renders nothing if all props are empty.",
+        },
+      },
+    },
+  });
 </script>
 
 <Story
@@ -30,8 +34,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -103,7 +108,9 @@
     docs: {
       description: {
         story:
-          "Assistant message with footer actions: copy, retry, thumbs up/down, and model label. Use for AI responses that need feedback or utility controls."}},
+          "Assistant message with footer actions: copy, retry, thumbs up/down, and model label. Use for AI responses that need feedback or utility controls.",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/ai/message-metadata/footer-actions-chromium.png",
@@ -111,8 +118,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -171,16 +179,17 @@
     docs: {
       description: {
         story:
-          "All 5 delivery statuses (sending, sent, delivered, read, and error), each with a timestamp. Use to show message delivery progress or surface failures."}},
+          "All 5 delivery statuses (sending, sent, delivered, read, and error), each with a timestamp. Use to show message delivery progress or surface failures.",
+      },
+    },
     visualDelta: {
-      images: [
-        "/visual-baselines/ai/message-metadata/status-chromium.png",
-      ],
+      images: ["/visual-baselines/ai/message-metadata/status-chromium.png"],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -236,16 +245,17 @@
     docs: {
       description: {
         story:
-          "Timestamp-only metadata on user and assistant messages. Supports absolute time and relative formats via Timestamp."}},
+          "Timestamp-only metadata on user and assistant messages. Supports absolute time and relative formats via Timestamp.",
+      },
+    },
     visualDelta: {
-      images: [
-        "/visual-baselines/ai/message-metadata/timestamps-chromium.png",
-      ],
+      images: ["/visual-baselines/ai/message-metadata/timestamps-chromium.png"],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
   tags={["visual-approved"]}
 >
   {#snippet template()}

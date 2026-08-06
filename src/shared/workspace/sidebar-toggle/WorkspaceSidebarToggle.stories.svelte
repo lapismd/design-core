@@ -10,7 +10,11 @@
       docs: {
         description: {
           component:
-            "Source-shaped left and right sidebar visibility control with serializable F-mode hint metadata."}}}});
+            "Source-shaped left and right sidebar visibility control with serializable F-mode hint metadata.",
+        },
+      },
+    },
+  });
 </script>
 
 <script lang="ts">
@@ -36,8 +40,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <div class="flex items-center gap-2">

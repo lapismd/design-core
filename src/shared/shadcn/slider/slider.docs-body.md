@@ -14,5 +14,5 @@ pnpm ui:add slider
 ```
 
 ```html
-<Slider type="single" bind:value max={100} step={1} />
+<Slider type="single" bind:value max="{100}" step="{1}" />
 ```

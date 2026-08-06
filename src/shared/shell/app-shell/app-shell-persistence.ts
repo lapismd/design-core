@@ -1,7 +1,8 @@
 import type { AppShellSide } from "./app-shell-controller.svelte.js";
 
 export const APP_SHELL_LAYOUT_VERSION = 1 as const;
-export const APP_SHELL_DEFAULT_STORAGE_KEY = "@lapismd/design-core/app-shell-layout";
+export const APP_SHELL_DEFAULT_STORAGE_KEY =
+  "@lapismd/design-core/app-shell-layout";
 
 export interface AppShellSidebarLayout {
   side: AppShellSide;

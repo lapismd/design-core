@@ -10,7 +10,11 @@
     parameters: {
       docs: {
         description: {
-          component: "Visual variations for Docs."}}}});
+          component: "Visual variations for Docs.",
+        },
+      },
+    },
+  });
 </script>
 
 <script lang="ts">
@@ -21,10 +25,17 @@
   name="Empty"
   exportName="Empty"
   parameters={{
-    visualDelta: {"images":["/visual-baselines/filter/search-filter-bar/empty-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: ["/visual-baselines/filter/search-filter-bar/empty-chromium.png"],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
     docs: {
-      description: { story: "Idle plain search pill." }}}}
-
+      description: { story: "Idle plain search pill." },
+    },
+  }}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -36,10 +47,19 @@
   name="With query"
   exportName="WithQuery"
   parameters={{
-    visualDelta: {"images":["/visual-baselines/filter/search-filter-bar/with-query-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: [
+        "/visual-baselines/filter/search-filter-bar/with-query-chromium.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
     docs: {
-      description: { story: "Populated plain search value." }}}}
-
+      description: { story: "Populated plain search value." },
+    },
+  }}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -51,11 +71,21 @@
   name="Filter query highlighted"
   exportName="FilterQueryHighlighted"
   parameters={{
-    visualDelta: {"images":["/visual-baselines/filter/search-filter-bar/filter-query-highlighted-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: [
+        "/visual-baselines/filter/search-filter-bar/filter-query-highlighted-chromium.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
     docs: {
       description: {
-        story: "Filter-query mode with syntax highlighting and help."}}}}
-
+        story: "Filter-query mode with syntax highlighting and help.",
+      },
+    },
+  }}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -74,14 +104,26 @@
   name="Filter query predicate chips"
   exportName="FilterQueryPredicateChips"
   parameters={{
-    visualDelta: {"images":["/visual-baselines/filter/search-filter-bar/filter-query-predicate-chips-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: [
+        "/visual-baselines/filter/search-filter-bar/filter-query-predicate-chips-chromium.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
     docs: {
       description: {
         story:
-          "Completed field-op-value terms render as removable inline chips."}}}}
+          "Completed field-op-value terms render as removable inline chips.",
+      },
+    },
+  }}
   play={async ({ canvas, canvasElement }) => {
     const box = canvas.getByRole("searchbox", {
-      name: "Filter with predicate chips"});
+      name: "Filter with predicate chips",
+    });
     await expect(box).toBeInTheDocument();
 
     await waitFor(() => {
@@ -140,7 +182,6 @@
       expect(remaining).toHaveLength(1);
     });
   }}
-
   tags={["visual-approved"]}
 >
   {#snippet template()}

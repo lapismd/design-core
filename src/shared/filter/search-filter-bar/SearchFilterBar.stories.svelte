@@ -6,7 +6,8 @@
   import { parseFilterQuery } from "../filter-query/index.js";
   import {
     FilterCommandPicker,
-    type FilterCommandOption} from "@lapismd/design-core/forms";
+    type FilterCommandOption,
+  } from "@lapismd/design-core/forms";
 
   const { Story } = defineMeta({
     title: "Filter/Search Filter Bar",
@@ -15,7 +16,11 @@
       docs: {
         description: {
           component:
-            "Search chrome with optional filter-query highlighting and host-supplied autocomplete. Import from `@lapismd/design-core/filter`."}}}});
+            "Search chrome with optional filter-query highlighting and host-supplied autocomplete. Import from `@lapismd/design-core/filter`.",
+        },
+      },
+    },
+  });
 
   const demoSyntax = createDemoLedgerFilterSyntax();
 
@@ -46,7 +51,8 @@
     return {
       ok: errors.length === 0,
       type: filter.constructor.name,
-      errors};
+      errors,
+    };
   });
 </script>
 
@@ -58,9 +64,16 @@
     await expect(canvas.getByRole("status")).toHaveTextContent("design");
   }}
   tags={["visual-approved"]}
-
   parameters={{
-    visualDelta: {"images":["/visual-baselines/filter/search-filter-bar/updates-the-query-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: [
+        "/visual-baselines/filter/search-filter-bar/updates-the-query-chromium.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
   }}
 >
   {#snippet template()}
@@ -79,10 +92,19 @@
   {/snippet}
 </Story>
 
-<Story name="Shows an error"
+<Story
+  name="Shows an error"
   parameters={{
-    visualDelta: {"images":["/visual-baselines/filter/search-filter-bar/shows-an-error-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"}}}
-
+    visualDelta: {
+      images: [
+        "/visual-baselines/filter/search-filter-bar/shows-an-error-chromium.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
+  }}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -117,10 +139,17 @@
       expect(body.querySelector(".cm-tooltip-autocomplete")).toBeNull();
     });
   }}
-
   parameters={{
-    visualDelta: {"images":["/visual-baselines/filter/search-filter-bar/filter-query-autocomplete-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"}}}
-
+    visualDelta: {
+      images: [
+        "/visual-baselines/filter/search-filter-bar/filter-query-autocomplete-chromium.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
+  }}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -153,10 +182,14 @@
       /AccountFilter|FieldFilter|ok/i,
     );
   }}
-
   parameters={{
-    visualDelta: {"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"}}}
-
+    visualDelta: {
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
+  }}
   tags={["visual-pending", "skip-visual"]}
 >
   {#snippet template()}
@@ -168,7 +201,8 @@
           types: TYPE_OPTIONS.filter((o) => o.value !== "all").map(
             (o) => o.value,
           ),
-          accounts: ACCOUNT_OPTIONS.map((o) => o.value)})}
+          accounts: ACCOUNT_OPTIONS.map((o) => o.value),
+        })}
         ariaLabel="Ledger search"
         placeholder="account:… payee:… #tag"
         showFilterToggle

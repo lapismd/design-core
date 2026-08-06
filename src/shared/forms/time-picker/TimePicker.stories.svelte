@@ -10,7 +10,7 @@
       docs: {
         description: {
           component:
-            "A controlled time picker wrapping a styled native `<input type=\"time\">` with an optional Clear action. Value is `HH:mm`. See the [Form guidance](?path=/docs/ui-forms-guidance--docs).",
+            'A controlled time picker wrapping a styled native `<input type="time">` with an optional Clear action. Value is `HH:mm`. See the [Form guidance](?path=/docs/ui-forms-guidance--docs).',
         },
       },
     },

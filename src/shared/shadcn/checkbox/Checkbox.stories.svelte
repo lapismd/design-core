@@ -11,7 +11,11 @@
       docs: {
         description: {
           component:
-            "UI-owned checkbox for forms and settings. Native CSS conversion via ui:add."}}}});
+            "UI-owned checkbox for forms and settings. Native CSS conversion via ui:add.",
+        },
+      },
+    },
+  });
 </script>
 
 <script lang="ts">
@@ -27,8 +31,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <div class="flex items-center gap-3">
@@ -55,8 +60,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
   tags={["visual-approved"]}
 >
   {#snippet template()}

@@ -11,7 +11,11 @@
       docs: {
         description: {
           component:
-            "Form field composition primitives. Prefer FieldGroup + Field over ad-hoc label/control stacks."}}}});
+            "Form field composition primitives. Prefer FieldGroup + Field over ad-hoc label/control stacks.",
+        },
+      },
+    },
+  });
 </script>
 
 <script lang="ts">
@@ -33,8 +37,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <Field.FieldGroup class="max-w-sm">

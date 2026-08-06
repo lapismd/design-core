@@ -73,13 +73,13 @@ existing family already covers the need.
 Layout is driven by **catalog/story identity**, not “one `.svelte` file per
 folder.”
 
-| Layer | Path shape | Keep together | Split apart |
-| ----- | ---------- | ------------- | ----------- |
-| Shadcn | `<family>/` | Multipart parts of one family | Never split Dialog/Sidebar-style parts |
-| Forms / Filter | `<family>/` | Supporting helpers of one catalog surface | Independently titled catalog components |
-| AI | `<component>/` | Internal helpers of that component | Separate catalog components |
-| Shell | `app-shell/` under layer root | All `AppShell.*` parts + controllers | Do not flatten to `shell/*.svelte` |
-| Workspace | `<family>/` | Compound visual families | Only if a family gains multiple primary story titles |
+| Layer          | Path shape                    | Keep together                             | Split apart                                          |
+| -------------- | ----------------------------- | ----------------------------------------- | ---------------------------------------------------- |
+| Shadcn         | `<family>/`                   | Multipart parts of one family             | Never split Dialog/Sidebar-style parts               |
+| Forms / Filter | `<family>/`                   | Supporting helpers of one catalog surface | Independently titled catalog components              |
+| AI             | `<component>/`                | Internal helpers of that component        | Separate catalog components                          |
+| Shell          | `app-shell/` under layer root | All `AppShell.*` parts + controllers      | Do not flatten to `shell/*.svelte`                   |
+| Workspace      | `<family>/`                   | Compound visual families                  | Only if a family gains multiple primary story titles |
 
 Anti-patterns to avoid:
 

@@ -4,7 +4,8 @@
   import {
     createDefaultWorkspaceLayout,
     createWorkspaceTab,
-    createWorkspaceTabs} from "../core/layout.js";
+    createWorkspaceTabs,
+  } from "../core/layout.js";
   import { WorkspaceShellController } from "../core/workspace-controller.svelte.js";
   import ExampleWorkspaceView from "./ExampleWorkspaceView.svelte";
   import WorkspaceViewHost from "./WorkspaceViewHost.svelte";
@@ -17,34 +18,43 @@
       docs: {
         description: {
           component:
-            "Resolves a serializable view type through the controller registry and renders Svelte, imperative, empty, or missing-view content."}}}});
+            "Resolves a serializable view type through the controller registry and renders Svelte, imperative, empty, or missing-view content.",
+        },
+      },
+    },
+  });
 </script>
 
 <script lang="ts">
   const registeredTab = createWorkspaceTab({
     id: "registered-view",
     title: "Registered view",
-    view: { type: "demo.registered", state: { count: 1 } }});
+    view: { type: "demo.registered", state: { count: 1 } },
+  });
   const layout = createDefaultWorkspaceLayout();
   const registeredPane = createWorkspaceTabs([registeredTab], {
     id: "registered-pane",
-    activeItemId: registeredTab.id});
+    activeItemId: registeredTab.id,
+  });
   layout.main = registeredPane;
   layout.active = {
     hostId: "root",
     paneId: registeredPane.id,
-    tabId: registeredTab.id};
+    tabId: registeredTab.id,
+  };
   const controller = new WorkspaceShellController({ layout });
   controller.registry.register({
     kind: "svelte",
     type: "demo.registered",
     component: ExampleWorkspaceView,
-    icon: "layout-template"});
+    icon: "layout-template",
+  });
 
   const missingTab = createWorkspaceTab({
     id: "missing-view",
     title: "Missing view",
-    view: { type: "demo.missing" }});
+    view: { type: "demo.missing" },
+  });
 </script>
 
 <Story
@@ -62,8 +72,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <div class="h-[28rem]">
@@ -85,9 +96,16 @@
       canvas.getByRole("heading", { name: "Plugin no longer active" }),
     ).toBeVisible();
   }}
-
   parameters={{
-    visualDelta: {"images":["/visual-baselines/workspace/view-host/missing-view-fallback-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/view-host/missing-view-fallback-chromium.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
   }}
 >
   {#snippet template()}

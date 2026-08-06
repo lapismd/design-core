@@ -7,7 +7,8 @@
 
   const { Story } = defineMeta({
     title: "Shadcn/Navigation/Pagination",
-    component: Pagination.Pagination});
+    component: Pagination.Pagination,
+  });
 </script>
 
 <Story
@@ -16,20 +17,21 @@
   tags={["upstream-example", "visual-ready"]}
   parameters={{
     visualDelta: {
-      images: [
-        "/visual-baselines/shadcn/pagination/preview-chromium.png",
-      ],
+      images: ["/visual-baselines/shadcn/pagination/preview-chromium.png"],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
+      placement: "right",
     },
     a11y: { test: "todo" },
     docs: {
       source: {
         code: exampleSources.Preview,
         language: "html",
-        type: "code"}}}}
+        type: "code",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div class="p-4">

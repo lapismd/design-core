@@ -77,6 +77,20 @@
         "path": "src/lib/components/ui/context-menu/index.ts",
         "sha256": "8b27e1f341d527394302b20931b929d46a17976888f60c3550fbdb76c2a0e235"
       }
+    ],
+    "docsUrl": "https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/context-menu.md",
+    "docsFetchedAt": "2026-08-06T23:23:39.051Z",
+    "docsSha256": "97f3705eef0ad6ad0e64da17a8002543c67be706d8f1b91fc7aac5905fad7435",
+    "docsCommit": "bf4f461d88526359d0e96e1950f637912bbeebe7",
+    "docsRef": "shadcn-svelte@1.4.2",
+    "docsVendorPath": "vendor/shadcn-svelte-docs",
+    "examplesIncluded": [],
+    "examplesSkipped": [
+      {
+        "name": "Preview",
+        "reason": "unsupported-hook",
+        "detail": "Example contains a bare bind: that is not valid Svelte"
+      }
     ]
   },
   "converter": {

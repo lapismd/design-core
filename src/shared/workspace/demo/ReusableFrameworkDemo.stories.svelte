@@ -10,7 +10,8 @@
   const pointer = createFrameworkDemo({ includeFloating: false });
   const mobile = createFrameworkDemo({
     includeFloating: true,
-    mobileMode: "always"});
+    mobileMode: "always",
+  });
 
   const { Story } = defineMeta({
     title: "Workspace/Demo/Reusable Framework",
@@ -20,7 +21,11 @@
       docs: {
         description: {
           component:
-            "A Lapis-like application assembled only from public Workspace controller, layout, view, persistence, settings, command, and static-plugin APIs."}}}});
+            "A Lapis-like application assembled only from public Workspace controller, layout, view, persistence, settings, command, and static-plugin APIs.",
+        },
+      },
+    },
+  });
 </script>
 
 <Story
@@ -29,13 +34,15 @@
   play={async ({ canvas, canvasElement }) => {
     await waitFor(() => expect(overview.app.ready).toBe(true));
     const settingsButton = canvas.getByRole("button", {
-      name: "Open settings"});
+      name: "Open settings",
+    });
     await userEvent.click(settingsButton);
     const dialog = canvas.getByRole("dialog", { name: "Settings" });
     await expect(dialog).toBeVisible();
     await expect(
       within(dialog).getByRole("complementary", {
-        name: "Settings navigation"}),
+        name: "Settings navigation",
+      }),
     ).toBeVisible();
     await userEvent.click(
       within(dialog).getByRole("button", { name: "Close settings" }),
@@ -44,7 +51,8 @@
     await expect(settingsButton).toHaveFocus();
 
     const initiallyCollapsedLinks = canvas.queryByRole("button", {
-      name: "Expand Links"});
+      name: "Expand Links",
+    });
     if (initiallyCollapsedLinks) {
       await userEvent.click(initiallyCollapsedLinks);
     }
@@ -68,9 +76,16 @@
       canvas.getByRole("button", { name: "Collapse Links" }),
     ).toBeVisible();
   }}
-
   parameters={{
-    visualDelta: {"images":["/visual-baselines/workspace/demo/reusable-framework-demo/overview-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/demo/reusable-framework-demo/overview-chromium.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
   }}
 >
   {#snippet template()}
@@ -108,12 +123,16 @@
   }}
   parameters={{
     visualDelta: {
-      images: ["/visual-baselines/workspace/demo/controller-and-persistence-interaction-chromium.png", "/visual-baselines/workspace/demo/reusable-framework-demo/controller-and-persistence-interaction-chromium.png"],
+      images: [
+        "/visual-baselines/workspace/demo/controller-and-persistence-interaction-chromium.png",
+        "/visual-baselines/workspace/demo/reusable-framework-demo/controller-and-persistence-interaction-chromium.png",
+      ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <ReusableFrameworkDemo app={interaction.app} />
@@ -127,11 +146,13 @@
     await waitFor(() => expect(pluginLifecycle.app.ready).toBe(true));
     const documentCanvas = within(canvasElement.ownerDocument.body);
     const pluginsButton = canvas.getByRole("button", {
-      name: "Manage demo plugin"});
+      name: "Manage demo plugin",
+    });
     await userEvent.click(pluginsButton);
     await userEvent.click(
       documentCanvas.getByRole("menuitem", {
-        name: "Disable Framework demo"}),
+        name: "Disable Framework demo",
+      }),
     );
     await expect(
       documentCanvas.getByText("Framework demo disabled"),
@@ -141,14 +162,16 @@
       expect(pluginsButton).toHaveAttribute("aria-expanded", "false"),
     );
     const enabledPluginsButton = canvas.getByRole("button", {
-      name: "Manage demo plugin"});
+      name: "Manage demo plugin",
+    });
     await waitFor(() =>
       expect(getComputedStyle(enabledPluginsButton).pointerEvents).toBe("auto"),
     );
     await userEvent.click(enabledPluginsButton);
     await userEvent.click(
       documentCanvas.getByRole("menuitem", {
-        name: "Enable Framework demo"}),
+        name: "Enable Framework demo",
+      }),
     );
     await expect(
       documentCanvas.getByText("Framework demo enabled"),
@@ -156,21 +179,35 @@
   }}
   parameters={{
     visualDelta: {
-      images: ["/visual-baselines/workspace/demo/plugin-lifecycle-chromium.png", "/visual-baselines/workspace/demo/reusable-framework-demo/plugin-lifecycle-chromium.png"],
+      images: [
+        "/visual-baselines/workspace/demo/plugin-lifecycle-chromium.png",
+        "/visual-baselines/workspace/demo/reusable-framework-demo/plugin-lifecycle-chromium.png",
+      ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <ReusableFrameworkDemo app={pluginLifecycle.app} />
   {/snippet}
 </Story>
 
-<Story name="Mobile composition" tags={["visual-approved"]}
+<Story
+  name="Mobile composition"
+  tags={["visual-approved"]}
   parameters={{
-    visualDelta: {"images":["/visual-baselines/workspace/demo/reusable-framework-demo/mobile-composition-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/demo/reusable-framework-demo/mobile-composition-chromium.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
   }}
 >
   {#snippet template()}
@@ -183,12 +220,16 @@
   tags={["visual-approved"]}
   parameters={{
     visualDelta: {
-      images: ["/visual-baselines/workspace/demo/pointer-drag-surface-chromium.png", "/visual-baselines/workspace/demo/reusable-framework-demo/pointer-drag-surface-chromium.png"],
+      images: [
+        "/visual-baselines/workspace/demo/pointer-drag-surface-chromium.png",
+        "/visual-baselines/workspace/demo/reusable-framework-demo/pointer-drag-surface-chromium.png",
+      ],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <ReusableFrameworkDemo app={pointer.app} />

@@ -10,7 +10,11 @@
       docs: {
         description: {
           component:
-            "Experimental compact reasoning disclosure with controlled expansion and streaming state."}}}});
+            "Experimental compact reasoning disclosure with controlled expansion and streaming state.",
+        },
+      },
+    },
+  });
 </script>
 
 <Story
@@ -30,8 +34,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -59,8 +64,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
   tags={["visual-approved"]}
 >
   {#snippet template()}

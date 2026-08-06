@@ -160,8 +160,8 @@ describe("decideStorybookStaticBuild", () => {
     const sourcePath = path.join(root, "src", "Button.svelte");
     const statsPath = path.join(
       root,
-      ".cache",
-      "visual-delta",
+      ".visual-delta",
+      "cache",
       "preview-stats.json",
     );
     mkdirSync(path.dirname(sourcePath), { recursive: true });

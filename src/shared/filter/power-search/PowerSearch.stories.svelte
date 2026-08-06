@@ -6,7 +6,8 @@
   import {
     createPowerSearchToken,
     tokensToFilterQuery,
-    type PowerSearchToken} from "./power-search.js";
+    type PowerSearchToken,
+  } from "./power-search.js";
 
   const { Story } = defineMeta({
     title: "Filter/Power Search",
@@ -15,7 +16,11 @@
       docs: {
         description: {
           component:
-            "Structured multi-field filter tokens with a field combobox — no CodeMirror. Import from `@lapismd/design-core/filter`."}}}});
+            "Structured multi-field filter tokens with a field combobox — no CodeMirror. Import from `@lapismd/design-core/filter`.",
+        },
+      },
+    },
+  });
 
   const demoSyntax = createDemoLedgerFilterSyntax();
 </script>
@@ -25,7 +30,8 @@
     createPowerSearchToken({
       field: "payee",
       operator: ":",
-      value: "Whole Foods"}),
+      value: "Whole Foods",
+    }),
   ]);
 
   let emptyTokens = $state<PowerSearchToken[]>([]);
@@ -47,7 +53,8 @@
       canvas.getByRole("dialog", { name: "Edit filter" }),
     );
     const valueInput = within(dialog).getByRole("spinbutton", {
-      name: "Value"});
+      name: "Value",
+    });
     await userEvent.clear(valueInput);
     await userEvent.type(valueInput, "20");
     await userEvent.click(
@@ -61,9 +68,16 @@
     });
   }}
   tags={["visual-approved"]}
-
   parameters={{
-    visualDelta: {"images":["/visual-baselines/filter/power-search/add-filter-via-combobox-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: [
+        "/visual-baselines/filter/power-search/add-filter-via-combobox-chromium.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
   }}
 >
   {#snippet template()}
@@ -132,9 +146,9 @@
     ).not.toBeInTheDocument();
   }}
   tags={["visual-approved", "skip-visual"]}
-
   parameters={{
-    visualDelta: {"align":"canvas","delay":5125}}}
+    visualDelta: { align: "canvas", delay: 5125 },
+  }}
 >
   {#snippet template()}
     <div class="max-w-2xl">

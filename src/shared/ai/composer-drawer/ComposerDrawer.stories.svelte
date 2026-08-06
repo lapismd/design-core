@@ -15,7 +15,11 @@
       docs: {
         description: {
           component:
-            "Collapsible drawer panel that sits above the chat input inside ChatComposer. Pass it to the composer's drawer slot to show attachments, context chips, or any supplementary content. When count is provided the drawer gains a collapse toggle: collapsed state shows a badge and label, expanded state shows all children."}}}});
+            "Collapsible drawer panel that sits above the chat input inside ChatComposer. Pass it to the composer's drawer slot to show attachments, context chips, or any supplementary content. When count is provided the drawer gains a collapse toggle: collapsed state shows a badge and label, expanded state shows all children.",
+        },
+      },
+    },
+  });
 </script>
 
 <script lang="ts">
@@ -50,8 +54,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -85,16 +90,17 @@
     docs: {
       description: {
         story:
-          "Drawer with two rows: a scrollable carousel of image thumbnails and a row of removable file tokens. Omit count to keep the drawer always expanded."}},
+          "Drawer with two rows: a scrollable carousel of image thumbnails and a row of removable file tokens. Omit count to keep the drawer always expanded.",
+      },
+    },
     visualDelta: {
-      images: [
-        "/visual-baselines/ai/composer-drawer/attachments-chromium.png",
-      ],
+      images: ["/visual-baselines/ai/composer-drawer/attachments-chromium.png"],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -123,16 +129,17 @@
     docs: {
       description: {
         story:
-          "Drawer with many items and a collapse toggle. Pass count to enable the toggle; collapsed state shows a badge with the total count and a label."}},
+          "Drawer with many items and a collapse toggle. Pass count to enable the toggle; collapsed state shows a badge with the total count and a label.",
+      },
+    },
     visualDelta: {
-      images: [
-        "/visual-baselines/ai/composer-drawer/collapsible-chromium.png",
-      ],
+      images: ["/visual-baselines/ai/composer-drawer/collapsible-chromium.png"],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -161,16 +168,17 @@
     docs: {
       description: {
         story:
-          "Chat composer drawer with a feedback prompt and selectable lettered options. Use for user confirmation workflows that require explicit action before proceeding."}},
+          "Chat composer drawer with a feedback prompt and selectable lettered options. Use for user confirmation workflows that require explicit action before proceeding.",
+      },
+    },
     visualDelta: {
-      images: [
-        "/visual-baselines/ai/composer-drawer/feedback-chromium.png",
-      ],
+      images: ["/visual-baselines/ai/composer-drawer/feedback-chromium.png"],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -215,7 +223,9 @@
     docs: {
       description: {
         story:
-          "Drawer paired with a context progress bar in the header. Show context window usage when attachments consume part of the available token budget."}},
+          "Drawer paired with a context progress bar in the header. Show context window usage when attachments consume part of the available token budget.",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/ai/composer-drawer/with-progress-chromium.png",
@@ -223,8 +233,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -270,8 +281,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
   tags={["visual-approved"]}
 >
   {#snippet template()}

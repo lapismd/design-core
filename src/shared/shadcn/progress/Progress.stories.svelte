@@ -9,7 +9,8 @@
     parameters: {
       docs: {
         description: {
-          component: "UI-owned progress bar for installs and long-running tasks.",
+          component:
+            "UI-owned progress bar for installs and long-running tasks.",
         },
       },
     },

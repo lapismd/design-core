@@ -17,7 +17,11 @@
       docs: {
         description: {
           component:
-            "Touch-, mouse-, and trackpad-friendly item that translates its content to reveal logical-edge actions, with an accessible click trigger and optional release-only full swipe."}}}});
+            "Touch-, mouse-, and trackpad-friendly item that translates its content to reveal logical-edge actions, with an accessible click trigger and optional release-only full swipe.",
+        },
+      },
+    },
+  });
 </script>
 
 <script lang="ts">
@@ -64,7 +68,8 @@
           deltaX: delta.deltaX ?? 0,
           deltaY: delta.deltaY ?? 0,
           bubbles: true,
-          cancelable: true}),
+          cancelable: true,
+        }),
       );
     }
     await new Promise<void>((resolve) =>
@@ -78,7 +83,8 @@
   tags={["visual-approved"]}
   play={async ({ canvas }) => {
     const trigger = canvas.getByRole("button", {
-      name: "Show message actions"});
+      name: "Show message actions",
+    });
     await userEvent.click(trigger);
     await expect(trigger).toHaveAttribute("aria-expanded", "true");
     await expect(
@@ -88,9 +94,17 @@
     await expect(canvas.getByRole("status")).toHaveTextContent("Archived");
     await expect(trigger).toHaveAttribute("aria-expanded", "false");
   }}
-
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/swipe-item/reveals-end-actions-by-click-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"}}}
+    visualDelta: {
+      images: [
+        "/visual-baselines/shadcn/swipe-item/reveals-end-actions-by-click-chromium.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <div class="w-full max-w-md">
@@ -147,9 +161,11 @@
   tags={["visual-approved"]}
   play={async ({ canvas }) => {
     const startTrigger = canvas.getByRole("button", {
-      name: "Show priority actions"});
+      name: "Show priority actions",
+    });
     const endTrigger = canvas.getByRole("button", {
-      name: "Show edit actions"});
+      name: "Show edit actions",
+    });
     await userEvent.click(startTrigger);
     await expect(startTrigger).toHaveAttribute("aria-expanded", "true");
     await userEvent.click(canvas.getByRole("button", { name: "Add star" }));
@@ -159,9 +175,17 @@
     await userEvent.click(canvas.getByRole("button", { name: "Delete task" }));
     await expect(canvas.getByRole("status")).toHaveTextContent("Deleted");
   }}
-
   parameters={{
-    visualDelta: {"interactions":[{"id":"interaction-12-toHaveAttribute","label":"toHaveAttribute(\"aria-expanded\", \"true\")","src":"/visual-baselines/shadcn/swipe-item/leading-and-trailing-actions--interaction-12-toHaveAttribute-chromium.png"}]}}}
+    visualDelta: {
+      interactions: [
+        {
+          id: "interaction-12-toHaveAttribute",
+          label: 'toHaveAttribute("aria-expanded", "true")',
+          src: "/visual-baselines/shadcn/swipe-item/leading-and-trailing-actions--interaction-12-toHaveAttribute-chromium.png",
+        },
+      ],
+    },
+  }}
 >
   {#snippet template()}
     <div class="w-full max-w-md">
@@ -226,7 +250,8 @@
   tags={["visual-approved"]}
   play={async ({ canvas }) => {
     const closeButton = canvas.getByRole("button", {
-      name: "Close controlled item"});
+      name: "Close controlled item",
+    });
     await expect(
       canvas.getByRole("group", { name: "Controlled actions" }),
     ).not.toHaveAttribute("aria-hidden", "true");
@@ -238,9 +263,17 @@
       canvas.getByRole("button", { name: "Show disabled actions" }),
     ).toBeDisabled();
   }}
-
   parameters={{
-    visualDelta: {"interactions":[{"id":"interaction-3-toHaveAttribute","label":"not.toHaveAttribute(\"aria-hidden\", \"true\")","src":"/visual-baselines/shadcn/swipe-item/controlled-and-disabled-states--interaction-3-toHaveAttribute-chromium.png"}]}}}
+    visualDelta: {
+      interactions: [
+        {
+          id: "interaction-3-toHaveAttribute",
+          label: 'not.toHaveAttribute("aria-hidden", "true")',
+          src: "/visual-baselines/shadcn/swipe-item/controlled-and-disabled-states--interaction-3-toHaveAttribute-chromium.png",
+        },
+      ],
+    },
+  }}
 >
   {#snippet template()}
     <div class="flex w-full max-w-md flex-col gap-4">
@@ -302,19 +335,24 @@
       {
         keys: "[TouchA>]",
         target: content,
-        coords: { clientX: startX, clientY: y }},
+        coords: { clientX: startX, clientY: y },
+      },
       {
         pointerName: "TouchA",
         target: content,
         coords: {
           clientX: startX - bounds.width * 1.5,
-          clientY: y}},
+          clientY: y,
+        },
+      },
       {
         keys: "[/TouchA]",
         target: content,
         coords: {
           clientX: startX - bounds.width * 1.5,
-          clientY: y}},
+          clientY: y,
+        },
+      },
     ]);
     await expect(canvas.getByRole("status")).toHaveTextContent(
       "Committed end with touch (1)",
@@ -374,7 +412,8 @@
       content,
       Array.from({ length: 8 }, () => ({
         deltaX: revealDistance / 8,
-        deltaY: 0})),
+        deltaY: 0,
+      })),
     );
     await expect(
       canvas.getByRole("group", { name: "Wheel end actions" }),
@@ -387,10 +426,22 @@
       "end",
     );
   }}
-
   parameters={{
-    visualDelta: {"interactions":[{"id":"interaction-9-toHaveAttribute","label":"toHaveAttribute(\"aria-expanded\", \"true\")","src":"/visual-baselines/shadcn/swipe-item/trackpad-wheel-reveals-end-actions--interaction-9-toHaveAttribute-chromium.png"},{"id":"interaction-6-toHaveAttribute","label":"not.toHaveAttribute(\"aria-hidden\", \"true\")","src":"/visual-baselines/shadcn/swipe-item/trackpad-wheel-reveals-end-actions--interaction-6-toHaveAttribute-chromium.png"}]}}}
-
+    visualDelta: {
+      interactions: [
+        {
+          id: "interaction-9-toHaveAttribute",
+          label: 'toHaveAttribute("aria-expanded", "true")',
+          src: "/visual-baselines/shadcn/swipe-item/trackpad-wheel-reveals-end-actions--interaction-9-toHaveAttribute-chromium.png",
+        },
+        {
+          id: "interaction-6-toHaveAttribute",
+          label: 'not.toHaveAttribute("aria-hidden", "true")',
+          src: "/visual-baselines/shadcn/swipe-item/trackpad-wheel-reveals-end-actions--interaction-6-toHaveAttribute-chromium.png",
+        },
+      ],
+    },
+  }}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -433,7 +484,8 @@
       content,
       Array.from({ length: 8 }, () => ({
         deltaX: 2,
-        deltaY: 24})),
+        deltaY: 24,
+      })),
     );
     await expect(
       canvas.getByRole("button", { name: "Show vertical wheel actions" }),
@@ -443,7 +495,6 @@
       "closed",
     );
   }}
-
   tags={["skip-visual"]}
 >
   {#snippet template()}
@@ -487,9 +538,17 @@
       canvas.getByRole("button", { name: "Show open start actions" }),
     ).toHaveAttribute("aria-expanded", "true");
   }}
-
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/swipe-item/start-actions-open-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"}}}
+    visualDelta: {
+      images: [
+        "/visual-baselines/shadcn/swipe-item/start-actions-open-chromium.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <div class="w-full max-w-md">
@@ -532,9 +591,17 @@
       canvas.getByRole("button", { name: "Show open end actions" }),
     ).toHaveAttribute("aria-expanded", "true");
   }}
-
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/swipe-item/end-actions-open-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"}}}
+    visualDelta: {
+      images: [
+        "/visual-baselines/shadcn/swipe-item/end-actions-open-chromium.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <div class="w-full max-w-md">
@@ -580,22 +647,33 @@
       {
         keys: "[TouchA>]",
         target: content,
-        coords: { clientX: startX, clientY: y }},
+        coords: { clientX: startX, clientY: y },
+      },
       {
         pointerName: "TouchA",
         target: content,
         coords: {
           clientX: startX - bounds.width * 1.5,
-          clientY: y}},
+          clientY: y,
+        },
+      },
     ]);
     await expect(content.closest('[data-ui-part="root"]')).toHaveAttribute(
       "data-armed-side",
       "end",
     );
   }}
-
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/swipe-item/full-swipe-armed-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"}}}
+    visualDelta: {
+      images: [
+        "/visual-baselines/shadcn/swipe-item/full-swipe-armed-chromium.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <div class="w-full max-w-md">

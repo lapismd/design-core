@@ -1,4 +1,11 @@
-import { Meta, Canvas, Controls, Primary, Source, Markdown } from "@storybook/addon-docs/blocks";
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+  Markdown,
+} from "@storybook/addon-docs/blocks";
 import * as DrawerStories from "./Drawer.stories.svelte";
 import * as DrawerVariations from "./Drawer.variations.stories.svelte";
 import docsBody from "./drawer.docs-body.md?raw";
@@ -17,7 +24,12 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 
 ## Usage
 
-<Source language="html" code={"<script lang=\"ts\">\n  import * as Drawer from \"@lapismd/design-core/shadcn/drawer\";\n</script>\n\n<Drawer.Root>\n  <Drawer.Trigger>Open</Drawer.Trigger>\n  <Drawer.Content>\n    <Drawer.Header>\n      <Drawer.Title>Are you sure absolutely sure?</Drawer.Title>\n      <Drawer.Description>This action cannot be undone.</Drawer.Description>\n    </Drawer.Header>\n    <Drawer.Footer>\n      <Button>Submit</Button>\n      <Drawer.Close>Cancel</Drawer.Close>\n    </Drawer.Footer>\n  </Drawer.Content>\n</Drawer.Root>"} />
+<Source
+  language="html"
+  code={
+    '<script lang="ts">\n  import * as Drawer from "@lapismd/design-core/shadcn/drawer";\n</script>\n\n<Drawer.Root>\n  <Drawer.Trigger>Open</Drawer.Trigger>\n  <Drawer.Content>\n    <Drawer.Header>\n      <Drawer.Title>Are you sure absolutely sure?</Drawer.Title>\n      <Drawer.Description>This action cannot be undone.</Drawer.Description>\n    </Drawer.Header>\n    <Drawer.Footer>\n      <Button>Submit</Button>\n      <Drawer.Close>Cancel</Drawer.Close>\n    </Drawer.Footer>\n  </Drawer.Content>\n</Drawer.Root>'
+  }
+/>
 
 <Primary />
 
@@ -27,7 +39,6 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 
 ### Preview
 
-
 <Canvas of={DrawerVariations.Preview} meta={DrawerVariations} />
 
 ### Sides
@@ -35,4 +46,3 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 Use the `direction` prop to set the side of the drawer. Available options are `top`, `right`, `bottom`, and `left`.
 
 <Canvas of={DrawerVariations.Sides} meta={DrawerVariations} />
-

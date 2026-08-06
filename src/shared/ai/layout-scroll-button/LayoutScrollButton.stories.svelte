@@ -10,7 +10,11 @@
       docs: {
         description: {
           component:
-            "Floating scroll-to-bottom button that appears when the user scrolls away from the latest messages. It fades in as a compact icon button and expands to show a label when new messages arrive. ChatLayout renders this by default: pass a custom element to the scrollButton prop to override, or null to hide it entirely."}}}});
+            "Floating scroll-to-bottom button that appears when the user scrolls away from the latest messages. It fades in as a compact icon button and expands to show a label when new messages arrive. ChatLayout renders this by default: pass a custom element to the scrollButton prop to override, or null to hide it entirely.",
+        },
+      },
+    },
+  });
 </script>
 
 <script lang="ts">
@@ -24,16 +28,17 @@
     docs: {
       description: {
         story:
-          "Scroll button visibility and expansion states. The control fades in when the transcript is not pinned to the latest messages and expands when a label is provided."}},
+          "Scroll button visibility and expansion states. The control fades in when the transcript is not pinned to the latest messages and expands when a label is provided.",
+      },
+    },
     visualDelta: {
-      images: [
-        "/visual-baselines/ai/layout-scroll-button/states-chromium.png",
-      ],
+      images: ["/visual-baselines/ai/layout-scroll-button/states-chromium.png"],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -61,16 +66,17 @@
     docs: {
       description: {
         story:
-          "Scroll button with different labels for context-specific notifications like new messages, unread replies, or a generic scroll prompt."}},
+          "Scroll button with different labels for context-specific notifications like new messages, unread replies, or a generic scroll prompt.",
+      },
+    },
     visualDelta: {
-      images: [
-        "/visual-baselines/ai/layout-scroll-button/labels-chromium.png",
-      ],
+      images: ["/visual-baselines/ai/layout-scroll-button/labels-chromium.png"],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -107,8 +113,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -129,14 +136,13 @@
   name="Hidden"
   parameters={{
     visualDelta: {
-      images: [
-        "/visual-baselines/ai/layout-scroll-button/hidden-chromium.png",
-      ],
+      images: ["/visual-baselines/ai/layout-scroll-button/hidden-chromium.png"],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
   tags={["visual-approved"]}
 >
   {#snippet template()}

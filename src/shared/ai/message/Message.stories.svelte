@@ -12,21 +12,24 @@
       docs: {
         description: {
           component:
-            "Sender context wrapper: handles avatar, name, metadata, and alignment based on sender role."}}}});
+            "Sender context wrapper: handles avatar, name, metadata, and alignment based on sender role.",
+        },
+      },
+    },
+  });
 </script>
 
 <Story
   name="ASTRYX showcase"
   parameters={{
     visualDelta: {
-      images: [
-        "/visual-baselines/ai/message/astryx-showcase-chromium.png",
-      ],
+      images: ["/visual-baselines/ai/message/astryx-showcase-chromium.png"],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -64,16 +67,17 @@
     docs: {
       description: {
         story:
-          "Messages with avatars and sender names. Place the name on the bubble when using bubbles, or on the message wrapper for raw content."}},
+          "Messages with avatars and sender names. Place the name on the bubble when using bubbles, or on the message wrapper for raw content.",
+      },
+    },
     visualDelta: {
-      images: [
-        "/visual-baselines/ai/message/avatar-and-name-chromium.png",
-      ],
+      images: ["/visual-baselines/ai/message/avatar-and-name-chromium.png"],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -118,14 +122,17 @@
     docs: {
       description: {
         story:
-          "Ghost variant for messages without visible bubble boundaries. Keeps padding for alignment but renders a transparent background, useful for AI-style responses."}},
+          "Ghost variant for messages without visible bubble boundaries. Keeps padding for alignment but renders a transparent background, useful for AI-style responses.",
+      },
+    },
     visualDelta: {
       images: ["/visual-baselines/ai/message/ghost-chromium.png"],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
   tags={["visual-approved"]}
 >
   {#snippet template()}
@@ -169,16 +176,17 @@
     docs: {
       description: {
         story:
-          "Grouped bubbles using the group prop for corner radius reduction. Use first, middle, and last to visually connect related bubbles from the same sender."}},
+          "Grouped bubbles using the group prop for corner radius reduction. Use first, middle, and last to visually connect related bubbles from the same sender.",
+      },
+    },
     visualDelta: {
-      images: [
-        "/visual-baselines/ai/message/multi-bubble-chromium.png",
-      ],
+      images: ["/visual-baselines/ai/message/multi-bubble-chromium.png"],
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
   tags={["visual-approved"]}
 >
   {#snippet template()}

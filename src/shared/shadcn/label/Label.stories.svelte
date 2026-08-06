@@ -10,7 +10,11 @@
     parameters: {
       docs: {
         description: {
-          component: "Accessible label for form controls."}}}});
+          component: "Accessible label for form controls.",
+        },
+      },
+    },
+  });
 </script>
 
 <script lang="ts">
@@ -32,8 +36,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <div class="flex max-w-sm flex-col gap-2">

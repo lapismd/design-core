@@ -31,7 +31,9 @@ const lane = resolveStorybookLane();
 const { root, port, visualPort, serverPorts } = lane;
 const require = createRequire(import.meta.url);
 const visualDeltaPackageRoot = realpathSync(
-  path.dirname(require.resolve("@lapismd/storybook-addon-visual-delta/package.json")),
+  path.dirname(
+    require.resolve("@lapismd/storybook-addon-visual-delta/package.json"),
+  ),
 );
 const RESTART_DEBOUNCE_MS = 500;
 const STARTUP_GRACE_MS = 10_000;

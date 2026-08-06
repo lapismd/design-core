@@ -10,7 +10,11 @@
       docs: {
         description: {
           component:
-            "Special Lapis-aligned fallback for a visible sidebar that has no tabs."}}}});
+            "Special Lapis-aligned fallback for a visible sidebar that has no tabs.",
+        },
+      },
+    },
+  });
 </script>
 
 <script lang="ts">
@@ -39,8 +43,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <div class="h-[28rem] w-80 border">
@@ -70,8 +75,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <div class="h-[28rem] w-80 border">

@@ -10,7 +10,11 @@
     parameters: {
       docs: {
         description: {
-          component: "Grouped related actions in a shared control cluster."}}}});
+          component: "Grouped related actions in a shared control cluster.",
+        },
+      },
+    },
+  });
 </script>
 
 <script lang="ts">
@@ -32,8 +36,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <div class="flex flex-col gap-3">

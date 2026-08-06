@@ -73,7 +73,10 @@ describe("@lapismd/design-core/shell public API", () => {
 
   it("publishes the shell subpaths and documented token defaults", () => {
     const packageJson = JSON.parse(
-      readFileSync(new URL("../../../../package.json", import.meta.url), "utf8"),
+      readFileSync(
+        new URL("../../../../package.json", import.meta.url),
+        "utf8",
+      ),
     ) as {
       exports: Record<string, string>;
     };

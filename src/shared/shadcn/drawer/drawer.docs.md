@@ -31,7 +31,7 @@ pnpm ui:add drawer
       <Drawer.Description>This action cannot be undone.</Drawer.Description>
     </Drawer.Header>
     <Drawer.Footer>
-      <Button>Submit</Button>
+      <button>Submit</button>
       <Drawer.Close>Cancel</Drawer.Close>
     </Drawer.Footer>
   </Drawer.Content>

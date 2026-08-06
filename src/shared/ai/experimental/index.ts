@@ -14,6 +14,9 @@ export { default as TypingIndicator } from "./typing-indicator/TypingIndicator.s
 export { default as UnreadDivider } from "./unread-divider/UnreadDivider.svelte";
 
 /** @experimental */
-export { DEFAULT_EMOJIS, type EmojiOption } from "./emoji-picker/EmojiPicker.svelte";
+export {
+  DEFAULT_EMOJIS,
+  type EmojiOption,
+} from "./emoji-picker/EmojiPicker.svelte";
 /** @experimental */
 export type { Reaction } from "./reaction-bar/ReactionBar.svelte";

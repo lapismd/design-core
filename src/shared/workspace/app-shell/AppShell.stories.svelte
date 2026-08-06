@@ -5,7 +5,8 @@
     createDefaultWorkspaceLayout,
     createWorkspaceSplit,
     createWorkspaceTab,
-    createWorkspaceTabs} from "../core/layout.js";
+    createWorkspaceTabs,
+  } from "../core/layout.js";
   import { AppShellController } from "../core/app-shell-controller.svelte.js";
   import { APP_SHELL_SETTING_IDS } from "../core/built-in-settings.svelte.js";
   import { AppShellPlugin } from "../core/plugin-manager.svelte.js";
@@ -22,7 +23,11 @@
       docs: {
         description: {
           component:
-            "Controller context and independently composable shell surfaces. Applications may use AppShell.Surface or assemble the ribbon, sidebars, workspace, floating layer, and status bar explicitly."}}}});
+            "Controller context and independently composable shell surfaces. Applications may use AppShell.Surface or assemble the ribbon, sidebars, workspace, floating layer, and status bar explicitly.",
+        },
+      },
+    },
+  });
 
   interface DemoViewState extends Record<string, unknown> {
     heading?: string;
@@ -73,7 +78,9 @@
       icon,
       view: {
         type: "demo",
-        state: { heading: title, description }}});
+        state: { heading: title, description },
+      },
+    });
   }
 
   function createDemoApp() {
@@ -103,11 +110,14 @@
     );
     const mainLeft = createWorkspaceTabs([home, notes], {
       id: "app-shell-main-left",
-      activeItemId: home.id});
+      activeItemId: home.id,
+    });
     const mainRightTop = createWorkspaceTabs([reference], {
-      id: "app-shell-main-right-top"});
+      id: "app-shell-main-right-top",
+    });
     const mainRightBottom = createWorkspaceTabs([details], {
-      id: "app-shell-main-right-bottom"});
+      id: "app-shell-main-right-bottom",
+    });
     const mainRight = createWorkspaceSplit(
       "vertical",
       [mainRightTop, mainRightBottom],
@@ -145,7 +155,8 @@
       tabs: [outline, links],
       hiddenTabIds: [],
       collapsedByTabId: { [outline.id]: false, [links.id]: false },
-      panelSizesByTabId: { [outline.id]: 50, [links.id]: 50 }};
+      panelSizesByTabId: { [outline.id]: 50, [links.id]: 50 },
+    };
     const layout = createDefaultWorkspaceLayout();
     layout.main = createWorkspaceSplit(
       "horizontal",
@@ -157,22 +168,28 @@
       size: 296,
       root: createWorkspaceTabs([files, search], {
         id: "app-shell-left-sidebar",
-        activeItemId: files.id})};
+        activeItemId: files.id,
+      }),
+    };
     layout.right = {
       open: true,
       size: 304,
       root: createWorkspaceTabs([rightGroup], {
         id: "app-shell-right-sidebar",
-        activeItemId: rightGroup.id})};
+        activeItemId: rightGroup.id,
+      }),
+    };
     layout.active = {
       hostId: "root",
       paneId: mainLeft.id,
-      tabId: home.id};
+      tabId: home.id,
+    };
     const app = new AppShellController({
       layout,
       application: { name: "Workspace demo", version: "1.0.0" },
       configuration: {
-        values: { [APP_SHELL_SETTING_IDS.mobileMode]: "never" }},
+        values: { [APP_SHELL_SETTING_IDS.mobileMode]: "never" },
+      },
       plugins: [
         {
           id: "demo-static-plugin",
@@ -180,18 +197,22 @@
           description: "A statically configured application plugin.",
           icon: "puzzle",
           plugin: DemoStaticPlugin,
-          enabled: true},
+          enabled: true,
+        },
       ],
       views: [
         {
           type: "demo",
-          factory: (leaf) => new DemoWorkspaceView(leaf, "demo")},
-      ]});
+          factory: (leaf) => new DemoWorkspaceView(leaf, "demo"),
+        },
+      ],
+    });
     app.status.addItem({
       id: "app-shell-ready",
       align: "right",
       icon: "circle-check",
-      label: "Framework ready"});
+      label: "Framework ready",
+    });
     return app;
   }
 
@@ -224,8 +245,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <div class="ui-app-shell-story-frame">
@@ -246,7 +268,8 @@
   tags={["visual-approved"]}
   play={async ({ canvas }) => {
     const settingsButton = canvas.getByRole("button", {
-      name: "Open settings"});
+      name: "Open settings",
+    });
     await userEvent.click(settingsButton);
     await expect(
       canvas.getByRole("dialog", { name: "Settings" }),
@@ -267,8 +290,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <div class="ui-app-shell-story-frame">
@@ -290,8 +314,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <div class="ui-app-shell-story-mobile-canvas">
@@ -321,8 +346,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <div class="ui-app-shell-story-frame">
@@ -353,8 +379,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <div class="ui-app-shell-story-frame">
@@ -377,8 +404,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <div class="ui-app-shell-story-frame ui-app-shell-story-frame--settings">
@@ -402,7 +430,8 @@
     await userEvent.click(canvas.getByTestId("hotkeys-clear-keyboard-filter"));
     await userEvent.click(
       canvas.getByRole("button", {
-        name: "Add hotkey for About Workspace demo"}),
+        name: "Add hotkey for About Workspace demo",
+      }),
     );
     await userEvent.keyboard("{Meta>}i{/Meta}");
     await userEvent.click(canvas.getByRole("button", { name: "Save hotkey" }));
@@ -429,8 +458,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <div class="ui-app-shell-story-frame ui-app-shell-story-frame--settings">

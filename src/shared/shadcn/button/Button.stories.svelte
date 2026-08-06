@@ -10,7 +10,11 @@
       docs: {
         description: {
           component:
-            "Native-CSS shadcn button. Restyle via --ui-button-* tokens on an ancestor (not Tailwind cn() class merges)."}}}});
+            "Native-CSS shadcn button. Restyle via --ui-button-* tokens on an ancestor (not Tailwind cn() class merges).",
+        },
+      },
+    },
+  });
 </script>
 
 <script lang="ts">
@@ -24,9 +28,16 @@
     await expect(canvas.getByRole("status")).toHaveTextContent("Changes saved");
   }}
   tags={["visual-approved"]}
-
   parameters={{
-    visualDelta: {"images":["/visual-baselines/shadcn/button/variants-and-action-feedback-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: [
+        "/visual-baselines/shadcn/button/variants-and-action-feedback-chromium.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
   }}
 >
   {#snippet template()}
@@ -58,7 +69,10 @@
     docs: {
       description: {
         story:
-          "Override --ui-button-* on an ancestor to restyle without Tailwind cn() merges. Tagged skip-visual: token demo only (no committed baseline)."}}}}
+          "Override --ui-button-* on an ancestor to restyle without Tailwind cn() merges. Tagged skip-visual: token demo only (no committed baseline).",
+      },
+    },
+  }}
 >
   {#snippet template()}
     <div

@@ -4,7 +4,8 @@
   import {
     createDefaultWorkspaceLayout,
     createWorkspaceTab,
-    createWorkspaceTabs} from "../core/layout.js";
+    createWorkspaceTabs,
+  } from "../core/layout.js";
   import type { WorkspaceSidebarGroup } from "../core/types.js";
   import { WorkspaceShellController } from "../core/workspace-controller.svelte.js";
   import ExampleWorkspaceView from "../view-host/ExampleWorkspaceView.svelte";
@@ -19,7 +20,11 @@
       docs: {
         description: {
           component:
-            "Composable left/right sidebar chrome with icon tabs, grouped panels, source context menus, group metadata editing, top/bottom drop targets, empty state, and controller-owned close behavior."}}}});
+            "Composable left/right sidebar chrome with icon tabs, grouped panels, source context menus, group metadata editing, top/bottom drop targets, empty state, and controller-owned close behavior.",
+        },
+      },
+    },
+  });
 </script>
 
 <script lang="ts">
@@ -28,17 +33,20 @@
       id: "sidebar-files",
       title: "Files",
       icon: "files",
-      view: { type: "example" }});
+      view: { type: "example" },
+    });
     const outline = createWorkspaceTab({
       id: "sidebar-outline",
       title: "Outline",
       icon: "list-tree",
-      view: { type: "example" }});
+      view: { type: "example" },
+    });
     const links = createWorkspaceTab({
       id: "sidebar-links",
       title: "Links",
       icon: "link",
-      view: { type: "example" }});
+      view: { type: "example" },
+    });
     const group: WorkspaceSidebarGroup = {
       kind: "sidebar-group",
       id: "sidebar-reference",
@@ -47,21 +55,25 @@
       tabs: [outline, links],
       hiddenTabIds: [],
       collapsedByTabId: { [outline.id]: false, [links.id]: true },
-      panelSizesByTabId: { [outline.id]: 80 }};
+      panelSizesByTabId: { [outline.id]: 80 },
+    };
     const pane = createWorkspaceTabs(withItems ? [files, group] : [], {
       id: withItems ? "sidebar-story-pane" : "sidebar-empty-pane",
-      activeItemId: withItems ? files.id : null});
+      activeItemId: withItems ? files.id : null,
+    });
     const layout = createDefaultWorkspaceLayout();
     layout.right = { open: true, size: 320, root: pane };
     layout.active = {
       hostId: "root",
       paneId: pane.id,
-      tabId: withItems ? files.id : null};
+      tabId: withItems ? files.id : null,
+    };
     const controller = new WorkspaceShellController({ layout });
     controller.registry.register({
       kind: "svelte",
       type: "example",
-      component: ExampleWorkspaceView});
+      component: ExampleWorkspaceView,
+    });
     return controller;
   }
 
@@ -81,9 +93,16 @@
       canvas.getByRole("button", { name: "Collapse Outline" }),
     ).toBeVisible();
   }}
-
   parameters={{
-    visualDelta: {"images":["/visual-baselines/workspace/sidebar/icon-tabs-and-grouped-panels-chromium.png"],"opacity":0.5,"colorInversion":false,"align":"canvas","placement":"right"},
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/sidebar/icon-tabs-and-grouped-panels-chromium.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
   }}
 >
   {#snippet template()}
@@ -116,11 +135,13 @@
     await expect(canvas.getByRole("tab", { name: "Research" })).toBeVisible();
 
     const outline = canvas.getByRole("button", {
-      name: "Collapse Outline"});
+      name: "Collapse Outline",
+    });
     await userEvent.pointer({ keys: "[MouseRight]", target: outline });
     await expect(
       await page.findByRole("menuitem", {
-        name: "Move to normal sidebar tabs"}),
+        name: "Move to normal sidebar tabs",
+      }),
     ).toBeVisible();
   }}
 >
@@ -142,8 +163,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <div class="ui-workspace-sidebar-story-frame">

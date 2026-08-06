@@ -5,7 +5,8 @@
     createDefaultWorkspaceLayout,
     createWorkspaceSplit,
     createWorkspaceTab,
-    createWorkspaceTabs} from "../core/layout.js";
+    createWorkspaceTabs,
+  } from "../core/layout.js";
   import { WorkspaceShellController } from "../core/workspace-controller.svelte.js";
   import WorkspaceSplit from "./WorkspaceSplit.svelte";
   import "./WorkspaceSplit.stories.css";
@@ -18,7 +19,11 @@
       docs: {
         description: {
           component:
-            "A controller-backed Paneforge split primitive that preserves serialized child sizes and exposes an accessible resize handle."}}}});
+            "A controller-backed Paneforge split primitive that preserves serialized child sizes and exposes an accessible resize handle.",
+        },
+      },
+    },
+  });
 </script>
 
 <script lang="ts">
@@ -60,8 +65,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <div class="ui-workspace-split-story-frame">

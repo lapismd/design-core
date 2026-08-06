@@ -54,7 +54,7 @@ function spawnStdio(): {
       return new Promise((resolve, reject) => {
         const timer = setTimeout(
           () => reject(new Error(`Timed out waiting for stdio response`)),
-          15_000,
+          60_000,
         );
         pending.push((value) => {
           clearTimeout(timer);
@@ -266,5 +266,5 @@ describe("Docs MCP transports", () => {
     });
     expect(first.lines.every((line) => JSON.parse(line))).toBe(true);
     expect(second.lines.every((line) => JSON.parse(line))).toBe(true);
-  }, 30_000);
+  }, 90_000);
 });

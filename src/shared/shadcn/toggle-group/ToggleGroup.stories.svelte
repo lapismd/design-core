@@ -9,7 +9,11 @@
     parameters: {
       docs: {
         description: {
-          component: "Exclusive or multi-select group of toggle options."}}}});
+          component: "Exclusive or multi-select group of toggle options.",
+        },
+      },
+    },
+  });
 </script>
 
 <script lang="ts">
@@ -31,8 +35,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
 >
   {#snippet template()}
     <div class="flex flex-col gap-2">

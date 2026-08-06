@@ -9,7 +9,11 @@
       docs: {
         description: {
           component:
-            "Experimental semantic separator marking the first unread message."}}}});
+            "Experimental semantic separator marking the first unread message.",
+        },
+      },
+    },
+  });
 </script>
 
 <Story
@@ -22,8 +26,9 @@
       opacity: 0.5,
       colorInversion: false,
       align: "canvas",
-      placement: "right"
-    }}}
+      placement: "right",
+    },
+  }}
   tags={["visual-approved"]}
 >
   {#snippet template()}
