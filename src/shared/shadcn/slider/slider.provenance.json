@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "component": "slider",
+  "scope": "shared",
+  "upstream": {
+    "project": "shadcn-svelte",
+    "registry": "https://shadcn-svelte.com/registry",
+    "cliVersion": "1.4.2",
+    "item": "slider",
+    "fetchedAt": "2026-08-06T21:53:03.296Z",
+    "sourceFiles": [
+      {
+        "path": "src/lib/components/ui/slider/index.ts",
+        "sha256": "0e2bda41f2c93303b7c87ddf67ff6e1d05ecfdfb3e834fbf5707ba6961eeb4d5"
+      },
+      {
+        "path": "src/lib/components/ui/slider/slider.svelte",
+        "sha256": "236155b3a3e1b86c5b437338403f60f777915a2feac35e295a33b0fbaf950f86"
+      }
+    ],
+    "docsUrl": "https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/slider.md",
+    "docsFetchedAt": "2026-08-06T21:53:03.309Z",
+    "docsSha256": "755172f71cf7b356998fd945566d49abc3c876c6102cb50041e7fa2e4a0af9a0",
+    "docsCommit": "bf4f461d88526359d0e96e1950f637912bbeebe7",
+    "docsRef": "shadcn-svelte@1.4.2",
+    "docsVendorPath": "vendor/shadcn-svelte-docs",
+    "examplesIncluded": [],
+    "examplesSkipped": [
+      {
+        "name": "Preview",
+        "reason": "unsupported-hook",
+        "detail": "Example contains a bare bind: that is not valid Svelte"
+      }
+    ]
+  },
+  "converter": {
+    "version": "2.0.0",
+    "irSchemaVersion": 1,
+    "tokenSchemaVersion": 2
+  },
+  "recipe": {
+    "name": "slider",
+    "version": 1,
+    "tier": "lightCompound"
+  }
+}

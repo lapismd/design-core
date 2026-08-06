@@ -1,0 +1,10 @@
+/**
+ * Default slider token bindings → theme tokens.
+ */
+:root {
+  --ui-slider-background: var(--muted);
+  --ui-slider-foreground: var(--primary);
+  --ui-slider-border-color: var(--border);
+  --ui-slider-radius: 9999px;
+  --ui-slider-focus-ring-color: var(--ring);
+}
