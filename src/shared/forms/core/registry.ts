@@ -38,6 +38,7 @@ export function defaultFieldWrapper(kind: FormFieldKind): FormFieldWrapper {
     kind === "options" ||
     kind === "segmented" ||
     kind === "choice" ||
+    kind === "time" ||
     kind === "tag-list" ||
     kind === "chip-list" ||
     kind === "string-list" ||

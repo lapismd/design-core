@@ -19,6 +19,7 @@
 @import "./shared/shadcn/select/select.tokens.css";
 @import "./shared/shadcn/scroll-area/scroll-area.tokens.css";
 @import "./shared/shadcn/resizable/resizable.tokens.css";
+@import "./shared/shadcn/progress/progress.tokens.css";
 @import "./shared/shadcn/popover/popover.tokens.css";
 @import "./shared/shadcn/pagination/pagination.tokens.css";
 @import "./shared/shadcn/label/label.tokens.css";

@@ -1,0 +1,76 @@
+@import "../form.tokens.css";
+
+.ui-time-picker {
+  display: grid;
+  gap: 0.35rem;
+  width: fit-content;
+  max-width: 100%;
+}
+
+.ui-time-picker__control {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  max-width: 100%;
+}
+
+.ui-time-picker__input {
+  box-sizing: border-box;
+  min-height: 2rem;
+  min-width: 7.5rem;
+  max-width: 100%;
+  border: 1px solid var(--ui-form-border);
+  border-radius: calc(var(--ui-form-radius) * 0.55);
+  background: var(--ui-form-background);
+  color: var(--ui-form-foreground);
+  font: inherit;
+  font-size: 0.875rem;
+  line-height: 1.25;
+  padding: 0.25rem 0.55rem;
+}
+
+.ui-time-picker__input:focus,
+.ui-time-picker__input:focus-visible {
+  border-color: var(--ui-form-accent);
+  outline: 2px solid color-mix(in srgb, var(--ui-form-accent) 35%, transparent);
+  outline-offset: 1px;
+}
+
+.ui-time-picker[data-invalid] .ui-time-picker__input {
+  border-color: color-mix(
+    in srgb,
+    var(--destructive, #dc2626) 55%,
+    var(--ui-form-border)
+  );
+}
+
+.ui-time-picker__input:disabled {
+  color: var(--ui-form-muted);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.ui-time-picker__clear {
+  border: 0;
+  border-radius: calc(var(--ui-form-radius) * 0.45);
+  background: transparent;
+  color: var(--ui-form-muted);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 650;
+  padding: 0.25rem 0.45rem;
+}
+
+.ui-time-picker__clear:hover,
+.ui-time-picker__clear:focus-visible {
+  color: var(--ui-form-foreground);
+  outline: 0;
+}
+
+.ui-time-picker__error {
+  margin: 0;
+  color: var(--destructive, #dc2626);
+  font-size: 0.75rem;
+  line-height: 1.25;
+}

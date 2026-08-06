@@ -8,6 +8,7 @@
   import ListEditor from "../list-editor/ListEditor.svelte";
   import ReferencePicker from "../reference-picker/ReferencePicker.svelte";
   import SegmentedControl from "../segmented-control/SegmentedControl.svelte";
+  import TimePicker from "../time-picker/TimePicker.svelte";
   import { autosizeTextarea } from "../core/autosize-textarea";
   import type { ReferenceIndex } from "../core/reference-utils";
 
@@ -61,6 +62,7 @@
   /** Leaf controls that render their own validation message. */
   const leafOwnsError = $derived(
     field.kind === "date" ||
+      field.kind === "time" ||
       field.kind === "options" ||
       field.kind === "choice" ||
       field.kind === "segmented" ||
@@ -198,6 +200,14 @@
       <DatePicker
         value={textValue() || undefined}
         ariaLabel={field.ariaLabel ?? field.label}
+        error={fieldError}
+        onValueChange={(next) => updateValue(next ?? "")}
+      />
+    {:else if field.kind === "time"}
+      <TimePicker
+        value={textValue() || undefined}
+        ariaLabel={field.ariaLabel ?? field.label}
+        placeholder={field.placeholder}
         error={fieldError}
         onValueChange={(next) => updateValue(next ?? "")}
       />

@@ -11,7 +11,7 @@ accordion, alert, alert-dialog, badge, button, card, code, code-block,
 collapsible, command, dialog, dropdown-menu, empty, field, input, input-group,
 label, popover, resizable, scroll-area, select, separator, sheet, sidebar,
 skeleton, spinner, switch, swipe-item, tabs, textarea, toggle, toggle-group,
-tooltip
+tooltip, progress, slider, context-menu, drawer
 
 Import: `@lapismd/design-core/shadcn/<family>`
 
@@ -42,8 +42,8 @@ JSON Patch, and review-diff utilities.
 `add-section-chooser`, `segmented-control`, `inline-option-picker`,
 `autocomplete-input`, `chip-autocomplete`, `list-editor`,
 `sortable-array-item`, `secret-field`, `filter-command-picker`,
-`date-picker`, `reference-picker`, `task-due-calendar`, `form-review`,
-`unified-review-diff`, and `field-review-actions`.
+`date-picker`, `time-picker`, `reference-picker`, `task-due-calendar`,
+`form-review`, `unified-review-diff`, and `field-review-actions`.
 
 Removed duplicate/thin aliases:
 

@@ -1,0 +1,10 @@
+/**
+ * Default progress token bindings → theme tokens.
+ */
+:root {
+  --ui-progress-background: var(--muted);
+  --ui-progress-foreground: var(--primary);
+  --ui-progress-border-color: transparent;
+  --ui-progress-radius: 9999px;
+  --ui-progress-focus-ring-color: var(--ring);
+}

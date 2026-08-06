@@ -65,6 +65,7 @@ export { default as SegmentedControl } from "./segmented-control/SegmentedContro
 export { default as SortableArrayItem } from "./sortable-array-item/SortableArrayItem.svelte";
 export { default as StructuredForm } from "./structured-form/StructuredForm.svelte";
 export { default as TaskDueCalendar } from "./task-due-calendar/TaskDueCalendar.svelte";
+export { TimePicker } from "./time-picker";
 export { default as UnifiedReviewDiff } from "./unified-review-diff/UnifiedReviewDiff.svelte";
 export { default as YamlBackedForm } from "./yaml-backed-form/YamlBackedForm.svelte";
 export {

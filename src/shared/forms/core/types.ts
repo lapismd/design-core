@@ -9,6 +9,7 @@ export type FormFieldKind =
   | "text"
   | "textarea"
   | "date"
+  | "time"
   | "readonly"
   | "timestamp"
   | "boolean"

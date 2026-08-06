@@ -66,6 +66,12 @@ export function dateField<TRoot, TContext = undefined>(
   return { ...config, kind: "date" as const };
 }
 
+export function timeField<TRoot, TContext = undefined>(
+  config: FieldBuilderInput<TRoot, TContext, string>,
+) {
+  return { ...config, kind: "time" as const };
+}
+
 export function readonlyField<TRoot, TContext = undefined, TValue = unknown>(
   config: FieldBuilderInput<TRoot, TContext, TValue>,
 ) {

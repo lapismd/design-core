@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "component": "progress",
+  "scope": "shared",
+  "upstream": {
+    "project": "shadcn-svelte",
+    "registry": "https://shadcn-svelte.com/registry",
+    "cliVersion": "1.4.2",
+    "item": "progress",
+    "fetchedAt": "2026-08-06T21:49:16.653Z",
+    "sourceFiles": [
+      {
+        "path": "src/lib/components/ui/progress/index.ts",
+        "sha256": "047b1de9082bd67dde821e907845484557cfbac5525dd672434250420d61e6d6"
+      },
+      {
+        "path": "src/lib/components/ui/progress/progress.svelte",
+        "sha256": "2c0f9814fb5620dbfc200c7cdc17cd2502dfbec7a665b6bcf3a739c15dba2658"
+      }
+    ],
+    "docsUrl": "https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/progress.md",
+    "docsFetchedAt": "2026-08-06T21:49:16.679Z",
+    "docsSha256": "746365d1a9e621fa9999a50f3764ff784b5321032d5b1627f3f7d37acf97aefa",
+    "docsCommit": "bf4f461d88526359d0e96e1950f637912bbeebe7",
+    "docsRef": "shadcn-svelte@1.4.2",
+    "docsVendorPath": "vendor/shadcn-svelte-docs",
+    "examplesIncluded": [
+      "Preview"
+    ],
+    "examplesSkipped": []
+  },
+  "converter": {
+    "version": "2.0.0",
+    "irSchemaVersion": 1,
+    "tokenSchemaVersion": 2
+  },
+  "recipe": {
+    "name": "progress",
+    "version": 1,
+    "tier": "lightCompound"
+  }
+}

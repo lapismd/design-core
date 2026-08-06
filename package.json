@@ -168,6 +168,7 @@
     "./forms/ListEditor.svelte": "./src/shared/forms/list-editor/ListEditor.svelte",
     "./forms/SortableArrayItem.svelte": "./src/shared/forms/sortable-array-item/SortableArrayItem.svelte",
     "./forms/TaskDueCalendar.svelte": "./src/shared/forms/task-due-calendar/TaskDueCalendar.svelte",
+    "./forms/TimePicker.svelte": "./src/shared/forms/time-picker/TimePicker.svelte",
     "./forms/CodeEditor.svelte": "./src/shared/forms/code-editor/CodeEditor.svelte",
     "./forms/YamlEditor.svelte": "./src/shared/forms/yaml-editor/YamlEditor.svelte",
     "./forms/StructuredForm.svelte": "./src/shared/forms/structured-form/StructuredForm.svelte",

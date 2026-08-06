@@ -19,6 +19,7 @@ export {
   tagListField,
   textareaField,
   textField,
+  timeField,
   timestampField,
 } from "./builders";
 export type { FieldReview, FieldReviewContext } from "./field-review";
