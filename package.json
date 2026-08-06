@@ -9,7 +9,7 @@
     "storybook:stop": "node scripts/with-storybook-env.mjs bash scripts/storybook-stop.sh",
     "storybook:restart": "node scripts/with-storybook-env.mjs bash scripts/storybook-restart.sh",
     "storybook:check": "pnpm test:storybook && pnpm test:workspace:pointer && pnpm test:shell:pointer && pnpm test:shadcn:pointer && pnpm build-storybook && pnpm workspace:visual:audit && pnpm test:visual",
-    "build-storybook": "node -e \"require('node:fs').mkdirSync('.visual-delta/cache',{recursive:true})\" && storybook build --stats-json .visual-delta/cache",
+    "build-storybook": "node -e \"require('node:fs').mkdirSync('.visual-delta/cache',{recursive:true})\" && node --max-old-space-size=6144 ./node_modules/storybook/dist/bin/dispatcher.js build --stats-json .visual-delta/cache",
     "test:unit": "vitest run --project unit",
     "test:storybook": "vitest run --project storybook",
     "test:storybook:watch": "vitest --project storybook",

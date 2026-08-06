@@ -16,7 +16,6 @@ import {
   storyIdPrefixFromTitle,
   type StoryIndexEntry,
 } from "../visual/snapshot-paths.js";
-import { ensureWarmStaticStorybookServer } from "../visual/ensure-playwright-webserver.js";
 import {
   listSkipVisualStoryIdsForPrefix,
   patchStoriesVisualDeltaImages,
@@ -200,43 +199,37 @@ export async function runVisualUpdate(options: {
     });
   }
 
-  await ensureWarmStaticStorybookServer(config.packageRoot);
-
-  // CLI `--update-snapshots` defaults to "all" and overrides config — always
-  // pass an explicit mode so create-only cannot rewrite existing PNGs.
+  // Authoritative capture goes through `visual-delta update` → Docker runner
+  // (same path as CI / Diff Browser). Host Playwright is not used for writes.
   // Create-only may still exit non-zero when *existing* baselines mismatch;
   // continue so newly written PNGs still get CSF wiring.
+  const updateArgs = [
+    "exec",
+    "visual-delta",
+    "update",
+    "--approved",
+    "--baseline-path-mode",
+    "nested-import",
+    "--snapshot-dir",
+    snapshotDir,
+    "--browser",
+    "chromium",
+    ...(createOnly ? ["--create-only"] : []),
+    ...(options.rebuild ? ["--rebuild"] : []),
+    ...(options.skipBuild && !options.rebuild ? ["--skip-build"] : []),
+    ...(storyIds.length
+      ? storyIds.flatMap((id) => ["--story-id", id])
+      : ["--component", component!]),
+  ];
   try {
-    execFileSync(
-      "pnpm",
-      [
-        "exec",
-        "playwright",
-        "test",
-        `--update-snapshots=${createOnly ? "missing" : "all"}`,
-        "--project",
-        "chromium",
-        "-g",
-        grep,
-      ],
-      {
-        cwd: config.packageRoot,
-        stdio: "inherit",
-        env: {
-          ...process.env,
-          PLAYWRIGHT_UPDATE_SNAPSHOTS: "1",
-          VISUAL_UPDATE_APPROVED: "1",
-          VISUAL_DELTA_BASELINE_PATH_MODE: "nested-import",
-          VISUAL_DELTA_SNAPSHOT_DIR: snapshotDir,
-          ...(createOnly
-            ? {
-                PLAYWRIGHT_UPDATE_MODE: "missing",
-                VISUAL_DELTA_FAILURE_MODE: "warn",
-              }
-            : {}),
-        },
+    execFileSync("pnpm", updateArgs, {
+      cwd: config.packageRoot,
+      stdio: "inherit",
+      env: {
+        ...process.env,
+        VISUAL_UPDATE_APPROVED: "1",
       },
-    );
+    });
   } catch (error) {
     if (!createOnly) {
       invalidateVisualResultArtifacts({
@@ -250,7 +243,7 @@ export async function runVisualUpdate(options: {
       throw error;
     }
     log.warn(
-      "Playwright exited non-zero during create-only (often existing baseline diffs). Continuing CSF wiring for any new PNGs.",
+      "visual-delta update exited non-zero during create-only (often existing baseline diffs). Continuing CSF wiring for any new PNGs.",
     );
   }
 

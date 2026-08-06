@@ -31,23 +31,13 @@ const config: StorybookConfig = {
           affectedTests: {
             externals: ["vendor/shadcn-svelte-docs/static/**"],
           },
-          visualUpdateArgs: [
-            "exec",
-            "tsx",
-            "scripts/ui-generator/cli.ts",
-            "visual-update",
-            "--allow-dirty",
-            "--approved",
-            "--skip-build",
-          ],
+          // Packaged CLI → Docker capture runner (same path as `pnpm test:visual`).
+          visualUpdateArgs: ["exec", "visual-delta", "update", "--approved"],
           visualInteractionUpdateArgs: [
             "exec",
-            "tsx",
-            "scripts/ui-generator/cli.ts",
-            "visual-interaction-update",
-            "--allow-dirty",
+            "visual-delta",
+            "interaction-update",
             "--approved",
-            "--skip-build",
           ],
         },
       },
