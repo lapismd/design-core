@@ -13,6 +13,8 @@ blob-report/
 .ui-generator/
 .cache/ui-docs/
 .cache/visual-delta/
+.visual-delta/artifacts/
+.visual-delta/cache/
 .cache/storybook/
 # Per-checkout Storybook/visual-test port allocation
 .env.storybook.local

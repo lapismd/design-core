@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { VISUAL_COMPARE_PANE_PAD_PX } from "storybook-addon-visual-delta/src/constants.js";
+import { VISUAL_COMPARE_PANE_PAD_PX } from "@lapismd/storybook-addon-visual-delta/src/constants.js";
 import {
   baselineCompareSizesFromNatural,
   sharedScrollExtentSize,
-} from "storybook-addon-visual-delta/src/shared/compare-viewport.js";
+} from "@lapismd/storybook-addon-visual-delta/src/shared/compare-viewport.js";
 
 describe("baselineCompareSizesFromNatural", () => {
   it("converts device-scale natural size to CSS content + padded viewport", () => {

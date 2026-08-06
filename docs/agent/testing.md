@@ -52,7 +52,7 @@ Committed under `tests/visual/storybook.spec.ts-snapshots/`.
   (`/__visual-delta/*` via the Visual Delta preset `viteFinal`); the host still
   owns Playwright writers and `staticDirs` → `/visual-baselines`.
 - Visual Delta self-test CSF lives in the package Storybook
-  (`pnpm visual-delta:storybook`). `pnpm test:visual-delta-panel` boots that
+  (the published `@lapismd/storybook-addon-visual-delta` package Storybook.
   catalog, not the UI Storybook.
 - `ui:add` may create/replace baselines only for the component it is adding,
   and only after parity passes.

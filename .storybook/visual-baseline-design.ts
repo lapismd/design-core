@@ -1,6 +1,6 @@
 /**
  * Re-exports — baseline design now lives in the addon package.
- * @deprecated Import from `storybook-addon-visual-delta/node` instead.
+ * @deprecated Import from `@lapismd/storybook-addon-visual-delta/node` instead.
  */
 export {
   VISUAL_BASELINE_SUFFIX,
@@ -9,4 +9,4 @@ export {
   storySlugFromId,
   visualBaselineVisualDeltaParameter,
   type BaselineStoryRef,
-} from "../../storybook-addon-visual-delta/src/node/baseline-design.ts";
+} from "@lapismd/storybook-addon-visual-delta/node";

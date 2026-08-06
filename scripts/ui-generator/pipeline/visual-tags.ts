@@ -4,7 +4,7 @@ import { getRecipe } from "../recipes/index.js";
 import {
   isVisualReviewStatus,
   type VisualReviewStatus,
-} from "storybook-addon-visual-delta/src/constants.js";
+} from "@lapismd/storybook-addon-visual-delta/src/constants.js";
 import { patchStorySkipVisual } from "../visual/patch-story-visual-delta.js";
 import {
   listStoryIdsForPrefix,

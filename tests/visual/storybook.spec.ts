@@ -1,7 +1,7 @@
 /**
  * Catalog visual suite (nested-import paths and sidecars). Portable hosts
  * should use `defineVisualSuite()` from
- * `storybook-addon-visual-delta/playwright` instead — see `visual-delta init`.
+ * `@lapismd/storybook-addon-visual-delta/playwright` instead — see `visual-delta init`.
  */
 import { expect, test, type Locator, type Page } from "@playwright/test";
 import { readFileSync } from "node:fs";
@@ -10,7 +10,7 @@ import {
   baselinePngPath,
   VISUAL_SNAPSHOT_DIR,
 } from "../../scripts/ui-generator/visual/diff-result.js";
-import { writeDiffArtifactsForBaseline } from "storybook-addon-visual-delta/src/playwright/write-diff-artifacts.js";
+import { writeDiffArtifactsForBaseline } from "@lapismd/storybook-addon-visual-delta/src/playwright/write-diff-artifacts.js";
 import {
   interactionBaselinePngPath,
   listInteractionBaselinesOnDisk,
@@ -25,11 +25,11 @@ import {
   VISUAL_CAPTURE_READY_ATTR,
   VISUAL_CAPTURE_UNTIL_PARAM,
   instrumenterCallIdForInteraction,
-} from "storybook-addon-visual-delta/src/shared/interaction-capture.js";
+} from "@lapismd/storybook-addon-visual-delta/src/shared/interaction-capture.js";
 import {
   VISUAL_CAPTURE_SURFACE_SELECTORS,
   measureVisualCaptureClip,
-} from "storybook-addon-visual-delta/src/shared/capture-target.js";
+} from "@lapismd/storybook-addon-visual-delta/src/shared/capture-target.js";
 import {
   VISUAL_DELTA_ALIGN_ATTR,
   VISUAL_DELTA_CROP_ATTR,
@@ -38,13 +38,13 @@ import {
   VISUAL_DELTA_IGNORE_ATTR_LIST,
   VISUAL_DELTA_INCLUDE_AA_ATTR,
   VISUAL_DELTA_PASS_THRESHOLD_ATTR,
-} from "storybook-addon-visual-delta/src/shared/capture-params-attrs.js";
-import { resolveIgnoreSelectors } from "storybook-addon-visual-delta/src/shared/ignore.js";
+} from "@lapismd/storybook-addon-visual-delta/src/shared/capture-params-attrs.js";
+import { resolveIgnoreSelectors } from "@lapismd/storybook-addon-visual-delta/src/shared/ignore.js";
 import {
   settleVisualStoryPage,
   waitForVisualStoryFinished,
-} from "storybook-addon-visual-delta/src/playwright/readiness.js";
-import { readVisualDeltaProjectConfig } from "storybook-addon-visual-delta/src/node/project-config.js";
+} from "@lapismd/storybook-addon-visual-delta/src/playwright/readiness.js";
+import { readVisualDeltaProjectConfig } from "@lapismd/storybook-addon-visual-delta/src/node/project-config.js";
 
 type StorybookIndex = {
   entries: Record<string, StoryIndexEntry>;

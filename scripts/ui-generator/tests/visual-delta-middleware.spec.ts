@@ -8,7 +8,7 @@ import {
   grepFromStoryIds,
   parseListReporterProgress,
   stripAnsi,
-} from "storybook-addon-visual-delta/node";
+} from "@lapismd/storybook-addon-visual-delta/node";
 import {
   addSkipVisualToStoryOpenTag,
   patchStoryOpenTagWithBaselineUrl,
@@ -33,11 +33,17 @@ describe("parseListReporterProgress", () => {
         index: 1,
         storyId: "shadcn-button--default",
         status: "passed",
+        browser: "chromium",
+        target: { browser: "chromium" },
+        platform: process.platform,
       },
       {
         index: 2,
         storyId: "shadcn-button--disabled",
         status: "failed",
+        browser: "chromium",
+        target: { browser: "chromium" },
+        platform: process.platform,
       },
     ]);
   });
@@ -51,6 +57,9 @@ describe("parseListReporterProgress", () => {
         index: 3,
         storyId: "forms-form-field--default",
         status: "passed",
+        browser: "chromium",
+        target: { browser: "chromium" },
+        platform: process.platform,
       },
     ]);
   });
@@ -63,6 +72,9 @@ describe("parseListReporterProgress", () => {
         index: 3,
         storyId: "shadcn-actions-button--default",
         status: "failed",
+        browser: "chromium",
+        target: { browser: "chromium" },
+        platform: process.platform,
       },
     ]);
   });
@@ -299,7 +311,7 @@ describe("baselineUrlForStoryRef (panel hydrate)", () => {
   // Keep import path mapping in sync with panel post-create hydrate.
   it("builds forms/form-field URLs and can ignore stale skip-visual", async () => {
     const { baselineUrlForStoryRef } = await import(
-      "storybook-addon-visual-delta/src/shared/baseline-url.ts"
+      "@lapismd/storybook-addon-visual-delta/src/shared/baseline-url.ts"
     );
     const story = {
       id: "ui-forms-form-inputs-form-field--center-aligned",
@@ -309,7 +321,7 @@ describe("baselineUrlForStoryRef (panel hydrate)", () => {
     };
     expect(baselineUrlForStoryRef(story)).toBeUndefined();
     expect(baselineUrlForStoryRef(story, { allowSkipVisual: true })).toBe(
-      "/visual-baselines/forms/form-field/center-aligned-chromium-darwin.png",
+      "/visual-baselines/forms/form-field/center-aligned-chromium.png",
     );
   });
 });

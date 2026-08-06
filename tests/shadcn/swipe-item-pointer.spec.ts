@@ -1,5 +1,5 @@
 import { expect, test, type Locator, type Page } from "@playwright/test";
-import { waitForVisualStoryFinished } from "storybook-addon-visual-delta/src/playwright/readiness.js";
+import { waitForVisualStoryFinished } from "@lapismd/storybook-addon-visual-delta/src/playwright/readiness.js";
 
 const leadingStoryId =
   "shadcn-actions-swipe-item--leading-and-trailing-actions";

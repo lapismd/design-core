@@ -2,4 +2,4 @@
  * Host compatibility re-export. The addon owns the pixel comparison contract
  * so Playwright, the panel, and generator pipelines cannot drift.
  */
-export * from "storybook-addon-visual-delta/src/playwright/compare-pixels.js";
+export * from "@lapismd/storybook-addon-visual-delta/src/playwright/compare-pixels.js";

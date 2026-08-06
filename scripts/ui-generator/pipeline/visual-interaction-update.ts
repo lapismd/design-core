@@ -16,7 +16,7 @@ import { decideStorybookStaticBuild } from "../visual/storybook-static-build.js"
 import {
   captureInteractionWithCreateVerification,
   slugifyStepLabel,
-} from "storybook-addon-visual-delta/src/shared/interaction-capture.js";
+} from "@lapismd/storybook-addon-visual-delta/src/shared/interaction-capture.js";
 import type { StoryIndexEntry } from "../visual/snapshot-paths.js";
 
 function loadStoryEntry(packageRoot: string, storyId: string): StoryIndexEntry {

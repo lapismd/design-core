@@ -5,12 +5,12 @@ import {
   visualReviewStatusFromTags,
   visualReviewTagFor,
   type VisualReviewStatus,
-} from "storybook-addon-visual-delta/src/constants.js";
+} from "@lapismd/storybook-addon-visual-delta/src/constants.js";
 import {
   findStoryOpenTagEnd,
   sanitizeStoryName,
-} from "storybook-addon-visual-delta/node";
-import { baselinePngExistsForStoryId } from "storybook-addon-visual-delta/src/node/visual-sidecars.js";
+} from "@lapismd/storybook-addon-visual-delta/node";
+import { baselinePngExistsForStoryId } from "@lapismd/storybook-addon-visual-delta/src/node/visual-sidecars.js";
 import { loadConfig } from "../config.js";
 import { log } from "../logger.js";
 import type { StoryIndexEntry } from "./snapshot-paths.js";

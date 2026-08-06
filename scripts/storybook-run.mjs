@@ -31,7 +31,7 @@ const lane = resolveStorybookLane();
 const { root, port, visualPort, serverPorts } = lane;
 const require = createRequire(import.meta.url);
 const visualDeltaPackageRoot = realpathSync(
-  path.dirname(require.resolve("storybook-addon-visual-delta/package.json")),
+  path.dirname(require.resolve("@lapismd/storybook-addon-visual-delta/package.json")),
 );
 const RESTART_DEBOUNCE_MS = 500;
 const STARTUP_GRACE_MS = 10_000;
@@ -78,6 +78,7 @@ for (const listener of auxiliaryPorts) {
  * Preview-only source remains under Vite HMR.
  */
 const restartWatchPaths = [
+  // npm package source (useful for pnpm link / editable installs).
   path.join(visualDeltaPackageRoot, "src/manager.tsx"),
   path.join(visualDeltaPackageRoot, "src/manager"),
   path.join(visualDeltaPackageRoot, "src/panel"),
@@ -87,7 +88,7 @@ const restartWatchPaths = [
   path.join(visualDeltaPackageRoot, "src/shared"),
   path.join(visualDeltaPackageRoot, "src/preset.ts"),
   path.join(visualDeltaPackageRoot, "src/node"),
-  path.join(root, ".storybook/visual-delta-preset.ts"),
+  path.join(root, ".storybook/main.ts"),
   path.join(root, ".storybook/manager.ts"),
 ];
 

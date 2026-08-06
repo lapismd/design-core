@@ -1,6 +1,6 @@
 /**
  * Re-exports — Visual Delta Vite middleware now lives in the addon package.
- * @deprecated Import from `storybook-addon-visual-delta/node` instead.
+ * @deprecated Import from `@lapismd/storybook-addon-visual-delta/node` instead.
  */
 export {
   attachSidecars,
@@ -12,4 +12,4 @@ export {
   type VisualRunResponse,
   type VisualRunResultItem,
   type VisualRunStreamEvent,
-} from "../../storybook-addon-visual-delta/src/node/middleware.ts";
+} from "@lapismd/storybook-addon-visual-delta/node";

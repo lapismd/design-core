@@ -1,4 +1,4 @@
-import { defineVisualPlaywrightConfig } from "storybook-addon-visual-delta/playwright";
+import { defineVisualPlaywrightConfig } from "@lapismd/storybook-addon-visual-delta/playwright";
 
 /**
  * Catalog visual suite — same capture matrix as the packaged helper

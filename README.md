@@ -37,7 +37,7 @@ src/
 tests/
   visual/                      # Playwright suite + committed snapshots
 packages/
-  storybook-addon-visual-delta/   # reusable Visual Delta addon
+  # Visual Delta: @lapismd/storybook-addon-visual-delta (npm)
 .storybook/                    # Storybook host configuration
 scripts/
   storybook-run.mjs            # polling/restart-aware Storybook entry
@@ -129,7 +129,6 @@ Setting only `STORYBOOK_PORT` allocates the related lanes from the same base:
 | Storybook and AI acceptance  | base         |
 | Visual Delta static server   | base + 1     |
 | Visual Delta panel static    | base + 3 (package `storybook-static`) |
-| Visual Delta panel Storybook | base + 4 (package self-test Storybook; default standalone `9109` via `pnpm visual-delta:storybook`) |
 | Visual Delta panel visual    | base + 5     |
 | Spare debug/cleanup port     | base + 90    |
 | Workspace pointer Storybook  | base + 200   |
@@ -156,7 +155,7 @@ normal secondary workspace only needs `STORYBOOK_PORT`.
 | [`.storybook/main.ts`](./.storybook/main.ts)                               | Story globs, addons, static baseline mount, aliases, Docs MCP |
 | [`.storybook/preview.ts`](./.storybook/preview.ts)                         | Global tags, theme, light/dark, a11y, docs, layout            |
 | [`.storybook/manager.ts`](./.storybook/manager.ts)                         | Tag badges and catalog toolbar                                |
-| [`.storybook/visual-delta-preset.ts`](./.storybook/visual-delta-preset.ts) | Local addon manager, preview, middleware, and Vite wiring     |
+| [`.storybook/main.ts`](./.storybook/main.ts) | Registers `@lapismd/storybook-addon-visual-delta` with catalog options |
 | [`.storybook/ui-docs-middleware.ts`](./.storybook/ui-docs-middleware.ts)   | Docs MCP and `llms.txt` routes                                |
 | [`.storybook/vitest.setup.ts`](./.storybook/vitest.setup.ts)               | Storybook Vitest annotations                                  |
 
@@ -188,18 +187,16 @@ own surfaces.
 ## Visual Delta setup
 
 Visual Delta compares the live story canvas with committed Playwright PNGs and
-provides overlay, heatmap, create/update, and review controls. The portable addon
-lives in a sibling checkout at `../storybook-addon-visual-delta` and is consumed
-with `"storybook-addon-visual-delta": "link:../storybook-addon-visual-delta"`.
-The addon API and host-integration details live in that sibling's
-[`README.md`](../storybook-addon-visual-delta/README.md). The normative behavior
-and acceptance criteria live in the
-[`Visual Delta system specification`](../storybook-addon-visual-delta/spec/src/index.md).
+provides overlay, heatmap, create/update, and review controls. This catalog
+consumes the published npm package
+[`@lapismd/storybook-addon-visual-delta`](https://www.npmjs.com/package/@lapismd/storybook-addon-visual-delta)
+and registers it in `.storybook/main.ts`. Addon API details live in the package
+[`README`](https://github.com/lapismd/storybook-addon-visual-delta/blob/main/README.md). Normative behavior lives in the
+[`Visual Delta system specification`](https://github.com/lapismd/storybook-addon-visual-delta/blob/main/spec/src/index.md).
 
-Addon self-test stories (Panel Shell, Panel Chrome, Testing Module, …) live in
-the package Storybook (`pnpm visual-delta:storybook`), not the UI catalog.
-`pnpm test:visual-delta-panel` boots that package catalog. See
-[`DEVELOPMENT.md`](../storybook-addon-visual-delta/DEVELOPMENT.md).
+After upgrades, run `pnpm exec visual-delta doctor` (and `--fix` / `--runner`
+when suggested).
+
 
 The boundary is:
 
@@ -283,28 +280,20 @@ pnpm storybook:stop
 pnpm storybook:restart
 pnpm build-storybook
 pnpm storybook:check
-pnpm visual-delta:storybook
-pnpm visual-delta:build-storybook
 
 # Verification
-pnpm visual-delta:spec:check
 pnpm test:unit
 pnpm test:storybook
 pnpm test:storybook:watch
-pnpm test:visual-delta-panel
-pnpm test:visual-delta-manager
 pnpm test:visual
 pnpm test:visual:affected
 pnpm test:visual:report
 pnpm checks
 
 # Canonical Visual Delta specification
-pnpm visual-delta:spec:build
-pnpm visual-delta:spec:serve
 
 # Explicitly approved baseline writes
 VISUAL_UPDATE_APPROVED=1 pnpm test:visual:update --component <name>
-VISUAL_UPDATE_APPROVED=1 pnpm test:visual-delta-panel:update
 
 # Agent and docs CLI
 pnpm ui guide [topic]
@@ -419,5 +408,5 @@ shadcn CLI directly against this package. Converted families keep
 | `pnpm ui guide layers`                                                                                                 | Layer selection, folders, dependencies    |
 | `pnpm ui guide testing`                                                                                                | Verification sequence                     |
 | [`COMPONENT_AUDIT.md`](./COMPONENT_AUDIT.md)                                                                           | Retained component inventory              |
-| [`../storybook-addon-visual-delta/spec/src/index.md`](../storybook-addon-visual-delta/spec/src/index.md) | Normative Visual Delta system contract    |
-| [`../storybook-addon-visual-delta/README.md`](../storybook-addon-visual-delta/README.md)                 | Addon API and integration                 |
+| [`Visual Delta system specification`](https://github.com/lapismd/storybook-addon-visual-delta/blob/main/spec/src/index.md) | Normative Visual Delta system contract    |
+| [`@lapismd/storybook-addon-visual-delta`](https://www.npmjs.com/package/@lapismd/storybook-addon-visual-delta) | Addon API and integration                 |

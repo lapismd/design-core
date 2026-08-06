@@ -3,8 +3,8 @@ import path from "node:path";
 import {
   stepIdFromInteractionSnapshotName,
   type VisualDeltaInteraction,
-} from "storybook-addon-visual-delta/src/shared/interaction-capture.js";
-import { VISUAL_BASELINE_SUFFIX } from "storybook-addon-visual-delta/node";
+} from "@lapismd/storybook-addon-visual-delta/src/shared/interaction-capture.js";
+import { VISUAL_BASELINE_SUFFIX } from "@lapismd/storybook-addon-visual-delta/node";
 import {
   interactionScreenshotRelativePath,
   nestedSnapshotFileName,

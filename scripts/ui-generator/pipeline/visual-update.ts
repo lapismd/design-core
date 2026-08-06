@@ -27,7 +27,7 @@ import {
   markCreatedStoriesPending,
 } from "../visual/patch-story-visual-review.js";
 import { decideStorybookStaticBuild } from "../visual/storybook-static-build.js";
-import { invalidateVisualResultArtifacts } from "storybook-addon-visual-delta/src/node/visual-sidecars.js";
+import { invalidateVisualResultArtifacts } from "@lapismd/storybook-addon-visual-delta/src/node/visual-sidecars.js";
 import {
   createRunContext,
   writeJson,

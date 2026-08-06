@@ -7,8 +7,8 @@ import {
   interactionScreenshotRelativePath,
   slugifyStepLabel,
   stepIdFromInteractionSnapshotName,
-} from "storybook-addon-visual-delta/src/shared/interaction-capture.js";
-import { mergeInteractionRows } from "storybook-addon-visual-delta/src/panel/usePlaySteps.js";
+} from "@lapismd/storybook-addon-visual-delta/src/shared/interaction-capture.js";
+import { mergeInteractionRows } from "@lapismd/storybook-addon-visual-delta/src/panel/usePlaySteps.js";
 import {
   patchStoryOpenTagWithInteraction,
   patchStoryVisualDeltaInteraction,

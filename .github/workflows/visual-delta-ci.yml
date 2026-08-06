@@ -8,7 +8,6 @@ on:
       - ".storybook/**"
       - "scripts/ui-generator/**"
       - "scripts/storybook-run.mjs"
-      - "scripts/visual-delta-panel-update.ts"
       - "package.json"
       - "pnpm-lock.yaml"
       - "pnpm-workspace.yaml"
@@ -23,21 +22,9 @@ jobs:
     name: Host catalog visual compare
     runs-on: ubuntu-latest
     timeout-minutes: 90
-    defaults:
-      run:
-        working-directory: ui
     steps:
       - name: Check out the UI catalog
         uses: actions/checkout@v4
-        with:
-          path: ui
-
-      - name: Check out Visual Delta sibling
-        uses: actions/checkout@v4
-        with:
-          repository: stevejuma/storybook-addon-visual-delta
-          path: storybook-addon-visual-delta
-          token: ${{ secrets.VISUAL_DELTA_REPO_TOKEN != '' && secrets.VISUAL_DELTA_REPO_TOKEN || github.token }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -49,11 +36,7 @@ jobs:
           corepack enable
           corepack prepare pnpm@10.32.1 --activate
 
-      - name: Install UI catalog dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Install Visual Delta sibling dependencies
-        working-directory: storybook-addon-visual-delta
+      - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
       - name: Install Playwright Chromium

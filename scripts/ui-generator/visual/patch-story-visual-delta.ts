@@ -6,7 +6,7 @@ import {
   visualBaselineVisualDeltaParameter,
   findStoryOpenTagEnd,
   sanitizeStoryName,
-} from "storybook-addon-visual-delta/node";
+} from "@lapismd/storybook-addon-visual-delta/node";
 import { log } from "../logger.js";
 import type { StoryIndexEntry } from "./snapshot-paths.js";
 

@@ -1,13 +1,6 @@
 import type { StorybookConfig } from "@storybook/svelte-vite";
-import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
-import path from "node:path";
 import { mergeConfig } from "vite";
-
-const require = createRequire(import.meta.url);
-const visualDeltaPackageRoot = path.dirname(
-  require.resolve("storybook-addon-visual-delta/package.json"),
-);
 
 const config: StorybookConfig = {
   stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|ts|tsx|svelte)"],
@@ -26,10 +19,8 @@ const config: StorybookConfig = {
       },
     },
     "@storybook/addon-themes",
-    // Absolute local preset → package `src/` (not node_modules package name).
-    // viteFinal lives in the addon (middleware + baseline inject + src watch).
     {
-      name: import.meta.resolve("./visual-delta-preset.ts"),
+      name: "@lapismd/storybook-addon-visual-delta",
       options: {
         visualDelta: {
           // Catalog layout + generator CLIs (package defaults are story-id + visual-delta bin).
@@ -82,12 +73,7 @@ const config: StorybookConfig = {
           "@lapismd/design-core/shadcn": fileURLToPath(
             new URL("../src/shared/shadcn", import.meta.url),
           ),
-          // Keep any bare imports on the workspace source tree.
-          "storybook-addon-visual-delta": visualDeltaPackageRoot,
         },
-      },
-      optimizeDeps: {
-        exclude: ["storybook-addon-visual-delta"],
       },
       server: {
         watch: {

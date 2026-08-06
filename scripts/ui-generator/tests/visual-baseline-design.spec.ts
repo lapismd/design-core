@@ -8,7 +8,7 @@ import {
   storySlugFromId,
   visualBaselineVisualDeltaParameter,
   VISUAL_BASELINE_SUFFIX,
-} from "storybook-addon-visual-delta/node";
+} from "@lapismd/storybook-addon-visual-delta/node";
 
 describe("visual-baseline-design", () => {
   it("maps Shadcn title + story id to the committed baseline URL", () => {
@@ -110,7 +110,6 @@ describe("visual-baseline-design", () => {
       colorInversion: false,
       align: "canvas",
       placement: "right",
-      passThresholdPercent: 0.1,
     });
   });
 
@@ -144,7 +143,11 @@ describe("visual-baseline-design", () => {
   {#snippet template()}ok{/snippet}
 </Story>
 `;
-    const out = injectVisualBaselineVisualDeltas(source, "shadcn/select");
+    const out = injectVisualBaselineVisualDeltas(
+      source,
+      "shadcn/select",
+      (url) => url.endsWith(`${VISUAL_BASELINE_SUFFIX}.png`),
+    );
     expect(out).toContain(
       `"images":["/visual-baselines/shadcn/select/open-menu${VISUAL_BASELINE_SUFFIX}.png"]`,
     );
@@ -165,7 +168,7 @@ describe("visual-baseline-design", () => {
     const out = injectVisualBaselineVisualDeltas(
       source,
       "workspace/tabs",
-      () => true,
+      (url) => url.endsWith(`${VISUAL_BASELINE_SUFFIX}.png`),
     );
     expect(out).toContain(
       `"images":["/visual-baselines/workspace/tabs/default${VISUAL_BASELINE_SUFFIX}.png"]`,
@@ -182,7 +185,7 @@ describe("visual-baseline-design", () => {
       source,
       "Filter/Power Search",
       "./src/shared/filter/power-search/PowerSearch.stories.svelte",
-      () => true,
+      (url) => url.endsWith(`${VISUAL_BASELINE_SUFFIX}.png`),
     );
     expect(out).toContain(
       `"images":["/visual-baselines/filter/power-search/add-filter-via-combobox${VISUAL_BASELINE_SUFFIX}.png"]`,

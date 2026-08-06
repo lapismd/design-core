@@ -5,7 +5,7 @@ import { describe, expect, it } from "vitest";
 
 const require = createRequire(import.meta.url);
 const packageRoot = path.dirname(
-  require.resolve("storybook-addon-visual-delta/package.json"),
+  require.resolve("@lapismd/storybook-addon-visual-delta/package.json"),
 );
 
 describe("packaged Visual Delta preset (Storybook 10 contract)", () => {
