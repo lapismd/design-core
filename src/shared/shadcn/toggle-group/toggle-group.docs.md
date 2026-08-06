@@ -1,4 +1,4 @@
-<!-- Adapted from https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/toggle-group.md for the @stevejuma/ui native-CSS catalog. -->
+<!-- Adapted from https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/toggle-group.md for the @lapismd/design-core native-CSS catalog. -->
 
 # Toggle Group
 
@@ -14,7 +14,7 @@ pnpm ui:add toggle-group
 
 ```html
 <script lang="ts">
-  import * as ToggleGroup from "@stevejuma/ui/shadcn/toggle-group";
+  import * as ToggleGroup from "@lapismd/design-core/shadcn/toggle-group";
 </script>
 ```
 
@@ -35,7 +35,7 @@ pnpm ui:add toggle-group
   import BoldIcon from "@lucide/svelte/icons/bold";
   import ItalicIcon from "@lucide/svelte/icons/italic";
   import UnderlineIcon from "@lucide/svelte/icons/underline";
-  import * as ToggleGroup from "@stevejuma/ui/shadcn/toggle-group";
+  import * as ToggleGroup from "@lapismd/design-core/shadcn/toggle-group";
 </script>
 
 <ToggleGroup.Root variant="outline" type="multiple">
@@ -58,7 +58,7 @@ pnpm ui:add toggle-group
   import BoldIcon from "@lucide/svelte/icons/bold";
   import ItalicIcon from "@lucide/svelte/icons/italic";
   import UnderlineIcon from "@lucide/svelte/icons/underline";
-  import * as ToggleGroup from "@stevejuma/ui/shadcn/toggle-group";
+  import * as ToggleGroup from "@lapismd/design-core/shadcn/toggle-group";
 </script>
 
 <ToggleGroup.Root type="single">
@@ -81,7 +81,7 @@ pnpm ui:add toggle-group
   import BoldIcon from "@lucide/svelte/icons/bold";
   import ItalicIcon from "@lucide/svelte/icons/italic";
   import UnderlineIcon from "@lucide/svelte/icons/underline";
-  import * as ToggleGroup from "@stevejuma/ui/shadcn/toggle-group";
+  import * as ToggleGroup from "@lapismd/design-core/shadcn/toggle-group";
 </script>
 
 <ToggleGroup.Root size="sm" type="single">
@@ -104,7 +104,7 @@ pnpm ui:add toggle-group
   import BoldIcon from "@lucide/svelte/icons/bold";
   import ItalicIcon from "@lucide/svelte/icons/italic";
   import UnderlineIcon from "@lucide/svelte/icons/underline";
-  import * as ToggleGroup from "@stevejuma/ui/shadcn/toggle-group";
+  import * as ToggleGroup from "@lapismd/design-core/shadcn/toggle-group";
 </script>
 
 <ToggleGroup.Root size="lg" type="multiple">
@@ -127,7 +127,7 @@ pnpm ui:add toggle-group
   import BoldIcon from "@lucide/svelte/icons/bold";
   import ItalicIcon from "@lucide/svelte/icons/italic";
   import UnderlineIcon from "@lucide/svelte/icons/underline";
-  import * as ToggleGroup from "@stevejuma/ui/shadcn/toggle-group";
+  import * as ToggleGroup from "@lapismd/design-core/shadcn/toggle-group";
 </script>
 
 <ToggleGroup.Root disabled type="single">
@@ -149,7 +149,7 @@ Use `spacing={2}` to add spacing between toggle group items.
 
 ```html
 <script lang="ts">
-  import * as ToggleGroup from "@stevejuma/ui/shadcn/toggle-group";
+  import * as ToggleGroup from "@lapismd/design-core/shadcn/toggle-group";
   import BookmarkIcon from "@lucide/svelte/icons/bookmark";
   import HeartIcon from "@lucide/svelte/icons/heart";
   import StarIcon from "@lucide/svelte/icons/star";

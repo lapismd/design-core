@@ -8,7 +8,7 @@ pnpm ui:add checkbox
 
 ```html
 <script lang="ts">
-  import { Checkbox } from "@stevejuma/ui/shadcn/checkbox";
+  import { Checkbox } from "@lapismd/design-core/shadcn/checkbox";
 </script>
 ```
 

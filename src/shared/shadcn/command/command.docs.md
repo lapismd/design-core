@@ -1,4 +1,4 @@
-<!-- Adapted from https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/command.md for the @stevejuma/ui native-CSS catalog. -->
+<!-- Adapted from https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/command.md for the @lapismd/design-core native-CSS catalog. -->
 
 # Command
 
@@ -14,7 +14,7 @@ pnpm ui:add command
 
 ```html
 <script lang="ts">
-  import * as Command from "@stevejuma/ui/shadcn/command";
+  import * as Command from "@lapismd/design-core/shadcn/command";
 </script>
 ```
 
@@ -46,7 +46,7 @@ To show the command menu in a dialog, use the `<Command.Dialog />` component ins
 
 ```html
 <script lang="ts">
-  import * as Command from "@stevejuma/ui/shadcn/command";
+  import * as Command from "@lapismd/design-core/shadcn/command";
   import { onMount } from "svelte";
 
   let open = $state(false);

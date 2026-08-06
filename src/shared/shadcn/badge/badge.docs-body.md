@@ -8,7 +8,7 @@ pnpm ui:add badge
 
 ```html
 <script lang="ts">
-  import { Badge } from "@stevejuma/ui/shadcn/badge";
+  import { Badge } from "@lapismd/design-core/shadcn/badge";
 </script>
 ```
 
@@ -22,7 +22,7 @@ You can use the `badgeVariants` helper to create a link that looks like a badge.
 
 ```html
 <script lang="ts">
-  import { badgeVariants } from "@stevejuma/ui/shadcn/badge";
+  import { badgeVariants } from "@lapismd/design-core/shadcn/badge";
 </script>
 
 <a href="/dashboard" class={badgeVariants({ variant: "outline" })}>Badge</a>

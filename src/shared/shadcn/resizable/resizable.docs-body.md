@@ -12,7 +12,7 @@ pnpm ui:add resizable
 
 ```html
 <script lang="ts">
-  import * as Resizable from "@stevejuma/ui/shadcn/resizable";
+  import * as Resizable from "@lapismd/design-core/shadcn/resizable";
 </script>
 ```
 
@@ -32,7 +32,7 @@ Use the `direction` prop to set the direction of the resizable panels.
 
 ```html
 <script lang="ts">
-  import * as Resizable from "@stevejuma/ui/shadcn/resizable";
+  import * as Resizable from "@lapismd/design-core/shadcn/resizable";
 </script>
 
 <Resizable.PaneGroup
@@ -59,7 +59,7 @@ You can set or hide the handle by using the `withHandle` prop on the `ResizableH
 
 ```html
 <script lang="ts">
-  import * as Resizable from "@stevejuma/ui/shadcn/resizable";
+  import * as Resizable from "@lapismd/design-core/shadcn/resizable";
 </script>
 
 <Resizable.PaneGroup

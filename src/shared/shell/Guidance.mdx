@@ -4,7 +4,7 @@ import { Meta } from "@storybook/addon-docs/blocks";
 
 # App shell composition guidance
 
-Use `@stevejuma/ui/shell` for bounded application chrome: application
+Use `@lapismd/design-core/shell` for bounded application chrome: application
 sidebars, a main toolbar, and a scrolling main surface. The shell owns geometry,
 collapse/close/resize behavior, responsive presentation, and focus management.
 The application still owns routes, selected navigation items, documents,
@@ -23,7 +23,7 @@ with application-specific layout markup.
 - **Table of contents or another panel local to one document/body:**
   `AppShell.Body layout="regions"` with `Body.Sidebar` and `Body.Toggle`.
 - **Registered views, tabs, recursive splits, commands, settings, or
-  plugins:** `@stevejuma/ui/workspace`, not Shell.
+  plugins:** `@lapismd/design-core/workspace`, not Shell.
 
 Do not put a document-local table of contents in the root sidebar lane, and do
 not turn application navigation into a body-local panel. Their responsive and
@@ -37,7 +37,7 @@ the scrolling `Body`.
 
 ```svelte
 <script lang="ts">
-  import { AppShell, AppShellController } from "@stevejuma/ui/shell";
+  import { AppShell, AppShellController } from "@lapismd/design-core/shell";
 
   const shell = new AppShellController();
   let leftCompact = $derived(

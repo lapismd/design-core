@@ -1,4 +1,4 @@
-<!-- Adapted from https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/dropdown-menu.md for the @stevejuma/ui native-CSS catalog. -->
+<!-- Adapted from https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/dropdown-menu.md for the @lapismd/design-core native-CSS catalog. -->
 
 # Dropdown Menu
 
@@ -14,7 +14,7 @@ pnpm ui:add dropdown-menu
 
 ```html
 <script lang="ts">
-  import * as DropdownMenu from "@stevejuma/ui/shadcn/dropdown-menu";
+  import * as DropdownMenu from "@lapismd/design-core/shadcn/dropdown-menu";
 </script>
 ```
 
@@ -40,8 +40,8 @@ pnpm ui:add dropdown-menu
 
 ```html
 <script lang="ts">
-  import * as DropdownMenu from "@stevejuma/ui/shadcn/dropdown-menu";
-  import { Button } from "@stevejuma/ui/shadcn/button";
+  import * as DropdownMenu from "@lapismd/design-core/shadcn/dropdown-menu";
+  import { Button } from "@lapismd/design-core/shadcn/button";
 
   let showStatusBar = $state(true);
   let showActivityBar = $state(false);
@@ -76,8 +76,8 @@ pnpm ui:add dropdown-menu
 
 ```html
 <script lang="ts">
-  import * as DropdownMenu from "@stevejuma/ui/shadcn/dropdown-menu";
-  import { Button } from "@stevejuma/ui/shadcn/button";
+  import * as DropdownMenu from "@lapismd/design-core/shadcn/dropdown-menu";
+  import { Button } from "@lapismd/design-core/shadcn/button";
 
   let position = $state("bottom");
 </script>
@@ -110,13 +110,13 @@ This example shows how to open a dialog from a dropdown menu.
 <script lang="ts">
 	import MoreHorizontal from "@lucide/svelte/icons/more-horizontal";
 
-	import { Button, buttonVariants } from "@stevejuma/ui/shadcn/button";
-	import * as Dialog from "@stevejuma/ui/shadcn/dialog";
-	import * as DropdownMenu from "@stevejuma/ui/shadcn/dropdown-menu";
-	import { Input } from "@stevejuma/ui/shadcn/input";
-	import { Label } from "@stevejuma/ui/shadcn/label";
-	import { Textarea } from "@stevejuma/ui/shadcn/textarea";
-	import * as Field from "@stevejuma/ui/shadcn/field";
+	import { Button, buttonVariants } from "@lapismd/design-core/shadcn/button";
+	import * as Dialog from "@lapismd/design-core/shadcn/dialog";
+	import * as DropdownMenu from "@lapismd/design-core/shadcn/dropdown-menu";
+	import { Input } from "@lapismd/design-core/shadcn/input";
+	import { Label } from "@lapismd/design-core/shadcn/label";
+	import { Textarea } from "@lapismd/design-core/shadcn/textarea";
+	import * as Field from "@lapismd/design-core/shadcn/field";
 
 	let showNewDialog = $state(false);
 	let showShareDialog = $state(false);

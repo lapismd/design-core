@@ -8,7 +8,7 @@ pnpm ui:add dialog
 
 ```html
 <script lang="ts">
-  import * as Dialog from "@stevejuma/ui/shadcn/dialog";
+  import * as Dialog from "@lapismd/design-core/shadcn/dialog";
 </script>
 ```
 
@@ -35,10 +35,10 @@ pnpm ui:add dialog
 
 ```html
 <script lang="ts">
-	import { buttonVariants } from "@stevejuma/ui/shadcn/button";
-	import * as Dialog from "@stevejuma/ui/shadcn/dialog";
-	import { Input } from "@stevejuma/ui/shadcn/input";
-	import { Label } from "@stevejuma/ui/shadcn/label";
+	import { buttonVariants } from "@lapismd/design-core/shadcn/button";
+	import * as Dialog from "@lapismd/design-core/shadcn/dialog";
+	import { Input } from "@lapismd/design-core/shadcn/input";
+	import { Label } from "@lapismd/design-core/shadcn/label";
 </script>
 
 <Dialog.Root>

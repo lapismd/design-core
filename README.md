@@ -1,4 +1,4 @@
-# `@stevejuma/ui`
+# `@lapismd/design-core`
 
 Private Svelte 5 UI package with a Storybook 10 catalog, Storybook Vitest,
 local Playwright visual regression, and the workspace Visual Delta addon.
@@ -53,17 +53,17 @@ split shadcn/workspace multipart compounds into one folder per part. See
 
 | Path                                 | Purpose                         |
 | ------------------------------------ | ------------------------------- |
-| `@stevejuma/ui/shadcn/<family>`      | shadcn family barrel            |
-| `@stevejuma/ui/forms`                | structured forms barrel         |
-| `@stevejuma/ui/forms/core`           | form builders, types, registry  |
-| `@stevejuma/ui/filter`               | search and filter-query barrel  |
-| `@stevejuma/ui/ai`                   | reusable AI presentation barrel |
-| `@stevejuma/ui/ai/chat`              | stable AI Chat primitives       |
-| `@stevejuma/ui/ai/experimental`      | experimental AI Chat primitives |
-| `@stevejuma/ui/ai/tokens`            | AI Chat design tokens           |
-| `@stevejuma/ui/shell`                | bounded structural app shell    |
-| `@stevejuma/ui/workspace`            | full workspace framework        |
-| `@stevejuma/ui/styles.css`           | package styles entry            |
+| `@lapismd/design-core/shadcn/<family>`      | shadcn family barrel            |
+| `@lapismd/design-core/forms`                | structured forms barrel         |
+| `@lapismd/design-core/forms/core`           | form builders, types, registry  |
+| `@lapismd/design-core/filter`               | search and filter-query barrel  |
+| `@lapismd/design-core/ai`                   | reusable AI presentation barrel |
+| `@lapismd/design-core/ai/chat`              | stable AI Chat primitives       |
+| `@lapismd/design-core/ai/experimental`      | experimental AI Chat primitives |
+| `@lapismd/design-core/ai/tokens`            | AI Chat design tokens           |
+| `@lapismd/design-core/shell`                | bounded structural app shell    |
+| `@lapismd/design-core/workspace`            | full workspace framework        |
+| `@lapismd/design-core/styles.css`           | package styles entry            |
 
 - `shared/shadcn` contains generated controls and must not depend on higher
   layers.
@@ -383,15 +383,15 @@ consumers and contributors:
 | ----- | ------------ | -------- |
 | Theme | `--background`, `--primary`, … | [`src/theme.css`](./src/theme.css) |
 | Shadcn family | `--ui-<family>-*` | `<family>.tokens.css` next to the family |
-| Forms | `--ui-form-*` | [`src/shared/forms/form.tokens.css`](./src/shared/forms/form.tokens.css) (`@stevejuma/ui/forms/tokens`) |
-| AI | `--ui-ai-*` | colocated maps / `@stevejuma/ui/ai/tokens` |
+| Forms | `--ui-form-*` | [`src/shared/forms/form.tokens.css`](./src/shared/forms/form.tokens.css) (`@lapismd/design-core/forms/tokens`) |
+| AI | `--ui-ai-*` | colocated maps / `@lapismd/design-core/ai/tokens` |
 | Shell | `--ui-shell-*` | [`src/shared/shell/shell.tokens.css`](./src/shared/shell/shell.tokens.css) |
 | Workspace | `--ui-workspace-*` | [`src/shared/workspace/workspace.tokens.css`](./src/shared/workspace/workspace.tokens.css) |
 
 Import the package stylesheet once from the host:
 
 ```ts
-import "@stevejuma/ui/styles.css";
+import "@lapismd/design-core/styles.css";
 ```
 
 That entry pulls theme tokens plus family token defaults. Override public tokens

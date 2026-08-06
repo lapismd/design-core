@@ -182,7 +182,7 @@ export function getGuideTopic(
 export function getGuideIndex(packageRoot: string): GuideIndex {
   const topics = listGuideTopics(packageRoot);
   return {
-    title: "@stevejuma/ui agent guide",
+    title: "@lapismd/design-core agent guide",
     summary:
       "Offline conventions for agents and humans. Prefer these topics before inventing workflows. When Storybook is running, use the Storybook MCP for interactive catalog work.",
     readingOrder: [

@@ -58,7 +58,7 @@ describe("data-ui-contract analyzer", () => {
     const styleOpen = "<" + "style>";
     const source = [
       "<script>",
-      '  import * as Tooltip from "@stevejuma/ui/shadcn/tooltip";',
+      '  import * as Tooltip from "@lapismd/design-core/shadcn/tooltip";',
       "</script>",
       '<Tooltip.Trigger type="button" data-ui-part="project-path">',
       "  <span>~/Projects/portfolio</span>",
@@ -77,7 +77,7 @@ describe("data-ui-contract analyzer", () => {
     const styleOpen = "<" + "style>";
     const source = [
       "<script>",
-      '  import { Button } from "@stevejuma/ui/shadcn/button";',
+      '  import { Button } from "@lapismd/design-core/shadcn/button";',
       "</script>",
       '<Button data-ui-component="studio-sidebar" data-ui-part="icon-button">Go</Button>',
       styleOpen,
@@ -104,7 +104,7 @@ describe("data-ui-contract analyzer", () => {
   it("flags data-ui-part override on Tooltip.Content (kills host background)", () => {
     const source = [
       "<script>",
-      '  import * as Tooltip from "@stevejuma/ui/shadcn/tooltip";',
+      '  import * as Tooltip from "@lapismd/design-core/shadcn/tooltip";',
       "</script>",
       '<Tooltip.Content data-studio-sidebar="tooltip-wide" data-ui-part="tooltip-wide">',
       "  /Users/demo/Projects/portfolio",
@@ -117,7 +117,7 @@ describe("data-ui-contract analyzer", () => {
   it("accepts Tooltip.Content with side-channel attrs only", () => {
     const source = [
       "<script>",
-      '  import * as Tooltip from "@stevejuma/ui/shadcn/tooltip";',
+      '  import * as Tooltip from "@lapismd/design-core/shadcn/tooltip";',
       "</script>",
       '<Tooltip.Content data-studio-sidebar="tooltip-wide">',
       "  /Users/demo/Projects/portfolio",
@@ -130,7 +130,7 @@ describe("data-ui-contract analyzer", () => {
     const styleOpen = "<" + "style>";
     const source = [
       "<script>",
-      '  import { Button } from "@stevejuma/ui/shadcn/button";',
+      '  import { Button } from "@lapismd/design-core/shadcn/button";',
       "</script>",
       '<div data-ui-component="studio-sidebar" data-ui-part="header">',
       '  <Button data-ui-part="icon-button">X</Button>',

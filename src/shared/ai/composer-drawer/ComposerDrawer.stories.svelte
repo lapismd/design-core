@@ -3,8 +3,8 @@
   import { expect, userEvent } from "storybook/test";
   import AtSignIcon from "@lucide/svelte/icons/at-sign";
   import PaperclipIcon from "@lucide/svelte/icons/paperclip";
-  import { Badge } from "@stevejuma/ui/shadcn/badge";
-  import { Button } from "@stevejuma/ui/shadcn/button";
+  import { Badge } from "@lapismd/design-core/shadcn/badge";
+  import { Button } from "@lapismd/design-core/shadcn/button";
   import Composer from "../composer/Composer.svelte";
   import ComposerDrawer from "./ComposerDrawer.svelte";
 

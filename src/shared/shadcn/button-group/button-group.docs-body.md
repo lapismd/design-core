@@ -8,7 +8,7 @@ pnpm ui:add button-group
 
 ```html
 <script lang="ts">
-  import * as ButtonGroup from "@stevejuma/ui/shadcn/button-group";
+  import * as ButtonGroup from "@lapismd/design-core/shadcn/button-group";
 </script>
 ```
 
@@ -47,8 +47,8 @@ Set the `orientation` prop to change the button group layout.
 <script lang="ts">
   import Minus from "@lucide/svelte/icons/minus";
   import Plus from "@lucide/svelte/icons/plus";
-  import { Button } from "@stevejuma/ui/shadcn/button";
-  import * as ButtonGroup from "@stevejuma/ui/shadcn/button-group";
+  import { Button } from "@lapismd/design-core/shadcn/button";
+  import * as ButtonGroup from "@lapismd/design-core/shadcn/button-group";
 </script>
 
 <ButtonGroup.Root
@@ -72,8 +72,8 @@ Control the size of buttons using the `size` prop on individual buttons.
 ```html
 <script lang="ts">
   import Plus from "@lucide/svelte/icons/plus";
-  import { Button } from "@stevejuma/ui/shadcn/button";
-  import * as ButtonGroup from "@stevejuma/ui/shadcn/button-group";
+  import { Button } from "@lapismd/design-core/shadcn/button";
+  import * as ButtonGroup from "@lapismd/design-core/shadcn/button-group";
 </script>
 
 <div class="flex flex-col items-start gap-8">
@@ -112,8 +112,8 @@ Nest `ButtonGroup` components to create button groups with spacing.
 <script lang="ts">
   import ArrowLeft from "@lucide/svelte/icons/arrow-left";
   import ArrowRight from "@lucide/svelte/icons/arrow-right";
-  import { Button } from "@stevejuma/ui/shadcn/button";
-  import * as ButtonGroup from "@stevejuma/ui/shadcn/button-group";
+  import { Button } from "@lapismd/design-core/shadcn/button";
+  import * as ButtonGroup from "@lapismd/design-core/shadcn/button-group";
 </script>
 
 <ButtonGroup.Root>
@@ -143,8 +143,8 @@ Buttons with variant `outline` do not need a separator since they have a border.
 
 ```html
 <script lang="ts">
-  import { Button } from "@stevejuma/ui/shadcn/button";
-  import * as ButtonGroup from "@stevejuma/ui/shadcn/button-group";
+  import { Button } from "@lapismd/design-core/shadcn/button";
+  import * as ButtonGroup from "@lapismd/design-core/shadcn/button-group";
 </script>
 
 <ButtonGroup.Root>
@@ -161,8 +161,8 @@ Create a split button group by adding two buttons separated by a `ButtonGroupSep
 ```html
 <script lang="ts">
   import Plus from "@lucide/svelte/icons/plus";
-  import { Button } from "@stevejuma/ui/shadcn/button";
-  import * as ButtonGroup from "@stevejuma/ui/shadcn/button-group";
+  import { Button } from "@lapismd/design-core/shadcn/button";
+  import * as ButtonGroup from "@lapismd/design-core/shadcn/button-group";
 </script>
 
 <ButtonGroup.Root>
@@ -181,9 +181,9 @@ Wrap an `Input` component with buttons.
 ```html
 <script lang="ts">
   import Search from "@lucide/svelte/icons/search";
-  import { Button } from "@stevejuma/ui/shadcn/button";
-  import * as ButtonGroup from "@stevejuma/ui/shadcn/button-group";
-  import { Input } from "@stevejuma/ui/shadcn/input";
+  import { Button } from "@lapismd/design-core/shadcn/button";
+  import * as ButtonGroup from "@lapismd/design-core/shadcn/button-group";
+  import { Input } from "@lapismd/design-core/shadcn/input";
 </script>
 
 <ButtonGroup.Root>
@@ -202,10 +202,10 @@ Wrap an `InputGroup` component to create complex input layouts.
 <script lang="ts">
   import AudioLines from "@lucide/svelte/icons/audio-lines";
   import Plus from "@lucide/svelte/icons/plus";
-  import { Button } from "@stevejuma/ui/shadcn/button";
-  import * as ButtonGroup from "@stevejuma/ui/shadcn/button-group";
-  import * as InputGroup from "@stevejuma/ui/shadcn/input-group";
-  import * as Tooltip from "@stevejuma/ui/shadcn/tooltip";
+  import { Button } from "@lapismd/design-core/shadcn/button";
+  import * as ButtonGroup from "@lapismd/design-core/shadcn/button-group";
+  import * as InputGroup from "@lapismd/design-core/shadcn/input-group";
+  import * as Tooltip from "@lapismd/design-core/shadcn/tooltip";
 
   let voiceEnabled = $state(false);
 </script>
@@ -264,9 +264,9 @@ Create a split button group with a `DropdownMenu` component.
   import Trash from "@lucide/svelte/icons/trash";
   import UserRoundX from "@lucide/svelte/icons/user-round-x";
   import VolumeOff from "@lucide/svelte/icons/volume-off";
-  import { Button } from "@stevejuma/ui/shadcn/button";
-  import * as ButtonGroup from "@stevejuma/ui/shadcn/button-group";
-  import * as DropdownMenu from "@stevejuma/ui/shadcn/dropdown-menu";
+  import { Button } from "@lapismd/design-core/shadcn/button";
+  import * as ButtonGroup from "@lapismd/design-core/shadcn/button-group";
+  import * as DropdownMenu from "@lapismd/design-core/shadcn/dropdown-menu";
 </script>
 
 <ButtonGroup.Root>
@@ -325,10 +325,10 @@ Pair with a `Select` component.
 ```html
 <script lang="ts">
   import ArrowRight from "@lucide/svelte/icons/arrow-right";
-  import { Button } from "@stevejuma/ui/shadcn/button";
-  import * as ButtonGroup from "@stevejuma/ui/shadcn/button-group";
-  import { Input } from "@stevejuma/ui/shadcn/input";
-  import * as Select from "@stevejuma/ui/shadcn/select";
+  import { Button } from "@lapismd/design-core/shadcn/button";
+  import * as ButtonGroup from "@lapismd/design-core/shadcn/button-group";
+  import { Input } from "@lapismd/design-core/shadcn/input";
+  import * as Select from "@lapismd/design-core/shadcn/select";
 
   const CURRENCIES = [
     {
@@ -379,11 +379,11 @@ Use with a `Popover` component.
 <script lang="ts">
   import Bot from "@lucide/svelte/icons/bot";
   import ChevronDown from "@lucide/svelte/icons/chevron-down";
-  import { Button } from "@stevejuma/ui/shadcn/button";
-  import * as ButtonGroup from "@stevejuma/ui/shadcn/button-group";
-  import * as Popover from "@stevejuma/ui/shadcn/popover";
-  import { Separator } from "@stevejuma/ui/shadcn/separator";
-  import { Textarea } from "@stevejuma/ui/shadcn/textarea";
+  import { Button } from "@lapismd/design-core/shadcn/button";
+  import * as ButtonGroup from "@lapismd/design-core/shadcn/button-group";
+  import * as Popover from "@lapismd/design-core/shadcn/popover";
+  import { Separator } from "@lapismd/design-core/shadcn/separator";
+  import { Textarea } from "@lapismd/design-core/shadcn/textarea";
 </script>
 
 <ButtonGroup.Root>

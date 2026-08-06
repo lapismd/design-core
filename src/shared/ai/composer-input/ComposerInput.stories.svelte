@@ -1,7 +1,7 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent, waitFor } from "storybook/test";
-  import { Button } from "@stevejuma/ui/shadcn/button";
+  import { Button } from "@lapismd/design-core/shadcn/button";
   import Composer from "../composer/Composer.svelte";
   import ComposerInput from "./ComposerInput.svelte";
   import type { ComposerInputHandle, ComposerTrigger } from "../types.js";

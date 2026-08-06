@@ -35,7 +35,7 @@ describe("ui guide", () => {
     expect(index.topics.length).toBeGreaterThanOrEqual(4);
     expect(index.readingOrder[0]).toMatch(/layers/);
     const text = renderGuideIndex(index, createColors(false));
-    expect(text).toContain("@stevejuma/ui agent guide");
+    expect(text).toContain("@lapismd/design-core agent guide");
     expect(text).toContain("pnpm ui guide");
   });
 

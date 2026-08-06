@@ -18,7 +18,7 @@
 </script>
 
 <script lang="ts">
-  import { Button } from "@stevejuma/ui/shadcn/button";
+  import { Button } from "@lapismd/design-core/shadcn/button";
 
   let open = $state(false);
   let collapsedAll = $state(false);

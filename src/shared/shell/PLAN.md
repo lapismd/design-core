@@ -1,6 +1,6 @@
 # Minimal composable app shell
 
-This tracker covers the structural `@stevejuma/ui/shell` layer. CV Studio is
+This tracker covers the structural `@lapismd/design-core/shell` layer. CV Studio is
 the visual reference only; its application store, routing, settings, and
 workspace behavior are not copied.
 
@@ -82,7 +82,7 @@ workspace behavior are not copied.
   shared shadcn Scroll Area.
 - Shell may compose shadcn Button for its Toggle and Close actions.
 - Production sources use native CSS and public `--ui-shell-*` tokens.
-- `@stevejuma/ui/workspace` remains the full workspace framework.
+- `@lapismd/design-core/workspace` remains the full workspace framework.
 
 ## Slices
 

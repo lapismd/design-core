@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { Button } from "@stevejuma/ui/shadcn/button";
-  import { Input } from "@stevejuma/ui/shadcn/input";
-  import { Switch } from "@stevejuma/ui/shadcn/switch";
+  import { Button } from "@lapismd/design-core/shadcn/button";
+  import { Input } from "@lapismd/design-core/shadcn/input";
+  import { Switch } from "@lapismd/design-core/shadcn/switch";
   import WorkspaceIcon from "../icon/WorkspaceIcon.svelte";
 
   let {

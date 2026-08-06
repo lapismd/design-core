@@ -29,18 +29,18 @@ describe("ui components", () => {
 
     const searchFilter = list.find((c) => c.key === "filter/search-filter-bar");
     expect(searchFilter).toBeDefined();
-    expect(searchFilter!.import).toBe("@stevejuma/ui/filter");
+    expect(searchFilter!.import).toBe("@lapismd/design-core/filter");
 
     const button = list.find((c) => c.key === "shadcn/button");
     expect(button).toBeDefined();
     expect(button!.hasDocs).toBe(true);
-    expect(button!.import).toBe("@stevejuma/ui/shadcn/button");
+    expect(button!.import).toBe("@lapismd/design-core/shadcn/button");
     expect(button!.exampleCount).toBeGreaterThan(0);
 
     const formField = list.find((c) => c.key === "forms/form-field");
     expect(formField).toBeDefined();
     expect(formField!.hasDocs).toBe(true);
-    expect(formField!.import).toBe("@stevejuma/ui/forms");
+    expect(formField!.import).toBe("@lapismd/design-core/forms");
   });
 
   it("filters by --layer", () => {
@@ -51,9 +51,9 @@ describe("ui components", () => {
 
   it("parses example-sources exports", () => {
     const map = parseExampleSources(
-      `export const Default = "<script>\\n  import { Button } from \\"@stevejuma/ui/shadcn/button\\";\\n</script>\\n<Button>Button</Button>";\n`,
+      `export const Default = "<script>\\n  import { Button } from \\"@lapismd/design-core/shadcn/button\\";\\n</script>\\n<Button>Button</Button>";\n`,
     );
-    expect(map.get("Default")).toContain("@stevejuma/ui/shadcn/button");
+    expect(map.get("Default")).toContain("@lapismd/design-core/shadcn/button");
     expect(map.get("Default")).toContain("<Button>Button</Button>");
   });
 
@@ -69,7 +69,7 @@ describe("ui components", () => {
     const sources = new Map([
       [
         "Default",
-        '<script lang="ts">\n  import { Button } from "@stevejuma/ui/shadcn/button";\n</script>\n<Button>Button</Button>',
+        '<script lang="ts">\n  import { Button } from "@lapismd/design-core/shadcn/button";\n</script>\n<Button>Button</Button>',
       ],
       ["Outline", '<Button variant="outline">Outline</Button>'],
     ]);
@@ -88,12 +88,12 @@ Hello
 
 ## Usage
 
-<Source language="html" code={"<script lang=\\"ts\\">\\n  import { FormField } from \\"@stevejuma/ui/forms\\";\\n</script>"} />
+<Source language="html" code={"<script lang=\\"ts\\">\\n  import { FormField } from \\"@lapismd/design-core/forms\\";\\n</script>"} />
 
 <Primary />
 `);
     expect(body).toContain("```svelte");
-    expect(body).toContain("@stevejuma/ui/forms");
+    expect(body).toContain("@lapismd/design-core/forms");
     expect(body).not.toContain("<Primary");
     expect(examples[0]?.source).toContain("FormField");
   });
@@ -116,14 +116,14 @@ Hello
     const doc = getComponent(packageRoot, "forms/form-field");
     expect(doc.layer).toBe("forms");
     expect(doc.body).toMatch(/FormField/);
-    expect(doc.body).toContain("@stevejuma/ui/forms");
+    expect(doc.body).toContain("@lapismd/design-core/forms");
     expect(doc.sources.some((s) => s.endsWith("FormField.mdx"))).toBe(true);
   });
 
   it("shows AI components from colocated MDX", () => {
     const ai = getComponent(packageRoot, "ai/composer-input");
     expect(ai.layer).toBe("ai");
-    expect(ai.import).toBe("@stevejuma/ui/ai/chat");
+    expect(ai.import).toBe("@lapismd/design-core/ai/chat");
     expect(ai.body).toContain("Import");
   });
 
@@ -132,11 +132,11 @@ Hello
     // 15 stable + 5 experimental + overview
     expect(ai).toHaveLength(21);
     expect(ai.find((entry) => entry.id === "composer-input")?.import).toBe(
-      "@stevejuma/ui/ai/chat",
+      "@lapismd/design-core/ai/chat",
     );
     expect(
       ai.find((entry) => entry.id === "experimental-emoji-picker")?.import,
-    ).toBe("@stevejuma/ui/ai/experimental");
+    ).toBe("@lapismd/design-core/ai/experimental");
     expect(ai.every((entry) => entry.hasDocs)).toBe(true);
   });
 

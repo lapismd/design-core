@@ -26,9 +26,9 @@
 
 <script lang="ts">
   import SmilePlusIcon from "@lucide/svelte/icons/smile-plus";
-  import { Button } from "@stevejuma/ui/shadcn/button";
-  import { Input } from "@stevejuma/ui/shadcn/input";
-  import * as Popover from "@stevejuma/ui/shadcn/popover";
+  import { Button } from "@lapismd/design-core/shadcn/button";
+  import { Input } from "@lapismd/design-core/shadcn/input";
+  import * as Popover from "@lapismd/design-core/shadcn/popover";
   import type { Snippet } from "svelte";
   import type { HTMLAttributes } from "svelte/elements";
   import "../../chat.css";

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Input } from "@stevejuma/ui/shadcn/input";
+  import { Input } from "@lapismd/design-core/shadcn/input";
   import type { WorkspaceCustomSettingProps } from "./types.js";
 
   let { id, value, disabled, update }: WorkspaceCustomSettingProps = $props();

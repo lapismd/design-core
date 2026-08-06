@@ -8,7 +8,7 @@ pnpm ui:add label
 
 ```html
 <script lang="ts">
-  import { Label } from "@stevejuma/ui/shadcn/label";
+  import { Label } from "@lapismd/design-core/shadcn/label";
 </script>
 ```
 

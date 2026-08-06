@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Switch } from "@stevejuma/ui/shadcn/switch";
+  import { Switch } from "@lapismd/design-core/shadcn/switch";
   import type { AppShellController } from "../core/app-shell-controller.svelte.js";
   import WorkspaceIcon from "../icon/WorkspaceIcon.svelte";
 

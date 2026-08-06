@@ -232,7 +232,7 @@ export function markdownToHtmlDocument(
   const bodyHtml = marked.parse(markdown, { async: false }) as string;
   const titleMatch = /^#\s+(.+)$/m.exec(markdown);
   const title =
-    options.title ?? titleMatch?.[1]?.trim() ?? "@stevejuma/ui docs";
+    options.title ?? titleMatch?.[1]?.trim() ?? "@lapismd/design-core docs";
 
   return `<!doctype html>
 <html lang="en">

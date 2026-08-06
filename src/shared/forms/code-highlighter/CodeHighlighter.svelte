@@ -2,7 +2,7 @@
   import "./CodeHighlighter.css";
   import type { Parser } from "@lezer/common";
   import { highlightCode } from "@lezer/highlight";
-  import * as ScrollArea from "@stevejuma/ui/shadcn/scroll-area";
+  import * as ScrollArea from "@lapismd/design-core/shadcn/scroll-area";
 
   import { codeHighlighter } from "./code-highlighter";
 

@@ -1,5 +1,5 @@
 /**
- * Public CSS custom properties for `@stevejuma/ui/workspace`.
+ * Public CSS custom properties for `@lapismd/design-core/workspace`.
  *
  * Defaults live in `workspace.tokens.css`. Consumers override these values on
  * `:root` or a Workspace ancestor.

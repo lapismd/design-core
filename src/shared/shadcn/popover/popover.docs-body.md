@@ -8,7 +8,7 @@ pnpm ui:add popover
 
 ```html
 <script lang="ts">
-  import * as Popover from "@stevejuma/ui/shadcn/popover";
+  import * as Popover from "@lapismd/design-core/shadcn/popover";
 </script>
 ```
 

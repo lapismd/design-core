@@ -2,8 +2,8 @@
   import SparklesIcon from "@lucide/svelte/icons/sparkles";
   import type { Snippet } from "svelte";
   import type { HTMLAttributes } from "svelte/elements";
-  import * as Empty from "@stevejuma/ui/shadcn/empty";
-  import { ScrollArea } from "@stevejuma/ui/shadcn/scroll-area";
+  import * as Empty from "@lapismd/design-core/shadcn/empty";
+  import { ScrollArea } from "@lapismd/design-core/shadcn/scroll-area";
   import { createNewMessages } from "../new-messages.svelte.js";
   import { createStreamScroll } from "../stream-scroll.svelte.js";
   import { setLayoutContext } from "../context.svelte.js";

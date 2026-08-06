@@ -3,7 +3,7 @@
   import GripVerticalIcon from "@lucide/svelte/icons/grip-vertical";
   import XIcon from "@lucide/svelte/icons/x";
   import type { Snippet } from "svelte";
-  import { Button } from "@stevejuma/ui/shadcn/button";
+  import { Button } from "@lapismd/design-core/shadcn/button";
 
   let {
     id,

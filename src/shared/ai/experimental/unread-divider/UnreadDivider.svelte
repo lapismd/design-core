@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Separator } from "@stevejuma/ui/shadcn/separator";
+  import { Separator } from "@lapismd/design-core/shadcn/separator";
   import type { HTMLAttributes } from "svelte/elements";
   import "../../chat.css";
 

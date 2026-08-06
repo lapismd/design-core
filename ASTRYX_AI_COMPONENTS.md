@@ -1,7 +1,7 @@
 # ASTRYX Chat/AI implementation tracker
 
 This tracker is the source of truth for the ASTRYX-inspired Chat family in
-`@stevejuma/ui`. It records observed upstream anatomy and behavior separately
+`@lapismd/design-core`. It records observed upstream anatomy and behavior separately
 from the local Svelte 5 implementation and its verification status.
 
 ## Reference and attribution
@@ -53,11 +53,11 @@ stays pending until a human reviews the Storybook previews. See
 The package subpaths are:
 
 ```ts
-import * as AiChat from "@stevejuma/ui/ai/chat";
-import * as ExperimentalAiChat from "@stevejuma/ui/ai/experimental";
+import * as AiChat from "@lapismd/design-core/ai/chat";
+import * as ExperimentalAiChat from "@lapismd/design-core/ai/experimental";
 ```
 
-The root `@stevejuma/ui/ai` barrel exposes the same families as `Chat` and
+The root `@lapismd/design-core/ai` barrel exposes the same families as `Chat` and
 `ExperimentalChat`. Sources live under `src/shared/ai/<component>/` (and
 `src/shared/ai/experimental/<component>/`).
 

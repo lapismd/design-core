@@ -1,10 +1,10 @@
 <script lang="ts">
-  import * as Alert from "@stevejuma/ui/shadcn/alert";
-  import { Button } from "@stevejuma/ui/shadcn/button";
-  import { Input } from "@stevejuma/ui/shadcn/input";
-  import { Switch } from "@stevejuma/ui/shadcn/switch";
-  import * as Table from "@stevejuma/ui/shadcn/table";
-  import { Textarea } from "@stevejuma/ui/shadcn/textarea";
+  import * as Alert from "@lapismd/design-core/shadcn/alert";
+  import { Button } from "@lapismd/design-core/shadcn/button";
+  import { Input } from "@lapismd/design-core/shadcn/input";
+  import { Switch } from "@lapismd/design-core/shadcn/switch";
+  import * as Table from "@lapismd/design-core/shadcn/table";
+  import { Textarea } from "@lapismd/design-core/shadcn/textarea";
   import type {
     WorkspaceKeyValueSetting,
     WorkspaceSettingField as SettingDefinition,

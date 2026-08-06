@@ -1,7 +1,7 @@
 # Shared Code and Code Block
 
 Implementation contract and progress record for the project-authored
-`@stevejuma/ui/shadcn/code` and `@stevejuma/ui/shadcn/code-block` families.
+`@lapismd/design-core/shadcn/code` and `@lapismd/design-core/shadcn/code-block` families.
 
 ## Classification and provenance
 
@@ -39,13 +39,13 @@ message content.
 
 ## Public contract
 
-### Code (`@stevejuma/ui/shadcn/code`)
+### Code (`@lapismd/design-core/shadcn/code`)
 
 - Styled `<code>` with `color?: "primary" | "secondary" | "inherit"` and
   `size?: "inherit"`.
 - Children via snippet.
 
-### CodeBlock (`@stevejuma/ui/shadcn/code-block`)
+### CodeBlock (`@lapismd/design-core/shadcn/code-block`)
 
 Props aligned with upstream: `code`, `language`, `title`, `hasLanguageLabel`,
 `hasLineNumbers`, `highlightLines`, `hasCopyButton`, `onCopy`, `isWrapped`,

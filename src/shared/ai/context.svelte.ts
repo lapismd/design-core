@@ -3,10 +3,10 @@ import type { Density, ComposerInputHandle } from "./types.js";
 import type { StreamScrollController } from "./stream-scroll.svelte.js";
 import type { NewMessagesController } from "./new-messages.svelte.js";
 
-const LAYOUT_CONTEXT = Symbol.for("@stevejuma/ui/ai/layout");
-const COMPOSER_CONTEXT = Symbol.for("@stevejuma/ui/ai/composer");
-const LIST_CONTEXT = Symbol.for("@stevejuma/ui/ai/list");
-const MESSAGE_CONTEXT = Symbol.for("@stevejuma/ui/ai/message");
+const LAYOUT_CONTEXT = Symbol.for("@lapismd/design-core/ai/layout");
+const COMPOSER_CONTEXT = Symbol.for("@lapismd/design-core/ai/composer");
+const LIST_CONTEXT = Symbol.for("@lapismd/design-core/ai/list");
+const MESSAGE_CONTEXT = Symbol.for("@lapismd/design-core/ai/message");
 
 export type LayoutContextValue = {
   getScrollContainer: () => HTMLElement | null;

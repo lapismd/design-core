@@ -1,4 +1,4 @@
-<!-- Adapted from https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/switch.md for the @stevejuma/ui native-CSS catalog. -->
+<!-- Adapted from https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/switch.md for the @lapismd/design-core native-CSS catalog. -->
 
 # Switch
 
@@ -14,7 +14,7 @@ pnpm ui:add switch
 
 ```html
 <script lang="ts">
-  import { Switch } from "@stevejuma/ui/shadcn/switch";
+  import { Switch } from "@lapismd/design-core/shadcn/switch";
 </script>
 ```
 

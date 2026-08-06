@@ -3,7 +3,7 @@
   import PlusIcon from "@lucide/svelte/icons/plus";
   import XIcon from "@lucide/svelte/icons/x";
   import { tick } from "svelte";
-  import { Button } from "@stevejuma/ui/shadcn/button";
+  import { Button } from "@lapismd/design-core/shadcn/button";
 
   export type AddSectionOption = {
     value: string;

@@ -120,16 +120,16 @@ folder. Full layer table: `pnpm ui guide layers`. Styling and tokens:
   shared primitive or deferred item.
 - `Shadcn/` is the UI-owned shadcn-svelte catalog. Source and stories live in
   `src/shared/shadcn/<family>/`. Import a family from
-  `@stevejuma/ui/shadcn/<family>`.
+  `@lapismd/design-core/shadcn/<family>`.
 - Shared forms live under `src/shared/forms/<family>/`. Import from
-  `@stevejuma/ui/forms` or `@stevejuma/ui/forms/core`.
+  `@lapismd/design-core/forms` or `@lapismd/design-core/forms/core`.
 - Search filter chrome and filter-query language live under
-  `src/shared/filter/`. Import from `@stevejuma/ui/filter`.
+  `src/shared/filter/`. Import from `@lapismd/design-core/filter`.
 - Shared AI presentation lives under `src/shared/ai/<component>/` (experimental
   under `src/shared/ai/experimental/<component>/`). Import from
-  `@stevejuma/ui/ai`, `@stevejuma/ui/ai/chat`, or `@stevejuma/ui/ai/experimental`.
+  `@lapismd/design-core/ai`, `@lapismd/design-core/ai/chat`, or `@lapismd/design-core/ai/experimental`.
 - Structural AppShell lives under `src/shared/shell/app-shell/`. Import from
-  `@stevejuma/ui/shell`.
+  `@lapismd/design-core/shell`.
 - Interactive examples must be genuinely interactive. Play functions must
   exercise the real control flow and assert a visible or accessible result as
   well as any callback.

@@ -8,7 +8,7 @@ pnpm ui:add accordion
 
 ```html
 <script lang="ts">
-  import * as Accordion from "@stevejuma/ui/shadcn/accordion";
+  import * as Accordion from "@lapismd/design-core/shadcn/accordion";
 </script>
 ```
 

@@ -7,7 +7,7 @@
   import SearchIcon from "@lucide/svelte/icons/search";
   import XIcon from "@lucide/svelte/icons/x";
   import type { Snippet } from "svelte";
-  import { Button } from "@stevejuma/ui/shadcn/button";
+  import { Button } from "@lapismd/design-core/shadcn/button";
   import FormAddButton from "../form-add-button/FormAddButton.svelte";
   import {
     duplicateReferenceCount,

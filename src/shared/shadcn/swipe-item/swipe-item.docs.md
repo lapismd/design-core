@@ -11,14 +11,14 @@ does not copy the unrelated upstream shadcn Item family.
 ## Import
 
 ```ts
-import * as SwipeItem from "@stevejuma/ui/shadcn/swipe-item";
+import * as SwipeItem from "@lapismd/design-core/shadcn/swipe-item";
 ```
 
 ## Usage
 
 ```svelte
 <script lang="ts">
-  import * as SwipeItem from "@stevejuma/ui/shadcn/swipe-item";
+  import * as SwipeItem from "@lapismd/design-core/shadcn/swipe-item";
 
   function archive() {
     // Consumer-owned domain work.

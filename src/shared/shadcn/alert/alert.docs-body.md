@@ -8,7 +8,7 @@ pnpm ui:add alert
 
 ```html
 <script lang="ts">
-  import * as Alert from "@stevejuma/ui/shadcn/alert";
+  import * as Alert from "@lapismd/design-core/shadcn/alert";
 </script>
 ```
 

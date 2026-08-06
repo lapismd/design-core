@@ -8,7 +8,7 @@ pnpm ui:add alert-dialog
 
 ```html
 <script lang="ts">
-  import * as AlertDialog from "@stevejuma/ui/shadcn/alert-dialog";
+  import * as AlertDialog from "@lapismd/design-core/shadcn/alert-dialog";
 </script>
 ```
 

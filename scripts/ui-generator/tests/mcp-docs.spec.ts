@@ -106,7 +106,7 @@ describe("llms docs service", () => {
 
   it("builds an llms.txt index with layered component links", () => {
     const index = service.buildLlmsIndex();
-    expect(index).toContain("# @stevejuma/ui");
+    expect(index).toContain("# @lapismd/design-core");
     expect(index).toContain("## shadcn");
     expect(index).toContain(
       "[Button](http://127.0.0.1:9011/llms/shadcn/button.md)",
@@ -155,7 +155,7 @@ describe("llms docs service", () => {
     const indexMd = service.resolveLlmsPath("/llms.md");
     expect(indexMd.status).toBe(200);
     expect(indexMd.contentType).toBe("text/html; charset=utf-8");
-    expect(indexMd.body).toContain("<h1>@stevejuma/ui</h1>");
+    expect(indexMd.body).toContain("<h1>@lapismd/design-core</h1>");
     expect(indexMd.body).toContain(
       'href="http://127.0.0.1:9011/llms/shadcn/button.md"',
     );

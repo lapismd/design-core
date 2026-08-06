@@ -1,4 +1,4 @@
-<!-- Adapted from https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/textarea.md for the @stevejuma/ui native-CSS catalog. -->
+<!-- Adapted from https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/textarea.md for the @lapismd/design-core native-CSS catalog. -->
 
 # Textarea
 
@@ -14,7 +14,7 @@ pnpm ui:add textarea
 
 ```html
 <script lang="ts">
-  import { Textarea } from "@stevejuma/ui/shadcn/textarea";
+  import { Textarea } from "@lapismd/design-core/shadcn/textarea";
 </script>
 ```
 
@@ -28,7 +28,7 @@ pnpm ui:add textarea
 
 ```html
 <script lang="ts">
-  import { Textarea } from "@stevejuma/ui/shadcn/textarea";
+  import { Textarea } from "@lapismd/design-core/shadcn/textarea";
 </script>
 
 <textarea placeholder="Type your message here." />
@@ -38,7 +38,7 @@ pnpm ui:add textarea
 
 ```html
 <script lang="ts">
-  import { Textarea } from "@stevejuma/ui/shadcn/textarea";
+  import { Textarea } from "@lapismd/design-core/shadcn/textarea";
 </script>
 
 <textarea disabled placeholder="Type your message here." />
@@ -48,8 +48,8 @@ pnpm ui:add textarea
 
 ```html
 <script lang="ts">
-  import { Label } from "@stevejuma/ui/shadcn/label";
-  import { Textarea } from "@stevejuma/ui/shadcn/textarea";
+  import { Label } from "@lapismd/design-core/shadcn/label";
+  import { Textarea } from "@lapismd/design-core/shadcn/textarea";
 </script>
 
 <div class="grid w-full gap-1.5">
@@ -62,8 +62,8 @@ pnpm ui:add textarea
 
 ```html
 <script lang="ts">
-  import { Label } from "@stevejuma/ui/shadcn/label";
-  import { Textarea } from "@stevejuma/ui/shadcn/textarea";
+  import { Label } from "@lapismd/design-core/shadcn/label";
+  import { Textarea } from "@lapismd/design-core/shadcn/textarea";
 </script>
 
 <div class="grid w-full gap-1.5">
@@ -79,8 +79,8 @@ pnpm ui:add textarea
 
 ```html
 <script lang="ts">
-  import { Button } from "@stevejuma/ui/shadcn/button";
-  import { Textarea } from "@stevejuma/ui/shadcn/textarea";
+  import { Button } from "@lapismd/design-core/shadcn/button";
+  import { Textarea } from "@lapismd/design-core/shadcn/textarea";
 </script>
 
 <div class="grid w-full gap-2">

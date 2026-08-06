@@ -8,7 +8,7 @@ pnpm ui:add switch
 
 ```html
 <script lang="ts">
-  import { Switch } from "@stevejuma/ui/shadcn/switch";
+  import { Switch } from "@lapismd/design-core/shadcn/switch";
 </script>
 ```
 

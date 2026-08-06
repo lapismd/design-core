@@ -16,7 +16,7 @@
     },
   });
 
-  const sampleTsx = `import { Button } from '@stevejuma/ui/shadcn/button';
+  const sampleTsx = `import { Button } from '@lapismd/design-core/shadcn/button';
 
 export function App() {
   return <Button>Hello</Button>;

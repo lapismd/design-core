@@ -16,7 +16,7 @@ Structured multi-field filter bar: each **token** is field + operator + value,
 plus a combobox to add more. No CodeMirror — prefer this when hosts want chip
 filters without a typed filter-query language.
 
-Import from `@stevejuma/ui/filter`. See [Filter/Guidance](?path=/docs/filter-guidance--docs)
+Import from `@lapismd/design-core/filter`. See [Filter/Guidance](?path=/docs/filter-guidance--docs)
 for when to use PowerSearch vs `SearchFilterBar`.
 
 ## Guidance
@@ -41,7 +41,7 @@ for when to use PowerSearch vs `SearchFilterBar`.
   PowerSearch,
   tokensToFilterQuery,
   type PowerSearchToken,
-} from "@stevejuma/ui/filter";
+} from "@lapismd/design-core/filter";
 
 let tokens = $state<PowerSearchToken[]>([]);
 

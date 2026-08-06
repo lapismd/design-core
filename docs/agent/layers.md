@@ -17,19 +17,19 @@ existing family already covers the need.
 ## Layers
 
 1. **Shadcn** (`src/shared/shadcn/<family>/`) — generic primitives. Import from
-   `@stevejuma/ui/shadcn/<family>`. Catalog: `Shadcn/...`. Guidance:
+   `@lapismd/design-core/shadcn/<family>`. Catalog: `Shadcn/...`. Guidance:
    `Shadcn/Guidance`.
 2. **Forms** (`src/shared/forms/<family>/`) — schema-shaped editing and form-row
-   chrome. Import from `@stevejuma/ui/forms` or `@stevejuma/ui/forms/core`.
+   chrome. Import from `@lapismd/design-core/forms` or `@lapismd/design-core/forms/core`.
    Catalog: `UI Forms/...`. Guidance: `UI Forms/Guidance`.
 3. **Filter** (`src/shared/filter/`) — search chrome and filter-query language
    (`PowerSearch`, `SearchFilterBar`, `parseFilterQuery`, host `filterSyntax`).
    Import from
-   `@stevejuma/ui/filter`. Catalog: `Filter/...`. Guidance: `Filter/Guidance`.
+   `@lapismd/design-core/filter`. Catalog: `Filter/...`. Guidance: `Filter/Guidance`.
 4. **AI** (`src/shared/ai/<component>/`) — shared AI chat primitives (one
    folder per component; experimental under `experimental/<component>/`).
-   Import from `@stevejuma/ui/ai`, `@stevejuma/ui/ai/chat`, or
-   `@stevejuma/ui/ai/experimental`. Catalog: `AI/...`.
+   Import from `@lapismd/design-core/ai`, `@lapismd/design-core/ai/chat`, or
+   `@lapismd/design-core/ai/experimental`. Catalog: `AI/...`.
 5. **Shell** (`src/shared/shell/app-shell/`) — bounded structural application
    chrome with independently controlled collapsible, closeable, and resizable
    left/right rails, optional same-side nesting, a full-height outer variant
@@ -42,13 +42,13 @@ existing family already covers the need.
    mutating durable layout. Its injected versioned adapter persists desktop
    sidebar state and widths, including named same-side panels, but not
    transient mobile state. Layer root keeps `Guidance.mdx`, tokens, and the
-   `@stevejuma/ui/shell` re-export barrel. Catalog: `Shell/App Shell`. Guidance:
+   `@lapismd/design-core/shell` re-export barrel. Catalog: `Shell/App Shell`. Guidance:
    `Shell/Guidance` and `pnpm ui guide shell`. It owns geometry plus
    Toggle/Close actions; consumers own navigation selection, other actions,
    content, and non-layout persistence.
 6. **Workspace** (`src/shared/workspace/`) — application-independent workspace
    framework, controller, layout, views, shell components, settings, and static
-   plugin presentation. Import from `@stevejuma/ui/workspace`. Catalog:
+   plugin presentation. Import from `@lapismd/design-core/workspace`. Catalog:
    `Workspace/...`. Its shell geometry uses native CSS; declarative settings
    and other generic controls compose UI-owned shadcn primitives.
 

@@ -1,4 +1,4 @@
-/** Public CSS custom properties for `@stevejuma/ui/shell`. */
+/** Public CSS custom properties for `@lapismd/design-core/shell`. */
 export const shellTokenNames = {
   height: "--ui-shell-height",
   leftSidebarWidth: "--ui-shell-left-sidebar-width",

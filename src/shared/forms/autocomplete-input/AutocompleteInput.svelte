@@ -1,6 +1,6 @@
 <script lang="ts">
   import "./AutocompleteInput.css";
-  import * as Popover from "@stevejuma/ui/shadcn/popover";
+  import * as Popover from "@lapismd/design-core/shadcn/popover";
 
   let {
     id = undefined,

@@ -11,8 +11,8 @@
     getLocalTimeZone,
   } from "@internationalized/date";
   import { parseDate } from "chrono-node";
-  import { Button } from "@stevejuma/ui/shadcn/button";
-  import * as Popover from "@stevejuma/ui/shadcn/popover";
+  import { Button } from "@lapismd/design-core/shadcn/button";
+  import * as Popover from "@lapismd/design-core/shadcn/popover";
   import TaskDueCalendar from "../task-due-calendar/TaskDueCalendar.svelte";
   import {
     buildNaturalDateSuggestions,

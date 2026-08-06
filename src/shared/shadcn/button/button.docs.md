@@ -1,4 +1,4 @@
-<!-- Adapted from https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/button.md for the @stevejuma/ui native-CSS catalog. -->
+<!-- Adapted from https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/button.md for the @lapismd/design-core native-CSS catalog. -->
 
 # Button
 
@@ -18,7 +18,7 @@ pnpm ui:add button
 
 ```html
 <script lang="ts">
-  import { Button } from "@stevejuma/ui/shadcn/button";
+  import { Button } from "@lapismd/design-core/shadcn/button";
 </script>
 
 <button variant="outline">Button</button>
@@ -31,7 +31,7 @@ pnpm ui:add button
 ```html
 <script lang="ts">
   import ArrowUpRightIcon from "@lucide/svelte/icons/arrow-up-right";
-  import { Button } from "@stevejuma/ui/shadcn/button";
+  import { Button } from "@lapismd/design-core/shadcn/button";
 </script>
 
 <div class="flex flex-col items-start gap-8 sm:flex-row">
@@ -60,7 +60,7 @@ pnpm ui:add button
 
 ```html
 <script lang="ts">
-  import { Button } from "@stevejuma/ui/shadcn/button";
+  import { Button } from "@lapismd/design-core/shadcn/button";
 </script>
 
 <button>Button</button>
@@ -70,7 +70,7 @@ pnpm ui:add button
 
 ```html
 <script lang="ts">
-  import { Button } from "@stevejuma/ui/shadcn/button";
+  import { Button } from "@lapismd/design-core/shadcn/button";
 </script>
 
 <button variant="outline">Outline</button>
@@ -80,7 +80,7 @@ pnpm ui:add button
 
 ```html
 <script lang="ts">
-  import { Button } from "@stevejuma/ui/shadcn/button";
+  import { Button } from "@lapismd/design-core/shadcn/button";
 </script>
 
 <button variant="secondary">Secondary</button>
@@ -90,7 +90,7 @@ pnpm ui:add button
 
 ```html
 <script lang="ts">
-  import { Button } from "@stevejuma/ui/shadcn/button";
+  import { Button } from "@lapismd/design-core/shadcn/button";
 </script>
 
 <button variant="ghost">Ghost</button>
@@ -100,7 +100,7 @@ pnpm ui:add button
 
 ```html
 <script lang="ts">
-  import { Button } from "@stevejuma/ui/shadcn/button";
+  import { Button } from "@lapismd/design-core/shadcn/button";
 </script>
 
 <button variant="destructive">Destructive</button>
@@ -110,7 +110,7 @@ pnpm ui:add button
 
 ```html
 <script lang="ts">
-  import { Button } from "@stevejuma/ui/shadcn/button";
+  import { Button } from "@lapismd/design-core/shadcn/button";
 </script>
 
 <button variant="link">Link</button>
@@ -121,7 +121,7 @@ pnpm ui:add button
 ```html
 <script lang="ts">
   import CircleFadingArrowUpIcon from "@lucide/svelte/icons/circle-fading-arrow-up";
-  import { Button } from "@stevejuma/ui/shadcn/button";
+  import { Button } from "@lapismd/design-core/shadcn/button";
 </script>
 
 <button variant="outline" size="icon" aria-label="Submit">
@@ -136,7 +136,7 @@ The spacing between the icon and the text is automatically adjusted based on the
 ```html
 <script lang="ts">
   import IconGitBranch from "@lucide/svelte/icons/git-branch";
-  import { Button } from "@stevejuma/ui/shadcn/button";
+  import { Button } from "@lapismd/design-core/shadcn/button";
 </script>
 
 <button variant="outline" size="sm"><IconGitBranch /> New Branch</button>
@@ -149,7 +149,7 @@ Use the `rounded-full` class to make the button rounded.
 ```html
 <script lang="ts">
   import ArrowUpIcon from "@lucide/svelte/icons/arrow-up";
-  import { Button } from "@stevejuma/ui/shadcn/button";
+  import { Button } from "@lapismd/design-core/shadcn/button";
 </script>
 
 <div class="flex flex-col gap-8">
@@ -163,8 +163,8 @@ Use the `rounded-full` class to make the button rounded.
 
 ```html
 <script lang="ts">
-  import { Button } from "@stevejuma/ui/shadcn/button";
-  import { Spinner } from "@stevejuma/ui/shadcn/spinner";
+  import { Button } from "@lapismd/design-core/shadcn/button";
+  import { Spinner } from "@lapismd/design-core/shadcn/spinner";
 </script>
 
 <button size="sm" variant="outline" disabled>
@@ -269,7 +269,7 @@ Alternatively, you can use the `buttonVariants` helper to create a link that loo
 
 ```html
 <script lang="ts">
-  import { Button } from "@stevejuma/ui/shadcn/button";
+  import { Button } from "@lapismd/design-core/shadcn/button";
 </script>
 
 <button variant="link">Link</button>

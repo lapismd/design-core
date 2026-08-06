@@ -1,4 +1,4 @@
-<!-- Adapted from https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/tabs.md for the @stevejuma/ui native-CSS catalog. -->
+<!-- Adapted from https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/tabs.md for the @lapismd/design-core native-CSS catalog. -->
 
 # Tabs
 
@@ -14,7 +14,7 @@ pnpm ui:add tabs
 
 ```html
 <script lang="ts">
-  import * as Tabs from "@stevejuma/ui/shadcn/tabs";
+  import * as Tabs from "@lapismd/design-core/shadcn/tabs";
 </script>
 ```
 

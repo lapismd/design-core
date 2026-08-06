@@ -173,7 +173,7 @@ export function createUiDocsProvider(): DocsMcpProvider {
       });
       return {
         project: {
-          title: "@stevejuma/ui",
+          title: "@lapismd/design-core",
           description:
             "Local UI package documentation for shadcn, forms, filter, and AI.",
           guidance: {
@@ -253,7 +253,7 @@ items. The composed story is the maintained executable reference.
             denseMarkdown: `# Reviewable form workflow
 
 - ID: \`block-reviewable-form-workflow\`
-- Import: \`@stevejuma/ui/forms\`
+- Import: \`@lapismd/design-core/forms\`
 - Components: \`forms-form-review\`, \`forms-form-field\`, \`forms-list-editor\`
 - State owner: consuming application
 - Actions: Keep clears review state; Undo restores \`removedValue\` then clears review state
@@ -317,7 +317,7 @@ owns filter options, selected values, query parsing, and list results.
             denseMarkdown: `# Filterable-list toolbar
 
 - ID: \`block-filterable-list-toolbar\`
-- Imports: \`SearchFilterBar\` from \`@stevejuma/ui/filter\`; \`FilterCommandPicker\` from \`@stevejuma/ui/forms\`
+- Imports: \`SearchFilterBar\` from \`@lapismd/design-core/filter\`; \`FilterCommandPicker\` from \`@lapismd/design-core/forms\`
 - Components: \`filter-search-filter-bar\`, \`forms-filter-command-picker\`
 - Host state: query, expanded state, filter options, selections, and results
 - Reference: \`${FILTER_BLOCK_SOURCE}\`

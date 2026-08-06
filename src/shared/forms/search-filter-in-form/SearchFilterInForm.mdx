@@ -12,7 +12,7 @@ import * as Stories from "./SearchFilterInForm.stories.svelte";
 # Search Filter in a Form
 
 Composition-only example. `SearchFilterBar` and the filter-query language live
-in `@stevejuma/ui/filter`. Forms supply toolbar filter pills via
+in `@lapismd/design-core/filter`. Forms supply toolbar filter pills via
 `FilterCommandPicker` (no `FormField` wrapper — same as Applications board
 filters).
 
@@ -28,8 +28,8 @@ filters).
 
 <Source
   language="ts"
-  code={`import { SearchFilterBar } from "@stevejuma/ui/filter";
-import { FilterCommandPicker } from "@stevejuma/ui/forms";
+  code={`import { SearchFilterBar } from "@lapismd/design-core/filter";
+import { FilterCommandPicker } from "@lapismd/design-core/forms";
 
 <SearchFilterBar inputMode="filter-query" filterSyntax={syntax} value={query} …>
   {#snippet filters()}

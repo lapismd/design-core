@@ -19,7 +19,7 @@ Agents should use:
 4. Colocated stories, MDX guidance pages, and `ui:docs` artifacts
 
 The components CLI covers the shadcn-svelte-style **list/get** slice for this
-package (adapted local docs with `@stevejuma/ui` imports), not only shadcn
+package (adapted local docs with `@lapismd/design-core` imports), not only shadcn
 families. It does **not** replace a full-repo `llms.txt` dump.
 
 ## Why not vendoring storybook-llms-extractor

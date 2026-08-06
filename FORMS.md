@@ -1,12 +1,12 @@
 # Forms and shared UI
 
-Shared form contract for `@stevejuma/ui/forms`, derived from CV Studio's
+Shared form contract for `@lapismd/design-core/forms`, derived from CV Studio's
 `@cvstudio/forms` + `@cvstudio/ui` primitives.
 
 ## Shared form pattern
 
-Prefer `@stevejuma/ui/forms` for **schema-shaped editing and CV form-row chrome**.
-Use `@stevejuma/ui/shadcn/<family>` for generic controls (Select, Switch, Command,
+Prefer `@lapismd/design-core/forms` for **schema-shaped editing and CV form-row chrome**.
+Use `@lapismd/design-core/shadcn/<family>` for generic controls (Select, Switch, Command,
 Toggle Group, Input, Textarea, Field).
 
 Default editable forms are row-based:
@@ -51,7 +51,7 @@ breaks the Tags layout.
 
 Forms expose a public token map like shadcn families:
 
-- `formTokenNames` / `formTokenDefaults` / `@stevejuma/ui/forms/tokens`
+- `formTokenNames` / `formTokenDefaults` / `@lapismd/design-core/forms/tokens`
 - `form.tokens.css` — default bindings to theme tokens (`--border`, `--primary`, …)
 
 Paint via colocated component CSS (no Tailwind utility classes in form sources).
@@ -114,7 +114,7 @@ These stay in shared forms when callers supply domain data via props:
 - `FilterCommandPicker` — searchable single/multi picker; host supplies options
 - `AddSectionChooser` — option lists from the app
 
-Search chrome and filter-query language live in `@stevejuma/ui/filter`
+Search chrome and filter-query language live in `@lapismd/design-core/filter`
 (`SearchFilterBar`). Compose them from forms (see
 **UI Forms/Form Inputs/Search Filter in a Form**); do not treat the bar as a
 forms primitive.

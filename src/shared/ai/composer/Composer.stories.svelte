@@ -6,7 +6,7 @@
   import SparklesIcon from "@lucide/svelte/icons/sparkles";
   import XIcon from "@lucide/svelte/icons/x";
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { Button } from "@stevejuma/ui/shadcn/button";
+  import { Button } from "@lapismd/design-core/shadcn/button";
   import { expect, userEvent } from "storybook/test";
   import Composer from "./Composer.svelte";
   import ComposerDrawer from "../composer-drawer/ComposerDrawer.svelte";

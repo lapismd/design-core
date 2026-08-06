@@ -1,7 +1,7 @@
 <script lang="ts">
   import ArrowUpIcon from "@lucide/svelte/icons/arrow-up";
   import SquareIcon from "@lucide/svelte/icons/square";
-  import { Button } from "@stevejuma/ui/shadcn/button";
+  import { Button } from "@lapismd/design-core/shadcn/button";
   import type { Snippet } from "svelte";
   import "../chat.css";
 

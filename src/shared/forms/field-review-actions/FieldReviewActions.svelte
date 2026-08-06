@@ -1,6 +1,6 @@
 <script lang="ts">
   import "./FieldReviewActions.css";
-  import { Button } from "@stevejuma/ui/shadcn/button";
+  import { Button } from "@lapismd/design-core/shadcn/button";
 
   let {
     stale = false,

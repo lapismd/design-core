@@ -8,7 +8,7 @@ pnpm ui:add command
 
 ```html
 <script lang="ts">
-  import * as Command from "@stevejuma/ui/shadcn/command";
+  import * as Command from "@lapismd/design-core/shadcn/command";
 </script>
 ```
 
@@ -40,7 +40,7 @@ To show the command menu in a dialog, use the `<Command.Dialog />` component ins
 
 ```html
 <script lang="ts">
-  import * as Command from "@stevejuma/ui/shadcn/command";
+  import * as Command from "@lapismd/design-core/shadcn/command";
   import { onMount } from "svelte";
 
   let open = $state(false);

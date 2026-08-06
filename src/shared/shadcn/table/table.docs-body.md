@@ -8,7 +8,7 @@ pnpm ui:add table
 
 ```html
 <script lang="ts">
-  import * as Table from "@stevejuma/ui/shadcn/table";
+  import * as Table from "@lapismd/design-core/shadcn/table";
 </script>
 ```
 

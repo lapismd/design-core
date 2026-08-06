@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { Button } from "@stevejuma/ui/shadcn/button";
-  import * as Dialog from "@stevejuma/ui/shadcn/dialog";
-  import * as Field from "@stevejuma/ui/shadcn/field";
-  import { Input } from "@stevejuma/ui/shadcn/input";
+  import { Button } from "@lapismd/design-core/shadcn/button";
+  import * as Dialog from "@lapismd/design-core/shadcn/dialog";
+  import * as Field from "@lapismd/design-core/shadcn/field";
+  import { Input } from "@lapismd/design-core/shadcn/input";
   import type { WorkspaceSidebarGroup } from "../core/types.js";
   import type { WorkspaceShellController } from "../core/workspace-controller.svelte.js";
   import WorkspaceIcon from "../icon/WorkspaceIcon.svelte";

@@ -53,7 +53,7 @@ A `Sidebar` component is composed of the following parts:
 
 ```html
 <script lang="ts">
-  import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
+  import * as Sidebar from "@lapismd/design-core/shadcn/sidebar";
   import AppSidebar from "$lib/components/app-sidebar.svelte";
 
   let { children } = $props();
@@ -70,7 +70,7 @@ A `Sidebar` component is composed of the following parts:
 
 ```html
 <script lang="ts">
-  import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
+  import * as Sidebar from "@lapismd/design-core/shadcn/sidebar";
 </script>
 
 <Sidebar.Root>
@@ -96,7 +96,7 @@ Add a `Sidebar.Provider` and `Sidebar.Trigger` at the root of your application.
   import InboxIcon from "@lucide/svelte/icons/inbox";
   import SearchIcon from "@lucide/svelte/icons/search";
   import SettingsIcon from "@lucide/svelte/icons/settings";
-  import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
+  import * as Sidebar from "@lapismd/design-core/shadcn/sidebar";
 
   // Menu items.
   const items = [
@@ -169,7 +169,7 @@ Create a new sidebar component at `src/lib/components/app-sidebar.svelte`.
   import InboxIcon from "@lucide/svelte/icons/inbox";
   import SearchIcon from "@lucide/svelte/icons/search";
   import SettingsIcon from "@lucide/svelte/icons/settings";
-  import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
+  import * as Sidebar from "@lapismd/design-core/shadcn/sidebar";
 
   // Menu items.
   const items = [
@@ -244,7 +244,7 @@ We'll use the `Sidebar.Menu` component in a `Sidebar.Group`.
   import InboxIcon from "@lucide/svelte/icons/inbox";
   import SearchIcon from "@lucide/svelte/icons/search";
   import SettingsIcon from "@lucide/svelte/icons/settings";
-  import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
+  import * as Sidebar from "@lapismd/design-core/shadcn/sidebar";
 
   // Menu items.
   const items = [
@@ -363,7 +363,7 @@ The main `Sidebar` component used to render a collapsible sidebar.
 
 ```html
 <script lang="ts">
-  import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
+  import * as Sidebar from "@lapismd/design-core/shadcn/sidebar";
 </script>
 
 <Sidebar.Root />
@@ -434,7 +434,7 @@ The `useSidebar` function is used to hook into the sidebar context. It returns a
 
 ```html
 <script lang="ts">
-  import { useSidebar } from "@stevejuma/ui/shadcn/sidebar";
+  import { useSidebar } from "@lapismd/design-core/shadcn/sidebar";
   const sidebar = useSidebar();
 
   // ...
@@ -463,8 +463,8 @@ The following example adds a `<DropdownMenu>` to the `Sidebar.Header`.
 
 ```html
 <script lang="ts">
-  import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
-  import * as DropdownMenu from "@stevejuma/ui/shadcn/dropdown-menu";
+  import * as Sidebar from "@lapismd/design-core/shadcn/sidebar";
+  import * as DropdownMenu from "@lapismd/design-core/shadcn/dropdown-menu";
   import ChevronDownIcon from "@lucide/svelte/icons/chevron-down";
 </script>
 
@@ -514,8 +514,8 @@ The following example adds a `<DropdownMenu>` to the `Sidebar.Footer`.
 
 ```html
 <script lang="ts">
-  import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
-  import * as DropdownMenu from "@stevejuma/ui/shadcn/dropdown-menu";
+  import * as Sidebar from "@lapismd/design-core/shadcn/sidebar";
+  import * as DropdownMenu from "@lapismd/design-core/shadcn/dropdown-menu";
   import ChevronUpIcon from "@lucide/svelte/icons/chevron-up";
 </script>
 
@@ -586,7 +586,7 @@ A `Sidebar.Group` has a `Sidebar.GroupLabel`, a `Sidebar.GroupContent` and an op
 
 ```html
 <script lang="ts">
-  import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
+  import * as Sidebar from "@lapismd/design-core/shadcn/sidebar";
   import LifeBuoyIcon from "@lucide/svelte/icons/life-buoy";
   import SendIcon from "@lucide/svelte/icons/send";
 </script>
@@ -624,8 +624,8 @@ To make a `Sidebar.Group` collapsible, wrap it in a `Collapsible`.
 
 ```html
 <script lang="ts">
-  import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
-  import * as Collapsible from "@stevejuma/ui/shadcn/collapsible";
+  import * as Sidebar from "@lapismd/design-core/shadcn/sidebar";
+  import * as Collapsible from "@lapismd/design-core/shadcn/collapsible";
   import ChevronDownIcon from "@lucide/svelte/icons/chevron-down";
   import LifeBuoyIcon from "@lucide/svelte/icons/life-buoy";
   import SendIcon from "@lucide/svelte/icons/send";
@@ -682,7 +682,7 @@ Use the `Sidebar.GroupAction` component to add an action to a `Sidebar.Group`.
 
 ```html
 <script lang="ts">
-  import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
+  import * as Sidebar from "@lapismd/design-core/shadcn/sidebar";
 
   import PlusIcon from "@lucide/svelte/icons/plus";
   import FrameIcon from "@lucide/svelte/icons/frame";
@@ -753,7 +753,7 @@ Here's an example of a `Sidebar.Menu` component rendering a list of projects.
 
 ```html
 <script lang="ts">
-  import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
+  import * as Sidebar from "@lapismd/design-core/shadcn/sidebar";
   import LifeBuoyIcon from "@lucide/svelte/icons/life-buoy";
   import SendIcon from "@lucide/svelte/icons/send";
   import FrameIcon from "@lucide/svelte/icons/frame";
@@ -889,8 +889,8 @@ Here's an example of a `Sidebar.MenuAction` that renders a `DropdownMenu`.
 
 ```html
 <script lang="ts">
-  import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
-  import * as DropdownMenu from "@stevejuma/ui/shadcn/dropdown-menu";
+  import * as Sidebar from "@lapismd/design-core/shadcn/sidebar";
+  import * as DropdownMenu from "@lapismd/design-core/shadcn/dropdown-menu";
   import EllipsisIcon from "@lucide/svelte/icons/ellipsis";
   import LifeBuoyIcon from "@lucide/svelte/icons/life-buoy";
   import SendIcon from "@lucide/svelte/icons/send";
@@ -982,7 +982,7 @@ Use `Sidebar.MenuSubItem` and `Sidebar.MenuSubButton` to render a submenu item.
 
 ```html
 <script lang="ts">
-  import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
+  import * as Sidebar from "@lapismd/design-core/shadcn/sidebar";
 
   const items = [
     {
@@ -1157,8 +1157,8 @@ To make a `Sidebar.Menu` collapsible, wrap it and the `Sidebar.MenuSub` componen
 
 ```html
 <script lang="ts">
-  import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
-  import * as Collapsible from "@stevejuma/ui/shadcn/collapsible";
+  import * as Sidebar from "@lapismd/design-core/shadcn/sidebar";
+  import * as Collapsible from "@lapismd/design-core/shadcn/collapsible";
   import ChevronRightIcon from "@lucide/svelte/icons/chevron-right";
 
   const items = [
@@ -1347,7 +1347,7 @@ The `Sidebar.MenuBadge` component is used to render a badge within a `Sidebar.Me
 
 ```html
 <script lang="ts">
-  import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
+  import * as Sidebar from "@lapismd/design-core/shadcn/sidebar";
   import LifeBuoyIcon from "@lucide/svelte/icons/life-buoy";
   import SendIcon from "@lucide/svelte/icons/send";
   import FrameIcon from "@lucide/svelte/icons/frame";
@@ -1469,7 +1469,7 @@ To create a custom trigger, you can use the `useSidebar` hook.
 
 ```html
 <script lang="ts">
-  import { useSidebar } from "@stevejuma/ui/shadcn/sidebar";
+  import { useSidebar } from "@lapismd/design-core/shadcn/sidebar";
   const sidebar = useSidebar();
 </script>
 
@@ -1497,8 +1497,8 @@ Use Svelte's [Function Binding](https://svelte.dev/docs/svelte/bind#Function-bin
 
 ```html
 <script lang="ts">
-  import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
-  import { Button } from "@stevejuma/ui/shadcn/button";
+  import * as Sidebar from "@lapismd/design-core/shadcn/sidebar";
+  import { Button } from "@lapismd/design-core/shadcn/button";
   import PanelLeftOpenIcon from "@lucide/svelte/icons/panel-left-open";
   import PanelLeftCloseIcon from "@lucide/svelte/icons/panel-left-close";
   import LifeBuoyIcon from "@lucide/svelte/icons/life-buoy";

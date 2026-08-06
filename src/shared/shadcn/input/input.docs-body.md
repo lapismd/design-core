@@ -8,7 +8,7 @@ pnpm ui:add input
 
 ```html
 <script lang="ts">
-  import { Input } from "@stevejuma/ui/shadcn/input";
+  import { Input } from "@lapismd/design-core/shadcn/input";
 </script>
 ```
 
@@ -22,7 +22,7 @@ pnpm ui:add input
 
 ```html
 <script lang="ts">
-  import { Input } from "@stevejuma/ui/shadcn/input";
+  import { Input } from "@lapismd/design-core/shadcn/input";
 </script>
 
 <input type="email" placeholder="Email" class="max-w-xs" />
@@ -32,8 +32,8 @@ pnpm ui:add input
 
 ```html
 <script lang="ts">
-  import { Input } from "@stevejuma/ui/shadcn/input";
-  import { Label } from "@stevejuma/ui/shadcn/label";
+  import { Input } from "@lapismd/design-core/shadcn/input";
+  import { Label } from "@lapismd/design-core/shadcn/label";
 </script>
 
 <div class="grid w-full max-w-sm items-center gap-1.5">
@@ -46,7 +46,7 @@ pnpm ui:add input
 
 ```html
 <script lang="ts">
-  import { Input } from "@stevejuma/ui/shadcn/input";
+  import { Input } from "@lapismd/design-core/shadcn/input";
 </script>
 
 <input disabled type="email" placeholder="Email" class="max-w-sm" />
@@ -56,8 +56,8 @@ pnpm ui:add input
 
 ```html
 <script lang="ts">
-  import { Input } from "@stevejuma/ui/shadcn/input";
-  import { Label } from "@stevejuma/ui/shadcn/label";
+  import { Input } from "@lapismd/design-core/shadcn/input";
+  import { Label } from "@lapismd/design-core/shadcn/label";
 
   const id = $props.id();
 </script>
@@ -72,8 +72,8 @@ pnpm ui:add input
 
 ```html
 <script lang="ts">
-  import { Button } from "@stevejuma/ui/shadcn/button";
-  import { Input } from "@stevejuma/ui/shadcn/input";
+  import { Button } from "@lapismd/design-core/shadcn/button";
+  import { Input } from "@lapismd/design-core/shadcn/input";
 </script>
 
 <div class="flex w-full max-w-sm items-center gap-2">

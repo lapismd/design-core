@@ -12,7 +12,7 @@ sources:
 
 # App shell composition
 
-Use `@stevejuma/ui/shell` for bounded application chrome with application
+Use `@lapismd/design-core/shell` for bounded application chrome with application
 sidebars and a main surface. Read **Shell/Guidance** in Storybook before
 composing a shell; use the **Shell/App Shell** examples as reference markup.
 
@@ -153,7 +153,7 @@ overlays**.
 
 Use `AppShell.Body layout="regions"` plus `Body.Sidebar`, `Body.Content`, and
 `Body.Toggle` for document-local panels such as a table of contents. Use
-`@stevejuma/ui/workspace` instead when the host needs registered views, tabs,
+`@lapismd/design-core/workspace` instead when the host needs registered views, tabs,
 recursive splits, commands, settings, or plugins.
 
 Shell owns geometry and layout interactions. Consumers own routing, selection,

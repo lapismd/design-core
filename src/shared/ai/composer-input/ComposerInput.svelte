@@ -3,7 +3,7 @@
 </script>
 
 <script lang="ts">
-  import * as Command from "@stevejuma/ui/shadcn/command";
+  import * as Command from "@lapismd/design-core/shadcn/command";
   import type { HTMLAttributes } from "svelte/elements";
   import {
     createComposerTokens,

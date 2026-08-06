@@ -8,7 +8,7 @@ pnpm ui:add skeleton
 
 ```html
 <script lang="ts">
-  import { Skeleton } from "@stevejuma/ui/shadcn/skeleton";
+  import { Skeleton } from "@lapismd/design-core/shadcn/skeleton";
 </script>
 ```
 
@@ -22,7 +22,7 @@ pnpm ui:add skeleton
 
 ```html
 <script lang="ts">
-  import { Skeleton } from "@stevejuma/ui/shadcn/skeleton";
+  import { Skeleton } from "@lapismd/design-core/shadcn/skeleton";
 </script>
 
 <div class="flex flex-col space-y-3">

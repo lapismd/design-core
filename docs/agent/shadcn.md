@@ -26,7 +26,7 @@ colocated stories, tokens, provenance, and docs artifacts.
   (`*.tokens.ts` / `*.tokens.css`), and `*.provenance.json` intact.
 - Classify new visual form-adjacent exports in `COMPONENT_AUDIT.md` first when
   the boundary is unclear.
-- Import from `@stevejuma/ui/shadcn/<family>` only.
+- Import from `@lapismd/design-core/shadcn/<family>` only.
 - Restyle via `--ui-<family>-*` CSS variables (forms pattern), not Tailwind
   `cn()` utility merges. Defaults ship in `<family>.tokens.css`.
 - Do not reintroduce Tailwind utility class strings into converted components

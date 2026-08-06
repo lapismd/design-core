@@ -1,6 +1,6 @@
 # Style rules
 
-How `@stevejuma/ui` paints components: native CSS, public tokens, and no
+How `@lapismd/design-core` paints components: native CSS, public tokens, and no
 Tailwind utility classes in package sources. Layer-specific contracts remain
 in [`FORMS.md`](./FORMS.md), [`docs/agent/shadcn.md`](./docs/agent/shadcn.md),
 and the Storybook Guidance pages.
@@ -18,7 +18,7 @@ and the Storybook Guidance pages.
 4. **Semantic hosts** — mark roots with `data-ui-component`,
    `data-ui-part`, and shadcn `data-slot`/axis attributes. Prefer semantic
    class names over utility strings.
-5. **Reuse primitives** — use `@stevejuma/ui/shadcn/<family>` for generic
+5. **Reuse primitives** — use `@lapismd/design-core/shadcn/<family>` for generic
    buttons, inputs, sheets, and popovers.
 6. **No Tailwind in sources** — retained component sources must not contain
    utility-class strings, `cn("…")` layout merges, or `tailwind-variants`.

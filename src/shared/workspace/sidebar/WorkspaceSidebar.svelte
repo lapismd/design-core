@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { ScrollArea } from "@stevejuma/ui/shadcn/scroll-area";
+  import { ScrollArea } from "@lapismd/design-core/shadcn/scroll-area";
   import { ContextMenu } from "bits-ui";
   import type { Snippet } from "svelte";
   import type {

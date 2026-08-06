@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Button } from "@stevejuma/ui/shadcn/button";
+  import { Button } from "@lapismd/design-core/shadcn/button";
   import { onMount, tick } from "svelte";
   import WorkspaceIcon from "../icon/WorkspaceIcon.svelte";
   import AppSettingsSection from "./AppSettingsSection.svelte";

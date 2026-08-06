@@ -3,9 +3,9 @@
   import ChevronDownIcon from "@lucide/svelte/icons/chevron-down";
   import CircleAlertIcon from "@lucide/svelte/icons/circle-alert";
   import WrenchIcon from "@lucide/svelte/icons/wrench";
-  import * as Collapsible from "@stevejuma/ui/shadcn/collapsible";
-  import { Badge } from "@stevejuma/ui/shadcn/badge";
-  import { Spinner } from "@stevejuma/ui/shadcn/spinner";
+  import * as Collapsible from "@lapismd/design-core/shadcn/collapsible";
+  import { Badge } from "@lapismd/design-core/shadcn/badge";
+  import { Spinner } from "@lapismd/design-core/shadcn/spinner";
   import type { HTMLAttributes } from "svelte/elements";
   import type { ToolCallItem, ToolCallStatus } from "../types.js";
   import "../chat.css";

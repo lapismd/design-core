@@ -4,7 +4,7 @@
   import {
     SearchFilterBar,
     createDemoLedgerFilterSyntax,
-  } from "@stevejuma/ui/filter";
+  } from "@lapismd/design-core/filter";
   import {
     FilterCommandPicker,
     type FilterCommandOption,
@@ -16,7 +16,7 @@
       docs: {
         description: {
           component:
-            "Composition example: `@stevejuma/ui/filter` SearchFilterBar with toolbar FilterCommandPicker pills (no FormField wrapper).",
+            "Composition example: `@lapismd/design-core/filter` SearchFilterBar with toolbar FilterCommandPicker pills (no FormField wrapper).",
         },
       },
     },

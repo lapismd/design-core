@@ -4,7 +4,7 @@ import { Meta } from "@storybook/addon-docs/blocks";
 
 # Shadcn guidance
 
-Use `@stevejuma/ui/shadcn/<family>` for generic primitives. Do **not** run the
+Use `@lapismd/design-core/shadcn/<family>` for generic primitives. Do **not** run the
 upstream `shadcn-svelte` CLI against this package tree — use the local generator.
 
 This page is the catalog companion to `pnpm ui guide shadcn` and `AGENTS.md`.
@@ -30,7 +30,7 @@ utility class merges (those were compile-time inputs to `ui:add`).
    `<family>.tokens.css`, names in `<family>.tokens.ts`). Example: set
    `--ui-button-background` on a subtree to restyle primary buttons without
    changing `--primary` for the whole app. Import maps from
-   `@stevejuma/ui/shadcn/<family>` or `@stevejuma/ui/shadcn/button/tokens`.
+   `@lapismd/design-core/shadcn/<family>` or `@lapismd/design-core/shadcn/button/tokens`.
 3. **Do not** reintroduce Tailwind utility class strings into shared or
    converted component sources. `pnpm check:no-tailwind` (part of
    `pnpm checks`) enforces this. Prefer tokens and scoped CSS.
@@ -39,8 +39,8 @@ Same override idea as forms (`--ui-form-*` / `form.tokens.css`).
 
 ## When not to use shadcn alone
 
-- Schema-shaped editing / label-value form rows → `@stevejuma/ui/forms`
-- Shared AI chat primitives → `@stevejuma/ui/ai`
+- Schema-shaped editing / label-value form rows → `@lapismd/design-core/forms`
+- Shared AI chat primitives → `@lapismd/design-core/ai`
 
 ## Add or convert a family
 

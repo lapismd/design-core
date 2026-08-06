@@ -8,7 +8,7 @@ pnpm ui:add input-group
 
 ```html
 <script lang="ts">
-  import * as InputGroup from "@stevejuma/ui/shadcn/input-group";
+  import * as InputGroup from "@lapismd/design-core/shadcn/input-group";
   import SearchIcon from "@lucide/svelte/icons/search";
 </script>
 ```
@@ -31,7 +31,7 @@ pnpm ui:add input-group
 
 ```html
 <script lang="ts">
-  import * as InputGroup from "@stevejuma/ui/shadcn/input-group";
+  import * as InputGroup from "@lapismd/design-core/shadcn/input-group";
   import CheckIcon from "@lucide/svelte/icons/check";
   import CreditCardIcon from "@lucide/svelte/icons/credit-card";
   import InfoIcon from "@lucide/svelte/icons/info";
@@ -78,7 +78,7 @@ Display additional text information alongside inputs.
 
 ```html
 <script lang="ts">
-  import * as InputGroup from "@stevejuma/ui/shadcn/input-group";
+  import * as InputGroup from "@lapismd/design-core/shadcn/input-group";
 </script>
 
 <div class="grid w-full max-w-sm gap-6">
@@ -127,8 +127,8 @@ Add tooltips to provide additional context or help.
 
 ```html
 <script lang="ts">
-  import * as InputGroup from "@stevejuma/ui/shadcn/input-group";
-  import * as Tooltip from "@stevejuma/ui/shadcn/tooltip";
+  import * as InputGroup from "@lapismd/design-core/shadcn/input-group";
+  import * as Tooltip from "@lapismd/design-core/shadcn/tooltip";
   import HelpCircleIcon from "@lucide/svelte/icons/help-circle";
   import InfoIcon from "@lucide/svelte/icons/info";
 </script>
@@ -216,7 +216,7 @@ Input groups also work with textarea components. Use `block-start` or `block-end
   import IconCornerDownLeft from "@lucide/svelte/icons/corner-down-left";
   import IconRefresh from "@lucide/svelte/icons/refresh-cw";
 
-  import * as InputGroup from "@stevejuma/ui/shadcn/input-group";
+  import * as InputGroup from "@lapismd/design-core/shadcn/input-group";
 </script>
 
 <div class="grid w-full max-w-md gap-4">
@@ -253,8 +253,8 @@ Show loading indicators while processing input.
 
 ```html
 <script lang="ts">
-  import * as InputGroup from "@stevejuma/ui/shadcn/input-group";
-  import { Spinner } from "@stevejuma/ui/shadcn/spinner";
+  import * as InputGroup from "@lapismd/design-core/shadcn/input-group";
+  import { Spinner } from "@lapismd/design-core/shadcn/spinner";
   import LoaderIcon from "@lucide/svelte/icons/loader";
 </script>
 
@@ -298,9 +298,9 @@ Add labels within input groups to improve accessibility.
 
 ```html
 <script lang="ts">
-  import * as InputGroup from "@stevejuma/ui/shadcn/input-group";
-  import * as Label from "@stevejuma/ui/shadcn/label";
-  import * as Tooltip from "@stevejuma/ui/shadcn/tooltip";
+  import * as InputGroup from "@lapismd/design-core/shadcn/input-group";
+  import * as Label from "@lapismd/design-core/shadcn/label";
+  import * as Tooltip from "@lapismd/design-core/shadcn/tooltip";
   import InfoIcon from "@lucide/svelte/icons/info";
 </script>
 
@@ -346,8 +346,8 @@ Pair input groups with dropdown menus for complex interactions.
 
 ```html
 <script lang="ts">
-  import * as DropdownMenu from "@stevejuma/ui/shadcn/dropdown-menu";
-  import * as InputGroup from "@stevejuma/ui/shadcn/input-group";
+  import * as DropdownMenu from "@lapismd/design-core/shadcn/dropdown-menu";
+  import * as InputGroup from "@lapismd/design-core/shadcn/input-group";
   import ChevronDownIcon from "@lucide/svelte/icons/chevron-down";
   import MoreHorizontalIcon from "@lucide/svelte/icons/more-horizontal";
 </script>
@@ -411,7 +411,7 @@ No style is applied to the custom input. Apply your own styles using the `class`
 
 ```html
 <script lang="ts">
-  import * as InputGroup from "@stevejuma/ui/shadcn/input-group";
+  import * as InputGroup from "@lapismd/design-core/shadcn/input-group";
 </script>
 
 <div class="grid w-full max-w-sm gap-6">

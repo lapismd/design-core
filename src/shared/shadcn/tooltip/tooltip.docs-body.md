@@ -10,7 +10,7 @@ The `Tooltip.Provider` component should be placed once in your root layout, wrap
 
 ```html
 <script lang="ts">
-  import * as Tooltip from "@stevejuma/ui/shadcn/tooltip";
+  import * as Tooltip from "@lapismd/design-core/shadcn/tooltip";
 
   let { children } = $props();
 </script>
@@ -24,7 +24,7 @@ Then use tooltips anywhere in your app:
 
 ```html
 <script lang="ts">
-  import * as Tooltip from "@stevejuma/ui/shadcn/tooltip";
+  import * as Tooltip from "@lapismd/design-core/shadcn/tooltip";
 </script>
 
 <Tooltip.Root>

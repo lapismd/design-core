@@ -1,6 +1,6 @@
 <script lang="ts">
   import "./SecretField.css";
-  import { Input } from "@stevejuma/ui/shadcn/input";
+  import { Input } from "@lapismd/design-core/shadcn/input";
 
   import FilterCommandPicker from "../filter-command-picker/FilterCommandPicker.svelte";
   import SegmentedControl from "../segmented-control/SegmentedControl.svelte";

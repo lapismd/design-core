@@ -1,4 +1,4 @@
-<!-- Adapted from https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/table.md for the @stevejuma/ui native-CSS catalog. -->
+<!-- Adapted from https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/table.md for the @lapismd/design-core native-CSS catalog. -->
 
 # Table
 
@@ -14,7 +14,7 @@ pnpm ui:add table
 
 ```html
 <script lang="ts">
-  import * as Table from "@stevejuma/ui/shadcn/table";
+  import * as Table from "@lapismd/design-core/shadcn/table";
 </script>
 ```
 

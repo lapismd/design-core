@@ -8,7 +8,7 @@ pnpm ui:add breadcrumb
 
 ```html
 <script lang="ts">
-  import * as Breadcrumb from "@stevejuma/ui/shadcn/breadcrumb";
+  import * as Breadcrumb from "@lapismd/design-core/shadcn/breadcrumb";
 </script>
 ```
 
@@ -39,7 +39,7 @@ Use a custom component in the `<slot>` of `<Breadcrumb.Separator />` to create a
 ```html
 <script lang="ts">
   import SlashIcon from "@lucide/svelte/icons/slash";
-  import * as Breadcrumb from "@stevejuma/ui/shadcn/breadcrumb";
+  import * as Breadcrumb from "@lapismd/design-core/shadcn/breadcrumb";
 </script>
 
 <Breadcrumb.Root>
@@ -67,8 +67,8 @@ You can compose `<Breadcrumb.Item />` with a `<DropdownMenu />` to create a drop
 <script lang="ts">
   import ChevronDownIcon from "@lucide/svelte/icons/chevron-down";
   import SlashIcon from "@lucide/svelte/icons/slash";
-  import * as Breadcrumb from "@stevejuma/ui/shadcn/breadcrumb";
-  import * as DropdownMenu from "@stevejuma/ui/shadcn/dropdown-menu";
+  import * as Breadcrumb from "@lapismd/design-core/shadcn/breadcrumb";
+  import * as DropdownMenu from "@lapismd/design-core/shadcn/dropdown-menu";
 </script>
 
 <!-- ... -->
@@ -96,7 +96,7 @@ We provide a `<Breadcrumb.Ellipsis />` component to show a collapsed state when 
 
 ```html
 <script lang="ts">
-  import * as Breadcrumb from "@stevejuma/ui/shadcn/breadcrumb";
+  import * as Breadcrumb from "@lapismd/design-core/shadcn/breadcrumb";
 </script>
 
 <Breadcrumb.Root>
@@ -128,7 +128,7 @@ To use a link just add the `href` prop to `<Breadcrumb.Link />`.
 
 ```html
 <script lang="ts">
-  import * as Breadcrumb from "@stevejuma/ui/shadcn/breadcrumb";
+  import * as Breadcrumb from "@lapismd/design-core/shadcn/breadcrumb";
 </script>
 
 <Breadcrumb.Root>

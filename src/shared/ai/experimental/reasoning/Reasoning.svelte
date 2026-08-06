@@ -1,7 +1,7 @@
 <script lang="ts">
   import ChevronDownIcon from "@lucide/svelte/icons/chevron-down";
   import CircleDashedIcon from "@lucide/svelte/icons/circle-dashed";
-  import * as Collapsible from "@stevejuma/ui/shadcn/collapsible";
+  import * as Collapsible from "@lapismd/design-core/shadcn/collapsible";
   import type { Snippet } from "svelte";
   import type { HTMLAttributes } from "svelte/elements";
   import "../../chat.css";

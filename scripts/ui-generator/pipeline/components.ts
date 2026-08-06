@@ -522,7 +522,7 @@ function collectShadcn(packageRoot: string): CatalogEntry[] {
       layer: "shadcn" as const,
       id,
       dir,
-      importPath: `@stevejuma/ui/shadcn/${id}`,
+      importPath: `@lapismd/design-core/shadcn/${id}`,
       docsCandidates: existsSync(docsPath) ? [docsPath] : [],
       exampleSourcesPath: existsSync(examplesPath) ? examplesPath : undefined,
       storyPaths: listFiles(dir, ".stories.svelte"),
@@ -548,7 +548,7 @@ function collectForms(packageRoot: string): CatalogEntry[] {
         layer: "forms" as const,
         id,
         dir,
-        importPath: "@stevejuma/ui/forms",
+        importPath: "@lapismd/design-core/forms",
         docsCandidates: mdx,
         storyPaths: [
           ...listFiles(dir, ".stories.svelte"),
@@ -570,7 +570,7 @@ function collectFilter(packageRoot: string): CatalogEntry[] {
         layer: "filter" as const,
         id,
         dir,
-        importPath: "@stevejuma/ui/filter",
+        importPath: "@lapismd/design-core/filter",
         docsCandidates: mdx,
         storyPaths: [
           ...listFiles(dir, ".stories.svelte"),
@@ -585,7 +585,7 @@ function collectFilter(packageRoot: string): CatalogEntry[] {
       layer: "filter",
       id: "guidance",
       dir: root,
-      importPath: "@stevejuma/ui/filter",
+      importPath: "@lapismd/design-core/filter",
       docsCandidates: [guidance],
       storyPaths: [],
     });
@@ -614,7 +614,7 @@ function collectAi(packageRoot: string): CatalogEntry[] {
         layer: "ai" as const,
         id,
         dir,
-        importPath: "@stevejuma/ui/ai/chat",
+        importPath: "@lapismd/design-core/ai/chat",
         docsCandidates: mdx.length
           ? mdx
           : existsSync(overview)
@@ -632,7 +632,7 @@ function collectAi(packageRoot: string): CatalogEntry[] {
       layer: "ai" as const,
       id: `experimental-${id}`,
       dir,
-      importPath: "@stevejuma/ui/ai/experimental",
+      importPath: "@lapismd/design-core/ai/experimental",
       docsCandidates: mdx.length
         ? mdx
         : existsSync(overview)
@@ -647,7 +647,7 @@ function collectAi(packageRoot: string): CatalogEntry[] {
       layer: "ai" as const,
       id: "overview",
       dir: root,
-      importPath: "@stevejuma/ui/ai",
+      importPath: "@lapismd/design-core/ai",
       docsCandidates: [overview],
       storyPaths: [],
     });
@@ -771,7 +771,7 @@ export function getComponentsIndex(
     ? `Filtered to layer \`${options.layer}\`.`
     : `Layers: ${LAYERS.join(", ")}.`;
   return {
-    title: "@stevejuma/ui components",
+    title: "@lapismd/design-core components",
     summary: `Local usage and examples across the package catalog. ${layerNote} Prefer \`layer/id\` keys when names collide; bare ids work when unique.`,
     components,
     related: [

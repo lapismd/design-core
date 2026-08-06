@@ -1,4 +1,4 @@
-<!-- Adapted from https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/skeleton.md for the @stevejuma/ui native-CSS catalog. -->
+<!-- Adapted from https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/skeleton.md for the @lapismd/design-core native-CSS catalog. -->
 
 # Skeleton
 
@@ -14,7 +14,7 @@ pnpm ui:add skeleton
 
 ```html
 <script lang="ts">
-  import { Skeleton } from "@stevejuma/ui/shadcn/skeleton";
+  import { Skeleton } from "@lapismd/design-core/shadcn/skeleton";
 </script>
 ```
 
@@ -28,7 +28,7 @@ pnpm ui:add skeleton
 
 ```html
 <script lang="ts">
-  import { Skeleton } from "@stevejuma/ui/shadcn/skeleton";
+  import { Skeleton } from "@lapismd/design-core/shadcn/skeleton";
 </script>
 
 <div class="flex flex-col space-y-3">

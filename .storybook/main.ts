@@ -79,7 +79,7 @@ const config: StorybookConfig = {
     return mergeConfig(viteConfig, {
       resolve: {
         alias: {
-          "@stevejuma/ui/shadcn": fileURLToPath(
+          "@lapismd/design-core/shadcn": fileURLToPath(
             new URL("../src/shared/shadcn", import.meta.url),
           ),
           // Keep any bare imports on the workspace source tree.

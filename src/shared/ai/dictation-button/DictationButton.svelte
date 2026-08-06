@@ -1,8 +1,8 @@
 <script lang="ts">
   import MicIcon from "@lucide/svelte/icons/mic";
   import MicOffIcon from "@lucide/svelte/icons/mic-off";
-  import { Button } from "@stevejuma/ui/shadcn/button";
-  import * as Tooltip from "@stevejuma/ui/shadcn/tooltip";
+  import { Button } from "@lapismd/design-core/shadcn/button";
+  import * as Tooltip from "@lapismd/design-core/shadcn/tooltip";
   import type { SpeechRecognitionController } from "../types.js";
   import "../chat.css";
 

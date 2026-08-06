@@ -4,7 +4,7 @@ import { Meta } from "@storybook/addon-docs/blocks";
 
 # Filter guidance
 
-Use `@stevejuma/ui/filter` for search chrome and the structured filter-query
+Use `@lapismd/design-core/filter` for search chrome and the structured filter-query
 language. Forms still own labelled rows and option pickers
 (`FilterCommandPicker`); compose them with `SearchFilterBar` or `PowerSearch`
 when a list or sidebar needs facets plus structured filters.
@@ -17,8 +17,8 @@ Offline agent summary: `pnpm ui guide layers`. Catalog components:
 
 | Need                                    | Package                                         |
 | --------------------------------------- | ----------------------------------------------- |
-| Structured multi-field filters, no QL   | `PowerSearch` (`@stevejuma/ui/filter`)          |
-| Search pill, clear chrome, filter slots | `SearchFilterBar` (`@stevejuma/ui/filter`)      |
+| Structured multi-field filters, no QL   | `PowerSearch` (`@lapismd/design-core/filter`)          |
+| Search pill, clear chrome, filter slots | `SearchFilterBar` (`@lapismd/design-core/filter`)      |
 | Parse / highlight filter queries        | `parseFilterQuery`, `filterQuery()`             |
 | Field → operator → value completions    | Host `SearchFilterSyntax` + `filterSyntax` prop |
 | Facet pickers (type, account, …)        | forms `FilterCommandPicker`                     |
@@ -86,7 +86,7 @@ Dates / relative time (parsed by `parseFilterQuery`):
 ### Host-owned completion schema
 
 ```ts
-import type { SearchFilterSyntax } from "@stevejuma/ui/filter";
+import type { SearchFilterSyntax } from "@lapismd/design-core/filter";
 
 const syntax: SearchFilterSyntax = {
   description: "Narrow ledger directives.",

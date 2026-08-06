@@ -1,5 +1,5 @@
 <script lang="ts">
-  import * as ScrollArea from "@stevejuma/ui/shadcn/scroll-area";
+  import * as ScrollArea from "@lapismd/design-core/shadcn/scroll-area";
 
   let {
     list,

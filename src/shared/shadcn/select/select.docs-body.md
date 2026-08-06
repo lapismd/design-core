@@ -8,7 +8,7 @@ pnpm ui:add select
 
 ```html
 <script lang="ts">
-  import * as Select from "@stevejuma/ui/shadcn/select";
+  import * as Select from "@lapismd/design-core/shadcn/select";
 </script>
 ```
 
@@ -29,7 +29,7 @@ pnpm ui:add select
 
 ```html
 <script lang="ts">
-  import * as Select from "@stevejuma/ui/shadcn/select";
+  import * as Select from "@lapismd/design-core/shadcn/select";
 </script>
 
 <Select.Root type="single">

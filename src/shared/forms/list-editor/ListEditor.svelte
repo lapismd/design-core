@@ -3,7 +3,7 @@
   import "../form-control-row/FormControlRow.css";
   import PlusIcon from "@lucide/svelte/icons/plus";
   import { onDestroy } from "svelte";
-  import { Button } from "@stevejuma/ui/shadcn/button";
+  import { Button } from "@lapismd/design-core/shadcn/button";
   import type { FieldReview } from "../core/field-review";
   import FieldReviewActions from "../field-review-actions/FieldReviewActions.svelte";
   import UnifiedReviewDiff from "../unified-review-diff/UnifiedReviewDiff.svelte";

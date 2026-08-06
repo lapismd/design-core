@@ -4,8 +4,8 @@
   import ChevronsUpDownIcon from "@lucide/svelte/icons/chevrons-up-down";
   import XIcon from "@lucide/svelte/icons/x";
   import type { Snippet } from "svelte";
-  import { Button } from "@stevejuma/ui/shadcn/button";
-  import * as Sheet from "@stevejuma/ui/shadcn/sheet";
+  import { Button } from "@lapismd/design-core/shadcn/button";
+  import * as Sheet from "@lapismd/design-core/shadcn/sheet";
 
   let {
     open = $bindable(false),

@@ -117,10 +117,10 @@ describe("Docs MCP transports", () => {
     try {
       expect(server.port).toBeGreaterThan(0);
       const health = await fetch(`${server.baseUrl}/health`);
-      expect(await health.text()).toContain("@stevejuma/ui docs server");
+      expect(await health.text()).toContain("@lapismd/design-core docs server");
       const llms = await fetch(`${server.baseUrl}/llms.txt`);
       const llmsText = await llms.text();
-      expect(llmsText).toContain("# @stevejuma/ui");
+      expect(llmsText).toContain("# @lapismd/design-core");
       expect(llmsText).toContain("## Blocks");
       const artifacts = await fetch(
         `${server.baseUrl}/ui-docs/manifests/artifacts.json`,

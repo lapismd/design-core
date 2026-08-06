@@ -51,7 +51,7 @@ const get = spawnSync("docs-mcp", ["get", found.id, "--format", "dense", ...comm
 if (get.status !== 0) process.exit(get.status ?? 1);
 mkdirSync("src", { recursive: true });
 writeFileSync("src/Fixture.svelte", \`<script lang="ts">
-  import { SearchFilterBar } from "@stevejuma/ui/filter";
+  import { SearchFilterBar } from "@lapismd/design-core/filter";
   let query = $state("");
 </script>
 <SearchFilterBar value={query} onValueChange={(next) => (query = next)} />

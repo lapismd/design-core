@@ -8,7 +8,7 @@ pnpm ui:add sheet
 
 ```html
 <script lang="ts">
-  import * as Sheet from "@stevejuma/ui/shadcn/sheet";
+  import * as Sheet from "@lapismd/design-core/shadcn/sheet";
 </script>
 ```
 

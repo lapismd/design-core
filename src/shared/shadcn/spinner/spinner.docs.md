@@ -1,4 +1,4 @@
-<!-- Adapted from https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/spinner.md for the @stevejuma/ui native-CSS catalog. -->
+<!-- Adapted from https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/spinner.md for the @lapismd/design-core native-CSS catalog. -->
 
 # Spinner
 
@@ -14,7 +14,7 @@ pnpm ui:add spinner
 
 ```html
 <script lang="ts">
-  import { Spinner } from "@stevejuma/ui/shadcn/spinner";
+  import { Spinner } from "@lapismd/design-core/shadcn/spinner";
 </script>
 ```
 
@@ -53,7 +53,7 @@ Use the `size-*` utility class to change the size of the spinner.
 
 ```html
 <script lang="ts">
-  import { Spinner } from "@stevejuma/ui/shadcn/spinner";
+  import { Spinner } from "@lapismd/design-core/shadcn/spinner";
 </script>
 
 <div class="flex items-center gap-6">
@@ -70,7 +70,7 @@ Use the `text-*` utility class to change the color of the spinner.
 
 ```html
 <script lang="ts">
-  import { Spinner } from "@stevejuma/ui/shadcn/spinner";
+  import { Spinner } from "@lapismd/design-core/shadcn/spinner";
 </script>
 
 <div class="flex items-center gap-6">
@@ -88,8 +88,8 @@ Add a spinner to a button to indicate a loading state. The `<Button />` will han
 
 ```html
 <script lang="ts">
-  import { Button } from "@stevejuma/ui/shadcn/button";
-  import { Spinner } from "@stevejuma/ui/shadcn/spinner";
+  import { Button } from "@lapismd/design-core/shadcn/button";
+  import { Spinner } from "@lapismd/design-core/shadcn/spinner";
 </script>
 
 <div class="flex flex-col items-center gap-4">
@@ -114,8 +114,8 @@ You can also use a spinner inside a badge.
 
 ```html
 <script lang="ts">
-  import { Badge } from "@stevejuma/ui/shadcn/badge";
-  import { Spinner } from "@stevejuma/ui/shadcn/spinner";
+  import { Badge } from "@lapismd/design-core/shadcn/badge";
+  import { Spinner } from "@lapismd/design-core/shadcn/spinner";
 </script>
 
 <div class="flex items-center gap-2">
@@ -140,8 +140,8 @@ Input Group can have spinners inside `<InputGroup.Addon>`.
 
 ```html
 <script lang="ts">
-  import * as InputGroup from "@stevejuma/ui/shadcn/input-group";
-  import { Spinner } from "@stevejuma/ui/shadcn/spinner";
+  import * as InputGroup from "@lapismd/design-core/shadcn/input-group";
+  import { Spinner } from "@lapismd/design-core/shadcn/spinner";
   import ArrowUpIcon from "@lucide/svelte/icons/arrow-up";
 </script>
 
@@ -169,9 +169,9 @@ Input Group can have spinners inside `<InputGroup.Addon>`.
 
 ```html
 <script lang="ts">
-  import * as Empty from "@stevejuma/ui/shadcn/empty";
-  import { Spinner } from "@stevejuma/ui/shadcn/spinner";
-  import { Button } from "@stevejuma/ui/shadcn/button";
+  import * as Empty from "@lapismd/design-core/shadcn/empty";
+  import { Spinner } from "@lapismd/design-core/shadcn/spinner";
+  import { Button } from "@lapismd/design-core/shadcn/button";
 </script>
 
 <Empty.Root class="w-full border md:p-6">

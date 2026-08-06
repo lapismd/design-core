@@ -8,7 +8,7 @@ pnpm ui:add tabs
 
 ```html
 <script lang="ts">
-  import * as Tabs from "@stevejuma/ui/shadcn/tabs";
+  import * as Tabs from "@lapismd/design-core/shadcn/tabs";
 </script>
 ```
 

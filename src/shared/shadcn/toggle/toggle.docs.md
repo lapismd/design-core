@@ -1,4 +1,4 @@
-<!-- Adapted from https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/toggle.md for the @stevejuma/ui native-CSS catalog. -->
+<!-- Adapted from https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/toggle.md for the @lapismd/design-core native-CSS catalog. -->
 
 # Toggle
 
@@ -14,7 +14,7 @@ pnpm ui:add toggle
 
 ```html
 <script lang="ts">
-  import { Toggle } from "@stevejuma/ui/shadcn/toggle";
+  import { Toggle } from "@lapismd/design-core/shadcn/toggle";
 </script>
 ```
 
@@ -29,7 +29,7 @@ pnpm ui:add toggle
 ```html
 <script lang="ts">
   import BookmarkIcon from "@lucide/svelte/icons/bookmark";
-  import { Toggle } from "@stevejuma/ui/shadcn/toggle";
+  import { Toggle } from "@lapismd/design-core/shadcn/toggle";
 </script>
 
 <Toggle
@@ -48,7 +48,7 @@ pnpm ui:add toggle
 ```html
 <script lang="ts">
   import ItalicIcon from "@lucide/svelte/icons/italic";
-  import { Toggle } from "@stevejuma/ui/shadcn/toggle";
+  import { Toggle } from "@lapismd/design-core/shadcn/toggle";
 </script>
 
 <Toggle variant="outline" aria-label="Toggle italic">
@@ -61,7 +61,7 @@ pnpm ui:add toggle
 ```html
 <script lang="ts">
   import ItalicIcon from "@lucide/svelte/icons/italic";
-  import { Toggle } from "@stevejuma/ui/shadcn/toggle";
+  import { Toggle } from "@lapismd/design-core/shadcn/toggle";
 </script>
 
 <Toggle aria-label="Toggle italic">
@@ -75,7 +75,7 @@ pnpm ui:add toggle
 ```html
 <script lang="ts">
   import ItalicIcon from "@lucide/svelte/icons/italic";
-  import { Toggle } from "@stevejuma/ui/shadcn/toggle";
+  import { Toggle } from "@lapismd/design-core/shadcn/toggle";
 </script>
 
 <Toggle size="sm" aria-label="Toggle italic">
@@ -88,7 +88,7 @@ pnpm ui:add toggle
 ```html
 <script lang="ts">
   import ItalicIcon from "@lucide/svelte/icons/italic";
-  import { Toggle } from "@stevejuma/ui/shadcn/toggle";
+  import { Toggle } from "@lapismd/design-core/shadcn/toggle";
 </script>
 
 <Toggle size="lg" aria-label="Toggle italic">
@@ -101,7 +101,7 @@ pnpm ui:add toggle
 ```html
 <script lang="ts">
   import UnderlineIcon from "@lucide/svelte/icons/underline";
-  import { Toggle } from "@stevejuma/ui/shadcn/toggle";
+  import { Toggle } from "@lapismd/design-core/shadcn/toggle";
 </script>
 
 <Toggle aria-label="Toggle underline" disabled>

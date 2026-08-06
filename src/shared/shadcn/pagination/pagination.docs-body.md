@@ -8,7 +8,7 @@ pnpm ui:add pagination
 
 ```html
 <script lang="ts">
-  import * as Pagination from "@stevejuma/ui/shadcn/pagination";
+  import * as Pagination from "@lapismd/design-core/shadcn/pagination";
 </script>
 ```
 

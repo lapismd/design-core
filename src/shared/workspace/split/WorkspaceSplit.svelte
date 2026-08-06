@@ -1,5 +1,5 @@
 <script lang="ts">
-  import * as Resizable from "@stevejuma/ui/shadcn/resizable";
+  import * as Resizable from "@lapismd/design-core/shadcn/resizable";
   import { onMount, type Snippet } from "svelte";
   import type { WorkspaceNode, WorkspaceSplitNode } from "../core/types.js";
   import type { WorkspaceShellController } from "../core/workspace-controller.svelte.js";

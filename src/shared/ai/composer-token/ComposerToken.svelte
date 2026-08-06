@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Badge } from "@stevejuma/ui/shadcn/badge";
+  import { Badge } from "@lapismd/design-core/shadcn/badge";
   import type { HTMLAttributes } from "svelte/elements";
   import type { ComposerToken } from "../types.js";
   import "../chat.css";

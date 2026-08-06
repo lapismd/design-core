@@ -4,7 +4,7 @@ import { Meta } from "@storybook/addon-docs/blocks";
 
 # Form guidance
 
-Use `@stevejuma/ui/forms` for structured editing and CV form-row chrome. Use
+Use `@lapismd/design-core/forms` for structured editing and CV form-row chrome. Use
 shadcn for generic controls (`Select`, `Switch`, `Command`, `Input`, …).
 
 This page mirrors the CV Studio forms contract (`forms-and-shared-ui`) and the
@@ -52,7 +52,7 @@ arbitrary flex rows for labelled fields.
 ## Tokens
 
 Forms use `--ui-form-*` CSS variables (`formTokenNames` / `formTokenDefaults` /
-`@stevejuma/ui/forms/tokens`), with defaults in `form.tokens.css` mapped to
+`@lapismd/design-core/forms/tokens`), with defaults in `form.tokens.css` mapped to
 theme tokens. Paint via colocated component CSS — no Tailwind utilities in form
 sources. Override on `:root` or a form ancestor — same idea as wired shadcn
 `--ui-<family>-*` maps. Each component Docs page includes a **Style** table of
@@ -125,7 +125,7 @@ the tokens that family reads.
 | Multi-value tags       | `ChipAutocomplete` (`tagListField` / `chipListField`)                     |
 | Ordered string lists   | `ListEditor` + `SortableArrayItem`                                        |
 | Searchable choices     | `FilterCommandPicker` (options + optional `allowCustom` via props)        |
-| Search / filter query  | `@stevejuma/ui/filter` `SearchFilterBar` (compose; see Filter/Guidance)   |
+| Search / filter query  | `@lapismd/design-core/filter` `SearchFilterBar` (compose; see Filter/Guidance)   |
 | Dates                  | `DatePicker` (natural-language + `TaskDueCalendar` month grid)            |
 | Pill / date controls   | `FormField align="center"`; popovers use `as="div"`                       |
 | YAML source            | `YamlEditor` only — no plain textarea YAML editors                        |

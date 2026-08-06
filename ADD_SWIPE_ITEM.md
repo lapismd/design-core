@@ -1,7 +1,7 @@
 # Shared Swipe Item
 
 Implementation contract and progress record for the project-authored
-`@stevejuma/ui/shadcn/swipe-item` family.
+`@lapismd/design-core/shadcn/swipe-item` family.
 
 ## Classification and provenance
 

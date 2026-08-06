@@ -7,7 +7,7 @@
   import {
     FilterCommandPicker,
     type FilterCommandOption,
-  } from "@stevejuma/ui/forms";
+  } from "@lapismd/design-core/forms";
 
   const { Story } = defineMeta({
     title: "Filter/Search Filter Bar",
@@ -16,7 +16,7 @@
       docs: {
         description: {
           component:
-            "Search chrome with optional filter-query highlighting and host-supplied autocomplete. Import from `@stevejuma/ui/filter`.",
+            "Search chrome with optional filter-query highlighting and host-supplied autocomplete. Import from `@lapismd/design-core/filter`.",
         },
       },
     },

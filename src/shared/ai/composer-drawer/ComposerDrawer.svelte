@@ -1,6 +1,6 @@
 <script lang="ts">
-  import * as Collapsible from "@stevejuma/ui/shadcn/collapsible";
-  import { Badge } from "@stevejuma/ui/shadcn/badge";
+  import * as Collapsible from "@lapismd/design-core/shadcn/collapsible";
+  import { Badge } from "@lapismd/design-core/shadcn/badge";
   import type { Snippet } from "svelte";
   import type { HTMLAttributes } from "svelte/elements";
   import "../chat.css";

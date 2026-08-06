@@ -16,7 +16,7 @@
       docs: {
         description: {
           component:
-            "Structured multi-field filter tokens with a field combobox — no CodeMirror. Import from `@stevejuma/ui/filter`.",
+            "Structured multi-field filter tokens with a field combobox — no CodeMirror. Import from `@lapismd/design-core/filter`.",
         },
       },
     },

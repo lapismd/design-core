@@ -1,4 +1,4 @@
-<!-- Adapted from https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/resizable.md for the @stevejuma/ui native-CSS catalog. -->
+<!-- Adapted from https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/resizable.md for the @lapismd/design-core native-CSS catalog. -->
 
 # Resizable
 
@@ -18,7 +18,7 @@ pnpm ui:add resizable
 
 ```html
 <script lang="ts">
-  import * as Resizable from "@stevejuma/ui/shadcn/resizable";
+  import * as Resizable from "@lapismd/design-core/shadcn/resizable";
 </script>
 ```
 
@@ -38,7 +38,7 @@ Use the `direction` prop to set the direction of the resizable panels.
 
 ```html
 <script lang="ts">
-  import * as Resizable from "@stevejuma/ui/shadcn/resizable";
+  import * as Resizable from "@lapismd/design-core/shadcn/resizable";
 </script>
 
 <Resizable.PaneGroup
@@ -65,7 +65,7 @@ You can set or hide the handle by using the `withHandle` prop on the `ResizableH
 
 ```html
 <script lang="ts">
-  import * as Resizable from "@stevejuma/ui/shadcn/resizable";
+  import * as Resizable from "@lapismd/design-core/shadcn/resizable";
 </script>
 
 <Resizable.PaneGroup

@@ -75,7 +75,7 @@ export function rewriteCatalogImports(
 
 /**
  * Rewrite catalog-relative (or upstream $lib) family imports to the published
- * package specifier consumers use: `@stevejuma/ui/shadcn/<family>`.
+ * package specifier consumers use: `@lapismd/design-core/shadcn/<family>`.
  */
 export function rewritePackageImports(
   source: string,
@@ -84,23 +84,23 @@ export function rewritePackageImports(
   let code = rewriteCatalogImports(source, component);
   code = code.replace(
     /from\s+["']\.\/index\.js["']/g,
-    `from "@stevejuma/ui/shadcn/${component}"`,
+    `from "@lapismd/design-core/shadcn/${component}"`,
   );
   code = code.replace(
     /from\s+["']\.\.\/([a-z][a-z0-9-]*)\/index\.js["']/g,
-    (_m, family: string) => `from "@stevejuma/ui/shadcn/${family}"`,
+    (_m, family: string) => `from "@lapismd/design-core/shadcn/${family}"`,
   );
   code = code.replace(
     /from\s+["']\$lib\/components\/ui\/([a-z][a-z0-9-]*)(?:\/index\.js)?["']/g,
-    (_m, family: string) => `from "@stevejuma/ui/shadcn/${family}"`,
+    (_m, family: string) => `from "@lapismd/design-core/shadcn/${family}"`,
   );
   code = code.replace(
     /from\s+["']\$lib\/registry\/ui\/([a-z][a-z0-9-]*)(?:\/index\.js)?["']/g,
-    (_m, family: string) => `from "@stevejuma/ui/shadcn/${family}"`,
+    (_m, family: string) => `from "@lapismd/design-core/shadcn/${family}"`,
   );
   code = code.replace(
     /from\s+["']\.\.\/ui\/([a-z][a-z0-9-]*)(?:\/index\.js)?["']/g,
-    (_m, family: string) => `from "@stevejuma/ui/shadcn/${family}"`,
+    (_m, family: string) => `from "@lapismd/design-core/shadcn/${family}"`,
   );
   return code;
 }

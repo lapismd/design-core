@@ -8,7 +8,7 @@ pnpm ui:add collapsible
 
 ```html
 <script lang="ts">
-  import * as Collapsible from "@stevejuma/ui/shadcn/collapsible";
+  import * as Collapsible from "@lapismd/design-core/shadcn/collapsible";
 </script>
 ```
 

@@ -38,7 +38,7 @@ import {
   shellTokenNames,
 } from "./index.js";
 
-describe("@stevejuma/ui/shell public API", () => {
+describe("@lapismd/design-core/shell public API", () => {
   it("keeps namespace and named compound exports aligned", () => {
     expect(AppShell.Root).toBe(AppShellRoot);
     expect(AppShell.Sidebar).toBe(AppShellSidebar);
@@ -103,7 +103,7 @@ describe("@stevejuma/ui/shell public API", () => {
     expect(APP_SHELL_DEFAULT_SIDEBAR_MAX_WIDTH).toBe(520);
     expect(APP_SHELL_LAYOUT_VERSION).toBe(1);
     expect(APP_SHELL_DEFAULT_STORAGE_KEY).toBe(
-      "@stevejuma/ui/app-shell-layout",
+      "@lapismd/design-core/app-shell-layout",
     );
     expect(createLocalStorageAppShellLayoutPersistence).toBeTypeOf("function");
     expect(shellTokenDefaults).toEqual({

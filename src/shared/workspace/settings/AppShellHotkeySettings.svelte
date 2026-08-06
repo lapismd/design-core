@@ -7,8 +7,8 @@
   import RotateCcw from "@lucide/svelte/icons/rotate-ccw";
   import Search from "@lucide/svelte/icons/search";
   import X from "@lucide/svelte/icons/x";
-  import { Button } from "@stevejuma/ui/shadcn/button";
-  import { Input } from "@stevejuma/ui/shadcn/input";
+  import { Button } from "@lapismd/design-core/shadcn/button";
+  import { Input } from "@lapismd/design-core/shadcn/input";
   import { onMount, tick } from "svelte";
   import type { AppShellController } from "../core/app-shell-controller.svelte.js";
   import {

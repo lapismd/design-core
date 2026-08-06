@@ -130,7 +130,7 @@ function rewriteDocsMarkdown(
   md = expandSectionExampleSources(md, examples, component);
   md = alignComponentThemeDocs(md, component);
   md = normalizeDocsFenceLanguages(md);
-  const banner = `<!-- Adapted from ${docs.docsUrl} for the @stevejuma/ui native-CSS catalog. -->\n\n`;
+  const banner = `<!-- Adapted from ${docs.docsUrl} for the @lapismd/design-core native-CSS catalog. -->\n\n`;
   return banner + md;
 }
 

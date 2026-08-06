@@ -1,4 +1,4 @@
-<!-- Adapted from https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/pagination.md for the @stevejuma/ui native-CSS catalog. -->
+<!-- Adapted from https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/pagination.md for the @lapismd/design-core native-CSS catalog. -->
 
 # Pagination
 
@@ -14,7 +14,7 @@ pnpm ui:add pagination
 
 ```html
 <script lang="ts">
-  import * as Pagination from "@stevejuma/ui/shadcn/pagination";
+  import * as Pagination from "@lapismd/design-core/shadcn/pagination";
 </script>
 ```
 

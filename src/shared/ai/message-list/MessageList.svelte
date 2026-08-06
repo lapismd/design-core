@@ -1,8 +1,8 @@
 <script lang="ts">
   import SparklesIcon from "@lucide/svelte/icons/sparkles";
-  import { Spinner } from "@stevejuma/ui/shadcn/spinner";
-  import { Button } from "@stevejuma/ui/shadcn/button";
-  import * as Empty from "@stevejuma/ui/shadcn/empty";
+  import { Spinner } from "@lapismd/design-core/shadcn/spinner";
+  import { Button } from "@lapismd/design-core/shadcn/button";
+  import * as Empty from "@lapismd/design-core/shadcn/empty";
   import { tick, type Snippet } from "svelte";
   import type { HTMLAttributes } from "svelte/elements";
   import { setListContext, useLayoutContext } from "../context.svelte.js";

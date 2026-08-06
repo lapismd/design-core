@@ -4,7 +4,7 @@
   import ThumbsDownIcon from "@lucide/svelte/icons/thumbs-down";
   import ThumbsUpIcon from "@lucide/svelte/icons/thumbs-up";
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { Button } from "@stevejuma/ui/shadcn/button";
+  import { Button } from "@lapismd/design-core/shadcn/button";
   import Message from "../message/Message.svelte";
   import MessageBubble from "../message-bubble/MessageBubble.svelte";
   import MessageList from "../message-list/MessageList.svelte";

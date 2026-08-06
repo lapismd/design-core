@@ -8,7 +8,7 @@ pnpm ui:add empty
 
 ```html
 <script lang="ts">
-  import * as Empty from "@stevejuma/ui/shadcn/empty";
+  import * as Empty from "@lapismd/design-core/shadcn/empty";
   import FolderCodeIcon from "@lucide/svelte/icons/folder-code";
 </script>
 ```
@@ -36,8 +36,8 @@ Use the `border` utility class to create an outline empty state.
 
 ```html
 <script lang="ts">
-  import * as Empty from "@stevejuma/ui/shadcn/empty";
-  import { Button } from "@stevejuma/ui/shadcn/button";
+  import * as Empty from "@lapismd/design-core/shadcn/empty";
+  import { Button } from "@lapismd/design-core/shadcn/button";
   import CloudIcon from "@lucide/svelte/icons/cloud";
 </script>
 
@@ -63,8 +63,8 @@ Use the `bg-*` and `bg-gradient-*` utilities to add a background to the empty st
 
 ```html
 <script lang="ts">
-  import * as Empty from "@stevejuma/ui/shadcn/empty";
-  import { Button } from "@stevejuma/ui/shadcn/button";
+  import * as Empty from "@lapismd/design-core/shadcn/empty";
+  import { Button } from "@lapismd/design-core/shadcn/button";
   import BellIcon from "@lucide/svelte/icons/bell";
   import RefreshCcwIcon from "@lucide/svelte/icons/refresh-ccw";
 </script>

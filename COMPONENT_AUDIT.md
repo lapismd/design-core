@@ -1,6 +1,6 @@
 # Component audit
 
-Classification for the reusable `@stevejuma/ui` package. Update this file when
+Classification for the reusable `@lapismd/design-core` package. Update this file when
 components move between shared layers.
 
 ## Shared — shadcn
@@ -13,7 +13,7 @@ label, popover, resizable, scroll-area, select, separator, sheet, sidebar,
 skeleton, spinner, switch, swipe-item, tabs, textarea, toggle, toggle-group,
 tooltip
 
-Import: `@stevejuma/ui/shadcn/<family>`
+Import: `@lapismd/design-core/shadcn/<family>`
 
 Registry-backed families are converted to scoped native CSS with token maps and
 provenance files through `pnpm ui:add` / `pnpm ui:add:batch`. `swipe-item` is a
@@ -63,7 +63,7 @@ Borderline but shared when prop-driven: `ReferencePicker`,
 `TaskDueCalendar`, `DatePicker`, `FilterCommandPicker`, and
 `AddSectionChooser`.
 
-Import: `@stevejuma/ui/forms` and `@stevejuma/ui/forms/core`
+Import: `@lapismd/design-core/forms` and `@lapismd/design-core/forms/core`
 
 ## Shared — filter
 
@@ -75,7 +75,7 @@ Search chrome and structured filter-query language in `src/shared/filter/`:
 - `filter-query/` — Lezer grammar, `parseFilterQuery`, and `filterQuery()`
   language support.
 
-Import: `@stevejuma/ui/filter`. Catalog: `Filter/...`. Guidance:
+Import: `@lapismd/design-core/filter`. Catalog: `Filter/...`. Guidance:
 `Filter/Guidance`. Forms may compose the bar; do not re-export it from the
 forms barrel.
 
@@ -86,13 +86,13 @@ network or host-store dependency. Storybook: `AI/...`.
 
 - One folder per stable component (layout, composer, message, …) — 15
   ASTRYX-inspired message/layout, composer, token, dictation, and tool-call
-  primitives. Stable imports use `@stevejuma/ui/ai/chat`.
+  primitives. Stable imports use `@lapismd/design-core/ai/chat`.
 - `experimental/<component>/` — five Lab-derived reasoning, reaction, emoji,
   typing, and unread primitives. Every export is marked `@experimental`;
-  import from `@stevejuma/ui/ai/experimental`.
+  import from `@lapismd/design-core/ai/experimental`.
 
-Import: `@stevejuma/ui/ai`, `@stevejuma/ui/ai/chat`, and
-`@stevejuma/ui/ai/experimental`.
+Import: `@lapismd/design-core/ai`, `@lapismd/design-core/ai/chat`, and
+`@lapismd/design-core/ai/experimental`.
 
 ## Shared — shell
 
@@ -123,7 +123,7 @@ guidance, tokens, and the package barrel):
 - Body-local corner toggles composed from the shadcn icon Button
 - Consumer-owned navigation, actions, content, and non-layout persistence
 
-Import: `@stevejuma/ui/shell`. Catalog: `Shell/App Shell`. Production Shell
+Import: `@lapismd/design-core/shell`. Catalog: `Shell/App Shell`. Production Shell
 sources use native CSS and `--ui-shell-*` geometry tokens. They compose the
 generic shadcn Scroll Area, Button, and Select primitives and do not import
 application-specific state; catalog examples compose other shadcn controls to
@@ -144,7 +144,7 @@ Application-independent workspace framework in `src/shared/workspace/`.
   ribbon, status, settings, command palette, empty and notice components
 - Optional F-Mode and Notifications plugins
 
-Import: `@stevejuma/ui/workspace`. Production Workspace sources use native CSS,
+Import: `@lapismd/design-core/workspace`. Production Workspace sources use native CSS,
 direct headless primitives, and `--ui-workspace-*` tokens. They do not import
 the shadcn layer or Tailwind class infrastructure. Migration progress and
 component classification are tracked in `src/shared/workspace/PLAN.md`.

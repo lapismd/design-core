@@ -8,7 +8,7 @@ pnpm ui:add scroll-area
 
 ```html
 <script lang="ts">
-  import { ScrollArea } from "@stevejuma/ui/shadcn/scroll-area";
+  import { ScrollArea } from "@lapismd/design-core/shadcn/scroll-area";
 </script>
 ```
 
@@ -31,7 +31,7 @@ Set the `orientation` prop to `"horizontal"` to enable horizontal scrolling.
 
 ```html
 <script lang="ts">
-  import { ScrollArea } from "@stevejuma/ui/shadcn/scroll-area";
+  import { ScrollArea } from "@lapismd/design-core/shadcn/scroll-area";
 
   type Artwork = {
     artist: string;

@@ -123,7 +123,7 @@ Colocated CSS: \`${cssFile}\`.
 ## Style
 
 Colocated CSS: \`${cssFile}\`. Paint with package tokens from
-\`@stevejuma/ui/forms/tokens\` (defaults in \`form.tokens.css\`). Stories may
+\`@lapismd/design-core/forms/tokens\` (defaults in \`form.tokens.css\`). Stories may
 still use host Tailwind for demo layout.
 
 | Token | Default |
@@ -156,7 +156,7 @@ const specs = [
       "Do not add extra borders on wrappers around `FormField` (section headers own separators)",
     ],
     usage: `<script lang="ts">
-  import { FormField } from "@stevejuma/ui/forms";
+  import { FormField } from "@lapismd/design-core/forms";
 </script>
 
 <div class="cv-structured-form">
@@ -222,7 +222,7 @@ const specs = [
       "Do not place disclosure toggles inside the form grid columns",
     ],
     usage: `<script lang="ts">
-  import { FormSectionHeader } from "@stevejuma/ui/forms";
+  import { FormSectionHeader } from "@lapismd/design-core/forms";
 </script>
 
 <FormSectionHeader
@@ -295,7 +295,7 @@ const specs = [
       "Do not invent local move/delete icon rows",
     ],
     usage: `<script lang="ts">
-  import { EntryActions } from "@stevejuma/ui/forms";
+  import { EntryActions } from "@lapismd/design-core/forms";
 </script>
 
 <EntryActions index={0} total={2} onMove={...} onRemove={...}>
@@ -443,8 +443,8 @@ const specs = [
       "YAML source editing — use `YamlBackedForm` / `YamlEditor`",
     ],
     usage: `<script lang="ts">
-  import { StructuredForm } from "@stevejuma/ui/forms";
-  import { createFormConfig, textField } from "@stevejuma/ui/forms/core";
+  import { StructuredForm } from "@lapismd/design-core/forms";
+  import { createFormConfig, textField } from "@lapismd/design-core/forms/core";
 </script>
 
 <StructuredForm value={data} {config} onChange={...} />`,

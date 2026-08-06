@@ -1,5 +1,5 @@
 <script lang="ts">
-  import * as InputGroup from "@stevejuma/ui/shadcn/input-group";
+  import * as InputGroup from "@lapismd/design-core/shadcn/input-group";
   import WorkspaceIcon from "../icon/WorkspaceIcon.svelte";
   import { getAppSettingsContext } from "./app-settings-context.svelte.js";
 

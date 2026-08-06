@@ -8,8 +8,8 @@
 </script>
 
 <script lang="ts">
-  import * as Tooltip from "@stevejuma/ui/shadcn/tooltip";
-  import { Toggle } from "@stevejuma/ui/shadcn/toggle";
+  import * as Tooltip from "@lapismd/design-core/shadcn/tooltip";
+  import { Toggle } from "@lapismd/design-core/shadcn/toggle";
   import type { HTMLAttributes } from "svelte/elements";
   import EmojiPicker, { type EmojiOption } from "../emoji-picker/EmojiPicker.svelte";
   import "../../chat.css";

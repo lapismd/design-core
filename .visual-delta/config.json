@@ -13,10 +13,14 @@
   },
   "previewSplitZoomDefault": "100%",
   "diffResultZoomDefault": "100%",
+  "browsers": [
+    "chromium"
+  ],
   "workflow": {
-    "autoAcceptLiveStoryComparisons": true,
+    "autoAcceptLiveStoryComparisons": false,
+    "visualTestFailureMode": "warn",
     "vcs": {
-      "mode": "auto",
+      "mode": "off",
       "commitMessageTemplate": "Visual Delta: {action} {scope}"
     }
   }

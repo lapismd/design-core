@@ -82,7 +82,7 @@ replacing that implementation with:
 - public `--ui-workspace-*` tokens;
 - `data-ui-component` and `data-ui-part` ownership markers.
 
-The optional `@stevejuma/ui/themes/lapis.css` brand theme maps the pinned Lapis
+The optional `@lapismd/design-core/themes/lapis.css` brand theme maps the pinned Lapis
 light/dark palette, shape, and shell geometry onto the host and Workspace token
 contracts. It is selected independently from the Storybook light/dark toolbar,
 so either Lapis colour mode can be reviewed without changing component code.

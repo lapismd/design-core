@@ -11,14 +11,14 @@ import {
   CodeBlock,
   defineSyntaxTheme,
   dracula,
-} from "@stevejuma/ui/shadcn/code-block";
+} from "@lapismd/design-core/shadcn/code-block";
 ```
 
 ## Usage
 
 ```svelte
 <script lang="ts">
-  import { CodeBlock } from "@stevejuma/ui/shadcn/code-block";
+  import { CodeBlock } from "@lapismd/design-core/shadcn/code-block";
 
   const code = `const answer = 42;`;
 </script>

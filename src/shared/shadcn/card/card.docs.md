@@ -1,4 +1,4 @@
-<!-- Adapted from https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/card.md for the @stevejuma/ui native-CSS catalog. -->
+<!-- Adapted from https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/card.md for the @lapismd/design-core native-CSS catalog. -->
 
 # Card
 
@@ -14,7 +14,7 @@ pnpm ui:add card
 
 ```html
 <script lang="ts">
-  import * as Card from "@stevejuma/ui/shadcn/card";
+  import * as Card from "@lapismd/design-core/shadcn/card";
 </script>
 ```
 
@@ -43,8 +43,8 @@ Use negative margins with `-mx-(--card-spacing)` to make content go edge to edge
 
 ```html
 <script lang="ts">
-  import { Button } from "@stevejuma/ui/shadcn/button";
-  import * as Card from "@stevejuma/ui/shadcn/card";
+  import { Button } from "@lapismd/design-core/shadcn/button";
+  import * as Card from "@lapismd/design-core/shadcn/card";
 </script>
 
 <Card.Root class="mx-auto w-full max-w-sm">
@@ -90,9 +90,9 @@ Add an image before the card header to create a card with an image.
 
 ```html
 <script lang="ts">
-  import { Badge } from "@stevejuma/ui/shadcn/badge";
-  import { Button } from "@stevejuma/ui/shadcn/button";
-  import * as Card from "@stevejuma/ui/shadcn/card";
+  import { Badge } from "@lapismd/design-core/shadcn/badge";
+  import { Button } from "@lapismd/design-core/shadcn/button";
+  import * as Card from "@lapismd/design-core/shadcn/card";
 </script>
 
 <Card.Root class="relative mx-auto w-full max-w-sm pt-0">

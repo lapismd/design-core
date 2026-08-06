@@ -1,7 +1,7 @@
 # Workspace framework migration
 
 This document tracks the migration of the standalone Lapis workspace-shell
-framework into the `Workspace` layer of `@stevejuma/ui`.
+framework into the `Workspace` layer of `@lapismd/design-core`.
 
 The migration is target-first. The source package remains intact until the
 target implementation has passed functional, interaction, visual, and manual
@@ -33,7 +33,7 @@ The source package currently contains:
 
 - Production files below `src/shared/workspace` use native CSS and public
   `--ui-workspace-*` tokens.
-- Workspace sources may compose repository-owned `@stevejuma/ui/shadcn`
+- Workspace sources may compose repository-owned `@lapismd/design-core/shadcn`
   primitives, but do not import `shadcn-svelte`, `tailwind-merge`, or
   `tailwind-variants`, and do not reconstruct an existing shadcn family.
 - Workspace sources do not contain Tailwind utility strings or `cn()` class
@@ -54,14 +54,14 @@ import {
   AppShell,
   AppShellController,
   WorkspaceView,
-} from "@stevejuma/ui/workspace";
+} from "@lapismd/design-core/workspace";
 ```
 
 Optional plugins use:
 
 ```ts
-import { fModePlugin } from "@stevejuma/ui/workspace/plugins/fmode";
-import { notificationsPlugin } from "@stevejuma/ui/workspace/plugins/notifications";
+import { fModePlugin } from "@lapismd/design-core/workspace/plugins/fmode";
+import { notificationsPlugin } from "@lapismd/design-core/workspace/plugins/notifications";
 ```
 
 The existing public names are retained while the move is in progress.
@@ -155,7 +155,7 @@ workflow.
 - Focused Workspace unit tests: 10 files and 47 tests pass.
 - `pnpm check:no-tailwind`: pass.
 - `pnpm check`: pass with zero Svelte errors or warnings.
-- The public `@stevejuma/ui/workspace`, `/core`, and `/settings` exports now
+- The public `@lapismd/design-core/workspace`, `/core`, and `/settings` exports now
   include the application controller, workspace mutation controller, view and
   editor registries, declarative configuration, commands, hotkeys, static
   plugins, notices, notifications, and persistence adapters.
@@ -381,7 +381,7 @@ workflow.
 
 ### Optional F-Mode plugin
 
-- Added `@stevejuma/ui/workspace/plugins/fmode` with the static
+- Added `@lapismd/design-core/workspace/plugins/fmode` with the static
   `fModePlugin()` descriptor, prefix-free hint generation, target-group
   settings, modal key capture, typed session model, and composable overlay.
 - `AppShell.Root` now renders controller-registered overlay contributions
@@ -402,7 +402,7 @@ workflow.
 
 ### Optional Notifications plugin
 
-- Added `@stevejuma/ui/workspace/plugins/notifications` with the static
+- Added `@lapismd/design-core/workspace/plugins/notifications` with the static
   `notificationsPlugin()` descriptor and composable toast, status, and
   notification-center components.
 - The controller-owned service retains transient notices, durable history,
@@ -703,7 +703,7 @@ workflow.
 
 The migration is complete only when:
 
-- every retained public API is exported from `@stevejuma/ui/workspace`;
+- every retained public API is exported from `@lapismd/design-core/workspace`;
 - current layout snapshots round-trip without data loss;
 - all current component and plugin behavior is covered in the target;
 - every public visual component has colocated documentation and a deterministic

@@ -1,5 +1,5 @@
 /**
- * Public CSS custom properties for `@stevejuma/ui/forms`.
+ * Public CSS custom properties for `@lapismd/design-core/forms`.
  * Defaults are applied in `form.tokens.css` (theme-token fallbacks).
  *
  * Override on `:root`, `.ui-structured-form`, or any form ancestor, e.g.

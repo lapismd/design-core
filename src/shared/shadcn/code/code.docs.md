@@ -6,14 +6,14 @@ Project-authored Astryx-inspired primitive — see `ADD_CODE_BLOCK.md`.
 ## Import
 
 ```ts
-import { Code } from "@stevejuma/ui/shadcn/code";
+import { Code } from "@lapismd/design-core/shadcn/code";
 ```
 
 ## Usage
 
 ```svelte
 <script lang="ts">
-  import { Code } from "@stevejuma/ui/shadcn/code";
+  import { Code } from "@lapismd/design-core/shadcn/code";
 </script>
 
 <p>Use <Code>const x = 1</Code> to declare a variable.</p>
@@ -29,5 +29,5 @@ import { Code } from "@stevejuma/ui/shadcn/code";
 
 ## Related
 
-- **Code Block** (`@stevejuma/ui/shadcn/code-block`) — fenced multi-line snippets
-- **Code Highlighter** (`@stevejuma/ui/forms`) — Lezer parser form previews
+- **Code Block** (`@lapismd/design-core/shadcn/code-block`) — fenced multi-line snippets
+- **Code Highlighter** (`@lapismd/design-core/forms`) — Lezer parser form previews

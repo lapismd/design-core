@@ -319,8 +319,8 @@ describe("rewriteExample", () => {
     const source = `import * as InputGroup from "$lib/components/ui/input-group/index.js";
 import * as Tooltip from "$lib/components/ui/tooltip/index.js";`;
     const rewritten = rewritePackageImports(source, "input-group");
-    expect(rewritten).toContain('from "@stevejuma/ui/shadcn/input-group"');
-    expect(rewritten).toContain('from "@stevejuma/ui/shadcn/tooltip"');
+    expect(rewritten).toContain('from "@lapismd/design-core/shadcn/input-group"');
+    expect(rewritten).toContain('from "@lapismd/design-core/shadcn/tooltip"');
     expect(rewritten).not.toContain("$lib/components/ui");
     expect(rewritten).not.toContain("./index.js");
   });
@@ -520,7 +520,7 @@ hello
 describe("expandSectionExampleSources", () => {
   it("replaces abbreviated section fences with the full example SFC", () => {
     const full = `<script lang="ts">
-  import * as Sidebar from "@stevejuma/ui/shadcn/sidebar";
+  import * as Sidebar from "@lapismd/design-core/shadcn/sidebar";
 </script>
 
 <Sidebar.Provider>
@@ -556,7 +556,7 @@ Intro.
       ],
       "sidebar",
     );
-    expect(expanded).toContain('from "@stevejuma/ui/shadcn/sidebar"');
+    expect(expanded).toContain('from "@lapismd/design-core/shadcn/sidebar"');
     expect(expanded).toContain("<Sidebar.Header>Workspace</Sidebar.Header>");
     expect(expanded).not.toContain("<Sidebar.Header />");
   });
@@ -790,7 +790,7 @@ describe("emitDocsArtifacts", () => {
     expect(mdx).toContain("<Primary />");
     expect(mdx).toContain("<Controls />");
     expect(mdx).toContain('<Source language="html" code={');
-    expect(mdx).toContain("@stevejuma/ui/shadcn/input-group");
+    expect(mdx).toContain("@lapismd/design-core/shadcn/input-group");
     expect(mdx).not.toContain('from "./index.js"');
     expect(mdx).toContain(
       "<Canvas of={InputGroupVariations.Icon} meta={InputGroupVariations} />",
@@ -807,7 +807,7 @@ describe("emitDocsArtifacts", () => {
     );
     expect(docsMd).toMatch(/##\s+(\[)?Installation/);
     expect(docsMd).toContain("## [Usage](#usage)");
-    expect(docsMd).toContain("@stevejuma/ui/shadcn/input-group");
+    expect(docsMd).toContain("@lapismd/design-core/shadcn/input-group");
     // Svelte fences are remapped to `html` for Storybook Prism highlighting.
     expect(docsMd).toContain("```html");
     // Example headings keep prose; abbreviated fences expand to full SFCs.
@@ -830,7 +830,7 @@ describe("emitDocsArtifacts", () => {
       path.join(targetDir, "InputGroup.example-sources.ts"),
       "utf8",
     );
-    expect(sources).toContain("@stevejuma/ui/shadcn/input-group");
+    expect(sources).toContain("@lapismd/design-core/shadcn/input-group");
     expect(sources).toContain("<InputGroup.Root>");
 
     const icon = readFileSync(

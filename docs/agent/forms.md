@@ -11,7 +11,7 @@ sources:
 
 # Forms guidance
 
-Use `@stevejuma/ui/forms` for structured editing and CV form-row chrome. Use
+Use `@lapismd/design-core/forms` for structured editing and CV form-row chrome. Use
 shadcn for generic controls (`Select`, `Switch`, `Command`, `Input`, …).
 
 This topic summarizes the package contract. Full decision guide:
@@ -34,7 +34,7 @@ This topic summarizes the package contract. Full decision guide:
 6. **shadcn** — Select, Switch, Command/Popover pickers, Toggle Group, Field.
    Prefer shared `FilterCommandPicker` / `DatePicker` when the forms catalog
    already covers the control.
-7. **filter** — search chrome and filter-query language via `@stevejuma/ui/filter`
+7. **filter** — search chrome and filter-query language via `@lapismd/design-core/filter`
    (`SearchFilterBar`). Compose from forms; see `Filter/Guidance` and
    **UI Forms/Form Inputs/Search Filter in a Form**.
 
@@ -50,7 +50,7 @@ This topic summarizes the package contract. Full decision guide:
 ## Tokens
 
 Forms use `--ui-form-*` (`formTokenNames` / `formTokenDefaults` /
-`@stevejuma/ui/forms/tokens`), defaults in `form.tokens.css`. Same override
+`@lapismd/design-core/forms/tokens`), defaults in `form.tokens.css`. Same override
 idea as shadcn `--ui-<family>-*` maps.
 
 Paint via colocated `ComponentName.css` — no Tailwind utilities in form

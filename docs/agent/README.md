@@ -1,6 +1,6 @@
 # Agent documentation
 
-Curated offline guidance for humans and coding agents working in `@stevejuma/ui`.
+Curated offline guidance for humans and coding agents working in `@lapismd/design-core`.
 
 ## CLI
 

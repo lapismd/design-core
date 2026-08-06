@@ -1,6 +1,6 @@
 <script lang="ts">
   import ChevronRight from "@lucide/svelte/icons/chevron-right";
-  import * as Resizable from "@stevejuma/ui/shadcn/resizable";
+  import * as Resizable from "@lapismd/design-core/shadcn/resizable";
   import { Collapsible, ContextMenu } from "bits-ui";
   import { onMount } from "svelte";
   import type {

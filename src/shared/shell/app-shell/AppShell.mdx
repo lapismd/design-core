@@ -5,7 +5,7 @@ import * as Stories from "./AppShell.stories.svelte";
 
 # App Shell
 
-`@stevejuma/ui/shell` is a bounded structural layout for applications that own
+`@lapismd/design-core/shell` is a bounded structural layout for applications that own
 their navigation and content. Consumers compose its compound parts once; the
 root presents them as independently collapsible and resizable desktop sidebars
 or as a container-aware mobile track.
@@ -253,7 +253,7 @@ explicit expanded `width`. The package includes a JSON `localStorage` adapter:
 import {
   AppShellController,
   createLocalStorageAppShellLayoutPersistence,
-} from "@stevejuma/ui/shell";
+} from "@lapismd/design-core/shell";
 
 const shell = new AppShellController({
   persistence: createLocalStorageAppShellLayoutPersistence(
@@ -272,7 +272,7 @@ JSON-safe; invalid panels and saved side mismatches are ignored, while restored
 widths are clamped to the receiving controller's bounds.
 
 The local adapter defaults to the
-`@stevejuma/ui/app-shell-layout` storage key when no key is supplied. Applications
+`@lapismd/design-core/app-shell-layout` storage key when no key is supplied. Applications
 with multiple shells should provide a stable application-specific key. A custom
 adapter may save to desktop settings, a database, or another host-owned store
 without changing shell components.
@@ -305,8 +305,8 @@ spacing.
 
 ## Shell or Workspace?
 
-Choose `@stevejuma/ui/shell` for structural application chrome with
-consumer-owned content. Choose `@stevejuma/ui/workspace` when the application
+Choose `@lapismd/design-core/shell` for structural application chrome with
+consumer-owned content. Choose `@lapismd/design-core/workspace` when the application
 needs registered views, tabs, recursive splits, general workspace persistence,
 commands, settings, plugins, windows, or general-purpose overlays. Both can
 present mobile navigation, but Shell remains a small geometry/controller layer;

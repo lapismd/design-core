@@ -1,4 +1,4 @@
-<!-- Adapted from https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/field.md for the @stevejuma/ui native-CSS catalog. -->
+<!-- Adapted from https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/field.md for the @lapismd/design-core native-CSS catalog. -->
 
 # Field
 
@@ -14,7 +14,7 @@ pnpm ui:add field
 
 ```html
 <script lang="ts">
-  import * as Field from "@stevejuma/ui/shadcn/field";
+  import * as Field from "@lapismd/design-core/shadcn/field";
 </script>
 ```
 
@@ -66,8 +66,8 @@ The `Field` family is designed for composing accessible forms. A typical field i
 
 ```html
 <script lang="ts">
-  import * as Field from "@stevejuma/ui/shadcn/field";
-  import { Input } from "@stevejuma/ui/shadcn/input";
+  import * as Field from "@lapismd/design-core/shadcn/field";
+  import { Input } from "@lapismd/design-core/shadcn/input";
 </script>
 
 <div class="w-full max-w-md">
@@ -96,8 +96,8 @@ The `Field` family is designed for composing accessible forms. A typical field i
 
 ```html
 <script lang="ts">
-  import * as Field from "@stevejuma/ui/shadcn/field";
-  import { Textarea } from "@stevejuma/ui/shadcn/textarea";
+  import * as Field from "@lapismd/design-core/shadcn/field";
+  import { Textarea } from "@lapismd/design-core/shadcn/textarea";
 </script>
 
 <div class="w-full max-w-md">
@@ -123,8 +123,8 @@ The `Field` family is designed for composing accessible forms. A typical field i
 
 ```html
 <script lang="ts">
-  import * as Field from "@stevejuma/ui/shadcn/field";
-  import * as Select from "@stevejuma/ui/shadcn/select";
+  import * as Field from "@lapismd/design-core/shadcn/field";
+  import * as Select from "@lapismd/design-core/shadcn/select";
 
   let department = $state<string>();
 
@@ -169,8 +169,8 @@ The `Field` family is designed for composing accessible forms. A typical field i
 
 ```html
 <script lang="ts">
-  import * as Field from "@stevejuma/ui/shadcn/field";
-  import { Input } from "@stevejuma/ui/shadcn/input";
+  import * as Field from "@lapismd/design-core/shadcn/field";
+  import { Input } from "@lapismd/design-core/shadcn/input";
 </script>
 
 <div class="w-full max-w-md space-y-6">
@@ -203,8 +203,8 @@ The `Field` family is designed for composing accessible forms. A typical field i
 
 ```html
 <script lang="ts">
-  import * as Field from "@stevejuma/ui/shadcn/field";
-  import { Checkbox } from "@stevejuma/ui/shadcn/checkbox";
+  import * as Field from "@lapismd/design-core/shadcn/field";
+  import { Checkbox } from "@lapismd/design-core/shadcn/checkbox";
 </script>
 
 <div class="w-full max-w-md">
@@ -272,8 +272,8 @@ The `Field` family is designed for composing accessible forms. A typical field i
 
 ```html
 <script lang="ts">
-  import * as Field from "@stevejuma/ui/shadcn/field";
-  import { Switch } from "@stevejuma/ui/shadcn/switch";
+  import * as Field from "@lapismd/design-core/shadcn/field";
+  import { Switch } from "@lapismd/design-core/shadcn/switch";
 </script>
 
 <div class="w-full max-w-md">
@@ -300,8 +300,8 @@ Stack `Field` components with `Field.Group`. Add `Field.Separator` to divide the
 
 ```html
 <script lang="ts">
-  import * as Field from "@stevejuma/ui/shadcn/field";
-  import { Checkbox } from "@stevejuma/ui/shadcn/checkbox";
+  import * as Field from "@lapismd/design-core/shadcn/field";
+  import { Checkbox } from "@lapismd/design-core/shadcn/checkbox";
 </script>
 
 <div class="w-full max-w-md">
@@ -355,10 +355,10 @@ Stack `Field` components with `Field.Group`. Add `Field.Separator` to divide the
 
 ```html
 <script lang="ts">
-  import * as Field from "@stevejuma/ui/shadcn/field";
-  import { Button } from "@stevejuma/ui/shadcn/button";
-  import { Input } from "@stevejuma/ui/shadcn/input";
-  import { Textarea } from "@stevejuma/ui/shadcn/textarea";
+  import * as Field from "@lapismd/design-core/shadcn/field";
+  import { Button } from "@lapismd/design-core/shadcn/button";
+  import { Input } from "@lapismd/design-core/shadcn/input";
+  import { Textarea } from "@lapismd/design-core/shadcn/textarea";
 </script>
 
 <div class="w-full max-w-4xl">

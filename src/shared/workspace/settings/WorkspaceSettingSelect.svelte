@@ -36,7 +36,7 @@
 </script>
 
 <script lang="ts">
-  import * as Select from "@stevejuma/ui/shadcn/select";
+  import * as Select from "@lapismd/design-core/shadcn/select";
 
   const SelectRoot: any = Select.Root;
 
