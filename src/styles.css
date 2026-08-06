@@ -30,6 +30,7 @@
 @import "./shared/shadcn/empty/empty.tokens.css";
 @import "./shared/shadcn/dropdown-menu/dropdown-menu.tokens.css";
 @import "./shared/shadcn/dialog/dialog.tokens.css";
+@import "./shared/shadcn/drawer/drawer.tokens.css";
 @import "./shared/shadcn/context-menu/context-menu.tokens.css";
 @import "./shared/shadcn/command/command.tokens.css";
 @import "./shared/shadcn/collapsible/collapsible.tokens.css";

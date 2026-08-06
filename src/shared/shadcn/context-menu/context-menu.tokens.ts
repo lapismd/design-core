@@ -1,4 +1,4 @@
-export const context_menuTokenNames = {
+export const contextMenuTokenNames = {
   background: "--ui-context-menu-background",
   foreground: "--ui-context-menu-foreground",
   borderColor: "--ui-context-menu-border-color",
@@ -7,4 +7,4 @@ export const context_menuTokenNames = {
 } as const;
 
 export type ContextMenuToken =
-  (typeof context_menuTokenNames)[keyof typeof context_menuTokenNames];
+  (typeof contextMenuTokenNames)[keyof typeof contextMenuTokenNames];

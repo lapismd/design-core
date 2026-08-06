@@ -1,0 +1,7 @@
+:root {
+  --ui-drawer-background: var(--popover);
+  --ui-drawer-foreground: var(--popover-foreground);
+  --ui-drawer-border-color: var(--border);
+  --ui-drawer-radius: calc(var(--radius) * 0.8);
+  --ui-drawer-focus-ring-color: var(--ring);
+}
