@@ -378,6 +378,43 @@ const recipes: Record<string, ComponentRecipe> = {
     shotSelector: '[data-ui-component="button-group"]',
     viewport: { width: 320, height: 80 },
   }),
+  progress: lightCompound("progress", "Shadcn/Feedback/Progress", {
+    tag: "div",
+    attrs: {
+      role: "progressbar",
+      "data-slot": "progress",
+      "aria-valuemin": "0",
+      "aria-valuemax": "100",
+      "aria-valuenow": "60",
+    },
+    shotSelector: '[data-ui-component="progress"]',
+    viewport: { width: 320, height: 48 },
+    referenceInnerHtml:
+      '<div data-slot="progress-indicator" class="bg-primary h-full w-full flex-1 transition-all" style="transform: translateX(-40%)"></div>',
+    semanticInnerHtml:
+      '<div data-ui-component="progress" data-ui-part="progress-indicator" data-slot="progress-indicator" style="transform: translateX(-40%)"></div>',
+  }),
+  slider: lightCompound("slider", "Shadcn/Forms/Slider", {
+    tag: "span",
+    attrs: {
+      "data-slot": "slider",
+      "data-orientation": "horizontal",
+    },
+    shotSelector: '[data-ui-component="slider"]',
+    viewport: { width: 320, height: 48 },
+  }),
+  "context-menu": portal("context-menu", "Shadcn/Overlays/Context Menu", {
+    tag: "div",
+    text: "Item",
+    attrs: { role: "menu", "data-slot": "context-menu-content" },
+    shotSelector: '[data-ui-part="context-menu-content"]',
+  }),
+  drawer: portal("drawer", "Shadcn/Overlays/Drawer", {
+    tag: "div",
+    text: "Drawer",
+    attrs: { role: "dialog", "data-slot": "drawer-content" },
+    shotSelector: '[data-ui-part="drawer-content"]',
+  }),
 };
 
 export function getRecipe(component: string): ComponentRecipe | undefined {
