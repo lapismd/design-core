@@ -17,8 +17,8 @@
 }
 
 .ui-workspace-status-item:hover:not(:disabled) {
-  color: var(--ui-workspace-panel-foreground);
-  background: var(--ui-workspace-muted);
+  color: var(--ui-workspace-panel-action-hover-foreground);
+  background: var(--ui-workspace-panel-action-hover-background);
 }
 
 .ui-workspace-status-item:disabled {

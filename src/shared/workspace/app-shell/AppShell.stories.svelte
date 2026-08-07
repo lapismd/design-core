@@ -319,11 +319,12 @@
     const buttons = [
       canvas.getByRole("button", { name: "Open command palette" }),
       canvas.getByRole("button", { name: "Open settings" }),
+      canvas.getByRole("button", { name: "Framework ready" }),
     ];
 
     for (const button of buttons) {
       const panel = button.closest(
-        '[data-ui-component="workspace-ribbon"], [data-ui-component="workspace-sidebar"]',
+        '[data-ui-component="workspace-ribbon"], [data-ui-component="workspace-sidebar"], [data-ui-component="workspace-status-bar"]',
       );
       await expect(panel).not.toBeNull();
       await userEvent.hover(button);

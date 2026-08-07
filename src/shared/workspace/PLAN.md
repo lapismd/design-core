@@ -294,6 +294,8 @@ workflow.
   geometry and hint targets, and can be omitted or replaced by an application.
 - Status items support direct actions, icons, segments, busy state, and shared
   declarative menus.
+- Status actions use the shared panel-action hover tokens so their feedback
+  remains distinct from the sidebar-coloured status-bar surface.
 - Focused Storybook interaction and accessibility execution: 3 files and 3
   stories pass through the repository's Storybook Vitest project.
 - The required MCP focused run was invoked. Its first attempt broadened into
