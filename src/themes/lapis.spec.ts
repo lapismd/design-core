@@ -27,6 +27,10 @@ describe("Lapis theme contract", () => {
     expect(css).toContain("--ui-workspace-sidebar-header-height: 32px");
     expect(css).toContain("--sidebar-accent: #e3e3e3");
     expect(css).toContain("--sidebar-accent: #363636");
+    expect(css).toContain(
+      "--ui-workspace-panel-action-hover-background: var(--sidebar-accent)",
+    );
+    expect(css).toContain("--ui-workspace-panel-action-hover-foreground: var(");
     expect(workspaceTokens).toContain(
       "--ui-workspace-panel-action-hover-background: var(",
     );

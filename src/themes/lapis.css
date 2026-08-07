@@ -66,6 +66,10 @@
   --ui-workspace-foreground: #222222;
   --ui-workspace-panel: #f6f6f6;
   --ui-workspace-panel-foreground: #222222;
+  --ui-workspace-panel-action-hover-background: var(--sidebar-accent);
+  --ui-workspace-panel-action-hover-foreground: var(
+    --sidebar-accent-foreground
+  );
   --ui-workspace-muted: #f6f6f6;
   --ui-workspace-muted-foreground: #5c5c5c;
   --ui-workspace-popover: #ffffff;

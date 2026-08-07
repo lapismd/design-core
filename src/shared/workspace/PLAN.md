@@ -132,6 +132,8 @@ workflow.
 - Mapped ribbon and sidebar button hover feedback through public
   `--ui-workspace-panel-action-hover-*` tokens, whose defaults follow the host
   `--sidebar-accent*` semantics instead of the page-level muted surface.
+- Declared the same panel-action mapping in the Lapis theme itself so direct
+  theme imports retain visible sidebar and ribbon hover feedback.
 - Imported all 52 validated standalone app-shell Storybook captures into the
   immutable reference tree with revision, capture, inventory-hash, and mapping
   provenance.
