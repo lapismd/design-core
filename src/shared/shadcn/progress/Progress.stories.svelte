@@ -28,7 +28,7 @@
 >
   {#snippet template()}
     <div class="w-64">
-      <Progress value={60} max={100} />
+      <Progress value={60} max={100} aria-label="Install progress" />
     </div>
   {/snippet}
 </Story>

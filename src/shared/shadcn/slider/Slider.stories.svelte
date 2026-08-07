@@ -29,7 +29,7 @@
 >
   {#snippet template()}
     <div class="w-64 p-4">
-      <Slider type="single" bind:value max={100} step={1} />
+      <Slider type="single" bind:value max={100} step={1} aria-label="Volume" />
     </div>
   {/snippet}
 </Story>

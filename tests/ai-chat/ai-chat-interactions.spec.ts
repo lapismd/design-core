@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { waitForVisualStoryFinished } from "@lapismd/storybook-addon-visual-delta/src/playwright/readiness.js";
+import { waitForVisualStoryFinished } from "@lapismd/storybook-addon-visual-delta/playwright";
 
 const storyUrl = (id: string) =>
   `/iframe.html?id=${encodeURIComponent(id)}&viewMode=story`;
