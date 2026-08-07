@@ -1,4 +1,5 @@
 <script lang="ts">
+  import ChevronDown from "@lucide/svelte/icons/chevron-down";
   import ChevronRight from "@lucide/svelte/icons/chevron-right";
   import * as Resizable from "@lapismd/design-core/shadcn/resizable";
   import { Collapsible, ContextMenu } from "bits-ui";
@@ -241,11 +242,17 @@
                             ondragend={(event) => dragState.endHtml5(event)}
                             onclick={() => toggle(tab.id, collapsed)}
                           >
-                            <ChevronRight
-                              class="ui-workspace-bottom-panel-group__chevron"
-                              data-expanded={!collapsed}
-                              aria-hidden="true"
-                            />
+                            {#if collapsed}
+                              <ChevronRight
+                                class="ui-workspace-bottom-panel-group__chevron"
+                                aria-hidden="true"
+                              />
+                            {:else}
+                              <ChevronDown
+                                class="ui-workspace-bottom-panel-group__chevron"
+                                aria-hidden="true"
+                              />
+                            {/if}
                             <span class="ui-workspace-bottom-panel-group__icon">
                               <WorkspaceIcon name={tab.icon ?? "file"} />
                             </span>

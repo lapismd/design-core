@@ -27,12 +27,6 @@
     return child ? topRightPaneId(child) : undefined;
   }
 
-  function bottomRightPaneId(node: WorkspaceNode): string | undefined {
-    if (node.kind === "tabs") return node.id;
-    const child = node.children.at(-1);
-    return child ? bottomRightPaneId(child) : undefined;
-  }
-
   let leftSidebarTogglePaneId = $derived(
     controller.renderer.layout.left.open
       ? undefined
@@ -43,10 +37,13 @@
       ? undefined
       : topRightPaneId(controller.renderer.layout.main),
   );
+  let bottomPanelHasItems = $derived(
+    controller.renderer.layout.bottom.root.items.length > 0,
+  );
   let bottomPanelTogglePaneId = $derived(
-    controller.renderer.layout.bottom.open
-      ? undefined
-      : bottomRightPaneId(controller.renderer.layout.main),
+    !controller.renderer.layout.right.open && bottomPanelHasItems
+      ? topRightPaneId(controller.renderer.layout.main)
+      : undefined,
   );
 </script>
 

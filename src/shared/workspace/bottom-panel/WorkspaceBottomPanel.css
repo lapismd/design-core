@@ -17,6 +17,12 @@
   background: var(--ui-workspace-panel);
 }
 
+.ui-workspace-bottom-panel[data-maximized="true"] {
+  height: 100%;
+  max-height: 100%;
+  flex-basis: 100%;
+}
+
 .ui-workspace-bottom-panel__resize-rail {
   position: absolute;
   z-index: 10;
@@ -53,6 +59,11 @@
 
 .ui-workspace-bottom-panel__resize-rail:focus-visible {
   outline: none;
+}
+
+.ui-workspace-bottom-panel__resize-rail:disabled {
+  cursor: default;
+  pointer-events: none;
 }
 
 .ui-workspace-bottom-panel__header {
@@ -168,32 +179,13 @@
 
 .ui-workspace-bottom-panel__drop-target {
   display: flex;
+  background: var(--ui-workspace-panel);
 }
 
-.ui-workspace-bottom-panel__empty {
-  display: flex;
+.ui-workspace-bottom-panel__drop-target > .ui-workspace-bottom-panel-empty {
   width: 100%;
-  height: 100%;
-  align-items: center;
-  justify-content: center;
-  gap: 0.75rem;
-  color: var(--ui-workspace-muted-foreground);
-}
-
-.ui-workspace-bottom-panel__empty > svg {
-  width: 1.25rem;
-  height: 1.25rem;
-}
-
-.ui-workspace-bottom-panel__empty > div {
-  display: grid;
-  gap: 0.125rem;
-  font-size: 0.8125rem;
-}
-
-.ui-workspace-bottom-panel__empty strong {
-  color: var(--ui-workspace-panel-foreground);
-  font-weight: 500;
+  min-height: 0;
+  flex: 1 1 auto;
 }
 
 .ui-workspace-bottom-panel__insertion-marker {
@@ -276,10 +268,6 @@
   flex: 0 0 1rem;
 }
 
-.ui-workspace-bottom-panel-group__chevron[data-expanded="true"] {
-  transform: rotate(180deg);
-}
-
 .ui-workspace-bottom-panel-group__title {
   min-height: 0;
   overflow: hidden;
@@ -352,17 +340,23 @@
 }
 
 .ui-workspace-bottom-panel-toggle {
-  display: inline-grid;
+  display: inline-flex;
   width: 2.25rem;
   height: 1.75rem;
   flex: 0 0 auto;
-  place-items: center;
+  align-items: center;
+  justify-content: center;
   border: 0;
   border-radius: var(--ui-workspace-radius-small);
-  padding: 0;
+  padding: 0 0.5rem;
   color: var(--ui-workspace-foreground);
   background: transparent;
   cursor: pointer;
+}
+
+.ui-workspace-bottom-panel-toggle[data-size="small"] {
+  width: 2.25rem;
+  padding-inline: 0.625rem;
 }
 
 .ui-workspace-bottom-panel-toggle:hover {
@@ -375,9 +369,18 @@
   outline-offset: 1px;
 }
 
-.ui-workspace-bottom-panel-toggle svg {
+.ui-workspace-bottom-panel-toggle__icon {
   width: 1rem;
   height: 1rem;
+  transition:
+    width 150ms ease,
+    height 150ms ease;
+}
+
+.ui-workspace-bottom-panel-toggle[data-state="expanded"]
+  .ui-workspace-bottom-panel-toggle__icon {
+  width: 1.25rem;
+  height: 1.25rem;
 }
 
 .ui-workspace-bottom-panel-group__empty {

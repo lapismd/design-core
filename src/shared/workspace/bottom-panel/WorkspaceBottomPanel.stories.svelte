@@ -1,6 +1,12 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, fireEvent, userEvent, waitFor } from "storybook/test";
+  import {
+    expect,
+    fireEvent,
+    userEvent,
+    waitFor,
+    within,
+  } from "storybook/test";
   import {
     createDefaultWorkspaceLayout,
     createWorkspaceTab,
@@ -28,7 +34,7 @@
 </script>
 
 <script lang="ts">
-  function createController() {
+  function createController(empty = false) {
     const terminal = createWorkspaceTab({
       id: "bottom-terminal",
       title: "Terminal",
@@ -63,13 +69,17 @@
       collapsedByTabId: { [problems.id]: false, [output.id]: true },
       panelSizesByTabId: { [problems.id]: 76 },
     };
-    const pane = createWorkspaceTabs([terminal, diagnostics], {
-      id: "bottom-story-pane",
-      activeItemId: terminal.id,
+    const pane = createWorkspaceTabs(empty ? [] : [terminal, diagnostics], {
+      id: empty ? "bottom-empty-story-pane" : "bottom-story-pane",
+      activeItemId: empty ? null : terminal.id,
     });
     const layout = createDefaultWorkspaceLayout();
     layout.bottom = { open: true, size: 288, root: pane };
-    layout.active = { hostId: "root", paneId: pane.id, tabId: terminal.id };
+    layout.active = {
+      hostId: "root",
+      paneId: pane.id,
+      tabId: empty ? null : terminal.id,
+    };
     const controller = new WorkspaceShellController({ layout });
     controller.registry.register({
       kind: "svelte",
@@ -86,6 +96,7 @@
 
   const controller = createController();
   const groupedController = createController();
+  const emptyController = createController(true);
 </script>
 
 <Story
@@ -110,11 +121,67 @@
         '[data-ui-component="workspace-bottom-panel"]',
       ),
     ).toHaveStyle("--ui-workspace-bottom-panel-height: 298px");
+    const panel = canvasElement.querySelector(
+      '[data-ui-component="workspace-bottom-panel"]',
+    );
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Maximize bottom panel" }),
+    );
+    const restore = canvas.getByRole("button", {
+      name: "Restore bottom panel",
+    });
+    await expect(restore).toHaveAttribute("aria-pressed", "true");
+    await expect(panel).toHaveAttribute("data-maximized", "true");
+    await expect(
+      canvas.getByRole("button", { name: "Resize bottom panel" }),
+    ).toBeDisabled();
+    await userEvent.click(restore);
+    await expect(panel).toHaveAttribute("data-maximized", "false");
+    await expect(controller.layout.bottom.size).toBe(298);
   }}
 >
   {#snippet template()}
     <div class="ui-workspace-bottom-panel-story-frame">
       <WorkspaceBottomPanel {controller} />
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Empty panel"
+  tags={["visual-pending"]}
+  play={async ({ canvas, canvasElement }) => {
+    const empty = canvasElement.querySelector<HTMLElement>(
+      "[data-workspace-bottom-panel-empty]",
+    );
+    await expect(empty).not.toBeNull();
+    await expect(
+      within(empty!).getByRole("heading", { name: "Heads up!" }),
+    ).toBeVisible();
+
+    const close = within(empty!).getByRole("button", {
+      name: "Close bottom panel",
+    });
+    await expect(close).toBeVisible();
+    await userEvent.click(close);
+    await expect(
+      canvas.queryByLabelText("Bottom panel"),
+    ).not.toBeInTheDocument();
+
+    emptyController.setDockOpen("bottom", true);
+    const restored = await canvas.findByLabelText("Bottom panel");
+    const restoredEmpty = restored.querySelector<HTMLElement>(
+      "[data-workspace-bottom-panel-empty]",
+    );
+    await expect(restoredEmpty).not.toBeNull();
+    expect(getComputedStyle(restoredEmpty!).backgroundColor).toBe(
+      getComputedStyle(restored).backgroundColor,
+    );
+  }}
+>
+  {#snippet template()}
+    <div class="ui-workspace-bottom-panel-story-frame">
+      <WorkspaceBottomPanel controller={emptyController} />
     </div>
   {/snippet}
 </Story>
@@ -129,10 +196,17 @@
     ).toBeVisible();
     const expandOutput = canvas.getByRole("button", { name: "Expand Output" });
     await expect(expandOutput).toHaveAttribute("aria-expanded", "false");
-    await userEvent.click(expandOutput);
     await expect(
-      canvas.getByRole("button", { name: "Collapse Output" }),
-    ).toHaveAttribute("aria-expanded", "true");
+      expandOutput.querySelector(".lucide-chevron-right"),
+    ).not.toBeNull();
+    await userEvent.click(expandOutput);
+    const collapseOutput = canvas.getByRole("button", {
+      name: "Collapse Output",
+    });
+    await expect(collapseOutput).toHaveAttribute("aria-expanded", "true");
+    await expect(
+      collapseOutput.querySelector(".lucide-chevron-down"),
+    ).not.toBeNull();
     await expect(canvas.getByRole("heading", { name: "Output" })).toBeVisible();
     await expect(
       canvasElement.querySelector(

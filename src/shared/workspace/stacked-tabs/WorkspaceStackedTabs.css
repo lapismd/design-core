@@ -47,6 +47,13 @@
   padding-right: 0.25rem;
 }
 
+.ui-workspace-stacked-tabs__right-toggles {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  padding-right: 0.25rem;
+}
+
 .ui-workspace-stacked-tabs__chrome-button {
   display: inline-flex;
   width: 1.75rem;

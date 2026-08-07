@@ -12,6 +12,7 @@
   import { WorkspaceMenu } from "../core/workspace-menu.js";
   import type { WorkspaceShellController } from "../core/workspace-controller.svelte.js";
   import { WorkspaceDragState } from "../drag/workspace-drag.svelte.js";
+  import WorkspaceBottomPanelToggle from "../bottom-panel/WorkspaceBottomPanelToggle.svelte";
   import WorkspaceTabsDrop from "../drop-overlay/WorkspaceTabsDrop.svelte";
   import WorkspaceIcon from "../icon/WorkspaceIcon.svelte";
   import WorkspaceContextMenuItems from "../menu/WorkspaceContextMenuItems.svelte";
@@ -32,6 +33,7 @@
     footer,
     width,
     resizable = true,
+    showBottomPanelToggle = false,
   }: {
     controller: WorkspaceShellController;
     side: WorkspaceSide;
@@ -40,6 +42,8 @@
     footer?: Snippet;
     width?: string;
     resizable?: boolean;
+    /** Show the bottom-panel control immediately before the right-sidebar toggle. */
+    showBottomPanelToggle?: boolean;
   } = $props();
 
   const createInternalDrag = () => new WorkspaceDragState(controller);
@@ -257,6 +261,15 @@
         </div>
 
         <div class="ui-workspace-sidebar__tab-spacer"></div>
+
+        {#if side === "right" && showBottomPanelToggle}
+          <WorkspaceBottomPanelToggle
+            size="small"
+            expanded={controller.layout.bottom.open}
+            onSelect={() =>
+              controller.setDockOpen("bottom", !controller.layout.bottom.open)}
+          />
+        {/if}
 
         <WorkspaceSidebarToggle
           {side}

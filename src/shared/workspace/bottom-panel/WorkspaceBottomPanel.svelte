@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Maximize from "@lucide/svelte/icons/maximize";
   import Plus from "@lucide/svelte/icons/plus";
   import { ContextMenu } from "bits-ui";
   import type {
@@ -16,6 +17,7 @@
   import WorkspaceSidebarGroupVisibilityDialog from "../sidebar-group/WorkspaceSidebarGroupVisibilityDialog.svelte";
   import WorkspaceTabsMove from "../tabs/WorkspaceTabsMove.svelte";
   import WorkspaceViewHost from "../view-host/WorkspaceViewHost.svelte";
+  import WorkspaceBottomPanelEmpty from "./WorkspaceBottomPanelEmpty.svelte";
   import WorkspaceBottomPanelToggle from "./WorkspaceBottomPanelToggle.svelte";
   import WorkspaceBottomPanelGroup from "./WorkspaceBottomPanelGroup.svelte";
   import "./WorkspaceBottomPanel.css";
@@ -40,6 +42,7 @@
   let activeItem = $derived(
     pane.items.find((item) => item.id === pane.activeItemId) ?? pane.items[0],
   );
+  let maximized = $state(false);
   let resizing = $state(false);
   let resizeStartY = 0;
   let resizeStartHeight = 0;
@@ -127,7 +130,12 @@
   }
 
   function closePanel() {
+    maximized = false;
     controller.setDockOpen("bottom", false);
+  }
+
+  function toggleMaximize() {
+    maximized = !maximized;
   }
 
   function startResize(event: MouseEvent) {
@@ -195,6 +203,7 @@
     class="ui-workspace-bottom-panel"
     data-ui-component="workspace-bottom-panel"
     data-ui-part="root"
+    data-maximized={maximized}
     data-resizing={resizing}
     style={`--ui-workspace-bottom-panel-height: ${panel.size}px`}
     aria-label="Bottom panel"
@@ -205,6 +214,7 @@
       data-ui-part="resize-rail"
       aria-label="Resize bottom panel"
       title="Resize bottom panel"
+      disabled={maximized}
       onmousedown={startResize}
       onkeydown={resizeWithKeyboard}
     ></button>
@@ -290,7 +300,31 @@
             <Plus aria-hidden="true" />
           </button>
         {/if}
-        <WorkspaceBottomPanelToggle expanded onSelect={closePanel} />
+        <button
+          type="button"
+          class="ui-workspace-bottom-panel__action"
+          data-ui-part="maximize-toggle"
+          aria-label={maximized
+            ? "Restore bottom panel"
+            : "Maximize bottom panel"}
+          aria-pressed={maximized}
+          title={maximized ? "Restore bottom panel" : "Maximize bottom panel"}
+          data-hint-target="bottom-panel-maximize"
+          data-hint-group="panel"
+          data-hint-action="click"
+          data-hint-target-id="bottom-panel:maximize"
+          data-hint-label={maximized
+            ? "Restore bottom panel"
+            : "Maximize bottom panel"}
+          onclick={toggleMaximize}
+        >
+          <Maximize aria-hidden="true" />
+        </button>
+        <WorkspaceBottomPanelToggle
+          size="small"
+          expanded
+          onSelect={closePanel}
+        />
       </div>
 
       {#if dragState.tabMoveIndicator.active && dragState.tabMoveIndicator.scope === `bottom-panel-${pane.id}` && dragState.active}
@@ -338,13 +372,7 @@
           dropZones={[]}
           class="ui-workspace-bottom-panel__drop-target"
         >
-          <div class="ui-workspace-bottom-panel__empty">
-            <WorkspaceIcon name="terminal" />
-            <div>
-              <strong>Bottom panel is empty</strong>
-              <span>Drag a tab here or open a panel view.</span>
-            </div>
-          </div>
+          <WorkspaceBottomPanelEmpty onClose={closePanel} />
         </WorkspaceTabsDrop>
       {/if}
     </div>

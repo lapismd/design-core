@@ -200,11 +200,6 @@
     </div>
 
     <div class="ui-workspace-stacked-tabs__chrome-actions">
-      {#if showBottomPanelToggle}
-        <WorkspaceBottomPanelToggle
-          onSelect={() => controller.setDockOpen("bottom", true)}
-        />
-      {/if}
       {#if canFocusMode}
         <button
           type="button"
@@ -271,11 +266,21 @@
     </div>
 
     {#if sidebarToggleSides.includes("right")}
-      <WorkspaceSidebarToggle
-        side="right"
-        label="Open right sidebar"
-        onSelect={() => controller.setSidebarOpen("right", true)}
-      />
+      <div class="ui-workspace-stacked-tabs__right-toggles">
+        {#if showBottomPanelToggle}
+          <WorkspaceBottomPanelToggle
+            size="small"
+            expanded={controller.layout.bottom.open}
+            onSelect={() =>
+              controller.setDockOpen("bottom", !controller.layout.bottom.open)}
+          />
+        {/if}
+        <WorkspaceSidebarToggle
+          side="right"
+          label="Open right sidebar"
+          onSelect={() => controller.setSidebarOpen("right", true)}
+        />
+      </div>
     {/if}
   </header>
 

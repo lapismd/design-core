@@ -390,11 +390,6 @@
     </WorkspaceTabsMove>
 
     <div class="ui-workspace-tabs__overflow" data-ui-part="overflow">
-      {#if showBottomPanelToggle}
-        <WorkspaceBottomPanelToggle
-          onSelect={() => controller.setDockOpen("bottom", true)}
-        />
-      {/if}
       {#if canFocusMode}
         <button
           class="ui-workspace-tabs__icon-button ui-workspace-tabs__focus-toggle"
@@ -502,6 +497,14 @@
 
     {#if sidebarToggleSides.includes("right")}
       <div class="ui-workspace-tabs__right-toggle" data-ui-part="right-toggle">
+        {#if showBottomPanelToggle}
+          <WorkspaceBottomPanelToggle
+            size="small"
+            expanded={controller.layout.bottom.open}
+            onSelect={() =>
+              controller.setDockOpen("bottom", !controller.layout.bottom.open)}
+          />
+        {/if}
         <WorkspaceSidebarToggle
           side="right"
           label="Open right sidebar"
