@@ -1,5 +1,6 @@
 import AppShellAboutDialog from "./AppShellAboutDialog.svelte";
 import AppShellBottomPanel from "./AppShellBottomPanel.svelte";
+import AppShellDesktopLayout from "./AppShellDesktopLayout.svelte";
 import AppShellCommandPalette from "./AppShellCommandPalette.svelte";
 import AppShellCorePluginsSettings from "./AppShellCorePluginsSettings.svelte";
 import AppShellFloatingLayer from "./AppShellFloatingLayer.svelte";
@@ -24,6 +25,7 @@ import AppShellWorkspace from "./AppShellWorkspace.svelte";
 export {
   AppShellAboutDialog,
   AppShellBottomPanel,
+  AppShellDesktopLayout,
   AppShellCommandPalette,
   AppShellCorePluginsSettings,
   AppShellFloatingLayer,
@@ -49,6 +51,7 @@ export {
 export const AppShell = {
   Root: AppShellRoot,
   BottomPanel: AppShellBottomPanel,
+  DesktopLayout: AppShellDesktopLayout,
   About: AppShellAboutDialog,
   CommandPalette: AppShellCommandPalette,
   CorePluginsSettings: AppShellCorePluginsSettings,

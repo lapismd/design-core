@@ -851,6 +851,24 @@ workflow.
   and workspace deltas remain pending explicit human review. No baseline image
   was created or replaced.
 
+### Bottom panel alignment
+
+- Added controller-owned `left`, `right`, `center`, and `justify` desktop
+  alignment through the existing configuration persistence path, with
+  `center` as the compatibility default and an explicit Surface override.
+- Added the public `AppShell.DesktopLayout` grid for both the default Surface
+  and manual compositions. Sidebars outside the selected span retain full
+  height, the ribbon remains outside the grid, and maximize fills only the
+  selected horizontal span.
+- Alignment does not change layout V3 or mobile presentation. Closed and
+  resized sidebars are resolved from the live grid columns, while bottom-panel
+  content, height, dragging, groups, and toggles retain their existing state.
+- Added controller/configuration unit coverage and an interactive alignment
+  catalog scenario covering all four spans, prop precedence, sidebar close and
+  resize behavior, and maximize/restore. Pixel-bearing stories remain
+  `visual-pending`; visual comparison and baseline updates are deferred by the
+  current implementation request.
+
 ## Completion gate
 
 The migration is complete only when:

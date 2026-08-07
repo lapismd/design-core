@@ -185,6 +185,16 @@ describe("AppShellController", () => {
     });
     app.workspace.setBottomPanelSize(320);
     expect(app.renderer.layout.bottom.size).toBe(320);
+    expect(app.workspace.bottomPanelAlignment).toBe("center");
+    expect(app.workspace.setBottomPanelAlignment("left")).toBe(true);
+    expect(app.workspace.bottomPanelAlignment).toBe("left");
+    expect(
+      app.configuration.set(
+        APP_SHELL_SETTING_IDS.bottomPanelAlignment,
+        "unsupported",
+      ),
+    ).toBe(false);
+    expect(app.workspace.bottomPanelAlignment).toBe("left");
     expect(await app.commands.execute("app-shell:toggle-bottom-panel")).toBe(
       true,
     );
@@ -203,6 +213,26 @@ describe("AppShellController", () => {
     ]);
     expect(app.appearance.colorScheme).toBe("system");
     expect(app.mobile.requestedDisplayMode).toBe("auto");
+    expect(app.workspace.bottomPanelAlignment).toBe("center");
+    expect(
+      app.settings.sections.find((section) => section.id === "workspace")
+        ?.fields,
+    ).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: APP_SHELL_SETTING_IDS.bottomPanelAlignment,
+          type: "enum",
+          title: "Bottom panel alignment",
+          default: "center",
+          options: [
+            { value: "center", label: "Center" },
+            { value: "left", label: "Left" },
+            { value: "right", label: "Right" },
+            { value: "justify", label: "Justify" },
+          ],
+        }),
+      ]),
+    );
 
     expect(
       app.configuration.set(APP_SHELL_SETTING_IDS.appearanceTheme, "dark"),
@@ -249,6 +279,8 @@ describe("AppShellController", () => {
     expect(
       bare.configuration.get(APP_SHELL_SETTING_IDS.appearanceTheme),
     ).toBeUndefined();
+    expect(bare.workspace.bottomPanelAlignment).toBe("center");
+    expect(bare.workspace.setBottomPanelAlignment("right")).toBe(false);
     await app.dispose();
     await bare.dispose();
   });
@@ -310,7 +342,7 @@ describe("AppShellController", () => {
     await app.dispose();
   });
 
-  it("hydrates and persists live appearance and mobile configuration", async () => {
+  it("hydrates and persists live shell configuration", async () => {
     const save = vi.fn(async () => undefined);
     const app = new AppShellController({
       persistence: {
@@ -321,6 +353,7 @@ describe("AppShellController", () => {
               [APP_SHELL_SETTING_IDS.appearanceTheme]: "dark",
               [APP_SHELL_SETTING_IDS.mobileMode]: "always",
               [APP_SHELL_SETTING_IDS.mobileDefaultPage]: "tabs",
+              [APP_SHELL_SETTING_IDS.bottomPanelAlignment]: "right",
             },
           }),
           save,
@@ -333,19 +366,18 @@ describe("AppShellController", () => {
     expect(app.appearance.theme).toBe("dark");
     expect(app.mobile.requestedDisplayMode).toBe("mobile");
     expect(app.mobile.defaultPage).toBe("tabs");
-    expect(
-      app.configuration.set(APP_SHELL_SETTING_IDS.mobileIncludeFloating, false),
-    ).toBe(true);
+    expect(app.workspace.bottomPanelAlignment).toBe("right");
+    expect(app.workspace.setBottomPanelAlignment("justify")).toBe(true);
     await app.settings.flushSave();
     expect(save).toHaveBeenCalledWith(
       expect.objectContaining({
         values: expect.objectContaining({
-          [APP_SHELL_SETTING_IDS.mobileIncludeFloating]: false,
+          [APP_SHELL_SETTING_IDS.bottomPanelAlignment]: "justify",
         }),
       }),
       {
         source: "update",
-        id: APP_SHELL_SETTING_IDS.mobileIncludeFloating,
+        id: APP_SHELL_SETTING_IDS.bottomPanelAlignment,
       },
     );
     await app.dispose();

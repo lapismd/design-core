@@ -11,7 +11,10 @@
   import { APP_SHELL_SETTING_IDS } from "../core/built-in-settings.svelte.js";
   import { AppShellPlugin } from "../core/plugin-manager.svelte.js";
   import { WorkspaceView, type WorkspaceLeaf } from "../core/workspace-view.js";
-  import type { WorkspaceSidebarGroup } from "../core/types.js";
+  import type {
+    WorkspaceBottomPanelAlignment,
+    WorkspaceSidebarGroup,
+  } from "../core/types.js";
   import { AppShell, AppShellRoot } from "./index.js";
   import "./AppShell.stories.css";
 
@@ -216,8 +219,22 @@
     return app;
   }
 
-  const composedApp = createDemoApp();
+  function createBottomPanelApp() {
+    const app = createDemoApp();
+    app.workspace.openInBottomPanel(
+      "demo",
+      {
+        heading: "Terminal",
+        description: "The bottom panel follows the configured desktop span.",
+      },
+      { title: "Terminal", icon: "terminal" },
+    );
+    return app;
+  }
+
+  const composedApp = createBottomPanelApp();
   const surfaceApp = createDemoApp();
+  const alignmentApp = createBottomPanelApp();
   const focusApp = createDemoApp();
   const panelHoverApp = createDemoApp();
   const mobileApp = createDemoApp();
@@ -231,13 +248,20 @@
 <Story
   name="Composable surfaces"
   tags={["visual-pending"]}
-  play={async ({ canvas }) => {
+  play={async ({ canvas, canvasElement }) => {
+    expect(composedApp.workspace.setBottomPanelAlignment("left")).toBe(true);
     const notes = canvas.getByRole("button", { name: /^Notes$/ });
     await userEvent.click(notes);
     await expect(notes).toHaveAttribute("aria-pressed", "true");
     await expect(canvas.getByText("Framework ready")).toBeVisible();
     await expect(canvas.getByLabelText("Left sidebar")).toBeVisible();
     await expect(canvas.getByLabelText("Right sidebar")).toBeVisible();
+    await expect(canvas.getByLabelText("Bottom panel")).toBeVisible();
+    await expect(
+      canvasElement.querySelector(
+        '[data-ui-component="app-shell-desktop-layout"]',
+      ),
+    ).toHaveAttribute("data-bottom-panel-alignment", "right");
   }}
   parameters={{
     visualDelta: {
@@ -255,11 +279,117 @@
     <div class="ui-app-shell-story-frame">
       <AppShell.Root controller={composedApp} theme="inherit">
         <AppShell.Ribbon />
-        <AppShell.LeftSidebar />
-        <AppShell.Workspace />
-        <AppShell.RightSidebar />
+        <AppShell.DesktopLayout bottomPanelAlignment="right">
+          <AppShell.LeftSidebar />
+          <AppShell.Main>
+            <AppShell.Workspace />
+          </AppShell.Main>
+          <AppShell.RightSidebar />
+          <AppShell.BottomPanel />
+        </AppShell.DesktopLayout>
         <AppShell.FloatingLayer />
         <AppShell.StatusBar />
+      </AppShell.Root>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Bottom panel alignments"
+  tags={["visual-pending"]}
+  play={async ({ canvas, canvasElement }) => {
+    const desktopLayout = canvasElement.querySelector<HTMLElement>(
+      '[data-ui-component="app-shell-desktop-layout"]',
+    )!;
+    const main = canvasElement.querySelector<HTMLElement>(
+      '[data-ui-component="app-shell-main"]',
+    )!;
+    const leftSidebar = canvas.getByLabelText("Left sidebar");
+    let rightSidebar = canvas.getByLabelText("Right sidebar");
+    const bottomPanel = canvas.getByLabelText("Bottom panel");
+
+    const expectClose = (actual: number, expected: number) =>
+      expect(Math.abs(actual - expected)).toBeLessThan(1);
+    const assertAlignment = async (
+      alignment: WorkspaceBottomPanelAlignment,
+      start: HTMLElement,
+      end: HTMLElement,
+    ) => {
+      expect(alignmentApp.workspace.setBottomPanelAlignment(alignment)).toBe(
+        true,
+      );
+      await waitFor(() =>
+        expect(desktopLayout).toHaveAttribute(
+          "data-bottom-panel-alignment",
+          alignment,
+        ),
+      );
+      const panelRect = bottomPanel.getBoundingClientRect();
+      expectClose(panelRect.left, start.getBoundingClientRect().left);
+      expectClose(panelRect.right, end.getBoundingClientRect().right);
+    };
+
+    await assertAlignment("center", main, main);
+    await assertAlignment("left", leftSidebar, main);
+    expectClose(
+      leftSidebar.getBoundingClientRect().bottom,
+      bottomPanel.getBoundingClientRect().top,
+    );
+    expectClose(
+      rightSidebar.getBoundingClientRect().bottom,
+      desktopLayout.getBoundingClientRect().bottom,
+    );
+    await assertAlignment("right", main, rightSidebar);
+
+    const panelLeftBeforeResize = bottomPanel.getBoundingClientRect().left;
+    alignmentApp.renderer.setSidebarSize("left", 340);
+    await waitFor(() =>
+      expect(bottomPanel.getBoundingClientRect().left).toBeGreaterThan(
+        panelLeftBeforeResize + 40,
+      ),
+    );
+    expectClose(
+      bottomPanel.getBoundingClientRect().left,
+      main.getBoundingClientRect().left,
+    );
+    await assertAlignment("justify", leftSidebar, rightSidebar);
+
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Close right sidebar" }),
+    );
+    await assertAlignment("right", main, desktopLayout);
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Open right sidebar" }),
+    );
+    rightSidebar = await canvas.findByLabelText("Right sidebar");
+
+    await assertAlignment("left", leftSidebar, main);
+    await userEvent.click(
+      within(bottomPanel).getByRole("button", {
+        name: "Maximize bottom panel",
+      }),
+    );
+    await expect(bottomPanel).toHaveAttribute("data-maximized", "true");
+    expectClose(
+      bottomPanel.getBoundingClientRect().top,
+      desktopLayout.getBoundingClientRect().top,
+    );
+    expectClose(
+      rightSidebar.getBoundingClientRect().height,
+      desktopLayout.getBoundingClientRect().height,
+    );
+    await userEvent.click(
+      within(bottomPanel).getByRole("button", {
+        name: "Restore bottom panel",
+      }),
+    );
+    await assertAlignment("center", main, main);
+  }}
+>
+  {#snippet template()}
+    <div class="ui-app-shell-story-frame">
+      <AppShell.Root controller={alignmentApp} theme="inherit">
+        <AppShell.Surface workspaceLabel="Workspace demo" />
       </AppShell.Root>
     </div>
   {/snippet}

@@ -6,6 +6,7 @@ import {
   walkWorkspacePanes,
 } from "./layout.js";
 import type {
+  WorkspaceBottomPanelAlignment,
   WorkspaceDropPosition,
   WorkspaceDockPosition,
   WorkspaceEventMap,
@@ -161,6 +162,31 @@ export class AppWorkspace {
 
   toggleBottomPanel(): void {
     this.setBottomPanelOpen(!this.renderer.layout.bottom.open);
+  }
+
+  /** The configured horizontal span for the desktop bottom panel. */
+  get bottomPanelAlignment(): WorkspaceBottomPanelAlignment {
+    const value = this.configuration?.get<WorkspaceBottomPanelAlignment>(
+      APP_SHELL_SETTING_IDS.bottomPanelAlignment,
+    );
+    return value === "left" ||
+      value === "right" ||
+      value === "justify" ||
+      value === "center"
+      ? value
+      : "center";
+  }
+
+  /** Update the persisted desktop bottom-panel alignment setting. */
+  setBottomPanelAlignment(
+    alignment: WorkspaceBottomPanelAlignment,
+  ): boolean {
+    return (
+      this.configuration?.set(
+        APP_SHELL_SETTING_IDS.bottomPanelAlignment,
+        alignment,
+      ) ?? false
+    );
   }
 
   getEditorAssociationForPath(path: string): EditorAssociationMatch | null {

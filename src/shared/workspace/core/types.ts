@@ -19,6 +19,12 @@ export type WorkspaceWindowState =
 export type WorkspaceDisplayMode = "desktop" | "mobile";
 export type WorkspaceRequestedDisplayMode = "auto" | WorkspaceDisplayMode;
 export type WorkspaceSide = "left" | "right";
+/** Horizontal span used by the desktop bottom panel. */
+export type WorkspaceBottomPanelAlignment =
+  | "left"
+  | "right"
+  | "center"
+  | "justify";
 /** A persistent edge surface owned by the workspace layout. */
 export type WorkspaceDockPosition = WorkspaceSide | "bottom";
 export type WorkspaceIconName = string;

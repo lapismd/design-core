@@ -15,6 +15,7 @@ export const APP_SHELL_SETTING_IDS = {
   appearanceTabTitleBar: "appearence.interface.showTabTitleBar",
   appearanceZoom: "appearence.advanced.zoomLevel",
   editorAssociations: "workspace.editorAssociations",
+  bottomPanelAlignment: "workspace.bottomPanel.alignment",
   mobileMode: "workspace.mobile.mode",
   mobileDefaultPage: "workspace.mobile.defaultPage",
   mobileShowBottomNav: "workspace.mobile.showBottomNav",
@@ -208,6 +209,20 @@ export function createBuiltInSettingsSections(): WorkspaceSettingsSection[] {
       order: 10,
       navigationGroupId: "options",
       fields: [
+        {
+          id: APP_SHELL_SETTING_IDS.bottomPanelAlignment,
+          type: "enum",
+          title: "Bottom panel alignment",
+          description:
+            "Choose which desktop workspace columns the bottom panel spans.",
+          default: "center",
+          options: [
+            { value: "center", label: "Center" },
+            { value: "left", label: "Left" },
+            { value: "right", label: "Right" },
+            { value: "justify", label: "Justify" },
+          ],
+        },
         {
           id: APP_SHELL_SETTING_IDS.editorAssociations,
           type: "key-value",

@@ -139,7 +139,8 @@ Application-independent workspace framework in `src/shared/workspace/`.
 
 - Headless controller, recursive layout, registered views, settings, commands,
   static plugins, events, and persistence adapters
-- Compound desktop/mobile app-shell surfaces
+- Compound desktop/mobile app-shell surfaces, including a reusable desktop
+  grid for bottom-panel alignment across workspace columns
 - Tabs, splits, sidebars, transposed bottom-panel groups, view headers, drop
   targets, windows, ribbon, status, settings, command palette, empty and notice
   components

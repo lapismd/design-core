@@ -1,0 +1,67 @@
+.ui-app-shell__desktop-layout {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  flex: 1 1 auto;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-rows: minmax(0, 1fr) auto;
+  overflow: hidden;
+}
+
+.ui-app-shell__desktop-layout > [data-app-shell-sidebar="left"] {
+  grid-column: 1;
+  grid-row: 1 / 3;
+}
+
+.ui-app-shell__desktop-layout > .ui-app-shell__main {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.ui-app-shell__desktop-layout > [data-app-shell-sidebar="right"] {
+  grid-column: 3;
+  grid-row: 1 / 3;
+}
+
+.ui-app-shell__desktop-layout > .ui-workspace-bottom-panel {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+.ui-app-shell__desktop-layout[data-bottom-panel-alignment="left"]
+  > [data-app-shell-sidebar="left"] {
+  grid-row: 1;
+}
+
+.ui-app-shell__desktop-layout[data-bottom-panel-alignment="left"]
+  > .ui-workspace-bottom-panel {
+  grid-column: 1 / 3;
+}
+
+.ui-app-shell__desktop-layout[data-bottom-panel-alignment="right"]
+  > [data-app-shell-sidebar="right"] {
+  grid-row: 1;
+}
+
+.ui-app-shell__desktop-layout[data-bottom-panel-alignment="right"]
+  > .ui-workspace-bottom-panel {
+  grid-column: 2 / 4;
+}
+
+.ui-app-shell__desktop-layout[data-bottom-panel-alignment="justify"]
+  > [data-app-shell-sidebar] {
+  grid-row: 1;
+}
+
+.ui-app-shell__desktop-layout[data-bottom-panel-alignment="justify"]
+  > .ui-workspace-bottom-panel {
+  grid-column: 1 / 4;
+}
+
+.ui-app-shell__desktop-layout:has(
+    > .ui-workspace-bottom-panel[data-maximized="true"]
+  ) {
+  grid-template-rows: 0 minmax(0, 1fr);
+}

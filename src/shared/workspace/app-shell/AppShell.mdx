@@ -12,11 +12,19 @@ disabled with `renderOverlays` or `renderPopouts` for explicit composition.
 
 ## Structure
 
-Use `AppShell.Surface` for the default desktop composition, or place `Ribbon`,
-`LeftSidebar`, `Main`, `Workspace`, `BottomPanel`, `RightSidebar`,
-`FloatingLayer`, and `StatusBar` independently under the root. `Main` is the
-center column that stacks `Workspace` above `BottomPanel`. Omitting or replacing
-a surface does not change controller behavior.
+Use `AppShell.Surface` for the default desktop composition. For explicit
+composition, keep `Ribbon` beside `DesktopLayout`; place `LeftSidebar`, `Main`,
+`RightSidebar`, and `BottomPanel` inside `DesktopLayout`, and keep
+`FloatingLayer` and `StatusBar` under the root. `Main` owns the center
+`Workspace`, while `DesktopLayout` places the bottom panel across the selected
+workspace columns. Omitting or replacing a surface does not change controller
+behavior.
+
+`DesktopLayout` and `Surface` accept `bottomPanelAlignment` with `left`,
+`right`, `center`, or `justify`. An explicit prop overrides the controller-owned
+`workspace.bottomPanel.alignment` setting; otherwise the setting defaults to
+`center`. `Justify` spans the left sidebar, center, and right sidebar while the
+ribbon remains full height.
 
 Utility surfaces are also composable: `About`, `CommandPalette`, `Notices`,
 `PluginLayer`, `Tabs`, `Sidebar`, `Settings`, `SettingsDialog`, `HotkeySettings`, and
@@ -28,10 +36,15 @@ Utility surfaces are also composable: `About`, `CommandPalette`, `Notices`,
 - `Workspace` accepts an optional serializable tab factory.
 - `BottomPanel` renders the controller-owned bottom dock and accepts the same
   optional tab factory.
+- `DesktopLayout` provides the reusable three-column desktop grid for manual
+  shell composition and bottom-panel alignment.
 - `Surface` composes the current default desktop surfaces, a workspace footer
   with the settings trigger, and the controller-backed settings dialog.
-- `Surface` accepts `workspaceLabel` and `settingsTitle` to configure that
-  integrated application chrome.
+- `Surface` accepts `workspaceLabel`, `settingsTitle`, and an optional
+  `bottomPanelAlignment` override to configure that integrated application
+  chrome.
+- `AppWorkspace.bottomPanelAlignment` reads the configured alignment and
+  `setBottomPanelAlignment()` updates it at runtime.
 - `Settings` renders the controller-owned settings surface directly;
   `SettingsDialog` provides its reusable modal presentation.
 - `Root` accepts an injectable popout host and explicit utility-layer toggles.
