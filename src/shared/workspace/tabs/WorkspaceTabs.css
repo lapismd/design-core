@@ -153,7 +153,7 @@
 
 .ui-workspace-tab__inner:hover {
   border-radius: var(--ui-workspace-radius-small);
-  background: var(--ui-workspace-muted);
+  background: var(--ui-workspace-tab-hover-background);
 }
 
 .ui-workspace-tab__inner[data-active="true"]:hover {
@@ -260,7 +260,7 @@
 
 .ui-workspace-tab__close:hover,
 .ui-workspace-tabs__icon-button:hover {
-  background: var(--ui-workspace-muted);
+  background: var(--ui-workspace-tab-hover-background);
 }
 
 .ui-workspace-tabs__icon-button:focus-visible {

@@ -85,6 +85,7 @@
   --ui-workspace-radius-medium: 8px;
   --ui-workspace-radius-large: 12px;
   --ui-workspace-shadow: none;
+  --ui-workspace-tab-hover-background: var(--sidebar-accent);
   --ui-workspace-fmode-default-accent: #000000;
   --ui-workspace-fmode-font-mono: monospace;
   --ui-workspace-notifications-primary: #000000;
@@ -183,6 +184,7 @@
   --ui-workspace-focus-ring: var(--lapis-accent-hover);
   --ui-workspace-notifications-card: #242424;
   --ui-workspace-tab-active-background: #1e1e1e;
+  --ui-workspace-tab-hover-background: var(--sidebar-accent);
   --ui-workspace-tab-container-background: #262626;
   --ui-workspace-tab-divider: #3f3f3f;
   --ui-workspace-settings-navigation-active-background: #363636;

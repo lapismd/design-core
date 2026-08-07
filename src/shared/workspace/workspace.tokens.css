@@ -46,6 +46,7 @@
   --ui-workspace-tab-max-width: 20rem;
   --ui-workspace-tab-curve: 0.375rem;
   --ui-workspace-tab-active-background: var(--background);
+  --ui-workspace-tab-hover-background: var(--accent);
   --ui-workspace-tab-container-background: var(
     --sidebar,
     var(--ui-workspace-muted)

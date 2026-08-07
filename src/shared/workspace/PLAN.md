@@ -127,6 +127,8 @@ workflow.
   independent light/dark colour-mode toggle.
 - Mapped the pinned Lapis palette and source shell geometry onto public host and
   `--ui-workspace-*` tokens without importing Lapis runtime code.
+- Kept tab-header hover feedback visible in both colour modes through the
+  public `--ui-workspace-tab-hover-background` token.
 - Imported all 52 validated standalone app-shell Storybook captures into the
   immutable reference tree with revision, capture, inventory-hash, and mapping
   provenance.
