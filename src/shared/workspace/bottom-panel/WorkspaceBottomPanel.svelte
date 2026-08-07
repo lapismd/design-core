@@ -1,6 +1,5 @@
 <script lang="ts">
   import Plus from "@lucide/svelte/icons/plus";
-  import Close from "@lucide/svelte/icons/x";
   import { ContextMenu } from "bits-ui";
   import type {
     WorkspaceBottomPanelState,
@@ -17,6 +16,7 @@
   import WorkspaceSidebarGroupVisibilityDialog from "../sidebar-group/WorkspaceSidebarGroupVisibilityDialog.svelte";
   import WorkspaceTabsMove from "../tabs/WorkspaceTabsMove.svelte";
   import WorkspaceViewHost from "../view-host/WorkspaceViewHost.svelte";
+  import WorkspaceBottomPanelToggle from "./WorkspaceBottomPanelToggle.svelte";
   import WorkspaceBottomPanelGroup from "./WorkspaceBottomPanelGroup.svelte";
   import "./WorkspaceBottomPanel.css";
 
@@ -290,15 +290,7 @@
             <Plus aria-hidden="true" />
           </button>
         {/if}
-        <button
-          type="button"
-          class="ui-workspace-bottom-panel__action"
-          aria-label="Close bottom panel"
-          title="Close bottom panel"
-          onclick={closePanel}
-        >
-          <Close aria-hidden="true" />
-        </button>
+        <WorkspaceBottomPanelToggle expanded onSelect={closePanel} />
       </div>
 
       {#if dragState.tabMoveIndicator.active && dragState.tabMoveIndicator.scope === `bottom-panel-${pane.id}` && dragState.active}

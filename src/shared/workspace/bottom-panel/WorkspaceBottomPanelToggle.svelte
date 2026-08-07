@@ -3,7 +3,7 @@
   import "./WorkspaceBottomPanel.css";
 
   let {
-    label = "Open bottom panel",
+    label,
     onSelect,
     expanded = false,
   }: {
@@ -11,6 +11,10 @@
     onSelect: (event: MouseEvent) => void;
     expanded?: boolean;
   } = $props();
+
+  let resolvedLabel = $derived(
+    label ?? (expanded ? "Close bottom panel" : "Open bottom panel"),
+  );
 </script>
 
 <button
@@ -19,14 +23,15 @@
   data-state={expanded ? "expanded" : "collapsed"}
   data-workspace-bottom-panel-toggle
   type="button"
-  aria-label={label}
-  title={label}
+  aria-label={resolvedLabel}
+  aria-expanded={expanded}
+  title={resolvedLabel}
   data-hint-target="bottom-panel-toggle"
   data-hint-group="panel"
   data-hint-action="click"
   data-hint-target-id="bottom-panel:toggle"
-  data-hint-label={label}
+  data-hint-label={resolvedLabel}
   onclick={onSelect}
 >
-  <WorkspaceIcon name="panel-bottom" />
+  <WorkspaceIcon name={expanded ? "chevron-down" : "chevron-right"} />
 </button>

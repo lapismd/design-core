@@ -119,12 +119,19 @@
     await expect(
       canvas.getByRole("button", { name: "Collapse Problems" }),
     ).toBeVisible();
-    await userEvent.click(
-      canvas.getByRole("button", { name: "Close bottom panel" }),
-    );
+    const close = canvas.getByRole("button", { name: "Close bottom panel" });
+    await expect(close).toHaveAttribute("aria-expanded", "true");
+    await expect(close.querySelector(".lucide-chevron-down")).not.toBeNull();
+    await userEvent.click(close);
     const reopen = canvas.getByRole("button", { name: "Open bottom panel" });
-    await expect(reopen).toBeVisible();
+    await expect(reopen).toHaveAttribute("aria-expanded", "false");
+    await expect(reopen.querySelector(".lucide-chevron-right")).not.toBeNull();
     await userEvent.click(reopen);
+    await expect(
+      canvas
+        .getByRole("button", { name: "Close bottom panel" })
+        .querySelector(".lucide-chevron-down"),
+    ).not.toBeNull();
     await expect(canvas.getByLabelText("Bottom panel")).toBeVisible();
   }}
 >
