@@ -20,6 +20,7 @@
   import WorkspaceSidebarGroupEditor from "../sidebar-group/WorkspaceSidebarGroupEditor.svelte";
   import WorkspaceSidebarGroupVisibilityDialog from "../sidebar-group/WorkspaceSidebarGroupVisibilityDialog.svelte";
   import WorkspaceSidebarToggle from "../sidebar-toggle/WorkspaceSidebarToggle.svelte";
+  import WorkspaceTabsMove from "../tabs/WorkspaceTabsMove.svelte";
   import WorkspaceViewHost from "../view-host/WorkspaceViewHost.svelte";
   import "./WorkspaceSidebar.css";
 
@@ -61,6 +62,8 @@
     { kind: "sidebar-group" }
   > | null>(null);
   let visibilityGroupOpen = $state(false);
+  let tabIndicatorRoot = $state<HTMLElement | null>(null);
+  let tabIndicatorScope = $derived(`sidebar-${side}-${pane?.id ?? "empty"}`);
   let resizeStartX = 0;
   let resizeStartWidth = 0;
 
@@ -158,6 +161,17 @@
     window.addEventListener("mousemove", resize);
     window.addEventListener("mouseup", endResize);
   }
+
+  function handleTabIndicatorLeave(event: DragEvent) {
+    if (
+      tabIndicatorRoot &&
+      event.relatedTarget instanceof Node &&
+      tabIndicatorRoot.contains(event.relatedTarget)
+    ) {
+      return;
+    }
+    dragState.clearTabMoveIndicator(tabIndicatorScope);
+  }
 </script>
 
 {#if sidebar.open}
@@ -171,56 +185,74 @@
     aria-label={`${side === "left" ? "Left" : "Right"} sidebar`}
   >
     {#if pane}
-      <div class="ui-workspace-sidebar__tab-bar" data-ui-part="sidebar-tab-bar">
+      <!-- svelte-ignore a11y_no_static_element_interactions -->
+      <div
+        bind:this={tabIndicatorRoot}
+        class="ui-workspace-sidebar__tab-bar"
+        data-ui-part="sidebar-tab-bar"
+        data-workspace-tab-strip="sidebar"
+        ondragleave={handleTabIndicatorLeave}
+      >
         <div
           class="ui-workspace-sidebar__tab-list"
           role="tablist"
           aria-label={`${side === "left" ? "Left" : "Right"} sidebar tabs`}
         >
-          {#each pane.items as item (item.id)}
+          {#each pane.items as item, index (item.id)}
             {@const tab = tabFor(item)}
             {@const menu = createItemMenu(item, tab)}
-            <ContextMenu.Root>
-              <ContextMenu.Trigger>
-                {#snippet child({ props })}
-                  <button
-                    {...props}
-                    type="button"
-                    role="tab"
-                    class="ui-workspace-sidebar__tab"
-                    data-ui-part="sidebar-tab"
-                    data-state={isSelected(item) ? "on" : "off"}
-                    aria-selected={isSelected(item)}
-                    aria-controls={`workspace-sidebar-panel-${side}`}
-                    id={`workspace-sidebar-tab-${side}-${item.id}`}
-                    aria-label={item.title}
-                    title={item.title}
-                    draggable={Boolean(tab)}
-                    data-workspace-tab-id={tab?.id}
-                    data-workspace-item-id={item.id}
-                    onpointerdown={(event) =>
-                      tab && dragState.startPointer(event, tab.id)}
-                    ondragstart={(event) =>
-                      tab && dragState.startHtml5(event, tab.id)}
-                    ondragend={(event) => tab && dragState.endHtml5(event)}
-                    onclick={() => select(item)}
+            <WorkspaceTabsMove
+              {pane}
+              {index}
+              drag={dragState}
+              indicatorRoot={tabIndicatorRoot}
+              indicatorScope={tabIndicatorScope}
+              activate={() => select(item)}
+              class="ui-workspace-sidebar__tab-move"
+              data-ui-part="sidebar-tab-move-target"
+            >
+              <ContextMenu.Root>
+                <ContextMenu.Trigger>
+                  {#snippet child({ props })}
+                    <button
+                      {...props}
+                      type="button"
+                      role="tab"
+                      class="ui-workspace-sidebar__tab"
+                      data-ui-part="sidebar-tab"
+                      data-state={isSelected(item) ? "on" : "off"}
+                      aria-selected={isSelected(item)}
+                      aria-controls={`workspace-sidebar-panel-${side}`}
+                      id={`workspace-sidebar-tab-${side}-${item.id}`}
+                      aria-label={item.title}
+                      title={item.title}
+                      draggable={Boolean(tab)}
+                      data-workspace-tab-id={tab?.id}
+                      data-workspace-item-id={item.id}
+                      onpointerdown={(event) =>
+                        tab && dragState.startPointer(event, tab.id)}
+                      ondragstart={(event) =>
+                        tab && dragState.startHtml5(event, tab.id)}
+                      ondragend={(event) => tab && dragState.endHtml5(event)}
+                      onclick={() => select(item)}
+                    >
+                      <WorkspaceIcon name={item.icon ?? tab?.icon ?? "file"} />
+                      <span class="sr-only">{item.title}</span>
+                    </button>
+                  {/snippet}
+                </ContextMenu.Trigger>
+                <ContextMenu.Portal>
+                  <ContextMenu.Content
+                    class="ui-workspace-menu__content"
+                    data-ui-component="workspace-menu"
+                    data-ui-part="content"
+                    sideOffset={4}
                   >
-                    <WorkspaceIcon name={item.icon ?? tab?.icon ?? "file"} />
-                    <span class="sr-only">{item.title}</span>
-                  </button>
-                {/snippet}
-              </ContextMenu.Trigger>
-              <ContextMenu.Portal>
-                <ContextMenu.Content
-                  class="ui-workspace-menu__content"
-                  data-ui-component="workspace-menu"
-                  data-ui-part="content"
-                  sideOffset={4}
-                >
-                  <WorkspaceContextMenuItems {menu} />
-                </ContextMenu.Content>
-              </ContextMenu.Portal>
-            </ContextMenu.Root>
+                    <WorkspaceContextMenuItems {menu} />
+                  </ContextMenu.Content>
+                </ContextMenu.Portal>
+              </ContextMenu.Root>
+            </WorkspaceTabsMove>
           {/each}
         </div>
 
@@ -233,6 +265,14 @@
           label={`Close ${side} sidebar`}
           onSelect={() => controller.setSidebarOpen(side, false)}
         />
+
+        {#if dragState.tabMoveIndicator.active && dragState.tabMoveIndicator.scope === tabIndicatorScope && dragState.active}
+          <div
+            class="workspace-tab-drop-indicator ui-workspace-sidebar__insertion-marker"
+            data-workspace-tab-insertion-marker
+            style={`width: ${dragState.tabMoveIndicator.width}px; height: ${dragState.tabMoveIndicator.height}px; transform: translate(${dragState.tabMoveIndicator.x}px, ${dragState.tabMoveIndicator.y}px);`}
+          ></div>
+        {/if}
       </div>
 
       <ScrollArea class="ui-workspace-sidebar__body">

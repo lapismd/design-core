@@ -12,6 +12,14 @@
     includeFloating: false,
     emptyLeftSidebar: true,
   });
+  const sidebarInsertionPointer = createFrameworkDemo({
+    includeFloating: false,
+    directLeftSidebar: true,
+  });
+  const stackedInsertionPointer = createFrameworkDemo({
+    includeFloating: false,
+    stackedPrimary: true,
+  });
   const mobile = createFrameworkDemo({
     includeFloating: true,
     mobileMode: "always",
@@ -34,7 +42,7 @@
 
 <Story
   name="Overview"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   play={async ({ canvas, canvasElement }) => {
     await waitFor(() => expect(overview.app.ready).toBe(true));
     const settingsButton = canvas.getByRole("button", {
@@ -103,6 +111,18 @@
   {/snippet}
 </Story>
 
+<Story name="Sidebar insertion drag surface" tags={["visual-pending"]}>
+  {#snippet template()}
+    <ReusableFrameworkDemo app={sidebarInsertionPointer.app} />
+  {/snippet}
+</Story>
+
+<Story name="Stacked insertion drag surface" tags={["visual-pending"]}>
+  {#snippet template()}
+    <ReusableFrameworkDemo app={stackedInsertionPointer.app} />
+  {/snippet}
+</Story>
+
 <Story
   name="Controller and persistence interaction"
   tags={["visual-approved"]}
@@ -112,23 +132,25 @@
     await userEvent.click(
       canvas.getAllByRole("button", { name: "New tab" })[0],
     );
-    const newTab = canvas.getByRole("tab", { name: "New Tab" });
-    await expect(newTab).toHaveAttribute("aria-selected", "true");
+    const newTab = canvas.getByRole("button", {
+      name: /^New Tab$/,
+    });
+    await expect(newTab).toHaveAttribute("aria-pressed", "true");
     await interaction.app.workspace.flushSave();
     await waitFor(() =>
       expect(interaction.tracker.saveCount).toBeGreaterThan(savesBeforeAdd),
     );
 
-    const plan = canvas.getByRole("tab", { name: "Plan" });
+    const plan = canvas.getByRole("button", { name: /^Plan$/ });
     await userEvent.click(plan);
-    await expect(plan).toHaveAttribute("aria-selected", "true");
+    await expect(plan).toHaveAttribute("aria-pressed", "true");
     await userEvent.keyboard("{Delete}");
     await interaction.app.workspace.flushSave();
     await waitFor(() =>
       expect(interaction.tracker.saveCount).toBeGreaterThan(0),
     );
     await expect(
-      canvas.queryByRole("tab", { name: "Plan" }),
+      canvas.queryByRole("button", { name: /^Plan$/ }),
     ).not.toBeInTheDocument();
   }}
   parameters={{

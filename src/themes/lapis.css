@@ -90,6 +90,12 @@
   --ui-workspace-radius-large: 12px;
   --ui-workspace-shadow: none;
   --ui-workspace-tab-hover-background: var(--sidebar-accent);
+  --ui-workspace-tab-action-hover-background: color-mix(
+    in srgb,
+    var(--ui-workspace-foreground) 12%,
+    transparent
+  );
+  --ui-workspace-tab-action-hover-foreground: var(--ui-workspace-foreground);
   --ui-workspace-fmode-default-accent: #000000;
   --ui-workspace-fmode-font-mono: monospace;
   --ui-workspace-notifications-primary: #000000;
@@ -189,6 +195,12 @@
   --ui-workspace-notifications-card: #242424;
   --ui-workspace-tab-active-background: #1e1e1e;
   --ui-workspace-tab-hover-background: var(--sidebar-accent);
+  --ui-workspace-tab-action-hover-background: color-mix(
+    in srgb,
+    var(--ui-workspace-foreground) 12%,
+    transparent
+  );
+  --ui-workspace-tab-action-hover-foreground: var(--ui-workspace-foreground);
   --ui-workspace-tab-container-background: #262626;
   --ui-workspace-tab-divider: #3f3f3f;
   --ui-workspace-settings-navigation-active-background: #363636;

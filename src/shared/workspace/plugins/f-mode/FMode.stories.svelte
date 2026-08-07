@@ -111,7 +111,7 @@
 
 <Story
   name="Active hints"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   play={async ({ canvasElement }) => {
     await openFMode(active.app, canvasElement);
     await expectActive(canvasElement);
@@ -144,7 +144,9 @@
   name="Keyboard activation"
   tags={["visual-approved"]}
   play={async ({ canvas, canvasElement }) => {
-    const tabsBefore = canvas.getAllByRole("tab").length;
+    const tabsBefore = canvasElement.querySelectorAll(
+      "[data-workspace-tab-title-trigger]",
+    ).length;
     await openFMode(activation.app, canvasElement);
     await expectActive(canvasElement);
     const addHint = Array.from(
@@ -156,7 +158,9 @@
       expect(canvasElement.querySelector("[data-fmode-root]")).toBeNull(),
     );
     await waitFor(() =>
-      expect(canvas.getAllByRole("tab")).toHaveLength(tabsBefore + 1),
+      expect(
+        canvasElement.querySelectorAll("[data-workspace-tab-title-trigger]"),
+      ).toHaveLength(tabsBefore + 1),
     );
   }}
   parameters={{
@@ -180,7 +184,7 @@
 
 <Story
   name="Partial query"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   play={async ({ canvasElement }) => {
     await openFMode(partial.app, canvasElement);
     await expectActive(canvasElement);
@@ -222,7 +226,7 @@
 
 <Story
   name="Filtered target groups"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   play={async ({ canvasElement }) => {
     await openFMode(filtered.app, canvasElement);
     await expectActive(canvasElement);
@@ -255,7 +259,7 @@
 
 <Story
   name="Minimal HUD"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   play={async ({ canvasElement }) => {
     await openFMode(minimal.app, canvasElement);
     await expectActive(canvasElement);

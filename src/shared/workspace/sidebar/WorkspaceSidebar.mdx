@@ -9,10 +9,15 @@ import * as Stories from "./WorkspaceSidebar.stories.svelte";
 view bodies, empty container, drop targets, and close control for either side.
 Right-clicking a group icon opens the source group menu, including shadcn-backed
 name/icon editing, visible-panel management, ungrouping, and close actions.
+Each top-level icon or group is also a before/after insertion anchor. Dropping
+beside a group creates a normal sidebar tab, while dropping within its body
+continues to use the grouped-panel top/bottom behavior.
 
 <Canvas of={Stories.IconTabsAndGroupedPanels} />
 
 <Canvas of={Stories.GroupContextMenuEditing} />
+
+<Canvas of={Stories.HeaderInsertionTargets} />
 
 <Canvas of={Stories.EmptyRightSidebar} />
 

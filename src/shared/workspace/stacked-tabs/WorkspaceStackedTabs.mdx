@@ -13,8 +13,13 @@ the target repository's native CSS and public Workspace tokens.
 - The supplied pane must be a live `WorkspaceTabsNode` owned by the controller.
 - Tab activation, closing, presentation changes, and drops use the controller.
 - The horizontal viewport scrolls without exposing a browser scrollbar.
-- Close affordances live inside the tab button without nesting interactive
-  controls; the focused tab also supports the `Delete` key.
+- Icon menu, title, and close actions are valid sibling controls. The title is
+  the drag and focus-mode surface; the icon opens the complete pane menu and
+  activates the tab first.
+- Headers register the same before/after insertion targets and shared marker
+  as top tabs, including corrected same-pane movement in both directions.
+- A second double-click while the pane is focused restores the normal shell;
+  the focused title also supports the `Delete` key.
 
 <Canvas of={Stories.ActivatesAndClosesVerticalTabs} />
 

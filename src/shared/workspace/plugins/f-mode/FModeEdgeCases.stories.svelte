@@ -63,7 +63,7 @@
 
 <Story
   name="Invalid query"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   play={async ({ canvasElement }) => {
     await openFMode(invalid.app, canvasElement);
     const root = canvasElement.querySelector<HTMLElement>(

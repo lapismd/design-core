@@ -444,6 +444,24 @@ export class WorkspaceShellController {
     const sourceLocation = findWorkspaceTab(this.layout, tabId);
     const targetPane = findWorkspacePane(this.layout, targetPaneId);
     if (!sourceLocation || !targetPane) return false;
+    const boundedTargetIndex = Math.min(
+      Math.max(0, targetIndex ?? targetPane.items.length),
+      targetPane.items.length,
+    );
+    const sourceItemIndex =
+      position === "center" &&
+      sourceLocation.pane.id === targetPaneId &&
+      !sourceLocation.group &&
+      sourceLocation.item.kind === "tab"
+        ? sourceLocation.pane.items.indexOf(sourceLocation.item)
+        : -1;
+    const insertionIndex =
+      sourceItemIndex >= 0 && sourceItemIndex < boundedTargetIndex
+        ? boundedTargetIndex - 1
+        : boundedTargetIndex;
+    if (sourceItemIndex >= 0 && insertionIndex === sourceItemIndex) {
+      return false;
+    }
     const event = createCancelableEvent({
       tabId,
       targetPaneId,
@@ -464,11 +482,7 @@ export class WorkspaceShellController {
     }
     if (sourceHostId !== targetHostId) this.#pruneEmptyWindow(sourceHostId);
     if (position === "center") {
-      const insertion = Math.min(
-        Math.max(0, targetIndex ?? targetPane.items.length),
-        targetPane.items.length,
-      );
-      targetPane.items.splice(insertion, 0, tab);
+      targetPane.items.splice(insertionIndex, 0, tab);
       targetPane.activeItemId = tab.id;
       const targetHost = this.#findPaneHost(targetPaneId)?.hostId ?? "root";
       this.layout.active = { hostId: targetHost, paneId: targetPaneId, tabId };

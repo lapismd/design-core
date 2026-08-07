@@ -1,6 +1,6 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, userEvent, within } from "storybook/test";
+  import { expect, userEvent, waitFor, within } from "storybook/test";
   import {
     createDefaultWorkspaceLayout,
     createWorkspaceTab,
@@ -99,6 +99,52 @@
       : constrainedTabs,
   );
 
+  const interactionTabs = createWorkspaceTabs(
+    [
+      createWorkspaceTab({
+        id: "menu-home",
+        title: "Menu home",
+        icon: "layout-template",
+        view: { type: "tab-interaction-story" },
+      }),
+      createWorkspaceTab({
+        id: "menu-reference",
+        title: "Menu reference",
+        icon: "book-open",
+        view: { type: "tab-interaction-story" },
+      }),
+    ],
+    { id: "menu-story-tabs", activeItemId: "menu-home" },
+  );
+  const interactionLayout = createDefaultWorkspaceLayout();
+  interactionLayout.main = interactionTabs;
+  interactionLayout.active = {
+    hostId: "root",
+    paneId: interactionTabs.id,
+    tabId: "menu-home",
+  };
+  const interactionController = new WorkspaceShellController({
+    layout: interactionLayout,
+  });
+  interactionController.registry.register({
+    kind: "imperative",
+    type: "tab-interaction-story",
+    mount(target, context) {
+      target.textContent = `${context.tab.title} view`;
+      return () => target.replaceChildren();
+    },
+    getChrome: () => ({
+      buildPaneMenu: (menu) => {
+        menu.addItem((item) => item.setTitle("Example view action"));
+      },
+    }),
+  });
+  const liveInteractionTabs = $derived(
+    interactionController.layout.main.kind === "tabs"
+      ? interactionController.layout.main
+      : interactionTabs,
+  );
+
   function createStoryTab() {
     const id = `new-${nextTab++}`;
     return createWorkspaceTab({ id, title: `New tab ${nextTab}` });
@@ -130,16 +176,21 @@
       parseFloat(getComputedStyle(rightToggle!).borderBottomWidth),
     ).toBeCloseTo(1);
 
-    const tab = canvas.getByRole("tab", { name: "Today.md" });
+    const tab = canvas.getByRole("button", {
+      name: /^Today\.md$/,
+    });
     await userEvent.click(tab);
-    await expect(tab).toHaveAttribute("aria-selected", "true");
+    await expect(tab).toHaveAttribute("aria-pressed", "true");
     await userEvent.click(
       canvas
-        .getByRole("tab", { name: "Today.md" })
+        .getByRole("button", { name: /^Today\.md$/ })
+        .closest('[data-ui-part="tab"]')!
         .querySelector('[data-ui-part="tab-close"]')!,
     );
     await controller.flushSave();
-    await expect(canvas.queryByRole("tab", { name: "Today.md" })).toBeNull();
+    await expect(
+      canvas.queryByRole("button", { name: /^Today\.md$/ }),
+    ).toBeNull();
     await expect(canvas.getByRole("status")).toHaveTextContent(
       "Saved tab-close",
     );
@@ -170,8 +221,96 @@
 </Story>
 
 <Story
+  name="Pane menus, hover, and focus toggle"
+  tags={["visual-pending"]}
+  play={async ({ canvas, canvasElement }) => {
+    interactionController.exitFocusMode();
+    interactionController.selectTab("menu-home");
+    const page = within(canvasElement.ownerDocument.body);
+    const pane = canvasElement.querySelector(
+      '[data-workspace-pane-id="menu-story-tabs"]',
+    );
+    const reference = () =>
+      canvas.getByRole("button", { name: /^Menu reference$/ });
+
+    await waitFor(() =>
+      expect(interactionController.activeTabId).toBe("menu-home"),
+    );
+
+    await userEvent.pointer({ keys: "[MouseRight]", target: reference() });
+    await expect(interactionController.activeTabId).toBe("menu-home");
+    for (const name of [
+      "Split right",
+      "Split down",
+      "Move to floating window",
+      "Open in new window",
+      "Close",
+      "Example view action",
+    ]) {
+      await expect(page.getByRole("menuitem", { name })).toBeVisible();
+    }
+    await userEvent.keyboard("{Escape}");
+
+    const referenceMenu = canvas.getByRole("button", {
+      name: "Open Menu reference tab menu",
+    });
+    await waitFor(() =>
+      expect(getComputedStyle(referenceMenu).pointerEvents).toBe("auto"),
+    );
+    const referenceSurface = referenceMenu.closest<HTMLElement>(
+      ".ui-workspace-tab__inner",
+    );
+    await expect(
+      getComputedStyle(referenceMenu).getPropertyValue(
+        "--ui-workspace-tab-action-hover-background",
+      ),
+    ).not.toBe("");
+    await userEvent.click(referenceMenu);
+    await waitFor(() =>
+      expect(interactionController.activeTabId).toBe("menu-reference"),
+    );
+    await expect(getComputedStyle(referenceMenu).backgroundColor).not.toBe(
+      "rgba(0, 0, 0, 0)",
+    );
+    await expect(getComputedStyle(referenceMenu).backgroundColor).not.toBe(
+      getComputedStyle(referenceSurface!).backgroundColor,
+    );
+    await expect(
+      page.getByRole("menuitem", { name: "Example view action" }),
+    ).toBeVisible();
+    await userEvent.keyboard("{Escape}");
+    referenceMenu.focus();
+    await userEvent.keyboard("{Enter}");
+    await expect(
+      page.getByRole("menuitem", { name: "Example view action" }),
+    ).toBeVisible();
+    await userEvent.keyboard("{Escape}");
+
+    await userEvent.dblClick(reference());
+    await expect(pane).toHaveAttribute("data-workspace-focus-mode", "true");
+    await userEvent.dblClick(reference());
+    await expect(pane).not.toHaveAttribute("data-workspace-focus-mode");
+    await userEvent.dblClick(reference());
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Exit focus mode" }),
+    );
+    await expect(pane).not.toHaveAttribute("data-workspace-focus-mode");
+  }}
+>
+  {#snippet template()}
+    <div class="ui-workspace-tabs-story-frame">
+      <WorkspaceTabs
+        controller={interactionController}
+        pane={liveInteractionTabs}
+        sidebarToggleSides={["left", "right"]}
+      />
+    </div>
+  {/snippet}
+</Story>
+
+<Story
   name="Overflow menu"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   play={async ({ canvas }) => {
     await userEvent.click(
       canvas.getByRole("button", { name: "Tab overflow menu" }),
@@ -199,7 +338,7 @@
 
 <Story
   name="Constrained hidden-scrollbar row"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   globals={{ theme: "lapis", colorMode: "light" }}
   play={async ({ canvasElement }) => {
     const row = canvasElement.querySelector<HTMLElement>(

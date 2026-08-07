@@ -181,6 +181,8 @@ function tab(id: string, title: string, icon: string, description: string) {
 function createLayout(
   includeFloating: boolean,
   emptyLeftSidebar: boolean,
+  directLeftSidebar: boolean,
+  stackedPrimary: boolean,
 ): WorkspaceLayoutV2 {
   const home = tab(
     "framework-home",
@@ -259,6 +261,7 @@ function createLayout(
   const primary = createWorkspaceTabs([home, plan, activity], {
     id: "framework-primary-pane",
     activeItemId: home.id,
+    presentation: stackedPrimary ? "stacked" : "top",
   });
   const layout = createDefaultWorkspaceLayout();
   layout.main = createWorkspaceSplit(
@@ -281,10 +284,17 @@ function createLayout(
   layout.left = {
     open: true,
     size: 292,
-    root: createWorkspaceTabs(emptyLeftSidebar ? [] : [leftGroup], {
-      id: "framework-left-sidebar",
-      activeItemId: emptyLeftSidebar ? null : leftGroup.id,
-    }),
+    root: createWorkspaceTabs(
+      emptyLeftSidebar ? [] : directLeftSidebar ? [files, search] : [leftGroup],
+      {
+        id: "framework-left-sidebar",
+        activeItemId: emptyLeftSidebar
+          ? null
+          : directLeftSidebar
+            ? files.id
+            : leftGroup.id,
+      },
+    ),
   };
   layout.right = {
     open: true,
@@ -336,6 +346,8 @@ export function createFrameworkDemo(
     initialConfiguration?: Record<string, unknown>;
     mobileMode?: "always" | "never" | "auto";
     emptyLeftSidebar?: boolean;
+    directLeftSidebar?: boolean;
+    stackedPrimary?: boolean;
   } = {},
 ): {
   app: AppShellController;
@@ -344,6 +356,8 @@ export function createFrameworkDemo(
   const layout = createLayout(
     options.includeFloating ?? true,
     options.emptyLeftSidebar ?? false,
+    options.directLeftSidebar ?? false,
+    options.stackedPrimary ?? false,
   );
   const tracker: FrameworkDemoTracker = { loadCount: 0, saveCount: 0 };
   let snapshot: unknown = workspaceLayoutToJson(layout);

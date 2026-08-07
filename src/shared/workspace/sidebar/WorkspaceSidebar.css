@@ -47,6 +47,7 @@
 }
 
 .ui-workspace-sidebar__tab-bar {
+  position: relative;
   display: flex;
   width: 100%;
   height: var(--ui-workspace-tab-height);
@@ -57,6 +58,13 @@
   border-bottom: 1px solid var(--ui-workspace-tab-divider);
   padding: 0 0.25rem;
   background: var(--ui-workspace-tab-container-background);
+}
+
+.ui-workspace-sidebar__tab-move {
+  display: flex;
+  width: 2rem;
+  height: 1.75rem;
+  flex: 0 0 2rem;
 }
 
 .ui-workspace-sidebar[data-workspace-sidebar-side="left"]
@@ -97,6 +105,21 @@
   padding: 0 0.5rem;
   color: var(--ui-workspace-muted-foreground);
   background: transparent;
+}
+
+.ui-workspace-sidebar__insertion-marker {
+  position: absolute;
+  z-index: var(--ui-workspace-overlay-z-index);
+  top: 0;
+  left: 0;
+  border-radius: 999px;
+  background: var(--ui-workspace-accent);
+  pointer-events: none;
+  transition:
+    transform 120ms ease-out,
+    height 120ms ease-out,
+    width 120ms ease-out;
+  will-change: transform, height;
 }
 
 .ui-workspace-sidebar__tab:hover {

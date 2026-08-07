@@ -232,9 +232,9 @@
   name="Composable surfaces"
   tags={["visual-approved"]}
   play={async ({ canvas }) => {
-    const notes = canvas.getByRole("tab", { name: "Notes" });
+    const notes = canvas.getByRole("button", { name: /^Notes$/ });
     await userEvent.click(notes);
-    await expect(notes).toHaveAttribute("aria-selected", "true");
+    await expect(notes).toHaveAttribute("aria-pressed", "true");
     await expect(canvas.getByText("Framework ready")).toBeVisible();
     await expect(canvas.getByLabelText("Left sidebar")).toBeVisible();
     await expect(canvas.getByLabelText("Right sidebar")).toBeVisible();
@@ -312,7 +312,7 @@
     const root = canvasElement.querySelector<HTMLElement>(
       "[data-app-shell-root]",
     );
-    const notes = canvas.getByRole("tab", { name: "Notes" });
+    const notes = canvas.getByRole("button", { name: /^Notes$/ });
     await userEvent.dblClick(notes);
     const focusedPane = canvasElement.querySelector<HTMLElement>(
       '[data-workspace-focus-mode="true"][data-workspace-pane-id="app-shell-main-left"]',
@@ -419,7 +419,7 @@
 
 <Story
   name="Explicit utility layers"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   play={async ({ canvas }) => {
     utilityApp.commands.openPalette();
     await expect(
@@ -483,7 +483,7 @@
 
 <Story
   name="Composable hotkey settings"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   parameters={{
     visualDelta: {
       images: [

@@ -186,18 +186,23 @@
 
 .ui-workspace-tab__trigger {
   display: flex;
-  width: 100%;
+  width: auto;
   min-width: 0;
   height: 1.5rem;
+  flex: 1 1 auto;
   align-items: center;
-  gap: 0.5rem;
   border: 0;
   padding: 0;
   color: inherit;
   background: transparent;
+  cursor: grab;
   font: inherit;
   font-size: 0.875rem;
   text-align: left;
+}
+
+.ui-workspace-tab__trigger:active {
+  cursor: grabbing;
 }
 
 .ui-workspace-tab__button {
@@ -206,6 +211,7 @@
   height: 100%;
   min-width: 0;
   align-items: center;
+  gap: 0.25rem;
   padding: 1px 3px 3.5px;
 }
 
@@ -215,19 +221,19 @@
 }
 
 .ui-workspace-tab__icon {
-  display: flex;
+  display: inline-flex;
   width: 1.5rem;
   height: 1.5rem;
   min-width: 0;
   flex: 0 1 1.5rem;
   align-items: center;
   justify-content: center;
+  border: 0;
   border-radius: var(--ui-workspace-radius-small);
-  cursor: grab;
-}
-
-.ui-workspace-tab__icon:active {
-  cursor: grabbing;
+  padding: 0.25rem;
+  color: inherit;
+  background: transparent;
+  cursor: pointer;
 }
 
 .ui-workspace-tab__title {
@@ -257,23 +263,31 @@
 .ui-workspace-tab__close {
   position: sticky;
   inset-inline-end: 0;
-  display: none;
   width: 1.25rem;
   height: 1.25rem;
   padding: 0.1875rem;
-  pointer-events: auto;
+  visibility: hidden;
+  pointer-events: none;
 }
 
 .ui-workspace-tab[data-active="true"] .ui-workspace-tab__close,
 .ui-workspace-tab:hover .ui-workspace-tab__close {
-  display: inline-flex;
+  visibility: visible;
+  pointer-events: auto;
 }
 
 .ui-workspace-tab__close:hover,
+.ui-workspace-tab__icon:is(:hover, [data-state="open"]) {
+  color: var(--ui-workspace-tab-action-hover-foreground);
+  background: var(--ui-workspace-tab-action-hover-background);
+}
+
 .ui-workspace-tabs__icon-button:hover {
   background: var(--ui-workspace-tab-hover-background);
 }
 
+.ui-workspace-tab__icon:focus-visible,
+.ui-workspace-tab__close:focus-visible,
 .ui-workspace-tabs__icon-button:focus-visible {
   outline: 2px solid var(--ui-workspace-focus-ring);
   outline-offset: 1px;

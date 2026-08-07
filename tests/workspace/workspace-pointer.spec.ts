@@ -62,7 +62,7 @@ test.describe("Workspace real pointer behavior", () => {
     );
     await expect(page.locator("[data-app-shell-ready='true']")).toBeVisible();
 
-    const source = page.getByRole("tab", { name: "Plan" });
+    const source = page.getByRole("button", { name: "Plan", exact: true });
     const target = page.locator(
       "[data-ui-component='workspace-tabs-drop'][data-workspace-pane-id='framework-details-pane']",
     );
@@ -110,7 +110,9 @@ test.describe("Workspace real pointer behavior", () => {
     const targetPane = page.locator(
       "[data-ui-component='workspace-tabs'][data-workspace-pane-id='framework-details-pane']",
     );
-    await expect(targetPane.getByRole("tab", { name: "Plan" })).toBeVisible();
+    await expect(
+      targetPane.getByRole("button", { name: "Plan", exact: true }),
+    ).toBeVisible();
   });
 
   test("empty sidebars accept a centre drop and create a sidebar tab", async ({
@@ -125,7 +127,10 @@ test.describe("Workspace real pointer behavior", () => {
     const primary = page.locator(
       "[data-ui-component='workspace-tabs'][data-workspace-pane-id='framework-primary-pane']",
     );
-    const source = primary.getByRole("tab", { name: "Plan" });
+    const source = primary.getByRole("button", {
+      name: "Plan",
+      exact: true,
+    });
     const target = page.locator(
       "[data-ui-component='workspace-tabs-drop'][data-workspace-pane-id='framework-left-sidebar']",
     );
@@ -156,7 +161,9 @@ test.describe("Workspace real pointer behavior", () => {
       name: "Left sidebar",
     });
     await expect(leftSidebar.getByRole("tab", { name: "Plan" })).toBeVisible();
-    await expect(primary.getByRole("tab", { name: "Plan" })).toHaveCount(0);
+    await expect(
+      primary.getByRole("button", { name: "Plan", exact: true }),
+    ).toHaveCount(0);
   });
 
   test("edge drop shows proportional geometry before splitting", async ({
@@ -167,7 +174,10 @@ test.describe("Workspace real pointer behavior", () => {
       "workspace-demo-reusable-framework--pointer-drag-surface",
     );
     await expect(page.locator("[data-app-shell-ready='true']")).toBeVisible();
-    const source = page.getByRole("tab", { name: "Activity" });
+    const source = page.getByRole("button", {
+      name: "Activity",
+      exact: true,
+    });
     const target = page.locator(
       "[data-ui-component='workspace-tabs-drop'][data-workspace-pane-id='framework-details-pane']",
     );
@@ -222,8 +232,14 @@ test.describe("Workspace real pointer behavior", () => {
     const primary = page.locator(
       "[data-ui-component='workspace-tabs'][data-workspace-pane-id='framework-primary-pane']",
     );
-    const source = primary.getByRole("tab", { name: "Activity" });
-    const target = primary.getByRole("tab", { name: "Framework home" });
+    const source = primary.getByRole("button", {
+      name: "Activity",
+      exact: true,
+    });
+    const target = primary.getByRole("button", {
+      name: "Framework home",
+      exact: true,
+    });
     const sourceBounds = await source.boundingBox();
     const targetBounds = await target.boundingBox();
     expect(sourceBounds).not.toBeNull();
@@ -257,6 +273,196 @@ test.describe("Workspace real pointer behavior", () => {
       .toEqual(["framework-activity", "framework-home", "framework-plan"]);
   });
 
+  test("main tabs insert before and after sidebar header items", async ({
+    page,
+  }) => {
+    const storyId =
+      "workspace-demo-reusable-framework--sidebar-insertion-drag-surface";
+    for (const placement of ["before", "after"] as const) {
+      await openStory(page, storyId);
+      await expect(page.locator("[data-app-shell-ready='true']")).toBeVisible();
+      const primary = page.locator(
+        "[data-ui-component='workspace-tabs'][data-workspace-pane-id='framework-primary-pane']",
+      );
+      const sidebar = page.getByRole("complementary", {
+        name: "Left sidebar",
+      });
+      const source = primary.getByRole("button", {
+        name: "Plan",
+        exact: true,
+      });
+      const target = sidebar.getByRole("tab", {
+        name: placement === "before" ? "Files" : "Search",
+      });
+      const sourceBounds = await source.boundingBox();
+      const targetBounds = await target.boundingBox();
+      expect(sourceBounds).not.toBeNull();
+      expect(targetBounds).not.toBeNull();
+      if (!sourceBounds || !targetBounds) return;
+
+      await dragWithPause(
+        page,
+        {
+          x: sourceBounds.x + sourceBounds.width / 2,
+          y: sourceBounds.y + sourceBounds.height / 2,
+        },
+        {
+          x:
+            placement === "before"
+              ? targetBounds.x + 2
+              : targetBounds.x + targetBounds.width - 3,
+          y: targetBounds.y + targetBounds.height / 2,
+        },
+      );
+
+      const marker = sidebar.locator("[data-workspace-tab-insertion-marker]");
+      await expect(marker).toBeVisible();
+      const markerBounds = await marker.boundingBox();
+      const targetMoveBounds = await target
+        .locator("xpath=ancestor::*[@data-ui-part='sidebar-tab-move-target']")
+        .boundingBox();
+      expect(markerBounds).not.toBeNull();
+      expect(targetMoveBounds).not.toBeNull();
+      if (!markerBounds || !targetMoveBounds) return;
+      expect(Math.abs(markerBounds.width - 3)).toBeLessThan(1);
+      expect(
+        Math.abs(markerBounds.height - targetMoveBounds.height),
+      ).toBeLessThan(1);
+      await page.mouse.up();
+
+      await expect
+        .poll(() =>
+          sidebar
+            .locator("[data-workspace-item-id]")
+            .evaluateAll((tabs) =>
+              tabs.map((tab) => tab.getAttribute("data-workspace-item-id")),
+            ),
+        )
+        .toEqual(
+          placement === "before"
+            ? ["framework-plan", "framework-files", "framework-search"]
+            : ["framework-files", "framework-search", "framework-plan"],
+        );
+      await expect(
+        primary.getByRole("button", { name: "Plan", exact: true }),
+      ).toHaveCount(0);
+    }
+  });
+
+  test("sidebar tabs reorder rightward with the detached index corrected", async ({
+    page,
+  }) => {
+    await openStory(
+      page,
+      "workspace-demo-reusable-framework--sidebar-insertion-drag-surface",
+    );
+    const sidebar = page.getByRole("complementary", { name: "Left sidebar" });
+    const source = sidebar.getByRole("tab", { name: "Files" });
+    const target = sidebar.getByRole("tab", { name: "Search" });
+    const sourceBounds = await source.boundingBox();
+    const targetBounds = await target.boundingBox();
+    expect(sourceBounds).not.toBeNull();
+    expect(targetBounds).not.toBeNull();
+    if (!sourceBounds || !targetBounds) return;
+
+    await dragWithPause(
+      page,
+      {
+        x: sourceBounds.x + sourceBounds.width / 2,
+        y: sourceBounds.y + sourceBounds.height / 2,
+      },
+      {
+        x: targetBounds.x + targetBounds.width - 3,
+        y: targetBounds.y + targetBounds.height / 2,
+      },
+    );
+    await expect(
+      sidebar.locator("[data-workspace-tab-insertion-marker]"),
+    ).toBeVisible();
+    await page.mouse.up();
+    await expect
+      .poll(() =>
+        sidebar
+          .locator("[data-workspace-item-id]")
+          .evaluateAll((tabs) =>
+            tabs.map((tab) => tab.getAttribute("data-workspace-item-id")),
+          ),
+      )
+      .toEqual(["framework-search", "framework-files"]);
+  });
+
+  test("stacked tabs reorder in both directions through shared markers", async ({
+    page,
+  }) => {
+    await openStory(
+      page,
+      "workspace-demo-reusable-framework--stacked-insertion-drag-surface",
+    );
+    const pane = page.locator(
+      "[data-ui-component='workspace-stacked-tabs'][data-workspace-pane-id='framework-primary-pane']",
+    );
+
+    const move = async (
+      sourceName: string,
+      targetName: string,
+      edge: "left" | "right",
+    ) => {
+      const source = pane.getByRole("button", {
+        name: sourceName,
+        exact: true,
+      });
+      const target = pane.getByRole("button", {
+        name: targetName,
+        exact: true,
+      });
+      const sourceBounds = await source.boundingBox();
+      const targetBounds = await target.boundingBox();
+      expect(sourceBounds).not.toBeNull();
+      expect(targetBounds).not.toBeNull();
+      if (!sourceBounds || !targetBounds) return;
+      await dragWithPause(
+        page,
+        {
+          x: sourceBounds.x + sourceBounds.width / 2,
+          y: sourceBounds.y + sourceBounds.height / 2,
+        },
+        {
+          x:
+            edge === "left"
+              ? targetBounds.x + 2
+              : targetBounds.x + targetBounds.width - 3,
+          y: targetBounds.y + targetBounds.height / 2,
+        },
+      );
+      await expect(
+        pane.locator("[data-workspace-tab-insertion-marker]"),
+      ).toBeVisible();
+      await page.mouse.up();
+    };
+
+    await move("Activity", "Framework home", "left");
+    await expect
+      .poll(() =>
+        pane
+          .locator("[data-workspace-tab-id]")
+          .evaluateAll((tabs) =>
+            tabs.map((tab) => tab.getAttribute("data-workspace-tab-id")),
+          ),
+      )
+      .toEqual(["framework-activity", "framework-home", "framework-plan"]);
+
+    await move("Activity", "Plan", "right");
+    await expect
+      .poll(() =>
+        pane
+          .locator("[data-workspace-tab-id]")
+          .evaluateAll((tabs) =>
+            tabs.map((tab) => tab.getAttribute("data-workspace-tab-id")),
+          ),
+      )
+      .toEqual(["framework-home", "framework-plan", "framework-activity"]);
+  });
+
   test("sidebar groups accept only top or bottom tab drops", async ({
     page,
   }) => {
@@ -265,7 +471,7 @@ test.describe("Workspace real pointer behavior", () => {
       "workspace-demo-reusable-framework--pointer-drag-surface",
     );
     await expect(page.locator("[data-app-shell-ready='true']")).toBeVisible();
-    const source = page.getByRole("tab", { name: "Plan" });
+    const source = page.getByRole("button", { name: "Plan", exact: true });
     const panel = page.locator(
       "[data-sidebar-group-panel-id='framework-outline']",
     );
@@ -306,7 +512,7 @@ test.describe("Workspace real pointer behavior", () => {
       page,
       "workspace-demo-reusable-framework--pointer-drag-surface",
     );
-    const source = page.getByRole("tab", { name: "Plan" });
+    const source = page.getByRole("button", { name: "Plan", exact: true });
     const status = page.getByRole("contentinfo", { name: "Workspace status" });
     const sourceBounds = await source.boundingBox();
     const statusBounds = await status.boundingBox();
@@ -332,7 +538,9 @@ test.describe("Workspace real pointer behavior", () => {
       "[data-ui-component='workspace-floating-window']",
     );
     await expect(floating).toHaveCount(1);
-    await expect(floating.getByRole("tab", { name: "Plan" })).toBeVisible();
+    await expect(
+      floating.getByRole("button", { name: "Plan", exact: true }),
+    ).toBeVisible();
   });
 
   test("floating tabs redock through the same centre drop target", async ({
@@ -343,7 +551,10 @@ test.describe("Workspace real pointer behavior", () => {
     const floating = page.locator(
       "[data-floating-window-id='framework-inspector-window']",
     );
-    const source = floating.getByRole("tab", { name: "Floating inspector" });
+    const source = floating.getByRole("button", {
+      name: "Floating inspector",
+      exact: true,
+    });
     const target = page.locator(
       "[data-ui-component='workspace-tabs-drop'][data-workspace-pane-id='framework-primary-pane']:visible",
     );
@@ -378,7 +589,9 @@ test.describe("Workspace real pointer behavior", () => {
       "[data-ui-component='workspace-tabs'][data-workspace-pane-id='framework-primary-pane']",
     );
     await expect(
-      primary.getByRole("tab", { name: "Floating inspector" }),
+      primary.locator(
+        "[data-workspace-tab-id='framework-inspector'][data-active='true']",
+      ),
     ).toBeVisible();
   });
 });

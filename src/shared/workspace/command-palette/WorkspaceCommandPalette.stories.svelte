@@ -45,7 +45,7 @@
 
 <Story
   name="Open palette"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   play={async ({ canvas }) => {
     await waitFor(() => expect(previewApp.ready).toBe(true));
     previewApp.commands.openPalette();

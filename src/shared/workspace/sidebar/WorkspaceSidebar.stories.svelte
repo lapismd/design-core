@@ -1,6 +1,12 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, userEvent, within } from "storybook/test";
+  import {
+    expect,
+    fireEvent,
+    userEvent,
+    waitFor,
+    within,
+  } from "storybook/test";
   import {
     createDefaultWorkspaceLayout,
     createWorkspaceTab,
@@ -8,6 +14,7 @@
   } from "../core/layout.js";
   import type { WorkspaceSidebarGroup } from "../core/types.js";
   import { WorkspaceShellController } from "../core/workspace-controller.svelte.js";
+  import { WorkspaceDragState } from "../drag/workspace-drag.svelte.js";
   import ExampleWorkspaceView from "../view-host/ExampleWorkspaceView.svelte";
   import WorkspaceSidebar from "./WorkspaceSidebar.svelte";
   import "./WorkspaceSidebar.stories.css";
@@ -79,6 +86,8 @@
 
   const controller = createController();
   const contextMenuController = createController();
+  const insertionController = createController();
+  const insertionDrag = new WorkspaceDragState(insertionController);
   const emptyController = createController(false);
 </script>
 
@@ -108,6 +117,83 @@
   {#snippet template()}
     <div class="ui-workspace-sidebar-story-frame">
       <WorkspaceSidebar {controller} side="right" />
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Header insertion targets"
+  tags={["visual-pending"]}
+  play={async ({ canvas, canvasElement }) => {
+    insertionDrag.clear();
+    insertionController.dropTab(
+      "sidebar-files",
+      "sidebar-story-pane",
+      "center",
+      "api",
+      0,
+    );
+    insertionController.selectTab("sidebar-files");
+    await waitFor(() => {
+      expect(
+        Array.from(
+          canvasElement.querySelectorAll("[data-workspace-item-id]"),
+          (element) => element.getAttribute("data-workspace-item-id"),
+        ),
+      ).toEqual(["sidebar-files", "sidebar-reference"]);
+    });
+
+    const reference = canvas.getByRole("tab", { name: "Reference" });
+    const targets = canvasElement.querySelectorAll(
+      '[data-ui-part="sidebar-tab-move-target"]',
+    );
+    await expect(targets).toHaveLength(2);
+
+    const targetRect = reference.getBoundingClientRect();
+    insertionDrag.active = { tabId: "sidebar-files", source: "html5" };
+    insertionDrag.dragging = true;
+    const targetMove = reference.closest<HTMLElement>(
+      '[data-ui-part="sidebar-tab-move-target"]',
+    )!;
+    const dataTransfer = new DataTransfer();
+    dataTransfer.effectAllowed = "move";
+    await fireEvent.dragOver(targetMove, {
+      clientX: targetRect.right - 2,
+      clientY: targetRect.top + targetRect.height / 2,
+      dataTransfer,
+    });
+
+    const marker = canvasElement.querySelector<HTMLElement>(
+      "[data-workspace-tab-insertion-marker]",
+    );
+    await expect(marker).not.toBeNull();
+    const markerRect = marker!.getBoundingClientRect();
+    const targetMoveRect = targetMove.getBoundingClientRect();
+    await expect(Math.round(markerRect.width)).toBe(3);
+    await expect(Math.round(markerRect.height)).toBe(
+      Math.round(targetMoveRect.height),
+    );
+
+    await fireEvent.drop(targetMove, {
+      clientX: targetRect.right - 2,
+      clientY: targetRect.top + targetRect.height / 2,
+      dataTransfer,
+    });
+    await expect(
+      Array.from(
+        canvasElement.querySelectorAll("[data-workspace-item-id]"),
+        (element) => element.getAttribute("data-workspace-item-id"),
+      ),
+    ).toEqual(["sidebar-reference", "sidebar-files"]);
+  }}
+>
+  {#snippet template()}
+    <div class="ui-workspace-sidebar-story-frame">
+      <WorkspaceSidebar
+        controller={insertionController}
+        side="right"
+        drag={insertionDrag}
+      />
     </div>
   {/snippet}
 </Story>

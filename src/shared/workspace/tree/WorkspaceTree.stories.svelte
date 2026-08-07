@@ -75,12 +75,12 @@
 
 <Story
   name="Recursive top and stacked panes"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   play={async ({ canvas }) => {
     await expect(canvas.getAllByRole("separator")).toHaveLength(1);
-    const notes = canvas.getByRole("tab", { name: "Notes" });
+    const notes = canvas.getByRole("button", { name: /^Notes$/ });
     await userEvent.click(notes);
-    await expect(notes).toHaveAttribute("aria-selected", "true");
+    await expect(notes).toHaveAttribute("aria-pressed", "true");
     await expect(
       canvas.getByRole("button", { name: "Reference" }),
     ).toBeVisible();

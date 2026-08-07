@@ -29,6 +29,11 @@ and content containers remain direct children of the raw Bits UI root.
   constrained split panes.
 - Pointer and HTML5 movement share the registered insertion and body-drop
   targets.
+- Double-clicking the title trigger enters focus mode; double-clicking any tab
+  in the focused pane restores the normal shell.
+- Right-clicking a tab or activating its icon button opens the complete
+  controller-owned pane menu. Icon activation selects the tab first, while a
+  context click leaves selection unchanged.
 
 ## Examples
 
@@ -38,5 +43,6 @@ and content containers remain direct children of the raw Bits UI root.
 ## Style
 
 Colocated CSS: `WorkspaceTabs.css`. Tab geometry uses public
-`--ui-workspace-tab-*` tokens, including the header-control hover background,
+`--ui-workspace-tab-*` tokens, including dedicated action-hover foreground and
+background values for icon and close controls inside an already-hovered tab,
 and retains the source active-tab curves.

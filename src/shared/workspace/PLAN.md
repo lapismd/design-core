@@ -748,6 +748,43 @@ workflow.
   Docker daemon reported `no space left on device` while creating its overlay
   mount. No baseline was created, replaced, or reclassified.
 
+### Desktop tab interaction parity
+
+- Rechecked the Lapis desktop surfaces and retained its shared insertion model
+  for top, stacked, and sidebar headers plus the complete pane context menu.
+  Design-core deliberately extends that reference by toggling focus mode off on
+  a second double-click and by opening the same pane menu from an accessible tab
+  icon button.
+- Top and stacked tab chrome now uses sibling icon-menu, title, and close
+  controls. Right-click keeps the clicked tab inactive, while icon activation
+  selects the tab before exposing split, float, popout, close, and contributed
+  view actions. Stable `data-ui-part` hooks identify both menu trigger surfaces.
+- Sidebar and stacked header items now compose `WorkspaceTabsMove` and the
+  shared `data-workspace-tab-insertion-marker`. The existing drag controller
+  therefore handles before/after insertion across all desktop tab strips
+  without adding a second mutation path.
+- Same-pane rightward drops correct the requested index after detaching the
+  source item; leftward, cross-pane, and no-op cases retain event ordering,
+  active-tab selection, and one persistence update. The no-op path returns
+  before emitting drag/drop events or scheduling a save.
+- Added public action-hover background and foreground tokens with safe default
+  mappings and explicit Lapis light/dark mappings. Top and stacked action
+  buttons use the tokens, and top close buttons reserve a stable hidden slot so
+  hover cannot move the draggable title surface under the pointer.
+- Focused controller coverage includes leftward, rightward, no-op, and
+  cross-pane insertion. Complete unit execution passes 77 files and 463 tests;
+  complete Storybook interaction and accessibility execution passes 181 files
+  and 495 tests; all 11 real Chromium Workspace pointer scenarios pass.
+- Production Storybook build, no-Tailwind, Svelte diagnostics, and the read-only
+  Workspace visual audit pass. Live checks confirm distinct action hover paint
+  in default and Lapis light/dark themes and in the cut-down consumer's Obsidian
+  selector on port 7010; its pane icon activates and opens the complete menu.
+- Compare-only Visual Delta completed all 381 canonical Chromium captures. Its
+  review metadata identified the expected shared-chrome changes in existing
+  shell, command-palette, tree, demo, tabs, and F-Mode stories; those exact
+  stories and all new pixel-bearing stories are `visual-pending`. No PNG
+  baseline was created or replaced.
+
 ## Completion gate
 
 The migration is complete only when:

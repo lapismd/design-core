@@ -3,7 +3,8 @@
   import Check from "@lucide/svelte/icons/check";
   import Plus from "@lucide/svelte/icons/plus";
   import Close from "@lucide/svelte/icons/x";
-  import { DropdownMenu, Tabs } from "bits-ui";
+  import { ContextMenu, DropdownMenu, Tabs } from "bits-ui";
+  import type { HTMLAttributes, HTMLButtonAttributes } from "svelte/elements";
   import type {
     WorkspaceSide,
     WorkspaceTab,
@@ -15,6 +16,8 @@
   import WorkspaceTabsDrop from "../drop-overlay/WorkspaceTabsDrop.svelte";
   import WorkspaceEmpty from "../empty/WorkspaceEmpty.svelte";
   import WorkspaceIcon from "../icon/WorkspaceIcon.svelte";
+  import WorkspaceContextMenuItems from "../menu/WorkspaceContextMenuItems.svelte";
+  import WorkspaceMenuItems from "../menu/WorkspaceMenuItems.svelte";
   import WorkspaceSidebarToggle from "../sidebar-toggle/WorkspaceSidebarToggle.svelte";
   import WorkspaceViewHeader from "../view-header/WorkspaceViewHeader.svelte";
   import WorkspaceViewHost from "../view-host/WorkspaceViewHost.svelte";
@@ -56,7 +59,9 @@
 
   function select(item: WorkspaceTabItem) {
     const tab = tabFor(item);
-    if (tab) controller.selectTab(tab.id);
+    if (!tab) return;
+    selectedItemId = item.id;
+    controller.selectTab(tab.id);
   }
 
   function selectItem(value: string) {
@@ -76,15 +81,7 @@
     controller.closeTab(tabId);
   }
 
-  function handleTabClick(event: MouseEvent, item: WorkspaceTabItem) {
-    if (
-      event.target instanceof Element &&
-      event.target.closest('[data-ui-part="tab-close"]')
-    ) {
-      const tab = tabFor(item);
-      if (tab && tab.closable !== false) removeTab(event, tab.id);
-      return;
-    }
+  function handleTabClick(item: WorkspaceTabItem) {
     select(item);
   }
 
@@ -100,16 +97,16 @@
     event.stopPropagation();
   }
 
-  function enterFocusMode(event: MouseEvent, item: WorkspaceTabItem) {
+  function toggleFocusMode(event: MouseEvent, item: WorkspaceTabItem) {
     event.stopPropagation();
-    if (
-      event.target instanceof Element &&
-      event.target.closest('[data-ui-part="tab-close"]')
-    ) {
+    if (controller.isFocusModeForPane(pane.id)) {
+      controller.exitFocusMode();
       return;
     }
     const tab = tabFor(item);
-    if (tab) controller.enterFocusMode(tab.id);
+    if (!tab) return;
+    controller.selectTab(tab.id);
+    controller.enterFocusMode(tab.id);
   }
 
   function exitFocusMode(event: MouseEvent) {
@@ -141,12 +138,23 @@
     }
     dragState.clearTabMoveIndicator(tabIndicatorScope);
   }
+
+  function toolbarListProps(props: HTMLAttributes<HTMLDivElement>) {
+    const { role: _role, "aria-orientation": _orientation, ...rest } = props;
+    return rest;
+  }
+
+  function toolbarTabProps(props: HTMLButtonAttributes) {
+    const { role: _role, "aria-selected": _selected, ...rest } = props;
+    return rest;
+  }
 </script>
 
 <!-- Source shape: packages/workspace/src/lib/components/tabs/tabs-top.svelte -->
 <Tabs.Root
   bind:value={selectedItemId}
   onValueChange={selectItem}
+  activationMode="manual"
   class="workspace-tabs mod-top ui-workspace-tabs"
   data-ui-component="workspace-tabs"
   data-workspace-pane-id={pane.id}
@@ -175,93 +183,159 @@
         </div>
       {/if}
 
-      <Tabs.List
-        class="workspace-tab-header-container-inner ui-workspace-tabs__list"
-        data-ui-part="list"
-        aria-label="Workspace tabs"
-      >
-        {#each pane.items as item, index (item.id)}
-          {@const tab = tabFor(item)}
-          {@const active = pane.activeItemId === item.id}
+      <Tabs.List>
+        {#snippet child({ props: listProps })}
           <div
-            class="workspace-tab-header ui-workspace-tab"
-            data-ui-part="tab"
-            data-active={active}
-            data-view-type={tab?.view.type}
-            data-workspace-tab-id={tab?.id}
-            data-workspace-item-id={item.id}
-            ondragover={(event) => {
-              event.preventDefault();
-              dragState.setInsertionTarget(pane.id, index, "html5");
-            }}
+            {...toolbarListProps(listProps)}
+            role="toolbar"
+            aria-label="Workspace tabs"
+            class="workspace-tab-header-container-inner ui-workspace-tabs__list"
+            data-ui-part="list"
           >
-            <WorkspaceTabsMove
-              {pane}
-              {index}
-              drag={dragState}
-              indicatorRoot={tabIndicatorRoot}
-              indicatorScope={tabIndicatorScope}
-              class="workspace-tab-header-inner ui-workspace-tab__inner"
-              data-active={active}
-              activate={() => select(item)}
-            >
-              <div class="ui-workspace-tab__button">
-                <Tabs.Trigger
-                  value={item.id}
-                  class="ui-workspace-tab__trigger"
-                  data-hint-target="tab"
-                  data-hint-group="tabs"
-                  data-hint-action="click"
-                  data-hint-target-id={`tab:${tab?.id ?? item.id}`}
-                  data-hint-label={item.title}
-                  draggable={Boolean(tab)}
-                  aria-keyshortcuts={item.kind === "tab" &&
-                  item.closable !== false
-                    ? "Delete"
-                    : undefined}
-                  onpointerdown={(event) =>
-                    tab && dragState.startPointer(event, tab.id)}
-                  ondragstart={(event) =>
-                    tab && dragState.startHtml5(event, tab.id)}
-                  ondragend={(event) => tab && dragState.endHtml5(event)}
-                  onclick={(event) => handleTabClick(event, item)}
-                  ondblclick={(event) => enterFocusMode(event, item)}
-                  onkeydown={(event) => handleTabKeydown(event, item)}
-                >
-                  <span
-                    class="workspace-tab-header-inner-icon ui-workspace-tab__icon"
-                    data-ui-part="tab-icon"
+            {#each pane.items as item, index (item.id)}
+              {@const tab = tabFor(item)}
+              {@const active = pane.activeItemId === item.id}
+              {@const menu = tab
+                ? controller.createPaneMenu(tab.id)
+                : undefined}
+              <div
+                class="workspace-tab-header ui-workspace-tab"
+                data-ui-part="tab"
+                data-active={active}
+                data-view-type={tab?.view.type}
+                data-workspace-tab-id={tab?.id}
+                data-workspace-item-id={item.id}
+                ondragover={(event) => {
+                  event.preventDefault();
+                  dragState.setInsertionTarget(pane.id, index, "html5");
+                }}
+              >
+                <ContextMenu.Root>
+                  <WorkspaceTabsMove
+                    {pane}
+                    {index}
+                    drag={dragState}
+                    indicatorRoot={tabIndicatorRoot}
+                    indicatorScope={tabIndicatorScope}
+                    class="workspace-tab-header-inner ui-workspace-tab__inner"
+                    data-active={active}
+                    activate={() => select(item)}
                   >
-                    <WorkspaceIcon name={item.icon ?? tab?.icon ?? "file"} />
-                  </span>
-                  <span
-                    class="ui-workspace-tab__title"
-                    data-ui-part="tab-title"
-                  >
-                    {item.title}
-                  </span>
+                    <div class="ui-workspace-tab__button">
+                      {#if tab && menu}
+                        <DropdownMenu.Root
+                          onOpenChange={(open) => open && select(item)}
+                        >
+                          <DropdownMenu.Trigger
+                            class="workspace-tab-header-inner-icon ui-workspace-tab__icon"
+                            data-ui-part="tab-menu-trigger"
+                            aria-label={`Open ${item.title} tab menu`}
+                            title={`Open ${item.title} tab menu`}
+                            onpointerdown={() => select(item)}
+                            ondblclick={stopDoubleClick}
+                          >
+                            <WorkspaceIcon
+                              name={item.icon ?? tab.icon ?? "file"}
+                            />
+                          </DropdownMenu.Trigger>
+                          <DropdownMenu.Portal>
+                            <DropdownMenu.Content
+                              class="ui-workspace-menu__content"
+                              data-ui-component="workspace-menu"
+                              data-ui-part="content"
+                              sideOffset={4}
+                            >
+                              <WorkspaceMenuItems {menu} />
+                            </DropdownMenu.Content>
+                          </DropdownMenu.Portal>
+                        </DropdownMenu.Root>
+                      {/if}
 
-                  {#if item.kind === "tab" && item.closable !== false}
-                    <span
-                      class="workspace-tab-header-inner-close-button ui-workspace-tab__close"
-                      data-ui-part="tab-close"
-                      data-hint-target="tab-close"
-                      data-hint-group="tabs"
-                      data-hint-action="click"
-                      data-hint-target-id={`tab:${item.id}:close`}
-                      data-hint-label={`Close ${item.title}`}
-                      role="button"
-                      aria-label={`Close ${item.title}`}
-                      title={`Close ${item.title}`}
-                    >
-                      <Close aria-hidden="true" />
-                    </span>
+                      <ContextMenu.Trigger>
+                        {#snippet child({ props })}
+                          <Tabs.Trigger
+                            {...props}
+                            value={item.id}
+                            class="ui-workspace-tab__trigger"
+                            data-ui-part="tab-menu-context-trigger"
+                            data-workspace-tab-title-trigger
+                            data-hint-target="tab"
+                            data-hint-group="tabs"
+                            data-hint-action="click"
+                            data-hint-target-id={`tab:${tab?.id ?? item.id}`}
+                            data-hint-label={item.title}
+                            draggable={Boolean(tab)}
+                            aria-keyshortcuts={item.kind === "tab" &&
+                            item.closable !== false
+                              ? "Delete"
+                              : undefined}
+                            onpointerdown={(event) =>
+                              tab && dragState.startPointer(event, tab.id)}
+                            ondragstart={(event) =>
+                              tab && dragState.startHtml5(event, tab.id)}
+                            ondragend={(event) =>
+                              tab && dragState.endHtml5(event)}
+                            onclick={() => handleTabClick(item)}
+                            ondblclick={(event) => toggleFocusMode(event, item)}
+                            onkeydown={(event) => handleTabKeydown(event, item)}
+                          >
+                            {#snippet child({ props: triggerProps })}
+                              <button
+                                {...toolbarTabProps(triggerProps)}
+                                aria-pressed={active}
+                                class="ui-workspace-tab__trigger"
+                                data-ui-part="tab-menu-context-trigger"
+                                data-workspace-tab-title-trigger
+                              >
+                                <span
+                                  class="ui-workspace-tab__title"
+                                  data-ui-part="tab-title"
+                                >
+                                  {item.title}
+                                </span>
+                              </button>
+                            {/snippet}
+                          </Tabs.Trigger>
+                        {/snippet}
+                      </ContextMenu.Trigger>
+
+                      {#if item.kind === "tab" && item.closable !== false}
+                        <button
+                          type="button"
+                          class="workspace-tab-header-inner-close-button ui-workspace-tab__close"
+                          data-ui-part="tab-close"
+                          data-hint-target="tab-close"
+                          data-hint-group="tabs"
+                          data-hint-action="click"
+                          data-hint-target-id={`tab:${item.id}:close`}
+                          data-hint-label={`Close ${item.title}`}
+                          aria-label={`Close ${item.title}`}
+                          title={`Close ${item.title}`}
+                          onclick={(event) => removeTab(event, item.id)}
+                          ondblclick={stopDoubleClick}
+                        >
+                          <Close aria-hidden="true" />
+                        </button>
+                      {/if}
+                    </div>
+                  </WorkspaceTabsMove>
+                  {#if menu}
+                    <ContextMenu.Portal>
+                      <ContextMenu.Content
+                        class="ui-workspace-menu__content"
+                        data-ui-component="workspace-menu"
+                        data-ui-part="content"
+                        sideOffset={4}
+                      >
+                        <WorkspaceContextMenuItems {menu} />
+                      </ContextMenu.Content>
+                    </ContextMenu.Portal>
                   {/if}
-                </Tabs.Trigger>
+                </ContextMenu.Root>
               </div>
-            </WorkspaceTabsMove>
+            {/each}
           </div>
-        {/each}
+        {/snippet}
       </Tabs.List>
     </div>
 

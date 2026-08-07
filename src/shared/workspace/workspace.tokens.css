@@ -55,6 +55,12 @@
   --ui-workspace-tab-curve: 0.375rem;
   --ui-workspace-tab-active-background: var(--background);
   --ui-workspace-tab-hover-background: var(--accent);
+  --ui-workspace-tab-action-hover-background: color-mix(
+    in srgb,
+    var(--ui-workspace-foreground) 12%,
+    transparent
+  );
+  --ui-workspace-tab-action-hover-foreground: var(--ui-workspace-foreground);
   --ui-workspace-tab-container-background: var(
     --sidebar,
     var(--ui-workspace-muted)

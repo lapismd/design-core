@@ -147,6 +147,96 @@ describe("WorkspaceShellController", () => {
     );
   });
 
+  it("reorders tabs in both directions and ignores same-slot drops", async () => {
+    const alpha = createWorkspaceTab({ id: "alpha", title: "Alpha" });
+    const beta = createWorkspaceTab({ id: "beta", title: "Beta" });
+    const gamma = createWorkspaceTab({ id: "gamma", title: "Gamma" });
+    const pane = createWorkspaceTabs([alpha, beta, gamma], {
+      id: "reorder-pane",
+      activeItemId: alpha.id,
+    });
+    const layout = createDefaultWorkspaceLayout();
+    layout.main = pane;
+    layout.active = {
+      hostId: "root",
+      paneId: pane.id,
+      tabId: alpha.id,
+    };
+    const save = vi.fn(async () => undefined);
+    const controller = new WorkspaceShellController({
+      layout,
+      persistence: { load: async () => null, save },
+      saveDebounceMs: 0,
+    });
+    const livePane = findWorkspacePane(controller.layout, pane.id);
+    if (!livePane) throw new Error("Expected reorder pane");
+    const order: string[] = [];
+    controller.on("layout-will-drop", () => order.push("will"));
+    controller.on("layout-did-drop", () => order.push("did"));
+    controller.on("active-tab-change", (tab) =>
+      order.push(`active:${tab?.id ?? "none"}`),
+    );
+    controller.on("layout-change", (event) =>
+      order.push(`change:${event.source}`),
+    );
+
+    expect(controller.dropTab("alpha", pane.id, "center", "api", 3)).toBe(true);
+    expect(livePane.items.map((item) => item.id)).toEqual([
+      "beta",
+      "gamma",
+      "alpha",
+    ]);
+    expect(livePane.activeItemId).toBe("alpha");
+    expect(controller.activeTabId).toBe("alpha");
+    expect(order).toEqual(["will", "did", "active:alpha", "change:drag-drop"]);
+    await controller.flushSave();
+    expect(save).toHaveBeenCalledTimes(1);
+
+    order.length = 0;
+    save.mockClear();
+    expect(controller.dropTab("alpha", pane.id, "center", "api", 0)).toBe(true);
+    expect(livePane.items.map((item) => item.id)).toEqual([
+      "alpha",
+      "beta",
+      "gamma",
+    ]);
+    await controller.flushSave();
+    expect(save).toHaveBeenCalledTimes(1);
+
+    order.length = 0;
+    save.mockClear();
+    expect(controller.dropTab("beta", pane.id, "center", "api", 2)).toBe(false);
+    expect(livePane.items.map((item) => item.id)).toEqual([
+      "alpha",
+      "beta",
+      "gamma",
+    ]);
+    expect(order).toEqual([]);
+    await controller.flushSave();
+    expect(save).not.toHaveBeenCalled();
+  });
+
+  it("inserts a cross-pane tab at the requested index and activates it", () => {
+    const layout = splitLayout();
+    const target = findWorkspacePane(layout, "second-pane");
+    if (!target) throw new Error("Expected second pane");
+    target.items.push(createWorkspaceTab({ id: "third", title: "Third" }));
+    const controller = new WorkspaceShellController({ layout });
+    const liveTarget = findWorkspacePane(controller.layout, target.id);
+    if (!liveTarget) throw new Error("Expected live second pane");
+
+    expect(controller.dropTab("first", liveTarget.id, "center", "api", 1)).toBe(
+      true,
+    );
+    expect(liveTarget.items.map((item) => item.id)).toEqual([
+      "second",
+      "first",
+      "third",
+    ]);
+    expect(liveTarget.activeItemId).toBe("first");
+    expect(controller.activeTabId).toBe("first");
+  });
+
   it("splits, floats, changes window state, and redocks tabs", () => {
     const controller = new WorkspaceShellController({ layout: splitLayout() });
     expect(

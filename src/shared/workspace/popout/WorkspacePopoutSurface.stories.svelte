@@ -50,8 +50,8 @@
       ),
     ).not.toBeNull();
     await expect(
-      canvas.getByRole("tab", { name: "Detached view" }),
-    ).toHaveAttribute("aria-selected", "true");
+      canvas.getByRole("button", { name: /^Detached view$/ }),
+    ).toHaveAttribute("aria-pressed", "true");
   }}
   parameters={{
     visualDelta: {
