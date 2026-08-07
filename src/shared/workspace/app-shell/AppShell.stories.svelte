@@ -1,6 +1,6 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, userEvent, waitFor } from "storybook/test";
+  import { expect, userEvent, waitFor, within } from "storybook/test";
   import {
     createDefaultWorkspaceLayout,
     createWorkspaceSplit,
@@ -230,7 +230,7 @@
 
 <Story
   name="Composable surfaces"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   play={async ({ canvas }) => {
     const notes = canvas.getByRole("button", { name: /^Notes$/ });
     await userEvent.click(notes);
@@ -267,7 +267,7 @@
 
 <Story
   name="Default surface"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   play={async ({ canvas }) => {
     const settingsButton = canvas.getByRole("button", {
       name: "Open settings",
@@ -326,18 +326,28 @@
     expect(Math.abs(focusedRect.width - rootRect.width)).toBeLessThan(1);
     expect(Math.abs(focusedRect.height - rootRect.height)).toBeLessThan(1);
 
-    await userEvent.click(
-      canvas.getByRole("button", { name: "Exit focus mode" }),
-    );
+    const restore = within(focusedPane!).getByRole("button", {
+      name: "Restore tab group",
+    });
+    await expect(restore).toHaveAttribute("aria-pressed", "true");
+    await userEvent.click(restore);
     await expect(root).not.toHaveAttribute("data-workspace-focus-mode");
     await userEvent.dblClick(notes);
     await userEvent.keyboard("{Escape}");
     await expect(root).not.toHaveAttribute("data-workspace-focus-mode");
 
-    await userEvent.dblClick(notes);
+    const notesPane = notes.closest<HTMLElement>(
+      '[data-workspace-pane-id="app-shell-main-left"]',
+    );
+    await userEvent.click(
+      within(notesPane!).getByRole("button", { name: "Maximize tab group" }),
+    );
     await expect(
-      canvas.getByRole("button", { name: "Exit focus mode" }),
-    ).toBeVisible();
+      within(notesPane!).getByRole("button", { name: "Restore tab group" }),
+    ).toHaveAttribute("aria-pressed", "true");
+    await expect(
+      canvas.queryByRole("button", { name: "Exit focus mode" }),
+    ).toBeNull();
   }}
 >
   {#snippet template()}
@@ -458,7 +468,7 @@
 
 <Story
   name="Low-level sidebar and tabs adapters"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   parameters={{
     visualDelta: {
       images: [
@@ -537,7 +547,7 @@
 
 <Story
   name="Composable core plugin settings"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   parameters={{
     visualDelta: {
       images: [

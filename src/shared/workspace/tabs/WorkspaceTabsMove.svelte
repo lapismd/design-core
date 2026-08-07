@@ -12,6 +12,7 @@
     dropZones = ["left", "right"],
     indicatorRoot = null,
     indicatorScope,
+    insertionReferenceSelector,
     activate,
     ...rest
   }: HTMLAttributes<HTMLDivElement> & {
@@ -22,6 +23,7 @@
     dropZones?: Array<"left" | "right">;
     indicatorRoot?: HTMLElement | null;
     indicatorScope: string;
+    insertionReferenceSelector?: string;
     activate?: () => void;
   } = $props();
 
@@ -55,7 +57,12 @@
 
     const rect = container.getBoundingClientRect();
     if (rect.width <= 0) return;
-    const fromLeft = (clientX - rect.x) / rect.width;
+    const insertionReference = insertionReferenceSelector
+      ? container.querySelector<HTMLElement>(insertionReferenceSelector)
+      : null;
+    const insertionRect = insertionReference?.getBoundingClientRect() ?? rect;
+    if (insertionRect.width <= 0) return;
+    const fromLeft = (clientX - insertionRect.x) / insertionRect.width;
     const positions = [
       { position: "left" as const, distance: fromLeft },
       { position: "right" as const, distance: 1 - fromLeft },

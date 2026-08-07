@@ -66,8 +66,23 @@
 
 <Story
   name="Window controls"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   play={async ({ canvas, canvasElement }) => {
+    const maximizeButton = canvas.getByRole("button", {
+      name: "Maximize floating pane",
+    });
+    await expect(
+      maximizeButton.querySelector(".lucide-maximize"),
+    ).not.toBeNull();
+    await userEvent.click(maximizeButton);
+    const restoreSizeButton = canvas.getByRole("button", {
+      name: "Restore floating pane size",
+    });
+    await expect(
+      restoreSizeButton.querySelector(".lucide-minimize"),
+    ).not.toBeNull();
+    await userEvent.click(restoreSizeButton);
+
     const collapseButton = canvas.getByRole("button", {
       name: "Collapse floating pane",
     });
@@ -133,7 +148,7 @@
 
 <Story
   name="Minimized window"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   parameters={{
     visualDelta: {
       images: [

@@ -64,6 +64,12 @@
   background: var(--ui-workspace-muted);
 }
 
+.ui-workspace-stacked-tabs__focus-toggle[aria-pressed="true"],
+.ui-workspace-stacked-tabs__focus-toggle[aria-pressed="true"]:hover {
+  color: var(--ui-workspace-accent-foreground);
+  background: var(--ui-workspace-accent);
+}
+
 .ui-workspace-stacked-tabs__chrome-button:focus-visible,
 .ui-workspace-stacked-tabs__tab-icon:focus-visible,
 .ui-workspace-stacked-tabs__tab-trigger:focus-visible,

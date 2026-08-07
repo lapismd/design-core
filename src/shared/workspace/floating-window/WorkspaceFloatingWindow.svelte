@@ -2,10 +2,10 @@
   import ChevronDown from "@lucide/svelte/icons/chevron-down";
   import ChevronUp from "@lucide/svelte/icons/chevron-up";
   import GripHorizontal from "@lucide/svelte/icons/grip-horizontal";
-  import Maximize from "@lucide/svelte/icons/maximize-2";
+  import Maximize from "@lucide/svelte/icons/maximize";
+  import Minimize from "@lucide/svelte/icons/minimize";
   import Minus from "@lucide/svelte/icons/minus";
   import PanelTopClose from "@lucide/svelte/icons/panel-top-close";
-  import Square from "@lucide/svelte/icons/square";
   import Close from "@lucide/svelte/icons/x";
   import type {
     WorkspaceNode,
@@ -300,7 +300,7 @@
             )}
         >
           {#if isMaximized}
-            <Square aria-hidden="true" />
+            <Minimize aria-hidden="true" />
           {:else}
             <Maximize aria-hidden="true" />
           {/if}

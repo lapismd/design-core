@@ -98,7 +98,7 @@
 
 <Story
   name="No targets"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   play={async ({ canvas, canvasElement }) => {
     await openFMode(noTargetsApp, canvasElement);
     await expect(canvas.getByText("No hint targets available")).toBeVisible();

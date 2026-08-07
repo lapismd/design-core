@@ -89,7 +89,7 @@
 
 <Story
   name="Idle target surface"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   parameters={{
     visualDelta: {
       images: [
@@ -142,7 +142,7 @@
 
 <Story
   name="Keyboard activation"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   play={async ({ canvas, canvasElement }) => {
     const tabsBefore = canvasElement.querySelectorAll(
       "[data-workspace-tab-title-trigger]",

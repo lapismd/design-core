@@ -610,7 +610,7 @@
 
 <Story
   name="Composable AppShell settings surface"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   play={async ({ canvas }) => {
     await userEvent.click(canvas.getByRole("button", { name: "Core plugins" }));
     await expect(

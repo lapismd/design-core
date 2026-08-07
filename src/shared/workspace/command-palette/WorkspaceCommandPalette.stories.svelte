@@ -80,7 +80,7 @@
 
 <Story
   name="Searches and runs commands"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   play={async ({ canvas }) => {
     await waitFor(() => expect(searchApp.ready).toBe(true));
     searchApp.commands.openPalette();
@@ -123,7 +123,7 @@
 
 <Story
   name="Empty search"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   play={async ({ canvas }) => {
     await waitFor(() => expect(emptyApp.ready).toBe(true));
     emptyApp.commands.openPalette();

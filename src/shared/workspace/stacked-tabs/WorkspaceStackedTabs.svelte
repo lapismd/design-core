@@ -1,11 +1,13 @@
 <script lang="ts">
   import ChevronDown from "@lucide/svelte/icons/chevron-down";
+  import Maximize from "@lucide/svelte/icons/maximize";
   import Plus from "@lucide/svelte/icons/plus";
   import Close from "@lucide/svelte/icons/x";
   import { ContextMenu, DropdownMenu } from "bits-ui";
   import { onMount } from "svelte";
   import type {
     WorkspaceSide,
+    WorkspaceNode,
     WorkspaceTab,
     WorkspaceTabItem,
     WorkspaceTabsNode,
@@ -47,10 +49,21 @@
   let maximumPaneWidth = $derived(Math.max(0, containerWidth - itemCount * 40));
   let minimumPaneWidth = $derived(maximumPaneWidth / itemCount);
   let isFocusMode = $derived(controller.isFocusModeForPane(pane.id));
+  let canFocusMode = $derived(
+    nodeContainsPane(controller.layout.main, pane.id),
+  );
   let tabIndicatorScope = $derived(`tabs-stacked-${pane.id}`);
 
   function tabFor(item: WorkspaceTabItem): WorkspaceTab | undefined {
     return item.kind === "tab" ? item : item.tabs[0];
+  }
+
+  function nodeContainsPane(node: WorkspaceNode, paneId: string): boolean {
+    if (node.id === paneId) return true;
+    return (
+      node.kind === "split" &&
+      node.children.some((child) => nodeContainsPane(child, paneId))
+    );
   }
 
   function select(item: WorkspaceTabItem, index: number) {
@@ -107,9 +120,17 @@
     controller.enterFocusMode(tab.id);
   }
 
-  function exitFocusMode(event: MouseEvent) {
+  function togglePaneFocusMode(event: MouseEvent) {
     event.stopPropagation();
-    controller.exitFocusMode();
+    if (isFocusMode) {
+      controller.exitFocusMode();
+      return;
+    }
+    const item =
+      pane.items.find((candidate) => candidate.id === pane.activeItemId) ??
+      pane.items[0];
+    const tab = item ? tabFor(item) : undefined;
+    if (tab) controller.enterFocusMode(tab.id);
   }
 
   function handleTabIndicatorLeave(event: DragEvent) {
@@ -157,24 +178,6 @@
     {/if}
 
     <div class="ui-workspace-stacked-tabs__chrome-main">
-      {#if isFocusMode}
-        <button
-          type="button"
-          class="ui-workspace-stacked-tabs__chrome-button"
-          data-ui-part="exit-focus-mode"
-          aria-label="Exit focus mode"
-          title="Exit focus mode"
-          data-hint-target="focus-mode-exit"
-          data-hint-group="tabs"
-          data-hint-action="click"
-          data-hint-target-id={`tabs:${pane.id}:exit-focus-mode`}
-          data-hint-label="Exit focus mode"
-          onclick={exitFocusMode}
-          ondblclick={stopDoubleClick}
-        >
-          <Close aria-hidden="true" />
-        </button>
-      {/if}
       {#if createTab}
         <button
           type="button"
@@ -194,6 +197,27 @@
     </div>
 
     <div class="ui-workspace-stacked-tabs__chrome-actions">
+      {#if canFocusMode}
+        <button
+          type="button"
+          class="ui-workspace-stacked-tabs__chrome-button ui-workspace-stacked-tabs__focus-toggle"
+          data-ui-part="focus-mode-toggle"
+          aria-label={isFocusMode ? "Restore tab group" : "Maximize tab group"}
+          aria-pressed={isFocusMode}
+          title={isFocusMode ? "Restore tab group" : "Maximize tab group"}
+          data-hint-target="focus-mode-toggle"
+          data-hint-group="tabs"
+          data-hint-action="click"
+          data-hint-target-id={`tabs:${pane.id}:focus-mode-toggle`}
+          data-hint-label={isFocusMode
+            ? "Restore tab group"
+            : "Maximize tab group"}
+          onclick={togglePaneFocusMode}
+          ondblclick={stopDoubleClick}
+        >
+          <Maximize aria-hidden="true" />
+        </button>
+      {/if}
       <DropdownMenu.Root>
         <DropdownMenu.Trigger
           class="ui-workspace-stacked-tabs__chrome-button"

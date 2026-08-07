@@ -243,12 +243,30 @@
     await expect(pane).toHaveAttribute("data-workspace-focus-mode", "true");
     await userEvent.dblClick(reference);
     await expect(pane).not.toHaveAttribute("data-workspace-focus-mode");
-    await userEvent.dblClick(reference);
-    await userEvent.click(
-      canvas.getByRole("button", { name: "Exit focus mode" }),
+
+    const maximize = canvas.getByRole("button", {
+      name: "Maximize tab group",
+    });
+    const restingBackground = getComputedStyle(maximize).backgroundColor;
+    await userEvent.click(maximize);
+    const restore = canvas.getByRole("button", {
+      name: "Restore tab group",
+    });
+    await expect(restore).toHaveAttribute("aria-pressed", "true");
+    await waitFor(() =>
+      expect(getComputedStyle(restore).backgroundColor).not.toBe(
+        restingBackground,
+      ),
     );
+    await userEvent.click(restore);
     await expect(pane).not.toHaveAttribute("data-workspace-focus-mode");
-    await userEvent.dblClick(reference);
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Maximize tab group" }),
+    );
+    await expect(pane).toHaveAttribute("data-workspace-focus-mode", "true");
+    await expect(
+      canvas.queryByRole("button", { name: "Exit focus mode" }),
+    ).toBeNull();
   }}
 >
   {#snippet template()}

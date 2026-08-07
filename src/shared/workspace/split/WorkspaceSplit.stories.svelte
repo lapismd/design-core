@@ -50,7 +50,7 @@
 
 <Story
   name="Horizontal split"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   play={async ({ canvas }) => {
     const separator = canvas.getByRole("separator");
     await expect(separator).toHaveAttribute("aria-orientation", "vertical");

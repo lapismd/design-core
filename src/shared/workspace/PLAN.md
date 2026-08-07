@@ -798,6 +798,28 @@ workflow.
   its workspace-shell play creates a real floating pane and verifies hover
   contrast under the default Obsidian theme without adding consumer paint.
 
+### Pane maximize controls
+
+- Top and stacked main-workspace chrome expose a pane-level maximize toggle
+  beside the tab-options menu. The toggle uses the Lucide `maximize` glyph,
+  switches to a restore label and pressed state in focus mode, and applies the
+  public workspace accent/foreground tokens as its primary paint.
+- Top-tab chrome reserves compact, non-shrinking space for add, maximize, and
+  options actions before the tab strip yields width, so constrained panes keep
+  all three controls usable without overlap.
+- The former focus-mode exit X is removed from both presentations. Double-click
+  and Escape remain supported, while the dedicated toggle now owns mouse and
+  keyboard entry and restoration without changing controller focus APIs or
+  serialized layout.
+- Floating-window size controls use the matching Lucide `maximize` and
+  `minimize` glyphs. Floating and popout tab panes do not render the main-pane
+  focus toggle because controller focus mode remains restricted to
+  `layout.main`.
+- Top, stacked, app-shell, and floating-window stories cover accessible labels,
+  pressed primary state, restoration, and the absence of the retired exit
+  control. Pixel-bearing changes remain `visual-pending`; no baseline is
+  created or replaced without human review.
+
 ## Completion gate
 
 The migration is complete only when:

@@ -125,7 +125,7 @@
 
 <Story
   name="Controller and persistence interaction"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   play={async ({ canvas }) => {
     await waitFor(() => expect(interaction.app.ready).toBe(true));
     const savesBeforeAdd = interaction.tracker.saveCount;
@@ -173,7 +173,7 @@
 
 <Story
   name="Plugin lifecycle"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   play={async ({ canvas, canvasElement }) => {
     await waitFor(() => expect(pluginLifecycle.app.ready).toBe(true));
     const documentCanvas = within(canvasElement.ownerDocument.body);
@@ -249,7 +249,7 @@
 
 <Story
   name="Pointer drag surface"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   parameters={{
     visualDelta: {
       images: [

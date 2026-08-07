@@ -153,7 +153,7 @@
 
 <Story
   name="Activates, closes, and persists tabs"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   play={async ({ canvas, canvasElement }) => {
     const headerMain = canvasElement.querySelector(
       ".ui-workspace-tabs__header-main",
@@ -286,15 +286,39 @@
     ).toBeVisible();
     await userEvent.keyboard("{Escape}");
 
+    const maximize = canvas.getByRole("button", {
+      name: "Maximize tab group",
+    });
+    const restingBackground = getComputedStyle(maximize).backgroundColor;
+    await expect(maximize).toHaveAttribute("aria-pressed", "false");
+    await waitFor(() =>
+      expect(getComputedStyle(maximize).pointerEvents).toBe("auto"),
+    );
+    await userEvent.click(maximize);
+    await expect(pane).toHaveAttribute("data-workspace-focus-mode", "true");
+    const restore = canvas.getByRole("button", {
+      name: "Restore tab group",
+    });
+    await expect(restore).toHaveAttribute("aria-pressed", "true");
+    await waitFor(() =>
+      expect(getComputedStyle(restore).backgroundColor).not.toBe(
+        restingBackground,
+      ),
+    );
+    await userEvent.click(restore);
+    await expect(pane).not.toHaveAttribute("data-workspace-focus-mode");
+
     await userEvent.dblClick(reference());
     await expect(pane).toHaveAttribute("data-workspace-focus-mode", "true");
     await userEvent.dblClick(reference());
     await expect(pane).not.toHaveAttribute("data-workspace-focus-mode");
     await userEvent.dblClick(reference());
-    await userEvent.click(
-      canvas.getByRole("button", { name: "Exit focus mode" }),
-    );
-    await expect(pane).not.toHaveAttribute("data-workspace-focus-mode");
+    await expect(
+      canvas.getByRole("button", { name: "Restore tab group" }),
+    ).toHaveAttribute("aria-pressed", "true");
+    await expect(
+      canvas.queryByRole("button", { name: "Exit focus mode" }),
+    ).toBeNull();
   }}
 >
   {#snippet template()}
@@ -340,7 +364,7 @@
   name="Constrained hidden-scrollbar row"
   tags={["visual-pending"]}
   globals={{ theme: "lapis", colorMode: "light" }}
-  play={async ({ canvasElement }) => {
+  play={async ({ canvas, canvasElement }) => {
     const row = canvasElement.querySelector<HTMLElement>(
       ".ui-workspace-tabs__list",
     );
@@ -372,6 +396,37 @@
     await expect(getComputedStyle(inner!).padding).toBe("0px 3px 0px 6px");
     await expect(icon!.getBoundingClientRect().right).toBeLessThanOrEqual(
       close!.getBoundingClientRect().left,
+    );
+    const add = canvas.getByRole("button", { name: "New tab" });
+    const maximize = canvas.getByRole("button", {
+      name: "Maximize tab group",
+    });
+    const options = canvas.getByRole("button", {
+      name: "Tab overflow menu",
+    });
+    const newArea = canvasElement.querySelector<HTMLElement>(
+      ".ui-workspace-tabs__new-area",
+    );
+    const overflow = canvasElement.querySelector<HTMLElement>(
+      ".ui-workspace-tabs__overflow",
+    );
+    await expect(add.getBoundingClientRect().width).toBe(32);
+    await expect(maximize.getBoundingClientRect().width).toBe(32);
+    await expect(options.getBoundingClientRect().width).toBe(32);
+    await expect(getComputedStyle(add).padding).toBe("4px 8px");
+    await expect(getComputedStyle(maximize).padding).toBe("4px 8px");
+    await expect(getComputedStyle(options).padding).toBe("4px 8px");
+    await expect(newArea!.getBoundingClientRect().width).toBeGreaterThanOrEqual(
+      32,
+    );
+    await expect(
+      overflow!.getBoundingClientRect().width,
+    ).toBeGreaterThanOrEqual(68);
+    await expect(add.getBoundingClientRect().right).toBeLessThanOrEqual(
+      maximize.getBoundingClientRect().left,
+    );
+    await expect(maximize.getBoundingClientRect().right).toBeLessThanOrEqual(
+      options.getBoundingClientRect().left,
     );
   }}
   parameters={{

@@ -1,12 +1,14 @@
 <script lang="ts">
   import ChevronDown from "@lucide/svelte/icons/chevron-down";
   import Check from "@lucide/svelte/icons/check";
+  import Maximize from "@lucide/svelte/icons/maximize";
   import Plus from "@lucide/svelte/icons/plus";
   import Close from "@lucide/svelte/icons/x";
   import { ContextMenu, DropdownMenu, Tabs } from "bits-ui";
   import type { HTMLAttributes, HTMLButtonAttributes } from "svelte/elements";
   import type {
     WorkspaceSide,
+    WorkspaceNode,
     WorkspaceTab,
     WorkspaceTabItem,
     WorkspaceTabsNode,
@@ -48,6 +50,9 @@
   let overflowMenuOpen = $state(false);
   let tabIndicatorScope = $derived(`tabs-top-${pane.id}`);
   let isFocusMode = $derived(controller.isFocusModeForPane(pane.id));
+  let canFocusMode = $derived(
+    nodeContainsPane(controller.layout.main, pane.id),
+  );
 
   $effect(() => {
     selectedItemId = pane.activeItemId ?? pane.items[0]?.id ?? "";
@@ -55,6 +60,14 @@
 
   function tabFor(item: WorkspaceTabItem): WorkspaceTab | undefined {
     return item.kind === "tab" ? item : item.tabs[0];
+  }
+
+  function nodeContainsPane(node: WorkspaceNode, paneId: string): boolean {
+    if (node.id === paneId) return true;
+    return (
+      node.kind === "split" &&
+      node.children.some((child) => nodeContainsPane(child, paneId))
+    );
   }
 
   function select(item: WorkspaceTabItem) {
@@ -109,9 +122,14 @@
     controller.enterFocusMode(tab.id);
   }
 
-  function exitFocusMode(event: MouseEvent) {
+  function togglePaneFocusMode(event: MouseEvent) {
     event.stopPropagation();
-    controller.exitFocusMode();
+    if (isFocusMode) {
+      controller.exitFocusMode();
+      return;
+    }
+    const tab = selectedTab();
+    if (tab) controller.enterFocusMode(tab.id);
   }
 
   function selectedTab(): WorkspaceTab | undefined {
@@ -217,6 +235,7 @@
                     drag={dragState}
                     indicatorRoot={tabIndicatorRoot}
                     indicatorScope={tabIndicatorScope}
+                    insertionReferenceSelector="[data-workspace-tab-title-trigger]"
                     class="workspace-tab-header-inner ui-workspace-tab__inner"
                     data-active={active}
                     activate={() => select(item)}
@@ -347,24 +366,6 @@
       indicatorScope={tabIndicatorScope}
       class="ui-workspace-tabs__new-area"
     >
-      {#if isFocusMode}
-        <button
-          class="ui-workspace-tabs__icon-button"
-          data-ui-part="exit-focus-mode"
-          type="button"
-          aria-label="Exit focus mode"
-          title="Exit focus mode"
-          data-hint-target="focus-mode-exit"
-          data-hint-group="tabs"
-          data-hint-action="click"
-          data-hint-target-id={`tabs:${pane.id}:exit-focus-mode`}
-          data-hint-label="Exit focus mode"
-          onclick={exitFocusMode}
-          ondblclick={stopDoubleClick}
-        >
-          <Close aria-hidden="true" />
-        </button>
-      {/if}
       {#if createTab}
         <button
           class="ui-workspace-tabs__icon-button"
@@ -386,6 +387,27 @@
     </WorkspaceTabsMove>
 
     <div class="ui-workspace-tabs__overflow" data-ui-part="overflow">
+      {#if canFocusMode}
+        <button
+          class="ui-workspace-tabs__icon-button ui-workspace-tabs__focus-toggle"
+          data-ui-part="focus-mode-toggle"
+          type="button"
+          aria-label={isFocusMode ? "Restore tab group" : "Maximize tab group"}
+          aria-pressed={isFocusMode}
+          title={isFocusMode ? "Restore tab group" : "Maximize tab group"}
+          data-hint-target="focus-mode-toggle"
+          data-hint-group="tabs"
+          data-hint-action="click"
+          data-hint-target-id={`tabs:${pane.id}:focus-mode-toggle`}
+          data-hint-label={isFocusMode
+            ? "Restore tab group"
+            : "Maximize tab group"}
+          onclick={togglePaneFocusMode}
+          ondblclick={stopDoubleClick}
+        >
+          <Maximize aria-hidden="true" />
+        </button>
+      {/if}
       <DropdownMenu.Root bind:open={overflowMenuOpen}>
         <DropdownMenu.Trigger
           class="ui-workspace-tabs__icon-button"

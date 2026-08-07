@@ -1,5 +1,6 @@
 .ui-workspace-tabs {
   --workspace-tab-outline-width: 1px;
+  --workspace-tab-chrome-action-size: 2rem;
 
   display: flex;
   width: 100%;
@@ -37,7 +38,6 @@
 .ui-workspace-tabs__header-main {
   display: flex;
   min-width: 0;
-  max-width: calc(100% - 4.75rem);
   flex: 0 1 auto;
   align-items: flex-end;
   border-bottom: var(--workspace-tab-outline-width) solid
@@ -286,6 +286,12 @@
   background: var(--ui-workspace-tab-hover-background);
 }
 
+.ui-workspace-tabs__focus-toggle[aria-pressed="true"],
+.ui-workspace-tabs__focus-toggle[aria-pressed="true"]:hover {
+  color: var(--ui-workspace-accent-foreground);
+  background: var(--ui-workspace-accent);
+}
+
 .ui-workspace-tab__icon:focus-visible,
 .ui-workspace-tab__close:focus-visible,
 .ui-workspace-tabs__icon-button:focus-visible {
@@ -300,12 +306,14 @@
   }
 
   .ui-workspace-tab__trigger {
+    min-width: 0.5rem;
+    flex: 1 1 0.5rem;
     gap: 0;
   }
 
   .ui-workspace-tab__icon {
     width: auto;
-    flex: 1 1 1.5rem;
+    flex: 0 1 1.5rem;
     overflow: hidden;
   }
 
@@ -323,7 +331,7 @@
 
 .ui-workspace-tabs__new-area {
   display: flex;
-  min-width: 0;
+  min-width: var(--workspace-tab-chrome-action-size);
   flex: 1 1 auto;
   align-items: center;
   border-bottom: var(--workspace-tab-outline-width) solid
@@ -333,13 +341,13 @@
 
 .ui-workspace-tabs__new-area > .ui-workspace-tabs__icon-button,
 .ui-workspace-tabs__overflow .ui-workspace-tabs__icon-button {
-  width: 2.25rem;
+  width: var(--workspace-tab-chrome-action-size);
   height: 2rem;
-  padding: 0.25rem 0.625rem;
+  padding: 0.25rem 0.5rem;
 }
 
 .ui-workspace-tabs__overflow {
-  flex-basis: 2.5rem;
+  flex-basis: calc(var(--workspace-tab-chrome-action-size) * 2 + 0.25rem);
   padding-inline-end: 0.25rem;
 }
 
