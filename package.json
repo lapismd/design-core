@@ -181,6 +181,8 @@
     "./forms/UnifiedReviewDiff.svelte": "./src/shared/forms/unified-review-diff/UnifiedReviewDiff.svelte",
     "./forms/FieldReviewActions.svelte": "./src/shared/forms/field-review-actions/FieldReviewActions.svelte",
     "./styles.css": "./src/styles.css",
+    "./storybook.css": "./src/storybook.css",
+    "./storybook/catalog-layout": "./src/storybook/catalog-layout.ts",
     "./themes/lapis.css": "./src/themes/lapis.css",
     "./ai": "./src/shared/ai/index.ts",
     "./ai/chat": "./src/shared/ai/chat.ts",

@@ -199,6 +199,9 @@ workflow.
 - Added individually importable `WorkspaceStackedTabs`, `WorkspaceSplit`, and
   `WorkspaceTree` component families with colocated native CSS, Storybook
   stories, and MDX documentation.
+- Restored the source stacked-pane preferred width through the existing
+  `--ui-workspace-stacked-pane-width` token, so empty views no longer collapse
+  to their per-pane minimum and selected tabs retain horizontal scrolling.
 - The recursive tree renders top and stacked panes from the live serializable
   layout; Paneforge resize callbacks write normalized sizes through the
   controller.

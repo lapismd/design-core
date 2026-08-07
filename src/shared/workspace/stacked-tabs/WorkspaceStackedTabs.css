@@ -154,6 +154,7 @@
 .ui-workspace-stacked-tabs__tab-content {
   z-index: 1;
   display: flex;
+  width: var(--ui-workspace-stacked-pane-width);
   min-width: 0;
   min-height: 0;
   flex-direction: column;

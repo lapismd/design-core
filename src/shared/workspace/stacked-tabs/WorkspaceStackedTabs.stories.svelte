@@ -1,6 +1,6 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, userEvent } from "storybook/test";
+  import { expect, userEvent, waitFor } from "storybook/test";
   import {
     createDefaultWorkspaceLayout,
     createWorkspaceTab,
@@ -67,11 +67,22 @@
 
 <Story
   name="Activates and closes vertical tabs"
-  tags={["visual-approved"]}
-  play={async ({ canvas }) => {
+  tags={["visual-pending"]}
+  play={async ({ canvas, canvasElement }) => {
+    const container = canvasElement.querySelector<HTMLElement>(
+      '[data-ui-part="container"]',
+    );
+    await expect(container).not.toBeNull();
+    await expect(container!.scrollWidth).toBeGreaterThan(
+      container!.clientWidth,
+    );
+
     const reference = canvas.getByRole("button", { name: "Reference" });
     await userEvent.click(reference);
     await expect(reference).toHaveAttribute("aria-pressed", "true");
+    await waitFor(() => {
+      expect(container!.scrollLeft).toBeGreaterThan(0);
+    });
 
     const details = canvas.getByRole("button", { name: "Details" });
     await userEvent.click(
