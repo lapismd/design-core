@@ -785,6 +785,19 @@ workflow.
   stories and all new pixel-bearing stories are `visual-pending`. No PNG
   baseline was created or replaced.
 
+### Floating-window action hover parity
+
+- Floating-window controls now use the shared panel-action hover background and
+  foreground tokens instead of the workspace muted surface. This keeps their
+  feedback distinct when the window header and muted colour resolve to the same
+  Lapis or consumer-theme value.
+- The floating-window interaction story asserts that a hovered header control
+  differs from its panel surface before restoring the story's existing final
+  collapsed state. The captured story pixels therefore remain unchanged.
+- The cut-down Lapis consumer exercises the same public design-core component;
+  its workspace-shell play creates a real floating pane and verifies hover
+  contrast under the default Obsidian theme without adding consumer paint.
+
 ## Completion gate
 
 The migration is complete only when:

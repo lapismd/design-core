@@ -98,8 +98,8 @@
 }
 
 .ui-workspace-floating-window__control:hover {
-  color: var(--ui-workspace-foreground);
-  background: var(--ui-workspace-muted);
+  color: var(--ui-workspace-panel-action-hover-foreground);
+  background: var(--ui-workspace-panel-action-hover-background);
 }
 
 .ui-workspace-floating-window__control:focus-visible,

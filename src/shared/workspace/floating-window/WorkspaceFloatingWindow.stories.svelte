@@ -1,6 +1,6 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, userEvent } from "storybook/test";
+  import { expect, userEvent, waitFor } from "storybook/test";
   import {
     createDefaultWorkspaceLayout,
     createWorkspaceTab,
@@ -68,9 +68,22 @@
   name="Window controls"
   tags={["visual-approved"]}
   play={async ({ canvas, canvasElement }) => {
-    await userEvent.click(
-      canvas.getByRole("button", { name: "Collapse floating pane" }),
+    const collapseButton = canvas.getByRole("button", {
+      name: "Collapse floating pane",
+    });
+    const header = canvasElement.querySelector<HTMLElement>(
+      ".ui-workspace-floating-window__header",
     );
+    await expect(header).not.toBeNull();
+    await userEvent.hover(collapseButton);
+    await waitFor(() => {
+      expect(getComputedStyle(collapseButton).backgroundColor).not.toBe(
+        getComputedStyle(header!).backgroundColor,
+      );
+    });
+    await userEvent.unhover(collapseButton);
+
+    await userEvent.click(collapseButton);
     await expect(
       canvas.getByRole("button", { name: "Restore floating pane" }),
     ).toBeVisible();
@@ -78,14 +91,14 @@
     const floatingWindow = canvasElement.querySelector(
       '[data-floating-window-state="collapsed"]',
     );
-    const header = floatingWindow?.querySelector(
+    const collapsedHeader = floatingWindow?.querySelector(
       ".ui-workspace-floating-window__header",
     );
     await expect(floatingWindow).not.toBeNull();
-    await expect(header).not.toBeNull();
+    await expect(collapsedHeader).not.toBeNull();
 
     const windowBounds = floatingWindow!.getBoundingClientRect();
-    const headerBounds = header!.getBoundingClientRect();
+    const headerBounds = collapsedHeader!.getBoundingClientRect();
     await expect(windowBounds.height).toBeCloseTo(headerBounds.height);
     await expect(Math.max(0, windowBounds.bottom - headerBounds.bottom)).toBe(
       0,
