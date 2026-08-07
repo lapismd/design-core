@@ -154,7 +154,7 @@
 
 <Story
   name="Empty right sidebar"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   play={async ({ canvasElement }) => {
     const empty = canvasElement.querySelector(
       '[data-workspace-sidebar-empty="right"]',
@@ -166,6 +166,17 @@
     await expect(dropTarget).toHaveAttribute(
       "data-workspace-pane-id",
       "sidebar-empty-pane",
+    );
+    const sidebar = canvasElement.querySelector(
+      '[data-workspace-sidebar-side="right"]',
+    );
+    await expect(sidebar).not.toBeNull();
+    const dropRect = dropTarget!.getBoundingClientRect();
+    const emptyRect = empty!.getBoundingClientRect();
+    expect(Math.abs(dropRect.height - emptyRect.height)).toBeLessThan(1);
+    const view = canvasElement.ownerDocument.defaultView!;
+    expect(view.getComputedStyle(dropTarget!).backgroundColor).toBe(
+      view.getComputedStyle(sidebar!).backgroundColor,
     );
   }}
   parameters={{

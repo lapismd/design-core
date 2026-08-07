@@ -725,6 +725,9 @@ workflow.
 - Empty left and right sidebars now compose the existing tab-drop host with no
   edge zones. Pointer and HTML5 input therefore use the normal centre-drop
   controller and persistence path instead of a sidebar-specific mutation.
+- The empty drop host uses the sidebar panel surface and stretches its empty
+  component across the available body while keeping the heads-up alert aligned
+  to the top.
 - Added focused top/stacked Storybook coverage and an empty-sidebar drag
   surface, all marked `visual-pending`. No candidate baseline was created or
   replaced pending human review.
@@ -737,8 +740,8 @@ workflow.
   interaction/accessibility tests, eight Workspace pointer scenarios, four
   shell pointer scenarios, five shadcn pointer scenarios, the static Storybook
   build, and two AI-browser scenarios.
-- The read-only visual audit passes with 80 classified stories, including four
-  `visual-pending` stories, 71 `visual-approved` stories, five intentional
+- The read-only visual audit passes with 80 classified stories, including five
+  `visual-pending` stories, 70 `visual-approved` stories, five intentional
   `skip-visual` stories, and zero failed, orphaned, or contract-error entries.
   Three new pixel-bearing stories intentionally have no candidate baseline.
 - Compare-only `pnpm test:visual` could not start Chromium because the local

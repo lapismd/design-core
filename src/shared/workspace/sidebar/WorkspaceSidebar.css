@@ -130,6 +130,17 @@
   overflow: hidden;
 }
 
+.ui-workspace-sidebar__drop-target {
+  display: flex;
+  flex-direction: column;
+  background: var(--ui-workspace-panel);
+}
+
+.ui-workspace-sidebar__drop-target > .ui-workspace-sidebar-empty {
+  min-height: 0;
+  flex: 1 1 auto;
+}
+
 .ui-workspace-sidebar__body {
   --ui-scroll-area-foreground: var(--ui-workspace-border-strong);
   background: var(--ui-workspace-background);
