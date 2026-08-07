@@ -44,6 +44,7 @@
   let tabIndicatorRoot = $state<HTMLElement | null>(null);
   let overflowMenuOpen = $state(false);
   let tabIndicatorScope = $derived(`tabs-top-${pane.id}`);
+  let isFocusMode = $derived(controller.isFocusModeForPane(pane.id));
 
   $effect(() => {
     selectedItemId = pane.activeItemId ?? pane.items[0]?.id ?? "";
@@ -99,6 +100,23 @@
     event.stopPropagation();
   }
 
+  function enterFocusMode(event: MouseEvent, item: WorkspaceTabItem) {
+    event.stopPropagation();
+    if (
+      event.target instanceof Element &&
+      event.target.closest('[data-ui-part="tab-close"]')
+    ) {
+      return;
+    }
+    const tab = tabFor(item);
+    if (tab) controller.enterFocusMode(tab.id);
+  }
+
+  function exitFocusMode(event: MouseEvent) {
+    event.stopPropagation();
+    controller.exitFocusMode();
+  }
+
   function selectedTab(): WorkspaceTab | undefined {
     const item =
       pane.items.find((candidate) => candidate.id === pane.activeItemId) ??
@@ -134,6 +152,7 @@
   data-workspace-pane-id={pane.id}
   data-workspace-host-id={hostId}
   data-workspace-pane-presentation="top"
+  data-workspace-focus-mode={isFocusMode ? "true" : undefined}
   ondragenter={(event) => event.preventDefault()}
   ondrop={(event) => dragState.dropHtml5(event)}
 >
@@ -206,6 +225,7 @@
                     tab && dragState.startHtml5(event, tab.id)}
                   ondragend={(event) => tab && dragState.endHtml5(event)}
                   onclick={(event) => handleTabClick(event, item)}
+                  ondblclick={(event) => enterFocusMode(event, item)}
                   onkeydown={(event) => handleTabKeydown(event, item)}
                 >
                   <span
@@ -253,6 +273,24 @@
       indicatorScope={tabIndicatorScope}
       class="ui-workspace-tabs__new-area"
     >
+      {#if isFocusMode}
+        <button
+          class="ui-workspace-tabs__icon-button"
+          data-ui-part="exit-focus-mode"
+          type="button"
+          aria-label="Exit focus mode"
+          title="Exit focus mode"
+          data-hint-target="focus-mode-exit"
+          data-hint-group="tabs"
+          data-hint-action="click"
+          data-hint-target-id={`tabs:${pane.id}:exit-focus-mode`}
+          data-hint-label="Exit focus mode"
+          onclick={exitFocusMode}
+          ondblclick={stopDoubleClick}
+        >
+          <Close aria-hidden="true" />
+        </button>
+      {/if}
       {#if createTab}
         <button
           class="ui-workspace-tabs__icon-button"

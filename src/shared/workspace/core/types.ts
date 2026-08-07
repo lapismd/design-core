@@ -93,6 +93,12 @@ export interface WorkspaceActiveState {
   tabId: string | null;
 }
 
+/** Transient main-workspace pane focus state. This is never serialized. */
+export interface WorkspaceFocusModeState {
+  tabId: string;
+  paneId: string;
+}
+
 export interface WorkspaceLayoutV2 {
   version: 2;
   main: WorkspaceNode;
@@ -272,6 +278,7 @@ export interface WorkspacePersistenceErrorEvent {
 export interface WorkspaceEventMap {
   "active-tab-change": [tab: WorkspaceTab | null];
   "display-mode-change": [mode: WorkspaceDisplayMode];
+  "focus-mode-change": [state: WorkspaceFocusModeState | null];
   resize: [id?: string];
   "layout-ready": [];
   "layout-change": [event: WorkspaceLayoutChangeEvent];

@@ -178,7 +178,10 @@ function tab(id: string, title: string, icon: string, description: string) {
   });
 }
 
-function createLayout(includeFloating: boolean): WorkspaceLayoutV2 {
+function createLayout(
+  includeFloating: boolean,
+  emptyLeftSidebar: boolean,
+): WorkspaceLayoutV2 {
   const home = tab(
     "framework-home",
     "Framework home",
@@ -278,9 +281,9 @@ function createLayout(includeFloating: boolean): WorkspaceLayoutV2 {
   layout.left = {
     open: true,
     size: 292,
-    root: createWorkspaceTabs([leftGroup], {
+    root: createWorkspaceTabs(emptyLeftSidebar ? [] : [leftGroup], {
       id: "framework-left-sidebar",
-      activeItemId: leftGroup.id,
+      activeItemId: emptyLeftSidebar ? null : leftGroup.id,
     }),
   };
   layout.right = {
@@ -332,12 +335,16 @@ export function createFrameworkDemo(
     includeNotifications?: boolean;
     initialConfiguration?: Record<string, unknown>;
     mobileMode?: "always" | "never" | "auto";
+    emptyLeftSidebar?: boolean;
   } = {},
 ): {
   app: AppShellController;
   tracker: FrameworkDemoTracker;
 } {
-  const layout = createLayout(options.includeFloating ?? true);
+  const layout = createLayout(
+    options.includeFloating ?? true,
+    options.emptyLeftSidebar ?? false,
+  );
   const tracker: FrameworkDemoTracker = { loadCount: 0, saveCount: 0 };
   let snapshot: unknown = workspaceLayoutToJson(layout);
   const plugins: AppShellPluginDescriptor[] = [

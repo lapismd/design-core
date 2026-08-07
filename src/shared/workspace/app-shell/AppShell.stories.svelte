@@ -218,6 +218,7 @@
 
   const composedApp = createDemoApp();
   const surfaceApp = createDemoApp();
+  const focusApp = createDemoApp();
   const panelHoverApp = createDemoApp();
   const mobileApp = createDemoApp();
   const utilityApp = createDemoApp();
@@ -298,6 +299,50 @@
   {#snippet template()}
     <div class="ui-app-shell-story-frame">
       <AppShell.Root controller={surfaceApp} theme="inherit">
+        <AppShell.Surface workspaceLabel="Workspace demo" />
+      </AppShell.Root>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Focused workspace pane"
+  tags={["visual-pending"]}
+  play={async ({ canvas, canvasElement }) => {
+    const root = canvasElement.querySelector<HTMLElement>(
+      "[data-app-shell-root]",
+    );
+    const notes = canvas.getByRole("tab", { name: "Notes" });
+    await userEvent.dblClick(notes);
+    const focusedPane = canvasElement.querySelector<HTMLElement>(
+      '[data-workspace-focus-mode="true"][data-workspace-pane-id="app-shell-main-left"]',
+    );
+    await expect(root).toHaveAttribute("data-workspace-focus-mode", "true");
+    await expect(focusedPane).not.toBeNull();
+    const rootRect = root!.getBoundingClientRect();
+    const focusedRect = focusedPane!.getBoundingClientRect();
+    expect(Math.abs(focusedRect.left - rootRect.left)).toBeLessThan(1);
+    expect(Math.abs(focusedRect.top - rootRect.top)).toBeLessThan(1);
+    expect(Math.abs(focusedRect.width - rootRect.width)).toBeLessThan(1);
+    expect(Math.abs(focusedRect.height - rootRect.height)).toBeLessThan(1);
+
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Exit focus mode" }),
+    );
+    await expect(root).not.toHaveAttribute("data-workspace-focus-mode");
+    await userEvent.dblClick(notes);
+    await userEvent.keyboard("{Escape}");
+    await expect(root).not.toHaveAttribute("data-workspace-focus-mode");
+
+    await userEvent.dblClick(notes);
+    await expect(
+      canvas.getByRole("button", { name: "Exit focus mode" }),
+    ).toBeVisible();
+  }}
+>
+  {#snippet template()}
+    <div class="ui-app-shell-story-frame">
+      <AppShell.Root controller={focusApp} theme="inherit">
         <AppShell.Surface workspaceLabel="Workspace demo" />
       </AppShell.Root>
     </div>

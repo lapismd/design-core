@@ -10,6 +10,18 @@
   background: var(--ui-workspace-background);
 }
 
+.ui-workspace-stacked-tabs[data-workspace-focus-mode="true"] {
+  position: fixed;
+  z-index: calc(var(--ui-workspace-overlay-z-index) + 5);
+  inset: 0;
+}
+
+.ui-workspace-stacked-tabs[data-workspace-focus-mode="true"]
+  > .ui-workspace-stacked-tabs__chrome
+  > [data-ui-component="workspace-sidebar-toggle"] {
+  display: none;
+}
+
 .ui-workspace-stacked-tabs__chrome {
   display: flex;
   width: 100%;

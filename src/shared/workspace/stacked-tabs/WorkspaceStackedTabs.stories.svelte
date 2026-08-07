@@ -63,6 +63,36 @@
       ? controller.layout.main
       : initialPane,
   );
+
+  const focusPane = createWorkspaceTabs(
+    [
+      createWorkspaceTab({
+        id: "stacked-focus-home",
+        title: "Focus home",
+        icon: "layout-template",
+      }),
+      createWorkspaceTab({
+        id: "stacked-focus-reference",
+        title: "Focus reference",
+        icon: "book-open",
+      }),
+    ],
+    {
+      id: "stacked-focus-pane",
+      activeItemId: "stacked-focus-home",
+      presentation: "stacked",
+    },
+  );
+  const focusLayout = createDefaultWorkspaceLayout();
+  focusLayout.main = focusPane;
+  focusLayout.active = {
+    hostId: "root",
+    paneId: focusPane.id,
+    tabId: "stacked-focus-home",
+  };
+  const focusController = new WorkspaceShellController({
+    layout: focusLayout,
+  });
 </script>
 
 <Story
@@ -107,6 +137,36 @@
       <WorkspaceStackedTabs
         {controller}
         pane={livePane}
+        sidebarToggleSides={["left", "right"]}
+      />
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Focus mode"
+  tags={["visual-pending"]}
+  play={async ({ canvas, canvasElement }) => {
+    const reference = canvas.getByRole("button", {
+      name: "Focus reference",
+    });
+    await userEvent.dblClick(reference);
+    const pane = canvasElement.querySelector(
+      '[data-workspace-pane-id="stacked-focus-pane"]',
+    );
+    await expect(pane).toHaveAttribute("data-workspace-focus-mode", "true");
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Exit focus mode" }),
+    );
+    await expect(pane).not.toHaveAttribute("data-workspace-focus-mode");
+    await userEvent.dblClick(reference);
+  }}
+>
+  {#snippet template()}
+    <div class="ui-workspace-stacked-tabs-story-frame">
+      <WorkspaceStackedTabs
+        controller={focusController}
+        pane={focusPane}
         sidebarToggleSides={["left", "right"]}
       />
     </div>

@@ -23,6 +23,7 @@ import type {
   WorkspaceDisplayMode,
   WorkspaceDropPosition,
   WorkspaceEventMap,
+  WorkspaceFocusModeState,
   WorkspaceLayoutChangeEvent,
   WorkspaceLayoutDropEvent,
   WorkspaceLayoutV2,
@@ -121,6 +122,7 @@ export class WorkspaceItemRegistry<
 export class WorkspaceShellController {
   layout = $state<WorkspaceLayoutV2>(createDefaultWorkspaceLayout());
   displayMode = $state<WorkspaceDisplayMode>("desktop");
+  focusMode = $state<WorkspaceFocusModeState | null>(null);
   showTabTitleBar = $state(true);
   showInlineTitle = $state(false);
   layoutReady = $state(false);
@@ -236,6 +238,7 @@ export class WorkspaceShellController {
     value: unknown,
     event: WorkspaceLayoutChangeEvent = { source: "layout-replace" },
   ): void {
+    this.exitFocusMode();
     this.layout = normalizeWorkspaceLayout(value, this.layout);
     this.#events.trigger("active-tab-change", this.activeTab);
     this.#commit(event);
@@ -243,6 +246,7 @@ export class WorkspaceShellController {
 
   async restoreLayout(): Promise<void> {
     if (this.layoutReady) return;
+    this.exitFocusMode();
     this.#hydrating = true;
     try {
       const value = await this.#persistence?.load();
@@ -301,6 +305,43 @@ export class WorkspaceShellController {
     return true;
   }
 
+  enterFocusMode(tabId: string | null = this.activeTabId): boolean {
+    if (!tabId) return false;
+    const location = findWorkspaceTab(this.layout, tabId);
+    if (
+      !location ||
+      !workspaceNodeContains(this.layout.main, location.pane.id)
+    ) {
+      return false;
+    }
+    if (
+      this.focusMode?.tabId === tabId &&
+      this.focusMode.paneId === location.pane.id
+    ) {
+      return false;
+    }
+    if (this.activeTabId !== tabId) this.#activateTab(tabId);
+    const state = { tabId, paneId: location.pane.id };
+    this.focusMode = state;
+    this.#events.trigger("focus-mode-change", state);
+    return true;
+  }
+
+  exitFocusMode(): boolean {
+    if (!this.focusMode) return false;
+    this.focusMode = null;
+    this.#events.trigger("focus-mode-change", null);
+    return true;
+  }
+
+  clearFocusModeForTab(tabId: string): boolean {
+    return this.focusMode?.tabId === tabId ? this.exitFocusMode() : false;
+  }
+
+  isFocusModeForPane(paneId: string): boolean {
+    return this.focusMode?.paneId === paneId;
+  }
+
   addTab(paneId: string, tab: WorkspaceTab, activate = true): boolean {
     const pane = findWorkspacePane(this.layout, paneId);
     if (!pane || findWorkspaceTab(this.layout, tab.id)) return false;
@@ -313,6 +354,7 @@ export class WorkspaceShellController {
   closeTab(tabId: string): boolean {
     const location = findWorkspaceTab(this.layout, tabId);
     if (!location || location.tab.closable === false) return false;
+    this.clearFocusModeForTab(tabId);
     const sourcePaneId = location.pane.id;
     const sourceHostId = location.hostId;
     if (location.group) {
@@ -359,6 +401,7 @@ export class WorkspaceShellController {
   ): boolean {
     const location = this.#findPaneHost(paneId);
     if (!location) return false;
+    if (this.focusMode?.paneId === paneId) this.exitFocusMode();
     const newPane = createWorkspaceTabs([tab], { activeItemId: tab.id });
     const direction =
       position === "left" || position === "right" ? "horizontal" : "vertical";
@@ -457,6 +500,7 @@ export class WorkspaceShellController {
     } as const);
     this.#events.trigger("layout-will-drop", event);
     if (event.defaultPrevented) return false;
+    this.clearFocusModeForTab(tabId);
 
     const tab = sourceLocation.tab;
     const sourceHostId = sourceLocation.hostId;
@@ -823,6 +867,7 @@ export class WorkspaceShellController {
   ): WorkspaceWindow | null {
     const location = findWorkspaceTab(this.layout, tabId);
     if (!location) return null;
+    this.clearFocusModeForTab(tabId);
     const tab = location.tab;
     const sourceHostId = location.hostId;
     const sourcePaneId = location.pane.id;
@@ -1086,6 +1131,14 @@ export class WorkspaceShellController {
     };
     if (location.hostId !== "root") this.#bringWindowToFront(location.hostId);
     this.#events.trigger("active-tab-change", location.tab);
+    if (
+      this.focusMode?.paneId === location.pane.id &&
+      this.focusMode.tabId !== tabId
+    ) {
+      const state = { tabId, paneId: location.pane.id };
+      this.focusMode = state;
+      this.#events.trigger("focus-mode-change", state);
+    }
     return true;
   }
 
@@ -1139,6 +1192,7 @@ export class WorkspaceShellController {
   }
 
   #detachTab(location: NonNullable<ReturnType<typeof findWorkspaceTab>>): void {
+    this.clearFocusModeForTab(location.tab.id);
     if (location.group) {
       location.group.tabs.splice(
         location.group.tabs.findIndex((tab) => tab.id === location.tab.id),

@@ -155,6 +155,19 @@
 <Story
   name="Empty right sidebar"
   tags={["visual-approved"]}
+  play={async ({ canvasElement }) => {
+    const empty = canvasElement.querySelector(
+      '[data-workspace-sidebar-empty="right"]',
+    );
+    const dropTarget = empty?.closest(
+      '[data-ui-component="workspace-tabs-drop"]',
+    );
+    await expect(dropTarget).not.toBeNull();
+    await expect(dropTarget).toHaveAttribute(
+      "data-workspace-pane-id",
+      "sidebar-empty-pane",
+    );
+  }}
   parameters={{
     visualDelta: {
       images: [

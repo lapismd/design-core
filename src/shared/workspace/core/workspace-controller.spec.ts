@@ -43,6 +43,85 @@ describe("WorkspaceShellController", () => {
     expect(controller.activeTabId).toBe("second");
   });
 
+  it("keeps main-pane focus transient and emits dedicated state changes", async () => {
+    const save = vi.fn(async () => undefined);
+    const controller = new WorkspaceShellController({
+      layout: splitLayout(),
+      persistence: { load: async () => null, save },
+      saveDebounceMs: 0,
+    });
+    const before = controller.getLayout();
+    const changes: Array<{ tabId: string; paneId: string } | null> = [];
+    controller.on("focus-mode-change", (state) => changes.push(state));
+
+    expect(controller.enterFocusMode("first")).toBe(true);
+    expect(controller.focusMode).toEqual({
+      tabId: "first",
+      paneId: "first-pane",
+    });
+    expect(controller.isFocusModeForPane("first-pane")).toBe(true);
+    expect(controller.enterFocusMode("first")).toBe(false);
+    expect(controller.getLayout()).toEqual(before);
+    await controller.flushSave();
+    expect(save).not.toHaveBeenCalled();
+
+    expect(controller.exitFocusMode()).toBe(true);
+    expect(controller.exitFocusMode()).toBe(false);
+    expect(changes).toEqual([{ tabId: "first", paneId: "first-pane" }, null]);
+  });
+
+  it("rejects non-main focus targets and clears focus when its tab detaches", () => {
+    const files = createWorkspaceTab({ id: "files", title: "Files" });
+    const layout = splitLayout();
+    layout.left = {
+      open: true,
+      size: 300,
+      root: createWorkspaceTabs([files], { id: "left-sidebar" }),
+    };
+    const controller = new WorkspaceShellController({ layout });
+
+    expect(controller.enterFocusMode("files")).toBe(false);
+    expect(controller.enterFocusMode("missing")).toBe(false);
+    expect(controller.enterFocusMode("first")).toBe(true);
+    expect(controller.dropTab("first", "second-pane", "center")).toBe(true);
+    expect(controller.focusMode).toBeNull();
+
+    expect(controller.enterFocusMode("first")).toBe(true);
+    controller.changeLayout(splitLayout());
+    expect(controller.focusMode).toBeNull();
+  });
+
+  it("keeps the pane focused when another tab is selected within it", () => {
+    const layout = splitLayout();
+    const pane = findWorkspacePane(layout, "first-pane");
+    const next = createWorkspaceTab({ id: "next", title: "Next" });
+    if (!pane) throw new Error("Expected first pane");
+    pane.items.push(next);
+    const controller = new WorkspaceShellController({ layout });
+
+    expect(controller.enterFocusMode("first")).toBe(true);
+    expect(controller.selectTab(next.id)).toBe(true);
+    expect(controller.focusMode).toEqual({
+      tabId: next.id,
+      paneId: "first-pane",
+    });
+    expect(controller.closeTab(next.id)).toBe(true);
+    expect(controller.focusMode).toBeNull();
+  });
+
+  it("clears focus before splitting its pane", () => {
+    const controller = new WorkspaceShellController({ layout: splitLayout() });
+    expect(controller.enterFocusMode("first")).toBe(true);
+    expect(
+      controller.splitPane(
+        "first-pane",
+        "bottom",
+        createWorkspaceTab({ id: "split-focus", title: "Split focus" }),
+      ),
+    ).toBe(true);
+    expect(controller.focusMode).toBeNull();
+  });
+
   it("uses one cancelable drop path and emits commit order", () => {
     const controller = new WorkspaceShellController({ layout: splitLayout() });
     const order: string[] = [];

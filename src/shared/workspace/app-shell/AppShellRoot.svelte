@@ -85,6 +85,7 @@
   data-app-shell-ready={controller.ready}
   data-workspace-theme={resolvedTheme}
   data-workspace-dragging={drag.dragging}
+  data-workspace-focus-mode={controller.renderer.focusMode ? "true" : undefined}
   style={appearanceStyle}
   onkeydown={(event) => void controller.commands.handleKeydown(event)}
 >

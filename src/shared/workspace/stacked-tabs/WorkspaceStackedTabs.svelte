@@ -43,6 +43,7 @@
   let itemCount = $derived(Math.max(1, pane.items.length));
   let maximumPaneWidth = $derived(Math.max(0, containerWidth - itemCount * 40));
   let minimumPaneWidth = $derived(maximumPaneWidth / itemCount);
+  let isFocusMode = $derived(controller.isFocusModeForPane(pane.id));
 
   function tabFor(item: WorkspaceTabItem): WorkspaceTab | undefined {
     return item.kind === "tab" ? item : item.tabs[0];
@@ -104,6 +105,23 @@
     event.stopPropagation();
   }
 
+  function enterFocusMode(event: MouseEvent, item: WorkspaceTabItem) {
+    event.stopPropagation();
+    if (
+      event.target instanceof Element &&
+      event.target.closest('[data-ui-part="stacked-tab-close"]')
+    ) {
+      return;
+    }
+    const tab = tabFor(item);
+    if (tab) controller.enterFocusMode(tab.id);
+  }
+
+  function exitFocusMode(event: MouseEvent) {
+    event.stopPropagation();
+    controller.exitFocusMode();
+  }
+
   onMount(() => {
     if (!container) return;
     const observer = new ResizeObserver(([entry]) => {
@@ -122,6 +140,7 @@
   data-workspace-pane-id={pane.id}
   data-workspace-host-id={hostId}
   data-workspace-pane-presentation="stacked"
+  data-workspace-focus-mode={isFocusMode ? "true" : undefined}
   aria-label={`Workspace pane ${pane.id}`}
   ondragenter={(event) => event.preventDefault()}
   ondragover={(event) => dragState.moveHtml5(event)}
@@ -137,6 +156,24 @@
     {/if}
 
     <div class="ui-workspace-stacked-tabs__chrome-main">
+      {#if isFocusMode}
+        <button
+          type="button"
+          class="ui-workspace-stacked-tabs__chrome-button"
+          data-ui-part="exit-focus-mode"
+          aria-label="Exit focus mode"
+          title="Exit focus mode"
+          data-hint-target="focus-mode-exit"
+          data-hint-group="tabs"
+          data-hint-action="click"
+          data-hint-target-id={`tabs:${pane.id}:exit-focus-mode`}
+          data-hint-label="Exit focus mode"
+          onclick={exitFocusMode}
+          ondblclick={stopDoubleClick}
+        >
+          <Close aria-hidden="true" />
+        </button>
+      {/if}
       {#if createTab}
         <button
           type="button"
@@ -242,6 +279,7 @@
         ondragstart={(event) => tab && dragState.startHtml5(event, tab.id)}
         ondragend={(event) => tab && dragState.endHtml5(event)}
         onclick={(event) => handleTabClick(event, item, index)}
+        ondblclick={(event) => enterFocusMode(event, item)}
         onkeydown={(event) => handleTabKeydown(event, item, index)}
       >
         <span class="ui-workspace-stacked-tabs__tab-inner">

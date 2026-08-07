@@ -10,7 +10,11 @@ import {
   type AppShellPluginDescriptor,
 } from "./plugin-manager.svelte.js";
 import { workspaceLayoutToJson } from "./workspace-json.js";
-import { createDefaultWorkspaceLayout } from "./layout.js";
+import {
+  createDefaultWorkspaceLayout,
+  createWorkspaceTab,
+  createWorkspaceTabs,
+} from "./layout.js";
 import { WorkspaceView } from "./workspace-view.js";
 import { APP_SHELL_SETTING_IDS } from "./built-in-settings.svelte.js";
 
@@ -116,6 +120,51 @@ describe("AppShellController", () => {
       version: "2.4.0",
       commitHash: "abcdef123456",
     });
+
+    await app.dispose();
+  });
+
+  it("exposes leaf focus mode through the application workspace and commands", async () => {
+    const tab = createWorkspaceTab({ id: "focus-tab", title: "Focus" });
+    const layout = createDefaultWorkspaceLayout();
+    layout.main = createWorkspaceTabs([tab], {
+      id: "focus-pane",
+      activeItemId: tab.id,
+    });
+    layout.active = {
+      hostId: "root",
+      paneId: "focus-pane",
+      tabId: tab.id,
+    };
+    const app = new AppShellController({ layout });
+    const focusEvents = vi.fn();
+    app.on("focus-mode-change", focusEvents);
+
+    expect(app.workspace.enterFocusMode()).toBe(true);
+    expect(app.workspace.focusMode).toEqual({
+      tabId: tab.id,
+      paneId: "focus-pane",
+    });
+    expect(focusEvents).toHaveBeenCalledWith({
+      tabId: tab.id,
+      paneId: "focus-pane",
+    });
+    expect(await app.commands.execute("app-shell:exit-focus-mode")).toBe(true);
+    expect(app.workspace.focusMode).toBeNull();
+
+    expect(await app.commands.execute("app-shell:focus-active-tab")).toBe(true);
+    const preventDefault = vi.fn();
+    const escape = {
+      key: "Escape",
+      ctrlKey: false,
+      metaKey: false,
+      altKey: false,
+      shiftKey: false,
+      preventDefault,
+    } as unknown as KeyboardEvent;
+    expect(await app.commands.handleKeydown(escape)).toBe(true);
+    expect(preventDefault).toHaveBeenCalledOnce();
+    expect(app.workspace.focusMode).toBeNull();
 
     await app.dispose();
   });

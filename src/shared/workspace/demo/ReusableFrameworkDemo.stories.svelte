@@ -8,6 +8,10 @@
   const interaction = createFrameworkDemo({ includeFloating: false });
   const pluginLifecycle = createFrameworkDemo({ includeFloating: false });
   const pointer = createFrameworkDemo({ includeFloating: false });
+  const emptySidebarPointer = createFrameworkDemo({
+    includeFloating: false,
+    emptyLeftSidebar: true,
+  });
   const mobile = createFrameworkDemo({
     includeFloating: true,
     mobileMode: "always",
@@ -90,6 +94,12 @@
 >
   {#snippet template()}
     <ReusableFrameworkDemo app={overview.app} />
+  {/snippet}
+</Story>
+
+<Story name="Empty sidebar drop surface" tags={["visual-pending"]}>
+  {#snippet template()}
+    <ReusableFrameworkDemo app={emptySidebarPointer.app} />
   {/snippet}
 </Story>
 

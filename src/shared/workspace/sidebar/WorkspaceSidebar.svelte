@@ -270,10 +270,18 @@
               />
             </WorkspaceTabsDrop>
           {:else}
-            <WorkspaceSidebarEmpty
-              {side}
-              onClose={() => controller.setSidebarOpen(side, false)}
-            />
+            <WorkspaceTabsDrop
+              {controller}
+              drag={dragState}
+              parent={pane}
+              dropZones={[]}
+              class="ui-workspace-sidebar__drop-target"
+            >
+              <WorkspaceSidebarEmpty
+                {side}
+                onClose={() => controller.setSidebarOpen(side, false)}
+              />
+            </WorkspaceTabsDrop>
           {/if}
         </div>
       </ScrollArea>

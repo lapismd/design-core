@@ -108,6 +108,7 @@ export interface AppShellEventMap extends WorkspaceEventMap {
 const forwardedWorkspaceEvents: Array<keyof WorkspaceEventMap> = [
   "active-tab-change",
   "display-mode-change",
+  "focus-mode-change",
   "resize",
   "layout-ready",
   "layout-change",
@@ -256,6 +257,26 @@ export class AppShellController {
       hotkeys: [{ modifiers: ["Mod"], key: "p" }],
       callback: () => this.commands.openPalette(),
     });
+    this.commands.register({
+      id: "app-shell:focus-active-tab",
+      title: "Workspace: Focus active tab",
+      category: "Workspace",
+      icon: "focus",
+      when: ({ leaf }) => Boolean(leaf),
+      callback: ({ leaf }) =>
+        leaf ? this.workspace.enterFocusMode(leaf) : false,
+    });
+    this.commands.register({
+      id: "app-shell:exit-focus-mode",
+      title: "Workspace: Exit focus mode",
+      category: "Workspace",
+      icon: "shrink",
+      when: () => Boolean(this.renderer.focusMode),
+      callback: () => this.workspace.exitFocusMode(),
+    });
+    this.keymap.register({ modifiers: [], key: "Escape" }, () =>
+      this.workspace.exitFocusMode(),
+    );
     this.ribbon.addItem({
       id: "app-shell:open-command-palette",
       label: "Open command palette",

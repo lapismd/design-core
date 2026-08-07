@@ -113,6 +113,52 @@ test.describe("Workspace real pointer behavior", () => {
     await expect(targetPane.getByRole("tab", { name: "Plan" })).toBeVisible();
   });
 
+  test("empty sidebars accept a centre drop and create a sidebar tab", async ({
+    page,
+  }) => {
+    await openStory(
+      page,
+      "workspace-demo-reusable-framework--empty-sidebar-drop-surface",
+    );
+    await expect(page.locator("[data-app-shell-ready='true']")).toBeVisible();
+
+    const primary = page.locator(
+      "[data-ui-component='workspace-tabs'][data-workspace-pane-id='framework-primary-pane']",
+    );
+    const source = primary.getByRole("tab", { name: "Plan" });
+    const target = page.locator(
+      "[data-ui-component='workspace-tabs-drop'][data-workspace-pane-id='framework-left-sidebar']",
+    );
+    const sourceBounds = await source.boundingBox();
+    const targetBounds = await target.boundingBox();
+    expect(sourceBounds).not.toBeNull();
+    expect(targetBounds).not.toBeNull();
+    if (!sourceBounds || !targetBounds) return;
+
+    await dragWithPause(
+      page,
+      {
+        x: sourceBounds.x + sourceBounds.width / 2,
+        y: sourceBounds.y + sourceBounds.height / 2,
+      },
+      {
+        x: targetBounds.x + targetBounds.width / 2,
+        y: targetBounds.y + targetBounds.height / 2,
+      },
+    );
+
+    const overlay = target.locator(".workspace-drop-overlay");
+    await expect(overlay).toBeVisible();
+    await expect(overlay).toHaveAttribute("data-drop-position", "center");
+    await page.mouse.up();
+
+    const leftSidebar = page.getByRole("complementary", {
+      name: "Left sidebar",
+    });
+    await expect(leftSidebar.getByRole("tab", { name: "Plan" })).toBeVisible();
+    await expect(primary.getByRole("tab", { name: "Plan" })).toHaveCount(0);
+  });
+
   test("edge drop shows proportional geometry before splitting", async ({
     page,
   }) => {

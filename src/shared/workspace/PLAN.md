@@ -711,6 +711,40 @@ workflow.
   interaction suite with 501 tests, formatting, Svelte diagnostics, and the
   production Storybook build.
 
+### Main-pane focus mode and empty sidebar intake
+
+- Added transient, controller-owned focus mode for main-workspace tabs. It is
+  exposed through the application workspace, emits a dedicated event, remains
+  outside serialized layout and persistence, and is cleared when its tab is
+  detached or its pane is split or replaced.
+- Top and stacked tab headers enter focus mode on double-click and retain their
+  existing mounted view while a fixed workspace overlay covers ribbon,
+  sidebars, splits, floating windows, and the status bar. An accessible exit
+  control and Escape restore the normal shell; dialogs, menus, and notices keep
+  their higher overlay tier.
+- Empty left and right sidebars now compose the existing tab-drop host with no
+  edge zones. Pointer and HTML5 input therefore use the normal centre-drop
+  controller and persistence path instead of a sidebar-specific mutation.
+- Added focused top/stacked Storybook coverage and an empty-sidebar drag
+  surface, all marked `visual-pending`. No candidate baseline was created or
+  replaced pending human review.
+- Focused validation covers controller and application APIs, interaction and
+  accessibility stories, and a real Chromium drag from the main pane into an
+  empty left sidebar. The focused desktop story was also inspected manually at
+  full-canvas size.
+- Repository validation passes formatting, Svelte diagnostics with zero errors
+  or warnings, 77 unit files with 461 tests, 181 Storybook files with 490
+  interaction/accessibility tests, eight Workspace pointer scenarios, four
+  shell pointer scenarios, five shadcn pointer scenarios, the static Storybook
+  build, and two AI-browser scenarios.
+- The read-only visual audit passes with 80 classified stories, including four
+  `visual-pending` stories, 71 `visual-approved` stories, five intentional
+  `skip-visual` stories, and zero failed, orphaned, or contract-error entries.
+  Three new pixel-bearing stories intentionally have no candidate baseline.
+- Compare-only `pnpm test:visual` could not start Chromium because the local
+  Docker daemon reported `no space left on device` while creating its overlay
+  mount. No baseline was created, replaced, or reclassified.
+
 ## Completion gate
 
 The migration is complete only when:

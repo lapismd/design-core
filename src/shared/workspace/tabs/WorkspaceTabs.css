@@ -12,6 +12,17 @@
   color: var(--ui-workspace-foreground);
 }
 
+.ui-workspace-tabs[data-workspace-focus-mode="true"] {
+  position: fixed;
+  z-index: calc(var(--ui-workspace-overlay-z-index) + 5);
+  inset: 0;
+}
+
+.ui-workspace-tabs[data-workspace-focus-mode="true"]
+  :is(.ui-workspace-tabs__left-toggle, .ui-workspace-tabs__right-toggle) {
+  display: none;
+}
+
 .ui-workspace-tabs__header {
   position: relative;
   display: flex;

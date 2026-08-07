@@ -86,6 +86,10 @@ export class AppWorkspace {
     return this.renderer.activeWindow;
   }
 
+  get focusMode() {
+    return this.renderer.focusMode;
+  }
+
   getLeafById(id: string): WorkspaceLeaf | null {
     return findWorkspaceTab(this.renderer.layout, id)
       ? new WorkspaceLeaf(this.renderer, id)
@@ -267,6 +271,18 @@ export class AppWorkspace {
 
   setActiveLeaf(leafOrId: WorkspaceLeaf | string): boolean {
     return this.revealLeaf(leafOrId);
+  }
+
+  enterFocusMode(leaf: WorkspaceLeaf | null = this.activeLeaf): boolean {
+    return this.renderer.enterFocusMode(leaf?.id ?? null);
+  }
+
+  exitFocusMode(): boolean {
+    return this.renderer.exitFocusMode();
+  }
+
+  clearFocusModeForLeaf(leaf: WorkspaceLeaf): boolean {
+    return this.renderer.clearFocusModeForTab(leaf.id);
   }
 
   closeLeaf(leafOrId: WorkspaceLeaf | string): boolean {
