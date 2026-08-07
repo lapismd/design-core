@@ -100,8 +100,8 @@
 }
 
 .ui-workspace-sidebar__tab:hover {
-  color: var(--ui-workspace-panel-foreground);
-  background: var(--ui-workspace-muted);
+  color: var(--ui-workspace-panel-action-hover-foreground);
+  background: var(--ui-workspace-panel-action-hover-background);
 }
 
 .ui-workspace-sidebar__tab[data-state="on"] {
@@ -272,7 +272,8 @@
 
 .ui-workspace-sidebar__workspace-trigger:hover,
 .ui-workspace-sidebar__settings-trigger:hover {
-  background: var(--ui-workspace-muted);
+  color: var(--ui-workspace-panel-action-hover-foreground);
+  background: var(--ui-workspace-panel-action-hover-background);
 }
 
 .ui-workspace-sidebar__workspace-trigger:focus-visible,

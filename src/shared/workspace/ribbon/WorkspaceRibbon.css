@@ -79,8 +79,8 @@
 }
 
 .ui-workspace-ribbon__action:hover:not([aria-disabled="true"]) {
-  color: var(--ui-workspace-panel-foreground);
-  background: var(--ui-workspace-muted);
+  color: var(--ui-workspace-panel-action-hover-foreground);
+  background: var(--ui-workspace-panel-action-hover-background);
 }
 
 .ui-workspace-ribbon__action[data-active="true"] {

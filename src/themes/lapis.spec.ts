@@ -10,10 +10,13 @@ const repoRoot = path.resolve(
 
 describe("Lapis theme contract", () => {
   it("maps the source palette and shell geometry onto target tokens", async () => {
-    const css = await readFile(
-      path.join(repoRoot, "src/themes/lapis.css"),
-      "utf8",
-    );
+    const [css, workspaceTokens] = await Promise.all([
+      readFile(path.join(repoRoot, "src/themes/lapis.css"), "utf8"),
+      readFile(
+        path.join(repoRoot, "src/shared/workspace/workspace.tokens.css"),
+        "utf8",
+      ),
+    ]);
 
     expect(css).toContain('[data-ui-theme="lapis"]');
     expect(css).toContain("--background: #ffffff");
@@ -22,6 +25,12 @@ describe("Lapis theme contract", () => {
     expect(css).toContain("--ui-workspace-tab-width: 200px");
     expect(css).toContain("--ui-workspace-ribbon-width: 49px");
     expect(css).toContain("--ui-workspace-sidebar-header-height: 32px");
+    expect(css).toContain("--sidebar-accent: #e3e3e3");
+    expect(css).toContain("--sidebar-accent: #363636");
+    expect(workspaceTokens).toContain(
+      "--ui-workspace-panel-action-hover-background: var(",
+    );
+    expect(workspaceTokens).toContain("--sidebar-accent,");
   });
 
   it("is exported and selectable in Storybook", async () => {

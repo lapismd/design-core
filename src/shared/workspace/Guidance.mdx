@@ -40,6 +40,12 @@ Workspace components use colocated native CSS and public
 `--ui-workspace-*` tokens. Override tokens on an ancestor. Do not pass Tailwind
 utility strings to component props.
 
+Controls painted on `--ui-workspace-panel` use
+`--ui-workspace-panel-action-hover-background` and
+`--ui-workspace-panel-action-hover-foreground`. Their defaults bind to the
+host theme's `--sidebar-accent*` semantics so hover feedback stays distinct
+from the sidebar surface.
+
 ## Development status
 
 The framework is being migrated from the standalone Lapis app-shell package.

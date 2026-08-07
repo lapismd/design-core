@@ -218,6 +218,7 @@
 
   const composedApp = createDemoApp();
   const surfaceApp = createDemoApp();
+  const panelHoverApp = createDemoApp();
   const mobileApp = createDemoApp();
   const utilityApp = createDemoApp();
   const adapterApp = createDemoApp();
@@ -297,6 +298,47 @@
   {#snippet template()}
     <div class="ui-app-shell-story-frame">
       <AppShell.Root controller={surfaceApp} theme="inherit">
+        <AppShell.Surface workspaceLabel="Workspace demo" />
+      </AppShell.Root>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Lapis panel action hover contract"
+  tags={["skip-visual"]}
+  globals={{ theme: "lapis", colorMode: "light" }}
+  play={async ({ canvas, canvasElement }) => {
+    await waitFor(() =>
+      expect(canvasElement.ownerDocument.documentElement).toHaveAttribute(
+        "data-ui-theme",
+        "lapis",
+      ),
+    );
+
+    const buttons = [
+      canvas.getByRole("button", { name: "Open command palette" }),
+      canvas.getByRole("button", { name: "Open settings" }),
+    ];
+
+    for (const button of buttons) {
+      const panel = button.closest(
+        '[data-ui-component="workspace-ribbon"], [data-ui-component="workspace-sidebar"]',
+      );
+      await expect(panel).not.toBeNull();
+      await userEvent.hover(button);
+      await waitFor(() =>
+        expect(getComputedStyle(button).backgroundColor).not.toBe(
+          getComputedStyle(panel!).backgroundColor,
+        ),
+      );
+      await userEvent.unhover(button);
+    }
+  }}
+>
+  {#snippet template()}
+    <div class="ui-app-shell-story-frame">
+      <AppShell.Root controller={panelHoverApp} theme="inherit">
         <AppShell.Surface workspaceLabel="Workspace demo" />
       </AppShell.Root>
     </div>

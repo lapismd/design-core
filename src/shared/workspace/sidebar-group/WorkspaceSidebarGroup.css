@@ -68,8 +68,8 @@
 }
 
 .ui-workspace-sidebar-group__header:hover {
-  color: var(--ui-workspace-panel-foreground);
-  background: var(--ui-workspace-muted);
+  color: var(--ui-workspace-panel-action-hover-foreground);
+  background: var(--ui-workspace-panel-action-hover-background);
 }
 
 .ui-workspace-sidebar-group__header:focus-visible {

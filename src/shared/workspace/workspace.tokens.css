@@ -7,6 +7,14 @@
   --ui-workspace-foreground: var(--foreground);
   --ui-workspace-panel: var(--sidebar, var(--background));
   --ui-workspace-panel-foreground: var(--sidebar-foreground, var(--foreground));
+  --ui-workspace-panel-action-hover-background: var(
+    --sidebar-accent,
+    var(--accent)
+  );
+  --ui-workspace-panel-action-hover-foreground: var(
+    --sidebar-accent-foreground,
+    var(--ui-workspace-panel-foreground)
+  );
   --ui-workspace-muted: var(--muted);
   --ui-workspace-muted-foreground: var(--muted-foreground);
   --ui-workspace-popover: var(--popover);

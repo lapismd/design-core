@@ -129,6 +129,9 @@ workflow.
   `--ui-workspace-*` tokens without importing Lapis runtime code.
 - Kept tab-header hover feedback visible in both colour modes through the
   public `--ui-workspace-tab-hover-background` token.
+- Mapped ribbon and sidebar button hover feedback through public
+  `--ui-workspace-panel-action-hover-*` tokens, whose defaults follow the host
+  `--sidebar-accent*` semantics instead of the page-level muted surface.
 - Imported all 52 validated standalone app-shell Storybook captures into the
   immutable reference tree with revision, capture, inventory-hash, and mapping
   provenance.

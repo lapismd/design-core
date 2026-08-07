@@ -9,6 +9,8 @@ export const workspaceTokenNames = {
   foreground: "--ui-workspace-foreground",
   panel: "--ui-workspace-panel",
   panelForeground: "--ui-workspace-panel-foreground",
+  panelActionHoverBackground: "--ui-workspace-panel-action-hover-background",
+  panelActionHoverForeground: "--ui-workspace-panel-action-hover-foreground",
   muted: "--ui-workspace-muted",
   mutedForeground: "--ui-workspace-muted-foreground",
   popover: "--ui-workspace-popover",
@@ -66,6 +68,9 @@ export const workspaceTokenDefaults: Record<WorkspaceTokenKey, string> = {
   foreground: "var(--foreground)",
   panel: "var(--sidebar, var(--background))",
   panelForeground: "var(--sidebar-foreground, var(--foreground))",
+  panelActionHoverBackground: "var(--sidebar-accent, var(--accent))",
+  panelActionHoverForeground:
+    "var(--sidebar-accent-foreground, var(--ui-workspace-panel-foreground))",
   muted: "var(--muted)",
   mutedForeground: "var(--muted-foreground)",
   popover: "var(--popover)",
