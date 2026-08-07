@@ -7,7 +7,8 @@ import {
 } from "./layout.js";
 import { cloneSerializable } from "./serializable.js";
 import type {
-  WorkspaceLayoutV2,
+  WorkspaceBottomPanelState,
+  WorkspaceLayout,
   WorkspaceNode,
   WorkspaceSidebarGroup,
   WorkspaceTab,
@@ -58,6 +59,10 @@ export interface WorkspaceSidedockJson extends WorkspaceSplitJson {
   width: string;
 }
 
+export interface WorkspaceBottomPanelJson extends WorkspaceTabsJson {
+  height: string;
+}
+
 export interface WorkspaceFloatingJson
   extends Omit<WorkspaceSplitJson, "type"> {
   type: "floating";
@@ -74,6 +79,7 @@ export interface WorkspaceJson {
   main: WorkspaceSplitJson;
   left: WorkspaceSidedockJson;
   right: WorkspaceSidedockJson;
+  bottom?: WorkspaceBottomPanelJson;
   floating?: WorkspaceFloatingJson[];
   active?: string;
 }
@@ -116,21 +122,25 @@ function itemToJson(
   return item.kind === "tab" ? leafToJson(item) : groupToJson(item);
 }
 
+function tabsToJson(node: WorkspaceTabsNode): WorkspaceTabsJson {
+  const currentTab = Math.max(
+    0,
+    node.items.findIndex((item) => item.id === node.activeItemId),
+  );
+  return {
+    id: node.id,
+    type: "tabs",
+    stacked: node.presentation === "stacked",
+    children: node.items.map(itemToJson),
+    currentTab,
+  };
+}
+
 function nodeToJson(
   node: WorkspaceNode,
 ): WorkspaceSplitJson | WorkspaceTabsJson {
   if (node.kind === "tabs") {
-    const currentTab = Math.max(
-      0,
-      node.items.findIndex((item) => item.id === node.activeItemId),
-    );
-    return {
-      id: node.id,
-      type: "tabs",
-      stacked: node.presentation === "stacked",
-      children: node.items.map(itemToJson),
-      currentTab,
-    };
+    return tabsToJson(node);
   }
   return {
     id: node.id,
@@ -170,9 +180,7 @@ function windowToJson(window: WorkspaceWindow): WorkspaceFloatingJson {
 }
 
 /** Convert the renderer's compatibility layout into the canonical wire shape. */
-export function workspaceLayoutToJson(
-  layout: WorkspaceLayoutV2,
-): WorkspaceJson {
+export function workspaceLayoutToJson(layout: WorkspaceLayout): WorkspaceJson {
   return {
     main: rootSplit(layout.main, "main"),
     left: {
@@ -182,6 +190,10 @@ export function workspaceLayoutToJson(
     right: {
       ...rootSplit(layout.right.root, "right"),
       width: layout.right.open ? `${layout.right.size}px` : "0px",
+    },
+    bottom: {
+      ...tabsToJson(layout.bottom.root),
+      height: layout.bottom.open ? `${layout.bottom.size}px` : "0px",
     },
     ...(layout.windows.length
       ? { floating: layout.windows.map(windowToJson) }
@@ -302,8 +314,8 @@ function nodeFromJson(value: unknown): WorkspaceNode | null {
 
 function sidedockFromJson(
   value: unknown,
-  fallback: WorkspaceLayoutV2["left"],
-): WorkspaceLayoutV2["left"] {
+  fallback: WorkspaceLayout["left"],
+): WorkspaceLayout["left"] {
   const input = record(value);
   const width = input && typeof input.width === "string" ? input.width : "";
   const parsedWidth = Number.parseFloat(width);
@@ -318,6 +330,23 @@ function sidedockFromJson(
       createWorkspaceTabs([], {
         id: string(input?.id, createWorkspaceId("sidebar-tabs")),
       }),
+  };
+}
+
+function bottomPanelFromJson(
+  value: unknown,
+  fallback: WorkspaceBottomPanelState,
+): WorkspaceBottomPanelState {
+  const input = record(value);
+  const height = input && typeof input.height === "string" ? input.height : "";
+  const parsedHeight = Number.parseFloat(height);
+  return {
+    open: !/^0(?:px|rem|em|%)?$/.test(height.trim()),
+    size:
+      Number.isFinite(parsedHeight) && parsedHeight > 0
+        ? parsedHeight
+        : fallback.size,
+    root: tabsFromJson(value) ?? fallback.root,
   };
 }
 
@@ -363,18 +392,19 @@ export function isWorkspaceJson(value: unknown): value is WorkspaceJson {
  */
 export function workspaceLayoutFromJson(
   value: unknown,
-  fallback: WorkspaceLayoutV2 = createDefaultWorkspaceLayout(),
-): WorkspaceLayoutV2 {
+  fallback: WorkspaceLayout = createDefaultWorkspaceLayout(),
+): WorkspaceLayout {
   if (!isWorkspaceJson(value)) return normalizeWorkspaceLayout(value, fallback);
   const main = nodeFromJson(value.main) ?? fallback.main;
   const windows = (value.floating ?? [])
     .map(windowFromJson)
     .filter((window): window is WorkspaceWindow => Boolean(window));
   const layout = normalizeWorkspaceLayout({
-    version: 2,
+    version: 3,
     main,
     left: sidedockFromJson(value.left, fallback.left),
     right: sidedockFromJson(value.right, fallback.right),
+    bottom: bottomPanelFromJson(value.bottom, fallback.bottom),
     windows,
     active: { hostId: "root", paneId: null, tabId: value.active ?? null },
   });

@@ -10,7 +10,7 @@ import {
   workspaceLayoutToJson,
   type AppShellPluginDescriptor,
   type WorkspaceLeaf,
-  type WorkspaceLayoutV2,
+  type WorkspaceLayout,
   type WorkspaceSidebarGroup,
 } from "../core/index.js";
 import { fModePlugin } from "../plugins/f-mode/index.js";
@@ -180,10 +180,11 @@ function tab(id: string, title: string, icon: string, description: string) {
 
 function createLayout(
   includeFloating: boolean,
+  includeBottomPanel: boolean,
   emptyLeftSidebar: boolean,
   directLeftSidebar: boolean,
   stackedPrimary: boolean,
-): WorkspaceLayoutV2 {
+): WorkspaceLayout {
   const home = tab(
     "framework-home",
     "Framework home",
@@ -304,6 +305,44 @@ function createLayout(
       activeItemId: rightGroup.id,
     }),
   };
+  if (includeBottomPanel) {
+    const terminal = tab(
+      "framework-terminal",
+      "Terminal",
+      "terminal",
+      "A consumer-owned terminal runtime can render in the generic bottom dock.",
+    );
+    const problems = tab(
+      "framework-problems",
+      "Problems",
+      "circle-alert",
+      "Grouped panel views transpose into side-by-side columns.",
+    );
+    const output = tab(
+      "framework-output",
+      "Output",
+      "list-output",
+      "Collapsed columns remain available as vertical title rails.",
+    );
+    const diagnostics: WorkspaceSidebarGroup = {
+      kind: "sidebar-group",
+      id: "framework-diagnostics-group",
+      title: "Diagnostics",
+      icon: "panel-top-open",
+      tabs: [problems, output],
+      hiddenTabIds: [],
+      collapsedByTabId: { [problems.id]: false, [output.id]: true },
+      panelSizesByTabId: { [problems.id]: 76 },
+    };
+    layout.bottom = {
+      open: true,
+      size: 264,
+      root: createWorkspaceTabs([terminal, diagnostics], {
+        id: "framework-bottom-panel",
+        activeItemId: terminal.id,
+      }),
+    };
+  }
   layout.windows = includeFloating
     ? [
         {
@@ -341,6 +380,7 @@ export interface FrameworkDemoTracker {
 export function createFrameworkDemo(
   options: {
     includeFloating?: boolean;
+    includeBottomPanel?: boolean;
     includeFMode?: boolean;
     includeNotifications?: boolean;
     initialConfiguration?: Record<string, unknown>;
@@ -355,6 +395,7 @@ export function createFrameworkDemo(
 } {
   const layout = createLayout(
     options.includeFloating ?? true,
+    options.includeBottomPanel ?? false,
     options.emptyLeftSidebar ?? false,
     options.directLeftSidebar ?? false,
     options.stackedPrimary ?? false,

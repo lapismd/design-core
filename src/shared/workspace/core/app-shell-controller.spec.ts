@@ -169,6 +169,30 @@ describe("AppShellController", () => {
     await app.dispose();
   });
 
+  it("opens bottom-panel leaves and exposes the built-in toggle command", async () => {
+    const app = new AppShellController();
+    const leaf = app.workspace.openInBottomPanel(
+      "empty",
+      { source: "test" },
+      { title: "Terminal", icon: "terminal" },
+    );
+
+    expect(leaf).not.toBeNull();
+    expect(app.renderer.layout.bottom.open).toBe(true);
+    expect(app.renderer.layout.bottom.root.items[0]).toMatchObject({
+      id: leaf?.id,
+      title: "Terminal",
+    });
+    app.workspace.setBottomPanelSize(320);
+    expect(app.renderer.layout.bottom.size).toBe(320);
+    expect(await app.commands.execute("app-shell:toggle-bottom-panel")).toBe(
+      true,
+    );
+    expect(app.renderer.layout.bottom.open).toBe(false);
+
+    await app.dispose();
+  });
+
   it("registers controller-owned settings by default and supports opting out", async () => {
     const app = new AppShellController();
     expect(app.settings.sections.map((section) => section.id)).toEqual([
@@ -201,12 +225,19 @@ describe("AppShellController", () => {
       app.configuration.set(APP_SHELL_SETTING_IDS.mobileIncludeSidebars, false),
     ).toBe(true);
     expect(
+      app.configuration.set(
+        APP_SHELL_SETTING_IDS.mobileIncludeBottomPanel,
+        false,
+      ),
+    ).toBe(true);
+    expect(
       app.configuration.set(APP_SHELL_SETTING_IDS.mobileIncludeFloating, false),
     ).toBe(true);
     expect(app.mobile.breakpointPx).toBe(640);
     expect(app.mobile.defaultPage).toBe("tabs");
     expect(app.mobile.showBottomNav).toBe(false);
     expect(app.mobile.includeSidebarsInTabs).toBe(false);
+    expect(app.mobile.includeBottomPanelInTabs).toBe(false);
     expect(app.mobile.includeFloatingInTabs).toBe(false);
     expect(
       app.configuration.set(APP_SHELL_SETTING_IDS.mobileMode, "never"),

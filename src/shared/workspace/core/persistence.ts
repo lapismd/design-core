@@ -1,7 +1,7 @@
 import type {
   WorkspaceLayoutChangeEvent,
   WorkspaceLayoutPersistence,
-  WorkspaceLayoutV2,
+  WorkspaceLayout,
 } from "./types.js";
 
 export function createLocalStorageWorkspacePersistence(
@@ -14,7 +14,7 @@ export function createLocalStorageWorkspacePersistence(
       const value = resolveStorage().getItem(key);
       return value ? (JSON.parse(value) as unknown) : null;
     },
-    async save(layout: WorkspaceLayoutV2, _event: WorkspaceLayoutChangeEvent) {
+    async save(layout: WorkspaceLayout, _event: WorkspaceLayoutChangeEvent) {
       resolveStorage().setItem(key, JSON.stringify(layout));
     },
   };

@@ -82,6 +82,7 @@ Compatibility aliases are removed only through an explicit reviewed slice.
 | Notifications model               | notice and notification managers                           | `core/notifications/`      | Complete            | Pass | Pending   | N/A                                          | Pending |
 | Tabs and splits                   | tab, pane, tree, drag modules                              | component families         | Complete            | Pass | Pass      | Candidate pass; review pending               | Pending |
 | Sidebars and groups               | sidebar modules                                            | component families         | Complete            | Pass | Pass      | Candidate pass; review pending               | Pending |
+| Bottom panel and groups           | bottom dock extension                                      | component families         | Complete            | Pass | Pass      | Pending explicit baseline review             | Pending |
 | View chrome and menus             | view header, empty, menus                                  | component families         | Complete            | Pass | Pass      | Candidate pass; review pending               | Pending |
 | Windows and overlays              | window and drop modules                                    | component families         | Complete            | Pass | Pass      | Candidate pass; review pending               | Pending |
 | Mobile shell                      | mobile modules                                             | component families         | Complete            | Pass | Pass      | Candidate pass; review pending               | Pending |
@@ -154,7 +155,7 @@ workflow.
 - Focused Workspace unit tests: 3 files and 7 tests pass.
 - `pnpm check:no-tailwind`: pass.
 - `pnpm check`: pass with zero Svelte errors or warnings.
-- Public exports cover events, normalized V2 layout, Lapis-compatible
+- Public exports cover events, normalized V3 layout, Lapis-compatible
   `WorkspaceJson`, persistence, popout contracts, menus, and view definitions.
 
 ### Headless application framework
@@ -819,6 +820,36 @@ workflow.
   pressed primary state, restoration, and the absence of the retired exit
   control. Pixel-bearing changes remain `visual-pending`; no baseline is
   created or replaced without human review.
+
+### Bottom workspace panel
+
+- Added a versioned V3 layout dock beneath the main workspace with V2 migration,
+  JSON round-trip support, persisted open state and height, controller events,
+  public application helpers, and a built-in toggle command.
+- Added a public `WorkspaceBottomPanel` family with a horizontal top tab strip,
+  keyboard and pointer height resizing, tab actions, empty intake, and grouped
+  panels that transpose sidebar mechanics into left-to-right resizable columns
+  with vertical collapsed title rails.
+- `AppShell.Surface` now composes `AppShell.Main`, the workspace body, and
+  `AppShell.BottomPanel` between the existing left and right sidebars. Closed
+  panels retain an accessible toggle in the bottom-right main-pane chrome.
+- Mobile mode includes bottom-panel leaves in its configurable open-tabs page
+  and renders the selected leaf full-screen; it does not create a mobile dock
+  or bottom sheet.
+- Added deterministic terminal, grouped-panel, integrated AppShell, and mobile
+  Storybook scenarios. Pixel-bearing stories are `visual-pending`; no baseline
+  image has been created or replaced.
+- Focused layout, JSON, controller, and application tests pass (4 files, 39
+  tests). Repository validation also passes formatting, Svelte diagnostics with
+  zero errors or warnings, the no-Tailwind and docs checks, 77 unit files with
+  466 tests, 182 Storybook files with 499 tests, the static Storybook build,
+  two AI-chat browser tests, and all workspace (13), shell (4), and shadcn (5)
+  pointer tests.
+- The Visual Delta audit reports 89 stories: 40 approved, 44 pending, and 5
+  skipped, with no failed, orphaned, or contract-error entries. The full
+  compare-only visual suite passes all 385 captures; the intentional AppShell
+  and workspace deltas remain pending explicit human review. No baseline image
+  was created or replaced.
 
 ## Completion gate
 

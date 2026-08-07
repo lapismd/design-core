@@ -5,5 +5,7 @@ export {
   DEFAULT_COLLAPSED_PANEL_SIZE,
   WORKSPACE_SIDEBAR_PANEL_HEADER_PX,
   collapsedSidebarPanelSize,
+  collapsedDockPanelSize,
+  dockPanelDefaultSizes,
   sidebarPanelDefaultSizes,
 } from "./workspace-sidebar-layout.js";

@@ -3,25 +3,33 @@ import type { WorkspaceSidebarGroup, WorkspaceTab } from "../core/types.js";
 export const DEFAULT_COLLAPSED_PANEL_SIZE = 8;
 export const WORKSPACE_SIDEBAR_PANEL_HEADER_PX = 32;
 
-export function collapsedSidebarPanelSize(
-  stackHeight: number | undefined,
+export function collapsedDockPanelSize(
+  containerExtent: number | undefined,
   visibleTabCount: number,
+  collapsedExtent = WORKSPACE_SIDEBAR_PANEL_HEADER_PX,
 ): number {
   if (
     !visibleTabCount ||
-    !Number.isFinite(stackHeight) ||
-    (stackHeight ?? 0) <= 0
+    !Number.isFinite(containerExtent) ||
+    (containerExtent ?? 0) <= 0
   ) {
     return DEFAULT_COLLAPSED_PANEL_SIZE;
   }
 
   return Math.min(
     100 / visibleTabCount,
-    (WORKSPACE_SIDEBAR_PANEL_HEADER_PX / (stackHeight ?? 1)) * 100,
+    (collapsedExtent / (containerExtent ?? 1)) * 100,
   );
 }
 
-export function sidebarPanelDefaultSizes(
+export function collapsedSidebarPanelSize(
+  stackHeight: number | undefined,
+  visibleTabCount: number,
+): number {
+  return collapsedDockPanelSize(stackHeight, visibleTabCount);
+}
+
+export function dockPanelDefaultSizes(
   group: WorkspaceSidebarGroup,
   tabs: WorkspaceTab[],
   collapsedSize: number,
@@ -70,3 +78,5 @@ export function sidebarPanelDefaultSizes(
       : (expandedSizeById.get(tab.id) ?? expandedFallback),
   );
 }
+
+export const sidebarPanelDefaultSizes = dockPanelDefaultSizes;

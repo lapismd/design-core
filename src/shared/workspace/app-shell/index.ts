@@ -1,9 +1,11 @@
 import AppShellAboutDialog from "./AppShellAboutDialog.svelte";
+import AppShellBottomPanel from "./AppShellBottomPanel.svelte";
 import AppShellCommandPalette from "./AppShellCommandPalette.svelte";
 import AppShellCorePluginsSettings from "./AppShellCorePluginsSettings.svelte";
 import AppShellFloatingLayer from "./AppShellFloatingLayer.svelte";
 import AppShellHotkeySettingsSurface from "./AppShellHotkeySettings.svelte";
 import AppShellLeftSidebar from "./AppShellLeftSidebar.svelte";
+import AppShellMain from "./AppShellMain.svelte";
 import AppShellNotices from "./AppShellNotices.svelte";
 import AppShellNoticeToasts from "./AppShellNoticeToasts.svelte";
 import AppShellOverlayLayer from "./AppShellOverlayLayer.svelte";
@@ -21,11 +23,13 @@ import AppShellWorkspace from "./AppShellWorkspace.svelte";
 
 export {
   AppShellAboutDialog,
+  AppShellBottomPanel,
   AppShellCommandPalette,
   AppShellCorePluginsSettings,
   AppShellFloatingLayer,
   AppShellHotkeySettingsSurface,
   AppShellLeftSidebar,
+  AppShellMain,
   AppShellNotices,
   AppShellNoticeToasts,
   AppShellOverlayLayer,
@@ -44,12 +48,14 @@ export {
 
 export const AppShell = {
   Root: AppShellRoot,
+  BottomPanel: AppShellBottomPanel,
   About: AppShellAboutDialog,
   CommandPalette: AppShellCommandPalette,
   CorePluginsSettings: AppShellCorePluginsSettings,
   Ribbon: AppShellRibbon,
   HotkeySettings: AppShellHotkeySettingsSurface,
   LeftSidebar: AppShellLeftSidebar,
+  Main: AppShellMain,
   Notices: AppShellNotices,
   OverlayLayer: AppShellOverlayLayer,
   PluginLayer: AppShellPluginLayer,

@@ -140,14 +140,16 @@ Application-independent workspace framework in `src/shared/workspace/`.
 - Headless controller, recursive layout, registered views, settings, commands,
   static plugins, events, and persistence adapters
 - Compound desktop/mobile app-shell surfaces
-- Tabs, splits, sidebars, sidebar groups, view headers, drop targets, windows,
-  ribbon, status, settings, command palette, empty and notice components
+- Tabs, splits, sidebars, transposed bottom-panel groups, view headers, drop
+  targets, windows, ribbon, status, settings, command palette, empty and notice
+  components
 - Optional F-Mode and Notifications plugins
 
-Import: `@lapismd/design-core/workspace`. Production Workspace sources use native CSS,
-direct headless primitives, and `--ui-workspace-*` tokens. They do not import
-the shadcn layer or Tailwind class infrastructure. Migration progress and
-component classification are tracked in `src/shared/workspace/PLAN.md`.
+Import: `@lapismd/design-core/workspace`. Production Workspace sources use
+native CSS, direct headless primitives, selected repository-owned shadcn
+families, and `--ui-workspace-*` tokens. They do not import upstream shadcn or
+Tailwind class infrastructure. Migration progress and component classification
+are tracked in `src/shared/workspace/PLAN.md`.
 
 ## Shared — later
 

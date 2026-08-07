@@ -19,6 +19,7 @@
     drag,
     leftSidebarTogglePaneId,
     rightSidebarTogglePaneId,
+    bottomPanelTogglePaneId,
     createTab,
   }: {
     controller: WorkspaceShellController;
@@ -27,6 +28,7 @@
     drag?: WorkspaceDragState;
     leftSidebarTogglePaneId?: string;
     rightSidebarTogglePaneId?: string;
+    bottomPanelTogglePaneId?: string;
     createTab?: (paneId: string) => WorkspaceTab;
   } = $props();
 
@@ -51,6 +53,7 @@
         {hostId}
         drag={dragState}
         sidebarToggleSides={sidebarToggleSides(node.id)}
+        showBottomPanelToggle={node.id === bottomPanelTogglePaneId}
         {createTab}
       />
     {:else}
@@ -60,6 +63,7 @@
         {hostId}
         drag={dragState}
         sidebarToggleSides={sidebarToggleSides(node.id)}
+        showBottomPanelToggle={node.id === bottomPanelTogglePaneId}
         {createTab}
       />
     {/if}
@@ -74,6 +78,7 @@
         drag={dragState}
         {leftSidebarTogglePaneId}
         {rightSidebarTogglePaneId}
+        {bottomPanelTogglePaneId}
         {createTab}
       />
     {/snippet}

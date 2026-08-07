@@ -20,6 +20,7 @@
   import WorkspaceIcon from "../icon/WorkspaceIcon.svelte";
   import WorkspaceContextMenuItems from "../menu/WorkspaceContextMenuItems.svelte";
   import WorkspaceMenuItems from "../menu/WorkspaceMenuItems.svelte";
+  import WorkspaceBottomPanelToggle from "../bottom-panel/WorkspaceBottomPanelToggle.svelte";
   import WorkspaceSidebarToggle from "../sidebar-toggle/WorkspaceSidebarToggle.svelte";
   import WorkspaceViewHeader from "../view-header/WorkspaceViewHeader.svelte";
   import WorkspaceViewHost from "../view-host/WorkspaceViewHost.svelte";
@@ -32,6 +33,7 @@
     hostId = "root",
     drag,
     sidebarToggleSides = [],
+    showBottomPanelToggle = false,
     createTab,
   }: {
     controller: WorkspaceShellController;
@@ -39,6 +41,7 @@
     hostId?: string;
     drag?: WorkspaceDragState;
     sidebarToggleSides?: WorkspaceSide[];
+    showBottomPanelToggle?: boolean;
     createTab?: (paneId: string) => WorkspaceTab;
   } = $props();
 
@@ -387,6 +390,11 @@
     </WorkspaceTabsMove>
 
     <div class="ui-workspace-tabs__overflow" data-ui-part="overflow">
+      {#if showBottomPanelToggle}
+        <WorkspaceBottomPanelToggle
+          onSelect={() => controller.setDockOpen("bottom", true)}
+        />
+      {/if}
       {#if canFocusMode}
         <button
           class="ui-workspace-tabs__icon-button ui-workspace-tabs__focus-toggle"

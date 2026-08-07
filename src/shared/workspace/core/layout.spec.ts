@@ -8,7 +8,7 @@ import {
   normalizeWorkspaceLayout,
 } from "./layout.js";
 
-describe("WorkspaceLayoutV2", () => {
+describe("WorkspaceLayout", () => {
   it("rejects legacy and malformed top-level layouts", () => {
     const fallback = createDefaultWorkspaceLayout();
     expect(normalizeWorkspaceLayout({ version: 1 }, fallback)).toEqual(
@@ -81,6 +81,29 @@ describe("WorkspaceLayoutV2", () => {
       expect(group.icon).toBe("files");
     }
     expect(layout.active.tabId).toBe("a");
+    expect(layout).toMatchObject({
+      version: 3,
+      bottom: { open: false, size: 240, root: { id: "bottom-panel" } },
+    });
+  });
+
+  it("normalizes bottom panel state and includes its tabs in lookup", () => {
+    const layout = normalizeWorkspaceLayout({
+      ...createDefaultWorkspaceLayout(),
+      bottom: {
+        open: true,
+        size: 50,
+        root: createWorkspaceTabs(
+          [createWorkspaceTab({ id: "terminal", title: "Terminal" })],
+          { id: "bottom" },
+        ),
+      },
+      active: { hostId: "root", paneId: "bottom", tabId: "terminal" },
+    });
+
+    expect(layout.bottom.size).toBe(120);
+    expect(findWorkspacePane(layout, "bottom")?.id).toBe("bottom");
+    expect(findWorkspaceTab(layout, "terminal")?.pane.id).toBe("bottom");
   });
 
   it("finds panes and grouped tabs without leaking mutable snapshots", () => {

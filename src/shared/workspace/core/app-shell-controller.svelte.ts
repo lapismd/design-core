@@ -267,6 +267,13 @@ export class AppShellController {
         leaf ? this.workspace.enterFocusMode(leaf) : false,
     });
     this.commands.register({
+      id: "app-shell:toggle-bottom-panel",
+      title: "View: Toggle bottom panel",
+      category: "Workspace",
+      icon: "panel-bottom",
+      callback: () => this.workspace.toggleBottomPanel(),
+    });
+    this.commands.register({
       id: "app-shell:exit-focus-mode",
       title: "Workspace: Exit focus mode",
       category: "Workspace",

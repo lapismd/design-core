@@ -7,6 +7,7 @@ import {
 } from "./layout.js";
 import type {
   WorkspaceDropPosition,
+  WorkspaceDockPosition,
   WorkspaceEventMap,
   WorkspaceLayoutChangeEvent,
   WorkspaceSide,
@@ -135,6 +136,31 @@ export class AppWorkspace {
     if (!this.renderer.addTab(pane.id, tab, options.active ?? true))
       return null;
     return new WorkspaceLeaf(this.renderer, tab.id);
+  }
+
+  openInBottomPanel(
+    type: string,
+    state: Record<string, unknown> = {},
+    options: Omit<OpenWorkspaceLeafOptions, "paneId"> = {},
+  ): WorkspaceLeaf | null {
+    const leaf = this.openLeaf(type, state, {
+      ...options,
+      paneId: this.renderer.layout.bottom.root.id,
+    });
+    if (leaf) this.renderer.setDockOpen("bottom", true);
+    return leaf;
+  }
+
+  setBottomPanelOpen(open: boolean): void {
+    this.renderer.setDockOpen("bottom", open);
+  }
+
+  setBottomPanelSize(size: number): void {
+    this.renderer.setDockSize("bottom", size);
+  }
+
+  toggleBottomPanel(): void {
+    this.setBottomPanelOpen(!this.renderer.layout.bottom.open);
   }
 
   getEditorAssociationForPath(path: string): EditorAssociationMatch | null {
@@ -312,6 +338,14 @@ export class AppWorkspace {
     options?: { id?: string; title?: string; icon?: string },
   ) {
     return this.renderer.groupSidebarTabs(side, leafIds, options);
+  }
+
+  groupDockTabs(
+    position: WorkspaceDockPosition,
+    leafIds: string[],
+    options?: { id?: string; title?: string; icon?: string },
+  ) {
+    return this.renderer.groupDockTabs(position, leafIds, options);
   }
 
   ungroupSidebarGroup(groupId: string): WorkspaceLeaf[] {

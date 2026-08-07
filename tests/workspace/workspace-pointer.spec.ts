@@ -27,6 +27,69 @@ async function dragWithPause(
 }
 
 test.describe("Workspace real pointer behavior", () => {
+  test("bottom panel height resizes from its top rail", async ({ page }) => {
+    await openStory(page, "workspace-components-bottom-panel--terminal-tabs");
+    const panel = page.locator("[data-ui-component='workspace-bottom-panel']");
+    const rail = page.getByRole("button", { name: "Resize bottom panel" });
+    const before = await panel.boundingBox();
+    const railBounds = await rail.boundingBox();
+    expect(before).not.toBeNull();
+    expect(railBounds).not.toBeNull();
+    if (!before || !railBounds) return;
+
+    await page.mouse.move(
+      railBounds.x + railBounds.width / 2,
+      railBounds.y + railBounds.height / 2,
+    );
+    await page.mouse.down();
+    await page.mouse.move(
+      railBounds.x + railBounds.width / 2,
+      railBounds.y - 72,
+      { steps: 8 },
+    );
+    await expect
+      .poll(async () => (await panel.boundingBox())?.height ?? 0)
+      .toBeGreaterThan(before.height + 60);
+    await page.mouse.up();
+  });
+
+  test("bottom panel groups accept left or right tab drops", async ({
+    page,
+  }) => {
+    await openStory(
+      page,
+      "workspace-components-bottom-panel--transposed-grouped-panels",
+    );
+    const source = page.getByRole("tab", { name: "Terminal" });
+    const target = page.locator(
+      "[data-bottom-panel-group-panel-id='bottom-problems']",
+    );
+    const sourceBounds = await source.boundingBox();
+    const targetBounds = await target.boundingBox();
+    expect(sourceBounds).not.toBeNull();
+    expect(targetBounds).not.toBeNull();
+    if (!sourceBounds || !targetBounds) return;
+
+    await dragWithPause(
+      page,
+      {
+        x: sourceBounds.x + sourceBounds.width / 2,
+        y: sourceBounds.y + sourceBounds.height / 2,
+      },
+      {
+        x: targetBounds.x + targetBounds.width - 4,
+        y: targetBounds.y + targetBounds.height / 2,
+      },
+    );
+    await expect(
+      target.locator("[data-bottom-panel-group-drop-position='right']"),
+    ).toBeVisible();
+    await page.mouse.up();
+    await expect(
+      page.locator("[data-bottom-panel-group-panel-id='bottom-terminal']"),
+    ).toBeVisible();
+  });
+
   test("mobile pan reveals and dismisses the left sidebar", async ({
     page,
   }) => {

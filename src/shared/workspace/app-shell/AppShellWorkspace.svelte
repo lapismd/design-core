@@ -27,6 +27,12 @@
     return child ? topRightPaneId(child) : undefined;
   }
 
+  function bottomRightPaneId(node: WorkspaceNode): string | undefined {
+    if (node.kind === "tabs") return node.id;
+    const child = node.children.at(-1);
+    return child ? bottomRightPaneId(child) : undefined;
+  }
+
   let leftSidebarTogglePaneId = $derived(
     controller.renderer.layout.left.open
       ? undefined
@@ -36,6 +42,11 @@
     controller.renderer.layout.right.open
       ? undefined
       : topRightPaneId(controller.renderer.layout.main),
+  );
+  let bottomPanelTogglePaneId = $derived(
+    controller.renderer.layout.bottom.open
+      ? undefined
+      : bottomRightPaneId(controller.renderer.layout.main),
   );
 </script>
 
@@ -52,6 +63,7 @@
     {drag}
     {leftSidebarTogglePaneId}
     {rightSidebarTogglePaneId}
+    {bottomPanelTogglePaneId}
     {createTab}
   />
 </main>

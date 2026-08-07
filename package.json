@@ -199,6 +199,7 @@
     "./workspace": "./src/shared/workspace/index.ts",
     "./workspace/about-dialog": "./src/shared/workspace/about-dialog/index.ts",
     "./workspace/app-shell": "./src/shared/workspace/app-shell/index.ts",
+    "./workspace/bottom-panel": "./src/shared/workspace/bottom-panel/index.ts",
     "./workspace/command-palette": "./src/shared/workspace/command-palette/index.ts",
     "./workspace/core": "./src/shared/workspace/core/index.ts",
     "./workspace/demo": "./src/shared/workspace/demo/index.ts",

@@ -12,10 +12,11 @@ disabled with `renderOverlays` or `renderPopouts` for explicit composition.
 
 ## Structure
 
-Use `AppShell.Surface` for the default desktop composition, or place
-`Ribbon`, `LeftSidebar`, `Workspace`, `RightSidebar`, `FloatingLayer`, and
-`StatusBar` independently under the root. Omitting or replacing a surface does
-not change controller behavior.
+Use `AppShell.Surface` for the default desktop composition, or place `Ribbon`,
+`LeftSidebar`, `Main`, `Workspace`, `BottomPanel`, `RightSidebar`,
+`FloatingLayer`, and `StatusBar` independently under the root. `Main` is the
+center column that stacks `Workspace` above `BottomPanel`. Omitting or replacing
+a surface does not change controller behavior.
 
 Utility surfaces are also composable: `About`, `CommandPalette`, `Notices`,
 `PluginLayer`, `Tabs`, `Sidebar`, `Settings`, `SettingsDialog`, `HotkeySettings`, and
@@ -25,6 +26,8 @@ Utility surfaces are also composable: `About`, `CommandPalette`, `Notices`,
 
 - `Root` requires an `AppShellController` and optionally starts or disposes it.
 - `Workspace` accepts an optional serializable tab factory.
+- `BottomPanel` renders the controller-owned bottom dock and accepts the same
+  optional tab factory.
 - `Surface` composes the current default desktop surfaces, a workspace footer
   with the settings trigger, and the controller-backed settings dialog.
 - `Surface` accepts `workspaceLabel` and `settingsTitle` to configure that

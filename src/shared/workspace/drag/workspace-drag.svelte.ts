@@ -207,7 +207,7 @@ export class WorkspaceDragState {
     paneId: string,
     sidebarGroupId: string,
     insertionIndex: number,
-    position: "top" | "bottom",
+    position: Exclude<WorkspaceDropPosition, "center">,
     source: WorkspaceLayoutDropEvent["source"],
   ): boolean {
     if (!this.active) return false;
@@ -252,7 +252,11 @@ export class WorkspaceDragState {
           active.tabId,
           target.sidebarGroupId,
           target.insertionIndex ?? 0,
-          target.position === "bottom" ? "bottom" : "top",
+          target.position === "left" ||
+            target.position === "right" ||
+            target.position === "bottom"
+            ? target.position
+            : "top",
           source,
         )
       : this.#controller.dropTab(

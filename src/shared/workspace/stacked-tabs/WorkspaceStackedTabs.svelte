@@ -18,6 +18,7 @@
   import WorkspaceIcon from "../icon/WorkspaceIcon.svelte";
   import WorkspaceContextMenuItems from "../menu/WorkspaceContextMenuItems.svelte";
   import WorkspaceMenuItems from "../menu/WorkspaceMenuItems.svelte";
+  import WorkspaceBottomPanelToggle from "../bottom-panel/WorkspaceBottomPanelToggle.svelte";
   import WorkspaceSidebarToggle from "../sidebar-toggle/WorkspaceSidebarToggle.svelte";
   import WorkspaceTabsMove from "../tabs/WorkspaceTabsMove.svelte";
   import WorkspaceViewHeader from "../view-header/WorkspaceViewHeader.svelte";
@@ -30,6 +31,7 @@
     hostId = "root",
     drag,
     sidebarToggleSides = [],
+    showBottomPanelToggle = false,
     createTab,
   }: {
     controller: WorkspaceShellController;
@@ -37,6 +39,7 @@
     hostId?: string;
     drag?: WorkspaceDragState;
     sidebarToggleSides?: WorkspaceSide[];
+    showBottomPanelToggle?: boolean;
     createTab?: (paneId: string) => WorkspaceTab;
   } = $props();
 
@@ -197,6 +200,11 @@
     </div>
 
     <div class="ui-workspace-stacked-tabs__chrome-actions">
+      {#if showBottomPanelToggle}
+        <WorkspaceBottomPanelToggle
+          onSelect={() => controller.setDockOpen("bottom", true)}
+        />
+      {/if}
       {#if canFocusMode}
         <button
           type="button"

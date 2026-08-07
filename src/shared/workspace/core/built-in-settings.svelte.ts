@@ -19,6 +19,7 @@ export const APP_SHELL_SETTING_IDS = {
   mobileDefaultPage: "workspace.mobile.defaultPage",
   mobileShowBottomNav: "workspace.mobile.showBottomNav",
   mobileIncludeSidebars: "workspace.mobile.includeSidebarsInTabs",
+  mobileIncludeBottomPanel: "workspace.mobile.includeBottomPanelInTabs",
   mobileIncludeFloating: "workspace.mobile.includeFloatingInTabs",
   mobileBreakpoint: "workspace.mobile.breakpointPx",
 } as const;
@@ -173,6 +174,14 @@ export class AppShellMobileSettings {
     );
   }
 
+  get includeBottomPanelInTabs(): boolean {
+    return getValue(
+      this.configuration,
+      APP_SHELL_SETTING_IDS.mobileIncludeBottomPanel,
+      true,
+    );
+  }
+
   get breakpointPx(): number {
     return getValue(
       this.configuration,
@@ -257,6 +266,14 @@ export function createBuiltInSettingsSections(): WorkspaceSettingsSection[] {
               title: "Include sidebars in open tabs",
               description:
                 "Show left and right sidebar leaves in the mobile open-tabs page.",
+              default: true,
+            },
+            {
+              id: APP_SHELL_SETTING_IDS.mobileIncludeBottomPanel,
+              type: "boolean",
+              title: "Include bottom panel in open tabs",
+              description:
+                "Show bottom-panel leaves as full-screen views in the mobile open-tabs page.",
               default: true,
             },
             {

@@ -35,7 +35,7 @@
     });
   }
 
-  function createFixture() {
+  function createFixture(includeBottomPanel = false) {
     const home = tab("mobile-home", "Framework home", "layout-template");
     const notes = tab("mobile-notes", "Notes", "notebook-tabs");
     const files = tab("mobile-files", "Files", "files");
@@ -73,6 +73,17 @@
         activeItemId: group.id,
       }),
     };
+    if (includeBottomPanel) {
+      const terminal = tab("mobile-terminal", "Terminal", "terminal");
+      layout.bottom = {
+        open: true,
+        size: 240,
+        root: createWorkspaceTabs([terminal], {
+          id: "mobile-bottom",
+          activeItemId: terminal.id,
+        }),
+      };
+    }
     layout.active = {
       hostId: "root",
       paneId: "mobile-main",
@@ -107,6 +118,7 @@
   const panController = createFixture();
   const actionsController = createFixture();
   const tabActionsController = createFixture();
+  const bottomPanelController = createFixture(true);
 </script>
 
 <Story
@@ -138,6 +150,38 @@
     <div class="ui-workspace-mobile-story-canvas">
       <div class="ui-workspace-mobile-story-frame">
         <WorkspaceMobile controller={editorController} />
+      </div>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Bottom panel views in open tabs"
+  tags={["visual-pending"]}
+  play={async ({ canvas, canvasElement }) => {
+    const openTerminal = canvas.getByRole("button", { name: "Open Terminal" });
+    await expect(openTerminal).toBeVisible();
+    await userEvent.click(openTerminal);
+    await expect(
+      canvas.getByRole("heading", { name: "Terminal" }),
+    ).toBeVisible();
+    await expect(
+      canvasElement.querySelector(
+        '[data-ui-component="workspace-bottom-panel"]',
+      ),
+    ).toBeNull();
+  }}
+>
+  {#snippet template()}
+    <div class="ui-workspace-mobile-story-canvas">
+      <div class="ui-workspace-mobile-story-frame">
+        <WorkspaceMobile
+          controller={bottomPanelController}
+          defaultPage="tabs"
+          includeSidebarsInTabs={false}
+          includeBottomPanelInTabs={true}
+          includeFloatingInTabs={false}
+        />
       </div>
     </div>
   {/snippet}

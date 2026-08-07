@@ -1,0 +1,24 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as Stories from "./WorkspaceBottomPanel.stories.svelte";
+
+<Meta of={Stories} />
+
+# WorkspaceBottomPanel
+
+`WorkspaceBottomPanel` renders the workspace's bottom dock beneath the main
+editor body. Its top-level views use a horizontal tab strip. A grouped tab
+transposes the sidebar-group mechanics: panels resize left-to-right and a
+collapsed panel remains available as a vertical title rail.
+
+The layout and controller own open state, height, tab order, grouping,
+collapsed panels, and expanded sizes. Consumers own terminal processes and
+other panel runtimes through registered workspace views.
+
+On mobile, panel views belong to the open-tabs page and render as full-screen
+views rather than as a dock or bottom sheet.
+
+<Canvas of={Stories.TerminalTabs} />
+
+<Canvas of={Stories.TransposedGroupedPanels} />
+
+<Controls of={Stories.TerminalTabs} />

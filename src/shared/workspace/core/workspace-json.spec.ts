@@ -53,10 +53,30 @@ describe("Lapis-compatible workspace JSON", () => {
         ]),
       },
     ];
+    layout.bottom = {
+      open: true,
+      size: 260,
+      root: createWorkspaceTabs(
+        [
+          createWorkspaceTab({
+            id: "terminal",
+            title: "Terminal",
+            view: { type: "terminal", state: { session: "local" } },
+          }),
+        ],
+        { id: "bottom-tabs" },
+      ),
+    };
 
     const json = workspaceLayoutToJson(layout);
     expect(json.left.width).toBe("280px");
     expect(json.active).toBe("files");
+    expect(json.bottom).toMatchObject({
+      id: "bottom-tabs",
+      type: "tabs",
+      height: "260px",
+      children: [{ id: "terminal", type: "leaf" }],
+    });
     expect(json.left.children[0]).toMatchObject({
       type: "tabs",
       children: [{ type: "sidebar-group", collapsed: { files: true } }],
@@ -66,6 +86,11 @@ describe("Lapis-compatible workspace JSON", () => {
     expect(restored.left.open).toBe(true);
     expect(restored.left.size).toBe(280);
     expect(restored.active.tabId).toBe("files");
+    expect(restored.bottom).toMatchObject({
+      open: true,
+      size: 260,
+      root: { id: "bottom-tabs", activeItemId: "terminal" },
+    });
     expect(restored.windows[0]).toMatchObject({
       id: "floating",
       state: "collapsed",
@@ -73,10 +98,15 @@ describe("Lapis-compatible workspace JSON", () => {
   });
 
   it("accepts the extracted V2 layout and drops runtime popouts on restore", () => {
-    const legacy = createDefaultWorkspaceLayout();
-    expect(workspaceLayoutFromJson(legacy)).toMatchObject({ version: 2 });
+    const current = createDefaultWorkspaceLayout();
+    const { bottom: _bottom, version: _version, ...legacyFields } = current;
+    const legacy = { ...legacyFields, version: 2 };
+    expect(workspaceLayoutFromJson(legacy)).toMatchObject({
+      version: 3,
+      bottom: { open: false, size: 240 },
+    });
 
-    const json = workspaceLayoutToJson(legacy);
+    const json = workspaceLayoutToJson(current);
     json.floating = [
       {
         id: "popout",

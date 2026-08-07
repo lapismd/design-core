@@ -8,7 +8,9 @@
   import WorkspaceMobile from "../mobile/WorkspaceMobile.svelte";
   import { getAppShellContext } from "./app-shell-context.svelte.js";
   import AppShellFloatingLayer from "./AppShellFloatingLayer.svelte";
+  import AppShellBottomPanel from "./AppShellBottomPanel.svelte";
   import AppShellLeftSidebar from "./AppShellLeftSidebar.svelte";
+  import AppShellMain from "./AppShellMain.svelte";
   import AppShellRibbon from "./AppShellRibbon.svelte";
   import AppShellRightSidebar from "./AppShellRightSidebar.svelte";
   import AppShellSettingsDialog from "./AppShellSettingsDialog.svelte";
@@ -22,6 +24,7 @@
     mobileDefaultPage,
     mobileShowBottomNav,
     mobileIncludeSidebars,
+    mobileIncludeBottomPanel,
     mobileIncludeFloating,
     onOpenSettings,
     settingsTitle = "Settings",
@@ -33,6 +36,7 @@
     mobileDefaultPage?: "editor" | "tabs";
     mobileShowBottomNav?: boolean;
     mobileIncludeSidebars?: boolean;
+    mobileIncludeBottomPanel?: boolean;
     mobileIncludeFloating?: boolean;
     onOpenSettings?: () => void;
     settingsTitle?: string;
@@ -92,6 +96,8 @@
       context.controller.mobile.showBottomNav}
     includeSidebarsInTabs={mobileIncludeSidebars ??
       context.controller.mobile.includeSidebarsInTabs}
+    includeBottomPanelInTabs={mobileIncludeBottomPanel ??
+      context.controller.mobile.includeBottomPanelInTabs}
     includeFloatingInTabs={mobileIncludeFloating ??
       context.controller.mobile.includeFloatingInTabs}
     onOpenSettings={openSettings}
@@ -99,7 +105,10 @@
 {:else}
   <AppShellRibbon />
   <AppShellLeftSidebar {workspaceLabel} onOpenSettings={openSettings} />
-  <AppShellWorkspace createTab={resolvedCreateTab} />
+  <AppShellMain>
+    <AppShellWorkspace createTab={resolvedCreateTab} />
+    <AppShellBottomPanel createTab={resolvedCreateTab} />
+  </AppShellMain>
   <AppShellRightSidebar />
   <AppShellFloatingLayer createTab={resolvedCreateTab} />
   <AppShellStatusBar />

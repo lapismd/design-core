@@ -1,5 +1,6 @@
 import type {
-  WorkspaceLayoutV2,
+  WorkspaceBottomPanelState,
+  WorkspaceLayout,
   WorkspaceNode,
   WorkspaceSidebarGroup,
   WorkspaceSidebarState,
@@ -17,10 +18,8 @@ export function createWorkspaceId(prefix: string): string {
   return `${prefix}-${generatedId.toString(36)}`;
 }
 
-export function cloneWorkspaceLayout(
-  layout: WorkspaceLayoutV2,
-): WorkspaceLayoutV2 {
-  return JSON.parse(JSON.stringify(layout)) as WorkspaceLayoutV2;
+export function cloneWorkspaceLayout(layout: WorkspaceLayout): WorkspaceLayout {
+  return JSON.parse(JSON.stringify(layout)) as WorkspaceLayout;
 }
 
 export function createWorkspaceTab(
@@ -49,7 +48,7 @@ export function createWorkspaceTabs(
   };
 }
 
-export function createDefaultWorkspaceLayout(): WorkspaceLayoutV2 {
+export function createDefaultWorkspaceLayout(): WorkspaceLayout {
   const tab = createWorkspaceTab({
     id: "welcome",
     title: "No file is open",
@@ -57,7 +56,7 @@ export function createDefaultWorkspaceLayout(): WorkspaceLayoutV2 {
     view: { type: "empty", state: {} },
   });
   return {
-    version: 2,
+    version: 3,
     main: createWorkspaceTabs([tab], { id: "main-pane" }),
     left: {
       open: false,
@@ -68,6 +67,11 @@ export function createDefaultWorkspaceLayout(): WorkspaceLayoutV2 {
       open: false,
       size: 300,
       root: createWorkspaceTabs([], { id: "right-sidebar" }),
+    },
+    bottom: {
+      open: false,
+      size: 240,
+      root: createWorkspaceTabs([], { id: "bottom-panel" }),
     },
     windows: [],
     active: { hostId: "root", paneId: "main-pane", tabId: tab.id },
@@ -225,6 +229,25 @@ function normalizeSidebar(
   };
 }
 
+function normalizeBottomPanel(
+  value: unknown,
+  ids: Set<string>,
+  fallback: WorkspaceBottomPanelState,
+): WorkspaceBottomPanelState {
+  const record = isRecord(value) ? value : {};
+  return {
+    open: record.open === true,
+    size: Math.min(
+      640,
+      Math.max(120, finiteNumber(record.size, fallback.size)),
+    ),
+    root: normalizeTabs(
+      isRecord(record.root) ? record.root : fallback.root,
+      ids,
+    ),
+  };
+}
+
 function normalizeWindow(value: unknown, ids: Set<string>): WorkspaceWindow {
   const record = isRecord(value) ? value : {};
   const bounds = isRecord(record.bounds) ? record.bounds : {};
@@ -250,23 +273,25 @@ function normalizeWindow(value: unknown, ids: Set<string>): WorkspaceWindow {
 export function normalizeWorkspaceLayout(
   value: unknown,
   fallback = createDefaultWorkspaceLayout(),
-): WorkspaceLayoutV2 {
-  if (!isRecord(value) || value.version !== 2) {
+): WorkspaceLayout {
+  if (!isRecord(value) || (value.version !== 2 && value.version !== 3)) {
     return cloneWorkspaceLayout(fallback);
   }
   const ids = new Set<string>();
   const main = normalizeNode(value.main, ids);
   const left = normalizeSidebar(value.left, ids, "left-sidebar");
   const right = normalizeSidebar(value.right, ids, "right-sidebar");
+  const bottom = normalizeBottomPanel(value.bottom, ids, fallback.bottom);
   const windows = Array.isArray(value.windows)
     ? value.windows.map((entry) => normalizeWindow(entry, ids))
     : [];
   const activeRecord = isRecord(value.active) ? value.active : {};
-  const layout: WorkspaceLayoutV2 = {
-    version: 2,
+  const layout: WorkspaceLayout = {
+    version: 3,
     main,
     left,
     right,
+    bottom,
     windows,
     active: {
       hostId: stringValue(activeRecord.hostId, "root"),
@@ -296,7 +321,7 @@ export interface WorkspaceTabLocation {
 }
 
 export function walkWorkspacePanes(
-  layout: WorkspaceLayoutV2,
+  layout: WorkspaceLayout,
   visitor: (pane: WorkspaceTabsNode, hostId: string) => void,
 ): void {
   const walk = (node: WorkspaceNode, hostId: string) => {
@@ -309,13 +334,14 @@ export function walkWorkspacePanes(
   walk(layout.main, "root");
   walk(layout.left.root, "root");
   walk(layout.right.root, "root");
+  walk(layout.bottom.root, "root");
   layout.windows.forEach((workspaceWindow) =>
     walk(workspaceWindow.root, workspaceWindow.id),
   );
 }
 
 export function findWorkspacePane(
-  layout: WorkspaceLayoutV2,
+  layout: WorkspaceLayout,
   paneId: string,
 ): WorkspaceTabsNode | null {
   let found: WorkspaceTabsNode | null = null;
@@ -326,7 +352,7 @@ export function findWorkspacePane(
 }
 
 export function findWorkspaceTab(
-  layout: WorkspaceLayoutV2,
+  layout: WorkspaceLayout,
   tabId: string,
 ): WorkspaceTabLocation | null {
   let found: WorkspaceTabLocation | null = null;
@@ -346,7 +372,7 @@ export function findWorkspaceTab(
 }
 
 export function firstWorkspaceTab(
-  layout: WorkspaceLayoutV2,
+  layout: WorkspaceLayout,
 ): WorkspaceTabLocation | null {
   let first: WorkspaceTabLocation | null = null;
   walkWorkspacePanes(layout, (pane, hostId) => {

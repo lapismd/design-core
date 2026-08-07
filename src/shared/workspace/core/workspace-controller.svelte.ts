@@ -21,12 +21,13 @@ import { WorkspaceMenu } from "./workspace-menu.js";
 import type {
   WorkspaceControllerOptions,
   WorkspaceDisplayMode,
+  WorkspaceDockPosition,
   WorkspaceDropPosition,
   WorkspaceEventMap,
   WorkspaceFocusModeState,
   WorkspaceLayoutChangeEvent,
   WorkspaceLayoutDropEvent,
-  WorkspaceLayoutV2,
+  WorkspaceLayout,
   WorkspaceIconName,
   WorkspaceNode,
   WorkspacePopoutHandle,
@@ -120,7 +121,7 @@ export class WorkspaceItemRegistry<
 }
 
 export class WorkspaceShellController {
-  layout = $state<WorkspaceLayoutV2>(createDefaultWorkspaceLayout());
+  layout = $state<WorkspaceLayout>(createDefaultWorkspaceLayout());
   displayMode = $state<WorkspaceDisplayMode>("desktop");
   focusMode = $state<WorkspaceFocusModeState | null>(null);
   showTabTitleBar = $state(true);
@@ -210,7 +211,7 @@ export class WorkspaceShellController {
 
   onChange(
     listener: (
-      layout: WorkspaceLayoutV2,
+      layout: WorkspaceLayout,
       event: WorkspaceLayoutChangeEvent,
     ) => void,
   ): () => void {
@@ -226,11 +227,11 @@ export class WorkspaceShellController {
     return () => this.offref(ref);
   }
 
-  getLayout(): WorkspaceLayoutV2 {
+  getLayout(): WorkspaceLayout {
     return cloneWorkspaceLayout(this.layout);
   }
 
-  toJSON(): WorkspaceLayoutV2 {
+  toJSON(): WorkspaceLayout {
     return this.getLayout();
   }
 
@@ -401,6 +402,7 @@ export class WorkspaceShellController {
   ): boolean {
     const location = this.#findPaneHost(paneId);
     if (!location) return false;
+    if (this.#dockForPane(paneId) === "bottom") return false;
     if (this.focusMode?.paneId === paneId) this.exitFocusMode();
     const newPane = createWorkspaceTabs([tab], { activeItemId: tab.id });
     const direction =
@@ -444,6 +446,9 @@ export class WorkspaceShellController {
     const sourceLocation = findWorkspaceTab(this.layout, tabId);
     const targetPane = findWorkspacePane(this.layout, targetPaneId);
     if (!sourceLocation || !targetPane) return false;
+    if (position !== "center" && this.#dockForPane(targetPaneId) === "bottom") {
+      return false;
+    }
     const boundedTargetIndex = Math.min(
       Math.max(0, targetIndex ?? targetPane.items.length),
       targetPane.items.length,
@@ -499,7 +504,7 @@ export class WorkspaceShellController {
     tabId: string,
     groupId: string,
     targetIndex: number,
-    position: "top" | "bottom",
+    position: Exclude<WorkspaceDropPosition, "center">,
     source: WorkspaceLayoutDropEvent["source"] = "api",
   ): boolean {
     const sourceLocation = findWorkspaceTab(this.layout, tabId);
@@ -559,10 +564,14 @@ export class WorkspaceShellController {
   }
 
   setSidebarOpen(side: WorkspaceSide, open: boolean): void {
-    this.layout[side].open = open;
+    this.setDockOpen(side, open);
+  }
+
+  setDockOpen(position: WorkspaceDockPosition, open: boolean): void {
+    this.layout[position].open = open;
     this.#commit({
-      source: "sidebar",
-      id: side,
+      source: position === "bottom" ? "bottom-panel" : "sidebar",
+      id: position,
       operation: open ? "open" : "close",
     });
   }
@@ -610,9 +619,14 @@ export class WorkspaceShellController {
   }
 
   setSidebarSize(side: WorkspaceSide, size: number): void {
-    this.layout[side].size = Math.min(640, Math.max(180, size));
-    this.#events.trigger("resize", side);
-    this.#commit({ source: "resize", id: side });
+    this.setDockSize(side, size);
+  }
+
+  setDockSize(position: WorkspaceDockPosition, size: number): void {
+    const minimum = position === "bottom" ? 120 : 180;
+    this.layout[position].size = Math.min(640, Math.max(minimum, size));
+    this.#events.trigger("resize", position);
+    this.#commit({ source: "resize", id: position });
   }
 
   setSidebarGroupCollapsed(
@@ -661,6 +675,14 @@ export class WorkspaceShellController {
     tabIds: string[],
     options: { id?: string; title?: string; icon?: string } = {},
   ): WorkspaceSidebarGroup | null {
+    return this.groupDockTabs(side, tabIds, options);
+  }
+
+  groupDockTabs(
+    position: WorkspaceDockPosition,
+    tabIds: string[],
+    options: { id?: string; title?: string; icon?: string } = {},
+  ): WorkspaceSidebarGroup | null {
     const locations = tabIds
       .map((tabId) => findWorkspaceTab(this.layout, tabId))
       .filter((location) => location !== null);
@@ -671,7 +693,7 @@ export class WorkspaceShellController {
         (location) =>
           location.group ||
           location.hostId !== "root" ||
-          this.#sideForPane(location.pane.id) !== side,
+          this.#dockForPane(location.pane.id) !== position,
       )
     ) {
       return null;
@@ -1066,8 +1088,9 @@ export class WorkspaceShellController {
             }),
         ),
     ]);
-    const sidebarSide = this.#sideForPane(location.pane.id);
-    if (sidebarSide) {
+    const dock = this.#dockForPane(location.pane.id);
+    if (dock) {
+      const dockLabel = dock === "bottom" ? "panel" : "sidebar";
       menu.addSeparator();
       if (location.group) {
         if (context === "sidebar-group-panel") {
@@ -1078,21 +1101,21 @@ export class WorkspaceShellController {
               }),
             )
             .addItem((item) =>
-              item.setTitle("Move to normal sidebar tabs").onClick(() => {
+              item.setTitle(`Move to normal ${dockLabel} tabs`).onClick(() => {
                 this.moveSidebarPanelToTabs(location.group!.id, tabId);
               }),
             );
         } else {
           menu.addItem((item) =>
-            item.setTitle("Ungroup into sidebar tabs").onClick(() => {
+            item.setTitle(`Ungroup into ${dockLabel} tabs`).onClick(() => {
               this.ungroupSidebarGroup(location.group!.id);
             }),
           );
         }
       } else {
         menu.addItem((item) =>
-          item.setTitle("Convert to sidebar group").onClick(() => {
-            this.groupSidebarTabs(sidebarSide, [tabId]);
+          item.setTitle(`Convert to ${dockLabel} group`).onClick(() => {
+            this.groupDockTabs(dock, [tabId]);
           }),
         );
       }
@@ -1203,6 +1226,12 @@ export class WorkspaceShellController {
       );
       return;
     }
+    if (workspaceNodeContains(this.layout.bottom.root, paneId)) {
+      this.layout.bottom.root = pruneEmptyWorkspacePane(
+        this.layout.bottom.root,
+        paneId,
+      ) as WorkspaceTabsNode;
+    }
   }
 
   #detachTab(location: NonNullable<ReturnType<typeof findWorkspaceTab>>): void {
@@ -1241,11 +1270,15 @@ export class WorkspaceShellController {
     if (!pane) return null;
     let hostId = "root";
     for (const workspaceWindow of this.layout.windows) {
-      const synthetic: WorkspaceLayoutV2 = {
+      const synthetic: WorkspaceLayout = {
         ...this.layout,
         main: workspaceWindow.root,
         left: { ...this.layout.left, root: createWorkspaceTabs([]) },
         right: { ...this.layout.right, root: createWorkspaceTabs([]) },
+        bottom: {
+          ...this.layout.bottom,
+          root: createWorkspaceTabs([]),
+        },
         windows: [],
       };
       if (findWorkspacePane(synthetic, paneId)) hostId = workspaceWindow.id;
@@ -1272,6 +1305,12 @@ export class WorkspaceShellController {
         );
         return;
       }
+      if (
+        replacement.kind === "tabs" &&
+        workspaceNodeContains(this.layout.bottom.root, nodeId)
+      ) {
+        this.layout.bottom.root = replacement;
+      }
       return;
     }
     const workspaceWindow = this.#window(hostId);
@@ -1287,13 +1326,13 @@ export class WorkspaceShellController {
   }
 
   #findSidebarGroupLocation(groupId: string): {
-    side: WorkspaceSide;
+    side: WorkspaceDockPosition;
     pane: WorkspaceTabsNode;
     group: WorkspaceSidebarGroup;
   } | null {
-    for (const side of ["left", "right"] as const) {
+    for (const side of ["left", "right", "bottom"] as const) {
       let match: {
-        side: WorkspaceSide;
+        side: WorkspaceDockPosition;
         pane: WorkspaceTabsNode;
         group: WorkspaceSidebarGroup;
       } | null = null;
@@ -1309,9 +1348,10 @@ export class WorkspaceShellController {
     return null;
   }
 
-  #sideForPane(paneId: string): WorkspaceSide | null {
+  #dockForPane(paneId: string): WorkspaceDockPosition | null {
     if (workspaceNodeContains(this.layout.left.root, paneId)) return "left";
     if (workspaceNodeContains(this.layout.right.root, paneId)) return "right";
+    if (workspaceNodeContains(this.layout.bottom.root, paneId)) return "bottom";
     return null;
   }
 
@@ -1331,6 +1371,8 @@ export class WorkspaceShellController {
     if (left) return left;
     const right = find(this.layout.right.root);
     if (right) return right;
+    const bottom = find(this.layout.bottom.root);
+    if (bottom) return bottom;
     for (const workspaceWindow of this.layout.windows) {
       const match = find(workspaceWindow.root);
       if (match) return match;

@@ -70,6 +70,9 @@
   --ui-workspace-stacked-pane-width: 43.75rem;
   --ui-workspace-sidebar-header-height: 2rem;
   --ui-workspace-sidebar-tab-header-inline-padding: 0.5rem;
+  --ui-workspace-bottom-panel-min-height: 7.5rem;
+  --ui-workspace-bottom-panel-max-height: 70%;
+  --ui-workspace-bottom-panel-collapsed-width: 2rem;
   --ui-workspace-resize-handle-size: 1px;
   --ui-workspace-resize-handle-active-size: 2px;
   --ui-workspace-ribbon-width: 3rem;

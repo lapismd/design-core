@@ -1,0 +1,53 @@
+.ui-workspace-bottom-panel-story-frame {
+  display: flex;
+  width: 100%;
+  height: 36rem;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--ui-workspace-muted) 36%, transparent),
+      transparent 45%
+    ),
+    var(--ui-workspace-background);
+}
+
+.ui-workspace-bottom-panel-story-terminal {
+  height: 100%;
+  box-sizing: border-box;
+  padding: 0.875rem 1rem;
+  color: var(--ui-workspace-foreground);
+  background: var(--ui-workspace-background);
+  font-family: var(--ui-workspace-font-mono);
+  font-size: 0.8125rem;
+}
+
+.ui-workspace-bottom-panel-story-terminal pre {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.ui-workspace-bottom-panel-story-terminal span {
+  color: var(--ui-workspace-accent);
+}
+
+.ui-workspace-bottom-panel-story-view {
+  display: grid;
+  height: 100%;
+  box-sizing: border-box;
+  place-content: center;
+  gap: 0.375rem;
+  padding: 1rem;
+  text-align: center;
+}
+
+.ui-workspace-bottom-panel-story-view h3,
+.ui-workspace-bottom-panel-story-view p {
+  margin: 0;
+}
+
+.ui-workspace-bottom-panel-story-view p {
+  color: var(--ui-workspace-muted-foreground);
+  font-size: 0.8125rem;
+}

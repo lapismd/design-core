@@ -19,6 +19,8 @@ export type WorkspaceWindowState =
 export type WorkspaceDisplayMode = "desktop" | "mobile";
 export type WorkspaceRequestedDisplayMode = "auto" | WorkspaceDisplayMode;
 export type WorkspaceSide = "left" | "right";
+/** A persistent edge surface owned by the workspace layout. */
+export type WorkspaceDockPosition = WorkspaceSide | "bottom";
 export type WorkspaceIconName = string;
 
 export interface WorkspaceViewState {
@@ -46,6 +48,9 @@ export interface WorkspaceSidebarGroup {
   panelSizesByTabId: Record<string, number>;
 }
 
+/** Position-neutral name for the grouped-panel model used by all docks. */
+export type WorkspacePanelGroup = WorkspaceSidebarGroup;
+
 export type WorkspaceTabItem = WorkspaceTab | WorkspaceSidebarGroup;
 
 export interface WorkspaceTabsNode {
@@ -70,6 +75,12 @@ export interface WorkspaceSidebarState {
   open: boolean;
   size: number;
   root: WorkspaceNode;
+}
+
+export interface WorkspaceBottomPanelState {
+  open: boolean;
+  size: number;
+  root: WorkspaceTabsNode;
 }
 
 export interface WorkspaceWindowBounds {
@@ -107,6 +118,19 @@ export interface WorkspaceLayoutV2 {
   windows: WorkspaceWindow[];
   active: WorkspaceActiveState;
 }
+
+export interface WorkspaceLayoutV3 {
+  version: 3;
+  main: WorkspaceNode;
+  left: WorkspaceSidebarState;
+  right: WorkspaceSidebarState;
+  bottom: WorkspaceBottomPanelState;
+  windows: WorkspaceWindow[];
+  active: WorkspaceActiveState;
+}
+
+/** The current normalized workspace layout. */
+export type WorkspaceLayout = WorkspaceLayoutV3;
 
 export interface WorkspaceBreadcrumb {
   id: string;
@@ -237,6 +261,7 @@ export type WorkspaceChangeSource =
   | "split"
   | "resize"
   | "sidebar"
+  | "bottom-panel"
   | "sidebar-group"
   | "view-state"
   | "window-open"
@@ -293,7 +318,7 @@ export interface WorkspaceEventMap {
 export interface WorkspaceLayoutPersistence {
   load(): Promise<unknown | null>;
   save(
-    layout: WorkspaceLayoutV2,
+    layout: WorkspaceLayout,
     event: WorkspaceLayoutChangeEvent,
   ): Promise<void>;
 }

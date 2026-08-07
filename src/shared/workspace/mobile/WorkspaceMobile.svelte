@@ -17,6 +17,7 @@
     defaultPage = "editor",
     showBottomNav = true,
     includeSidebarsInTabs = true,
+    includeBottomPanelInTabs = true,
     includeFloatingInTabs = true,
     onOpenSettings,
   }: {
@@ -25,6 +26,7 @@
     defaultPage?: "editor" | "tabs";
     showBottomNav?: boolean;
     includeSidebarsInTabs?: boolean;
+    includeBottomPanelInTabs?: boolean;
     includeFloatingInTabs?: boolean;
     onOpenSettings?: () => void;
   } = $props();
@@ -33,7 +35,7 @@
   type Entry = {
     tab: WorkspaceTab;
     paneId: string;
-    origin: "main" | "left" | "right" | "floating";
+    origin: "main" | "left" | "right" | "bottom" | "floating";
   };
   type PanGesture = {
     pointerId: number;
@@ -82,6 +84,9 @@
           ...collectEntries(controller.layout.left.root, "left"),
           ...collectEntries(controller.layout.right.root, "right"),
         ]
+      : []),
+    ...(includeBottomPanelInTabs
+      ? collectEntries(controller.layout.bottom.root, "bottom")
       : []),
     ...(includeFloatingInTabs
       ? controller.layout.windows.flatMap((workspaceWindow) =>

@@ -7,6 +7,7 @@ export {
 
 export * from "./app-shell/index.js";
 export * from "./about-dialog/index.js";
+export * from "./bottom-panel/index.js";
 export * from "./command-palette/index.js";
 export * from "./core/index.js";
 export * from "./demo/index.js";
@@ -30,6 +31,8 @@ export {
   DEFAULT_COLLAPSED_PANEL_SIZE,
   WORKSPACE_SIDEBAR_PANEL_HEADER_PX,
   collapsedSidebarPanelSize,
+  collapsedDockPanelSize,
+  dockPanelDefaultSizes,
   sidebarPanelDefaultSizes,
 } from "./sidebar-group/index.js";
 export * from "./sidebar-toggle/index.js";

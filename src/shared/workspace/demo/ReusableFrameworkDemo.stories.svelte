@@ -8,6 +8,10 @@
   const interaction = createFrameworkDemo({ includeFloating: false });
   const pluginLifecycle = createFrameworkDemo({ includeFloating: false });
   const pointer = createFrameworkDemo({ includeFloating: false });
+  const bottomPanel = createFrameworkDemo({
+    includeFloating: false,
+    includeBottomPanel: true,
+  });
   const emptySidebarPointer = createFrameworkDemo({
     includeFloating: false,
     emptyLeftSidebar: true,
@@ -102,6 +106,30 @@
 >
   {#snippet template()}
     <ReusableFrameworkDemo app={overview.app} />
+  {/snippet}
+</Story>
+
+<Story
+  name="Bottom panel shell"
+  tags={["visual-pending"]}
+  play={async ({ canvas }) => {
+    await waitFor(() => expect(bottomPanel.app.ready).toBe(true));
+    await expect(canvas.getByLabelText("Bottom panel")).toBeVisible();
+    await userEvent.click(canvas.getByRole("tab", { name: "Diagnostics" }));
+    await expect(
+      canvas.getByRole("button", { name: "Collapse Problems" }),
+    ).toBeVisible();
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Close bottom panel" }),
+    );
+    const reopen = canvas.getByRole("button", { name: "Open bottom panel" });
+    await expect(reopen).toBeVisible();
+    await userEvent.click(reopen);
+    await expect(canvas.getByLabelText("Bottom panel")).toBeVisible();
+  }}
+>
+  {#snippet template()}
+    <ReusableFrameworkDemo app={bottomPanel.app} />
   {/snippet}
 </Story>
 

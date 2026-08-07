@@ -9,11 +9,11 @@ import {
 import type {
   WorkspaceLayoutChangeEvent,
   WorkspaceLayoutPersistence,
-  WorkspaceLayoutV2,
+  WorkspaceLayout,
 } from "./types.js";
 import { WorkspaceShellController } from "./workspace-controller.svelte.js";
 
-function splitLayout(): WorkspaceLayoutV2 {
+function splitLayout(): WorkspaceLayout {
   const first = createWorkspaceTab({ id: "first", title: "First" });
   const second = createWorkspaceTab({ id: "second", title: "Second" });
   return {
@@ -327,6 +327,42 @@ describe("WorkspaceShellController", () => {
     ).toBe(true);
   });
 
+  it("opens, sizes, groups, and constrains the bottom dock", () => {
+    const terminal = createWorkspaceTab({ id: "terminal", title: "Terminal" });
+    const output = createWorkspaceTab({ id: "output", title: "Output" });
+    const layout = splitLayout();
+    layout.bottom = {
+      open: false,
+      size: 240,
+      root: createWorkspaceTabs([terminal, output], { id: "bottom-panel" }),
+    };
+    const controller = new WorkspaceShellController({ layout });
+    const sources: string[] = [];
+    controller.on("layout-change", (event) => sources.push(event.source));
+
+    controller.setDockOpen("bottom", true);
+    controller.setDockSize("bottom", 800);
+    expect(controller.layout.bottom).toMatchObject({ open: true, size: 640 });
+
+    const group = controller.groupDockTabs("bottom", [terminal.id, output.id], {
+      id: "diagnostics",
+      title: "Diagnostics",
+    });
+    expect(group?.tabs.map((tab) => tab.id)).toEqual(["terminal", "output"]);
+    expect(findWorkspaceTab(controller.layout, terminal.id)?.group?.id).toBe(
+      "diagnostics",
+    );
+    expect(
+      controller.splitPane(
+        "bottom-panel",
+        "right",
+        createWorkspaceTab({ id: "split", title: "Split" }),
+      ),
+    ).toBe(false);
+    expect(controller.dropTab("first", "bottom-panel", "top")).toBe(false);
+    expect(sources).toEqual(["bottom-panel", "resize", "sidebar-group"]);
+  });
+
   it("updates persisted sidebar-group metadata and exposes panel actions", async () => {
     const files = createWorkspaceTab({ id: "files", title: "Files" });
     const search = createWorkspaceTab({ id: "search", title: "Search" });
@@ -338,7 +374,7 @@ describe("WorkspaceShellController", () => {
     };
     const save = vi.fn<
       (
-        layout: WorkspaceLayoutV2,
+        layout: WorkspaceLayout,
         event: WorkspaceLayoutChangeEvent,
       ) => Promise<void>
     >(async () => undefined);
@@ -477,7 +513,7 @@ describe("WorkspaceShellController", () => {
     };
     const save = vi.fn<
       (
-        layout: WorkspaceLayoutV2,
+        layout: WorkspaceLayout,
         event: WorkspaceLayoutChangeEvent,
       ) => Promise<void>
     >(async () => undefined);
@@ -521,6 +557,6 @@ describe("WorkspaceShellController", () => {
     controller.setSidebarOpen("left", true);
     await controller.flushSave();
     expect(errors).toEqual(["load", "save"]);
-    expect(controller.layout.version).toBe(2);
+    expect(controller.layout.version).toBe(3);
   });
 });
