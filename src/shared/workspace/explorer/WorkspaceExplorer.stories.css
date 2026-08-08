@@ -1,3 +1,4 @@
+/* Story host chrome only. WorkspaceExplorer itself is borderless. */
 .ui-workspace-explorer-story {
   box-sizing: border-box;
   width: 20rem;
@@ -6,6 +7,11 @@
   border: 1px solid var(--ui-workspace-border);
   background: var(--ui-workspace-panel);
   overflow: hidden;
+}
+
+.ui-workspace-explorer-story--overflow {
+  width: 16rem;
+  height: 22rem;
 }
 
 .sr-only {

@@ -84,6 +84,12 @@ into design-core.
 
 <Canvas of={Stories.LoadedTree} />
 
+The explorer root is borderless. Story canvases may draw a host border for
+framing; pages that embed the panel own any chrome border. Tree scrolling uses
+shadcn `ScrollArea` (not a native overflow container).
+
+<Canvas of={Stories.ScrollAreaAndLongNames} />
+
 ## Toolbar contract
 
 - **Create file / folder** — call adapter create helpers; select the new path;
@@ -193,6 +199,8 @@ Override on an ancestor of the explorer surface:
 | `--ui-workspace-explorer-font-size` | `0.8125rem` (13px; Lapis `--font-ui-small`) |
 | `--ui-workspace-explorer-row-height` | `1.75rem` |
 | `--ui-workspace-explorer-row-gap` | `0.125rem` |
+| `--ui-workspace-explorer-row-active-weight` | `700` |
+| `--ui-workspace-explorer-padding` | `0.5rem` |
 
 Nested folders draw a vertical indentation guide on
 `.ui-workspace-explorer__sublist` (`border-inline-start`) using the guide

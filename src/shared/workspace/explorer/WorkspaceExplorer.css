@@ -5,15 +5,22 @@
   height: 100%;
   min-height: 0;
   flex-direction: column;
+  overflow: hidden;
+  padding: var(--ui-workspace-explorer-padding);
   color: var(--ui-workspace-panel-foreground);
   background: var(--ui-workspace-panel);
   font-family: var(--ui-workspace-explorer-font-family);
   font-size: var(--ui-workspace-explorer-font-size);
+  /* Host pages own chrome borders; the explorer surface itself is borderless. */
+  border: none;
 }
 
 .ui-workspace-explorer__scroll {
   flex: 1 1 auto;
   min-height: 0;
+  height: 100%;
+  overflow: hidden;
+  --ui-scroll-area-foreground: var(--ui-workspace-border-strong);
 }
 
 .ui-workspace-explorer__toolbar {
@@ -50,7 +57,7 @@
   position: relative;
   box-sizing: border-box;
   min-height: 100%;
-  padding-bottom: 2.5rem;
+  padding-block-end: 2.5rem;
 }
 
 .ui-workspace-explorer__group-label {
@@ -65,8 +72,9 @@
 .ui-workspace-explorer__tree {
   display: flex;
   width: 100%;
+  min-width: 0;
   flex-direction: column;
-  padding: 0 0.25rem 3rem;
+  padding-block-end: 3rem;
 }
 
 .ui-workspace-explorer__loading {
@@ -78,6 +86,8 @@
 .ui-workspace-explorer__list,
 .ui-workspace-explorer__sublist {
   display: flex;
+  width: 100%;
+  min-width: 0;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -94,6 +104,8 @@
 }
 
 .ui-workspace-explorer__item {
+  width: 100%;
+  min-width: 0;
   margin: 0;
   padding: 0;
 }
@@ -101,6 +113,7 @@
 .ui-workspace-explorer__row {
   display: flex;
   width: 100%;
+  min-width: 0;
   min-height: var(--ui-workspace-explorer-row-height);
   align-items: center;
   gap: 0.375rem;
@@ -124,6 +137,11 @@
 
 .ui-workspace-explorer__row[data-active="true"] {
   background: var(--ui-workspace-explorer-row-active-background);
+  font-weight: var(--ui-workspace-explorer-row-active-weight);
+}
+
+.ui-workspace-explorer__row[data-active="true"] .ui-workspace-explorer__title {
+  font-weight: inherit;
 }
 
 .ui-workspace-explorer__row.is-flashing {

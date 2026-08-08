@@ -29,7 +29,51 @@
     { path: "empty", name: "empty", kind: "folder", children: [] },
   ];
 
+  const LONG_FILE_NAME =
+    "a-very-long-filename-that-should-ellipsis-in-the-narrow-explorer-pane.md";
+
+  function buildOverflowSeed(): ExplorerNode[] {
+    const archiveFiles = Array.from({ length: 36 }, (_, i) => {
+      const name = `file-${String(i + 1).padStart(2, "0")}.md`;
+      return {
+        path: `archive/${name}`,
+        name,
+        kind: "file" as const,
+      };
+    });
+    const projectFiles = Array.from({ length: 20 }, (_, i) => {
+      const name = `project-${i}-with-an-intentionally-long-descriptive-name.md`;
+      return {
+        path: `projects/${name}`,
+        name,
+        kind: "file" as const,
+      };
+    });
+    return [
+      {
+        path: "archive",
+        name: "archive",
+        kind: "folder",
+        children: [
+          {
+            path: `archive/${LONG_FILE_NAME}`,
+            name: LONG_FILE_NAME,
+            kind: "file",
+          },
+          ...archiveFiles,
+        ],
+      },
+      {
+        path: "projects",
+        name: "projects",
+        kind: "folder",
+        children: projectFiles,
+      },
+    ];
+  }
+
   function mountExplorer(options: {
+    seed?: ExplorerNode[];
     loading?: boolean;
     autoReveal?: boolean;
     buildItemMenu?: (
@@ -39,7 +83,7 @@
     ) => void;
     extensionLog?: { value: string };
   } = {}) {
-    const memory = createMemoryExplorerAdapter(seed, {
+    const memory = createMemoryExplorerAdapter(options.seed ?? seed, {
       autoReveal: options.autoReveal,
     });
     const extensionLog = options.extensionLog ?? { value: "" };
@@ -95,10 +139,11 @@
   });
   const revealFixture = mountExplorer();
   const scrollFixture = mountExplorer({ autoReveal: false });
+  const overflowFixture = mountExplorer({ seed: buildOverflowSeed() });
 </script>
 
-{#snippet Panel(controller: ExplorerController)}
-  <div class="ui-workspace-explorer-story">
+{#snippet Panel(controller: ExplorerController, hostClass = "")}
+  <div class={["ui-workspace-explorer-story", hostClass].filter(Boolean).join(" ")}>
     <WorkspaceExplorer {controller} />
   </div>
 {/snippet}
@@ -199,6 +244,12 @@
       ).toBeVisible();
     });
     await userEvent.keyboard("{Escape}");
+    await userEvent.keyboard("{Escape}");
+    await waitFor(() => {
+      expect(
+        document.body.querySelector('[data-ui-component="workspace-menu"]'),
+      ).toBeNull();
+    });
   }}
 >
   {#snippet template()}
@@ -213,9 +264,9 @@
     await userEvent.keyboard("{Escape}");
     const canvas = within(canvasElement);
     await waitFor(() => {
-      expect(
-        canvas.getByRole("button", { name: "Sort Files" }),
-      ).toBeVisible();
+      const sort = canvas.getByRole("button", { name: "Sort Files" });
+      expect(sort).toBeVisible();
+      expect(getComputedStyle(sort).pointerEvents).not.toBe("none");
     });
     const before = [
       ...canvasElement.querySelectorAll(
@@ -439,9 +490,73 @@
       ".ui-workspace-explorer",
     ) as HTMLElement;
     expect(getComputedStyle(root).fontSize).toBe("13px");
+    expect(getComputedStyle(root).borderWidth).toBe("0px");
   }}
 >
   {#snippet template()}
     {@render Panel(revealFixture.controller)}
+  {/snippet}
+</Story>
+
+<Story
+  name="Scroll area and long names"
+  tags={["visual-pending"]}
+  play={async ({ canvasElement }) => {
+    const { controller, memory } = overflowFixture;
+    controller.expandedPaths.add("archive");
+    controller.expandedPaths.add("projects");
+    memory.setActivePath(`archive/${LONG_FILE_NAME}`);
+
+    await waitFor(() => {
+      expect(
+        canvasElement.querySelector(
+          `[data-path="archive/${LONG_FILE_NAME}"]`,
+        ),
+      ).not.toBeNull();
+    });
+
+    const root = canvasElement.querySelector(
+      ".ui-workspace-explorer",
+    ) as HTMLElement;
+    const rootStyle = getComputedStyle(root);
+    expect(rootStyle.borderWidth).toBe("0px");
+    expect(Number.parseFloat(rootStyle.paddingTop)).toBeGreaterThan(0);
+    expect(Number.parseFloat(rootStyle.paddingLeft)).toBeGreaterThan(0);
+
+    const scrollRoot = canvasElement.querySelector(
+      '[data-ui-component="scroll-area"][data-ui-part="scroll-area"]',
+    );
+    expect(scrollRoot).not.toBeNull();
+    expect(scrollRoot?.classList.contains("ui-workspace-explorer__scroll")).toBe(
+      true,
+    );
+
+    const viewport = canvasElement.querySelector(
+      '[data-slot="scroll-area-viewport"]',
+    ) as HTMLElement;
+    expect(viewport).not.toBeNull();
+    await waitFor(() => {
+      expect(viewport.scrollHeight).toBeGreaterThan(viewport.clientHeight);
+    });
+
+    const activeRow = canvasElement.querySelector(
+      `[data-path="archive/${LONG_FILE_NAME}"]`,
+    ) as HTMLElement;
+    expect(activeRow).toHaveAttribute("data-active", "true");
+    expect(Number.parseInt(getComputedStyle(activeRow).fontWeight, 10)).toBeGreaterThanOrEqual(
+      700,
+    );
+
+    const title = activeRow.querySelector(
+      ".ui-workspace-explorer__title",
+    ) as HTMLElement;
+    const titleStyle = getComputedStyle(title);
+    expect(titleStyle.textOverflow).toBe("ellipsis");
+    expect(titleStyle.whiteSpace).toBe("nowrap");
+    expect(title.scrollWidth).toBeGreaterThan(title.clientWidth);
+  }}
+>
+  {#snippet template()}
+    {@render Panel(overflowFixture.controller, "ui-workspace-explorer-story--overflow")}
   {/snippet}
 </Story>
