@@ -75,6 +75,7 @@ export const workspaceTokenNames = {
   explorerFontFamily: "--ui-workspace-explorer-font-family",
   explorerFontSize: "--ui-workspace-explorer-font-size",
   explorerRowHeight: "--ui-workspace-explorer-row-height",
+  explorerRowGap: "--ui-workspace-explorer-row-gap",
 } as const;
 
 export type WorkspaceTokenKey = keyof typeof workspaceTokenNames;
@@ -156,4 +157,5 @@ export const workspaceTokenDefaults: Record<WorkspaceTokenKey, string> = {
   explorerFontFamily: "var(--ui-workspace-font-sans)",
   explorerFontSize: "0.8125rem",
   explorerRowHeight: "1.75rem",
+  explorerRowGap: "0.125rem",
 };

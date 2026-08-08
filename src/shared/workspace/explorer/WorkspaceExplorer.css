@@ -66,7 +66,6 @@
   display: flex;
   width: 100%;
   flex-direction: column;
-  gap: 0.0625rem;
   padding: 0 0.25rem 3rem;
 }
 
@@ -78,9 +77,12 @@
 
 .ui-workspace-explorer__list,
 .ui-workspace-explorer__sublist {
+  display: flex;
   margin: 0;
   padding: 0;
   list-style: none;
+  flex-direction: column;
+  gap: var(--ui-workspace-explorer-row-gap);
 }
 
 .ui-workspace-explorer__sublist {
@@ -141,8 +143,8 @@
   transition: transform 120ms ease;
 }
 
-.ui-workspace-explorer__folder[data-state="open"]
-  .ui-workspace-explorer__chevron {
+/* Scope to the folder row itself so nested closed folders are not forced open. */
+.ui-workspace-explorer__row[aria-expanded="true"] .ui-workspace-explorer__chevron {
   transform: rotate(90deg);
 }
 
