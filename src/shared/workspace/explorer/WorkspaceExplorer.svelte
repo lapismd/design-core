@@ -372,7 +372,7 @@
               <Button
                 {...props}
                 variant="ghost"
-                size="sm"
+                size="icon-sm"
                 class="ui-workspace-explorer__toolbar-action"
                 aria-label={labels.createFile}
                 data-hint-target="file-explorer-action"
@@ -392,7 +392,7 @@
               <Button
                 {...props}
                 variant="ghost"
-                size="sm"
+                size="icon-sm"
                 class="ui-workspace-explorer__toolbar-action"
                 aria-label={labels.createFolder}
                 data-hint-target="file-explorer-action"
@@ -421,7 +421,7 @@
                       {...tooltipProps}
                       {...menuProps}
                       variant="ghost"
-                      size="sm"
+                      size="icon-sm"
                       class="ui-workspace-explorer__toolbar-action"
                       aria-label={labels.sortFiles}
                     >
@@ -456,7 +456,7 @@
               <Button
                 {...props}
                 variant="ghost"
-                size="sm"
+                size="icon-sm"
                 class="ui-workspace-explorer__toolbar-action"
                 aria-label={labels.autoReveal}
                 aria-pressed={controller.autoReveal}
@@ -477,7 +477,7 @@
               <Button
                 {...props}
                 variant="ghost"
-                size="sm"
+                size="icon-sm"
                 class="ui-workspace-explorer__toolbar-action"
                 aria-label={labels.toggleCollapse}
                 data-hint-target="file-explorer-action"

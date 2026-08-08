@@ -54,6 +54,7 @@
 }
 
 .ui-workspace-explorer__toolbar-action {
+  box-sizing: border-box;
   color: var(--ui-workspace-panel-foreground);
 }
 
@@ -68,9 +69,13 @@
   color: var(--ui-workspace-explorer-toolbar-action-hover-foreground);
 }
 
-.ui-workspace-explorer__toolbar-action[aria-pressed="true"] {
-  background: var(--ui-workspace-explorer-row-active-background);
+.ui-workspace-explorer__toolbar
+  [data-ui-component="button"].ui-workspace-explorer__toolbar-action[aria-pressed="true"] {
+  /* Keep geometry identical to idle — only the fill/color change. */
+  border-color: transparent;
+  background-color: var(--ui-workspace-explorer-row-active-background);
   color: var(--ui-workspace-panel-action-hover-foreground);
+  box-shadow: none;
 }
 
 .ui-workspace-explorer__body {
@@ -219,20 +224,37 @@
 }
 
 .ui-workspace-explorer__rename {
+  display: flex;
   min-width: 0;
   flex: 1 1 auto;
+  align-items: center;
 }
 
+/* Match the non-editing title metrics — Input defaults add padding/height. */
+.ui-workspace-explorer__rename
+  [data-ui-component="input"].ui-workspace-explorer__rename-input,
 .ui-workspace-explorer__rename-input {
+  box-sizing: border-box;
   width: 100%;
-  height: 1.75rem;
+  height: auto;
+  min-height: 0;
+  margin: 0;
   border: none;
-  background: inherit;
+  border-radius: 0;
+  padding: 0;
   color: inherit;
+  background: transparent;
   font: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  box-shadow: none;
 }
 
+.ui-workspace-explorer__rename
+  [data-ui-component="input"].ui-workspace-explorer__rename-input:focus-visible,
 .ui-workspace-explorer__rename-input:focus-visible {
+  border: none;
   outline: none;
   box-shadow: none;
 }

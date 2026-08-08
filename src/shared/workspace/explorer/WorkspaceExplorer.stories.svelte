@@ -355,11 +355,15 @@
       name: "Auto-reveal current file",
     });
     await expect(toggle).toHaveAttribute("aria-pressed", "false");
+    const idleBox = toggle.getBoundingClientRect();
     await userEvent.click(toggle);
     await waitFor(() => {
       expect(toggle).toHaveAttribute("aria-pressed", "true");
       expect(autoRevealFixture.memory.preferences.getAutoReveal()).toBe(true);
     });
+    const pressedBox = toggle.getBoundingClientRect();
+    expect(pressedBox.width).toBe(idleBox.width);
+    expect(pressedBox.height).toBe(idleBox.height);
   }}
 >
   {#snippet template()}
@@ -410,6 +414,10 @@
     const row = canvasElement.querySelector(
       '[data-path="readme.md"]',
     ) as HTMLElement;
+    const title = row.querySelector(
+      ".ui-workspace-explorer__title",
+    ) as HTMLElement;
+    const titleLeft = title.getBoundingClientRect().left;
     row.focus();
     await userEvent.keyboard("{Enter}");
     await waitFor(() => {
@@ -418,6 +426,17 @@
         canvasElement.querySelector('[data-path="readme.md"] input'),
       ).toBeTruthy();
     });
+    const input = canvasElement.querySelector(
+      ".ui-workspace-explorer__rename-input",
+    ) as HTMLInputElement;
+    const inputStyle = getComputedStyle(input);
+    expect(inputStyle.paddingTop).toBe("0px");
+    expect(inputStyle.paddingRight).toBe("0px");
+    expect(inputStyle.paddingBottom).toBe("0px");
+    expect(inputStyle.paddingLeft).toBe("0px");
+    expect(Math.abs(input.getBoundingClientRect().left - titleLeft)).toBeLessThan(
+      1,
+    );
   }}
 >
   {#snippet template()}
