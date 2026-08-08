@@ -570,6 +570,15 @@
     expect(titleStyle.textOverflow).toBe("ellipsis");
     expect(titleStyle.whiteSpace).toBe("nowrap");
     expect(title.scrollWidth).toBeGreaterThan(title.clientWidth);
+
+    // Nested sublists must not overflow horizontally (that clipped the right radius).
+    const viewportEl = scrollRoot.querySelector(
+      '[data-slot="scroll-area-viewport"]',
+    ) as HTMLElement;
+    expect(viewportEl.scrollWidth).toBeLessThanOrEqual(viewportEl.clientWidth);
+    const rootRight = root.getBoundingClientRect().right;
+    const rowRight = activeRow.getBoundingClientRect().right;
+    expect(rootRight - rowRight).toBeGreaterThanOrEqual(12);
   }}
 >
   {#snippet template()}

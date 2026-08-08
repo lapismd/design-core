@@ -97,7 +97,6 @@
 .ui-workspace-explorer__list,
 .ui-workspace-explorer__sublist {
   display: flex;
-  width: 100%;
   min-width: 0;
   margin: 0;
   padding: 0;
@@ -106,9 +105,20 @@
   gap: var(--ui-workspace-explorer-row-gap);
 }
 
+.ui-workspace-explorer__list {
+  width: 100%;
+}
+
 .ui-workspace-explorer__sublist {
+  /* Lapis Sidebar.MenuSub: min-w-0 + mx (both sides), not width:100%.
+     width:100% + margin-inline-start overflowed the parent and the ScrollArea
+     viewport clipped the selected row’s right radius. End margin keeps nested
+     rows clear of the overlay scrollbar the same way Lapis mx does. */
   position: relative;
+  width: auto;
+  max-width: 100%;
   margin-inline-start: var(--ui-workspace-explorer-indent);
+  margin-inline-end: var(--ui-workspace-explorer-indent);
   padding-inline-start: var(--ui-workspace-explorer-guide-gap);
   border-inline-start: var(--ui-workspace-explorer-guide-width) solid
     var(--ui-workspace-explorer-guide-color);
@@ -123,8 +133,10 @@
 
 .ui-workspace-explorer__row {
   display: flex;
+  box-sizing: border-box;
   width: 100%;
   min-width: 0;
+  max-width: 100%;
   min-height: var(--ui-workspace-explorer-row-height);
   align-items: center;
   gap: 0.375rem;
