@@ -425,7 +425,7 @@
                       class="ui-workspace-explorer__toolbar-action"
                       aria-label={labels.sortFiles}
                     >
-                      <WorkspaceIcon name="arrow-up-a-z" />
+                      <WorkspaceIcon name="arrow-up-narrow-wide" />
                     </Button>
                   {/snippet}
                 </DropdownMenu.Trigger>
