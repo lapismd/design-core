@@ -62,6 +62,13 @@ export const workspaceTokenNames = {
   settingsDialogMaxWidth: "--ui-workspace-settings-dialog-max-width",
   settingsDialogHeight: "--ui-workspace-settings-dialog-height",
   overlayZIndex: "--ui-workspace-overlay-z-index",
+  explorerToolbarHeight: "--ui-workspace-explorer-toolbar-height",
+  explorerRowHoverBackground: "--ui-workspace-explorer-row-hover-background",
+  explorerRowActiveBackground: "--ui-workspace-explorer-row-active-background",
+  explorerDropBackground: "--ui-workspace-explorer-drop-background",
+  explorerDropForeground: "--ui-workspace-explorer-drop-foreground",
+  explorerFlashRing: "--ui-workspace-explorer-flash-ring",
+  explorerIndent: "--ui-workspace-explorer-indent",
 } as const;
 
 export type WorkspaceTokenKey = keyof typeof workspaceTokenNames;
@@ -127,4 +134,13 @@ export const workspaceTokenDefaults: Record<WorkspaceTokenKey, string> = {
   settingsDialogMaxWidth: "68.75rem",
   settingsDialogHeight: "85vh",
   overlayZIndex: "50",
+  explorerToolbarHeight: "var(--ui-workspace-sidebar-header-height)",
+  explorerRowHoverBackground:
+    "var(--ui-workspace-panel-action-hover-background)",
+  explorerRowActiveBackground: "var(--ui-workspace-selection)",
+  explorerDropBackground:
+    "color-mix(in srgb, var(--ui-workspace-accent) 10%, transparent)",
+  explorerDropForeground: "var(--ui-workspace-accent)",
+  explorerFlashRing: "var(--ui-workspace-accent)",
+  explorerIndent: "0.75rem",
 };

@@ -144,6 +144,9 @@ Application-independent workspace framework in `src/shared/workspace/`.
 - Tabs, splits, sidebars, transposed bottom-panel groups, view headers, drop
   targets, windows, ribbon, status, settings, command palette, empty and notice
   components
+- Explorer panel (`Workspace/Panels/Explorer`): controller-driven file/folder
+  chrome with consumer-owned tree/action adapters (filesystem stays outside
+  the framework)
 - Optional F-Mode and Notifications plugins
 
 Import: `@lapismd/design-core/workspace`. Production Workspace sources use

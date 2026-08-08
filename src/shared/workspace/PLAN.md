@@ -92,6 +92,7 @@ Compatibility aliases are removed only through an explicit reviewed slice.
 | F-Mode                            | optional plugin package                                    | `plugins/f-mode/`          | Complete            | Pass | Pass      | Candidate pass; review pending               | Pending |
 | Notifications                     | optional plugin package                                    | `plugins/notifications/`   | Complete            | Pass | Pass      | Candidate pass; review pending               | Pending |
 | Demo and reference                | demos, stories, references                                 | `demo/`, `reference/`      | Complete            | Pass | Pass      | Canonical and candidate pass                 | Pending |
+| Explorer panel                    | lapis `feature/file-explorer`                              | `explorer/`                | Complete            | Pass | Pass      | Pending (`visual-pending`)                   | Pending |
 | Lapis source removal              | `lapis-notes/app-shell`                                    | separate Changeyard change | Blocked on approval | N/A  | N/A       | N/A                                          | Pending |
 
 ## Validation cadence
@@ -854,6 +855,24 @@ workflow.
   compare-only visual suite passes all 385 captures; the intentional AppShell
   and workspace deltas remain pending explicit human review. No baseline image
   was created or replaced.
+
+### Explorer panel
+
+- Added `Workspace/Panels/Explorer` under `explorer/` with
+  `ExplorerController`, tree/action/selection/preferences adapters,
+  `createMemoryExplorerAdapter`, and `WorkspaceExplorer` presentation.
+- Reuses `WorkspaceMenu` / context menu items, `WorkspaceIcon`, shadcn
+  ScrollArea/Button/Input, and Bits Collapsible/ContextMenu/DropdownMenu.
+  File moves use HTML5 DnD only (not layout `WorkspaceDragState`).
+- Intentional Lapis deviations: vault-relative copy path is built-in; native
+  system path, OS reveal, and Lapis URL items are host `buildItemMenu`
+  extensions. Filesystem ownership stays on consumer adapters.
+- Unit coverage for sort, reveal, CRUD/move, preferences, and menu extension.
+  Storybook play matrix covers create, sort, copy-path submenu, auto-reveal,
+  rename, collapse-all, DnD move, menu extension, loading, and reveal flash.
+- Colocated `WorkspaceExplorer.mdx` requirements contract, Guidance/PLAN/
+  REFERENCE/COMPONENT_AUDIT updates, and `./workspace/explorer` package
+  export. Stories tagged `visual-pending` pending baseline approval.
 
 ### Bottom panel alignment
 

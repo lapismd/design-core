@@ -14,6 +14,7 @@ export * from "./demo/index.js";
 export * from "./drag/index.js";
 export * from "./drop-overlay/index.js";
 export * from "./empty/index.js";
+export * from "./explorer/index.js";
 export * from "./floating-layer/index.js";
 export * from "./floating-window/index.js";
 export * from "./icon/index.js";

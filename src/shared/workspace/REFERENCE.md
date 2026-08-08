@@ -113,6 +113,7 @@ coverage.
 | `workspace-mobile.svelte` and all seven `workspace-mobile-*` helper components                                                  | `mobile/WorkspaceMobile*.svelte` public component family                                                   | Complete |
 | `app-settings-*`, `workspace-setting-*`, `workspace-settings-surface.svelte`                                                    | `settings/` native-CSS compound components                                                                 | Complete |
 | F-Mode and Notifications package components                                                                                     | `plugins/f-mode/`, `plugins/notifications/`                                                                | Complete |
+| Lapis `packages/workspace/.../feature/file-explorer` (vault-coupled plugin UI)                                                  | `explorer/` reusable controller + adapters (`Workspace/Panels/Explorer`)                                   | Complete |
 | Source shell, framework, component, settings, overlay, and reference stories                                                    | Colocated `*.stories.svelte` and `*.mdx` files across each target family                                   | Complete |
 | Copied shadcn components and generated Tailwind utility wrappers                                                                | Not migrated; replaced by semantic HTML, direct Bits UI where needed, Paneforge, native CSS, and UI tokens | Excluded |
 

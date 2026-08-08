@@ -34,6 +34,16 @@ package subpath. Optional plugins are available from
 `@lapismd/design-core/workspace/plugins/fmode` and
 `@lapismd/design-core/workspace/plugins/notifications`.
 
+## Panels
+
+`Workspace/Panels/Explorer` is a controller-driven file/folder presentation
+family (`@lapismd/design-core/workspace/explorer`). It owns tree chrome,
+selection, menus, and HTML5 file-move affordances. Consumers inject tree/action
+adapters for vault listing, create/rename/delete, active-file sync, and
+preferences. Native OS path actions and Lapis-specific URLs stay on the host
+via `buildItemMenu`. Layout tab drag-and-drop remains separate
+(`WorkspaceDragState` / drop overlay).
+
 ## Styling
 
 Workspace components use colocated native CSS and public

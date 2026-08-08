@@ -1,0 +1,21 @@
+.ui-workspace-explorer-story {
+  box-sizing: border-box;
+  width: 20rem;
+  height: 32rem;
+  margin: 1rem;
+  border: 1px solid var(--ui-workspace-border);
+  background: var(--ui-workspace-panel);
+  overflow: hidden;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
