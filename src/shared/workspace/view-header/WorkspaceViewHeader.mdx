@@ -13,9 +13,9 @@ For file views, contribute parent-path segments through
 `WorkspaceViewChrome.breadcrumbs` (filename stays in `title`). History uses
 `canGoBack` / `canGoForward` with `onGoBack` / `onGoForward`.
 
-When space is tight, parent-path breadcrumbs shrink and clip first (from the
-left, with a subtle fade) so the final title stays readable as long as
-possible.
+Breadcrumbs stay start-aligned beside the nav when space allows. When space is
+tight, the path shrinks and clips from the left first so segments nearest the
+filename — and the final title — stay readable as long as possible.
 
 Set `titleEditable` and `onTitleCommit` to enable click-to-edit rename on the
 header title. Editing stays in place with the same typography — breadcrumbs
