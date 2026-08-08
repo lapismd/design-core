@@ -69,6 +69,12 @@ export const workspaceTokenNames = {
   explorerDropForeground: "--ui-workspace-explorer-drop-foreground",
   explorerFlashRing: "--ui-workspace-explorer-flash-ring",
   explorerIndent: "--ui-workspace-explorer-indent",
+  explorerGuideWidth: "--ui-workspace-explorer-guide-width",
+  explorerGuideColor: "--ui-workspace-explorer-guide-color",
+  explorerGuideGap: "--ui-workspace-explorer-guide-gap",
+  explorerFontFamily: "--ui-workspace-explorer-font-family",
+  explorerFontSize: "--ui-workspace-explorer-font-size",
+  explorerRowHeight: "--ui-workspace-explorer-row-height",
 } as const;
 
 export type WorkspaceTokenKey = keyof typeof workspaceTokenNames;
@@ -143,4 +149,11 @@ export const workspaceTokenDefaults: Record<WorkspaceTokenKey, string> = {
   explorerDropForeground: "var(--ui-workspace-accent)",
   explorerFlashRing: "var(--ui-workspace-accent)",
   explorerIndent: "0.75rem",
+  explorerGuideWidth: "1px",
+  explorerGuideColor:
+    "color-mix(in srgb, var(--ui-workspace-foreground) 22%, transparent)",
+  explorerGuideGap: "0.5rem",
+  explorerFontFamily: "var(--ui-workspace-font-sans)",
+  explorerFontSize: "0.8125rem",
+  explorerRowHeight: "1.75rem",
 };

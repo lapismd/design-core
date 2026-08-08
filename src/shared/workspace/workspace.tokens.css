@@ -108,4 +108,17 @@
   --ui-workspace-explorer-drop-foreground: var(--ui-workspace-accent);
   --ui-workspace-explorer-flash-ring: var(--ui-workspace-accent);
   --ui-workspace-explorer-indent: 0.75rem;
+  --ui-workspace-explorer-guide-width: 1px;
+  /* Foreground wash so guides stay visible on panel surfaces (Lapis
+     `--indentation-guide-color` is similarly a low-opacity dark line). */
+  --ui-workspace-explorer-guide-color: color-mix(
+    in srgb,
+    var(--ui-workspace-foreground) 22%,
+    transparent
+  );
+  --ui-workspace-explorer-guide-gap: 0.5rem;
+  --ui-workspace-explorer-font-family: var(--ui-workspace-font-sans);
+  /* Match Lapis nav/file-explorer `--font-ui-small` (13px). */
+  --ui-workspace-explorer-font-size: 0.8125rem;
+  --ui-workspace-explorer-row-height: 1.75rem;
 }

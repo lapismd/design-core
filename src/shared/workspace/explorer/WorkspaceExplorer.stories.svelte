@@ -428,6 +428,17 @@
       const row = canvasElement.querySelector('[data-path="notes/zeta.md"]');
       expect(row?.classList.contains("is-flashing")).toBe(true);
     });
+    const sublist = canvasElement.querySelector(
+      ".ui-workspace-explorer__sublist",
+    ) as HTMLElement | null;
+    expect(sublist).not.toBeNull();
+    const guide = getComputedStyle(sublist!);
+    expect(Number.parseFloat(guide.borderInlineStartWidth)).toBeGreaterThan(0);
+    expect(guide.borderInlineStartStyle).toBe("solid");
+    const root = canvasElement.querySelector(
+      ".ui-workspace-explorer",
+    ) as HTMLElement;
+    expect(getComputedStyle(root).fontSize).toBe("13px");
   }}
 >
   {#snippet template()}

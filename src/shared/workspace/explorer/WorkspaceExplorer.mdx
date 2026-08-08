@@ -186,6 +186,17 @@ Override on an ancestor of the explorer surface:
 | `--ui-workspace-explorer-drop-foreground` | `--ui-workspace-accent` |
 | `--ui-workspace-explorer-flash-ring` | `--ui-workspace-accent` |
 | `--ui-workspace-explorer-indent` | `0.75rem` |
+| `--ui-workspace-explorer-guide-width` | `1px` |
+| `--ui-workspace-explorer-guide-color` | 22% foreground wash |
+| `--ui-workspace-explorer-guide-gap` | `0.5rem` |
+| `--ui-workspace-explorer-font-family` | `--ui-workspace-font-sans` |
+| `--ui-workspace-explorer-font-size` | `0.8125rem` (13px; Lapis `--font-ui-small`) |
+| `--ui-workspace-explorer-row-height` | `1.75rem` |
+
+Nested folders draw a vertical indentation guide on
+`.ui-workspace-explorer__sublist` (`border-inline-start`) using the guide
+tokens above — the same role as Lapis `--nav-indentation-guide-*` / shadcn
+sidebar `menu-sub` left border.
 
 ## Related
 
