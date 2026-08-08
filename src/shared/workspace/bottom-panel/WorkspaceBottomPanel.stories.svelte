@@ -124,13 +124,20 @@
     const panel = canvasElement.querySelector(
       '[data-ui-component="workspace-bottom-panel"]',
     );
-    await userEvent.click(
-      canvas.getByRole("button", { name: "Maximize bottom panel" }),
-    );
+    const maximize = canvas.getByRole("button", {
+      name: "Maximize bottom panel",
+    });
+    const restingBackground = getComputedStyle(maximize).backgroundColor;
+    await userEvent.click(maximize);
     const restore = canvas.getByRole("button", {
       name: "Restore bottom panel",
     });
     await expect(restore).toHaveAttribute("aria-pressed", "true");
+    await waitFor(() =>
+      expect(getComputedStyle(restore).backgroundColor).not.toBe(
+        restingBackground,
+      ),
+    );
     await expect(panel).toHaveAttribute("data-maximized", "true");
     await expect(
       canvas.getByRole("button", { name: "Resize bottom panel" }),

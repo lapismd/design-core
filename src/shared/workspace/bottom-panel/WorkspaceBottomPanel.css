@@ -166,6 +166,12 @@
   background: var(--ui-workspace-panel-action-hover-background);
 }
 
+.ui-workspace-bottom-panel__action[aria-pressed="true"],
+.ui-workspace-bottom-panel__action[aria-pressed="true"]:hover {
+  color: var(--ui-workspace-accent-foreground);
+  background: var(--ui-workspace-accent);
+}
+
 .ui-workspace-bottom-panel__content,
 .ui-workspace-bottom-panel__drop-target {
   position: relative;
