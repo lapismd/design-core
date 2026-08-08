@@ -1,4 +1,4 @@
-import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import { Meta, Canvas, Controls, Source } from "@storybook/addon-docs/blocks";
 import * as Stories from "./WorkspaceExplorer.stories.svelte";
 
 <Meta of={Stories} />
@@ -12,7 +12,9 @@ expand/sort/reveal UX, built-in menus, and HTML5 drop affordances. It does
 
 Import from `@lapismd/design-core/workspace/explorer`.
 
-```svelte
+<Source
+  language="ts"
+  code={`
 <script lang="ts">
   import {
     WorkspaceExplorer,
@@ -29,27 +31,68 @@ Import from `@lapismd/design-core/workspace/explorer`.
   });
 </script>
 
-<WorkspaceExplorer {controller} />
-```
+<WorkspaceExplorer controller={controller} />
+`}
+/>
 
 ## Boundary / ownership
 
-| Concern | Owner |
-| --- | --- |
-| Tree chrome, expand/collapse, sort UI, reveal flash, row selection UI | Framework (`ExplorerController` + `WorkspaceExplorer`) |
-| Built-in menus (new note/folder, copy vault path, rename, refresh, delete) | Framework |
-| HTML5 file→folder drop highlighting and move/import calls | Framework |
-| Listing entries + change subscription | Consumer `ExplorerTreeAdapter` |
-| Create / rename / move / delete / open / optional external import | Consumer `ExplorerActionsAdapter` |
-| Untitled naming, note-link rewrites | Consumer (for Lapis: vault + `fileManager.renameFile`) |
-| Active-file sync + auto-reveal source path | Consumer `ExplorerSelectionAdapter` |
-| Persist auto-reveal (`workspace.fileExplorer.autoRevealCurrentFile`) | Consumer `ExplorerPreferencesAdapter` |
-| Native path / reveal in Finder / Lapis URL / `file-menu` plugins | Consumer via `buildItemMenu` |
-| Empty-left-dock bootstrap leaf + host commands | Consumer / host plugin |
+<table>
+  <thead>
+    <tr>
+      <th>Concern</th>
+      <th>Owner</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Tree chrome, expand/collapse, sort UI, reveal flash, row selection UI</td>
+      <td>Framework (<code>ExplorerController</code> + <code>WorkspaceExplorer</code>)</td>
+    </tr>
+    <tr>
+      <td>Built-in menus (new note/folder, copy vault path, rename, refresh, delete)</td>
+      <td>Framework</td>
+    </tr>
+    <tr>
+      <td>HTML5 file→folder drop highlighting and move/import calls</td>
+      <td>Framework</td>
+    </tr>
+    <tr>
+      <td>Listing entries + change subscription</td>
+      <td>Consumer <code>ExplorerTreeAdapter</code></td>
+    </tr>
+    <tr>
+      <td>Create / rename / move / delete / open / optional external import</td>
+      <td>Consumer <code>ExplorerActionsAdapter</code></td>
+    </tr>
+    <tr>
+      <td>Untitled naming, note-link rewrites</td>
+      <td>Consumer (for Lapis: vault + <code>fileManager.renameFile</code>)</td>
+    </tr>
+    <tr>
+      <td>Active-file sync + auto-reveal source path</td>
+      <td>Consumer <code>ExplorerSelectionAdapter</code></td>
+    </tr>
+    <tr>
+      <td>Persist auto-reveal (<code>workspace.fileExplorer.autoRevealCurrentFile</code>)</td>
+      <td>Consumer <code>ExplorerPreferencesAdapter</code></td>
+    </tr>
+    <tr>
+      <td>Native path / reveal in Finder / Lapis URL / <code>file-menu</code> plugins</td>
+      <td>Consumer via <code>buildItemMenu</code></td>
+    </tr>
+    <tr>
+      <td>Empty-left-dock bootstrap leaf + host commands</td>
+      <td>Consumer / host plugin</td>
+    </tr>
+  </tbody>
+</table>
 
 ## Controller and adapters
 
-```ts
+<Source
+  language="ts"
+  code={`
 new ExplorerController({
   tree,
   actions,
@@ -66,12 +109,13 @@ controller.revealPath(path);
 controller.setSelectedPath(path);
 controller.refresh();
 controller.setLoading(false);
-```
+`}
+/>
 
-`createMemoryExplorerAdapter(seed)` returns `{ tree, actions, selection, preferences }`
-for stories and unit tests. `createExplorerViewDefinition` / `EXPLORER_VIEW_TYPE`
-(`"file:explorer"`) help hosts register a leaf later without baking plugin code
-into design-core.
+`createMemoryExplorerAdapter(seed)` returns an object with `tree`, `actions`,
+`selection`, and `preferences` for stories and unit tests.
+`createExplorerViewDefinition` / `EXPLORER_VIEW_TYPE` (`"file:explorer"`) help
+hosts register a leaf later without baking plugin code into design-core.
 
 ## Surface anatomy
 
@@ -181,42 +225,139 @@ command ids for parity:
 
 ## Addressability
 
-| Attribute / class | Role |
-| --- | --- |
-| `data-ui-component="workspace-explorer"` | Root |
-| `data-path` | Row identity |
-| `data-active` | Selection |
-| `data-drop` | Folder drop target |
-| `is-flashing` | Reveal highlight |
-| `data-hint-group="file-explorer"` | Optional F-Mode targets |
-| `ui-workspace-explorer*` | BEM parts |
+<table>
+  <thead>
+    <tr>
+      <th>Attribute / class</th>
+      <th>Role</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>data-ui-component="workspace-explorer"</code></td>
+      <td>Root</td>
+    </tr>
+    <tr>
+      <td><code>data-path</code></td>
+      <td>Row identity</td>
+    </tr>
+    <tr>
+      <td><code>data-active</code></td>
+      <td>Selection</td>
+    </tr>
+    <tr>
+      <td><code>data-drop</code></td>
+      <td>Folder drop target</td>
+    </tr>
+    <tr>
+      <td><code>is-flashing</code></td>
+      <td>Reveal highlight</td>
+    </tr>
+    <tr>
+      <td><code>data-hint-group="file-explorer"</code></td>
+      <td>Optional F-Mode targets</td>
+    </tr>
+    <tr>
+      <td><code>ui-workspace-explorer*</code></td>
+      <td>BEM parts</td>
+    </tr>
+  </tbody>
+</table>
 
 ## Presentation tokens
 
 Override on an ancestor of the explorer surface:
 
-| Token | Default |
-| --- | --- |
-| `--ui-workspace-explorer-toolbar-height` | `var(--ui-workspace-sidebar-header-height)` |
-| `--ui-workspace-explorer-row-hover-background` | panel-action hover |
-| `--ui-workspace-explorer-row-active-background` | `--ui-workspace-selection` |
-| `--ui-workspace-explorer-drop-background` | accent wash |
-| `--ui-workspace-explorer-drop-foreground` | `--ui-workspace-accent` |
-| `--ui-workspace-explorer-drop-radius` | `var(--ui-workspace-radius-small)` |
-| `--ui-workspace-explorer-drop-padding-end` | `0.25rem` |
-| `--ui-workspace-explorer-toolbar-action-hover-background` | 14% foreground on panel (Lapis: `--sidebar-accent`) |
-| `--ui-workspace-explorer-toolbar-action-hover-foreground` | panel foreground |
-| `--ui-workspace-explorer-flash-ring` | `--ui-workspace-accent` |
-| `--ui-workspace-explorer-indent` | `0.75rem` |
-| `--ui-workspace-explorer-guide-width` | `1px` |
-| `--ui-workspace-explorer-guide-color` | 22% foreground wash |
-| `--ui-workspace-explorer-guide-gap` | `0.5rem` |
-| `--ui-workspace-explorer-font-family` | `--ui-workspace-font-sans` |
-| `--ui-workspace-explorer-font-size` | `0.8125rem` (13px; Lapis `--font-ui-small`) |
-| `--ui-workspace-explorer-row-height` | `1.75rem` |
-| `--ui-workspace-explorer-row-gap` | `0.125rem` |
-| `--ui-workspace-explorer-row-active-weight` | `700` |
-| `--ui-workspace-explorer-content-padding` | `0.5rem` (body inset; scrollbar flush) |
+<table>
+  <thead>
+    <tr>
+      <th>Token</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>--ui-workspace-explorer-toolbar-height</code></td>
+      <td><code>var(--ui-workspace-sidebar-header-height)</code></td>
+    </tr>
+    <tr>
+      <td><code>--ui-workspace-explorer-row-hover-background</code></td>
+      <td>panel-action hover</td>
+    </tr>
+    <tr>
+      <td><code>--ui-workspace-explorer-row-active-background</code></td>
+      <td><code>--ui-workspace-selection</code></td>
+    </tr>
+    <tr>
+      <td><code>--ui-workspace-explorer-drop-background</code></td>
+      <td>accent wash</td>
+    </tr>
+    <tr>
+      <td><code>--ui-workspace-explorer-drop-foreground</code></td>
+      <td><code>--ui-workspace-accent</code></td>
+    </tr>
+    <tr>
+      <td><code>--ui-workspace-explorer-drop-radius</code></td>
+      <td><code>var(--ui-workspace-radius-small)</code></td>
+    </tr>
+    <tr>
+      <td><code>--ui-workspace-explorer-drop-padding-end</code></td>
+      <td><code>0.25rem</code></td>
+    </tr>
+    <tr>
+      <td><code>--ui-workspace-explorer-toolbar-action-hover-background</code></td>
+      <td>14% foreground on panel (Lapis: <code>--sidebar-accent</code>)</td>
+    </tr>
+    <tr>
+      <td><code>--ui-workspace-explorer-toolbar-action-hover-foreground</code></td>
+      <td>panel foreground</td>
+    </tr>
+    <tr>
+      <td><code>--ui-workspace-explorer-flash-ring</code></td>
+      <td><code>--ui-workspace-accent</code></td>
+    </tr>
+    <tr>
+      <td><code>--ui-workspace-explorer-indent</code></td>
+      <td><code>0.75rem</code></td>
+    </tr>
+    <tr>
+      <td><code>--ui-workspace-explorer-guide-width</code></td>
+      <td><code>1px</code></td>
+    </tr>
+    <tr>
+      <td><code>--ui-workspace-explorer-guide-color</code></td>
+      <td>22% foreground wash</td>
+    </tr>
+    <tr>
+      <td><code>--ui-workspace-explorer-guide-gap</code></td>
+      <td><code>0.5rem</code></td>
+    </tr>
+    <tr>
+      <td><code>--ui-workspace-explorer-font-family</code></td>
+      <td><code>--ui-workspace-font-sans</code></td>
+    </tr>
+    <tr>
+      <td><code>--ui-workspace-explorer-font-size</code></td>
+      <td><code>0.8125rem</code> (13px; Lapis <code>--font-ui-small</code>)</td>
+    </tr>
+    <tr>
+      <td><code>--ui-workspace-explorer-row-height</code></td>
+      <td><code>1.75rem</code></td>
+    </tr>
+    <tr>
+      <td><code>--ui-workspace-explorer-row-gap</code></td>
+      <td><code>0.125rem</code></td>
+    </tr>
+    <tr>
+      <td><code>--ui-workspace-explorer-row-active-weight</code></td>
+      <td><code>700</code></td>
+    </tr>
+    <tr>
+      <td><code>--ui-workspace-explorer-content-padding</code></td>
+      <td><code>0.5rem</code> (body inset; scrollbar flush)</td>
+    </tr>
+  </tbody>
+</table>
 
 Nested folders draw a vertical indentation guide on
 `.ui-workspace-explorer__sublist` (`border-inline-start`) using the guide
@@ -243,8 +384,8 @@ When wiring `packages/workspace` file-explorer onto this family:
    `workspace.fileExplorer.autoRevealCurrentFile`.
 5. Use `buildItemMenu` for system path, Lapis URL, native open/reveal, and
    `workspace.dispatch("file-menu", …, "file-explorer")`.
-6. Mount `<WorkspaceExplorer {controller} />` from a thin `file:explorer` View;
-   forward `revealPath` from the View/commands.
+6. Mount `WorkspaceExplorer` with the host `controller` from a thin
+   `file:explorer` View; forward `revealPath` from the View/commands.
 7. Keep empty-left-dock bootstrap and “Opening vault” loading in the host
    plugin (`controller.setLoading`).
 
