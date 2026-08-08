@@ -457,8 +457,8 @@ workflow.
   committed baseline image was created or replaced in this slice.
 - About dialog actions now share semantic secondary and foreground tokens, the
   version action is labelled `Copy`, and the interaction story covers their
-  shared paint. The changed story is `visual-pending`; baselines remain
-  untouched.
+  distinct paint. `OK` uses the stronger secondary treatment. The changed story
+  is `visual-pending`; baselines remain untouched.
 
 ### Popout presentation
 

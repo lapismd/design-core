@@ -95,7 +95,7 @@
       <div class="ui-workspace-about__actions">
         <button
           type="button"
-          data-variant="secondary"
+          data-variant="secondary-strong"
           onclick={() => setOpen(false)}
         >
           OK

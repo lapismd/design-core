@@ -101,13 +101,20 @@
   border-radius: 999px;
 }
 
-.ui-workspace-about__actions button[data-variant="secondary"] {
-  border-color: var(--ui-workspace-secondary);
+.ui-workspace-about__actions button:is(
+    [data-variant="secondary"],
+    [data-variant="secondary-strong"]
+  ) {
   color: var(--ui-workspace-secondary-foreground);
-  background: var(--ui-workspace-secondary);
   transition:
     background-color 150ms ease,
+    border-color 150ms ease,
     color 150ms ease;
+}
+
+.ui-workspace-about__actions button[data-variant="secondary"] {
+  border-color: var(--ui-workspace-secondary);
+  background: var(--ui-workspace-secondary);
 }
 
 .ui-workspace-about__actions button[data-variant="secondary"]:hover {
@@ -115,6 +122,35 @@
   background: color-mix(
     in oklab,
     var(--ui-workspace-secondary) 85%,
+    var(--ui-workspace-secondary-foreground)
+  );
+  filter: none;
+}
+
+.ui-workspace-about__actions button[data-variant="secondary-strong"] {
+  border-color: color-mix(
+    in oklab,
+    var(--ui-workspace-secondary) 85%,
+    var(--ui-workspace-secondary-foreground)
+  );
+  background: color-mix(
+    in oklab,
+    var(--ui-workspace-secondary) 85%,
+    var(--ui-workspace-secondary-foreground)
+  );
+}
+
+.ui-workspace-about__actions
+  button[data-variant="secondary-strong"]:hover {
+  border-color: color-mix(
+    in oklab,
+    var(--ui-workspace-secondary) 70%,
+    var(--ui-workspace-secondary-foreground)
+  );
+  color: var(--ui-workspace-secondary-foreground);
+  background: color-mix(
+    in oklab,
+    var(--ui-workspace-secondary) 70%,
     var(--ui-workspace-secondary-foreground)
   );
   filter: none;

@@ -46,7 +46,9 @@
     await expect(canvas.queryByText("Copy Version")).not.toBeInTheDocument();
     const restingBackground = getComputedStyle(copy).backgroundColor;
     await expect(restingBackground).not.toBe("rgba(0, 0, 0, 0)");
-    await expect(getComputedStyle(ok).backgroundColor).toBe(restingBackground);
+    await expect(getComputedStyle(ok).backgroundColor).not.toBe(
+      restingBackground,
+    );
     await expect(getComputedStyle(ok).color).toBe(
       getComputedStyle(copy).color,
     );
