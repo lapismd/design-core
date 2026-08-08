@@ -67,6 +67,8 @@ export const workspaceTokenNames = {
   explorerRowActiveBackground: "--ui-workspace-explorer-row-active-background",
   explorerDropBackground: "--ui-workspace-explorer-drop-background",
   explorerDropForeground: "--ui-workspace-explorer-drop-foreground",
+  explorerDropRadius: "--ui-workspace-explorer-drop-radius",
+  explorerDropPaddingEnd: "--ui-workspace-explorer-drop-padding-end",
   explorerFlashRing: "--ui-workspace-explorer-flash-ring",
   explorerIndent: "--ui-workspace-explorer-indent",
   explorerGuideWidth: "--ui-workspace-explorer-guide-width",
@@ -150,6 +152,8 @@ export const workspaceTokenDefaults: Record<WorkspaceTokenKey, string> = {
   explorerDropBackground:
     "color-mix(in srgb, var(--ui-workspace-accent) 10%, transparent)",
   explorerDropForeground: "var(--ui-workspace-accent)",
+  explorerDropRadius: "var(--ui-workspace-radius-small)",
+  explorerDropPaddingEnd: "0.25rem",
   explorerFlashRing: "var(--ui-workspace-accent)",
   explorerIndent: "0.75rem",
   explorerGuideWidth: "1px",

@@ -172,7 +172,12 @@
 }
 
 .ui-workspace-explorer__folder[data-drop="true"] {
+  /* Lapis Collapsible uses rounded-sm on the drop wash; keep a little end
+     padding so the overlay isn’t flush with the last nested row. */
   z-index: 2;
+  box-sizing: border-box;
+  border-radius: var(--ui-workspace-explorer-drop-radius);
+  padding-block-end: var(--ui-workspace-explorer-drop-padding-end);
   color: var(--ui-workspace-explorer-drop-foreground);
   background: var(--ui-workspace-explorer-drop-background);
 }

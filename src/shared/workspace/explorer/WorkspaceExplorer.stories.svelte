@@ -422,6 +422,13 @@
     await fireEvent.dragEnter(folder, { dataTransfer });
     await waitFor(() => {
       expect(dragFixture.controller.dropTargetPath).toBe("empty");
+      const dropFolder = canvasElement.querySelector(
+        '.ui-workspace-explorer__folder[data-drop="true"]',
+      ) as HTMLElement;
+      expect(dropFolder).not.toBeNull();
+      const dropStyle = getComputedStyle(dropFolder);
+      expect(Number.parseFloat(dropStyle.borderRadius)).toBeGreaterThan(0);
+      expect(Number.parseFloat(dropStyle.paddingBottom)).toBeGreaterThan(0);
     });
     await fireEvent.dragOver(folder, { dataTransfer });
     await fireEvent.drop(folder, { dataTransfer });
