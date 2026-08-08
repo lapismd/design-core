@@ -93,6 +93,7 @@ Compatibility aliases are removed only through an explicit reviewed slice.
 | Notifications                     | optional plugin package                                    | `plugins/notifications/`   | Complete            | Pass | Pass      | Candidate pass; review pending               | Pending |
 | Demo and reference                | demos, stories, references                                 | `demo/`, `reference/`      | Complete            | Pass | Pass      | Canonical and candidate pass                 | Pending |
 | Explorer panel                    | lapis `feature/file-explorer`                              | `explorer/`                | Complete            | Pass | Pass      | Pending (`visual-pending`)                   | Pending |
+| Startup progress and failure      | lapis `components/app/App.svelte`                          | `startup/`                 | Complete            | N/A  | Pass      | Candidate baselines; review pending          | Pending |
 | Lapis source removal              | `lapis-notes/app-shell`                                    | separate Changeyard change | Blocked on approval | N/A  | N/A       | N/A                                          | Pending |
 
 ## Validation cadence
@@ -111,6 +112,20 @@ requires explicit human approval and the repository's guarded Visual Delta
 workflow.
 
 ## Validation evidence
+
+### Startup progress and failure
+
+- `pnpm check:no-tailwind`: pass.
+- `pnpm check`: pass with zero Svelte errors or warnings.
+- Focused Storybook interaction and accessibility tests: 2 pass.
+- `pnpm test:unit`: 474 pass.
+- `pnpm test:storybook`: 519 pass.
+- `pnpm build-storybook`: pass.
+- `pnpm workspace:visual:audit`: pass with zero contract errors.
+- Pinned Chromium candidate baselines created for loading and bounded failure;
+  both remain `visual-pending` for human review.
+- `pnpm checks`: reaches nine pre-existing Prettier findings in other workspace
+  files; no startup file is listed.
 
 ### Layer contract and tokens
 

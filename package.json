@@ -224,6 +224,7 @@
     "./workspace/sidebar-toggle": "./src/shared/workspace/sidebar-toggle/index.ts",
     "./workspace/split": "./src/shared/workspace/split/index.ts",
     "./workspace/stacked-tabs": "./src/shared/workspace/stacked-tabs/index.ts",
+    "./workspace/startup": "./src/shared/workspace/startup/index.ts",
     "./workspace/status-bar": "./src/shared/workspace/status-bar/index.ts",
     "./workspace/status-item": "./src/shared/workspace/status-item/index.ts",
     "./workspace/tabs": "./src/shared/workspace/tabs/index.ts",

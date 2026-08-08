@@ -136,4 +136,27 @@
   --ui-workspace-explorer-row-active-weight: 700;
   /* Insets tree content only (Lapis Sidebar.Group p-2); scrollbar stays flush. */
   --ui-workspace-explorer-content-padding: 0.5rem;
+  --ui-workspace-startup-background: var(--ui-workspace-background);
+  --ui-workspace-startup-max-width: 32rem;
+  --ui-workspace-startup-padding: 1.5rem;
+  --ui-workspace-startup-title-size: 1.125rem;
+  --ui-workspace-startup-progress-height: 0.5rem;
+  --ui-workspace-startup-progress-background: color-mix(
+    in srgb,
+    var(--ui-workspace-accent) 20%,
+    transparent
+  );
+  --ui-workspace-startup-task-background: var(--ui-workspace-background);
+  --ui-workspace-startup-task-active-background: color-mix(
+    in srgb,
+    var(--ui-workspace-accent) 5%,
+    var(--ui-workspace-background)
+  );
+  --ui-workspace-startup-task-complete-background: color-mix(
+    in srgb,
+    var(--ui-workspace-muted) 40%,
+    var(--ui-workspace-background)
+  );
+  --ui-workspace-startup-failure-background: var(--ui-workspace-background);
+  --ui-workspace-startup-failure-padding: 1.5rem;
 }

@@ -84,6 +84,18 @@ export const workspaceTokenNames = {
   explorerRowGap: "--ui-workspace-explorer-row-gap",
   explorerRowActiveWeight: "--ui-workspace-explorer-row-active-weight",
   explorerContentPadding: "--ui-workspace-explorer-content-padding",
+  startupBackground: "--ui-workspace-startup-background",
+  startupMaxWidth: "--ui-workspace-startup-max-width",
+  startupPadding: "--ui-workspace-startup-padding",
+  startupTitleSize: "--ui-workspace-startup-title-size",
+  startupProgressHeight: "--ui-workspace-startup-progress-height",
+  startupProgressBackground: "--ui-workspace-startup-progress-background",
+  startupTaskBackground: "--ui-workspace-startup-task-background",
+  startupTaskActiveBackground: "--ui-workspace-startup-task-active-background",
+  startupTaskCompleteBackground:
+    "--ui-workspace-startup-task-complete-background",
+  startupFailureBackground: "--ui-workspace-startup-failure-background",
+  startupFailurePadding: "--ui-workspace-startup-failure-padding",
 } as const;
 
 export type WorkspaceTokenKey = keyof typeof workspaceTokenNames;
@@ -173,4 +185,18 @@ export const workspaceTokenDefaults: Record<WorkspaceTokenKey, string> = {
   explorerRowGap: "0.125rem",
   explorerRowActiveWeight: "700",
   explorerContentPadding: "0.5rem",
+  startupBackground: "var(--ui-workspace-background)",
+  startupMaxWidth: "32rem",
+  startupPadding: "1.5rem",
+  startupTitleSize: "1.125rem",
+  startupProgressHeight: "0.5rem",
+  startupProgressBackground:
+    "color-mix(in srgb, var(--ui-workspace-accent) 20%, transparent)",
+  startupTaskBackground: "var(--ui-workspace-background)",
+  startupTaskActiveBackground:
+    "color-mix(in srgb, var(--ui-workspace-accent) 5%, var(--ui-workspace-background))",
+  startupTaskCompleteBackground:
+    "color-mix(in srgb, var(--ui-workspace-muted) 40%, var(--ui-workspace-background))",
+  startupFailureBackground: "var(--ui-workspace-background)",
+  startupFailurePadding: "1.5rem",
 };

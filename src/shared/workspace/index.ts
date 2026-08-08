@@ -39,6 +39,7 @@ export {
 export * from "./sidebar-toggle/index.js";
 export * from "./split/index.js";
 export * from "./stacked-tabs/index.js";
+export * from "./startup/index.js";
 export * from "./status-bar/index.js";
 export { WorkspaceStatusItem as WorkspaceStatusItemComponent } from "./status-item/index.js";
 export * from "./tabs/index.js";

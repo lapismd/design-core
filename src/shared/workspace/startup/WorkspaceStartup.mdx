@@ -1,0 +1,30 @@
+import { Meta, Canvas, Source } from "@storybook/addon-docs/blocks";
+import * as Stories from "./WorkspaceStartup.stories.svelte";
+import * as exampleSources from "./WorkspaceStartup.example-sources.js";
+
+<Meta of={Stories} />
+
+# Workspace Startup
+
+`WorkspaceStartup` presents application-owned startup tasks and failures. It
+does not run tasks, load plugins, open vaults, or decide recovery policy.
+
+Import from `@lapismd/design-core/workspace/startup`.
+
+<Source language="ts" code={exampleSources.Loading} />
+
+## Loading
+
+Provide a stable task list and change each task status as the host advances.
+The component derives the current message, step number, and progress value.
+
+<Canvas of={Stories.LoadingPlugins} />
+
+## Failure
+
+Set the failed task and provide a generic failure record. Recovery actions are
+ordinary `WorkspaceAction` values owned by the host.
+
+<Canvas of={Stories.StartupFailure} />
+
+<Source language="ts" code={exampleSources.Failure} />
