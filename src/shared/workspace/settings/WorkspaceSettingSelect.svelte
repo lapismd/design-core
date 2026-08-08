@@ -51,6 +51,9 @@
     ...rest
   }: WorkspaceSettingSelectProps = $props();
 
+  const uid = $props.id();
+  let optionsId = $derived(id ? `${id}-options` : `${uid}-options`);
+
   let selectedValue = $state<string | string[] | undefined>();
 
   $effect(() => {
@@ -75,12 +78,12 @@
     {id}
     role="combobox"
     aria-label={ariaLabel}
-    aria-controls={id ? `${id}-options` : undefined}
+    aria-controls={optionsId}
   >
     <span class="ui-workspace-setting-select__value">{triggerContent}</span>
   </Select.Trigger>
   <Select.Content
-    id={id ? `${id}-options` : undefined}
+    id={optionsId}
     aria-label={ariaLabel ? `${ariaLabel} options` : undefined}
   >
     <Select.Group>
