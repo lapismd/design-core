@@ -7,9 +7,26 @@ import viteConfig from "./vite.config";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
+// Keep axe annotations available to the browser runner so preview
+// `parameters.a11y.test: "error"` fails `pnpm test:storybook` on violations.
+const storybookA11yDependencies = [
+  "aria-query",
+  "react",
+  "react-dom",
+  "react-dom/client",
+  "@storybook/addon-a11y/preview",
+  "@storybook/svelte-vite",
+];
+
 export default mergeConfig(
   viteConfig,
   defineConfig({
+    optimizeDeps: {
+      include: storybookA11yDependencies,
+    },
+    ssr: {
+      noExternal: ["aria-query"],
+    },
     test: {
       projects: [
         {
@@ -35,6 +52,12 @@ export default mergeConfig(
               configDir: path.join(dirname, ".storybook"),
             }),
           ],
+          optimizeDeps: {
+            include: storybookA11yDependencies,
+          },
+          ssr: {
+            noExternal: ["aria-query"],
+          },
           test: {
             name: "storybook",
             browser: {
