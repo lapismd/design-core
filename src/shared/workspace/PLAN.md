@@ -868,6 +868,9 @@ workflow.
   resize behavior, and maximize/restore. Pixel-bearing stories remain
   `visual-pending`; visual comparison and baseline updates are deferred by the
   current implementation request.
+- Fixed the integrated grid row to own the configured panel height rather than
+  auto-sizing from the panel's percentage cap. The AppShell story now asserts
+  that keyboard resize changes the rendered height before restoring it.
 
 ## Completion gate
 

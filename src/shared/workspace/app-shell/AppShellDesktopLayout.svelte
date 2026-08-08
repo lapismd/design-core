@@ -17,6 +17,9 @@
   let resolvedAlignment = $derived(
     bottomPanelAlignment ?? controller.workspace.bottomPanelAlignment,
   );
+  let bottomPanelHeight = $derived(
+    `${controller.renderer.layout.bottom.size}px`,
+  );
 </script>
 
 <div
@@ -24,6 +27,7 @@
   data-ui-component="app-shell-desktop-layout"
   data-ui-part="desktop-layout"
   data-bottom-panel-alignment={resolvedAlignment}
+  style:--ui-app-shell-bottom-panel-height={bottomPanelHeight}
 >
   {@render children?.()}
 </div>

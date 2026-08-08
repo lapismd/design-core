@@ -1,6 +1,6 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, userEvent, waitFor, within } from "storybook/test";
+  import { expect, fireEvent, userEvent, waitFor, within } from "storybook/test";
   import {
     createDefaultWorkspaceLayout,
     createWorkspaceSplit,
@@ -298,15 +298,21 @@
   name="Bottom panel alignments"
   tags={["visual-pending"]}
   play={async ({ canvas, canvasElement }) => {
+    alignmentApp.renderer.setSidebarOpen("left", true);
+    alignmentApp.renderer.setSidebarOpen("right", true);
+    alignmentApp.renderer.setSidebarSize("left", 296);
+    alignmentApp.renderer.setSidebarSize("right", 304);
+    alignmentApp.workspace.setBottomPanelOpen(true);
+    alignmentApp.workspace.setBottomPanelSize(240);
     const desktopLayout = canvasElement.querySelector<HTMLElement>(
       '[data-ui-component="app-shell-desktop-layout"]',
     )!;
     const main = canvasElement.querySelector<HTMLElement>(
       '[data-ui-component="app-shell-main"]',
     )!;
-    const leftSidebar = canvas.getByLabelText("Left sidebar");
-    let rightSidebar = canvas.getByLabelText("Right sidebar");
-    const bottomPanel = canvas.getByLabelText("Bottom panel");
+    const leftSidebar = await canvas.findByLabelText("Left sidebar");
+    let rightSidebar = await canvas.findByLabelText("Right sidebar");
+    const bottomPanel = await canvas.findByLabelText("Bottom panel");
 
     const expectClose = (actual: number, expected: number) =>
       expect(Math.abs(actual - expected)).toBeLessThan(1);
@@ -329,6 +335,9 @@
       expectClose(panelRect.right, end.getBoundingClientRect().right);
     };
 
+    await waitFor(() =>
+      expectClose(bottomPanel.getBoundingClientRect().height, 240),
+    );
     await assertAlignment("center", main, main);
     await assertAlignment("left", leftSidebar, main);
     expectClose(
@@ -354,6 +363,24 @@
     );
     await assertAlignment("justify", leftSidebar, rightSidebar);
 
+    const resizeRail = within(bottomPanel).getByRole("button", {
+      name: "Resize bottom panel",
+    });
+    const panelHeightBeforeResize = bottomPanel.getBoundingClientRect().height;
+    await fireEvent.keyDown(resizeRail, { key: "ArrowUp" });
+    await waitFor(() =>
+      expect(bottomPanel.getBoundingClientRect().height).toBeGreaterThan(
+        panelHeightBeforeResize + 9,
+      ),
+    );
+    await fireEvent.keyDown(resizeRail, { key: "ArrowDown" });
+    await waitFor(() =>
+      expectClose(
+        bottomPanel.getBoundingClientRect().height,
+        panelHeightBeforeResize,
+      ),
+    );
+
     await userEvent.click(
       canvas.getByRole("button", { name: "Close right sidebar" }),
     );
@@ -369,7 +396,9 @@
         name: "Maximize bottom panel",
       }),
     );
-    await expect(bottomPanel).toHaveAttribute("data-maximized", "true");
+    await waitFor(() =>
+      expect(bottomPanel).toHaveAttribute("data-maximized", "true"),
+    );
     expectClose(
       bottomPanel.getBoundingClientRect().top,
       desktopLayout.getBoundingClientRect().top,
@@ -382,6 +411,9 @@
       within(bottomPanel).getByRole("button", {
         name: "Restore bottom panel",
       }),
+    );
+    await waitFor(() =>
+      expect(bottomPanel).toHaveAttribute("data-maximized", "false"),
     );
     await assertAlignment("center", main, main);
   }}

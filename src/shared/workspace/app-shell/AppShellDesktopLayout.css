@@ -6,7 +6,7 @@
   min-height: 0;
   flex: 1 1 auto;
   grid-template-columns: auto minmax(0, 1fr) auto;
-  grid-template-rows: minmax(0, 1fr) auto;
+  grid-template-rows: minmax(0, 1fr) 0;
   overflow: hidden;
 }
 
@@ -28,6 +28,20 @@
 .ui-app-shell__desktop-layout > .ui-workspace-bottom-panel {
   grid-column: 2;
   grid-row: 2;
+  height: 100%;
+  min-height: 0;
+  max-height: none;
+}
+
+.ui-app-shell__desktop-layout:has(
+    > .ui-workspace-bottom-panel:not([data-maximized="true"])
+  ) {
+  grid-template-rows:
+    minmax(0, 1fr)
+    min(
+      var(--ui-app-shell-bottom-panel-height, 15rem),
+      var(--ui-workspace-bottom-panel-max-height)
+    );
 }
 
 .ui-app-shell__desktop-layout[data-bottom-panel-alignment="left"]
