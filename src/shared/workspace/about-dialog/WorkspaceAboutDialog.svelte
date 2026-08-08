@@ -93,13 +93,19 @@
         <p class="ui-workspace-about__copyright">{info.copyright}</p>
       {/if}
       <div class="ui-workspace-about__actions">
-        <button type="button" onclick={() => setOpen(false)}>OK</button>
         <button
           type="button"
-          data-variant="primary"
+          data-variant="secondary"
+          onclick={() => setOpen(false)}
+        >
+          OK
+        </button>
+        <button
+          type="button"
+          data-variant="secondary"
           onclick={() => void copy(info.version, "version")}
         >
-          Copy Version
+          Copy
         </button>
       </div>
     </div>

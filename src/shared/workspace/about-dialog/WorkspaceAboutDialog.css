@@ -101,10 +101,23 @@
   border-radius: 999px;
 }
 
-.ui-workspace-about__actions button[data-variant="primary"] {
-  border-color: var(--ui-workspace-accent);
-  color: var(--ui-workspace-about-primary-foreground);
-  background: var(--ui-workspace-accent);
+.ui-workspace-about__actions button[data-variant="secondary"] {
+  border-color: var(--ui-workspace-secondary);
+  color: var(--ui-workspace-secondary-foreground);
+  background: var(--ui-workspace-secondary);
+  transition:
+    background-color 150ms ease,
+    color 150ms ease;
+}
+
+.ui-workspace-about__actions button[data-variant="secondary"]:hover {
+  color: var(--ui-workspace-secondary-foreground);
+  background: color-mix(
+    in oklab,
+    var(--ui-workspace-secondary) 80%,
+    transparent
+  );
+  filter: none;
 }
 
 .ui-workspace-about button:hover {

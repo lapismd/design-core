@@ -27,6 +27,8 @@
   );
   --ui-workspace-accent: var(--primary);
   --ui-workspace-accent-foreground: var(--primary-foreground);
+  --ui-workspace-secondary: var(--secondary);
+  --ui-workspace-secondary-foreground: var(--secondary-foreground);
   --ui-workspace-about-primary-foreground: color-mix(
     in srgb,
     var(--ui-workspace-accent) 15%,

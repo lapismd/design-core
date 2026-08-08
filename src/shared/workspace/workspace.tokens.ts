@@ -19,6 +19,8 @@ export const workspaceTokenNames = {
   borderStrong: "--ui-workspace-border-strong",
   accent: "--ui-workspace-accent",
   accentForeground: "--ui-workspace-accent-foreground",
+  secondary: "--ui-workspace-secondary",
+  secondaryForeground: "--ui-workspace-secondary-foreground",
   aboutPrimaryForeground: "--ui-workspace-about-primary-foreground",
   selection: "--ui-workspace-selection",
   destructive: "--ui-workspace-destructive",
@@ -82,6 +84,8 @@ export const workspaceTokenDefaults: Record<WorkspaceTokenKey, string> = {
   borderStrong: "color-mix(in srgb, var(--foreground) 18%, var(--border))",
   accent: "var(--primary)",
   accentForeground: "var(--primary-foreground)",
+  secondary: "var(--secondary)",
+  secondaryForeground: "var(--secondary-foreground)",
   aboutPrimaryForeground:
     "color-mix(in srgb, var(--ui-workspace-accent) 15%, #000)",
   selection: "color-mix(in srgb, var(--primary) 14%, transparent)",

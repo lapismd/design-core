@@ -31,16 +31,25 @@
 
 <Story
   name="Application information"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   play={async ({ canvas }) => {
     await waitFor(() => expect(aboutApp.ready).toBe(true));
     await userEvent.click(
       canvas.getByRole("button", { name: "About Workspace Studio" }),
     );
-    await expect(
-      canvas.getByRole("dialog", { name: "Workspace Studio" }),
-    ).toBeVisible();
+    const dialog = canvas.getByRole("dialog", { name: "Workspace Studio" });
+    await expect(dialog).toBeVisible();
     await expect(canvas.getByText("Version 1.12.3")).toBeVisible();
+
+    const ok = canvas.getByRole("button", { name: "OK" });
+    const copy = canvas.getByRole("button", { name: "Copy" });
+    await expect(canvas.queryByText("Copy Version")).not.toBeInTheDocument();
+    const restingBackground = getComputedStyle(copy).backgroundColor;
+    await expect(restingBackground).not.toBe("rgba(0, 0, 0, 0)");
+    await expect(getComputedStyle(ok).backgroundColor).toBe(restingBackground);
+    await expect(getComputedStyle(ok).color).toBe(
+      getComputedStyle(copy).color,
+    );
   }}
   parameters={{
     visualDelta: {
