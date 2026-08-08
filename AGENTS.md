@@ -110,6 +110,14 @@ folder. Full layer table: `pnpm ui guide layers`. Styling and tokens:
   as every visual component. Point `defineMeta` at the actual component, give
   the story group a clear catalog title, and give each story a human-readable
   scenario name.
+- **Docs Show code must be consumer-usable.** Auto-extracted story templates
+  often show harness only (`{@render …}`, `*-story-frame` wrappers, fixtures).
+  Colocate `ComponentName.example-sources.ts` with copy-pasteable public imports
+  and set `parameters.docs.source` (`code`, `language`, `type: "code"`) on
+  `defineMeta` and/or each `Story` — same pattern as shadcn `*.example-sources`
+  and Workspace Explorer. Prefer object-literal `parameters={{ … }}` (CSF
+  extraction). Reuse the same `Basic` (or story-specific) string from MDX
+  `<Source>` when present. Details: `pnpm ui guide testing`.
 - Type every public prop and add short JSDoc to non-obvious props, events, and
   state.
 - `UI Forms/Guidance` is the catalog's high-level form decision guide. Link

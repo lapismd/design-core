@@ -17,20 +17,32 @@ with the catalog — do not invent props or skip visual compare.
 1. **Stories** — colocated `ComponentName.stories.svelte` in the same change.
    Interactive controls need play functions that assert a visible/accessible
    result (and callbacks when passed).
-2. **Live catalog** — `pnpm storybook` or `pnpm storybook:ui` (polling). Do not
+2. **Docs Show code** — Canvas **Show code** must show copy-pasteable consumer
+   usage (public `@lapismd/design-core/…` imports + mount), not story harness.
+   Auto-extraction from Svelte CSF often emits `{@render …}`, fixture helpers,
+   or `*-story-frame` wrappers. For every new family (and when touching docs):
+   - Colocate `ComponentName.example-sources.ts` exporting at least `Basic`
+     (and story-specific snippets when the public API differs).
+   - Set `parameters.docs.source` with `code`, `language` (`ts` when the snippet
+     includes `<script>`), and `type: "code"` on `defineMeta` and/or each
+     `Story`. Use an **object literal** `parameters={{ … }}` so CSF picks it up;
+     do not hide the object behind a helper call.
+   - Follow shadcn `*.example-sources` / Workspace Explorer. Reuse the same
+     string from MDX `<Source code={…}>` when the docs page has a Usage block.
+3. **Live catalog** — `pnpm storybook` or `pnpm storybook:ui` (polling). Do not
    invoke `storybook dev` directly.
-3. **Story tests** — Storybook Vitest / Storybook MCP `run-story-tests` while
+4. **Story tests** — Storybook Vitest / Storybook MCP `run-story-tests` while
    iterating. Prefer focused runs, then a broader pass before handoff.
-4. **Visual compare** — `pnpm test:visual` (compare only; never writes
+5. **Visual compare** — `pnpm test:visual` (compare only; never writes
    baselines). Inspect expected/actual/diff or `pnpm test:visual:report` on
    failure.
-5. **Before commit** — `pnpm checks` (fmt, `svelte-check --fail-on-warnings`,
+6. **Before commit** — `pnpm checks` (fmt, `svelte-check --fail-on-warnings`,
    unit, storybook, static build, visual). Shorter: `pnpm storybook:check`.
    Vite / Storybook also fail transforms on first-party Svelte compiler
    warnings (`svelte.config.js` `onwarn`), except known-safe noise (`*`
    unused selectors; global-only styles on bits-ui/shadcn wrappers with
    no scopable HTML). Warnings from `node_modules` are logged only.
-6. **Commit** — record the verified slice immediately (see `pnpm ui guide vcs`).
+7. **Commit** — record the verified slice immediately (see `pnpm ui guide vcs`).
    Prefer `jj commit` when Jujutsu is available; otherwise use Git.
 
 ## Visual baselines
