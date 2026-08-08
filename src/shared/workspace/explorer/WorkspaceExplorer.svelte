@@ -132,8 +132,7 @@
       await controller.importExternalFiles(folderPath, files);
       return;
     }
-    const path =
-      event.dataTransfer.getData("text/plain") || draggingPath || "";
+    const path = event.dataTransfer.getData("text/plain") || draggingPath || "";
     if (!path || path === folderPath) return;
     if (folderPath && path.startsWith(`${folderPath}/`)) return;
     await controller.moveNode(path, folderPath);
@@ -493,7 +492,9 @@
               </Button>
             {/snippet}
           </Tooltip.Trigger>
-          <Tooltip.Content side="bottom">{labels.toggleCollapse}</Tooltip.Content>
+          <Tooltip.Content side="bottom"
+            >{labels.toggleCollapse}</Tooltip.Content
+          >
         </Tooltip.Root>
       </div>
     </Tooltip.Provider>
