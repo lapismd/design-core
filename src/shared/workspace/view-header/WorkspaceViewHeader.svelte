@@ -36,6 +36,7 @@
       controller.updateViewState(tab.id, state),
   });
   let chrome = $derived(definition?.getChrome?.(context) ?? {});
+  let chromeLabel = $derived((chrome.title ?? tab.title) || tab.id);
   let menuOpen = $state(false);
   let menu = $state(new WorkspaceMenu());
 
@@ -56,7 +57,10 @@
   data-ui-part="root"
   data-workspace-view-header={tab.id}
 >
-  <nav class="ui-workspace-view-header__navigation" aria-label="View history">
+  <nav
+    class="ui-workspace-view-header__navigation"
+    aria-label={`View history: ${chromeLabel}`}
+  >
     <button
       type="button"
       class="ui-workspace-view-header__button"
@@ -100,7 +104,7 @@
       <ol
         class="ui-workspace-view-header__breadcrumbs"
         data-ui-part="breadcrumbs"
-        aria-label="Breadcrumb"
+        aria-label={`Breadcrumb: ${chromeLabel}`}
       >
         {#each chrome.breadcrumbs as breadcrumb, index (breadcrumb.id)}
           {#if index > 0}

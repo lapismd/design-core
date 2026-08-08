@@ -9,6 +9,12 @@ The view header consumes `WorkspaceViewDefinition.getChrome()` and the shared
 pane-menu builder. Applications contribute serializable breadcrumbs, history
 callbacks, header actions, and menu items without owning shell markup.
 
+For file views, contribute parent-path segments through
+`WorkspaceViewChrome.breadcrumbs` (filename stays in `title`). History uses
+`canGoBack` / `canGoForward` with `onGoBack` / `onGoForward`. The header title
+is display-only in this surface; editable rename belongs in view content (for
+example an inline filename title) when `showInlineTitle` is enabled.
+
 <Canvas of={Stories.BreadcrumbsActionsAndPaneMenu} />
 
 <Controls of={Stories.BreadcrumbsActionsAndPaneMenu} />

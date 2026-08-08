@@ -153,7 +153,12 @@ export interface WorkspaceAction {
 }
 
 export interface WorkspaceViewChrome {
+  /** Display title for the tab title bar (not contenteditable). */
   title?: string;
+  /**
+   * Parent-path segments for the open resource. Prefer omitting the leaf
+   * filename here; keep that in `title` / view content.
+   */
   breadcrumbs?: WorkspaceBreadcrumb[];
   canGoBack?: boolean;
   canGoForward?: boolean;
