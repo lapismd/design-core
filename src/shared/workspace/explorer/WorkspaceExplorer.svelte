@@ -100,25 +100,28 @@
   }
 
   function onDragEnter(event: DragEvent, folderPath: string) {
+    event.stopPropagation();
     const current = event.currentTarget as HTMLElement;
     if (current.contains(event.relatedTarget as Node)) return;
     controller.dropTargetPath = folderPath;
   }
 
   function onDragLeave(event: DragEvent) {
-    const current = event.currentTarget as HTMLElement;
-    if (current.contains(event.relatedTarget as Node)) return;
-    controller.dropTargetPath = null;
+    // Row leave does not clear the target — body/folder enter handlers own it.
+    event.stopPropagation();
   }
 
   function onDragOver(event: DragEvent, folderPath: string) {
     event.preventDefault();
+    event.stopPropagation();
     if (event.dataTransfer) event.dataTransfer.dropEffect = "move";
-    controller.setExpanded(folderPath, true);
+    if (folderPath) controller.setExpanded(folderPath, true);
+    controller.dropTargetPath = folderPath;
   }
 
   async function onDrop(event: DragEvent, folderPath: string) {
     event.preventDefault();
+    event.stopPropagation();
     controller.dropTargetPath = null;
     const draggingPath = controller.draggingPath;
     controller.draggingPath = null;
@@ -130,10 +133,35 @@
     }
     const path =
       event.dataTransfer.getData("text/plain") || draggingPath || "";
-    if (!path || path === folderPath || path.startsWith(`${folderPath}/`)) {
-      return;
-    }
+    if (!path || path === folderPath) return;
+    if (folderPath && path.startsWith(`${folderPath}/`)) return;
     await controller.moveNode(path, folderPath);
+  }
+
+  function onBodyPointerDown(event: MouseEvent) {
+    const target = event.target as HTMLElement | null;
+    if (!target) return;
+    if (target.closest("[data-path], .ui-workspace-explorer__row")) return;
+    controller.selectRoot();
+  }
+
+  function onBodyDragEnter(event: DragEvent) {
+    const current = event.currentTarget as HTMLElement;
+    if (current.contains(event.relatedTarget as Node)) return;
+    controller.dropTargetPath = "";
+  }
+
+  function onBodyDragLeave(event: DragEvent) {
+    const current = event.currentTarget as HTMLElement;
+    if (current.contains(event.relatedTarget as Node)) return;
+    controller.dropTargetPath = null;
+  }
+
+  function onBodyDragOver(event: DragEvent) {
+    event.preventDefault();
+    if (event.dataTransfer) event.dataTransfer.dropEffect = "move";
+    if ((event.target as HTMLElement | null)?.closest("[data-path]")) return;
+    controller.dropTargetPath = "";
   }
 
   function rowClass(node: ExplorerNode): string {
@@ -431,7 +459,16 @@
     <ContextMenu.Root>
       <ContextMenu.Trigger>
         {#snippet child({ props })}
-          <div class="ui-workspace-explorer__body" {...props}>
+          <div
+            class="ui-workspace-explorer__body"
+            {...props}
+            data-drop={controller.dropTargetPath === "" ? "true" : undefined}
+            onpointerdown={onBodyPointerDown}
+            ondragenter={onBodyDragEnter}
+            ondragleave={onBodyDragLeave}
+            ondragover={onBodyDragOver}
+            ondrop={(event) => void onDrop(event, "")}
+          >
             <div
               class="ui-workspace-explorer__group-label"
               data-ui-part="group-label"

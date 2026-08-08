@@ -137,6 +137,11 @@ export class ExplorerController {
     this.selectedPath = path;
   }
 
+  /** Clear item selection so creates/drops target the vault root. */
+  selectRoot(): void {
+    this.selectedPath = "";
+  }
+
   setExpanded(path: string, open: boolean): void {
     if (open) this.expandedPaths.add(path);
     else this.expandedPaths.delete(path);
@@ -251,7 +256,9 @@ export class ExplorerController {
 
   async moveNode(path: string, destinationFolderPath: string): Promise<void> {
     await this.#actions.move(path, destinationFolderPath);
-    this.expandedPaths.add(destinationFolderPath);
+    if (destinationFolderPath) {
+      this.expandedPaths.add(destinationFolderPath);
+    }
     await this.refresh();
   }
 

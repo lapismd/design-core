@@ -129,11 +129,13 @@
   const autoRevealFixture = mountExplorer({ autoReveal: false });
   const createFileFixture = mountExplorer();
   const createFolderFixture = mountExplorer();
+  const createAtRootFixture = mountExplorer();
   const copyPathFixture = mountExplorer();
   const sortFixture = mountExplorer();
   const renameFixture = mountExplorer();
   const collapseFixture = mountExplorer();
   const dragFixture = mountExplorer();
+  const dragToRootFixture = mountExplorer();
   const menuExtFixture = mountExplorer({
     extensionLog: { value: "" },
   });
@@ -217,6 +219,38 @@
 >
   {#snippet template()}
     {@render Panel(createFileFixture.controller)}
+  {/snippet}
+</Story>
+
+<Story
+  name="Empty space selects root for create"
+  tags={["visual-pending"]}
+  play={async ({ canvasElement }) => {
+    const { controller } = createAtRootFixture;
+    controller.revealPath("notes/alpha.md");
+    await waitFor(() => {
+      expect(controller.selectedPath).toBe("notes/alpha.md");
+    });
+    const body = canvasElement.querySelector(
+      ".ui-workspace-explorer__body",
+    ) as HTMLElement;
+    await fireEvent.pointerDown(body);
+    expect(controller.selectedPath).toBe("");
+    expect(controller.parentPathForCreate()).toBe("");
+    const canvas = within(canvasElement);
+    await userEvent.click(canvas.getByRole("button", { name: "Create File" }));
+    await waitFor(() => {
+      expect(
+        canvasElement.querySelector('[data-path="Untitled.md"]'),
+      ).not.toBeNull();
+    });
+    expect(
+      canvasElement.querySelector('[data-path="notes/Untitled.md"]'),
+    ).toBeNull();
+  }}
+>
+  {#snippet template()}
+    {@render Panel(createAtRootFixture.controller)}
   {/snippet}
 </Story>
 
@@ -441,6 +475,49 @@
 >
   {#snippet template()}
     {@render Panel(dragFixture.controller)}
+  {/snippet}
+</Story>
+
+<Story
+  name="Drag file onto empty space moves to root"
+  tags={["visual-pending"]}
+  play={async ({ canvasElement }) => {
+    const { controller } = dragToRootFixture;
+    controller.setExpanded("notes", true);
+    await controller.moveNode("readme.md", "notes");
+    await waitFor(() => {
+      expect(
+        canvasElement.querySelector('[data-path="notes/readme.md"]'),
+      ).not.toBeNull();
+    });
+    const file = canvasElement.querySelector(
+      '[data-path="notes/readme.md"]',
+    ) as HTMLElement;
+    const body = canvasElement.querySelector(
+      ".ui-workspace-explorer__body",
+    ) as HTMLElement;
+    const dataTransfer = new DataTransfer();
+    dataTransfer.setData("text/plain", "notes/readme.md");
+    await fireEvent.dragStart(file, { dataTransfer });
+    await fireEvent.dragEnter(body, { dataTransfer });
+    await waitFor(() => {
+      expect(controller.dropTargetPath).toBe("");
+      expect(body.getAttribute("data-drop")).toBe("true");
+    });
+    await fireEvent.dragOver(body, { dataTransfer });
+    await fireEvent.drop(body, { dataTransfer });
+    await waitFor(() => {
+      expect(
+        canvasElement.querySelector('[data-path="readme.md"]'),
+      ).not.toBeNull();
+      expect(
+        canvasElement.querySelector('[data-path="notes/readme.md"]'),
+      ).toBeNull();
+    });
+  }}
+>
+  {#snippet template()}
+    {@render Panel(dragToRootFixture.controller)}
   {/snippet}
 </Story>
 

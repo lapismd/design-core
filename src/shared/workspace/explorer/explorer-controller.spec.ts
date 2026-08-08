@@ -100,6 +100,16 @@ describe("ExplorerController", () => {
     expect(controller.expandedPaths.has("empty")).toBe(true);
   });
 
+  it("selectRoot clears selection so creates target the vault root", async () => {
+    const { controller } = createController();
+    await controller.refresh();
+    controller.setSelectedPath("notes/alpha.md");
+    expect(controller.parentPathForCreate()).toBe("notes");
+    controller.selectRoot();
+    expect(controller.selectedPath).toBe("");
+    expect(controller.parentPathForCreate()).toBe("");
+  });
+
   it("creates, renames, moves, and deletes through adapters", async () => {
     const { controller, memory } = createController();
     await controller.refresh();

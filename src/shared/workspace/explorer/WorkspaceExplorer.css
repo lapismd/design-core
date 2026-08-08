@@ -57,6 +57,17 @@
   color: var(--ui-workspace-panel-foreground);
 }
 
+/* Beat ghost-button :hover (uses --muted, which matches the Lapis panel). */
+.ui-workspace-explorer__toolbar
+  [data-ui-component="button"].ui-workspace-explorer__toolbar-action:hover,
+.ui-workspace-explorer__toolbar
+  [data-ui-component="button"].ui-workspace-explorer__toolbar-action:focus-visible {
+  background-color: var(
+    --ui-workspace-explorer-toolbar-action-hover-background
+  );
+  color: var(--ui-workspace-explorer-toolbar-action-hover-foreground);
+}
+
 .ui-workspace-explorer__toolbar-action[aria-pressed="true"] {
   background: var(--ui-workspace-explorer-row-active-background);
   color: var(--ui-workspace-panel-action-hover-foreground);
@@ -171,15 +182,19 @@
   box-shadow: 0 0 0 2px var(--ui-workspace-explorer-flash-ring);
 }
 
-.ui-workspace-explorer__folder[data-drop="true"] {
+.ui-workspace-explorer__folder[data-drop="true"],
+.ui-workspace-explorer__body[data-drop="true"] {
   /* Lapis Collapsible uses rounded-sm on the drop wash; keep a little end
      padding so the overlay isn’t flush with the last nested row. */
   z-index: 2;
   box-sizing: border-box;
   border-radius: var(--ui-workspace-explorer-drop-radius);
-  padding-block-end: var(--ui-workspace-explorer-drop-padding-end);
   color: var(--ui-workspace-explorer-drop-foreground);
   background: var(--ui-workspace-explorer-drop-background);
+}
+
+.ui-workspace-explorer__folder[data-drop="true"] {
+  padding-block-end: var(--ui-workspace-explorer-drop-padding-end);
 }
 
 .ui-workspace-explorer__chevron {

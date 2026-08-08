@@ -31,6 +31,9 @@ describe("Lapis theme contract", () => {
       "--ui-workspace-panel-action-hover-background: var(--sidebar-accent)",
     );
     expect(css).toContain("--ui-workspace-panel-action-hover-foreground: var(");
+    expect(css).toContain(
+      "--ui-workspace-explorer-toolbar-action-hover-background: var(",
+    );
     expect(workspaceTokens).toContain(
       "--ui-workspace-panel-action-hover-background: var(",
     );
