@@ -114,8 +114,8 @@
   color: var(--ui-workspace-secondary-foreground);
   background: color-mix(
     in oklab,
-    var(--ui-workspace-secondary) 80%,
-    transparent
+    var(--ui-workspace-secondary) 85%,
+    var(--ui-workspace-secondary-foreground)
   );
   filter: none;
 }
