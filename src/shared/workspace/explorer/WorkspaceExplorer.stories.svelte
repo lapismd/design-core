@@ -165,6 +165,20 @@
       expect(canvas.getByText("readme.md")).toBeVisible();
     });
     await expect(canvas.getByText("notes")).toBeVisible();
+    const createFile = canvas.getByRole("button", { name: "Create File" });
+    createFile.focus();
+    await expect(createFile).toHaveFocus();
+    await userEvent.hover(createFile);
+    await waitFor(async () => {
+      await expect(createFile).toHaveAttribute("data-state", "instant-open");
+      await expect(
+        within(document.body).getByText("Create File", {
+          selector: '[data-slot="tooltip-content"]',
+        }),
+      ).toBeVisible();
+    });
+    await userEvent.unhover(createFile);
+    await userEvent.keyboard("{Escape}");
   }}
 >
   {#snippet template()}

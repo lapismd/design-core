@@ -101,6 +101,8 @@ tree content is inset via `--ui-workspace-explorer-content-padding` (Lapis
 - **Auto-reveal** — toolbar `aria-pressed` mirrors preferences adapter; when
   enabled, selection updates expand ancestors and scroll the active path.
 - **Toggle collapse** — expand all folders or collapse all.
+- Icon actions use shadcn `Tooltip` (`side="bottom"`) with the same label text as
+  `aria-label` (sort shows the active sort mode).
 
 <Canvas of={Stories.CreateFolderSelectsAndRenames} />
 

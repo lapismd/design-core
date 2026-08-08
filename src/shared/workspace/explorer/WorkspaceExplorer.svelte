@@ -2,6 +2,7 @@
   import { Button } from "@lapismd/design-core/shadcn/button";
   import { Input } from "@lapismd/design-core/shadcn/input";
   import { ScrollArea } from "@lapismd/design-core/shadcn/scroll-area";
+  import * as Tooltip from "@lapismd/design-core/shadcn/tooltip";
   import { Collapsible, ContextMenu, DropdownMenu } from "bits-ui";
   import { onMount, tick } from "svelte";
   import type { WorkspaceMenu } from "../core/workspace-menu.js";
@@ -363,96 +364,139 @@
   bind:this={rootEl}
 >
   <div class="ui-workspace-explorer__toolbar" data-ui-part="toolbar">
-    <div class="ui-workspace-explorer__toolbar-actions">
-      <Button
-        variant="ghost"
-        size="sm"
-        class="ui-workspace-explorer__toolbar-action"
-        aria-label={labels.createFile}
-        data-hint-target="file-explorer-action"
-        data-hint-group="file-explorer"
-        data-hint-target-id="file-explorer:create-file"
-        onclick={() => void controller.createFile()}
-      >
-        <WorkspaceIcon name="square-pen" />
-      </Button>
-      <Button
-        variant="ghost"
-        size="sm"
-        class="ui-workspace-explorer__toolbar-action"
-        aria-label={labels.createFolder}
-        data-hint-target="file-explorer-action"
-        data-hint-group="file-explorer"
-        data-hint-target-id="file-explorer:create-folder"
-        onclick={() => void controller.createFolder()}
-      >
-        <WorkspaceIcon name="folder-plus" />
-      </Button>
-      <DropdownMenu.Root
-        bind:open={sortMenuOpen}
-        onOpenChange={(open) => {
-          if (open) openSortMenu();
-        }}
-      >
-        <DropdownMenu.Trigger>
-          {#snippet child({ props })}
-            <Button
-              variant="ghost"
-              size="sm"
-              class="ui-workspace-explorer__toolbar-action"
-              aria-label={labels.sortFiles}
-              data-tooltip={controller.sortMode === "name-asc"
-                ? labels.filenameAsc
-                : labels.filenameDesc}
-              {...props}
-            >
-              <WorkspaceIcon name="arrow-up-a-z" />
-            </Button>
-          {/snippet}
-        </DropdownMenu.Trigger>
-        <DropdownMenu.Portal>
-          <DropdownMenu.Content
-            class="ui-workspace-menu__content"
-            data-ui-component="workspace-menu"
-            data-ui-part="content"
-            sideOffset={4}
+    <Tooltip.Provider delayDuration={0}>
+      <div class="ui-workspace-explorer__toolbar-actions">
+        <Tooltip.Root>
+          <Tooltip.Trigger>
+            {#snippet child({ props })}
+              <Button
+                {...props}
+                variant="ghost"
+                size="sm"
+                class="ui-workspace-explorer__toolbar-action"
+                aria-label={labels.createFile}
+                data-hint-target="file-explorer-action"
+                data-hint-group="file-explorer"
+                data-hint-target-id="file-explorer:create-file"
+                onclick={() => void controller.createFile()}
+              >
+                <WorkspaceIcon name="square-pen" />
+              </Button>
+            {/snippet}
+          </Tooltip.Trigger>
+          <Tooltip.Content side="bottom">{labels.createFile}</Tooltip.Content>
+        </Tooltip.Root>
+        <Tooltip.Root>
+          <Tooltip.Trigger>
+            {#snippet child({ props })}
+              <Button
+                {...props}
+                variant="ghost"
+                size="sm"
+                class="ui-workspace-explorer__toolbar-action"
+                aria-label={labels.createFolder}
+                data-hint-target="file-explorer-action"
+                data-hint-group="file-explorer"
+                data-hint-target-id="file-explorer:create-folder"
+                onclick={() => void controller.createFolder()}
+              >
+                <WorkspaceIcon name="folder-plus" />
+              </Button>
+            {/snippet}
+          </Tooltip.Trigger>
+          <Tooltip.Content side="bottom">{labels.createFolder}</Tooltip.Content>
+        </Tooltip.Root>
+        <Tooltip.Root>
+          <DropdownMenu.Root
+            bind:open={sortMenuOpen}
+            onOpenChange={(open) => {
+              if (open) openSortMenu();
+            }}
           >
-            {#if sortMenu}
-              <WorkspaceMenuItems menu={sortMenu} />
-            {/if}
-          </DropdownMenu.Content>
-        </DropdownMenu.Portal>
-      </DropdownMenu.Root>
-      <Button
-        variant="ghost"
-        size="sm"
-        class="ui-workspace-explorer__toolbar-action"
-        aria-label={labels.autoReveal}
-        aria-pressed={controller.autoReveal}
-        data-hint-target="file-explorer-action"
-        data-hint-group="file-explorer"
-        data-hint-target-id="file-explorer:auto-reveal"
-        onclick={() => void controller.toggleAutoReveal()}
-      >
-        <WorkspaceIcon name="gallery-vertical" />
-      </Button>
-      <Button
-        variant="ghost"
-        size="sm"
-        class="ui-workspace-explorer__toolbar-action"
-        aria-label={labels.toggleCollapse}
-        data-hint-target="file-explorer-action"
-        data-hint-group="file-explorer"
-        data-hint-target-id="file-explorer:toggle-collapse"
-        onclick={() => controller.toggleCollapseAll()}
-      >
-        {#if controller.expandedPaths.size > 0}
-          <WorkspaceIcon name="chevrons-down-up" />
-        {:else}
-          <WorkspaceIcon name="chevrons-up-down" />
-        {/if}
-      </Button>
-    </div>
+            <Tooltip.Trigger>
+              {#snippet child({ props: tooltipProps })}
+                <DropdownMenu.Trigger>
+                  {#snippet child({ props: menuProps })}
+                    <Button
+                      {...tooltipProps}
+                      {...menuProps}
+                      variant="ghost"
+                      size="sm"
+                      class="ui-workspace-explorer__toolbar-action"
+                      aria-label={labels.sortFiles}
+                    >
+                      <WorkspaceIcon name="arrow-up-a-z" />
+                    </Button>
+                  {/snippet}
+                </DropdownMenu.Trigger>
+              {/snippet}
+            </Tooltip.Trigger>
+            <DropdownMenu.Portal>
+              <DropdownMenu.Content
+                class="ui-workspace-menu__content"
+                data-ui-component="workspace-menu"
+                data-ui-part="content"
+                sideOffset={4}
+              >
+                {#if sortMenu}
+                  <WorkspaceMenuItems menu={sortMenu} />
+                {/if}
+              </DropdownMenu.Content>
+            </DropdownMenu.Portal>
+          </DropdownMenu.Root>
+          <Tooltip.Content side="bottom">
+            {controller.sortMode === "name-asc"
+              ? labels.filenameAsc
+              : labels.filenameDesc}
+          </Tooltip.Content>
+        </Tooltip.Root>
+        <Tooltip.Root>
+          <Tooltip.Trigger>
+            {#snippet child({ props })}
+              <Button
+                {...props}
+                variant="ghost"
+                size="sm"
+                class="ui-workspace-explorer__toolbar-action"
+                aria-label={labels.autoReveal}
+                aria-pressed={controller.autoReveal}
+                data-hint-target="file-explorer-action"
+                data-hint-group="file-explorer"
+                data-hint-target-id="file-explorer:auto-reveal"
+                onclick={() => void controller.toggleAutoReveal()}
+              >
+                <WorkspaceIcon name="gallery-vertical" />
+              </Button>
+            {/snippet}
+          </Tooltip.Trigger>
+          <Tooltip.Content side="bottom">{labels.autoReveal}</Tooltip.Content>
+        </Tooltip.Root>
+        <Tooltip.Root>
+          <Tooltip.Trigger>
+            {#snippet child({ props })}
+              <Button
+                {...props}
+                variant="ghost"
+                size="sm"
+                class="ui-workspace-explorer__toolbar-action"
+                aria-label={labels.toggleCollapse}
+                data-hint-target="file-explorer-action"
+                data-hint-group="file-explorer"
+                data-hint-target-id="file-explorer:toggle-collapse"
+                onclick={() => controller.toggleCollapseAll()}
+              >
+                {#if controller.expandedPaths.size > 0}
+                  <WorkspaceIcon name="chevrons-down-up" />
+                {:else}
+                  <WorkspaceIcon name="chevrons-up-down" />
+                {/if}
+              </Button>
+            {/snippet}
+          </Tooltip.Trigger>
+          <Tooltip.Content side="bottom">{labels.toggleCollapse}</Tooltip.Content>
+        </Tooltip.Root>
+      </div>
+    </Tooltip.Provider>
   </div>
 
   <ScrollArea class="ui-workspace-explorer__scroll">
