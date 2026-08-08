@@ -7,6 +7,7 @@
     createWorkspaceTabs,
   } from "../core/layout.js";
   import { WorkspaceShellController } from "../core/workspace-controller.svelte.js";
+  import * as exampleSources from "./WorkspaceStackedTabs.example-sources.js";
   import WorkspaceStackedTabs from "./WorkspaceStackedTabs.svelte";
   import "./WorkspaceStackedTabs.stories.css";
 
@@ -19,6 +20,11 @@
         description: {
           component:
             "Source-shaped stacked workspace tabs with controller-backed activation, closing, overflow actions, drag targets, and hidden-scrollbar pane overflow.",
+        },
+        source: {
+          code: exampleSources.Basic,
+          language: "ts",
+          type: "code",
         },
       },
     },

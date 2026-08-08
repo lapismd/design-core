@@ -11,6 +11,7 @@
   import AppSettingsSearch from "./AppSettingsSearch.svelte";
   import WorkspaceSettingsStoryCustomField from "./WorkspaceSettingsStoryCustomField.svelte";
   import WorkspaceSettingsSurface from "./WorkspaceSettingsSurface.svelte";
+  import * as exampleSources from "./WorkspaceSettings.example-sources.js";
   import { WorkspaceSettingsController } from "./settings-controller.svelte.js";
   import type { WorkspaceSettingsSection } from "./types.js";
   import "./WorkspaceSettings.stories.css";
@@ -322,6 +323,11 @@
         description: {
           component:
             "Native-token settings presentation for controller-owned schemas, application commands, and static plugins. The AppSettings compound parts can be assembled independently.",
+        },
+        source: {
+          code: exampleSources.Basic,
+          language: "ts",
+          type: "code",
         },
       },
     },

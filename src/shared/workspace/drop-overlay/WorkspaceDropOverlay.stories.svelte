@@ -1,6 +1,7 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect } from "storybook/test";
+  import * as exampleSources from "./WorkspaceDropOverlay.example-sources.js";
   import WorkspaceDropOverlay from "./WorkspaceDropOverlay.svelte";
 
   const { Story } = defineMeta({
@@ -11,6 +12,11 @@
         description: {
           component:
             "Lapis-compatible centre and proportional edge drop geometry shared by pointer and HTML5 tab movement.",
+        },
+        source: {
+          code: exampleSources.Basic,
+          language: "ts",
+          type: "code",
         },
       },
     },

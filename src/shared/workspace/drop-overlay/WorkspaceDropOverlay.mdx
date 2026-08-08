@@ -1,4 +1,5 @@
 import { Meta, Canvas, Primary, Source } from "@storybook/addon-docs/blocks";
+import { Basic } from "./WorkspaceDropOverlay.example-sources.js";
 import * as WorkspaceDropOverlayStories from "./WorkspaceDropOverlay.stories.svelte";
 
 <Meta of={WorkspaceDropOverlayStories} />
@@ -10,12 +11,7 @@ proportions: 25% left/right/top and 35% bottom; the remaining area is centre.
 
 ## Usage
 
-<Source
-  language="html"
-  code={
-    "<WorkspaceTabsDrop {controller} {drag} parent={tabs}>{content}</WorkspaceTabsDrop>"
-  }
-/>
+<Source language="ts" code={Basic} />
 
 <Primary />
 

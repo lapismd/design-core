@@ -6,6 +6,7 @@
   import { APP_SHELL_SETTING_IDS } from "../../core/built-in-settings.svelte.js";
   import type { NotificationProgressHandle } from "../../core/notification-manager.svelte.js";
   import NotificationsStorySurface from "./NotificationsStorySurface.svelte";
+  import * as exampleSources from "./Notifications.example-sources.js";
   import {
     NOTIFICATIONS_PLUGIN_ID,
     notificationsPlugin,
@@ -72,6 +73,11 @@
         description: {
           component:
             "Optional notification presentation over the controller-owned transient, durable history, unread, progress, and cancellation service.",
+        },
+        source: {
+          code: exampleSources.Basic,
+          language: "ts",
+          type: "code",
         },
       },
     },

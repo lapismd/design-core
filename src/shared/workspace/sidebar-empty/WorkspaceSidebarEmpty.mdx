@@ -1,4 +1,5 @@
 import { Meta, Canvas, Primary, Source } from "@storybook/addon-docs/blocks";
+import { Basic } from "./WorkspaceSidebarEmpty.example-sources.js";
 import * as WorkspaceSidebarEmptyStories from "./WorkspaceSidebarEmpty.stories.svelte";
 
 <Meta of={WorkspaceSidebarEmptyStories} />
@@ -10,10 +11,7 @@ retains a close control.
 
 ## Usage
 
-<Source
-  language="html"
-  code={'<WorkspaceSidebarEmpty side="left" onClose={closeLeftSidebar} />'}
-/>
+<Source language="ts" code={Basic} />
 
 <Primary />
 

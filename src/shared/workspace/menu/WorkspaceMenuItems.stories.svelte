@@ -2,6 +2,7 @@
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent, within } from "storybook/test";
   import { WorkspaceMenu } from "../core/workspace-menu.js";
+  import * as exampleSources from "./WorkspaceMenuItems.example-sources.js";
   import WorkspaceMenuItems from "./WorkspaceMenuItems.svelte";
 
   const { Story } = defineMeta({
@@ -13,6 +14,11 @@
         description: {
           component:
             "Renderer-neutral workspace menu entries presented through direct Bits UI primitives and native Workspace tokens.",
+        },
+        source: {
+          code: exampleSources.Basic,
+          language: "ts",
+          type: "code",
         },
       },
     },

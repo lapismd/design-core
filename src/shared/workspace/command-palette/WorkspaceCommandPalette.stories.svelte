@@ -4,6 +4,7 @@
   import AppShellRoot from "../app-shell/AppShellRoot.svelte";
   import { AppShellController } from "../core/app-shell-controller.svelte.js";
   import { APP_SHELL_SETTING_IDS } from "../core/built-in-settings.svelte.js";
+  import * as exampleSources from "./WorkspaceCommandPalette.example-sources.js";
   import WorkspaceCommandPalette from "./WorkspaceCommandPalette.svelte";
   import "./WorkspaceCommandPalette.stories.css";
 
@@ -39,7 +40,16 @@
   const { Story } = defineMeta({
     title: "Workspace/Components/Command Palette",
     component: WorkspaceCommandPalette,
-    parameters: { layout: "fullscreen" },
+    parameters: {
+      layout: "fullscreen",
+      docs: {
+        source: {
+          code: exampleSources.Basic,
+          language: "ts",
+          type: "code",
+        },
+      },
+    },
   });
 </script>
 

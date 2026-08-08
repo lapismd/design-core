@@ -8,6 +8,7 @@
   } from "../core/layout.js";
   import { WorkspaceShellController } from "../core/workspace-controller.svelte.js";
   import ExampleWorkspaceView from "./ExampleWorkspaceView.svelte";
+  import * as exampleSources from "./WorkspaceViewHost.example-sources.js";
   import WorkspaceViewHost from "./WorkspaceViewHost.svelte";
 
   const { Story } = defineMeta({
@@ -19,6 +20,11 @@
         description: {
           component:
             "Resolves a serializable view type through the controller registry and renders Svelte, imperative, empty, or missing-view content.",
+        },
+        source: {
+          code: exampleSources.Basic,
+          language: "ts",
+          type: "code",
         },
       },
     },

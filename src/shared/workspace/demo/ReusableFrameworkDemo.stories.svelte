@@ -2,6 +2,7 @@
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent, waitFor, within } from "storybook/test";
   import ReusableFrameworkDemo from "./ReusableFrameworkDemo.svelte";
+  import * as exampleSources from "./ReusableFrameworkDemo.example-sources.js";
   import { createFrameworkDemo } from "./framework-demo.js";
 
   const overview = createFrameworkDemo();
@@ -38,6 +39,11 @@
         description: {
           component:
             "A Lapis-like application assembled only from public Workspace controller, layout, view, persistence, settings, command, and static-plugin APIs.",
+        },
+        source: {
+          code: exampleSources.Basic,
+          language: "ts",
+          type: "code",
         },
       },
     },

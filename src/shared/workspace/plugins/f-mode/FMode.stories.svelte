@@ -5,6 +5,7 @@
   import { APP_SHELL_SETTING_IDS } from "../../core/built-in-settings.svelte.js";
   import ReusableFrameworkDemo from "../../demo/ReusableFrameworkDemo.svelte";
   import { createFrameworkDemo } from "../../demo/framework-demo.js";
+  import * as exampleSources from "./FMode.example-sources.js";
   import { FMODE_SETTING_IDS } from "./settings.js";
   import "./FMode.stories.css";
 
@@ -81,6 +82,11 @@
         description: {
           component:
             "Optional keyboard-hint plugin exercised through the complete reusable Workspace shell, including tabs, view headers, sidebars, ribbon, and status targets.",
+        },
+        source: {
+          code: exampleSources.Basic,
+          language: "ts",
+          type: "code",
         },
       },
     },

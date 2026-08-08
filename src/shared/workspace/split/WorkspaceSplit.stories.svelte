@@ -8,6 +8,7 @@
     createWorkspaceTabs,
   } from "../core/layout.js";
   import { WorkspaceShellController } from "../core/workspace-controller.svelte.js";
+  import * as exampleSources from "./WorkspaceSplit.example-sources.js";
   import WorkspaceSplit from "./WorkspaceSplit.svelte";
   import "./WorkspaceSplit.stories.css";
 
@@ -20,6 +21,11 @@
         description: {
           component:
             "A controller-backed Paneforge split primitive that preserves serialized child sizes and exposes an accessible resize handle.",
+        },
+        source: {
+          code: exampleSources.Basic,
+          language: "ts",
+          type: "code",
         },
       },
     },

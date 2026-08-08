@@ -3,6 +3,7 @@
   import { expect, userEvent, within } from "storybook/test";
   import { createDefaultWorkspaceLayout } from "../core/layout.js";
   import { WorkspaceShellController } from "../core/workspace-controller.svelte.js";
+  import * as exampleSources from "./WorkspaceViewHeader.example-sources.js";
   import WorkspaceViewHeader from "./WorkspaceViewHeader.svelte";
   import "./WorkspaceViewHeader.stories.css";
 
@@ -15,6 +16,11 @@
         description: {
           component:
             "Source-shaped view header with history, breadcrumbs, view actions, and the shared declarative pane menu.",
+        },
+        source: {
+          code: exampleSources.Basic,
+          language: "ts",
+          type: "code",
         },
       },
     },

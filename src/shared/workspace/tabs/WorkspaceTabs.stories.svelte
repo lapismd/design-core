@@ -8,6 +8,7 @@
   } from "../core/layout.js";
   import type { WorkspaceLayoutChangeEvent } from "../core/types.js";
   import { WorkspaceShellController } from "../core/workspace-controller.svelte.js";
+  import * as exampleSources from "./WorkspaceTabs.example-sources.js";
   import WorkspaceTabs from "./WorkspaceTabs.svelte";
   import "./WorkspaceTabs.stories.css";
 
@@ -20,6 +21,11 @@
         description: {
           component:
             "Source-shaped top tabs with direct Bits UI tab/list/content structure, hidden-scrollbar overflow, controller-owned mutation, and registered drop targets.",
+        },
+        source: {
+          code: exampleSources.Basic,
+          language: "ts",
+          type: "code",
         },
       },
     },

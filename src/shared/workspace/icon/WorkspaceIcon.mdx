@@ -1,4 +1,5 @@
 import { Meta, Canvas, Primary, Source } from "@storybook/addon-docs/blocks";
+import { Basic } from "./WorkspaceIcon.example-sources.js";
 import * as WorkspaceIconStories from "./WorkspaceIcon.stories.svelte";
 
 <Meta of={WorkspaceIconStories} />
@@ -10,7 +11,7 @@ through `registerWorkspaceIcon`. Unknown names use the stable `file` fallback.
 
 ## Usage
 
-<Source language="html" code={'<WorkspaceIcon name="panel-left" />'} />
+<Source language="ts" code={Basic} />
 
 <Primary />
 

@@ -1,4 +1,5 @@
 import { Meta, Canvas, Primary, Source } from "@storybook/addon-docs/blocks";
+import { Basic } from "./WorkspaceEmpty.example-sources.js";
 import * as WorkspaceEmptyStories from "./WorkspaceEmpty.stories.svelte";
 
 <Meta of={WorkspaceEmptyStories} />
@@ -10,7 +11,7 @@ views whose registration is unavailable.
 
 ## Usage
 
-<Source language="html" code={"<WorkspaceEmpty actions={emptyActions} />"} />
+<Source language="ts" code={Basic} />
 
 <Primary />
 

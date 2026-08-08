@@ -9,6 +9,7 @@
     createWorkspaceTabs,
   } from "../core/layout.js";
   import { WorkspaceDragState } from "../drag/workspace-drag.svelte.js";
+  import * as exampleSources from "./WorkspacePopoutSurface.example-sources.js";
   import WorkspacePopoutSurface from "./WorkspacePopoutSurface.svelte";
   import "./WorkspacePopoutSurface.stories.css";
 
@@ -36,7 +37,16 @@
   const { Story } = defineMeta({
     title: "Workspace/Components/Popout Surface",
     component: WorkspacePopoutSurface,
-    parameters: { layout: "fullscreen" },
+    parameters: {
+      layout: "fullscreen",
+      docs: {
+        source: {
+          code: exampleSources.Basic,
+          language: "ts",
+          type: "code",
+        },
+      },
+    },
   });
 </script>
 

@@ -5,6 +5,7 @@
   import AppShellStatusBar from "../app-shell/AppShellStatusBar.svelte";
   import { AppShellController } from "../core/app-shell-controller.svelte.js";
   import { APP_SHELL_SETTING_IDS } from "../core/built-in-settings.svelte.js";
+  import * as exampleSources from "./WorkspaceAboutDialog.example-sources.js";
   import WorkspaceAboutDialog from "./WorkspaceAboutDialog.svelte";
   import "../command-palette/WorkspaceCommandPalette.stories.css";
 
@@ -25,7 +26,16 @@
   const { Story } = defineMeta({
     title: "Workspace/Components/About Dialog",
     component: WorkspaceAboutDialog,
-    parameters: { layout: "fullscreen" },
+    parameters: {
+      layout: "fullscreen",
+      docs: {
+        source: {
+          code: exampleSources.Basic,
+          language: "ts",
+          type: "code",
+        },
+      },
+    },
   });
 </script>
 

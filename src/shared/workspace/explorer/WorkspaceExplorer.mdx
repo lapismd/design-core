@@ -1,5 +1,6 @@
 import { Meta, Canvas, Controls, Source } from "@storybook/addon-docs/blocks";
 import * as Stories from "./WorkspaceExplorer.stories.svelte";
+import * as exampleSources from "./WorkspaceExplorer.example-sources.js";
 
 <Meta of={Stories} />
 
@@ -12,28 +13,7 @@ expand/sort/reveal UX, built-in menus, and HTML5 drop affordances. It does
 
 Import from `@lapismd/design-core/workspace/explorer`.
 
-<Source
-  language="ts"
-  code={`
-<script lang="ts">
-  import {
-    WorkspaceExplorer,
-    ExplorerController,
-    createMemoryExplorerAdapter,
-  } from "@lapismd/design-core/workspace/explorer";
-
-  const memory = createMemoryExplorerAdapter(/* seed nodes */);
-  const controller = new ExplorerController({
-    tree: memory.tree,
-    actions: memory.actions,
-    selection: memory.selection,
-    preferences: memory.preferences,
-  });
-</script>
-
-<WorkspaceExplorer controller={controller} />
-`}
-/>
+<Source language="ts" code={exampleSources.Basic} />
 
 ## Boundary / ownership
 
@@ -46,11 +26,19 @@ Import from `@lapismd/design-core/workspace/explorer`.
   </thead>
   <tbody>
     <tr>
-      <td>Tree chrome, expand/collapse, sort UI, reveal flash, row selection UI</td>
-      <td>Framework (<code>ExplorerController</code> + <code>WorkspaceExplorer</code>)</td>
+      <td>
+        Tree chrome, expand/collapse, sort UI, reveal flash, row selection UI
+      </td>
+      <td>
+        Framework (<code>ExplorerController</code> +{" "}
+        <code>WorkspaceExplorer</code>)
+      </td>
     </tr>
     <tr>
-      <td>Built-in menus (new note/folder, copy vault path, rename, refresh, delete)</td>
+      <td>
+        Built-in menus (new note/folder, copy vault path, rename, refresh,
+        delete)
+      </td>
       <td>Framework</td>
     </tr>
     <tr>
@@ -59,27 +47,45 @@ Import from `@lapismd/design-core/workspace/explorer`.
     </tr>
     <tr>
       <td>Listing entries + change subscription</td>
-      <td>Consumer <code>ExplorerTreeAdapter</code></td>
+      <td>
+        Consumer <code>ExplorerTreeAdapter</code>
+      </td>
     </tr>
     <tr>
       <td>Create / rename / move / delete / open / optional external import</td>
-      <td>Consumer <code>ExplorerActionsAdapter</code></td>
+      <td>
+        Consumer <code>ExplorerActionsAdapter</code>
+      </td>
     </tr>
     <tr>
       <td>Untitled naming, note-link rewrites</td>
-      <td>Consumer (for Lapis: vault + <code>fileManager.renameFile</code>)</td>
+      <td>
+        Consumer (for Lapis: vault + <code>fileManager.renameFile</code>)
+      </td>
     </tr>
     <tr>
       <td>Active-file sync + auto-reveal source path</td>
-      <td>Consumer <code>ExplorerSelectionAdapter</code></td>
+      <td>
+        Consumer <code>ExplorerSelectionAdapter</code>
+      </td>
     </tr>
     <tr>
-      <td>Persist auto-reveal (<code>workspace.fileExplorer.autoRevealCurrentFile</code>)</td>
-      <td>Consumer <code>ExplorerPreferencesAdapter</code></td>
+      <td>
+        Persist auto-reveal (
+        <code>workspace.fileExplorer.autoRevealCurrentFile</code>)
+      </td>
+      <td>
+        Consumer <code>ExplorerPreferencesAdapter</code>
+      </td>
     </tr>
     <tr>
-      <td>Native path / reveal in Finder / Lapis URL / <code>file-menu</code> plugins</td>
-      <td>Consumer via <code>buildItemMenu</code></td>
+      <td>
+        Native path / reveal in Finder / Lapis URL / <code>file-menu</code>{" "}
+        plugins
+      </td>
+      <td>
+        Consumer via <code>buildItemMenu</code>
+      </td>
     </tr>
     <tr>
       <td>Empty-left-dock bootstrap leaf + host commands</td>
@@ -90,27 +96,7 @@ Import from `@lapismd/design-core/workspace/explorer`.
 
 ## Controller and adapters
 
-<Source
-  language="ts"
-  code={`
-new ExplorerController({
-  tree,
-  actions,
-  selection?,      // optional active-path sync
-  preferences?,    // optional auto-reveal persistence
-  getIcon?,        // WorkspaceIcon name resolver
-  buildItemMenu?,  // append after built-ins; source is always "explorer"
-  onFileDragStart?,
-  labels?,
-  loading?,
-});
-
-controller.revealPath(path);
-controller.setSelectedPath(path);
-controller.refresh();
-controller.setLoading(false);
-`}
-/>
+<Source language="ts" code={exampleSources.ControllerApi} />
 
 `createMemoryExplorerAdapter(seed)` returns an object with `tree`, `actions`,
 `selection`, and `preferences` for stories and unit tests.
@@ -234,31 +220,45 @@ command ids for parity:
   </thead>
   <tbody>
     <tr>
-      <td><code>data-ui-component="workspace-explorer"</code></td>
+      <td>
+        <code>data-ui-component="workspace-explorer"</code>
+      </td>
       <td>Root</td>
     </tr>
     <tr>
-      <td><code>data-path</code></td>
+      <td>
+        <code>data-path</code>
+      </td>
       <td>Row identity</td>
     </tr>
     <tr>
-      <td><code>data-active</code></td>
+      <td>
+        <code>data-active</code>
+      </td>
       <td>Selection</td>
     </tr>
     <tr>
-      <td><code>data-drop</code></td>
+      <td>
+        <code>data-drop</code>
+      </td>
       <td>Folder drop target</td>
     </tr>
     <tr>
-      <td><code>is-flashing</code></td>
+      <td>
+        <code>is-flashing</code>
+      </td>
       <td>Reveal highlight</td>
     </tr>
     <tr>
-      <td><code>data-hint-group="file-explorer"</code></td>
+      <td>
+        <code>data-hint-group="file-explorer"</code>
+      </td>
       <td>Optional F-Mode targets</td>
     </tr>
     <tr>
-      <td><code>ui-workspace-explorer*</code></td>
+      <td>
+        <code>ui-workspace-explorer*</code>
+      </td>
       <td>BEM parts</td>
     </tr>
   </tbody>
@@ -277,84 +277,156 @@ Override on an ancestor of the explorer surface:
   </thead>
   <tbody>
     <tr>
-      <td><code>--ui-workspace-explorer-toolbar-height</code></td>
-      <td><code>var(--ui-workspace-sidebar-header-height)</code></td>
+      <td>
+        <code>--ui-workspace-explorer-toolbar-height</code>
+      </td>
+      <td>
+        <code>var(--ui-workspace-sidebar-header-height)</code>
+      </td>
     </tr>
     <tr>
-      <td><code>--ui-workspace-explorer-row-hover-background</code></td>
+      <td>
+        <code>--ui-workspace-explorer-row-hover-background</code>
+      </td>
       <td>panel-action hover</td>
     </tr>
     <tr>
-      <td><code>--ui-workspace-explorer-row-active-background</code></td>
-      <td><code>--ui-workspace-selection</code></td>
+      <td>
+        <code>--ui-workspace-explorer-row-active-background</code>
+      </td>
+      <td>
+        <code>--ui-workspace-selection</code>
+      </td>
     </tr>
     <tr>
-      <td><code>--ui-workspace-explorer-drop-background</code></td>
+      <td>
+        <code>--ui-workspace-explorer-drop-background</code>
+      </td>
       <td>accent wash</td>
     </tr>
     <tr>
-      <td><code>--ui-workspace-explorer-drop-foreground</code></td>
-      <td><code>--ui-workspace-accent</code></td>
+      <td>
+        <code>--ui-workspace-explorer-drop-foreground</code>
+      </td>
+      <td>
+        <code>--ui-workspace-accent</code>
+      </td>
     </tr>
     <tr>
-      <td><code>--ui-workspace-explorer-drop-radius</code></td>
-      <td><code>var(--ui-workspace-radius-small)</code></td>
+      <td>
+        <code>--ui-workspace-explorer-drop-radius</code>
+      </td>
+      <td>
+        <code>var(--ui-workspace-radius-small)</code>
+      </td>
     </tr>
     <tr>
-      <td><code>--ui-workspace-explorer-drop-padding-end</code></td>
-      <td><code>0.25rem</code></td>
+      <td>
+        <code>--ui-workspace-explorer-drop-padding-end</code>
+      </td>
+      <td>
+        <code>0.25rem</code>
+      </td>
     </tr>
     <tr>
-      <td><code>--ui-workspace-explorer-toolbar-action-hover-background</code></td>
-      <td>14% foreground on panel (Lapis: <code>--sidebar-accent</code>)</td>
+      <td>
+        <code>--ui-workspace-explorer-toolbar-action-hover-background</code>
+      </td>
+      <td>
+        14% foreground on panel (Lapis: <code>--sidebar-accent</code>)
+      </td>
     </tr>
     <tr>
-      <td><code>--ui-workspace-explorer-toolbar-action-hover-foreground</code></td>
+      <td>
+        <code>--ui-workspace-explorer-toolbar-action-hover-foreground</code>
+      </td>
       <td>panel foreground</td>
     </tr>
     <tr>
-      <td><code>--ui-workspace-explorer-flash-ring</code></td>
-      <td><code>--ui-workspace-accent</code></td>
+      <td>
+        <code>--ui-workspace-explorer-flash-ring</code>
+      </td>
+      <td>
+        <code>--ui-workspace-accent</code>
+      </td>
     </tr>
     <tr>
-      <td><code>--ui-workspace-explorer-indent</code></td>
-      <td><code>0.75rem</code></td>
+      <td>
+        <code>--ui-workspace-explorer-indent</code>
+      </td>
+      <td>
+        <code>0.75rem</code>
+      </td>
     </tr>
     <tr>
-      <td><code>--ui-workspace-explorer-guide-width</code></td>
-      <td><code>1px</code></td>
+      <td>
+        <code>--ui-workspace-explorer-guide-width</code>
+      </td>
+      <td>
+        <code>1px</code>
+      </td>
     </tr>
     <tr>
-      <td><code>--ui-workspace-explorer-guide-color</code></td>
+      <td>
+        <code>--ui-workspace-explorer-guide-color</code>
+      </td>
       <td>22% foreground wash</td>
     </tr>
     <tr>
-      <td><code>--ui-workspace-explorer-guide-gap</code></td>
-      <td><code>0.5rem</code></td>
+      <td>
+        <code>--ui-workspace-explorer-guide-gap</code>
+      </td>
+      <td>
+        <code>0.5rem</code>
+      </td>
     </tr>
     <tr>
-      <td><code>--ui-workspace-explorer-font-family</code></td>
-      <td><code>--ui-workspace-font-sans</code></td>
+      <td>
+        <code>--ui-workspace-explorer-font-family</code>
+      </td>
+      <td>
+        <code>--ui-workspace-font-sans</code>
+      </td>
     </tr>
     <tr>
-      <td><code>--ui-workspace-explorer-font-size</code></td>
-      <td><code>0.8125rem</code> (13px; Lapis <code>--font-ui-small</code>)</td>
+      <td>
+        <code>--ui-workspace-explorer-font-size</code>
+      </td>
+      <td>
+        <code>0.8125rem</code> (13px; Lapis <code>--font-ui-small</code>)
+      </td>
     </tr>
     <tr>
-      <td><code>--ui-workspace-explorer-row-height</code></td>
-      <td><code>1.75rem</code></td>
+      <td>
+        <code>--ui-workspace-explorer-row-height</code>
+      </td>
+      <td>
+        <code>1.75rem</code>
+      </td>
     </tr>
     <tr>
-      <td><code>--ui-workspace-explorer-row-gap</code></td>
-      <td><code>0.125rem</code></td>
+      <td>
+        <code>--ui-workspace-explorer-row-gap</code>
+      </td>
+      <td>
+        <code>0.125rem</code>
+      </td>
     </tr>
     <tr>
-      <td><code>--ui-workspace-explorer-row-active-weight</code></td>
-      <td><code>700</code></td>
+      <td>
+        <code>--ui-workspace-explorer-row-active-weight</code>
+      </td>
+      <td>
+        <code>700</code>
+      </td>
     </tr>
     <tr>
-      <td><code>--ui-workspace-explorer-content-padding</code></td>
-      <td><code>0.5rem</code> (body inset; scrollbar flush)</td>
+      <td>
+        <code>--ui-workspace-explorer-content-padding</code>
+      </td>
+      <td>
+        <code>0.5rem</code> (body inset; scrollbar flush)
+      </td>
     </tr>
   </tbody>
 </table>

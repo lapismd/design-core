@@ -1,4 +1,5 @@
 import { Meta, Canvas, Primary, Source } from "@storybook/addon-docs/blocks";
+import { Basic as ViewHostBasic } from "./WorkspaceViewHost.example-sources.js";
 import * as WorkspaceViewHostStories from "./WorkspaceViewHost.stories.svelte";
 
 <Meta of={WorkspaceViewHostStories} />
@@ -10,12 +11,7 @@ register view factories once; leaves retain only JSON-safe type and state.
 
 ## Usage
 
-<Source
-  language="html"
-  code={
-    '<WorkspaceViewHost {controller} {tab} hostId="root" paneId={pane.id} />'
-  }
-/>
+<Source language="ts" code={ViewHostBasic} />
 
 <Primary />
 

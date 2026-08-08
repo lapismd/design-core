@@ -15,6 +15,7 @@
   import type { WorkspacePanelGroup } from "../core/types.js";
   import { WorkspaceShellController } from "../core/workspace-controller.svelte.js";
   import WorkspaceBottomPanel from "./WorkspaceBottomPanel.svelte";
+  import * as exampleSources from "./WorkspaceBottomPanel.example-sources.js";
   import WorkspaceBottomPanelStoryView from "./WorkspaceBottomPanelStoryView.svelte";
   import "./WorkspaceBottomPanel.stories.css";
 
@@ -27,6 +28,11 @@
         description: {
           component:
             "A VS Code-style bottom dock with a horizontal tab strip and transposed grouped panels that resize left-to-right and collapse into vertical title rails.",
+        },
+        source: {
+          code: exampleSources.Basic,
+          language: "ts",
+          type: "code",
         },
       },
     },

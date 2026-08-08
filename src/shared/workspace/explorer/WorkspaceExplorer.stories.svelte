@@ -1,9 +1,16 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, fireEvent, userEvent, waitFor, within } from "storybook/test";
+  import {
+    expect,
+    fireEvent,
+    userEvent,
+    waitFor,
+    within,
+  } from "storybook/test";
   import { ExplorerController } from "./explorer-controller.svelte.js";
   import { createMemoryExplorerAdapter } from "./memory-adapter.js";
   import type { ExplorerNode } from "./types.js";
+  import * as exampleSources from "./WorkspaceExplorer.example-sources.js";
   import WorkspaceExplorer from "./WorkspaceExplorer.svelte";
   import { WorkspaceMenu } from "../core/workspace-menu.js";
 
@@ -72,17 +79,19 @@
     ];
   }
 
-  function mountExplorer(options: {
-    seed?: ExplorerNode[];
-    loading?: boolean;
-    autoReveal?: boolean;
-    buildItemMenu?: (
-      menu: WorkspaceMenu,
-      node: ExplorerNode,
-      source: "explorer",
-    ) => void;
-    extensionLog?: { value: string };
-  } = {}) {
+  function mountExplorer(
+    options: {
+      seed?: ExplorerNode[];
+      loading?: boolean;
+      autoReveal?: boolean;
+      buildItemMenu?: (
+        menu: WorkspaceMenu,
+        node: ExplorerNode,
+        source: "explorer",
+      ) => void;
+      extensionLog?: { value: string };
+    } = {},
+  ) {
     const memory = createMemoryExplorerAdapter(options.seed ?? seed, {
       autoReveal: options.autoReveal,
     });
@@ -115,6 +124,11 @@
           component:
             "Controller-driven hierarchical file explorer panel with injected tree/action adapters.",
         },
+        source: {
+          code: exampleSources.Basic,
+          language: "ts",
+          type: "code",
+        },
       },
     },
     tags: ["visual-pending"],
@@ -145,12 +159,26 @@
 </script>
 
 {#snippet Panel(controller: ExplorerController, hostClass = "")}
-  <div class={["ui-workspace-explorer-story", hostClass].filter(Boolean).join(" ")}>
+  <div
+    class={["ui-workspace-explorer-story", hostClass].filter(Boolean).join(" ")}
+  >
     <WorkspaceExplorer {controller} />
   </div>
 {/snippet}
 
-<Story name="Loading and empty tree" tags={["visual-pending"]}>
+<Story
+  name="Loading and empty tree"
+  tags={["visual-pending"]}
+  parameters={{
+    docs: {
+      source: {
+        code: exampleSources.Loading,
+        language: "ts",
+        type: "code",
+      },
+    },
+  }}
+>
   {#snippet template()}
     {@render Panel(loadingFixture.controller)}
   {/snippet}
@@ -434,9 +462,9 @@
     expect(inputStyle.paddingRight).toBe("0px");
     expect(inputStyle.paddingBottom).toBe("0px");
     expect(inputStyle.paddingLeft).toBe("0px");
-    expect(Math.abs(input.getBoundingClientRect().left - titleLeft)).toBeLessThan(
-      1,
-    );
+    expect(
+      Math.abs(input.getBoundingClientRect().left - titleLeft),
+    ).toBeLessThan(1);
   }}
 >
   {#snippet template()}
@@ -473,9 +501,7 @@
       expect(
         canvasElement.querySelector('[data-path="readme.md"]'),
       ).not.toBeNull();
-      expect(
-        canvasElement.querySelector('[data-path="empty"]'),
-      ).not.toBeNull();
+      expect(canvasElement.querySelector('[data-path="empty"]')).not.toBeNull();
     });
     const file = canvasElement.querySelector(
       '[data-path="readme.md"]',
@@ -557,6 +583,15 @@
 <Story
   name="Menu extension hook"
   tags={["visual-pending"]}
+  parameters={{
+    docs: {
+      source: {
+        code: exampleSources.MenuExtension,
+        language: "ts",
+        type: "code",
+      },
+    },
+  }}
   play={async ({ canvasElement }) => {
     await waitFor(() => {
       expect(
@@ -588,6 +623,15 @@
 <Story
   name="Reveal path flashes and focuses"
   tags={["visual-pending"]}
+  parameters={{
+    docs: {
+      source: {
+        code: exampleSources.RevealPath,
+        language: "ts",
+        type: "code",
+      },
+    },
+  }}
   play={async ({ canvasElement }) => {
     revealFixture.controller.revealPath("notes/zeta.md");
     await waitFor(() => {
@@ -626,9 +670,7 @@
 
     await waitFor(() => {
       expect(
-        canvasElement.querySelector(
-          `[data-path="archive/${LONG_FILE_NAME}"]`,
-        ),
+        canvasElement.querySelector(`[data-path="archive/${LONG_FILE_NAME}"]`),
       ).not.toBeNull();
     });
 
@@ -676,9 +718,9 @@
       `[data-path="archive/${LONG_FILE_NAME}"]`,
     ) as HTMLElement;
     expect(activeRow).toHaveAttribute("data-active", "true");
-    expect(Number.parseInt(getComputedStyle(activeRow).fontWeight, 10)).toBeGreaterThanOrEqual(
-      700,
-    );
+    expect(
+      Number.parseInt(getComputedStyle(activeRow).fontWeight, 10),
+    ).toBeGreaterThanOrEqual(700);
 
     const title = activeRow.querySelector(
       ".ui-workspace-explorer__title",
@@ -699,6 +741,9 @@
   }}
 >
   {#snippet template()}
-    {@render Panel(overflowFixture.controller, "ui-workspace-explorer-story--overflow")}
+    {@render Panel(
+      overflowFixture.controller,
+      "ui-workspace-explorer-story--overflow",
+    )}
   {/snippet}
 </Story>

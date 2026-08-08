@@ -2,6 +2,7 @@
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent } from "storybook/test";
   import { WorkspaceShellController } from "../core/workspace-controller.svelte.js";
+  import * as exampleSources from "./WorkspaceRibbon.example-sources.js";
   import WorkspaceRibbon from "./WorkspaceRibbon.svelte";
   import "./WorkspaceRibbon.stories.css";
 
@@ -14,6 +15,11 @@
         description: {
           component:
             "Controller-managed ribbon actions split into top and bottom sections with the source Lapis geometry.",
+        },
+        source: {
+          code: exampleSources.Basic,
+          language: "ts",
+          type: "code",
         },
       },
     },

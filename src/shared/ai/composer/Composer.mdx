@@ -6,6 +6,7 @@ import {
   Source,
 } from "@storybook/addon-docs/blocks";
 import * as ComposerStories from "./Composer.stories.svelte";
+import * as exampleSources from "./Composer.example-sources.js";
 
 <Meta of={ComposerStories} />
 
@@ -20,10 +21,7 @@ Adapted from
 
 ## Usage
 
-<Source
-  language="ts"
-  code={'import { Composer } from "@lapismd/design-core/ai/chat";'}
-/>
+<Source language="ts" code={exampleSources.Basic} />
 
 <Primary />
 

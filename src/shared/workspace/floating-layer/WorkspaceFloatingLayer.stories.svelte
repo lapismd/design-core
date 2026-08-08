@@ -7,6 +7,7 @@
   } from "../core/layout.js";
   import { WorkspaceShellController } from "../core/workspace-controller.svelte.js";
   import ExampleWorkspaceView from "../view-host/ExampleWorkspaceView.svelte";
+  import * as exampleSources from "./WorkspaceFloatingLayer.example-sources.js";
   import WorkspaceFloatingLayer from "./WorkspaceFloatingLayer.svelte";
   import "./WorkspaceFloatingLayer.stories.css";
 
@@ -19,6 +20,11 @@
         description: {
           component:
             "Presentation layer for free and minimized floating windows, driven entirely by serialized controller state.",
+        },
+        source: {
+          code: exampleSources.Basic,
+          language: "ts",
+          type: "code",
         },
       },
     },

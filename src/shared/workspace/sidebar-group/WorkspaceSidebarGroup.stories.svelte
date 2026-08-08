@@ -9,6 +9,7 @@
   import type { WorkspaceSidebarGroup as WorkspaceSidebarGroupModel } from "../core/types.js";
   import { WorkspaceShellController } from "../core/workspace-controller.svelte.js";
   import ExampleWorkspaceView from "../view-host/ExampleWorkspaceView.svelte";
+  import * as exampleSources from "./WorkspaceSidebarGroup.example-sources.js";
   import WorkspaceSidebarGroup from "./WorkspaceSidebarGroup.svelte";
   import "./WorkspaceSidebarGroup.stories.css";
 
@@ -21,6 +22,11 @@
         description: {
           component:
             "Measured, collapsible and resizable grouped sidebar panels with top/bottom-only registered tab drop targets.",
+        },
+        source: {
+          code: exampleSources.Basic,
+          language: "ts",
+          type: "code",
         },
       },
     },

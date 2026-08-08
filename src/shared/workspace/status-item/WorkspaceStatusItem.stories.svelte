@@ -2,6 +2,7 @@
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent, within } from "storybook/test";
   import type { WorkspaceStatusItem as WorkspaceStatusItemModel } from "../core/types.js";
+  import * as exampleSources from "./WorkspaceStatusItem.example-sources.js";
   import WorkspaceStatusItem from "./WorkspaceStatusItem.svelte";
   import "./WorkspaceStatusItem.stories.css";
 
@@ -14,6 +15,11 @@
         description: {
           component:
             "Compact status contribution supporting icons, segments, progress, actions, and declarative menus.",
+        },
+        source: {
+          code: exampleSources.Basic,
+          language: "ts",
+          type: "code",
         },
       },
     },

@@ -8,6 +8,7 @@
     createWorkspaceTabs,
   } from "../core/layout.js";
   import { WorkspaceShellController } from "../core/workspace-controller.svelte.js";
+  import * as exampleSources from "./WorkspaceTree.example-sources.js";
   import WorkspaceTree from "./WorkspaceTree.svelte";
   import "./WorkspaceTree.stories.css";
 
@@ -20,6 +21,11 @@
         description: {
           component:
             "The recursive renderer for serializable split, top-tab, and stacked-tab workspace nodes.",
+        },
+        source: {
+          code: exampleSources.Basic,
+          language: "ts",
+          type: "code",
         },
       },
     },

@@ -1,6 +1,7 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent } from "storybook/test";
+  import * as exampleSources from "./WorkspaceSidebarEmpty.example-sources.js";
   import WorkspaceSidebarEmpty from "./WorkspaceSidebarEmpty.svelte";
 
   const { Story } = defineMeta({
@@ -11,6 +12,11 @@
         description: {
           component:
             "Special Lapis-aligned fallback for a visible sidebar that has no tabs.",
+        },
+        source: {
+          code: exampleSources.Basic,
+          language: "ts",
+          type: "code",
         },
       },
     },

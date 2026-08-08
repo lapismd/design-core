@@ -1,6 +1,7 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect } from "storybook/test";
+  import * as exampleSources from "./WorkspaceIcon.example-sources.js";
   import WorkspaceIcon from "./WorkspaceIcon.svelte";
 
   const { Story } = defineMeta({
@@ -11,6 +12,11 @@
         description: {
           component:
             "Serializable Lucide icon renderer used by tabs, views, sidebars, commands, ribbon items, and status items.",
+        },
+        source: {
+          code: exampleSources.Basic,
+          language: "ts",
+          type: "code",
         },
       },
     },

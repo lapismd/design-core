@@ -8,6 +8,7 @@
   import { WorkspaceShellController } from "../core/workspace-controller.svelte.js";
   import { WorkspaceDragState } from "../drag/workspace-drag.svelte.js";
   import ExampleWorkspaceView from "../view-host/ExampleWorkspaceView.svelte";
+  import * as exampleSources from "./WorkspaceFloatingWindow.example-sources.js";
   import WorkspaceFloatingWindow from "./WorkspaceFloatingWindow.svelte";
   import "./WorkspaceFloatingWindow.stories.css";
 
@@ -20,6 +21,11 @@
         description: {
           component:
             "Controller-backed floating window with focus, move, resize, collapse, minimize, maximize, close, and redock controls.",
+        },
+        source: {
+          code: exampleSources.Basic,
+          language: "ts",
+          type: "code",
         },
       },
     },

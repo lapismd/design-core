@@ -1,6 +1,7 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent } from "storybook/test";
+  import * as exampleSources from "./WorkspaceEmpty.example-sources.js";
   import WorkspaceEmpty from "./WorkspaceEmpty.svelte";
 
   const { Story } = defineMeta({
@@ -12,6 +13,11 @@
         description: {
           component:
             "Source-aligned empty leaf and unresolved-view fallback rendered without shadcn or Tailwind primitives.",
+        },
+        source: {
+          code: exampleSources.Basic,
+          language: "ts",
+          type: "code",
         },
       },
     },

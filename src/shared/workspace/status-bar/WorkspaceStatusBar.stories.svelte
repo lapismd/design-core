@@ -2,6 +2,7 @@
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent } from "storybook/test";
   import { WorkspaceShellController } from "../core/workspace-controller.svelte.js";
+  import * as exampleSources from "./WorkspaceStatusBar.example-sources.js";
   import WorkspaceStatusBar from "./WorkspaceStatusBar.svelte";
   import "./WorkspaceStatusBar.stories.css";
 
@@ -14,6 +15,11 @@
         description: {
           component:
             "Lapis-shaped bottom-right status surface backed by the controller status registry.",
+        },
+        source: {
+          code: exampleSources.Basic,
+          language: "ts",
+          type: "code",
         },
       },
     },

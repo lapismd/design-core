@@ -16,6 +16,7 @@
   import { WorkspaceShellController } from "../core/workspace-controller.svelte.js";
   import { WorkspaceDragState } from "../drag/workspace-drag.svelte.js";
   import ExampleWorkspaceView from "../view-host/ExampleWorkspaceView.svelte";
+  import * as exampleSources from "./WorkspaceSidebar.example-sources.js";
   import WorkspaceSidebar from "./WorkspaceSidebar.svelte";
   import "./WorkspaceSidebar.stories.css";
 
@@ -28,6 +29,11 @@
         description: {
           component:
             "Composable left/right sidebar chrome with icon tabs, grouped panels, source context menus, group metadata editing, top/bottom drop targets, empty state, and controller-owned close behavior.",
+        },
+        source: {
+          code: exampleSources.Basic,
+          language: "ts",
+          type: "code",
         },
       },
     },
