@@ -520,24 +520,40 @@
     ) as HTMLElement;
     const rootStyle = getComputedStyle(root);
     expect(rootStyle.borderWidth).toBe("0px");
-    expect(Number.parseFloat(rootStyle.paddingTop)).toBeGreaterThan(0);
-    expect(Number.parseFloat(rootStyle.paddingLeft)).toBeGreaterThan(0);
+    expect(Number.parseFloat(rootStyle.paddingTop)).toBe(0);
+    expect(Number.parseFloat(rootStyle.paddingRight)).toBe(0);
+    expect(Number.parseFloat(rootStyle.paddingLeft)).toBe(0);
+
+    const body = canvasElement.querySelector(
+      ".ui-workspace-explorer__body",
+    ) as HTMLElement;
+    const bodyStyle = getComputedStyle(body);
+    expect(Number.parseFloat(bodyStyle.paddingInlineStart)).toBeGreaterThan(0);
+    expect(Number.parseFloat(bodyStyle.paddingInlineEnd)).toBeGreaterThan(0);
 
     const scrollRoot = canvasElement.querySelector(
-      '[data-ui-component="scroll-area"][data-ui-part="scroll-area"]',
-    );
+      ".ui-workspace-explorer__scroll",
+    ) as HTMLElement;
     expect(scrollRoot).not.toBeNull();
-    expect(scrollRoot?.classList.contains("ui-workspace-explorer__scroll")).toBe(
-      true,
-    );
+    expect(scrollRoot.getAttribute("data-ui-component")).toBe("scroll-area");
 
-    const viewport = canvasElement.querySelector(
+    const viewport = scrollRoot.querySelector(
       '[data-slot="scroll-area-viewport"]',
     ) as HTMLElement;
     expect(viewport).not.toBeNull();
     await waitFor(() => {
       expect(viewport.scrollHeight).toBeGreaterThan(viewport.clientHeight);
     });
+
+    await fireEvent.pointerMove(scrollRoot, { clientX: 1, clientY: 1 });
+    const scrollbar = scrollRoot.querySelector(
+      '[data-slot="scroll-area-scrollbar"][data-orientation="vertical"]',
+    ) as HTMLElement | null;
+    if (scrollbar) {
+      const rootRight = root.getBoundingClientRect().right;
+      const barRight = scrollbar.getBoundingClientRect().right;
+      expect(Math.abs(barRight - rootRight)).toBeLessThan(2);
+    }
 
     const activeRow = canvasElement.querySelector(
       `[data-path="archive/${LONG_FILE_NAME}"]`,

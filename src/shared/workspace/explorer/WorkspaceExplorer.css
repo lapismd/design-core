@@ -6,7 +6,9 @@
   min-height: 0;
   flex-direction: column;
   overflow: hidden;
-  padding: var(--ui-workspace-explorer-padding);
+  /* No root padding: Lapis keeps ScrollArea flush so the scrollbar rides the
+     panel edge. Content inset lives on the scroll body instead. */
+  padding: 0;
   color: var(--ui-workspace-panel-foreground);
   background: var(--ui-workspace-panel);
   font-family: var(--ui-workspace-explorer-font-family);
@@ -16,11 +18,18 @@
 }
 
 .ui-workspace-explorer__scroll {
+  position: relative;
   flex: 1 1 auto;
   min-height: 0;
   height: 100%;
   overflow: hidden;
   --ui-scroll-area-foreground: var(--ui-workspace-border-strong);
+}
+
+.ui-workspace-explorer__scroll
+  [data-ui-component="scroll-area"][data-ui-part="scroll-area-scrollbar"][data-orientation="vertical"] {
+  /* Match workspace sidebar: thin rail flush to the scroll root edge. */
+  width: 0.5rem;
 }
 
 .ui-workspace-explorer__toolbar {
@@ -57,6 +66,8 @@
   position: relative;
   box-sizing: border-box;
   min-height: 100%;
+  /* Lapis Sidebar.Group uses p-2 around label + tree; keep scrollbar outside. */
+  padding: var(--ui-workspace-explorer-content-padding);
   padding-block-end: 2.5rem;
 }
 

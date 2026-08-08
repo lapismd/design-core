@@ -123,5 +123,6 @@
   --ui-workspace-explorer-row-height: 1.75rem;
   --ui-workspace-explorer-row-gap: 0.125rem;
   --ui-workspace-explorer-row-active-weight: 700;
-  --ui-workspace-explorer-padding: 0.5rem;
+  /* Insets tree content only (Lapis Sidebar.Group p-2); scrollbar stays flush. */
+  --ui-workspace-explorer-content-padding: 0.5rem;
 }

@@ -77,7 +77,7 @@ export const workspaceTokenNames = {
   explorerRowHeight: "--ui-workspace-explorer-row-height",
   explorerRowGap: "--ui-workspace-explorer-row-gap",
   explorerRowActiveWeight: "--ui-workspace-explorer-row-active-weight",
-  explorerPadding: "--ui-workspace-explorer-padding",
+  explorerContentPadding: "--ui-workspace-explorer-content-padding",
 } as const;
 
 export type WorkspaceTokenKey = keyof typeof workspaceTokenNames;
@@ -161,5 +161,5 @@ export const workspaceTokenDefaults: Record<WorkspaceTokenKey, string> = {
   explorerRowHeight: "1.75rem",
   explorerRowGap: "0.125rem",
   explorerRowActiveWeight: "700",
-  explorerPadding: "0.5rem",
+  explorerContentPadding: "0.5rem",
 };

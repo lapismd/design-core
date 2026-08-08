@@ -86,7 +86,10 @@ into design-core.
 
 The explorer root is borderless. Story canvases may draw a host border for
 framing; pages that embed the panel own any chrome border. Tree scrolling uses
-shadcn `ScrollArea` (not a native overflow container).
+shadcn `ScrollArea` (not a native overflow container). The scrollbar stays flush
+to the panel edge (Lapis `ScrollArea` is `h-full w-full` with no outer padding);
+tree content is inset via `--ui-workspace-explorer-content-padding` (Lapis
+`Sidebar.Group` `p-2`).
 
 <Canvas of={Stories.ScrollAreaAndLongNames} />
 
@@ -200,7 +203,7 @@ Override on an ancestor of the explorer surface:
 | `--ui-workspace-explorer-row-height` | `1.75rem` |
 | `--ui-workspace-explorer-row-gap` | `0.125rem` |
 | `--ui-workspace-explorer-row-active-weight` | `700` |
-| `--ui-workspace-explorer-padding` | `0.5rem` |
+| `--ui-workspace-explorer-content-padding` | `0.5rem` (body inset; scrollbar flush) |
 
 Nested folders draw a vertical indentation guide on
 `.ui-workspace-explorer__sublist` (`border-inline-start`) using the guide
