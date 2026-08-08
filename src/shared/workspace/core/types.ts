@@ -153,8 +153,12 @@ export interface WorkspaceAction {
 }
 
 export interface WorkspaceViewChrome {
-  /** Display title for the tab title bar (not contenteditable). */
+  /** Display title for the tab title bar; may be editable when `titleEditable`. */
   title?: string;
+  /** When true, the header title is click-to-edit in place. */
+  titleEditable?: boolean;
+  /** Called when an editable title commits (Enter or blur). */
+  onTitleCommit?: (nextTitle: string) => void | Promise<void>;
   /**
    * Parent-path segments for the open resource. Prefer omitting the leaf
    * filename here; keep that in `title` / view content.

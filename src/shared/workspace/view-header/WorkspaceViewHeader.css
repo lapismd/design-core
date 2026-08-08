@@ -65,33 +65,44 @@
   font-size: 0.875rem;
 }
 
-.ui-workspace-view-header__breadcrumbs {
+/*
+ * Content-sized so crumbs sit at the start (beside nav) when space allows.
+ * Can shrink before the title; rtl clips overflow from the left so segments
+ * nearest the filename stay visible.
+ */
+.ui-workspace-view-header__path {
   display: flex;
   min-width: 0;
   flex: 0 1 auto;
   align-items: center;
+  justify-content: flex-start;
+  overflow: hidden;
+  direction: rtl;
+}
+
+.ui-workspace-view-header__breadcrumbs {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
   gap: 0.125rem;
   margin: 0;
   padding: 0;
-  overflow: hidden;
   list-style: none;
+  direction: ltr;
 }
 
 .ui-workspace-view-header__breadcrumbs li {
   display: flex;
-  min-width: 0;
+  flex: 0 0 auto;
   align-items: center;
 }
 
 .ui-workspace-view-header__breadcrumb {
-  max-width: 10rem;
   border: 0;
   border-radius: var(--ui-workspace-radius-small);
   padding: 0.125rem 0.25rem;
-  overflow: hidden;
   color: inherit;
   background: transparent;
-  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
@@ -110,11 +121,50 @@
   justify-content: center;
 }
 
+.ui-workspace-view-header__title-wrap {
+  display: flex;
+  min-width: 4rem;
+  max-width: 100%;
+  flex: 0 1 auto;
+  align-items: center;
+  overflow: hidden;
+}
+
 .ui-workspace-view-header__title {
   min-width: 0;
-  padding-inline: 0.75rem;
+  max-width: 100%;
+  border: 0;
+  border-radius: var(--ui-workspace-radius-small);
+  padding: 0.125rem 0.75rem;
   overflow: hidden;
   color: var(--ui-workspace-foreground);
+  background: transparent;
+  font: inherit;
+  text-align: start;
   text-overflow: ellipsis;
+  white-space: pre;
+  cursor: default;
+}
+
+button.ui-workspace-view-header__title {
+  cursor: pointer;
+}
+
+button.ui-workspace-view-header__title:hover {
+  background: var(--ui-workspace-muted);
+}
+
+button.ui-workspace-view-header__title:focus-visible {
+  outline: 2px solid var(--ui-workspace-focus-ring);
+  outline-offset: 1px;
+}
+
+.ui-workspace-view-header__title[data-editing="true"] {
+  overflow: auto;
+  text-overflow: clip;
+  outline: 2px solid var(--ui-workspace-focus-ring);
+  outline-offset: 1px;
+  cursor: text;
+  user-select: text;
   white-space: pre;
 }

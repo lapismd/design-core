@@ -37,13 +37,19 @@
   tab.view = { type: "header-story" };
 
   let result = $state("No action selected");
+  let title = $state("Framework overview");
   const controller = new WorkspaceShellController({ layout });
   controller.registry.register({
     kind: "svelte",
     type: "header-story",
     component: {} as never,
     getChrome: () => ({
-      title: "Framework overview",
+      title,
+      titleEditable: true,
+      onTitleCommit: (nextTitle) => {
+        title = nextTitle;
+        result = nextTitle;
+      },
       breadcrumbs: [
         { id: "workspace", label: "Workspace" },
         { id: "guides", label: "Guides" },
@@ -81,6 +87,17 @@
     await userEvent.click(canvas.getByRole("button", { name: "Refresh view" }));
     await expect(canvas.getByRole("status")).toHaveTextContent(
       "Refresh selected",
+    );
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Rename Framework overview" }),
+    );
+    const titleEditor = canvas.getByRole("textbox", {
+      name: "Rename Framework overview",
+    });
+    await userEvent.clear(titleEditor);
+    await userEvent.type(titleEditor, "Renamed overview{Enter}");
+    await expect(canvas.getByRole("status")).toHaveTextContent(
+      "Renamed overview",
     );
     await userEvent.click(canvas.getByRole("button", { name: "More options" }));
     const page = within(document.body);

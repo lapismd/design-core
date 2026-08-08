@@ -37,8 +37,12 @@
   });
   let chrome = $derived(definition?.getChrome?.(context) ?? {});
   let chromeLabel = $derived((chrome.title ?? tab.title) || tab.id);
+  let displayTitle = $derived(chrome.title ?? tab.title);
   let menuOpen = $state(false);
   let menu = $state(new WorkspaceMenu());
+  let editingTitle = $state(false);
+  let draftTitle = $state("");
+  let cancellingTitleEdit = false;
 
   function setMenuOpen(open: boolean) {
     menuOpen = open;
@@ -48,6 +52,53 @@
     } else {
       menu.hide();
     }
+  }
+
+  function startTitleEdit() {
+    cancellingTitleEdit = false;
+    draftTitle = displayTitle;
+    editingTitle = true;
+  }
+
+  async function commitTitleEdit(node: HTMLElement) {
+    if (!editingTitle) return;
+    if (cancellingTitleEdit) {
+      cancellingTitleEdit = false;
+      editingTitle = false;
+      draftTitle = displayTitle;
+      return;
+    }
+    const next = (node.textContent ?? "").trim();
+    editingTitle = false;
+    if (!next) {
+      draftTitle = displayTitle;
+      return;
+    }
+    draftTitle = next;
+    await chrome.onTitleCommit?.(next);
+  }
+
+  function onTitleEditorKeydown(event: KeyboardEvent) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      void commitTitleEdit(event.currentTarget as HTMLElement);
+    } else if (event.key === "Escape") {
+      event.preventDefault();
+      cancellingTitleEdit = true;
+      (event.currentTarget as HTMLElement).blur();
+    }
+  }
+
+  function focusTitleEditor(node: HTMLElement) {
+    queueMicrotask(() => {
+      node.focus();
+      const selection = window.getSelection();
+      if (!selection) return;
+      const range = document.createRange();
+      range.selectNodeContents(node);
+      selection.removeAllRanges();
+      selection.addRange(range);
+    });
   }
 </script>
 
@@ -101,41 +152,79 @@
     data-desktop-drag-region
   >
     {#if chrome.breadcrumbs?.length}
-      <ol
-        class="ui-workspace-view-header__breadcrumbs"
-        data-ui-part="breadcrumbs"
-        aria-label={`Breadcrumb: ${chromeLabel}`}
-      >
-        {#each chrome.breadcrumbs as breadcrumb, index (breadcrumb.id)}
-          {#if index > 0}
-            <li class="ui-workspace-view-header__separator" aria-hidden="true">
-              <ChevronRight />
+      <div class="ui-workspace-view-header__path" data-ui-part="path">
+        <ol
+          class="ui-workspace-view-header__breadcrumbs"
+          data-ui-part="breadcrumbs"
+          aria-label={`Breadcrumb: ${chromeLabel}`}
+        >
+          {#each chrome.breadcrumbs as breadcrumb, index (breadcrumb.id)}
+            {#if index > 0}
+              <li
+                class="ui-workspace-view-header__separator"
+                aria-hidden="true"
+              >
+                <ChevronRight />
+              </li>
+            {/if}
+            <li>
+              <button
+                type="button"
+                class="ui-workspace-view-header__breadcrumb"
+                data-hint-target="view-header-breadcrumb"
+                data-hint-group="view-header"
+                data-hint-action="click"
+                data-hint-target-id={`view-header:${tab.id}:breadcrumb:${breadcrumb.id}`}
+                data-hint-label={breadcrumb.label}
+                onclick={() => breadcrumb.onSelect?.()}
+              >
+                {breadcrumb.label}
+              </button>
             </li>
-          {/if}
-          <li>
-            <button
-              type="button"
-              class="ui-workspace-view-header__breadcrumb"
-              data-hint-target="view-header-breadcrumb"
-              data-hint-group="view-header"
-              data-hint-action="click"
-              data-hint-target-id={`view-header:${tab.id}:breadcrumb:${breadcrumb.id}`}
-              data-hint-label={breadcrumb.label}
-              onclick={() => breadcrumb.onSelect?.()}
-            >
-              {breadcrumb.label}
-            </button>
-          </li>
-        {/each}
-      </ol>
+          {/each}
+        </ol>
+      </div>
       <ChevronRight
         class="ui-workspace-view-header__title-separator"
         aria-hidden="true"
       />
     {/if}
-    <span class="ui-workspace-view-header__title" data-ui-part="title">
-      {chrome.title ?? tab.title}
-    </span>
+    <div class="ui-workspace-view-header__title-wrap" data-ui-part="title-wrap">
+      {#if chrome.titleEditable && editingTitle}
+        <div
+          class="ui-workspace-view-header__title"
+          data-ui-part="title"
+          data-editing="true"
+          data-desktop-drag-region="false"
+          role="textbox"
+          tabindex="0"
+          aria-label={`Rename ${displayTitle}`}
+          contenteditable="true"
+          {@attach focusTitleEditor}
+          onkeydown={onTitleEditorKeydown}
+          onblur={(event) =>
+            void commitTitleEdit(event.currentTarget as HTMLElement)}
+        >
+          {draftTitle}
+        </div>
+      {:else if chrome.titleEditable}
+        <button
+          type="button"
+          class="ui-workspace-view-header__title"
+          data-ui-part="title"
+          data-desktop-drag-region="false"
+          aria-label={`Rename ${displayTitle}`}
+          title={displayTitle}
+          onclick={startTitleEdit}
+        >
+          {displayTitle}
+        </button>
+      {:else}
+        <span class="ui-workspace-view-header__title" data-ui-part="title">
+          {displayTitle}
+        </span>
+      {/if}
+    </div>
   </div>
 
   <div class="ui-workspace-view-header__actions" data-ui-part="actions">
