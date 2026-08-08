@@ -302,6 +302,17 @@ export class WorkspaceShellController {
   }
 
   selectTab(tabId: string): boolean {
+    const location = findWorkspaceTab(this.layout, tabId);
+    if (!location) return false;
+    // Leaf content pointerdown calls selectTab on every editor click. Skip the
+    // layout-change commit when the tab is already active so CodeMirror fold
+    // (and other in-view) interactions are not reset by layout projection.
+    const alreadyActive =
+      this.layout.active?.tabId === tabId &&
+      this.layout.active?.paneId === location.pane.id &&
+      this.layout.active?.hostId === location.hostId &&
+      location.pane.activeItemId === location.item.id;
+    if (alreadyActive) return true;
     if (!this.#activateTab(tabId)) return false;
     this.#commit({ source: "tab-select", id: tabId });
     return true;

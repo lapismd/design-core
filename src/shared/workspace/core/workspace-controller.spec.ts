@@ -43,6 +43,16 @@ describe("WorkspaceShellController", () => {
     expect(controller.activeTabId).toBe("second");
   });
 
+  it("does not emit layout-change when selecting the already-active tab", () => {
+    const controller = new WorkspaceShellController({ layout: splitLayout() });
+    const changes: string[] = [];
+    controller.on("layout-change", (event) => changes.push(event.source));
+    expect(controller.selectTab("first")).toBe(true);
+    expect(changes).toEqual([]);
+    expect(controller.selectTab("second")).toBe(true);
+    expect(changes).toEqual(["tab-select"]);
+  });
+
   it("keeps main-pane focus transient and emits dedicated state changes", async () => {
     const save = vi.fn(async () => undefined);
     const controller = new WorkspaceShellController({
