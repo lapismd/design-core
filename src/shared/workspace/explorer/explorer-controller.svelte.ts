@@ -237,6 +237,7 @@ export class ExplorerController {
   }
 
   async commitRename(path: string, nextBaseName: string): Promise<void> {
+    if (this.editingPath !== path) return;
     this.editingPath = null;
     const node = findExplorerNode(this.root, path);
     if (!node || !nextBaseName || nextBaseName === node.name) return;
@@ -262,10 +263,7 @@ export class ExplorerController {
     await this.refresh();
   }
 
-  async importExternalFiles(
-    folderPath: string,
-    files: File[],
-  ): Promise<void> {
+  async importExternalFiles(folderPath: string, files: File[]): Promise<void> {
     if (!this.#actions.importExternalFiles || files.length === 0) return;
     await this.#actions.importExternalFiles(folderPath, files);
     this.expandedPaths.add(folderPath);
@@ -283,10 +281,7 @@ export class ExplorerController {
     }
   }
 
-  iconFor(
-    node: ExplorerNode,
-    editing: boolean,
-  ): WorkspaceIconName {
+  iconFor(node: ExplorerNode, editing: boolean): WorkspaceIconName {
     const resolved = this.#getIcon?.(node, {
       selectedPath: this.selectedPath,
       opened: node.kind === "folder" && this.expandedPaths.has(node.path),

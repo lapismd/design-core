@@ -125,12 +125,17 @@ describe("ExplorerController", () => {
     await controller.commitRename("Untitled", "docs");
     expect(controller.selectedPath).toBe("docs");
 
+    // Enter followed by blur may submit the same rename twice. Once the first
+    // submission clears editing state, the stale blur must be ignored.
+    await controller.commitRename("Untitled", "docs");
+    expect(controller.selectedPath).toBe("docs");
+
     await controller.moveNode("Untitled.md", "docs");
     await controller.refresh();
     const docs = controller.root.children?.find((node) => node.path === "docs");
-    expect(docs?.children?.some((node) => node.path === "docs/Untitled.md")).toBe(
-      true,
-    );
+    expect(
+      docs?.children?.some((node) => node.path === "docs/Untitled.md"),
+    ).toBe(true);
 
     await controller.deleteNode("empty");
     expect(
