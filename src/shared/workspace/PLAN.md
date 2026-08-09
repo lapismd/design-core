@@ -859,6 +859,18 @@ workflow.
 - Added deterministic terminal, grouped-panel, integrated AppShell, and mobile
   Storybook scenarios. Pixel-bearing stories are `visual-pending`; no baseline
   image has been created or replaced.
+- Grouped panel size persistence now ignores normalized no-op reports from the
+  resizable host. This keeps initially selected imperative views mounted when
+  a consumer projects layout-change events into its own compatibility model;
+  the bottom-panel catalog covers the retained view across a host-width change.
+- Validation passes the focused controller and bottom-panel suites, all 79 unit
+  files (478 tests), all 184 Storybook files (521 tests), no-Tailwind and Svelte
+  diagnostics, the production Storybook build, and a fresh Lapis consumer
+  browser load. The compare-only grouped-panel capture completes as
+  `missing-baseline` because that story remains `visual-pending`; no PNG was
+  created or replaced. The aggregate gate still stops at six unrelated
+  repository Prettier findings, and the visual audit reports the existing
+  orphaned WorkspaceEmpty candidate owned by its concurrent story change.
 - Focused layout, JSON, controller, and application tests pass (4 files, 39
   tests). Repository validation also passes formatting, Svelte diagnostics with
   zero errors or warnings, the no-Tailwind and docs checks, 77 unit files with

@@ -373,6 +373,43 @@ describe("WorkspaceShellController", () => {
     expect(sources).toEqual(["bottom-panel", "resize", "sidebar-group"]);
   });
 
+  it("does not persist unchanged grouped panel sizes", () => {
+    const properties = createWorkspaceTab({
+      id: "properties",
+      title: "Properties",
+    });
+    const layout = splitLayout();
+    layout.bottom = {
+      open: true,
+      size: 240,
+      root: createWorkspaceTabs([properties], { id: "bottom-panel" }),
+    };
+    const controller = new WorkspaceShellController({ layout });
+    const group = controller.groupDockTabs("bottom", [properties.id], {
+      id: "properties-group",
+      title: "Properties",
+    })!;
+    const changes: WorkspaceLayoutChangeEvent[] = [];
+    controller.on("layout-change", (event) => changes.push(event));
+
+    expect(
+      controller.setSidebarPanelSizes(group.id, { [properties.id]: 100 }),
+    ).toBe(true);
+    expect(changes).toEqual([]);
+
+    expect(
+      controller.setSidebarPanelSizes(group.id, { [properties.id]: 75 }),
+    ).toBe(true);
+    expect(group.panelSizesByTabId[properties.id]).toBe(75);
+    expect(changes).toEqual([
+      {
+        source: "resize",
+        id: group.id,
+        operation: "sidebar-panel",
+      },
+    ]);
+  });
+
   it("updates persisted sidebar-group metadata and exposes panel actions", async () => {
     const files = createWorkspaceTab({ id: "files", title: "Files" });
     const search = createWorkspaceTab({ id: "search", title: "Search" });

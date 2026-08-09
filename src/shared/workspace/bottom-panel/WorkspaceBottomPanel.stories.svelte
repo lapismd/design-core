@@ -40,6 +40,8 @@
 </script>
 
 <script lang="ts">
+  let imperativeResizeChanges = 0;
+
   function createController(empty = false) {
     const terminal = createWorkspaceTab({
       id: "bottom-terminal",
@@ -100,9 +102,67 @@
     return controller;
   }
 
+  function createImperativeGroupedController() {
+    const properties = createWorkspaceTab({
+      id: "bottom-properties",
+      title: "Properties",
+      icon: "archive",
+      view: { type: "imperative-panel-story" },
+    });
+    const group: WorkspacePanelGroup = {
+      kind: "sidebar-group",
+      id: "bottom-properties-group",
+      title: "Properties",
+      icon: "archive",
+      tabs: [properties],
+      hiddenTabIds: [],
+      collapsedByTabId: { [properties.id]: false },
+      panelSizesByTabId: { [properties.id]: 100 },
+    };
+    const pane = createWorkspaceTabs([group], {
+      id: "bottom-imperative-story-pane",
+      activeItemId: group.id,
+    });
+    const layout = createDefaultWorkspaceLayout();
+    layout.bottom = { open: true, size: 288, root: pane };
+    layout.active = {
+      hostId: "root",
+      paneId: pane.id,
+      tabId: properties.id,
+    };
+    const controller = new WorkspaceShellController({ layout });
+    let retainedView: HTMLElement | null = null;
+    controller.registry.register({
+      kind: "imperative",
+      type: "imperative-panel-story",
+      mount: (target) => {
+        retainedView ??= document.createElement("section");
+        retainedView.className = "ui-workspace-bottom-panel-story-view";
+        retainedView.dataset.testid = "bottom-imperative-view";
+        retainedView.setAttribute("aria-label", "Properties content");
+        retainedView.textContent = "Properties are ready.";
+        target.replaceChildren(retainedView);
+        return () => {
+          if (retainedView?.parentElement === target) retainedView.remove();
+        };
+      },
+    });
+    controller.onChange((_layout, event) => {
+      if (
+        event.source === "resize" &&
+        event.id === group.id &&
+        event.operation === "sidebar-panel"
+      ) {
+        imperativeResizeChanges += 1;
+      }
+    });
+    return controller;
+  }
+
   const controller = createController();
   const groupedController = createController();
   const emptyController = createController(true);
+  const imperativeGroupedController = createImperativeGroupedController();
 </script>
 
 <Story
@@ -156,6 +216,31 @@
   {#snippet template()}
     <div class="ui-workspace-bottom-panel-story-frame">
       <WorkspaceBottomPanel {controller} />
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Initially selected imperative group"
+  tags={["visual-pending"]}
+  play={async ({ canvas, canvasElement }) => {
+    await expect(canvas.getByTestId("bottom-imperative-view")).toBeVisible();
+    const frame = canvasElement.querySelector<HTMLElement>(
+      ".ui-workspace-bottom-panel-story-frame",
+    );
+    if (!frame) throw new Error("Expected the bottom-panel story frame");
+    frame.style.width = "80%";
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    await expect(canvas.getByTestId("bottom-imperative-view")).toBeVisible();
+    await expect(imperativeResizeChanges).toBe(0);
+    await expect(
+      canvas.getByRole("button", { name: "Collapse Properties" }),
+    ).toHaveAttribute("aria-expanded", "true");
+  }}
+>
+  {#snippet template()}
+    <div class="ui-workspace-bottom-panel-story-frame">
+      <WorkspaceBottomPanel controller={imperativeGroupedController} />
     </div>
   {/snippet}
 </Story>

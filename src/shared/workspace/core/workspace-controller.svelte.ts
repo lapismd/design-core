@@ -843,11 +843,18 @@ export class WorkspaceShellController {
     const group = this.#findSidebarGroup(groupId);
     if (!group) return false;
     const tabIds = new Set(group.tabs.map((tab) => tab.id));
-    const entries = Object.entries(sizesByTabId).filter(
-      ([tabId, size]) => tabIds.has(tabId) && Number.isFinite(size) && size > 0,
-    );
+    const entries = Object.entries(sizesByTabId)
+      .filter(
+        ([tabId, size]) =>
+          tabIds.has(tabId) && Number.isFinite(size) && size > 0,
+      )
+      .map(([tabId, size]) => [tabId, Number(size.toFixed(4))] as const);
     if (!entries.length) return false;
-    for (const [tabId, size] of entries) {
+    const changes = entries.filter(
+      ([tabId, size]) => group.panelSizesByTabId[tabId] !== size,
+    );
+    if (!changes.length) return true;
+    for (const [tabId, size] of changes) {
       group.panelSizesByTabId[tabId] = size;
       this.#events.trigger("resize", tabId);
     }
