@@ -256,6 +256,16 @@
     await expect(
       within(empty!).getByRole("heading", { name: "Heads up!" }),
     ).toBeVisible();
+    const content = empty!.closest<HTMLElement>(
+      "#workspace-bottom-panel-content",
+    );
+    await expect(content).not.toBeNull();
+    await waitFor(() => {
+      expect(empty!.getBoundingClientRect().height).toBeCloseTo(
+        content!.getBoundingClientRect().height,
+        1,
+      );
+    });
 
     const close = within(empty!).getByRole("button", {
       name: "Close bottom panel",
