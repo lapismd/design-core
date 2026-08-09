@@ -8,10 +8,10 @@ components move between shared layers.
 Generic primitives in `src/shared/shadcn/`:
 
 accordion, alert, alert-dialog, badge, button, card, code, code-block,
-collapsible, command, dialog, dropdown-menu, empty, field, input, input-group,
-label, popover, resizable, scroll-area, select, separator, sheet, sidebar,
-skeleton, spinner, switch, swipe-item, tabs, textarea, toggle, toggle-group,
-tooltip, progress, slider, context-menu, drawer
+collapsible, column-canvas, command, dialog, dropdown-menu, empty, field,
+input, input-group, label, popover, resizable, scroll-area, select, separator,
+sheet, sidebar, skeleton, spinner, switch, swipe-item, tabs, textarea, toggle,
+toggle-group, tooltip, progress, slider, context-menu, drawer
 
 Import: `@lapismd/design-core/shadcn/<family>`
 
@@ -19,6 +19,10 @@ Registry-backed families are converted to scoped native CSS with token maps and
 provenance files through `pnpm ui:add` / `pnpm ui:add:batch`. `swipe-item` is a
 project-authored native-CSS family because no corresponding registry item
 exists; its contract and research provenance live in `ADD_SWIPE_ITEM.md`.
+`column-canvas` is a project-authored Layout family for selection-driven
+horizontal column cascades (Miller-column style) with an AppShell-like
+controller, compound Header/Toggle/Body/Item parts, and injected width/collapse
+persistence; it is not registry-backed.
 `code` and `code-block` are project-authored Astryx-inspired content primitives;
 see `ADD_CODE_BLOCK.md`. Prefer them for inline/fenced presentation. Forms
 `code-highlighter` remains the Lezer/`parser`-driven form-preview path.

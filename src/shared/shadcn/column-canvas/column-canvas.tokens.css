@@ -1,0 +1,24 @@
+/**
+ * Default ColumnCanvas bindings → public theme tokens.
+ * Override --ui-column-canvas-* on :root or a shared ancestor.
+ */
+:root {
+  --ui-column-canvas-background: var(--background);
+  --ui-column-canvas-column-background: var(--card);
+  --ui-column-canvas-border-color: var(--border);
+  --ui-column-canvas-radius: var(--radius-lg, var(--radius));
+  --ui-column-canvas-header-height: 2.5rem;
+  --ui-column-canvas-gap: calc(var(--spacing, 0.25rem) * 3);
+  --ui-column-canvas-collapsed-width: 2.75rem;
+  --ui-column-canvas-resize-handle-hover: color-mix(
+    in oklab,
+    var(--primary) 40%,
+    transparent
+  );
+  --ui-column-canvas-title-color: var(--foreground);
+  --ui-column-canvas-count-color: var(--muted-foreground);
+  --ui-column-canvas-padding: calc(var(--spacing, 0.25rem) * 3);
+  --ui-column-canvas-item-hover: var(--muted);
+  --ui-column-canvas-item-selected: var(--accent);
+  --ui-column-canvas-item-selected-foreground: var(--accent-foreground);
+}

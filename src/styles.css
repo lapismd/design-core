@@ -34,6 +34,7 @@
 @import "./shared/shadcn/context-menu/context-menu.tokens.css";
 @import "./shared/shadcn/command/command.tokens.css";
 @import "./shared/shadcn/collapsible/collapsible.tokens.css";
+@import "./shared/shadcn/column-canvas/column-canvas.tokens.css";
 @import "./shared/shadcn/checkbox/checkbox.tokens.css";
 @import "./shared/shadcn/card/card.tokens.css";
 @import "./shared/shadcn/button-group/button-group.tokens.css";
