@@ -15,6 +15,11 @@
   import type { WorkspaceShellController } from "../core/workspace-controller.svelte.js";
   import { WorkspaceDragState } from "../drag/workspace-drag.svelte.js";
   import WorkspaceTabsDrop from "../drop-overlay/WorkspaceTabsDrop.svelte";
+  import WorkspaceEmpty from "../empty/WorkspaceEmpty.svelte";
+  import {
+    createWorkspaceEmptyActions,
+    createWorkspaceSidebarLinks,
+  } from "../empty/workspace-empty-actions.js";
   import WorkspaceIcon from "../icon/WorkspaceIcon.svelte";
   import WorkspaceContextMenuItems from "../menu/WorkspaceContextMenuItems.svelte";
   import WorkspaceMenuItems from "../menu/WorkspaceMenuItems.svelte";
@@ -49,6 +54,10 @@
   let container = $state<HTMLElement | null>(null);
   let containerWidth = $state(700);
   let itemCount = $derived(Math.max(1, pane.items.length));
+  let emptyActions = $derived(
+    createWorkspaceEmptyActions(controller, pane.id, createTab),
+  );
+  let emptyLinks = $derived(createWorkspaceSidebarLinks(controller, pane.id));
   let maximumPaneWidth = $derived(Math.max(0, containerWidth - itemCount * 40));
   let minimumPaneWidth = $derived(maximumPaneWidth / itemCount);
   let isFocusMode = $derived(controller.isFocusModeForPane(pane.id));
@@ -439,6 +448,7 @@
                   {tab}
                   {hostId}
                   paneId={pane.id}
+                  {createTab}
                 />
               </div>
             </div>
@@ -446,6 +456,17 @@
         {/if}
       </div>
     {/each}
+
+    {#if pane.items.length === 0}
+      <WorkspaceTabsDrop
+        {controller}
+        drag={dragState}
+        parent={pane}
+        class="ui-workspace-stacked-tabs__drop-target"
+      >
+        <WorkspaceEmpty actions={emptyActions} links={emptyLinks} />
+      </WorkspaceTabsDrop>
+    {/if}
 
     {#if dragState.tabMoveIndicator.active && dragState.tabMoveIndicator.scope === tabIndicatorScope && dragState.active}
       <div

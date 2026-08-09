@@ -31,6 +31,7 @@ import type {
   WorkspaceEventMap,
   WorkspaceLayoutChangeEvent,
   WorkspaceLayoutPersistence,
+  WorkspaceAction,
   AppShellApplicationInfo,
   WorkspaceRibbonItem,
   WorkspaceStatusItem,
@@ -142,6 +143,8 @@ export class AppShellController {
   readonly ui: AppShellUiRegistry;
   readonly ribbon: WorkspaceItemRegistry<WorkspaceRibbonItem>;
   readonly status: WorkspaceItemRegistry<WorkspaceStatusItem>;
+  /** Host and plugin actions shown after the built-in Create Tab action. */
+  readonly emptyViewActions: WorkspaceItemRegistry<WorkspaceAction>;
   readonly applicationInfo: Readonly<AppShellApplicationInfo> | null;
 
   ready = $state(false);
@@ -232,6 +235,7 @@ export class AppShellController {
     this.commands.pushScope(this.keymap);
     this.ribbon = this.renderer.ribbon;
     this.status = this.renderer.statusBar;
+    this.emptyViewActions = this.renderer.emptyViewActions;
     this.applicationInfo = options.application
       ? Object.freeze({ ...options.application })
       : null;
@@ -289,6 +293,11 @@ export class AppShellController {
       label: "Open command palette",
       icon: "terminal",
       priority: -1000,
+      onSelect: () => this.commands.openPalette(),
+    });
+    this.emptyViewActions.addItem({
+      id: "app-shell:open-command-palette",
+      label: "Open Command Palette",
       onSelect: () => this.commands.openPalette(),
     });
     if (this.applicationInfo) {

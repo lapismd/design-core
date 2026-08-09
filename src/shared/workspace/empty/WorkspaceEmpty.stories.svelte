@@ -12,7 +12,7 @@
       docs: {
         description: {
           component:
-            "Source-aligned empty leaf and unresolved-view fallback rendered without shadcn or Tailwind primitives.",
+            "Workspace empty state composed from design-core's shadcn Empty and Button primitives.",
         },
         source: {
           code: exampleSources.Basic,
@@ -28,24 +28,33 @@
   let result = $state("No action selected");
   const actions = [
     {
-      id: "new",
-      label: "Create new note (⌘ N)",
+      id: "create-tab",
+      label: "Create Tab",
       onSelect: () => {
-        result = "Create new note selected";
+        result = "Create Tab selected";
       },
     },
     {
-      id: "open",
-      label: "Go to file (⌘ O)",
+      id: "open-command-palette",
+      label: "Open Command Palette",
       onSelect: () => {
-        result = "Go to file selected";
+        result = "Open Command Palette selected";
+      },
+    },
+  ];
+  const links = [
+    {
+      id: "files",
+      label: "Files",
+      onSelect: () => {
+        result = "Files selected";
       },
     },
     {
-      id: "recent",
-      label: "See recent files",
+      id: "search",
+      label: "Search",
       onSelect: () => {
-        result = "Recent files selected";
+        result = "Search selected";
       },
     },
   ];
@@ -53,13 +62,15 @@
 
 <Story
   name="Empty leaf actions"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   play={async ({ canvas }) => {
-    await userEvent.click(
-      canvas.getByRole("button", { name: "Create new note (⌘ N)" }),
-    );
+    await userEvent.click(canvas.getByRole("button", { name: "Create Tab" }));
     await expect(canvas.getByRole("status")).toHaveTextContent(
-      "Create new note selected",
+      "Create Tab selected",
+    );
+    await userEvent.click(canvas.getByRole("button", { name: "Files" }));
+    await expect(canvas.getByRole("status")).toHaveTextContent(
+      "Files selected",
     );
   }}
   parameters={{
@@ -76,7 +87,7 @@
 >
   {#snippet template()}
     <div class="bg-background relative h-[28rem] min-h-0">
-      <WorkspaceEmpty {actions} />
+      <WorkspaceEmpty {actions} {links} />
     </div>
     <output class="sr-only">{result}</output>
   {/snippet}
@@ -84,7 +95,7 @@
 
 <Story
   name="Missing registered view"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   play={async ({ canvas }) => {
     await expect(
       canvas.getByRole("heading", { name: "Plugin no longer active" }),

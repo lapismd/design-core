@@ -100,6 +100,31 @@ describe("AppShellController", () => {
     });
     palette?.onSelect();
     expect(app.commands.paletteOpen).toBe(true);
+    app.commands.closePalette();
+
+    const emptyPalette = app.emptyViewActions.items.find(
+      (item) => item.id === "app-shell:open-command-palette",
+    );
+    expect(emptyPalette).toMatchObject({ label: "Open Command Palette" });
+    emptyPalette?.onSelect();
+    expect(app.commands.paletteOpen).toBe(true);
+
+    const customEmptyAction = vi.fn();
+    const removeCustomEmptyAction = app.emptyViewActions.addItem({
+      id: "consumer:custom-empty-action",
+      label: "Custom empty action",
+      onSelect: customEmptyAction,
+    });
+    app.emptyViewActions.items
+      .find((item) => item.id === "consumer:custom-empty-action")
+      ?.onSelect();
+    expect(customEmptyAction).toHaveBeenCalledOnce();
+    removeCustomEmptyAction();
+    expect(
+      app.emptyViewActions.items.some(
+        (item) => item.id === "consumer:custom-empty-action",
+      ),
+    ).toBe(false);
 
     const version = app.status.items.find(
       (item) => item.id === "app-shell:version",

@@ -17,6 +17,10 @@
   import { WorkspaceDragState } from "../drag/workspace-drag.svelte.js";
   import WorkspaceTabsDrop from "../drop-overlay/WorkspaceTabsDrop.svelte";
   import WorkspaceEmpty from "../empty/WorkspaceEmpty.svelte";
+  import {
+    createWorkspaceEmptyActions,
+    createWorkspaceSidebarLinks,
+  } from "../empty/workspace-empty-actions.js";
   import WorkspaceIcon from "../icon/WorkspaceIcon.svelte";
   import WorkspaceContextMenuItems from "../menu/WorkspaceContextMenuItems.svelte";
   import WorkspaceMenuItems from "../menu/WorkspaceMenuItems.svelte";
@@ -56,6 +60,10 @@
   let canFocusMode = $derived(
     nodeContainsPane(controller.layout.main, pane.id),
   );
+  let emptyActions = $derived(
+    createWorkspaceEmptyActions(controller, pane.id, createTab),
+  );
+  let emptyLinks = $derived(createWorkspaceSidebarLinks(controller, pane.id));
 
   $effect(() => {
     selectedItemId = pane.activeItemId ?? pane.items[0]?.id ?? "";
@@ -552,12 +560,13 @@
                   tab={item}
                   {hostId}
                   paneId={pane.id}
+                  {createTab}
                 />
               </div>
             </div>
           </WorkspaceTabsDrop>
         {:else}
-          <WorkspaceEmpty />
+          <WorkspaceEmpty actions={emptyActions} links={emptyLinks} />
         {/if}
       </Tabs.Content>
     {/each}
@@ -569,7 +578,7 @@
         parent={pane}
         class="ui-workspace-tabs__drop-target"
       >
-        <WorkspaceEmpty />
+        <WorkspaceEmpty actions={emptyActions} links={emptyLinks} />
       </WorkspaceTabsDrop>
     {/if}
   </div>
