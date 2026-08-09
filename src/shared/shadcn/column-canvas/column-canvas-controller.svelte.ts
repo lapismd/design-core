@@ -11,7 +11,7 @@ import {
 
 export const COLUMN_CANVAS_DEFAULT_MIN_WIDTH = 240;
 export const COLUMN_CANVAS_DEFAULT_MAX_WIDTH = 760;
-export const COLUMN_CANVAS_DEFAULT_TRAILING_SPACER_WIDTH = 640;
+export const COLUMN_CANVAS_DEFAULT_TRAILING_SPACER_WIDTH = 320;
 
 export type ColumnCanvasColumnConfig = {
   /** Initial expanded width in CSS pixels. */

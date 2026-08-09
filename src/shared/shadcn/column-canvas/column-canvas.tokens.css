@@ -18,6 +18,7 @@
   --ui-column-canvas-title-color: var(--foreground);
   --ui-column-canvas-count-color: var(--muted-foreground);
   --ui-column-canvas-padding: calc(var(--spacing, 0.25rem) * 3);
+  --ui-column-canvas-scrollbar-gap: calc(var(--spacing, 0.25rem) * 2);
   --ui-column-canvas-item-hover: var(--muted);
   --ui-column-canvas-item-selected: var(--accent);
   --ui-column-canvas-item-selected-foreground: var(--accent-foreground);

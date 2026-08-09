@@ -2,6 +2,7 @@
   import type { Snippet } from "svelte";
   import type { HTMLAttributes } from "svelte/elements";
   import type { WithElementRef } from "../../../lib/utils.js";
+  import { ScrollArea } from "../scroll-area/index.js";
   import { useColumnCanvasColumn } from "./column-canvas-column-context.svelte.js";
 
   let {
@@ -18,18 +19,25 @@
 
   useColumnCanvasColumn();
 
-  function handleScroll(
-    event: Event & { currentTarget: HTMLDivElement },
-  ): void {
-    if (!onScrollNearEnd) return;
-    const element = event.currentTarget;
-    if (
-      element.scrollHeight - element.scrollTop - element.clientHeight <=
-      180
-    ) {
-      onScrollNearEnd();
+  let viewportRef = $state<HTMLElement | null>(null);
+
+  $effect(() => {
+    const element = viewportRef;
+    const nearEnd = onScrollNearEnd;
+    if (!element || !nearEnd) return;
+
+    function handleScroll(): void {
+      if (
+        element!.scrollHeight - element!.scrollTop - element!.clientHeight <=
+        180
+      ) {
+        nearEnd!();
+      }
     }
-  }
+
+    element.addEventListener("scroll", handleScroll);
+    return () => element.removeEventListener("scroll", handleScroll);
+  });
 </script>
 
 <div
@@ -38,7 +46,8 @@
   class={className}
   data-ui-component="column-canvas"
   data-ui-part="column-body"
-  onscroll={handleScroll}
 >
-  {@render children?.()}
+  <ScrollArea type="auto" orientation="vertical" bind:viewportRef>
+    {@render children?.()}
+  </ScrollArea>
 </div>
