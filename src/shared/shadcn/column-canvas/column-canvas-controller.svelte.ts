@@ -18,12 +18,22 @@ export type ColumnCanvasColumnConfig = {
   defaultWidth: number;
   minWidth?: number;
   maxWidth?: number;
+  /**
+   * Minimum `path.length` required before the column is path-visible.
+   * Omit or `0` for a root lane that is always path-eligible.
+   */
+  pathLevel?: number;
   /** When true, Column renders a trailing resize handle. */
   resizable?: boolean;
   /** When true, Column can collapse to a rail via Toggle. */
   collapsible?: boolean;
   /** When true, Close can remove the column from the canvas. */
   closeable?: boolean;
+  /**
+   * When true (default for closeable columns), `select` at
+   * `pathLevel - 1` reopens this column if it was closed.
+   */
+  openOnSelect?: boolean;
   /** Initial collapsed state before persistence restore. */
   collapsed?: boolean;
   /** Initial closed state before persistence restore. */
@@ -35,9 +45,11 @@ type ColumnRuntimeState = {
   defaultWidth: number;
   minWidth: number;
   maxWidth: number;
+  pathLevel: number;
   resizable: boolean;
   collapsible: boolean;
   closeable: boolean;
+  openOnSelect: boolean;
   collapsed: boolean;
   closed: boolean;
 };
@@ -119,6 +131,7 @@ export class ColumnCanvasController {
       return;
     }
     this.#setPath([...this.path.slice(0, level), key]);
+    this.#openColumnsForSelect(level);
   };
 
   clearFrom = (level: number): void => {
@@ -137,6 +150,28 @@ export class ColumnCanvasController {
 
   isSelected = (level: number, key: string): boolean => {
     return this.path[level] === key;
+  };
+
+  /** Path key at `level`, or `undefined` when that depth is unset. */
+  pathAt = (level: number): string | undefined => {
+    return this.path[level];
+  };
+
+  getPathLevel = (id: string): number => {
+    return this.#requireColumn(id).pathLevel;
+  };
+
+  /** True when `path.length` meets the column's configured `pathLevel`. */
+  isPathVisible = (id: string): boolean => {
+    return this.path.length >= this.getPathLevel(id);
+  };
+
+  /**
+   * True when the column should render chrome: path-eligible and not closed.
+   * Collapse is handled separately once visible.
+   */
+  isColumnVisible = (id: string): boolean => {
+    return this.isPathVisible(id) && !this.isClosed(id);
   };
 
   // —— Layout ————————————————————————————————————————————————
@@ -248,13 +283,23 @@ export class ColumnCanvasController {
 
     const existing = this.#columns[columnId];
     if (existing) {
+      const closeable = config.closeable ?? existing.closeable;
       const next = {
         ...existing,
         minWidth: config.minWidth ?? existing.minWidth,
         maxWidth: config.maxWidth ?? existing.maxWidth,
+        pathLevel:
+          config.pathLevel === undefined
+            ? existing.pathLevel
+            : normalizePathLevel(config.pathLevel),
         resizable: config.resizable ?? existing.resizable,
         collapsible: config.collapsible ?? existing.collapsible,
-        closeable: config.closeable ?? existing.closeable,
+        closeable,
+        openOnSelect:
+          config.openOnSelect ??
+          (config.closeable !== undefined
+            ? closeable
+            : existing.openOnSelect),
         defaultWidth: config.defaultWidth,
       };
       if (next.minWidth > next.maxWidth) {
@@ -343,6 +388,21 @@ export class ColumnCanvasController {
     this.#onPathChange?.([...next]);
   }
 
+  /** Reopen closeable columns that should appear after selecting at `level`. */
+  #openColumnsForSelect(level: number): void {
+    const targetPathLevel = level + 1;
+    for (const [id, column] of Object.entries(this.#columns)) {
+      if (
+        column.closeable &&
+        column.openOnSelect &&
+        column.pathLevel === targetPathLevel &&
+        column.closed
+      ) {
+        this.setClosed(id, false);
+      }
+    }
+  }
+
   #requireColumn(id: string): ColumnRuntimeState {
     const column = this.#columns[String(id)];
     if (!column) {
@@ -427,17 +487,26 @@ function createRuntimeState(
   const defaultWidth = clampWidth(config.defaultWidth, minWidth, maxWidth);
   const closeable = config.closeable ?? false;
   const collapsible = config.collapsible ?? false;
+  const pathLevel = normalizePathLevel(config.pathLevel);
   return {
     width: defaultWidth,
     defaultWidth,
     minWidth,
     maxWidth,
+    pathLevel,
     resizable: config.resizable ?? false,
     collapsible,
     closeable,
+    openOnSelect: config.openOnSelect ?? closeable,
     collapsed: Boolean(config.collapsed && collapsible && !config.closed),
     closed: Boolean(config.closed && closeable),
   };
+}
+
+function normalizePathLevel(pathLevel: number | undefined): number {
+  if (pathLevel === undefined) return 0;
+  if (!Number.isFinite(pathLevel)) return 0;
+  return Math.max(0, Math.round(pathLevel));
 }
 
 function clampWidth(width: number, minWidth: number, maxWidth: number): number {

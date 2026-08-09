@@ -15,6 +15,66 @@ describe("createColumnCanvasController", () => {
     });
     expect(canvas.path).toEqual([]);
     expect(canvas.visibleDepth).toBe(1);
+    expect(canvas.isPathVisible("categories")).toBe(true);
+    expect(canvas.isColumnVisible("categories")).toBe(true);
+  });
+
+  it("gates cascade columns by pathLevel and closed state", () => {
+    const canvas = createColumnCanvasController({
+      columns: {
+        categories: { defaultWidth: 260, pathLevel: 0 },
+        components: { defaultWidth: 300, pathLevel: 1 },
+        detail: {
+          defaultWidth: 340,
+          pathLevel: 2,
+          closeable: true,
+        },
+      },
+    });
+
+    expect(canvas.getPathLevel("components")).toBe(1);
+    expect(canvas.isColumnVisible("categories")).toBe(true);
+    expect(canvas.isColumnVisible("components")).toBe(false);
+    expect(canvas.isColumnVisible("detail")).toBe(false);
+
+    canvas.select(0, "stable-chat");
+    expect(canvas.pathAt(0)).toBe("stable-chat");
+    expect(canvas.isColumnVisible("components")).toBe(true);
+    expect(canvas.isColumnVisible("detail")).toBe(false);
+
+    canvas.select(1, "composer");
+    expect(canvas.isColumnVisible("detail")).toBe(true);
+
+    canvas.close("detail");
+    expect(canvas.isPathVisible("detail")).toBe(true);
+    expect(canvas.isColumnVisible("detail")).toBe(false);
+
+    canvas.select(1, "message-bubble");
+    expect(canvas.isClosed("detail")).toBe(false);
+    expect(canvas.isColumnVisible("detail")).toBe(true);
+
+    canvas.select(0, "stable-chat");
+    expect(canvas.isColumnVisible("components")).toBe(false);
+    expect(canvas.isColumnVisible("detail")).toBe(false);
+  });
+
+  it("skips openOnSelect when disabled", () => {
+    const canvas = createColumnCanvasController({
+      columns: {
+        components: { defaultWidth: 300, pathLevel: 0 },
+        detail: {
+          defaultWidth: 340,
+          pathLevel: 1,
+          closeable: true,
+          openOnSelect: false,
+          closed: true,
+        },
+      },
+    });
+    expect(canvas.isClosed("detail")).toBe(true);
+    canvas.select(0, "composer");
+    expect(canvas.isClosed("detail")).toBe(true);
+    expect(canvas.isColumnVisible("detail")).toBe(false);
   });
 
   it("selects, truncates, and toggle-clears path levels", () => {

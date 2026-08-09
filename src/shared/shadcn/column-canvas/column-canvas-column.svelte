@@ -16,6 +16,7 @@
     id,
     title,
     count,
+    pathLevel: pathLevelProp,
     resizable: resizableProp,
     collapsible: collapsibleProp,
     closeable: closeableProp,
@@ -37,6 +38,11 @@
     title?: string;
     /** Convenience count badge for the default header. */
     count?: number;
+    /**
+     * Minimum path length required before this column is path-visible.
+     * Defaults to the column config on the controller (`0` when omitted).
+     */
+    pathLevel?: number;
     /**
      * When true, renders a trailing resize handle that updates the controller.
      * Defaults to the column config on the controller.
@@ -62,6 +68,9 @@
   const controller = useColumnCanvas();
 
   const resolvedTitle = $derived(title ?? id);
+  const resolvedPathLevel = $derived(
+    pathLevelProp ?? controller.getPathLevel(id),
+  );
   const resolvedResizable = $derived(
     resizableProp ?? controller.isResizable(id),
   );
@@ -71,7 +80,11 @@
   const resolvedCloseable = $derived(
     closeableProp ?? controller.isCloseable(id),
   );
+  const pathVisible = $derived(
+    controller.path.length >= resolvedPathLevel,
+  );
   const closed = $derived(controller.isClosed(id));
+  const visible = $derived(pathVisible && !closed);
   const collapsed = $derived(controller.isCollapsed(id));
   const width = $derived(widthOverride ?? controller.getWidth(id));
   const minWidth = $derived(controller.getMinWidth(id));
@@ -158,7 +171,7 @@
   }
 </script>
 
-{#if !closed}
+{#if visible}
   {#if collapsed && resolvedCollapsible}
     <section
       bind:this={ref}

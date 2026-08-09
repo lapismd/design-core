@@ -37,6 +37,7 @@
         defaultWidth: 260,
         minWidth: 220,
         maxWidth: 420,
+        pathLevel: 0,
         collapsible: true,
         resizable: true,
       },
@@ -44,6 +45,7 @@
         defaultWidth: 300,
         minWidth: 240,
         maxWidth: 480,
+        pathLevel: 1,
         collapsible: true,
         resizable: true,
       },
@@ -51,6 +53,7 @@
         defaultWidth: 340,
         minWidth: 280,
         maxWidth: 520,
+        pathLevel: 2,
         collapsible: true,
         resizable: true,
         closeable: true,
@@ -61,9 +64,9 @@
 
   const threeLevelCanvas = createColumnCanvasController({
     columns: {
-      categories: { defaultWidth: 260, collapsible: true },
-      components: { defaultWidth: 300, collapsible: true },
-      detail: { defaultWidth: 340, closeable: true },
+      categories: { defaultWidth: 260, pathLevel: 0, collapsible: true },
+      components: { defaultWidth: 300, pathLevel: 1, collapsible: true },
+      detail: { defaultWidth: 340, pathLevel: 2, closeable: true },
     },
   });
 
@@ -75,8 +78,13 @@
 
   const closeableCanvas = createColumnCanvasController({
     columns: {
-      components: { defaultWidth: 300, collapsible: true },
-      detail: { defaultWidth: 360, closeable: true, collapsible: true },
+      components: { defaultWidth: 300, pathLevel: 0, collapsible: true },
+      detail: {
+        defaultWidth: 360,
+        pathLevel: 1,
+        closeable: true,
+        collapsible: true,
+      },
     },
   });
 
@@ -245,8 +253,8 @@
           Open detail
         </button>
         <p class="text-muted-foreground self-center text-xs">
-          Collapse, resize, or close any column. Details repeats fields from the
-          selected component.
+          Always-mounted columns; pathLevel + close/collapse own visibility.
+          Details repeats fields from the selected component.
         </p>
       </div>
       <div class="min-h-0 flex-1">
@@ -274,54 +282,49 @@
             </ColumnCanvas.Body>
           </ColumnCanvas.Column>
 
-          {#if basicSelectedCategory}
-            <ColumnCanvas.Column
-              id="components"
-              title={basicSelectedCategory.label}
-              count={basicSelectedCategory.components.length}
-            >
-              <ColumnCanvas.Body>
-                {#each basicSelectedCategory.components as component (component.id)}
-                  <ColumnCanvas.Item
-                    aria-label={component.label}
-                    selected={basicCanvas.isSelected(1, component.id)}
-                    onclick={() => {
-                      basicCanvas.select(1, component.id);
-                      basicCanvas.open("detail");
-                    }}
-                  >
-                    <span class="flex min-w-0 flex-col gap-0.5">
-                      <span class="font-medium">{component.label}</span>
-                      <span class="text-muted-foreground line-clamp-2 text-xs">
-                        {component.role}
-                      </span>
+          <ColumnCanvas.Column
+            id="components"
+            title={basicSelectedCategory?.label ?? "Components"}
+            count={basicSelectedCategory?.components.length}
+          >
+            <ColumnCanvas.Body>
+              {#each basicSelectedCategory?.components ?? [] as component (
+                component.id
+              )}
+                <ColumnCanvas.Item
+                  aria-label={component.label}
+                  selected={basicCanvas.isSelected(1, component.id)}
+                  onclick={() => basicCanvas.select(1, component.id)}
+                >
+                  <span class="flex min-w-0 flex-col gap-0.5">
+                    <span class="font-medium">{component.label}</span>
+                    <span class="text-muted-foreground line-clamp-2 text-xs">
+                      {component.role}
                     </span>
-                  </ColumnCanvas.Item>
-                {/each}
-              </ColumnCanvas.Body>
-            </ColumnCanvas.Column>
-          {/if}
+                  </span>
+                </ColumnCanvas.Item>
+              {/each}
+            </ColumnCanvas.Body>
+          </ColumnCanvas.Column>
 
-          {#if basicSelectedComponent && basicSelectedCategory}
-            <ColumnCanvas.Column
-              id="detail"
-              title="Details"
-              count={basicDetailFields.length}
-            >
-              <ColumnCanvas.Body>
-                {#each basicDetailFields as field (field.id)}
-                  <ColumnCanvas.Item aria-label={field.label} disabled>
-                    <span class="flex min-w-0 flex-col gap-0.5">
-                      <span class="text-muted-foreground text-xs">
-                        {field.label}
-                      </span>
-                      <span class="break-all font-medium">{field.value}</span>
+          <ColumnCanvas.Column
+            id="detail"
+            title="Details"
+            count={basicDetailFields.length || undefined}
+          >
+            <ColumnCanvas.Body>
+              {#each basicDetailFields as field (field.id)}
+                <ColumnCanvas.Item aria-label={field.label} disabled>
+                  <span class="flex min-w-0 flex-col gap-0.5">
+                    <span class="text-muted-foreground text-xs">
+                      {field.label}
                     </span>
-                  </ColumnCanvas.Item>
-                {/each}
-              </ColumnCanvas.Body>
-            </ColumnCanvas.Column>
-          {/if}
+                    <span class="break-all font-medium">{field.value}</span>
+                  </span>
+                </ColumnCanvas.Item>
+              {/each}
+            </ColumnCanvas.Body>
+          </ColumnCanvas.Column>
         </ColumnCanvas.Root>
       </div>
     </div>
@@ -385,46 +388,46 @@
           </ColumnCanvas.Body>
         </ColumnCanvas.Column>
 
-        {#if threeLevelCategory}
-          <ColumnCanvas.Column
-            id="components"
-            title={threeLevelCategory.label}
-            count={threeLevelCategory.components.length}
-          >
-            <ColumnCanvas.Body>
-              {#each threeLevelCategory.components as component (component.id)}
-                <ColumnCanvas.Item
-                  aria-label={component.label}
-                  selected={threeLevelCanvas.isSelected(1, component.id)}
-                  onclick={() => {
-                    threeLevelCanvas.select(1, component.id);
-                    threeLevelCanvas.open("detail");
-                  }}
-                >
-                  <span class="flex min-w-0 flex-col gap-0.5">
-                    <span class="font-medium">{component.label}</span>
-                    <span class="text-muted-foreground line-clamp-2 text-xs">
-                      {component.role}
-                    </span>
+        <ColumnCanvas.Column
+          id="components"
+          title={threeLevelCategory?.label ?? "Components"}
+          count={threeLevelCategory?.components.length}
+        >
+          <ColumnCanvas.Body>
+            {#each threeLevelCategory?.components ?? [] as component (
+              component.id
+            )}
+              <ColumnCanvas.Item
+                aria-label={component.label}
+                selected={threeLevelCanvas.isSelected(1, component.id)}
+                onclick={() => threeLevelCanvas.select(1, component.id)}
+              >
+                <span class="flex min-w-0 flex-col gap-0.5">
+                  <span class="font-medium">{component.label}</span>
+                  <span class="text-muted-foreground line-clamp-2 text-xs">
+                    {component.role}
                   </span>
-                </ColumnCanvas.Item>
-              {/each}
-            </ColumnCanvas.Body>
-          </ColumnCanvas.Column>
-        {/if}
+                </span>
+              </ColumnCanvas.Item>
+            {/each}
+          </ColumnCanvas.Body>
+        </ColumnCanvas.Column>
 
-        {#if threeLevelComponent}
-          <ColumnCanvas.Column id="detail" title={threeLevelComponent.label}>
-            <ColumnCanvas.Body>
+        <ColumnCanvas.Column
+          id="detail"
+          title={threeLevelComponent?.label ?? "Detail"}
+        >
+          <ColumnCanvas.Body>
+            {#if threeLevelComponent}
               <div class="text-muted-foreground flex flex-col gap-3 p-3 text-sm">
                 <p>{threeLevelComponent.role}</p>
                 <code class="bg-muted rounded px-2 py-1 text-xs break-all">
                   {threeLevelComponent.importPath}
                 </code>
               </div>
-            </ColumnCanvas.Body>
-          </ColumnCanvas.Column>
-        {/if}
+            {/if}
+          </ColumnCanvas.Body>
+        </ColumnCanvas.Column>
       </ColumnCanvas.Root>
     </div>
   {/snippet}
@@ -489,10 +492,7 @@
                 <ColumnCanvas.Item
                   aria-label={component.label}
                   selected={closeableCanvas.isSelected(0, component.id)}
-                  onclick={() => {
-                    closeableCanvas.select(0, component.id);
-                    closeableCanvas.open("detail");
-                  }}
+                  onclick={() => closeableCanvas.select(0, component.id)}
                 >
                   <span class="flex min-w-0 flex-col gap-0.5">
                     <span class="font-medium">{component.label}</span>
@@ -505,9 +505,9 @@
             </ColumnCanvas.Body>
           </ColumnCanvas.Column>
 
-          {#if closeableComponent}
-            <ColumnCanvas.Column id="detail" title="Detail">
-              <ColumnCanvas.Body>
+          <ColumnCanvas.Column id="detail" title="Detail">
+            <ColumnCanvas.Body>
+              {#if closeableComponent}
                 <div
                   class="text-muted-foreground flex flex-col gap-3 p-3 text-sm"
                 >
@@ -519,9 +519,9 @@
                     {closeableComponent.importPath}
                   </code>
                 </div>
-              </ColumnCanvas.Body>
-            </ColumnCanvas.Column>
-          {/if}
+              {/if}
+            </ColumnCanvas.Body>
+          </ColumnCanvas.Column>
         </ColumnCanvas.Root>
       </div>
     </div>

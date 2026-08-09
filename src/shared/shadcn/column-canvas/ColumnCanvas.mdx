@@ -22,10 +22,12 @@ canvas of fixed-width columns.
 
 ## Usage
 
-Create a controller, pass it to `Root`, and mount columns by selection depth.
-The primary demo below uses three columns with collapse, resize, and a closeable
-details pane that repeats fields from the selected second-column row. Use
-**Show code** on the preview for a copy-pasteable example.
+Always mount `Column` parts under `Root`. Configure each column’s `pathLevel`
+so cascade visibility is controller-owned (same idea as AppShell self-gating
+closed/collapsed chrome). Hosts map `path` keys to domain rows; they do not
+`{#if}` columns into the tree. The primary demo uses three columns with
+collapse, resize, and a closeable details pane. Use **Show code** on the
+preview for a copy-pasteable example.
 
 <Primary />
 
@@ -36,22 +38,22 @@ details pane that repeats fields from the selected second-column row. Use
 ### All features
 
 Categories → components → details. Every column is collapsible and resizable;
-details is also closeable. Selecting a component reopens details and fills it
-with Name / Id / Role / Import / Category values from that row.
+details is also closeable. Selecting a component reopens details (`openOnSelect`)
+and fills it with Name / Id / Role / Import / Category values from that row.
 
 <Canvas of={ColumnCanvasStories.AllFeatures} meta={ColumnCanvasStories} />
 
 ### Three-level cascade
 
 Path selection only — categories → components → detail prose, with
-toggle-select clearing deeper levels.
+toggle-select clearing deeper levels (deeper columns hide via `pathLevel`).
 
 <Canvas of={ColumnCanvasStories.ThreeLevelCascade} meta={ColumnCanvasStories} />
 
 ### Closeable columns
 
-`Close` removes a closeable column from the canvas; `controller.open(id)`
-restores it (for example when selecting a new row).
+`Close` removes a closeable column from the canvas; `controller.open(id)` or
+selecting a row restores it when `openOnSelect` is enabled.
 
 <Canvas of={ColumnCanvasStories.CloseableColumns} meta={ColumnCanvasStories} />
 
