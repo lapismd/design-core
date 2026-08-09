@@ -37,7 +37,7 @@ src/
 tests/
   visual/                      # Playwright suite + committed snapshots
 packages/
-  # Visual Delta: @lapismd/storybook-addon-visual-delta (npm)
+  # Visual Delta: sibling @lapismd/storybook-addon-visual-delta checkout
 .storybook/                    # Storybook host configuration
 scripts/
   storybook-run.mjs            # polling/restart-aware Storybook entry
@@ -188,9 +188,9 @@ own surfaces.
 
 Visual Delta compares the live story canvas with committed Playwright PNGs and
 provides overlay, heatmap, create/update, and review controls. This catalog
-consumes the published npm package
-[`@lapismd/storybook-addon-visual-delta`](https://www.npmjs.com/package/@lapismd/storybook-addon-visual-delta)
-and registers it in `.storybook/main.ts`. Addon API details live in the package
+resolves the sibling `../storybook-addon-visual-delta` checkout through its
+`link:` development dependency and registers the package in
+`.storybook/main.ts`. Addon API details live in the package
 [`README`](https://github.com/lapismd/storybook-addon-visual-delta/blob/main/README.md). Normative behavior lives in the
 [`Visual Delta system specification`](https://github.com/lapismd/storybook-addon-visual-delta/blob/main/spec/src/index.md).
 
