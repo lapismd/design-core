@@ -4,6 +4,8 @@ export const COLUMN_CANVAS_DEFAULT_STORAGE_KEY =
 
 export interface ColumnCanvasColumnLayout {
   collapsed: boolean;
+  /** When omitted (older snapshots), treated as open. */
+  closed?: boolean;
   width?: number;
 }
 
@@ -14,6 +16,7 @@ export interface ColumnCanvasLayoutV1 {
 
 export type ColumnCanvasLayoutChangeSource =
   | "collapse"
+  | "close"
   | "resize"
   | "reset-width"
   | "register"
@@ -79,6 +82,7 @@ export function normalizeColumnCanvasLayout(
     }
     columns.set(id, {
       collapsed: column.collapsed,
+      ...(typeof column.closed === "boolean" ? { closed: column.closed } : {}),
       ...(typeof column.width === "number" && Number.isFinite(column.width)
         ? { width: column.width }
         : {}),

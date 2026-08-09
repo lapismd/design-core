@@ -6,6 +6,7 @@ import Title from "./column-canvas-title.svelte";
 import Count from "./column-canvas-count.svelte";
 import HeaderActions from "./column-canvas-header-actions.svelte";
 import Toggle from "./column-canvas-toggle.svelte";
+import Close from "./column-canvas-close.svelte";
 import Body from "./column-canvas-body.svelte";
 import Item from "./column-canvas-item.svelte";
 
@@ -18,6 +19,7 @@ export {
   Count,
   HeaderActions,
   Toggle,
+  Close,
   Body,
   Item,
   //
@@ -29,6 +31,7 @@ export {
   Count as ColumnCanvasCount,
   HeaderActions as ColumnCanvasHeaderActions,
   Toggle as ColumnCanvasToggle,
+  Close as ColumnCanvasClose,
   Body as ColumnCanvasBody,
   Item as ColumnCanvasItem,
 };

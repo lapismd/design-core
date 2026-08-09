@@ -59,7 +59,8 @@ import * as ColumnCanvas from "@lapismd/design-core/shadcn/column-canvas";
 
 - Path: `path`, `select`, `clearFrom`, `clear`, `isSelected`, `visibleDepth`
 - Layout: `getWidth` / `setWidth` / `resetWidth`, `collapse` / `expand` /
-  `toggle`, `isCollapsed`, `isResizable`, `isCollapsible`
+  `toggle`, `close` / `open`, `isCollapsed`, `isClosed`, `isResizable`,
+  `isCollapsible`, `isCloseable`
 - Dynamic columns: `ensureColumn(id, config)`
 - Persistence: `restoreLayout`, `flushSave`, `getLayout`, `dispose`
 
@@ -82,6 +83,11 @@ Two-level selection that mounts the next column when a row is chosen.
 
 Categories → items → detail, with toggle-select clearing deeper levels.
 
+### Closeable
+
+`Close` removes a closeable column from the canvas; `controller.open(id)`
+restores it.
+
 ### Collapse And Expand
 
 `Toggle` collapses a column to a vertical rail; expand restores it.
@@ -93,4 +99,4 @@ Set `resizable: true` on the column config — the handle updates the controller
 ## Styling
 
 Override the public `--ui-column-canvas-*` tokens on an ancestor. Production
-sources use native CSS and compose the shared Button for Toggle.
+sources use native CSS and compose the shared Button for Toggle and Close.

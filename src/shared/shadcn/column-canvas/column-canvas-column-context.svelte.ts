@@ -9,6 +9,7 @@ export type ColumnCanvasColumnContext = {
   count: number | undefined;
   resizable: boolean;
   collapsible: boolean;
+  closeable: boolean;
 };
 
 export function setColumnCanvasColumnContext(

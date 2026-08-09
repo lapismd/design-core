@@ -36,13 +36,20 @@
     columns: {
       groups: { defaultWidth: 240, collapsible: true },
       items: { defaultWidth: 280, collapsible: true },
-      detail: { defaultWidth: 320 },
+      detail: { defaultWidth: 320, closeable: true },
     },
   });
 
   const collapseCanvas = createColumnCanvasController({
     columns: {
       refs: { defaultWidth: 280, collapsible: true },
+    },
+  });
+
+  const closeableCanvas = createColumnCanvasController({
+    columns: {
+      files: { defaultWidth: 280, collapsible: true },
+      preview: { defaultWidth: 360, closeable: true, collapsible: true },
     },
   });
 
@@ -270,7 +277,10 @@
               {#each selectedGroup.items as item (item.id)}
                 <ColumnCanvas.Item
                   selected={threeLevelCanvas.isSelected(1, item.id)}
-                  onclick={() => threeLevelCanvas.select(1, item.id)}
+                  onclick={() => {
+                    threeLevelCanvas.select(1, item.id);
+                    threeLevelCanvas.open("detail");
+                  }}
                 >
                   {item.label}
                 </ColumnCanvas.Item>
@@ -289,6 +299,85 @@
           </ColumnCanvas.Column>
         {/if}
       </ColumnCanvas.Root>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Closeable columns"
+  play={async ({ canvas }) => {
+    closeableCanvas.clear();
+    closeableCanvas.open("preview");
+    await userEvent.click(canvas.getByRole("button", { name: "readme.md" }));
+    await expect(canvas.getByText("Preview")).toBeVisible();
+    await expect(canvas.getByText("readme.md contents")).toBeVisible();
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Close Preview column" }),
+    );
+    await expect(canvas.queryByText("readme.md contents")).toBeNull();
+    await expect(
+      canvas.queryByRole("button", { name: "Close Preview column" }),
+    ).toBeNull();
+    await userEvent.click(canvas.getByRole("button", { name: "Open preview" }));
+    await expect(canvas.getByText("readme.md contents")).toBeVisible();
+  }}
+  parameters={{
+    docs: {
+      source: {
+        code: exampleSources.Closeable,
+        language: "html",
+        type: "code",
+      },
+    },
+  }}
+>
+  {#snippet template()}
+    <div class="flex h-[320px] w-full flex-col gap-2">
+      <div class="flex gap-2 px-1">
+        <button
+          type="button"
+          class="hover:bg-muted rounded border px-2 py-1 text-sm"
+          onclick={() => closeableCanvas.open("preview")}
+        >
+          Open preview
+        </button>
+      </div>
+      <div class="min-h-0 flex-1">
+        <ColumnCanvas.Root controller={closeableCanvas}>
+          <ColumnCanvas.Column id="files" title="Files" count={2}>
+            <ColumnCanvas.Body>
+              <ColumnCanvas.Item
+                selected={closeableCanvas.isSelected(0, "readme")}
+                onclick={() => {
+                  closeableCanvas.select(0, "readme");
+                  closeableCanvas.open("preview");
+                }}
+              >
+                readme.md
+              </ColumnCanvas.Item>
+              <ColumnCanvas.Item
+                selected={closeableCanvas.isSelected(0, "notes")}
+                onclick={() => {
+                  closeableCanvas.select(0, "notes");
+                  closeableCanvas.open("preview");
+                }}
+              >
+                notes.md
+              </ColumnCanvas.Item>
+            </ColumnCanvas.Body>
+          </ColumnCanvas.Column>
+
+          {#if closeableCanvas.path[0]}
+            <ColumnCanvas.Column id="preview" title="Preview">
+              <ColumnCanvas.Body>
+                <p class="text-muted-foreground p-3 text-sm">
+                  {closeableCanvas.path[0]}.md contents
+                </p>
+              </ColumnCanvas.Body>
+            </ColumnCanvas.Column>
+          {/if}
+        </ColumnCanvas.Root>
+      </div>
     </div>
   {/snippet}
 </Story>

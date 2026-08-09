@@ -9,6 +9,7 @@
   import Title from "./column-canvas-title.svelte";
   import Count from "./column-canvas-count.svelte";
   import Toggle from "./column-canvas-toggle.svelte";
+  import Close from "./column-canvas-close.svelte";
 
   let {
     ref = $bindable(null),
@@ -17,6 +18,7 @@
     count,
     resizable: resizableProp,
     collapsible: collapsibleProp,
+    closeable: closeableProp,
     width: widthOverride,
     onWidthChange,
     class: className,
@@ -45,6 +47,11 @@
      * Defaults to the column config on the controller.
      */
     collapsible?: boolean;
+    /**
+     * When true, Close can remove this column from the canvas.
+     * Defaults to the column config on the controller.
+     */
+    closeable?: boolean;
     /** Test/override width. Prefer controller-owned widths. */
     width?: number;
     /** Test/override resize callback. Prefer controller-owned widths. */
@@ -61,6 +68,10 @@
   const resolvedCollapsible = $derived(
     collapsibleProp ?? controller.isCollapsible(id),
   );
+  const resolvedCloseable = $derived(
+    closeableProp ?? controller.isCloseable(id),
+  );
+  const closed = $derived(controller.isClosed(id));
   const collapsed = $derived(controller.isCollapsed(id));
   const width = $derived(widthOverride ?? controller.getWidth(id));
   const minWidth = $derived(controller.getMinWidth(id));
@@ -82,6 +93,9 @@
     },
     get collapsible() {
       return resolvedCollapsible;
+    },
+    get closeable() {
+      return resolvedCloseable;
     },
   });
 
@@ -144,77 +158,80 @@
   }
 </script>
 
-{#if collapsed && resolvedCollapsible}
-  <section
-    bind:this={ref}
-    {...restProps}
-    class={className}
-    data-ui-component="column-canvas"
-    data-ui-part="collapsed-column"
-    data-column-id={id}
-  >
-    <button
-      type="button"
+{#if !closed}
+  {#if collapsed && resolvedCollapsible}
+    <section
+      bind:this={ref}
+      {...restProps}
+      class={className}
       data-ui-component="column-canvas"
-      data-ui-part="collapsed-trigger"
-      aria-label={`Expand ${resolvedTitle} column`}
-      title={count === undefined
-        ? resolvedTitle
-        : `${resolvedTitle} (${count})`}
-      onclick={() => controller.expand(id)}
+      data-ui-part="collapsed-column"
+      data-column-id={id}
     >
-      <span data-ui-component="column-canvas" data-ui-part="collapsed-label">
-        <span>{resolvedTitle}</span>
-        {#if count !== undefined}
-          <span
-            data-ui-component="column-canvas"
-            data-ui-part="collapsed-count"
-          >
-            {count}
-          </span>
-        {/if}
-      </span>
-      <ChevronRight />
-    </button>
-  </section>
-{:else}
-  <section
-    bind:this={ref}
-    {...restProps}
-    class={className}
-    data-ui-component="column-canvas"
-    data-ui-part="column"
-    data-column-id={id}
-    data-resizable={resolvedResizable ? "true" : undefined}
-    style:width={`${width}px`}
-    style:min-width={`${width}px`}
-  >
-    {#if useDefaultHeader}
-      <Header>
-        <div
-          data-ui-component="column-canvas"
-          data-ui-part="column-header-main"
-        >
-          <Title>{resolvedTitle}</Title>
-          <Count />
-        </div>
-        <Toggle />
-      </Header>
-    {/if}
-
-    {@render children?.()}
-
-    {#if resolvedResizable}
-      <div
-        role="separator"
-        aria-orientation="vertical"
-        aria-label={`Resize ${resolvedTitle} column`}
-        title={`Resize ${resolvedTitle}`}
+      <button
+        type="button"
         data-ui-component="column-canvas"
-        data-ui-part="resize-handle"
-        data-resizing={resizing ? "true" : undefined}
-        onpointerdown={startHorizontalResize}
-      ></div>
-    {/if}
-  </section>
+        data-ui-part="collapsed-trigger"
+        aria-label={`Expand ${resolvedTitle} column`}
+        title={count === undefined
+          ? resolvedTitle
+          : `${resolvedTitle} (${count})`}
+        onclick={() => controller.expand(id)}
+      >
+        <span data-ui-component="column-canvas" data-ui-part="collapsed-label">
+          <span>{resolvedTitle}</span>
+          {#if count !== undefined}
+            <span
+              data-ui-component="column-canvas"
+              data-ui-part="collapsed-count"
+            >
+              {count}
+            </span>
+          {/if}
+        </span>
+        <ChevronRight size={14} aria-hidden="true" />
+      </button>
+    </section>
+  {:else}
+    <section
+      bind:this={ref}
+      {...restProps}
+      class={className}
+      data-ui-component="column-canvas"
+      data-ui-part="column"
+      data-column-id={id}
+      data-resizable={resolvedResizable ? "true" : undefined}
+      style:width={`${width}px`}
+      style:min-width={`${width}px`}
+    >
+      {#if useDefaultHeader}
+        <Header>
+          <div
+            data-ui-component="column-canvas"
+            data-ui-part="column-header-main"
+          >
+            <Title>{resolvedTitle}</Title>
+            <Count />
+          </div>
+          <Toggle />
+          <Close />
+        </Header>
+      {/if}
+
+      {@render children?.()}
+
+      {#if resolvedResizable}
+        <div
+          role="separator"
+          aria-orientation="vertical"
+          aria-label={`Resize ${resolvedTitle} column`}
+          title={`Resize ${resolvedTitle}`}
+          data-ui-component="column-canvas"
+          data-ui-part="resize-handle"
+          data-resizing={resizing ? "true" : undefined}
+          onpointerdown={startHorizontalResize}
+        ></div>
+      {/if}
+    </section>
+  {/if}
 {/if}

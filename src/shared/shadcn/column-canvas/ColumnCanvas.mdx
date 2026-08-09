@@ -14,8 +14,8 @@ import * as exampleSources from "./ColumnCanvas.example-sources";
 
 Horizontal, selection-driven column cascade for Miller-column / Finder-style
 navigation. A typed app-owned controller owns path selection, widths, and
-collapse. Compound parts (`Header`, `Toggle`, `Body`, `Item`) provide consistent
-chrome so hosts do not invent row or header styling.
+collapse/close. Compound parts (`Header`, `Toggle`, `Close`, `Body`, `Item`)
+provide consistent chrome so hosts do not invent row or header styling.
 
 This is a project-authored native-CSS family. It is not the same as
 [Resizable](?path=/docs/shadcn-layout-resizable--docs): Resizable fills a box
@@ -48,6 +48,13 @@ Categories → items → detail, with toggle-select clearing deeper levels.
 
 <Canvas of={ColumnCanvasStories.ThreeLevelCascade} meta={ColumnCanvasStories} />
 
+### Closeable columns
+
+`Close` removes a closeable column from the canvas; `controller.open(id)`
+restores it (for example when selecting a new row).
+
+<Canvas of={ColumnCanvasStories.CloseableColumns} meta={ColumnCanvasStories} />
+
 ### Collapse and expand
 
 `Toggle` collapses a column to a vertical rail; expand restores it.
@@ -71,7 +78,7 @@ Inject `createLocalStorageColumnCanvasLayoutPersistence` (or any
 
 - `Root` — installs the controller, horizontal scroller, trailing spacer
 - `Column` — controller-driven width/collapse; optional convenience `title`/`count`
-- `Header` / `Title` / `Count` / `HeaderActions` / `Toggle`
+- `Header` / `Title` / `Count` / `HeaderActions` / `Toggle` / `Close`
 - `Body` / `Item`
 - `createColumnCanvasController` — typed path + layout controller
 - `CollapsedColumn` — low-level rail escape hatch (prefer controller collapse)
@@ -79,4 +86,4 @@ Inject `createLocalStorageColumnCanvasLayoutPersistence` (or any
 ## Styling
 
 Override `--ui-column-canvas-*` tokens on an ancestor. Production sources use
-native CSS and compose the shared Button for Toggle.
+native CSS and compose the shared Button for Toggle and Close.

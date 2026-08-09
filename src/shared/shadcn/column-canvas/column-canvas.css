@@ -188,6 +188,19 @@
   color: var(--ui-column-canvas-title-color, var(--foreground));
 }
 
+[data-ui-component="column-canvas"][data-ui-part="collapsed-trigger"]
+  :global(svg) {
+  width: 0.875rem;
+  height: 0.875rem;
+  flex-shrink: 0;
+}
+
+[data-ui-component="column-canvas"][data-ui-part="column-toggle"] :global(svg),
+[data-ui-component="column-canvas"][data-ui-part="column-close"] :global(svg) {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
 [data-ui-component="column-canvas"][data-ui-part="collapsed-label"] {
   display: inline-flex;
   align-items: center;

@@ -22,8 +22,12 @@ export type ColumnCanvasColumnConfig = {
   resizable?: boolean;
   /** When true, Column can collapse to a rail via Toggle. */
   collapsible?: boolean;
+  /** When true, Close can remove the column from the canvas. */
+  closeable?: boolean;
   /** Initial collapsed state before persistence restore. */
   collapsed?: boolean;
+  /** Initial closed state before persistence restore. */
+  closed?: boolean;
 };
 
 type ColumnRuntimeState = {
@@ -33,7 +37,9 @@ type ColumnRuntimeState = {
   maxWidth: number;
   resizable: boolean;
   collapsible: boolean;
+  closeable: boolean;
   collapsed: boolean;
+  closed: boolean;
 };
 
 export type CreateColumnCanvasControllerOptions<
@@ -162,8 +168,16 @@ export class ColumnCanvasController {
     return this.#requireColumn(id).collapsed;
   };
 
+  isClosed = (id: string): boolean => {
+    return this.#requireColumn(id).closed;
+  };
+
   isCollapsible = (id: string): boolean => {
     return this.#requireColumn(id).collapsible;
+  };
+
+  isCloseable = (id: string): boolean => {
+    return this.#requireColumn(id).closeable;
   };
 
   isResizable = (id: string): boolean => {
@@ -188,7 +202,7 @@ export class ColumnCanvasController {
 
   toggle = (id: string): void => {
     const column = this.#requireColumn(id);
-    if (!column.collapsible) return;
+    if (!column.collapsible || column.closed) return;
     this.setCollapsed(id, !column.collapsed);
   };
 
@@ -198,6 +212,28 @@ export class ColumnCanvasController {
     if (column.collapsed === collapsed) return;
     this.#patchColumn(id, { collapsed });
     this.#layoutChanged(id, "collapse");
+  };
+
+  /** Remove a closeable column from the canvas (keeps registered state). */
+  close = (id: string): void => {
+    this.setClosed(id, true);
+  };
+
+  /** Show a previously closed column again. */
+  open = (id: string): void => {
+    this.setClosed(id, false);
+  };
+
+  setClosed = (id: string, closed: boolean): void => {
+    const column = this.#requireColumn(id);
+    if (!column.closeable) return;
+    if (column.closed === closed) return;
+    this.#patchColumn(id, {
+      closed,
+      // Opening restores an expanded column; closing clears collapse chrome.
+      ...(closed ? { collapsed: false } : {}),
+    });
+    this.#layoutChanged(id, "close");
   };
 
   /**
@@ -218,6 +254,7 @@ export class ColumnCanvasController {
         maxWidth: config.maxWidth ?? existing.maxWidth,
         resizable: config.resizable ?? existing.resizable,
         collapsible: config.collapsible ?? existing.collapsible,
+        closeable: config.closeable ?? existing.closeable,
         defaultWidth: config.defaultWidth,
       };
       if (next.minWidth > next.maxWidth) {
@@ -233,6 +270,7 @@ export class ColumnCanvasController {
     const restored = this.#restoredColumns.get(columnId);
     if (restored) {
       runtime.collapsed = runtime.collapsible ? restored.collapsed : false;
+      runtime.closed = runtime.closeable ? Boolean(restored.closed) : false;
       if (restored.width !== undefined) {
         runtime.width = clampWidth(
           restored.width,
@@ -251,6 +289,7 @@ export class ColumnCanvasController {
     for (const [id, column] of Object.entries(this.#columns)) {
       columns[id] = {
         collapsed: column.collapsed,
+        closed: column.closed,
         width: column.width,
       };
     }
@@ -335,6 +374,7 @@ export class ColumnCanvasController {
         next[id] = {
           ...column,
           collapsed: column.collapsible ? restored.collapsed : false,
+          closed: column.closeable ? Boolean(restored.closed) : false,
           width:
             restored.width === undefined
               ? column.width
@@ -385,14 +425,18 @@ function createRuntimeState(
     );
   }
   const defaultWidth = clampWidth(config.defaultWidth, minWidth, maxWidth);
+  const closeable = config.closeable ?? false;
+  const collapsible = config.collapsible ?? false;
   return {
     width: defaultWidth,
     defaultWidth,
     minWidth,
     maxWidth,
     resizable: config.resizable ?? false,
-    collapsible: config.collapsible ?? false,
-    collapsed: Boolean(config.collapsed && (config.collapsible ?? false)),
+    collapsible,
+    closeable,
+    collapsed: Boolean(config.collapsed && collapsible && !config.closed),
+    closed: Boolean(config.closed && closeable),
   };
 }
 

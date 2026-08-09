@@ -99,8 +99,28 @@ describe("createColumnCanvasController", () => {
     };
     expect(last.columns.workspace).toEqual({
       collapsed: false,
+      closed: false,
       width: 300,
     });
+  });
+
+  it("closes and reopens closeable columns", () => {
+    const canvas = createColumnCanvasController({
+      columns: {
+        detail: {
+          defaultWidth: 320,
+          closeable: true,
+          collapsible: true,
+        },
+      },
+    });
+    canvas.collapse("detail");
+    expect(canvas.isCollapsed("detail")).toBe(true);
+    canvas.close("detail");
+    expect(canvas.isClosed("detail")).toBe(true);
+    expect(canvas.isCollapsed("detail")).toBe(false);
+    canvas.open("detail");
+    expect(canvas.isClosed("detail")).toBe(false);
   });
 
   it("ensureColumn registers dynamic columns", () => {

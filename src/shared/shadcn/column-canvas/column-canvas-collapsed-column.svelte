@@ -44,6 +44,6 @@
         </span>
       {/if}
     </span>
-    <ChevronRight />
+    <ChevronRight size={14} aria-hidden="true" />
   </button>
 </section>
