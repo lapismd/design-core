@@ -203,6 +203,7 @@
     class="ui-workspace-bottom-panel"
     data-ui-component="workspace-bottom-panel"
     data-ui-part="root"
+    data-workspace-surface="bottom-panel"
     data-maximized={maximized}
     data-resizing={resizing}
     style={`--ui-workspace-bottom-panel-height: ${panel.size}px`}

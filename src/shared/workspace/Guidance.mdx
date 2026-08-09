@@ -56,6 +56,13 @@ Controls painted on `--ui-workspace-panel` use
 host theme's `--sidebar-accent*` semantics so hover feedback stays distinct
 from sidebar, status-bar, ribbon, and floating-window header surfaces.
 
+Desktop layout hosts expose a stable `data-workspace-surface` contract for
+consumer CSS: `body`, `left-sidebar`, `right-sidebar`, and `bottom-panel`.
+Style registered view content from these ancestors instead of inspecting the
+controller or caching a view's initial parent. Because the attribute stays on
+the destination host, CSS updates automatically when drag-and-drop moves a view
+between surfaces.
+
 ## Development status
 
 The framework is being migrated from the standalone Lapis app-shell package.

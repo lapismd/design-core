@@ -51,6 +51,7 @@
   class="ui-app-shell__workspace"
   data-ui-component="app-shell-workspace"
   data-ui-part="workspace"
+  data-workspace-surface="body"
   data-app-shell-workspace
 >
   <WorkspaceTree

@@ -185,6 +185,7 @@
     data-ui-part="sidebar"
     data-app-shell-sidebar={side}
     data-workspace-sidebar-side={side}
+    data-workspace-surface={`${side}-sidebar`}
     style={`width: ${width ?? `${sidebar.size}px`}`}
     aria-label={`${side === "left" ? "Left" : "Right"} sidebar`}
   >

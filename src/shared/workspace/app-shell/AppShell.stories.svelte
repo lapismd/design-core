@@ -1,6 +1,12 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, fireEvent, userEvent, waitFor, within } from "storybook/test";
+  import {
+    expect,
+    fireEvent,
+    userEvent,
+    waitFor,
+    within,
+  } from "storybook/test";
   import {
     createDefaultWorkspaceLayout,
     createWorkspaceSplit,
@@ -257,6 +263,18 @@
     await expect(canvas.getByLabelText("Left sidebar")).toBeVisible();
     await expect(canvas.getByLabelText("Right sidebar")).toBeVisible();
     await expect(canvas.getByLabelText("Bottom panel")).toBeVisible();
+    const expectedSurfaces = [
+      ['[data-ui-component="app-shell-workspace"]', "body"],
+      ['[data-workspace-sidebar-side="left"]', "left-sidebar"],
+      ['[data-workspace-sidebar-side="right"]', "right-sidebar"],
+      ['[data-ui-component="workspace-bottom-panel"]', "bottom-panel"],
+    ] as const;
+    for (const [selector, surface] of expectedSurfaces) {
+      await expect(canvasElement.querySelector(selector)).toHaveAttribute(
+        "data-workspace-surface",
+        surface,
+      );
+    }
     await expect(
       canvasElement.querySelector(
         '[data-ui-component="app-shell-desktop-layout"]',

@@ -83,6 +83,7 @@ Compatibility aliases are removed only through an explicit reviewed slice.
 | Tabs and splits                   | tab, pane, tree, drag modules                              | component families         | Complete            | Pass | Pass      | Candidate pass; review pending               | Pending |
 | Sidebars and groups               | sidebar modules                                            | component families         | Complete            | Pass | Pass      | Candidate pass; review pending               | Pending |
 | Bottom panel and groups           | bottom dock extension                                      | component families         | Complete            | Pass | Pass      | Pending explicit baseline review             | Pending |
+| Stable surface selectors          | consumer placement styling                                 | app shell/sidebar/bottom   | Complete            | N/A  | Pass      | Explicitly deferred                          | Pending |
 | View chrome and menus             | view header, empty, menus                                  | component families         | Complete            | Pass | Pass      | Candidate pass; review pending               | Pending |
 | Windows and overlays              | window and drop modules                                    | component families         | Complete            | Pass | Pass      | Candidate pass; review pending               | Pending |
 | Mobile shell                      | mobile modules                                             | component families         | Complete            | Pass | Pass      | Candidate pass; review pending               | Pending |
@@ -863,6 +864,17 @@ workflow.
   resizable host. This keeps initially selected imperative views mounted when
   a consumer projects layout-change events into its own compatibility model;
   the bottom-panel catalog covers the retained view across a host-width change.
+- Desktop body, left/right sidebar, and bottom-panel hosts now expose the stable
+  `data-workspace-surface` values documented in Guidance. AppShell interaction
+  coverage asserts all four values so consumer CSS can follow the destination
+  host after a drag without inspecting or caching the workspace parent graph.
+- Stable-surface validation passes no-Tailwind and Svelte diagnostics, all 79
+  unit files (478 tests), all 184 Storybook files (521 tests), and the production
+  Storybook build. The aggregate `pnpm checks` gate reaches formatting and stops
+  only at five unrelated existing Prettier findings under about-dialog,
+  app-workspace, and explorer; those files remain untouched.
+- Visual comparison is explicitly deferred by the consumer request; the
+  interrupted compare-only run did not update or replace any baseline.
 - Validation passes the focused controller and bottom-panel suites, all 79 unit
   files (478 tests), all 184 Storybook files (521 tests), no-Tailwind and Svelte
   diagnostics, the production Storybook build, and a fresh Lapis consumer
