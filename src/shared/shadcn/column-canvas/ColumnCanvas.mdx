@@ -3,10 +3,8 @@ import {
   Canvas,
   Controls,
   Primary,
-  Source,
 } from "@storybook/addon-docs/blocks";
 import * as ColumnCanvasStories from "./ColumnCanvas.stories.svelte";
-import * as exampleSources from "./ColumnCanvas.example-sources";
 
 <Meta of={ColumnCanvasStories} />
 
@@ -26,9 +24,8 @@ canvas of fixed-width columns.
 
 Create a controller, pass it to `Root`, and mount columns by selection depth.
 The primary demo below uses three columns with collapse, resize, and a closeable
-details pane that repeats fields from the selected second-column row.
-
-<Source language="html" code={exampleSources.Basic} />
+details pane that repeats fields from the selected second-column row. Use
+**Show code** on the preview for a copy-pasteable example.
 
 <Primary />
 
