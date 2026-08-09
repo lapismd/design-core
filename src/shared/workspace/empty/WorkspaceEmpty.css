@@ -11,6 +11,11 @@
   color: var(--ui-workspace-panel-foreground);
 }
 
+.ui-workspace-empty[data-workspace-surface="page"] {
+  background: var(--ui-workspace-background);
+  color: var(--ui-workspace-foreground);
+}
+
 .ui-workspace-empty > .ui-workspace-empty__body {
   flex: 0 1 auto;
   width: min(42rem, calc(100% - 2.5rem));

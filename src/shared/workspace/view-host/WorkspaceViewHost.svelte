@@ -52,10 +52,11 @@
   data-workspace-view-type={tab.view.type}
 >
   {#if tab.view.type === "empty"}
-    <WorkspaceEmpty actions={emptyActions} />
+    <WorkspaceEmpty actions={emptyActions} surface="page" />
   {:else if !definition}
     <WorkspaceEmpty
       missingViewType={tab.view.type}
+      surface="page"
       actions={[
         {
           id: "close",

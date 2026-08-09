@@ -105,7 +105,10 @@ describe("AppShellController", () => {
     const emptyPalette = app.emptyViewActions.items.find(
       (item) => item.id === "app-shell:open-command-palette",
     );
-    expect(emptyPalette).toMatchObject({ label: "Open Command Palette" });
+    expect(emptyPalette).toMatchObject({
+      label: "Open Command Palette",
+      icon: "terminal",
+    });
     emptyPalette?.onSelect();
     expect(app.commands.paletteOpen).toBe(true);
 

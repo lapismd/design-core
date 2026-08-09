@@ -9,6 +9,7 @@
     missingViewType = null,
     actions = [],
     links = [],
+    surface = "panel",
   }: {
     /** Missing serializable view type, or `null` for an ordinary empty leaf. */
     missingViewType?: string | null;
@@ -16,6 +17,8 @@
     actions?: WorkspaceAction[];
     /** Compact tertiary actions rendered beneath the primary actions. */
     links?: WorkspaceAction[];
+    /** Background surface for the empty state host. */
+    surface?: "page" | "panel";
   } = $props();
 </script>
 
@@ -24,6 +27,7 @@
   data-ui-component="workspace-empty"
   data-ui-part="root"
   data-workspace-missing-view={missingViewType ?? undefined}
+  data-workspace-surface={surface}
 >
   <Empty.Root class="ui-workspace-empty__body">
     <Empty.Header>
@@ -53,6 +57,9 @@
               disabled={action.disabled}
               onclick={(event) => action.onSelect(event)}
             >
+              {#if action.icon}
+                <WorkspaceIcon name={action.icon} data-icon="inline-start" />
+              {/if}
               {action.label}
             </Button>
           {/each}
@@ -69,6 +76,9 @@
             disabled={action.disabled}
             onclick={(event) => action.onSelect(event)}
           >
+            {#if action.icon}
+              <WorkspaceIcon name={action.icon} data-icon="inline-start" />
+            {/if}
             {action.label}
           </Button>
         {/each}

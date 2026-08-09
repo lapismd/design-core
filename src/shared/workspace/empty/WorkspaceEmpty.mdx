@@ -8,7 +8,7 @@ import * as WorkspaceEmptyStories from "./WorkspaceEmpty.stories.svelte";
 
 Workspace empty content for leaves with no resource and for serialized views
 whose registration is unavailable. It composes design-core's shadcn `Empty`
-and `Button` primitives over the workspace panel surface.
+and `Button` primitives over a workspace surface.
 
 ## Usage
 
@@ -24,6 +24,7 @@ component:
 const removeAction = app.emptyViewActions.addItem({
   id: "consumer:create-note",
   label: "Create Note",
+  icon: "file-plus",
   onSelect: () => createNote(),
 });
 ```
@@ -35,6 +36,6 @@ const removeAction = app.emptyViewActions.addItem({
 ## Style
 
 Colocated CSS: `WorkspaceEmpty.css`. Paint reads the public
-`--ui-workspace-*` token layer. The root uses `--ui-workspace-panel` so its
-surface follows the registered sidebars, while shadcn owns empty-state and
-button paint.
+`--ui-workspace-*` token layer. The default `panel` surface follows the
+registered sidebars. `WorkspaceViewHost` selects the `page` surface for empty
+tabs and missing-view bodies, while shadcn owns empty-state and button paint.

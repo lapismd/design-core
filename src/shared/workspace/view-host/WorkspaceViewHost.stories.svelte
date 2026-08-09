@@ -61,6 +61,11 @@
     title: "Missing view",
     view: { type: "demo.missing" },
   });
+  const emptyTab = createWorkspaceTab({
+    id: "empty-view",
+    title: "Empty view",
+    view: { type: "empty" },
+  });
 </script>
 
 <Story
@@ -96,11 +101,16 @@
 
 <Story
   name="Missing view fallback"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   play={async ({ canvas }) => {
     await expect(
       canvas.getByRole("heading", { name: "Plugin no longer active" }),
     ).toBeVisible();
+    await expect(
+      canvas
+        .getByRole("heading", { name: "Plugin no longer active" })
+        .closest('[data-ui-component="workspace-empty"]'),
+    ).toHaveAttribute("data-workspace-surface", "page");
   }}
   parameters={{
     visualDelta: {
@@ -119,6 +129,29 @@
       <WorkspaceViewHost
         {controller}
         tab={missingTab}
+        hostId="root"
+        paneId={registeredPane.id}
+      />
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Empty tab"
+  tags={["visual-pending"]}
+  play={async ({ canvas }) => {
+    await expect(
+      canvas
+        .getByRole("heading", { name: "No file is open" })
+        .closest('[data-ui-component="workspace-empty"]'),
+    ).toHaveAttribute("data-workspace-surface", "page");
+  }}
+>
+  {#snippet template()}
+    <div class="h-[28rem]">
+      <WorkspaceViewHost
+        {controller}
+        tab={emptyTab}
         hostId="root"
         paneId={registeredPane.id}
       />

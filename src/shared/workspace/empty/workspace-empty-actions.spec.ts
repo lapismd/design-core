@@ -32,6 +32,7 @@ describe("workspace empty actions", () => {
       "Create Tab",
       "Custom Action",
     ]);
+    expect(actions[0]?.icon).toBe("file-plus");
     actions[0]?.onSelect();
     expect(findWorkspacePane(controller.layout, "empty-main")?.items).toEqual([
       expect.objectContaining({ id: "created", title: "New Tab" }),

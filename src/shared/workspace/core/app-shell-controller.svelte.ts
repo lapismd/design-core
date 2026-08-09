@@ -298,6 +298,7 @@ export class AppShellController {
     this.emptyViewActions.addItem({
       id: "app-shell:open-command-palette",
       label: "Open Command Palette",
+      icon: "terminal",
       onSelect: () => this.commands.openPalette(),
     });
     if (this.applicationInfo) {

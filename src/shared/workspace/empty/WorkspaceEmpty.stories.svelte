@@ -30,6 +30,7 @@
     {
       id: "create-tab",
       label: "Create Tab",
+      icon: "file-plus",
       onSelect: () => {
         result = "Create Tab selected";
       },
@@ -37,6 +38,7 @@
     {
       id: "open-command-palette",
       label: "Open Command Palette",
+      icon: "terminal",
       onSelect: () => {
         result = "Open Command Palette selected";
       },
@@ -46,6 +48,7 @@
     {
       id: "files",
       label: "Files",
+      icon: "files",
       onSelect: () => {
         result = "Files selected";
       },
@@ -53,6 +56,7 @@
     {
       id: "search",
       label: "Search",
+      icon: "search",
       onSelect: () => {
         result = "Search selected";
       },
@@ -64,7 +68,21 @@
   name="Empty leaf actions"
   tags={["visual-pending"]}
   play={async ({ canvas }) => {
-    await userEvent.click(canvas.getByRole("button", { name: "Create Tab" }));
+    const createTabButton = canvas.getByRole("button", { name: "Create Tab" });
+    await expect(
+      canvas
+        .getByRole("heading", { name: "No file is open" })
+        .closest('[data-ui-component="workspace-empty"]'),
+    ).toHaveAttribute("data-workspace-surface", "panel");
+    await expect(
+      createTabButton.querySelector('[data-icon="inline-start"]'),
+    ).toBeInTheDocument();
+    await expect(
+      canvas
+        .getByRole("button", { name: "Open Command Palette" })
+        .querySelector('[data-icon="inline-start"]'),
+    ).toBeInTheDocument();
+    await userEvent.click(createTabButton);
     await expect(canvas.getByRole("status")).toHaveTextContent(
       "Create Tab selected",
     );
@@ -101,6 +119,11 @@
       canvas.getByRole("heading", { name: "Plugin no longer active" }),
     ).toBeVisible();
     await expect(canvas.getByText(/demo\.missing/)).toBeVisible();
+    await expect(
+      canvas
+        .getByRole("heading", { name: "Plugin no longer active" })
+        .closest('[data-ui-component="workspace-empty"]'),
+    ).toHaveAttribute("data-workspace-surface", "page");
   }}
   parameters={{
     visualDelta: {
@@ -118,6 +141,7 @@
     <div class="bg-background relative h-[28rem] min-h-0">
       <WorkspaceEmpty
         missingViewType="demo.missing"
+        surface="page"
         actions={[
           {
             id: "close",

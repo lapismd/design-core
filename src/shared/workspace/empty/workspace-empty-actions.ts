@@ -46,6 +46,7 @@ export function createWorkspaceEmptyActions(
           {
             id: "workspace-empty:create-tab",
             label: "Create Tab",
+            icon: "file-plus",
             onSelect: (event?: MouseEvent | KeyboardEvent) => {
               event?.stopPropagation();
               controller.addTab(paneId, createTab(paneId), true);
@@ -61,7 +62,9 @@ export function createWorkspaceEmptyActions(
           {
             id: `workspace-empty:close:${closeTabId}`,
             label: "Close",
-            onSelect: () => controller.closeTab(closeTabId),
+            onSelect: () => {
+              controller.closeTab(closeTabId);
+            },
           },
         ]
       : []),
@@ -97,6 +100,7 @@ function createSidebarLink(
   return {
     id: `workspace-empty:sidebar:${side}:${item.id}`,
     label: item.title,
+    icon: item.icon ?? tab.icon,
     onSelect: () => {
       const liveSidebar = controller.layout[side];
       const livePane = findPane(liveSidebar.root, pane.id);
