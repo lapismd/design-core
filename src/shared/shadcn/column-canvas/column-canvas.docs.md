@@ -23,27 +23,27 @@ import * as ColumnCanvas from "@lapismd/design-core/shadcn/column-canvas";
 
   const canvas = ColumnCanvas.createColumnCanvasController({
     columns: {
-      categories: { defaultWidth: 260, collapsible: true },
-      items: { defaultWidth: 300, collapsible: true },
+      categories: { defaultWidth: 280, collapsible: true },
+      components: { defaultWidth: 320, collapsible: true },
     },
   });
 </script>
 
-<div style="height: 360px">
+<div style="height: 420px">
   <ColumnCanvas.Root controller={canvas}>
     <ColumnCanvas.Column id="categories" title="Categories">
       <ColumnCanvas.Body>
         <ColumnCanvas.Item
-          selected={canvas.isSelected(0, "design")}
-          onclick={() => canvas.select(0, "design")}
+          selected={canvas.isSelected(0, "stable-chat")}
+          onclick={() => canvas.select(0, "stable-chat")}
         >
-          Design
+          Stable Chat
         </ColumnCanvas.Item>
       </ColumnCanvas.Body>
     </ColumnCanvas.Column>
 
     {#if canvas.path[0]}
-      <ColumnCanvas.Column id="items" title="Items">
+      <ColumnCanvas.Column id="components" title="Components">
         <ColumnCanvas.Body>
           <!-- Consumer-owned list content -->
         </ColumnCanvas.Body>

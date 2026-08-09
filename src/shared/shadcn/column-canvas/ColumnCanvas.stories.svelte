@@ -3,6 +3,11 @@
   import { expect, userEvent, waitFor } from "storybook/test";
   import * as ColumnCanvas from "./index.js";
   import { createColumnCanvasController } from "./column-canvas-controller.svelte.js";
+  import {
+    aiDemoCategories,
+    findAiDemoCategory,
+    findAiDemoComponent,
+  } from "./column-canvas.demo-data.js";
   import * as exampleSources from "./ColumnCanvas.example-sources.js";
 
   const { Story } = defineMeta({
@@ -27,36 +32,36 @@
 <script lang="ts">
   const basicCanvas = createColumnCanvasController({
     columns: {
-      categories: { defaultWidth: 260, collapsible: true },
-      items: { defaultWidth: 300, collapsible: true },
+      categories: { defaultWidth: 280, collapsible: true },
+      components: { defaultWidth: 320, collapsible: true },
     },
   });
 
   const threeLevelCanvas = createColumnCanvasController({
     columns: {
-      groups: { defaultWidth: 240, collapsible: true },
-      items: { defaultWidth: 280, collapsible: true },
-      detail: { defaultWidth: 320, closeable: true },
+      categories: { defaultWidth: 260, collapsible: true },
+      components: { defaultWidth: 300, collapsible: true },
+      detail: { defaultWidth: 340, closeable: true },
     },
   });
 
   const collapseCanvas = createColumnCanvasController({
     columns: {
-      refs: { defaultWidth: 280, collapsible: true },
+      components: { defaultWidth: 320, collapsible: true },
     },
   });
 
   const closeableCanvas = createColumnCanvasController({
     columns: {
-      files: { defaultWidth: 280, collapsible: true },
-      preview: { defaultWidth: 360, closeable: true, collapsible: true },
+      components: { defaultWidth: 300, collapsible: true },
+      detail: { defaultWidth: 360, closeable: true, collapsible: true },
     },
   });
 
   const resizeCanvas = createColumnCanvasController({
     columns: {
-      workspace: {
-        defaultWidth: 280,
+      components: {
+        defaultWidth: 300,
         minWidth: 240,
         maxWidth: 480,
         resizable: true,
@@ -69,8 +74,8 @@
 
   const persistCanvas = createColumnCanvasController({
     columns: {
-      workspace: {
-        defaultWidth: 280,
+      components: {
+        defaultWidth: 300,
         minWidth: 240,
         maxWidth: 480,
         resizable: true,
@@ -79,63 +84,25 @@
     },
     saveDebounceMs: 0,
     onLayoutChange: (layout) => {
-      lastSavedWidth = layout.columns.workspace?.width ?? null;
-      lastSavedCollapsed = layout.columns.workspace?.collapsed ?? null;
+      lastSavedWidth = layout.columns.components?.width ?? null;
+      lastSavedCollapsed = layout.columns.components?.collapsed ?? null;
     },
   });
 
-  const categories = [
-    { id: "design", label: "Design" },
-    { id: "engineering", label: "Engineering" },
-  ] as const;
-
-  const itemsByCategory = {
-    design: [
-      { id: "tokens", label: "Tokens" },
-      { id: "components", label: "Components" },
-    ],
-    engineering: [
-      { id: "api", label: "API" },
-      { id: "ci", label: "CI" },
-    ],
-  } as const;
-
-  const groups = [
-    {
-      id: "product",
-      label: "Product",
-      items: [
-        {
-          id: "roadmap",
-          label: "Roadmap",
-          detail: "Q3 milestones and owners.",
-        },
-        {
-          id: "launch",
-          label: "Launch",
-          detail: "Go-to-market checklist.",
-        },
-      ],
-    },
-    {
-      id: "platform",
-      label: "Platform",
-      items: [
-        { id: "auth", label: "Auth", detail: "Session and SSO work." },
-        {
-          id: "billing",
-          label: "Billing",
-          detail: "Invoice pipeline status.",
-        },
-      ],
-    },
-  ] as const;
-
-  const selectedGroup = $derived(
-    groups.find((group) => group.id === threeLevelCanvas.path[0]),
+  const basicSelectedCategory = $derived(
+    findAiDemoCategory(basicCanvas.path[0]),
   );
-  const selectedItem = $derived(
-    selectedGroup?.items.find((item) => item.id === threeLevelCanvas.path[1]),
+  const threeLevelCategory = $derived(
+    findAiDemoCategory(threeLevelCanvas.path[0]),
+  );
+  const threeLevelComponent = $derived(
+    findAiDemoComponent(threeLevelCanvas.path[0], threeLevelCanvas.path[1]),
+  );
+  const closeableComponent = $derived(
+    findAiDemoComponent("stable-chat", closeableCanvas.path[0]),
+  );
+  const stableChatComponents = $derived(
+    findAiDemoCategory("stable-chat")?.components ?? [],
   );
 
   async function dragResizeHandle(
@@ -169,15 +136,19 @@
   play={async ({ canvas }) => {
     basicCanvas.clear();
     await expect(canvas.getByText("Categories")).toBeVisible();
-    await expect(canvas.queryByText("Items")).toBeNull();
-    await userEvent.click(canvas.getByRole("button", { name: "Design" }));
-    await expect(canvas.getByText("Items")).toBeVisible();
-    await expect(canvas.getByText("Tokens")).toBeVisible();
+    await expect(canvas.queryByText("Components")).toBeNull();
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Stable Chat" }),
+    );
+    await expect(canvas.getByText("Components")).toBeVisible();
+    await expect(canvas.getByText("Message Bubble")).toBeVisible();
     await expect(
-      canvas.getByRole("button", { name: "Design" }),
+      canvas.getByRole("button", { name: "Stable Chat" }),
     ).toHaveAttribute("aria-pressed", "true");
-    await userEvent.click(canvas.getByRole("button", { name: "Design" }));
-    await expect(canvas.queryByText("Items")).toBeNull();
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Stable Chat" }),
+    );
+    await expect(canvas.queryByText("Components")).toBeNull();
   }}
   parameters={{
     docs: {
@@ -190,36 +161,47 @@
   }}
 >
   {#snippet template()}
-    <div class="h-[360px] w-full">
+    <div class="h-[420px] w-full">
       <ColumnCanvas.Root controller={basicCanvas}>
         <ColumnCanvas.Column
           id="categories"
           title="Categories"
-          count={categories.length}
+          count={aiDemoCategories.length}
         >
           <ColumnCanvas.Body>
-            {#each categories as category (category.id)}
+            {#each aiDemoCategories as category (category.id)}
               <ColumnCanvas.Item
+                aria-label={category.label}
                 selected={basicCanvas.isSelected(0, category.id)}
                 onclick={() => basicCanvas.select(0, category.id)}
               >
-                {category.label}
+                <span class="flex min-w-0 flex-col gap-0.5">
+                  <span class="font-medium">{category.label}</span>
+                  <span class="text-muted-foreground line-clamp-2 text-xs">
+                    {category.description}
+                  </span>
+                </span>
               </ColumnCanvas.Item>
             {/each}
           </ColumnCanvas.Body>
         </ColumnCanvas.Column>
 
-        {#if basicCanvas.path[0]}
-          {@const categoryKey = basicCanvas
-            .path[0] as keyof typeof itemsByCategory}
+        {#if basicSelectedCategory && basicCanvas.path[0]}
           <ColumnCanvas.Column
-            id="items"
-            title="Items"
-            count={itemsByCategory[categoryKey].length}
+            id="components"
+            title="Components"
+            count={basicSelectedCategory.components.length}
           >
             <ColumnCanvas.Body>
-              {#each itemsByCategory[categoryKey] as item (item.id)}
-                <ColumnCanvas.Item>{item.label}</ColumnCanvas.Item>
+              {#each basicSelectedCategory.components as component (component.id)}
+                <ColumnCanvas.Item aria-label={component.label}>
+                  <span class="flex min-w-0 flex-col gap-0.5">
+                    <span class="font-medium">{component.label}</span>
+                    <span class="text-muted-foreground line-clamp-2 text-xs">
+                      {component.role}
+                    </span>
+                  </span>
+                </ColumnCanvas.Item>
               {/each}
             </ColumnCanvas.Body>
           </ColumnCanvas.Column>
@@ -233,13 +215,22 @@
   name="Three-level cascade"
   play={async ({ canvas }) => {
     threeLevelCanvas.clear();
-    await userEvent.click(canvas.getByRole("button", { name: "Product" }));
-    await expect(canvas.getByText("Roadmap")).toBeVisible();
-    await userEvent.click(canvas.getByRole("button", { name: "Roadmap" }));
-    await expect(canvas.getByText("Q3 milestones and owners.")).toBeVisible();
-    await userEvent.click(canvas.getByRole("button", { name: "Roadmap" }));
-    await expect(canvas.queryByText("Q3 milestones and owners.")).toBeNull();
-    await expect(canvas.getByText("Launch")).toBeVisible();
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Stable Chat" }),
+    );
+    await expect(canvas.getByText("Composer")).toBeVisible();
+    await userEvent.click(canvas.getByRole("button", { name: "Composer" }));
+    await expect(
+      canvas.getByText("@lapismd/design-core/ai/chat"),
+    ).toBeVisible();
+    await expect(
+      canvas.getByRole("button", { name: "Close Composer column" }),
+    ).toBeVisible();
+    await userEvent.click(canvas.getByRole("button", { name: "Composer" }));
+    await expect(
+      canvas.queryByText("@lapismd/design-core/ai/chat"),
+    ).toBeNull();
+    await expect(canvas.getByText("Send Button")).toBeVisible();
   }}
   parameters={{
     docs: {
@@ -252,49 +243,68 @@
   }}
 >
   {#snippet template()}
-    <div class="h-[400px] w-full">
+    <div class="h-[440px] w-full">
       <ColumnCanvas.Root controller={threeLevelCanvas}>
-        <ColumnCanvas.Column id="groups" title="Groups" count={groups.length}>
+        <ColumnCanvas.Column
+          id="categories"
+          title="Categories"
+          count={aiDemoCategories.length}
+        >
           <ColumnCanvas.Body>
-            {#each groups as group (group.id)}
+            {#each aiDemoCategories as category (category.id)}
               <ColumnCanvas.Item
-                selected={threeLevelCanvas.isSelected(0, group.id)}
-                onclick={() => threeLevelCanvas.select(0, group.id)}
+                aria-label={category.label}
+                selected={threeLevelCanvas.isSelected(0, category.id)}
+                onclick={() => threeLevelCanvas.select(0, category.id)}
               >
-                {group.label}
+                <span class="flex min-w-0 flex-col gap-0.5">
+                  <span class="font-medium">{category.label}</span>
+                  <span class="text-muted-foreground line-clamp-2 text-xs">
+                    {category.description}
+                  </span>
+                </span>
               </ColumnCanvas.Item>
             {/each}
           </ColumnCanvas.Body>
         </ColumnCanvas.Column>
 
-        {#if selectedGroup}
+        {#if threeLevelCategory}
           <ColumnCanvas.Column
-            id="items"
-            title={selectedGroup.label}
-            count={selectedGroup.items.length}
+            id="components"
+            title={threeLevelCategory.label}
+            count={threeLevelCategory.components.length}
           >
             <ColumnCanvas.Body>
-              {#each selectedGroup.items as item (item.id)}
+              {#each threeLevelCategory.components as component (component.id)}
                 <ColumnCanvas.Item
-                  selected={threeLevelCanvas.isSelected(1, item.id)}
+                  aria-label={component.label}
+                  selected={threeLevelCanvas.isSelected(1, component.id)}
                   onclick={() => {
-                    threeLevelCanvas.select(1, item.id);
+                    threeLevelCanvas.select(1, component.id);
                     threeLevelCanvas.open("detail");
                   }}
                 >
-                  {item.label}
+                  <span class="flex min-w-0 flex-col gap-0.5">
+                    <span class="font-medium">{component.label}</span>
+                    <span class="text-muted-foreground line-clamp-2 text-xs">
+                      {component.role}
+                    </span>
+                  </span>
                 </ColumnCanvas.Item>
               {/each}
             </ColumnCanvas.Body>
           </ColumnCanvas.Column>
         {/if}
 
-        {#if selectedItem}
-          <ColumnCanvas.Column id="detail" title={selectedItem.label}>
+        {#if threeLevelComponent}
+          <ColumnCanvas.Column id="detail" title={threeLevelComponent.label}>
             <ColumnCanvas.Body>
-              <p class="text-muted-foreground p-3 text-sm">
-                {selectedItem.detail}
-              </p>
+              <div class="text-muted-foreground flex flex-col gap-3 p-3 text-sm">
+                <p>{threeLevelComponent.role}</p>
+                <code class="bg-muted rounded px-2 py-1 text-xs break-all">
+                  {threeLevelComponent.importPath}
+                </code>
+              </div>
             </ColumnCanvas.Body>
           </ColumnCanvas.Column>
         {/if}
@@ -307,19 +317,27 @@
   name="Closeable columns"
   play={async ({ canvas }) => {
     closeableCanvas.clear();
-    closeableCanvas.open("preview");
-    await userEvent.click(canvas.getByRole("button", { name: "readme.md" }));
-    await expect(canvas.getByText("Preview")).toBeVisible();
-    await expect(canvas.getByText("readme.md contents")).toBeVisible();
+    closeableCanvas.open("detail");
     await userEvent.click(
-      canvas.getByRole("button", { name: "Close Preview column" }),
+      canvas.getByRole("button", { name: "Message Bubble" }),
     );
-    await expect(canvas.queryByText("readme.md contents")).toBeNull();
+    await expect(canvas.getByText("Detail")).toBeVisible();
     await expect(
-      canvas.queryByRole("button", { name: "Close Preview column" }),
+      canvas.getByText("@lapismd/design-core/ai/chat"),
+    ).toBeVisible();
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Close Detail column" }),
+    );
+    await expect(
+      canvas.queryByText("@lapismd/design-core/ai/chat"),
     ).toBeNull();
-    await userEvent.click(canvas.getByRole("button", { name: "Open preview" }));
-    await expect(canvas.getByText("readme.md contents")).toBeVisible();
+    await expect(
+      canvas.queryByRole("button", { name: "Close Detail column" }),
+    ).toBeNull();
+    await userEvent.click(canvas.getByRole("button", { name: "Open detail" }));
+    await expect(
+      canvas.getByText("@lapismd/design-core/ai/chat"),
+    ).toBeVisible();
   }}
   parameters={{
     docs: {
@@ -332,47 +350,58 @@
   }}
 >
   {#snippet template()}
-    <div class="flex h-[320px] w-full flex-col gap-2">
+    <div class="flex h-[420px] w-full flex-col gap-2">
       <div class="flex gap-2 px-1">
         <button
           type="button"
           class="hover:bg-muted rounded border px-2 py-1 text-sm"
-          onclick={() => closeableCanvas.open("preview")}
+          onclick={() => closeableCanvas.open("detail")}
         >
-          Open preview
+          Open detail
         </button>
       </div>
       <div class="min-h-0 flex-1">
         <ColumnCanvas.Root controller={closeableCanvas}>
-          <ColumnCanvas.Column id="files" title="Files" count={2}>
+          <ColumnCanvas.Column
+            id="components"
+            title="Stable Chat"
+            count={stableChatComponents.length}
+          >
             <ColumnCanvas.Body>
-              <ColumnCanvas.Item
-                selected={closeableCanvas.isSelected(0, "readme")}
-                onclick={() => {
-                  closeableCanvas.select(0, "readme");
-                  closeableCanvas.open("preview");
-                }}
-              >
-                readme.md
-              </ColumnCanvas.Item>
-              <ColumnCanvas.Item
-                selected={closeableCanvas.isSelected(0, "notes")}
-                onclick={() => {
-                  closeableCanvas.select(0, "notes");
-                  closeableCanvas.open("preview");
-                }}
-              >
-                notes.md
-              </ColumnCanvas.Item>
+              {#each stableChatComponents as component (component.id)}
+                <ColumnCanvas.Item
+                  aria-label={component.label}
+                  selected={closeableCanvas.isSelected(0, component.id)}
+                  onclick={() => {
+                    closeableCanvas.select(0, component.id);
+                    closeableCanvas.open("detail");
+                  }}
+                >
+                  <span class="flex min-w-0 flex-col gap-0.5">
+                    <span class="font-medium">{component.label}</span>
+                    <span class="text-muted-foreground line-clamp-2 text-xs">
+                      {component.role}
+                    </span>
+                  </span>
+                </ColumnCanvas.Item>
+              {/each}
             </ColumnCanvas.Body>
           </ColumnCanvas.Column>
 
-          {#if closeableCanvas.path[0]}
-            <ColumnCanvas.Column id="preview" title="Preview">
+          {#if closeableComponent}
+            <ColumnCanvas.Column id="detail" title="Detail">
               <ColumnCanvas.Body>
-                <p class="text-muted-foreground p-3 text-sm">
-                  {closeableCanvas.path[0]}.md contents
-                </p>
+                <div
+                  class="text-muted-foreground flex flex-col gap-3 p-3 text-sm"
+                >
+                  <p class="text-foreground font-medium">
+                    {closeableComponent.label}
+                  </p>
+                  <p>{closeableComponent.role}</p>
+                  <code class="bg-muted rounded px-2 py-1 text-xs break-all">
+                    {closeableComponent.importPath}
+                  </code>
+                </div>
               </ColumnCanvas.Body>
             </ColumnCanvas.Column>
           {/if}
@@ -385,19 +414,19 @@
 <Story
   name="Collapse and expand"
   play={async ({ canvas }) => {
-    collapseCanvas.expand("refs");
-    await expect(canvas.getByText("Branches")).toBeVisible();
+    collapseCanvas.expand("components");
+    await expect(canvas.getByText("Components")).toBeVisible();
     await userEvent.click(
-      canvas.getByRole("button", { name: "Collapse Branches column" }),
+      canvas.getByRole("button", { name: "Collapse Components column" }),
     );
     await expect(
-      canvas.getByRole("button", { name: "Expand Branches column" }),
+      canvas.getByRole("button", { name: "Expand Components column" }),
     ).toBeVisible();
-    await expect(canvas.queryByText("main")).toBeNull();
+    await expect(canvas.queryByText("Tool Calls")).toBeNull();
     await userEvent.click(
-      canvas.getByRole("button", { name: "Expand Branches column" }),
+      canvas.getByRole("button", { name: "Expand Components column" }),
     );
-    await expect(canvas.getByText("main")).toBeVisible();
+    await expect(canvas.getByText("Tool Calls")).toBeVisible();
   }}
   parameters={{
     docs: {
@@ -410,12 +439,24 @@
   }}
 >
   {#snippet template()}
-    <div class="h-[320px] w-full">
+    <div class="h-[420px] w-full">
       <ColumnCanvas.Root controller={collapseCanvas}>
-        <ColumnCanvas.Column id="refs" title="Branches" count={2}>
+        <ColumnCanvas.Column
+          id="components"
+          title="Components"
+          count={stableChatComponents.length}
+        >
           <ColumnCanvas.Body>
-            <ColumnCanvas.Item>main</ColumnCanvas.Item>
-            <ColumnCanvas.Item>feature/canvas</ColumnCanvas.Item>
+            {#each stableChatComponents as component (component.id)}
+              <ColumnCanvas.Item>
+                <span class="flex min-w-0 flex-col gap-0.5">
+                  <span class="font-medium">{component.label}</span>
+                  <span class="text-muted-foreground line-clamp-2 text-xs">
+                    {component.role}
+                  </span>
+                </span>
+              </ColumnCanvas.Item>
+            {/each}
           </ColumnCanvas.Body>
         </ColumnCanvas.Column>
       </ColumnCanvas.Root>
@@ -426,21 +467,21 @@
 <Story
   name="Resizable columns"
   play={async ({ canvasElement, canvas }) => {
-    resizeCanvas.resetWidth("workspace");
+    resizeCanvas.resetWidth("components");
     const handle = canvas.getByRole("separator", {
-      name: "Resize Workspace column",
+      name: "Resize Components column",
     });
     await expect(handle).toHaveAttribute("aria-orientation", "vertical");
     const column = canvasElement.querySelector(
-      '[data-ui-part="column"][data-column-id="workspace"]',
+      '[data-ui-part="column"][data-column-id="components"]',
     );
     await expect(column).not.toBeNull();
     await dragResizeHandle(handle, 40);
     await waitFor(() => {
-      expect(resizeCanvas.getWidth("workspace")).toBeGreaterThan(280);
+      expect(resizeCanvas.getWidth("components")).toBeGreaterThan(300);
     });
     await expect(column).toHaveStyle({
-      width: `${resizeCanvas.getWidth("workspace")}px`,
+      width: `${resizeCanvas.getWidth("components")}px`,
     });
   }}
   parameters={{
@@ -454,13 +495,27 @@
   }}
 >
   {#snippet template()}
-    <div class="h-[320px] w-full">
+    <div class="h-[420px] w-full">
       <ColumnCanvas.Root controller={resizeCanvas}>
-        <ColumnCanvas.Column id="workspace" title="Workspace">
+        <ColumnCanvas.Column
+          id="components"
+          title="Components"
+          count={stableChatComponents.length}
+        >
           <ColumnCanvas.Body>
-            <p class="p-3 text-sm">
+            {#each stableChatComponents as component (component.id)}
+              <ColumnCanvas.Item>
+                <span class="flex min-w-0 flex-col gap-0.5">
+                  <span class="font-medium">{component.label}</span>
+                  <span class="text-muted-foreground line-clamp-2 text-xs">
+                    {component.role}
+                  </span>
+                </span>
+              </ColumnCanvas.Item>
+            {/each}
+            <p class="text-muted-foreground px-3 py-2 text-xs">
               Drag the trailing edge to resize. Width:
-              <output>{resizeCanvas.getWidth("workspace")}px</output>
+              <output>{resizeCanvas.getWidth("components")}px</output>
             </p>
           </ColumnCanvas.Body>
         </ColumnCanvas.Column>
@@ -474,22 +529,22 @@
   play={async ({ canvas }) => {
     lastSavedWidth = null;
     lastSavedCollapsed = null;
-    persistCanvas.resetWidth("workspace");
-    persistCanvas.expand("workspace");
+    persistCanvas.resetWidth("components");
+    persistCanvas.expand("components");
     await persistCanvas.flushSave();
 
     const handle = canvas.getByRole("separator", {
-      name: "Resize Workspace column",
+      name: "Resize Components column",
     });
     await dragResizeHandle(handle, 50);
     await persistCanvas.flushSave();
     await waitFor(() => {
       expect(lastSavedWidth).not.toBeNull();
-      expect(lastSavedWidth!).toBeGreaterThan(280);
+      expect(lastSavedWidth!).toBeGreaterThan(300);
     });
 
     await userEvent.click(
-      canvas.getByRole("button", { name: "Collapse Workspace column" }),
+      canvas.getByRole("button", { name: "Collapse Components column" }),
     );
     await persistCanvas.flushSave();
     await waitFor(() => {
@@ -507,11 +562,25 @@
   }}
 >
   {#snippet template()}
-    <div class="h-[320px] w-full">
+    <div class="h-[420px] w-full">
       <ColumnCanvas.Root controller={persistCanvas}>
-        <ColumnCanvas.Column id="workspace" title="Workspace">
+        <ColumnCanvas.Column
+          id="components"
+          title="Components"
+          count={stableChatComponents.length}
+        >
           <ColumnCanvas.Body>
-            <p class="p-3 text-sm">
+            {#each stableChatComponents as component (component.id)}
+              <ColumnCanvas.Item>
+                <span class="flex min-w-0 flex-col gap-0.5">
+                  <span class="font-medium">{component.label}</span>
+                  <span class="text-muted-foreground line-clamp-2 text-xs">
+                    {component.role}
+                  </span>
+                </span>
+              </ColumnCanvas.Item>
+            {/each}
+            <p class="text-muted-foreground px-3 py-2 text-xs">
               Layout saves through the injected persistence adapter.
             </p>
           </ColumnCanvas.Body>
