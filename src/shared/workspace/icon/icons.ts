@@ -24,12 +24,21 @@ export function resolveWorkspaceIcon(name?: string): Component | null {
   return customIcons.get(name ?? "") ?? null;
 }
 
+/** Normalize Obsidian-style `lucide-foo` / `lucide:foo` to Lucide short names. */
+export function normalizeWorkspaceIconName(name?: string): string {
+  const raw = (name || "file").trim();
+  if (!raw) return "file";
+  if (raw.startsWith("lucide:")) return raw.slice("lucide:".length) || "file";
+  if (raw.startsWith("lucide-")) return raw.slice("lucide-".length) || "file";
+  return raw;
+}
+
 export function getWorkspaceIconSvg(
   name?: string,
   className?: string,
   dataIcon?: string,
 ): string {
-  const requestedName = name || "file";
+  const requestedName = normalizeWorkspaceIconName(name);
   const resolvedName = getIconData(lucideIcons, requestedName)
     ? requestedName
     : "file";
