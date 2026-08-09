@@ -23,13 +23,20 @@ import * as ColumnCanvas from "@lapismd/design-core/shadcn/column-canvas";
 
   const canvas = ColumnCanvas.createColumnCanvasController({
     columns: {
-      categories: { defaultWidth: 280, collapsible: true },
-      components: { defaultWidth: 320, collapsible: true },
+      categories: { defaultWidth: 260, collapsible: true, resizable: true },
+      components: { defaultWidth: 300, collapsible: true, resizable: true },
+      detail: {
+        defaultWidth: 340,
+        collapsible: true,
+        resizable: true,
+        closeable: true,
+      },
     },
+    initialPath: ["stable-chat", "composer"],
   });
 </script>
 
-<div style="height: 420px">
+<div style="height: 460px">
   <ColumnCanvas.Root controller={canvas}>
     <ColumnCanvas.Column id="categories" title="Categories">
       <ColumnCanvas.Body>
@@ -46,6 +53,14 @@ import * as ColumnCanvas from "@lapismd/design-core/shadcn/column-canvas";
       <ColumnCanvas.Column id="components" title="Components">
         <ColumnCanvas.Body>
           <!-- Consumer-owned list content -->
+        </ColumnCanvas.Body>
+      </ColumnCanvas.Column>
+    {/if}
+
+    {#if canvas.path[1]}
+      <ColumnCanvas.Column id="detail" title="Details">
+        <ColumnCanvas.Body>
+          <!-- Fields echoed from the selected second-column row -->
         </ColumnCanvas.Body>
       </ColumnCanvas.Column>
     {/if}
@@ -75,13 +90,14 @@ elsewhere.
 
 ## Examples
 
-### Basic
+### All Features
 
-Two-level selection that mounts the next column when a row is chosen.
+Three-column cascade with collapse, resize, and a closeable details pane that
+repeats Name / Id / Role / Import / Category from the selected component.
 
 ### Three Level
 
-Categories → items → detail, with toggle-select clearing deeper levels.
+Path selection only — categories → components → detail prose.
 
 ### Closeable
 

@@ -170,3 +170,23 @@ export function findAiDemoComponent(
     (component) => component.id === componentId,
   );
 }
+
+export type AiDemoDetailField = {
+  id: string;
+  label: string;
+  value: string;
+};
+
+/** Third-column rows that echo fields from the selected second-column component. */
+export function aiDemoComponentDetailFields(
+  component: AiDemoComponent,
+  category: AiDemoCategory,
+): AiDemoDetailField[] {
+  return [
+    { id: "name", label: "Name", value: component.label },
+    { id: "id", label: "Id", value: component.id },
+    { id: "role", label: "Role", value: component.role },
+    { id: "import", label: "Import", value: component.importPath },
+    { id: "category", label: "Category", value: category.label },
+  ];
+}

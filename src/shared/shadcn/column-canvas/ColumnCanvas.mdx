@@ -25,8 +25,8 @@ canvas of fixed-width columns.
 ## Usage
 
 Create a controller, pass it to `Root`, and mount columns by selection depth.
-`resizable` / `collapsible` come from column config (override per `Column` if
-needed). Persist widths with an injected adapter.
+The primary demo below uses three columns with collapse, resize, and a closeable
+details pane that repeats fields from the selected second-column row.
 
 <Source language="html" code={exampleSources.Basic} />
 
@@ -36,16 +36,18 @@ needed). Persist widths with an injected adapter.
 
 ## Examples
 
-### Basic cascade
+### All features
 
-Two-level selection that mounts the next column when a row is chosen.
+Categories → components → details. Every column is collapsible and resizable;
+details is also closeable. Selecting a component reopens details and fills it
+with Name / Id / Role / Import / Category values from that row.
 
-<Canvas of={ColumnCanvasStories.BasicCascade} meta={ColumnCanvasStories} />
+<Canvas of={ColumnCanvasStories.AllFeatures} meta={ColumnCanvasStories} />
 
 ### Three-level cascade
 
-Categories → components → detail (role + import path), with toggle-select
-clearing deeper levels. Demo data mirrors `AI/Overview` families.
+Path selection only — categories → components → detail prose, with
+toggle-select clearing deeper levels.
 
 <Canvas of={ColumnCanvasStories.ThreeLevelCascade} meta={ColumnCanvasStories} />
 

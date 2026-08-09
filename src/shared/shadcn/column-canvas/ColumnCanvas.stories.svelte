@@ -5,6 +5,7 @@
   import { createColumnCanvasController } from "./column-canvas-controller.svelte.js";
   import {
     aiDemoCategories,
+    aiDemoComponentDetailFields,
     findAiDemoCategory,
     findAiDemoComponent,
   } from "./column-canvas.demo-data.js";
@@ -32,9 +33,30 @@
 <script lang="ts">
   const basicCanvas = createColumnCanvasController({
     columns: {
-      categories: { defaultWidth: 280, collapsible: true },
-      components: { defaultWidth: 320, collapsible: true },
+      categories: {
+        defaultWidth: 260,
+        minWidth: 220,
+        maxWidth: 420,
+        collapsible: true,
+        resizable: true,
+      },
+      components: {
+        defaultWidth: 300,
+        minWidth: 240,
+        maxWidth: 480,
+        collapsible: true,
+        resizable: true,
+      },
+      detail: {
+        defaultWidth: 340,
+        minWidth: 280,
+        maxWidth: 520,
+        collapsible: true,
+        resizable: true,
+        closeable: true,
+      },
     },
+    initialPath: ["stable-chat", "composer"],
   });
 
   const threeLevelCanvas = createColumnCanvasController({
@@ -92,6 +114,17 @@
   const basicSelectedCategory = $derived(
     findAiDemoCategory(basicCanvas.path[0]),
   );
+  const basicSelectedComponent = $derived(
+    findAiDemoComponent(basicCanvas.path[0], basicCanvas.path[1]),
+  );
+  const basicDetailFields = $derived(
+    basicSelectedCategory && basicSelectedComponent
+      ? aiDemoComponentDetailFields(
+          basicSelectedComponent,
+          basicSelectedCategory,
+        )
+      : [],
+  );
   const threeLevelCategory = $derived(
     findAiDemoCategory(threeLevelCanvas.path[0]),
   );
@@ -132,23 +165,64 @@
 </script>
 
 <Story
-  name="Basic cascade"
-  play={async ({ canvas }) => {
+  name="All features"
+  play={async ({ canvasElement, canvas }) => {
+    basicCanvas.open("detail");
+    basicCanvas.expand("categories");
+    basicCanvas.expand("components");
+    basicCanvas.expand("detail");
+    // `select` toggles — clear first so setup does not deselect the initial path.
     basicCanvas.clear();
+    basicCanvas.select(0, "stable-chat");
+    basicCanvas.select(1, "composer");
+    basicCanvas.open("detail");
+
     await expect(canvas.getByText("Categories")).toBeVisible();
-    await expect(canvas.queryByText("Components")).toBeNull();
-    await userEvent.click(
-      canvas.getByRole("button", { name: "Stable Chat" }),
-    );
-    await expect(canvas.getByText("Components")).toBeVisible();
-    await expect(canvas.getByText("Message Bubble")).toBeVisible();
     await expect(
       canvas.getByRole("button", { name: "Stable Chat" }),
     ).toHaveAttribute("aria-pressed", "true");
+    await expect(
+      canvas.getByRole("button", { name: "Composer" }),
+    ).toHaveAttribute("aria-pressed", "true");
+    await expect(
+      canvas.getByRole("button", { name: "Name" }),
+    ).toBeVisible();
+    await expect(canvas.getByText("@lapismd/design-core/ai/chat")).toBeVisible();
+
     await userEvent.click(
-      canvas.getByRole("button", { name: "Stable Chat" }),
+      canvas.getByRole("button", { name: "Message Bubble" }),
     );
-    await expect(canvas.queryByText("Components")).toBeNull();
+    await expect(canvas.getByText("message-bubble")).toBeVisible();
+    await expect(
+      canvas.getByRole("button", { name: "Close Details column" }),
+    ).toBeVisible();
+    await expect(
+      canvas.getByRole("separator", { name: "Resize Details column" }),
+    ).toBeVisible();
+
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Close Details column" }),
+    );
+    await expect(
+      canvas.queryByRole("button", { name: "Close Details column" }),
+    ).toBeNull();
+    await userEvent.click(canvas.getByRole("button", { name: "Open detail" }));
+    await expect(canvas.getByText("message-bubble")).toBeVisible();
+
+    const handle = canvas.getByRole("separator", {
+      name: "Resize Stable Chat column",
+    });
+    const before = basicCanvas.getWidth("components");
+    await dragResizeHandle(handle, 40);
+    await waitFor(() => {
+      expect(basicCanvas.getWidth("components")).toBeGreaterThan(before);
+    });
+    const column = canvasElement.querySelector(
+      '[data-ui-part="column"][data-column-id="components"]',
+    );
+    await expect(column).toHaveStyle({
+      width: `${basicCanvas.getWidth("components")}px`,
+    });
   }}
   parameters={{
     docs: {
@@ -161,52 +235,95 @@
   }}
 >
   {#snippet template()}
-    <div class="h-[420px] w-full">
-      <ColumnCanvas.Root controller={basicCanvas}>
-        <ColumnCanvas.Column
-          id="categories"
-          title="Categories"
-          count={aiDemoCategories.length}
+    <div class="flex h-[460px] w-full flex-col gap-2">
+      <div class="flex flex-wrap gap-2 px-1">
+        <button
+          type="button"
+          class="hover:bg-muted rounded border px-2 py-1 text-sm"
+          onclick={() => basicCanvas.open("detail")}
         >
-          <ColumnCanvas.Body>
-            {#each aiDemoCategories as category (category.id)}
-              <ColumnCanvas.Item
-                aria-label={category.label}
-                selected={basicCanvas.isSelected(0, category.id)}
-                onclick={() => basicCanvas.select(0, category.id)}
-              >
-                <span class="flex min-w-0 flex-col gap-0.5">
-                  <span class="font-medium">{category.label}</span>
-                  <span class="text-muted-foreground line-clamp-2 text-xs">
-                    {category.description}
-                  </span>
-                </span>
-              </ColumnCanvas.Item>
-            {/each}
-          </ColumnCanvas.Body>
-        </ColumnCanvas.Column>
-
-        {#if basicSelectedCategory && basicCanvas.path[0]}
+          Open detail
+        </button>
+        <p class="text-muted-foreground self-center text-xs">
+          Collapse, resize, or close any column. Details repeats fields from the
+          selected component.
+        </p>
+      </div>
+      <div class="min-h-0 flex-1">
+        <ColumnCanvas.Root controller={basicCanvas}>
           <ColumnCanvas.Column
-            id="components"
-            title="Components"
-            count={basicSelectedCategory.components.length}
+            id="categories"
+            title="Categories"
+            count={aiDemoCategories.length}
           >
             <ColumnCanvas.Body>
-              {#each basicSelectedCategory.components as component (component.id)}
-                <ColumnCanvas.Item aria-label={component.label}>
+              {#each aiDemoCategories as category (category.id)}
+                <ColumnCanvas.Item
+                  aria-label={category.label}
+                  selected={basicCanvas.isSelected(0, category.id)}
+                  onclick={() => basicCanvas.select(0, category.id)}
+                >
                   <span class="flex min-w-0 flex-col gap-0.5">
-                    <span class="font-medium">{component.label}</span>
+                    <span class="font-medium">{category.label}</span>
                     <span class="text-muted-foreground line-clamp-2 text-xs">
-                      {component.role}
+                      {category.description}
                     </span>
                   </span>
                 </ColumnCanvas.Item>
               {/each}
             </ColumnCanvas.Body>
           </ColumnCanvas.Column>
-        {/if}
-      </ColumnCanvas.Root>
+
+          {#if basicSelectedCategory}
+            <ColumnCanvas.Column
+              id="components"
+              title={basicSelectedCategory.label}
+              count={basicSelectedCategory.components.length}
+            >
+              <ColumnCanvas.Body>
+                {#each basicSelectedCategory.components as component (component.id)}
+                  <ColumnCanvas.Item
+                    aria-label={component.label}
+                    selected={basicCanvas.isSelected(1, component.id)}
+                    onclick={() => {
+                      basicCanvas.select(1, component.id);
+                      basicCanvas.open("detail");
+                    }}
+                  >
+                    <span class="flex min-w-0 flex-col gap-0.5">
+                      <span class="font-medium">{component.label}</span>
+                      <span class="text-muted-foreground line-clamp-2 text-xs">
+                        {component.role}
+                      </span>
+                    </span>
+                  </ColumnCanvas.Item>
+                {/each}
+              </ColumnCanvas.Body>
+            </ColumnCanvas.Column>
+          {/if}
+
+          {#if basicSelectedComponent && basicSelectedCategory}
+            <ColumnCanvas.Column
+              id="detail"
+              title="Details"
+              count={basicDetailFields.length}
+            >
+              <ColumnCanvas.Body>
+                {#each basicDetailFields as field (field.id)}
+                  <ColumnCanvas.Item aria-label={field.label} disabled>
+                    <span class="flex min-w-0 flex-col gap-0.5">
+                      <span class="text-muted-foreground text-xs">
+                        {field.label}
+                      </span>
+                      <span class="break-all font-medium">{field.value}</span>
+                    </span>
+                  </ColumnCanvas.Item>
+                {/each}
+              </ColumnCanvas.Body>
+            </ColumnCanvas.Column>
+          {/if}
+        </ColumnCanvas.Root>
+      </div>
     </div>
   {/snippet}
 </Story>
