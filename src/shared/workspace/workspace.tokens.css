@@ -5,6 +5,8 @@
 :root {
   --ui-workspace-background: var(--background);
   --ui-workspace-foreground: var(--foreground);
+  --ui-workspace-view-background: var(--ui-workspace-background);
+  --ui-workspace-view-foreground: var(--ui-workspace-foreground);
   --ui-workspace-panel: var(--sidebar, var(--background));
   --ui-workspace-panel-foreground: var(--sidebar-foreground, var(--foreground));
   --ui-workspace-panel-action-hover-background: var(

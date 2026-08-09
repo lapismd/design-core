@@ -176,6 +176,24 @@
     await expect(canvas.getByLabelText("Terminal")).toHaveTextContent(
       "24 tests passed",
     );
+    const viewHost = canvas
+      .getByLabelText("Terminal")
+      .closest<HTMLElement>('[data-ui-component="workspace-view-host"]');
+    const panelContent = canvasElement.querySelector<HTMLElement>(
+      "#workspace-bottom-panel-content",
+    );
+    const bottomPanel = canvasElement.querySelector<HTMLElement>(
+      '[data-workspace-surface="bottom-panel"]',
+    );
+    await expect(viewHost).not.toBeNull();
+    await expect(panelContent).not.toBeNull();
+    await expect(bottomPanel).not.toBeNull();
+    expect(getComputedStyle(viewHost!).backgroundColor).toBe(
+      getComputedStyle(panelContent!).backgroundColor,
+    );
+    expect(getComputedStyle(viewHost!).backgroundColor).not.toBe(
+      getComputedStyle(bottomPanel!).backgroundColor,
+    );
 
     const resize = canvas.getByRole("button", { name: "Resize bottom panel" });
     await fireEvent.keyDown(resize, { key: "ArrowUp" });
@@ -321,6 +339,17 @@
         '[data-ui-component="workspace-bottom-panel-group"]',
       ),
     ).not.toBeNull();
+    const groupedViewHost = canvasElement.querySelector<HTMLElement>(
+      '[data-ui-component="workspace-bottom-panel-group"] [data-ui-component="workspace-view-host"]',
+    );
+    const groupedContent = groupedViewHost?.closest<HTMLElement>(
+      ".ui-workspace-bottom-panel-group__content",
+    );
+    await expect(groupedViewHost).not.toBeNull();
+    await expect(groupedContent).not.toBeNull();
+    expect(getComputedStyle(groupedViewHost!).backgroundColor).toBe(
+      getComputedStyle(groupedContent!).backgroundColor,
+    );
   }}
 >
   {#snippet template()}

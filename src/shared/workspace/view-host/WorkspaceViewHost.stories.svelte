@@ -71,9 +71,17 @@
 <Story
   name="Registered Svelte view"
   tags={["visual-approved"]}
-  play={async ({ canvas }) => {
+  play={async ({ canvas, canvasElement }) => {
     await userEvent.click(canvas.getByRole("button", { name: "Count 1" }));
     await expect(canvas.getByRole("button", { name: "Count 2" })).toBeVisible();
+    const host = canvasElement.querySelector<HTMLElement>(
+      '[data-ui-component="workspace-view-host"]',
+    );
+    const surface = canvas.getByTestId("view-host-default-surface");
+    await expect(host).not.toBeNull();
+    expect(getComputedStyle(host!).backgroundColor).toBe(
+      getComputedStyle(surface).backgroundColor,
+    );
   }}
   parameters={{
     visualDelta: {
@@ -88,7 +96,11 @@
   }}
 >
   {#snippet template()}
-    <div class="h-[28rem]">
+    <div
+      class="h-[28rem]"
+      data-testid="view-host-default-surface"
+      style="background: var(--ui-workspace-background); color: var(--ui-workspace-foreground)"
+    >
       <WorkspaceViewHost
         {controller}
         tab={registeredTab}

@@ -27,9 +27,10 @@ behavior.
 ribbon remains full height.
 
 The rendered body, left sidebar, right sidebar, and bottom panel carry stable
-`data-workspace-surface` values. Consumer views should use CSS ancestry against
-those hosts when their paint depends on placement; a dragged view then adopts
-its destination styling without runtime workspace-parent inspection.
+`data-workspace-surface` values. Design-core uses those destination surfaces to
+resolve the public Workspace view background and foreground tokens, so normal
+consumer views do not need placement selectors. A dragged view adopts its new
+surface styling without runtime workspace-parent inspection.
 
 Utility surfaces are also composable: `About`, `CommandPalette`, `Notices`,
 `PluginLayer`, `Tabs`, `Sidebar`, `Settings`, `SettingsDialog`, `HotkeySettings`, and

@@ -83,7 +83,7 @@ Compatibility aliases are removed only through an explicit reviewed slice.
 | Tabs and splits                   | tab, pane, tree, drag modules                              | component families         | Complete            | Pass | Pass      | Candidate pass; review pending               | Pending |
 | Sidebars and groups               | sidebar modules                                            | component families         | Complete            | Pass | Pass      | Candidate pass; review pending               | Pending |
 | Bottom panel and groups           | bottom dock extension                                      | component families         | Complete            | Pass | Pass      | Pending explicit baseline review             | Pending |
-| Stable surface selectors          | consumer placement styling                                 | app shell/sidebar/bottom   | Complete            | N/A  | Pass      | Explicitly deferred                          | Pending |
+| Stable surface selectors + paint  | consumer placement styling                                 | tokens/view host/surfaces  | Complete            | N/A  | Pass      | Explicitly deferred                          | Pending |
 | View chrome and menus             | view header, empty, menus                                  | component families         | Complete            | Pass | Pass      | Candidate pass; review pending               | Pending |
 | Windows and overlays              | window and drop modules                                    | component families         | Complete            | Pass | Pass      | Candidate pass; review pending               | Pending |
 | Mobile shell                      | mobile modules                                             | component families         | Complete            | Pass | Pass      | Candidate pass; review pending               | Pending |
@@ -868,6 +868,11 @@ workflow.
   `data-workspace-surface` values documented in Guidance. AppShell interaction
   coverage asserts all four values so consumer CSS can follow the destination
   host after a drag without inspecting or caching the workspace parent graph.
+- WorkspaceViewHost now owns registered-view paint through public view
+  background/foreground tokens. Direct sidebars resolve those tokens to panel
+  paint, sidebar groups reset them to the workspace surface, and body, bottom,
+  mobile, floating, and standalone hosts retain the workspace default. Consumer
+  panels need no placement props or surface-specific selectors.
 - Stable-surface validation passes no-Tailwind and Svelte diagnostics, all 79
   unit files (478 tests), all 184 Storybook files (521 tests), and the production
   Storybook build. The aggregate `pnpm checks` gate reaches formatting and stops

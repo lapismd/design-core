@@ -1,4 +1,7 @@
 .ui-workspace-sidebar {
+  --ui-workspace-view-background: var(--ui-workspace-panel);
+  --ui-workspace-view-foreground: var(--ui-workspace-panel-foreground);
+
   position: relative;
   z-index: 2;
   display: flex;

@@ -56,12 +56,19 @@ Controls painted on `--ui-workspace-panel` use
 host theme's `--sidebar-accent*` semantics so hover feedback stays distinct
 from sidebar, status-bar, ribbon, and floating-window header surfaces.
 
-Desktop layout hosts expose a stable `data-workspace-surface` contract for
-consumer CSS: `body`, `left-sidebar`, `right-sidebar`, and `bottom-panel`.
-Style registered view content from these ancestors instead of inspecting the
-controller or caching a view's initial parent. Because the attribute stays on
-the destination host, CSS updates automatically when drag-and-drop moves a view
-between surfaces.
+Every registered Svelte or imperative view is painted by `WorkspaceViewHost`
+through the public `--ui-workspace-view-background` and
+`--ui-workspace-view-foreground` tokens. Body, bottom-panel, grouped-panel,
+mobile, floating, and standalone views use the workspace surface by default;
+only an ungrouped left/right sidebar view resolves to panel paint. Consumers
+may override the view tokens for exceptional content, but normal views should
+not implement their own placement selectors.
+
+Desktop layout hosts also retain the stable `data-workspace-surface` contract:
+`body`, `left-sidebar`, `right-sidebar`, and `bottom-panel`. Use these
+identifiers for diagnostics and placement assertions instead of inspecting or
+caching the controller parent graph. Moving a view changes its inherited
+design-core surface styling without adding placement props to the view.
 
 ## Development status
 

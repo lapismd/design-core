@@ -7,6 +7,8 @@
 export const workspaceTokenNames = {
   background: "--ui-workspace-background",
   foreground: "--ui-workspace-foreground",
+  viewBackground: "--ui-workspace-view-background",
+  viewForeground: "--ui-workspace-view-foreground",
   panel: "--ui-workspace-panel",
   panelForeground: "--ui-workspace-panel-foreground",
   panelActionHoverBackground: "--ui-workspace-panel-action-hover-background",
@@ -105,6 +107,8 @@ export type WorkspaceToken = (typeof workspaceTokenNames)[WorkspaceTokenKey];
 export const workspaceTokenDefaults: Record<WorkspaceTokenKey, string> = {
   background: "var(--background)",
   foreground: "var(--foreground)",
+  viewBackground: "var(--ui-workspace-background)",
+  viewForeground: "var(--ui-workspace-foreground)",
   panel: "var(--sidebar, var(--background))",
   panelForeground: "var(--sidebar-foreground, var(--foreground))",
   panelActionHoverBackground: "var(--sidebar-accent, var(--accent))",

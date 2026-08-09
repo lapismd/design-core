@@ -100,13 +100,39 @@
 <Story
   name="Icon tabs and grouped panels"
   tags={["visual-approved"]}
-  play={async ({ canvas }) => {
+  play={async ({ canvas, canvasElement }) => {
+    const sidebar = canvasElement.querySelector<HTMLElement>(
+      '[data-workspace-surface="right-sidebar"]',
+    );
+    const directViewHost = canvasElement.querySelector<HTMLElement>(
+      '.ui-workspace-sidebar__drop-target > [data-ui-component="workspace-view-host"]',
+    );
+    await expect(sidebar).not.toBeNull();
+    await expect(directViewHost).not.toBeNull();
+    expect(getComputedStyle(directViewHost!).backgroundColor).toBe(
+      getComputedStyle(sidebar!).backgroundColor,
+    );
+
     const reference = canvas.getByRole("tab", { name: "Reference" });
     await userEvent.click(reference);
     await expect(reference).toHaveAttribute("aria-selected", "true");
     await expect(
       canvas.getByRole("button", { name: "Collapse Outline" }),
     ).toBeVisible();
+    const groupedViewHost = canvasElement.querySelector<HTMLElement>(
+      '[data-ui-component="workspace-sidebar-group"] [data-ui-component="workspace-view-host"]',
+    );
+    const groupedBody = groupedViewHost?.closest<HTMLElement>(
+      ".ui-workspace-sidebar-group__body",
+    );
+    await expect(groupedViewHost).not.toBeNull();
+    await expect(groupedBody).not.toBeNull();
+    expect(getComputedStyle(groupedViewHost!).backgroundColor).toBe(
+      getComputedStyle(groupedBody!).backgroundColor,
+    );
+    expect(getComputedStyle(groupedViewHost!).backgroundColor).not.toBe(
+      getComputedStyle(sidebar!).backgroundColor,
+    );
   }}
   parameters={{
     visualDelta: {

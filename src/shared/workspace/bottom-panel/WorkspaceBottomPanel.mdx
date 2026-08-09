@@ -14,6 +14,10 @@ The layout and controller own open state, height, tab order, grouping,
 collapsed panels, and expanded sizes. Consumers own terminal processes and
 other panel runtimes through registered workspace views.
 
+Registered view bodies, including grouped bodies, retain the normal Workspace
+view background and foreground. The dock tab strip, group rails, resize chrome,
+and empty state continue to use their dedicated panel styling.
+
 An initially selected grouped panel mounts its registered view immediately.
 Initial or repeated resizable-layout reports that match the stored panel sizes
 are ignored, so imperative view hosts are not remounted by no-op persistence.

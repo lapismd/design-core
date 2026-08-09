@@ -13,6 +13,10 @@ Each top-level icon or group is also a before/after insertion anchor. Dropping
 beside a group creates a normal sidebar tab, while dropping within its body
 continues to use the grouped-panel top/bottom behavior.
 
+An ungrouped registered view inherits the sidebar panel surface through the
+Workspace view tokens. A grouped view resets those tokens to the normal
+workspace surface while the group header retains sidebar chrome.
+
 <Canvas of={Stories.IconTabsAndGroupedPanels} />
 
 <Canvas of={Stories.GroupContextMenuEditing} />

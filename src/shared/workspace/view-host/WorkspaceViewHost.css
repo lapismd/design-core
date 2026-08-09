@@ -6,6 +6,9 @@
   min-width: 0;
   min-height: 0;
   overflow: hidden;
-  background: var(--ui-workspace-background);
-  color: var(--ui-workspace-foreground);
+  background: var(
+    --ui-workspace-view-background,
+    var(--ui-workspace-background)
+  );
+  color: var(--ui-workspace-view-foreground, var(--ui-workspace-foreground));
 }
