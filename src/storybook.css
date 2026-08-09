@@ -35,3 +35,12 @@ body.sb-main-fullscreen[data-ui-catalog-full-viewport] #storybook-root {
   box-sizing: border-box;
   padding: 1rem 2.5rem;
 }
+
+/*
+ * Workspace and Shell stories are application surfaces in Docs too. Keep the
+ * document scrollable, but let those embedded fullscreen stories meet the
+ * Canvas edge instead of inheriting the regular component-example inset.
+ */
+.docs-story .sb-story:is([id^="story--workspace-"], [id^="story--shell-"]) {
+  padding: 0;
+}

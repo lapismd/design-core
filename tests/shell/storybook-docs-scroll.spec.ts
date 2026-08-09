@@ -30,6 +30,31 @@ async function expectScrollableDocs(page: Page, id: string): Promise<void> {
     .toBeGreaterThan(0);
 }
 
+async function expectEdgeToEdgeStory(
+  page: Page,
+  selector: string,
+): Promise<void> {
+  const story = page.locator(selector);
+  const appShell = story.locator('[data-ui-component="app-shell"]').first();
+
+  await expect(story).toBeVisible();
+  await expect(appShell).toBeVisible();
+  await expect(story).toHaveCSS("padding", "0px");
+
+  const [storyBox, appShellBox] = await Promise.all([
+    story.boundingBox(),
+    appShell.boundingBox(),
+  ]);
+  expect(storyBox).not.toBeNull();
+  expect(appShellBox).not.toBeNull();
+  expect(Math.abs(appShellBox!.x - storyBox!.x)).toBeLessThan(1);
+  expect(
+    Math.abs(
+      appShellBox!.x + appShellBox!.width - (storyBox!.x + storyBox!.width),
+    ),
+  ).toBeLessThan(1);
+}
+
 test.describe("Storybook Docs scrolling", () => {
   test("keeps long Shell documentation scrollable", async ({ page }) => {
     await expectScrollableDocs(page, "shell-app-shell--docs");
@@ -40,5 +65,15 @@ test.describe("Storybook Docs scrolling", () => {
   }) => {
     await expectScrollableDocs(page, "workspace-plugins-f-mode--docs");
     await expect(page.locator(".ui-workspace-fmode-story")).not.toHaveCount(0);
+  });
+
+  test("renders Workspace application surfaces edge to edge", async ({
+    page,
+  }) => {
+    await page.goto(docsUrl("workspace-demo-reusable-framework--docs"));
+    await expectEdgeToEdgeStory(
+      page,
+      "#story--workspace-demo-reusable-framework--controller-and-persistence-interaction",
+    );
   });
 });
