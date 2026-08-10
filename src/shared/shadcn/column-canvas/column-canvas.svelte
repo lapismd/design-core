@@ -3,7 +3,9 @@
   import { onDestroy, onMount, tick, untrack } from "svelte";
   import type { Snippet } from "svelte";
   import type { HTMLAttributes } from "svelte/elements";
+  import ArrowLeft from "@lucide/svelte/icons/arrow-left";
   import type { WithElementRef } from "../../../lib/utils.js";
+  import { Button } from "../button/index.js";
   import type { ColumnCanvasController } from "./column-canvas-controller.svelte.js";
   import {
     setColumnCanvasContext,
@@ -16,6 +18,7 @@
 
   const DEFAULT_COMPACT_BREAKPOINT = 960;
   const COMPACT_WHEEL_SNAP_DURATION_MS = 650;
+  const STICKY_WHEEL_DELTA_SCALE = 0.5;
   type WheelDirection = -1 | 1;
   type ResolvedStickyColumn = {
     id: string;
@@ -58,6 +61,8 @@
   let stickyWidthProbe = $state<HTMLDivElement | null>(null);
   let rootWidth = $state<number | null>(null);
   let stickyLayerHeight = $state(0);
+  let stickyLayerInlineOffset = $state(0);
+  let stickyLayerBlockOffset = $state(0);
   let stickyRegistrations = $state.raw<ColumnCanvasStickyColumnRegistration[]>(
     [],
   );
@@ -135,7 +140,10 @@
     for (const column of columns) clearStickyLayout(column);
     activeStickyColumns = [];
     stuckStickyColumns = [];
-    stickyLayerHeight = rowElement.getBoundingClientRect().height;
+    const rootStyle = getComputedStyle(root);
+    stickyLayerHeight = root.clientHeight;
+    stickyLayerInlineOffset = finitePixels(rootStyle.paddingInlineStart);
+    stickyLayerBlockOffset = finitePixels(rootStyle.paddingBlockStart);
     if (resolvedDisplayMode === "compact") return;
 
     const registrations = new Map(
@@ -198,12 +206,10 @@
       return;
     }
 
-    const rootStyle = getComputedStyle(root);
-    const paddingStart = finitePixels(rootStyle.paddingInlineStart);
     const hasScrolled = Math.abs(root.scrollLeft) > 1;
     const stuckColumns: ResolvedStickyColumn[] = [];
     for (const column of activeStickyColumns) {
-      const activationEdge = paddingStart + column.offset + column.width;
+      const activationEdge = column.offset + column.width;
       const isStuck =
         hasScrolled &&
         inlineEndPosition(root, column.element) <= activationEdge + 1;
@@ -459,7 +465,9 @@
     event: WheelEvent & { currentTarget: EventTarget & HTMLDivElement },
   ): void {
     onwheel?.(event);
-    if (event.defaultPrevented || resolvedDisplayMode !== "compact") return;
+    const routesUnusedVerticalWheel =
+      resolvedDisplayMode === "compact" || activeStickyColumns.length > 0;
+    if (event.defaultPrevented || !routesUnusedVerticalWheel) return;
     if (
       Math.abs(event.deltaY) <= Math.abs(event.deltaX) ||
       event.deltaY === 0
@@ -483,6 +491,16 @@
         ? root.scrollLeft > 1
         : root.scrollLeft < maxScrollLeft - 1;
     if (!canMove) return;
+
+    if (resolvedDisplayMode !== "compact") {
+      event.preventDefault();
+      cancelWheelAnimation();
+      root.scrollLeft = Math.min(
+        maxScrollLeft,
+        Math.max(0, root.scrollLeft + event.deltaY * STICKY_WHEEL_DELTA_SCALE),
+      );
+      return;
+    }
 
     const direction: WheelDirection = event.deltaY < 0 ? -1 : 1;
     if (wheelAnimationFrame !== null && wheelAnimationDirection === direction) {
@@ -568,6 +586,8 @@
     data-ui-component="column-canvas"
     data-ui-part="sticky-layer"
     style:--ui-column-canvas-sticky-layer-height={`${stickyLayerHeight}px`}
+    style:--ui-column-canvas-sticky-layer-inline-offset={`${stickyLayerInlineOffset}px`}
+    style:--ui-column-canvas-sticky-layer-block-offset={`${stickyLayerBlockOffset}px`}
   >
     {#if stuckStickyColumns.length > 0}
       <div
@@ -577,36 +597,34 @@
         aria-label="Previous columns"
       >
         {#each stuckStickyColumns as column (column.id)}
-          <button
-            type="button"
+          <div
             data-ui-component="column-canvas"
             data-ui-part="sticky-rail"
             data-sticky-for={column.id}
             data-sticky-state="stuck"
-            aria-label={`Return to ${column.registration.title} column`}
-            title={`Return to ${column.registration.title}`}
             style:--ui-column-canvas-sticky-rail-width={`${column.width}px`}
-            onclick={() => returnToStickyColumn(column)}
           >
-            {#if column.registration.rail}
-              {@render column.registration.rail()}
-            {:else}
-              <span
-                data-ui-component="column-canvas"
-                data-ui-part="sticky-rail-label"
-              >
-                <span>{column.registration.title}</span>
-                {#if column.registration.count !== undefined}
-                  <span
-                    data-ui-component="column-canvas"
-                    data-ui-part="sticky-rail-count"
-                  >
-                    {column.registration.count}
-                  </span>
-                {/if}
-              </span>
-            {/if}
-          </button>
+            <Button
+              variant="outline"
+              size="icon-sm"
+              data-ui-part="sticky-return"
+              aria-label={`Return to ${column.registration.title} column`}
+              title={`Return to ${column.registration.title}`}
+              onclick={() => returnToStickyColumn(column)}
+            >
+              {#if column.registration.rail}
+                {@render column.registration.rail()}
+              {:else}
+                <ArrowLeft data-icon="inline-start" aria-hidden="true" />
+              {/if}
+            </Button>
+            <span
+              data-ui-component="column-canvas"
+              data-ui-part="sticky-rail-label"
+            >
+              {column.registration.title}
+            </span>
+          </div>
         {/each}
       </div>
     {/if}

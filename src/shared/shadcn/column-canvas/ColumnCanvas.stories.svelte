@@ -1,6 +1,7 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent, waitFor } from "storybook/test";
+  import ArrowLeft from "@lucide/svelte/icons/arrow-left";
   import * as ColumnCanvas from "./index.js";
   import { Button } from "../button/index.js";
   import { createColumnCanvasController } from "./column-canvas-controller.svelte.js";
@@ -978,9 +979,15 @@
     await expect(
       canvas.getByRole("button", { name: "Return to Workspace column" }),
     ).toBeVisible();
-    await expect(canvas.getByTestId("sticky-rail-primary")).toHaveTextContent(
-      "Workspace",
-    );
+    await expect(canvas.getByTestId("sticky-rail-primary")).toBeVisible();
+    await expect(
+      canvas.getByRole("button", { name: "Return to Workspace column" }),
+    ).toHaveAttribute("data-variant", "outline");
+    await expect(
+      root.querySelector(
+        '[data-sticky-for="primary"] [data-ui-part="sticky-rail-label"]',
+      ),
+    ).toHaveTextContent("Workspace");
     await expect(
       root.querySelector('[data-column-id="activity"]'),
     ).not.toHaveAttribute("data-sticky-state");
@@ -1005,19 +1012,11 @@
             sticky={column.sticky}
           >
             {#snippet stickyRail()}
-              <span
+              <ArrowLeft
                 data-testid={`sticky-rail-${column.id}`}
-                class="flex h-full flex-col items-center gap-2 py-1"
-              >
-                <span
-                  class="bg-muted flex size-8 items-center justify-center rounded-full text-xs font-semibold"
-                >
-                  {column.title.slice(0, 1)}
-                </span>
-                <span class="text-xs font-medium [writing-mode:vertical-rl]">
-                  {column.title}
-                </span>
-              </span>
+                data-icon="inline-start"
+                aria-hidden="true"
+              />
             {/snippet}
             <ColumnCanvas.Body data-testid={`sticky-body-${column.id}`}>
               {#each Array.from({ length: column.rows }) as _, index}
@@ -1119,19 +1118,11 @@
                 : column.sticky}
             >
               {#snippet stickyRail()}
-                <span
+                <ArrowLeft
                   data-testid={`sticky-fixed-rail-${column.id}`}
-                  class="flex h-full flex-col items-center gap-2 py-1"
-                >
-                  <span
-                    class="bg-muted flex size-8 items-center justify-center rounded-full text-xs font-semibold"
-                  >
-                    {column.title.slice(0, 1)}
-                  </span>
-                  <span class="text-xs font-medium [writing-mode:vertical-rl]">
-                    {column.title}
-                  </span>
-                </span>
+                  data-icon="inline-start"
+                  aria-hidden="true"
+                />
               {/snippet}
               <ColumnCanvas.Body>
                 {#each Array.from({ length: column.rows }) as _, index}

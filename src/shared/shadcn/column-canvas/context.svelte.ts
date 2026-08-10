@@ -10,9 +10,7 @@ export type ColumnCanvasStickyColumnRegistration = {
   readonly id: string;
   /** Accessible title used by the default rail and return action. */
   readonly title: string;
-  /** Optional count rendered by the default rail. */
-  readonly count: number | undefined;
-  /** Consumer-owned contents for the floating collapsed rail. */
+  /** Consumer-owned contents for the floating rail's return button. */
   readonly rail: Snippet | undefined;
 };
 

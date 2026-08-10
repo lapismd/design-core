@@ -519,6 +519,15 @@ test.describe("Column Canvas responsive scrolling", () => {
     expect(await root.evaluate((element) => element.scrollLeft)).toBeLessThan(
       230,
     );
+
+    const beforeUnusedVerticalWheel = await root.evaluate(
+      (element) => element.scrollLeft,
+    );
+    await page.mouse.wheel(0, 120);
+    await page.waitForTimeout(100);
+    expect(await root.evaluate((element) => element.scrollLeft)).toBe(
+      beforeUnusedVerticalWheel,
+    );
   });
 });
 
@@ -534,6 +543,7 @@ test.describe("Column Canvas sticky scrolling", () => {
     const secondary = root.locator('[data-column-id="secondary"]');
     const activity = root.locator('[data-column-id="activity"]');
     const rails = root.locator('[data-ui-part="sticky-rail"]');
+    const returns = root.locator('[data-ui-part="sticky-return"]');
     await expect(root).toHaveAttribute("data-display-mode", "fixed");
     await root.evaluate((element) => element.scrollTo({ left: 0 }));
     await expect(primary).toHaveAttribute("data-sticky", "true");
@@ -545,7 +555,7 @@ test.describe("Column Canvas sticky scrolling", () => {
     await expect(primary).toHaveCSS("position", "relative");
 
     await root.evaluate((element) => {
-      element.scrollLeft = 320;
+      element.scrollLeft = 370;
     });
     const before = await root.evaluate((element) => {
       const primaryColumn = element.querySelector<HTMLElement>(
@@ -605,9 +615,26 @@ test.describe("Column Canvas sticky scrolling", () => {
     await expect(primary).toHaveAttribute("data-sticky-state", "stuck");
     await expect(secondary).toHaveAttribute("data-sticky-state", "stuck");
     await expect(rails).toHaveCount(2);
+    await expect(returns).toHaveCount(2);
+    await expect(returns.first()).toHaveAttribute("data-variant", "outline");
+    await expect(returns.first()).toHaveAttribute("data-size", "icon-sm");
+    await expect(rails.nth(0)).toContainText("Workspace");
+    await expect(rails.nth(1)).toContainText("Inbox");
+    const returnStyle = await returns.first().evaluate((button) => {
+      const rect = button.getBoundingClientRect();
+      const style = getComputedStyle(button);
+      return {
+        width: rect.width,
+        height: rect.height,
+        radius: Number.parseFloat(style.borderTopLeftRadius),
+        borderStyle: style.borderTopStyle,
+      };
+    });
+    expect(returnStyle.width).toBeCloseTo(returnStyle.height, 1);
+    expect(returnStyle.radius).toBeGreaterThanOrEqual(returnStyle.width / 2);
+    expect(returnStyle.borderStyle).toBe("solid");
     const stack = await root.evaluate((element) => {
       const rootRect = element.getBoundingClientRect();
-      const rootStyle = getComputedStyle(element);
       const stackElement = element.querySelector<HTMLElement>(
         '[data-ui-part="sticky-stack"]',
       )!;
@@ -621,16 +648,23 @@ test.describe("Column Canvas sticky scrolling", () => {
         rail.getBoundingClientRect(),
       );
       return {
-        padding: Number.parseFloat(rootStyle.paddingInlineStart),
         stackStart: stackRect.left - rootRect.left,
+        stackTop: stackRect.top - rootRect.top,
+        stackBottom: rootRect.bottom - stackRect.bottom,
         stackWidth: stackRect.width,
+        stackHeight: stackRect.height,
+        rootHeight: rootRect.height,
         railWidths: railRects.map((rect) => rect.width),
         railGap: railRects[1].left - railRects[0].right,
         stackBackground: getComputedStyle(stackElement).backgroundColor,
       };
     });
-    expect(Math.abs(stack.stackStart - stack.padding)).toBeLessThan(2);
-    expect(stack.railWidths).toEqual([76, 76]);
+    expect(Math.abs(stack.stackStart)).toBeLessThan(2);
+    expect(Math.abs(stack.stackTop)).toBeLessThan(2);
+    expect(Math.abs(stack.stackBottom)).toBeLessThan(2);
+    expect(Math.abs(stack.stackHeight - stack.rootHeight)).toBeLessThan(2);
+    expect(stack.railWidths).toHaveLength(2);
+    for (const width of stack.railWidths) expect(width).toBeCloseTo(44, 1);
     expect(Math.abs(stack.railGap)).toBeLessThan(1);
     expect(
       Math.abs(
@@ -640,6 +674,15 @@ test.describe("Column Canvas sticky scrolling", () => {
       ),
     ).toBeLessThan(1);
     expect(stack.stackBackground).not.toBe("rgba(0, 0, 0, 0)");
+
+    const beforeUnusedVerticalWheel = await root.evaluate(
+      (element) => element.scrollLeft,
+    );
+    await activity.hover();
+    await page.mouse.wheel(0, -120);
+    await expect
+      .poll(() => root.evaluate((element) => element.scrollLeft))
+      .toBeLessThan(beforeUnusedVerticalWheel);
 
     const scrollbar = primary.locator('[data-ui-part="scroll-area-scrollbar"]');
     await expect(scrollbar).not.toHaveCSS("display", "none");
@@ -672,9 +715,16 @@ test.describe("Column Canvas sticky scrolling", () => {
       root.getByRole("button", { name: "Return to Inbox column" }),
     ).toHaveCount(0);
     await useReducedMotion(page);
-    await root
-      .getByRole("button", { name: "Return to Workspace column" })
-      .click();
+    const workspaceReturn = root.getByRole("button", {
+      name: "Return to Workspace column",
+    });
+    const workspaceReturnBox = await workspaceReturn.boundingBox();
+    expect(workspaceReturnBox).not.toBeNull();
+    if (!workspaceReturnBox) return;
+    await page.mouse.click(
+      workspaceReturnBox.x + workspaceReturnBox.width / 2,
+      workspaceReturnBox.y + workspaceReturnBox.height / 2,
+    );
     await expect
       .poll(() => root.evaluate((element) => element.scrollLeft))
       .toBeLessThan(2);
@@ -738,7 +788,7 @@ test.describe("Column Canvas sticky scrolling", () => {
       };
     });
     expect(collapsedStack.firstWidth).toBe(44);
-    expect(collapsedStack.secondWidth).toBe(76);
+    expect(collapsedStack.secondWidth).toBeCloseTo(44, 1);
     expect(Math.abs(collapsedStack.gap)).toBeLessThan(1);
 
     await root

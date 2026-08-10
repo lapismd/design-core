@@ -59,17 +59,23 @@ an opaque replacement rail while every source and following column continues
 moving with native horizontal scrolling.
 
 Supply a named `stickyRail` snippet to customize the contents of that floating
-replacement. `Root` owns the accessible button and return behavior: clicking a
-rail scrolls back to its source column without changing controller selection.
-Without a snippet, the rail uses the column title and count.
+replacement's return button. `Root` composes a circular outlined shadcn `Button`
+with the visible column label beneath it and owns the return behavior: clicking
+it scrolls back to its source column without changing controller selection.
+Without a snippet, the button uses the standard back arrow.
 
 Sticky presentation applies in `wide` and `fixed` modes. Compact mode ignores
 it and keeps the existing stage-width previous-column peek. Expanded sticky
-columns use `--ui-column-canvas-sticky-peek-width` (`4.75rem` by default) for
-their floating rail; collapsed sources use their complete collapsed width.
-Consecutive rails share one gapless stack so moving content cannot show between
-them. A sticky request after the first non-sticky rendered column remains
-ordinary flow.
+columns use `--ui-column-canvas-sticky-peek-width` (the collapsed-column
+`2.75rem` width by default) for their floating rail; collapsed sources use their
+complete collapsed width.
+Consecutive rails share one gapless stack, flush with the root inline and block
+edges, so root padding and moving content cannot show around or between them. A
+sticky request after the first non-sticky rendered column remains ordinary
+flow. In wide and fixed sticky canvases, otherwise-unused vertical wheel input
+over a non-scrollable body moves the horizontal track continuously; scrollable
+bodies still consume the motion first, and canvas-edge motion remains available
+to the surrounding page.
 
 ## Examples
 
@@ -169,5 +175,6 @@ their previous geometry.
 
 Override `--ui-column-canvas-*` tokens on an ancestor, including
 `--ui-column-canvas-compact-peek-width` (default `2.75rem`) and
-`--ui-column-canvas-sticky-peek-width` (default `4.75rem`). Production sources
-use native CSS and compose the shared Button for Toggle and Close.
+`--ui-column-canvas-sticky-peek-width` (defaulting to
+`--ui-column-canvas-collapsed-width`, `2.75rem`). Production sources use native
+CSS and compose the shared Button for Toggle, Close, and sticky return controls.

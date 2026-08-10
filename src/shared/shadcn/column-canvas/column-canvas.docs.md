@@ -135,20 +135,26 @@ source moves underneath its rail-width slot, `Root` overlays an opaque collapsed
 rail while the source and later columns keep moving with native horizontal
 motion.
 
-Use the named `stickyRail` snippet for consumer-owned rail contents. `Root`
-provides the accessible button and return action, so clicking the rail scrolls
-back to the source column without selecting, expanding, or otherwise mutating
-controller state. The default rail renders the column title and count.
+Use the named `stickyRail` snippet for consumer-owned return-button contents.
+`Root` composes a circular outlined shadcn `Button`, keeps the visible column
+label beneath it, and provides the return action, so clicking it scrolls back to
+the source column without selecting, expanding, or otherwise mutating
+controller state. The default button uses the standard back arrow.
 
 Sticky behavior resolves only in `wide` and `fixed` modes. Expanded columns
-use `--ui-column-canvas-sticky-peek-width` (`4.75rem` by default) for the
-floating rail, while a collapsed source uses its complete collapsed width.
-Active rails form one gapless, opaque stack at the root inline start. A sticky
-request after a rendered non-sticky column does not activate.
+use `--ui-column-canvas-sticky-peek-width` (the collapsed-column `2.75rem`
+width by default) for the floating rail, while a collapsed source uses its
+complete collapsed width.
+Active rails form one gapless, opaque stack flush with the root's inline and
+block edges, ignoring its content padding. A sticky request after a rendered
+non-sticky column does not activate.
 `data-sticky="true"` reflects the request, source columns expose
 `data-sticky-state="flowing|stuck"`, and replacements expose
 `data-sticky-for` for diagnostics and styling. Source body scrollbars and
-independent vertical scrolling remain unchanged.
+independent vertical scrolling remain unchanged. Otherwise-unused vertical
+wheel input over a non-scrollable body moves a wide/fixed sticky canvas
+horizontally with continuous scaled motion; scrollable bodies retain priority,
+and input at a canvas edge is left to the surrounding page.
 
 Sticky is transient presentation state. It is not controller configuration or
 part of the V1 persistence schema. Compact mode ignores it and retains the
@@ -215,5 +221,6 @@ unchanged.
 
 Override the public `--ui-column-canvas-*` tokens on an ancestor, including
 `--ui-column-canvas-compact-peek-width` (default `2.75rem`) and
-`--ui-column-canvas-sticky-peek-width` (default `4.75rem`). Production sources
-use native CSS and compose the shared Button for Toggle and Close.
+`--ui-column-canvas-sticky-peek-width` (defaulting to
+`--ui-column-canvas-collapsed-width`, `2.75rem`). Production sources use native
+CSS and compose the shared Button for Toggle, Close, and sticky return controls.

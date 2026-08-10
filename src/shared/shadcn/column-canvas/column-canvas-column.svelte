@@ -67,7 +67,7 @@
      * columns form a stack. Compact presentation ignores this prop.
      */
     sticky?: boolean;
-    /** Custom contents for the floating collapsed rail. */
+    /** Custom contents for the floating rail's return button. */
     stickyRail?: Snippet;
     /** Test/override width. Prefer controller-owned widths. */
     width?: number;
@@ -131,9 +131,6 @@
       },
       get title() {
         return resolvedTitle;
-      },
-      get count() {
-        return count;
       },
       get rail() {
         return stickyRail;
