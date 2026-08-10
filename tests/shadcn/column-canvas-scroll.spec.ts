@@ -116,6 +116,29 @@ async function sampleHorizontalMotion(
   }, frameCount);
 }
 
+async function columnSnapPoint(
+  root: Locator,
+  columnId: string,
+): Promise<number> {
+  return root.evaluate((element, id) => {
+    const target = element.querySelector<HTMLElement>(
+      `[data-column-id="${id}"]`,
+    );
+    if (!target) throw new Error(`Missing Column Canvas column: ${id}`);
+    const padding = Number.parseFloat(
+      getComputedStyle(element).paddingInlineEnd,
+    );
+    const contentEnd =
+      element.getBoundingClientRect().right -
+      (Number.isFinite(padding) ? padding : 0);
+    const delta = target.getBoundingClientRect().right - contentEnd;
+    return Math.min(
+      Math.max(0, element.scrollWidth - element.clientWidth),
+      Math.max(0, element.scrollLeft + delta),
+    );
+  }, columnId);
+}
+
 test.describe("Column Canvas responsive scrolling", () => {
   test("700px and 390px compact layouts follow the active column, preserve the peek, and have no blank tail", async ({
     page,
@@ -366,6 +389,7 @@ test.describe("Column Canvas responsive scrolling", () => {
     await page.keyboard.press("End");
     await expectActiveColumnAligned(page);
     const rightEdge = await root.evaluate((element) => element.scrollLeft);
+    const previousSnapPoint = await columnSnapPoint(root, "components");
     await root.locator('[data-column-id="detail"]').hover();
     await page.mouse.wheel(0, -420);
     const backwardSamples = await sampleHorizontalMotion(root);
@@ -373,9 +397,20 @@ test.describe("Column Canvas responsive scrolling", () => {
       new Set(backwardSamples.map((sample) => Math.round(sample))).size,
     ).toBeGreaterThan(2);
     expect(Math.min(...backwardSamples)).toBeLessThan(rightEdge);
+    expect(
+      (rightEdge - Math.min(...backwardSamples)) /
+        (rightEdge - previousSnapPoint),
+    ).toBeLessThan(0.35);
+    await page.waitForTimeout(250);
+    await page.mouse.wheel(0, -420);
     await expect
-      .poll(() => root.evaluate((element) => element.scrollLeft))
-      .toBeLessThan(rightEdge);
+      .poll(async () =>
+        root.evaluate(
+          (element, target) => Math.abs(element.scrollLeft - target),
+          previousSnapPoint,
+        ),
+      )
+      .toBeLessThan(2);
 
     await root.focus();
     await page.keyboard.press("Home");

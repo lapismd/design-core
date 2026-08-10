@@ -12,7 +12,8 @@
   } from "./column-canvas-types.js";
 
   const DEFAULT_COMPACT_BREAKPOINT = 960;
-  const COMPACT_WHEEL_SCROLL_FACTOR = 0.75;
+  const COMPACT_WHEEL_SNAP_DURATION_MS = 650;
+  type WheelDirection = -1 | 1;
 
   let {
     ref = $bindable(null),
@@ -45,6 +46,9 @@
   let rowElement = $state<HTMLDivElement | null>(null);
   let rootWidth = $state<number | null>(null);
   let alignmentFrame: number | null = null;
+  let wheelAnimationFrame: number | null = null;
+  let wheelAnimationRoot: HTMLElement | null = null;
+  let wheelAnimationDirection: WheelDirection | null = null;
 
   const resolvedCompactBreakpoint = $derived(
     Number.isFinite(compactBreakpoint) && compactBreakpoint >= 0
@@ -93,9 +97,84 @@
     );
   }
 
+  function cancelWheelAnimation(): void {
+    if (wheelAnimationFrame !== null) {
+      cancelAnimationFrame(wheelAnimationFrame);
+    }
+    wheelAnimationRoot?.removeAttribute("data-wheel-animating");
+    wheelAnimationFrame = null;
+    wheelAnimationRoot = null;
+    wheelAnimationDirection = null;
+  }
+
+  function compactSnapPoints(root: HTMLElement): number[] {
+    return visibleColumns().map((column) => targetScrollLeft(root, column));
+  }
+
+  function adjacentSnapPoint(
+    root: HTMLElement,
+    direction: WheelDirection,
+  ): number | undefined {
+    const points = compactSnapPoints(root);
+    if (direction > 0) {
+      return points.find((point) => point > root.scrollLeft + 2);
+    }
+    for (let index = points.length - 1; index >= 0; index -= 1) {
+      if (points[index] < root.scrollLeft - 2) return points[index];
+    }
+    return undefined;
+  }
+
+  function easeInOutCubic(progress: number): number {
+    return progress < 0.5
+      ? 4 * progress * progress * progress
+      : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+  }
+
+  function animateWheelToSnapPoint(
+    root: HTMLElement,
+    target: number,
+    direction: WheelDirection,
+  ): void {
+    cancelWheelAnimation();
+    if (prefersReducedMotion()) {
+      root.scrollTo({ left: target, behavior: "auto" });
+      return;
+    }
+
+    const start = root.scrollLeft;
+    const distance = target - start;
+    const startedAt = performance.now();
+    wheelAnimationRoot = root;
+    wheelAnimationDirection = direction;
+    root.setAttribute("data-wheel-animating", "true");
+
+    const step = (time: number): void => {
+      const progress = Math.min(
+        1,
+        (time - startedAt) / COMPACT_WHEEL_SNAP_DURATION_MS,
+      );
+      root.scrollLeft = start + distance * easeInOutCubic(progress);
+      if (progress < 1) {
+        wheelAnimationFrame = requestAnimationFrame(step);
+        return;
+      }
+
+      root.scrollLeft = target;
+      root.removeAttribute("data-wheel-animating");
+      wheelAnimationFrame = null;
+      wheelAnimationRoot = null;
+      wheelAnimationDirection = null;
+    };
+
+    wheelAnimationFrame = requestAnimationFrame(step);
+  }
+
   function alignActiveColumn(): void {
     const root = ref;
-    if (!root || resolvedDisplayMode === "fixed") return;
+    if (!root) return;
+    cancelWheelAnimation();
+    if (resolvedDisplayMode === "fixed") return;
     const columns = visibleColumns();
     const target = columns.at(-1);
     if (!target) return;
@@ -161,6 +240,7 @@
 
   onDestroy(() => {
     if (alignmentFrame !== null) cancelAnimationFrame(alignmentFrame);
+    cancelWheelAnimation();
   });
 
   function canScrollVertically(element: HTMLElement, delta: number): boolean {
@@ -216,19 +296,22 @@
         : root.scrollLeft < maxScrollLeft - 1;
     if (!canMove) return;
 
+    const direction: WheelDirection = event.deltaY < 0 ? -1 : 1;
+    if (wheelAnimationFrame !== null && wheelAnimationDirection === direction) {
+      event.preventDefault();
+      return;
+    }
+
+    const target = adjacentSnapPoint(root, direction);
+    if (target === undefined) return;
     event.preventDefault();
-    root.scrollBy({
-      left: event.deltaY * COMPACT_WHEEL_SCROLL_FACTOR,
-      behavior: prefersReducedMotion() ? "auto" : "smooth",
-    });
+    animateWheelToSnapPoint(root, target, direction);
   }
 
   function navigateSnapPoint(key: string): boolean {
     const root = ref;
     if (!root) return false;
-    const points = visibleColumns().map((column) =>
-      targetScrollLeft(root, column),
-    );
+    const points = compactSnapPoints(root);
     if (points.length === 0) return false;
 
     let target: number | undefined;
@@ -247,6 +330,7 @@
     }
     if (target === undefined) return false;
 
+    cancelWheelAnimation();
     root.scrollTo({
       left: target,
       behavior: prefersReducedMotion() ? "auto" : "smooth",

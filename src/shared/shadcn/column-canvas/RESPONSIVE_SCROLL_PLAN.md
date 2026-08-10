@@ -20,8 +20,11 @@
   path, visibility, collapse/open, restoration, or resolved-mode transition.
 - Scrollable column bodies retain vertical wheel ownership while they can move.
   At a boundary—or over a non-scrollable column—vertical input maps to slower,
-  smooth horizontal canvas motion; reduced-motion preferences keep it instant.
-  Input at a horizontal edge remains available to the surrounding page.
+  smooth adjacent-column motion with a deliberate ease-in/ease-out trajectory;
+  reduced-motion preferences keep it instant. Repeated events while that
+  transition is active retain the current adjacent target rather than skipping
+  a column. Input at a horizontal edge remains available to the surrounding
+  page.
 - Root-level Arrow Left/Right and Home/End move among compact snap points without
   changing controller selection or focus.
 - V1 persistence remains widths, collapse, and close state only. Resolved mode,
@@ -66,8 +69,12 @@ src/shared/shadcn/column-canvas/ColumnCanvas.stories.svelte`: 8 passed.
 - The compact wheel scenario places a non-scrollable column inside a scrollable
   ancestor. It asserts that available motion smoothly changes the canvas
   `scrollLeft` without changing the ancestor `scrollTop`, and that a scrollable
-  body hands off at both boundaries. It separately verifies page handoff once
-  the canvas reaches its horizontal edge.
+  body hands off at both boundaries. The backward boundary regression samples
+  the first 12 animation frames, requires less than 35% of the stage distance
+  to be covered in that opening interval, repeats the same wheel direction to
+  guard against skipped columns, and verifies the exact adjacent snap point.
+  It separately verifies page handoff once the canvas reaches its horizontal
+  edge.
 - `pnpm check`: 0 errors and 0 warnings.
 - `pnpm check:docs-mcp`: both TypeScript configurations passed.
 - `pnpm check:no-tailwind`: passed.

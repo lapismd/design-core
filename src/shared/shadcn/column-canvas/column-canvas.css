@@ -32,6 +32,11 @@
   touch-action: pan-x pan-y;
 }
 
+[data-ui-component="column-canvas"][data-ui-part="root"][data-display-mode="compact"][data-wheel-animating="true"] {
+  /* The wheel handoff lands exactly on a snap point with its own gentler ease. */
+  scroll-snap-type: none;
+}
+
 [data-ui-component="column-canvas"][data-ui-part="root"][data-display-mode="compact"]::-webkit-scrollbar {
   display: none;
 }
