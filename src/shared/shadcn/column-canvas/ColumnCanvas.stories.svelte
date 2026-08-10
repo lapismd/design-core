@@ -976,6 +976,12 @@
       ).toHaveAttribute("data-sticky-state", "stuck");
     });
     await expect(
+      canvas.getByRole("button", { name: "Return to Workspace column" }),
+    ).toBeVisible();
+    await expect(canvas.getByTestId("sticky-rail-primary")).toHaveTextContent(
+      "Workspace",
+    );
+    await expect(
       root.querySelector('[data-column-id="activity"]'),
     ).not.toHaveAttribute("data-sticky-state");
   }}
@@ -998,6 +1004,21 @@
             title={column.title}
             sticky={column.sticky}
           >
+            {#snippet stickyRail()}
+              <span
+                data-testid={`sticky-rail-${column.id}`}
+                class="flex h-full flex-col items-center gap-2 py-1"
+              >
+                <span
+                  class="bg-muted flex size-8 items-center justify-center rounded-full text-xs font-semibold"
+                >
+                  {column.title.slice(0, 1)}
+                </span>
+                <span class="text-xs font-medium [writing-mode:vertical-rl]">
+                  {column.title}
+                </span>
+              </span>
+            {/snippet}
             <ColumnCanvas.Body data-testid={`sticky-body-${column.id}`}>
               {#each Array.from({ length: column.rows }) as _, index}
                 <ColumnCanvas.Item>
@@ -1040,6 +1061,9 @@
         root.querySelector('[data-column-id="secondary"]'),
       ).toHaveAttribute("data-sticky-state", "stuck");
     });
+    await expect(
+      canvas.getByRole("button", { name: "Return to Inbox column" }),
+    ).toBeVisible();
   }}
   parameters={{
     docs: {
@@ -1094,6 +1118,21 @@
                 ? stickyFixedSecondary
                 : column.sticky}
             >
+              {#snippet stickyRail()}
+                <span
+                  data-testid={`sticky-fixed-rail-${column.id}`}
+                  class="flex h-full flex-col items-center gap-2 py-1"
+                >
+                  <span
+                    class="bg-muted flex size-8 items-center justify-center rounded-full text-xs font-semibold"
+                  >
+                    {column.title.slice(0, 1)}
+                  </span>
+                  <span class="text-xs font-medium [writing-mode:vertical-rl]">
+                    {column.title}
+                  </span>
+                </span>
+              {/snippet}
               <ColumnCanvas.Body>
                 {#each Array.from({ length: column.rows }) as _, index}
                   <ColumnCanvas.Item>

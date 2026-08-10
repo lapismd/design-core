@@ -1,8 +1,20 @@
 import { getContext, setContext } from "svelte";
+import type { Snippet } from "svelte";
 import type { ColumnCanvasController } from "./column-canvas-controller.svelte.js";
 import type { ColumnCanvasResolvedDisplayMode } from "./column-canvas-types.js";
 
 const COLUMN_CANVAS_CONTEXT = Symbol("ui-column-canvas");
+
+export type ColumnCanvasStickyColumnRegistration = {
+  /** Stable id shared with the source column. */
+  readonly id: string;
+  /** Accessible title used by the default rail and return action. */
+  readonly title: string;
+  /** Optional count rendered by the default rail. */
+  readonly count: number | undefined;
+  /** Consumer-owned contents for the floating collapsed rail. */
+  readonly rail: Snippet | undefined;
+};
 
 export type ColumnCanvasContext = {
   /** App-owned controller. Do not destructure reactive fields. */
@@ -11,8 +23,12 @@ export type ColumnCanvasContext = {
   readonly displayMode: ColumnCanvasResolvedDisplayMode;
   /** Schedule active-column alignment after a structural column change. */
   requestAlignment: () => void;
-  /** Recompute transient sticky-column geometry without moving the canvas. */
+  /** Recompute transient floating-rail geometry without moving the canvas. */
   requestStickyLayout: () => void;
+  /** Register a column's transient floating-rail presentation. */
+  registerStickyColumn: (
+    registration: ColumnCanvasStickyColumnRegistration,
+  ) => () => void;
 };
 
 export function setColumnCanvasContext(

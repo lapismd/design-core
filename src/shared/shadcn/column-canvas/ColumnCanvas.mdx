@@ -52,17 +52,24 @@ to contain durable width, collapse, and close state only.
 
 ## Sticky columns
 
-Set `sticky` on consecutive leading `Column` parts to retain their trailing
-edges as the canvas moves horizontally. Sticky columns remain full-width in
-normal flow, then pin as compact context rails after crossing the canvas start
-edge. Later columns continue moving underneath the sticky stack without a
-programmatic jump or snap.
+Set `sticky` on consecutive leading `Column` parts to register separate
+floating collapsed rails. The source columns always remain full-width in
+normal flow. Once a source moves underneath its rail-width slot, the root shows
+an opaque replacement rail while every source and following column continues
+moving with native horizontal scrolling.
+
+Supply a named `stickyRail` snippet to customize the contents of that floating
+replacement. `Root` owns the accessible button and return behavior: clicking a
+rail scrolls back to its source column without changing controller selection.
+Without a snippet, the rail uses the column title and count.
 
 Sticky presentation applies in `wide` and `fixed` modes. Compact mode ignores
 it and keeps the existing stage-width previous-column peek. Expanded sticky
-columns expose `--ui-column-canvas-sticky-peek-width` (`4.75rem` by default);
-collapsed sticky columns retain their complete collapsed rail. A sticky request
-after the first non-sticky rendered column remains ordinary flow.
+columns use `--ui-column-canvas-sticky-peek-width` (`4.75rem` by default) for
+their floating rail; collapsed sources use their complete collapsed width.
+Consecutive rails share one gapless stack so moving content cannot show between
+them. A sticky request after the first non-sticky rendered column remains
+ordinary flow.
 
 ## Examples
 
@@ -128,8 +135,9 @@ column, and leaves the configured previous-column context visible.
 
 ### Sticky floating columns
 
-Leading main panels remain available as trailing-edge context while later
-detail panels float through the horizontal canvas.
+Leading main panels gain custom floating collapsed replacements after their
+full source panels pass underneath the start stack. Clicking one returns to its
+source panel.
 
 <Canvas
   of={ColumnCanvasStories.StickyFloatingColumns}
@@ -149,8 +157,9 @@ their previous geometry.
 ## Parts
 
 - `Root` — installs the controller, responsive horizontal scroller, and
-  wide/fixed trailing spacer
-- `Column` — controller-driven width/collapse; optional convenience `title`/`count`
+  wide/fixed trailing spacer and floating sticky-rail stack
+- `Column` — controller-driven width/collapse; optional convenience
+  `title`/`count`, `sticky`, and custom `stickyRail` snippet
 - `Header` / `Title` / `Count` / `HeaderActions` / `Toggle` / `Close`
 - `Body` / `Item`
 - `createColumnCanvasController` — typed path + layout controller

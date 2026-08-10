@@ -5,7 +5,10 @@
   import type { HTMLAttributes } from "svelte/elements";
   import type { WithElementRef } from "../../../lib/utils.js";
   import type { ColumnCanvasController } from "./column-canvas-controller.svelte.js";
-  import { setColumnCanvasContext } from "./context.svelte.js";
+  import {
+    setColumnCanvasContext,
+    type ColumnCanvasStickyColumnRegistration,
+  } from "./context.svelte.js";
   import type {
     ColumnCanvasDisplayMode,
     ColumnCanvasResolvedDisplayMode,
@@ -14,6 +17,13 @@
   const DEFAULT_COMPACT_BREAKPOINT = 960;
   const COMPACT_WHEEL_SNAP_DURATION_MS = 650;
   type WheelDirection = -1 | 1;
+  type ResolvedStickyColumn = {
+    id: string;
+    registration: ColumnCanvasStickyColumnRegistration;
+    element: HTMLElement;
+    width: number;
+    offset: number;
+  };
 
   let {
     ref = $bindable(null),
@@ -45,8 +55,14 @@
 
   const rootController = untrack(() => controller);
   let rowElement = $state<HTMLDivElement | null>(null);
-  let stickyPeekProbe = $state<HTMLDivElement | null>(null);
+  let stickyWidthProbe = $state<HTMLDivElement | null>(null);
   let rootWidth = $state<number | null>(null);
+  let stickyLayerHeight = $state(0);
+  let stickyRegistrations = $state.raw<ColumnCanvasStickyColumnRegistration[]>(
+    [],
+  );
+  let activeStickyColumns = $state.raw<ResolvedStickyColumn[]>([]);
+  let stuckStickyColumns = $state.raw<ResolvedStickyColumn[]>([]);
   let alignmentFrame: number | null = null;
   let stickyLayoutFrame: number | null = null;
   let stickyStateFrame: number | null = null;
@@ -101,10 +117,6 @@
 
   function clearStickyLayout(column: HTMLElement): void {
     column.removeAttribute("data-sticky-state");
-    column.style.removeProperty("--ui-column-canvas-sticky-stack-offset");
-    column.style.removeProperty(
-      "--ui-column-canvas-sticky-effective-peek-width",
-    );
   }
 
   function scheduleStickyStateUpdate(): void {
@@ -121,11 +133,20 @@
 
     const columns = visibleColumns();
     for (const column of columns) clearStickyLayout(column);
+    activeStickyColumns = [];
+    stuckStickyColumns = [];
+    stickyLayerHeight = rowElement.getBoundingClientRect().height;
     if (resolvedDisplayMode === "compact") return;
 
-    const rowStyle = getComputedStyle(rowElement);
-    const gap = finitePixels(rowStyle.columnGap);
-    const configuredPeek = stickyPeekProbe?.getBoundingClientRect().width ?? 0;
+    const registrations = new Map(
+      stickyRegistrations.map((registration) => [
+        registration.id,
+        registration,
+      ]),
+    );
+    const configuredWidth =
+      stickyWidthProbe?.getBoundingClientRect().width ?? 0;
+    const active: ResolvedStickyColumn[] = [];
     let stackOffset = 0;
     let withinLeadingStack = true;
 
@@ -136,22 +157,29 @@
         continue;
       }
 
+      const id = column.dataset.columnId;
+      const registration = id ? registrations.get(id) : undefined;
+      if (!id || !registration) {
+        withinLeadingStack = false;
+        continue;
+      }
+
       const width = column.getBoundingClientRect().width;
       const collapsed = column.dataset.uiPart === "collapsed-column";
-      const effectivePeek = collapsed ? width : Math.min(configuredPeek, width);
+      const railWidth = collapsed ? width : Math.min(configuredWidth, width);
 
       column.dataset.stickyState = "flowing";
-      column.style.setProperty(
-        "--ui-column-canvas-sticky-stack-offset",
-        `${stackOffset}px`,
-      );
-      column.style.setProperty(
-        "--ui-column-canvas-sticky-effective-peek-width",
-        `${effectivePeek}px`,
-      );
-      stackOffset += effectivePeek + gap;
+      active.push({
+        id,
+        registration,
+        element: column,
+        width: railWidth,
+        offset: stackOffset,
+      });
+      stackOffset += railWidth;
     }
 
+    activeStickyColumns = active;
     scheduleStickyStateUpdate();
   }
 
@@ -165,31 +193,32 @@
 
   function updateStickyStates(): void {
     const root = ref;
-    if (!root || resolvedDisplayMode === "compact") return;
+    if (!root || resolvedDisplayMode === "compact") {
+      stuckStickyColumns = [];
+      return;
+    }
 
     const rootStyle = getComputedStyle(root);
     const paddingStart = finitePixels(rootStyle.paddingInlineStart);
     const hasScrolled = Math.abs(root.scrollLeft) > 1;
-    for (const column of visibleColumns()) {
-      if (!column.hasAttribute("data-sticky-state")) continue;
-      const stackOffset = finitePixels(
-        column.style.getPropertyValue("--ui-column-canvas-sticky-stack-offset"),
-      );
-      const effectivePeek = finitePixels(
-        column.style.getPropertyValue(
-          "--ui-column-canvas-sticky-effective-peek-width",
-        ),
-      );
-      const collapsed = column.dataset.uiPart === "collapsed-column";
-      const pinnedStart =
-        paddingStart +
-        stackOffset +
-        (collapsed ? 0 : effectivePeek - column.getBoundingClientRect().width);
-      const stuck =
+    const stuckColumns: ResolvedStickyColumn[] = [];
+    for (const column of activeStickyColumns) {
+      const activationEdge = paddingStart + column.offset + column.width;
+      const isStuck =
         hasScrolled &&
-        Math.abs(inlineStartPosition(root, column) - pinnedStart) < 2;
-      column.dataset.stickyState = stuck ? "stuck" : "flowing";
+        inlineEndPosition(root, column.element) <= activationEdge + 1;
+      column.element.dataset.stickyState = isStuck ? "stuck" : "flowing";
+      if (isStuck) stuckColumns.push(column);
     }
+    stuckStickyColumns = stuckColumns;
+  }
+
+  function inlineEndPosition(root: HTMLElement, column: HTMLElement): number {
+    const rootRect = root.getBoundingClientRect();
+    const columnRect = column.getBoundingClientRect();
+    return getComputedStyle(root).direction === "rtl"
+      ? rootRect.right - columnRect.left
+      : columnRect.right - rootRect.left;
   }
 
   function requestStickyLayout(): void {
@@ -199,6 +228,40 @@
         stickyLayoutFrame = null;
         syncStickyLayout();
       });
+    });
+  }
+
+  function registerStickyColumn(
+    registration: ColumnCanvasStickyColumnRegistration,
+  ): () => void {
+    stickyRegistrations = [
+      ...stickyRegistrations.filter((entry) => entry.id !== registration.id),
+      registration,
+    ];
+    requestStickyLayout();
+    return () => {
+      stickyRegistrations = stickyRegistrations.filter(
+        (entry) => entry !== registration,
+      );
+      requestStickyLayout();
+    };
+  }
+
+  function returnToStickyColumn(column: ResolvedStickyColumn): void {
+    const root = ref;
+    if (!root) return;
+    const rootStyle = getComputedStyle(root);
+    const paddingStart = finitePixels(rootStyle.paddingInlineStart);
+    const currentStart = inlineStartPosition(root, column.element);
+    const desiredStart = paddingStart + column.offset;
+    const delta = currentStart - desiredStart;
+    const nextScrollLeft =
+      rootStyle.direction === "rtl"
+        ? root.scrollLeft - delta
+        : root.scrollLeft + delta;
+    root.scrollTo({
+      left: nextScrollLeft,
+      behavior: prefersReducedMotion() ? "auto" : "smooth",
     });
   }
 
@@ -314,6 +377,7 @@
     },
     requestAlignment,
     requestStickyLayout,
+    registerStickyColumn,
   });
 
   $effect(() => {
@@ -501,15 +565,62 @@
   onwheel={handleWheel}
 >
   <div
+    data-ui-component="column-canvas"
+    data-ui-part="sticky-layer"
+    style:--ui-column-canvas-sticky-layer-height={`${stickyLayerHeight}px`}
+  >
+    {#if stuckStickyColumns.length > 0}
+      <div
+        role="navigation"
+        data-ui-component="column-canvas"
+        data-ui-part="sticky-stack"
+        aria-label="Previous columns"
+      >
+        {#each stuckStickyColumns as column (column.id)}
+          <button
+            type="button"
+            data-ui-component="column-canvas"
+            data-ui-part="sticky-rail"
+            data-sticky-for={column.id}
+            data-sticky-state="stuck"
+            aria-label={`Return to ${column.registration.title} column`}
+            title={`Return to ${column.registration.title}`}
+            style:--ui-column-canvas-sticky-rail-width={`${column.width}px`}
+            onclick={() => returnToStickyColumn(column)}
+          >
+            {#if column.registration.rail}
+              {@render column.registration.rail()}
+            {:else}
+              <span
+                data-ui-component="column-canvas"
+                data-ui-part="sticky-rail-label"
+              >
+                <span>{column.registration.title}</span>
+                {#if column.registration.count !== undefined}
+                  <span
+                    data-ui-component="column-canvas"
+                    data-ui-part="sticky-rail-count"
+                  >
+                    {column.registration.count}
+                  </span>
+                {/if}
+              </span>
+            {/if}
+          </button>
+        {/each}
+      </div>
+    {/if}
+  </div>
+  <div
     bind:this={rowElement}
     data-ui-component="column-canvas"
     data-ui-part="row"
   >
     {@render children?.()}
     <div
-      bind:this={stickyPeekProbe}
+      bind:this={stickyWidthProbe}
       data-ui-component="column-canvas"
-      data-ui-part="sticky-peek-probe"
+      data-ui-part="sticky-width-probe"
       aria-hidden="true"
     ></div>
     <div

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import type { Snippet } from "svelte";
   import type { HTMLAttributes } from "svelte/elements";
   import ChevronRight from "@lucide/svelte/icons/chevron-right";
@@ -21,6 +22,7 @@
     collapsible: collapsibleProp,
     closeable: closeableProp,
     sticky = false,
+    stickyRail,
     width: widthOverride,
     onWidthChange,
     class: className,
@@ -60,11 +62,13 @@
      */
     closeable?: boolean;
     /**
-     * Keeps this column's trailing edge visible after it crosses the canvas
-     * start edge in wide and fixed layouts. Consecutive leading sticky columns
-     * form a stack. Compact presentation ignores this prop.
+     * Replaces this column with a floating collapsed rail after it crosses the
+     * canvas start edge in wide and fixed layouts. Consecutive leading sticky
+     * columns form a stack. Compact presentation ignores this prop.
      */
     sticky?: boolean;
+    /** Custom contents for the floating collapsed rail. */
+    stickyRail?: Snippet;
     /** Test/override width. Prefer controller-owned widths. */
     width?: number;
     /** Test/override resize callback. Prefer controller-owned widths. */
@@ -120,6 +124,23 @@
 
   let resizing = $state(false);
 
+  onMount(() =>
+    canvas.registerStickyColumn({
+      get id() {
+        return id;
+      },
+      get title() {
+        return resolvedTitle;
+      },
+      get count() {
+        return count;
+      },
+      get rail() {
+        return stickyRail;
+      },
+    }),
+  );
+
   $effect(() => {
     // Structural column changes are the only child-side alignment trigger.
     visible;
@@ -128,9 +149,10 @@
   });
 
   $effect(() => {
-    // Sticky geometry is transient presentation state and must not trigger
-    // active-column alignment.
+    // Floating-rail geometry is transient presentation state and must not
+    // trigger active-column alignment.
     sticky;
+    stickyRail;
     width;
     canvas.requestStickyLayout();
   });

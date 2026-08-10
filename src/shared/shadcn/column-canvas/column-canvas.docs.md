@@ -128,20 +128,27 @@ to the surrounding page. Reduced-motion preferences keep routed motion instant.
 
 ## Sticky columns
 
-Add `sticky` to consecutive leading `Column` parts to keep their trailing edges
-available after they cross the canvas start edge. The columns stay full-width
-in normal flow and retain their durable geometry; CSS sticky positioning only
-changes their rendered position. Later columns continue moving beneath the
-sticky stack with native horizontal motion.
+Add `sticky` to consecutive leading `Column` parts to register floating
+collapsed replacements. The source columns stay full-width in normal flow and
+retain their durable geometry; they do not use CSS sticky positioning. When a
+source moves underneath its rail-width slot, `Root` overlays an opaque collapsed
+rail while the source and later columns keep moving with native horizontal
+motion.
+
+Use the named `stickyRail` snippet for consumer-owned rail contents. `Root`
+provides the accessible button and return action, so clicking the rail scrolls
+back to the source column without selecting, expanding, or otherwise mutating
+controller state. The default rail renders the column title and count.
 
 Sticky behavior resolves only in `wide` and `fixed` modes. Expanded columns
-expose `--ui-column-canvas-sticky-peek-width` (`4.75rem` by default), while a
-collapsed sticky column retains its complete collapsed rail. A sticky request
-after a rendered non-sticky column does not activate. `data-sticky="true"`
-reflects the request, and active columns expose
-`data-sticky-state="flowing|stuck"` for diagnostics and styling. The body
-scrollbar is visually suppressed while its column is stuck, without disabling
-body scrolling.
+use `--ui-column-canvas-sticky-peek-width` (`4.75rem` by default) for the
+floating rail, while a collapsed source uses its complete collapsed width.
+Active rails form one gapless, opaque stack at the root inline start. A sticky
+request after a rendered non-sticky column does not activate.
+`data-sticky="true"` reflects the request, source columns expose
+`data-sticky-state="flowing|stuck"`, and replacements expose
+`data-sticky-for` for diagnostics and styling. Source body scrollbars and
+independent vertical scrolling remain unchanged.
 
 Sticky is transient presentation state. It is not controller configuration or
 part of the V1 persistence schema. Compact mode ignores it and retains the
@@ -194,13 +201,15 @@ horizontal scrolling at every container size.
 
 ### Sticky Floating Columns
 
-Mark consecutive leading main panels `sticky` so later detail columns can move
-past them while their trailing edges remain available as context.
+Mark consecutive leading main panels `sticky` and provide `stickyRail` snippets
+so later detail columns can move past ordinary-flow sources while custom
+collapsed replacements remain available as return controls.
 
 ### Sticky Fixed Columns
 
-Fixed mode supports the same opt-in sticky geometry without enabling active
-following or snapping. Fixed canvases without sticky columns are unchanged.
+Fixed mode supports the same opt-in floating replacements without enabling
+active following or snapping. Fixed canvases without sticky columns are
+unchanged.
 
 ## Styling
 

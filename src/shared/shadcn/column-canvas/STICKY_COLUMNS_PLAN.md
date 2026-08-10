@@ -1,71 +1,70 @@
-# Sticky Column Canvas panels
+# Floating sticky Column Canvas rails
 
 ## Contract
 
-- `Column` accepts presentation-only `sticky?: boolean`, defaulting to false.
-- Consecutive leading rendered sticky columns activate in wide and fixed modes.
-  Expanded columns retain `--ui-column-canvas-sticky-peek-width` (`4.75rem` by
-  default); collapsed columns retain their complete collapsed rail.
-- Sticky requests after the first rendered non-sticky column remain in normal
-  flow. Compact mode ignores sticky presentation.
-- Requested columns expose `data-sticky="true"`; active columns expose
-  `data-sticky-state="flowing|stuck"`.
-- Native scrolling, durable widths, collapse/close state, active following, and
-  the V1 persistence schema remain unchanged.
+- `Column` accepts presentation-only `sticky?: boolean`, defaulting to false,
+  plus a named `stickyRail` snippet for consumer-owned collapsed contents.
+- Source columns always retain normal flow, durable width, resizers, body
+  scrolling, and scrollbar presentation. Sticky presentation never applies
+  `position: sticky` to the source column.
+- When a leading sticky source moves underneath its rail-width slot, `Root`
+  renders a separate opaque collapsed return rail. Clicking it scrolls back to
+  the source without changing controller selection, collapse, close, or path.
+- Consecutive leading rails stack at the root inline start with no gap. Expanded
+  sources use `--ui-column-canvas-sticky-peek-width` (`4.75rem` by default);
+  collapsed sources use their full collapsed width.
+- A sticky request after the first rendered non-sticky column stays inactive.
+  Compact mode renders no floating rails and retains its existing peek,
+  snapping, wheel routing, and scrollbar treatment.
+- Requested source columns expose `data-sticky="true"` and active sources expose
+  `data-sticky-state="flowing|stuck"`; floating replacements expose
+  `data-sticky-for` and `data-sticky-state="stuck"`.
+- Sticky configuration and rail visibility remain transient presentation state.
+  The controller and V1 persistence schema are unchanged.
 
 ## Staged status
 
-| Stage                                  | Status     | Evidence                                                           |
-| -------------------------------------- | ---------- | ------------------------------------------------------------------ |
-| Public contract and progress artifact  | Complete   | Column prop, token, data attributes, and this document             |
-| Sticky measurement and native geometry | Complete   | Storybook interactions and real Chromium geometry/input coverage   |
-| Stories, examples, and documentation   | Complete   | Adaptive/fixed stories, consumer examples, MDX, and generated docs |
-| Browser and repository validation      | Complete\* | Focused checks, pointer suite, production build, and catalog audit |
-| Compare-only visual inspection         | Complete   | Both stories are `missing-baseline`; no baseline PNGs were written |
+| Stage                                      | Status   | Evidence                                                         |
+| ------------------------------------------ | -------- | ---------------------------------------------------------------- |
+| Corrected public contract and registration | Complete | `stickyRail`, root registration, and this document               |
+| Gapless floating stack and return action   | Complete | Live Storybook inspection and focused story interactions         |
+| Stories, examples, and documentation       | Complete | Adaptive/fixed custom rails and consumer-facing prose            |
+| Chromium regression coverage               | Complete | Native motion, geometry, return, lifecycle, and responsive tests |
+| Repository and compare-only validation     | Complete | Focused checks, build, audit, and visual comparison              |
 
 ## Risks and guards
 
-- **Sticky panels jump or alter scroll motion:** CSS sticky positioning clamps
-  rendered geometry; it never writes canvas scroll position.
-- **Multiple rails overlap:** the root measures resolved peek, gap, and
-  collapsed widths and assigns cumulative offsets to the leading stack.
-- **Stale offsets after structural changes:** layout refreshes after visibility,
-  collapse/open, mode, root-size, and runtime sticky changes.
-- **Compact behavior regresses:** compact clears active sticky state and retains
-  the existing snapping and input-arbitration implementation.
-- **Context scrollbars become misleading:** the visual body scrollbar is hidden
-  only while its sticky column is actually stuck; scrolling remains available.
-- **Presentation leaks into persistence:** sticky never enters controller state
-  or the V1 layout payload.
+- **Source panels accidentally pin or resize:** browser tests compare source
+  movement directly with `scrollLeft` and assert `position: relative`.
+- **Content shows between stacked rails:** the root renders one opaque stack
+  with zero flex gap and only internal separators.
+- **Return controls mutate domain state:** the click handler writes only the
+  root scroll position; it never calls the controller.
+- **Stale rails after structural changes:** registration and layout refreshes
+  cover visibility, close/open, collapse/expand, resize, mode, root size, and
+  runtime `sticky` or `stickyRail` changes.
+- **Compact behavior regresses:** compact clears both active source state and
+  rendered rail state before its existing layout/input logic runs.
+- **Presentation leaks into persistence:** registrations and stuck state live
+  only in the root component.
 
 ## Validation evidence
 
-- Focused controller Vitest: 8 passed.
-- Focused Column Canvas Storybook Vitest: 10 passed, including both new sticky
-  scenarios.
-- `pnpm test:shadcn:pointer`: 13 passed overall. Eight Column Canvas browser
-  scenarios include native wheel/touch threshold crossing, stable stacked
-  peeks, non-leading sticky rejection, hidden stuck scrollbars with working body
-  scrolling, resize, collapse/expand, close/reopen, path visibility, runtime
-  sticky changes, fixed compatibility, and 1280/700/390 responsive round trips.
-- The existing compact no-blank-tail, wheel arbitration, keyboard, touch,
-  persistence geometry, and fixed free-scroll scenarios still pass after the
-  max-content row change.
-- `pnpm check`, `pnpm check:docs-mcp`, `pnpm check:no-tailwind`, changed-file
-  Prettier validation, and `pnpm build-storybook`: passed.
-- `pnpm workspace:visual:audit`: 111 stories, 70 pending, 36 approved, 5
-  skipped, no failed stories, orphan baselines, or contract errors.
-- Exact canonical Linux/ARM64 compare-only captures for
-  `sticky-floating-columns` and `sticky-fixed-columns`: both executed and were
-  visually inspected. Both report `outcome: missing-baseline` and
-  `policyStatus: warning`; no baseline PNG was created or updated.
-- A sibling-repository source search found no Column Canvas consumer, so no
-  consumer refresh or workaround is required.
-- `pnpm checks` reached `fmt:check` and stopped on six unrelated pre-existing
-  formatting findings: `column-canvas-controller.svelte.ts`,
-  `WorkspaceAboutDialog.css`, `WorkspaceAboutDialog.stories.svelte`,
-  `app-workspace.ts`, `tree.ts`, and `WorkspaceExplorer.css`. Owned files pass
-  formatting and the required checks above were run separately.
-
-\* The sticky implementation and its focused validation are complete. The
-aggregate command remains blocked only by the inherited formatting findings.
+- Focused Column Canvas Storybook Vitest: 10 passed after the corrected rail
+  model and custom snippets were added.
+- Live fixed-story inspection confirms two custom collapsed replacements render
+  as one opaque stack with no visible gap.
+- Full shadcn pointer suite: 15 passed, including 8 Column Canvas responsive and
+  sticky cases covering native motion, gapless rail geometry, smooth and
+  reduced-motion return, lifecycle changes, and compact suppression.
+- Focused controller Vitest: 8 passed. `pnpm check`, `pnpm check:no-tailwind`,
+  `pnpm check:docs-mcp`, the owned-file Prettier check, `pnpm build-storybook`,
+  and `pnpm workspace:visual:audit` passed.
+- Compare-only canonical Chromium execution passed both sticky stories. Each
+  correctly reported `missing-baseline`; no PNG baseline was created or
+  updated. The wrapper's final checkout guard separately detected the
+  concurrently changed Workspace Popout source outside this slice.
+- Final `pnpm checks` stopped at `fmt:check` on six inherited files outside
+  this slice: the Column Canvas controller and five Workspace sources. The
+  owned-file Prettier check remains green; those unrelated files were not
+  modified.
