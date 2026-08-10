@@ -40,8 +40,10 @@ it. The resolved state is available as `data-display-mode`.
 - **wide** — durable pixel widths, resize handles, trailing spacer, active
   following, and proximity snapping
 - **compact** — stage-width expanded columns, a `2.75rem` previous-column peek,
-  no durable blank tail or resize handles, mandatory snapping, and guarded
-  vertical-wheel handoff at body boundaries
+  no durable blank tail, horizontal scrollbar, or resize handles; mandatory
+  snapping; context-column scrollbar suppression; and slower, smooth
+  vertical-to-horizontal routing for non-scrollable columns and scrollable-body
+  boundaries
 - **fixed** — original fixed geometry and free horizontal scrolling at every
   size, without active following
 

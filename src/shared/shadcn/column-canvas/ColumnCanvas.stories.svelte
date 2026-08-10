@@ -763,6 +763,11 @@
     responsiveCanvas.select(1, "composer");
 
     const root = canvas.getByRole("region", { name: "Responsive canvas" });
+    const pageHost = canvas.getByRole("region", {
+      name: "Scrollable page host",
+    });
+    expect(pageHost.scrollHeight).toBeGreaterThan(pageHost.clientHeight);
+    expect(getComputedStyle(pageHost).scrollbarWidth).toBe("none");
     await waitFor(() => {
       expect(root).toHaveAttribute("data-display-mode", "compact");
       expect(root.scrollLeft).toBeGreaterThan(0);
@@ -795,46 +800,57 @@
   }}
 >
   {#snippet template()}
-    <div data-testid="responsive-stage" class="h-[460px] w-[min(100%,700px)]">
-      <ColumnCanvas.Root
-        controller={responsiveCanvas}
-        aria-label="Responsive canvas"
-      >
-        <ColumnCanvas.Column id="categories" title="Categories">
-          <ColumnCanvas.Body>
-            <ColumnCanvas.Item
-              selected={responsiveCanvas.isSelected(0, "stable-chat")}
-              onclick={() => responsiveCanvas.select(0, "stable-chat")}
-            >
-              Stable Chat
-            </ColumnCanvas.Item>
-          </ColumnCanvas.Body>
-        </ColumnCanvas.Column>
-
-        <ColumnCanvas.Column id="components" title="Components">
-          <ColumnCanvas.Body data-testid="responsive-scroll-body">
-            {#each responsiveRows as row (row.id)}
+    <div
+      role="region"
+      aria-label="Scrollable page host"
+      data-testid="responsive-scroll-host"
+      class="h-[460px] w-[min(100%,700px)] [scrollbar-width:none] overflow-x-hidden overflow-y-auto [&::-webkit-scrollbar]:hidden"
+    >
+      <div data-testid="responsive-stage" class="h-[460px] w-full">
+        <ColumnCanvas.Root
+          controller={responsiveCanvas}
+          aria-label="Responsive canvas"
+        >
+          <ColumnCanvas.Column id="categories" title="Categories">
+            <ColumnCanvas.Body>
               <ColumnCanvas.Item
-                selected={responsiveCanvas.isSelected(1, row.id)}
-                onclick={() => responsiveCanvas.select(1, row.id)}
+                selected={responsiveCanvas.isSelected(0, "stable-chat")}
+                onclick={() => responsiveCanvas.select(0, "stable-chat")}
               >
-                {row.label}
+                Stable Chat
               </ColumnCanvas.Item>
-            {/each}
-          </ColumnCanvas.Body>
-        </ColumnCanvas.Column>
+            </ColumnCanvas.Body>
+          </ColumnCanvas.Column>
 
-        <ColumnCanvas.Column id="detail" title="Detail">
-          <ColumnCanvas.Body>
-            <div class="flex flex-col gap-2 p-3 text-sm">
-              <strong>Composer</strong>
-              <span class="text-muted-foreground">
-                The active compact column follows the deepest visible path.
-              </span>
-            </div>
-          </ColumnCanvas.Body>
-        </ColumnCanvas.Column>
-      </ColumnCanvas.Root>
+          <ColumnCanvas.Column id="components" title="Components">
+            <ColumnCanvas.Body data-testid="responsive-scroll-body">
+              {#each responsiveRows as row (row.id)}
+                <ColumnCanvas.Item
+                  selected={responsiveCanvas.isSelected(1, row.id)}
+                  onclick={() => responsiveCanvas.select(1, row.id)}
+                >
+                  {row.label}
+                </ColumnCanvas.Item>
+              {/each}
+            </ColumnCanvas.Body>
+          </ColumnCanvas.Column>
+
+          <ColumnCanvas.Column id="detail" title="Detail">
+            <ColumnCanvas.Body>
+              <div class="flex flex-col gap-2 p-3 text-sm">
+                <strong>Composer</strong>
+                <span class="text-muted-foreground">
+                  The active compact column follows the deepest visible path.
+                </span>
+              </div>
+            </ColumnCanvas.Body>
+          </ColumnCanvas.Column>
+        </ColumnCanvas.Root>
+      </div>
+      <div class="text-muted-foreground h-40 border-t px-3 py-4 text-xs">
+        Surrounding page content receives vertical motion once neither the
+        column body nor the horizontal canvas can move.
+      </div>
     </div>
   {/snippet}
 </Story>

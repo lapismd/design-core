@@ -1,4 +1,4 @@
-import { expect, test, type Page } from "@playwright/test";
+import { expect, test, type Locator, type Page } from "@playwright/test";
 import { waitForVisualStoryFinished } from "@lapismd/storybook-addon-visual-delta/playwright";
 
 const responsiveStoryId =
@@ -29,10 +29,12 @@ async function setResponsiveStageWidth(
   page: Page,
   width: number,
 ): Promise<void> {
-  await page.getByTestId("responsive-stage").evaluate((stage, nextWidth) => {
-    stage.style.width = `${nextWidth}px`;
-    stage.style.maxWidth = "none";
-  }, width);
+  await page
+    .getByTestId("responsive-scroll-host")
+    .evaluate((host, nextWidth) => {
+      host.style.width = `${nextWidth}px`;
+      host.style.maxWidth = "none";
+    }, width);
 }
 
 async function expectActiveColumnAligned(page: Page): Promise<void> {
@@ -98,6 +100,22 @@ async function nativeTouchDrag(
   await session.detach();
 }
 
+async function sampleHorizontalMotion(
+  root: Locator,
+  frameCount = 12,
+): Promise<number[]> {
+  return root.evaluate(async (element, count) => {
+    const samples: number[] = [];
+    for (let frame = 0; frame < count; frame += 1) {
+      await new Promise<void>((resolve) =>
+        requestAnimationFrame(() => resolve()),
+      );
+      samples.push(element.scrollLeft);
+    }
+    return samples;
+  }, frameCount);
+}
+
 test.describe("Column Canvas responsive scrolling", () => {
   test("700px and 390px compact layouts follow the active column, preserve the peek, and have no blank tail", async ({
     page,
@@ -108,6 +126,16 @@ test.describe("Column Canvas responsive scrolling", () => {
 
     const root = page.getByRole("region", { name: "Responsive canvas" });
     await expect(root).toHaveAttribute("data-display-mode", "compact");
+    expect(
+      await root.evaluate(
+        (element) => getComputedStyle(element).scrollbarWidth,
+      ),
+    ).toBe("none");
+    await expect(
+      root
+        .locator('[data-column-id="components"]')
+        .locator('[data-ui-part="scroll-area-scrollbar"]'),
+    ).toHaveCSS("display", "none");
     await expectActiveColumnAligned(page);
     await expect(page.getByRole("separator")).toHaveCount(0);
 
@@ -235,6 +263,7 @@ test.describe("Column Canvas responsive scrolling", () => {
     await openStory(page, responsiveStoryId);
 
     const root = page.getByRole("region", { name: "Responsive canvas" });
+    const outerScrollHost = page.getByTestId("responsive-scroll-host");
     const selectedBefore = await page
       .locator('[data-ui-part="column-item"][aria-pressed="true"]')
       .allTextContents();
@@ -271,11 +300,41 @@ test.describe("Column Canvas responsive scrolling", () => {
       element.scrollTop = element.scrollHeight;
     });
     await viewport.hover();
-    await page.mouse.wheel(0, 420);
+    const rootAtBottomBoundary = await root.evaluate(
+      (element) => element.scrollLeft,
+    );
+    const outerAtBottomBoundary = await outerScrollHost.evaluate(
+      (element) => element.scrollTop,
+    );
+    await page.mouse.wheel(0, 560);
     await expect
       .poll(() => root.evaluate((element) => element.scrollLeft))
-      .toBeGreaterThan(rootBeforeBodyWheel);
+      .toBeGreaterThan(rootAtBottomBoundary);
+    expect(await outerScrollHost.evaluate((element) => element.scrollTop)).toBe(
+      outerAtBottomBoundary,
+    );
     await expectActiveColumnAligned(page);
+
+    await viewport.evaluate((element) => {
+      element.scrollTop = 0;
+    });
+    await viewport.hover();
+    const rootAtTopBoundary = await root.evaluate(
+      (element) => element.scrollLeft,
+    );
+    const outerAtTopBoundary = await outerScrollHost.evaluate(
+      (element) => element.scrollTop,
+    );
+    await page.mouse.wheel(0, -560);
+    await expect
+      .poll(() => root.evaluate((element) => element.scrollLeft))
+      .toBeLessThan(rootAtTopBoundary);
+    expect(await outerScrollHost.evaluate((element) => element.scrollTop)).toBe(
+      outerAtTopBoundary,
+    );
+    await outerScrollHost.evaluate((element) => {
+      element.scrollTop = 0;
+    });
 
     await root.focus();
     await page.keyboard.press("Home");
@@ -302,40 +361,64 @@ test.describe("Column Canvas responsive scrolling", () => {
       .poll(() => root.evaluate((element) => element.scrollLeft))
       .toBeGreaterThan(touchStartScroll);
 
+    await page.emulateMedia({ reducedMotion: "no-preference" });
     await root.focus();
     await page.keyboard.press("End");
+    await expectActiveColumnAligned(page);
     const rightEdge = await root.evaluate((element) => element.scrollLeft);
     await root.locator('[data-column-id="detail"]').hover();
     await page.mouse.wheel(0, -420);
+    const backwardSamples = await sampleHorizontalMotion(root);
+    expect(
+      new Set(backwardSamples.map((sample) => Math.round(sample))).size,
+    ).toBeGreaterThan(2);
+    expect(Math.min(...backwardSamples)).toBeLessThan(rightEdge);
     await expect
       .poll(() => root.evaluate((element) => element.scrollLeft))
       .toBeLessThan(rightEdge);
 
     await root.focus();
-    await page.keyboard.press("End");
-    await page.evaluate(() => {
-      const stage = document.querySelector<HTMLElement>(
-        '[data-testid="responsive-stage"]',
-      )!;
-      const scrollHost = document.createElement("div");
-      scrollHost.dataset.testid = "outer-scroll-host";
-      scrollHost.style.cssText = "height:300px;overflow-y:auto";
-      stage.parentElement!.insertBefore(scrollHost, stage);
-      scrollHost.append(stage);
-      const spacer = document.createElement("div");
-      spacer.style.height = "1600px";
-      scrollHost.append(spacer);
-      scrollHost.scrollTop = 0;
-    });
-    await root.locator('[data-column-id="detail"]').hover();
+    await page.keyboard.press("Home");
+    await expect
+      .poll(() => root.evaluate((element) => element.scrollLeft))
+      .toBe(0);
+    expect(
+      await outerScrollHost.evaluate(
+        (element) => element.scrollHeight > element.clientHeight,
+      ),
+    ).toBe(true);
+    const categoriesViewport = root
+      .locator('[data-column-id="categories"]')
+      .locator('[data-ui-part="scroll-area-viewport"]');
+    expect(
+      await categoriesViewport.evaluate(
+        (element) => element.scrollHeight <= element.clientHeight + 1,
+      ),
+    ).toBe(true);
+    await categoriesViewport.hover();
+    const outerScrollBeforeWheel = await outerScrollHost.evaluate(
+      (element) => element.scrollTop,
+    );
     await page.mouse.wheel(0, 320);
     await expect
-      .poll(() =>
-        page
-          .getByTestId("outer-scroll-host")
-          .evaluate((element) => element.scrollTop),
-      )
+      .poll(() => root.evaluate((element) => element.scrollLeft))
       .toBeGreaterThan(0);
+    await page.waitForTimeout(100);
+    expect(await outerScrollHost.evaluate((element) => element.scrollTop)).toBe(
+      outerScrollBeforeWheel,
+    );
+
+    await root.focus();
+    await page.keyboard.press("End");
+    await expectActiveColumnAligned(page);
+    await root.locator('[data-column-id="detail"]').hover();
+    const outerScrollBeforeEdgeWheel = await outerScrollHost.evaluate(
+      (element) => element.scrollTop,
+    );
+    await page.mouse.wheel(0, 320);
+    await expect
+      .poll(() => outerScrollHost.evaluate((element) => element.scrollTop))
+      .toBeGreaterThan(outerScrollBeforeEdgeWheel);
   });
 
   test("close, reopen, and collapse changes re-follow without changing compact persistence geometry", async ({

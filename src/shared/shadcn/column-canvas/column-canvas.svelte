@@ -12,6 +12,7 @@
   } from "./column-canvas-types.js";
 
   const DEFAULT_COMPACT_BREAKPOINT = 960;
+  const COMPACT_WHEEL_SCROLL_FACTOR = 0.75;
 
   let {
     ref = $bindable(null),
@@ -170,7 +171,11 @@
 
   function nearestVerticalScroller(event: WheelEvent): HTMLElement | null {
     for (const target of event.composedPath()) {
-      if (!(target instanceof HTMLElement) || target === ref) continue;
+      // Only descendants belong to the canvas arbitration boundary. A
+      // scrollable ancestor outside the root must not mask available
+      // horizontal movement.
+      if (target === ref) break;
+      if (!(target instanceof HTMLElement)) continue;
       const overflow = getComputedStyle(target).overflowY;
       if (
         (overflow === "auto" || overflow === "scroll") &&
@@ -212,7 +217,10 @@
     if (!canMove) return;
 
     event.preventDefault();
-    root.scrollBy({ left: event.deltaY, behavior: "auto" });
+    root.scrollBy({
+      left: event.deltaY * COMPACT_WHEEL_SCROLL_FACTOR,
+      behavior: prefersReducedMotion() ? "auto" : "smooth",
+    });
   }
 
   function navigateSnapPoint(key: string): boolean {

@@ -110,7 +110,9 @@ import * as ColumnCanvas from "@lapismd/design-core/shadcn/column-canvas";
   following, and proximity snapping.
 - `compact` makes each expanded column one stage wide, exposes
   `--ui-column-canvas-compact-peek-width` of the previous column, removes the
-  durable blank tail, hides resize handles, and snaps columns mandatorily.
+  durable blank tail and horizontal scrollbar, hides resize handles, and snaps
+  columns mandatorily. Scrollbars are suppressed on preceding context columns
+  so the peek does not read as another scroll surface.
 - `displayMode="fixed"` is the compatibility escape hatch: controller widths,
   resize handles, trailing spacer, and free horizontal scrolling remain as in
   the original canvas, with no active-column following.
@@ -119,9 +121,10 @@ The last rendered, non-closed column is the active column. It is followed after
 path, visibility, collapse/open, restoration, and display-mode changes—not
 after ordinary body rendering or manual scrolling. Root-level Arrow Left/Right
 and Home/End navigate compact snap points without changing controller
-selection. Vertical wheel input remains in a body while it can scroll, then
-advances the compact canvas; input at the canvas edge remains available to the
-surrounding page.
+selection. A scrollable body retains vertical wheel ownership while it can
+move. At its boundary—or over a non-scrollable body—vertical input routes to
+slower, smooth compact-canvas motion. Input at the canvas edge remains available
+to the surrounding page. Reduced-motion preferences keep routed motion instant.
 
 ## Persistence
 

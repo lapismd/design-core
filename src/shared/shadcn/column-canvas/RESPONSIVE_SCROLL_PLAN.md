@@ -11,14 +11,17 @@
   independent vertical bodies, and proximity snapping.
 - Compact mode makes each expanded column one stage wide while exposing
   `--ui-column-canvas-compact-peek-width` of the preceding column. It hides
-  resize handles, removes the trailing blank tail, and uses mandatory snapping.
+  resize handles and the auxiliary horizontal scrollbar, removes the trailing
+  blank tail, suppresses context-column scrollbars in the peek, and uses
+  mandatory snapping.
 - `fixed` retains the previous fixed-width, free-horizontal-scroll geometry and
   does not auto-follow columns.
 - The last rendered, non-closed column is active. Auto-follow runs only after a
   path, visibility, collapse/open, restoration, or resolved-mode transition.
-- Compact vertical wheel input stays in a scrollable column body until its
-  boundary, then advances the horizontal canvas when possible. Unconsumed edge
-  input remains available to the surrounding page.
+- Scrollable column bodies retain vertical wheel ownership while they can move.
+  At a boundary—or over a non-scrollable column—vertical input maps to slower,
+  smooth horizontal canvas motion; reduced-motion preferences keep it instant.
+  Input at a horizontal edge remains available to the surrounding page.
 - Root-level Arrow Left/Right and Home/End move among compact snap points without
   changing controller selection or focus.
 - V1 persistence remains widths, collapse, and close state only. Resolved mode,
@@ -39,8 +42,10 @@
 
 - **Auto-follow fights manual scrolling:** alignment is event-triggered rather
   than tied to rendering or scroll state.
-- **Wheel hijacking:** vertical input is prevented only when the target body
-  cannot consume it and the canvas can move in the requested direction.
+- **Wheel hijacking:** vertical-scroller lookup stops at the canvas root so an
+  outer scroll owner cannot mask available horizontal movement. Input is
+  prevented only when the target body cannot move and the canvas can move in
+  the requested direction.
 - **Compact widths leak into persistence:** CSS derives compact width from the
   container; controller widths are never changed during mode transitions.
 - **Small-screen blank tail:** the durable trailing spacer is reduced to the
@@ -58,6 +63,11 @@ src/shared/shadcn/column-canvas/ColumnCanvas.stories.svelte`: 8 passed.
   scenarios covering wide, 700px/390px compact, fixed, wheel, native touch,
   keyboard, resize round-trips, close/reopen, collapse/expand, reduced motion,
   focus retention, and nested vertical-scroll arbitration.
+- The compact wheel scenario places a non-scrollable column inside a scrollable
+  ancestor. It asserts that available motion smoothly changes the canvas
+  `scrollLeft` without changing the ancestor `scrollTop`, and that a scrollable
+  body hands off at both boundaries. It separately verifies page handoff once
+  the canvas reaches its horizontal edge.
 - `pnpm check`: 0 errors and 0 warnings.
 - `pnpm check:docs-mcp`: both TypeScript configurations passed.
 - `pnpm check:no-tailwind`: passed.

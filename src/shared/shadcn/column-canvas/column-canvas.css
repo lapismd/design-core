@@ -26,8 +26,24 @@
 
 [data-ui-component="column-canvas"][data-ui-part="root"][data-display-mode="compact"] {
   overscroll-behavior-inline: contain;
+  padding-bottom: var(--ui-column-canvas-padding, 0.75rem);
+  scrollbar-width: none;
   scroll-snap-type: x mandatory;
   touch-action: pan-x pan-y;
+}
+
+[data-ui-component="column-canvas"][data-ui-part="root"][data-display-mode="compact"]::-webkit-scrollbar {
+  display: none;
+}
+
+[data-ui-component="column-canvas"][data-ui-part="root"][data-display-mode="compact"]
+  [data-ui-part="column"]:has(
+    ~ [data-ui-part="column"],
+    ~ [data-ui-part="collapsed-column"]
+  )
+  [data-ui-part="scroll-area-scrollbar"] {
+  /* The preceding context peek should not read as a second scroll surface. */
+  display: none;
 }
 
 [data-ui-component="column-canvas"][data-ui-part="row"] {
