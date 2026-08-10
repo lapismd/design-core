@@ -29,7 +29,6 @@
     size="icon-sm"
     class={className}
     type="button"
-    data-ui-component="column-canvas"
     data-ui-part="column-toggle"
     aria-label={collapsed
       ? `Expand ${column.title} column`

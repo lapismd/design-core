@@ -3,7 +3,7 @@
   import type { HTMLAttributes } from "svelte/elements";
   import ChevronRight from "@lucide/svelte/icons/chevron-right";
   import type { WithElementRef } from "../../../lib/utils.js";
-  import { useColumnCanvas } from "./context.svelte.js";
+  import { useColumnCanvasContext } from "./context.svelte.js";
   import { setColumnCanvasColumnContext } from "./column-canvas-column-context.svelte.js";
   import Header from "./column-canvas-header.svelte";
   import Title from "./column-canvas-title.svelte";
@@ -65,7 +65,8 @@
     children?: Snippet;
   } = $props();
 
-  const controller = useColumnCanvas();
+  const canvas = useColumnCanvasContext();
+  const controller = canvas.controller;
 
   const resolvedTitle = $derived(title ?? id);
   const resolvedPathLevel = $derived(
@@ -80,9 +81,7 @@
   const resolvedCloseable = $derived(
     closeableProp ?? controller.isCloseable(id),
   );
-  const pathVisible = $derived(
-    controller.path.length >= resolvedPathLevel,
-  );
+  const pathVisible = $derived(controller.path.length >= resolvedPathLevel);
   const closed = $derived(controller.isClosed(id));
   const visible = $derived(pathVisible && !closed);
   const collapsed = $derived(controller.isCollapsed(id));
@@ -113,6 +112,13 @@
   });
 
   let resizing = $state(false);
+
+  $effect(() => {
+    // Structural column changes are the only child-side alignment trigger.
+    visible;
+    collapsed;
+    canvas.requestAlignment();
+  });
 
   function startHorizontalResize(event: PointerEvent): void {
     if (!resolvedResizable || !event.isPrimary || event.button !== 0) return;
@@ -214,8 +220,7 @@
       data-ui-part="column"
       data-column-id={id}
       data-resizable={resolvedResizable ? "true" : undefined}
-      style:width={`${width}px`}
-      style:min-width={`${width}px`}
+      style:--ui-column-canvas-expanded-width={`${width}px`}
     >
       {#if useDefaultHeader}
         <Header>
@@ -233,7 +238,7 @@
 
       {@render children?.()}
 
-      {#if resolvedResizable}
+      {#if resolvedResizable && canvas.displayMode !== "compact"}
         <div
           role="separator"
           aria-orientation="vertical"

@@ -119,6 +119,45 @@
     },
   });
 
+  const responsiveCanvas = createColumnCanvasController({
+    columns: {
+      categories: {
+        defaultWidth: 260,
+        pathLevel: 0,
+        collapsible: true,
+        resizable: true,
+      },
+      components: {
+        defaultWidth: 340,
+        pathLevel: 1,
+        collapsible: true,
+        resizable: true,
+      },
+      detail: {
+        defaultWidth: 380,
+        pathLevel: 2,
+        collapsible: true,
+        resizable: true,
+        closeable: true,
+      },
+    },
+    initialPath: ["stable-chat", "composer"],
+  });
+
+  const fixedCanvas = createColumnCanvasController({
+    columns: {
+      categories: { defaultWidth: 260, pathLevel: 0, resizable: true },
+      components: { defaultWidth: 340, pathLevel: 1, resizable: true },
+      detail: { defaultWidth: 380, pathLevel: 2, resizable: true },
+    },
+    initialPath: ["stable-chat", "composer"],
+  });
+
+  const responsiveRows = Array.from({ length: 32 }, (_, index) => ({
+    id: `component-${index + 1}`,
+    label: `Component ${index + 1}`,
+  }));
+
   const basicSelectedCategory = $derived(
     findAiDemoCategory(basicCanvas.path[0]),
   );
@@ -192,10 +231,10 @@
     await expect(
       canvas.getByRole("button", { name: "Composer" }),
     ).toHaveAttribute("aria-pressed", "true");
+    await expect(canvas.getByRole("button", { name: "Name" })).toBeVisible();
     await expect(
-      canvas.getByRole("button", { name: "Name" }),
+      canvas.getByText("@lapismd/design-core/ai/chat"),
     ).toBeVisible();
-    await expect(canvas.getByText("@lapismd/design-core/ai/chat")).toBeVisible();
 
     await userEvent.click(
       canvas.getByRole("button", { name: "Message Bubble" }),
@@ -204,9 +243,16 @@
     await expect(
       canvas.getByRole("button", { name: "Close Details column" }),
     ).toBeVisible();
-    await expect(
-      canvas.getByRole("separator", { name: "Resize Details column" }),
-    ).toBeVisible();
+    const root = canvas.getByRole("region", { name: "Column canvas" });
+    if (root.getAttribute("data-display-mode") === "compact") {
+      await expect(
+        canvas.queryByRole("separator", { name: "Resize Details column" }),
+      ).toBeNull();
+    } else {
+      await expect(
+        canvas.getByRole("separator", { name: "Resize Details column" }),
+      ).toBeVisible();
+    }
 
     await userEvent.click(
       canvas.getByRole("button", { name: "Close Details column" }),
@@ -217,20 +263,22 @@
     await userEvent.click(canvas.getByRole("button", { name: "Open detail" }));
     await expect(canvas.getByText("message-bubble")).toBeVisible();
 
-    const handle = canvas.getByRole("separator", {
-      name: "Resize Stable Chat column",
-    });
-    const before = basicCanvas.getWidth("components");
-    await dragResizeHandle(handle, 40);
-    await waitFor(() => {
-      expect(basicCanvas.getWidth("components")).toBeGreaterThan(before);
-    });
-    const column = canvasElement.querySelector(
-      '[data-ui-part="column"][data-column-id="components"]',
-    );
-    await expect(column).toHaveStyle({
-      width: `${basicCanvas.getWidth("components")}px`,
-    });
+    if (root.getAttribute("data-display-mode") !== "compact") {
+      const handle = canvas.getByRole("separator", {
+        name: "Resize Stable Chat column",
+      });
+      const before = basicCanvas.getWidth("components");
+      await dragResizeHandle(handle, 40);
+      await waitFor(() => {
+        expect(basicCanvas.getWidth("components")).toBeGreaterThan(before);
+      });
+      const column = canvasElement.querySelector(
+        '[data-ui-part="column"][data-column-id="components"]',
+      );
+      await expect(column).toHaveStyle({
+        width: `${basicCanvas.getWidth("components")}px`,
+      });
+    }
   }}
   parameters={{
     docs: {
@@ -288,9 +336,7 @@
             count={basicSelectedCategory?.components.length}
           >
             <ColumnCanvas.Body>
-              {#each basicSelectedCategory?.components ?? [] as component (
-                component.id
-              )}
+              {#each basicSelectedCategory?.components ?? [] as component (component.id)}
                 <ColumnCanvas.Item
                   aria-label={component.label}
                   selected={basicCanvas.isSelected(1, component.id)}
@@ -319,7 +365,7 @@
                     <span class="text-muted-foreground text-xs">
                       {field.label}
                     </span>
-                    <span class="break-all font-medium">{field.value}</span>
+                    <span class="font-medium break-all">{field.value}</span>
                   </span>
                 </ColumnCanvas.Item>
               {/each}
@@ -335,9 +381,7 @@
   name="Three-level cascade"
   play={async ({ canvas }) => {
     threeLevelCanvas.clear();
-    await userEvent.click(
-      canvas.getByRole("button", { name: "Stable Chat" }),
-    );
+    await userEvent.click(canvas.getByRole("button", { name: "Stable Chat" }));
     await expect(canvas.getByText("Composer")).toBeVisible();
     await userEvent.click(canvas.getByRole("button", { name: "Composer" }));
     await expect(
@@ -347,9 +391,7 @@
       canvas.getByRole("button", { name: "Close Composer column" }),
     ).toBeVisible();
     await userEvent.click(canvas.getByRole("button", { name: "Composer" }));
-    await expect(
-      canvas.queryByText("@lapismd/design-core/ai/chat"),
-    ).toBeNull();
+    await expect(canvas.queryByText("@lapismd/design-core/ai/chat")).toBeNull();
     await expect(canvas.getByText("Send Button")).toBeVisible();
   }}
   parameters={{
@@ -394,9 +436,7 @@
           count={threeLevelCategory?.components.length}
         >
           <ColumnCanvas.Body>
-            {#each threeLevelCategory?.components ?? [] as component (
-              component.id
-            )}
+            {#each threeLevelCategory?.components ?? [] as component (component.id)}
               <ColumnCanvas.Item
                 aria-label={component.label}
                 selected={threeLevelCanvas.isSelected(1, component.id)}
@@ -419,7 +459,9 @@
         >
           <ColumnCanvas.Body>
             {#if threeLevelComponent}
-              <div class="text-muted-foreground flex flex-col gap-3 p-3 text-sm">
+              <div
+                class="text-muted-foreground flex flex-col gap-3 p-3 text-sm"
+              >
                 <p>{threeLevelComponent.role}</p>
                 <code class="bg-muted rounded px-2 py-1 text-xs break-all">
                   {threeLevelComponent.importPath}
@@ -448,9 +490,7 @@
     await userEvent.click(
       canvas.getByRole("button", { name: "Close Detail column" }),
     );
-    await expect(
-      canvas.queryByText("@lapismd/design-core/ai/chat"),
-    ).toBeNull();
+    await expect(canvas.queryByText("@lapismd/design-core/ai/chat")).toBeNull();
     await expect(
       canvas.queryByRole("button", { name: "Close Detail column" }),
     ).toBeNull();
@@ -613,7 +653,7 @@
 >
   {#snippet template()}
     <div class="h-[420px] w-full">
-      <ColumnCanvas.Root controller={resizeCanvas}>
+      <ColumnCanvas.Root controller={resizeCanvas} displayMode="fixed">
         <ColumnCanvas.Column
           id="components"
           title="Components"
@@ -680,7 +720,7 @@
 >
   {#snippet template()}
     <div class="h-[420px] w-full">
-      <ColumnCanvas.Root controller={persistCanvas}>
+      <ColumnCanvas.Root controller={persistCanvas} displayMode="fixed">
         <ColumnCanvas.Column
           id="components"
           title="Components"
@@ -701,6 +741,144 @@
               Layout saves through the injected persistence adapter.
             </p>
           </ColumnCanvas.Body>
+        </ColumnCanvas.Column>
+      </ColumnCanvas.Root>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Responsive adaptive canvas"
+  tags={["visual-pending"]}
+  play={async ({ canvas, canvasElement }) => {
+    responsiveCanvas.expand("categories");
+    responsiveCanvas.expand("components");
+    responsiveCanvas.expand("detail");
+    responsiveCanvas.resetWidth("categories");
+    responsiveCanvas.resetWidth("components");
+    responsiveCanvas.resetWidth("detail");
+    responsiveCanvas.open("detail");
+    responsiveCanvas.clear();
+    responsiveCanvas.select(0, "stable-chat");
+    responsiveCanvas.select(1, "composer");
+
+    const root = canvas.getByRole("region", { name: "Responsive canvas" });
+    await waitFor(() => {
+      expect(root).toHaveAttribute("data-display-mode", "compact");
+      expect(root.scrollLeft).toBeGreaterThan(0);
+    });
+    await expect(canvas.queryByRole("separator")).toBeNull();
+
+    const detail = canvasElement.querySelector<HTMLElement>(
+      '[data-ui-part="column"][data-column-id="detail"]',
+    );
+    await expect(detail).not.toBeNull();
+    await waitFor(() => {
+      const rootStyle = getComputedStyle(root);
+      const contentEnd =
+        root.getBoundingClientRect().right -
+        Number.parseFloat(rootStyle.paddingInlineEnd);
+      expect(
+        Math.abs(detail!.getBoundingClientRect().right - contentEnd),
+      ).toBeLessThan(2);
+    });
+    expect(responsiveCanvas.getWidth("detail")).toBe(380);
+  }}
+  parameters={{
+    docs: {
+      source: {
+        code: exampleSources.ResponsiveAdaptive,
+        language: "html",
+        type: "code",
+      },
+    },
+  }}
+>
+  {#snippet template()}
+    <div data-testid="responsive-stage" class="h-[460px] w-[min(100%,700px)]">
+      <ColumnCanvas.Root
+        controller={responsiveCanvas}
+        aria-label="Responsive canvas"
+      >
+        <ColumnCanvas.Column id="categories" title="Categories">
+          <ColumnCanvas.Body>
+            <ColumnCanvas.Item
+              selected={responsiveCanvas.isSelected(0, "stable-chat")}
+              onclick={() => responsiveCanvas.select(0, "stable-chat")}
+            >
+              Stable Chat
+            </ColumnCanvas.Item>
+          </ColumnCanvas.Body>
+        </ColumnCanvas.Column>
+
+        <ColumnCanvas.Column id="components" title="Components">
+          <ColumnCanvas.Body data-testid="responsive-scroll-body">
+            {#each responsiveRows as row (row.id)}
+              <ColumnCanvas.Item
+                selected={responsiveCanvas.isSelected(1, row.id)}
+                onclick={() => responsiveCanvas.select(1, row.id)}
+              >
+                {row.label}
+              </ColumnCanvas.Item>
+            {/each}
+          </ColumnCanvas.Body>
+        </ColumnCanvas.Column>
+
+        <ColumnCanvas.Column id="detail" title="Detail">
+          <ColumnCanvas.Body>
+            <div class="flex flex-col gap-2 p-3 text-sm">
+              <strong>Composer</strong>
+              <span class="text-muted-foreground">
+                The active compact column follows the deepest visible path.
+              </span>
+            </div>
+          </ColumnCanvas.Body>
+        </ColumnCanvas.Column>
+      </ColumnCanvas.Root>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Fixed compatibility"
+  tags={["visual-pending"]}
+  play={async ({ canvas, canvasElement }) => {
+    const root = canvas.getByRole("region", { name: "Fixed canvas" });
+    await expect(root).toHaveAttribute("data-display-mode", "fixed");
+    expect(root.scrollLeft).toBe(0);
+    await expect(canvas.getAllByRole("separator")).toHaveLength(3);
+
+    const widths = Array.from(
+      canvasElement.querySelectorAll<HTMLElement>('[data-ui-part="column"]'),
+      (column) => Math.round(column.getBoundingClientRect().width),
+    );
+    expect(widths).toEqual([260, 340, 380]);
+  }}
+  parameters={{
+    docs: {
+      source: {
+        code: exampleSources.FixedCompatibility,
+        language: "html",
+        type: "code",
+      },
+    },
+  }}
+>
+  {#snippet template()}
+    <div class="h-[460px] w-[min(100%,700px)]">
+      <ColumnCanvas.Root
+        controller={fixedCanvas}
+        displayMode="fixed"
+        aria-label="Fixed canvas"
+      >
+        <ColumnCanvas.Column id="categories" title="Categories">
+          <ColumnCanvas.Body><p class="p-3">Categories</p></ColumnCanvas.Body>
+        </ColumnCanvas.Column>
+        <ColumnCanvas.Column id="components" title="Components">
+          <ColumnCanvas.Body><p class="p-3">Components</p></ColumnCanvas.Body>
+        </ColumnCanvas.Column>
+        <ColumnCanvas.Column id="detail" title="Detail">
+          <ColumnCanvas.Body><p class="p-3">Detail</p></ColumnCanvas.Body>
         </ColumnCanvas.Column>
       </ColumnCanvas.Root>
     </div>

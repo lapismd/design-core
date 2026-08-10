@@ -59,7 +59,16 @@ export {
   type ColumnCanvasPersistenceErrorEvent,
 } from "./column-canvas-persistence.js";
 
-export { useColumnCanvas, type ColumnCanvasContext } from "./context.svelte.js";
+export type {
+  ColumnCanvasDisplayMode,
+  ColumnCanvasResolvedDisplayMode,
+} from "./column-canvas-types.js";
+
+export {
+  useColumnCanvas,
+  useColumnCanvasContext,
+  type ColumnCanvasContext,
+} from "./context.svelte.js";
 
 export {
   useColumnCanvasColumn,

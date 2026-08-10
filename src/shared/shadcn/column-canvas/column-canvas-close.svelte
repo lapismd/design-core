@@ -27,7 +27,6 @@
     size="icon-sm"
     class={className}
     type="button"
-    data-ui-component="column-canvas"
     data-ui-part="column-close"
     aria-label={`Close ${column.title} column`}
     title={`Close ${column.title}`}

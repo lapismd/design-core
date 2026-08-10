@@ -2,6 +2,7 @@
   import type { HTMLAttributes } from "svelte/elements";
   import ChevronRight from "@lucide/svelte/icons/chevron-right";
   import type { WithElementRef } from "../../../lib/utils.js";
+  import { useColumnCanvasContext } from "./context.svelte.js";
 
   /**
    * Low-level collapsed rail escape hatch. Prefer `Column` with a collapsible
@@ -19,6 +20,13 @@
     count?: number;
     onExpand: () => void;
   } = $props();
+
+  const canvas = useColumnCanvasContext();
+
+  $effect(() => {
+    canvas.requestAlignment();
+    return canvas.requestAlignment;
+  });
 </script>
 
 <section
