@@ -126,6 +126,27 @@ move. At its boundary—or over a non-scrollable body—vertical input routes to
 slower, smooth compact-canvas motion. Input at the canvas edge remains available
 to the surrounding page. Reduced-motion preferences keep routed motion instant.
 
+## Sticky columns
+
+Add `sticky` to consecutive leading `Column` parts to keep their trailing edges
+available after they cross the canvas start edge. The columns stay full-width
+in normal flow and retain their durable geometry; CSS sticky positioning only
+changes their rendered position. Later columns continue moving beneath the
+sticky stack with native horizontal motion.
+
+Sticky behavior resolves only in `wide` and `fixed` modes. Expanded columns
+expose `--ui-column-canvas-sticky-peek-width` (`4.75rem` by default), while a
+collapsed sticky column retains its complete collapsed rail. A sticky request
+after a rendered non-sticky column does not activate. `data-sticky="true"`
+reflects the request, and active columns expose
+`data-sticky-state="flowing|stuck"` for diagnostics and styling. The body
+scrollbar is visually suppressed while its column is stuck, without disabling
+body scrolling.
+
+Sticky is transient presentation state. It is not controller configuration or
+part of the V1 persistence schema. Compact mode ignores it and retains the
+existing stage-width peek and snapping behavior.
+
 ## Persistence
 
 ### Persisted Widths
@@ -171,8 +192,19 @@ preserved for the next wide layout.
 Set `displayMode="fixed"` when a host must retain fixed pixel widths and free
 horizontal scrolling at every container size.
 
+### Sticky Floating Columns
+
+Mark consecutive leading main panels `sticky` so later detail columns can move
+past them while their trailing edges remain available as context.
+
+### Sticky Fixed Columns
+
+Fixed mode supports the same opt-in sticky geometry without enabling active
+following or snapping. Fixed canvases without sticky columns are unchanged.
+
 ## Styling
 
 Override the public `--ui-column-canvas-*` tokens on an ancestor, including
-`--ui-column-canvas-compact-peek-width` (default `2.75rem`). Production sources
+`--ui-column-canvas-compact-peek-width` (default `2.75rem`) and
+`--ui-column-canvas-sticky-peek-width` (default `4.75rem`). Production sources
 use native CSS and compose the shared Button for Toggle and Close.

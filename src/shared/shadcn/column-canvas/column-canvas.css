@@ -52,12 +52,23 @@
 }
 
 [data-ui-component="column-canvas"][data-ui-part="row"] {
+  position: relative;
   display: flex;
   align-items: stretch;
   flex: 1 1 auto;
   height: auto;
+  inline-size: max-content;
+  min-inline-size: 100%;
   min-height: 0;
   gap: var(--ui-column-canvas-gap, 0.75rem);
+}
+
+[data-ui-component="column-canvas"][data-ui-part="sticky-peek-probe"] {
+  position: absolute;
+  width: var(--ui-column-canvas-sticky-peek-width, 4.75rem);
+  height: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
 
 [data-ui-component="column-canvas"][data-ui-part="trailing-spacer"] {
@@ -67,7 +78,7 @@
 
 [data-ui-component="column-canvas"][data-ui-part="root"][data-display-mode="compact"]
   [data-ui-part="trailing-spacer"] {
-  /* Represent only the root's end padding; remove the durable blank tail. */
+  /* The max-content row already retains root end padding; remove its gap. */
   margin-inline-start: calc(-1 * var(--ui-column-canvas-gap, 0.75rem));
 }
 
@@ -84,6 +95,35 @@
   background: var(--ui-column-canvas-column-background, var(--card));
   width: var(--ui-column-canvas-expanded-width);
   min-width: var(--ui-column-canvas-expanded-width);
+}
+
+[data-ui-component="column-canvas"][data-ui-part="root"]:is(
+    [data-display-mode="wide"],
+    [data-display-mode="fixed"]
+  )
+  [data-ui-part="column"][data-sticky-state] {
+  position: sticky;
+  inset-inline-start: calc(
+    var(--ui-column-canvas-sticky-stack-offset, 0px) +
+      var(--ui-column-canvas-sticky-effective-peek-width, 4.75rem) -
+      var(--ui-column-canvas-expanded-width)
+  );
+  z-index: 10;
+}
+
+[data-ui-component="column-canvas"][data-ui-part="root"]:is(
+    [data-display-mode="wide"],
+    [data-display-mode="fixed"]
+  )
+  [data-ui-part="collapsed-column"][data-sticky-state] {
+  position: sticky;
+  inset-inline-start: var(--ui-column-canvas-sticky-stack-offset, 0px);
+  z-index: 10;
+}
+
+[data-ui-component="column-canvas"][data-ui-part="column"][data-sticky-state="stuck"]
+  [data-ui-part="scroll-area-scrollbar"] {
+  display: none;
 }
 
 [data-ui-component="column-canvas"][data-ui-part="root"][data-display-mode="wide"]

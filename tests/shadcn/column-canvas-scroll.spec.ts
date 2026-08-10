@@ -4,6 +4,8 @@ import { waitForVisualStoryFinished } from "@lapismd/storybook-addon-visual-delt
 const responsiveStoryId =
   "shadcn-layout-column-canvas--responsive-adaptive-canvas";
 const fixedStoryId = "shadcn-layout-column-canvas--fixed-compatibility";
+const stickyStoryId = "shadcn-layout-column-canvas--sticky-floating-columns";
+const stickyFixedStoryId = "shadcn-layout-column-canvas--sticky-fixed-columns";
 
 const storyUrl = (storyId: string) =>
   `/iframe.html?id=${encodeURIComponent(storyId)}&viewMode=story`;
@@ -517,5 +519,289 @@ test.describe("Column Canvas responsive scrolling", () => {
     expect(await root.evaluate((element) => element.scrollLeft)).toBeLessThan(
       230,
     );
+  });
+});
+
+test.describe("Column Canvas sticky scrolling", () => {
+  test("fixed mode crosses sticky thresholds with continuous native wheel and touch motion", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await openStory(page, stickyFixedStoryId);
+
+    const root = page.getByRole("region", { name: "Sticky fixed canvas" });
+    const primary = root.locator('[data-column-id="primary"]');
+    const secondary = root.locator('[data-column-id="secondary"]');
+    const activity = root.locator('[data-column-id="activity"]');
+    await expect(root).toHaveAttribute("data-display-mode", "fixed");
+    await root.evaluate((element) => element.scrollTo({ left: 0 }));
+    await expect(primary).toHaveAttribute("data-sticky", "true");
+    await expect(primary).toHaveAttribute("data-sticky-state", "flowing");
+    await expect(secondary).toHaveAttribute("data-sticky-state", "flowing");
+    await expect(activity).toHaveAttribute("data-sticky", "true");
+    await expect(activity).not.toHaveAttribute("data-sticky-state");
+
+    const scrollbar = primary.locator('[data-ui-part="scroll-area-scrollbar"]');
+    await expect(scrollbar).not.toHaveCSS("display", "none");
+
+    await root.evaluate((element) => {
+      element.scrollLeft = 320;
+    });
+    const before = await root.evaluate((element) => {
+      const primaryColumn = element.querySelector<HTMLElement>(
+        '[data-column-id="primary"]',
+      )!;
+      const followingColumn = element.querySelector<HTMLElement>(
+        '[data-column-id="list"]',
+      )!;
+      const rootRect = element.getBoundingClientRect();
+      return {
+        scrollLeft: element.scrollLeft,
+        primaryEnd: primaryColumn.getBoundingClientRect().right - rootRect.left,
+        followingStart:
+          followingColumn.getBoundingClientRect().left - rootRect.left,
+      };
+    });
+    await root.hover();
+    await page.mouse.wheel(32, 0);
+    await expect
+      .poll(() => root.evaluate((element) => element.scrollLeft))
+      .toBeGreaterThan(before.scrollLeft);
+    const after = await root.evaluate((element) => {
+      const primaryColumn = element.querySelector<HTMLElement>(
+        '[data-column-id="primary"]',
+      )!;
+      const followingColumn = element.querySelector<HTMLElement>(
+        '[data-column-id="list"]',
+      )!;
+      const rootRect = element.getBoundingClientRect();
+      return {
+        scrollLeft: element.scrollLeft,
+        primaryEnd: primaryColumn.getBoundingClientRect().right - rootRect.left,
+        followingStart:
+          followingColumn.getBoundingClientRect().left - rootRect.left,
+      };
+    });
+    const nativeDelta = after.scrollLeft - before.scrollLeft;
+    expect(nativeDelta).toBeGreaterThan(0);
+    expect(nativeDelta).toBeLessThan(80);
+    expect(before.primaryEnd - after.primaryEnd).toBeGreaterThanOrEqual(0);
+    expect(before.primaryEnd - after.primaryEnd).toBeLessThanOrEqual(
+      nativeDelta + 1,
+    );
+    expect(
+      Math.abs(before.followingStart - after.followingStart - nativeDelta),
+    ).toBeLessThan(2);
+    await page.waitForTimeout(120);
+    expect(await root.evaluate((element) => element.scrollLeft)).toBe(
+      after.scrollLeft,
+    );
+
+    await root.evaluate((element) => {
+      element.scrollLeft = element.scrollWidth;
+    });
+    await expect(primary).toHaveAttribute("data-sticky-state", "stuck");
+    await expect(secondary).toHaveAttribute("data-sticky-state", "stuck");
+    await expect(scrollbar).toHaveCSS("display", "none");
+    const stack = await root.evaluate((element) => {
+      const rootRect = element.getBoundingClientRect();
+      const style = getComputedStyle(element);
+      const padding = Number.parseFloat(style.paddingInlineStart);
+      const gap = Number.parseFloat(
+        getComputedStyle(
+          element.querySelector<HTMLElement>('[data-ui-part="row"]')!,
+        ).columnGap,
+      );
+      const columns = ["primary", "secondary"].map((id) => {
+        const column = element.querySelector<HTMLElement>(
+          `[data-column-id="${id}"]`,
+        )!;
+        return {
+          end: column.getBoundingClientRect().right - rootRect.left,
+          peek: Number.parseFloat(
+            column.style.getPropertyValue(
+              "--ui-column-canvas-sticky-effective-peek-width",
+            ),
+          ),
+        };
+      });
+      return { padding, gap, columns };
+    });
+    expect(
+      Math.abs(stack.columns[0].end - stack.padding - stack.columns[0].peek),
+    ).toBeLessThan(2);
+    expect(
+      Math.abs(
+        stack.columns[1].end -
+          stack.columns[0].end -
+          stack.gap -
+          stack.columns[1].peek,
+      ),
+    ).toBeLessThan(2);
+
+    const viewport = primary.locator('[data-ui-part="scroll-area-viewport"]');
+    expect(
+      await viewport.evaluate(
+        (element) => element.scrollHeight > element.clientHeight,
+      ),
+    ).toBe(true);
+    await viewport.evaluate((element) => {
+      element.scrollTop = 160;
+    });
+    await expect
+      .poll(() => viewport.evaluate((element) => element.scrollTop))
+      .toBeGreaterThan(0);
+
+    await root.evaluate((element) => element.scrollTo({ left: 0 }));
+    const box = await root.boundingBox();
+    expect(box).not.toBeNull();
+    if (!box) return;
+    await nativeTouchDrag(
+      page,
+      { x: box.x + box.width - 100, y: box.y + 180 },
+      { x: box.x + 120, y: box.y + 180 },
+    );
+    await expect
+      .poll(() => root.evaluate((element) => element.scrollLeft))
+      .toBeGreaterThan(0);
+  });
+
+  test("collapse, resize, close, and path visibility recompute the leading stack", async ({
+    page,
+  }) => {
+    await useReducedMotion(page);
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await openStory(page, stickyFixedStoryId);
+
+    const root = page.getByRole("region", { name: "Sticky fixed canvas" });
+    await root.evaluate((element) => element.scrollTo({ left: 0 }));
+    const primary = root.locator('[data-column-id="primary"]');
+    const secondary = root.locator('[data-column-id="secondary"]');
+    const handle = page.getByRole("separator", {
+      name: "Resize Workspace column",
+    });
+    const handleBox = await handle.boundingBox();
+    expect(handleBox).not.toBeNull();
+    if (!handleBox) return;
+    await page.mouse.move(handleBox.x + 1, handleBox.y + 80);
+    await page.mouse.down();
+    await page.mouse.move(handleBox.x + 41, handleBox.y + 80, { steps: 6 });
+    await page.mouse.up();
+    await expect
+      .poll(() =>
+        primary.evaluate((column) => column.getBoundingClientRect().width),
+      )
+      .toBe(460);
+
+    await page
+      .getByRole("button", { name: "Collapse Workspace column" })
+      .click();
+    await expect(primary).toHaveAttribute("data-ui-part", "collapsed-column");
+    const collapsedStack = await root.evaluate((element) => {
+      const first = element.querySelector<HTMLElement>(
+        '[data-column-id="primary"]',
+      )!;
+      const second = element.querySelector<HTMLElement>(
+        '[data-column-id="secondary"]',
+      )!;
+      const row = element.querySelector<HTMLElement>('[data-ui-part="row"]')!;
+      return {
+        firstWidth: first.getBoundingClientRect().width,
+        gap: Number.parseFloat(getComputedStyle(row).columnGap),
+        secondOffset: Number.parseFloat(
+          second.style.getPropertyValue(
+            "--ui-column-canvas-sticky-stack-offset",
+          ),
+        ),
+      };
+    });
+    expect(
+      Math.abs(
+        collapsedStack.secondOffset -
+          collapsedStack.firstWidth -
+          collapsedStack.gap,
+      ),
+    ).toBeLessThan(2);
+
+    await root.evaluate((element) => {
+      element.scrollLeft = element.scrollWidth;
+    });
+    await expect(primary).toHaveAttribute("data-sticky-state", "stuck");
+    await expect(secondary).toHaveAttribute("data-sticky-state", "stuck");
+    await page.getByRole("button", { name: "Expand Workspace column" }).click();
+    await expect(primary).toHaveAttribute("data-ui-part", "column");
+    await expect
+      .poll(() =>
+        primary.evaluate((column) => column.getBoundingClientRect().width),
+      )
+      .toBe(460);
+
+    await root.evaluate((element) => element.scrollTo({ left: 0 }));
+    await page.getByRole("button", { name: "Close Inbox column" }).click();
+    await expect(secondary).toHaveCount(0);
+    await expect(root.locator('[data-column-id="list"]')).not.toHaveAttribute(
+      "data-sticky-state",
+    );
+    await page.getByRole("button", { name: "Restore Inbox" }).click();
+    await expect(secondary).toHaveCount(1);
+    await expect(secondary).toHaveAttribute("data-sticky-state", "flowing");
+
+    await page.getByRole("button", { name: "Disable Inbox sticky" }).click();
+    await expect(secondary).not.toHaveAttribute("data-sticky");
+    await expect(secondary).not.toHaveAttribute("data-sticky-state");
+    await page.getByRole("button", { name: "Enable Inbox sticky" }).click();
+    await expect(secondary).toHaveAttribute("data-sticky", "true");
+    await expect(secondary).toHaveAttribute("data-sticky-state", "flowing");
+
+    await page.getByRole("button", { name: "Hide Inbox" }).click();
+    await expect(secondary).toHaveCount(0);
+    await page.getByRole("button", { name: "Restore Inbox" }).click();
+    await expect(secondary).toHaveCount(1);
+    await expect(
+      root.locator('[data-column-id="activity"]'),
+    ).not.toHaveAttribute("data-sticky-state");
+  });
+
+  test("adaptive sticky columns activate only in wide mode and restore durable widths", async ({
+    page,
+  }) => {
+    await useReducedMotion(page);
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await openStory(page, stickyStoryId);
+
+    const root = page.getByRole("region", { name: "Sticky canvas" });
+    const primary = root.locator('[data-column-id="primary"]');
+    const secondary = root.locator('[data-column-id="secondary"]');
+    await expect(root).toHaveAttribute("data-display-mode", "wide");
+    await expect(primary).toHaveAttribute("data-sticky-state", "stuck");
+    await expect(secondary).toHaveAttribute("data-sticky-state", "stuck");
+    await expect(primary).toHaveCSS("width", "420px");
+
+    await page.setViewportSize({ width: 700, height: 900 });
+    await expect(root).toHaveAttribute("data-display-mode", "compact");
+    await expect(primary).toHaveAttribute("data-sticky", "true");
+    await expect(primary).not.toHaveAttribute("data-sticky-state");
+    await expect(secondary).not.toHaveAttribute("data-sticky-state");
+    await expect(page.getByRole("separator")).toHaveCount(0);
+    expect(
+      await primary.evaluate((column) => column.getBoundingClientRect().width),
+    ).not.toBe(420);
+
+    await page.setViewportSize({ width: 390, height: 900 });
+    await expect(root).toHaveAttribute("data-display-mode", "compact");
+    await expect(primary).not.toHaveAttribute("data-sticky-state");
+    expect(
+      await primary.evaluate((column) => column.getBoundingClientRect().width),
+    ).toBeLessThan(420);
+
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await expect(root).toHaveAttribute("data-display-mode", "wide");
+    await expect
+      .poll(() =>
+        primary.evaluate((column) => column.getBoundingClientRect().width),
+      )
+      .toBe(420);
+    await expect(page.getByRole("separator")).toHaveCount(2);
+    await expect(primary).toHaveAttribute("data-sticky-state", "stuck");
   });
 });

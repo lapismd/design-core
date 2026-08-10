@@ -2,6 +2,7 @@
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent, waitFor } from "storybook/test";
   import * as ColumnCanvas from "./index.js";
+  import { Button } from "../button/index.js";
   import { createColumnCanvasController } from "./column-canvas-controller.svelte.js";
   import {
     aiDemoCategories,
@@ -152,6 +153,50 @@
     },
     initialPath: ["stable-chat", "composer"],
   });
+
+  function createStickyStoryCanvas() {
+    return createColumnCanvasController({
+      columns: {
+        primary: {
+          defaultWidth: 420,
+          minWidth: 300,
+          maxWidth: 560,
+          collapsible: true,
+          resizable: true,
+        },
+        secondary: {
+          defaultWidth: 360,
+          minWidth: 280,
+          maxWidth: 480,
+          pathLevel: 1,
+          collapsible: true,
+          resizable: true,
+          closeable: true,
+        },
+        list: { defaultWidth: 360 },
+        detail: { defaultWidth: 420 },
+        activity: { defaultWidth: 360 },
+      },
+      initialPath: ["workspace"],
+    });
+  }
+
+  const stickyCanvas = createStickyStoryCanvas();
+  const stickyFixedCanvas = createStickyStoryCanvas();
+  let stickyFixedSecondary = $state(true);
+
+  const stickyStoryColumns = [
+    { id: "primary", title: "Workspace", sticky: true, rows: 36 },
+    { id: "secondary", title: "Inbox", sticky: true, rows: 18 },
+    { id: "list", title: "Tasks", sticky: false, rows: 12 },
+    { id: "detail", title: "Task detail", sticky: false, rows: 9 },
+    {
+      id: "activity",
+      title: "Activity",
+      sticky: true,
+      rows: 7,
+    },
+  ] as const;
 
   const responsiveRows = Array.from({ length: 32 }, (_, index) => ({
     id: `component-${index + 1}`,
@@ -897,6 +942,169 @@
           <ColumnCanvas.Body><p class="p-3">Detail</p></ColumnCanvas.Body>
         </ColumnCanvas.Column>
       </ColumnCanvas.Root>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Sticky floating columns"
+  tags={["visual-pending"]}
+  play={async ({ canvas }) => {
+    stickyCanvas.expand("primary");
+    stickyCanvas.expand("secondary");
+    stickyCanvas.resetWidth("primary");
+    stickyCanvas.resetWidth("secondary");
+    stickyCanvas.open("secondary");
+    stickyCanvas.clear();
+    stickyCanvas.select(0, "workspace");
+
+    const root = canvas.getByRole("region", { name: "Sticky canvas" });
+    await waitFor(() => {
+      expect(root).toHaveAttribute("data-display-mode", "wide");
+      expect(root.querySelector('[data-column-id="primary"]')).toHaveAttribute(
+        "data-sticky-state",
+      );
+    });
+    root.scrollTo({ left: root.scrollWidth, behavior: "auto" });
+    await waitFor(() => {
+      expect(root.querySelector('[data-column-id="primary"]')).toHaveAttribute(
+        "data-sticky-state",
+        "stuck",
+      );
+      expect(
+        root.querySelector('[data-column-id="secondary"]'),
+      ).toHaveAttribute("data-sticky-state", "stuck");
+    });
+    await expect(
+      root.querySelector('[data-column-id="activity"]'),
+    ).not.toHaveAttribute("data-sticky-state");
+  }}
+  parameters={{
+    docs: {
+      source: {
+        code: exampleSources.StickyFloating,
+        language: "html",
+        type: "code",
+      },
+    },
+  }}
+>
+  {#snippet template()}
+    <div class="h-[460px] w-full max-w-[1100px]">
+      <ColumnCanvas.Root controller={stickyCanvas} aria-label="Sticky canvas">
+        {#each stickyStoryColumns as column (column.id)}
+          <ColumnCanvas.Column
+            id={column.id}
+            title={column.title}
+            sticky={column.sticky}
+          >
+            <ColumnCanvas.Body data-testid={`sticky-body-${column.id}`}>
+              {#each Array.from({ length: column.rows }) as _, index}
+                <ColumnCanvas.Item>
+                  {column.title} item {index + 1}
+                </ColumnCanvas.Item>
+              {/each}
+            </ColumnCanvas.Body>
+          </ColumnCanvas.Column>
+        {/each}
+      </ColumnCanvas.Root>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Sticky fixed columns"
+  tags={["visual-pending"]}
+  play={async ({ canvas }) => {
+    stickyFixedCanvas.expand("primary");
+    stickyFixedCanvas.expand("secondary");
+    stickyFixedCanvas.resetWidth("primary");
+    stickyFixedCanvas.resetWidth("secondary");
+    stickyFixedSecondary = true;
+    stickyFixedCanvas.open("secondary");
+    stickyFixedCanvas.clear();
+    stickyFixedCanvas.select(0, "workspace");
+
+    const root = canvas.getByRole("region", {
+      name: "Sticky fixed canvas",
+    });
+    await expect(root).toHaveAttribute("data-display-mode", "fixed");
+    expect(root.scrollLeft).toBe(0);
+    root.scrollTo({ left: root.scrollWidth, behavior: "auto" });
+    await waitFor(() => {
+      expect(root.querySelector('[data-column-id="primary"]')).toHaveAttribute(
+        "data-sticky-state",
+        "stuck",
+      );
+      expect(
+        root.querySelector('[data-column-id="secondary"]'),
+      ).toHaveAttribute("data-sticky-state", "stuck");
+    });
+  }}
+  parameters={{
+    docs: {
+      source: {
+        code: exampleSources.StickyFixed,
+        language: "html",
+        type: "code",
+      },
+    },
+  }}
+>
+  {#snippet template()}
+    <div class="flex h-[500px] w-full max-w-[1100px] flex-col gap-2">
+      <div class="flex gap-2">
+        <Button
+          size="sm"
+          variant="outline"
+          onclick={() => stickyFixedCanvas.clear()}
+        >
+          Hide Inbox
+        </Button>
+        <Button
+          size="sm"
+          variant="outline"
+          onclick={() => {
+            stickyFixedCanvas.clear();
+            stickyFixedCanvas.select(0, "workspace");
+            stickyFixedCanvas.open("secondary");
+          }}
+        >
+          Restore Inbox
+        </Button>
+        <Button
+          size="sm"
+          variant="outline"
+          onclick={() => (stickyFixedSecondary = !stickyFixedSecondary)}
+        >
+          {stickyFixedSecondary ? "Disable" : "Enable"} Inbox sticky
+        </Button>
+      </div>
+      <div class="min-h-0 flex-1">
+        <ColumnCanvas.Root
+          controller={stickyFixedCanvas}
+          displayMode="fixed"
+          aria-label="Sticky fixed canvas"
+        >
+          {#each stickyStoryColumns as column (column.id)}
+            <ColumnCanvas.Column
+              id={column.id}
+              title={column.title}
+              sticky={column.id === "secondary"
+                ? stickyFixedSecondary
+                : column.sticky}
+            >
+              <ColumnCanvas.Body>
+                {#each Array.from({ length: column.rows }) as _, index}
+                  <ColumnCanvas.Item>
+                    {column.title} item {index + 1}
+                  </ColumnCanvas.Item>
+                {/each}
+              </ColumnCanvas.Body>
+            </ColumnCanvas.Column>
+          {/each}
+        </ColumnCanvas.Root>
+      </div>
     </div>
   {/snippet}
 </Story>

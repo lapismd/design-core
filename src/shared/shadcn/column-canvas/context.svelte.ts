@@ -11,6 +11,8 @@ export type ColumnCanvasContext = {
   readonly displayMode: ColumnCanvasResolvedDisplayMode;
   /** Schedule active-column alignment after a structural column change. */
   requestAlignment: () => void;
+  /** Recompute transient sticky-column geometry without moving the canvas. */
+  requestStickyLayout: () => void;
 };
 
 export function setColumnCanvasContext(

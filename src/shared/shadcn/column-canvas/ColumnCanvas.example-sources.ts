@@ -21,3 +21,9 @@ export const ResponsiveAdaptive =
 
 export const FixedCompatibility =
   '<ColumnCanvas.Root controller={canvas} displayMode="fixed">\n\t<!-- Durable pixel widths, resize handles, trailing spacer, and free scrolling stay unchanged. -->\n</ColumnCanvas.Root>';
+
+export const StickyFloating =
+  '<ColumnCanvas.Root controller={canvas}>\n\t<ColumnCanvas.Column id="workspace" title="Workspace" sticky>\n\t\t<ColumnCanvas.Body><!-- Main panel content --></ColumnCanvas.Body>\n\t</ColumnCanvas.Column>\n\t<ColumnCanvas.Column id="inbox" title="Inbox" sticky>\n\t\t<ColumnCanvas.Body><!-- Secondary main panel --></ColumnCanvas.Body>\n\t</ColumnCanvas.Column>\n\t<ColumnCanvas.Column id="tasks" title="Tasks">\n\t\t<ColumnCanvas.Body><!-- Floating detail columns continue in normal flow. --></ColumnCanvas.Body>\n\t</ColumnCanvas.Column>\n</ColumnCanvas.Root>';
+
+export const StickyFixed =
+  '<ColumnCanvas.Root controller={canvas} displayMode="fixed">\n\t<ColumnCanvas.Column id="workspace" title="Workspace" sticky />\n\t<ColumnCanvas.Column id="inbox" title="Inbox" sticky />\n\t<ColumnCanvas.Column id="detail" title="Detail" />\n</ColumnCanvas.Root>';

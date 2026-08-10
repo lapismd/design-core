@@ -50,6 +50,20 @@ it. The resolved state is available as `data-display-mode`.
 Responsive widths and scroll position are transient. V1 persistence continues
 to contain durable width, collapse, and close state only.
 
+## Sticky columns
+
+Set `sticky` on consecutive leading `Column` parts to retain their trailing
+edges as the canvas moves horizontally. Sticky columns remain full-width in
+normal flow, then pin as compact context rails after crossing the canvas start
+edge. Later columns continue moving underneath the sticky stack without a
+programmatic jump or snap.
+
+Sticky presentation applies in `wide` and `fixed` modes. Compact mode ignores
+it and keeps the existing stage-width previous-column peek. Expanded sticky
+columns expose `--ui-column-canvas-sticky-peek-width` (`4.75rem` by default);
+collapsed sticky columns retain their complete collapsed rail. A sticky request
+after the first non-sticky rendered column remains ordinary flow.
+
 ## Examples
 
 ### All features
@@ -112,6 +126,26 @@ column, and leaves the configured previous-column context visible.
   meta={ColumnCanvasStories}
 />
 
+### Sticky floating columns
+
+Leading main panels remain available as trailing-edge context while later
+detail panels float through the horizontal canvas.
+
+<Canvas
+  of={ColumnCanvasStories.StickyFloatingColumns}
+  meta={ColumnCanvasStories}
+/>
+
+### Sticky fixed columns
+
+Sticky columns are opt-in in fixed mode; fixed canvases without `sticky` retain
+their previous geometry.
+
+<Canvas
+  of={ColumnCanvasStories.StickyFixedColumns}
+  meta={ColumnCanvasStories}
+/>
+
 ## Parts
 
 - `Root` — installs the controller, responsive horizontal scroller, and
@@ -125,5 +159,6 @@ column, and leaves the configured previous-column context visible.
 ## Styling
 
 Override `--ui-column-canvas-*` tokens on an ancestor, including
-`--ui-column-canvas-compact-peek-width` (default `2.75rem`). Production sources
+`--ui-column-canvas-compact-peek-width` (default `2.75rem`) and
+`--ui-column-canvas-sticky-peek-width` (default `4.75rem`). Production sources
 use native CSS and compose the shared Button for Toggle and Close.

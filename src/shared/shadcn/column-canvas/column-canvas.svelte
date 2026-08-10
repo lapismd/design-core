@@ -24,6 +24,7 @@
     role = "region",
     "aria-label": ariaLabel = "Column canvas",
     onkeydown,
+    onscroll,
     onwheel,
     class: className,
     children,
@@ -44,8 +45,11 @@
 
   const rootController = untrack(() => controller);
   let rowElement = $state<HTMLDivElement | null>(null);
+  let stickyPeekProbe = $state<HTMLDivElement | null>(null);
   let rootWidth = $state<number | null>(null);
   let alignmentFrame: number | null = null;
+  let stickyLayoutFrame: number | null = null;
+  let stickyStateFrame: number | null = null;
   let wheelAnimationFrame: number | null = null;
   let wheelAnimationRoot: HTMLElement | null = null;
   let wheelAnimationDirection: WheelDirection | null = null;
@@ -88,6 +92,114 @@
       Math.max(0, root.scrollWidth - root.clientWidth),
       Math.max(0, root.scrollLeft + delta),
     );
+  }
+
+  function finitePixels(value: string): number {
+    const parsed = Number.parseFloat(value);
+    return Number.isFinite(parsed) ? parsed : 0;
+  }
+
+  function clearStickyLayout(column: HTMLElement): void {
+    column.removeAttribute("data-sticky-state");
+    column.style.removeProperty("--ui-column-canvas-sticky-stack-offset");
+    column.style.removeProperty(
+      "--ui-column-canvas-sticky-effective-peek-width",
+    );
+  }
+
+  function scheduleStickyStateUpdate(): void {
+    if (stickyStateFrame !== null) cancelAnimationFrame(stickyStateFrame);
+    stickyStateFrame = requestAnimationFrame(() => {
+      stickyStateFrame = null;
+      updateStickyStates();
+    });
+  }
+
+  function syncStickyLayout(): void {
+    const root = ref;
+    if (!root || !rowElement) return;
+
+    const columns = visibleColumns();
+    for (const column of columns) clearStickyLayout(column);
+    if (resolvedDisplayMode === "compact") return;
+
+    const rowStyle = getComputedStyle(rowElement);
+    const gap = finitePixels(rowStyle.columnGap);
+    const configuredPeek = stickyPeekProbe?.getBoundingClientRect().width ?? 0;
+    let stackOffset = 0;
+    let withinLeadingStack = true;
+
+    for (const column of columns) {
+      const requested = column.dataset.sticky === "true";
+      if (!withinLeadingStack || !requested) {
+        withinLeadingStack = false;
+        continue;
+      }
+
+      const width = column.getBoundingClientRect().width;
+      const collapsed = column.dataset.uiPart === "collapsed-column";
+      const effectivePeek = collapsed ? width : Math.min(configuredPeek, width);
+
+      column.dataset.stickyState = "flowing";
+      column.style.setProperty(
+        "--ui-column-canvas-sticky-stack-offset",
+        `${stackOffset}px`,
+      );
+      column.style.setProperty(
+        "--ui-column-canvas-sticky-effective-peek-width",
+        `${effectivePeek}px`,
+      );
+      stackOffset += effectivePeek + gap;
+    }
+
+    scheduleStickyStateUpdate();
+  }
+
+  function inlineStartPosition(root: HTMLElement, column: HTMLElement): number {
+    const rootRect = root.getBoundingClientRect();
+    const columnRect = column.getBoundingClientRect();
+    return getComputedStyle(root).direction === "rtl"
+      ? rootRect.right - columnRect.right
+      : columnRect.left - rootRect.left;
+  }
+
+  function updateStickyStates(): void {
+    const root = ref;
+    if (!root || resolvedDisplayMode === "compact") return;
+
+    const rootStyle = getComputedStyle(root);
+    const paddingStart = finitePixels(rootStyle.paddingInlineStart);
+    const hasScrolled = Math.abs(root.scrollLeft) > 1;
+    for (const column of visibleColumns()) {
+      if (!column.hasAttribute("data-sticky-state")) continue;
+      const stackOffset = finitePixels(
+        column.style.getPropertyValue("--ui-column-canvas-sticky-stack-offset"),
+      );
+      const effectivePeek = finitePixels(
+        column.style.getPropertyValue(
+          "--ui-column-canvas-sticky-effective-peek-width",
+        ),
+      );
+      const collapsed = column.dataset.uiPart === "collapsed-column";
+      const pinnedStart =
+        paddingStart +
+        stackOffset +
+        (collapsed ? 0 : effectivePeek - column.getBoundingClientRect().width);
+      const stuck =
+        hasScrolled &&
+        Math.abs(inlineStartPosition(root, column) - pinnedStart) < 2;
+      column.dataset.stickyState = stuck ? "stuck" : "flowing";
+    }
+  }
+
+  function requestStickyLayout(): void {
+    void tick().then(() => {
+      if (stickyLayoutFrame !== null) cancelAnimationFrame(stickyLayoutFrame);
+      stickyLayoutFrame = requestAnimationFrame(() => {
+        stickyLayoutFrame = null;
+        syncStickyLayout();
+      });
+    });
   }
 
   function prefersReducedMotion(): boolean {
@@ -189,6 +301,7 @@
       if (alignmentFrame !== null) cancelAnimationFrame(alignmentFrame);
       alignmentFrame = requestAnimationFrame(() => {
         alignmentFrame = null;
+        syncStickyLayout();
         alignActiveColumn();
       });
     });
@@ -200,6 +313,7 @@
       return resolvedDisplayMode;
     },
     requestAlignment,
+    requestStickyLayout,
   });
 
   $effect(() => {
@@ -230,6 +344,7 @@
 
     const measure = (): void => {
       rootWidth = root.getBoundingClientRect().width;
+      requestStickyLayout();
     };
     measure();
     if (typeof ResizeObserver === "undefined") return;
@@ -240,8 +355,17 @@
 
   onDestroy(() => {
     if (alignmentFrame !== null) cancelAnimationFrame(alignmentFrame);
+    if (stickyLayoutFrame !== null) cancelAnimationFrame(stickyLayoutFrame);
+    if (stickyStateFrame !== null) cancelAnimationFrame(stickyStateFrame);
     cancelWheelAnimation();
   });
+
+  function handleScroll(
+    event: UIEvent & { currentTarget: EventTarget & HTMLDivElement },
+  ): void {
+    onscroll?.(event);
+    scheduleStickyStateUpdate();
+  }
 
   function canScrollVertically(element: HTMLElement, delta: number): boolean {
     if (element.scrollHeight <= element.clientHeight + 1) return false;
@@ -355,7 +479,7 @@
 
   const spacerStyle = $derived(
     resolvedDisplayMode === "compact"
-      ? "var(--ui-column-canvas-padding, 0.75rem)"
+      ? "0px"
       : `${Math.max(0, rootController.trailingSpacerWidth)}px`,
   );
 </script>
@@ -373,6 +497,7 @@
   data-layout-ready={rootController.layoutReady ? "true" : "false"}
   data-display-mode={resolvedDisplayMode}
   onkeydown={handleKeydown}
+  onscroll={handleScroll}
   onwheel={handleWheel}
 >
   <div
@@ -381,6 +506,12 @@
     data-ui-part="row"
   >
     {@render children?.()}
+    <div
+      bind:this={stickyPeekProbe}
+      data-ui-component="column-canvas"
+      data-ui-part="sticky-peek-probe"
+      aria-hidden="true"
+    ></div>
     <div
       data-ui-component="column-canvas"
       data-ui-part="trailing-spacer"

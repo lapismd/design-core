@@ -20,6 +20,7 @@
     resizable: resizableProp,
     collapsible: collapsibleProp,
     closeable: closeableProp,
+    sticky = false,
     width: widthOverride,
     onWidthChange,
     class: className,
@@ -58,6 +59,12 @@
      * Defaults to the column config on the controller.
      */
     closeable?: boolean;
+    /**
+     * Keeps this column's trailing edge visible after it crosses the canvas
+     * start edge in wide and fixed layouts. Consecutive leading sticky columns
+     * form a stack. Compact presentation ignores this prop.
+     */
+    sticky?: boolean;
     /** Test/override width. Prefer controller-owned widths. */
     width?: number;
     /** Test/override resize callback. Prefer controller-owned widths. */
@@ -118,6 +125,14 @@
     visible;
     collapsed;
     canvas.requestAlignment();
+  });
+
+  $effect(() => {
+    // Sticky geometry is transient presentation state and must not trigger
+    // active-column alignment.
+    sticky;
+    width;
+    canvas.requestStickyLayout();
   });
 
   function startHorizontalResize(event: PointerEvent): void {
@@ -186,6 +201,7 @@
       data-ui-component="column-canvas"
       data-ui-part="collapsed-column"
       data-column-id={id}
+      data-sticky={sticky ? "true" : undefined}
     >
       <button
         type="button"
@@ -220,6 +236,7 @@
       data-ui-part="column"
       data-column-id={id}
       data-resizable={resolvedResizable ? "true" : undefined}
+      data-sticky={sticky ? "true" : undefined}
       style:--ui-column-canvas-expanded-width={`${width}px`}
     >
       {#if useDefaultHeader}
