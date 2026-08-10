@@ -3,6 +3,13 @@
   import PopoverPortal from "./popover-portal.svelte";
   import { type WithoutChildrenOrChild } from "../../../lib/utils.js";
   import type { ComponentProps } from "svelte";
+  import { getContext } from "svelte";
+  import {
+    disableOverlayPortalContextKey,
+    popoverPortalContextKey,
+    resolveOverlayPortalProps,
+    type OverlayPortalContext,
+  } from "../../../lib/overlay-portal-context.js";
 
   let {
     ref = $bindable(null),
@@ -14,9 +21,17 @@
   }: PopoverPrimitive.ContentProps & {
     portalProps?: WithoutChildrenOrChild<ComponentProps<typeof PopoverPortal>>;
   } = $props();
+
+  const portalContext = getContext<OverlayPortalContext | undefined>(
+    popoverPortalContextKey,
+  );
+  const disablePortals =
+    getContext<boolean | undefined>(disableOverlayPortalContextKey) ?? false;
 </script>
 
-<PopoverPortal {...portalProps}>
+<PopoverPortal
+  {...resolveOverlayPortalProps(portalContext, portalProps, disablePortals)}
+>
   <PopoverPrimitive.Content
     bind:ref
     data-ui-component="popover"

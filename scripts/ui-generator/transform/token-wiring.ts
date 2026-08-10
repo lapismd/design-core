@@ -17,7 +17,8 @@ export type TokenKey =
   | "height"
   | "paddingInline"
   | "gap"
-  | "iconSize";
+  | "iconSize"
+  | "zIndex";
 
 export type FamilyTokenSpec = {
   /** camelCase keys matching *.tokens.ts */
@@ -318,6 +319,34 @@ export const FAMILY_TOKEN_SPECS: Record<string, FamilyTokenSpec> = {
       borderColor: "var(--border)",
       radius: "var(--radius-md, calc(var(--radius) * 0.8))",
       focusRingColor: "var(--ring)",
+    },
+    paintRewrites: [
+      {
+        themeVar: "--popover",
+        token: "background",
+        properties: ["background-color"],
+      },
+      {
+        themeVar: "--popover-foreground",
+        token: "foreground",
+        properties: ["color"],
+      },
+      {
+        themeVar: "--border",
+        token: "borderColor",
+        properties: ["border-color"],
+      },
+    ],
+  },
+  "hover-card": {
+    keys: [...CURATED_FIVE, "zIndex"],
+    defaults: {
+      background: "var(--popover)",
+      foreground: "var(--popover-foreground)",
+      borderColor: "var(--border)",
+      radius: "var(--radius-md, calc(var(--radius) * 0.8))",
+      focusRingColor: "var(--ring)",
+      zIndex: "calc(var(--ui-workspace-overlay-z-index, 50) + 210)",
     },
     paintRewrites: [
       {
@@ -834,6 +863,7 @@ const TOKEN_SLUGS: Record<TokenKey, string> = {
   paddingInline: "padding-inline",
   gap: "gap",
   iconSize: "icon-size",
+  zIndex: "z-index",
 };
 
 export function tokenCssName(family: string, key: TokenKey): string {

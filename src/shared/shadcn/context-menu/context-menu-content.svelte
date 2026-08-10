@@ -2,7 +2,13 @@
   import { ContextMenu as ContextMenuPrimitive } from "bits-ui";
   import type { WithoutChildrenOrChild } from "../../../lib/utils.js";
   import ContextMenuPortal from "./context-menu-portal.svelte";
-  import type { ComponentProps } from "svelte";
+  import { getContext, type ComponentProps } from "svelte";
+  import {
+    contextMenuPortalContextKey,
+    disableOverlayPortalContextKey,
+    resolveOverlayPortalProps,
+    type OverlayPortalContext,
+  } from "../../../lib/overlay-portal-context.js";
 
   let {
     ref = $bindable(null),
@@ -14,9 +20,17 @@
       ComponentProps<typeof ContextMenuPortal>
     >;
   } = $props();
+
+  const portalContext = getContext<OverlayPortalContext | undefined>(
+    contextMenuPortalContextKey,
+  );
+  const disablePortals =
+    getContext<boolean | undefined>(disableOverlayPortalContextKey) ?? false;
 </script>
 
-<ContextMenuPortal {...portalProps}>
+<ContextMenuPortal
+  {...resolveOverlayPortalProps(portalContext, portalProps, disablePortals)}
+>
   <ContextMenuPrimitive.Content
     bind:ref
     data-ui-component="context-menu"

@@ -78,6 +78,7 @@ export const BATCH_B = [
 
 export const BATCH_C = [
   "tooltip",
+  "hover-card",
   "popover",
   "dialog",
   "sheet",
@@ -258,6 +259,12 @@ const recipes: Record<string, ComponentRecipe> = {
     text: "Tip",
     attrs: { "data-slot": "tooltip-content" },
     shotSelector: '[data-ui-part="tooltip-content"]',
+  }),
+  "hover-card": portal("hover-card", "Shadcn/Overlays/Hover Card", {
+    tag: "div",
+    text: "Preview",
+    attrs: { "data-slot": "hover-card-content" },
+    shotSelector: '[data-ui-part="hover-card-content"]',
   }),
   popover: portal("popover", "Shadcn/Overlays/Popover", {
     tag: "div",

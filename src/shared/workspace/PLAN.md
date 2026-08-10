@@ -939,6 +939,22 @@ workflow.
   auto-sizing from the panel's percentage cap. The AppShell story now asserts
   that keyboard resize changes the rendered height before restoring it.
 
+### Document-aware trigger overlays
+
+- Added the governed Hover Card family backed by Bits UI `LinkPreview`, with
+  public paint tokens and an elevated `--ui-hover-card-z-index` layer. Default
+  700ms open and 300ms close timing, keyboard focus, and safe pointer handoff
+  remain primitive-owned.
+- Popover, Hover Card, Tooltip, Dropdown Menu, Context Menu, and Select now
+  share one internal owner-document portal contract. Explicit `portalProps`
+  retain precedence; popout surfaces render inline; normal triggers use their
+  own document body; cross-realm Elements fall back inline.
+- Added unit resolution coverage, governed Hover Card Storybook interaction,
+  real pointer handoff/topmost checks, and a browser-popout regression proving
+  Dropdown Menu and Hover Card content never leaks into the opener document.
+- Visual comparison and baseline creation remain intentionally deferred by the
+  implementation request; new catalog stories retain `visual-pending`.
+
 ## Completion gate
 
 The migration is complete only when:

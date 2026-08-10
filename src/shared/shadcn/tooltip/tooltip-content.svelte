@@ -1,9 +1,15 @@
 <script lang="ts">
   import { Tooltip as TooltipPrimitive } from "bits-ui";
   import TooltipPortal from "./tooltip-portal.svelte";
-  import type { ComponentProps } from "svelte";
+  import { getContext, type ComponentProps } from "svelte";
   import type { WithoutChildrenOrChild } from "../../../lib/utils.js";
   import { omitDataUiIdentity } from "../../../lib/data-ui-host.js";
+  import {
+    disableOverlayPortalContextKey,
+    resolveOverlayPortalProps,
+    tooltipPortalContextKey,
+    type OverlayPortalContext,
+  } from "../../../lib/overlay-portal-context.js";
 
   let {
     ref = $bindable(null),
@@ -18,9 +24,17 @@
     arrowClasses?: string;
     portalProps?: WithoutChildrenOrChild<ComponentProps<typeof TooltipPortal>>;
   } = $props();
+
+  const portalContext = getContext<OverlayPortalContext | undefined>(
+    tooltipPortalContextKey,
+  );
+  const disablePortals =
+    getContext<boolean | undefined>(disableOverlayPortalContextKey) ?? false;
 </script>
 
-<TooltipPortal {...portalProps}>
+<TooltipPortal
+  {...resolveOverlayPortalProps(portalContext, portalProps, disablePortals)}
+>
   <TooltipPrimitive.Content
     bind:ref
     {...omitDataUiIdentity(restProps)}

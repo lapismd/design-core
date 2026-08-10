@@ -9,7 +9,7 @@ Generic primitives in `src/shared/shadcn/`:
 
 accordion, alert, alert-dialog, badge, button, card, code, code-block,
 collapsible, column-canvas, command, dialog, dropdown-menu, empty, field,
-input, input-group, label, popover, resizable, scroll-area, select, separator,
+input, input-group, label, hover-card, popover, resizable, scroll-area, select, separator,
 sheet, sidebar, skeleton, spinner, switch, swipe-item, tabs, textarea, toggle,
 toggle-group, tooltip, progress, slider, context-menu, drawer
 

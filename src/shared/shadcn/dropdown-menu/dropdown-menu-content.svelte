@@ -2,8 +2,14 @@
   import { type WithoutChildrenOrChild } from "../../../lib/utils.js";
   import DropdownMenuPortal from "./dropdown-menu-portal.svelte";
   import { DropdownMenu as DropdownMenuPrimitive } from "bits-ui";
-  import type { ComponentProps } from "svelte";
+  import { getContext, type ComponentProps } from "svelte";
   import { omitDataUiIdentity } from "../../../lib/data-ui-host.js";
+  import {
+    disableOverlayPortalContextKey,
+    dropdownMenuPortalContextKey,
+    resolveOverlayPortalProps,
+    type OverlayPortalContext,
+  } from "../../../lib/overlay-portal-context.js";
 
   let {
     ref = $bindable(null),
@@ -17,9 +23,17 @@
       ComponentProps<typeof DropdownMenuPortal>
     >;
   } = $props();
+
+  const portalContext = getContext<OverlayPortalContext | undefined>(
+    dropdownMenuPortalContextKey,
+  );
+  const disablePortals =
+    getContext<boolean | undefined>(disableOverlayPortalContextKey) ?? false;
 </script>
 
-<DropdownMenuPortal {...portalProps}>
+<DropdownMenuPortal
+  {...resolveOverlayPortalProps(portalContext, portalProps, disablePortals)}
+>
   <DropdownMenuPrimitive.Content
     bind:ref
     {...omitDataUiIdentity(restProps)}

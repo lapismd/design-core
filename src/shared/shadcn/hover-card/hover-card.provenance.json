@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "component": "hover-card",
+  "scope": "shared",
+  "upstream": {
+    "project": "shadcn-svelte",
+    "registry": "https://shadcn-svelte.com/registry",
+    "cliVersion": "1.4.2",
+    "item": "hover-card",
+    "fetchedAt": "2026-08-10T20:10:42.021Z",
+    "sourceFiles": [
+      {
+        "path": "src/lib/components/ui/hover-card/hover-card-content.svelte",
+        "sha256": "f6e628a9c6b9419c3686eddb9367d622bcf28db45edc8fbd31098aeaa8d096df"
+      },
+      {
+        "path": "src/lib/components/ui/hover-card/hover-card-portal.svelte",
+        "sha256": "4bc8e49f3936fff222eab5f65724130dba5be7cd69ae5dd8e1a62cc86e1f8dca"
+      },
+      {
+        "path": "src/lib/components/ui/hover-card/hover-card-trigger.svelte",
+        "sha256": "83e114e2a0edefb11599fe749283713e0fb0c76ce81f23579ae16be349332fdd"
+      },
+      {
+        "path": "src/lib/components/ui/hover-card/hover-card.svelte",
+        "sha256": "39946ce6ee8ed12a62f3e9cd2ae86408ae2843afb0546ee1313af7998a53a046"
+      },
+      {
+        "path": "src/lib/components/ui/hover-card/index.ts",
+        "sha256": "bc5681b0719b54549f8ebe6624b468f7487752132f69f365d1a394d1176cb7c9"
+      }
+    ],
+    "docsUrl": "https://github.com/huntabyte/shadcn-svelte/blob/bf4f461d88526359d0e96e1950f637912bbeebe7/docs/content/components/hover-card.md",
+    "docsFetchedAt": "2026-08-10T20:10:42.035Z",
+    "docsSha256": "4417172d61bd99e581c96cb7bd1a80e737c0317197a50f175d0c347c395daf55",
+    "docsCommit": "bf4f461d88526359d0e96e1950f637912bbeebe7",
+    "docsRef": "shadcn-svelte@1.4.2",
+    "docsVendorPath": "vendor/shadcn-svelte-docs",
+    "examplesIncluded": ["Basic"],
+    "examplesSkipped": [
+      {
+        "name": "Preview",
+        "reason": "missing-family",
+        "detail": "Catalog is missing family \"avatar\""
+      }
+    ]
+  },
+  "converter": {
+    "version": "2.0.0",
+    "irSchemaVersion": 1,
+    "tokenSchemaVersion": 2
+  },
+  "recipe": {
+    "name": "hover-card",
+    "version": 1,
+    "tier": "portal"
+  }
+}

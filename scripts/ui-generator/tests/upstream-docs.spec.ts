@@ -28,6 +28,7 @@ import {
   rewritePackageImports,
   rewriteSpacingArbitraryProps,
 } from "../docs/rewrite-example.js";
+import { usageFallbackExample } from "../docs/sync-upstream-docs.js";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const packageRoot = path.resolve(here, "../../..");
@@ -273,6 +274,27 @@ This example shows how to open a dialog from a dropdown menu.
     expect(dialog?.code).toContain('<script lang="ts">');
     expect(dialog?.code).toContain("showNewDialog");
     expect(dialog?.code).toContain("<Dialog.Root");
+  });
+});
+
+describe("usageFallbackExample", () => {
+  it("keeps docs indexable when every preview example needs a missing family", () => {
+    const { docs } = loadVendoredDocs({
+      packageRoot,
+      component: "hover-card",
+    });
+    const fallback = usageFallbackExample(docs);
+
+    expect(fallback?.name).toBe("Basic");
+    expect(fallback?.code).toContain("import * as HoverCard from");
+    expect(fallback?.code).toContain("<HoverCard.Root>");
+
+    const rewritten = rewriteExample({
+      component: "hover-card",
+      example: fallback!,
+      availableFamilies: new Set(["hover-card"]),
+    });
+    expect(isRewrittenExample(rewritten)).toBe(true);
   });
 });
 
@@ -774,6 +796,9 @@ describe("emitDocsArtifacts", () => {
     expect(
       written.some((p) => p.endsWith("InputGroup.variations.stories.svelte")),
     ).toBe(true);
+    expect(written.some((p) => p.endsWith("InputGroup.stories.svelte"))).toBe(
+      true,
+    );
     expect(existsSync(path.join(targetDir, "InputGroup.mdx"))).toBe(true);
 
     const mdx = readFileSync(path.join(targetDir, "InputGroup.mdx"), "utf8");
@@ -828,6 +853,14 @@ describe("emitDocsArtifacts", () => {
     // Canvas "Show code" must surface the example SFC, not the Story wrapper.
     expect(stories).toContain("exampleSources.Icon");
     expect(stories).toContain('type: "code"');
+
+    const primaryStories = readFileSync(
+      path.join(targetDir, "InputGroup.stories.svelte"),
+      "utf8",
+    );
+    expect(primaryStories).toContain('tags={["visual-pending", "test"]}');
+    expect(primaryStories).toContain("exampleSources.Preview");
+    expect(primaryStories).toContain("PreviewExample");
     const sources = readFileSync(
       path.join(targetDir, "InputGroup.example-sources.ts"),
       "utf8",

@@ -7,6 +7,8 @@
   import type { WorkspaceShellController } from "../core/workspace-controller.svelte.js";
   import type { WorkspaceDragState } from "../drag/workspace-drag.svelte.js";
   import WorkspaceTree from "../tree/WorkspaceTree.svelte";
+  import { setContext } from "svelte";
+  import { disableOverlayPortalContextKey } from "../../../lib/overlay-portal-context.js";
   import "./WorkspacePopoutSurface.css";
 
   let {
@@ -22,6 +24,8 @@
     createTab?: (paneId: string) => WorkspaceTab;
     theme?: WorkspaceTheme;
   } = $props();
+
+  setContext(disableOverlayPortalContextKey, true);
 </script>
 
 <div

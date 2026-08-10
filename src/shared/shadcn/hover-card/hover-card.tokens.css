@@ -1,0 +1,14 @@
+/**
+ * Default hover-card token bindings → theme tokens.
+ * Override --ui-hover-card-* on :root or any ancestor (forms pattern).
+ * Do not rebind these names on [data-ui-component="hover-card"] hosts — that
+ * blocks ancestor customization.
+ */
+:root {
+  --ui-hover-card-background: var(--popover);
+  --ui-hover-card-foreground: var(--popover-foreground);
+  --ui-hover-card-border-color: var(--border);
+  --ui-hover-card-radius: var(--radius-md, calc(var(--radius) * 0.8));
+  --ui-hover-card-focus-ring-color: var(--ring);
+  --ui-hover-card-z-index: calc(var(--ui-workspace-overlay-z-index, 50) + 210);
+}

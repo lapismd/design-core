@@ -15,3 +15,16 @@
   background: var(--ui-workspace-background);
   box-shadow: var(--ui-workspace-shadow);
 }
+
+.ui-workspace-popout-story__open {
+  position: absolute;
+  z-index: 1;
+  inset-block-start: 0.75rem;
+  inset-inline-end: 0.75rem;
+  border: 1px solid var(--ui-workspace-border);
+  border-radius: var(--ui-workspace-radius-small);
+  padding: 0.4rem 0.65rem;
+  background: var(--ui-workspace-background);
+  color: var(--ui-workspace-foreground);
+  font: inherit;
+}

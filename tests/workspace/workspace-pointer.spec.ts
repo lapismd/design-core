@@ -657,4 +657,41 @@ test.describe("Workspace real pointer behavior", () => {
       ),
     ).toBeVisible();
   });
+
+  test("trigger overlays stay interactive inside their popout document", async ({
+    page,
+  }) => {
+    await openStory(
+      page,
+      "workspace-components-popout-surface--owner-document-overlays",
+    );
+    const popupPromise = page.waitForEvent("popup");
+    await page
+      .getByRole("button", { name: "Open overlay fixture in a popout" })
+      .click();
+    const popup = await popupPromise;
+    await popup.waitForLoadState("domcontentloaded");
+
+    await popup.getByRole("button", { name: "Open fixture menu" }).click();
+    await expect(
+      popup.getByRole("menuitem", { name: "Popup-only action" }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("menuitem", { name: "Popup-only action" }),
+    ).toHaveCount(0);
+    await popup.keyboard.press("Escape");
+
+    const trigger = popup.getByRole("button", { name: "Preview fixture link" });
+    await trigger.hover();
+    const previewAction = popup.getByRole("button", { name: "Preview action" });
+    await expect(previewAction).toBeVisible();
+    await expect(
+      page.getByRole("button", { name: "Preview action" }),
+    ).toHaveCount(0);
+    await previewAction.hover();
+    await popup.waitForTimeout(350);
+    await expect(previewAction).toBeVisible();
+
+    await popup.close();
+  });
 });

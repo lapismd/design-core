@@ -4,8 +4,14 @@
   import SelectScrollUpButton from "./select-scroll-up-button.svelte";
   import SelectScrollDownButton from "./select-scroll-down-button.svelte";
   import { type WithoutChild } from "../../../lib/utils.js";
-  import type { ComponentProps } from "svelte";
+  import { getContext, type ComponentProps } from "svelte";
   import type { WithoutChildrenOrChild } from "../../../lib/utils.js";
+  import {
+    disableOverlayPortalContextKey,
+    resolveOverlayPortalProps,
+    selectPortalContextKey,
+    type OverlayPortalContext,
+  } from "../../../lib/overlay-portal-context.js";
 
   let {
     ref = $bindable(null),
@@ -18,9 +24,17 @@
   }: WithoutChild<SelectPrimitive.ContentProps> & {
     portalProps?: WithoutChildrenOrChild<ComponentProps<typeof SelectPortal>>;
   } = $props();
+
+  const portalContext = getContext<OverlayPortalContext | undefined>(
+    selectPortalContextKey,
+  );
+  const disablePortals =
+    getContext<boolean | undefined>(disableOverlayPortalContextKey) ?? false;
 </script>
 
-<SelectPortal {...portalProps}>
+<SelectPortal
+  {...resolveOverlayPortalProps(portalContext, portalProps, disablePortals)}
+>
   <SelectPrimitive.Content
     bind:ref
     {sideOffset}

@@ -6,7 +6,11 @@ import { emitDocsArtifacts } from "./emit-docs-artifacts.js";
 import { loadVendoredDocs } from "./load-vendored-docs.js";
 import { parseUpstreamDocs } from "./parse-upstream-docs.js";
 import { isRewrittenExample, rewriteExample } from "./rewrite-example.js";
-import type { SyncUpstreamDocsResult } from "./types.js";
+import type {
+  SyncUpstreamDocsResult,
+  UpstreamDocs,
+  UpstreamExample,
+} from "./types.js";
 import { VENDOR_DOCS_RELATIVE } from "./vendor-docs.js";
 
 export function listShadcnFamilies(sharedRoot: string): Set<string> {
@@ -16,6 +20,18 @@ export function listShadcnFamilies(sharedRoot: string): Set<string> {
       .filter((d) => d.isDirectory())
       .map((d) => d.name),
   );
+}
+
+export function usageFallbackExample(
+  docs: UpstreamDocs,
+): UpstreamExample | null {
+  if (!docs.usage.markup) return null;
+  return {
+    name: "Basic",
+    slug: "basic",
+    description: null,
+    code: [docs.usage.script, docs.usage.markup].filter(Boolean).join("\n\n"),
+  };
 }
 
 function patchProvenance(
@@ -124,6 +140,25 @@ export async function syncUpstreamDocs(args: {
       log.warn(
         `Skipping example "${example.name}": ${result.reason} (${result.detail})`,
       );
+    }
+  }
+
+  if (included.length === 0) {
+    const fallback = usageFallbackExample(docs);
+    if (fallback) {
+      const result = rewriteExample({
+        component,
+        example: fallback,
+        availableFamilies: available,
+      });
+      if (isRewrittenExample(result)) {
+        included.push(result);
+        log.warn(
+          `${component}: using the upstream Usage example because no preview examples were importable`,
+        );
+      } else {
+        skipped.push(result);
+      }
     }
   }
 

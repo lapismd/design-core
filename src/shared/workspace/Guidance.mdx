@@ -70,6 +70,12 @@ identifiers for diagnostics and placement assertions instead of inspecting or
 caching the controller parent graph. Moving a view changes its inherited
 design-core surface styling without adding placement props to the view.
 
+Trigger-based shadcn overlays follow the trigger's `ownerDocument`.
+`WorkspacePopoutSurface` is an inline-overlay host, so Popover, Hover Card,
+Tooltip, Dropdown Menu, Context Menu, and Select stay in the detached document
+instead of escaping back to the opener. Do not add view-specific portal
+targets or copy popup detection into consumer panels.
+
 ## Development status
 
 The framework is being migrated from the standalone Lapis app-shell package.

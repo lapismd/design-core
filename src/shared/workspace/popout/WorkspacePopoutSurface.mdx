@@ -12,5 +12,10 @@ public host contract.
 
 The detached surface reuses the controller, view registry, drag state, tabs,
 splits, and theme tokens rather than creating a second application singleton.
+It also establishes an inline-overlay boundary. Trigger-based shadcn overlays
+therefore render only in the popout document; outside a popout those same
+families follow the trigger document's body automatically.
 
 <Canvas of={Stories.DetachedWorkspaceTree} />
+
+<Canvas of={Stories.OwnerDocumentOverlays} />

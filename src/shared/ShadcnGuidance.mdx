@@ -37,6 +37,25 @@ utility class merges (those were compile-time inputs to `ui:add`).
 
 Same override idea as forms (`--ui-form-*` / `form.tokens.css`).
 
+## Trigger overlay documents
+
+Popover, Hover Card, Tooltip, Dropdown Menu, Context Menu, and Select follow
+their trigger's `ownerDocument` automatically. This keeps overlays inside a
+browser popout while allowing normal in-page overlays to portal to that
+document's body and escape a constrained pane. The resolution order is:
+
+1. explicit `portalProps` supplied by the consumer;
+2. inline rendering under an overlay host such as `WorkspacePopoutSurface`;
+3. the same-document trigger body;
+4. the underlying Bits UI default.
+
+A target from another Window realm is never passed to Bits UI; the family
+falls back to inline rendering. Consumers should use `portalProps` only for an
+intentional host override and must not recreate owner-document detection or
+manual anchors. Hover Card retains the Bits UI `LinkPreview` defaults (700ms
+open, 300ms close) and its safe pointer corridor. Its elevated layer is
+controlled by `--ui-hover-card-z-index`.
+
 ## When not to use shadcn alone
 
 - Schema-shaped editing / label-value form rows → `@lapismd/design-core/forms`

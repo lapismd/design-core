@@ -1,19 +1,16 @@
 <script lang="ts">
-  import { Popover as PopoverPrimitive } from "bits-ui";
+  import { LinkPreview as HoverCardPrimitive } from "bits-ui";
   import { getContext } from "svelte";
   import {
-    popoverPortalContextKey,
+    hoverCardPortalContextKey,
     type OverlayPortalContext,
   } from "../../../lib/overlay-portal-context.js";
 
-  let {
-    ref = $bindable(null),
-    class: className,
-    ...restProps
-  }: PopoverPrimitive.TriggerProps = $props();
+  let { ref = $bindable(null), ...restProps }: HoverCardPrimitive.TriggerProps =
+    $props();
 
   const portalContext = getContext<OverlayPortalContext | undefined>(
-    popoverPortalContextKey,
+    hoverCardPortalContextKey,
   );
 
   $effect(() => {
@@ -22,11 +19,8 @@
   });
 </script>
 
-<PopoverPrimitive.Trigger
+<HoverCardPrimitive.Trigger
   bind:ref
-  data-ui-component="popover"
-  data-ui-part="popover-trigger"
-  data-slot="popover-trigger"
-  class={className}
+  data-slot="hover-card-trigger"
   {...restProps}
 />

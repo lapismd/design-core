@@ -2,6 +2,11 @@
   import { Select as SelectPrimitive } from "bits-ui";
   import { type WithoutChild } from "../../../lib/utils.js";
   import ChevronDownIcon from "@lucide/svelte/icons/chevron-down";
+  import { getContext } from "svelte";
+  import {
+    selectPortalContextKey,
+    type OverlayPortalContext,
+  } from "../../../lib/overlay-portal-context.js";
 
   let {
     ref = $bindable(null),
@@ -12,6 +17,15 @@
   }: WithoutChild<SelectPrimitive.TriggerProps> & {
     size?: "sm" | "default";
   } = $props();
+
+  const portalContext = getContext<OverlayPortalContext | undefined>(
+    selectPortalContextKey,
+  );
+
+  $effect(() => {
+    if (portalContext)
+      portalContext.portalTarget = ref?.ownerDocument.body ?? null;
+  });
 </script>
 
 <SelectPrimitive.Trigger
