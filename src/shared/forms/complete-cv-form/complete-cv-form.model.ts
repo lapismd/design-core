@@ -1,10 +1,12 @@
 import { parse, stringify } from "yaml";
+import { getFormValueAtPath } from "../core/path-utils";
 
 import {
   CV_ENTRY_TYPES,
   type AppliedYamlEdit,
   type CompleteCvSource,
   type CvEntry,
+  type CvEntryByType,
   type CvEntryType,
   type CvFragment,
   type CvSection,
@@ -13,7 +15,6 @@ import {
   type ParsedFragment,
   type PathPart,
   type StoryRecord,
-  type UiIdentityState,
 } from "./complete-cv-form.types";
 
 export const ENTRY_TYPE_OPTIONS: Array<{
@@ -74,50 +75,6 @@ export function cloneSource<T>(source: T): T {
   return structuredClone(source);
 }
 
-export function getAtPath(root: unknown, path: PathPart[]): unknown {
-  return path.reduce<unknown>((value, key) => {
-    if (typeof key === "number" && Array.isArray(value)) return value[key];
-    if (typeof key === "string" && isRecord(value)) return value[key];
-    return undefined;
-  }, root);
-}
-
-export function setAtPath<T>(root: T, path: PathPart[], value: unknown): T {
-  if (path.length === 0) return value as T;
-  const [head, ...tail] = path;
-
-  if (typeof head === "number") {
-    const next = Array.isArray(root) ? [...root] : [];
-    next[head] = setAtPath(next[head], tail, value);
-    return next as T;
-  }
-
-  const record: StoryRecord = isRecord(root) ? root : {};
-  return {
-    ...record,
-    [head]: setAtPath(record[head], tail, value),
-  } as T;
-}
-
-export function moveItem<T>(items: T[], index: number, direction: -1 | 1): T[] {
-  const target = index + direction;
-  if (
-    index < 0 ||
-    index >= items.length ||
-    target < 0 ||
-    target >= items.length
-  ) {
-    return items;
-  }
-  const next = [...items];
-  [next[index], next[target]] = [next[target], next[index]];
-  return next;
-}
-
-export function removeItem<T>(items: T[], index: number): T[] {
-  return items.filter((_, itemIndex) => itemIndex !== index);
-}
-
 export function uniqueId(base: string, existingIds: Iterable<string>): string {
   const normalized =
     base
@@ -156,8 +113,10 @@ export function simpleListEntryMarker(
   return null;
 }
 
-export function defaultEntry(entryType: CvEntryType): CvEntry {
-  if (entryType === "TextEntry") return "";
+export function defaultEntry<TType extends CvEntryType>(
+  entryType: TType,
+): CvEntryByType[TType] {
+  if (entryType === "TextEntry") return "" as CvEntryByType[TType];
   if (entryType === "ExperienceEntry") {
     return {
       company: "New company",
@@ -169,7 +128,7 @@ export function defaultEntry(entryType: CvEntryType): CvEntry {
       role_history: [],
       extra_details: [],
       highlights: [""],
-    };
+    } as unknown as CvEntryByType[TType];
   }
   if (entryType === "EducationEntry") {
     return {
@@ -181,29 +140,38 @@ export function defaultEntry(entryType: CvEntryType): CvEntry {
       end_date: "",
       display_date: "",
       highlights: [],
-    };
+    } as unknown as CvEntryByType[TType];
   }
   if (entryType === "PublicationEntry") {
-    return { title: "Publication title", authors: [""], journal: "", date: "" };
+    return {
+      title: "Publication title",
+      authors: [""],
+      journal: "",
+      date: "",
+    } as CvEntryByType[TType];
   }
-  if (entryType === "OneLineEntry") return { label: "Label", details: "" };
-  if (entryType === "BulletEntry") return { bullet: "" };
-  if (entryType === "NumberedEntry") return { number: "" };
-  if (entryType === "ReversedNumberedEntry") return { reversed_number: "" };
+  if (entryType === "OneLineEntry")
+    return { label: "Label", details: "" } as CvEntryByType[TType];
+  if (entryType === "BulletEntry")
+    return { bullet: "" } as CvEntryByType[TType];
+  if (entryType === "NumberedEntry")
+    return { number: "" } as CvEntryByType[TType];
+  if (entryType === "ReversedNumberedEntry")
+    return { reversed_number: "" } as CvEntryByType[TType];
   return {
     name: "New entry",
     date: "",
     location: "",
     summary: "",
     highlights: [],
-  };
+  } as unknown as CvEntryByType[TType];
 }
 
-export function defaultSection(
-  entryType: CvEntryType,
+export function defaultSection<TType extends CvEntryType>(
+  entryType: TType,
   existingIds: Iterable<string> = [],
   requestedTitle?: string,
-): CvSection {
+): Extract<CvSection, { entry_type: TType }> {
   const title =
     requestedTitle?.trim() ||
     (entryType === "TextEntry"
@@ -214,7 +182,7 @@ export function defaultSection(
     title,
     entry_type: entryType,
     entries: [defaultEntry(entryType)],
-  };
+  } as Extract<CvSection, { entry_type: TType }>;
 }
 
 export function entryTitle(
@@ -228,61 +196,33 @@ export function entryTitle(
       : `Text ${index + 1}`;
   }
   if (!isRecord(entry)) return `${entryTypeLabel(entryType)} ${index + 1}`;
+  const record = entry as unknown as StoryRecord;
   if (entryType === "ExperienceEntry") {
     return (
-      [entry.company, entry.position].filter(Boolean).join(" — ") ||
+      [record.company, record.position].filter(Boolean).join(" — ") ||
       `Experience ${index + 1}`
     );
   }
   if (entryType === "EducationEntry") {
     return (
-      [entry.institution, entry.area].filter(Boolean).join(" — ") ||
+      [record.institution, record.area].filter(Boolean).join(" — ") ||
       `Education ${index + 1}`
     );
   }
   if (entryType === "PublicationEntry")
-    return String(entry.title || `Publication ${index + 1}`);
+    return String(record.title || `Publication ${index + 1}`);
   if (entryType === "OneLineEntry")
-    return String(entry.label || `One-line ${index + 1}`);
+    return String(record.label || `One-line ${index + 1}`);
   if (entryType === "BulletEntry")
-    return String(entry.bullet || `Bullet ${index + 1}`).slice(0, 80);
+    return String(record.bullet || `Bullet ${index + 1}`).slice(0, 80);
   if (entryType === "NumberedEntry")
-    return String(entry.number || `Numbered ${index + 1}`).slice(0, 80);
+    return String(record.number || `Numbered ${index + 1}`).slice(0, 80);
   if (entryType === "ReversedNumberedEntry") {
     return String(
-      entry.reversed_number || `Reversed numbered ${index + 1}`,
+      record.reversed_number || `Reversed numbered ${index + 1}`,
     ).slice(0, 80);
   }
-  return String(entry.name || `Entry ${index + 1}`);
-}
-
-function makeUiIds(prefix: string, count: number): string[] {
-  return Array.from({ length: count }, (_, index) => `${prefix}-${index + 1}`);
-}
-
-export function createUiIdentityState(
-  source: CompleteCvSource,
-): UiIdentityState {
-  const sections = source.cv.sections ?? [];
-  const sectionIds = sections.map((section, index) =>
-    uniqueId(`section-${section.id || index + 1}`, []),
-  );
-  const entries = Object.fromEntries(
-    sections.map((section, index) => [
-      sectionIds[index],
-      makeUiIds(`${sectionIds[index]}-entry`, section.entries.length),
-    ]),
-  );
-  return {
-    socialNetworks: makeUiIds("social", source.cv.social_networks?.length ?? 0),
-    sections: sectionIds,
-    entries,
-    nested: {},
-  };
-}
-
-export function appendUiId(ids: string[], prefix: string): string[] {
-  return [...ids, uniqueId(prefix, ids)];
+  return String(record.name || `Entry ${index + 1}`);
 }
 
 function assertString(value: unknown, path: string): string | null {
@@ -365,7 +305,7 @@ function validateKnownLists(
         : null;
   if (!listPath) return null;
   const [path, label] = listPath;
-  const list = getAtPath(value, path);
+  const list = getFormValueAtPath(value, path.join("."));
   if (list === undefined) return null;
   return Array.isArray(list) && list.every((item) => typeof item === "string")
     ? null

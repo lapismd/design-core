@@ -146,7 +146,42 @@
           await expect(getComputedStyle(row).backgroundColor).toBe(
             listFocusBackground,
           );
+          const rowBody = row.querySelector<HTMLElement>(
+            '[data-ui-part="configured-array-row-body"][data-has-marker]',
+          )!;
+          const marker = rowBody.querySelector<HTMLElement>(
+            '[data-testid="simple-entry-marker"]',
+          )!;
+          await expect(
+            Math.abs(
+              marker.getBoundingClientRect().left -
+                rowBody.getBoundingClientRect().left,
+            ),
+          ).toBeLessThan(2);
+          await expect(getComputedStyle(rowBody).borderBottomWidth).toBe("1px");
+          await expect(
+            getComputedStyle(
+              rowBody.querySelector<HTMLElement>(".cv-form-field")!,
+            ).borderBottomWidth,
+          ).toBe("0px");
         }
+
+        const bulletRowBody = canvas
+          .getByTestId("cv-section-BulletEntry")
+          .querySelector<HTMLElement>(
+            '[data-ui-part="configured-array-row-body"][data-marker-spacing="wide"]',
+          )!;
+        const bulletSectionBody = canvas
+          .getByTestId("cv-section-BulletEntry")
+          .querySelector<HTMLElement>(
+            ":scope > .ui-configured-array__section-body",
+          )!;
+        await expect(getComputedStyle(bulletSectionBody).paddingTop).toBe(
+          "1px",
+        );
+        await expect(
+          Number.parseFloat(getComputedStyle(bulletRowBody).columnGap),
+        ).toBe(10);
 
         for (const entryType of [
           "TextEntry",
@@ -155,17 +190,33 @@
           "ReversedNumberedEntry",
         ]) {
           const section = canvas.getByTestId(`cv-section-${entryType}`);
-          const visibleFieldLabels = Array.from(
+          const fieldLabels = Array.from(
             section.querySelectorAll<HTMLElement>(
-              ".complete-cv-unlabeled-entry .cv-form-field > span",
+              '[data-ui-part="configured-array-row-body"][data-hide-label] .cv-form-field > span',
             ),
-          ).filter((label) => getComputedStyle(label).position !== "absolute");
-          await expect(visibleFieldLabels).toHaveLength(0);
+          );
+          await expect(fieldLabels.length).toBeGreaterThan(0);
+          for (const fieldLabel of fieldLabels) {
+            await expect(getComputedStyle(fieldLabel).position).toBe(
+              "absolute",
+            );
+          }
         }
 
         const firstHighlights = canvas
           .getAllByText("Highlights")[0]
           .closest<HTMLElement>('[data-ui-part="list-editor"]')!;
+        await expect(
+          within(firstHighlights).getByRole("button", {
+            name: /^Add$/,
+          }),
+        ).toBeInTheDocument();
+        await expect(
+          within(canvas.getByTestId("cv-section-TextEntry")).getByRole(
+            "button",
+            { name: /^Add$/ },
+          ),
+        ).toBeInTheDocument();
         const finalHighlight = firstHighlights.querySelector<HTMLElement>(
           ':scope > [data-ui-part="list-editor-items"] > [data-ui-component="sortable-array-item"]:last-child',
         )!;
@@ -178,23 +229,55 @@
         await expect(
           getComputedStyle(firstHighlightBody).borderBottomWidth,
         ).toBe("0px");
+        const highlightsForm = firstHighlights.closest<HTMLElement>(
+          ".cv-structured-form",
+        )!;
+        await expect(firstHighlights.getBoundingClientRect().width).toBeCloseTo(
+          highlightsForm.getBoundingClientRect().width,
+          0,
+        );
+
+        for (const section of canvasElement.querySelectorAll<HTMLElement>(
+          '[data-testid^="cv-section-"]',
+        )) {
+          await expect(getComputedStyle(section).borderTopWidth).toBe("0px");
+        }
+
+        for (const entryType of [
+          "OneLineEntry",
+          "NumberedEntry",
+          "ReversedNumberedEntry",
+        ]) {
+          const section = canvas.getByTestId(`cv-section-${entryType}`);
+          const add = within(section).getByRole("button", { name: /^Add / });
+          const configuredArray = add.closest<HTMLElement>(
+            '[data-ui-part="configured-array"]',
+          )!;
+          await expect(
+            Math.abs(
+              add.getBoundingClientRect().right -
+                configuredArray.getBoundingClientRect().right,
+            ),
+          ).toBeLessThan(2);
+          await expect(Number.parseFloat(getComputedStyle(add).marginTop)).toBe(
+            12,
+          );
+        }
 
         const socialRows = canvas
           .getByTestId("social-networks")
-          .querySelectorAll<HTMLElement>(
-            ':scope > [data-ui-part="entry-actions"]',
-          );
+          .querySelectorAll<HTMLElement>('[data-ui-part="entry-actions"]');
         await expect(
           getComputedStyle(socialRows[socialRows.length - 1]).borderBottomWidth,
         ).toBe("0px");
 
         for (const [testId, addLabel] of [
-          ["role_history-0", "Add role history"],
-          ["extra_details-0", "Add extra detail"],
+          ["role-history", "Add role history"],
+          ["extra-details", "Add extra detail"],
         ] as const) {
           const subgroup = canvas.getAllByTestId(testId)[0];
           const title = subgroup.querySelector<HTMLElement>(
-            ":scope > .complete-cv-subgroup-title",
+            ":scope > .ui-configured-array__title-row",
           )!;
           const addButton = within(subgroup).getByRole("button", {
             name: addLabel,
@@ -218,6 +301,7 @@
         const initialWidth = formPane.getBoundingClientRect().width;
 
         await expect(handle).toHaveAttribute("role", "separator");
+        await expect(handle).toHaveAttribute("data-variant", "prominent");
         await expect(
           canvasElement.querySelector(".complete-cv-yaml-header"),
         ).not.toBeInTheDocument();
@@ -244,6 +328,12 @@
           );
           await expect(canvas.getByTestId("structured-cv")).toBeVisible();
         } else {
+          await expect(handle.getBoundingClientRect().width).toBeCloseTo(4, 0);
+          const thumb = handle.querySelector<HTMLElement>(
+            '[data-ui-part="resizable-handle-anon-0"]',
+          )!;
+          await expect(thumb.getBoundingClientRect().width).toBeCloseTo(10, 0);
+          await expect(thumb.getBoundingClientRect().height).toBeCloseTo(40, 0);
           handle.focus();
           await userEvent.keyboard("{ArrowRight}");
           await waitFor(() =>
@@ -298,9 +388,9 @@
           within(networks).getAllByRole("button", { name: "Move up" }).at(-1)!,
         );
         await userEvent.click(
-          within(networks).getByRole("button", {
-            name: "Remove social network 3",
-          }),
+          within(networks)
+            .getAllByRole("button", { name: /^Remove / })
+            .at(-1)!,
         );
         await expect(
           within(networks).getAllByRole("button", { name: "Network" }),
@@ -349,6 +439,31 @@
       "Edits representative Design, Locale, and Settings controls",
       async () => {
         await userEvent.click(canvas.getByRole("tab", { name: "Design" }));
+        const designGroups = canvasElement.querySelectorAll<HTMLElement>(
+          '.complete-cv-tab-content[data-state="active"] [data-ui-part="configured-form-group"]',
+        );
+        await expect(designGroups.length).toBeGreaterThan(10);
+        for (const group of designGroups) {
+          await expect(getComputedStyle(group).borderTopWidth).toBe("0px");
+        }
+        const firstDesignHeader = designGroups[0].querySelector<HTMLElement>(
+          ".cv-form-section-header",
+        )!;
+        const designDisclosure = firstDesignHeader.querySelector<HTMLElement>(
+          ".cv-form-section-toggle",
+        )!;
+        const designTitle = firstDesignHeader.querySelector<HTMLElement>(
+          ".cv-form-section-title-toggle",
+        )!;
+        const disclosureRect = designDisclosure.getBoundingClientRect();
+        const titleRect = designTitle.getBoundingClientRect();
+        await expect(
+          Math.abs(
+            disclosureRect.top +
+              disclosureRect.height / 2 -
+              (titleRect.top + titleRect.height / 2),
+          ),
+        ).toBeLessThan(1);
         const theme = canvasElement.querySelector<HTMLButtonElement>(
           '.cv-form-inline-option-trigger[aria-label="Theme"]',
         )!;

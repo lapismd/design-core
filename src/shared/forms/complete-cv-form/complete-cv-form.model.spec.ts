@@ -2,15 +2,10 @@ import { describe, expect, it } from "vitest";
 
 import {
   applyYamlEdit,
-  createUiIdentityState,
   defaultEntry,
   defaultSection,
-  getAtPath,
-  moveItem,
   parseFragment,
-  removeItem,
   serializeFragment,
-  setAtPath,
   simpleListEntryMarker,
   uniqueId,
 } from "./complete-cv-form.model";
@@ -47,7 +42,7 @@ describe("complete CV form model", () => {
     });
   });
 
-  it("creates unique section and stable UI identities without changing source data", () => {
+  it("creates unique section identifiers", () => {
     const section = defaultSection(
       "EducationEntry",
       ["education"],
@@ -57,38 +52,6 @@ describe("complete CV form model", () => {
     expect(uniqueId("Education", ["education", "education-2"])).toBe(
       "education-3",
     );
-
-    const source = createSampleCv();
-    const first = createUiIdentityState(source);
-    const second = createUiIdentityState(source);
-    expect(first).toEqual(second);
-    expect(first.sections).toHaveLength(9);
-    expect(source.cv.sections?.[0]).not.toHaveProperty("_uiId");
-  });
-
-  it("updates nested paths immutably", () => {
-    const source = createSampleCv();
-    const next = setAtPath(
-      source,
-      ["cv", "sections", 1, "entries", 0, "degree"],
-      "DPhil",
-    );
-    expect(getAtPath(next, ["cv", "sections", 1, "entries", 0, "degree"])).toBe(
-      "DPhil",
-    );
-    expect(
-      getAtPath(source, ["cv", "sections", 1, "entries", 0, "degree"]),
-    ).toBe("PhD");
-    expect(next).not.toBe(source);
-    expect(next.cv).not.toBe(source.cv);
-  });
-
-  it("moves and removes list values without mutating the original", () => {
-    const items = ["alpha", "beta", "gamma"];
-    expect(moveItem(items, 0, 1)).toEqual(["beta", "alpha", "gamma"]);
-    expect(moveItem(items, 0, -1)).toBe(items);
-    expect(removeItem(items, 1)).toEqual(["alpha", "gamma"]);
-    expect(items).toEqual(["alpha", "beta", "gamma"]);
   });
 
   it("renders simple list markers in forward and reversed order", () => {

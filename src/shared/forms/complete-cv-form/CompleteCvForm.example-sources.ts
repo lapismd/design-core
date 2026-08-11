@@ -1,23 +1,21 @@
 export const CompleteCvFormExample = `<script lang="ts">
   import { AppShell, AppShellController } from "@lapismd/design-core/shell";
   import { FormToolbar, StructuredForm, YamlEditor } from "@lapismd/design-core/forms";
-  import { createFormConfig, textField } from "@lapismd/design-core/forms/core";
+  import { createFormController, defineFormConfig } from "@lapismd/design-core/forms/core";
   import * as Resizable from "@lapismd/design-core/shadcn/resizable";
   import * as ScrollArea from "@lapismd/design-core/shadcn/scroll-area";
   import * as Tabs from "@lapismd/design-core/shadcn/tabs";
 
   type CvDraft = { name: string };
   const shell = new AppShellController();
-  const config = createFormConfig<CvDraft>({
+  const controller = createFormController<CvDraft>({
+    defaultValues: { name: "John Doe" },
+  });
+  const config = defineFormConfig<CvDraft>()({
     id: "cv",
-    fields: [
-      textField({
-        id: "name",
-        label: "Name",
-        get: (draft) => draft.name,
-        set: (draft, name) => ({ ...draft, name }),
-      }),
-    ],
+    fields: {
+      name: { kind: "text", label: "Name" },
+    },
   });
   let draft = $state<CvDraft>({ name: "John Doe" });
   let tab = $state("cv");
@@ -62,13 +60,15 @@ export const CompleteCvFormExample = `<script lang="ts">
                   <StructuredForm
                     value={draft}
                     {config}
-                    onChange={(value) => updateDraft(value as CvDraft)}
+                    {controller}
+                    onChange={updateDraft}
                   />
                 </div>
               </ScrollArea.Root>
             </Resizable.Pane>
             <Resizable.Handle
               withHandle
+              variant="prominent"
               aria-label="Resize form and YAML panels"
             />
             <Resizable.Pane

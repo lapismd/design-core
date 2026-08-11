@@ -8,17 +8,16 @@
   import * as ScrollArea from "../../shadcn/scroll-area/index";
   import * as Tabs from "../../shadcn/tabs/index";
   import { AppShell, AppShellController } from "../../shell/app-shell/index";
-  import FormSectionHeader from "../form-section-header/FormSectionHeader.svelte";
+  import { createFormController, type FormController } from "../core/core";
   import FormToolbar from "../form-toolbar/FormToolbar.svelte";
   import StructuredForm from "../structured-form/StructuredForm.svelte";
   import YamlEditor from "../yaml-editor/YamlEditor.svelte";
-  import CompleteCvContent from "./CompleteCvContent.svelte";
-  import CompleteCvGroupList from "./CompleteCvGroupList.svelte";
   import {
-    designGroups,
-    localeGroups,
-    settingsConfig,
-  } from "./complete-cv-form.config";
+    completeCvConfig,
+    completeDesignConfig,
+    completeLocaleConfig,
+    completeSettingsConfig,
+  } from "./complete-cv-form.typed-config";
   import {
     applyYamlEdit,
     cloneSource,
@@ -29,7 +28,9 @@
     CompleteCvSource,
     CvFragment,
     CvStoryTab,
-    StoryRecord,
+    DesignFragment,
+    LocaleFragment,
+    SettingsFragment,
   } from "./complete-cv-form.types";
   import "./CompleteCvForm.css";
 
@@ -41,6 +42,18 @@
   ];
   const shellController = new AppShellController();
   const initialSource = createSampleCv();
+  const cvController = createFormController<CvFragment>({
+    defaultValues: initialSource.cv,
+  });
+  const designController = createFormController<DesignFragment>({
+    defaultValues: initialSource.design ?? {},
+  });
+  const localeController = createFormController<LocaleFragment>({
+    defaultValues: initialSource.locale ?? {},
+  });
+  const settingsController = createFormController<SettingsFragment>({
+    defaultValues: initialSource.settings ?? {},
+  });
 
   function yamlFor(source: CompleteCvSource): Record<CvStoryTab, string> {
     return {
@@ -61,16 +74,17 @@
     locale: null,
     settings: null,
   });
-  let closedByTab = $state<Record<CvStoryTab, string[]>>({
-    cv: [],
-    design: [],
-    locale: [],
-    settings: [],
-  });
-  let identityRevision = $state(0);
   let shellHost: HTMLDivElement;
 
-  const collapsedAll = $derived(closedByTab[activeTab].includes("*"));
+  const activeController = $derived(
+    {
+      cv: cvController,
+      design: designController,
+      locale: localeController,
+      settings: settingsController,
+    }[activeTab] as FormController<any, any>,
+  );
+  const collapsedAll = $derived(activeController.allDisclosuresCollapsed());
 
   function commit(next: CompleteCvSource): void {
     source = next;
@@ -78,7 +92,10 @@
     yamlErrors = { cv: null, design: null, locale: null, settings: null };
   }
 
-  function commitFragment(tab: CvStoryTab, value: StoryRecord): void {
+  function commitFragment<TTab extends Exclude<CvStoryTab, "cv">>(
+    tab: TTab,
+    value: NonNullable<CompleteCvSource[TTab]>,
+  ): void {
     commit({ ...source, [tab]: value });
   }
 
@@ -88,7 +105,6 @@
     yamlErrors = { ...yamlErrors, [tab]: result.error };
     if (!result.applied) return;
     source = result.source;
-    if (tab === "cv") identityRevision += 1;
   }
 
   async function reset(): Promise<void> {
@@ -97,8 +113,10 @@
     activeWorkspacePane = "form";
     yamlText = yamlFor(source);
     yamlErrors = { cv: null, design: null, locale: null, settings: null };
-    closedByTab = { cv: [], design: [], locale: [], settings: [] };
-    identityRevision += 1;
+    cvController.reset(source.cv, { emit: false });
+    designController.reset(source.design ?? {}, { emit: false });
+    localeController.reset(source.locale ?? {}, { emit: false });
+    settingsController.reset(source.settings ?? {}, { emit: false });
     await tick();
     const resetScroll = () => {
       shellHost
@@ -112,10 +130,6 @@
       resetScroll();
       requestAnimationFrame(resetScroll);
     });
-  }
-
-  function setClosed(tab: CvStoryTab, ids: string[]): void {
-    closedByTab = { ...closedByTab, [tab]: ids };
   }
 </script>
 
@@ -138,7 +152,9 @@
               collapseLabel={`Collapse all ${tabs.find((tab) => tab.value === activeTab)?.label ?? activeTab} groups`}
               expandLabel={`Expand all ${tabs.find((tab) => tab.value === activeTab)?.label ?? activeTab} groups`}
               onToggleCollapse={() =>
-                setClosed(activeTab, collapsedAll ? [] : ["*"])}
+                collapsedAll
+                  ? activeController.expandAll()
+                  : activeController.collapseAll()}
             >
               {#snippet leading()}
                 <span class="complete-cv-toolbar-title"
@@ -195,80 +211,36 @@
                         >
                           <div class="complete-cv-form-pane__content">
                             {#if tab.value === "cv"}
-                              <CompleteCvContent
-                                cv={source.cv}
-                                closedIds={closedByTab.cv}
-                                {identityRevision}
-                                onChange={(cv: CvFragment) =>
-                                  commit({ ...source, cv })}
-                                onClosedIdsChange={(ids) =>
-                                  setClosed("cv", ids)}
+                              <StructuredForm
+                                value={source.cv}
+                                config={completeCvConfig}
+                                controller={cvController}
+                                onChange={(cv) => commit({ ...source, cv })}
                               />
                             {:else if tab.value === "design"}
-                              <CompleteCvGroupList
+                              <StructuredForm
                                 value={source.design ?? {}}
-                                groups={designGroups}
-                                closedIds={closedByTab.design}
+                                config={completeDesignConfig}
+                                controller={designController}
                                 onChange={(value) =>
                                   commitFragment("design", value)}
-                                onClosedIdsChange={(ids) =>
-                                  setClosed("design", ids)}
                               />
                             {:else if tab.value === "locale"}
-                              <CompleteCvGroupList
+                              <StructuredForm
                                 value={source.locale ?? {}}
-                                groups={localeGroups}
-                                closedIds={closedByTab.locale}
+                                config={completeLocaleConfig}
+                                controller={localeController}
                                 onChange={(value) =>
                                   commitFragment("locale", value)}
-                                onClosedIdsChange={(ids) =>
-                                  setClosed("locale", ids)}
                               />
                             {:else}
-                              <section
-                                class="complete-cv-group complete-cv-settings-group"
-                              >
-                                <FormSectionHeader
-                                  title="Document Settings"
-                                  index={0}
-                                  total={1}
-                                  open={!closedByTab.settings.includes("*") &&
-                                    !closedByTab.settings.includes(
-                                      "document-settings",
-                                    )}
-                                  editable={false}
-                                  movable={false}
-                                  removable={false}
-                                  titleToggleable
-                                  titleRowClass="complete-cv-setting-title-row"
-                                  onToggle={() => {
-                                    const ids = closedByTab.settings.filter(
-                                      (id) => id !== "*",
-                                    );
-                                    setClosed(
-                                      "settings",
-                                      ids.includes("document-settings")
-                                        ? ids.filter(
-                                            (id) => id !== "document-settings",
-                                          )
-                                        : [...ids, "document-settings"],
-                                    );
-                                  }}
-                                />
-                                {#if !closedByTab.settings.includes("*") && !closedByTab.settings.includes("document-settings")}
-                                  <div class="complete-cv-group__body">
-                                    <StructuredForm
-                                      value={source.settings ?? {}}
-                                      config={settingsConfig}
-                                      onChange={(value) =>
-                                        commitFragment(
-                                          "settings",
-                                          value as StoryRecord,
-                                        )}
-                                    />
-                                  </div>
-                                {/if}
-                              </section>
+                              <StructuredForm
+                                value={source.settings ?? {}}
+                                config={completeSettingsConfig}
+                                controller={settingsController}
+                                onChange={(value) =>
+                                  commitFragment("settings", value)}
+                              />
                             {/if}
                           </div>
                         </ScrollArea.Root>
@@ -276,6 +248,7 @@
 
                       <Resizable.Handle
                         withHandle
+                        variant="prominent"
                         class="complete-cv-resize-handle"
                         aria-label="Resize form and YAML panels"
                         data-testid={`complete-cv-${tab.value}-resize-handle`}
