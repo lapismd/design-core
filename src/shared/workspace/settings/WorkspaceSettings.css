@@ -350,7 +350,8 @@
   white-space: nowrap;
 }
 
-.ui-workspace-setting-toggle-table__enabled [data-ui-component="switch"] {
+.ui-workspace-setting-toggle-table__enabled
+  [data-ui-component="switch"][data-ui-part="switch"] {
   margin-inline-start: auto;
 }
 

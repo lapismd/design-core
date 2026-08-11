@@ -428,6 +428,18 @@
 
     const formatting = canvas.getByRole("switch", { name: "Formatting" });
     await expect(formatting).toBeChecked();
+    const formattingThumb = formatting.querySelector<HTMLElement>(
+      '[data-ui-part="switch-thumb"]',
+    );
+    await expect(formattingThumb).not.toBeNull();
+    const trackBounds = formatting.getBoundingClientRect();
+    const thumbBounds = formattingThumb!.getBoundingClientRect();
+    await expect(thumbBounds.left).toBeGreaterThanOrEqual(
+      trackBounds.left - 0.5,
+    );
+    await expect(thumbBounds.right).toBeLessThanOrEqual(
+      trackBounds.right + 0.5,
+    );
     await userEvent.click(formatting);
     await expect(formatting).not.toBeChecked();
     await expect(toggleTableControls.get("demo.features.formatting")).toBe(
