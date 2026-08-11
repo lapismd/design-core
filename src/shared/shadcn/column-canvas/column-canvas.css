@@ -252,11 +252,12 @@
   [data-ui-part="column-item"] {
   width: calc(100% - 0.5rem);
   margin-inline: 0.25rem;
+  margin-block-start: var(--ui-column-canvas-item-gap, 0.25rem);
 }
 
 [data-ui-component="column-canvas"][data-ui-part="column-body"]
-  [data-ui-part="column-item"]:first-child {
-  margin-block-start: 0.25rem;
+  [data-ui-part="column-item"]:last-child {
+  margin-block-end: var(--ui-column-canvas-item-gap, 0.25rem);
 }
 
 [data-ui-component="column-canvas"][data-ui-part="column-body"]

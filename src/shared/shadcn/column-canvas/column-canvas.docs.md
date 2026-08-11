@@ -5,6 +5,8 @@ navigation. A typed app-owned controller owns path selection, cascade
 visibility (`pathLevel`), durable widths, and collapse/close. `Root` adapts the
 canvas presentation to its own bounded width without mutating that controller.
 Compound parts provide consistent header, toggle, body, and item chrome.
+Adjacent `Item` rows are separated by `--ui-column-canvas-item-gap` so hover
+and selected surfaces retain distinct rounded edges.
 
 This is a project-authored native-CSS Layout family. It is not the same as
 Resizable: Resizable fills a box with percentage pane groups, while Column

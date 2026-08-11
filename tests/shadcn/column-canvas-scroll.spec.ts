@@ -908,6 +908,17 @@ test.describe("Column Canvas full showcase", () => {
     ).toBeVisible();
     await expect(workspace).toHaveCSS("width", "280px");
 
+    const workspaceItems = workspace.locator('[data-ui-part="column-item"]');
+    await expect(workspaceItems).toHaveCount(2);
+    const itemGaps = await workspaceItems.evaluateAll((items) =>
+      items.slice(1).map((item, index) => {
+        const previousRect = items[index].getBoundingClientRect();
+        const currentRect = item.getBoundingClientRect();
+        return currentRect.top - previousRect.bottom;
+      }),
+    );
+    expect(itemGaps).toEqual([4]);
+
     await page.getByRole("button", { name: "Close Activity column" }).click();
     await expect(root.locator('[data-column-id="activity"]')).toHaveCount(0);
     await page

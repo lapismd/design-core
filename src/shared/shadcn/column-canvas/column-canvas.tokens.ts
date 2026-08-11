@@ -13,6 +13,7 @@ export const columnCanvasTokenNames = {
   countColor: "--ui-column-canvas-count-color",
   padding: "--ui-column-canvas-padding",
   scrollbarGap: "--ui-column-canvas-scrollbar-gap",
+  itemGap: "--ui-column-canvas-item-gap",
   itemHover: "--ui-column-canvas-item-hover",
   itemSelected: "--ui-column-canvas-item-selected",
   itemSelectedForeground: "--ui-column-canvas-item-selected-foreground",
