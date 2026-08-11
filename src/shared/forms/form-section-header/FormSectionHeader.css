@@ -1,5 +1,6 @@
 .cv-form-section-header {
   position: relative;
+  --ui-form-section-title-line-height: 1.5rem;
 }
 .cv-form-section-move {
   position: absolute;
@@ -44,7 +45,7 @@
 
 .cv-form-section-toggle {
   position: absolute;
-  top: 50%;
+  top: calc(var(--ui-form-section-title-line-height) / 2);
   left: -1.35rem;
   z-index: 1;
   translate: 0 -50%;

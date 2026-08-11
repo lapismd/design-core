@@ -138,6 +138,10 @@
   padding: 0 0 0.25rem;
 }
 
+.ui-configured-form-group[data-appearance="subtle"] > .cv-form-section-header {
+  --ui-form-section-title-line-height: 1.03125rem;
+}
+
 .ui-configured-form-group[data-appearance="subtle"]
   > .cv-form-section-header
   .cv-form-section-title-toggle {

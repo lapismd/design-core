@@ -25,9 +25,20 @@
 <Story
   name="Toggles disclosure"
   play={async ({ canvas }) => {
-    await userEvent.click(
-      canvas.getByRole("button", { name: "Collapse Experience" }),
-    );
+    const disclosure = canvas.getByRole("button", {
+      name: "Collapse Experience",
+    });
+    const title = canvas.getByRole("button", { name: "Experience" });
+    const disclosureRect = disclosure.getBoundingClientRect();
+    const titleRect = title.getBoundingClientRect();
+    await expect(
+      Math.abs(
+        disclosureRect.top +
+          disclosureRect.height / 2 -
+          (titleRect.top + titleRect.height / 2),
+      ),
+    ).toBeLessThan(1);
+    await userEvent.click(disclosure);
     await expect(canvas.getByRole("status")).toHaveTextContent("collapsed");
   }}
   tags={["visual-ready"]}
