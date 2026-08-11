@@ -76,11 +76,18 @@ describe("source-reference form layout CSS", () => {
     );
   });
 
-  it("keeps add actions legible and full width in limited space", () => {
+  it("keeps add actions subdued until interaction and full width in limited space", () => {
     const addButtonCss = readCss("../form-add-button/FormAddButton.css");
+    const listEditorCss = readCss("../list-editor/ListEditor.css");
 
     expect(addButtonCss).toMatch(
-      /color:\s*color-mix\([\s\S]*?var\(--ui-form-foreground\)\s*80%/,
+      /color:\s*color-mix\([\s\S]*?var\(--ui-form-foreground\)\s*62%/,
+    );
+    expect(addButtonCss).toMatch(
+      /\.ui-form-add-button:hover,[\s\S]*?color:\s*var\(--ui-form-foreground\)/,
+    );
+    expect(listEditorCss).toMatch(
+      /\.ui-list-editor__add\s*\{[\s\S]*?var\(--ui-form-foreground\)\s*62%/,
     );
     expect(addButtonCss).toMatch(
       /@media \(max-width:\s*720px\)[\s\S]*?\.ui-form-add-button\s*\{[\s\S]*?width:\s*100%[\s\S]*?justify-content:\s*center/,

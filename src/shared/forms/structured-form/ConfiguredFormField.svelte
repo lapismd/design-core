@@ -309,6 +309,9 @@
               class="ui-configured-array__row-body"
               data-ui-part="configured-array-row-body"
               data-has-marker={marker ? "" : undefined}
+              data-marker-spacing={marker
+                ? (field.markerSpacing ?? "default")
+                : undefined}
               data-hide-label={(field.itemField as Record<string, unknown>)
                 ?.hideLabel || field.hideItemLabels
                 ? ""

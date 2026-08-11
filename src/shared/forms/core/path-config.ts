@@ -179,6 +179,7 @@ type PrimitiveArrayItemField<TItem> = {
 export type FormArrayPresentation = "rows" | "sections";
 export type FormArrayAppearance = "default" | "subsection";
 export type FormAddButtonPresentation = "inline" | "panel";
+export type FormArrayMarkerSpacing = "default" | "wide";
 
 type ArrayPathFormFieldConfig<
   TValues,
@@ -209,6 +210,7 @@ type ArrayPathFormFieldConfig<
           index: number;
           total: number;
         }) => string | null;
+        markerSpacing?: FormArrayMarkerSpacing;
         showLabel?: boolean;
         hideItemLabels?: boolean;
         addPlacement?: "header" | "footer";
