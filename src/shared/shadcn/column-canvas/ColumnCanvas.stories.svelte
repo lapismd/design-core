@@ -121,6 +121,16 @@
 
   let lastSavedWidth = $state<number | null>(null);
   let lastSavedCollapsed = $state<boolean | null>(null);
+  let persistedWidthsLayout: ColumnCanvas.ColumnCanvasLayoutV1 | null = null;
+
+  const persistedWidthsAdapter: ColumnCanvas.ColumnCanvasLayoutPersistence = {
+    async load() {
+      return persistedWidthsLayout;
+    },
+    async save(layout) {
+      persistedWidthsLayout = structuredClone(layout);
+    },
+  };
 
   const persistCanvas = createColumnCanvasController({
     columns: {
@@ -132,6 +142,7 @@
         collapsible: true,
       },
     },
+    persistence: persistedWidthsAdapter,
     saveDebounceMs: 0,
     onLayoutChange: (layout) => {
       lastSavedWidth = layout.columns.components?.width ?? null;
@@ -1290,6 +1301,8 @@
 <Story
   name="Persisted widths"
   play={async ({ canvas }) => {
+    await waitFor(() => expect(persistCanvas.layoutReady).toBe(true));
+    persistedWidthsLayout = null;
     lastSavedWidth = null;
     lastSavedCollapsed = null;
     persistCanvas.resetWidth("components");
@@ -1304,6 +1317,9 @@
     await waitFor(() => {
       expect(lastSavedWidth).not.toBeNull();
       expect(lastSavedWidth!).toBeGreaterThan(300);
+      expect(persistedWidthsLayout?.columns.components?.width).toBe(
+        lastSavedWidth,
+      );
     });
 
     await userEvent.click(
@@ -1312,6 +1328,7 @@
     await persistCanvas.flushSave();
     await waitFor(() => {
       expect(lastSavedCollapsed).toBe(true);
+      expect(persistedWidthsLayout?.columns.components?.collapsed).toBe(true);
     });
   }}
   parameters={{

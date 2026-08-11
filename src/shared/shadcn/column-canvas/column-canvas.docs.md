@@ -87,21 +87,112 @@ import * as ColumnCanvas from "@lapismd/design-core/shadcn/column-canvas";
 </div>
 ```
 
-## Controller
+## Configure the controller
 
-`createColumnCanvasController` owns:
+Create one app-owned controller and pass it to `Root`. The controller owns the
+selection path and durable layout state. Keep its reactive fields on the
+controller object instead of destructuring them.
 
-- Path: `path`, `pathAt`, `select`, `clearFrom`, `clear`, `isSelected`,
-  `visibleDepth`
-- Cascade visibility: `pathLevel` on column config, `getPathLevel`,
-  `isPathVisible`, `isColumnVisible` (path-eligible and not closed)
-- Layout: `getWidth` / `getDefaultWidth` / `setWidth` / `resetWidth`, `collapse`
-  / `expand` / `toggle`, `close` / `open`, `isCollapsed`, `isClosed`,
-  `isResizable`, `isCollapsible`, `isCloseable`
-- Closeable QoL: `openOnSelect` (default true when `closeable`) reopens the
-  next-level closeable column on `select`
-- Dynamic columns: `ensureColumn(id, config)`
-- Persistence: `restoreLayout`, `flushSave`, `getLayout`, `dispose`
+### Column configuration
+
+Each entry in `columns` registers one stable column id:
+
+| Option         | Default             | Purpose                                                                |
+| -------------- | ------------------- | ---------------------------------------------------------------------- |
+| `defaultWidth` | Required            | Initial expanded width in CSS pixels, clamped to the configured limits |
+| `minWidth`     | `240`               | Minimum durable width                                                  |
+| `maxWidth`     | `760`               | Maximum durable width                                                  |
+| `pathLevel`    | `0`                 | Minimum `path.length` required before the column can render            |
+| `resizable`    | `false`             | Adds the pointer resize handle outside compact mode                    |
+| `collapsible`  | `false`             | Enables `Toggle` and the collapsed rail                                |
+| `closeable`    | `false`             | Enables `Close`, `open`, and durable closed state                      |
+| `openOnSelect` | Same as `closeable` | Reopens a closed next-level column after selection                     |
+| `collapsed`    | `false`             | Initial collapsed state before persistence restores                    |
+| `closed`       | `false`             | Initial closed state before persistence restores                       |
+
+`minWidth` must not exceed `maxWidth`. The controller rounds and clamps every
+width before storing it.
+
+### Controller options
+
+The controller constructor accepts these host integrations:
+
+| Option                | Default  | Purpose                                                             |
+| --------------------- | -------- | ------------------------------------------------------------------- |
+| `columns`             | Required | Registered column configuration keyed by stable id                  |
+| `initialPath`         | `[]`     | Initial Miller-column selection path                                |
+| `trailingSpacerWidth` | `0`      | Optional blank width after the final column in wide and fixed modes |
+| `persistence`         | None     | Async `load` and `save` adapter for V1 layout state                 |
+| `saveDebounceMs`      | `200`    | Delay before layout callbacks and persistence saves                 |
+| `onPathChange`        | None     | Receives a copied path after selection changes                      |
+| `onLayoutChange`      | None     | Receives the V1 snapshot and its change event before save           |
+| `onPersistenceError`  | None     | Receives failed `load` or `save` operations                         |
+
+### Controller state and methods
+
+The public controller surface is grouped by responsibility:
+
+| Area              | State and methods                                                                     |
+| ----------------- | ------------------------------------------------------------------------------------- |
+| Selection         | `path`, `visibleDepth`, `pathAt`, `select`, `clearFrom`, `clear`, `isSelected`        |
+| Visibility        | `getPathLevel`, `isPathVisible`, `isColumnVisible`                                    |
+| Registration      | `hasColumn`, `ensureColumn`                                                           |
+| Width             | `getWidth`, `getDefaultWidth`, `getMinWidth`, `getMaxWidth`, `setWidth`, `resetWidth` |
+| Collapse          | `isCollapsible`, `isCollapsed`, `collapse`, `expand`, `toggle`, `setCollapsed`        |
+| Close             | `isCloseable`, `isClosed`, `close`, `open`, `setClosed`                               |
+| Resize capability | `isResizable`                                                                         |
+| Persistence       | `layoutReady`, `getLayout`, `restoreLayout`, `flushSave`, `dispose`                   |
+
+Selecting the current key clears that level and every deeper level. Closing a
+column keeps it registered. Opening a column also leaves its durable width
+intact. `ensureColumn(id, config)` supports runtime lanes and applies any
+restored snapshot that arrived before registration.
+
+## Compose columns
+
+Passing `title` to `Column` renders the standard `Header`, `Title`, `Count`,
+`Toggle`, and `Close` chrome. Omit `title` when you need a custom header and
+compose the exported parts yourself. `Body` owns an independent vertical Scroll
+Area. Its `onScrollNearEnd` callback fires whenever the body is within 180 CSS
+pixels of its bottom.
+
+`Item` is a button that accepts native button attributes. `selected` sets both
+`data-selected` and `aria-pressed`; `disabled` retains native button behavior.
+The near-end callback can fire again while the body remains near its boundary.
+Deduplicate in-flight loading in the host. `Toggle` and `Close` accept shared
+Button props and render only when their controller capability is enabled. When
+you omit `Column.title`, use readable column ids or override the action labels.
+
+### Column props
+
+`Column` accepts these family-specific props in addition to native section
+attributes and a bindable `ref`:
+
+| Prop            | Purpose                                                                |
+| --------------- | ---------------------------------------------------------------------- |
+| `id`            | Stable controller id                                                   |
+| `title`         | Default header title and accessible action label                       |
+| `count`         | Default header and collapsed-rail count                                |
+| `pathLevel`     | Presentation override for the registered config                        |
+| `resizable`     | Presentation override for the registered config                        |
+| `collapsible`   | Presentation override for the registered config                        |
+| `closeable`     | Presentation override for the registered config                        |
+| `sticky`        | Registers a leading floating return rail in wide and fixed modes       |
+| `stickyRail`    | Named snippet rendered inside the sticky return button                 |
+| `width`         | Test or harness width override; prefer controller widths in products   |
+| `onWidthChange` | Test or harness resize callback; prefer controller updates in products |
+
+`CollapsedColumn` is a low-level escape hatch with `label`, optional `count`,
+and `onExpand`. It must remain inside `Root`. Prefer controller-owned collapse
+through `Column` for durable application layout.
+
+### Compound context hooks
+
+Use `useColumnCanvas()` inside a custom descendant to read the controller.
+`useColumnCanvasContext()` also exposes the resolved display mode and layout
+request functions for compound extensions. `useColumnCanvasColumn()` reads the
+current column id, title, count, and capability flags inside `Column`. Do not
+destructure reactive context getters.
 
 ## Responsive display
 
@@ -109,6 +200,23 @@ import * as ColumnCanvas from "@lapismd/design-core/shadcn/column-canvas";
 `wide` at or above `compactBreakpoint` (`960` CSS pixels by default), or
 `compact` below it. Inspect the resolved presentation through
 `data-display-mode="wide|compact|fixed"`.
+
+### Root props
+
+| Prop                | Default           | Purpose                                                       |
+| ------------------- | ----------------- | ------------------------------------------------------------- |
+| `controller`        | Required          | App-owned `ColumnCanvasController`                            |
+| `displayMode`       | `"auto"`          | Requested `auto`, `compact`, or `fixed` presentation          |
+| `compactBreakpoint` | `960`             | Bounded root width that separates auto compact and wide modes |
+| `tabindex`          | `0`               | Keeps root-level compact keyboard navigation reachable        |
+| `role`              | `"region"`        | Root landmark role                                            |
+| `aria-label`        | `"Column canvas"` | Accessible landmark name                                      |
+| `ref`               | `null`            | Bindable root element reference                               |
+| `children`          | None              | Column parts rendered in track order                          |
+
+`Root` also forwards native div attributes and event handlers. An `onkeydown`
+or `onwheel` handler can call `preventDefault()` before the built-in routing
+logic runs.
 
 - `wide` gives the newest two rendered columns enough transient minimum width
   to share the stage, while retaining larger controller widths and all resize
@@ -124,12 +232,16 @@ import * as ColumnCanvas from "@lapismd/design-core/shadcn/column-canvas";
   resize handles, an optional configured trailing spacer, and free horizontal
   scrolling remain as in the original canvas, with no active-column following.
 
+Set `displayMode="compact"` to force the compact presentation at every root
+width. Set `displayMode="fixed"` to bypass container adaptation. In auto mode,
+`compactBreakpoint` uses the bounded root width rather than the viewport.
+
 The last rendered, non-closed column is the active column. It is followed after
-path, visibility, collapse/open, restoration, and display-mode changes—not
+path, visibility, collapse/open, restoration, and display-mode changes, not
 after ordinary body rendering or manual scrolling. Root-level Arrow Left/Right
 and Home/End navigate compact snap points without changing controller
 selection. A scrollable body retains vertical wheel ownership while it can
-move. At its boundary—or over a non-scrollable body—vertical input routes to
+move. At its boundary, or over a non-scrollable body, vertical input routes to
 slower, smooth compact-canvas motion. Input at the canvas edge remains available
 to the surrounding page. Reduced-motion preferences keep routed motion instant.
 
@@ -167,78 +279,188 @@ Sticky is transient presentation state. It is not controller configuration or
 part of the V1 persistence schema. Compact mode ignores it and retains the
 full-stage active-column and snapping behavior.
 
-## Persistence
+## Persist layout
 
-### Persisted Widths
+`Root` calls `restoreLayout()` and exposes restoration through
+`controller.layoutReady` and `data-layout-ready`. A persistence adapter loads
+unknown data and saves the normalized V1 shape:
 
-Inject `ColumnCanvasLayoutPersistence` (or
-`createLocalStorageColumnCanvasLayoutPersistence`) to restore widths and
-collapse. `onLayoutChange` fires on debounced saves for hosts that sync
-elsewhere. `pathLevel` is config, not persisted layout.
+```json
+{
+  "version": 1,
+  "columns": {
+    "tasks": { "width": 380, "collapsed": false, "closed": false }
+  }
+}
+```
+
+V1 persists each registered column's width, collapsed state, and closed state.
+Invalid versions and malformed entries are ignored. Restored widths are
+clamped to the current `minWidth` and `maxWidth`.
+
+Use `createLocalStorageColumnCanvasLayoutPersistence(key, storage?)` for browser
+storage, or implement `ColumnCanvasLayoutPersistence` for another backend.
+Call `flushSave()` before a host must observe pending changes. Call `dispose()`
+when the owning application lifecycle ends.
+
+`onLayoutChange` receives a `source` of `collapse`, `close`, `resize`,
+`reset-width`, `register`, or `ensure`, plus the affected `columnId`.
+`onPersistenceError` reports `load` and `save` failures without replacing app
+error policy.
+
+The selection path, `pathLevel`, responsive mode, sticky state, and scroll
+position are transient. They never enter the V1 layout schema.
+
+## Accessibility and input
+
+`Root` defaults to a focusable `region` named “Column canvas”. Supply a
+domain-specific `aria-label` when a page contains more than one canvas. Native
+HTML attributes and event handlers pass through every visual part.
+
+When compact `Root` itself has focus, Arrow Left, Arrow Right, Home, and End
+move between snap points without changing controller selection or descendant
+focus. Horizontal wheel, trackpad, and touch movement remain native. Vertical
+wheel motion stays with the nearest scrollable body while it can move. Unused
+vertical motion moves an eligible horizontal canvas, and motion at the canvas
+edge remains available to the surrounding page.
+
+Toggle, Close, collapsed rails, resize separators, and sticky return buttons
+ship with accessible names. Routed scrolling uses instant motion when the
+reader requests reduced motion. Logical inline-axis geometry supports
+left-to-right and right-to-left documents.
 
 ## Examples
 
-### Product Workspace Showcase
+### Product workspace showcase
 
 A realistic workspace → project → board → task cascade with responsive
 active-column following, two leading sticky return rails, independent body
 scrolling, resizers, collapse controls, five closeable lanes, task progress,
 checklist data, and an activity timeline.
 
-### All Features
+### All features
 
 Three always-mounted columns with collapse, resize, and a closeable details
 pane that repeats Name / Id / Role / Import / Category from the selected
 component.
 
-### Three Level
+### Three-level cascade
 
-Path selection only — categories → components → detail prose.
+Path selection only: categories → components → detail prose.
 
 ### Closeable
 
 `Close` removes a closeable column from the canvas; `controller.open(id)` or
 selecting a row (`openOnSelect`) restores it.
 
-### Collapse And Expand
+### Collapse and expand
 
 `Toggle` collapses a column to a vertical rail; expand restores it.
 
-### Resizable
+### Resizable columns
 
-Set `resizable: true` on the column config — the handle updates the controller.
+Set `resizable: true` on the column config. The handle updates the controller.
 
-### Responsive Adaptive Canvas
+### Responsive adaptive canvas
 
 At compact widths the active column follows the deepest path and fills the
 bounded stage without exposing the previous column. At wide widths the newest
 pair shares the stage with a narrow slice of preceding context. Durable
 controller widths are preserved through both presentations.
 
-### Fixed Compatibility
+### Fixed compatibility
 
 Set `displayMode="fixed"` when a host must retain fixed pixel widths and free
 horizontal scrolling at every container size.
 
-### Sticky Floating Columns
+### Sticky floating columns
 
 Mark consecutive leading main panels `sticky` and provide `stickyRail` snippets
 so later detail columns can move past ordinary-flow sources while custom
 collapsed replacements remain available as return controls.
 
-### Sticky Fixed Columns
+### Sticky fixed columns
 
 Fixed mode supports the same opt-in floating replacements without enabling
 active following or snapping. Fixed canvases without sticky columns are
 unchanged.
 
+## Parts
+
+The family exports these visual parts:
+
+| Part              | Responsibility                                                                                      |
+| ----------------- | --------------------------------------------------------------------------------------------------- |
+| `Root`            | Controller context, bounded responsive horizontal track, input routing, following, and sticky stack |
+| `Column`          | Visibility, durable width, collapse/close state, default header, and resize handle                  |
+| `Header`          | Custom fixed header container inside `Column`                                                       |
+| `Title`           | Custom title that falls back to the column context title                                            |
+| `Count`           | Custom count that hides when neither content nor a count exists                                     |
+| `HeaderActions`   | Action group for custom header controls                                                             |
+| `Toggle`          | Controller-owned collapse and expand button                                                         |
+| `Close`           | Controller-owned close button                                                                       |
+| `Body`            | Independent vertical Scroll Area and near-end callback                                              |
+| `Item`            | Selectable native button row                                                                        |
+| `CollapsedColumn` | Low-level manually controlled rail                                                                  |
+
+The barrel also exports the controller, persistence types and helpers, display
+mode types, context hooks, constants, and `columnCanvasTokenNames`.
+
+The complete non-visual export groups are:
+
+- Controller: `createColumnCanvasController`, `ColumnCanvasController`,
+  `ColumnCanvasColumnConfig`, `CreateColumnCanvasControllerOptions`, and the
+  `COLUMN_CANVAS_DEFAULT_MIN_WIDTH`, `COLUMN_CANVAS_DEFAULT_MAX_WIDTH`, and
+  `COLUMN_CANVAS_DEFAULT_TRAILING_SPACER_WIDTH` constants
+- Persistence: `createLocalStorageColumnCanvasLayoutPersistence`,
+  `normalizeColumnCanvasLayout`, `COLUMN_CANVAS_LAYOUT_VERSION`,
+  `COLUMN_CANVAS_DEFAULT_STORAGE_KEY`, and all layout, adapter, event, source,
+  and error types
+- Presentation: `ColumnCanvasDisplayMode`,
+  `ColumnCanvasResolvedDisplayMode`, the three context hooks and their context
+  types, `columnCanvasTokenNames`, and `ColumnCanvasToken`
+
+Each visual part also has a long alias, such as `ColumnCanvasColumn` and
+`ColumnCanvasBody`. `ColumnCanvas` is the alias for `Root`.
+
+## Diagnostic attributes
+
+Use semantic attributes for tests and supported ancestor styling:
+
+| Element            | Attributes                                                                  |
+| ------------------ | --------------------------------------------------------------------------- |
+| Root               | `data-display-mode` with `wide`, `compact`, or `fixed`; `data-layout-ready` |
+| Column             | `data-column-id`, `data-resizable`, `data-sticky`, `data-sticky-state`      |
+| Sticky replacement | `data-sticky-for`, `data-sticky-state="stuck"`                              |
+| Item               | `data-selected` and `aria-pressed`                                          |
+| Every family part  | `data-ui-component="column-canvas"` and a semantic `data-ui-part`           |
+
 ## Styling
 
-Override the public `--ui-column-canvas-*` tokens on an ancestor, including
-`--ui-column-canvas-wide-context-width` (defaulting to the retained
-`--ui-column-canvas-compact-peek-width` compatibility token, `2.75rem`) and
-`--ui-column-canvas-sticky-peek-width` (defaulting to
-`--ui-column-canvas-collapsed-width`, `2.75rem`). Floating and collapsed rail
-hover surfaces use `--ui-column-canvas-rail-hover` (defaulting to `--muted`).
-Production sources use native CSS and compose the shared Button for Toggle,
-Close, and sticky return controls.
+Override these public tokens on `:root` or a shared ancestor:
+
+| Token                                         | Default                                 |
+| --------------------------------------------- | --------------------------------------- |
+| `--ui-column-canvas-background`               | `--background`                          |
+| `--ui-column-canvas-column-background`        | `--card`                                |
+| `--ui-column-canvas-border-color`             | `--border`                              |
+| `--ui-column-canvas-radius`                   | `--radius-lg`, then `--radius`          |
+| `--ui-column-canvas-header-height`            | `2.5rem`                                |
+| `--ui-column-canvas-gap`                      | `0.75rem`                               |
+| `--ui-column-canvas-collapsed-width`          | `2.75rem`                               |
+| `--ui-column-canvas-compact-peek-width`       | `2.75rem` compatibility token           |
+| `--ui-column-canvas-wide-context-width`       | `--ui-column-canvas-compact-peek-width` |
+| `--ui-column-canvas-sticky-peek-width`        | `--ui-column-canvas-collapsed-width`    |
+| `--ui-column-canvas-resize-handle-hover`      | 40% `--primary` mixed with transparent  |
+| `--ui-column-canvas-title-color`              | `--foreground`                          |
+| `--ui-column-canvas-count-color`              | `--muted-foreground`                    |
+| `--ui-column-canvas-padding`                  | `0.75rem`                               |
+| `--ui-column-canvas-scrollbar-gap`            | `0.5rem`                                |
+| `--ui-column-canvas-item-gap`                 | `0.25rem`                               |
+| `--ui-column-canvas-item-hover`               | `--muted`                               |
+| `--ui-column-canvas-rail-hover`               | `--muted`                               |
+| `--ui-column-canvas-item-selected`            | `--accent`                              |
+| `--ui-column-canvas-item-selected-foreground` | `--accent-foreground`                   |
+
+Production sources use native CSS. Toggle, Close, and sticky return controls
+compose the shared shadcn Button.

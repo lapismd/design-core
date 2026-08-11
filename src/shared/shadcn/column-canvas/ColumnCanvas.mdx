@@ -1,5 +1,12 @@
-import { Meta, Canvas, Controls, Primary } from "@storybook/addon-docs/blocks";
+import {
+  Meta,
+  Canvas,
+  Controls,
+  Primary,
+  Source,
+} from "@storybook/addon-docs/blocks";
 import * as ColumnCanvasStories from "./ColumnCanvas.stories.svelte";
+import * as exampleSources from "./ColumnCanvas.example-sources";
 
 <Meta of={ColumnCanvasStories} />
 
@@ -36,24 +43,520 @@ adjacent hover and selected surfaces visually separate.
 
 <Controls />
 
+## Configure the controller
+
+Create one app-owned controller and pass it to `Root`. The controller owns the
+selection path and durable layout state. Keep its reactive fields on the
+controller object instead of destructuring them.
+
+### Column configuration
+
+Each entry in `columns` registers one stable column id:
+
+<table>
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Default</th>
+      <th>Purpose</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>defaultWidth</code>
+      </td>
+      <td>Required</td>
+      <td>
+        Initial expanded width in CSS pixels, clamped to the configured limits
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>minWidth</code>
+      </td>
+      <td>
+        <code>240</code>
+      </td>
+      <td>Minimum durable width</td>
+    </tr>
+    <tr>
+      <td>
+        <code>maxWidth</code>
+      </td>
+      <td>
+        <code>760</code>
+      </td>
+      <td>Maximum durable width</td>
+    </tr>
+    <tr>
+      <td>
+        <code>pathLevel</code>
+      </td>
+      <td>
+        <code>0</code>
+      </td>
+      <td>
+        Minimum <code>path.length</code> required before the column can render
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>resizable</code>
+      </td>
+      <td>
+        <code>false</code>
+      </td>
+      <td>Adds the pointer resize handle outside compact mode</td>
+    </tr>
+    <tr>
+      <td>
+        <code>collapsible</code>
+      </td>
+      <td>
+        <code>false</code>
+      </td>
+      <td>
+        Enables <code>Toggle</code> and the collapsed rail
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>closeable</code>
+      </td>
+      <td>
+        <code>false</code>
+      </td>
+      <td>
+        Enables <code>Close</code>, <code>open</code>, and durable closed state
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>openOnSelect</code>
+      </td>
+      <td>
+        Same as <code>closeable</code>
+      </td>
+      <td>Reopens a closed next-level column after selection</td>
+    </tr>
+    <tr>
+      <td>
+        <code>collapsed</code>
+      </td>
+      <td>
+        <code>false</code>
+      </td>
+      <td>Initial collapsed state before persistence restores</td>
+    </tr>
+    <tr>
+      <td>
+        <code>closed</code>
+      </td>
+      <td>
+        <code>false</code>
+      </td>
+      <td>Initial closed state before persistence restores</td>
+    </tr>
+  </tbody>
+</table>
+
+`minWidth` must not exceed `maxWidth`. The controller rounds and clamps every
+width before storing it.
+
+### Controller options
+
+The controller constructor accepts these host integrations:
+
+<table>
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Default</th>
+      <th>Purpose</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>columns</code>
+      </td>
+      <td>Required</td>
+      <td>Registered column configuration keyed by stable id</td>
+    </tr>
+    <tr>
+      <td>
+        <code>initialPath</code>
+      </td>
+      <td>
+        <code>[]</code>
+      </td>
+      <td>Initial Miller-column selection path</td>
+    </tr>
+    <tr>
+      <td>
+        <code>trailingSpacerWidth</code>
+      </td>
+      <td>
+        <code>0</code>
+      </td>
+      <td>
+        Optional blank width after the final column in wide and fixed modes
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>persistence</code>
+      </td>
+      <td>None</td>
+      <td>
+        Async <code>load</code> and <code>save</code> adapter for V1 layout
+        state
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>saveDebounceMs</code>
+      </td>
+      <td>
+        <code>200</code>
+      </td>
+      <td>Delay before layout callbacks and persistence saves</td>
+    </tr>
+    <tr>
+      <td>
+        <code>onPathChange</code>
+      </td>
+      <td>None</td>
+      <td>Receives a copied path after selection changes</td>
+    </tr>
+    <tr>
+      <td>
+        <code>onLayoutChange</code>
+      </td>
+      <td>None</td>
+      <td>Receives the V1 snapshot and its change event before save</td>
+    </tr>
+    <tr>
+      <td>
+        <code>onPersistenceError</code>
+      </td>
+      <td>None</td>
+      <td>
+        Receives failed <code>load</code> or <code>save</code> operations
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+### Controller state and methods
+
+The public controller surface is grouped by responsibility:
+
+<table>
+  <thead>
+    <tr>
+      <th>Area</th>
+      <th>State and methods</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Selection</td>
+      <td>
+        <code>path</code>, <code>visibleDepth</code>, <code>pathAt</code>,{" "}
+        <code>select</code>, <code>clearFrom</code>, <code>clear</code>,{" "}
+        <code>isSelected</code>
+      </td>
+    </tr>
+    <tr>
+      <td>Visibility</td>
+      <td>
+        <code>getPathLevel</code>, <code>isPathVisible</code>,{" "}
+        <code>isColumnVisible</code>
+      </td>
+    </tr>
+    <tr>
+      <td>Registration</td>
+      <td>
+        <code>hasColumn</code>, <code>ensureColumn</code>
+      </td>
+    </tr>
+    <tr>
+      <td>Width</td>
+      <td>
+        <code>getWidth</code>, <code>getDefaultWidth</code>,{" "}
+        <code>getMinWidth</code>, <code>getMaxWidth</code>,{" "}
+        <code>setWidth</code>, <code>resetWidth</code>
+      </td>
+    </tr>
+    <tr>
+      <td>Collapse</td>
+      <td>
+        <code>isCollapsible</code>, <code>isCollapsed</code>,{" "}
+        <code>collapse</code>, <code>expand</code>, <code>toggle</code>,{" "}
+        <code>setCollapsed</code>
+      </td>
+    </tr>
+    <tr>
+      <td>Close</td>
+      <td>
+        <code>isCloseable</code>, <code>isClosed</code>, <code>close</code>,{" "}
+        <code>open</code>, <code>setClosed</code>
+      </td>
+    </tr>
+    <tr>
+      <td>Resize capability</td>
+      <td>
+        <code>isResizable</code>
+      </td>
+    </tr>
+    <tr>
+      <td>Persistence</td>
+      <td>
+        <code>layoutReady</code>, <code>getLayout</code>,{" "}
+        <code>restoreLayout</code>, <code>flushSave</code>, <code>dispose</code>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+Selecting the current key clears that level and every deeper level. Closing a
+column keeps it registered. Opening a column also leaves its durable width
+intact. `ensureColumn(id, config)` supports runtime lanes and applies any
+restored snapshot that arrived before registration.
+
+## Compose columns
+
+Passing `title` to `Column` renders the standard `Header`, `Title`, `Count`,
+`Toggle`, and `Close` chrome. Omit `title` when you need a custom header and
+compose the exported parts yourself:
+
+<Source code={exampleSources.CustomComposition} language="html" />
+
+`Body` owns an independent vertical Scroll Area. Its `onScrollNearEnd` callback
+fires whenever the body is within 180 CSS pixels of its bottom. Use it for
+incremental loading. `Item` is a button that accepts native button attributes;
+`selected` sets both `data-selected` and `aria-pressed`, while `disabled`
+retains native button behavior.
+
+The near-end callback can fire again while the body remains near its boundary.
+Deduplicate in-flight loading in the host. `Toggle` and `Close` accept shared
+Button props and render only when their controller capability is enabled. When
+you omit `Column.title`, use readable column ids or override the action labels
+as the custom example does.
+
+### Column props
+
+`Column` accepts these family-specific props in addition to native section
+attributes and a bindable `ref`:
+
+<table>
+  <thead>
+    <tr>
+      <th>Prop</th>
+      <th>Purpose</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>id</code>
+      </td>
+      <td>Stable controller id</td>
+    </tr>
+    <tr>
+      <td>
+        <code>title</code>
+      </td>
+      <td>Default header title and accessible action label</td>
+    </tr>
+    <tr>
+      <td>
+        <code>count</code>
+      </td>
+      <td>Default header and collapsed-rail count</td>
+    </tr>
+    <tr>
+      <td>
+        <code>pathLevel</code>
+      </td>
+      <td>Presentation override for the registered config</td>
+    </tr>
+    <tr>
+      <td>
+        <code>resizable</code>
+      </td>
+      <td>Presentation override for the registered config</td>
+    </tr>
+    <tr>
+      <td>
+        <code>collapsible</code>
+      </td>
+      <td>Presentation override for the registered config</td>
+    </tr>
+    <tr>
+      <td>
+        <code>closeable</code>
+      </td>
+      <td>Presentation override for the registered config</td>
+    </tr>
+    <tr>
+      <td>
+        <code>sticky</code>
+      </td>
+      <td>Registers a leading floating return rail in wide and fixed modes</td>
+    </tr>
+    <tr>
+      <td>
+        <code>stickyRail</code>
+      </td>
+      <td>Named snippet rendered inside the sticky return button</td>
+    </tr>
+    <tr>
+      <td>
+        <code>width</code>
+      </td>
+      <td>
+        Test or harness width override; prefer controller widths in products
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>onWidthChange</code>
+      </td>
+      <td>
+        Test or harness resize callback; prefer controller updates in products
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+`CollapsedColumn` is a low-level escape hatch with `label`, optional `count`,
+and `onExpand`. It must remain inside `Root`. Prefer controller-owned collapse
+through `Column` for durable application layout.
+
+### Compound context hooks
+
+Use `useColumnCanvas()` inside a custom descendant to read the controller.
+`useColumnCanvasContext()` also exposes the resolved display mode and layout
+request functions for compound extensions. `useColumnCanvasColumn()` reads the
+current column id, title, count, and capability flags inside `Column`. Do not
+destructure reactive context getters.
+
 ## Responsive display
 
 `displayMode="auto"` is the default. `Root` observes its own width and resolves
 to `wide` at or above `compactBreakpoint` (`960` by default) or `compact` below
 it. The resolved state is available as `data-display-mode`.
 
-- **wide** — the newest two rendered columns expand as needed to share the
+### Root props
+
+<table>
+  <thead>
+    <tr>
+      <th>Prop</th>
+      <th>Default</th>
+      <th>Purpose</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>controller</code>
+      </td>
+      <td>Required</td>
+      <td>
+        App-owned <code>ColumnCanvasController</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>displayMode</code>
+      </td>
+      <td>
+        <code>"auto"</code>
+      </td>
+      <td>
+        Requested <code>auto</code>, <code>compact</code>, or <code>fixed</code>{" "}
+        presentation
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>compactBreakpoint</code>
+      </td>
+      <td>
+        <code>960</code>
+      </td>
+      <td>Bounded root width that separates auto compact and wide modes</td>
+    </tr>
+    <tr>
+      <td>
+        <code>tabindex</code>
+      </td>
+      <td>
+        <code>0</code>
+      </td>
+      <td>Keeps root-level compact keyboard navigation reachable</td>
+    </tr>
+    <tr>
+      <td>
+        <code>role</code>
+      </td>
+      <td>
+        <code>"region"</code>
+      </td>
+      <td>Root landmark role</td>
+    </tr>
+    <tr>
+      <td>
+        <code>aria-label</code>
+      </td>
+      <td>
+        <code>"Column canvas"</code>
+      </td>
+      <td>Accessible landmark name</td>
+    </tr>
+    <tr>
+      <td>
+        <code>ref</code>
+      </td>
+      <td>
+        <code>null</code>
+      </td>
+      <td>Bindable root element reference</td>
+    </tr>
+    <tr>
+      <td>
+        <code>children</code>
+      </td>
+      <td>None</td>
+      <td>Column parts rendered in track order</td>
+    </tr>
+  </tbody>
+</table>
+
+`Root` also forwards native div attributes and event handlers. An `onkeydown`
+or `onwheel` handler can call `preventDefault()` before the built-in routing
+logic runs.
+
+- **wide**: the newest two rendered columns expand as needed to share the
   stage while retaining at least their durable pixel widths; when older context
   exists, `--ui-column-canvas-wide-context-width` remains visible; resize
   handles, an optional `trailingSpacerWidth`, active following, and proximity
   snapping remain; no trailing spacer is added by default
-- **compact** — each expanded column occupies the complete bounded stage, with
+- **compact**: each expanded column occupies the complete bounded stage, with
   no previous-column peek, durable blank tail, horizontal scrollbar, or resize
   handles; mandatory snapping; and slower, smooth
   vertical-to-horizontal routing for non-scrollable columns and scrollable-body
   boundaries
-- **fixed** — original fixed geometry and free horizontal scrolling at every
+- **fixed**: original fixed geometry and free horizontal scrolling at every
   size, without active following
+
+Set `displayMode="compact"` to force the compact presentation at every root
+width. Set `displayMode="fixed"` to bypass container adaptation. In auto mode,
+`compactBreakpoint` uses the bounded root width rather than the viewport.
 
 Responsive widths and scroll position are transient. V1 persistence continues
 to contain durable width, collapse, and close state only.
@@ -85,6 +588,56 @@ over a non-scrollable body moves the horizontal track continuously; scrollable
 bodies still consume the motion first, and canvas-edge motion remains available
 to the surrounding page.
 
+## Persist layout
+
+`Root` calls `restoreLayout()` and exposes restoration through
+`controller.layoutReady` and `data-layout-ready`. A persistence adapter loads
+unknown data and saves the normalized V1 shape:
+
+```json
+{
+  "version": 1,
+  "columns": {
+    "tasks": { "width": 380, "collapsed": false, "closed": false }
+  }
+}
+```
+
+V1 persists each registered column's width, collapsed state, and closed state.
+Invalid versions and malformed entries are ignored. Restored widths are
+clamped to the current `minWidth` and `maxWidth`.
+
+Use `createLocalStorageColumnCanvasLayoutPersistence(key, storage?)` for browser
+storage, or implement `ColumnCanvasLayoutPersistence` for another backend.
+Call `flushSave()` before a host must observe pending changes. Call `dispose()`
+when the owning application lifecycle ends.
+
+`onLayoutChange` receives a `source` of `collapse`, `close`, `resize`,
+`reset-width`, `register`, or `ensure`, plus the affected `columnId`.
+`onPersistenceError` reports `load` and `save` failures without replacing app
+error policy.
+
+The selection path, `pathLevel`, responsive mode, sticky state, and scroll
+position are transient. They never enter the V1 layout schema.
+
+## Accessibility and input
+
+`Root` defaults to a focusable `region` named “Column canvas”. Supply a
+domain-specific `aria-label` when a page contains more than one canvas. Native
+HTML attributes and event handlers pass through every visual part.
+
+When compact `Root` itself has focus, Arrow Left, Arrow Right, Home, and End
+move between snap points without changing controller selection or descendant
+focus. Horizontal wheel, trackpad, and touch movement remain native. Vertical
+wheel motion stays with the nearest scrollable body while it can move. Unused
+vertical motion moves an eligible horizontal canvas, and motion at the canvas
+edge remains available to the surrounding page.
+
+Toggle, Close, collapsed rails, resize separators, and sticky return buttons
+ship with accessible names. Routed scrolling uses instant motion when the
+reader requests reduced motion. Logical inline-axis geometry supports
+left-to-right and right-to-left documents.
+
 ## Examples
 
 ### Product workspace showcase
@@ -109,7 +662,7 @@ and fills it with Name / Id / Role / Import / Category values from that row.
 
 ### Three-level cascade
 
-Path selection only — categories → components → detail prose, with
+Path selection only: categories → components → detail prose, with
 toggle-select clearing deeper levels (deeper columns hide via `pathLevel`).
 
 <Canvas of={ColumnCanvasStories.ThreeLevelCascade} meta={ColumnCanvasStories} />
@@ -129,14 +682,14 @@ selecting a row restores it when `openOnSelect` is enabled.
 
 ### Resizable columns
 
-Set `resizable: true` on the column config — the handle updates the controller.
+Set `resizable: true` on the column config. The handle updates the controller.
 
 <Canvas of={ColumnCanvasStories.ResizableColumns} meta={ColumnCanvasStories} />
 
 ### Persisted widths
 
 Inject `createLocalStorageColumnCanvasLayoutPersistence` (or any
-`ColumnCanvasLayoutPersistence`) to restore widths and collapse.
+`ColumnCanvasLayoutPersistence`) to restore width, collapse, and close state.
 
 <Canvas of={ColumnCanvasStories.PersistedWidths} meta={ColumnCanvasStories} />
 
@@ -183,22 +736,335 @@ their previous geometry.
 
 ## Parts
 
-- `Root` — installs the controller, responsive horizontal scroller, and
-  wide/fixed trailing spacer and floating sticky-rail stack
-- `Column` — controller-driven width/collapse; optional convenience
-  `title`/`count`, `sticky`, and custom `stickyRail` snippet
-- `Header` / `Title` / `Count` / `HeaderActions` / `Toggle` / `Close`
-- `Body` / `Item`
-- `createColumnCanvasController` — typed path + layout controller
-- `CollapsedColumn` — low-level rail escape hatch (prefer controller collapse)
+The family exports these visual parts:
+
+<table>
+  <thead>
+    <tr>
+      <th>Part</th>
+      <th>Responsibility</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>Root</code>
+      </td>
+      <td>
+        Controller context, bounded responsive horizontal track, input routing,
+        following, and sticky stack
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>Column</code>
+      </td>
+      <td>
+        Visibility, durable width, collapse/close state, default header, and
+        resize handle
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>Header</code>
+      </td>
+      <td>
+        Custom fixed header container inside <code>Column</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>Title</code>
+      </td>
+      <td>Custom title that falls back to the column context title</td>
+    </tr>
+    <tr>
+      <td>
+        <code>Count</code>
+      </td>
+      <td>Custom count that hides when neither content nor a count exists</td>
+    </tr>
+    <tr>
+      <td>
+        <code>HeaderActions</code>
+      </td>
+      <td>Action group for custom header controls</td>
+    </tr>
+    <tr>
+      <td>
+        <code>Toggle</code>
+      </td>
+      <td>Controller-owned collapse and expand button</td>
+    </tr>
+    <tr>
+      <td>
+        <code>Close</code>
+      </td>
+      <td>Controller-owned close button</td>
+    </tr>
+    <tr>
+      <td>
+        <code>Body</code>
+      </td>
+      <td>Independent vertical Scroll Area and near-end callback</td>
+    </tr>
+    <tr>
+      <td>
+        <code>Item</code>
+      </td>
+      <td>Selectable native button row</td>
+    </tr>
+    <tr>
+      <td>
+        <code>CollapsedColumn</code>
+      </td>
+      <td>Low-level manually controlled rail</td>
+    </tr>
+  </tbody>
+</table>
+
+The barrel also exports the controller, persistence types and helpers, display
+mode types, context hooks, constants, and `columnCanvasTokenNames`.
+
+The complete non-visual export groups are:
+
+- Controller: `createColumnCanvasController`, `ColumnCanvasController`,
+  `ColumnCanvasColumnConfig`, `CreateColumnCanvasControllerOptions`, and the
+  `COLUMN_CANVAS_DEFAULT_MIN_WIDTH`, `COLUMN_CANVAS_DEFAULT_MAX_WIDTH`, and
+  `COLUMN_CANVAS_DEFAULT_TRAILING_SPACER_WIDTH` constants
+- Persistence: `createLocalStorageColumnCanvasLayoutPersistence`,
+  `normalizeColumnCanvasLayout`, `COLUMN_CANVAS_LAYOUT_VERSION`,
+  `COLUMN_CANVAS_DEFAULT_STORAGE_KEY`, and all layout, adapter, event, source,
+  and error types
+- Presentation: `ColumnCanvasDisplayMode`,
+  `ColumnCanvasResolvedDisplayMode`, the three context hooks and their context
+  types, `columnCanvasTokenNames`, and `ColumnCanvasToken`
+
+Each visual part also has a long alias, such as `ColumnCanvasColumn` and
+`ColumnCanvasBody`. `ColumnCanvas` is the alias for `Root`.
+
+## Diagnostic attributes
+
+Use semantic attributes for tests and supported ancestor styling:
+
+<table>
+  <thead>
+    <tr>
+      <th>Element</th>
+      <th>Attributes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Root</td>
+      <td>
+        <code>data-display-mode="wide|compact|fixed"</code>,{" "}
+        <code>data-layout-ready</code>
+      </td>
+    </tr>
+    <tr>
+      <td>Column</td>
+      <td>
+        <code>data-column-id</code>, <code>data-resizable</code>,{" "}
+        <code>data-sticky</code>, <code>data-sticky-state</code>
+      </td>
+    </tr>
+    <tr>
+      <td>Sticky replacement</td>
+      <td>
+        <code>data-sticky-for</code>, <code>data-sticky-state="stuck"</code>
+      </td>
+    </tr>
+    <tr>
+      <td>Item</td>
+      <td>
+        <code>data-selected</code> and <code>aria-pressed</code>
+      </td>
+    </tr>
+    <tr>
+      <td>Every family part</td>
+      <td>
+        <code>data-ui-component="column-canvas"</code> and a semantic{" "}
+        <code>data-ui-part</code>
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 ## Styling
 
-Override `--ui-column-canvas-*` tokens on an ancestor, including
-`--ui-column-canvas-wide-context-width` (defaulting to the retained
-`--ui-column-canvas-compact-peek-width` compatibility token, `2.75rem`) and
-`--ui-column-canvas-sticky-peek-width` (defaulting to
-`--ui-column-canvas-collapsed-width`, `2.75rem`) and
-`--ui-column-canvas-rail-hover` (defaulting to `--muted`). Production sources
-use native CSS and compose the shared Button for Toggle, Close, and sticky
-return controls.
+Override these public tokens on `:root` or a shared ancestor:
+
+<table>
+  <thead>
+    <tr>
+      <th>Token</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>--ui-column-canvas-background</code>
+      </td>
+      <td>
+        <code>--background</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>--ui-column-canvas-column-background</code>
+      </td>
+      <td>
+        <code>--card</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>--ui-column-canvas-border-color</code>
+      </td>
+      <td>
+        <code>--border</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>--ui-column-canvas-radius</code>
+      </td>
+      <td>
+        <code>--radius-lg</code>, then <code>--radius</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>--ui-column-canvas-header-height</code>
+      </td>
+      <td>
+        <code>2.5rem</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>--ui-column-canvas-gap</code>
+      </td>
+      <td>
+        <code>0.75rem</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>--ui-column-canvas-collapsed-width</code>
+      </td>
+      <td>
+        <code>2.75rem</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>--ui-column-canvas-compact-peek-width</code>
+      </td>
+      <td>
+        <code>2.75rem</code> compatibility token
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>--ui-column-canvas-wide-context-width</code>
+      </td>
+      <td>
+        <code>--ui-column-canvas-compact-peek-width</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>--ui-column-canvas-sticky-peek-width</code>
+      </td>
+      <td>
+        <code>--ui-column-canvas-collapsed-width</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>--ui-column-canvas-resize-handle-hover</code>
+      </td>
+      <td>
+        40% <code>--primary</code> mixed with transparent
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>--ui-column-canvas-title-color</code>
+      </td>
+      <td>
+        <code>--foreground</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>--ui-column-canvas-count-color</code>
+      </td>
+      <td>
+        <code>--muted-foreground</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>--ui-column-canvas-padding</code>
+      </td>
+      <td>
+        <code>0.75rem</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>--ui-column-canvas-scrollbar-gap</code>
+      </td>
+      <td>
+        <code>0.5rem</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>--ui-column-canvas-item-gap</code>
+      </td>
+      <td>
+        <code>0.25rem</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>--ui-column-canvas-item-hover</code>
+      </td>
+      <td>
+        <code>--muted</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>--ui-column-canvas-rail-hover</code>
+      </td>
+      <td>
+        <code>--muted</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>--ui-column-canvas-item-selected</code>
+      </td>
+      <td>
+        <code>--accent</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>--ui-column-canvas-item-selected-foreground</code>
+      </td>
+      <td>
+        <code>--accent-foreground</code>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+Production sources use native CSS. Toggle, Close, and sticky return controls
+compose the shared shadcn Button.
