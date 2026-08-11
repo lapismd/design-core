@@ -125,6 +125,29 @@
           ).toEqual(markers);
         }
 
+        const targetRole = canvas.getByLabelText("Target Roles 1");
+        await userEvent.click(targetRole);
+        const listFocusBackground = getComputedStyle(
+          targetRole.closest<HTMLElement>("[data-sortable-item]")!,
+        ).backgroundColor;
+        await expect(listFocusBackground).not.toBe("rgba(0, 0, 0, 0)");
+
+        for (const [entryType, label] of [
+          ["BulletEntry", "Bullet"],
+          ["NumberedEntry", "Numbered item"],
+          ["ReversedNumberedEntry", "Reversed numbered item"],
+        ] as const) {
+          const section = canvas.getByTestId(`cv-section-${entryType}`);
+          const input = within(section).getAllByLabelText(label)[0];
+          await userEvent.click(input);
+          const row = input.closest<HTMLElement>(
+            '[data-ui-part="entry-actions"]',
+          )!;
+          await expect(getComputedStyle(row).backgroundColor).toBe(
+            listFocusBackground,
+          );
+        }
+
         for (const entryType of [
           "TextEntry",
           "BulletEntry",

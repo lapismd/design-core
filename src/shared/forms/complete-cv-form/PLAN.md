@@ -22,6 +22,7 @@
 - [x] Remove the YAML editor's leading inset and preserve a stacked compact layout.
 - [x] Render CV profile, networks, roles, all nine section types, and nested repeatables.
 - [x] Match simple-entry presentation with bullets, forward numbering, reversed numbering, and visually hidden repeated field labels.
+- [x] Match bullet, numbered, and reversed-numbered row focus treatment to the existing sortable list rows.
 - [x] Remove duplicate and trailing dividers from sortable list rows, Social Networks, Target Roles, and Highlights.
 - [x] Render Social Network with the same inline option picker as Theme, strengthen Add-action contrast, and make compact Add actions full width.
 - [x] Match Role History and Extra Details title dividers and full-width dashed add actions to the reference.
@@ -34,6 +35,8 @@
 
 ## Validation evidence
 
+- Focus-state follow-up: `pnpm exec vitest run --project storybook src/shared/forms/complete-cv-form/CompleteCvForm.stories.svelte` passed its interaction test, including computed focus-color parity between all three simple entry rows and `SortableArrayItem`.
+- Focus-state follow-up: `pnpm check:no-tailwind` and `pnpm check` passed with zero errors or warnings. Live Storybook inspection confirmed BulletEntry, NumberedEntry, and ReversedNumberedEntry each retain keyboard/input focus and compute the same `--ui-form-accent` 8% background as Target Roles.
 - `pnpm exec vitest run --project unit src/shared/forms/complete-cv-form/complete-cv-form.model.spec.ts src/shared/forms/form-field/FormField.layout.spec.ts`: 2 files and 14 tests passed, including marker ordering, root-scoped sortable borders, and responsive Add-action rules.
 - `pnpm exec vitest run --project storybook src/shared/forms/complete-cv-form/CompleteCvForm.stories.svelte src/shared/shell/app-shell/AppShell.stories.svelte`: 2 files and 11 tests passed, including sample reset, compact Form/YAML switching, pane-only scroll ownership, equal shell insets, App Shell compact framing, YAML round-trip, and representative controls.
 - `pnpm check` and `pnpm check:no-tailwind`: passed with zero errors or warnings.
