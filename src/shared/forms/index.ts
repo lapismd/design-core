@@ -40,6 +40,12 @@ export { default as FieldReviewActions } from "./field-review-actions/FieldRevie
 export { default as FormAddButton } from "./form-add-button/FormAddButton.svelte";
 export { default as FormField } from "./form-field/FormField.svelte";
 export { default as FormFieldRenderer } from "./structured-form/FormFieldRenderer.svelte";
+export {
+  createFormRendererRegistry,
+  FormRendererRegistry,
+  type RegisteredFormRendererDescriptor,
+  type RegisteredFormRendererProps,
+} from "./structured-form/form-renderer-registry";
 export { default as FormPlaceholder } from "./form-placeholder/FormPlaceholder.svelte";
 export { default as FormSectionHeader } from "./form-section-header/FormSectionHeader.svelte";
 export { default as FormSheet } from "./form-sheet/FormSheet.svelte";

@@ -1,5 +1,6 @@
 import ReviewedStringListFormField from "../form-review/ReviewedStringListFormField.svelte";
 import ReviewedTextFormField from "../form-review/ReviewedTextFormField.svelte";
+export { defineFormConfig } from "./path-config";
 import type { FieldReviewContext } from "./field-review";
 import type {
   FormConfig,

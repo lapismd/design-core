@@ -3,6 +3,7 @@ export {
   chipListField,
   choiceField,
   createFormConfig,
+  defineFormConfig,
   customField,
   customViewField,
   dateField,
@@ -22,6 +23,56 @@ export {
   timeField,
   timestampField,
 } from "./builders";
+export {
+  isPathFormConfig,
+  type AnyPathFormConfig,
+  type AnyPathFormFieldConfig,
+  type CompatibleFormFieldKind,
+  type FormArrayItemTitle,
+  type FormArrayPresentation,
+  type FormFieldConfigMap,
+  type FormFieldKindDefinition,
+  type FormFieldKindMap,
+  type FormFieldKindOptions,
+  type FormFieldKindValue,
+  type FormGroupConfig,
+  type FormValidationMode,
+  type PathFieldValidationArgs,
+  type PathFieldValidator,
+  type PathFormConfig,
+  type PathFormFieldConfig,
+  type RegisteredFormFieldKind,
+  type RuntimePathFormConfig,
+} from "./path-config";
+export {
+  formPathParts,
+  getFormValueAtPath,
+  moveFormArrayItem,
+  removeFormArrayItem,
+  setFormValueAtPath,
+  setFormValueWithDefault,
+  type FormPathPart,
+} from "./path-utils";
+export {
+  formFieldId,
+  formFieldLabel,
+  normalizePathField,
+  pathFormEntries,
+} from "./path-runtime";
+export type {
+  FieldArrayPath,
+  FieldPath,
+  FieldPathByValue,
+  FieldPathValue,
+  FieldValues,
+} from "./path-types";
+export {
+  createFormController,
+  FormController,
+  type CreateFormControllerOptions,
+  type FormControllerResetOptions,
+  type FormFieldState,
+} from "./form-controller.svelte";
 export type { FieldReview, FieldReviewContext } from "./field-review";
 export {
   buildNaturalDateSuggestions,

@@ -2,34 +2,20 @@ import type { Component } from "svelte";
 import type { HTMLInputAttributes } from "svelte/elements";
 import type { InlineOptionPickerOption } from "../inline-option-picker/InlineOptionPicker.svelte";
 import type { ReferenceIndex } from "./reference-utils";
+import type { RegisteredFormFieldKind } from "./path-config";
+import type { FieldPath } from "./path-types";
 
 export type FormViewName = "edit" | "preview" | "readonly" | (string & {});
 
-export type FormFieldKind =
-  | "text"
-  | "textarea"
-  | "date"
-  | "time"
-  | "readonly"
-  | "timestamp"
-  | "boolean"
-  | "options"
-  | "segmented"
-  | "choice"
-  | "string-list"
-  | "ordered-string-list"
-  | "tag-list"
-  | "chip-list"
-  | "reference-list"
-  | "custom";
+export type FormFieldKind = RegisteredFormFieldKind;
 
 /** `middle` = vertically center label with control; `start` = top (multiline); `center` = pill controls. */
 export type FormFieldAlign = "start" | "center" | "middle";
 export type FormFieldWrapper = "label" | "div";
 
-export type FormValidationIssue = {
+export type FormValidationIssue<TValues = unknown> = {
   fieldId?: string;
-  path?: string;
+  path?: TValues extends object ? FieldPath<TValues> : string;
   message: string;
   severity?: "error" | "warning" | "info";
 };

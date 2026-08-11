@@ -1,5 +1,9 @@
 @import "../form.tokens.css";
 
+.cv-form-field-renderer {
+  display: contents;
+}
+
 .cv-forms-preview-value {
   display: block;
   min-height: 1.25rem;
@@ -22,6 +26,12 @@
 
 .cv-forms-field-issues p {
   margin: 0;
+}
+
+.cv-forms-missing-renderer {
+  margin: 0;
+  color: var(--destructive);
+  font-size: 0.8125rem;
 }
 
 .cv-forms-switch {
