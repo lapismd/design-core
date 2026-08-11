@@ -36,7 +36,7 @@
 }
 
 [data-ui-component="add-section-chooser"]
-  :global([data-ui-component="button"].ui-add-section-chooser__cancel) {
+  [data-ui-component="button"].ui-add-section-chooser__cancel {
   display: inline-grid;
   place-items: center;
   width: 1.25rem;
@@ -47,17 +47,16 @@
 }
 
 [data-ui-component="add-section-chooser"]
-  :global([data-ui-component="button"].ui-add-section-chooser__cancel:hover),
+  [data-ui-component="button"].ui-add-section-chooser__cancel:hover,
 [data-ui-component="add-section-chooser"]
-  :global(
-    [data-ui-component="button"].ui-add-section-chooser__cancel:focus-visible
-  ) {
+  [data-ui-component="button"].ui-add-section-chooser__cancel:focus-visible {
   color: var(--ui-form-foreground);
   background: transparent;
 }
 
 [data-ui-component="add-section-chooser"]
-  :global([data-ui-component="button"].ui-add-section-chooser__cancel svg) {
+  [data-ui-component="button"].ui-add-section-chooser__cancel
+  svg {
   width: 0.875rem;
   height: 0.875rem;
 }
@@ -85,7 +84,7 @@
 }
 
 [data-ui-component="add-section-chooser"]
-  :global([data-ui-component="button"].ui-add-section-chooser__choice) {
+  [data-ui-component="button"].ui-add-section-chooser__choice {
   height: 1.75rem;
   border: 1px solid var(--ui-form-border);
   border-radius: calc(var(--ui-form-radius) * 0.55);
@@ -97,11 +96,9 @@
 }
 
 [data-ui-component="add-section-chooser"]
-  :global([data-ui-component="button"].ui-add-section-chooser__choice:hover),
+  [data-ui-component="button"].ui-add-section-chooser__choice:hover,
 [data-ui-component="add-section-chooser"]
-  :global(
-    [data-ui-component="button"].ui-add-section-chooser__choice:focus-visible
-  ) {
+  [data-ui-component="button"].ui-add-section-chooser__choice:focus-visible {
   background: color-mix(in srgb, var(--ui-form-muted-surface) 60%, transparent);
   color: var(--ui-form-foreground);
 }
@@ -132,7 +129,7 @@
   outline: 0;
 }
 
-[data-ui-component="add-section-chooser"][data-ui-part="cta"] :global(svg) {
+[data-ui-component="add-section-chooser"][data-ui-part="cta"] svg {
   width: 1rem;
   height: 1rem;
 }

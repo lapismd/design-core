@@ -56,8 +56,8 @@
   outline: 0;
 }
 
-.cv-form-entry-move :global(svg),
-.cv-form-entry-remove :global(svg) {
+.cv-form-entry-move svg,
+.cv-form-entry-remove svg {
   width: 0.75rem;
   height: 0.75rem;
 }

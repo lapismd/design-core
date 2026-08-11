@@ -22,7 +22,7 @@
   align-self: stretch;
 }
 
-.cvstudio-yaml-editor.fill :global(.cm-editor) {
+.cvstudio-yaml-editor.fill .cm-editor {
   flex: 1 1 auto;
   min-height: 0;
 }
@@ -31,11 +31,11 @@
   border-color: var(--destructive, rgb(220 38 38));
 }
 
-:global(.cvstudio-yaml-editor:not(.fill) .cm-editor) {
+.cvstudio-yaml-editor:not(.fill) .cm-editor {
   height: auto;
 }
 
-:global(.cvstudio-yaml-editor.fill .cm-editor) {
+.cvstudio-yaml-editor.fill .cm-editor {
   height: 100%;
   min-height: 0;
 }

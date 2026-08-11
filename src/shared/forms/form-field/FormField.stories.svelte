@@ -25,6 +25,21 @@
   name="Text input"
   play={async ({ canvas }) => {
     const input = canvas.getByLabelText("Ledger name");
+    const control = input.closest(".cv-form-field-control");
+    const row = input.closest(".cv-form-field");
+
+    await expect(control).not.toBeNull();
+    await expect(row).not.toBeNull();
+    await expect(
+      Math.abs(
+        input.getBoundingClientRect().width -
+          (control?.getBoundingClientRect().width ?? 0),
+      ),
+    ).toBeLessThan(1);
+    await expect(
+      row?.getBoundingClientRect().height ?? 0,
+    ).toBeGreaterThanOrEqual(32);
+
     await userEvent.clear(input);
     await userEvent.type(input, "Shared ledger");
     await expect(canvas.getByRole("status")).toHaveTextContent("Shared ledger");

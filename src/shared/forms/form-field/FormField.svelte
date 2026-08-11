@@ -9,7 +9,7 @@
 
   let {
     label,
-    align = "middle",
+    align = "start",
     as = "label",
     readonly = false,
     review = null,

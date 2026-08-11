@@ -13,7 +13,7 @@
   display: grid;
   grid-template-columns: max-content minmax(0, 1fr);
   column-gap: var(--ui-form-column-gap);
-  row-gap: 0.35rem;
+  row-gap: 0;
   min-width: 0;
 }
 
@@ -22,7 +22,7 @@
   grid-column: 1 / -1;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 720px) {
   .cv-structured-form,
   .ui-structured-form {
     grid-template-columns: 1fr;

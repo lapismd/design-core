@@ -90,7 +90,7 @@
   cursor: grabbing;
 }
 
-[data-ui-part="sortable-array-item-drag"] :global(svg) {
+[data-ui-part="sortable-array-item-drag"] svg {
   width: 0.75rem;
   height: 0.75rem;
 }
@@ -100,7 +100,7 @@
 }
 
 [data-ui-component="sortable-array-item"]
-  :global([data-ui-component="button"].ui-sortable-array-item__remove) {
+  [data-ui-component="button"].ui-sortable-array-item__remove {
   position: absolute;
   top: 50%;
   right: 0;
@@ -116,28 +116,25 @@
 }
 
 [data-ui-component="sortable-array-item"]:hover
-  :global([data-ui-component="button"].ui-sortable-array-item__remove),
+  [data-ui-component="button"].ui-sortable-array-item__remove,
 [data-ui-component="sortable-array-item"]:focus-within
-  :global([data-ui-component="button"].ui-sortable-array-item__remove),
+  [data-ui-component="button"].ui-sortable-array-item__remove,
 [data-ui-component="sortable-array-item"]
-  :global(
-    [data-ui-component="button"].ui-sortable-array-item__remove:focus-visible
-  ) {
+  [data-ui-component="button"].ui-sortable-array-item__remove:focus-visible {
   opacity: 1;
 }
 
 [data-ui-component="sortable-array-item"]
-  :global([data-ui-component="button"].ui-sortable-array-item__remove:hover),
+  [data-ui-component="button"].ui-sortable-array-item__remove:hover,
 [data-ui-component="sortable-array-item"]
-  :global(
-    [data-ui-component="button"].ui-sortable-array-item__remove:focus-visible
-  ) {
+  [data-ui-component="button"].ui-sortable-array-item__remove:focus-visible {
   color: var(--ui-form-foreground);
   background: transparent;
 }
 
 [data-ui-component="sortable-array-item"]
-  :global([data-ui-component="button"].ui-sortable-array-item__remove svg) {
+  [data-ui-component="button"].ui-sortable-array-item__remove
+  svg {
   width: 0.875rem;
   height: 0.875rem;
 }

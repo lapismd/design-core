@@ -36,7 +36,7 @@
   outline: 0;
 }
 
-.ui-form-toolbar-collapse :global(svg) {
+.ui-form-toolbar-collapse svg {
   width: 1rem;
   height: 1rem;
 }
