@@ -41,10 +41,6 @@
   min-width: 0;
 }
 
-.ui-configured-form-group + .ui-configured-form-group {
-  border-top: 1px solid var(--ui-form-border);
-}
-
 .ui-configured-form-group__body,
 .ui-configured-array__section-body {
   min-width: 0;
