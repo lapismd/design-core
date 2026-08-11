@@ -22,6 +22,11 @@
   grid-column: 1 / -1;
 }
 
+.cv-structured-form > .cv-form-field-renderer > *,
+.ui-structured-form > .cv-form-field-renderer > * {
+  grid-column: 1 / -1;
+}
+
 .cv-structured-form[data-layout="stacked"] {
   display: flex;
   min-width: 0;
@@ -36,8 +41,7 @@
   min-width: 0;
 }
 
-.ui-configured-form-group + .ui-configured-form-group,
-.ui-configured-array__section + .ui-configured-array__section {
+.ui-configured-form-group + .ui-configured-form-group {
   border-top: 1px solid var(--ui-form-border);
 }
 
@@ -139,8 +143,9 @@
   line-height: 1.5;
 }
 
+.ui-configured-array__row-body[data-hide-label] .cv-form-field > span,
 .ui-configured-array__row-body[data-hide-label]
-  :is(.cv-form-field-label, [data-ui-part="form-field-label"]) {
+  [data-ui-part="form-field-label"] {
   position: absolute;
   width: 1px;
   height: 1px;

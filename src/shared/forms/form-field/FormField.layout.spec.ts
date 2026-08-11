@@ -43,6 +43,9 @@ describe("source-reference form layout CSS", () => {
     expect(structuredFormCss).toMatch(/row-gap:\s*0/);
     expect(structuredFormCss).toMatch(/@media \(max-width:\s*720px\)/);
     expect(controlRowCss).toMatch(/padding-block:\s*0\.375rem/);
+    expect(controlRowCss).toMatch(
+      />\s*\.cv-form-field-renderer[\s\S]*?>\s*\.cv-control-row-group,[\s\S]*?grid-template-columns:\s*subgrid/,
+    );
   });
 
   it("lets a fill-mode YAML editor occupy its pane", () => {
