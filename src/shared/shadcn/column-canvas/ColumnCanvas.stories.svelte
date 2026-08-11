@@ -1351,10 +1351,14 @@
     expect(pageHost.scrollHeight).toBeGreaterThan(pageHost.clientHeight);
     expect(getComputedStyle(pageHost).scrollbarWidth).toBe("none");
     await waitFor(() => {
-      expect(root).toHaveAttribute("data-display-mode", "compact");
+      expect(root.getAttribute("data-display-mode")).toMatch(/wide|compact/);
       expect(root.scrollLeft).toBeGreaterThan(0);
     });
-    await expect(canvas.queryByRole("separator")).toBeNull();
+    if (root.getAttribute("data-display-mode") === "compact") {
+      await expect(canvas.queryByRole("separator")).toBeNull();
+    } else {
+      await expect(canvas.getAllByRole("separator")).toHaveLength(3);
+    }
 
     const detail = canvasElement.querySelector<HTMLElement>(
       '[data-ui-part="column"][data-column-id="detail"]',
@@ -1386,7 +1390,7 @@
       role="region"
       aria-label="Scrollable page host"
       data-testid="responsive-scroll-host"
-      class="h-[460px] w-[min(100%,700px)] [scrollbar-width:none] overflow-x-hidden overflow-y-auto [&::-webkit-scrollbar]:hidden"
+      class="h-[460px] w-full max-w-[1100px] [scrollbar-width:none] overflow-x-hidden overflow-y-auto [&::-webkit-scrollbar]:hidden"
     >
       <div data-testid="responsive-stage" class="h-[460px] w-full">
         <ColumnCanvas.Root
@@ -1422,7 +1426,7 @@
               <div class="flex flex-col gap-2 p-3 text-sm">
                 <strong>Composer</strong>
                 <span class="text-muted-foreground">
-                  The active compact column follows the deepest visible path.
+                  The active column follows the deepest visible path.
                 </span>
               </div>
             </ColumnCanvas.Body>

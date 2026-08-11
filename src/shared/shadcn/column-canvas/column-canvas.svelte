@@ -58,6 +58,7 @@
 
   const rootController = untrack(() => controller);
   let rowElement = $state<HTMLDivElement | null>(null);
+  let wideContextWidthProbe = $state<HTMLDivElement | null>(null);
   let stickyWidthProbe = $state<HTMLDivElement | null>(null);
   let rootWidth = $state<number | null>(null);
   let stickyLayerHeight = $state(0);
@@ -124,6 +125,69 @@
     column.removeAttribute("data-sticky-state");
   }
 
+  function clearResponsiveStageLayout(column: HTMLElement): void {
+    column.removeAttribute("data-responsive-stage");
+    column.removeAttribute("data-responsive-context");
+    column.style.removeProperty("--ui-column-canvas-wide-stage-min-width");
+  }
+
+  function syncResponsiveStageLayout(
+    root: HTMLElement,
+    row: HTMLElement,
+    rootStyle: CSSStyleDeclaration,
+    columns: HTMLElement[],
+  ): void {
+    for (const column of columns) clearResponsiveStageLayout(column);
+    if (resolvedDisplayMode !== "wide" || columns.length === 0) return;
+
+    const pair = columns.slice(-2);
+    const context = columns.at(-(pair.length + 1));
+    for (const column of pair) column.dataset.responsiveStage = "pair";
+    if (context) context.dataset.responsiveContext = "true";
+
+    const expandedPair = pair.filter(
+      (column) => column.dataset.uiPart === "column",
+    );
+    if (expandedPair.length === 0) return;
+
+    const contentWidth = Math.max(
+      0,
+      root.clientWidth -
+        finitePixels(rootStyle.paddingInlineStart) -
+        finitePixels(rootStyle.paddingInlineEnd),
+    );
+    const gap = finitePixels(getComputedStyle(row).columnGap);
+    const configuredContextWidth =
+      wideContextWidthProbe?.getBoundingClientRect().width ?? 0;
+    const contextWidth = context
+      ? Math.min(configuredContextWidth, context.getBoundingClientRect().width)
+      : 0;
+    const collapsedPairWidth = pair.reduce(
+      (total, column) =>
+        column.dataset.uiPart === "collapsed-column"
+          ? total + column.getBoundingClientRect().width
+          : total,
+      0,
+    );
+    const gapCount = Math.max(0, pair.length - 1) + (context ? 1 : 0);
+    const availableExpandedWidth = Math.max(
+      0,
+      contentWidth - contextWidth - collapsedPairWidth - gap * gapCount,
+    );
+    const sharedStageWidth = availableExpandedWidth / expandedPair.length;
+    for (const column of expandedPair) {
+      const maxWidth = finitePixels(
+        getComputedStyle(column).getPropertyValue(
+          "--ui-column-canvas-expanded-max-width",
+        ),
+      );
+      column.style.setProperty(
+        "--ui-column-canvas-wide-stage-min-width",
+        `${Math.min(sharedStageWidth, maxWidth)}px`,
+      );
+    }
+  }
+
   function scheduleStickyStateUpdate(): void {
     if (stickyStateFrame !== null) cancelAnimationFrame(stickyStateFrame);
     stickyStateFrame = requestAnimationFrame(() => {
@@ -141,6 +205,7 @@
     activeStickyColumns = [];
     stuckStickyColumns = [];
     const rootStyle = getComputedStyle(root);
+    syncResponsiveStageLayout(root, rowElement, rootStyle, columns);
     stickyLayerHeight = root.clientHeight;
     stickyLayerInlineOffset = finitePixels(rootStyle.paddingInlineStart);
     stickyLayerBlockOffset = finitePixels(rootStyle.paddingBlockStart);
@@ -635,6 +700,12 @@
     data-ui-part="row"
   >
     {@render children?.()}
+    <div
+      bind:this={wideContextWidthProbe}
+      data-ui-component="column-canvas"
+      data-ui-part="wide-context-width-probe"
+      aria-hidden="true"
+    ></div>
     <div
       bind:this={stickyWidthProbe}
       data-ui-component="column-canvas"

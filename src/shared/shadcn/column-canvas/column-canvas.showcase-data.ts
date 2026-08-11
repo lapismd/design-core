@@ -227,7 +227,7 @@ export const showcaseWorkspaces: ShowcaseWorkspace[] = [
                 key: "DC-165",
                 title: "Validate compact snapping at 390px",
                 summary:
-                  "Confirm active-column following, the previous-column peek, keyboard movement, and durable-width restoration at phone widths.",
+                  "Confirm active-column following, the full-stage phone presentation, keyboard movement, and durable-width restoration.",
                 status: "Done",
                 priority: "Medium",
                 assignee: "Ari Patel",

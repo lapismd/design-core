@@ -10,9 +10,9 @@ and selected surfaces retain distinct rounded edges.
 
 This is a project-authored native-CSS Layout family. It is not the same as
 Resizable: Resizable fills a box with percentage pane groups, while Column
-Canvas grows a horizontally scrolling canvas. Wide layouts use durable
-fixed-width columns; compact layouts use stage-width columns with a previous
-column peek and mandatory snapping.
+Canvas grows a horizontally scrolling canvas. Wide layouts prioritise the
+newest pair with a narrow preceding-column context slice; compact layouts use
+one full-stage active column with mandatory snapping.
 
 Visibility follows the same split as AppShell: mount every `Column` under
 `Root`; the controller decides whether chrome appears. Hosts only map
@@ -110,14 +110,15 @@ import * as ColumnCanvas from "@lapismd/design-core/shadcn/column-canvas";
 `compact` below it. Inspect the resolved presentation through
 `data-display-mode="wide|compact|fixed"`.
 
-- `wide` retains controller pixel widths, resize handles, the configured
-  trailing spacer, independent vertical body scrolling, active-column
-  following, and proximity snapping.
-- `compact` makes each expanded column one stage wide, exposes
-  `--ui-column-canvas-compact-peek-width` of the previous column, removes the
-  durable blank tail and horizontal scrollbar, hides resize handles, and snaps
-  columns mandatorily. Scrollbars are suppressed on preceding context columns
-  so the peek does not read as another scroll surface.
+- `wide` gives the newest two rendered columns enough transient minimum width
+  to share the stage, while retaining larger controller widths and all resize
+  handles. When an older column exists,
+  `--ui-column-canvas-wide-context-width` remains visible before the pair.
+  The configured trailing spacer, independent vertical body scrolling,
+  active-column following, and proximity snapping remain.
+- `compact` makes each expanded column fill the complete bounded stage, removes
+  the previous-column peek, durable blank tail, and horizontal scrollbar, hides
+  resize handles, and snaps columns mandatorily.
 - `displayMode="fixed"` is the compatibility escape hatch: controller widths,
   resize handles, trailing spacer, and free horizontal scrolling remain as in
   the original canvas, with no active-column following.
@@ -163,7 +164,7 @@ and input at a canvas edge is left to the surrounding page.
 
 Sticky is transient presentation state. It is not controller configuration or
 part of the V1 persistence schema. Compact mode ignores it and retains the
-existing stage-width peek and snapping behavior.
+full-stage active-column and snapping behavior.
 
 ## Persistence
 
@@ -208,9 +209,10 @@ Set `resizable: true` on the column config — the handle updates the controller
 
 ### Responsive Adaptive Canvas
 
-At a bounded 700px width the active column follows the deepest path, the
-previous column remains available as context, and durable controller widths are
-preserved for the next wide layout.
+At compact widths the active column follows the deepest path and fills the
+bounded stage without exposing the previous column. At wide widths the newest
+pair shares the stage with a narrow slice of preceding context. Durable
+controller widths are preserved through both presentations.
 
 ### Fixed Compatibility
 
@@ -232,7 +234,8 @@ unchanged.
 ## Styling
 
 Override the public `--ui-column-canvas-*` tokens on an ancestor, including
-`--ui-column-canvas-compact-peek-width` (default `2.75rem`) and
+`--ui-column-canvas-wide-context-width` (defaulting to the retained
+`--ui-column-canvas-compact-peek-width` compatibility token, `2.75rem`) and
 `--ui-column-canvas-sticky-peek-width` (defaulting to
 `--ui-column-canvas-collapsed-width`, `2.75rem`). Production sources use native
 CSS and compose the shared Button for Toggle, Close, and sticky return controls.

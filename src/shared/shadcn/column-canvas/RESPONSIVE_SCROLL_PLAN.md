@@ -7,13 +7,15 @@
 - `auto` resolves from the bounded root width. The default
   `compactBreakpoint` is `960` CSS pixels.
 - The resolved mode is exposed as `data-display-mode="wide|compact|fixed"`.
-- Wide mode retains durable pixel widths, resize handles, the trailing spacer,
-  independent vertical bodies, and proximity snapping.
-- Compact mode makes each expanded column one stage wide while exposing
-  `--ui-column-canvas-compact-peek-width` of the preceding column. It hides
-  resize handles and the auxiliary horizontal scrollbar, removes the trailing
-  blank tail, suppresses context-column scrollbars in the peek, and uses
-  mandatory snapping.
+- Wide mode transiently gives the newest two rendered columns enough minimum
+  width to share the stage, within their configured maximum widths. Larger
+  durable widths remain authoritative; an older rendered column stays visible through
+  `--ui-column-canvas-wide-context-width`. Resize handles, the trailing spacer,
+  independent vertical bodies, and proximity snapping remain.
+- Compact mode makes each expanded column fill the complete bounded stage with
+  no preceding-column peek. It hides resize handles and the auxiliary
+  horizontal scrollbar, removes the trailing blank tail, and uses mandatory
+  snapping.
 - `fixed` retains the previous fixed-width, free-horizontal-scroll geometry and
   does not auto-follow columns.
 - The last rendered, non-closed column is active. Auto-follow runs only after a
@@ -49,8 +51,10 @@
   outer scroll owner cannot mask available horizontal movement. Input is
   prevented only when the target body cannot move and the canvas can move in
   the requested direction.
-- **Compact widths leak into persistence:** CSS derives compact width from the
-  container; controller widths are never changed during mode transitions.
+- **Responsive widths leak into persistence:** CSS derives compact and wide-pair
+  minimum widths from the container; controller widths are never changed during
+  mode transitions. A deliberate resize starts from the presented wide width
+  and remains the only action that updates durable geometry.
 - **Small-screen blank tail:** the durable trailing spacer is reduced to the
   root's end padding and the active column snaps to the content edge.
 - **Motion and focus disruption:** programmatic alignment does not focus a
@@ -58,11 +62,20 @@
 
 ## Validation evidence
 
+- The signed-in Superlist reference was inspected visually at 1343x997,
+  900x800, and 390x844. Its wide layout keeps the newest two task panels side by
+  side with an older task-panel slice, while the narrower layouts give the
+  newest task panel the complete content stage. Superlist's separate navigation
+  rail remains consumer-owned and is not part of this component contract.
+
 - `pnpm exec vitest run --project unit
 src/shared/shadcn/column-canvas/column-canvas-controller.spec.ts`: 8 passed.
 - `pnpm exec vitest run --project storybook
-src/shared/shadcn/column-canvas/ColumnCanvas.stories.svelte`: 8 passed.
-- `pnpm test:shadcn:pointer`: 10 passed, including 5 Column Canvas browser
+src/shared/shadcn/column-canvas/ColumnCanvas.stories.svelte`: 11 passed.
+- `pnpm exec playwright test tests/shadcn/column-canvas-scroll.spec.ts`: 9
+  passed, including full-stage 700px/390px compact geometry and wide newest-pair
+  context geometry.
+- `pnpm test:shadcn:pointer`: 16 passed, including 9 Column Canvas browser
   scenarios covering wide, 700px/390px compact, fixed, wheel, native touch,
   keyboard, resize round-trips, close/reopen, collapse/expand, reduced motion,
   focus retention, and nested vertical-scroll arbitration.
@@ -86,11 +99,11 @@ src/shared/shadcn/column-canvas/ColumnCanvas.stories.svelte`: 8 passed.
 - `pnpm test:workspace:pointer`: 13 passed.
 - `pnpm test:shell:pointer`: 5 passed.
 - `pnpm test:ai-chat-browser`: 2 passed.
-- `pnpm workspace:visual:audit`: passed with 111 stories, 70 pending, 36
+- `pnpm workspace:visual:audit`: passed with 112 stories, 71 pending, 36
   approved, 5 skipped, no failed stories, no orphan baselines, and no contract
   errors.
 - Exact compare-only capture for `responsive-adaptive-canvas` and
-  `fixed-compatibility`: both completed under the canonical Linux/ARM64 capture
+  `product-workspace-showcase`: both completed under the canonical Linux/ARM64 capture
   profile with `outcome: missing-baseline` and `policyStatus: warning`. The
   actual captures were inspected; no baseline PNG was created or updated.
 - `pnpm test:visual`: all 415 canonical Chromium captures completed. The result

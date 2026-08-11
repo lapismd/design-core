@@ -160,7 +160,7 @@
     event.stopPropagation();
 
     const startX = event.clientX;
-    const startWidth = width;
+    const startWidth = ref?.getBoundingClientRect().width ?? width;
     const ownerDocument =
       event.currentTarget instanceof Element
         ? event.currentTarget.ownerDocument
@@ -257,6 +257,7 @@
       data-resizable={resolvedResizable ? "true" : undefined}
       data-sticky={sticky ? "true" : undefined}
       style:--ui-column-canvas-expanded-width={`${width}px`}
+      style:--ui-column-canvas-expanded-max-width={`${maxWidth}px`}
     >
       {#if useDefaultHeader}
         <Header>

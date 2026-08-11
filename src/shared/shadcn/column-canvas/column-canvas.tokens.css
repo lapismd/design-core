@@ -11,6 +11,10 @@
   --ui-column-canvas-gap: calc(var(--spacing, 0.25rem) * 3);
   --ui-column-canvas-collapsed-width: 2.75rem;
   --ui-column-canvas-compact-peek-width: 2.75rem;
+  --ui-column-canvas-wide-context-width: var(
+    --ui-column-canvas-compact-peek-width,
+    2.75rem
+  );
   --ui-column-canvas-sticky-peek-width: var(
     --ui-column-canvas-collapsed-width,
     2.75rem

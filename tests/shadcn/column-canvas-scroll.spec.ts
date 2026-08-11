@@ -144,7 +144,7 @@ async function columnSnapPoint(
 }
 
 test.describe("Column Canvas responsive scrolling", () => {
-  test("700px and 390px compact layouts follow the active column, preserve the peek, and have no blank tail", async ({
+  test("700px and 390px compact layouts give the active column the full stage with no previous-column peek", async ({
     page,
   }) => {
     await useReducedMotion(page);
@@ -158,11 +158,6 @@ test.describe("Column Canvas responsive scrolling", () => {
         (element) => getComputedStyle(element).scrollbarWidth,
       ),
     ).toBe("none");
-    await expect(
-      root
-        .locator('[data-column-id="components"]')
-        .locator('[data-ui-part="scroll-area-scrollbar"]'),
-    ).toHaveCSS("display", "none");
     await expectActiveColumnAligned(page);
     await expect(page.getByRole("separator")).toHaveCount(0);
 
@@ -171,25 +166,16 @@ test.describe("Column Canvas responsive scrolling", () => {
         element.querySelectorAll<HTMLElement>('[data-ui-part="column"]'),
       );
       const style = getComputedStyle(element);
-      const padding = Number.parseFloat(style.paddingInlineStart);
-      const gap =
-        columns[1].getBoundingClientRect().left -
-        columns[0].getBoundingClientRect().right;
-      const peekProbe = document.createElement("span");
-      peekProbe.style.cssText =
-        "position:absolute;width:var(--ui-column-canvas-compact-peek-width);height:0";
-      element.append(peekProbe);
-      const peek = peekProbe.getBoundingClientRect().width;
-      peekProbe.remove();
+      const paddingStart = Number.parseFloat(style.paddingInlineStart);
+      const paddingEnd = Number.parseFloat(style.paddingInlineEnd);
+      const contentStart = element.getBoundingClientRect().left + paddingStart;
       const previous = columns.at(-2)!;
       const active = columns.at(-1)!;
       return {
         actualWidth: active.getBoundingClientRect().width,
-        expectedWidth: element.clientWidth - 2 * padding - gap - peek,
-        visiblePrevious:
-          previous.getBoundingClientRect().right -
-          (element.getBoundingClientRect().left + padding),
-        peek,
+        expectedWidth: element.clientWidth - paddingStart - paddingEnd,
+        activeStart: active.getBoundingClientRect().left - contentStart,
+        visiblePrevious: previous.getBoundingClientRect().right - contentStart,
         trailing:
           element.scrollWidth - element.clientWidth - element.scrollLeft,
       };
@@ -197,16 +183,38 @@ test.describe("Column Canvas responsive scrolling", () => {
     expect(Math.abs(metrics.actualWidth - metrics.expectedWidth)).toBeLessThan(
       2,
     );
-    expect(Math.abs(metrics.visiblePrevious - metrics.peek)).toBeLessThan(2);
+    expect(Math.abs(metrics.activeStart)).toBeLessThan(2);
+    expect(metrics.visiblePrevious).toBeLessThanOrEqual(1);
     expect(metrics.trailing).toBeLessThan(2);
 
     await page.setViewportSize({ width: 390, height: 760 });
     await expect(root).toHaveAttribute("data-display-mode", "compact");
     await expectActiveColumnAligned(page);
-    const compactWidth = await root
-      .locator('[data-column-id="detail"]')
-      .evaluate((column) => column.getBoundingClientRect().width);
-    expect(compactWidth).toBeLessThan(380);
+    const phoneMetrics = await root.evaluate((element) => {
+      const columns = Array.from(
+        element.querySelectorAll<HTMLElement>('[data-ui-part="column"]'),
+      );
+      const style = getComputedStyle(element);
+      const contentStart =
+        element.getBoundingClientRect().left +
+        Number.parseFloat(style.paddingInlineStart);
+      const active = columns.at(-1)!;
+      return {
+        width: active.getBoundingClientRect().width,
+        expectedWidth:
+          element.clientWidth -
+          Number.parseFloat(style.paddingInlineStart) -
+          Number.parseFloat(style.paddingInlineEnd),
+        activeStart: active.getBoundingClientRect().left - contentStart,
+        visiblePrevious:
+          columns.at(-2)!.getBoundingClientRect().right - contentStart,
+      };
+    });
+    expect(
+      Math.abs(phoneMetrics.width - phoneMetrics.expectedWidth),
+    ).toBeLessThan(2);
+    expect(Math.abs(phoneMetrics.activeStart)).toBeLessThan(2);
+    expect(phoneMetrics.visiblePrevious).toBeLessThanOrEqual(1);
 
     await root.focus();
     await page.keyboard.press("Home");
@@ -219,7 +227,7 @@ test.describe("Column Canvas responsive scrolling", () => {
     expect(await root.evaluate((element) => element.scrollLeft)).toBe(0);
   });
 
-  test("wide mode restores durable widths, resizers, fixed headers, and independent body scrolling", async ({
+  test("wide mode prioritises the newest pair with previous context while retaining resize and body-scroll behavior", async ({
     page,
   }) => {
     await useReducedMotion(page);
@@ -231,11 +239,58 @@ test.describe("Column Canvas responsive scrolling", () => {
     await expect(root).toHaveAttribute("data-display-mode", "wide");
     await expect(page.getByRole("separator")).toHaveCount(3);
     const detail = root.locator('[data-column-id="detail"]');
-    await expect
-      .poll(() =>
-        detail.evaluate((column) => column.getBoundingClientRect().width),
-      )
-      .toBe(380);
+    const components = root.locator('[data-column-id="components"]');
+    const categories = root.locator('[data-column-id="categories"]');
+    await expect(components).toHaveAttribute("data-responsive-stage", "pair");
+    await expect(detail).toHaveAttribute("data-responsive-stage", "pair");
+    await expect(categories).toHaveAttribute("data-responsive-context", "true");
+    const wideMetrics = await root.evaluate((element) => {
+      const categories = element.querySelector<HTMLElement>(
+        '[data-column-id="categories"]',
+      )!;
+      const components = element.querySelector<HTMLElement>(
+        '[data-column-id="components"]',
+      )!;
+      const detail = element.querySelector<HTMLElement>(
+        '[data-column-id="detail"]',
+      )!;
+      const style = getComputedStyle(element);
+      const paddingStart = Number.parseFloat(style.paddingInlineStart);
+      const paddingEnd = Number.parseFloat(style.paddingInlineEnd);
+      const contentWidth = element.clientWidth - paddingStart - paddingEnd;
+      const contentStart = element.getBoundingClientRect().left + paddingStart;
+      const contentEnd = element.getBoundingClientRect().right - paddingEnd;
+      const gap =
+        detail.getBoundingClientRect().left -
+        components.getBoundingClientRect().right;
+      const contextProbe = document.createElement("span");
+      contextProbe.style.cssText =
+        "position:absolute;width:var(--ui-column-canvas-wide-context-width);height:0";
+      element.append(contextProbe);
+      const contextWidth = contextProbe.getBoundingClientRect().width;
+      contextProbe.remove();
+      return {
+        componentsWidth: components.getBoundingClientRect().width,
+        detailWidth: detail.getBoundingClientRect().width,
+        expectedPairWidth: (contentWidth - contextWidth - gap * 2) / 2,
+        visibleContext: categories.getBoundingClientRect().right - contentStart,
+        contextWidth,
+        activeEndDistance: detail.getBoundingClientRect().right - contentEnd,
+        trailingSpacer:
+          element.scrollWidth - element.clientWidth - element.scrollLeft,
+      };
+    });
+    expect(
+      Math.abs(wideMetrics.componentsWidth - wideMetrics.expectedPairWidth),
+    ).toBeLessThan(2);
+    expect(
+      Math.abs(wideMetrics.detailWidth - wideMetrics.expectedPairWidth),
+    ).toBeLessThan(2);
+    expect(
+      Math.abs(wideMetrics.visibleContext - wideMetrics.contextWidth),
+    ).toBeLessThan(2);
+    expect(Math.abs(wideMetrics.activeEndDistance)).toBeLessThan(2);
+    expect(wideMetrics.trailingSpacer).toBeGreaterThan(300);
 
     const handle = page.getByRole("separator", {
       name: "Resize Detail column",
@@ -248,15 +303,17 @@ test.describe("Column Canvas responsive scrolling", () => {
     await page.mouse.down();
     await page.mouse.move(startX + 40, handleBox.y + 80, { steps: 8 });
     await page.mouse.up();
+    const resizedDetailWidth = wideMetrics.detailWidth + 40;
     await expect
       .poll(() =>
         detail.evaluate((column) => column.getBoundingClientRect().width),
       )
-      .toBe(420);
+      .toBeCloseTo(resizedDetailWidth, 0);
 
-    const component = root.locator('[data-column-id="components"]');
-    const header = component.locator('[data-ui-part="column-header"]');
-    const viewport = component.locator('[data-ui-part="scroll-area-viewport"]');
+    const header = components.locator('[data-ui-part="column-header"]');
+    const viewport = components.locator(
+      '[data-ui-part="scroll-area-viewport"]',
+    );
     const headerTop = (await header.boundingBox())!.y;
     await viewport.evaluate((element) => {
       element.scrollTop = 240;
@@ -271,7 +328,7 @@ test.describe("Column Canvas responsive scrolling", () => {
     await expect(page.getByRole("separator")).toHaveCount(0);
     expect(
       await detail.evaluate((column) => column.getBoundingClientRect().width),
-    ).not.toBe(420);
+    ).not.toBeCloseTo(resizedDetailWidth, 0);
 
     await setResponsiveStageWidth(page, 1100);
     await expect(root).toHaveAttribute("data-display-mode", "wide");
@@ -279,7 +336,7 @@ test.describe("Column Canvas responsive scrolling", () => {
       .poll(() =>
         detail.evaluate((column) => column.getBoundingClientRect().width),
       )
-      .toBe(420);
+      .toBeCloseTo(resizedDetailWidth, 0);
   });
 
   test("compact keyboard, wheel, and native touch input arbitrate between bodies, columns, and the page", async ({
@@ -388,10 +445,10 @@ test.describe("Column Canvas responsive scrolling", () => {
       .poll(() => root.evaluate((element) => element.scrollLeft))
       .toBeGreaterThan(touchStartScroll);
 
-    await page.emulateMedia({ reducedMotion: "no-preference" });
     await root.focus();
     await page.keyboard.press("End");
     await expectActiveColumnAligned(page);
+    await page.emulateMedia({ reducedMotion: "no-preference" });
     const rightEdge = await root.evaluate((element) => element.scrollLeft);
     const previousSnapPoint = await columnSnapPoint(root, "components");
     await root.locator('[data-column-id="detail"]').hover();

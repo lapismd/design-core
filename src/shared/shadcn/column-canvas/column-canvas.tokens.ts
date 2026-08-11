@@ -7,6 +7,7 @@ export const columnCanvasTokenNames = {
   gap: "--ui-column-canvas-gap",
   collapsedWidth: "--ui-column-canvas-collapsed-width",
   compactPeekWidth: "--ui-column-canvas-compact-peek-width",
+  wideContextWidth: "--ui-column-canvas-wide-context-width",
   stickyPeekWidth: "--ui-column-canvas-sticky-peek-width",
   resizeHandleHover: "--ui-column-canvas-resize-handle-hover",
   titleColor: "--ui-column-canvas-title-color",
