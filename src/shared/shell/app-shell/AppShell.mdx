@@ -17,7 +17,8 @@ is the detailed API and behavior reference.
 
 ## Structure
 
-```svelte
+{/* prettier-ignore */}
+```html
 <AppShell.Root {controller} displayMode="auto" mobileBreakpoint={1024}>
   <AppShell.Sidebar side="left">
     <AppShell.Sidebar.Header>...</AppShell.Sidebar.Header>
@@ -53,7 +54,8 @@ three values as ordinary programmatic state.
 For document-local navigation, switch the body to independently scrolling
 regions and mount a consumer-controlled sidebar on either side:
 
-```svelte
+{/* prettier-ignore */}
+```html
 <AppShell.Body layout="regions" label="Markdown document">
   <AppShell.Body.Toggle
     side="left"
@@ -170,7 +172,8 @@ more than one independently controlled surface on the same side. Create a named
 panel through the root controller when its state should participate in layout
 persistence:
 
-```svelte
+{/* prettier-ignore */}
+```html
 <script lang="ts">
   const shell = new AppShellController();
   const projectSidebar = shell.createSidebar("projects", "left");

@@ -35,7 +35,8 @@ Keep root sidebars and main as siblings. Within each sidebar, keep fixed header
 and footer chrome outside `Sidebar.Body`; within main, keep `Toolbar` outside
 the scrolling `Body`.
 
-```svelte
+{/* prettier-ignore */}
+```html
 <script lang="ts">
   import { AppShell, AppShellController } from "@lapismd/design-core/shell";
 
@@ -138,7 +139,8 @@ the outer panel first, its adjacent inner panel second, and main third. The
 inner header owns the outer panel’s toggle; the main toolbar owns the inner
 panel’s toggle.
 
-```svelte
+{/* prettier-ignore */}
+```html
 <script lang="ts">
   const shell = new AppShellController();
   const projects = shell.createSidebar("projects", "left");
@@ -301,7 +303,8 @@ Compact rendering is a desktop presentation decision. Durable desktop state
 can still say “collapsed” while the panel is fully presented on mobile or in a
 temporary preview:
 
-```svelte
+{/* prettier-ignore */}
+```html
 <script lang="ts">
   let compact = $derived(
     shell.mobile.resolvedMode === "desktop" &&
@@ -327,7 +330,8 @@ changes must not mutate desktop collapse/close/width state.
 
 Use body regions when a panel belongs to one main document or view:
 
-```svelte
+{/* prettier-ignore */}
+```html
 <AppShell.Body layout="regions" label="Markdown document">
   <AppShell.Body.Toggle
     side="right"

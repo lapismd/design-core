@@ -1,11 +1,21 @@
 import type { StorybookConfig } from "@storybook/svelte-vite";
 import { fileURLToPath } from "node:url";
+import remarkGfm from "remark-gfm";
 import { mergeConfig } from "vite";
 
 const config: StorybookConfig = {
   stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|ts|tsx|svelte)"],
   addons: [
-    "@storybook/addon-docs",
+    {
+      name: "@storybook/addon-docs",
+      options: {
+        mdxPluginOptions: {
+          mdxCompileOptions: {
+            remarkPlugins: [remarkGfm],
+          },
+        },
+      },
+    },
     "@storybook/addon-a11y",
     "@storybook/addon-svelte-csf",
     "@storybook/addon-vitest",

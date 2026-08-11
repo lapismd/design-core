@@ -12,7 +12,8 @@ presentation primitives.
 Applications can use the complete `WorkspaceSettingsSurface`, render
 `AppShell.Settings` inside `AppShell.Root`, or assemble the compound parts:
 
-```svelte
+{/* prettier-ignore */}
+```html
 <AppSettings.Root controller={app.settings} {app}>
   <AppSettings.Search />
   <AppSettings.Navigation />
