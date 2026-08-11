@@ -95,9 +95,9 @@ import * as ColumnCanvas from "@lapismd/design-core/shadcn/column-canvas";
   `visibleDepth`
 - Cascade visibility: `pathLevel` on column config, `getPathLevel`,
   `isPathVisible`, `isColumnVisible` (path-eligible and not closed)
-- Layout: `getWidth` / `setWidth` / `resetWidth`, `collapse` / `expand` /
-  `toggle`, `close` / `open`, `isCollapsed`, `isClosed`, `isResizable`,
-  `isCollapsible`, `isCloseable`
+- Layout: `getWidth` / `getDefaultWidth` / `setWidth` / `resetWidth`, `collapse`
+  / `expand` / `toggle`, `close` / `open`, `isCollapsed`, `isClosed`,
+  `isResizable`, `isCollapsible`, `isCloseable`
 - Closeable QoL: `openOnSelect` (default true when `closeable`) reopens the
   next-level closeable column on `select`
 - Dynamic columns: `ensureColumn(id, config)`

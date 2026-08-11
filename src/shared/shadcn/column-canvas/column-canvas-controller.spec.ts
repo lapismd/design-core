@@ -106,8 +106,10 @@ describe("createColumnCanvasController", () => {
       },
     });
     expect(canvas.getWidth("workspace")).toBe(280);
+    expect(canvas.getDefaultWidth("workspace")).toBe(280);
     canvas.setWidth("workspace", 900);
     expect(canvas.getWidth("workspace")).toBe(400);
+    expect(canvas.getDefaultWidth("workspace")).toBe(280);
     canvas.toggle("workspace");
     expect(canvas.isCollapsed("workspace")).toBe(true);
     canvas.expand("workspace");

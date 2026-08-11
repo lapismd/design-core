@@ -25,6 +25,14 @@
   scroll-snap-type: x proximity;
 }
 
+[data-ui-component="column-canvas"][data-ui-part="root"][data-display-mode="wide"][data-wheel-routing="true"],
+[data-ui-component="column-canvas"][data-ui-part="root"][data-display-mode="wide"][data-wheel-animating="true"] {
+  /* Programmatic vertical-wheel handoff must not be cancelled by the snap
+     point it is leaving. Native proximity snapping resumes at the settled
+     column or canvas-end position. */
+  scroll-snap-type: none;
+}
+
 [data-ui-component="column-canvas"][data-ui-part="root"][data-display-mode="compact"] {
   overscroll-behavior-inline: contain;
   padding-bottom: var(--ui-column-canvas-padding, 0.75rem);

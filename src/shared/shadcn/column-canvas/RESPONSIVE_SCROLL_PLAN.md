@@ -9,7 +9,9 @@
 - The resolved mode is exposed as `data-display-mode="wide|compact|fixed"`.
 - Wide mode transiently gives the newest two rendered columns enough minimum
   width to share the stage, within their configured maximum widths. Larger
-  durable widths remain authoritative; an older rendered column stays visible through
+  durable widths remain authoritative; once deliberately resized in either
+  direction, a column's durable width replaces the responsive default until it
+  is reset. An older rendered column stays visible through
   `--ui-column-canvas-wide-context-width`. Resize handles, the trailing spacer,
   independent vertical bodies, and proximity snapping remain.
 - Compact mode makes each expanded column fill the complete bounded stage with
@@ -54,7 +56,8 @@
 - **Responsive widths leak into persistence:** CSS derives compact and wide-pair
   minimum widths from the container; controller widths are never changed during
   mode transitions. A deliberate resize starts from the presented wide width
-  and remains the only action that updates durable geometry.
+  and remains the only action that updates durable geometry. The responsive
+  minimum yields as soon as that width differs from the controller default.
 - **Small-screen blank tail:** the durable trailing spacer is reduced to the
   root's end padding and the active column snaps to the content edge.
 - **Motion and focus disruption:** programmatic alignment does not focus a
@@ -117,6 +120,29 @@ src/shared/shadcn/column-canvas/ColumnCanvas.stories.svelte`: 11 passed.
   `WorkspaceAboutDialog.stories.svelte`, `app-workspace.ts`, `tree.ts`, and
   `WorkspaceExplorer.css`. The remaining checks were run individually with the
   passing results above. Changed-file Prettier validation passes.
+
+### 2026-08-11 trailing-column regression
+
+- The Product workspace pair exposed two fixture-specific conflicts: its
+  responsive minimum continued to win after a pointer resize, and wide-mode
+  proximity snapping cancelled the smaller programmatic delta used for unused
+  vertical-wheel handoff.
+- Responsive pair sizing now yields to any deliberate non-default durable
+  width. Wide sticky canvases suspend proximity snapping during the restrained
+  wheel delta and then ease to the adjacent snap point or canvas edge; fixed
+  canvases retain their free-scrolling behavior.
+- The full showcase Chromium scenario now drags both Task details and Activity
+  in both directions, verifies the rendered and durable widths, confirms both
+  bodies are non-scrollable, and exercises vertical-wheel handoff from each.
+  The earlier tests covered one resizer in a three-column non-sticky fixture,
+  fixed-mode sticky wheel routing without proximity snapping, and showcase
+  visibility/compact geometry—but never this six-column combination.
+- `pnpm test:shadcn:pointer`: 17 passed. The compact touch/wheel scenario was
+  also repeated three times after its existing touch-momentum race was made
+  explicit; all three passed.
+- Focused controller tests (8), focused Storybook tests (11), `pnpm check`,
+  `pnpm check:no-tailwind`, and `pnpm build-storybook` passed. Visual tests and
+  baseline comparisons were deliberately not rerun for this follow-up.
 
 \* The requested implementation and validation are complete. The aggregate
 `pnpm checks` command remains blocked only by the unrelated pre-existing

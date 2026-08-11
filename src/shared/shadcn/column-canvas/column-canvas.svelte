@@ -75,6 +75,7 @@
   let wheelAnimationFrame: number | null = null;
   let wheelAnimationRoot: HTMLElement | null = null;
   let wheelAnimationDirection: WheelDirection | null = null;
+  let stickyWheelRoutingTimer: ReturnType<typeof setTimeout> | null = null;
 
   const resolvedCompactBreakpoint = $derived(
     Number.isFinite(compactBreakpoint) && compactBreakpoint >= 0
@@ -176,6 +177,21 @@
     );
     const sharedStageWidth = availableExpandedWidth / expandedPair.length;
     for (const column of expandedPair) {
+      const id = column.dataset.columnId;
+      if (!id || !rootController.hasColumn(id)) continue;
+      const configuredWidth = finitePixels(
+        getComputedStyle(column).getPropertyValue(
+          "--ui-column-canvas-expanded-width",
+        ),
+      );
+      // The responsive pair is a default presentation, not a competing width
+      // source. Once a consumer or pointer resize supplies a non-default
+      // durable width, render that width directly until it is reset.
+      if (
+        Math.abs(configuredWidth - rootController.getDefaultWidth(id)) > 0.5
+      ) {
+        continue;
+      }
       const maxWidth = finitePixels(
         getComputedStyle(column).getPropertyValue(
           "--ui-column-canvas-expanded-max-width",
@@ -353,7 +369,34 @@
     wheelAnimationDirection = null;
   }
 
-  function compactSnapPoints(root: HTMLElement): number[] {
+  function stopStickyWheelRouting(): void {
+    if (stickyWheelRoutingTimer !== null) {
+      clearTimeout(stickyWheelRoutingTimer);
+      stickyWheelRoutingTimer = null;
+    }
+    ref?.removeAttribute("data-wheel-routing");
+  }
+
+  function startStickyWheelRouting(
+    root: HTMLElement,
+    direction: WheelDirection,
+  ): void {
+    if (stickyWheelRoutingTimer !== null) {
+      clearTimeout(stickyWheelRoutingTimer);
+    }
+    root.setAttribute("data-wheel-routing", "true");
+    stickyWheelRoutingTimer = setTimeout(() => {
+      stickyWheelRoutingTimer = null;
+      root.removeAttribute("data-wheel-routing");
+      const target =
+        adjacentSnapPoint(root, direction) ??
+        (direction > 0 ? Math.max(0, root.scrollWidth - root.clientWidth) : 0);
+      if (Math.abs(target - root.scrollLeft) <= 2) return;
+      animateWheelToSnapPoint(root, target, direction);
+    }, 240);
+  }
+
+  function columnSnapPoints(root: HTMLElement): number[] {
     return visibleColumns().map((column) => targetScrollLeft(root, column));
   }
 
@@ -361,7 +404,7 @@
     root: HTMLElement,
     direction: WheelDirection,
   ): number | undefined {
-    const points = compactSnapPoints(root);
+    const points = columnSnapPoints(root);
     if (direction > 0) {
       return points.find((point) => point > root.scrollLeft + 2);
     }
@@ -493,6 +536,7 @@
     if (stickyLayoutFrame !== null) cancelAnimationFrame(stickyLayoutFrame);
     if (stickyStateFrame !== null) cancelAnimationFrame(stickyStateFrame);
     cancelWheelAnimation();
+    stopStickyWheelRouting();
   });
 
   function handleScroll(
@@ -560,6 +604,10 @@
     if (resolvedDisplayMode !== "compact") {
       event.preventDefault();
       cancelWheelAnimation();
+      if (resolvedDisplayMode === "wide") {
+        const direction: WheelDirection = event.deltaY < 0 ? -1 : 1;
+        startStickyWheelRouting(root, direction);
+      }
       root.scrollLeft = Math.min(
         maxScrollLeft,
         Math.max(0, root.scrollLeft + event.deltaY * STICKY_WHEEL_DELTA_SCALE),
@@ -582,7 +630,7 @@
   function navigateSnapPoint(key: string): boolean {
     const root = ref;
     if (!root) return false;
-    const points = compactSnapPoints(root);
+    const points = columnSnapPoints(root);
     if (points.length === 0) return false;
 
     let target: number | undefined;

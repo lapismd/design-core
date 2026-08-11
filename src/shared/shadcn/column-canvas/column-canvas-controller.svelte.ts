@@ -184,6 +184,11 @@ export class ColumnCanvasController {
     return this.#requireColumn(id).width;
   };
 
+  /** Initial width used when resetting a resized column. */
+  getDefaultWidth = (id: string): number => {
+    return this.#requireColumn(id).defaultWidth;
+  };
+
   setWidth = (id: string, width: number): void => {
     const column = this.#requireColumn(id);
     const next = clampWidth(width, column.minWidth, column.maxWidth);

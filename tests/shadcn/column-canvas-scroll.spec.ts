@@ -444,11 +444,42 @@ test.describe("Column Canvas responsive scrolling", () => {
     await expect
       .poll(() => root.evaluate((element) => element.scrollLeft))
       .toBeGreaterThan(touchStartScroll);
+    await expect
+      .poll(async () => {
+        const before = await root.evaluate((element) => element.scrollLeft);
+        await page.waitForTimeout(120);
+        const after = await root.evaluate((element) => element.scrollLeft);
+        return Math.abs(after - before);
+      })
+      .toBeLessThan(1);
 
     await root.focus();
     await page.keyboard.press("End");
-    await expectActiveColumnAligned(page);
     await page.emulateMedia({ reducedMotion: "no-preference" });
+    await expectActiveColumnAligned(page);
+    await expect
+      .poll(() =>
+        root.evaluate((element) =>
+          Math.abs(
+            element.scrollLeft -
+              Math.max(0, element.scrollWidth - element.clientWidth),
+          ),
+        ),
+      )
+      .toBeLessThan(2);
+    // Native touch momentum can finish after the first aligned frame. Require
+    // the End position to remain settled before sampling wheel animation.
+    await page.waitForTimeout(120);
+    await expect
+      .poll(() =>
+        root.evaluate((element) =>
+          Math.abs(
+            element.scrollLeft -
+              Math.max(0, element.scrollWidth - element.clientWidth),
+          ),
+        ),
+      )
+      .toBeLessThan(2);
     const rightEdge = await root.evaluate((element) => element.scrollLeft);
     const previousSnapPoint = await columnSnapPoint(root, "components");
     await root.locator('[data-column-id="detail"]').hover();
@@ -946,6 +977,114 @@ test.describe("Column Canvas sticky scrolling", () => {
 });
 
 test.describe("Column Canvas full showcase", () => {
+  test("resizes both trailing columns and routes their unused vertical wheel input", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await openStory(page, showcaseStoryId);
+
+    const root = page.getByRole("region", {
+      name: "Product delivery workspace",
+    });
+    const detail = root.locator('[data-column-id="detail"]');
+    const activity = root.locator('[data-column-id="activity"]');
+
+    async function dragTrailingColumn(
+      label: string,
+      column: Locator,
+      deltaX: number,
+    ): Promise<void> {
+      const before = await column.evaluate(
+        (element) => element.getBoundingClientRect().width,
+      );
+      const handle = page.getByRole("separator", {
+        name: `Resize ${label} column`,
+      });
+      const box = await handle.boundingBox();
+      expect(box).not.toBeNull();
+      if (!box) return;
+      const x = box.x + box.width / 2;
+      const y = box.y + box.height / 2;
+      await page.mouse.move(x, y);
+      await page.mouse.down();
+      await page.mouse.move(x + deltaX, y, { steps: 8 });
+      await page.mouse.up();
+      await expect
+        .poll(() =>
+          column.evaluate((element) => element.getBoundingClientRect().width),
+        )
+        .toBeCloseTo(before + deltaX, 0);
+      await expect
+        .poll(() =>
+          column.evaluate((element) =>
+            Number.parseFloat(
+              getComputedStyle(element).getPropertyValue(
+                "--ui-column-canvas-expanded-width",
+              ),
+            ),
+          ),
+        )
+        .toBeCloseTo(before + deltaX, 0);
+    }
+
+    await dragTrailingColumn("Task details", detail, -48);
+    await dragTrailingColumn("Activity", activity, -36);
+    await dragTrailingColumn("Task details", detail, 24);
+    await dragTrailingColumn("Activity", activity, 20);
+
+    for (const column of [detail, activity]) {
+      const viewport = column.locator('[data-ui-part="scroll-area-viewport"]');
+      expect(
+        await viewport.evaluate(
+          (element) => element.scrollHeight <= element.clientHeight + 1,
+        ),
+      ).toBe(true);
+    }
+
+    const activityViewport = activity.locator(
+      '[data-ui-part="scroll-area-viewport"]',
+    );
+    const beforeActivityWheel = await root.evaluate(
+      (element) => element.scrollLeft,
+    );
+    await activityViewport.hover();
+    await page.mouse.wheel(0, -240);
+    await expect
+      .poll(() => root.evaluate((element) => element.scrollLeft))
+      .toBeLessThan(beforeActivityWheel - 40);
+    await expect(activityViewport).toHaveJSProperty("scrollTop", 0);
+
+    await page.waitForTimeout(320);
+    await expect(root).not.toHaveAttribute("data-wheel-routing");
+    await expect(root).toHaveAttribute("data-wheel-animating", "true");
+    await expect
+      .poll(() => root.getAttribute("data-wheel-animating"))
+      .toBeNull();
+    const settledActivityWheel = await root.evaluate(
+      (element) => element.scrollLeft,
+    );
+    expect(settledActivityWheel).toBeLessThan(beforeActivityWheel - 40);
+
+    const detailViewport = detail.locator(
+      '[data-ui-part="scroll-area-viewport"]',
+    );
+    await detailViewport.hover();
+    await page.mouse.wheel(0, 240);
+    await expect
+      .poll(() => root.evaluate((element) => element.scrollLeft))
+      .toBeGreaterThan(settledActivityWheel + 40);
+    await expect(detailViewport).toHaveJSProperty("scrollTop", 0);
+
+    await page.waitForTimeout(320);
+    await expect(root).not.toHaveAttribute("data-wheel-routing");
+    await expect
+      .poll(() => root.getAttribute("data-wheel-animating"))
+      .toBeNull();
+    expect(
+      await root.evaluate((element) => element.scrollLeft),
+    ).toBeGreaterThan(settledActivityWheel + 40);
+  });
+
   test("keeps the deep cascade usable across wide and compact layouts", async ({
     page,
   }) => {
