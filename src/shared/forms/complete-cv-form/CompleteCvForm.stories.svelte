@@ -43,6 +43,11 @@
         await expect(
           canvas.getByRole("textbox", { name: "CV YAML" }),
         ).toBeVisible();
+        await expect(
+          canvasElement.querySelectorAll(
+            '[data-ui-part="body"] > [data-ui-component="scroll-area"]',
+          ),
+        ).toHaveLength(0);
         await expect(canvas.getAllByDisplayValue("John Doe")[0]).toBeVisible();
         for (const entryType of [
           "TextEntry",
@@ -58,6 +63,116 @@
           const section = canvas.getByTestId(`cv-section-${entryType}`);
           section.scrollIntoView({ block: "center" });
           await expect(section).toBeVisible();
+        }
+
+        const formRoot = canvas.getByTestId("structured-cv");
+        await expect(formRoot).toHaveAttribute(
+          "data-ui-component",
+          "scroll-area",
+        );
+        const formScroller = formRoot.querySelector<HTMLElement>(
+          '[data-ui-part="scroll-area-viewport"]',
+        )!;
+        if (getComputedStyle(formScroller).overflowY === "visible") {
+          await expect(
+            canvas.getByRole("tabpanel", { name: "CV" }).scrollTop,
+          ).toBeGreaterThan(0);
+        } else {
+          await expect(formScroller.scrollTop).toBeGreaterThan(0);
+        }
+
+        for (const [entryType, markers] of [
+          ["BulletEntry", ["•", "•", "•", "•", "•"]],
+          ["NumberedEntry", ["1.", "2.", "3."]],
+          ["ReversedNumberedEntry", ["4.", "3.", "2.", "1."]],
+        ] as const) {
+          const section = canvas.getByTestId(`cv-section-${entryType}`);
+          await expect(
+            within(section)
+              .getAllByTestId("simple-entry-marker")
+              .map((marker) => marker.textContent),
+          ).toEqual(markers);
+        }
+
+        for (const entryType of [
+          "TextEntry",
+          "BulletEntry",
+          "NumberedEntry",
+          "ReversedNumberedEntry",
+        ]) {
+          const section = canvas.getByTestId(`cv-section-${entryType}`);
+          const visibleFieldLabels = Array.from(
+            section.querySelectorAll<HTMLElement>(
+              ".complete-cv-unlabeled-entry .cv-form-field > span",
+            ),
+          ).filter((label) => getComputedStyle(label).position !== "absolute");
+          await expect(visibleFieldLabels).toHaveLength(0);
+        }
+
+        const firstHighlights = canvas
+          .getAllByText("Highlights")[0]
+          .closest<HTMLElement>('[data-ui-part="list-editor"]')!;
+        const finalHighlight = firstHighlights.querySelector<HTMLElement>(
+          ':scope > [data-ui-part="list-editor-items"] > [data-ui-component="sortable-array-item"]:last-child',
+        )!;
+        await expect(getComputedStyle(finalHighlight).borderBottomWidth).toBe(
+          "0px",
+        );
+        const firstHighlightBody = firstHighlights.querySelector<HTMLElement>(
+          '[data-ui-part="sortable-array-item-body"]',
+        )!;
+        await expect(
+          getComputedStyle(firstHighlightBody).borderBottomWidth,
+        ).toBe("0px");
+
+        const socialRows = canvas
+          .getByTestId("social-networks")
+          .querySelectorAll<HTMLElement>(
+            ':scope > [data-ui-part="entry-actions"]',
+          );
+        await expect(
+          getComputedStyle(socialRows[socialRows.length - 1]).borderBottomWidth,
+        ).toBe("0px");
+      },
+    );
+
+    await step(
+      "Resizes the form and YAML panes with the keyboard",
+      async () => {
+        const handle = canvas.getByTestId("complete-cv-cv-resize-handle");
+        const formPane = canvas.getByTestId(
+          "complete-cv-cv-form-resizable-pane",
+        );
+        const initialWidth = formPane.getBoundingClientRect().width;
+
+        await expect(handle).toHaveAttribute("role", "separator");
+        await expect(
+          canvasElement.querySelector(".complete-cv-yaml-header"),
+        ).not.toBeInTheDocument();
+
+        if (getComputedStyle(handle).display === "none") {
+          await expect(
+            getComputedStyle(
+              canvasElement.querySelector<HTMLElement>(
+                ".complete-cv-editor-split",
+              )!,
+            ).display,
+          ).toBe("block");
+        } else {
+          handle.focus();
+          await userEvent.keyboard("{ArrowRight}");
+          await waitFor(() =>
+            expect(formPane.getBoundingClientRect().width).toBeGreaterThan(
+              initialWidth,
+            ),
+          );
+
+          await userEvent.keyboard("{ArrowLeft}");
+          await waitFor(() =>
+            expect(
+              Math.abs(formPane.getBoundingClientRect().width - initialWidth),
+            ).toBeLessThan(2),
+          );
         }
       },
     );
@@ -214,8 +329,19 @@
         canvasElement.querySelectorAll(
           '[data-ui-part="body"] > [data-ui-component="scroll-area"]',
         ),
-      ).toHaveLength(1);
-      resetButton.blur();
+      ).toHaveLength(0);
+      await waitFor(() =>
+        expect(
+          canvas
+            .getByTestId("structured-cv")
+            .querySelector<HTMLElement>(
+              '[data-ui-part="scroll-area-viewport"]',
+            )!.scrollTop,
+        ).toBe(0),
+      );
+      await expect(canvas.getByRole("tabpanel", { name: "CV" }).scrollTop).toBe(
+        0,
+      );
     });
   }}
 >

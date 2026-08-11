@@ -59,5 +59,21 @@ describe("source-reference form layout CSS", () => {
     expect(listEditorCss).toMatch(
       /\[data-ui-component="list-editor"\]\[data-ui-part="list-editor"\]\[data-variant="inline"\]/,
     );
+    expect(listEditorCss).toMatch(
+      /\[data-ui-part="list-editor-items"\][\s\S]*?> \[data-ui-component="sortable-array-item"\]\[data-ui-part="sortable-array-item"\]:last-child\s*\{[\s\S]*?border-bottom:\s*0/,
+    );
+  });
+
+  it("applies sortable item borders only to the component root", () => {
+    const sortableItemCss = readCss(
+      "../sortable-array-item/SortableArrayItem.css",
+    );
+
+    expect(sortableItemCss).not.toMatch(
+      /^\[data-ui-component="sortable-array-item"\]\s*\{/m,
+    );
+    expect(sortableItemCss).toMatch(
+      /\[data-ui-component="sortable-array-item"\]\[data-ui-part="sortable-array-item"\]\s*\{[\s\S]*?border-bottom:\s*1px/,
+    );
   });
 });

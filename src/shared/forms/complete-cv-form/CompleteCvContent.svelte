@@ -26,6 +26,7 @@
     moveItem,
     removeItem,
     setAtPath,
+    simpleListEntryMarker,
     uniqueId,
   } from "./complete-cv-form.model";
   import type {
@@ -490,6 +491,17 @@
                 {/if}
               </article>
             {:else}
+              {@const marker = simpleListEntryMarker(
+                section.entry_type,
+                entryIndex,
+                section.entries.length,
+              )}
+              {@const unlabeled = [
+                "TextEntry",
+                "BulletEntry",
+                "NumberedEntry",
+                "ReversedNumberedEntry",
+              ].includes(section.entry_type)}
               <EntryActions
                 index={entryIndex}
                 total={section.entries.length}
@@ -498,17 +510,29 @@
                   moveEntry(sectionIndex, entryIndex, direction)}
                 onRemove={() => removeEntry(sectionIndex, entryIndex)}
               >
-                <StructuredForm
-                  value={entryRecord}
-                  config={entryConfigs[section.entry_type]}
-                  onChange={(next) =>
-                    updateEntry(
-                      sectionIndex,
-                      entryIndex,
-                      section.entry_type,
-                      next as StoryRecord,
-                    )}
-                />
+                <div
+                  class:complete-cv-simple-entry={marker !== null}
+                  class:complete-cv-unlabeled-entry={unlabeled}
+                >
+                  {#if marker !== null}
+                    <span
+                      class="complete-cv-simple-entry__marker"
+                      data-testid="simple-entry-marker"
+                      aria-hidden="true">{marker}</span
+                    >
+                  {/if}
+                  <StructuredForm
+                    value={entryRecord}
+                    config={entryConfigs[section.entry_type]}
+                    onChange={(next) =>
+                      updateEntry(
+                        sectionIndex,
+                        entryIndex,
+                        section.entry_type,
+                        next as StoryRecord,
+                      )}
+                  />
+                </div>
               </EntryActions>
             {/if}
           {/each}

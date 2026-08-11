@@ -1,6 +1,6 @@
 @import "../form.tokens.css";
 
-[data-ui-component="sortable-array-item"] {
+[data-ui-component="sortable-array-item"][data-ui-part="sortable-array-item"] {
   position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -9,31 +9,33 @@
   transition: background-color 0.15s ease;
 }
 
-[data-ui-component="sortable-array-item"]:focus-within {
+[data-ui-component="sortable-array-item"][data-ui-part="sortable-array-item"]:focus-within {
   background: color-mix(in srgb, var(--ui-form-accent) 8%, transparent);
 }
 
-[data-ui-component="sortable-array-item"][data-compact] {
+[data-ui-component="sortable-array-item"][data-ui-part="sortable-array-item"][data-compact] {
   padding-block: 0.25rem;
 }
 
-[data-ui-component="sortable-array-item"]:not([data-compact]) {
+[data-ui-component="sortable-array-item"][data-ui-part="sortable-array-item"]:not(
+    [data-compact]
+  ) {
   padding-block: 0.375rem;
 }
 
-[data-ui-component="sortable-array-item"][data-inset="flush"] {
+[data-ui-component="sortable-array-item"][data-ui-part="sortable-array-item"][data-inset="flush"] {
   padding-left: 0;
 }
 
-[data-ui-component="sortable-array-item"][data-inset="tight"] {
+[data-ui-component="sortable-array-item"][data-ui-part="sortable-array-item"][data-inset="tight"] {
   padding-left: 0.75rem;
 }
 
-[data-ui-component="sortable-array-item"][data-inset="normal"] {
+[data-ui-component="sortable-array-item"][data-ui-part="sortable-array-item"][data-inset="normal"] {
   padding-left: 1.25rem;
 }
 
-[data-ui-component="sortable-array-item"][data-dragging] {
+[data-ui-component="sortable-array-item"][data-ui-part="sortable-array-item"][data-dragging] {
   background: color-mix(in srgb, var(--ui-form-accent) 16%, transparent);
   opacity: 0.7;
 }
@@ -59,19 +61,21 @@
     color 0.15s ease;
 }
 
-[data-ui-component="sortable-array-item"][data-inset="flush"]
+[data-ui-component="sortable-array-item"][data-ui-part="sortable-array-item"][data-inset="flush"]
   [data-ui-part="sortable-array-item-drag"] {
   left: -1rem;
 }
 
-[data-ui-component="sortable-array-item"]:not([data-inset="flush"])
+[data-ui-component="sortable-array-item"][data-ui-part="sortable-array-item"]:not(
+    [data-inset="flush"]
+  )
   [data-ui-part="sortable-array-item-drag"] {
   left: 0;
 }
 
-[data-ui-component="sortable-array-item"]:hover
+[data-ui-component="sortable-array-item"][data-ui-part="sortable-array-item"]:hover
   [data-ui-part="sortable-array-item-drag"],
-[data-ui-component="sortable-array-item"]:focus-within
+[data-ui-component="sortable-array-item"][data-ui-part="sortable-array-item"]:focus-within
   [data-ui-part="sortable-array-item-drag"],
 [data-ui-part="sortable-array-item-drag"]:focus-visible {
   opacity: 1;
@@ -99,7 +103,7 @@
   min-width: 0;
 }
 
-[data-ui-component="sortable-array-item"]
+[data-ui-component="sortable-array-item"][data-ui-part="sortable-array-item"]
   [data-ui-component="button"].ui-sortable-array-item__remove {
   position: absolute;
   top: 50%;
@@ -115,24 +119,24 @@
     color 0.15s ease;
 }
 
-[data-ui-component="sortable-array-item"]:hover
+[data-ui-component="sortable-array-item"][data-ui-part="sortable-array-item"]:hover
   [data-ui-component="button"].ui-sortable-array-item__remove,
-[data-ui-component="sortable-array-item"]:focus-within
+[data-ui-component="sortable-array-item"][data-ui-part="sortable-array-item"]:focus-within
   [data-ui-component="button"].ui-sortable-array-item__remove,
-[data-ui-component="sortable-array-item"]
+[data-ui-component="sortable-array-item"][data-ui-part="sortable-array-item"]
   [data-ui-component="button"].ui-sortable-array-item__remove:focus-visible {
   opacity: 1;
 }
 
-[data-ui-component="sortable-array-item"]
+[data-ui-component="sortable-array-item"][data-ui-part="sortable-array-item"]
   [data-ui-component="button"].ui-sortable-array-item__remove:hover,
-[data-ui-component="sortable-array-item"]
+[data-ui-component="sortable-array-item"][data-ui-part="sortable-array-item"]
   [data-ui-component="button"].ui-sortable-array-item__remove:focus-visible {
   color: var(--ui-form-foreground);
   background: transparent;
 }
 
-[data-ui-component="sortable-array-item"]
+[data-ui-component="sortable-array-item"][data-ui-part="sortable-array-item"]
   [data-ui-component="button"].ui-sortable-array-item__remove
   svg {
   width: 0.875rem;

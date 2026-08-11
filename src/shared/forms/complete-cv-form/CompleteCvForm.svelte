@@ -1,8 +1,11 @@
 <script lang="ts">
   import RotateCcwIcon from "@lucide/svelte/icons/rotate-ccw";
+  import { tick } from "svelte";
 
   import * as Alert from "../../shadcn/alert/index";
   import { Button } from "../../shadcn/button/index";
+  import * as Resizable from "../../shadcn/resizable/index";
+  import * as ScrollArea from "../../shadcn/scroll-area/index";
   import * as Tabs from "../../shadcn/tabs/index";
   import { AppShell, AppShellController } from "../../shell/app-shell/index";
   import FormSectionHeader from "../form-section-header/FormSectionHeader.svelte";
@@ -64,6 +67,7 @@
     settings: [],
   });
   let identityRevision = $state(0);
+  let shellHost: HTMLDivElement;
 
   const collapsedAll = $derived(closedByTab[activeTab].includes("*"));
 
@@ -86,13 +90,26 @@
     if (tab === "cv") identityRevision += 1;
   }
 
-  function reset(): void {
+  async function reset(): Promise<void> {
     source = cloneSource(initialSource);
     activeTab = "cv";
     yamlText = yamlFor(source);
     yamlErrors = { cv: null, design: null, locale: null, settings: null };
     closedByTab = { cv: [], design: [], locale: [], settings: [] };
     identityRevision += 1;
+    await tick();
+    const resetScroll = () => {
+      shellHost
+        ?.querySelectorAll<HTMLElement>(
+          '.complete-cv-tab-content, .complete-cv-form-pane [data-ui-part="scroll-area-viewport"], .complete-cv-yaml-pane .cm-scroller',
+        )
+        .forEach((element) => element.scrollTo({ top: 0 }));
+    };
+    resetScroll();
+    requestAnimationFrame(() => {
+      resetScroll();
+      requestAnimationFrame(resetScroll);
+    });
   }
 
   function setClosed(tab: CvStoryTab, ids: string[]): void {
@@ -100,10 +117,18 @@
   }
 </script>
 
-<div class="complete-cv-shell" data-testid="complete-cv-shell">
+<div
+  bind:this={shellHost}
+  class="complete-cv-shell"
+  data-testid="complete-cv-shell"
+>
   <AppShell.Root controller={shellController} mobileBreakpoint={640}>
     <AppShell.Main>
-      <AppShell.Body label="Complete CV form">
+      <AppShell.Body
+        layout="regions"
+        label="Complete CV form"
+        class="complete-cv-body"
+      >
         <div class="complete-cv-page">
           <div class="complete-cv-sticky-controls">
             <FormToolbar
@@ -135,116 +160,143 @@
 
               {#each tabs as tab (tab.value)}
                 <Tabs.Content value={tab.value} class="complete-cv-tab-content">
-                  <div class="complete-cv-editor-split">
-                    <div
-                      class="complete-cv-form-pane"
-                      data-testid={`structured-${tab.value}`}
+                  <Resizable.PaneGroup
+                    direction="horizontal"
+                    class="complete-cv-editor-split"
+                  >
+                    <Resizable.Pane
+                      defaultSize={48}
+                      minSize={30}
+                      class="complete-cv-form-resizable-pane"
+                      data-testid={`complete-cv-${tab.value}-form-resizable-pane`}
                     >
-                      {#if tab.value === "cv"}
-                        <CompleteCvContent
-                          cv={source.cv}
-                          closedIds={closedByTab.cv}
-                          {identityRevision}
-                          onChange={(cv: CvFragment) =>
-                            commit({ ...source, cv })}
-                          onClosedIdsChange={(ids) => setClosed("cv", ids)}
-                        />
-                      {:else if tab.value === "design"}
-                        <CompleteCvGroupList
-                          value={source.design ?? {}}
-                          groups={designGroups}
-                          closedIds={closedByTab.design}
-                          onChange={(value) => commitFragment("design", value)}
-                          onClosedIdsChange={(ids) => setClosed("design", ids)}
-                        />
-                      {:else if tab.value === "locale"}
-                        <CompleteCvGroupList
-                          value={source.locale ?? {}}
-                          groups={localeGroups}
-                          closedIds={closedByTab.locale}
-                          onChange={(value) => commitFragment("locale", value)}
-                          onClosedIdsChange={(ids) => setClosed("locale", ids)}
-                        />
-                      {:else}
-                        <section
-                          class="complete-cv-group complete-cv-settings-group"
-                        >
-                          <FormSectionHeader
-                            title="Document Settings"
-                            index={0}
-                            total={1}
-                            open={!closedByTab.settings.includes("*") &&
-                              !closedByTab.settings.includes(
-                                "document-settings",
-                              )}
-                            editable={false}
-                            movable={false}
-                            removable={false}
-                            titleToggleable
-                            titleRowClass="complete-cv-setting-title-row"
-                            onToggle={() => {
-                              const ids = closedByTab.settings.filter(
-                                (id) => id !== "*",
-                              );
-                              setClosed(
-                                "settings",
-                                ids.includes("document-settings")
-                                  ? ids.filter(
-                                      (id) => id !== "document-settings",
-                                    )
-                                  : [...ids, "document-settings"],
-                              );
-                            }}
-                          />
-                          {#if !closedByTab.settings.includes("*") && !closedByTab.settings.includes("document-settings")}
-                            <div class="complete-cv-group__body">
-                              <StructuredForm
-                                value={source.settings ?? {}}
-                                config={settingsConfig}
-                                onChange={(value) =>
-                                  commitFragment(
-                                    "settings",
-                                    value as StoryRecord,
+                      <ScrollArea.Root
+                        class="complete-cv-form-pane"
+                        orientation="vertical"
+                        data-testid={`structured-${tab.value}`}
+                      >
+                        <div class="complete-cv-form-pane__content">
+                          {#if tab.value === "cv"}
+                            <CompleteCvContent
+                              cv={source.cv}
+                              closedIds={closedByTab.cv}
+                              {identityRevision}
+                              onChange={(cv: CvFragment) =>
+                                commit({ ...source, cv })}
+                              onClosedIdsChange={(ids) => setClosed("cv", ids)}
+                            />
+                          {:else if tab.value === "design"}
+                            <CompleteCvGroupList
+                              value={source.design ?? {}}
+                              groups={designGroups}
+                              closedIds={closedByTab.design}
+                              onChange={(value) =>
+                                commitFragment("design", value)}
+                              onClosedIdsChange={(ids) =>
+                                setClosed("design", ids)}
+                            />
+                          {:else if tab.value === "locale"}
+                            <CompleteCvGroupList
+                              value={source.locale ?? {}}
+                              groups={localeGroups}
+                              closedIds={closedByTab.locale}
+                              onChange={(value) =>
+                                commitFragment("locale", value)}
+                              onClosedIdsChange={(ids) =>
+                                setClosed("locale", ids)}
+                            />
+                          {:else}
+                            <section
+                              class="complete-cv-group complete-cv-settings-group"
+                            >
+                              <FormSectionHeader
+                                title="Document Settings"
+                                index={0}
+                                total={1}
+                                open={!closedByTab.settings.includes("*") &&
+                                  !closedByTab.settings.includes(
+                                    "document-settings",
                                   )}
+                                editable={false}
+                                movable={false}
+                                removable={false}
+                                titleToggleable
+                                titleRowClass="complete-cv-setting-title-row"
+                                onToggle={() => {
+                                  const ids = closedByTab.settings.filter(
+                                    (id) => id !== "*",
+                                  );
+                                  setClosed(
+                                    "settings",
+                                    ids.includes("document-settings")
+                                      ? ids.filter(
+                                          (id) => id !== "document-settings",
+                                        )
+                                      : [...ids, "document-settings"],
+                                  );
+                                }}
                               />
-                            </div>
+                              {#if !closedByTab.settings.includes("*") && !closedByTab.settings.includes("document-settings")}
+                                <div class="complete-cv-group__body">
+                                  <StructuredForm
+                                    value={source.settings ?? {}}
+                                    config={settingsConfig}
+                                    onChange={(value) =>
+                                      commitFragment(
+                                        "settings",
+                                        value as StoryRecord,
+                                      )}
+                                  />
+                                </div>
+                              {/if}
+                            </section>
                           {/if}
-                        </section>
-                      {/if}
-                    </div>
+                        </div>
+                      </ScrollArea.Root>
+                    </Resizable.Pane>
 
-                    <aside
-                      class="complete-cv-yaml-pane"
-                      aria-label={`${tab.label} YAML source`}
-                      data-testid={`yaml-${tab.value}`}
+                    <Resizable.Handle
+                      withHandle
+                      class="complete-cv-resize-handle"
+                      aria-label="Resize form and YAML panels"
+                      data-testid={`complete-cv-${tab.value}-resize-handle`}
+                    />
+
+                    <Resizable.Pane
+                      defaultSize={52}
+                      minSize={30}
+                      class="complete-cv-yaml-resizable-pane"
+                      data-testid={`complete-cv-${tab.value}-yaml-resizable-pane`}
                     >
-                      <div class="complete-cv-yaml-header">
-                        <strong>YAML</strong>
-                        <span>{tab.label}</span>
-                      </div>
-                      <YamlEditor
-                        value={yamlText[tab.value]}
-                        invalid={Boolean(yamlErrors[tab.value])}
-                        frameless
-                        minHeight="100%"
-                        ariaLabel={`${tab.label} YAML`}
-                        editorId={`complete-cv-${tab.value}-yaml`}
-                        onChange={(text) => editYaml(tab.value, text)}
-                      />
-                      {#if yamlErrors[tab.value]}
-                        <Alert.Root
-                          variant="destructive"
-                          role="alert"
-                          data-testid="yaml-error"
-                        >
-                          <Alert.Title>YAML not applied</Alert.Title>
-                          <Alert.Description
-                            >{yamlErrors[tab.value]}</Alert.Description
+                      <aside
+                        class="complete-cv-yaml-pane"
+                        aria-label={`${tab.label} YAML source`}
+                        data-testid={`yaml-${tab.value}`}
+                      >
+                        <YamlEditor
+                          value={yamlText[tab.value]}
+                          invalid={Boolean(yamlErrors[tab.value])}
+                          frameless
+                          minHeight="100%"
+                          ariaLabel={`${tab.label} YAML`}
+                          editorId={`complete-cv-${tab.value}-yaml`}
+                          onChange={(text) => editYaml(tab.value, text)}
+                        />
+                        {#if yamlErrors[tab.value]}
+                          <Alert.Root
+                            variant="destructive"
+                            role="alert"
+                            data-testid="yaml-error"
                           >
-                        </Alert.Root>
-                      {/if}
-                    </aside>
-                  </div>
+                            <Alert.Title>YAML not applied</Alert.Title>
+                            <Alert.Description
+                              >{yamlErrors[tab.value]}</Alert.Description
+                            >
+                          </Alert.Root>
+                        {/if}
+                      </aside>
+                    </Resizable.Pane>
+                  </Resizable.PaneGroup>
                 </Tabs.Content>
               {/each}
             </Tabs.Root>

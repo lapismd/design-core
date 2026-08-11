@@ -11,6 +11,7 @@ import {
   removeItem,
   serializeFragment,
   setAtPath,
+  simpleListEntryMarker,
   uniqueId,
 } from "./complete-cv-form.model";
 import { createSampleCv } from "./sample-cv.fixture";
@@ -88,6 +89,14 @@ describe("complete CV form model", () => {
     expect(moveItem(items, 0, -1)).toBe(items);
     expect(removeItem(items, 1)).toEqual(["alpha", "gamma"]);
     expect(items).toEqual(["alpha", "beta", "gamma"]);
+  });
+
+  it("renders simple list markers in forward and reversed order", () => {
+    expect(simpleListEntryMarker("BulletEntry", 0, 3)).toBe("•");
+    expect(simpleListEntryMarker("NumberedEntry", 1, 3)).toBe("2.");
+    expect(simpleListEntryMarker("ReversedNumberedEntry", 0, 3)).toBe("3.");
+    expect(simpleListEntryMarker("ReversedNumberedEntry", 2, 3)).toBe("1.");
+    expect(simpleListEntryMarker("TextEntry", 0, 1)).toBeNull();
   });
 
   it("serializes wrapped fragments and parses wrapped or unwrapped YAML", () => {

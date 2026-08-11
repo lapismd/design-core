@@ -145,6 +145,17 @@ export function addEntryLabel(entryType: CvEntryType): string {
   );
 }
 
+export function simpleListEntryMarker(
+  entryType: CvEntryType,
+  index: number,
+  total: number,
+): string | null {
+  if (entryType === "BulletEntry") return "•";
+  if (entryType === "NumberedEntry") return `${index + 1}.`;
+  if (entryType === "ReversedNumberedEntry") return `${total - index}.`;
+  return null;
+}
+
 export function defaultEntry(entryType: CvEntryType): CvEntry {
   if (entryType === "TextEntry") return "";
   if (entryType === "ExperienceEntry") {

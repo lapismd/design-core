@@ -78,6 +78,11 @@
   gap: 0.5rem;
 }
 
+[data-ui-part="list-editor-items"]
+  > [data-ui-component="sortable-array-item"][data-ui-part="sortable-array-item"]:last-child {
+  border-bottom: 0;
+}
+
 [data-ui-component="list-editor"][data-ui-part="list-editor"][data-variant="inline"]
   [data-ui-part="list-editor-items"] {
   grid-column: 1 / -1;

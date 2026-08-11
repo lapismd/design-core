@@ -21,7 +21,22 @@
 }
 
 .complete-cv-page {
-  min-height: 100%;
+  display: flex;
+  min-height: 0;
+  flex: 1;
+}
+
+.complete-cv-body,
+.complete-cv-sticky-controls {
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.complete-cv-sticky-controls {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
 }
 
 .complete-cv-sticky-controls > .ui-form-toolbar {
@@ -46,7 +61,10 @@
 }
 
 .complete-cv-tabs {
-  display: block;
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
   gap: 0;
 }
 
@@ -73,19 +91,47 @@
 }
 
 .complete-cv-tab-content {
+  min-height: 0;
+  flex: 1;
+  overflow: hidden;
+  overflow-anchor: none;
   outline: none;
 }
 
 .complete-cv-editor-split {
-  display: grid;
-  min-height: calc(
-    100vh - var(--complete-cv-toolbar-height) - var(--complete-cv-tabs-height)
-  );
-  grid-template-columns: minmax(0, min(46rem, 55vw)) minmax(24rem, 1fr);
-  align-items: start;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  align-items: stretch;
+}
+
+.complete-cv-form-resizable-pane,
+.complete-cv-yaml-resizable-pane {
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden !important;
+}
+
+.complete-cv-resize-handle {
+  z-index: 4;
+  flex: 0 0 1px;
+  cursor: col-resize;
 }
 
 .complete-cv-form-pane {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.complete-cv-form-pane
+  > [data-ui-component="scroll-area"][data-ui-part="scroll-area-viewport"] {
+  overflow-anchor: none;
+  overscroll-behavior: contain;
+}
+
+.complete-cv-form-pane__content {
   width: 100%;
   max-width: 46rem;
   padding: 1.5rem clamp(2rem, 4vw, 2.75rem) 5rem;
@@ -145,6 +191,41 @@
   padding-bottom: 0.375rem;
 }
 
+.complete-cv-simple-entry {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: 1.125rem minmax(0, 1fr);
+  align-items: start;
+  gap: 0.375rem;
+}
+
+.complete-cv-simple-entry__marker {
+  padding-top: 0.375rem;
+  color: var(--ui-form-muted, var(--muted-foreground));
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.25rem;
+  text-align: right;
+}
+
+.complete-cv-unlabeled-entry .cv-structured-form > .cv-form-field {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.complete-cv-unlabeled-entry .cv-form-field > span {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.complete-cv-unlabeled-entry .cv-form-field-control {
+  grid-column: 1 / -1;
+}
+
 .complete-cv-entry-title-row .cv-form-section-title-toggle,
 .complete-cv-nested-title-row .cv-form-section-title-toggle {
   min-height: 1.25rem;
@@ -185,7 +266,6 @@
 }
 
 .complete-cv-subgroup > .cv-form-entry-actions {
-  border-bottom: 1px solid var(--ui-form-border-muted, var(--border));
   padding-left: 1rem;
 }
 
@@ -234,42 +314,23 @@
 }
 
 .complete-cv-yaml-pane {
-  position: sticky;
-  top: calc(var(--complete-cv-toolbar-height) + var(--complete-cv-tabs-height));
   display: flex;
-  height: calc(
-    100vh - var(--complete-cv-toolbar-height) - var(--complete-cv-tabs-height)
-  );
-  min-height: 32rem;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
   flex-direction: column;
-  align-self: start;
   overflow: hidden;
   border-left: 1px solid var(--border);
   background: color-mix(in srgb, var(--muted) 20%, var(--background));
 }
 
-.complete-cv-yaml-header {
-  display: flex;
-  min-height: 2.25rem;
-  flex: 0 0 auto;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  border-bottom: 1px solid var(--border);
-  color: var(--muted-foreground);
-  font-size: 0.6875rem;
-  padding-inline: 0.75rem;
-}
-
-.complete-cv-yaml-header strong {
-  color: var(--foreground);
-  font-size: 0.75rem;
-  font-weight: 600;
-}
-
 .complete-cv-yaml-pane > .cvstudio-yaml-editor {
   min-height: 0;
   flex: 1 1 auto;
+}
+
+.complete-cv-yaml-pane .cm-content {
+  padding-top: 0;
 }
 
 .complete-cv-yaml-pane [data-slot="alert"] {
@@ -282,14 +343,42 @@
 
 @media (max-width: 60rem) {
   .complete-cv-editor-split {
-    display: flex;
+    display: block !important;
+    height: auto !important;
     min-height: 0;
-    flex-direction: column;
+  }
+
+  .complete-cv-tab-content {
+    overflow-y: auto;
+  }
+
+  .complete-cv-form-resizable-pane,
+  .complete-cv-yaml-resizable-pane {
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    flex: none !important;
+    overflow: visible !important;
+  }
+
+  .complete-cv-resize-handle {
+    display: none !important;
   }
 
   .complete-cv-form-pane {
-    max-width: 46rem;
-    align-self: center;
+    height: auto;
+    overflow: visible;
+  }
+
+  .complete-cv-form-pane
+    > [data-ui-component="scroll-area"][data-ui-part="scroll-area-viewport"] {
+    height: auto;
+    overflow: visible !important;
+  }
+
+  .complete-cv-form-pane
+    > [data-ui-component="scroll-area"][data-ui-part="scroll-area-scrollbar"] {
+    display: none;
   }
 
   .complete-cv-yaml-pane {
@@ -311,7 +400,7 @@
     padding-inline: 0.25rem;
   }
 
-  .complete-cv-form-pane {
+  .complete-cv-form-pane__content {
     padding: 1.25rem 1.5rem 4rem;
   }
 
