@@ -75,6 +75,25 @@
 - [x] Complete repository-wide build, live wide/narrow/a11y, and compare-only
       visual validation for this migration. Do not write a baseline.
 
+## Design picker follow-up
+
+- [x] Add a shared controlled `ColorPicker` with a circular native color swatch,
+      editable serialized value, RGB-compatible display fallback, accessible
+      labels/errors, and `hex`/`hex-without-hash` output modes.
+- [x] Add a shared `CyclePicker` for previous/current/next selection, option-list
+      disclosure, and optional font-family previews.
+- [x] Keep the three cycle controls visually borderless with transparent borders,
+      independent 8px four-corner radii, and shared Button hover/focus behavior;
+      separate their hover surfaces with a 2px gap, and center/ellipsize the
+      current value without a center chevron.
+- [x] Add typed `color` kind support and `options` cycle presentation to both
+      path maps and the retained callback configuration API.
+- [x] Migrate all eight Design color values plus Theme and all five Font Family
+      values to the shared controls, using the current CV Studio theme and font
+      option catalogs.
+- [x] Add public exports, consumer examples, component stories, documentation,
+      audit entries, and focused type/runtime/interaction coverage.
+
 ## Validation evidence
 
 - Config migration focused unit run: 8 files and 35 tests passed, covering path
@@ -112,6 +131,27 @@
 - Final migration validation passed `pnpm check`, `pnpm check:no-tailwind`, Docs MCP typechecking, the focused Complete CV Storybook interaction, `pnpm build-storybook`, and `pnpm workspace:visual:audit` with 112 stories, 0 visual failures, 0 orphan baselines, and 0 contract errors.
 - `pnpm test:visual:affected` selected the full 422-scenario compare-only fallback because the uncommitted stack contains the globally scoped Forms Guidance input. The story remains a missing-baseline warning; no baseline was written.
 - `pnpm test:visual`: all 422 compare-only capture scenarios executed successfully in 15.6 minutes. The new story produced `outcome: missing-baseline` with warning policy under the canonical Linux ARM64 profile; no reference image was written.
+- Design picker follow-up: focused unit validation passed 3 files and 9 tests,
+  including color parsing/serialization and path-config kind inference. Focused
+  Storybook validation passed ColorPicker, CyclePicker, and Complete CV (3 files,
+  4 tests) with the global a11y gate enabled; the CyclePicker-only regression run
+  also passed its 2 stories after adding the long-label truncation assertion.
+- Design picker follow-up: `pnpm check` passed with zero errors or warnings.
+  Live Complete CV inspection found all 8 color fields using 27.99px square
+  swatches clipped to `circle(50%)`, with the expected `#000000`, `#004f90`, and
+  `#808080` values. Theme and five font fields use the shared CyclePicker; its
+  current control has no icon or visible border, centers its contents, and uses
+  ellipsis/nowrap overflow behavior.
+- Design picker follow-up: the final focused Storybook run passed all 3 files
+  and 4 tests after asserting a 2px control gap, transparent borders, independent
+  8px radii, the absent center chevron, and real long-label overflow. The scoped
+  Prettier check, `pnpm check:no-tailwind`, Docs MCP typecheck,
+  `pnpm build-storybook`, and workspace visual-contract audit all passed. The
+  repository-wide Prettier check remains blocked by 5 unrelated pre-existing
+  files; none were changed.
+- Per the user's explicit stop request, the 428-scenario affected compare-only
+  visual run was interrupted during isolated dependency setup. No capture,
+  comparison, or baseline write was completed for this follow-up.
 
 ## Visual baseline
 

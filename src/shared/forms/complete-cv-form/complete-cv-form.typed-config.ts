@@ -28,6 +28,38 @@ import type {
 const options = (values: string[]) =>
   values.map((value) => ({ value, label: value }));
 
+const themeOptions = [
+  { value: "classic", label: "Classic" },
+  { value: "ember", label: "Ember" },
+  { value: "engineeringclassic", label: "Engineering Classic" },
+  { value: "engineeringresumes", label: "Engineering Resumes" },
+  { value: "harvard", label: "Harvard" },
+  { value: "ink", label: "Ink" },
+  { value: "moderncv", label: "ModernCV" },
+  { value: "opal", label: "Opal" },
+  { value: "sb2nov", label: "SB2Nov" },
+];
+
+const fontFamilyOptions = options([
+  "DejaVu Sans Mono",
+  "EB Garamond",
+  "Fontin",
+  "Gentium Book Plus",
+  "Lato",
+  "Libertinus Serif",
+  "Mukta",
+  "New Computer Modern",
+  "Noto Sans",
+  "Open Sans",
+  "Open Sauce Sans",
+  "Poppins",
+  "Raleway",
+  "Roboto",
+  "Source Sans 3",
+  "Ubuntu",
+  "XCharter",
+]);
+
 const socialNetworkConfig = defineFormConfig<SocialNetwork>()({
   id: "complete-cv-social-network",
   fields: {
@@ -615,44 +647,8 @@ export const completeDesignConfig = defineFormConfig<DesignFragment>()({
       label: "Theme",
       group: "design-theme",
       defaultValue: "moderncv",
-      options: [
-        {
-          value: "classic",
-          label: "classic",
-        },
-        {
-          value: "ember",
-          label: "ember",
-        },
-        {
-          value: "engineeringclassic",
-          label: "engineeringclassic",
-        },
-        {
-          value: "engineeringresumes",
-          label: "engineeringresumes",
-        },
-        {
-          value: "harvard",
-          label: "harvard",
-        },
-        {
-          value: "ink",
-          label: "ink",
-        },
-        {
-          value: "moderncv",
-          label: "moderncv",
-        },
-        {
-          value: "opal",
-          label: "opal",
-        },
-        {
-          value: "sb2nov",
-          label: "sb2nov",
-        },
-      ],
+      presentation: "cycle",
+      options: themeOptions,
     },
     "page.size": {
       kind: "options",
@@ -711,44 +707,60 @@ export const completeDesignConfig = defineFormConfig<DesignFragment>()({
       defaultValue: true,
     },
     "colors.body": {
-      kind: "text",
+      kind: "color",
       label: "Body",
       group: "design-colors",
+      placeholder: "rgb(0, 0, 0)",
+      colorFormat: "hex-without-hash",
     },
     "colors.name": {
-      kind: "text",
+      kind: "color",
       label: "Name",
       group: "design-colors",
+      placeholder: "rgb(0, 79, 144)",
+      colorFormat: "hex-without-hash",
     },
     "colors.headline": {
-      kind: "text",
+      kind: "color",
       label: "Headline",
       group: "design-colors",
+      placeholder: "rgb(0, 79, 144)",
+      colorFormat: "hex-without-hash",
     },
     "colors.connections": {
-      kind: "text",
+      kind: "color",
       label: "Connections",
       group: "design-colors",
+      placeholder: "rgb(0, 79, 144)",
+      colorFormat: "hex-without-hash",
     },
     "colors.section_titles": {
-      kind: "text",
+      kind: "color",
       label: "Section titles",
       group: "design-colors",
+      placeholder: "rgb(0, 79, 144)",
+      colorFormat: "hex-without-hash",
     },
     "colors.links": {
-      kind: "text",
+      kind: "color",
       label: "Links",
       group: "design-colors",
+      placeholder: "rgb(0, 79, 144)",
+      colorFormat: "hex-without-hash",
     },
     "colors.footer": {
-      kind: "text",
+      kind: "color",
       label: "Footer",
       group: "design-colors",
+      placeholder: "rgb(128, 128, 128)",
+      colorFormat: "hex-without-hash",
     },
     "colors.top_note": {
-      kind: "text",
+      kind: "color",
       label: "Top note",
       group: "design-colors",
+      placeholder: "rgb(128, 128, 128)",
+      colorFormat: "hex-without-hash",
     },
     "typography.line_spacing": {
       kind: "text",
@@ -799,181 +811,46 @@ export const completeDesignConfig = defineFormConfig<DesignFragment>()({
       kind: "options",
       label: "Body",
       group: "design-font-family",
-      defaultValue: "Source Sans 3",
-      options: [
-        {
-          value: "EB Garamond",
-          label: "EB Garamond",
-        },
-        {
-          value: "Lato",
-          label: "Lato",
-        },
-        {
-          value: "Noto Sans",
-          label: "Noto Sans",
-        },
-        {
-          value: "Open Sans",
-          label: "Open Sans",
-        },
-        {
-          value: "Roboto",
-          label: "Roboto",
-        },
-        {
-          value: "Source Sans 3",
-          label: "Source Sans 3",
-        },
-        {
-          value: "XCharter",
-          label: "XCharter",
-        },
-      ],
+      defaultValue: "Fontin",
+      presentation: "cycle",
+      optionPreview: "font",
+      options: fontFamilyOptions,
     },
     "typography.font_family.name": {
       kind: "options",
       label: "Name",
       group: "design-font-family",
-      defaultValue: "Source Sans 3",
-      options: [
-        {
-          value: "EB Garamond",
-          label: "EB Garamond",
-        },
-        {
-          value: "Lato",
-          label: "Lato",
-        },
-        {
-          value: "Noto Sans",
-          label: "Noto Sans",
-        },
-        {
-          value: "Open Sans",
-          label: "Open Sans",
-        },
-        {
-          value: "Roboto",
-          label: "Roboto",
-        },
-        {
-          value: "Source Sans 3",
-          label: "Source Sans 3",
-        },
-        {
-          value: "XCharter",
-          label: "XCharter",
-        },
-      ],
+      defaultValue: "Fontin",
+      presentation: "cycle",
+      optionPreview: "font",
+      options: fontFamilyOptions,
     },
     "typography.font_family.headline": {
       kind: "options",
       label: "Headline",
       group: "design-font-family",
-      defaultValue: "Source Sans 3",
-      options: [
-        {
-          value: "EB Garamond",
-          label: "EB Garamond",
-        },
-        {
-          value: "Lato",
-          label: "Lato",
-        },
-        {
-          value: "Noto Sans",
-          label: "Noto Sans",
-        },
-        {
-          value: "Open Sans",
-          label: "Open Sans",
-        },
-        {
-          value: "Roboto",
-          label: "Roboto",
-        },
-        {
-          value: "Source Sans 3",
-          label: "Source Sans 3",
-        },
-        {
-          value: "XCharter",
-          label: "XCharter",
-        },
-      ],
+      defaultValue: "Fontin",
+      presentation: "cycle",
+      optionPreview: "font",
+      options: fontFamilyOptions,
     },
     "typography.font_family.connections": {
       kind: "options",
       label: "Connections",
       group: "design-font-family",
-      defaultValue: "Source Sans 3",
-      options: [
-        {
-          value: "EB Garamond",
-          label: "EB Garamond",
-        },
-        {
-          value: "Lato",
-          label: "Lato",
-        },
-        {
-          value: "Noto Sans",
-          label: "Noto Sans",
-        },
-        {
-          value: "Open Sans",
-          label: "Open Sans",
-        },
-        {
-          value: "Roboto",
-          label: "Roboto",
-        },
-        {
-          value: "Source Sans 3",
-          label: "Source Sans 3",
-        },
-        {
-          value: "XCharter",
-          label: "XCharter",
-        },
-      ],
+      defaultValue: "Fontin",
+      presentation: "cycle",
+      optionPreview: "font",
+      options: fontFamilyOptions,
     },
     "typography.font_family.section_titles": {
       kind: "options",
-      label: "Section_titles",
+      label: "Section titles",
       group: "design-font-family",
-      defaultValue: "Source Sans 3",
-      options: [
-        {
-          value: "EB Garamond",
-          label: "EB Garamond",
-        },
-        {
-          value: "Lato",
-          label: "Lato",
-        },
-        {
-          value: "Noto Sans",
-          label: "Noto Sans",
-        },
-        {
-          value: "Open Sans",
-          label: "Open Sans",
-        },
-        {
-          value: "Roboto",
-          label: "Roboto",
-        },
-        {
-          value: "Source Sans 3",
-          label: "Source Sans 3",
-        },
-        {
-          value: "XCharter",
-          label: "XCharter",
-        },
-      ],
+      defaultValue: "Fontin",
+      presentation: "cycle",
+      optionPreview: "font",
+      options: fontFamilyOptions,
     },
     "typography.font_size.body": {
       kind: "text",

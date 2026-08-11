@@ -464,12 +464,25 @@
               (titleRect.top + titleRect.height / 2),
           ),
         ).toBeLessThan(1);
-        const theme = canvasElement.querySelector<HTMLButtonElement>(
-          '.cv-form-inline-option-trigger[aria-label="Theme"]',
-        )!;
-        await expect(
-          theme.closest(".cv-form-inline-option-picker"),
-        ).toBeInTheDocument();
+        const theme = canvas.getByRole("button", { name: "Select Theme" });
+        await expect(theme.closest(".ui-cycle-picker")).toBeInTheDocument();
+        await userEvent.click(
+          canvas.getByRole("button", { name: "Next Theme" }),
+        );
+        await expect(theme).toHaveTextContent("Opal");
+
+        const nameColorValue = canvas.getByLabelText("Name color value");
+        const nameColorPicker = canvas.getByLabelText("Name color picker");
+        await expect(nameColorPicker).toHaveValue("#004f90");
+        await userEvent.type(nameColorValue, "112233");
+        await expect(nameColorPicker).toHaveValue("#112233");
+
+        const bodyFont = canvas.getByRole("button", { name: "Select Body" });
+        await expect(bodyFont.closest(".ui-cycle-picker")).toBeInTheDocument();
+        await userEvent.click(
+          canvas.getByRole("button", { name: "Next Body" }),
+        );
+        await expect(bodyFont).toHaveTextContent("Gentium Book Plus");
         const margin = canvas.getByLabelText("Top margin");
         await userEvent.type(margin, "1.5cm");
         await expect(margin).toHaveValue("1.5cm");
