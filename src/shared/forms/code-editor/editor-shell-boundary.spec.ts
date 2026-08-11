@@ -31,7 +31,7 @@ describe("Mira-owned editor shell boundary", () => {
     }
   });
 
-  it("bridges the Design Core accent and one editor surface into Mira", () => {
+  it("bridges Design Core's base surface while retaining Mira search chrome", () => {
     for (const cssPath of [
       "./CodeEditor.css",
       "../yaml-editor/YamlEditor.css",
@@ -47,11 +47,22 @@ describe("Mira-owned editor shell boundary", () => {
         /--mira-code-editor-search-input-hover-border:\s*var\(--ui-form-accent\)/,
       );
       expect(css, cssPath).toMatch(
-        /--mira-code-editor-search-button-hover-background:\s*var\(\s*--ui-form-active-line\s*\)/,
+        /--mira-code-editor-search-muted:\s*var\(--ui-form-muted\)/,
       );
-      expect(css, cssPath).toMatch(
-        /--mira-code-editor-search-focus-ring:\s*var\(--ui-form-accent\)/,
-      );
+      for (const staleOverride of [
+        "--mira-code-editor-search-radius",
+        "--mira-code-editor-search-options-background",
+        "--mira-code-editor-search-options-border",
+        "--mira-code-editor-search-button-border",
+        "--mira-code-editor-search-button-hover-background",
+        "--mira-code-editor-search-button-hover-border",
+        "--mira-code-editor-search-active-background",
+        "--mira-code-editor-search-focus-ring",
+      ]) {
+        expect(css, `${cssPath}: ${staleOverride}`).not.toContain(
+          staleOverride,
+        );
+      }
     }
   });
 

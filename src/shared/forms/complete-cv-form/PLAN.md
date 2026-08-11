@@ -199,6 +199,16 @@
   neither consumer command changed the clean Lapis working copy.
 - No Visual Delta command or baseline write was run for the Mira migration, per
   the user's instruction.
+- Search/Replace alignment follow-up: Mira now clears CodeMirror's independent
+  `.cm-panels-top` background as well as its divider. Design Core removed the
+  stale pre-pill radius, option-container, button-border, hover-border, and
+  active-state overrides so Mira owns the new shell chrome. Mira spec-first,
+  catalog, package check/build, 2 focused unit files with 9 tests, and the
+  3-story focused catalog run passed; Design Core check, no-Tailwind, the
+  4-test ownership unit file, 4 Code/YAML story tests, and static Storybook
+  build passed. Live YAML acceptance confirmed a transparent panel, 999px Find
+  pill, and transparent button borders. No visual test or baseline write was
+  run.
 
 ## Visual baseline
 
