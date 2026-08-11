@@ -1,3 +1,12 @@
+<script lang="ts" module>
+  import type { Separator as SeparatorContract } from "bits-ui";
+
+  export type SeparatorProps = SeparatorContract.RootProps & {
+    /** Intentional family restyle. Overrides the default host identity. */
+    dataUiComponent?: string;
+  };
+</script>
+
 <script lang="ts">
   import { Separator as SeparatorPrimitive } from "bits-ui";
   import {
@@ -11,9 +20,7 @@
     "data-slot": dataSlot = "separator",
     dataUiComponent,
     ...restProps
-  }: SeparatorPrimitive.RootProps & {
-    dataUiComponent?: string;
-  } = $props();
+  }: SeparatorProps = $props();
 </script>
 
 <SeparatorPrimitive.Root
