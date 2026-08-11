@@ -7,6 +7,7 @@ import {
   symlinkSync,
   writeFileSync,
 } from "node:fs";
+import { createRequire } from "node:module";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import type { DocsMcpEntryKind } from "../discovery.js";
@@ -14,6 +15,18 @@ import type { DocsMcpEvalCase } from "../evaluation.js";
 import type { DocsService } from "../service.js";
 import { buildManagedAgentDocs } from "./agent-docs.js";
 import { loadEvalCases } from "./eval.js";
+
+const resolveModule = createRequire(import.meta.url);
+const svelteCheckPackagePath = resolveModule.resolve(
+  "svelte-check/package.json",
+);
+const svelteCheckPackage = JSON.parse(
+  readFileSync(svelteCheckPackagePath, "utf8"),
+) as { bin: string };
+const svelteCheckCli = path.resolve(
+  path.dirname(svelteCheckPackagePath),
+  svelteCheckPackage.bin,
+);
 
 export type AgentEvalCondition = "bare" | "mcp" | "mcp-agent-docs";
 
@@ -364,12 +377,9 @@ function typecheckFixture(
     return "missing";
   }
   const result = spawnSync(
-    "pnpm",
+    process.execPath,
     [
-      "--dir",
-      service.root,
-      "exec",
-      "svelte-check",
+      svelteCheckCli,
       "--workspace",
       sandbox,
       "--tsconfig",
@@ -378,7 +388,7 @@ function typecheckFixture(
       "--output",
       "machine",
     ],
-    { encoding: "utf8", timeout: 120_000 },
+    { cwd: service.root, encoding: "utf8", timeout: 120_000 },
   );
   writeFileSync(
     path.join(sandbox, "svelte-check.log"),

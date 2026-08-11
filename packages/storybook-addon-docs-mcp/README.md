@@ -340,5 +340,6 @@ pnpm exec docs-mcp eval-agent \
 The harness creates a fresh sandbox for `bare`, `mcp`, and `mcp-agent-docs`
 conditions, runs every prompt in a new process, logs Docs MCP CLI and stdio tool
 calls, checks returned IDs/props/imports, and typechecks an isolated Svelte
-fixture when supplied. Identical prompt files never contain expected IDs.
+fixture with the owning workspace's installed `svelte-check` when supplied.
+Identical prompt files never contain expected IDs.
 Reports default to `.cache/docs-mcp/evals/`.
