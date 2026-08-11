@@ -42,6 +42,9 @@ describe("source-reference form layout CSS", () => {
     expect(formFieldCss).toMatch(/padding-block:\s*0\.375rem/);
     expect(structuredFormCss).toMatch(/row-gap:\s*0/);
     expect(structuredFormCss).toMatch(/@media \(max-width:\s*720px\)/);
+    expect(structuredFormCss).toMatch(
+      /\.ui-configured-array\[data-appearance="default"\][\s\S]*?>\s*\.ui-form-add-button\[data-presentation="inline"\][\s\S]*?margin:\s*0\.75rem 0 0 auto/,
+    );
     expect(controlRowCss).toMatch(/padding-block:\s*0\.375rem/);
     expect(controlRowCss).toMatch(
       />\s*\.cv-form-field-renderer[\s\S]*?>\s*\.cv-control-row-group,[\s\S]*?grid-template-columns:\s*subgrid/,

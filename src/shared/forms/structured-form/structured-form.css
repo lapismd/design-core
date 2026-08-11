@@ -162,9 +162,21 @@
   min-width: 0;
 }
 
+.ui-configured-array[data-appearance="default"]
+  > .ui-form-add-button[data-presentation="inline"] {
+  display: flex;
+  margin: 0.75rem 0 0 auto;
+}
+
 @media (max-width: 720px) {
   .cv-structured-form,
   .ui-structured-form {
     grid-template-columns: 1fr;
+  }
+
+  .ui-configured-array[data-appearance="default"]
+    > .ui-form-add-button[data-presentation="inline"] {
+    width: 100%;
+    margin-left: 0;
   }
 }
