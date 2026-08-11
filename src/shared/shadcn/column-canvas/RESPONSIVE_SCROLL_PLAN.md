@@ -12,8 +12,9 @@
   durable widths remain authoritative; once deliberately resized in either
   direction, a column's durable width replaces the responsive default until it
   is reset. An older rendered column stays visible through
-  `--ui-column-canvas-wide-context-width`. Resize handles, the trailing spacer,
-  independent vertical bodies, and proximity snapping remain.
+  `--ui-column-canvas-wide-context-width`. Resize handles, an optional
+  consumer-configured trailing spacer, independent vertical bodies, and
+  proximity snapping remain. The default trailing spacer width is `0`.
 - Compact mode makes each expanded column fill the complete bounded stage with
   no preceding-column peek. It hides resize handles and the auxiliary
   horizontal scrollbar, removes the trailing blank tail, and uses mandatory
@@ -143,6 +144,23 @@ src/shared/shadcn/column-canvas/ColumnCanvas.stories.svelte`: 11 passed.
 - Focused controller tests (8), focused Storybook tests (11), `pnpm check`,
   `pnpm check:no-tailwind`, and `pnpm build-storybook` passed. Visual tests and
   baseline comparisons were deliberately not rerun for this follow-up.
+
+### 2026-08-11 default canvas ending and rail chrome
+
+- The default trailing spacer is now zero and its presentation element is
+  omitted entirely when unused, so the final column ends at the root's normal
+  inline-end padding. Consumers can still opt into extra space with
+  `trailingSpacerWidth` without changing persistence.
+- Floating sticky rails and collapsed-column triggers now share a tokenized
+  hover/focus treatment. Collapsed-column triggers place the expand chevron
+  before the title in both DOM and visual order.
+- Live Chromium acceptance in Product workspace found no trailing-spacer
+  element, a sub-pixel difference between `scrollLeft` and the maximum scroll
+  position, and the expected 12px root end padding after the Activity column.
+- Focused controller tests (9), focused Storybook tests (11), and all 17 pointer
+  browser tests passed. `pnpm check`, `pnpm check:docs-mcp`,
+  `pnpm check:no-tailwind`, and `pnpm build-storybook` also passed. Visual tests
+  and baseline comparisons were skipped as requested.
 
 \* The requested implementation and validation are complete. The aggregate
 `pnpm checks` command remains blocked only by the unrelated pre-existing

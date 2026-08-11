@@ -114,14 +114,15 @@ import * as ColumnCanvas from "@lapismd/design-core/shadcn/column-canvas";
   to share the stage, while retaining larger controller widths and all resize
   handles. When an older column exists,
   `--ui-column-canvas-wide-context-width` remains visible before the pair.
-  The configured trailing spacer, independent vertical body scrolling,
-  active-column following, and proximity snapping remain.
+  No trailing spacer is added by default; consumers can opt into one with
+  `trailingSpacerWidth`. Independent vertical body scrolling, active-column
+  following, and proximity snapping remain.
 - `compact` makes each expanded column fill the complete bounded stage, removes
   the previous-column peek, durable blank tail, and horizontal scrollbar, hides
   resize handles, and snaps columns mandatorily.
 - `displayMode="fixed"` is the compatibility escape hatch: controller widths,
-  resize handles, trailing spacer, and free horizontal scrolling remain as in
-  the original canvas, with no active-column following.
+  resize handles, an optional configured trailing spacer, and free horizontal
+  scrolling remain as in the original canvas, with no active-column following.
 
 The last rendered, non-closed column is the active column. It is followed after
 path, visibility, collapse/open, restoration, and display-mode changes—not
@@ -237,5 +238,7 @@ Override the public `--ui-column-canvas-*` tokens on an ancestor, including
 `--ui-column-canvas-wide-context-width` (defaulting to the retained
 `--ui-column-canvas-compact-peek-width` compatibility token, `2.75rem`) and
 `--ui-column-canvas-sticky-peek-width` (defaulting to
-`--ui-column-canvas-collapsed-width`, `2.75rem`). Production sources use native
-CSS and compose the shared Button for Toggle, Close, and sticky return controls.
+`--ui-column-canvas-collapsed-width`, `2.75rem`). Floating and collapsed rail
+hover surfaces use `--ui-column-canvas-rail-hover` (defaulting to `--muted`).
+Production sources use native CSS and compose the shared Button for Toggle,
+Close, and sticky return controls.

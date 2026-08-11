@@ -44,6 +44,7 @@
     title={count === undefined ? label : `${label} (${count})`}
     onclick={onExpand}
   >
+    <ChevronRight size={14} aria-hidden="true" />
     <span data-ui-component="column-canvas" data-ui-part="collapsed-label">
       <span>{label}</span>
       {#if count !== undefined}
@@ -52,6 +53,5 @@
         </span>
       {/if}
     </span>
-    <ChevronRight size={14} aria-hidden="true" />
   </button>
 </section>

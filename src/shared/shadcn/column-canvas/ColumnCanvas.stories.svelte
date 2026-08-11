@@ -261,7 +261,6 @@
       },
     },
     initialPath: ["lapis", "design-core", "column-canvas", "showcase"],
-    trailingSpacerWidth: 260,
   });
 
   const showcaseColumnIds = [

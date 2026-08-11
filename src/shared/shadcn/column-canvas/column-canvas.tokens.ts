@@ -16,6 +16,7 @@ export const columnCanvasTokenNames = {
   scrollbarGap: "--ui-column-canvas-scrollbar-gap",
   itemGap: "--ui-column-canvas-item-gap",
   itemHover: "--ui-column-canvas-item-hover",
+  railHover: "--ui-column-canvas-rail-hover",
   itemSelected: "--ui-column-canvas-item-selected",
   itemSelectedForeground: "--ui-column-canvas-item-selected-foreground",
 } as const;

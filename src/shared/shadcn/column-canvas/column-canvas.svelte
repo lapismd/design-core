@@ -672,10 +672,10 @@
     event.preventDefault();
   }
 
-  const spacerStyle = $derived(
+  const trailingSpacerWidth = $derived(
     resolvedDisplayMode === "compact"
-      ? "0px"
-      : `${Math.max(0, rootController.trailingSpacerWidth)}px`,
+      ? 0
+      : Math.max(0, rootController.trailingSpacerWidth),
   );
 </script>
 
@@ -760,12 +760,14 @@
       data-ui-part="sticky-width-probe"
       aria-hidden="true"
     ></div>
-    <div
-      data-ui-component="column-canvas"
-      data-ui-part="trailing-spacer"
-      aria-hidden="true"
-      style:width={spacerStyle}
-      style:min-width={spacerStyle}
-    ></div>
+    {#if trailingSpacerWidth > 0}
+      <div
+        data-ui-component="column-canvas"
+        data-ui-part="trailing-spacer"
+        aria-hidden="true"
+        style:width={`${trailingSpacerWidth}px`}
+        style:min-width={`${trailingSpacerWidth}px`}
+      ></div>
+    {/if}
   </div>
 </div>

@@ -45,7 +45,8 @@ it. The resolved state is available as `data-display-mode`.
 - **wide** — the newest two rendered columns expand as needed to share the
   stage while retaining at least their durable pixel widths; when older context
   exists, `--ui-column-canvas-wide-context-width` remains visible; resize
-  handles, the trailing spacer, active following, and proximity snapping remain
+  handles, an optional `trailingSpacerWidth`, active following, and proximity
+  snapping remain; no trailing spacer is added by default
 - **compact** — each expanded column occupies the complete bounded stage, with
   no previous-column peek, durable blank tail, horizontal scrollbar, or resize
   handles; mandatory snapping; and slower, smooth
@@ -197,5 +198,7 @@ Override `--ui-column-canvas-*` tokens on an ancestor, including
 `--ui-column-canvas-wide-context-width` (defaulting to the retained
 `--ui-column-canvas-compact-peek-width` compatibility token, `2.75rem`) and
 `--ui-column-canvas-sticky-peek-width` (defaulting to
-`--ui-column-canvas-collapsed-width`, `2.75rem`). Production sources use native
-CSS and compose the shared Button for Toggle, Close, and sticky return controls.
+`--ui-column-canvas-collapsed-width`, `2.75rem`) and
+`--ui-column-canvas-rail-hover` (defaulting to `--muted`). Production sources
+use native CSS and compose the shared Button for Toggle, Close, and sticky
+return controls.

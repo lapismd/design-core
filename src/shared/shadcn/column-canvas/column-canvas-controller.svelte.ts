@@ -11,7 +11,7 @@ import {
 
 export const COLUMN_CANVAS_DEFAULT_MIN_WIDTH = 240;
 export const COLUMN_CANVAS_DEFAULT_MAX_WIDTH = 760;
-export const COLUMN_CANVAS_DEFAULT_TRAILING_SPACER_WIDTH = 320;
+export const COLUMN_CANVAS_DEFAULT_TRAILING_SPACER_WIDTH = 0;
 
 export type ColumnCanvasColumnConfig = {
   /** Initial expanded width in CSS pixels. */
@@ -59,6 +59,7 @@ export type CreateColumnCanvasControllerOptions<
 > = {
   columns: Record<TColumnId, ColumnCanvasColumnConfig>;
   initialPath?: string[];
+  /** Optional extra space after the final column. Defaults to `0`. */
   trailingSpacerWidth?: number;
   persistence?: ColumnCanvasLayoutPersistence;
   saveDebounceMs?: number;

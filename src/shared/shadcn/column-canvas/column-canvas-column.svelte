@@ -232,6 +232,7 @@
           : `${resolvedTitle} (${count})`}
         onclick={() => controller.expand(id)}
       >
+        <ChevronRight size={14} aria-hidden="true" />
         <span data-ui-component="column-canvas" data-ui-part="collapsed-label">
           <span>{resolvedTitle}</span>
           {#if count !== undefined}
@@ -243,7 +244,6 @@
             </span>
           {/if}
         </span>
-        <ChevronRight size={14} aria-hidden="true" />
       </button>
     </section>
   {:else}

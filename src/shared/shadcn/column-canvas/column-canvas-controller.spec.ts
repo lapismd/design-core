@@ -15,8 +15,18 @@ describe("createColumnCanvasController", () => {
     });
     expect(canvas.path).toEqual([]);
     expect(canvas.visibleDepth).toBe(1);
+    expect(canvas.trailingSpacerWidth).toBe(0);
     expect(canvas.isPathVisible("categories")).toBe(true);
     expect(canvas.isColumnVisible("categories")).toBe(true);
+  });
+
+  it("keeps trailing canvas space opt-in", () => {
+    const canvas = createColumnCanvasController({
+      columns: { categories: { defaultWidth: 260 } },
+      trailingSpacerWidth: 144,
+    });
+
+    expect(canvas.trailingSpacerWidth).toBe(144);
   });
 
   it("gates cascade columns by pathLevel and closed state", () => {

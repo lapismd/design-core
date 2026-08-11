@@ -290,7 +290,10 @@ test.describe("Column Canvas responsive scrolling", () => {
       Math.abs(wideMetrics.visibleContext - wideMetrics.contextWidth),
     ).toBeLessThan(2);
     expect(Math.abs(wideMetrics.activeEndDistance)).toBeLessThan(2);
-    expect(wideMetrics.trailingSpacer).toBeGreaterThan(300);
+    expect(wideMetrics.trailingSpacer).toBeLessThan(2);
+    await expect(root.locator('[data-ui-part="trailing-spacer"]')).toHaveCount(
+      0,
+    );
 
     const handle = page.getByRole("separator", {
       name: "Resize Detail column",
@@ -710,6 +713,17 @@ test.describe("Column Canvas sticky scrolling", () => {
     await expect(returns.first()).toHaveAttribute("data-size", "icon-sm");
     await expect(rails.nth(0)).toContainText("Workspace");
     await expect(rails.nth(1)).toContainText("Inbox");
+    const railBackground = await rails
+      .first()
+      .evaluate((rail) => getComputedStyle(rail).backgroundColor);
+    await rails.first().hover();
+    await expect
+      .poll(() =>
+        rails
+          .first()
+          .evaluate((rail) => getComputedStyle(rail).backgroundColor),
+      )
+      .not.toBe(railBackground);
     const returnStyle = await returns.first().evaluate((button) => {
       const rect = button.getBoundingClientRect();
       const style = getComputedStyle(button);
@@ -865,6 +879,25 @@ test.describe("Column Canvas sticky scrolling", () => {
       .getByRole("button", { name: "Collapse Workspace column" })
       .click();
     await expect(primary).toHaveAttribute("data-ui-part", "collapsed-column");
+    const collapsedTrigger = page.getByRole("button", {
+      name: "Expand Workspace column",
+    });
+    expect(
+      await collapsedTrigger.evaluate((trigger) =>
+        trigger.firstElementChild?.tagName.toLowerCase(),
+      ),
+    ).toBe("svg");
+    const collapsedBackground = await collapsedTrigger.evaluate(
+      (trigger) => getComputedStyle(trigger).backgroundColor,
+    );
+    await collapsedTrigger.hover();
+    await expect
+      .poll(() =>
+        collapsedTrigger.evaluate(
+          (trigger) => getComputedStyle(trigger).backgroundColor,
+        ),
+      )
+      .not.toBe(collapsedBackground);
     await root.evaluate((element) => {
       element.scrollLeft = element.scrollWidth;
     });
@@ -904,6 +937,9 @@ test.describe("Column Canvas sticky scrolling", () => {
 
     await page.getByRole("button", { name: "Restore Inbox" }).click();
     await expect(secondary).toHaveCount(1);
+    await root.evaluate((element) => {
+      element.scrollLeft = element.scrollWidth;
+    });
     await expect(rails).toHaveCount(2);
     await page.getByRole("button", { name: "Disable Inbox sticky" }).click();
     await expect(secondary).not.toHaveAttribute("data-sticky");
@@ -918,6 +954,9 @@ test.describe("Column Canvas sticky scrolling", () => {
     await expect(rails).toHaveCount(1);
     await page.getByRole("button", { name: "Restore Inbox" }).click();
     await expect(secondary).toHaveCount(1);
+    await root.evaluate((element) => {
+      element.scrollLeft = element.scrollWidth;
+    });
     await expect(rails).toHaveCount(2);
     await expect(
       root.locator('[data-column-id="activity"]'),
@@ -986,6 +1025,9 @@ test.describe("Column Canvas full showcase", () => {
     const root = page.getByRole("region", {
       name: "Product delivery workspace",
     });
+    await expect(root.locator('[data-ui-part="trailing-spacer"]')).toHaveCount(
+      0,
+    );
     const detail = root.locator('[data-column-id="detail"]');
     const activity = root.locator('[data-column-id="activity"]');
 
