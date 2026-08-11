@@ -431,6 +431,31 @@
     ).toBeVisible();
     await expect(canvas.getByText("68% complete")).toBeVisible();
 
+    const showcaseTaskRow = canvas.getByRole("button", {
+      name: "Build the complete Column Canvas showcase",
+    });
+    await waitFor(() => {
+      const content = showcaseTaskRow.firstElementChild;
+      const status = showcaseTaskRow.querySelector(
+        '[data-ui-component="badge"]',
+      );
+      expect(content).not.toBeNull();
+      expect(status).not.toBeNull();
+      if (!content || !status) return;
+
+      const rowBounds = showcaseTaskRow.getBoundingClientRect();
+      const contentBounds = content.getBoundingClientRect();
+      const statusBounds = status.getBoundingClientRect();
+      const rowStyle = getComputedStyle(showcaseTaskRow);
+      const paddingStart = Number.parseFloat(rowStyle.paddingInlineStart);
+      const paddingEnd = Number.parseFloat(rowStyle.paddingInlineEnd);
+      expect(contentBounds.width).toBeCloseTo(
+        rowBounds.width - paddingStart - paddingEnd,
+        1,
+      );
+      expect(statusBounds.right).toBeCloseTo(rowBounds.right - paddingEnd, 1);
+    });
+
     await userEvent.click(
       canvas.getByRole("button", { name: "Close Task details column" }),
     );
@@ -552,7 +577,7 @@
                   selected={showcaseCanvas.isSelected(0, workspace.id)}
                   onclick={() => showcaseCanvas.select(0, workspace.id)}
                 >
-                  <span class="flex min-w-0 flex-col gap-1">
+                  <span class="flex w-full min-w-0 flex-col gap-1">
                     <span class="flex items-center justify-between gap-2">
                       <span class="truncate font-medium">{workspace.label}</span
                       >
@@ -585,7 +610,7 @@
                   selected={showcaseCanvas.isSelected(1, project.id)}
                   onclick={() => showcaseCanvas.select(1, project.id)}
                 >
-                  <span class="flex min-w-0 flex-col gap-1.5">
+                  <span class="flex w-full min-w-0 flex-col gap-1.5">
                     <span class="flex items-center justify-between gap-2">
                       <span class="truncate font-medium">{project.label}</span>
                       <Badge variant={projectStatusVariant(project.status)}>
@@ -619,7 +644,7 @@
                   selected={showcaseCanvas.isSelected(2, board.id)}
                   onclick={() => showcaseCanvas.select(2, board.id)}
                 >
-                  <span class="flex min-w-0 flex-col gap-1">
+                  <span class="flex w-full min-w-0 flex-col gap-1">
                     <span class="flex items-center justify-between gap-2">
                       <span class="truncate font-medium">{board.label}</span>
                       <Badge variant="outline">{board.tasks.length} tasks</Badge
@@ -646,7 +671,7 @@
                   selected={showcaseCanvas.isSelected(3, task.id)}
                   onclick={() => showcaseCanvas.select(3, task.id)}
                 >
-                  <span class="flex min-w-0 flex-col gap-1.5">
+                  <span class="flex w-full min-w-0 flex-col gap-1.5">
                     <span class="flex items-center justify-between gap-2">
                       <span class="text-muted-foreground text-xs font-medium">
                         {task.key}
@@ -901,7 +926,7 @@
                   selected={basicCanvas.isSelected(0, category.id)}
                   onclick={() => basicCanvas.select(0, category.id)}
                 >
-                  <span class="flex min-w-0 flex-col gap-0.5">
+                  <span class="flex w-full min-w-0 flex-col gap-0.5">
                     <span class="font-medium">{category.label}</span>
                     <span class="text-muted-foreground line-clamp-2 text-xs">
                       {category.description}
@@ -924,7 +949,7 @@
                   selected={basicCanvas.isSelected(1, component.id)}
                   onclick={() => basicCanvas.select(1, component.id)}
                 >
-                  <span class="flex min-w-0 flex-col gap-0.5">
+                  <span class="flex w-full min-w-0 flex-col gap-0.5">
                     <span class="font-medium">{component.label}</span>
                     <span class="text-muted-foreground line-clamp-2 text-xs">
                       {component.role}
@@ -943,7 +968,7 @@
             <ColumnCanvas.Body>
               {#each basicDetailFields as field (field.id)}
                 <ColumnCanvas.Item aria-label={field.label} disabled>
-                  <span class="flex min-w-0 flex-col gap-0.5">
+                  <span class="flex w-full min-w-0 flex-col gap-0.5">
                     <span class="text-muted-foreground text-xs">
                       {field.label}
                     </span>
@@ -1001,7 +1026,7 @@
                 selected={threeLevelCanvas.isSelected(0, category.id)}
                 onclick={() => threeLevelCanvas.select(0, category.id)}
               >
-                <span class="flex min-w-0 flex-col gap-0.5">
+                <span class="flex w-full min-w-0 flex-col gap-0.5">
                   <span class="font-medium">{category.label}</span>
                   <span class="text-muted-foreground line-clamp-2 text-xs">
                     {category.description}
@@ -1024,7 +1049,7 @@
                 selected={threeLevelCanvas.isSelected(1, component.id)}
                 onclick={() => threeLevelCanvas.select(1, component.id)}
               >
-                <span class="flex min-w-0 flex-col gap-0.5">
+                <span class="flex w-full min-w-0 flex-col gap-0.5">
                   <span class="font-medium">{component.label}</span>
                   <span class="text-muted-foreground line-clamp-2 text-xs">
                     {component.role}
@@ -1116,7 +1141,7 @@
                   selected={closeableCanvas.isSelected(0, component.id)}
                   onclick={() => closeableCanvas.select(0, component.id)}
                 >
-                  <span class="flex min-w-0 flex-col gap-0.5">
+                  <span class="flex w-full min-w-0 flex-col gap-0.5">
                     <span class="font-medium">{component.label}</span>
                     <span class="text-muted-foreground line-clamp-2 text-xs">
                       {component.role}
@@ -1188,7 +1213,7 @@
           <ColumnCanvas.Body>
             {#each stableChatComponents as component (component.id)}
               <ColumnCanvas.Item>
-                <span class="flex min-w-0 flex-col gap-0.5">
+                <span class="flex w-full min-w-0 flex-col gap-0.5">
                   <span class="font-medium">{component.label}</span>
                   <span class="text-muted-foreground line-clamp-2 text-xs">
                     {component.role}
@@ -1244,7 +1269,7 @@
           <ColumnCanvas.Body>
             {#each stableChatComponents as component (component.id)}
               <ColumnCanvas.Item>
-                <span class="flex min-w-0 flex-col gap-0.5">
+                <span class="flex w-full min-w-0 flex-col gap-0.5">
                   <span class="font-medium">{component.label}</span>
                   <span class="text-muted-foreground line-clamp-2 text-xs">
                     {component.role}
@@ -1311,7 +1336,7 @@
           <ColumnCanvas.Body>
             {#each stableChatComponents as component (component.id)}
               <ColumnCanvas.Item>
-                <span class="flex min-w-0 flex-col gap-0.5">
+                <span class="flex w-full min-w-0 flex-col gap-0.5">
                   <span class="font-medium">{component.label}</span>
                   <span class="text-muted-foreground line-clamp-2 text-xs">
                     {component.role}

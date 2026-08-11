@@ -89,8 +89,10 @@ export const FullShowcase = `<script lang="ts">
 			<ColumnCanvas.Body>
 				{#each board?.tasks ?? [] as item (item.id)}
 					<ColumnCanvas.Item selected={canvas.isSelected(3, item.id)} onclick={() => canvas.select(3, item.id)}>
-						<Badge variant="outline">{item.key}</Badge>
-						{item.title}
+						<span style="display:flex;width:100%;min-width:0;align-items:center;justify-content:space-between;gap:0.5rem">
+							<span>{item.title}</span>
+							<Badge>{item.status}</Badge>
+						</span>
 					</ColumnCanvas.Item>
 				{/each}
 			</ColumnCanvas.Body>
