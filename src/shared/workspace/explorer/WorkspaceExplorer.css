@@ -9,8 +9,8 @@
   /* No root padding: Lapis keeps ScrollArea flush so the scrollbar rides the
      panel edge. Content inset lives on the scroll body instead. */
   padding: 0;
-  color: var(--ui-workspace-panel-foreground);
-  background: var(--ui-workspace-panel);
+  color: var(--ui-workspace-view-foreground);
+  background: var(--ui-workspace-view-background);
   font-family: var(--ui-workspace-explorer-font-family);
   font-size: var(--ui-workspace-explorer-font-size);
   /* Host pages own chrome borders; the explorer surface itself is borderless. */
@@ -43,7 +43,7 @@
   justify-content: center;
   gap: 0.25rem;
   padding: 0.25rem;
-  background: var(--ui-workspace-panel);
+  background: var(--ui-workspace-view-background);
 }
 
 .ui-workspace-explorer__toolbar-actions {
@@ -55,7 +55,7 @@
 
 .ui-workspace-explorer__toolbar-action {
   box-sizing: border-box;
-  color: var(--ui-workspace-panel-foreground);
+  color: var(--ui-workspace-view-foreground);
 }
 
 /* Beat ghost-button :hover (uses --muted, which matches the Lapis panel). */
@@ -210,7 +210,8 @@
 }
 
 /* Scope to the folder row itself so nested closed folders are not forced open. */
-.ui-workspace-explorer__row[aria-expanded="true"] .ui-workspace-explorer__chevron {
+.ui-workspace-explorer__row[aria-expanded="true"]
+  .ui-workspace-explorer__chevron {
   transform: rotate(90deg);
 }
 

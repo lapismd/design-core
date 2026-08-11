@@ -917,6 +917,11 @@ workflow.
 - Colocated `WorkspaceExplorer.mdx` requirements contract, Guidance/PLAN/
   REFERENCE/COMPONENT_AUDIT updates, and `./workspace/explorer` package
   export. Stories tagged `visual-pending` pending baseline approval.
+- Explorer root and sticky toolbar paint now consume the resolved public
+  workspace-view background and foreground tokens. Focused Storybook coverage
+  proves both update when the owning surface changes, so Explorer follows the
+  same direct-sidebar versus body, bottom, and grouped placement contract as
+  other registered panels without component-owned placement logic.
 
 ### Bottom panel alignment
 

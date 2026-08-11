@@ -193,6 +193,51 @@
       expect(canvas.getByText("readme.md")).toBeVisible();
     });
     await expect(canvas.getByText("notes")).toBeVisible();
+    const host = canvasElement.querySelector<HTMLElement>(
+      ".ui-workspace-explorer-story",
+    );
+    const explorer = canvasElement.querySelector<HTMLElement>(
+      '[data-ui-component="workspace-explorer"]',
+    );
+    const toolbar = explorer?.querySelector<HTMLElement>(
+      '[data-ui-part="toolbar"]',
+    );
+    await expect(host).not.toBeNull();
+    await expect(explorer).not.toBeNull();
+    await expect(toolbar).not.toBeNull();
+
+    const previousBackground = host!.style.getPropertyValue(
+      "--ui-workspace-view-background",
+    );
+    const previousForeground = host!.style.getPropertyValue(
+      "--ui-workspace-view-foreground",
+    );
+    host!.style.setProperty("--ui-workspace-view-background", "rgb(17 31 47)");
+    host!.style.setProperty(
+      "--ui-workspace-view-foreground",
+      "rgb(239 241 243)",
+    );
+    try {
+      await waitFor(() => {
+        expect(getComputedStyle(explorer!).backgroundColor).toBe(
+          "rgb(17, 31, 47)",
+        );
+        expect(getComputedStyle(toolbar!).backgroundColor).toBe(
+          "rgb(17, 31, 47)",
+        );
+        expect(getComputedStyle(explorer!).color).toBe("rgb(239, 241, 243)");
+      });
+    } finally {
+      host!.style.setProperty(
+        "--ui-workspace-view-background",
+        previousBackground,
+      );
+      host!.style.setProperty(
+        "--ui-workspace-view-foreground",
+        previousForeground,
+      );
+    }
+
     const createFile = canvas.getByRole("button", { name: "Create File" });
     createFile.focus();
     await expect(createFile).toHaveFocus();

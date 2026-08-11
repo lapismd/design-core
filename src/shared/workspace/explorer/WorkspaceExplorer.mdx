@@ -121,6 +121,13 @@ to the panel edge (Lapis `ScrollArea` is `h-full w-full` with no outer padding);
 tree content is inset via `--ui-workspace-explorer-content-padding` (Lapis
 `Sidebar.Group` `p-2`).
 
+The explorer root and toolbar paint from
+`--ui-workspace-view-background` and `--ui-workspace-view-foreground`. Moving
+the registered view therefore follows the standard workspace surface contract:
+direct left/right sidebars use panel paint, while body, bottom, grouped,
+floating, mobile, and standalone placements use workspace paint. Explorer
+consumers must not add placement selectors or cache layout ancestry.
+
 <Canvas of={Stories.ScrollAreaAndLongNames} />
 
 ## Toolbar contract
