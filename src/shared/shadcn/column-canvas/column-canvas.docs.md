@@ -14,7 +14,10 @@ column peek and mandatory snapping.
 
 Visibility follows the same split as AppShell: mount every `Column` under
 `Root`; the controller decides whether chrome appears. Hosts only map
-`path` / `pathAt(level)` to domain data for row content.
+`path` / `pathAt(level)` to domain data for row content. The full
+product-workspace showcase demonstrates a four-level selection path feeding two
+detail lanes, with two sticky leading columns and five closeable downstream
+columns.
 
 ## Import
 
@@ -170,6 +173,13 @@ collapse. `onLayoutChange` fires on debounced saves for hosts that sync
 elsewhere. `pathLevel` is config, not persisted layout.
 
 ## Examples
+
+### Product Workspace Showcase
+
+A realistic workspace → project → board → task cascade with responsive
+active-column following, two leading sticky return rails, independent body
+scrolling, resizers, collapse controls, five closeable lanes, task progress,
+checklist data, and an activity timeline.
 
 ### All Features
 

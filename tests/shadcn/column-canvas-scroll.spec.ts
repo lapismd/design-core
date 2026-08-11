@@ -6,6 +6,8 @@ const responsiveStoryId =
 const fixedStoryId = "shadcn-layout-column-canvas--fixed-compatibility";
 const stickyStoryId = "shadcn-layout-column-canvas--sticky-floating-columns";
 const stickyFixedStoryId = "shadcn-layout-column-canvas--sticky-fixed-columns";
+const showcaseStoryId =
+  "shadcn-layout-column-canvas--product-workspace-showcase";
 
 const storyUrl = (storyId: string) =>
   `/iframe.html?id=${encodeURIComponent(storyId)}&viewMode=story`;
@@ -883,5 +885,63 @@ test.describe("Column Canvas sticky scrolling", () => {
     await expect(page.getByRole("separator")).toHaveCount(2);
     await expect(primary).toHaveAttribute("data-sticky-state", "stuck");
     await expect(rails).toHaveCount(2);
+  });
+});
+
+test.describe("Column Canvas full showcase", () => {
+  test("keeps the deep cascade usable across wide and compact layouts", async ({
+    page,
+  }) => {
+    await useReducedMotion(page);
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await openStory(page, showcaseStoryId);
+
+    const root = page.getByRole("region", {
+      name: "Product delivery workspace",
+    });
+    const workspace = root.locator('[data-column-id="workspaces"]');
+    const rails = root.locator('[data-ui-part="sticky-rail"]');
+    await expect(root).toHaveAttribute("data-display-mode", "wide");
+    await expect(rails).toHaveCount(2);
+    await expect(
+      page.getByRole("heading", { name: "Tune vertical wheel handoff" }),
+    ).toBeVisible();
+    await expect(workspace).toHaveCSS("width", "280px");
+
+    await page.getByRole("button", { name: "Close Activity column" }).click();
+    await expect(root.locator('[data-column-id="activity"]')).toHaveCount(0);
+    await page
+      .getByRole("button", {
+        name: "Build the complete Column Canvas showcase",
+      })
+      .click();
+    await expect(root.locator('[data-column-id="activity"]')).toHaveCount(1);
+    await expect(
+      page.getByRole("heading", {
+        name: "Build the complete Column Canvas showcase",
+      }),
+    ).toBeVisible();
+
+    await page.setViewportSize({ width: 700, height: 900 });
+    await expect(root).toHaveAttribute("data-display-mode", "compact");
+    await expect(rails).toHaveCount(0);
+    await expect(root.locator('[data-ui-part="resize-handle"]')).toHaveCount(0);
+    expect(
+      await workspace.evaluate(
+        (column) => column.getBoundingClientRect().width,
+      ),
+    ).not.toBeCloseTo(280, 0);
+
+    await page.setViewportSize({ width: 390, height: 900 });
+    await expect(root).toHaveAttribute("data-display-mode", "compact");
+    await expect(rails).toHaveCount(0);
+    await expect(
+      page.getByRole("button", { name: "Reset view" }),
+    ).toBeVisible();
+
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await expect(root).toHaveAttribute("data-display-mode", "wide");
+    await expect(workspace).toHaveCSS("width", "280px");
+    await expect(root.locator('[data-ui-part="resize-handle"]')).toHaveCount(6);
   });
 });

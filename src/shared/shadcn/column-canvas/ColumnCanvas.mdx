@@ -23,9 +23,10 @@ active column, previous-column peek, and mandatory snapping.
 Always mount `Column` parts under `Root`. Configure each column’s `pathLevel`
 so cascade visibility is controller-owned (same idea as AppShell self-gating
 closed/collapsed chrome). Hosts map `path` keys to domain rows; they do not
-`{#if}` columns into the tree. The primary demo uses three columns with
-collapse, resize, and a closeable details pane. Use **Show code** on the
-preview for a copy-pasteable example.
+`{#if}` columns into the tree. The primary demo is a realistic six-column
+product workspace with a four-level path, two sticky leading lanes, and five
+closeable downstream lanes. Use **Show code** on the preview for a
+copy-pasteable example.
 
 <Primary />
 
@@ -78,6 +79,18 @@ bodies still consume the motion first, and canvas-edge motion remains available
 to the surrounding page.
 
 ## Examples
+
+### Product workspace showcase
+
+A complete workspace → project → board → task workflow using realistic delivery
+data. It combines responsive active-column following, two leading sticky return
+rails, independent body scrolling, resizers, collapse controls, five closeable
+lanes, progress, checklist, and activity detail in one example.
+
+<Canvas
+  of={ColumnCanvasStories.ProductWorkspaceShowcase}
+  meta={ColumnCanvasStories}
+/>
 
 ### All features
 

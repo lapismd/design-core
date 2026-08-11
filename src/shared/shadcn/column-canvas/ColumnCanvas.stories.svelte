@@ -2,8 +2,17 @@
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent, waitFor } from "storybook/test";
   import ArrowLeft from "@lucide/svelte/icons/arrow-left";
+  import CalendarDays from "@lucide/svelte/icons/calendar-days";
+  import Check from "@lucide/svelte/icons/check";
+  import Circle from "@lucide/svelte/icons/circle";
+  import MessageSquare from "@lucide/svelte/icons/message-square";
+  import PanelsTopLeft from "@lucide/svelte/icons/panels-top-left";
+  import RotateCcw from "@lucide/svelte/icons/rotate-ccw";
   import * as ColumnCanvas from "./index.js";
+  import { Badge, type BadgeVariant } from "../badge/index.js";
   import { Button } from "../button/index.js";
+  import { Progress } from "../progress/index.js";
+  import { Separator } from "../separator/index.js";
   import { createColumnCanvasController } from "./column-canvas-controller.svelte.js";
   import {
     aiDemoCategories,
@@ -11,6 +20,15 @@
     findAiDemoCategory,
     findAiDemoComponent,
   } from "./column-canvas.demo-data.js";
+  import {
+    findShowcaseBoard,
+    findShowcaseProject,
+    findShowcaseTask,
+    findShowcaseWorkspace,
+    showcaseWorkspaces,
+    type ShowcaseProject,
+    type ShowcaseTask,
+  } from "./column-canvas.showcase-data.js";
   import * as exampleSources from "./ColumnCanvas.example-sources.js";
 
   const { Story } = defineMeta({
@@ -186,6 +204,75 @@
   const stickyFixedCanvas = createStickyStoryCanvas();
   let stickyFixedSecondary = $state(true);
 
+  const showcaseCanvas = createColumnCanvasController({
+    columns: {
+      workspaces: {
+        defaultWidth: 280,
+        minWidth: 240,
+        maxWidth: 380,
+        pathLevel: 0,
+        collapsible: true,
+        resizable: true,
+      },
+      projects: {
+        defaultWidth: 320,
+        minWidth: 260,
+        maxWidth: 440,
+        pathLevel: 1,
+        collapsible: true,
+        resizable: true,
+        closeable: true,
+      },
+      boards: {
+        defaultWidth: 300,
+        minWidth: 250,
+        maxWidth: 420,
+        pathLevel: 2,
+        collapsible: true,
+        resizable: true,
+        closeable: true,
+      },
+      tasks: {
+        defaultWidth: 380,
+        minWidth: 320,
+        maxWidth: 520,
+        pathLevel: 3,
+        collapsible: true,
+        resizable: true,
+        closeable: true,
+      },
+      detail: {
+        defaultWidth: 440,
+        minWidth: 360,
+        maxWidth: 620,
+        pathLevel: 4,
+        collapsible: true,
+        resizable: true,
+        closeable: true,
+      },
+      activity: {
+        defaultWidth: 340,
+        minWidth: 280,
+        maxWidth: 460,
+        pathLevel: 4,
+        collapsible: true,
+        resizable: true,
+        closeable: true,
+      },
+    },
+    initialPath: ["lapis", "design-core", "column-canvas", "showcase"],
+    trailingSpacerWidth: 260,
+  });
+
+  const showcaseColumnIds = [
+    "workspaces",
+    "projects",
+    "boards",
+    "tasks",
+    "detail",
+    "activity",
+  ] as const;
+
   const stickyStoryColumns = [
     { id: "primary", title: "Workspace", sticky: true, rows: 36 },
     { id: "secondary", title: "Inbox", sticky: true, rows: 18 },
@@ -230,6 +317,64 @@
   const stableChatComponents = $derived(
     findAiDemoCategory("stable-chat")?.components ?? [],
   );
+  const showcaseWorkspace = $derived(
+    findShowcaseWorkspace(showcaseCanvas.path[0]),
+  );
+  const showcaseProject = $derived(
+    findShowcaseProject(showcaseCanvas.path[0], showcaseCanvas.path[1]),
+  );
+  const showcaseBoard = $derived(
+    findShowcaseBoard(
+      showcaseCanvas.path[0],
+      showcaseCanvas.path[1],
+      showcaseCanvas.path[2],
+    ),
+  );
+  const showcaseTask = $derived(
+    findShowcaseTask(
+      showcaseCanvas.path[0],
+      showcaseCanvas.path[1],
+      showcaseCanvas.path[2],
+      showcaseCanvas.path[3],
+    ),
+  );
+
+  function projectStatusVariant(
+    status: ShowcaseProject["status"],
+  ): BadgeVariant {
+    if (status === "At risk") return "destructive";
+    if (status === "Complete") return "secondary";
+    return "default";
+  }
+
+  function taskStatusVariant(status: ShowcaseTask["status"]): BadgeVariant {
+    if (status === "Blocked") return "destructive";
+    if (status === "Done") return "secondary";
+    if (status === "Planned") return "outline";
+    return "default";
+  }
+
+  function initials(name: string): string {
+    return name
+      .split(" ")
+      .map((part) => part[0])
+      .join("")
+      .slice(0, 2)
+      .toUpperCase();
+  }
+
+  function resetShowcaseCanvas(): void {
+    for (const id of showcaseColumnIds) {
+      showcaseCanvas.open(id);
+      showcaseCanvas.expand(id);
+      showcaseCanvas.resetWidth(id);
+    }
+    showcaseCanvas.clear();
+    showcaseCanvas.select(0, "lapis");
+    showcaseCanvas.select(1, "design-core");
+    showcaseCanvas.select(2, "column-canvas");
+    showcaseCanvas.select(3, "showcase");
+  }
 
   async function dragResizeHandle(
     handle: HTMLElement,
@@ -256,6 +401,397 @@
     ]);
   }
 </script>
+
+<Story
+  name="Product workspace showcase"
+  exportName="ProductWorkspaceShowcase"
+  tags={["visual-pending"]}
+  play={async ({ canvas }) => {
+    resetShowcaseCanvas();
+
+    const root = canvas.getByRole("region", {
+      name: "Product delivery workspace",
+    });
+    await waitFor(() => {
+      expect(root.getAttribute("data-display-mode")).toMatch(/wide|compact/);
+      expect(showcaseCanvas.path).toEqual([
+        "lapis",
+        "design-core",
+        "column-canvas",
+        "showcase",
+      ]);
+    });
+    await expect(
+      canvas.getByRole("button", { name: "Lapis workspace" }),
+    ).toHaveAttribute("aria-pressed", "true");
+    await expect(
+      canvas.getByRole("heading", {
+        name: "Build the complete Column Canvas showcase",
+      }),
+    ).toBeVisible();
+    await expect(canvas.getByText("68% complete")).toBeVisible();
+
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Close Task details column" }),
+    );
+    await expect(
+      canvas.queryByRole("button", { name: "Close Task details column" }),
+    ).toBeNull();
+    await userEvent.click(
+      canvas.getByRole("button", {
+        name: "Tune vertical wheel handoff",
+      }),
+    );
+    await expect(
+      canvas.getByRole("heading", { name: "Tune vertical wheel handoff" }),
+    ).toBeVisible();
+
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Collapse Tasks column" }),
+    );
+    await expect(
+      canvas.getByRole("button", { name: "Expand Tasks column" }),
+    ).toBeVisible();
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Expand Tasks column" }),
+    );
+
+    if (root.getAttribute("data-display-mode") === "wide") {
+      root.scrollTo({ left: root.scrollWidth, behavior: "auto" });
+      await waitFor(() => {
+        expect(
+          root.querySelector('[data-column-id="workspaces"]'),
+        ).toHaveAttribute("data-sticky-state", "stuck");
+        expect(
+          root.querySelector('[data-column-id="projects"]'),
+        ).toHaveAttribute("data-sticky-state", "stuck");
+      });
+      await expect(
+        canvas.getByRole("button", { name: "Return to Workspaces column" }),
+      ).toBeVisible();
+      await expect(
+        canvas.getByRole("button", { name: "Return to Projects column" }),
+      ).toBeVisible();
+    } else {
+      await expect(
+        root.querySelector('[data-ui-part="sticky-rail"]'),
+      ).toBeNull();
+      expect(root.scrollLeft).toBeGreaterThan(0);
+    }
+  }}
+  parameters={{
+    docs: {
+      description: {
+        story:
+          "A realistic six-column product workspace combining a four-level selection path, two leading sticky lanes, responsive presentation, closeable downstream panels, collapse, resize, independent body scrolling, task progress, and activity data.",
+      },
+      source: {
+        code: exampleSources.FullShowcase,
+        language: "html",
+        type: "code",
+      },
+    },
+  }}
+>
+  {#snippet template()}
+    <div
+      class="bg-background flex h-[650px] w-full max-w-[1200px] flex-col overflow-hidden rounded-xl border"
+    >
+      <header
+        class="bg-muted/30 flex flex-wrap items-center justify-between gap-3 px-4 py-3"
+      >
+        <div class="flex min-w-0 flex-col gap-0.5">
+          <div class="flex items-center gap-2">
+            <PanelsTopLeft class="size-4" aria-hidden="true" />
+            <h2 class="font-semibold">Product delivery workspace</h2>
+          </div>
+          <p class="text-muted-foreground text-xs">
+            Workspaces → projects → boards → tasks → details and activity
+          </p>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <Button size="sm" variant="outline" onclick={resetShowcaseCanvas}>
+            <RotateCcw data-icon="inline-start" aria-hidden="true" />
+            Reset view
+          </Button>
+          <Button
+            size="sm"
+            variant="outline"
+            onclick={() => {
+              for (const id of showcaseColumnIds) showcaseCanvas.open(id);
+            }}
+          >
+            Restore all columns
+          </Button>
+        </div>
+      </header>
+      <div class="flex flex-wrap items-center gap-2 border-t px-4 py-2">
+        <Badge variant="secondary">Auto responsive</Badge>
+        <Badge variant="outline">2 sticky lanes</Badge>
+        <Badge variant="outline">5 closeable lanes</Badge>
+        <Badge variant="outline">Resizable + collapsible</Badge>
+      </div>
+      <div class="min-h-0 flex-1 border-t">
+        <ColumnCanvas.Root
+          controller={showcaseCanvas}
+          aria-label="Product delivery workspace"
+        >
+          <ColumnCanvas.Column
+            id="workspaces"
+            title="Workspaces"
+            count={showcaseWorkspaces.length}
+            sticky
+          >
+            {#snippet stickyRail()}
+              <ArrowLeft data-icon="inline-start" aria-hidden="true" />
+            {/snippet}
+            <ColumnCanvas.Body>
+              {#each showcaseWorkspaces as workspace (workspace.id)}
+                <ColumnCanvas.Item
+                  aria-label={workspace.label}
+                  selected={showcaseCanvas.isSelected(0, workspace.id)}
+                  onclick={() => showcaseCanvas.select(0, workspace.id)}
+                >
+                  <span class="flex min-w-0 flex-col gap-1">
+                    <span class="flex items-center justify-between gap-2">
+                      <span class="truncate font-medium">{workspace.label}</span
+                      >
+                      <Badge variant="secondary">
+                        {workspace.projects.length}
+                      </Badge>
+                    </span>
+                    <span class="text-muted-foreground line-clamp-2 text-xs">
+                      {workspace.description}
+                    </span>
+                  </span>
+                </ColumnCanvas.Item>
+              {/each}
+            </ColumnCanvas.Body>
+          </ColumnCanvas.Column>
+
+          <ColumnCanvas.Column
+            id="projects"
+            title="Projects"
+            count={showcaseWorkspace?.projects.length}
+            sticky
+          >
+            {#snippet stickyRail()}
+              <ArrowLeft data-icon="inline-start" aria-hidden="true" />
+            {/snippet}
+            <ColumnCanvas.Body>
+              {#each showcaseWorkspace?.projects ?? [] as project (project.id)}
+                <ColumnCanvas.Item
+                  aria-label={project.label}
+                  selected={showcaseCanvas.isSelected(1, project.id)}
+                  onclick={() => showcaseCanvas.select(1, project.id)}
+                >
+                  <span class="flex min-w-0 flex-col gap-1.5">
+                    <span class="flex items-center justify-between gap-2">
+                      <span class="truncate font-medium">{project.label}</span>
+                      <Badge variant={projectStatusVariant(project.status)}>
+                        {project.status}
+                      </Badge>
+                    </span>
+                    <span class="text-muted-foreground line-clamp-2 text-xs">
+                      {project.summary}
+                    </span>
+                    <span
+                      class="text-muted-foreground flex items-center gap-1 text-xs"
+                    >
+                      <CalendarDays class="size-3.5" aria-hidden="true" />
+                      Due {project.due}
+                    </span>
+                  </span>
+                </ColumnCanvas.Item>
+              {/each}
+            </ColumnCanvas.Body>
+          </ColumnCanvas.Column>
+
+          <ColumnCanvas.Column
+            id="boards"
+            title={showcaseProject?.label ?? "Boards"}
+            count={showcaseProject?.boards.length}
+          >
+            <ColumnCanvas.Body>
+              {#each showcaseProject?.boards ?? [] as board (board.id)}
+                <ColumnCanvas.Item
+                  aria-label={board.label}
+                  selected={showcaseCanvas.isSelected(2, board.id)}
+                  onclick={() => showcaseCanvas.select(2, board.id)}
+                >
+                  <span class="flex min-w-0 flex-col gap-1">
+                    <span class="flex items-center justify-between gap-2">
+                      <span class="truncate font-medium">{board.label}</span>
+                      <Badge variant="outline">{board.tasks.length} tasks</Badge
+                      >
+                    </span>
+                    <span class="text-muted-foreground line-clamp-2 text-xs">
+                      {board.summary}
+                    </span>
+                  </span>
+                </ColumnCanvas.Item>
+              {/each}
+            </ColumnCanvas.Body>
+          </ColumnCanvas.Column>
+
+          <ColumnCanvas.Column
+            id="tasks"
+            title="Tasks"
+            count={showcaseBoard?.tasks.length}
+          >
+            <ColumnCanvas.Body>
+              {#each showcaseBoard?.tasks ?? [] as task (task.id)}
+                <ColumnCanvas.Item
+                  aria-label={task.title}
+                  selected={showcaseCanvas.isSelected(3, task.id)}
+                  onclick={() => showcaseCanvas.select(3, task.id)}
+                >
+                  <span class="flex min-w-0 flex-col gap-1.5">
+                    <span class="flex items-center justify-between gap-2">
+                      <span class="text-muted-foreground text-xs font-medium">
+                        {task.key}
+                      </span>
+                      <Badge variant={taskStatusVariant(task.status)}>
+                        {task.status}
+                      </Badge>
+                    </span>
+                    <span class="line-clamp-2 font-medium">{task.title}</span>
+                    <span
+                      class="text-muted-foreground flex items-center justify-between gap-2 text-xs"
+                    >
+                      <span>{task.assignee}</span>
+                      <span>{task.due}</span>
+                    </span>
+                  </span>
+                </ColumnCanvas.Item>
+              {/each}
+            </ColumnCanvas.Body>
+          </ColumnCanvas.Column>
+
+          <ColumnCanvas.Column
+            id="detail"
+            title="Task details"
+            count={showcaseTask?.checklist.length}
+          >
+            <ColumnCanvas.Body>
+              {#if showcaseTask}
+                <article class="flex flex-col gap-4 p-4">
+                  <div class="flex flex-col gap-2">
+                    <div class="flex flex-wrap items-center gap-2">
+                      <Badge variant="outline">{showcaseTask.key}</Badge>
+                      <Badge variant={taskStatusVariant(showcaseTask.status)}>
+                        {showcaseTask.status}
+                      </Badge>
+                      <Badge variant="secondary">
+                        {showcaseTask.priority} priority
+                      </Badge>
+                    </div>
+                    <h2 class="text-lg leading-snug font-semibold">
+                      {showcaseTask.title}
+                    </h2>
+                    <p class="text-muted-foreground text-sm leading-relaxed">
+                      {showcaseTask.summary}
+                    </p>
+                  </div>
+
+                  <div class="flex flex-col gap-2">
+                    <div class="flex items-center justify-between text-xs">
+                      <span class="font-medium">Progress</span>
+                      <span class="text-muted-foreground">
+                        {showcaseTask.progress}% complete
+                      </span>
+                    </div>
+                    <Progress
+                      value={showcaseTask.progress}
+                      aria-label="Task completion"
+                    />
+                  </div>
+
+                  <div class="grid grid-cols-2 gap-3 text-sm">
+                    <div class="bg-muted/50 flex flex-col gap-1 rounded-lg p-3">
+                      <span class="text-muted-foreground text-xs">Owner</span>
+                      <span class="font-medium">{showcaseTask.assignee}</span>
+                    </div>
+                    <div class="bg-muted/50 flex flex-col gap-1 rounded-lg p-3">
+                      <span class="text-muted-foreground text-xs">Due date</span
+                      >
+                      <span class="font-medium">{showcaseTask.due}</span>
+                    </div>
+                  </div>
+
+                  <div class="flex flex-wrap gap-1.5">
+                    {#each showcaseTask.tags as tag (tag)}
+                      <Badge variant="outline">{tag}</Badge>
+                    {/each}
+                  </div>
+
+                  <Separator />
+
+                  <section class="flex flex-col gap-2.5">
+                    <h3 class="text-sm font-semibold">Checklist</h3>
+                    {#each showcaseTask.checklist as item (item.id)}
+                      <div class="flex items-start gap-2 text-sm">
+                        {#if item.done}
+                          <Check
+                            class="text-primary mt-0.5 size-4"
+                            aria-hidden="true"
+                          />
+                        {:else}
+                          <Circle
+                            class="text-muted-foreground mt-0.5 size-4"
+                            aria-hidden="true"
+                          />
+                        {/if}
+                        <span class:text-muted-foreground={item.done}>
+                          {item.label}
+                        </span>
+                      </div>
+                    {/each}
+                  </section>
+                </article>
+              {/if}
+            </ColumnCanvas.Body>
+          </ColumnCanvas.Column>
+
+          <ColumnCanvas.Column
+            id="activity"
+            title="Activity"
+            count={showcaseTask?.activity.length}
+          >
+            <ColumnCanvas.Body>
+              {#if showcaseTask}
+                <div class="flex flex-col gap-4 p-4">
+                  <div class="flex items-center gap-2">
+                    <MessageSquare class="size-4" aria-hidden="true" />
+                    <p class="text-sm font-semibold">Latest updates</p>
+                  </div>
+                  <ol class="flex flex-col gap-4">
+                    {#each showcaseTask.activity as activity (activity.id)}
+                      <li class="flex gap-3">
+                        <Badge variant="outline">
+                          {initials(activity.person)}
+                        </Badge>
+                        <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+                          <span class="text-sm">
+                            <strong>{activity.person}</strong>
+                            {activity.action}
+                          </span>
+                          <span class="text-muted-foreground text-xs">
+                            {activity.time}
+                          </span>
+                        </span>
+                      </li>
+                    {/each}
+                  </ol>
+                </div>
+              {/if}
+            </ColumnCanvas.Body>
+          </ColumnCanvas.Column>
+        </ColumnCanvas.Root>
+      </div>
+    </div>
+  {/snippet}
+</Story>
 
 <Story
   name="All features"
