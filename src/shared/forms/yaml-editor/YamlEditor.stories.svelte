@@ -10,7 +10,8 @@
     parameters: {
       docs: {
         description: {
-          component: "CodeMirror YAML editor with optional review diffs.",
+          component:
+            "YAML language and review behavior over the Mira-owned CodeMirror shell.",
         },
       },
     },
@@ -56,6 +57,9 @@
       "tabindex",
       "0",
     );
+    await expect(
+      canvasElement.querySelector(".mira-code-editor"),
+    ).toHaveAttribute("data-surface", "framed");
   }}
   tags={["visual-ready"]}
 >

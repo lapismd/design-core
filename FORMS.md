@@ -106,6 +106,25 @@ Override on `:root` or a form ancestor, e.g. `--ui-form-accent: oklch(...)`.
 | Source editing              | `CodeEditor`                                                                                   |
 | Read-only source preview    | `CodeHighlighter`                                                                              |
 
+## Editor shell ownership
+
+`CodeEditor` and `YamlEditor` keep the Design Core form APIs, language support,
+diagnostics, YAML folding/formatting, and review decorations. Their CodeMirror
+mounting, controlled-value lifecycle, editor chrome, sizing, gutters, selection,
+and scroller behavior are owned by the linked `@lapismd/mira`
+`MiraCodeEditor` shell.
+
+Consumers continue importing the Design Core wrappers. Pass language or
+domain-specific CodeMirror extensions through those wrappers; do not construct a
+second `EditorView` or style the shell with `.cm-*` selectors. Design Core maps
+its form tokens onto the public `--mira-code-editor-*` tokens. `SearchFilterBar`
+retains its compact filter-query editor lifecycle until Mira has a dedicated
+inline/searchbox shell contract.
+
+Mira's built-in Find/Replace panel is part of the editor shell. Its surface,
+inputs, buttons, hover/active states, and focus ring inherit the same form
+background, border, muted, active-line, and accent tokens as the editor.
+
 ## Config-driven forms
 
 Use `defineFormConfig<TValues>()` for new schema-shaped forms. Field keys are

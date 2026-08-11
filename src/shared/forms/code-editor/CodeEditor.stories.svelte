@@ -10,7 +10,7 @@
       docs: {
         description: {
           component:
-            "CodeMirror multi-language editor used by form source modes.",
+            "Multi-language form editor using the Mira-owned CodeMirror shell.",
         },
       },
     },
@@ -23,10 +23,13 @@
 
 <Story
   name="Renders a language editor"
-  play={async ({ canvas }) => {
+  play={async ({ canvas, canvasElement }) => {
     await expect(
       canvas.getByRole("textbox", { name: "Source editor" }),
     ).toBeVisible();
+    await expect(
+      canvasElement.querySelector(".mira-code-editor"),
+    ).toHaveAttribute("data-surface", "framed");
   }}
   tags={["visual-ready"]}
 >

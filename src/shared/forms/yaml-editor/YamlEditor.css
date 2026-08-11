@@ -1,41 +1,68 @@
 @import "../form.tokens.css";
 
 .cvstudio-yaml-editor {
-  overflow: hidden;
-  border: 1px solid var(--ui-form-border);
-  border-radius: 0.35rem;
-  background: transparent;
+  --mira-code-editor-background: transparent;
+  --mira-code-editor-foreground: var(--ui-form-foreground);
+  --mira-code-editor-border: var(--ui-form-border);
+  --mira-code-editor-radius: 0.35rem;
+  --mira-code-editor-focus-ring: var(--ui-form-accent);
+  --mira-code-editor-gutter-background: var(--mira-code-editor-background);
+  --mira-code-editor-active-line: var(--ui-form-active-line);
+  --mira-code-editor-selection: var(--ui-form-selection-strong);
+  --mira-code-editor-popover: var(--ui-form-popover);
+  --mira-code-editor-search-radius: var(--mira-code-editor-radius);
+  --mira-code-editor-search-options-background: var(
+    --mira-code-editor-background
+  );
+  --mira-code-editor-search-options-border: var(--ui-form-border);
+  --mira-code-editor-search-input-background: var(
+    --mira-code-editor-background
+  );
+  --mira-code-editor-search-input-foreground: var(--ui-form-foreground);
+  --mira-code-editor-search-input-border: var(--ui-form-border);
+  --mira-code-editor-search-input-hover-border: var(--ui-form-accent);
+  --mira-code-editor-search-muted: var(--ui-form-muted);
+  --mira-code-editor-search-button-background: transparent;
+  --mira-code-editor-search-button-foreground: var(--ui-form-muted);
+  --mira-code-editor-search-button-border: var(--ui-form-border);
+  --mira-code-editor-search-button-hover-background: var(--ui-form-active-line);
+  --mira-code-editor-search-button-hover-foreground: var(--ui-form-foreground);
+  --mira-code-editor-search-button-hover-border: var(--ui-form-accent);
+  --mira-code-editor-search-active-background: var(--ui-form-selection);
+  --mira-code-editor-search-focus-ring: var(--ui-form-accent);
+  --mira-code-editor-padding: 0.75rem;
+  --mira-code-editor-syntax-keyword: var(--ui-form-accent);
+  --mira-code-editor-syntax-number: var(--ui-form-accent);
+  --mira-code-editor-syntax-string: var(--ui-form-foreground);
+  --mira-code-editor-syntax-variable: var(--ui-form-accent);
+  --mira-code-editor-syntax-property: var(--ui-form-accent);
+  --mira-code-editor-syntax-comment: var(--ui-form-muted);
+  --mira-code-editor-syntax-operator: var(--ui-form-muted);
+  --mira-code-editor-syntax-punctuation: var(--ui-form-muted);
+  --mira-font-mono: var(
+    --studio-font-mono,
+    var(
+      --font-mono,
+      "Source Code Pro Variable",
+      "Source Code Pro",
+      ui-monospace,
+      SFMono-Regular,
+      Menlo,
+      Monaco,
+      Consolas,
+      "Liberation Mono",
+      monospace
+    )
+  );
+
+  min-width: 0;
 }
 
-.cvstudio-yaml-editor.frameless {
-  border: 0;
-  border-radius: 0;
-}
-
-/* Size comes from a flex parent (e.g. docs YAML pane); keep min-height: 0 so
-   the CodeMirror scroller can shrink and scroll instead of growing forever. */
+/* The consumer pane supplies the available height; MiraCodeEditor remains the
+   sole CodeMirror/scroller sizing and overflow owner. */
 .cvstudio-yaml-editor.fill {
-  display: flex;
-  min-height: 0;
-  flex: 1 1 auto;
-  flex-direction: column;
   align-self: stretch;
-}
-
-.cvstudio-yaml-editor.fill .cm-editor {
+  display: grid;
   flex: 1 1 auto;
-  min-height: 0;
-}
-
-.cvstudio-yaml-editor.error {
-  border-color: var(--destructive, rgb(220 38 38));
-}
-
-.cvstudio-yaml-editor:not(.fill) .cm-editor {
-  height: auto;
-}
-
-.cvstudio-yaml-editor.fill .cm-editor {
-  height: 100%;
   min-height: 0;
 }

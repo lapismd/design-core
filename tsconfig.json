@@ -17,7 +17,15 @@
     "useDefineForClassFields": true,
     "verbatimModuleSyntax": true,
     "paths": {
-      "storybook/test": ["./node_modules/storybook/dist/test/index.d.ts"]
+      "storybook/test": ["./node_modules/storybook/dist/test/index.d.ts"],
+      "svelte": ["./node_modules/svelte"],
+      "svelte/*": ["./node_modules/svelte/*"],
+      "@codemirror/state": ["./node_modules/@codemirror/state"],
+      "@codemirror/view": ["./node_modules/@codemirror/view"],
+      "@codemirror/language": ["./node_modules/@codemirror/language"],
+      "@codemirror/lint": ["./node_modules/@codemirror/lint"],
+      "@codemirror/autocomplete": ["./node_modules/@codemirror/autocomplete"],
+      "@codemirror/commands": ["./node_modules/@codemirror/commands"]
     }
   },
   "include": [

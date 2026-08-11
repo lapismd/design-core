@@ -51,6 +51,7 @@
     "svelte": "^5.0.0"
   },
   "dependencies": {
+    "@lapismd/mira": "link:../mira-mde/packages/mira",
     "@codemirror/autocomplete": "^6.18.0",
     "@codemirror/commands": "^6.8.0",
     "@codemirror/lang-java": "^6.0.2",
@@ -75,7 +76,6 @@
     "bits-ui": "^2.18.1",
     "chrono-node": "^2.10.1",
     "clsx": "^2.1.1",
-    "codemirror": "^6.0.2",
     "codemirror-lang-mermaid": "^0.5.0",
     "luxon": "^3.5.0",
     "minimatch": "^10.2.5",

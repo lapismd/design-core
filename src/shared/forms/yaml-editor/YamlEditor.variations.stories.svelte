@@ -1,5 +1,6 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
+  import { expect } from "storybook/test";
   import YamlEditor from "./YamlEditor.svelte";
 
   const { Story } = defineMeta({
@@ -27,5 +28,38 @@
 >
   {#snippet template()}
     <YamlEditor value={"name: Jane\nrole: Designer\n"} minHeight="10rem" />
+  {/snippet}
+</Story>
+
+<Story
+  name="Frameless fill"
+  exportName="FramelessFill"
+  tags={["skip-visual"]}
+  parameters={{
+    docs: {
+      description: {
+        story:
+          "Frameless editor that fills and scrolls inside its parent pane.",
+      },
+    },
+  }}
+  play={async ({ canvasElement }) => {
+    const shell = canvasElement.querySelector(".mira-code-editor");
+    await expect(shell).toHaveAttribute("data-surface", "frameless");
+    await expect(shell).toHaveAttribute("data-height", "fill");
+    await expect(canvasElement.querySelector(".cm-scroller")).toHaveAttribute(
+      "tabindex",
+      "0",
+    );
+  }}
+>
+  {#snippet template()}
+    <div style="height: 16rem; min-height: 0;">
+      <YamlEditor
+        value={"name: Jane\nrole: Designer\n"}
+        frameless
+        minHeight="100%"
+      />
+    </div>
   {/snippet}
 </Story>

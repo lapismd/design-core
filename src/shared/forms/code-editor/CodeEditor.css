@@ -1,14 +1,60 @@
 @import "../form.tokens.css";
 
 .cvstudio-code-editor {
-  min-width: 0;
-  margin: 2px;
-  overflow: hidden;
-  border: 1px solid var(--ui-form-border);
-  border-radius: 0.4rem;
-  background: var(--ui-form-code-background);
-}
+  --mira-code-editor-background: var(--ui-form-code-background);
+  --mira-code-editor-foreground: var(--ui-form-foreground);
+  --mira-code-editor-border: var(--ui-form-border);
+  --mira-code-editor-radius: 0.4rem;
+  --mira-code-editor-focus-ring: var(--ui-form-accent);
+  --mira-code-editor-gutter-background: var(--mira-code-editor-background);
+  --mira-code-editor-active-line: var(--ui-form-active-line);
+  --mira-code-editor-selection: var(--ui-form-selection-strong);
+  --mira-code-editor-popover: var(--ui-form-popover);
+  --mira-code-editor-search-radius: var(--mira-code-editor-radius);
+  --mira-code-editor-search-options-background: var(
+    --mira-code-editor-background
+  );
+  --mira-code-editor-search-options-border: var(--ui-form-border);
+  --mira-code-editor-search-input-background: var(
+    --mira-code-editor-background
+  );
+  --mira-code-editor-search-input-foreground: var(--ui-form-foreground);
+  --mira-code-editor-search-input-border: var(--ui-form-border);
+  --mira-code-editor-search-input-hover-border: var(--ui-form-accent);
+  --mira-code-editor-search-muted: var(--ui-form-muted);
+  --mira-code-editor-search-button-background: transparent;
+  --mira-code-editor-search-button-foreground: var(--ui-form-muted);
+  --mira-code-editor-search-button-border: var(--ui-form-border);
+  --mira-code-editor-search-button-hover-background: var(--ui-form-active-line);
+  --mira-code-editor-search-button-hover-foreground: var(--ui-form-foreground);
+  --mira-code-editor-search-button-hover-border: var(--ui-form-accent);
+  --mira-code-editor-search-active-background: var(--ui-form-selection);
+  --mira-code-editor-search-focus-ring: var(--ui-form-accent);
+  --mira-code-editor-syntax-keyword: var(--cv-code-keyword, #5b21b6);
+  --mira-code-editor-syntax-keyword-weight: 600;
+  --mira-code-editor-syntax-number: var(--cv-code-constant, #0e726a);
+  --mira-code-editor-syntax-string: var(--cv-code-string, #92400e);
+  --mira-code-editor-syntax-variable: var(--cv-code-function, #075985);
+  --mira-code-editor-syntax-type: var(--cv-code-type, #6b21a8);
+  --mira-code-editor-syntax-property: var(--cv-code-property, #1d4ed8);
+  --mira-code-editor-syntax-comment: var(--ui-form-muted);
+  --mira-code-editor-syntax-invalid: var(--destructive, #dc2626);
+  --mira-font-mono: var(
+    --studio-font-mono,
+    var(
+      --font-mono,
+      "Source Code Pro Variable",
+      "Source Code Pro",
+      ui-monospace,
+      SFMono-Regular,
+      Menlo,
+      Monaco,
+      Consolas,
+      "Liberation Mono",
+      monospace
+    )
+  );
 
-:global(.cvstudio-code-editor .cm-editor) {
-  height: auto;
+  margin: 2px;
+  min-width: 0;
 }

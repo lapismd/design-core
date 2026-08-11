@@ -58,8 +58,9 @@ describe("source-reference form layout CSS", () => {
     const yamlEditorCss = readCss("../yaml-editor/YamlEditor.css");
 
     expect(yamlEditorCss).toMatch(
-      /\.cvstudio-yaml-editor\.fill \.cm-editor\s*\{[\s\S]*?flex:\s*1 1 auto/,
+      /\.cvstudio-yaml-editor\.fill\s*\{[\s\S]*?display:\s*grid[\s\S]*?flex:\s*1 1 auto/,
     );
+    expect(yamlEditorCss).not.toMatch(/\.cm-(?:editor|scroller)/);
   });
 
   it("scopes list editor variants to the root instead of nested parts", () => {

@@ -59,6 +59,11 @@ Removed duplicate/thin aliases:
 - `read-only-form` — use readonly `FormField` or `ReferencePicker`.
 
 **Runtime editors:** `code-editor`, `code-highlighter`, `yaml-editor`.
+`CodeEditor` and `YamlEditor` are Design Core domain wrappers over
+`@lapismd/mira`'s `MiraCodeEditor`; Mira owns CodeMirror mounting, lifecycle,
+base chrome, sizing, gutters, and scrolling. Design Core owns languages,
+diagnostics, YAML folding/formatting, review decorations, and form-token
+mappings. `code-highlighter` remains the read-only Lezer preview path.
 
 **Patch review:** `PatchableForm` orchestrates Keep/Undo over structured fields
 and YAML hunks. `form-review/` provides `UnifiedReviewDiff`,
@@ -77,7 +82,8 @@ Search chrome and structured filter-query language in `src/shared/filter/`:
 
 - `PowerSearch` — field/operator/value tokens and a field combobox.
 - `SearchFilterBar` — plain or `filter-query` CodeMirror mode plus
-  host-supplied `filterSyntax` autocomplete.
+  host-supplied `filterSyntax` autocomplete. This compact/searchbox lifecycle is
+  intentionally deferred from the Mira shell migration.
 - `filter-query/` — Lezer grammar, `parseFilterQuery`, and `filterQuery()`
   language support.
 

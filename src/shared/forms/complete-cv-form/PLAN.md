@@ -94,6 +94,25 @@
 - [x] Add public exports, consumer examples, component stories, documentation,
       audit entries, and focused type/runtime/interaction coverage.
 
+## Mira CodeMirror shell migration
+
+- [x] Link `@lapismd/mira` from `../mira-mde/packages/mira` and remove the
+      aggregate `codemirror` dependency.
+- [x] Keep Complete CV's public `YamlEditor` integration unchanged while moving
+      CodeMirror mounting, controlled synchronization, base chrome, sizing,
+      gutters, and scroller ownership into Mira's `MiraCodeEditor`.
+- [x] Retain YAML language support, invalid state, active-selection formatting,
+      folding, review hunks, Keep/Undo actions, and form-token mappings in Design
+      Core.
+- [x] Add targeted Svelte and CodeMirror peer-singleton resolution for the local
+      linked package, without a source alias, package patch, or global
+      `preserveSymlinks` behavior.
+- [x] Add source-boundary, language-alias, syntax-diagnostic, folding, formatting,
+      sizing, and existing Complete CV interaction coverage.
+- [x] Record final non-visual Mira, Design Core, and Lapis validation evidence.
+- [x] Skip Visual Delta runs and baseline changes per the user's explicit
+      instruction.
+
 ## Validation evidence
 
 - Config migration focused unit run: 8 files and 35 tests passed, covering path
@@ -152,6 +171,34 @@
 - Per the user's explicit stop request, the 428-scenario affected compare-only
   visual run was interrupted during isolated dependency setup. No capture,
   comparison, or baseline write was completed for this follow-up.
+- Mira shell migration: `pnpm check:all`, `pnpm packages:pack`,
+  `pnpm packages:check`, `pnpm spec:check`, `pnpm catalog:check`, and
+  `pnpm build-storybook` passed. The package suite covered 57 Mira test files
+  and 330 tests, the catalog documents 157 public tokens, and the packed
+  six-package graph passed its install and leak checks.
+- Design Core shell migration: `pnpm check`, Docs MCP typechecking,
+  `pnpm check:no-tailwind`, the 4-file/15-test focused unit run, the
+  7-file/15-test affected Storybook run, `pnpm build-storybook`, and the
+  workspace visual-contract audit passed. The audit reports 113 stories and
+  zero contract errors. The full unit run passed 545 of 547 tests; its two
+  failures are the pre-existing StructuredForm MDX fence and FormField docs
+  default expectations. Repository-wide Prettier remains blocked by the five
+  unrelated files listed above; the complete migration path passed scoped
+  Prettier verification.
+- Live CodeEditor acceptance confirmed the editor, number gutter, Find panel,
+  and Find input compute to the same Design Core surface background. With Find
+  focused, both the field and framed editor have transparent borders and only
+  the mapped Design Core accent rings (2px and 1px respectively).
+- Lapis consumer validation ran the repository's current `check:all` and
+  `build:all` equivalents because `check` and `build` scripts are not defined.
+  All 33 package-level check tasks passed; the aggregate then stopped only on
+  the unrelated root formatting issue in
+  `spec/src/10-architecture/monorepo-structure.md`. `build:all` stopped in the
+  unrelated Spellchecker build because Vite cannot parse
+  `packages/api/src/lib/components/editor/extensions/lint/lapis-lint-tooltip.svelte`;
+  neither consumer command changed the clean Lapis working copy.
+- No Visual Delta command or baseline write was run for the Mira migration, per
+  the user's instruction.
 
 ## Visual baseline
 

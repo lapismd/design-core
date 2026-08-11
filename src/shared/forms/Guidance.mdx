@@ -154,6 +154,12 @@ the tokens that family reads.
 | Dual structured + JSON | `JsonBackedForm` (compatibility path; prefer YAML for new drafts)              |
 | Textareas              | Autosize, hide resize handles, avoid internal scroll for ordinary editing      |
 
+`CodeEditor` and `YamlEditor` are the stable Design Core imports. They add
+language, validation, YAML folding/formatting, and review behavior to Mira's
+language-neutral `MiraCodeEditor`, which owns the CodeMirror lifecycle, shell,
+and scroller. Theme them through form tokens; do not add consumer `.cm-*` shell
+overrides or mount a second `EditorView`.
+
 ## Evidence references
 
 `ReferencePicker` shows stored ref, resolved path, label, and excerpt.

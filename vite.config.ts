@@ -11,5 +11,14 @@ export default defineConfig({
   plugins: [tailwindcss(), svelte()],
   resolve: {
     alias: [{ find: "storybook/test", replacement: storybookTest }],
+    dedupe: [
+      "svelte",
+      "@codemirror/state",
+      "@codemirror/view",
+      "@codemirror/language",
+      "@codemirror/lint",
+      "@codemirror/autocomplete",
+      "@codemirror/commands",
+    ],
   },
 });

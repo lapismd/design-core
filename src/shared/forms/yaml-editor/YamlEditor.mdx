@@ -12,7 +12,9 @@ import * as YamlEditorVariations from "./YamlEditor.variations.stories.svelte";
 
 # YamlEditor
 
-Use for YAML only. Do not add plain textarea YAML editors.
+Use for YAML only. Do not add plain textarea YAML editors. The wrapper supplies
+YAML language support, folding, active-selection formatting, and review hunks
+over Mira's language-neutral CodeMirror shell.
 
 Toolbar YAML switches should edit the authoritative serialized draft; invalid YAML stays editable and surfaces parse errors.
 
@@ -42,13 +44,18 @@ See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and the shared
 
 ## Style
 
-Colocated CSS: `YamlEditor.css`. Paint with package tokens from
-`@lapismd/design-core/forms/tokens` (defaults in `form.tokens.css`). Stories may
-still use host Tailwind for demo layout.
+Colocated CSS: `YamlEditor.css`. It maps package tokens from
+`@lapismd/design-core/forms/tokens` onto Mira's public
+`--mira-code-editor-*` tokens and retains only YAML review decoration styles.
+Mira owns the editor surface, gutters, sizing, and scroller. Stories may still
+use host Tailwind for demo layout.
 
-| Token              | Default         |
-| ------------------ | --------------- |
-| `--ui-form-border` | `var(--border)` |
+| Token                   | Default                                              |
+| ----------------------- | ---------------------------------------------------- |
+| `--ui-form-border`      | `var(--border)`                                      |
+| `--ui-form-muted`       | `var(--muted-foreground)`                            |
+| `--ui-form-active-line` | `color-mix(in srgb, var(--primary) 9%, transparent)` |
+| `--ui-form-accent`      | `var(--primary)`                                     |
 
 ## Examples
 

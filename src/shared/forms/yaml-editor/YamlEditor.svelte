@@ -1,13 +1,10 @@
 <script lang="ts" module>
   import "./YamlEditor.css";
-  import { foldEffect, foldable, unfoldAll } from "@codemirror/language";
-  import { EditorSelection } from "@codemirror/state";
+  import { unfoldAll } from "@codemirror/language";
   import type { EditorView as CodeMirrorEditorView } from "@codemirror/view";
 
-  import {
-    createMarkdownEdit,
-    type MarkdownFormatKind,
-  } from "../core/markdown-format";
+  import type { MarkdownFormatKind } from "../core/markdown-format";
+  import { formatYamlSelection } from "./yaml-editor-runtime";
 
   export type YamlReviewDiff = {
     id: string;
@@ -35,35 +32,7 @@
     const editor = activeEditor;
     if (!editor || !editor.hasFocus) return false;
 
-    let offset = 0;
-    const changes = editor.state.selection.ranges.map((range) => {
-      const selectedText = editor.state.doc.sliceString(range.from, range.to);
-      const edit = createMarkdownEdit(kind, selectedText, linkUrl);
-      const mappedFrom = range.from + offset;
-      offset += edit.text.length - (range.to - range.from);
-      return {
-        range,
-        edit,
-        selectionFrom: mappedFrom + edit.selectionStart,
-        selectionTo: mappedFrom + edit.selectionEnd,
-      };
-    });
-
-    editor.dispatch({
-      changes: changes.map(({ range, edit }) => ({
-        from: range.from,
-        to: range.to,
-        insert: edit.text,
-      })),
-      selection: EditorSelection.create(
-        changes.map(({ selectionFrom, selectionTo }) =>
-          EditorSelection.range(selectionFrom, selectionTo),
-        ),
-        editor.state.selection.mainIndex,
-      ),
-      scrollIntoView: true,
-      userEvent: "input",
-    });
+    formatYamlSelection(editor, kind, linkUrl);
     editor.focus();
     return true;
   }
@@ -71,14 +40,12 @@
 
 <script lang="ts">
   import { yaml } from "@codemirror/lang-yaml";
-  import { HighlightStyle, syntaxHighlighting } from "@codemirror/language";
-  import { Compartment, type Range } from "@codemirror/state";
+  import { Compartment, type Extension, type Range } from "@codemirror/state";
   import { Decoration, EditorView, WidgetType } from "@codemirror/view";
-  import { tags } from "@lezer/highlight";
-  import { basicSetup } from "codemirror";
-  import { onMount } from "svelte";
+  import { MiraCodeEditor, type MiraCodeEditorHandle } from "@lapismd/mira";
 
   import { unifiedDiff, type UnifiedDiffLine } from "../core/review-diff";
+  import { foldAllYaml } from "./yaml-editor-runtime";
 
   let {
     value = $bindable(""),
@@ -106,12 +73,10 @@
     onChange?: (value: string) => void;
   } = $props();
 
-  let host: HTMLDivElement;
-  let editor: EditorView | null = null;
+  let editor: MiraCodeEditorHandle | null = $state(null);
   let lastFoldRequestId: number | null = null;
-  const themeCompartment = new Compartment();
   const diffCompartment = new Compartment();
-  const ariaLabelCompartment = new Compartment();
+  const yamlExtensions: Extension = [yaml(), diffCompartment.of([])];
 
   /** Fill the parent and scroll inside CodeMirror (docs YAML pane). */
   const fillParent = $derived(
@@ -367,246 +332,59 @@
     ];
   }
 
-  function foldAllNested(view: EditorView) {
-    const effects = [];
-    const seen = new Set<string>();
-    for (
-      let lineNumber = 1;
-      lineNumber <= view.state.doc.lines;
-      lineNumber += 1
-    ) {
-      const line = view.state.doc.line(lineNumber);
-      const range = foldable(view.state, line.from, line.to);
-      if (!range) continue;
-      const key = `${range.from}:${range.to}`;
-      if (seen.has(key)) continue;
-      seen.add(key);
-      effects.push(foldEffect.of(range));
-    }
-    if (!effects.length) return false;
-    view.dispatch({ effects });
-    return true;
+  function handleFocus(_event: FocusEvent, view: EditorView): void {
+    activeEditor = view;
   }
 
-  function editorTheme() {
-    return [
-      EditorView.theme({
-        "&": {
-          ...(fillParent
-            ? { height: "100%", minHeight: 0 }
-            : { minHeight, height: "auto" }),
-          color: "var(--ui-form-foreground)",
-          backgroundColor: "transparent",
-        },
-        "&.cm-focused": {
-          outline: "0",
-        },
-        ".cm-scroller": {
-          ...(fillParent
-            ? { height: "100%", minHeight: 0, overflow: "auto" }
-            : { minHeight }),
-          fontFamily:
-            "var(--studio-font-mono, var(--font-mono, 'Source Code Pro Variable', 'Source Code Pro', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace))",
-          backgroundColor: "transparent",
-        },
-        ".cm-content": {
-          ...(fillParent ? {} : { minHeight }),
-          fontSize: "0.82rem",
-          lineHeight: "1.55",
-          padding: "0.75rem",
-        },
-        ".cm-gutters": {
-          color: "var(--ui-form-muted)",
-          backgroundColor: "var(--ui-form-gutter)",
-          borderRightColor: "var(--ui-form-border)",
-        },
-        ".cm-activeLine, .cm-activeLineGutter": {
-          backgroundColor: "var(--ui-form-active-line)",
-        },
-        ".cm-selectionBackground, &.cm-focused .cm-selectionBackground": {
-          backgroundColor: "var(--ui-form-selection-strong)",
-        },
-        ".cm-cursor": {
-          borderLeftColor: "var(--ui-form-foreground)",
-        },
-        ".cm-tooltip": {
-          borderRadius: "calc(var(--radius, 0.625rem) - 0.125rem)",
-          borderColor: "var(--ui-form-border)",
-          backgroundColor: "var(--ui-form-popover)",
-          color: "var(--ui-form-foreground)",
-          boxShadow:
-            "0 12px 24px color-mix(in srgb, var(--foreground) 16%, transparent)",
-          fontFamily:
-            "var(--studio-font-mono, var(--font-mono, 'Source Code Pro Variable', 'Source Code Pro', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace))",
-          fontSize: "0.75rem",
-          lineHeight: "1.45",
-          overflow: "hidden",
-        },
-        ".cm-tooltip *": {
-          fontFamily:
-            "var(--studio-font-mono, var(--font-mono, 'Source Code Pro Variable', 'Source Code Pro', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace))",
-        },
-        ".cm-tooltip-autocomplete > ul": {
-          backgroundColor: "transparent",
-          color: "var(--ui-form-foreground)",
-          fontSize: "0.75rem",
-          lineHeight: "1.4",
-        },
-        ".cm-tooltip-autocomplete > ul > li": {
-          padding: "0.25rem 0.45rem",
-        },
-        ".cm-tooltip-autocomplete > ul > li[aria-selected]": {
-          backgroundColor: "var(--ui-form-active-line)",
-          color: "var(--ui-form-foreground)",
-        },
-        ".cm-completionDetail": {
-          color: "var(--ui-form-muted)",
-        },
-        ".cm-tooltip-autocomplete > ul > li[aria-selected] .cm-completionDetail":
-          {
-            color: "inherit",
-          },
-        ".cm-completionMatchedText": {
-          color: "var(--ui-form-accent)",
-          fontWeight: "700",
-        },
-        ".cm-tooltip-autocomplete > ul > li[aria-selected] .cm-completionMatchedText":
-          {
-            color: "inherit",
-          },
-      }),
-      syntaxHighlighting(
-        HighlightStyle.define([
-          {
-            tag: tags.keyword,
-            color: "var(--ui-form-accent)",
-          },
-          {
-            tag: tags.atom,
-            color: "var(--ui-form-accent)",
-          },
-          {
-            tag: tags.bool,
-            color: "var(--ui-form-accent)",
-          },
-          {
-            tag: tags.number,
-            color: "var(--ui-form-accent)",
-          },
-          {
-            tag: tags.string,
-            color: "var(--ui-form-foreground)",
-          },
-          {
-            tag: tags.propertyName,
-            color: "var(--ui-form-accent)",
-          },
-          {
-            tag: tags.comment,
-            color: "var(--ui-form-muted)",
-          },
-          {
-            tag: tags.punctuation,
-            color: "var(--ui-form-muted)",
-          },
-        ]),
-      ),
-    ];
+  function handleBlur(_event: FocusEvent, view: EditorView): void {
+    setTimeout(() => {
+      if (activeEditor === view && !view.hasFocus) activeEditor = null;
+    });
   }
 
-  onMount(() => {
-    editor = new EditorView({
-      doc: value,
-      parent: host,
-      extensions: [
-        basicSetup,
-        yaml(),
-        EditorView.lineWrapping,
-        EditorView.domEventHandlers({
-          focus: (_event, view) => {
-            activeEditor = view;
-          },
-          blur: (_event, view) => {
-            setTimeout(() => {
-              if (activeEditor === view && !view.hasFocus) activeEditor = null;
-            });
-          },
-        }),
-        diffCompartment.of([]),
-        themeCompartment.of(editorTheme()),
-        ariaLabelCompartment.of(
-          EditorView.contentAttributes.of({ "aria-label": ariaLabel }),
-        ),
-        EditorView.updateListener.of((update) => {
-          if (!update.docChanged) return;
-          value = update.state.doc.toString();
-          onChange?.(value);
-        }),
-      ],
-    });
-    editor.dom
-      .querySelector(".cm-gutters")
-      ?.setAttribute("aria-hidden", "true");
-    // CodeMirror keeps the overflow owner out of the tab order by default.
-    // Fill-mode panes scroll here, so keyboard users must be able to focus it.
-    editor.scrollDOM.tabIndex = 0;
-
-    return () => editor?.destroy();
-  });
-
   $effect(() => {
-    if (!editor) return;
-    const current = editor.state.doc.toString();
-    if (value !== current) {
-      editor.dispatch({
-        changes: { from: 0, to: current.length, insert: value },
-      });
-    }
-  });
-
-  $effect(() => {
-    if (!editor) return;
-    editor.dispatch({
-      effects: themeCompartment.reconfigure(editorTheme()),
+    const view = editor?.getView();
+    if (!view) return;
+    view.dispatch({
+      effects: diffCompartment.reconfigure(diffExtension(view, reviewDiffs)),
     });
   });
 
   $effect(() => {
-    if (!editor) return;
-    editor.dispatch({
-      effects: ariaLabelCompartment.reconfigure(
-        EditorView.contentAttributes.of({ "aria-label": ariaLabel }),
-      ),
-    });
-  });
-
-  $effect(() => {
-    if (!editor) return;
-    editor.dispatch({
-      effects: diffCompartment.reconfigure(diffExtension(editor, reviewDiffs)),
-    });
-  });
-
-  $effect(() => {
-    if (!editor || !foldRequest) return;
+    const view = editor?.getView();
+    if (!view || !foldRequest) return;
     if (foldRequest.target && foldRequest.target !== editorId) return;
     if (foldRequest.id === lastFoldRequestId) return;
     lastFoldRequestId = foldRequest.id;
     if (foldRequest.action === "fold") {
-      foldAllNested(editor);
+      foldAllYaml(view);
       return;
     }
-    unfoldAll(editor);
+    unfoldAll(view);
   });
 </script>
 
 <div
-  bind:this={host}
   class:error={invalid}
   class:frameless
   class:fill={fillParent}
   class="cvstudio-yaml-editor"
   data-ui-component="yaml-editor"
   data-ui-part="yaml-editor"
-  aria-label={ariaLabel}
-></div>
+>
+  <MiraCodeEditor
+    bind:this={editor}
+    bind:value
+    extensions={yamlExtensions}
+    {invalid}
+    {minHeight}
+    {ariaLabel}
+    scrollerTabIndex={0}
+    variant="code"
+    surface={frameless ? "frameless" : "framed"}
+    height={fillParent ? "fill" : "content"}
+    onFocus={handleFocus}
+    onBlur={handleBlur}
+    onChange={(nextValue) => onChange?.(nextValue)}
+  />
+</div>
