@@ -90,10 +90,22 @@ export interface WorkspaceActionSetting extends WorkspaceSettingBase {
   run(): void | Promise<void>;
 }
 
-export interface WorkspaceSettingGroup extends WorkspaceSettingBase {
+export interface WorkspaceSectionSettingGroup extends WorkspaceSettingBase {
   type: "group";
+  presentation?: "section";
   fields: WorkspaceSettingField[];
 }
+
+/** A compact table presentation that preserves each Boolean child as a setting. */
+export interface WorkspaceToggleTableSettingGroup extends WorkspaceSettingBase {
+  type: "group";
+  presentation: "toggle-table";
+  fields: WorkspaceBooleanSetting[];
+}
+
+export type WorkspaceSettingGroup =
+  | WorkspaceSectionSettingGroup
+  | WorkspaceToggleTableSettingGroup;
 
 export interface WorkspaceObjectProperty {
   id: string;

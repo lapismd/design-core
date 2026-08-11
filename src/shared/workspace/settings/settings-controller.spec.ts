@@ -133,6 +133,55 @@ describe("WorkspaceSettingsController", () => {
     ).toContain("key and value must be a string");
   });
 
+  it("keeps toggle-table groups searchable and persists Boolean child keys", () => {
+    const controller = new WorkspaceSettingsController({
+      sections: [
+        {
+          id: "markdown",
+          title: "Markdown",
+          fields: [
+            {
+              id: "markdown.features",
+              type: "group",
+              presentation: "toggle-table",
+              title: "Features",
+              description: "Choose Markdown capabilities.",
+              fields: [
+                {
+                  id: "markdown.features.formatting",
+                  type: "boolean",
+                  title: "Formatting",
+                  description: "Show formatting actions.",
+                  default: true,
+                },
+                {
+                  id: "markdown.features.slash-commands",
+                  type: "boolean",
+                  title: "Slash commands",
+                  description: "Show the slash command menu.",
+                  default: true,
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+
+    expect(controller.get("markdown.features.formatting")).toBe(true);
+    expect(controller.get("markdown.features")).toBeUndefined();
+    expect(controller.search("slash command menu")[0]).toMatchObject({
+      fieldId: "markdown.features.slash-commands",
+      path: ["Markdown", "Features", "Slash commands"],
+    });
+
+    expect(controller.update("markdown.features.formatting", false)).toBe(true);
+    expect(controller.getSnapshot().values).toEqual({
+      "markdown.features.formatting": false,
+      "markdown.features.slash-commands": true,
+    });
+  });
+
   it("loads known settings, ignores malformed values, and saves snapshots", async () => {
     const save = vi.fn<
       (

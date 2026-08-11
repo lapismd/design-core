@@ -15,6 +15,7 @@
   import WorkspaceSettingFieldRecursive from "./WorkspaceSettingField.svelte";
   import WorkspaceSettingList from "./WorkspaceSettingList.svelte";
   import WorkspaceSettingSelect from "./WorkspaceSettingSelect.svelte";
+  import WorkspaceSettingToggleTable from "./WorkspaceSettingToggleTable.svelte";
 
   let {
     controller,
@@ -150,9 +151,13 @@
       {#if field.description}<p>{field.description}</p>{/if}
     </header>
     <div class="ui-workspace-settings__schema-body">
-      {#each field.fields as child (child.id)}
-        <WorkspaceSettingFieldRecursive {controller} field={child} />
-      {/each}
+      {#if field.presentation === "toggle-table"}
+        <WorkspaceSettingToggleTable {controller} group={field} />
+      {:else}
+        {#each field.fields as child (child.id)}
+          <WorkspaceSettingFieldRecursive {controller} field={child} />
+        {/each}
+      {/if}
     </div>
   </section>
 {:else}

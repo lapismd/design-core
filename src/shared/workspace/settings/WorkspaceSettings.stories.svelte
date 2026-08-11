@@ -313,6 +313,48 @@
       { id: "advanced", title: "Advanced", order: 10 },
     ],
   });
+  const toggleTableControls = new WorkspaceSettingsController({
+    sections: [
+      {
+        id: "feature-controls",
+        title: "Feature settings",
+        description: "Compact groups of independently persisted flags.",
+        icon: "list-checks",
+        fields: [
+          {
+            id: "demo.features",
+            type: "group",
+            presentation: "toggle-table",
+            title: "Features",
+            description: "Choose which authoring capabilities are available.",
+            fields: [
+              {
+                id: "demo.features.formatting",
+                type: "boolean",
+                title: "Formatting",
+                description: "Show formatting actions in the editor.",
+                default: true,
+              },
+              {
+                id: "demo.features.slash-commands",
+                type: "boolean",
+                title: "Slash commands",
+                description: "Show the slash command menu while authoring.",
+                default: true,
+              },
+              {
+                id: "demo.features.block-controls",
+                type: "boolean",
+                title: "Block controls",
+                description: "Show handles for moving document blocks.",
+                default: false,
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  });
 
   const { Story } = defineMeta({
     title: "Workspace/Components/Settings",
@@ -368,6 +410,79 @@
             app={builtInApp}
           />
         </AppShellRoot>
+      </div>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Toggle table feature group"
+  tags={["visual-pending"]}
+  play={async ({ canvas, canvasElement }) => {
+    await expect(
+      canvas.getByRole("heading", { name: "Features" }),
+    ).toBeVisible();
+    await expect(
+      canvas.getByText("Show the slash command menu while authoring."),
+    ).toBeVisible();
+
+    const formatting = canvas.getByRole("switch", { name: "Formatting" });
+    await expect(formatting).toBeChecked();
+    await userEvent.click(formatting);
+    await expect(formatting).not.toBeChecked();
+    await expect(toggleTableControls.get("demo.features.formatting")).toBe(
+      false,
+    );
+    await expect(toggleTableControls.get("demo.features")).toBeUndefined();
+
+    const search = canvas.getByRole("searchbox", {
+      name: "Search settings",
+    });
+    await userEvent.type(search, "slash command menu");
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Open Slash commands" }),
+    );
+    await waitFor(() =>
+      expect(
+        canvasElement.querySelector(
+          '[data-setting-id="demo.features.slash-commands"]',
+        ),
+      ).toHaveClass("ui-workspace-settings__search-hit"),
+    );
+  }}
+  parameters={{
+    docs: {
+      source: {
+        code: exampleSources.ToggleTable,
+        language: "svelte",
+        type: "code",
+      },
+    },
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/settings/toggle-table-feature-group-chromium.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
+  }}
+>
+  {#snippet template()}
+    <div class="ui-workspace-settings-story-canvas">
+      <div class="ui-workspace-settings-story-frame">
+        <AppSettingsRoot controller={toggleTableControls}>
+          <aside
+            class="ui-workspace-settings__sidebar"
+            data-ui-part="settings-sidebar"
+            aria-label="Settings navigation"
+          >
+            <AppSettingsSearch />
+            <AppSettingsNavigation />
+          </aside>
+          <AppSettingsContent />
+        </AppSettingsRoot>
       </div>
     </div>
   {/snippet}

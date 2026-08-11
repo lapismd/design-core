@@ -34,6 +34,9 @@ settings, commands, static plugins, and composable shell presentation.
   `--ui-workspace-*` tokens.
 - Each visual family has a colocated Svelte component, CSS, story, docs, and
   index.
+- Use `presentation: "toggle-table"` on a Boolean settings group when many
+  independent feature flags need a compact table. Child IDs remain the stored,
+  searchable settings; the group never becomes a configuration value.
 
 ## Validation
 

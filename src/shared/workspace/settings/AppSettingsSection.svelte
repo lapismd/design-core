@@ -2,6 +2,8 @@
   import type { WorkspaceSettingsSection } from "./types.js";
   import { getAppSettingsContext } from "./app-settings-context.svelte.js";
   import WorkspaceSettingField from "./WorkspaceSettingField.svelte";
+  import WorkspaceSettingToggleTable from "./WorkspaceSettingToggleTable.svelte";
+  import type { WorkspaceSettingGroup } from "./types.js";
 
   let { section }: { section: WorkspaceSettingsSection } = $props();
   const state = getAppSettingsContext();
@@ -13,6 +15,7 @@
       id: string;
       title: string;
       description?: string;
+      group?: WorkspaceSettingGroup;
       fields: NonNullable<WorkspaceSettingsSection["fields"]>;
     }> = [];
     if (directFields.length) {
@@ -29,6 +32,7 @@
         id: field.id,
         title: field.title,
         description: field.description,
+        group: field,
         fields: field.fields,
       });
     }
@@ -47,10 +51,21 @@
         <h1>{schemaSection.title}</h1>
         {#if schemaSection.description}<p>{schemaSection.description}</p>{/if}
       </header>
-      <div class="ui-workspace-settings__schema-body">
-        {#each schemaSection.fields as field (field.id)}
-          <WorkspaceSettingField controller={state.controller} {field} />
-        {/each}
+      <div
+        class="ui-workspace-settings__schema-body"
+        data-settings-presentation={schemaSection.group?.presentation ??
+          "section"}
+      >
+        {#if schemaSection.group?.presentation === "toggle-table"}
+          <WorkspaceSettingToggleTable
+            controller={state.controller}
+            group={schemaSection.group}
+          />
+        {:else}
+          {#each schemaSection.fields as field (field.id)}
+            <WorkspaceSettingField controller={state.controller} {field} />
+          {/each}
+        {/if}
       </div>
     </section>
   {/each}

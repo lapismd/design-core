@@ -398,6 +398,9 @@ workflow.
   controls, lists, JSON-safe structured collections, dynamic editor
   associations, custom renderers, actions, unsupported fallbacks, and
   restoration through the controller.
+- Boolean settings groups now support a compact `toggle-table` presentation
+  with descriptions, accessible switches, responsive wrapping, child-key
+  persistence, and search navigation without introducing a stored group value.
 - Focused settings and application-controller unit execution: 2 files and 19
   tests pass.
 - Focused Storybook interaction and accessibility execution: 1 file and 5
