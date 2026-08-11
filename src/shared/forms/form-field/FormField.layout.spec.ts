@@ -49,4 +49,15 @@ describe("source-reference form layout CSS", () => {
       /\.cvstudio-yaml-editor\.fill \.cm-editor\s*\{[\s\S]*?flex:\s*1 1 auto/,
     );
   });
+
+  it("scopes list editor variants to the root instead of nested parts", () => {
+    const listEditorCss = readCss("../list-editor/ListEditor.css");
+
+    expect(listEditorCss).not.toMatch(
+      /\[data-ui-component="list-editor"\]:not\(\[data-variant=/,
+    );
+    expect(listEditorCss).toMatch(
+      /\[data-ui-component="list-editor"\]\[data-ui-part="list-editor"\]\[data-variant="inline"\]/,
+    );
+  });
 });

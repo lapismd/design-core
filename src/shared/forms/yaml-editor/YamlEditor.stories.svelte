@@ -48,10 +48,14 @@
 
 <Story
   name="Renders YAML source"
-  play={async ({ canvas }) => {
+  play={async ({ canvas, canvasElement }) => {
     await expect(
       canvas.getByRole("textbox", { name: "YAML editor" }),
     ).toBeVisible();
+    await expect(canvasElement.querySelector(".cm-scroller")).toHaveAttribute(
+      "tabindex",
+      "0",
+    );
   }}
   tags={["visual-ready"]}
 >

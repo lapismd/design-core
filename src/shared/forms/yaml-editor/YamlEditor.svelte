@@ -547,6 +547,9 @@
     editor.dom
       .querySelector(".cm-gutters")
       ?.setAttribute("aria-hidden", "true");
+    // CodeMirror keeps the overflow owner out of the tab order by default.
+    // Fill-mode panes scroll here, so keyboard users must be able to focus it.
+    editor.scrollDOM.tabIndex = 0;
 
     return () => editor?.destroy();
   });
