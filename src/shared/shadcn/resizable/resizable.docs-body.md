@@ -56,6 +56,7 @@ Use the `direction` prop to set the direction of the resizable panels.
 ### Handle
 
 You can set or hide the handle by using the `withHandle` prop on the `ResizableHandle` component.
+Use `variant="prominent"` for a thicker separator and a larger drag thumb in dense split workspaces.
 
 ```html
 <script lang="ts">
@@ -71,7 +72,7 @@ You can set or hide the handle by using the `withHandle` prop on the `ResizableH
       <span class="font-semibold">Sidebar</span>
     </div>
   </Resizable.Pane>
-  <Resizable.Handle withHandle />
+  <Resizable.Handle withHandle variant="prominent" />
   <Resizable.Pane defaultSize="{75}">
     <div class="flex h-full items-center justify-center p-6">
       <span class="font-semibold">Content</span>

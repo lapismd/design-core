@@ -10,4 +10,8 @@
   --ui-resizable-border-color: var(--border);
   --ui-resizable-radius: 0;
   --ui-resizable-focus-ring-color: var(--ring);
+  --ui-resizable-prominent-separator-size: 0.25rem;
+  --ui-resizable-prominent-thumb-width: 0.625rem;
+  --ui-resizable-prominent-thumb-height: 2.5rem;
+  --ui-resizable-prominent-hit-area: 0.75rem;
 }

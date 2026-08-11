@@ -6,9 +6,11 @@
     ref = $bindable(null),
     class: className,
     withHandle = false,
+    variant = "default",
     ...restProps
   }: WithoutChildrenOrChild<ResizablePrimitive.PaneResizerProps> & {
     withHandle?: boolean;
+    variant?: "default" | "prominent";
   } = $props();
 </script>
 
@@ -17,6 +19,7 @@
   data-ui-component="resizable"
   data-ui-part="resizable-handle"
   data-slot="resizable-handle"
+  data-variant={variant}
   class={className}
   {...restProps}
 >
@@ -67,6 +70,10 @@
       [data-ui-component="resizable"][data-ui-part="resizable-handle"] {
         width: 1px;
       }
+      [data-ui-component="resizable"][data-ui-part="resizable-handle"][data-variant="prominent"] {
+        width: var(--ui-resizable-prominent-separator-size, 0.25rem);
+        cursor: col-resize;
+      }
       [data-ui-component="resizable"][data-ui-part="resizable-handle-anon-0"] {
         flex-shrink: 0;
       }
@@ -78,6 +85,12 @@
       }
       [data-ui-component="resizable"][data-ui-part="resizable-handle-anon-0"] {
         border-radius: var(--radius);
+      }
+      [data-ui-component="resizable"][data-ui-part="resizable-handle"][data-variant="prominent"]
+        > [data-ui-part="resizable-handle-anon-0"] {
+        width: var(--ui-resizable-prominent-thumb-width, 0.625rem);
+        height: var(--ui-resizable-prominent-thumb-height, 2.5rem);
+        border-radius: 9999px;
       }
       [data-ui-component="resizable"][data-ui-part="resizable-handle"],
       [data-ui-component="resizable"][data-ui-part="resizable-handle-anon-0"] {
@@ -98,6 +111,9 @@
       [data-ui-component="resizable"][data-ui-part="resizable-handle"]:after {
         content: var(--tw-content);
         width: var(--spacing);
+      }
+      [data-ui-component="resizable"][data-ui-part="resizable-handle"][data-variant="prominent"]:after {
+        width: var(--ui-resizable-prominent-hit-area, 0.75rem);
       }
       [data-ui-component="resizable"][data-ui-part="resizable-handle"]:after {
         content: var(--tw-content);
@@ -135,6 +151,10 @@
       [data-ui-component="resizable"][data-ui-part="resizable-handle"][data-direction="vertical"] {
         width: 100%;
       }
+      [data-ui-component="resizable"][data-ui-part="resizable-handle"][data-direction="vertical"][data-variant="prominent"] {
+        height: var(--ui-resizable-prominent-separator-size, 0.25rem);
+        cursor: row-resize;
+      }
       [data-ui-component="resizable"][data-ui-part="resizable-pane-group"][data-direction="vertical"] {
         flex-direction: column;
       }
@@ -145,6 +165,9 @@
       [data-ui-component="resizable"][data-ui-part="resizable-handle"][data-direction="vertical"]:after {
         content: var(--tw-content);
         height: var(--spacing);
+      }
+      [data-ui-component="resizable"][data-ui-part="resizable-handle"][data-direction="vertical"][data-variant="prominent"]:after {
+        height: var(--ui-resizable-prominent-hit-area, 0.75rem);
       }
       [data-ui-component="resizable"][data-ui-part="resizable-handle"][data-direction="vertical"]:after {
         content: var(--tw-content);
