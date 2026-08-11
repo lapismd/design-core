@@ -27,6 +27,26 @@
   outline: 0;
 }
 
+.ui-form-add-button[data-presentation="panel"] {
+  width: 100%;
+  min-height: 2.75rem;
+  box-sizing: border-box;
+  align-self: stretch;
+  justify-content: center;
+  margin-block: 0.5rem;
+  border: 1px dashed var(--ui-form-border);
+  border-radius: var(--ui-form-radius);
+  background: transparent;
+  padding-block: 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 400;
+}
+
+.ui-form-add-button[data-presentation="panel"]:hover,
+.ui-form-add-button[data-presentation="panel"]:focus-visible {
+  background: color-mix(in srgb, var(--ui-form-muted-surface) 40%, transparent);
+}
+
 @media (max-width: 720px) {
   .ui-form-add-button {
     width: 100%;

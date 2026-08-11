@@ -20,10 +20,16 @@ type ExampleValues = {
   targetRoles: string[];
   socialNetworks: SocialNetwork[];
   nested: { count: number };
+  optionalNested?: { title?: string | null };
   price: number;
 };
 
-declare module "./path-config" {
+type ContentBlock =
+  | { type: "text"; text: string }
+  | { type: "toggle"; enabled: boolean };
+type VariantValues = { blocks: ContentBlock[] };
+
+declare module "@lapismd/design-core/forms/core" {
   interface FormFieldKindMap {
     currency: FormFieldKindDefinition<number, { currency: string }>;
   }
@@ -43,6 +49,8 @@ describe("config-driven form types", () => {
       | `socialNetworks.${number}.username`
       | "nested"
       | "nested.count"
+      | "optionalNested"
+      | "optionalNested.title"
       | "price"
     >();
     expectTypeOf<FieldArrayPath<ExampleValues>>().toEqualTypeOf<
@@ -54,6 +62,9 @@ describe("config-driven form types", () => {
     expectTypeOf<
       FieldPathByValue<ExampleValues, boolean>
     >().toEqualTypeOf<"enabled">();
+    expectTypeOf<
+      FieldPathValue<ExampleValues, "optionalNested.title">
+    >().toEqualTypeOf<string | null | undefined>();
   });
 
   it("accepts value-compatible leaf and array definitions", () => {
@@ -128,6 +139,75 @@ describe("config-driven form types", () => {
             id: "social-network",
             fields: {},
           }),
+        },
+      },
+    });
+
+    defineFormConfig<ExampleValues>()({
+      id: "invalid-custom-options",
+      fields: {
+        price: {
+          // @ts-expect-error custom renderer options retain their exact type
+          kind: "currency",
+          // @ts-expect-error custom renderer options retain their exact type
+          currency: 10,
+        },
+      },
+    });
+  });
+
+  it("correlates discriminated variants with exact factories and configs", () => {
+    const textConfig = defineFormConfig<
+      Extract<ContentBlock, { type: "text" }>
+    >()({
+      id: "text-block",
+      fields: { text: { kind: "text" } },
+    });
+    const toggleConfig = defineFormConfig<
+      Extract<ContentBlock, { type: "toggle" }>
+    >()({
+      id: "toggle-block",
+      fields: { enabled: { kind: "boolean" } },
+    });
+
+    const config = defineFormConfig<VariantValues>()({
+      id: "variants",
+      fields: {
+        blocks: {
+          kind: "variant-array",
+          discriminator: "type",
+          variants: {
+            text: {
+              label: "Text",
+              createItem: () => ({ type: "text", text: "" }),
+              itemConfig: textConfig,
+            },
+            toggle: {
+              label: "Toggle",
+              createItem: () => ({ type: "toggle", enabled: false }),
+              itemConfig: toggleConfig,
+            },
+          },
+        },
+      },
+    });
+
+    expect(config.fields.blocks.discriminator).toBe("type");
+
+    defineFormConfig<VariantValues>()({
+      id: "bad-variants",
+      fields: {
+        blocks: {
+          kind: "variant-array",
+          discriminator: "type",
+          // @ts-expect-error every discriminator value needs an exact variant
+          variants: {
+            text: {
+              label: "Text",
+              createItem: () => ({ type: "text", text: "" }),
+              itemConfig: textConfig,
+            },
+          },
         },
       },
     });

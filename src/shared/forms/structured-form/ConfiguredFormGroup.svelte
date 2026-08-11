@@ -59,20 +59,23 @@
   data-ui-component="configured-form-group"
   data-ui-part="configured-form-group"
   data-group-id={groupId}
+  data-appearance={group.appearance ?? "default"}
   data-testid={`group-${groupId}`}
 >
-  <FormSectionHeader
-    title={group.title}
-    {index}
-    {total}
-    {open}
-    editable={false}
-    movable={false}
-    removable={false}
-    titleToggleable
-    titleRowClass="ui-configured-form-group__title-row"
-    onToggle={() => controller.toggleDisclosure(disclosureId)}
-  />
+  {#if !group.hiddenHeader}
+    <FormSectionHeader
+      title={group.title}
+      {index}
+      {total}
+      {open}
+      editable={false}
+      movable={false}
+      removable={false}
+      titleToggleable
+      titleRowClass="ui-configured-form-group__title-row"
+      onToggle={() => controller.toggleDisclosure(disclosureId)}
+    />
+  {/if}
   {#if open}
     <div class="ui-configured-form-group__body cv-structured-form">
       {#each fields as [path, field] (path)}

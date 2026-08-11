@@ -177,6 +177,8 @@ type PrimitiveArrayItemField<TItem> = {
 }[CompatibleFormFieldKind<TItem>];
 
 export type FormArrayPresentation = "rows" | "sections";
+export type FormArrayAppearance = "default" | "subsection";
+export type FormAddButtonPresentation = "inline" | "panel";
 
 type ArrayPathFormFieldConfig<
   TValues,
@@ -189,6 +191,7 @@ type ArrayPathFormFieldConfig<
     ? PathFieldBase<TValues, TContext, TPath, TGroup> & {
         kind: "array";
         presentation?: FormArrayPresentation;
+        appearance?: FormArrayAppearance;
         createItem: () => TItem;
         itemConfig?: TItem extends object
           ? PathFormConfig<TItem, TContext, string>
@@ -207,7 +210,9 @@ type ArrayPathFormFieldConfig<
           total: number;
         }) => string | null;
         showLabel?: boolean;
+        hideItemLabels?: boolean;
         addPlacement?: "header" | "footer";
+        addButtonPresentation?: FormAddButtonPresentation;
         testId?: string;
         itemTestId?: (args: { item: TItem; index: number }) => string;
         collapsible?: boolean;
@@ -254,6 +259,7 @@ type VariantPathFormFieldConfig<
           kind: "variant-array";
           discriminator: TDiscriminator;
           presentation?: FormArrayPresentation;
+          appearance?: FormArrayAppearance;
           getKey?: (item: TItem, index: number) => string;
           itemTitle?: FormArrayItemTitle<TItem>;
           editableTitlePath?: TItem extends object
@@ -263,6 +269,7 @@ type VariantPathFormFieldConfig<
           movable?: boolean;
           removable?: boolean;
           addLabel?: string;
+          addButtonPresentation?: FormAddButtonPresentation;
           chooserTitle?: string;
           showLabel?: boolean;
           testId?: string;
@@ -311,7 +318,11 @@ export type FormGroupConfig = {
   title: string;
   collapsible?: boolean;
   defaultOpen?: boolean;
+  hiddenHeader?: boolean;
+  appearance?: "default" | "subtle";
 };
+
+export type PathFormLayout = "grid" | "stacked";
 
 export type PathFormConfig<
   TValues,
@@ -322,6 +333,7 @@ export type PathFormConfig<
   fields: FormFieldConfigMap<TValues, TContext, TGroup>;
   groups?: Record<TGroup, FormGroupConfig>;
   defaults?: Partial<TValues>;
+  layout?: PathFormLayout;
   defaultView?: FormViewName;
   validationMode?: FormValidationMode;
   validate?: (
@@ -351,6 +363,7 @@ export type RuntimePathFormConfig<TValues, TContext = undefined> = {
   fields: Record<string, AnyPathFormFieldConfig | undefined>;
   groups?: Record<string, FormGroupConfig>;
   defaults?: Partial<TValues>;
+  layout?: PathFormLayout;
   defaultView?: FormViewName;
   validationMode?: FormValidationMode;
   validate?: (

@@ -28,6 +28,8 @@ export {
   type AnyPathFormConfig,
   type AnyPathFormFieldConfig,
   type CompatibleFormFieldKind,
+  type FormAddButtonPresentation,
+  type FormArrayAppearance,
   type FormArrayItemTitle,
   type FormArrayPresentation,
   type FormFieldConfigMap,
@@ -41,6 +43,7 @@ export {
   type PathFieldValidator,
   type PathFormConfig,
   type PathFormFieldConfig,
+  type PathFormLayout,
   type RegisteredFormFieldKind,
   type RuntimePathFormConfig,
 } from "./path-config";

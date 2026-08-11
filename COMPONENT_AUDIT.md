@@ -39,7 +39,9 @@ Config-driven form engine and field primitives in
 **Engine** (`structured-form/`, `yaml-backed-form/`, `json-backed-form/`,
 `core/`): `StructuredForm`, `FormFieldRenderer`, `FormViewRenderer`,
 `YamlBackedForm`, `JsonBackedForm`, `PatchableForm`, builders, types, registry,
-JSON Patch, and review-diff utilities.
+typed path configurations, form controllers, JSON Patch, and review-diff
+utilities. Renderer registries are explicit per-form instances; the package
+does not expose mutable global renderer registration.
 
 **Primitives:** `form-field`, `form-section-header`, `form-toolbar`,
 `form-add-button`, `form-sheet`, `entry-actions`, `collapsible-item-list`,

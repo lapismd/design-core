@@ -14,7 +14,9 @@
 
 @supports (grid-template-columns: subgrid) {
   .cv-structured-form > .cv-form-field,
-  .ui-structured-form > .cv-form-field {
+  .ui-structured-form > .cv-form-field,
+  .cv-structured-form > .cv-form-field-renderer > .cv-form-field,
+  .ui-structured-form > .cv-form-field-renderer > .cv-form-field {
     grid-column: 1 / -1;
     grid-template-columns: subgrid;
     column-gap: var(--ui-form-column-gap);
@@ -145,7 +147,9 @@
   }
 
   .cv-structured-form > .cv-form-field,
-  .ui-structured-form > .cv-form-field {
+  .ui-structured-form > .cv-form-field,
+  .cv-structured-form > .cv-form-field-renderer > .cv-form-field,
+  .ui-structured-form > .cv-form-field-renderer > .cv-form-field {
     grid-column: auto;
     grid-template-columns: 1fr;
   }

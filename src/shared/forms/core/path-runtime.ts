@@ -40,7 +40,10 @@ export function normalizePathField<TValues, TContext>(
     label: source.label ?? formFieldLabel(path),
     kind: source.kind,
     path,
-    get: (root) => getFormValueAtPath(root, path) ?? source.defaultValue,
+    get: (root) =>
+      getFormValueAtPath(root, path) ??
+      source.defaultValue ??
+      getFormValueAtPath(form.defaults, path),
     set: (root, value) =>
       setFormValueWithDefault(
         root,

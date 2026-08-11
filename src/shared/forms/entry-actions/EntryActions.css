@@ -2,6 +2,11 @@
 
 .cv-form-entry-actions {
   position: relative;
+  transition: background-color 0.15s ease;
+}
+
+.cv-form-entry-actions:focus-within {
+  background: color-mix(in srgb, var(--ui-form-accent) 8%, transparent);
 }
 
 .cv-form-entry-content {
@@ -69,4 +74,20 @@
   translate: 0 -50%;
   opacity: 0;
   transition: opacity 140ms ease;
+}
+
+@media (max-width: 640px) {
+  .cv-form-entry-content {
+    padding-right: 1.4rem;
+  }
+
+  .cv-form-entry-remove {
+    right: 0;
+    opacity: 1;
+  }
+
+  .cv-form-entry-remove svg {
+    width: 0.75rem;
+    height: 0.75rem;
+  }
 }

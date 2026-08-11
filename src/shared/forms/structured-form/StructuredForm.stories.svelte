@@ -25,6 +25,9 @@
     textField,
     defineFormConfig,
   } from "../core/core";
+  import CurrencyFormControl from "./CurrencyFormControl.story.svelte";
+  import { createFormRendererRegistry } from "./form-renderer-registry";
+  import "./StructuredForm.currency-kind.story";
 
   type Settings = {
     name: string;
@@ -116,6 +119,24 @@
     name: "Northstar",
     socialNetworks: [{ network: "GitHub", username: "northstar" }],
   });
+
+  type Product = { name: string; price: number };
+  const currencyRegistry = createFormRendererRegistry();
+  currencyRegistry.register("currency", {
+    component: CurrencyFormControl,
+  });
+  const productConfig = defineFormConfig<Product>()({
+    id: "typed-product",
+    fields: {
+      name: { kind: "text", label: "Product" },
+      price: {
+        kind: "currency",
+        label: "Price",
+        currency: "GBP",
+      },
+    },
+  });
+  let product = $state<Product>({ name: "Notebook", price: 12 });
 </script>
 
 <Story
@@ -142,6 +163,56 @@
       />
       <output class="text-muted-foreground mt-3 block text-sm">
         {settings.name} uses {settings.syncMode} sync
+      </output>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Reports an unregistered custom renderer"
+  exportName="MissingCustomRenderer"
+  play={async ({ canvas }) => {
+    await expect(canvas.getByRole("alert")).toHaveTextContent(
+      "No renderer is registered for field kind “currency”",
+    );
+  }}
+>
+  {#snippet template()}
+    <div class="max-w-2xl">
+      <StructuredForm
+        value={product}
+        config={productConfig}
+        onChange={(next) => {
+          product = next;
+        }}
+      />
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Uses an explicit custom renderer registry"
+  exportName="CustomRendererRegistry"
+  play={async ({ canvas }) => {
+    const price = canvas.getByLabelText("Price");
+    await userEvent.clear(price);
+    await userEvent.type(price, "18");
+    await expect(price).toHaveValue(18);
+    await expect(canvas.getByRole("status")).toHaveTextContent("GBP 18");
+  }}
+>
+  {#snippet template()}
+    <div class="max-w-2xl">
+      <StructuredForm
+        value={product}
+        config={productConfig}
+        registry={currencyRegistry}
+        onChange={(next) => {
+          product = next;
+        }}
+      />
+      <output class="text-muted-foreground mt-3 block text-sm">
+        {product.name}: GBP {product.price}
       </output>
     </div>
   {/snippet}

@@ -30,8 +30,10 @@ structured form without introducing a CV-specific package component.
 
 ## Choose the right layer
 
-1. **StructuredForm** — schema-shaped data with typed field configs from
-   `createFormConfig` / `textField` / `segmentedField` / etc.
+1. **StructuredForm** — schema-shaped data with path-keyed configs from
+   `defineFormConfig<TValues>()`. Paths, kinds, defaults, validators, and array
+   factories are checked against the value model. The callback-based
+   `createFormConfig` builders remain available for manual adapters.
 2. **Composed primitives** — `FormField`, `FormSectionHeader`,
    `CollapsibleItemList`, `InlineOptionPicker` for one-off layouts.
 3. **YamlBackedForm** — dual structured + YAML source mode over the same draft.
@@ -54,6 +56,13 @@ Default editable forms should be minimal and row-based:
 Compose fields inside one `max-content minmax(0, 1fr)` label/value grid per
 form scope (`cv-structured-form` / `ui-structured-form`). Do not invent
 arbitrary flex rows for labelled fields.
+
+For large forms, keep the consumer boundary controlled: pass `value`,
+`onChange`, and optionally `createFormController<TValues>()`. The controller
+owns dirty/touched/validation, focus, repeat identities, and disclosure state;
+the application still owns persistence and authoritative values. Use an
+explicit `createFormRendererRegistry()` for downstream field kinds so renderer
+registration remains isolated across forms and SSR requests.
 
 ## Tokens
 

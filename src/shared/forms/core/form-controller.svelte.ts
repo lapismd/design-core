@@ -27,6 +27,7 @@ export type FormControllerResetOptions = {
   keepDirty?: boolean;
   keepTouched?: boolean;
   keepErrors?: boolean;
+  emit?: boolean;
 };
 
 export type CreateFormControllerOptions<TValues> = {
@@ -77,6 +78,7 @@ export class FormController<TValues, TContext = undefined> {
   #validationGeneration = new Map<string, number>();
   #closedDisclosures = new SvelteSet<string>();
   #knownDisclosures = new Map<string, string | undefined>();
+  #disclosureRevision = $state(0);
   #itemIds = new Map<string, string[]>();
   #identitySequence = 0;
 
@@ -202,8 +204,9 @@ export class FormController<TValues, TContext = undefined> {
     this.validatingFields.clear();
     this.#validationGeneration.clear();
     this.#closedDisclosures.clear();
+    this.#disclosureRevision += 1;
     this.#itemIds.clear();
-    void this.#connection?.onChange(nextValues);
+    if (options.emit !== false) void this.#connection?.onChange(nextValues);
   }
 
   resetField(
@@ -225,7 +228,9 @@ export class FormController<TValues, TContext = undefined> {
   }
 
   registerDisclosure(id: string, group?: string): void {
+    if (this.#knownDisclosures.get(id) === group) return;
     this.#knownDisclosures.set(id, group);
+    this.#disclosureRevision += 1;
   }
 
   isDisclosureOpen(id: string, defaultOpen = true): boolean {
@@ -238,12 +243,14 @@ export class FormController<TValues, TContext = undefined> {
     } else {
       this.#closedDisclosures.delete(id);
     }
+    this.#disclosureRevision += 1;
   }
 
   collapseAll(group?: string): void {
     for (const [id, disclosureGroup] of this.#knownDisclosures) {
       if (!group || disclosureGroup === group) this.#closedDisclosures.add(id);
     }
+    this.#disclosureRevision += 1;
   }
 
   expandAll(group?: string): void {
@@ -251,16 +258,28 @@ export class FormController<TValues, TContext = undefined> {
       if (!group || disclosureGroup === group)
         this.#closedDisclosures.delete(id);
     }
+    this.#disclosureRevision += 1;
   }
 
-  itemIds(
+  allDisclosuresCollapsed(group?: string): boolean {
+    void this.#disclosureRevision;
+    let matched = 0;
+    for (const [id, disclosureGroup] of this.#knownDisclosures) {
+      if (group && disclosureGroup !== group) continue;
+      matched += 1;
+      if (!this.#closedDisclosures.has(id)) return false;
+    }
+    return matched > 0;
+  }
+
+  itemIds<TItem>(
     path: string,
-    items: readonly unknown[],
-    getKey?: (item: never, index: number) => string,
+    items: readonly TItem[],
+    getKey?: (item: TItem, index: number) => string,
   ): string[] {
     const previous = this.#itemIds.get(path) ?? [];
     const next = items.map((item, index) => {
-      const configured = getKey?.(item as never, index);
+      const configured = getKey?.(item, index);
       return configured
         ? `${path}:${configured}`
         : (previous[index] ?? this.#newId(path));

@@ -128,6 +128,64 @@ describe("FormController", () => {
     expect(controller.touchedFields.size).toBe(0);
   });
 
+  it("reconciles keyed item identities after external replacement", () => {
+    const controller = createFormController<Values>({
+      defaultValues: { name: "", confirmation: "", items: [] },
+    });
+    const first = [{ name: "one" }, { name: "two" }];
+    const firstIds = controller.itemIds(
+      "items",
+      first,
+      (item: { name: string }) => item.name,
+    );
+    const nextIds = controller.itemIds(
+      "items",
+      [first[1], first[0]],
+      (item: { name: string }) => item.name,
+    );
+
+    expect(nextIds).toEqual([firstIds[1], firstIds[0]]);
+  });
+
+  it("focuses typed field references and validates dependent fields", async () => {
+    const { controller } = createHarness("onSubmit");
+    const focus = vi.fn();
+    const select = vi.fn();
+    controller.registerField("name", {
+      matches: () => true,
+      focus,
+      select,
+    } as unknown as HTMLElement);
+
+    expect(controller.focus("name", { select: true })).toBe(true);
+    expect(focus).toHaveBeenCalledOnce();
+    expect(select).toHaveBeenCalledOnce();
+
+    controller.notifyChange("name", {
+      name: "Changed",
+      confirmation: "Initial",
+      items: [],
+    });
+    await Promise.resolve();
+    expect(controller.getFieldState("confirmation").issues).toMatchObject([
+      { message: "Values must match" },
+    ]);
+  });
+
+  it("tracks disclosure state through collapse, expand, and reset", () => {
+    const { controller } = createHarness("onSubmit");
+    controller.registerDisclosure("profile", "basics");
+    controller.registerDisclosure("sections", "content");
+
+    controller.collapseAll();
+    expect(controller.allDisclosuresCollapsed()).toBe(true);
+    controller.expandAll("basics");
+    expect(controller.isDisclosureOpen("profile")).toBe(true);
+    expect(controller.isDisclosureOpen("sections")).toBe(false);
+    controller.reset(undefined, { emit: false });
+    expect(controller.isDisclosureOpen("sections")).toBe(true);
+  });
+
   it("discards stale async validation results", async () => {
     const resolvers: Array<(value: string | undefined) => void> = [];
     const config = defineFormConfig<Values>()({

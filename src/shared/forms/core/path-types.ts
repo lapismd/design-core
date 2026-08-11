@@ -12,6 +12,7 @@ type TupleKeys<T extends readonly unknown[]> = Exclude<
 >;
 type ArrayKey = number;
 type IsAny<TValue> = 0 extends 1 & TValue ? true : false;
+type Nullish<TValue> = Extract<TValue, null | undefined>;
 type PreviousDepth = [never, 0, 1, 2, 3, 4, 5, 6];
 
 type PathImpl<
@@ -103,21 +104,23 @@ export type FieldPathValue<
     ? any
     : TPath extends `${infer TKey}.${infer TRest}`
       ? TKey extends keyof TValues
-        ? TRest extends FieldPath<TValues[TKey]>
-          ? FieldPathValue<TValues[TKey], TRest>
+        ? TRest extends FieldPath<NonNullable<TValues[TKey]>>
+          ?
+              | FieldPathValue<NonNullable<TValues[TKey]>, TRest>
+              | Nullish<TValues[TKey]>
           : never
-        : TValues extends readonly (infer TItem)[]
+        : NonNullable<TValues> extends readonly (infer TItem)[]
           ? TKey extends `${number}`
             ? TRest extends FieldPath<TItem>
-              ? FieldPathValue<TItem, TRest>
+              ? FieldPathValue<TItem, TRest> | Nullish<TValues>
               : never
             : never
           : never
       : TPath extends keyof TValues
         ? TValues[TPath]
-        : TValues extends readonly (infer TItem)[]
+        : NonNullable<TValues> extends readonly (infer TItem)[]
           ? TPath extends `${number}`
-            ? TItem
+            ? TItem | Nullish<TValues>
             : never
           : never;
 

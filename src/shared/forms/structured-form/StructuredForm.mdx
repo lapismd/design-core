@@ -12,7 +12,8 @@ import * as StructuredFormVariations from "./StructuredForm.variations.stories.s
 
 # StructuredForm
 
-Config-driven form runtime for schema-shaped data. Prefer this over hand-rolled field lists when you have typed getters/setters.
+Config-driven form runtime for schema-shaped data. Prefer a path-keyed typed
+configuration over hand-rolled field lists when the value model is known.
 
 Establishes the `cv-structured-form` host grid for label alignment.
 
@@ -20,7 +21,10 @@ Establishes the `cv-structured-form` host grid for label alignment.
 
 ### When to use
 
-- Schema-shaped editing with `createFormConfig` / field builders
+- Schema-shaped editing with `defineFormConfig<TValues>()`
+- Typed groups, primitive and object arrays, and discriminated variant arrays
+- Controlled values with controller-owned validation and disclosure metadata
+- Existing callback builders through `createFormConfig`
 - Shared validation issues + readonly/view modes
 
 ### When not to use
@@ -33,11 +37,66 @@ See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and the shared
 ## Usage
 
 <Source
-  language="html"
+  language="ts"
   code={
-    '<script lang="ts">\n  import { StructuredForm } from "@lapismd/design-core/forms";\n  import { createFormConfig, textField } from "@lapismd/design-core/forms/core";\n</script>\n\n<StructuredForm value={data} {config} onChange={...} />'
+    'import { defineFormConfig } from "@lapismd/design-core/forms/core";\n\ntype Profile = { enabled: boolean; name: string };\n\nconst config = defineFormConfig<Profile>()({\n  id: "profile",\n  fields: {\n    enabled: { kind: "boolean" },\n    name: { kind: "text" },\n  },\n});'
   }
 />
+
+```svelte
+<StructuredForm
+  {config}
+  value={profile}
+  onChange={(next) => (profile = next)}
+/>
+```
+
+Paths and renderer kinds are checked against the value at that path. Optional
+and nullable paths select their renderer from the non-null value type. A
+`defaultValue` is display-only: a missing optional key stays absent until that
+field is edited.
+
+## Controller
+
+`createFormController<TValues>()` owns dirty, touched, validating, validation
+issue, disclosure, repeat-item identity, focus, and reset metadata. It does not
+own persistence or the authoritative form value.
+
+```ts
+const controller = createFormController<Profile>({ defaultValues: profile });
+await controller.validate();
+controller.focus("name");
+controller.collapseAll();
+```
+
+Pass the controller explicitly with `{controller}`. Validation modes are
+`onSubmit`, `onBlur`, `onChange`, `onTouched`, and `all`.
+
+## Custom renderer kinds
+
+Custom kinds are registered on a form-local registry. Registries are isolated;
+registration never changes a process-global renderer table.
+
+```ts
+declare module "@lapismd/design-core/forms/core" {
+  interface FormFieldKindMap {
+    currency: FormFieldKindDefinition<number, { currency: string }>;
+  }
+}
+
+const registry = createFormRendererRegistry();
+const unregister = registry.register("currency", {
+  component: CurrencyField,
+});
+```
+
+Import `createFormRendererRegistry` from `@lapismd/design-core/forms`; import
+`FormFieldKindDefinition` and `defineFormConfig` from
+`@lapismd/design-core/forms/core`.
+
+Use `<StructuredForm {registry} ... />`. A duplicate registration throws unless
+`{ replace: true }` is passed; the returned disposer restores the previous
+renderer. A missing renderer produces an accessible developer error.
 
 <Primary />
 
@@ -65,3 +124,15 @@ Text, segmented, and boolean fields from a typed config.
   of={StructuredFormVariations.SchemaFields}
   meta={StructuredFormVariations}
 />
+
+### Typed path configuration
+
+Groups and an object-array repeater rendered from one typed configuration.
+
+<Canvas of={StructuredFormStories.TypeSafePathConfig} />
+
+### Explicit custom renderer registry
+
+An augmented `currency` kind resolved through a form-local registry.
+
+<Canvas of={StructuredFormStories.CustomRendererRegistry} />

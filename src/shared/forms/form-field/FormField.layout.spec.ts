@@ -36,6 +36,9 @@ describe("source-reference form layout CSS", () => {
     expect(formFieldCss).toMatch(
       /\.cv-structured-form\s*>\s*\.cv-form-field,[\s\S]*?grid-template-columns:\s*subgrid/,
     );
+    expect(formFieldCss).toMatch(
+      /\.cv-structured-form\s*>\s*\.cv-form-field-renderer\s*>\s*\.cv-form-field,[\s\S]*?grid-column:\s*1\s*\/\s*-1/,
+    );
     expect(formFieldCss).toMatch(/padding-block:\s*0\.375rem/);
     expect(structuredFormCss).toMatch(/row-gap:\s*0/);
     expect(structuredFormCss).toMatch(/@media \(max-width:\s*720px\)/);

@@ -74,7 +74,12 @@
   });
 </script>
 
-<div class="cv-structured-form" data-form-id={config.id} data-view={view}>
+<div
+  class="cv-structured-form"
+  data-form-id={config.id}
+  data-view={view}
+  data-layout={pathConfig?.layout ?? "grid"}
+>
   {#each legacyFields as field (field.id)}
     <FormFieldRenderer
       root={value}

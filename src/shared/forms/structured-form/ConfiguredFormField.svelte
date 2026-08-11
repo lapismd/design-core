@@ -71,7 +71,7 @@
           path,
           items,
           typeof field.getKey === "function"
-            ? (field.getKey as (item: never, index: number) => string)
+            ? (field.getKey as (item: unknown, index: number) => string)
             : undefined,
         )
       : [],
@@ -221,6 +221,7 @@
     data-ui-component="configured-array"
     data-ui-part="configured-array"
     data-presentation={presentation}
+    data-appearance={field.appearance ?? "default"}
     data-field-path={path}
     data-testid={typeof field.testId === "string" ? field.testId : undefined}
   >
@@ -309,13 +310,17 @@
               data-ui-part="configured-array-row-body"
               data-has-marker={marker ? "" : undefined}
               data-hide-label={(field.itemField as Record<string, unknown>)
-                ?.hideLabel
+                ?.hideLabel || field.hideItemLabels
                 ? ""
                 : undefined}
               data-testid={itemTestId}
             >
               {#if marker}
-                <span class="ui-configured-array__marker" aria-hidden="true">
+                <span
+                  class="ui-configured-array__marker"
+                  data-testid="simple-entry-marker"
+                  aria-hidden="true"
+                >
                   {marker}
                 </span>
               {/if}
@@ -357,6 +362,9 @@
         label={typeof field.addLabel === "string"
           ? field.addLabel
           : `Add ${label.replace(/s$/, "")}`}
+        presentation={field.addButtonPresentation === "panel"
+          ? "panel"
+          : "inline"}
         onclick={addDefaultItem}
       />
     {:else if !readonly && field.kind === "variant-array"}

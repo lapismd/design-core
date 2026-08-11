@@ -88,7 +88,7 @@ Override on `:root` or a form ancestor, e.g. `--ui-form-accent: oklch(...)`.
 | Need                        | Use                                                                                            |
 | --------------------------- | ---------------------------------------------------------------------------------------------- |
 | Label/value row             | `FormField`                                                                                    |
-| Schema-shaped forms         | `StructuredForm` + builders from `forms/core`                                                  |
+| Schema-shaped forms         | `StructuredForm` + `defineFormConfig<TValues>()` from `forms/core`                             |
 | Sections / repeated entries | `FormSectionHeader`, `EntryActions`, `CollapsibleItemList`, `AddSectionChooser`                |
 | Story / stub body outlines  | `FormPlaceholder` only (dotted). Real components render without outline.                       |
 | 2–3 exclusive values        | `SegmentedControl` (or shadcn `ToggleGroup` when matching Actions UI)                          |
@@ -103,6 +103,34 @@ Override on `:root` or a form ancestor, e.g. `--ui-form-accent: oklch(...)`.
 | Patch Keep/Undo review      | `PatchableForm` + `reviewedTextField` / `reviewedStringListField` + `createOrAppendJsonReview` |
 | Source editing              | `CodeEditor`                                                                                   |
 | Read-only source preview    | `CodeHighlighter`                                                                              |
+
+## Config-driven forms
+
+Use `defineFormConfig<TValues>()` for new schema-shaped forms. Field keys are
+typed nested paths, including numeric array segments, and each field kind,
+default, validator, and factory is checked against the value at that path.
+Record insertion order controls field order; ungrouped fields render first,
+then groups in group-record order.
+
+`StructuredForm` is controlled: the consumer supplies `value` and `onChange`.
+`createFormController<TValues>()` owns only form metadata—dirty/touched state,
+validation, field focus, disclosure, repeat identities, and reset baselines.
+Persistence, submission, routing, and domain state stay with the consumer.
+
+Arrays support primitive `itemField` values, homogeneous object `itemConfig`
+values, and discriminated `variant-array` values. Use `appearance="subsection"`
+with `addButtonPresentation="panel"` for a nested titled collection; these are
+shared component variants, not story CSS. `hideItemLabels` removes redundant
+single-value labels visually while retaining accessible names.
+
+Downstream field kinds augment `FormFieldKindMap` in
+`@lapismd/design-core/forms/core` and register their renderer on an explicit
+`createFormRendererRegistry()`. Registries are isolated. Duplicate registration
+requires `{ replace: true }` and returns a disposer; a missing runtime renderer
+is rendered as an accessible developer error.
+
+The callback-based `createFormConfig` and field builders remain supported for
+manual adapters and custom composition.
 
 ## Borderline shared components
 

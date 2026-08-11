@@ -4,10 +4,13 @@
 
   let {
     label,
+    presentation = "inline",
     onclick = () => {},
   }: {
     /** Domain-specific add label, e.g. "Add source". */
     label: string;
+    /** Inline link-style action or a full-width panel action. */
+    presentation?: "inline" | "panel";
     onclick?: () => void;
   } = $props();
 </script>
@@ -17,6 +20,7 @@
   class="ui-form-add-button"
   data-ui-component="form-add-button"
   data-ui-part="form-add-button"
+  data-presentation={presentation}
   {onclick}
 >
   <PlusIcon aria-hidden="true" />

@@ -158,3 +158,19 @@
   opacity: 0;
   transition: opacity 140ms ease;
 }
+
+@media (max-width: 640px) {
+  .cv-form-section-title-row {
+    padding-right: 1.4rem;
+  }
+
+  .cv-form-section-remove {
+    right: 0;
+    opacity: 1;
+  }
+
+  .cv-form-section-remove svg {
+    width: 0.75rem;
+    height: 0.75rem;
+  }
+}
