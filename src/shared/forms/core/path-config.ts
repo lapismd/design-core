@@ -1,4 +1,6 @@
 import type { HTMLInputAttributes } from "svelte/elements";
+import type { ColorPickerFormat } from "../color-picker/color-value";
+import type { CyclePickerPreview } from "../cycle-picker/CyclePicker.svelte";
 import type { InlineOptionPickerOption } from "../inline-option-picker/InlineOptionPicker.svelte";
 import type { ReferenceIndex } from "./reference-utils";
 import type {
@@ -31,7 +33,11 @@ export interface FormFieldKindMap {
   readonly: FormFieldKindDefinition<unknown>;
   timestamp: FormFieldKindDefinition<string>;
   boolean: FormFieldKindDefinition<boolean>;
-  options: FormFieldKindDefinition<string>;
+  color: FormFieldKindDefinition<string, { colorFormat?: ColorPickerFormat }>;
+  options: FormFieldKindDefinition<
+    string,
+    { optionPreview?: CyclePickerPreview }
+  >;
   segmented: FormFieldKindDefinition<string>;
   choice: FormFieldKindDefinition<string>;
   "string-list": FormFieldKindDefinition<string[]>;
@@ -152,7 +158,7 @@ type LeafPathFormFieldConfig<
   >]: PathFieldBase<TValues, TContext, TPath, TGroup> &
     FormFieldKindOptions<TKind> & {
       kind: TKind;
-      presentation?: "menu" | "swap";
+      presentation?: "menu" | "swap" | "cycle";
     };
 }[CompatibleFormFieldKind<FieldPathValue<TValues, TPath>>];
 

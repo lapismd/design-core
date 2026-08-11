@@ -165,6 +165,8 @@
     "./forms/AddSectionChooser.svelte": "./src/shared/forms/add-section-chooser/AddSectionChooser.svelte",
     "./forms/SegmentedControl.svelte": "./src/shared/forms/segmented-control/SegmentedControl.svelte",
     "./forms/InlineOptionPicker.svelte": "./src/shared/forms/inline-option-picker/InlineOptionPicker.svelte",
+    "./forms/ColorPicker.svelte": "./src/shared/forms/color-picker/ColorPicker.svelte",
+    "./forms/CyclePicker.svelte": "./src/shared/forms/cycle-picker/CyclePicker.svelte",
     "./forms/AutocompleteInput.svelte": "./src/shared/forms/autocomplete-input/AutocompleteInput.svelte",
     "./forms/ChipAutocomplete.svelte": "./src/shared/forms/chip-autocomplete/ChipAutocomplete.svelte",
     "./forms/ReferencePicker.svelte": "./src/shared/forms/reference-picker/ReferencePicker.svelte",

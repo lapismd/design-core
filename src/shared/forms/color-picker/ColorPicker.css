@@ -1,0 +1,73 @@
+@import "../form.tokens.css";
+
+.ui-color-picker {
+  display: grid;
+  grid-template-columns: 1.75rem minmax(0, 1fr);
+  width: 100%;
+  min-width: 0;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ui-color-picker__swatch {
+  width: 1.75rem;
+  height: 1.75rem;
+  aspect-ratio: 1;
+  overflow: hidden;
+  appearance: none;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  clip-path: circle(50%);
+  cursor: pointer;
+  padding: 0;
+}
+
+.ui-color-picker__swatch::-webkit-color-swatch-wrapper {
+  border: 0;
+  border-radius: inherit;
+  padding: 0;
+}
+
+.ui-color-picker__swatch::-webkit-color-swatch,
+.ui-color-picker__swatch::-moz-color-swatch {
+  border: 1px solid var(--ui-form-border);
+  border-radius: inherit;
+}
+
+.ui-color-picker__swatch:focus-visible {
+  outline: 2px solid var(--ui-form-accent);
+  outline-offset: 2px;
+}
+
+.ui-color-picker .ui-color-picker__value[data-ui-component="input"] {
+  height: 1.5rem;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  color: var(--ui-form-foreground);
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.8125rem;
+  padding: 0;
+}
+
+.ui-color-picker
+  .ui-color-picker__value[data-ui-component="input"]:focus-visible {
+  outline: 0;
+  box-shadow: none;
+}
+
+.ui-color-picker[data-invalid] .ui-color-picker__swatch {
+  outline: 1px solid var(--destructive, #dc2626);
+  outline-offset: 1px;
+}
+
+.ui-color-picker__error {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--destructive, #dc2626);
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.3;
+}

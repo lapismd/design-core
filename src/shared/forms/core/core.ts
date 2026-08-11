@@ -2,6 +2,7 @@ export {
   booleanField,
   chipListField,
   choiceField,
+  colorField,
   createFormConfig,
   defineFormConfig,
   customField,

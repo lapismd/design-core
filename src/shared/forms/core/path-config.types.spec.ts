@@ -16,6 +16,8 @@ type SocialNetwork = {
 type ExampleValues = {
   enabled: boolean;
   name: string;
+  accent?: string;
+  theme: string;
   optionalHeadline?: string | null;
   targetRoles: string[];
   socialNetworks: SocialNetwork[];
@@ -40,6 +42,8 @@ describe("config-driven form types", () => {
     expectTypeOf<FieldPath<ExampleValues>>().toEqualTypeOf<
       | "enabled"
       | "name"
+      | "accent"
+      | "theme"
       | "optionalHeadline"
       | "targetRoles"
       | `targetRoles.${number}`
@@ -74,6 +78,17 @@ describe("config-driven form types", () => {
       fields: {
         enabled: { kind: "boolean", group: "profile" },
         name: { kind: "text", group: "profile", defaultValue: "Unknown" },
+        accent: {
+          kind: "color",
+          group: "profile",
+          colorFormat: "hex-without-hash",
+        },
+        theme: {
+          kind: "options",
+          group: "profile",
+          presentation: "cycle",
+          optionPreview: "plain",
+        },
         optionalHeadline: { kind: "textarea", group: "profile" },
         targetRoles: {
           kind: "array",
@@ -117,6 +132,14 @@ describe("config-driven form types", () => {
       fields: {
         // @ts-expect-error a boolean path cannot use a text renderer
         enabled: { kind: "text" },
+      },
+    });
+
+    defineFormConfig<ExampleValues>()({
+      id: "invalid-color-kind",
+      fields: {
+        // @ts-expect-error a boolean path cannot use the color renderer
+        enabled: { kind: "color" },
       },
     });
 

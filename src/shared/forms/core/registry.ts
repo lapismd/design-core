@@ -23,6 +23,7 @@ export function fieldIssuesFor<TRoot, TContext, TValue>(
 export function defaultFieldAlign(kind: FormFieldKind): FormFieldAlign {
   if (
     kind === "boolean" ||
+    kind === "color" ||
     kind === "options" ||
     kind === "segmented" ||
     kind === "choice"
@@ -35,6 +36,7 @@ export function defaultFieldAlign(kind: FormFieldKind): FormFieldAlign {
 
 export function defaultFieldWrapper(kind: FormFieldKind): FormFieldWrapper {
   return kind === "boolean" ||
+    kind === "color" ||
     kind === "options" ||
     kind === "segmented" ||
     kind === "choice" ||

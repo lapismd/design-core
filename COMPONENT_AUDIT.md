@@ -46,7 +46,7 @@ does not expose mutable global renderer registration.
 **Primitives:** `form-field`, `form-section-header`, `form-toolbar`,
 `form-add-button`, `form-sheet`, `entry-actions`, `collapsible-item-list`,
 `add-section-chooser`, `segmented-control`, `inline-option-picker`,
-`autocomplete-input`, `chip-autocomplete`, `list-editor`,
+`color-picker`, `cycle-picker`, `autocomplete-input`, `chip-autocomplete`, `list-editor`,
 `sortable-array-item`, `secret-field`, `filter-command-picker`,
 `date-picker`, `time-picker`, `reference-picker`, `task-due-calendar`,
 `form-review`, `unified-review-diff`, and `field-review-actions`.

@@ -56,6 +56,11 @@ and nullable paths select their renderer from the non-null value type. A
 `defaultValue` is display-only: a missing optional key stays absent until that
 field is edited.
 
+Built-in string controls include `color` for a native swatch plus editable
+source value, and `options` with `presentation: "cycle"` for compact
+previous/current/next browsing. Set `optionPreview: "font"` when each option
+should be displayed in its named font family.
+
 ## Controller
 
 `createFormController<TValues>()` owns dirty, touched, validating, validation

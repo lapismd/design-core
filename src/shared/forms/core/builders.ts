@@ -91,6 +91,12 @@ export function booleanField<TRoot, TContext = undefined>(
   return { ...config, kind: "boolean" as const };
 }
 
+export function colorField<TRoot, TContext = undefined>(
+  config: FieldBuilderInput<TRoot, TContext, string>,
+) {
+  return { ...config, kind: "color" as const };
+}
+
 export function optionField<TRoot, TContext = undefined>(
   config: FieldBuilderInput<TRoot, TContext, string>,
 ) {

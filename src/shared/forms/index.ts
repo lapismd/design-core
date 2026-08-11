@@ -7,6 +7,12 @@ export {
 export { default as AddSectionChooser } from "./add-section-chooser/AddSectionChooser.svelte";
 export { default as AutocompleteInput } from "./autocomplete-input/AutocompleteInput.svelte";
 export { default as ChipAutocomplete } from "./chip-autocomplete/ChipAutocomplete.svelte";
+export {
+  ColorPicker,
+  colorValueForPicker,
+  formatPickerColor,
+  type ColorPickerFormat,
+} from "./color-picker";
 export { default as CodeEditor } from "./code-editor/CodeEditor.svelte";
 export {
   DatePicker,
@@ -35,6 +41,7 @@ export {
 } from "./filter-command-picker";
 export { CodeHighlighter, codeHighlighter } from "./code-highlighter";
 export { default as CollapsibleItemList } from "./collapsible-item-list/CollapsibleItemList.svelte";
+export { CyclePicker, type CyclePickerPreview } from "./cycle-picker";
 export { default as EntryActions } from "./entry-actions/EntryActions.svelte";
 export { default as FieldReviewActions } from "./field-review-actions/FieldReviewActions.svelte";
 export { default as FormAddButton } from "./form-add-button/FormAddButton.svelte";

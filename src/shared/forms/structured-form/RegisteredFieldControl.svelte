@@ -1,5 +1,7 @@
 <script lang="ts">
   import ChipAutocomplete from "../chip-autocomplete/ChipAutocomplete.svelte";
+  import ColorPicker from "../color-picker/ColorPicker.svelte";
+  import CyclePicker from "../cycle-picker/CyclePicker.svelte";
   import DatePicker from "../date-picker/DatePicker.svelte";
   import InlineOptionPicker from "../inline-option-picker/InlineOptionPicker.svelte";
   import type { InlineOptionPickerOption } from "../inline-option-picker/InlineOptionPicker.svelte";
@@ -128,12 +130,36 @@
       <span class="cv-forms-switch-thumb"></span>
     </span>
   </button>
+{:else if field.kind === "color"}
+  <ColorPicker
+    value={textValue()}
+    placeholder={field.placeholder ?? ""}
+    ariaLabel={field.ariaLabel ?? field.label}
+    format={field.colorFormat ?? "hex"}
+    {error}
+    onChange={update}
+    onBlur={blur}
+  />
+{:else if field.kind === "options" && field.presentation === "cycle"}
+  <CyclePicker
+    value={textValue()}
+    options={optionsFor()}
+    placeholder={field.placeholder ?? "Select option"}
+    ariaLabel={field.ariaLabel ?? field.label}
+    preview={field.optionPreview ?? "plain"}
+    {error}
+    onChange={update}
+    onBlur={blur}
+  />
 {:else if field.kind === "options" || field.kind === "choice"}
   <InlineOptionPicker
     value={textValue()}
     options={optionsFor()}
-    presentation={field.presentation ??
-      (field.kind === "choice" ? "menu" : "swap")}
+    presentation={field.presentation === "menu" || field.presentation === "swap"
+      ? field.presentation
+      : field.kind === "choice"
+        ? "menu"
+        : "swap"}
     ariaLabel={field.ariaLabel ?? field.label}
     {error}
     onChange={update}

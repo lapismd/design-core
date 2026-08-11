@@ -57,6 +57,7 @@ const BUILTIN_KINDS = [
   "readonly",
   "timestamp",
   "boolean",
+  "color",
   "options",
   "segmented",
   "choice",

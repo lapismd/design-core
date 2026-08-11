@@ -71,6 +71,7 @@
   const leafOwnsError = $derived(
     field.kind === "date" ||
       field.kind === "time" ||
+      field.kind === "color" ||
       field.kind === "options" ||
       field.kind === "choice" ||
       field.kind === "segmented" ||

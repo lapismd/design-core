@@ -1,5 +1,7 @@
 import type { Component } from "svelte";
 import type { HTMLInputAttributes } from "svelte/elements";
+import type { ColorPickerFormat } from "../color-picker/color-value";
+import type { CyclePickerPreview } from "../cycle-picker/CyclePicker.svelte";
 import type { InlineOptionPickerOption } from "../inline-option-picker/InlineOptionPicker.svelte";
 import type { ReferenceIndex } from "./reference-utils";
 import type { RegisteredFormFieldKind } from "./path-config";
@@ -102,7 +104,9 @@ export type FormFieldConfig<TRoot, TContext = undefined, TValue = unknown> = {
   as?: FormFieldWrapper;
   inputType?: string;
   autocomplete?: HTMLInputAttributes["autocomplete"];
-  presentation?: "menu" | "swap";
+  presentation?: "menu" | "swap" | "cycle";
+  optionPreview?: CyclePickerPreview;
+  colorFormat?: ColorPickerFormat;
   rows?: number;
   readonly?: boolean;
   get: (root: TRoot, context: TContext) => TValue;

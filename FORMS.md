@@ -93,6 +93,8 @@ Override on `:root` or a form ancestor, e.g. `--ui-form-accent: oklch(...)`.
 | Story / stub body outlines  | `FormPlaceholder` only (dotted). Real components render without outline.                       |
 | 2–3 exclusive values        | `SegmentedControl` (or shadcn `ToggleGroup` when matching Actions UI)                          |
 | Option menus                | shadcn `Select`; form-row icons/swap → `InlineOptionPicker`                                    |
+| Sequential option browsing  | `CyclePicker`; typed `options` fields use `presentation: "cycle"`                              |
+| Color values                | `ColorPicker`; typed fields use `kind: "color"`                                                |
 | Tags / chip lists           | `ChipAutocomplete` (`tagListField` / `chipListField` / `stringListField`)                      |
 | Ordered string lists        | `ListEditor` via `orderedStringListField` (or `reviewedStringListField` for Keep/Undo)         |
 | Searchable choices          | `FilterCommandPicker` (bits-ui Command + Popover; options via props)                           |
