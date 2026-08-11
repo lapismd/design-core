@@ -46,7 +46,7 @@
   height: 1.25rem;
   gap: 0.25rem;
   padding-inline: 0;
-  color: var(--ui-form-muted);
+  color: color-mix(in srgb, var(--ui-form-foreground) 80%, transparent);
   font-size: 0.75rem;
   font-weight: 400;
   background: transparent;
@@ -148,4 +148,22 @@
   font-size: 0.75rem;
   font-weight: 500;
   line-height: 1.3;
+}
+
+@media (max-width: 720px) {
+  [data-ui-component="list-editor"][data-ui-part="list-editor"][data-variant="inline"] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  [data-ui-component="list-editor"][data-ui-part="list-editor"]
+    .cv-control-action-row__control {
+    width: 100%;
+  }
+
+  [data-ui-component="list-editor"][data-ui-part="list-editor"]
+    [data-ui-component="button"].ui-list-editor__add {
+    width: 100%;
+    min-height: 2rem;
+    justify-content: center;
+  }
 }

@@ -136,7 +136,31 @@ export const targetRolesConfig = storyFormConfig("complete-cv-target-roles", [
 export const socialNetworkConfig = storyFormConfig(
   "complete-cv-social-network",
   [
-    { id: "social-network", label: "Network", path: ["network"] },
+    {
+      id: "social-network",
+      label: "Network",
+      path: ["network"],
+      kind: "option",
+      options: options([
+        "LinkedIn",
+        "GitHub",
+        "GitLab",
+        "IMDB",
+        "Instagram",
+        "ORCID",
+        "Mastodon",
+        "StackOverflow",
+        "ResearchGate",
+        "YouTube",
+        "Google Scholar",
+        "Telegram",
+        "WhatsApp",
+        "Leetcode",
+        "X",
+        "Bluesky",
+        "Reddit",
+      ]),
+    },
     { id: "social-username", label: "Username", path: ["username"] },
   ],
 );

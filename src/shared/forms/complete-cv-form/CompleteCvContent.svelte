@@ -378,6 +378,7 @@
                       {#each ["role_history", "extra_details"] as nestedKeyName}
                         <div
                           class="complete-cv-subgroup"
+                          data-subgroup={nestedKeyName}
                           data-testid={`${nestedKeyName}-${entryIndex}`}
                         >
                           <p class="complete-cv-subgroup-title">

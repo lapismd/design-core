@@ -21,6 +21,7 @@ export const CompleteCvFormExample = `<script lang="ts">
   });
   let draft = $state<CvDraft>({ name: "John Doe" });
   let tab = $state("cv");
+  let pane = $state("form");
   let yaml = $state("cv:\n  name: John Doe\n");
 
   function updateDraft(value: CvDraft) {
@@ -39,9 +40,24 @@ export const CompleteCvFormExample = `<script lang="ts">
           <Tabs.Trigger value="design">Design</Tabs.Trigger>
         </Tabs.List>
         <Tabs.Content value="cv">
+          <Tabs.Root bind:value={pane} class="workspace-switch">
+            <Tabs.List aria-label="CV workspace view">
+              <Tabs.Trigger value="form">Form</Tabs.Trigger>
+              <Tabs.Trigger value="yaml">YAML</Tabs.Trigger>
+            </Tabs.List>
+          </Tabs.Root>
           <Resizable.PaneGroup direction="horizontal" class="editor-split">
-            <Resizable.Pane defaultSize={48} minSize={30}>
-              <ScrollArea.Root class="form-pane" orientation="vertical">
+            <Resizable.Pane
+              defaultSize={48}
+              minSize={30}
+              data-pane="form"
+              data-pane-active={pane === "form" ? "" : undefined}
+            >
+              <ScrollArea.Root
+                class="form-pane"
+                orientation="vertical"
+                type="always"
+              >
                 <div class="form-content">
                   <StructuredForm
                     value={draft}
@@ -55,7 +71,12 @@ export const CompleteCvFormExample = `<script lang="ts">
               withHandle
               aria-label="Resize form and YAML panels"
             />
-            <Resizable.Pane defaultSize={52} minSize={30}>
+            <Resizable.Pane
+              defaultSize={52}
+              minSize={30}
+              data-pane="yaml"
+              data-pane-active={pane === "yaml" ? "" : undefined}
+            >
               <aside class="yaml-pane" aria-label="CV YAML source">
                 <YamlEditor
                   value={yaml}
@@ -79,6 +100,10 @@ export const CompleteCvFormExample = `<script lang="ts">
     min-height: 32rem;
   }
 
+  .workspace-switch {
+    display: none;
+  }
+
   .form-pane,
   .yaml-pane {
     height: 100%;
@@ -100,23 +125,22 @@ export const CompleteCvFormExample = `<script lang="ts">
 
   @media (max-width: 60rem) {
     .editor-split {
-      display: block !important;
+      display: flex !important;
+      height: 100% !important;
     }
 
     .editor-split > [data-ui-part="resizable-pane"] {
       width: 100% !important;
-      height: auto !important;
-      flex: none !important;
+      height: 100% !important;
+      flex: 1 1 auto !important;
     }
 
-    .form-pane {
-      height: auto;
-      overflow: visible;
+    .workspace-switch {
+      display: flex;
     }
 
-    .form-pane > [data-ui-part="scroll-area-viewport"] {
-      height: auto;
-      overflow: visible !important;
+    .editor-split > [data-pane]:not([data-pane-active]) {
+      display: none !important;
     }
 
     .editor-split > [data-ui-part="resizable-handle"] {

@@ -39,15 +39,39 @@
       "Shows the complete sample and all nine entry types",
       async () => {
         await expect(canvas.getByTestId("structured-cv")).toBeVisible();
-        await expect(canvas.getByTestId("yaml-cv")).toBeVisible();
-        await expect(
-          canvas.getByRole("textbox", { name: "CV YAML" }),
-        ).toBeVisible();
+        const workspaceTabs = canvasElement.querySelector<HTMLElement>(
+          '[aria-label="CV workspace view"]',
+        )!;
+        await expect(workspaceTabs).toBeInTheDocument();
+        if (getComputedStyle(workspaceTabs).display === "none") {
+          await expect(canvas.getByTestId("yaml-cv")).toBeVisible();
+          await expect(
+            canvas.getByRole("textbox", { name: "CV YAML" }),
+          ).toBeVisible();
+        } else {
+          await expect(workspaceTabs).toBeVisible();
+          await expect(canvas.getByTestId("yaml-cv")).not.toBeVisible();
+        }
         await expect(
           canvasElement.querySelectorAll(
             '[data-ui-part="body"] > [data-ui-component="scroll-area"]',
           ),
         ).toHaveLength(0);
+        const shellRoot = canvas
+          .getByTestId("complete-cv-shell")
+          .querySelector<HTMLElement>('[data-ui-part="root"]')!;
+        const mainSurface = shellRoot.querySelector<HTMLElement>(
+          '[data-ui-part="main"]',
+        )!;
+        const rootRect = shellRoot.getBoundingClientRect();
+        const mainRect = mainSurface.getBoundingClientRect();
+        const insets = [
+          mainRect.top - rootRect.top,
+          rootRect.right - mainRect.right,
+          rootRect.bottom - mainRect.bottom,
+          mainRect.left - rootRect.left,
+        ];
+        await expect(Math.max(...insets) - Math.min(...insets)).toBeLessThan(1);
         await expect(canvas.getAllByDisplayValue("John Doe")[0]).toBeVisible();
         for (const entryType of [
           "TextEntry",
@@ -73,13 +97,20 @@
         const formScroller = formRoot.querySelector<HTMLElement>(
           '[data-ui-part="scroll-area-viewport"]',
         )!;
-        if (getComputedStyle(formScroller).overflowY === "visible") {
-          await expect(
-            canvas.getByRole("tabpanel", { name: "CV" }).scrollTop,
-          ).toBeGreaterThan(0);
-        } else {
-          await expect(formScroller.scrollTop).toBeGreaterThan(0);
+        await expect(getComputedStyle(formScroller).overflowY).toBe("scroll");
+        if (formScroller.scrollHeight > formScroller.clientHeight + 1) {
+          formScroller.scrollTo({ top: formScroller.scrollHeight });
+          await waitFor(() =>
+            expect(formScroller.scrollTop).toBeGreaterThan(0),
+          );
         }
+
+        const firstNetwork = canvas.getAllByRole("button", {
+          name: "Network",
+        })[0];
+        await expect(
+          firstNetwork.closest(".cv-form-inline-option-picker"),
+        ).toBeInTheDocument();
 
         for (const [entryType, markers] of [
           ["BulletEntry", ["•", "•", "•", "•", "•"]],
@@ -133,6 +164,24 @@
         await expect(
           getComputedStyle(socialRows[socialRows.length - 1]).borderBottomWidth,
         ).toBe("0px");
+
+        for (const [testId, addLabel] of [
+          ["role_history-0", "Add role history"],
+          ["extra_details-0", "Add extra detail"],
+        ] as const) {
+          const subgroup = canvas.getAllByTestId(testId)[0];
+          const title = subgroup.querySelector<HTMLElement>(
+            ":scope > .complete-cv-subgroup-title",
+          )!;
+          const addButton = within(subgroup).getByRole("button", {
+            name: addLabel,
+          });
+          await expect(getComputedStyle(title).borderBottomWidth).toBe("1px");
+          await expect(getComputedStyle(addButton).borderStyle).toBe("dashed");
+          await expect(addButton.getBoundingClientRect().width).toBeGreaterThan(
+            subgroup.getBoundingClientRect().width - 2,
+          );
+        }
       },
     );
 
@@ -157,7 +206,20 @@
                 ".complete-cv-editor-split",
               )!,
             ).display,
-          ).toBe("block");
+          ).toBe("flex");
+          const workspaceTabs = canvasElement.querySelector<HTMLElement>(
+            '[aria-label="CV workspace view"]',
+          )!;
+          await expect(workspaceTabs).toBeVisible();
+          await userEvent.click(
+            within(workspaceTabs).getByRole("tab", { name: "YAML" }),
+          );
+          await expect(canvas.getByTestId("yaml-cv")).toBeVisible();
+          await expect(canvas.getByTestId("structured-cv")).not.toBeVisible();
+          await userEvent.click(
+            within(workspaceTabs).getByRole("tab", { name: "Form" }),
+          );
+          await expect(canvas.getByTestId("structured-cv")).toBeVisible();
         } else {
           handle.focus();
           await userEvent.keyboard("{ArrowRight}");
@@ -207,7 +269,7 @@
           within(networks).getByRole("button", { name: "Add" }),
         );
         await expect(
-          within(networks).getAllByLabelText("Network"),
+          within(networks).getAllByRole("button", { name: "Network" }),
         ).toHaveLength(3);
         await userEvent.click(
           within(networks).getAllByRole("button", { name: "Move up" }).at(-1)!,
@@ -218,7 +280,7 @@
           }),
         );
         await expect(
-          within(networks).getAllByLabelText("Network"),
+          within(networks).getAllByRole("button", { name: "Network" }),
         ).toHaveLength(2);
 
         const targetRoles = canvas
@@ -264,6 +326,12 @@
       "Edits representative Design, Locale, and Settings controls",
       async () => {
         await userEvent.click(canvas.getByRole("tab", { name: "Design" }));
+        const theme = canvasElement.querySelector<HTMLButtonElement>(
+          '.cv-form-inline-option-trigger[aria-label="Theme"]',
+        )!;
+        await expect(
+          theme.closest(".cv-form-inline-option-picker"),
+        ).toBeInTheDocument();
         const margin = canvas.getByLabelText("Top margin");
         await userEvent.type(margin, "1.5cm");
         await expect(margin).toHaveValue("1.5cm");
@@ -285,6 +353,16 @@
     await step(
       "Round-trips valid YAML and preserves invalid YAML",
       async () => {
+        const workspaceTabs = canvasElement.querySelector<HTMLElement>(
+          '[aria-label="Settings workspace view"]',
+        )!;
+        const compactWorkspace =
+          getComputedStyle(workspaceTabs).display !== "none";
+        if (compactWorkspace) {
+          await userEvent.click(
+            within(workspaceTabs).getByRole("tab", { name: "YAML" }),
+          );
+        }
         const editor = canvas.getByRole("textbox", { name: "Settings YAML" });
         await userEvent.click(editor);
         replaceYaml(
@@ -292,16 +370,31 @@
           "settings:\n  pdf_title: YAML title\n  extra_key: preserved\n",
         );
 
+        if (compactWorkspace) {
+          await userEvent.click(
+            within(workspaceTabs).getByRole("tab", { name: "Form" }),
+          );
+        }
         await waitFor(() =>
           expect(canvas.getByLabelText("PDF title")).toHaveValue("YAML title"),
         );
 
+        if (compactWorkspace) {
+          await userEvent.click(
+            within(workspaceTabs).getByRole("tab", { name: "YAML" }),
+          );
+        }
         await userEvent.click(editor);
         replaceYaml(editor, "settings:\n  pdf_title: [broken\n");
         await waitFor(() =>
           expect(canvas.getByTestId("yaml-error")).toBeVisible(),
         );
 
+        if (compactWorkspace) {
+          await userEvent.click(
+            within(workspaceTabs).getByRole("tab", { name: "Form" }),
+          );
+        }
         await expect(canvas.getByLabelText("PDF title")).toHaveValue(
           "YAML title",
         );
@@ -342,6 +435,9 @@
       await expect(canvas.getByRole("tabpanel", { name: "CV" }).scrollTop).toBe(
         0,
       );
+      await expect(
+        getComputedStyle(canvas.getByTestId("complete-cv-shell")).overflowY,
+      ).toBe("hidden");
     });
   }}
 >

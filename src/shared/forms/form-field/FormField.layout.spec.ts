@@ -62,6 +62,20 @@ describe("source-reference form layout CSS", () => {
     expect(listEditorCss).toMatch(
       /\[data-ui-part="list-editor-items"\][\s\S]*?> \[data-ui-component="sortable-array-item"\]\[data-ui-part="sortable-array-item"\]:last-child\s*\{[\s\S]*?border-bottom:\s*0/,
     );
+    expect(listEditorCss).toMatch(
+      /@media \(max-width:\s*720px\)[\s\S]*?\.ui-list-editor__add\s*\{[\s\S]*?width:\s*100%/,
+    );
+  });
+
+  it("keeps add actions legible and full width in limited space", () => {
+    const addButtonCss = readCss("../form-add-button/FormAddButton.css");
+
+    expect(addButtonCss).toMatch(
+      /color:\s*color-mix\([\s\S]*?var\(--ui-form-foreground\)\s*80%/,
+    );
+    expect(addButtonCss).toMatch(
+      /@media \(max-width:\s*720px\)[\s\S]*?\.ui-form-add-button\s*\{[\s\S]*?width:\s*100%[\s\S]*?justify-content:\s*center/,
+    );
   });
 
   it("applies sortable item borders only to the component root", () => {

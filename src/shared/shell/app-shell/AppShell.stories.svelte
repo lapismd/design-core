@@ -1137,8 +1137,10 @@
     const tabletMain = root!.querySelector<HTMLElement>(
       '[data-ui-part="main"]',
     )!;
-    await expect(getComputedStyle(tabletMain).marginTop).toBe("0px");
-    await expect(getComputedStyle(tabletMain).marginBottom).toBe("0px");
+    await expect(getComputedStyle(tabletMain).marginTop).toBe("8px");
+    await expect(getComputedStyle(tabletMain).marginBottom).toBe("8px");
+    await expect(getComputedStyle(tabletMain).borderTopWidth).toBe("1px");
+    await expect(getComputedStyle(tabletMain).borderRadius).toBe("14px");
     await expect(getComputedStyle(frame).paddingTop).toBe("0px");
     await expect(getComputedStyle(frame).paddingBottom).toBe("0px");
 
@@ -1230,8 +1232,10 @@
       '[data-ui-part="main"]',
     )!;
     const mobileFrame = root.closest<HTMLElement>(".ui-shell-story-frame")!;
-    await expect(getComputedStyle(mobileMain).marginTop).toBe("0px");
-    await expect(getComputedStyle(mobileMain).marginBottom).toBe("0px");
+    await expect(getComputedStyle(mobileMain).marginTop).toBe("8px");
+    await expect(getComputedStyle(mobileMain).marginBottom).toBe("8px");
+    await expect(getComputedStyle(mobileMain).borderTopWidth).toBe("1px");
+    await expect(getComputedStyle(mobileMain).borderRadius).toBe("14px");
     await expect(getComputedStyle(mobileFrame).paddingTop).toBe("0px");
     await expect(getComputedStyle(mobileFrame).paddingBottom).toBe("0px");
 
