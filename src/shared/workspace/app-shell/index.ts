@@ -22,6 +22,11 @@ import AppShellSurface from "./AppShellSurface.svelte";
 import AppShellTabs from "./AppShellTabs.svelte";
 import AppShellWorkspace from "./AppShellWorkspace.svelte";
 
+export type {
+  WorkspaceNavigation,
+  WorkspaceNavigationItem,
+} from "./workspace-navigation.js";
+
 export {
   AppShellAboutDialog,
   AppShellBottomPanel,

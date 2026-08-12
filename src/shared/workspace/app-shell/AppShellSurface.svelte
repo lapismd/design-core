@@ -7,6 +7,7 @@
   } from "../core/types.js";
   import { createWorkspaceTab } from "../core/layout.js";
   import WorkspaceMobile from "../mobile/WorkspaceMobile.svelte";
+  import type { WorkspaceNavigation } from "./workspace-navigation.js";
   import { getAppShellContext } from "./app-shell-context.svelte.js";
   import AppShellFloatingLayer from "./AppShellFloatingLayer.svelte";
   import AppShellBottomPanel from "./AppShellBottomPanel.svelte";
@@ -32,6 +33,7 @@
     onOpenSettings,
     settingsTitle = "Settings",
     workspaceLabel = "Workspace",
+    workspaceNavigation,
   }: {
     createTab?: (paneId: string) => WorkspaceTab;
     displayMode?: WorkspaceRequestedDisplayMode;
@@ -46,6 +48,7 @@
     onOpenSettings?: () => void;
     settingsTitle?: string;
     workspaceLabel?: string;
+    workspaceNavigation?: WorkspaceNavigation;
   } = $props();
 
   const context = getAppShellContext();
@@ -110,7 +113,11 @@
 {:else}
   <AppShellRibbon />
   <AppShellDesktopLayout {bottomPanelAlignment}>
-    <AppShellLeftSidebar {workspaceLabel} onOpenSettings={openSettings} />
+    <AppShellLeftSidebar
+      {workspaceLabel}
+      {workspaceNavigation}
+      onOpenSettings={openSettings}
+    />
     <AppShellMain>
       <AppShellWorkspace createTab={resolvedCreateTab} />
     </AppShellMain>

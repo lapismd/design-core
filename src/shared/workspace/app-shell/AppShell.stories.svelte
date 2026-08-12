@@ -21,7 +21,7 @@
     WorkspaceBottomPanelAlignment,
     WorkspaceSidebarGroup,
   } from "../core/types.js";
-  import { AppShell, AppShellRoot } from "./index.js";
+  import { AppShell, AppShellRoot, type WorkspaceNavigation } from "./index.js";
   import "./AppShell.stories.css";
 
   const { Story } = defineMeta({
@@ -249,6 +249,31 @@
   const hotkeysApp = createDemoApp();
   const hotkeysInteractionApp = createDemoApp();
   const pluginsApp = createDemoApp();
+  let workspaceNavigationStatus = $state("No workspace action selected");
+  const workspaceNavigation: WorkspaceNavigation = {
+    currentLabel: "Workspace demo",
+    menuLabel: "Recent workspaces",
+    items: [
+      {
+        id: "workspace-demo",
+        label: "Workspace demo",
+        description: "/Users/demo/Workspace demo",
+        disabled: true,
+      },
+      {
+        id: "research-notes",
+        label: "Research notes",
+        description: "/Users/demo/Research notes",
+      },
+    ],
+    manageLabel: "Manage workspaces",
+    onSelect: (item) => {
+      workspaceNavigationStatus = `${item.label} selected`;
+    },
+    onManage: () => {
+      workspaceNavigationStatus = "Manage workspaces selected";
+    },
+  };
 </script>
 
 <Story
@@ -448,7 +473,41 @@
 <Story
   name="Default surface"
   tags={["visual-pending"]}
-  play={async ({ canvas }) => {
+  play={async ({ canvas, canvasElement }) => {
+    const page = within(canvasElement.ownerDocument.body);
+    const workspaceTrigger = canvas.getByRole("button", {
+      name: "Current workspace: Workspace demo",
+    });
+    await userEvent.click(workspaceTrigger);
+    await expect(page.getByText("Recent workspaces")).toBeVisible();
+    await expect(
+      page.getByRole("menuitem", { name: /Workspace demo/ }),
+    ).toHaveAttribute("data-disabled");
+    await userEvent.click(
+      page.getByRole("menuitem", { name: /Research notes/ }),
+    );
+    await expect(canvas.getByRole("status")).toHaveTextContent(
+      "Research notes selected",
+    );
+    await waitFor(() =>
+      expect(page.queryByRole("menu")).not.toBeInTheDocument(),
+    );
+    await waitFor(() =>
+      expect(getComputedStyle(workspaceTrigger).pointerEvents).toBe("auto"),
+    );
+    await userEvent.click(workspaceTrigger);
+    await userEvent.click(
+      page.getByRole("menuitem", { name: "Manage workspaces" }),
+    );
+    await expect(canvas.getByRole("status")).toHaveTextContent(
+      "Manage workspaces selected",
+    );
+    await waitFor(() =>
+      expect(page.queryByRole("menu")).not.toBeInTheDocument(),
+    );
+    await waitFor(() =>
+      expect(getComputedStyle(workspaceTrigger).pointerEvents).toBe("auto"),
+    );
     const settingsButton = canvas.getByRole("button", {
       name: "Open settings",
     });
@@ -479,7 +538,8 @@
   {#snippet template()}
     <div class="ui-app-shell-story-frame">
       <AppShell.Root controller={surfaceApp} theme="inherit">
-        <AppShell.Surface workspaceLabel="Workspace demo" />
+        <AppShell.Surface {workspaceNavigation} />
+        <output class="sr-only">{workspaceNavigationStatus}</output>
       </AppShell.Root>
     </div>
   {/snippet}

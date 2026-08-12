@@ -1008,6 +1008,17 @@ workflow.
 - Visual comparison and baseline creation remain intentionally deferred by the
   implementation request; new catalog stories retain `visual-pending`.
 
+### Consumer-owned workspace navigation
+
+- Added an optional typed App Shell navigation contract for current-workspace,
+  recent-workspace, empty, and management states. Discovery, selection,
+  persistence, and lifecycle policy remain consumer-owned callbacks.
+- The desktop left-sidebar footer presents the contract through the shared
+  accessible menu styling. Without the contract, the current workspace is a
+  non-interactive label rather than a dead button.
+- The integrated App Shell story exercises disabled-current, recent selection,
+  and management actions without introducing another application runtime.
+
 ## Completion gate
 
 The migration is complete only when:

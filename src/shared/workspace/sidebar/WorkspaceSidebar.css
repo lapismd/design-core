@@ -272,6 +272,7 @@
 }
 
 .ui-workspace-sidebar__workspace-trigger,
+.ui-workspace-sidebar__workspace-label,
 .ui-workspace-sidebar__settings-trigger {
   display: inline-flex;
   min-width: 0;
@@ -284,7 +285,8 @@
   font: inherit;
 }
 
-.ui-workspace-sidebar__workspace-trigger {
+.ui-workspace-sidebar__workspace-trigger,
+.ui-workspace-sidebar__workspace-label {
   flex: 1 1 auto;
   justify-content: space-between;
   gap: 0.75rem;
@@ -292,7 +294,8 @@
   text-align: left;
 }
 
-.ui-workspace-sidebar__workspace-trigger span {
+.ui-workspace-sidebar__workspace-trigger > span,
+.ui-workspace-sidebar__workspace-label > span {
   min-width: 0;
   overflow: hidden;
   font-size: 0.875rem;
@@ -329,4 +332,36 @@
 
 .ui-workspace-sidebar__workspace-trigger svg {
   color: var(--ui-workspace-muted-foreground);
+}
+
+.ui-workspace-sidebar__workspace-menu {
+  width: min(20rem, calc(100vw - 1rem));
+}
+
+.ui-workspace-sidebar__workspace-menu-label {
+  padding: 0.375rem 0.5rem;
+  color: var(--ui-workspace-muted-foreground);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.ui-workspace-sidebar__workspace-menu-item {
+  min-height: 2.75rem;
+}
+
+.ui-workspace-sidebar__workspace-menu-copy {
+  display: flex;
+  min-width: 0;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.ui-workspace-sidebar__workspace-menu-description {
+  overflow: hidden;
+  color: var(--ui-workspace-muted-foreground);
+  font-size: 0.75rem;
+  line-height: 1rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

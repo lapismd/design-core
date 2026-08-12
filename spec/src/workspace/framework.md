@@ -13,6 +13,7 @@ Workspace framework contracts coordinate reusable layout and state through expli
 | Workspace drag              | `@lapismd/design-core/workspace/drag`      | DC-WS-005   |
 | Workspace View Host         | `@lapismd/design-core/workspace/view-host` | DC-WS-006   |
 | Workspace Guidance          | Documentation surface                      | DC-WS-007   |
+| Workspace navigation        | `@lapismd/design-core/workspace/app-shell` | DC-WS-038   |
 
 ## DC-WS-001 — Shared Workspace invariants
 
@@ -79,3 +80,13 @@ Workspace framework contracts coordinate reusable layout and state through expli
 - The public boundary is Documentation surface.
 - Workspace guidance and progress records MUST keep completed panel presentation refinements, including leaf-owned chrome and readable severity filters, mapped to their owning panel contract and evidence.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+
+## DC-WS-038 — Workspace navigation
+
+**Requirement.** The Workspace App Shell MUST present optional consumer-supplied workspace navigation without owning workspace discovery, selection, or persistence policy.
+
+### Acceptance details
+
+- The public contract supplies the current label, recent options, disabled state, descriptions, and selection and management callbacks.
+- The desktop sidebar MUST render an accessible menu with current, empty, recent, and management states.
+- Without an actionable navigation contract, the workspace label MUST remain non-interactive.
