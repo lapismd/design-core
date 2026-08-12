@@ -24,6 +24,25 @@ Specification governance keeps requirements discoverable, mapped, validated, and
 - A diagnostic must identify its stable code, governing requirement, source path, line when available, affected identifier, and corrective action.
 - Generated or discovery surfaces must point back to canonical Markdown rather than becoming a second source of truth.
 
+## Change map
+
+| Protected area                                            | Owning canonical chapter         |
+| --------------------------------------------------------- | -------------------------------- |
+| Root package manifests and exports                        | `architecture.md`, `packages.md` |
+| Shared styles, themes, and tokens                         | `styling-and-themes.md`          |
+| Shadcn families                                           | Matching chapter under `shadcn/` |
+| Forms families                                            | Matching chapter under `forms/`  |
+| Filter layer                                              | `filter.md`                      |
+| AI layer                                                  | `ai.md`                          |
+| Shell layer                                               | `shell.md`                       |
+| Workspace framework                                       | `workspace/framework.md`         |
+| Workspace components                                      | `workspace/components.md`        |
+| Workspace panels                                          | `workspace/panels.md`            |
+| Workspace plugins                                         | `workspace/plugins.md`           |
+| Storybook host and specification mirrors                  | `storybook-catalog.md`           |
+| UI generator and Docs MCP tooling                         | `tooling.md`                     |
+| Specification validators, book, map, QMD, and agent rules | `spec-governance.md`             |
+
 ## DC-GOV-002 — Verification matrix
 
 **Requirement.** The Verification matrix family MUST map every requirement to exactly one verification row with an explicit status and source or test evidence.

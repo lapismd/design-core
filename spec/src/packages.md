@@ -23,6 +23,7 @@ The root package manifest defines the supported import boundaries. Family barrel
 
 - The export must resolve to tracked source or the documented workspace build output.
 - Package checks must fail when the mapped entry point is stale or missing.
+- Tool-only dependencies must remain outside runtime exports and be pinned where reproducibility requires it.
 
 ## DC-PKG-002 — Shadcn exports
 

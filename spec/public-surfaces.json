@@ -1,0 +1,950 @@
+{
+  "exports": [
+    {
+      "name": "./ai",
+      "requirement": "DC-PKG-004"
+    },
+    {
+      "name": "./ai/chat",
+      "requirement": "DC-PKG-004"
+    },
+    {
+      "name": "./ai/chat/experimental",
+      "requirement": "DC-PKG-004"
+    },
+    {
+      "name": "./ai/chat/tokens",
+      "requirement": "DC-PKG-004"
+    },
+    {
+      "name": "./ai/experimental",
+      "requirement": "DC-PKG-004"
+    },
+    {
+      "name": "./ai/tokens",
+      "requirement": "DC-PKG-004"
+    },
+    {
+      "name": "./filter",
+      "requirement": "DC-PKG-005"
+    },
+    {
+      "name": "./filter/SearchFilterBar.svelte",
+      "requirement": "DC-PKG-005"
+    },
+    {
+      "name": "./filter/filter-query",
+      "requirement": "DC-PKG-005"
+    },
+    {
+      "name": "./forms",
+      "requirement": "DC-PKG-003"
+    },
+    {
+      "name": "./forms/AddSectionChooser.svelte",
+      "requirement": "DC-PKG-003"
+    },
+    {
+      "name": "./forms/AutocompleteInput.svelte",
+      "requirement": "DC-PKG-003"
+    },
+    {
+      "name": "./forms/ChipAutocomplete.svelte",
+      "requirement": "DC-PKG-003"
+    },
+    {
+      "name": "./forms/CodeEditor.svelte",
+      "requirement": "DC-PKG-003"
+    },
+    {
+      "name": "./forms/CollapsibleItemList.svelte",
+      "requirement": "DC-PKG-003"
+    },
+    {
+      "name": "./forms/ColorPicker.svelte",
+      "requirement": "DC-PKG-003"
+    },
+    {
+      "name": "./forms/CyclePicker.svelte",
+      "requirement": "DC-PKG-003"
+    },
+    {
+      "name": "./forms/EntryActions.svelte",
+      "requirement": "DC-PKG-003"
+    },
+    {
+      "name": "./forms/FieldReviewActions.svelte",
+      "requirement": "DC-PKG-003"
+    },
+    {
+      "name": "./forms/FormAddButton.svelte",
+      "requirement": "DC-PKG-003"
+    },
+    {
+      "name": "./forms/FormControlRow.css",
+      "requirement": "DC-PKG-003"
+    },
+    {
+      "name": "./forms/FormField.svelte",
+      "requirement": "DC-PKG-003"
+    },
+    {
+      "name": "./forms/FormFieldRenderer.svelte",
+      "requirement": "DC-PKG-003"
+    },
+    {
+      "name": "./forms/FormSectionHeader.svelte",
+      "requirement": "DC-PKG-003"
+    },
+    {
+      "name": "./forms/FormSheet.svelte",
+      "requirement": "DC-PKG-003"
+    },
+    {
+      "name": "./forms/FormToolbar.svelte",
+      "requirement": "DC-PKG-003"
+    },
+    {
+      "name": "./forms/FormViewRenderer.svelte",
+      "requirement": "DC-PKG-003"
+    },
+    {
+      "name": "./forms/InlineOptionPicker.svelte",
+      "requirement": "DC-PKG-003"
+    },
+    {
+      "name": "./forms/JsonBackedForm.svelte",
+      "requirement": "DC-PKG-003"
+    },
+    {
+      "name": "./forms/ListEditor.svelte",
+      "requirement": "DC-PKG-003"
+    },
+    {
+      "name": "./forms/PatchableForm.svelte",
+      "requirement": "DC-PKG-003"
+    },
+    {
+      "name": "./forms/ReferencePicker.svelte",
+      "requirement": "DC-PKG-003"
+    },
+    {
+      "name": "./forms/SegmentedControl.svelte",
+      "requirement": "DC-PKG-003"
+    },
+    {
+      "name": "./forms/SortableArrayItem.svelte",
+      "requirement": "DC-PKG-003"
+    },
+    {
+      "name": "./forms/StructuredForm.svelte",
+      "requirement": "DC-PKG-003"
+    },
+    {
+      "name": "./forms/TaskDueCalendar.svelte",
+      "requirement": "DC-PKG-003"
+    },
+    {
+      "name": "./forms/TimePicker.svelte",
+      "requirement": "DC-PKG-003"
+    },
+    {
+      "name": "./forms/UnifiedReviewDiff.svelte",
+      "requirement": "DC-PKG-003"
+    },
+    {
+      "name": "./forms/YamlBackedForm.svelte",
+      "requirement": "DC-PKG-003"
+    },
+    {
+      "name": "./forms/YamlEditor.svelte",
+      "requirement": "DC-PKG-003"
+    },
+    {
+      "name": "./forms/core",
+      "requirement": "DC-PKG-003"
+    },
+    {
+      "name": "./forms/form.tokens.css",
+      "requirement": "DC-PKG-003"
+    },
+    {
+      "name": "./forms/tokens",
+      "requirement": "DC-PKG-003"
+    },
+    {
+      "name": "./shadcn/*",
+      "requirement": "DC-PKG-002"
+    },
+    {
+      "name": "./shadcn/badge/tokens",
+      "requirement": "DC-PKG-002"
+    },
+    {
+      "name": "./shadcn/button/tokens",
+      "requirement": "DC-PKG-002"
+    },
+    {
+      "name": "./shadcn/card/tokens",
+      "requirement": "DC-PKG-002"
+    },
+    {
+      "name": "./shadcn/dialog/tokens",
+      "requirement": "DC-PKG-002"
+    },
+    {
+      "name": "./shadcn/input/tokens",
+      "requirement": "DC-PKG-002"
+    },
+    {
+      "name": "./shell",
+      "requirement": "DC-PKG-006"
+    },
+    {
+      "name": "./shell/shell.tokens.css",
+      "requirement": "DC-PKG-006"
+    },
+    {
+      "name": "./shell/tokens",
+      "requirement": "DC-PKG-006"
+    },
+    {
+      "name": "./storybook.css",
+      "requirement": "DC-PKG-001"
+    },
+    {
+      "name": "./storybook/catalog-layout",
+      "requirement": "DC-PKG-001"
+    },
+    {
+      "name": "./styles.css",
+      "requirement": "DC-PKG-001"
+    },
+    {
+      "name": "./themes/lapis.css",
+      "requirement": "DC-PKG-001"
+    },
+    {
+      "name": "./workspace",
+      "requirement": "DC-PKG-007"
+    },
+    {
+      "name": "./workspace/about-dialog",
+      "requirement": "DC-PKG-007"
+    },
+    {
+      "name": "./workspace/app-shell",
+      "requirement": "DC-PKG-007"
+    },
+    {
+      "name": "./workspace/bottom-panel",
+      "requirement": "DC-PKG-007"
+    },
+    {
+      "name": "./workspace/command-palette",
+      "requirement": "DC-PKG-007"
+    },
+    {
+      "name": "./workspace/core",
+      "requirement": "DC-PKG-007"
+    },
+    {
+      "name": "./workspace/demo",
+      "requirement": "DC-PKG-007"
+    },
+    {
+      "name": "./workspace/drag",
+      "requirement": "DC-PKG-007"
+    },
+    {
+      "name": "./workspace/drop-overlay",
+      "requirement": "DC-PKG-007"
+    },
+    {
+      "name": "./workspace/empty",
+      "requirement": "DC-PKG-007"
+    },
+    {
+      "name": "./workspace/explorer",
+      "requirement": "DC-PKG-007"
+    },
+    {
+      "name": "./workspace/floating-layer",
+      "requirement": "DC-PKG-007"
+    },
+    {
+      "name": "./workspace/floating-window",
+      "requirement": "DC-PKG-007"
+    },
+    {
+      "name": "./workspace/icon",
+      "requirement": "DC-PKG-007"
+    },
+    {
+      "name": "./workspace/menu",
+      "requirement": "DC-PKG-007"
+    },
+    {
+      "name": "./workspace/mobile",
+      "requirement": "DC-PKG-007"
+    },
+    {
+      "name": "./workspace/plugins/fmode",
+      "requirement": "DC-PKG-007"
+    },
+    {
+      "name": "./workspace/plugins/notifications",
+      "requirement": "DC-PKG-007"
+    },
+    {
+      "name": "./workspace/popout",
+      "requirement": "DC-PKG-007"
+    },
+    {
+      "name": "./workspace/problems",
+      "requirement": "DC-PKG-007"
+    },
+    {
+      "name": "./workspace/ribbon",
+      "requirement": "DC-PKG-007"
+    },
+    {
+      "name": "./workspace/settings",
+      "requirement": "DC-PKG-007"
+    },
+    {
+      "name": "./workspace/sidebar",
+      "requirement": "DC-PKG-007"
+    },
+    {
+      "name": "./workspace/sidebar-empty",
+      "requirement": "DC-PKG-007"
+    },
+    {
+      "name": "./workspace/sidebar-group",
+      "requirement": "DC-PKG-007"
+    },
+    {
+      "name": "./workspace/sidebar-toggle",
+      "requirement": "DC-PKG-007"
+    },
+    {
+      "name": "./workspace/split",
+      "requirement": "DC-PKG-007"
+    },
+    {
+      "name": "./workspace/stacked-tabs",
+      "requirement": "DC-PKG-007"
+    },
+    {
+      "name": "./workspace/startup",
+      "requirement": "DC-PKG-007"
+    },
+    {
+      "name": "./workspace/status-bar",
+      "requirement": "DC-PKG-007"
+    },
+    {
+      "name": "./workspace/status-item",
+      "requirement": "DC-PKG-007"
+    },
+    {
+      "name": "./workspace/tabs",
+      "requirement": "DC-PKG-007"
+    },
+    {
+      "name": "./workspace/tokens",
+      "requirement": "DC-PKG-007"
+    },
+    {
+      "name": "./workspace/tree",
+      "requirement": "DC-PKG-007"
+    },
+    {
+      "name": "./workspace/view-header",
+      "requirement": "DC-PKG-007"
+    },
+    {
+      "name": "./workspace/view-host",
+      "requirement": "DC-PKG-007"
+    },
+    {
+      "name": "./workspace/workspace.tokens.css",
+      "requirement": "DC-PKG-007"
+    }
+  ],
+  "catalog": [
+    {
+      "name": "AI/Chat/Composer",
+      "requirement": "DC-AI-009"
+    },
+    {
+      "name": "AI/Chat/Composer Drawer",
+      "requirement": "DC-AI-011"
+    },
+    {
+      "name": "AI/Chat/Composer Input",
+      "requirement": "DC-AI-010"
+    },
+    {
+      "name": "AI/Chat/Composer Token",
+      "requirement": "DC-AI-013"
+    },
+    {
+      "name": "AI/Chat/Conversation",
+      "requirement": "DC-AI-022"
+    },
+    {
+      "name": "AI/Chat/Dictation Button",
+      "requirement": "DC-AI-016"
+    },
+    {
+      "name": "AI/Chat/Experimental/Emoji Picker",
+      "requirement": "DC-AI-017"
+    },
+    {
+      "name": "AI/Chat/Experimental/Reaction Bar",
+      "requirement": "DC-AI-018"
+    },
+    {
+      "name": "AI/Chat/Experimental/Reasoning",
+      "requirement": "DC-AI-019"
+    },
+    {
+      "name": "AI/Chat/Experimental/Typing Indicator",
+      "requirement": "DC-AI-020"
+    },
+    {
+      "name": "AI/Chat/Experimental/Unread Divider",
+      "requirement": "DC-AI-021"
+    },
+    {
+      "name": "AI/Chat/Layout",
+      "requirement": "DC-AI-002"
+    },
+    {
+      "name": "AI/Chat/Layout Scroll Button",
+      "requirement": "DC-AI-003"
+    },
+    {
+      "name": "AI/Chat/Message",
+      "requirement": "DC-AI-005"
+    },
+    {
+      "name": "AI/Chat/Message Bubble",
+      "requirement": "DC-AI-006"
+    },
+    {
+      "name": "AI/Chat/Message List",
+      "requirement": "DC-AI-004"
+    },
+    {
+      "name": "AI/Chat/Message Metadata",
+      "requirement": "DC-AI-007"
+    },
+    {
+      "name": "AI/Chat/Send Button",
+      "requirement": "DC-AI-012"
+    },
+    {
+      "name": "AI/Chat/System Message",
+      "requirement": "DC-AI-008"
+    },
+    {
+      "name": "AI/Chat/Tokenized Text",
+      "requirement": "DC-AI-014"
+    },
+    {
+      "name": "AI/Chat/Tool Calls",
+      "requirement": "DC-AI-015"
+    },
+    {
+      "name": "AI/Overview",
+      "requirement": "DC-AI-023"
+    },
+    {
+      "name": "Filter/Guidance",
+      "requirement": "DC-FILTER-005"
+    },
+    {
+      "name": "Filter/Power Search",
+      "requirement": "DC-FILTER-004"
+    },
+    {
+      "name": "Filter/Search Filter Bar",
+      "requirement": "DC-FILTER-003"
+    },
+    {
+      "name": "Shadcn/Actions/Button",
+      "requirement": "DC-SHA-002"
+    },
+    {
+      "name": "Shadcn/Actions/Button Group",
+      "requirement": "DC-SHA-003"
+    },
+    {
+      "name": "Shadcn/Actions/Swipe Item",
+      "requirement": "DC-SHA-004"
+    },
+    {
+      "name": "Shadcn/Actions/Toggle",
+      "requirement": "DC-SHA-005"
+    },
+    {
+      "name": "Shadcn/Actions/Toggle Group",
+      "requirement": "DC-SHA-006"
+    },
+    {
+      "name": "Shadcn/Content/Code",
+      "requirement": "DC-SHA-007"
+    },
+    {
+      "name": "Shadcn/Content/Code Block",
+      "requirement": "DC-SHA-008"
+    },
+    {
+      "name": "Shadcn/Data/Badge",
+      "requirement": "DC-SHA-010"
+    },
+    {
+      "name": "Shadcn/Data/Table",
+      "requirement": "DC-SHA-011"
+    },
+    {
+      "name": "Shadcn/Disclosure/Accordion",
+      "requirement": "DC-SHA-018"
+    },
+    {
+      "name": "Shadcn/Disclosure/Collapsible",
+      "requirement": "DC-SHA-019"
+    },
+    {
+      "name": "Shadcn/Disclosure/Tabs",
+      "requirement": "DC-SHA-020"
+    },
+    {
+      "name": "Shadcn/Feedback/Alert",
+      "requirement": "DC-SHA-012"
+    },
+    {
+      "name": "Shadcn/Feedback/Empty",
+      "requirement": "DC-SHA-013"
+    },
+    {
+      "name": "Shadcn/Feedback/Progress",
+      "requirement": "DC-SHA-014"
+    },
+    {
+      "name": "Shadcn/Feedback/Skeleton",
+      "requirement": "DC-SHA-015"
+    },
+    {
+      "name": "Shadcn/Feedback/Spinner",
+      "requirement": "DC-SHA-016"
+    },
+    {
+      "name": "Shadcn/Forms/Checkbox",
+      "requirement": "DC-SHA-024"
+    },
+    {
+      "name": "Shadcn/Forms/Command",
+      "requirement": "DC-SHA-025"
+    },
+    {
+      "name": "Shadcn/Forms/Field",
+      "requirement": "DC-SHA-026"
+    },
+    {
+      "name": "Shadcn/Forms/Input",
+      "requirement": "DC-SHA-027"
+    },
+    {
+      "name": "Shadcn/Forms/Input Group",
+      "requirement": "DC-SHA-028"
+    },
+    {
+      "name": "Shadcn/Forms/Label",
+      "requirement": "DC-SHA-029"
+    },
+    {
+      "name": "Shadcn/Forms/Select",
+      "requirement": "DC-SHA-030"
+    },
+    {
+      "name": "Shadcn/Forms/Slider",
+      "requirement": "DC-SHA-031"
+    },
+    {
+      "name": "Shadcn/Forms/Switch",
+      "requirement": "DC-SHA-032"
+    },
+    {
+      "name": "Shadcn/Forms/Textarea",
+      "requirement": "DC-SHA-033"
+    },
+    {
+      "name": "Shadcn/Guidance",
+      "requirement": "DC-CAT-003"
+    },
+    {
+      "name": "Shadcn/Layout/Card",
+      "requirement": "DC-SHA-035"
+    },
+    {
+      "name": "Shadcn/Layout/Column Canvas",
+      "requirement": "DC-SHA-036"
+    },
+    {
+      "name": "Shadcn/Layout/Resizable",
+      "requirement": "DC-SHA-037"
+    },
+    {
+      "name": "Shadcn/Layout/Scroll Area",
+      "requirement": "DC-SHA-038"
+    },
+    {
+      "name": "Shadcn/Layout/Separator",
+      "requirement": "DC-SHA-039"
+    },
+    {
+      "name": "Shadcn/Layout/Sidebar",
+      "requirement": "DC-SHA-040"
+    },
+    {
+      "name": "Shadcn/Navigation/Breadcrumb",
+      "requirement": "DC-SHA-021"
+    },
+    {
+      "name": "Shadcn/Navigation/Pagination",
+      "requirement": "DC-SHA-022"
+    },
+    {
+      "name": "Shadcn/Overlays/Alert Dialog",
+      "requirement": "DC-SHA-042"
+    },
+    {
+      "name": "Shadcn/Overlays/Context Menu",
+      "requirement": "DC-SHA-043"
+    },
+    {
+      "name": "Shadcn/Overlays/Dialog",
+      "requirement": "DC-SHA-044"
+    },
+    {
+      "name": "Shadcn/Overlays/Drawer",
+      "requirement": "DC-SHA-045"
+    },
+    {
+      "name": "Shadcn/Overlays/Dropdown Menu",
+      "requirement": "DC-SHA-046"
+    },
+    {
+      "name": "Shadcn/Overlays/Hover Card",
+      "requirement": "DC-SHA-047"
+    },
+    {
+      "name": "Shadcn/Overlays/Popover",
+      "requirement": "DC-SHA-048"
+    },
+    {
+      "name": "Shadcn/Overlays/Sheet",
+      "requirement": "DC-SHA-049"
+    },
+    {
+      "name": "Shadcn/Overlays/Tooltip",
+      "requirement": "DC-SHA-050"
+    },
+    {
+      "name": "Shadcn/Overview",
+      "requirement": "DC-CAT-003"
+    },
+    {
+      "name": "Shell/App Shell",
+      "requirement": "DC-SHELL-002"
+    },
+    {
+      "name": "Shell/Guidance",
+      "requirement": "DC-SHELL-003"
+    },
+    {
+      "name": "UI Forms/Editors/Code Editor",
+      "requirement": "DC-FORM-033"
+    },
+    {
+      "name": "UI Forms/Editors/Code Highlighter",
+      "requirement": "DC-FORM-034"
+    },
+    {
+      "name": "UI Forms/Editors/YAML Editor",
+      "requirement": "DC-FORM-035"
+    },
+    {
+      "name": "UI Forms/Examples/Complete CV Form",
+      "requirement": "DC-FORM-041"
+    },
+    {
+      "name": "UI Forms/Form Inputs/All Schema Kinds",
+      "requirement": "DC-FORM-002"
+    },
+    {
+      "name": "UI Forms/Form Inputs/Autocomplete Input",
+      "requirement": "DC-FORM-007"
+    },
+    {
+      "name": "UI Forms/Form Inputs/Chip Autocomplete",
+      "requirement": "DC-FORM-008"
+    },
+    {
+      "name": "UI Forms/Form Inputs/Color Picker",
+      "requirement": "DC-FORM-009"
+    },
+    {
+      "name": "UI Forms/Form Inputs/Cycle Picker",
+      "requirement": "DC-FORM-010"
+    },
+    {
+      "name": "UI Forms/Form Inputs/Date Picker",
+      "requirement": "DC-FORM-011"
+    },
+    {
+      "name": "UI Forms/Form Inputs/Filter Command Picker",
+      "requirement": "DC-FORM-012"
+    },
+    {
+      "name": "UI Forms/Form Inputs/Form Field",
+      "requirement": "DC-FORM-026"
+    },
+    {
+      "name": "UI Forms/Form Inputs/Inline Option Picker",
+      "requirement": "DC-FORM-013"
+    },
+    {
+      "name": "UI Forms/Form Inputs/List Editor",
+      "requirement": "DC-FORM-014"
+    },
+    {
+      "name": "UI Forms/Form Inputs/Reference Picker",
+      "requirement": "DC-FORM-015"
+    },
+    {
+      "name": "UI Forms/Form Inputs/Search Filter in a Form",
+      "requirement": "DC-FORM-020"
+    },
+    {
+      "name": "UI Forms/Form Inputs/Secret Field",
+      "requirement": "DC-FORM-016"
+    },
+    {
+      "name": "UI Forms/Form Inputs/Segmented Control",
+      "requirement": "DC-FORM-017"
+    },
+    {
+      "name": "UI Forms/Form Inputs/Task Due Calendar",
+      "requirement": "DC-FORM-018"
+    },
+    {
+      "name": "UI Forms/Form Inputs/Time Picker",
+      "requirement": "DC-FORM-019"
+    },
+    {
+      "name": "UI Forms/Guidance",
+      "requirement": "DC-CAT-003"
+    },
+    {
+      "name": "UI Forms/Layout/Add Section Chooser",
+      "requirement": "DC-FORM-022"
+    },
+    {
+      "name": "UI Forms/Layout/Collapsible Item List",
+      "requirement": "DC-FORM-023"
+    },
+    {
+      "name": "UI Forms/Layout/Entry Actions",
+      "requirement": "DC-FORM-024"
+    },
+    {
+      "name": "UI Forms/Layout/Form Add Button",
+      "requirement": "DC-FORM-025"
+    },
+    {
+      "name": "UI Forms/Layout/Form Placeholder",
+      "requirement": "DC-FORM-027"
+    },
+    {
+      "name": "UI Forms/Layout/Form Section Header",
+      "requirement": "DC-FORM-028"
+    },
+    {
+      "name": "UI Forms/Layout/Form Sheet",
+      "requirement": "DC-FORM-029"
+    },
+    {
+      "name": "UI Forms/Layout/Form Toolbar",
+      "requirement": "DC-FORM-030"
+    },
+    {
+      "name": "UI Forms/Orchestrators/JSON Backed Form",
+      "requirement": "DC-FORM-004"
+    },
+    {
+      "name": "UI Forms/Orchestrators/Patchable Form",
+      "requirement": "DC-FORM-005"
+    },
+    {
+      "name": "UI Forms/Orchestrators/Structured Form",
+      "requirement": "DC-FORM-002"
+    },
+    {
+      "name": "UI Forms/Orchestrators/YAML Backed Form",
+      "requirement": "DC-FORM-003"
+    },
+    {
+      "name": "UI Forms/Review/Composed Review",
+      "requirement": "DC-FORM-037"
+    },
+    {
+      "name": "UI Forms/Review/Form Review",
+      "requirement": "DC-FORM-037"
+    },
+    {
+      "name": "Welcome",
+      "requirement": "DC-CAT-003"
+    },
+    {
+      "name": "Workspace/Components/About Dialog",
+      "requirement": "DC-WS-008"
+    },
+    {
+      "name": "Workspace/Components/Bottom Panel",
+      "requirement": "DC-WS-009"
+    },
+    {
+      "name": "Workspace/Components/Command Palette",
+      "requirement": "DC-WS-010"
+    },
+    {
+      "name": "Workspace/Components/Drop Overlay",
+      "requirement": "DC-WS-011"
+    },
+    {
+      "name": "Workspace/Components/Empty Sidebar",
+      "requirement": "DC-WS-022"
+    },
+    {
+      "name": "Workspace/Components/Empty View",
+      "requirement": "DC-WS-012"
+    },
+    {
+      "name": "Workspace/Components/Floating Layer",
+      "requirement": "DC-WS-013"
+    },
+    {
+      "name": "Workspace/Components/Floating Window",
+      "requirement": "DC-WS-014"
+    },
+    {
+      "name": "Workspace/Components/Icon",
+      "requirement": "DC-WS-015"
+    },
+    {
+      "name": "Workspace/Components/Menu",
+      "requirement": "DC-WS-016"
+    },
+    {
+      "name": "Workspace/Components/Mobile Shell",
+      "requirement": "DC-WS-017"
+    },
+    {
+      "name": "Workspace/Components/Popout Surface",
+      "requirement": "DC-WS-018"
+    },
+    {
+      "name": "Workspace/Components/Ribbon",
+      "requirement": "DC-WS-019"
+    },
+    {
+      "name": "Workspace/Components/Settings",
+      "requirement": "DC-WS-020"
+    },
+    {
+      "name": "Workspace/Components/Sidebar",
+      "requirement": "DC-WS-021"
+    },
+    {
+      "name": "Workspace/Components/Sidebar Group",
+      "requirement": "DC-WS-023"
+    },
+    {
+      "name": "Workspace/Components/Sidebar Toggle",
+      "requirement": "DC-WS-024"
+    },
+    {
+      "name": "Workspace/Components/Split",
+      "requirement": "DC-WS-025"
+    },
+    {
+      "name": "Workspace/Components/Stacked Tabs",
+      "requirement": "DC-WS-026"
+    },
+    {
+      "name": "Workspace/Components/Startup",
+      "requirement": "DC-WS-027"
+    },
+    {
+      "name": "Workspace/Components/Status Bar",
+      "requirement": "DC-WS-028"
+    },
+    {
+      "name": "Workspace/Components/Status Item",
+      "requirement": "DC-WS-029"
+    },
+    {
+      "name": "Workspace/Components/Tabs",
+      "requirement": "DC-WS-030"
+    },
+    {
+      "name": "Workspace/Components/Tree",
+      "requirement": "DC-WS-031"
+    },
+    {
+      "name": "Workspace/Components/View Header",
+      "requirement": "DC-WS-032"
+    },
+    {
+      "name": "Workspace/Components/View Host",
+      "requirement": "DC-WS-006"
+    },
+    {
+      "name": "Workspace/Demo/Reusable Framework",
+      "requirement": "DC-WS-004"
+    },
+    {
+      "name": "Workspace/Framework/App Shell",
+      "requirement": "DC-WS-003"
+    },
+    {
+      "name": "Workspace/Guidance",
+      "requirement": "DC-WS-007"
+    },
+    {
+      "name": "Workspace/Panels/Explorer",
+      "requirement": "DC-WS-033"
+    },
+    {
+      "name": "Workspace/Panels/Problems",
+      "requirement": "DC-WS-034"
+    },
+    {
+      "name": "Workspace/Plugins/F-Mode",
+      "requirement": "DC-WS-035"
+    },
+    {
+      "name": "Workspace/Plugins/F-Mode/Edge cases",
+      "requirement": "DC-WS-036"
+    },
+    {
+      "name": "Workspace/Plugins/Notifications",
+      "requirement": "DC-WS-037"
+    }
+  ]
+}

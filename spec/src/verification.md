@@ -192,9 +192,9 @@ This matrix records one current evidence status for every canonical requirement.
 | DC-CAT-005    | In progress | Planned metadata-only `src/spec/**/*.mdx` mirrors                                 |
 | DC-GOV-001    | Implemented | Canonical requirement chapters and verification matrix                            |
 | DC-GOV-002    | Implemented | Canonical requirement chapters and verification matrix                            |
-| DC-GOV-003    | In progress | Planned governance and discovery tooling                                          |
-| DC-GOV-004    | In progress | Planned governance and discovery tooling                                          |
-| DC-GOV-005    | In progress | Planned governance and discovery tooling                                          |
-| DC-GOV-006    | In progress | Planned governance and discovery tooling                                          |
-| DC-GOV-007    | In progress | Planned governance and discovery tooling                                          |
-| DC-GOV-008    | In progress | Planned governance and discovery tooling                                          |
+| DC-GOV-003    | In progress | Core validators pass; Storybook mirror validation lands with the mirrors          |
+| DC-GOV-004    | Implemented | `pnpm spec:first`; local and CI diff tests                                        |
+| DC-GOV-005    | Implemented | `.qmd/index.yml`; `pnpm spec:index`                                               |
+| DC-GOV-006    | Implemented | `pnpm spec:search`; QMD wrapper tests and `rg` fallback                           |
+| DC-GOV-007    | Implemented | `AGENTS.md`; `pnpm ui guide specification`                                        |
+| DC-GOV-008    | Implemented | `.gitignore`; book and QMD tracking validators                                    |

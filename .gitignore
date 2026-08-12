@@ -2,6 +2,7 @@ node_modules
 storybook-static
 storybook-static-check
 spec/book/
+.qmd/index.sqlite*
 dist
 .DS_Store
 *.log

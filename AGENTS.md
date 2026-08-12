@@ -1,5 +1,30 @@
 # Storybook catalog
 
+## Canonical specification
+
+Normative package behavior lives under [`spec/src`](./spec/src). Apply this
+authority order when sources disagree:
+
+1. Higher-level workspace instructions and this tracked guide.
+2. The owning `DC-<AREA>-NNN` requirement and verification row in `spec/src`.
+3. Public source, exported types, and package entry points.
+4. Tests and Storybook scenarios as verification evidence.
+5. README, migration trackers, and generated or mirrored documentation.
+
+Update the owning canonical chapter before or with a protected implementation,
+package, tooling, or Storybook-host change. Requirements use a unique
+`DC-<AREA>-NNN` heading, one concise normative statement, and two to four
+atomic acceptance bullets. Add exactly one verification row. Run
+`pnpm spec:first` to check the local Jujutsu diff, or pass `--base` and `--head`
+for an explicit CI revision range. The canonical path map is in
+[`spec-governance.md`](./spec/src/spec-governance.md#change-map).
+
+Use `pnpm spec:search -- "<topic or DC-ID>"` for lexical discovery before a
+broad scan. Add `--semantic` only when conceptual retrieval is useful. QMD is
+a cache, not an authority: open the returned file and line in `spec/src`
+before acting. When QMD is unavailable, follow the reported `rg` fallback.
+Run `pnpm spec:check` after specification or protected-surface work.
+
 When working on UI components, use the local Storybook catalog and its browser
 tests to validate the change. Human-oriented package overview and command list:
 [`README.md`](./README.md).
@@ -9,17 +34,18 @@ tests to validate the change. Human-oriented package overview and command list:
 Before inventing workflows, load package conventions offline via the CLI:
 
 1. `pnpm ui guide` — topic index and reading order
-2. [`styles.md`](./styles.md) — native CSS, tokens, no Tailwind in sources
-3. `pnpm ui guide layers` — layers, folder layout, and dependency boundaries
-4. [`src/shared/workspace/PLAN.md`](./src/shared/workspace/PLAN.md) — workspace
+2. `pnpm ui guide specification` — canonical requirements and QMD workflow
+3. [`styles.md`](./styles.md) — native CSS, tokens, no Tailwind in sources
+4. `pnpm ui guide layers` — layers, folder layout, and dependency boundaries
+5. [`src/shared/workspace/PLAN.md`](./src/shared/workspace/PLAN.md) — workspace
    framework migration boundary and slice tracker
-5. `pnpm ui guide shadcn` — `ui:add` / inspect / docs sync (never raw shadcn CLI)
-6. `pnpm ui guide forms` — structured forms vs shadcn controls
-7. `pnpm ui guide shell` — canonical AppShell topology, toggles, headers, and
+6. `pnpm ui guide shadcn` — `ui:add` / inspect / docs sync (never raw shadcn CLI)
+7. `pnpm ui guide forms` — structured forms vs shadcn controls
+8. `pnpm ui guide shell` — canonical AppShell topology, toggles, headers, and
    collapsed rails
-8. `pnpm ui guide testing` — stories, checks, and visual baselines after a change
-9. `pnpm ui guide vcs` — commit after each verified change (prefer `jj` when available)
-10. `pnpm ui components` / `pnpm ui components <layer/id>` — list or show local
+9. `pnpm ui guide testing` — stories, checks, and visual baselines after a change
+10. `pnpm ui guide vcs` — commit after each verified change (prefer `jj` when available)
+11. `pnpm ui components` / `pnpm ui components <layer/id>` — list or show local
     usage and examples across shadcn, forms, filter, AI, and workspace (filter
     with `--layer`)
 

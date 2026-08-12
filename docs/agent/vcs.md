@@ -24,6 +24,7 @@ If `jj` is on `PATH` and the repo is colocated / jj-backed (`.jj` present):
 ```bash
 jj --no-pager st
 jj --no-pager diff --summary
+# protected changes: pnpm spec:first
 # validation already done (stories / checks / focused tests as appropriate)
 jj commit -m "Concise why-focused message"
 jj --no-pager st

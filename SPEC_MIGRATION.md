@@ -49,10 +49,10 @@ This tracker records the one-time migration from implicit source and Storybook c
 
 - [x] Inventory current exported and catalogued public surfaces.
 - [x] Create the mdBook source, summary, concise requirements, coverage tables, and one-to-one verification matrix.
-- [ ] Add stable validators and tests for the canonical structure and public-surface mappings.
-- [ ] Add fail-closed local and CI `spec:first` classification.
-- [ ] Add pinned QMD lexical and opt-in semantic discovery with actionable fallbacks.
-- [ ] Update agent, CLI, testing, VCS, and README guidance.
+- [x] Add stable validators and tests for the canonical structure and public-surface mappings.
+- [x] Add fail-closed local and CI `spec:first` classification.
+- [x] Add pinned QMD lexical and opt-in semantic discovery with actionable fallbacks.
+- [x] Update agent, CLI, testing, VCS, and README guidance.
 - [ ] Add metadata-only Storybook mirrors in summary order.
 - [ ] Add canonical specification chapters to Docs MCP and llms discovery.
 - [ ] Complete non-visual repository validation and record evidence.

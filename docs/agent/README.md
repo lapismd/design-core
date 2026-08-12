@@ -25,6 +25,7 @@ Per-component docs are not topics here — use `pnpm ui components`.
 
 | Topic             | File                 | Purpose                                     |
 | ----------------- | -------------------- | ------------------------------------------- |
+| `specification`   | `specification.md`   | canonical spec, validation, and QMD search  |
 | `layers`          | `layers.md`          | shared package-layer boundaries             |
 | `workspace`       | `workspace.md`       | workspace framework boundary and migration  |
 | `shadcn`          | `shadcn.md`          | `ui:add` / inspect / docs sync              |

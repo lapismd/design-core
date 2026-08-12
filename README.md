@@ -7,6 +7,15 @@ This README is the human-facing package map and command reference. Agent
 conventions are available offline through `pnpm ui guide` and in
 [`AGENTS.md`](./AGENTS.md). Styling rules live in [`styles.md`](./styles.md).
 
+## Canonical specification
+
+[`spec/src`](./spec/src) is the canonical source for public behavior,
+architecture, governance, and verification evidence. Search it with
+`pnpm spec:search -- "<topic or DC-ID>"`, then open the returned source path;
+QMD is a discovery cache rather than a second source of truth. Use
+`pnpm ui guide specification` for the authority order, authoring rules, path
+map, and failure fallbacks.
+
 ## Archived product surfaces
 
 The former Apps and Tasks product work is preserved in the jj workspace named
@@ -283,6 +292,13 @@ pnpm build-storybook
 pnpm storybook:check
 
 # Verification
+pnpm spec:validate
+pnpm spec:test
+pnpm spec:build
+pnpm spec:first
+pnpm spec:check
+pnpm spec:index -- [--semantic]
+pnpm spec:search -- [--semantic] [--limit N] [--json] "<query or DC-ID>"
 pnpm test:unit
 pnpm test:storybook
 pnpm test:storybook:watch
@@ -290,6 +306,7 @@ pnpm test:visual
 pnpm test:visual:affected
 pnpm test:visual:report
 pnpm checks
+pnpm checks:nonvisual
 
 # Canonical Visual Delta specification
 
@@ -405,6 +422,8 @@ shadcn CLI directly against this package. Converted families keep
 | Resource                                                                                                                   | Use                                    |
 | -------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
 | [`AGENTS.md`](./AGENTS.md)                                                                                                 | Primary agent workflow + folder layout |
+| [`spec/src/index.md`](./spec/src/index.md)                                                                                 | Canonical Design Core specification    |
+| `pnpm ui guide specification`                                                                                              | Spec-first and QMD workflow            |
 | [`styles.md`](./styles.md)                                                                                                 | Native CSS and token contract          |
 | `pnpm ui guide layers`                                                                                                     | Layer selection, folders, dependencies |
 | `pnpm ui guide testing`                                                                                                    | Verification sequence                  |

@@ -14,6 +14,10 @@ with the catalog — do not invent props or skip visual compare.
 
 ## Required loop
 
+Run `pnpm spec:first` for protected production, package, tooling, or Storybook
+host changes and keep the owning canonical chapter in the same diff. Run
+`pnpm spec:check` when specification governance or mirrors change.
+
 1. **Stories** — colocated `ComponentName.stories.svelte` in the same change.
    Interactive controls need play functions that assert a visible/accessible
    result (and callbacks when passed).
@@ -44,6 +48,10 @@ with the catalog — do not invent props or skip visual compare.
    no scopable HTML). Warnings from `node_modules` are logged only.
 7. **Commit** — record the verified slice immediately (see `pnpm ui guide vcs`).
    Prefer `jj commit` when Jujutsu is available; otherwise use Git.
+
+For an explicitly non-visual governance or documentation migration, use
+`pnpm checks:nonvisual` and the relevant focused commands. This does not grant
+permission to skip visual comparison for later component or styling changes.
 
 ## Visual baselines
 
