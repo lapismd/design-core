@@ -94,6 +94,7 @@ Compatibility aliases are removed only through an explicit reviewed slice.
 | Notifications                     | optional plugin package                                    | `plugins/notifications/`   | Complete            | Pass | Pass      | Candidate pass; review pending               | Pending |
 | Demo and reference                | demos, stories, references                                 | `demo/`, `reference/`      | Complete            | Pass | Pass      | Canonical and candidate pass                 | Pending |
 | Explorer panel                    | lapis `feature/file-explorer`                              | `explorer/`                | Complete            | Pass | Pass      | Pending (`visual-pending`)                   | Pending |
+| Problems diagnostics + panel      | VS Code diagnostic model + Lapis Problems parity           | `problems/`                | Complete            | Pass | Pass      | Pending (`visual-pending`)                   | Pending |
 | Startup progress and failure      | lapis `components/app/App.svelte`                          | `startup/`                 | Complete            | N/A  | Pass      | Candidate baselines; review pending          | Pending |
 | Lapis source removal              | `lapis-notes/app-shell`                                    | separate Changeyard change | Blocked on approval | N/A  | N/A       | N/A                                          | Pending |
 
@@ -927,6 +928,28 @@ workflow.
   proves both update when the owning surface changes, so Explorer follows the
   same direct-sidebar versus body, bottom, and grouped placement contract as
   other registered panels without component-owned placement logic.
+
+### Problems diagnostics and panel
+
+- Added the plain `WorkspaceDiagnostic` model, opaque resource and optional
+  range/related-information types, string severities, tags, codes, and
+  owner-isolated `WorkspaceDiagnosticCollection` lifecycle under `problems/`.
+- `AppShellController.diagnostics` is always available. Static plugins use the
+  protected `createDiagnosticCollection()` helper for automatic teardown; the
+  shell's internal collection publishes active plugin and persistence failures
+  and clears them after recovery.
+- Added `WorkspaceProblemsController` and `WorkspaceProblems` with live counts,
+  severity filters, text search, sorted resource/workspace groups, related
+  locations, diagnostic tags, navigation, copy actions, and synchronous
+  collection menu contributions.
+- Added the required `problemsPlugin()` presentation plugin. It preserves a
+  persisted/moved leaf, otherwise seeds an inactive closable bottom tab after
+  hydration without opening the dock, and recreates/reveals it from the App
+  Shell command after closure.
+- Published `./workspace/problems`, four semantic severity tokens, consumer
+  Show Code, MDX guidance, unit coverage, and six placement stories with
+  literal `visual-pending` metadata. Visual comparison remains explicitly
+  deferred.
 
 ### Bottom panel alignment
 

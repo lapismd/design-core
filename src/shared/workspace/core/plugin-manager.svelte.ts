@@ -18,6 +18,10 @@ import type { ConfigurationOptionSource } from "../settings/configuration.js";
 import type { WorkspaceSettingsSection } from "../settings/types.js";
 import type { AppShellOverlayContribution } from "./app-shell-ui-registry.svelte.js";
 import type { CommandKeymapScope } from "./command-manager.svelte.js";
+import type {
+  WorkspaceDiagnosticCollection,
+  WorkspaceDiagnosticCollectionOptions,
+} from "../problems/types.js";
 
 export type AppShellPluginStatus =
   | "disabled"
@@ -62,6 +66,7 @@ export interface AppShellPluginManagerEventMap {
   error: [state: AppShellPluginState];
   ready: [];
   "persistence-error": [event: { operation: "load" | "save"; error: unknown }];
+  "persistence-success": [event: { operation: "load" | "save" }];
 }
 
 export abstract class AppShellPlugin<Options = unknown> {
@@ -138,6 +143,19 @@ export abstract class AppShellPlugin<Options = unknown> {
 
   protected registerOverlay(contribution: AppShellOverlayContribution): void {
     this.register(this.app.ui.registerOverlay(contribution));
+  }
+
+  /** Create an owner-scoped collection that is disposed with this plugin. */
+  protected createDiagnosticCollection(
+    id: string,
+    options: WorkspaceDiagnosticCollectionOptions = {},
+  ): WorkspaceDiagnosticCollection {
+    const collection = this.app.diagnostics.createCollection(
+      `${this.id}:${id}`,
+      options,
+    );
+    this.register(() => collection.dispose());
+    return collection;
   }
 
   protected pushKeymapScope(scope: CommandKeymapScope): void {
@@ -231,6 +249,12 @@ export class AppShellPluginManager {
     return this.#events.on(name, listener);
   }
 
+  offref<Name extends keyof AppShellPluginManagerEventMap>(
+    ref: WorkspaceEventRef<AppShellPluginManagerEventMap, Name>,
+  ): void {
+    this.#events.offref(ref);
+  }
+
   get(id: string): AppShellPluginState | null {
     const state = this.states.find((entry) => entry.id === id);
     return state ? { ...state } : null;
@@ -253,6 +277,9 @@ export class AppShellPluginManager {
             entry.state.enabled = enabled;
           }
         }
+      }
+      if (this.persistence) {
+        this.#events.trigger("persistence-success", { operation: "load" });
       }
     } catch (error) {
       this.#events.trigger("persistence-error", {
@@ -383,6 +410,7 @@ export class AppShellPluginManager {
           [...this.#entries].map(([id, entry]) => [id, entry.state.enabled]),
         ),
       );
+      this.#events.trigger("persistence-success", { operation: "save" });
     } catch (error) {
       this.#events.trigger("persistence-error", {
         operation: "save",

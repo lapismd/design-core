@@ -1,0 +1,61 @@
+import { Meta, Canvas, Source } from "@storybook/addon-docs/blocks";
+import * as Stories from "./WorkspaceProblems.stories.svelte";
+import * as exampleSources from "./WorkspaceProblems.example-sources.js";
+
+<Meta of={Stories} />
+
+# Workspace Problems
+
+`WorkspaceProblems` renders plain, ephemeral diagnostics supplied through the
+application-owned `AppShellController.diagnostics` manager. The package never
+interprets resource URIs or imports a filesystem, editor, language service, or
+Lapis API.
+
+Import the model, panel, and optional presentation plugin from
+`@lapismd/design-core/workspace/problems`.
+
+<Source language="svelte" code={exampleSources.BottomPanel} />
+
+## Model and ownership
+
+- Positions are zero-based and ranges are end-exclusive.
+- Severities are `error`, `warning`, `information`, and `hint`.
+- A resource is an opaque URI plus optional label, detail, and icon hints.
+- A `null` resource publishes a workspace-wide issue.
+- Collections replace diagnostics per resource and are isolated by owner.
+- Plugins created through `AppShellPlugin.createDiagnosticCollection()` dispose
+  their collections automatically during teardown.
+- Diagnostics are never persisted. Workspace layout remains the only persisted
+  state, including a moved Problems leaf.
+
+## Presentation plugin
+
+`problemsPlugin()` registers the movable view and the `App Shell: Show Problems`
+command. After layout hydration it preserves an existing leaf or seeds one
+inactive, closable tab in the closed bottom dock. New problems never open the
+dock automatically; the command reveals the existing destination or recreates
+the tab after closure.
+
+## Placement coverage
+
+The same registered view must remain usable in every workspace destination.
+
+<Canvas of={Stories.MiddleTopTabs} />
+
+<Canvas of={Stories.StackedTabs} />
+
+<Canvas of={Stories.LeftSidebar} />
+
+<Canvas of={Stories.RightSidebar} />
+
+<Canvas of={Stories.BottomPanel} />
+
+<Canvas of={Stories.SidebarAsAGroup} />
+
+## Consumer adapters
+
+Primary activation calls the host navigation adapter with the opaque resource
+and optional range. Related-information rows use the same adapter. Built-in
+context actions copy the message or formatted problem; each collection may
+synchronously append actions such as quick fixes while their callbacks remain
+free to run asynchronously.

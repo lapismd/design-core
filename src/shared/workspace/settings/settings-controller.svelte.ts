@@ -436,6 +436,9 @@ export class WorkspaceSettingsController {
           }
         }
       }
+      if (this.#persistence) {
+        this.#events.trigger("persistence-success", { operation: "load" });
+      }
       this.#validateAll();
     } catch (error) {
       this.#events.trigger("persistence-error", { operation: "load", error });
@@ -471,6 +474,7 @@ export class WorkspaceSettingsController {
       try {
         await this.#persistence?.save(snapshot, event);
         this.dirty = false;
+        this.#events.trigger("persistence-success", { operation: "save" });
       } catch (error) {
         this.#events.trigger("persistence-error", { operation: "save", error });
       } finally {

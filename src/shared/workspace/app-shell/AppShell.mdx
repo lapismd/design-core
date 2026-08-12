@@ -51,6 +51,10 @@ Utility surfaces are also composable: `About`, `CommandPalette`, `Notices`,
   chrome.
 - `AppWorkspace.bottomPanelAlignment` reads the configured alignment and
   `setBottomPanelAlignment()` updates it at runtime.
+- `AppShellController.diagnostics` owns ephemeral diagnostic collections.
+  Include `problemsPlugin()` when the application wants the standard movable
+  Problems view and Show Problems command; resource navigation and fixes remain
+  application adapters.
 - `Settings` renders the controller-owned settings surface directly;
   `SettingsDialog` provides its reusable modal presentation.
 - `Root` accepts an injectable popout host and explicit utility-layer toggles.

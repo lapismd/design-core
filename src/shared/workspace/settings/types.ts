@@ -239,6 +239,7 @@ export interface WorkspaceSettingsEventMap {
   "schema-change": [];
   "validation-error": [event: WorkspaceSettingsValidationError];
   "persistence-error": [event: { operation: "load" | "save"; error: unknown }];
+  "persistence-success": [event: { operation: "load" | "save" }];
 }
 
 export interface WorkspaceSettingsSearchResult {

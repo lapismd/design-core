@@ -39,6 +39,10 @@
   --ui-workspace-selection: color-mix(in srgb, var(--primary) 14%, transparent);
   --ui-workspace-destructive: var(--destructive);
   --ui-workspace-warning: var(--warning, #f97316);
+  --ui-workspace-diagnostic-error: var(--ui-workspace-destructive);
+  --ui-workspace-diagnostic-warning: var(--ui-workspace-warning);
+  --ui-workspace-diagnostic-information: var(--ui-workspace-accent);
+  --ui-workspace-diagnostic-hint: var(--ui-workspace-muted-foreground);
   --ui-workspace-focus-ring: var(--ring);
   --ui-workspace-font-sans: var(--font-sans, inherit);
   --ui-workspace-font-mono: var(

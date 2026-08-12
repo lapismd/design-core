@@ -159,6 +159,9 @@ Application-independent workspace framework in `src/shared/workspace/`.
 - Explorer panel (`Workspace/Panels/Explorer`): controller-driven file/folder
   chrome with consumer-owned tree/action adapters (filesystem stays outside
   the framework)
+- Problems panel (`Workspace/Panels/Problems`): generic diagnostic collections,
+  filtering/grouping/actions, and a movable presentation plugin with
+  consumer-owned resource navigation and quick-fix adapters
 - Startup surface (`Workspace/Components/Startup`): application-independent
   task progress and bounded failure presentation with host-owned actions
 - Optional F-Mode and Notifications plugins

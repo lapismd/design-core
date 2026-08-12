@@ -255,6 +255,9 @@ export class WorkspaceShellController {
       if (value !== null && value !== undefined) {
         this.layout = normalizeWorkspaceLayout(value, this.layout);
       }
+      if (this.#persistence) {
+        this.#events.trigger("persistence-success", { operation: "load" });
+      }
     } catch (error) {
       this.#events.trigger("persistence-error", { operation: "load", error });
     } finally {
@@ -287,6 +290,7 @@ export class WorkspaceShellController {
     this.#saveChain = this.#saveChain.then(async () => {
       try {
         await this.#persistence?.save(snapshot, event);
+        this.#events.trigger("persistence-success", { operation: "save" });
       } catch (error) {
         this.#events.trigger("persistence-error", { operation: "save", error });
       }

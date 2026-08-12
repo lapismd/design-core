@@ -328,6 +328,7 @@ export interface WorkspaceEventMap {
   "layout-will-drop": [event: WorkspaceLayoutDropEvent];
   "layout-did-drop": [event: WorkspaceLayoutDropEvent];
   "persistence-error": [event: WorkspacePersistenceErrorEvent];
+  "persistence-success": [event: { operation: "load" | "save" }];
 }
 
 export interface WorkspaceLayoutPersistence {

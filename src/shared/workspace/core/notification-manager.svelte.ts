@@ -95,6 +95,7 @@ export interface NotificationManagerEventMap {
   changed: [];
   notify: [record: NotificationTransientRecord];
   "persistence-error": [event: { operation: "load" | "save"; error: unknown }];
+  "persistence-success": [event: { operation: "load" | "save" }];
 }
 
 const DEFAULT_NOTIFICATION_DURATION = 4000;
@@ -393,6 +394,9 @@ export class NotificationManager {
         await this.#persistence?.load(),
       );
       this.records = snapshot.records;
+      if (this.#persistence) {
+        this.#events.trigger("persistence-success", { operation: "load" });
+      }
     } catch (error) {
       this.#events.trigger("persistence-error", {
         operation: "load",
@@ -598,6 +602,7 @@ export class NotificationManager {
     this.#saveChain = this.#saveChain.then(async () => {
       try {
         await this.#persistence!.save(snapshot);
+        this.#events.trigger("persistence-success", { operation: "save" });
       } catch (error) {
         this.#events.trigger("persistence-error", {
           operation: "save",

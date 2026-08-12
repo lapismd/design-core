@@ -219,6 +219,7 @@
     "./workspace/plugins/fmode": "./src/shared/workspace/plugins/f-mode/index.ts",
     "./workspace/plugins/notifications": "./src/shared/workspace/plugins/notifications/index.ts",
     "./workspace/popout": "./src/shared/workspace/popout/index.ts",
+    "./workspace/problems": "./src/shared/workspace/problems/index.ts",
     "./workspace/ribbon": "./src/shared/workspace/ribbon/index.ts",
     "./workspace/settings": "./src/shared/workspace/settings/index.ts",
     "./workspace/sidebar": "./src/shared/workspace/sidebar/index.ts",

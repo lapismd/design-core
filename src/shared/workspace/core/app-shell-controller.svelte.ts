@@ -62,6 +62,11 @@ import {
   type EditorViewContribution,
 } from "./editor-view-registry.js";
 import type { WorkspaceResourceOpenError } from "./app-workspace.js";
+import { WorkspaceDiagnosticsManager } from "../problems/diagnostics-manager.svelte.js";
+import type {
+  WorkspaceDiagnostic,
+  WorkspaceDiagnosticCollection,
+} from "../problems/types.js";
 
 export interface AppShellLayoutPersistence {
   load(): Promise<unknown | null>;
@@ -119,6 +124,7 @@ const forwardedWorkspaceEvents: Array<keyof WorkspaceEventMap> = [
   "layout-will-drop",
   "layout-did-drop",
   "persistence-error",
+  "persistence-success",
 ];
 
 /**
@@ -139,6 +145,8 @@ export class AppShellController {
   readonly keymap: CommandKeymapScope;
   readonly plugins: AppShellPluginManager;
   readonly notifications: NotificationManager;
+  /** Ephemeral, owner-isolated diagnostics published by the shell and plugins. */
+  readonly diagnostics: WorkspaceDiagnosticsManager;
   readonly notices: NoticeManager;
   readonly ui: AppShellUiRegistry;
   readonly ribbon: WorkspaceItemRegistry<WorkspaceRibbonItem>;
@@ -156,6 +164,8 @@ export class AppShellController {
 
   readonly #events = new WorkspaceEventDispatcher<AppShellEventMap>();
   readonly #workspaceDisposers: Array<() => void> = [];
+  readonly #coreDiagnosticCollection: WorkspaceDiagnosticCollection;
+  readonly #coreFailures = new Map<string, WorkspaceDiagnostic>();
   #startPromise: Promise<void> | null = null;
   #disposed = false;
 
@@ -184,6 +194,11 @@ export class AppShellController {
     this.notifications = new NotificationManager(
       options.persistence?.notifications,
       options.notificationSaveDebounceMs,
+    );
+    this.diagnostics = new WorkspaceDiagnosticsManager();
+    this.#coreDiagnosticCollection = this.diagnostics.createCollection(
+      "app-shell:core",
+      { label: "App Shell" },
     );
     this.notices = new NoticeManager(this.notifications);
     this.ui = new AppShellUiRegistry();
@@ -352,20 +367,111 @@ export class AppShellController {
       options.plugins ?? [],
       options.persistence?.plugins,
     );
-    this.plugins.on("error", (state) => {
+    const pluginErrorRef = this.plugins.on("error", (state) => {
       this.#events.trigger("plugin-error", state);
+      this.#setCoreFailure(
+        `plugin:${state.id}`,
+        "app-shell.plugin-enablement",
+        `Plugin “${state.name}” failed to enable: ${errorMessage(state.error)}`,
+      );
     });
-    this.plugins.on("persistence-error", ({ operation, error }) => {
-      this.notices.show(`Plugin ${operation} failed: ${String(error)}`);
+    const pluginChangeRef = this.plugins.on("change", (state) => {
+      if (state.status === "enabled" || state.status === "disabled") {
+        this.#clearCoreFailure(`plugin:${state.id}`);
+      }
     });
+    const pluginPersistenceErrorRef = this.plugins.on(
+      "persistence-error",
+      ({ operation, error }) => {
+        this.notices.show(`Plugin ${operation} failed: ${String(error)}`);
+        this.#setCoreFailure(
+          `plugin-persistence:${operation}`,
+          `app-shell.plugin-state-${operation}`,
+          `Plugin state ${operation} failed: ${errorMessage(error)}`,
+        );
+      },
+    );
+    const pluginPersistenceSuccessRef = this.plugins.on(
+      "persistence-success",
+      ({ operation }) => {
+        this.#clearCoreFailure(`plugin-persistence:${operation}`);
+      },
+    );
     const notificationPersistenceRef = this.notifications.on(
       "persistence-error",
       (event) => {
         this.#events.trigger("notification-persistence-error", event);
+        this.#setCoreFailure(
+          `notification-persistence:${event.operation}`,
+          `app-shell.notification-${event.operation}`,
+          `Notification ${event.operation} failed: ${errorMessage(event.error)}`,
+        );
+      },
+    );
+    const notificationPersistenceSuccessRef = this.notifications.on(
+      "persistence-success",
+      ({ operation }) => {
+        this.#clearCoreFailure(`notification-persistence:${operation}`);
+      },
+    );
+    const configurationPersistenceErrorRef = this.settings.on(
+      "persistence-error",
+      ({ operation, error }) => {
+        this.#setCoreFailure(
+          `configuration-persistence:${operation}`,
+          `app-shell.configuration-${operation}`,
+          `Configuration ${operation} failed: ${errorMessage(error)}`,
+        );
+      },
+    );
+    const configurationPersistenceSuccessRef = this.settings.on(
+      "persistence-success",
+      ({ operation }) => {
+        this.#clearCoreFailure(`configuration-persistence:${operation}`);
       },
     );
     this.#workspaceDisposers.push(() =>
       this.notifications.offref(notificationPersistenceRef),
+    );
+    this.#workspaceDisposers.push(() =>
+      this.notifications.offref(notificationPersistenceSuccessRef),
+    );
+    this.#workspaceDisposers.push(() =>
+      this.settings.offref(configurationPersistenceErrorRef),
+    );
+    this.#workspaceDisposers.push(() =>
+      this.settings.offref(configurationPersistenceSuccessRef),
+    );
+    this.#workspaceDisposers.push(() => this.plugins.offref(pluginErrorRef));
+    this.#workspaceDisposers.push(() => this.plugins.offref(pluginChangeRef));
+    this.#workspaceDisposers.push(() =>
+      this.plugins.offref(pluginPersistenceErrorRef),
+    );
+    this.#workspaceDisposers.push(() =>
+      this.plugins.offref(pluginPersistenceSuccessRef),
+    );
+
+    const layoutPersistenceErrorRef = this.renderer.on(
+      "persistence-error",
+      ({ operation, error }) => {
+        this.#setCoreFailure(
+          `layout-persistence:${operation}`,
+          `app-shell.layout-${operation}`,
+          `Workspace layout ${operation} failed: ${errorMessage(error)}`,
+        );
+      },
+    );
+    const layoutPersistenceSuccessRef = this.renderer.on(
+      "persistence-success",
+      ({ operation }) => {
+        this.#clearCoreFailure(`layout-persistence:${operation}`);
+      },
+    );
+    this.#workspaceDisposers.push(() =>
+      this.renderer.offref(layoutPersistenceErrorRef),
+    );
+    this.#workspaceDisposers.push(() =>
+      this.renderer.offref(layoutPersistenceSuccessRef),
     );
 
     const workspaceEvents = this
@@ -447,6 +553,7 @@ export class AppShellController {
     this.commands.destroy();
     this.notices.clear();
     this.notifications.destroy();
+    this.diagnostics.dispose();
     this.ui.destroy();
     this.settings.destroy();
     this.renderer.destroy();
@@ -471,9 +578,34 @@ export class AppShellController {
     this.aboutDialogOpen = false;
   }
 
+  #setCoreFailure(key: string, code: string, message: string): void {
+    this.#coreFailures.set(key, {
+      message,
+      severity: "error",
+      source: "App Shell",
+      code,
+    });
+    this.#publishCoreFailures();
+  }
+
+  #clearCoreFailure(key: string): void {
+    if (!this.#coreFailures.delete(key)) return;
+    this.#publishCoreFailures();
+  }
+
+  #publishCoreFailures(): void {
+    this.#coreDiagnosticCollection.set(null, [...this.#coreFailures.values()]);
+  }
+
   registerSettingsSection(section: WorkspaceSettingsSection): () => void {
     return this.configuration.register(section);
   }
+}
+
+function errorMessage(error: unknown): string {
+  return error instanceof Error
+    ? error.message
+    : String(error ?? "Unknown error");
 }
 
 function mergeById<T extends { id: string }>(

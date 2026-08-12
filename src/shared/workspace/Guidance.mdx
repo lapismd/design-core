@@ -27,6 +27,10 @@ import {
 import { WorkspaceCommandPalette } from "@lapismd/design-core/workspace/command-palette";
 import { WorkspacePopoutSurface } from "@lapismd/design-core/workspace/popout";
 import { WorkspaceTabs } from "@lapismd/design-core/workspace/tabs";
+import {
+  WorkspaceProblems,
+  problemsPlugin,
+} from "@lapismd/design-core/workspace/problems";
 ```
 
 Every top-level Workspace component family with a public barrel has a matching
@@ -43,6 +47,21 @@ adapters for vault listing, create/rename/delete, active-file sync, and
 preferences. Native OS path actions and Lapis-specific URLs stay on the host
 via `buildItemMenu`. Layout tab drag-and-drop remains separate
 (`WorkspaceDragState` / drop overlay).
+
+`Workspace/Panels/Problems` is the application-independent diagnostics
+presentation (`@lapismd/design-core/workspace/problems`). Applications and
+plugins publish plain diagnostics through owner-isolated collections on
+`AppShellController.diagnostics`; they keep resource URI interpretation,
+navigation, code actions, editors, and language services in host adapters.
+`problemsPlugin()` registers the movable view and quietly seeds a closed bottom
+tab only when no persisted Problems leaf exists. Diagnostics are ephemeral and
+must never be added to workspace layout persistence.
+
+Framework plugins should use `AppShellPlugin.createDiagnosticCollection()` so
+their collection is disposed automatically. Collection `buildItemMenu` hooks
+may append quick fixes, while primary row activation remains navigation-only.
+Do not put callbacks on `WorkspaceDiagnostic` data or make the panel inspect
+Lapis paths, vaults, or editor instances.
 
 ## Styling
 
