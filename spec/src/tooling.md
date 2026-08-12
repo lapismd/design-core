@@ -19,7 +19,6 @@ Repository tools keep source generation, discovery, documentation, and validatio
 
 - Machine-readable output must be stable enough for repository automation.
 - Tooling failures must report an actionable source path or command.
-- Specification commands must retain separate validation, tests, build, spec-first, index, search, and serve entry points.
 
 ## DC-TOOL-002 — Component generator
 
@@ -38,6 +37,7 @@ Repository tools keep source generation, discovery, documentation, and validatio
 
 - Machine-readable output must be stable enough for repository automation.
 - Tooling failures must report an actionable source path or command.
+- Specification commands must retain separate validation, tests, build, spec-first, index, search, and serve entry points.
 
 ## DC-TOOL-004 — Docs MCP and llms catalog
 
@@ -47,3 +47,4 @@ Repository tools keep source generation, discovery, documentation, and validatio
 
 - Machine-readable output must be stable enough for repository automation.
 - Tooling failures must report an actionable source path or command.
+- Docs MCP and llms discovery must expose canonical specification files without rewriting their Markdown.

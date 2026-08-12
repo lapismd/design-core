@@ -52,6 +52,49 @@ const preview: Preview = {
     },
   ],
   parameters: {
+    options: {
+      storySort: {
+        order: [
+          "Specification",
+          [
+            "Introduction",
+            "Architecture",
+            "Package exports",
+            "Styling and themes",
+            "Tooling",
+            "Shadcn",
+            [
+              "Actions and content",
+              "Data and feedback",
+              "Disclosure and navigation",
+              "Forms",
+              "Layout",
+              "Overlays",
+            ],
+            "Forms",
+            [
+              "Core and orchestrators",
+              "Inputs",
+              "Layout",
+              "Editors",
+              "Review",
+              "Examples",
+            ],
+            "Filter",
+            "AI",
+            "Shell",
+            "Workspace",
+            ["Framework", "Components", "Panels", "Plugins"],
+            "Storybook catalog",
+            "Specification governance",
+            "Verification",
+          ],
+          "Documentation",
+          ["Welcome"],
+          "*",
+        ],
+      },
+    },
     a11y: {
       test: "error",
       context: {

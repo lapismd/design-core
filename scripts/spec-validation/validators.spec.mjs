@@ -24,6 +24,14 @@ test("accepts a complete one-to-one canonical fixture", () => {
   assert.equal(result.stats.surfaces, 1);
 });
 
+test("allows documentation groups after the canonical specification order", () => {
+  const files = minimalBook();
+  files[".storybook/preview.ts"] =
+    'export default { parameters: { options: { storySort: { order: ["Specification", ["Chapter", "Verification"], "Documentation", ["Welcome"], "*"] } } } };\n';
+  const { result } = validate(files);
+  assert.equal(result.ok, true);
+});
+
 test("reports duplicate IDs, malformed details, and missing verification", () => {
   const files = minimalBook({
     details: ["Two sentences. This is not atomic."],
@@ -98,4 +106,17 @@ test("reports malformed JSON as a fail-closed internal validation error", () => 
     readFileSync(path.join(repoRoot, "spec/public-surfaces.json"), "utf8"),
     "{",
   );
+});
+
+test("enforces complete metadata-only Storybook mirrors in SUMMARY order", () => {
+  const files = minimalBook();
+  files["src/spec/chapter.mdx"] += "\nCopied normative prose.\n";
+  files[".storybook/preview.ts"] =
+    'export default { parameters: { options: { storySort: { order: ["Specification", ["Verification"], "*"] } } } };\n';
+  delete files["src/spec/verification.mdx"];
+  const { result } = validate(files);
+  const codes = new Set(result.findings.map((finding) => finding.code));
+  assert(codes.has("SPEC-MIRROR-CONTENT"));
+  assert(codes.has("SPEC-MIRROR-MISSING"));
+  assert(codes.has("SPEC-MIRROR-ORDER"));
 });

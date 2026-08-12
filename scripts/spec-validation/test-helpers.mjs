@@ -52,5 +52,8 @@ ${details.map((detail) => `- ${detail}`).join("\n")}
     "spec/src/chapter.md": chapter,
     "spec/src/verification.md": `# Verification\n\n| Requirement | Status | Evidence |\n| --- | --- | --- |\n| ${requirement} | ${status} | fixture |\n`,
     "src/Fixture.stories.svelte": `<script module>const { Story } = defineMeta({ title: "Fixture/Test" });</script>`,
+    "src/spec/chapter.mdx": `import { Markdown, Meta } from "@storybook/addon-docs/blocks";\nimport content from "../../spec/src/chapter.md?raw";\n\n<Meta title="Specification/Chapter" />\n\n<Markdown>{content}</Markdown>\n`,
+    "src/spec/verification.mdx": `import { Markdown, Meta } from "@storybook/addon-docs/blocks";\nimport content from "../../spec/src/verification.md?raw";\n\n<Meta title="Specification/Verification" />\n\n<Markdown>{content}</Markdown>\n`,
+    ".storybook/preview.ts": `export default { parameters: { options: { storySort: { order: ["Specification", ["Chapter", "Verification"], "*"] } } } };\n`,
   };
 }

@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import type {
@@ -22,6 +23,35 @@ const REVIEW_BLOCK_SOURCE =
   "src/shared/forms/form-review/ComposedReview.stories.svelte";
 const FILTER_BLOCK_SOURCE =
   "src/shared/filter/search-filter-bar/SearchFilterBar.stories.svelte";
+const SPEC_SUMMARY_SOURCE = "spec/src/SUMMARY.md";
+
+type SpecificationChapter = {
+  label: string;
+  chapterPath: string;
+  absolutePath: string;
+  slug: string;
+};
+
+function specificationChapters(root: string): SpecificationChapter[] {
+  const summaryPath = path.resolve(root, SPEC_SUMMARY_SOURCE);
+  return readFileSync(summaryPath, "utf8")
+    .split(/\r?\n/)
+    .flatMap((line) => {
+      const match = /^\s*-\s+\[([^\]]+)]\(([^)#]+\.md)(?:#[^)]+)?\)\s*$/.exec(
+        line,
+      );
+      if (!match) return [];
+      const chapterPath = match[2]!.replaceAll("\\", "/");
+      return [
+        {
+          label: match[1]!.replaceAll(" / ", "/"),
+          chapterPath,
+          absolutePath: path.resolve(root, "spec", "src", chapterPath),
+          slug: chapterPath.replace(/\.md$/, "").replaceAll("/", "-"),
+        },
+      ];
+    });
+}
 
 const ENTRY_METADATA: Record<
   string,
@@ -91,9 +121,14 @@ export function createUiDocsProvider(): DocsMcpProvider {
       const guideFiles = listGuideTopics(root).map(
         (topic) => getGuideTopic(root, topic.id).path,
       );
+      const specificationFiles = specificationChapters(root).map(
+        (chapter) => chapter.absolutePath,
+      );
       return [
         fileURLToPath(import.meta.url),
         ...componentFiles,
+        path.resolve(root, SPEC_SUMMARY_SOURCE),
+        ...specificationFiles,
         ...guideFiles,
         path.resolve(root, REVIEW_BLOCK_SOURCE),
         path.resolve(root, FILTER_BLOCK_SOURCE),
@@ -151,7 +186,29 @@ export function createUiDocsProvider(): DocsMcpProvider {
           ],
         };
       });
-      const documents = listGuideTopics(root).map((topic) => {
+      const specificationDocuments = specificationChapters(root).map(
+        (chapter) => {
+          const markdown = readFileSync(chapter.absolutePath, "utf8");
+          return {
+            id: `spec-${chapter.slug}`,
+            group: "specification",
+            slug: chapter.slug,
+            name: chapter.label,
+            title: `Specification/${chapter.label}`,
+            summary: `Canonical Design Core specification chapter for ${chapter.label}.`,
+            keywords: [
+              "canonical specification",
+              ...new Set(markdown.match(/DC-[A-Z]+-\d{3}/g) ?? []),
+            ],
+            path: path
+              .relative(root, chapter.absolutePath)
+              .replaceAll("\\", "/"),
+            markdown,
+            sourceFiles: [chapter.absolutePath],
+          };
+        },
+      );
+      const guideDocuments = listGuideTopics(root).map((topic) => {
         const guide = getGuideTopic(root, topic.id);
         return {
           id: `guide-${topic.id}`,
@@ -171,6 +228,7 @@ export function createUiDocsProvider(): DocsMcpProvider {
           sourceFiles: [guide.path],
         };
       });
+      const documents = [...specificationDocuments, ...guideDocuments];
       return {
         project: {
           title: "@lapismd/design-core",
@@ -178,16 +236,19 @@ export function createUiDocsProvider(): DocsMcpProvider {
             "Local UI package documentation for shadcn, forms, filter, and AI.",
           guidance: {
             setup: [
+              'Search `spec/src` with `pnpm spec:search -- "<topic or DC-ID>"`, then open the returned canonical file.',
               "Run `pnpm ui guide` before inventing a component workflow.",
               "Use the Storybook MCP for live story instructions, previews, and story tests.",
             ],
             readingOrder: [
+              "`pnpm ui guide specification`",
               "`pnpm ui guide layers`",
               "`pnpm ui guide shadcn` or `pnpm ui guide forms`",
               "`pnpm ui guide testing`",
               "`pnpm ui guide vcs`",
             ],
             rules: [
+              "Update the owning canonical specification chapter before or with protected behavior changes.",
               "Use native CSS and shared tokens; do not add Tailwind to component sources.",
               "Add or update a colocated story with every visual component change.",
               "Never update visual baselines without explicit human approval.",

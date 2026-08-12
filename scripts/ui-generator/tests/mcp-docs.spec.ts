@@ -1,11 +1,18 @@
 import { describe, expect, it } from "vitest";
-import { mkdtempSync, writeFileSync, mkdirSync, rmSync } from "node:fs";
+import {
+  mkdtempSync,
+  writeFileSync,
+  mkdirSync,
+  readFileSync,
+  rmSync,
+} from "node:fs";
 import path from "node:path";
 import { tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
 import { createDocsCache } from "../mcp/cache.js";
 import { createDocsService } from "../mcp/docs-service.js";
 import { extractPropsFromSvelteFile } from "../mcp/svelte-props.js";
+import { createUiDocsProvider } from "../mcp/ui-provider.js";
 
 const packageRoot = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
@@ -121,6 +128,8 @@ describe("llms docs service", () => {
     expect(index).toContain("## guide");
     expect(index).toMatch(/llms\/guide\/layers\.md/);
     expect(index).toMatch(/llms\/guide\/layers\.txt/);
+    expect(index).toContain("## specification");
+    expect(index).toMatch(/llms\/specification\/forms-inputs\.md/);
   }, 30_000);
 
   it("resolves qualified and bare component paths as .md and .txt", () => {
@@ -178,5 +187,30 @@ describe("llms docs service", () => {
       reactDocgen?: { props: Record<string, unknown> };
     };
     expect(button.reactDocgen?.props.variant).toBeDefined();
+  });
+
+  it("serves canonical specification Markdown without copying prose", () => {
+    const page = service.resolveLlmsPath(
+      "/llms/specification/forms-inputs.txt",
+    );
+    expect(page.status).toBe(200);
+    expect(page.body).toBe(
+      readFileSync(path.join(packageRoot, "spec/src/forms/inputs.md"), "utf8"),
+    );
+
+    const catalog = createUiDocsProvider().load({ root: packageRoot });
+    const chapters = catalog.documents.filter(
+      (document) => document.group === "specification",
+    );
+    expect(chapters).toHaveLength(27);
+    expect(chapters[0]).toMatchObject({
+      id: "spec-index",
+      title: "Specification/Introduction",
+      path: "spec/src/index.md",
+    });
+    expect(chapters.at(-1)).toMatchObject({
+      id: "spec-verification",
+      title: "Specification/Verification",
+    });
   });
 });

@@ -53,8 +53,8 @@ This tracker records the one-time migration from implicit source and Storybook c
 - [x] Add fail-closed local and CI `spec:first` classification.
 - [x] Add pinned QMD lexical and opt-in semantic discovery with actionable fallbacks.
 - [x] Update agent, CLI, testing, VCS, and README guidance.
-- [ ] Add metadata-only Storybook mirrors in summary order.
-- [ ] Add canonical specification chapters to Docs MCP and llms discovery.
+- [x] Add metadata-only Storybook mirrors in summary order.
+- [x] Add canonical specification chapters to Docs MCP and llms discovery.
 - [ ] Complete non-visual repository validation and record evidence.
 
 ## Evidence and known gaps

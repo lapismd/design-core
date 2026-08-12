@@ -56,3 +56,4 @@ Storybook is the interactive catalog and acceptance surface. It documents compon
 
 - Story titles and hierarchy must remain stable discovery identifiers unless a migration is documented.
 - Normative prose must remain in `spec/src`; mirrors may contain only Storybook metadata and a raw import.
+- Specification must sort first and its nested titles must follow `SUMMARY.md` order.

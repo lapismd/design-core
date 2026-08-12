@@ -189,10 +189,10 @@ This matrix records one current evidence status for every canonical requirement.
 | DC-CAT-002    | Implemented | `.storybook/`; `src/**/*.stories.svelte`; current static Storybook index          |
 | DC-CAT-003    | Implemented | `.storybook/`; `src/**/*.stories.svelte`; current static Storybook index          |
 | DC-CAT-004    | Implemented | `.storybook/`; `src/**/*.stories.svelte`; current static Storybook index          |
-| DC-CAT-005    | In progress | Planned metadata-only `src/spec/**/*.mdx` mirrors                                 |
+| DC-CAT-005    | Implemented | `src/spec/**/*.mdx`; Storybook ordering and mirror validator                      |
 | DC-GOV-001    | Implemented | Canonical requirement chapters and verification matrix                            |
 | DC-GOV-002    | Implemented | Canonical requirement chapters and verification matrix                            |
-| DC-GOV-003    | In progress | Core validators pass; Storybook mirror validation lands with the mirrors          |
+| DC-GOV-003    | Implemented | `pnpm spec:validate`; canonical, surface, book, and mirror validator tests        |
 | DC-GOV-004    | Implemented | `pnpm spec:first`; local and CI diff tests                                        |
 | DC-GOV-005    | Implemented | `.qmd/index.yml`; `pnpm spec:index`                                               |
 | DC-GOV-006    | Implemented | `pnpm spec:search`; QMD wrapper tests and `rg` fallback                           |
