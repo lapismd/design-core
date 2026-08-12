@@ -45,12 +45,13 @@ Overlay primitives preserve accessible labelling, focus management, dismissal, p
 
 ## DC-SHA-044 — Dialog
 
-**Requirement.** The Dialog family MUST compose modal or non-modal labelled content with controlled open state and focus management.
+**Requirement.** The Dialog family MUST compose modal or non-modal labelled content with controlled open state, focus management, and a visible full-viewport scrim for modal content.
 
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/shadcn/dialog`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- The modal scrim must remain visible when Dialog content is restyled by a composed family such as Command.
 
 ## DC-SHA-045 — Drawer
 

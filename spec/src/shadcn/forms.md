@@ -37,12 +37,13 @@ Shadcn form controls provide the low-level accessible inputs used directly or in
 
 ## DC-SHA-025 — Command
 
-**Requirement.** The Command family MUST compose searchable command lists with keyboard navigation, grouping, empty state, and selection.
+**Requirement.** The Command family MUST compose searchable command lists with keyboard navigation, grouping, empty state, selection, and a fixed viewport-contained dialog variant.
 
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/shadcn/command`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- The dialog variant must retain modal positioning when Command semantic identity replaces Dialog identity.
 
 ## DC-SHA-026 — Field
 

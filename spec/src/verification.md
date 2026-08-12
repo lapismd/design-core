@@ -51,7 +51,7 @@ This matrix records one current evidence status for every canonical requirement.
 | DC-SHA-022    | Implemented | src/shared/shadcn/pagination/; colocated stories                                  |
 | DC-SHA-023    | Implemented | Shadcn family sources, stories, pointer tests, and component audit                |
 | DC-SHA-024    | Implemented | src/shared/shadcn/checkbox/; colocated stories                                    |
-| DC-SHA-025    | Implemented | src/shared/shadcn/command/; colocated stories                                     |
+| DC-SHA-025    | Implemented | src/shared/shadcn/command/; dialog positioning interaction; colocated stories     |
 | DC-SHA-026    | Implemented | src/shared/shadcn/field/; colocated stories                                       |
 | DC-SHA-027    | Implemented | src/shared/shadcn/input/; colocated stories                                       |
 | DC-SHA-028    | Implemented | src/shared/shadcn/input-group/; colocated stories                                 |
@@ -70,7 +70,7 @@ This matrix records one current evidence status for every canonical requirement.
 | DC-SHA-041    | Implemented | Shadcn family sources, stories, pointer tests, and component audit                |
 | DC-SHA-042    | Implemented | src/shared/shadcn/alert-dialog/; colocated stories                                |
 | DC-SHA-043    | Implemented | src/shared/shadcn/context-menu/; colocated stories                                |
-| DC-SHA-044    | Implemented | src/shared/shadcn/dialog/; colocated stories                                      |
+| DC-SHA-044    | Implemented | src/shared/shadcn/dialog/; modal scrim interactions; colocated stories            |
 | DC-SHA-045    | Implemented | src/shared/shadcn/drawer/; colocated stories                                      |
 | DC-SHA-046    | Implemented | src/shared/shadcn/dropdown-menu/; colocated stories                               |
 | DC-SHA-047    | Implemented | src/shared/shadcn/hover-card/; colocated stories                                  |

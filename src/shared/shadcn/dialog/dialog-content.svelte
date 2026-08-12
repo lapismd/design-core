@@ -142,16 +142,7 @@
         border-radius: calc(var(--radius) * 1.4);
       }
       [data-ui-component="dialog"][data-ui-part="dialog-overlay"] {
-        background-color: #0000001a;
-      }
-      @supports (color: color-mix(in lab, red, red)) {
-        [data-ui-component="dialog"][data-ui-part="dialog-overlay"] {
-          background-color: color-mix(
-            in oklab,
-            var(--color-black) 10%,
-            transparent
-          );
-        }
+        background-color: var(--ui-dialog-overlay-background, rgb(0 0 0 / 50%));
       }
       [data-ui-component="dialog"][data-ui-part="dialog-content"] {
         background-color: var(--ui-dialog-background, var(--popover));

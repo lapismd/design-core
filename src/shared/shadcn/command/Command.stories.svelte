@@ -1,6 +1,6 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, userEvent } from "storybook/test";
+  import { expect, userEvent, waitFor, within } from "storybook/test";
   import * as Command from "./index.js";
 
   const { Story } = defineMeta({
@@ -18,6 +18,7 @@
 
 <script lang="ts">
   let selected = $state("none");
+  let dialogOpen = $state(false);
 </script>
 
 <Story
@@ -75,5 +76,58 @@
       </Command.Root>
       <output class="text-muted-foreground text-sm">{selected}</output>
     </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Dialog"
+  play={async ({ canvas, canvasElement }) => {
+    await userEvent.click(canvas.getByRole("button", { name: "Open palette" }));
+    const dialog = await within(canvasElement.ownerDocument.body).findByRole(
+      "dialog",
+      {
+        name: "Project palette",
+      },
+    );
+    await expect(dialog).toBeVisible();
+    await expect(dialog).toHaveStyle({ position: "fixed" });
+    const overlay = canvasElement.ownerDocument.querySelector<HTMLElement>(
+      '[data-ui-component="dialog"][data-ui-part="dialog-overlay"]',
+    );
+    await expect(overlay).toBeVisible();
+    await expect(getComputedStyle(overlay!).backgroundColor).toBe(
+      "rgba(0, 0, 0, 0.5)",
+    );
+    const bounds = dialog.getBoundingClientRect();
+    const viewport = dialog.ownerDocument.defaultView;
+    await expect(
+      Math.abs(bounds.left + bounds.width / 2 - viewport!.innerWidth / 2),
+    ).toBeLessThanOrEqual(1);
+    await expect(bounds.top).toBeLessThan(viewport!.innerHeight / 2);
+    await userEvent.keyboard("{Escape}");
+    await waitFor(() => expect(dialog).not.toBeVisible());
+  }}
+>
+  {#snippet template()}
+    <button type="button" onclick={() => (dialogOpen = true)}
+      >Open palette</button
+    >
+    <Command.Dialog
+      bind:open={dialogOpen}
+      title="Project palette"
+      description="Search projects"
+    >
+      <Command.Input
+        aria-controls="catalog-project-command-list"
+        placeholder="Search projects…"
+      />
+      <Command.List id="catalog-project-command-list">
+        <Command.Empty>No projects</Command.Empty>
+        <Command.Group>
+          <Command.Item value="Lapis Notes">Lapis Notes</Command.Item>
+          <Command.Item value="Design Core">Design Core</Command.Item>
+        </Command.Group>
+      </Command.List>
+    </Command.Dialog>
   {/snippet}
 </Story>

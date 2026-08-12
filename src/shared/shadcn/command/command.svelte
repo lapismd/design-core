@@ -41,7 +41,13 @@
         position: relative;
       }
       [data-ui-component="command"][data-ui-part="command-content"] {
+        position: fixed;
         top: 33.3333%;
+        left: 50%;
+        z-index: 50;
+        display: grid;
+        width: 100%;
+        max-width: calc(100% - 2rem);
       }
       [data-ui-component="command"][data-ui-part="command-separator"] {
         margin-inline: calc(var(--spacing) * -1);
@@ -89,6 +95,7 @@
         flex-shrink: 0;
       }
       [data-ui-component="command"][data-ui-part="command-content"] {
+        --tw-translate-x: calc(calc(1 / 2 * 100%) * -1);
         --tw-translate-y: 0px;
         translate: var(--tw-translate-x) var(--tw-translate-y);
       }
@@ -232,6 +239,11 @@
         [data-ui-component="command"][data-ui-part="command-item"] {
           outline-offset: 2px;
           outline: 2px solid #0000;
+        }
+      }
+      @media (min-width: 40rem) {
+        [data-ui-component="command"][data-ui-part="command-content"] {
+          max-width: var(--container-md);
         }
       }
       [data-ui-component="command"][data-ui-part="command-list"] {

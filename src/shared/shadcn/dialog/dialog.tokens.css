@@ -7,6 +7,7 @@
 :root {
   --ui-dialog-background: var(--popover);
   --ui-dialog-foreground: var(--popover-foreground);
+  --ui-dialog-overlay-background: rgb(0 0 0 / 50%);
   --ui-dialog-border-color: var(--border);
   --ui-dialog-radius: var(--radius-xl, calc(var(--radius) * 1.4));
   --ui-dialog-focus-ring-color: var(--ring);
