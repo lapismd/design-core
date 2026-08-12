@@ -1,0 +1,13 @@
+[book]
+title = "Design Core Specification"
+authors = ["LapisMD contributors"]
+description = "Canonical requirements and verification evidence for @lapismd/design-core."
+language = "en"
+src = "src"
+
+[build]
+build-dir = "book"
+create-missing = false
+
+[output.html]
+git-repository-url = "https://github.com/lapismd/design-core"

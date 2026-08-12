@@ -1,0 +1,58 @@
+# Filter
+
+Filter contracts separate query language, reusable search chrome, and consumer query execution.
+
+## Public surface coverage
+
+| Surface                  | Public boundary                            | Requirement   |
+| ------------------------ | ------------------------------------------ | ------------- |
+| Shared Filter invariants | Filter layer                               | DC-FILTER-001 |
+| Filter query language    | `@lapismd/design-core/filter/filter-query` | DC-FILTER-002 |
+| Search Filter Bar        | `@lapismd/design-core/filter`              | DC-FILTER-003 |
+| Power Search             | Storybook composition                      | DC-FILTER-004 |
+| Filter Guidance          | Documentation surface                      | DC-FILTER-005 |
+
+## DC-FILTER-001 — Shared Filter invariants
+
+**Requirement.** The Shared Filter invariants family MUST keep query parsing, filter presentation, and consumer-owned execution separate while preserving accessible keyboard behavior.
+
+### Acceptance details
+
+- The public boundary is Filter layer.
+- The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+
+## DC-FILTER-002 — Filter query language
+
+**Requirement.** The Filter query language family MUST parse, serialize, inspect, and edit the documented filter expression grammar without executing application queries.
+
+### Acceptance details
+
+- The public boundary is `@lapismd/design-core/filter/filter-query`.
+- The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+
+## DC-FILTER-003 — Search Filter Bar
+
+**Requirement.** The Search Filter Bar family MUST compose text search, structured filters, commands, and controlled query changes in an accessible search surface.
+
+### Acceptance details
+
+- The public boundary is `@lapismd/design-core/filter`.
+- The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+
+## DC-FILTER-004 — Power Search
+
+**Requirement.** The Power Search family MUST demonstrate advanced shared filter syntax and interaction through public filter contracts.
+
+### Acceptance details
+
+- The public boundary is Storybook composition.
+- The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+
+## DC-FILTER-005 — Filter Guidance
+
+**Requirement.** The Filter Guidance family MUST explain when to use plain search, structured filters, command pickers, and the query-language helpers.
+
+### Acceptance details
+
+- The public boundary is Documentation surface.
+- The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.

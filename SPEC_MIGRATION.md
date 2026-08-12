@@ -1,0 +1,64 @@
+# Design Core specification migration
+
+## Purpose
+
+This tracker records the one-time migration from implicit source and Storybook contracts to canonical Markdown under `spec/src`. Canonical requirements live in the book; this file is progress evidence only.
+
+## Source snapshot
+
+- Snapshot date: 2026-08-12.
+- Root package: `@lapismd/design-core@0.1.0`.
+- Public sources inventoried: `package.json#exports`, package barrels, `COMPONENT_AUDIT.md`, `pnpm ui components --json`, and the current Storybook static index.
+- Current Storybook static inventory: 143 Autodocs families and 551 story entries.
+- Guidance, overview, composition, and Welcome pages are documentation surfaces, not new runtime component APIs.
+- Existing behavior is the baseline contract; no runtime component behavior changed in this slice.
+
+## Chapter coverage
+
+| Chapter                            | Requirements | Status           |
+| ---------------------------------- | -----------: | ---------------- |
+| Introduction                       |            1 | Baseline drafted |
+| Architecture                       |            4 | Baseline drafted |
+| Package exports                    |            8 | Baseline drafted |
+| Styling and themes                 |            5 | Baseline drafted |
+| Tooling                            |            4 | Baseline drafted |
+| Shadcn / Actions and content       |            8 | Baseline drafted |
+| Shadcn / Data and feedback         |            8 | Baseline drafted |
+| Shadcn / Disclosure and navigation |            6 | Baseline drafted |
+| Shadcn / Forms                     |           11 | Baseline drafted |
+| Shadcn / Layout                    |            7 | Baseline drafted |
+| Shadcn / Overlays                  |           10 | Baseline drafted |
+| Forms / Core and orchestrators     |            5 | Baseline drafted |
+| Forms / Inputs                     |           15 | Baseline drafted |
+| Forms / Layout                     |           11 | Baseline drafted |
+| Forms / Editors                    |            4 | Baseline drafted |
+| Forms / Review                     |            4 | Baseline drafted |
+| Forms / Examples                   |            2 | Baseline drafted |
+| Filter                             |            5 | Baseline drafted |
+| AI                                 |           23 | Baseline drafted |
+| Shell                              |            3 | Baseline drafted |
+| Workspace / Framework              |            7 | Baseline drafted |
+| Workspace / Components             |           25 | Baseline drafted |
+| Workspace / Panels                 |            2 | Baseline drafted |
+| Workspace / Plugins                |            3 | Baseline drafted |
+| Storybook catalog                  |            5 | Baseline drafted |
+| Specification governance           |            8 | Baseline drafted |
+| Verification                       |     194 rows | Baseline drafted |
+
+## Staged checklist
+
+- [x] Inventory current exported and catalogued public surfaces.
+- [x] Create the mdBook source, summary, concise requirements, coverage tables, and one-to-one verification matrix.
+- [ ] Add stable validators and tests for the canonical structure and public-surface mappings.
+- [ ] Add fail-closed local and CI `spec:first` classification.
+- [ ] Add pinned QMD lexical and opt-in semantic discovery with actionable fallbacks.
+- [ ] Update agent, CLI, testing, VCS, and README guidance.
+- [ ] Add metadata-only Storybook mirrors in summary order.
+- [ ] Add canonical specification chapters to Docs MCP and llms discovery.
+- [ ] Complete non-visual repository validation and record evidence.
+
+## Evidence and known gaps
+
+The source and existing Storybook catalog provide implementation evidence for the initial public contracts. Requirements for automated governance, QMD, and Storybook mirrors remain `In progress` until their owning slices land and pass focused tests. The migration does not claim that every existing family has exhaustive unit, interaction, keyboard, compact-width, or accessibility coverage; later component changes must strengthen evidence where their owning requirement exposes a gap.
+
+Visual Delta is out of scope. No visual comparison, capture, or baseline update is authorized for this migration.
