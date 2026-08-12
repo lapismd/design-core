@@ -27,8 +27,8 @@ host changes and keep the owning canonical chapter in the same diff. Run
    or `*-story-frame` wrappers. For every new family (and when touching docs):
    - Colocate `ComponentName.example-sources.ts` exporting at least `Basic`
      (and story-specific snippets when the public API differs).
-   - Set `parameters.docs.source` with `code`, `language` (`ts` when the snippet
-     includes `<script>`), and `type: "code"` on `defineMeta` and/or each
+   - Set `parameters.docs.source` with `code`, `language` (`tsx` for Svelte
+     component markup), and `type: "code"` on `defineMeta` and/or each
      `Story`. Use an **object literal** `parameters={{ … }}` so CSF picks it up;
      do not hide the object behind a helper call.
    - Follow shadcn `*.example-sources` / Workspace Explorer. Reuse the same
@@ -36,6 +36,9 @@ host changes and keep the owning canonical chapter in the same diff. Run
    - `pnpm spec:validate` enforces complete consumer source for Autodocs stories
      that render through a local demo, harness, fixture, or story surface;
      `!autodocs` acceptance stories are exempt.
+   - Authored MDX and Docs source metadata must use a grammar that tokenizes in
+     the current catalog. Do not use `html`, `svelte`, or `markup`; Storybook
+     currently renders those values without syntax highlighting.
 3. **Live catalog** — `pnpm storybook` or `pnpm storybook:ui` (polling). Do not
    invoke `storybook dev` directly.
 4. **Story tests** — Storybook Vitest / Storybook MCP `run-story-tests` while

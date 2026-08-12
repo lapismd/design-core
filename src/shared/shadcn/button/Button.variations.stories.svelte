@@ -42,7 +42,7 @@
       },
       source: {
         code: exampleSources.Preview,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -71,7 +71,7 @@
     docs: {
       source: {
         code: exampleSources.Size,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -100,7 +100,7 @@
     docs: {
       source: {
         code: exampleSources.Default,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -129,7 +129,7 @@
     docs: {
       source: {
         code: exampleSources.Outline,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -158,7 +158,7 @@
     docs: {
       source: {
         code: exampleSources.Secondary,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -187,7 +187,7 @@
     docs: {
       source: {
         code: exampleSources.Ghost,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -216,7 +216,7 @@
     docs: {
       source: {
         code: exampleSources.Destructive,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -245,7 +245,7 @@
     docs: {
       source: {
         code: exampleSources.Link,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -274,7 +274,7 @@
     docs: {
       source: {
         code: exampleSources.Icon,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -307,7 +307,7 @@
       },
       source: {
         code: exampleSources.WithIcon,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -339,7 +339,7 @@
       },
       source: {
         code: exampleSources.Rounded,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -368,7 +368,7 @@
     docs: {
       source: {
         code: exampleSources.Spinner,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },

@@ -18,7 +18,7 @@
         },
         source: {
           code: CompleteCvFormExample,
-          language: "svelte",
+          language: "tsx",
           type: "code",
         },
       },

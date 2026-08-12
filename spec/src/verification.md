@@ -192,6 +192,7 @@ This matrix records one current evidence status for every canonical requirement.
 | DC-CAT-005    | Implemented | `src/spec/**/*.mdx`; Storybook ordering and mirror validator                      |
 | DC-CAT-006    | Implemented | Public-boundary `*.example-sources.ts` modules and catalog validator              |
 | DC-CAT-007    | Implemented | Typed `parameters.docs.source` metadata and catalog validator                     |
+| DC-CAT-008    | Implemented | Tokenizing Storybook languages, catalog validator, and live DOM acceptance        |
 | DC-GOV-001    | Implemented | Canonical requirement chapters and verification matrix                            |
 | DC-GOV-002    | Implemented | Canonical requirement chapters and verification matrix                            |
 | DC-GOV-003    | Implemented | `pnpm spec:validate`; canonical, surface, book, and mirror validator tests        |

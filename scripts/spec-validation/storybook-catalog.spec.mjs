@@ -36,7 +36,7 @@ test("accepts complete consumer source for a local demo boundary", () => {
 <!-- parameters.docs.source is explicit consumer code -->
 <Story parameters={{ docs: { source: {
   code: exampleSources.Basic,
-  language: "svelte",
+  language: "tsx",
   type: "code",
 } } }} />`,
     },
@@ -91,6 +91,68 @@ test("requires code, language, and code type on every explicit source", () => {
       );
       assert.equal(findings[0].rule, "DC-CAT-007");
     },
+  );
+});
+
+test("rejects Storybook languages that render Docs source without syntax tokens", () => {
+  withSources(
+    {
+      "src/Button.stories.svelte": `
+<script module lang="ts">
+  const parameters = { docs: { source: {
+    code: "<Button />",
+    language: "svelte",
+    type: "code",
+  } } };
+</script>`,
+    },
+    (findings) => {
+      assert.deepEqual(
+        findings.map((finding) => finding.code),
+        ["SPEC-STORY-SYNTAX-LANGUAGE"],
+      );
+      assert.equal(findings[0].rule, "DC-CAT-008");
+    },
+  );
+});
+
+test("rejects unhighlighted Source props and fenced code in authored MDX", () => {
+  withSources(
+    {
+      "src/Button.mdx": `<Source language="html" code={Basic} />
+
+\`\`\`svelte
+<Button />
+\`\`\`
+`,
+    },
+    (findings) =>
+      assert.deepEqual(
+        findings.map((finding) => finding.code),
+        ["SPEC-STORY-SYNTAX-LANGUAGE", "SPEC-STORY-SYNTAX-LANGUAGE"],
+      ),
+  );
+});
+
+test("accepts the tokenizing tsx grammar for Svelte component examples", () => {
+  withSources(
+    {
+      "src/Button.mdx": `<Source language="tsx" code={Basic} />
+
+\`\`\`tsx
+<Button />
+\`\`\`
+`,
+      "src/Button.stories.svelte": `
+<script module lang="ts">
+  const parameters = { docs: { source: {
+    code: "<Button />",
+    language: "tsx",
+    type: "code",
+  } } };
+</script>`,
+    },
+    (findings) => assert.deepEqual(findings, []),
   );
 });
 

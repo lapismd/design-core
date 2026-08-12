@@ -28,7 +28,7 @@
     docs: {
       source: {
         code: exampleSources.Preview,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -63,7 +63,7 @@
       },
       source: {
         code: exampleSources.HorizontalScrolling,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },

@@ -25,7 +25,7 @@ Adapted from the upstream [shadcn-svelte docs](https://github.com/huntabyte/shad
 ## Usage
 
 <Source
-  language="html"
+  language="tsx"
   code={
     '<script lang="ts">\n  import * as Sidebar from "@lapismd/design-core/shadcn/sidebar";\n  import AppSidebar from "$lib/components/app-sidebar.svelte";\n\n  let { children } = $props();\n</script>\n\n<Sidebar.Provider>\n  <AppSidebar />\n  <main>\n    <Sidebar.Trigger />\n    {@render children?.()}\n  </main>\n</Sidebar.Provider>\n\n<script lang="ts">\n  import * as Sidebar from "@lapismd/design-core/shadcn/sidebar";\n</script>\n\n<Sidebar.Root>\n  <Sidebar.Header />\n  <Sidebar.Content>\n    <Sidebar.Group />\n    <Sidebar.Group />\n  </Sidebar.Content>\n  <Sidebar.Footer />\n</Sidebar.Root>'
   }

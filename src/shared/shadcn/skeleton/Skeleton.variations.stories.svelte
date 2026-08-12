@@ -28,7 +28,7 @@
     docs: {
       source: {
         code: exampleSources.Preview,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -57,7 +57,7 @@
     docs: {
       source: {
         code: exampleSources.Card,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },

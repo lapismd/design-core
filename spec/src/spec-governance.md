@@ -108,11 +108,12 @@ Specification governance keeps requirements discoverable, mapped, validated, and
 - A diagnostic must identify its stable code, governing requirement, source path, line when available, affected identifier, and corrective action.
 - Generated or discovery surfaces must point back to canonical Markdown rather than becoming a second source of truth.
 
-## DC-GOV-009 — Storybook source checks
+## DC-GOV-009 — Storybook documentation checks
 
-**Requirement.** Specification validation MUST inspect Autodocs stories that use a local story-only render boundary.
+**Requirement.** Specification validation MUST inspect Autodocs consumer source and authored documentation code examples.
 
 ### Acceptance details
 
 - Validation must reject missing or incomplete explicit source metadata for demo, harness, fixture, and story-surface boundaries.
 - Validation must reject example source that exposes story-only component names or inferred args as consumer usage.
+- Validation must reject language values that the current Storybook highlighter renders without syntax tokens.

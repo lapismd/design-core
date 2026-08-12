@@ -35,7 +35,7 @@
     docs: {
       source: {
         code: exampleSources.Preview,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -64,7 +64,7 @@
     docs: {
       source: {
         code: exampleSources.Input,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -93,7 +93,7 @@
     docs: {
       source: {
         code: exampleSources.Textarea,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -122,7 +122,7 @@
     docs: {
       source: {
         code: exampleSources.Select,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -151,7 +151,7 @@
     docs: {
       source: {
         code: exampleSources.Fieldset,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -180,7 +180,7 @@
     docs: {
       source: {
         code: exampleSources.Checkbox,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -209,7 +209,7 @@
     docs: {
       source: {
         code: exampleSources.Switch,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -242,7 +242,7 @@
       },
       source: {
         code: exampleSources.FieldGroup,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -275,7 +275,7 @@
       },
       source: {
         code: exampleSources.ResponsiveLayout,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },

@@ -29,7 +29,7 @@
     docs: {
       source: {
         code: exampleSources.Preview,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -62,7 +62,7 @@
       },
       source: {
         code: exampleSources.Vertical,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -95,7 +95,7 @@
       },
       source: {
         code: exampleSources.Handle,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },

@@ -7,7 +7,9 @@ import { diagnostic, relativePath } from "./lib/spec-model.mjs";
 export const name = "storybook-catalog";
 
 const STORY_FILE_PATTERN = /\.stories\.(?:svelte|[cm]?[jt]sx?)$/;
+const MDX_FILE_PATTERN = /\.mdx$/;
 const EXAMPLE_SOURCE_FILE_PATTERN = /\.example-sources\.[cm]?[jt]sx?$/;
+const PLAIN_TEXT_LANGUAGE_PATTERN = /^(?:html|markup|svelte)$/;
 const STORY_ONLY_NAME_PATTERN =
   /(?:Demo|Harness|Fixture|Story(?:View|Surface|Frame|Control)?)$/;
 const STORY_ONLY_MODULE_PATTERN =
@@ -168,6 +170,51 @@ function validateSourceObjects(objects, source, file, findings) {
   }
 }
 
+function validateSourceLanguages(objects, source, file, findings) {
+  for (const sourceObject of objects) {
+    const match = sourceObject.source.match(
+      /\blanguage\s*:\s*["']([^"']+)["']/,
+    );
+    if (!match || !PLAIN_TEXT_LANGUAGE_PATTERN.test(match[1])) continue;
+    findings.push(
+      diagnostic({
+        code: "SPEC-STORY-SYNTAX-LANGUAGE",
+        rule: "DC-CAT-008",
+        file,
+        line: lineOf(source, sourceObject.start + match.index),
+        message: `Storybook renders language "${match[1]}" without syntax tokens; use "tsx" for Svelte component markup`,
+      }),
+    );
+  }
+}
+
+function validateMdxLanguages(sourceRoot, repoRoot) {
+  const findings = [];
+  const patterns = [
+    /\blanguage\s*=\s*["'](html|markup|svelte)["']/g,
+    /^```(html|markup|svelte)\s*$/gm,
+  ];
+
+  for (const absolutePath of files(sourceRoot, MDX_FILE_PATTERN)) {
+    const source = readFileSync(absolutePath, "utf8");
+    const relative = relativePath(repoRoot, absolutePath);
+    for (const pattern of patterns) {
+      for (const match of source.matchAll(pattern)) {
+        findings.push(
+          diagnostic({
+            code: "SPEC-STORY-SYNTAX-LANGUAGE",
+            rule: "DC-CAT-008",
+            file: relative,
+            line: lineOf(source, match.index),
+            message: `Storybook renders language "${match[1]}" without syntax tokens; use "tsx" for Svelte component markup`,
+          }),
+        );
+      }
+    }
+  }
+  return findings;
+}
+
 function moduleCandidates(importer, moduleName) {
   const base = path.resolve(path.dirname(importer), moduleName);
   return [
@@ -250,6 +297,7 @@ export function validate(context) {
   const sourceRoot = path.join(context.model.repoRoot, "src");
 
   findings.push(...validateExampleSources(sourceRoot, context.model.repoRoot));
+  findings.push(...validateMdxLanguages(sourceRoot, context.model.repoRoot));
 
   for (const absolutePath of files(sourceRoot, STORY_FILE_PATTERN)) {
     const source = readFileSync(absolutePath, "utf8");
@@ -259,6 +307,7 @@ export function validate(context) {
     if (source.includes('"!autodocs"') || source.includes("'!autodocs'")) {
       continue;
     }
+    validateSourceLanguages(sourceObjects, source, relative, findings);
     const storyOnly = localDefaultImports(source).filter(isStoryOnlyBoundary);
     if (!storyOnly.length) continue;
     validateSourceObjects(sourceObjects, source, relative, findings);

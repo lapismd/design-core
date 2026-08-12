@@ -36,7 +36,7 @@ and footer chrome outside `Sidebar.Body`; within main, keep `Toolbar` outside
 the scrolling `Body`.
 
 {/* prettier-ignore */}
-```html
+```tsx
 <script lang="ts">
   import { AppShell, AppShellController } from "@lapismd/design-core/shell";
 
@@ -140,7 +140,7 @@ inner header owns the outer panel’s toggle; the main toolbar owns the inner
 panel’s toggle.
 
 {/* prettier-ignore */}
-```html
+```tsx
 <script lang="ts">
   const shell = new AppShellController();
   const projects = shell.createSidebar("projects", "left");
@@ -304,7 +304,7 @@ can still say “collapsed” while the panel is fully presented on mobile or in
 temporary preview:
 
 {/* prettier-ignore */}
-```html
+```tsx
 <script lang="ts">
   let compact = $derived(
     shell.mobile.resolvedMode === "desktop" &&
@@ -331,7 +331,7 @@ changes must not mutate desktop collapse/close/width state.
 Use body regions when a panel belongs to one main document or view:
 
 {/* prettier-ignore */}
-```html
+```tsx
 <AppShell.Body layout="regions" label="Markdown document">
   <AppShell.Body.Toggle
     side="right"

@@ -146,7 +146,7 @@
     docs: {
       source: {
         code: exampleSources.CallbackConfig,
-        language: "svelte",
+        language: "tsx",
         type: "code",
       },
     },
@@ -185,7 +185,7 @@
     docs: {
       source: {
         code: exampleSources.MissingCustomRenderer,
-        language: "svelte",
+        language: "tsx",
         type: "code",
       },
     },
@@ -216,7 +216,7 @@
     docs: {
       source: {
         code: exampleSources.CustomRendererRegistry,
-        language: "svelte",
+        language: "tsx",
         type: "code",
       },
     },
@@ -253,7 +253,7 @@
     docs: {
       source: {
         code: exampleSources.TypeSafePathConfig,
-        language: "svelte",
+        language: "tsx",
         type: "code",
       },
     },

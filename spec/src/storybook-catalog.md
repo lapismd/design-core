@@ -13,6 +13,7 @@ Storybook is the interactive catalog and acceptance surface. It documents compon
 | Specification mirrors | Storybook documentation | DC-CAT-005  |
 | Consumer source       | Storybook documentation | DC-CAT-006  |
 | Explicit source       | Storybook documentation | DC-CAT-007  |
+| Highlighted source    | Storybook documentation | DC-CAT-008  |
 
 ## DC-CAT-001 — Catalog metadata
 
@@ -77,3 +78,12 @@ Storybook is the interactive catalog and acceptance surface. It documents compon
 
 - The source object must define `code`, `language`, and `type: "code"`.
 - Nontrivial source should live in a colocated `*.example-sources.ts` module and derive from the scenario's public boundary.
+
+## DC-CAT-008 — Highlighted source
+
+**Requirement.** Every authored Storybook code example MUST select a language grammar that produces syntax-highlight tokens in the current catalog.
+
+### Acceptance details
+
+- Svelte component markup must use Storybook's bundled `tsx` grammar while the catalog has no working Svelte or HTML alias.
+- Specification validation must reject the known plain-text `html`, `svelte`, and `markup` language values in authored MDX and Docs source metadata.

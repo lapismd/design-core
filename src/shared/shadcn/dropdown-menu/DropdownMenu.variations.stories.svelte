@@ -23,7 +23,7 @@
     docs: {
       source: {
         code: exampleSources.Preview,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -45,7 +45,7 @@
     docs: {
       source: {
         code: exampleSources.Checkboxes,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -67,7 +67,7 @@
     docs: {
       source: {
         code: exampleSources.RadioGroup,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -92,7 +92,7 @@
       },
       source: {
         code: exampleSources.Dialog,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },

@@ -32,7 +32,7 @@
     docs: {
       source: {
         code: exampleSources.Preview,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -61,7 +61,7 @@
     docs: {
       source: {
         code: exampleSources.Default,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -90,7 +90,7 @@
     docs: {
       source: {
         code: exampleSources.File,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -119,7 +119,7 @@
     docs: {
       source: {
         code: exampleSources.Disabled,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -148,7 +148,7 @@
     docs: {
       source: {
         code: exampleSources.WithLabel,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -177,7 +177,7 @@
     docs: {
       source: {
         code: exampleSources.WithButton,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },

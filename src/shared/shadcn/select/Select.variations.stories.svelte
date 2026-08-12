@@ -27,7 +27,7 @@
     docs: {
       source: {
         code: exampleSources.Scrollable,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },

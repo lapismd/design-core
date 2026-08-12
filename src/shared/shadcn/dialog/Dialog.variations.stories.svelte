@@ -21,7 +21,7 @@
     docs: {
       source: {
         code: exampleSources.Preview,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -43,7 +43,7 @@
     docs: {
       source: {
         code: exampleSources.CustomCloseButton,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },

@@ -29,7 +29,7 @@
           component:
             "Interactive hover and keyboard-focus preview using Bits UI LinkPreview defaults: 700ms to open and 300ms to close.",
         },
-        source: { code: source, language: "html", type: "code" },
+        source: { code: source, language: "tsx", type: "code" },
       },
     },
   });
@@ -101,7 +101,7 @@
   name="Constrained overlay"
   tags={["visual-pending", "test"]}
   parameters={{
-    docs: { source: { code: source, language: "html", type: "code" } },
+    docs: { source: { code: source, language: "tsx", type: "code" } },
   }}
 >
   {#snippet template()}

@@ -466,7 +466,7 @@
     docs: {
       source: {
         code: exampleSources.ToggleTable,
-        language: "svelte",
+        language: "tsx",
         type: "code",
       },
     },

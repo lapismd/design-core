@@ -37,7 +37,7 @@
       },
       source: {
         code: exampleSources.Customization,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -70,7 +70,7 @@
       },
       source: {
         code: exampleSources.Size,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -103,7 +103,7 @@
       },
       source: {
         code: exampleSources.Color,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -136,7 +136,7 @@
       },
       source: {
         code: exampleSources.Button,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -168,7 +168,7 @@
       },
       source: {
         code: exampleSources.Badge,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -200,7 +200,7 @@
       },
       source: {
         code: exampleSources.InputGroup,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -229,7 +229,7 @@
     docs: {
       source: {
         code: exampleSources.Empty,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },

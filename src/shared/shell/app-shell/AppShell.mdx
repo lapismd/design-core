@@ -18,7 +18,7 @@ is the detailed API and behavior reference.
 ## Structure
 
 {/* prettier-ignore */}
-```html
+```tsx
 <AppShell.Root {controller} displayMode="auto" mobileBreakpoint={1024}>
   <AppShell.Sidebar side="left">
     <AppShell.Sidebar.Header>...</AppShell.Sidebar.Header>
@@ -55,7 +55,7 @@ For document-local navigation, switch the body to independently scrolling
 regions and mount a consumer-controlled sidebar on either side:
 
 {/* prettier-ignore */}
-```html
+```tsx
 <AppShell.Body layout="regions" label="Markdown document">
   <AppShell.Body.Toggle
     side="left"
@@ -173,7 +173,7 @@ panel through the root controller when its state should participate in layout
 persistence:
 
 {/* prettier-ignore */}
-```html
+```tsx
 <script lang="ts">
   const shell = new AppShellController();
   const projectSidebar = shell.createSidebar("projects", "left");

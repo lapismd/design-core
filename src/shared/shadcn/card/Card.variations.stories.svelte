@@ -31,7 +31,7 @@
     docs: {
       source: {
         code: exampleSources.Preview,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -60,7 +60,7 @@
     docs: {
       source: {
         code: exampleSources.Preview2,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -93,7 +93,7 @@
       },
       source: {
         code: exampleSources.Spacing,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -126,7 +126,7 @@
       },
       source: {
         code: exampleSources.Spacing2,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -159,7 +159,7 @@
       },
       source: {
         code: exampleSources.Image,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },

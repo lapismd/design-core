@@ -42,7 +42,7 @@
         },
         source: {
           code: exampleSources.Basic,
-          language: "html",
+          language: "tsx",
           type: "code",
         },
       },
@@ -522,7 +522,7 @@
       },
       source: {
         code: exampleSources.FullShowcase,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -901,7 +901,7 @@
     docs: {
       source: {
         code: exampleSources.Basic,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -1015,7 +1015,7 @@
     docs: {
       source: {
         code: exampleSources.ThreeLevel,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -1120,7 +1120,7 @@
     docs: {
       source: {
         code: exampleSources.Closeable,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -1206,7 +1206,7 @@
     docs: {
       source: {
         code: exampleSources.CollapseAndExpand,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -1262,7 +1262,7 @@
     docs: {
       source: {
         code: exampleSources.Resizable,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -1335,7 +1335,7 @@
     docs: {
       source: {
         code: exampleSources.PersistedWidths,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -1420,7 +1420,7 @@
     docs: {
       source: {
         code: exampleSources.ResponsiveAdaptive,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -1501,7 +1501,7 @@
     docs: {
       source: {
         code: exampleSources.FixedCompatibility,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -1577,7 +1577,7 @@
     docs: {
       source: {
         code: exampleSources.StickyFloating,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -1649,7 +1649,7 @@
     docs: {
       source: {
         code: exampleSources.StickyFixed,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },

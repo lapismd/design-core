@@ -35,7 +35,7 @@
     docs: {
       source: {
         code: exampleSources.Preview,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -64,7 +64,7 @@
     docs: {
       source: {
         code: exampleSources.Icon,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -96,7 +96,7 @@
       },
       source: {
         code: exampleSources.Text,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -128,7 +128,7 @@
       },
       source: {
         code: exampleSources.Tooltip,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -161,7 +161,7 @@
       },
       source: {
         code: exampleSources.Textarea,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -193,7 +193,7 @@
       },
       source: {
         code: exampleSources.Spinner,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -225,7 +225,7 @@
       },
       source: {
         code: exampleSources.Label,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -258,7 +258,7 @@
       },
       source: {
         code: exampleSources.Dropdown,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -293,7 +293,7 @@
       },
       source: {
         code: exampleSources.CustomInput,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },

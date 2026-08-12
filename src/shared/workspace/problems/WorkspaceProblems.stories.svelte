@@ -287,7 +287,7 @@
         },
         source: {
           code: exampleSources.BottomPanel,
-          language: "svelte",
+          language: "tsx",
           type: "code",
         },
       },

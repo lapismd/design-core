@@ -31,7 +31,7 @@
     docs: {
       source: {
         code: exampleSources.Preview,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -66,7 +66,7 @@
       },
       source: {
         code: exampleSources.CustomSeparator,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -99,7 +99,7 @@
       },
       source: {
         code: exampleSources.Dropdown,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -132,7 +132,7 @@
       },
       source: {
         code: exampleSources.Collapsed,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -166,7 +166,7 @@
       },
       source: {
         code: exampleSources.LinkComponent,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },

@@ -334,7 +334,7 @@
     docs: {
       source: {
         code: exampleSources.TwoExpandedSidebars,
-        language: "svelte",
+        language: "tsx",
         type: "code",
       },
     },
@@ -764,7 +764,7 @@
     docs: {
       source: {
         code: exampleSources.NestedProjectAndFileSidebars,
-        language: "svelte",
+        language: "tsx",
         type: "code",
       },
     },
@@ -848,7 +848,7 @@
       },
       source: {
         code: exampleSources.CompleteShellComposition,
-        language: "svelte",
+        language: "tsx",
         type: "code",
       },
     },
@@ -1207,7 +1207,7 @@
     docs: {
       source: {
         code: exampleSources.AutomaticTabletComposition,
-        language: "svelte",
+        language: "tsx",
         type: "code",
       },
     },
@@ -1238,7 +1238,7 @@
     docs: {
       source: {
         code: exampleSources.MobileEdgePanels,
-        language: "svelte",
+        language: "tsx",
         type: "code",
       },
     },
@@ -1400,7 +1400,7 @@
     docs: {
       source: {
         code: exampleSources.ProgrammaticDisplayModes,
-        language: "svelte",
+        language: "tsx",
         type: "code",
       },
     },
@@ -1443,7 +1443,7 @@
       },
       source: {
         code: exampleSources.ConstrainedDesktopOverlays,
-        language: "svelte",
+        language: "tsx",
         type: "code",
       },
     },
@@ -1693,7 +1693,7 @@
     docs: {
       source: {
         code: exampleSources.MarkdownDocumentBodySidebars,
-        language: "svelte",
+        language: "tsx",
         type: "code",
       },
     },
@@ -1860,7 +1860,7 @@
     docs: {
       source: {
         code: exampleSources.IndependentIconRails,
-        language: "svelte",
+        language: "tsx",
         type: "code",
       },
     },
@@ -1939,7 +1939,7 @@
     docs: {
       source: {
         code: exampleSources.SingleSidebarComposition,
-        language: "svelte",
+        language: "tsx",
         type: "code",
       },
     },

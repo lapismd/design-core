@@ -37,7 +37,7 @@
     docs: {
       source: {
         code: exampleSources.Preview,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -71,7 +71,7 @@
       },
       source: {
         code: exampleSources.Orientation,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -104,7 +104,7 @@
       },
       source: {
         code: exampleSources.Size,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -137,7 +137,7 @@
       },
       source: {
         code: exampleSources.Nested,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -170,7 +170,7 @@
       },
       source: {
         code: exampleSources.Separator,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -203,7 +203,7 @@
       },
       source: {
         code: exampleSources.Split,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -235,7 +235,7 @@
       },
       source: {
         code: exampleSources.Input,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -270,7 +270,7 @@
       },
       source: {
         code: exampleSources.InputGroup,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -304,7 +304,7 @@
       },
       source: {
         code: exampleSources.DropdownMenu,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -336,7 +336,7 @@
       },
       source: {
         code: exampleSources.Select,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -368,7 +368,7 @@
       },
       source: {
         code: exampleSources.Popover,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },

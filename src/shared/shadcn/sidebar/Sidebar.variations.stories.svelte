@@ -44,7 +44,7 @@
       },
       source: {
         code: exampleSources.YourFirstSidebar,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -77,7 +77,7 @@
       },
       source: {
         code: exampleSources.SidebarHeader,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -110,7 +110,7 @@
       },
       source: {
         code: exampleSources.SidebarFooter,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -143,7 +143,7 @@
       },
       source: {
         code: exampleSources.SidebarGroup,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -178,7 +178,7 @@
       },
       source: {
         code: exampleSources.CollapsibleSidebarGroup,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -213,7 +213,7 @@
       },
       source: {
         code: exampleSources.SidebarGroupaction,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -246,7 +246,7 @@
       },
       source: {
         code: exampleSources.SidebarMenu,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -279,7 +279,7 @@
       },
       source: {
         code: exampleSources.Dropdownmenu,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -312,7 +312,7 @@
       },
       source: {
         code: exampleSources.SidebarMenusub,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -347,7 +347,7 @@
       },
       source: {
         code: exampleSources.CollapsibleSidebarMenu,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -382,7 +382,7 @@
       },
       source: {
         code: exampleSources.SidebarMenubadge,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
@@ -417,7 +417,7 @@
       },
       source: {
         code: exampleSources.ControlledSidebar,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },

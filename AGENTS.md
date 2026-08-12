@@ -147,6 +147,11 @@ folder. Full layer table: `pnpm ui guide layers`. Styling and tokens:
   `pnpm spec:validate` fails when an Autodocs story uses a local demo, harness,
   fixture, or story surface without complete consumer source; `!autodocs`
   acceptance stories are exempt.
+- **Docs code examples must be syntax highlighted.** Use Storybook's bundled
+  `tsx` grammar for Svelte component markup in MDX `<Source>` blocks, fenced
+  examples, and `parameters.docs.source`. The current `html`, `svelte`, and
+  `markup` values render as plain text and are rejected by
+  `pnpm spec:validate`.
 - Type every public prop and add short JSDoc to non-obvious props, events, and
   state.
 - `UI Forms/Guidance` is the catalog's high-level form decision guide. Link

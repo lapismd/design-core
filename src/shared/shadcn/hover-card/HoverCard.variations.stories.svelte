@@ -20,7 +20,7 @@
     docs: {
       source: {
         code: exampleSources.Basic,
-        language: "html",
+        language: "tsx",
         type: "code",
       },
     },
