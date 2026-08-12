@@ -209,6 +209,16 @@
   build passed. Live YAML acceptance confirmed a transparent panel, 999px Find
   pill, and transparent button borders. No visual test or baseline write was
   run.
+- Search typography follow-up: live comparison measured Find, Replace, and
+  their placeholders at 16px in Design Core versus 14px in Mira because the
+  search inputs inherited each consumer page's body size. Mira now owns a
+  compact `--mira-code-editor-search-font-size` default of `0.875rem`; after its
+  required root build, both linked stories computed 14px for both inputs and
+  placeholders. Mira spec-first, catalog, package check/build, 2 focused unit
+  files with 9 tests, and the 3-story focused catalog run passed. Design Core
+  check, no-Tailwind, 3 focused unit files with 9 tests, and 2 focused editor
+  story files with 4 tests passed; its static Storybook build also completed.
+  No visual test or baseline write was run.
 
 ## Visual baseline
 
