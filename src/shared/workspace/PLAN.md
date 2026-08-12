@@ -954,6 +954,10 @@ workflow.
   workspace leaf label renders the Badge across tab, dock, group, and mobile
   surfaces. The serialized tab title remains the stable fallback, and the
   internal Problems toolbar no longer duplicates the count.
+- Moved the four severity toggles into a checkbox menu triggered inside the
+  Problems search field. The wider untitled menu preserves semantic icon
+  colours and compact readable labels, while table/tree and collapse controls
+  remain toolbar actions.
 - Added the required `problemsPlugin()` presentation plugin. It preserves a
   persisted/moved leaf, otherwise seeds an inactive closable bottom tab after
   hydration without opening the dock, and recreates/reveals it from the App

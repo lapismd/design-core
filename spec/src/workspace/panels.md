@@ -27,5 +27,5 @@ Workspace panels provide generic domain-neutral views driven by consumer data an
 
 - The public boundary is `@lapismd/design-core/workspace/problems`.
 - The owning workspace leaf title and grouped-tree counts MUST present live totals with the shared Badge component, while the panel toolbar MUST NOT duplicate its title count.
-- The grouped-to-table action MUST use the Lucide `table-properties` icon.
+- Severity toggles MUST be presented as compact, readable checkbox items in an untitled filter menu triggered from inside the problems search field, retaining semantic severity colours while the separate grouped-to-table action uses the Lucide `table-properties` icon.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.

@@ -72,6 +72,13 @@ with `defaultViewMode`, but the view choice remains transient and never changes
 diagnostic ownership or workspace layout. Keep table overflow on the shared
 shadcn Scroll Area rather than introducing a native panel scrollbar.
 
+The compact search field owns the Problems severity-filter trigger. Present the
+four severity gates as checkbox items in its shared Dropdown Menu so filtering
+remains discoverable without consuming a toolbar control for every severity.
+Keep this small menu untitled, wide enough for every severity label, and retain
+the established semantic icon colours. The table/tree and collapse-all actions
+remain independent toolbar controls.
+
 The Problems plugin contributes its live diagnostic total to the owning leaf
 badge. The internal panel toolbar does not repeat that title count; resource
 group counts retain the same shared Badge treatment.

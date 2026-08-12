@@ -181,7 +181,7 @@ This matrix records one current evidence status for every canonical requirement.
 | DC-WS-031     | Implemented | Workspace component source, public barrel, and colocated Storybook scenarios      |
 | DC-WS-032     | Implemented | Structured WorkspaceViewChrome badge contract and accessible shared presentation  |
 | DC-WS-033     | Implemented | Explorer panel tree source, identity tests, and Storybook scenarios               |
-| DC-WS-034     | Implemented | Problems leaf badge, grouped count chips, table icon, and Storybook scenarios     |
+| DC-WS-034     | Implemented | Problems filter menu, badges, table icon, and Storybook scenarios                 |
 | DC-WS-035     | Implemented | Workspace plugin sources, tests, and Storybook scenarios                          |
 | DC-WS-036     | Implemented | Workspace plugin sources, tests, and Storybook scenarios                          |
 | DC-WS-037     | Implemented | Workspace plugin sources, tests, and Storybook scenarios                          |

@@ -1,6 +1,7 @@
 <script lang="ts">
   import { Button } from "@lapismd/design-core/shadcn/button";
   import { Badge } from "@lapismd/design-core/shadcn/badge";
+  import * as DropdownMenu from "@lapismd/design-core/shadcn/dropdown-menu";
   import { Input } from "@lapismd/design-core/shadcn/input";
   import { ScrollArea } from "@lapismd/design-core/shadcn/scroll-area";
   import { ContextMenu } from "bits-ui";
@@ -27,6 +28,13 @@
     { severity: "information", label: "Information", icon: "info" },
     { severity: "hint", label: "Hints", icon: "lightbulb" },
   ];
+
+  let filterMenuOpen = $state(false);
+
+  function toggleSeverity(severity: WorkspaceDiagnosticSeverity) {
+    controller.toggleSeverity(severity);
+    filterMenuOpen = false;
+  }
 
   function positionLabel(line: number, character: number) {
     return `[Ln ${line + 1}, Col ${character + 1}]`;
@@ -57,22 +65,51 @@
         oninput={(event) =>
           controller.setQuery((event.currentTarget as HTMLInputElement).value)}
       />
-    </div>
-    <div class="ui-workspace-problems__filters" aria-label="Severity filters">
-      {#each filters as filter (filter.severity)}
-        <Button
-          variant="ghost"
-          size="xs"
-          class="ui-workspace-problems__filter"
-          data-severity={filter.severity}
-          aria-label={`${filter.label}: ${controller.counts[filter.severity]}`}
-          aria-pressed={controller.isSeverityEnabled(filter.severity)}
-          onclick={() => controller.toggleSeverity(filter.severity)}
+      <DropdownMenu.Root bind:open={filterMenuOpen}>
+        <DropdownMenu.Trigger>
+          {#snippet child({ props })}
+            <Button
+              {...props}
+              variant="ghost"
+              size="icon-xs"
+              class="ui-workspace-problems__filter-menu-trigger"
+              data-filtered={filters.some(
+                (filter) => !controller.isSeverityEnabled(filter.severity),
+              ) || undefined}
+              aria-label="Filter problem severities"
+              title="Filter problem severities"
+            >
+              <WorkspaceIcon name="list-filter" />
+            </Button>
+          {/snippet}
+        </DropdownMenu.Trigger>
+        <DropdownMenu.Content
+          class="ui-workspace-problems__filter-menu"
+          align="end"
         >
-          <WorkspaceIcon name={filter.icon} />
-          <span>{controller.counts[filter.severity]}</span>
-        </Button>
-      {/each}
+          <DropdownMenu.Group>
+            {#each filters as filter (filter.severity)}
+              <DropdownMenu.CheckboxItem
+                class="ui-workspace-problems__filter-menu-item"
+                data-severity={filter.severity}
+                checked={controller.isSeverityEnabled(filter.severity)}
+                aria-label={`${filter.label}: ${controller.counts[filter.severity]}`}
+                onCheckedChange={() => toggleSeverity(filter.severity)}
+              >
+                <WorkspaceIcon name={filter.icon} />
+                <span class="ui-workspace-problems__filter-menu-label">
+                  {filter.label}
+                </span>
+                <span class="ui-workspace-problems__filter-menu-count">
+                  {controller.counts[filter.severity]}
+                </span>
+              </DropdownMenu.CheckboxItem>
+            {/each}
+          </DropdownMenu.Group>
+        </DropdownMenu.Content>
+      </DropdownMenu.Root>
+    </div>
+    <div class="ui-workspace-problems__actions" aria-label="Problems actions">
       <Button
         variant="ghost"
         size="icon-xs"

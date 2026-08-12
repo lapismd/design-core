@@ -209,7 +209,24 @@
     group: createProblemsApp("group"),
   };
 
+  async function dismissProblemsFilter(ownerDocument: Document) {
+    await userEvent.keyboard("{Escape}");
+    ownerDocument
+      .querySelectorAll('[data-slot="dropdown-menu-content"]')
+      .forEach((node) => node.remove());
+    ownerDocument.body.style.pointerEvents = "";
+    ownerDocument.body.style.overflow = "";
+    ownerDocument.body.removeAttribute("data-scroll-locked");
+    await waitFor(() => {
+      expect(
+        ownerDocument.querySelector('[role="menu"][data-state="open"]'),
+      ).toBeNull();
+      expect(ownerDocument.body.style.pointerEvents).not.toBe("none");
+    });
+  }
+
   async function assertProblems(canvasElement: HTMLElement, surface: string) {
+    await dismissProblemsFilter(canvasElement.ownerDocument);
     const canvas = within(canvasElement);
     const panel = await canvas.findByRole("region", { name: "Problems" });
     expect(panel).toBeVisible();
@@ -217,7 +234,11 @@
       "data-workspace-surface",
       surface,
     );
-    expect(canvas.getByLabelText("Errors: 2")).toBeVisible();
+    const severityFilter = canvas.getByRole("button", {
+      name: "Filter problem severities",
+    });
+    expect(severityFilter).toBeVisible();
+    expect(severityFilter.querySelector(".lucide-list-filter")).toBeVisible();
     const leafBadge = canvasElement.querySelector<HTMLElement>(
       "[data-workspace-view-badge]",
     );
@@ -363,7 +384,38 @@
     expect(tableScope.getByText("MD034")).toBeVisible();
     expect(tableScope.getAllByText("markdownlint").length).toBeGreaterThan(0);
     await userEvent.click(canvas.getByRole("button", { name: "View as Tree" }));
-    await userEvent.click(canvas.getByLabelText("Warnings: 1"));
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Filter problem severities" }),
+    );
+    const documentCanvas = within(canvasElement.ownerDocument.body);
+    const warningsFilter = await documentCanvas.findByRole("menuitemcheckbox", {
+      name: "Warnings: 1",
+    });
+    const filterMenu = warningsFilter.closest<HTMLElement>('[role="menu"]');
+    expect(filterMenu).not.toBeNull();
+    expect(within(filterMenu!).queryByText("Severity")).not.toBeInTheDocument();
+    expect(filterMenu!.scrollWidth).toBeLessThanOrEqual(
+      filterMenu!.clientWidth,
+    );
+    for (const label of [
+      "Errors: 2",
+      "Warnings: 1",
+      "Information: 1",
+      "Hints: 1",
+    ]) {
+      expect(
+        documentCanvas.getByRole("menuitemcheckbox", { name: label }),
+      ).toBeVisible();
+    }
+    expect(warningsFilter).toHaveAttribute("data-state", "checked");
+    await userEvent.click(warningsFilter);
+    await waitFor(() =>
+      expect(
+        documentCanvas.queryByRole("menuitemcheckbox", {
+          name: "Warnings: 1",
+        }),
+      ).not.toBeInTheDocument(),
+    );
     await waitFor(() =>
       expect(
         canvas.queryByText(
@@ -371,7 +423,12 @@
         ),
       ).not.toBeInTheDocument(),
     );
-    await userEvent.type(canvas.getByLabelText("Filter problems"), "bare URL");
+    await dismissProblemsFilter(canvasElement.ownerDocument);
+    const searchInput = canvas.getByLabelText("Filter problems");
+    await waitFor(() =>
+      expect(getComputedStyle(searchInput).pointerEvents).not.toBe("none"),
+    );
+    await userEvent.type(searchInput, "bare URL");
     await expect(
       canvas.getByText("Bare URL should be enclosed in angle brackets"),
     ).toBeVisible();
