@@ -11,6 +11,7 @@ Design Core styling is native CSS driven by semantic tokens. Themes and consumer
 | Theme surfaces        | Theme           | DC-CSS-003  |
 | Accessibility styling | Styling         | DC-CSS-004  |
 | No utility leakage    | Styling         | DC-CSS-005  |
+| Visually hidden text  | Styling         | DC-CSS-006  |
 
 ## DC-CSS-001 — Native CSS
 
@@ -56,3 +57,12 @@ Design Core styling is native CSS driven by semantic tokens. Themes and consumer
 
 - Consumers may override documented semantic tokens without depending on private selectors.
 - Styling validation must distinguish source ownership from Storybook-only presentation.
+
+## DC-CSS-006 — Visually hidden text
+
+**Requirement.** The public runtime stylesheet MUST hide production `sr-only` content without requiring a consumer Tailwind source scan.
+
+### Acceptance details
+
+- Accessible names must remain available to assistive technology.
+- Linked application builds must not display icon-button labels or hidden dialog headings.

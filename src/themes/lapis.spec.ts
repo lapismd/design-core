@@ -55,5 +55,6 @@ describe("Lapis theme contract", () => {
     expect(styles.indexOf("./themes/lapis.css")).toBeGreaterThan(
       styles.indexOf("./shared/workspace/workspace.tokens.css"),
     );
+    expect(styles).toMatch(/@layer utilities[\s\S]*\.sr-only[\s\S]*clip:/u);
   });
 });

@@ -22,6 +22,7 @@ This matrix records one current evidence status for every canonical requirement.
 | DC-CSS-003    | Implemented | `styles.md`; `src/styles.css`; theme and token sources; no-Tailwind check         |
 | DC-CSS-004    | Implemented | `styles.md`; `src/styles.css`; theme and token sources; no-Tailwind check         |
 | DC-CSS-005    | Implemented | `styles.md`; `src/styles.css`; theme and token sources; no-Tailwind check         |
+| DC-CSS-006    | Implemented | `src/styles.css`; `src/themes/lapis.spec.ts`; linked Electron consumer acceptance |
 | DC-TOOL-001   | Implemented | Root scripts; `scripts/ui-generator/`; `packages/storybook-addon-docs-mcp/`       |
 | DC-TOOL-002   | Implemented | Root scripts; `scripts/ui-generator/`; `packages/storybook-addon-docs-mcp/`       |
 | DC-TOOL-003   | Implemented | Root scripts; `scripts/ui-generator/`; `packages/storybook-addon-docs-mcp/`       |
