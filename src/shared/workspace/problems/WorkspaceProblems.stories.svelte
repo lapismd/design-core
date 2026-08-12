@@ -230,6 +230,14 @@
     const canvas = within(canvasElement);
     const panel = await canvas.findByRole("region", { name: "Problems" });
     expect(panel).toBeVisible();
+    expect(
+      within(panel).queryByRole("heading", { name: "Problems" }),
+    ).not.toBeInTheDocument();
+    const toolbar = panel.querySelector<HTMLElement>(
+      '[data-ui-part="toolbar"]',
+    );
+    expect(toolbar).not.toBeNull();
+    expect(getComputedStyle(toolbar!).justifyContent).toBe("flex-end");
     expect(panel.closest("[data-workspace-surface]")).toHaveAttribute(
       "data-workspace-surface",
       surface,

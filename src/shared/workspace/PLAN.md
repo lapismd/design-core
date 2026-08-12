@@ -958,6 +958,9 @@ workflow.
   Problems search field. The wider untitled menu preserves semantic icon
   colours and compact readable labels, while table/tree and collapse controls
   remain toolbar actions.
+- Removed the duplicated Problems text from the panel toolbar and right-aligned
+  its search, filter, presentation, and collapse controls beneath the
+  leaf-owned title and badge.
 - Added the required `problemsPlugin()` presentation plugin. It preserves a
   persisted/moved leaf, otherwise seeds an inactive closable bottom tab after
   hydration without opening the dock, and recreates/reveals it from the App

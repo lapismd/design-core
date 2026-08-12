@@ -18,20 +18,10 @@
   min-height: var(--ui-workspace-sidebar-header-height);
   flex: 0 0 auto;
   align-items: center;
+  justify-content: flex-end;
   gap: 0.5rem;
   padding: 0.25rem 0.5rem;
   border-bottom: 1px solid var(--ui-workspace-border);
-}
-
-.ui-workspace-problems__title {
-  display: flex;
-  margin: 0;
-  flex: 0 0 auto;
-  align-items: center;
-  gap: 0.375rem;
-  color: var(--ui-workspace-view-foreground);
-  font: inherit;
-  font-weight: 600;
 }
 
 .ui-workspace-problems__count-chip[data-ui-component="badge"] {
@@ -43,8 +33,9 @@
   display: flex;
   min-width: 8rem;
   max-width: 20rem;
-  flex: 1 1 16rem;
+  flex: 0 1 20rem;
   align-items: center;
+  margin-inline-start: auto;
 }
 
 .ui-workspace-problems__search > [data-ui-component="workspace-icon"] {
@@ -437,10 +428,6 @@
 @container (max-width: 30rem) {
   .ui-workspace-problems__toolbar {
     flex-wrap: wrap;
-  }
-
-  .ui-workspace-problems__title {
-    order: 1;
   }
 
   .ui-workspace-problems__search {

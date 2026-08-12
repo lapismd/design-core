@@ -65,9 +65,6 @@
   aria-label={title}
 >
   <div class="ui-workspace-problems__toolbar" data-ui-part="toolbar">
-    <h2 class="ui-workspace-problems__title" data-ui-part="title">
-      <span>{title}</span>
-    </h2>
     <div class="ui-workspace-problems__search">
       <WorkspaceIcon name="search" />
       <Input

@@ -83,6 +83,10 @@ The Problems plugin contributes its live diagnostic total to the owning leaf
 badge. The internal panel toolbar does not repeat that title count; resource
 group counts retain the same shared Badge treatment.
 
+The owning leaf also supplies the Problems title. Do not repeat it inside the
+panel toolbar; keep the search field, filter trigger, presentation toggle, and
+collapse action together at the toolbar's right edge.
+
 Framework plugins should use `AppShellPlugin.createDiagnosticCollection()` so
 their collection is disposed automatically. Collection `buildItemMenu` hooks
 may append quick fixes, while primary row activation remains navigation-only.
