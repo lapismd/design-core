@@ -27,6 +27,7 @@
   import WorkspaceSidebarToggle from "../sidebar-toggle/WorkspaceSidebarToggle.svelte";
   import WorkspaceTabsMove from "../tabs/WorkspaceTabsMove.svelte";
   import WorkspaceViewHeader from "../view-header/WorkspaceViewHeader.svelte";
+  import WorkspaceViewLabel from "../view-header/WorkspaceViewLabel.svelte";
   import WorkspaceViewHost from "../view-host/WorkspaceViewHost.svelte";
   import "./WorkspaceStackedTabs.css";
 
@@ -266,7 +267,17 @@
                 <WorkspaceIcon
                   name={item.icon ?? tabFor(item)?.icon ?? "file"}
                 />
-                {item.title}
+                {#if item.kind === "tab"}
+                  <WorkspaceViewLabel
+                    {controller}
+                    tab={item}
+                    {hostId}
+                    paneId={pane.id}
+                    fallbackTitle={item.title}
+                  />
+                {:else}
+                  {item.title}
+                {/if}
               </DropdownMenu.Item>
             {/each}
           </DropdownMenu.Content>
@@ -382,9 +393,20 @@
                     ondblclick={(event) => toggleFocusMode(event, item)}
                     onkeydown={(event) => handleTabKeydown(event, item)}
                   >
-                    <span class="ui-workspace-stacked-tabs__tab-title">
-                      {item.title}
-                    </span>
+                    {#if item.kind === "tab"}
+                      <WorkspaceViewLabel
+                        {controller}
+                        tab={item}
+                        {hostId}
+                        paneId={pane.id}
+                        fallbackTitle={item.title}
+                        class="ui-workspace-stacked-tabs__tab-title"
+                      />
+                    {:else}
+                      <span class="ui-workspace-stacked-tabs__tab-title">
+                        {item.title}
+                      </span>
+                    {/if}
                   </button>
                 {/snippet}
               </ContextMenu.Trigger>

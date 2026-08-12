@@ -27,6 +27,7 @@
   import WorkspaceBottomPanelToggle from "../bottom-panel/WorkspaceBottomPanelToggle.svelte";
   import WorkspaceSidebarToggle from "../sidebar-toggle/WorkspaceSidebarToggle.svelte";
   import WorkspaceViewHeader from "../view-header/WorkspaceViewHeader.svelte";
+  import WorkspaceViewLabel from "../view-header/WorkspaceViewLabel.svelte";
   import WorkspaceViewHost from "../view-host/WorkspaceViewHost.svelte";
   import WorkspaceTabsMove from "./WorkspaceTabsMove.svelte";
   import "./WorkspaceTabs.css";
@@ -317,12 +318,23 @@
                                 data-ui-part="tab-menu-context-trigger"
                                 data-workspace-tab-title-trigger
                               >
-                                <span
-                                  class="ui-workspace-tab__title"
-                                  data-ui-part="tab-title"
-                                >
-                                  {item.title}
-                                </span>
+                                {#if item.kind === "tab"}
+                                  <WorkspaceViewLabel
+                                    {controller}
+                                    tab={item}
+                                    {hostId}
+                                    paneId={pane.id}
+                                    fallbackTitle={item.title}
+                                    class="ui-workspace-tab__title"
+                                  />
+                                {:else}
+                                  <span
+                                    class="ui-workspace-tab__title"
+                                    data-ui-part="tab-title"
+                                  >
+                                    {item.title}
+                                  </span>
+                                {/if}
                               </button>
                             {/snippet}
                           </Tabs.Trigger>
@@ -494,7 +506,17 @@
                       <Check />
                     {/if}
                   </span>
-                  {item.title}
+                  {#if item.kind === "tab"}
+                    <WorkspaceViewLabel
+                      {controller}
+                      tab={item}
+                      {hostId}
+                      paneId={pane.id}
+                      fallbackTitle={item.title}
+                    />
+                  {:else}
+                    {item.title}
+                  {/if}
                 </DropdownMenu.CheckboxItem>
               {/each}
             {/if}

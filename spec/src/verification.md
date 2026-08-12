@@ -149,7 +149,7 @@ This matrix records one current evidence status for every canonical requirement.
 | DC-SHELL-002  | Implemented | App Shell sources, guidance, stories, and pointer tests                           |
 | DC-SHELL-003  | Implemented | `src/shared/shell/Guidance.mdx`                                                   |
 | DC-WS-001     | Implemented | Workspace framework sources, guidance, stories, and tests                         |
-| DC-WS-002     | Implemented | Workspace framework sources, typed state tests, guidance, and stories             |
+| DC-WS-002     | Implemented | Typed view chrome registration, reactive instances, unit and Storybook coverage   |
 | DC-WS-003     | Implemented | Workspace framework sources, guidance, stories, and tests                         |
 | DC-WS-004     | Implemented | Workspace framework sources, guidance, stories, and tests                         |
 | DC-WS-005     | Implemented | Workspace framework sources, guidance, stories, and tests                         |
@@ -177,11 +177,11 @@ This matrix records one current evidence status for every canonical requirement.
 | DC-WS-027     | Implemented | Workspace component source, public barrel, and colocated Storybook scenarios      |
 | DC-WS-028     | Implemented | Workspace component source, public barrel, and colocated Storybook scenarios      |
 | DC-WS-029     | Implemented | Workspace component source, public barrel, and colocated Storybook scenarios      |
-| DC-WS-030     | Implemented | Workspace component source, public barrel, and colocated Storybook scenarios      |
+| DC-WS-030     | Implemented | Shared live leaf-label renderer across workspace surfaces and Storybook coverage  |
 | DC-WS-031     | Implemented | Workspace component source, public barrel, and colocated Storybook scenarios      |
-| DC-WS-032     | Implemented | Workspace component source, public barrel, and colocated Storybook scenarios      |
+| DC-WS-032     | Implemented | Structured WorkspaceViewChrome badge contract and accessible shared presentation  |
 | DC-WS-033     | Implemented | Explorer panel tree source, identity tests, and Storybook scenarios               |
-| DC-WS-034     | Implemented | Problems chips, table icon, and Storybook scenarios                               |
+| DC-WS-034     | Implemented | Problems leaf badge, grouped count chips, table icon, and Storybook scenarios     |
 | DC-WS-035     | Implemented | Workspace plugin sources, tests, and Storybook scenarios                          |
 | DC-WS-036     | Implemented | Workspace plugin sources, tests, and Storybook scenarios                          |
 | DC-WS-037     | Implemented | Workspace plugin sources, tests, and Storybook scenarios                          |

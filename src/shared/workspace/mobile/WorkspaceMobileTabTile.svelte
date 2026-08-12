@@ -2,6 +2,7 @@
   import type { WorkspaceTab } from "../core/types.js";
   import type { WorkspaceShellController } from "../core/workspace-controller.svelte.js";
   import WorkspaceIcon from "../icon/WorkspaceIcon.svelte";
+  import WorkspaceViewLabel from "../view-header/WorkspaceViewLabel.svelte";
   import WorkspaceViewHost from "../view-host/WorkspaceViewHost.svelte";
 
   let {
@@ -26,7 +27,14 @@
 >
   <div class="ui-workspace-mobile-tab__preview">
     <div class="ui-workspace-mobile-tab__surface">
-      <div class="ui-workspace-mobile-tab__title">{tab.title}</div>
+      <WorkspaceViewLabel
+        {controller}
+        {tab}
+        hostId="root"
+        {paneId}
+        fallbackTitle={tab.title}
+        class="ui-workspace-mobile-tab__title"
+      />
       <WorkspaceViewHost {controller} {tab} hostId="root" {paneId} />
     </div>
     <button
@@ -51,5 +59,13 @@
       </button>
     {/if}
   </div>
-  <h2>{tab.title}</h2>
+  <h2>
+    <WorkspaceViewLabel
+      {controller}
+      {tab}
+      hostId="root"
+      {paneId}
+      fallbackTitle={tab.title}
+    />
+  </h2>
 </article>

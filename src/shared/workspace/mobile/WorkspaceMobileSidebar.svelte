@@ -7,6 +7,7 @@
     WorkspaceTabItem,
   } from "../core/types.js";
   import type { WorkspaceShellController } from "../core/workspace-controller.svelte.js";
+  import WorkspaceViewLabel from "../view-header/WorkspaceViewLabel.svelte";
   import WorkspaceViewHost from "../view-host/WorkspaceViewHost.svelte";
 
   let {
@@ -86,7 +87,15 @@
             data-mobile-sidebar-group-leaf={tab.id}
           >
             {#if visibleGroupTabs.length > 1}
-              <header>{tab.title}</header>
+              <header>
+                <WorkspaceViewLabel
+                  {controller}
+                  {tab}
+                  hostId="root"
+                  paneId={selectedEntry.paneId}
+                  fallbackTitle={tab.title}
+                />
+              </header>
             {/if}
             <WorkspaceViewHost
               {controller}

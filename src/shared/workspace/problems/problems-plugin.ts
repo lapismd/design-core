@@ -80,7 +80,19 @@ export class ProblemsPlugin extends AppShellPlugin<ProblemsPluginOptions> {
     this.registerView(
       PROBLEMS_VIEW_TYPE,
       (leaf) => new WorkspaceProblemsView(leaf, this.#controller, title, icon),
-      { icon, showHeader: false },
+      {
+        icon,
+        showHeader: false,
+        getChromeForContext: () => {
+          const count = this.#controller.diagnostics.size;
+          return {
+            badge: {
+              value: count,
+              label: `${count} ${count === 1 ? "problem" : "problems"}`,
+            },
+          };
+        },
+      },
     );
     this.addCommand({
       id: SHOW_PROBLEMS_COMMAND_ID,

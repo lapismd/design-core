@@ -238,6 +238,8 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/workspace/tabs`.
+- Registered leaf labels MUST resolve live titles and optional badges from view chrome across tab, dock, grouped-panel, and mobile surfaces.
+- `WorkspaceTab.title` MUST remain the serialized fallback; live badges MUST remain ephemeral and MUST NOT change workspace layout persistence.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 
 ## DC-WS-031 — Workspace Tree
@@ -256,4 +258,6 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/workspace/view-header`.
+- `WorkspaceViewChrome` MAY contribute a structured badge value and accessible label without templating presentation into its title string.
+- Workspace leaf labels MUST render contributed badges through the shared Badge component while retaining the plain title as their stable identity.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.

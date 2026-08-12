@@ -4,6 +4,7 @@ import {
   createDefaultWorkspaceLayout,
   createWorkspaceTab,
   createWorkspaceTabs,
+  findWorkspaceTab,
 } from "../core/layout.js";
 import { WorkspaceMenu } from "../core/workspace-menu.js";
 import { AppShellPlugin } from "../core/plugin-manager.svelte.js";
@@ -285,6 +286,40 @@ describe("problemsPlugin", () => {
     expect(app.workspace.getLeavesOfType(PROBLEMS_VIEW_TYPE)).toEqual([]);
     expect(await app.commands.execute(SHOW_PROBLEMS_COMMAND_ID)).toBe(true);
     expect(app.workspace.getLeavesOfType(PROBLEMS_VIEW_TYPE)).toHaveLength(1);
+    await app.dispose();
+  });
+
+  it("contributes a live leaf badge without persisting its count", async () => {
+    const app = new AppShellController({ plugins: [problemsPlugin()] });
+    await app.start();
+    const [leaf] = app.workspace.getLeavesOfType(PROBLEMS_VIEW_TYPE);
+    const location = leaf
+      ? findWorkspaceTab(app.renderer.layout, leaf.id)
+      : undefined;
+    const definition = app.renderer.registry.resolve(PROBLEMS_VIEW_TYPE);
+    expect(leaf?.title).toBe("Problems");
+    expect(location).toBeDefined();
+
+    const getChrome = () =>
+      definition?.getChrome?.({
+        tab: location!.tab,
+        hostId: location!.hostId,
+        paneId: location!.pane.id,
+        active: leaf?.active ?? false,
+        showInlineTitle: app.renderer.showInlineTitle,
+        activate: () => leaf?.activate() ?? false,
+        close: () => leaf?.close() ?? false,
+        setState: (state) => app.renderer.updateViewState(leaf!.id, state),
+      });
+
+    expect(getChrome()?.badge).toEqual({ value: 0, label: "0 problems" });
+    const collection = app.diagnostics.createCollection("test:badge");
+    collection.set(alpha, [error]);
+    expect(getChrome()?.badge).toEqual({ value: 1, label: "1 problem" });
+    expect(leaf?.title).toBe("Problems");
+    expect(findWorkspaceTab(app.renderer.layout, leaf!.id)?.tab.title).toBe(
+      "Problems",
+    );
     await app.dispose();
   });
 

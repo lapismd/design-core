@@ -22,6 +22,8 @@
   import WorkspaceSidebarGroupVisibilityDialog from "../sidebar-group/WorkspaceSidebarGroupVisibilityDialog.svelte";
   import WorkspaceSidebarToggle from "../sidebar-toggle/WorkspaceSidebarToggle.svelte";
   import WorkspaceTabsMove from "../tabs/WorkspaceTabsMove.svelte";
+  import WorkspaceViewLabel from "../view-header/WorkspaceViewLabel.svelte";
+  import { resolveWorkspaceViewLabel } from "../view-header/workspace-view-label.js";
   import WorkspaceViewHost from "../view-host/WorkspaceViewHost.svelte";
   import "./WorkspaceSidebar.css";
 
@@ -82,6 +84,17 @@
 
   function isSelected(item: WorkspaceTabItem) {
     return pane?.activeItemId === item.id;
+  }
+
+  function itemLabel(item: WorkspaceTabItem): string {
+    if (item.kind !== "tab") return item.title;
+    return resolveWorkspaceViewLabel(
+      controller,
+      item,
+      "root",
+      pane?.id ?? `${side}-sidebar`,
+      item.title,
+    ).accessibleLabel;
   }
 
   function createItemMenu(
@@ -229,8 +242,8 @@
                       aria-selected={isSelected(item)}
                       aria-controls={`workspace-sidebar-panel-${side}`}
                       id={`workspace-sidebar-tab-${side}-${item.id}`}
-                      aria-label={item.title}
-                      title={item.title}
+                      aria-label={itemLabel(item)}
+                      title={itemLabel(item)}
                       draggable={Boolean(tab)}
                       data-workspace-tab-id={tab?.id}
                       data-workspace-item-id={item.id}
@@ -242,7 +255,19 @@
                       onclick={() => select(item)}
                     >
                       <WorkspaceIcon name={item.icon ?? tab?.icon ?? "file"} />
-                      <span class="sr-only">{item.title}</span>
+                      {#if item.kind === "tab"}
+                        <WorkspaceViewLabel
+                          {controller}
+                          tab={item}
+                          hostId="root"
+                          paneId={pane?.id ?? `${side}-sidebar`}
+                          fallbackTitle={item.title}
+                          showTitle={false}
+                          announce={false}
+                        />
+                      {:else}
+                        <span class="sr-only">{item.title}</span>
+                      {/if}
                     </button>
                   {/snippet}
                 </ContextMenu.Trigger>

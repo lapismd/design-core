@@ -46,13 +46,6 @@
   <div class="ui-workspace-problems__toolbar" data-ui-part="toolbar">
     <h2 class="ui-workspace-problems__title" data-ui-part="title">
       <span>{title}</span>
-      <Badge
-        variant="secondary"
-        class="ui-workspace-problems__count-chip ui-workspace-problems__title-count"
-        aria-label={problemCountLabel(controller.diagnostics.size)}
-      >
-        {controller.diagnostics.size}
-      </Badge>
     </h2>
     <div class="ui-workspace-problems__search">
       <WorkspaceIcon name="search" />

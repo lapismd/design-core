@@ -16,6 +16,7 @@
   import WorkspaceSidebarGroupEditor from "../sidebar-group/WorkspaceSidebarGroupEditor.svelte";
   import WorkspaceSidebarGroupVisibilityDialog from "../sidebar-group/WorkspaceSidebarGroupVisibilityDialog.svelte";
   import WorkspaceTabsMove from "../tabs/WorkspaceTabsMove.svelte";
+  import WorkspaceViewLabel from "../view-header/WorkspaceViewLabel.svelte";
   import WorkspaceViewHost from "../view-host/WorkspaceViewHost.svelte";
   import WorkspaceBottomPanelEmpty from "./WorkspaceBottomPanelEmpty.svelte";
   import WorkspaceBottomPanelToggle from "./WorkspaceBottomPanelToggle.svelte";
@@ -270,7 +271,17 @@
                     <WorkspaceIcon
                       name={item.icon ?? tab?.icon ?? "terminal"}
                     />
-                    <span>{item.title}</span>
+                    {#if item.kind === "tab"}
+                      <WorkspaceViewLabel
+                        {controller}
+                        tab={item}
+                        hostId="root"
+                        paneId={pane.id}
+                        fallbackTitle={item.title}
+                      />
+                    {:else}
+                      <span>{item.title}</span>
+                    {/if}
                   </button>
                 {/snippet}
               </ContextMenu.Trigger>

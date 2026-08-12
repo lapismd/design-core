@@ -12,6 +12,7 @@
   import { WorkspaceDragState } from "../drag/workspace-drag.svelte.js";
   import WorkspaceIcon from "../icon/WorkspaceIcon.svelte";
   import WorkspaceContextMenuItems from "../menu/WorkspaceContextMenuItems.svelte";
+  import WorkspaceViewLabel from "../view-header/WorkspaceViewLabel.svelte";
   import WorkspaceViewHost from "../view-host/WorkspaceViewHost.svelte";
   import {
     collapsedSidebarPanelSize,
@@ -273,9 +274,14 @@
                             <span class="ui-workspace-sidebar-group__icon">
                               <WorkspaceIcon name={tab.icon ?? "file"} />
                             </span>
-                            <span class="ui-workspace-sidebar-group__title">
-                              {tab.title}
-                            </span>
+                            <WorkspaceViewLabel
+                              {controller}
+                              {tab}
+                              hostId="root"
+                              paneId={pane.id}
+                              fallbackTitle={tab.title}
+                              class="ui-workspace-sidebar-group__title"
+                            />
                           </button>
                         {/snippet}
                       </ContextMenu.Trigger>

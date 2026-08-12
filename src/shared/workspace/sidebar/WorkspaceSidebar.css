@@ -97,6 +97,7 @@
 }
 
 .ui-workspace-sidebar__tab {
+  position: relative;
   display: inline-flex;
   width: 2rem;
   height: 1.75rem;

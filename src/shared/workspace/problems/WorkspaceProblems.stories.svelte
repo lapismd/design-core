@@ -197,7 +197,7 @@
         ],
       ],
     ]);
-    return { app, navigationLog, copyLog };
+    return { app, collection, navigationLog, copyLog };
   }
 
   const fixtures = {
@@ -218,10 +218,24 @@
       surface,
     );
     expect(canvas.getByLabelText("Errors: 2")).toBeVisible();
-    expect(canvas.getByLabelText("5 problems")).toHaveAttribute(
-      "data-ui-component",
-      "badge",
+    const leafBadge = canvasElement.querySelector<HTMLElement>(
+      "[data-workspace-view-badge]",
     );
+    const leafLabel = leafBadge?.closest<HTMLElement>(
+      '[data-ui-component="workspace-view-label"]',
+    );
+    expect(leafLabel).not.toBeNull();
+    expect(leafLabel).toHaveAttribute(
+      "data-ui-component",
+      "workspace-view-label",
+    );
+    expect(leafBadge).toHaveTextContent("5");
+    expect(getComputedStyle(leafBadge!).backgroundColor).not.toBe(
+      "rgba(0, 0, 0, 0)",
+    );
+    expect(
+      panel.querySelector(".ui-workspace-problems__title-count"),
+    ).not.toBeInTheDocument();
     expect(canvas.getByLabelText("2 problems in welcome.md")).toHaveAttribute(
       "data-ui-component",
       "badge",
@@ -309,6 +323,20 @@
   play={async ({ canvasElement }) => {
     await assertProblems(canvasElement, "bottom-panel");
     const canvas = within(canvasElement);
+    const transientResource = {
+      uri: "document:///notes/transient.md",
+      label: "transient.md",
+    };
+    fixtures.bottom.collection.set(transientResource, [
+      { message: "Transient issue", severity: "warning" },
+    ]);
+    await waitFor(() =>
+      expect(canvas.getByLabelText("Problems, 6 problems")).toBeInTheDocument(),
+    );
+    fixtures.bottom.collection.delete(transientResource);
+    await waitFor(() =>
+      expect(canvas.getByLabelText("Problems, 5 problems")).toBeInTheDocument(),
+    );
     await userEvent.click(
       canvas.getByRole("button", { name: "View as Table" }),
     );

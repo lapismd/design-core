@@ -31,6 +31,7 @@ Workspace framework contracts coordinate reusable layout and state through expli
 
 - The public boundary is `@lapismd/design-core/workspace/core`.
 - Application workspace state transitions must remain typed and independent of consumer persistence.
+- Imperative view registration MUST expose live context chrome before mounting and MUST react when instance-owned chrome becomes available.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 
 ## DC-WS-003 — Workspace App Shell

@@ -12,6 +12,7 @@
   import { WorkspaceDragState } from "../drag/workspace-drag.svelte.js";
   import WorkspaceIcon from "../icon/WorkspaceIcon.svelte";
   import WorkspaceContextMenuItems from "../menu/WorkspaceContextMenuItems.svelte";
+  import WorkspaceViewLabel from "../view-header/WorkspaceViewLabel.svelte";
   import {
     collapsedDockPanelSize,
     dockPanelDefaultSizes,
@@ -256,11 +257,14 @@
                             <span class="ui-workspace-bottom-panel-group__icon">
                               <WorkspaceIcon name={tab.icon ?? "file"} />
                             </span>
-                            <span
+                            <WorkspaceViewLabel
+                              {controller}
+                              {tab}
+                              hostId="root"
+                              paneId={pane.id}
+                              fallbackTitle={tab.title}
                               class="ui-workspace-bottom-panel-group__title"
-                            >
-                              {tab.title}
-                            </span>
+                            />
                           </button>
                         {/snippet}
                       </ContextMenu.Trigger>

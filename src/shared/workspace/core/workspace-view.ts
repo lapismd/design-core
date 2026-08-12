@@ -1,8 +1,13 @@
 import type { WorkspaceMenu } from "./workspace-menu.js";
 import { findWorkspaceTab } from "./layout.js";
 import { cloneSerializable } from "./serializable.js";
-import type { WorkspaceViewChrome, WorkspaceViewState } from "./types.js";
+import type {
+  WorkspaceViewChrome,
+  WorkspaceViewContext,
+  WorkspaceViewState,
+} from "./types.js";
 import type { WorkspaceShellController } from "./workspace-controller.svelte.js";
+import { SvelteMap } from "svelte/reactivity";
 
 export interface WorkspaceViewStateResult {
   history?: boolean;
@@ -126,6 +131,8 @@ export type WorkspaceViewFactory<View extends WorkspaceView = WorkspaceView> = (
 export interface WorkspaceClassViewRegistration {
   icon?: string;
   showHeader?: boolean;
+  /** Chrome available before an imperative view instance is mounted. */
+  getChromeForContext?: (context: WorkspaceViewContext) => WorkspaceViewChrome;
   getChrome?: (view: WorkspaceView) => WorkspaceViewChrome;
 }
 
@@ -137,7 +144,7 @@ export class WorkspaceViewManager {
       disposeRenderer: () => void;
     }
   >();
-  readonly #instances = new Map<string, WorkspaceView>();
+  readonly #instances = new SvelteMap<string, WorkspaceView>();
 
   constructor(readonly workspace: WorkspaceShellController) {}
 
@@ -156,13 +163,15 @@ export class WorkspaceViewManager {
       showHeader: options.showHeader,
       getChrome: (context) => {
         const view = this.#instances.get(context.tab.id);
+        const contextChrome = options.getChromeForContext?.(context) ?? {};
         return view
           ? {
+              ...contextChrome,
               title: view.getDisplayText(),
               ...options.getChrome?.(view),
               buildPaneMenu: (menu) => view.onPaneMenu(menu),
             }
-          : {};
+          : contextChrome;
       },
       mount: (target, context) => {
         const leaf = new WorkspaceLeaf(this.workspace, context.tab.id);

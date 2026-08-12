@@ -155,14 +155,14 @@ Application-independent workspace framework in `src/shared/workspace/`.
   grid for bottom-panel alignment across workspace columns
 - Tabs, splits, sidebars, transposed bottom-panel groups, view headers, drop
   targets, windows, ribbon, status, settings, command palette, empty and notice
-  components
+  components, with structured live view badges shared across every leaf label
 - Explorer panel (`Workspace/Panels/Explorer`): controller-driven file/folder
   chrome with consumer-owned tree/action adapters (filesystem stays outside
   the framework)
 - Problems panel (`Workspace/Panels/Problems`): generic diagnostic collections,
   filtering, grouped-tree and compact-table views, actions, and a movable
-  presentation plugin with consumer-owned resource navigation and quick-fix
-  adapters
+  presentation plugin with a live owning-leaf count badge plus consumer-owned
+  resource navigation and quick-fix adapters
 - Startup surface (`Workspace/Components/Startup`): application-independent
   task progress and bounded failure presentation with host-owned actions
 - Optional F-Mode and Notifications plugins

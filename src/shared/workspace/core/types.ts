@@ -152,9 +152,19 @@ export interface WorkspaceAction {
   onSelect: (event?: MouseEvent | KeyboardEvent) => void | Promise<void>;
 }
 
+/** Ephemeral metadata rendered beside a registered workspace view title. */
+export interface WorkspaceViewBadge {
+  /** Compact value rendered in the shared Badge component. */
+  value: string | number;
+  /** Accessible meaning of the value, for example `2 problems`. */
+  label: string;
+}
+
 export interface WorkspaceViewChrome {
   /** Display title for the tab title bar; may be editable when `titleEditable`. */
   title?: string;
+  /** Live, non-persisted metadata rendered beside the owning leaf title. */
+  badge?: WorkspaceViewBadge;
   /** When true, the header title is click-to-edit in place. */
   titleEditable?: boolean;
   /** Called when an editable title commits (Enter or blur). */
