@@ -397,16 +397,24 @@
     expect(filterMenu!.scrollWidth).toBeLessThanOrEqual(
       filterMenu!.clientWidth,
     );
+    const severityIconColors = new Set<string>();
     for (const label of [
       "Errors: 2",
       "Warnings: 1",
       "Information: 1",
       "Hints: 1",
     ]) {
-      expect(
-        documentCanvas.getByRole("menuitemcheckbox", { name: label }),
-      ).toBeVisible();
+      const item = documentCanvas.getByRole("menuitemcheckbox", {
+        name: label,
+      });
+      expect(item).toBeVisible();
+      const icon = item.querySelector<SVGElement>(
+        '[data-ui-component="workspace-icon"]',
+      );
+      expect(icon).not.toBeNull();
+      severityIconColors.add(getComputedStyle(icon!).color);
     }
+    expect(severityIconColors.size).toBe(4);
     expect(warningsFilter).toHaveAttribute("data-state", "checked");
     await userEvent.click(warningsFilter);
     await waitFor(() =>

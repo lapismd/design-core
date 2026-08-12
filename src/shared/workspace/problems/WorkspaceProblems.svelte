@@ -36,6 +36,19 @@
     filterMenuOpen = false;
   }
 
+  function severityColor(severity: WorkspaceDiagnosticSeverity) {
+    switch (severity) {
+      case "error":
+        return "var(--ui-workspace-diagnostic-error, var(--destructive, #c41e34))";
+      case "warning":
+        return "var(--ui-workspace-diagnostic-warning, var(--warning, #f97316))";
+      case "information":
+        return "var(--ui-workspace-diagnostic-information, var(--primary, #7c3aed))";
+      case "hint":
+        return "var(--ui-workspace-diagnostic-hint, var(--muted-foreground, #64748b))";
+    }
+  }
+
   function positionLabel(line: number, character: number) {
     return `[Ln ${line + 1}, Col ${character + 1}]`;
   }
@@ -96,7 +109,10 @@
                 aria-label={`${filter.label}: ${controller.counts[filter.severity]}`}
                 onCheckedChange={() => toggleSeverity(filter.severity)}
               >
-                <WorkspaceIcon name={filter.icon} />
+                <WorkspaceIcon
+                  name={filter.icon}
+                  style={`color: ${severityColor(filter.severity)}`}
+                />
                 <span class="ui-workspace-problems__filter-menu-label">
                   {filter.label}
                 </span>
