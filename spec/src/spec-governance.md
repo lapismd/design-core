@@ -14,6 +14,7 @@ Specification governance keeps requirements discoverable, mapped, validated, and
 | QMD discovery             | Governance      | DC-GOV-006  |
 | Agent authority           | Governance      | DC-GOV-007  |
 | Generated artifacts       | Governance      | DC-GOV-008  |
+| Storybook source checks   | Governance      | DC-GOV-009  |
 
 ## DC-GOV-001 — Requirement identifiers
 
@@ -106,3 +107,12 @@ Specification governance keeps requirements discoverable, mapped, validated, and
 
 - A diagnostic must identify its stable code, governing requirement, source path, line when available, affected identifier, and corrective action.
 - Generated or discovery surfaces must point back to canonical Markdown rather than becoming a second source of truth.
+
+## DC-GOV-009 — Storybook source checks
+
+**Requirement.** Specification validation MUST inspect Autodocs stories that use a local story-only render boundary.
+
+### Acceptance details
+
+- Validation must reject missing or incomplete explicit source metadata for demo, harness, fixture, and story-surface boundaries.
+- Validation must reject example source that exposes story-only component names or inferred args as consumer usage.

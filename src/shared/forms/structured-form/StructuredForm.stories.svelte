@@ -1,6 +1,7 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent, within } from "storybook/test";
+  import * as exampleSources from "./StructuredForm.example-sources.js";
   import StructuredForm from "./StructuredForm.svelte";
 
   const { Story } = defineMeta({
@@ -141,6 +142,15 @@
 
 <Story
   name="Updates a schema-shaped form"
+  parameters={{
+    docs: {
+      source: {
+        code: exampleSources.CallbackConfig,
+        language: "svelte",
+        type: "code",
+      },
+    },
+  }}
   play={async ({ canvas }) => {
     const name = canvas.getByLabelText("Display name");
     await userEvent.clear(name);
@@ -171,6 +181,15 @@
 <Story
   name="Reports an unregistered custom renderer"
   exportName="MissingCustomRenderer"
+  parameters={{
+    docs: {
+      source: {
+        code: exampleSources.MissingCustomRenderer,
+        language: "svelte",
+        type: "code",
+      },
+    },
+  }}
   play={async ({ canvas }) => {
     await expect(canvas.getByRole("alert")).toHaveTextContent(
       "No renderer is registered for field kind “currency”",
@@ -193,6 +212,15 @@
 <Story
   name="Uses an explicit custom renderer registry"
   exportName="CustomRendererRegistry"
+  parameters={{
+    docs: {
+      source: {
+        code: exampleSources.CustomRendererRegistry,
+        language: "svelte",
+        type: "code",
+      },
+    },
+  }}
   play={async ({ canvas }) => {
     const price = canvas.getByLabelText("Price");
     await userEvent.clear(price);
@@ -221,6 +249,15 @@
 <Story
   name="Renders a type-safe path config"
   exportName="TypeSafePathConfig"
+  parameters={{
+    docs: {
+      source: {
+        code: exampleSources.TypeSafePathConfig,
+        language: "svelte",
+        type: "code",
+      },
+    },
+  }}
   play={async ({ canvas }) => {
     const name = canvas.getByLabelText("Name");
     await userEvent.clear(name);

@@ -16,6 +16,7 @@ import {
 } from "./lib/spec-model.mjs";
 import * as publicSurfaces from "./public-surfaces.mjs";
 import * as storybookMirrors from "./storybook-mirrors.mjs";
+import * as storybookCatalog from "./storybook-catalog.mjs";
 import * as summary from "./summary.mjs";
 import * as verification from "./verification.mjs";
 
@@ -27,6 +28,7 @@ export const VALIDATORS = [
   verification,
   book,
   publicSurfaces,
+  storybookCatalog,
   storybookMirrors,
 ];
 

@@ -190,6 +190,8 @@ This matrix records one current evidence status for every canonical requirement.
 | DC-CAT-003    | Implemented | `.storybook/`; `src/**/*.stories.svelte`; current static Storybook index          |
 | DC-CAT-004    | Implemented | `.storybook/`; `src/**/*.stories.svelte`; current static Storybook index          |
 | DC-CAT-005    | Implemented | `src/spec/**/*.mdx`; Storybook ordering and mirror validator                      |
+| DC-CAT-006    | Implemented | Public-boundary `*.example-sources.ts` modules and catalog validator              |
+| DC-CAT-007    | Implemented | Typed `parameters.docs.source` metadata and catalog validator                     |
 | DC-GOV-001    | Implemented | Canonical requirement chapters and verification matrix                            |
 | DC-GOV-002    | Implemented | Canonical requirement chapters and verification matrix                            |
 | DC-GOV-003    | Implemented | `pnpm spec:validate`; canonical, surface, book, and mirror validator tests        |
@@ -198,3 +200,4 @@ This matrix records one current evidence status for every canonical requirement.
 | DC-GOV-006    | Implemented | `pnpm spec:search`; QMD wrapper tests and `rg` fallback                           |
 | DC-GOV-007    | Implemented | `AGENTS.md`; `pnpm ui guide specification`                                        |
 | DC-GOV-008    | Implemented | `.gitignore`; book and QMD tracking validators                                    |
+| DC-GOV-009    | Implemented | Storybook source validator and focused validator tests                            |

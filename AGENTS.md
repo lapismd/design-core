@@ -144,6 +144,9 @@ folder. Full layer table: `pnpm ui guide layers`. Styling and tokens:
   and Workspace Explorer. Prefer object-literal `parameters={{ … }}` (CSF
   extraction). Reuse the same `Basic` (or story-specific) string from MDX
   `<Source>` when present. Details: `pnpm ui guide testing`.
+  `pnpm spec:validate` fails when an Autodocs story uses a local demo, harness,
+  fixture, or story surface without complete consumer source; `!autodocs`
+  acceptance stories are exempt.
 - Type every public prop and add short JSDoc to non-obvious props, events, and
   state.
 - `UI Forms/Guidance` is the catalog's high-level form decision guide. Link

@@ -6,6 +6,7 @@
   import { APP_SHELL_SETTING_IDS } from "../../core/built-in-settings.svelte.js";
   import ReusableFrameworkDemo from "../../demo/ReusableFrameworkDemo.svelte";
   import { createFrameworkDemo } from "../../demo/framework-demo.js";
+  import * as exampleSources from "./FMode.example-sources.js";
   import { fModePlugin } from "./f-mode-plugin.js";
   import { FMODE_SETTING_IDS } from "./settings.js";
   import "./FMode.stories.css";
@@ -78,6 +79,13 @@
     );
   }}
   parameters={{
+    docs: {
+      source: {
+        code: exampleSources.InvalidQuery,
+        language: "ts",
+        type: "code",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/workspace/plugins/f-mode/fmode-edge-cases/invalid-query-chromium.png",
@@ -105,6 +113,13 @@
     await expect(canvasElement.querySelector("[data-fmode-root]")).toBeNull();
   }}
   parameters={{
+    docs: {
+      source: {
+        code: exampleSources.NoTargets,
+        language: "ts",
+        type: "code",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/workspace/plugins/f-mode/fmode-edge-cases/no-targets-chromium.png",

@@ -16,7 +16,11 @@
           component:
             "A complete, body-only App Shell form over a story-local snapshot of CV Studio's John Doe sample. Every structured fragment round-trips through live YAML.",
         },
-        source: { code: CompleteCvFormExample, language: "svelte" },
+        source: {
+          code: CompleteCvFormExample,
+          language: "svelte",
+          type: "code",
+        },
       },
     },
   });

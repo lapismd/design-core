@@ -33,6 +33,9 @@ host changes and keep the owning canonical chapter in the same diff. Run
      do not hide the object behind a helper call.
    - Follow shadcn `*.example-sources` / Workspace Explorer. Reuse the same
      string from MDX `<Source code={…}>` when the docs page has a Usage block.
+   - `pnpm spec:validate` enforces complete consumer source for Autodocs stories
+     that render through a local demo, harness, fixture, or story surface;
+     `!autodocs` acceptance stories are exempt.
 3. **Live catalog** — `pnpm storybook` or `pnpm storybook:ui` (polling). Do not
    invoke `storybook dev` directly.
 4. **Story tests** — Storybook Vitest / Storybook MCP `run-story-tests` while

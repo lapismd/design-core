@@ -41,9 +41,9 @@ This tracker records the one-time migration from implicit source and Storybook c
 | Workspace / Components             |           25 | Baseline drafted |
 | Workspace / Panels                 |            2 | Baseline drafted |
 | Workspace / Plugins                |            3 | Baseline drafted |
-| Storybook catalog                  |            5 | Baseline drafted |
-| Specification governance           |            8 | Baseline drafted |
-| Verification                       |     194 rows | Baseline drafted |
+| Storybook catalog                  |            7 | Baseline drafted |
+| Specification governance           |            9 | Baseline drafted |
+| Verification                       |     197 rows | Baseline drafted |
 
 ## Staged checklist
 
@@ -55,10 +55,13 @@ This tracker records the one-time migration from implicit source and Storybook c
 - [x] Update agent, CLI, testing, VCS, and README guidance.
 - [x] Add metadata-only Storybook mirrors in summary order.
 - [x] Add canonical specification chapters to Docs MCP and llms discovery.
-- [ ] Complete non-visual repository validation and record evidence.
+- [x] Replace story-only Show Code output with explicit consumer source and enforce it through specification validation.
+- [x] Complete non-visual repository validation and record evidence.
 
 ## Evidence and known gaps
 
-The source and existing Storybook catalog provide implementation evidence for the initial public contracts. Requirements for automated governance, QMD, and Storybook mirrors remain `In progress` until their owning slices land and pass focused tests. The migration does not claim that every existing family has exhaustive unit, interaction, keyboard, compact-width, or accessibility coverage; later component changes must strengthen evidence where their owning requirement exposes a gap.
+The source and existing Storybook catalog provide implementation evidence for the initial public contracts. On 2026-08-12, `pnpm spec:validate`, `pnpm spec:test`, `pnpm spec:build`, an explicit committed-range `spec:first`, `pnpm check`, `pnpm check:no-tailwind`, `pnpm fmt:check`, five focused Storybook files (23 interactions), and `pnpm build-storybook` passed. Live Storybook acceptance confirmed that Structured Form Show Code renders the public package import and typed path configuration without story-only state or renderer imports.
+
+The migration does not claim that every existing family has exhaustive unit, interaction, keyboard, compact-width, or accessibility coverage; later component changes must strengthen evidence where their owning requirement exposes a gap.
 
 Visual Delta is out of scope. No visual comparison, capture, or baseline update is authorized for this migration.

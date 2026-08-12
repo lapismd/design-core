@@ -11,6 +11,8 @@ Storybook is the interactive catalog and acceptance surface. It documents compon
 | Guidance and Welcome  | Documentation surface   | DC-CAT-003  |
 | Catalog validation    | Storybook               | DC-CAT-004  |
 | Specification mirrors | Storybook documentation | DC-CAT-005  |
+| Consumer source       | Storybook documentation | DC-CAT-006  |
+| Explicit source       | Storybook documentation | DC-CAT-007  |
 
 ## DC-CAT-001 — Catalog metadata
 
@@ -57,3 +59,21 @@ Storybook is the interactive catalog and acceptance surface. It documents compon
 - Story titles and hierarchy must remain stable discovery identifiers unless a migration is documented.
 - Normative prose must remain in `spec/src`; mirrors may contain only Storybook metadata and a raw import.
 - Specification must sort first and its nested titles must follow `SUMMARY.md` order.
+
+## DC-CAT-006 — Consumer source
+
+**Requirement.** Every Storybook Docs Show Code panel MUST present copy-pasteable usage of the real documented component boundary.
+
+### Acceptance details
+
+- Public components must use public package imports and include the state or composition needed to reproduce the scenario.
+- Show Code must not present a story-only demo, harness, fixture, story surface, or inferred story args as consumer API.
+
+## DC-CAT-007 — Explicit source
+
+**Requirement.** An Autodocs story whose render path differs from consumer usage MUST define an explicit `parameters.docs.source` object.
+
+### Acceptance details
+
+- The source object must define `code`, `language`, and `type: "code"`.
+- Nontrivial source should live in a colocated `*.example-sources.ts` module and derive from the scenario's public boundary.

@@ -1,6 +1,7 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent, waitFor, within } from "storybook/test";
+  import * as exampleSources from "./AppShell.example-sources.js";
   import AppShellBodyDemo from "./examples/AppShellBodyDemo.svelte";
   import AppShellCompleteDemo from "./examples/AppShellCompleteDemo.svelte";
   import AppShellConversationDemo from "./examples/AppShellConversationDemo.svelte";
@@ -330,6 +331,13 @@
     ).toBeVisible();
   }}
   parameters={{
+    docs: {
+      source: {
+        code: exampleSources.TwoExpandedSidebars,
+        language: "svelte",
+        type: "code",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/shell/app-shell/two-expanded-sidebars-chromium.png",
@@ -753,6 +761,13 @@
     );
   }}
   parameters={{
+    docs: {
+      source: {
+        code: exampleSources.NestedProjectAndFileSidebars,
+        language: "svelte",
+        type: "code",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/shell/app-shell/nested-project-and-file-sidebars-chromium.png",
@@ -830,6 +845,11 @@
       description: {
         story:
           'Full nested shell topology that tracks the Storybook viewport (`displayMode="auto"`). Play temporarily widens and narrows the frame to assert desktop, constrained overlays, then restores a fluid frame so resizing the panel continues to drive layout.',
+      },
+      source: {
+        code: exampleSources.CompleteShellComposition,
+        language: "svelte",
+        type: "code",
       },
     },
   }}
@@ -1184,6 +1204,13 @@
     await expect(completeTabletController.right.width).toBe(312);
   }}
   parameters={{
+    docs: {
+      source: {
+        code: exampleSources.AutomaticTabletComposition,
+        language: "svelte",
+        type: "code",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/shell/app-shell/automatic-tablet-composition-chromium.png",
@@ -1207,6 +1234,15 @@
 <Story
   name="Mobile edge panels"
   tags={["visual-pending", "skip-visual"]}
+  parameters={{
+    docs: {
+      source: {
+        code: exampleSources.MobileEdgePanels,
+        language: "svelte",
+        type: "code",
+      },
+    },
+  }}
   play={async ({ canvas }) => {
     const mobileGroup = canvas.getByRole("group", {
       name: "Mobile application shell",
@@ -1361,6 +1397,13 @@
     );
   }}
   parameters={{
+    docs: {
+      source: {
+        code: exampleSources.ProgrammaticDisplayModes,
+        language: "svelte",
+        type: "code",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/shell/app-shell/programmatic-display-modes-chromium.png",
@@ -1397,6 +1440,11 @@
       description: {
         story:
           "When the desktop root cannot protect the min main width, lower-priority rails leave inline flow (right → named outer-left → left). Toggles open full-height overlay previews without mutating durable state. This demo rests with Files as a collapsed icon rail, Projects/AI overlay-hidden, and main filling the remaining width inside the Storybook panel.",
+      },
+      source: {
+        code: exampleSources.ConstrainedDesktopOverlays,
+        language: "svelte",
+        type: "code",
       },
     },
   }}
@@ -1642,6 +1690,13 @@
     await expect(activeRightButton).toHaveAttribute("data-variant", "ghost");
   }}
   parameters={{
+    docs: {
+      source: {
+        code: exampleSources.MarkdownDocumentBodySidebars,
+        language: "svelte",
+        type: "code",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/shell/app-shell/markdown-document-body-sidebars-chromium.png",
@@ -1802,6 +1857,13 @@
     ).toBeVisible();
   }}
   parameters={{
+    docs: {
+      source: {
+        code: exampleSources.IndependentIconRails,
+        language: "svelte",
+        type: "code",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/shell/app-shell/independent-icon-rails-chromium.png",
@@ -1874,6 +1936,13 @@
     ).not.toBeInTheDocument();
   }}
   parameters={{
+    docs: {
+      source: {
+        code: exampleSources.SingleSidebarComposition,
+        language: "svelte",
+        type: "code",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/shell/app-shell/single-sidebar-composition-chromium.png",
