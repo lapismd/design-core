@@ -406,12 +406,7 @@
       filterMenu!.clientWidth,
     );
     const severityIconColors = new Set<string>();
-    for (const label of [
-      "Errors: 2",
-      "Warnings: 1",
-      "Information: 1",
-      "Hints: 1",
-    ]) {
+    for (const label of ["Errors: 2", "Warnings: 1", "Infos: 1", "Hints: 1"]) {
       const item = documentCanvas.getByRole("menuitemcheckbox", {
         name: label,
       });

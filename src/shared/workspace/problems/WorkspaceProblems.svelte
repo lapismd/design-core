@@ -25,7 +25,7 @@
   }> = [
     { severity: "error", label: "Errors", icon: "circle-x" },
     { severity: "warning", label: "Warnings", icon: "triangle-alert" },
-    { severity: "information", label: "Information", icon: "info" },
+    { severity: "information", label: "Infos", icon: "info" },
     { severity: "hint", label: "Hints", icon: "lightbulb" },
   ];
 
