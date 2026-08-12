@@ -39,6 +39,7 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/workspace/about-dialog`.
+- Dialog scenarios must expose application identity through an accessible title and description relationship.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 
 ## DC-WS-009 — Bottom Panel

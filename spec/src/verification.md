@@ -61,7 +61,7 @@ This matrix records one current evidence status for every canonical requirement.
 | DC-SHA-033    | Implemented | src/shared/shadcn/textarea/; colocated stories                                    |
 | DC-SHA-034    | Implemented | Shadcn family sources, stories, pointer tests, and component audit                |
 | DC-SHA-035    | Implemented | src/shared/shadcn/card/; colocated stories                                        |
-| DC-SHA-036    | Implemented | src/shared/shadcn/column-canvas/; colocated stories                               |
+| DC-SHA-036    | Implemented | Column Canvas controller source, unit tests, and colocated stories                |
 | DC-SHA-037    | Implemented | src/shared/shadcn/resizable/; colocated stories                                   |
 | DC-SHA-038    | Implemented | src/shared/shadcn/scroll-area/; colocated stories                                 |
 | DC-SHA-039    | Implemented | src/shared/shadcn/separator/; colocated stories                                   |
@@ -77,7 +77,7 @@ This matrix records one current evidence status for every canonical requirement.
 | DC-SHA-049    | Implemented | src/shared/shadcn/sheet/; colocated stories                                       |
 | DC-SHA-050    | Implemented | src/shared/shadcn/tooltip/; colocated stories                                     |
 | DC-FORM-001   | Implemented | Forms core and family sources, unit tests, and Storybook scenarios                |
-| DC-FORM-002   | Implemented | Forms family source and colocated Storybook scenarios for Structured Form         |
+| DC-FORM-002   | Implemented | Structured Form source, type tests, rendered MDX, and Storybook scenarios         |
 | DC-FORM-003   | Implemented | Forms family source and colocated Storybook scenarios for YAML Backed Form        |
 | DC-FORM-004   | Implemented | Forms family source and colocated Storybook scenarios for JSON Backed Form        |
 | DC-FORM-005   | Implemented | Forms family source and colocated Storybook scenarios for Patchable Form          |
@@ -97,7 +97,7 @@ This matrix records one current evidence status for every canonical requirement.
 | DC-FORM-019   | Implemented | Forms family source and colocated Storybook scenarios for Time Picker             |
 | DC-FORM-020   | Implemented | Forms family source and colocated Storybook scenarios for Search Filter in a Form |
 | DC-FORM-021   | Implemented | Forms core and family sources, unit tests, and Storybook scenarios                |
-| DC-FORM-022   | Implemented | Forms family source and colocated Storybook scenarios for Add Section Chooser     |
+| DC-FORM-022   | Implemented | Add Section Chooser source and confirmed-contrast Storybook scenarios             |
 | DC-FORM-023   | Implemented | Forms family source and colocated Storybook scenarios for Collapsible Item List   |
 | DC-FORM-024   | Implemented | Forms family source and colocated Storybook scenarios for Entry Actions           |
 | DC-FORM-025   | Implemented | Forms family source and colocated Storybook scenarios for Form Add Button         |
@@ -149,13 +149,13 @@ This matrix records one current evidence status for every canonical requirement.
 | DC-SHELL-002  | Implemented | App Shell sources, guidance, stories, and pointer tests                           |
 | DC-SHELL-003  | Implemented | `src/shared/shell/Guidance.mdx`                                                   |
 | DC-WS-001     | Implemented | Workspace framework sources, guidance, stories, and tests                         |
-| DC-WS-002     | Implemented | Workspace framework sources, guidance, stories, and tests                         |
+| DC-WS-002     | Implemented | Workspace framework sources, typed state tests, guidance, and stories             |
 | DC-WS-003     | Implemented | Workspace framework sources, guidance, stories, and tests                         |
 | DC-WS-004     | Implemented | Workspace framework sources, guidance, stories, and tests                         |
 | DC-WS-005     | Implemented | Workspace framework sources, guidance, stories, and tests                         |
 | DC-WS-006     | Implemented | Workspace framework sources, guidance, stories, and tests                         |
 | DC-WS-007     | Implemented | Workspace framework sources, guidance, stories, and tests                         |
-| DC-WS-008     | Implemented | Workspace component source, public barrel, and colocated Storybook scenarios      |
+| DC-WS-008     | Implemented | About Dialog source, public barrel, and accessible Storybook scenarios            |
 | DC-WS-009     | Implemented | Workspace component source, public barrel, and colocated Storybook scenarios      |
 | DC-WS-010     | Implemented | Workspace component source, public barrel, and colocated Storybook scenarios      |
 | DC-WS-011     | Implemented | Workspace component source, public barrel, and colocated Storybook scenarios      |
@@ -180,7 +180,7 @@ This matrix records one current evidence status for every canonical requirement.
 | DC-WS-030     | Implemented | Workspace component source, public barrel, and colocated Storybook scenarios      |
 | DC-WS-031     | Implemented | Workspace component source, public barrel, and colocated Storybook scenarios      |
 | DC-WS-032     | Implemented | Workspace component source, public barrel, and colocated Storybook scenarios      |
-| DC-WS-033     | Implemented | Workspace panel source and Storybook scenarios                                    |
+| DC-WS-033     | Implemented | Explorer panel tree source, identity tests, and Storybook scenarios               |
 | DC-WS-034     | Implemented | Problems chips, table icon, and Storybook scenarios                               |
 | DC-WS-035     | Implemented | Workspace plugin sources, tests, and Storybook scenarios                          |
 | DC-WS-036     | Implemented | Workspace plugin sources, tests, and Storybook scenarios                          |

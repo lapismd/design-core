@@ -33,6 +33,7 @@ Form layout families provide reusable chrome for sections, fields, repeaters, ac
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/forms`.
+- Idle chooser options must meet WCAG AA text contrast while retaining distinct hover and focus states.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 
 ## DC-FORM-023 — Collapsible Item List

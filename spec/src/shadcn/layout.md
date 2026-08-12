@@ -38,6 +38,7 @@ Layout primitives establish reusable spatial, scrolling, and responsive composit
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/shadcn/column-canvas`.
+- Controller updates must preserve consumer item identity while columns resize or reflow.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 
 ## DC-SHA-037 — Resizable

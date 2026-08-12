@@ -12,14 +12,14 @@ export function compareExplorerNodes(
   const direction = sortMode === "name-desc" ? -1 : 1;
   return (
     direction *
-      (left.name.localeCompare(right.name, undefined, {
+    (left.name.localeCompare(right.name, undefined, {
+      numeric: true,
+      sensitivity: "base",
+    }) ||
+      left.path.localeCompare(right.path, undefined, {
         numeric: true,
         sensitivity: "base",
-      }) ||
-        left.path.localeCompare(right.path, undefined, {
-          numeric: true,
-          sensitivity: "base",
-        }))
+      }))
   );
 }
 

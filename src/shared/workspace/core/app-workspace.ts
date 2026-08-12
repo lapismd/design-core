@@ -178,9 +178,7 @@ export class AppWorkspace {
   }
 
   /** Update the persisted desktop bottom-panel alignment setting. */
-  setBottomPanelAlignment(
-    alignment: WorkspaceBottomPanelAlignment,
-  ): boolean {
+  setBottomPanelAlignment(alignment: WorkspaceBottomPanelAlignment): boolean {
     return (
       this.configuration?.set(
         APP_SHELL_SETTING_IDS.bottomPanelAlignment,

@@ -303,9 +303,7 @@ export class ColumnCanvasController {
         closeable,
         openOnSelect:
           config.openOnSelect ??
-          (config.closeable !== undefined
-            ? closeable
-            : existing.openOnSelect),
+          (config.closeable !== undefined ? closeable : existing.openOnSelect),
         defaultWidth: config.defaultWidth,
       };
       if (next.minWidth > next.maxWidth) {

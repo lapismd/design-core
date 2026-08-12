@@ -101,10 +101,8 @@
   border-radius: 999px;
 }
 
-.ui-workspace-about__actions button:is(
-    [data-variant="secondary"],
-    [data-variant="secondary-strong"]
-  ) {
+.ui-workspace-about__actions
+  button:is([data-variant="secondary"], [data-variant="secondary-strong"]) {
   color: var(--ui-workspace-secondary-foreground);
   transition:
     background-color 150ms ease,
@@ -140,8 +138,7 @@
   );
 }
 
-.ui-workspace-about__actions
-  button[data-variant="secondary-strong"]:hover {
+.ui-workspace-about__actions button[data-variant="secondary-strong"]:hover {
   border-color: color-mix(
     in oklab,
     var(--ui-workspace-secondary) 70%,

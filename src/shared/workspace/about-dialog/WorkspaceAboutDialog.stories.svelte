@@ -59,9 +59,7 @@
     await expect(getComputedStyle(ok).backgroundColor).not.toBe(
       restingBackground,
     );
-    await expect(getComputedStyle(ok).color).toBe(
-      getComputedStyle(copy).color,
-    );
+    await expect(getComputedStyle(ok).color).toBe(getComputedStyle(copy).color);
   }}
   parameters={{
     visualDelta: {

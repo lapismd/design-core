@@ -89,7 +89,7 @@
   border: 1px solid var(--ui-form-border);
   border-radius: calc(var(--ui-form-radius) * 0.55);
   background: transparent;
-  color: color-mix(in srgb, var(--ui-form-muted) 80%, transparent);
+  color: color-mix(in srgb, var(--ui-form-foreground) 62%, transparent);
   font-size: 0.75rem;
   font-weight: 400;
   padding-inline: 0.5rem;

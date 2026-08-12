@@ -16,6 +16,7 @@ Workspace panels provide generic domain-neutral views driven by consumer data an
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/workspace/explorer`.
+- Explorer tree construction must preserve stable resource identity and declared parent-child ordering.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 
 ## DC-WS-034 — Problems Panel
