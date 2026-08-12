@@ -48,7 +48,7 @@ class WorkspaceProblemsView extends WorkspaceView {
   onOpen(): void {
     this.#component = mount(WorkspaceProblems as Component, {
       target: this.containerEl,
-      props: { controller: this.controller },
+      props: { controller: this.controller, title: this.title },
     });
   }
 

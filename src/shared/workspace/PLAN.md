@@ -947,6 +947,9 @@ workflow.
   filtering, navigation, related-information, and context-action behavior;
   hosts may select its initial mode without persisting presentation state. Its
   two-axis overflow is owned by the shared shadcn Scroll Area.
+- Refined the panel toolbar with a live total rendered through the shared Badge
+  primitive, matching Badge chips on grouped-tree counts, and changed the table
+  presentation action to the Lucide `table-properties` icon.
 - Added the required `problemsPlugin()` presentation plugin. It preserves a
   persisted/moved leaf, otherwise seeds an inactive closable bottom tab after
   hydration without opening the dock, and recreates/reveals it from the App

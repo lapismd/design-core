@@ -181,7 +181,7 @@ This matrix records one current evidence status for every canonical requirement.
 | DC-WS-031     | Implemented | Workspace component source, public barrel, and colocated Storybook scenarios      |
 | DC-WS-032     | Implemented | Workspace component source, public barrel, and colocated Storybook scenarios      |
 | DC-WS-033     | Implemented | Workspace panel source and Storybook scenarios                                    |
-| DC-WS-034     | Implemented | Workspace panel source and Storybook scenarios                                    |
+| DC-WS-034     | Implemented | Problems chips, table icon, and Storybook scenarios                               |
 | DC-WS-035     | Implemented | Workspace plugin sources, tests, and Storybook scenarios                          |
 | DC-WS-036     | Implemented | Workspace plugin sources, tests, and Storybook scenarios                          |
 | DC-WS-037     | Implemented | Workspace plugin sources, tests, and Storybook scenarios                          |

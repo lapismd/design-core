@@ -25,4 +25,6 @@ Workspace panels provide generic domain-neutral views driven by consumer data an
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/workspace/problems`.
+- The panel title MUST present the live issue total with the shared Badge component, and grouped-tree counts MUST use the same chip treatment.
+- The grouped-to-table action MUST use the Lucide `table-properties` icon.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.

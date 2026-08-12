@@ -75,4 +75,5 @@ Workspace framework contracts coordinate reusable layout and state through expli
 ### Acceptance details
 
 - The public boundary is Documentation surface.
+- Workspace progress records MUST keep completed panel presentation refinements mapped to their owning panel contract and evidence.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.

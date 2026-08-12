@@ -1,5 +1,6 @@
 <script lang="ts">
   import { Button } from "@lapismd/design-core/shadcn/button";
+  import { Badge } from "@lapismd/design-core/shadcn/badge";
   import { Input } from "@lapismd/design-core/shadcn/input";
   import { ScrollArea } from "@lapismd/design-core/shadcn/scroll-area";
   import { ContextMenu } from "bits-ui";
@@ -11,7 +12,10 @@
   import { diagnosticCodeValue } from "./problems-controller.svelte.js";
   import "./WorkspaceProblems.css";
 
-  let { controller }: { controller: WorkspaceProblemsController } = $props();
+  let {
+    controller,
+    title = "Problems",
+  }: { controller: WorkspaceProblemsController; title?: string } = $props();
 
   const filters: Array<{
     severity: WorkspaceDiagnosticSeverity;
@@ -27,14 +31,29 @@
   function positionLabel(line: number, character: number) {
     return `[Ln ${line + 1}, Col ${character + 1}]`;
   }
+
+  function problemCountLabel(count: number, context?: string) {
+    const label = `${count} ${count === 1 ? "problem" : "problems"}`;
+    return context ? `${label} in ${context}` : label;
+  }
 </script>
 
 <section
   class="ui-workspace-problems"
   data-ui-component="workspace-problems"
-  aria-label="Problems"
+  aria-label={title}
 >
   <div class="ui-workspace-problems__toolbar" data-ui-part="toolbar">
+    <h2 class="ui-workspace-problems__title" data-ui-part="title">
+      <span>{title}</span>
+      <Badge
+        variant="secondary"
+        class="ui-workspace-problems__count-chip ui-workspace-problems__title-count"
+        aria-label={problemCountLabel(controller.diagnostics.size)}
+      >
+        {controller.diagnostics.size}
+      </Badge>
+    </h2>
     <div class="ui-workspace-problems__search">
       <WorkspaceIcon name="search" />
       <Input
@@ -74,7 +93,9 @@
         onclick={() => controller.toggleViewMode()}
       >
         <WorkspaceIcon
-          name={controller.viewMode === "tree" ? "table-2" : "list-tree"}
+          name={controller.viewMode === "tree"
+            ? "table-properties"
+            : "list-tree"}
         />
       </Button>
       {#if controller.viewMode === "tree"}
@@ -135,9 +156,16 @@
                     >{group.detail}</span
                   >
                 {/if}
-                <span class="ui-workspace-problems__group-count"
-                  >{group.entries.length}</span
+                <Badge
+                  variant="secondary"
+                  class="ui-workspace-problems__count-chip ui-workspace-problems__group-count"
+                  aria-label={problemCountLabel(
+                    group.entries.length,
+                    group.label,
+                  )}
                 >
+                  {group.entries.length}
+                </Badge>
               </button>
 
               {#if !controller.isGroupCollapsed(group.key)}

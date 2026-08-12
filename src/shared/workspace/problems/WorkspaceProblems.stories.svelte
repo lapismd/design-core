@@ -218,7 +218,17 @@
       surface,
     );
     expect(canvas.getByLabelText("Errors: 2")).toBeVisible();
-    expect(canvas.getByRole("button", { name: "View as Table" })).toBeVisible();
+    expect(canvas.getByLabelText("5 problems")).toHaveAttribute(
+      "data-ui-component",
+      "badge",
+    );
+    expect(canvas.getByLabelText("2 problems in welcome.md")).toHaveAttribute(
+      "data-ui-component",
+      "badge",
+    );
+    const tableToggle = canvas.getByRole("button", { name: "View as Table" });
+    expect(tableToggle).toBeVisible();
+    expect(tableToggle.querySelector(".lucide-table-properties")).toBeVisible();
     expect(canvas.getByText("welcome.md")).toBeVisible();
   }
 
