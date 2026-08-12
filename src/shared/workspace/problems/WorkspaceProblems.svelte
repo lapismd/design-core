@@ -5,6 +5,7 @@
   import { ContextMenu } from "bits-ui";
   import WorkspaceIcon from "../icon/WorkspaceIcon.svelte";
   import WorkspaceContextMenuItems from "../menu/WorkspaceContextMenuItems.svelte";
+  import WorkspaceProblemsTable from "./WorkspaceProblemsTable.svelte";
   import type { WorkspaceDiagnosticSeverity } from "./types.js";
   import type { WorkspaceProblemsController } from "./problems-controller.svelte.js";
   import { diagnosticCodeValue } from "./problems-controller.svelte.js";
@@ -63,18 +64,40 @@
       <Button
         variant="ghost"
         size="icon-xs"
-        class="ui-workspace-problems__collapse-all"
-        aria-label="Collapse all problem groups"
-        onclick={() => controller.collapseAll()}
+        class="ui-workspace-problems__view-mode"
+        aria-label={controller.viewMode === "tree"
+          ? "View as Table"
+          : "View as Tree"}
+        title={controller.viewMode === "tree"
+          ? "View as Table"
+          : "View as Tree"}
+        onclick={() => controller.toggleViewMode()}
       >
-        <WorkspaceIcon name="chevrons-down-up" />
+        <WorkspaceIcon
+          name={controller.viewMode === "tree" ? "table-2" : "list-tree"}
+        />
       </Button>
+      {#if controller.viewMode === "tree"}
+        <Button
+          variant="ghost"
+          size="icon-xs"
+          class="ui-workspace-problems__collapse-all"
+          aria-label="Collapse all problem groups"
+          onclick={() => controller.collapseAll()}
+        >
+          <WorkspaceIcon name="chevrons-down-up" />
+        </Button>
+      {/if}
     </div>
   </div>
 
-  <ScrollArea class="ui-workspace-problems__scroll">
+  <ScrollArea
+    class="ui-workspace-problems__scroll"
+    orientation={controller.viewMode === "table" ? "both" : "vertical"}
+    data-view-mode={controller.viewMode}
+  >
     <div class="ui-workspace-problems__body" data-ui-part="body">
-      {#if controller.groups.length === 0}
+      {#if controller.totalCount === 0}
         <div class="ui-workspace-problems__empty" data-ui-part="empty">
           <WorkspaceIcon name="circle-check" />
           <span
@@ -83,6 +106,8 @@
               : "No matching problems"}</span
           >
         </div>
+      {:else if controller.viewMode === "table"}
+        <WorkspaceProblemsTable {controller} {filters} />
       {:else}
         <ul class="ui-workspace-problems__groups">
           {#each controller.groups as group (group.key)}

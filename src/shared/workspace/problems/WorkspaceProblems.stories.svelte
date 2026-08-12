@@ -218,6 +218,7 @@
       surface,
     );
     expect(canvas.getByLabelText("Errors: 2")).toBeVisible();
+    expect(canvas.getByRole("button", { name: "View as Table" })).toBeVisible();
     expect(canvas.getByText("welcome.md")).toBeVisible();
   }
 
@@ -298,6 +299,32 @@
   play={async ({ canvasElement }) => {
     await assertProblems(canvasElement, "bottom-panel");
     const canvas = within(canvasElement);
+    await userEvent.click(
+      canvas.getByRole("button", { name: "View as Table" }),
+    );
+    const table = canvas.getByRole("table", { name: "Problems table" });
+    expect(table).toBeVisible();
+    expect(
+      canvasElement.querySelector(
+        '[data-ui-component="scroll-area"][data-ui-part="scroll-area"][data-view-mode="table"]',
+      ),
+    ).toBeInTheDocument();
+    const tableScope = within(table);
+    expect(
+      tableScope.getByRole("columnheader", { name: "Code" }),
+    ).toBeVisible();
+    expect(
+      tableScope.getByRole("columnheader", { name: "Message" }),
+    ).toBeVisible();
+    expect(
+      tableScope.getByRole("columnheader", { name: "File" }),
+    ).toBeVisible();
+    expect(
+      tableScope.getByRole("columnheader", { name: "Source" }),
+    ).toBeVisible();
+    expect(tableScope.getByText("MD034")).toBeVisible();
+    expect(tableScope.getAllByText("markdownlint").length).toBeGreaterThan(0);
+    await userEvent.click(canvas.getByRole("button", { name: "View as Tree" }));
     await userEvent.click(canvas.getByLabelText("Warnings: 1"));
     await waitFor(() =>
       expect(

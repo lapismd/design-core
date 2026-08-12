@@ -21,6 +21,8 @@ export type WorkspaceDiagnosticSeverity =
 
 export type WorkspaceDiagnosticTag = "unnecessary" | "deprecated";
 
+export type WorkspaceProblemsViewMode = "tree" | "table";
+
 export interface WorkspaceDiagnosticCodeTarget {
   value: string | number;
   target?: string;
@@ -144,4 +146,6 @@ export interface WorkspaceProblemsCopyAdapter {
 export interface WorkspaceProblemsControllerOptions {
   navigation?: WorkspaceProblemsNavigationAdapter;
   clipboard?: WorkspaceProblemsCopyAdapter;
+  /** Initial presentation. The toolbar can switch modes without persisting it. */
+  defaultViewMode?: WorkspaceProblemsViewMode;
 }

@@ -942,6 +942,11 @@ workflow.
   severity filters, text search, sorted resource/workspace groups, related
   locations, diagnostic tags, navigation, copy actions, and synchronous
   collection menu contributions.
+- Added the transient grouped-tree/compact-table presentation toggle. The table
+  exposes Code, Message, File, and Source columns while retaining the shared
+  filtering, navigation, related-information, and context-action behavior;
+  hosts may select its initial mode without persisting presentation state. Its
+  two-axis overflow is owned by the shared shadcn Scroll Area.
 - Added the required `problemsPlugin()` presentation plugin. It preserves a
   persisted/moved leaf, otherwise seeds an inactive closable bottom tab after
   hydration without opening the dock, and recreates/reveals it from the App

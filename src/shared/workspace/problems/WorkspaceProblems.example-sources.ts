@@ -63,6 +63,7 @@ const source = (placement: string) => `<script lang="ts">
   const app = new AppShellController({
     layout,
     plugins: [problemsPlugin({
+      // Optional: use defaultViewMode: "table" for a flat initial presentation.
       navigation: { open: ({ resource, range }) => console.log("open", resource.uri, range) },
     })],
   });

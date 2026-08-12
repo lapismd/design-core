@@ -36,4 +36,5 @@ export type {
   WorkspaceProblemsCopyAdapter,
   WorkspaceProblemsControllerOptions,
   WorkspaceProblemsNavigationAdapter,
+  WorkspaceProblemsViewMode,
 } from "./types.js";

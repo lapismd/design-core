@@ -9,6 +9,7 @@ import type {
   WorkspaceDiagnosticResource,
   WorkspaceDiagnosticSeverity,
   WorkspaceProblemsControllerOptions,
+  WorkspaceProblemsViewMode,
 } from "./types.js";
 
 export interface WorkspaceProblemsGroup {
@@ -29,6 +30,7 @@ const severityOrder: Record<WorkspaceDiagnosticSeverity, number> = {
 
 export class WorkspaceProblemsController {
   query = $state("");
+  viewMode = $state<WorkspaceProblemsViewMode>("tree");
   enabledSeverities = new SvelteSet<WorkspaceDiagnosticSeverity>([
     "error",
     "warning",
@@ -46,6 +48,7 @@ export class WorkspaceProblemsController {
   ) {
     this.#navigation = options.navigation;
     this.#clipboard = options.clipboard;
+    this.viewMode = options.defaultViewMode ?? "tree";
   }
 
   get counts() {
@@ -57,6 +60,10 @@ export class WorkspaceProblemsController {
       (total, group) => total + group.entries.length,
       0,
     );
+  }
+
+  get visibleEntries(): WorkspaceDiagnosticEntry[] {
+    return this.groups.flatMap((group) => group.entries);
   }
 
   get groups(): WorkspaceProblemsGroup[] {
@@ -95,6 +102,14 @@ export class WorkspaceProblemsController {
 
   setQuery(value: string): void {
     this.query = value;
+  }
+
+  setViewMode(mode: WorkspaceProblemsViewMode): void {
+    this.viewMode = mode;
+  }
+
+  toggleViewMode(): void {
+    this.viewMode = this.viewMode === "tree" ? "table" : "tree";
   }
 
   toggleSeverity(severity: WorkspaceDiagnosticSeverity): void {

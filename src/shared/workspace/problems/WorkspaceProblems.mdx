@@ -36,6 +36,18 @@ inactive, closable tab in the closed bottom dock. New problems never open the
 dock automatically; the command reveals the existing destination or recreates
 the tab after closure.
 
+## Tree and table views
+
+The panel starts with the grouped tree presentation. Its upper-right view action
+switches to a compact table with **Code**, **Message**, **File**, and **Source**
+columns, and switches back without changing workspace layout. Both views use the
+same severity filters, search, navigation, related information, and context
+actions. Table overflow is governed by the shared shadcn Scroll Area in both
+axes, including when the view is moved into a narrow sidebar. A host that
+prefers the flat presentation may pass
+`defaultViewMode: "table"` to `problemsPlugin()`; the mode remains transient and
+diagnostics remain ephemeral.
+
 ## Placement coverage
 
 The same registered view must remain usable in every workspace destination.

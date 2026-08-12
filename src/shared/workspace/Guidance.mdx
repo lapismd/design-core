@@ -57,6 +57,12 @@ navigation, code actions, editors, and language services in host adapters.
 tab only when no persisted Problems leaf exists. Diagnostics are ephemeral and
 must never be added to workspace layout persistence.
 
+Problems defaults to a grouped tree and exposes an upper-right action for its
+compact Code/Message/File/Source table. Consumers may select the initial mode
+with `defaultViewMode`, but the view choice remains transient and never changes
+diagnostic ownership or workspace layout. Keep table overflow on the shared
+shadcn Scroll Area rather than introducing a native panel scrollbar.
+
 Framework plugins should use `AppShellPlugin.createDiagnosticCollection()` so
 their collection is disposed automatically. Collection `buildItemMenu` hooks
 may append quick fixes, while primary row activation remains navigation-only.

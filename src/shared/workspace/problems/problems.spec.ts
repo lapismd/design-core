@@ -170,6 +170,8 @@ describe("WorkspaceProblemsController", () => {
       clipboard: { writeText },
     });
 
+    expect(controller.viewMode).toBe("tree");
+    expect(controller.visibleEntries).toHaveLength(4);
     expect(controller.groups.map((group) => group.label)).toEqual([
       "Workspace",
       "alpha.md",
@@ -200,6 +202,23 @@ describe("WorkspaceProblemsController", () => {
     const copyMessage = menu.entries[0];
     if (copyMessage?.kind === "item") await copyMessage.callback?.();
     expect(writeText).toHaveBeenCalledWith("Problem message", "Earlier error");
+  });
+
+  it("switches between grouped tree and flat table presentations", () => {
+    const manager = new WorkspaceDiagnosticsManager();
+    const collection = manager.createCollection("language");
+    collection.set(beta, [error]);
+
+    const controller = new WorkspaceProblemsController(manager, {
+      defaultViewMode: "table",
+    });
+    expect(controller.viewMode).toBe("table");
+    expect(controller.visibleEntries).toHaveLength(1);
+
+    controller.toggleViewMode();
+    expect(controller.viewMode).toBe("tree");
+    controller.setViewMode("table");
+    expect(controller.viewMode).toBe("table");
   });
 });
 
