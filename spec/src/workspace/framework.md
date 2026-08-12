@@ -77,5 +77,5 @@ Workspace framework contracts coordinate reusable layout and state through expli
 ### Acceptance details
 
 - The public boundary is Documentation surface.
-- Workspace guidance and progress records MUST keep completed panel presentation refinements, including leaf-owned title and badge chrome, mapped to their owning panel contract and evidence.
+- Workspace guidance and progress records MUST keep completed panel presentation refinements, including leaf-owned chrome and readable severity filters, mapped to their owning panel contract and evidence.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.

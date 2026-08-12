@@ -65,11 +65,18 @@
       },
     },
   }}
-  play={async ({ canvasElement }) => {
-    await expect(canvasElement.querySelector(".lucide-file")).not.toBeNull();
+  play={async ({ canvas, canvasElement }) => {
+    const fallback = canvas.getByTestId("workspace-icon-fallback");
+    const graphic = canvasElement.querySelector<SVGElement>(".lucide-file");
+    await expect(graphic).not.toBeNull();
+    await expect(getComputedStyle(graphic!).color).toBe(
+      getComputedStyle(fallback).color,
+    );
   }}
 >
   {#snippet template()}
-    <WorkspaceIcon name="not-a-real-icon" />
+    <span data-testid="workspace-icon-fallback" style="color: rgb(196, 30, 52)">
+      <WorkspaceIcon name="not-a-real-icon" />
+    </span>
   {/snippet}
 </Story>

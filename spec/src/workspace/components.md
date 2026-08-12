@@ -103,6 +103,7 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/workspace/icon`.
+- Registered and fallback SVG icons MUST inherit the colour and sizing resolved by the shared icon host.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 
 ## DC-WS-016 — Workspace Menu

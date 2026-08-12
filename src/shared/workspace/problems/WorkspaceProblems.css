@@ -59,6 +59,10 @@
   position: absolute;
   z-index: 1;
   right: 0.25rem;
+  width: 1.25rem;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  padding: 0.1875rem;
   color: var(--ui-workspace-muted-foreground);
 }
 
@@ -67,8 +71,9 @@
   background: var(--ui-workspace-panel-action-hover-background);
 }
 
-.ui-workspace-problems__filter-menu {
-  min-width: 18rem;
+.ui-workspace-problems__filter-menu[data-ui-component="dropdown-menu"][data-ui-part="dropdown-menu-content"] {
+  width: 14rem;
+  min-width: 14rem;
 }
 
 .ui-workspace-problems__filter-menu-item {
@@ -83,6 +88,13 @@
   height: 0.875rem;
 }
 
+.ui-workspace-problems__filter-menu
+  .ui-workspace-problems__filter-menu-item
+  > [data-ui-component="workspace-icon"]
+  > svg {
+  color: inherit;
+}
+
 .ui-workspace-problems__filter-menu-label {
   min-width: max-content;
   flex: 1 1 auto;
@@ -90,8 +102,9 @@
 }
 
 .ui-workspace-problems__filter-menu-count {
-  min-width: 1.5ch;
-  margin-inline: auto 1rem;
+  width: 3ch;
+  flex: 0 0 3ch;
+  margin-inline-start: auto;
   color: var(--ui-workspace-muted-foreground);
   font-variant-numeric: tabular-nums;
   text-align: end;

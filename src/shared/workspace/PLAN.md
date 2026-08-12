@@ -956,8 +956,9 @@ workflow.
   internal Problems toolbar no longer duplicates the count.
 - Moved the four severity toggles into a checkbox menu triggered inside the
   Problems search field. The wider untitled menu preserves semantic icon
-  colours and compact readable labels, while table/tree and collapse controls
-  remain toolbar actions.
+  colours for registered and fallback icons, compact readable labels, and a
+  fixed aligned count column, while table/tree and collapse controls remain
+  toolbar actions.
 - Removed the duplicated Problems text from the panel toolbar and right-aligned
   its search, filter, presentation, and collapse controls beneath the
   leaf-owned title and badge.
