@@ -7,6 +7,7 @@ import { cloneExplorerNodes } from "./tree.js";
 import type {
   ExplorerActionsAdapter,
   ExplorerNode,
+  ExplorerOpenFileOptions,
   ExplorerPreferencesAdapter,
   ExplorerSelectionAdapter,
   ExplorerTreeAdapter,
@@ -19,6 +20,10 @@ export interface MemoryExplorerBundle {
   preferences: ExplorerPreferencesAdapter;
   readonly nodes: ExplorerNode[];
   readonly openedPaths: string[];
+  readonly openRequests: Array<{
+    path: string;
+    options: ExplorerOpenFileOptions;
+  }>;
   setActivePath(path: string | null): void;
   setAutoRevealValue(value: boolean): void;
 }
@@ -117,6 +122,10 @@ export function createMemoryExplorerAdapter(
   let autoReveal = options.autoReveal ?? false;
   let activePath: string | null = null;
   const openedPaths: string[] = [];
+  const openRequests: Array<{
+    path: string;
+    options: ExplorerOpenFileOptions;
+  }> = [];
 
   const notifyTree = () => {
     for (const listener of treeListeners) listener();
@@ -127,7 +136,8 @@ export function createMemoryExplorerAdapter(
   };
 
   const actions: ExplorerActionsAdapter = {
-    async openFile(path) {
+    async openFile(path, options = { disposition: "current" }) {
+      openRequests.push({ path, options });
       if (!openedPaths.includes(path)) openedPaths.push(path);
       activePath = path;
       notifySelection();
@@ -251,6 +261,12 @@ export function createMemoryExplorerAdapter(
     },
     get openedPaths() {
       return [...openedPaths];
+    },
+    get openRequests() {
+      return openRequests.map((request) => ({
+        path: request.path,
+        options: { ...request.options },
+      }));
     },
     setActivePath(path) {
       activePath = path;

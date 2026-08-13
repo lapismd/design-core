@@ -155,6 +155,26 @@ describe("ExplorerController", () => {
     stop();
   });
 
+  it("forwards semantic file-open dispositions to the consumer adapter", async () => {
+    const { controller, memory } = createController();
+
+    await controller.openFile("notes/alpha.md");
+    await controller.openFile("notes/alpha.md", {
+      disposition: "new-tab",
+    });
+
+    expect(memory.openRequests).toEqual([
+      {
+        path: "notes/alpha.md",
+        options: { disposition: "current" },
+      },
+      {
+        path: "notes/alpha.md",
+        options: { disposition: "new-tab" },
+      },
+    ]);
+  });
+
   it("builds item menus with builtins and extension hooks", async () => {
     const memory = createMemoryExplorerAdapter(seed);
     const extension = vi.fn();

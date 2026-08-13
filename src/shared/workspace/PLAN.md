@@ -932,6 +932,14 @@ workflow.
   proves both update when the owning surface changes, so Explorer follows the
   same direct-sidebar versus body, bottom, and grouped placement contract as
   other registered panels without component-owned placement logic.
+- Explorer file activation now reports current-view versus new-tab disposition
+  through its application-independent action adapter, including modifier and
+  middle clicks. The tree keeps its accessible Files name without repeating
+  the leaf title, and the pressed auto-reveal action uses the theme accent.
+- Programmatic workspace tab creation replaces the pane item collection so
+  mounted tab strips react immediately to host API opens.
+- Implicit public leaf opens now stay in the main workspace when Explorer or
+  another sidebar or dock view owns the global active-pane state.
 
 ### Problems diagnostics and panel
 

@@ -522,6 +522,36 @@
       canvas.queryByRole("dialog", { name: "Settings" }),
     ).not.toBeInTheDocument();
     await expect(settingsButton).toHaveFocus();
+    const openedLeaf = surfaceApp.workspace.openLeaf(
+      "demo",
+      {
+        heading: "Programmatic tab",
+        description: "Opened through the public workspace API.",
+      },
+      {
+        paneId: "app-shell-main-left",
+        title: "Programmatic tab",
+        closable: true,
+      },
+    );
+    expect(openedLeaf).not.toBeNull();
+    const programmaticTab = await waitFor(() => {
+      const tab = canvas.getByRole("button", { name: "Programmatic tab" });
+      expect(tab).toBeVisible();
+      return tab;
+    });
+    await expect(programmaticTab).toBeVisible();
+    await waitFor(() =>
+      expect(
+        canvas.getByRole("heading", { name: "Programmatic tab" }),
+      ).toBeVisible(),
+    );
+    expect(surfaceApp.workspace.closeLeaf(openedLeaf!)).toBe(true);
+    await waitFor(() =>
+      expect(
+        canvas.queryByRole("button", { name: "Programmatic tab" }),
+      ).not.toBeInTheDocument(),
+    );
   }}
   parameters={{
     visualDelta: {

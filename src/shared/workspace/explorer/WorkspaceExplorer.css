@@ -70,12 +70,22 @@
 }
 
 .ui-workspace-explorer__toolbar
-  [data-ui-component="button"].ui-workspace-explorer__toolbar-action[aria-pressed="true"] {
+  [data-ui-component="button"].ui-workspace-explorer__toolbar-action[aria-pressed="true"],
+.ui-workspace-explorer__toolbar
+  [data-ui-component="button"].ui-workspace-explorer__toolbar-action[aria-pressed="true"]:hover,
+.ui-workspace-explorer__toolbar
+  [data-ui-component="button"].ui-workspace-explorer__toolbar-action[aria-pressed="true"]:focus-visible {
   /* Keep geometry identical to idle — only the fill/color change. */
   border-color: transparent;
   background-color: var(--ui-workspace-explorer-row-active-background);
-  color: var(--ui-workspace-panel-action-hover-foreground);
+  color: var(--ui-workspace-accent);
   box-shadow: none;
+}
+
+.ui-workspace-explorer__toolbar
+  [data-ui-component="button"].ui-workspace-explorer__toolbar-action[aria-pressed="true"]
+  [data-ui-component="workspace-icon"] {
+  color: var(--ui-workspace-accent);
 }
 
 .ui-workspace-explorer__body {
@@ -85,15 +95,6 @@
   /* Lapis Sidebar.Group uses p-2 around label + tree; keep scrollbar outside. */
   padding: var(--ui-workspace-explorer-content-padding);
   padding-block-end: 2.5rem;
-}
-
-.ui-workspace-explorer__group-label {
-  padding: 0.5rem 0.75rem 0.25rem;
-  color: var(--ui-workspace-muted-foreground);
-  font-size: 0.75rem;
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
 }
 
 .ui-workspace-explorer__tree {

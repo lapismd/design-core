@@ -31,7 +31,7 @@ Workspace framework contracts coordinate reusable layout and state through expli
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/workspace/core`.
-- Application workspace state transitions must remain typed and independent of consumer persistence.
+- Application workspace state transitions and consumer-adapter intents must remain typed and independent of consumer persistence, while programmatic tab creation through the public workspace API MUST render immediately without a layout reload and implicit leaf opens MUST target the active main pane or first main pane when a sidebar or dock has focus.
 - Imperative view registration MUST expose live context chrome before mounting and MUST react when instance-owned chrome becomes available.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 

@@ -86,6 +86,14 @@
     }
   }
 
+  function openFileFromPointer(event: MouseEvent, node: ExplorerNode) {
+    const disposition =
+      event.ctrlKey || event.metaKey || event.button === 1
+        ? "new-tab"
+        : "current";
+    void controller.openFile(node.path, { disposition });
+  }
+
   function onDragStart(event: DragEvent, node: ExplorerNode) {
     if (node.kind !== "file" || !event.dataTransfer) return;
     event.dataTransfer.setData("text/plain", node.path);
@@ -226,7 +234,12 @@
                 data-hint-target="file-item"
                 data-hint-group="file-explorer"
                 draggable="true"
-                onclick={() => void controller.openFile(node.path)}
+                onclick={(event) => openFileFromPointer(event, node)}
+                onauxclick={(event) => {
+                  if (event.button !== 1) return;
+                  event.preventDefault();
+                  openFileFromPointer(event, node);
+                }}
                 onkeydown={(event) => onRowKeydown(event, node)}
                 ondragstart={(event) => onDragStart(event, node)}
                 ondragend={() => {
@@ -514,12 +527,6 @@
             ondragover={onBodyDragOver}
             ondrop={(event) => void onDrop(event, "")}
           >
-            <div
-              class="ui-workspace-explorer__group-label"
-              data-ui-part="group-label"
-            >
-              {labels.files}
-            </div>
             <div class="ui-workspace-explorer__tree" data-ui-part="tree">
               {#if controller.loading}
                 <div
@@ -529,7 +536,10 @@
                   {labels.openingVault}
                 </div>
               {:else}
-                <ul class="ui-workspace-explorer__list">
+                <ul
+                  class="ui-workspace-explorer__list"
+                  aria-label={labels.files}
+                >
                   {#each controller.root.children ?? [] as child (child.path)}
                     {@render Tree({ node: child })}
                   {/each}

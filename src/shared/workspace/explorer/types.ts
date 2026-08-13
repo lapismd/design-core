@@ -67,8 +67,17 @@ export interface ExplorerTreeAdapter {
   subscribe(onChange: () => void): () => void;
 }
 
+export type ExplorerOpenDisposition = "current" | "new-tab";
+
+export interface ExplorerOpenFileOptions {
+  disposition: ExplorerOpenDisposition;
+}
+
 export interface ExplorerActionsAdapter {
-  openFile(path: string): void | Promise<void>;
+  openFile(
+    path: string,
+    options?: ExplorerOpenFileOptions,
+  ): void | Promise<void>;
   createFile(parentPath: string): Promise<string>;
   createFolder(parentPath: string): Promise<string>;
   rename(path: string, nextBaseName: string): Promise<string>;

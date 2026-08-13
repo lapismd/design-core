@@ -106,7 +106,7 @@ hosts register a leaf later without baking plugin code into design-core.
 ## Surface anatomy
 
 - Toolbar: create file, create folder, sort, auto-reveal, expand/collapse-all
-- Group label (“Files”)
+- Accessible tree label (“Files”) without a redundant visible group heading
 - Recursive tree rows with icons (`WorkspaceIcon` / `getIcon`)
 - Loading gate (“Opening vault”) while `controller.loading` is true
 
@@ -136,7 +136,8 @@ consumers must not add placement selectors or cache layout ancestry.
   folders enter rename mode; files also invoke `openFile`.
 - **Sort** — filename A→Z / Z→A; folders always before files inside each folder.
 - **Auto-reveal** — toolbar `aria-pressed` mirrors preferences adapter; when
-  enabled, selection updates expand ancestors and scroll the active path.
+  enabled, selection updates expand ancestors and scroll the active path. Its
+  pressed glyph uses the theme's workspace accent foreground.
 - **Toggle collapse** — expand all folders or collapse all.
 - Icon actions use shadcn `Tooltip` (`side="bottom"`) with the same label text as
   `aria-label` (sort shows the active sort mode).
@@ -153,7 +154,9 @@ consumers must not add placement selectors or cache layout ancestry.
 
 ## Tree interactions
 
-- Click file → `actions.openFile`
+- Click file → `actions.openFile(path, { disposition: "current" })`
+- Ctrl/Cmd-click or middle-click file →
+  `actions.openFile(path, { disposition: "new-tab" })`
 - Folder expand/collapse via Bits Collapsible
 - Click empty space in the tree body → root selection (`selectedPath ""`);
   create file/folder then targets the vault root
@@ -456,8 +459,8 @@ When wiring `packages/workspace` file-explorer onto this family:
 
 1. Implement `ExplorerTreeAdapter` over `app.vault.getAllLoadedFiles()` +
    create/rename/delete events.
-2. Implement `ExplorerActionsAdapter` with `openFile`, vault create helpers,
-   `fileManager.renameFile` for rename/move, and vault delete.
+2. Implement `ExplorerActionsAdapter` with disposition-aware `openFile`, vault
+   create helpers, `fileManager.renameFile` for rename/move, and vault delete.
 3. Wire `ExplorerSelectionAdapter` to `active-leaf-change` / `FileView`.
 4. Wire `ExplorerPreferencesAdapter` to
    `workspace.fileExplorer.autoRevealCurrentFile`.

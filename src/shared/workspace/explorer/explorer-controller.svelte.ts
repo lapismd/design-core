@@ -19,6 +19,7 @@ import {
   type ExplorerGetIcon,
   type ExplorerLabels,
   type ExplorerNode,
+  type ExplorerOpenFileOptions,
   type ExplorerRevealState,
   type ExplorerSortMode,
 } from "./types.js";
@@ -231,9 +232,12 @@ export class ExplorerController {
     return path;
   }
 
-  async openFile(path: string): Promise<void> {
+  async openFile(
+    path: string,
+    options: ExplorerOpenFileOptions = { disposition: "current" },
+  ): Promise<void> {
     this.selectedPath = path;
-    await this.#actions.openFile(path);
+    await this.#actions.openFile(path, options);
   }
 
   async commitRename(path: string, nextBaseName: string): Promise<void> {

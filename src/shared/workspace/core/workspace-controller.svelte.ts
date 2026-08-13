@@ -364,6 +364,7 @@ export class WorkspaceShellController {
     if (!pane || findWorkspaceTab(this.layout, tab.id)) return false;
     pane.items.push(tab);
     if (activate) this.#activateTab(tab.id);
+    this.layout = cloneWorkspaceLayout(this.layout);
     this.#commit({ source: "tab-add", id: tab.id });
     return true;
   }

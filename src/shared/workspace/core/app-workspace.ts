@@ -118,14 +118,15 @@ export class AppWorkspace {
     state: Record<string, unknown> = {},
     options: OpenWorkspaceLeafOptions = {},
   ): WorkspaceLeaf | null {
+    const activeMainPane = this.renderer.activePaneId
+      ? this.#findMainPane(this.renderer.activePaneId)
+      : null;
     const pane =
       (options.paneId
         ? findWorkspacePane(this.renderer.layout, options.paneId)
         : null) ??
-      (this.renderer.activePaneId
-        ? findWorkspacePane(this.renderer.layout, this.renderer.activePaneId)
-        : null) ??
-      this.#firstPane();
+      activeMainPane ??
+      this.#firstMainPane();
     if (!pane) return null;
     const tab = createWorkspaceTab({
       id: createWorkspaceId("leaf"),
@@ -446,11 +447,30 @@ export class AppWorkspace {
     this.renderer.off(name, listener);
   }
 
-  #firstPane() {
-    let first: ReturnType<typeof findWorkspacePane> = null;
-    walkWorkspacePanes(this.renderer.layout, (pane) => {
-      first ??= pane;
-    });
-    return first;
+  #firstMainPane() {
+    const main = this.renderer.layout.main;
+    if (main.kind === "tabs") return main;
+    const queue = [...main.children];
+    while (queue.length > 0) {
+      const node = queue.shift();
+      if (!node) break;
+      if (node.kind === "tabs") return node;
+      queue.unshift(...node.children);
+    }
+    return null;
+  }
+
+  #findMainPane(paneId: string) {
+    const visit = (
+      node: (typeof this.renderer.layout)["main"],
+    ): ReturnType<typeof findWorkspacePane> => {
+      if (node.kind === "tabs") return node.id === paneId ? node : null;
+      for (const child of node.children) {
+        const pane = visit(child);
+        if (pane) return pane;
+      }
+      return null;
+    };
+    return visit(this.renderer.layout.main);
   }
 }

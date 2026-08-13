@@ -608,6 +608,39 @@ describe("AppShellController", () => {
     await app.dispose();
   });
 
+  it("opens implicit leaves in the main workspace when a sidebar has focus", () => {
+    const layout = createDefaultWorkspaceLayout();
+    const explorer = createWorkspaceTab({
+      id: "explorer",
+      title: "Files",
+      view: { type: "empty", state: {} },
+    });
+    layout.left.open = true;
+    layout.left.root = createWorkspaceTabs([explorer], {
+      id: "left-sidebar",
+      activeItemId: explorer.id,
+    });
+    layout.active = {
+      hostId: "root",
+      paneId: layout.left.root.id,
+      tabId: explorer.id,
+    };
+    const app = new AppShellController({ layout });
+
+    const leaf = app.workspace.openLeaf("empty", {}, { title: "Document" });
+
+    expect(leaf).not.toBeNull();
+    expect(app.renderer.layout.left.root.kind).toBe("tabs");
+    if (app.renderer.layout.left.root.kind === "tabs") {
+      expect(app.renderer.layout.left.root.items).toHaveLength(1);
+    }
+    expect(app.renderer.layout.main.kind).toBe("tabs");
+    if (app.renderer.layout.main.kind === "tabs") {
+      expect(app.renderer.layout.main.items).toHaveLength(2);
+      expect(app.renderer.layout.main.activeItemId).toBe(leaf?.id);
+    }
+  });
+
   it("uses Lapis hotkey override semantics and reports conflicts", async () => {
     const app = new AppShellController({
       commands: [

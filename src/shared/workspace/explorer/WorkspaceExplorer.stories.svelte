@@ -193,6 +193,8 @@
       expect(canvas.getByText("readme.md")).toBeVisible();
     });
     await expect(canvas.getByText("notes")).toBeVisible();
+    await expect(canvas.queryByText("Files", { exact: true })).toBeNull();
+    await expect(canvas.getByRole("list", { name: "Files" })).toBeVisible();
     const host = canvasElement.querySelector<HTMLElement>(
       ".ui-workspace-explorer-story",
     );
@@ -252,6 +254,16 @@
     });
     await userEvent.unhover(createFile);
     await userEvent.keyboard("{Escape}");
+
+    const file = canvas.getByRole("button", { name: "readme.md" });
+    await fireEvent.click(file, { ctrlKey: true });
+    await waitFor(() => {
+      expect(loaded.memory.openRequests.at(-1)).toEqual({
+        path: "readme.md",
+        options: { disposition: "new-tab" },
+      });
+    });
+    loaded.controller.selectRoot();
   }}
 >
   {#snippet template()}
@@ -429,6 +441,14 @@
     });
     await expect(toggle).toHaveAttribute("aria-pressed", "false");
     const idleBox = toggle.getBoundingClientRect();
+    const explorer = canvasElement.querySelector<HTMLElement>(
+      '[data-ui-component="workspace-explorer"]',
+    );
+    await expect(explorer).not.toBeNull();
+    const previousAccent = explorer!.style.getPropertyValue(
+      "--ui-workspace-accent",
+    );
+    explorer!.style.setProperty("--ui-workspace-accent", "rgb(120 48 200)");
     await userEvent.click(toggle);
     await waitFor(() => {
       expect(toggle).toHaveAttribute("aria-pressed", "true");
@@ -437,6 +457,12 @@
     const pressedBox = toggle.getBoundingClientRect();
     expect(pressedBox.width).toBe(idleBox.width);
     expect(pressedBox.height).toBe(idleBox.height);
+    const icon = toggle.querySelector<HTMLElement>(
+      '[data-ui-component="workspace-icon"]',
+    );
+    await expect(icon).not.toBeNull();
+    expect(getComputedStyle(icon!).color).toBe("rgb(120, 48, 200)");
+    explorer!.style.setProperty("--ui-workspace-accent", previousAccent);
   }}
 >
   {#snippet template()}
