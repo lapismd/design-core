@@ -9,6 +9,12 @@ language. Forms still own labelled rows and option pickers
 (`FilterCommandPicker`); compose them with `SearchFilterBar` or `PowerSearch`
 when a list or sidebar needs facets plus structured filters.
 
+Search panels should render small enumerated facets such as file type, account,
+or retrieval strategy as compact `FilterCommandPicker` dropdowns beneath the
+query. Do not spread those choices across a persistent row of buttons. Reserve
+button and toggle groups for controls that are genuinely actions or display
+modes rather than query facets.
+
 Offline agent summary: `pnpm ui guide layers`. Catalog components:
 `pnpm ui components filter/search-filter-bar`,
 `pnpm ui components filter/power-search`.
@@ -46,6 +52,8 @@ that still call `parseFilterQuery`. No CodeMirror.
 - **`plain` (default)** — normal `<input type="search">` for free-text search
 - **`filter-query`** — single-line CodeMirror editor with syntax highlighting;
   pass `filterSyntax` for autocomplete and the expandable syntax help panel.
+  The help panel uses the shared Lucide disclosure indicator and native
+  `details` state, so consumers should not add their own expand/collapse chrome.
   Completion tooltips reuse shadcn Command / Popover tokens (`--popover`,
   `--accent`, `--radius`, …), not CodeMirror’s default monospace/blue chrome.
   Completed `field op value` terms (Lezer `TermExpr`) render as removable

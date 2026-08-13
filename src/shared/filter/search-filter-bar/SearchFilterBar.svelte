@@ -21,6 +21,7 @@
     keymap,
     placeholder as placeholderExtension,
   } from "@codemirror/view";
+  import ChevronRightIcon from "@lucide/svelte/icons/chevron-right";
   import SearchIcon from "@lucide/svelte/icons/search";
   import SlidersHorizontalIcon from "@lucide/svelte/icons/sliders-horizontal";
   import XIcon from "@lucide/svelte/icons/x";
@@ -502,7 +503,10 @@
 
     {#if filtersVisible && filterSyntax}
       <details class="cv-search-filter-bar__syntax-help">
-        <summary>{filterSyntax.title ?? "Search syntax"}</summary>
+        <summary>
+          <ChevronRightIcon aria-hidden="true" />
+          <span>{filterSyntax.title ?? "Search syntax"}</span>
+        </summary>
         <div class="cv-search-filter-bar__syntax-help-content">
           {#if filterSyntax.description}
             <p>{filterSyntax.description}</p>

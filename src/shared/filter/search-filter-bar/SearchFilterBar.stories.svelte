@@ -178,6 +178,13 @@
     await expect(
       canvas.getByRole("searchbox", { name: "Ledger search" }),
     ).toBeInTheDocument();
+    const syntaxSummary = canvas
+      .getByText("Ledger search syntax")
+      .closest("summary");
+    expect(syntaxSummary).not.toBeNull();
+    await expect(syntaxSummary!.querySelector("svg")).toBeInTheDocument();
+    await userEvent.click(syntaxSummary!);
+    await expect(syntaxSummary!.closest("details")).toHaveAttribute("open");
     await expect(canvas.getByRole("status")).toHaveTextContent(
       /AccountFilter|FieldFilter|ok/i,
     );

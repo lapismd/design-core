@@ -634,10 +634,29 @@
 }
 
 .cv-search-filter-bar__syntax-help summary {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
   cursor: pointer;
   color: var(--ui-form-foreground);
   font-weight: 750;
+  list-style: none;
   padding: 0.45rem 0.6rem;
+}
+
+.cv-search-filter-bar__syntax-help summary::-webkit-details-marker {
+  display: none;
+}
+
+.cv-search-filter-bar__syntax-help summary > svg {
+  width: 0.75rem !important;
+  height: 0.75rem !important;
+  flex: 0 0 auto;
+  transition: transform 120ms ease;
+}
+
+.cv-search-filter-bar__syntax-help[open] summary > svg {
+  transform: rotate(90deg);
 }
 
 .cv-search-filter-bar__syntax-help-content {
