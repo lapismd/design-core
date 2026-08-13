@@ -19,6 +19,10 @@ test("maps every production layer and tooling area to its canonical chapter", ()
       "src/shared/forms/color-picker/ColorPicker.svelte",
       ["spec/src/forms/inputs.md"],
     ],
+    [
+      "src/shared/forms/core/autosize-textarea.ts",
+      ["spec/src/forms/core-and-orchestrators.md"],
+    ],
     ["src/shared/filter/filter-query/index.ts", ["spec/src/filter.md"]],
     ["src/shared/ai/message/Message.svelte", ["spec/src/ai.md"]],
     ["src/shared/shell/app-shell/AppShellRoot.svelte", ["spec/src/shell.md"]],

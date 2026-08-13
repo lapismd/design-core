@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { autosizeTextarea } from "../core/autosize-textarea";
   import "./ListEditor.css";
   import "../form-control-row/FormControlRow.css";
   import PlusIcon from "@lucide/svelte/icons/plus";
@@ -206,6 +207,7 @@
               multilineSize === "compact"
                 ? 1
                 : 3}
+              use:autosizeTextarea={item}
               value={item}
               placeholder={inferredPlaceholder()}
               aria-label={`${label} ${index + 1}`}

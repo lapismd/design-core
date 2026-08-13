@@ -72,6 +72,7 @@ Specification governance keeps requirements discoverable, mapped, validated, and
 
 - A diagnostic must identify its stable code, governing requirement, source path, line when available, affected identifier, and corrective action.
 - Generated or discovery surfaces must point back to canonical Markdown rather than becoming a second source of truth.
+- Forms core helpers MUST map to `forms/core-and-orchestrators.md` rather than fail as unclassified production source.
 
 ## DC-GOV-005 — QMD indexing
 

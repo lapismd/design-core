@@ -12,6 +12,10 @@
   import { autosizeTextarea } from "../core/autosize-textarea";
   import type { ReferenceIndex } from "../core/reference-utils";
   import type { FormFieldConfig, FormValidationIssue } from "../core/types";
+  import {
+    inputModeForWrappingTextType,
+    wrapsTextInputType,
+  } from "./wrapping-text-input";
 
   type AnyFieldConfig = FormFieldConfig<any, any, any>;
 
@@ -190,6 +194,19 @@
   <p class="cv-forms-missing-renderer" role="alert">
     No renderer is registered for {field.label}.
   </p>
+{:else if wrapsTextInputType(field.inputType)}
+  <textarea
+    rows={1}
+    use:autosizeTextarea={textValue()}
+    value={textValue()}
+    placeholder={field.placeholder ?? ""}
+    autocomplete={field.autocomplete}
+    inputmode={inputModeForWrappingTextType(field.inputType)}
+    aria-label={field.ariaLabel ?? field.label}
+    aria-invalid={issues.length ? "true" : undefined}
+    oninput={(event) => update(event.currentTarget.value)}
+    onblur={blur}
+  ></textarea>
 {:else}
   <input
     type={field.inputType ?? "text"}

@@ -71,6 +71,7 @@ const SHADCN_CHAPTERS = new Map([
 ]);
 
 const FORM_CHAPTERS = new Map([
+  ["core", "spec/src/forms/core-and-orchestrators.md"],
   ["structured-form", "spec/src/forms/core-and-orchestrators.md"],
   ["yaml-backed-form", "spec/src/forms/core-and-orchestrators.md"],
   ["json-backed-form", "spec/src/forms/core-and-orchestrators.md"],

@@ -71,6 +71,7 @@ Form layout families provide reusable chrome for sections, fields, repeaters, ac
 
 - The public boundary is `@lapismd/design-core/forms`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- Text-like controls MUST use the available value track, wrap long content, and grow to keep every line readable.
 
 ## DC-FORM-027 — Form Placeholder
 

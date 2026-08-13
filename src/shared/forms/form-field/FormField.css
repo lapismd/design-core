@@ -125,7 +125,7 @@
 }
 
 .cv-form-field-control textarea {
-  overflow: hidden;
+  overflow: visible;
   resize: none;
   overflow-wrap: anywhere;
   white-space: pre-wrap;

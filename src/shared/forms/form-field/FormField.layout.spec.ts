@@ -34,6 +34,9 @@ describe("source-reference form layout CSS", () => {
       /\.cv-form-field-control input,[\s\S]*?\.cv-form-field-control textarea\s*\{[\s\S]*?width:\s*100%/,
     );
     expect(formFieldCss).toMatch(
+      /\.cv-form-field-control textarea\s*\{[\s\S]*?overflow:\s*visible[\s\S]*?overflow-wrap:\s*anywhere[\s\S]*?white-space:\s*pre-wrap/,
+    );
+    expect(formFieldCss).toMatch(
       /\.cv-structured-form\s*>\s*\.cv-form-field,[\s\S]*?grid-template-columns:\s*subgrid/,
     );
     expect(formFieldCss).toMatch(
@@ -77,6 +80,9 @@ describe("source-reference form layout CSS", () => {
     );
     expect(listEditorCss).toMatch(
       /@media \(max-width:\s*720px\)[\s\S]*?\.ui-list-editor__add\s*\{[\s\S]*?width:\s*100%/,
+    );
+    expect(listEditorCss).toMatch(
+      /\[data-ui-part="list-editor-input"\]\s*\{[\s\S]*?overflow:\s*visible[\s\S]*?overflow-wrap:\s*anywhere[\s\S]*?white-space:\s*pre-wrap/,
     );
   });
 

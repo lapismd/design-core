@@ -1,6 +1,6 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, userEvent, within } from "storybook/test";
+  import { expect, userEvent, waitFor, within } from "storybook/test";
   import * as exampleSources from "./StructuredForm.example-sources.js";
   import StructuredForm from "./StructuredForm.svelte";
 
@@ -138,6 +138,64 @@
     },
   });
   let product = $state<Product>({ name: "Notebook", price: 12 });
+
+  type WrappingTextFields = {
+    text: string;
+    email: string;
+    search: string;
+    telephone: string;
+    url: string;
+  };
+
+  const longText =
+    "A deliberately long value that must wrap when the form becomes narrow";
+  const wrappingTextConfig = createFormConfig<WrappingTextFields>({
+    id: "wrapping-text-fields",
+    fields: [
+      textField({
+        id: "text",
+        label: "Text",
+        get: (value) => value.text,
+        set: (value, text) => ({ ...value, text }),
+      }),
+      textField({
+        id: "email",
+        label: "Email",
+        inputType: "email",
+        get: (value) => value.email,
+        set: (value, email) => ({ ...value, email }),
+      }),
+      textField({
+        id: "search",
+        label: "Search",
+        inputType: "search",
+        get: (value) => value.search,
+        set: (value, search) => ({ ...value, search }),
+      }),
+      textField({
+        id: "telephone",
+        label: "Telephone",
+        inputType: "tel",
+        get: (value) => value.telephone,
+        set: (value, telephone) => ({ ...value, telephone }),
+      }),
+      textField({
+        id: "url",
+        label: "URL",
+        inputType: "url",
+        get: (value) => value.url,
+        set: (value, url) => ({ ...value, url }),
+      }),
+    ],
+  });
+
+  let wrappingTextFields = $state<WrappingTextFields>({
+    text: longText,
+    email: "a-long-email-address-for-wrapping@example.test",
+    search: longText,
+    telephone: "+44 20 7946 0958 extension 123456789",
+    url: "https://example.test/a/deliberately/long/path/that/must/wrap",
+  });
 </script>
 
 <Story
@@ -287,6 +345,71 @@
         config={typedConfig}
         onChange={(next) => {
           profile = next;
+        }}
+      />
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Wraps text-like inputs"
+  exportName="WrappingTextInputs"
+  tags={["skip-visual"]}
+  parameters={{
+    docs: {
+      description: {
+        story:
+          "Text-like controls wrap and autosize when their form container becomes narrower.",
+      },
+    },
+  }}
+  play={async ({ canvas }) => {
+    const host = canvas.getByTestId("wrapping-text-fields");
+    const controls = ["Text", "Email", "Search", "Telephone", "URL"].map(
+      (label) => canvas.getByLabelText(label) as HTMLTextAreaElement,
+    );
+
+    await waitFor(() => {
+      for (const control of controls) {
+        expect(control.tagName).toBe("TEXTAREA");
+        expect(getComputedStyle(control).overflow).not.toBe("hidden");
+        expect(getComputedStyle(control).whiteSpace).toBe("pre-wrap");
+        expect(control.scrollWidth).toBeLessThanOrEqual(
+          control.clientWidth + 1,
+        );
+        expect(control.scrollHeight).toBeLessThanOrEqual(
+          control.clientHeight + 1,
+        );
+      }
+    });
+
+    const initialHeights = controls.map((control) => control.clientHeight);
+    host.style.width = "12rem";
+
+    await waitFor(() => {
+      expect(
+        controls.some(
+          (control, index) => control.clientHeight > initialHeights[index],
+        ),
+      ).toBe(true);
+      for (const control of controls) {
+        expect(control.scrollWidth).toBeLessThanOrEqual(
+          control.clientWidth + 1,
+        );
+        expect(control.scrollHeight).toBeLessThanOrEqual(
+          control.clientHeight + 1,
+        );
+      }
+    });
+  }}
+>
+  {#snippet template()}
+    <div data-testid="wrapping-text-fields" style="width: 18rem">
+      <StructuredForm
+        value={wrappingTextFields}
+        config={wrappingTextConfig}
+        onChange={(next) => {
+          wrappingTextFields = next;
         }}
       />
     </div>

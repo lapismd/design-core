@@ -26,10 +26,10 @@ Forms core supplies manual and config-driven controlled rendering. Orchestrators
 
 ### Acceptance details
 
-- The public boundary is `@lapismd/design-core/forms` and `/forms/core`.
-- Catalog usage documentation must render a consumer-facing typed configuration example with Storybook-supported syntax highlighting.
+- The public boundary is `@lapismd/design-core/forms` and `/forms/core`; catalog usage documentation MUST render a consumer-facing typed configuration example with Storybook-supported syntax highlighting.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 - Controller-wide disclosure actions MUST target visible group and section controls while hidden-header wrapper groups remain rendered.
+- Editable text, email, search, telephone, and URL fields MUST wrap and autosize instead of clipping horizontally, including after their container width changes.
 
 ## DC-FORM-003 — YAML Backed Form
 
