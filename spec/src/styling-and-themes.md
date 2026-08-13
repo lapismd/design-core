@@ -20,6 +20,7 @@ Design Core styling is native CSS driven by semantic tokens. Themes and consumer
 ### Acceptance details
 
 - Consumers may override documented semantic tokens without depending on private selectors.
+- Workspace view tokens MUST expose resolved primary and secondary backgrounds so movable views can preserve contrast without placement selectors.
 - Styling validation must distinguish source ownership from Storybook-only presentation.
 
 ## DC-CSS-002 — Design tokens

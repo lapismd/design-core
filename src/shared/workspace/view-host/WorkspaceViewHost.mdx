@@ -24,5 +24,7 @@ register view factories once; leaves retain only JSON-safe type and state.
 Colocated CSS: `WorkspaceViewHost.css`. The host supplies full-size clipping
 and paints every registered Svelte or imperative view with
 `--ui-workspace-view-background` / `--ui-workspace-view-foreground` resolved by
-the destination surface. View content should remain transparent unless it
-intentionally overrides those tokens for a specialized surface.
+the destination surface. Nested cards and result surfaces can use the resolved
+`--ui-workspace-view-secondary-background`, which swaps appropriately for a
+direct sidebar. View content should remain transparent unless it intentionally
+overrides those tokens for a specialized surface.

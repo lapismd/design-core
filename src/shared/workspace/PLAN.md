@@ -879,6 +879,10 @@ workflow.
   paint, sidebar groups reset them to the workspace surface, and body, bottom,
   mobile, floating, and standalone hosts retain the workspace default. Consumer
   panels need no placement props or surface-specific selectors.
+- Registered views also inherit a resolved secondary background. Ordinary and
+  grouped views use the workspace secondary surface, while direct sidebars use
+  the workspace background against panel paint, so nested result surfaces and
+  chips retain contrast after a move without placement-specific CSS.
 - Stable-surface validation passes no-Tailwind and Svelte diagnostics, all 79
   unit files (478 tests), all 184 Storybook files (521 tests), and the production
   Storybook build. The aggregate `pnpm checks` gate reaches formatting and stops

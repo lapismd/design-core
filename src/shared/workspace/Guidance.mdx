@@ -109,11 +109,13 @@ from sidebar, status-bar, ribbon, and floating-window header surfaces.
 
 Every registered Svelte or imperative view is painted by `WorkspaceViewHost`
 through the public `--ui-workspace-view-background` and
-`--ui-workspace-view-foreground` tokens. Body, bottom-panel, grouped-panel,
-mobile, floating, and standalone views use the workspace surface by default;
-only an ungrouped left/right sidebar view resolves to panel paint. Consumers
-may override the view tokens for exceptional content, but normal views should
-not implement their own placement selectors.
+`--ui-workspace-view-foreground` tokens. The companion
+`--ui-workspace-view-secondary-background` token supplies a contrasting nested
+surface. Body, bottom-panel, grouped-panel, mobile, floating, and standalone
+views use workspace primary and secondary paint; only an ungrouped left/right
+sidebar swaps the pair so its primary is the panel surface and its secondary is
+the workspace surface. Consumers may override the view tokens for exceptional
+content, but normal views should not implement their own placement selectors.
 
 Desktop layout hosts also retain the stable `data-workspace-surface` contract:
 `body`, `left-sidebar`, `right-sidebar`, and `bottom-panel`. Use these

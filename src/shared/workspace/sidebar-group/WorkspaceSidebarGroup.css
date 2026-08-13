@@ -1,5 +1,6 @@
 .ui-workspace-sidebar-group {
   --ui-workspace-view-background: var(--ui-workspace-background);
+  --ui-workspace-view-secondary-background: var(--ui-workspace-secondary);
   --ui-workspace-view-foreground: var(--ui-workspace-foreground);
 
   display: flex;

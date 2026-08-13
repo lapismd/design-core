@@ -69,6 +69,8 @@ Workspace framework contracts coordinate reusable layout and state through expli
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/workspace/view-host`.
+- Workspace views MUST inherit primary background and foreground tokens resolved by their destination surface.
+- The secondary view background MUST contrast with the primary surface: workspace secondary for ordinary and grouped views, and workspace background for direct sidebars.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 
 ## DC-WS-007 — Workspace Guidance

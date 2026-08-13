@@ -20,6 +20,15 @@
   import WorkspaceSidebar from "./WorkspaceSidebar.svelte";
   import "./WorkspaceSidebar.stories.css";
 
+  function resolveTokenColor(element: HTMLElement, token: string) {
+    const probe = document.createElement("span");
+    probe.style.cssText = `position:absolute;background:var(${token})`;
+    element.append(probe);
+    const color = getComputedStyle(probe).backgroundColor;
+    probe.remove();
+    return color;
+  }
+
   const { Story } = defineMeta({
     title: "Workspace/Components/Sidebar",
     component: WorkspaceSidebar,
@@ -112,6 +121,18 @@
     expect(getComputedStyle(directViewHost!).backgroundColor).toBe(
       getComputedStyle(sidebar!).backgroundColor,
     );
+    expect(
+      resolveTokenColor(
+        directViewHost!,
+        "--ui-workspace-view-secondary-background",
+      ),
+    ).toBe(resolveTokenColor(directViewHost!, "--ui-workspace-background"));
+    expect(
+      resolveTokenColor(
+        directViewHost!,
+        "--ui-workspace-view-secondary-background",
+      ),
+    ).not.toBe(getComputedStyle(directViewHost!).backgroundColor);
 
     const reference = canvas.getByRole("tab", { name: "Reference" });
     await userEvent.click(reference);
@@ -133,6 +154,18 @@
     expect(getComputedStyle(groupedViewHost!).backgroundColor).not.toBe(
       getComputedStyle(sidebar!).backgroundColor,
     );
+    expect(
+      resolveTokenColor(
+        groupedViewHost!,
+        "--ui-workspace-view-secondary-background",
+      ),
+    ).toBe(resolveTokenColor(groupedViewHost!, "--ui-workspace-secondary"));
+    expect(
+      resolveTokenColor(
+        groupedViewHost!,
+        "--ui-workspace-view-secondary-background",
+      ),
+    ).not.toBe(getComputedStyle(groupedViewHost!).backgroundColor);
   }}
   parameters={{
     visualDelta: {

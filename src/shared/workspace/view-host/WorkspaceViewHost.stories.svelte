@@ -11,6 +11,15 @@
   import * as exampleSources from "./WorkspaceViewHost.example-sources.js";
   import WorkspaceViewHost from "./WorkspaceViewHost.svelte";
 
+  function resolveTokenColor(element: HTMLElement, token: string) {
+    const probe = document.createElement("span");
+    probe.style.cssText = `position:absolute;background:var(${token})`;
+    element.append(probe);
+    const color = getComputedStyle(probe).backgroundColor;
+    probe.remove();
+    return color;
+  }
+
   const { Story } = defineMeta({
     title: "Workspace/Components/View Host",
     component: WorkspaceViewHost,
@@ -82,6 +91,12 @@
     expect(getComputedStyle(host!).backgroundColor).toBe(
       getComputedStyle(surface).backgroundColor,
     );
+    expect(
+      resolveTokenColor(host!, "--ui-workspace-view-secondary-background"),
+    ).toBe(resolveTokenColor(host!, "--ui-workspace-secondary"));
+    expect(
+      resolveTokenColor(host!, "--ui-workspace-view-secondary-background"),
+    ).not.toBe(getComputedStyle(host!).backgroundColor);
   }}
   parameters={{
     visualDelta: {

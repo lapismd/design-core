@@ -1,5 +1,6 @@
 .ui-workspace-sidebar {
   --ui-workspace-view-background: var(--ui-workspace-panel);
+  --ui-workspace-view-secondary-background: var(--ui-workspace-background);
   --ui-workspace-view-foreground: var(--ui-workspace-panel-foreground);
 
   position: relative;

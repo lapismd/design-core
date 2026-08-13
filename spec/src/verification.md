@@ -18,7 +18,7 @@ This matrix records one current evidence status for every canonical requirement.
 | DC-PKG-007    | Implemented | `package.json#exports`; referenced barrels                                        |
 | DC-PKG-008    | Implemented | `packages/storybook-addon-docs-mcp/`; root workspace manifest                     |
 | DC-CSS-001    | Implemented | `styles.md`; `src/styles.css`; theme and token sources; no-Tailwind check         |
-| DC-CSS-002    | Implemented | `styles.md`; `src/styles.css`; theme and token sources; no-Tailwind check         |
+| DC-CSS-002    | Implemented | Resolved Workspace view token maps and surface story assertions                   |
 | DC-CSS-003    | Implemented | `styles.md`; `src/styles.css`; theme and token sources; no-Tailwind check         |
 | DC-CSS-004    | Implemented | `styles.md`; `src/styles.css`; theme and token sources; no-Tailwind check         |
 | DC-CSS-005    | Implemented | `styles.md`; `src/styles.css`; theme and token sources; no-Tailwind check         |
@@ -154,7 +154,7 @@ This matrix records one current evidence status for every canonical requirement.
 | DC-WS-003     | Implemented | Workspace framework sources, guidance, stories, and tests                         |
 | DC-WS-004     | Implemented | Workspace framework sources, guidance, stories, and tests                         |
 | DC-WS-005     | Implemented | Workspace framework sources, guidance, stories, and tests                         |
-| DC-WS-006     | Implemented | Workspace framework sources, guidance, stories, and tests                         |
+| DC-WS-006     | Implemented | View Host surface tokens, guidance, and surface story assertions                  |
 | DC-WS-007     | Implemented | Workspace framework sources, guidance, stories, and tests                         |
 | DC-WS-008     | Implemented | About Dialog source, public barrel, and accessible Storybook scenarios            |
 | DC-WS-009     | Implemented | Workspace component source, public barrel, and colocated Storybook scenarios      |
