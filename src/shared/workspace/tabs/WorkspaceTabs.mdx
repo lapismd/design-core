@@ -19,6 +19,8 @@ and content containers remain direct children of the raw Bits UI root.
 
 - Selecting, adding, and closing tabs mutates the controller and schedules a
   layout save.
+- User-created tabs respect the controller activation policy. Consumers can
+  create a background tab without changing the active tab.
 - Five or more tabs preserve a usable minimum size and overflow horizontally
   with no visible scrollbar.
 - The close action never shrinks; the title and decorative icon yield in

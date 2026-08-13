@@ -33,7 +33,7 @@
   function addTab() {
     const paneId = controller.activePaneId ?? paneIdFor(tabs[0]?.id ?? "");
     if (!createTab || !paneId) return;
-    controller.addTab(paneId, createTab(paneId), true);
+    controller.addCreatedTab(paneId, createTab(paneId));
     onDone();
   }
 

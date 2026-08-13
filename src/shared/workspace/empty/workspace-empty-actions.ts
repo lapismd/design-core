@@ -49,7 +49,7 @@ export function createWorkspaceEmptyActions(
             icon: "file-plus",
             onSelect: (event?: MouseEvent | KeyboardEvent) => {
               event?.stopPropagation();
-              controller.addTab(paneId, createTab(paneId), true);
+              controller.addCreatedTab(paneId, createTab(paneId));
             },
           },
         ]

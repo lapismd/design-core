@@ -127,7 +127,7 @@
 
   function addTab() {
     if (!createTab) return;
-    controller.addTab(pane.id, createTab(pane.id), true);
+    controller.addCreatedTab(pane.id, createTab(pane.id));
   }
 
   function closePanel() {

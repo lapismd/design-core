@@ -30,10 +30,10 @@ Workspace framework contracts coordinate reusable layout and state through expli
 
 ### Acceptance details
 
-- The public boundary is `@lapismd/design-core/workspace/core`.
-- Application workspace state transitions and consumer-adapter intents MUST remain typed and independent of consumer persistence, including Explorer's current-tab, reveal-or-create-tab, and forced-new-tab intents, while programmatic tab creation MUST render immediately and implicit leaf opens MUST target the active or first main pane when a sidebar or dock has focus.
+- The catalog MUST demonstrate supported states through the public `@lapismd/design-core/workspace/core` boundary without introducing a second runtime contract.
+- Application workspace state transitions and consumer-adapter intents MUST remain typed and independent of consumer persistence, including Explorer's three activation intents and a consumer-controlled user-created-tab activation policy.
+- Programmatic tab creation MUST render immediately, and implicit leaf opens MUST target the active or first main pane when a sidebar or dock has focus.
 - Imperative view registration MUST expose live context chrome before mounting and MUST react when instance-owned chrome becomes available.
-- The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 
 ## DC-WS-003 — Workspace App Shell
 

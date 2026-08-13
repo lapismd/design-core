@@ -182,6 +182,27 @@
       parseFloat(getComputedStyle(rightToggle!).borderBottomWidth),
     ).toBeCloseTo(1);
 
+    const addTab = canvas.getByRole("button", { name: "New tab" });
+    controller.activateNewTabs = false;
+    const initialTabCount = liveTabs.items.length;
+    await userEvent.click(addTab);
+    await waitFor(() => {
+      expect(liveTabs.items).toHaveLength(initialTabCount + 1);
+      expect(controller.activeTabId).toBe("welcome");
+    });
+    const backgroundTabId = liveTabs.items.at(-1)!.id;
+
+    controller.activateNewTabs = true;
+    await userEvent.click(addTab);
+    await waitFor(() => {
+      expect(liveTabs.items).toHaveLength(initialTabCount + 2);
+      expect(controller.activeTabId).toBe(liveTabs.items.at(-1)!.id);
+    });
+    const activatedTabId = liveTabs.items.at(-1)!.id;
+    controller.closeTab(activatedTabId);
+    controller.closeTab(backgroundTabId);
+    controller.selectTab("welcome");
+
     const tab = canvas.getByRole("button", {
       name: /^Today\.md$/,
     });

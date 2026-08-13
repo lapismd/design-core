@@ -97,7 +97,7 @@
   function addTab(event: MouseEvent) {
     event.stopPropagation();
     if (!createTab) return;
-    controller.addTab(pane.id, createTab(pane.id), true);
+    controller.addCreatedTab(pane.id, createTab(pane.id));
   }
 
   function removeTab(event: MouseEvent, tabId: string) {

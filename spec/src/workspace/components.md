@@ -241,10 +241,10 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 
 ### Acceptance details
 
-- The public boundary is `@lapismd/design-core/workspace/tabs`.
+- The catalog MUST demonstrate supported states through the public `@lapismd/design-core/workspace/tabs` boundary without introducing a second runtime contract.
 - Registered leaf labels MUST resolve live titles and optional badges from view chrome across tab, dock, grouped-panel, and mobile surfaces.
 - `WorkspaceTab.title` MUST remain the serialized fallback; live badges MUST remain ephemeral and MUST NOT change workspace layout persistence.
-- The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- User-created tabs MUST honor the controller's activation policy across top, stacked, bottom-panel, empty-state, and mobile creation actions.
 
 ## DC-WS-031 — Workspace Tree
 

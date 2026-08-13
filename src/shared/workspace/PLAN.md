@@ -942,6 +942,10 @@ workflow.
   mounted tab strips react immediately to host API opens.
 - Implicit public leaf opens now stay in the main workspace when Explorer or
   another sidebar or dock view owns the global active-pane state.
+- Added the public `AppShell.Root.activateNewTabs` policy and centralized
+  user-created top, stacked, bottom-panel, empty-state, and mobile tab actions
+  through `WorkspaceShellController.addCreatedTab`. Explicit application opens
+  keep their caller-owned activation intent.
 
 ### Problems diagnostics and panel
 

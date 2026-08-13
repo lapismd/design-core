@@ -53,6 +53,38 @@ describe("WorkspaceShellController", () => {
     expect(changes).toEqual(["tab-select"]);
   });
 
+  it("applies the user-created tab activation policy independently of explicit adds", () => {
+    const controller = new WorkspaceShellController({ layout: splitLayout() });
+
+    controller.activateNewTabs = false;
+    expect(
+      controller.addCreatedTab(
+        "first-pane",
+        createWorkspaceTab({ id: "background", title: "Background" }),
+      ),
+    ).toBe(true);
+    expect(controller.activeTabId).toBe("first");
+
+    controller.activateNewTabs = true;
+    expect(
+      controller.addCreatedTab(
+        "first-pane",
+        createWorkspaceTab({ id: "focused", title: "Focused" }),
+      ),
+    ).toBe(true);
+    expect(controller.activeTabId).toBe("focused");
+
+    controller.activateNewTabs = false;
+    expect(
+      controller.addTab(
+        "first-pane",
+        createWorkspaceTab({ id: "explicit", title: "Explicit" }),
+        true,
+      ),
+    ).toBe(true);
+    expect(controller.activeTabId).toBe("explicit");
+  });
+
   it("keeps main-pane focus transient and emits dedicated state changes", async () => {
     const save = vi.fn(async () => undefined);
     const controller = new WorkspaceShellController({

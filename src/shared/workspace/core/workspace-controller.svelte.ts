@@ -127,6 +127,7 @@ export class WorkspaceShellController {
   // Match appearance-setting defaults until AppShell syncs configuration.
   showTabTitleBar = $state(false);
   showInlineTitle = $state(false);
+  activateNewTabs = $state(true);
   layoutReady = $state(false);
   readonly registry: WorkspaceViewRegistry;
   readonly statusBar = new WorkspaceItemRegistry<WorkspaceStatusItem>();
@@ -367,6 +368,10 @@ export class WorkspaceShellController {
     this.layout = cloneWorkspaceLayout(this.layout);
     this.#commit({ source: "tab-add", id: tab.id });
     return true;
+  }
+
+  addCreatedTab(paneId: string, tab: WorkspaceTab): boolean {
+    return this.addTab(paneId, tab, this.activateNewTabs);
   }
 
   closeTab(tabId: string): boolean {

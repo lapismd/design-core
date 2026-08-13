@@ -66,6 +66,11 @@ Imperative registrations that need metadata before mounting provide it through
 `getChromeForContext`; instance-owned chrome remains available through
 `getChrome` after the view mounts.
 
+`AppShell.Root` accepts `activateNewTabs` for the host's user-created-tab
+policy. The default remains `true`; setting it to `false` creates tabs in the
+background. Programmatic opens keep their explicit activation intent and are
+not changed by this presentation policy.
+
 Problems defaults to a grouped tree and exposes an upper-right action for its
 compact Code/Message/File/Source table. Consumers may select the initial mode
 with `defaultViewMode`, but the view choice remains transient and never changes

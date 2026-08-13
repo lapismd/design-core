@@ -114,7 +114,7 @@
 
   function addTab(event: MouseEvent) {
     event.stopPropagation();
-    if (createTab) controller.addTab(pane.id, createTab(pane.id), true);
+    if (createTab) controller.addCreatedTab(pane.id, createTab(pane.id));
   }
 
   function stopDoubleClick(event: MouseEvent) {

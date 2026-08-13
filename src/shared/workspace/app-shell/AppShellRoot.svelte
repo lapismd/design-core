@@ -17,6 +17,7 @@
     accentColor,
     fontSize,
     zoomLevel,
+    activateNewTabs = true,
     popoutHost,
     renderOverlays = true,
     renderPopouts = true,
@@ -30,6 +31,8 @@
     accentColor?: string;
     fontSize?: number;
     zoomLevel?: number;
+    /** Whether user-created tabs become active immediately. */
+    activateNewTabs?: boolean;
     popoutHost?: WorkspacePopoutHost | null;
     renderOverlays?: boolean;
     renderPopouts?: boolean;
@@ -60,6 +63,7 @@
   $effect(() => {
     controller.renderer.showTabTitleBar = controller.appearance.showTabTitleBar;
     controller.renderer.showInlineTitle = controller.appearance.showInlineTitle;
+    controller.renderer.activateNewTabs = activateNewTabs;
   });
 
   onMount(() => {
