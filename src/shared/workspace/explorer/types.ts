@@ -67,7 +67,10 @@ export interface ExplorerTreeAdapter {
   subscribe(onChange: () => void): () => void;
 }
 
-export type ExplorerOpenDisposition = "current" | "new-tab";
+export type ExplorerOpenDisposition =
+  | "current"
+  | "reveal-or-new-tab"
+  | "new-tab";
 
 export interface ExplorerOpenFileOptions {
   disposition: ExplorerOpenDisposition;

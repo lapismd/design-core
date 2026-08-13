@@ -23,6 +23,9 @@
   let sortMenu = $state<WorkspaceMenu | null>(null);
   let sortMenuOpen = $state(false);
   let flashTimeout: ReturnType<typeof setTimeout> | null = null;
+  let fileOpenTimeout: ReturnType<typeof setTimeout> | null = null;
+
+  const FILE_SINGLE_CLICK_DELAY_MS = 250;
 
   const labels = $derived(controller.labels);
   const rootMenu = $derived(controller.createItemMenu(controller.root));
@@ -31,6 +34,7 @@
     const stop = controller.start();
     return () => {
       if (flashTimeout !== null) clearTimeout(flashTimeout);
+      if (fileOpenTimeout !== null) clearTimeout(fileOpenTimeout);
       stop();
     };
   });
@@ -86,12 +90,34 @@
     }
   }
 
+  function cancelPendingFileOpen() {
+    if (fileOpenTimeout === null) return;
+    clearTimeout(fileOpenTimeout);
+    fileOpenTimeout = null;
+  }
+
   function openFileFromPointer(event: MouseEvent, node: ExplorerNode) {
-    const disposition =
-      event.ctrlKey || event.metaKey || event.button === 1
-        ? "new-tab"
-        : "current";
-    void controller.openFile(node.path, { disposition });
+    controller.setSelectedPath(node.path);
+    if (event.ctrlKey || event.metaKey || event.button === 1) {
+      cancelPendingFileOpen();
+      void controller.openFile(node.path, { disposition: "new-tab" });
+      return;
+    }
+    if (event.detail > 1) return;
+    cancelPendingFileOpen();
+    fileOpenTimeout = setTimeout(() => {
+      fileOpenTimeout = null;
+      void controller.openFile(node.path, { disposition: "current" });
+    }, FILE_SINGLE_CLICK_DELAY_MS);
+  }
+
+  function openFileFromDoubleClick(event: MouseEvent, node: ExplorerNode) {
+    if (event.ctrlKey || event.metaKey || event.button !== 0) return;
+    event.preventDefault();
+    cancelPendingFileOpen();
+    void controller.openFile(node.path, {
+      disposition: "reveal-or-new-tab",
+    });
   }
 
   function onDragStart(event: DragEvent, node: ExplorerNode) {
@@ -235,6 +261,7 @@
                 data-hint-group="file-explorer"
                 draggable="true"
                 onclick={(event) => openFileFromPointer(event, node)}
+                ondblclick={(event) => openFileFromDoubleClick(event, node)}
                 onauxclick={(event) => {
                   if (event.button !== 1) return;
                   event.preventDefault();

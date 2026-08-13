@@ -34,6 +34,7 @@ export {
   type ExplorerLabels,
   type ExplorerNode,
   type ExplorerNodeKind,
+  type ExplorerOpenDisposition,
   type ExplorerPreferencesAdapter,
   type ExplorerRevealState,
   type ExplorerSelectionAdapter,

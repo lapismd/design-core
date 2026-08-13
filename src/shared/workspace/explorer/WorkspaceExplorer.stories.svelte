@@ -256,6 +256,20 @@
     await userEvent.keyboard("{Escape}");
 
     const file = canvas.getByRole("button", { name: "readme.md" });
+    await fireEvent.click(file);
+    await waitFor(() => {
+      expect(loaded.memory.openRequests.at(-1)).toEqual({
+        path: "readme.md",
+        options: { disposition: "current" },
+      });
+    });
+    await fireEvent.dblClick(file);
+    await waitFor(() => {
+      expect(loaded.memory.openRequests.at(-1)).toEqual({
+        path: "readme.md",
+        options: { disposition: "reveal-or-new-tab" },
+      });
+    });
     await fireEvent.click(file, { ctrlKey: true });
     await waitFor(() => {
       expect(loaded.memory.openRequests.at(-1)).toEqual({

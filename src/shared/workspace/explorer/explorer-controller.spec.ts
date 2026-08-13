@@ -160,6 +160,9 @@ describe("ExplorerController", () => {
 
     await controller.openFile("notes/alpha.md");
     await controller.openFile("notes/alpha.md", {
+      disposition: "reveal-or-new-tab",
+    });
+    await controller.openFile("notes/alpha.md", {
       disposition: "new-tab",
     });
 
@@ -167,6 +170,10 @@ describe("ExplorerController", () => {
       {
         path: "notes/alpha.md",
         options: { disposition: "current" },
+      },
+      {
+        path: "notes/alpha.md",
+        options: { disposition: "reveal-or-new-tab" },
       },
       {
         path: "notes/alpha.md",

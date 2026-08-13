@@ -16,7 +16,7 @@ Workspace panels provide generic domain-neutral views driven by consumer data an
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/workspace/explorer`, whose tree construction must preserve stable resource identity and declared parent-child ordering.
-- File activation MUST pass a semantic current-view or new-tab disposition to the consumer adapter; modifier-click and middle-click request a new tab.
+- File activation MUST pass one semantic disposition to the consumer adapter: single-click requests `current`, double-click requests `reveal-or-new-tab`, and modifier-click or middle-click requests forced `new-tab`.
 - The tree MUST retain an accessible label without duplicating the owning leaf title, and pressed toolbar actions MUST use the workspace accent foreground.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 
