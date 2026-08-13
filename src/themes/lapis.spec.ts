@@ -34,6 +34,8 @@ describe("Lapis theme contract", () => {
     expect(css).toContain(
       "--ui-workspace-explorer-toolbar-action-hover-background: var(",
     );
+    expect(css).toContain("--ui-workspace-font-sans: var(--font-sans)");
+    expect(css).not.toMatch(/--ui-workspace-font-sans:\s*ui-sans-serif/u);
     expect(workspaceTokens).toContain(
       "--ui-workspace-panel-action-hover-background: var(",
     );

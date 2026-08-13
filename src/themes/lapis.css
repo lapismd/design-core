@@ -89,8 +89,9 @@
   --ui-workspace-destructive: var(--destructive);
   --ui-workspace-warning: #ec7500;
   --ui-workspace-focus-ring: var(--lapis-accent);
-  --ui-workspace-font-sans: ui-sans-serif, system-ui, sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --ui-workspace-font-sans: var(--font-sans), ui-sans-serif, system-ui,
+    sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+    "Noto Color Emoji";
   --ui-workspace-radius-small: 4px;
   --ui-workspace-radius-medium: 8px;
   --ui-workspace-radius-large: 12px;

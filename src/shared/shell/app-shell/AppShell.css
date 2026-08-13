@@ -265,7 +265,7 @@
   min-height: 0;
   overflow: hidden;
   margin-block: var(--ui-shell-main-block-inset);
-  border: 1px solid var(--border);
+  border: var(--ui-shell-main-border);
   border-radius: var(--ui-shell-main-radius);
   background: var(--background);
   box-shadow: var(--ui-shell-main-shadow);
@@ -522,7 +522,7 @@
   width: auto;
   height: auto;
   margin: var(--ui-shell-main-block-inset);
-  border: 1px solid var(--border);
+  border: var(--ui-shell-main-border);
   border-radius: var(--ui-shell-main-radius);
   box-shadow: var(--ui-shell-main-shadow);
 }

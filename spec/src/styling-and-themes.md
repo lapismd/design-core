@@ -12,6 +12,7 @@ Design Core styling is native CSS driven by semantic tokens. Themes and consumer
 | Accessibility styling | Styling         | DC-CSS-004  |
 | No utility leakage    | Styling         | DC-CSS-005  |
 | Visually hidden text  | Styling         | DC-CSS-006  |
+| Lapis workspace sans  | Theme           | DC-CSS-007  |
 
 ## DC-CSS-001 — Native CSS
 
@@ -67,3 +68,12 @@ Design Core styling is native CSS driven by semantic tokens. Themes and consumer
 
 - Accessible names must remain available to assistive technology.
 - Linked application builds must not display icon-button labels or hidden dialog headings.
+
+## DC-CSS-007 — Lapis workspace sans
+
+**Requirement.** The Lapis theme MUST bind `--ui-workspace-font-sans` through the brand `--font-sans` stack so AppShell, Settings, explorer, and other workspace chrome share the same sans family as forms.
+
+### Acceptance details
+
+- The token MUST start with `var(--font-sans)` and MAY keep system and emoji fallbacks after that family.
+- Theme contract tests MUST reject a system-ui-only `--ui-workspace-font-sans` stack.

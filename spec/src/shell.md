@@ -17,7 +17,7 @@ The App Shell owns application structure and responsive layout while consumers o
 ### Acceptance details
 
 - Responsive variants must keep landmarks, labels, focus order, and consumer actions equivalent.
-- Shell tokens must remain the supported styling extension boundary.
+- Shell tokens must remain the supported styling extension boundary, including `--ui-shell-main-border` with the inset, radius, and shadow main-surface tokens.
 
 ## DC-SHELL-002 — App Shell
 

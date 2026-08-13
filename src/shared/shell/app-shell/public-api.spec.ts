@@ -124,6 +124,7 @@ describe("@lapismd/design-core/shell public API", () => {
       mainRadius: "0.875rem",
       mainShadow:
         "0 1px 3px color-mix(in srgb, var(--foreground) 10%, transparent), 0 1px 2px -1px color-mix(in srgb, var(--foreground) 10%, transparent)",
+      mainBorder: "1px solid var(--border)",
     });
   });
 });

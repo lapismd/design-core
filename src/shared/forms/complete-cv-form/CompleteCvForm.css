@@ -13,6 +13,10 @@ body:has(#storybook-root .complete-cv-shell) {
 
 .complete-cv-shell {
   --ui-shell-height: 100vh;
+  --ui-shell-main-block-inset: 0;
+  --ui-shell-main-radius: 0;
+  --ui-shell-main-shadow: none;
+  --ui-shell-main-border: none;
   --complete-cv-toolbar-height: 2.75rem;
   --complete-cv-tabs-height: 2.75rem;
   height: 100vh;

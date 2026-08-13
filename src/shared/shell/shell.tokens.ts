@@ -13,6 +13,7 @@ export const shellTokenNames = {
   mainBlockInset: "--ui-shell-main-block-inset",
   mainRadius: "--ui-shell-main-radius",
   mainShadow: "--ui-shell-main-shadow",
+  mainBorder: "--ui-shell-main-border",
 } as const;
 
 export type ShellTokenKey = keyof typeof shellTokenNames;
@@ -34,4 +35,5 @@ export const shellTokenDefaults: Record<ShellTokenKey, string> = {
   mainRadius: "0.875rem",
   mainShadow:
     "0 1px 3px color-mix(in srgb, var(--foreground) 10%, transparent), 0 1px 2px -1px color-mix(in srgb, var(--foreground) 10%, transparent)",
+  mainBorder: "1px solid var(--border)",
 };

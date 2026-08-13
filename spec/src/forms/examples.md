@@ -25,3 +25,4 @@ Examples prove consumer composition without adding CV-specific runtime exports.
 
 - The public boundary is Storybook example.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- The form shell MUST zero `--ui-shell-main-block-inset`, `--ui-shell-main-radius`, `--ui-shell-main-shadow`, and `--ui-shell-main-border` so the surface fills its host edge to edge.

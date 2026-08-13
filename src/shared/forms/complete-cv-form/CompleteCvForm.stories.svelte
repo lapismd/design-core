@@ -75,7 +75,9 @@
           rootRect.bottom - mainRect.bottom,
           mainRect.left - rootRect.left,
         ];
-        await expect(Math.max(...insets) - Math.min(...insets)).toBeLessThan(1);
+        await expect(Math.max(...insets)).toBeLessThan(1);
+        await expect(getComputedStyle(mainSurface).borderRadius).toBe("0px");
+        await expect(getComputedStyle(mainSurface).boxShadow).toBe("none");
         await expect(canvas.getAllByDisplayValue("John Doe")[0]).toBeVisible();
         for (const entryType of [
           "TextEntry",
