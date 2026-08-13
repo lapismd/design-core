@@ -2,6 +2,7 @@
   import "./YamlEditor.css";
   import { unfoldAll } from "@codemirror/language";
   import type { EditorView as CodeMirrorEditorView } from "@codemirror/view";
+  import type { MiraCodeEditorHandle } from "@lapismd/mira";
 
   import type { MarkdownFormatKind } from "../core/markdown-format";
   import { formatYamlSelection } from "./yaml-editor-runtime";
@@ -23,7 +24,11 @@
     target?: string;
   };
 
-  let activeEditor: CodeMirrorEditorView | null = null;
+  type MiraEditorView = NonNullable<
+    ReturnType<MiraCodeEditorHandle["getView"]>
+  >;
+
+  let activeEditor: MiraEditorView | null = null;
 
   export function formatActiveYamlSelection(
     kind: MarkdownFormatKind,
@@ -32,7 +37,11 @@
     const editor = activeEditor;
     if (!editor || !editor.hasFocus) return false;
 
-    formatYamlSelection(editor, kind, linkUrl);
+    formatYamlSelection(
+      editor as unknown as CodeMirrorEditorView,
+      kind,
+      linkUrl,
+    );
     editor.focus();
     return true;
   }
@@ -42,7 +51,7 @@
   import { yaml } from "@codemirror/lang-yaml";
   import { Compartment, type Extension, type Range } from "@codemirror/state";
   import { Decoration, EditorView, WidgetType } from "@codemirror/view";
-  import { MiraCodeEditor, type MiraCodeEditorHandle } from "@lapismd/mira";
+  import { MiraCodeEditor } from "@lapismd/mira";
 
   import { unifiedDiff, type UnifiedDiffLine } from "../core/review-diff";
   import { foldAllYaml } from "./yaml-editor-runtime";
@@ -332,11 +341,17 @@
     ];
   }
 
-  function handleFocus(_event: FocusEvent, view: EditorView): void {
+  function asHostEditorView(view: MiraEditorView): EditorView {
+    // Runtime hosts deduplicate CodeMirror. This narrow cast keeps linked
+    // peer patch versions from leaking nominal private fields into the form.
+    return view as unknown as EditorView;
+  }
+
+  function handleFocus(_event: FocusEvent, view: MiraEditorView): void {
     activeEditor = view;
   }
 
-  function handleBlur(_event: FocusEvent, view: EditorView): void {
+  function handleBlur(_event: FocusEvent, view: MiraEditorView): void {
     setTimeout(() => {
       if (activeEditor === view && !view.hasFocus) activeEditor = null;
     });
@@ -346,7 +361,9 @@
     const view = editor?.getView();
     if (!view) return;
     view.dispatch({
-      effects: diffCompartment.reconfigure(diffExtension(view, reviewDiffs)),
+      effects: diffCompartment.reconfigure(
+        diffExtension(asHostEditorView(view), reviewDiffs),
+      ),
     });
   });
 
@@ -357,10 +374,10 @@
     if (foldRequest.id === lastFoldRequestId) return;
     lastFoldRequestId = foldRequest.id;
     if (foldRequest.action === "fold") {
-      foldAllYaml(view);
+      foldAllYaml(asHostEditorView(view));
       return;
     }
-    unfoldAll(view);
+    unfoldAll(asHostEditorView(view));
   });
 </script>
 

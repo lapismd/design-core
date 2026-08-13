@@ -111,7 +111,7 @@ This matrix records one current evidence status for every canonical requirement.
 | DC-FORM-032   | Implemented | Forms core and family sources, unit tests, and Storybook scenarios                |
 | DC-FORM-033   | Implemented | Forms family source and colocated Storybook scenarios for Code Editor             |
 | DC-FORM-034   | Implemented | Forms family source and colocated Storybook scenarios for Code Highlighter        |
-| DC-FORM-035   | Implemented | Forms family source and colocated Storybook scenarios for YAML Editor             |
+| DC-FORM-035   | Implemented | YAML editor unit/catalog coverage and linked Lapis consumer type check             |
 | DC-FORM-036   | Implemented | Forms core and family sources, unit tests, and Storybook scenarios                |
 | DC-FORM-037   | Implemented | Forms family source and colocated Storybook scenarios for Form Review             |
 | DC-FORM-038   | Implemented | Forms family source and colocated Storybook scenarios for Field Review Actions    |

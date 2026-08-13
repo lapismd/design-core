@@ -45,3 +45,4 @@ Editor families separate language or review behavior from the Mira-owned CodeMir
 
 - The public boundary is `@lapismd/design-core/forms`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- Linked consumers MAY resolve compatible CodeMirror peer patch versions during type checking, while the host MUST still deduplicate the runtime singleton.
