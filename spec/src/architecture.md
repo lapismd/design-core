@@ -36,6 +36,7 @@ Design Core is a shared presentation and controller library. Consumer applicatio
 ### Acceptance details
 
 - Direct compatibility exports may delegate to family barrels but must not fork behavior.
+- Focused public subpaths MAY isolate one reusable family when consumers should not load unrelated barrel dependencies.
 - A breaking removal or semantic change requires a new or revised canonical requirement.
 - Root manifest changes must update the owning architecture and package chapters in the same protected diff.
 

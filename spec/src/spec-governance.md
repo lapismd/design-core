@@ -62,6 +62,7 @@ Specification governance keeps requirements discoverable, mapped, validated, and
 - A diagnostic must identify its stable code, governing requirement, source path, line when available, affected identifier, and corrective action.
 - Generated or discovery surfaces must point back to canonical Markdown rather than becoming a second source of truth.
 - Mirror validation must reject missing, stale, misordered, retargeted, or prose-bearing Storybook pages.
+- Public-surface validation must map every root export to exactly one owning requirement.
 
 ## DC-GOV-004 — Spec-first classification
 

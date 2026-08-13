@@ -41,6 +41,10 @@
       "requirement": "DC-PKG-003"
     },
     {
+      "name": "./forms/filter-command-picker",
+      "requirement": "DC-PKG-003"
+    },
+    {
       "name": "./forms/AddSectionChooser.svelte",
       "requirement": "DC-PKG-003"
     },

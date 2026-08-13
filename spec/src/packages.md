@@ -22,6 +22,7 @@ The root package manifest defines the supported import boundaries. Family barrel
 ### Acceptance details
 
 - The export must resolve to tracked source or the documented workspace build output.
+- Reusable form families MAY expose focused public subpaths that avoid loading unrelated forms from the barrel.
 - Package checks must fail when the mapped entry point is stale or missing.
 - Tool-only dependencies must remain outside runtime exports and be pinned where reproducibility requires it.
 

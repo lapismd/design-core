@@ -133,6 +133,11 @@ the tokens that family reads.
 
 ## Control choice
 
+Consumers that need only the searchable filter selector may import
+`FilterCommandPicker` and its option types from the focused
+`@lapismd/design-core/forms/filter-command-picker` entry point. The forms
+barrel remains available for broader form compositions.
+
 | Need                   | Use                                                                            |
 | ---------------------- | ------------------------------------------------------------------------------ |
 | 2–3 exclusive values   | `SegmentedControl` (inside `FormField align="center" as="div"`)                |

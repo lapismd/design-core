@@ -7,11 +7,11 @@ This matrix records one current evidence status for every canonical requirement.
 | DC-ARCH-001   | Implemented | `spec/src/`; tracked repository guidance                                          |
 | DC-ARCH-002   | Implemented | `src/shared/`; `package.json#exports`                                             |
 | DC-ARCH-003   | Implemented | Forms, Shell, and Workspace controller sources and stories                        |
-| DC-ARCH-004   | Implemented | `package.json#exports`; package barrel files                                      |
+| DC-ARCH-004   | Implemented | `package.json#exports`; family barrels and focused component entry points          |
 | DC-ARCH-005   | Implemented | Tracked workspace guidance; linked package manifests                              |
 | DC-PKG-001    | Implemented | `package.json#exports`; referenced barrels                                        |
 | DC-PKG-002    | Implemented | `package.json#exports`; referenced barrels                                        |
-| DC-PKG-003    | Implemented | `package.json#exports`; referenced barrels                                        |
+| DC-PKG-003    | Implemented | `package.json#exports`; forms barrel and focused Filter Command Picker entry point |
 | DC-PKG-004    | Implemented | `package.json#exports`; referenced barrels                                        |
 | DC-PKG-005    | Implemented | `package.json#exports`; referenced barrels                                        |
 | DC-PKG-006    | Implemented | `package.json#exports`; referenced barrels                                        |
@@ -88,7 +88,7 @@ This matrix records one current evidence status for every canonical requirement.
 | DC-FORM-009   | Implemented | Forms family source and colocated Storybook scenarios for Color Picker            |
 | DC-FORM-010   | Implemented | Forms family source and colocated Storybook scenarios for Cycle Picker            |
 | DC-FORM-011   | Implemented | Forms family source and colocated Storybook scenarios for Date Picker             |
-| DC-FORM-012   | Implemented | Forms family source and colocated Storybook scenarios for Filter Command Picker   |
+| DC-FORM-012   | Implemented | Forms family source, focused export, and colocated Filter Command Picker stories   |
 | DC-FORM-013   | Implemented | Forms family source and colocated Storybook scenarios for Inline Option Picker    |
 | DC-FORM-014   | Implemented | Forms family source and colocated Storybook scenarios for List Editor             |
 | DC-FORM-015   | Implemented | Forms family source and colocated Storybook scenarios for Reference Picker        |
@@ -197,7 +197,7 @@ This matrix records one current evidence status for every canonical requirement.
 | DC-CAT-008    | Implemented | Tokenizing Storybook languages, catalog validator, and live DOM acceptance        |
 | DC-GOV-001    | Implemented | Canonical requirement chapters and verification matrix                            |
 | DC-GOV-002    | Implemented | Canonical requirement chapters and verification matrix                            |
-| DC-GOV-003    | Implemented | `pnpm spec:validate`; canonical, surface, book, and mirror validator tests        |
+| DC-GOV-003    | Implemented | `pnpm spec:validate`; canonical, package-export surface, book, and mirror tests    |
 | DC-GOV-004    | Implemented | `pnpm spec:first`; local and CI diff tests                                        |
 | DC-GOV-005    | Implemented | `.qmd/index.yml`; `pnpm spec:index`                                               |
 | DC-GOV-006    | Implemented | `pnpm spec:search`; QMD wrapper tests and `rg` fallback                           |

@@ -160,6 +160,7 @@
   "exports": {
     "./shadcn/*": "./src/shared/shadcn/*/index.ts",
     "./forms": "./src/shared/forms/index.ts",
+    "./forms/filter-command-picker": "./src/shared/forms/filter-command-picker/index.ts",
     "./forms/core": "./src/shared/forms/core/core.ts",
     "./forms/tokens": "./src/shared/forms/form.tokens.ts",
     "./forms/form.tokens.css": "./src/shared/forms/form.tokens.css",
