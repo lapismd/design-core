@@ -27,6 +27,7 @@
   import FormFieldRenderer from "./FormFieldRenderer.svelte";
   import type { FormRendererRegistry } from "./form-renderer-registry";
   import StructuredForm from "./StructuredForm.svelte";
+  import { registerConfiguredArraySectionDisclosures } from "./disclosure-policy";
 
   let {
     root,
@@ -82,6 +83,16 @@
   const presentation = $derived(
     field.presentation === "sections" ? "sections" : "rows",
   );
+
+  $effect(() => {
+    if (presentation !== "sections") return;
+    registerConfiguredArraySectionDisclosures(
+      controller,
+      form.id,
+      path,
+      itemIds,
+    );
+  });
 
   function commitItems(nextItems: unknown[]): void {
     const nextRoot = setFormValueWithDefault(

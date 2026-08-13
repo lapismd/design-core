@@ -8,6 +8,7 @@
   } from "../core/path-config";
   import type { FormValidationIssue, FormViewName } from "../core/types";
   import ConfiguredFormField from "./ConfiguredFormField.svelte";
+  import { isControllableFormGroupDisclosure } from "./disclosure-policy";
   import type { FormRendererRegistry } from "./form-renderer-registry";
 
   let {
@@ -43,14 +44,15 @@
   } = $props();
 
   const disclosureId = $derived(`${form.id}:group:${groupId}`);
+  const controllable = $derived(isControllableFormGroupDisclosure(group));
   const open = $derived(
-    group.collapsible === false
+    !controllable
       ? true
       : controller.isDisclosureOpen(disclosureId, group.defaultOpen !== false),
   );
 
   $effect(() => {
-    controller.registerDisclosure(disclosureId, groupId);
+    if (controllable) controller.registerDisclosure(disclosureId, groupId);
   });
 </script>
 
