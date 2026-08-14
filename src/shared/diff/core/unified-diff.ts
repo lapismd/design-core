@@ -122,12 +122,16 @@ export function buildUnifiedDiffRows(
     if (op.kind === "left" && nextOp?.kind === "right") {
       const removedLines: string[] = [];
       const addedLines: string[] = [];
-      while (index < ops.length && ops[index]?.kind === "left") {
-        removedLines.push(ops[index]!.value);
+      while (index < ops.length) {
+        const current = ops[index];
+        if (current?.kind !== "left") break;
+        removedLines.push(current.value);
         index += 1;
       }
-      while (index < ops.length && ops[index]?.kind === "right") {
-        addedLines.push(ops[index]!.value);
+      while (index < ops.length) {
+        const current = ops[index];
+        if (current?.kind !== "right") break;
+        addedLines.push(current.value);
         index += 1;
       }
 

@@ -35,7 +35,7 @@ Specification governance keeps requirements discoverable, mapped, validated, and
 | Forms families                                            | Matching chapter under `forms/`  |
 | Filter layer                                              | `filter.md`                      |
 | AI layer                                                  | `ai.md`                          |
-| Diff layer                                                | `diff.md`                        |
+| Diff layer (`FileListing`, `FileDiff`, `MergeEditor`)     | `diff.md`                        |
 | Shell layer                                               | `shell.md`                       |
 | Workspace framework                                       | `workspace/framework.md`         |
 | Workspace components                                      | `workspace/components.md`        |

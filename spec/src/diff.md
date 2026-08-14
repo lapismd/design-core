@@ -30,9 +30,9 @@ Diff contracts keep change-set listing, file comparison, and merge presentation 
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/diff`.
-- Selection and view mode MUST remain host-controllable.
-- Row leading, label, and meta content MUST be host-replaceable.
-- The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- Selection and view mode MUST remain host-controllable through `selectedPath`, `mode`, and `FileListingViewModeToggle`.
+- Row leading, label, and meta content MUST be host-replaceable snippets.
+- The catalog MUST demonstrate list, folder tree, package tree, empty, and selected states without introducing a second runtime contract.
 
 ## DC-DIFF-003 — File Diff
 
@@ -42,8 +42,8 @@ Diff contracts keep change-set listing, file comparison, and merge presentation 
 
 - The public boundary is `@lapismd/design-core/diff`.
 - Unchanged context MUST collapse with incremental expand controls.
-- Line identity MUST be exposed for host accessories through data attributes or a snippet.
-- The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- Line identity MUST be exposed for host accessories through `data-diff-line-*` attributes or a `lineAccessory` snippet.
+- The catalog MUST demonstrate unified, split, collapsed-context, binary, empty, and multi-file composer states without introducing a second runtime contract.
 
 ## DC-DIFF-004 — Merge Editor
 
@@ -52,9 +52,9 @@ Diff contracts keep change-set listing, file comparison, and merge presentation 
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/diff`.
-- The editor MUST report resolved content and remaining conflict counts to the host.
+- The editor MUST report resolved content and remaining conflict counts to the host through `onResolvedChange`.
 - Connector and block visuals MUST derive from the shared merge render model.
-- The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- The catalog MUST demonstrate one-way, three-way, block actions, and connector-band states without introducing a second runtime contract.
 
 ## DC-DIFF-005 — Diff Guidance
 

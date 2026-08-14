@@ -1,0 +1,80 @@
+@import "../diff.tokens.css";
+
+.ui-diff-file-listing {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  color: var(--foreground);
+  font-size: 0.8125rem;
+}
+
+.ui-diff-file-listing__empty {
+  margin: 0;
+  padding: 1.5rem 0.5rem;
+  color: var(--muted-foreground);
+  text-align: center;
+}
+
+.ui-diff-file-listing__row {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  min-width: 0;
+  width: 100%;
+  padding: 0.25rem 0.5rem;
+  padding-inline-start: calc(0.5rem + (var(--ui-diff-file-depth, 0) * 0.75rem));
+  border: 0;
+  border-radius: calc(var(--radius) * 0.6);
+  background: transparent;
+  color: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+
+.ui-diff-file-listing__row:hover {
+  background: var(--ui-diff-row-hover);
+}
+
+.ui-diff-file-listing__row--selected {
+  box-shadow: inset 2px 0 0 var(--primary);
+}
+
+.ui-diff-file-listing__chevron,
+.ui-diff-file-listing__icon {
+  display: inline-flex;
+  flex: 0 0 auto;
+  width: 0.875rem;
+  height: 0.875rem;
+  color: var(--muted-foreground);
+}
+
+.ui-diff-file-listing__chevron :global(svg),
+.ui-diff-file-listing__icon :global(svg) {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
+.ui-diff-file-listing__label {
+  min-width: 0;
+  flex: 1 1 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ui-diff-file-listing__stats {
+  display: inline-flex;
+  gap: 0.375rem;
+  margin-inline-start: auto;
+  font-family: var(--ui-diff-mono);
+  font-size: 0.75rem;
+  font-weight: 650;
+}
+
+.ui-diff-file-listing__stats [data-tone="added"] {
+  color: color-mix(in srgb, var(--chart-2, oklch(0.55 0.14 145)) 25%, black);
+}
+
+.ui-diff-file-listing__stats [data-tone="removed"] {
+  color: color-mix(in srgb, var(--destructive) 35%, black);
+}

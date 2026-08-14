@@ -151,9 +151,9 @@ This matrix records one current evidence status for every canonical requirement.
 | DC-AI-022     | Implemented | AI sources, controllers, Storybook scenarios, and browser acceptance                        |
 | DC-AI-023     | Implemented | AI sources, controllers, Storybook scenarios, and browser acceptance                        |
 | DC-DIFF-001   | Implemented | Diff layer contract, tokens, guidance, and headless core models                             |
-| DC-DIFF-002   | In progress | Diff layer contract; File Listing implementation follows                                    |
-| DC-DIFF-003   | In progress | Diff layer contract; File Diff implementation follows                                       |
-| DC-DIFF-004   | In progress | Diff layer contract; Merge Editor implementation follows                                    |
+| DC-DIFF-002   | Implemented | File Listing sources, view-mode toggle, unit tests, and Storybook scenarios                 |
+| DC-DIFF-003   | Implemented | File Diff unified, split, and multi-file composer sources and Storybook scenarios           |
+| DC-DIFF-004   | Implemented | Merge Editor one-way and three-way sources, connector bands, and Storybook scenarios        |
 | DC-DIFF-005   | Implemented | `src/shared/diff/Guidance.mdx`                                                              |
 | DC-SHELL-001  | Implemented | `src/shared/shell/`; Shell guidance and tests                                               |
 | DC-SHELL-002  | Implemented | App Shell sources, guidance, stories, and pointer tests                                     |

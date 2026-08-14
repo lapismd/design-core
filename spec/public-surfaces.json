@@ -475,8 +475,20 @@
       "requirement": "DC-AI-023"
     },
     {
+      "name": "Diff/File Diff",
+      "requirement": "DC-DIFF-003"
+    },
+    {
+      "name": "Diff/File Listing",
+      "requirement": "DC-DIFF-002"
+    },
+    {
       "name": "Diff/Guidance",
       "requirement": "DC-DIFF-005"
+    },
+    {
+      "name": "Diff/Merge Editor",
+      "requirement": "DC-DIFF-004"
     },
     {
       "name": "Filter/Guidance",
