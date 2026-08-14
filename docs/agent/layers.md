@@ -30,9 +30,10 @@ existing family already covers the need.
    folder per component; experimental under `experimental/<component>/`).
    Import from `@lapismd/design-core/ai`, `@lapismd/design-core/ai/chat`, or
    `@lapismd/design-core/ai/experimental`. Catalog: `AI/...`.
-5. **Diff** (`src/shared/diff/<family>/`) — change-set file listing, unified or
-   split file diffs, and one-way or three-way merge editors. Import from
-   `@lapismd/design-core/diff`. Catalog: `Diff/...`. Guidance: `Diff/Guidance`.
+5. **Diff** (`src/shared/diff/<family>/`) — change-set file listing, added and
+   removed counts, unified or split file diffs, and one-way or three-way merge
+   editors. Import from `@lapismd/design-core/diff`. Catalog: `Diff/...`.
+   Guidance: `Diff/Guidance`.
    Hosts own VCS, file bytes, and persistence. Forms `UnifiedReviewDiff` remains
    the short field-value review surface.
 6. **Shell** (`src/shared/shell/app-shell/`) — bounded structural application

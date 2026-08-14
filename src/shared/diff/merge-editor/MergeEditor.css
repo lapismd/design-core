@@ -123,6 +123,49 @@
   flex: 1;
 }
 
+.ui-diff-merge-editor__view-content {
+  position: relative;
+  min-height: var(--ui-diff-merge-edit-min-height, 100%);
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.ui-diff-merge-editor__component-stack {
+  width: max-content;
+  min-width: 100%;
+  min-height: 100%;
+}
+
+.ui-diff-merge-editor__edit {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  width: 100%;
+  min-height: var(--ui-diff-merge-edit-min-height, 100%);
+  border: 0;
+  background: transparent;
+  color: var(--foreground);
+  caret-color: var(--foreground);
+  font-family: var(--ui-diff-mono);
+  font-size: 0.75rem;
+  line-height: 1.25rem;
+  outline: none;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0 0.5rem;
+  resize: none;
+  scrollbar-width: none;
+  white-space: pre;
+}
+
+.ui-diff-merge-editor__edit::-webkit-scrollbar {
+  display: none;
+}
+
+.ui-diff-merge-editor__view[data-editable="true"] .ui-diff-merge-editor__edit {
+  color: transparent;
+}
+
 .ui-diff-merge-editor__gutter {
   position: relative;
   width: var(--ui-diff-merge-line-number-width);
@@ -191,6 +234,12 @@
   min-height: 1.25rem;
   padding-inline: 1.75rem 0.25rem;
   text-align: end;
+}
+
+.ui-diff-merge-editor__line-number[data-visual-kind]:not(
+    [data-visual-kind="unchanged"]
+  ) {
+  color: var(--foreground);
 }
 
 .ui-diff-merge-editor__placeholder {

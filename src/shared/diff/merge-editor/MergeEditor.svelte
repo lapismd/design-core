@@ -1,11 +1,15 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import CheckCheckIcon from "@lucide/svelte/icons/check-check";
   import ChevronDownIcon from "@lucide/svelte/icons/chevron-down";
   import ChevronUpIcon from "@lucide/svelte/icons/chevron-up";
   import PencilIcon from "@lucide/svelte/icons/pencil";
   import PlayIcon from "@lucide/svelte/icons/play";
   import XIcon from "@lucide/svelte/icons/x";
+  import { ensureHighlightStyles } from "../../shadcn/code-block/index.js";
   import { Button } from "../../shadcn/button/index.js";
+  import { highlightText } from "../file-diff/highlight.js";
+  import { resolveDiffLanguage } from "../file-diff/language.js";
   import {
     applyMergeAction,
     assembleOneWayMerge,
@@ -35,7 +39,16 @@
     baseLabel = "Resolved",
     rightLabel = "Right",
     path,
+    language,
     readOnly = false,
+    editable = false,
+    editableSides,
+    ignoreWhitespace = false,
+    ignoreCase = false,
+    syncHorizontalScroll = false,
+    onLeftChange,
+    onBaseChange,
+    onRightChange,
     onResolvedChange,
   }: {
     mode?: MergeEditorMode;
@@ -47,19 +60,56 @@
     baseLabel?: string;
     rightLabel?: string;
     path?: string;
+    language?: string | null;
     readOnly?: boolean;
+    /** When true, visible sides are editable unless `editableSides` narrows them. */
+    editable?: boolean;
+    editableSides?: readonly MergeSide[];
+    ignoreWhitespace?: boolean;
+    ignoreCase?: boolean;
+    syncHorizontalScroll?: boolean;
+    onLeftChange?: (content: string) => void;
+    onBaseChange?: (content: string) => void;
+    onRightChange?: (content: string) => void;
     onResolvedChange?: (state: MergeResolvedChange) => void;
   } = $props();
 
-  const inputKey = $derived(`${mode}\0${left}\0${base}\0${right}`);
+  const mergeOptions = $derived({ ignoreWhitespace, ignoreCase });
+  const inputKey = $derived(
+    `${mode}\0${left}\0${base}\0${right}\0${ignoreWhitespace}\0${ignoreCase}`,
+  );
+  const resolvedLanguage = $derived(resolveDiffLanguage(path ?? "", language));
+  let draft = $state<{
+    key: string;
+    left: string;
+    base: string;
+    right: string;
+  } | null>(null);
   let override = $state<{ key: string; model: MergeModel } | null>(null);
+  const source = $derived({
+    left: draft?.key === inputKey ? draft.left : left,
+    base: draft?.key === inputKey ? draft.base : base,
+    right: draft?.key === inputKey ? draft.right : right,
+  });
   const model = $derived(
     override?.key === inputKey
       ? override.model
       : mode === "one-way"
-        ? assembleOneWayMerge(left, right)
-        : assembleThreeWayMerge(left, base, right),
+        ? assembleOneWayMerge(source.left, source.right, mergeOptions)
+        : assembleThreeWayMerge(
+            source.left,
+            source.base,
+            source.right,
+            mergeOptions,
+          ),
   );
+  const resolvedEditableSides = $derived.by((): ReadonlySet<MergeSide> => {
+    if (readOnly || !editable) return new Set();
+    if (editableSides) return new Set(editableSides);
+    return mode === "one-way"
+      ? new Set<MergeSide>(["left", "right"])
+      : new Set<MergeSide>(["left", "base", "right"]);
+  });
   let editorEl: HTMLElement | null = $state(null);
   let geometry = $state<ConnectorGeometry>(EMPTY_CONNECTOR_GEOMETRY);
   let activeIndex = $state(-1);
@@ -90,8 +140,45 @@
     ).length,
   });
 
+  onMount(() => {
+    ensureHighlightStyles();
+  });
+
   $effect(() => {
     emitResolved(model);
+  });
+
+  $effect(() => {
+    const container = editorEl;
+    const syncAcross = syncHorizontalScroll;
+    if (!container) return;
+    const targets = [
+      ...container.querySelectorAll<HTMLElement>(
+        "[data-ui-part='merge-pane-scroll'], .ui-diff-merge-editor__edit",
+      ),
+    ];
+    if (targets.length === 0) return;
+    let syncing = false;
+    const listeners = targets.map((target) => {
+      const onScroll = () => {
+        if (syncing) return;
+        syncing = true;
+        const side = target.dataset.mergeSide;
+        for (const candidate of targets) {
+          if (candidate === target) continue;
+          if (!syncAcross && candidate.dataset.mergeSide !== side) continue;
+          if (candidate.scrollLeft !== target.scrollLeft) {
+            candidate.scrollLeft = target.scrollLeft;
+          }
+        }
+        syncing = false;
+      };
+      target.addEventListener("scroll", onScroll, { passive: true });
+      return () => target.removeEventListener("scroll", onScroll);
+    });
+    return () => {
+      for (const stop of listeners) stop();
+    };
   });
 
   $effect(() => {
@@ -117,7 +204,7 @@
     const observer = new ResizeObserver(schedule);
     observer.observe(container);
     for (const target of container.querySelectorAll<HTMLElement>(
-      "[data-ui-part='merge-view'], [data-ui-part='merge-component']",
+      "[data-ui-part='merge-view'], [data-ui-part='merge-pane-scroll'], [data-ui-part='merge-component']",
     )) {
       observer.observe(target);
     }
@@ -138,7 +225,36 @@
   }
 
   function commit(next: MergeModel) {
+    const nextBase = serializeMergeCenter(next);
     override = { key: inputKey, model: next };
+    draft = {
+      key: inputKey,
+      left: source.left,
+      base: nextBase,
+      right: source.right,
+    };
+    onBaseChange?.(nextBase);
+  }
+
+  function editSide(side: MergeSide, content: string) {
+    const next = {
+      key: inputKey,
+      left: source.left,
+      base: source.base,
+      right: source.right,
+      [side]: content,
+    };
+    draft = next;
+    override = null;
+    if (side === "left") onLeftChange?.(content);
+    else if (side === "base") onBaseChange?.(content);
+    else onRightChange?.(content);
+  }
+
+  function sideText(side: MergeSide): string {
+    if (side === "left") return source.left;
+    if (side === "right") return source.right;
+    return source.base;
   }
 
   function applyComponentAction(component: RenderComponent) {
@@ -214,10 +330,14 @@
 
 {#snippet sideView(side: MergeSide, label: string)}
   {@const components = renderModel.sides[side]}
+  {@const isEditable = resolvedEditableSides.has(side)}
+  {@const editValue = sideText(side)}
+  {@const editMinHeight = `${Math.max(1, editValue.split("\n").length) * 1.25}rem`}
   <section
     class="ui-diff-merge-editor__view"
     data-ui-part="merge-view"
     data-merge-side={side}
+    data-editable={isEditable}
     aria-label={label}
   >
     <div class="ui-diff-merge-editor__gutter">
@@ -245,24 +365,60 @@
       {/each}
     </div>
     <div class="ui-diff-merge-editor__view-inner">
-      {#each components as component (component.id)}
+      <div
+        class="ui-diff-merge-editor__view-content"
+        data-ui-part="merge-pane-scroll"
+        data-merge-side={side}
+        style:--ui-diff-merge-edit-min-height={editMinHeight}
+      >
         <div
-          class="ui-diff-merge-editor__component"
-          data-ui-part="merge-component"
-          data-render-component-id={component.id}
-          data-block-id={component.blockId}
-          data-visual-kind={component.visualKind}
-          data-placeholder={component.placeholder}
+          class="ui-diff-merge-editor__component-stack"
+          aria-hidden={isEditable}
         >
-          {#each component.lines as line (line.id)}
-            <span class="ui-diff-merge-editor__line">
-              {#each line.parts as part, partIndex (`${line.id}-${partIndex}`)}
-                <span data-changed={part.changed}>{part.text}</span>
+          {#each components as component (component.id)}
+            <div
+              class="ui-diff-merge-editor__component"
+              data-ui-part="merge-component"
+              data-render-component-id={component.id}
+              data-block-id={component.blockId}
+              data-visual-kind={component.visualKind}
+              data-placeholder={component.placeholder}
+            >
+              {#each component.lines as line (line.id)}
+                <span class="ui-diff-merge-editor__line">
+                  {#each line.parts as part, partIndex (`${line.id}-${partIndex}`)}
+                    <span data-changed={part.changed}>
+                      {#if part.changed}
+                        {part.text}
+                      {:else}
+                        {#each highlightText(part.text, resolvedLanguage) as token (`${line.id}-${partIndex}-${token.key}`)}
+                          {#if token.type}
+                            <span class={`ui-code-token-${token.type}`}
+                              >{token.text}</span
+                            >
+                          {:else}
+                            {token.text}
+                          {/if}
+                        {/each}
+                      {/if}
+                    </span>
+                  {/each}
+                </span>
               {/each}
-            </span>
+            </div>
           {/each}
         </div>
-      {/each}
+        {#if isEditable}
+          <textarea
+            class="ui-diff-merge-editor__edit"
+            aria-label={`Edit ${label}`}
+            data-merge-side={side}
+            spellcheck={false}
+            value={editValue}
+            oninput={(event) => editSide(side, event.currentTarget.value)}
+          ></textarea>
+        {/if}
+      </div>
     </div>
   </section>
 {/snippet}

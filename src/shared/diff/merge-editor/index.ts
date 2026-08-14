@@ -1,2 +1,8 @@
 export { default as MergeEditor } from "./MergeEditor.svelte";
-export type { MergeEditorMode, MergeResolvedChange } from "./types.js";
+export { mergeDemoFixtures, type MergeDemoFixture } from "./demo-fixtures.js";
+export { quicksortFixture } from "./quicksort-fixture.js";
+export type {
+  MergeEditorMode,
+  MergeResolvedChange,
+  MergeSide,
+} from "./types.js";

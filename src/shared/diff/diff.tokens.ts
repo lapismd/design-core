@@ -16,6 +16,8 @@ export const diffTokenNames = {
   rowHover: "--ui-diff-row-hover",
   selected: "--ui-diff-selected",
   border: "--ui-diff-border",
+  statAdded: "--ui-diff-stat-added",
+  statRemoved: "--ui-diff-stat-removed",
 } as const;
 
 export type DiffToken = (typeof diffTokenNames)[keyof typeof diffTokenNames];

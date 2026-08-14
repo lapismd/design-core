@@ -46,4 +46,6 @@
   --ui-diff-row-hover: color-mix(in srgb, var(--muted) 40%, transparent);
   --ui-diff-selected: color-mix(in srgb, var(--primary) 12%, transparent);
   --ui-diff-border: var(--border);
+  --ui-diff-stat-added: oklch(0.42 0.12 145);
+  --ui-diff-stat-removed: oklch(0.48 0.19 25);
 }

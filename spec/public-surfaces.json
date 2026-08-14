@@ -475,6 +475,10 @@
       "requirement": "DC-AI-023"
     },
     {
+      "name": "Diff/File Change Stats",
+      "requirement": "DC-DIFF-006"
+    },
+    {
       "name": "Diff/File Diff",
       "requirement": "DC-DIFF-003"
     },

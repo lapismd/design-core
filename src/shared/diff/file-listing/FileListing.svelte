@@ -18,6 +18,7 @@
     getFilePathName,
     type FileTreeNode,
   } from "../core/file-tree.js";
+  import FileChangeStats from "../file-change-stats/FileChangeStats.svelte";
   import { fileIconNameForPath } from "./file-icon.js";
   import type {
     FileListingDirectoryContext,
@@ -107,17 +108,17 @@
 {#snippet fileIcon(path: string)}
   {@const icon = fileIconNameForPath(path)}
   {#if icon === "file-code-2"}
-    <FileCode2Icon aria-hidden="true" />
+    <FileCode2Icon size={14} aria-hidden="true" />
   {:else if icon === "file-json"}
-    <FileJsonIcon aria-hidden="true" />
+    <FileJsonIcon size={14} aria-hidden="true" />
   {:else if icon === "file-text"}
-    <FileTextIcon aria-hidden="true" />
+    <FileTextIcon size={14} aria-hidden="true" />
   {:else if icon === "file-code"}
-    <FileCodeIcon aria-hidden="true" />
+    <FileCodeIcon size={14} aria-hidden="true" />
   {:else if icon === "image"}
-    <ImageIcon aria-hidden="true" />
+    <ImageIcon size={14} aria-hidden="true" />
   {:else}
-    <FileIcon aria-hidden="true" />
+    <FileIcon size={14} aria-hidden="true" />
   {/if}
 {/snippet}
 
@@ -139,6 +140,9 @@
     style={depth === undefined ? undefined : `--ui-diff-file-depth: ${depth}`}
     onclick={() => selectPath(path)}
   >
+    {#if depth !== undefined}
+      <span class="ui-diff-file-listing__chevron" aria-hidden="true"></span>
+    {/if}
     <span class="ui-diff-file-listing__icon">
       {@render fileIcon(path)}
     </span>
@@ -154,15 +158,11 @@
     {/if}
     {#if fileMeta}
       {@render fileMeta(context)}
-    {:else if (file.additions ?? 0) > 0 || (file.deletions ?? 0) > 0}
-      <span class="ui-diff-file-listing__stats" aria-hidden="true">
-        {#if (file.additions ?? 0) > 0}
-          <span data-tone="added">+{file.additions}</span>
-        {/if}
-        {#if (file.deletions ?? 0) > 0}
-          <span data-tone="removed">-{file.deletions}</span>
-        {/if}
-      </span>
+    {:else}
+      <FileChangeStats
+        additions={file.additions ?? 0}
+        deletions={file.deletions ?? 0}
+      />
     {/if}
   </button>
 {/snippet}
@@ -189,16 +189,16 @@
       >
         <span class="ui-diff-file-listing__chevron" aria-hidden="true">
           {#if collapsed}
-            <ChevronRightIcon />
+            <ChevronRightIcon size={14} />
           {:else}
-            <ChevronDownIcon />
+            <ChevronDownIcon size={14} />
           {/if}
         </span>
         <span class="ui-diff-file-listing__icon" aria-hidden="true">
           {#if collapsed}
-            <FolderIcon />
+            <FolderIcon size={14} />
           {:else}
-            <FolderOpenIcon />
+            <FolderOpenIcon size={14} />
           {/if}
         </span>
         <span class="ui-diff-file-listing__label">{node.name}</span>

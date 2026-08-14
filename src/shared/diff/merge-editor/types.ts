@@ -1,4 +1,4 @@
-import type { MergeMode } from "../core/merge/types.js";
+import type { MergeMode, MergeSide } from "../core/merge/types.js";
 
 export interface MergeResolvedChange {
   resolved: boolean;
@@ -8,3 +8,4 @@ export interface MergeResolvedChange {
 }
 
 export type MergeEditorMode = MergeMode;
+export type { MergeSide };

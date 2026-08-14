@@ -112,8 +112,9 @@ Change-set listing, file comparison, and merge presentation in
 `src/shared/diff/<family>/`. Hosts own VCS, file bytes, and persistence.
 
 - `FileListing` — list, folder tree, and compacted package tree for a change set
+- `FileChangeStats` — added and removed line counts with distinct tones
 - `FileDiff` — unified or split textual diffs with collapsed context
-- `MergeEditor` — one-way or three-way merge blocks and host-triggered actions
+- `MergeEditor` — one-way or three-way merge blocks, optional editable overlay, and host-triggered actions
 - `core/` — headless tree, row, and merge models
 
 Import: `@lapismd/design-core/diff`. Catalog: `Diff/...`. Guidance:

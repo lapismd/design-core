@@ -17,20 +17,22 @@ Offline agent summary: `pnpm ui guide layers`. Catalog components:
 
 ## Layer boundary
 
-| Need                                          | Package                                     |
-| --------------------------------------------- | ------------------------------------------- |
-| Change-set list, folder tree, or package tree | `FileListing` (`@lapismd/design-core/diff`) |
-| Unified or split file comparison              | `FileDiff` (`@lapismd/design-core/diff`)    |
-| One-way or three-way merge blocks             | `MergeEditor` (`@lapismd/design-core/diff`) |
-| Short form-field review                       | Forms `UnifiedReviewDiff`                   |
-| Vault filesystem chrome                       | Workspace Explorer                          |
-| git / jj / PR transport                       | Application host                            |
+| Need                                          | Package                                         |
+| --------------------------------------------- | ----------------------------------------------- |
+| Change-set list, folder tree, or package tree | `FileListing` (`@lapismd/design-core/diff`)     |
+| Added and removed line counts                 | `FileChangeStats` (`@lapismd/design-core/diff`) |
+| Unified or split file comparison              | `FileDiff` (`@lapismd/design-core/diff`)        |
+| One-way or three-way merge blocks             | `MergeEditor` (`@lapismd/design-core/diff`)     |
+| Short form-field review                       | Forms `UnifiedReviewDiff`                       |
+| Vault filesystem chrome                       | Workspace Explorer                              |
+| git / jj / PR transport                       | Application host                                |
 
 ## Choosing a surface
 
 | Need                                           | Use                     |
 | ---------------------------------------------- | ----------------------- |
 | Files in one change, with optional `+/−` stats | **FileListing**         |
+| Standalone added/removed counts                | **FileChangeStats**     |
 | One or many textual file diffs                 | **FileDiff**            |
 | Accept left/right/base and resolve conflicts   | **MergeEditor**         |
 | A single form value changing in review         | Forms UnifiedReviewDiff |
@@ -49,5 +51,6 @@ hosts can attach those accessories later.
 ## Stories
 
 - **Diff/File Listing** — list, folder tree, and package tree
+- **Diff/File Change Stats** — added and removed line counts
 - **Diff/File Diff** — unified, split, collapse, and multi-file stack
-- **Diff/Merge Editor** — one-way and three-way conflict resolution
+- **Diff/Merge Editor** — one-way, three-way, editable overlay, syntax highlighting, and a Changeyard-style settings demo

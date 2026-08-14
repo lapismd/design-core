@@ -11,6 +11,7 @@ Diff contracts keep change-set listing, file comparison, and merge presentation 
 | File Diff              | `@lapismd/design-core/diff` | DC-DIFF-003 |
 | Merge Editor           | `@lapismd/design-core/diff` | DC-DIFF-004 |
 | Diff Guidance          | Documentation surface       | DC-DIFF-005 |
+| File Change Stats      | `@lapismd/design-core/diff` | DC-DIFF-006 |
 
 ## DC-DIFF-001 — Shared Diff invariants
 
@@ -31,7 +32,7 @@ Diff contracts keep change-set listing, file comparison, and merge presentation 
 
 - The public boundary is `@lapismd/design-core/diff`.
 - Selection and view mode MUST remain host-controllable through `selectedPath`, `mode`, and `FileListingViewModeToggle`.
-- Row leading, label, and meta content MUST be host-replaceable snippets.
+- Row leading, label, and meta content MUST be host-replaceable snippets; default file-row meta MUST render File Change Stats from `additions` and `deletions`.
 - The catalog MUST demonstrate list, folder tree, package tree, empty, and selected states without introducing a second runtime contract.
 
 ## DC-DIFF-003 — File Diff
@@ -52,13 +53,13 @@ Diff contracts keep change-set listing, file comparison, and merge presentation 
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/diff`.
-- The editor MUST report resolved content and remaining conflict counts to the host through `onResolvedChange`.
+- The editor MUST report resolved content through `onResolvedChange`, and optional editable sides MUST overlay a textarea and report `onLeftChange`, `onBaseChange`, and `onRightChange`.
 - Connector and block visuals MUST derive from the shared merge render model.
-- The catalog MUST demonstrate one-way, three-way, block actions, and connector-band states without introducing a second runtime contract.
+- The catalog MUST demonstrate one-way, three-way, editable, syntax-highlighted Changeyard fixtures, comparison-option, and connector-band states without introducing a second runtime contract.
 
 ## DC-DIFF-005 — Diff Guidance
 
-**Requirement.** The Diff Guidance family MUST explain when to use File Listing, File Diff, Merge Editor, and Forms UnifiedReviewDiff.
+**Requirement.** The Diff Guidance family MUST explain when to use File Listing, File Change Stats, File Diff, Merge Editor, and Forms UnifiedReviewDiff.
 
 ### Acceptance details
 
@@ -66,3 +67,14 @@ Diff contracts keep change-set listing, file comparison, and merge presentation 
 - Guidance MUST keep version-control execution and persistence in the host.
 - Guidance MUST route short field-value review to Forms UnifiedReviewDiff.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+
+## DC-DIFF-006 — File Change Stats
+
+**Requirement.** The File Change Stats family MUST present added and removed line counts with distinct tones and MUST NOT own change-set listing or file comparison.
+
+### Acceptance details
+
+- The public boundary is `@lapismd/design-core/diff`.
+- Added and removed counts MUST use distinct `--ui-diff-stat-*` colors and `formatDiffDelta` prefixes.
+- Zero sides MUST hide unless `showZero` is set.
+- The catalog MUST demonstrate added, removed, and hidden-zero states without introducing a second runtime contract.

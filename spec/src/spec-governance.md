@@ -27,23 +27,23 @@ Specification governance keeps requirements discoverable, mapped, validated, and
 
 ## Change map
 
-| Protected area                                            | Owning canonical chapter         |
-| --------------------------------------------------------- | -------------------------------- |
-| Root package manifests and exports                        | `architecture.md`, `packages.md` |
-| Shared styles, themes, and tokens                         | `styling-and-themes.md`          |
-| Shadcn families                                           | Matching chapter under `shadcn/` |
-| Forms families                                            | Matching chapter under `forms/`  |
-| Filter layer                                              | `filter.md`                      |
-| AI layer                                                  | `ai.md`                          |
-| Diff layer (`FileListing`, `FileDiff`, `MergeEditor`)     | `diff.md`                        |
-| Shell layer                                               | `shell.md`                       |
-| Workspace framework                                       | `workspace/framework.md`         |
-| Workspace components                                      | `workspace/components.md`        |
-| Workspace panels                                          | `workspace/panels.md`            |
-| Workspace plugins                                         | `workspace/plugins.md`           |
-| Storybook host and specification mirrors                  | `storybook-catalog.md`           |
-| UI generator and Docs MCP tooling                         | `tooling.md`                     |
-| Specification validators, book, map, QMD, and agent rules | `spec-governance.md`             |
+| Protected area                                                           | Owning canonical chapter         |
+| ------------------------------------------------------------------------ | -------------------------------- |
+| Root package manifests and exports                                       | `architecture.md`, `packages.md` |
+| Shared styles, themes, and tokens                                        | `styling-and-themes.md`          |
+| Shadcn families                                                          | Matching chapter under `shadcn/` |
+| Forms families                                                           | Matching chapter under `forms/`  |
+| Filter layer                                                             | `filter.md`                      |
+| AI layer                                                                 | `ai.md`                          |
+| Diff layer (`FileListing`, `FileChangeStats`, `FileDiff`, `MergeEditor`) | `diff.md`                        |
+| Shell layer                                                              | `shell.md`                       |
+| Workspace framework                                                      | `workspace/framework.md`         |
+| Workspace components                                                     | `workspace/components.md`        |
+| Workspace panels                                                         | `workspace/panels.md`            |
+| Workspace plugins                                                        | `workspace/plugins.md`           |
+| Storybook host and specification mirrors                                 | `storybook-catalog.md`           |
+| UI generator and Docs MCP tooling                                        | `tooling.md`                     |
+| Specification validators, book, map, QMD, and agent rules                | `spec-governance.md`             |
 
 ## DC-GOV-002 — Verification matrix
 

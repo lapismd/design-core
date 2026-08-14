@@ -1,0 +1,20 @@
+@import "../diff.tokens.css";
+
+.ui-diff-file-change-stats {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-family: var(--ui-diff-mono);
+  font-size: 0.75rem;
+  font-weight: 650;
+  line-height: 1.25rem;
+  white-space: nowrap;
+}
+
+.ui-diff-file-change-stats [data-tone="added"] {
+  color: var(--ui-diff-stat-added);
+}
+
+.ui-diff-file-change-stats [data-tone="removed"] {
+  color: var(--ui-diff-stat-removed);
+}

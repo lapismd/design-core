@@ -48,6 +48,8 @@
     await expect(
       canvas.getByRole("button", { name: "src/lib/tree.ts" }),
     ).toHaveAttribute("aria-current", "true");
+    await expect(canvas.getByText("+12")).toBeVisible();
+    await expect(canvas.getByText("-1")).toBeVisible();
   }}
   tags={["visual-pending"]}
 >

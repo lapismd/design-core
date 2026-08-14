@@ -1,0 +1,41 @@
+.ui-diff-merge-demo {
+  display: flex;
+  min-width: 0;
+  min-height: 32rem;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.ui-diff-merge-demo__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) * 0.8);
+  background: var(--muted);
+  padding: 0.5rem 0.75rem;
+}
+
+.ui-diff-merge-demo__field,
+.ui-diff-merge-demo__check {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  color: var(--foreground);
+  font-size: 0.75rem;
+}
+
+.ui-diff-merge-demo__field select {
+  min-width: 12rem;
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) * 0.6);
+  background: var(--background);
+  color: inherit;
+  padding: 0.25rem 0.5rem;
+}
+
+.ui-diff-merge-demo__editor {
+  min-height: 0;
+  flex: 1;
+}

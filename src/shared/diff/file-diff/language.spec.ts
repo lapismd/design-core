@@ -9,6 +9,8 @@ describe("resolveDiffLanguage", () => {
   it("maps common extensions to CodeBlock language ids", () => {
     expect(resolveDiffLanguage("src/index.ts")).toBe("typescript");
     expect(resolveDiffLanguage("notes.md")).toBe("markdown");
+    expect(resolveDiffLanguage("quicksort.c")).toBe("c");
+    expect(resolveDiffLanguage("src/conflict.rs")).toBe("rust");
     expect(resolveDiffLanguage("Dockerfile")).toBe("bash");
     expect(resolveDiffLanguage("LICENSE")).toBeNull();
   });
