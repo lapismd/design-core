@@ -48,6 +48,7 @@
 
 .ui-diff-merge-editor__labels {
   display: grid;
+  gap: 0;
   padding: 0;
   border-bottom: 1px solid var(--ui-diff-border);
   font-weight: 650;
@@ -80,6 +81,10 @@
 .ui-diff-merge-editor__label:last-child,
 .ui-diff-merge-editor__label[data-spacer] {
   border-right: 0;
+}
+
+.ui-diff-merge-editor__label[data-align="end"] {
+  justify-content: flex-end;
 }
 
 .ui-diff-merge-editor__label[data-spacer] {

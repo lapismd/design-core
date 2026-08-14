@@ -384,6 +384,40 @@
         ).toBeLessThan(1);
       }
     }
+    const labelCells = [
+      ...(editor?.querySelectorAll(".ui-diff-merge-editor__label") ?? []),
+    ];
+    const viewCells = [
+      ...(editor?.querySelectorAll(
+        ".ui-diff-merge-editor__view, .ui-diff-merge-editor__connector",
+      ) ?? []),
+    ];
+    await expect(labelCells.length).toBe(viewCells.length);
+    for (const [index, label] of labelCells.entries()) {
+      const view = viewCells[index]!;
+      await expect(
+        Math.abs(
+          label.getBoundingClientRect().left -
+            view.getBoundingClientRect().left,
+        ),
+      ).toBeLessThan(1);
+      await expect(
+        Math.abs(
+          label.getBoundingClientRect().right -
+            view.getBoundingClientRect().right,
+        ),
+      ).toBeLessThan(1);
+    }
+    const rightLabel = labelCells.at(-1);
+    await expect(rightLabel).toHaveAttribute("data-align", "end");
+    const rightText = rightLabel?.querySelector("span");
+    await expect(rightText?.textContent).toBe("Right");
+    await expect(
+      Math.abs(
+        (rightText?.getBoundingClientRect().right ?? 0) -
+          (rightLabel?.getBoundingClientRect().right ?? 0),
+      ),
+    ).toBeLessThan(12);
   }}
   tags={["visual-pending"]}
 >

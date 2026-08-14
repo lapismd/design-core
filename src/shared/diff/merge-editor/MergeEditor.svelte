@@ -541,7 +541,7 @@
         aria-hidden="true"
       ></div>
     {/if}
-    <div class="ui-diff-merge-editor__label">
+    <div class="ui-diff-merge-editor__label" data-align="end">
       {#if !readOnly}
         <Button
           variant="ghost"
