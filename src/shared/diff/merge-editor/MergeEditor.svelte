@@ -358,7 +358,7 @@
   {@const components = renderModel.sides[side]}
   {@const isEditable = resolvedEditableSides.has(side)}
   {@const editValue = sideText(side)}
-  {@const editMinHeight = `${Math.max(1, editValue.split("\n").length) * 1.25}rem`}
+  {@const editMinHeight = `calc(${Math.max(1, editValue.split("\n").length)} * var(--ui-diff-merge-line-height))`}
   <section
     class="ui-diff-merge-editor__view"
     data-ui-part="merge-view"

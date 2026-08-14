@@ -368,6 +368,22 @@
         '[data-merge-side="base"] [data-action-kind="delete"]',
       ),
     ).not.toBeNull();
+    for (const side of ["left", "base", "right"]) {
+      const numbers = [
+        ...(editor?.querySelectorAll(
+          `[data-merge-side="${side}"] .ui-diff-merge-editor__line-number`,
+        ) ?? []),
+      ];
+      await expect(numbers.length).toBeGreaterThan(0);
+      const lineHeight = Number.parseFloat(
+        getComputedStyle(numbers[0]!).lineHeight,
+      );
+      for (const [index, number] of numbers.entries()) {
+        await expect(
+          Math.abs(number.offsetTop - index * lineHeight),
+        ).toBeLessThan(1);
+      }
+    }
   }}
   tags={["visual-pending"]}
 >
