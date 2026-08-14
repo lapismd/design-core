@@ -1,7 +1,7 @@
 ---
 id: layers
 title: Package layers
-summary: Choose shadcn, forms, filter, AI, shell, or workspace.
+summary: Choose shadcn, forms, filter, AI, Diff, shell, or workspace.
 sources:
   - README.md
   - COMPONENT_AUDIT.md
@@ -30,7 +30,12 @@ existing family already covers the need.
    folder per component; experimental under `experimental/<component>/`).
    Import from `@lapismd/design-core/ai`, `@lapismd/design-core/ai/chat`, or
    `@lapismd/design-core/ai/experimental`. Catalog: `AI/...`.
-5. **Shell** (`src/shared/shell/app-shell/`) — bounded structural application
+5. **Diff** (`src/shared/diff/<family>/`) — change-set file listing, unified or
+   split file diffs, and one-way or three-way merge editors. Import from
+   `@lapismd/design-core/diff`. Catalog: `Diff/...`. Guidance: `Diff/Guidance`.
+   Hosts own VCS, file bytes, and persistence. Forms `UnifiedReviewDiff` remains
+   the short field-value review surface.
+6. **Shell** (`src/shared/shell/app-shell/`) — bounded structural application
    chrome with independently controlled collapsible, closeable, and resizable
    left/right rails, optional same-side nesting, a full-height outer variant
    with collapsed/closed edge and delayed toggle-hover previews, fixed sidebar
@@ -46,7 +51,7 @@ existing family already covers the need.
    `Shell/Guidance` and `pnpm ui guide shell`. It owns geometry plus
    Toggle/Close actions; consumers own navigation selection, other actions,
    content, and non-layout persistence.
-6. **Workspace** (`src/shared/workspace/`) — application-independent workspace
+7. **Workspace** (`src/shared/workspace/`) — application-independent workspace
    framework, controller, layout, views, shell components, settings, and static
    plugin presentation. Import from `@lapismd/design-core/workspace`. Catalog:
    `Workspace/...`. Its shell geometry uses native CSS; declarative settings
@@ -54,19 +59,22 @@ existing family already covers the need.
 
 ## Dependency rules
 
-- `shared/shadcn` must not import forms, filter, or AI.
+- `shared/shadcn` must not import forms, filter, AI, or Diff.
 - `shared/filter` may import shadcn; it must not import forms in production
   code (stories may compose forms pickers).
-- `shared/forms` may import shadcn and filter.
+- `shared/forms` may import shadcn and filter. Forms must not import Diff.
 - `shared/ai` may compose generic shared controls but must remain
   host-controlled and reusable.
+- `shared/diff` may import shadcn. It must not import forms, filter, AI, shell,
+  or workspace.
 - `shared/shell` may compose shadcn Scroll Area for bounded section scrolling,
   Button for Toggle/Close actions, and Select for a mobile edge with multiple
   registered panels. It must not import workspace or application state in
   production sources. Stories may compose other shadcn controls.
 - `shared/workspace` may import generic controls from `shared/shadcn` and may
   use headless Bits UI and Paneforge directly for workspace-specific geometry.
-  It must not import forms, filter, AI, or application-specific surfaces.
+  It may later compose Diff through the public Diff barrel. It must not import
+  forms, filter, AI, or application-specific surfaces.
 
 ## Folder layout
 
@@ -78,6 +86,7 @@ folder.”
 | Shadcn         | `<family>/`                   | Multipart parts of one family             | Never split Dialog/Sidebar-style parts               |
 | Forms / Filter | `<family>/`                   | Supporting helpers of one catalog surface | Independently titled catalog components              |
 | AI             | `<component>/`                | Internal helpers of that component        | Separate catalog components                          |
+| Diff           | `<family>/`                   | Supporting helpers of one catalog surface | Independently titled catalog components              |
 | Shell          | `app-shell/` under layer root | All `AppShell.*` parts + controllers      | Do not flatten to `shell/*.svelte`                   |
 | Workspace      | `<family>/`                   | Compound visual families                  | Only if a family gains multiple primary story titles |
 

@@ -229,6 +229,8 @@
     "./ai/chat/tokens": "./src/shared/ai/chat.tokens.ts",
     "./ai/experimental": "./src/shared/ai/experimental/index.ts",
     "./ai/chat/experimental": "./src/shared/ai/experimental/index.ts",
+    "./diff": "./src/shared/diff/index.ts",
+    "./diff/tokens": "./src/shared/diff/diff.tokens.ts",
     "./filter": "./src/shared/filter/index.ts",
     "./filter/filter-query": "./src/shared/filter/filter-query/index.ts",
     "./filter/SearchFilterBar.svelte": "./src/shared/filter/search-filter-bar/SearchFilterBar.svelte",

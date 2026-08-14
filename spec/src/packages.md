@@ -15,6 +15,7 @@ The root package manifest defines the supported import boundaries. Family barrel
 | Workspace exports      | Package exports   | DC-PKG-007  |
 | Docs MCP package       | Workspace package | DC-PKG-008  |
 | Versioned package      | npm artifact      | DC-PKG-009  |
+| Diff exports           | Package exports   | DC-PKG-010  |
 
 ## DC-PKG-001 — Root styles and themes
 
@@ -99,3 +100,12 @@ The root package manifest defines the supported import boundaries. Family barrel
 - Colocated development may link a matching Mira sibling through workspace configuration without changing the package manifest.
 - The tarball must contain public source exports and omit repository-only catalogs, example sources, tests, nested package-manager caches, and generated Storybook output.
 - A clean consumer must resolve exported source paths using only declared dependencies and peers.
+
+## DC-PKG-010 — Diff exports
+
+**Requirement.** The Diff exports family MUST resolve the Diff barrel and documented token subpaths.
+
+### Acceptance details
+
+- The export must resolve to tracked source or the documented workspace build output.
+- Package checks must fail when the mapped entry point is stale or missing.

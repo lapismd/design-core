@@ -14,7 +14,7 @@ Design Core is a shared presentation and controller library. Consumer applicatio
 
 ## DC-ARCH-002 — Layer boundaries
 
-**Requirement.** Production code MUST preserve the Shadcn, Forms, Filter, AI, Shell, and Workspace ownership boundaries documented by their public package entry points.
+**Requirement.** Production code MUST preserve the Shadcn, Forms, Filter, AI, Diff, Shell, and Workspace ownership boundaries documented by their public package entry points.
 
 ### Acceptance details
 

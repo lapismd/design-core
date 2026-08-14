@@ -19,6 +19,7 @@
 - [Forms / Examples](forms/examples.md)
 - [Filter](filter.md)
 - [AI](ai.md)
+- [Diff](diff.md)
 - [Shell](shell.md)
 - [Workspace / Framework](workspace/framework.md)
 - [Workspace / Components](workspace/components.md)

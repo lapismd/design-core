@@ -1,6 +1,6 @@
 # Styling and themes
 
-Design Core styling is native CSS driven by semantic tokens. Themes and consumers may customize documented tokens without depending on private DOM selectors.
+Design Core styling is native CSS driven by semantic tokens. Themes and consumers may customize documented tokens without depending on private DOM selectors. Diff surfaces read `--ui-diff-*` defaults from `src/shared/diff/diff.tokens.css`.
 
 ## Public surface coverage
 

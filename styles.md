@@ -31,6 +31,7 @@ and the Storybook Guidance pages.
 | Shadcn family       | `--ui-<family>-*`              | `<family>.tokens.css`                                                 |
 | Forms               | `--ui-form-*`                  | [`form.tokens.css`](./src/shared/forms/form.tokens.css)               |
 | Filter and AI       | `--ui-*` / `--ui-ai-*`         | colocated CSS and token maps                                          |
+| Diff                | `--ui-diff-*`                  | [`diff.tokens.css`](./src/shared/diff/diff.tokens.css)                |
 | Structural shell    | `--ui-shell-*`                 | [`shell.tokens.css`](./src/shared/shell/shell.tokens.css)             |
 | Workspace framework | `--ui-workspace-*`             | [`workspace.tokens.css`](./src/shared/workspace/workspace.tokens.css) |
 

@@ -25,6 +25,7 @@ test("maps every production layer and tooling area to its canonical chapter", ()
     ],
     ["src/shared/filter/filter-query/index.ts", ["spec/src/filter.md"]],
     ["src/shared/ai/message/Message.svelte", ["spec/src/ai.md"]],
+    ["src/shared/diff/file-listing/FileListing.svelte", ["spec/src/diff.md"]],
     ["src/shared/shell/app-shell/AppShellRoot.svelte", ["spec/src/shell.md"]],
     [
       "src/shared/workspace/problems/index.ts",

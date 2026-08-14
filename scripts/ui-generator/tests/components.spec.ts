@@ -25,7 +25,10 @@ describe("ui components", () => {
     expect(layers.has("forms")).toBe(true);
     expect(layers.has("filter")).toBe(true);
     expect(layers.has("ai")).toBe(true);
-    expect(layers).toEqual(new Set(["shadcn", "forms", "filter", "ai"]));
+    expect(layers.has("diff")).toBe(true);
+    expect(layers).toEqual(
+      new Set(["shadcn", "forms", "filter", "ai", "diff"]),
+    );
 
     const searchFilter = list.find((c) => c.key === "filter/search-filter-bar");
     expect(searchFilter).toBeDefined();

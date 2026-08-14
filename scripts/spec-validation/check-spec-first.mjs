@@ -145,6 +145,7 @@ export function chaptersForPath(filePath) {
     return ["spec/src/styling-and-themes.md"];
   if (/^src\/shared\/filter\//.test(normalized)) return ["spec/src/filter.md"];
   if (/^src\/shared\/ai\//.test(normalized)) return ["spec/src/ai.md"];
+  if (/^src\/shared\/diff\//.test(normalized)) return ["spec/src/diff.md"];
   if (/^src\/shared\/shell\//.test(normalized)) return ["spec/src/shell.md"];
   const workspace = /^src\/shared\/workspace\/([^/]+)(?:\/|$)/.exec(normalized);
   if (workspace) {

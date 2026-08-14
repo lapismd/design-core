@@ -106,6 +106,20 @@ network or host-store dependency. Storybook: `AI/...`.
 Import: `@lapismd/design-core/ai`, `@lapismd/design-core/ai/chat`, and
 `@lapismd/design-core/ai/experimental`.
 
+## Shared — Diff
+
+Change-set listing, file comparison, and merge presentation in
+`src/shared/diff/<family>/`. Hosts own VCS, file bytes, and persistence.
+
+- `FileListing` — list, folder tree, and compacted package tree for a change set
+- `FileDiff` — unified or split textual diffs with collapsed context
+- `MergeEditor` — one-way or three-way merge blocks and host-triggered actions
+- `core/` — headless tree, row, and merge models
+
+Import: `@lapismd/design-core/diff`. Catalog: `Diff/...`. Guidance:
+`Diff/Guidance`. Forms `UnifiedReviewDiff` remains the short field-value review
+surface. Workspace Explorer remains vault filesystem chrome.
+
 ## Shared — shell
 
 Bounded application chrome in `src/shared/shell/app-shell/` (layer root holds

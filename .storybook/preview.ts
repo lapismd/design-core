@@ -82,6 +82,7 @@ const preview: Preview = {
             ],
             "Filter",
             "AI",
+            "Diff",
             "Shell",
             "Workspace",
             ["Framework", "Components", "Panels", "Plugins"],

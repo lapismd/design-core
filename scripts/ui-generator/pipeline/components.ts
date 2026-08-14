@@ -10,7 +10,7 @@ import {
   getRecipe,
 } from "../recipes/index.js";
 
-export type ComponentLayer = "shadcn" | "forms" | "filter" | "ai";
+export type ComponentLayer = "shadcn" | "forms" | "filter" | "ai" | "diff";
 
 export type ComponentExample = {
   id: string;
@@ -60,10 +60,11 @@ export type ComponentsOptions = {
   layer?: ComponentLayer;
 };
 
-const LAYERS: ComponentLayer[] = ["shadcn", "forms", "filter", "ai"];
+const LAYERS: ComponentLayer[] = ["shadcn", "forms", "filter", "ai", "diff"];
 
 const FORMS_SKIP_DIRS = new Set(["core"]);
 const FILTER_SKIP_DIRS = new Set(["filter-query"]);
+const DIFF_SKIP_DIRS = new Set(["core"]);
 /** Non-component folders under `src/shared/ai/`. */
 const AI_SKIP_DIRS = new Set(["experimental", "conversation"]);
 
@@ -594,6 +595,42 @@ function collectFilter(packageRoot: string): CatalogEntry[] {
   return entries.sort((a, b) => a.id.localeCompare(b.id));
 }
 
+function collectDiff(packageRoot: string): CatalogEntry[] {
+  const root = path.join(packageRoot, "src", "shared", "diff");
+  if (!existsSync(root)) return [];
+  const entries: CatalogEntry[] = listDirs(root)
+    .filter((id) => !DIFF_SKIP_DIRS.has(id))
+    .map((id) => {
+      const dir = path.join(root, id);
+      const mdx = listFiles(dir, ".mdx");
+      return {
+        layer: "diff" as const,
+        id,
+        dir,
+        importPath: "@lapismd/design-core/diff",
+        docsCandidates: mdx,
+        storyPaths: [
+          ...listFiles(dir, ".stories.svelte"),
+          ...listFiles(dir, ".variations.stories.svelte"),
+        ],
+      };
+    });
+
+  const guidance = path.join(root, "Guidance.mdx");
+  if (existsSync(guidance)) {
+    entries.push({
+      layer: "diff",
+      id: "guidance",
+      dir: root,
+      importPath: "@lapismd/design-core/diff",
+      docsCandidates: [guidance],
+      storyPaths: [],
+    });
+  }
+
+  return entries.sort((a, b) => a.id.localeCompare(b.id));
+}
+
 function collectAi(packageRoot: string): CatalogEntry[] {
   const root = path.join(packageRoot, "src", "shared", "ai");
   if (!existsSync(root)) return [];
@@ -658,6 +695,7 @@ export function collectCatalog(packageRoot: string): CatalogEntry[] {
     ...collectForms(packageRoot),
     ...collectFilter(packageRoot),
     ...collectAi(packageRoot),
+    ...collectDiff(packageRoot),
   ];
 }
 
@@ -687,7 +725,11 @@ function summarizeEntry(
         readFileSync(entry.exampleSourcesPath, "utf8"),
       ).size;
     }
-  } else if (entry.layer === "forms" || entry.layer === "filter") {
+  } else if (
+    entry.layer === "forms" ||
+    entry.layer === "filter" ||
+    entry.layer === "diff"
+  ) {
     const mdx = entry.docsCandidates[0];
     if (mdx) {
       const converted = mdxToAgentMarkdown(readFileSync(mdx, "utf8"));
@@ -1012,7 +1054,11 @@ export function getComponent(
 ): ComponentDoc {
   const entry = findEntry(packageRoot, name, options);
   if (entry.layer === "shadcn") return showShadcn(packageRoot, entry);
-  if (entry.layer === "forms" || entry.layer === "filter") {
+  if (
+    entry.layer === "forms" ||
+    entry.layer === "filter" ||
+    entry.layer === "diff"
+  ) {
     return showForms(packageRoot, entry);
   }
   return showStoryDriven(packageRoot, entry);

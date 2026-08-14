@@ -1,6 +1,6 @@
 # Storybook catalog
 
-Storybook is the interactive catalog and acceptance surface. It documents components but does not supersede canonical specification Markdown.
+Storybook is the interactive catalog and acceptance surface. It documents components but does not supersede canonical specification Markdown. The specification sidebar includes the Diff chapter after AI.
 
 ## Public surface coverage
 

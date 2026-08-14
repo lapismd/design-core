@@ -115,6 +115,7 @@ multipart compound parts into one folder each.
 | Forms     | `src/shared/forms/<family>/`     | One folder per **catalog family/component**. Supporting renderers may colocate with their host.      |
 | Filter    | `src/shared/filter/<family>/`    | One folder per public catalog surface; private helpers stay colocated.                               |
 | AI        | `src/shared/ai/<component>/`     | One folder per catalog component (`experimental/<component>/` for experimental).                     |
+| Diff      | `src/shared/diff/<family>/`      | One folder per public catalog surface; headless models stay in `core/`.                              |
 | Shell     | `src/shared/shell/app-shell/`    | One **compound** family; guidance, tokens, and the package barrel stay at `shell/` layer root.       |
 | Workspace | `src/shared/workspace/<family>/` | One folder per **visual family**; large compounds are intentional (same rationale as shadcn Dialog). |
 

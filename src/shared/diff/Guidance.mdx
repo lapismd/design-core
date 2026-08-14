@@ -1,0 +1,53 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="Diff/Guidance" />
+
+# Diff guidance
+
+Use `@lapismd/design-core/diff` for change-set file lists, unified or split
+file diffs, and one-way or three-way merge editors. Hosts own version-control
+commands, file bytes, persistence, and review policy.
+
+Forms still own short field-value review (`UnifiedReviewDiff`). Workspace
+Explorer still owns vault create, rename, delete, and auto-reveal. Do not
+replace those surfaces with Diff primitives.
+
+Offline agent summary: `pnpm ui guide layers`. Catalog components:
+`pnpm ui components --layer diff`.
+
+## Layer boundary
+
+| Need                                          | Package                                     |
+| --------------------------------------------- | ------------------------------------------- |
+| Change-set list, folder tree, or package tree | `FileListing` (`@lapismd/design-core/diff`) |
+| Unified or split file comparison              | `FileDiff` (`@lapismd/design-core/diff`)    |
+| One-way or three-way merge blocks             | `MergeEditor` (`@lapismd/design-core/diff`) |
+| Short form-field review                       | Forms `UnifiedReviewDiff`                   |
+| Vault filesystem chrome                       | Workspace Explorer                          |
+| git / jj / PR transport                       | Application host                            |
+
+## Choosing a surface
+
+| Need                                           | Use                     |
+| ---------------------------------------------- | ----------------------- |
+| Files in one change, with optional `+/−` stats | **FileListing**         |
+| One or many textual file diffs                 | **FileDiff**            |
+| Accept left/right/base and resolve conflicts   | **MergeEditor**         |
+| A single form value changing in review         | Forms UnifiedReviewDiff |
+
+## Host ownership
+
+Diff components are controlled. The host supplies paths, file texts, selected
+path, and merge sides. Internal state may own disclosure such as collapsed
+directories or collapsed unchanged context. Do not call git or jj from this
+layer.
+
+Line comments, terminal send, and pull-request authors stay in the host. File
+Diff exposes `data-diff-line-*` attributes and a `lineAccessory` snippet so
+hosts can attach those accessories later.
+
+## Stories
+
+- **Diff/File Listing** — list, folder tree, and package tree
+- **Diff/File Diff** — unified, split, collapse, and multi-file stack
+- **Diff/Merge Editor** — one-way and three-way conflict resolution

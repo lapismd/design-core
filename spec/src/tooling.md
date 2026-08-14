@@ -1,6 +1,6 @@
 # Tooling
 
-Repository tools keep source generation, discovery, documentation, and validation reproducible for humans and agents.
+Repository tools keep source generation, discovery, documentation, and validation reproducible for humans and agents. The catalog CLI lists Diff families beside shadcn, forms, filter, and AI.
 
 ## Public surface coverage
 

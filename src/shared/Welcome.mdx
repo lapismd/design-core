@@ -5,7 +5,8 @@ import { Meta } from "@storybook/addon-docs/blocks";
 # `@lapismd/design-core`
 
 Shared Storybook catalog for shadcn primitives, structured forms, filter
-controls, AI presentation, structural shells, and workspace surfaces.
+controls, AI presentation, Diff surfaces, structural shells, and workspace
+surfaces.
 
 Agent conventions: run `pnpm ui guide` from the package root (JSON:
 `pnpm ui guide <topic> --json`). Decision pages: **Shadcn/Guidance**,
@@ -17,11 +18,13 @@ Agent conventions: run `pnpm ui guide` from the package root (JSON:
 2. **Forms** — config-driven form engine and field controls under `src/shared/forms`
 3. **Filter** — search chrome and filter-query language under `src/shared/filter`
 4. **AI** — reusable assistant presentation under `src/shared/ai`
-5. **Shell** — bounded app chrome, fixed regions, section Scroll Areas, independently controlled same-side nesting, transient sidebar previews, and persistable collapsible/closeable/resizable sidebar state under `src/shared/shell`
-6. **Workspace** — tabs, splits, views, and application framework under `src/shared/workspace`
+5. **Diff** — change-set listing, file diffs, and merge editors under `src/shared/diff`
+6. **Shell** — bounded app chrome, fixed regions, section Scroll Areas, independently controlled same-side nesting, transient sidebar previews, and persistable collapsible/closeable/resizable sidebar state under `src/shared/shell`
+7. **Workspace** — tabs, splits, views, and application framework under `src/shared/workspace`
 
 Import shared primitives from `@lapismd/design-core/shadcn/<family>`, forms from
-`@lapismd/design-core/forms`, search/filter from `@lapismd/design-core/filter`, and AI
-presentation from `@lapismd/design-core/ai`. Use `@lapismd/design-core/shell` for structural
+`@lapismd/design-core/forms`, search/filter from `@lapismd/design-core/filter`, AI
+presentation from `@lapismd/design-core/ai`, and Diff surfaces from
+`@lapismd/design-core/diff`. Use `@lapismd/design-core/shell` for structural
 application chrome and `@lapismd/design-core/workspace` for the full workspace
 framework.

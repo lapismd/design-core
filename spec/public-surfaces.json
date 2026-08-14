@@ -25,6 +25,14 @@
       "requirement": "DC-PKG-004"
     },
     {
+      "name": "./diff",
+      "requirement": "DC-PKG-010"
+    },
+    {
+      "name": "./diff/tokens",
+      "requirement": "DC-PKG-010"
+    },
+    {
       "name": "./filter",
       "requirement": "DC-PKG-005"
     },
@@ -465,6 +473,10 @@
     {
       "name": "AI/Overview",
       "requirement": "DC-AI-023"
+    },
+    {
+      "name": "Diff/Guidance",
+      "requirement": "DC-DIFF-005"
     },
     {
       "name": "Filter/Guidance",

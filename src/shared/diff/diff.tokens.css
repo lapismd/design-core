@@ -1,0 +1,49 @@
+/**
+ * Default Diff token bindings → theme tokens.
+ * Theme via `--ui-diff-*`.
+ */
+:root,
+.ui-diff {
+  --ui-diff-added-background: color-mix(
+    in srgb,
+    var(--chart-2, oklch(0.7 0.15 145)) 16%,
+    transparent
+  );
+  --ui-diff-added-foreground: var(--foreground);
+  --ui-diff-removed-background: color-mix(
+    in srgb,
+    var(--destructive) 14%,
+    transparent
+  );
+  --ui-diff-removed-foreground: var(--foreground);
+  --ui-diff-modified-background: color-mix(
+    in srgb,
+    var(--chart-4, oklch(0.75 0.12 80)) 16%,
+    transparent
+  );
+  --ui-diff-conflict-background: color-mix(
+    in srgb,
+    var(--destructive) 22%,
+    transparent
+  );
+  --ui-diff-resolved-background: color-mix(
+    in srgb,
+    var(--chart-2, oklch(0.7 0.15 145)) 10%,
+    transparent
+  );
+  --ui-diff-segment-added: color-mix(
+    in srgb,
+    var(--chart-2, oklch(0.7 0.15 145)) 36%,
+    transparent
+  );
+  --ui-diff-segment-removed: color-mix(
+    in srgb,
+    var(--destructive) 32%,
+    transparent
+  );
+  --ui-diff-gutter: var(--muted-foreground);
+  --ui-diff-mono: var(--font-mono, ui-monospace, monospace);
+  --ui-diff-row-hover: color-mix(in srgb, var(--muted) 40%, transparent);
+  --ui-diff-selected: color-mix(in srgb, var(--primary) 12%, transparent);
+  --ui-diff-border: var(--border);
+}
