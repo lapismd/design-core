@@ -1,5 +1,6 @@
 export { default as MergeEditor } from "./MergeEditor.svelte";
 export { mergeDemoFixtures, type MergeDemoFixture } from "./demo-fixtures.js";
+export { mismergeQuicksortFixture } from "./mismerge-quicksort-fixture.js";
 export { quicksortFixture } from "./quicksort-fixture.js";
 export type {
   MergeEditorMode,

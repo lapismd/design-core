@@ -431,15 +431,39 @@ test("drops a unique center line under default VCS ancestor semantics", () => {
   assert.equal(serializeMergeCenter(model), "hello\n");
 });
 
-test("still auto-takes a one-sided addition when treating base as a working copy", () => {
+test("keeps a one-sided addition out of center when treating base as a working copy", () => {
   const model = assembleThreeWayMerge("1\n2\n3\n4", "1\n2\n3", "1\n2\n3", {
     workingCopyCenter: true,
   });
   assert.deepEqual(
     model.blocks.map((block) => block.kind),
-    ["unchanged", "modified"],
+    ["unchanged", "removed"],
   );
-  assert.equal(serializeMergeCenter(model), "1\n2\n3\n4");
+  assert.equal(serializeMergeCenter(model), "1\n2\n3");
+});
+
+test("offers merge on a working-copy side-only removed hunk", () => {
+  const model = assembleThreeWayMerge("1\n2\n3\n4", "1\n2\n3", "1\n2\n3", {
+    workingCopyCenter: true,
+  });
+  const removed = model.blocks.find((block) => block.kind === "removed");
+  assert.ok(removed);
+  const left = renderComponent(model, "left", removed.id);
+  assert.equal(left.visualKind, "removed");
+  assert.equal(left.action?.kind, "merge");
+});
+
+test("merging a working-copy side-only hunk inserts it into center", () => {
+  const model = assembleThreeWayMerge("1\n2\n3\n4", "1\n2\n3", "1\n2\n3", {
+    workingCopyCenter: true,
+  });
+  const removed = model.blocks.find((block) => block.kind === "removed");
+  assert.ok(removed);
+  const merged = mergeRenderComponentIntoCenter(
+    model,
+    renderComponent(model, "left", removed.id),
+  );
+  assert.equal(serializeMergeCenter(merged), "1\n2\n3\n4");
 });
 
 test("marks a shared line deleted from center as removed when treating base as a working copy", () => {
@@ -675,7 +699,7 @@ test("deleting a picked modified source flips its action back to merge", () => {
   assert.equal(rightAfterDelete.action?.kind, "merge");
 });
 
-test("merging a left-side conflict change replaces center content", () => {
+test("merging a left-side conflict change inserts it above center content", () => {
   const model = assembleThreeWayMerge(
     "left change\n",
     "center change\n",
@@ -687,10 +711,10 @@ test("merging a left-side conflict change replaces center content", () => {
 
   const merged = mergeRenderComponentIntoCenter(model, left);
 
-  assert.equal(serializeMergeCenter(merged), "left change\n");
+  assert.equal(serializeMergeCenter(merged), "left change\ncenter change\n");
 });
 
-test("merging a right-side conflict change replaces center content", () => {
+test("merging a right-side conflict change inserts it below center content", () => {
   const model = assembleThreeWayMerge(
     "left change\n",
     "center change\n",
@@ -702,7 +726,7 @@ test("merging a right-side conflict change replaces center content", () => {
 
   const merged = mergeRenderComponentIntoCenter(model, right);
 
-  assert.equal(serializeMergeCenter(merged), "right change\n");
+  assert.equal(serializeMergeCenter(merged), "center change\nright change\n");
 });
 
 test("merging both conflict sides stacks left then right in center content", () => {
@@ -726,7 +750,7 @@ test("merging both conflict sides stacks left then right in center content", () 
 
   assert.equal(
     serializeMergeCenter(withRightMerged),
-    "left change\nright change\n",
+    "left change\ncenter change\nright change\n",
   );
 });
 
@@ -751,7 +775,7 @@ test("merging both conflict sides from right first still stacks left then right 
 
   assert.equal(
     serializeMergeCenter(withLeftMerged),
-    "left change\nright change\n",
+    "left change\ncenter change\nright change\n",
   );
 });
 
@@ -802,7 +826,7 @@ test("removing one side from stacked conflict content keeps the other selected s
 
   const removed = deleteMergedRenderComponentFromCenter(withBothMerged, right);
 
-  assert.equal(serializeMergeCenter(removed), "left change\n");
+  assert.equal(serializeMergeCenter(removed), "left change\ncenter change\n");
   assert.equal(
     renderComponent(removed, "right", conflict.id).action?.kind,
     "merge",

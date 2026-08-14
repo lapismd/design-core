@@ -88,6 +88,19 @@ function sideLinesForRange(
   return [...change.lines];
 }
 
+function workingCopyHunkKind(
+  centerLines: readonly string[],
+  sideLines: readonly string[],
+): MergeBlockKind {
+  if (centerLines.length === 0 && sideLines.length > 0) {
+    return "removed";
+  }
+  if (centerLines.length > 0 && sideLines.length === 0) {
+    return "added";
+  }
+  return "modified";
+}
+
 function createThreeWayChangeBlock(
   blocks: MergeBlock[],
   baseLines: readonly string[],
@@ -120,9 +133,17 @@ function createThreeWayChangeBlock(
   let kind: MergeBlockKind = "modified";
   let resolved = true;
   if (leftChanged && !rightChanged) {
-    centerLines = leftResolvedLines;
+    if (options.workingCopyCenter) {
+      kind = workingCopyHunkKind(originalBaseLines, leftResolvedLines);
+    } else {
+      centerLines = leftResolvedLines;
+    }
   } else if (rightChanged && !leftChanged) {
-    centerLines = rightResolvedLines;
+    if (options.workingCopyCenter) {
+      kind = workingCopyHunkKind(originalBaseLines, rightResolvedLines);
+    } else {
+      centerLines = rightResolvedLines;
+    }
   } else if (
     leftChanged &&
     rightChanged &&
@@ -132,14 +153,7 @@ function createThreeWayChangeBlock(
       options.workingCopyCenter &&
       !linesEqual(originalBaseLines, leftResolvedLines, options)
     ) {
-      centerLines = originalBaseLines;
-      if (originalBaseLines.length === 0) {
-        kind = "removed";
-      } else if (leftResolvedLines.length === 0) {
-        kind = "added";
-      } else {
-        kind = "modified";
-      }
+      kind = workingCopyHunkKind(originalBaseLines, leftResolvedLines);
     } else {
       centerLines = leftResolvedLines;
     }

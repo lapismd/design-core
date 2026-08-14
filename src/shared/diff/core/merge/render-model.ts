@@ -77,7 +77,7 @@ function endsWithSequence(
   return sequence.every((line, index) => lines[offset + index] === line);
 }
 
-function hasMergedIntoCenter(block: MergeBlock, side: MergeSide): boolean {
+function isSequenceMerged(block: MergeBlock, side: MergeSide): boolean {
   if (side === "base") {
     return false;
   }
@@ -91,9 +91,36 @@ function hasMergedIntoCenter(block: MergeBlock, side: MergeSide): boolean {
     : endsWithSequence(centerLines, sourceLines);
 }
 
-function centerIncludesMergedChange(block: MergeBlock): boolean {
+function hasMergedIntoCenter(
+  block: MergeBlock,
+  side: MergeSide,
+  workingCopyCenter = false,
+): boolean {
+  if (!isSequenceMerged(block, side)) {
+    return false;
+  }
+  if (!workingCopyCenter) {
+    return true;
+  }
+  const sourceLines = lineTexts(block, side);
+  const centerLines = lineTexts(block, "base");
+  if (
+    sourceLines.length !== centerLines.length ||
+    sourceLines.some((line, index) => line !== centerLines[index])
+  ) {
+    return true;
+  }
+  const other = oppositeSide(side);
+  return other !== null && isSequenceMerged(block, other);
+}
+
+function centerIncludesMergedChange(
+  block: MergeBlock,
+  workingCopyCenter = false,
+): boolean {
   return (
-    hasMergedIntoCenter(block, "left") || hasMergedIntoCenter(block, "right")
+    hasMergedIntoCenter(block, "left", workingCopyCenter) ||
+    hasMergedIntoCenter(block, "right", workingCopyCenter)
   );
 }
 
@@ -111,6 +138,7 @@ function visualKindFor(
   block: MergeBlock,
   side: MergeSide,
   placeholder: boolean,
+  workingCopyCenter = false,
 ): RenderVisualKind {
   if (block.kind === "unchanged") {
     return "unchanged";
@@ -119,20 +147,31 @@ function visualKindFor(
     if (block.resolved) {
       return "resolved";
     }
-    if (side !== "base" && hasMergedIntoCenter(block, side)) {
+    if (
+      side !== "base" &&
+      hasMergedIntoCenter(block, side, workingCopyCenter)
+    ) {
       return "added";
     }
     return "conflict";
   }
   if (block.kind === "modified") {
     if (side === "base") {
-      return centerIncludesMergedChange(block) ? "added" : "modified";
+      return centerIncludesMergedChange(block, workingCopyCenter)
+        ? "added"
+        : "modified";
     }
-    if (hasMergedIntoCenter(block, side)) {
+    if (hasMergedIntoCenter(block, side, workingCopyCenter)) {
       return "added";
     }
-    if (centerIncludesMergedChange(block)) {
+    if (centerIncludesMergedChange(block, workingCopyCenter)) {
       return "removed";
+    }
+    if (
+      workingCopyCenter &&
+      lineTexts(block, side).join("\n") === lineTexts(block, "base").join("\n")
+    ) {
+      return "unchanged";
     }
     return "modified";
   }
@@ -201,18 +240,17 @@ export function mergeRenderComponentIntoCenter(
   if (hasMergedIntoCenter(block, component.side)) {
     return model;
   }
-  const otherSide = oppositeSide(component.side);
-  const otherSideIsMerged = otherSide
-    ? hasMergedIntoCenter(block, otherSide)
-    : false;
-  if (!otherSideIsMerged) {
-    return updateBlockCenterLines(model, block.id, sourceLines);
-  }
   if (component.side === "left") {
+    if (startsWithSequence(centerLines, sourceLines)) {
+      return model;
+    }
     return updateBlockCenterLines(model, block.id, [
       ...sourceLines,
       ...centerLines,
     ]);
+  }
+  if (endsWithSequence(centerLines, sourceLines)) {
+    return model;
   }
   return updateBlockCenterLines(model, block.id, [
     ...centerLines,
@@ -287,6 +325,7 @@ function actionFor(
   side: MergeSide,
   visualKind: RenderVisualKind,
   mode: MergeModel["mode"],
+  workingCopyCenter = false,
 ): RenderAction | undefined {
   if (block.kind === "unchanged") {
     return undefined;
@@ -310,6 +349,18 @@ function actionFor(
     }
     return undefined;
   }
+  if (block.kind === "removed") {
+    if (lineTexts(block, side).length === 0) {
+      return undefined;
+    }
+    return {
+      kind: hasMergedIntoCenter(block, side, workingCopyCenter)
+        ? "delete"
+        : "merge",
+      side,
+      blockId: block.id,
+    };
+  }
   if (block.kind !== "modified" && block.kind !== "conflict") {
     return undefined;
   }
@@ -317,7 +368,9 @@ function actionFor(
     return undefined;
   }
   return {
-    kind: hasMergedIntoCenter(block, side) ? "delete" : "merge",
+    kind: hasMergedIntoCenter(block, side, workingCopyCenter)
+      ? "delete"
+      : "merge",
     side,
     blockId: block.id,
   };
@@ -368,12 +421,18 @@ export function createMergeRenderModel(
   const leftConnections: RenderConnection[] = [];
   const rightConnections: RenderConnection[] = [];
 
+  const workingCopyCenter = model.options.workingCopyCenter;
   for (const block of model.blocks) {
     const blockComponents = new Map<MergeSide, RenderComponent>();
     for (const side of sides) {
       const lines = block.sides[side] ?? [];
       const placeholder = lines.length === 0 && block.kind !== "unchanged";
-      const visualKind = visualKindFor(block, side, placeholder);
+      const visualKind = visualKindFor(
+        block,
+        side,
+        placeholder,
+        workingCopyCenter,
+      );
       const component: RenderComponent = {
         id: `${block.id}:${side}`,
         blockId: block.id,
@@ -387,8 +446,14 @@ export function createMergeRenderModel(
         acceptedInCenter:
           side === "base" &&
           block.kind === "modified" &&
-          centerIncludesMergedChange(block),
-        action: actionFor(block, side, visualKind, model.mode),
+          centerIncludesMergedChange(block, workingCopyCenter),
+        action: actionFor(
+          block,
+          side,
+          visualKind,
+          model.mode,
+          workingCopyCenter,
+        ),
       };
       renderSides[side].push(component);
       blockComponents.set(side, component);

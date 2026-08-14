@@ -6,11 +6,13 @@
     Demo,
     Editable,
     MatchingSides,
+    MismergeQuicksort,
     OneWayEditable,
     Quicksort,
   } from "./MergeEditor.example-sources.js";
   import MergeEditor from "./MergeEditor.svelte";
   import MergeEditorDemo from "./MergeEditorDemo.svelte";
+  import { mismergeQuicksortFixture } from "./mismerge-quicksort-fixture.js";
   import { quicksortFixture } from "./quicksort-fixture.js";
   import type { MergeResolvedChange } from "./types.js";
 
@@ -236,7 +238,7 @@
     await userEvent.clear(field);
     await userEvent.type(field, "hello{Enter}unique left line");
     await expect(field).toHaveValue("hello\nunique left line");
-    await expect(canvas.getByText("1 modified")).toBeVisible();
+    await expect(canvas.getByText("1 removed")).toBeVisible();
     await expect(
       editor?.querySelectorAll(
         "[data-ui-part='merge-component'][data-visual-kind='unchanged']",
@@ -293,6 +295,95 @@
         editable
         left={"hello\n"}
         right={"hello\n"}
+      />
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Adds and rejects a side-only change"
+  parameters={{
+    docs: { source: { code: MatchingSides, language: "tsx", type: "code" } },
+  }}
+  play={async ({ canvas }) => {
+    const editor = canvas
+      .getByLabelText("Left")
+      .closest("[data-ui-component='merge-editor']");
+    await expect(canvas.getByText("1 removed")).toBeVisible();
+    await userEvent.click(canvas.getByRole("button", { name: "Merge Left" }));
+    await expect(canvas.getByText("1 added")).toBeVisible();
+    await expect(canvas.getByLabelText("Edit Resolved")).toHaveValue(
+      "hello\nunique left line\n",
+    );
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Delete merged content" }),
+    );
+    await expect(canvas.getByText("1 removed")).toBeVisible();
+    await expect(canvas.getByLabelText("Edit Resolved")).toHaveValue("hello\n");
+    await expect(
+      editor?.querySelector(
+        '[data-merge-side="left"] [data-action-kind="merge"]',
+      ),
+    ).not.toBeNull();
+  }}
+  tags={["visual-pending"]}
+>
+  {#snippet template()}
+    <div class="max-w-5xl p-4">
+      <MergeEditor
+        mode="three-way"
+        path="src/hello.ts"
+        editable
+        left={"hello\nunique left line\n"}
+        base={"hello\n"}
+        right={"hello\n"}
+      />
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Recreates the MisMerge quicksort example"
+  parameters={{
+    docs: {
+      source: { code: MismergeQuicksort, language: "tsx", type: "code" },
+    },
+  }}
+  play={async ({ canvas }) => {
+    const editor = canvas
+      .getByLabelText("Left")
+      .closest("[data-ui-component='merge-editor']");
+    await expect(editor).toHaveAttribute("data-path", "quicksort.c");
+    await expect(canvas.getByText("1 added")).toBeVisible();
+    await expect(canvas.getByText("1 removed")).toBeVisible();
+    await expect(canvas.getByText("1 modified")).toBeVisible();
+    await expect(canvas.getByText("1 conflict")).toBeVisible();
+    await expect(
+      editor?.querySelector(
+        '[data-merge-side="left"] [data-action-kind="merge"]',
+      ),
+    ).not.toBeNull();
+    await expect(
+      editor?.querySelector(
+        '[data-merge-side="base"] [data-action-kind="delete"]',
+      ),
+    ).not.toBeNull();
+  }}
+  tags={["visual-pending"]}
+>
+  {#snippet template()}
+    <div class="max-w-6xl p-4">
+      <MergeEditor
+        mode="three-way"
+        editable
+        path={mismergeQuicksortFixture.path}
+        language={mismergeQuicksortFixture.language}
+        left={mismergeQuicksortFixture.left}
+        base={mismergeQuicksortFixture.base}
+        right={mismergeQuicksortFixture.right}
+        leftLabel={mismergeQuicksortFixture.leftLabel}
+        baseLabel={mismergeQuicksortFixture.baseLabel}
+        rightLabel={mismergeQuicksortFixture.rightLabel}
       />
     </div>
   {/snippet}

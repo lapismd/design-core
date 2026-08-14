@@ -69,6 +69,23 @@ export const OneWayEditable = `<script lang="ts">
   right={"hello\\n"}
 />`;
 
+export const MismergeQuicksort = `<script lang="ts">
+  import { MergeEditor, mismergeQuicksortFixture } from "@lapismd/design-core/diff";
+</script>
+
+<MergeEditor
+  mode="three-way"
+  editable
+  path={mismergeQuicksortFixture.path}
+  language="c"
+  left={mismergeQuicksortFixture.left}
+  base={mismergeQuicksortFixture.base}
+  right={mismergeQuicksortFixture.right}
+  leftLabel={mismergeQuicksortFixture.leftLabel}
+  baseLabel={mismergeQuicksortFixture.baseLabel}
+  rightLabel={mismergeQuicksortFixture.rightLabel}
+/>`;
+
 export const Quicksort = `<script lang="ts">
   import { MergeEditor, quicksortFixture } from "@lapismd/design-core/diff";
 </script>

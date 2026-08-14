@@ -22,6 +22,7 @@ export {
 export {
   MergeEditor,
   mergeDemoFixtures,
+  mismergeQuicksortFixture,
   quicksortFixture,
   type MergeDemoFixture,
   type MergeEditorMode,

@@ -1,3 +1,5 @@
+import { mismergeQuicksortFixture } from "./mismerge-quicksort-fixture.js";
+
 export type MergeDemoFixture = {
   id: string;
   label: string;
@@ -12,6 +14,18 @@ export type MergeDemoFixture = {
 };
 
 export const mergeDemoFixtures: MergeDemoFixture[] = [
+  {
+    id: "mismerge-quicksort",
+    label: "MisMerge quicksort",
+    path: mismergeQuicksortFixture.path,
+    language: mismergeQuicksortFixture.language,
+    leftLabel: mismergeQuicksortFixture.leftLabel,
+    baseLabel: "Base",
+    rightLabel: mismergeQuicksortFixture.rightLabel,
+    left: mismergeQuicksortFixture.left,
+    base: mismergeQuicksortFixture.base,
+    right: mismergeQuicksortFixture.right,
+  },
   {
     id: "quicksort-c",
     label: "Quicksort C",

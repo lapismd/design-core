@@ -6,7 +6,7 @@
   import "./MergeEditorDemo.css";
 
   let {
-    fixtureId = $bindable("quicksort-c"),
+    fixtureId = $bindable("mismerge-quicksort"),
     mode = $bindable<MergeEditorMode>("three-way"),
     editable = $bindable(true),
     ignoreWhitespace = $bindable(false),

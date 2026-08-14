@@ -265,24 +265,29 @@
     return source.base;
   }
 
+  function applyCenterDraft(next: MergeModel) {
+    const nextBase = serializeMergeCenter(next);
+    writeDraft({ base: nextBase });
+    onBaseChange?.(nextBase);
+  }
+
   function applyComponentAction(component: RenderComponent) {
     if (readOnly || !component.action) return;
     if (component.action.kind === "merge") {
-      commit(mergeRenderComponentIntoCenter(model, component));
+      applyCenterDraft(mergeRenderComponentIntoCenter(model, component));
       return;
     }
     if (component.action.kind === "delete") {
       if (component.side === "base") {
-        const next = applyMergeAction(model, {
-          type: "delete-merged-content",
-          blockId: component.blockId,
-        });
-        const nextBase = serializeMergeCenter(next);
-        writeDraft({ base: nextBase });
-        onBaseChange?.(nextBase);
+        applyCenterDraft(
+          applyMergeAction(model, {
+            type: "delete-merged-content",
+            blockId: component.blockId,
+          }),
+        );
         return;
       }
-      commit(deleteMergedRenderComponentFromCenter(model, component));
+      applyCenterDraft(deleteMergedRenderComponentFromCenter(model, component));
       return;
     }
     commit(
