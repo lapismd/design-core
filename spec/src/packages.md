@@ -97,5 +97,5 @@ The root package manifest defines the supported import boundaries. Family barrel
 ### Acceptance details
 
 - Colocated development may link a matching Mira sibling through workspace configuration without changing the package manifest.
-- The tarball must contain public source exports and omit repository-only catalogs, tests, caches, and generated Storybook output.
+- The tarball must contain public source exports and omit repository-only catalogs, example sources, tests, nested package-manager caches, and generated Storybook output.
 - A clean consumer must resolve exported source paths using only declared dependencies and peers.

@@ -14,6 +14,8 @@
     "!src/**/*.spec.*",
     "!src/**/*.test.*",
     "!src/**/*.mdx",
+    "!src/**/*.example-sources.*",
+    "!src/**/.npm/**",
     "!src/spec/**",
     "README.md",
     "styles.md"

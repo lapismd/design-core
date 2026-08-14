@@ -57,5 +57,6 @@ Design Core is a shared presentation and controller library. Consumer applicatio
 ### Acceptance details
 
 - The package manifest must remain registry-installable when sibling repositories are absent.
+- The published boundary must omit repository-local caches and catalog-only examples so external installs reproduce only public runtime source.
 - Colocated workspace linking may select a matching local version without changing the published dependency range.
 - Consumers remain responsible for application plugin lifecycle and policy.
