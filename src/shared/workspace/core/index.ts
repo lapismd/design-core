@@ -6,6 +6,7 @@ export * from "./command-manager.svelte.js";
 export * from "./editor-view-registry.js";
 export * from "./event-dispatcher.js";
 export * from "./layout.js";
+export * from "./managed-plugin-settings.svelte.js";
 export * from "./notice-manager.svelte.js";
 export * from "./notification-manager.svelte.js";
 export * from "./persistence.js";

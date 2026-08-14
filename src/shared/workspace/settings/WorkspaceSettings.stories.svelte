@@ -299,6 +299,23 @@
   const interactionApp = createSettingsApp();
   const searchInteractionApp = createSettingsApp();
   const compoundApp = createSettingsApp();
+  compoundApp.managedPlugins.registerSource({
+    id: "first-party",
+    getEntries: () => [
+      {
+        id: "roles",
+        name: "CV Roles",
+        description: "Role tracking and CV workflows maintained by Lapis.",
+        icon: "briefcase-business",
+        required: false,
+        enabled: true,
+        status: "enabled",
+        distribution: "first-party-external",
+      },
+    ],
+    enable: async () => true,
+    disable: async () => true,
+  });
   const allControls = new WorkspaceSettingsController({
     sections: allControlSections,
     navigationGroups: [
@@ -750,11 +767,21 @@
       canvas.getByRole("heading", { name: "Core plugins" }),
     ).toBeVisible();
     await expect(
+      canvas.getByRole("heading", { name: "Included plugins" }),
+    ).toBeVisible();
+    await expect(
+      canvas.getByRole("heading", { name: "First-party plugins" }),
+    ).toBeVisible();
+    await expect(
       canvas.getByRole("switch", { name: "Enable Workspace" }),
     ).toBeDisabled();
     await expect(
       canvas.getByRole("switch", { name: "Enable Backlinks" }),
     ).toBeChecked();
+    await expect(
+      canvas.getByRole("switch", { name: "Enable CV Roles" }),
+    ).toBeChecked();
+    await expect(canvas.getByText("Required")).toBeVisible();
   }}
   parameters={{
     visualDelta: {

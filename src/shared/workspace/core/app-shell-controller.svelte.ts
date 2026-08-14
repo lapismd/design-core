@@ -21,6 +21,10 @@ import {
   type AppShellPluginState,
   type PluginEnablementPersistence,
 } from "./plugin-manager.svelte.js";
+import {
+  createAppShellManagedPluginSource,
+  ManagedPluginSettingsRegistry,
+} from "./managed-plugin-settings.svelte.js";
 import { NoticeManager } from "./notice-manager.svelte.js";
 import {
   NotificationManager,
@@ -144,6 +148,8 @@ export class AppShellController {
   readonly commandPalette: CommandManager;
   readonly keymap: CommandKeymapScope;
   readonly plugins: AppShellPluginManager;
+  /** Presentation registry for shell and consumer-owned managed plugins. */
+  readonly managedPlugins: ManagedPluginSettingsRegistry;
   readonly notifications: NotificationManager;
   /** Ephemeral, owner-isolated diagnostics published by the shell and plugins. */
   readonly diagnostics: WorkspaceDiagnosticsManager;
@@ -366,6 +372,13 @@ export class AppShellController {
       this,
       options.plugins ?? [],
       options.persistence?.plugins,
+    );
+    this.managedPlugins = new ManagedPluginSettingsRegistry();
+    this.#workspaceDisposers.push(
+      this.managedPlugins.registerSource(
+        createAppShellManagedPluginSource(this.plugins),
+      ),
+      () => this.managedPlugins.dispose(),
     );
     const pluginErrorRef = this.plugins.on("error", (state) => {
       this.#events.trigger("plugin-error", state);

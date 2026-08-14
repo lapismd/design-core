@@ -31,6 +31,7 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 | Workspace Tabs  | `@lapismd/design-core/workspace/tabs`            | DC-WS-030   |
 | Workspace Tree  | `@lapismd/design-core/workspace/tree`            | DC-WS-031   |
 | View Header     | `@lapismd/design-core/workspace/view-header`     | DC-WS-032   |
+| Managed plugins | `@lapismd/design-core/workspace`                 | DC-WS-039   |
 
 ## DC-WS-008 — About Dialog
 
@@ -265,3 +266,13 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 - `WorkspaceViewChrome` MAY contribute a structured badge value and accessible label without templating presentation into its title string.
 - Workspace leaf labels MUST render contributed badges through the shared Badge component while retaining the plain title as their stable identity.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+
+## DC-WS-039 — Managed plugin settings
+
+**Requirement.** The managed plugin settings family MUST merge presentation state from independently owned lifecycle sources without owning application plugin policy.
+
+### Acceptance details
+
+- Sources must supply stable identities, distribution, lifecycle status, errors, and enable or disable callbacks.
+- Included and first-party plugins must render in separate groups with required and busy states.
+- Source lifecycle notifications must refresh the settings presentation without polling.

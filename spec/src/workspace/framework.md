@@ -14,6 +14,7 @@ Workspace framework contracts coordinate reusable layout and state through expli
 | Workspace View Host         | `@lapismd/design-core/workspace/view-host` | DC-WS-006   |
 | Workspace Guidance          | Documentation surface                      | DC-WS-007   |
 | Workspace navigation        | `@lapismd/design-core/workspace/app-shell` | DC-WS-038   |
+| Managed plugin registry     | `@lapismd/design-core/workspace/core`      | DC-WS-040   |
 
 ## DC-WS-001 — Shared Workspace invariants
 
@@ -92,3 +93,13 @@ Workspace framework contracts coordinate reusable layout and state through expli
 - The public contract supplies the current label, recent options, disabled state, descriptions, and selection and management callbacks.
 - The desktop sidebar MUST render an accessible menu with current, empty, recent, and management states.
 - Without an actionable navigation contract, the workspace label MUST remain non-interactive.
+
+## DC-WS-040 — Managed plugin registry
+
+**Requirement.** The managed plugin registry MUST combine lifecycle sources through source-qualified identities and delegate enablement without owning application policy or persistence.
+
+### Acceptance details
+
+- Duplicate source identities must be rejected and removed sources must unsubscribe from lifecycle notifications.
+- Required entries must reject disablement before calling their owning source.
+- The built-in shell plugin manager must participate through the same public source contract as consumer managers.
