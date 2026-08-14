@@ -4,6 +4,7 @@ export const DEFAULT_OPTIONS: Required<MergeOptions> = {
   ignoreWhitespace: false,
   ignoreCase: false,
   lineDiffAlgorithm: "words_with_space",
+  workingCopyCenter: false,
 };
 
 export function normalizeOptions(

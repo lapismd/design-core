@@ -44,6 +44,31 @@ export const Editable = `<script lang="ts">
   }}
 />`;
 
+export const MatchingSides = `<script lang="ts">
+  import { MergeEditor } from "@lapismd/design-core/diff";
+</script>
+
+<MergeEditor
+  mode="three-way"
+  path="src/hello.ts"
+  editable
+  left={"hello\\n"}
+  base={"hello\\n"}
+  right={"hello\\n"}
+/>`;
+
+export const OneWayEditable = `<script lang="ts">
+  import { MergeEditor } from "@lapismd/design-core/diff";
+</script>
+
+<MergeEditor
+  mode="one-way"
+  path="src/hello.ts"
+  editable
+  left={"hello\\n"}
+  right={"hello\\n"}
+/>`;
+
 export const Quicksort = `<script lang="ts">
   import { MergeEditor, quicksortFixture } from "@lapismd/design-core/diff";
 </script>

@@ -12,6 +12,11 @@ export interface MergeOptions {
   ignoreWhitespace?: boolean;
   ignoreCase?: boolean;
   lineDiffAlgorithm?: LineDiffAlgorithm;
+  /**
+   * Treat `base` as a working copy rather than a VCS ancestor.
+   * Shared side deletions keep unique center lines as added hunks.
+   */
+  workingCopyCenter?: boolean;
 }
 
 export interface MergeLinePart {

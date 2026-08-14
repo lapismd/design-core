@@ -302,9 +302,13 @@ function actionFor(
     return { kind: "merge", side, blockId: block.id };
   }
   if (side === "base") {
-    return block.kind === "conflict"
-      ? { kind: "resolve", side, blockId: block.id }
-      : undefined;
+    if (block.kind === "conflict") {
+      return { kind: "resolve", side, blockId: block.id };
+    }
+    if (block.kind === "added") {
+      return { kind: "delete", side, blockId: block.id };
+    }
+    return undefined;
   }
   if (block.kind !== "modified" && block.kind !== "conflict") {
     return undefined;

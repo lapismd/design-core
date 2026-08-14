@@ -74,7 +74,11 @@
     onResolvedChange?: (state: MergeResolvedChange) => void;
   } = $props();
 
-  const mergeOptions = $derived({ ignoreWhitespace, ignoreCase });
+  const mergeOptions = $derived({
+    ignoreWhitespace,
+    ignoreCase,
+    workingCopyCenter: true,
+  });
   const inputKey = $derived(
     `${mode}\0${left}\0${base}\0${right}\0${ignoreWhitespace}\0${ignoreCase}`,
   );
@@ -236,28 +240,23 @@
     onBaseChange?.(nextBase);
   }
 
-  function editSide(side: MergeSide, content: string) {
-    const editsResolvedPane =
-      side === "base" || (mode === "one-way" && side === "right");
-    if (editsResolvedPane) {
-      commit(applyMergeAction(model, { type: "edit-center", content }));
-      if (side === "right" && draft) {
-        draft = { ...draft, right: content };
-        onRightChange?.(content);
-      }
-      return;
-    }
-    const next = {
+  function writeDraft(
+    next: Partial<{ left: string; base: string; right: string }>,
+  ) {
+    draft = {
       key: inputKey,
-      left: source.left,
-      base: source.base,
-      right: source.right,
-      [side]: content,
+      left: next.left ?? source.left,
+      base: next.base ?? source.base,
+      right: next.right ?? source.right,
     };
-    draft = next;
     override = null;
+  }
+
+  function editSide(side: MergeSide, content: string) {
+    writeDraft({ [side]: content });
     if (side === "left") onLeftChange?.(content);
-    else onRightChange?.(content);
+    else if (side === "right") onRightChange?.(content);
+    else onBaseChange?.(content);
   }
 
   function sideText(side: MergeSide): string {
@@ -273,6 +272,16 @@
       return;
     }
     if (component.action.kind === "delete") {
+      if (component.side === "base") {
+        const next = applyMergeAction(model, {
+          type: "delete-merged-content",
+          blockId: component.blockId,
+        });
+        const nextBase = serializeMergeCenter(next);
+        writeDraft({ base: nextBase });
+        onBaseChange?.(nextBase);
+        return;
+      }
       commit(deleteMergedRenderComponentFromCenter(model, component));
       return;
     }
@@ -322,11 +331,9 @@
       type="button"
       class="ui-diff-merge-editor__action"
       data-action-kind={component.action.kind}
-      data-point={
-        component.action.kind === "merge" && side === "right"
-          ? "toward-center"
-          : undefined
-      }
+      data-point={component.action.kind === "merge" && side === "right"
+        ? "toward-center"
+        : undefined}
       aria-label={actionLabel(component)}
       title={actionLabel(component)}
       onclick={() => applyComponentAction(component)}

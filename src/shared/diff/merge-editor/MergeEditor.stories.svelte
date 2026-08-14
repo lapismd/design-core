@@ -1,10 +1,12 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, userEvent } from "storybook/test";
+  import { expect, userEvent, waitFor } from "storybook/test";
   import {
     Basic,
     Demo,
     Editable,
+    MatchingSides,
+    OneWayEditable,
     Quicksort,
   } from "./MergeEditor.example-sources.js";
   import MergeEditor from "./MergeEditor.svelte";
@@ -19,7 +21,7 @@
       docs: {
         description: {
           component:
-            "One-way or three-way merge blocks with host-triggered accept, delete, and resolve actions. Optional editable sides overlay a textarea on the highlight stack.",
+            "One-way or three-way merge blocks with host-triggered accept, delete, and resolve actions. Optional editable sides overlay a textarea on the highlight stack. Typing in any pane reassembles merge blocks.",
         },
         source: { code: Basic, language: "tsx", type: "code" },
       },
@@ -78,6 +80,9 @@
     );
     await expect(rightMerge).toHaveAttribute("data-point", "toward-center");
     await expect(leftMerge).not.toHaveAttribute("data-point", "toward-center");
+    await expect(canvas.getByText("- / 1")).toBeVisible();
+    await userEvent.click(canvas.getByRole("button", { name: "Next change" }));
+    await expect(canvas.getByText("1 / 1")).toBeVisible();
     await expect(canvas.getByText("Conflicts: 1/1")).toBeVisible();
     await userEvent.click(
       canvas.getByRole("button", {
@@ -174,6 +179,126 @@
 </Story>
 
 <Story
+  name="Draws a new hunk when the center pane is edited"
+  parameters={{
+    docs: { source: { code: MatchingSides, language: "tsx", type: "code" } },
+  }}
+  play={async ({ canvas }) => {
+    const field = canvas.getByLabelText("Edit Resolved");
+    const editor = field.closest("[data-ui-component='merge-editor']");
+    await expect(editor).not.toBeNull();
+    await expect(canvas.getAllByText("No changes").length).toBeGreaterThan(0);
+    await userEvent.clear(field);
+    await userEvent.type(field, "hello{Enter}unique center line");
+    await expect(field).toHaveValue("hello\nunique center line");
+    await expect(canvas.getByText("1 added")).toBeVisible();
+    await expect(
+      editor?.querySelectorAll(
+        "[data-ui-part='merge-component'][data-visual-kind='added'][data-placeholder='false']",
+      ).length,
+    ).toBeGreaterThan(0);
+    await waitFor(() => {
+      expect(
+        editor?.querySelectorAll(".ui-diff-merge-editor__connector-path")
+          .length ?? 0,
+      ).toBeGreaterThan(0);
+    });
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Delete merged content" }),
+    );
+    await expect(canvas.getAllByText("No changes").length).toBeGreaterThan(0);
+  }}
+  tags={["visual-pending"]}
+>
+  {#snippet template()}
+    <div class="max-w-5xl p-4">
+      <MergeEditor
+        mode="three-way"
+        path="src/hello.ts"
+        editable
+        left={"hello\n"}
+        base={"hello\n"}
+        right={"hello\n"}
+      />
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Draws a new hunk when a side pane is edited"
+  parameters={{
+    docs: { source: { code: MatchingSides, language: "tsx", type: "code" } },
+  }}
+  play={async ({ canvas }) => {
+    const field = canvas.getByLabelText("Edit Left");
+    const editor = field.closest("[data-ui-component='merge-editor']");
+    await expect(editor).not.toBeNull();
+    await userEvent.clear(field);
+    await userEvent.type(field, "hello{Enter}unique left line");
+    await expect(field).toHaveValue("hello\nunique left line");
+    await expect(canvas.getByText("1 modified")).toBeVisible();
+    await expect(
+      editor?.querySelectorAll(
+        "[data-ui-part='merge-component'][data-visual-kind='unchanged']",
+      ).length,
+    ).toBeGreaterThan(0);
+    await expect(
+      editor?.querySelectorAll(
+        "[data-ui-part='merge-component']:not([data-visual-kind='unchanged'])",
+      ).length,
+    ).toBeGreaterThan(0);
+  }}
+  tags={["visual-pending"]}
+>
+  {#snippet template()}
+    <div class="max-w-5xl p-4">
+      <MergeEditor
+        mode="three-way"
+        path="src/hello.ts"
+        editable
+        left={"hello\n"}
+        base={"hello\n"}
+        right={"hello\n"}
+      />
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Draws a new hunk when the one-way resolved pane is edited"
+  parameters={{
+    docs: { source: { code: OneWayEditable, language: "tsx", type: "code" } },
+  }}
+  play={async ({ canvas }) => {
+    const field = canvas.getByLabelText("Edit Right");
+    const editor = field.closest("[data-ui-component='merge-editor']");
+    await expect(editor).not.toBeNull();
+    await userEvent.clear(field);
+    await userEvent.type(field, "hello{Enter}unique right line");
+    await expect(field).toHaveValue("hello\nunique right line");
+    await expect(canvas.getByText("1 added")).toBeVisible();
+    await expect(
+      editor?.querySelectorAll(
+        "[data-ui-part='merge-component'][data-visual-kind='added'][data-placeholder='false']",
+      ).length,
+    ).toBeGreaterThan(0);
+  }}
+  tags={["visual-pending"]}
+>
+  {#snippet template()}
+    <div class="max-w-5xl p-4">
+      <MergeEditor
+        mode="one-way"
+        path="src/hello.ts"
+        editable
+        left={"hello\n"}
+        right={"hello\n"}
+      />
+    </div>
+  {/snippet}
+</Story>
+
+<Story
   name="Overlays the Changeyard quicksort fixture"
   parameters={{
     docs: { source: { code: Quicksort, language: "tsx", type: "code" } },
@@ -188,7 +313,9 @@
     await expect(canvas.getByLabelText("Edit Base")).toBeVisible();
     await expect(canvas.getByLabelText("Edit Right")).toBeVisible();
     await expect(
-      editor?.querySelectorAll("[data-visual-kind='modified']").length,
+      editor?.querySelectorAll(
+        "[data-visual-kind='added'], [data-visual-kind='modified'], [data-visual-kind='conflict']",
+      ).length,
     ).toBeGreaterThan(0);
     await expect(
       editor?.querySelectorAll("[data-ui-part='merge-connector']").length,

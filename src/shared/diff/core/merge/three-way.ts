@@ -128,7 +128,21 @@ function createThreeWayChangeBlock(
     rightChanged &&
     linesEqual(leftResolvedLines, rightResolvedLines, options)
   ) {
-    centerLines = leftResolvedLines;
+    if (
+      options.workingCopyCenter &&
+      !linesEqual(originalBaseLines, leftResolvedLines, options)
+    ) {
+      centerLines = originalBaseLines;
+      if (originalBaseLines.length === 0) {
+        kind = "removed";
+      } else if (leftResolvedLines.length === 0) {
+        kind = "added";
+      } else {
+        kind = "modified";
+      }
+    } else {
+      centerLines = leftResolvedLines;
+    }
   } else if (leftChanged || rightChanged) {
     kind = "conflict";
     resolved = false;

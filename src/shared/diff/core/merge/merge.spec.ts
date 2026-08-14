@@ -397,6 +397,79 @@ test("assembles three-way shared removals", () => {
   assert.equal(serializeMergeCenter(model), "1\n2\n3");
 });
 
+test("keeps unique center lines as added hunks when treating base as a working copy", () => {
+  const model = assembleThreeWayMerge("1\n2\n3", "1\n2\n3\n4", "1\n2\n3", {
+    workingCopyCenter: true,
+  });
+  assert.deepEqual(
+    model.blocks.map((block) => block.kind),
+    ["unchanged", "added"],
+  );
+  assert.equal(serializeMergeCenter(model), "1\n2\n3\n4");
+});
+
+test("keeps a center line edit when both sides still agree with each other", () => {
+  const model = assembleThreeWayMerge(
+    "hello world\n",
+    "hello there\n",
+    "hello world\n",
+    { workingCopyCenter: true },
+  );
+  assert.deepEqual(
+    model.blocks.map((block) => block.kind),
+    ["modified"],
+  );
+  assert.equal(serializeMergeCenter(model), "hello there\n");
+});
+
+test("drops a unique center line under default VCS ancestor semantics", () => {
+  const model = assembleThreeWayMerge("hello\n", "hello\nNEW\n", "hello\n");
+  assert.deepEqual(
+    model.blocks.map((block) => block.kind),
+    ["unchanged", "modified"],
+  );
+  assert.equal(serializeMergeCenter(model), "hello\n");
+});
+
+test("still auto-takes a one-sided addition when treating base as a working copy", () => {
+  const model = assembleThreeWayMerge("1\n2\n3\n4", "1\n2\n3", "1\n2\n3", {
+    workingCopyCenter: true,
+  });
+  assert.deepEqual(
+    model.blocks.map((block) => block.kind),
+    ["unchanged", "modified"],
+  );
+  assert.equal(serializeMergeCenter(model), "1\n2\n3\n4");
+});
+
+test("marks a shared line deleted from center as removed when treating base as a working copy", () => {
+  const model = assembleThreeWayMerge("a\nb\nc\n", "a\nc\n", "a\nb\nc\n", {
+    workingCopyCenter: true,
+  });
+  assert.deepEqual(
+    model.blocks.map((block) => block.kind),
+    ["unchanged", "removed", "unchanged"],
+  );
+  assert.equal(serializeMergeCenter(model), "a\nc\n");
+});
+
+test("connects and offers delete on a working-copy center-only added hunk", () => {
+  const model = assembleThreeWayMerge("hello\n", "hello\nNEW\n", "hello\n", {
+    workingCopyCenter: true,
+  });
+  const added = model.blocks.find((block) => block.kind === "added");
+  assert.ok(added);
+  const renderModel = createMergeRenderModel(model);
+  const base = renderModel.sides.base.find(
+    (component) => component.blockId === added.id,
+  );
+
+  assert.equal(base?.visualKind, "added");
+  assert.equal(base?.action?.kind, "delete");
+  assert.equal(renderModel.leftConnections.length > 0, true);
+  assert.equal(renderModel.rightConnections.length > 0, true);
+});
+
 test("assembles three-way divergent edits as conflicts", () => {
   const model = assembleThreeWayMerge("1\na\n3", "1\nb\n3", "1\nc\n3");
   assert.deepEqual(
