@@ -53,9 +53,9 @@ Diff contracts keep change-set listing, file comparison, and merge presentation 
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/diff`.
-- The editor MUST report resolved content through `onResolvedChange`, overlay optional editable sides that report `onLeftChange`, `onBaseChange`, and `onRightChange`, insert or remove a side through center-pointed merge actions, and reassemble merge blocks after those actions or any pane edit.
-- Connector and block visuals MUST derive from the shared merge render model.
-- The catalog MUST demonstrate one-way, three-way, editable, syntax-highlighted Changeyard fixtures, comparison-option, and connector-band states without introducing a second runtime contract.
+- The editor MUST report resolved content through `onResolvedChange`, overlay optional editable sides that report `onLeftChange`, `onBaseChange`, and `onRightChange`, assemble a working-copy center while the headless default keeps VCS ancestor semantics, insert a side above or below center or remove it through center-pointed actions, and reassemble after those actions or any pane edit.
+- Connector, block, caret, and line-number visuals MUST share the merge render model and one line grid, and column headers MUST align with editor panes.
+- The catalog MUST demonstrate one-way, three-way, editable, MisMerge-style insert/reject, syntax-highlighted Changeyard fixtures, comparison-option, and connector-band states without introducing a second runtime contract.
 
 ## DC-DIFF-005 — Diff Guidance
 

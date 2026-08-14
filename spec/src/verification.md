@@ -153,7 +153,7 @@ This matrix records one current evidence status for every canonical requirement.
 | DC-DIFF-001   | Implemented | Diff layer contract, tokens, guidance, and headless core models                                   |
 | DC-DIFF-002   | Implemented | File Listing sources, view-mode toggle, unit tests, and Storybook scenarios                       |
 | DC-DIFF-003   | Implemented | File Diff unified, split, and multi-file composer sources and Storybook scenarios                 |
-| DC-DIFF-004   | Implemented | Merge Editor sources, MisMerge-style insert/reject, pane-edit reassembly, and Storybook scenarios |
+| DC-DIFF-004   | Implemented | Merge Editor sources, working-copy center insert/reject, aligned chrome, and Storybook scenarios |
 | DC-DIFF-005   | Implemented | `src/shared/diff/Guidance.mdx`                                                                    |
 | DC-DIFF-006   | Implemented | File Change Stats sources, `formatDiffDelta` unit tests, and Storybook scenarios                  |
 | DC-SHELL-001  | Implemented | `src/shared/shell/`; Shell guidance and tests                                                     |
