@@ -408,9 +408,37 @@
         ),
       ).toBeLessThan(1);
     }
+    const labelsRow = editor?.querySelector(".ui-diff-merge-editor__labels");
+    const labelsRowBox = labelsRow?.getBoundingClientRect();
+    for (const label of labelCells) {
+      const box = label.getBoundingClientRect();
+      await expect(Math.abs(box.top - (labelsRowBox?.top ?? 0))).toBeLessThan(
+        1,
+      );
+      await expect(
+        Math.abs(box.height - (labelsRow?.clientHeight ?? 0)),
+      ).toBeLessThan(1);
+    }
+    const resolvedLabel = labelCells.find((label) =>
+      label.textContent?.includes("Resolved"),
+    );
+    const resolvedText = resolvedLabel?.querySelector("span");
+    const baseLine = editor?.querySelector(
+      "[data-merge-side='base'] .ui-diff-merge-editor__line",
+    );
+    const baseLinePad = Number.parseFloat(
+      getComputedStyle(baseLine!).paddingLeft,
+    );
+    await expect(resolvedText?.textContent).toBe("Resolved");
+    await expect(
+      Math.abs(
+        (resolvedText?.getBoundingClientRect().left ?? 0) -
+          ((baseLine?.getBoundingClientRect().left ?? 0) + baseLinePad),
+      ),
+    ).toBeLessThan(2);
     const rightLabel = labelCells.at(-1);
     await expect(rightLabel).toHaveAttribute("data-align", "end");
-    const rightText = rightLabel?.querySelector("span");
+    const rightText = [...(rightLabel?.querySelectorAll("span") ?? [])].at(-1);
     await expect(rightText?.textContent).toBe("Right");
     await expect(
       Math.abs(

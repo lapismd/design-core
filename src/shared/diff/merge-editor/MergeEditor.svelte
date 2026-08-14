@@ -515,14 +515,16 @@
   <div class="ui-diff-merge-editor__labels" data-mode={mode}>
     <div class="ui-diff-merge-editor__label">
       {#if !readOnly}
-        <Button
-          variant="ghost"
-          size="icon-xs"
-          aria-label="Accept All Incoming Changes from Left"
-          onclick={() => acceptAll("left")}
-        >
-          <CheckCheckIcon />
-        </Button>
+        <span class="ui-diff-merge-editor__label-action">
+          <Button
+            variant="ghost"
+            size="icon-xs"
+            aria-label="Accept All Incoming Changes from Left"
+            onclick={() => acceptAll("left")}
+          >
+            <CheckCheckIcon />
+          </Button>
+        </span>
       {/if}
       <span>{leftLabel}</span>
     </div>
