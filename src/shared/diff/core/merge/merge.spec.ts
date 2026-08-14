@@ -232,6 +232,35 @@ test("edits center content without reassembling it from the side panes", () => {
   assert.equal(serializeMergeCenter(nextModel), "base\n\n");
 });
 
+test("edit-center keeps topology and refreshes inline overlays", () => {
+  const model = assembleThreeWayMerge(
+    "hello world\n",
+    "hello world\n",
+    "hello world\n",
+  );
+  const nextModel = applyMergeAction(model, {
+    type: "edit-center",
+    content: "hello there\n",
+  });
+
+  assert.equal(nextModel.sourceBase, "hello world\n");
+  assert.equal(nextModel.blocks.length, model.blocks.length);
+  assert.equal(nextModel.left, "hello world\n");
+  assert.equal(nextModel.right, "hello world\n");
+  assert.equal(serializeMergeCenter(nextModel), "hello there\n");
+
+  const block = nextModel.blocks[0];
+  assert.ok(block);
+  for (const side of ["left", "right"] as const) {
+    const line = block.sides[side]?.[0];
+    assert.ok(line);
+    assert.equal(
+      line.parts.some((part) => part.changed),
+      true,
+    );
+  }
+});
+
 test("supports whitespace and case comparison options", () => {
   const model = assembleThreeWayMerge("Value\n", "value\n", " value \n", {
     ignoreCase: true,

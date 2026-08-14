@@ -237,6 +237,16 @@
   }
 
   function editSide(side: MergeSide, content: string) {
+    const editsResolvedPane =
+      side === "base" || (mode === "one-way" && side === "right");
+    if (editsResolvedPane) {
+      commit(applyMergeAction(model, { type: "edit-center", content }));
+      if (side === "right" && draft) {
+        draft = { ...draft, right: content };
+        onRightChange?.(content);
+      }
+      return;
+    }
     const next = {
       key: inputKey,
       left: source.left,
@@ -247,7 +257,6 @@
     draft = next;
     override = null;
     if (side === "left") onLeftChange?.(content);
-    else if (side === "base") onBaseChange?.(content);
     else onRightChange?.(content);
   }
 
@@ -307,12 +316,17 @@
   }
 </script>
 
-{#snippet actionButton(component: RenderComponent)}
+{#snippet actionButton(component: RenderComponent, side: MergeSide)}
   {#if !readOnly && component.action}
     <button
       type="button"
       class="ui-diff-merge-editor__action"
       data-action-kind={component.action.kind}
+      data-point={
+        component.action.kind === "merge" && side === "right"
+          ? "toward-center"
+          : undefined
+      }
       aria-label={actionLabel(component)}
       title={actionLabel(component)}
       onclick={() => applyComponentAction(component)}
@@ -356,7 +370,7 @@
               data-block-id={component.blockId}
             >
               {#if index === 0}
-                {@render actionButton(component)}
+                {@render actionButton(component, side)}
               {/if}
               {component.lineStart + index}
             </div>

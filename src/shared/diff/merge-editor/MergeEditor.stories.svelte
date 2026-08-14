@@ -66,6 +66,18 @@
 <Story
   name="Resolves a three-way conflict"
   play={async ({ canvas }) => {
+    const editor = canvas
+      .getByLabelText("Left")
+      .closest("[data-ui-component='merge-editor']");
+    await expect(editor).not.toBeNull();
+    const leftMerge = editor?.querySelector(
+      '[data-merge-side="left"] [data-action-kind="merge"]',
+    );
+    const rightMerge = editor?.querySelector(
+      '[data-merge-side="right"] [data-action-kind="merge"]',
+    );
+    await expect(rightMerge).toHaveAttribute("data-point", "toward-center");
+    await expect(leftMerge).not.toHaveAttribute("data-point", "toward-center");
     await expect(canvas.getByText("Conflicts: 1/1")).toBeVisible();
     await userEvent.click(
       canvas.getByRole("button", {
@@ -128,12 +140,18 @@
   }}
   play={async ({ canvas }) => {
     const field = canvas.getByLabelText("Edit Resolved");
+    const editor = field.closest("[data-ui-component='merge-editor']");
+    const changedBefore =
+      editor?.querySelectorAll('[data-changed="true"]').length ?? 0;
     await userEvent.clear(field);
     await userEvent.type(field, "const edited = true;");
     await expect(field).toHaveValue("const edited = true;");
     await expect(canvas.getByRole("status")).toHaveTextContent(
       "const edited = true;",
     );
+    await expect(
+      editor?.querySelectorAll('[data-changed="true"]').length ?? 0,
+    ).toBeGreaterThan(changedBefore);
   }}
   tags={["visual-pending"]}
 >
