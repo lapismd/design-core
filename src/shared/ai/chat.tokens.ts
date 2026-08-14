@@ -11,6 +11,8 @@ export const chatTokenNames = {
   assistantBubbleForeground: "--ui-ai-chat-assistant-bubble-foreground",
   composerRadius: "--ui-ai-chat-composer-radius",
   composerBackground: "--ui-ai-chat-composer-background",
+  shadowMedium: "--ui-ai-chat-shadow-medium",
+  shadowLarge: "--ui-ai-chat-shadow-large",
   dockBackground: "--ui-ai-chat-dock-background",
   triggerWidth: "--ui-ai-chat-trigger-width",
   reasoningAccent: "--ui-ai-chat-reasoning-accent",

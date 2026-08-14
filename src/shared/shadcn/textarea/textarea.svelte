@@ -95,7 +95,7 @@
         color: var(--muted-foreground);
       }
       [data-ui-component="textarea"]:focus-visible {
-        border-color: var(--ui-textarea-focus-ring-color, var(--ring));
+        border-color: transparent;
       }
       [data-ui-component="textarea"]:focus-visible {
         --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0

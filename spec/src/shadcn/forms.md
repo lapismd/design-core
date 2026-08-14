@@ -56,7 +56,7 @@ Shadcn form controls provide the low-level accessible inputs used directly or in
 
 ## DC-SHA-027 — Input
 
-**Requirement.** The Input family MUST provide a token-driven native input contract with invalid, disabled, and focus-visible states.
+**Requirement.** The Input family MUST provide a token-driven native input contract with invalid, disabled, and focus-visible states. Focus-visible MUST render a single ring without a second focus-colored border.
 
 ### Acceptance details
 
@@ -110,7 +110,7 @@ Shadcn form controls provide the low-level accessible inputs used directly or in
 
 ## DC-SHA-033 — Textarea
 
-**Requirement.** The Textarea family MUST provide a token-driven multiline input with resize, invalid, disabled, and focus-visible states.
+**Requirement.** The Textarea family MUST provide a token-driven multiline input with resize, invalid, disabled, and focus-visible states. Focus-visible MUST render a single ring without a second focus-colored border.
 
 ### Acceptance details
 

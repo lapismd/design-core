@@ -27,6 +27,9 @@
     await userEvent.clear(area);
     await userEvent.type(area, "Updated notes");
     await expect(canvas.getByRole("status")).toHaveTextContent("Updated notes");
+    await expect(area).toHaveFocus();
+    expect(getComputedStyle(area).borderTopColor).toBe("rgba(0, 0, 0, 0)");
+    expect(getComputedStyle(area).boxShadow).not.toBe("none");
   }}
   tags={["visual-approved"]}
   parameters={{

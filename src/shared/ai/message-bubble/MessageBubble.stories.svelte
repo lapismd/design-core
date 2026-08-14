@@ -1,5 +1,6 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
+  import { expect } from "storybook/test";
   import Message from "../message/Message.svelte";
   import MessageBubble from "./MessageBubble.svelte";
   import MessageList from "../message-list/MessageList.svelte";
@@ -60,6 +61,22 @@
 <Story
   name="Density"
   exportName="Density"
+  play={async ({ canvasElement }) => {
+    const assistantBubble = canvasElement.querySelector<HTMLElement>(
+      '[data-ui-component="ai-chat-message-bubble"][data-sender="assistant"]',
+    );
+    const userBubble = canvasElement.querySelector<HTMLElement>(
+      '[data-ui-component="ai-chat-message-bubble"][data-sender="user"]',
+    );
+    if (!assistantBubble || !userBubble) {
+      throw new Error("Both message sender variants are required");
+    }
+    await expect(assistantBubble).toBeVisible();
+    await expect(userBubble).toBeVisible();
+    expect(getComputedStyle(userBubble).backgroundColor).not.toBe(
+      getComputedStyle(assistantBubble).backgroundColor,
+    );
+  }}
   parameters={{
     docs: {
       description: {

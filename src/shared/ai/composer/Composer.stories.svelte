@@ -176,6 +176,42 @@
 </Story>
 
 <Story
+  name="Portable elevation"
+  exportName="PortableElevation"
+  play={async ({ canvasElement }) => {
+    const body = canvasElement.querySelector<HTMLElement>(
+      '[data-ui-component="ai-chat-composer"] [data-ui-part="body"]',
+    );
+    if (!body) throw new Error("Composer body is missing");
+    await expect(body).toBeVisible();
+    expect(getComputedStyle(body).boxShadow).not.toBe("none");
+  }}
+  parameters={{
+    docs: {
+      description: {
+        story:
+          "The raised composer retains its elevation and inset edge when a consuming host does not define optional shadow tokens.",
+      },
+      source: {
+        code: exampleSources.Basic,
+        language: "ts",
+        type: "code",
+      },
+    },
+  }}
+  tags={["visual-pending"]}
+>
+  {#snippet template()}
+    <div
+      data-story="composer-reference"
+      style="--shadow-md: initial; --shadow-lg: initial"
+    >
+      <Composer placeholder="Type a message…" onSubmit={() => {}} />
+    </div>
+  {/snippet}
+</Story>
+
+<Story
   name="Footer actions"
   exportName="FooterActions"
   parameters={{

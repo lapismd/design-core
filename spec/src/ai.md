@@ -77,7 +77,7 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 
 ## DC-AI-006 — Message Bubble
 
-**Requirement.** The Message Bubble family MUST present role-aware message content with readable width and token-driven surfaces.
+**Requirement.** The Message Bubble family MUST present role-aware message content with readable width and token-driven surfaces. Filled user and assistant messages MUST remain visually distinguishable without consumer overrides.
 
 ### Acceptance details
 
@@ -104,7 +104,7 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 
 ## DC-AI-009 — Composer
 
-**Requirement.** The Composer family MUST coordinate controlled input, tokens, attachments or drawers, and submit affordances.
+**Requirement.** The Composer family MUST coordinate controlled input, tokens, attachments or drawers, and submit affordances. Its elevation and focus chrome MUST remain visible when host shadow tokens are absent and MUST NOT stack a focus border with its focus ring.
 
 ### Acceptance details
 

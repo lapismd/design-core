@@ -5,13 +5,25 @@
   --ui-ai-chat-spacious-gap: 1.5rem;
   --ui-ai-chat-bubble-radius: 1.75rem;
   --ui-ai-chat-bubble-compact-radius: 0.75rem;
-  --ui-ai-chat-user-bubble: var(--muted);
+  --ui-ai-chat-user-bubble: color-mix(
+    in oklab,
+    var(--primary) 14%,
+    var(--muted)
+  );
   --ui-ai-chat-user-bubble-foreground: var(--foreground);
   --ui-ai-chat-assistant-bubble: var(--muted);
   --ui-ai-chat-assistant-bubble-foreground: var(--foreground);
   --ui-ai-chat-composer-radius: 1.75rem;
   --ui-ai-chat-composer-padding: 0.75rem;
   --ui-ai-chat-composer-background: var(--popover);
+  --ui-ai-chat-shadow-medium: var(
+    --shadow-md,
+    0 0.375rem 1rem color-mix(in srgb, var(--foreground) 14%, transparent)
+  );
+  --ui-ai-chat-shadow-large: var(
+    --shadow-lg,
+    0 0.75rem 2rem color-mix(in srgb, var(--foreground) 18%, transparent)
+  );
   --ui-ai-chat-dock-background: color-mix(
     in oklab,
     var(--background) 88%,
@@ -173,7 +185,7 @@
   background: var(--popover);
   color: var(--foreground);
   padding-inline: 0.5rem;
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--ui-ai-chat-shadow-medium);
   white-space: nowrap;
 }
 
@@ -536,7 +548,7 @@
   [data-ui-part="body"] {
   /* Match Astryx --shadow-low: drop shadow + 1px inset ring so the top edge reads. */
   box-shadow:
-    var(--shadow-md),
+    var(--ui-ai-chat-shadow-medium),
     inset 0 0 0 1px var(--border);
 }
 
@@ -545,7 +557,7 @@
 [data-ui-component="ai-chat-composer"][data-elevation="low"]
   [data-ui-part="body"]:focus-within {
   box-shadow:
-    var(--shadow-lg),
+    var(--ui-ai-chat-shadow-large),
     inset 0 0 0 1px var(--border);
 }
 
@@ -558,7 +570,7 @@
 
 [data-ui-component="ai-chat-composer"][data-elevation="none"]
   [data-ui-part="body"]:focus-within {
-  border-color: var(--ring);
+  border-color: transparent;
   box-shadow: inset 0 0 0 2px color-mix(in oklab, var(--ring) 28%, transparent);
 }
 
@@ -737,7 +749,7 @@
   border: 1px solid var(--border);
   border-radius: 0.75rem;
   background: var(--popover);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--ui-ai-chat-shadow-large);
 }
 
 [data-ui-component="ai-chat-composer-input"]

@@ -145,7 +145,7 @@
         color: var(--muted-foreground);
       }
       [data-ui-component="input"]:focus-visible {
-        border-color: var(--ui-input-focus-ring-color, var(--ring));
+        border-color: transparent;
       }
       [data-ui-component="input"]:focus-visible {
         --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0

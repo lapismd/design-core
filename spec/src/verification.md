@@ -56,13 +56,13 @@ This matrix records one current evidence status for every canonical requirement.
 | DC-SHA-024    | Implemented | src/shared/shadcn/checkbox/; colocated stories                                     |
 | DC-SHA-025    | Implemented | src/shared/shadcn/command/; dialog positioning interaction; colocated stories      |
 | DC-SHA-026    | Implemented | src/shared/shadcn/field/; colocated stories                                        |
-| DC-SHA-027    | Implemented | src/shared/shadcn/input/; colocated stories                                        |
+| DC-SHA-027    | Implemented | Input focus-ring story                                                             |
 | DC-SHA-028    | Implemented | src/shared/shadcn/input-group/; colocated stories                                  |
 | DC-SHA-029    | Implemented | src/shared/shadcn/label/; colocated stories                                        |
 | DC-SHA-030    | Implemented | src/shared/shadcn/select/; colocated stories                                       |
 | DC-SHA-031    | Implemented | src/shared/shadcn/slider/; colocated stories                                       |
 | DC-SHA-032    | Implemented | src/shared/shadcn/switch/; colocated stories                                       |
-| DC-SHA-033    | Implemented | src/shared/shadcn/textarea/; colocated stories                                     |
+| DC-SHA-033    | Implemented | Textarea focus-ring story                                                          |
 | DC-SHA-034    | Implemented | Shadcn family sources, stories, pointer tests, and component audit                 |
 | DC-SHA-035    | Implemented | src/shared/shadcn/card/; colocated stories                                         |
 | DC-SHA-036    | Implemented | Column Canvas controller source, unit tests, and colocated stories                 |
@@ -131,10 +131,10 @@ This matrix records one current evidence status for every canonical requirement.
 | DC-AI-003     | Implemented | AI sources, controllers, Storybook scenarios, and browser acceptance               |
 | DC-AI-004     | Implemented | AI sources, controllers, Storybook scenarios, and browser acceptance               |
 | DC-AI-005     | Implemented | AI sources, controllers, Storybook scenarios, and browser acceptance               |
-| DC-AI-006     | Implemented | AI sources, controllers, Storybook scenarios, and browser acceptance               |
+| DC-AI-006     | Implemented | Message Bubble sender-color story                                                  |
 | DC-AI-007     | Implemented | AI sources, controllers, Storybook scenarios, and browser acceptance               |
 | DC-AI-008     | Implemented | AI sources, controllers, Storybook scenarios, and browser acceptance               |
-| DC-AI-009     | Implemented | AI sources, controllers, Storybook scenarios, and browser acceptance               |
+| DC-AI-009     | Implemented | Composer portable-shadow story                                                     |
 | DC-AI-010     | Implemented | AI sources, controllers, Storybook scenarios, and browser acceptance               |
 | DC-AI-011     | Implemented | AI sources, controllers, Storybook scenarios, and browser acceptance               |
 | DC-AI-012     | Implemented | AI sources, controllers, Storybook scenarios, and browser acceptance               |

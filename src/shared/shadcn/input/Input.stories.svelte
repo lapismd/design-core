@@ -28,6 +28,9 @@
     await userEvent.clear(input);
     await userEvent.type(input, "Personal");
     await expect(canvas.getByRole("status")).toHaveTextContent("Personal");
+    await expect(input).toHaveFocus();
+    expect(getComputedStyle(input).borderTopColor).toBe("rgba(0, 0, 0, 0)");
+    expect(getComputedStyle(input).boxShadow).not.toBe("none");
   }}
   tags={["visual-approved"]}
   parameters={{
