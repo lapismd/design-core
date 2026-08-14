@@ -14,6 +14,7 @@ The root package manifest defines the supported import boundaries. Family barrel
 | Shell exports          | Package exports   | DC-PKG-006  |
 | Workspace exports      | Package exports   | DC-PKG-007  |
 | Docs MCP package       | Workspace package | DC-PKG-008  |
+| Versioned package      | npm artifact      | DC-PKG-009  |
 
 ## DC-PKG-001 — Root styles and themes
 
@@ -88,3 +89,13 @@ The root package manifest defines the supported import boundaries. Family barrel
 
 - The export must resolve to tracked source or the documented workspace build output.
 - Package checks must fail when the mapped entry point is stale or missing.
+
+## DC-PKG-009 — Versioned package artifact
+
+**Requirement.** Design Core MUST be packable as a public versioned source artifact whose manifest uses semver for runtime dependencies.
+
+### Acceptance details
+
+- Colocated development may link a matching Mira sibling through workspace configuration without changing the package manifest.
+- The tarball must contain public source exports and omit repository-only catalogs, tests, caches, and generated Storybook output.
+- A clean consumer must resolve exported source paths using only declared dependencies and peers.

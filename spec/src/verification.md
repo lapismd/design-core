@@ -9,6 +9,7 @@ This matrix records one current evidence status for every canonical requirement.
 | DC-ARCH-003   | Implemented | Forms, Shell, and Workspace controller sources and stories                         |
 | DC-ARCH-004   | Implemented | `package.json#exports`; family barrels and focused component entry points          |
 | DC-ARCH-005   | Implemented | Tracked workspace guidance; linked package manifests                               |
+| DC-ARCH-006   | Implemented | versioned package manifest, tarball inventory, and external Roles consumer check   |
 | DC-PKG-001    | Implemented | `package.json#exports`; referenced barrels                                         |
 | DC-PKG-002    | Implemented | `package.json#exports`; referenced barrels                                         |
 | DC-PKG-003    | Implemented | `package.json#exports`; forms barrel and focused Filter Command Picker entry point |
@@ -17,6 +18,7 @@ This matrix records one current evidence status for every canonical requirement.
 | DC-PKG-006    | Implemented | `package.json#exports`; referenced barrels                                         |
 | DC-PKG-007    | Implemented | `package.json#exports`; referenced barrels                                         |
 | DC-PKG-008    | Implemented | `packages/storybook-addon-docs-mcp/`; root workspace manifest                      |
+| DC-PKG-009    | Implemented | package manifest, `pnpm pack` inventory, and external Roles consumer check         |
 | DC-CSS-001    | Implemented | `styles.md`; `src/styles.css`; theme and token sources; no-Tailwind check          |
 | DC-CSS-002    | Implemented | Resolved Workspace view token maps and surface story assertions                    |
 | DC-CSS-003    | Implemented | `styles.md`; `src/styles.css`; theme and token sources; no-Tailwind check          |

@@ -1,6 +1,9 @@
 packages:
   - "."
   - "packages/*"
+  - "../mira-mde/packages/mira"
+
+linkWorkspacePackages: true
 
 allowBuilds:
   "@parcel/watcher": true

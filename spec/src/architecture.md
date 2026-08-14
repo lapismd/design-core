@@ -10,6 +10,7 @@ Design Core is a shared presentation and controller library. Consumer applicatio
 | Controlled state       | Architecture    | DC-ARCH-003 |
 | Compatibility          | Architecture    | DC-ARCH-004 |
 | Local source ownership | Architecture    | DC-ARCH-005 |
+| External consumption   | Architecture    | DC-ARCH-006 |
 
 ## DC-ARCH-002 — Layer boundaries
 
@@ -48,3 +49,13 @@ Design Core is a shared presentation and controller library. Consumer applicatio
 
 - Design Core must not vendor or patch a sibling package to conceal an upstream defect.
 - Consumer-specific adapters may remain local when they do not redefine the upstream public contract.
+
+## DC-ARCH-006 — External consumption
+
+**Requirement.** Independent first-party plugins MUST consume Design Core through its public versioned package boundary without repository source aliases.
+
+### Acceptance details
+
+- The package manifest must remain registry-installable when sibling repositories are absent.
+- Colocated workspace linking may select a matching local version without changing the published dependency range.
+- Consumers remain responsible for application plugin lifecycle and policy.
