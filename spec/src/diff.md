@@ -1,6 +1,6 @@
 # Diff
 
-Diff contracts keep change-set listing, file comparison, and merge presentation separate from version-control commands, file I/O, and review policy.
+Diff contracts keep change-set listing, file comparison, and merge presentation separate from version-control commands, file I/O, and review policy. Headless tree, unified-diff, and merge models live under `src/shared/diff/core`.
 
 ## Public surface coverage
 

@@ -1,7 +1,7 @@
 /**
  * Fail if Tailwind utility class strings appear in native-CSS surfaces.
  *
- * Default roots: shared UI layers (forms, filter, AI, shell, shadcn, workspace).
+ * Default roots: shared UI layers (forms, filter, AI, Diff, shell, shadcn, workspace).
  * Storybook story wrappers still use host Tailwind for layout demos and are
  * excluded (`*.stories.svelte`, `*.variations.stories.svelte`, `examples/`).
  *
@@ -15,6 +15,7 @@ import { findTailwindUtilitiesInSource } from "./lib/no-tailwind-utilities.js";
 
 const DEFAULT_ROOTS = [
   "src/shared/ai",
+  "src/shared/diff",
   "src/shared/filter",
   "src/shared/forms",
   "src/shared/shadcn",

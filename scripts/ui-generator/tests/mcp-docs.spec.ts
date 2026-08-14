@@ -202,7 +202,7 @@ describe("llms docs service", () => {
     const chapters = catalog.documents.filter(
       (document) => document.group === "specification",
     );
-    expect(chapters).toHaveLength(27);
+    expect(chapters).toHaveLength(28);
     expect(chapters[0]).toMatchObject({
       id: "spec-index",
       title: "Specification/Introduction",
