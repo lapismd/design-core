@@ -38,6 +38,7 @@ Form inputs provide higher-level controlled editing patterns composed from share
 
 - The public boundaries are `@lapismd/design-core/forms` and the focused `@lapismd/design-core/forms/filter-command-picker` entry point.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- Moving focus outside an open autocomplete MUST close its suggestion list without restoring focus to the input and reopening it.
 
 ## DC-FORM-008 — Chip Autocomplete
 

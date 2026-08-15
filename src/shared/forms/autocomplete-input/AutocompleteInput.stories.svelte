@@ -1,6 +1,6 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, userEvent, within } from "storybook/test";
+  import { expect, userEvent, waitFor, within } from "storybook/test";
   import AutocompleteInput from "./AutocompleteInput.svelte";
 
   const { Story } = defineMeta({
@@ -56,6 +56,41 @@
       <output class="text-muted-foreground text-sm"
         >{committed || "none"}</output
       >
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Closes when focus leaves the input"
+  tags={["visual-pending"]}
+  play={async ({ canvas, canvasElement }) => {
+    const input = canvas.getByLabelText("Owner");
+    const nextField = canvas.getByRole("button", { name: "Next field" });
+    const body = within(canvasElement.ownerDocument.body);
+
+    await userEvent.type(input, "Pri");
+    await expect(
+      body.getByRole("option", { name: "Priya Shah" }),
+    ).toBeVisible();
+    await userEvent.click(nextField);
+
+    await waitFor(() => {
+      expect(nextField).toHaveFocus();
+      expect(input).toHaveAttribute("aria-expanded", "false");
+      expect(
+        body.queryByRole("option", { name: "Priya Shah" }),
+      ).not.toBeInTheDocument();
+    });
+  }}
+>
+  {#snippet template()}
+    <div class="flex max-w-sm flex-col gap-2">
+      <button type="button">Next field</button>
+      <AutocompleteInput
+        value=""
+        suggestions={["Priya Shah", "Maya Chen"]}
+        ariaLabel="Owner"
+      />
     </div>
   {/snippet}
 </Story>

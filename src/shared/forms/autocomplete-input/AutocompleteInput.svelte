@@ -191,6 +191,7 @@
       align="start"
       sideOffset={6}
       onOpenAutoFocus={(event) => event.preventDefault()}
+      onCloseAutoFocus={(event) => event.preventDefault()}
     >
       <div id={listId} class="ui-autocomplete-input__list" role="listbox">
         {#each normalizedSuggestions as suggestion, index (suggestion)}

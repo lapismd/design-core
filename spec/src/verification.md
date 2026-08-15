@@ -87,7 +87,7 @@ This matrix records one current evidence status for every canonical requirement.
 | DC-FORM-004   | Implemented | Forms family source and colocated Storybook scenarios for JSON Backed Form                        |
 | DC-FORM-005   | Implemented | Forms family source and colocated Storybook scenarios for Patchable Form                          |
 | DC-FORM-006   | Implemented | Forms core and family sources, unit tests, and Storybook scenarios                                |
-| DC-FORM-007   | Implemented | Forms family source and colocated Storybook scenarios for Autocomplete Input                      |
+| DC-FORM-007   | Implemented | Autocomplete source and story cover selection and close on focus loss                             |
 | DC-FORM-008   | Implemented | Forms family source and colocated Storybook scenarios for Chip Autocomplete                       |
 | DC-FORM-009   | Implemented | Forms family source and colocated Storybook scenarios for Color Picker                            |
 | DC-FORM-010   | Implemented | Forms family source and colocated Storybook scenarios for Cycle Picker                            |
