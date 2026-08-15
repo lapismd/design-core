@@ -44,12 +44,14 @@
 
   let input = $state<HTMLInputElement | null>(null);
   let open = $state(false);
+  let editing = $state(false);
+  let filterValue = $state("");
   let activeIndex = $state(0);
   const listId = `autocomplete-list-${Math.random().toString(36).slice(2)}`;
 
   const normalizedSuggestions = $derived.by(() => {
     const seen = new Set<string>();
-    const needle = value.trim().toLowerCase();
+    const needle = (editing ? filterValue : value).trim().toLowerCase();
     return suggestions
       .map((suggestion) => suggestion.trim())
       .filter(Boolean)
@@ -76,13 +78,34 @@
 
   function setPopoverOpen(next: boolean) {
     if (forceOpen) return;
-    open = next;
-    if (!next) activeIndex = 0;
+    if (next) {
+      beginEditing();
+    } else {
+      closeList();
+    }
+  }
+
+  function beginEditing() {
+    editing = true;
+    filterValue = "";
+    open = true;
+    activeIndex = 0;
+    requestAnimationFrame(() => {
+      const currentInput = input;
+      if (
+        currentInput &&
+        currentInput.ownerDocument.activeElement === currentInput
+      ) {
+        currentInput.select();
+      }
+    });
   }
 
   function chooseSuggestion(suggestion: string) {
     value = suggestion;
     if (!forceOpen) open = false;
+    editing = false;
+    filterValue = "";
     activeIndex = 0;
     void onCommit(suggestion);
   }
@@ -91,18 +114,23 @@
     const committed = value.trim();
     if (!committed) return;
     if (!forceOpen) open = false;
+    editing = false;
+    filterValue = "";
     void onCommit(committed);
   }
 
   function closeList() {
     if (forceOpen) return;
     open = false;
+    editing = false;
+    filterValue = "";
     activeIndex = 0;
   }
 
   function handleKeydown(event: KeyboardEvent) {
     if (event.key === "ArrowDown") {
       event.preventDefault();
+      if (!open) beginEditing();
       open = true;
       activeIndex = Math.min(
         activeIndex + 1,
@@ -112,6 +140,7 @@
     }
     if (event.key === "ArrowUp") {
       event.preventDefault();
+      if (!open) beginEditing();
       open = true;
       activeIndex = Math.max(activeIndex - 1, 0);
       return;
@@ -155,41 +184,42 @@
   data-ui-part="autocomplete-input"
 >
   <Popover.Root open={listVisible} onOpenChange={setPopoverOpen}>
-    <Popover.Trigger>
-      {#snippet child({ props })}
-        <input
-          {...props}
-          {id}
-          bind:this={input}
-          bind:value
-          type="text"
-          {placeholder}
-          aria-label={ariaLabel}
-          aria-autocomplete="list"
-          aria-controls={listId}
-          aria-expanded={listVisible ? "true" : "false"}
-          aria-haspopup="listbox"
-          aria-invalid={error ? "true" : undefined}
-          role="combobox"
-          onfocus={() => (open = true)}
-          oninput={() => {
-            open = true;
-            activeIndex = 0;
-          }}
-          onkeydown={handleKeydown}
-          onblur={() => {
-            if (commitOnBlur) {
-              commitValue();
-            }
-            closeList();
-          }}
-        />
-      {/snippet}
-    </Popover.Trigger>
+    <input
+      {id}
+      bind:this={input}
+      bind:value
+      type="text"
+      {placeholder}
+      aria-label={ariaLabel}
+      aria-autocomplete="list"
+      aria-controls={listId}
+      aria-expanded={listVisible ? "true" : "false"}
+      aria-haspopup="listbox"
+      aria-invalid={error ? "true" : undefined}
+      role="combobox"
+      onfocus={beginEditing}
+      onclick={() => {
+        if (!open) beginEditing();
+      }}
+      oninput={() => {
+        editing = true;
+        filterValue = value;
+        open = true;
+        activeIndex = 0;
+      }}
+      onkeydown={handleKeydown}
+      onblur={() => {
+        if (commitOnBlur) {
+          commitValue();
+        }
+        closeList();
+      }}
+    />
     <Popover.Content
       class="ui-autocomplete-input__popover"
       align="start"
       sideOffset={6}
+      customAnchor={input}
       onOpenAutoFocus={(event) => event.preventDefault()}
       onCloseAutoFocus={(event) => event.preventDefault()}
     >

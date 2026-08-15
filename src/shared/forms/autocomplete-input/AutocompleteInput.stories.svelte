@@ -19,6 +19,8 @@
 <script lang="ts">
   let value = $state("");
   let committed = $state("");
+  let currentOwner = $state("Maya Chen");
+  let committedOwner = $state("");
 </script>
 
 <Story
@@ -55,6 +57,50 @@
       />
       <output class="text-muted-foreground text-sm"
         >{committed || "none"}</output
+      >
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Edits an existing value while open"
+  tags={["visual-pending"]}
+  play={async ({ canvas, canvasElement }) => {
+    const input = canvas.getByLabelText("Existing owner") as HTMLInputElement;
+    const body = within(canvasElement.ownerDocument.body);
+
+    await userEvent.click(input);
+    await waitFor(() => {
+      expect(input).toHaveFocus();
+      expect(input).toHaveAttribute("aria-expanded", "true");
+      expect(input.selectionStart).toBe(0);
+      expect(input.selectionEnd).toBe("Maya Chen".length);
+    });
+    await expect(body.getByRole("option", { name: "Maya Chen" })).toBeVisible();
+    await expect(
+      body.getByRole("option", { name: "Priya Shah" }),
+    ).toBeVisible();
+    await expect(
+      body.getByRole("option", { name: "Leo Martins" }),
+    ).toBeVisible();
+
+    await userEvent.click(body.getByRole("option", { name: "Priya Shah" }));
+    await expect(input).toHaveValue("Priya Shah");
+    await expect(canvas.getByRole("status")).toHaveTextContent("Priya Shah");
+  }}
+>
+  {#snippet template()}
+    <div class="flex max-w-sm flex-col gap-2">
+      <AutocompleteInput
+        bind:value={currentOwner}
+        suggestions={["Maya Chen", "Priya Shah", "Leo Martins"]}
+        ariaLabel="Existing owner"
+        onCommit={(next) => {
+          committedOwner = next;
+        }}
+      />
+      <output class="text-muted-foreground text-sm"
+        >{committedOwner || "none"}</output
       >
     </div>
   {/snippet}
