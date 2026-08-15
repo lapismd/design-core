@@ -258,9 +258,16 @@ Time:        1.8s`;
 <Story
   name="Expands call details"
   play={async ({ canvas }) => {
-    await userEvent.click(
-      canvas.getByRole("button", { name: "Show details for Read file" }),
-    );
+    const trigger = canvas.getByRole("button", {
+      name: "Show details for Read file",
+    });
+    await expect(
+      trigger.querySelector('[data-ui-part="detail-chevron"]'),
+    ).toHaveAttribute("data-direction", "right");
+    await userEvent.click(trigger);
+    await expect(
+      trigger.querySelector('[data-ui-part="detail-chevron"]'),
+    ).toHaveAttribute("data-direction", "down");
     await expect(canvas.getByText("Loaded 84 lines")).toBeVisible();
   }}
   parameters={{
@@ -311,6 +318,18 @@ Time:        1.8s`;
 
 <Story
   name="Collapsed summary"
+  play={async ({ canvas }) => {
+    const trigger = canvas.getByRole("button", {
+      name: "Expand 2 tool calls",
+    });
+    await expect(
+      trigger.querySelector('[data-ui-part="chevron"]'),
+    ).toHaveAttribute("data-direction", "right");
+    await userEvent.click(trigger);
+    await expect(
+      trigger.querySelector('[data-ui-part="chevron"]'),
+    ).toHaveAttribute("data-direction", "down");
+  }}
   parameters={{
     visualDelta: {
       images: [

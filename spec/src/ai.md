@@ -164,6 +164,7 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 
 - The public boundary is `@lapismd/design-core/ai/chat`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- Tool-call disclosure indicators MUST point right while closed and down while open for both grouped calls and individual call details.
 
 ## DC-AI-016 — Dictation Button
 

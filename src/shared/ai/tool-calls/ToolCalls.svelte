@@ -1,6 +1,6 @@
 <script lang="ts">
   import CheckIcon from "@lucide/svelte/icons/check";
-  import ChevronDownIcon from "@lucide/svelte/icons/chevron-down";
+  import ChevronRightIcon from "@lucide/svelte/icons/chevron-right";
   import CircleAlertIcon from "@lucide/svelte/icons/circle-alert";
   import WrenchIcon from "@lucide/svelte/icons/wrench";
   import * as Collapsible from "@lapismd/design-core/shadcn/collapsible";
@@ -111,7 +111,12 @@
           <span data-ui-part="duration">{call.duration}</span>
         {/if}
         {#if call.detail}
-          <ChevronDownIcon data-ui-part="detail-chevron" aria-hidden="true" />
+          <ChevronRightIcon
+            data-ui-part="detail-chevron"
+            data-direction={detailOpen[id] ? "down" : "right"}
+            style={`rotate: ${detailOpen[id] ? "90deg" : "0deg"}`}
+            aria-hidden="true"
+          />
         {/if}
       </Collapsible.Trigger>
       {#if call.errorMessage}
@@ -160,7 +165,12 @@
               {calls.length}
             </span>
           {/if}
-          <ChevronDownIcon data-ui-part="chevron" aria-hidden="true" />
+          <ChevronRightIcon
+            data-ui-part="chevron"
+            data-direction={expanded ? "down" : "right"}
+            style={`rotate: ${expanded ? "90deg" : "0deg"}`}
+            aria-hidden="true"
+          />
         </Collapsible.Trigger>
         <Collapsible.Content data-ai-chat-part="group-content">
           <ul data-ui-part="call-list">

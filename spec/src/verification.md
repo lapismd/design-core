@@ -143,7 +143,7 @@ This matrix records one current evidence status for every canonical requirement.
 | DC-AI-012     | Implemented | AI sources, controllers, Storybook scenarios, and browser acceptance                             |
 | DC-AI-013     | Implemented | AI sources, controllers, Storybook scenarios, and browser acceptance                             |
 | DC-AI-014     | Implemented | AI sources, controllers, Storybook scenarios, and browser acceptance                             |
-| DC-AI-015     | Implemented | AI sources, controllers, Storybook scenarios, and browser acceptance                             |
+| DC-AI-015     | Implemented | Tool Calls source plus grouped and detail disclosure-direction Storybook interactions            |
 | DC-AI-016     | Implemented | AI sources, controllers, Storybook scenarios, and browser acceptance                             |
 | DC-AI-017     | Implemented | AI sources, controllers, Storybook scenarios, and browser acceptance                             |
 | DC-AI-018     | Implemented | AI sources, controllers, Storybook scenarios, and browser acceptance                             |
