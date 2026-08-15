@@ -45,6 +45,8 @@ Specification governance keeps requirements discoverable, mapped, validated, and
 | Storybook host and specification mirrors                                 | `storybook-catalog.md`           |
 | UI generator and Docs MCP tooling                                        | `tooling.md`                     |
 | Specification validators, book, map, QMD, and agent rules                | `spec-governance.md`             |
+| Component classification                                                 | `component-inventory.md`         |
+| Cross-family forms composition guidance                                  | `forms/guidance.md`              |
 
 ## DC-GOV-002 — Verification matrix
 
@@ -111,6 +113,7 @@ Specification governance keeps requirements discoverable, mapped, validated, and
 
 - A diagnostic must identify its stable code, governing requirement, source path, line when available, affected identifier, and corrective action.
 - Generated or discovery surfaces must point back to canonical Markdown rather than becoming a second source of truth.
+- Supporting implementation records must live under `spec/records/`, and completed one-time plans must live under `spec/archive/`; neither location is normative or included in the canonical book.
 
 ## DC-GOV-009 — Storybook documentation checks
 

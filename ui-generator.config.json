@@ -39,6 +39,6 @@
     "tests/visual/storybook.spec.ts-snapshots/",
     "package.json",
     "pnpm-lock.yaml",
-    "COMPONENT_AUDIT.md"
+    "spec/src/component-inventory.md"
   ]
 }

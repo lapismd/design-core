@@ -5,7 +5,7 @@ summary: Inspect, add, and document UI-owned shadcn-svelte families via ui:add.
 sources:
   - AGENTS.md
   - README.md
-  - COMPONENT_AUDIT.md
+  - spec/src/component-inventory.md
   - src/shared/ShadcnOverview.mdx
   - src/shared/ShadcnGuidance.mdx
 ---
@@ -24,8 +24,8 @@ colocated stories, tokens, provenance, and docs artifacts.
   bypass by copying files by hand.
 - Keep `data-ui-component`, `data-ui-part`, `data-slot`, token metadata
   (`*.tokens.ts` / `*.tokens.css`), and `*.provenance.json` intact.
-- Classify new visual form-adjacent exports in `COMPONENT_AUDIT.md` first when
-  the boundary is unclear.
+- Classify new visual form-adjacent exports in
+  `spec/src/component-inventory.md` first when the boundary is unclear.
 - Import from `@lapismd/design-core/shadcn/<family>` only.
 - Restyle via `--ui-<family>-*` CSS variables (forms pattern), not Tailwind
   `cn()` utility merges. Defaults ship in `<family>.tokens.css`.

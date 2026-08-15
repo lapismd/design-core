@@ -71,7 +71,7 @@
 - [x] Retain the legacy callback story and add typed path, explicit custom
       registry, and missing-renderer Storybook coverage.
 - [x] Update the consumer source, Forms guidance, StructuredForm docs,
-      `FORMS.md`, and the component audit.
+      `spec/src/forms/guidance.md`, and the component inventory.
 - [x] Complete repository-wide build, live wide/narrow/a11y, and compare-only
       visual validation for this migration. Do not write a baseline.
 

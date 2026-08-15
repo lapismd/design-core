@@ -3,6 +3,23 @@
 Shared form contract for `@lapismd/design-core/forms`, derived from CV Studio's
 `@cvstudio/forms` + `@cvstudio/ui` primitives.
 
+## Public surface coverage
+
+| Surface        | Public boundary | Requirement |
+| -------------- | --------------- | ----------- |
+| Forms guidance | Forms           | DC-FORM-042 |
+
+## DC-FORM-042 — Forms guidance
+
+**Requirement.** Shared form composition MUST follow the canonical component,
+layout, token, and ownership guidance in this chapter.
+
+### Acceptance details
+
+- Schema-shaped editing and form-row chrome must use the Forms layer, while generic controls remain owned by their Shadcn families.
+- Consumers retain persistence, submission, routing, and domain state.
+- Every visual form export must have colocated documentation and an interaction story covering its meaningful states.
+
 ## Shared form pattern
 
 Prefer `@lapismd/design-core/forms` for **schema-shaped editing and CV form-row chrome**.

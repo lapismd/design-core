@@ -1,9 +1,9 @@
 # ASTRYX Chat visual parity
 
-This audit records the rendering comparison between the local Svelte 5 Chat
-family and the public ASTRYX component catalog. It complements
-[`ASTRYX_AI_COMPONENTS.md`](./ASTRYX_AI_COMPONENTS.md), which remains the
-implementation and acceptance tracker.
+This non-normative audit records the rendering comparison between the local
+Svelte 5 Chat family and the public ASTRYX component catalog. It complements
+[`astryx-ai-components.md`](./astryx-ai-components.md); the canonical contract
+lives in [`spec/src/ai.md`](../src/ai.md).
 
 ## Reference boundary
 

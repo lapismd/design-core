@@ -1,5 +1,8 @@
 # Design Core specification migration
 
+Historical, non-normative migration record. Current governance requirements
+live in [`spec/src/spec-governance.md`](../src/spec-governance.md).
+
 ## Purpose
 
 This tracker records the one-time migration from implicit source and Storybook contracts to canonical Markdown under `spec/src`. Canonical requirements live in the book; this file is progress evidence only.
@@ -8,7 +11,9 @@ This tracker records the one-time migration from implicit source and Storybook c
 
 - Snapshot date: 2026-08-12.
 - Root package: `@lapismd/design-core@0.1.0`.
-- Public sources inventoried: `package.json#exports`, package barrels, `COMPONENT_AUDIT.md`, `pnpm ui components --json`, and the current Storybook static index.
+- Public sources inventoried: `package.json#exports`, package barrels, the
+  component inventory, `pnpm ui components --json`, and the current Storybook
+  static index.
 - Current Storybook static inventory: 143 Autodocs families and 551 story entries.
 - Guidance, overview, composition, and Welcome pages are documentation surfaces, not new runtime component APIs.
 - Existing behavior is the baseline contract; no runtime component behavior changed in this slice.

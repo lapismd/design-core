@@ -21,7 +21,7 @@ Storybook is the interactive catalog and acceptance surface. It documents compon
 
 ### Acceptance details
 
-- Story titles and hierarchy must remain stable discovery identifiers unless a migration is documented.
+- Story titles, hierarchy, and specification-book position must remain stable discovery identifiers unless a migration is documented.
 - Storybook documentation must link or derive from the owning source instead of copying normative contracts.
 
 ## DC-CAT-002 — Autodocs inventory

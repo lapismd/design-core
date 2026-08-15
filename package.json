@@ -18,7 +18,7 @@
     "!src/**/.npm/**",
     "!src/spec/**",
     "README.md",
-    "styles.md"
+    "spec/src/styling-and-themes.md"
   ],
   "publishConfig": {
     "access": "public"

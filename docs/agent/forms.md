@@ -1,11 +1,11 @@
 ---
 id: forms
 title: Forms guidance
-summary: Structured forms vs shadcn controls; link to UI Forms/Guidance and FORMS.md.
+summary: Structured forms vs shadcn controls and the canonical forms guidance.
 sources:
-  - FORMS.md
+  - spec/src/forms/guidance.md
   - src/shared/forms/Guidance.mdx
-  - COMPONENT_AUDIT.md
+  - spec/src/component-inventory.md
   - AGENTS.md
 ---
 
@@ -16,7 +16,7 @@ shadcn for generic controls (`Select`, `Switch`, `Command`, `Input`, …).
 
 This topic summarizes the package contract. Full decision guide:
 
-- Package: `FORMS.md`
+- Package: `spec/src/forms/guidance.md`
 - Storybook: `UI Forms/Guidance`
 
 ## Choose the right layer
@@ -68,5 +68,6 @@ stay colocated with their host. See `pnpm ui guide layers` **Folder layout**.
 
 ## Before adding a form export
 
-Classify in `COMPONENT_AUDIT.md` as shared primitive, app-specific, or deferred.
+Classify in `spec/src/component-inventory.md` as shared primitive,
+app-specific, or deferred.
 Link reusable form primitives back to `UI Forms/Guidance` in Storybook docs.

@@ -1,6 +1,6 @@
 # Forms / Editors
 
-Editor families separate language or review behavior from the Mira-owned CodeMirror shell and static highlighting.
+Editor families separate language or review behavior from the Mira-owned CodeMirror shell and static highlighting. Cross-family composition follows the canonical [`Forms guidance`](guidance.md).
 
 ## Public surface coverage
 

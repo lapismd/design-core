@@ -1,16 +1,17 @@
 # Architecture
 
-Design Core is a shared presentation and controller library. Consumer applications retain domain policy, persistence, transport, routing, and environment adapters.
+Design Core is a shared presentation and controller library. Consumer applications retain domain policy, persistence, transport, routing, and environment adapters. Component ownership and public-layer classification are maintained in the canonical [`component inventory`](component-inventory.md).
 
 ## Public surface coverage
 
-| Surface                | Public boundary | Requirement |
-| ---------------------- | --------------- | ----------- |
-| Layer boundaries       | Architecture    | DC-ARCH-002 |
-| Controlled state       | Architecture    | DC-ARCH-003 |
-| Compatibility          | Architecture    | DC-ARCH-004 |
-| Local source ownership | Architecture    | DC-ARCH-005 |
-| External consumption   | Architecture    | DC-ARCH-006 |
+| Surface                  | Public boundary | Requirement |
+| ------------------------ | --------------- | ----------- |
+| Layer boundaries         | Architecture    | DC-ARCH-002 |
+| Controlled state         | Architecture    | DC-ARCH-003 |
+| Compatibility            | Architecture    | DC-ARCH-004 |
+| Local source ownership   | Architecture    | DC-ARCH-005 |
+| External consumption     | Architecture    | DC-ARCH-006 |
+| Component classification | Architecture    | DC-ARCH-007 |
 
 ## DC-ARCH-002 — Layer boundaries
 

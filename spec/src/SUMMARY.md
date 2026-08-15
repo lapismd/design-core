@@ -2,6 +2,7 @@
 
 - [Introduction](index.md)
 - [Architecture](architecture.md)
+- [Component inventory](component-inventory.md)
 - [Package exports](packages.md)
 - [Styling and themes](styling-and-themes.md)
 - [Tooling](tooling.md)
@@ -11,6 +12,7 @@
 - [Shadcn / Forms](shadcn/forms.md)
 - [Shadcn / Layout](shadcn/layout.md)
 - [Shadcn / Overlays](shadcn/overlays.md)
+- [Forms / Guidance](forms/guidance.md)
 - [Forms / Core and orchestrators](forms/core-and-orchestrators.md)
 - [Forms / Inputs](forms/inputs.md)
 - [Forms / Layout](forms/layout.md)

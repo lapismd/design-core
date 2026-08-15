@@ -118,7 +118,7 @@ export default defineConfig(headingRequirements(), {
   validators: {
     summary: true,
     governance: {
-      extras: ["AGENTS.md", "SPEC_MIGRATION.md", "README.md"],
+      extras: ["AGENTS.md", "README.md"],
     },
     verification: singleIdVerification(),
     book: true,
@@ -155,8 +155,6 @@ export default defineConfig(headingRequirements(), {
         "\\.example-sources\\.[cm]?[jt]sx?$",
         "\\.mdx$",
         "^README\\.md$",
-        "^SPEC_MIGRATION\\.md$",
-        "^COMPONENT_AUDIT\\.md$",
       ],
       rules: [
         {

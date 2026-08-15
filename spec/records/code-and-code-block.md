@@ -1,7 +1,9 @@
 # Shared Code and Code Block
 
-Implementation contract and progress record for the project-authored
+Non-normative implementation and provenance record for the project-authored
 `@lapismd/design-core/shadcn/code` and `@lapismd/design-core/shadcn/code-block` families.
+The canonical contract is
+[`DC-SHA-007` and `DC-SHA-008`](../src/shadcn/actions-and-content.md).
 
 ## Classification and provenance
 
@@ -34,7 +36,7 @@ Implementation contract and progress record for the project-authored
 | Forms `CodeEditor` / `YamlEditor` | Editable CodeMirror form fields                                                              |
 
 AI markdown/code rendering stays consumer-supplied through Svelte snippets
-(`ASTRYX_AI_COMPONENTS.md`). Hosts may compose these shadcn primitives inside
+([`astryx-ai-components.md`](./astryx-ai-components.md)). Hosts may compose these shadcn primitives inside
 message content.
 
 ## Public contract

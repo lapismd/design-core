@@ -1,6 +1,6 @@
 # Shadcn / Actions and content
 
-Action and content primitives adapt shadcn-svelte semantics to Design Core styling, provenance, and catalog conventions.
+Action and content primitives adapt shadcn-svelte semantics to Design Core styling, provenance, and catalog conventions. Historical implementation research lives under `spec/records/`; this chapter remains authoritative.
 
 ## Public surface coverage
 

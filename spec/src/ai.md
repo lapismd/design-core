@@ -1,6 +1,6 @@
 # AI
 
-AI presentation contracts remain provider-neutral and leave transport, model selection, persistence, and product policy downstream.
+AI presentation contracts remain provider-neutral and leave transport, model selection, persistence, and product policy downstream. Historical implementation and visual-comparison evidence lives under `spec/records/`; this chapter remains authoritative.
 
 ## Public surface coverage
 

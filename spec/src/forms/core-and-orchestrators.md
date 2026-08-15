@@ -1,6 +1,6 @@
 # Forms / Core and orchestrators
 
-Forms core supplies manual and config-driven controlled rendering. Orchestrators add structured text and review workflows without owning persistence.
+Forms core supplies manual and config-driven controlled rendering. Orchestrators add structured text and review workflows without owning persistence. Cross-family composition follows the canonical [`Forms guidance`](guidance.md).
 
 ## Public surface coverage
 

@@ -17,7 +17,7 @@ For the form decision guide, see **UI Forms/Guidance**.
 - Controls composed inside forms (Select, Switch, Command + Popover, Field)
 - Inline **Code** and fenced **Code Block** presentation (`Shadcn/Content/…`).
   Prefer these over Forms `CodeHighlighter` when you have a language string
-  rather than a Lezer parser. See `ADD_CODE_BLOCK.md`.
+  rather than a Lezer parser. See `spec/records/code-and-code-block.md`.
 
 ## Customization
 
@@ -63,7 +63,7 @@ controlled by `--ui-hover-card-z-index`.
 
 ## Add or convert a family
 
-1. Classify in `COMPONENT_AUDIT.md` if the boundary is unclear.
+1. Classify in `spec/src/component-inventory.md` if the boundary is unclear.
 2. `pnpm ui:inspect <name>` — support tier and candidates (read-only).
 3. `pnpm ui:add <name> [--overwrite] [--dry-run]` — transactional convert in a
    detached worktree. Batches: `pnpm ui:add:batch a|b|c|d`.

@@ -1,7 +1,9 @@
 # Shared Swipe Item
 
-Implementation contract and progress record for the project-authored
+Non-normative implementation and provenance record for the project-authored
 `@lapismd/design-core/shadcn/swipe-item` family.
+The canonical contract is
+[`DC-SHA-004`](../src/shadcn/actions-and-content.md).
 
 ## Classification and provenance
 
@@ -109,7 +111,7 @@ open item remeasures and preserves the logical state rather than stale pixels.
 ## Progress
 
 - [x] Contract and research recorded.
-- [x] Component classified in `COMPONENT_AUDIT.md`.
+- [x] Component classified in `spec/src/component-inventory.md`.
 - [x] Pure gesture math and unit tests.
 - [x] Compound component family and public tokens.
 - [x] Storybook docs and interaction stories.

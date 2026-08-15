@@ -10,7 +10,7 @@
       docs: {
         description: {
           component:
-            "Fenced code block with syntax highlighting, optional line numbers, copy, collapse, and syntax themes. Prefer over UI Forms Code Highlighter when you have a language string rather than a Lezer parser. See ADD_CODE_BLOCK.md.",
+            "Fenced code block with syntax highlighting, optional line numbers, copy, collapse, and syntax themes. Prefer over UI Forms Code Highlighter when you have a language string rather than a Lezer parser. See spec/records/code-and-code-block.md.",
         },
       },
     },

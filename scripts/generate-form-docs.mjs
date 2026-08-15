@@ -1099,7 +1099,7 @@ ${spec.guidance.join("\n\n")}
 
 ${spec.when.map((w) => `- ${w}`).join("\n")}
 ${whenNot}
-See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and the shared form contract in \`FORMS.md\`.
+See also [UI Forms/Guidance](?path=/docs/ui-forms-guidance--docs) and the shared form contract in \`spec/src/forms/guidance.md\`.
 
 ## Usage
 

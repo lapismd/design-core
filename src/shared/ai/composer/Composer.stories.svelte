@@ -65,7 +65,7 @@
     docs: {
       description: {
         story:
-          "Pinned ASTRYX reference fixture for anatomy comparison. See AI/Overview and ASTRYX_AI_VISUAL_PARITY.md.",
+          "Pinned ASTRYX reference fixture for anatomy comparison. See AI/Overview and spec/records/astryx-ai-visual-parity.md.",
       },
       source: {
         code: exampleSources.Basic,

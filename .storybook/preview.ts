@@ -59,6 +59,7 @@ const preview: Preview = {
           [
             "Introduction",
             "Architecture",
+            "Component inventory",
             "Package exports",
             "Styling and themes",
             "Tooling",
@@ -73,6 +74,7 @@ const preview: Preview = {
             ],
             "Forms",
             [
+              "Guidance",
               "Core and orchestrators",
               "Inputs",
               "Layout",

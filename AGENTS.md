@@ -45,7 +45,8 @@ Before inventing workflows, load package conventions offline via the CLI:
 
 1. `pnpm ui guide` — topic index and reading order
 2. `pnpm ui guide specification` — canonical requirements and QMD workflow
-3. [`styles.md`](./styles.md) — native CSS, tokens, no Tailwind in sources
+3. [`spec/src/styling-and-themes.md`](./spec/src/styling-and-themes.md) — native
+   CSS, tokens, no Tailwind in sources
 4. `pnpm ui guide layers` — layers, folder layout, and dependency boundaries
 5. [`src/shared/workspace/PLAN.md`](./src/shared/workspace/PLAN.md) — workspace
    framework migration boundary and slice tracker
@@ -134,7 +135,8 @@ orchestrator or review primitive with its own `UI Forms/…` title), give it its
 own folder under the layer. When adding parts of an existing compound API
 (`AppShell.Root` / `Sidebar`, Dialog content/footer), keep them in the family
 folder. Full layer table: `pnpm ui guide layers`. Styling and tokens:
-[`styles.md`](./styles.md) and the README **Styling and tokens** section.
+[`spec/src/styling-and-themes.md`](./spec/src/styling-and-themes.md) and the
+README **Styling and tokens** section.
 
 ## Component documentation
 
@@ -169,7 +171,8 @@ folder. Full layer table: `pnpm ui guide layers`. Styling and tokens:
   reusable form primitives back to it.
 - `Shadcn/Guidance` is the catalog's shadcn add/convert decision guide. Link
   new or converted families back to it.
-- Before adding a visual export, classify it in `COMPONENT_AUDIT.md` as a
+- Before adding a visual export, classify it in
+  [`spec/src/component-inventory.md`](./spec/src/component-inventory.md) as a
   shared primitive or deferred item.
 - `Shadcn/` is the UI-owned shadcn-svelte catalog. Source and stories live in
   `src/shared/shadcn/<family>/`. Import a family from

@@ -4,7 +4,7 @@ title: Package layers
 summary: Choose shadcn, forms, filter, AI, Diff, shell, or workspace.
 sources:
   - README.md
-  - COMPONENT_AUDIT.md
+  - spec/src/component-inventory.md
   - AGENTS.md
   - src/shared/Welcome.mdx
 ---
@@ -105,8 +105,8 @@ with them; do not refresh PNG pixels unless visuals change.
 
 ## Classification
 
-Before adding a visual export, update `COMPONENT_AUDIT.md`: shared primitive or
-deferred. Prefer extending an audited family over a one-off.
+Before adding a visual export, update `spec/src/component-inventory.md`: shared
+primitive or deferred. Prefer extending an audited family over a one-off.
 
 ## Next topics
 

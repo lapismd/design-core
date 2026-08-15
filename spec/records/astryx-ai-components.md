@@ -1,8 +1,9 @@
 # ASTRYX Chat/AI implementation tracker
 
-This tracker is the source of truth for the ASTRYX-inspired Chat family in
-`@lapismd/design-core`. It records observed upstream anatomy and behavior separately
-from the local Svelte 5 implementation and its verification status.
+This non-normative tracker records observed upstream anatomy and behavior for
+the ASTRYX-inspired Chat family separately from the local Svelte 5
+implementation and its verification status. The canonical contract lives in
+[`spec/src/ai.md`](../src/ai.md).
 
 ## Reference and attribution
 
@@ -25,7 +26,7 @@ Implementation status values are `planned`, `implemented`, `tested`, and
 `reviewed`. Visual reference status is `live-compared` for stable public
 components and `source-compared` for Lab-only components. Baseline approval
 stays pending until a human reviews the Storybook previews. See
-[`ASTRYX_AI_VISUAL_PARITY.md`](./ASTRYX_AI_VISUAL_PARITY.md).
+[`astryx-ai-visual-parity.md`](./astryx-ai-visual-parity.md).
 
 | Upstream component         | Local export                       | Stability    | Story       | Tests   | Visual          |
 | -------------------------- | ---------------------------------- | ------------ | ----------- | ------- | --------------- |

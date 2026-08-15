@@ -4,7 +4,7 @@ title: Workspace framework
 summary: Migrate and extend the reusable workspace controller and shell.
 sources:
   - AGENTS.md
-  - styles.md
+  - spec/src/styling-and-themes.md
   - src/shared/workspace/PLAN.md
   - src/shared/workspace/REFERENCE.md
 ---
@@ -20,7 +20,7 @@ settings, commands, static plugins, and composable shell presentation.
 1. `src/shared/workspace/PLAN.md` for the current slice and acceptance matrix.
 2. `src/shared/workspace/REFERENCE.md` for source revision and immutable
    reference hashes.
-3. `styles.md` for native CSS and token rules.
+3. `spec/src/styling-and-themes.md` for native CSS and token rules.
 4. `docs/agent/testing.md` before changing components or stories.
 
 ## Boundary

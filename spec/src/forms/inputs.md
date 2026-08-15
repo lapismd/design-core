@@ -1,6 +1,6 @@
 # Forms / Inputs
 
-Form inputs provide higher-level controlled editing patterns composed from shared primitives.
+Form inputs provide higher-level controlled editing patterns composed from shared primitives. Cross-family composition follows the canonical [`Forms guidance`](guidance.md).
 
 ## Public surface coverage
 

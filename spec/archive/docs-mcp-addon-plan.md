@@ -1,5 +1,8 @@
 # Standalone Docs MCP addon plan
 
+Historical, non-normative implementation plan. Current tooling requirements
+live in [`spec/src/tooling.md`](../src/tooling.md).
+
 Status: implemented; focused acceptance complete. Broad Storybook acceptance is
 blocked by unrelated concurrent AI catalog changes recorded below.
 

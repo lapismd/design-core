@@ -1,7 +1,7 @@
 # Code
 
 Inline `<code>` for short references (APIs, flags, identifiers) inside prose.
-Project-authored Astryx-inspired primitive — see `ADD_CODE_BLOCK.md`.
+Project-authored Astryx-inspired primitive — see `spec/records/code-and-code-block.md`.
 
 ## Import
 

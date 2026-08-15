@@ -1,6 +1,6 @@
 # Forms / Examples
 
-Examples prove consumer composition without adding CV-specific runtime exports.
+Examples prove consumer composition without adding CV-specific runtime exports. Cross-family composition follows the canonical [`Forms guidance`](guidance.md).
 
 ## Public surface coverage
 

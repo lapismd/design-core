@@ -1,6 +1,6 @@
 # Forms / Layout
 
-Form layout families provide reusable chrome for sections, fields, repeaters, actions, and sheets.
+Form layout families provide reusable chrome for sections, fields, repeaters, actions, and sheets. Cross-family composition follows the canonical [`Forms guidance`](guidance.md).
 
 ## Public surface coverage
 

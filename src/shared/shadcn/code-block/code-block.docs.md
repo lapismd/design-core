@@ -2,7 +2,7 @@
 
 Fenced, syntax-highlighted code with optional header, line numbers, copy,
 collapse, and syntax themes. Project-authored Astryx-inspired primitive — see
-`ADD_CODE_BLOCK.md`.
+`spec/records/code-and-code-block.md`.
 
 ## Import
 

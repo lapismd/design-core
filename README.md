@@ -5,7 +5,8 @@ local Playwright visual regression, and the workspace Visual Delta addon.
 
 This README is the human-facing package map and command reference. Agent
 conventions are available offline through `pnpm ui guide` and in
-[`AGENTS.md`](./AGENTS.md). Styling rules live in [`styles.md`](./styles.md).
+[`AGENTS.md`](./AGENTS.md). Styling rules live in the canonical
+[`Styling and themes`](./spec/src/styling-and-themes.md) chapter.
 
 ## Canonical specification
 
@@ -372,8 +373,9 @@ advertised.
 
 ## Styling and tokens
 
-Normative rules live in [`styles.md`](./styles.md). Summary for package
-consumers and contributors:
+Normative rules live in the canonical
+[`Styling and themes`](./spec/src/styling-and-themes.md) chapter. Summary for
+package consumers and contributors:
 
 1. **Theme first** — global semantics (`--background`, `--primary`, `--border`,
    `--radius`, …) come from [`src/theme.css`](./src/theme.css).
@@ -423,9 +425,9 @@ shadcn CLI directly against this package. Converted families keep
 | [`AGENTS.md`](./AGENTS.md)                                                                                                 | Primary agent workflow + folder layout |
 | [`spec/src/index.md`](./spec/src/index.md)                                                                                 | Canonical Design Core specification    |
 | `pnpm ui guide specification`                                                                                              | Spec-first and QMD workflow            |
-| [`styles.md`](./styles.md)                                                                                                 | Native CSS and token contract          |
+| [`Styling and themes`](./spec/src/styling-and-themes.md)                                                                   | Native CSS and token contract          |
 | `pnpm ui guide layers`                                                                                                     | Layer selection, folders, dependencies |
 | `pnpm ui guide testing`                                                                                                    | Verification sequence                  |
-| [`COMPONENT_AUDIT.md`](./COMPONENT_AUDIT.md)                                                                               | Retained component inventory           |
+| [`Component inventory`](./spec/src/component-inventory.md)                                                                 | Retained component inventory           |
 | [`Visual Delta system specification`](https://github.com/lapismd/storybook-addon-visual-delta/blob/main/spec/src/index.md) | Normative Visual Delta system contract |
 | [`@lapismd/storybook-addon-visual-delta`](https://www.npmjs.com/package/@lapismd/storybook-addon-visual-delta)             | Addon API and integration              |
