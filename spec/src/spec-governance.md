@@ -15,6 +15,7 @@ Specification governance keeps requirements discoverable, mapped, validated, and
 | Agent authority           | Governance      | DC-GOV-007  |
 | Generated artifacts       | Governance      | DC-GOV-008  |
 | Storybook source checks   | Governance      | DC-GOV-009  |
+| Sibling resolution        | Governance      | DC-GOV-010  |
 
 ## DC-GOV-001 — Requirement identifiers
 
@@ -120,3 +121,13 @@ Specification governance keeps requirements discoverable, mapped, validated, and
 - Validation must reject missing or incomplete explicit source metadata for demo, harness, fixture, and story-surface boundaries.
 - Validation must reject example source that exposes story-only component names or inferred args as consumer usage.
 - Validation must reject language values that the current Storybook highlighter renders without syntax tokens.
+
+## DC-GOV-010 — Sibling resolution
+
+**Requirement.** Repository agent guidance MUST keep colocated LapisMD sibling repositories outside this pnpm workspace and resolve them through explicit `link:` dependencies or `link:`-valued root overrides.
+
+### Acceptance details
+
+- Publishable manifests must retain portable dependency ranges.
+- Agents must not vendor sibling source, mutate sibling `node_modules`, or replace a local checkout with a registry copy.
+- A sibling that exports built output must be rebuilt before consumer validation.

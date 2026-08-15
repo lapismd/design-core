@@ -216,3 +216,4 @@ This matrix records one current evidence status for every canonical requirement.
 | DC-GOV-007    | Implemented | `AGENTS.md`; `pnpm ui guide specification`                                                        |
 | DC-GOV-008    | Implemented | `.gitignore`; book and QMD tracking validators                                                    |
 | DC-GOV-009    | Implemented | Storybook source validator and focused validator tests                                            |
+| DC-GOV-010    | Implemented | `AGENTS.md`; portable sibling dependency policy                                                   |
