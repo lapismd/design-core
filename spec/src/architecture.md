@@ -49,6 +49,7 @@ Design Core is a shared presentation and controller library. Consumer applicatio
 
 - Design Core must not vendor or patch a sibling package to conceal an upstream defect.
 - Consumer-specific adapters may remain local when they do not redefine the upstream public contract.
+- Shared development tooling may be linked from its owning sibling while Design Core retains its own validation policy and diagnostic identifiers.
 
 ## DC-ARCH-006 — External consumption
 

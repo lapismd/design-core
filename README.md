@@ -293,7 +293,6 @@ pnpm storybook:check
 
 # Verification
 pnpm spec:validate
-pnpm spec:test
 pnpm spec:build
 pnpm spec:first
 pnpm spec:check

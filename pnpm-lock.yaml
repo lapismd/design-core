@@ -114,6 +114,9 @@ importers:
         specifier: ^2.9.0
         version: 2.9.0
     devDependencies:
+      '@lapismd/spec-validator':
+        specifier: link:../spec-validator
+        version: link:../spec-validator
       '@lapismd/storybook-addon-visual-delta':
         specifier: link:../storybook-addon-visual-delta
         version: link:../storybook-addon-visual-delta

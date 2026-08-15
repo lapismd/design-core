@@ -37,7 +37,7 @@ Repository tools keep source generation, discovery, documentation, and validatio
 
 - Machine-readable output must be stable enough for repository automation.
 - Tooling failures must report an actionable source path or command.
-- Specification commands must retain separate validation, tests, build, spec-first, index, search, and serve entry points.
+- Specification commands must retain separate validation, build, spec-first, index, search, and serve entry points through the configured shared CLI.
 - Specification validation must include Storybook consumer-source and syntax-language lanes before broader catalog gates.
 
 ## DC-TOOL-004 — Docs MCP and llms catalog

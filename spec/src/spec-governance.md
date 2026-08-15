@@ -61,7 +61,7 @@ Specification governance keeps requirements discoverable, mapped, validated, and
 ### Acceptance details
 
 - A diagnostic must identify its stable code, governing requirement, source path, line when available, affected identifier, and corrective action.
-- Generated or discovery surfaces must point back to canonical Markdown rather than becoming a second source of truth.
+- Repository-owned configuration must map Design Core paths, statuses, and governing DC identifiers onto reusable shared validators.
 - Mirror validation must reject missing, stale, misordered, retargeted, or prose-bearing Storybook pages.
 - Public-surface validation must map every root export to exactly one owning requirement.
 
@@ -72,7 +72,7 @@ Specification governance keeps requirements discoverable, mapped, validated, and
 ### Acceptance details
 
 - A diagnostic must identify its stable code, governing requirement, source path, line when available, affected identifier, and corrective action.
-- Generated or discovery surfaces must point back to canonical Markdown rather than becoming a second source of truth.
+- The repository configuration must carry the complete Design Core path-to-chapter map without moving ownership policy into the shared validator package.
 - Forms core helpers MUST map to `forms/core-and-orchestrators.md` rather than fail as unclassified production source.
 
 ## DC-GOV-005 — QMD indexing

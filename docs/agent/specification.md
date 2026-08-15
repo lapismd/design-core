@@ -49,7 +49,6 @@ line, affected identifier when available, and a corrective message.
 
 ```text
 pnpm spec:validate
-pnpm spec:test
 pnpm spec:build
 pnpm spec:first [-- --base <rev> --head <rev>]
 pnpm spec:index [-- --semantic]
