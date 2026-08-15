@@ -8,10 +8,13 @@
     ref = $bindable(null),
     class: className,
     level = 3,
+    indicatorPosition = "end",
     children,
     ...restProps
   }: WithoutChild<AccordionPrimitive.TriggerProps> & {
     level?: AccordionPrimitive.HeaderProps["level"];
+    /** Places the built-in disclosure indicator before or after the label. */
+    indicatorPosition?: "start" | "end";
   } = $props();
 </script>
 
@@ -25,6 +28,7 @@
     data-ui-component="accordion"
     data-ui-part="accordion-trigger"
     data-slot="accordion-trigger"
+    data-indicator-position={indicatorPosition}
     bind:ref
     class={className}
     {...restProps}

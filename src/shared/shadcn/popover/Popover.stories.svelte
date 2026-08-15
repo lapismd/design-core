@@ -51,6 +51,11 @@
     const trigger = canvas.getByRole("button", { name: "Filters" });
     await userEvent.click(trigger);
     await expect(trigger).toHaveAttribute("aria-expanded", "true");
+    await expect(within(document.body).getByText("Active filters")).toHaveStyle(
+      {
+        width: "352px",
+      },
+    );
     await expect(canvas.getByRole("status")).toHaveTextContent("open");
     await userEvent.keyboard("{Escape}");
     await expect(canvas.getByRole("status")).toHaveTextContent("closed");
@@ -65,7 +70,7 @@
             <Button {...props} variant="outline">Filters</Button>
           {/snippet}
         </Popover.Trigger>
-        <Popover.Content class="w-56 p-3 text-sm"
+        <Popover.Content class="p-3 text-sm" style="--ui-popover-width: 22rem"
           >Active filters</Popover.Content
         >
       </Popover.Root>

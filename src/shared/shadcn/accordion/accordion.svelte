@@ -65,6 +65,10 @@
       [data-ui-component="accordion"][data-ui-part="accordion-trigger"] {
         justify-content: space-between;
       }
+      [data-ui-component="accordion"][data-ui-part="accordion-trigger"][data-indicator-position="start"] {
+        justify-content: flex-start;
+        gap: calc(var(--spacing) * 2);
+      }
       [data-ui-component="accordion"][data-ui-part="accordion-content"] {
         overflow: hidden;
       }
@@ -173,6 +177,13 @@
           [data-ui-component="accordion"][data-ui-part="accordion-trigger"] *
         )[data-slot="accordion-trigger-icon"] {
         margin-left: auto;
+      }
+      :is(
+          [data-ui-component="accordion"][data-ui-part="accordion-trigger"][data-indicator-position="start"]
+            *
+        )[data-slot="accordion-trigger-icon"] {
+        order: -1;
+        margin-left: 0;
       }
       :is(
           [data-ui-component="accordion"][data-ui-part="accordion-trigger"] *

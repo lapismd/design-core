@@ -64,7 +64,7 @@
         display: flex;
       }
       [data-ui-component="popover"][data-ui-part="popover-content"] {
-        width: calc(var(--spacing) * 72);
+        width: var(--ui-popover-width, calc(var(--spacing) * 72));
       }
       [data-ui-component="popover"][data-ui-part="popover-content"] {
         transform-origin: var(--transform-origin);

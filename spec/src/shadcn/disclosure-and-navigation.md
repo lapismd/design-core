@@ -28,6 +28,7 @@ Disclosure and navigation primitives retain semantic structure and keyboard beha
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/shadcn/accordion`.
+- Triggers MUST default their disclosure indicator to the inline end and support an explicit inline-start position without changing disclosure semantics.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 
 ## DC-SHA-019 — Collapsible

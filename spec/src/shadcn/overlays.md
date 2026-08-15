@@ -87,6 +87,7 @@ Overlay primitives preserve accessible labelling, focus management, dismissal, p
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/shadcn/popover`.
+- Content width MUST retain the 18rem default and support consumer sizing through the public `--ui-popover-width` token.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 
 ## DC-SHA-049 — Sheet

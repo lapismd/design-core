@@ -48,7 +48,7 @@ This matrix records one current evidence status for every canonical requirement.
 | DC-SHA-015    | Implemented | src/shared/shadcn/skeleton/; colocated stories                                                    |
 | DC-SHA-016    | Implemented | src/shared/shadcn/spinner/; colocated stories                                                     |
 | DC-SHA-017    | Implemented | Shadcn family sources, stories, pointer tests, and component audit                                |
-| DC-SHA-018    | Implemented | src/shared/shadcn/accordion/; colocated stories                                                   |
+| DC-SHA-018    | Implemented | src/shared/shadcn/accordion/; start/end indicator story                                           |
 | DC-SHA-019    | Implemented | src/shared/shadcn/collapsible/; colocated stories                                                 |
 | DC-SHA-020    | Implemented | src/shared/shadcn/tabs/; colocated stories                                                        |
 | DC-SHA-021    | Implemented | src/shared/shadcn/breadcrumb/; colocated stories                                                  |
@@ -78,7 +78,7 @@ This matrix records one current evidence status for every canonical requirement.
 | DC-SHA-045    | Implemented | src/shared/shadcn/drawer/; colocated stories                                                      |
 | DC-SHA-046    | Implemented | src/shared/shadcn/dropdown-menu/; colocated stories                                               |
 | DC-SHA-047    | Implemented | src/shared/shadcn/hover-card/; colocated stories                                                  |
-| DC-SHA-048    | Implemented | src/shared/shadcn/popover/; colocated stories                                                     |
+| DC-SHA-048    | Implemented | src/shared/shadcn/popover/; custom-width interaction story                                        |
 | DC-SHA-049    | Implemented | src/shared/shadcn/sheet/; colocated stories                                                       |
 | DC-SHA-050    | Implemented | src/shared/shadcn/tooltip/; colocated stories                                                     |
 | DC-FORM-001   | Implemented | Forms core and family sources, unit tests, and Storybook scenarios                                |
