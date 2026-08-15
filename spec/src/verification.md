@@ -48,7 +48,7 @@ This matrix records one current evidence status for every canonical requirement.
 | DC-SHA-015    | Implemented | src/shared/shadcn/skeleton/; colocated stories                                                    |
 | DC-SHA-016    | Implemented | src/shared/shadcn/spinner/; colocated stories                                                     |
 | DC-SHA-017    | Implemented | Shadcn family sources, stories, pointer tests, and component audit                                |
-| DC-SHA-018    | Implemented | src/shared/shadcn/accordion/; start/end indicator story                                           |
+| DC-SHA-018    | Implemented | src/shared/shadcn/accordion/; start/end and disclosure indicator story                            |
 | DC-SHA-019    | Implemented | src/shared/shadcn/collapsible/; colocated stories                                                 |
 | DC-SHA-020    | Implemented | src/shared/shadcn/tabs/; colocated stories                                                        |
 | DC-SHA-021    | Implemented | src/shared/shadcn/breadcrumb/; colocated stories                                                  |

@@ -31,8 +31,8 @@
       }
     }
     @layer utilities {
-      [data-ui-component="accordion"][data-ui-part="accordion-trigger-icon"],
-      [data-ui-component="accordion"][data-ui-part="accordion-chevron-up-icon"] {
+      [data-ui-component="accordion"][data-ui-part="accordion-collapsed-icon"],
+      [data-ui-component="accordion"][data-ui-part="accordion-expanded-icon"] {
         pointer-events: none;
       }
       [data-ui-component="accordion"][data-ui-part="accordion-trigger"] {
@@ -43,7 +43,7 @@
       [data-ui-component="accordion"][data-ui-part="accordion"] {
         display: flex;
       }
-      [data-ui-component="accordion"][data-ui-part="accordion-chevron-up-icon"] {
+      [data-ui-component="accordion"][data-ui-part="accordion-expanded-icon"] {
         display: none;
       }
       [data-ui-component="accordion"][data-ui-part="accordion"] {
@@ -52,8 +52,8 @@
       [data-ui-component="accordion"][data-ui-part="accordion-trigger"] {
         flex: 1;
       }
-      [data-ui-component="accordion"][data-ui-part="accordion-trigger-icon"],
-      [data-ui-component="accordion"][data-ui-part="accordion-chevron-up-icon"] {
+      [data-ui-component="accordion"][data-ui-part="accordion-collapsed-icon"],
+      [data-ui-component="accordion"][data-ui-part="accordion-expanded-icon"] {
         flex-shrink: 0;
       }
       [data-ui-component="accordion"][data-ui-part="accordion"] {
@@ -124,7 +124,7 @@
         border-bottom-style: var(--tw-border-style);
         border-bottom-width: 1px;
       }
-      [data-ui-component="accordion"][data-ui-part="accordion-trigger-icon"]:is(
+      [data-ui-component="accordion"][data-ui-part="accordion-collapsed-icon"]:is(
           :where(
               [data-ui-component="accordion"][data-ui-part="accordion-trigger"]
             )[aria-expanded="true"]
@@ -132,7 +132,7 @@
         ) {
         display: none;
       }
-      [data-ui-component="accordion"][data-ui-part="accordion-chevron-up-icon"]:is(
+      [data-ui-component="accordion"][data-ui-part="accordion-expanded-icon"]:is(
           :where(
               [data-ui-component="accordion"][data-ui-part="accordion-trigger"]
             )[aria-expanded="true"]

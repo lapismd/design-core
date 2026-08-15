@@ -52,21 +52,37 @@
 </Story>
 
 <Story
-  name="Places the indicator first"
+  name="Uses a leading disclosure indicator"
   play={async ({ canvas }) => {
     const trigger = canvas.getByRole("button", { name: "All views" });
-    const indicator = trigger.querySelector<SVGElement>(
-      '[data-ui-part="accordion-chevron-up-icon"]',
+    const collapsedIndicator = trigger.querySelector<SVGElement>(
+      '[data-ui-part="accordion-collapsed-icon"]',
     );
     const label = trigger.querySelector<HTMLElement>("span");
 
     await expect(trigger).toHaveAttribute("data-indicator-position", "start");
-    await expect(indicator).toBeVisible();
-    await expect(indicator!.getBoundingClientRect().right).toBeLessThan(
-      label!.getBoundingClientRect().left,
+    await expect(trigger).toHaveAttribute(
+      "data-indicator-variant",
+      "disclosure",
     );
+    await expect(collapsedIndicator).toHaveAttribute(
+      "data-indicator-glyph",
+      "chevron-right",
+    );
+    await expect(collapsedIndicator).toBeVisible();
+    await expect(
+      collapsedIndicator!.getBoundingClientRect().right,
+    ).toBeLessThan(label!.getBoundingClientRect().left);
     await userEvent.click(trigger);
-    await expect(canvas.queryByText("Shared filters")).not.toBeInTheDocument();
+    const expandedIndicator = trigger.querySelector<SVGElement>(
+      '[data-ui-part="accordion-expanded-icon"]',
+    );
+    await expect(expandedIndicator).toHaveAttribute(
+      "data-indicator-glyph",
+      "chevron-down",
+    );
+    await expect(expandedIndicator).toBeVisible();
+    await expect(canvas.getByText("Shared filters")).toBeVisible();
   }}
   tags={["visual-pending"]}
   parameters={{
@@ -80,9 +96,12 @@
   }}
 >
   {#snippet template()}
-    <Accordion.Root type="single" value="all-views" class="max-w-md">
+    <Accordion.Root type="single" class="max-w-md">
       <Accordion.Item value="all-views">
-        <Accordion.Trigger indicatorPosition="start">
+        <Accordion.Trigger
+          indicatorPosition="start"
+          indicatorVariant="disclosure"
+        >
           <span>All views</span>
         </Accordion.Trigger>
         <Accordion.Content>Shared filters</Accordion.Content>
