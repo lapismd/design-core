@@ -54,6 +54,19 @@
     await expect(getComputedStyle(selected).backgroundColor).not.toBe(
       "rgba(0, 0, 0, 0)",
     );
+    const activeToggle = canvas.getByRole("radio", {
+      name: "Show files as folders",
+    });
+    const idleToggle = canvas.getByRole("radio", {
+      name: "Show files as list",
+    });
+    await expect(activeToggle).toHaveAttribute("data-state", "on");
+    await expect(getComputedStyle(activeToggle).backgroundColor).not.toBe(
+      getComputedStyle(idleToggle).backgroundColor,
+    );
+    await expect(getComputedStyle(activeToggle).backgroundColor).toBe(
+      getComputedStyle(selected).backgroundColor,
+    );
     await expect(canvas.getByText("+12")).toBeVisible();
     await expect(canvas.getByText("-1")).toBeVisible();
   }}

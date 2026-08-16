@@ -4,6 +4,7 @@
   import PackageIcon from "@lucide/svelte/icons/package";
   import * as ToggleGroup from "../../shadcn/toggle-group/index.js";
   import type { FileListingViewMode } from "./types.js";
+  import "./FileListingViewModeToggle.css";
 
   let {
     mode = $bindable("tree"),
@@ -47,10 +48,3 @@
     <PackageIcon />
   </ToggleGroup.Item>
 </ToggleGroup.Root>
-
-<style>
-  :global([data-ui-component="file-listing-view-mode-toggle"] svg) {
-    width: 0.875rem;
-    height: 0.875rem;
-  }
-</style>

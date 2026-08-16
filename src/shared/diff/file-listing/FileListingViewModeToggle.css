@@ -1,0 +1,14 @@
+@import "../diff.tokens.css";
+
+[data-ui-component="file-listing-view-mode-toggle"] svg {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
+[data-ui-component="file-listing-view-mode-toggle"]
+  [data-ui-part="toggle-group-item"][data-state="on"],
+[data-ui-component="file-listing-view-mode-toggle"]
+  [data-ui-part="toggle-group-item"][data-state="on"]:hover {
+  background-color: var(--ui-diff-selected);
+  color: inherit;
+}
