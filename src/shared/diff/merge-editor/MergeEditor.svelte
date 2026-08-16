@@ -389,7 +389,7 @@
       {:else if component.action.kind === "resolve"}
         <PencilIcon />
       {:else}
-        <PlayIcon />
+        <PlayIcon fill="currentColor" />
       {/if}
     </button>
   {/if}

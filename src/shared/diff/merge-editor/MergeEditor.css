@@ -317,6 +317,10 @@
   color: var(--foreground);
 }
 
+.ui-diff-merge-editor__action[data-action-kind="merge"] svg {
+  fill: currentColor;
+}
+
 .ui-diff-merge-editor__view[data-merge-side="right"]
   .ui-diff-merge-editor__action[data-action-kind="merge"]
   svg {

@@ -82,6 +82,10 @@
     );
     await expect(rightMerge).toHaveAttribute("data-point", "toward-center");
     await expect(leftMerge).not.toHaveAttribute("data-point", "toward-center");
+    await expect(leftMerge?.querySelector("svg")).toHaveAttribute(
+      "fill",
+      "currentColor",
+    );
     await expect(canvas.getByText("1 / 1")).toBeVisible();
     await expect(
       editor?.querySelector(
