@@ -79,9 +79,19 @@
   overscroll-behavior: contain;
 }
 
+[data-ui-component="ai-chat-layout"]
+  [data-ui-part="scroll-shell"]
+  [data-scroll-area-content] {
+  display: flex;
+  min-height: 100%;
+  flex: 1 0 auto;
+  flex-direction: column;
+}
+
 [data-ui-component="ai-chat-layout"] [data-ui-part="message-area"] {
   display: flex;
   min-height: 100%;
+  flex: 1 0 auto;
   flex-direction: column;
   padding-inline: 0;
   box-sizing: border-box;
@@ -107,6 +117,7 @@
 [data-ui-component="ai-chat-layout"] [data-ui-part="empty-state"] {
   display: grid;
   min-height: 100%;
+  flex: 1 0 auto;
   place-items: center;
 }
 

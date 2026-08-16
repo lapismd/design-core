@@ -46,6 +46,8 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/ai/chat`.
+- The generated ScrollArea content wrapper MUST preserve the bounded viewport height.
+- An empty conversation MUST fill the message area while the composer remains docked at the bottom.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 
 ## DC-AI-003 — Layout Scroll Button

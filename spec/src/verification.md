@@ -131,7 +131,7 @@ This matrix records one current evidence status for every canonical requirement.
 | DC-FILTER-004 | Implemented | Filter sources, parser tests, catalog stories, and guidance                                      |
 | DC-FILTER-005 | Implemented | Filter sources, parser tests, catalog stories, and guidance                                      |
 | DC-AI-001     | Implemented | AI sources, controllers, Storybook scenarios, and browser acceptance                             |
-| DC-AI-002     | Implemented | AI sources, controllers, Storybook scenarios, and browser acceptance                             |
+| DC-AI-002     | Implemented | Layout empty-conversation height-chain geometry play plus AI browser acceptance                   |
 | DC-AI-003     | Implemented | AI sources, controllers, Storybook scenarios, and browser acceptance                             |
 | DC-AI-004     | Implemented | AI sources, controllers, Storybook scenarios, and browser acceptance                             |
 | DC-AI-005     | Implemented | AI sources, controllers, Storybook scenarios, and browser acceptance                             |

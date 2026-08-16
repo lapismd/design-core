@@ -1,5 +1,6 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
+  import { expect } from "storybook/test";
   import Composer from "../composer/Composer.svelte";
   import Layout from "./Layout.svelte";
   import MessageList from "../message-list/MessageList.svelte";
@@ -143,6 +144,42 @@
 
 <Story
   name="Empty conversation"
+  play={async ({ canvasElement }) => {
+    const frame = canvasElement.querySelector<HTMLElement>(
+      '[data-story="chat-frame"]',
+    );
+    const viewport = frame?.querySelector<HTMLElement>(
+      '[data-ui-part="scroll-area-viewport"]',
+    );
+    const content = viewport?.querySelector<HTMLElement>(
+      "[data-scroll-area-content]",
+    );
+    const messageArea = frame?.querySelector<HTMLElement>(
+      '[data-ui-part="message-area"]',
+    );
+    const emptyState = frame?.querySelector<HTMLElement>(
+      '[data-ui-part="empty-state"]',
+    );
+    if (!frame || !viewport || !content || !messageArea || !emptyState) {
+      throw new Error("The empty chat layout height chain must be rendered");
+    }
+
+    const viewportHeight = viewport.getBoundingClientRect().height;
+    expect(content.getBoundingClientRect().height).toBeGreaterThanOrEqual(
+      viewportHeight - 1,
+    );
+    expect(messageArea.getBoundingClientRect().height).toBeGreaterThanOrEqual(
+      viewportHeight - 1,
+    );
+    const messageStyle = getComputedStyle(messageArea);
+    const availableMessageHeight =
+      messageArea.getBoundingClientRect().height -
+      Number.parseFloat(messageStyle.paddingTop) -
+      Number.parseFloat(messageStyle.paddingBottom);
+    expect(emptyState.getBoundingClientRect().height).toBeGreaterThanOrEqual(
+      availableMessageHeight - 1,
+    );
+  }}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/ai/layout/empty-conversation-chromium.png"],
