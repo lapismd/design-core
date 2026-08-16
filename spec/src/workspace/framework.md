@@ -15,6 +15,7 @@ Workspace framework contracts coordinate reusable layout and state through expli
 | Workspace Guidance          | Documentation surface                      | DC-WS-007   |
 | Workspace navigation        | `@lapismd/design-core/workspace/app-shell` | DC-WS-038   |
 | Managed plugin registry     | `@lapismd/design-core/workspace/core`      | DC-WS-040   |
+| Pane menu Move to           | `@lapismd/design-core/workspace/core`      | DC-WS-041   |
 
 ## DC-WS-001 — Shared Workspace invariants
 
@@ -103,3 +104,14 @@ Workspace framework contracts coordinate reusable layout and state through expli
 - Duplicate source identities must be rejected and removed sources must unsubscribe from lifecycle notifications.
 - Required entries must reject disablement before calling their owning source.
 - The built-in shell plugin manager must participate through the same public source contract as consumer managers.
+
+## DC-WS-041 — Pane menu Move to
+
+**Requirement.** The shared pane menu MUST offer a Move to submenu that relocates the current tab into the left sidebar, right sidebar, or bottom sidebar and opens that dock.
+
+### Acceptance details
+
+- Submenu items MUST be Left Sidebar, Right Sidebar, and Bottom Sidebar, using the existing `panel-left`, `panel-right`, and `panel-bottom` icons.
+- Selecting a destination MUST move the tab into that dock's tabs pane, activate it, and open the dock.
+- The destination that already contains the tab MUST be disabled.
+- Controller tests MUST cover a successful dock move, and the Workspace Tabs pane-menu story MUST expose the submenu labels and icons.

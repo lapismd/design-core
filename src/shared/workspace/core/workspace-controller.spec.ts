@@ -618,6 +618,62 @@ describe("WorkspaceShellController", () => {
     expect(save.mock.calls[0]?.[1]).toMatchObject({ source: "sidebar" });
   });
 
+  it("moves a tab into a dock from the pane menu Move to submenu", () => {
+    const controller = new WorkspaceShellController({ layout: splitLayout() });
+    const menu = controller.createPaneMenu("first");
+    const moveTo = menu.entries.find(
+      (entry) => entry.kind === "submenu" && entry.title === "Move to",
+    );
+    expect(moveTo?.kind).toBe("submenu");
+    if (moveTo?.kind !== "submenu") return;
+    const destinations = moveTo.menu.entries.filter(
+      (entry) => entry.kind === "item",
+    );
+    expect(
+      destinations.map((entry) =>
+        entry.kind === "item" ? [entry.title, entry.icon, entry.disabled] : [],
+      ),
+    ).toEqual([
+      ["Left Sidebar", "panel-left", false],
+      ["Right Sidebar", "panel-right", false],
+      ["Bottom Sidebar", "panel-bottom", false],
+    ]);
+
+    const left = destinations[0];
+    expect(left?.kind).toBe("item");
+    if (left?.kind !== "item") return;
+    left.callback?.();
+    expect(findWorkspaceTab(controller.layout, "first")?.pane.id).toBe(
+      "left-sidebar",
+    );
+    expect(controller.layout.left.open).toBe(true);
+    expect(controller.activeTabId).toBe("first");
+
+    const docked = controller.createPaneMenu("first");
+    const dockedMoveTo = docked.entries.find(
+      (entry) => entry.kind === "submenu" && entry.title === "Move to",
+    );
+    expect(dockedMoveTo?.kind).toBe("submenu");
+    if (dockedMoveTo?.kind !== "submenu") return;
+    expect(
+      dockedMoveTo.menu.entries
+        .filter((entry) => entry.kind === "item")
+        .map((entry) =>
+          entry.kind === "item" ? [entry.title, entry.disabled] : [],
+        ),
+    ).toEqual([
+      ["Left Sidebar", true],
+      ["Right Sidebar", false],
+      ["Bottom Sidebar", false],
+    ]);
+    expect(controller.moveTabToDock("first", "left")).toBe(false);
+    expect(controller.moveTabToDock("first", "bottom")).toBe(true);
+    expect(findWorkspaceTab(controller.layout, "first")?.pane.id).toBe(
+      "bottom-panel",
+    );
+    expect(controller.layout.bottom.open).toBe(true);
+  });
+
   it("reports load and save failures while retaining usable state", async () => {
     const errors: string[] = [];
     const controller = new WorkspaceShellController({

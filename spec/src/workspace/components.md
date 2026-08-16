@@ -242,6 +242,9 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 
 **Requirement.** The Workspace Tabs family MUST compose controlled workspace tabs with selection, close, overflow, and reorder actions.
 
+The family presents the shared controller pane menu, including Move to
+sidebar destinations.
+
 ### Acceptance details
 
 - The catalog MUST demonstrate supported states through the public `@lapismd/design-core/workspace/tabs` boundary without introducing a second runtime contract.

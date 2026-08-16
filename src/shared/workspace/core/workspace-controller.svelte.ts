@@ -65,6 +65,15 @@ function workspaceNodeContains(node: WorkspaceNode, nodeId: string): boolean {
   );
 }
 
+function firstWorkspaceTabsNode(node: WorkspaceNode): WorkspaceTabsNode | null {
+  if (node.kind === "tabs") return node;
+  for (const child of node.children) {
+    const match = firstWorkspaceTabsNode(child);
+    if (match) return match;
+  }
+  return null;
+}
+
 function pruneEmptyWorkspacePane(
   root: WorkspaceNode,
   paneId: string,
@@ -926,6 +935,15 @@ export class WorkspaceShellController {
     return workspaceWindow;
   }
 
+  moveTabToDock(tabId: string, position: WorkspaceDockPosition): boolean {
+    const location = findWorkspaceTab(this.layout, tabId);
+    const target = this.#dockTabsPane(position);
+    if (!location || !target) return false;
+    if (this.#dockForPane(location.pane.id) === position) return false;
+    this.setDockOpen(position, true);
+    return this.dropTab(tabId, target.id, "center");
+  }
+
   floatTab(
     tabId: string,
     bounds: Partial<WorkspaceWindowBounds> = {},
@@ -1089,6 +1107,36 @@ export class WorkspaceShellController {
           ),
       (group) =>
         group
+          .addMenu("Move to", (submenu) => {
+            const currentDock = this.#dockForPane(location.pane.id);
+            for (const destination of [
+              {
+                position: "left" as const,
+                title: "Left Sidebar",
+                icon: "panel-left",
+              },
+              {
+                position: "right" as const,
+                title: "Right Sidebar",
+                icon: "panel-right",
+              },
+              {
+                position: "bottom" as const,
+                title: "Bottom Sidebar",
+                icon: "panel-bottom",
+              },
+            ]) {
+              submenu.addItem((item) =>
+                item
+                  .setTitle(destination.title)
+                  .setIcon(destination.icon)
+                  .setDisabled(currentDock === destination.position)
+                  .onClick(() => {
+                    this.moveTabToDock(tabId, destination.position);
+                  }),
+              );
+            }
+          })
           .addItem((item) =>
             item
               .setTitle("Move to floating window")
@@ -1375,6 +1423,20 @@ export class WorkspaceShellController {
       if (match) return match;
     }
     return null;
+  }
+
+  #dockTabsPane(position: WorkspaceDockPosition): WorkspaceTabsNode | null {
+    const preferredId =
+      position === "left"
+        ? "left-sidebar"
+        : position === "right"
+          ? "right-sidebar"
+          : "bottom-panel";
+    const preferred = findWorkspacePane(this.layout, preferredId);
+    if (preferred && this.#dockForPane(preferred.id) === position) {
+      return preferred;
+    }
+    return firstWorkspaceTabsNode(this.layout[position].root);
   }
 
   #dockForPane(paneId: string): WorkspaceDockPosition | null {

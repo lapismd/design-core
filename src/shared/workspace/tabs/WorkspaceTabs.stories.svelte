@@ -269,6 +269,7 @@
     for (const name of [
       "Split right",
       "Split down",
+      /^Move to$/,
       "Move to floating window",
       "Open in new window",
       "Close",
@@ -276,6 +277,13 @@
     ]) {
       await expect(page.getByRole("menuitem", { name })).toBeVisible();
     }
+    await userEvent.hover(page.getByRole("menuitem", { name: /^Move to$/ }));
+    for (const name of ["Left Sidebar", "Right Sidebar", "Bottom Sidebar"]) {
+      await expect(page.getByRole("menuitem", { name })).toBeVisible();
+    }
+    await expect(
+      page.getByRole("menuitem", { name: "Left Sidebar" }).querySelector("svg"),
+    ).not.toBeNull();
     await userEvent.keyboard("{Escape}");
 
     const referenceMenu = canvas.getByRole("button", {

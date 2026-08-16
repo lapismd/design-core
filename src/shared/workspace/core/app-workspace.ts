@@ -379,6 +379,14 @@ export class AppWorkspace {
       .map((tab) => new WorkspaceLeaf(this.renderer, tab.id));
   }
 
+  moveLeafToDock(
+    leafOrId: WorkspaceLeaf | string,
+    position: WorkspaceDockPosition,
+  ): boolean {
+    const id = typeof leafOrId === "string" ? leafOrId : leafOrId.id;
+    return this.renderer.moveTabToDock(id, position);
+  }
+
   floatLeaf(
     leafOrId: WorkspaceLeaf | string,
     bounds?: Partial<WorkspaceWindowBounds>,

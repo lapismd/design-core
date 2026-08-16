@@ -181,6 +181,7 @@
     for (const name of [
       "Split right",
       "Split down",
+      /^Move to$/,
       "Move to floating window",
       "Open in new window",
       "Close",
