@@ -276,7 +276,7 @@
 .ui-diff-merge-editor__line-number {
   position: relative;
   min-height: var(--ui-diff-merge-line-height);
-  padding-inline: 1.75rem 0.25rem;
+  padding-inline: 1.25rem 0.25rem;
   text-align: end;
 }
 
@@ -301,20 +301,25 @@
   top: 50%;
   left: 0.125rem;
   display: inline-flex;
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 0.875rem;
+  height: 0.875rem;
   transform: translateY(-50%);
   align-items: center;
   justify-content: center;
   border: 0;
   background: transparent;
-  color: var(--muted-foreground);
+  color: inherit;
   padding: 0;
   cursor: pointer;
 }
 
 .ui-diff-merge-editor__action:hover {
-  color: var(--foreground);
+  opacity: 0.72;
+}
+
+.ui-diff-merge-editor__action svg {
+  width: 0.75rem;
+  height: 0.75rem;
 }
 
 .ui-diff-merge-editor__action[data-action-kind="merge"] svg {
