@@ -24,13 +24,18 @@
 
 <Story
   name="Adds a reference"
-  play={async ({ canvas }) => {
+  play={async ({ canvas, canvasElement }) => {
     await userEvent.click(
       canvas.getByRole("button", { name: /Add Reference/i }),
     );
     await expect(
       canvas.getByPlaceholderText(/Search references/i),
     ).toBeVisible();
+    expect(
+      canvasElement.querySelector(
+        '[data-ui-component="command-view"][data-ui-part="root"]',
+      ),
+    ).not.toBeNull();
   }}
   tags={["visual-failed"]}
 >

@@ -113,6 +113,7 @@ Form inputs provide higher-level controlled editing patterns composed from share
 
 - The public boundary is `@lapismd/design-core/forms`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- The add-reference search surface MUST compose `@lapismd/design-core/shadcn/command-view` and MUST NOT own overlay chrome.
 
 ## DC-FORM-016 — Secret Field
 

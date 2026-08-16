@@ -174,7 +174,8 @@ manual adapters and custom composition.
 
 These stay in shared forms when callers supply domain data via props:
 
-- `ReferencePicker` — reference index from the app
+- `ReferencePicker` — reference index from the app; add-reference search
+  composes Command View
 - `TaskDueCalendar` — generic calendar control (until a shadcn calendar lands)
 - `DatePicker` — natural-language / semantic dates + `TaskDueCalendar` (no calendar recipe yet)
 - `FilterCommandPicker` — searchable single/multi picker; host supplies options

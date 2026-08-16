@@ -1,13 +1,12 @@
 <script lang="ts">
   import "./ReferencePicker.css";
   import "../form-control-row/FormControlRow.css";
-  import { Command as CommandPrimitive } from "bits-ui";
   import ChevronDownIcon from "@lucide/svelte/icons/chevron-down";
   import PlusIcon from "@lucide/svelte/icons/plus";
-  import SearchIcon from "@lucide/svelte/icons/search";
   import XIcon from "@lucide/svelte/icons/x";
   import type { Snippet } from "svelte";
   import { Button } from "@lapismd/design-core/shadcn/button";
+  import * as CommandView from "@lapismd/design-core/shadcn/command-view";
   import FormAddButton from "../form-add-button/FormAddButton.svelte";
   import {
     duplicateReferenceCount,
@@ -329,38 +328,26 @@
             </button>
           {/if}
         </div>
-        <CommandPrimitive.Root
-          class="cv-reference-command"
-          label={`${addHeading} search`}
-          shouldFilter={false}
-          loop
-        >
-          <div class="cv-reference-command-input-wrap">
-            <div class="cv-reference-command-input-row">
-              <SearchIcon />
-              <CommandPrimitive.Input
-                bind:value={query}
-                class="cv-reference-command-input"
-                placeholder={searchPlaceholder}
-                aria-controls="cv-reference-command-list"
-              />
-            </div>
-          </div>
-          <CommandPrimitive.List
-            id="cv-reference-command-list"
-            class="cv-reference-command-list"
+        <div class="cv-reference-command">
+          <CommandView.Root
+            shouldFilter={false}
+            loop
+            label={`${addHeading} search`}
           >
-            {#if references.length > 0}
-              <CommandPrimitive.Group
-                class="cv-reference-command-group"
-                value="references"
-                forceMount
-              >
-                <CommandPrimitive.GroupItems
-                  class="cv-reference-command-group-items"
-                >
+            <CommandView.Input
+              bind:value={query}
+              placeholder={searchPlaceholder}
+              aria-controls="cv-reference-command-list"
+            />
+            <CommandView.List
+              id="cv-reference-command-list"
+              aria-label={`${addHeading} search`}
+            >
+              <CommandView.Empty>{emptyLabel}</CommandView.Empty>
+              {#if references.length > 0}
+                <CommandView.Group value="references">
                   {#each references as reference (reference.ref)}
-                    <CommandPrimitive.Item
+                    <CommandView.Item
                       class={[
                         "cv-reference-command-item",
                         searchOption && "cv-reference-command-item--custom",
@@ -382,33 +369,20 @@
                           onSelect: () => addReference(reference.ref),
                         })}
                       {:else}
-                        <span class="cv-reference-option-title">
-                          <span class="cv-reference-ref">{reference.ref}</span>
-                          <span class="cv-reference-label"
-                            >{reference.label}</span
-                          >
-                        </span>
-                        <span class="cv-reference-path">{reference.path}</span>
-                        {#if reference.excerpt}
-                          <span class="cv-reference-excerpt">
-                            {reference.excerpt}
-                          </span>
-                        {/if}
+                        <CommandView.ItemLabel>
+                          {reference.ref}
+                          {reference.label}
+                        </CommandView.ItemLabel>
+                        <CommandView.ItemDescription>
+                          {reference.path}
+                        </CommandView.ItemDescription>
                       {/if}
-                    </CommandPrimitive.Item>
+                    </CommandView.Item>
                   {/each}
-                </CommandPrimitive.GroupItems>
-              </CommandPrimitive.Group>
-            {:else if canCreateFromSearch()}
-              <CommandPrimitive.Group
-                class="cv-reference-command-group"
-                value="create"
-                forceMount
-              >
-                <CommandPrimitive.GroupItems
-                  class="cv-reference-command-group-items"
-                >
-                  <CommandPrimitive.Item
+                </CommandView.Group>
+              {:else if canCreateFromSearch()}
+                <CommandView.Group value="create">
+                  <CommandView.Item
                     class={[
                       "cv-reference-command-item",
                       searchCreate && "cv-reference-command-item--custom",
@@ -421,20 +395,16 @@
                     {#if searchCreate}
                       {@render searchCreate(query.trim())}
                     {:else}
-                      <span class="cv-reference-create-label">
+                      <CommandView.ItemLabel>
                         Create "{query.trim()}"
-                      </span>
+                      </CommandView.ItemLabel>
                     {/if}
-                  </CommandPrimitive.Item>
-                </CommandPrimitive.GroupItems>
-              </CommandPrimitive.Group>
-            {:else}
-              <CommandPrimitive.Empty class="cv-reference-empty" forceMount>
-                {emptyLabel}
-              </CommandPrimitive.Empty>
-            {/if}
-          </CommandPrimitive.List>
-        </CommandPrimitive.Root>
+                  </CommandView.Item>
+                </CommandView.Group>
+              {/if}
+            </CommandView.List>
+          </CommandView.Root>
+        </div>
         {#if Object.keys(referenceIndex.duplicates).length > 0}
           <p class="cv-reference-duplicates">{duplicateMessage}</p>
         {/if}

@@ -50,6 +50,9 @@ Shadcn form controls provide the low-level accessible inputs used directly or in
 
 **Requirement.** The Command View family MUST provide a host-agnostic searchable list with composable input start icon, item icon, label, description, and shortcut parts. Overflowing lists MUST use the public ScrollArea viewport. The family MUST NOT own dialog, popover, or other overlay chrome.
 
+Root forwards Command filter and value props. It does not expose a separate
+bits-ui command API bindable.
+
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/shadcn/command-view`.

@@ -97,7 +97,7 @@ This matrix records one current evidence status for every canonical requirement.
 | DC-FORM-012   | Implemented | Forms family source, focused export, and colocated Filter Command Picker stories                 |
 | DC-FORM-013   | Implemented | Forms family source and colocated Storybook scenarios for Inline Option Picker                   |
 | DC-FORM-014   | Implemented | Forms family source and colocated Storybook scenarios for List Editor                            |
-| DC-FORM-015   | Implemented | Forms family source and colocated Storybook scenarios for Reference Picker                       |
+| DC-FORM-015   | Implemented | Forms family source composes Command View; colocated Storybook scenarios for Reference Picker    |
 | DC-FORM-016   | Implemented | Forms family source and colocated Storybook scenarios for Secret Field                           |
 | DC-FORM-017   | Implemented | Forms family source and colocated Storybook scenarios for Segmented Control                      |
 | DC-FORM-018   | Implemented | Forms family source and colocated Storybook scenarios for Task Due Calendar                      |
