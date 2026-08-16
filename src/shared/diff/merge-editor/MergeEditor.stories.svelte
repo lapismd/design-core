@@ -5,10 +5,12 @@
     Basic,
     Demo,
     Editable,
+    Fill,
     MatchingSides,
     MismergeQuicksort,
     OneWayEditable,
     Quicksort,
+    Wrap,
   } from "./MergeEditor.example-sources.js";
   import MergeEditor from "./MergeEditor.svelte";
   import MergeEditorDemo from "./MergeEditorDemo.svelte";
@@ -63,6 +65,148 @@
         }}
       />
       <output class="sr-only">{oneWayResolved}</output>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Wraps long lines"
+  play={async ({ canvas }) => {
+    const editor = canvas
+      .getByLabelText("Left")
+      .closest("[data-ui-component='merge-editor']");
+    await expect(editor).toHaveAttribute("data-wrap", "true");
+    const line = editor?.querySelector(".ui-diff-merge-editor__line");
+    await expect(line).not.toBeNull();
+    const style = getComputedStyle(line as HTMLElement);
+    await expect(style.whiteSpace).toBe("pre-wrap");
+    await expect((line as HTMLElement).clientHeight).toBeGreaterThan(20);
+    await expect((line as HTMLElement).scrollWidth).toBeLessThanOrEqual(
+      (line as HTMLElement).clientWidth + 1,
+    );
+  }}
+  tags={["visual-pending"]}
+  parameters={{
+    docs: { source: { code: Wrap, language: "tsx", type: "code" } },
+  }}
+>
+  {#snippet template()}
+    <div class="p-4" style="width: 16rem">
+      <MergeEditor
+        mode="one-way"
+        path="src/note.ts"
+        wrap
+        left={'export const note = "' + "alpha ".repeat(24).trim() + '";\n'}
+        right={'export const note = "' + "beta ".repeat(24).trim() + '";\n'}
+      />
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Fills the host through ScrollArea"
+  play={async ({ canvas, canvasElement }) => {
+    const root = canvas
+      .getByLabelText("Left")
+      .closest("[data-ui-component='merge-editor']") as HTMLElement | null;
+    const host = root?.parentElement;
+    await expect(root).not.toBeNull();
+    await expect(host).not.toBeNull();
+    const areas = root!.querySelectorAll(
+      '[data-ui-component="scroll-area"][data-ui-part="scroll-area"]',
+    );
+    await expect(areas.length).toBeGreaterThan(0);
+    await expect(
+      Math.abs(root!.getBoundingClientRect().height - host!.clientHeight),
+    ).toBeLessThan(2);
+    const footer = root!.querySelector<HTMLElement>(
+      ".ui-diff-merge-editor__footer",
+    );
+    await expect(footer).not.toBeNull();
+    const bars = [
+      ...root!.querySelectorAll<HTMLElement>(
+        '[data-ui-part="scroll-area-scrollbar"][data-orientation="horizontal"]',
+      ),
+    ];
+    const footerTop = footer!.getBoundingClientRect().top;
+    for (const bar of bars) {
+      const box = bar.getBoundingClientRect();
+      await expect(box.bottom).toBeLessThanOrEqual(footerTop + 2);
+      await expect(box.bottom).toBeGreaterThan(footerTop - 16);
+    }
+    const content = root!.querySelector(".ui-diff-merge-editor__view-content");
+    await expect(content).not.toBeNull();
+    await expect(getComputedStyle(content as HTMLElement).overflowX).toBe(
+      "hidden",
+    );
+    for (const view of root!.querySelectorAll<HTMLElement>(
+      "[data-ui-part='merge-view']",
+    )) {
+      const viewport = view.querySelector<HTMLElement>(
+        "[data-ui-part='scroll-area-viewport']",
+      );
+      const gutter = view.querySelector<HTMLElement>(
+        ".ui-diff-merge-editor__gutter",
+      );
+      await expect(viewport).not.toBeNull();
+      await expect(gutter).not.toBeNull();
+      await expect(gutter!.getBoundingClientRect().bottom).toBeGreaterThanOrEqual(
+        viewport!.getBoundingClientRect().bottom - 16,
+      );
+      const rail = getComputedStyle(view, "::before");
+      await expect(rail.content).not.toBe("none");
+      await expect(Number.parseFloat(rail.width)).toBeGreaterThan(0);
+    }
+  }}
+  tags={["visual-pending"]}
+  parameters={{
+    docs: { source: { code: Fill, language: "tsx", type: "code" } },
+  }}
+>
+  {#snippet template()}
+    <div style="height: 20rem; width: 36rem">
+      <MergeEditor
+        mode="one-way"
+        path="src/fill.ts"
+        left={Array.from(
+          { length: 5 },
+          (_, index) => `left ${index + 1} ${"alpha ".repeat(20).trim()}`,
+        ).join("\n")}
+        right={Array.from(
+          { length: 5 },
+          (_, index) => `right ${index + 1} ${"beta ".repeat(20).trim()}`,
+        ).join("\n")}
+      />
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Hosts can flush the card frame"
+  play={async ({ canvas }) => {
+    const editor = canvas
+      .getByLabelText("Left")
+      .closest("[data-ui-component='merge-editor']");
+    await expect(editor).not.toBeNull();
+    const style = getComputedStyle(editor as HTMLElement);
+    await expect(style.borderTopWidth).toBe("0px");
+    await expect(style.borderRightWidth).toBe("0px");
+    await expect(style.borderLeftWidth).toBe("0px");
+    await expect(style.borderRadius).toBe("0px");
+  }}
+  tags={["visual-pending"]}
+>
+  {#snippet template()}
+    <div
+      class="p-4"
+      style="--ui-diff-frame-border: none; --ui-diff-frame-radius: 0"
+    >
+      <MergeEditor
+        mode="one-way"
+        path="src/hello.ts"
+        left={"hello\nworld\n"}
+        right={"hello\nthere\n"}
+      />
     </div>
   {/snippet}
 </Story>

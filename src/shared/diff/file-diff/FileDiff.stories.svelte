@@ -1,7 +1,7 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent } from "storybook/test";
-  import { Basic } from "./FileDiff.example-sources.js";
+  import { Basic, Fill, Split, Wrap } from "./FileDiff.example-sources.js";
   import FileDiff from "./FileDiff.svelte";
   import FileDiffComposer from "./FileDiffComposer.svelte";
 
@@ -43,6 +43,73 @@
   }
 
   const largeChange = paddedChange(24);
+  const wrapOld = `export const note = "${"alpha ".repeat(24).trim()}";\n`;
+  const wrapNew = `export const note = "${"beta ".repeat(24).trim()}";\n`;
+  const fillOld = Array.from(
+    { length: 5 },
+    (_, index) => `old ${index + 1} ${"alpha ".repeat(20).trim()}`,
+  ).join("\n");
+  const fillNew = Array.from(
+    { length: 5 },
+    (_, index) => `new ${index + 1} ${"beta ".repeat(20).trim()}`,
+  ).join("\n");
+
+  function paneViewport(root: ParentNode, side: "left" | "right") {
+    return root.querySelector<HTMLElement>(
+      `[data-ui-part='file-diff-pane'][data-side='${side}'] [data-ui-part='scroll-area-viewport']`,
+    );
+  }
+
+  function expectFilledScrollArea(
+    root: HTMLElement,
+    host: HTMLElement,
+    options?: { above?: HTMLElement },
+  ) {
+    const areas = root.querySelectorAll(
+      '[data-ui-component="scroll-area"][data-ui-part="scroll-area"]',
+    );
+    expect(areas.length).toBeGreaterThan(0);
+    expect(Math.abs(root.getBoundingClientRect().height - host.clientHeight)).toBeLessThan(
+      2,
+    );
+    const bars = [
+      ...root.querySelectorAll<HTMLElement>(
+        '[data-ui-part="scroll-area-scrollbar"][data-orientation="horizontal"]',
+      ),
+    ];
+    const limit = options?.above?.getBoundingClientRect().top ?? root.getBoundingClientRect().bottom;
+    for (const bar of bars) {
+      const box = bar.getBoundingClientRect();
+      expect(box.bottom).toBeLessThanOrEqual(limit + 2);
+      expect(box.bottom).toBeGreaterThan(limit - 16);
+    }
+  }
+
+  function expectGutterFills(root: HTMLElement) {
+    const hosts = [
+      ...root.querySelectorAll<HTMLElement>(
+        "[data-ui-part='file-diff-pane'], [data-ui-part='merge-view']",
+      ),
+    ];
+    expect(hosts.length).toBeGreaterThan(0);
+    for (const host of hosts) {
+      const viewport = host.querySelector<HTMLElement>(
+        "[data-ui-part='scroll-area-viewport']",
+      );
+      const fill = host.querySelector<HTMLElement>(
+        ".ui-diff-file-diff__pane-stack, .ui-diff-merge-editor__gutter",
+      );
+      expect(viewport).not.toBeNull();
+      expect(fill).not.toBeNull();
+      const viewportBox = viewport!.getBoundingClientRect();
+      expect(fill!.getBoundingClientRect().bottom).toBeGreaterThanOrEqual(
+        viewportBox.bottom - 16,
+      );
+      const rail = getComputedStyle(host, "::before");
+      expect(rail.content).not.toBe("none");
+      expect(Number.parseFloat(rail.width)).toBeGreaterThan(0);
+    }
+  }
 
   function diffText(expected: string) {
     return (_content: string, element: Element | null) =>
@@ -86,15 +153,75 @@
         .getByText(diffText("return `Hello, ${name}!`;"))
         .closest("[data-side]"),
     ).toHaveAttribute("data-side", "right");
+    const leftRow = canvas
+      .getByText(diffText('return "Hello, " + name;'))
+      .closest("[data-ui-part='diff-row']");
+    const gutter = leftRow?.querySelector(".ui-diff-file-diff__gutter");
+    const text = leftRow?.querySelector(".ui-diff-file-diff__text");
+    await expect(gutter).not.toBeNull();
+    await expect(text).not.toBeNull();
+    await expect(gutter?.getBoundingClientRect().top).toBe(
+      text?.getBoundingClientRect().top,
+    );
+    const omegaRows = canvas
+      .getAllByText(diffText("omega"))
+      .map((node) => node.closest("[data-ui-part='diff-row']"));
+    const omegaLeft = omegaRows
+      .find((row) => row?.getAttribute("data-side") === "left")
+      ?.querySelector(".ui-diff-file-diff__gutter");
+    const omegaRight = omegaRows
+      .find((row) => row?.getAttribute("data-side") === "right")
+      ?.querySelector(".ui-diff-file-diff__gutter");
+    await expect(omegaLeft).toHaveTextContent("5");
+    await expect(omegaRight).toHaveTextContent("4");
+    const root = canvas
+      .getByLabelText("Previous revision")
+      .closest("[data-ui-component='file-diff']") as HTMLElement | null;
+    await expect(root).not.toBeNull();
+    expectGutterFills(root!);
   }}
   tags={["visual-pending"]}
 >
   {#snippet template()}
-    <div class="max-w-5xl p-4">
+    <div class="max-w-5xl p-4" style="height: 16rem">
       <FileDiff
         path="src/greet.ts"
-        oldText={oldGreet}
-        newText={newGreet}
+        oldText={`${oldGreet}remove-me\nomega\n`}
+        newText={`${newGreet}omega\n`}
+        viewMode="split"
+      />
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Synchronizes unwrapped split panes"
+  play={async ({ canvas }) => {
+    const leftPane = canvas.getByLabelText("Previous revision");
+    const rightPane = canvas.getByLabelText("Later revision");
+    const left = paneViewport(leftPane, "left");
+    const right = paneViewport(rightPane, "right");
+    await expect(left).not.toBeNull();
+    await expect(right).not.toBeNull();
+    await expect(left!.getBoundingClientRect().right).toBeLessThanOrEqual(
+      right!.getBoundingClientRect().left + 1,
+    );
+    await expect(left!.scrollWidth).toBeGreaterThan(left!.clientWidth);
+    left!.scrollLeft = 48;
+    left!.dispatchEvent(new Event("scroll"));
+    await expect(right!.scrollLeft).toBe(48);
+  }}
+  tags={["visual-pending"]}
+  parameters={{
+    docs: { source: { code: Split, language: "tsx", type: "code" } },
+  }}
+>
+  {#snippet template()}
+    <div class="p-4" style="width: 20rem">
+      <FileDiff
+        path="src/note.ts"
+        oldText={wrapOld}
+        newText={wrapNew}
         viewMode="split"
       />
     </div>
@@ -139,6 +266,66 @@
     <div class="flex max-w-3xl flex-col gap-4 p-4">
       <FileDiff path="assets/logo.png" oldText={null} newText="" />
       <FileDiff path="src/empty.ts" patch="" />
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Fills the host through ScrollArea"
+  play={async ({ canvas, canvasElement }) => {
+    const root = canvasElement.querySelector<HTMLElement>(
+      "[data-ui-component='file-diff']",
+    );
+    const host = root?.parentElement;
+    await expect(root).not.toBeNull();
+    await expect(host).not.toBeNull();
+    expectFilledScrollArea(root!, host!);
+    expectGutterFills(root!);
+    await expect(
+      canvas.getByText(diffText(`new 1 ${"beta ".repeat(20).trim()}`)),
+    ).toBeVisible();
+  }}
+  tags={["visual-pending"]}
+  parameters={{
+    docs: { source: { code: Fill, language: "tsx", type: "code" } },
+  }}
+>
+  {#snippet template()}
+    <div style="height: 16rem; width: 24rem">
+      <FileDiff
+        path="src/fill.ts"
+        oldText={fillOld}
+        newText={fillNew}
+        viewMode="split"
+      />
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Wraps long lines"
+  play={async ({ canvas }) => {
+    const root = canvas
+      .getByText(diffText(`export const note = "${"beta ".repeat(24).trim()}";`))
+      .closest("[data-ui-component='file-diff']");
+    await expect(root).toHaveAttribute("data-wrap", "true");
+    const text = root?.querySelector(".ui-diff-file-diff__text");
+    await expect(text).not.toBeNull();
+    const style = getComputedStyle(text as HTMLElement);
+    await expect(style.whiteSpace).toBe("pre-wrap");
+    await expect((text as HTMLElement).clientHeight).toBeGreaterThan(20);
+    await expect((text as HTMLElement).scrollWidth).toBeLessThanOrEqual(
+      (text as HTMLElement).clientWidth + 1,
+    );
+  }}
+  tags={["visual-pending"]}
+  parameters={{
+    docs: { source: { code: Wrap, language: "tsx", type: "code" } },
+  }}
+>
+  {#snippet template()}
+    <div class="p-4" style="width: 16rem">
+      <FileDiff path="src/note.ts" oldText={wrapOld} newText={wrapNew} wrap />
     </div>
   {/snippet}
 </Story>

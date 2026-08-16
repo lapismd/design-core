@@ -12,6 +12,8 @@ Diff contracts keep change-set listing, file comparison, and merge presentation 
 | Merge Editor           | `@lapismd/design-core/diff` | DC-DIFF-004 |
 | Diff Guidance          | Documentation surface       | DC-DIFF-005 |
 | File Change Stats      | `@lapismd/design-core/diff` | DC-DIFF-006 |
+| Diff wrap and frame    | `@lapismd/design-core/diff` | DC-DIFF-007 |
+| Diff scroll surfaces   | `@lapismd/design-core/diff` | DC-DIFF-008 |
 
 ## DC-DIFF-001 — Shared Diff invariants
 
@@ -43,12 +45,12 @@ Diff contracts keep change-set listing, file comparison, and merge presentation 
 
 - The public boundary is `@lapismd/design-core/diff`.
 - Unchanged context MUST collapse with incremental expand controls.
-- Line identity MUST be exposed for host accessories through `data-diff-line-*` attributes or a `lineAccessory` snippet.
-- The catalog MUST demonstrate unified, split, collapsed-context, binary, empty, and multi-file composer states without introducing a second runtime contract.
+- Line identity MUST be exposed through `data-diff-line-*` or a `lineAccessory` snippet, and split gutters MUST show old-file numbers on the left and new-file numbers on the right, each aligned with its row.
+- The catalog MUST demonstrate unified, split, collapsed-context, binary, empty, multi-file composer, and wrap-text states without introducing a second runtime contract.
 
 ## DC-DIFF-004 — Merge Editor
 
-**Requirement.** The Merge Editor family MUST present one-way or three-way merge blocks and apply host-triggered accept, delete, and resolve actions without writing a repository.
+**Requirement.** The Merge Editor family MUST present one-way or three-way merge blocks and apply host-triggered accept, delete, and resolve actions without writing a repository. Horizontally scrollable panes MUST be keyboard-focusable.
 
 ### Acceptance details
 
@@ -78,3 +80,25 @@ Diff contracts keep change-set listing, file comparison, and merge presentation 
 - Added and removed counts MUST use distinct `--ui-diff-stat-*` colors and `formatDiffDelta` prefixes.
 - Zero sides MUST hide unless `showZero` is set.
 - The catalog MUST demonstrate added, removed, and hidden-zero states without introducing a second runtime contract.
+
+## DC-DIFF-007 — Diff wrap and frame
+
+**Requirement.** File Diff and Merge Editor MUST wrap long lines against the available width when `wrap` is true and MUST paint their outer card through `--ui-diff-frame-border` and `--ui-diff-frame-radius`.
+
+### Acceptance details
+
+- The public boundary is `@lapismd/design-core/diff`.
+- `wrap` MUST set `data-wrap="true"` and wrap text to the pane width, while unwrapped split panes MUST clip to their column and sync horizontal scroll.
+- Frame tokens MUST default to the card border and radius so hosts can flush them.
+- The catalog MUST demonstrate wrap on File Diff and Merge Editor.
+
+## DC-DIFF-008 — Diff scroll surfaces
+
+**Requirement.** File Diff and Merge Editor MUST scroll through the public shadcn ScrollArea, fill the host height, and keep unwrapped horizontal scrollbars at the bottom of that filled surface.
+
+### Acceptance details
+
+- The public boundary is `@lapismd/design-core/diff`.
+- File Diff and Merge Editor MUST mount shadcn `scroll-area` viewports instead of native overflow panes.
+- The editor MUST fill the host height, paint line-number gutters through unused space below the last line, and keep unwrapped horizontal scrollbars at the bottom of that surface, just above any merge footer.
+- The catalog MUST demonstrate the filled ScrollArea on File Diff and Merge Editor.

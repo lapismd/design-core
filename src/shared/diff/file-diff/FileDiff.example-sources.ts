@@ -24,11 +24,39 @@ export const Split = `<script lang="ts">
 </script>
 
 <FileDiff
-  path="src/greet.ts"
-  oldText={"export const n = 1;\\n"}
-  newText={"export const n = 2;\\n"}
+  path="src/note.ts"
   viewMode="split"
+  oldText={'export const note = "alpha alpha alpha alpha alpha alpha";\\n'}
+  newText={'export const note = "beta beta beta beta beta beta beta";\\n'}
 />`;
+
+export const Wrap = `<script lang="ts">
+  import { FileDiff } from "@lapismd/design-core/diff";
+</script>
+
+<FileDiff
+  path="src/note.ts"
+  wrap
+  oldText={'export const note = "alpha alpha alpha alpha alpha alpha alpha alpha";\\n'}
+  newText={'export const note = "beta beta beta beta beta beta beta beta beta";\\n'}
+/>`;
+
+export const Fill = `<script lang="ts">
+  import { FileDiff } from "@lapismd/design-core/diff";
+
+  const oldText = Array.from(
+    { length: 5 },
+    (_, index) => \`old \${index + 1} \${"alpha ".repeat(20).trim()}\`,
+  ).join("\\n");
+  const newText = Array.from(
+    { length: 5 },
+    (_, index) => \`new \${index + 1} \${"beta ".repeat(20).trim()}\`,
+  ).join("\\n");
+</script>
+
+<div style="height: 16rem; width: 24rem">
+  <FileDiff path="src/fill.ts" viewMode="split" {oldText} {newText} />
+</div>`;
 
 export const Composer = `<script lang="ts">
   import { FileDiffComposer } from "@lapismd/design-core/diff";

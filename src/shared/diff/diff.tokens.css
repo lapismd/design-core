@@ -50,6 +50,8 @@
   );
   --ui-diff-current-ring: var(--ring, var(--primary));
   --ui-diff-border: var(--border);
+  --ui-diff-frame-border: 1px solid var(--ui-diff-border);
+  --ui-diff-frame-radius: calc(var(--radius) * 0.8);
   --ui-diff-stat-added: oklch(0.42 0.12 145);
   --ui-diff-stat-removed: oklch(0.48 0.19 25);
 }

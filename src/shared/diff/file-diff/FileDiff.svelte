@@ -13,6 +13,7 @@
     buildDisplayItems,
     buildUnifiedDiffRows,
     isBinaryFilePath,
+    lineNumberForSplitSide,
     pairRowsForSplit,
     parsePatchToRows,
     type CollapsedContextBlock,
@@ -35,6 +36,7 @@
     newText = null,
     patch,
     viewMode = "unified",
+    wrap = false,
     language,
     scrollTo,
     lineAccessory,
@@ -45,6 +47,7 @@
     /** Unified patch used when old/new texts are omitted. */
     patch?: string;
     viewMode?: FileDiffViewMode;
+    wrap?: boolean;
     language?: string;
     scrollTo?: FileDiffScrollTarget | null;
     lineAccessory?: Snippet<[FileDiffLineContext]>;
@@ -81,6 +84,73 @@
       `[data-diff-line-number="${target.lineNumber}"]${variant}`,
     );
     node?.scrollIntoView({ block: "center", inline: "nearest" });
+  });
+
+  $effect(() => {
+    const container = rootEl;
+    const shouldSync = viewMode === "split";
+    const syncHorizontal = shouldSync && !wrap;
+    if (!container || !shouldSync) return;
+    const targets = [
+      ...container.querySelectorAll<HTMLElement>(
+        "[data-ui-part='file-diff-pane'] [data-ui-part='scroll-area-viewport']",
+      ),
+    ];
+    if (targets.length === 0) return;
+    let syncing = false;
+    const listeners = targets.map((target) => {
+      const onScroll = () => {
+        if (syncing) return;
+        syncing = true;
+        for (const candidate of targets) {
+          if (candidate === target) continue;
+          if (candidate.scrollTop !== target.scrollTop) {
+            candidate.scrollTop = target.scrollTop;
+          }
+          if (
+            syncHorizontal &&
+            candidate.scrollLeft !== target.scrollLeft
+          ) {
+            candidate.scrollLeft = target.scrollLeft;
+          }
+        }
+        syncing = false;
+      };
+      target.addEventListener("scroll", onScroll, { passive: true });
+      return () => target.removeEventListener("scroll", onScroll);
+    });
+    return () => {
+      for (const stop of listeners) stop();
+    };
+  });
+
+  $effect(() => {
+    const container = rootEl;
+    const shouldAlign = viewMode === "split" && wrap;
+    if (!container) return;
+    const pairKeys = [
+      ...new Set(
+        [
+          ...container.querySelectorAll<HTMLElement>(
+            "[data-ui-part='diff-row'][data-pair-key], .ui-diff-file-diff__row--empty[data-pair-key]",
+          ),
+        ].map((node) => node.dataset.pairKey ?? ""),
+      ),
+    ].filter(Boolean);
+    for (const pairKey of pairKeys) {
+      const nodes = [
+        ...container.querySelectorAll<HTMLElement>(
+          `[data-ui-part='diff-row'][data-pair-key="${pairKey}"], .ui-diff-file-diff__row--empty[data-pair-key="${pairKey}"]`,
+        ),
+      ];
+      for (const node of nodes) node.style.minHeight = "";
+      if (!shouldAlign) continue;
+      const height = Math.max(
+        ...nodes.map((node) => node.getBoundingClientRect().height),
+        0,
+      );
+      for (const node of nodes) node.style.minHeight = `${height}px`;
+    }
   });
 
   function lineContext(row: UnifiedDiffRow): FileDiffLineContext {
@@ -143,7 +213,11 @@
   </div>
 {/snippet}
 
-{#snippet splitCell(row: UnifiedDiffRow | null, side: "left" | "right")}
+{#snippet splitCell(
+    row: UnifiedDiffRow | null,
+    side: "left" | "right",
+    pairKey: string,
+  )}
   {#if row}
     <div
       class="ui-diff-file-diff__row"
@@ -153,9 +227,10 @@
       data-diff-line-variant={row.variant}
       data-variant={row.variant}
       data-side={side}
+      data-pair-key={pairKey}
     >
       <span class="ui-diff-file-diff__gutter" aria-hidden="true">
-        {row.lineNumber ?? ""}
+        {lineNumberForSplitSide(row, side) ?? ""}
       </span>
       {@render highlightedText(row)}
       {#if lineAccessory}
@@ -166,6 +241,7 @@
     <div
       class="ui-diff-file-diff__row ui-diff-file-diff__row--empty"
       data-side={side}
+      data-pair-key={pairKey}
     ></div>
   {/if}
 {/snippet}
@@ -243,39 +319,63 @@
   data-ui-component="file-diff"
   data-ui-part="file-diff"
   data-view-mode={viewMode}
+  data-wrap={wrap ? "true" : undefined}
   data-diff-file-path={path}
 >
   {#if binary}
     <p class="ui-diff-file-diff__empty">Binary file not shown</p>
   {:else if empty}
     <p class="ui-diff-file-diff__empty">No textual changes</p>
+  {:else if viewMode === "split"}
+    <div class="ui-diff-file-diff__split">
+      {#each ["left", "right"] as side (side)}
+        {@const paneSide = side as "left" | "right"}
+        <section
+          class="ui-diff-file-diff__pane"
+          data-ui-part="file-diff-pane"
+          data-side={paneSide}
+          aria-label={paneSide === "left"
+            ? "Previous revision"
+            : "Later revision"}
+        >
+          <ScrollArea.Root
+            class="ui-diff-file-diff__pane-scroll"
+            type="auto"
+            orientation={wrap ? "vertical" : "both"}
+          >
+            <div class="ui-diff-file-diff__pane-stack">
+              {#each splitPairs as pair (pair.key)}
+                {@render splitCell(
+                  paneSide === "left" ? pair.left : pair.right,
+                  paneSide,
+                  pair.key,
+                )}
+              {/each}
+            </div>
+          </ScrollArea.Root>
+        </section>
+      {/each}
+    </div>
   {:else}
-    <ScrollArea.Root orientation="both">
-      {#if viewMode === "split"}
-        <div class="ui-diff-file-diff__split">
-          {#each splitPairs as pair (pair.key)}
-            <div class="ui-diff-file-diff__split-pair">
-              {@render splitCell(pair.left, "left")}
-              {@render splitCell(pair.right, "right")}
-            </div>
-          {/each}
-        </div>
-      {:else}
-        {#each displayItems as item (item.type === "row" ? item.row.key : item.block.id)}
-          {#if item.type === "row"}
-            {@render unifiedRow(item.row)}
-          {:else}
-            <div data-ui-part="collapsed-context">
-              {@render collapsedControls(item.block)}
-              {#if item.block.expanded}
-                {#each item.block.rows as row (row.key)}
-                  {@render unifiedRow(row)}
-                {/each}
-              {/if}
-            </div>
-          {/if}
-        {/each}
-      {/if}
+    <ScrollArea.Root
+      class="ui-diff-file-diff__scroll"
+      type="auto"
+      orientation={wrap ? "vertical" : "both"}
+    >
+      {#each displayItems as item (item.type === "row" ? item.row.key : item.block.id)}
+        {#if item.type === "row"}
+          {@render unifiedRow(item.row)}
+        {:else}
+          <div data-ui-part="collapsed-context">
+            {@render collapsedControls(item.block)}
+            {#if item.block.expanded}
+              {#each item.block.rows as row (row.key)}
+                {@render unifiedRow(row)}
+              {/each}
+            {/if}
+          </div>
+        {/if}
+      {/each}
     </ScrollArea.Root>
   {/if}
 </div>

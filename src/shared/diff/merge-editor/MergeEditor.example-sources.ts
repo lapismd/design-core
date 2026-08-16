@@ -26,6 +26,35 @@ export const OneWay = `<script lang="ts">
   right={"hello\\nthere\\n"}
 />`;
 
+export const Wrap = `<script lang="ts">
+  import { MergeEditor } from "@lapismd/design-core/diff";
+</script>
+
+<MergeEditor
+  mode="one-way"
+  path="src/note.ts"
+  wrap
+  left={'export const note = "alpha alpha alpha alpha alpha alpha";\\n'}
+  right={'export const note = "beta beta beta beta beta beta beta";\\n'}
+/>`;
+
+export const Fill = `<script lang="ts">
+  import { MergeEditor } from "@lapismd/design-core/diff";
+
+  const left = Array.from(
+    { length: 5 },
+    (_, index) => \`left \${index + 1} \${"alpha ".repeat(20).trim()}\`,
+  ).join("\\n");
+  const right = Array.from(
+    { length: 5 },
+    (_, index) => \`right \${index + 1} \${"beta ".repeat(20).trim()}\`,
+  ).join("\\n");
+</script>
+
+<div style="height: 20rem; width: 36rem">
+  <MergeEditor mode="one-way" path="src/fill.ts" {left} {right} />
+</div>`;
+
 export const Editable = `<script lang="ts">
   import { MergeEditor } from "@lapismd/design-core/diff";
 

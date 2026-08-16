@@ -155,10 +155,12 @@ This matrix records one current evidence status for every canonical requirement.
 | DC-AI-023     | Implemented | AI sources, controllers, Storybook scenarios, and browser acceptance                             |
 | DC-DIFF-001   | Implemented | Diff layer contract, tokens, guidance, and headless core models                                  |
 | DC-DIFF-002   | Implemented | File Listing sources, shared selected-row and toggle fill, and Storybook scenarios               |
-| DC-DIFF-003   | Implemented | File Diff unified, split, and multi-file composer sources and Storybook scenarios                |
+| DC-DIFF-003   | Implemented | File Diff unified, split, aligned old/new gutters, synchronized panes, and composer scenarios    |
 | DC-DIFF-004   | Implemented | Merge Editor sources, working-copy center insert/reject, gutter-token merge arrows, aligned chrome, pending-change navigation, current-hunk ring, and Storybook scenarios |
 | DC-DIFF-005   | Implemented | `src/shared/diff/Guidance.mdx`                                                                   |
 | DC-DIFF-006   | Implemented | File Change Stats sources, `formatDiffDelta` unit tests, and Storybook scenarios                 |
+| DC-DIFF-007   | Implemented | Wrap stories, flushed frame tokens, and unwrapped split pane clip plus synchronized scroll        |
+| DC-DIFF-008   | Implemented | File Diff and Merge Editor fill-host ScrollArea stories with gutter rails and horizontal bars at the surface bottom |
 | DC-SHELL-001  | Implemented | `src/shared/shell/`; Shell guidance and tests                                                    |
 | DC-SHELL-002  | Implemented | App Shell sources, guidance, stories, and pointer tests                                          |
 | DC-SHELL-003  | Implemented | `src/shared/shell/Guidance.mdx`                                                                  |

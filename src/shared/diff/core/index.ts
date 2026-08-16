@@ -13,6 +13,7 @@ export {
   buildDisplayItems,
   buildUnifiedDiffRows,
   isBinaryFilePath,
+  lineNumberForSplitSide,
   pairRowsForSplit,
   parsePatchToRows,
   truncatePathMiddle,

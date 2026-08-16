@@ -15,6 +15,8 @@ export interface InlineDiffSegment {
 export interface UnifiedDiffRow {
   key: string;
   lineNumber: number | null;
+  /** Old-file number for split left gutters. Context rows keep both sides. */
+  oldLineNumber?: number | null;
   variant: "context" | "added" | "removed";
   text: string;
   segments?: InlineDiffSegment[];
@@ -153,6 +155,7 @@ export function buildUnifiedDiffRows(
           removedRows.push({
             key: `m-old-${localOldLine}-${localNewLine}`,
             lineNumber: localOldLine,
+            oldLineNumber: localOldLine,
             variant: "removed",
             text: removedLine,
             segments: oldSegments,
@@ -170,6 +173,7 @@ export function buildUnifiedDiffRows(
           removedRows.push({
             key: `o-${localOldLine}`,
             lineNumber: localOldLine,
+            oldLineNumber: localOldLine,
             variant: "removed",
             text: removedLine,
           });
@@ -203,6 +207,7 @@ export function buildUnifiedDiffRows(
       rows.push({
         key: `o-${oldLine}`,
         lineNumber: oldLine,
+        oldLineNumber: oldLine,
         variant: "removed",
         text: op.value,
       });
@@ -211,6 +216,7 @@ export function buildUnifiedDiffRows(
       rows.push({
         key: `c-${oldLine}-${newLine}`,
         lineNumber: newLine,
+        oldLineNumber: oldLine,
         variant: "context",
         text: op.right,
       });
@@ -311,6 +317,7 @@ export function parsePatchToRows(patch: string): UnifiedDiffRow[] {
       rows.push({
         key: `o-${oldLine}`,
         lineNumber: oldLine,
+        oldLineNumber: oldLine,
         variant: "removed",
         text: raw.slice(1),
       });
@@ -319,6 +326,7 @@ export function parsePatchToRows(patch: string): UnifiedDiffRow[] {
       rows.push({
         key: `c-${oldLine}-${newLine}`,
         lineNumber: newLine,
+        oldLineNumber: oldLine,
         variant: "context",
         text: raw.slice(1),
       });
@@ -512,6 +520,19 @@ export function pairRowsForSplit(rows: UnifiedDiffRow[]): SplitDiffRowPair[] {
   }
 
   return pairs;
+}
+
+export function lineNumberForSplitSide(
+  row: UnifiedDiffRow | null,
+  side: "left" | "right",
+): number | null {
+  if (!row) return null;
+  if (side === "left") {
+    if (row.variant === "added") return null;
+    return row.oldLineNumber ?? row.lineNumber;
+  }
+  if (row.variant === "removed") return null;
+  return row.lineNumber;
 }
 
 export function truncatePathMiddle(path: string, maxLength = 64): string {

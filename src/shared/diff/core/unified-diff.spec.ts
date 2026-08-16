@@ -8,6 +8,8 @@ import {
   buildDisplayItems,
   buildUnifiedDiffRows,
   isBinaryFilePath,
+  lineNumberForSplitSide,
+  pairRowsForSplit,
   parsePatchToRows,
   type UnifiedDiffRow,
 } from "./unified-diff";
@@ -70,6 +72,14 @@ describe("buildUnifiedDiffRows", () => {
     expect(rows[1]?.segments?.some((segment) => segment.tone === "added")).toBe(
       true,
     );
+  });
+
+  it("keeps old-file line numbers on split context after a deletion", () => {
+    const rows = buildUnifiedDiffRows("a\nb\nc\n", "a\nc\n");
+    const pairs = pairRowsForSplit(rows);
+    const omega = pairs.find((pair) => pair.right?.text === "c");
+    expect(lineNumberForSplitSide(omega?.left ?? null, "left")).toBe(3);
+    expect(lineNumberForSplitSide(omega?.right ?? null, "right")).toBe(2);
   });
 });
 
