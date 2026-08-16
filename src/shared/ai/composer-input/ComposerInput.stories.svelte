@@ -315,9 +315,20 @@
     const input = canvas.getByRole("combobox", { name: "Mention someone" });
     await userEvent.click(input);
     await userEvent.type(input, "@c");
-    await expect(
-      await canvas.findByRole("option", { name: /Cindy Zhang/ }),
-    ).toBeVisible();
+    const option = await canvas.findByRole("option", { name: /Cindy Zhang/ });
+    await expect(option).toBeVisible();
+    const menu = option.closest("[data-ui-part='trigger-menu']");
+    expect(menu).toBeTruthy();
+    const inputBox = input.getBoundingClientRect();
+    const menuBox = (menu as HTMLElement).getBoundingClientRect();
+    const gap =
+      menuBox.top >= inputBox.bottom - 2
+        ? menuBox.top - inputBox.bottom
+        : inputBox.top - menuBox.bottom;
+    expect(gap).toBeGreaterThanOrEqual(-4);
+    expect(gap).toBeLessThan(32);
+    expect(menuBox.left).toBeGreaterThanOrEqual(inputBox.left - 8);
+    expect(menuBox.left).toBeLessThan(inputBox.right);
     await userEvent.keyboard("{Enter}");
     await expect(canvas.getByRole("status")).toHaveTextContent("@cindy");
   }}

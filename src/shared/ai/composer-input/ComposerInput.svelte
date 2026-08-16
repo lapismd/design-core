@@ -21,6 +21,8 @@
   import {
     createTriggerSearch,
     findActiveComposerTrigger,
+    positionComposerTriggerMenu,
+    type ComposerTriggerMenuPlacement,
     type TriggerSearchState,
   } from "../trigger-menu.js";
   import { useComposerContext } from "../context.svelte.js";
@@ -89,6 +91,7 @@
   let triggerStart = -1;
   let menuLeft = $state(0);
   let menuTop = $state(0);
+  let menuPlacement = $state<ComposerTriggerMenuPlacement>("below");
   let composing = false;
   let syncingDom = false;
   const triggerMenuOpen = $derived(
@@ -184,16 +187,26 @@
       loading: false,
       error: null,
     };
+    menuPlacement = "below";
   }
 
   function updateMenuPosition(range: Range): void {
-    const rect =
+    const caret =
       typeof range.getBoundingClientRect === "function"
         ? range.getBoundingClientRect()
         : null;
-    const fallback = editableRef?.getBoundingClientRect();
-    menuLeft = rect?.left || fallback?.left || 0;
-    menuTop = (rect?.bottom || fallback?.bottom || 0) + 6;
+    const editable = editableRef?.getBoundingClientRect();
+    const root = ref?.getBoundingClientRect();
+    if (!editable || !root) return;
+    const next = positionComposerTriggerMenu({
+      caret,
+      editable,
+      root,
+      viewportHeight: window.innerHeight,
+    });
+    menuLeft = next.left;
+    menuTop = next.top;
+    menuPlacement = next.placement;
   }
 
   function updateTriggerMenu(): void {
@@ -449,6 +462,7 @@
   {#if triggerMenuOpen && activeTrigger}
     <div
       data-ui-part="trigger-menu"
+      data-placement={menuPlacement}
       role="presentation"
       style:left={`${menuLeft}px`}
       style:top={`${menuTop}px`}

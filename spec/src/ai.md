@@ -119,6 +119,7 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 
 - The public boundary is `@lapismd/design-core/ai/chat`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- Trigger menus MUST anchor to the caret or input using the composer-input containing block, flip above when space below is insufficient, and MUST NOT use viewport-fixed coordinates that drift inside isolated or transformed hosts.
 
 ## DC-AI-011 — Composer Drawer
 

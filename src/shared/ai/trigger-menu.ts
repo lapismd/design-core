@@ -16,6 +16,52 @@ export type TriggerSearchController = {
   cancel: () => void;
 };
 
+export type ComposerTriggerMenuPlacement = "above" | "below";
+
+export type ComposerTriggerMenuBox = {
+  left: number;
+  top: number;
+  right: number;
+  bottom: number;
+};
+
+function isUsableBox(
+  box: ComposerTriggerMenuBox | null | undefined,
+): box is ComposerTriggerMenuBox {
+  return Boolean(box && (box.left || box.top || box.right || box.bottom));
+}
+
+export function positionComposerTriggerMenu(input: {
+  caret: ComposerTriggerMenuBox | null | undefined;
+  editable: ComposerTriggerMenuBox;
+  root: ComposerTriggerMenuBox;
+  viewportHeight: number;
+  gap?: number;
+  estimatedMenuHeight?: number;
+}): {
+  left: number;
+  top: number;
+  placement: ComposerTriggerMenuPlacement;
+} {
+  const gap = input.gap ?? 6;
+  const estimatedMenuHeight = input.estimatedMenuHeight ?? 288;
+  const caret = isUsableBox(input.caret) ? input.caret : input.editable;
+  const spaceBelow = input.viewportHeight - caret.bottom;
+  const spaceAbove = caret.top;
+  const placement: ComposerTriggerMenuPlacement =
+    spaceBelow < estimatedMenuHeight && spaceAbove > spaceBelow
+      ? "above"
+      : "below";
+  return {
+    left: caret.left - input.root.left,
+    top:
+      placement === "above"
+        ? caret.top - input.root.top
+        : caret.bottom - input.root.top + gap,
+    placement,
+  };
+}
+
 export function findActiveComposerTrigger(
   textBeforeCaret: string,
   triggers: ComposerTrigger[],

@@ -10,7 +10,10 @@ import {
 import { createNewMessages } from "./new-messages.svelte.js";
 import { createSpeechRecognition } from "./speech-recognition.svelte.js";
 import { createStreamScroll } from "./stream-scroll.svelte.js";
-import { createTriggerSearch } from "./trigger-menu.js";
+import {
+  createTriggerSearch,
+  positionComposerTriggerMenu,
+} from "./trigger-menu.js";
 import type {
   ComposerInputHandle,
   ComposerTrigger,
@@ -210,6 +213,34 @@ describe("composer token helpers", () => {
     expect(insertToken).toHaveBeenCalledWith(
       expect.objectContaining({ value: "five!" }),
     );
+  });
+});
+
+describe("positionComposerTriggerMenu", () => {
+  it("anchors to the composer-input containing block instead of the viewport", () => {
+    const position = positionComposerTriggerMenu({
+      caret: { left: 420, top: 640, right: 428, bottom: 658 },
+      editable: { left: 400, top: 630, right: 720, bottom: 670 },
+      root: { left: 380, top: 610, right: 740, bottom: 690 },
+      viewportHeight: 1200,
+    });
+    expect(position).toEqual({
+      left: 40,
+      top: 54,
+      placement: "below",
+    });
+  });
+
+  it("flips above the caret when the viewport has no room below", () => {
+    const position = positionComposerTriggerMenu({
+      caret: { left: 32, top: 820, right: 40, bottom: 838 },
+      editable: { left: 24, top: 810, right: 360, bottom: 850 },
+      root: { left: 16, top: 800, right: 368, bottom: 870 },
+      viewportHeight: 860,
+    });
+    expect(position.placement).toBe("above");
+    expect(position.top).toBe(20);
+    expect(position.left).toBe(16);
   });
 });
 
