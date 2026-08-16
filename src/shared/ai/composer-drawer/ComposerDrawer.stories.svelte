@@ -29,6 +29,7 @@
   let progressCollapsed = $state(false);
   let feedbackCollapsed = $state(false);
   let selectedFeedback = $state<string | null>(null);
+  let selectedDisabledFeedback = $state<string | null>(null);
 
   const showcaseFiles = [
     "design-spec.pdf",
@@ -77,6 +78,68 @@
           <Button size="icon-sm" variant="ghost" aria-label="Attach">
             <PaperclipIcon aria-hidden="true" />
           </Button>
+        {/snippet}
+      </Composer>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Feedback while disabled"
+  exportName="FeedbackWhileDisabled"
+  parameters={{
+    docs: {
+      description: {
+        story:
+          "A consumer may keep a feedback drawer interactive while the composer body is disabled during an active agent turn.",
+      },
+    },
+    visualDelta: {
+      images: [
+        "/visual-baselines/ai/composer-drawer/feedback-while-disabled-chromium.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
+  }}
+  tags={["visual-pending"]}
+  play={async ({ canvas }) => {
+    const choice = canvas.getByRole("button", { name: /Yes, proceed/ });
+    await expect(choice).toBeEnabled();
+    await userEvent.click(choice);
+    await expect(choice).toHaveAttribute("data-selected", "true");
+  }}
+>
+  {#snippet template()}
+    <div data-story="drawer-composer">
+      <Composer
+        value=""
+        disabled
+        interactiveDrawerWhenDisabled
+        onSubmit={() => {}}
+      >
+        {#snippet drawer()}
+          <ComposerDrawer count={1} label="User feedback requested">
+            <div data-story="feedback-list">
+              <strong>Do you want to proceed?</strong>
+              <button
+                type="button"
+                data-selected={selectedDisabledFeedback === "yes"}
+                onclick={() => {
+                  selectedDisabledFeedback = "yes";
+                }}
+              >
+                <Badge
+                  variant={selectedDisabledFeedback === "yes"
+                    ? "default"
+                    : "secondary"}>A</Badge
+                >
+                Yes, proceed
+              </button>
+            </div>
+          </ComposerDrawer>
         {/snippet}
       </Composer>
     </div>

@@ -579,6 +579,17 @@
   pointer-events: none;
 }
 
+[data-ui-component="ai-chat-composer"][data-disabled="true"][data-interactive-drawer-when-disabled="true"] {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+[data-ui-component="ai-chat-composer"][data-disabled="true"][data-interactive-drawer-when-disabled="true"]
+  > [data-ui-part="body"] {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
 [data-ui-component="ai-chat-composer"] [data-ui-part="header"],
 [data-ui-component="ai-chat-composer"] [data-ui-part="footer"] {
   display: flex;

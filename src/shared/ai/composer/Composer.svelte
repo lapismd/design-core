@@ -18,6 +18,7 @@
     value = $bindable(""),
     placeholder = "Ask the assistant…",
     disabled = false,
+    interactiveDrawerWhenDisabled = false,
     density = "balanced",
     elevation = "low",
     isStopShown = false,
@@ -39,6 +40,7 @@
     value?: string;
     placeholder?: string;
     disabled?: boolean;
+    interactiveDrawerWhenDisabled?: boolean;
     density?: Density;
     elevation?: "none" | "low";
     isStopShown?: boolean;
@@ -110,6 +112,7 @@
   data-density={density}
   data-elevation={elevation}
   data-disabled={disabled}
+  data-interactive-drawer-when-disabled={interactiveDrawerWhenDisabled}
   onclick={handleShellClick}
 >
   {#if status && statusPosition === "top"}

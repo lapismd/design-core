@@ -128,6 +128,7 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 
 - The public boundary is `@lapismd/design-core/ai/chat`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- A consumer MAY keep the drawer interactive while the disabled composer body blocks input and submit actions, so feedback can unblock an active turn.
 
 ## DC-AI-012 — Send Button
 
