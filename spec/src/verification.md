@@ -82,7 +82,7 @@ This matrix records one current evidence status for every canonical requirement.
 | DC-SHA-048    | Implemented | src/shared/shadcn/popover/; custom-width interaction story                                       |
 | DC-SHA-049    | Implemented | src/shared/shadcn/sheet/; colocated stories                                                      |
 | DC-SHA-050    | Implemented | src/shared/shadcn/tooltip/; colocated stories                                                    |
-| DC-SHA-051    | Implemented | src/shared/shadcn/command-view/; colocated inline, dialog, popover, and overflow stories         |
+| DC-SHA-051    | Implemented | Command View source plus empty-result listbox semantics and colocated host and overflow stories |
 | DC-FORM-001   | Implemented | Forms core and family sources, unit tests, and Storybook scenarios                               |
 | DC-FORM-002   | Implemented | Structured Form source, type tests, rendered MDX, and Storybook scenarios                        |
 | DC-FORM-003   | Implemented | Forms family source and colocated Storybook scenarios for YAML Backed Form                       |
@@ -171,7 +171,7 @@ This matrix records one current evidence status for every canonical requirement.
 | DC-WS-007     | Implemented | Workspace framework sources, guidance, stories, and tests                                        |
 | DC-WS-008     | Implemented | About Dialog source, public barrel, and accessible Storybook scenarios                           |
 | DC-WS-009     | Implemented | Workspace component source, public barrel, and colocated Storybook scenarios                     |
-| DC-WS-010     | Implemented | Command Palette Command View surface, public barrel, and colocated Storybook scenarios           |
+| DC-WS-010     | Implemented | Command Palette Command View surface, labelled search combobox, public barrel, and colocated Storybook scenarios |
 | DC-WS-011     | Implemented | Workspace component source, public barrel, and colocated Storybook scenarios                     |
 | DC-WS-012     | Implemented | Workspace component source, public barrel, and colocated Storybook scenarios                     |
 | DC-WS-013     | Implemented | Workspace component source, public barrel, and colocated Storybook scenarios                     |

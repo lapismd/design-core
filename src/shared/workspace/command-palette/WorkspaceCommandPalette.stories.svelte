@@ -95,6 +95,9 @@
     await expect(
       await canvas.findByRole("dialog", { name: "Command Palette" }),
     ).toBeVisible();
+    await expect(
+      canvas.getByRole("combobox", { name: "Search commands" }),
+    ).toBeVisible();
     expectPaletteCommandView(canvasElement);
     expectPaletteScrollArea(canvasElement);
   }}
@@ -175,8 +178,9 @@
   play={async ({ canvas, canvasElement }) => {
     await waitFor(() => expect(searchApp.ready).toBe(true));
     searchApp.commands.openPalette();
+    await canvas.findByRole("dialog", { name: "Command Palette" });
     expectPaletteCommandView(canvasElement);
-    const input = await canvas.findByRole("textbox", {
+    const input = await canvas.findByRole("combobox", {
       name: "Search commands",
     });
     await userEvent.type(input, "split");
@@ -219,13 +223,16 @@
   play={async ({ canvas, canvasElement }) => {
     await waitFor(() => expect(emptyApp.ready).toBe(true));
     emptyApp.commands.openPalette();
+    await canvas.findByRole("dialog", { name: "Command Palette" });
     expectPaletteCommandView(canvasElement);
-    const input = await canvas.findByRole("textbox", {
+    const input = await canvas.findByRole("combobox", {
       name: "Search commands",
     });
     await userEvent.clear(input);
     await userEvent.type(input, "No matching command");
-    await expect(canvas.getByText("No results found.")).toBeVisible();
+    await expect(
+      canvas.getByRole("option", { name: "No results found." }),
+    ).toBeVisible();
   }}
   parameters={{
     visualDelta: {

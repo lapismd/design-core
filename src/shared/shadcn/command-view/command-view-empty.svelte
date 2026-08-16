@@ -5,4 +5,9 @@
   let props: ComponentProps<typeof Command.Empty> = $props();
 </script>
 
-<Command.Empty {...props} />
+<Command.Empty
+  role="option"
+  aria-disabled="true"
+  aria-selected="false"
+  {...props}
+/>

@@ -72,12 +72,11 @@
         if (event.key === "Escape") close();
       }}
     >
-      <CommandView.Root shouldFilter={false}>
+      <CommandView.Root shouldFilter={false} label="Search commands">
         <CommandView.Input
           bind:ref={input}
           bind:value={query}
           {placeholder}
-          aria-label="Search commands"
           autocomplete="off"
           spellcheck="false"
         >

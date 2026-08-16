@@ -59,7 +59,7 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/workspace/command-palette`.
-- The palette MUST compose `@lapismd/design-core/shadcn/command-view` for its inner search and result surface and MUST retain overlay, controller, and dismiss ownership.
+- The palette MUST compose `@lapismd/design-core/shadcn/command-view`, retain overlay, controller, and dismiss ownership, and label the search combobox through Command View's root label.
 - Overflowing result lists MUST scroll through the Command View list viewport, which uses the public `@lapismd/design-core/shadcn/scroll-area`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 
