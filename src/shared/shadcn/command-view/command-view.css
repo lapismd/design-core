@@ -1,0 +1,143 @@
+@import "./command-view.tokens.css";
+
+[data-ui-component="command-view"][data-ui-part="root"] {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  border-radius: var(--ui-command-view-radius);
+  color: var(--ui-command-view-foreground);
+  background: var(--ui-command-view-background);
+}
+
+[data-ui-component="command-view"][data-ui-part="root"]
+  > [data-ui-component="command"][data-ui-part="command"] {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  padding: 0;
+  border-radius: inherit;
+  background: transparent;
+  color: inherit;
+}
+
+[data-ui-component="command-view"][data-ui-part="input-wrapper"] {
+  padding: 0.25rem;
+}
+
+[data-ui-component="command-view"][data-ui-part="input-wrapper"]
+  > [data-ui-component="input-group"][data-ui-part="input-group"] {
+  height: 2.5rem;
+  border-color: var(--ui-command-view-border-color);
+  background: transparent;
+  box-shadow: none;
+}
+
+[data-ui-component="command-view"][data-ui-part="search-icon"],
+[data-ui-component="command-view"][data-ui-part="input-wrapper"]
+  [data-ui-part="input-group-addon"]
+  svg {
+  width: var(--ui-command-view-icon-size);
+  height: var(--ui-command-view-icon-size);
+  flex-shrink: 0;
+  color: var(--ui-command-view-muted-foreground);
+}
+
+[data-ui-component="command-view"][data-ui-part="list"] {
+  min-width: 0;
+}
+
+[data-ui-component="command-view"][data-ui-part="list"]
+  [data-ui-component="scroll-area"][data-ui-part="scroll-area-viewport"] {
+  max-height: var(--ui-command-view-list-max-height);
+}
+
+[data-ui-component="command-view"][data-ui-part="command-list"] {
+  overflow: visible;
+  max-height: none;
+}
+
+[data-ui-component="command-view"][data-ui-part="viewport"] {
+  padding: var(--ui-command-view-list-padding);
+}
+
+[data-ui-component="command-view"][data-ui-part="item"] {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas:
+    "icon label shortcut"
+    "icon description shortcut";
+  align-items: center;
+  column-gap: var(--ui-command-view-gap);
+  width: 100%;
+  min-height: 2.5rem;
+  padding: 0.5rem 0.625rem;
+  border-radius: var(--ui-command-view-item-radius);
+  color: inherit;
+  cursor: default;
+  user-select: none;
+  outline: none;
+}
+
+[data-ui-component="command-view"][data-ui-part="item"][data-selected],
+[data-ui-component="command-view"][data-ui-part="item"][aria-selected="true"] {
+  background: var(--ui-command-view-item-selected-background);
+  color: var(--ui-command-view-item-selected-foreground);
+}
+
+[data-ui-component="command-view"][data-ui-part="item"][data-disabled="true"] {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+[data-ui-component="command-view"][data-ui-part="item-icon"] {
+  grid-area: icon;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+[data-ui-component="command-view"][data-ui-part="item-icon"] svg {
+  width: var(--ui-command-view-icon-size);
+  height: var(--ui-command-view-icon-size);
+  flex-shrink: 0;
+}
+
+[data-ui-component="command-view"][data-ui-part="item-label"] {
+  grid-area: label;
+  overflow: hidden;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+[data-ui-component="command-view"][data-ui-part="item-description"] {
+  grid-area: description;
+  overflow: hidden;
+  color: var(--ui-command-view-muted-foreground);
+  font-size: 0.75rem;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+[data-ui-component="command-view"][data-ui-part="shortcut"] {
+  grid-area: shortcut;
+  margin-inline-start: auto;
+  border: 1px solid var(--ui-command-view-shortcut-border);
+  border-radius: var(--ui-command-view-item-radius);
+  padding: 0.125rem 0.375rem;
+  color: var(--ui-command-view-muted-foreground);
+  background: var(--ui-command-view-shortcut-background);
+  font-size: 0.6875rem;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+[data-ui-component="command-view"][data-ui-part="item"][data-selected]
+  [data-ui-part="shortcut"] {
+  color: var(--ui-command-view-item-selected-foreground);
+}

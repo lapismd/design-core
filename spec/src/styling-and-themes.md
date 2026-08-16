@@ -32,6 +32,7 @@ Design Core styling is native CSS driven by semantic tokens. Themes and consumer
 
 - Consumers may override documented semantic tokens without depending on private selectors.
 - Styling validation must distinguish source ownership from Storybook-only presentation.
+- `src/styles.css` MUST import each shadcn family's `*.tokens.css`, including project-authored families such as `command-view`.
 
 ## DC-CSS-003 — Theme surfaces
 

@@ -30,7 +30,7 @@ Storybook is the interactive catalog and acceptance surface. It documents compon
 
 ### Acceptance details
 
-- The recorded baseline is 143 Autodocs families in the current static catalog.
+- The recorded baseline is 144 Autodocs families in the current static catalog.
 - Storybook documentation must link or derive from the owning source instead of copying normative contracts.
 
 ## DC-CAT-003 — Guidance and Welcome

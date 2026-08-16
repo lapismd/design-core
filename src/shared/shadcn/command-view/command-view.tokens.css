@@ -1,0 +1,21 @@
+/**
+ * Default Command View bindings → public theme tokens.
+ * Override --ui-command-view-* on :root or a shared ancestor.
+ */
+:root {
+  --ui-command-view-background: var(--popover);
+  --ui-command-view-foreground: var(--popover-foreground);
+  --ui-command-view-muted-foreground: var(--muted-foreground);
+  --ui-command-view-border-color: var(--border);
+  --ui-command-view-radius: var(--radius-md, calc(var(--radius) * 0.8));
+  --ui-command-view-item-radius: var(--radius-sm, calc(var(--radius) * 0.6));
+  --ui-command-view-item-selected-background: var(--muted);
+  --ui-command-view-item-selected-foreground: var(--foreground);
+  --ui-command-view-list-max-height: min(22rem, 52vh);
+  --ui-command-view-list-padding: 0.375rem;
+  --ui-command-view-gap: 0.75rem;
+  --ui-command-view-icon-size: 1rem;
+  --ui-command-view-shortcut-background: var(--muted);
+  --ui-command-view-shortcut-border: var(--border);
+  --ui-command-view-focus-ring-color: var(--ring);
+}

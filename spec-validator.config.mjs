@@ -19,6 +19,7 @@ const shadcnChapters = {
   collapsible: ["spec/src/shadcn/disclosure-and-navigation.md"],
   "column-canvas": ["spec/src/shadcn/layout.md"],
   command: ["spec/src/shadcn/forms.md"],
+  "command-view": ["spec/src/shadcn/forms.md"],
   "context-menu": ["spec/src/shadcn/overlays.md"],
   dialog: ["spec/src/shadcn/overlays.md"],
   drawer: ["spec/src/shadcn/overlays.md"],

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { ScrollArea } from "@lapismd/design-core/shadcn/scroll-area";
+  import * as CommandView from "@lapismd/design-core/shadcn/command-view";
   import { tick } from "svelte";
   import type { AppShellController } from "../core/app-shell-controller.svelte.js";
   import type {
@@ -72,54 +72,50 @@
         if (event.key === "Escape") close();
       }}
     >
-      <label class="ui-workspace-command-palette__search">
-        <WorkspaceIcon name="search" />
-        <span class="ui-workspace-command-palette__sr-only">
-          Search commands
-        </span>
-        <input
-          bind:this={input}
+      <CommandView.Root shouldFilter={false}>
+        <CommandView.Input
+          bind:ref={input}
           bind:value={query}
           {placeholder}
+          aria-label="Search commands"
           autocomplete="off"
           spellcheck="false"
-        />
-      </label>
-      <ScrollArea
-        class="ui-workspace-command-palette__list"
-        role={results.length > 0 ? "listbox" : undefined}
-        aria-label={results.length > 0 ? "Commands and actions" : undefined}
-      >
-        <div class="ui-workspace-command-palette__list-content">
-          {#if results.length === 0}
-            <p class="ui-workspace-command-palette__empty">No results found.</p>
-          {:else}
-            <p class="ui-workspace-command-palette__heading">
-              Commands and actions
-            </p>
-            {#each results as item (`${item.providerId}:${item.id}`)}
-              <button
-                type="button"
-                class="ui-workspace-command-palette__item"
-                role="option"
-                aria-selected="false"
-                onclick={() => void select(item)}
-              >
-                {#if item.icon}
-                  <WorkspaceIcon name={item.icon} />
-                {/if}
-                <span>
-                  <strong>{item.title}</strong>
-                  {#if item.subtitle}<small>{item.subtitle}</small>{/if}
-                </span>
-                {#if item.hotkeys?.[0]}
-                  <kbd>{displayHotkey(item.hotkeys[0])}</kbd>
-                {/if}
-              </button>
-            {/each}
+        >
+          {#snippet start()}
+            <WorkspaceIcon name="search" />
+          {/snippet}
+        </CommandView.Input>
+        <CommandView.List aria-label="Commands and actions">
+          <CommandView.Empty>No results found.</CommandView.Empty>
+          {#if results.length > 0}
+            <CommandView.Group heading="Commands and actions">
+              {#each results as item (`${item.providerId}:${item.id}`)}
+                <CommandView.Item
+                  value={`${item.providerId}:${item.id}`}
+                  onSelect={() => void select(item)}
+                >
+                  {#if item.icon}
+                    <CommandView.ItemIcon>
+                      <WorkspaceIcon name={item.icon} />
+                    </CommandView.ItemIcon>
+                  {/if}
+                  <CommandView.ItemLabel>{item.title}</CommandView.ItemLabel>
+                  {#if item.subtitle}
+                    <CommandView.ItemDescription>
+                      {item.subtitle}
+                    </CommandView.ItemDescription>
+                  {/if}
+                  {#if item.hotkeys?.[0]}
+                    <CommandView.Shortcut>
+                      {displayHotkey(item.hotkeys[0])}
+                    </CommandView.Shortcut>
+                  {/if}
+                </CommandView.Item>
+              {/each}
+            </CommandView.Group>
           {/if}
-        </div>
-      </ScrollArea>
+        </CommandView.List>
+      </CommandView.Root>
     </div>
   </div>
 {/if}

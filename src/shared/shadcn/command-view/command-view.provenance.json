@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "component": "command-view",
+  "scope": "shared",
+  "authored": "project",
+  "upstream": null,
+  "notes": "Project-authored host-agnostic command surface. Composes bits-ui Command keyboard behavior and the public ScrollArea viewport. Not registry-backed and does not export overlay chrome."
+}

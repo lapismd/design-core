@@ -7,8 +7,9 @@ Shadcn form controls provide the low-level accessible inputs used directly or in
 | Surface     | Public boundary                           | Requirement |
 | ----------- | ----------------------------------------- | ----------- |
 | Checkbox    | `@lapismd/design-core/shadcn/checkbox`    | DC-SHA-024  |
-| Command     | `@lapismd/design-core/shadcn/command`     | DC-SHA-025  |
-| Field       | `@lapismd/design-core/shadcn/field`       | DC-SHA-026  |
+| Command      | `@lapismd/design-core/shadcn/command`      | DC-SHA-025  |
+| Command View | `@lapismd/design-core/shadcn/command-view` | DC-SHA-051  |
+| Field        | `@lapismd/design-core/shadcn/field`        | DC-SHA-026  |
 | Input       | `@lapismd/design-core/shadcn/input`       | DC-SHA-027  |
 | Input Group | `@lapismd/design-core/shadcn/input-group` | DC-SHA-028  |
 | Label       | `@lapismd/design-core/shadcn/label`       | DC-SHA-029  |
@@ -44,6 +45,17 @@ Shadcn form controls provide the low-level accessible inputs used directly or in
 - The public boundary is `@lapismd/design-core/shadcn/command`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 - The dialog variant must retain modal positioning when Command semantic identity replaces Dialog identity.
+
+## DC-SHA-051 — Command View
+
+**Requirement.** The Command View family MUST provide a host-agnostic searchable list with composable input start icon, item icon, label, description, and shortcut parts. Overflowing lists MUST use the public ScrollArea viewport. The family MUST NOT own dialog, popover, or other overlay chrome.
+
+### Acceptance details
+
+- The public boundary is `@lapismd/design-core/shadcn/command-view`.
+- Input MUST expose a replaceable `start` snippet and MUST NOT bake a Lucide icon into the public contract.
+- Item rows MUST compose icon, label, optional description, and shortcut parts without a default check icon.
+- Overflowing lists MUST scroll through `@lapismd/design-core/shadcn/scroll-area`, and the catalog MUST demonstrate inline, Dialog, and Popover hosts.
 
 ## DC-SHA-026 — Field
 

@@ -47,9 +47,18 @@
     });
   }
 
+  function expectPaletteCommandView(canvasElement: HTMLElement): HTMLElement {
+    const commandView = canvasElement.querySelector<HTMLElement>(
+      '[data-ui-component="workspace-command-palette"] [data-ui-component="command-view"][data-ui-part="root"]',
+    );
+    expect(commandView).not.toBeNull();
+    expect(commandView).toBeVisible();
+    return commandView!;
+  }
+
   function expectPaletteScrollArea(canvasElement: HTMLElement): HTMLElement {
     const scrollArea = canvasElement.querySelector<HTMLElement>(
-      '[data-ui-component="workspace-command-palette"] [data-ui-component="scroll-area"][data-ui-part="scroll-area"]',
+      '[data-ui-component="workspace-command-palette"] [data-ui-component="command-view"] [data-ui-component="scroll-area"][data-ui-part="scroll-area"]',
     );
     expect(scrollArea).not.toBeNull();
     expect(scrollArea).toBeVisible();
@@ -86,6 +95,7 @@
     await expect(
       await canvas.findByRole("dialog", { name: "Command Palette" }),
     ).toBeVisible();
+    expectPaletteCommandView(canvasElement);
     expectPaletteScrollArea(canvasElement);
   }}
   parameters={{
@@ -122,6 +132,7 @@
     await expect(
       await canvas.findByRole("dialog", { name: "Command Palette" }),
     ).toBeVisible();
+    expectPaletteCommandView(canvasElement);
     const scrollArea = expectPaletteScrollArea(canvasElement);
     const viewport = scrollArea.querySelector<HTMLElement>(
       '[data-ui-part="scroll-area-viewport"]',
@@ -161,9 +172,10 @@
 <Story
   name="Searches and runs commands"
   tags={["visual-pending"]}
-  play={async ({ canvas }) => {
+  play={async ({ canvas, canvasElement }) => {
     await waitFor(() => expect(searchApp.ready).toBe(true));
     searchApp.commands.openPalette();
+    expectPaletteCommandView(canvasElement);
     const input = await canvas.findByRole("textbox", {
       name: "Search commands",
     });
@@ -204,9 +216,10 @@
 <Story
   name="Empty search"
   tags={["visual-pending"]}
-  play={async ({ canvas }) => {
+  play={async ({ canvas, canvasElement }) => {
     await waitFor(() => expect(emptyApp.ready).toBe(true));
     emptyApp.commands.openPalette();
+    expectPaletteCommandView(canvasElement);
     const input = await canvas.findByRole("textbox", {
       name: "Search commands",
     });
