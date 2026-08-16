@@ -181,7 +181,7 @@ This matrix records one current evidence status for every canonical requirement.
 | DC-WS-018     | Implemented | Workspace component source, public barrel, and colocated Storybook scenarios                     |
 | DC-WS-019     | Implemented | Workspace component source, public barrel, and colocated Storybook scenarios                     |
 | DC-WS-020     | Implemented | Workspace component source, public barrel, and colocated Storybook scenarios                     |
-| DC-WS-021     | Implemented | Workspace component source, public barrel, and colocated Storybook scenarios                     |
+| DC-WS-021     | Implemented | Sidebar story asserts a direct WorkspaceViewHost fills its drop target; public source and barrel |
 | DC-WS-022     | Implemented | Workspace component source, public barrel, and colocated Storybook scenarios                     |
 | DC-WS-023     | Implemented | Workspace component source, public barrel, and colocated Storybook scenarios                     |
 | DC-WS-024     | Implemented | Workspace component source, public barrel, and colocated Storybook scenarios                     |

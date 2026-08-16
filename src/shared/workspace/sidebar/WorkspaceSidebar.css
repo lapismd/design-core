@@ -164,6 +164,11 @@
   background: var(--ui-workspace-panel);
 }
 
+.ui-workspace-sidebar__drop-target > [data-ui-component="workspace-view-host"] {
+  min-height: 0;
+  flex: 1 1 0;
+}
+
 .ui-workspace-sidebar__drop-target > .ui-workspace-sidebar-empty {
   min-height: 0;
   flex: 1 1 auto;

@@ -116,8 +116,14 @@
     const directViewHost = canvasElement.querySelector<HTMLElement>(
       '.ui-workspace-sidebar__drop-target > [data-ui-component="workspace-view-host"]',
     );
+    const directDropTarget = directViewHost?.parentElement;
     await expect(sidebar).not.toBeNull();
     await expect(directViewHost).not.toBeNull();
+    await expect(directDropTarget).not.toBeNull();
+    expect(directViewHost!.getBoundingClientRect().height).toBeCloseTo(
+      directDropTarget!.getBoundingClientRect().height,
+      0,
+    );
     expect(getComputedStyle(directViewHost!).backgroundColor).toBe(
       getComputedStyle(sidebar!).backgroundColor,
     );
