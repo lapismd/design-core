@@ -201,7 +201,7 @@
   width: var(--ui-diff-merge-line-number-width);
   flex: 0 0 var(--ui-diff-merge-line-number-width);
   background: color-mix(in srgb, var(--muted) 76%, var(--background));
-  color: var(--muted-foreground);
+  color: var(--ui-diff-gutter);
   font-family: var(--ui-diff-mono);
   font-size: 0.75rem;
   line-height: var(--ui-diff-merge-line-height);
@@ -280,12 +280,6 @@
   text-align: end;
 }
 
-.ui-diff-merge-editor__line-number[data-visual-kind]:not(
-    [data-visual-kind="unchanged"]
-  ) {
-  color: var(--foreground);
-}
-
 .ui-diff-merge-editor__placeholder {
   position: absolute;
   left: 0;
@@ -308,7 +302,7 @@
   justify-content: center;
   border: 0;
   background: transparent;
-  color: inherit;
+  color: var(--ui-diff-gutter);
   padding: 0;
   cursor: pointer;
 }
@@ -324,6 +318,7 @@
 
 .ui-diff-merge-editor__action[data-action-kind="merge"] svg {
   fill: currentColor;
+  stroke: none;
 }
 
 .ui-diff-merge-editor__view[data-merge-side="right"]
