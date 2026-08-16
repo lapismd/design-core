@@ -140,7 +140,7 @@ This matrix records one current evidence status for every canonical requirement.
 | DC-AI-008     | Implemented | AI sources, controllers, Storybook scenarios, and browser acceptance                             |
 | DC-AI-009     | Implemented | Composer portable-shadow story                                                                   |
 | DC-AI-010     | Implemented | Trigger-menu positioning unit tests plus Composer Input mention interaction geometry             |
-| DC-AI-011     | Implemented | Composer Drawer attachment contrast play plus disabled-body interaction                          |
+| DC-AI-011     | Implemented | Composer attachment-chip hover play plus Composer Drawer disabled-body interaction               |
 | DC-AI-012     | Implemented | AI sources, controllers, Storybook scenarios, and browser acceptance                             |
 | DC-AI-013     | Implemented | AI sources, controllers, Storybook scenarios, and browser acceptance                             |
 | DC-AI-014     | Implemented | AI sources, controllers, Storybook scenarios, and browser acceptance                             |

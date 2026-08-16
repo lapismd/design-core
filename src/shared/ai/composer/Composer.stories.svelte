@@ -39,9 +39,13 @@
 </script>
 
 {#snippet removableToken(label: string)}
-  <span data-story="attachment-token">
+  <span data-ui-part="attachment-chip">
     <span>{label}</span>
-    <button type="button" aria-label={`Remove ${label}`}>
+    <button
+      type="button"
+      data-ui-part="attachment-remove"
+      aria-label={`Remove ${label}`}
+    >
       <XIcon aria-hidden="true" />
     </button>
   </span>
@@ -113,7 +117,30 @@
       placement: "right",
     },
   }}
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
+  play={async ({ canvas, canvasElement }) => {
+    const chip = canvas
+      .getByText("feature-prd.docx")
+      .closest('[data-ui-part="attachment-chip"]') as HTMLElement | null;
+    const remove = canvas.getByRole("button", {
+      name: "Remove feature-prd.docx",
+    });
+    const drawer = canvasElement.querySelector(
+      '[data-ui-component="ai-chat-composer-drawer"]',
+    ) as HTMLElement | null;
+    expect(chip).not.toBeNull();
+    expect(drawer).not.toBeNull();
+    const rest = getComputedStyle(chip!);
+    expect(rest.backgroundColor).not.toBe(
+      getComputedStyle(drawer!).backgroundColor,
+    );
+    expect(rest.borderTopLeftRadius).not.toBe("999px");
+    await userEvent.hover(chip!);
+    expect(getComputedStyle(chip!).backgroundColor).not.toBe(rest.backgroundColor);
+    const removeRest = getComputedStyle(remove).backgroundColor;
+    await userEvent.hover(remove);
+    expect(getComputedStyle(remove).backgroundColor).not.toBe(removeRest);
+  }}
 >
   {#snippet template()}
     <div data-story="composer-reference">
@@ -274,7 +301,7 @@
       placement: "right",
     },
   }}
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <div data-story="composer-reference" data-with-label>
@@ -529,37 +556,6 @@
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
-  }
-
-  :global([data-story="attachment-token"]) {
-    display: inline-flex;
-    max-width: 100%;
-    align-items: center;
-    gap: 0.25rem;
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    background: var(--secondary);
-    padding: 0.125rem 0.25rem 0.125rem 0.5rem;
-    color: var(--secondary-foreground);
-    font-size: 0.75rem;
-    line-height: 1rem;
-  }
-
-  :global([data-story="attachment-token"] button) {
-    display: grid;
-    width: 1rem;
-    height: 1rem;
-    place-items: center;
-    border: 0;
-    border-radius: 50%;
-    background: transparent;
-    padding: 0;
-    color: inherit;
-  }
-
-  :global([data-story="attachment-token"] svg) {
-    width: 0.75rem;
-    height: 0.75rem;
   }
 
   :global([data-story="context-progress"]) {

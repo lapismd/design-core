@@ -6,13 +6,32 @@ export const Basic = `<script lang="ts">
 
 export const Attachments = `<script lang="ts">
   import { Composer, ComposerDrawer } from "@lapismd/design-core/ai/chat";
+  import XIcon from "@lucide/svelte/icons/x";
 </script>
 
 <Composer onSubmit={() => {}}>
   {#snippet drawer()}
     <ComposerDrawer count={2}>
-      <span>feature-prd.docx</span>
-      <span>2026-roadmap.pdf</span>
+      <span data-ui-part="attachment-chip">
+        <span>feature-prd.docx</span>
+        <button
+          type="button"
+          data-ui-part="attachment-remove"
+          aria-label="Remove feature-prd.docx"
+        >
+          <XIcon aria-hidden="true" />
+        </button>
+      </span>
+      <span data-ui-part="attachment-chip">
+        <span>2026-roadmap.pdf</span>
+        <button
+          type="button"
+          data-ui-part="attachment-remove"
+          aria-label="Remove 2026-roadmap.pdf"
+        >
+          <XIcon aria-hidden="true" />
+        </button>
+      </span>
     </ComposerDrawer>
   {/snippet}
 </Composer>`;

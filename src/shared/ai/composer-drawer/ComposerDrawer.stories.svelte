@@ -3,6 +3,7 @@
   import { expect, userEvent } from "storybook/test";
   import AtSignIcon from "@lucide/svelte/icons/at-sign";
   import PaperclipIcon from "@lucide/svelte/icons/paperclip";
+  import XIcon from "@lucide/svelte/icons/x";
   import { Badge } from "@lapismd/design-core/shadcn/badge";
   import { Button } from "@lapismd/design-core/shadcn/button";
   import Composer from "../composer/Composer.svelte";
@@ -45,6 +46,19 @@
   ];
 </script>
 
+{#snippet removableToken(label: string)}
+  <span data-ui-part="attachment-chip">
+    <span>{label}</span>
+    <button
+      type="button"
+      data-ui-part="attachment-remove"
+      aria-label={`Remove ${label}`}
+    >
+      <XIcon aria-hidden="true" />
+    </button>
+  </span>
+{/snippet}
+
 <Story
   name="ASTRYX showcase"
   parameters={{
@@ -70,7 +84,7 @@
             label="Attachments"
           >
             {#each showcaseFiles as file (file)}
-              <Badge variant="secondary">{file} ×</Badge>
+              {@render removableToken(file)}
             {/each}
           </ComposerDrawer>
         {/snippet}
@@ -166,16 +180,27 @@
   }}
   tags={["visual-pending"]}
   play={async ({ canvas, canvasElement }) => {
-    const pill = canvas.getByText("quarterly-report.pdf ×");
+    const chip = canvas
+      .getByText("quarterly-report.pdf")
+      .closest('[data-ui-part="attachment-chip"]') as HTMLElement | null;
+    const remove = canvas.getByRole("button", {
+      name: "Remove quarterly-report.pdf",
+    });
     const drawer = canvasElement.querySelector(
       '[data-ui-component="ai-chat-composer-drawer"]',
-    );
+    ) as HTMLElement | null;
+    expect(chip).not.toBeNull();
     expect(drawer).not.toBeNull();
-    const pillStyles = getComputedStyle(pill);
-    const drawerPaint = getComputedStyle(drawer as HTMLElement).backgroundColor;
-    expect(pillStyles.backgroundColor).not.toBe(drawerPaint);
-    expect(pillStyles.borderTopWidth).not.toBe("0px");
-    expect(pillStyles.borderTopColor).not.toBe("rgba(0, 0, 0, 0)");
+    const rest = getComputedStyle(chip!);
+    expect(rest.backgroundColor).not.toBe(
+      getComputedStyle(drawer!).backgroundColor,
+    );
+    expect(rest.borderTopLeftRadius).not.toBe("999px");
+    await userEvent.hover(chip!);
+    expect(getComputedStyle(chip!).backgroundColor).not.toBe(rest.backgroundColor);
+    const removeRest = getComputedStyle(remove).backgroundColor;
+    await userEvent.hover(remove);
+    expect(getComputedStyle(remove).backgroundColor).not.toBe(removeRest);
   }}
 >
   {#snippet template()}
@@ -188,8 +213,8 @@
                 <span role="img" aria-label={file}>{file}</span>
               {/each}
             </div>
-            <Badge variant="secondary">quarterly-report.pdf ×</Badge>
-            <Badge variant="secondary">budget-forecast.xlsx ×</Badge>
+            {@render removableToken("quarterly-report.pdf")}
+            {@render removableToken("budget-forecast.xlsx")}
           </ComposerDrawer>
         {/snippet}
       </Composer>
@@ -227,7 +252,7 @@
             label="Files"
           >
             {#each collapsibleFiles as file (file)}
-              <Badge variant="secondary">{file} ×</Badge>
+              {@render removableToken(file)}
             {/each}
           </ComposerDrawer>
         {/snippet}
@@ -323,7 +348,7 @@
             label="Attachments"
           >
             {#each showcaseFiles.slice(0, 3) as file (file)}
-              <Badge variant="secondary">{file} ×</Badge>
+              {@render removableToken(file)}
             {/each}
           </ComposerDrawer>
         {/snippet}
@@ -366,8 +391,8 @@
       <Composer value="" placeholder="Type a message..." onSubmit={() => {}}>
         {#snippet drawer()}
           <ComposerDrawer bind:collapsed count={2}>
-            <Badge variant="secondary">release-notes.md ×</Badge>
-            <Badge variant="secondary">changelog.md ×</Badge>
+            {@render removableToken("release-notes.md")}
+            {@render removableToken("changelog.md")}
           </ComposerDrawer>
         {/snippet}
       </Composer>
