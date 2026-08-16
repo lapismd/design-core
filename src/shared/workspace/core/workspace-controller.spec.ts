@@ -626,6 +626,7 @@ describe("WorkspaceShellController", () => {
     );
     expect(moveTo?.kind).toBe("submenu");
     if (moveTo?.kind !== "submenu") return;
+    expect(moveTo.icon).toBe("move");
     const destinations = moveTo.menu.entries.filter(
       (entry) => entry.kind === "item",
     );

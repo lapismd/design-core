@@ -243,7 +243,7 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 **Requirement.** The Workspace Tabs family MUST compose controlled workspace tabs with selection, close, overflow, and reorder actions.
 
 The family presents the shared controller pane menu, including Move to
-sidebar destinations.
+sidebar destinations marked with the `move` icon.
 
 ### Acceptance details
 

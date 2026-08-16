@@ -1107,36 +1107,40 @@ export class WorkspaceShellController {
           ),
       (group) =>
         group
-          .addMenu("Move to", (submenu) => {
-            const currentDock = this.#dockForPane(location.pane.id);
-            for (const destination of [
-              {
-                position: "left" as const,
-                title: "Left Sidebar",
-                icon: "panel-left",
-              },
-              {
-                position: "right" as const,
-                title: "Right Sidebar",
-                icon: "panel-right",
-              },
-              {
-                position: "bottom" as const,
-                title: "Bottom Sidebar",
-                icon: "panel-bottom",
-              },
-            ]) {
-              submenu.addItem((item) =>
-                item
-                  .setTitle(destination.title)
-                  .setIcon(destination.icon)
-                  .setDisabled(currentDock === destination.position)
-                  .onClick(() => {
-                    this.moveTabToDock(tabId, destination.position);
-                  }),
-              );
-            }
-          })
+          .addMenu(
+            "Move to",
+            (submenu) => {
+              const currentDock = this.#dockForPane(location.pane.id);
+              for (const destination of [
+                {
+                  position: "left" as const,
+                  title: "Left Sidebar",
+                  icon: "panel-left",
+                },
+                {
+                  position: "right" as const,
+                  title: "Right Sidebar",
+                  icon: "panel-right",
+                },
+                {
+                  position: "bottom" as const,
+                  title: "Bottom Sidebar",
+                  icon: "panel-bottom",
+                },
+              ]) {
+                submenu.addItem((item) =>
+                  item
+                    .setTitle(destination.title)
+                    .setIcon(destination.icon)
+                    .setDisabled(currentDock === destination.position)
+                    .onClick(() => {
+                      this.moveTabToDock(tabId, destination.position);
+                    }),
+                );
+              }
+            },
+            { icon: "move" },
+          )
           .addItem((item) =>
             item
               .setTitle("Move to floating window")

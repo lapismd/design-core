@@ -107,11 +107,11 @@ Workspace framework contracts coordinate reusable layout and state through expli
 
 ## DC-WS-041 — Pane menu Move to
 
-**Requirement.** The shared pane menu MUST offer a Move to submenu that relocates the current tab into the left sidebar, right sidebar, or bottom sidebar and opens that dock.
+**Requirement.** The shared pane menu MUST offer a Move to submenu, marked with the `move` icon, that relocates the current tab into the left sidebar, right sidebar, or bottom sidebar and opens that dock.
 
 ### Acceptance details
 
-- Submenu items MUST be Left Sidebar, Right Sidebar, and Bottom Sidebar, using the existing `panel-left`, `panel-right`, and `panel-bottom` icons.
+- Move to MUST use the `move` icon, and its items MUST be Left Sidebar, Right Sidebar, and Bottom Sidebar with `panel-left`, `panel-right`, and `panel-bottom`.
 - Selecting a destination MUST move the tab into that dock's tabs pane, activate it, and open the dock.
 - The destination that already contains the tab MUST be disabled.
 - Controller tests MUST cover a successful dock move, and the Workspace Tabs pane-menu story MUST expose the submenu labels and icons.

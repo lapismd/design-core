@@ -202,7 +202,7 @@ This matrix records one current evidence status for every canonical requirement.
 | DC-WS-038     | Implemented | App Shell navigation contract, sidebar presentation, and Storybook interaction                   |
 | DC-WS-039     | Implemented | Managed plugin registry tests and grouped Core plugins Storybook interaction                     |
 | DC-WS-040     | Implemented | Managed plugin registry source, lifecycle delegation, and unit tests                             |
-| DC-WS-041     | Implemented | Pane-menu Move to submenu, dock move tests, and Workspace Tabs story coverage                    |
+| DC-WS-041     | Implemented | Pane-menu Move to submenu with move icon, dock move tests, and Workspace Tabs story coverage     |
 | DC-CAT-001    | Implemented | `.storybook/`; `src/**/*.stories.svelte`; current static Storybook index                         |
 | DC-CAT-002    | Implemented | `.storybook/`; `src/**/*.stories.svelte`; current static Storybook index                         |
 | DC-CAT-003    | Implemented | `.storybook/`; `src/**/*.stories.svelte`; current static Storybook index                         |
