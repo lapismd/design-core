@@ -46,6 +46,73 @@ export interface MergeRenderModel {
   rightConnections: RenderConnection[];
 }
 
+export interface MergeNavigationTarget {
+  blockId: string;
+  componentId: string;
+  side: MergeSide;
+}
+
+const NAVIGATION_SIDE_ORDER: MergeSide[] = ["left", "base", "right"];
+
+function isPendingNavigationComponent(component: RenderComponent): boolean {
+  if (component.placeholder || !component.action) {
+    return false;
+  }
+  if (component.action.kind === "merge") {
+    return true;
+  }
+  return component.action.kind === "resolve" && !component.resolved;
+}
+
+function preferPendingComponent(
+  candidates: readonly RenderComponent[],
+): RenderComponent {
+  return (
+    candidates.find(
+      (component) =>
+        component.side === "left" && component.action?.kind === "merge",
+    ) ??
+    candidates.find(
+      (component) =>
+        component.side === "right" && component.action?.kind === "merge",
+    ) ??
+    candidates[0]
+  );
+}
+
+export function pendingMergeNavigationTargets(
+  renderModel: MergeRenderModel,
+): MergeNavigationTarget[] {
+  const blockCount = Math.max(
+    renderModel.sides.left.length,
+    renderModel.sides.base.length,
+    renderModel.sides.right.length,
+  );
+  const targets: MergeNavigationTarget[] = [];
+  const seen = new Set<string>();
+  for (let index = 0; index < blockCount; index += 1) {
+    const candidates = NAVIGATION_SIDE_ORDER.map(
+      (side) => renderModel.sides[side][index],
+    ).filter((component): component is RenderComponent =>
+      Boolean(component && isPendingNavigationComponent(component)),
+    );
+    if (candidates.length === 0) {
+      continue;
+    }
+    const preferred = preferPendingComponent(candidates);
+    if (seen.has(preferred.blockId)) {
+      continue;
+    }
+    seen.add(preferred.blockId);
+    targets.push({
+      blockId: preferred.blockId,
+      componentId: preferred.id,
+      side: preferred.side,
+    });
+  }
+  return targets;
+}
+
 const EMPTY_SIDES: Record<MergeSide, RenderComponent[]> = {
   left: [],
   base: [],

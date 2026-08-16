@@ -82,7 +82,7 @@
     );
     await expect(rightMerge).toHaveAttribute("data-point", "toward-center");
     await expect(leftMerge).not.toHaveAttribute("data-point", "toward-center");
-    await expect(canvas.getByText("- / 1")).toBeVisible();
+    await expect(canvas.getByText("1 / 1")).toBeVisible();
     await userEvent.click(canvas.getByRole("button", { name: "Next change" }));
     await expect(canvas.getByText("1 / 1")).toBeVisible();
     await expect(canvas.getByText("Conflicts: 1/1")).toBeVisible();
@@ -526,6 +526,73 @@
     await expect(
       editor?.querySelector(".ui-code-token-keyword"),
     ).toHaveTextContent("void");
+    await userEvent.selectOptions(
+      canvas.getByLabelText("Fixture"),
+      "quicksort-c",
+    );
+    const quicksortEditor = canvas
+      .getByLabelText("Left")
+      .closest("[data-ui-component='merge-editor']");
+    const pendingBlockIds = new Set<string>();
+    for (const button of quicksortEditor?.querySelectorAll(
+      '[data-action-kind="merge"]',
+    ) ?? []) {
+      const blockId = button
+        .closest("[data-block-id]")
+        ?.getAttribute("data-block-id");
+      if (blockId) pendingBlockIds.add(blockId);
+    }
+    for (const button of quicksortEditor?.querySelectorAll(
+      '[data-action-kind="resolve"]',
+    ) ?? []) {
+      if (button.getAttribute("aria-label") !== "Mark Resolved") continue;
+      const blockId = button
+        .closest("[data-block-id]")
+        ?.getAttribute("data-block-id");
+      if (blockId) pendingBlockIds.add(blockId);
+    }
+    const pendingCount = pendingBlockIds.size;
+    await expect(pendingCount).toBeGreaterThan(1);
+    await expect(canvas.getByText(`1 / ${pendingCount}`)).toBeVisible();
+    await userEvent.click(canvas.getByRole("button", { name: "Next change" }));
+    await expect(canvas.getByText(`2 / ${pendingCount}`)).toBeVisible();
+    const laterTarget = [...pendingBlockIds][1];
+    await expect(
+      quicksortEditor?.querySelector(
+        `[data-ui-part='merge-component'][data-block-id="${laterTarget}"][data-placeholder="false"]`,
+      ),
+    ).not.toBeNull();
+    const conflictBlockIds = new Set(
+      [
+        ...(quicksortEditor?.querySelectorAll('[data-action-kind="resolve"]') ??
+          []),
+      ]
+        .map((button) =>
+          button.closest("[data-block-id]")?.getAttribute("data-block-id"),
+        )
+        .filter((blockId): blockId is string => Boolean(blockId)),
+    );
+    const mergeButtonsByBlock = new Map<string, HTMLElement[]>();
+    for (const button of quicksortEditor?.querySelectorAll(
+      '[data-action-kind="merge"]',
+    ) ?? []) {
+      const blockId = button
+        .closest("[data-block-id]")
+        ?.getAttribute("data-block-id");
+      if (!blockId) continue;
+      const buttons = mergeButtonsByBlock.get(blockId) ?? [];
+      buttons.push(button as HTMLElement);
+      mergeButtonsByBlock.set(blockId, buttons);
+    }
+    const droppableMerge = [...mergeButtonsByBlock.entries()].find(
+      ([blockId, buttons]) =>
+        buttons.length === 1 && !conflictBlockIds.has(blockId),
+    )?.[1][0];
+    await expect(droppableMerge).toBeTruthy();
+    await userEvent.click(droppableMerge as HTMLElement);
+    await expect(
+      canvas.getByText(new RegExp(`\\d+ / ${pendingCount - 1}`)),
+    ).toBeVisible();
     await userEvent.selectOptions(
       canvas.getByLabelText("Fixture"),
       "ignore-options",

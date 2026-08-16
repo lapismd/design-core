@@ -17,6 +17,7 @@
     createMergeRenderModel,
     deleteMergedRenderComponentFromCenter,
     mergeRenderComponentIntoCenter,
+    pendingMergeNavigationTargets,
     serializeMergeCenter,
     type MergeModel,
     type MergeSide,
@@ -116,22 +117,21 @@
   });
   let editorEl: HTMLElement | null = $state(null);
   let geometry = $state<ConnectorGeometry>(EMPTY_CONNECTOR_GEOMETRY);
-  let activeIndex = $state(-1);
+  let activeIndex = $state(0);
 
   const renderModel = $derived(
     mode === "one-way"
       ? createMergeRenderModel(model, ["left", "right"])
       : createMergeRenderModel(model),
   );
-  const navigationTargets = $derived.by(() => {
-    const conflicts = model.blocks
-      .filter((block) => block.kind === "conflict" && !block.resolved)
-      .map((block) => block.id);
-    if (conflicts.length > 0) return conflicts;
-    return model.blocks
-      .filter((block) => block.kind !== "unchanged")
-      .map((block) => block.id);
-  });
+  const navigationTargets = $derived(
+    pendingMergeNavigationTargets(renderModel),
+  );
+  const currentIndex = $derived(
+    navigationTargets.length === 0
+      ? -1
+      : Math.min(Math.max(activeIndex, 0), navigationTargets.length - 1),
+  );
   const footerCounts = $derived({
     added: model.blocks.filter((block) => block.kind === "added").length,
     removed: model.blocks.filter((block) => block.kind === "removed").length,
@@ -306,15 +306,15 @@
 
   function navigate(delta: number) {
     if (navigationTargets.length === 0) return;
+    const from = currentIndex < 0 ? 0 : currentIndex;
     const next =
-      (((activeIndex + delta) % navigationTargets.length) +
-        navigationTargets.length) %
+      (((from + delta) % navigationTargets.length) + navigationTargets.length) %
       navigationTargets.length;
     activeIndex = next;
-    const blockId = navigationTargets[next];
+    const target = navigationTargets[next];
     editorEl
       ?.querySelector<HTMLElement>(
-        `[data-ui-part='merge-component'][data-block-id="${blockId}"][data-placeholder="false"]`,
+        `[data-ui-part='merge-component'][data-render-component-id="${target.componentId}"][data-placeholder="false"]`,
       )
       ?.scrollIntoView({ block: "center", inline: "nearest" });
   }
@@ -498,7 +498,7 @@
       <span>
         {navigationTargets.length === 0
           ? "No changes"
-          : `${activeIndex < 0 ? "-" : activeIndex + 1} / ${navigationTargets.length}`}
+          : `${currentIndex + 1} / ${navigationTargets.length}`}
       </span>
       <Button
         variant="ghost"

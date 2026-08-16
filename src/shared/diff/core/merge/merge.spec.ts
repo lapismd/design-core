@@ -9,6 +9,7 @@ import {
   deleteMergedRenderComponentFromCenter,
   diffSequences,
   mergeRenderComponentIntoCenter,
+  pendingMergeNavigationTargets,
   serializeMergeCenter,
   splitLines,
   DEFAULT_OPTIONS,
@@ -564,6 +565,46 @@ test("creates side-major render components and connector lanes for the C fixture
     ),
     true,
   );
+});
+
+test("lists pending merge navigation targets for the C quicksort fixture", () => {
+  const model = assembleThreeWayMerge(
+    quicksortLeft,
+    quicksortBase,
+    quicksortRight,
+    { workingCopyCenter: true },
+  );
+  const renderModel = createMergeRenderModel(model);
+  const targets = pendingMergeNavigationTargets(renderModel);
+
+  assert.equal(targets.length > model.unresolvedConflictCount, true);
+  assert.equal(
+    targets.some((target) => {
+      const block = model.blocks.find((item) => item.id === target.blockId);
+      return block !== undefined && block.kind !== "conflict";
+    }),
+    true,
+  );
+
+  const droppable = targets.find((target) => {
+    const pendingOnBlock = renderModel.components.filter(
+      (component) =>
+        component.blockId === target.blockId &&
+        !component.placeholder &&
+        (component.action?.kind === "merge" ||
+          (component.action?.kind === "resolve" && !component.resolved)),
+    );
+    return pendingOnBlock.length === 1;
+  });
+  assert.ok(droppable);
+  const toMerge = renderModel.components.find(
+    (component) => component.id === droppable.componentId,
+  );
+  assert.ok(toMerge);
+  const nextTargets = pendingMergeNavigationTargets(
+    createMergeRenderModel(mergeRenderComponentIntoCenter(model, toMerge)),
+  );
+  assert.equal(nextTargets.length, targets.length - 1);
 });
 
 test("places merge and resolve actions on render components", () => {
