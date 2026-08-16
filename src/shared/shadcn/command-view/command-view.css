@@ -23,14 +23,25 @@
 }
 
 [data-ui-component="command-view"][data-ui-part="input-wrapper"] {
-  padding: 0.25rem;
+  padding: 0.25rem 0.25rem 0;
+  border-block-end: 1px solid var(--ui-command-view-border-color);
 }
 
 [data-ui-component="command-view"][data-ui-part="input-wrapper"]
-  > [data-ui-component="input-group"][data-ui-part="input-group"] {
+  > [data-ui-component="input-group"][data-ui-part="input-group"],
+[data-ui-component="command-view"][data-ui-part="input-wrapper"]
+  > [data-ui-component="input-group"][data-ui-part="input-group"]:has(
+    [data-slot="input-group-control"]:focus-visible
+  ) {
   height: 2.5rem;
-  border-color: var(--ui-command-view-border-color);
+  border: 0;
   background: transparent;
+  box-shadow: none;
+}
+
+[data-ui-component="command-view"][data-ui-part="input-wrapper"]
+  [data-slot="input-group-control"] {
+  outline: none;
   box-shadow: none;
 }
 

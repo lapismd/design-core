@@ -53,7 +53,7 @@ Shadcn form controls provide the low-level accessible inputs used directly or in
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/shadcn/command-view`.
-- Input MUST expose a replaceable `start` snippet and MUST NOT bake a Lucide icon into the public contract.
+- Input MUST expose a replaceable `start` snippet, MUST NOT bake a Lucide icon into the public contract, and MUST NOT paint a box border around the search field.
 - Item rows MUST compose icon, label, optional description, and shortcut parts without a default check icon.
 - Overflowing lists MUST scroll through `@lapismd/design-core/shadcn/scroll-area`, and the catalog MUST demonstrate inline, Dialog, and Popover hosts.
 
