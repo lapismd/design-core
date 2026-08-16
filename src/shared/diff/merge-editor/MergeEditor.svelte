@@ -17,6 +17,7 @@
     createMergeRenderModel,
     deleteMergedRenderComponentFromCenter,
     mergeRenderComponentIntoCenter,
+    navigationIndexForLine,
     pendingMergeNavigationTargets,
     serializeMergeCenter,
     type MergeModel,
@@ -132,6 +133,9 @@
       ? -1
       : Math.min(Math.max(activeIndex, 0), navigationTargets.length - 1),
   );
+  const currentTarget = $derived(
+    currentIndex < 0 ? undefined : navigationTargets[currentIndex],
+  );
   const footerCounts = $derived({
     added: model.blocks.filter((block) => block.kind === "added").length,
     removed: model.blocks.filter((block) => block.kind === "removed").length,
@@ -150,6 +154,23 @@
 
   $effect(() => {
     emitResolved(model);
+  });
+
+  $effect(() => {
+    const container = editorEl;
+    const targets = navigationTargets;
+    if (!container) return;
+    const onClick = (event: MouseEvent) => {
+      const host = (event.target as HTMLElement | null)?.closest(
+        "[data-block-id]",
+      );
+      if (!host || !container.contains(host)) return;
+      const blockId = host.getAttribute("data-block-id");
+      const index = targets.findIndex((target) => target.blockId === blockId);
+      if (index >= 0) activeIndex = index;
+    };
+    container.addEventListener("click", onClick);
+    return () => container.removeEventListener("click", onClick);
   });
 
   $effect(() => {
@@ -319,6 +340,26 @@
       ?.scrollIntoView({ block: "center", inline: "nearest" });
   }
 
+  function lineNumberFromOffset(text: string, offset: number): number {
+    let line = 1;
+    const end = Math.min(offset, text.length);
+    for (let index = 0; index < end; index += 1) {
+      if (text[index] === "\n") line += 1;
+    }
+    return line;
+  }
+
+  function syncCaret(event: Event, side: MergeSide) {
+    const textarea = event.currentTarget as HTMLTextAreaElement;
+    const index = navigationIndexForLine(
+      navigationTargets,
+      renderModel,
+      side,
+      lineNumberFromOffset(textarea.value, textarea.selectionStart),
+    );
+    if (index >= 0) activeIndex = index;
+  }
+
   function actionLabel(component: RenderComponent): string {
     if (component.action?.kind === "resolve") {
       return component.resolved ? "Mark Unresolved" : "Mark Resolved";
@@ -373,6 +414,9 @@
             class="ui-diff-merge-editor__placeholder"
             data-block-id={component.blockId}
             data-visual-kind={component.visualKind}
+            data-current={component.blockId === currentTarget?.blockId
+              ? "true"
+              : undefined}
           ></div>
         {:else}
           {#each component.lines as line, index (line.id)}
@@ -380,6 +424,9 @@
               class="ui-diff-merge-editor__line-number"
               data-visual-kind={component.visualKind}
               data-block-id={component.blockId}
+              data-current={component.blockId === currentTarget?.blockId
+                ? "true"
+                : undefined}
             >
               {#if index === 0}
                 {@render actionButton(component, side)}
@@ -409,6 +456,9 @@
               data-block-id={component.blockId}
               data-visual-kind={component.visualKind}
               data-placeholder={component.placeholder}
+              data-current={component.blockId === currentTarget?.blockId
+                ? "true"
+                : undefined}
             >
               {#each component.lines as line (line.id)}
                 <span class="ui-diff-merge-editor__line">
@@ -442,6 +492,9 @@
             spellcheck={false}
             value={editValue}
             oninput={(event) => editSide(side, event.currentTarget.value)}
+            onclick={(event) => syncCaret(event, side)}
+            onkeyup={(event) => syncCaret(event, side)}
+            onselect={(event) => syncCaret(event, side)}
           ></textarea>
         {/if}
       </div>

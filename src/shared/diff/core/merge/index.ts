@@ -20,6 +20,7 @@ export {
   createMergeRenderModel,
   deleteMergedRenderComponentFromCenter,
   mergeRenderComponentIntoCenter,
+  navigationIndexForLine,
   pendingMergeNavigationTargets,
   type MergeNavigationTarget,
   type MergeRenderModel,

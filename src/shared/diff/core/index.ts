@@ -32,6 +32,7 @@ export {
   deleteMergedRenderComponentFromCenter,
   diffSequences,
   mergeRenderComponentIntoCenter,
+  navigationIndexForLine,
   pendingMergeNavigationTargets,
   serializeMergeCenter,
   splitLines,

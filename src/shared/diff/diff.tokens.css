@@ -48,6 +48,7 @@
     --ui-workspace-selection,
     color-mix(in srgb, var(--primary) 14%, transparent)
   );
+  --ui-diff-current-ring: var(--ring, var(--primary));
   --ui-diff-border: var(--border);
   --ui-diff-stat-added: oklch(0.42 0.12 145);
   --ui-diff-stat-removed: oklch(0.48 0.19 25);

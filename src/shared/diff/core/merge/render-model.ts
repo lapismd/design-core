@@ -113,6 +113,26 @@ export function pendingMergeNavigationTargets(
   return targets;
 }
 
+export function navigationIndexForLine(
+  targets: readonly MergeNavigationTarget[],
+  renderModel: MergeRenderModel,
+  side: MergeSide,
+  lineNumber: number,
+): number {
+  return targets.findIndex((target) => {
+    const component = renderModel.sides[side].find(
+      (candidate) => candidate.blockId === target.blockId,
+    );
+    if (!component || component.placeholder || component.lines.length === 0) {
+      return false;
+    }
+    return (
+      lineNumber >= component.lineStart &&
+      lineNumber < component.lineStart + component.lines.length
+    );
+  });
+}
+
 const EMPTY_SIDES: Record<MergeSide, RenderComponent[]> = {
   left: [],
   base: [],

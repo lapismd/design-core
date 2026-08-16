@@ -46,6 +46,13 @@
   gap: 0.25rem;
 }
 
+.ui-diff-merge-editor__nav [data-ui-component="button"]:hover:not(:disabled),
+.ui-diff-merge-editor__nav
+  [data-ui-component="button"]:focus-visible:not(:disabled) {
+  background: color-mix(in srgb, var(--foreground) 10%, transparent);
+  color: var(--foreground);
+}
+
 .ui-diff-merge-editor__labels {
   display: grid;
   align-items: stretch;
@@ -214,6 +221,11 @@
   height: 2px;
   min-height: 2px;
   pointer-events: none;
+}
+
+.ui-diff-merge-editor__component[data-current="true"][data-placeholder="false"] {
+  z-index: 1;
+  box-shadow: inset 0 0 0 2px var(--ui-diff-current-ring);
 }
 
 .ui-diff-merge-editor__component[data-visual-kind="added"],

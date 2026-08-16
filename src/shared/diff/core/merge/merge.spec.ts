@@ -9,6 +9,7 @@ import {
   deleteMergedRenderComponentFromCenter,
   diffSequences,
   mergeRenderComponentIntoCenter,
+  navigationIndexForLine,
   pendingMergeNavigationTargets,
   serializeMergeCenter,
   splitLines,
@@ -605,6 +606,43 @@ test("lists pending merge navigation targets for the C quicksort fixture", () =>
     createMergeRenderModel(mergeRenderComponentIntoCenter(model, toMerge)),
   );
   assert.equal(nextTargets.length, targets.length - 1);
+});
+
+test("maps a caret line to the pending merge navigation index", () => {
+  const model = assembleThreeWayMerge(
+    quicksortLeft,
+    quicksortBase,
+    quicksortRight,
+    { workingCopyCenter: true },
+  );
+  const renderModel = createMergeRenderModel(model);
+  const targets = pendingMergeNavigationTargets(renderModel);
+  assert.equal(targets.length > 1, true);
+
+  const second = targets[1];
+  const secondComponent = renderModel.sides[second.side].find(
+    (component) => component.blockId === second.blockId,
+  );
+  assert.ok(secondComponent);
+  assert.equal(
+    navigationIndexForLine(
+      targets,
+      renderModel,
+      second.side,
+      secondComponent.lineStart,
+    ),
+    1,
+  );
+
+  const unchanged = renderModel.sides.left.find(
+    (component) =>
+      component.blockKind === "unchanged" && component.lines.length > 0,
+  );
+  assert.ok(unchanged);
+  assert.equal(
+    navigationIndexForLine(targets, renderModel, "left", unchanged.lineStart),
+    -1,
+  );
 });
 
 test("places merge and resolve actions on render components", () => {

@@ -83,6 +83,11 @@
     await expect(rightMerge).toHaveAttribute("data-point", "toward-center");
     await expect(leftMerge).not.toHaveAttribute("data-point", "toward-center");
     await expect(canvas.getByText("1 / 1")).toBeVisible();
+    await expect(
+      editor?.querySelector(
+        "[data-ui-part='merge-component'][data-current='true'][data-placeholder='false']",
+      ),
+    ).not.toBeNull();
     await userEvent.click(canvas.getByRole("button", { name: "Next change" }));
     await expect(canvas.getByText("1 / 1")).toBeVisible();
     await expect(canvas.getByText("Conflicts: 1/1")).toBeVisible();
@@ -554,14 +559,26 @@
     const pendingCount = pendingBlockIds.size;
     await expect(pendingCount).toBeGreaterThan(1);
     await expect(canvas.getByText(`1 / ${pendingCount}`)).toBeVisible();
+    const firstCurrent = quicksortEditor?.querySelector(
+      "[data-ui-part='merge-component'][data-current='true'][data-placeholder='false']",
+    );
+    await expect(firstCurrent).not.toBeNull();
+    const firstBlockId = firstCurrent?.getAttribute("data-block-id");
     await userEvent.click(canvas.getByRole("button", { name: "Next change" }));
     await expect(canvas.getByText(`2 / ${pendingCount}`)).toBeVisible();
-    const laterTarget = [...pendingBlockIds][1];
-    await expect(
-      quicksortEditor?.querySelector(
-        `[data-ui-part='merge-component'][data-block-id="${laterTarget}"][data-placeholder="false"]`,
-      ),
-    ).not.toBeNull();
+    const laterCurrent = quicksortEditor?.querySelector(
+      "[data-ui-part='merge-component'][data-current='true'][data-placeholder='false']",
+    );
+    await expect(laterCurrent).not.toBeNull();
+    await expect(laterCurrent?.getAttribute("data-block-id")).not.toBe(
+      firstBlockId,
+    );
+    const firstGutter = quicksortEditor?.querySelector(
+      `[data-block-id="${firstBlockId}"].ui-diff-merge-editor__line-number`,
+    );
+    await expect(firstGutter).not.toBeNull();
+    await userEvent.click(firstGutter as HTMLElement);
+    await expect(canvas.getByText(`1 / ${pendingCount}`)).toBeVisible();
     const conflictBlockIds = new Set(
       [
         ...(quicksortEditor?.querySelectorAll('[data-action-kind="resolve"]') ??
