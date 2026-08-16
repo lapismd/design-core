@@ -100,5 +100,5 @@ Diff contracts keep change-set listing, file comparison, and merge presentation 
 
 - The public boundary is `@lapismd/design-core/diff`.
 - File Diff and Merge Editor MUST mount shadcn `scroll-area` viewports instead of native overflow panes.
-- The editor MUST fill the host height, paint line-number gutters through unused space below the last line, and keep unwrapped horizontal scrollbars at the bottom of that surface, just above any merge footer.
+- The editor MUST fill the host height, paint line-number gutters through unused space below the last line, keep those sticky gutters opaque so scrolled line text cannot show through, and keep unwrapped horizontal scrollbars at the bottom of that surface, just above any merge footer.
 - The catalog MUST demonstrate the filled ScrollArea on File Diff and Merge Editor.

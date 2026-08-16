@@ -161,7 +161,11 @@
   z-index: 0;
   width: var(--ui-diff-merge-line-number-width);
   pointer-events: none;
-  background: color-mix(in srgb, var(--muted) 76%, var(--background));
+  background-color: var(--ui-diff-surface);
+  background-image: linear-gradient(
+    var(--ui-diff-gutter-wash),
+    var(--ui-diff-gutter-wash)
+  );
 }
 
 .ui-diff-merge-editor__scroll {
@@ -232,7 +236,11 @@
   width: var(--ui-diff-merge-line-number-width);
   min-height: 100%;
   flex: 0 0 var(--ui-diff-merge-line-number-width);
-  background: color-mix(in srgb, var(--muted) 76%, var(--background));
+  background-color: var(--ui-diff-surface);
+  background-image: linear-gradient(
+    var(--ui-diff-gutter-wash),
+    var(--ui-diff-gutter-wash)
+  );
   color: var(--ui-diff-gutter);
   font-family: var(--ui-diff-mono);
   font-size: 0.75rem;
@@ -261,33 +269,68 @@
 }
 
 .ui-diff-merge-editor__component[data-visual-kind="added"],
-.ui-diff-merge-editor__line-number[data-visual-kind="added"],
 .ui-diff-merge-editor__placeholder[data-visual-kind="added"] {
   background: var(--ui-diff-added-background);
 }
 
 .ui-diff-merge-editor__component[data-visual-kind="removed"],
-.ui-diff-merge-editor__line-number[data-visual-kind="removed"],
 .ui-diff-merge-editor__placeholder[data-visual-kind="removed"] {
   background: var(--ui-diff-removed-background);
 }
 
 .ui-diff-merge-editor__component[data-visual-kind="modified"],
-.ui-diff-merge-editor__line-number[data-visual-kind="modified"],
 .ui-diff-merge-editor__placeholder[data-visual-kind="modified"] {
   background: var(--ui-diff-modified-background);
 }
 
 .ui-diff-merge-editor__component[data-visual-kind="conflict"],
-.ui-diff-merge-editor__line-number[data-visual-kind="conflict"],
 .ui-diff-merge-editor__placeholder[data-visual-kind="conflict"] {
   background: var(--ui-diff-conflict-background);
 }
 
 .ui-diff-merge-editor__component[data-visual-kind="resolved"],
-.ui-diff-merge-editor__line-number[data-visual-kind="resolved"],
 .ui-diff-merge-editor__placeholder[data-visual-kind="resolved"] {
   background: var(--ui-diff-resolved-background);
+}
+
+.ui-diff-merge-editor__line-number[data-visual-kind="added"] {
+  background-color: var(--ui-diff-surface);
+  background-image: linear-gradient(
+    var(--ui-diff-added-background),
+    var(--ui-diff-added-background)
+  );
+}
+
+.ui-diff-merge-editor__line-number[data-visual-kind="removed"] {
+  background-color: var(--ui-diff-surface);
+  background-image: linear-gradient(
+    var(--ui-diff-removed-background),
+    var(--ui-diff-removed-background)
+  );
+}
+
+.ui-diff-merge-editor__line-number[data-visual-kind="modified"] {
+  background-color: var(--ui-diff-surface);
+  background-image: linear-gradient(
+    var(--ui-diff-modified-background),
+    var(--ui-diff-modified-background)
+  );
+}
+
+.ui-diff-merge-editor__line-number[data-visual-kind="conflict"] {
+  background-color: var(--ui-diff-surface);
+  background-image: linear-gradient(
+    var(--ui-diff-conflict-background),
+    var(--ui-diff-conflict-background)
+  );
+}
+
+.ui-diff-merge-editor__line-number[data-visual-kind="resolved"] {
+  background-color: var(--ui-diff-surface);
+  background-image: linear-gradient(
+    var(--ui-diff-resolved-background),
+    var(--ui-diff-resolved-background)
+  );
 }
 
 .ui-diff-merge-editor__line {

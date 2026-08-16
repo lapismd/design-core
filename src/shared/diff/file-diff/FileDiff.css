@@ -14,6 +14,7 @@
   height: 100%;
   min-height: 0;
   flex-direction: column;
+  background: var(--ui-diff-surface);
 }
 
 .ui-diff-file-diff__empty {
@@ -134,7 +135,11 @@
   z-index: 0;
   width: 3rem;
   pointer-events: none;
-  background: color-mix(in srgb, var(--muted) 76%, var(--background));
+  background-color: var(--ui-diff-surface);
+  background-image: linear-gradient(
+    var(--ui-diff-gutter-wash),
+    var(--ui-diff-gutter-wash)
+  );
 }
 
 .ui-diff-file-diff__pane + .ui-diff-file-diff__pane {
@@ -151,19 +156,31 @@
   left: 0;
   z-index: 1;
   box-sizing: border-box;
-  background: color-mix(in srgb, var(--muted) 76%, var(--background));
+  background-color: var(--ui-diff-surface);
+  background-image: linear-gradient(
+    var(--ui-diff-gutter-wash),
+    var(--ui-diff-gutter-wash)
+  );
 }
 
 .ui-diff-file-diff[data-view-mode="split"]
   .ui-diff-file-diff__row[data-variant="added"]
   .ui-diff-file-diff__gutter {
-  background: var(--ui-diff-added-background);
+  background-color: var(--ui-diff-surface);
+  background-image: linear-gradient(
+    var(--ui-diff-added-background),
+    var(--ui-diff-added-background)
+  );
 }
 
 .ui-diff-file-diff[data-view-mode="split"]
   .ui-diff-file-diff__row[data-variant="removed"]
   .ui-diff-file-diff__gutter {
-  background: var(--ui-diff-removed-background);
+  background-color: var(--ui-diff-surface);
+  background-image: linear-gradient(
+    var(--ui-diff-removed-background),
+    var(--ui-diff-removed-background)
+  );
 }
 
 .ui-diff-file-diff__pane-stack {
@@ -178,7 +195,11 @@
   flex: 1 1 auto;
   width: 3rem;
   min-height: 0;
-  background: color-mix(in srgb, var(--muted) 76%, var(--background));
+  background-color: var(--ui-diff-surface);
+  background-image: linear-gradient(
+    var(--ui-diff-gutter-wash),
+    var(--ui-diff-gutter-wash)
+  );
 }
 
 .ui-diff-file-diff[data-view-mode="split"]:not([data-wrap="true"])

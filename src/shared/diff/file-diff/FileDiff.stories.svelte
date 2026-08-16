@@ -85,6 +85,31 @@
     }
   }
 
+  function cssAlpha(color: string): number {
+    const normalized = color.trim().toLowerCase();
+    if (normalized === "transparent") return 0;
+    const slash = normalized.match(/\/\s*([0-9.]+%?)\s*\)/);
+    if (slash) {
+      const raw = slash[1];
+      return raw.endsWith("%") ? Number.parseFloat(raw) / 100 : Number(raw);
+    }
+    const rgba = normalized.match(
+      /rgba\(\s*[\d.]+\s*,\s*[\d.]+\s*,\s*[\d.]+\s*,\s*([\d.]+)\s*\)/,
+    );
+    if (rgba) return Number(rgba[1]);
+    return 1;
+  }
+
+  function expectOpaqueStickyGutters(root: ParentNode) {
+    const gutters = [
+      ...root.querySelectorAll<HTMLElement>(".ui-diff-file-diff__gutter"),
+    ];
+    expect(gutters.length).toBeGreaterThan(0);
+    for (const gutter of gutters) {
+      expect(cssAlpha(getComputedStyle(gutter).backgroundColor)).toBe(1);
+    }
+  }
+
   function expectGutterFills(root: HTMLElement) {
     const hosts = [
       ...root.querySelectorAll<HTMLElement>(
@@ -179,6 +204,7 @@
       .closest("[data-ui-component='file-diff']") as HTMLElement | null;
     await expect(root).not.toBeNull();
     expectGutterFills(root!);
+    expectOpaqueStickyGutters(root!);
   }}
   tags={["visual-pending"]}
 >
@@ -210,6 +236,18 @@
     left!.scrollLeft = 48;
     left!.dispatchEvent(new Event("scroll"));
     await expect(right!.scrollLeft).toBe(48);
+    const gutter = leftPane.querySelector<HTMLElement>(
+      ".ui-diff-file-diff__gutter",
+    );
+    const text = leftPane.querySelector<HTMLElement>(
+      ".ui-diff-file-diff__text",
+    );
+    await expect(gutter).not.toBeNull();
+    await expect(text).not.toBeNull();
+    await expect(text!.getBoundingClientRect().left).toBeLessThan(
+      gutter!.getBoundingClientRect().right,
+    );
+    expectOpaqueStickyGutters(leftPane);
   }}
   tags={["visual-pending"]}
   parameters={{

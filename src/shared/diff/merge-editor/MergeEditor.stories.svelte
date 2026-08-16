@@ -153,6 +153,21 @@
       await expect(gutter!.getBoundingClientRect().bottom).toBeGreaterThanOrEqual(
         viewport!.getBoundingClientRect().bottom - 16,
       );
+      const gutterColor = getComputedStyle(gutter!).backgroundColor;
+      await expect(gutterColor).not.toBe("transparent");
+      await expect(gutterColor).not.toBe("rgba(0, 0, 0, 0)");
+      const slash = gutterColor.match(/\/\s*([0-9.]+%?)\s*\)/);
+      const rgba = gutterColor.match(
+        /rgba\(\s*[\d.]+\s*,\s*[\d.]+\s*,\s*[\d.]+\s*,\s*([\d.]+)\s*\)/i,
+      );
+      const alpha = slash
+        ? slash[1].endsWith("%")
+          ? Number.parseFloat(slash[1]) / 100
+          : Number(slash[1])
+        : rgba
+          ? Number(rgba[1])
+          : 1;
+      await expect(alpha).toBe(1);
       const rail = getComputedStyle(view, "::before");
       await expect(rail.content).not.toBe("none");
       await expect(Number.parseFloat(rail.width)).toBeGreaterThan(0);

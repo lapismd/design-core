@@ -160,7 +160,7 @@ This matrix records one current evidence status for every canonical requirement.
 | DC-DIFF-005   | Implemented | `src/shared/diff/Guidance.mdx`                                                                   |
 | DC-DIFF-006   | Implemented | File Change Stats sources, `formatDiffDelta` unit tests, and Storybook scenarios                 |
 | DC-DIFF-007   | Implemented | Wrap stories, flushed frame tokens, and unwrapped split pane clip plus synchronized scroll        |
-| DC-DIFF-008   | Implemented | File Diff and Merge Editor fill-host ScrollArea stories with gutter rails and horizontal bars at the surface bottom |
+| DC-DIFF-008   | Implemented | File Diff and Merge Editor fill-host ScrollArea stories with opaque sticky gutters, gutter rails, and horizontal bars at the surface bottom |
 | DC-SHELL-001  | Implemented | `src/shared/shell/`; Shell guidance and tests                                                    |
 | DC-SHELL-002  | Implemented | App Shell sources, guidance, stories, and pointer tests                                          |
 | DC-SHELL-003  | Implemented | `src/shared/shell/Guidance.mdx`                                                                  |
