@@ -58,7 +58,7 @@
       placement: "right",
     },
   }}
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <div data-story="drawer-composer">
@@ -164,7 +164,19 @@
       placement: "right",
     },
   }}
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
+  play={async ({ canvas, canvasElement }) => {
+    const pill = canvas.getByText("quarterly-report.pdf ×");
+    const drawer = canvasElement.querySelector(
+      '[data-ui-component="ai-chat-composer-drawer"]',
+    );
+    expect(drawer).not.toBeNull();
+    const pillStyles = getComputedStyle(pill);
+    const drawerPaint = getComputedStyle(drawer as HTMLElement).backgroundColor;
+    expect(pillStyles.backgroundColor).not.toBe(drawerPaint);
+    expect(pillStyles.borderTopWidth).not.toBe("0px");
+    expect(pillStyles.borderTopColor).not.toBe("rgba(0, 0, 0, 0)");
+  }}
 >
   {#snippet template()}
     <div data-story="drawer-composer">
@@ -203,7 +215,7 @@
       placement: "right",
     },
   }}
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <div data-story="drawer-composer">
@@ -299,7 +311,7 @@
       placement: "right",
     },
   }}
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <div data-story="drawer-composer">
@@ -347,7 +359,7 @@
       placement: "right",
     },
   }}
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <div data-story="drawer-composer">

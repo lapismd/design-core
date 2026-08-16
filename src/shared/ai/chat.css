@@ -30,6 +30,9 @@
     transparent
   );
   --ui-ai-chat-trigger-width: 18rem;
+  --ui-ai-chat-attachment-background: var(--background);
+  --ui-ai-chat-attachment-foreground: var(--foreground);
+  --ui-ai-chat-attachment-border: var(--border);
 }
 
 [data-ui-component="ai-chat-layout"] {
@@ -905,6 +908,18 @@
   flex-wrap: wrap;
   align-items: flex-start;
   gap: 0.25rem;
+}
+
+[data-ui-component="ai-chat-composer-drawer"]
+  [data-ai-chat-part="drawer-content"]
+  > [data-ui-component="badge"][data-variant="secondary"],
+[data-ui-component="ai-chat-composer-drawer"]
+  [data-ai-chat-part="drawer-content"]
+  > [data-ui-component="ai-chat-composer-token"]
+  [data-ui-component="badge"][data-variant="secondary"] {
+  border-color: var(--ui-ai-chat-attachment-border);
+  background: var(--ui-ai-chat-attachment-background);
+  color: var(--ui-ai-chat-attachment-foreground);
 }
 
 [data-ui-component="ai-chat-dictation-button"] {
