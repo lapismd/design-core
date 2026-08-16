@@ -45,9 +45,15 @@
     await expect(canvas.getByRole("status")).toHaveTextContent(
       "src/lib/tree.ts",
     );
-    await expect(
-      canvas.getByRole("button", { name: "src/lib/tree.ts" }),
-    ).toHaveAttribute("aria-current", "true");
+    const selected = canvas.getByRole("button", { name: "src/lib/tree.ts" });
+    const idle = canvas.getByRole("button", { name: "README.md" });
+    await expect(selected).toHaveAttribute("aria-current", "true");
+    await expect(getComputedStyle(selected).backgroundColor).not.toBe(
+      getComputedStyle(idle).backgroundColor,
+    );
+    await expect(getComputedStyle(selected).backgroundColor).not.toBe(
+      "rgba(0, 0, 0, 0)",
+    );
     await expect(canvas.getByText("+12")).toBeVisible();
     await expect(canvas.getByText("-1")).toBeVisible();
   }}

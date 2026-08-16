@@ -37,8 +37,9 @@
   background: var(--ui-diff-row-hover);
 }
 
-.ui-diff-file-listing__row--selected {
-  box-shadow: inset 2px 0 0 var(--primary);
+.ui-diff-file-listing__row--selected,
+.ui-diff-file-listing__row--selected:hover {
+  background: var(--ui-diff-selected);
 }
 
 .ui-diff-file-listing__chevron,
