@@ -59,6 +59,7 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/workspace/command-palette`.
+- Overflowing result lists MUST scroll through the public `@lapismd/design-core/shadcn/scroll-area` viewport rather than a native overflow box.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 
 ## DC-WS-011 — Drop Overlay

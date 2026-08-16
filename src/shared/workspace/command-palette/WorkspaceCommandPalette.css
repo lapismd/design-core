@@ -48,8 +48,15 @@
 }
 
 .ui-workspace-command-palette__list {
+  --ui-scroll-area-foreground: var(--ui-workspace-border);
+}
+
+.ui-workspace-command-palette__list
+  [data-ui-component="scroll-area"][data-ui-part="scroll-area-viewport"] {
   max-height: min(22rem, 52vh);
-  overflow: auto;
+}
+
+.ui-workspace-command-palette__list-content {
   padding: 0.375rem;
 }
 

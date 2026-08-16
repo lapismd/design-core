@@ -170,7 +170,7 @@ This matrix records one current evidence status for every canonical requirement.
 | DC-WS-007     | Implemented | Workspace framework sources, guidance, stories, and tests                                        |
 | DC-WS-008     | Implemented | About Dialog source, public barrel, and accessible Storybook scenarios                           |
 | DC-WS-009     | Implemented | Workspace component source, public barrel, and colocated Storybook scenarios                     |
-| DC-WS-010     | Implemented | Workspace component source, public barrel, and colocated Storybook scenarios                     |
+| DC-WS-010     | Implemented | Command Palette ScrollArea list, public barrel, and colocated Storybook scenarios                |
 | DC-WS-011     | Implemented | Workspace component source, public barrel, and colocated Storybook scenarios                     |
 | DC-WS-012     | Implemented | Workspace component source, public barrel, and colocated Storybook scenarios                     |
 | DC-WS-013     | Implemented | Workspace component source, public barrel, and colocated Storybook scenarios                     |

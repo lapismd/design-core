@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { ScrollArea } from "@lapismd/design-core/shadcn/scroll-area";
   import { tick } from "svelte";
   import type { AppShellController } from "../core/app-shell-controller.svelte.js";
   import type {
@@ -84,39 +85,41 @@
           spellcheck="false"
         />
       </label>
-      <div
+      <ScrollArea
         class="ui-workspace-command-palette__list"
         role={results.length > 0 ? "listbox" : undefined}
         aria-label={results.length > 0 ? "Commands and actions" : undefined}
       >
-        {#if results.length === 0}
-          <p class="ui-workspace-command-palette__empty">No results found.</p>
-        {:else}
-          <p class="ui-workspace-command-palette__heading">
-            Commands and actions
-          </p>
-          {#each results as item (`${item.providerId}:${item.id}`)}
-            <button
-              type="button"
-              class="ui-workspace-command-palette__item"
-              role="option"
-              aria-selected="false"
-              onclick={() => void select(item)}
-            >
-              {#if item.icon}
-                <WorkspaceIcon name={item.icon} />
-              {/if}
-              <span>
-                <strong>{item.title}</strong>
-                {#if item.subtitle}<small>{item.subtitle}</small>{/if}
-              </span>
-              {#if item.hotkeys?.[0]}
-                <kbd>{displayHotkey(item.hotkeys[0])}</kbd>
-              {/if}
-            </button>
-          {/each}
-        {/if}
-      </div>
+        <div class="ui-workspace-command-palette__list-content">
+          {#if results.length === 0}
+            <p class="ui-workspace-command-palette__empty">No results found.</p>
+          {:else}
+            <p class="ui-workspace-command-palette__heading">
+              Commands and actions
+            </p>
+            {#each results as item (`${item.providerId}:${item.id}`)}
+              <button
+                type="button"
+                class="ui-workspace-command-palette__item"
+                role="option"
+                aria-selected="false"
+                onclick={() => void select(item)}
+              >
+                {#if item.icon}
+                  <WorkspaceIcon name={item.icon} />
+                {/if}
+                <span>
+                  <strong>{item.title}</strong>
+                  {#if item.subtitle}<small>{item.subtitle}</small>{/if}
+                </span>
+                {#if item.hotkeys?.[0]}
+                  <kbd>{displayHotkey(item.hotkeys[0])}</kbd>
+                {/if}
+              </button>
+            {/each}
+          {/if}
+        </div>
+      </ScrollArea>
     </div>
   </div>
 {/if}
