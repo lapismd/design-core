@@ -31,7 +31,7 @@ This matrix records one current evidence status for every canonical requirement.
 | DC-TOOL-001   | Implemented | Root scripts; `scripts/ui-generator/`; `packages/storybook-addon-docs-mcp/`                      |
 | DC-TOOL-002   | Implemented | Root scripts; `scripts/ui-generator/`; `packages/storybook-addon-docs-mcp/`                      |
 | DC-TOOL-003   | Implemented | Root scripts; `scripts/ui-generator/`; `packages/storybook-addon-docs-mcp/`                      |
-| DC-TOOL-004   | Implemented | Root scripts; `scripts/ui-generator/`; `packages/storybook-addon-docs-mcp/`                      |
+| DC-TOOL-004   | Implemented | Docs MCP llms catalog plus SUMMARY-derived specification chapter coverage                        |
 | DC-SHA-001    | Implemented | Shadcn sources, stories, pointer tests, and canonical inventory                                  |
 | DC-SHA-002    | Implemented | src/shared/shadcn/button/; colocated stories                                                     |
 | DC-SHA-003    | Implemented | src/shared/shadcn/button-group/; colocated stories                                               |
@@ -114,7 +114,7 @@ This matrix records one current evidence status for every canonical requirement.
 | DC-FORM-030   | Implemented | Forms family source and colocated Storybook scenarios for Form Toolbar                           |
 | DC-FORM-031   | Implemented | Forms family source and colocated Storybook scenarios for Sortable Array Item                    |
 | DC-FORM-032   | Implemented | Forms core and family sources, unit tests, and Storybook scenarios                               |
-| DC-FORM-033   | Implemented | Forms family source and colocated Storybook scenarios for Code Editor                            |
+| DC-FORM-033   | Implemented | Code Editor Mira workspace-link contract and colocated Storybook scenarios                       |
 | DC-FORM-034   | Implemented | Forms family source and colocated Storybook scenarios for Code Highlighter                       |
 | DC-FORM-035   | Implemented | YAML editor unit/catalog coverage and linked Lapis consumer type check                           |
 | DC-FORM-036   | Implemented | Forms core and family sources, unit tests, and Storybook scenarios                               |

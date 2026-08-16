@@ -70,10 +70,17 @@ describe("Mira-owned editor shell boundary", () => {
     const packageJson = JSON.parse(read("../../../../package.json")) as {
       dependencies: Record<string, string>;
     };
+    const workspace = read("../../../../pnpm-workspace.yaml");
+    const mira = packageJson.dependencies["@lapismd/mira"];
+    const usesExplicitLink = mira === "link:../mira-mde/packages/mira";
+    const usesWorkspaceMember =
+      typeof mira === "string" &&
+      mira.length > 0 &&
+      /(?:^|\n)\s*-\s*["']?\.\.\/mira-mde\/packages\/mira["']?\s*$/m.test(
+        workspace,
+      );
 
-    expect(packageJson.dependencies["@lapismd/mira"]).toBe(
-      "link:../mira-mde/packages/mira",
-    );
+    expect(usesExplicitLink || usesWorkspaceMember).toBe(true);
     expect(packageJson.dependencies).not.toHaveProperty("codemirror");
   });
 });

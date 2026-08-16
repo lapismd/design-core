@@ -26,6 +26,7 @@ Editor families separate language or review behavior from the Mira-owned CodeMir
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/forms`.
+- Colocated Mira resolution MUST use an explicit `link:` dependency or a workspace member that keeps the published manifest portable, and MUST NOT add an aggregate `codemirror` runtime dependency.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 
 ## DC-FORM-034 — Code Highlighter

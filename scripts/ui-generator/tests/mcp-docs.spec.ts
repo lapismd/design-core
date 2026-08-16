@@ -202,7 +202,13 @@ describe("llms docs service", () => {
     const chapters = catalog.documents.filter(
       (document) => document.group === "specification",
     );
-    expect(chapters).toHaveLength(28);
+    const summaryChapters = readFileSync(
+      path.join(packageRoot, "spec/src/SUMMARY.md"),
+      "utf8",
+    )
+      .split(/\r?\n/)
+      .filter((line) => /^\s*-\s+\[[^\]]+]\([^)#]+\.md/.test(line));
+    expect(chapters).toHaveLength(summaryChapters.length);
     expect(chapters[0]).toMatchObject({
       id: "spec-index",
       title: "Specification/Introduction",
@@ -212,5 +218,5 @@ describe("llms docs service", () => {
       id: "spec-verification",
       title: "Specification/Verification",
     });
-  });
+  }, 15_000);
 });

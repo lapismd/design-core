@@ -50,3 +50,4 @@ Repository tools keep source generation, discovery, documentation, and validatio
 - Machine-readable output must be stable enough for repository automation.
 - Tooling failures must report an actionable source path or command.
 - Docs MCP and llms discovery must expose canonical specification files without rewriting their Markdown.
+- The specification document catalog MUST include every `spec/src/SUMMARY.md` chapter and MUST NOT hard-code a stale chapter count.
