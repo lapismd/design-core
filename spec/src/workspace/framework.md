@@ -69,7 +69,7 @@ Workspace framework contracts coordinate reusable layout and state through expli
 
 ## DC-WS-006 — Workspace View Host
 
-**Requirement.** The Workspace View Host family MUST resolve registered views into the active workspace surface with explicit missing and error states.
+**Requirement.** The Workspace View Host family MUST resolve registered views into the active workspace surface with explicit missing and error states. An `empty` leaf that carries `__missingViewType`, or an unregistered view type, MUST present the missing-view empty surface.
 
 ### Acceptance details
 

@@ -119,11 +119,13 @@
       canvas.getByRole("heading", { name: "Plugin no longer active" }),
     ).toBeVisible();
     await expect(canvas.getByText(/demo\.missing/)).toBeVisible();
+    const missingRoot = canvas
+      .getByRole("heading", { name: "Plugin no longer active" })
+      .closest('[data-ui-component="workspace-empty"]');
+    await expect(missingRoot).toHaveAttribute("data-workspace-surface", "page");
     await expect(
-      canvas
-        .getByRole("heading", { name: "Plugin no longer active" })
-        .closest('[data-ui-component="workspace-empty"]'),
-    ).toHaveAttribute("data-workspace-surface", "page");
+      missingRoot?.querySelector('[data-workspace-icon="ghost"]'),
+    ).toBeInTheDocument();
   }}
   parameters={{
     visualDelta: {

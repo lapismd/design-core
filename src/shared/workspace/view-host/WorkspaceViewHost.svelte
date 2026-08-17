@@ -43,6 +43,25 @@
       tab.closable === false ? undefined : tab.id,
     ),
   );
+  let missingViewType = $derived.by(() => {
+    const persisted = tab.view.state?.["__missingViewType"];
+    if (typeof persisted === "string" && persisted.length > 0) {
+      return persisted;
+    }
+    if (tab.view.type !== "empty" && !definition) {
+      return tab.view.type;
+    }
+    return null;
+  });
+  let missingViewActions = $derived([
+    {
+      id: "close",
+      label: "Close",
+      onSelect: () => {
+        controller.closeTab(tab.id);
+      },
+    },
+  ]);
 </script>
 
 <div
@@ -51,23 +70,15 @@
   data-type={tab.view.type}
   data-workspace-view-type={tab.view.type}
 >
-  {#if tab.view.type === "empty"}
+  {#if tab.view.type === "empty" && !missingViewType}
     <WorkspaceEmpty actions={emptyActions} surface="page" />
-  {:else if !definition}
+  {:else if missingViewType}
     <WorkspaceEmpty
-      missingViewType={tab.view.type}
+      {missingViewType}
       surface="page"
-      actions={[
-        {
-          id: "close",
-          label: "Close",
-          onSelect: () => {
-            controller.closeTab(tab.id);
-          },
-        },
-      ]}
+      actions={missingViewActions}
     />
-  {:else if definition.kind === "imperative"}
+  {:else if definition?.kind === "imperative"}
     <WorkspaceImperativeView {definition} {context} />
   {:else if ViewComponent}
     <ViewComponent {...context} />

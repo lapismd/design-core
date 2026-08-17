@@ -124,6 +124,31 @@ describe("Lapis-compatible workspace JSON", () => {
     expect(workspaceLayoutFromJson(json).windows).toEqual([]);
   });
 
+  it("restores a missing-view placeholder with the ghost icon", () => {
+    const layout = createDefaultWorkspaceLayout();
+    if (layout.main.kind !== "tabs" || layout.main.items[0]?.kind !== "tab") {
+      throw new Error("Expected the default layout to contain a tab");
+    }
+    layout.main.items[0] = createWorkspaceTab({
+      id: "missing",
+      title: "bookmarks",
+      icon: "file",
+      view: {
+        type: "empty",
+        state: { __missingViewType: "bookmarks" },
+      },
+    });
+
+    const restored = workspaceLayoutFromJson(workspaceLayoutToJson(layout));
+    const tab =
+      restored.main.kind === "tabs" ? restored.main.items[0] : null;
+    if (!tab || tab.kind !== "tab") {
+      throw new Error("Expected a restored missing-view tab");
+    }
+    expect(tab.icon).toBe("ghost");
+    expect(tab.view.state).toEqual({ __missingViewType: "bookmarks" });
+  });
+
   it("preserves grouped leaf ids and view state through restore", () => {
     const layout = createDefaultWorkspaceLayout();
     layout.right = {

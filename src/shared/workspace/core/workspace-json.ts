@@ -220,17 +220,24 @@ function leafFromJson(value: unknown): WorkspaceTab | null {
   const input = record(value);
   if (!input || input.type !== "leaf") return null;
   const state = record(input.state) ?? {};
+  const viewState = record(state.state) ?? {};
+  const missingViewType = viewState["__missingViewType"];
+  const isMissingView =
+    typeof missingViewType === "string" && missingViewType.length > 0;
+  const icon = isMissingView
+    ? "ghost"
+    : typeof state.icon === "string" && state.icon
+      ? state.icon
+      : undefined;
   return {
     kind: "tab",
     id: string(input.id, createWorkspaceId("leaf")),
     title: string(state.title, "New Tab"),
-    ...(typeof state.icon === "string" && state.icon
-      ? { icon: state.icon }
-      : {}),
+    ...(icon ? { icon } : {}),
     closable: true,
     view: {
       type: string(state.type, "empty"),
-      state: record(state.state) ?? {},
+      state: viewState,
     },
   };
 }

@@ -75,11 +75,12 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 
 ## DC-WS-012 — Empty View
 
-**Requirement.** The Empty View family MUST present a reusable empty workspace view with optional consumer actions.
+**Requirement.** The Empty View family MUST present a reusable empty workspace view with optional consumer actions. A missing-view empty state MUST use the Lucide `ghost` icon.
 
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/workspace/empty`.
+- Missing-view empty states MUST render `ghost`; ordinary empty leaves MUST keep `file-plus`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 
 ## DC-WS-013 — Floating Layer

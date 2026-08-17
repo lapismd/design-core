@@ -32,7 +32,7 @@
   <Empty.Root class="ui-workspace-empty__body">
     <Empty.Header>
       <Empty.Media variant="icon">
-        <WorkspaceIcon name={missingViewType ? "unplug" : "file-plus"} />
+        <WorkspaceIcon name={missingViewType ? "ghost" : "file-plus"} />
       </Empty.Media>
 
       <Empty.Title role="heading" aria-level={2}>
