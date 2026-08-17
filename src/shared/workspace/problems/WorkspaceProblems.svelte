@@ -175,41 +175,58 @@
       {:else}
         <ul class="ui-workspace-problems__groups">
           {#each controller.groups as group (group.key)}
+            {@const groupMenu = controller.createGroupMenu(group)}
             <li class="ui-workspace-problems__group" data-resource={group.key}>
-              <button
-                type="button"
-                class="ui-workspace-problems__group-trigger"
-                aria-expanded={!controller.isGroupCollapsed(group.key)}
-                onclick={() => controller.toggleGroup(group.key)}
-              >
-                <WorkspaceIcon
-                  name={controller.isGroupCollapsed(group.key)
-                    ? "chevron-right"
-                    : "chevron-down"}
-                />
-                <WorkspaceIcon
-                  name={group.icon ||
-                    (group.resource ? "file" : "layout-dashboard")}
-                />
-                <span class="ui-workspace-problems__group-label"
-                  >{group.label}</span
-                >
-                {#if group.detail}
-                  <span class="ui-workspace-problems__group-detail"
-                    >{group.detail}</span
+              <ContextMenu.Root>
+                <ContextMenu.Trigger>
+                  {#snippet child({ props })}
+                    <button
+                      {...props}
+                      type="button"
+                      class="ui-workspace-problems__group-trigger"
+                      aria-expanded={!controller.isGroupCollapsed(group.key)}
+                      onclick={() => controller.toggleGroup(group.key)}
+                    >
+                      <WorkspaceIcon
+                        name={controller.isGroupCollapsed(group.key)
+                          ? "chevron-right"
+                          : "chevron-down"}
+                      />
+                      <WorkspaceIcon
+                        name={group.icon ||
+                          (group.resource ? "file" : "layout-dashboard")}
+                      />
+                      <span class="ui-workspace-problems__group-label"
+                        >{group.label}</span
+                      >
+                      {#if group.detail}
+                        <span class="ui-workspace-problems__group-detail"
+                          >{group.detail}</span
+                        >
+                      {/if}
+                      <Badge
+                        variant="secondary"
+                        class="ui-workspace-problems__count-chip ui-workspace-problems__group-count"
+                        aria-label={problemCountLabel(
+                          group.entries.length,
+                          group.label,
+                        )}
+                      >
+                        {group.entries.length}
+                      </Badge>
+                    </button>
+                  {/snippet}
+                </ContextMenu.Trigger>
+                <ContextMenu.Portal>
+                  <ContextMenu.Content
+                    class="ui-workspace-menu__content"
+                    data-ui-component="workspace-menu"
+                    data-ui-part="content"
                   >
-                {/if}
-                <Badge
-                  variant="secondary"
-                  class="ui-workspace-problems__count-chip ui-workspace-problems__group-count"
-                  aria-label={problemCountLabel(
-                    group.entries.length,
-                    group.label,
-                  )}
-                >
-                  {group.entries.length}
-                </Badge>
-              </button>
+                    <WorkspaceContextMenuItems menu={groupMenu} />
+                  </ContextMenu.Content>
+                </ContextMenu.Portal>
+              </ContextMenu.Root>
 
               {#if !controller.isGroupCollapsed(group.key)}
                 <ul class="ui-workspace-problems__entries">
@@ -225,38 +242,42 @@
                       <ContextMenu.Root>
                         <ContextMenu.Trigger>
                           {#snippet child({ props })}
-                            <button
+                            <div
                               {...props}
-                              type="button"
-                              class="ui-workspace-problems__row"
-                              disabled={!controller.canNavigate(entry)}
-                              onclick={() => void controller.open(entry)}
+                              class="ui-workspace-problems__row-wrap"
                             >
-                              <WorkspaceIcon
-                                class="ui-workspace-problems__severity"
-                                name={filters.find(
-                                  (filter) =>
-                                    filter.severity ===
-                                    entry.diagnostic.severity,
-                                )?.icon}
-                              />
-                              <span class="ui-workspace-problems__message">
-                                {entry.diagnostic.message}
-                              </span>
-                              {#if entry.diagnostic.source || code}
-                                <span class="ui-workspace-problems__source">
-                                  {entry.diagnostic.source ||
-                                    entry.collectionLabel}{code
-                                    ? `(${code})`
-                                    : ""}
+                              <button
+                                type="button"
+                                class="ui-workspace-problems__row"
+                                disabled={!controller.canNavigate(entry)}
+                                onclick={() => void controller.open(entry)}
+                              >
+                                <WorkspaceIcon
+                                  class="ui-workspace-problems__severity"
+                                  name={filters.find(
+                                    (filter) =>
+                                      filter.severity ===
+                                      entry.diagnostic.severity,
+                                  )?.icon}
+                                />
+                                <span class="ui-workspace-problems__message">
+                                  {entry.diagnostic.message}
                                 </span>
-                              {/if}
-                              {#if start}
-                                <span class="ui-workspace-problems__position">
-                                  {positionLabel(start.line, start.character)}
-                                </span>
-                              {/if}
-                            </button>
+                                {#if entry.diagnostic.source || code}
+                                  <span class="ui-workspace-problems__source">
+                                    {entry.diagnostic.source ||
+                                      entry.collectionLabel}{code
+                                      ? `(${code})`
+                                      : ""}
+                                  </span>
+                                {/if}
+                                {#if start}
+                                  <span class="ui-workspace-problems__position">
+                                    {positionLabel(start.line, start.character)}
+                                  </span>
+                                {/if}
+                              </button>
+                            </div>
                           {/snippet}
                         </ContextMenu.Trigger>
                         <ContextMenu.Portal>

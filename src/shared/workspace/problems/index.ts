@@ -5,6 +5,8 @@ export {
   diagnosticCodeValue,
   diagnosticLocationLabel,
   formatProblem,
+  formatProblems,
+  serializeProblem,
   type WorkspaceProblemsGroup,
 } from "./problems-controller.svelte.js";
 export {

@@ -8,6 +8,7 @@ Workspace panels provide generic domain-neutral views driven by consumer data an
 | -------------- | ----------------------------------------- | ----------- |
 | Explorer Panel | `@lapismd/design-core/workspace/explorer` | DC-WS-033   |
 | Problems Panel | `@lapismd/design-core/workspace/problems` | DC-WS-034   |
+| Problems copy  | `@lapismd/design-core/workspace/problems` | DC-WS-046   |
 
 ## DC-WS-033 — Explorer Panel
 
@@ -30,3 +31,14 @@ Workspace panels provide generic domain-neutral views driven by consumer data an
 - The owning workspace leaf title and grouped-tree counts MUST present live totals with the shared Badge component, while the right-aligned panel toolbar MUST NOT duplicate its title text or count.
 - Severity toggles MUST appear as compact checkbox items in an untitled search-field menu whose semantic icons retain their colours and whose aligned count column remains unclipped, while the separate grouped-to-table action uses the Lucide `table-properties` icon.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+
+## DC-WS-046 — Problems copy
+
+**Requirement.** Problems tree and table context menus MUST expose Copy Message and Copy Problem. Copy Problem MUST serialize the selected diagnostics as a JSON array. Tree group rows MUST copy every grouped problem.
+
+### Acceptance details
+
+- Copy Message MUST copy the diagnostic message, or every grouped message joined by newlines.
+- Copy Problem MUST copy a JSON array of serializable objects with resource, owner, code, numeric severity, message, source, and one-based range fields when present.
+- Tree group rows MUST offer the same two copy actions for all grouped entries.
+- Unit tests MUST cover item and group copy payloads.

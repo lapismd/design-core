@@ -173,6 +173,28 @@ export class WorkspaceProblemsController {
     return true;
   }
 
+  createGroupMenu(group: WorkspaceProblemsGroup): WorkspaceMenu {
+    const menu = new WorkspaceMenu();
+    menu.addItem((item) =>
+      item
+        .setTitle("Copy Message")
+        .setIcon("copy")
+        .onClick(() =>
+          this.copy(
+            "Problem message",
+            group.entries.map((entry) => entry.diagnostic.message).join("\n"),
+          ),
+        ),
+    );
+    menu.addItem((item) =>
+      item
+        .setTitle("Copy Problem")
+        .setIcon("copy")
+        .onClick(() => this.copy("Problem", formatProblems(group.entries))),
+    );
+    return menu;
+  }
+
   createItemMenu(entry: WorkspaceDiagnosticEntry): WorkspaceMenu {
     const menu = new WorkspaceMenu();
     menu.addItem((item) =>
@@ -251,20 +273,55 @@ export function diagnosticCodeValue(
     : String(diagnostic.code);
 }
 
+const problemSeverityNumber: Record<WorkspaceDiagnosticSeverity, number> = {
+  hint: 1,
+  information: 2,
+  warning: 4,
+  error: 8,
+};
+
 export function formatProblem(entry: WorkspaceDiagnosticEntry): string {
-  const resource = entry.resource?.label || entry.resource?.uri || "Workspace";
-  const position = entry.diagnostic.range?.start;
-  const location = position
-    ? `:${position.line + 1}:${position.character + 1}`
-    : "";
-  const source = entry.diagnostic.source || entry.collectionLabel;
-  const code = diagnosticCodeValue(entry.diagnostic);
-  const attribution = source
-    ? ` [${source}${code ? `(${code})` : ""}]`
-    : code
-      ? ` [${code}]`
-      : "";
-  return `${resource}${location} ${entry.diagnostic.severity}: ${entry.diagnostic.message}${attribution}`;
+  return formatProblems([entry]);
+}
+
+export function formatProblems(
+  entries: readonly WorkspaceDiagnosticEntry[],
+): string {
+  return JSON.stringify(entries.map(serializeProblem), null, "\t");
+}
+
+export function serializeProblem(
+  entry: WorkspaceDiagnosticEntry,
+): Record<string, unknown> {
+  const range = entry.diagnostic.range;
+  const problem: Record<string, unknown> = {
+    resource: entry.resource?.label || entry.resource?.uri || "Workspace",
+    owner: entry.collectionId,
+    severity: problemSeverityNumber[entry.diagnostic.severity],
+    message: entry.diagnostic.message,
+    source: entry.diagnostic.source || entry.collectionLabel,
+  };
+  const code = serializeProblemCode(entry.diagnostic.code);
+  if (code !== undefined) problem.code = code;
+  if (range) {
+    problem.startLineNumber = range.start.line + 1;
+    problem.startColumn = range.start.character + 1;
+    problem.endLineNumber = range.end.line + 1;
+    problem.endColumn = range.end.character + 1;
+  }
+  return problem;
+}
+
+function serializeProblemCode(
+  code: WorkspaceDiagnostic["code"],
+): { value: string | number; target?: string } | undefined {
+  if (code === undefined) return undefined;
+  if (typeof code === "object") {
+    return code.target
+      ? { value: code.value, target: code.target }
+      : { value: code.value };
+  }
+  return { value: code };
 }
 
 export function diagnosticLocationLabel(

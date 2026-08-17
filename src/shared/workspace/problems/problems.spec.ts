@@ -203,6 +203,62 @@ describe("WorkspaceProblemsController", () => {
     const copyMessage = menu.entries[0];
     if (copyMessage?.kind === "item") await copyMessage.callback?.();
     expect(writeText).toHaveBeenCalledWith("Problem message", "Earlier error");
+    const copyProblem = menu.entries[1];
+    if (copyProblem?.kind === "item") await copyProblem.callback?.();
+    expect(writeText).toHaveBeenCalledWith(
+      "Problem",
+      JSON.stringify(
+        [
+          {
+            resource: "beta.md",
+            owner: "language",
+            severity: 8,
+            message: "Earlier error",
+            source: "parser",
+            code: { value: "parse-error" },
+            startLineNumber: 5,
+            startColumn: 3,
+            endLineNumber: 5,
+            endColumn: 4,
+          },
+        ],
+        null,
+        "\t",
+      ),
+    );
+
+    controller.setQuery("");
+    const group = controller.groups.find((item) => item.label === "beta.md");
+    expect(group).toBeDefined();
+    const groupMenu = controller.createGroupMenu(group!);
+    expect(
+      groupMenu.entries.map((item) =>
+        item.kind === "item" ? item.title : "---",
+      ),
+    ).toEqual(["Copy Message", "Copy Problem"]);
+    const copyGroupMessage = groupMenu.entries[0];
+    if (copyGroupMessage?.kind === "item") await copyGroupMessage.callback?.();
+    expect(writeText).toHaveBeenCalledWith(
+      "Problem message",
+      "Earlier error\nLater warning",
+    );
+    const copyGroupProblem = groupMenu.entries[1];
+    if (copyGroupProblem?.kind === "item") await copyGroupProblem.callback?.();
+    const groupPayload = writeText.mock.calls.at(-1)?.[1];
+    expect(JSON.parse(groupPayload as string)).toEqual([
+      expect.objectContaining({
+        resource: "beta.md",
+        owner: "language",
+        message: "Earlier error",
+        severity: 8,
+      }),
+      expect.objectContaining({
+        resource: "beta.md",
+        owner: "language",
+        message: "Later warning",
+        severity: 4,
+      }),
+    ]);
   });
 
   it("switches between grouped tree and flat table presentations", () => {

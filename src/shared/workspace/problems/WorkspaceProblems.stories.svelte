@@ -352,6 +352,51 @@
   play={async ({ canvasElement }) => {
     await assertProblems(canvasElement, "bottom-panel");
     const canvas = within(canvasElement);
+    const groupTrigger = canvas.getByRole("button", {
+      name: /welcome\.md/i,
+    });
+    await userEvent.pointer({ keys: "[MouseRight]", target: groupTrigger });
+    const documentCanvas = within(canvasElement.ownerDocument.body);
+    await documentCanvas.findByRole("menuitem", { name: "Copy Problem" });
+    await userEvent.click(
+      documentCanvas.getByRole("menuitem", { name: "Copy Problem" }),
+    );
+    const groupCopy = fixtures.bottom.copyLog.at(-1);
+    expect(JSON.parse(groupCopy ?? "[]")).toEqual([
+      expect.objectContaining({
+        resource: "welcome.md",
+        owner: "story:markdownlint",
+        message: "Bare URL should be enclosed in angle brackets",
+        code: { value: "MD034" },
+        severity: 8,
+      }),
+      expect.objectContaining({
+        resource: "welcome.md",
+        owner: "story:markdownlint",
+        message: "Heading levels should increment by one level at a time",
+        code: { value: "MD001" },
+        severity: 4,
+        startLineNumber: 7,
+        startColumn: 1,
+      }),
+    ]);
+    const problemRow = canvas.getByRole("button", {
+      name: /Bare URL should be enclosed in angle brackets/i,
+    });
+    await userEvent.pointer({ keys: "[MouseRight]", target: problemRow });
+    await documentCanvas.findByRole("menuitem", { name: "Copy Message" });
+    await userEvent.click(
+      documentCanvas.getByRole("menuitem", { name: "Copy Message" }),
+    );
+    expect(fixtures.bottom.copyLog.at(-1)).toBe(
+      "Bare URL should be enclosed in angle brackets",
+    );
+    await userEvent.keyboard("{Escape}");
+    await waitFor(() =>
+      expect(canvasElement.ownerDocument.body.style.pointerEvents).not.toBe(
+        "none",
+      ),
+    );
     const transientResource = {
       uri: "document:///notes/transient.md",
       label: "transient.md",
@@ -395,7 +440,6 @@
     await userEvent.click(
       canvas.getByRole("button", { name: "Filter problem severities" }),
     );
-    const documentCanvas = within(canvasElement.ownerDocument.body);
     const warningsFilter = await documentCanvas.findByRole("menuitemcheckbox", {
       name: "Warnings: 1",
     });

@@ -8,6 +8,7 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 | --------------- | ------------------------------------------------ | ----------- |
 | About Dialog    | `@lapismd/design-core/workspace/about-dialog`    | DC-WS-008   |
 | Bottom Panel    | `@lapismd/design-core/workspace/bottom-panel`    | DC-WS-009   |
+| Bottom Panel status clearance | `@lapismd/design-core/workspace/bottom-panel` | DC-WS-045 |
 | Command Palette | `@lapismd/design-core/workspace/command-palette` | DC-WS-010   |
 | Drop Overlay    | `@lapismd/design-core/workspace/drop-overlay`    | DC-WS-011   |
 | Empty View      | `@lapismd/design-core/workspace/empty`           | DC-WS-012   |
@@ -53,6 +54,16 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 
 - The public boundary is `@lapismd/design-core/workspace/bottom-panel`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+
+## DC-WS-045 — Bottom Panel status clearance
+
+**Requirement.** The Bottom Panel view container MUST pad its block-end by `--ui-workspace-status-height` so the last hosted row remains visible above the status bar.
+
+### Acceptance details
+
+- The public boundary remains `@lapismd/design-core/workspace/bottom-panel`.
+- A `workspace-view-host` inside `.ui-workspace-bottom-panel__content` MUST set `padding-block-end` to `var(--ui-workspace-status-height)`.
+- The catalog MUST assert that computed padding on the hosted view container.
 
 ## DC-WS-010 — Command Palette
 
