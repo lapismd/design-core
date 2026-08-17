@@ -89,6 +89,42 @@
 </Story>
 
 <Story
+  name="Loading plugin detail"
+  tags={["visual-pending", "test"]}
+  parameters={{
+    docs: {
+      description: {
+        story:
+          "An active task may set detail so the live status names the current plugin while the task list keeps the stable label.",
+      },
+      source: {
+        code: exampleSources.LoadingDetail,
+        language: "ts",
+        type: "code",
+      },
+    },
+  }}
+  play={async ({ canvas }) => {
+    await expect(canvas.getByRole("status")).toHaveTextContent("Loading AI");
+    await expect(canvas.getByText("Loading core plugins")).toBeVisible();
+    await expect(canvas.getByText("Step 3 of 4")).toBeVisible();
+  }}
+>
+  {#snippet template()}
+    <div style="position: relative; min-height: 32rem;">
+      <WorkspaceStartup
+        title="Starting Lapis Notes"
+        tasks={loadingTasks.map((task) =>
+          task.id === "plugins"
+            ? { ...task, detail: "Loading AI" }
+            : task,
+        )}
+      />
+    </div>
+  {/snippet}
+</Story>
+
+<Story
   name="Startup failure"
   tags={["visual-pending"]}
   parameters={{

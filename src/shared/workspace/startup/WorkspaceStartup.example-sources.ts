@@ -14,6 +14,27 @@ export const Loading = `<script lang="ts">
 
 <WorkspaceStartup title="Starting Lapis Notes" {tasks} />`;
 
+export const LoadingDetail = `<script lang="ts">
+  import {
+    WorkspaceStartup,
+    type WorkspaceStartupTask,
+  } from "@lapismd/design-core/workspace/startup";
+
+  const tasks: WorkspaceStartupTask[] = [
+    { id: "vault", label: "Loading file system", status: "complete" },
+    { id: "config", label: "Loading configuration", status: "complete" },
+    {
+      id: "plugins",
+      label: "Loading core plugins",
+      status: "active",
+      detail: "Loading AI",
+    },
+    { id: "layout", label: "Loading layout", status: "pending" },
+  ];
+</script>
+
+<WorkspaceStartup title="Starting Lapis Notes" {tasks} />`;
+
 export const Failure = `<script lang="ts">
   import { WorkspaceStartup } from "@lapismd/design-core/workspace/startup";
 

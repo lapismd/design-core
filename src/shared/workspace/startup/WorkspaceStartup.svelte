@@ -11,6 +11,7 @@
     id: string;
     label: string;
     status: WorkspaceStartupTaskStatus;
+    detail?: string;
   }
 
   export interface WorkspaceStartupFailure {
@@ -59,6 +60,9 @@
         : Math.max(8, (currentStep / tasks.length) * 100),
   );
   let activeTask = $derived(tasks[activeIndex]);
+  let statusMessage = $derived(
+    activeTask?.detail?.trim() || activeTask?.label || "Preparing workspace",
+  );
   let hasFailure = $derived(failure !== null || failedTask !== undefined);
 </script>
 
@@ -146,7 +150,7 @@
         role="status"
         aria-live="polite"
       >
-        {activeTask?.label ?? "Preparing workspace"}
+        {statusMessage}
       </p>
 
       {#if tasks.length}

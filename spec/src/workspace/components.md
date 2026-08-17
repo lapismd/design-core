@@ -218,12 +218,14 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 
 ## DC-WS-027 — Startup
 
-**Requirement.** The Startup family MUST present deterministic workspace loading, recovery, and empty startup states.
+**Requirement.** The Startup family MUST present deterministic workspace loading, recovery, and empty startup states. An active task MAY supply `detail`; the live status MUST show that detail when present and MUST otherwise show the task label.
 
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/workspace/startup`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- The task list MUST keep the stable `label` when `detail` is set.
+- The catalog MUST demonstrate an active task whose status message shows `detail`.
 
 ## DC-WS-028 — Status Bar
 

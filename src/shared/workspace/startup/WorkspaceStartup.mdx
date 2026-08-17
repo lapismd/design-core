@@ -1,4 +1,4 @@
-import { Meta, Canvas, Source } from "@storybook/addon-docs/blocks";
+import { Meta, Canvas, Description, Source } from "@storybook/addon-docs/blocks";
 import * as Stories from "./WorkspaceStartup.stories.svelte";
 import * as exampleSources from "./WorkspaceStartup.example-sources.js";
 
@@ -19,6 +19,17 @@ Provide a stable task list and change each task status as the host advances.
 The component derives the current message, step number, and progress value.
 
 <Canvas of={Stories.LoadingPlugins} />
+
+## Plugin detail
+
+An active task may set `detail` so the live status names the current plugin
+while the task list keeps the stable label.
+
+<Description of={Stories.LoadingPluginDetail} />
+
+<Canvas of={Stories.LoadingPluginDetail} />
+
+<Source language="ts" code={exampleSources.LoadingDetail} />
 
 ## Failure
 
