@@ -24,6 +24,37 @@ export function resolveWorkspaceIcon(name?: string): Component | null {
   return customIcons.get(name ?? "") ?? null;
 }
 
+let lucideIconNames: readonly string[] | undefined;
+
+function listLucideIconNames(): readonly string[] {
+  lucideIconNames ??= Object.keys(lucideIcons.icons).sort((left, right) =>
+    left.localeCompare(right),
+  );
+  return lucideIconNames;
+}
+
+/** Serializable Lucide names plus any application-registered extras. */
+export function listWorkspaceIconNames(): string[] {
+  const lucide = listLucideIconNames();
+  if (customIcons.size === 0) return [...lucide];
+  const extras = [...customIcons.keys()]
+    .filter((name) => !lucide.includes(name))
+    .sort((left, right) => left.localeCompare(right));
+  return extras.length > 0 ? [...extras, ...lucide] : [...lucide];
+}
+
+/** Filter serializable icon names by Lucide id, ignoring extra spaces. */
+export function filterWorkspaceIconNames(query: string): string[] {
+  const normalized = query.trim().toLowerCase();
+  const names = listWorkspaceIconNames();
+  if (!normalized) return names;
+  const compact = normalized.replace(/[\s_]+/g, "-");
+  return names.filter((name) => {
+    const haystack = name.toLowerCase();
+    return haystack.includes(normalized) || haystack.includes(compact);
+  });
+}
+
 /** Normalize Obsidian-style `lucide-foo` / `lucide:foo` to Lucide short names. */
 export function normalizeWorkspaceIconName(name?: string): string {
   const raw = (name || "file").trim();

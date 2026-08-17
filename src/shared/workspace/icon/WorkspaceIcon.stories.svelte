@@ -1,8 +1,9 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect } from "storybook/test";
+  import { expect, userEvent, waitFor, within } from "storybook/test";
   import * as exampleSources from "./WorkspaceIcon.example-sources.js";
   import WorkspaceIcon from "./WorkspaceIcon.svelte";
+  import WorkspaceIconPicker from "./WorkspaceIconPicker.svelte";
 
   const { Story } = defineMeta({
     title: "Workspace/Components/Icon",
@@ -11,7 +12,7 @@
       docs: {
         description: {
           component:
-            "Serializable Lucide icon renderer used by tabs, views, sidebars, commands, ribbon items, and status items.",
+            "Serializable Lucide icon renderer and searchable picker used by tabs, views, sidebars, commands, ribbon items, status items, and Settings.",
         },
         source: {
           code: exampleSources.Basic,
@@ -21,6 +22,10 @@
       },
     },
   });
+</script>
+
+<script lang="ts">
+  let pickerValue = $state("notebook-tabs");
 </script>
 
 <Story
@@ -78,5 +83,60 @@
     <span data-testid="workspace-icon-fallback" style="color: rgb(196, 30, 52)">
       <WorkspaceIcon name="not-a-real-icon" />
     </span>
+  {/snippet}
+</Story>
+
+<Story
+  name="Icon picker"
+  tags={["visual-pending"]}
+  play={async ({ canvas }) => {
+    const trigger = canvas.getByRole("combobox", { name: "Workspace icon" });
+    await expect(trigger).toBeVisible();
+    await expect(trigger).toHaveTextContent("notebook-tabs");
+    await expect(getComputedStyle(trigger).borderTopWidth).not.toBe("0px");
+    await userEvent.click(trigger);
+    const popover = await waitFor(() => {
+      const content = document.body.querySelector<HTMLElement>(
+        '[data-ui-component="workspace-icon-picker"][data-ui-part="content"]',
+      );
+      expect(content).not.toBeNull();
+      expect(
+        content!.querySelector(
+          '[data-ui-component="command-view"][data-ui-part="root"]',
+        ),
+      ).not.toBeNull();
+      return content!;
+    });
+    const search = await waitFor(() =>
+      within(popover).getByPlaceholderText("Search icon..."),
+    );
+    await userEvent.type(search, "panel-left");
+    await userEvent.click(
+      within(document.body).getByRole("option", { name: /^panel-left$/i }),
+    );
+    await expect(trigger).toHaveTextContent("panel-left");
+  }}
+  parameters={{
+    docs: {
+      description: {
+        story:
+          "Searchable popover that writes a serializable Lucide icon name. Tagged visual-pending until the picker baseline is reviewed.",
+      },
+      source: {
+        code: exampleSources.Picker,
+        language: "ts",
+        type: "code",
+      },
+    },
+  }}
+>
+  {#snippet template()}
+    <WorkspaceIconPicker
+      value={pickerValue}
+      ariaLabel="Workspace icon"
+      onValueChange={(next) => {
+        pickerValue = next;
+      }}
+    />
   {/snippet}
 </Story>

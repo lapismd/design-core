@@ -78,6 +78,7 @@ export interface WorkspaceListSetting extends WorkspaceSettingBase {
   type: "list";
   default: Array<string | number | boolean>;
   itemType: "string" | "number" | "integer" | "boolean";
+  itemLabels?: string[];
   minimumItems?: number;
   maximumItems?: number;
 }

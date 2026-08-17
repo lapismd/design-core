@@ -3,10 +3,12 @@
   import { Input } from "@lapismd/design-core/shadcn/input";
   import { Switch } from "@lapismd/design-core/shadcn/switch";
   import WorkspaceIcon from "../icon/WorkspaceIcon.svelte";
+  import WorkspaceSettingAddButton from "./WorkspaceSettingAddButton.svelte";
 
   let {
     itemType,
     label,
+    itemLabels = [],
     value = [],
     disabled = false,
     maximumItems,
@@ -14,11 +16,16 @@
   }: {
     itemType: "string" | "number" | "integer" | "boolean";
     label: string;
+    itemLabels?: string[];
     value?: unknown[];
     disabled?: boolean;
     maximumItems?: number;
     onValueChange: (value: unknown[]) => void;
   } = $props();
+
+  function itemLabel(index: number): string {
+    return itemLabels[index]?.trim() || `${label} item ${index + 1}`;
+  }
 
   function update(index: number, nextValue: unknown) {
     const next = [...value];
@@ -42,12 +49,15 @@
   {#each value as item, index (index)}
     <div>
       {#if itemType === "boolean"}
-        <Switch
-          aria-label={`${label} item ${index + 1}`}
-          checked={Boolean(item)}
-          {disabled}
-          onCheckedChange={(checked) => update(index, checked)}
-        />
+        <label class="ui-workspace-setting-list__flag">
+          <Switch
+            checked={Boolean(item)}
+            {disabled}
+            aria-label={itemLabel(index)}
+            onCheckedChange={(checked) => update(index, checked)}
+          />
+          <span>{itemLabel(index)}</span>
+        </label>
       {:else}
         <Input
           type={itemType === "string" ? "text" : "number"}
@@ -67,7 +77,7 @@
       <Button
         variant="ghost"
         size="icon-sm"
-        aria-label={`Remove ${label} item ${index + 1}`}
+        aria-label={`Remove ${itemLabel(index)}`}
         {disabled}
         onclick={() =>
           onValueChange(value.filter((_, itemIndex) => itemIndex !== index))}
@@ -76,15 +86,10 @@
       </Button>
     </div>
   {/each}
-  <Button
-    variant="ghost"
-    size="sm"
-    class="ui-workspace-setting-list__add"
+  <WorkspaceSettingAddButton
+    label="Add item"
     disabled={disabled ||
       (maximumItems !== undefined && value.length >= maximumItems)}
     onclick={add}
-  >
-    <WorkspaceIcon name="plus" />
-    Add item
-  </Button>
+  />
 </div>

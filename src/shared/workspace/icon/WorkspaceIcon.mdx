@@ -1,5 +1,5 @@
 import { Meta, Canvas, Primary, Source } from "@storybook/addon-docs/blocks";
-import { Basic } from "./WorkspaceIcon.example-sources.js";
+import { Basic, Picker } from "./WorkspaceIcon.example-sources.js";
 import * as WorkspaceIconStories from "./WorkspaceIcon.stories.svelte";
 
 <Meta of={WorkspaceIconStories} />
@@ -8,12 +8,20 @@ import * as WorkspaceIconStories from "./WorkspaceIcon.stories.svelte";
 
 Renders a serializable Lucide icon name and supports application-owned icons
 through `registerWorkspaceIcon`. Unknown names use the stable `file` fallback.
+`WorkspaceIconPicker` is the searchable popover used by Settings
+`presentation: "icon"`.
 
 ## Usage
 
 <Source language="ts" code={Basic} />
 
 <Primary />
+
+## Icon picker
+
+<Source language="ts" code={Picker} />
+
+<Canvas of={WorkspaceIconStories.IconPicker} />
 
 ## Examples
 

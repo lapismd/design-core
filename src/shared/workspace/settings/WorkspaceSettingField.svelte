@@ -2,6 +2,7 @@
   import * as Alert from "@lapismd/design-core/shadcn/alert";
   import { Button } from "@lapismd/design-core/shadcn/button";
   import { Input } from "@lapismd/design-core/shadcn/input";
+  import { Slider } from "@lapismd/design-core/shadcn/slider";
   import { Switch } from "@lapismd/design-core/shadcn/switch";
   import * as Table from "@lapismd/design-core/shadcn/table";
   import { Textarea } from "@lapismd/design-core/shadcn/textarea";
@@ -12,8 +13,11 @@
   } from "./types.js";
   import type { WorkspaceSettingsController } from "./settings-controller.svelte.js";
   import WorkspaceIcon from "../icon/WorkspaceIcon.svelte";
+  import WorkspaceIconPicker from "../icon/WorkspaceIconPicker.svelte";
   import WorkspaceSettingFieldRecursive from "./WorkspaceSettingField.svelte";
+  import WorkspaceSettingAddButton from "./WorkspaceSettingAddButton.svelte";
   import WorkspaceSettingList from "./WorkspaceSettingList.svelte";
+  import WorkspaceSettingObjectTable from "./WorkspaceSettingObjectTable.svelte";
   import WorkspaceSettingSelect from "./WorkspaceSettingSelect.svelte";
   import WorkspaceSettingToggleTable from "./WorkspaceSettingToggleTable.svelte";
 
@@ -100,14 +104,6 @@
       : "row";
   }
 
-  function updateStructured(raw: string) {
-    try {
-      controller.update(field.id, JSON.parse(raw));
-    } catch {
-      // Keep the last valid structured value while the draft is incomplete.
-    }
-  }
-
   function keyValue(field: WorkspaceKeyValueSetting) {
     const current =
       value && typeof value === "object" && !Array.isArray(value)
@@ -186,9 +182,19 @@
           disabled={field.disabled}
           onCheckedChange={(checked) => controller.update(field.id, checked)}
         />
+      {:else if field.type === "string" && field.presentation === "icon"}
+        <WorkspaceIconPicker
+          id={`setting-${field.id}`}
+          value={String(value ?? "")}
+          disabled={field.disabled}
+          placeholder={field.placeholder ?? "Select an icon"}
+          ariaLabel={field.title}
+          onValueChange={(next) => controller.update(field.id, next)}
+        />
       {:else if field.type === "string" && field.presentation === "textarea"}
         <Textarea
           id={`setting-${field.id}`}
+          rows={1}
           value={String(value ?? "")}
           placeholder={field.placeholder}
           disabled={field.disabled}
@@ -229,16 +235,16 @@
         />
       {:else if (field.type === "number" || field.type === "integer") && field.minimum !== undefined && field.maximum !== undefined}
         <div class="ui-workspace-setting-range">
-          <Input
+          <Slider
             id={`setting-${field.id}`}
-            type="range"
+            type="single"
             value={Number(value ?? field.default)}
             min={field.minimum}
             max={field.maximum}
             step={field.step ?? (field.type === "integer" ? 1 : 0.1)}
             disabled={field.disabled}
-            oninput={(event) =>
-              controller.update(field.id, event.currentTarget.valueAsNumber)}
+            aria-label={field.title}
+            onValueChange={(next: number) => controller.update(field.id, next)}
           />
           <output for={`setting-${field.id}`}
             >{Number(value ?? field.default)}</output
@@ -284,19 +290,30 @@
         <WorkspaceSettingList
           itemType={field.itemType}
           label={field.title}
+          itemLabels={field.itemLabels}
           value={Array.isArray(value) ? value : []}
           disabled={field.disabled}
           maximumItems={field.maximumItems}
           onValueChange={(next) => controller.update(field.id, next)}
         />
-      {:else if field.type === "object-array" || field.type === "object-grid" || field.type === "object-map"}
-        <Textarea
-          id={`setting-${field.id}`}
-          class="ui-workspace-setting-structured"
-          value={JSON.stringify(value ?? field.default, null, 2)}
+      {:else if field.type === "object-array" || field.type === "object-grid"}
+        <WorkspaceSettingObjectTable
+          label={field.title}
+          properties={field.properties}
+          value={value ?? field.default}
           disabled={field.disabled}
-          aria-invalid={Boolean(error)}
-          onchange={(event) => updateStructured(event.currentTarget.value)}
+          minimumItems={field.minimumItems}
+          maximumItems={field.maximumItems}
+          onValueChange={(next) => controller.update(field.id, next)}
+        />
+      {:else if field.type === "object-map"}
+        <WorkspaceSettingObjectTable
+          label={field.title}
+          properties={field.properties}
+          mode="map"
+          value={value ?? field.default}
+          disabled={field.disabled}
+          onValueChange={(next) => controller.update(field.id, next)}
         />
       {:else if field.type === "key-value"}
         <div class="ui-workspace-setting-key-value">
@@ -352,18 +369,14 @@
               {/each}
             </Table.Body>
           </Table.Root>
-          <Button
-            variant="outline"
-            size="sm"
+          <WorkspaceSettingAddButton
+            label={field.addLabel ?? "Add entry"}
             onclick={() =>
               controller.update(field.id, {
                 ...keyValue(field),
                 [nextKey(field)]: keyValueOptions[0]?.value ?? "",
               })}
-          >
-            <WorkspaceIcon name="plus" />
-            {field.addLabel ?? "Add entry"}
-          </Button>
+          />
         </div>
       {:else if field.type === "custom"}
         {@const CustomComponent = field.component}
