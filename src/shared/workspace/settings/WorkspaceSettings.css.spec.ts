@@ -10,13 +10,13 @@ const css = readFileSync(
 describe("workspace settings action hover", () => {
   it("paints restore, list, and association icon hover with panel-action tokens", () => {
     expect(css).toMatch(
-      /\.ui-workspace-settings[\s\S]*?\.ui-workspace-setting-restore[\s\S]*?\.ui-workspace-setting-list \[data-ui-component="button"\][\s\S]*?\.ui-workspace-setting-key-value \[data-ui-component="button"\][\s\S]*?\.ui-workspace-setting-object-collection \[data-ui-component="button"\][\s\S]*?\.ui-workspace-settings__search-result-open[\s\S]*?:hover \{[\s\S]*?color:\s*var\(--ui-workspace-panel-action-hover-foreground\);[\s\S]*?background-color:\s*var\(--ui-workspace-panel-action-hover-background\);/,
+      /\.ui-workspace-settings[\s\S]*?\.ui-workspace-setting-restore[\s\S]*?\.ui-workspace-setting-list \[data-ui-component="button"\][\s\S]*?\.ui-workspace-setting-key-value \[data-ui-component="button"\][\s\S]*?\.ui-workspace-setting-object-collection \[data-ui-component="button"\][\s\S]*?:hover \{[\s\S]*?color:\s*var\(--ui-workspace-panel-action-hover-foreground\);[\s\S]*?background-color:\s*var\(--ui-workspace-panel-action-hover-background\);/,
     );
     expect(css).toMatch(
       /\.ui-workspace-setting-key-value,[\s\S]*?\.ui-workspace-setting-object-collection \{[\s\S]*?--muted:\s*var\(--ui-workspace-panel-action-hover-background\);/,
     );
     expect(css).toMatch(
-      /\.ui-workspace-settings__search-result \{[\s\S]*?--muted:\s*var\(--ui-workspace-panel-action-hover-background\);/,
+      /\.ui-workspace-settings__search-result-open:hover \{[\s\S]*?color:\s*var\(--ui-workspace-panel-action-hover-foreground\);[\s\S]*?background:\s*var\(--ui-workspace-panel-action-hover-background\);/,
     );
     expect(css).toMatch(
       /\[data-ui-part="table-cell"\][\s\S]*?\[data-ui-component="button"\]:is\([\s\S]*?:hover \{[\s\S]*?background-color:\s*var\(--ui-workspace-panel-action-hover-background\);/,

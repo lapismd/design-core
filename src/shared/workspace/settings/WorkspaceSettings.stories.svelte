@@ -954,7 +954,12 @@
     const openSearchResult = canvas.getByRole("button", {
       name: "Open Custom renderer",
     });
-    expect(resolveToken(openSearchResult, "--muted")).toBe(hoverFill);
+    expect(
+      resolveToken(
+        openSearchResult,
+        "--ui-workspace-panel-action-hover-background",
+      ),
+    ).toBe(hoverFill);
     await userEvent.clear(search);
     await expect(
       canvas.getByRole("heading", { name: "Extension points" }),

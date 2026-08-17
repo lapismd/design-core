@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { Button } from "@lapismd/design-core/shadcn/button";
   import { onMount, tick } from "svelte";
   import WorkspaceIcon from "../icon/WorkspaceIcon.svelte";
   import AppSettingsSection from "./AppSettingsSection.svelte";
@@ -152,16 +151,15 @@
                     {/if}
                   </button>
                   <div class="ui-workspace-settings__search-result-actions">
-                    <Button
-                      variant="ghost"
-                      size="icon-sm"
+                    <button
+                      type="button"
                       class="ui-workspace-settings__search-result-open"
                       aria-label={`Open ${result.title}`}
                       title={`Open ${result.title}`}
                       onclick={() => void openSearchResult(result)}
                     >
                       <WorkspaceIcon name="arrow-up-right" />
-                    </Button>
+                    </button>
                   </div>
                 </article>
               {/each}

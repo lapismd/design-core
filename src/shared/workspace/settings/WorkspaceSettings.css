@@ -438,8 +438,7 @@
       .ui-workspace-setting-restore,
       .ui-workspace-setting-list [data-ui-component="button"],
       .ui-workspace-setting-key-value [data-ui-component="button"],
-      .ui-workspace-setting-object-collection [data-ui-component="button"],
-      .ui-workspace-settings__search-result-open
+      .ui-workspace-setting-object-collection [data-ui-component="button"]
     ):is([data-variant="ghost"], [data-variant="outline"]):hover,
   .ui-workspace-settings
     :is(
@@ -659,7 +658,6 @@
 }
 
 .ui-workspace-settings__search-result {
-  --muted: var(--ui-workspace-panel-action-hover-background);
   display: grid;
   min-height: 5.75rem;
   grid-template-columns: minmax(0, 1fr) auto;
@@ -709,7 +707,27 @@
 }
 
 .ui-workspace-settings__search-result-open {
+  display: inline-flex;
+  width: 2rem;
+  height: 2rem;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: var(--ui-workspace-radius-small);
+  padding: 0;
   color: var(--ui-workspace-muted-foreground);
+  background: transparent;
+  cursor: pointer;
+}
+
+.ui-workspace-settings__search-result-open:hover {
+  color: var(--ui-workspace-panel-action-hover-foreground);
+  background: var(--ui-workspace-panel-action-hover-background);
+}
+
+.ui-workspace-settings__search-result-open:focus-visible {
+  outline: 2px solid var(--ui-workspace-focus-ring);
+  outline-offset: 1px;
 }
 
 .ui-workspace-settings__search-result-open svg {
