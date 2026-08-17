@@ -127,8 +127,16 @@
     --ui-workspace-panel-foreground
   );
   --ui-workspace-explorer-flash-ring: var(--ui-workspace-accent);
-  --ui-workspace-explorer-indent: 0.75rem;
+  --ui-workspace-explorer-row-border-width: 2px;
+  --ui-workspace-explorer-row-padding-inline: 0.375rem;
   --ui-workspace-explorer-guide-width: 1px;
+  /* Start inset that places the 1px guide under the expanded chevron tip. */
+  --ui-workspace-explorer-indent: calc(
+    var(--ui-workspace-explorer-row-border-width) +
+      var(--ui-workspace-explorer-row-padding-inline) +
+      (var(--ui-workspace-icon-size, 1rem) / 2) -
+      (var(--ui-workspace-explorer-guide-width) / 2)
+  );
   /* Foreground wash so guides stay visible on panel surfaces (Lapis
      `--indentation-guide-color` is similarly a low-opacity dark line). */
   --ui-workspace-explorer-guide-color: color-mix(

@@ -363,10 +363,27 @@ Override on an ancestor of the explorer surface:
     </tr>
     <tr>
       <td>
+        <code>--ui-workspace-explorer-row-border-width</code>
+      </td>
+      <td>
+        <code>2px</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>--ui-workspace-explorer-row-padding-inline</code>
+      </td>
+      <td>
+        <code>0.375rem</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
         <code>--ui-workspace-explorer-indent</code>
       </td>
       <td>
-        <code>0.75rem</code>
+        calc of row border + padding + half icon − half guide, so the nested
+        guide sits under the expanded chevron tip
       </td>
     </tr>
     <tr>
@@ -445,7 +462,8 @@ Override on an ancestor of the explorer surface:
 Nested folders draw a vertical indentation guide on
 `.ui-workspace-explorer__sublist` (`border-inline-start`) using the guide
 tokens above — the same role as Lapis `--nav-indentation-guide-*` / shadcn
-sidebar `menu-sub` left border.
+sidebar `menu-sub` left border. The guide is centered on the expanded
+disclosure chevron tip.
 
 ## Related
 

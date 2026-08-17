@@ -736,13 +736,28 @@
       const row = canvasElement.querySelector('[data-path="notes/zeta.md"]');
       expect(row?.classList.contains("is-flashing")).toBe(true);
     });
-    const sublist = canvasElement.querySelector(
-      ".ui-workspace-explorer__sublist",
+    const expanded = canvasElement.querySelector(
+      '.ui-workspace-explorer__row[aria-expanded="true"]',
     ) as HTMLElement | null;
+    const chevron = expanded?.querySelector(
+      ".ui-workspace-explorer__chevron",
+    ) as HTMLElement | null;
+    const sublist = expanded
+      ?.closest(".ui-workspace-explorer__folder")
+      ?.querySelector(
+        ":scope .ui-workspace-explorer__sublist",
+      ) as HTMLElement | null;
     expect(sublist).not.toBeNull();
+    expect(chevron).not.toBeNull();
     const guide = getComputedStyle(sublist!);
     expect(Number.parseFloat(guide.borderInlineStartWidth)).toBeGreaterThan(0);
     expect(guide.borderInlineStartStyle).toBe("solid");
+    const chevronBox = chevron!.getBoundingClientRect();
+    const sublistBox = sublist!.getBoundingClientRect();
+    const guideCenter =
+      sublistBox.left + Number.parseFloat(guide.borderInlineStartWidth) / 2;
+    const chevronTip = chevronBox.left + chevronBox.width / 2;
+    expect(Math.abs(guideCenter - chevronTip)).toBeLessThan(1);
     const root = canvasElement.querySelector(
       ".ui-workspace-explorer",
     ) as HTMLElement;

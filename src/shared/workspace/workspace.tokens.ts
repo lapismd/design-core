@@ -81,6 +81,8 @@ export const workspaceTokenNames = {
   explorerToolbarActionHoverForeground:
     "--ui-workspace-explorer-toolbar-action-hover-foreground",
   explorerFlashRing: "--ui-workspace-explorer-flash-ring",
+  explorerRowBorderWidth: "--ui-workspace-explorer-row-border-width",
+  explorerRowPaddingInline: "--ui-workspace-explorer-row-padding-inline",
   explorerIndent: "--ui-workspace-explorer-indent",
   explorerGuideWidth: "--ui-workspace-explorer-guide-width",
   explorerGuideColor: "--ui-workspace-explorer-guide-color",
@@ -189,7 +191,10 @@ export const workspaceTokenDefaults: Record<WorkspaceTokenKey, string> = {
     "color-mix(in srgb, var(--ui-workspace-foreground) 14%, var(--ui-workspace-panel))",
   explorerToolbarActionHoverForeground: "var(--ui-workspace-panel-foreground)",
   explorerFlashRing: "var(--ui-workspace-accent)",
-  explorerIndent: "0.75rem",
+  explorerRowBorderWidth: "2px",
+  explorerRowPaddingInline: "0.375rem",
+  explorerIndent:
+    "calc(var(--ui-workspace-explorer-row-border-width) + var(--ui-workspace-explorer-row-padding-inline) + (var(--ui-workspace-icon-size, 1rem) / 2) - (var(--ui-workspace-explorer-guide-width) / 2))",
   explorerGuideWidth: "1px",
   explorerGuideColor:
     "color-mix(in srgb, var(--ui-workspace-foreground) 22%, transparent)",
