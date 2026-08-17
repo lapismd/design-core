@@ -163,8 +163,9 @@ consumers must not add placement selectors or cache layout ancestry.
 - Click empty space in the tree body → root selection (`selectedPath ""`);
   create file/folder then targets the vault root
 - Drop onto empty body space → move/import into the vault root
-- Enter on a focused row starts inline rename; blur/Enter commits through
-  `actions.rename`
+- Enter on a selected row starts inline rename; blur/Enter commits through
+  `actions.rename`. Single-click keeps keyboard focus on that row after the
+  `current` open so Enter still reaches the tree.
 - Delete is offered for files and **empty** folders only
 
 <Canvas of={Stories.EmptySpaceSelectsRootForCreate} />

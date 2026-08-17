@@ -77,17 +77,28 @@
     };
   }
 
+  function explorerRow(path: string): HTMLElement | null {
+    return (rootEl?.querySelector(`[data-path=${JSON.stringify(path)}]`) ??
+      null) as HTMLElement | null;
+  }
+
+  function focusExplorerRow(path: string): void {
+    explorerRow(path)?.focus({ preventScroll: true });
+  }
+
+  function startInlineRename(path: string): void {
+    controller.beginRename(path);
+    void tick().then(() => {
+      const el = explorerRow(path);
+      if (el) focusRename(el);
+    });
+  }
+
   function onRowKeydown(event: KeyboardEvent, node: ExplorerNode) {
-    if (event.code === "Enter") {
-      event.preventDefault();
-      controller.beginRename(node.path);
-      void tick().then(() => {
-        const el = rootEl?.querySelector(
-          `[data-path=${JSON.stringify(node.path)}]`,
-        ) as HTMLElement | null;
-        if (el) focusRename(el);
-      });
-    }
+    if (event.code !== "Enter" && event.key !== "Enter") return;
+    event.preventDefault();
+    event.stopPropagation();
+    startInlineRename(node.path);
   }
 
   function cancelPendingFileOpen() {
@@ -98,6 +109,7 @@
 
   function openFileFromPointer(event: MouseEvent, node: ExplorerNode) {
     controller.setSelectedPath(node.path);
+    (event.currentTarget as HTMLElement).focus({ preventScroll: true });
     if (event.ctrlKey || event.metaKey || event.button === 1) {
       cancelPendingFileOpen();
       void controller.openFile(node.path, { disposition: "new-tab" });
@@ -105,9 +117,17 @@
     }
     if (event.detail > 1) return;
     cancelPendingFileOpen();
+    const path = node.path;
     fileOpenTimeout = setTimeout(() => {
       fileOpenTimeout = null;
-      void controller.openFile(node.path, { disposition: "current" });
+      void Promise.resolve(
+        controller.openFile(path, { disposition: "current" }),
+      ).finally(() => {
+        requestAnimationFrame(() => {
+          focusExplorerRow(path);
+          setTimeout(() => focusExplorerRow(path), 0);
+        });
+      });
     }, FILE_SINGLE_CLICK_DELAY_MS);
   }
 
@@ -254,6 +274,7 @@
               <button
                 {...props}
                 type="button"
+                tabindex="0"
                 class={rowClass(node)}
                 data-path={node.path}
                 data-active={node.path === controller.selectedPath}
@@ -347,17 +368,23 @@
                 <button
                   {...props}
                   type="button"
+                  tabindex="0"
                   class={rowClass(node)}
                   data-path={node.path}
                   data-active={node.path === controller.selectedPath}
                   data-hint-target="folder-item"
                   data-hint-group="file-explorer"
                   aria-expanded={controller.isExpanded(node.path)}
-                  onclick={() =>
+                  onclick={(event) => {
+                    controller.setSelectedPath(node.path);
                     controller.setExpanded(
                       node.path,
                       !controller.isExpanded(node.path),
-                    )}
+                    );
+                    (event.currentTarget as HTMLElement).focus({
+                      preventScroll: true,
+                    });
+                  }}
                   onkeydown={(event) => onRowKeydown(event, node)}
                   ondragenter={(event) => onDragEnter(event, node.path)}
                   ondragleave={onDragLeave}

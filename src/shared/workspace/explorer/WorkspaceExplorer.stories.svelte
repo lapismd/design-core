@@ -531,7 +531,18 @@
       ".ui-workspace-explorer__title",
     ) as HTMLElement;
     const titleLeft = title.getBoundingClientRect().left;
-    row.focus();
+    await userEvent.click(row);
+    await waitFor(
+      () => {
+        expect(renameFixture.memory.openRequests).toEqual([
+          { path: "readme.md", options: { disposition: "current" } },
+        ]);
+      },
+      { timeout: 1000 },
+    );
+    expect(document.activeElement).toBe(
+      canvasElement.querySelector('[data-path="readme.md"]'),
+    );
     await userEvent.keyboard("{Enter}");
     await waitFor(() => {
       expect(renameFixture.controller.editingPath).toBe("readme.md");
