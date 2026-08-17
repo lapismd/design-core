@@ -1,6 +1,9 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
+  /* Compiled shadcn CSS reads these even when a consumer does not reprocess @theme. */
+  --color-white: #ffffff;
+  --color-black: #000000;
   --radius: 0.625rem;
   --studio-font-mono: "Source Code Pro Variable", "Source Code Pro",
     ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",

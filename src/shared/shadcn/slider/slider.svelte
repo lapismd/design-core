@@ -119,7 +119,10 @@ get along, so we shut typescript up by casting `value` to `never`.
       background-color: var(--primary);
     }
     [data-ui-component="slider"][data-ui-part="slider-thumb"] {
-      background-color: var(--color-white);
+      background-color: var(
+        --ui-slider-thumb-background,
+        var(--color-white, #ffffff)
+      );
     }
     [data-ui-component="slider"][data-ui-part="slider-thumb"] {
       --tw-shadow: 0 1px 3px 0 var(--tw-shadow-color, #0000001a),

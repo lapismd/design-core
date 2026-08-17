@@ -43,6 +43,7 @@ Design Core styling is native CSS driven by semantic tokens. Themes and consumer
 
 - Consumers may override documented semantic tokens without depending on private selectors.
 - Styling validation must distinguish source ownership from Storybook-only presentation.
+- Compiled palette anchors `--color-white` and `--color-black` MUST be defined on `:root`, not only inside `@theme inline`.
 
 ## DC-CSS-004 — Accessibility styling
 

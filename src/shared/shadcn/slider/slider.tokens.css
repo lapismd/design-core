@@ -7,4 +7,5 @@
   --ui-slider-border-color: var(--border);
   --ui-slider-radius: 9999px;
   --ui-slider-focus-ring-color: var(--ring);
+  --ui-slider-thumb-background: var(--color-white, #ffffff);
 }

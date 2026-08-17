@@ -113,6 +113,7 @@ bits-ui command API bindable.
 
 - The public boundary is `@lapismd/design-core/shadcn/slider`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- Thumb fill MUST use `--ui-slider-thumb-background` with a `#ffffff` fallback so consumers without `--color-white` still paint an opaque handle.
 
 ## DC-SHA-032 — Switch
 
