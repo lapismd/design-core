@@ -12,6 +12,7 @@ Workspace framework contracts coordinate reusable layout and state through expli
 | Workspace demo              | `@lapismd/design-core/workspace/demo`      | DC-WS-004   |
 | Workspace drag              | `@lapismd/design-core/workspace/drag`      | DC-WS-005   |
 | Workspace View Host         | `@lapismd/design-core/workspace/view-host` | DC-WS-006   |
+| Imperative view remount     | `@lapismd/design-core/workspace/view-host` | DC-WS-043   |
 | Workspace Guidance          | Documentation surface                      | DC-WS-007   |
 | Workspace navigation        | `@lapismd/design-core/workspace/app-shell` | DC-WS-038   |
 | Managed plugin registry     | `@lapismd/design-core/workspace/core`      | DC-WS-040   |
@@ -75,6 +76,17 @@ Workspace framework contracts coordinate reusable layout and state through expli
 - The public boundary is `@lapismd/design-core/workspace/view-host`.
 - Workspace views MUST inherit primary background and foreground tokens resolved by their destination surface.
 - The secondary view background MUST contrast with the primary surface: workspace secondary for ordinary and grouped views, and workspace background for direct sidebars.
+- The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+
+## DC-WS-043 — Imperative view remount
+
+**Requirement.** An imperative Workspace View Host MUST remount a consumer view only when the tab id or registered view type changes.
+
+### Acceptance details
+
+- The public boundary is `@lapismd/design-core/workspace/view-host`.
+- Active-tab, chrome, and other context-only updates MUST NOT teardown and remount the imperative root.
+- Remount MUST pass the same tab id through to the consumer mount so the existing view container can be reattached.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 
 ## DC-WS-007 — Workspace Guidance

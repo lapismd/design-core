@@ -124,6 +124,67 @@ describe("Lapis-compatible workspace JSON", () => {
     expect(workspaceLayoutFromJson(json).windows).toEqual([]);
   });
 
+  it("preserves grouped leaf ids and view state through restore", () => {
+    const layout = createDefaultWorkspaceLayout();
+    layout.right = {
+      open: true,
+      size: 280,
+      root: createWorkspaceTabs(
+        [
+          {
+            kind: "sidebar-group",
+            id: "tools",
+            title: "Tools",
+            tabs: [
+              createWorkspaceTab({
+                id: "fixture-a",
+                title: "Fixture A",
+                view: { type: "fixture-a", state: { mode: "preview", file: "Note.md" } },
+              }),
+              createWorkspaceTab({
+                id: "fixture-b",
+                title: "Fixture B",
+                view: { type: "fixture-b", state: { mode: "source" } },
+              }),
+            ],
+            hiddenTabIds: [],
+            collapsedByTabId: {},
+            panelSizesByTabId: {},
+          },
+        ],
+        { id: "right-tabs" },
+      ),
+    };
+
+    const restored = workspaceLayoutFromJson(workspaceLayoutToJson(layout));
+    const group =
+      restored.right.root.kind === "tabs"
+        ? restored.right.root.items[0]
+        : null;
+    if (!group || group.kind !== "sidebar-group") {
+      throw new Error("Expected a restored sidebar group");
+    }
+    expect(group.id).toBe("tools");
+    expect(
+      group.tabs.map((tab) => ({
+        id: tab.id,
+        type: tab.view.type,
+        state: tab.view.state,
+      })),
+    ).toEqual([
+      {
+        id: "fixture-a",
+        type: "fixture-a",
+        state: { mode: "preview", file: "Note.md" },
+      },
+      {
+        id: "fixture-b",
+        type: "fixture-b",
+        state: { mode: "source" },
+      },
+    ]);
+  });
+
   it("serializes reactive-compatible view state proxies", () => {
     const layout = createDefaultWorkspaceLayout();
     if (layout.main.kind !== "tabs" || layout.main.items[0]?.kind !== "tab") {

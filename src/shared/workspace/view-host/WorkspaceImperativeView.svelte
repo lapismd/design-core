@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { untrack } from "svelte";
   import type {
     WorkspaceImperativeViewDefinition,
     WorkspaceViewContext,
@@ -13,16 +14,19 @@
     context: WorkspaceViewContext;
   } = $props();
 
-  let target: HTMLDivElement;
+  let remountKey = $derived(`${context.tab.id}:${definition.type}`);
 
-  $effect(() => {
-    const cleanup = definition.mount(target, context);
-    return () => cleanup?.();
-  });
+  function mountView(key: string) {
+    return (element: HTMLDivElement) => {
+      void key;
+      const cleanup = untrack(() => definition.mount(element, context));
+      return () => cleanup?.();
+    };
+  }
 </script>
 
 <div
-  bind:this={target}
   class="ui-workspace-imperative-view"
   data-ui-component="workspace-imperative-view"
+  {@attach mountView(remountKey)}
 ></div>

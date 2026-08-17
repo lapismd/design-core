@@ -442,6 +442,59 @@ describe("WorkspaceShellController", () => {
     ]);
   });
 
+  it("keeps grouped tab ids and view state across collapse and tab select", () => {
+    const first = createWorkspaceTab({
+      id: "fixture-a",
+      title: "Fixture A",
+      view: { type: "fixture-a", state: { mode: "preview", file: "Note.md" } },
+    });
+    const second = createWorkspaceTab({
+      id: "fixture-b",
+      title: "Fixture B",
+      view: { type: "fixture-b", state: { mode: "source" } },
+    });
+    const layout = splitLayout();
+    layout.right = {
+      open: true,
+      size: 300,
+      root: createWorkspaceTabs([first, second], { id: "right-sidebar" }),
+    };
+    const controller = new WorkspaceShellController({ layout });
+    const group = controller.groupSidebarTabs(
+      "right",
+      ["fixture-a", "fixture-b"],
+      {
+        id: "tools",
+        title: "Tools",
+      },
+    )!;
+    const firstTab = group.tabs[0]!;
+    const secondTab = group.tabs[1]!;
+    const firstState = firstTab.view.state;
+
+    expect(
+      controller.setSidebarGroupCollapsed(group.id, firstTab.id, true),
+    ).toBe(true);
+    expect(group.tabs[0]).toBe(firstTab);
+    expect(group.tabs[1]).toBe(secondTab);
+    expect(firstTab.id).toBe("fixture-a");
+    expect(secondTab.id).toBe("fixture-b");
+    expect(firstTab.view.state).toBe(firstState);
+    expect(firstTab.view.state).toEqual({
+      mode: "preview",
+      file: "Note.md",
+    });
+    expect(secondTab.view.state).toEqual({ mode: "source" });
+
+    expect(controller.selectTab(secondTab.id)).toBe(true);
+    expect(group.tabs[0]).toBe(firstTab);
+    expect(firstTab.view.state).toEqual({
+      mode: "preview",
+      file: "Note.md",
+    });
+    expect(controller.activeTabId).toBe("fixture-b");
+  });
+
   it("updates persisted sidebar-group metadata and exposes panel actions", async () => {
     const files = createWorkspaceTab({ id: "files", title: "Files" });
     const search = createWorkspaceTab({ id: "search", title: "Search" });
