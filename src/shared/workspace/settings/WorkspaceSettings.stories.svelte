@@ -949,6 +949,9 @@
     });
     await userEvent.type(search, "custom renderer");
     await expect(
+      canvas.getAllByRole("button", { name: "Clear settings search" }),
+    ).toHaveLength(1);
+    await expect(
       canvas.getByRole("heading", { name: "Settings Search Results" }),
     ).toBeVisible();
     const openSearchResult = canvas.getByRole("button", {

@@ -23,6 +23,12 @@ describe("workspace settings action hover", () => {
     );
   });
 
+  it("hides the native search cancel so only the workspace clear remains", () => {
+    expect(css).toMatch(
+      /\.ui-workspace-settings__search[\s\S]*?::-webkit-search-cancel-button,[\s\S]*?::-webkit-search-decoration \{[\s\S]*?display:\s*none;/,
+    );
+  });
+
   it("sizes bounded number fields through the shadcn slider host", () => {
     expect(css).toMatch(
       /\.ui-workspace-setting-range[\s\S]*?\[data-ui-component="slider"\]\[data-ui-part="slider"\]/,

@@ -55,6 +55,13 @@
   font-size: 0.875rem;
 }
 
+.ui-workspace-settings__search
+  [data-ui-component="input"]::-webkit-search-cancel-button,
+.ui-workspace-settings__search
+  [data-ui-component="input"]::-webkit-search-decoration {
+  display: none;
+}
+
 .ui-workspace-settings__search-clear {
   --ui-button-height: 1rem;
   width: 1rem !important;
