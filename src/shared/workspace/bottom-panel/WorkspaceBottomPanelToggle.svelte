@@ -6,11 +6,13 @@
     onSelect,
     size = "default",
     expanded = false,
+    "data-desktop-drag-region": desktopDragRegion = "false",
   }: {
     label?: string;
     onSelect: (event: MouseEvent) => void;
     size?: "small" | "default";
     expanded?: boolean;
+    "data-desktop-drag-region"?: string;
   } = $props();
 
   let resolvedLabel = $derived(
@@ -21,6 +23,7 @@
 <button
   class="ui-workspace-bottom-panel-toggle"
   data-ui-component="workspace-bottom-panel-toggle"
+  data-desktop-drag-region={desktopDragRegion}
   data-size={size}
   data-state={expanded ? "expanded" : "collapsed"}
   data-workspace-bottom-panel-toggle

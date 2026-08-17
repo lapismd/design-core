@@ -66,6 +66,7 @@
   class={["ui-workspace-startup", className].filter(Boolean).join(" ")}
   data-ui-component="workspace-startup"
   data-ui-part="root"
+  data-desktop-drag-region
   data-state={hasFailure ? "failed" : "loading"}
   aria-label={title}
 >
@@ -125,6 +126,7 @@
             <Button
               variant={index === 0 ? "default" : "outline"}
               disabled={action.disabled}
+              data-desktop-drag-region="false"
               onclick={(event) => void action.onSelect(event)}
             >
               {action.label}

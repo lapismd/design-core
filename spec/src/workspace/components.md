@@ -32,6 +32,7 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 | Workspace Tree  | `@lapismd/design-core/workspace/tree`            | DC-WS-031   |
 | View Header     | `@lapismd/design-core/workspace/view-header`     | DC-WS-032   |
 | Managed plugins | `@lapismd/design-core/workspace`                 | DC-WS-039   |
+| Desktop drag    | Workspace chrome                                 | DC-WS-042   |
 
 ## DC-WS-008 — About Dialog
 
@@ -285,3 +286,13 @@ sidebar destinations marked with the `move` icon.
 - Included and first-party plugins must render in separate groups with required and busy states.
 - Source lifecycle notifications must refresh the settings presentation without polling.
 - Plugin rows that have a registered settings section MUST expose an options action that opens that section.
+
+## DC-WS-042 — Desktop window-drag regions
+
+**Requirement.** Non-interactive top-tab, stacked-tab, view-header, and startup chrome MUST set `data-desktop-drag-region`, and shared CSS MUST map that attribute to native `app-region` drag surfaces.
+
+### Acceptance details
+
+- Shared CSS MUST set `app-region` and `-webkit-app-region: drag` on `[data-desktop-drag-region]` except when the value is `false`.
+- Interactive descendants MUST set `data-desktop-drag-region="false"` so they compute `no-drag`.
+- Sidebar tab rows MUST remain unmarked so native window drag does not capture pane-to-pane tab moves.

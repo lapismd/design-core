@@ -126,6 +126,16 @@
     await expect(container!.scrollWidth).toBeGreaterThan(
       container!.clientWidth,
     );
+    const chrome = canvasElement.querySelector('[data-ui-part="chrome"]');
+    const overflow = canvas.getByRole("button", { name: "Tab options" });
+    await expect(chrome).toHaveAttribute("data-desktop-drag-region", "");
+    await expect(overflow).toHaveAttribute("data-desktop-drag-region", "false");
+    await expect(
+      getComputedStyle(chrome!).getPropertyValue("-webkit-app-region").trim(),
+    ).toBe("drag");
+    await expect(
+      getComputedStyle(overflow).getPropertyValue("-webkit-app-region").trim(),
+    ).toBe("no-drag");
 
     const reference = canvas.getByRole("button", { name: "Reference" });
     await userEvent.click(reference);

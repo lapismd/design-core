@@ -49,6 +49,7 @@
 @import "./shared/forms/form.tokens.css";
 @import "./shared/diff/diff.tokens.css";
 @import "./shared/workspace/workspace.tokens.css";
+@import "./shared/workspace/workspace-desktop-drag.css";
 @import "./themes/lapis.css";
 
 @layer base {

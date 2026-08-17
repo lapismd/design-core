@@ -24,6 +24,7 @@ Workspace framework contracts coordinate reusable layout and state through expli
 ### Acceptance details
 
 - The public boundary is Workspace layer.
+- Shared workspace CSS MAY map `data-desktop-drag-region` to native `app-region` surfaces without owning Electron policy.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 
 ## DC-WS-002 — Workspace core

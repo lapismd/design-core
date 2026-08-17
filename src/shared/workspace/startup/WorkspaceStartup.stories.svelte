@@ -63,6 +63,11 @@
       canvas.getByRole("progressbar", { name: "Startup progress" }),
     ).toHaveAttribute("aria-valuenow", "75");
     await expect(canvas.getByText("Now")).toBeVisible();
+    const startup = canvas.getByRole("region", { name: "Starting Lapis Notes" });
+    await expect(startup).toHaveAttribute("data-desktop-drag-region", "");
+    await expect(
+      getComputedStyle(startup).getPropertyValue("-webkit-app-region").trim(),
+    ).toBe("drag");
   }}
   parameters={{
     visualDelta: {
@@ -112,6 +117,10 @@
     await userEvent.click(canvas.getByRole("button", { name: "Retry" }));
     await expect(canvas.getByRole("status")).toHaveTextContent(
       "Retry selected",
+    );
+    await expect(canvas.getByRole("button", { name: "Retry" })).toHaveAttribute(
+      "data-desktop-drag-region",
+      "false",
     );
   }}
 >

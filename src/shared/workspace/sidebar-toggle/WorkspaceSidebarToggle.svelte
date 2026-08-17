@@ -8,18 +8,21 @@
     onSelect,
     size = "default",
     expanded = false,
+    "data-desktop-drag-region": desktopDragRegion = "false",
   }: {
     side: WorkspaceSide;
     label: string;
     onSelect: (event: MouseEvent) => void;
     size?: "small" | "default";
     expanded?: boolean;
+    "data-desktop-drag-region"?: string;
   } = $props();
 </script>
 
 <button
   class="ui-workspace-sidebar-toggle"
   data-ui-component="workspace-sidebar-toggle"
+  data-desktop-drag-region={desktopDragRegion}
   data-size={size}
   data-side={side}
   data-state={expanded ? "expanded" : "collapsed"}

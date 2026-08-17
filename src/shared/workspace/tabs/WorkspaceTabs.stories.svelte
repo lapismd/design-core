@@ -174,6 +174,21 @@
     await expect(headerMain).not.toBeNull();
     await expect(leftToggle).not.toBeNull();
     await expect(rightToggle).not.toBeNull();
+    const header = canvasElement.querySelector('[data-ui-part="header"]');
+    const spacer = canvasElement.querySelector('[data-ui-part="spacer"]');
+    const newTab = canvas.getByRole("button", { name: "New tab" });
+    await expect(header).toHaveAttribute("data-desktop-drag-region", "");
+    await expect(spacer).toHaveAttribute("data-desktop-drag-region", "");
+    await expect(newTab).toHaveAttribute("data-desktop-drag-region", "false");
+    await expect(
+      getComputedStyle(header!).getPropertyValue("-webkit-app-region").trim(),
+    ).toBe("drag");
+    await expect(
+      getComputedStyle(spacer!).getPropertyValue("-webkit-app-region").trim(),
+    ).toBe("drag");
+    await expect(
+      getComputedStyle(newTab).getPropertyValue("-webkit-app-region").trim(),
+    ).toBe("no-drag");
     await expect(
       parseFloat(getComputedStyle(headerMain!).borderBottomWidth),
     ).toBeCloseTo(1);

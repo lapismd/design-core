@@ -181,11 +181,16 @@
   ondragover={(event) => dragState.moveHtml5(event)}
   ondrop={(event) => dragState.dropHtml5(event)}
 >
-  <header class="ui-workspace-stacked-tabs__chrome" data-ui-part="chrome">
+  <header
+    class="ui-workspace-stacked-tabs__chrome"
+    data-ui-part="chrome"
+    data-desktop-drag-region
+  >
     {#if sidebarToggleSides.includes("left")}
       <WorkspaceSidebarToggle
         side="left"
         label="Open left sidebar"
+        data-desktop-drag-region="false"
         onSelect={() => controller.setSidebarOpen("left", true)}
       />
     {/if}
@@ -195,6 +200,7 @@
         <button
           type="button"
           class="ui-workspace-stacked-tabs__chrome-button"
+          data-desktop-drag-region="false"
           aria-label="New tab"
           data-hint-target="tab-add"
           data-hint-group="tabs"
@@ -215,6 +221,7 @@
           type="button"
           class="ui-workspace-stacked-tabs__chrome-button ui-workspace-stacked-tabs__focus-toggle"
           data-ui-part="focus-mode-toggle"
+          data-desktop-drag-region="false"
           aria-label={isFocusMode ? "Restore tab group" : "Maximize tab group"}
           aria-pressed={isFocusMode}
           title={isFocusMode ? "Restore tab group" : "Maximize tab group"}
@@ -234,6 +241,7 @@
       <DropdownMenu.Root>
         <DropdownMenu.Trigger
           class="ui-workspace-stacked-tabs__chrome-button"
+          data-desktop-drag-region="false"
           aria-label="Tab options"
           data-hint-target="tabs-action"
           data-hint-group="tabs"
@@ -291,6 +299,7 @@
           <WorkspaceBottomPanelToggle
             size="small"
             expanded={controller.layout.bottom.open}
+            data-desktop-drag-region="false"
             onSelect={() =>
               controller.setDockOpen("bottom", !controller.layout.bottom.open)}
           />
@@ -298,6 +307,7 @@
         <WorkspaceSidebarToggle
           side="right"
           label="Open right sidebar"
+          data-desktop-drag-region="false"
           onSelect={() => controller.setSidebarOpen("right", true)}
         />
       </div>

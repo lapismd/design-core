@@ -199,6 +199,7 @@
     bind:this={tabIndicatorRoot}
     class="ui-workspace-tabs__header"
     data-ui-part="header"
+    data-desktop-drag-region
     data-workspace-tab-strip="top"
     ondragleave={handleTabIndicatorLeave}
   >
@@ -208,6 +209,7 @@
           <WorkspaceSidebarToggle
             side="left"
             label="Open left sidebar"
+            data-desktop-drag-region="false"
             onSelect={() => controller.setSidebarOpen("left", true)}
           />
         </div>
@@ -260,6 +262,7 @@
                           <DropdownMenu.Trigger
                             class="workspace-tab-header-inner-icon ui-workspace-tab__icon"
                             data-ui-part="tab-menu-trigger"
+                            data-desktop-drag-region="false"
                             aria-label={`Open ${item.title} tab menu`}
                             title={`Open ${item.title} tab menu`}
                             onpointerdown={() => select(item)}
@@ -290,6 +293,7 @@
                             class="ui-workspace-tab__trigger"
                             data-ui-part="tab-menu-context-trigger"
                             data-workspace-tab-title-trigger
+                            data-desktop-drag-region="false"
                             data-hint-target="tab"
                             data-hint-group="tabs"
                             data-hint-action="click"
@@ -317,6 +321,7 @@
                                 class="ui-workspace-tab__trigger"
                                 data-ui-part="tab-menu-context-trigger"
                                 data-workspace-tab-title-trigger
+                                data-desktop-drag-region="false"
                               >
                                 {#if item.kind === "tab"}
                                   <WorkspaceViewLabel
@@ -346,6 +351,7 @@
                           type="button"
                           class="workspace-tab-header-inner-close-button ui-workspace-tab__close"
                           data-ui-part="tab-close"
+                          data-desktop-drag-region="false"
                           data-hint-target="tab-close"
                           data-hint-group="tabs"
                           data-hint-action="click"
@@ -393,6 +399,7 @@
         <button
           class="ui-workspace-tabs__icon-button"
           data-ui-part="new-tab"
+          data-desktop-drag-region="false"
           type="button"
           aria-label="New tab"
           data-hint-target="tab-add"
@@ -406,7 +413,11 @@
           <Plus aria-hidden="true" />
         </button>
       {/if}
-      <div class="ui-workspace-tabs__spacer" data-ui-part="spacer"></div>
+      <div
+        class="ui-workspace-tabs__spacer"
+        data-ui-part="spacer"
+        data-desktop-drag-region
+      ></div>
     </WorkspaceTabsMove>
 
     <div class="ui-workspace-tabs__overflow" data-ui-part="overflow">
@@ -414,6 +425,7 @@
         <button
           class="ui-workspace-tabs__icon-button ui-workspace-tabs__focus-toggle"
           data-ui-part="focus-mode-toggle"
+          data-desktop-drag-region="false"
           type="button"
           aria-label={isFocusMode ? "Restore tab group" : "Maximize tab group"}
           aria-pressed={isFocusMode}
@@ -434,6 +446,7 @@
       <DropdownMenu.Root bind:open={overflowMenuOpen}>
         <DropdownMenu.Trigger
           class="ui-workspace-tabs__icon-button"
+          data-desktop-drag-region="false"
           data-hint-target="tabs-action"
           data-hint-group="tabs"
           data-hint-action="click"
@@ -531,6 +544,7 @@
           <WorkspaceBottomPanelToggle
             size="small"
             expanded={controller.layout.bottom.open}
+            data-desktop-drag-region="false"
             onSelect={() =>
               controller.setDockOpen("bottom", !controller.layout.bottom.open)}
           />
@@ -538,6 +552,7 @@
         <WorkspaceSidebarToggle
           side="right"
           label="Open right sidebar"
+          data-desktop-drag-region="false"
           onSelect={() => controller.setSidebarOpen("right", true)}
         />
       </div>

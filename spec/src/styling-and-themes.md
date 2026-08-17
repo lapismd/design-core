@@ -33,6 +33,7 @@ Design Core styling is native CSS driven by semantic tokens. Themes and consumer
 - Consumers may override documented semantic tokens without depending on private selectors.
 - Styling validation must distinguish source ownership from Storybook-only presentation.
 - `src/styles.css` MUST import each shadcn family's `*.tokens.css`, including project-authored families such as `command-view`.
+- `src/styles.css` MUST import the shared workspace desktop drag-region stylesheet so `data-desktop-drag-region` maps to native `app-region` surfaces.
 
 ## DC-CSS-003 — Theme surfaces
 
@@ -114,6 +115,7 @@ pages.
 | Diff                | `--ui-diff-*`                  | `src/shared/diff/diff.tokens.css`           |
 | Structural shell    | `--ui-shell-*`                 | `src/shared/shell/shell.tokens.css`         |
 | Workspace framework | `--ui-workspace-*`             | `src/shared/workspace/workspace.tokens.css` |
+| Desktop drag        | `data-desktop-drag-region`     | `src/shared/workspace/workspace-desktop-drag.css` |
 
 Set public tokens on `:root` or an appropriate shared ancestor such as
 `.ui-structured-form`. Do not rebind a token on the same component host that
