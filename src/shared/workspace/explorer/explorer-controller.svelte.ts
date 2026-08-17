@@ -95,9 +95,10 @@ export class ExplorerController {
     if (this.#selection) {
       this.#unsubscribers.push(
         this.#selection.subscribe((path) => {
+          const alreadySelected = Boolean(path) && this.selectedPath === path;
           this.selectedPath = path ?? "";
           if (this.autoReveal && path) {
-            this.revealPath(path);
+            this.revealPath(path, { flash: !alreadySelected });
           }
         }),
       );
@@ -171,7 +172,7 @@ export class ExplorerController {
     this.editingPath = null;
   }
 
-  revealPath(path: string): void {
+  revealPath(path: string, options?: { flash?: boolean }): void {
     if (!path || path === "/") {
       this.revealState = { path: "", isFlashing: false };
       return;
@@ -189,7 +190,7 @@ export class ExplorerController {
       if (ancestorNode?.kind === "folder") this.expandedPaths.add(ancestor);
     }
     this.selectedPath = path;
-    this.revealState = { path, isFlashing: true };
+    this.revealState = { path, isFlashing: options?.flash !== false };
   }
 
   clearRevealFlash(): void {

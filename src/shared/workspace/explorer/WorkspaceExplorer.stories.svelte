@@ -507,7 +507,26 @@
       expect(controller.expandedPaths.has("notes")).toBe(true);
       expect(controller.expandedPaths.has("notes/deep")).toBe(true);
       expect(controller.selectedPath).toBe("notes/deep/nested.md");
+      expect(controller.revealState.isFlashing).toBe(true);
     });
+    const nested = canvasElement.querySelector(
+      '[data-path="notes/deep/nested.md"]',
+    );
+    expect(nested?.classList.contains("is-flashing")).toBe(true);
+    controller.clearRevealFlash();
+    const alpha = within(canvasElement).getByRole("button", {
+      name: "alpha.md",
+    });
+    await userEvent.click(alpha);
+    await waitFor(() => {
+      expect(controller.selectedPath).toBe("notes/alpha.md");
+      expect(memory.openRequests.at(-1)).toEqual({
+        path: "notes/alpha.md",
+        options: { disposition: "current" },
+      });
+    });
+    expect(controller.revealState.isFlashing).toBe(false);
+    expect(canvasElement.querySelector(".is-flashing")).toBeNull();
   }}
 >
   {#snippet template()}

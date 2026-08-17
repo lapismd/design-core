@@ -136,8 +136,10 @@ consumers must not add placement selectors or cache layout ancestry.
   folders enter rename mode; files also invoke `openFile`.
 - **Sort** — filename A→Z / Z→A; folders always before files inside each folder.
 - **Auto-reveal** — toolbar `aria-pressed` mirrors preferences adapter; when
-  enabled, selection updates expand ancestors and scroll the active path. Its
-  pressed glyph uses the theme's workspace accent foreground.
+  enabled, selection updates expand ancestors and scroll the active path. The
+  reveal flash runs only when the active file changes from outside the tree
+  (tab switches, commands), not after a click that already selected that row.
+  Its pressed glyph uses the theme's workspace accent foreground.
 - **Toggle collapse** — expand all folders or collapse all.
 - Icon actions use shadcn `Tooltip` (`side="bottom"`) with the same label text as
   `aria-label` (sort shows the active sort mode).
@@ -214,7 +216,8 @@ must read/write the same key.
 ## Commands and reveal
 
 Framework API: `controller.revealPath(path)` expands ancestors, selects the
-path, scrolls into view, and applies a short flash. Recommended Lapis host
+path, scrolls into view, and applies a short flash. Pass `{ flash: false }`
+to keep the scroll/expand without the ring. Recommended Lapis host
 command ids for parity:
 
 - `file-explorer:reveal-path`

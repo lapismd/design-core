@@ -222,6 +222,23 @@ describe("ExplorerController", () => {
     await vi.waitFor(() => {
       expect(controller.selectedPath).toBe("notes/alpha.md");
       expect(controller.expandedPaths.has("notes")).toBe(true);
+      expect(controller.revealState).toEqual({
+        path: "notes/alpha.md",
+        isFlashing: true,
+      });
+    });
+    controller.clearRevealFlash();
+    controller.setSelectedPath("notes/zeta.md");
+    memory.setActivePath("notes/zeta.md");
+    await vi.waitFor(() => {
+      expect(controller.selectedPath).toBe("notes/zeta.md");
+      expect(controller.expandedPaths.has("notes")).toBe(true);
+    });
+    expect(controller.revealState.isFlashing).toBe(false);
+    controller.revealPath("notes/zeta.md");
+    expect(controller.revealState).toEqual({
+      path: "notes/zeta.md",
+      isFlashing: true,
     });
     stop();
   });
