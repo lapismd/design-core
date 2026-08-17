@@ -438,7 +438,8 @@
       .ui-workspace-setting-restore,
       .ui-workspace-setting-list [data-ui-component="button"],
       .ui-workspace-setting-key-value [data-ui-component="button"],
-      .ui-workspace-setting-object-collection [data-ui-component="button"]
+      .ui-workspace-setting-object-collection [data-ui-component="button"],
+      .ui-workspace-settings__search-result-open
     ):is([data-variant="ghost"], [data-variant="outline"]):hover,
   .ui-workspace-settings
     :is(
@@ -658,6 +659,7 @@
 }
 
 .ui-workspace-settings__search-result {
+  --muted: var(--ui-workspace-panel-action-hover-background);
   display: grid;
   min-height: 5.75rem;
   grid-template-columns: minmax(0, 1fr) auto;
@@ -708,11 +710,6 @@
 
 .ui-workspace-settings__search-result-open {
   color: var(--ui-workspace-muted-foreground);
-}
-
-.ui-workspace-settings__search-result-open:hover {
-  color: var(--ui-workspace-foreground);
-  background: var(--ui-workspace-muted);
 }
 
 .ui-workspace-settings__search-result-open svg {

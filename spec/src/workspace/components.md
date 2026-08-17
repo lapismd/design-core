@@ -155,7 +155,7 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 - The public boundary is `@lapismd/design-core/workspace/settings`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 - `Workspace/Components/Settings` All supported controls MUST render every default field kind in one selected section, with `object-array`, `object-grid`, and `object-map` as editable property tables: boolean, string presentations including the workspace icon picker, enum, multi-enum, combobox, shadcn Slider ranges and unbounded numbers, labeled list item types, key-value, section and toggle-table groups, action, custom, and unsupported.
-- Restore, list-remove, association-remove, and object-row-remove actions MUST use contrasting panel-action hover tokens, and list plus structured-collection add actions MUST use a trailing subdued text control that brightens on hover, matching the forms add treatment.
+- Restore, list-remove, association-remove, object-row-remove, and settings-search open actions MUST use contrasting panel-action hover tokens, and list plus structured-collection add actions MUST use a trailing subdued text control that brightens on hover, matching the forms add treatment.
 
 ## DC-WS-021 — Sidebar
 

@@ -951,6 +951,10 @@
     await expect(
       canvas.getByRole("heading", { name: "Settings Search Results" }),
     ).toBeVisible();
+    const openSearchResult = canvas.getByRole("button", {
+      name: "Open Custom renderer",
+    });
+    expect(resolveToken(openSearchResult, "--muted")).toBe(hoverFill);
     await userEvent.clear(search);
     await expect(
       canvas.getByRole("heading", { name: "Extension points" }),
