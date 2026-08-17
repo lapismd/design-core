@@ -769,6 +769,13 @@
     color 150ms ease;
 }
 
+.ui-workspace-setting-item.ui-workspace-settings__search-hit,
+.ui-workspace-settings__schema-body
+  > .ui-workspace-settings__schema-section.ui-workspace-settings__search-hit {
+  margin-inline: -0.75rem;
+  padding-inline: 0.75rem;
+}
+
 .ui-workspace-settings__search-hit .ui-workspace-setting-item__info p {
   color: color-mix(in srgb, var(--ui-workspace-foreground) 78%, transparent);
 }

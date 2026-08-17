@@ -6,6 +6,7 @@
   import AppShellHotkeySettings from "./AppShellHotkeySettings.svelte";
   import AppShellPluginsSettings from "./AppShellPluginsSettings.svelte";
   import { getAppSettingsContext } from "./app-settings-context.svelte.js";
+  import { SETTINGS_SEARCH_HIT_MS } from "./search-hit.js";
   import type { WorkspaceSettingsSearchResult } from "./types.js";
 
   const settingsState = getAppSettingsContext();
@@ -66,7 +67,7 @@
     highlightTimeout = setTimeout(() => {
       element.classList.remove("ui-workspace-settings__search-hit");
       highlightTimeout = null;
-    }, 1400);
+    }, SETTINGS_SEARCH_HIT_MS);
   }
 
   async function openSearchResult(result: WorkspaceSettingsSearchResult) {

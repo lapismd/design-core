@@ -50,6 +50,12 @@ describe("workspace settings action hover", () => {
     );
   });
 
+  it("insets the search-hit wash so the row reads with horizontal padding", () => {
+    expect(css).toMatch(
+      /\.ui-workspace-setting-item\.ui-workspace-settings__search-hit,[\s\S]*?margin-inline:\s*-0\.75rem;[\s\S]*?padding-inline:\s*0\.75rem;/,
+    );
+  });
+
   it("keeps add actions subdued until hover like form add", () => {
     expect(css).toMatch(
       /\.ui-workspace-setting-add \{[\s\S]*?color:\s*color-mix\([\s\S]*?var\(--ui-workspace-foreground\)\s*62%/,

@@ -6,6 +6,7 @@
   import { APP_SHELL_SETTING_IDS } from "../core/built-in-settings.svelte.js";
   import { AppShellPlugin } from "../core/plugin-manager.svelte.js";
   import AppSettingsContent from "./AppSettingsContent.svelte";
+  import { SETTINGS_SEARCH_HIT_MS } from "./search-hit.js";
   import AppSettingsNavigation from "./AppSettingsNavigation.svelte";
   import AppSettingsRoot from "./AppSettingsRoot.svelte";
   import AppSettingsSearch from "./AppSettingsSearch.svelte";
@@ -744,7 +745,7 @@
     });
     await waitFor(
       () => expect(target).not.toHaveClass("ui-workspace-settings__search-hit"),
-      { timeout: 2_000 },
+      { timeout: SETTINGS_SEARCH_HIT_MS + 1_500 },
     );
   }}
 >
