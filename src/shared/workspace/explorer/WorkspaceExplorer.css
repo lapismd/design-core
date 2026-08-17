@@ -137,6 +137,7 @@
   margin-inline-start: var(--ui-workspace-explorer-indent);
   margin-inline-end: var(--ui-workspace-explorer-indent);
   padding-inline-start: var(--ui-workspace-explorer-guide-gap);
+  padding-block-start: var(--ui-workspace-explorer-folder-gap);
   border-inline-start: var(--ui-workspace-explorer-guide-width) solid
     var(--ui-workspace-explorer-guide-color);
 }

@@ -25,7 +25,7 @@ Workspace framework contracts coordinate reusable layout and state through expli
 
 - The public boundary is Workspace layer.
 - Shared workspace CSS MAY map `data-desktop-drag-region` to native `app-region` surfaces without owning Electron policy.
-- Shared explorer row tokens MUST default selected fill to the same wash as row hover, selected labels to the idle font weight, and the default indent MUST place nested guides under expanded disclosure chevron tips.
+- Shared explorer row tokens MUST default selected fill to the same wash as row hover, selected labels to the idle font weight, the default indent MUST place nested guides under expanded disclosure chevron tips, and expanded folders MUST keep a small gap before their first child.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 
 ## DC-WS-002 — Workspace core

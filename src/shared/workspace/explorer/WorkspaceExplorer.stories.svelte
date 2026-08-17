@@ -777,6 +777,15 @@
       sublistBox.left + Number.parseFloat(guide.borderInlineStartWidth) / 2;
     const chevronTip = chevronBox.left + chevronBox.width / 2;
     expect(Math.abs(guideCenter - chevronTip)).toBeLessThan(1);
+    const firstChild = sublist!.querySelector(
+      ".ui-workspace-explorer__row",
+    ) as HTMLElement | null;
+    expect(firstChild).not.toBeNull();
+    expect(Number.parseFloat(guide.paddingBlockStart)).toBeGreaterThan(0);
+    expect(
+      firstChild!.getBoundingClientRect().top -
+        expanded!.getBoundingClientRect().bottom,
+    ).toBeGreaterThanOrEqual(3);
     const root = canvasElement.querySelector(
       ".ui-workspace-explorer",
     ) as HTMLElement;

@@ -445,6 +445,15 @@ Override on an ancestor of the explorer surface:
     </tr>
     <tr>
       <td>
+        <code>--ui-workspace-explorer-folder-gap</code>
+      </td>
+      <td>
+        <code>0.25rem</code> after an expanded folder row, before its first
+        child
+      </td>
+    </tr>
+    <tr>
+      <td>
         <code>--ui-workspace-explorer-row-active-weight</code>
       </td>
       <td>
@@ -466,7 +475,9 @@ Nested folders draw a vertical indentation guide on
 `.ui-workspace-explorer__sublist` (`border-inline-start`) using the guide
 tokens above — the same role as Lapis `--nav-indentation-guide-*` / shadcn
 sidebar `menu-sub` left border. The guide is centered on the expanded
-disclosure chevron tip.
+disclosure chevron tip. The sublist also keeps
+`--ui-workspace-explorer-folder-gap` after the folder row so a selected
+folder wash does not touch the first child's hover wash.
 
 ## Related
 

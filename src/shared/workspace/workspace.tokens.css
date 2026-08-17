@@ -150,6 +150,8 @@
   --ui-workspace-explorer-font-size: 0.8125rem;
   --ui-workspace-explorer-row-height: 1.75rem;
   --ui-workspace-explorer-row-gap: 0.125rem;
+  /* Space after an expanded folder row so its wash does not touch the first child. */
+  --ui-workspace-explorer-folder-gap: 0.25rem;
   --ui-workspace-explorer-row-active-weight: inherit;
   /* Insets tree content only (Lapis Sidebar.Group p-2); scrollbar stays flush. */
   --ui-workspace-explorer-content-padding: 0.5rem;
