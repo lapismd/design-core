@@ -4,6 +4,12 @@
   import * as CommandView from "@lapismd/design-core/shadcn/command-view";
   import * as Popover from "@lapismd/design-core/shadcn/popover";
   import WorkspaceIcon from "../icon/WorkspaceIcon.svelte";
+  import {
+    filterMultiSelectItems,
+    orderSelectedFirst,
+    summarizeMultiSelectIds,
+    type WorkspaceSettingMultiSelectItem,
+  } from "./multiselect.js";
 
   let {
     id,
@@ -15,12 +21,7 @@
     onValueChange,
   }: {
     id?: string;
-    items?: Array<{
-      value: string;
-      label: string;
-      description?: string;
-      disabled?: boolean;
-    }>;
+    items?: WorkspaceSettingMultiSelectItem[];
     value?: string[];
     placeholder?: string;
     ariaLabel?: string;
@@ -33,23 +34,15 @@
   let trigger = $state<HTMLButtonElement | null>(null);
   let selected = $derived(Array.isArray(value) ? value : []);
 
-  let selectedLabels = $derived(
-    items
-      .filter((item) => selected.includes(item.value))
-      .map((item) => item.label),
+  let selectedIds = $derived(
+    selected.map((id) => items.find((item) => item.value === id)?.value ?? id),
   );
   let triggerContent = $derived(
-    selectedLabels.length > 0 ? selectedLabels.join(", ") : placeholder,
+    summarizeMultiSelectIds(selectedIds, placeholder),
   );
-  let filtered = $derived.by(() => {
-    const needle = query.trim().toLowerCase();
-    if (!needle) return items;
-    return items.filter((item) =>
-      [item.value, item.label, item.description ?? ""].some((part) =>
-        part.toLowerCase().includes(needle),
-      ),
-    );
-  });
+  let filtered = $derived(
+    orderSelectedFirst(filterMultiSelectItems(items, query), selected),
+  );
 
   function toggle(nextValue: string) {
     onValueChange?.(

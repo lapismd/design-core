@@ -78,7 +78,7 @@
   grid-template-columns: auto minmax(0, 1fr) auto;
   grid-template-areas:
     "icon label shortcut"
-    "icon description shortcut";
+    ". description shortcut";
   align-items: center;
   column-gap: var(--ui-command-view-gap);
   width: 100%;
@@ -107,6 +107,9 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  align-self: center;
+  width: var(--ui-command-view-icon-size);
+  height: var(--ui-command-view-icon-size);
 }
 
 [data-ui-component="command-view"][data-ui-part="item-icon"] svg {

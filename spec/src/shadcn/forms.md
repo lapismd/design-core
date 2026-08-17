@@ -57,7 +57,7 @@ bits-ui command API bindable.
 
 - The public boundary is `@lapismd/design-core/shadcn/command-view`, and an empty filtered result MUST remain a disabled option so the listbox retains its required child semantics.
 - Input MUST expose a replaceable `start` snippet, MUST NOT bake a Lucide icon into the public contract, and MUST NOT paint a box border around the search field.
-- Item rows MUST compose icon, label, optional description, and shortcut parts without a default check icon.
+- Item rows MUST compose icon, label, optional description, and shortcut parts without a default check icon, and the icon MUST stay vertically centered on the label row.
 - Overflowing lists MUST scroll through `@lapismd/design-core/shadcn/scroll-area`, and the catalog MUST demonstrate inline, Dialog, and Popover hosts.
 
 ## DC-SHA-026 — Field

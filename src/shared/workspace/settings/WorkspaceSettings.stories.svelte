@@ -858,6 +858,7 @@
       name: "Enabled surfaces",
     });
     await expect(enabledSurfaces).toBeVisible();
+    await expect(enabledSurfaces).toHaveTextContent("left, status");
     await expect(
       enabledSurfaces.closest(
         "[data-ui-component='workspace-setting-multiselect']",
@@ -876,6 +877,16 @@
       ).not.toBeNull();
       return content!;
     });
+    const surfaceItems = () =>
+      [...surfacesPopover.querySelectorAll<HTMLElement>(
+        '[data-ui-component="command-view"][data-ui-part="item"]',
+      )];
+    await expect(
+      surfaceItems().find((item) => /Left sidebar/.test(item.textContent ?? "")),
+    ).toHaveAttribute("data-checked", "true");
+    await expect(
+      surfaceItems().find((item) => /Status bar/.test(item.textContent ?? "")),
+    ).toHaveAttribute("data-checked", "true");
     const surfacesSearch = await waitFor(() =>
       within(surfacesPopover).getByPlaceholderText("Search options..."),
     );
@@ -888,7 +899,12 @@
       "status",
       "right",
     ]);
+    await userEvent.clear(surfacesSearch);
+    await expect(
+      surfaceItems().find((item) => /Right sidebar/.test(item.textContent ?? "")),
+    ).toHaveAttribute("data-checked", "true");
     await userEvent.keyboard("{Escape}");
+    await expect(enabledSurfaces).toHaveTextContent("left, status + 1 more");
     await expect(
       canvas.getByRole("combobox", { name: "Default model" }),
     ).toBeVisible();

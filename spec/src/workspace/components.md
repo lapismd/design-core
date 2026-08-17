@@ -167,9 +167,9 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 ### Acceptance details
 
 - The picker MUST compose `@lapismd/design-core/shadcn/command-view` inside a Popover host and MUST NOT add a settings-local command list.
-- Search MUST filter options by value, label, and description.
-- The trigger MUST remain a labelled combobox that summarizes the current selection.
-- `Workspace/Components/Settings` All supported controls MUST search Enabled surfaces and toggle a filtered option.
+- Search MUST filter options by value, label, and description, and selected matches MUST appear before unselected matches.
+- The trigger MUST remain a labelled combobox that shows option ids: one id, two as `id, id`, and more as `id, id + N more`, with ellipsis overflow.
+- `Workspace/Components/Settings` All supported controls MUST search Enabled surfaces, toggle a filtered option, and show the selected-id summary.
 
 ## DC-WS-021 — Sidebar
 

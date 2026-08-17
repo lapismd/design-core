@@ -417,7 +417,9 @@
 
 .ui-workspace-setting-select__value {
   min-width: 0;
+  flex: 1 1 auto;
   overflow: hidden;
+  line-height: 1;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -426,11 +428,30 @@
   display: contents;
 }
 
+[data-ui-component="workspace-setting-multiselect"][data-ui-part="trigger"] {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-block: 0;
+  padding-inline: 0.75rem;
+}
+
 [data-ui-component="workspace-setting-multiselect"] [data-ui-part="chevron"] {
   display: inline-flex;
   flex: 0 0 auto;
   align-items: center;
+  justify-content: center;
+  width: 0.875rem;
+  height: 0.875rem;
+  line-height: 0;
   opacity: 0.5;
+}
+
+[data-ui-component="workspace-setting-multiselect"][data-ui-part="trigger"]
+  [data-ui-component="workspace-icon"] {
+  display: block;
+  width: 0.875rem;
+  height: 0.875rem;
 }
 
 [data-ui-component="workspace-setting-multiselect"][data-ui-part="content"] {

@@ -51,6 +51,15 @@ describe("workspace settings action hover", () => {
     expect(css).toMatch(
       /\[data-ui-component="workspace-setting-multiselect"\]\[data-ui-part="trigger"\] \{[\s\S]*?justify-content:\s*space-between;/,
     );
+    expect(css).toMatch(
+      /\[data-ui-component="workspace-setting-multiselect"\]\[data-ui-part="trigger"\] \{[\s\S]*?align-items:\s*center;[\s\S]*?padding-inline:\s*0\.75rem;/,
+    );
+    expect(css).toMatch(
+      /\[data-ui-component="workspace-setting-multiselect"\] \[data-ui-part="chevron"\] \{[\s\S]*?justify-content:\s*center;[\s\S]*?width:\s*0\.875rem;[\s\S]*?height:\s*0\.875rem;/,
+    );
+    expect(css).toMatch(
+      /\.ui-workspace-setting-select__value \{[\s\S]*?flex:\s*1 1 auto;[\s\S]*?text-overflow:\s*ellipsis;/,
+    );
   });
 
   it("sizes the icon picker trigger with other settings controls", () => {
