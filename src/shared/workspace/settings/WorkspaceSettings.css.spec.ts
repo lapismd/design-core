@@ -23,6 +23,12 @@ describe("workspace settings action hover", () => {
     );
   });
 
+  it("paints the plugin options action with panel-action hover tokens", () => {
+    expect(css).toMatch(
+      /\.ui-workspace-plugins__settings:hover \{[\s\S]*?color:\s*var\(--ui-workspace-panel-action-hover-foreground\);[\s\S]*?background:\s*var\(--ui-workspace-panel-action-hover-background\);/,
+    );
+  });
+
   it("hides the native search cancel so only the workspace clear remains", () => {
     expect(css).toMatch(
       /\.ui-workspace-settings__search[\s\S]*?::-webkit-search-cancel-button,[\s\S]*?::-webkit-search-decoration \{[\s\S]*?display:\s*none;/,

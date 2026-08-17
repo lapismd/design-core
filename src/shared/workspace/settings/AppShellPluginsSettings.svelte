@@ -2,6 +2,7 @@
   import { Switch } from "@lapismd/design-core/shadcn/switch";
   import type { AppShellController } from "../core/app-shell-controller.svelte.js";
   import WorkspaceIcon from "../icon/WorkspaceIcon.svelte";
+  import { findPluginSettingsSection } from "./plugin-settings-target.js";
 
   let { app }: { app: AppShellController } = $props();
   let busy = $state<string | null>(null);
@@ -25,12 +26,22 @@
       busy = null;
     }
   }
+
+  function openPluginSettings(pluginId: string) {
+    const section = findPluginSettingsSection(app.settings.sections, pluginId);
+    if (!section) return;
+    app.settings.selectSection(section.id);
+  }
 </script>
 
 {#snippet pluginList(plugins: typeof app.managedPlugins.states)}
   <div class="ui-workspace-plugins">
     {#each plugins as plugin (plugin.key)}
-      <article>
+      {@const settingsSection = findPluginSettingsSection(
+        app.settings.sections,
+        plugin.id,
+      )}
+      <article data-settings-plugin-id={plugin.id}>
         <div class="ui-workspace-plugins__icon">
           <WorkspaceIcon name={plugin.icon ?? "puzzle"} />
         </div>
@@ -49,12 +60,25 @@
             >
           {/if}
         </div>
-        <Switch
-          aria-label={`Enable ${plugin.name}`}
-          checked={plugin.enabled}
-          disabled={plugin.required || busy === plugin.key}
-          onCheckedChange={() => toggle(plugin.key, plugin.enabled)}
-        />
+        <div class="ui-workspace-plugins__actions">
+          {#if settingsSection}
+            <button
+              type="button"
+              class="ui-workspace-plugins__settings"
+              aria-label={`Open ${plugin.name} settings`}
+              title="Options"
+              onclick={() => openPluginSettings(plugin.id)}
+            >
+              <WorkspaceIcon name="settings" />
+            </button>
+          {/if}
+          <Switch
+            aria-label={`Enable ${plugin.name}`}
+            checked={plugin.enabled}
+            disabled={plugin.required || busy === plugin.key}
+            onCheckedChange={() => toggle(plugin.key, plugin.enabled)}
+          />
+        </div>
       </article>
     {/each}
   </div>

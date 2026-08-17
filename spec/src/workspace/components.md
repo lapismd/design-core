@@ -284,3 +284,4 @@ sidebar destinations marked with the `move` icon.
 - Sources must supply stable identities, distribution, lifecycle status, errors, and enable or disable callbacks.
 - Included and first-party plugins must render in separate groups with required and busy states.
 - Source lifecycle notifications must refresh the settings presentation without polling.
+- Plugin rows that have a registered settings section MUST expose an options action that opens that section.

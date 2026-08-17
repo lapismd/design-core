@@ -453,6 +453,23 @@
     enable: async () => true,
     disable: async () => true,
   });
+  compoundApp.settings.registerSection({
+    id: "backlinks",
+    title: "Backlinks",
+    description: "Linked-resource navigation.",
+    icon: "link",
+    order: 210,
+    navigationGroupId: "core-plugins",
+    sourcePluginId: "backlinks",
+    fields: [
+      {
+        id: "backlinks.showInEditor",
+        title: "Show in editor",
+        type: "boolean",
+        default: true,
+      },
+    ],
+  });
   const allControls = new WorkspaceSettingsController({
     sections: allControlSections,
   });
@@ -1083,7 +1100,7 @@
   play={async ({ canvas }) => {
     await userEvent.click(canvas.getByRole("button", { name: "Core plugins" }));
     await expect(
-      canvas.getByRole("heading", { name: "Core plugins" }),
+      canvas.getByRole("heading", { name: "Core plugins", level: 1 }),
     ).toBeVisible();
     await expect(
       canvas.getByRole("heading", { name: "Included plugins" }),
@@ -1101,6 +1118,21 @@
       canvas.getByRole("switch", { name: "Enable CV Roles" }),
     ).toBeChecked();
     await expect(canvas.getByText("Required")).toBeVisible();
+    await expect(
+      canvas.queryByRole("button", { name: "Open Workspace settings" }),
+    ).toBeNull();
+    await expect(
+      canvas.queryByRole("button", { name: "Open CV Roles settings" }),
+    ).toBeNull();
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Open Backlinks settings" }),
+    );
+    await expect(
+      canvas.getByRole("heading", { name: "Backlinks", level: 1 }),
+    ).toBeVisible();
+    await expect(
+      canvas.getByRole("switch", { name: "Show in editor" }),
+    ).toBeChecked();
   }}
   parameters={{
     visualDelta: {
