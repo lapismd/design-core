@@ -763,6 +763,22 @@
     ) as HTMLElement;
     expect(getComputedStyle(root).fontSize).toBe("13px");
     expect(getComputedStyle(root).borderWidth).toBe("0px");
+    const selected = canvasElement.querySelector(
+      '[data-path="notes/zeta.md"]',
+    ) as HTMLElement;
+    const idle = canvasElement.querySelector(
+      '[data-path="readme.md"]',
+    ) as HTMLElement | null;
+    expect(selected).toHaveAttribute("data-active", "true");
+    if (idle) {
+      expect(getComputedStyle(selected).fontWeight).toBe(
+        getComputedStyle(idle).fontWeight,
+      );
+    } else {
+      expect(
+        Number.parseInt(getComputedStyle(selected).fontWeight, 10),
+      ).toBeLessThan(600);
+    }
   }}
 >
   {#snippet template()}
@@ -829,12 +845,12 @@
       `[data-path="archive/${LONG_FILE_NAME}"]`,
     ) as HTMLElement;
     expect(activeRow).toHaveAttribute("data-active", "true");
-    expect(
-      Number.parseInt(getComputedStyle(activeRow).fontWeight, 10),
-    ).toBeGreaterThanOrEqual(700);
     const idleRow = canvasElement.querySelector(
       '[data-path="archive/file-01.md"]',
     ) as HTMLElement;
+    expect(getComputedStyle(activeRow).fontWeight).toBe(
+      getComputedStyle(idleRow).fontWeight,
+    );
     await userEvent.hover(idleRow);
     expect(getComputedStyle(activeRow).backgroundColor).toBe(
       getComputedStyle(idleRow).backgroundColor,

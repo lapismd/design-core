@@ -203,7 +203,7 @@ export const workspaceTokenDefaults: Record<WorkspaceTokenKey, string> = {
   explorerFontSize: "0.8125rem",
   explorerRowHeight: "1.75rem",
   explorerRowGap: "0.125rem",
-  explorerRowActiveWeight: "700",
+  explorerRowActiveWeight: "inherit",
   explorerContentPadding: "0.5rem",
   startupBackground: "var(--ui-workspace-background)",
   startupMaxWidth: "32rem",
