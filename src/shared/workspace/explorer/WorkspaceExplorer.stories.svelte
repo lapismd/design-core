@@ -817,6 +817,13 @@
     expect(
       Number.parseInt(getComputedStyle(activeRow).fontWeight, 10),
     ).toBeGreaterThanOrEqual(700);
+    const idleRow = canvasElement.querySelector(
+      '[data-path="archive/file-01.md"]',
+    ) as HTMLElement;
+    await userEvent.hover(idleRow);
+    expect(getComputedStyle(activeRow).backgroundColor).toBe(
+      getComputedStyle(idleRow).backgroundColor,
+    );
 
     const title = activeRow.querySelector(
       ".ui-workspace-explorer__title",

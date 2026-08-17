@@ -178,7 +178,8 @@ export const workspaceTokenDefaults: Record<WorkspaceTokenKey, string> = {
   explorerToolbarHeight: "var(--ui-workspace-sidebar-header-height)",
   explorerRowHoverBackground:
     "var(--ui-workspace-panel-action-hover-background)",
-  explorerRowActiveBackground: "var(--ui-workspace-selection)",
+  explorerRowActiveBackground:
+    "var(--ui-workspace-explorer-row-hover-background)",
   explorerDropBackground:
     "color-mix(in srgb, var(--ui-workspace-accent) 10%, transparent)",
   explorerDropForeground: "var(--ui-workspace-accent)",

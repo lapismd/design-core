@@ -106,7 +106,9 @@
   --ui-workspace-explorer-row-hover-background: var(
     --ui-workspace-panel-action-hover-background
   );
-  --ui-workspace-explorer-row-active-background: var(--ui-workspace-selection);
+  --ui-workspace-explorer-row-active-background: var(
+    --ui-workspace-explorer-row-hover-background
+  );
   --ui-workspace-explorer-drop-background: color-mix(
     in srgb,
     var(--ui-workspace-accent) 10%,
