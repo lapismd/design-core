@@ -4,6 +4,7 @@
   export type WorkspaceSettingSelectItem = {
     value: string;
     label: string;
+    description?: string;
     disabled?: boolean;
   };
 
@@ -37,6 +38,7 @@
 
 <script lang="ts">
   import * as Select from "@lapismd/design-core/shadcn/select";
+  import WorkspaceSettingMultiSelect from "./WorkspaceSettingMultiSelect.svelte";
 
   const SelectRoot: any = Select.Root;
 
@@ -48,6 +50,7 @@
     placeholder = "Select...",
     ariaLabel,
     disabled = false,
+    onValueChange,
     ...rest
   }: WorkspaceSettingSelectProps = $props();
 
@@ -73,7 +76,24 @@
   });
 </script>
 
-<SelectRoot {...rest} {type} {disabled} bind:value={selectedValue}>
+{#if type === "multiple"}
+  <WorkspaceSettingMultiSelect
+    {id}
+    {items}
+    value={Array.isArray(selectedValue) ? selectedValue : []}
+    {placeholder}
+    {ariaLabel}
+    {disabled}
+    onValueChange={onValueChange as ((next: string[]) => void) | undefined}
+  />
+{:else}
+<SelectRoot
+  {...rest}
+  type="single"
+  {disabled}
+  bind:value={selectedValue}
+  onValueChange={onValueChange as ((next: string) => void) | undefined}
+>
   <Select.Trigger
     {id}
     role="combobox"
@@ -97,3 +117,4 @@
     </Select.Group>
   </Select.Content>
 </SelectRoot>
+{/if}

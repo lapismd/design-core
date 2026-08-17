@@ -19,6 +19,7 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 | Popout Surface  | `@lapismd/design-core/workspace/popout`          | DC-WS-018   |
 | Ribbon          | `@lapismd/design-core/workspace/ribbon`          | DC-WS-019   |
 | Settings        | `@lapismd/design-core/workspace/settings`        | DC-WS-020   |
+| Settings multi-enum | `@lapismd/design-core/workspace/settings`    | DC-WS-044   |
 | Sidebar         | `@lapismd/design-core/workspace/sidebar`         | DC-WS-021   |
 | Empty Sidebar   | `@lapismd/design-core/workspace/sidebar-empty`   | DC-WS-022   |
 | Sidebar Group   | `@lapismd/design-core/workspace/sidebar-group`   | DC-WS-023   |
@@ -157,7 +158,18 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 - The public boundary is `@lapismd/design-core/workspace/settings`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 - `Workspace/Components/Settings` All supported controls MUST render every default field kind in one selected section, with `object-array`, `object-grid`, and `object-map` as editable property tables: boolean, string presentations including the workspace icon picker, enum, multi-enum, combobox, shadcn Slider ranges and unbounded numbers, labeled list item types, key-value, section and toggle-table groups, action, custom, and unsupported.
-- Restore, list-remove, association-remove, object-row-remove, and settings-search open actions MUST use contrasting panel-action hover tokens, and list plus structured-collection add actions MUST use a trailing subdued text control that brightens on hover, matching the forms add treatment.
+- Restore, list-remove, association-remove, object-row-remove, and settings-search open actions MUST use contrasting panel-action hover tokens, and list plus structured-collection add actions MUST use trailing muted-foreground text that stays WCAG AA on panel paint and brightens on hover.
+
+## DC-WS-044 — Settings searchable multi-enum
+
+**Requirement.** Settings `multi-enum` fields MUST open a searchable Command View list so long option catalogs stay filterable. Choosing an option MUST toggle membership without dismissing the picker.
+
+### Acceptance details
+
+- The picker MUST compose `@lapismd/design-core/shadcn/command-view` inside a Popover host and MUST NOT add a settings-local command list.
+- Search MUST filter options by value, label, and description.
+- The trigger MUST remain a labelled combobox that summarizes the current selection.
+- `Workspace/Components/Settings` All supported controls MUST search Enabled surfaces and toggle a filtered option.
 
 ## DC-WS-021 — Sidebar
 

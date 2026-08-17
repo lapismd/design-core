@@ -44,6 +44,15 @@ describe("workspace settings action hover", () => {
     );
   });
 
+  it("sizes the multi-enum trigger with other settings controls", () => {
+    expect(css).toMatch(
+      /\.ui-workspace-setting-item[\s\S]*?\[data-ui-component="workspace-setting-multiselect"\]\[data-ui-part="trigger"\]/,
+    );
+    expect(css).toMatch(
+      /\[data-ui-component="workspace-setting-multiselect"\]\[data-ui-part="trigger"\] \{[\s\S]*?justify-content:\s*space-between;/,
+    );
+  });
+
   it("sizes the icon picker trigger with other settings controls", () => {
     expect(css).toMatch(
       /\.ui-workspace-setting-item[\s\S]*?\[data-ui-component="workspace-icon-picker"\]\[data-ui-part="trigger"\]/,
@@ -73,7 +82,7 @@ describe("workspace settings action hover", () => {
 
   it("keeps add actions subdued until hover like form add", () => {
     expect(css).toMatch(
-      /\.ui-workspace-setting-add \{[\s\S]*?color:\s*color-mix\([\s\S]*?var\(--ui-workspace-foreground\)\s*62%/,
+      /\.ui-workspace-setting-add \{[\s\S]*?color:\s*var\(--ui-workspace-muted-foreground\)/,
     );
     expect(css).toMatch(
       /\.ui-workspace-setting-add:hover,[\s\S]*?color:\s*var\(--ui-workspace-foreground\)/,

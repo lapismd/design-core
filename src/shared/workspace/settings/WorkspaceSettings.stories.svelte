@@ -199,9 +199,21 @@
               title: "Enabled surfaces",
               default: ["left", "status"],
               options: [
-                { value: "left", label: "Left sidebar" },
-                { value: "right", label: "Right sidebar" },
-                { value: "status", label: "Status bar" },
+                {
+                  value: "left",
+                  label: "Left sidebar",
+                  description: "Primary navigation rail",
+                },
+                {
+                  value: "right",
+                  label: "Right sidebar",
+                  description: "Secondary inspector rail",
+                },
+                {
+                  value: "status",
+                  label: "Status bar",
+                  description: "Footer status items",
+                },
               ],
             },
             {
@@ -842,6 +854,41 @@
       within(document.body).getByRole("option", { name: /^panel-left$/i }),
     );
     await expect(allControls.get("demo.icon")).toBe("panel-left");
+    const enabledSurfaces = canvas.getByRole("combobox", {
+      name: "Enabled surfaces",
+    });
+    await expect(enabledSurfaces).toBeVisible();
+    await expect(
+      enabledSurfaces.closest(
+        "[data-ui-component='workspace-setting-multiselect']",
+      ),
+    ).not.toBeNull();
+    await userEvent.click(enabledSurfaces);
+    const surfacesPopover = await waitFor(() => {
+      const content = document.body.querySelector<HTMLElement>(
+        '[data-ui-component="workspace-setting-multiselect"][data-ui-part="content"]',
+      );
+      expect(content).not.toBeNull();
+      expect(
+        content!.querySelector(
+          '[data-ui-component="command-view"][data-ui-part="root"]',
+        ),
+      ).not.toBeNull();
+      return content!;
+    });
+    const surfacesSearch = await waitFor(() =>
+      within(surfacesPopover).getByPlaceholderText("Search options..."),
+    );
+    await userEvent.type(surfacesSearch, "inspector");
+    await userEvent.click(
+      within(document.body).getByRole("option", { name: /Right sidebar/i }),
+    );
+    await expect(allControls.get("demo.sources")).toEqual([
+      "left",
+      "status",
+      "right",
+    ]);
+    await userEvent.keyboard("{Escape}");
     await expect(
       canvas.getByRole("combobox", { name: "Default model" }),
     ).toBeVisible();
@@ -989,7 +1036,7 @@
     docs: {
       description: {
         story:
-          "One selected Settings section renders every default field kind, including string presentations, combobox sources, ranged and unbounded numbers, list item types, structured collections, and toggle-table groups.",
+          "One selected Settings section renders every default field kind, including string presentations, searchable multi-enum Command View lists, combobox sources, ranged and unbounded numbers, list item types, structured collections, and toggle-table groups.",
       },
       source: {
         code: exampleSources.AllSupported,
