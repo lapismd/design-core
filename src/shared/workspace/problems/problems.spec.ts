@@ -201,6 +201,13 @@ describe("WorkspaceProblemsController", () => {
     expect(
       menu.entries.map((item) => (item.kind === "item" ? item.title : "---")),
     ).toEqual(["Copy Message", "Copy Problem", "---", "Apply quick fix"]);
+    const quickFix = controller.createQuickFixMenu(entry);
+    expect(quickFix).not.toBeNull();
+    expect(
+      quickFix!.entries.map((item) =>
+        item.kind === "item" ? item.title : "---",
+      ),
+    ).toEqual(["Apply quick fix"]);
     const copyMessage = menu.entries[0];
     if (copyMessage?.kind === "item") await copyMessage.callback?.();
     expect(writeText).toHaveBeenCalledWith("Problem message", "Earlier error");
@@ -260,6 +267,33 @@ describe("WorkspaceProblemsController", () => {
         severity: 4,
       }),
     ]);
+  });
+
+  it("exposes collection-only quick-fix menus", () => {
+    const manager = new WorkspaceDiagnosticsManager();
+    const withFix = manager.createCollection("language", {
+      buildItemMenu(menu) {
+        menu.addItem((item) => item.setTitle("Apply quick fix"));
+      },
+    });
+    const withoutFix = manager.createCollection("shell");
+    withFix.set(beta, [error]);
+    withoutFix.set(null, [{ message: "Shell failure", severity: "error" }]);
+    const controller = new WorkspaceProblemsController(manager);
+    const withEntry = controller.groups.find(
+      (group) => group.label === "beta.md",
+    )?.entries[0];
+    const withoutEntry = controller.groups.find(
+      (group) => group.label === "Workspace",
+    )?.entries[0];
+    expect(withEntry).toBeDefined();
+    expect(withoutEntry).toBeDefined();
+    expect(
+      controller
+        .createQuickFixMenu(withEntry!)
+        ?.entries.map((item) => (item.kind === "item" ? item.title : "---")),
+    ).toEqual(["Apply quick fix"]);
+    expect(controller.createQuickFixMenu(withoutEntry!)).toBeNull();
   });
 
   it("switches between grouped tree and flat table presentations", () => {

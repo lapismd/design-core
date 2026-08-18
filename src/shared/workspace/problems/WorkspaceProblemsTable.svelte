@@ -2,6 +2,7 @@
   import * as Table from "@lapismd/design-core/shadcn/table";
   import { ContextMenu } from "bits-ui";
   import WorkspaceIcon from "../icon/WorkspaceIcon.svelte";
+  import ProblemsQuickFix from "./ProblemsQuickFix.svelte";
   import WorkspaceContextMenuItems from "../menu/WorkspaceContextMenuItems.svelte";
   import {
     diagnosticCodeValue,
@@ -77,11 +78,17 @@
       <Table.Head scope="col" class="ui-workspace-problems__table-source"
         >Source</Table.Head
       >
+      <Table.Head
+        scope="col"
+        aria-label="Quick fix"
+        class="ui-workspace-problems__table-quick-fix"
+      ></Table.Head>
     </Table.Row>
   </Table.Header>
   <Table.Body>
     {#each controller.visibleEntries as entry (entry.key)}
       {@const menu = controller.createItemMenu(entry)}
+      {@const quickFix = controller.createQuickFixMenu(entry)}
       {@const code = diagnosticCodeValue(entry.diagnostic)}
       {@const start = entry.diagnostic.range?.start}
       <ContextMenu.Root>
@@ -129,6 +136,11 @@
                   >{sourceLabel(entry)}</span
                 >
               </Table.Cell>
+              <Table.Cell class="ui-workspace-problems__table-quick-fix">
+                {#if quickFix}
+                  <ProblemsQuickFix menu={quickFix} />
+                {/if}
+              </Table.Cell>
             </Table.Row>
           {/snippet}
         </ContextMenu.Trigger>
@@ -174,6 +186,7 @@
             </span>
           </Table.Cell>
           <Table.Cell class="ui-workspace-problems__table-source"></Table.Cell>
+          <Table.Cell class="ui-workspace-problems__table-quick-fix"></Table.Cell>
         </Table.Row>
       {/each}
     {/each}

@@ -7,6 +7,7 @@
   import { ContextMenu } from "bits-ui";
   import WorkspaceIcon from "../icon/WorkspaceIcon.svelte";
   import WorkspaceContextMenuItems from "../menu/WorkspaceContextMenuItems.svelte";
+  import ProblemsQuickFix from "./ProblemsQuickFix.svelte";
   import WorkspaceProblemsTable from "./WorkspaceProblemsTable.svelte";
   import type { WorkspaceDiagnosticSeverity } from "./types.js";
   import type { WorkspaceProblemsController } from "./problems-controller.svelte.js";
@@ -232,6 +233,7 @@
                 <ul class="ui-workspace-problems__entries">
                   {#each group.entries as entry (entry.key)}
                     {@const menu = controller.createItemMenu(entry)}
+                    {@const quickFix = controller.createQuickFixMenu(entry)}
                     {@const code = diagnosticCodeValue(entry.diagnostic)}
                     {@const start = entry.diagnostic.range?.start}
                     <li
@@ -277,6 +279,9 @@
                                   </span>
                                 {/if}
                               </button>
+                              {#if quickFix}
+                                <ProblemsQuickFix menu={quickFix} />
+                              {/if}
                             </div>
                           {/snippet}
                         </ContextMenu.Trigger>

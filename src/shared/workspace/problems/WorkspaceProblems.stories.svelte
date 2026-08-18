@@ -273,6 +273,9 @@
     expect(tableToggle).toBeVisible();
     expect(tableToggle.querySelector(".lucide-table-properties")).toBeVisible();
     expect(canvas.getByText("welcome.md")).toBeVisible();
+    expect(
+      canvas.getAllByRole("button", { name: "Quick fix" }).length,
+    ).toBeGreaterThan(0);
   }
 
   const { Story } = defineMeta({

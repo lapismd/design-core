@@ -10,6 +10,7 @@ Workspace panels provide generic domain-neutral views driven by consumer data an
 | Problems Panel  | `@lapismd/design-core/workspace/problems` | DC-WS-034   |
 | Problems copy   | `@lapismd/design-core/workspace/problems` | DC-WS-046   |
 | Problems opener | `@lapismd/design-core/workspace/problems` | DC-WS-047   |
+| Problems quick fix | `@lapismd/design-core/workspace/problems` | DC-WS-050   |
 
 ## DC-WS-033 — Explorer Panel
 
@@ -54,3 +55,14 @@ Workspace panels provide generic domain-neutral views driven by consumer data an
 - The command and status item MUST reveal an existing leaf wherever it lives, including an empty missing-view placeholder that registration upgrades to `workspace:problems`, or create one closable bottom tab.
 - The right-aligned status item MUST show the live total; count changes MUST NOT open the dock.
 - ViewHost MUST NOT show missing-view once the type is registered; unit tests MUST cover no-seed start, command create, placeholder upgrade, and status click versus count-change.
+
+## DC-WS-050 — Problems row quick fix
+
+**Requirement.** Problems tree and table rows MUST show an inline Lucide `wand-sparkles` control when the collection contributed actions. Click MUST open those actions only. Row activation MUST still navigate. The Copy-first context menu MUST remain.
+
+### Acceptance details
+
+- The control MUST be absent when `buildItemMenu` adds no entries.
+- Click MUST not navigate the row.
+- Tree and table presentations MUST share the same control.
+- Unit tests MUST cover presence, absence, and the action menu contents.

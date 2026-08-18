@@ -220,6 +220,12 @@ export class WorkspaceProblemsController {
     return menu;
   }
 
+  createQuickFixMenu(entry: WorkspaceDiagnosticEntry): WorkspaceMenu | null {
+    const menu = new WorkspaceMenu();
+    this.diagnostics.buildItemMenu(menu, entry);
+    return menu.entries.length > 0 ? menu : null;
+  }
+
   async copy(label: string, value: string): Promise<void> {
     if (this.#clipboard) {
       await this.#clipboard.writeText(label, value);
