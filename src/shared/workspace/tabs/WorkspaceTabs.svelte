@@ -65,6 +65,9 @@
     createWorkspaceEmptyActions(controller, pane.id, createTab),
   );
   let emptyLinks = $derived(createWorkspaceSidebarLinks(controller, pane.id));
+  let showRightToggleCluster = $derived(
+    sidebarToggleSides.includes("right") || showBottomPanelToggle,
+  );
 
   $effect(() => {
     selectedItemId = pane.activeItemId ?? pane.items[0]?.id ?? "";
@@ -538,7 +541,7 @@
       </DropdownMenu.Root>
     </div>
 
-    {#if sidebarToggleSides.includes("right")}
+    {#if showRightToggleCluster}
       <div class="ui-workspace-tabs__right-toggle" data-ui-part="right-toggle">
         {#if showBottomPanelToggle}
           <WorkspaceBottomPanelToggle
@@ -549,12 +552,14 @@
               controller.setDockOpen("bottom", !controller.layout.bottom.open)}
           />
         {/if}
-        <WorkspaceSidebarToggle
-          side="right"
-          label="Open right sidebar"
-          data-desktop-drag-region="false"
-          onSelect={() => controller.setSidebarOpen("right", true)}
-        />
+        {#if sidebarToggleSides.includes("right")}
+          <WorkspaceSidebarToggle
+            side="right"
+            label="Open right sidebar"
+            data-desktop-drag-region="false"
+            onSelect={() => controller.setSidebarOpen("right", true)}
+          />
+        {/if}
       </div>
     {/if}
 

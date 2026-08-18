@@ -54,6 +54,7 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 
 - The public boundary is `@lapismd/design-core/workspace/bottom-panel`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- The family MUST NOT host the dock visibility toggle in the right sidebar header; see DC-WS-048.
 
 ## DC-WS-045 — Bottom Panel status clearance
 

@@ -118,7 +118,7 @@
 <Story
   name="Bottom panel shell"
   tags={["visual-pending"]}
-  play={async ({ canvas }) => {
+  play={async ({ canvas, canvasElement }) => {
     await waitFor(() => expect(bottomPanel.app.ready).toBe(true));
     await expect(canvas.getByLabelText("Bottom panel")).toBeVisible();
     await userEvent.click(canvas.getByRole("tab", { name: "Diagnostics" }));
@@ -142,32 +142,39 @@
     const closeRightSidebar = canvas.getByRole("button", {
       name: "Close right sidebar",
     });
-    const bottomPanelToggle = within(
+    const middleBottomToggle = canvasElement.querySelector(
+      '[data-ui-part="right-toggle"] [data-workspace-bottom-panel-toggle]',
+    );
+    const bottomPanelClose = within(
       canvas.getByLabelText("Bottom panel"),
     ).getByRole("button", { name: "Close bottom panel" });
-    const bottomPanelToggleIcon = bottomPanelToggle.querySelector("svg")!;
+    const bottomPanelToggleIcon = middleBottomToggle?.querySelector("svg")!;
     const rightSidebarToggleIcon = closeRightSidebar.querySelector("svg")!;
+    await expect(middleBottomToggle).toHaveAttribute(
+      "data-ui-component",
+      "workspace-bottom-panel-toggle",
+    );
+    await expect(middleBottomToggle).toHaveAttribute(
+      "aria-label",
+      "Close bottom panel",
+    );
+    await expect(
+      closeRightSidebar
+        .closest("[data-ui-component='workspace-sidebar']")
+        ?.querySelector("[data-workspace-bottom-panel-toggle]"),
+    ).toBeNull();
     await expect(
       bottomPanelToggleIcon.getBoundingClientRect().width,
     ).toBeCloseTo(rightSidebarToggleIcon.getBoundingClientRect().width, 2);
     await expect(
       bottomPanelToggleIcon.getBoundingClientRect().height,
     ).toBeCloseTo(rightSidebarToggleIcon.getBoundingClientRect().height, 2);
-    const expandedSidebarBottomToggle =
-      closeRightSidebar.previousElementSibling;
-    await expect(expandedSidebarBottomToggle).toHaveAttribute(
-      "data-ui-component",
-      "workspace-bottom-panel-toggle",
-    );
-    await expect(expandedSidebarBottomToggle).toHaveAttribute(
-      "aria-label",
-      "Close bottom panel",
-    );
-    await userEvent.click(expandedSidebarBottomToggle!);
+    await expect(bottomPanelClose).toBeVisible();
+    await userEvent.click(middleBottomToggle!);
     await expect(
       canvas.queryByLabelText("Bottom panel"),
     ).not.toBeInTheDocument();
-    await expect(expandedSidebarBottomToggle).toHaveAttribute(
+    await expect(middleBottomToggle).toHaveAttribute(
       "aria-label",
       "Open bottom panel",
     );
@@ -197,9 +204,18 @@
     const restoredRightSidebarToggle = canvas.getByRole("button", {
       name: "Close right sidebar",
     });
+    const restoredMiddleBottomToggle = canvasElement.querySelector(
+      '[data-ui-part="right-toggle"] [data-workspace-bottom-panel-toggle]',
+    );
+    await expect(restoredMiddleBottomToggle).toHaveAttribute(
+      "aria-label",
+      "Close bottom panel",
+    );
     await expect(
-      restoredRightSidebarToggle.previousElementSibling,
-    ).toHaveAttribute("aria-label", "Close bottom panel");
+      restoredRightSidebarToggle
+        .closest("[data-ui-component='workspace-sidebar']")
+        ?.querySelector("[data-workspace-bottom-panel-toggle]"),
+    ).toBeNull();
   }}
 >
   {#snippet template()}

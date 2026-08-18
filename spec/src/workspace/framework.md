@@ -4,19 +4,20 @@ Workspace framework contracts coordinate reusable layout and state through expli
 
 ## Public surface coverage
 
-| Surface                     | Public boundary                            | Requirement |
-| --------------------------- | ------------------------------------------ | ----------- |
-| Shared Workspace invariants | Workspace layer                            | DC-WS-001   |
-| Workspace core              | `@lapismd/design-core/workspace/core`      | DC-WS-002   |
-| Workspace App Shell         | `@lapismd/design-core/workspace/app-shell` | DC-WS-003   |
-| Workspace demo              | `@lapismd/design-core/workspace/demo`      | DC-WS-004   |
-| Workspace drag              | `@lapismd/design-core/workspace/drag`      | DC-WS-005   |
-| Workspace View Host         | `@lapismd/design-core/workspace/view-host` | DC-WS-006   |
-| Imperative view remount     | `@lapismd/design-core/workspace/view-host` | DC-WS-043   |
-| Workspace Guidance          | Documentation surface                      | DC-WS-007   |
-| Workspace navigation        | `@lapismd/design-core/workspace/app-shell` | DC-WS-038   |
-| Managed plugin registry     | `@lapismd/design-core/workspace/core`      | DC-WS-040   |
-| Pane menu Move to           | `@lapismd/design-core/workspace/core`      | DC-WS-041   |
+| Surface                       | Public boundary                            | Requirement |
+| ----------------------------- | ------------------------------------------ | ----------- |
+| Shared Workspace invariants   | Workspace layer                            | DC-WS-001   |
+| Workspace core                | `@lapismd/design-core/workspace/core`      | DC-WS-002   |
+| Workspace App Shell           | `@lapismd/design-core/workspace/app-shell` | DC-WS-003   |
+| Workspace demo                | `@lapismd/design-core/workspace/demo`      | DC-WS-004   |
+| Workspace drag                | `@lapismd/design-core/workspace/drag`      | DC-WS-005   |
+| Workspace View Host           | `@lapismd/design-core/workspace/view-host` | DC-WS-006   |
+| Imperative view remount       | `@lapismd/design-core/workspace/view-host` | DC-WS-043   |
+| Workspace Guidance            | Documentation surface                      | DC-WS-007   |
+| Workspace navigation          | `@lapismd/design-core/workspace/app-shell` | DC-WS-038   |
+| Bottom Panel toggle placement | `@lapismd/design-core/workspace/app-shell` | DC-WS-048   |
+| Managed plugin registry       | `@lapismd/design-core/workspace/core`      | DC-WS-040   |
+| Pane menu Move to             | `@lapismd/design-core/workspace/core`      | DC-WS-041   |
 
 ## DC-WS-001 — Shared Workspace invariants
 
@@ -108,6 +109,16 @@ Workspace framework contracts coordinate reusable layout and state through expli
 - The public contract supplies the current label, recent options, disabled state, descriptions, and selection and management callbacks.
 - The desktop sidebar MUST render an accessible menu with current, empty, recent, and management states.
 - Without an actionable navigation contract, the workspace label MUST remain non-interactive.
+
+## DC-WS-048 — Bottom Panel toggle placement
+
+**Requirement.** When the bottom dock has items, the Workspace App Shell MUST place the bottom-panel visibility toggle in the top-right chrome of the middle workspace pane, immediately before the open-right-sidebar action when that sidebar is collapsed.
+
+### Acceptance details
+
+- The toggle MUST remain in that middle-pane cluster while the right sidebar is open, and the right sidebar header MUST NOT host a second copy.
+- The catalog MUST assert the control sits immediately before "Open right sidebar" when that sidebar is collapsed and remains in the middle pane after the sidebar is opened.
+- The toggle MUST stay hidden when the bottom dock has no items.
 
 ## DC-WS-040 — Managed plugin registry
 

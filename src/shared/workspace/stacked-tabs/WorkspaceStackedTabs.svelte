@@ -66,6 +66,9 @@
     nodeContainsPane(controller.layout.main, pane.id),
   );
   let tabIndicatorScope = $derived(`tabs-stacked-${pane.id}`);
+  let showRightToggleCluster = $derived(
+    sidebarToggleSides.includes("right") || showBottomPanelToggle,
+  );
 
   function tabFor(item: WorkspaceTabItem): WorkspaceTab | undefined {
     return item.kind === "tab" ? item : item.tabs[0];
@@ -293,8 +296,11 @@
       </DropdownMenu.Root>
     </div>
 
-    {#if sidebarToggleSides.includes("right")}
-      <div class="ui-workspace-stacked-tabs__right-toggles">
+    {#if showRightToggleCluster}
+      <div
+        class="ui-workspace-stacked-tabs__right-toggles"
+        data-ui-part="right-toggle"
+      >
         {#if showBottomPanelToggle}
           <WorkspaceBottomPanelToggle
             size="small"
@@ -304,12 +310,14 @@
               controller.setDockOpen("bottom", !controller.layout.bottom.open)}
           />
         {/if}
-        <WorkspaceSidebarToggle
-          side="right"
-          label="Open right sidebar"
-          data-desktop-drag-region="false"
-          onSelect={() => controller.setSidebarOpen("right", true)}
-        />
+        {#if sidebarToggleSides.includes("right")}
+          <WorkspaceSidebarToggle
+            side="right"
+            label="Open right sidebar"
+            data-desktop-drag-region="false"
+            onSelect={() => controller.setSidebarOpen("right", true)}
+          />
+        {/if}
       </div>
     {/if}
   </header>

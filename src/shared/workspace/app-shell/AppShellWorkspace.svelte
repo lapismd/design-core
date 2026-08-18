@@ -41,7 +41,7 @@
     controller.renderer.layout.bottom.root.items.length > 0,
   );
   let bottomPanelTogglePaneId = $derived(
-    !controller.renderer.layout.right.open && bottomPanelHasItems
+    bottomPanelHasItems
       ? topRightPaneId(controller.renderer.layout.main)
       : undefined,
   );
