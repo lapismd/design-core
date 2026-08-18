@@ -57,6 +57,7 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/ai/chat`.
+- The control MUST render inside the transcript `scroll-shell`, not in the composer dock.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 
 ## DC-AI-004 — Message List
@@ -112,6 +113,7 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 
 - The public boundary is `@lapismd/design-core/ai/chat`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- When `disabled` and `isStopShown` are both true, the stop control MUST remain pointer-interactive while input, send, and other body actions stay blocked.
 
 ## DC-AI-010 — Composer Input
 
@@ -131,7 +133,7 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 
 - The public boundary is `@lapismd/design-core/ai/chat`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
-- A consumer MAY keep the drawer interactive while the disabled composer body blocks input and submit actions, so feedback can unblock an active turn.
+- A consumer MAY keep the drawer interactive while the disabled composer body blocks input and send except the stop control when `isStopShown` is true.
 - File chips in the drawer content MUST use a darker fill than the drawer, a compact corner radius, and distinct hover paint on the chip and its remove control.
 
 ## DC-AI-012 — Send Button
@@ -142,6 +144,7 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 
 - The public boundary is `@lapismd/design-core/ai/chat`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- The stop presentation MUST stay enabled, fully opaque, and clickable even when the parent Composer is disabled.
 
 ## DC-AI-013 — Composer Token
 
@@ -170,6 +173,7 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 - The public boundary is `@lapismd/design-core/ai/chat`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 - Tool-call disclosure indicators MUST point right while closed and down while open for both grouped calls and individual call details.
+- Pending and running calls MUST render the public Spinner as a rotating busy indicator.
 
 ## DC-AI-016 — Dictation Button
 
@@ -206,6 +210,7 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 
 - The public boundary is `@lapismd/design-core/ai/experimental`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- A streaming reasoning row MUST rotate its progress icon unless the user prefers reduced motion.
 
 ## DC-AI-020 — Typing Indicator
 

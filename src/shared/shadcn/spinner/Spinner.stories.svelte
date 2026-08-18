@@ -19,7 +19,11 @@
 <Story
   name="Pending indicator"
   play={async ({ canvas }) => {
-    await expect(canvas.getByLabelText("Loading")).toBeVisible();
+    const spinner = canvas.getByLabelText("Loading");
+    await expect(spinner).toBeVisible();
+    const styles = getComputedStyle(spinner);
+    expect(styles.animationName).not.toBe("none");
+    expect(styles.animationIterationCount).toBe("infinite");
   }}
   tags={["visual-approved"]}
   parameters={{

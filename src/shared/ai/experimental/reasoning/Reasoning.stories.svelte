@@ -56,6 +56,15 @@
 
 <Story
   name="Streams reasoning"
+  play={async ({ canvasElement }) => {
+    const icon = canvasElement.querySelector(
+      '[data-ui-component="ai-chat-reasoning"][data-streaming="true"] [data-ui-part="reasoning-icon"]',
+    );
+    expect(icon).not.toBeNull();
+    const styles = getComputedStyle(icon!);
+    expect(styles.animationName).not.toBe("none");
+    expect(styles.animationIterationCount).toBe("infinite");
+  }}
   parameters={{
     visualDelta: {
       images: [

@@ -112,6 +112,7 @@
   data-density={density}
   data-elevation={elevation}
   data-disabled={disabled}
+  data-stop-shown={isStopShown}
   data-interactive-drawer-when-disabled={interactiveDrawerWhenDisabled}
   onclick={handleShellClick}
 >

@@ -84,6 +84,15 @@ Time:        1.8s`;
 <Story
   name="Statuses"
   exportName="Statuses"
+  play={async ({ canvasElement }) => {
+    const running = canvasElement.querySelector(
+      '[data-ui-part="call-status"][data-status="running"] [data-ui-component="spinner"]',
+    );
+    expect(running).not.toBeNull();
+    const styles = getComputedStyle(running!);
+    expect(styles.animationName).not.toBe("none");
+    expect(styles.animationIterationCount).toBe("infinite");
+  }}
   parameters={{
     docs: {
       description: {

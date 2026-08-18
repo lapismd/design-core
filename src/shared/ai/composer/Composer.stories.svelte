@@ -36,6 +36,8 @@
   let submitted = $state("");
   let fullFeaturedStreaming = $state(false);
   let streaming = $state(false);
+  let stoppedPlain = $state(false);
+  let stoppedDrawer = $state(false);
 </script>
 
 {#snippet removableToken(label: string)}
@@ -481,6 +483,78 @@
           onSubmit={() => {}}
         />
       </section>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Stops while disabled"
+  exportName="StopsWhileDisabled"
+  play={async ({ canvas }) => {
+    const buttons = canvas.getAllByRole("button", { name: "Stop response" });
+    expect(buttons).toHaveLength(2);
+    for (const button of buttons) {
+      expect(button).toBeEnabled();
+      expect(getComputedStyle(button).pointerEvents).not.toBe("none");
+      const composer = button.closest("[data-ui-component='ai-chat-composer']");
+      expect(composer).toBeTruthy();
+      expect(getComputedStyle(composer!).opacity).toBe("1");
+    }
+    await userEvent.click(buttons[0]!);
+    await userEvent.click(buttons[1]!);
+    await expect(canvas.getByTestId("stop-plain")).toHaveTextContent(
+      "Stopped",
+    );
+    await expect(canvas.getByTestId("stop-drawer")).toHaveTextContent(
+      "Stopped",
+    );
+  }}
+  parameters={{
+    docs: {
+      description: {
+        story:
+          "A disabled composer still lets the stop control abort an in-flight turn, including when the drawer stays interactive.",
+      },
+      source: {
+        code: exampleSources.StopsWhileDisabled,
+        language: "ts",
+        type: "code",
+      },
+    },
+  }}
+  tags={["visual-pending"]}
+>
+  {#snippet template()}
+    <div data-story="composer-stop-disabled">
+      <Composer
+        disabled
+        isStopShown
+        onSubmit={() => {}}
+        onStop={() => {
+          stoppedPlain = true;
+        }}
+      />
+      <output data-testid="stop-plain" aria-live="polite">
+        {stoppedPlain ? "Stopped" : "Running"}
+      </output>
+      <Composer
+        disabled
+        interactiveDrawerWhenDisabled
+        isStopShown
+        onSubmit={() => {}}
+        onStop={() => {
+          stoppedDrawer = true;
+        }}
+      >
+        {#snippet drawer()}
+          <ComposerDrawer count={1} label="Permission requested">
+            Waiting for approval
+          </ComposerDrawer>
+        {/snippet}
+      </Composer>
+      <output data-testid="stop-drawer" aria-live="polite">
+        {stoppedDrawer ? "Stopped" : "Running"}
+      </output>
     </div>
   {/snippet}
 </Story>

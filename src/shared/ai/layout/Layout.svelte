@@ -118,21 +118,20 @@
         {/if}
       </div>
     </ScrollArea>
+    {#if scrollButton}
+      {@render scrollButton({
+        isVisible: streamScroll.isScrolledUp || newMessages.hasNewMessages,
+        hasNewMessages: newMessages.hasNewMessages,
+        scrollToBottom,
+      })}
+    {:else}
+      <LayoutScrollButton
+        isVisible={streamScroll.isScrolledUp || newMessages.hasNewMessages}
+        hasNewMessages={newMessages.hasNewMessages}
+        onClick={scrollToBottom}
+      />
+    {/if}
   </div>
-
-  {#if scrollButton}
-    {@render scrollButton({
-      isVisible: streamScroll.isScrolledUp || newMessages.hasNewMessages,
-      hasNewMessages: newMessages.hasNewMessages,
-      scrollToBottom,
-    })}
-  {:else}
-    <LayoutScrollButton
-      isVisible={streamScroll.isScrolledUp || newMessages.hasNewMessages}
-      hasNewMessages={newMessages.hasNewMessages}
-      onClick={scrollToBottom}
-    />
-  {/if}
 
   <div data-ui-part="composer-dock">
     <div data-ui-part="composer-inner">

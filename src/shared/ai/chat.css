@@ -66,6 +66,7 @@
 [data-ui-component="ai-chat-layout"]
   > [data-ui-part="scroll-shell"]
   > [data-ui-component="scroll-area"] {
+  position: relative;
   display: flex;
   min-height: 0;
   flex: 1 1 auto;
@@ -192,7 +193,7 @@
   position: absolute;
   z-index: 4;
   right: 50%;
-  bottom: var(--ui-ai-chat-scroll-button-bottom, 6.25rem);
+  bottom: var(--ui-ai-chat-scroll-button-bottom, 0.75rem);
   translate: 50% 0;
   transition:
     opacity 160ms ease,
@@ -603,7 +604,9 @@
   box-shadow: inset 0 0 0 2px color-mix(in oklab, var(--ring) 28%, transparent);
 }
 
-[data-ui-component="ai-chat-composer"][data-disabled="true"] {
+[data-ui-component="ai-chat-composer"][data-disabled="true"]:not(
+    [data-stop-shown="true"]
+  ):not([data-interactive-drawer-when-disabled="true"]) {
   opacity: 0.6;
   pointer-events: none;
 }
@@ -613,10 +616,24 @@
   pointer-events: auto;
 }
 
-[data-ui-component="ai-chat-composer"][data-disabled="true"][data-interactive-drawer-when-disabled="true"]
+[data-ui-component="ai-chat-composer"][data-disabled="true"][data-stop-shown="true"]
+  [data-ui-part="header"],
+[data-ui-component="ai-chat-composer"][data-disabled="true"][data-stop-shown="true"]
+  [data-ui-part="input-area"],
+[data-ui-component="ai-chat-composer"][data-disabled="true"][data-stop-shown="true"]
+  [data-ui-part="footer-actions"],
+[data-ui-component="ai-chat-composer"][data-disabled="true"][data-interactive-drawer-when-disabled="true"]:not(
+    [data-stop-shown="true"]
+  )
   > [data-ui-part="body"] {
   opacity: 0.6;
   pointer-events: none;
+}
+
+[data-ui-component="ai-chat-composer"][data-disabled="true"][data-stop-shown="true"]
+  [data-ui-part="send-button"] {
+  pointer-events: auto;
+  opacity: 1;
 }
 
 [data-ui-component="ai-chat-composer"] [data-ui-part="header"],
@@ -1242,6 +1259,12 @@
   }
 }
 
+@keyframes ui-ai-chat-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 [data-ui-component="ai-chat-reasoning"] {
   --ui-ai-chat-reasoning-accent: var(--muted-foreground);
   margin-block-start: 0.5rem;
@@ -1287,6 +1310,11 @@
 [data-ui-component="ai-chat-reasoning"][data-streaming="true"]
   [data-ui-part="reasoning-label"] {
   animation: ui-ai-chat-pulse 1.5s ease-in-out infinite;
+}
+
+[data-ui-component="ai-chat-reasoning"][data-streaming="true"]
+  [data-ui-part="reasoning-icon"] {
+  animation: ui-ai-chat-spin 1s linear infinite;
 }
 
 [data-ui-component="ai-chat-reasoning"] [data-ui-part="reasoning-duration"],
@@ -1465,6 +1493,7 @@
   [data-ui-component="ai-chat-dictation-button"] [data-ui-part="volume-bar"],
   [data-ui-component="ai-chat-tool-calls"] svg,
   [data-ui-component="ai-chat-reasoning"] [data-ui-part="reasoning-label"],
+  [data-ui-component="ai-chat-reasoning"] [data-ui-part="reasoning-icon"],
   [data-ui-component="ai-chat-reasoning"] [data-ui-part="reasoning-chevron"],
   [data-ui-component="ai-chat-typing-indicator"] [data-ui-part="typing-dot"] {
     transition: none;

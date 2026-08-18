@@ -166,6 +166,21 @@ export const Streaming = `<script lang="ts">
   }}
 />`;
 
+export const StopsWhileDisabled = `<script lang="ts">
+  import { Composer } from "@lapismd/design-core/ai/chat";
+
+  let stopped = $state(false);
+</script>
+
+<Composer
+  disabled
+  isStopShown
+  onSubmit={() => {}}
+  onStop={() => {
+    stopped = true;
+  }}
+/>`;
+
 export const Validation = `<script lang="ts">
   import { Composer } from "@lapismd/design-core/ai/chat";
 </script>

@@ -85,3 +85,4 @@ Data and feedback primitives communicate state without taking ownership of consu
 
 - The public boundary is `@lapismd/design-core/shadcn/spinner`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- The indicator MUST rotate continuously unless the user prefers reduced motion.
