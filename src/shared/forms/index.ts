@@ -66,6 +66,7 @@ export { fieldReviewContextFromReview } from "./patchable-form/field-review-cont
 export { default as ReferencePicker } from "./reference-picker/ReferencePicker.svelte";
 export { default as ReviewedStringListFormField } from "./form-review/ReviewedStringListFormField.svelte";
 export { default as ReviewedTextFormField } from "./form-review/ReviewedTextFormField.svelte";
+export { PasswordInput } from "./password-input";
 export {
   SecretField,
   isSecretFieldConfigured,

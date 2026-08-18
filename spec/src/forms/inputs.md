@@ -14,6 +14,7 @@ Form inputs provide higher-level controlled editing patterns composed from share
 | Filter Command Picker   | `@lapismd/design-core/forms` | DC-FORM-012 |
 | Inline Option Picker    | `@lapismd/design-core/forms` | DC-FORM-013 |
 | List Editor             | `@lapismd/design-core/forms` | DC-FORM-014 |
+| Password Input          | `@lapismd/design-core/forms` | DC-FORM-043 |
 | Reference Picker        | `@lapismd/design-core/forms` | DC-FORM-015 |
 | Secret Field            | `@lapismd/design-core/forms` | DC-FORM-016 |
 | Segmented Control       | `@lapismd/design-core/forms` | DC-FORM-017 |
@@ -104,6 +105,16 @@ Form inputs provide higher-level controlled editing patterns composed from share
 - The public boundary is `@lapismd/design-core/forms`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 - Editable list values MUST wrap and autosize without horizontal or vertical clipping.
+
+## DC-FORM-043 — Password Input
+
+**Requirement.** The Password Input family MUST mask a controlled secret by default and reveal it only while an inline toggle inside the field is active.
+
+### Acceptance details
+
+- The public boundary is `@lapismd/design-core/forms`.
+- The control MUST compose Input Group with an inline-end reveal button and MUST NOT add a second input chrome.
+- The catalog MUST demonstrate masked and revealed states without introducing a second runtime contract.
 
 ## DC-FORM-015 — Reference Picker
 

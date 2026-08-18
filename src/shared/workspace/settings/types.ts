@@ -36,7 +36,8 @@ export interface WorkspaceStringSetting extends WorkspaceSettingBase {
     | "date"
     | "time"
     | "icon"
-    | "combobox";
+    | "combobox"
+    | "password";
   placeholder?: string;
   minLength?: number;
   maxLength?: number;

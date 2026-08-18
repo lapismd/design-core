@@ -34,6 +34,7 @@ Specification governance keeps requirements discoverable, mapped, validated, and
 | Shared styles, themes, and tokens                                        | `styling-and-themes.md`          |
 | Shadcn families                                                          | Matching chapter under `shadcn/` |
 | Forms families                                                           | Matching chapter under `forms/`  |
+| `password-input` form family                                             | `forms/inputs.md`                |
 | Filter layer                                                             | `filter.md`                      |
 | AI layer                                                                 | `ai.md`                          |
 | Diff layer (`FileListing`, `FileChangeStats`, `FileDiff`, `MergeEditor`) | `diff.md`                        |

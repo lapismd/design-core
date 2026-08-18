@@ -66,6 +66,7 @@ const formChapters = {
   "filter-command-picker": ["spec/src/forms/inputs.md"],
   "inline-option-picker": ["spec/src/forms/inputs.md"],
   "list-editor": ["spec/src/forms/inputs.md"],
+  "password-input": ["spec/src/forms/inputs.md"],
   "reference-picker": ["spec/src/forms/inputs.md"],
   "secret-field": ["spec/src/forms/inputs.md"],
   "segmented-control": ["spec/src/forms/inputs.md"],

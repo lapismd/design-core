@@ -140,6 +140,14 @@
               default: "https://example.com",
             },
             {
+              id: "demo.token",
+              type: "string",
+              presentation: "password",
+              title: "Auth token",
+              default: "shared-secret",
+              placeholder: "Shared token",
+            },
+            {
               id: "demo.ip",
               type: "string",
               presentation: "ip",
@@ -814,6 +822,12 @@
     await userEvent.clear(workspaceName);
     await userEvent.type(workspaceName, "Composable shell");
     await expect(workspaceName).toHaveValue("Composable shell");
+    const authToken = canvas.getByLabelText("Auth token");
+    await expect(authToken).toHaveAttribute("type", "password");
+    await expect(authToken).toHaveValue("shared-secret");
+    await expect(
+      authToken.closest("[data-ui-component='password-input']"),
+    ).not.toBeNull();
     const summary = canvas.getByLabelText("Summary");
     await expect(summary).toHaveStyle({ resize: "none" });
     const summaryHeight = summary.getBoundingClientRect().height;

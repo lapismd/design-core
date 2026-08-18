@@ -70,7 +70,7 @@ does not expose mutable global renderer registration.
 `form-add-button`, `form-sheet`, `entry-actions`, `collapsible-item-list`,
 `add-section-chooser`, `segmented-control`, `inline-option-picker`,
 `color-picker`, `cycle-picker`, `autocomplete-input`, `chip-autocomplete`, `list-editor`,
-`sortable-array-item`, `secret-field`, `filter-command-picker`,
+`sortable-array-item`, `secret-field`, `password-input`, `filter-command-picker`,
 `date-picker`, `time-picker`, `reference-picker`, `task-due-calendar`,
 `form-review`, `unified-review-diff`, and `field-review-actions`.
 

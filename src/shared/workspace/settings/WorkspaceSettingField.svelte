@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { PasswordInput } from "@lapismd/design-core/forms";
   import * as Alert from "@lapismd/design-core/shadcn/alert";
   import { Button } from "@lapismd/design-core/shadcn/button";
   import { Input } from "@lapismd/design-core/shadcn/input";
@@ -211,6 +212,16 @@
           ariaLabel={field.title}
           placeholder={field.placeholder}
           onValueChange={(next: string) => controller.update(field.id, next)}
+        />
+      {:else if field.type === "string" && field.presentation === "password"}
+        <PasswordInput
+          id={`setting-${field.id}`}
+          value={String(value ?? "")}
+          placeholder={field.placeholder}
+          disabled={field.disabled}
+          aria-invalid={Boolean(error)}
+          oninput={(event) =>
+            controller.update(field.id, event.currentTarget.value)}
         />
       {:else if field.type === "string"}
         <Input
