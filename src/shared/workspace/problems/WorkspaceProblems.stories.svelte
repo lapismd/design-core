@@ -355,11 +355,45 @@
   play={async ({ canvasElement }) => {
     await assertProblems(canvasElement, "bottom-panel");
     const canvas = within(canvasElement);
+    const documentCanvas = within(canvasElement.ownerDocument.body);
+    const quickFix = canvas.getAllByRole("button", { name: "Quick fix" })[0];
+    expect(quickFix).toBeDefined();
+    expect(
+      quickFix.querySelector(".ui-workspace-problems__severity"),
+    ).not.toBeNull();
+    await userEvent.click(quickFix);
+    const quickFixItem = await documentCanvas.findByRole("menuitem", {
+      name: "Fix heading level",
+    });
+    const quickFixMenu = quickFixItem.closest<HTMLElement>('[role="menu"]');
+    const panel = canvasElement.querySelector(".ui-workspace-problems");
+    expect(quickFixMenu).not.toBeNull();
+    expect(panel).not.toBeNull();
+    expect(panel!.contains(quickFixMenu)).toBe(false);
+    expect(quickFixMenu!.scrollHeight).toBeLessThanOrEqual(
+      quickFixMenu!.clientHeight + 1,
+    );
+    const menuRect = quickFixMenu!.getBoundingClientRect();
+    const panelRect = panel!.getBoundingClientRect();
+    expect(menuRect.top).toBeLessThan(panelRect.top);
+    const centerX = Math.floor((menuRect.left + menuRect.right) / 2);
+    const centerY = Math.floor((menuRect.top + menuRect.bottom) / 2);
+    const overlay = canvasElement.ownerDocument.elementFromPoint(
+      centerX,
+      centerY,
+    );
+    expect(overlay).not.toBeNull();
+    expect(panel!.contains(overlay)).toBe(false);
+    await userEvent.keyboard("{Escape}");
+    await waitFor(() =>
+      expect(
+        canvasElement.ownerDocument.querySelector('[role="menu"][data-state="open"]'),
+      ).toBeNull(),
+    );
     const groupTrigger = canvas.getByRole("button", {
       name: /welcome\.md/i,
     });
     await userEvent.pointer({ keys: "[MouseRight]", target: groupTrigger });
-    const documentCanvas = within(canvasElement.ownerDocument.body);
     await documentCanvas.findByRole("menuitem", { name: "Copy Problem" });
     await userEvent.click(
       documentCanvas.getByRole("menuitem", { name: "Copy Problem" }),

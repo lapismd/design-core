@@ -248,12 +248,16 @@
                               {...props}
                               class="ui-workspace-problems__row-wrap"
                             >
-                              <button
-                                type="button"
-                                class="ui-workspace-problems__row"
-                                disabled={!controller.canNavigate(entry)}
-                                onclick={() => void controller.open(entry)}
-                              >
+                              {#if quickFix}
+                                <ProblemsQuickFix
+                                  menu={quickFix}
+                                  severityIcon={filters.find(
+                                    (filter) =>
+                                      filter.severity ===
+                                      entry.diagnostic.severity,
+                                  )?.icon ?? "circle"}
+                                />
+                              {:else}
                                 <WorkspaceIcon
                                   class="ui-workspace-problems__severity"
                                   name={filters.find(
@@ -262,6 +266,13 @@
                                       entry.diagnostic.severity,
                                   )?.icon}
                                 />
+                              {/if}
+                              <button
+                                type="button"
+                                class="ui-workspace-problems__row"
+                                disabled={!controller.canNavigate(entry)}
+                                onclick={() => void controller.open(entry)}
+                              >
                                 <span class="ui-workspace-problems__message">
                                   {entry.diagnostic.message}
                                 </span>
@@ -279,9 +290,6 @@
                                   </span>
                                 {/if}
                               </button>
-                              {#if quickFix}
-                                <ProblemsQuickFix menu={quickFix} />
-                              {/if}
                             </div>
                           {/snippet}
                         </ContextMenu.Trigger>

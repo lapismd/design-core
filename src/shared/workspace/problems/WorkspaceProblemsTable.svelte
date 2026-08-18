@@ -78,11 +78,6 @@
       <Table.Head scope="col" class="ui-workspace-problems__table-source"
         >Source</Table.Head
       >
-      <Table.Head
-        scope="col"
-        aria-label="Quick fix"
-        class="ui-workspace-problems__table-quick-fix"
-      ></Table.Head>
     </Table.Row>
   </Table.Header>
   <Table.Body>
@@ -107,10 +102,17 @@
             >
               <Table.Cell class="ui-workspace-problems__table-code">
                 <span class="ui-workspace-problems__table-code-content">
-                  <WorkspaceIcon
-                    class="ui-workspace-problems__severity"
-                    name={severityIcon(entry.diagnostic.severity)}
-                  />
+                  {#if quickFix}
+                    <ProblemsQuickFix
+                      menu={quickFix}
+                      severityIcon={severityIcon(entry.diagnostic.severity)}
+                    />
+                  {:else}
+                    <WorkspaceIcon
+                      class="ui-workspace-problems__severity"
+                      name={severityIcon(entry.diagnostic.severity)}
+                    />
+                  {/if}
                   <span>{code ?? ""}</span>
                 </span>
               </Table.Cell>
@@ -135,11 +137,6 @@
                 <span class="ui-workspace-problems__source"
                   >{sourceLabel(entry)}</span
                 >
-              </Table.Cell>
-              <Table.Cell class="ui-workspace-problems__table-quick-fix">
-                {#if quickFix}
-                  <ProblemsQuickFix menu={quickFix} />
-                {/if}
               </Table.Cell>
             </Table.Row>
           {/snippet}
@@ -186,7 +183,6 @@
             </span>
           </Table.Cell>
           <Table.Cell class="ui-workspace-problems__table-source"></Table.Cell>
-          <Table.Cell class="ui-workspace-problems__table-quick-fix"></Table.Cell>
         </Table.Row>
       {/each}
     {/each}

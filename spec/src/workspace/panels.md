@@ -58,11 +58,11 @@ Workspace panels provide generic domain-neutral views driven by consumer data an
 
 ## DC-WS-050 — Problems row quick fix
 
-**Requirement.** Problems tree and table rows MUST show an inline Lucide `wand-sparkles` control when the collection contributed actions. Click MUST open those actions only. Row activation MUST still navigate. The Copy-first context menu MUST remain.
+**Requirement.** Problems tree and table rows MUST use the severity-icon slot as the quick-fix control when the collection contributed actions. Hover or focus MUST show a Lucide lightbulb in that slot. Click MUST open the portaled workspace menu of those actions. Row activation MUST still navigate, and the Copy-first context menu MUST remain.
 
 ### Acceptance details
 
-- The control MUST be absent when `buildItemMenu` adds no entries.
+- The lightbulb MUST be absent when `buildItemMenu` adds no entries.
+- The open menu MUST portal outside the Problems view without clipping to that container.
 - Click MUST not navigate the row.
-- Tree and table presentations MUST share the same control.
-- Unit tests MUST cover presence, absence, and the action menu contents.
+- Unit tests and the bottom-panel story MUST cover presence, absence, menu titles, and outside-panel paint.
