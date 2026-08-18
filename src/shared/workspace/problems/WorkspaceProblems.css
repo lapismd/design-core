@@ -416,18 +416,17 @@
 }
 
 .ui-workspace-problems__quick-fix {
+  box-sizing: border-box;
   position: relative;
   display: inline-flex;
-  flex: 0 0 0.875rem;
-  width: 0.875rem;
-  min-width: 0.875rem;
-  height: 0.875rem;
+  flex: 0 0 1.5rem;
+  width: 1.5rem;
+  min-width: 1.5rem;
+  height: 1.5rem;
   align-items: center;
   justify-content: center;
-  padding: 0.3125rem;
-  margin-block: -0.3125rem;
-  margin-inline-start: -0.3125rem;
-  margin-inline-end: 0.125rem;
+  padding: 0;
+  margin: 0;
   border: 0;
   border-radius: var(--ui-workspace-radius-small);
   background: transparent;
