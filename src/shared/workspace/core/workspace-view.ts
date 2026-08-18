@@ -1,5 +1,8 @@
 import type { WorkspaceMenu } from "./workspace-menu.js";
-import { findWorkspaceTab } from "./layout.js";
+import {
+  findWorkspaceTab,
+  upgradeRegisteredViewPlaceholders,
+} from "./layout.js";
 import { cloneSerializable } from "./serializable.js";
 import type {
   WorkspaceViewChrome,
@@ -130,6 +133,7 @@ export type WorkspaceViewFactory<View extends WorkspaceView = WorkspaceView> = (
 
 export interface WorkspaceClassViewRegistration {
   icon?: string;
+  title?: string;
   showHeader?: boolean;
   /** Chrome available before an imperative view instance is mounted. */
   getChromeForContext?: (context: WorkspaceViewContext) => WorkspaceViewChrome;
@@ -196,6 +200,10 @@ export class WorkspaceViewManager {
       },
     });
     this.#registrations.set(type, { factory, disposeRenderer });
+    upgradeRegisteredViewPlaceholders(this.workspace.layout, type, {
+      title: options.title,
+      icon: options.icon,
+    });
     this.workspace.changeLayout(this.workspace.getLayout(), {
       source: "view-state",
       operation: "register-view",

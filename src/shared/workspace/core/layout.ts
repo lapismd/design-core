@@ -320,6 +320,34 @@ export interface WorkspaceTabLocation {
   group?: WorkspaceSidebarGroup;
 }
 
+export function upgradeRegisteredViewPlaceholders(
+  layout: WorkspaceLayout,
+  type: string,
+  chrome: { title?: string; icon?: string } = {},
+): void {
+  walkWorkspacePanes(layout, (pane) => {
+    for (const item of pane.items) {
+      const tabs = item.kind === "tab" ? [item] : item.tabs;
+      for (const tab of tabs) {
+        const missing = tab.view.state?.["__missingViewType"];
+        if (
+          missing !== type ||
+          (tab.view.type !== "empty" && tab.view.type !== type)
+        ) {
+          continue;
+        }
+        const state = { ...(tab.view.state ?? {}) };
+        delete state["__missingViewType"];
+        tab.view = { type, state };
+        if (chrome.title) tab.title = chrome.title;
+        if (chrome.icon && (!tab.icon || tab.icon === "ghost")) {
+          tab.icon = chrome.icon;
+        }
+      }
+    }
+  });
+}
+
 export function walkWorkspacePanes(
   layout: WorkspaceLayout,
   visitor: (pane: WorkspaceTabsNode, hostId: string) => void,

@@ -82,6 +82,7 @@ export class ProblemsPlugin extends AppShellPlugin<ProblemsPluginOptions> {
       PROBLEMS_VIEW_TYPE,
       (leaf) => new WorkspaceProblemsView(leaf, this.#controller, title, icon),
       {
+        title,
         icon,
         showHeader: false,
         getChromeForContext: () => {

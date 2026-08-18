@@ -20,7 +20,19 @@
     createTab?: (paneId: string) => WorkspaceTab;
   } = $props();
 
-  let definition = $derived(controller.registry.resolve(tab.view.type));
+  let persistedMissingType = $derived.by(() => {
+    const persisted = tab.view.state?.["__missingViewType"];
+    return typeof persisted === "string" && persisted.length > 0
+      ? persisted
+      : null;
+  });
+  let resolvedViewType = $derived(persistedMissingType ?? tab.view.type);
+  let definition = $derived(
+    controller.registry.resolve(tab.view.type) ??
+      (persistedMissingType
+        ? controller.registry.resolve(persistedMissingType)
+        : undefined),
+  );
   let context = $derived({
     tab,
     hostId,
@@ -44,13 +56,9 @@
     ),
   );
   let missingViewType = $derived.by(() => {
-    const persisted = tab.view.state?.["__missingViewType"];
-    if (typeof persisted === "string" && persisted.length > 0) {
-      return persisted;
-    }
-    if (tab.view.type !== "empty" && !definition) {
-      return tab.view.type;
-    }
+    if (definition) return null;
+    if (persistedMissingType) return persistedMissingType;
+    if (tab.view.type !== "empty") return tab.view.type;
     return null;
   });
   let missingViewActions = $derived([
@@ -67,20 +75,20 @@
 <div
   class="ui-workspace-view-host"
   data-ui-component="workspace-view-host"
-  data-type={tab.view.type}
-  data-workspace-view-type={tab.view.type}
+  data-type={resolvedViewType}
+  data-workspace-view-type={resolvedViewType}
 >
-  {#if tab.view.type === "empty" && !missingViewType}
-    <WorkspaceEmpty actions={emptyActions} surface="page" />
+  {#if definition?.kind === "imperative"}
+    <WorkspaceImperativeView {definition} {context} />
+  {:else if ViewComponent}
+    <ViewComponent {...context} />
   {:else if missingViewType}
     <WorkspaceEmpty
       {missingViewType}
       surface="page"
       actions={missingViewActions}
     />
-  {:else if definition?.kind === "imperative"}
-    <WorkspaceImperativeView {definition} {context} />
-  {:else if ViewComponent}
-    <ViewComponent {...context} />
+  {:else if tab.view.type === "empty"}
+    <WorkspaceEmpty actions={emptyActions} surface="page" />
   {/if}
 </div>

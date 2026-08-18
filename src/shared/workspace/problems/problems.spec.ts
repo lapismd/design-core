@@ -371,6 +371,7 @@ describe("problemsPlugin", () => {
     const tab = createWorkspaceTab({
       id: "placeholder-problems",
       title: "Problems",
+      icon: "ghost",
       view: {
         type: "empty",
         state: { __missingViewType: PROBLEMS_VIEW_TYPE },
@@ -383,8 +384,15 @@ describe("problemsPlugin", () => {
     const app = new AppShellController({ layout, plugins: [problemsPlugin()] });
     await app.start();
 
-    expect(app.workspace.getLeavesOfType(PROBLEMS_VIEW_TYPE)).toEqual([]);
+    const restored = findWorkspaceTab(
+      app.renderer.layout,
+      "placeholder-problems",
+    );
+    expect(app.workspace.getLeavesOfType(PROBLEMS_VIEW_TYPE)).toHaveLength(1);
     expect(app.renderer.layout.bottom.root.items).toHaveLength(1);
+    expect(restored?.tab.view.type).toBe(PROBLEMS_VIEW_TYPE);
+    expect(restored?.tab.view.state?.["__missingViewType"]).toBeUndefined();
+    expect(restored?.tab.icon).toBe("circle-alert");
     expect(await app.commands.execute(SHOW_PROBLEMS_COMMAND_ID)).toBe(true);
     expect(app.renderer.layout.bottom.root.items).toHaveLength(1);
     expect(app.renderer.layout.bottom.open).toBe(true);

@@ -46,11 +46,11 @@ Workspace panels provide generic domain-neutral views driven by consumer data an
 
 ## DC-WS-047 — Problems opener
 
-**Requirement.** The Problems presentation plugin MUST NOT seed a leaf when the shell becomes ready. Show Problems and the Problems status item MUST be the only creators, revealing an existing leaf or opening the default bottom tab. The status item MUST show the circle-alert icon and live diagnostics total and MUST call `showProblems()` on select.
+**Requirement.** The Problems presentation plugin MUST NOT seed a leaf when the shell becomes ready. Show Problems and the Problems status item MUST be the only creators, revealing an existing leaf or opening the default bottom tab. Registering the view MUST upgrade leftover missing-view placeholders, and ViewHost MUST NOT show missing-view once the type is registered. The status item MUST show the circle-alert icon and live diagnostics total and MUST call `showProblems()` on select.
 
 ### Acceptance details
 
 - Starting the shell with no persisted Problems leaf MUST leave `getLeavesOfType` empty.
-- The command and status item MUST reveal an existing leaf wherever it lives, including an empty missing-view placeholder, or create one closable bottom tab.
+- The command and status item MUST reveal an existing leaf wherever it lives, including an empty missing-view placeholder that registration upgrades to `workspace:problems`, or create one closable bottom tab.
 - The right-aligned status item MUST show the live total; count changes MUST NOT open the dock.
-- Unit tests MUST cover no-seed start, command create, persisted-leaf no-growth, and status click versus count-change.
+- ViewHost MUST NOT show missing-view once the type is registered; unit tests MUST cover no-seed start, command create, placeholder upgrade, and status click versus count-change.

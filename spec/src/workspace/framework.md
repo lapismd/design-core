@@ -69,11 +69,11 @@ Workspace framework contracts coordinate reusable layout and state through expli
 
 ## DC-WS-006 — Workspace View Host
 
-**Requirement.** The Workspace View Host family MUST resolve registered views into the active workspace surface with explicit missing and error states. An `empty` leaf that carries `__missingViewType`, or an unregistered view type, MUST present the missing-view empty surface.
+**Requirement.** The Workspace View Host family MUST resolve registered views into the active workspace surface with explicit missing and error states. An `empty` leaf that carries `__missingViewType`, or an unregistered view type, MUST present the missing-view empty surface unless that type is already registered.
 
 ### Acceptance details
 
-- The public boundary is `@lapismd/design-core/workspace/view-host`.
+- The public boundary is `@lapismd/design-core/workspace/view-host`; a registered `__missingViewType` or view type MUST remount as that view instead of the ghost missing-view surface.
 - Workspace views MUST inherit primary background and foreground tokens resolved by their destination surface.
 - The secondary view background MUST contrast with the primary surface: workspace secondary for ordinary and grouped views, and workspace background for direct sidebars.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
