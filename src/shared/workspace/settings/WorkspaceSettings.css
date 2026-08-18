@@ -369,6 +369,16 @@
   color: var(--ui-workspace-foreground);
 }
 
+.ui-workspace-setting-item [data-ui-component="password-input"] {
+  width: min(100%, 20rem);
+}
+
+.ui-workspace-setting-item
+  [data-ui-component="password-input"]
+  [data-ui-component="input"] {
+  width: 100%;
+}
+
 .ui-workspace-setting-item [data-ui-component="input"]:not([type="range"]),
 .ui-workspace-setting-item [data-ui-component="textarea"],
 .ui-workspace-setting-item
@@ -383,6 +393,12 @@
   color: var(--ui-workspace-foreground);
   background: var(--ui-workspace-background);
   font-size: 0.875rem;
+}
+
+.ui-workspace-setting-item
+  [data-ui-component="input"]:not([type="range"]):focus-visible,
+.ui-workspace-setting-item [data-ui-component="textarea"]:focus-visible {
+  border-color: transparent;
 }
 
 .ui-workspace-setting-item [data-ui-component="input"]:not([type="range"]),

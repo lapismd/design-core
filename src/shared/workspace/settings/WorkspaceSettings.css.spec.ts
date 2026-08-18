@@ -89,6 +89,20 @@ describe("workspace settings action hover", () => {
     );
   });
 
+  it("clears the idle border on string and textarea focus so only the ring remains", () => {
+    expect(css).toMatch(
+      /\.ui-workspace-setting-item[\s\S]*?\[data-ui-component="input"\]:not\(\[type="range"\]\):focus-visible,[\s\S]*?\[data-ui-component="textarea"\]:focus-visible \{[\s\S]*?border-color:\s*transparent;/,
+    );
+  });
+
+  it("sizes password inputs with other settings controls without a second wrapper border", () => {
+    const passwordHost = css.match(
+      /\.ui-workspace-setting-item \[data-ui-component="password-input"\] \{[^}]+\}/,
+    );
+    expect(passwordHost?.[0]).toMatch(/width:\s*min\(100%, 20rem\);/);
+    expect(passwordHost?.[0]).not.toMatch(/border:/);
+  });
+
   it("keeps add actions subdued until hover like form add", () => {
     expect(css).toMatch(
       /\.ui-workspace-setting-add \{[\s\S]*?color:\s*var\(--ui-workspace-muted-foreground\)/,

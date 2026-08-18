@@ -119,7 +119,7 @@ Override on `:root` or a form ancestor, e.g. `--ui-form-accent: oklch(...)`.
 | YAML dual mode              | `YamlBackedForm` + `YamlEditor`                                                                |
 | JSON dual mode (legacy)     | `JsonBackedForm` + `CodeEditor` (`language="json"`)                                            |
 | Credentials                 | `SecretField` (`env:NAME` or masked inline)                                                    |
-| Masked secrets              | `PasswordInput` (inline reveal toggle; Settings `presentation: "password"`)                    |
+| Masked secrets              | `PasswordInput` (single Input plus overlay reveal; Settings `presentation: "password"`)        |
 | Patch Keep/Undo review      | `PatchableForm` + `reviewedTextField` / `reviewedStringListField` + `createOrAppendJsonReview` |
 | Source editing              | `CodeEditor`                                                                                   |
 | Read-only source preview    | `CodeHighlighter`                                                                              |

@@ -1,7 +1,6 @@
 <script lang="ts">
-  import { Button } from "@lapismd/design-core/shadcn/button";
-  import type { InputProps } from "@lapismd/design-core/shadcn/input";
-  import * as InputGroup from "@lapismd/design-core/shadcn/input-group";
+  import "./PasswordInput.css";
+  import { Input, type InputProps } from "@lapismd/design-core/shadcn/input";
   import EyeIcon from "@lucide/svelte/icons/eye";
   import EyeOffIcon from "@lucide/svelte/icons/eye-off";
 
@@ -26,38 +25,33 @@
 </script>
 
 <div data-ui-component="password-input" data-ui-part="password-input">
-  <InputGroup.Root>
-    <InputGroup.Input
-      {id}
-      type={revealed ? "text" : "password"}
-      bind:value
-      {placeholder}
-      {disabled}
-      {autocomplete}
-      spellcheck={false}
-      aria-invalid={ariaInvalid}
-      aria-label={ariaLabel}
-      {oninput}
-      {...restProps}
-    />
-    <InputGroup.Addon align="inline-end">
-      <Button
-        type="button"
-        variant="ghost"
-        size="icon-xs"
-        aria-label={revealLabel}
-        aria-pressed={revealed}
-        {disabled}
-        onclick={() => {
-          revealed = !revealed;
-        }}
-      >
-        {#if revealed}
-          <EyeOffIcon />
-        {:else}
-          <EyeIcon />
-        {/if}
-      </Button>
-    </InputGroup.Addon>
-  </InputGroup.Root>
+  <Input
+    {id}
+    type={revealed ? "text" : "password"}
+    bind:value
+    {placeholder}
+    {disabled}
+    {autocomplete}
+    spellcheck={false}
+    aria-invalid={ariaInvalid}
+    aria-label={ariaLabel}
+    {oninput}
+    {...restProps}
+  />
+  <button
+    type="button"
+    data-ui-part="reveal"
+    aria-label={revealLabel}
+    aria-pressed={revealed}
+    {disabled}
+    onclick={() => {
+      revealed = !revealed;
+    }}
+  >
+    {#if revealed}
+      <EyeOffIcon />
+    {:else}
+      <EyeIcon />
+    {/if}
+  </button>
 </div>

@@ -21,6 +21,7 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 | Ribbon          | `@lapismd/design-core/workspace/ribbon`          | DC-WS-019   |
 | Settings        | `@lapismd/design-core/workspace/settings`        | DC-WS-020   |
 | Settings multi-enum | `@lapismd/design-core/workspace/settings`    | DC-WS-044   |
+| Settings text-field focus | `@lapismd/design-core/workspace/settings` | DC-WS-049 |
 | Sidebar         | `@lapismd/design-core/workspace/sidebar`         | DC-WS-021   |
 | Empty Sidebar   | `@lapismd/design-core/workspace/sidebar-empty`   | DC-WS-022   |
 | Sidebar Group   | `@lapismd/design-core/workspace/sidebar-group`   | DC-WS-023   |
@@ -171,6 +172,16 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 - `Workspace/Components/Settings` All supported controls MUST render every default field kind in one selected section, with `object-array`, `object-grid`, and `object-map` as editable property tables: boolean, string presentations including the workspace icon picker and password input, enum, multi-enum, combobox, shadcn Slider ranges and unbounded numbers, labeled list item types, key-value, section and toggle-table groups, action, custom, and unsupported.
 - Restore, list-remove, association-remove, object-row-remove, and settings-search open actions MUST use contrasting panel-action hover tokens, and list plus structured-collection add actions MUST use trailing muted-foreground text that stays WCAG AA on panel paint and brightens on hover.
+
+## DC-WS-049 — Settings text-field focus chrome
+
+**Requirement.** Settings string and textarea fields MUST keep the Input or Textarea focus-visible ring and MUST NOT keep a second border while focused.
+
+### Acceptance details
+
+- Settings CSS MUST set those controls' focus-visible border-color to transparent.
+- All supported controls MUST assert a focused string field has a transparent border and a non-none box-shadow.
+- Password presentation MUST share that Input focus chrome.
 
 ## DC-WS-044 — Settings searchable multi-enum
 

@@ -108,13 +108,14 @@ Form inputs provide higher-level controlled editing patterns composed from share
 
 ## DC-FORM-043 — Password Input
 
-**Requirement.** The Password Input family MUST mask a controlled secret by default and reveal it only while an inline toggle inside the field is active.
+**Requirement.** The Password Input family MUST mask a controlled secret by default and reveal it only while an overlay toggle inside a single Input is active.
 
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/forms`.
-- The control MUST compose Input Group with an inline-end reveal button and MUST NOT add a second input chrome.
-- The catalog MUST demonstrate masked and revealed states without introducing a second runtime contract.
+- The control MUST compose one Input with a borderless overlay reveal and MUST NOT add Input Group or a second input chrome.
+- Reveal hover and focus-visible MUST use a circular wash and MUST NOT paint a button border.
+- Focus-visible on the Input MUST keep a single ring and MUST NOT keep a second border.
 
 ## DC-FORM-015 — Reference Picker
 

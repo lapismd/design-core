@@ -822,12 +822,24 @@
     await userEvent.clear(workspaceName);
     await userEvent.type(workspaceName, "Composable shell");
     await expect(workspaceName).toHaveValue("Composable shell");
+    await expect(workspaceName).toHaveFocus();
+    expect(getComputedStyle(workspaceName).borderTopColor).toBe(
+      "rgba(0, 0, 0, 0)",
+    );
+    expect(getComputedStyle(workspaceName).boxShadow).not.toBe("none");
     const authToken = canvas.getByLabelText("Auth token");
     await expect(authToken).toHaveAttribute("type", "password");
     await expect(authToken).toHaveValue("shared-secret");
     await expect(
       authToken.closest("[data-ui-component='password-input']"),
     ).not.toBeNull();
+    expect(getComputedStyle(authToken).borderTopColor).not.toBe(
+      "rgba(0, 0, 0, 0)",
+    );
+    await userEvent.type(authToken, "{End}");
+    await expect(authToken).toHaveFocus();
+    expect(getComputedStyle(authToken).borderTopColor).toBe("rgba(0, 0, 0, 0)");
+    expect(getComputedStyle(authToken).boxShadow).not.toBe("none");
     const summary = canvas.getByLabelText("Summary");
     await expect(summary).toHaveStyle({ resize: "none" });
     const summaryHeight = summary.getBoundingClientRect().height;
