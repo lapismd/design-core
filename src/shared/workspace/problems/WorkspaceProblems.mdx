@@ -30,11 +30,12 @@ Import the model, panel, and optional presentation plugin from
 
 ## Presentation plugin
 
-`problemsPlugin()` registers the movable view and the `App Shell: Show Problems`
-command. After layout hydration it preserves an existing leaf or seeds one
-inactive, closable tab in the closed bottom dock. New problems never open the
-dock automatically; the command reveals the existing destination or recreates
-the tab after closure.
+`problemsPlugin()` registers the movable view, the `App Shell: Show Problems`
+command, and a right-aligned status item with the live diagnostics total. It
+does not seed a tab after hydration. A persisted or moved Problems leaf is
+restored as-is. Show Problems and the status item reveal that instance or
+create a closable bottom-dock tab when none exists. New problems never open
+the dock automatically.
 
 ## Tree and table views
 

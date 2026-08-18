@@ -59,7 +59,7 @@ const source = (placement: string) => `<script lang="ts">
   ${placementSetup[placement]}
 
   // The shell persists this ordinary leaf in the ${placement} surface.
-  // problemsPlugin only seeds a quiet bottom tab when no Problems leaf exists.
+  // problemsPlugin does not seed a tab; Show Problems or the status item create one when none exists.
   const app = new AppShellController({
     layout,
     plugins: [problemsPlugin({

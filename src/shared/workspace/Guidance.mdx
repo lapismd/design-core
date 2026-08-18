@@ -53,9 +53,11 @@ presentation (`@lapismd/design-core/workspace/problems`). Applications and
 plugins publish plain diagnostics through owner-isolated collections on
 `AppShellController.diagnostics`; they keep resource URI interpretation,
 navigation, code actions, editors, and language services in host adapters.
-`problemsPlugin()` registers the movable view and quietly seeds a closed bottom
-tab only when no persisted Problems leaf exists. Diagnostics are ephemeral and
-must never be added to workspace layout persistence.
+`problemsPlugin()` registers the movable view, Show Problems, and a status-bar
+count chip. It does not seed a tab after hydration; the command and status
+item reveal a persisted leaf or create the default bottom tab when none
+exists. Diagnostics are ephemeral and must never be added to workspace layout
+persistence.
 
 Registered views may contribute an optional structured badge through
 `WorkspaceViewChrome`. Workspace tab, dock, grouped-panel, and mobile labels

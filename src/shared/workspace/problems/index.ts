@@ -12,6 +12,7 @@ export {
 export {
   ProblemsPlugin,
   PROBLEMS_PLUGIN_ID,
+  PROBLEMS_STATUS_ITEM_ID,
   PROBLEMS_VIEW_TYPE,
   SHOW_PROBLEMS_COMMAND_ID,
   problemsPlugin,

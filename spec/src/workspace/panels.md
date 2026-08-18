@@ -4,11 +4,12 @@ Workspace panels provide generic domain-neutral views driven by consumer data an
 
 ## Public surface coverage
 
-| Surface        | Public boundary                           | Requirement |
-| -------------- | ----------------------------------------- | ----------- |
-| Explorer Panel | `@lapismd/design-core/workspace/explorer` | DC-WS-033   |
-| Problems Panel | `@lapismd/design-core/workspace/problems` | DC-WS-034   |
-| Problems copy  | `@lapismd/design-core/workspace/problems` | DC-WS-046   |
+| Surface         | Public boundary                           | Requirement |
+| --------------- | ----------------------------------------- | ----------- |
+| Explorer Panel  | `@lapismd/design-core/workspace/explorer` | DC-WS-033   |
+| Problems Panel  | `@lapismd/design-core/workspace/problems` | DC-WS-034   |
+| Problems copy   | `@lapismd/design-core/workspace/problems` | DC-WS-046   |
+| Problems opener | `@lapismd/design-core/workspace/problems` | DC-WS-047   |
 
 ## DC-WS-033 — Explorer Panel
 
@@ -42,3 +43,14 @@ Workspace panels provide generic domain-neutral views driven by consumer data an
 - Copy Problem MUST copy a JSON array of serializable objects with resource, owner, code, numeric severity, message, source, and one-based range fields when present.
 - Tree group rows MUST offer the same two copy actions for all grouped entries.
 - Unit tests MUST cover item and group copy payloads.
+
+## DC-WS-047 — Problems opener
+
+**Requirement.** The Problems presentation plugin MUST NOT seed a leaf when the shell becomes ready. Show Problems and the Problems status item MUST be the only creators, revealing an existing leaf or opening the default bottom tab. The status item MUST show the circle-alert icon and live diagnostics total and MUST call `showProblems()` on select.
+
+### Acceptance details
+
+- Starting the shell with no persisted Problems leaf MUST leave `getLeavesOfType` empty.
+- The command and status item MUST reveal an existing leaf wherever it lives, including an empty missing-view placeholder, or create one closable bottom tab.
+- The right-aligned status item MUST show the live total; count changes MUST NOT open the dock.
+- Unit tests MUST cover no-seed start, command create, persisted-leaf no-growth, and status click versus count-change.

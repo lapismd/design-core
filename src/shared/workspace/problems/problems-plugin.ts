@@ -1,12 +1,12 @@
 import { mount, unmount, type Component } from "svelte";
 import type { AppShellController } from "../core/app-shell-controller.svelte.js";
-import { findWorkspaceTab } from "../core/layout.js";
+import { findWorkspaceTab, walkWorkspacePanes } from "../core/layout.js";
 import {
   AppShellPlugin,
   type AppShellPluginDescriptor,
 } from "../core/plugin-manager.svelte.js";
 import { WorkspaceView, type WorkspaceLeaf } from "../core/workspace-view.js";
-import type { WorkspaceNode } from "../core/types.js";
+import type { WorkspaceNode, WorkspaceTab } from "../core/types.js";
 import WorkspaceProblems from "./WorkspaceProblems.svelte";
 import { WorkspaceProblemsController } from "./problems-controller.svelte.js";
 import type { WorkspaceProblemsControllerOptions } from "./types.js";
@@ -14,6 +14,7 @@ import type { WorkspaceProblemsControllerOptions } from "./types.js";
 export const PROBLEMS_VIEW_TYPE = "workspace:problems";
 export const PROBLEMS_PLUGIN_ID = "app-shell:problems";
 export const SHOW_PROBLEMS_COMMAND_ID = "app-shell:show-problems";
+export const PROBLEMS_STATUS_ITEM_ID = "app-shell:problems";
 
 export interface ProblemsPluginOptions
   extends WorkspaceProblemsControllerOptions {
@@ -101,13 +102,23 @@ export class ProblemsPlugin extends AppShellPlugin<ProblemsPluginOptions> {
       icon,
       callback: () => this.showProblems(),
     });
+    this.register(this.app.diagnostics.subscribe(() => this.#syncStatusItem()));
+    this.register(() => this.app.status.removeItem(PROBLEMS_STATUS_ITEM_ID));
+  }
 
-    const seed = () => this.ensureProblemsLeaf(false);
-    if (this.app.ready) queueMicrotask(seed);
-    else {
-      this.app.once("ready", seed);
-      this.register(() => this.app.off("ready", seed));
-    }
+  #syncStatusItem(): void {
+    const count = this.#controller.diagnostics.size;
+    this.app.status.addItem({
+      id: PROBLEMS_STATUS_ITEM_ID,
+      align: "right",
+      priority: 480,
+      icon: this.options?.icon ?? "circle-alert",
+      label: String(count),
+      tooltip: `${count} ${count === 1 ? "problem" : "problems"}`,
+      onSelect: () => {
+        this.showProblems();
+      },
+    });
   }
 
   showProblems(): boolean {
@@ -127,7 +138,7 @@ export class ProblemsPlugin extends AppShellPlugin<ProblemsPluginOptions> {
   }
 
   private ensureProblemsLeaf(active: boolean) {
-    const existing = this.app.workspace.getLeavesOfType(PROBLEMS_VIEW_TYPE)[0];
+    const existing = this.findProblemsLeaf();
     if (existing) return existing;
     return this.app.workspace.openLeaf(
       PROBLEMS_VIEW_TYPE,
@@ -140,6 +151,25 @@ export class ProblemsPlugin extends AppShellPlugin<ProblemsPluginOptions> {
         active,
       },
     );
+  }
+
+  private findProblemsLeaf(): WorkspaceLeaf | null {
+    const existing = this.app.workspace.getLeavesOfType(PROBLEMS_VIEW_TYPE)[0];
+    if (existing) return existing;
+    let found: WorkspaceLeaf | null = null;
+    walkWorkspacePanes(this.app.renderer.layout, (pane) => {
+      if (found) return;
+      for (const item of pane.items) {
+        const tabs = item.kind === "tab" ? [item] : item.tabs;
+        for (const tab of tabs) {
+          if (isProblemsTab(tab)) {
+            found = this.app.workspace.getLeafById(tab.id);
+            return;
+          }
+        }
+      }
+    });
+    return found;
   }
 }
 
@@ -156,6 +186,14 @@ export function problemsPlugin(
     plugin: ProblemsPlugin,
     options,
   };
+}
+
+function isProblemsTab(tab: WorkspaceTab): boolean {
+  return (
+    tab.view.type === PROBLEMS_VIEW_TYPE ||
+    (tab.view.type === "empty" &&
+      tab.view.state?.["__missingViewType"] === PROBLEMS_VIEW_TYPE)
+  );
 }
 
 function workspaceNodeContains(node: WorkspaceNode, paneId: string): boolean {

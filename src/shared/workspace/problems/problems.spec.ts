@@ -10,6 +10,7 @@ import { WorkspaceMenu } from "../core/workspace-menu.js";
 import { AppShellPlugin } from "../core/plugin-manager.svelte.js";
 import { WorkspaceDiagnosticsManager } from "./diagnostics-manager.svelte.js";
 import {
+  PROBLEMS_STATUS_ITEM_ID,
   PROBLEMS_VIEW_TYPE,
   SHOW_PROBLEMS_COMMAND_ID,
   problemsPlugin,
@@ -325,16 +326,16 @@ describe("problemsPlugin", () => {
     await app.dispose();
   });
 
-  it("seeds a quiet bottom tab and reveals it only on command", async () => {
+  it("does not seed a Problems leaf and creates one only on command", async () => {
     const app = new AppShellController({ plugins: [problemsPlugin()] });
     await app.start();
 
-    const [leaf] = app.workspace.getLeavesOfType(PROBLEMS_VIEW_TYPE);
-    expect(leaf).toBeDefined();
+    expect(app.workspace.getLeavesOfType(PROBLEMS_VIEW_TYPE)).toEqual([]);
     expect(app.renderer.layout.bottom.open).toBe(false);
-    expect(leaf?.active).toBe(false);
 
     expect(await app.commands.execute(SHOW_PROBLEMS_COMMAND_ID)).toBe(true);
+    const [leaf] = app.workspace.getLeavesOfType(PROBLEMS_VIEW_TYPE);
+    expect(leaf).toBeDefined();
     expect(app.renderer.layout.bottom.open).toBe(true);
     expect(leaf?.active).toBe(true);
 
@@ -345,9 +346,87 @@ describe("problemsPlugin", () => {
     await app.dispose();
   });
 
+  it("does not add another Problems leaf when one is already persisted", async () => {
+    const layout = createDefaultWorkspaceLayout();
+    const tab = createWorkspaceTab({
+      id: "persisted-problems",
+      title: "Problems",
+      view: { type: PROBLEMS_VIEW_TYPE },
+    });
+    layout.bottom.root = createWorkspaceTabs([tab], {
+      id: layout.bottom.root.id,
+      activeItemId: tab.id,
+    });
+    const app = new AppShellController({ layout, plugins: [problemsPlugin()] });
+    await app.start();
+
+    expect(app.workspace.getLeavesOfType(PROBLEMS_VIEW_TYPE)).toHaveLength(1);
+    expect(app.renderer.layout.bottom.root.items).toHaveLength(1);
+    expect(app.renderer.layout.bottom.open).toBe(false);
+    await app.dispose();
+  });
+
+  it("treats a missing-view Problems placeholder as the existing leaf", async () => {
+    const layout = createDefaultWorkspaceLayout();
+    const tab = createWorkspaceTab({
+      id: "placeholder-problems",
+      title: "Problems",
+      view: {
+        type: "empty",
+        state: { __missingViewType: PROBLEMS_VIEW_TYPE },
+      },
+    });
+    layout.bottom.root = createWorkspaceTabs([tab], {
+      id: layout.bottom.root.id,
+      activeItemId: tab.id,
+    });
+    const app = new AppShellController({ layout, plugins: [problemsPlugin()] });
+    await app.start();
+
+    expect(app.workspace.getLeavesOfType(PROBLEMS_VIEW_TYPE)).toEqual([]);
+    expect(app.renderer.layout.bottom.root.items).toHaveLength(1);
+    expect(await app.commands.execute(SHOW_PROBLEMS_COMMAND_ID)).toBe(true);
+    expect(app.renderer.layout.bottom.root.items).toHaveLength(1);
+    expect(app.renderer.layout.bottom.open).toBe(true);
+    await app.dispose();
+  });
+
+  it("exposes a status item that reveals or creates Problems without opening on count changes", async () => {
+    const app = new AppShellController({ plugins: [problemsPlugin()] });
+    await app.start();
+
+    const item = app.status.items.find(
+      (entry) => entry.id === PROBLEMS_STATUS_ITEM_ID,
+    );
+    expect(item).toMatchObject({
+      align: "right",
+      priority: 480,
+      icon: "circle-alert",
+      label: "0",
+    });
+    expect(app.workspace.getLeavesOfType(PROBLEMS_VIEW_TYPE)).toEqual([]);
+    expect(app.renderer.layout.bottom.open).toBe(false);
+
+    const collection = app.diagnostics.createCollection("test:status");
+    collection.set(alpha, [error]);
+    const updated = app.status.items.find(
+      (entry) => entry.id === PROBLEMS_STATUS_ITEM_ID,
+    );
+    expect(updated?.label).toBe("1");
+    expect(updated?.tooltip).toBe("1 problem");
+    expect(app.renderer.layout.bottom.open).toBe(false);
+    expect(app.workspace.getLeavesOfType(PROBLEMS_VIEW_TYPE)).toEqual([]);
+
+    await updated?.onSelect?.();
+    expect(app.workspace.getLeavesOfType(PROBLEMS_VIEW_TYPE)).toHaveLength(1);
+    expect(app.renderer.layout.bottom.open).toBe(true);
+    await app.dispose();
+  });
+
   it("contributes a live leaf badge without persisting its count", async () => {
     const app = new AppShellController({ plugins: [problemsPlugin()] });
     await app.start();
+    expect(await app.commands.execute(SHOW_PROBLEMS_COMMAND_ID)).toBe(true);
     const [leaf] = app.workspace.getLeavesOfType(PROBLEMS_VIEW_TYPE);
     const location = leaf
       ? findWorkspaceTab(app.renderer.layout, leaf.id)
