@@ -6,6 +6,7 @@ import {
   COMMAND_PALETTE_TAB_ALL,
   COMMAND_PALETTE_TAB_SETTINGS,
   actionPaletteGroup,
+  createMemoryPaletteTabPersistence,
   groupPaletteItems,
 } from "./command-manager.svelte.js";
 
@@ -26,14 +27,47 @@ describe("command palette tabs and groups", () => {
   });
 
   it("opens a requested tab and falls back to All for unknown ids", () => {
-    const app = new AppShellController();
+    const app = new AppShellController({
+      persistence: { paletteTab: createMemoryPaletteTabPersistence() },
+    });
     app.commands.openPalette({ tab: COMMAND_PALETTE_TAB_ACTIONS });
     expect(app.commands.paletteOpen).toBe(true);
     expect(app.commands.paletteTab).toBe(COMMAND_PALETTE_TAB_ACTIONS);
     app.commands.closePalette();
-    expect(app.commands.paletteTab).toBe(COMMAND_PALETTE_TAB_ALL);
+    expect(app.commands.paletteTab).toBe(COMMAND_PALETTE_TAB_ACTIONS);
     app.commands.openPalette({ tab: "missing" });
     expect(app.commands.paletteTab).toBe(COMMAND_PALETTE_TAB_ALL);
+  });
+
+  it("restores the last selected tab from persistence", () => {
+    const paletteTab = createMemoryPaletteTabPersistence(
+      COMMAND_PALETTE_TAB_ACTIONS,
+    );
+    const app = new AppShellController({
+      persistence: { paletteTab },
+    });
+    app.commands.openPalette();
+    expect(app.commands.paletteTab).toBe(COMMAND_PALETTE_TAB_ACTIONS);
+    app.commands.selectPaletteTab(COMMAND_PALETTE_TAB_SETTINGS);
+    app.commands.closePalette();
+    expect(paletteTab.load()).toBe(COMMAND_PALETTE_TAB_SETTINGS);
+
+    const restored = new AppShellController({
+      persistence: { paletteTab },
+    });
+    restored.commands.openPalette();
+    expect(restored.commands.paletteTab).toBe(COMMAND_PALETTE_TAB_SETTINGS);
+  });
+
+  it("falls back to All when a remembered provider tab is absent", () => {
+    const app = new AppShellController({
+      persistence: { paletteTab: createMemoryPaletteTabPersistence("files") },
+    });
+    app.commands.openPalette();
+    expect(app.commands.paletteTab).toBe(COMMAND_PALETTE_TAB_ALL);
+    expect(app.commands.resolvePaletteTab("files")).toBe(
+      COMMAND_PALETTE_TAB_ALL,
+    );
   });
 
   it("groups empty-query actions by sourcePlugin then category", async () => {

@@ -20,6 +20,11 @@ export interface HotkeyPersistence {
   save(overrides: HotkeyOverrides): Promise<void>;
 }
 
+export interface PaletteTabPersistence {
+  load(): string | null;
+  save(tab: string): void;
+}
+
 export interface AppShellCommandContext {
   app: AppShellController;
   leaf: WorkspaceLeaf | null;
@@ -45,6 +50,8 @@ export interface AppShellCommand {
 export const COMMAND_PALETTE_TAB_ALL = "all";
 export const COMMAND_PALETTE_TAB_ACTIONS = "actions";
 export const COMMAND_PALETTE_TAB_SETTINGS = "settings";
+export const COMMAND_PALETTE_TAB_STORAGE_KEY =
+  "ui-workspace-command-palette.tab";
 
 export const ALL_TAB_EMPTY_LIMITS = {
   actions: 6,
@@ -239,12 +246,17 @@ export class CommandManager {
   readonly #events = new WorkspaceEventDispatcher<CommandManagerEventMap>();
   readonly #scopes: CommandKeymapScope[] = [];
   #persistence?: HotkeyPersistence;
+  readonly #paletteTabPersistence: PaletteTabPersistence;
+  #rememberedTab: string | null = null;
 
   constructor(
     readonly app: AppShellController,
     persistence?: HotkeyPersistence,
+    paletteTabPersistence: PaletteTabPersistence = createLocalStoragePaletteTabPersistence(),
   ) {
     this.#persistence = persistence;
+    this.#paletteTabPersistence = paletteTabPersistence;
+    this.#rememberedTab = paletteTabPersistence.load();
   }
 
   on<Name extends keyof CommandManagerEventMap>(
@@ -652,21 +664,31 @@ export class CommandManager {
     }
   }
 
+  selectPaletteTab(tab: string): void {
+    this.paletteTab = this.resolvePaletteTab(tab);
+    this.#rememberedTab = this.paletteTab;
+    this.#paletteTabPersistence.save(this.paletteTab);
+  }
+
   openPalette(options: CommandPaletteSearchOptions = {}): void {
     this.paletteOpen = true;
-    this.paletteTab = this.resolvePaletteTab(options.tab);
+    if (options.tab !== undefined) {
+      this.selectPaletteTab(options.tab);
+      return;
+    }
+    this.paletteTab = this.resolvePaletteTab(
+      this.#rememberedTab ?? this.paletteTab,
+    );
   }
 
   closePalette(): void {
     this.paletteOpen = false;
-    this.paletteTab = COMMAND_PALETTE_TAB_ALL;
   }
 
   destroy(): void {
     this.commands = [];
     this.paletteProviders = [];
     this.paletteOpen = false;
-    this.paletteTab = COMMAND_PALETTE_TAB_ALL;
     this.#scopes.splice(0);
     this.#events.clear();
   }
@@ -684,6 +706,49 @@ export function createLocalStorageHotkeyPersistence(
     },
     async save(overrides) {
       resolveStorage().setItem(key, JSON.stringify(overrides));
+    },
+  };
+}
+
+function resolveBrowserStorage(storage?: Storage): Storage | null {
+  if (storage) return storage;
+  try {
+    return globalThis.localStorage ?? null;
+  } catch {
+    return null;
+  }
+}
+
+export function createLocalStoragePaletteTabPersistence(
+  key = COMMAND_PALETTE_TAB_STORAGE_KEY,
+  storage?: Storage,
+): PaletteTabPersistence {
+  return {
+    load() {
+      try {
+        return resolveBrowserStorage(storage)?.getItem(key) ?? null;
+      } catch {
+        return null;
+      }
+    },
+    save(tab) {
+      try {
+        resolveBrowserStorage(storage)?.setItem(key, tab);
+      } catch {
+        // Private mode or quota must not block the palette.
+      }
+    },
+  };
+}
+
+export function createMemoryPaletteTabPersistence(
+  initial?: string | null,
+): PaletteTabPersistence {
+  let value = initial ?? null;
+  return {
+    load: () => value,
+    save(tab) {
+      value = tab;
     },
   };
 }

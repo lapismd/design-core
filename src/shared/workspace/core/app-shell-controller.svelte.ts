@@ -10,6 +10,7 @@ import {
   CommandManager,
   type AppShellCommand,
   type HotkeyPersistence,
+  type PaletteTabPersistence,
 } from "./command-manager.svelte.js";
 import {
   WorkspaceEventDispatcher,
@@ -81,6 +82,7 @@ export interface AppShellPersistence {
   layout?: AppShellLayoutPersistence;
   configuration?: WorkspaceSettingsPersistence;
   hotkeys?: HotkeyPersistence;
+  paletteTab?: PaletteTabPersistence;
   plugins?: PluginEnablementPersistence;
   notifications?: NotificationPersistence;
 }
@@ -250,7 +252,11 @@ export class AppShellController {
       this.configuration,
       (event) => this.#events.trigger("resource-open-error", event),
     );
-    this.commands = new CommandManager(this, options.persistence?.hotkeys);
+    this.commands = new CommandManager(
+      this,
+      options.persistence?.hotkeys,
+      options.persistence?.paletteTab,
+    );
     this.commandPalette = this.commands;
     this.keymap = new CommandKeymapScope();
     this.commands.pushScope(this.keymap);

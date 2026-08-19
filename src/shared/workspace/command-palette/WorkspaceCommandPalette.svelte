@@ -55,7 +55,7 @@
   }
 
   function setTab(tab: string): void {
-    app.commands.paletteTab = tab;
+    app.commands.selectPaletteTab(tab);
   }
 
   function cycleTab(delta: number): void {

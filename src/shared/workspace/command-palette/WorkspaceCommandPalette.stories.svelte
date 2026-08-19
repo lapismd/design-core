@@ -116,7 +116,7 @@
   tags={["visual-pending"]}
   play={async ({ canvas, canvasElement }) => {
     await waitFor(() => expect(previewApp.ready).toBe(true));
-    previewApp.commands.openPalette();
+    previewApp.commands.openPalette({ tab: "all" });
     await expect(
       await canvas.findByRole("dialog", { name: "Command Palette" }),
     ).toBeVisible();
@@ -220,7 +220,7 @@
   tags={["visual-pending"]}
   play={async ({ canvas, canvasElement }) => {
     await waitFor(() => expect(searchApp.ready).toBe(true));
-    searchApp.commands.openPalette();
+    searchApp.commands.openPalette({ tab: "all" });
     await canvas.findByRole("dialog", { name: "Command Palette" });
     expectPaletteCommandView(canvasElement);
     const input = await canvas.findByRole("combobox", {
@@ -270,7 +270,7 @@
   tags={["visual-pending"]}
   play={async ({ canvas, canvasElement }) => {
     await waitFor(() => expect(emptyApp.ready).toBe(true));
-    emptyApp.commands.openPalette();
+    emptyApp.commands.openPalette({ tab: "all" });
     await canvas.findByRole("dialog", { name: "Command Palette" });
     expectPaletteCommandView(canvasElement);
     const input = await canvas.findByRole("combobox", {

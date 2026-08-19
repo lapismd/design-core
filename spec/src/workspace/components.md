@@ -13,6 +13,7 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 | Command Palette tabs          | `@lapismd/design-core/workspace/command-palette` | DC-WS-053   |
 | Command Palette groups        | `@lapismd/design-core/workspace/command-palette` | DC-WS-054   |
 | Command Palette open tab      | `@lapismd/design-core/workspace/command-palette` | DC-WS-055   |
+| Command Palette remembered tab | `@lapismd/design-core/workspace/command-palette` | DC-WS-057   |
 | Settings dialog reveal        | `@lapismd/design-core/workspace/settings`        | DC-WS-056   |
 | Drop Overlay                  | `@lapismd/design-core/workspace/drop-overlay`    | DC-WS-011   |
 | Empty View                    | `@lapismd/design-core/workspace/empty`           | DC-WS-012   |
@@ -106,14 +107,25 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 
 ## DC-WS-055 — Command Palette open tab
 
-**Requirement.** `openPalette` MUST accept an optional tab id and open that filter. An unknown id MUST fall back to All. Close MUST reset the tab to All.
+**Requirement.** `openPalette` MUST accept an optional tab id and open that filter. An unknown id MUST fall back to All. Close MUST reset the query and MUST NOT force All.
 
 ### Acceptance details
 
 - The public command-manager API MUST accept `openPalette({ tab })`.
 - Opening Files or another registered provider tab MUST select that filter immediately.
-- Close MUST clear the search query and restore the All tab.
+- Close MUST clear the search query and keep the selected tab.
 - The catalog MUST open the palette on Actions and assert that tab is selected.
+
+## DC-WS-057 — Command Palette remembered tab
+
+**Requirement.** The command manager MUST persist the last selected palette tab in `localStorage`. `openPalette()` without a tab MUST restore that tab when it is still listed, otherwise All.
+
+### Acceptance details
+
+- Selecting Actions, closing, and opening without a tab MUST return to Actions.
+- A remembered provider tab MUST fall back to All when that provider is absent.
+- An explicit `openPalette({ tab })` MUST override and persist that tab.
+- Unit tests MUST cover restore through injected storage.
 
 ## DC-WS-056 — Settings dialog reveal
 
