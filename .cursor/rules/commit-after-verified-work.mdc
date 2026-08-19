@@ -1,28 +1,26 @@
 ---
-description: Commit each verified change promptly with jj (AGENTS.md / vcs guide)
+description: Commit verified changes with the owning repo's Jujutsu policy without waiting to be asked
 alwaysApply: true
 ---
 
 # Commit after every verified change
 
-After a self-contained, validated slice of work, **commit before starting the next unrelated task**. Do not leave finished work only in a dirty working copy across task boundaries.
+This is a standing request for this package and every other LapisMD package in
+the same workspace. Do not wait for a later "commit" message. The generic
+preference to commit only when asked does not apply here.
 
-This mirrors `AGENTS.md` and `pnpm ui guide vcs`.
+After a self-contained, validated slice:
 
-## Workflow
+1. Read the owning repository `AGENTS.md` and the `jj-jujutsu` skill.
+2. Run `jj --no-pager st` in every repository that changed.
+3. Commit with Jujutsu (`jj commit -m`) using that repository's message
+   quality. Path-scope with `-- path…` when unrelated dirty files exist.
+   If `jj` is unavailable, use Git with the same quality.
+4. Commit each repository separately. Leave unrelated work uncommitted.
+5. Skip when the working copy is empty or only has secrets, loader
+   symlinks, or generated `spec/book/` output.
 
-1. Validate the slice (focused tests while iterating; broader checks when the slice touches catalog surfaces).
-2. Prefer **`jj`** when available (colocated repo):
-   - `jj --no-pager st`
-   - `jj --no-pager diff --summary`
-   - `jj commit -m "Concise why-focused message"` (path-scoped with `-- path…` when unrelated dirty files exist)
-   - `jj --no-pager st` to confirm
-3. Always pass `-m` / `--message` so commits never open an editor.
-4. Do not invent commits for speculative WIP, failing checks, or secrets.
-5. Do not push or rewrite published history unless the user asks.
-
-## Cadence
-
-- One logical fix/feature → validate → commit.
-- Prefer small commits over an end-of-session dump.
-- When the user asks to commit, follow this flow immediately; when finishing verified work without an explicit commit request, still commit per this rule and `pnpm ui guide vcs`.
+```text
+# ✅ GOOD — validated slice, then jj commit in the owning repo
+# ❌ BAD — leave finished work in @ and ask whether to commit
+```

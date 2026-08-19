@@ -227,7 +227,8 @@ README **Styling and tokens** section.
 - Do not invent component props: verify them from the component source,
   TypeScript types, and existing stories.
 - After a verified slice, commit promptly (`pnpm ui guide vcs`): prefer
-  `jj commit` when available.
+  `jj commit` when available. This is a standing request; do not wait for
+  the user to ask.
 
 ## Generated UI and visual baseline rules
 

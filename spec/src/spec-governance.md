@@ -100,7 +100,7 @@ Specification governance keeps requirements discoverable, mapped, validated, and
 
 ## DC-GOV-007 — Agent authority
 
-**Requirement.** The Agent authority family MUST teach repository agents the specification authority order, authoring rules, path ownership map, search workflow, and required validation.
+**Requirement.** The Agent authority family MUST teach repository agents the specification authority order, authoring rules, path ownership map, search workflow, required validation, and a standing Jujutsu commit after each verified slice.
 
 ### Acceptance details
 
