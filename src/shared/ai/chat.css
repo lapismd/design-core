@@ -814,7 +814,7 @@
 
 [data-ui-component="ai-chat-composer-input"] [data-ui-part="trigger-menu"] {
   position: absolute;
-  z-index: 80;
+  z-index: calc(var(--ui-workspace-overlay-z-index, 50) + 40);
   width: min(var(--ui-ai-chat-trigger-width), calc(100vw - 2rem));
   overflow: hidden;
   border: 1px solid var(--border);

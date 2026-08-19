@@ -67,6 +67,20 @@
   const mentionTriggers = [mentionTrigger];
   const commandTriggers = [commandTrigger];
   const allTriggers = [mentionTrigger, commandTrigger];
+  const submitTrigger: ComposerTrigger = {
+    character: "/",
+    menuLabel: "Commands",
+    searchSource: async () => [
+      {
+        id: "status",
+        label: "/status",
+        value: "/status",
+        description: "Show context",
+        submitOnSelect: true,
+      },
+    ],
+    onSelect: (item) => item.value ?? item.label,
+  };
 
   const { Story } = defineMeta({
     title: "AI/Chat/Composer Input",
@@ -96,6 +110,8 @@
   let mentionValue = $state("");
   let multiTriggerValue = $state("");
   let slashValue = $state("");
+  let submitValue = $state("");
+  let submittedValue = $state("");
 </script>
 
 <Story
@@ -525,6 +541,44 @@
       </Composer>
       <output data-browser-value>{browserValue || "Empty"}</output>
       <output data-browser-files>{browserFileResult}</output>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Submits a trigger item"
+  tags={["!autodocs"]}
+  play={async ({ canvas }) => {
+    const input = canvas.getByRole("combobox", { name: "Message" });
+    await userEvent.click(input);
+    await userEvent.type(input, "/");
+    const option = await canvas.findByRole("option", { name: /status/ });
+    await userEvent.click(option);
+    await waitFor(() =>
+      expect(canvas.getByTestId("submitted-trigger")).toHaveTextContent(
+        "/status",
+      ),
+    );
+    expect(input).toHaveTextContent("");
+  }}
+>
+  {#snippet template()}
+    <div data-story="composer-input-stack">
+      <Composer
+        bind:value={submitValue}
+        onSubmit={(value) => {
+          submittedValue = value;
+        }}
+      >
+        {#snippet input()}
+          <ComposerInput
+            bind:value={submitValue}
+            triggers={[submitTrigger]}
+            placeholder="Type / to submit"
+          />
+        {/snippet}
+      </Composer>
+      <output data-testid="submitted-trigger">{submittedValue}</output>
     </div>
   {/snippet}
 </Story>

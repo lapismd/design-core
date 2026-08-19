@@ -16,6 +16,7 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 | System Message       | `@lapismd/design-core/ai/chat`         | DC-AI-008   |
 | Composer             | `@lapismd/design-core/ai/chat`         | DC-AI-009   |
 | Composer Input       | `@lapismd/design-core/ai/chat`         | DC-AI-010   |
+| Composer trigger submit | `@lapismd/design-core/ai/chat`      | DC-AI-024   |
 | Composer Drawer      | `@lapismd/design-core/ai/chat`         | DC-AI-011   |
 | Send Button          | `@lapismd/design-core/ai/chat`         | DC-AI-012   |
 | Composer Token       | `@lapismd/design-core/ai/chat`         | DC-AI-013   |
@@ -123,7 +124,7 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 
 - The public boundary is `@lapismd/design-core/ai/chat`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
-- Trigger menus MUST anchor to the caret or input using the composer-input containing block, flip above when space below is insufficient, and MUST NOT use viewport-fixed coordinates that drift inside isolated or transformed hosts.
+- Trigger menus MUST anchor to the caret or input using the composer-input containing block, flip above when space below the nearest clipping ancestor or the viewport is insufficient, and MUST NOT use viewport-fixed coordinates that drift inside isolated or transformed hosts.
 
 ## DC-AI-011 — Composer Drawer
 
@@ -248,3 +249,13 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 
 - The public boundary is Documentation surface.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+
+## DC-AI-024 — Composer trigger submit
+
+**Requirement.** Composer Input trigger items MAY declare `submitOnSelect`. Selecting such an item MUST insert the trigger value and submit immediately. Other items MUST insert and leave the composer editable.
+
+### Acceptance details
+
+- The public boundary is `@lapismd/design-core/ai/chat`.
+- `submitOnSelect` MUST work for pointer and Enter selection of the highlighted item.
+- Items without the flag MUST keep the existing insert-and-continue behavior.

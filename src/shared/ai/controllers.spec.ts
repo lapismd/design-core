@@ -242,6 +242,18 @@ describe("positionComposerTriggerMenu", () => {
     expect(position.top).toBe(20);
     expect(position.left).toBe(16);
   });
+
+  it("flips above when a clipping ancestor leaves no room below", () => {
+    const position = positionComposerTriggerMenu({
+      caret: { left: 32, top: 640, right: 40, bottom: 658 },
+      editable: { left: 24, top: 630, right: 360, bottom: 670 },
+      root: { left: 16, top: 610, right: 368, bottom: 690 },
+      viewportHeight: 1200,
+      clipBottom: 700,
+    });
+    expect(position.placement).toBe("above");
+    expect(position.top).toBe(30);
+  });
 });
 
 describe("createTriggerSearch", () => {

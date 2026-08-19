@@ -31,11 +31,32 @@ function isUsableBox(
   return Boolean(box && (box.left || box.top || box.right || box.bottom));
 }
 
+const CLIPPING_OVERFLOW = new Set(["hidden", "auto", "scroll", "clip"]);
+
+export function nearestClipBottom(
+  element: HTMLElement | null | undefined,
+  viewportHeight: number,
+): number {
+  let bottom = viewportHeight;
+  let current = element?.parentElement ?? null;
+  while (current) {
+    const overflowY = current.ownerDocument.defaultView
+      ?.getComputedStyle(current)
+      .overflowY;
+    if (overflowY && CLIPPING_OVERFLOW.has(overflowY)) {
+      bottom = Math.min(bottom, current.getBoundingClientRect().bottom);
+    }
+    current = current.parentElement;
+  }
+  return bottom;
+}
+
 export function positionComposerTriggerMenu(input: {
   caret: ComposerTriggerMenuBox | null | undefined;
   editable: ComposerTriggerMenuBox;
   root: ComposerTriggerMenuBox;
   viewportHeight: number;
+  clipBottom?: number;
   gap?: number;
   estimatedMenuHeight?: number;
 }): {
@@ -46,7 +67,11 @@ export function positionComposerTriggerMenu(input: {
   const gap = input.gap ?? 6;
   const estimatedMenuHeight = input.estimatedMenuHeight ?? 288;
   const caret = isUsableBox(input.caret) ? input.caret : input.editable;
-  const spaceBelow = input.viewportHeight - caret.bottom;
+  const availableBottom = Math.min(
+    input.viewportHeight,
+    input.clipBottom ?? input.viewportHeight,
+  );
+  const spaceBelow = availableBottom - caret.bottom;
   const spaceAbove = caret.top;
   const placement: ComposerTriggerMenuPlacement =
     spaceBelow < estimatedMenuHeight && spaceAbove > spaceBelow

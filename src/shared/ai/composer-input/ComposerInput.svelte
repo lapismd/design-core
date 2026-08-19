@@ -21,6 +21,7 @@
   import {
     createTriggerSearch,
     findActiveComposerTrigger,
+    nearestClipBottom,
     positionComposerTriggerMenu,
     type ComposerTriggerMenuPlacement,
     type TriggerSearchState,
@@ -203,6 +204,7 @@
       editable,
       root,
       viewportHeight: window.innerHeight,
+      clipBottom: nearestClipBottom(ref, window.innerHeight),
     });
     menuLeft = next.left;
     menuTop = next.top;
@@ -277,11 +279,14 @@
     const result = activeTrigger.onSelect(item);
     resetTriggerMenu();
     if (typeof result === "string") {
-      insertText(`${result} `);
+      insertText(item.submitOnSelect ? result.trim() : `${result} `);
     } else {
       tokens.insertToken(result);
     }
     emitChange();
+    if (item.submitOnSelect) {
+      queueMicrotask(() => submit());
+    }
   }
 
   function selectAllText(): void {

@@ -31,6 +31,7 @@ export type ComposerTriggerItem = {
   value?: string;
   description?: string;
   keywords?: string[];
+  submitOnSelect?: boolean;
 };
 
 export type ComposerSearchSource = (
