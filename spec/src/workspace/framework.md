@@ -1,6 +1,11 @@
 # Workspace / Framework
 
 Workspace framework contracts coordinate reusable layout and state through explicit controllers, registries, events, and consumer adapters.
+Command manager palette search filters by tab (`openPalette({ tab })`,
+`searchPalette(query, { tab })`) and groups Actions by plugin contribution.
+Settings dialog open and field reveal live on the settings controller
+(`open({ sectionId, fieldId })`). Palette presentation remains DC-WS-010 and
+DC-WS-053 through DC-WS-056.
 
 ## Public surface coverage
 

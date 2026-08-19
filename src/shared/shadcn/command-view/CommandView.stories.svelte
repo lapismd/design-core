@@ -75,6 +75,7 @@
 
 <script lang="ts">
   let selected = $state("none");
+  let selectedTab = $state("all");
   let dialogOpen = $state(false);
   let popoverOpen = $state(false);
 </script>
@@ -95,7 +96,9 @@
     const input = canvas.getByPlaceholderText("Type a command or search...");
     await userEvent.type(input, "split");
     await expect(canvas.getByText("Split pane right")).toBeVisible();
-    await userEvent.click(canvas.getByRole("option", { name: /Split pane right/ }));
+    await userEvent.click(
+      canvas.getByRole("option", { name: /Split pane right/ }),
+    );
     await expect(canvas.getByRole("status")).toHaveTextContent(
       "Split pane right",
     );
@@ -134,7 +137,9 @@
             >
               <CommandView.ItemIcon><Columns2Icon /></CommandView.ItemIcon>
               <CommandView.ItemLabel>Split pane right</CommandView.ItemLabel>
-              <CommandView.ItemDescription>Workspace</CommandView.ItemDescription>
+              <CommandView.ItemDescription
+                >Workspace</CommandView.ItemDescription
+              >
               <CommandView.Shortcut>⌘+\</CommandView.Shortcut>
             </CommandView.Item>
             <CommandView.Item
@@ -142,8 +147,11 @@
               onSelect={() => (selected = "Toggle right sidebar")}
             >
               <CommandView.ItemIcon><PanelRightIcon /></CommandView.ItemIcon>
-              <CommandView.ItemLabel>Toggle right sidebar</CommandView.ItemLabel>
-              <CommandView.ItemDescription>Workspace</CommandView.ItemDescription>
+              <CommandView.ItemLabel>Toggle right sidebar</CommandView.ItemLabel
+              >
+              <CommandView.ItemDescription
+                >Workspace</CommandView.ItemDescription
+              >
             </CommandView.Item>
             <CommandView.Item
               value="settings"
@@ -151,7 +159,9 @@
             >
               <CommandView.ItemIcon><SettingsIcon /></CommandView.ItemIcon>
               <CommandView.ItemLabel>Open settings</CommandView.ItemLabel>
-              <CommandView.ItemDescription>Application</CommandView.ItemDescription>
+              <CommandView.ItemDescription
+                >Application</CommandView.ItemDescription
+              >
               <CommandView.Shortcut>⌘+,</CommandView.Shortcut>
             </CommandView.Item>
           </CommandView.Group>
@@ -426,6 +436,75 @@
             {/each}
           </CommandView.Group>
         </CommandView.List>
+      </CommandView.Root>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Filters and footer"
+  exportName="FiltersAndFooter"
+  tags={["visual-pending"]}
+  play={async ({ canvas, canvasElement }) => {
+    expectCommandView(canvasElement);
+    const tablist = canvas.getByRole("tablist", { name: "Result filters" });
+    expect(tablist).toBeVisible();
+    const actions = canvas.getByRole("tab", { name: "Actions" });
+    await userEvent.click(actions);
+    expect(actions).toHaveAttribute("aria-selected", "true");
+    expect(
+      canvasElement.querySelector('[data-ui-part="footer"]'),
+    ).not.toBeNull();
+    await expect(canvas.getByText("↑↓ Select")).toBeVisible();
+  }}
+  parameters={{
+    docs: {
+      description: {
+        story:
+          "Optional Filters tablist and Footer hints. Hosts own the selected tab; Root does not.",
+      },
+      source: {
+        code: exampleSources.FiltersAndFooter,
+        language: "tsx",
+        type: "code",
+      },
+    },
+    visualDelta: {
+      images: [
+        "/visual-baselines/shadcn/command-view/filters-and-footer-chromium.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
+  }}
+>
+  {#snippet template()}
+    <div class="max-w-md">
+      <CommandView.Root shouldFilter={false}>
+        <CommandView.Input placeholder="Type a command or search..." />
+        <CommandView.Filters
+          bind:value={selectedTab}
+          tabs={[
+            { id: "all", label: "All" },
+            { id: "actions", label: "Actions" },
+            { id: "settings", label: "Settings" },
+          ]}
+        />
+        <CommandView.List>
+          <CommandView.Empty>No results found.</CommandView.Empty>
+          <CommandView.Group heading="Workspace">
+            <CommandView.Item value="split-right">
+              <CommandView.ItemLabel>Split pane right</CommandView.ItemLabel>
+            </CommandView.Item>
+          </CommandView.Group>
+        </CommandView.List>
+        <CommandView.Footer>
+          <span>↑↓ Select</span>
+          <span>↵ Open</span>
+          <span>→ Change Filter</span>
+        </CommandView.Footer>
       </CommandView.Root>
     </div>
   {/snippet}

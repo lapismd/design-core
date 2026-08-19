@@ -136,3 +136,34 @@ export const OverflowingResults = `<script lang="ts">
 		</CommandView.Group>
 	</CommandView.List>
 </CommandView.Root>`;
+
+export const FiltersAndFooter = `<script lang="ts">
+	import * as CommandView from "@lapismd/design-core/shadcn/command-view";
+
+	let tab = $state("all");
+</script>
+
+<CommandView.Root shouldFilter={false}>
+	<CommandView.Input placeholder="Type a command or search..." />
+	<CommandView.Filters
+		bind:value={tab}
+		tabs={[
+			{ id: "all", label: "All" },
+			{ id: "actions", label: "Actions" },
+			{ id: "settings", label: "Settings" },
+		]}
+	/>
+	<CommandView.List>
+		<CommandView.Empty>No results found.</CommandView.Empty>
+		<CommandView.Group heading="Workspace">
+			<CommandView.Item value="split-right">
+				<CommandView.ItemLabel>Split pane right</CommandView.ItemLabel>
+			</CommandView.Item>
+		</CommandView.Group>
+	</CommandView.List>
+	<CommandView.Footer>
+		<span>↑↓ Select</span>
+		<span>↵ Open</span>
+		<span>→ Change Filter</span>
+	</CommandView.Footer>
+</CommandView.Root>`;

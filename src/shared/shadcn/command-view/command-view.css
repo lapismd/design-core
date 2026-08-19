@@ -27,6 +27,50 @@
   border-block-end: 1px solid var(--ui-command-view-border-color);
 }
 
+[data-ui-component="command-view"][data-ui-part="input-wrapper"]:has(
+    + [data-ui-part="filters"]
+  ) {
+  border-block-end: 0;
+}
+
+[data-ui-component="command-view"][data-ui-part="filters"] {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  padding: 0.375rem 0.75rem 0.625rem;
+  border-block-end: 1px solid var(--ui-command-view-border-color);
+}
+
+[data-ui-component="command-view"][data-ui-part="filters"] [role="tab"] {
+  appearance: none;
+  border: 0;
+  border-radius: 999px;
+  padding: 0.25rem 0.75rem;
+  color: var(--ui-command-view-muted-foreground);
+  background: transparent;
+  font: inherit;
+  font-size: 0.8125rem;
+  line-height: 1.25;
+  cursor: pointer;
+}
+
+[data-ui-component="command-view"][data-ui-part="filters"]
+  [role="tab"][data-state="active"] {
+  color: var(--ui-command-view-foreground);
+  background: var(--ui-command-view-item-selected-background);
+}
+
+[data-ui-component="command-view"][data-ui-part="footer"] {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
+  padding: 0.5rem 0.75rem;
+  border-block-start: 1px solid var(--ui-command-view-border-color);
+  color: var(--ui-command-view-muted-foreground);
+  font-size: 0.75rem;
+  line-height: 1.25;
+}
+
 [data-ui-component="command-view"][data-ui-part="input-wrapper"]
   > [data-ui-component="input-group"][data-ui-part="input-group"],
 [data-ui-component="command-view"][data-ui-part="input-wrapper"]
@@ -135,6 +179,15 @@
   font-size: 0.75rem;
   line-height: 1.25;
   text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+[data-ui-component="command-view"][data-ui-part="trailing"] {
+  grid-area: shortcut;
+  margin-inline-start: auto;
+  color: var(--ui-command-view-muted-foreground);
+  font-size: 0.75rem;
+  line-height: 1.25;
   white-space: nowrap;
 }
 

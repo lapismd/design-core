@@ -2,6 +2,7 @@
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent, waitFor } from "storybook/test";
   import AppShellRoot from "../app-shell/AppShellRoot.svelte";
+  import AppShellSettingsDialog from "../app-shell/AppShellSettingsDialog.svelte";
   import { AppShellController } from "../core/app-shell-controller.svelte.js";
   import { APP_SHELL_SETTING_IDS } from "../core/built-in-settings.svelte.js";
   import * as exampleSources from "./WorkspaceCommandPalette.example-sources.js";
@@ -27,6 +28,28 @@
           title: "Toggle right sidebar",
           category: "Workspace",
           icon: "panel-right",
+          callback: () => true,
+        },
+      ],
+    });
+  }
+
+  function createGroupedPaletteApp(): AppShellController {
+    return new AppShellController({
+      configuration: {
+        values: { [APP_SHELL_SETTING_IDS.mobileMode]: "never" },
+      },
+      commands: [
+        {
+          id: "alpha:one",
+          title: "Alpha one",
+          sourcePlugin: "alpha",
+          callback: () => true,
+        },
+        {
+          id: "beta:one",
+          title: "Beta one",
+          sourcePlugin: "beta",
           callback: () => true,
         },
       ],
@@ -69,6 +92,8 @@
   const previewApp = createPaletteApp();
   const emptyApp = createPaletteApp();
   const overflowApp = createOverflowPaletteApp();
+  const groupedApp = createGroupedPaletteApp();
+  const settingsApp = createPaletteApp();
 
   const { Story } = defineMeta({
     title: "Workspace/Components/Command Palette",
@@ -100,8 +125,20 @@
     ).toBeVisible();
     expectPaletteCommandView(canvasElement);
     expectPaletteScrollArea(canvasElement);
+    await expect(canvas.getByRole("tab", { name: "All" })).toHaveAttribute(
+      "aria-selected",
+      "true",
+    );
+    await expect(canvas.getByRole("tab", { name: "Actions" })).toBeVisible();
+    await expect(canvas.getByRole("tab", { name: "Settings" })).toBeVisible();
   }}
   parameters={{
+    docs: {
+      description: {
+        story:
+          "The open palette shows filter tabs under search and a keyboard footer.",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/workspace/command-palette/open-palette-chromium.png",
@@ -131,7 +168,7 @@
   tags={["visual-pending"]}
   play={async ({ canvas, canvasElement }) => {
     await waitFor(() => expect(overflowApp.ready).toBe(true));
-    overflowApp.commands.openPalette();
+    overflowApp.commands.openPalette({ tab: "actions" });
     await expect(
       await canvas.findByRole("dialog", { name: "Command Palette" }),
     ).toBeVisible();
@@ -148,6 +185,12 @@
     await expect(canvas.getByText("Overflow command 24")).toBeInTheDocument();
   }}
   parameters={{
+    docs: {
+      description: {
+        story:
+          "The Actions tab scrolls long command lists through the Command View viewport.",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/workspace/command-palette/overflowing-results-chromium.png",
@@ -193,6 +236,11 @@
     });
   }}
   parameters={{
+    docs: {
+      description: {
+        story: "Typing a query filters commands and selecting one runs it.",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/workspace/command-palette/searches-and-runs-commands-chromium.png",
@@ -235,6 +283,11 @@
     ).toBeVisible();
   }}
   parameters={{
+    docs: {
+      description: {
+        story: "A query with no matches keeps the empty-result listbox option.",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/workspace/command-palette/empty-search-chromium.png",
@@ -253,6 +306,118 @@
           <div class="ui-workspace-overlay-story__content">
             Search application commands
           </div>
+        </AppShellRoot>
+      </div>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Grouped actions"
+  tags={["visual-pending"]}
+  play={async ({ canvas, canvasElement }) => {
+    await waitFor(() => expect(groupedApp.ready).toBe(true));
+    groupedApp.commands.openPalette({ tab: "actions" });
+    await canvas.findByRole("dialog", { name: "Command Palette" });
+    expectPaletteCommandView(canvasElement);
+    await expect(canvas.getByRole("tab", { name: "Actions" })).toHaveAttribute(
+      "aria-selected",
+      "true",
+    );
+    await expect(canvas.getByText("alpha")).toBeVisible();
+    await expect(canvas.getByText("beta")).toBeVisible();
+    await expect(canvas.getByText("Alpha one")).toBeVisible();
+    await expect(canvas.getByText("Beta one")).toBeVisible();
+  }}
+  parameters={{
+    docs: {
+      description: {
+        story:
+          "The Actions tab groups commands by sourcePlugin, then category.",
+      },
+    },
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/command-palette/grouped-actions-chromium.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
+  }}
+>
+  {#snippet template()}
+    <div class="ui-workspace-overlay-story">
+      <div class="ui-workspace-overlay-story__frame">
+        <AppShellRoot controller={groupedApp} theme="inherit">
+          <div class="ui-workspace-overlay-story__content">
+            Grouped command contributions
+          </div>
+        </AppShellRoot>
+      </div>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Reveals a setting"
+  tags={["visual-pending"]}
+  play={async ({ canvas, canvasElement }) => {
+    await waitFor(() => expect(settingsApp.ready).toBe(true));
+    settingsApp.commands.openPalette({ tab: "settings" });
+    await canvas.findByRole("dialog", { name: "Command Palette" });
+    expectPaletteCommandView(canvasElement);
+    const input = await canvas.findByRole("combobox", {
+      name: "Search commands",
+    });
+    await userEvent.type(input, "show ribbon");
+    await userEvent.click(await canvas.findByText("Show ribbon"));
+    await waitFor(() => {
+      expect(settingsApp.settings.dialogOpen).toBe(true);
+    });
+    await waitFor(() => {
+      const field = canvasElement.ownerDocument.querySelector(
+        '[data-setting-id="appearence.interface.showRibbon"]',
+      );
+      expect(field).not.toBeNull();
+      expect(field).toHaveClass("ui-workspace-settings__search-hit");
+    });
+  }}
+  parameters={{
+    docs: {
+      description: {
+        story:
+          "A Settings palette row opens the settings dialog and highlights the field.",
+      },
+    },
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/command-palette/reveals-a-setting-chromium.png",
+      ],
+      opacity: 0.5,
+      colorInversion: false,
+      align: "canvas",
+      placement: "right",
+    },
+  }}
+>
+  {#snippet template()}
+    <div class="ui-workspace-overlay-story">
+      <div class="ui-workspace-overlay-story__frame">
+        <AppShellRoot controller={settingsApp} theme="inherit">
+          <div class="ui-workspace-overlay-story__content">
+            Jump to a setting
+          </div>
+          <AppShellSettingsDialog
+            bind:open={
+              () => settingsApp.settings.dialogOpen,
+              (next) => {
+                settingsApp.settings.dialogOpen = next;
+                if (!next) settingsApp.settings.revealFieldId = null;
+              }
+            }
+          />
         </AppShellRoot>
       </div>
     </div>

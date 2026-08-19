@@ -4,19 +4,20 @@ Shadcn form controls provide the low-level accessible inputs used directly or in
 
 ## Public surface coverage
 
-| Surface     | Public boundary                           | Requirement |
-| ----------- | ----------------------------------------- | ----------- |
-| Checkbox    | `@lapismd/design-core/shadcn/checkbox`    | DC-SHA-024  |
-| Command      | `@lapismd/design-core/shadcn/command`      | DC-SHA-025  |
-| Command View | `@lapismd/design-core/shadcn/command-view` | DC-SHA-051  |
-| Field        | `@lapismd/design-core/shadcn/field`        | DC-SHA-026  |
-| Input       | `@lapismd/design-core/shadcn/input`       | DC-SHA-027  |
-| Input Group | `@lapismd/design-core/shadcn/input-group` | DC-SHA-028  |
-| Label       | `@lapismd/design-core/shadcn/label`       | DC-SHA-029  |
-| Select      | `@lapismd/design-core/shadcn/select`      | DC-SHA-030  |
-| Slider      | `@lapismd/design-core/shadcn/slider`      | DC-SHA-031  |
-| Switch      | `@lapismd/design-core/shadcn/switch`      | DC-SHA-032  |
-| Textarea    | `@lapismd/design-core/shadcn/textarea`    | DC-SHA-033  |
+| Surface              | Public boundary                            | Requirement |
+| -------------------- | ------------------------------------------ | ----------- |
+| Checkbox             | `@lapismd/design-core/shadcn/checkbox`     | DC-SHA-024  |
+| Command              | `@lapismd/design-core/shadcn/command`      | DC-SHA-025  |
+| Command View         | `@lapismd/design-core/shadcn/command-view` | DC-SHA-051  |
+| Command View filters | `@lapismd/design-core/shadcn/command-view` | DC-SHA-052  |
+| Field                | `@lapismd/design-core/shadcn/field`        | DC-SHA-026  |
+| Input                | `@lapismd/design-core/shadcn/input`        | DC-SHA-027  |
+| Input Group          | `@lapismd/design-core/shadcn/input-group`  | DC-SHA-028  |
+| Label                | `@lapismd/design-core/shadcn/label`        | DC-SHA-029  |
+| Select               | `@lapismd/design-core/shadcn/select`       | DC-SHA-030  |
+| Slider               | `@lapismd/design-core/shadcn/slider`       | DC-SHA-031  |
+| Switch               | `@lapismd/design-core/shadcn/switch`       | DC-SHA-032  |
+| Textarea             | `@lapismd/design-core/shadcn/textarea`     | DC-SHA-033  |
 
 ## DC-SHA-023 — Shared Shadcn invariants
 
@@ -59,6 +60,17 @@ bits-ui command API bindable.
 - Input MUST expose a replaceable `start` snippet, MUST NOT bake a Lucide icon into the public contract, and MUST NOT paint a box border around the search field.
 - Item rows MUST compose icon, label, optional description, and shortcut parts without a default check icon, and the icon MUST stay vertically centered on the label row.
 - Overflowing lists MUST scroll through `@lapismd/design-core/shadcn/scroll-area`, and the catalog MUST demonstrate inline, Dialog, and Popover hosts.
+
+## DC-SHA-052 — Command View filters and footer
+
+**Requirement.** The Command View family MUST expose optional Filters and Footer parts that hosts MAY compose under the input and after the list. Root MUST NOT own tab state or overlay chrome.
+
+### Acceptance details
+
+- The public boundary remains `@lapismd/design-core/shadcn/command-view`.
+- Filters MUST render a tablist of host-supplied tabs, and Footer MUST render host-supplied hint content.
+- Icon pickers and settings comboboxes MUST remain valid without Filters or Footer.
+- The catalog MUST demonstrate Filters and Footer without a second runtime contract.
 
 ## DC-SHA-026 — Field
 

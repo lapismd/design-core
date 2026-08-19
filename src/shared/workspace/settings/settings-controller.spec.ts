@@ -75,6 +75,25 @@ describe("WorkspaceSettingsController", () => {
     expect(controller.search("theme")[0]).toMatchObject({ fieldId: "theme" });
   });
 
+  it("opens the dialog and reveals a field or section", () => {
+    const controller = new WorkspaceSettingsController({
+      sections: sections(),
+    });
+    expect(controller.open({ fieldId: "theme" })).toBe(true);
+    expect(controller.dialogOpen).toBe(true);
+    expect(controller.selectedSectionId).toBe("appearance");
+    expect(controller.revealFieldId).toBe("theme");
+    expect(
+      controller.listPaletteEntries("").map((entry) => entry.title),
+    ).toContain("Appearance");
+    expect(controller.listPaletteEntries("theme")[0]).toMatchObject({
+      fieldId: "theme",
+    });
+    controller.close();
+    expect(controller.dialogOpen).toBe(false);
+    expect(controller.revealFieldId).toBeNull();
+  });
+
   it("validates the integer-list presentation used by the complete demo", () => {
     const controller = new WorkspaceSettingsController({
       sections: [

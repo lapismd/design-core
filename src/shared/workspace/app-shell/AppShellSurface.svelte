@@ -59,7 +59,6 @@
       view: { type: "empty", state: {} },
     });
   let resolvedCreateTab = $derived(createTab ?? createEmptyTab);
-  let settingsOpen = $state(false);
   let observedWidth = $state(Number.POSITIVE_INFINITY);
   let requestedMode = $derived(
     displayMode ?? context.controller.mobile.requestedDisplayMode,
@@ -78,7 +77,7 @@
   $effect(() => context.controller.renderer.setDisplayMode(resolvedMode));
 
   function openSettings() {
-    settingsOpen = true;
+    context.controller.settings.open();
     onOpenSettings?.();
   }
 
@@ -128,4 +127,13 @@
   <AppShellStatusBar />
 {/if}
 
-<AppShellSettingsDialog bind:open={settingsOpen} title={settingsTitle} />
+<AppShellSettingsDialog
+  bind:open={
+    () => context.controller.settings.dialogOpen,
+    (next) => {
+      context.controller.settings.dialogOpen = next;
+      if (!next) context.controller.settings.revealFieldId = null;
+    }
+  }
+  title={settingsTitle}
+/>

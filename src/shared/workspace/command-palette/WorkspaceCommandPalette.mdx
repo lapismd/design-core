@@ -1,4 +1,4 @@
-import { Meta, Canvas } from "@storybook/addon-docs/blocks";
+import { Meta, Canvas, Description } from "@storybook/addon-docs/blocks";
 import * as Stories from "./WorkspaceCommandPalette.stories.svelte";
 
 <Meta of={Stories} />
@@ -9,4 +9,38 @@ The command palette renders the controller's available commands and
 application-provided palette results. Search and execution use the same
 context-aware command path as hotkeys and programmatic calls.
 
+## Open palette
+
+<Description of={Stories.OpenPalette} />
+
 <Canvas of={Stories.OpenPalette} />
+
+## Overflowing results
+
+<Description of={Stories.OverflowingResults} />
+
+<Canvas of={Stories.OverflowingResults} />
+
+## Searches and runs commands
+
+<Description of={Stories.SearchesAndRunsCommands} />
+
+<Canvas of={Stories.SearchesAndRunsCommands} />
+
+## Empty search
+
+<Description of={Stories.EmptySearch} />
+
+<Canvas of={Stories.EmptySearch} />
+
+## Grouped actions
+
+<Description of={Stories.GroupedActions} />
+
+<Canvas of={Stories.GroupedActions} />
+
+## Reveals a setting
+
+<Description of={Stories.RevealsASetting} />
+
+<Canvas of={Stories.RevealsASetting} />

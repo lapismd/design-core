@@ -62,6 +62,19 @@ function flattenFields(
   return result;
 }
 
+function collectSettingGroups(
+  fields: WorkspaceSettingField[],
+  path: string[],
+  visit: (group: WorkspaceSettingGroup, path: string[]) => void,
+): void {
+  for (const field of fields) {
+    if (field.type !== "group") continue;
+    const next = [...path, field.title];
+    visit(field, next);
+    collectSettingGroups(field.fields, next, visit);
+  }
+}
+
 function defaultValues(
   sections: WorkspaceSettingsSection[],
 ): Record<string, unknown> {
@@ -217,6 +230,8 @@ export class WorkspaceSettingsController {
   saving = $state(false);
   validationErrors = $state<Record<string, string>>({});
   selectedSectionId = $state("");
+  dialogOpen = $state(false);
+  revealFieldId = $state<string | null>(null);
 
   readonly #events = new WorkspaceEventDispatcher<WorkspaceSettingsEventMap>();
   readonly #persistence;
@@ -348,6 +363,62 @@ export class WorkspaceSettingsController {
     }
     this.selectedSectionId = sectionId;
     return true;
+  }
+
+  open(options: { sectionId?: string; fieldId?: string } = {}): boolean {
+    if (options.fieldId) {
+      const indexed = this.#field(options.fieldId);
+      if (indexed) {
+        this.selectedSectionId = indexed.section.id;
+        this.revealFieldId = options.fieldId;
+      } else if (options.sectionId && !this.selectSection(options.sectionId)) {
+        return false;
+      } else {
+        this.revealFieldId = null;
+      }
+    } else if (options.sectionId && !this.selectSection(options.sectionId)) {
+      return false;
+    } else {
+      this.revealFieldId = null;
+    }
+    this.dialogOpen = true;
+    return true;
+  }
+
+  close(): void {
+    this.dialogOpen = false;
+    this.revealFieldId = null;
+  }
+
+  listPaletteEntries(query: string): WorkspaceSettingsSearchResult[] {
+    const normalized = query.trim();
+    if (normalized) return this.search(normalized);
+    const results: WorkspaceSettingsSearchResult[] = [];
+    for (const section of this.sections) {
+      results.push({
+        sectionId: section.id,
+        fieldId: null,
+        title: section.title,
+        description: section.description,
+        path: [section.title],
+        score: 0,
+      });
+      collectSettingGroups(
+        section.fields ?? [],
+        [section.title],
+        (group, path) => {
+          results.push({
+            sectionId: section.id,
+            fieldId: null,
+            title: group.title,
+            description: group.description,
+            path,
+            score: 1,
+          });
+        },
+      );
+    }
+    return results;
   }
 
   update(id: string, value: unknown): boolean {
@@ -522,6 +593,7 @@ export class WorkspaceSettingsController {
 
   destroy(): void {
     if (this.#saveTimer) clearTimeout(this.#saveTimer);
+    this.close();
     this.#events.clear();
   }
 

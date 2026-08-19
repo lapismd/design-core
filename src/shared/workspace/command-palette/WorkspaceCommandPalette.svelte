@@ -2,9 +2,10 @@
   import * as CommandView from "@lapismd/design-core/shadcn/command-view";
   import { tick } from "svelte";
   import type { AppShellController } from "../core/app-shell-controller.svelte.js";
-  import type {
-    CommandPaletteItem,
-    Hotkey,
+  import {
+    groupPaletteItems,
+    type CommandPaletteItem,
+    type Hotkey,
   } from "../core/command-manager.svelte.js";
   import WorkspaceIcon from "../icon/WorkspaceIcon.svelte";
   import "./WorkspaceCommandPalette.css";
@@ -21,11 +22,18 @@
   let results = $state<CommandPaletteItem[]>([]);
   let input = $state<HTMLInputElement | null>(null);
   let request = 0;
+  let tabs = $derived(app.commands.listPaletteTabs());
+  let groups = $derived(groupPaletteItems(results));
 
   $effect(() => {
-    if (!app.commands.paletteOpen) return;
+    if (!app.commands.paletteOpen) {
+      query = "";
+      results = [];
+      return;
+    }
     const current = ++request;
-    void app.commands.searchPalette(query).then((next) => {
+    const tab = app.commands.paletteTab;
+    void app.commands.searchPalette(query, { tab }).then((next) => {
       if (current === request) results = next;
     });
   });
@@ -44,6 +52,38 @@
   function close(): void {
     app.commands.closePalette();
     query = "";
+  }
+
+  function setTab(tab: string): void {
+    app.commands.paletteTab = tab;
+  }
+
+  function cycleTab(delta: number): void {
+    if (tabs.length === 0) return;
+    const index = Math.max(
+      0,
+      tabs.findIndex((tab) => tab.id === app.commands.paletteTab),
+    );
+    const next = tabs[(index + delta + tabs.length) % tabs.length];
+    if (next) setTab(next.id);
+  }
+
+  function onSearchKeydown(event: KeyboardEvent): void {
+    if (
+      event.key === "ArrowRight" ||
+      (event.shiftKey && event.key === "ArrowRight")
+    ) {
+      event.preventDefault();
+      cycleTab(1);
+      return;
+    }
+    if (
+      event.key === "ArrowLeft" ||
+      (event.shiftKey && event.key === "ArrowLeft")
+    ) {
+      event.preventDefault();
+      cycleTab(-1);
+    }
   }
 
   async function select(item: CommandPaletteItem): Promise<void> {
@@ -79,16 +119,25 @@
           {placeholder}
           autocomplete="off"
           spellcheck="false"
+          onkeydown={onSearchKeydown}
         >
           {#snippet start()}
             <WorkspaceIcon name="search" />
           {/snippet}
         </CommandView.Input>
+        {#if tabs.length > 1}
+          <CommandView.Filters
+            {tabs}
+            value={app.commands.paletteTab}
+            onValueChange={setTab}
+            label="Command palette filters"
+          />
+        {/if}
         <CommandView.List aria-label="Commands and actions">
           <CommandView.Empty>No results found.</CommandView.Empty>
-          {#if results.length > 0}
-            <CommandView.Group heading="Commands and actions">
-              {#each results as item (`${item.providerId}:${item.id}`)}
+          {#each groups as group, index (`${group.heading}:${index}`)}
+            <CommandView.Group heading={group.heading || undefined}>
+              {#each group.items as item (`${item.providerId}:${item.id}`)}
                 <CommandView.Item
                   value={`${item.providerId}:${item.id}`}
                   onSelect={() => void select(item)}
@@ -108,12 +157,26 @@
                     <CommandView.Shortcut>
                       {displayHotkey(item.hotkeys[0])}
                     </CommandView.Shortcut>
+                  {:else if item.trailing}
+                    <span
+                      data-ui-component="command-view"
+                      data-ui-part="trailing"
+                    >
+                      {item.trailing}
+                    </span>
                   {/if}
                 </CommandView.Item>
               {/each}
             </CommandView.Group>
-          {/if}
+          {/each}
         </CommandView.List>
+        <CommandView.Footer>
+          <span>↑↓ Select</span>
+          <span>↵ Open</span>
+          {#if tabs.length > 1}
+            <span>→ or ⇧→ Change Filter</span>
+          {/if}
+        </CommandView.Footer>
       </CommandView.Root>
     </div>
   </div>

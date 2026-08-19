@@ -42,6 +42,26 @@ export interface AppShellCommand {
   ): void | boolean | Promise<void | boolean>;
 }
 
+export const COMMAND_PALETTE_TAB_ALL = "all";
+export const COMMAND_PALETTE_TAB_ACTIONS = "actions";
+export const COMMAND_PALETTE_TAB_SETTINGS = "settings";
+
+export const ALL_TAB_EMPTY_LIMITS = {
+  actions: 6,
+  settings: 5,
+  provider: 5,
+} as const;
+
+export interface CommandPaletteTab {
+  id: string;
+  label: string;
+  order?: number;
+}
+
+export interface CommandPaletteSearchOptions {
+  tab?: string;
+}
+
 export interface CommandPaletteItem {
   id: string;
   title: string;
@@ -49,16 +69,56 @@ export interface CommandPaletteItem {
   icon?: string;
   hotkeys?: Hotkey[];
   providerId: string;
+  tab?: string;
+  group?: string;
+  trailing?: string;
   run(): void | Promise<unknown>;
 }
 
 export interface CommandPaletteProvider {
   id: string;
   prefix?: string;
+  tab?: CommandPaletteTab;
+  emptyQueryLimit?: number;
   search(
     query: string,
     context: AppShellCommandContext,
   ): CommandPaletteItem[] | Promise<CommandPaletteItem[]>;
+}
+
+export interface CommandPaletteGroup {
+  heading: string;
+  items: CommandPaletteItem[];
+}
+
+export function groupPaletteItems(
+  items: CommandPaletteItem[],
+): CommandPaletteGroup[] {
+  const groups = new Map<string, CommandPaletteItem[]>();
+  const order: string[] = [];
+  for (const item of items) {
+    const heading = item.group?.trim() ?? "";
+    if (!groups.has(heading)) {
+      groups.set(heading, []);
+      order.push(heading);
+    }
+    groups.get(heading)?.push(item);
+  }
+  return order.map((heading) => ({
+    heading,
+    items: groups.get(heading) ?? [],
+  }));
+}
+
+export function actionPaletteGroup(command: AppShellCommand): string {
+  return command.sourcePlugin?.trim() || command.category?.trim() || "Commands";
+}
+
+function limitItems(
+  items: CommandPaletteItem[],
+  limit?: number,
+): CommandPaletteItem[] {
+  return limit == null ? items : items.slice(0, limit);
 }
 
 export interface CommandConflict {
@@ -174,6 +234,7 @@ export class CommandManager {
   hotkeyOverrides = $state<HotkeyOverrides>({});
   ready = $state(false);
   paletteOpen = $state(false);
+  paletteTab = $state(COMMAND_PALETTE_TAB_ALL);
 
   readonly #events = new WorkspaceEventDispatcher<CommandManagerEventMap>();
   readonly #scopes: CommandKeymapScope[] = [];
@@ -387,13 +448,65 @@ export class CommandManager {
     return false;
   }
 
-  async searchPalette(query: string): Promise<CommandPaletteItem[]> {
+  listPaletteTabs(): CommandPaletteTab[] {
+    const tabs = new Map<string, CommandPaletteTab>();
+    tabs.set(COMMAND_PALETTE_TAB_ALL, {
+      id: COMMAND_PALETTE_TAB_ALL,
+      label: "All",
+      order: 0,
+    });
+    tabs.set(COMMAND_PALETTE_TAB_ACTIONS, {
+      id: COMMAND_PALETTE_TAB_ACTIONS,
+      label: "Actions",
+      order: 30,
+    });
+    if (this.app.settings.sections.length > 0) {
+      tabs.set(COMMAND_PALETTE_TAB_SETTINGS, {
+        id: COMMAND_PALETTE_TAB_SETTINGS,
+        label: "Settings",
+        order: 40,
+      });
+    }
+    for (const provider of this.paletteProviders) {
+      if (!provider.tab) continue;
+      tabs.set(provider.tab.id, {
+        ...provider.tab,
+        order: provider.tab.order ?? 20,
+      });
+    }
+    return [...tabs.values()].sort(
+      (left, right) =>
+        (left.order ?? 0) - (right.order ?? 0) ||
+        left.label.localeCompare(right.label),
+    );
+  }
+
+  resolvePaletteTab(tab?: string): string {
+    if (!tab || tab === COMMAND_PALETTE_TAB_ALL) {
+      return COMMAND_PALETTE_TAB_ALL;
+    }
+    return this.listPaletteTabs().some((entry) => entry.id === tab)
+      ? tab
+      : COMMAND_PALETTE_TAB_ALL;
+  }
+
+  async searchPalette(
+    query: string,
+    options: CommandPaletteSearchOptions = {},
+  ): Promise<CommandPaletteItem[]> {
+    const tab = this.resolvePaletteTab(options.tab ?? this.paletteTab);
     const normalized = query.trim().toLocaleLowerCase();
+    const empty = normalized.length === 0;
     const context = this.createContext("palette");
-    const commands = this.commands
+    const extraTabs = this.listPaletteTabs().filter(
+      (entry) => entry.id !== COMMAND_PALETTE_TAB_ALL,
+    );
+    const curated =
+      empty && tab === COMMAND_PALETTE_TAB_ALL && extraTabs.length > 1;
+    const actions = this.commands
       .filter((command) => this.isAvailable(command, context))
       .filter((command) =>
-        `${command.title} ${command.name ?? ""} ${command.category ?? ""}`
+        `${command.title} ${command.name ?? ""} ${command.category ?? ""} ${command.sourcePlugin ?? ""}`
           .toLocaleLowerCase()
           .includes(normalized),
       )
@@ -405,6 +518,8 @@ export class CommandManager {
           icon: command.icon,
           hotkeys: this.getHotkeys(command.id),
           providerId: "commands",
+          tab: COMMAND_PALETTE_TAB_ACTIONS,
+          group: actionPaletteGroup(command),
           run: () => this.execute(command.id, { source: "palette" }),
         }),
       );
@@ -414,9 +529,89 @@ export class CommandManager {
           (provider) =>
             !provider.prefix || query.trimStart().startsWith(provider.prefix),
         )
-        .map((provider) => provider.search(query, context)),
+        .map(async (provider) => {
+          const items = await provider.search(query, context);
+          return items.map(
+            (item): CommandPaletteItem => ({
+              ...item,
+              tab: item.tab ?? provider.tab?.id ?? COMMAND_PALETTE_TAB_ACTIONS,
+              group: item.group,
+            }),
+          );
+        }),
     );
-    return [...commands, ...provided.flat()];
+    const providerItems = provided.flat();
+    const settings = this.listSettingsPaletteItems(query);
+
+    if (tab === COMMAND_PALETTE_TAB_ACTIONS) {
+      return [
+        ...actions,
+        ...providerItems.filter(
+          (item) =>
+            (item.tab ?? COMMAND_PALETTE_TAB_ACTIONS) ===
+            COMMAND_PALETTE_TAB_ACTIONS,
+        ),
+      ];
+    }
+    if (tab === COMMAND_PALETTE_TAB_SETTINGS) {
+      return settings;
+    }
+    if (tab !== COMMAND_PALETTE_TAB_ALL) {
+      return providerItems.filter((item) => item.tab === tab);
+    }
+
+    const chunks: CommandPaletteItem[] = [];
+    for (const provider of this.paletteProviders) {
+      const providerTab = provider.tab?.id;
+      if (!providerTab) continue;
+      const limit = curated
+        ? (provider.emptyQueryLimit ?? ALL_TAB_EMPTY_LIMITS.provider)
+        : undefined;
+      chunks.push(
+        ...limitItems(
+          providerItems.filter((item) => item.tab === providerTab),
+          limit,
+        ),
+      );
+    }
+    chunks.push(
+      ...limitItems(
+        [
+          ...actions,
+          ...providerItems.filter(
+            (item) =>
+              (item.tab ?? COMMAND_PALETTE_TAB_ACTIONS) ===
+              COMMAND_PALETTE_TAB_ACTIONS,
+          ),
+        ],
+        curated ? ALL_TAB_EMPTY_LIMITS.actions : undefined,
+      ),
+    );
+    chunks.push(
+      ...limitItems(
+        settings,
+        curated ? ALL_TAB_EMPTY_LIMITS.settings : undefined,
+      ),
+    );
+    return chunks;
+  }
+
+  listSettingsPaletteItems(query: string): CommandPaletteItem[] {
+    return this.app.settings.listPaletteEntries(query).map((result) => ({
+      id: `settings:${result.sectionId}:${result.fieldId ?? "section"}:${result.path.join("/")}`,
+      title: result.title,
+      subtitle: result.path.join(" › "),
+      icon: "settings",
+      providerId: "settings",
+      tab: COMMAND_PALETTE_TAB_SETTINGS,
+      group: result.path[0] ?? "Settings",
+      run: () => {
+        this.app.settings.open({
+          sectionId: result.sectionId,
+          fieldId: result.fieldId ?? undefined,
+        });
+      },
+    }));
   }
 
   async loadHotkeys(): Promise<void> {
@@ -457,17 +652,21 @@ export class CommandManager {
     }
   }
 
-  openPalette(): void {
+  openPalette(options: CommandPaletteSearchOptions = {}): void {
     this.paletteOpen = true;
+    this.paletteTab = this.resolvePaletteTab(options.tab);
   }
 
   closePalette(): void {
     this.paletteOpen = false;
+    this.paletteTab = COMMAND_PALETTE_TAB_ALL;
   }
 
   destroy(): void {
     this.commands = [];
     this.paletteProviders = [];
+    this.paletteOpen = false;
+    this.paletteTab = COMMAND_PALETTE_TAB_ALL;
     this.#scopes.splice(0);
     this.#events.clear();
   }

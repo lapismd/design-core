@@ -46,6 +46,8 @@ import * as CommandView from "@lapismd/design-core/shadcn/command-view";
 - `Root` composes Command keyboard navigation. Default `shouldFilter={true}`.
 - `Input` uses Input Group and a replaceable `start` snippet. The default search
   icon is an implementation fallback, not a public Lucide contract.
+- `Filters` is an optional tablist under the input. Hosts own the selected tab.
+- `Footer` is optional host-supplied hint content after the list.
 - `List` owns overflow through the public ScrollArea viewport
   (`--ui-command-view-list-max-height`).
 - `Group` and `Empty` wrap the existing Command parts.

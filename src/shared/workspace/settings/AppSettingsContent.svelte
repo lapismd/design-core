@@ -69,6 +69,23 @@
     }, SETTINGS_SEARCH_HIT_MS);
   }
 
+  $effect(() => {
+    const fieldId = settingsState.controller.revealFieldId;
+    if (!fieldId) return;
+    void revealPendingField(fieldId);
+  });
+
+  async function revealPendingField(fieldId: string): Promise<void> {
+    await openSearchResult({
+      sectionId: settingsState.controller.selectedSectionId,
+      fieldId,
+      title: "",
+      path: [],
+      score: 0,
+    });
+    settingsState.controller.revealFieldId = null;
+  }
+
   async function openSearchResult(result: WorkspaceSettingsSearchResult) {
     settingsState.controller.selectSection(result.sectionId);
     settingsState.query = "";
