@@ -1036,6 +1036,41 @@
   height: 0.75rem;
 }
 
+[data-ui-component="ai-chat-composer-drawer"]
+  [data-ai-chat-part="drawer-content"]
+  [data-ui-part="feedback-list"] {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+[data-ui-component="ai-chat-composer-drawer"]
+  [data-ai-chat-part="drawer-content"]
+  [data-ui-part="feedback-option"] {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 0.5rem;
+  border: 0;
+  border-radius: var(--ui-ai-chat-attachment-radius);
+  background: transparent;
+  padding: 0.375rem;
+  color: var(--ui-ai-chat-attachment-foreground);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+[data-ui-component="ai-chat-composer-drawer"]
+  [data-ai-chat-part="drawer-content"]
+  [data-ui-part="feedback-option"]:hover:not(:disabled),
+[data-ui-component="ai-chat-composer-drawer"]
+  [data-ai-chat-part="drawer-content"]
+  [data-ui-part="feedback-option"][data-selected="true"] {
+  background: var(--ui-ai-chat-attachment-background-hover);
+}
+
 [data-ui-component="ai-chat-dictation-button"] {
   display: inline-flex;
 }

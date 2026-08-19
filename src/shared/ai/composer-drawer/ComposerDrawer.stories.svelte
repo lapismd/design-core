@@ -136,10 +136,11 @@
       >
         {#snippet drawer()}
           <ComposerDrawer count={1} label="User feedback requested">
-            <div data-story="feedback-list">
+            <div data-ui-part="feedback-list" data-story="feedback-list">
               <strong>Do you want to proceed?</strong>
               <button
                 type="button"
+                data-ui-part="feedback-option"
                 data-selected={selectedDisabledFeedback === "yes"}
                 onclick={() => {
                   selectedDisabledFeedback = "yes";
@@ -280,6 +281,29 @@
     },
   }}
   tags={["visual-approved"]}
+  play={async ({ canvas, canvasElement }) => {
+    const option = canvas.getByRole("button", { name: "A Yes" });
+    const selectedOption = canvas.getByRole("button", {
+      name: /don’t ask again/,
+    });
+    const drawer = canvasElement.querySelector(
+      '[data-ui-component="ai-chat-composer-drawer"]',
+    ) as HTMLElement | null;
+    expect(drawer).not.toBeNull();
+    const drawerFill = getComputedStyle(drawer!).backgroundColor;
+    const rest = getComputedStyle(option).backgroundColor;
+    const { page } = await import("vitest/browser");
+    await page.elementLocator(option).hover();
+    const hovered = getComputedStyle(option).backgroundColor;
+    expect(hovered).not.toBe(rest);
+    expect(hovered).not.toBe(drawerFill);
+    const selectedRest = getComputedStyle(selectedOption).backgroundColor;
+    await userEvent.click(selectedOption);
+    await expect(selectedOption).toHaveAttribute("data-selected", "true");
+    const selected = getComputedStyle(selectedOption).backgroundColor;
+    expect(selected).not.toBe(selectedRest);
+    expect(selected).not.toBe(drawerFill);
+  }}
 >
   {#snippet template()}
     <div data-story="drawer-composer">
@@ -290,11 +314,12 @@
             count={1}
             label="User feedback requested"
           >
-            <div data-story="feedback-list">
+            <div data-ui-part="feedback-list" data-story="feedback-list">
               <strong>Do you want to proceed?</strong>
               {#each [{ key: "A", label: "Yes" }, { key: "B", label: "Yes, and don’t ask again for `git add` commands" }, { key: "C", label: "No, and tell me what to do differently" }] as option (option.key)}
                 <button
                   type="button"
+                  data-ui-part="feedback-option"
                   data-selected={selectedFeedback === option.key}
                   onclick={() => {
                     selectedFeedback = option.key;
@@ -424,32 +449,8 @@
     font-size: 0.625rem;
   }
 
-  :global([data-story="feedback-list"]) {
-    display: flex;
-    width: 100%;
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-
   :global([data-story="feedback-list"] strong) {
     padding: 0.375rem;
     font-size: 0.875rem;
-  }
-
-  :global([data-story="feedback-list"] button) {
-    display: flex;
-    width: 100%;
-    align-items: center;
-    gap: 0.5rem;
-    border: 0;
-    border-radius: 0.5rem;
-    background: transparent;
-    padding: 0.375rem;
-    color: var(--foreground);
-    text-align: left;
-  }
-
-  :global([data-story="feedback-list"] button[data-selected="true"]) {
-    background: var(--accent);
   }
 </style>
