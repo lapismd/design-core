@@ -745,6 +745,20 @@
   border-radius: 999px;
 }
 
+[data-ui-component="button"][data-ui-part="send-button"][data-stop="true"] {
+  background-color: var(--foreground);
+  color: var(--background);
+}
+
+[data-ui-component="button"][data-ui-part="send-button"][data-stop="true"]:hover {
+  background-color: color-mix(
+    in oklab,
+    var(--foreground) 82%,
+    var(--background)
+  );
+  color: var(--background);
+}
+
 [data-ui-component="ai-chat-composer"] [data-ui-part="send-button"] svg {
   width: 1rem;
   height: 1rem;

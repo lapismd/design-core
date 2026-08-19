@@ -7,6 +7,15 @@
   import Composer from "../composer/Composer.svelte";
   import SendButton from "./SendButton.svelte";
 
+  function resolveToken(element: Element, token: string): string {
+    const probe = document.createElement("span");
+    probe.style.backgroundColor = `var(${token})`;
+    element.appendChild(probe);
+    const color = getComputedStyle(probe).backgroundColor;
+    probe.remove();
+    return color;
+  }
+
   const { Story } = defineMeta({
     title: "AI/Chat/Send Button",
     component: SendButton,
@@ -14,7 +23,7 @@
       docs: {
         description: {
           component:
-            "Circular send/stop toggle button for the chat composer. Place it inside ChatComposer where it reads context automatically: no wiring needed. When streaming starts, the button switches from a primary send icon to a secondary stop icon. Override any context value via props for standalone or custom usage.",
+            "Circular send/stop toggle button for the chat composer. Place it inside ChatComposer where it reads context automatically: no wiring needed. When streaming starts, the button switches from a primary send icon to an inverse stop icon. Override any context value via props for standalone or custom usage.",
         },
       },
     },
@@ -57,7 +66,7 @@
     docs: {
       description: {
         story:
-          "Disabled, ready, and streaming states at both sizes. The button automatically toggles between send (primary) and stop (secondary) based on streaming state.",
+          "Disabled, ready, and streaming states at both sizes. The button automatically toggles between send (primary) and stop (inverse fill) based on streaming state.",
       },
     },
     visualDelta: {
@@ -180,6 +189,16 @@
 
 <Story
   name="Stops a response"
+  play={async ({ canvas }) => {
+    const button = canvas.getByRole("button", { name: "Stop response" });
+    await expect(button).toHaveAttribute("data-stop", "true");
+    const inverseFill = resolveToken(button, "--foreground");
+    const inverseIcon = resolveToken(button, "--background");
+    const styles = getComputedStyle(button);
+    expect(inverseFill).not.toBe(inverseIcon);
+    expect(styles.backgroundColor).toBe(inverseFill);
+    expect(styles.color).toBe(inverseIcon);
+  }}
   parameters={{
     visualDelta: {
       images: [

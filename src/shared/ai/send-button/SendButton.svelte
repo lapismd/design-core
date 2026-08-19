@@ -30,8 +30,9 @@
   bind:ref
   type="button"
   data-ui-part="send-button"
+  data-stop={isStopShown ? "true" : undefined}
   size={size === "sm" ? "icon-sm" : "icon"}
-  variant={isStopShown ? "secondary" : "default"}
+  variant="default"
   disabled={isDisabled && !isStopShown}
   aria-label={isStopShown ? "Stop response" : "Send message"}
   onclick={isStopShown ? onStop : onSend}

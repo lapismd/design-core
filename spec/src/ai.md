@@ -145,6 +145,7 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 - The public boundary is `@lapismd/design-core/ai/chat`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 - The stop presentation MUST stay enabled, fully opaque, and clickable even when the parent Composer is disabled.
+- The stop presentation MUST use a solid inverse fill (dark background, light icon) with a distinct hover state.
 
 ## DC-AI-013 — Composer Token
 
