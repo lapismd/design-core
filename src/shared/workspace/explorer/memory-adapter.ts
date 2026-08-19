@@ -26,6 +26,7 @@ export interface MemoryExplorerBundle {
   }>;
   setActivePath(path: string | null): void;
   setAutoRevealValue(value: boolean): void;
+  setShowHiddenFilesValue(value: boolean): void;
 }
 
 function listSiblingNames(nodes: ExplorerNode[], parentPath: string): string[] {
@@ -114,12 +115,13 @@ function rewriteSubtree(node: ExplorerNode, nextPath: string): ExplorerNode {
 
 export function createMemoryExplorerAdapter(
   seed: ExplorerNode[] = [],
-  options: { autoReveal?: boolean } = {},
+  options: { autoReveal?: boolean; showHiddenFiles?: boolean } = {},
 ): MemoryExplorerBundle {
   let nodes = cloneExplorerNodes(seed);
   const treeListeners = new Set<() => void>();
   const selectionListeners = new Set<(path: string | null) => void>();
   let autoReveal = options.autoReveal ?? false;
+  let showHiddenFiles = options.showHiddenFiles ?? false;
   let activePath: string | null = null;
   const openedPaths: string[] = [];
   const openRequests: Array<{
@@ -255,6 +257,12 @@ export function createMemoryExplorerAdapter(
       setAutoReveal(value) {
         autoReveal = value;
       },
+      getShowHiddenFiles() {
+        return showHiddenFiles;
+      },
+      setShowHiddenFiles(value) {
+        showHiddenFiles = value;
+      },
     },
     get nodes() {
       return cloneExplorerNodes(nodes);
@@ -274,6 +282,9 @@ export function createMemoryExplorerAdapter(
     },
     setAutoRevealValue(value) {
       autoReveal = value;
+    },
+    setShowHiddenFilesValue(value) {
+      showHiddenFiles = value;
     },
   };
 }

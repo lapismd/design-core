@@ -1,7 +1,11 @@
 import { describe, expect, it, vi } from "vitest";
 import { ExplorerController } from "./explorer-controller.svelte.js";
 import { createMemoryExplorerAdapter } from "./memory-adapter.js";
-import { buildExplorerTree, compareExplorerNodes } from "./tree.js";
+import {
+  buildExplorerTree,
+  compareExplorerNodes,
+  filterHiddenExplorerTree,
+} from "./tree.js";
 import type { ExplorerNode } from "./types.js";
 
 const seed: ExplorerNode[] = [
@@ -66,6 +70,35 @@ describe("explorer tree helpers", () => {
         "name-asc",
       ),
     ).toBeLessThan(0);
+  });
+
+  it("prunes dot-named nodes unless show-hidden is on", () => {
+    const withHidden = buildExplorerTree(
+      [
+        ...seed,
+        { path: ".env", name: ".env", kind: "file" },
+        {
+          path: ".obsidian",
+          name: ".obsidian",
+          kind: "folder",
+          children: [
+            { path: ".obsidian/app.json", name: "app.json", kind: "file" },
+          ],
+        },
+      ],
+      "name-asc",
+    );
+    const hidden = filterHiddenExplorerTree(withHidden, false);
+    expect(hidden.children?.map((node) => node.name)).toEqual([
+      "empty",
+      "notes",
+      "readme.md",
+    ]);
+    const shown = filterHiddenExplorerTree(withHidden, true);
+    expect(shown.children?.some((node) => node.name === ".env")).toBe(true);
+    expect(shown.children?.some((node) => node.name === ".obsidian")).toBe(
+      true,
+    );
   });
 });
 
@@ -152,6 +185,52 @@ describe("ExplorerController", () => {
     await controller.toggleAutoReveal();
     expect(controller.autoReveal).toBe(true);
     expect(memory.preferences.getAutoReveal()).toBe(true);
+    stop();
+  });
+
+  it("hides dotted names until show-hidden is toggled", async () => {
+    const memory = createMemoryExplorerAdapter(
+      [
+        ...seed,
+        { path: ".env", name: ".env", kind: "file" },
+        {
+          path: ".obsidian",
+          name: ".obsidian",
+          kind: "folder",
+          children: [
+            { path: ".obsidian/app.json", name: "app.json", kind: "file" },
+          ],
+        },
+      ],
+      { showHiddenFiles: false },
+    );
+    const controller = new ExplorerController({
+      tree: memory.tree,
+      actions: memory.actions,
+      selection: memory.selection,
+      preferences: memory.preferences,
+    });
+    const stop = controller.start();
+    await controller.refresh();
+    expect(
+      controller.root.children?.some((node) => node.name.startsWith(".")),
+    ).toBe(false);
+    await controller.toggleShowHiddenFiles();
+    expect(controller.showHiddenFiles).toBe(true);
+    expect(memory.preferences.getShowHiddenFiles()).toBe(true);
+    expect(controller.root.children?.some((node) => node.name === ".env")).toBe(
+      true,
+    );
+    expect(
+      controller.root.children?.some((node) => node.name === ".obsidian"),
+    ).toBe(true);
+    controller.applyShowHiddenFiles(false);
+    await vi.waitFor(() => {
+      expect(controller.showHiddenFiles).toBe(false);
+      expect(
+        controller.root.children?.some((node) => node.name.startsWith(".")),
+      ).toBe(false);
+    });
     stop();
   });
 

@@ -4,12 +4,14 @@ Workspace panels provide generic domain-neutral views driven by consumer data an
 
 ## Public surface coverage
 
-| Surface         | Public boundary                           | Requirement |
-| --------------- | ----------------------------------------- | ----------- |
-| Explorer Panel  | `@lapismd/design-core/workspace/explorer` | DC-WS-033   |
-| Problems Panel  | `@lapismd/design-core/workspace/problems` | DC-WS-034   |
-| Problems copy   | `@lapismd/design-core/workspace/problems` | DC-WS-046   |
-| Problems opener | `@lapismd/design-core/workspace/problems` | DC-WS-047   |
+| Surface            | Public boundary                           | Requirement |
+| ------------------ | ----------------------------------------- | ----------- |
+| Explorer Panel     | `@lapismd/design-core/workspace/explorer` | DC-WS-033   |
+| Explorer icons     | `@lapismd/design-core/workspace/explorer` | DC-WS-051   |
+| Explorer hidden    | `@lapismd/design-core/workspace/explorer` | DC-WS-052   |
+| Problems Panel     | `@lapismd/design-core/workspace/problems` | DC-WS-034   |
+| Problems copy      | `@lapismd/design-core/workspace/problems` | DC-WS-046   |
+| Problems opener    | `@lapismd/design-core/workspace/problems` | DC-WS-047   |
 | Problems quick fix | `@lapismd/design-core/workspace/problems` | DC-WS-050   |
 
 ## DC-WS-033 — Explorer Panel
@@ -22,6 +24,27 @@ Workspace panels provide generic domain-neutral views driven by consumer data an
 - File activation MUST pass one semantic disposition to the consumer adapter: single-click requests `current` and MUST keep keyboard focus on the selected row so Enter starts inline rename, double-click requests `reveal-or-new-tab`, and modifier-click or middle-click requests forced `new-tab`.
 - The tree MUST retain an accessible label without duplicating the owning leaf title, pressed toolbar actions MUST use the workspace accent foreground, selected tree rows MUST use the same background wash as row hover without a heavier font weight, nested indentation guides MUST sit beneath expanded disclosure chevron tips with a small gap before the first child, and auto-reveal MUST flash a row only when the active file changes from outside the tree.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+
+## DC-WS-051 — Explorer same-depth type icons
+
+**Requirement.** Explorer rows at the same depth MUST reserve a disclosure column so sibling folder and file type icons share one start edge.
+
+### Acceptance details
+
+- File rows MUST render a non-interactive disclosure spacer whose size matches the folder chevron.
+- Nested indent guides MUST remain aligned under expanded disclosure chevron tips.
+- The catalog MUST assert same-depth folder and file type icons share one start edge.
+
+## DC-WS-052 — Explorer hidden files
+
+**Requirement.** The Explorer Panel MUST hide tree nodes whose names start with a dot unless the consumer show-hidden preference is on.
+
+### Acceptance details
+
+- The preferences adapter MUST expose get and set for show hidden files and default the preference off.
+- Refresh MUST prune dot-named nodes at any depth when the preference is off and keep them when it is on.
+- The toolbar MUST offer a pressed Show hidden files control that persists through the adapter.
+- Unit tests and the catalog MUST cover default-hidden and revealed dotted names.
 
 ## DC-WS-034 — Problems Panel
 

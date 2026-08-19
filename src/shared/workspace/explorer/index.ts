@@ -20,7 +20,9 @@ export {
   cloneExplorerNodes,
   collectFolderPaths,
   compareExplorerNodes,
+  filterHiddenExplorerTree,
   findExplorerNode,
+  isHiddenExplorerName,
   sortExplorerChildren,
 } from "./tree.js";
 export {

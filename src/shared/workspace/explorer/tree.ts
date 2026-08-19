@@ -120,6 +120,28 @@ export function findExplorerNode(
   return current;
 }
 
+export function isHiddenExplorerName(name: string): boolean {
+  return name.startsWith(".");
+}
+
+/** Drop dot-named nodes and their descendants unless show-hidden is on. */
+export function filterHiddenExplorerTree(
+  root: ExplorerNode,
+  showHidden: boolean,
+): ExplorerNode {
+  if (showHidden) return root;
+  const visit = (node: ExplorerNode): ExplorerNode => {
+    if (!node.children) return node;
+    return {
+      ...node,
+      children: node.children
+        .filter((child) => !isHiddenExplorerName(child.name))
+        .map(visit),
+    };
+  };
+  return visit(root);
+}
+
 export function collectFolderPaths(root: ExplorerNode): string[] {
   const paths: string[] = [];
   const visit = (node: ExplorerNode) => {

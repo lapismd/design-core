@@ -92,11 +92,36 @@ export const RevealPath = `<script lang="ts">
 
 <WorkspaceExplorer {controller} />`;
 
+export const ShowHiddenFiles = `<script lang="ts">
+  import {
+    WorkspaceExplorer,
+    ExplorerController,
+    createMemoryExplorerAdapter,
+  } from "@lapismd/design-core/workspace/explorer";
+
+  const memory = createMemoryExplorerAdapter(
+    [
+      { path: "readme.md", name: "readme.md", kind: "file" },
+      { path: ".env", name: ".env", kind: "file" },
+    ],
+    { showHiddenFiles: false },
+  );
+
+  const controller = new ExplorerController({
+    tree: memory.tree,
+    actions: memory.actions,
+    selection: memory.selection,
+    preferences: memory.preferences,
+  });
+</script>
+
+<WorkspaceExplorer {controller} />`;
+
 export const ControllerApi = `new ExplorerController({
   tree,
   actions,
   selection?,      // optional active-path sync
-  preferences?,    // optional auto-reveal persistence
+  preferences?,    // optional auto-reveal and show-hidden persistence
   getIcon?,        // WorkspaceIcon name resolver
   buildItemMenu?,  // append after built-ins; source is always "explorer"
   onFileDragStart?,
@@ -107,4 +132,5 @@ export const ControllerApi = `new ExplorerController({
 controller.revealPath(path);
 controller.setSelectedPath(path);
 controller.refresh();
+controller.toggleShowHiddenFiles();
 controller.setLoading(false);`;

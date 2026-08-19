@@ -205,11 +205,19 @@
   padding-block-end: var(--ui-workspace-explorer-drop-padding-end);
 }
 
+.ui-workspace-explorer__disclosure,
 .ui-workspace-explorer__chevron {
   flex: 0 0 auto;
   width: var(--ui-workspace-icon-size, 1rem);
   height: var(--ui-workspace-icon-size, 1rem);
+}
+
+.ui-workspace-explorer__chevron {
   transition: transform 120ms ease;
+}
+
+.ui-workspace-explorer__type-icon {
+  flex: 0 0 auto;
 }
 
 /* Scope to the folder row itself so nested closed folders are not forced open. */

@@ -33,6 +33,7 @@ export interface ExplorerLabels {
   filenameAsc: string;
   filenameDesc: string;
   autoReveal: string;
+  showHiddenFiles: string;
   toggleCollapse: string;
   newNote: string;
   newFolder: string;
@@ -52,6 +53,7 @@ export const DEFAULT_EXPLORER_LABELS: ExplorerLabels = {
   filenameAsc: "Filename (A to Z)",
   filenameDesc: "Filename (Z to A)",
   autoReveal: "Auto-reveal current file",
+  showHiddenFiles: "Show hidden files",
   toggleCollapse: "Toggle collapse",
   newNote: "New note",
   newFolder: "New folder",
@@ -97,6 +99,8 @@ export interface ExplorerSelectionAdapter {
 export interface ExplorerPreferencesAdapter {
   getAutoReveal(): boolean | Promise<boolean>;
   setAutoReveal(value: boolean): void | Promise<void>;
+  getShowHiddenFiles(): boolean | Promise<boolean>;
+  setShowHiddenFiles(value: boolean): void | Promise<void>;
 }
 
 export type ExplorerGetIcon = (

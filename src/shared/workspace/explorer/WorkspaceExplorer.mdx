@@ -105,7 +105,7 @@ hosts register a leaf later without baking plugin code into design-core.
 
 ## Surface anatomy
 
-- Toolbar: create file, create folder, sort, auto-reveal, expand/collapse-all
+- Toolbar: create file, create folder, sort, auto-reveal, show hidden files, expand/collapse-all
 - Accessible tree label (“Files”) without a redundant visible group heading
 - Recursive tree rows with icons (`WorkspaceIcon` / `getIcon`)
 - Loading gate (“Opening vault”) while `controller.loading` is true
@@ -207,11 +207,15 @@ onto a folder calls `actions.move`. External OS files call optional
 ## Preferences and configuration
 
 The preferences adapter maps to Lapis
-`workspace.fileExplorer.autoRevealCurrentFile` (boolean, default `false`). When
-a host wires both the explorer toolbar and Workspace settings, both surfaces
-must read/write the same key.
+`workspace.fileExplorer.autoRevealCurrentFile` (boolean, default `false`) and
+`workspace.fileExplorer.showHiddenFiles` (boolean, default `false`). When a
+host wires both the explorer toolbar and Workspace settings, both surfaces
+must read/write the same keys. Show hidden files reveals every dotted name,
+including `.obsidian`, `.trash`, and `.lapis`.
 
 <Canvas of={Stories.AutoRevealScrollsActiveIntoView} />
+
+<Canvas of={Stories.ShowHiddenFiles} />
 
 ## Commands and reveal
 
@@ -222,6 +226,7 @@ command ids for parity:
 
 - `file-explorer:reveal-path`
 - `file-explorer:show-file-explorer`
+- `file-explorer:toggle-hidden-files`
 
 <Canvas of={Stories.RevealPathFlashesAndFocuses} />
 

@@ -240,7 +240,12 @@
           data-path={node.path}
           data-active={node.path === controller.selectedPath}
         >
-          <WorkspaceIcon name={controller.iconFor(node, true)} />
+          <span class="ui-workspace-explorer__disclosure" aria-hidden="true"
+          ></span>
+          <WorkspaceIcon
+            name={controller.iconFor(node, true)}
+            class="ui-workspace-explorer__type-icon"
+          />
           <span class="ui-workspace-explorer__rename" use:focusRename>
             <Input
               class="ui-workspace-explorer__rename-input"
@@ -298,7 +303,14 @@
                   onDragEnter(event, dirnameOf(node.path))}
                 ondragleave={onDragLeave}
               >
-                <WorkspaceIcon name={controller.iconFor(node, false)} />
+                <span
+                  class="ui-workspace-explorer__disclosure"
+                  aria-hidden="true"
+                ></span>
+                <WorkspaceIcon
+                  name={controller.iconFor(node, false)}
+                  class="ui-workspace-explorer__type-icon"
+                />
                 <span class="ui-workspace-explorer__title">{node.name}</span>
               </button>
             {/snippet}
@@ -335,7 +347,10 @@
                 name="chevron-right"
                 class="ui-workspace-explorer__chevron"
               />
-              <WorkspaceIcon name={controller.iconFor(node, true)} />
+              <WorkspaceIcon
+                name={controller.iconFor(node, true)}
+                class="ui-workspace-explorer__type-icon"
+              />
               <span class="ui-workspace-explorer__rename" use:focusRename>
                 <Input
                   class="ui-workspace-explorer__rename-input"
@@ -395,7 +410,10 @@
                     name="chevron-right"
                     class="ui-workspace-explorer__chevron"
                   />
-                  <WorkspaceIcon name={controller.iconFor(node, false)} />
+                  <WorkspaceIcon
+                    name={controller.iconFor(node, false)}
+                    class="ui-workspace-explorer__type-icon"
+                  />
                   <span class="ui-workspace-explorer__title">{node.name}</span>
                 </button>
               {/snippet}
@@ -536,6 +554,33 @@
             {/snippet}
           </Tooltip.Trigger>
           <Tooltip.Content side="bottom">{labels.autoReveal}</Tooltip.Content>
+        </Tooltip.Root>
+        <Tooltip.Root>
+          <Tooltip.Trigger>
+            {#snippet child({ props })}
+              <Button
+                {...props}
+                variant="ghost"
+                size="icon-sm"
+                class="ui-workspace-explorer__toolbar-action"
+                aria-label={labels.showHiddenFiles}
+                aria-pressed={controller.showHiddenFiles}
+                data-hint-target="file-explorer-action"
+                data-hint-group="file-explorer"
+                data-hint-target-id="file-explorer:show-hidden-files"
+                onclick={() => void controller.toggleShowHiddenFiles()}
+              >
+                {#if controller.showHiddenFiles}
+                  <WorkspaceIcon name="eye" />
+                {:else}
+                  <WorkspaceIcon name="eye-off" />
+                {/if}
+              </Button>
+            {/snippet}
+          </Tooltip.Trigger>
+          <Tooltip.Content side="bottom"
+            >{labels.showHiddenFiles}</Tooltip.Content
+          >
         </Tooltip.Root>
         <Tooltip.Root>
           <Tooltip.Trigger>

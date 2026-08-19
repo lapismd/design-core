@@ -9,6 +9,7 @@ import {
 import {
   buildExplorerTree,
   collectFolderPaths,
+  filterHiddenExplorerTree,
   findExplorerNode,
 } from "./tree.js";
 import {
@@ -41,6 +42,7 @@ export class ExplorerController {
   draggingPath = $state<string | null>(null);
   revealState = $state<ExplorerRevealState>({ path: "", isFlashing: false });
   autoReveal = $state(false);
+  showHiddenFiles = $state(false);
   labels: ExplorerLabels;
 
   readonly #tree;
@@ -68,7 +70,7 @@ export class ExplorerController {
     if (!this.loading) {
       const entries = this.#tree.listEntries();
       if (!isThenable(entries)) {
-        this.root = buildExplorerTree(entries, this.sortMode);
+        this.root = this.#treeFromEntries(entries);
       }
     }
   }
@@ -126,7 +128,7 @@ export class ExplorerController {
 
   async refresh(): Promise<void> {
     const entries = await this.#tree.listEntries();
-    this.root = buildExplorerTree(entries, this.sortMode);
+    this.root = this.#treeFromEntries(entries);
     this.#menuCache.clear();
   }
 
@@ -204,6 +206,19 @@ export class ExplorerController {
     if (next && this.selectedPath) {
       this.revealPath(this.selectedPath);
     }
+  }
+
+  async toggleShowHiddenFiles(): Promise<void> {
+    const next = !this.showHiddenFiles;
+    this.showHiddenFiles = next;
+    await this.#preferences?.setShowHiddenFiles(next);
+    await this.refresh();
+  }
+
+  applyShowHiddenFiles(value: boolean): void {
+    if (this.showHiddenFiles === value) return;
+    this.showHiddenFiles = value;
+    void this.refresh();
   }
 
   parentPathForCreate(): string {
@@ -387,6 +402,14 @@ export class ExplorerController {
   async #hydratePreferences(): Promise<void> {
     if (!this.#preferences) return;
     this.autoReveal = await this.#preferences.getAutoReveal();
+    this.showHiddenFiles = await this.#preferences.getShowHiddenFiles();
+  }
+
+  #treeFromEntries(entries: ExplorerNode[]): ExplorerNode {
+    return filterHiddenExplorerTree(
+      buildExplorerTree(entries, this.sortMode),
+      this.showHiddenFiles,
+    );
   }
 }
 

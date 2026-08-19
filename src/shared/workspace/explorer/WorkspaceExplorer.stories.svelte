@@ -84,6 +84,7 @@
       seed?: ExplorerNode[];
       loading?: boolean;
       autoReveal?: boolean;
+      showHiddenFiles?: boolean;
       buildItemMenu?: (
         menu: WorkspaceMenu,
         node: ExplorerNode,
@@ -94,6 +95,7 @@
   ) {
     const memory = createMemoryExplorerAdapter(options.seed ?? seed, {
       autoReveal: options.autoReveal,
+      showHiddenFiles: options.showHiddenFiles,
     });
     const extensionLog = options.extensionLog ?? { value: "" };
     const controller = new ExplorerController({
@@ -141,6 +143,25 @@
   const loaded = mountExplorer();
   const loadingFixture = mountExplorer({ loading: true });
   const autoRevealFixture = mountExplorer({ autoReveal: false });
+  const hiddenFixture = mountExplorer({
+    showHiddenFiles: false,
+    seed: [
+      ...seed,
+      { path: ".env", name: ".env", kind: "file" },
+      {
+        path: ".obsidian",
+        name: ".obsidian",
+        kind: "folder",
+        children: [
+          {
+            path: ".obsidian/app.json",
+            name: "app.json",
+            kind: "file",
+          },
+        ],
+      },
+    ],
+  });
   const createFileFixture = mountExplorer();
   const createFolderFixture = mountExplorer();
   const createAtRootFixture = mountExplorer();
@@ -195,6 +216,20 @@
     await expect(canvas.getByText("notes")).toBeVisible();
     await expect(canvas.queryByText("Files", { exact: true })).toBeNull();
     await expect(canvas.getByRole("list", { name: "Files" })).toBeVisible();
+    const folderIcon = canvasElement.querySelector(
+      '[data-path="empty"] .ui-workspace-explorer__type-icon',
+    ) as HTMLElement | null;
+    const fileIcon = canvasElement.querySelector(
+      '[data-path="readme.md"] .ui-workspace-explorer__type-icon',
+    ) as HTMLElement | null;
+    expect(folderIcon).not.toBeNull();
+    expect(fileIcon).not.toBeNull();
+    expect(
+      Math.abs(
+        folderIcon!.getBoundingClientRect().left -
+          fileIcon!.getBoundingClientRect().left,
+      ),
+    ).toBeLessThan(1);
     const host = canvasElement.querySelector<HTMLElement>(
       ".ui-workspace-explorer-story",
     );
@@ -481,6 +516,41 @@
 >
   {#snippet template()}
     {@render Panel(autoRevealFixture.controller)}
+  {/snippet}
+</Story>
+
+<Story
+  name="Show hidden files"
+  tags={["visual-pending"]}
+  parameters={{
+    docs: {
+      source: {
+        code: exampleSources.ShowHiddenFiles,
+        language: "ts",
+        type: "code",
+      },
+    },
+  }}
+  play={async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await waitFor(() => {
+      expect(canvas.getByText("readme.md")).toBeVisible();
+    });
+    await expect(canvas.queryByText(".env")).toBeNull();
+    await expect(canvas.queryByText(".obsidian")).toBeNull();
+    const toggle = canvas.getByRole("button", { name: "Show hidden files" });
+    await expect(toggle).toHaveAttribute("aria-pressed", "false");
+    await userEvent.click(toggle);
+    await waitFor(() => {
+      expect(toggle).toHaveAttribute("aria-pressed", "true");
+      expect(hiddenFixture.memory.preferences.getShowHiddenFiles()).toBe(true);
+      expect(canvas.getByText(".env")).toBeVisible();
+      expect(canvas.getByText(".obsidian")).toBeVisible();
+    });
+  }}
+>
+  {#snippet template()}
+    {@render Panel(hiddenFixture.controller)}
   {/snippet}
 </Story>
 
