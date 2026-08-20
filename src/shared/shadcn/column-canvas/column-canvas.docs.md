@@ -439,28 +439,30 @@ Use semantic attributes for tests and supported ancestor styling:
 
 Override these public tokens on `:root` or a shared ancestor:
 
-| Token                                         | Default                                 |
-| --------------------------------------------- | --------------------------------------- |
-| `--ui-column-canvas-background`               | `--background`                          |
-| `--ui-column-canvas-column-background`        | `--card`                                |
-| `--ui-column-canvas-border-color`             | `--border`                              |
-| `--ui-column-canvas-radius`                   | `--radius-lg`, then `--radius`          |
-| `--ui-column-canvas-header-height`            | `2.5rem`                                |
-| `--ui-column-canvas-gap`                      | `0.75rem`                               |
-| `--ui-column-canvas-collapsed-width`          | `2.75rem`                               |
-| `--ui-column-canvas-compact-peek-width`       | `2.75rem` compatibility token           |
-| `--ui-column-canvas-wide-context-width`       | `--ui-column-canvas-compact-peek-width` |
-| `--ui-column-canvas-sticky-peek-width`        | `--ui-column-canvas-collapsed-width`    |
-| `--ui-column-canvas-resize-handle-hover`      | 40% `--primary` mixed with transparent  |
-| `--ui-column-canvas-title-color`              | `--foreground`                          |
-| `--ui-column-canvas-count-color`              | `--muted-foreground`                    |
-| `--ui-column-canvas-padding`                  | `0.75rem`                               |
-| `--ui-column-canvas-scrollbar-gap`            | `0.5rem`                                |
-| `--ui-column-canvas-item-gap`                 | `0.25rem`                               |
-| `--ui-column-canvas-item-hover`               | `--muted`                               |
-| `--ui-column-canvas-rail-hover`               | `--muted`                               |
-| `--ui-column-canvas-item-selected`            | `--accent`                              |
-| `--ui-column-canvas-item-selected-foreground` | `--accent-foreground`                   |
+| Token                                               | Default                                         |
+| --------------------------------------------------- | ----------------------------------------------- |
+| `--ui-column-canvas-background`                     | `--background`                                  |
+| `--ui-column-canvas-column-background`              | `--card`                                        |
+| `--ui-column-canvas-border-color`                   | `--border`                                      |
+| `--ui-column-canvas-radius`                         | `--radius-lg`, then `--radius`                  |
+| `--ui-column-canvas-header-height`                  | `2.5rem`                                        |
+| `--ui-column-canvas-gap`                            | `0.75rem`                                       |
+| `--ui-column-canvas-collapsed-width`                | `2.75rem`                                       |
+| `--ui-column-canvas-compact-peek-width`             | `2.75rem` compatibility token                   |
+| `--ui-column-canvas-wide-context-width`             | `--ui-column-canvas-compact-peek-width`         |
+| `--ui-column-canvas-sticky-peek-width`              | `--ui-column-canvas-collapsed-width`            |
+| `--ui-column-canvas-resize-handle-hover`            | 40% `--primary` mixed with transparent          |
+| `--ui-column-canvas-title-color`                    | `--foreground`                                  |
+| `--ui-column-canvas-count-color`                    | `--muted-foreground`                            |
+| `--ui-column-canvas-header-action-hover`            | 12% `--foreground` mixed with column background |
+| `--ui-column-canvas-header-action-hover-foreground` | `--foreground`                                  |
+| `--ui-column-canvas-padding`                        | `0.75rem`                                       |
+| `--ui-column-canvas-scrollbar-gap`                  | `0.5rem`                                        |
+| `--ui-column-canvas-item-gap`                       | `0.25rem`                                       |
+| `--ui-column-canvas-item-hover`                     | `--muted`                                       |
+| `--ui-column-canvas-rail-hover`                     | `--muted`                                       |
+| `--ui-column-canvas-item-selected`                  | `--accent`                                      |
+| `--ui-column-canvas-item-selected-foreground`       | `--accent-foreground`                           |
 
 Production sources use native CSS. Toggle, Close, and sticky return controls
 compose the shared shadcn Button.

@@ -12,6 +12,9 @@ export const columnCanvasTokenNames = {
   resizeHandleHover: "--ui-column-canvas-resize-handle-hover",
   titleColor: "--ui-column-canvas-title-color",
   countColor: "--ui-column-canvas-count-color",
+  headerActionHover: "--ui-column-canvas-header-action-hover",
+  headerActionHoverForeground:
+    "--ui-column-canvas-header-action-hover-foreground",
   padding: "--ui-column-canvas-padding",
   scrollbarGap: "--ui-column-canvas-scrollbar-gap",
   itemGap: "--ui-column-canvas-item-gap",

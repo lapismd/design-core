@@ -297,6 +297,14 @@
   margin-inline-start: auto;
 }
 
+[data-ui-component="column-canvas"][data-ui-part="column-header-actions"]
+  > button:hover,
+[data-ui-component="column-canvas"][data-ui-part="column-header-actions"]
+  > button:focus-visible {
+  background: var(--ui-column-canvas-header-action-hover);
+  color: var(--ui-column-canvas-header-action-hover-foreground);
+}
+
 [data-ui-component="column-canvas"][data-ui-part="column-body"] {
   display: flex;
   flex-direction: column;
