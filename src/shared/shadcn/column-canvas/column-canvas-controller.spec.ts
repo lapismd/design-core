@@ -126,6 +126,23 @@ describe("createColumnCanvasController", () => {
     expect(canvas.isCollapsed("workspace")).toBe(false);
   });
 
+  it("supports explicitly unbounded columns", () => {
+    const canvas = createColumnCanvasController({
+      columns: {
+        workspace: {
+          defaultWidth: 280,
+          minWidth: 240,
+          maxWidth: null,
+          resizable: true,
+        },
+      },
+    });
+
+    canvas.setWidth("workspace", 1_400);
+    expect(canvas.getMaxWidth("workspace")).toBeNull();
+    expect(canvas.getWidth("workspace")).toBe(1_400);
+  });
+
   it("persists layout through an injected adapter", async () => {
     vi.useFakeTimers();
     const saved: unknown[] = [];
@@ -174,6 +191,106 @@ describe("createColumnCanvasController", () => {
       closed: false,
       width: 300,
     });
+    expect(last).toMatchObject({ version: 2, pairSplits: [] });
+  });
+
+  it("migrates V1 layouts and persists independent pair splits atomically", async () => {
+    vi.useFakeTimers();
+    const saved: Array<{
+      layout: unknown;
+      event: unknown;
+    }> = [];
+    const persistence: ColumnCanvasLayoutPersistence = {
+      async load() {
+        return {
+          version: 1,
+          columns: {
+            planner: { collapsed: false, width: 420 },
+          },
+        };
+      },
+      async save(layout, event) {
+        saved.push({ layout, event });
+      },
+    };
+    const canvas = createColumnCanvasController({
+      columns: {
+        navigation: { defaultWidth: 260, resizable: true },
+        planner: { defaultWidth: 420, resizable: true },
+        detail: { defaultWidth: 480, resizable: true },
+      },
+      persistence,
+      saveDebounceMs: 20,
+    });
+
+    await canvas.restoreLayout();
+    expect(canvas.getWidth("planner")).toBe(420);
+    expect(canvas.getPairSplit("navigation", "planner")).toBeUndefined();
+
+    canvas.setPairSplit("navigation", "planner", 0.35);
+    canvas.setPairSplit("planner", "detail", 0.58);
+    await vi.advanceTimersByTimeAsync(20);
+    await canvas.flushSave();
+
+    expect(saved).toHaveLength(1);
+    expect(saved[0]).toMatchObject({
+      event: {
+        source: "resize-pair",
+        columnId: "planner",
+        relatedColumnId: "detail",
+      },
+      layout: {
+        version: 2,
+        pairSplits: [
+          {
+            leadingColumnId: "navigation",
+            trailingColumnId: "planner",
+            leadingFraction: 0.35,
+          },
+          {
+            leadingColumnId: "planner",
+            trailingColumnId: "detail",
+            leadingFraction: 0.58,
+          },
+        ],
+      },
+    });
+  });
+
+  it("restores valid V2 pair splits and rejects malformed entries", async () => {
+    const persistence: ColumnCanvasLayoutPersistence = {
+      async load() {
+        return {
+          version: 2,
+          columns: {},
+          pairSplits: [
+            {
+              leadingColumnId: "planner",
+              trailingColumnId: "detail",
+              leadingFraction: 0.61,
+            },
+            {
+              leadingColumnId: "detail",
+              trailingColumnId: "related",
+              leadingFraction: 2,
+            },
+          ],
+        };
+      },
+      async save() {},
+    };
+    const canvas = createColumnCanvasController({
+      columns: {
+        planner: { defaultWidth: 400 },
+        detail: { defaultWidth: 400 },
+        related: { defaultWidth: 400 },
+      },
+      persistence,
+    });
+
+    await canvas.restoreLayout();
+    expect(canvas.getPairSplit("planner", "detail")).toBe(0.61);
+    expect(canvas.getPairSplit("detail", "related")).toBeUndefined();
   });
 
   it("closes and reopens closeable columns", () => {

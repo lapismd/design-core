@@ -121,7 +121,7 @@
 
   let lastSavedWidth = $state<number | null>(null);
   let lastSavedCollapsed = $state<boolean | null>(null);
-  let persistedWidthsLayout: ColumnCanvas.ColumnCanvasLayoutV1 | null = null;
+  let persistedWidthsLayout: ColumnCanvas.ColumnCanvasLayout | null = null;
 
   const persistedWidthsAdapter: ColumnCanvas.ColumnCanvasLayoutPersistence = {
     async load() {
@@ -160,12 +160,14 @@
       },
       components: {
         defaultWidth: 340,
+        maxWidth: null,
         pathLevel: 1,
         collapsible: true,
         resizable: true,
       },
       detail: {
         defaultWidth: 380,
+        maxWidth: null,
         pathLevel: 2,
         collapsible: true,
         resizable: true,
@@ -255,7 +257,7 @@
       detail: {
         defaultWidth: 440,
         minWidth: 360,
-        maxWidth: 620,
+        maxWidth: null,
         pathLevel: 4,
         collapsible: true,
         resizable: true,
@@ -264,7 +266,7 @@
       activity: {
         defaultWidth: 340,
         minWidth: 280,
-        maxWidth: 460,
+        maxWidth: null,
         pathLevel: 4,
         collapsible: true,
         resizable: true,
@@ -378,6 +380,12 @@
       showcaseCanvas.open(id);
       showcaseCanvas.expand(id);
       showcaseCanvas.resetWidth(id);
+    }
+    for (let index = 0; index < showcaseColumnIds.length - 1; index += 1) {
+      showcaseCanvas.resetPairSplit(
+        showcaseColumnIds[index],
+        showcaseColumnIds[index + 1],
+      );
     }
     showcaseCanvas.clear();
     showcaseCanvas.select(0, "lapis");
@@ -831,6 +839,8 @@
 <Story
   name="All features"
   play={async ({ canvasElement, canvas }) => {
+    basicCanvas.resetPairSplit("categories", "components");
+    basicCanvas.resetPairSplit("components", "detail");
     basicCanvas.open("detail");
     basicCanvas.expand("categories");
     basicCanvas.expand("components");
@@ -863,12 +873,16 @@
     const root = canvas.getByRole("region", { name: "Column canvas" });
     if (root.getAttribute("data-display-mode") === "compact") {
       await expect(
-        canvas.queryByRole("separator", { name: "Resize Details column" }),
+        canvasElement.querySelector('[data-resize-mode="pair"]'),
       ).toBeNull();
     } else {
-      await expect(
-        canvas.getByRole("separator", { name: "Resize Details column" }),
-      ).toBeVisible();
+      await waitFor(() => {
+        expect(
+          canvasElement.querySelector(
+            '[data-column-id="components"] [data-resize-mode="pair"]',
+          ),
+        ).not.toBeNull();
+      });
     }
 
     await userEvent.click(
@@ -881,20 +895,38 @@
     await expect(canvas.getByText("message-bubble")).toBeVisible();
 
     if (root.getAttribute("data-display-mode") !== "compact") {
-      const handle = canvas.getByRole("separator", {
-        name: "Resize Stable Chat column",
+      let handle: HTMLElement | null = null;
+      await waitFor(() => {
+        handle = canvasElement.querySelector<HTMLElement>(
+          '[data-column-id="components"] [data-resize-mode="pair"]',
+        );
+        expect(handle).not.toBeNull();
       });
-      const before = basicCanvas.getWidth("components");
+      const components = canvasElement.querySelector<HTMLElement>(
+        '[data-column-id="components"]',
+      );
+      const detail = canvasElement.querySelector<HTMLElement>(
+        '[data-column-id="detail"]',
+      );
+      await expect(components).not.toBeNull();
+      await expect(detail).not.toBeNull();
+      if (!handle || !components || !detail) return;
+      const beforeLeading = components.getBoundingClientRect().width;
+      const beforeTrailing = detail.getBoundingClientRect().width;
       await dragResizeHandle(handle, 40);
       await waitFor(() => {
-        expect(basicCanvas.getWidth("components")).toBeGreaterThan(before);
+        expect(components.getBoundingClientRect().width).toBeGreaterThan(
+          beforeLeading,
+        );
+        expect(detail.getBoundingClientRect().width).toBeLessThan(
+          beforeTrailing,
+        );
       });
-      const column = canvasElement.querySelector(
-        '[data-ui-part="column"][data-column-id="components"]',
-      );
-      await expect(column).toHaveStyle({
-        width: `${basicCanvas.getWidth("components")}px`,
-      });
+      expect(
+        components.getBoundingClientRect().width +
+          detail.getBoundingClientRect().width,
+      ).toBeCloseTo(beforeLeading + beforeTrailing, 1);
+      basicCanvas.resetPairSplit("components", "detail");
     }
   }}
   parameters={{
@@ -908,7 +940,7 @@
   }}
 >
   {#snippet template()}
-    <div class="flex h-[460px] w-full flex-col gap-2">
+    <div class="flex h-[460px] w-full max-w-[900px] flex-col gap-2">
       <div class="flex flex-wrap gap-2 px-1">
         <button
           type="button"
@@ -1380,6 +1412,8 @@
     responsiveCanvas.resetWidth("categories");
     responsiveCanvas.resetWidth("components");
     responsiveCanvas.resetWidth("detail");
+    responsiveCanvas.resetPairSplit("categories", "components");
+    responsiveCanvas.resetPairSplit("components", "detail");
     responsiveCanvas.open("detail");
     responsiveCanvas.clear();
     responsiveCanvas.select(0, "stable-chat");
@@ -1398,7 +1432,17 @@
     if (root.getAttribute("data-display-mode") === "compact") {
       await expect(canvas.queryByRole("separator")).toBeNull();
     } else {
-      await expect(canvas.getAllByRole("separator")).toHaveLength(3);
+      await expect(canvas.getAllByRole("separator")).toHaveLength(2);
+      await expect(
+        canvasElement.querySelector(
+          '[data-column-id="components"] [data-resize-mode="pair"]',
+        ),
+      ).not.toBeNull();
+      await expect(
+        canvasElement.querySelector(
+          '[data-column-id="detail"] [data-ui-part="resize-handle"]',
+        ),
+      ).toBeNull();
     }
 
     const detail = canvasElement.querySelector<HTMLElement>(

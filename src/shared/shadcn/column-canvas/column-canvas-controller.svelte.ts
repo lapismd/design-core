@@ -1,11 +1,13 @@
 import {
   COLUMN_CANVAS_LAYOUT_VERSION,
   normalizeColumnCanvasLayout,
+  pairSplitKey,
   type ColumnCanvasColumnLayout,
+  type ColumnCanvasLayout,
   type ColumnCanvasLayoutChangeEvent,
   type ColumnCanvasLayoutChangeSource,
   type ColumnCanvasLayoutPersistence,
-  type ColumnCanvasLayoutV1,
+  type ColumnCanvasPairSplit,
   type ColumnCanvasPersistenceErrorEvent,
 } from "./column-canvas-persistence.js";
 
@@ -17,7 +19,8 @@ export type ColumnCanvasColumnConfig = {
   /** Initial expanded width in CSS pixels. */
   defaultWidth: number;
   minWidth?: number;
-  maxWidth?: number;
+  /** Maximum durable width, or `null` for no upper bound. */
+  maxWidth?: number | null;
   /**
    * Minimum `path.length` required before the column is path-visible.
    * Omit or `0` for a root lane that is always path-eligible.
@@ -44,7 +47,7 @@ type ColumnRuntimeState = {
   width: number;
   defaultWidth: number;
   minWidth: number;
-  maxWidth: number;
+  maxWidth: number | null;
   pathLevel: number;
   resizable: boolean;
   collapsible: boolean;
@@ -65,7 +68,7 @@ export type CreateColumnCanvasControllerOptions<
   saveDebounceMs?: number;
   onPathChange?: (path: string[]) => void;
   onLayoutChange?: (
-    layout: ColumnCanvasLayoutV1,
+    layout: ColumnCanvasLayout,
     event: ColumnCanvasLayoutChangeEvent,
   ) => void;
   onPersistenceError?: (event: ColumnCanvasPersistenceErrorEvent) => void;
@@ -88,7 +91,7 @@ export class ColumnCanvasController {
   #onPathChange: ((path: string[]) => void) | undefined;
   #onLayoutChange:
     | ((
-        layout: ColumnCanvasLayoutV1,
+        layout: ColumnCanvasLayout,
         event: ColumnCanvasLayoutChangeEvent,
       ) => void)
     | undefined;
@@ -99,6 +102,7 @@ export class ColumnCanvasController {
   #saveDebounceMs: number;
   #hydrating = false;
   #restoredColumns = new Map<string, ColumnCanvasColumnLayout>();
+  #pairSplits = $state<Record<string, ColumnCanvasPairSplit>>({});
   #restorePromise: Promise<void> | null = null;
   #saveTimer: ReturnType<typeof setTimeout> | null = null;
   #pendingSaveEvent: ColumnCanvasLayoutChangeEvent | null = null;
@@ -229,8 +233,64 @@ export class ColumnCanvasController {
     return this.#requireColumn(id).minWidth;
   };
 
-  getMaxWidth = (id: string): number => {
+  getMaxWidth = (id: string): number | null => {
     return this.#requireColumn(id).maxWidth;
+  };
+
+  getPairSplit = (
+    leadingColumnId: string,
+    trailingColumnId: string,
+  ): number | undefined => {
+    return this.#pairSplits[pairSplitKey(leadingColumnId, trailingColumnId)]
+      ?.leadingFraction;
+  };
+
+  setPairSplit = (
+    leadingColumnId: string,
+    trailingColumnId: string,
+    leadingFraction: number,
+  ): void => {
+    this.#requireColumn(leadingColumnId);
+    this.#requireColumn(trailingColumnId);
+    if (
+      leadingColumnId === trailingColumnId ||
+      !Number.isFinite(leadingFraction)
+    ) {
+      return;
+    }
+    const nextFraction = Math.min(
+      0.999_999,
+      Math.max(0.000_001, leadingFraction),
+    );
+    const key = pairSplitKey(leadingColumnId, trailingColumnId);
+    const current = this.#pairSplits[key];
+    if (
+      current &&
+      Math.abs(current.leadingFraction - nextFraction) < Number.EPSILON
+    ) {
+      return;
+    }
+    this.#pairSplits = {
+      ...this.#pairSplits,
+      [key]: {
+        leadingColumnId,
+        trailingColumnId,
+        leadingFraction: nextFraction,
+      },
+    };
+    this.#layoutChanged(leadingColumnId, "resize-pair", trailingColumnId);
+  };
+
+  resetPairSplit = (
+    leadingColumnId: string,
+    trailingColumnId: string,
+  ): void => {
+    const key = pairSplitKey(leadingColumnId, trailingColumnId);
+    if (!this.#pairSplits[key]) return;
+    const next = { ...this.#pairSplits };
+    delete next[key];
+    this.#pairSplits = next;
+    this.#layoutChanged(leadingColumnId, "reset-pair", trailingColumnId);
   };
 
   collapse = (id: string): void => {
@@ -293,7 +353,8 @@ export class ColumnCanvasController {
       const next = {
         ...existing,
         minWidth: config.minWidth ?? existing.minWidth,
-        maxWidth: config.maxWidth ?? existing.maxWidth,
+        maxWidth:
+          config.maxWidth === undefined ? existing.maxWidth : config.maxWidth,
         pathLevel:
           config.pathLevel === undefined
             ? existing.pathLevel
@@ -306,7 +367,7 @@ export class ColumnCanvasController {
           (config.closeable !== undefined ? closeable : existing.openOnSelect),
         defaultWidth: config.defaultWidth,
       };
-      if (next.minWidth > next.maxWidth) {
+      if (next.maxWidth !== null && next.minWidth > next.maxWidth) {
         throw new RangeError(
           "Column Canvas minWidth must be less than or equal to maxWidth.",
         );
@@ -333,7 +394,7 @@ export class ColumnCanvasController {
     this.#layoutChanged(columnId, "ensure");
   };
 
-  getLayout = (): ColumnCanvasLayoutV1 => {
+  getLayout = (): ColumnCanvasLayout => {
     const columns: Record<string, ColumnCanvasColumnLayout> = {};
     for (const [id, column] of Object.entries(this.#columns)) {
       columns[id] = {
@@ -345,6 +406,7 @@ export class ColumnCanvasController {
     return {
       version: COLUMN_CANVAS_LAYOUT_VERSION,
       columns,
+      pairSplits: Object.values(this.#pairSplits),
     };
   };
 
@@ -428,8 +490,15 @@ export class ColumnCanvasController {
   async #restoreLayout(): Promise<void> {
     this.#hydrating = true;
     try {
-      this.#restoredColumns = normalizeColumnCanvasLayout(
+      const restored = normalizeColumnCanvasLayout(
         await this.#persistence?.load(),
+      );
+      this.#restoredColumns = restored.columns;
+      this.#pairSplits = Object.fromEntries(
+        restored.pairSplits.map((split) => [
+          pairSplitKey(split.leadingColumnId, split.trailingColumnId),
+          split,
+        ]),
       );
       const next = { ...this.#columns };
       for (const [id, column] of Object.entries(next)) {
@@ -457,9 +526,10 @@ export class ColumnCanvasController {
   #layoutChanged(
     columnId: string,
     source: ColumnCanvasLayoutChangeSource,
+    relatedColumnId?: string,
   ): void {
     if (this.#hydrating || !this.layoutReady) return;
-    this.#pendingSaveEvent = { source, columnId };
+    this.#pendingSaveEvent = { source, columnId, relatedColumnId };
     if (this.#saveTimer) clearTimeout(this.#saveTimer);
     this.#saveTimer = setTimeout(() => {
       this.#saveTimer = null;
@@ -480,10 +550,11 @@ function createRuntimeState(
   const minWidth = Math.round(
     config.minWidth ?? COLUMN_CANVAS_DEFAULT_MIN_WIDTH,
   );
-  const maxWidth = Math.round(
-    config.maxWidth ?? COLUMN_CANVAS_DEFAULT_MAX_WIDTH,
-  );
-  if (minWidth > maxWidth) {
+  const maxWidth =
+    config.maxWidth === null
+      ? null
+      : Math.round(config.maxWidth ?? COLUMN_CANVAS_DEFAULT_MAX_WIDTH);
+  if (maxWidth !== null && minWidth > maxWidth) {
     throw new RangeError(
       "Column Canvas minWidth must be less than or equal to maxWidth.",
     );
@@ -513,7 +584,12 @@ function normalizePathLevel(pathLevel: number | undefined): number {
   return Math.max(0, Math.round(pathLevel));
 }
 
-function clampWidth(width: number, minWidth: number, maxWidth: number): number {
+function clampWidth(
+  width: number,
+  minWidth: number,
+  maxWidth: number | null,
+): number {
   const finite = Number.isFinite(width) ? width : minWidth;
-  return Math.min(maxWidth, Math.max(minWidth, Math.round(finite)));
+  const rounded = Math.max(minWidth, Math.round(finite));
+  return maxWidth === null ? rounded : Math.min(maxWidth, rounded);
 }

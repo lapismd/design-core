@@ -8,7 +8,12 @@
   import { Button } from "../button/index.js";
   import type { ColumnCanvasController } from "./column-canvas-controller.svelte.js";
   import {
+    allocateColumnCanvasPair,
+    allocateColumnCanvasWidth,
+  } from "./column-canvas-layout.js";
+  import {
     setColumnCanvasContext,
+    type ColumnCanvasResizeBehavior,
     type ColumnCanvasStickyColumnRegistration,
   } from "./context.svelte.js";
   import type {
@@ -76,6 +81,10 @@
   let wheelAnimationRoot: HTMLElement | null = null;
   let wheelAnimationDirection: WheelDirection | null = null;
   let stickyWheelRoutingTimer: ReturnType<typeof setTimeout> | null = null;
+  let activePairLeadingId = $state<string | null>(null);
+  let activePairResize = $state.raw<
+    Extract<ColumnCanvasResizeBehavior, { kind: "pair" }> | undefined
+  >(undefined);
 
   const resolvedCompactBreakpoint = $derived(
     Number.isFinite(compactBreakpoint) && compactBreakpoint >= 0
@@ -122,14 +131,58 @@
     return Number.isFinite(parsed) ? parsed : 0;
   }
 
+  function outerInlineSpacing(element: HTMLElement): number {
+    const style = getComputedStyle(element);
+    return (
+      finitePixels(style.marginInlineStart) +
+      finitePixels(style.marginInlineEnd)
+    );
+  }
+
   function clearStickyLayout(column: HTMLElement): void {
     column.removeAttribute("data-sticky-state");
   }
 
   function clearResponsiveStageLayout(column: HTMLElement): void {
     column.removeAttribute("data-responsive-stage");
+    column.removeAttribute("data-responsive-stage-position");
     column.removeAttribute("data-responsive-context");
-    column.style.removeProperty("--ui-column-canvas-wide-stage-min-width");
+    column.style.removeProperty("--ui-column-canvas-wide-stage-width");
+  }
+
+  function columnId(column: HTMLElement): string | undefined {
+    const id = column.dataset.columnId;
+    return id && rootController.hasColumn(id) ? id : undefined;
+  }
+
+  function deepestPairLeadingId(columns: HTMLElement[]): string | null {
+    const pair = columns
+      .filter((column) => column.dataset.uiPart === "column")
+      .slice(-2);
+    return pair.length === 2 ? (columnId(pair[0]) ?? null) : null;
+  }
+
+  function activePair(columns: HTMLElement[]): HTMLElement[] {
+    const expanded = columns.filter(
+      (column) => column.dataset.uiPart === "column",
+    );
+    if (expanded.length <= 2) return expanded;
+    const activeIndex = activePairLeadingId
+      ? expanded.findIndex((column) => columnId(column) === activePairLeadingId)
+      : -1;
+    const leadingIndex =
+      activeIndex >= 0 && activeIndex < expanded.length - 1
+        ? activeIndex
+        : expanded.length - 2;
+    return expanded.slice(leadingIndex, leadingIndex + 2);
+  }
+
+  function widthBounds(id: string) {
+    return {
+      preferredWidth: rootController.getWidth(id),
+      minWidth: rootController.getMinWidth(id),
+      maxWidth: rootController.getMaxWidth(id),
+    };
   }
 
   function syncResponsiveStageLayout(
@@ -139,17 +192,22 @@
     columns: HTMLElement[],
   ): void {
     for (const column of columns) clearResponsiveStageLayout(column);
+    activePairResize = undefined;
     if (resolvedDisplayMode !== "wide" || columns.length === 0) return;
 
-    const pair = columns.slice(-2);
-    const context = columns.at(-(pair.length + 1));
-    for (const column of pair) column.dataset.responsiveStage = "pair";
+    const pair = activePair(columns);
+    if (pair.length === 0) return;
+    const pairStartIndex = columns.indexOf(pair[0]);
+    const context = columns
+      .slice(0, pairStartIndex)
+      .filter((column) => column.dataset.uiPart === "column")
+      .at(-1);
+    for (const [index, column] of pair.entries()) {
+      column.dataset.responsiveStage = "pair";
+      column.dataset.responsiveStagePosition =
+        index === 0 ? "leading" : "trailing";
+    }
     if (context) context.dataset.responsiveContext = "true";
-
-    const expandedPair = pair.filter(
-      (column) => column.dataset.uiPart === "column",
-    );
-    if (expandedPair.length === 0) return;
 
     const contentWidth = Math.max(
       0,
@@ -163,44 +221,73 @@
     const contextWidth = context
       ? Math.min(configuredContextWidth, context.getBoundingClientRect().width)
       : 0;
-    const collapsedPairWidth = pair.reduce(
+    const stageStartIndex = context ? columns.indexOf(context) : 0;
+    const stageColumns = columns.slice(stageStartIndex);
+    const collapsedStageColumns = stageColumns.filter(
+      (column) => column.dataset.uiPart === "collapsed-column",
+    );
+    const collapsedStageWidth = collapsedStageColumns.reduce(
       (total, column) =>
-        column.dataset.uiPart === "collapsed-column"
-          ? total + column.getBoundingClientRect().width
-          : total,
+        total +
+        column.getBoundingClientRect().width +
+        outerInlineSpacing(column),
       0,
     );
-    const gapCount = Math.max(0, pair.length - 1) + (context ? 1 : 0);
+    const pairOuterInlineSpacing = pair.reduce(
+      (total, column) => total + outerInlineSpacing(column),
+      0,
+    );
+    const contextOuterInlineSpacing = context ? outerInlineSpacing(context) : 0;
+    const gapCount = Math.max(0, stageColumns.length - 1);
     const availableExpandedWidth = Math.max(
       0,
-      contentWidth - contextWidth - collapsedPairWidth - gap * gapCount,
+      contentWidth -
+        contextWidth -
+        contextOuterInlineSpacing -
+        pairOuterInlineSpacing -
+        collapsedStageWidth -
+        gap * gapCount,
     );
-    const sharedStageWidth = availableExpandedWidth / expandedPair.length;
-    for (const column of expandedPair) {
-      const id = column.dataset.columnId;
-      if (!id || !rootController.hasColumn(id)) continue;
-      const configuredWidth = finitePixels(
-        getComputedStyle(column).getPropertyValue(
-          "--ui-column-canvas-expanded-width",
-        ),
+    if (pair.length === 1) {
+      const expanded = pair[0];
+      const id = columnId(expanded);
+      if (!id) return;
+      expanded.style.setProperty(
+        "--ui-column-canvas-wide-stage-width",
+        `${allocateColumnCanvasWidth(availableExpandedWidth, widthBounds(id))}px`,
       );
-      // The responsive pair is a default presentation, not a competing width
-      // source. Once a consumer or pointer resize supplies a non-default
-      // durable width, render that width directly until it is reset.
-      if (
-        Math.abs(configuredWidth - rootController.getDefaultWidth(id)) > 0.5
-      ) {
-        continue;
-      }
-      const maxWidth = finitePixels(
-        getComputedStyle(column).getPropertyValue(
-          "--ui-column-canvas-expanded-max-width",
-        ),
-      );
-      column.style.setProperty(
-        "--ui-column-canvas-wide-stage-min-width",
-        `${Math.min(sharedStageWidth, maxWidth)}px`,
-      );
+      return;
+    }
+
+    const leadingId = columnId(pair[0]);
+    const trailingId = columnId(pair[1]);
+    if (!leadingId || !trailingId) return;
+    const allocation = allocateColumnCanvasPair(
+      availableExpandedWidth,
+      widthBounds(leadingId),
+      widthBounds(trailingId),
+      rootController.getPairSplit(leadingId, trailingId),
+    );
+    pair[0].style.setProperty(
+      "--ui-column-canvas-wide-stage-width",
+      `${allocation.leadingWidth}px`,
+    );
+    pair[1].style.setProperty(
+      "--ui-column-canvas-wide-stage-width",
+      `${allocation.trailingWidth}px`,
+    );
+    if (
+      rootController.isResizable(leadingId) &&
+      rootController.isResizable(trailingId)
+    ) {
+      activePairResize = {
+        kind: "pair",
+        leadingColumnId: leadingId,
+        trailingColumnId: trailingId,
+        trailingTitle: pair[1].dataset.columnTitle ?? trailingId,
+        leadingWidth: allocation.leadingWidth,
+        trailingWidth: allocation.trailingWidth,
+      };
     }
   }
 
@@ -290,7 +377,8 @@
     const hasScrolled = Math.abs(root.scrollLeft) > 1;
     const stuckColumns: ResolvedStickyColumn[] = [];
     for (const column of activeStickyColumns) {
-      const activationEdge = column.offset + column.width;
+      const activationEdge =
+        stickyLayerInlineOffset + column.offset + column.width;
       const isStuck =
         hasScrolled &&
         inlineEndPosition(root, column.element) <= activationEdge + 1;
@@ -478,10 +566,24 @@
       if (alignmentFrame !== null) cancelAnimationFrame(alignmentFrame);
       alignmentFrame = requestAnimationFrame(() => {
         alignmentFrame = null;
+        const columns = visibleColumns();
+        activePairLeadingId = deepestPairLeadingId(columns);
         syncStickyLayout();
         alignActiveColumn();
       });
     });
+  }
+
+  function getResizeBehavior(columnId: string): ColumnCanvasResizeBehavior {
+    if (resolvedDisplayMode === "compact") return { kind: "hidden" };
+    if (resolvedDisplayMode !== "wide" || !activePairResize) {
+      return { kind: "column" };
+    }
+    if (columnId === activePairResize.leadingColumnId) return activePairResize;
+    if (columnId === activePairResize.trailingColumnId) {
+      return { kind: "hidden" };
+    }
+    return { kind: "column" };
   }
 
   setColumnCanvasContext({
@@ -491,6 +593,7 @@
     },
     requestAlignment,
     requestStickyLayout,
+    getResizeBehavior,
     registerStickyColumn,
   });
 
@@ -508,6 +611,19 @@
     // Restoration can change width, collapse, and close state in one update.
     rootController.layoutReady;
     requestAlignment();
+  });
+
+  $effect(() => {
+    // Pair ratios are controller-owned durable state and may be changed by a
+    // consumer without a pointer event from this mounted canvas.
+    rootController
+      .getLayout()
+      .pairSplits.map(
+        (split) =>
+          `${split.leadingColumnId}\u0000${split.trailingColumnId}\u0000${split.leadingFraction}`,
+      )
+      .join("\u0001");
+    requestStickyLayout();
   });
 
   $effect(() => {

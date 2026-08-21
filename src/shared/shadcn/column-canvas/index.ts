@@ -48,16 +48,27 @@ export {
 
 export {
   COLUMN_CANVAS_LAYOUT_VERSION,
+  COLUMN_CANVAS_LAYOUT_V1_VERSION,
   COLUMN_CANVAS_DEFAULT_STORAGE_KEY,
   createLocalStorageColumnCanvasLayoutPersistence,
   normalizeColumnCanvasLayout,
   type ColumnCanvasColumnLayout,
   type ColumnCanvasLayoutV1,
+  type ColumnCanvasLayoutV2,
+  type ColumnCanvasLayout,
+  type ColumnCanvasPairSplit,
   type ColumnCanvasLayoutChangeSource,
   type ColumnCanvasLayoutChangeEvent,
   type ColumnCanvasLayoutPersistence,
   type ColumnCanvasPersistenceErrorEvent,
 } from "./column-canvas-persistence.js";
+
+export {
+  allocateColumnCanvasPair,
+  allocateColumnCanvasWidth,
+  type ColumnCanvasPairAllocation,
+  type ColumnCanvasWidthBounds,
+} from "./column-canvas-layout.js";
 
 export type {
   ColumnCanvasDisplayMode,
@@ -68,6 +79,7 @@ export {
   useColumnCanvas,
   useColumnCanvasContext,
   type ColumnCanvasContext,
+  type ColumnCanvasResizeBehavior,
 } from "./context.svelte.js";
 
 export {

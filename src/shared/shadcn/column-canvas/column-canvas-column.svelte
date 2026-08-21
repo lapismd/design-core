@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
+  import type { Action } from "svelte/action";
   import type { Snippet } from "svelte";
   import type { HTMLAttributes } from "svelte/elements";
   import ChevronRight from "@lucide/svelte/icons/chevron-right";
@@ -100,6 +101,39 @@
   const minWidth = $derived(controller.getMinWidth(id));
   const maxWidth = $derived(controller.getMaxWidth(id));
   const useDefaultHeader = $derived(title !== undefined);
+  const resizeBehavior = $derived.by(() =>
+    resolvedResizable
+      ? canvas.getResizeBehavior(id)
+      : ({ kind: "hidden" } as const),
+  );
+  const resizeMinimum = $derived.by(() => {
+    if (resizeBehavior.kind !== "pair") return minWidth;
+    const trailingMaximum = controller.getMaxWidth(
+      resizeBehavior.trailingColumnId,
+    );
+    return Math.max(
+      minWidth,
+      trailingMaximum === null
+        ? minWidth
+        : resizeBehavior.leadingWidth +
+            resizeBehavior.trailingWidth -
+            trailingMaximum,
+    );
+  });
+  const resizeMaximum = $derived.by(() => {
+    if (resizeBehavior.kind !== "pair") {
+      return maxWidth ?? Number.MAX_SAFE_INTEGER;
+    }
+    return Math.max(
+      resizeMinimum,
+      Math.min(
+        maxWidth ?? Number.MAX_SAFE_INTEGER,
+        resizeBehavior.leadingWidth +
+          resizeBehavior.trailingWidth -
+          controller.getMinWidth(resizeBehavior.trailingColumnId),
+      ),
+    );
+  });
 
   setColumnCanvasColumnContext({
     get id() {
@@ -123,6 +157,13 @@
   });
 
   let resizing = $state(false);
+
+  function constrainedWidth(requestedWidth: number): number {
+    return Math.max(
+      minWidth,
+      maxWidth === null ? requestedWidth : Math.min(maxWidth, requestedWidth),
+    );
+  }
 
   onMount(() =>
     canvas.registerStickyColumn({
@@ -155,12 +196,26 @@
   });
 
   function startHorizontalResize(event: PointerEvent): void {
-    if (!resolvedResizable || !event.isPrimary || event.button !== 0) return;
+    if (
+      !resolvedResizable ||
+      resizeBehavior.kind === "hidden" ||
+      !event.isPrimary ||
+      event.button !== 0
+    ) {
+      return;
+    }
     event.preventDefault();
     event.stopPropagation();
 
     const startX = event.clientX;
-    const startWidth = ref?.getBoundingClientRect().width ?? width;
+    const startWidth =
+      resizeBehavior.kind === "pair"
+        ? resizeBehavior.leadingWidth
+        : (ref?.getBoundingClientRect().width ?? width);
+    const pairTotal =
+      resizeBehavior.kind === "pair"
+        ? resizeBehavior.leadingWidth + resizeBehavior.trailingWidth
+        : 0;
     const ownerDocument =
       event.currentTarget instanceof Element
         ? event.currentTarget.ownerDocument
@@ -171,13 +226,19 @@
     resizing = true;
 
     function handlePointerMove(pointerEvent: PointerEvent): void {
-      const next = Math.min(
-        maxWidth,
-        Math.max(
-          minWidth,
-          Math.round(startWidth + pointerEvent.clientX - startX),
-        ),
+      const requestedWidth = Math.round(
+        startWidth + pointerEvent.clientX - startX,
       );
+      if (resizeBehavior.kind === "pair" && pairTotal > 0) {
+        controller.setPairSplit(
+          resizeBehavior.leadingColumnId,
+          resizeBehavior.trailingColumnId,
+          requestedWidth / pairTotal,
+        );
+        canvas.requestStickyLayout();
+        return;
+      }
+      const next = constrainedWidth(requestedWidth);
       if (onWidthChange) {
         onWidthChange(next);
       } else {
@@ -209,6 +270,57 @@
     ownerDocument.defaultView?.addEventListener("pointerup", stopResize);
     ownerDocument.defaultView?.addEventListener("pointercancel", stopResize);
   }
+
+  function resizeWithKeyboard(event: KeyboardEvent): void {
+    if (resizeBehavior.kind === "hidden") return;
+    if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+    event.preventDefault();
+    event.stopPropagation();
+    const delta =
+      (event.shiftKey ? 32 : 8) * (event.key === "ArrowRight" ? 1 : -1);
+    if (resizeBehavior.kind === "pair") {
+      const total = resizeBehavior.leadingWidth + resizeBehavior.trailingWidth;
+      if (total <= 0) return;
+      controller.setPairSplit(
+        resizeBehavior.leadingColumnId,
+        resizeBehavior.trailingColumnId,
+        (resizeBehavior.leadingWidth + delta) / total,
+      );
+      canvas.requestStickyLayout();
+      return;
+    }
+    if (onWidthChange) {
+      onWidthChange(constrainedWidth(width + delta));
+    } else {
+      controller.setWidth(id, width + delta);
+    }
+    canvas.requestStickyLayout();
+  }
+
+  function resetResize(): void {
+    if (resizeBehavior.kind === "pair") {
+      controller.resetPairSplit(
+        resizeBehavior.leadingColumnId,
+        resizeBehavior.trailingColumnId,
+      );
+    } else {
+      controller.resetWidth(id);
+    }
+    canvas.requestStickyLayout();
+  }
+
+  const resizeHandleInteractions: Action<HTMLElement> = (node) => {
+    node.addEventListener("pointerdown", startHorizontalResize);
+    node.addEventListener("keydown", resizeWithKeyboard);
+    node.addEventListener("dblclick", resetResize);
+    return {
+      destroy() {
+        node.removeEventListener("pointerdown", startHorizontalResize);
+        node.removeEventListener("keydown", resizeWithKeyboard);
+        node.removeEventListener("dblclick", resetResize);
+      },
+    };
+  };
 </script>
 
 {#if visible}
@@ -220,6 +332,7 @@
       data-ui-component="column-canvas"
       data-ui-part="collapsed-column"
       data-column-id={id}
+      data-column-title={resolvedTitle}
       data-sticky={sticky ? "true" : undefined}
     >
       <button
@@ -254,10 +367,10 @@
       data-ui-component="column-canvas"
       data-ui-part="column"
       data-column-id={id}
+      data-column-title={resolvedTitle}
       data-resizable={resolvedResizable ? "true" : undefined}
       data-sticky={sticky ? "true" : undefined}
       style:--ui-column-canvas-expanded-width={`${width}px`}
-      style:--ui-column-canvas-expanded-max-width={`${maxWidth}px`}
     >
       {#if useDefaultHeader}
         <Header>
@@ -275,16 +388,30 @@
 
       {@render children?.()}
 
-      {#if resolvedResizable && canvas.displayMode !== "compact"}
+      {#if resolvedResizable && resizeBehavior.kind !== "hidden"}
+        <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
         <div
           role="separator"
+          tabindex="0"
           aria-orientation="vertical"
-          aria-label={`Resize ${resolvedTitle} column`}
-          title={`Resize ${resolvedTitle}`}
+          aria-label={resizeBehavior.kind === "pair"
+            ? `Resize ${resolvedTitle} and ${resizeBehavior.trailingTitle} columns`
+            : `Resize ${resolvedTitle} column`}
+          aria-valuemin={Math.round(resizeMinimum)}
+          aria-valuemax={Math.round(resizeMaximum)}
+          aria-valuenow={Math.round(
+            resizeBehavior.kind === "pair"
+              ? resizeBehavior.leadingWidth
+              : width,
+          )}
+          title={resizeBehavior.kind === "pair"
+            ? `Resize ${resolvedTitle} and ${resizeBehavior.trailingTitle}`
+            : `Resize ${resolvedTitle}`}
           data-ui-component="column-canvas"
           data-ui-part="resize-handle"
+          data-resize-mode={resizeBehavior.kind}
           data-resizing={resizing ? "true" : undefined}
-          onpointerdown={startHorizontalResize}
+          use:resizeHandleInteractions
         ></div>
       {/if}
     </section>

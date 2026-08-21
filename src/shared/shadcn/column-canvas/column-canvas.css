@@ -180,13 +180,13 @@
 
 [data-ui-component="column-canvas"][data-ui-part="root"][data-display-mode="wide"]
   [data-ui-part="column"][data-responsive-stage="pair"] {
-  width: max(
-    var(--ui-column-canvas-expanded-width),
-    var(--ui-column-canvas-wide-stage-min-width, 0px)
+  width: var(
+    --ui-column-canvas-wide-stage-width,
+    var(--ui-column-canvas-expanded-width)
   );
-  min-width: max(
-    var(--ui-column-canvas-expanded-width),
-    var(--ui-column-canvas-wide-stage-min-width, 0px)
+  min-width: var(
+    --ui-column-canvas-wide-stage-width,
+    var(--ui-column-canvas-expanded-width)
   );
 }
 
@@ -329,6 +329,9 @@
   height: 100%;
   cursor: col-resize;
   touch-action: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
   background: transparent;
   transition: background-color 120ms ease;
 }
@@ -339,11 +342,13 @@
 }
 
 [data-ui-component="column-canvas"][data-ui-part="resize-handle"]:hover,
+[data-ui-component="column-canvas"][data-ui-part="resize-handle"]:focus-visible,
 [data-ui-component="column-canvas"][data-ui-part="resize-handle"][data-resizing="true"] {
   background: var(
     --ui-column-canvas-resize-handle-hover,
     color-mix(in oklab, var(--primary) 40%, transparent)
   );
+  outline: none;
 }
 
 [data-ui-component="column-canvas"][data-ui-part="collapsed-column"] {

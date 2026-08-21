@@ -14,6 +14,18 @@ export type ColumnCanvasStickyColumnRegistration = {
   readonly rail: Snippet | undefined;
 };
 
+export type ColumnCanvasResizeBehavior =
+  | { readonly kind: "hidden" }
+  | { readonly kind: "column" }
+  | {
+      readonly kind: "pair";
+      readonly leadingColumnId: string;
+      readonly trailingColumnId: string;
+      readonly trailingTitle: string;
+      readonly leadingWidth: number;
+      readonly trailingWidth: number;
+    };
+
 export type ColumnCanvasContext = {
   /** App-owned controller. Do not destructure reactive fields. */
   controller: ColumnCanvasController;
@@ -23,6 +35,8 @@ export type ColumnCanvasContext = {
   requestAlignment: () => void;
   /** Recompute transient floating-rail geometry without moving the canvas. */
   requestStickyLayout: () => void;
+  /** Resolve independent or shared-divider behavior for a visible column. */
+  getResizeBehavior: (columnId: string) => ColumnCanvasResizeBehavior;
   /** Register a column's transient floating-rail presentation. */
   registerStickyColumn: (
     registration: ColumnCanvasStickyColumnRegistration,

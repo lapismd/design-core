@@ -1,4 +1,5 @@
-export const COLUMN_CANVAS_LAYOUT_VERSION = 1 as const;
+export const COLUMN_CANVAS_LAYOUT_VERSION = 2 as const;
+export const COLUMN_CANVAS_LAYOUT_V1_VERSION = 1 as const;
 export const COLUMN_CANVAS_DEFAULT_STORAGE_KEY =
   "@lapismd/design-core/column-canvas-layout";
 
@@ -10,14 +11,36 @@ export interface ColumnCanvasColumnLayout {
 }
 
 export interface ColumnCanvasLayoutV1 {
+  version: typeof COLUMN_CANVAS_LAYOUT_V1_VERSION;
+  columns: Record<string, ColumnCanvasColumnLayout>;
+}
+
+export interface ColumnCanvasPairSplit {
+  leadingColumnId: string;
+  trailingColumnId: string;
+  /** Leading-column share of the pair's available width, from 0 to 1. */
+  leadingFraction: number;
+}
+
+export interface ColumnCanvasLayoutV2 {
   version: typeof COLUMN_CANVAS_LAYOUT_VERSION;
   columns: Record<string, ColumnCanvasColumnLayout>;
+  pairSplits: ColumnCanvasPairSplit[];
+}
+
+export type ColumnCanvasLayout = ColumnCanvasLayoutV2;
+
+export interface NormalizedColumnCanvasLayout {
+  columns: Map<string, ColumnCanvasColumnLayout>;
+  pairSplits: ColumnCanvasPairSplit[];
 }
 
 export type ColumnCanvasLayoutChangeSource =
   | "collapse"
   | "close"
   | "resize"
+  | "resize-pair"
+  | "reset-pair"
   | "reset-width"
   | "register"
   | "ensure";
@@ -25,12 +48,14 @@ export type ColumnCanvasLayoutChangeSource =
 export interface ColumnCanvasLayoutChangeEvent {
   source: ColumnCanvasLayoutChangeSource;
   columnId: string;
+  /** The other member affected by a paired resize or reset. */
+  relatedColumnId?: string;
 }
 
 export interface ColumnCanvasLayoutPersistence {
   load(): Promise<unknown | null>;
   save(
-    layout: ColumnCanvasLayoutV1,
+    layout: ColumnCanvasLayout,
     event: ColumnCanvasLayoutChangeEvent,
   ): Promise<void>;
 }
@@ -69,12 +94,17 @@ export function createLocalStorageColumnCanvasLayoutPersistence(
 
 export function normalizeColumnCanvasLayout(
   value: unknown,
-): Map<string, ColumnCanvasColumnLayout> {
+): NormalizedColumnCanvasLayout {
   const columns = new Map<string, ColumnCanvasColumnLayout>();
-  if (!isRecord(value) || value.version !== COLUMN_CANVAS_LAYOUT_VERSION) {
-    return columns;
+  const pairSplits: ColumnCanvasPairSplit[] = [];
+  if (
+    !isRecord(value) ||
+    (value.version !== COLUMN_CANVAS_LAYOUT_VERSION &&
+      value.version !== COLUMN_CANVAS_LAYOUT_V1_VERSION)
+  ) {
+    return { columns, pairSplits };
   }
-  if (!isRecord(value.columns)) return columns;
+  if (!isRecord(value.columns)) return { columns, pairSplits };
 
   for (const [id, column] of Object.entries(value.columns)) {
     if (!id || !isRecord(column) || typeof column.collapsed !== "boolean") {
@@ -88,7 +118,46 @@ export function normalizeColumnCanvasLayout(
         : {}),
     });
   }
-  return columns;
+
+  if (
+    value.version === COLUMN_CANVAS_LAYOUT_VERSION &&
+    Array.isArray(value.pairSplits)
+  ) {
+    const seen = new Set<string>();
+    for (const split of value.pairSplits) {
+      if (
+        !isRecord(split) ||
+        typeof split.leadingColumnId !== "string" ||
+        !split.leadingColumnId ||
+        typeof split.trailingColumnId !== "string" ||
+        !split.trailingColumnId ||
+        split.leadingColumnId === split.trailingColumnId ||
+        typeof split.leadingFraction !== "number" ||
+        !Number.isFinite(split.leadingFraction) ||
+        split.leadingFraction <= 0 ||
+        split.leadingFraction >= 1
+      ) {
+        continue;
+      }
+      const key = pairSplitKey(split.leadingColumnId, split.trailingColumnId);
+      if (seen.has(key)) continue;
+      seen.add(key);
+      pairSplits.push({
+        leadingColumnId: split.leadingColumnId,
+        trailingColumnId: split.trailingColumnId,
+        leadingFraction: split.leadingFraction,
+      });
+    }
+  }
+
+  return { columns, pairSplits };
+}
+
+export function pairSplitKey(
+  leadingColumnId: string,
+  trailingColumnId: string,
+): string {
+  return JSON.stringify([leadingColumnId, trailingColumnId]);
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {

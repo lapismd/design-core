@@ -252,7 +252,7 @@ export const showcaseWorkspaces: ShowcaseWorkspace[] = [
                 key: "DC-188",
                 title: "Document consumer-owned persistence boundaries",
                 summary:
-                  "Explain which presentation state stays transient and which width, collapse, and close fields remain durable in the V1 layout schema.",
+                  "Explain which presentation state stays transient and which width, collapse, close, and pair-ratio fields remain durable in the V2 layout schema.",
                 status: "Planned",
                 priority: "Medium",
                 assignee: "Noah Williams",

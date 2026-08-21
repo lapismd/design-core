@@ -10,9 +10,10 @@ and selected surfaces retain distinct rounded edges.
 
 This is a project-authored native-CSS Layout family. It is not the same as
 Resizable: Resizable fills a box with percentage pane groups, while Column
-Canvas grows a horizontally scrolling canvas. Wide layouts prioritise the
-newest pair with a narrow preceding-column context slice; compact layouts use
-one full-stage active column with mandatory snapping.
+Canvas grows a horizontally scrolling canvas. Wide layouts make the structurally
+active column and its immediate right neighbour a shared, bounded pair with a
+narrow preceding-column context slice; compact layouts use one full-stage
+active column with mandatory snapping.
 
 Visibility follows the same split as AppShell: mount every `Column` under
 `Root`; the controller decides whether chrome appears. Hosts only map
@@ -101,7 +102,7 @@ Each entry in `columns` registers one stable column id:
 | -------------- | ------------------- | ---------------------------------------------------------------------- |
 | `defaultWidth` | Required            | Initial expanded width in CSS pixels, clamped to the configured limits |
 | `minWidth`     | `240`               | Minimum durable width                                                  |
-| `maxWidth`     | `760`               | Maximum durable width                                                  |
+| `maxWidth`     | `760`               | Maximum durable width; set `null` for no upper bound                   |
 | `pathLevel`    | `0`                 | Minimum `path.length` required before the column can render            |
 | `resizable`    | `false`             | Adds the pointer resize handle outside compact mode                    |
 | `collapsible`  | `false`             | Enables `Toggle` and the collapsed rail                                |
@@ -110,8 +111,8 @@ Each entry in `columns` registers one stable column id:
 | `collapsed`    | `false`             | Initial collapsed state before persistence restores                    |
 | `closed`       | `false`             | Initial closed state before persistence restores                       |
 
-`minWidth` must not exceed `maxWidth`. The controller rounds and clamps every
-width before storing it.
+`minWidth` must not exceed a finite `maxWidth`. The controller rounds and
+clamps every durable width before storing it.
 
 ### Controller options
 
@@ -122,10 +123,10 @@ The controller constructor accepts these host integrations:
 | `columns`             | Required | Registered column configuration keyed by stable id                  |
 | `initialPath`         | `[]`     | Initial Miller-column selection path                                |
 | `trailingSpacerWidth` | `0`      | Optional blank width after the final column in wide and fixed modes |
-| `persistence`         | None     | Async `load` and `save` adapter for V1 layout state                 |
+| `persistence`         | None     | Async `load` and `save` adapter for V2 layout state                 |
 | `saveDebounceMs`      | `200`    | Delay before layout callbacks and persistence saves                 |
 | `onPathChange`        | None     | Receives a copied path after selection changes                      |
-| `onLayoutChange`      | None     | Receives the V1 snapshot and its change event before save           |
+| `onLayoutChange`      | None     | Receives the V2 snapshot and its change event before save           |
 | `onPersistenceError`  | None     | Receives failed `load` or `save` operations                         |
 
 ### Controller state and methods
@@ -138,6 +139,7 @@ The public controller surface is grouped by responsibility:
 | Visibility        | `getPathLevel`, `isPathVisible`, `isColumnVisible`                                    |
 | Registration      | `hasColumn`, `ensureColumn`                                                           |
 | Width             | `getWidth`, `getDefaultWidth`, `getMinWidth`, `getMaxWidth`, `setWidth`, `resetWidth` |
+| Pair split        | `getPairSplit`, `setPairSplit`, `resetPairSplit`                                      |
 | Collapse          | `isCollapsible`, `isCollapsed`, `collapse`, `expand`, `toggle`, `setCollapsed`        |
 | Close             | `isCloseable`, `isClosed`, `close`, `open`, `setClosed`                               |
 | Resize capability | `isResizable`                                                                         |
@@ -218,13 +220,14 @@ destructure reactive context getters.
 or `onwheel` handler can call `preventDefault()` before the built-in routing
 logic runs.
 
-- `wide` gives the newest two rendered columns enough transient minimum width
-  to share the stage, while retaining larger controller widths and all resize
-  handles. When an older column exists,
-  `--ui-column-canvas-wide-context-width` remains visible before the pair.
-  No trailing spacer is added by default; consumers can opt into one with
-  `trailingSpacerWidth`. Independent vertical body scrolling, active-column
-  following, and proximity snapping remain.
+- `wide` gives the structurally active column and its immediate right neighbour the
+  available stage after padding, gaps, collapsed rails, and the existing
+  preceding-context allowance. Their configured widths establish the initial
+  ratio; minimum and maximum bounds redistribute space, `maxWidth: null`
+  permits unbounded fill, minimum overflow remains scrollable, and finite
+  maximum slack remains explicit. Two expanded resizable members expose one
+  keyboard-accessible shared divider: growing one shrinks the other by the same
+  amount. The right member's outer handle is suppressed.
 - `compact` makes each expanded column fill the complete bounded stage, removes
   the previous-column peek, durable blank tail, and horizontal scrollbar, hides
   resize handles, and snaps columns mandatorily.
@@ -236,9 +239,12 @@ Set `displayMode="compact"` to force the compact presentation at every root
 width. Set `displayMode="fixed"` to bypass container adaptation. In auto mode,
 `compactBreakpoint` uses the bounded root width rather than the viewport.
 
-The last rendered, non-closed column is the active column. It is followed after
-path, visibility, collapse/open, restoration, and display-mode changes, not
-after ordinary body rendering or manual scrolling. Root-level Arrow Left/Right
+Structural navigation initially activates the deepest adjacent pair. Manual
+horizontal scrolling preserves that allocation and its native position.
+Collapsed rails are skipped as pair members; their widths, margins, and
+intervening gaps are deducted before the next expanded column is paired.
+Collapse or close temporarily reallocates available space; reopening restores
+the pair's saved split. Root-level Arrow Left/Right
 and Home/End navigate compact snap points without changing controller
 selection. A scrollable body retains vertical wheel ownership while it can
 move. At its boundary, or over a non-scrollable body, vertical input routes to
@@ -276,27 +282,36 @@ horizontally with continuous scaled motion; scrollable bodies retain priority,
 and input at a canvas edge is left to the surrounding page.
 
 Sticky is transient presentation state. It is not controller configuration or
-part of the V1 persistence schema. Compact mode ignores it and retains the
+part of the V2 persistence schema. Compact mode ignores it and retains the
 full-stage active-column and snapping behavior.
 
 ## Persist layout
 
 `Root` calls `restoreLayout()` and exposes restoration through
 `controller.layoutReady` and `data-layout-ready`. A persistence adapter loads
-unknown data and saves the normalized V1 shape:
+unknown data and saves the normalized V2 shape:
 
 ```json
 {
-  "version": 1,
+  "version": 2,
   "columns": {
     "tasks": { "width": 380, "collapsed": false, "closed": false }
-  }
+  },
+  "pairSplits": [
+    {
+      "leadingColumnId": "tasks",
+      "trailingColumnId": "detail",
+      "leadingFraction": 0.42
+    }
+  ]
 }
 ```
 
-V1 persists each registered column's width, collapsed state, and closed state.
-Invalid versions and malformed entries are ignored. Restored widths are
-clamped to the current `minWidth` and `maxWidth`.
+V2 persists each registered column's width, collapsed state, and closed state,
+plus validated ratios for independent directed adjacent pairs. V1 snapshots
+migrate with no pair ratios. Invalid versions and malformed entries are
+ignored. Temporary collapse stretching and container-size scaling are never
+persisted.
 
 Use `createLocalStorageColumnCanvasLayoutPersistence(key, storage?)` for browser
 storage, or implement `ColumnCanvasLayoutPersistence` for another backend.
@@ -304,12 +319,13 @@ Call `flushSave()` before a host must observe pending changes. Call `dispose()`
 when the owning application lifecycle ends.
 
 `onLayoutChange` receives a `source` of `collapse`, `close`, `resize`,
-`reset-width`, `register`, or `ensure`, plus the affected `columnId`.
+`resize-pair`, `reset-pair`, `reset-width`, `register`, or `ensure`, plus the
+affected `columnId`; pair events also carry `relatedColumnId`.
 `onPersistenceError` reports `load` and `save` failures without replacing app
 error policy.
 
 The selection path, `pathLevel`, responsive mode, sticky state, and scroll
-position are transient. They never enter the V1 layout schema.
+position are transient. They never enter the V2 layout schema.
 
 ## Accessibility and input
 
@@ -359,14 +375,17 @@ selecting a row (`openOnSelect`) restores it.
 
 ### Resizable columns
 
-Set `resizable: true` on the column config. The handle updates the controller.
+Set `resizable: true` on adjacent columns. Wide active pairs share one inverse
+divider; fixed mode retains independent trailing handles.
 
 ### Responsive adaptive canvas
 
 At compact widths the active column follows the deepest path and fills the
 bounded stage without exposing the previous column. At wide widths the newest
-pair shares the stage with a narrow slice of preceding context. Durable
-controller widths are preserved through both presentations.
+pair shares the stage with the full outer slot of preceding context, including
+consumer margins, so a sticky overlay does not obstruct it. Pair ratios
+scale with the container, survive collapse/expand, and remain independent as
+navigation activates deeper pairs.
 
 ### Fixed compatibility
 
@@ -412,8 +431,11 @@ The complete non-visual export groups are:
   `ColumnCanvasColumnConfig`, `CreateColumnCanvasControllerOptions`, and the
   `COLUMN_CANVAS_DEFAULT_MIN_WIDTH`, `COLUMN_CANVAS_DEFAULT_MAX_WIDTH`, and
   `COLUMN_CANVAS_DEFAULT_TRAILING_SPACER_WIDTH` constants
+- Allocation: `allocateColumnCanvasPair`, `allocateColumnCanvasWidth`, and
+  their bound/allocation types
 - Persistence: `createLocalStorageColumnCanvasLayoutPersistence`,
-  `normalizeColumnCanvasLayout`, `COLUMN_CANVAS_LAYOUT_VERSION`,
+  `normalizeColumnCanvasLayout`, `ColumnCanvasLayoutV1`,
+  `ColumnCanvasLayoutV2`, `COLUMN_CANVAS_LAYOUT_VERSION`,
   `COLUMN_CANVAS_DEFAULT_STORAGE_KEY`, and all layout, adapter, event, source,
   and error types
 - Presentation: `ColumnCanvasDisplayMode`,
@@ -427,13 +449,14 @@ Each visual part also has a long alias, such as `ColumnCanvasColumn` and
 
 Use semantic attributes for tests and supported ancestor styling:
 
-| Element            | Attributes                                                                  |
-| ------------------ | --------------------------------------------------------------------------- |
-| Root               | `data-display-mode` with `wide`, `compact`, or `fixed`; `data-layout-ready` |
-| Column             | `data-column-id`, `data-resizable`, `data-sticky`, `data-sticky-state`      |
-| Sticky replacement | `data-sticky-for`, `data-sticky-state="stuck"`                              |
-| Item               | `data-selected` and `aria-pressed`                                          |
-| Every family part  | `data-ui-component="column-canvas"` and a semantic `data-ui-part`           |
+| Element            | Attributes                                                                                                                        |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------------- |
+| Root               | `data-display-mode` with `wide`, `compact`, or `fixed`; `data-layout-ready`                                                       |
+| Column             | `data-column-id`, `data-resizable`, `data-responsive-stage`, `data-responsive-stage-position`, `data-sticky`, `data-sticky-state` |
+| Resize handle      | `data-resize-mode` with `pair` or `column`; `data-resizing`                                                                       |
+| Sticky replacement | `data-sticky-for`, `data-sticky-state="stuck"`                                                                                    |
+| Item               | `data-selected` and `aria-pressed`                                                                                                |
+| Every family part  | `data-ui-component="column-canvas"` and a semantic `data-ui-part`                                                                 |
 
 ## Styling
 

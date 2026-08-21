@@ -227,7 +227,7 @@ test.describe("Column Canvas responsive scrolling", () => {
     expect(await root.evaluate((element) => element.scrollLeft)).toBe(0);
   });
 
-  test("wide mode prioritises the newest pair with previous context while retaining resize and body-scroll behavior", async ({
+  test("wide mode fills the stage with an inverse shared divider and restores its split", async ({
     page,
   }) => {
     await useReducedMotion(page);
@@ -237,10 +237,28 @@ test.describe("Column Canvas responsive scrolling", () => {
 
     const root = page.getByRole("region", { name: "Responsive canvas" });
     await expect(root).toHaveAttribute("data-display-mode", "wide");
-    await expect(page.getByRole("separator")).toHaveCount(3);
+    await expect(page.getByRole("separator")).toHaveCount(2);
     const detail = root.locator('[data-column-id="detail"]');
     const components = root.locator('[data-column-id="components"]');
     const categories = root.locator('[data-column-id="categories"]');
+    await detail.evaluate((column) => {
+      column.style.marginInlineStart = "12px";
+    });
+    await setResponsiveStageWidth(page, 1070);
+    await expect
+      .poll(() =>
+        root.evaluate((element) => {
+          const detail = element.querySelector<HTMLElement>(
+            '[data-column-id="detail"]',
+          )!;
+          const style = getComputedStyle(element);
+          const contentEnd =
+            element.getBoundingClientRect().right -
+            Number.parseFloat(style.paddingInlineEnd);
+          return Math.abs(detail.getBoundingClientRect().right - contentEnd);
+        }),
+      )
+      .toBeLessThan(2);
     await expect(components).toHaveAttribute("data-responsive-stage", "pair");
     await expect(detail).toHaveAttribute("data-responsive-stage", "pair");
     await expect(categories).toHaveAttribute("data-responsive-context", "true");
@@ -260,9 +278,12 @@ test.describe("Column Canvas responsive scrolling", () => {
       const contentWidth = element.clientWidth - paddingStart - paddingEnd;
       const contentStart = element.getBoundingClientRect().left + paddingStart;
       const contentEnd = element.getBoundingClientRect().right - paddingEnd;
-      const gap =
+      const pairGap =
         detail.getBoundingClientRect().left -
         components.getBoundingClientRect().right;
+      const contextGap =
+        components.getBoundingClientRect().left -
+        categories.getBoundingClientRect().right;
       const contextProbe = document.createElement("span");
       contextProbe.style.cssText =
         "position:absolute;width:var(--ui-column-canvas-wide-context-width);height:0";
@@ -272,7 +293,7 @@ test.describe("Column Canvas responsive scrolling", () => {
       return {
         componentsWidth: components.getBoundingClientRect().width,
         detailWidth: detail.getBoundingClientRect().width,
-        expectedPairWidth: (contentWidth - contextWidth - gap * 2) / 2,
+        expectedPairWidth: contentWidth - contextWidth - contextGap - pairGap,
         visibleContext: categories.getBoundingClientRect().right - contentStart,
         contextWidth,
         activeEndDistance: detail.getBoundingClientRect().right - contentEnd,
@@ -281,11 +302,16 @@ test.describe("Column Canvas responsive scrolling", () => {
       };
     });
     expect(
-      Math.abs(wideMetrics.componentsWidth - wideMetrics.expectedPairWidth),
+      Math.abs(
+        wideMetrics.componentsWidth +
+          wideMetrics.detailWidth -
+          wideMetrics.expectedPairWidth,
+      ),
     ).toBeLessThan(2);
     expect(
-      Math.abs(wideMetrics.detailWidth - wideMetrics.expectedPairWidth),
-    ).toBeLessThan(2);
+      wideMetrics.componentsWidth /
+        (wideMetrics.componentsWidth + wideMetrics.detailWidth),
+    ).toBeCloseTo(340 / (340 + 380), 2);
     expect(
       Math.abs(wideMetrics.visibleContext - wideMetrics.contextWidth),
     ).toBeLessThan(2);
@@ -295,9 +321,12 @@ test.describe("Column Canvas responsive scrolling", () => {
       0,
     );
 
-    const handle = page.getByRole("separator", {
-      name: "Resize Detail column",
-    });
+    const handle = components.locator(
+      '[data-ui-part="resize-handle"][data-resize-mode="pair"]',
+    );
+    await expect(detail.locator('[data-ui-part="resize-handle"]')).toHaveCount(
+      0,
+    );
     const handleBox = await handle.boundingBox();
     expect(handleBox).not.toBeNull();
     if (!handleBox) return;
@@ -306,12 +335,96 @@ test.describe("Column Canvas responsive scrolling", () => {
     await page.mouse.down();
     await page.mouse.move(startX + 40, handleBox.y + 80, { steps: 8 });
     await page.mouse.up();
-    const resizedDetailWidth = wideMetrics.detailWidth + 40;
+    const resizedComponentsWidth = wideMetrics.componentsWidth + 40;
+    const resizedDetailWidth = wideMetrics.detailWidth - 40;
+    await expect
+      .poll(() =>
+        components.evaluate((column) => column.getBoundingClientRect().width),
+      )
+      .toBeCloseTo(resizedComponentsWidth, 0);
     await expect
       .poll(() =>
         detail.evaluate((column) => column.getBoundingClientRect().width),
       )
       .toBeCloseTo(resizedDetailWidth, 0);
+    expect(
+      await Promise.all(
+        [components, detail].map((column) =>
+          column.evaluate((element) => element.getBoundingClientRect().width),
+        ),
+      ).then((widths) => widths.reduce((total, width) => total + width, 0)),
+    ).toBeCloseTo(wideMetrics.componentsWidth + wideMetrics.detailWidth, 0);
+
+    await handle.focus();
+    await page.keyboard.press("Shift+ArrowLeft");
+    await expect
+      .poll(() =>
+        components.evaluate((column) => column.getBoundingClientRect().width),
+      )
+      .toBeCloseTo(resizedComponentsWidth - 32, 0);
+
+    const restoredComponentsWidth = await components.evaluate(
+      (column) => column.getBoundingClientRect().width,
+    );
+    const restoredDetailWidth = await detail.evaluate(
+      (column) => column.getBoundingClientRect().width,
+    );
+    await page
+      .getByRole("button", { name: "Collapse Components column" })
+      .click();
+    await expect(components).toHaveAttribute(
+      "data-ui-part",
+      "collapsed-column",
+    );
+    await expect(categories).toHaveAttribute("data-responsive-stage", "pair");
+    await expect(detail).toHaveAttribute("data-responsive-stage", "pair");
+    await expect(components).not.toHaveAttribute("data-responsive-stage");
+    await expect
+      .poll(() =>
+        detail.evaluate((column) => column.getBoundingClientRect().width),
+      )
+      .toBeGreaterThan(restoredDetailWidth + 40);
+    await expect
+      .poll(() =>
+        root.evaluate((element) => {
+          const categories = element.querySelector<HTMLElement>(
+            '[data-column-id="categories"]',
+          )!;
+          const detail = element.querySelector<HTMLElement>(
+            '[data-column-id="detail"]',
+          )!;
+          const rootRect = element.getBoundingClientRect();
+          const style = getComputedStyle(element);
+          const contentStart =
+            rootRect.left + Number.parseFloat(style.paddingInlineStart);
+          const contentEnd =
+            rootRect.right - Number.parseFloat(style.paddingInlineEnd);
+          return Math.max(
+            Math.abs(categories.getBoundingClientRect().left - contentStart),
+            Math.abs(detail.getBoundingClientRect().right - contentEnd),
+          );
+        }),
+      )
+      .toBeLessThan(2);
+    await expect(categories.locator('[data-resize-mode="pair"]')).toHaveCount(
+      1,
+    );
+    await expect(detail.locator('[data-ui-part="resize-handle"]')).toHaveCount(
+      0,
+    );
+    await page
+      .getByRole("button", { name: "Expand Components column" })
+      .click();
+    await expect
+      .poll(() =>
+        components.evaluate((column) => column.getBoundingClientRect().width),
+      )
+      .toBeCloseTo(restoredComponentsWidth, 0);
+    await expect
+      .poll(() =>
+        detail.evaluate((column) => column.getBoundingClientRect().width),
+      )
+      .toBeCloseTo(restoredDetailWidth, 0);
 
     const header = components.locator('[data-ui-part="column-header"]');
     const viewport = components.locator(
@@ -333,13 +446,70 @@ test.describe("Column Canvas responsive scrolling", () => {
       await detail.evaluate((column) => column.getBoundingClientRect().width),
     ).not.toBeCloseTo(resizedDetailWidth, 0);
 
-    await setResponsiveStageWidth(page, 1100);
+    await setResponsiveStageWidth(page, 1070);
     await expect(root).toHaveAttribute("data-display-mode", "wide");
     await expect
       .poll(() =>
         detail.evaluate((column) => column.getBoundingClientRect().width),
       )
-      .toBeCloseTo(resizedDetailWidth, 0);
+      .toBeCloseTo(restoredDetailWidth, 0);
+  });
+
+  test("manual horizontal scrolling preserves the structurally active pair", async ({
+    page,
+  }) => {
+    await useReducedMotion(page);
+    await page.setViewportSize({ width: 1280, height: 820 });
+    await openStory(page, responsiveStoryId);
+    await setResponsiveStageWidth(page, 1100);
+
+    const root = page.getByRole("region", { name: "Responsive canvas" });
+    const components = root.locator('[data-column-id="components"]');
+    const detail = root.locator('[data-column-id="detail"]');
+    const deeperHandle = components.locator('[data-resize-mode="pair"]');
+    const deeperBox = await deeperHandle.boundingBox();
+    expect(deeperBox).not.toBeNull();
+    if (!deeperBox) return;
+    await page.mouse.move(deeperBox.x + 1, deeperBox.y + 80);
+    await page.mouse.down();
+    await page.mouse.move(deeperBox.x + 61, deeperBox.y + 80, { steps: 8 });
+    await page.mouse.up();
+    const deeperWidths = await Promise.all(
+      [components, detail].map((column) =>
+        column.evaluate((element) => element.getBoundingClientRect().width),
+      ),
+    );
+
+    await root.evaluate((element) =>
+      element.scrollTo({ left: 0, behavior: "auto" }),
+    );
+    await page.waitForTimeout(180);
+    await expect(components).toHaveAttribute("data-responsive-stage", "pair");
+    await expect(detail).toHaveAttribute("data-responsive-stage", "pair");
+    await expect(components).toHaveAttribute(
+      "data-responsive-stage-position",
+      "leading",
+    );
+    await expect(detail).toHaveAttribute(
+      "data-responsive-stage-position",
+      "trailing",
+    );
+    await expect
+      .poll(() =>
+        components.evaluate((element) => element.getBoundingClientRect().width),
+      )
+      .toBeCloseTo(deeperWidths[0], 0);
+    await expect
+      .poll(() =>
+        detail.evaluate((element) => element.getBoundingClientRect().width),
+      )
+      .toBeCloseTo(deeperWidths[1], 0);
+    await expect
+      .poll(() => root.evaluate((element) => element.scrollLeft))
+      .toBeLessThan(2);
+    await expect(components.locator('[data-resize-mode="pair"]')).toHaveCount(
+      1,
+    );
   });
 
   test("compact keyboard, wheel, and native touch input arbitrate between bodies, columns, and the page", async ({
@@ -1016,7 +1186,7 @@ test.describe("Column Canvas sticky scrolling", () => {
 });
 
 test.describe("Column Canvas full showcase", () => {
-  test("resizes both trailing columns and routes their unused vertical wheel input", async ({
+  test("resizes the trailing pair inversely and routes unused vertical wheel input", async ({
     page,
   }) => {
     await page.setViewportSize({ width: 1280, height: 900 });
@@ -1031,48 +1201,43 @@ test.describe("Column Canvas full showcase", () => {
     const detail = root.locator('[data-column-id="detail"]');
     const activity = root.locator('[data-column-id="activity"]');
 
-    async function dragTrailingColumn(
-      label: string,
-      column: Locator,
-      deltaX: number,
-    ): Promise<void> {
-      const before = await column.evaluate(
-        (element) => element.getBoundingClientRect().width,
-      );
-      const handle = page.getByRole("separator", {
-        name: `Resize ${label} column`,
-      });
-      const box = await handle.boundingBox();
-      expect(box).not.toBeNull();
-      if (!box) return;
-      const x = box.x + box.width / 2;
-      const y = box.y + box.height / 2;
-      await page.mouse.move(x, y);
-      await page.mouse.down();
-      await page.mouse.move(x + deltaX, y, { steps: 8 });
-      await page.mouse.up();
-      await expect
-        .poll(() =>
-          column.evaluate((element) => element.getBoundingClientRect().width),
-        )
-        .toBeCloseTo(before + deltaX, 0);
-      await expect
-        .poll(() =>
-          column.evaluate((element) =>
-            Number.parseFloat(
-              getComputedStyle(element).getPropertyValue(
-                "--ui-column-canvas-expanded-width",
-              ),
-            ),
-          ),
-        )
-        .toBeCloseTo(before + deltaX, 0);
-    }
-
-    await dragTrailingColumn("Task details", detail, -48);
-    await dragTrailingColumn("Activity", activity, -36);
-    await dragTrailingColumn("Task details", detail, 24);
-    await dragTrailingColumn("Activity", activity, 20);
+    const handle = detail.locator(
+      '[data-ui-part="resize-handle"][data-resize-mode="pair"]',
+    );
+    await expect(handle).toHaveCount(1);
+    await expect(
+      activity.locator('[data-ui-part="resize-handle"]'),
+    ).toHaveCount(0);
+    const before = await Promise.all(
+      [detail, activity].map((column) =>
+        column.evaluate((element) => element.getBoundingClientRect().width),
+      ),
+    );
+    const box = await handle.boundingBox();
+    expect(box).not.toBeNull();
+    if (!box) return;
+    const x = box.x + box.width / 2;
+    const y = box.y + box.height / 2;
+    await page.mouse.move(x, y);
+    await page.mouse.down();
+    await page.mouse.move(x - 48, y, { steps: 8 });
+    await page.mouse.up();
+    await expect
+      .poll(() =>
+        detail.evaluate((element) => element.getBoundingClientRect().width),
+      )
+      .toBeCloseTo(before[0] - 48, 0);
+    await expect
+      .poll(() =>
+        activity.evaluate((element) => element.getBoundingClientRect().width),
+      )
+      .toBeCloseTo(before[1] + 48, 0);
+    const after = await Promise.all(
+      [detail, activity].map((column) =>
+        column.evaluate((element) => element.getBoundingClientRect().width),
+      ),
+    );
+    expect(after[0] + after[1]).toBeCloseTo(before[0] + before[1], 0);
 
     for (const column of [detail, activity]) {
       const viewport = column.locator('[data-ui-part="scroll-area-viewport"]');
@@ -1191,6 +1356,6 @@ test.describe("Column Canvas full showcase", () => {
     await page.setViewportSize({ width: 1280, height: 900 });
     await expect(root).toHaveAttribute("data-display-mode", "wide");
     await expect(workspace).toHaveCSS("width", "280px");
-    await expect(root.locator('[data-ui-part="resize-handle"]')).toHaveCount(6);
+    await expect(root.locator('[data-ui-part="resize-handle"]')).toHaveCount(5);
   });
 });
