@@ -85,6 +85,7 @@
   let activePairResize = $state.raw<
     Extract<ColumnCanvasResizeBehavior, { kind: "pair" }> | undefined
   >(undefined);
+  let pairResizeScrollLeft: number | null = null;
 
   const resolvedCompactBreakpoint = $derived(
     Number.isFinite(compactBreakpoint) && compactBreakpoint >= 0
@@ -356,6 +357,9 @@
     }
 
     activeStickyColumns = active;
+    if (pairResizeScrollLeft !== null) {
+      root.scrollLeft = pairResizeScrollLeft;
+    }
     scheduleStickyStateUpdate();
   }
 
@@ -547,13 +551,16 @@
     wheelAnimationFrame = requestAnimationFrame(step);
   }
 
-  function alignActiveColumn(): void {
+  function alignActivePair(): void {
     const root = ref;
     if (!root) return;
     cancelWheelAnimation();
     if (resolvedDisplayMode === "fixed") return;
     const columns = visibleColumns();
-    const target = columns.at(-1);
+    const target =
+      resolvedDisplayMode === "wide"
+        ? activePair(columns).at(-1)
+        : columns.at(-1);
     if (!target) return;
     root.scrollTo({
       left: targetScrollLeft(root, target),
@@ -562,28 +569,102 @@
   }
 
   function requestAlignment(): void {
+    requestPairAlignment(true);
+  }
+
+  function requestActivePairAlignment(): void {
+    requestPairAlignment(false);
+  }
+
+  function requestPairAlignment(activateDeepest: boolean): void {
     void tick().then(() => {
       if (alignmentFrame !== null) cancelAnimationFrame(alignmentFrame);
       alignmentFrame = requestAnimationFrame(() => {
         alignmentFrame = null;
         const columns = visibleColumns();
-        activePairLeadingId = deepestPairLeadingId(columns);
+        if (activateDeepest) {
+          activePairLeadingId = deepestPairLeadingId(columns);
+        }
         syncStickyLayout();
-        alignActiveColumn();
+        alignActivePair();
       });
     });
   }
 
-  function getResizeBehavior(columnId: string): ColumnCanvasResizeBehavior {
+  function getResizeBehavior(
+    requestedColumnId: string,
+  ): ColumnCanvasResizeBehavior {
     if (resolvedDisplayMode === "compact") return { kind: "hidden" };
-    if (resolvedDisplayMode !== "wide" || !activePairResize) {
+    if (resolvedDisplayMode !== "wide") {
       return { kind: "column" };
     }
-    if (columnId === activePairResize.leadingColumnId) return activePairResize;
-    if (columnId === activePairResize.trailingColumnId) {
+    if (
+      activePairResize &&
+      requestedColumnId === activePairResize.leadingColumnId
+    ) {
+      return activePairResize;
+    }
+
+    const expanded = visibleColumns().filter(
+      (column) => column.dataset.uiPart === "column",
+    );
+    const leadingIndex = expanded.findIndex(
+      (column) => requestedColumnId === column.dataset.columnId,
+    );
+    const leading = expanded[leadingIndex];
+    const trailing = expanded[leadingIndex + 1];
+    const leadingId = leading ? columnId(leading) : undefined;
+    const trailingId = trailing ? columnId(trailing) : undefined;
+    if (
+      !leading ||
+      !trailing ||
+      !leadingId ||
+      !trailingId ||
+      !rootController.isResizable(leadingId) ||
+      !rootController.isResizable(trailingId)
+    ) {
       return { kind: "hidden" };
     }
-    return { kind: "column" };
+    return {
+      kind: "pair",
+      leadingColumnId: leadingId,
+      trailingColumnId: trailingId,
+      trailingTitle: trailing.dataset.columnTitle ?? trailingId,
+      leadingWidth: leading.getBoundingClientRect().width,
+      trailingWidth: trailing.getBoundingClientRect().width,
+    };
+  }
+
+  function activateResizePair(columnId: string): ColumnCanvasResizeBehavior {
+    const behavior = getResizeBehavior(columnId);
+    if (resolvedDisplayMode !== "wide" || behavior.kind !== "pair") {
+      return behavior;
+    }
+    const root = ref;
+    if (root && pairResizeScrollLeft === null) {
+      pairResizeScrollLeft = root.scrollLeft;
+    }
+    if (activePairLeadingId !== behavior.leadingColumnId) {
+      activePairLeadingId = behavior.leadingColumnId;
+      // Resizing is an explicit pair activation event. Reallocate the chosen
+      // neighbours without aligning or otherwise moving the scroll position.
+      syncStickyLayout();
+    }
+    return activePairResize ?? behavior;
+  }
+
+  function finishResizePair(): void {
+    const root = ref;
+    if (!root || pairResizeScrollLeft === null) return;
+    void tick().then(() => {
+      requestAnimationFrame(() => {
+        if (pairResizeScrollLeft !== null) {
+          root.scrollLeft = pairResizeScrollLeft;
+        }
+        pairResizeScrollLeft = null;
+        scheduleStickyStateUpdate();
+      });
+    });
   }
 
   setColumnCanvasContext({
@@ -594,6 +675,8 @@
     requestAlignment,
     requestStickyLayout,
     getResizeBehavior,
+    activateResizePair,
+    finishResizePair,
     registerStickyColumn,
   });
 
@@ -637,8 +720,17 @@
     if (!root) return;
 
     const measure = (): void => {
-      rootWidth = root.getBoundingClientRect().width;
-      requestStickyLayout();
+      const nextWidth = root.getBoundingClientRect().width;
+      const shouldAlignActivePair =
+        rootWidth !== null &&
+        resolvedDisplayMode === "wide" &&
+        Math.abs(nextWidth - rootWidth) > 1;
+      rootWidth = nextWidth;
+      if (shouldAlignActivePair) {
+        requestActivePairAlignment();
+      } else {
+        requestStickyLayout();
+      }
     };
     measure();
     if (typeof ResizeObserver === "undefined") return;
@@ -653,6 +745,7 @@
     if (stickyStateFrame !== null) cancelAnimationFrame(stickyStateFrame);
     cancelWheelAnimation();
     stopStickyWheelRouting();
+    pairResizeScrollLeft = null;
   });
 
   function handleScroll(

@@ -1179,13 +1179,88 @@ test.describe("Column Canvas sticky scrolling", () => {
         primary.evaluate((column) => column.getBoundingClientRect().width),
       )
       .toBe(420);
-    await expect(page.getByRole("separator")).toHaveCount(2);
+    await expect(page.getByRole("separator")).toHaveCount(1);
     await expect(primary).toHaveAttribute("data-sticky-state", "stuck");
     await expect(rails).toHaveCount(2);
   });
 });
 
 test.describe("Column Canvas full showcase", () => {
+  test("activates an earlier adjacent pair from its divider without moving the canvas", async ({
+    page,
+  }) => {
+    await useReducedMotion(page);
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await openStory(page, showcaseStoryId);
+
+    const root = page.getByRole("region", {
+      name: "Product delivery workspace",
+    });
+    const tasks = root.locator('[data-column-id="tasks"]');
+    const detail = root.locator('[data-column-id="detail"]');
+    const handle = tasks.locator(
+      '[data-ui-part="resize-handle"][data-resize-mode="pair"]',
+    );
+    await expect(handle).toHaveAttribute(
+      "aria-label",
+      "Resize Tasks and Task details columns",
+    );
+    await handle.evaluate((element) =>
+      element.scrollIntoView({ inline: "center", block: "nearest" }),
+    );
+    await expect
+      .poll(async () => {
+        const before = await root.evaluate((element) => element.scrollLeft);
+        await page.waitForTimeout(100);
+        const after = await root.evaluate((element) => element.scrollLeft);
+        return Math.abs(after - before);
+      })
+      .toBeLessThan(1);
+    const box = await handle.boundingBox();
+    expect(box).not.toBeNull();
+    if (!box) return;
+    const scrollBeforeActivation = await root.evaluate(
+      (element) => element.scrollLeft,
+    );
+
+    const x = box.x + box.width / 2;
+    const y = box.y + box.height / 2;
+    await page.mouse.move(x, y);
+    await page.mouse.down();
+    await expect(tasks).toHaveAttribute("data-responsive-stage", "pair");
+    await expect(detail).toHaveAttribute("data-responsive-stage", "pair");
+    await expect
+      .poll(() => root.evaluate((element) => element.scrollLeft))
+      .toBeCloseTo(scrollBeforeActivation, 0);
+    const activated = await Promise.all(
+      [tasks, detail].map((column) =>
+        column.evaluate((element) => element.getBoundingClientRect().width),
+      ),
+    );
+
+    await page.mouse.move(x - 24, y, { steps: 8 });
+    await page.mouse.up();
+    await expect
+      .poll(() =>
+        tasks.evaluate((element) => element.getBoundingClientRect().width),
+      )
+      .toBeCloseTo(activated[0] - 24, 0);
+    await expect
+      .poll(() =>
+        detail.evaluate((element) => element.getBoundingClientRect().width),
+      )
+      .toBeCloseTo(activated[1] + 24, 0);
+    const resized = await Promise.all(
+      [tasks, detail].map((column) =>
+        column.evaluate((element) => element.getBoundingClientRect().width),
+      ),
+    );
+    expect(resized[0] + resized[1]).toBeCloseTo(activated[0] + activated[1], 0);
+    await expect
+      .poll(() => root.evaluate((element) => element.scrollLeft))
+      .toBeCloseTo(scrollBeforeActivation, 0);
+  });
+
   test("resizes the trailing pair inversely and routes unused vertical wheel input", async ({
     page,
   }) => {

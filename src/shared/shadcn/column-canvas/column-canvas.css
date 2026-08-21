@@ -22,14 +22,8 @@
 
 [data-ui-component="column-canvas"][data-ui-part="root"][data-display-mode="wide"] {
   overscroll-behavior-inline: contain;
-  scroll-snap-type: x proximity;
-}
-
-[data-ui-component="column-canvas"][data-ui-part="root"][data-display-mode="wide"][data-wheel-routing="true"],
-[data-ui-component="column-canvas"][data-ui-part="root"][data-display-mode="wide"][data-wheel-animating="true"] {
-  /* Programmatic vertical-wheel handoff must not be cancelled by the snap
-     point it is leaving. Native proximity snapping resumes at the settled
-     column or canvas-end position. */
+  /* Wide canvases keep native continuous scrolling. Structural navigation and
+     routed vertical-wheel input align explicitly when those events occur. */
   scroll-snap-type: none;
 }
 

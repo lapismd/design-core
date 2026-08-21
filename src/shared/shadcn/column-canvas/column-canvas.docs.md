@@ -12,8 +12,9 @@ This is a project-authored native-CSS Layout family. It is not the same as
 Resizable: Resizable fills a box with percentage pane groups, while Column
 Canvas grows a horizontally scrolling canvas. Wide layouts make the structurally
 active column and its immediate right neighbour a shared, bounded pair with a
-narrow preceding-column context slice; compact layouts use one full-stage
-active column with mandatory snapping.
+narrow preceding-column context slice. Starting a resize on another divider
+activates that adjacent pair without moving the canvas. Compact layouts use one
+full-stage active column with mandatory snapping.
 
 Visibility follows the same split as AppShell: mount every `Column` under
 `Root`; the controller decides whether chrome appears. Hosts only map
@@ -191,10 +192,11 @@ through `Column` for durable application layout.
 ### Compound context hooks
 
 Use `useColumnCanvas()` inside a custom descendant to read the controller.
-`useColumnCanvasContext()` also exposes the resolved display mode and layout
-request functions for compound extensions. `useColumnCanvasColumn()` reads the
-current column id, title, count, and capability flags inside `Column`. Do not
-destructure reactive context getters.
+`useColumnCanvasContext()` also exposes the resolved display mode, layout
+request functions, and `activateResizePair()` for compound extensions that own
+a resize gesture. `useColumnCanvasColumn()` reads the current column id, title,
+count, and capability flags inside `Column`. Do not destructure reactive
+context getters.
 
 ## Responsive display
 
@@ -239,12 +241,15 @@ Set `displayMode="compact"` to force the compact presentation at every root
 width. Set `displayMode="fixed"` to bypass container adaptation. In auto mode,
 `compactBreakpoint` uses the bounded root width rather than the viewport.
 
-Structural navigation initially activates the deepest adjacent pair. Manual
-horizontal scrolling preserves that allocation and its native position.
-Collapsed rails are skipped as pair members; their widths, margins, and
-intervening gaps are deducted before the next expanded column is paired.
-Collapse or close temporarily reallocates available space; reopening restores
-the pair's saved split. Root-level Arrow Left/Right
+Structural navigation initially activates the deepest adjacent pair. Starting
+a pointer, keyboard, or reset interaction on any other eligible divider
+activates its adjacent expanded pair and reallocates that stage without moving
+the canvas. The shared divider changes both widths inversely. Manual horizontal
+scrolling alone preserves the current allocation and native position. Collapsed
+rails are skipped as pair members; their widths, margins, and intervening gaps
+are deducted before the next expanded column is paired. Collapse or close
+temporarily reallocates available space; reopening restores the pair's saved
+split. Root-level Arrow Left/Right
 and Home/End navigate compact snap points without changing controller
 selection. A scrollable body retains vertical wheel ownership while it can
 move. At its boundary, or over a non-scrollable body, vertical input routes to
@@ -375,17 +380,19 @@ selecting a row (`openOnSelect`) restores it.
 
 ### Resizable columns
 
-Set `resizable: true` on adjacent columns. Wide active pairs share one inverse
-divider; fixed mode retains independent trailing handles.
+Set `resizable: true` on adjacent columns. In wide mode every eligible divider
+activates its adjacent expanded pair when used, then resizes both members
+inversely without moving the canvas. Fixed mode retains independent trailing
+handles.
 
 ### Responsive adaptive canvas
 
 At compact widths the active column follows the deepest path and fills the
 bounded stage without exposing the previous column. At wide widths the newest
 pair shares the stage with the full outer slot of preceding context, including
-consumer margins, so a sticky overlay does not obstruct it. Pair ratios
-scale with the container, survive collapse/expand, and remain independent as
-navigation activates deeper pairs.
+consumer margins, so a sticky overlay does not obstruct it. Pair ratios scale
+with the container, survive collapse/expand, and remain independent as
+navigation or an explicit resize activates another pair.
 
 ### Fixed compatibility
 

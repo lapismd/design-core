@@ -204,17 +204,19 @@
     ) {
       return;
     }
+    const gestureBehavior = canvas.activateResizePair(id);
+    if (gestureBehavior.kind === "hidden") return;
     event.preventDefault();
     event.stopPropagation();
 
     const startX = event.clientX;
     const startWidth =
-      resizeBehavior.kind === "pair"
-        ? resizeBehavior.leadingWidth
+      gestureBehavior.kind === "pair"
+        ? gestureBehavior.leadingWidth
         : (ref?.getBoundingClientRect().width ?? width);
     const pairTotal =
-      resizeBehavior.kind === "pair"
-        ? resizeBehavior.leadingWidth + resizeBehavior.trailingWidth
+      gestureBehavior.kind === "pair"
+        ? gestureBehavior.leadingWidth + gestureBehavior.trailingWidth
         : 0;
     const ownerDocument =
       event.currentTarget instanceof Element
@@ -229,10 +231,10 @@
       const requestedWidth = Math.round(
         startWidth + pointerEvent.clientX - startX,
       );
-      if (resizeBehavior.kind === "pair" && pairTotal > 0) {
+      if (gestureBehavior.kind === "pair" && pairTotal > 0) {
         controller.setPairSplit(
-          resizeBehavior.leadingColumnId,
-          resizeBehavior.trailingColumnId,
+          gestureBehavior.leadingColumnId,
+          gestureBehavior.trailingColumnId,
           requestedWidth / pairTotal,
         );
         canvas.requestStickyLayout();
@@ -248,6 +250,7 @@
 
     function stopResize(): void {
       resizing = false;
+      if (gestureBehavior.kind === "pair") canvas.finishResizePair();
       body.style.userSelect = previousUserSelect;
       body.style.cursor = previousCursor;
       ownerDocument.defaultView?.removeEventListener(
@@ -272,21 +275,24 @@
   }
 
   function resizeWithKeyboard(event: KeyboardEvent): void {
-    if (resizeBehavior.kind === "hidden") return;
     if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+    const keyboardBehavior = canvas.activateResizePair(id);
+    if (keyboardBehavior.kind === "hidden") return;
     event.preventDefault();
     event.stopPropagation();
     const delta =
       (event.shiftKey ? 32 : 8) * (event.key === "ArrowRight" ? 1 : -1);
-    if (resizeBehavior.kind === "pair") {
-      const total = resizeBehavior.leadingWidth + resizeBehavior.trailingWidth;
+    if (keyboardBehavior.kind === "pair") {
+      const total =
+        keyboardBehavior.leadingWidth + keyboardBehavior.trailingWidth;
       if (total <= 0) return;
       controller.setPairSplit(
-        resizeBehavior.leadingColumnId,
-        resizeBehavior.trailingColumnId,
-        (resizeBehavior.leadingWidth + delta) / total,
+        keyboardBehavior.leadingColumnId,
+        keyboardBehavior.trailingColumnId,
+        (keyboardBehavior.leadingWidth + delta) / total,
       );
       canvas.requestStickyLayout();
+      canvas.finishResizePair();
       return;
     }
     if (onWidthChange) {
@@ -295,18 +301,21 @@
       controller.setWidth(id, width + delta);
     }
     canvas.requestStickyLayout();
+    canvas.finishResizePair();
   }
 
   function resetResize(): void {
-    if (resizeBehavior.kind === "pair") {
+    const resetBehavior = canvas.activateResizePair(id);
+    if (resetBehavior.kind === "pair") {
       controller.resetPairSplit(
-        resizeBehavior.leadingColumnId,
-        resizeBehavior.trailingColumnId,
+        resetBehavior.leadingColumnId,
+        resetBehavior.trailingColumnId,
       );
     } else {
       controller.resetWidth(id);
     }
     canvas.requestStickyLayout();
+    canvas.finishResizePair();
   }
 
   const resizeHandleInteractions: Action<HTMLElement> = (node) => {

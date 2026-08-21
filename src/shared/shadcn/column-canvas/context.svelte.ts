@@ -37,6 +37,10 @@ export type ColumnCanvasContext = {
   requestStickyLayout: () => void;
   /** Resolve independent or shared-divider behavior for a visible column. */
   getResizeBehavior: (columnId: string) => ColumnCanvasResizeBehavior;
+  /** Activate the eligible adjacent pair for an explicit resize gesture. */
+  activateResizePair: (columnId: string) => ColumnCanvasResizeBehavior;
+  /** Finish a pair resize after its final layout update has settled. */
+  finishResizePair: () => void;
   /** Register a column's transient floating-rail presentation. */
   registerStickyColumn: (
     registration: ColumnCanvasStickyColumnRegistration,

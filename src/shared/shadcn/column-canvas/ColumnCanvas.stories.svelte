@@ -1440,6 +1440,11 @@
       ).not.toBeNull();
       await expect(
         canvasElement.querySelector(
+          '[data-column-id="categories"] [data-resize-mode="pair"]',
+        ),
+      ).not.toBeNull();
+      await expect(
+        canvasElement.querySelector(
           '[data-column-id="detail"] [data-ui-part="resize-handle"]',
         ),
       ).toBeNull();

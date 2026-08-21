@@ -33,14 +33,14 @@ Layout primitives establish reusable spatial, scrolling, and responsive composit
 
 ## DC-SHA-036 — Column Canvas
 
-**Requirement.** The Column Canvas family MUST lay out horizontally scrollable columns with consumer-owned items and responsive sizing. In wide auto mode, the structurally active column and its immediate right neighbour MUST share the available stage within configured bounds through one inverse resize divider, with independent durable pair ratios. Fixed and compact modes MUST retain their documented behavior.
+**Requirement.** The Column Canvas family MUST lay out horizontally scrollable columns with consumer-owned items and responsive sizing. In wide auto mode, adjacent expanded columns MUST share the available stage within configured bounds through one inverse resize divider when structurally activated or explicitly resized, with independent durable pair ratios. Fixed and compact modes MUST retain their documented behavior.
 
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/shadcn/column-canvas`, controller updates must preserve consumer item identity, and header actions must use distinct public hover tokens.
 - Structural navigation activates the deepest pair of expanded columns, skips collapsed rails as pair members, and deducts their widths, margins, and intervening gaps from the shared stage.
-- Resizing or collapsing reallocates the active pair while manual horizontal scrolling preserves its geometry and scroll position, and bounded allocation preserves minimum overflow or finite-maximum slack plus the full outer slot of preceding sticky context.
-- V2 persistence must migrate V1 column layouts, retain independent adjacent-pair splits, exclude temporary collapse/container stretching, and leave fixed and compact geometry unchanged.
+- Pointer, keyboard, or reset interaction on any eligible divider activates that adjacent expanded pair without moving the canvas; resizing changes the two widths inversely while their total remains constant.
+- Collapsing reallocates the active pair while manual horizontal scrolling preserves its geometry and scroll position; bounded allocation preserves minimum overflow or finite-maximum slack plus preceding sticky context, and V2 persistence retains independent pair splits without temporary stretching.
 
 ## DC-SHA-037 — Resizable
 
