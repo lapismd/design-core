@@ -18,6 +18,7 @@
 
 <script lang="ts">
   let value = $state("edit");
+  let disabledValue = $state("schedule");
 </script>
 
 <Story
@@ -38,6 +39,31 @@
         onChange={(next) => (value = next)}
       />
       <output class="text-muted-foreground text-sm">{value}</output>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Disables choices"
+  tags={["test", "visual-pending"]}
+  play={async ({ canvas }) => {
+    const completion = canvas.getByRole("button", { name: "Completion" });
+    await expect(completion).toBeDisabled();
+    await userEvent.click(completion);
+    await expect(canvas.getByRole("status")).toHaveTextContent("schedule");
+  }}
+>
+  {#snippet template()}
+    <div class="flex flex-col gap-2">
+      <SegmentedControl
+        value={disabledValue}
+        options={["schedule", "completion"]}
+        labels={{ schedule: "Schedule", completion: "Completion" }}
+        ariaLabel="Advance from"
+        disabled
+        onChange={(next) => (disabledValue = next)}
+      />
+      <output class="text-muted-foreground text-sm">{disabledValue}</output>
     </div>
   {/snippet}
 </Story>

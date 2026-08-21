@@ -46,6 +46,19 @@
   padding: 0 0.65rem;
 }
 
+.cv-form-segmented[data-disabled] {
+  background: color-mix(
+    in srgb,
+    var(--ui-form-muted-surface, var(--muted)) 72%,
+    transparent
+  );
+}
+
+.cv-form-segmented button:disabled {
+  cursor: not-allowed;
+  opacity: 0.62;
+}
+
 .cv-form-segmented button:last-child {
   border-right: 0;
 }
@@ -54,6 +67,11 @@
 .cv-form-segmented button:focus-visible {
   color: var(--ui-form-foreground);
   outline: 0;
+}
+
+.cv-form-segmented button:disabled:hover,
+.cv-form-segmented button:disabled:focus-visible {
+  color: var(--ui-form-muted);
 }
 
 .cv-form-segmented button.active {

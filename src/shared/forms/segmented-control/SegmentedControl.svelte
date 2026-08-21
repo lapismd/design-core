@@ -5,6 +5,7 @@
     options,
     labels = {},
     ariaLabel,
+    disabled = false,
     /** Validation message; marks the control invalid and renders below. */
     error = null,
     onChange = () => {},
@@ -13,6 +14,7 @@
     options: string[];
     labels?: Record<string, string>;
     ariaLabel: string;
+    disabled?: boolean;
     error?: string | null;
     onChange?: (value: string) => void;
   } = $props();
@@ -27,13 +29,17 @@
     class="cv-form-segmented"
     aria-label={ariaLabel}
     data-invalid={error ? "" : undefined}
+    data-disabled={disabled ? "" : undefined}
   >
     {#each options as option (option)}
       <button
         type="button"
         class:active={value === option}
         aria-pressed={value === option}
-        onclick={() => onChange(option)}
+        {disabled}
+        onclick={() => {
+          if (!disabled) onChange(option);
+        }}
       >
         {labels[option] ?? option}
       </button>
