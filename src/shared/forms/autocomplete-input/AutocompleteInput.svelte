@@ -1,6 +1,8 @@
 <script lang="ts">
   import "./AutocompleteInput.css";
+  import type { ComponentProps } from "svelte";
   import * as Popover from "@lapismd/design-core/shadcn/popover";
+  import type { WithoutChildrenOrChild } from "../../../lib/utils.js";
 
   let {
     id = undefined,
@@ -19,6 +21,7 @@
     commitOnComma = false,
     commitOnBlur = false,
     commitOnTab = false,
+    portalProps = undefined,
     /** Validation message; sets aria-invalid and renders below the input. */
     error = null,
     onCommit = () => {},
@@ -36,6 +39,8 @@
     commitOnComma?: boolean;
     commitOnBlur?: boolean;
     commitOnTab?: boolean;
+    /** Optional portal configuration for the suggestion popover. */
+    portalProps?: WithoutChildrenOrChild<ComponentProps<typeof Popover.Portal>>;
     error?: string | null;
     onCommit?: (value: string) => void | Promise<void>;
     onEmptyBackspace?: () => void | Promise<void>;
@@ -220,6 +225,7 @@
       align="start"
       sideOffset={6}
       customAnchor={input}
+      {portalProps}
       onOpenAutoFocus={(event) => event.preventDefault()}
       onCloseAutoFocus={(event) => event.preventDefault()}
     >

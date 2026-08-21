@@ -38,7 +38,7 @@ Form inputs provide higher-level controlled editing patterns composed from share
 ### Acceptance details
 
 - The public boundaries are `@lapismd/design-core/forms` and the focused `@lapismd/design-core/forms/filter-command-picker` entry point.
-- The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- The catalog MUST demonstrate the family’s supported states and portal placement options without introducing a second runtime contract.
 - Moving focus outside an open autocomplete MUST close its suggestion list without restoring focus to the input and reopening it.
 - Opening an autocomplete with an existing value MUST focus the input, select the committed text, and expose alternative suggestions before the user types.
 
@@ -50,6 +50,7 @@ Form inputs provide higher-level controlled editing patterns composed from share
 
 - The public boundary is `@lapismd/design-core/forms`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- The family MUST forward suggestion popover portal configuration to its internal Autocomplete Input so sheet, dialog, and popover consumers can keep nested suggestion clicks inside the owning workflow.
 
 ## DC-FORM-009 — Color Picker
 

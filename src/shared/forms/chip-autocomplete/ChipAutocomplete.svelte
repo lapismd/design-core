@@ -1,9 +1,14 @@
 <script lang="ts">
   import "./ChipAutocomplete.css";
   import XIcon from "@lucide/svelte/icons/x";
+  import type { ComponentProps } from "svelte";
 
   import * as Tooltip from "../../shadcn/tooltip/index.js";
   import AutocompleteInput from "../autocomplete-input/AutocompleteInput.svelte";
+
+  type SuggestionPortalProps = ComponentProps<
+    typeof AutocompleteInput
+  >["portalProps"];
 
   let {
     value = [],
@@ -14,6 +19,7 @@
     id = undefined,
     embedded = false,
     uppercase = true,
+    suggestionPortalProps = undefined,
     /** Validation message; forwarded to AutocompleteInput and marks the chip box. */
     error = null,
     onChange = () => {},
@@ -26,6 +32,8 @@
     id?: string;
     embedded?: boolean;
     uppercase?: boolean;
+    /** Optional portal configuration for the suggestion popover. */
+    suggestionPortalProps?: SuggestionPortalProps;
     error?: string | null;
     onChange?: (items: string[]) => void | Promise<void>;
   } = $props();
@@ -138,6 +146,7 @@
           commitOnComma
           commitOnBlur
           commitOnTab
+          portalProps={suggestionPortalProps}
           onCommit={commitItem}
           onEmptyBackspace={removeLastItem}
         />
