@@ -172,6 +172,11 @@ you omit `Column.title`, use readable column ids or override the action labels.
 `previewOnHover` to use the App Shell timing contract: a 600 ms reveal and a
 120 ms dismissal grace period. Clicking always performs a durable transition:
 expanded to collapsed, collapsed to expanded, or closed to open and expanded.
+The boundary affordance is a thin neutral-grey strip. Override
+`--ui-column-canvas-edge-trigger-width` or
+`--ui-column-canvas-edge-trigger-hover` only when a surrounding surface needs
+different geometry or contrast; preview content paints the ordinary column
+background by default.
 
 ### Column props
 
@@ -507,6 +512,8 @@ Override these public tokens on `:root` or a shared ancestor:
 | `--ui-column-canvas-wide-context-width`             | `--ui-column-canvas-compact-peek-width`         |
 | `--ui-column-canvas-sticky-peek-width`              | `--ui-column-canvas-collapsed-width`            |
 | `--ui-column-canvas-resize-handle-hover`            | 40% `--primary` mixed with transparent          |
+| `--ui-column-canvas-edge-trigger-width`             | `0.25rem`                                       |
+| `--ui-column-canvas-edge-trigger-hover`             | 32% `--muted-foreground` mixed with transparent |
 | `--ui-column-canvas-title-color`                    | `--foreground`                                  |
 | `--ui-column-canvas-count-color`                    | `--muted-foreground`                            |
 | `--ui-column-canvas-header-action-hover`            | 12% `--foreground` mixed with column background |

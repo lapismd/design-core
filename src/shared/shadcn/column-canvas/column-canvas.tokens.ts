@@ -10,6 +10,8 @@ export const columnCanvasTokenNames = {
   wideContextWidth: "--ui-column-canvas-wide-context-width",
   stickyPeekWidth: "--ui-column-canvas-sticky-peek-width",
   resizeHandleHover: "--ui-column-canvas-resize-handle-hover",
+  edgeTriggerWidth: "--ui-column-canvas-edge-trigger-width",
+  edgeTriggerHover: "--ui-column-canvas-edge-trigger-hover",
   titleColor: "--ui-column-canvas-title-color",
   countColor: "--ui-column-canvas-count-color",
   headerActionHover: "--ui-column-canvas-header-action-hover",

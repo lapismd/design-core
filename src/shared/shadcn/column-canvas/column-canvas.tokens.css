@@ -24,6 +24,12 @@
     var(--primary) 40%,
     transparent
   );
+  --ui-column-canvas-edge-trigger-width: 0.25rem;
+  --ui-column-canvas-edge-trigger-hover: color-mix(
+    in oklab,
+    var(--muted-foreground) 32%,
+    transparent
+  );
   --ui-column-canvas-title-color: var(--foreground);
   --ui-column-canvas-count-color: var(--muted-foreground);
   --ui-column-canvas-header-action-hover: color-mix(

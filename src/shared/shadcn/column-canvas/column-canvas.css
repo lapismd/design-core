@@ -182,7 +182,7 @@
   z-index: var(--ui-column-canvas-edge-trigger-z-index, 42);
   inset-block: 0;
   inset-inline-start: 0;
-  width: var(--ui-column-canvas-edge-trigger-width, 0.5rem);
+  width: var(--ui-column-canvas-edge-trigger-width, 0.25rem);
   margin: 0;
   padding: 0;
   border: 0;
@@ -195,8 +195,8 @@
 [data-ui-component="column-canvas"][data-ui-part="column-edge-trigger"]:focus-visible {
   outline: none;
   background: var(
-    --ui-column-canvas-resize-handle-hover,
-    color-mix(in oklab, var(--primary) 40%, transparent)
+    --ui-column-canvas-edge-trigger-hover,
+    color-mix(in oklab, var(--muted-foreground) 32%, transparent)
   );
 }
 
@@ -356,7 +356,15 @@
 [data-ui-component="column-canvas"][data-ui-part="column-header-actions"]
   > button:hover,
 [data-ui-component="column-canvas"][data-ui-part="column-header-actions"]
-  > button:focus-visible {
+  > button:focus-visible,
+[data-ui-component="column-canvas"][data-ui-part="column-header"]
+  > [data-ui-part="column-toggle"]:hover,
+[data-ui-component="column-canvas"][data-ui-part="column-header"]
+  > [data-ui-part="column-toggle"]:focus-visible,
+[data-ui-component="column-canvas"][data-ui-part="column-header"]
+  > [data-ui-part="column-close"]:hover,
+[data-ui-component="column-canvas"][data-ui-part="column-header"]
+  > [data-ui-part="column-close"]:focus-visible {
   background: var(--ui-column-canvas-header-action-hover);
   color: var(--ui-column-canvas-header-action-hover-foreground);
 }
