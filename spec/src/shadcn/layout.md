@@ -38,7 +38,7 @@ Layout primitives establish reusable spatial, scrolling, and responsive composit
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/shadcn/column-canvas`; controller updates must preserve consumer item identity, header actions must use distinct public hover tokens, and custom collapsed rails must retain the default accessible fallback.
-- Structural navigation activates the deepest pair of expanded columns, skips collapsed rails as pair members, and deducts their widths, margins, and intervening gaps from the shared stage.
+- Structural navigation and direct controller open, close, collapse, expand, and runtime column registration changes activate the deepest pair of expanded columns, skip collapsed rails as pair members, deduct their widths, margins, and intervening gaps from the shared stage, supersede any pending resize-scroll restoration, and update the wide-mode native scroll position immediately.
 - Pointer, keyboard, or reset interaction on any eligible divider activates that adjacent expanded pair without moving the canvas; resizing changes the two widths inversely while their total remains constant.
 - Wide and fixed previews must preserve collapsed rail space, leave closed columns out of inline flow, keep owned portalled controls interactive, and remain outside layout persistence; their zero-width boundary MUST expose a thin neutral-grey hover/focus affordance rather than the primary accent, their overlay MUST paint the normal column surface above adjacent content, and compact presentation must disable hover preview.
 

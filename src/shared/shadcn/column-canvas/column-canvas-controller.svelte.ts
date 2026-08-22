@@ -88,8 +88,12 @@ export class ColumnCanvasController {
   readonly visibleDepth = $derived(this.path.length + 1);
   trailingSpacerWidth = $state(COLUMN_CANVAS_DEFAULT_TRAILING_SPACER_WIDTH);
   layoutReady = $state(false);
+  get structuralRevision(): number {
+    return this.#structuralRevision;
+  }
 
   #columns = $state<Record<string, ColumnRuntimeState>>({});
+  #structuralRevision = $state(0);
   #onPathChange: ((path: string[]) => void) | undefined;
   #onLayoutChange:
     | ((
@@ -331,6 +335,7 @@ export class ColumnCanvasController {
     this.dismissPreview(id);
     if (column.collapsed === collapsed) return;
     this.#patchColumn(id, { collapsed });
+    this.#structuralLayoutChanged();
     this.#layoutChanged(id, "collapse");
   };
 
@@ -354,6 +359,7 @@ export class ColumnCanvasController {
       // Opening restores an expanded column; closing clears collapse chrome.
       ...(closed ? { collapsed: false } : {}),
     });
+    this.#structuralLayoutChanged();
     this.#layoutChanged(id, "close");
   };
 
@@ -453,6 +459,7 @@ export class ColumnCanvasController {
         );
       }
       this.#patchColumn(columnId, next);
+      this.#structuralLayoutChanged();
       return;
     }
 
@@ -471,6 +478,7 @@ export class ColumnCanvasController {
     }
 
     this.#columns = { ...this.#columns, [columnId]: runtime };
+    this.#structuralLayoutChanged();
     this.#layoutChanged(columnId, "ensure");
   };
 
@@ -578,6 +586,10 @@ export class ColumnCanvasController {
       ...this.#columns,
       [String(id)]: { ...current, ...patch },
     };
+  }
+
+  #structuralLayoutChanged(): void {
+    this.#structuralRevision += 1;
   }
 
   async #restoreLayout(): Promise<void> {

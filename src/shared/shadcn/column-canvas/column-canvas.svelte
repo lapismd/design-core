@@ -75,6 +75,7 @@
   let activeStickyColumns = $state.raw<ResolvedStickyColumn[]>([]);
   let stuckStickyColumns = $state.raw<ResolvedStickyColumn[]>([]);
   let alignmentFrame: number | null = null;
+  let alignmentShouldActivateDeepest = false;
   let stickyLayoutFrame: number | null = null;
   let stickyStateFrame: number | null = null;
   let wheelAnimationFrame: number | null = null;
@@ -121,10 +122,7 @@
 
   function targetScrollLeft(root: HTMLElement, target: HTMLElement): number {
     const delta = target.getBoundingClientRect().right - contentEnd(root);
-    return Math.min(
-      Math.max(0, root.scrollWidth - root.clientWidth),
-      Math.max(0, root.scrollLeft + delta),
-    );
+    return Math.max(0, root.scrollLeft + delta);
   }
 
   function finitePixels(value: string): number {
@@ -562,9 +560,14 @@
         ? activePair(columns).at(-1)
         : columns.at(-1);
     if (!target) return;
+    const nextScrollLeft = targetScrollLeft(root, target);
+    if (resolvedDisplayMode === "wide" || prefersReducedMotion()) {
+      root.scrollLeft = nextScrollLeft;
+      return;
+    }
     root.scrollTo({
-      left: targetScrollLeft(root, target),
-      behavior: prefersReducedMotion() ? "auto" : "smooth",
+      left: nextScrollLeft,
+      behavior: "smooth",
     });
   }
 
@@ -577,13 +580,18 @@
   }
 
   function requestPairAlignment(activateDeepest: boolean): void {
+    alignmentShouldActivateDeepest =
+      alignmentShouldActivateDeepest || activateDeepest;
     void tick().then(() => {
       if (alignmentFrame !== null) cancelAnimationFrame(alignmentFrame);
       alignmentFrame = requestAnimationFrame(() => {
         alignmentFrame = null;
+        const shouldActivateDeepest = alignmentShouldActivateDeepest;
+        alignmentShouldActivateDeepest = false;
         const columns = visibleColumns();
-        if (activateDeepest) {
+        if (shouldActivateDeepest) {
           activePairLeadingId = deepestPairLeadingId(columns);
+          pairResizeScrollLeft = null;
         }
         syncStickyLayout();
         alignActivePair();
@@ -693,6 +701,13 @@
   $effect(() => {
     // Restoration can change width, collapse, and close state in one update.
     rootController.layoutReady;
+    requestAlignment();
+  });
+
+  $effect(() => {
+    // Direct controller calls such as open/close/collapse/ensure can change
+    // the rendered column structure without a path change or local trigger.
+    rootController.structuralRevision;
     requestAlignment();
   });
 

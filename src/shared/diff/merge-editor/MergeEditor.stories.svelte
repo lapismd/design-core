@@ -538,7 +538,7 @@
     ).not.toBeNull();
     for (const side of ["left", "base", "right"]) {
       const numbers = [
-        ...(editor?.querySelectorAll(
+        ...(editor?.querySelectorAll<HTMLElement>(
           `[data-merge-side="${side}"] .ui-diff-merge-editor__line-number`,
         ) ?? []),
       ];

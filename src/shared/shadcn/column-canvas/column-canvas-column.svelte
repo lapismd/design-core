@@ -178,6 +178,12 @@
 
   function expandColumn(): void {
     controller.expand(id);
+    canvas.requestAlignment();
+  }
+
+  function toggleColumn(): void {
+    controller.toggle(id);
+    canvas.requestAlignment();
   }
 
   function keepPreview(): void {
@@ -476,7 +482,7 @@
         onmouseleave={schedulePreviewDismiss}
         onfocus={() => controller.preview(id)}
         onblur={handlePreviewBlur}
-        onclick={() => controller.toggle(id)}
+        onclick={toggleColumn}
       ></button>
     {/if}
 

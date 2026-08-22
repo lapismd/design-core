@@ -101,6 +101,7 @@
       onclick?.(event);
       controller.dismissPreview(targetId);
       controller.toggle(targetId);
+      canvas.requestAlignment();
     }}
   >
     {#if icon}

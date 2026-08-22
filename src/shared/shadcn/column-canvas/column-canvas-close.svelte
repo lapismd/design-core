@@ -2,7 +2,7 @@
   import type { ComponentProps } from "svelte";
   import XIcon from "@lucide/svelte/icons/x";
   import { Button } from "../button/index.js";
-  import { useColumnCanvas } from "./context.svelte.js";
+  import { useColumnCanvasContext } from "./context.svelte.js";
   import { useColumnCanvasColumn } from "./column-canvas-column-context.svelte.js";
 
   let {
@@ -14,7 +14,8 @@
     onclick?: (event: MouseEvent) => void;
   } = $props();
 
-  const controller = useColumnCanvas();
+  const canvas = useColumnCanvasContext();
+  const controller = canvas.controller;
   const column = useColumnCanvasColumn();
 
   const closeable = $derived(controller.isCloseable(column.id));
@@ -34,6 +35,7 @@
     onclick={(event) => {
       onclick?.(event);
       controller.close(column.id);
+      canvas.requestAlignment();
     }}
   >
     <XIcon aria-hidden="true" />

@@ -1,6 +1,6 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, userEvent, waitFor, within } from "storybook/test";
+  import { expect, fireEvent, userEvent, waitFor, within } from "storybook/test";
   import ArrowLeft from "@lucide/svelte/icons/arrow-left";
   import CalendarDays from "@lucide/svelte/icons/calendar-days";
   import Check from "@lucide/svelte/icons/check";
@@ -1709,6 +1709,13 @@
       ).toBeLessThan(2);
     });
     expect(responsiveCanvas.getWidth("detail")).toBe(380);
+    if (root.getAttribute("data-display-mode") === "wide") {
+      root.scrollTo({ left: 0, behavior: "auto" });
+      await fireEvent.scroll(root);
+      await waitFor(() => {
+        expect(root.scrollLeft).toBeLessThan(2);
+      });
+    }
   }}
   parameters={{
     docs: {
