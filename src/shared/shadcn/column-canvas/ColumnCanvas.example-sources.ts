@@ -130,6 +130,45 @@ export const ThreeLevel =
 export const CollapseAndExpand =
   '<script lang="ts">\n\timport * as ColumnCanvas from "@lapismd/design-core/shadcn/column-canvas";\n\n\tconst canvas = ColumnCanvas.createColumnCanvasController({\n\t\tcolumns: {\n\t\t\tcomponents: { defaultWidth: 320, collapsible: true },\n\t\t},\n\t});\n\n\tconst components = [\n\t\t{ id: "layout", label: "Layout", role: "Full-page chat shell with docked composer." },\n\t\t{ id: "message-bubble", label: "Message Bubble", role: "Filled or ghost content container." },\n\t\t{ id: "composer", label: "Composer", role: "Layout shell for composer slots and send." },\n\t\t{ id: "tool-calls", label: "Tool Calls", role: "LLM tool and function-call activity." },\n\t];\n</script>\n\n<div style="height: 420px">\n\t<ColumnCanvas.Root controller={canvas}>\n\t\t<ColumnCanvas.Column id="components" title="Components" count={components.length}>\n\t\t\t<ColumnCanvas.Body>\n\t\t\t\t{#each components as component (component.id)}\n\t\t\t\t\t<ColumnCanvas.Item aria-label={component.label}>\n\t\t\t\t\t\t<strong>{component.label}</strong>\n\t\t\t\t\t\t<span style="display:block;font-size:0.75rem;opacity:0.7">{component.role}</span>\n\t\t\t\t\t</ColumnCanvas.Item>\n\t\t\t\t{/each}\n\t\t\t</ColumnCanvas.Body>\n\t\t</ColumnCanvas.Column>\n\t</ColumnCanvas.Root>\n</div>';
 
+export const CustomRailAndPreview = `<script lang="ts">
+  import PanelsTopLeft from "@lucide/svelte/icons/panels-top-left";
+  import * as ColumnCanvas from "@lapismd/design-core/shadcn/column-canvas";
+  import { Button } from "@lapismd/design-core/shadcn/button";
+
+  const canvas = ColumnCanvas.createColumnCanvasController({
+    columns: {
+      navigation: { defaultWidth: 280, collapsible: true, closeable: true },
+      content: { defaultWidth: 520 },
+    },
+  });
+</script>
+
+<ColumnCanvas.Root controller={canvas} displayMode="fixed">
+  <ColumnCanvas.Column
+    id="navigation"
+    title="Navigation"
+    revealOnEdgeHover
+  >
+    {#snippet collapsedRail({ expand })}
+      <Button aria-label="Expand Navigation column" onclick={expand}>
+        <PanelsTopLeft aria-hidden="true" />
+      </Button>
+    {/snippet}
+    <ColumnCanvas.Body>Full navigation</ColumnCanvas.Body>
+  </ColumnCanvas.Column>
+
+  <ColumnCanvas.Column id="content">
+    <ColumnCanvas.Header>
+      <ColumnCanvas.Toggle
+        columnId="navigation"
+        columnTitle="Navigation"
+        previewOnHover
+      />
+      <ColumnCanvas.Title>Content</ColumnCanvas.Title>
+    </ColumnCanvas.Header>
+  </ColumnCanvas.Column>
+</ColumnCanvas.Root>`;
+
 export const Closeable =
   '<script lang="ts">\n\timport * as ColumnCanvas from "@lapismd/design-core/shadcn/column-canvas";\n\n\tconst canvas = ColumnCanvas.createColumnCanvasController({\n\t\tcolumns: {\n\t\t\tcomponents: { defaultWidth: 300, pathLevel: 0, collapsible: true },\n\t\t\tdetail: { defaultWidth: 360, pathLevel: 1, closeable: true },\n\t\t},\n\t});\n\n\tconst components = [\n\t\t{\n\t\t\tid: "message-bubble",\n\t\t\tlabel: "Message Bubble",\n\t\t\trole: "Filled or ghost content container styled from sender context.",\n\t\t\timportPath: "@lapismd/design-core/ai/chat",\n\t\t},\n\t\t{\n\t\t\tid: "composer",\n\t\t\tlabel: "Composer",\n\t\t\trole: "Layout shell for composer slots, drawer, input, and send actions.",\n\t\t\timportPath: "@lapismd/design-core/ai/chat",\n\t\t},\n\t];\n\n\tconst selected = $derived(components.find((component) => component.id === canvas.path[0]));\n</script>\n\n<button type="button" onclick={() => canvas.open("detail")}>Open detail</button>\n\n<div style="height: 420px">\n\t<ColumnCanvas.Root controller={canvas}>\n\t\t<ColumnCanvas.Column id="components" title="Stable Chat" count={components.length}>\n\t\t\t<ColumnCanvas.Body>\n\t\t\t\t{#each components as component (component.id)}\n\t\t\t\t\t<ColumnCanvas.Item\n\t\t\t\t\t\taria-label={component.label}\n\t\t\t\t\t\tonclick={() => canvas.select(0, component.id)}\n\t\t\t\t\t>\n\t\t\t\t\t\t{component.label}\n\t\t\t\t\t</ColumnCanvas.Item>\n\t\t\t\t{/each}\n\t\t\t</ColumnCanvas.Body>\n\t\t</ColumnCanvas.Column>\n\n\t\t<ColumnCanvas.Column id="detail" title="Detail">\n\t\t\t<ColumnCanvas.Body>\n\t\t\t\t{#if selected}\n\t\t\t\t\t<p>{selected.role}</p>\n\t\t\t\t\t<code>{selected.importPath}</code>\n\t\t\t\t{/if}\n\t\t\t</ColumnCanvas.Body>\n\t\t</ColumnCanvas.Column>\n\t</ColumnCanvas.Root>\n</div>';
 

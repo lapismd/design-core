@@ -10,6 +10,7 @@ import {
   type ColumnCanvasPairSplit,
   type ColumnCanvasPersistenceErrorEvent,
 } from "./column-canvas-persistence.js";
+import type { ColumnCanvasColumnState } from "./column-canvas-types.js";
 
 export const COLUMN_CANVAS_DEFAULT_MIN_WIDTH = 240;
 export const COLUMN_CANVAS_DEFAULT_MAX_WIDTH = 760;
@@ -55,6 +56,7 @@ type ColumnRuntimeState = {
   openOnSelect: boolean;
   collapsed: boolean;
   closed: boolean;
+  previewed: boolean;
 };
 
 export type CreateColumnCanvasControllerOptions<
@@ -107,6 +109,8 @@ export class ColumnCanvasController {
   #saveTimer: ReturnType<typeof setTimeout> | null = null;
   #pendingSaveEvent: ColumnCanvasLayoutChangeEvent | null = null;
   #saveChain: Promise<void> = Promise.resolve();
+  #previewTimers = new Map<string, ReturnType<typeof setTimeout>>();
+  #previewDismissTimers = new Map<string, ReturnType<typeof setTimeout>>();
 
   constructor(options: CreateColumnCanvasControllerOptions) {
     this.path = options.initialPath ? [...options.initialPath] : [];
@@ -217,6 +221,16 @@ export class ColumnCanvasController {
     return this.#requireColumn(id).closed;
   };
 
+  getState = (id: string): ColumnCanvasColumnState => {
+    const column = this.#requireColumn(id);
+    if (column.closed) return "closed";
+    return column.collapsed ? "collapsed" : "expanded";
+  };
+
+  isPreviewed = (id: string): boolean => {
+    return this.#requireColumn(id).previewed;
+  };
+
   isCollapsible = (id: string): boolean => {
     return this.#requireColumn(id).collapsible;
   };
@@ -303,13 +317,18 @@ export class ColumnCanvasController {
 
   toggle = (id: string): void => {
     const column = this.#requireColumn(id);
-    if (!column.collapsible || column.closed) return;
+    if (column.closed) {
+      this.open(id);
+      return;
+    }
+    if (!column.collapsible) return;
     this.setCollapsed(id, !column.collapsed);
   };
 
   setCollapsed = (id: string, collapsed: boolean): void => {
     const column = this.#requireColumn(id);
     if (!column.collapsible) return;
+    this.dismissPreview(id);
     if (column.collapsed === collapsed) return;
     this.#patchColumn(id, { collapsed });
     this.#layoutChanged(id, "collapse");
@@ -328,6 +347,7 @@ export class ColumnCanvasController {
   setClosed = (id: string, closed: boolean): void => {
     const column = this.#requireColumn(id);
     if (!column.closeable) return;
+    this.dismissPreview(id);
     if (column.closed === closed) return;
     this.#patchColumn(id, {
       closed,
@@ -335,6 +355,66 @@ export class ColumnCanvasController {
       ...(closed ? { collapsed: false } : {}),
     });
     this.#layoutChanged(id, "close");
+  };
+
+  /** Preview a collapsed or closed column without changing durable layout. */
+  preview = (id: string): void => {
+    const column = this.#requireColumn(id);
+    this.#clearPreviewTimer(id);
+    this.#clearPreviewDismissTimer(id);
+    if ((!column.collapsed && !column.closed) || column.previewed) return;
+    this.#patchColumn(id, { previewed: true });
+  };
+
+  /** Preview after a consumer-owned hover delay. */
+  schedulePreview = (id: string, delay = 600): void => {
+    const column = this.#requireColumn(id);
+    this.#clearPreviewTimer(id);
+    this.#clearPreviewDismissTimer(id);
+    if (!column.collapsed && !column.closed) return;
+    this.#previewTimers.set(
+      id,
+      setTimeout(
+        () => {
+          this.#previewTimers.delete(id);
+          this.preview(id);
+        },
+        Math.max(0, delay),
+      ),
+    );
+  };
+
+  /** Keep a preview open while pointer or focus enters owned content. */
+  keepPreview = (id: string): void => {
+    this.#requireColumn(id);
+    this.#clearPreviewDismissTimer(id);
+  };
+
+  /** Dismiss a preview after a short pointer/focus handoff grace period. */
+  schedulePreviewDismiss = (id: string, delay = 120): void => {
+    const column = this.#requireColumn(id);
+    this.#clearPreviewTimer(id);
+    this.#clearPreviewDismissTimer(id);
+    if (!column.previewed) return;
+    this.#previewDismissTimers.set(
+      id,
+      setTimeout(
+        () => {
+          this.#previewDismissTimers.delete(id);
+          this.dismissPreview(id);
+        },
+        Math.max(0, delay),
+      ),
+    );
+  };
+
+  /** Clear pending and open transient preview state immediately. */
+  dismissPreview = (id: string): void => {
+    const column = this.#requireColumn(id);
+    this.#clearPreviewTimer(id);
+    this.#clearPreviewDismissTimer(id);
+    if (!column.previewed) return;
+    this.#patchColumn(id, { previewed: false });
   };
 
   /**
@@ -446,7 +526,20 @@ export class ColumnCanvasController {
   }
 
   async dispose(): Promise<void> {
+    for (const id of Object.keys(this.#columns)) this.dismissPreview(id);
     await this.flushSave();
+  }
+
+  #clearPreviewTimer(id: string): void {
+    const timer = this.#previewTimers.get(id);
+    if (timer !== undefined) clearTimeout(timer);
+    this.#previewTimers.delete(id);
+  }
+
+  #clearPreviewDismissTimer(id: string): void {
+    const timer = this.#previewDismissTimers.get(id);
+    if (timer !== undefined) clearTimeout(timer);
+    this.#previewDismissTimers.delete(id);
   }
 
   #setPath(next: string[]): void {
@@ -575,6 +668,7 @@ function createRuntimeState(
     openOnSelect: config.openOnSelect ?? closeable,
     collapsed: Boolean(config.collapsed && collapsible && !config.closed),
     closed: Boolean(config.closed && closeable),
+    previewed: false,
   };
 }
 

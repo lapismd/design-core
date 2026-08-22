@@ -126,6 +126,86 @@ describe("createColumnCanvasController", () => {
     expect(canvas.isCollapsed("workspace")).toBe(false);
   });
 
+  it("opens a closed column through the shared toggle semantics", () => {
+    const canvas = createColumnCanvasController({
+      columns: {
+        workspace: {
+          defaultWidth: 280,
+          collapsible: true,
+          closeable: true,
+        },
+      },
+    });
+
+    expect(canvas.getState("workspace")).toBe("expanded");
+    canvas.collapse("workspace");
+    expect(canvas.getState("workspace")).toBe("collapsed");
+    canvas.close("workspace");
+    expect(canvas.getState("workspace")).toBe("closed");
+
+    canvas.toggle("workspace");
+    expect(canvas.getState("workspace")).toBe("expanded");
+  });
+
+  it("keeps delayed preview state transient and out of persistence", async () => {
+    vi.useFakeTimers();
+    const onLayoutChange = vi.fn();
+    const canvas = createColumnCanvasController({
+      columns: {
+        workspace: {
+          defaultWidth: 280,
+          collapsible: true,
+          closeable: true,
+          collapsed: true,
+        },
+      },
+      onLayoutChange,
+      saveDebounceMs: 0,
+    });
+
+    canvas.schedulePreview("workspace", 600);
+    await vi.advanceTimersByTimeAsync(599);
+    expect(canvas.isPreviewed("workspace")).toBe(false);
+    await vi.advanceTimersByTimeAsync(1);
+    expect(canvas.isPreviewed("workspace")).toBe(true);
+    expect(canvas.getLayout().columns.workspace).toEqual({
+      collapsed: true,
+      closed: false,
+      width: 280,
+    });
+    expect(onLayoutChange).not.toHaveBeenCalled();
+
+    canvas.schedulePreviewDismiss("workspace", 120);
+    await vi.advanceTimersByTimeAsync(119);
+    expect(canvas.isPreviewed("workspace")).toBe(true);
+    canvas.keepPreview("workspace");
+    await vi.advanceTimersByTimeAsync(1);
+    expect(canvas.isPreviewed("workspace")).toBe(true);
+
+    canvas.schedulePreviewDismiss("workspace", 120);
+    await vi.advanceTimersByTimeAsync(120);
+    expect(canvas.isPreviewed("workspace")).toBe(false);
+    expect(onLayoutChange).not.toHaveBeenCalled();
+  });
+
+  it("clears pending preview timers when disposed", async () => {
+    vi.useFakeTimers();
+    const canvas = createColumnCanvasController({
+      columns: {
+        workspace: {
+          defaultWidth: 280,
+          collapsible: true,
+          collapsed: true,
+        },
+      },
+    });
+
+    canvas.schedulePreview("workspace", 600);
+    await canvas.dispose();
+    await vi.advanceTimersByTimeAsync(600);
+    expect(canvas.isPreviewed("workspace")).toBe(false);
+  });
+
   it("supports explicitly unbounded columns", () => {
     const canvas = createColumnCanvasController({
       columns: {

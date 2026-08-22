@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { onDestroy, onMount } from "svelte";
   import type { Action } from "svelte/action";
   import type { Snippet } from "svelte";
   import type { HTMLAttributes } from "svelte/elements";
@@ -12,6 +12,7 @@
   import Count from "./column-canvas-count.svelte";
   import Toggle from "./column-canvas-toggle.svelte";
   import Close from "./column-canvas-close.svelte";
+  import type { ColumnCanvasCollapsedRailContext } from "./column-canvas-types.js";
 
   let {
     ref = $bindable(null),
@@ -24,6 +25,9 @@
     closeable: closeableProp,
     sticky = false,
     stickyRail,
+    collapsedRail,
+    revealOnEdgeHover = false,
+    edgeRevealLabel,
     width: widthOverride,
     onWidthChange,
     class: className,
@@ -70,6 +74,12 @@
     sticky?: boolean;
     /** Custom contents for the floating rail's return button. */
     stickyRail?: Snippet;
+    /** Consumer-owned collapsed rail. The default title/count trigger remains the fallback. */
+    collapsedRail?: Snippet<[ColumnCanvasCollapsedRailContext]>;
+    /** Preview a collapsed or closed column from its inline boundary. */
+    revealOnEdgeHover?: boolean;
+    /** Accessible name for the optional edge-preview control. */
+    edgeRevealLabel?: string;
     /** Test/override width. Prefer controller-owned widths. */
     width?: number;
     /** Test/override resize callback. Prefer controller-owned widths. */
@@ -97,6 +107,10 @@
   const closed = $derived(controller.isClosed(id));
   const visible = $derived(pathVisible && !closed);
   const collapsed = $derived(controller.isCollapsed(id));
+  const previewed = $derived(controller.isPreviewed(id));
+  const previewAvailable = $derived(
+    pathVisible && (collapsed || closed) && canvas.displayMode !== "compact",
+  );
   const width = $derived(widthOverride ?? controller.getWidth(id));
   const minWidth = $derived(controller.getMinWidth(id));
   const maxWidth = $derived(controller.getMaxWidth(id));
@@ -157,6 +171,73 @@
   });
 
   let resizing = $state(false);
+  let previewRef = $state<HTMLElement | null>(null);
+  const accessibleEdgeRevealLabel = $derived(
+    edgeRevealLabel ?? `Preview ${resolvedTitle} column`,
+  );
+
+  function expandColumn(): void {
+    controller.expand(id);
+  }
+
+  function keepPreview(): void {
+    controller.keepPreview(id);
+  }
+
+  function schedulePreviewDismiss(): void {
+    controller.schedulePreviewDismiss(id);
+  }
+
+  function isPreviewInteractionTarget(target: EventTarget | null): boolean {
+    if (!(target instanceof Node) || !previewRef) return false;
+    if (previewRef.contains(target)) return true;
+
+    const controlIds = new Set<string>();
+    for (const owner of previewRef.querySelectorAll<HTMLElement>(
+      "[aria-controls], [aria-owns]",
+    )) {
+      for (const attribute of ["aria-controls", "aria-owns"] as const) {
+        for (const controlledId of owner
+          .getAttribute(attribute)
+          ?.split(/\s+/) ?? []) {
+          if (controlledId) controlIds.add(controlledId);
+        }
+      }
+    }
+
+    for (const controlledId of controlIds) {
+      const controlledElement =
+        previewRef.ownerDocument.getElementById(controlledId);
+      if (controlledElement?.contains(target)) return true;
+    }
+
+    if (!(target instanceof Element)) return false;
+    const hasOpenPopupOwner = previewRef.querySelector(
+      '[aria-haspopup][aria-expanded="true"], [role="combobox"][aria-expanded="true"]',
+    );
+    if (!hasOpenPopupOwner) return false;
+    return Boolean(
+      target.closest(
+        '[role="dialog"], [role="grid"], [role="listbox"], [role="menu"], [role="tooltip"], [role="tree"]',
+      ),
+    );
+  }
+
+  function handlePreviewBlur(event: FocusEvent): void {
+    if (isPreviewInteractionTarget(event.relatedTarget)) {
+      keepPreview();
+      return;
+    }
+    schedulePreviewDismiss();
+  }
+
+  function handlePreviewPointerLeave(event: MouseEvent): void {
+    if (isPreviewInteractionTarget(event.relatedTarget)) {
+      keepPreview();
+      return;
+    }
+    schedulePreviewDismiss();
+  }
 
   function constrainedWidth(requestedWidth: number): number {
     return Math.max(
@@ -178,6 +259,35 @@
       },
     }),
   );
+
+  onDestroy(() => controller.dismissPreview(id));
+
+  $effect(() => {
+    if (typeof document === "undefined" || !previewed || !previewRef) return;
+    const ownerDocument = previewRef.ownerDocument;
+    const handleDocumentPointerOver = (event: PointerEvent) => {
+      if (isPreviewInteractionTarget(event.target)) keepPreview();
+      else schedulePreviewDismiss();
+    };
+    const handleDocumentFocusIn = (event: FocusEvent) => {
+      if (isPreviewInteractionTarget(event.target)) keepPreview();
+      else schedulePreviewDismiss();
+    };
+    ownerDocument.addEventListener(
+      "pointerover",
+      handleDocumentPointerOver,
+      true,
+    );
+    ownerDocument.addEventListener("focusin", handleDocumentFocusIn, true);
+    return () => {
+      ownerDocument.removeEventListener(
+        "pointerover",
+        handleDocumentPointerOver,
+        true,
+      );
+      ownerDocument.removeEventListener("focusin", handleDocumentFocusIn, true);
+    };
+  });
 
   $effect(() => {
     // Structural column changes are the only child-side alignment trigger.
@@ -332,6 +442,67 @@
   };
 </script>
 
+{#snippet expandedContents()}
+  {#if useDefaultHeader}
+    <Header>
+      <div data-ui-component="column-canvas" data-ui-part="column-header-main">
+        <Title>{resolvedTitle}</Title>
+        <Count />
+      </div>
+      <Toggle />
+      <Close />
+    </Header>
+  {/if}
+
+  {@render children?.()}
+{/snippet}
+
+{#if previewAvailable && (revealOnEdgeHover || previewed)}
+  <div
+    data-ui-component="column-canvas"
+    data-ui-part="column-preview-anchor"
+    data-column-id={id}
+  >
+    {#if revealOnEdgeHover}
+      <button
+        type="button"
+        data-ui-component="column-canvas"
+        data-ui-part="column-edge-trigger"
+        data-state={controller.getState(id)}
+        aria-label={accessibleEdgeRevealLabel}
+        aria-expanded={previewed}
+        title={accessibleEdgeRevealLabel}
+        onmouseenter={() => controller.preview(id)}
+        onmouseleave={schedulePreviewDismiss}
+        onfocus={() => controller.preview(id)}
+        onblur={handlePreviewBlur}
+        onclick={() => controller.toggle(id)}
+      ></button>
+    {/if}
+
+    {#if previewed}
+      <aside
+        bind:this={previewRef}
+        class={className}
+        aria-label={`${resolvedTitle} column preview`}
+        data-ui-component="column-canvas"
+        data-ui-part="column-preview"
+        data-column-id={id}
+        data-column-title={resolvedTitle}
+        data-state={controller.getState(id)}
+        data-presentation="overlay"
+        style:--ui-column-canvas-expanded-width={`${width}px`}
+        onmouseenter={keepPreview}
+        onmouseleave={handlePreviewPointerLeave}
+        onfocusin={keepPreview}
+        onfocusout={handlePreviewBlur}
+      >
+        {@render expandedContents()}
+      </aside>
+    {/if}
+  </div>
+{/if}
+
 {#if visible}
   {#if collapsed && resolvedCollapsible}
     <section
@@ -344,29 +515,47 @@
       data-column-title={resolvedTitle}
       data-sticky={sticky ? "true" : undefined}
     >
-      <button
-        type="button"
-        data-ui-component="column-canvas"
-        data-ui-part="collapsed-trigger"
-        aria-label={`Expand ${resolvedTitle} column`}
-        title={count === undefined
-          ? resolvedTitle
-          : `${resolvedTitle} (${count})`}
-        onclick={() => controller.expand(id)}
-      >
-        <ChevronRight size={14} aria-hidden="true" />
-        <span data-ui-component="column-canvas" data-ui-part="collapsed-label">
-          <span>{resolvedTitle}</span>
-          {#if count !== undefined}
-            <span
-              data-ui-component="column-canvas"
-              data-ui-part="collapsed-count"
-            >
-              {count}
-            </span>
-          {/if}
-        </span>
-      </button>
+      {#if previewed}
+        <div
+          data-ui-component="column-canvas"
+          data-ui-part="collapsed-placeholder"
+          aria-hidden="true"
+        ></div>
+      {:else if collapsedRail}
+        {@render collapsedRail({
+          id,
+          title: resolvedTitle,
+          count,
+          expand: expandColumn,
+        })}
+      {:else}
+        <button
+          type="button"
+          data-ui-component="column-canvas"
+          data-ui-part="collapsed-trigger"
+          aria-label={`Expand ${resolvedTitle} column`}
+          title={count === undefined
+            ? resolvedTitle
+            : `${resolvedTitle} (${count})`}
+          onclick={expandColumn}
+        >
+          <ChevronRight size={14} aria-hidden="true" />
+          <span
+            data-ui-component="column-canvas"
+            data-ui-part="collapsed-label"
+          >
+            <span>{resolvedTitle}</span>
+            {#if count !== undefined}
+              <span
+                data-ui-component="column-canvas"
+                data-ui-part="collapsed-count"
+              >
+                {count}
+              </span>
+            {/if}
+          </span>
+        </button>
+      {/if}
     </section>
   {:else}
     <section
@@ -381,21 +570,7 @@
       data-sticky={sticky ? "true" : undefined}
       style:--ui-column-canvas-expanded-width={`${width}px`}
     >
-      {#if useDefaultHeader}
-        <Header>
-          <div
-            data-ui-component="column-canvas"
-            data-ui-part="column-header-main"
-          >
-            <Title>{resolvedTitle}</Title>
-            <Count />
-          </div>
-          <Toggle />
-          <Close />
-        </Header>
-      {/if}
-
-      {@render children?.()}
+      {@render expandedContents()}
 
       {#if resolvedResizable && resizeBehavior.kind !== "hidden"}
         <!-- svelte-ignore a11y_no_noninteractive_tabindex -->

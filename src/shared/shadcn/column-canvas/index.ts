@@ -71,8 +71,11 @@ export {
 } from "./column-canvas-layout.js";
 
 export type {
+  ColumnCanvasCollapsedRailContext,
+  ColumnCanvasColumnState,
   ColumnCanvasDisplayMode,
   ColumnCanvasResolvedDisplayMode,
+  ColumnCanvasToggleIcon,
 } from "./column-canvas-types.js";
 
 export {

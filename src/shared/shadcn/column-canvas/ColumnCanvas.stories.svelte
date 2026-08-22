@@ -1,6 +1,6 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, userEvent, waitFor } from "storybook/test";
+  import { expect, userEvent, waitFor, within } from "storybook/test";
   import ArrowLeft from "@lucide/svelte/icons/arrow-left";
   import CalendarDays from "@lucide/svelte/icons/calendar-days";
   import Check from "@lucide/svelte/icons/check";
@@ -12,6 +12,7 @@
   import { Badge, type BadgeVariant } from "../badge/index.js";
   import { Button } from "../button/index.js";
   import { Progress } from "../progress/index.js";
+  import * as Popover from "../popover/index.js";
   import { Separator } from "../separator/index.js";
   import { createColumnCanvasController } from "./column-canvas-controller.svelte.js";
   import {
@@ -95,6 +96,31 @@
       components: { defaultWidth: 320, collapsible: true },
     },
   });
+
+  const previewCanvas = createColumnCanvasController({
+    columns: {
+      navigation: {
+        defaultWidth: 280,
+        collapsible: true,
+        closeable: true,
+      },
+      content: { defaultWidth: 520 },
+    },
+  });
+
+  const compactPreviewCanvas = createColumnCanvasController({
+    columns: {
+      navigation: {
+        defaultWidth: 280,
+        collapsible: true,
+        closeable: true,
+        collapsed: true,
+      },
+      content: { defaultWidth: 520 },
+    },
+  });
+
+  let previewPopoverOpen = $state(false);
 
   const closeableCanvas = createColumnCanvasController({
     columns: {
@@ -1266,6 +1292,225 @@
           </ColumnCanvas.Body>
         </ColumnCanvas.Column>
       </ColumnCanvas.Root>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Custom rail and preview"
+  tags={["visual-pending"]}
+  parameters={{
+    a11y: { disable: false },
+    docs: {
+      source: {
+        code: exampleSources.CustomRailAndPreview,
+        language: "tsx",
+        type: "code",
+      },
+    },
+  }}
+  play={async ({ canvas }) => {
+    previewPopoverOpen = false;
+    previewCanvas.dismissPreview("navigation");
+    previewCanvas.open("navigation");
+    previewCanvas.expand("navigation");
+    compactPreviewCanvas.dismissPreview("navigation");
+    compactPreviewCanvas.open("navigation");
+    compactPreviewCanvas.collapse("navigation");
+
+    const previewRoot = canvas.getByRole("region", {
+      name: "Preview canvas",
+    });
+    const preview = within(previewRoot);
+    await userEvent.click(
+      preview.getByRole("button", { name: "Collapse Navigation column" }),
+    );
+    await expect(previewCanvas.getState("navigation")).toBe("collapsed");
+    await expect(
+      preview.getByRole("button", { name: "Expand Navigation from rail" }),
+    ).toBeVisible();
+
+    const siblingToggle = preview.getByRole("button", {
+      name: "Toggle Navigation column",
+    });
+    await userEvent.hover(siblingToggle);
+    await waitFor(() =>
+      expect(previewCanvas.isPreviewed("navigation")).toBe(true),
+    );
+    await expect(
+      preview.getByRole("complementary", {
+        name: "Navigation column preview",
+      }),
+    ).toBeVisible();
+    const collapsedRail = previewRoot.querySelector<HTMLElement>(
+      '[data-ui-part="collapsed-column"][data-column-id="navigation"]',
+    );
+    const collapsedOverlay = previewRoot.querySelector<HTMLElement>(
+      '[data-ui-part="column-preview"][data-column-id="navigation"]',
+    );
+    expect(collapsedRail).not.toBeNull();
+    expect(collapsedOverlay).not.toBeNull();
+    expect(
+      Math.abs(
+        collapsedRail!.getBoundingClientRect().left -
+          collapsedOverlay!.getBoundingClientRect().left,
+      ),
+    ).toBeLessThan(1);
+
+    await userEvent.click(
+      preview.getByRole("button", { name: "Navigation options" }),
+    );
+    await expect(
+      within(document.body).getByText("Portalled preview controls"),
+    ).toBeVisible();
+    await expect(previewCanvas.isPreviewed("navigation")).toBe(true);
+    await userEvent.keyboard("{Escape}");
+
+    previewCanvas.dismissPreview("navigation");
+    previewCanvas.expand("navigation");
+    await waitFor(() => {
+      expect(
+        preview.queryByRole("complementary", {
+          name: "Navigation column preview",
+        }),
+      ).toBeNull();
+      expect(
+        preview.getByRole("button", { name: "Close Navigation column" }),
+      ).toBeVisible();
+    });
+    await userEvent.click(
+      preview.getByRole("button", { name: "Close Navigation column" }),
+    );
+    await expect(previewCanvas.getState("navigation")).toBe("closed");
+    const contentColumn = previewRoot.querySelector<HTMLElement>(
+      '[data-ui-part="column"][data-column-id="content"]',
+    );
+    expect(contentColumn).not.toBeNull();
+    const closedContentLeft = contentColumn!.getBoundingClientRect().left;
+    const edgeTrigger = preview.getByRole("button", {
+      name: "Preview Navigation column",
+    });
+    edgeTrigger.focus();
+    await expect(previewCanvas.isPreviewed("navigation")).toBe(true);
+    await expect(previewCanvas.getState("navigation")).toBe("closed");
+    expect(contentColumn!.getBoundingClientRect().left).toBe(closedContentLeft);
+    edgeTrigger.blur();
+    previewCanvas.dismissPreview("navigation");
+    await userEvent.click(siblingToggle);
+    await expect(previewCanvas.getState("navigation")).toBe("expanded");
+
+    const compactRoot = canvas.getByRole("region", {
+      name: "Compact preview canvas",
+    });
+    const compactToggle = within(compactRoot).getByRole("button", {
+      name: "Toggle Compact navigation column",
+    });
+    await userEvent.hover(compactToggle);
+    await expect(compactPreviewCanvas.isPreviewed("navigation")).toBe(false);
+  }}
+>
+  {#snippet template()}
+    <div class="flex w-full flex-col gap-4">
+      <div class="h-[420px] w-full">
+        <ColumnCanvas.Root
+          controller={previewCanvas}
+          displayMode="fixed"
+          aria-label="Preview canvas"
+        >
+          <ColumnCanvas.Column
+            id="navigation"
+            title="Navigation"
+            count={4}
+            revealOnEdgeHover
+            edgeRevealLabel="Preview Navigation column"
+          >
+            {#snippet collapsedRail({ expand })}
+              <div class="flex h-full flex-col items-center gap-2 py-2">
+                <Button
+                  variant="ghost"
+                  size="icon-sm"
+                  aria-label="Expand Navigation from rail"
+                  onclick={expand}
+                >
+                  <PanelsTopLeft aria-hidden="true" />
+                </Button>
+                <span class="text-muted-foreground text-xs">4</span>
+              </div>
+            {/snippet}
+
+            <ColumnCanvas.Body>
+              <ColumnCanvas.Item selected>Inbox</ColumnCanvas.Item>
+              <ColumnCanvas.Item>Today</ColumnCanvas.Item>
+              <ColumnCanvas.Item>Upcoming</ColumnCanvas.Item>
+              <Popover.Root bind:open={previewPopoverOpen}>
+                <Popover.Trigger>
+                  {#snippet child({ props })}
+                    <Button {...props} variant="outline"
+                      >Navigation options</Button
+                    >
+                  {/snippet}
+                </Popover.Trigger>
+                <Popover.Content
+                  side="right"
+                  align="start"
+                  style="--ui-popover-width: 20rem"
+                >
+                  Portalled preview controls
+                </Popover.Content>
+              </Popover.Root>
+            </ColumnCanvas.Body>
+          </ColumnCanvas.Column>
+
+          <ColumnCanvas.Column id="content">
+            <ColumnCanvas.Header>
+              <ColumnCanvas.Toggle
+                columnId="navigation"
+                columnTitle="Navigation"
+                previewOnHover
+                aria-label="Toggle Navigation column"
+              >
+                {#snippet icon(_state)}
+                  <PanelsTopLeft aria-hidden="true" />
+                {/snippet}
+              </ColumnCanvas.Toggle>
+              <ColumnCanvas.Title>Content</ColumnCanvas.Title>
+            </ColumnCanvas.Header>
+            <ColumnCanvas.Body>
+              <p class="text-muted-foreground p-3 text-sm">
+                The navigation overlay does not consume this column's width.
+              </p>
+            </ColumnCanvas.Body>
+          </ColumnCanvas.Column>
+        </ColumnCanvas.Root>
+      </div>
+
+      <div class="h-[220px] w-full max-w-[520px]">
+        <ColumnCanvas.Root
+          controller={compactPreviewCanvas}
+          displayMode="compact"
+          aria-label="Compact preview canvas"
+        >
+          <ColumnCanvas.Column
+            id="navigation"
+            title="Compact navigation"
+            revealOnEdgeHover
+          >
+            <ColumnCanvas.Body>Compact navigation</ColumnCanvas.Body>
+          </ColumnCanvas.Column>
+          <ColumnCanvas.Column id="content">
+            <ColumnCanvas.Header>
+              <ColumnCanvas.Toggle
+                columnId="navigation"
+                columnTitle="Compact navigation"
+                previewOnHover
+                previewDelay={0}
+                aria-label="Toggle Compact navigation column"
+              />
+              <ColumnCanvas.Title>Compact content</ColumnCanvas.Title>
+            </ColumnCanvas.Header>
+          </ColumnCanvas.Column>
+        </ColumnCanvas.Root>
+      </div>
     </div>
   {/snippet}
 </Story>

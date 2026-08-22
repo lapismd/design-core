@@ -14,7 +14,8 @@ import * as exampleSources from "./ColumnCanvas.example-sources";
 
 Horizontal, selection-driven column cascade for Miller-column / Finder-style
 navigation. A typed app-owned controller owns path selection, durable widths,
-and collapse/close. `Root` adapts its canvas presentation to its bounded width
+and collapse/close. Transient previews reveal collapsed or closed columns
+without changing durable layout. `Root` adapts its canvas presentation to its bounded width
 without mutating that controller. Compound parts (`Header`, `Toggle`, `Close`,
 `Body`, `Item`) provide consistent chrome so hosts do not invent row or header
 styling.
@@ -277,7 +278,7 @@ The public controller surface is grouped by responsibility:
       <td>Visibility</td>
       <td>
         <code>getPathLevel</code>, <code>isPathVisible</code>,{" "}
-        <code>isColumnVisible</code>
+        <code>isColumnVisible</code>, <code>getState</code>
       </td>
     </tr>
     <tr>
@@ -314,6 +315,14 @@ The public controller surface is grouped by responsibility:
       <td>
         <code>isCloseable</code>, <code>isClosed</code>, <code>close</code>,{" "}
         <code>open</code>, <code>setClosed</code>
+      </td>
+    </tr>
+    <tr>
+      <td>Preview</td>
+      <td>
+        <code>isPreviewed</code>, <code>preview</code>,{" "}
+        <code>schedulePreview</code>, <code>keepPreview</code>,{" "}
+        <code>dismissPreview</code>, <code>schedulePreviewDismiss</code>
       </td>
     </tr>
     <tr>
@@ -356,6 +365,11 @@ Deduplicate in-flight loading in the host. `Toggle` and `Close` accept shared
 Button props and render only when their controller capability is enabled. When
 you omit `Column.title`, use readable column ids or override the action labels
 as the custom example does.
+
+`Toggle` can target an adjacent column with `columnId` and `columnTitle`.
+`previewOnHover` uses a 600 ms reveal and 120 ms dismissal grace period.
+Clicking performs the durable expanded → collapsed, collapsed → expanded, or
+closed → open and expanded transition.
 
 ### Column props
 
@@ -411,6 +425,27 @@ attributes and a bindable `ref`:
         <code>closeable</code>
       </td>
       <td>Presentation override for the registered config</td>
+    </tr>
+    <tr>
+      <td>
+        <code>collapsedRail</code>
+      </td>
+      <td>
+        Consumer snippet receiving <code>{`{ id, title, count, expand }`}</code>
+        ; the vertical title/count trigger remains the fallback
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>revealOnEdgeHover</code>
+      </td>
+      <td>Zero-width boundary control for collapsed or closed preview</td>
+    </tr>
+    <tr>
+      <td>
+        <code>edgeRevealLabel</code>
+      </td>
+      <td>Accessible label for the boundary preview control</td>
     </tr>
     <tr>
       <td>
@@ -561,7 +596,7 @@ logic runs.
   members expose one keyboard-accessible inverse divider on the leading member.
 - **compact**: each expanded column occupies the complete bounded stage, with
   no previous-column peek, durable blank tail, horizontal scrollbar, or resize
-  handles; mandatory snapping; and slower, smooth
+  handles or hover previews; mandatory snapping; and slower, smooth
   vertical-to-horizontal routing for non-scrollable columns and scrollable-body
   boundaries
 - **fixed**: original fixed geometry and free horizontal scrolling at every
@@ -648,6 +683,13 @@ error policy.
 The selection path, `pathLevel`, responsive mode, sticky state, and scroll
 position are transient. They never enter the V2 layout schema.
 
+Preview state is transient too. In wide and fixed modes, a collapsed column
+retains its rail-width placeholder while the full column overlays adjacent
+content; a closed column retains no inline placeholder. Edge hover/focus opens
+immediately and a targeted toggle can schedule the same overlay. Focus and
+portalled popup content owned by the preview keep it open. Preview changes do
+not call `onLayoutChange` and never enter persistence.
+
 ## Accessibility and input
 
 `Root` defaults to a focusable `region` named “Column canvas”. Supply a
@@ -707,6 +749,17 @@ selecting a row restores it when `openOnSelect` is enabled.
 `Toggle` collapses a column to a vertical rail; expand restores it.
 
 <Canvas of={ColumnCanvasStories.CollapseAndExpand} meta={ColumnCanvasStories} />
+
+### Custom rail and transient preview
+
+Consumer-owned rail contents can preserve high-value navigation in the narrow
+state. Edge hover/focus previews immediately, a sibling-targeted toggle previews
+after the App Shell delay, and click keeps the durable three-state transition.
+
+<Canvas
+  of={ColumnCanvasStories.CustomRailAndPreview}
+  meta={ColumnCanvasStories}
+/>
 
 ### Resizable columns
 
@@ -829,7 +882,10 @@ The family exports these visual parts:
       <td>
         <code>Toggle</code>
       </td>
-      <td>Controller-owned collapse and expand button</td>
+      <td>
+        Contextual or sibling-targeted durable toggle with optional delayed
+        hover preview
+      </td>
     </tr>
     <tr>
       <td>
@@ -874,7 +930,8 @@ The complete non-visual export groups are:
   `ColumnCanvasLayoutV2`, `COLUMN_CANVAS_LAYOUT_VERSION`,
   `COLUMN_CANVAS_DEFAULT_STORAGE_KEY`, and all layout, adapter, event, source,
   and error types
-- Presentation: `ColumnCanvasDisplayMode`,
+- Presentation: `ColumnCanvasDisplayMode`, `ColumnCanvasColumnState`,
+  `ColumnCanvasCollapsedRailContext`, `ColumnCanvasToggleIcon`,
   `ColumnCanvasResolvedDisplayMode`, the three context hooks and their context
   types, `columnCanvasTokenNames`, and `ColumnCanvasToken`
 

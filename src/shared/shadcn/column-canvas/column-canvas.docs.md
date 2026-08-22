@@ -2,7 +2,9 @@
 
 Horizontal, selection-driven column cascade for Miller-column / Finder-style
 navigation. A typed app-owned controller owns path selection, cascade
-visibility (`pathLevel`), durable widths, and collapse/close. `Root` adapts the
+visibility (`pathLevel`), durable widths, and collapse/close. Transient previews
+can reveal collapsed or closed columns without changing that durable state.
+`Root` adapts the
 canvas presentation to its own bounded width without mutating that controller.
 Compound parts provide consistent header, toggle, body, and item chrome.
 Adjacent `Item` rows are separated by `--ui-column-canvas-item-gap` so hover
@@ -134,17 +136,18 @@ The controller constructor accepts these host integrations:
 
 The public controller surface is grouped by responsibility:
 
-| Area              | State and methods                                                                     |
-| ----------------- | ------------------------------------------------------------------------------------- |
-| Selection         | `path`, `visibleDepth`, `pathAt`, `select`, `clearFrom`, `clear`, `isSelected`        |
-| Visibility        | `getPathLevel`, `isPathVisible`, `isColumnVisible`                                    |
-| Registration      | `hasColumn`, `ensureColumn`                                                           |
-| Width             | `getWidth`, `getDefaultWidth`, `getMinWidth`, `getMaxWidth`, `setWidth`, `resetWidth` |
-| Pair split        | `getPairSplit`, `setPairSplit`, `resetPairSplit`                                      |
-| Collapse          | `isCollapsible`, `isCollapsed`, `collapse`, `expand`, `toggle`, `setCollapsed`        |
-| Close             | `isCloseable`, `isClosed`, `close`, `open`, `setClosed`                               |
-| Resize capability | `isResizable`                                                                         |
-| Persistence       | `layoutReady`, `getLayout`, `restoreLayout`, `flushSave`, `dispose`                   |
+| Area              | State and methods                                                                                      |
+| ----------------- | ------------------------------------------------------------------------------------------------------ |
+| Selection         | `path`, `visibleDepth`, `pathAt`, `select`, `clearFrom`, `clear`, `isSelected`                         |
+| Visibility        | `getPathLevel`, `isPathVisible`, `isColumnVisible`, `getState`                                         |
+| Registration      | `hasColumn`, `ensureColumn`                                                                            |
+| Width             | `getWidth`, `getDefaultWidth`, `getMinWidth`, `getMaxWidth`, `setWidth`, `resetWidth`                  |
+| Pair split        | `getPairSplit`, `setPairSplit`, `resetPairSplit`                                                       |
+| Collapse          | `isCollapsible`, `isCollapsed`, `collapse`, `expand`, `toggle`, `setCollapsed`                         |
+| Close             | `isCloseable`, `isClosed`, `close`, `open`, `setClosed`                                                |
+| Preview           | `isPreviewed`, `preview`, `schedulePreview`, `keepPreview`, `dismissPreview`, `schedulePreviewDismiss` |
+| Resize capability | `isResizable`                                                                                          |
+| Persistence       | `layoutReady`, `getLayout`, `restoreLayout`, `flushSave`, `dispose`                                    |
 
 Selecting the current key clears that level and every deeper level. Closing a
 column keeps it registered. Opening a column also leaves its durable width
@@ -165,25 +168,32 @@ The near-end callback can fire again while the body remains near its boundary.
 Deduplicate in-flight loading in the host. `Toggle` and `Close` accept shared
 Button props and render only when their controller capability is enabled. When
 you omit `Column.title`, use readable column ids or override the action labels.
+`Toggle` can target another column with `columnId` and `columnTitle`. Add
+`previewOnHover` to use the App Shell timing contract: a 600 ms reveal and a
+120 ms dismissal grace period. Clicking always performs a durable transition:
+expanded to collapsed, collapsed to expanded, or closed to open and expanded.
 
 ### Column props
 
 `Column` accepts these family-specific props in addition to native section
 attributes and a bindable `ref`:
 
-| Prop            | Purpose                                                                |
-| --------------- | ---------------------------------------------------------------------- |
-| `id`            | Stable controller id                                                   |
-| `title`         | Default header title and accessible action label                       |
-| `count`         | Default header and collapsed-rail count                                |
-| `pathLevel`     | Presentation override for the registered config                        |
-| `resizable`     | Presentation override for the registered config                        |
-| `collapsible`   | Presentation override for the registered config                        |
-| `closeable`     | Presentation override for the registered config                        |
-| `sticky`        | Registers a leading floating return rail in wide and fixed modes       |
-| `stickyRail`    | Named snippet rendered inside the sticky return button                 |
-| `width`         | Test or harness width override; prefer controller widths in products   |
-| `onWidthChange` | Test or harness resize callback; prefer controller updates in products |
+| Prop                | Purpose                                                                                              |
+| ------------------- | ---------------------------------------------------------------------------------------------------- |
+| `id`                | Stable controller id                                                                                 |
+| `title`             | Default header title and accessible action label                                                     |
+| `count`             | Default header and collapsed-rail count                                                              |
+| `pathLevel`         | Presentation override for the registered config                                                      |
+| `resizable`         | Presentation override for the registered config                                                      |
+| `collapsible`       | Presentation override for the registered config                                                      |
+| `closeable`         | Presentation override for the registered config                                                      |
+| `collapsedRail`     | Consumer snippet receiving `{ id, title, count, expand }`; the vertical trigger remains the fallback |
+| `revealOnEdgeHover` | Adds a zero-width boundary control for transient collapsed/closed preview                            |
+| `edgeRevealLabel`   | Accessible label for the boundary preview control                                                    |
+| `sticky`            | Registers a leading floating return rail in wide and fixed modes                                     |
+| `stickyRail`        | Named snippet rendered inside the sticky return button                                               |
+| `width`             | Test or harness width override; prefer controller widths in products                                 |
+| `onWidthChange`     | Test or harness resize callback; prefer controller updates in products                               |
 
 `CollapsedColumn` is a low-level escape hatch with `label`, optional `count`,
 and `onExpand`. It must remain inside `Root`. Prefer controller-owned collapse
@@ -232,7 +242,7 @@ logic runs.
   amount. The right member's outer handle is suppressed.
 - `compact` makes each expanded column fill the complete bounded stage, removes
   the previous-column peek, durable blank tail, and horizontal scrollbar, hides
-  resize handles, and snaps columns mandatorily.
+  resize handles, disables hover previews, and snaps columns mandatorily.
 - `displayMode="fixed"` is the compatibility escape hatch: controller widths,
   resize handles, an optional configured trailing spacer, and free horizontal
   scrolling remain as in the original canvas, with no active-column following.
@@ -332,6 +342,13 @@ error policy.
 The selection path, `pathLevel`, responsive mode, sticky state, and scroll
 position are transient. They never enter the V2 layout schema.
 
+Preview state is also transient. In wide and fixed modes, a collapsed column
+keeps its rail-width placeholder while its expanded contents overlay adjacent
+columns; a closed column keeps no inline placeholder. Edge hover or focus opens
+the overlay immediately, while a sibling-targeted `Toggle` can schedule it.
+Focus and portalled popup content owned by the overlay retain the preview. A
+preview never calls `onLayoutChange` and is excluded from persistence.
+
 ## Accessibility and input
 
 `Root` defaults to a focusable `region` named “Column canvas”. Supply a
@@ -378,6 +395,13 @@ selecting a row (`openOnSelect`) restores it.
 
 `Toggle` collapses a column to a vertical rail; expand restores it.
 
+### Custom rail and transient preview
+
+Supply `collapsedRail` for consumer-owned compact navigation, enable
+`revealOnEdgeHover`, and place a targeted `Toggle` in an adjacent column. The
+expanded column appears as a full-height overlay while the durable collapsed or
+closed state remains unchanged.
+
 ### Resizable columns
 
 Set `resizable: true` on adjacent columns. In wide mode every eligible divider
@@ -423,7 +447,7 @@ The family exports these visual parts:
 | `Title`           | Custom title that falls back to the column context title                                            |
 | `Count`           | Custom count that hides when neither content nor a count exists                                     |
 | `HeaderActions`   | Action group for custom header controls                                                             |
-| `Toggle`          | Controller-owned collapse and expand button                                                         |
+| `Toggle`          | Contextual or sibling-targeted durable toggle with optional delayed hover preview                   |
 | `Close`           | Controller-owned close button                                                                       |
 | `Body`            | Independent vertical Scroll Area and near-end callback                                              |
 | `Item`            | Selectable native button row                                                                        |
@@ -445,7 +469,8 @@ The complete non-visual export groups are:
   `ColumnCanvasLayoutV2`, `COLUMN_CANVAS_LAYOUT_VERSION`,
   `COLUMN_CANVAS_DEFAULT_STORAGE_KEY`, and all layout, adapter, event, source,
   and error types
-- Presentation: `ColumnCanvasDisplayMode`,
+- Presentation: `ColumnCanvasDisplayMode`, `ColumnCanvasColumnState`,
+  `ColumnCanvasCollapsedRailContext`, `ColumnCanvasToggleIcon`,
   `ColumnCanvasResolvedDisplayMode`, the three context hooks and their context
   types, `columnCanvasTokenNames`, and `ColumnCanvasToken`
 
