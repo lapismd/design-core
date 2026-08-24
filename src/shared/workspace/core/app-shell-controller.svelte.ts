@@ -6,6 +6,7 @@ import type {
 import { ConfigurationSchema } from "../settings/configuration.js";
 import { WorkspaceSettingsController } from "../settings/settings-controller.svelte.js";
 import {
+  COMMAND_PALETTE_TAB_ALL,
   CommandKeymapScope,
   CommandManager,
   type AppShellCommand,
@@ -286,7 +287,8 @@ export class AppShellController {
       category: "App Shell",
       icon: "search",
       hotkeys: [{ modifiers: ["Mod"], key: "p" }],
-      callback: () => this.commands.openPalette(),
+      callback: () =>
+        this.commands.openPalette({ tab: COMMAND_PALETTE_TAB_ALL }),
     });
     this.commands.register({
       id: "app-shell:focus-active-tab",
@@ -320,13 +322,15 @@ export class AppShellController {
       label: "Open command palette",
       icon: "terminal",
       priority: -1000,
-      onSelect: () => this.commands.openPalette(),
+      onSelect: () =>
+        this.commands.openPalette({ tab: COMMAND_PALETTE_TAB_ALL }),
     });
     this.emptyViewActions.addItem({
       id: "app-shell:open-command-palette",
       label: "Open Command Palette",
       icon: "terminal",
-      onSelect: () => this.commands.openPalette(),
+      onSelect: () =>
+        this.commands.openPalette({ tab: COMMAND_PALETTE_TAB_ALL }),
     });
     if (this.applicationInfo) {
       const aboutTitle = `About ${this.applicationInfo.name}`;

@@ -4,7 +4,11 @@ import {
   type AppShellControllerOptions,
   type AppShellLayoutPersistence,
 } from "./app-shell-controller.svelte.js";
-import type { Hotkey } from "./command-manager.svelte.js";
+import {
+  COMMAND_PALETTE_TAB_ACTIONS,
+  COMMAND_PALETTE_TAB_ALL,
+  type Hotkey,
+} from "./command-manager.svelte.js";
 import {
   AppShellPlugin,
   type AppShellPluginDescriptor,
@@ -98,8 +102,10 @@ describe("AppShellController", () => {
       label: "Open command palette",
       icon: "terminal",
     });
+    app.commands.selectPaletteTab(COMMAND_PALETTE_TAB_ACTIONS);
     palette?.onSelect();
     expect(app.commands.paletteOpen).toBe(true);
+    expect(app.commands.paletteTab).toBe(COMMAND_PALETTE_TAB_ALL);
     app.commands.closePalette();
 
     const emptyPalette = app.emptyViewActions.items.find(
@@ -109,8 +115,17 @@ describe("AppShellController", () => {
       label: "Open Command Palette",
       icon: "terminal",
     });
+    app.commands.selectPaletteTab(COMMAND_PALETTE_TAB_ACTIONS);
     emptyPalette?.onSelect();
     expect(app.commands.paletteOpen).toBe(true);
+    expect(app.commands.paletteTab).toBe(COMMAND_PALETTE_TAB_ALL);
+    app.commands.closePalette();
+
+    app.commands.selectPaletteTab(COMMAND_PALETTE_TAB_ACTIONS);
+    expect(await app.commands.execute("app-shell:open-command-palette")).toBe(
+      true,
+    );
+    expect(app.commands.paletteTab).toBe(COMMAND_PALETTE_TAB_ALL);
 
     const customEmptyAction = vi.fn();
     const removeCustomEmptyAction = app.emptyViewActions.addItem({

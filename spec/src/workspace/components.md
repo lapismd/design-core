@@ -4,43 +4,43 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 
 ## Public surface coverage
 
-| Surface                       | Public boundary                                  | Requirement |
-| ----------------------------- | ------------------------------------------------ | ----------- |
-| About Dialog                  | `@lapismd/design-core/workspace/about-dialog`    | DC-WS-008   |
-| Bottom Panel                  | `@lapismd/design-core/workspace/bottom-panel`    | DC-WS-009   |
-| Bottom Panel status clearance | `@lapismd/design-core/workspace/bottom-panel`    | DC-WS-045   |
-| Command Palette               | `@lapismd/design-core/workspace/command-palette` | DC-WS-010   |
-| Command Palette tabs          | `@lapismd/design-core/workspace/command-palette` | DC-WS-053   |
-| Command Palette groups        | `@lapismd/design-core/workspace/command-palette` | DC-WS-054   |
-| Command Palette open tab      | `@lapismd/design-core/workspace/command-palette` | DC-WS-055   |
+| Surface                        | Public boundary                                  | Requirement |
+| ------------------------------ | ------------------------------------------------ | ----------- |
+| About Dialog                   | `@lapismd/design-core/workspace/about-dialog`    | DC-WS-008   |
+| Bottom Panel                   | `@lapismd/design-core/workspace/bottom-panel`    | DC-WS-009   |
+| Bottom Panel status clearance  | `@lapismd/design-core/workspace/bottom-panel`    | DC-WS-045   |
+| Command Palette                | `@lapismd/design-core/workspace/command-palette` | DC-WS-010   |
+| Command Palette tabs           | `@lapismd/design-core/workspace/command-palette` | DC-WS-053   |
+| Command Palette groups         | `@lapismd/design-core/workspace/command-palette` | DC-WS-054   |
+| Command Palette open tab       | `@lapismd/design-core/workspace/command-palette` | DC-WS-055   |
 | Command Palette remembered tab | `@lapismd/design-core/workspace/command-palette` | DC-WS-057   |
-| Settings dialog reveal        | `@lapismd/design-core/workspace/settings`        | DC-WS-056   |
-| Drop Overlay                  | `@lapismd/design-core/workspace/drop-overlay`    | DC-WS-011   |
-| Empty View                    | `@lapismd/design-core/workspace/empty`           | DC-WS-012   |
-| Floating Layer                | `@lapismd/design-core/workspace/floating-layer`  | DC-WS-013   |
-| Floating Window               | `@lapismd/design-core/workspace/floating-window` | DC-WS-014   |
-| Workspace Icon                | `@lapismd/design-core/workspace/icon`            | DC-WS-015   |
-| Workspace Menu                | `@lapismd/design-core/workspace/menu`            | DC-WS-016   |
-| Mobile Shell                  | `@lapismd/design-core/workspace/mobile`          | DC-WS-017   |
-| Popout Surface                | `@lapismd/design-core/workspace/popout`          | DC-WS-018   |
-| Ribbon                        | `@lapismd/design-core/workspace/ribbon`          | DC-WS-019   |
-| Settings                      | `@lapismd/design-core/workspace/settings`        | DC-WS-020   |
-| Settings multi-enum           | `@lapismd/design-core/workspace/settings`        | DC-WS-044   |
-| Settings text-field focus     | `@lapismd/design-core/workspace/settings`        | DC-WS-049   |
-| Sidebar                       | `@lapismd/design-core/workspace/sidebar`         | DC-WS-021   |
-| Empty Sidebar                 | `@lapismd/design-core/workspace/sidebar-empty`   | DC-WS-022   |
-| Sidebar Group                 | `@lapismd/design-core/workspace/sidebar-group`   | DC-WS-023   |
-| Sidebar Toggle                | `@lapismd/design-core/workspace/sidebar-toggle`  | DC-WS-024   |
-| Workspace Split               | `@lapismd/design-core/workspace/split`           | DC-WS-025   |
-| Stacked Tabs                  | `@lapismd/design-core/workspace/stacked-tabs`    | DC-WS-026   |
-| Startup                       | `@lapismd/design-core/workspace/startup`         | DC-WS-027   |
-| Status Bar                    | `@lapismd/design-core/workspace/status-bar`      | DC-WS-028   |
-| Status Item                   | `@lapismd/design-core/workspace/status-item`     | DC-WS-029   |
-| Workspace Tabs                | `@lapismd/design-core/workspace/tabs`            | DC-WS-030   |
-| Workspace Tree                | `@lapismd/design-core/workspace/tree`            | DC-WS-031   |
-| View Header                   | `@lapismd/design-core/workspace/view-header`     | DC-WS-032   |
-| Managed plugins               | `@lapismd/design-core/workspace`                 | DC-WS-039   |
-| Desktop drag                  | Workspace chrome                                 | DC-WS-042   |
+| Settings dialog reveal         | `@lapismd/design-core/workspace/settings`        | DC-WS-056   |
+| Drop Overlay                   | `@lapismd/design-core/workspace/drop-overlay`    | DC-WS-011   |
+| Empty View                     | `@lapismd/design-core/workspace/empty`           | DC-WS-012   |
+| Floating Layer                 | `@lapismd/design-core/workspace/floating-layer`  | DC-WS-013   |
+| Floating Window                | `@lapismd/design-core/workspace/floating-window` | DC-WS-014   |
+| Workspace Icon                 | `@lapismd/design-core/workspace/icon`            | DC-WS-015   |
+| Workspace Menu                 | `@lapismd/design-core/workspace/menu`            | DC-WS-016   |
+| Mobile Shell                   | `@lapismd/design-core/workspace/mobile`          | DC-WS-017   |
+| Popout Surface                 | `@lapismd/design-core/workspace/popout`          | DC-WS-018   |
+| Ribbon                         | `@lapismd/design-core/workspace/ribbon`          | DC-WS-019   |
+| Settings                       | `@lapismd/design-core/workspace/settings`        | DC-WS-020   |
+| Settings multi-enum            | `@lapismd/design-core/workspace/settings`        | DC-WS-044   |
+| Settings text-field focus      | `@lapismd/design-core/workspace/settings`        | DC-WS-049   |
+| Sidebar                        | `@lapismd/design-core/workspace/sidebar`         | DC-WS-021   |
+| Empty Sidebar                  | `@lapismd/design-core/workspace/sidebar-empty`   | DC-WS-022   |
+| Sidebar Group                  | `@lapismd/design-core/workspace/sidebar-group`   | DC-WS-023   |
+| Sidebar Toggle                 | `@lapismd/design-core/workspace/sidebar-toggle`  | DC-WS-024   |
+| Workspace Split                | `@lapismd/design-core/workspace/split`           | DC-WS-025   |
+| Stacked Tabs                   | `@lapismd/design-core/workspace/stacked-tabs`    | DC-WS-026   |
+| Startup                        | `@lapismd/design-core/workspace/startup`         | DC-WS-027   |
+| Status Bar                     | `@lapismd/design-core/workspace/status-bar`      | DC-WS-028   |
+| Status Item                    | `@lapismd/design-core/workspace/status-item`     | DC-WS-029   |
+| Workspace Tabs                 | `@lapismd/design-core/workspace/tabs`            | DC-WS-030   |
+| Workspace Tree                 | `@lapismd/design-core/workspace/tree`            | DC-WS-031   |
+| View Header                    | `@lapismd/design-core/workspace/view-header`     | DC-WS-032   |
+| Managed plugins                | `@lapismd/design-core/workspace`                 | DC-WS-039   |
+| Desktop drag                   | Workspace chrome                                 | DC-WS-042   |
 
 ## DC-WS-008 — About Dialog
 
@@ -126,6 +126,17 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 - A remembered provider tab MUST fall back to All when that provider is absent.
 - An explicit `openPalette({ tab })` MUST override and persist that tab.
 - Unit tests MUST cover restore through injected storage.
+
+## DC-WS-058 — Canonical Command Palette launch
+
+**Requirement.** The App Shell's built-in generic Command Palette launch surfaces MUST open the All tab explicitly, without changing `openPalette()`'s remembered-tab behavior for other callers.
+
+### Acceptance details
+
+- The built-in Command Palette command and its hotkey MUST open All.
+- The built-in ribbon and empty-workspace actions MUST open All.
+- A consumer call to `openPalette()` without a tab MUST continue to restore the remembered tab.
+- Go-to-file and other explicitly targeted callers MAY continue to open a provider tab.
 
 ## DC-WS-056 — Settings dialog reveal
 

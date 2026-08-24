@@ -4,9 +4,11 @@ Workspace framework contracts coordinate reusable layout and state through expli
 Command manager palette search filters by tab (`openPalette({ tab })`,
 `searchPalette(query, { tab })`) and groups Actions by plugin contribution.
 The last selected palette tab persists in `localStorage` and is restored when
-`openPalette()` has no tab. Settings dialog open and field reveal live on the
-settings controller (`open({ sectionId, fieldId })`). Palette presentation
-remains DC-WS-010 and DC-WS-053 through DC-WS-057.
+`openPalette()` has no tab. The built-in command/hotkey, ribbon, and
+empty-workspace launch surfaces explicitly request All so generic application
+launch never inherits a narrower remembered provider tab. Settings dialog open
+and field reveal live on the settings controller (`open({ sectionId, fieldId })`).
+Palette presentation remains DC-WS-010 and DC-WS-053 through DC-WS-058.
 
 ## Public surface coverage
 
