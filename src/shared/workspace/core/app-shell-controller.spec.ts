@@ -122,9 +122,18 @@ describe("AppShellController", () => {
     app.commands.closePalette();
 
     app.commands.selectPaletteTab(COMMAND_PALETTE_TAB_ACTIONS);
-    expect(await app.commands.execute("app-shell:open-command-palette")).toBe(
-      true,
-    );
+    const preventDefault = vi.fn();
+    const hotkey = {
+      key: "p",
+      ctrlKey: false,
+      metaKey: true,
+      altKey: false,
+      shiftKey: false,
+      preventDefault,
+    } as unknown as KeyboardEvent;
+    const handled = app.commands.handleKeydown(hotkey);
+    expect(preventDefault).toHaveBeenCalledOnce();
+    expect(await handled).toBe(true);
     expect(app.commands.paletteTab).toBe(COMMAND_PALETTE_TAB_ALL);
 
     const customEmptyAction = vi.fn();

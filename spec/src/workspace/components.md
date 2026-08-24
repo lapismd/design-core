@@ -129,7 +129,7 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 
 ## DC-WS-058 — Canonical Command Palette launch
 
-**Requirement.** The App Shell's built-in generic Command Palette launch surfaces MUST open the All tab explicitly, without changing `openPalette()`'s remembered-tab behavior for other callers.
+**Requirement.** The App Shell's built-in generic Command Palette launch surfaces MUST open the All tab explicitly, without changing `openPalette()`'s remembered-tab behavior for other callers. The App Shell root MUST capture its hotkey at document scope and synchronously prevent the host browser default, including while the document body owns focus.
 
 ### Acceptance details
 

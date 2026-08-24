@@ -67,11 +67,27 @@
   });
 
   onMount(() => {
+    const document = root?.ownerDocument;
+    const handleDocumentKeydown = (event: KeyboardEvent) => {
+      if (!root || event.defaultPrevented) return;
+      const target = event.target;
+      if (
+        target instanceof Node &&
+        target !== document?.body &&
+        target !== document?.documentElement &&
+        !root.contains(target)
+      ) {
+        return;
+      }
+      void controller.commands.handleKeydown(event);
+    };
     const disposeSurface = root
       ? controller.ui.registerSurface(root)
       : () => {};
+    document?.addEventListener("keydown", handleDocumentKeydown);
     if (autoStart) void controller.start();
     return () => {
+      document?.removeEventListener("keydown", handleDocumentKeydown);
       disposeSurface();
       drag.clear();
       if (disposeOnDestroy) void controller.dispose();
@@ -79,7 +95,6 @@
   });
 </script>
 
-<!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
   bind:this={root}
   class={`ui-app-shell ${resolvedTheme === "dark" ? "dark" : ""} ${className}`}
@@ -91,7 +106,6 @@
   data-workspace-dragging={drag.dragging}
   data-workspace-focus-mode={controller.renderer.focusMode ? "true" : undefined}
   style={appearanceStyle}
-  onkeydown={(event) => void controller.commands.handleKeydown(event)}
 >
   {@render children?.()}
   {#if renderPopouts}

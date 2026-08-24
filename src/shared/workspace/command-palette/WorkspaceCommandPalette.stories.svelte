@@ -116,7 +116,18 @@
   tags={["visual-pending"]}
   play={async ({ canvas, canvasElement }) => {
     await waitFor(() => expect(previewApp.ready).toBe(true));
-    previewApp.commands.openPalette({ tab: "all" });
+    previewApp.commands.selectPaletteTab("actions");
+    const document = canvasElement.ownerDocument;
+    const hotkey = new KeyboardEvent("keydown", {
+      key: "p",
+      bubbles: true,
+      cancelable: true,
+      ...(/Mac|iPhone|iPad/.test(navigator.platform)
+        ? { metaKey: true }
+        : { ctrlKey: true }),
+    });
+    document.body.dispatchEvent(hotkey);
+    await expect(hotkey.defaultPrevented).toBe(true);
     await expect(
       await canvas.findByRole("dialog", { name: "Command Palette" }),
     ).toBeVisible();

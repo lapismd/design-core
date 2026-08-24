@@ -439,24 +439,22 @@ export class CommandManager {
   }
 
   async handleKeydown(event: KeyboardEvent): Promise<boolean> {
+    const matchingCommand = this.commands.find(
+      (command) =>
+        this.isAvailable(command, this.createContext("hotkey")) &&
+        this.getHotkeys(command.id).some((hotkey) =>
+          eventMatchesHotkey(event, hotkey),
+        ),
+    );
+    if (matchingCommand) event.preventDefault();
     for (const scope of [...this.#scopes].reverse()) {
       if (await scope.handle(event)) {
         event.preventDefault();
         return true;
       }
     }
-    for (const command of this.commands) {
-      if (
-        !this.isAvailable(command, this.createContext("hotkey")) ||
-        !this.getHotkeys(command.id).some((hotkey) =>
-          eventMatchesHotkey(event, hotkey),
-        )
-      ) {
-        continue;
-      }
-      event.preventDefault();
-      return this.execute(command.id, { source: "hotkey" });
-    }
+    if (matchingCommand)
+      return this.execute(matchingCommand.id, { source: "hotkey" });
     return false;
   }
 

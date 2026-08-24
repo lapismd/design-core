@@ -6,7 +6,9 @@ Command manager palette search filters by tab (`openPalette({ tab })`,
 The last selected palette tab persists in `localStorage` and is restored when
 `openPalette()` has no tab. The built-in command/hotkey, ribbon, and
 empty-workspace launch surfaces explicitly request All so generic application
-launch never inherits a narrower remembered provider tab. Settings dialog open
+launch never inherits a narrower remembered provider tab. App Shell captures
+its hotkey at document scope and prevents the browser default synchronously,
+including when body owns focus. Settings dialog open
 and field reveal live on the settings controller (`open({ sectionId, fieldId })`).
 Palette presentation remains DC-WS-010 and DC-WS-053 through DC-WS-058.
 
