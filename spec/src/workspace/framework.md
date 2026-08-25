@@ -23,6 +23,7 @@ Palette presentation remains DC-WS-010 and DC-WS-053 through DC-WS-058.
 | Workspace drag                | `@lapismd/design-core/workspace/drag`      | DC-WS-005   |
 | Workspace View Host           | `@lapismd/design-core/workspace/view-host` | DC-WS-006   |
 | Imperative view remount       | `@lapismd/design-core/workspace/view-host` | DC-WS-043   |
+| Imperative view containment   | `@lapismd/design-core/workspace/view-host` | DC-WS-059   |
 | Workspace Guidance            | Documentation surface                      | DC-WS-007   |
 | Workspace navigation          | `@lapismd/design-core/workspace/app-shell` | DC-WS-038   |
 | Bottom Panel toggle placement | `@lapismd/design-core/workspace/app-shell` | DC-WS-048   |
@@ -99,6 +100,16 @@ Palette presentation remains DC-WS-010 and DC-WS-053 through DC-WS-058.
 - Active-tab, chrome, and other context-only updates MUST NOT teardown and remount the imperative root.
 - Remount MUST pass the same tab id through to the consumer mount so the existing view container can be reattached.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+
+## DC-WS-059 — Imperative view containment
+
+**Requirement.** An imperative Workspace View Host MUST keep its consumer mount root within the host's used bounds so content cannot enlarge or escape the workspace surface.
+
+### Acceptance details
+
+- The mount root MUST use the host as its containing block and MUST NOT contribute intrinsic size to the host.
+- Percentage-height consumer roots MUST receive a definite bounded height while nested Scroll Areas retain their own overflow range.
+- WebKit browser acceptance MUST prove a tall nested Scroll Area scrolls without enlarging the imperative mount root.
 
 ## DC-WS-007 — Workspace Guidance
 

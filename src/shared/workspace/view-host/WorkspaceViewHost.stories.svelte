@@ -1,6 +1,7 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent } from "storybook/test";
+  import { mount, unmount } from "svelte";
   import {
     createDefaultWorkspaceLayout,
     createWorkspaceTab,
@@ -8,6 +9,7 @@
   } from "../core/layout.js";
   import { WorkspaceShellController } from "../core/workspace-controller.svelte.js";
   import ExampleWorkspaceView from "./ExampleWorkspaceView.svelte";
+  import ImperativeScrollFixture from "./WorkspaceViewHost.stories.fixture.svelte";
   import * as exampleSources from "./WorkspaceViewHost.example-sources.js";
   import WorkspaceViewHost from "./WorkspaceViewHost.svelte";
 
@@ -75,6 +77,34 @@
     title: "Empty view",
     view: { type: "empty" },
   });
+
+  const imperativeTab = createWorkspaceTab({
+    id: "imperative-scroll-view",
+    title: "Imperative scroll view",
+    view: { type: "demo.imperative-scroll" },
+  });
+  const imperativeLayout = createDefaultWorkspaceLayout();
+  const imperativePane = createWorkspaceTabs([imperativeTab], {
+    id: "imperative-scroll-pane",
+    activeItemId: imperativeTab.id,
+  });
+  imperativeLayout.main = imperativePane;
+  imperativeLayout.active = {
+    hostId: "root",
+    paneId: imperativePane.id,
+    tabId: imperativeTab.id,
+  };
+  const imperativeController = new WorkspaceShellController({
+    layout: imperativeLayout,
+  });
+  imperativeController.registry.register({
+    kind: "imperative",
+    type: "demo.imperative-scroll",
+    mount(target) {
+      const fixture = mount(ImperativeScrollFixture, { target });
+      return () => void unmount(fixture);
+    },
+  });
 </script>
 
 <Story
@@ -121,6 +151,47 @@
         tab={registeredTab}
         hostId="root"
         paneId={registeredPane.id}
+      />
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Imperative scroll containment"
+  tags={["visual-pending"]}
+  play={async ({ canvasElement }) => {
+    const host = canvasElement.querySelector<HTMLElement>(
+      '[data-ui-component="workspace-view-host"]',
+    );
+    const imperativeRoot = canvasElement.querySelector<HTMLElement>(
+      '[data-ui-component="workspace-imperative-view"]',
+    );
+    const viewport = canvasElement.querySelector<HTMLElement>(
+      '[data-testid="imperative-scroll-fixture"] [data-ui-part="scroll-area-viewport"]',
+    );
+    await expect(host).not.toBeNull();
+    await expect(imperativeRoot).not.toBeNull();
+    await expect(viewport).not.toBeNull();
+    expect(getComputedStyle(imperativeRoot!).position).toBe("absolute");
+    expect(imperativeRoot!.getBoundingClientRect().height).toBeCloseTo(
+      host!.getBoundingClientRect().height,
+      0,
+    );
+    expect(viewport!.clientHeight).toBeLessThan(viewport!.scrollHeight);
+    viewport!.scrollTop = 96;
+    expect(viewport!.scrollTop).toBe(96);
+  }}
+>
+  {#snippet template()}
+    <div
+      data-testid="imperative-scroll-host"
+      style="height: 14rem; min-height: 0; overflow: hidden"
+    >
+      <WorkspaceViewHost
+        controller={imperativeController}
+        tab={imperativeTab}
+        hostId="root"
+        paneId={imperativePane.id}
       />
     </div>
   {/snippet}
