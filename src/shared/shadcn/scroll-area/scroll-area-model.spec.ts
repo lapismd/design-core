@@ -54,6 +54,16 @@ describe("ScrollArea overlay model", () => {
       shouldShowOverlayScrollbar({ ...state, type: "scroll", scrolling: true }),
     ).toBe(true);
     expect(
+      shouldShowOverlayScrollbar({
+        ...state,
+        type: "scroll",
+        scrollbarHovered: true,
+      }),
+    ).toBe(true);
+    expect(
+      shouldShowOverlayScrollbar({ ...state, type: "scroll", hovered: true }),
+    ).toBe(false);
+    expect(
       shouldShowOverlayScrollbar({ ...state, type: "hover", hovered: true }),
     ).toBe(true);
     expect(shouldShowOverlayScrollbar({ ...state, type: "always" })).toBe(true);

@@ -35,6 +35,7 @@
   let track = $state<HTMLDivElement | null>(null);
   let metrics = $state(emptyMetrics);
   let hovered = $state(false);
+  let scrollbarHovered = $state(false);
   let scrolling = $state(false);
   let interacting = $state(false);
   let dragPointerId = $state<number | null>(null);
@@ -48,6 +49,7 @@
       overflowing: metrics.overflowing,
       type,
       hovered,
+      scrollbarHovered,
       scrolling,
       interacting,
     }),
@@ -223,6 +225,8 @@
   data-orientation={orientation}
   data-scrollbar-overlay
   data-state={visible ? "visible" : "hidden"}
+  onpointerenter={() => (scrollbarHovered = true)}
+  onpointerleave={() => (scrollbarHovered = false)}
   onpointerdown={handleTrackPointerDown}
 >
   <!-- svelte-ignore a11y_no_static_element_interactions (presentation-only thumb delegates to the native accessible viewport) -->

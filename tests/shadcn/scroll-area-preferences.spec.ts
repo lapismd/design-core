@@ -176,6 +176,11 @@ test.describe("Scroll Area preferences", () => {
       element.scrollTop += 20;
     });
     await expect(scrollbar).toHaveAttribute("data-state", "visible");
+    const thumb = scrollbar.locator('[data-ui-part="scroll-area-thumb"]');
+    await thumb.hover();
+    await page.waitForTimeout(1_000);
+    await expect(scrollbar).toHaveAttribute("data-state", "visible");
+    await page.mouse.move(790, 890);
     await expect(scrollbar).toHaveAttribute("data-state", "hidden", {
       timeout: 2_000,
     });

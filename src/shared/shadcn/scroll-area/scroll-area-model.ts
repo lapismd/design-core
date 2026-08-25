@@ -70,19 +70,21 @@ export function shouldShowOverlayScrollbar({
   overflowing,
   type,
   hovered,
+  scrollbarHovered = false,
   scrolling,
   interacting,
 }: {
   overflowing: boolean;
   type: ScrollAreaType;
   hovered: boolean;
+  scrollbarHovered?: boolean;
   scrolling: boolean;
   interacting: boolean;
 }): boolean {
   if (!overflowing) return false;
   if (type === "always" || type === "auto") return true;
   if (type === "hover") return hovered || interacting;
-  return scrolling || interacting;
+  return scrolling || scrollbarHovered || interacting;
 }
 
 export function scrollOffsetForTrackPress({
