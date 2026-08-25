@@ -240,6 +240,18 @@
       [data-ui-component="scroll-area"][data-ui-part="scroll-area"][data-scroll-strategy="native"] {
         overflow: hidden !important;
       }
+      [data-ui-component="scroll-area"][data-ui-part="scroll-area"][data-scroll-strategy="native"]
+        > [data-ui-part="scroll-area-viewport"]::-webkit-scrollbar,
+      [data-ui-component="scroll-area"][data-ui-part="scroll-area"][data-scroll-strategy="native"]
+        > [data-ui-part="scroll-area-viewport"]::-webkit-scrollbar-track,
+      [data-ui-component="scroll-area"][data-ui-part="scroll-area"][data-scroll-strategy="native"]
+        > [data-ui-part="scroll-area-viewport"]::-webkit-scrollbar-track-piece,
+      [data-ui-component="scroll-area"][data-ui-part="scroll-area"][data-scroll-strategy="native"]
+        > [data-ui-part="scroll-area-viewport"]::-webkit-scrollbar-corner {
+        border: 0;
+        background-color: transparent;
+        box-shadow: none;
+      }
       [data-ui-component="scroll-area"][data-ui-part="scroll-area"][data-scroll-strategy="native"][data-orientation="vertical"]
         > [data-ui-part="scroll-area-viewport"] {
         overflow-x: hidden !important;
