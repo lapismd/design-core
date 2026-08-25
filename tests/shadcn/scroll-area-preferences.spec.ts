@@ -184,5 +184,20 @@ test.describe("Scroll Area preferences", () => {
     await expect(scrollbar).toHaveAttribute("data-state", "hidden", {
       timeout: 2_000,
     });
+    await expect(scrollbar).toHaveCSS("pointer-events", "auto");
+
+    const railBounds = await scrollbar.boundingBox();
+    if (!railBounds) throw new Error("Overflowing interaction rail is missing");
+    await page.mouse.move(
+      railBounds.x + railBounds.width / 2,
+      railBounds.y + railBounds.height / 2,
+    );
+    await expect(scrollbar).toHaveAttribute("data-state", "visible");
+    await thumb.hover();
+    await page.waitForTimeout(1_000);
+    await expect(scrollbar).toHaveAttribute("data-state", "visible");
+
+    await expect(noOverflowScrollbar).not.toHaveAttribute("data-overflow", "");
+    await expect(noOverflowScrollbar).toHaveCSS("pointer-events", "none");
   });
 });

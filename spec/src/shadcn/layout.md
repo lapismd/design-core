@@ -54,7 +54,7 @@ Layout primitives establish reusable spatial, scrolling, and responsive composit
 
 ## DC-SHA-038 — Scroll Area
 
-**Requirement.** The Scroll Area family MUST provide styled viewport and scrollbar parts while preserving native scrolling semantics. In `scroll` visibility mode, a shown overlay MUST remain visible while its track or thumb is hovered or dragged and resume delayed hiding after pointer departure; hovering only the content MUST NOT activate it.
+**Requirement.** The Scroll Area family MUST provide styled viewport and scrollbar parts while preserving native scrolling semantics. In `scroll` visibility mode, an overflowing overlay MUST retain a transparent interaction rail after its paint hides so pointer entry can reveal the thumb. A shown overlay MUST remain visible while its track or thumb is hovered or dragged and resume delayed hiding after pointer departure; hovering only the content MUST NOT activate it.
 
 ### Acceptance details
 

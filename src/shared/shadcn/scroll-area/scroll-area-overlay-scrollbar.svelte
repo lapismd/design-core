@@ -232,6 +232,7 @@
   data-slot="scroll-area-scrollbar"
   data-orientation={orientation}
   data-scrollbar-overlay
+  data-overflow={metrics.overflowing ? "" : undefined}
   data-state={visible ? "visible" : "hidden"}
   onpointerenter={() => (scrollbarHovered = true)}
   onpointerleave={() => (scrollbarHovered = false)}
@@ -271,6 +272,12 @@
 
   [data-ui-component="scroll-area"][data-ui-part="scroll-area-scrollbar"][data-scrollbar-overlay].ui-scroll-area__overlay-scrollbar[data-state="visible"] {
     opacity: 1;
+    pointer-events: auto;
+  }
+
+  [data-ui-component="scroll-area"][data-ui-part="scroll-area-scrollbar"][data-scrollbar-overlay].ui-scroll-area__overlay-scrollbar[data-overflow] {
+    /* Keep the transparent rail reachable after scroll-mode paint fades so a
+       pointer entering the edge can reveal and retain the thumb. */
     pointer-events: auto;
   }
 
