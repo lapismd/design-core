@@ -179,12 +179,6 @@
   background: var(--ui-workspace-background);
 }
 
-.ui-workspace-sidebar[data-workspace-sidebar-side="left"]
-  .ui-workspace-sidebar__body {
-  /* Keep nested Explorer scrollbars out from under the resize rail. */
-  --ui-workspace-explorer-scrollbar-inline-end: 0.5rem;
-}
-
 .ui-workspace-sidebar__body
   [data-ui-component="scroll-area"][data-ui-part="scroll-area-viewport"] {
   min-width: 0;

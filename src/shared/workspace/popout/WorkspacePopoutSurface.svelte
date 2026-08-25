@@ -9,6 +9,7 @@
   import WorkspaceTree from "../tree/WorkspaceTree.svelte";
   import { setContext } from "svelte";
   import { disableOverlayPortalContextKey } from "../../../lib/overlay-portal-context.js";
+  import type { ScrollAreaVisibility } from "../../shadcn/scroll-area/index.js";
   import "./WorkspacePopoutSurface.css";
 
   let {
@@ -17,12 +18,14 @@
     drag,
     createTab,
     theme = "inherit",
+    scrollbarVisibility = "scroll",
   }: {
     controller: WorkspaceShellController;
     window: WorkspaceWindow;
     drag: WorkspaceDragState;
     createTab?: (paneId: string) => WorkspaceTab;
     theme?: WorkspaceTheme;
+    scrollbarVisibility?: ScrollAreaVisibility;
   } = $props();
 
   setContext(disableOverlayPortalContextKey, true);
@@ -35,6 +38,7 @@
   data-ui-part="root"
   data-workspace-popout-id={workspaceWindow.id}
   data-workspace-theme={theme}
+  data-ui-scrollbar-visibility={scrollbarVisibility}
 >
   <WorkspaceTree
     {controller}

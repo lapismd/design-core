@@ -5,21 +5,28 @@
     type WorkspacePopoutHost,
   } from "../core/index.js";
   import type { WorkspaceTheme } from "../core/types.js";
+  import type { ScrollAreaVisibility } from "../../shadcn/scroll-area/index.js";
   import { getAppShellContext } from "../app-shell/app-shell-context.svelte.js";
   import WorkspacePopoutSurface from "./WorkspacePopoutSurface.svelte";
 
   let {
     host,
     theme = "inherit",
+    scrollbarVisibility = "scroll",
   }: {
     host?: WorkspacePopoutHost | null;
     theme?: WorkspaceTheme;
+    scrollbarVisibility?: ScrollAreaVisibility;
   } = $props();
 
   const { controller, drag } = getAppShellContext();
   const mounts = new Map<
     string,
-    { component: ReturnType<typeof mount>; theme: WorkspaceTheme }
+    {
+      component: ReturnType<typeof mount>;
+      theme: WorkspaceTheme;
+      scrollbarVisibility: ScrollAreaVisibility;
+    }
   >();
 
   $effect(() => {
@@ -46,7 +53,12 @@
         overflow: "hidden",
       });
       const existing = mounts.get(workspaceWindow.id);
-      if (existing?.theme === theme) continue;
+      if (
+        existing?.theme === theme &&
+        existing.scrollbarVisibility === scrollbarVisibility
+      ) {
+        continue;
+      }
       if (existing) void unmount(existing.component);
       target.replaceChildren();
       const component = mount(WorkspacePopoutSurface, {
@@ -56,9 +68,14 @@
           window: workspaceWindow,
           drag,
           theme,
+          scrollbarVisibility,
         },
       });
-      mounts.set(workspaceWindow.id, { component, theme });
+      mounts.set(workspaceWindow.id, {
+        component,
+        theme,
+        scrollbarVisibility,
+      });
     }
   });
 

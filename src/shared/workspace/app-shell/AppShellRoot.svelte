@@ -48,6 +48,9 @@
   );
   let resolvedFontSize = $derived(fontSize ?? controller.appearance.fontSize);
   let resolvedZoom = $derived(zoomLevel ?? controller.appearance.zoomLevel);
+  let resolvedScrollbarVisibility = $derived(
+    controller.appearance.scrollbarVisibility,
+  );
   let appearanceStyle = $derived(
     [
       `font-size: ${resolvedFontSize}px`,
@@ -105,11 +108,16 @@
   data-workspace-theme={resolvedTheme}
   data-workspace-dragging={drag.dragging}
   data-workspace-focus-mode={controller.renderer.focusMode ? "true" : undefined}
+  data-ui-scrollbar-visibility={resolvedScrollbarVisibility}
   style={appearanceStyle}
 >
   {@render children?.()}
   {#if renderPopouts}
-    <AppShellPopoutLayer host={popoutHost} theme={resolvedTheme} />
+    <AppShellPopoutLayer
+      host={popoutHost}
+      theme={resolvedTheme}
+      scrollbarVisibility={resolvedScrollbarVisibility}
+    />
   {/if}
   {#if renderOverlays && root}
     <AppShellOverlayLayer portalTarget={root} />

@@ -36,7 +36,7 @@ Repository tools keep source generation, discovery, documentation, and validatio
 
 ### Acceptance details
 
-- Machine-readable output must be stable enough for repository automation.
+- Machine-readable output must be stable enough for repository automation, and compatibility browser projects must exercise every engine that owns a distinct runtime strategy.
 - Tooling failures must report an actionable source path or command.
 - Specification commands must retain separate validation, build, spec-first, index, search, and serve entry points through the configured shared CLI.
 - Specification validation must include Storybook consumer-source and syntax-language lanes before broader catalog gates.

@@ -929,23 +929,24 @@
       expect(viewport.scrollHeight).toBeGreaterThan(viewport.clientHeight);
     });
 
-    const scrollbar = scrollRoot.querySelector(
-      '[data-slot="scroll-area-scrollbar"][data-orientation="vertical"]',
-    ) as HTMLElement | null;
-    expect(scrollbar).not.toBeNull();
+    await fireEvent.pointerEnter(scrollRoot);
+    const scrollbar = await waitFor(() => {
+      const element = scrollRoot.querySelector(
+        '[data-slot="scroll-area-scrollbar"][data-orientation="vertical"]',
+      ) as HTMLElement | null;
+      expect(element).not.toBeNull();
+      return element!;
+    });
     const scrollRootRight = scrollRoot.getBoundingClientRect().right;
-    const barRight = scrollbar!.getBoundingClientRect().right;
-    const insetToken = getComputedStyle(scrollRoot).getPropertyValue(
-      "--ui-workspace-explorer-scrollbar-inline-end",
-    );
+    const barRight = scrollbar.getBoundingClientRect().right;
     const scrollbarInset = Number.parseFloat(
-      getComputedStyle(scrollbar!).insetInlineEnd,
+      getComputedStyle(scrollbar).insetInlineEnd,
     );
-    expect(insetToken).not.toBe("");
-    expect(scrollbarInset).toBeGreaterThan(0);
-    expect(Math.abs(scrollRootRight - barRight - scrollbarInset)).toBeLessThan(
-      2,
-    );
+    expect(scrollbarInset).toBe(0);
+    expect(Math.abs(scrollRootRight - barRight)).toBeLessThan(2);
+    expect(
+      Number.parseInt(getComputedStyle(scrollbar).zIndex, 10),
+    ).toBeGreaterThan(10);
     await fireEvent.pointerMove(scrollRoot, { clientX: 1, clientY: 1 });
     const activeRow = canvasElement.querySelector(
       `[data-path="archive/${LONG_FILE_NAME}"]`,

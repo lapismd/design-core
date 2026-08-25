@@ -12,7 +12,6 @@
 .ui-workspace-explorer-story--overflow {
   width: 16rem;
   height: 22rem;
-  --ui-workspace-explorer-scrollbar-inline-end: 0.5rem;
 }
 
 .sr-only {

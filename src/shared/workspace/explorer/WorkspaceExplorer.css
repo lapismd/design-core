@@ -28,12 +28,11 @@
 
 .ui-workspace-explorer__scroll
   [data-ui-component="scroll-area"][data-ui-part="scroll-area-scrollbar"][data-orientation="vertical"] {
-  /* Match workspace sidebar: thin rail flush to the scroll root edge. */
+  /* Keep the thumb flush to the Explorer edge and above a competing sidebar
+     resize rail only while the governed overlay is interactive. */
+  z-index: 11;
   width: 0.5rem;
-  inset-inline-end: var(
-    --ui-workspace-explorer-scrollbar-inline-end,
-    0px
-  ) !important;
+  inset-inline-end: 0 !important;
 }
 
 .ui-workspace-explorer__toolbar {

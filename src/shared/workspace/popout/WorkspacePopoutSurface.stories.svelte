@@ -76,11 +76,14 @@
   name="Detached workspace tree"
   tags={["visual-approved"]}
   play={async ({ canvas, canvasElement }) => {
-    await expect(
-      canvasElement.querySelector(
-        '[data-workspace-popout-id="popout-story-window"]',
-      ),
-    ).not.toBeNull();
+    const popoutSurface = canvasElement.querySelector(
+      '[data-workspace-popout-id="popout-story-window"]',
+    );
+    await expect(popoutSurface).not.toBeNull();
+    await expect(popoutSurface).toHaveAttribute(
+      "data-ui-scrollbar-visibility",
+      "scroll",
+    );
     await expect(
       canvas.getByRole("button", { name: /^Detached view$/ }),
     ).toHaveAttribute("aria-pressed", "true");

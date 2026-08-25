@@ -4,6 +4,10 @@ import type {
   WorkspaceSettingsSection,
 } from "../settings/types.js";
 import type { WorkspaceRequestedDisplayMode, WorkspaceTheme } from "./types.js";
+import {
+  isScrollAreaVisibility,
+  type ScrollAreaVisibility,
+} from "../../shadcn/scroll-area/scroll-area-model.js";
 
 export const APP_SHELL_SETTING_IDS = {
   appearanceTheme: "appearence.baseColorSchema",
@@ -13,6 +17,7 @@ export const APP_SHELL_SETTING_IDS = {
   appearanceInlineTitle: "appearence.interface.showInlineTitle",
   appearanceRibbon: "appearence.interface.showRibbon",
   appearanceTabTitleBar: "appearence.interface.showTabTitleBar",
+  appearanceScrollbarVisibility: "appearence.interface.scrollbarVisibility",
   appearanceZoom: "appearence.advanced.zoomLevel",
   editorAssociations: "workspace.editorAssociations",
   bottomPanelAlignment: "workspace.bottomPanel.alignment",
@@ -99,6 +104,13 @@ export class AppShellAppearanceSettings {
       APP_SHELL_SETTING_IDS.appearanceTabTitleBar,
       false,
     );
+  }
+
+  get scrollbarVisibility(): ScrollAreaVisibility {
+    const value = this.configuration.get(
+      APP_SHELL_SETTING_IDS.appearanceScrollbarVisibility,
+    );
+    return isScrollAreaVisibility(value) ? value : "scroll";
   }
 
   get zoomLevel(): number {
@@ -414,6 +426,18 @@ export function createBuiltInSettingsSections(): WorkspaceSettingsSection[] {
               title: "Show tab title bar",
               description: "Display the header at the top of every tab.",
               default: false,
+            },
+            {
+              id: APP_SHELL_SETTING_IDS.appearanceScrollbarVisibility,
+              type: "enum",
+              title: "Scrollbar visibility",
+              description: "Choose when scrollable areas show their scrollbar.",
+              default: "scroll",
+              options: [
+                { value: "scroll", label: "Scrollbar on scroll" },
+                { value: "hover", label: "Scrollbar on hover" },
+                { value: "always", label: "Always show scrollbar" },
+              ],
             },
           ],
         },

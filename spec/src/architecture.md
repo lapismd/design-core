@@ -33,7 +33,7 @@ Design Core is a shared presentation and controller library. Consumer applicatio
 
 ## DC-ARCH-004 — Compatibility
 
-**Requirement.** Public additions MUST be additive unless a migration is explicitly specified, compatibility entry points MUST continue to resolve to their owning implementation, and engine-specific compatibility behavior MUST preserve the same public component and reference contracts behind an explicit internal strategy marker.
+**Requirement.** Public additions MUST be additive unless a migration is explicitly specified, compatibility entry points MUST continue to resolve to their owning implementation, engine-specific compatibility behavior MUST preserve the same public component and reference contracts behind an explicit internal strategy marker, and inherited appearance policy MUST cross separately mounted surfaces through owned DOM attributes rather than consumer wrappers.
 
 ### Acceptance details
 

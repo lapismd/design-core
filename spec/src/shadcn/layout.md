@@ -59,9 +59,9 @@ Layout primitives establish reusable spatial, scrolling, and responsive composit
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/shadcn/scroll-area`.
-- The styled Bits UI viewport and scrollbar behavior MUST remain for Blink and Gecko, while WebKit hosts identified by a host engine marker or the renderer user agent MUST use a dedicated native viewport that is not subject to Bits UI's hidden-scrollbar selectors and resolve the public `viewportRef` to that active owner.
-- WebKit fallback coverage MUST prove vertical wheel and programmatic scrolling, absence of nonfunctional custom scrollbar parts and Bits viewport attributes, and bounded direct and imperative-host layouts without relying on visual scrollbar paint.
-- The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- Blink and Gecko MUST retain Bits UI scrolling while WebKit hosts identified by an engine marker or user agent MUST use a dedicated native viewport outside Bits UI's hidden-scrollbar selector with Design Core-owned token-driven scrollbar parts that reserve no native gutter.
+- `ScrollAreaVisibility` MUST expose `scroll`, `hover`, and `always`; an omitted local type MUST inherit the nearest App Shell preference, while an explicit type remains authoritative for standalone consumers.
+- Browser coverage MUST prove wheel, keyboard, programmatic, track, and thumb-drag scrolling; bounded direct and imperative layouts; overflow-aware geometry; and each visibility mode without relying on the native scrollbar paint.
 
 ## DC-SHA-039 — Separator
 

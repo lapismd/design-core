@@ -28,7 +28,7 @@ export default defineConfig({
     },
     {
       name: "webkit",
-      testMatch: /scroll-area-webkit\.spec\.ts/,
+      testMatch: /scroll-area-(webkit|preferences)\.spec\.ts/,
       use: { ...devices["Desktop Safari"] },
     },
   ],

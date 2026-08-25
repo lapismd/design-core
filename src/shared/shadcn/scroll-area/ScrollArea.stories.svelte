@@ -3,6 +3,8 @@
   import { expect } from "storybook/test";
   import * as ScrollArea from "./index.js";
   import ScrollAreaScrollableList from "./ScrollAreaScrollableList.svelte";
+  import ScrollAreaBehaviorFixture from "./ScrollAreaBehaviorFixture.svelte";
+  import * as exampleSources from "./ScrollArea.local-example-sources.js";
 
   const { Story } = defineMeta({
     title: "Shadcn/Layout/Scroll Area",
@@ -11,6 +13,11 @@
       docs: {
         description: {
           component: "Custom scrollable region with styled scrollbars.",
+        },
+        source: {
+          code: exampleSources.Basic,
+          language: "tsx",
+          type: "code",
         },
       },
     },
@@ -48,5 +55,34 @@
 >
   {#snippet template()}
     <ScrollAreaScrollableList {items} />
+  {/snippet}
+</Story>
+
+<Story
+  name="Visibility modes"
+  play={async ({ canvas, userEvent }) => {
+    const inherited = canvas.getByLabelText("Inherited vertical area");
+    await expect(inherited).toHaveAttribute("data-scroll-visibility", "scroll");
+    await userEvent.click(canvas.getByRole("button", { name: "hover" }));
+    await expect(inherited).toHaveAttribute("data-scroll-visibility", "hover");
+    await userEvent.click(canvas.getByRole("button", { name: "always" }));
+    await expect(inherited).toHaveAttribute("data-scroll-visibility", "always");
+    await expect(canvas.getByLabelText("No overflow area")).toBeVisible();
+    await expect(canvas.getByLabelText("Horizontal area")).toBeVisible();
+    await expect(canvas.getByLabelText("Dual axis area")).toBeVisible();
+  }}
+  tags={["visual-pending"]}
+  parameters={{
+    docs: {
+      source: {
+        code: exampleSources.VisibilityModes,
+        language: "tsx",
+        type: "code",
+      },
+    },
+  }}
+>
+  {#snippet template()}
+    <ScrollAreaBehaviorFixture />
   {/snippet}
 </Story>

@@ -1,6 +1,12 @@
 <script lang="ts">
   import { ScrollArea as ScrollAreaPrimitive } from "bits-ui";
   import { Scrollbar } from "./index.js";
+  import OverlayScrollbar from "./scroll-area-overlay-scrollbar.svelte";
+  import {
+    isScrollAreaVisibility,
+    SCROLL_AREA_VISIBILITY_ATTRIBUTE,
+    type ScrollAreaVisibility,
+  } from "./scroll-area-model.js";
   import { type WithoutChild } from "../../../lib/utils.js";
   import { omitDataUiIdentity } from "../../../lib/data-ui-host.js";
 
@@ -25,7 +31,7 @@
     orientation = "vertical",
     scrollbarXClasses = "",
     scrollbarYClasses = "",
-    type = "hover",
+    type,
     scrollHideDelay = 600,
     children,
     ...restProps
@@ -36,23 +42,53 @@
     viewportRef?: HTMLElement | null;
   } = $props();
 
+  let activeRootRef = $state<HTMLElement | null>(null);
   let activeViewportRef = $state<HTMLElement | null>(null);
+  let inheritedType = $state<ScrollAreaVisibility | undefined>(undefined);
+  let resolvedType = $derived(type ?? inheritedType ?? "hover");
   const nativeWebKitScrolling = usesNativeWebKitScrolling();
 
   $effect(() => {
+    ref = activeRootRef;
     viewportRef = activeViewportRef;
+  });
+
+  $effect(() => {
+    if (type !== undefined || !activeRootRef) {
+      inheritedType = undefined;
+      return;
+    }
+    const owner = activeRootRef.parentElement?.closest(
+      `[${SCROLL_AREA_VISIBILITY_ATTRIBUTE}]`,
+    );
+    if (!owner) {
+      inheritedType = undefined;
+      return;
+    }
+    const sync = () => {
+      const value = owner.getAttribute(SCROLL_AREA_VISIBILITY_ATTRIBUTE);
+      inheritedType = isScrollAreaVisibility(value) ? value : undefined;
+    };
+    sync();
+    const observer = new MutationObserver(sync);
+    observer.observe(owner, {
+      attributes: true,
+      attributeFilter: [SCROLL_AREA_VISIBILITY_ATTRIBUTE],
+    });
+    return () => observer.disconnect();
   });
 </script>
 
 <ScrollAreaPrimitive.Root
-  bind:ref
+  bind:ref={activeRootRef}
   {...omitDataUiIdentity(restProps)}
-  {type}
+  type={resolvedType}
   {scrollHideDelay}
   data-ui-component="scroll-area"
   data-ui-part="scroll-area"
   data-slot="scroll-area"
   data-orientation={orientation}
+  data-scroll-visibility={resolvedType}
   data-scroll-strategy={nativeWebKitScrolling ? "native" : "styled"}
   class={className}
 >
@@ -69,6 +105,26 @@
     >
       {@render children?.()}
     </div>
+    {#if orientation === "vertical" || orientation === "both"}
+      <OverlayScrollbar
+        root={activeRootRef}
+        viewport={activeViewportRef}
+        orientation="vertical"
+        type={resolvedType}
+        {scrollHideDelay}
+        class={scrollbarYClasses}
+      />
+    {/if}
+    {#if orientation === "horizontal" || orientation === "both"}
+      <OverlayScrollbar
+        root={activeRootRef}
+        viewport={activeViewportRef}
+        orientation="horizontal"
+        type={resolvedType}
+        {scrollHideDelay}
+        class={scrollbarXClasses}
+      />
+    {/if}
   {:else}
     <ScrollAreaPrimitive.Viewport
       bind:ref={activeViewportRef}
@@ -234,8 +290,9 @@
        * and some WKWebView releases stop scrolling the viewport altogether.
        * A host marker or the renderer user agent selects a plain native
        * viewport which never receives Bits' data-scroll-area-viewport
-       * attribute or its hidden-scrollbar rule. Other engines retain the
-       * styled Bits UI viewport and scrollbar.
+       * attribute or its display:none rule. Its native chrome is suppressed
+       * without removing native scrolling, and a presentation-only overlay
+       * supplies the governed thumb interactions. Other engines retain Bits.
        */
       [data-ui-component="scroll-area"][data-ui-part="scroll-area"][data-scroll-strategy="native"] {
         overflow: hidden !important;
@@ -253,6 +310,18 @@
       [data-ui-component="scroll-area"][data-ui-part="scroll-area"][data-scroll-strategy="native"][data-orientation="both"]
         > [data-ui-part="scroll-area-viewport"] {
         overflow: auto !important;
+      }
+      [data-ui-component="scroll-area"][data-ui-part="scroll-area"][data-scroll-strategy="native"]
+        > [data-ui-part="scroll-area-viewport"] {
+        scrollbar-color: transparent transparent;
+        scrollbar-width: none;
+      }
+      [data-ui-component="scroll-area"][data-ui-part="scroll-area"][data-scroll-strategy="native"]
+        > [data-ui-part="scroll-area-viewport"]::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+        border: 0;
+        background: transparent;
       }
     }
     @property --tw-animation-delay {

@@ -475,6 +475,33 @@
   tags={["visual-pending"]}
   play={async ({ canvas, canvasElement }) => {
     const page = within(canvasElement.ownerDocument.body);
+    const shellRoot = canvasElement.querySelector<HTMLElement>(
+      "[data-app-shell-root]",
+    );
+    await expect(shellRoot).toHaveAttribute(
+      "data-ui-scrollbar-visibility",
+      "scroll",
+    );
+    surfaceApp.configuration.set(
+      APP_SHELL_SETTING_IDS.appearanceScrollbarVisibility,
+      "hover",
+    );
+    await waitFor(() =>
+      expect(shellRoot).toHaveAttribute(
+        "data-ui-scrollbar-visibility",
+        "hover",
+      ),
+    );
+    surfaceApp.configuration.set(
+      APP_SHELL_SETTING_IDS.appearanceScrollbarVisibility,
+      "scroll",
+    );
+    await waitFor(() =>
+      expect(shellRoot).toHaveAttribute(
+        "data-ui-scrollbar-visibility",
+        "scroll",
+      ),
+    );
     const workspaceTrigger = canvas.getByRole("button", {
       name: "Current workspace: Workspace demo",
     });

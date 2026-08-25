@@ -264,6 +264,7 @@ describe("AppShellController", () => {
       "core-plugins",
     ]);
     expect(app.appearance.colorScheme).toBe("system");
+    expect(app.appearance.scrollbarVisibility).toBe("scroll");
     expect(app.mobile.requestedDisplayMode).toBe("auto");
     expect(app.workspace.bottomPanelAlignment).toBe("center");
     expect(
@@ -285,11 +286,39 @@ describe("AppShellController", () => {
         }),
       ]),
     );
+    expect(
+      (
+        app.settings.sections.find((section) => section.id === "appearance")
+          ?.fields ?? []
+      ).flatMap((field) =>
+        field.type === "group" ? (field.fields ?? []) : [field],
+      ),
+    ).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: APP_SHELL_SETTING_IDS.appearanceScrollbarVisibility,
+          type: "enum",
+          default: "scroll",
+          options: [
+            { value: "scroll", label: "Scrollbar on scroll" },
+            { value: "hover", label: "Scrollbar on hover" },
+            { value: "always", label: "Always show scrollbar" },
+          ],
+        }),
+      ]),
+    );
 
     expect(
       app.configuration.set(APP_SHELL_SETTING_IDS.appearanceTheme, "dark"),
     ).toBe(true);
     expect(app.appearance.theme).toBe("dark");
+    expect(
+      app.configuration.set(
+        APP_SHELL_SETTING_IDS.appearanceScrollbarVisibility,
+        "hover",
+      ),
+    ).toBe(true);
+    expect(app.appearance.scrollbarVisibility).toBe("hover");
     expect(
       app.configuration.set(APP_SHELL_SETTING_IDS.mobileMode, "always"),
     ).toBe(true);
@@ -403,6 +432,7 @@ describe("AppShellController", () => {
             version: 1,
             values: {
               [APP_SHELL_SETTING_IDS.appearanceTheme]: "dark",
+              [APP_SHELL_SETTING_IDS.appearanceScrollbarVisibility]: "always",
               [APP_SHELL_SETTING_IDS.mobileMode]: "always",
               [APP_SHELL_SETTING_IDS.mobileDefaultPage]: "tabs",
               [APP_SHELL_SETTING_IDS.bottomPanelAlignment]: "right",
@@ -416,20 +446,28 @@ describe("AppShellController", () => {
     await app.start();
 
     expect(app.appearance.theme).toBe("dark");
+    expect(app.appearance.scrollbarVisibility).toBe("always");
     expect(app.mobile.requestedDisplayMode).toBe("mobile");
     expect(app.mobile.defaultPage).toBe("tabs");
     expect(app.workspace.bottomPanelAlignment).toBe("right");
     expect(app.workspace.setBottomPanelAlignment("justify")).toBe(true);
+    expect(
+      app.configuration.set(
+        APP_SHELL_SETTING_IDS.appearanceScrollbarVisibility,
+        "hover",
+      ),
+    ).toBe(true);
     await app.settings.flushSave();
     expect(save).toHaveBeenCalledWith(
       expect.objectContaining({
         values: expect.objectContaining({
           [APP_SHELL_SETTING_IDS.bottomPanelAlignment]: "justify",
+          [APP_SHELL_SETTING_IDS.appearanceScrollbarVisibility]: "hover",
         }),
       }),
       {
         source: "update",
-        id: APP_SHELL_SETTING_IDS.bottomPanelAlignment,
+        id: APP_SHELL_SETTING_IDS.appearanceScrollbarVisibility,
       },
     );
     await app.dispose();

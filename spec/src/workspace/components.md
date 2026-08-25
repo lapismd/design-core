@@ -218,7 +218,7 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 
 ## DC-WS-018 — Popout Surface
 
-**Requirement.** The Popout Surface family MUST host a controlled detached view surface while leaving browser-window policy to the consumer.
+**Requirement.** The Popout Surface family MUST host a controlled detached view surface, propagate the App Shell scrollbar visibility preference into its detached document, and leave browser-window policy to the consumer.
 
 ### Acceptance details
 
@@ -236,7 +236,7 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 
 ## DC-WS-020 — Settings
 
-**Requirement.** The Settings family MUST compose registered settings sections and controlled values without owning persistence.
+**Requirement.** The Settings family MUST compose registered settings sections and controlled values without owning persistence while the built-in Appearance section MUST expose the governed scrollbar visibility enum through that same configuration boundary.
 
 ### Acceptance details
 
@@ -272,7 +272,7 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 
 ### Acceptance details
 
-- The public boundary is `@lapismd/design-core/workspace/sidebar`, whose resize rail MUST expose a column resize cursor without covering an owned Explorer scrollbar.
+- The public boundary is `@lapismd/design-core/workspace/sidebar`, whose resize rail MUST expose a column resize cursor while yielding paint and pointer priority to a visible edge-aligned Explorer scrollbar.
 - A direct sidebar `WorkspaceViewHost` MUST stretch through the available sidebar body height so content-sized or empty imperative views receive a definite full-height containing block, and its secondary view background MUST resolve to the workspace surface against the panel-painted primary view.
 - App Shell footer actions MUST use the Sidebar family’s native workspace-menu tokens for interactive, disabled, descriptive, and focus states.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.

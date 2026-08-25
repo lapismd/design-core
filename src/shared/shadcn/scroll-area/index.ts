@@ -13,3 +13,8 @@ export {
   scroll_areaTokenNames,
   type ScrollAreaToken,
 } from "./scroll-area.tokens.js";
+
+export {
+  SCROLL_AREA_VISIBILITY_ATTRIBUTE,
+  type ScrollAreaVisibility,
+} from "./scroll-area-model.js";
