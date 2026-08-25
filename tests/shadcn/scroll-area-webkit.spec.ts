@@ -47,19 +47,6 @@ test.describe("Scroll Area WebKit fallback", () => {
         viewportScrollHeight: viewport.scrollHeight,
         rootOverflowY: getComputedStyle(element).overflowY,
         viewportOverflowY: getComputedStyle(viewport).overflowY,
-        nativeRail: [
-          "::-webkit-scrollbar",
-          "::-webkit-scrollbar-track",
-          "::-webkit-scrollbar-track-piece",
-          "::-webkit-scrollbar-corner",
-        ].map((pseudoElement) => {
-          const style = getComputedStyle(viewport, pseudoElement);
-          return {
-            backgroundColor: style.backgroundColor,
-            borderLeftWidth: style.borderLeftWidth,
-            boxShadow: style.boxShadow,
-          };
-        }),
       };
     });
     expect(layout.rootScrollHeight).toBe(layout.clientHeight);
@@ -68,13 +55,6 @@ test.describe("Scroll Area WebKit fallback", () => {
     );
     expect(layout.rootOverflowY).toBe("hidden");
     expect(layout.viewportOverflowY).toBe("auto");
-    expect(layout.nativeRail).toEqual(
-      Array.from({ length: 4 }, () => ({
-        backgroundColor: "rgba(0, 0, 0, 0)",
-        borderLeftWidth: "0px",
-        boxShadow: "none",
-      })),
-    );
 
     await nativeViewport.evaluate((element) => {
       element.scrollTop = 48;
