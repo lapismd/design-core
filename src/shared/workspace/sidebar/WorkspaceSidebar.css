@@ -185,11 +185,6 @@
   min-height: 0;
 }
 
-.ui-workspace-sidebar__body
-  [data-ui-component="scroll-area"][data-ui-part="scroll-area-scrollbar"][data-orientation="vertical"] {
-  width: 0.5rem;
-}
-
 .ui-workspace-sidebar__body-content {
   display: flex;
   width: 100%;

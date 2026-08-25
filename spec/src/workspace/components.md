@@ -272,7 +272,7 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 
 ### Acceptance details
 
-- The public boundary is `@lapismd/design-core/workspace/sidebar`, whose resize rail MUST expose a column resize cursor while yielding paint and pointer priority to a visible edge-aligned Explorer scrollbar.
+- The public boundary is `@lapismd/design-core/workspace/sidebar`, whose resize rail MUST expose a column resize cursor while yielding paint and pointer priority to a visible edge-aligned Explorer scrollbar; sidebar Scroll Areas MUST retain the shared component's track geometry instead of overriding its width locally.
 - A direct sidebar `WorkspaceViewHost` MUST stretch through the available sidebar body height so content-sized or empty imperative views receive a definite full-height containing block, and its secondary view background MUST resolve to the workspace surface against the panel-painted primary view.
 - App Shell footer actions MUST use the Sidebar family’s native workspace-menu tokens for interactive, disabled, descriptive, and focus states.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.

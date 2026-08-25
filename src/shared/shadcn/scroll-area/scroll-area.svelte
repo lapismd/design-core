@@ -186,9 +186,14 @@
       }
       [data-ui-component="scroll-area"][data-ui-part="scroll-area-thumb"] {
         background-color: var(--ui-scroll-area-foreground, var(--border));
+        transition:
+          width 140ms ease,
+          height 140ms ease,
+          flex-basis 140ms ease,
+          background-color 140ms ease;
       }
       [data-ui-component="scroll-area"][data-ui-part="scroll-area-scrollbar"] {
-        padding: 1px;
+        padding: 0;
       }
       [data-ui-component="scroll-area"][data-ui-part="scroll-area-viewport"] {
         transition-property: color, box-shadow;
@@ -244,7 +249,7 @@
       [data-ui-component="scroll-area"][data-ui-part="scroll-area-scrollbar"]:where(
           [data-orientation="horizontal"]
         ) {
-        height: calc(var(--spacing) * 2.5);
+        height: 0.5rem;
       }
       [data-ui-component="scroll-area"][data-ui-part="scroll-area-scrollbar"]:where(
           [data-orientation="horizontal"]
@@ -254,8 +259,7 @@
       [data-ui-component="scroll-area"][data-ui-part="scroll-area-scrollbar"]:where(
           [data-orientation="horizontal"]
         ) {
-        border-top-style: var(--tw-border-style);
-        border-top-width: 1px;
+        border: 0;
       }
       [data-ui-component="scroll-area"][data-ui-part="scroll-area-scrollbar"]:where(
           [data-orientation="horizontal"]
@@ -270,18 +274,71 @@
       [data-ui-component="scroll-area"][data-ui-part="scroll-area-scrollbar"]:where(
           [data-orientation="vertical"]
         ) {
-        width: calc(var(--spacing) * 2.5);
+        width: 0.5rem;
       }
       [data-ui-component="scroll-area"][data-ui-part="scroll-area-scrollbar"]:where(
           [data-orientation="vertical"]
         ) {
-        border-left-style: var(--tw-border-style);
-        border-left-width: 1px;
+        border: 0;
       }
       [data-ui-component="scroll-area"][data-ui-part="scroll-area-scrollbar"]:where(
           [data-orientation="vertical"]
         ) {
         border-left-color: #0000;
+      }
+
+      [data-ui-component="scroll-area"][data-ui-part="scroll-area-scrollbar"][data-orientation="vertical"]
+        > [data-ui-component="scroll-area"][data-ui-part="scroll-area-thumb"] {
+        width: 0.25rem;
+        flex: 0 0 0.25rem;
+        margin-inline-start: auto;
+      }
+
+      [data-ui-component="scroll-area"][data-ui-part="scroll-area-scrollbar"][data-orientation="vertical"]
+        > [data-ui-component="scroll-area"][data-ui-part="scroll-area-thumb"]:is(
+          :hover,
+          :active
+        ) {
+        width: 0.375rem;
+        flex-basis: 0.375rem;
+      }
+
+      [data-ui-component="scroll-area"][data-ui-part="scroll-area-scrollbar"][data-orientation="horizontal"]
+        > [data-ui-component="scroll-area"][data-ui-part="scroll-area-thumb"] {
+        height: 0.25rem;
+        flex: 0 0 0.25rem;
+        margin-block-start: auto;
+      }
+
+      [data-ui-component="scroll-area"][data-ui-part="scroll-area-scrollbar"][data-orientation="horizontal"]
+        > [data-ui-component="scroll-area"][data-ui-part="scroll-area-thumb"]:is(
+          :hover,
+          :active
+        ) {
+        height: 0.375rem;
+        flex-basis: 0.375rem;
+      }
+
+      [data-ui-component="scroll-area"][data-ui-part="scroll-area-thumb"]:hover {
+        background-color: color-mix(
+          in srgb,
+          var(--ui-scroll-area-foreground, var(--border)) 65%,
+          currentColor
+        );
+      }
+
+      [data-ui-component="scroll-area"][data-ui-part="scroll-area-thumb"]:active {
+        background-color: color-mix(
+          in srgb,
+          var(--ui-scroll-area-foreground, var(--border)) 50%,
+          currentColor
+        );
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        [data-ui-component="scroll-area"][data-ui-part="scroll-area-thumb"] {
+          transition: none;
+        }
       }
 
       /*

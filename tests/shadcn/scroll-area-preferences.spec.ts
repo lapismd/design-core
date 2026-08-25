@@ -52,6 +52,99 @@ test.describe("Scroll Area preferences", () => {
       .toBe(true);
   });
 
+  test("keeps compact thumbs edge anchored while hover expands and strengthens them", async ({
+    page,
+  }) => {
+    await openPreferenceStory(page);
+    await page.getByRole("button", { name: "always", exact: true }).click();
+
+    const cases = [
+      {
+        root: page.getByLabel("Inherited vertical area"),
+        orientation: "vertical",
+        crossSize: "width",
+        outerEdge: "right",
+      },
+      {
+        root: page.getByLabel("Horizontal area"),
+        orientation: "horizontal",
+        crossSize: "height",
+        outerEdge: "bottom",
+      },
+    ] as const;
+
+    for (const testCase of cases) {
+      const scrollbar = testCase.root.locator(
+        `[data-ui-part="scroll-area-scrollbar"][data-orientation="${testCase.orientation}"]`,
+      );
+      const thumb = scrollbar.locator('[data-ui-part="scroll-area-thumb"]');
+      await expect(scrollbar).toBeVisible();
+      await expect(thumb).toBeVisible();
+
+      const resting = await thumb.evaluate(
+        (element, { crossSize, outerEdge }) => {
+          const thumbBounds = element.getBoundingClientRect();
+          const trackBounds = element.parentElement!.getBoundingClientRect();
+          return {
+            background: getComputedStyle(element).backgroundColor,
+            crossSize:
+              crossSize === "width" ? thumbBounds.width : thumbBounds.height,
+            edgeDelta:
+              outerEdge === "right"
+                ? Math.abs(trackBounds.right - thumbBounds.right)
+                : Math.abs(trackBounds.bottom - thumbBounds.bottom),
+            trackCrossSize:
+              crossSize === "width" ? trackBounds.width : trackBounds.height,
+          };
+        },
+        {
+          crossSize: testCase.crossSize,
+          outerEdge: testCase.outerEdge,
+        },
+      );
+      expect(resting.trackCrossSize).toBeCloseTo(8, 0);
+      expect(resting.crossSize).toBeCloseTo(4, 0);
+      expect(resting.edgeDelta).toBeLessThan(1);
+
+      await thumb.hover();
+      await expect
+        .poll(() =>
+          thumb.evaluate((element, crossSize) => {
+            const bounds = element.getBoundingClientRect();
+            return crossSize === "width" ? bounds.width : bounds.height;
+          }, testCase.crossSize),
+        )
+        .toBeCloseTo(6, 0);
+
+      const hovered = await thumb.evaluate(
+        (element, { outerEdge }) => {
+          const thumbBounds = element.getBoundingClientRect();
+          const trackBounds = element.parentElement!.getBoundingClientRect();
+          return {
+            background: getComputedStyle(element).backgroundColor,
+            edgeDelta:
+              outerEdge === "right"
+                ? Math.abs(trackBounds.right - thumbBounds.right)
+                : Math.abs(trackBounds.bottom - thumbBounds.bottom),
+          };
+        },
+        { outerEdge: testCase.outerEdge },
+      );
+      expect(hovered.background).not.toBe(resting.background);
+      expect(hovered.edgeDelta).toBeLessThan(1);
+
+      await page.mouse.move(790, 890);
+      await expect
+        .poll(() =>
+          thumb.evaluate((element, crossSize) => {
+            const bounds = element.getBoundingClientRect();
+            return crossSize === "width" ? bounds.width : bounds.height;
+          }, testCase.crossSize),
+        )
+        .toBeCloseTo(4, 0);
+    }
+  });
+
   test("applies governed overlay visibility in WebKit", async ({
     page,
     browserName,
