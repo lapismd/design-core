@@ -45,6 +45,14 @@ const testCases: Record<string, Array<{ input: string; expected: string }>> = {
       expected: "Filter(Expr(Value(Tag)))",
     },
     {
+      input: "#topic/finance",
+      expected: "Filter(Expr(Value(Tag)))",
+    },
+    {
+      input: "tag:#topic/finance",
+      expected: "Filter(Expr(TermExpr(Key,OP,Value(Tag))))",
+    },
+    {
       input: "-#tag",
       expected: "Filter(Expr(ExprNot(NOT(MINUS),Expr(Value(Tag)))))",
     },
@@ -55,6 +63,12 @@ const testCases: Record<string, Array<{ input: string; expected: string }>> = {
     {
       input: "-^link",
       expected: "Filter(Expr(ExprNot(NOT(MINUS),Expr(Value(Link)))))",
+    },
+  ],
+  "Keep regex values distinct from hierarchical tags": [
+    {
+      input: "tag:/finance/",
+      expected: "Filter(Expr(TermExpr(Key,OP,Value(Regex))))",
     },
   ],
   "Filter by amount": [

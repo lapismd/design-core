@@ -125,7 +125,7 @@ Interval {
    Week { Year "-" "W" INT INT?}
    Month { Year "-" INT INT }
    Day { Year "-" INT INT "-" INT INT }
-   Tag { "#" $[a-zA-Z0-9_-]+}
+   Tag { "#" $[a-zA-Z0-9_-]+ ("/" $[a-zA-Z0-9_-]+)* }
    Link { "^" $[a-zA-Z0-9_-]+ }
    name { $[A-Z.*]$[A-Za-z0-9-.*]+ }
    AccountName { name ( ":" name)* }

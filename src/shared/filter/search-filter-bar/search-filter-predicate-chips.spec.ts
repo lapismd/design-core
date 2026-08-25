@@ -123,6 +123,12 @@ describe("collectTermExprRanges", () => {
     expect(doc.slice(ranges[1]!.from, ranges[1]!.to)).toBe("amount > 20");
   });
 
+  it("keeps a hierarchical tag inside one complete predicate range", () => {
+    const doc = "tag:#topic/finance";
+    const ranges = parseRanges(doc);
+    expect(ranges).toEqual([{ from: 0, to: doc.length }]);
+  });
+
   it("does not chip incomplete field fragments", () => {
     expect(parseRanges("amount ")).toEqual([]);
   });
@@ -146,6 +152,25 @@ describe("searchFilterPredicateChips", () => {
       expect(
         chips[0]?.querySelector(".cv-search-filter-bar__tok-op")?.textContent,
       ).toBe("=");
+    } finally {
+      destroy();
+    }
+  });
+
+  it("renders the complete hierarchical tag inside the predicate chip", () => {
+    const { view, destroy } = createChipEditor("tag:#topic/finance");
+    try {
+      const chip = view.dom.querySelector(
+        ".cv-search-filter-bar__predicate-chip",
+      );
+      expect(chip).not.toBeNull();
+      expect(
+        chip?.querySelector(".cv-search-filter-bar__predicate-chip-label")
+          ?.textContent,
+      ).toBe("tag:#topic/finance");
+      expect(view.dom.querySelector(".cm-content")?.textContent).toBe(
+        "tag:#topic/finance",
+      );
     } finally {
       destroy();
     }

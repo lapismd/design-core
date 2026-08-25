@@ -28,6 +28,7 @@ Filter contracts separate query language, reusable search chrome, and consumer q
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/filter/filter-query`.
+- Slash-delimited hierarchical tags MUST remain one parsed value and one complete Search Filter Bar predicate chip.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 
 ## DC-FILTER-003 — Search Filter Bar
