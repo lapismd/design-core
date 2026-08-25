@@ -1,8 +1,23 @@
 <script lang="ts">
   import { ScrollArea as ScrollAreaPrimitive } from "bits-ui";
+  import { onMount } from "svelte";
   import { Scrollbar } from "./index.js";
   import { type WithoutChild } from "../../../lib/utils.js";
   import { omitDataUiIdentity } from "../../../lib/data-ui-host.js";
+
+  function usesNativeWebKitScrolling(): boolean {
+    if (
+      typeof document !== "undefined" &&
+      document.documentElement.dataset.engine
+    ) {
+      return document.documentElement.dataset.engine === "webkit";
+    }
+    if (typeof navigator === "undefined") return false;
+    return (
+      /AppleWebKit/u.test(navigator.userAgent) &&
+      !/(Chrome|Chromium|CriOS|Edg|OPR)/u.test(navigator.userAgent)
+    );
+  }
 
   let {
     ref = $bindable(null),
@@ -19,6 +34,17 @@
     scrollbarYClasses?: string | undefined;
     viewportRef?: HTMLElement | null;
   } = $props();
+
+  let primitiveViewportRef = $state<HTMLElement | null>(null);
+  let nativeWebKitScrolling = $state(false);
+
+  onMount(() => {
+    nativeWebKitScrolling = usesNativeWebKitScrolling();
+  });
+
+  $effect(() => {
+    viewportRef = nativeWebKitScrolling ? ref : primitiveViewportRef;
+  });
 </script>
 
 <ScrollAreaPrimitive.Root
@@ -27,10 +53,12 @@
   data-ui-component="scroll-area"
   data-ui-part="scroll-area"
   data-slot="scroll-area"
+  data-orientation={orientation}
+  data-scroll-strategy={nativeWebKitScrolling ? "native" : "styled"}
   class={className}
 >
   <ScrollAreaPrimitive.Viewport
-    bind:ref={viewportRef}
+    bind:ref={primitiveViewportRef}
     tabindex={0}
     data-ui-component="scroll-area"
     data-ui-part="scroll-area-viewport"
@@ -44,7 +72,11 @@
   {#if orientation === "horizontal" || orientation === "both"}
     <Scrollbar orientation="horizontal" class={scrollbarXClasses} />
   {/if}
-  <ScrollAreaPrimitive.Corner />
+  <ScrollAreaPrimitive.Corner
+    data-ui-component="scroll-area"
+    data-ui-part="scroll-area-corner"
+    data-slot="scroll-area-corner"
+  />
 </ScrollAreaPrimitive.Root>
 
 <style>
@@ -180,6 +212,37 @@
           [data-orientation="vertical"]
         ) {
         border-left-color: #0000;
+      }
+
+      /*
+       * Bits UI hides the native scrollbar with ::-webkit-scrollbar
+       * { display:none!important }. WebKit cannot reliably reverse that mode
+       * and some WKWebView releases stop scrolling the viewport altogether.
+       * A host marker or the renderer user agent selects the native strategy;
+       * move overflow ownership to this outer element so the native scroller
+       * never receives Bits' hidden scrollbar rule. Other engines retain the
+       * styled Bits UI scrollbar.
+       */
+      [data-ui-component="scroll-area"][data-ui-part="scroll-area"][data-scroll-strategy="native"][data-orientation="vertical"] {
+        overflow-x: hidden !important;
+        overflow-y: auto !important;
+      }
+      [data-ui-component="scroll-area"][data-ui-part="scroll-area"][data-scroll-strategy="native"][data-orientation="horizontal"] {
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+      }
+      [data-ui-component="scroll-area"][data-ui-part="scroll-area"][data-scroll-strategy="native"][data-orientation="both"] {
+        overflow: auto !important;
+      }
+      [data-ui-component="scroll-area"][data-ui-part="scroll-area"][data-scroll-strategy="native"]
+        > [data-ui-part="scroll-area-viewport"] {
+        overflow: visible !important;
+      }
+      [data-ui-component="scroll-area"][data-ui-part="scroll-area"][data-scroll-strategy="native"]
+        > [data-ui-part="scroll-area-scrollbar"],
+      [data-ui-component="scroll-area"][data-ui-part="scroll-area"][data-scroll-strategy="native"]
+        > [data-ui-part="scroll-area-corner"] {
+        display: none !important;
       }
     }
     @property --tw-animation-delay {

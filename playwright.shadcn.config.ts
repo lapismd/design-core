@@ -23,7 +23,13 @@ export default defineConfig({
   projects: [
     {
       name: "chromium",
+      testIgnore: /scroll-area-webkit\.spec\.ts/,
       use: { ...devices["Desktop Chrome"] },
+    },
+    {
+      name: "webkit",
+      testMatch: /scroll-area-webkit\.spec\.ts/,
+      use: { ...devices["Desktop Safari"] },
     },
   ],
   webServer: {

@@ -2,6 +2,7 @@
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect } from "storybook/test";
   import * as ScrollArea from "./index.js";
+  import ScrollAreaScrollableList from "./ScrollAreaScrollableList.svelte";
 
   const { Story } = defineMeta({
     title: "Shadcn/Layout/Scroll Area",
@@ -22,6 +23,17 @@
   name="Scrollable list"
   play={async ({ canvas }) => {
     await expect(canvas.getByRole("link", { name: "Item 1" })).toBeVisible();
+    const root = canvas.getByLabelText("Catalog items");
+    const primitiveViewport = root.querySelector<HTMLElement>(
+      '[data-ui-part="scroll-area-viewport"]',
+    );
+    await expect(primitiveViewport).toBeInTheDocument();
+    const activeScrollOwner =
+      root.dataset.scrollStrategy === "native" ? root : primitiveViewport;
+    await expect(activeScrollOwner).toHaveAttribute(
+      "data-scroll-area-bound-viewport",
+      "true",
+    );
   }}
   tags={["visual-approved"]}
   parameters={{
@@ -37,17 +49,6 @@
   }}
 >
   {#snippet template()}
-    <ScrollArea.Root
-      class="h-40 w-56 rounded-md border"
-      aria-label="Catalog items"
-    >
-      <ul class="flex flex-col gap-2 p-3 text-sm">
-        {#each items as item (item)}
-          <li>
-            <a href={`#${item}`}>{item}</a>
-          </li>
-        {/each}
-      </ul>
-    </ScrollArea.Root>
+    <ScrollAreaScrollableList {items} />
   {/snippet}
 </Story>

@@ -32,7 +32,7 @@ Repository tools keep source generation, discovery, documentation, and validatio
 
 ## DC-TOOL-003 — Validation commands
 
-**Requirement.** The Validation commands family MUST provide focused formatting, type, unit, Storybook, source-style, browser, build, and visual-comparison commands.
+**Requirement.** The Validation commands family MUST provide focused formatting, type, unit, Storybook, source-style, browser, build, and visual-comparison commands, including narrowly filtered engine projects when a compatibility boundary requires real browser acceptance.
 
 ### Acceptance details
 
