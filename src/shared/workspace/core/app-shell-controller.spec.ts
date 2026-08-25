@@ -221,8 +221,13 @@ describe("AppShellController", () => {
     await app.dispose();
   });
 
-  it("opens bottom-panel leaves and exposes the built-in toggle command", async () => {
+  it("opens workspace docks through idempotent built-in commands", async () => {
     const app = new AppShellController();
+    const mainLeaf = app.workspace.openLeaf(
+      "empty",
+      { source: "test" },
+      { title: "Document" },
+    );
     const leaf = app.workspace.openInBottomPanel(
       "empty",
       { source: "test" },
@@ -247,6 +252,42 @@ describe("AppShellController", () => {
       ),
     ).toBe(false);
     expect(app.workspace.bottomPanelAlignment).toBe("left");
+
+    for (const [id, title, icon] of [
+      ["app-shell:open-left-sidebar", "Open Left Sidebar", "panel-left"],
+      ["app-shell:open-right-sidebar", "Open Right Sidebar", "panel-right"],
+      ["app-shell:open-bottom-panel", "Open Bottom Sidebar", "panel-bottom"],
+    ] as const) {
+      expect(app.commands.getCommand(id)).toMatchObject({ title, icon });
+    }
+
+    app.renderer.setSidebarOpen("left", false);
+    app.renderer.setSidebarOpen("right", false);
+    app.workspace.setBottomPanelOpen(false);
+    expect(app.workspace.enterFocusMode(mainLeaf)).toBe(true);
+    expect(await app.commands.execute("app-shell:open-left-sidebar")).toBe(
+      true,
+    );
+    expect(app.renderer.layout.left.open).toBe(true);
+    expect(app.workspace.focusMode).toBeNull();
+    expect(await app.commands.execute("app-shell:open-left-sidebar")).toBe(
+      true,
+    );
+    expect(app.renderer.layout.left.open).toBe(true);
+
+    expect(app.workspace.enterFocusMode(mainLeaf)).toBe(true);
+    expect(await app.commands.execute("app-shell:open-right-sidebar")).toBe(
+      true,
+    );
+    expect(app.renderer.layout.right.open).toBe(true);
+    expect(app.workspace.focusMode).toBeNull();
+
+    expect(app.workspace.enterFocusMode(mainLeaf)).toBe(true);
+    expect(await app.commands.execute("app-shell:open-bottom-panel")).toBe(
+      true,
+    );
+    expect(app.renderer.layout.bottom.open).toBe(true);
+    expect(app.workspace.focusMode).toBeNull();
     expect(await app.commands.execute("app-shell:toggle-bottom-panel")).toBe(
       true,
     );
@@ -264,6 +305,8 @@ describe("AppShellController", () => {
       "core-plugins",
     ]);
     expect(app.appearance.colorScheme).toBe("system");
+    expect(app.appearance.showTabTitleBar).toBe(true);
+    expect(app.renderer.showTabTitleBar).toBe(true);
     expect(app.appearance.scrollbarVisibility).toBe("scroll");
     expect(app.mobile.requestedDisplayMode).toBe("auto");
     expect(app.workspace.bottomPanelAlignment).toBe("center");
@@ -296,6 +339,11 @@ describe("AppShellController", () => {
     ).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
+          id: APP_SHELL_SETTING_IDS.appearanceTabTitleBar,
+          type: "boolean",
+          default: true,
+        }),
+        expect.objectContaining({
           id: APP_SHELL_SETTING_IDS.appearanceScrollbarVisibility,
           type: "enum",
           default: "scroll",
@@ -319,6 +367,10 @@ describe("AppShellController", () => {
       ),
     ).toBe(true);
     expect(app.appearance.scrollbarVisibility).toBe("hover");
+    expect(
+      app.configuration.set(APP_SHELL_SETTING_IDS.appearanceTabTitleBar, false),
+    ).toBe(true);
+    expect(app.appearance.showTabTitleBar).toBe(false);
     expect(
       app.configuration.set(APP_SHELL_SETTING_IDS.mobileMode, "always"),
     ).toBe(true);
@@ -432,6 +484,7 @@ describe("AppShellController", () => {
             version: 1,
             values: {
               [APP_SHELL_SETTING_IDS.appearanceTheme]: "dark",
+              [APP_SHELL_SETTING_IDS.appearanceTabTitleBar]: false,
               [APP_SHELL_SETTING_IDS.appearanceScrollbarVisibility]: "always",
               [APP_SHELL_SETTING_IDS.mobileMode]: "always",
               [APP_SHELL_SETTING_IDS.mobileDefaultPage]: "tabs",
@@ -446,6 +499,7 @@ describe("AppShellController", () => {
     await app.start();
 
     expect(app.appearance.theme).toBe("dark");
+    expect(app.appearance.showTabTitleBar).toBe(false);
     expect(app.appearance.scrollbarVisibility).toBe("always");
     expect(app.mobile.requestedDisplayMode).toBe("mobile");
     expect(app.mobile.defaultPage).toBe("tabs");

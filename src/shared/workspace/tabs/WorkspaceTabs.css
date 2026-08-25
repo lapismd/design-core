@@ -46,6 +46,12 @@
   background: var(--ui-workspace-tab-container-background);
 }
 
+.ui-workspace-tabs__header-main:has(> .ui-workspace-tabs__left-toggle) {
+  padding-inline-start: calc(
+    8px + var(--ui-workspace-window-controls-inline-start, 0px)
+  );
+}
+
 .ui-workspace-tabs__left-toggle,
 .ui-workspace-tabs__right-toggle,
 .ui-workspace-tabs__overflow {
@@ -195,14 +201,14 @@
   padding: 0;
   color: inherit;
   background: transparent;
-  cursor: grab;
+  cursor: pointer;
   font: inherit;
   font-size: 0.875rem;
   text-align: left;
 }
 
 .ui-workspace-tab__trigger:active {
-  cursor: grabbing;
+  cursor: pointer;
 }
 
 .ui-workspace-tab__button {

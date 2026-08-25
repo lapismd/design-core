@@ -32,6 +32,12 @@
   background: var(--ui-workspace-tab-container-background);
 }
 
+.ui-workspace-stacked-tabs__chrome:has(
+    > [data-workspace-sidebar-toggle="left"]
+  ) {
+  padding-inline-start: var(--ui-workspace-window-controls-inline-start, 0px);
+}
+
 .ui-workspace-stacked-tabs__chrome-main {
   display: flex;
   min-width: 0;
@@ -158,14 +164,14 @@
   padding: 0;
   color: inherit;
   background: transparent;
-  cursor: grab;
+  cursor: pointer;
   font: inherit;
   text-align: start;
   writing-mode: inherit;
 }
 
 .ui-workspace-stacked-tabs__tab-trigger:active {
-  cursor: grabbing;
+  cursor: pointer;
 }
 
 .ui-workspace-stacked-tabs__tab-icon,

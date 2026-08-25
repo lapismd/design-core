@@ -196,6 +196,17 @@
     await expect(
       parseFloat(getComputedStyle(rightToggle!).borderBottomWidth),
     ).toBeCloseTo(1);
+    const tabsRoot = canvasElement.querySelector<HTMLElement>(
+      '[data-ui-component="workspace-tabs"]',
+    )!;
+    tabsRoot.style.setProperty(
+      "--ui-workspace-window-controls-inline-start",
+      "40px",
+    );
+    await expect(getComputedStyle(headerMain!).paddingLeft).toBe("48px");
+    tabsRoot.style.removeProperty(
+      "--ui-workspace-window-controls-inline-start",
+    );
 
     const addTab = canvas.getByRole("button", { name: "New tab" });
     controller.activateNewTabs = false;
@@ -221,6 +232,7 @@
     const tab = canvas.getByRole("button", {
       name: /^Today\.md$/,
     });
+    await expect(getComputedStyle(tab).cursor).toBe("pointer");
     await userEvent.click(tab);
     await expect(tab).toHaveAttribute("aria-pressed", "true");
     await userEvent.click(

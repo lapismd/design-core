@@ -300,6 +300,36 @@ export class AppShellController {
         leaf ? this.workspace.enterFocusMode(leaf) : false,
     });
     this.commands.register({
+      id: "app-shell:open-left-sidebar",
+      title: "Open Left Sidebar",
+      category: "Workspace",
+      icon: "panel-left",
+      callback: () => {
+        this.workspace.exitFocusMode();
+        this.renderer.setSidebarOpen("left", true);
+      },
+    });
+    this.commands.register({
+      id: "app-shell:open-right-sidebar",
+      title: "Open Right Sidebar",
+      category: "Workspace",
+      icon: "panel-right",
+      callback: () => {
+        this.workspace.exitFocusMode();
+        this.renderer.setSidebarOpen("right", true);
+      },
+    });
+    this.commands.register({
+      id: "app-shell:open-bottom-panel",
+      title: "Open Bottom Sidebar",
+      category: "Workspace",
+      icon: "panel-bottom",
+      callback: () => {
+        this.workspace.exitFocusMode();
+        this.workspace.setBottomPanelOpen(true);
+      },
+    });
+    this.commands.register({
       id: "app-shell:toggle-bottom-panel",
       title: "View: Toggle bottom panel",
       category: "Workspace",

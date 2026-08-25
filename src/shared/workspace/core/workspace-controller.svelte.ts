@@ -134,7 +134,7 @@ export class WorkspaceShellController {
   displayMode = $state<WorkspaceDisplayMode>("desktop");
   focusMode = $state<WorkspaceFocusModeState | null>(null);
   // Match appearance-setting defaults until AppShell syncs configuration.
-  showTabTitleBar = $state(false);
+  showTabTitleBar = $state(true);
   showInlineTitle = $state(false);
   activateNewTabs = $state(true);
   layoutReady = $state(false);

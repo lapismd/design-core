@@ -102,7 +102,7 @@ export class AppShellAppearanceSettings {
     return getValue(
       this.configuration,
       APP_SHELL_SETTING_IDS.appearanceTabTitleBar,
-      false,
+      true,
     );
   }
 
@@ -425,7 +425,7 @@ export function createBuiltInSettingsSections(): WorkspaceSettingsSection[] {
               type: "boolean",
               title: "Show tab title bar",
               description: "Display the header at the top of every tab.",
-              default: false,
+              default: true,
             },
             {
               id: APP_SHELL_SETTING_IDS.appearanceScrollbarVisibility,

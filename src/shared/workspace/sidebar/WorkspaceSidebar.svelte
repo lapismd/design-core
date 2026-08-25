@@ -282,7 +282,11 @@
           {/each}
         </div>
 
-        <div class="ui-workspace-sidebar__tab-spacer"></div>
+        <div
+          class="ui-workspace-sidebar__tab-spacer"
+          data-ui-part="sidebar-tab-spacer"
+          data-desktop-drag-region
+        ></div>
 
         <WorkspaceSidebarToggle
           {side}

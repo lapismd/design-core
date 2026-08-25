@@ -41,6 +41,10 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 | View Header                    | `@lapismd/design-core/workspace/view-header`     | DC-WS-032   |
 | Managed plugins                | `@lapismd/design-core/workspace`                 | DC-WS-039   |
 | Desktop drag                   | Workspace chrome                                 | DC-WS-042   |
+| Workspace dock commands        | `@lapismd/design-core/workspace`                 | DC-WS-060   |
+| Tab title-bar default          | `@lapismd/design-core/workspace/settings`        | DC-WS-061   |
+| Window-controls safe area      | Workspace chrome                                 | DC-WS-062   |
+| Workspace tab cursors          | Workspace tabs                                   | DC-WS-063   |
 
 ## DC-WS-008 — About Dialog
 
@@ -138,6 +142,48 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 - The built-in ribbon and empty-workspace actions MUST open All.
 - A consumer call to `openPalette()` without a tab MUST continue to restore the remembered tab.
 - Go-to-file and other explicitly targeted callers MAY continue to open a provider tab.
+
+## DC-WS-060 — Workspace dock commands
+
+**Requirement.** The App Shell MUST register idempotent commands that open the left sidebar, right sidebar, and bottom panel with matching panel icons. Each command MUST exit focus mode before revealing its dock.
+
+### Acceptance details
+
+- Command ids MUST be `app-shell:open-left-sidebar`, `app-shell:open-right-sidebar`, and `app-shell:open-bottom-panel`.
+- Titles MUST be `Open Left Sidebar`, `Open Right Sidebar`, and `Open Bottom Sidebar`.
+- Icons MUST be `panel-left`, `panel-right`, and `panel-bottom` respectively.
+- Re-running an open command MUST leave the target dock open.
+
+## DC-WS-061 — Tab title-bar default
+
+**Requirement.** `appearence.interface.showTabTitleBar` MUST default to `true` across the registered setting, appearance fallback, and unsynchronized workspace renderer. An explicitly persisted `false` MUST continue to hide tab title bars.
+
+### Acceptance details
+
+- The Appearance Settings field MUST expose a Boolean default of `true`.
+- `AppShellAppearanceSettings.showTabTitleBar` MUST fall back to `true`.
+- `WorkspaceShellController.showTabTitleBar` MUST initialize to `true` before App Shell synchronization.
+
+## DC-WS-062 — Window-controls safe area
+
+**Requirement.** Leading top and stacked main-pane chrome MUST consume the host-supplied `--ui-workspace-window-controls-inline-start` inset when the left-sidebar reopen control is present.
+
+### Acceptance details
+
+- The token MUST default to `0px` when a host does not supply it.
+- Top tabs MUST add the inset to their existing header-main start padding.
+- Stacked tabs MUST apply the inset to the complete leading chrome row.
+- Chrome without a left-sidebar reopen control MUST remain unshifted.
+
+## DC-WS-063 — Workspace tab cursors
+
+**Requirement.** Selectable top and stacked workspace tab triggers MUST expose the `pointer` cursor while preserving their existing pointer and HTML drag behavior.
+
+### Acceptance details
+
+- Top-tab triggers MUST compute `cursor: pointer` at rest and while active.
+- Stacked-tab triggers MUST compute `cursor: pointer` at rest and while active.
+- Cursor presentation MUST NOT remove or replace either drag input path.
 
 ## DC-WS-056 — Settings dialog reveal
 
@@ -401,10 +447,10 @@ sidebar destinations marked with the `move` icon.
 
 ## DC-WS-042 — Desktop window-drag regions
 
-**Requirement.** Non-interactive top-tab, stacked-tab, view-header, and startup chrome MUST set `data-desktop-drag-region`, and shared CSS MUST map that attribute to native `app-region` drag surfaces.
+**Requirement.** Non-interactive top-tab, stacked-tab, sidebar-spacer, view-header, and startup chrome MUST set `data-desktop-drag-region`, and shared CSS MUST map that attribute to native `app-region` drag surfaces.
 
 ### Acceptance details
 
 - Shared CSS MUST set `app-region` and `-webkit-app-region: drag` on `[data-desktop-drag-region]` except when the value is `false`.
 - Interactive descendants MUST set `data-desktop-drag-region="false"` so they compute `no-drag`.
-- Sidebar tab rows MUST remain unmarked so native window drag does not capture pane-to-pane tab moves.
+- Sidebar tab rows MUST remain unmarked while the unused tab-strip spacer MUST be a drag region, so native window drag does not capture pane-to-pane tab moves.

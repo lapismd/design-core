@@ -104,6 +104,21 @@
   const insertionController = createController();
   const insertionDrag = new WorkspaceDragState(insertionController);
   const emptyController = createController(false);
+  const dragRegionController = createController();
+  const dragRegionLeftTab = createWorkspaceTab({
+    id: "drag-region-left-files",
+    title: "Left files",
+    icon: "files",
+    view: { type: "example" },
+  });
+  dragRegionController.layout.left = {
+    open: true,
+    size: 320,
+    root: createWorkspaceTabs([dragRegionLeftTab], {
+      id: "drag-region-left-pane",
+      activeItemId: dragRegionLeftTab.id,
+    }),
+  };
 </script>
 
 <Story
@@ -120,6 +135,18 @@
     await expect(sidebar).not.toBeNull();
     await expect(directViewHost).not.toBeNull();
     await expect(directDropTarget).not.toBeNull();
+    const tabSpacer = canvasElement.querySelector<HTMLElement>(
+      '[data-ui-part="sidebar-tab-spacer"]',
+    );
+    const filesTab = canvas.getByRole("tab", { name: "Files" });
+    await expect(tabSpacer).not.toBeNull();
+    await expect(tabSpacer).toHaveAttribute("data-desktop-drag-region", "");
+    await expect(filesTab).not.toHaveAttribute("data-desktop-drag-region");
+    await expect(
+      getComputedStyle(tabSpacer!)
+        .getPropertyValue("-webkit-app-region")
+        .trim(),
+    ).toBe("drag");
     const resizeRail = canvas.getByRole("button", {
       name: "Resize right sidebar",
     });
@@ -192,6 +219,45 @@
   {#snippet template()}
     <div class="ui-workspace-sidebar-story-frame">
       <WorkspaceSidebar {controller} side="right" />
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Left and right desktop drag spacers"
+  tags={["visual-pending"]}
+  play={async ({ canvasElement }) => {
+    const sidebars = canvasElement.querySelectorAll<HTMLElement>(
+      '[data-ui-component="workspace-sidebar"]',
+    );
+    const spacers = canvasElement.querySelectorAll<HTMLElement>(
+      '[data-ui-part="sidebar-tab-spacer"]',
+    );
+    const tabs = canvasElement.querySelectorAll<HTMLElement>(
+      '[data-ui-part="sidebar-tab"]',
+    );
+
+    await expect(sidebars).toHaveLength(2);
+    await expect(spacers).toHaveLength(2);
+    for (const spacer of spacers) {
+      await expect(spacer).toHaveAttribute("data-desktop-drag-region", "");
+      await expect(
+        getComputedStyle(spacer).getPropertyValue("-webkit-app-region").trim(),
+      ).toBe("drag");
+    }
+    for (const tab of tabs) {
+      await expect(tab).not.toHaveAttribute("data-desktop-drag-region");
+    }
+  }}
+>
+  {#snippet template()}
+    <div class="ui-workspace-sidebar-story-pair">
+      <div class="ui-workspace-sidebar-story-frame">
+        <WorkspaceSidebar controller={dragRegionController} side="left" />
+      </div>
+      <div class="ui-workspace-sidebar-story-frame">
+        <WorkspaceSidebar controller={dragRegionController} side="right" />
+      </div>
     </div>
   {/snippet}
 </Story>

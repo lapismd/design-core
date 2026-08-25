@@ -136,8 +136,20 @@
     await expect(
       getComputedStyle(overflow).getPropertyValue("-webkit-app-region").trim(),
     ).toBe("no-drag");
+    const stackedRoot = canvasElement.querySelector<HTMLElement>(
+      '[data-ui-component="workspace-stacked-tabs"]',
+    )!;
+    stackedRoot.style.setProperty(
+      "--ui-workspace-window-controls-inline-start",
+      "40px",
+    );
+    await expect(getComputedStyle(chrome!).paddingLeft).toBe("40px");
+    stackedRoot.style.removeProperty(
+      "--ui-workspace-window-controls-inline-start",
+    );
 
     const reference = canvas.getByRole("button", { name: "Reference" });
+    await expect(getComputedStyle(reference).cursor).toBe("pointer");
     await userEvent.click(reference);
     await expect(reference).toHaveAttribute("aria-pressed", "true");
     await waitFor(() => {
