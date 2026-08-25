@@ -1,6 +1,5 @@
 <script lang="ts">
   import { ScrollArea as ScrollAreaPrimitive } from "bits-ui";
-  import { onMount } from "svelte";
   import { Scrollbar } from "./index.js";
   import { type WithoutChild } from "../../../lib/utils.js";
   import { omitDataUiIdentity } from "../../../lib/data-ui-host.js";
@@ -26,6 +25,8 @@
     orientation = "vertical",
     scrollbarXClasses = "",
     scrollbarYClasses = "",
+    type = "hover",
+    scrollHideDelay = 600,
     children,
     ...restProps
   }: WithoutChild<ScrollAreaPrimitive.RootProps> & {
@@ -35,21 +36,19 @@
     viewportRef?: HTMLElement | null;
   } = $props();
 
-  let primitiveViewportRef = $state<HTMLElement | null>(null);
-  let nativeWebKitScrolling = $state(false);
-
-  onMount(() => {
-    nativeWebKitScrolling = usesNativeWebKitScrolling();
-  });
+  let activeViewportRef = $state<HTMLElement | null>(null);
+  const nativeWebKitScrolling = usesNativeWebKitScrolling();
 
   $effect(() => {
-    viewportRef = nativeWebKitScrolling ? ref : primitiveViewportRef;
+    viewportRef = activeViewportRef;
   });
 </script>
 
 <ScrollAreaPrimitive.Root
   bind:ref
   {...omitDataUiIdentity(restProps)}
+  {type}
+  {scrollHideDelay}
   data-ui-component="scroll-area"
   data-ui-part="scroll-area"
   data-slot="scroll-area"
@@ -57,26 +56,41 @@
   data-scroll-strategy={nativeWebKitScrolling ? "native" : "styled"}
   class={className}
 >
-  <ScrollAreaPrimitive.Viewport
-    bind:ref={primitiveViewportRef}
-    tabindex={0}
-    data-ui-component="scroll-area"
-    data-ui-part="scroll-area-viewport"
-    data-slot="scroll-area-viewport"
-  >
-    {@render children?.()}
-  </ScrollAreaPrimitive.Viewport>
-  {#if orientation === "vertical" || orientation === "both"}
-    <Scrollbar orientation="vertical" class={scrollbarYClasses} />
+  {#if nativeWebKitScrolling}
+    <!-- svelte-ignore a11y_no_noninteractive_tabindex (keyboard access for a named scrollable region) -->
+    <div
+      bind:this={activeViewportRef}
+      tabindex={0}
+      role="region"
+      aria-label="Scrollable content"
+      data-ui-component="scroll-area"
+      data-ui-part="scroll-area-viewport"
+      data-slot="scroll-area-viewport"
+    >
+      {@render children?.()}
+    </div>
+  {:else}
+    <ScrollAreaPrimitive.Viewport
+      bind:ref={activeViewportRef}
+      tabindex={0}
+      data-ui-component="scroll-area"
+      data-ui-part="scroll-area-viewport"
+      data-slot="scroll-area-viewport"
+    >
+      {@render children?.()}
+    </ScrollAreaPrimitive.Viewport>
+    {#if orientation === "vertical" || orientation === "both"}
+      <Scrollbar orientation="vertical" class={scrollbarYClasses} />
+    {/if}
+    {#if orientation === "horizontal" || orientation === "both"}
+      <Scrollbar orientation="horizontal" class={scrollbarXClasses} />
+    {/if}
+    <ScrollAreaPrimitive.Corner
+      data-ui-component="scroll-area"
+      data-ui-part="scroll-area-corner"
+      data-slot="scroll-area-corner"
+    />
   {/if}
-  {#if orientation === "horizontal" || orientation === "both"}
-    <Scrollbar orientation="horizontal" class={scrollbarXClasses} />
-  {/if}
-  <ScrollAreaPrimitive.Corner
-    data-ui-component="scroll-area"
-    data-ui-part="scroll-area-corner"
-    data-slot="scroll-area-corner"
-  />
 </ScrollAreaPrimitive.Root>
 
 <style>
@@ -218,31 +232,27 @@
        * Bits UI hides the native scrollbar with ::-webkit-scrollbar
        * { display:none!important }. WebKit cannot reliably reverse that mode
        * and some WKWebView releases stop scrolling the viewport altogether.
-       * A host marker or the renderer user agent selects the native strategy;
-       * move overflow ownership to this outer element so the native scroller
-       * never receives Bits' hidden scrollbar rule. Other engines retain the
-       * styled Bits UI scrollbar.
+       * A host marker or the renderer user agent selects a plain native
+       * viewport which never receives Bits' data-scroll-area-viewport
+       * attribute or its hidden-scrollbar rule. Other engines retain the
+       * styled Bits UI viewport and scrollbar.
        */
-      [data-ui-component="scroll-area"][data-ui-part="scroll-area"][data-scroll-strategy="native"][data-orientation="vertical"] {
+      [data-ui-component="scroll-area"][data-ui-part="scroll-area"][data-scroll-strategy="native"] {
+        overflow: hidden !important;
+      }
+      [data-ui-component="scroll-area"][data-ui-part="scroll-area"][data-scroll-strategy="native"][data-orientation="vertical"]
+        > [data-ui-part="scroll-area-viewport"] {
         overflow-x: hidden !important;
         overflow-y: auto !important;
       }
-      [data-ui-component="scroll-area"][data-ui-part="scroll-area"][data-scroll-strategy="native"][data-orientation="horizontal"] {
+      [data-ui-component="scroll-area"][data-ui-part="scroll-area"][data-scroll-strategy="native"][data-orientation="horizontal"]
+        > [data-ui-part="scroll-area-viewport"] {
         overflow-x: auto !important;
         overflow-y: hidden !important;
       }
-      [data-ui-component="scroll-area"][data-ui-part="scroll-area"][data-scroll-strategy="native"][data-orientation="both"] {
-        overflow: auto !important;
-      }
-      [data-ui-component="scroll-area"][data-ui-part="scroll-area"][data-scroll-strategy="native"]
+      [data-ui-component="scroll-area"][data-ui-part="scroll-area"][data-scroll-strategy="native"][data-orientation="both"]
         > [data-ui-part="scroll-area-viewport"] {
-        overflow: visible !important;
-      }
-      [data-ui-component="scroll-area"][data-ui-part="scroll-area"][data-scroll-strategy="native"]
-        > [data-ui-part="scroll-area-scrollbar"],
-      [data-ui-component="scroll-area"][data-ui-part="scroll-area"][data-scroll-strategy="native"]
-        > [data-ui-part="scroll-area-corner"] {
-        display: none !important;
+        overflow: auto !important;
       }
     }
     @property --tw-animation-delay {

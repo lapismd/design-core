@@ -28,9 +28,7 @@
       '[data-ui-part="scroll-area-viewport"]',
     );
     await expect(primitiveViewport).toBeInTheDocument();
-    const activeScrollOwner =
-      root.dataset.scrollStrategy === "native" ? root : primitiveViewport;
-    await expect(activeScrollOwner).toHaveAttribute(
+    await expect(primitiveViewport).toHaveAttribute(
       "data-scroll-area-bound-viewport",
       "true",
     );

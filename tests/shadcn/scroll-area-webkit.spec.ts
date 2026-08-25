@@ -11,26 +11,27 @@ async function openWebKitScrollAreaStory(page: Page): Promise<void> {
 }
 
 test.describe("Scroll Area WebKit fallback", () => {
-  test("uses the native root for wheel and programmatic scrolling", async ({
+  test("uses a plain native viewport for wheel and programmatic scrolling", async ({
     page,
   }) => {
     await openWebKitScrollAreaStory(page);
 
     const root = page.getByLabel("Catalog items");
-    const primitiveViewport = root.locator(
+    const nativeViewport = root.locator(
       '[data-ui-part="scroll-area-viewport"]',
     );
     const scrollbar = root.locator('[data-ui-part="scroll-area-scrollbar"]');
 
     await expect(root).toHaveAttribute("data-scroll-strategy", "native");
-    await expect(root).toHaveAttribute(
+    await expect(nativeViewport).toHaveAttribute(
       "data-scroll-area-bound-viewport",
       "true",
     );
-    await expect(primitiveViewport).not.toHaveAttribute(
-      "data-scroll-area-bound-viewport",
-      "true",
+    await expect(nativeViewport).not.toHaveAttribute(
+      "data-scroll-area-viewport",
+      "",
     );
+    await expect(scrollbar).toHaveCount(0);
 
     const layout = await root.evaluate((element) => {
       const viewport = element.querySelector<HTMLElement>(
@@ -39,36 +40,34 @@ test.describe("Scroll Area WebKit fallback", () => {
       if (!viewport) throw new Error("Scroll Area viewport is missing");
       return {
         clientHeight: element.clientHeight,
-        scrollHeight: element.scrollHeight,
+        rootScrollHeight: element.scrollHeight,
+        viewportClientHeight: viewport.clientHeight,
+        viewportScrollHeight: viewport.scrollHeight,
         rootOverflowY: getComputedStyle(element).overflowY,
         viewportOverflowY: getComputedStyle(viewport).overflowY,
       };
     });
-    expect(layout.scrollHeight).toBeGreaterThan(layout.clientHeight);
-    expect(layout.rootOverflowY).toBe("auto");
-    expect(layout.viewportOverflowY).toBe("visible");
-    expect(
-      await scrollbar.evaluateAll((elements) =>
-        elements.every(
-          (element) => getComputedStyle(element).display === "none",
-        ),
-      ),
-    ).toBe(true);
+    expect(layout.rootScrollHeight).toBe(layout.clientHeight);
+    expect(layout.viewportScrollHeight).toBeGreaterThan(
+      layout.viewportClientHeight,
+    );
+    expect(layout.rootOverflowY).toBe("hidden");
+    expect(layout.viewportOverflowY).toBe("auto");
 
-    await root.evaluate((element) => {
+    await nativeViewport.evaluate((element) => {
       element.scrollTop = 48;
     });
     await expect
-      .poll(() => root.evaluate((element) => element.scrollTop))
+      .poll(() => nativeViewport.evaluate((element) => element.scrollTop))
       .toBe(48);
 
-    await root.evaluate((element) => {
+    await nativeViewport.evaluate((element) => {
       element.scrollTop = 0;
     });
-    await root.hover();
+    await nativeViewport.hover();
     await page.mouse.wheel(0, 120);
     await expect
-      .poll(() => root.evaluate((element) => element.scrollTop))
+      .poll(() => nativeViewport.evaluate((element) => element.scrollTop))
       .toBeGreaterThan(0);
   });
 });
