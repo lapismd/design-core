@@ -163,40 +163,48 @@
   }
 
   $effect(() => {
-    if (!root) return;
+    const mountedRoot = root;
+    if (!mountedRoot) return;
     const handlePointerEnter = () => {
       hovered = true;
     };
     const handlePointerLeave = () => {
       hovered = false;
     };
-    root.addEventListener("pointerenter", handlePointerEnter);
-    root.addEventListener("pointerleave", handlePointerLeave);
+    mountedRoot.addEventListener("pointerenter", handlePointerEnter);
+    mountedRoot.addEventListener("pointerleave", handlePointerLeave);
     return () => {
-      root.removeEventListener("pointerenter", handlePointerEnter);
-      root.removeEventListener("pointerleave", handlePointerLeave);
+      mountedRoot.removeEventListener("pointerenter", handlePointerEnter);
+      mountedRoot.removeEventListener("pointerleave", handlePointerLeave);
     };
   });
 
   $effect(() => {
-    if (!viewport || !track) return;
+    const mountedViewport = viewport;
+    const mountedTrack = track;
+    if (!mountedViewport || !mountedTrack) return;
     const handleScroll = () => {
       scheduleMeasurement();
       scheduleScrollHide();
     };
     const observeContent = () => {
       resizeObserver.disconnect();
-      resizeObserver.observe(viewport);
-      for (const child of viewport.children) resizeObserver.observe(child);
+      resizeObserver.observe(mountedViewport);
+      for (const child of mountedViewport.children) {
+        resizeObserver.observe(child);
+      }
       scheduleMeasurement();
     };
     const resizeObserver = new ResizeObserver(scheduleMeasurement);
     const mutationObserver = new MutationObserver(observeContent);
-    viewport.addEventListener("scroll", handleScroll, { passive: true });
+    mountedViewport.addEventListener("scroll", handleScroll, { passive: true });
     observeContent();
-    mutationObserver.observe(viewport, { childList: true, subtree: true });
+    mutationObserver.observe(mountedViewport, {
+      childList: true,
+      subtree: true,
+    });
     return () => {
-      viewport.removeEventListener("scroll", handleScroll);
+      mountedViewport.removeEventListener("scroll", handleScroll);
       resizeObserver.disconnect();
       mutationObserver.disconnect();
     };
