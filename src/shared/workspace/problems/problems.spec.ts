@@ -28,6 +28,7 @@ const alpha: WorkspaceDiagnosticResource = {
 const beta: WorkspaceDiagnosticResource = {
   uri: "memory:///beta.md",
   label: "beta.md",
+  detail: "Notes/Nested/beta.md",
 };
 
 const error: WorkspaceDiagnostic = {
@@ -218,7 +219,7 @@ describe("WorkspaceProblemsController", () => {
       JSON.stringify(
         [
           {
-            resource: "beta.md",
+            resource: "Notes/Nested/beta.md",
             owner: "language",
             severity: 8,
             message: "Earlier error",
@@ -255,13 +256,13 @@ describe("WorkspaceProblemsController", () => {
     const groupPayload = writeText.mock.calls.at(-1)?.[1];
     expect(JSON.parse(groupPayload as string)).toEqual([
       expect.objectContaining({
-        resource: "beta.md",
+        resource: "Notes/Nested/beta.md",
         owner: "language",
         message: "Earlier error",
         severity: 8,
       }),
       expect.objectContaining({
-        resource: "beta.md",
+        resource: "Notes/Nested/beta.md",
         owner: "language",
         message: "Later warning",
         severity: 4,

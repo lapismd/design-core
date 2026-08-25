@@ -65,8 +65,8 @@ Workspace panels provide generic domain-neutral views driven by consumer data an
 
 - Copy Message MUST copy the diagnostic message, or every grouped message joined by newlines.
 - Copy Problem MUST copy a JSON array of serializable objects with resource, owner, code, numeric severity, message, source, and one-based range fields when present.
-- Tree group rows MUST offer the same two copy actions for all grouped entries.
-- Unit tests MUST cover item and group copy payloads.
+- Resource serialization MUST use the supplied full resource detail when available, otherwise its opaque URI, and MUST NOT collapse a path-bearing resource to its display label.
+- Unit tests MUST cover item and tree-group copy payloads with the same two copy actions.
 
 ## DC-WS-047 — Problems opener
 

@@ -301,7 +301,7 @@ export function serializeProblem(
 ): Record<string, unknown> {
   const range = entry.diagnostic.range;
   const problem: Record<string, unknown> = {
-    resource: entry.resource?.label || entry.resource?.uri || "Workspace",
+    resource: serializedProblemResource(entry.resource),
     owner: entry.collectionId,
     severity: problemSeverityNumber[entry.diagnostic.severity],
     message: entry.diagnostic.message,
@@ -316,6 +316,13 @@ export function serializeProblem(
     problem.endColumn = range.end.character + 1;
   }
   return problem;
+}
+
+function serializedProblemResource(
+  resource: WorkspaceDiagnosticResource | null,
+): string {
+  if (!resource) return "Workspace";
+  return resource.detail?.trim() || resource.uri;
 }
 
 function serializeProblemCode(
