@@ -60,6 +60,7 @@
   play={async ({ canvas }) => {
     const separator = canvas.getByRole("separator");
     await expect(separator).toHaveAttribute("aria-orientation", "vertical");
+    await expect(getComputedStyle(separator).cursor).toBe("col-resize");
     await expect(canvas.getByText("Left pane")).toBeVisible();
     await expect(canvas.getByText("Right pane")).toBeVisible();
   }}

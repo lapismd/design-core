@@ -115,6 +115,7 @@
     await expect(getComputedStyle(panels[1]).borderBottomWidth).toBe("0px");
     await expect(getComputedStyle(panels[2]).borderBottomWidth).toBe("1px");
     await expect(getComputedStyle(resizer!, "::before").height).toBe("1px");
+    await expect(getComputedStyle(resizer!).cursor).toBe("row-resize");
 
     const expand = canvas.getByRole("button", { name: "Expand Links" });
     await expect(expand).toHaveAttribute("aria-expanded", "false");

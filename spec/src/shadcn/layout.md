@@ -49,6 +49,7 @@ Layout primitives establish reusable spatial, scrolling, and responsive composit
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/shadcn/resizable`.
+- Pointer handles MUST expose column or row resize cursors for their orientation and retain that cursor across the document for the duration of a pointer drag, including in system WebViews where axis-combined resize cursors are unavailable.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 
 ## DC-SHA-038 — Scroll Area

@@ -612,7 +612,7 @@
     </Tooltip.Provider>
   </div>
 
-  <ScrollArea class="ui-workspace-explorer__scroll">
+  <ScrollArea type="always" class="ui-workspace-explorer__scroll">
     <ContextMenu.Root>
       <ContextMenu.Trigger>
         {#snippet child({ props })}

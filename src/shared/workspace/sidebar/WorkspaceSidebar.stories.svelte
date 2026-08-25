@@ -120,6 +120,10 @@
     await expect(sidebar).not.toBeNull();
     await expect(directViewHost).not.toBeNull();
     await expect(directDropTarget).not.toBeNull();
+    const resizeRail = canvas.getByRole("button", {
+      name: "Resize right sidebar",
+    });
+    expect(getComputedStyle(resizeRail).cursor).toBe("col-resize");
     expect(directViewHost!.getBoundingClientRect().height).toBeCloseTo(
       directDropTarget!.getBoundingClientRect().height,
       0,

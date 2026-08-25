@@ -381,7 +381,7 @@
     }
 
     body.style.userSelect = "none";
-    body.style.cursor = "ew-resize";
+    body.style.cursor = "col-resize";
     ownerDocument.defaultView?.addEventListener(
       "pointermove",
       handlePointerMove,

@@ -1,5 +1,7 @@
 <script lang="ts">
   import * as ResizablePrimitive from "paneforge";
+  import { onDestroy } from "svelte";
+  import { omitDataUiIdentity } from "../../../lib/data-ui-host.js";
   import { type WithoutChildrenOrChild } from "../../../lib/utils.js";
 
   let {
@@ -7,11 +9,34 @@
     class: className,
     withHandle = false,
     variant = "default",
+    onDraggingChange,
     ...restProps
   }: WithoutChildrenOrChild<ResizablePrimitive.PaneResizerProps> & {
     withHandle?: boolean;
     variant?: "default" | "prominent";
   } = $props();
+
+  let activeCursorRoot: HTMLElement | null = null;
+
+  function clearDragCursor(): void {
+    if (!activeCursorRoot) return;
+    delete activeCursorRoot.dataset.uiResizeCursor;
+    activeCursorRoot = null;
+  }
+
+  function handleDraggingChange(dragging: boolean): void {
+    if (dragging && ref) {
+      const direction = ref.dataset.direction;
+      activeCursorRoot = ref.ownerDocument.documentElement;
+      activeCursorRoot.dataset.uiResizeCursor =
+        direction === "vertical" ? "row" : "column";
+    } else {
+      clearDragCursor();
+    }
+    onDraggingChange?.(dragging);
+  }
+
+  onDestroy(clearDragCursor);
 </script>
 
 <ResizablePrimitive.PaneResizer
@@ -21,7 +46,8 @@
   data-slot="resizable-handle"
   data-variant={variant}
   class={className}
-  {...restProps}
+  onDraggingChange={handleDraggingChange}
+  {...omitDataUiIdentity(restProps)}
 >
   {#if withHandle}
     <div
@@ -69,6 +95,20 @@
       }
       [data-ui-component="resizable"][data-ui-part="resizable-handle"] {
         width: 1px;
+      }
+      [data-ui-component="resizable"][data-ui-part="resizable-handle"][data-direction="horizontal"] {
+        cursor: col-resize !important;
+      }
+      [data-ui-component="resizable"][data-ui-part="resizable-handle"][data-direction="vertical"] {
+        cursor: row-resize !important;
+      }
+      html[data-ui-resize-cursor="column"],
+      html[data-ui-resize-cursor="column"] * {
+        cursor: col-resize !important;
+      }
+      html[data-ui-resize-cursor="row"],
+      html[data-ui-resize-cursor="row"] * {
+        cursor: row-resize !important;
       }
       [data-ui-component="resizable"][data-ui-part="resizable-handle"][data-variant="prominent"] {
         width: var(--ui-resizable-prominent-separator-size, 0.25rem);

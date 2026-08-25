@@ -206,6 +206,7 @@
     );
 
     const resize = canvas.getByRole("button", { name: "Resize bottom panel" });
+    expect(getComputedStyle(resize).cursor).toBe("row-resize");
     await fireEvent.keyDown(resize, { key: "ArrowUp" });
     await waitFor(() => {
       expect(controller.layout.bottom.size).toBe(298);
@@ -349,6 +350,11 @@
         '[data-ui-component="workspace-bottom-panel-group"]',
       ),
     ).not.toBeNull();
+    const groupedResizer = canvasElement.querySelector<HTMLElement>(
+      ".ui-workspace-bottom-panel-group__resizer",
+    );
+    await expect(groupedResizer).not.toBeNull();
+    expect(getComputedStyle(groupedResizer!).cursor).toBe("col-resize");
     const groupedViewHost = canvasElement.querySelector<HTMLElement>(
       '[data-ui-component="workspace-bottom-panel-group"] [data-ui-component="workspace-view-host"]',
     );

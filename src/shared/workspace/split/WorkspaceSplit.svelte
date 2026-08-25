@@ -45,7 +45,6 @@
       {#if index > 0}
         <Resizable.Handle
           class="ui-workspace-split__handle"
-          data-ui-part="split-handle"
           data-direction={split.direction}
           aria-orientation={split.direction === "horizontal"
             ? "vertical"

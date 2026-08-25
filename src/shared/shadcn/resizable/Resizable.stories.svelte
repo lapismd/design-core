@@ -1,6 +1,6 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect } from "storybook/test";
+  import { expect, fireEvent } from "storybook/test";
   import * as Resizable from "./index.js";
 
   const { Story } = defineMeta({
@@ -18,9 +18,20 @@
 
 <Story
   name="Two pane split"
-  play={async ({ canvas }) => {
+  play={async ({ canvas, canvasElement }) => {
     await expect(canvas.getByText("Left pane")).toBeVisible();
     await expect(canvas.getByText("Right pane")).toBeVisible();
+    const handle = canvas.getByRole("separator");
+    await expect(getComputedStyle(handle).cursor).toBe("col-resize");
+    await fireEvent.mouseDown(handle, { clientX: 100, clientY: 20 });
+    const documentRoot = canvasElement.ownerDocument.documentElement;
+    await expect(documentRoot).toHaveAttribute(
+      "data-ui-resize-cursor",
+      "column",
+    );
+    await expect(getComputedStyle(canvasElement).cursor).toBe("col-resize");
+    await fireEvent.mouseUp(canvasElement.ownerDocument.defaultView!);
+    await expect(documentRoot).not.toHaveAttribute("data-ui-resize-cursor");
   }}
   tags={["visual-approved"]}
   parameters={{

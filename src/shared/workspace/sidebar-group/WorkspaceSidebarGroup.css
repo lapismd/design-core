@@ -130,7 +130,7 @@
   height: 1px;
   flex: 0 0 1px;
   background: transparent;
-  cursor: ns-resize;
+  cursor: row-resize;
   outline: none;
 }
 

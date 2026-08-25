@@ -42,12 +42,12 @@
 
 .ui-workspace-split__handle[data-direction="horizontal"] {
   width: 1px;
-  cursor: ew-resize;
+  cursor: col-resize;
 }
 
 .ui-workspace-split__handle[data-direction="vertical"] {
   height: 1px;
-  cursor: ns-resize;
+  cursor: row-resize;
 }
 
 .ui-workspace-split__handle::after {

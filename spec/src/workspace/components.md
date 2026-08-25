@@ -59,6 +59,7 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/workspace/bottom-panel`.
+- The top resize rail and nested panel dividers MUST expose row and column resize cursors respectively.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 - The family MUST NOT host the dock visibility toggle in the right sidebar header; see DC-WS-048.
 
@@ -271,7 +272,7 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 
 ### Acceptance details
 
-- The public boundary is `@lapismd/design-core/workspace/sidebar`.
+- The public boundary is `@lapismd/design-core/workspace/sidebar`, whose resize rail MUST expose a column resize cursor without covering an owned Explorer scrollbar.
 - A direct sidebar `WorkspaceViewHost` MUST stretch through the available sidebar body height so content-sized or empty imperative views receive a definite full-height containing block, and its secondary view background MUST resolve to the workspace surface against the panel-painted primary view.
 - App Shell footer actions MUST use the Sidebar family’s native workspace-menu tokens for interactive, disabled, descriptive, and focus states.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
@@ -293,6 +294,7 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 
 - The public boundary is `@lapismd/design-core/workspace/sidebar-group`.
 - Sidebar groups MUST restore nested views to workspace primary and secondary backgrounds while preserving panel-painted group chrome.
+- Stacked panel dividers MUST expose a row resize cursor.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 
 ## DC-WS-024 — Sidebar Toggle
@@ -311,6 +313,7 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/workspace/split`.
+- Split handles MUST expose column or row resize cursors matching their orientation.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 
 ## DC-WS-026 — Stacked Tabs

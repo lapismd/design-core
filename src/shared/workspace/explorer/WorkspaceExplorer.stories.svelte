@@ -929,16 +929,24 @@
       expect(viewport.scrollHeight).toBeGreaterThan(viewport.clientHeight);
     });
 
-    await fireEvent.pointerMove(scrollRoot, { clientX: 1, clientY: 1 });
     const scrollbar = scrollRoot.querySelector(
       '[data-slot="scroll-area-scrollbar"][data-orientation="vertical"]',
     ) as HTMLElement | null;
-    if (scrollbar) {
-      const rootRight = root.getBoundingClientRect().right;
-      const barRight = scrollbar.getBoundingClientRect().right;
-      expect(Math.abs(barRight - rootRight)).toBeLessThan(2);
-    }
-
+    expect(scrollbar).not.toBeNull();
+    const scrollRootRight = scrollRoot.getBoundingClientRect().right;
+    const barRight = scrollbar!.getBoundingClientRect().right;
+    const insetToken = getComputedStyle(scrollRoot).getPropertyValue(
+      "--ui-workspace-explorer-scrollbar-inline-end",
+    );
+    const scrollbarInset = Number.parseFloat(
+      getComputedStyle(scrollbar!).insetInlineEnd,
+    );
+    expect(insetToken).not.toBe("");
+    expect(scrollbarInset).toBeGreaterThan(0);
+    expect(Math.abs(scrollRootRight - barRight - scrollbarInset)).toBeLessThan(
+      2,
+    );
+    await fireEvent.pointerMove(scrollRoot, { clientX: 1, clientY: 1 });
     const activeRow = canvasElement.querySelector(
       `[data-path="archive/${LONG_FILE_NAME}"]`,
     ) as HTMLElement;
@@ -949,10 +957,14 @@
     expect(getComputedStyle(activeRow).fontWeight).toBe(
       getComputedStyle(idleRow).fontWeight,
     );
-    await userEvent.hover(idleRow);
+    const hoverBackgroundProbe = document.createElement("span");
+    hoverBackgroundProbe.style.backgroundColor =
+      "var(--ui-workspace-explorer-row-hover-background)";
+    root.append(hoverBackgroundProbe);
     expect(getComputedStyle(activeRow).backgroundColor).toBe(
-      getComputedStyle(idleRow).backgroundColor,
+      getComputedStyle(hoverBackgroundProbe).backgroundColor,
     );
+    hoverBackgroundProbe.remove();
 
     const title = activeRow.querySelector(
       ".ui-workspace-explorer__title",
@@ -970,6 +982,13 @@
     const rootRight = root.getBoundingClientRect().right;
     const rowRight = activeRow.getBoundingClientRect().right;
     expect(rootRight - rowRight).toBeGreaterThanOrEqual(12);
+
+    const initialScrollTop = viewport.scrollTop;
+    viewport.scrollTop = 96;
+    await fireEvent.scroll(viewport);
+    await waitFor(() => {
+      expect(viewport.scrollTop).toBeGreaterThan(initialScrollTop);
+    });
   }}
 >
   {#snippet template()}

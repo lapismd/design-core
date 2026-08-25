@@ -20,9 +20,9 @@ Workspace panels provide generic domain-neutral views driven by consumer data an
 
 ### Acceptance details
 
-- The public boundary is `@lapismd/design-core/workspace/explorer`, whose tree construction must preserve stable resource identity and declared parent-child ordering.
+- The public boundary is `@lapismd/design-core/workspace/explorer`; tree construction MUST preserve stable resource identity and ordering, while overflow MUST stay in a bounded native viewport with a mounted vertical scrollbar that does not require hover activation and can clear host overlay rails through its inset token.
 - File activation MUST pass one semantic disposition to the consumer adapter: single-click requests `current` and MUST keep keyboard focus on the selected row so Enter starts inline rename, double-click requests `reveal-or-new-tab`, and modifier-click or middle-click requests forced `new-tab`.
-- The tree MUST retain an accessible label without duplicating the owning leaf title, pressed toolbar actions MUST use the workspace accent foreground, selected tree rows MUST use the same background wash as row hover without a heavier font weight, nested indentation guides MUST sit beneath expanded disclosure chevron tips with a small gap before the first child, and auto-reveal MUST flash a row only when the active file changes from outside the tree.
+- The tree MUST retain an accessible label without duplicating the leaf title; pressed toolbar actions MUST use the workspace accent foreground; selected rows MUST match the hover wash without heavier type; indent guides MUST align beneath expanded chevrons; and auto-reveal MUST flash only for external active-file changes.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 
 ## DC-WS-051 — Explorer same-depth type icons
