@@ -20,6 +20,7 @@
     EditorView,
     keymap,
     placeholder as placeholderExtension,
+    tooltips,
   } from "@codemirror/view";
   import ChevronRightIcon from "@lucide/svelte/icons/chevron-right";
   import SearchIcon from "@lucide/svelte/icons/search";
@@ -178,7 +179,7 @@
    * around its dynamic-value lists, and remount it whenever CodeMirror swaps
    * the list for a new completion stage.
    */
-  function autocompletePopup(node: HTMLDivElement) {
+  function observeAutocompletePopup(node: HTMLDivElement) {
     let mounted: Record<string, unknown> | null = null;
     let mountedList: HTMLUListElement | null = null;
 
@@ -283,6 +284,13 @@
   }
 
   function filterQueryEditor(node: HTMLDivElement, source: string) {
+    const tooltipLayer = node.ownerDocument.createElement("div");
+    tooltipLayer.className = "cv-search-filter-bar__tooltip-layer";
+    tooltipLayer.dataset.uiComponent = "search-filter-bar-tooltip-layer";
+    tooltipLayer.dataset.uiPart = "completion-portal";
+    node.ownerDocument.body.append(tooltipLayer);
+    const popupObserver = observeAutocompletePopup(tooltipLayer);
+
     const view = new EditorView({
       state: EditorState.create({
         doc: source,
@@ -294,6 +302,7 @@
           history(),
           drawSelection(),
           EditorView.lineWrapping,
+          tooltips({ parent: tooltipLayer }),
           editableCompartment.of(EditorView.editable.of(!disabled)),
           placeholderCompartment.of(placeholderExtension(placeholder)),
           autocompleteCompartment.of(autocompleteExtension()),
@@ -346,7 +355,9 @@
         replacing = false;
       },
       destroy() {
+        popupObserver.destroy();
         view.destroy();
+        tooltipLayer.remove();
         if (editor === view) editor = null;
         chipEditSession = null;
       },
@@ -409,7 +420,6 @@
         <div
           class="cv-search-filter-bar__editor"
           use:filterQueryEditor={value}
-          use:autocompletePopup
         ></div>
       {/if}
       {#if shortcut && !hasValue && (!showFilterToggle || filtersExpanded)}

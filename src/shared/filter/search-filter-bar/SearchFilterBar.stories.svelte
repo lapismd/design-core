@@ -126,9 +126,27 @@
     await userEvent.keyboard("{Control>}a{/Control}{Backspace}");
     await userEvent.keyboard("pay");
     const body = canvasElement.ownerDocument.body;
-    await waitFor(() => {
-      expect(body.querySelector(".cm-tooltip-autocomplete")).toBeTruthy();
+    const tooltip = await waitFor(() => {
+      const current = body.querySelector<HTMLElement>(
+        ".cm-tooltip-autocomplete",
+      );
+      expect(current).not.toBeNull();
+      return current!;
     });
+    const portal = tooltip.closest<HTMLElement>(
+      ".cv-search-filter-bar__tooltip-layer",
+    );
+    expect(portal).not.toBeNull();
+    expect(portal!.parentElement).toBe(body);
+    expect(canvasElement.contains(tooltip)).toBe(false);
+    const firstOption = tooltip.querySelector<HTMLElement>("li[role='option']");
+    expect(firstOption).not.toBeNull();
+    const optionRect = firstOption!.getBoundingClientRect();
+    const hit = canvasElement.ownerDocument.elementFromPoint(
+      optionRect.left + optionRect.width / 2,
+      optionRect.top + optionRect.height / 2,
+    );
+    expect(firstOption!.contains(hit)).toBe(true);
     await userEvent.keyboard("{Enter}");
     await waitFor(() => {
       expect(canvas.getByRole("status")).toHaveTextContent(/payee/i);

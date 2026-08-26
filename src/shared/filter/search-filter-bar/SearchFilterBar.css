@@ -400,7 +400,8 @@
  * shadcn Command / Popover (tokens from theme.css). CM’s baseTheme forces
  * monospace + blue selected rows — override with matching specificity / !important.
  */
-.cv-search-filter-bar__editor .cm-tooltip.cm-tooltip-autocomplete {
+:is(.cv-search-filter-bar__editor, .cv-search-filter-bar__tooltip-layer)
+  .cm-tooltip.cm-tooltip-autocomplete {
   z-index: 80;
   overflow: hidden;
   border: 1px solid var(--border);
@@ -413,7 +414,9 @@
   padding: var(--spacing, 0.25rem);
 }
 
-.cv-search-filter-bar__editor .cm-tooltip.cm-tooltip-autocomplete > ul {
+:is(.cv-search-filter-bar__editor, .cv-search-filter-bar__tooltip-layer)
+  .cm-tooltip.cm-tooltip-autocomplete
+  > ul {
   display: grid;
   grid-template-columns: max-content minmax(0, 1fr);
   min-width: min(18rem, 88vw);
@@ -428,7 +431,10 @@
   white-space: nowrap;
 }
 
-.cv-search-filter-bar__editor .cm-tooltip.cm-tooltip-autocomplete ul > li {
+:is(.cv-search-filter-bar__editor, .cv-search-filter-bar__tooltip-layer)
+  .cm-tooltip.cm-tooltip-autocomplete
+  ul
+  > li {
   display: grid;
   grid-column: 1 / -1;
   grid-template-columns: subgrid;
@@ -446,8 +452,11 @@
   outline: none;
 }
 
-.cv-search-filter-bar__editor .cm-tooltip.cm-tooltip-autocomplete ul > li:hover,
-.cv-search-filter-bar__editor
+:is(.cv-search-filter-bar__editor, .cv-search-filter-bar__tooltip-layer)
+  .cm-tooltip.cm-tooltip-autocomplete
+  ul
+  > li:hover,
+:is(.cv-search-filter-bar__editor, .cv-search-filter-bar__tooltip-layer)
   .cm-tooltip.cm-tooltip-autocomplete
   ul
   > li:focus-visible {
@@ -455,11 +464,11 @@
   color: var(--accent-foreground) !important;
 }
 
-.cv-search-filter-bar__editor
+:is(.cv-search-filter-bar__editor, .cv-search-filter-bar__tooltip-layer)
   .cm-tooltip.cm-tooltip-autocomplete
   ul
   > li[aria-selected],
-.cv-search-filter-bar__editor
+:is(.cv-search-filter-bar__editor, .cv-search-filter-bar__tooltip-layer)
   .cm-editor
   .cm-tooltip-autocomplete
   ul
@@ -468,7 +477,7 @@
   color: var(--accent-foreground) !important;
 }
 
-.cv-search-filter-bar__editor
+:is(.cv-search-filter-bar__editor, .cv-search-filter-bar__tooltip-layer)
   .cm-tooltip.cm-tooltip-autocomplete
   ul
   > completion-section {
@@ -481,12 +490,14 @@
   padding: calc(var(--spacing, 0.25rem) * 1.5) calc(var(--spacing, 0.25rem) * 2) !important;
 }
 
-.cv-search-filter-bar__editor .cm-completionLabel {
+:is(.cv-search-filter-bar__editor, .cv-search-filter-bar__tooltip-layer)
+  .cm-completionLabel {
   min-width: 0;
   font-weight: 500;
 }
 
-.cv-search-filter-bar__editor .cm-completionDetail {
+:is(.cv-search-filter-bar__editor, .cv-search-filter-bar__tooltip-layer)
+  .cm-completionDetail {
   min-width: 0;
   overflow: hidden;
   color: var(--muted-foreground);
