@@ -453,4 +453,5 @@ sidebar destinations marked with the `move` icon.
 
 - Shared CSS MUST set `app-region` and `-webkit-app-region: drag` on `[data-desktop-drag-region]` except when the value is `false`.
 - Interactive descendants MUST set `data-desktop-drag-region="false"` so they compute `no-drag`.
+- Startup failure disclosures and actions MUST retain pointer and keyboard activation inside the surrounding drag region.
 - Sidebar tab rows MUST remain unmarked while the unused tab-strip spacer MUST be a drag region, so native window drag does not capture pane-to-pane tab moves.

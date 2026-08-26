@@ -63,7 +63,9 @@
       canvas.getByRole("progressbar", { name: "Startup progress" }),
     ).toHaveAttribute("aria-valuenow", "75");
     await expect(canvas.getByText("Now")).toBeVisible();
-    const startup = canvas.getByRole("region", { name: "Starting Lapis Notes" });
+    const startup = canvas.getByRole("region", {
+      name: "Starting Lapis Notes",
+    });
     await expect(startup).toHaveAttribute("data-desktop-drag-region", "");
     await expect(
       getComputedStyle(startup).getPropertyValue("-webkit-app-region").trim(),
@@ -115,9 +117,7 @@
       <WorkspaceStartup
         title="Starting Lapis Notes"
         tasks={loadingTasks.map((task) =>
-          task.id === "plugins"
-            ? { ...task, detail: "Loading AI" }
-            : task,
+          task.id === "plugins" ? { ...task, detail: "Loading AI" } : task,
         )}
       />
     </div>
@@ -149,6 +149,12 @@
     await expect(canvas.getByRole("alert")).toBeVisible();
     await expect(
       canvas.getByRole("heading", { name: "App startup failed" }),
+    ).toBeVisible();
+    const details = canvas.getByText("Error details").closest("details");
+    await expect(details).toHaveAttribute("data-desktop-drag-region", "false");
+    await userEvent.click(canvas.getByText("Error details"));
+    await expect(
+      canvas.getByText("Error: Required plugin source-editor failed to load"),
     ).toBeVisible();
     await userEvent.click(canvas.getByRole("button", { name: "Retry" }));
     await expect(canvas.getByRole("status")).toHaveTextContent(

@@ -115,6 +115,7 @@
         <details
           class="ui-workspace-startup__failure-detail"
           data-ui-part="failure-detail"
+          data-desktop-drag-region="false"
         >
           <summary>Error details</summary>
           <pre>{failure.detail}</pre>
