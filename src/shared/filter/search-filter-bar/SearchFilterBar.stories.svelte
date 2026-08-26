@@ -23,6 +23,18 @@
   });
 
   const demoSyntax = createDemoLedgerFilterSyntax();
+  const compactAutocompleteSyntax = {
+    ...demoSyntax,
+    fields: demoSyntax.fields.map((field) =>
+      field.name === "payee"
+        ? {
+            ...field,
+            description:
+              "Transaction counterparty across imported and manually entered ledger records.",
+          }
+        : field,
+    ),
+  };
 
   const TYPE_OPTIONS: FilterCommandOption[] = [
     { value: "all", label: "All types" },
@@ -141,6 +153,19 @@
     expect(canvasElement.contains(tooltip)).toBe(false);
     const firstOption = tooltip.querySelector<HTMLElement>("li[role='option']");
     expect(firstOption).not.toBeNull();
+    const tooltipRect = tooltip.getBoundingClientRect();
+    expect(tooltipRect.width).toBeGreaterThanOrEqual(280);
+    expect(tooltipRect.width).toBeLessThanOrEqual(304);
+    const detail = firstOption!.querySelector<HTMLElement>(
+      ".cm-completionDetail",
+    );
+    expect(detail).not.toBeNull();
+    const detailStyle = getComputedStyle(detail!);
+    const detailLineHeight = Number.parseFloat(detailStyle.lineHeight);
+    expect(detailStyle.whiteSpace).toBe("normal");
+    expect(detail!.getBoundingClientRect().height).toBeGreaterThan(
+      detailLineHeight * 1.5,
+    );
     const optionRect = firstOption!.getBoundingClientRect();
     const hit = canvasElement.ownerDocument.elementFromPoint(
       optionRect.left + optionRect.width / 2,
@@ -175,7 +200,7 @@
       <SearchFilterBar
         value={filterValue}
         inputMode="filter-query"
-        filterSyntax={demoSyntax}
+        filterSyntax={compactAutocompleteSyntax}
         ariaLabel="Filter ledger"
         showFilterToggle
         bind:filtersExpanded

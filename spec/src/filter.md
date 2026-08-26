@@ -40,7 +40,7 @@ Filter contracts separate query language, reusable search chrome, and consumer q
 - The public boundary is `@lapismd/design-core/filter`.
 - Search surfaces with small enumerated facets beneath the query MUST use forms `FilterCommandPicker` selectors by default; parallel button sets are reserved for true mode or action switching.
 - Expandable search-syntax guidance MUST use a Lucide disclosure icon whose orientation reflects the native disclosure state.
-- The catalog MUST prove filter-query completion tooltips portal into the owner document, escape search-surface clipping, and remain hit-testable above adjacent content.
+- The catalog MUST prove filter-query completion tooltips portal into the owner document, escape search-surface clipping, remain hit-testable above adjacent content, use a compact 18rem viewport-bounded default width, and wrap labels and details inside each row.
 
 ## DC-FILTER-004 — Power Search
 
