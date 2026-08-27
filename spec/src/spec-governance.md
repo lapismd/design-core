@@ -117,8 +117,7 @@ Specification governance keeps requirements discoverable, mapped, validated, and
 - A diagnostic must identify its stable code, governing requirement, source path, line when available, affected identifier, and corrective action.
 - Generated or discovery surfaces must point back to canonical Markdown rather than becoming a second source of truth.
 - Supporting implementation records must live under `spec/records/`, and completed one-time plans must live under `spec/archive/`; neither location is normative or included in the canonical book.
-- Release artifacts under `.release/` must remain ignored.
-- Source-tree `Library/Caches`, `__pycache__`, and Python bytecode artifacts must remain ignored and must be rejected by release packaging checks if they appear in an npm tarball.
+- Release artifacts under `.release/`, source-tree `Library/Caches`, `__pycache__`, and Python bytecode artifacts must remain ignored, and release packaging checks must reject cache artifacts if they appear in an npm tarball.
 
 ## DC-GOV-009 — Storybook documentation checks
 
