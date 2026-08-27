@@ -66,21 +66,20 @@ describe("Mira-owned editor shell boundary", () => {
     }
   });
 
-  it("links the Mira package without the aggregate CodeMirror dependency", () => {
+  it("uses the published Mira package without the aggregate CodeMirror dependency", () => {
     const packageJson = JSON.parse(read("../../../../package.json")) as {
       dependencies: Record<string, string>;
     };
     const workspace = read("../../../../pnpm-workspace.yaml");
+    const lockfile = read("../../../../pnpm-lock.yaml");
     const mira = packageJson.dependencies["@lapismd/mira"];
-    const usesExplicitLink = mira === "link:../mira-mde/packages/mira";
-    const usesWorkspaceMember =
-      typeof mira === "string" &&
-      mira.length > 0 &&
-      /(?:^|\n)\s*-\s*["']?\.\.\/mira-mde\/packages\/mira["']?\s*$/m.test(
-        workspace,
-      );
 
-    expect(usesExplicitLink || usesWorkspaceMember).toBe(true);
+    expect(mira).toMatch(/^\^?\d+\.\d+\.\d+(?:[-+][\w.-]+)?$/);
+    expect(mira).not.toMatch(/^(?:link|file|workspace):/);
+    expect(workspace).not.toMatch(
+      /(?:^|\n)\s*-\s*["']?\.\.\/mira-mde\/packages\/mira["']?\s*$/m,
+    );
+    expect(lockfile).not.toContain("link:../mira-mde/packages/mira");
     expect(packageJson.dependencies).not.toHaveProperty("codemirror");
   });
 });

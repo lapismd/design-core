@@ -123,10 +123,13 @@ describe("AppShellController", () => {
 
     app.commands.selectPaletteTab(COMMAND_PALETTE_TAB_ACTIONS);
     const preventDefault = vi.fn();
+    const usesMetaForMod =
+      typeof navigator !== "undefined" &&
+      /Mac|iPhone|iPad/.test(navigator.platform);
     const hotkey = {
       key: "p",
-      ctrlKey: false,
-      metaKey: true,
+      ctrlKey: !usesMetaForMod,
+      metaKey: usesMetaForMod,
       altKey: false,
       shiftKey: false,
       preventDefault,
