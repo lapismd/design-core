@@ -1,17 +1,7 @@
 name: Visual Delta CI
 
 on:
-  pull_request:
-    paths:
-      - "tests/visual/**"
-      - "src/**"
-      - ".storybook/**"
-      - "scripts/ui-generator/**"
-      - "scripts/storybook-run.mjs"
-      - "package.json"
-      - "pnpm-lock.yaml"
-      - "pnpm-workspace.yaml"
-      - ".github/workflows/visual-delta-ci.yml"
+  workflow_dispatch:
 
 concurrency:
   group: visual-delta-ci-${{ github.ref }}

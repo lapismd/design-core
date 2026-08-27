@@ -13,6 +13,7 @@ playwright-report/
 blob-report/
 **/__diff_output__/
 .ui-generator/
+.release/
 .cache/ui-docs/
 .cache/visual-delta/
 .visual-delta/artifacts/

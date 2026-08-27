@@ -1,7 +1,12 @@
 # `@lapismd/design-core`
 
-Private Svelte 5 UI package with a Storybook 10 catalog, Storybook Vitest,
-local Playwright visual regression, and the workspace Visual Delta addon.
+[![Release public packages](https://github.com/lapismd/design-core/actions/workflows/release.yml/badge.svg)](https://github.com/lapismd/design-core/actions/workflows/release.yml)
+[![Storybook Pages](https://github.com/lapismd/design-core/actions/workflows/publish-storybook-pages.yml/badge.svg)](https://github.com/lapismd/design-core/actions/workflows/publish-storybook-pages.yml)
+[![npm version](https://img.shields.io/npm/v/@lapismd/design-core.svg)](https://www.npmjs.com/package/@lapismd/design-core)
+[![Storybook](https://img.shields.io/badge/storybook-live-ff4785?logo=storybook&logoColor=white)](https://lapismd.github.io/design-core/)
+
+Public Svelte 5 UI package with a Storybook 10 catalog, Storybook Vitest,
+explicit Playwright visual regression, and the published Visual Delta addon.
 
 This README is the human-facing package map and command reference. Agent
 conventions are available offline through `pnpm ui guide` and in
@@ -47,7 +52,7 @@ src/
 tests/
   visual/                      # Playwright suite + committed snapshots
 packages/
-  # Visual Delta: sibling @lapismd/storybook-addon-visual-delta checkout
+  storybook-addon-docs-mcp/      # private Docs MCP workspace tooling
 .storybook/                    # Storybook host configuration
 scripts/
   storybook-run.mjs            # polling/restart-aware Storybook entry
@@ -178,7 +183,7 @@ Registered addons:
 - `@storybook/addon-mcp`
 - `@storybook/addon-themes`
 - `storybook-addon-tag-badges`
-- the local Visual Delta preset
+- `@lapismd/storybook-addon-visual-delta`
 
 The preview applies the `autodocs` and `test` tags, uses
 `parameters.a11y.test: "error"`, and owns light/dark mode through the
@@ -198,9 +203,8 @@ own surfaces.
 
 Visual Delta compares the live story canvas with committed Playwright PNGs and
 provides overlay, heatmap, create/update, and review controls. This catalog
-resolves the sibling `../storybook-addon-visual-delta` checkout through its
-`link:` development dependency and registers the package in
-`.storybook/main.ts`. Addon API details live in the package
+resolves the published `@lapismd/storybook-addon-visual-delta` package from npm
+and registers it in `.storybook/main.ts`. Addon API details live in the package
 [`README`](https://github.com/lapismd/storybook-addon-visual-delta/blob/main/README.md). Normative behavior lives in the
 [`Visual Delta system specification`](https://github.com/lapismd/storybook-addon-visual-delta/blob/main/spec/src/index.md).
 
@@ -307,6 +311,17 @@ pnpm test:visual:affected
 pnpm test:visual:report
 pnpm checks
 pnpm checks:nonvisual
+pnpm checks:release
+pnpm checks:visual
+
+# Release
+pnpm changeset
+pnpm release:check
+pnpm release:plan
+pnpm packages:pack
+pnpm release:prepare
+pnpm release:publish .release/release-manifest.json
+pnpm release:verify .release/release-manifest.json .release/npm-signatures.json
 
 # Canonical Visual Delta specification
 

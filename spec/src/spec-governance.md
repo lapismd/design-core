@@ -106,6 +106,7 @@ Specification governance keeps requirements discoverable, mapped, validated, and
 
 - A diagnostic must identify its stable code, governing requirement, source path, line when available, affected identifier, and corrective action.
 - Generated or discovery surfaces must point back to canonical Markdown rather than becoming a second source of truth.
+- Agent testing guidance must document nonvisual release gates.
 
 ## DC-GOV-008 — Generated artifacts
 
@@ -116,6 +117,7 @@ Specification governance keeps requirements discoverable, mapped, validated, and
 - A diagnostic must identify its stable code, governing requirement, source path, line when available, affected identifier, and corrective action.
 - Generated or discovery surfaces must point back to canonical Markdown rather than becoming a second source of truth.
 - Supporting implementation records must live under `spec/records/`, and completed one-time plans must live under `spec/archive/`; neither location is normative or included in the canonical book.
+- Release artifacts under `.release/` must remain ignored.
 
 ## DC-GOV-009 — Storybook documentation checks
 

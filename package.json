@@ -7,6 +7,10 @@
     "type": "git",
     "url": "git+https://github.com/lapismd/design-core.git"
   },
+  "homepage": "https://lapismd.github.io/design-core/",
+  "bugs": {
+    "url": "https://github.com/lapismd/design-core/issues"
+  },
   "type": "module",
   "files": [
     "src",
@@ -17,6 +21,8 @@
     "!src/**/*.example-sources.*",
     "!src/**/.npm/**",
     "!src/spec/**",
+    "CHANGELOG.md",
+    "LICENSE.md",
     "README.md",
     "spec/src/styling-and-themes.md"
   ],
@@ -32,8 +38,9 @@
     "storybook:ui": "WATCHPACK_POLLING=250 node scripts/with-storybook-env.mjs node scripts/storybook-run.mjs",
     "storybook:stop": "node scripts/with-storybook-env.mjs bash scripts/storybook-stop.sh",
     "storybook:restart": "node scripts/with-storybook-env.mjs bash scripts/storybook-restart.sh",
-    "storybook:check": "pnpm test:storybook && pnpm test:workspace:pointer && pnpm test:shell:pointer && pnpm test:shadcn:pointer && pnpm build-storybook && pnpm workspace:visual:audit && pnpm test:visual",
+    "storybook:check": "pnpm test:storybook && pnpm test:workspace:pointer && pnpm test:shell:pointer && pnpm test:shadcn:pointer && pnpm build-storybook && pnpm workspace:visual:audit",
     "build-storybook": "node -e \"require('node:fs').mkdirSync('.visual-delta/cache',{recursive:true})\" && node --max-old-space-size=6144 ./node_modules/storybook/dist/bin/dispatcher.js build --stats-json .visual-delta/cache",
+    "changeset": "changeset",
     "test:unit": "vitest run --project unit",
     "test:storybook": "vitest run --project storybook",
     "test:storybook:watch": "vitest --project storybook",
@@ -55,6 +62,15 @@
     "workspace:visual:audit": "node scripts/with-storybook-env.mjs tsx scripts/workspace-visual-audit.ts",
     "workspace:visual:verify": "node scripts/with-storybook-env.mjs tsx scripts/workspace-visual-audit.ts --require-baselines",
     "visual-delta": "node scripts/with-storybook-env.mjs visual-delta",
+    "packages:check": "pnpm release:check",
+    "packages:pack": "node ./scripts/design-core-release.mjs pack-check",
+    "release:check": "node ./scripts/design-core-release.mjs check",
+    "release:notes": "node ./scripts/design-core-release.mjs notes",
+    "release:plan": "node ./scripts/design-core-release.mjs plan",
+    "release:prepare": "node ./scripts/design-core-release.mjs prepare",
+    "release:publish": "node ./scripts/design-core-release.mjs publish",
+    "release:verify": "node ./scripts/design-core-release.mjs verify",
+    "release:version": "changeset version && pnpm install --lockfile-only && prettier package.json CHANGELOG.md --write",
     "docs-mcp": "node packages/storybook-addon-docs-mcp/dist/node/cli.js",
     "ui": "tsx scripts/ui-generator/cli.ts",
     "ui:guide": "tsx scripts/ui-generator/cli.ts guide",
@@ -76,7 +92,9 @@
     "fmt:check": "prettier . --check",
     "check:no-tailwind": "tsx scripts/check-no-tailwind-utilities.ts",
     "checks:nonvisual": "pnpm fmt:check && pnpm spec:check && pnpm check && pnpm check:docs-mcp && pnpm check:no-tailwind && pnpm test:unit && pnpm test:storybook && pnpm test:workspace:pointer && pnpm test:shell:pointer && pnpm test:shadcn:pointer && pnpm build-storybook && pnpm workspace:visual:audit && pnpm test:ai-chat-browser",
-    "checks": "pnpm fmt:check && pnpm check && pnpm check:docs-mcp && pnpm check:no-tailwind && pnpm test:unit && pnpm test:storybook && pnpm test:workspace:pointer && pnpm test:shell:pointer && pnpm test:shadcn:pointer && pnpm build-storybook && pnpm workspace:visual:audit && pnpm test:ai-chat-browser && pnpm test:visual",
+    "checks:release": "pnpm spec:check && pnpm check && pnpm check:docs-mcp && pnpm check:no-tailwind && pnpm test:unit && pnpm build-storybook && pnpm workspace:visual:audit",
+    "checks": "pnpm checks:nonvisual",
+    "checks:visual": "pnpm checks:nonvisual && pnpm test:visual",
     "filter:grammar": "node scripts/generate-filter-query-parser.mjs"
   },
   "peerDependencies": {
@@ -120,6 +138,8 @@
     "yaml": "^2.9.0"
   },
   "devDependencies": {
+    "@changesets/changelog-github": "^0.7.0",
+    "@changesets/cli": "^2.31.1",
     "@lapismd/spec-validator": "0.1.0",
     "@lapismd/storybook-addon-visual-delta": "0.0.7",
     "@lezer/generator": "^1.7.0",

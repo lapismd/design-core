@@ -45,9 +45,13 @@ host changes and keep the owning canonical chapter in the same diff. Run
    iterating. Prefer focused runs, then a broader pass before handoff.
 5. **Visual compare** — `pnpm test:visual` (compare only; never writes
    baselines). Inspect expected/actual/diff or `pnpm test:visual:report` on
-   failure.
+   failure. Visual comparison is explicit for the v1 release bootstrap rather
+   than part of the default aggregate checks.
 6. **Before commit** — `pnpm checks` (fmt, `svelte-check --fail-on-warnings`,
-   unit, storybook, static build, visual). Shorter: `pnpm storybook:check`.
+   unit, storybook, pointer/browser acceptance, static build, workspace visual
+   metadata audit, and AI chat browser acceptance). Shorter:
+   `pnpm storybook:check`. Use `pnpm checks:visual` when the slice includes
+   reviewed visual-baseline work or a visual-risk component/style change.
    Vite / Storybook also fail transforms on first-party Svelte compiler
    warnings (`svelte.config.js` `onwarn`), except known-safe noise (`*`
    unused selectors; global-only styles on bits-ui/shadcn wrappers with
@@ -56,8 +60,12 @@ host changes and keep the owning canonical chapter in the same diff. Run
    Prefer `jj commit` when Jujutsu is available; otherwise use Git.
 
 For an explicitly non-visual governance or documentation migration, use
-`pnpm checks:nonvisual` and the relevant focused commands. This does not grant
-permission to skip visual comparison for later component or styling changes.
+`pnpm checks` / `pnpm checks:nonvisual` and the relevant focused commands. The
+release workflow uses `pnpm checks:release` during the v1 bootstrap so inherited
+repo-wide formatting drift, inherited Storybook interaction drift, and inherited
+Playwright browser readiness drift do not block artifact creation. This does
+not grant permission to skip visual comparison for later component or styling
+changes.
 
 ## Visual baselines
 

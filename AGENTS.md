@@ -220,10 +220,21 @@ README **Styling and tokens** section.
 
 ## Verification
 
-- Run `pnpm checks` before committing UI work. It verifies formatting,
-  `svelte-check` (including warnings), unit tests, Storybook Vitest tests, the
-  static Storybook build, and Playwright visual comparison.
-- `pnpm storybook:check` runs story tests + Storybook build + visual compare.
+- Run `pnpm checks` before committing release, package, documentation, and
+  non-visual UI work. It verifies formatting, `svelte-check` (including
+  warnings), unit tests, Storybook Vitest tests, pointer/browser acceptance, the
+  static Storybook build, AI chat browser acceptance, and the workspace visual
+  metadata audit without running screenshot comparison.
+- `pnpm storybook:check` runs story tests, focused pointer suites, Storybook
+  build, and workspace visual metadata audit without Playwright screenshot
+  comparison.
+- Run `pnpm checks:visual` or `pnpm test:visual` explicitly when a reviewed
+  visual-baseline change or visual-risk component change is in scope.
+- The release workflow uses `pnpm checks:release` for the v1 bootstrap path: it
+  keeps spec, type, unit, static Storybook build, and audit coverage but excludes
+  screenshot comparison, inherited Storybook interaction drift, inherited
+  Playwright browser readiness drift, and inherited repo-wide formatting drift
+  until those cleanups are handled separately.
 - Do not invent component props: verify them from the component source,
   TypeScript types, and existing stories.
 - After a verified slice, commit promptly (`pnpm ui guide vcs`): prefer

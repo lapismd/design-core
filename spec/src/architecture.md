@@ -59,6 +59,6 @@ Design Core is a shared presentation and controller library. Consumer applicatio
 ### Acceptance details
 
 - Root package installation must not require sibling repositories.
-- The published boundary must omit repository-local caches and catalog-only examples so external installs reproduce only public runtime source.
-- Colocated workspace linking may select a matching local version without changing the published dependency range.
-- Consumers remain responsible for application plugin lifecycle and policy.
+- The published boundary must omit repository-local caches and catalog-only examples.
+- Colocated workspace linking must not change the published dependency range.
+- Public metadata must identify `lapismd/design-core` as the canonical source.
