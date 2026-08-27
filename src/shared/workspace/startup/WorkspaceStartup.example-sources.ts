@@ -15,6 +15,7 @@ export const Loading = `<script lang="ts">
 <WorkspaceStartup title="Starting Lapis Notes" {tasks} />`;
 
 export const LoadingDetail = `<script lang="ts">
+  import brandLogo from "./brand-logo.svg";
   import {
     WorkspaceStartup,
     type WorkspaceStartupTask,
@@ -33,7 +34,15 @@ export const LoadingDetail = `<script lang="ts">
   ];
 </script>
 
-<WorkspaceStartup title="Starting Lapis Notes" {tasks} />`;
+{#snippet brand()}
+  <img src={brandLogo} alt="" />
+{/snippet}
+
+<WorkspaceStartup
+  title="Starting Lapis Notes"
+  loadingVisual={brand}
+  {tasks}
+/>`;
 
 export const Failure = `<script lang="ts">
   import { WorkspaceStartup } from "@lapismd/design-core/workspace/startup";

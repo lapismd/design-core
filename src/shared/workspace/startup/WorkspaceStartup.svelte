@@ -1,4 +1,5 @@
 <script lang="ts" module>
+  import type { Snippet } from "svelte";
   import type { WorkspaceAction } from "../core/types.js";
 
   export type WorkspaceStartupTaskStatus =
@@ -23,6 +24,8 @@
 
   export interface WorkspaceStartupProps {
     title?: string;
+    /** Application-owned visual rendered instead of the visible loading title. */
+    loadingVisual?: Snippet;
     tasks?: WorkspaceStartupTask[];
     failure?: WorkspaceStartupFailure | null;
     class?: string;
@@ -37,6 +40,7 @@
 
   let {
     title = "Starting workspace",
+    loadingVisual,
     tasks = [],
     failure = null,
     class: className = "",
@@ -142,9 +146,19 @@
     </div>
   {:else}
     <div class="ui-workspace-startup__loading" data-ui-part="loading">
-      <h1 class="ui-workspace-startup__title" data-ui-part="title">
-        {title}
-      </h1>
+      {#if loadingVisual}
+        <div
+          class="ui-workspace-startup__visual"
+          data-ui-part="loading-visual"
+          aria-hidden="true"
+        >
+          {@render loadingVisual()}
+        </div>
+      {:else}
+        <h1 class="ui-workspace-startup__title" data-ui-part="title">
+          {title}
+        </h1>
+      {/if}
       <p
         class="ui-workspace-startup__message"
         data-ui-part="message"

@@ -373,7 +373,7 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 
 ## DC-WS-027 — Startup
 
-**Requirement.** The Startup family MUST present deterministic workspace loading, recovery, and empty startup states. An active task MAY supply `detail`; the live status MUST show that detail when present and MUST otherwise show the task label.
+**Requirement.** The Startup family MUST present deterministic workspace loading, recovery, and empty startup states. An active task MAY supply `detail`; the live status MUST show that detail when present and MUST otherwise show the task label. A consumer MAY replace the visible loading title with an application-owned visual while `title` remains the startup region's accessible name.
 
 ### Acceptance details
 

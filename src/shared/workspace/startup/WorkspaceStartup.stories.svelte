@@ -51,6 +51,19 @@
   );
 </script>
 
+{#snippet brandVisual()}
+  <svg
+    data-testid="startup-brand-visual"
+    width="64"
+    height="64"
+    viewBox="0 0 64 64"
+    aria-hidden="true"
+  >
+    <circle cx="32" cy="32" r="30" fill="var(--ui-workspace-accent)" />
+    <path d="M22 18h12l8 28H30z" fill="var(--ui-workspace-background)" />
+  </svg>
+{/snippet}
+
 <Story
   name="Loading plugins"
   tags={["visual-pending"]}
@@ -107,6 +120,13 @@
     },
   }}
   play={async ({ canvas }) => {
+    await expect(canvas.getByTestId("startup-brand-visual")).toBeVisible();
+    await expect(
+      canvas.getByRole("region", { name: "Starting Lapis Notes" }),
+    ).toBeVisible();
+    await expect(
+      canvas.queryByRole("heading", { name: "Starting Lapis Notes" }),
+    ).not.toBeInTheDocument();
     await expect(canvas.getByRole("status")).toHaveTextContent("Loading AI");
     await expect(canvas.getByText("Loading core plugins")).toBeVisible();
     await expect(canvas.getByText("Step 3 of 4")).toBeVisible();
@@ -116,6 +136,7 @@
     <div style="position: relative; min-height: 32rem;">
       <WorkspaceStartup
         title="Starting Lapis Notes"
+        loadingVisual={brandVisual}
         tasks={loadingTasks.map((task) =>
           task.id === "plugins" ? { ...task, detail: "Loading AI" } : task,
         )}

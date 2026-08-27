@@ -22,6 +22,12 @@
   text-align: center;
 }
 
+.ui-workspace-startup__visual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .ui-workspace-startup__title {
   margin: 0;
   color: var(--ui-workspace-foreground);
