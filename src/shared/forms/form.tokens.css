@@ -32,4 +32,5 @@
   --ui-form-code-gutter: color-mix(in srgb, var(--muted) 52%, transparent);
   --ui-form-column-gap: 1rem;
   --ui-form-radius: var(--radius, 0.625rem);
+  --ui-sortable-array-item-remove-hover-background: transparent;
 }

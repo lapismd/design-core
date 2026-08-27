@@ -4,6 +4,7 @@ import { describe, expect, it } from "vitest";
 
 const cssFiles = [
   "./FormField.css",
+  "../form.tokens.css",
   "../structured-form/structured-form.css",
   "../form-control-row/FormControlRow.css",
   "../list-editor/ListEditor.css",
@@ -114,6 +115,20 @@ describe("source-reference form layout CSS", () => {
     );
     expect(sortableItemCss).toMatch(
       /\[data-ui-component="sortable-array-item"\]\[data-ui-part="sortable-array-item"\]\s*\{[\s\S]*?border-bottom:\s*1px/,
+    );
+  });
+
+  it("lets consumers paint sortable remove-action hover without private selectors", () => {
+    const formTokensCss = readCss("../form.tokens.css");
+    const sortableItemCss = readCss(
+      "../sortable-array-item/SortableArrayItem.css",
+    );
+
+    expect(formTokensCss).toMatch(
+      /--ui-sortable-array-item-remove-hover-background:\s*transparent/,
+    );
+    expect(sortableItemCss).toMatch(
+      /\.ui-sortable-array-item__remove:hover,[\s\S]*?background:\s*var\(--ui-sortable-array-item-remove-hover-background\)/,
     );
   });
 });

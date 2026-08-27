@@ -47,10 +47,20 @@
     secondHandle.focus();
     await userEvent.keyboard("{ArrowUp}");
     await expect(canvas.getByRole("status")).toHaveTextContent("Second,First");
+    const firstRemove = canvas.getAllByRole("button", {
+      name: "Remove item",
+    })[0]!;
+    await expect(
+      getComputedStyle(firstRemove)
+        .getPropertyValue("--ui-sortable-array-item-remove-hover-background")
+        .trim(),
+    ).toBe("rgb(226 232 240)");
   }}
 >
   {#snippet template()}
-    <div style="width: 18rem; padding: 1rem;">
+    <div
+      style="width: 18rem; padding: 1rem; --ui-sortable-array-item-remove-hover-background: rgb(226 232 240);"
+    >
       {#each items as item, index (item)}
         <SortableArrayItem
           id={item}

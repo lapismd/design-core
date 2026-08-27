@@ -54,6 +54,7 @@ Form layout families provide reusable chrome for sections, fields, repeaters, ac
 
 - The public boundary is `@lapismd/design-core/forms`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- Remove-action hover paint MUST read the public `--ui-sortable-array-item-remove-hover-background` token, which defaults to transparent.
 
 ## DC-FORM-025 — Form Add Button
 

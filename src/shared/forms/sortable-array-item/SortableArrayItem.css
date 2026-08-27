@@ -133,7 +133,7 @@
 [data-ui-component="sortable-array-item"][data-ui-part="sortable-array-item"]
   [data-ui-component="button"].ui-sortable-array-item__remove:focus-visible {
   color: var(--ui-form-foreground);
-  background: transparent;
+  background: var(--ui-sortable-array-item-remove-hover-background);
 }
 
 [data-ui-component="sortable-array-item"][data-ui-part="sortable-array-item"]
