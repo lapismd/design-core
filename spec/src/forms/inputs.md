@@ -61,6 +61,7 @@ Form inputs provide higher-level controlled editing patterns composed from share
 
 - The public boundary is `@lapismd/design-core/forms`.
 - Popover presentation MUST keep its icon-only trigger and editable palette adjacent through owner-document collision-aware positioning.
+- Popover presentation MUST render supplied presets alongside a native any-color swatch and editable text value.
 - Inline presentation MUST retain the existing native swatch and text editor contract.
 
 ## DC-FORM-010 — Cycle Picker

@@ -91,15 +91,26 @@
             {/each}
           </div>
         {/if}
-        <Input
-          class="ui-color-picker__value"
-          {value}
-          {placeholder}
-          aria-label={`${ariaLabel} color value`}
-          aria-invalid={error ? "true" : undefined}
-          oninput={(event) => onChange(event.currentTarget.value)}
-          onblur={onBlur}
-        />
+        <div class="ui-color-picker__custom">
+          <input
+            class="ui-color-picker__swatch"
+            type="color"
+            value={pickerValue}
+            aria-label={`${ariaLabel} any color`}
+            aria-invalid={error ? "true" : undefined}
+            oninput={(event) => updateFromPicker(event.currentTarget.value)}
+            onblur={onBlur}
+          />
+          <Input
+            class="ui-color-picker__value"
+            {value}
+            {placeholder}
+            aria-label={`${ariaLabel} color value`}
+            aria-invalid={error ? "true" : undefined}
+            oninput={(event) => onChange(event.currentTarget.value)}
+            onblur={onBlur}
+          />
+        </div>
         {#if error}
           <p class="ui-color-picker__error" role="alert">{error}</p>
         {/if}

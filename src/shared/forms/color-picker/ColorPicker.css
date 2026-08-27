@@ -121,6 +121,14 @@
   gap: 0.5rem;
 }
 
+.ui-color-picker__custom {
+  display: grid;
+  grid-template-columns: 1.75rem minmax(0, 1fr);
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
 .ui-color-picker__preset {
   width: 1.75rem;
   height: 1.75rem;

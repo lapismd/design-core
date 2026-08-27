@@ -92,6 +92,13 @@
     ).toBeLessThanOrEqual(8);
     await userEvent.click(preset);
     await expect(canvas.getByRole("status")).toHaveTextContent("#16a34a");
+    const anyColor = page.getByLabelText("Group any color");
+    await expect(anyColor).toHaveValue("#16a34a");
+    (anyColor as HTMLInputElement).value = "#0ea5e9";
+    await fireEvent.input(anyColor);
+    await waitFor(() =>
+      expect(canvas.getByRole("status")).toHaveTextContent("#0ea5e9"),
+    );
     const value = page.getByLabelText("Group color value");
     await userEvent.clear(value);
     await userEvent.type(value, "#112233");
