@@ -209,6 +209,13 @@ function assertNoPortableManifestViolations(tarballPath) {
         `Tarball contains nested package-manager cache: ${entry}`,
       );
     }
+    if (
+      entry.includes("/Library/Caches/") ||
+      entry.includes("/__pycache__/") ||
+      entry.endsWith(".pyc")
+    ) {
+      throw new Error(`Tarball contains local cache artifact: ${entry}`);
+    }
     const forbidden = forbiddenEntries.find((prefix) =>
       entry.startsWith(prefix),
     );

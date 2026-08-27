@@ -110,7 +110,7 @@ Specification governance keeps requirements discoverable, mapped, validated, and
 
 ## DC-GOV-008 — Generated artifacts
 
-**Requirement.** The Generated artifacts family MUST keep generated mdBook output and QMD caches ignored and untracked.
+**Requirement.** The Generated artifacts family MUST keep generated mdBook output, QMD caches, release artifacts, and local source-tree OS or Python caches ignored and out of package payloads.
 
 ### Acceptance details
 
@@ -118,6 +118,7 @@ Specification governance keeps requirements discoverable, mapped, validated, and
 - Generated or discovery surfaces must point back to canonical Markdown rather than becoming a second source of truth.
 - Supporting implementation records must live under `spec/records/`, and completed one-time plans must live under `spec/archive/`; neither location is normative or included in the canonical book.
 - Release artifacts under `.release/` must remain ignored.
+- Source-tree `Library/Caches`, `__pycache__`, and Python bytecode artifacts must remain ignored and must be rejected by release packaging checks if they appear in an npm tarball.
 
 ## DC-GOV-009 — Storybook documentation checks
 

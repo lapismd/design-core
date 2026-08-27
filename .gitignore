@@ -19,6 +19,10 @@ blob-report/
 .visual-delta/artifacts/
 .visual-delta/cache/
 .cache/storybook/
+# Local OS/Python caches must never enter npm package source payloads.
+src/**/Library/Caches/
+src/**/__pycache__/
+src/**/*.pyc
 # Per-checkout Storybook/visual-test port allocation
 .env.storybook.local
 # Ephemeral visual-diff artifacts written by Playwright visual runs
