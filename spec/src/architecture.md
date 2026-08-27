@@ -50,7 +50,7 @@ Design Core is a shared presentation and controller library. Consumer applicatio
 
 - Design Core must not vendor or patch a sibling package to conceal an upstream defect.
 - Consumer-specific adapters may remain local when they do not redefine the upstream public contract.
-- Shared development tooling may be linked from its owning sibling while Design Core retains its own validation policy and diagnostic identifiers.
+- Shared development tooling may use published npm packages once available while Design Core retains its own validation policy and diagnostic identifiers.
 
 ## DC-ARCH-006 — External consumption
 
@@ -58,7 +58,7 @@ Design Core is a shared presentation and controller library. Consumer applicatio
 
 ### Acceptance details
 
-- The package manifest must remain registry-installable when sibling repositories are absent.
+- The package manifest and root-only validation tooling must remain registry-installable when sibling repositories are absent.
 - The published boundary must omit repository-local caches and catalog-only examples so external installs reproduce only public runtime source.
 - Colocated workspace linking may select a matching local version without changing the published dependency range.
 - Consumers remain responsible for application plugin lifecycle and policy.

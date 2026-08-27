@@ -120,7 +120,7 @@
     "yaml": "^2.9.0"
   },
   "devDependencies": {
-    "@lapismd/spec-validator": "link:../spec-validator",
+    "@lapismd/spec-validator": "0.1.0",
     "@lapismd/storybook-addon-visual-delta": "link:../storybook-addon-visual-delta",
     "@lezer/generator": "^1.7.0",
     "@playwright/test": "1.61.1",
