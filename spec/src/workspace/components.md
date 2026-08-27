@@ -377,7 +377,7 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 
 ### Acceptance details
 
-- The public boundary is `@lapismd/design-core/workspace/startup`.
+- The public boundary is `@lapismd/design-core/workspace/startup`; its loading-visual callback MUST remain assignable across source-linked consumer Svelte instances.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 - The task list MUST keep the stable `label` when `detail` is set.
 - The catalog MUST demonstrate an active task whose status message shows `detail`.

@@ -1,5 +1,4 @@
 <script lang="ts" module>
-  import type { Snippet } from "svelte";
   import type { WorkspaceAction } from "../core/types.js";
 
   export type WorkspaceStartupTaskStatus =
@@ -25,7 +24,7 @@
   export interface WorkspaceStartupProps {
     title?: string;
     /** Application-owned visual rendered instead of the visible loading title. */
-    loadingVisual?: Snippet;
+    loadingVisual?: () => unknown;
     tasks?: WorkspaceStartupTask[];
     failure?: WorkspaceStartupFailure | null;
     class?: string;
@@ -33,6 +32,7 @@
 </script>
 
 <script lang="ts">
+  import type { Snippet } from "svelte";
   import { Button } from "../../shadcn/button/index.js";
   import { Progress } from "../../shadcn/progress/index.js";
   import WorkspaceIcon from "../icon/WorkspaceIcon.svelte";
@@ -47,6 +47,7 @@
   }: WorkspaceStartupProps = $props();
 
   let failedTask = $derived(tasks.find((task) => task.status === "failed"));
+  let renderedLoadingVisual = $derived(loadingVisual as Snippet | undefined);
   let activeIndex = $derived.by(() => {
     const running = tasks.findIndex(
       (task) => task.status === "active" || task.status === "failed",
@@ -146,13 +147,13 @@
     </div>
   {:else}
     <div class="ui-workspace-startup__loading" data-ui-part="loading">
-      {#if loadingVisual}
+      {#if renderedLoadingVisual}
         <div
           class="ui-workspace-startup__visual"
           data-ui-part="loading-visual"
           aria-hidden="true"
         >
-          {@render loadingVisual()}
+          {@render renderedLoadingVisual()}
         </div>
       {:else}
         <h1 class="ui-workspace-startup__title" data-ui-part="title">
