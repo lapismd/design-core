@@ -121,7 +121,7 @@
   },
   "devDependencies": {
     "@lapismd/spec-validator": "0.1.0",
-    "@lapismd/storybook-addon-visual-delta": "link:../storybook-addon-visual-delta",
+    "@lapismd/storybook-addon-visual-delta": "0.0.7",
     "@lezer/generator": "^1.7.0",
     "@playwright/test": "1.61.1",
     "@storybook/addon-a11y": "^10.5.2",

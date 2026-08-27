@@ -98,7 +98,7 @@ The root package manifest defines the supported import boundaries. Family barrel
 ### Acceptance details
 
 - Colocated development may link a matching Mira sibling through workspace configuration without changing the package manifest.
-- Colocated runtime development may keep sibling links where source-first validation requires them, but published validation tooling such as `@lapismd/spec-validator` must resolve through its npm semver dependency and must not enter the published runtime dependency graph.
+- Colocated runtime development may keep sibling links where source-first validation requires them, but published development tooling such as `@lapismd/spec-validator` and `@lapismd/storybook-addon-visual-delta` must resolve through npm semver dependencies and must not enter the published runtime dependency graph.
 - The tarball must contain public source exports, the README, and canonical styling guidance while omitting repository-only catalogs, records, archived plans, example sources, tests, nested package-manager caches, and generated Storybook output.
 - A clean consumer must resolve exported source paths using only declared dependencies and peers.
 
