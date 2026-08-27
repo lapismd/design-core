@@ -127,8 +127,14 @@ describe("source-reference form layout CSS", () => {
     expect(formTokensCss).toMatch(
       /--ui-sortable-array-item-remove-hover-background:\s*transparent/,
     );
+    expect(formTokensCss).toMatch(
+      /--ui-sortable-array-item-focus-background:\s*color-mix\(/,
+    );
     expect(sortableItemCss).toMatch(
       /\.ui-sortable-array-item__remove:hover,[\s\S]*?background:\s*var\(--ui-sortable-array-item-remove-hover-background\)/,
+    );
+    expect(sortableItemCss).toMatch(
+      /sortable-array-item"\]:focus-within\s*\{[\s\S]*?background:\s*var\(--ui-sortable-array-item-focus-background\)/,
     );
   });
 });

@@ -20,7 +20,7 @@ Masked secrets use the Password Input family under Forms / Inputs rather than th
 
 - Display-only defaults must remain absent from authoritative values until the consumer edits the field.
 - Array and disclosure metadata must remain outside consumer values unless explicitly part of the configured schema.
-- Shared Form tokens MUST give component-specific sortable remove-action hover paint a transparent default while allowing ancestor overrides.
+- Shared Form tokens MUST retain the existing subtle sortable-row focus paint and transparent remove-action hover paint as defaults while allowing ancestor overrides for both.
 
 ## DC-FORM-002 — Structured Form
 

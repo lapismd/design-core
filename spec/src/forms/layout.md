@@ -54,7 +54,8 @@ Form layout families provide reusable chrome for sections, fields, repeaters, ac
 
 - The public boundary is `@lapismd/design-core/forms`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
-- Remove-action hover paint MUST read the public `--ui-sortable-array-item-remove-hover-background` token, which defaults to transparent.
+- Whole-row focus paint and remove-action hover paint MUST read the public `--ui-sortable-array-item-focus-background` and `--ui-sortable-array-item-remove-hover-background` tokens.
+- Those tokens MUST default to the existing subtle focus tint and transparent action hover.
 
 ## DC-FORM-025 — Form Add Button
 

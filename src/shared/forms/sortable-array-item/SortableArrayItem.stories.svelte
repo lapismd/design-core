@@ -55,11 +55,16 @@
         .getPropertyValue("--ui-sortable-array-item-remove-hover-background")
         .trim(),
     ).toBe("rgb(226 232 240)");
+    await expect(
+      getComputedStyle(secondHandle)
+        .getPropertyValue("--ui-sortable-array-item-focus-background")
+        .trim(),
+    ).toBe("rgb(241 245 249)");
   }}
 >
   {#snippet template()}
     <div
-      style="width: 18rem; padding: 1rem; --ui-sortable-array-item-remove-hover-background: rgb(226 232 240);"
+      style="width: 18rem; padding: 1rem; --ui-sortable-array-item-focus-background: rgb(241 245 249); --ui-sortable-array-item-remove-hover-background: rgb(226 232 240);"
     >
       {#each items as item, index (item)}
         <SortableArrayItem
