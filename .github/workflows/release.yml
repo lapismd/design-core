@@ -37,6 +37,11 @@ jobs:
           node-version: 24
           cache: pnpm
 
+      - name: Install mdBook
+        uses: taiki-e/install-action@v2
+        with:
+          tool: mdbook@0.5.4
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
