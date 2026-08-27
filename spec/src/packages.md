@@ -98,7 +98,7 @@ The root package manifest defines the supported import boundaries. Family barrel
 
 ### Acceptance details
 
-- Local Mira linking must not change the package manifest.
+- Mira must resolve through a published npm semver dependency in the root manifest and lockfile.
 - Published development tooling dependencies must use npm semver ranges.
 - The tarball must omit repository-only files.
 - Clean consumers must resolve exported source paths using declared dependencies.

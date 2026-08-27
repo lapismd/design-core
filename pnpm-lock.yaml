@@ -61,7 +61,7 @@ importers:
         version: 3.12.2
       '@lapismd/mira':
         specifier: ^0.0.1
-        version: link:../mira-mde/packages/mira
+        version: 0.0.1(@codemirror/autocomplete@6.20.3)(@codemirror/commands@6.10.4)(@codemirror/lang-markdown@6.5.2)(@codemirror/lang-yaml@6.1.3)(@codemirror/language-data@6.5.2)(@codemirror/language@6.12.4)(@codemirror/legacy-modes@6.5.3)(@codemirror/lint@6.9.7)(@codemirror/search@6.7.1)(@codemirror/state@6.7.1)(@codemirror/view@6.43.8)(@internationalized/date@3.12.2)(@lezer/common@1.5.2)(@lezer/highlight@1.2.3)(@lezer/markdown@1.7.2)(svelte@5.56.6)(tailwindcss@4.3.3)
       '@lezer/common':
         specifier: ^1.2.3
         version: 1.5.2
@@ -279,184 +279,6 @@ importers:
       zod:
         specifier: ^4.4.3
         version: 4.4.3
-
-  ../mira-mde/packages/mira:
-    dependencies:
-      '@adobe/mdast-util-gridtables':
-        specifier: ^4.0.13
-        version: 4.0.19
-      '@adobe/remark-gridtables':
-        specifier: ^3.0.14
-        version: 3.0.20
-      '@dnd-kit/dom':
-        specifier: ^0.4.0
-        version: 0.4.0
-      '@dnd-kit/svelte':
-        specifier: ^0.4.0
-        version: 0.4.0(svelte@5.56.6)
-      '@fontsource/source-code-pro':
-        specifier: ^5.2.7
-        version: 5.3.0
-      '@lucide/svelte':
-        specifier: ^0.525.0
-        version: 0.525.0(svelte@5.56.6)
-      bits-ui:
-        specifier: 2.18.1
-        version: 2.18.1(@internationalized/date@3.12.2)(svelte@5.56.6)
-      clsx:
-        specifier: ^2.1.1
-        version: 2.1.1
-      hast-util-to-text:
-        specifier: ^4.0.2
-        version: 4.0.2
-      lodash-es:
-        specifier: ^4.17.21
-        version: 4.18.1
-      mdast-util-from-markdown:
-        specifier: ^2.0.2
-        version: 2.0.3
-      mdast-util-gfm-table:
-        specifier: ^2.0.0
-        version: 2.0.0
-      mdast-util-to-markdown:
-        specifier: ^2.1.2
-        version: 2.1.2
-      micromark-extension-gfm-table:
-        specifier: ^2.1.1
-        version: 2.1.1
-      micromark-factory-space:
-        specifier: ^2.0.1
-        version: 2.0.1
-      micromark-util-character:
-        specifier: ^2.1.1
-        version: 2.1.1
-      micromark-util-symbol:
-        specifier: ^2.0.1
-        version: 2.0.1
-      micromark-util-types:
-        specifier: ^2.0.2
-        version: 2.0.2
-      rehype-highlight:
-        specifier: ^7.0.2
-        version: 7.0.2
-      rehype-katex:
-        specifier: ^7.0.1
-        version: 7.0.1
-      rehype-parse:
-        specifier: ^9.0.1
-        version: 9.0.1
-      rehype-raw:
-        specifier: ^7.0.0
-        version: 7.0.0
-      rehype-remark:
-        specifier: ^10.0.1
-        version: 10.0.1
-      rehype-sanitize:
-        specifier: ^6.0.0
-        version: 6.0.0
-      rehype-stringify:
-        specifier: ^10.0.1
-        version: 10.0.1
-      remark-directive:
-        specifier: ^4.0.0
-        version: 4.0.0
-      remark-emoji:
-        specifier: ^5.0.2
-        version: 5.0.2
-      remark-frontmatter:
-        specifier: ^5.0.0
-        version: 5.0.0
-      remark-gfm:
-        specifier: ^4.0.1
-        version: 4.0.1
-      remark-math:
-        specifier: ^6.0.0
-        version: 6.0.0
-      remark-parse:
-        specifier: ^11.0.0
-        version: 11.0.0
-      remark-rehype:
-        specifier: ^11.1.2
-        version: 11.1.2
-      remark-stringify:
-        specifier: ^11.0.0
-        version: 11.0.0
-      tailwind-merge:
-        specifier: ^3.4.0
-        version: 3.6.0
-      tailwind-variants:
-        specifier: ^1.0.0
-        version: 1.0.0(tailwindcss@4.3.3)
-      unified:
-        specifier: ^11.0.5
-        version: 11.0.5
-      unist-util-visit:
-        specifier: ^5.0.0
-        version: 5.1.0
-      yaml:
-        specifier: ^2.8.1
-        version: 2.9.0
-    devDependencies:
-      '@codemirror/autocomplete':
-        specifier: ^6.18.7
-        version: 6.20.3
-      '@codemirror/commands':
-        specifier: ^6.10.1
-        version: 6.10.4
-      '@codemirror/lang-markdown':
-        specifier: ^6.3.4
-        version: 6.5.2
-      '@codemirror/lang-yaml':
-        specifier: ^6.1.2
-        version: 6.1.3
-      '@codemirror/language':
-        specifier: ^6.11.3
-        version: 6.12.4
-      '@codemirror/language-data':
-        specifier: ^6.5.2
-        version: 6.5.2
-      '@codemirror/legacy-modes':
-        specifier: ^6.5.3
-        version: 6.5.3
-      '@codemirror/lint':
-        specifier: ^6.9.2
-        version: 6.9.7
-      '@codemirror/search':
-        specifier: ^6.5.11
-        version: 6.7.1
-      '@codemirror/state':
-        specifier: ^6.5.2
-        version: 6.7.1
-      '@codemirror/view':
-        specifier: ^6.38.8
-        version: 6.43.8
-      '@lezer/common':
-        specifier: ^1.5.2
-        version: 1.5.2
-      '@lezer/highlight':
-        specifier: ^1.2.3
-        version: 1.2.3
-      '@lezer/markdown':
-        specifier: ^1.4.3
-        version: 1.7.2
-      '@types/hast':
-        specifier: ^3.0.4
-        version: 3.0.5
-      '@types/lodash-es':
-        specifier: ^4.17.12
-        version: 4.17.12
-      '@types/mdast':
-        specifier: ^4.0.4
-        version: 4.0.4
-      '@types/unist':
-        specifier: ^3.0.3
-        version: 3.0.3
-      katex:
-        specifier: ^0.16.22
-        version: 0.16.47
-      svelte:
-        specifier: ^5.46.1
-        version: 5.56.6
 
 packages:
 
@@ -1132,6 +954,25 @@ packages:
 
   '@kwsites/promise-deferred@1.1.1':
     resolution: {integrity: sha512-GaHYm+c0O9MjZRu0ongGBRbinu8gVAMd2UZjji6jVmqKtZluZnptXGWhz1E8j8D2HJ3f/yMxKAUC0b+57wncIw==}
+
+  '@lapismd/mira@0.0.1':
+    resolution: {integrity: sha512-RTCrOIfJIaYwwSONGA2LO52M67U22A1NMwb9/ZgPNxx4dlO4IIhLhSMVHOln6Ds+JctblbWQIKOhPfAHhw/YsA==}
+    peerDependencies:
+      '@codemirror/autocomplete': ^6.18.7
+      '@codemirror/commands': ^6.10.0
+      '@codemirror/lang-markdown': ^6.3.4
+      '@codemirror/lang-yaml': ^6.1.2
+      '@codemirror/language': ^6.11.3
+      '@codemirror/language-data': ^6.5.2
+      '@codemirror/legacy-modes': ^6.5.3
+      '@codemirror/lint': ^6.9.2
+      '@codemirror/search': ^6.5.11
+      '@codemirror/state': ^6.5.2
+      '@codemirror/view': ^6.38.8
+      '@lezer/common': ^1.5.2
+      '@lezer/highlight': ^1.2.3
+      '@lezer/markdown': ^1.4.3
+      svelte: ^5.0.0
 
   '@lapismd/spec-validator@0.1.0':
     resolution: {integrity: sha512-LixMQdIgdh96K4nEq3G31cRa26zQ830SvhLSp1AFufhP6lc1AS6PTyc/bV6JhlN6NC94PtgmBOBeq0VJGhQCFA==}
@@ -2233,12 +2074,6 @@ packages:
 
   '@types/katex@0.16.8':
     resolution: {integrity: sha512-trgaNyfU+Xh2Tc+ABIb44a5AYUpicB3uwirOioeOkNPPbmgRNtcWyDeeFRzjPZENO9Vq8gvVqfhaaXWLlevVwg==}
-
-  '@types/lodash-es@4.17.12':
-    resolution: {integrity: sha512-0NgftHUcV4v34VhXm8QBSftKVXtbkBG3ViCjs6+eJ5a6y6Mi/jiFGPc1sC7QK+9BFhWrURE3EOggmWaSxL9OzQ==}
-
-  '@types/lodash@4.17.25':
-    resolution: {integrity: sha512-+K1NIO8I+F9/wNulfVvu23QYd0Pe9/OCqRrim4NoYIf1VoEDL90Ve4ClzpyqBLc7NpGGWRvYNCKZ1BE/Jpf8dQ==}
 
   '@types/luxon@3.7.2':
     resolution: {integrity: sha512-gW+Oib+vUtGJBtNC8V9Reww0oIpusw+4m81uncg9REGZAJfqOQHfo/nkabnc7w0QReXyPqjrbWMJk6NuAkiX3Q==}
@@ -5893,6 +5728,67 @@ snapshots:
 
   '@kwsites/promise-deferred@1.1.1': {}
 
+  '@lapismd/mira@0.0.1(@codemirror/autocomplete@6.20.3)(@codemirror/commands@6.10.4)(@codemirror/lang-markdown@6.5.2)(@codemirror/lang-yaml@6.1.3)(@codemirror/language-data@6.5.2)(@codemirror/language@6.12.4)(@codemirror/legacy-modes@6.5.3)(@codemirror/lint@6.9.7)(@codemirror/search@6.7.1)(@codemirror/state@6.7.1)(@codemirror/view@6.43.8)(@internationalized/date@3.12.2)(@lezer/common@1.5.2)(@lezer/highlight@1.2.3)(@lezer/markdown@1.7.2)(svelte@5.56.6)(tailwindcss@4.3.3)':
+    dependencies:
+      '@adobe/mdast-util-gridtables': 4.0.19
+      '@adobe/remark-gridtables': 3.0.20
+      '@codemirror/autocomplete': 6.20.3
+      '@codemirror/commands': 6.10.4
+      '@codemirror/lang-markdown': 6.5.2
+      '@codemirror/lang-yaml': 6.1.3
+      '@codemirror/language': 6.12.4
+      '@codemirror/language-data': 6.5.2
+      '@codemirror/legacy-modes': 6.5.3
+      '@codemirror/lint': 6.9.7
+      '@codemirror/search': 6.7.1
+      '@codemirror/state': 6.7.1
+      '@codemirror/view': 6.43.8
+      '@dnd-kit/dom': 0.4.0
+      '@dnd-kit/svelte': 0.4.0(svelte@5.56.6)
+      '@fontsource/source-code-pro': 5.3.0
+      '@lezer/common': 1.5.2
+      '@lezer/highlight': 1.2.3
+      '@lezer/markdown': 1.7.2
+      '@lucide/svelte': 0.525.0(svelte@5.56.6)
+      bits-ui: 2.18.1(@internationalized/date@3.12.2)(svelte@5.56.6)
+      clsx: 2.1.1
+      hast-util-to-text: 4.0.2
+      lodash-es: 4.18.1
+      mdast-util-from-markdown: 2.0.3
+      mdast-util-gfm-table: 2.0.0
+      mdast-util-to-markdown: 2.1.2
+      micromark-extension-gfm-table: 2.1.1
+      micromark-factory-space: 2.0.1
+      micromark-util-character: 2.1.1
+      micromark-util-symbol: 2.0.1
+      micromark-util-types: 2.0.2
+      rehype-highlight: 7.0.2
+      rehype-katex: 7.0.1
+      rehype-parse: 9.0.1
+      rehype-raw: 7.0.0
+      rehype-remark: 10.0.1
+      rehype-sanitize: 6.0.0
+      rehype-stringify: 10.0.1
+      remark-directive: 4.0.0
+      remark-emoji: 5.0.2
+      remark-frontmatter: 5.0.0
+      remark-gfm: 4.0.1
+      remark-math: 6.0.0
+      remark-parse: 11.0.0
+      remark-rehype: 11.1.2
+      remark-stringify: 11.0.0
+      svelte: 5.56.6
+      tailwind-merge: 3.6.0
+      tailwind-variants: 1.0.0(tailwindcss@4.3.3)
+      unified: 11.0.5
+      unist-util-visit: 5.1.0
+      yaml: 2.9.0
+    transitivePeerDependencies:
+      - '@internationalized/date'
+      - '@sveltejs/kit'
+      - supports-color
+      - tailwindcss
+
   '@lapismd/spec-validator@0.1.0(@tobilu/qmd@2.5.3(typescript@5.9.3))':
     dependencies:
       jiti: 2.7.0
@@ -6826,12 +6722,6 @@ snapshots:
       '@types/unist': 3.0.3
 
   '@types/katex@0.16.8': {}
-
-  '@types/lodash-es@4.17.12':
-    dependencies:
-      '@types/lodash': 4.17.25
-
-  '@types/lodash@4.17.25': {}
 
   '@types/luxon@3.7.2': {}
 

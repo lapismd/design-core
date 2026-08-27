@@ -54,7 +54,7 @@ Design Core is a shared presentation and controller library. Consumer applicatio
 
 ## DC-ARCH-006 — External consumption
 
-**Requirement.** Independent first-party plugins MUST consume Design Core through its public versioned package boundary without repository source aliases.
+**Requirement.** Independent first-party plugins MUST consume Design Core through its public versioned package boundary without repository source aliases or sibling workspace membership.
 
 ### Acceptance details
 
