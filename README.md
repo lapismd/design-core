@@ -246,7 +246,7 @@ pnpm release:plan --registry https://registry.npmjs.org
 pnpm packages:pack
 ```
 
-The first public npm publication is a manual bootstrap from reviewed tarballs.
+`@lapismd/design-core@0.1.0` was manually bootstrapped from a reviewed tarball.
 Future releases use Changesets and the repository release workflow.
 
 ## Further reading

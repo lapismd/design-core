@@ -29,15 +29,13 @@ When working on UI components, use the local Storybook catalog and its browser
 tests to validate the change. Human-oriented package overview and command list:
 [`README.md`](./README.md).
 
-## Colocated sibling dependencies
+## Package dependency policy
 
-- Consume a colocated LapisMD sibling through an explicit `link:` dependency or
-  a `link:`-valued root `pnpm-workspace.yaml` override; do not add the sibling
-  repository as a workspace member.
-- Keep publishable manifests portable. Do not vendor sibling source, edit its
-  `node_modules`, or replace a local checkout with a registry copy.
-- When a sibling exports built output, rebuild it before validating this
-  repository as a consumer.
+- Consume published LapisMD packages through normal npm semver ranges.
+- Keep publishable manifests portable. Do not vendor dependency source, edit
+  dependency `node_modules`, or add checkout-specific paths.
+- If a LapisMD dependency needs a source fix, make the change in the owning
+  repository, verify it there, and consume a released package version here.
 
 ## Agent reading order
 

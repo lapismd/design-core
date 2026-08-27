@@ -129,12 +129,12 @@ Specification governance keeps requirements discoverable, mapped, validated, and
 - Validation must reject example source that exposes story-only component names or inferred args as consumer usage.
 - Validation must reject language values that the current Storybook highlighter renders without syntax tokens.
 
-## DC-GOV-010 — Sibling resolution
+## DC-GOV-010 — Published dependency resolution
 
-**Requirement.** Repository agent guidance MUST keep colocated LapisMD sibling repositories outside this pnpm workspace and resolve them through explicit `link:` dependencies or `link:`-valued root overrides.
+**Requirement.** Repository agent guidance MUST keep external LapisMD repositories outside this pnpm workspace and consume published dependencies through npm semver ranges.
 
 ### Acceptance details
 
 - Publishable manifests must retain portable dependency ranges.
-- Agents must not vendor sibling source, mutate sibling `node_modules`, or replace a local checkout with a registry copy.
-- A sibling that exports built output must be rebuilt before consumer validation.
+- Agents must not vendor dependency source, mutate dependency `node_modules`, or add checkout-specific paths.
+- Dependency source fixes must be made in the owning repository and consumed through a released package version.
