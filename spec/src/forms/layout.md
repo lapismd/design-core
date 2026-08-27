@@ -43,7 +43,8 @@ Form layout families provide reusable chrome for sections, fields, repeaters, ac
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/forms`.
-- The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- Consumers MUST be able to supply an item-specific drag label and Arrow Up or Arrow Down reorder controller.
+- The catalog MUST demonstrate pointer, keyboard, and remove controllers without owning the repeated collection.
 
 ## DC-FORM-024 — Entry Actions
 

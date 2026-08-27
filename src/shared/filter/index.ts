@@ -1,5 +1,6 @@
 export {
   SearchFilterBar,
+  SearchFilterInput,
   searchFilterCompletion,
   searchFilterCompletionStage,
   searchFilterFieldByName,

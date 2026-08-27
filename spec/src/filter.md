@@ -33,11 +33,11 @@ Filter contracts separate query language, reusable search chrome, and consumer q
 
 ## DC-FILTER-003 — Search Filter Bar
 
-**Requirement.** The Search Filter Bar family MUST compose text search, structured filters, commands, and controlled query changes in an accessible search surface.
+**Requirement.** The Search Filter Bar family MUST compose text search, structured filters, commands, and controlled query changes from one reusable accessible query input.
 
 ### Acceptance details
 
-- The public boundary is `@lapismd/design-core/filter`.
+- The public boundary is `@lapismd/design-core/filter`; its `SearchFilterInput` MUST expose the same plain and CodeMirror lifecycle in compact rows without bar chrome.
 - Search surfaces with small enumerated facets beneath the query MUST use forms `FilterCommandPicker` selectors by default; parallel button sets are reserved for true mode or action switching.
 - Expandable search-syntax guidance MUST use a Lucide disclosure icon whose orientation reflects the native disclosure state.
 - The catalog MUST prove filter-query completion tooltips portal into the owner document, escape search-surface clipping, remain hit-testable above adjacent content, use a compact 18rem viewport-bounded default width, and wrap labels and details inside each row.

@@ -1,47 +1,12 @@
 <script lang="ts">
   import "./SearchFilterBar.css";
-  import { filterQuery } from "../filter-query/index.js";
-  import {
-    acceptCompletion,
-    autocompletion,
-    completionKeymap,
-    startCompletion,
-  } from "@codemirror/autocomplete";
-  import { syntaxHighlighting } from "@codemirror/language";
-  import { defaultKeymap, history, historyKeymap } from "@codemirror/commands";
-  import {
-    Compartment,
-    EditorState,
-    Prec,
-    type Extension,
-  } from "@codemirror/state";
-  import {
-    drawSelection,
-    EditorView,
-    keymap,
-    placeholder as placeholderExtension,
-    tooltips,
-  } from "@codemirror/view";
+  import type { Extension } from "@codemirror/state";
   import ChevronRightIcon from "@lucide/svelte/icons/chevron-right";
-  import SearchIcon from "@lucide/svelte/icons/search";
   import SlidersHorizontalIcon from "@lucide/svelte/icons/sliders-horizontal";
   import XIcon from "@lucide/svelte/icons/x";
-  import { mount, type Snippet, unmount } from "svelte";
-  import { searchFilterHighlightStyle } from "./search-filter-highlight.js";
-  import {
-    formatTermExpr,
-    predicateChipEditHandler,
-    searchFilterPredicateChips,
-    type PredicateChipEditSession,
-    type PredicateTermParts,
-  } from "./search-filter-predicate-chips.js";
-  import {
-    searchFilterCompletion,
-    searchFilterCompletionStage,
-    type SearchFilterSyntax,
-  } from "./search-filter-syntax.js";
-  import SearchFilterAutocompleteScrollArea from "./SearchFilterAutocompleteScrollArea.svelte";
-  import SearchFilterPredicateEditor from "./SearchFilterPredicateEditor.svelte";
+  import { type Snippet } from "svelte";
+  import SearchFilterInput from "./SearchFilterInput.svelte";
+  import type { SearchFilterSyntax } from "./search-filter-syntax.js";
 
   let {
     value = "",
@@ -101,13 +66,10 @@
     actions?: Snippet;
   } = $props();
 
-  let editor = $state<EditorView | null>(null);
-  let plainInput = $state<HTMLInputElement | null>(null);
-  let replacing = false;
-  let chipEditSession = $state<PredicateChipEditSession | null>(null);
-  const editableCompartment = new Compartment();
-  const placeholderCompartment = new Compartment();
-  const autocompleteCompartment = new Compartment();
+  let searchInput = $state<{
+    focus: () => void;
+    clear: () => void;
+  } | null>(null);
 
   const trimmedValue = $derived(value.trim());
   const hasValue = $derived(trimmedValue.length > 0);
@@ -122,269 +84,17 @@
       !filtersExpanded,
   );
 
-  function autocompleteExtension(): Extension {
-    if (!filterSyntax || disabled || inputMode !== "filter-query") return [];
-    return [
-      autocompletion({
-        override: [searchFilterCompletion(filterSyntax)],
-        icons: false,
-        activateOnTyping: true,
-        activateOnTypingDelay: 0,
-        interactionDelay: 0,
-        activateOnCompletion: (completion) =>
-          completion.type === "property" || completion.type === "operator",
-        tooltipClass: (state) =>
-          searchFilterCompletionStage(
-            filterSyntax,
-            state.doc.toString(),
-            state.selection.main.head,
-          ) === "value"
-            ? "cv-search-filter-bar__autocomplete--values"
-            : "",
-      }),
-      // CodeMirror prevents the browser's normal Tab navigation when this
-      // command accepts an open completion, but preserves Tab otherwise.
-      Prec.highest(
-        keymap.of([{ key: "Tab", run: acceptCompletion }, ...completionKeymap]),
-      ),
-    ];
-  }
-
-  function shouldStartAutocomplete(view: EditorView) {
-    if (!filterSyntax || disabled || inputMode !== "filter-query") {
-      return false;
-    }
-
-    const query = view.state.doc.toString();
-    if (!query) return true;
-
-    const stage = searchFilterCompletionStage(
-      filterSyntax,
-      query,
-      view.state.selection.main.head,
-    );
-    return stage === "operator" || stage === "value";
-  }
-
-  function scheduleAutocomplete(view: EditorView) {
-    queueMicrotask(() => {
-      if (view.hasFocus && shouldStartAutocomplete(view)) {
-        startCompletion(view);
-      }
-    });
-  }
-
-  /**
-   * CodeMirror owns and replaces the listbox. Mount a shadcn ScrollArea only
-   * around its dynamic-value lists, and remount it whenever CodeMirror swaps
-   * the list for a new completion stage.
-   */
-  function observeAutocompletePopup(node: HTMLDivElement) {
-    let mounted: Record<string, unknown> | null = null;
-    let mountedList: HTMLUListElement | null = null;
-
-    function cleanup() {
-      if (mounted) void unmount(mounted);
-      mounted = null;
-      mountedList = null;
-    }
-
-    function refresh() {
-      const tooltip = node.querySelector<HTMLElement>(
-        ".cm-tooltip-autocomplete",
-      );
-      const shouldScrollValues = tooltip?.classList.contains(
-        "cv-search-filter-bar__autocomplete--values",
-      );
-      const list = tooltip?.querySelector<HTMLUListElement>(":scope > ul");
-
-      if (!tooltip || !shouldScrollValues) {
-        cleanup();
-        return;
-      }
-      if (!list || list === mountedList) return;
-
-      cleanup();
-      mountedList = list;
-      mounted = mount(SearchFilterAutocompleteScrollArea, {
-        target: tooltip,
-        props: { list },
-      });
-    }
-
-    const observer = new MutationObserver(refresh);
-    observer.observe(node, {
-      childList: true,
-      subtree: true,
-      attributes: true,
-      attributeFilter: ["class"],
-    });
-    refresh();
-
-    return {
-      destroy() {
-        observer.disconnect();
-        cleanup();
-      },
-    };
-  }
-
   export function focus() {
-    if (inputMode === "plain") {
-      plainInput?.focus();
-      return;
-    }
-    editor?.focus();
+    searchInput?.focus();
   }
 
   function toggleFilters() {
     filtersExpanded = !filtersExpanded;
   }
 
-  function openPredicateChipEditor(session: PredicateChipEditSession) {
-    if (disabled) return;
-    chipEditSession = session;
-  }
-
-  function closePredicateChipEditor() {
-    chipEditSession = null;
-  }
-
-  function applyPredicateChipEdit(parts: PredicateTermParts) {
-    const session = chipEditSession;
-    const view = editor;
-    chipEditSession = null;
-    if (!session || !view) return;
-    const next = formatTermExpr(parts.field, parts.operator, parts.value);
-    view.dispatch({
-      changes: { from: session.from, to: session.to, insert: next },
-    });
-  }
-
   function clearEditor() {
-    chipEditSession = null;
-    if (inputMode === "plain") {
-      if (value) onValueChange("");
-      void onClearSearch();
-      return;
-    }
-    if (editor && editor.state.doc.length > 0) {
-      replacing = true;
-      editor.dispatch({
-        changes: { from: 0, to: editor.state.doc.length, insert: "" },
-      });
-      replacing = false;
-    }
-    void onClearSearch();
+    searchInput?.clear();
   }
-
-  function handlePlainInput(event: Event) {
-    if (!(event.currentTarget instanceof HTMLInputElement)) return;
-    onValueChange(event.currentTarget.value);
-  }
-
-  function filterQueryEditor(node: HTMLDivElement, source: string) {
-    const tooltipLayer = node.ownerDocument.createElement("div");
-    tooltipLayer.className = "cv-search-filter-bar__tooltip-layer";
-    tooltipLayer.dataset.uiComponent = "search-filter-bar-tooltip-layer";
-    tooltipLayer.dataset.uiPart = "completion-portal";
-    node.ownerDocument.body.append(tooltipLayer);
-    const popupObserver = observeAutocompletePopup(tooltipLayer);
-
-    const view = new EditorView({
-      state: EditorState.create({
-        doc: source,
-        extensions: [
-          filterQuery(),
-          syntaxHighlighting(searchFilterHighlightStyle, { fallback: true }),
-          searchFilterPredicateChips(),
-          predicateChipEditHandler.of(openPredicateChipEditor),
-          history(),
-          drawSelection(),
-          EditorView.lineWrapping,
-          tooltips({ parent: tooltipLayer }),
-          editableCompartment.of(EditorView.editable.of(!disabled)),
-          placeholderCompartment.of(placeholderExtension(placeholder)),
-          autocompleteCompartment.of(autocompleteExtension()),
-          EditorView.contentAttributes.of({
-            role: "searchbox",
-            "aria-label": ariaLabel,
-            "aria-invalid": error ? "true" : "false",
-            ...(inputId ? { id: inputId } : {}),
-          }),
-          EditorView.editorAttributes.of({
-            class: "cv-search-filter-bar__cm",
-          }),
-          EditorView.theme({
-            ".cm-content": {
-              caretColor:
-                "var(--code-caret, var(--ui-form-foreground, currentColor))",
-            },
-            "&.cm-focused .cm-cursor": {
-              borderLeftColor:
-                "var(--code-caret, var(--ui-form-foreground, currentColor))",
-              borderLeftWidth: "2px",
-            },
-          }),
-          keymap.of([...defaultKeymap, ...historyKeymap]),
-          EditorView.updateListener.of((update) => {
-            if (update.docChanged && !replacing) {
-              onValueChange(update.state.doc.toString());
-            }
-            if (
-              (update.focusChanged && update.view.hasFocus) ||
-              (update.selectionSet && !update.docChanged)
-            ) {
-              scheduleAutocomplete(update.view);
-            }
-          }),
-          ...editorExtensions,
-        ],
-      }),
-      parent: node,
-    });
-    editor = view;
-
-    return {
-      update(next: string) {
-        if (view.state.doc.toString() === next) return;
-        replacing = true;
-        view.dispatch({
-          changes: { from: 0, to: view.state.doc.length, insert: next },
-        });
-        replacing = false;
-      },
-      destroy() {
-        popupObserver.destroy();
-        view.destroy();
-        tooltipLayer.remove();
-        if (editor === view) editor = null;
-        chipEditSession = null;
-      },
-    };
-  }
-
-  $effect(() => {
-    editor?.dispatch({
-      effects: editableCompartment.reconfigure(
-        EditorView.editable.of(!disabled),
-      ),
-    });
-  });
-
-  $effect(() => {
-    editor?.dispatch({
-      effects: autocompleteCompartment.reconfigure(autocompleteExtension()),
-    });
-  });
-
-  $effect(() => {
-    editor?.dispatch({
-      effects: placeholderCompartment.reconfigure(
-        placeholderExtension(placeholder),
-      ),
-    });
-  });
 </script>
 
 <div
@@ -395,62 +105,38 @@
   data-input-mode={inputMode}
 >
   <div class="cv-search-filter-bar__content">
-    <label class="cv-search-filter-bar__label" for={inputId}>
+    <SearchFilterInput
+      bind:this={searchInput}
+      {value}
+      {placeholder}
       {ariaLabel}
-    </label>
-
-    <div class="cv-search-filter-bar__search-pill">
-      <SearchIcon />
-      {#if inputMode === "plain"}
-        <input
-          bind:this={plainInput}
-          class="cv-search-filter-bar__plain-input"
-          type="search"
-          id={inputId}
-          {value}
-          {placeholder}
-          {disabled}
-          aria-label={ariaLabel}
-          aria-invalid={error ? "true" : undefined}
-          autocomplete="off"
-          spellcheck="false"
-          oninput={handlePlainInput}
-        />
-      {:else}
-        <div
-          class="cv-search-filter-bar__editor"
-          use:filterQueryEditor={value}
-        ></div>
-      {/if}
-      {#if shortcut && !hasValue && (!showFilterToggle || filtersExpanded)}
-        <kbd>{shortcut}</kbd>
-      {/if}
-      {#if showFilterToggle && hasFilterControls && !filtersExpanded}
-        <button
-          type="button"
-          class="cv-search-filter-bar__filter-toggle cv-search-filter-bar__filter-toggle--inline"
-          aria-label={expandFiltersLabel}
-          aria-pressed={false}
-          title={expandFiltersLabel}
-          {disabled}
-          onclick={toggleFilters}
-        >
-          <SlidersHorizontalIcon />
-        </button>
-      {/if}
-      {#if hasValue}
-        <button
-          type="button"
-          class="cv-search-filter-bar__clear-search"
-          aria-label={clearSearchLabel}
-          title={clearSearchLabel}
-          {disabled}
-          onclick={clearEditor}
-        >
-          <XIcon />
-        </button>
-      {/if}
-    </div>
+      shortcut={!showFilterToggle || filtersExpanded ? shortcut : ""}
+      {disabled}
+      {inputId}
+      {inputMode}
+      {clearSearchLabel}
+      {error}
+      {editorExtensions}
+      {filterSyntax}
+      {onValueChange}
+      {onClearSearch}
+    >
+      {#snippet actions()}
+        {#if showFilterToggle && hasFilterControls && !filtersExpanded}
+          <button
+            type="button"
+            class="cv-search-filter-bar__filter-toggle cv-search-filter-bar__filter-toggle--inline"
+            aria-label={expandFiltersLabel}
+            aria-pressed={false}
+            title={expandFiltersLabel}
+            {disabled}
+            onclick={toggleFilters}
+          >
+            <SlidersHorizontalIcon />
+          </button>
+        {/if}
+      {/snippet}
+    </SearchFilterInput>
 
     {#if collapsedFiltersVisible && collapsedFilters}
       <div class="cv-search-filter-bar__collapsed-filters">
@@ -556,23 +242,5 @@
         </div>
       </details>
     {/if}
-
-    {#if error}
-      <p class="ui-form-control-error cv-search-filter-bar__error" role="alert">
-        {error}
-      </p>
-    {/if}
   </div>
-
-  {#if chipEditSession}
-    {#key `${chipEditSession.from}:${chipEditSession.to}:${chipEditSession.field}`}
-      <SearchFilterPredicateEditor
-        session={chipEditSession}
-        {filterSyntax}
-        {disabled}
-        onCancel={closePredicateChipEditor}
-        onApply={applyPredicateChipEdit}
-      />
-    {/key}
-  {/if}
 </div>

@@ -13,7 +13,11 @@
     compact = false,
     inset = "normal",
     removable = true,
+    dragLabel = "Drag item",
+    canMoveUp = true,
+    canMoveDown = true,
     onDragStart,
+    onKeyboardMove,
     onRemove,
     children,
   }: {
@@ -25,7 +29,11 @@
     /** Horizontal padding; `flush` hangs the grip left with no left padding. */
     inset?: "normal" | "tight" | "flush";
     removable?: boolean;
+    dragLabel?: string;
+    canMoveUp?: boolean;
+    canMoveDown?: boolean;
     onDragStart?: (event: PointerEvent, index: number) => void;
+    onKeyboardMove?: (index: number, delta: -1 | 1) => void;
     onRemove?: () => void;
     children?: Snippet;
   } = $props();
@@ -45,10 +53,20 @@
   {#if onDragStart}
     <button
       type="button"
-      aria-label="Drag item"
+      aria-label={dragLabel}
+      aria-keyshortcuts="ArrowUp ArrowDown"
       data-ui-component="sortable-array-item"
       data-ui-part="sortable-array-item-drag"
       onpointerdown={(event) => onDragStart(event, index)}
+      onkeydown={(event) => {
+        if (event.key === "ArrowUp" && canMoveUp) {
+          event.preventDefault();
+          onKeyboardMove?.(index, -1);
+        } else if (event.key === "ArrowDown" && canMoveDown) {
+          event.preventDefault();
+          onKeyboardMove?.(index, 1);
+        }
+      }}
     >
       <GripVerticalIcon aria-hidden="true" />
     </button>

@@ -1,4 +1,5 @@
 export { default as SearchFilterBar } from "./SearchFilterBar.svelte";
+export { default as SearchFilterInput } from "./SearchFilterInput.svelte";
 export {
   searchFilterCompletion,
   searchFilterCompletionStage,

@@ -1,6 +1,12 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, fireEvent, userEvent } from "storybook/test";
+  import {
+    expect,
+    fireEvent,
+    userEvent,
+    waitFor,
+    within,
+  } from "storybook/test";
   import { Basic } from "./ColorPicker.example-sources";
   import ColorPicker from "./ColorPicker.svelte";
 
@@ -58,6 +64,54 @@
         }}
       />
       <output class="sr-only">{color}</output>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Compact popover palette"
+  tags={["visual-pending", "test"]}
+  play={async ({ canvas, canvasElement }) => {
+    const page = within(canvasElement.ownerDocument.body);
+    const trigger = canvas.getByRole("button", { name: "Group color picker" });
+    await userEvent.click(trigger);
+    const preset = await page.findByRole("button", { name: "Use #16a34a" });
+    const triggerBounds = trigger.getBoundingClientRect();
+    const content = preset.closest<HTMLElement>(
+      '[data-ui-part="popover-content"]',
+    );
+    await expect(content).not.toBeNull();
+    const contentBounds = content!.getBoundingClientRect();
+    await expect(
+      Math.min(
+        Math.abs(contentBounds.top - triggerBounds.bottom),
+        Math.abs(contentBounds.bottom - triggerBounds.top),
+        Math.abs(contentBounds.left - triggerBounds.right),
+        Math.abs(contentBounds.right - triggerBounds.left),
+      ),
+    ).toBeLessThanOrEqual(8);
+    await userEvent.click(preset);
+    await expect(canvas.getByRole("status")).toHaveTextContent("#16a34a");
+    const value = page.getByLabelText("Group color value");
+    await userEvent.clear(value);
+    await userEvent.type(value, "#112233");
+    await waitFor(() =>
+      expect(canvas.getByRole("status")).toHaveTextContent("#112233"),
+    );
+  }}
+>
+  {#snippet template()}
+    <div style="padding: 4rem;">
+      <ColorPicker
+        value={color}
+        ariaLabel="Group"
+        presentation="popover"
+        presets={["#3b82f6", "#16a34a", "#d97706", "#9333ea", "#db2777"]}
+        onChange={(next) => {
+          color = next;
+        }}
+      />
+      <output>{color}</output>
     </div>
   {/snippet}
 </Story>

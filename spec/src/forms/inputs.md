@@ -60,7 +60,8 @@ Form inputs provide higher-level controlled editing patterns composed from share
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/forms`.
-- The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- Popover presentation MUST keep its icon-only trigger and editable palette adjacent through owner-document collision-aware positioning.
+- Inline presentation MUST retain the existing native swatch and text editor contract.
 
 ## DC-FORM-010 — Cycle Picker
 
