@@ -4,18 +4,18 @@ The root package manifest defines the supported import boundaries. Family barrel
 
 ## Public surface coverage
 
-| Surface                | Public boundary   | Requirement |
-| ---------------------- | ----------------- | ----------- |
-| Root styles and themes | Package exports   | DC-PKG-001  |
-| Shadcn exports         | Package exports   | DC-PKG-002  |
-| Forms exports          | Package exports   | DC-PKG-003  |
-| AI exports             | Package exports   | DC-PKG-004  |
-| Filter exports         | Package exports   | DC-PKG-005  |
-| Shell exports          | Package exports   | DC-PKG-006  |
-| Workspace exports      | Package exports   | DC-PKG-007  |
-| Docs MCP package       | Workspace package | DC-PKG-008  |
-| Versioned package      | npm artifact      | DC-PKG-009  |
-| Diff exports           | Package exports   | DC-PKG-010  |
+| Surface                 | Public boundary  | Requirement |
+| ----------------------- | ---------------- | ----------- |
+| Root styles and themes  | Package exports  | DC-PKG-001  |
+| Shadcn exports          | Package exports  | DC-PKG-002  |
+| Forms exports           | Package exports  | DC-PKG-003  |
+| AI exports              | Package exports  | DC-PKG-004  |
+| Filter exports          | Package exports  | DC-PKG-005  |
+| Shell exports           | Package exports  | DC-PKG-006  |
+| Workspace exports       | Package exports  | DC-PKG-007  |
+| Private workspace tools | Package boundary | DC-PKG-008  |
+| Versioned package       | npm artifact     | DC-PKG-009  |
+| Diff exports            | Package exports  | DC-PKG-010  |
 
 ## DC-PKG-001 — Root styles and themes
 
@@ -82,14 +82,15 @@ The root package manifest defines the supported import boundaries. Family barrel
 - The export must resolve to tracked source or the documented workspace build output.
 - Package checks must fail when the mapped entry point is stale or missing.
 
-## DC-PKG-008 — Docs MCP package
+## DC-PKG-008 — Private workspace tools
 
-**Requirement.** The Docs MCP package family MUST expose the private Storybook Docs MCP package only as workspace tooling rather than a Design Core runtime export.
+**Requirement.** Design Core MUST NOT include private workspace packages in its root workspace, runtime manifest, release manifest, Storybook host configuration, or public package artifact.
 
 ### Acceptance details
 
-- The export must resolve to tracked source or the documented workspace build output.
-- Package checks must fail when the mapped entry point is stale or missing.
+- Private documentation or automation packages must live in their own repository or package release boundary.
+- Root package checks must fail when the removed private Docs MCP package is reintroduced into release configuration.
+- The package artifact must stay focused on Design Core source, styles, docs, and metadata.
 
 ## DC-PKG-009 — Versioned package artifact
 

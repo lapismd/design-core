@@ -44,7 +44,7 @@ Specification governance keeps requirements discoverable, mapped, validated, and
 | Workspace panels                                                         | `workspace/panels.md`            |
 | Workspace plugins                                                        | `workspace/plugins.md`           |
 | Storybook host and specification mirrors                                 | `storybook-catalog.md`           |
-| UI generator and Docs MCP tooling                                        | `tooling.md`                     |
+| UI generator and offline docs tooling                                    | `tooling.md`                     |
 | Specification validators, book, map, QMD, and agent rules                | `spec-governance.md`             |
 | Component classification                                                 | `component-inventory.md`         |
 | Cross-family forms composition guidance                                  | `forms/guidance.md`              |

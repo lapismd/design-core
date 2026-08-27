@@ -4,12 +4,12 @@ Repository tools keep source generation, discovery, documentation, and validatio
 
 ## Public surface coverage
 
-| Surface                   | Public boundary | Requirement |
-| ------------------------- | --------------- | ----------- |
-| UI catalog CLI            | Tooling         | DC-TOOL-001 |
-| Component generator       | Tooling         | DC-TOOL-002 |
-| Validation commands       | Tooling         | DC-TOOL-003 |
-| Docs MCP and llms catalog | Tooling         | DC-TOOL-004 |
+| Surface               | Public boundary | Requirement |
+| --------------------- | --------------- | ----------- |
+| UI catalog CLI        | Tooling         | DC-TOOL-001 |
+| Component generator   | Tooling         | DC-TOOL-002 |
+| Validation commands   | Tooling         | DC-TOOL-003 |
+| Offline documentation | Tooling         | DC-TOOL-004 |
 
 ## DC-TOOL-001 — UI catalog CLI
 
@@ -41,13 +41,13 @@ Repository tools keep source generation, discovery, documentation, and validatio
 - Specification commands must retain separate validation, build, spec-first, index, search, and serve entry points through the configured shared CLI.
 - Release-safe aggregate gates must use bootstrap-safe validation.
 
-## DC-TOOL-004 — Docs MCP and llms catalog
+## DC-TOOL-004 — Offline documentation
 
-**Requirement.** The Docs MCP and llms catalog family MUST publish the same bounded component and guidance documents through stdio, HTTP, CLI, and llms routes.
+**Requirement.** The offline documentation tooling MUST expose guide and component discovery through repository-local CLI commands without depending on a private Docs MCP workspace package.
 
 ### Acceptance details
 
 - Machine-readable output must be stable enough for repository automation.
 - Tooling failures must report an actionable source path or command.
-- Docs MCP and llms discovery must expose canonical specification files without rewriting their Markdown.
-- The specification document catalog MUST include every `spec/src/SUMMARY.md` chapter and MUST NOT hard-code a stale chapter count.
+- Guide and component discovery must point readers back to canonical source paths instead of becoming a second authority.
+- Removed Docs MCP commands must not appear in root package scripts or Storybook host configuration.

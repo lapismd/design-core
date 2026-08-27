@@ -64,6 +64,15 @@ function runInherited(commandName, commandArgs, options = {}) {
   });
 }
 
+function currentCommit() {
+  if (process.env.GITHUB_SHA) return process.env.GITHUB_SHA;
+  try {
+    return run("git", ["rev-parse", "HEAD"]).trim();
+  } catch {
+    return null;
+  }
+}
+
 function packageJson() {
   return readJson(path.join(root, "package.json"));
 }
@@ -352,7 +361,7 @@ function prepare({ consumerInstall = false } = {}) {
     generatedAt: new Date().toISOString(),
     registry,
     repository,
-    commit: process.env.GITHUB_SHA ?? null,
+    commit: currentCommit(),
     bootstrapRequired: plan.bootstrapRequired,
     packages: [packageEntry],
   };
@@ -392,8 +401,14 @@ function checkReleaseConfig() {
   if (changesetConfig.changelog?.[1]?.repo !== repository) {
     throw new Error("Changesets changelog repo must be lapismd/design-core");
   }
-  if (!changesetConfig.ignore?.includes("storybook-addon-docs-mcp")) {
-    throw new Error("Private Docs MCP package must be ignored by Changesets");
+  if (
+    JSON.stringify(changesetConfig).includes("storybook-addon-docs-mcp") ||
+    pkg.devDependencies?.["storybook-addon-docs-mcp"] ||
+    releaseWorkflow.includes("storybook-addon-docs-mcp")
+  ) {
+    throw new Error(
+      "Design Core release config must not reference the removed private Docs MCP package",
+    );
   }
   for (const token of [
     "changesets/action@",
@@ -584,7 +599,7 @@ function notes() {
       "- Visual Delta screenshot comparison remains an explicit manual review lane for this bootstrap release.",
     ].join("\n");
     writeFileSync(notesPath, `${notesText}\n`);
-    const target = process.env.GITHUB_SHA ?? manifest.commit ?? "main";
+    const target = currentCommit() ?? manifest.commit ?? "main";
     const view = spawnSync("gh", ["release", "view", entry.tagName], {
       cwd: root,
       encoding: "utf8",

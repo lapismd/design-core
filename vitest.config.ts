@@ -38,7 +38,6 @@ export default mergeConfig(
               "src/**/*.spec.ts",
               "scripts/storybook-*.spec.ts",
               "scripts/ui-generator/**/*.spec.ts",
-              "packages/storybook-addon-docs-mcp/src/**/*.spec.ts",
             ],
           },
         },

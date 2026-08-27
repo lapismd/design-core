@@ -62,56 +62,32 @@ Before inventing workflows, load package conventions offline via the CLI:
 
 Use `--json` for machine-readable output (`pnpm ui guide testing --json`,
 `pnpm ui components button --json`). Aliases: `pnpm ui:guide`,
-`pnpm ui:components`, `pnpm ui:mcp`.
+`pnpm ui:components`.
 
-When Storybook is running (`pnpm storybook`), prefer the MCP endpoints below for
-interactive story work and live docs; keep the CLI for offline / scripted use.
-The HTTP URLs below show the default workspace port. Use the current checkout's
-`STORYBOOK_PORT` when `.env.storybook.local` selects another port.
+When Storybook is running (`pnpm storybook`), the official Storybook MCP
+endpoint is available for interactive story work; keep the CLI for offline /
+scripted docs lookup. The URL below shows the default workspace port. Use the
+current checkout's `STORYBOOK_PORT` when `.env.storybook.local` selects another
+port.
 
 ## CLI quick reference
 
-| Command                                    | Purpose                                   |
-| ------------------------------------------ | ----------------------------------------- |
-| `pnpm ui guide [topic]`                    | Agent conventions from `docs/agent/`      |
-| `pnpm ui components [name] [--layer …]`    | Catalog list / show (all layers)          |
-| `pnpm ui:mcp:stdio`                        | Docs MCP over stdio (preferred)           |
-| `pnpm ui mcp [--port 9011] [--no-cache]`   | Standalone Docs MCP + llms (no Storybook) |
-| `pnpm docs-mcp search "<intent>"`          | Rank components, guides, and blocks       |
-| `pnpm docs-mcp get <exact-id>`             | Bounded docs or one stable section        |
-| `pnpm ui:add` / `ui:inspect` / `ui:doctor` | Generator pipeline (see README)           |
+| Command                                    | Purpose                              |
+| ------------------------------------------ | ------------------------------------ |
+| `pnpm ui guide [topic]`                    | Agent conventions from `docs/agent/` |
+| `pnpm ui components [name] [--layer …]`    | Catalog list / show (all layers)     |
+| `pnpm ui:add` / `ui:inspect` / `ui:doctor` | Generator pipeline (see README)      |
 
-## Docs MCP and llms.txt
+## Storybook MCP
 
-Docs MCP comes from the standalone `storybook-addon-docs-mcp` workspace
-package. Prefer `pnpm ui:mcp:stdio`: it reads the configured provider directly,
-works while Storybook is down, and lets multiple catalogs run without port
-coordination. It is also mounted on the Storybook server (starts/restarts with
-`pnpm storybook`) at a path separate from the core Storybook MCP:
+| Surface       | URL                         | Use for                                                          |
+| ------------- | --------------------------- | ---------------------------------------------------------------- |
+| Storybook MCP | `http://localhost:9009/mcp` | Story instructions, previews, changed stories, `run-story-tests` |
 
-| Surface        | URL                                                                      | Use for                                                                 |
-| -------------- | ------------------------------------------------------------------------ | ----------------------------------------------------------------------- |
-| Storybook MCP  | `http://localhost:9009/mcp`                                              | Story instructions, previews, changed stories, `run-story-tests`        |
-| Docs MCP       | `http://localhost:9009/docs-mcp`                                         | Prefer `search` → `get`; legacy exhaustive/story tools remain available |
-| llms index     | `http://localhost:9009/llms.txt` (markdown) / `/llms.md` (HTML)          | Bulk LLM/markdown index by layer                                        |
-| Component page | `http://localhost:9009/llms/<layer>/<id>.md` (HTML) / `.txt` (markdown)  | Full props + examples for one component                                 |
-| Guide topic    | `http://localhost:9009/llms/guide/<topic>.md` (HTML) / `.txt` (markdown) | Same content as `pnpm ui guide <topic>`                                 |
-
-Cursor (`.cursor/mcp.json`):
-
-- `stevejuma-ui-storybook` → `http://localhost:9009/mcp`
-- `stevejuma-ui-docs` → `pnpm … docs-mcp stdio --config …`
-
-Optional standalone fallback when Storybook is down: `pnpm ui mcp` (alias
-`pnpm ui:mcp`) on `:9011` with the same Docs MCP + llms routes. Offline CLI:
-`pnpm ui guide` / `pnpm ui components`; use `pnpm docs-mcp search` → `get` for
-the same discovery workflow without an MCP client. Cache under `.cache/ui-docs/`
-(content-hash invalidation); bypass with `DOCS_MCP_CACHE=0` (or the legacy
-`UI_DOCS_CACHE=0`) or
-`pnpm ui mcp --no-cache`.
-
-In-catalog decision pages: `UI Forms/Guidance`, `Shadcn/Guidance`. Deferred
-full-repo static `llms.txt` notes: `pnpm ui guide llms-extraction`.
+Cursor (`.cursor/mcp.json`) registers `stevejuma-ui-storybook` against this
+endpoint. For static docs discovery, use `pnpm ui guide` and
+`pnpm ui components`; the private Docs MCP workspace package is no longer part
+of this repository.
 
 ## Source folder layout
 
@@ -214,9 +190,8 @@ README **Styling and tokens** section.
   variable on the command line takes precedence for a one-off run.
 - Run `pnpm storybook:stop` from the same workspace that started the catalog.
   It loads that checkout's port file and leaves the default/main catalog alone.
-- Prefer `pnpm ui:mcp:stdio` for docs because it needs no port. For Storybook or
-  Docs MCP over HTTP, use the current checkout's `STORYBOOK_PORT`, not the
-  default 9009 URL shown above.
+- For Storybook MCP over HTTP, use the current checkout's `STORYBOOK_PORT`, not
+  the default 9009 URL shown above.
 
 ## Verification
 

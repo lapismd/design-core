@@ -20,14 +20,6 @@ const config: StorybookConfig = {
     "@storybook/addon-svelte-csf",
     "@storybook/addon-vitest",
     "@storybook/addon-mcp",
-    {
-      name: import.meta.resolve(
-        "../packages/storybook-addon-docs-mcp/src/preset.ts",
-      ),
-      options: {
-        config: ".storybook/docs-mcp.config.ts",
-      },
-    },
     "@storybook/addon-themes",
     {
       name: "@lapismd/storybook-addon-visual-delta",

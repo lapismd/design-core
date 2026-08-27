@@ -5,444 +5,256 @@
 [![npm version](https://img.shields.io/npm/v/@lapismd/design-core.svg)](https://www.npmjs.com/package/@lapismd/design-core)
 [![Storybook](https://img.shields.io/badge/storybook-live-ff4785?logo=storybook&logoColor=white)](https://lapismd.github.io/design-core/)
 
-Public Svelte 5 UI package with a Storybook 10 catalog, Storybook Vitest,
-explicit Playwright visual regression, and the published Visual Delta addon.
+Svelte 5 design-system package for LapisMD applications. It provides native-CSS
+component families, form primitives, search/filter controls, AI chat
+presentation, diff views, shell layout, and a workspace framework.
 
-This README is the human-facing package map and command reference. Agent
-conventions are available offline through `pnpm ui guide` and in
-[`AGENTS.md`](./AGENTS.md). Styling rules live in the canonical
-[`Styling and themes`](./spec/src/styling-and-themes.md) chapter.
+Design Core owns reusable presentation and controller behavior. Consumers own
+routing, data loading, persistence, domain state, transport, and application
+policy.
 
-## Canonical specification
+## Current package status
 
-[`spec/src`](./spec/src) is the canonical source for public behavior,
-architecture, governance, and verification evidence. Search it with
-`pnpm spec:search -- "<topic or DC-ID>"`, then open the returned source path;
-QMD is a discovery cache rather than a second source of truth. Use
-`pnpm ui guide specification` for the authority order, authoring rules, path
-map, and failure fallbacks.
+- Public package: `@lapismd/design-core@0.1.0`.
+- Runtime peer: `svelte@^5`.
+- Source package: exports point at tracked `.svelte`, `.ts`, and `.css` source
+  files for modern Svelte/Vite consumers.
+- Canonical repository: `lapismd/design-core`.
+- Live catalog: <https://lapismd.github.io/design-core/>.
 
-## Archived product surfaces
-
-The former Apps and Tasks product work is preserved in the jj workspace named
-`apps-tasks-archive` at `/Users/stevejuma/ui-apps-tasks-archive`. That workspace
-retains the product source, specifications, reference evidence, authentication
-state, and local capture artifacts so this repository can focus on reusable UI.
-
-## Layout
-
-```text
-src/
-  lib/utils.ts
-  styles.css, theme.css, storybook.css   # package entry + theme tokens
-  shared/
-    shadcn/<family>/           # one folder per family (multipart parts stay)
-    forms/<family>/            # one folder per catalog family/component
-    forms/core/                # builders, types, registry (non-visual)
-    forms/form.tokens.css      # --ui-form-* defaults
-    filter/<family>/           # search chrome + filter-query language
-    ai/<component>/            # one folder per catalog component
-    ai/experimental/<component>/
-    shell/                     # Guidance, tokens, package barrel
-      app-shell/               # compound AppShell family
-      shell.tokens.css         # --ui-shell-* defaults
-    workspace/<family>/        # one folder per visual family
-      workspace.tokens.css     # --ui-workspace-* defaults
-  storybook/                   # catalog-only helpers
-tests/
-  visual/                      # Playwright suite + committed snapshots
-packages/
-  storybook-addon-docs-mcp/      # private Docs MCP workspace tooling
-.storybook/                    # Storybook host configuration
-scripts/
-  storybook-run.mjs            # polling/restart-aware Storybook entry
-  ui-generator/                # UI CLI, baseline tooling, Docs MCP
-```
-
-Folder layout follows **catalog/story identity**: one directory per independent
-Storybook title (or one compound family with a single primary title). Do not
-split shadcn/workspace multipart compounds into one folder per part. See
-[`AGENTS.md`](./AGENTS.md) **Source folder layout** and `pnpm ui guide layers`.
-
-## Imports and layer boundaries
-
-| Path                                   | Purpose                         |
-| -------------------------------------- | ------------------------------- |
-| `@lapismd/design-core/shadcn/<family>` | shadcn family barrel            |
-| `@lapismd/design-core/forms`           | structured forms barrel         |
-| `@lapismd/design-core/forms/core`      | form builders, types, registry  |
-| `@lapismd/design-core/filter`          | search and filter-query barrel  |
-| `@lapismd/design-core/ai`              | reusable AI presentation barrel |
-| `@lapismd/design-core/ai/chat`         | stable AI Chat primitives       |
-| `@lapismd/design-core/ai/experimental` | experimental AI Chat primitives |
-| `@lapismd/design-core/ai/tokens`       | AI Chat design tokens           |
-| `@lapismd/design-core/shell`           | bounded structural app shell    |
-| `@lapismd/design-core/workspace`       | full workspace framework        |
-| `@lapismd/design-core/styles.css`      | package styles entry            |
-
-- `shared/shadcn` contains generated controls and must not depend on higher
-  layers.
-- `shared/filter` may compose shadcn controls.
-- `shared/forms` may compose shadcn and filter primitives.
-- `shared/ai` contains reusable, host-controlled presentation components.
-- `shared/shell` owns bounded application geometry, fixed chrome, shadcn
-  Scroll Areas, independent collapsible/closeable/resizable sidebar state, and
-  optional same-side nesting with collapsed/closed edge and delayed toggle
-  previews, plus injected sidebar-layout persistence with a default
-  localStorage adapter. Its single compound composition resolves desktop or
-  mobile presentation from the bounded root width; mobile uses transient
-  left/main/right stages while retaining desktop layout state. Auto mode is
-  the default. Constrained desktop protects the main body and moves
-  lower-priority sidebars into transient overlays without mutating their saved
-  layout. Body regions
-  support consumer-controlled left or right sidebars such as a Markdown table
-  of contents, with targeted toggles fixed to the matching body corner.
-  Consumer content, navigation selection, non-shell controls, and non-layout
-  persistence stay outside the layer.
-- `shared/workspace` owns the full tab, split, view, plugin, and persistence
-  framework.
-- Public components take typed props and callbacks rather than importing host
-  routers, persistence, or application context.
-
-Story titles stay under `Shadcn/...`, `UI Forms/...`, `Filter/...`, and
-`AI/...`, with structural and workspace surfaces under `Shell/...` and
-`Workspace/...`. Stable story ids are part of the committed visual-baseline
-contract.
-
-## Storybook catalog
-
-Stack: Storybook 10, `@storybook/svelte-vite`, Vite 6, and Svelte 5. The
-catalog runs on port 9009 by default. Use the package scripts because they
-enable polling, load checkout-local port settings, and restart the manager when
-Visual Delta source changes.
-
-### Parallel workspaces and ports
-
-Do not edit tracked Storybook or Playwright configuration to give a jj
-workspace a different port. Each additional workspace should copy the example
-to the ignored checkout-local file and choose an unused base port:
-
-```bash
-cp .env.storybook.local.example .env.storybook.local
-```
-
-```dotenv
-STORYBOOK_PORT=9309
-```
-
-The package scripts automatically load `.env.storybook.local`. An explicit
-shell variable still takes precedence for a one-off run:
-
-```bash
-STORYBOOK_PORT=9409 pnpm storybook
-```
-
-Setting only `STORYBOOK_PORT` allocates the related lanes from the same base:
-
-| Lane                        | Derived port                          |
-| --------------------------- | ------------------------------------- |
-| Storybook and AI acceptance | base                                  |
-| Visual Delta static server  | base + 1                              |
-| Visual Delta panel static   | base + 3 (package `storybook-static`) |
-| Visual Delta panel visual   | base + 5                              |
-| Spare debug/cleanup port    | base + 90                             |
-| Workspace pointer Storybook | base + 200                            |
-| Workspace pointer visual    | base + 201                            |
-
-`pnpm storybook`, `storybook:stop`, `storybook:restart`, the browser suites,
-the Visual Delta CLI, and the visual audit all use the checkout-local file.
-This keeps start, test, and cleanup commands scoped to the same workspace.
-The dev command owns one supervisor per checkout and base port: a duplicate
-`pnpm storybook` reports the existing process and exits successfully.
-`pnpm storybook:restart` explicitly replaces that owner, while
-`pnpm storybook:stop` terminates its descendants and matching legacy
-supervisors before cleaning up checkout-owned listeners. Preview addon edits
-use Vite HMR; Visual Delta manager, shared, and node edits are debounced into
-one server restart and the runtime's single manager reload.
-`VISUAL_SERVER_PORT`, `STORYBOOK_EXTRA_PORTS`, `AI_CHAT_STORYBOOK_URL`, and the
-suite-specific port variables remain available as advanced overrides, but a
-normal secondary workspace only needs `STORYBOOK_PORT`.
-
-### Host file map
-
-| File                                                                     | Role                                                                   |
-| ------------------------------------------------------------------------ | ---------------------------------------------------------------------- |
-| [`.storybook/main.ts`](./.storybook/main.ts)                             | Story globs, addons, static baseline mount, aliases, Docs MCP          |
-| [`.storybook/preview.ts`](./.storybook/preview.ts)                       | Global tags, theme, light/dark, a11y, docs, layout                     |
-| [`.storybook/manager.ts`](./.storybook/manager.ts)                       | Tag badges and catalog toolbar                                         |
-| [`.storybook/main.ts`](./.storybook/main.ts)                             | Registers `@lapismd/storybook-addon-visual-delta` with catalog options |
-| [`.storybook/ui-docs-middleware.ts`](./.storybook/ui-docs-middleware.ts) | Docs MCP and `llms.txt` routes                                         |
-| [`.storybook/vitest.setup.ts`](./.storybook/vitest.setup.ts)             | Storybook Vitest annotations                                           |
-
-Registered addons:
-
-- `@storybook/addon-docs`
-- `@storybook/addon-a11y`
-- `@storybook/addon-svelte-csf`
-- `@storybook/addon-vitest`
-- `@storybook/addon-mcp`
-- `@storybook/addon-themes`
-- `storybook-addon-tag-badges`
-- `@lapismd/storybook-addon-visual-delta`
-
-The preview applies the `autodocs` and `test` tags, uses
-`parameters.a11y.test: "error"`, and owns light/dark mode through the
-`colorMode` global. The backgrounds addon is disabled because package tokens
-own surfaces.
-
-### Storybook projects
-
-[`vitest.config.ts`](./vitest.config.ts) defines:
-
-| Project     | Coverage                                              |
-| ----------- | ----------------------------------------------------- |
-| `unit`      | Node unit specs in `src/` and `scripts/ui-generator/` |
-| `storybook` | browser story tests through `@storybook/addon-vitest` |
-
-## Visual Delta setup
-
-Visual Delta compares the live story canvas with committed Playwright PNGs and
-provides overlay, heatmap, create/update, and review controls. This catalog
-resolves the published `@lapismd/storybook-addon-visual-delta` package from npm
-and registers it in `.storybook/main.ts`. Addon API details live in the package
-[`README`](https://github.com/lapismd/storybook-addon-visual-delta/blob/main/README.md). Normative behavior lives in the
-[`Visual Delta system specification`](https://github.com/lapismd/storybook-addon-visual-delta/blob/main/spec/src/index.md).
-
-After upgrades, run `pnpm exec visual-delta doctor` (and `--fix` / `--runner`
-when suggested).
-
-The boundary is:
-
-| Addon owns                                    | This host owns                           |
-| --------------------------------------------- | ---------------------------------------- |
-| Panel, overlay, testing UI, run events        | Playwright suite and committed PNGs      |
-| Dev middleware and baseline CSF injection     | Baseline-write and tag CLIs              |
-| Generic shared and workspace snapshot mapping | Host story selection and sidecars        |
-| Portable Playwright helpers                   | Approval gates and compare-only defaults |
-
-Committed baselines are mounted at `/visual-baselines` from
-`tests/visual/storybook.spec.ts-snapshots`. Current host mappings are:
-
-| Catalog title  | Source heuristic             | Snapshot directory |
-| -------------- | ---------------------------- | ------------------ |
-| `Shadcn/...`   | `src/shared/shadcn/`         | `shadcn/<family>`  |
-| `UI Forms/...` | `src/shared/forms/<family>/` | `forms/<family>`   |
-
-The reusable addon also supports `packages/workspace/src/lib/` mapped to
-`workspace/` for consumer catalogs.
-
-The committed filename suffix is `-chromium` (browser-only; platform-qualified
-`*-chromium-darwin.png` names are legacy). A story tagged `skip-visual` is
-excluded. If a matching PNG exists, the Vite plugin injects
-`parameters.visualDelta` with a canvas-aligned baseline and 50% opacity.
-Pass/diff thresholds use the Visual Delta built-in defaults (`0.063`) unless
-overridden in `.visual-delta/config.json`.
-
-Never update baselines unless a human explicitly requests it. Ordinary
-`pnpm test:visual` is compare-only and Playwright is configured with
-`updateSnapshots: "none"`.
-
-`pnpm test:visual` always runs the complete suite and seeds the ignored local
-affected cache. `pnpm test:visual:affected` uses Storybook's generated
-dependency stats to skip unchanged stories, while conservatively falling back
-to all stories for global-risk or unresolved changes. Inspect a decision
-without capturing with
-`pnpm visual-delta test --affected --dry-run --explain`.
-
-### Review tags
-
-| Tag                | Meaning                                                 |
-| ------------------ | ------------------------------------------------------- |
-| `skip-test`        | Excluded from Storybook Vitest with a documented reason |
-| `skip-visual`      | Excluded from the Playwright visual suite               |
-| `upstream-example` | Generated from upstream documentation                   |
-| `visual-state`     | Explicit visual-state story                             |
-| `visual-pending`   | Baseline awaits review                                  |
-| `visual-approved`  | Baseline accepted                                       |
-| `visual-ready`     | Baseline ready for human review                         |
-| `visual-failed`    | Review rejected or comparison failed                    |
-
-Review tags are mutually exclusive and independent of `skip-visual`.
-Skip/include preserves the current review state while making the story
-ineligible/eligible for comparison. The Visual Delta panel and
-`pnpm ui visual:tag` both patch colocated CSF.
-Each baseline accordion has a kebab for History, exact-story Update baseline,
-and Delete screenshot. Delete removes the matching CSF image/interaction,
-invalidates its comparison evidence, and deletes only that PNG and its derived
-local diff artifacts; review state is unchanged.
-
-### Baseline write gates
-
-| Gate                                       | Effect                                                  |
-| ------------------------------------------ | ------------------------------------------------------- |
-| `VISUAL_UPDATE_APPROVED=1` or `--approved` | Required to write baselines                             |
-| `--create-only`                            | Creates missing PNGs without replacing existing files   |
-| `--allow-dirty`                            | Skips the writer's clean-tree check                     |
-| `--skip-build`                             | Reuses a complete, fresh static Storybook when possible |
-| `--rebuild`                                | Forces a static Storybook rebuild                       |
-| `PLAYWRIGHT_UPDATE_SNAPSHOTS=0`            | Compare-only                                            |
-| `PLAYWRIGHT_UPDATE_SNAPSHOTS=1`            | Enables writes inside gated commands                    |
-
-The CLI rejects broad `--component *` and `--component all` updates.
-
-## Commands
-
-```text
-# Catalog
-pnpm storybook
-pnpm storybook:ui
-pnpm storybook:stop
-pnpm storybook:restart
-pnpm build-storybook
-pnpm storybook:check
-
-# Verification
-pnpm spec:validate
-pnpm spec:build
-pnpm spec:first
-pnpm spec:check
-pnpm spec:index -- [--semantic]
-pnpm spec:search -- [--semantic] [--limit N] [--json] "<query or DC-ID>"
-pnpm test:unit
-pnpm test:storybook
-pnpm test:storybook:watch
-pnpm test:visual
-pnpm test:visual:affected
-pnpm test:visual:report
-pnpm checks
-pnpm checks:nonvisual
-pnpm checks:release
-pnpm checks:visual
-
-# Release
-pnpm changeset
-pnpm release:check
-pnpm release:plan
-pnpm packages:pack
-pnpm release:prepare
-pnpm release:publish .release/release-manifest.json
-pnpm release:verify .release/release-manifest.json .release/npm-signatures.json
-
-# Canonical Visual Delta specification
-
-# Explicitly approved baseline writes
-VISUAL_UPDATE_APPROVED=1 pnpm test:visual:update --component <name>
-
-# Agent and docs CLI
-pnpm ui guide [topic]
-pnpm ui components [name]
-pnpm ui components --layer shadcn|forms|filter|ai
-pnpm ui:mcp:stdio
-pnpm ui mcp
-pnpm docs-mcp search "<intent>"
-pnpm docs-mcp get <exact-id> [--section <id>]
-pnpm docs-mcp eval --cases packages/storybook-addon-docs-mcp/eval/ui-relevance-cases.json
-pnpm ui visual:tag skip|include --component <name>
-pnpm ui visual:tag review --status ready --component <name>
-
-# Generator
-pnpm ui:doctor
-pnpm ui:inspect <name>
-pnpm ui:add <name> [--overwrite] [--dry-run]
-pnpm ui:add:batch <a|b|c|d>
-```
-
-Use `--json` with `pnpm ui guide` and `pnpm ui components` for
-machine-readable output. Install Chromium once with
-`pnpm exec playwright install chromium`.
-
-## MCP and `llms.txt`
-
-The preferred docs transport is stdio because each project gets its own
-process, so multiple Storybooks do not need unique MCP ports:
+## Install
 
 ```sh
-pnpm ui:mcp:stdio
+pnpm add @lapismd/design-core svelte
 ```
 
-The Cursor entry in `.cursor/mcp.json` uses this command. The standalone
-`storybook-addon-docs-mcp` package also provides `search` → `get` discovery,
-`init`, `stdio`, `serve`, `doctor`, deterministic `eval`, and opt-in
-`eval-agent`; see its
-[`README.md`](./packages/storybook-addon-docs-mcp/README.md).
-
-Use `pnpm docs-mcp search "<intent>"` to rank components, guides, and curated
-blocks, then `pnpm docs-mcp get <exact-id>` for bounded documentation. The same
-tools and structured results are available through stdio and HTTP MCP.
-
-With Storybook running on its default port 9009, HTTP remains available. In a
-secondary workspace, replace 9009 with that checkout's `STORYBOOK_PORT`:
-
-| Surface       | URL                              | Purpose                                   |
-| ------------- | -------------------------------- | ----------------------------------------- |
-| Storybook MCP | `http://localhost:9009/mcp`      | Story instructions, previews, story tests |
-| Docs MCP      | `http://localhost:9009/docs-mcp` | Component and story documentation         |
-| LLM index     | `http://localhost:9009/llms.txt` | Markdown catalog index                    |
-| HTML index    | `http://localhost:9009/llms.md`  | Browser-readable catalog index            |
-
-Component pages use `/llms/<layer>/<id>.txt`; guide pages use
-`/llms/guide/<topic>.txt`. When Storybook is down, `pnpm ui mcp` serves the
-Docs MCP and LLM routes on `http://127.0.0.1:9011`. The Storybook mount uses
-the public Storybook server port; Vite's internal 5173 default is not
-advertised.
-
-## Styling and tokens
-
-Normative rules live in the canonical
-[`Styling and themes`](./spec/src/styling-and-themes.md) chapter. Summary for
-package consumers and contributors:
-
-1. **Theme first** — global semantics (`--background`, `--primary`, `--border`,
-   `--radius`, …) come from [`src/theme.css`](./src/theme.css).
-2. **Public layer tokens** — hosts restyle by setting `--ui-*` variables, not by
-   merging utility classes onto package components.
-3. **Colocated native CSS** — each visual component paints from a sibling
-   `Component.css` that reads tokens through `var(--…)`.
-4. **No Tailwind in retained sources** — `pnpm check:no-tailwind` gates
-   `shared/{ai,filter,forms,shadcn,shell,workspace}`. Stories may still use host
-   Tailwind for demo layout.
-
-| Layer         | Token prefix                   | Defaults                                                                                                       |
-| ------------- | ------------------------------ | -------------------------------------------------------------------------------------------------------------- |
-| Theme         | `--background`, `--primary`, … | [`src/theme.css`](./src/theme.css)                                                                             |
-| Shadcn family | `--ui-<family>-*`              | `<family>.tokens.css` next to the family                                                                       |
-| Forms         | `--ui-form-*`                  | [`src/shared/forms/form.tokens.css`](./src/shared/forms/form.tokens.css) (`@lapismd/design-core/forms/tokens`) |
-| AI            | `--ui-ai-*`                    | colocated maps / `@lapismd/design-core/ai/tokens`                                                              |
-| Shell         | `--ui-shell-*`                 | [`src/shared/shell/shell.tokens.css`](./src/shared/shell/shell.tokens.css)                                     |
-| Workspace     | `--ui-workspace-*`             | [`src/shared/workspace/workspace.tokens.css`](./src/shared/workspace/workspace.tokens.css)                     |
-
-Import the package stylesheet once from the host:
+Import the shared stylesheet once at the application boundary:
 
 ```ts
 import "@lapismd/design-core/styles.css";
 ```
 
-That entry pulls theme tokens plus family token defaults. Override public tokens
-on `:root` or a shared ancestor (for example `.ui-structured-form`); do not
-rebind a token on the same host that consumes it. Prefer typed variant/density
-props over per-call-site class props.
+Then import component families from their public layer:
 
-Stamp roots with `data-ui-component` / `data-ui-part` (and shadcn `data-slot`
-where applicable). Document the token subset each Docs page reads.
+```svelte
+<script lang="ts">
+  import { Button } from "@lapismd/design-core/shadcn/button";
+  import { StructuredForm } from "@lapismd/design-core/forms";
+  import * as AppShell from "@lapismd/design-core/shell";
+</script>
+```
 
-## Generator and CSS
+## Public layers
 
-`pnpm ui:add` runs the transactional native-CSS conversion pipeline in a
-detached worktree: pinned shadcn ingestion, Tailwind expansion, scoped native
-CSS, reference/candidate parity, then one patch. Do not run the upstream
-shadcn CLI directly against this package. Converted families keep
-`*.tokens.css` / `*.tokens.ts`, `data-ui-*` metadata, and provenance files.
+| Layer             | Import                                                                     | Use for                                                                                                           |
+| ----------------- | -------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| Styles and themes | `@lapismd/design-core/styles.css`, `@lapismd/design-core/themes/lapis.css` | Theme tokens, base package styles, Lapis theme assets                                                             |
+| shadcn primitives | `@lapismd/design-core/shadcn/<family>`                                     | Low-level buttons, inputs, dialogs, popovers, menus, tabs, scroll areas, and layout primitives                    |
+| Forms             | `@lapismd/design-core/forms`, `@lapismd/design-core/forms/core`            | Structured forms, field renderers, form controls, editors, review/diff affordances                                |
+| Filter            | `@lapismd/design-core/filter`                                              | Search bars, power-search tokens, and the filter-query CodeMirror language                                        |
+| AI                | `@lapismd/design-core/ai`, `@lapismd/design-core/ai/chat`                  | Host-controlled chat layout, messages, composer, tool-call, dictation, and status presentation                    |
+| AI experimental   | `@lapismd/design-core/ai/experimental`                                     | Lab-derived chat affordances marked experimental                                                                  |
+| Diff              | `@lapismd/design-core/diff`                                                | File listings, change stats, file diffs, merge presentation, and headless diff models                             |
+| Shell             | `@lapismd/design-core/shell`                                               | Bounded app chrome, sidebars, body regions, responsive shell state, and shell layout persistence adapters         |
+| Workspace         | `@lapismd/design-core/workspace`                                           | Registered views, tabs, splits, sidebars, panels, plugins, commands, settings, and workspace persistence adapters |
+
+Focused component subpaths are also exported for compatibility, especially under
+`forms` and `workspace`. Treat `package.json` exports as the supported import
+boundary.
+
+## Component coverage
+
+Implemented shadcn families include:
+
+accordion, alert, alert-dialog, badge, breadcrumb, button, button-group, card,
+checkbox, code, code-block, collapsible, column-canvas, command, command-view,
+context-menu, dialog, drawer, dropdown-menu, empty, field, hover-card, input,
+input-group, label, pagination, popover, progress, resizable, scroll-area,
+select, separator, sheet, sidebar, skeleton, slider, spinner, swipe-item,
+switch, table, tabs, textarea, toggle, toggle-group, and tooltip.
+
+The higher layers compose these primitives:
+
+- Forms provide structured rendering, YAML/JSON-backed editing, list editors,
+  autocomplete/chip inputs, date/time/reference pickers, code/YAML editors, and
+  patch review surfaces.
+- Filter provides reusable search chrome plus parser/language helpers for the
+  filter-query syntax.
+- AI provides presentation-only chat parts. It does not own model calls, network
+  transport, conversation storage, or host actions.
+- Diff provides file/change/merge UI. Hosts own repository state and file
+  contents.
+- Shell provides application chrome and responsive sidebars without owning
+  application navigation.
+- Workspace provides the heavier app framework for registered views, layout
+  persistence, commands, panels, and plugins.
+
+Use Shell for application chrome. Use Workspace when the host needs registered
+views, tab/split layout, plugins, settings, command palette, or full workspace
+persistence.
+
+## Styling contract
+
+Design Core uses native CSS and public custom properties. Consumers should style
+through tokens and typed props rather than patching internal selectors.
+
+1. Import `@lapismd/design-core/styles.css` once.
+2. Override public `--ui-*` variables on `:root` or a shared ancestor.
+3. Prefer component props for variants, density, layout, and state.
+4. Avoid overriding private DOM structure or internal class names.
+
+Token families:
+
+| Scope                | Token examples                                                      | Source                                                |
+| -------------------- | ------------------------------------------------------------------- | ----------------------------------------------------- |
+| Global theme         | `--background`, `--foreground`, `--primary`, `--border`, `--radius` | `src/theme.css`                                       |
+| shadcn family tokens | `--ui-button-*`, `--ui-input-*`, `--ui-card-*`                      | colocated family token files                          |
+| Forms                | `--ui-form-*`                                                       | `@lapismd/design-core/forms/form.tokens.css`          |
+| AI                   | `--ui-ai-*`                                                         | `@lapismd/design-core/ai/tokens`                      |
+| Diff                 | `--ui-diff-*`                                                       | `@lapismd/design-core/diff/tokens`                    |
+| Shell                | `--ui-shell-*`                                                      | `@lapismd/design-core/shell/shell.tokens.css`         |
+| Workspace            | `--ui-workspace-*`                                                  | `@lapismd/design-core/workspace/workspace.tokens.css` |
+
+Component roots stamp stable `data-ui-component` and `data-ui-part` attributes
+for package-owned styling. Consumers may use side-channel attributes for their
+own selectors, but should not overwrite Design Core identity attributes on
+package components.
+
+## Layout conventions
+
+Source layout follows the public catalog and package layers:
+
+```text
+src/
+  styles.css, theme.css, storybook.css
+  shared/
+    shadcn/<family>/
+    forms/<family>/
+    filter/<family>/
+    ai/<component>/
+    ai/experimental/<component>/
+    diff/<family>/
+    shell/app-shell/
+    workspace/<family>/
+```
+
+One directory owns one independent component family or one compound family.
+Multipart components stay together in the owning family folder. Public barrels
+live at the layer root or family root.
+
+## Usage examples
+
+### shadcn primitive
+
+```svelte
+<script lang="ts">
+  import { Button } from "@lapismd/design-core/shadcn/button";
+</script>
+
+<Button variant="default" size="sm">Save</Button>
+```
+
+### Shell layout
+
+```svelte
+<script lang="ts">
+  import * as AppShell from "@lapismd/design-core/shell";
+
+  const shell = AppShell.createAppShellController({
+    layoutId: "app",
+  });
+</script>
+
+<AppShell.Root controller={shell}>
+  <AppShell.Sidebar side="left">
+    <AppShell.Sidebar.Header>Navigation</AppShell.Sidebar.Header>
+    <AppShell.Sidebar.Body>...</AppShell.Sidebar.Body>
+  </AppShell.Sidebar>
+
+  <AppShell.Main>
+    <AppShell.Toolbar>Toolbar</AppShell.Toolbar>
+    <AppShell.Body>
+      <AppShell.Body.Content>Application content</AppShell.Body.Content>
+    </AppShell.Body>
+  </AppShell.Main>
+</AppShell.Root>
+```
+
+### Forms
+
+```svelte
+<script lang="ts">
+  import { FormField } from "@lapismd/design-core/forms";
+  import { Textarea } from "@lapismd/design-core/shadcn/textarea";
+</script>
+
+<FormField label="Summary" description="Short text shown in previews">
+  <Textarea bind:value={summary} />
+</FormField>
+```
+
+## Storybook and local documentation
+
+Run the local catalog:
+
+```sh
+pnpm storybook
+```
+
+Build the static catalog:
+
+```sh
+pnpm build-storybook
+```
+
+Offline package guidance:
+
+```sh
+pnpm ui guide
+pnpm ui guide styling
+pnpm ui components
+pnpm ui components button
+```
+
+The canonical specification lives in `spec/src`. Use it for package behavior,
+architecture, style rules, and verification evidence:
+
+```sh
+pnpm spec:search -- "tokens"
+pnpm spec:check
+```
+
+## Release and validation
+
+Common validation commands:
+
+```sh
+pnpm spec:first
+pnpm spec:check
+pnpm check
+pnpm test:unit
+pnpm build-storybook
+pnpm checks:release
+```
+
+Release planning and package artifacts:
+
+```sh
+pnpm changeset
+pnpm release:check
+pnpm release:plan --registry https://registry.npmjs.org
+pnpm packages:pack
+```
+
+The first public npm publication is a manual bootstrap from reviewed tarballs.
+Future releases use Changesets and the repository release workflow.
 
 ## Further reading
 
-| Resource                                                                                                                   | Use                                    |
-| -------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
-| [`AGENTS.md`](./AGENTS.md)                                                                                                 | Primary agent workflow + folder layout |
-| [`spec/src/index.md`](./spec/src/index.md)                                                                                 | Canonical Design Core specification    |
-| `pnpm ui guide specification`                                                                                              | Spec-first and QMD workflow            |
-| [`Styling and themes`](./spec/src/styling-and-themes.md)                                                                   | Native CSS and token contract          |
-| `pnpm ui guide layers`                                                                                                     | Layer selection, folders, dependencies |
-| `pnpm ui guide testing`                                                                                                    | Verification sequence                  |
-| [`Component inventory`](./spec/src/component-inventory.md)                                                                 | Retained component inventory           |
-| [`Visual Delta system specification`](https://github.com/lapismd/storybook-addon-visual-delta/blob/main/spec/src/index.md) | Normative Visual Delta system contract |
-| [`@lapismd/storybook-addon-visual-delta`](https://www.npmjs.com/package/@lapismd/storybook-addon-visual-delta)             | Addon API and integration              |
+| Resource                                                               | Use                                 |
+| ---------------------------------------------------------------------- | ----------------------------------- |
+| [`spec/src/index.md`](./spec/src/index.md)                             | Canonical Design Core specification |
+| [`spec/src/component-inventory.md`](./spec/src/component-inventory.md) | Implemented component inventory     |
+| [`spec/src/styling-and-themes.md`](./spec/src/styling-and-themes.md)   | Styling and token contract          |
+| [`spec/src/packages.md`](./spec/src/packages.md)                       | Public export requirements          |
+| [`AGENTS.md`](./AGENTS.md)                                             | Contributor and agent workflow      |

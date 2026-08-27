@@ -12,8 +12,8 @@ sources:
 # Canonical specification and search
 
 `spec/src` is the source of truth for Design Core public behavior. Generated
-mdBook pages, QMD indexes, Storybook mirrors, Docs MCP documents, README prose,
-and migration trackers are discovery or progress surfaces, not authorities.
+mdBook pages, QMD indexes, Storybook mirrors, README prose, and migration
+trackers are discovery or progress surfaces, not authorities.
 
 ## Before changing a protected surface
 

@@ -12,7 +12,7 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["storybook-addon-docs-mcp"],
+  "ignore": [],
   "privatePackages": {
     "version": false,
     "tag": false

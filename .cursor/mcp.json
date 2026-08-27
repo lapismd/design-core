@@ -2,18 +2,6 @@
   "mcpServers": {
     "stevejuma-ui-storybook": {
       "url": "http://localhost:9009/mcp"
-    },
-    "stevejuma-ui-docs": {
-      "command": "pnpm",
-      "args": [
-        "--dir",
-        "/Users/stevejuma/ui",
-        "exec",
-        "docs-mcp",
-        "stdio",
-        "--config",
-        "/Users/stevejuma/ui/.storybook/docs-mcp.config.ts"
-      ]
     }
   }
 }

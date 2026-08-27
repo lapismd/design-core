@@ -1,6 +1,5 @@
 packages:
   - "."
-  - "packages/*"
   - "../mira-mde/packages/mira"
 
 linkWorkspacePackages: true

@@ -153,9 +153,6 @@ importers:
       '@storybook/icons':
         specifier: ^2.1.0
         version: 2.1.0(react@19.2.7)
-      '@storybook/mcp':
-        specifier: 0.8.0
-        version: 0.8.0(typescript@5.9.3)
       '@storybook/svelte-vite':
         specifier: ^10.5.2
         version: 10.5.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.56.6)(vite@6.4.3(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.1)(yaml@2.9.0)))(esbuild@0.28.1)(rollup@4.62.2)(storybook@10.5.2(@types/react@19.2.17)(prettier@3.3.3)(react@19.2.7))(svelte@5.56.6)(vite@6.4.3(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.1)(yaml@2.9.0))
@@ -222,9 +219,6 @@ importers:
       markdownlint-cli2:
         specifier: ^0.22.1
         version: 0.22.1
-      marked:
-        specifier: ^18.0.6
-        version: 18.0.6
       pixelmatch:
         specifier: ^7.2.0
         version: 7.2.0
@@ -261,9 +255,6 @@ importers:
       storybook:
         specifier: ^10.5.2
         version: 10.5.2(@types/react@19.2.17)(prettier@3.3.3)(react@19.2.7)
-      storybook-addon-docs-mcp:
-        specifier: workspace:*
-        version: link:packages/storybook-addon-docs-mcp
       svelte:
         specifier: ^5.56.1
         version: 5.56.6
@@ -466,52 +457,6 @@ importers:
       svelte:
         specifier: ^5.46.1
         version: 5.56.6
-
-  packages/storybook-addon-docs-mcp:
-    dependencies:
-      '@storybook/mcp':
-        specifier: 0.8.0
-        version: 0.8.0(typescript@5.9.3)
-      '@tmcp/adapter-valibot':
-        specifier: ^0.1.6
-        version: 0.1.6(tmcp@1.19.4(typescript@5.9.3))(valibot@1.2.0(typescript@5.9.3))
-      '@tmcp/transport-http':
-        specifier: ^0.8.6
-        version: 0.8.6(tmcp@1.19.4(typescript@5.9.3))
-      '@tmcp/transport-stdio':
-        specifier: ^0.4.3
-        version: 0.4.3(tmcp@1.19.4(typescript@5.9.3))
-      fast-glob:
-        specifier: ^3.3.3
-        version: 3.3.3
-      highlight.js:
-        specifier: ^11.11.1
-        version: 11.11.1
-      jiti:
-        specifier: ^2.7.0
-        version: 2.7.0
-      jsonc-parser:
-        specifier: ^3.3.1
-        version: 3.3.1
-      marked:
-        specifier: ^18.0.6
-        version: 18.0.6
-      storybook:
-        specifier: '>=9'
-        version: 10.5.2(@types/react@19.2.17)(prettier@3.3.3)(react@19.2.8)
-      tmcp:
-        specifier: ^1.19.4
-        version: 1.19.4(typescript@5.9.3)
-      typescript:
-        specifier: ^5.7.2
-        version: 5.9.3
-      valibot:
-        specifier: ^1.2.0
-        version: 1.2.0(typescript@5.9.3)
-    devDependencies:
-      '@types/node':
-        specifier: ^22.15.0
-        version: 22.20.1
 
 packages:
 
@@ -2258,11 +2203,6 @@ packages:
       '@tmcp/auth':
         optional: true
 
-  '@tmcp/transport-stdio@0.4.3':
-    resolution: {integrity: sha512-chdmSwk7PSXjkaQId2OAY8ZMFrTFWwckfCyXJuw6b6WFK9IMK95EoU2VDFioybcmawuQox0MNPM5R2DVxlptoA==}
-    peerDependencies:
-      tmcp: ^1.16.3
-
   '@tobilu/qmd@2.5.3':
     resolution: {integrity: sha512-wUKc4pSPDbgs7mV7JYE8/Qj1pNXXatJFV8byTT/T3yLaoAXheFtWu0BgSWwoWGhRkMmxl5Qyitt66NHgbMyeBA==}
     engines: {node: '>=22.0.0'}
@@ -3566,11 +3506,6 @@ packages:
   markdownlint@0.40.0:
     resolution: {integrity: sha512-UKybllYNheWac61Ia7T6fzuQNDZimFIpCg2w6hHjgV1Qu0w1TV0LlSgryUGzM0bkKQCBhy2FDhEELB73Kb0kAg==}
     engines: {node: '>=20'}
-
-  marked@18.0.6:
-    resolution: {integrity: sha512-MrV5puXBfuiy6wl6DLaq3BtIJQAJToAd5zt/ZKhRfGRAuFPALE7/4Y7jnxRQoEgK/pBgurGqLyAuRgZ2xOjr6w==}
-    engines: {node: '>= 20'}
-    hasBin: true
 
   math-intrinsics@1.1.0:
     resolution: {integrity: sha512-/IXtbwEk5HTPyEwyKX6hGkYXxM9nbj64B+ilVJnC/R6B0pH5G4V3b0pVbL7DBj4tkhBAppbQUlf6F6Xl9LHu1g==}
@@ -6839,10 +6774,6 @@ snapshots:
       esm-env: 1.2.2
       tmcp: 1.19.4(typescript@5.9.3)
 
-  '@tmcp/transport-stdio@0.4.3(tmcp@1.19.4(typescript@5.9.3))':
-    dependencies:
-      tmcp: 1.19.4(typescript@5.9.3)
-
   '@tobilu/qmd@2.5.3(typescript@5.9.3)':
     dependencies:
       '@modelcontextprotocol/sdk': 1.29.0(zod@4.2.1)
@@ -8264,8 +8195,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  marked@18.0.6: {}
-
   math-intrinsics@1.1.0: {}
 
   mdast-util-directive@3.1.0:
@@ -9541,33 +9470,6 @@ snapshots:
       - react
       - utf-8-validate
 
-  storybook@10.5.2(@types/react@19.2.17)(prettier@3.3.3)(react@19.2.8):
-    dependencies:
-      '@storybook/global': 5.0.0
-      '@storybook/icons': 2.1.0(react@19.2.8)
-      '@testing-library/dom': 10.4.1
-      '@testing-library/jest-dom': 6.9.1
-      '@testing-library/user-event': 14.6.1(@testing-library/dom@10.4.1)
-      '@vitest/expect': 3.2.4
-      '@vitest/spy': 3.2.4
-      '@webcontainer/env': 1.1.1
-      esbuild: 0.28.1
-      jsonc-parser: 3.3.1
-      open: 10.2.0
-      oxc-parser: 0.127.0
-      oxc-resolver: 11.24.2
-      recast: 0.23.12
-      semver: 7.8.5
-      use-sync-external-store: 1.6.0(react@19.2.8)
-      ws: 8.21.1
-    optionalDependencies:
-      '@types/react': 19.2.17
-      prettier: 3.3.3
-    transitivePeerDependencies:
-      - bufferutil
-      - react
-      - utf-8-validate
-
   string-width@4.2.3:
     dependencies:
       emoji-regex: 8.0.0
@@ -9928,10 +9830,6 @@ snapshots:
   use-sync-external-store@1.6.0(react@19.2.7):
     dependencies:
       react: 19.2.7
-
-  use-sync-external-store@1.6.0(react@19.2.8):
-    dependencies:
-      react: 19.2.8
 
   util-deprecate@1.0.2: {}
 
