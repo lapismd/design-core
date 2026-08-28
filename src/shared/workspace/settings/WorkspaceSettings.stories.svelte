@@ -1,6 +1,6 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, userEvent, waitFor, within } from "storybook/test";
+  import { expect, fn, userEvent, waitFor, within } from "storybook/test";
   import AppShellRoot from "../app-shell/AppShellRoot.svelte";
   import { AppShellController } from "../core/app-shell-controller.svelte.js";
   import { APP_SHELL_SETTING_IDS } from "../core/built-in-settings.svelte.js";
@@ -11,6 +11,7 @@
   import AppSettingsRoot from "./AppSettingsRoot.svelte";
   import AppSettingsSearch from "./AppSettingsSearch.svelte";
   import WorkspaceSettingsStoryCustomField from "./WorkspaceSettingsStoryCustomField.svelte";
+  import WorkspaceSettingsStoryCustomPage from "./WorkspaceSettingsStoryCustomPage.svelte";
   import WorkspaceSettingsSurface from "./WorkspaceSettingsSurface.svelte";
   import * as exampleSources from "./WorkspaceSettings.example-sources.js";
   import { WorkspaceSettingsController } from "./settings-controller.svelte.js";
@@ -455,6 +456,24 @@
   const builtInApp = createSettingsApp();
   const interactionApp = createSettingsApp();
   const searchInteractionApp = createSettingsApp();
+  const revealCustomSearchEntry = fn();
+  const customPageSearchApp = createSettingsApp();
+  customPageSearchApp.settings.registerSection({
+    id: "community-plugins",
+    title: "Community plugins",
+    description: "Manage plugins installed from the community registry.",
+    page: WorkspaceSettingsStoryCustomPage,
+    searchEntries: () => [
+      {
+        id: "community.spellcheck",
+        title: "Spellcheck",
+        description: "Check prose while editing.",
+        keywords: ["dictionary", "language"],
+        path: ["Installed", "Spellcheck"],
+      },
+    ],
+    revealSearchEntry: revealCustomSearchEntry,
+  });
   const compoundApp = createSettingsApp();
   compoundApp.managedPlugins.registerSource({
     id: "first-party",
@@ -801,6 +820,43 @@
 </Story>
 
 <Story
+  name="Custom page search navigation"
+  tags={["skip-visual"]}
+  play={async ({ canvas, canvasElement }) => {
+    const search = canvas.getByRole("searchbox", {
+      name: "Search settings",
+    });
+    await userEvent.type(search, "dictionary");
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Open Spellcheck" }),
+    );
+    await waitFor(() =>
+      expect(revealCustomSearchEntry).toHaveBeenCalledWith(
+        "community.spellcheck",
+      ),
+    );
+    await waitFor(() =>
+      expect(
+        canvasElement.querySelector('[data-setting-id="community.spellcheck"]'),
+      ).toHaveClass("ui-workspace-settings__search-hit"),
+    );
+  }}
+>
+  {#snippet template()}
+    <div class="ui-workspace-settings-story-canvas">
+      <div class="ui-workspace-settings-story-frame">
+        <AppShellRoot controller={customPageSearchApp} theme="inherit">
+          <WorkspaceSettingsSurface
+            controller={customPageSearchApp.settings}
+            app={customPageSearchApp}
+          />
+        </AppShellRoot>
+      </div>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
   name="All supported controls"
   tags={["visual-pending"]}
   play={async ({ canvas }) => {
@@ -903,12 +959,15 @@
       ).not.toBeNull();
       return content!;
     });
-    const surfaceItems = () =>
-      [...surfacesPopover.querySelectorAll<HTMLElement>(
+    const surfaceItems = () => [
+      ...surfacesPopover.querySelectorAll<HTMLElement>(
         '[data-ui-component="command-view"][data-ui-part="item"]',
-      )];
+      ),
+    ];
     await expect(
-      surfaceItems().find((item) => /Left sidebar/.test(item.textContent ?? "")),
+      surfaceItems().find((item) =>
+        /Left sidebar/.test(item.textContent ?? ""),
+      ),
     ).toHaveAttribute("data-checked", "true");
     await expect(
       surfaceItems().find((item) => /Status bar/.test(item.textContent ?? "")),
@@ -927,7 +986,9 @@
     ]);
     await userEvent.clear(surfacesSearch);
     await expect(
-      surfaceItems().find((item) => /Right sidebar/.test(item.textContent ?? "")),
+      surfaceItems().find((item) =>
+        /Right sidebar/.test(item.textContent ?? ""),
+      ),
     ).toHaveAttribute("data-checked", "true");
     await userEvent.keyboard("{Escape}");
     await expect(enabledSurfaces).toHaveTextContent("left, status + 1 more");

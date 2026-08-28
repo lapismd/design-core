@@ -187,14 +187,14 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 
 ## DC-WS-056 — Settings dialog reveal
 
-**Requirement.** The settings controller MUST open the settings dialog and reveal a section or field. Palette Settings items MUST call that API.
+**Requirement.** The settings controller MUST open the settings dialog and reveal a section, schema field, or custom-page search entry. Palette Settings items MUST call that API.
 
 ### Acceptance details
 
 - `open({ sectionId, fieldId })` MUST set dialog open state, select the section, and highlight the field when `fieldId` is present.
 - Ribbon and sidebar Open Settings MUST use the same controller open path.
 - A Settings palette row MUST close the palette, open the dialog, and land on that section or field.
-- The catalog MUST cover a Settings row that reveals a named field.
+- The catalog MUST cover a Settings row that reveals a named field; custom settings pages MAY contribute dynamic search entries and MUST receive the selected entry before the shell scrolls to and highlights its `data-setting-id` target.
 
 ## DC-WS-011 — Drop Overlay
 

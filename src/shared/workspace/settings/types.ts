@@ -184,6 +184,14 @@ export interface WorkspaceSettingsPageProps {
   section: WorkspaceSettingsSection;
 }
 
+export interface WorkspaceSettingsSearchEntry {
+  id: string;
+  title: string;
+  description?: string;
+  keywords?: readonly string[];
+  path?: readonly string[];
+}
+
 export interface WorkspaceSettingsSection {
   id: string;
   title: string;
@@ -194,6 +202,10 @@ export interface WorkspaceSettingsSection {
   sourcePluginId?: string;
   surface?: "schema" | "hotkeys" | "core-plugins";
   page?: Component<WorkspaceSettingsPageProps>;
+  searchEntries?:
+    | readonly WorkspaceSettingsSearchEntry[]
+    | (() => readonly WorkspaceSettingsSearchEntry[]);
+  revealSearchEntry?(entryId: string): void | Promise<void>;
   fields?: WorkspaceSettingField[];
 }
 

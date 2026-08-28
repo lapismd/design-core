@@ -90,6 +90,12 @@
     settingsState.controller.selectSection(result.sectionId);
     settingsState.query = "";
     await tick();
+    if (result.fieldId) {
+      const section = settingsState.controller.sections.find(
+        (candidate) => candidate.id === result.sectionId,
+      );
+      await section?.revealSearchEntry?.(result.fieldId);
+    }
     await tick();
     requestAnimationFrame(() => {
       const element = viewport?.querySelector<HTMLElement>(

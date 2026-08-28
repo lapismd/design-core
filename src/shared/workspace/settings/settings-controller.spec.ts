@@ -94,6 +94,48 @@ describe("WorkspaceSettingsController", () => {
     expect(controller.revealFieldId).toBeNull();
   });
 
+  it("searches and opens entries contributed by custom settings pages", () => {
+    const controller = new WorkspaceSettingsController({
+      sections: [
+        ...sections(),
+        {
+          id: "community-plugins",
+          title: "Community plugins",
+          searchEntries: () => [
+            {
+              id: "community.spellcheck",
+              title: "Spellcheck",
+              description: "Check prose while editing.",
+              keywords: ["dictionary", "language"],
+              path: ["Installed", "Spellcheck"],
+            },
+          ],
+        },
+      ],
+    });
+
+    expect(controller.search("dictionary")[0]).toMatchObject({
+      sectionId: "community-plugins",
+      fieldId: "community.spellcheck",
+      title: "Spellcheck",
+      path: ["Community plugins", "Installed", "Spellcheck"],
+    });
+    expect(
+      controller.open({
+        sectionId: "community-plugins",
+        fieldId: "community.spellcheck",
+      }),
+    ).toBe(true);
+    expect(controller.selectedSectionId).toBe("community-plugins");
+    expect(controller.revealFieldId).toBe("community.spellcheck");
+    expect(
+      controller.open({
+        sectionId: "community-plugins",
+        fieldId: "community.missing",
+      }),
+    ).toBe(false);
+  });
+
   it("validates the integer-list presentation used by the complete demo", () => {
     const controller = new WorkspaceSettingsController({
       sections: [

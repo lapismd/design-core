@@ -12,6 +12,7 @@ import type {
   WorkspaceSettingsEventMap,
   WorkspaceSettingsNavigationGroup,
   WorkspaceSettingsSearchResult,
+  WorkspaceSettingsSearchEntry,
   WorkspaceSettingsSection,
   WorkspaceSettingsSnapshotV1,
 } from "./types.js";
@@ -73,6 +74,14 @@ function collectSettingGroups(
     visit(field, next);
     collectSettingGroups(field.fields, next, visit);
   }
+}
+
+function sectionSearchEntries(
+  section: WorkspaceSettingsSection,
+): readonly WorkspaceSettingsSearchEntry[] {
+  return typeof section.searchEntries === "function"
+    ? section.searchEntries()
+    : (section.searchEntries ?? []);
 }
 
 function defaultValues(
@@ -371,10 +380,26 @@ export class WorkspaceSettingsController {
       if (indexed) {
         this.selectedSectionId = indexed.section.id;
         this.revealFieldId = options.fieldId;
-      } else if (options.sectionId && !this.selectSection(options.sectionId)) {
-        return false;
       } else {
-        this.revealFieldId = null;
+        const section = options.sectionId
+          ? this.sections.find(
+              (candidate) => candidate.id === options.sectionId,
+            )
+          : this.sections.find((candidate) =>
+              sectionSearchEntries(candidate).some(
+                (entry) => entry.id === options.fieldId,
+              ),
+            );
+        if (
+          !section ||
+          !sectionSearchEntries(section).some(
+            (entry) => entry.id === options.fieldId,
+          )
+        ) {
+          return false;
+        }
+        this.selectedSectionId = section.id;
+        this.revealFieldId = options.fieldId;
       }
     } else if (options.sectionId && !this.selectSection(options.sectionId)) {
       return false;
@@ -582,6 +607,20 @@ export class WorkspaceSettingsController {
           title: indexed.field.title,
           description: indexed.field.description,
           path: [section.title, ...indexed.path],
+          score: text.startsWith(normalized) ? 0 : 1,
+        });
+      }
+      for (const entry of sectionSearchEntries(section)) {
+        const path = [section.title, ...(entry.path ?? [entry.title])];
+        const text =
+          `${entry.title} ${entry.description ?? ""} ${entry.keywords?.join(" ") ?? ""} ${path.join(" ")}`.toLocaleLowerCase();
+        if (!text.includes(normalized)) continue;
+        results.push({
+          sectionId: section.id,
+          fieldId: entry.id,
+          title: entry.title,
+          description: entry.description,
+          path,
           score: text.startsWith(normalized) ? 0 : 1,
         });
       }
