@@ -45,6 +45,7 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 | Tab title-bar default          | `@lapismd/design-core/workspace/settings`        | DC-WS-061   |
 | Window-controls safe area      | Workspace chrome                                 | DC-WS-062   |
 | Workspace tab cursors          | Workspace tabs                                   | DC-WS-063   |
+| Narrow settings navigation     | `@lapismd/design-core/workspace/settings`        | DC-WS-064   |
 
 ## DC-WS-008 — About Dialog
 
@@ -300,6 +301,17 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 - Settings CSS MUST set those controls' focus-visible border-color to transparent.
 - All supported controls MUST assert a focused string field has a transparent border and a non-none box-shadow.
 - Password presentation MUST share that Input focus chrome.
+
+## DC-WS-064 — Narrow settings navigation
+
+**Requirement.** The Settings surface MUST replace its persistent navigation rail with an inline navigation trigger when its own container is narrow. The trigger MUST open the same settings search and section navigation in a left Sheet.
+
+### Acceptance details
+
+- Responsiveness MUST follow the Settings surface width rather than the browser viewport.
+- The narrow trigger MUST identify the currently selected settings section.
+- The Sheet MUST provide an accessible title, search, close action, and complete navigation.
+- Selecting a section in the Sheet MUST update the shared controller and close the Sheet.
 
 ## DC-WS-044 — Settings searchable multi-enum
 

@@ -559,6 +559,7 @@
       },
     ],
   });
+  const narrowApp = createSettingsApp();
 
   const { Story } = defineMeta({
     title: "Workspace/Components/Settings",
@@ -612,6 +613,58 @@
           <WorkspaceSettingsSurface
             controller={builtInApp.settings}
             app={builtInApp}
+          />
+        </AppShellRoot>
+      </div>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Narrow settings navigation sheet"
+  tags={["visual-pending"]}
+  play={async ({ canvas }) => {
+    const openNavigation = canvas.getByRole("button", {
+      name: "Open settings navigation",
+    });
+    await expect(openNavigation).toHaveTextContent(/Workspace|Appearance/);
+    await userEvent.click(openNavigation);
+    const sheet = within(document.body).getByRole("dialog", {
+      name: "Settings navigation",
+    });
+    await expect(sheet).toBeVisible();
+    await expect(
+      within(sheet).getByRole("searchbox", { name: "Search settings" }),
+    ).toBeVisible();
+    await userEvent.click(
+      within(sheet).getByRole("button", { name: "Appearance" }),
+    );
+    await waitFor(() => expect(sheet).not.toBeVisible());
+    await expect(openNavigation).toHaveTextContent("Appearance");
+  }}
+  parameters={{
+    docs: {
+      description: {
+        story:
+          "A container-constrained Settings surface replaces its rail with an inline trigger and reuses the complete search and navigation inside a left Sheet.",
+      },
+      source: {
+        code: exampleSources.Basic,
+        language: "tsx",
+        type: "code",
+      },
+    },
+  }}
+>
+  {#snippet template()}
+    <div class="ui-workspace-settings-story-canvas">
+      <div
+        class="ui-workspace-settings-story-frame ui-workspace-settings-story-frame--narrow"
+      >
+        <AppShellRoot controller={narrowApp} theme="inherit">
+          <WorkspaceSettingsSurface
+            controller={narrowApp.settings}
+            app={narrowApp}
           />
         </AppShellRoot>
       </div>

@@ -19,6 +19,10 @@
     color-mix(in srgb, var(--ui-workspace-foreground) 12%, transparent);
 }
 
+.ui-workspace-settings-story-frame--narrow {
+  width: min(28rem, 100%);
+}
+
 .ui-workspace-settings-story-custom {
   display: flex;
   width: min(100%, 20rem);

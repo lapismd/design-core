@@ -2,6 +2,12 @@
   import WorkspaceIcon from "../icon/WorkspaceIcon.svelte";
   import { getAppSettingsContext } from "./app-settings-context.svelte.js";
 
+  let {
+    onselect,
+  }: {
+    onselect?: (sectionId: string) => void;
+  } = $props();
+
   const state = getAppSettingsContext();
   let groups = $derived.by(() => {
     const configured = new Map(
@@ -47,6 +53,7 @@
             onclick={() => {
               state.controller.selectSection(section.id);
               state.query = "";
+              onselect?.(section.id);
             }}
           >
             <WorkspaceIcon name={section.icon ?? "settings"} />
