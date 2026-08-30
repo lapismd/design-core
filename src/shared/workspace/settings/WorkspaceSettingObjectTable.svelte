@@ -30,6 +30,7 @@
     reorderable = false,
     allowAdd = true,
     allowRemove = true,
+    stateRevision = 0,
     rowActions = [],
     onValueChange,
   }: {
@@ -45,6 +46,7 @@
     reorderable?: boolean;
     allowAdd?: boolean;
     allowRemove?: boolean;
+    stateRevision?: number;
     rowActions?: WorkspaceObjectRowAction[];
     onValueChange: (value: unknown) => void;
   } = $props();
@@ -184,6 +186,7 @@
     row: Record<string, unknown>,
     key: string,
   ): boolean {
+    stateRevision;
     const configured =
       typeof action.disabled === "function"
         ? action.disabled(row)

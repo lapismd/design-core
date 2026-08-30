@@ -328,6 +328,7 @@
           reorderable={field.reorderable}
           allowAdd={field.allowAdd}
           allowRemove={field.allowRemove}
+          stateRevision={controller.sourceRevision}
           addLabel={field.addLabel}
           rowActions={field.rowActions}
           onValueChange={(next) => void controller.set(field.id, next)}

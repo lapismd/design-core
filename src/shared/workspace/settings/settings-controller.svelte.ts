@@ -251,6 +251,7 @@ export class WorkspaceSettingsController {
   validationErrors = $state<Record<string, string>>({});
   sourceErrors = $state<Record<string, string>>({});
   sourceBusy = $state<Record<string, boolean>>({});
+  sourceRevision = $state(0);
   actionResults = $state<
     Record<string, { tone: "success" | "warning" | "error"; message: string }>
   >({});
@@ -274,7 +275,6 @@ export class WorkspaceSettingsController {
   >();
   readonly #sourceWriteChains = new Map<string, Promise<boolean>>();
   readonly #sourceWriteVersions = new Map<string, number>();
-  #sourceRevision = $state(0);
   #optionSourceLoader?: (
     sourceId: string,
     context: {
@@ -350,7 +350,7 @@ export class WorkspaceSettingsController {
     });
     this.#syncDefinition(definition);
     const disposeSource = source.subscribe((fieldId) => {
-      this.#sourceRevision += 1;
+      this.sourceRevision += 1;
       this.#syncDefinition(definition, fieldId);
     });
     this.#definitions.set(section.id, { definition, disposeSource });
@@ -425,7 +425,7 @@ export class WorkspaceSettingsController {
   }
 
   isBusy(id: string): boolean {
-    this.#sourceRevision;
+    this.sourceRevision;
     const indexed = this.#field(id);
     return (
       this.sourceBusy[id] === true ||
@@ -434,7 +434,7 @@ export class WorkspaceSettingsController {
   }
 
   isDisabled(id: string): boolean {
-    this.#sourceRevision;
+    this.sourceRevision;
     const indexed = this.#field(id);
     return Boolean(
       indexed?.field.disabled ||
