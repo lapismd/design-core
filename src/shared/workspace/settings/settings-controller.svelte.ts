@@ -251,6 +251,9 @@ export class WorkspaceSettingsController {
   validationErrors = $state<Record<string, string>>({});
   sourceErrors = $state<Record<string, string>>({});
   sourceBusy = $state<Record<string, boolean>>({});
+  actionResults = $state<
+    Record<string, { tone: "success" | "warning" | "error"; message: string }>
+  >({});
   selectedSectionId = $state("");
   dialogOpen = $state(false);
   revealFieldId = $state<string | null>(null);
@@ -420,7 +423,24 @@ export class WorkspaceSettingsController {
   }
 
   isBusy(id: string): boolean {
-    return this.sourceBusy[id] === true;
+    const indexed = this.#field(id);
+    return (
+      this.sourceBusy[id] === true ||
+      (indexed?.field.type === "action" && indexed.field.isBusy?.() === true)
+    );
+  }
+
+  isDisabled(id: string): boolean {
+    const indexed = this.#field(id);
+    return Boolean(
+      indexed?.field.disabled ||
+        indexed?.field.readOnly ||
+        (indexed?.field.type === "action" && indexed.field.isDisabled?.()),
+    );
+  }
+
+  getActionResult(id: string) {
+    return this.actionResults[id];
   }
 
   getError(id: string): string | undefined {
@@ -635,11 +655,34 @@ export class WorkspaceSettingsController {
 
   async runAction(id: string): Promise<boolean> {
     const indexed = this.#field(id);
-    if (!indexed || indexed.field.type !== "action" || indexed.field.disabled) {
+    if (
+      !indexed ||
+      indexed.field.type !== "action" ||
+      this.isDisabled(id) ||
+      this.sourceBusy[id]
+    ) {
       return false;
     }
-    await (indexed.field as WorkspaceActionSetting).run();
-    return true;
+    const action = indexed.field as WorkspaceActionSetting;
+    if (action.confirm && !(await action.confirm())) return false;
+    delete this.actionResults[id];
+    this.sourceBusy[id] = true;
+    try {
+      const result = await action.run();
+      if (result) this.actionResults[id] = result;
+      return true;
+    } catch (caught) {
+      this.actionResults[id] = {
+        tone: "error",
+        message:
+          caught instanceof Error
+            ? caught.message
+            : "Unable to run this action",
+      };
+      return false;
+    } finally {
+      this.sourceBusy[id] = false;
+    }
   }
 
   getSnapshot(): WorkspaceSettingsSnapshotV1 {

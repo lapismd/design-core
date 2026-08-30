@@ -46,6 +46,9 @@
   } = $props();
 
   let busyActions = $state<Record<string, boolean>>({});
+  let actionResults = $state<
+    Record<string, { tone: "success" | "warning" | "error"; message: string }>
+  >({});
   let visibleProperties = $derived(
     properties.filter((property) => property.presentation !== "hidden"),
   );
@@ -194,9 +197,19 @@
     if (actionDisabled(action, row, key)) return;
     if (action.confirm && !(await action.confirm(row))) return;
     const actionKey = `${key}:${action.id}`;
+    delete actionResults[actionKey];
     busyActions[actionKey] = true;
     try {
-      await action.run(row, index);
+      const result = await action.run(row, index);
+      if (result) actionResults[actionKey] = result;
+    } catch (caught) {
+      actionResults[actionKey] = {
+        tone: "error",
+        message:
+          caught instanceof Error
+            ? caught.message
+            : "Unable to run this action",
+      };
     } finally {
       busyActions[actionKey] = false;
     }
@@ -315,6 +328,15 @@
                   {#if action.icon}<WorkspaceIcon name={action.icon} />{/if}
                   {#if !action.icon}{action.label}{/if}
                 </Button>
+                {@const result = actionResults[`${entry.key}:${action.id}`]}
+                {#if result}
+                  <span
+                    class="ui-workspace-setting-object-action-result"
+                    data-tone={result.tone}
+                    role={result.tone === "error" ? "alert" : "status"}
+                    >{result.message}</span
+                  >
+                {/if}
               {/each}
               {#if !disabled}
                 <Button

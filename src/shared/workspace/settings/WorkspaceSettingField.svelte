@@ -34,6 +34,7 @@
   let value = $derived(controller.get(field.id));
   let error = $derived(controller.getError(field.id));
   let busy = $derived(controller.isBusy(field.id));
+  let actionResult = $derived(controller.getActionResult(field.id));
   let controlDisabled = $derived(
     field.disabled === true || field.readOnly === true,
   );
@@ -464,12 +465,23 @@
         <Button
           id={`setting-${field.id}`}
           variant={field.variant ?? "outline"}
-          disabled={field.disabled || busy}
+          disabled={controller.isDisabled(field.id) || busy}
+          aria-busy={busy}
           onclick={() => controller.runAction(field.id)}
         >
           {#if field.icon}<WorkspaceIcon name={field.icon} />{/if}
           {field.label}
         </Button>
+      {/if}
+
+      {#if field.type === "action" && actionResult}
+        <p
+          class="ui-workspace-setting-action-result"
+          data-tone={actionResult.tone}
+          role={actionResult.tone === "error" ? "alert" : "status"}
+        >
+          {actionResult.message}
+        </p>
       {/if}
 
       {#if field.type !== "action" && field.type !== "output" && "default" in field && field.default !== undefined}

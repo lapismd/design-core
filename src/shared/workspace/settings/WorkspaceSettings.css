@@ -728,6 +728,28 @@
   font-weight: 600;
 }
 
+.ui-workspace-setting-action-result,
+.ui-workspace-setting-object-action-result {
+  margin: 0;
+  color: var(--ui-workspace-muted-foreground);
+  font-size: 0.75rem;
+}
+
+.ui-workspace-setting-action-result[data-tone="success"],
+.ui-workspace-setting-object-action-result[data-tone="success"] {
+  color: var(--ui-workspace-success, #15803d);
+}
+
+.ui-workspace-setting-action-result[data-tone="warning"],
+.ui-workspace-setting-object-action-result[data-tone="warning"] {
+  color: var(--ui-workspace-warning, #a16207);
+}
+
+.ui-workspace-setting-action-result[data-tone="error"],
+.ui-workspace-setting-object-action-result[data-tone="error"] {
+  color: var(--ui-workspace-destructive, #b91c1c);
+}
+
 button.ui-workspace-copyable-value[data-ui-component="button"] {
   --ui-button-padding-inline: 0.4rem;
   min-width: 0;

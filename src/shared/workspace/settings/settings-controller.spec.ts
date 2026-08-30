@@ -456,4 +456,45 @@ describe("WorkspaceSettingsController", () => {
       "Provider rejected the value",
     );
   });
+
+  it("controls action confirmation, busy state, and inline results", async () => {
+    let resolveRun!: () => void;
+    const run = vi.fn(
+      () =>
+        new Promise<{ tone: "success"; message: string }>((resolve) => {
+          resolveRun = () => resolve({ tone: "success", message: "Connected" });
+        }),
+    );
+    const confirm = vi.fn(async () => true);
+    const controller = new WorkspaceSettingsController({
+      sections: [
+        {
+          id: "actions",
+          title: "Actions",
+          fields: [
+            {
+              id: "actions.test",
+              type: "action",
+              title: "Connection",
+              label: "Test connection",
+              confirm,
+              run,
+            },
+          ],
+        },
+      ],
+    });
+
+    const pending = controller.runAction("actions.test");
+    await vi.waitFor(() =>
+      expect(controller.isBusy("actions.test")).toBe(true),
+    );
+    resolveRun();
+    await expect(pending).resolves.toBe(true);
+    expect(confirm).toHaveBeenCalledOnce();
+    expect(controller.getActionResult("actions.test")).toEqual({
+      tone: "success",
+      message: "Connected",
+    });
+  });
 });

@@ -90,7 +90,15 @@ export interface WorkspaceActionSetting extends WorkspaceSettingBase {
   label: string;
   icon?: WorkspaceIconName;
   variant?: "default" | "outline" | "destructive" | "ghost";
-  run(): void | Promise<void>;
+  isDisabled?(): boolean;
+  isBusy?(): boolean;
+  confirm?(): boolean | Promise<boolean>;
+  run(): void | WorkspaceActionResult | Promise<void | WorkspaceActionResult>;
+}
+
+export interface WorkspaceActionResult {
+  tone: "success" | "warning" | "error";
+  message: string;
 }
 
 export interface WorkspaceOutputSetting extends WorkspaceSettingBase {
@@ -138,7 +146,10 @@ export interface WorkspaceObjectRowAction {
   hidden?: boolean | ((row: Record<string, unknown>) => boolean);
   busy?: (row: Record<string, unknown>) => boolean;
   confirm?: (row: Record<string, unknown>) => boolean | Promise<boolean>;
-  run(row: Record<string, unknown>, index: number): void | Promise<void>;
+  run(
+    row: Record<string, unknown>,
+    index: number,
+  ): void | WorkspaceActionResult | Promise<void | WorkspaceActionResult>;
 }
 
 export interface WorkspaceObjectCollectionSetting extends WorkspaceSettingBase {
@@ -262,7 +273,7 @@ export interface WorkspaceSettingsSource {
 export interface WorkspaceSettingsDefinition {
   section: WorkspaceSettingsSection;
   source: WorkspaceSettingsSource;
-  adapters?: readonly WorkspaceCustomFieldAdapter[];
+  adapters?: readonly WorkspaceCustomFieldAdapter<any>[];
 }
 
 export interface WorkspaceSettingsNavigationGroup {
