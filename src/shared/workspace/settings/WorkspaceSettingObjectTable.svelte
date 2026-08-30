@@ -28,6 +28,8 @@
     addLabel,
     rowKey,
     reorderable = false,
+    allowAdd = true,
+    allowRemove = true,
     rowActions = [],
     onValueChange,
   }: {
@@ -41,6 +43,8 @@
     addLabel?: string;
     rowKey?: string;
     reorderable?: boolean;
+    allowAdd?: boolean;
+    allowRemove?: boolean;
     rowActions?: WorkspaceObjectRowAction[];
     onValueChange: (value: unknown) => void;
   } = $props();
@@ -69,10 +73,14 @@
     }));
   });
   let canAdd = $derived(
-    !disabled && (maximumItems === undefined || rows.length < maximumItems),
+    allowAdd &&
+      !disabled &&
+      (maximumItems === undefined || rows.length < maximumItems),
   );
   let canRemove = $derived(
-    !disabled && (minimumItems === undefined || rows.length > minimumItems),
+    allowRemove &&
+      !disabled &&
+      (minimumItems === undefined || rows.length > minimumItems),
   );
   let resolvedAddLabel = $derived(
     addLabel ?? (mode === "map" ? `Add ${label} entry` : `Add ${label} row`),
@@ -230,7 +238,7 @@
       </Table.Row>
     </Table.Header>
     <Table.Body>
-      {#each rows as entry, index (mode === "map" ? entry.key : index)}
+      {#each rows as entry, index (entry.key)}
         <Table.Row>
           {#if mode === "map"}
             <Table.Cell>
@@ -338,7 +346,7 @@
                   >
                 {/if}
               {/each}
-              {#if !disabled}
+              {#if !disabled && allowRemove}
                 <Button
                   variant="ghost"
                   size="icon-sm"
@@ -355,7 +363,7 @@
       {/each}
     </Table.Body>
   </Table.Root>
-  {#if !disabled}
+  {#if !disabled && allowAdd}
     <WorkspaceSettingAddButton
       label={resolvedAddLabel}
       disabled={!canAdd}

@@ -160,6 +160,8 @@ export interface WorkspaceObjectCollectionSetting extends WorkspaceSettingBase {
   maximumItems?: number;
   rowKey?: string;
   reorderable?: boolean;
+  allowAdd?: boolean;
+  allowRemove?: boolean;
   addLabel?: string;
   rowActions?: WorkspaceObjectRowAction[];
 }
