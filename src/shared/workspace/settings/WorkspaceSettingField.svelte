@@ -21,6 +21,7 @@
   import WorkspaceSettingObjectTable from "./WorkspaceSettingObjectTable.svelte";
   import WorkspaceSettingSelect from "./WorkspaceSettingSelect.svelte";
   import WorkspaceSettingToggleTable from "./WorkspaceSettingToggleTable.svelte";
+  import CopyableValue from "./CopyableValue.svelte";
 
   let {
     controller,
@@ -31,7 +32,11 @@
   } = $props();
 
   let value = $derived(controller.get(field.id));
-  let error = $derived(controller.validationErrors[field.id]);
+  let error = $derived(controller.getError(field.id));
+  let busy = $derived(controller.isBusy(field.id));
+  let controlDisabled = $derived(
+    field.disabled === true || field.readOnly === true,
+  );
   let options = $state<WorkspaceSettingOption[]>([]);
   let optionRequest = 0;
   let keyValueOptions = $derived.by(() => {
@@ -100,7 +105,8 @@
     return field.type === "key-value" ||
       field.type === "object-array" ||
       field.type === "object-grid" ||
-      field.type === "object-map"
+      field.type === "object-map" ||
+      (field.type === "custom" && field.presentation === "full-width")
       ? "stacked"
       : "row";
   }
@@ -123,7 +129,7 @@
     const next = { ...current };
     delete next[currentKey];
     next[nextKey] = nextValue;
-    controller.update(field.id, next);
+    void controller.set(field.id, next);
   }
 
   function nextKey(field: WorkspaceKeyValueSetting) {
@@ -180,17 +186,17 @@
         <Switch
           id={`setting-${field.id}`}
           checked={value === true}
-          disabled={field.disabled}
-          onCheckedChange={(checked) => controller.update(field.id, checked)}
+          disabled={controlDisabled}
+          onCheckedChange={(checked) => void controller.set(field.id, checked)}
         />
       {:else if field.type === "string" && field.presentation === "icon"}
         <WorkspaceIconPicker
           id={`setting-${field.id}`}
           value={String(value ?? "")}
-          disabled={field.disabled}
+          disabled={controlDisabled}
           placeholder={field.placeholder ?? "Select an icon"}
           ariaLabel={field.title}
-          onValueChange={(next) => controller.update(field.id, next)}
+          onValueChange={(next) => void controller.set(field.id, next)}
         />
       {:else if field.type === "string" && field.presentation === "textarea"}
         <Textarea
@@ -198,30 +204,30 @@
           rows={1}
           value={String(value ?? "")}
           placeholder={field.placeholder}
-          disabled={field.disabled}
+          disabled={controlDisabled}
           aria-invalid={Boolean(error)}
           oninput={(event) =>
-            controller.update(field.id, event.currentTarget.value)}
+            void controller.set(field.id, event.currentTarget.value)}
         />
       {:else if field.type === "string" && (field.presentation === "combobox" || field.optionsSource)}
         <WorkspaceSettingSelect
           id={`setting-${field.id}`}
           items={options}
           value={String(value ?? field.default)}
-          disabled={field.disabled}
+          disabled={controlDisabled}
           ariaLabel={field.title}
           placeholder={field.placeholder}
-          onValueChange={(next: string) => controller.update(field.id, next)}
+          onValueChange={(next: string) => void controller.set(field.id, next)}
         />
       {:else if field.type === "string" && field.presentation === "password"}
         <PasswordInput
           id={`setting-${field.id}`}
           value={String(value ?? "")}
           placeholder={field.placeholder}
-          disabled={field.disabled}
+          disabled={controlDisabled}
           aria-invalid={Boolean(error)}
           oninput={(event) =>
-            controller.update(field.id, event.currentTarget.value)}
+            void controller.set(field.id, event.currentTarget.value)}
         />
       {:else if field.type === "string"}
         <Input
@@ -239,10 +245,10 @@
                     : "text"}
           value={String(value ?? "")}
           placeholder={field.placeholder}
-          disabled={field.disabled}
+          disabled={controlDisabled}
           aria-invalid={Boolean(error)}
           oninput={(event) =>
-            controller.update(field.id, event.currentTarget.value)}
+            void controller.set(field.id, event.currentTarget.value)}
         />
       {:else if (field.type === "number" || field.type === "integer") && field.minimum !== undefined && field.maximum !== undefined}
         <div class="ui-workspace-setting-range">
@@ -253,9 +259,10 @@
             min={field.minimum}
             max={field.maximum}
             step={field.step ?? (field.type === "integer" ? 1 : 0.1)}
-            disabled={field.disabled}
+            disabled={controlDisabled}
             aria-label={field.title}
-            onValueChange={(next: number) => controller.update(field.id, next)}
+            onValueChange={(next: number) =>
+              void controller.set(field.id, next)}
           />
           <output for={`setting-${field.id}`}
             >{Number(value ?? field.default)}</output
@@ -269,18 +276,18 @@
           min={field.minimum}
           max={field.maximum}
           step={field.step ?? (field.type === "integer" ? 1 : "any")}
-          disabled={field.disabled}
+          disabled={controlDisabled}
           onchange={(event) =>
-            controller.update(field.id, event.currentTarget.valueAsNumber)}
+            void controller.set(field.id, event.currentTarget.valueAsNumber)}
         />
       {:else if field.type === "enum"}
         <WorkspaceSettingSelect
           id={`setting-${field.id}`}
           items={options}
           value={String(value ?? field.default)}
-          disabled={field.disabled}
+          disabled={controlDisabled}
           ariaLabel={field.title}
-          onValueChange={(next: string) => controller.update(field.id, next)}
+          onValueChange={(next: string) => void controller.set(field.id, next)}
         />
       {:else if field.type === "multi-enum"}
         <WorkspaceSettingSelect
@@ -292,10 +299,11 @@
                 (entry): entry is string => typeof entry === "string",
               )
             : field.default}
-          disabled={field.disabled}
+          disabled={controlDisabled}
           ariaLabel={field.title}
           placeholder="Select options..."
-          onValueChange={(next: string[]) => controller.update(field.id, next)}
+          onValueChange={(next: string[]) =>
+            void controller.set(field.id, next)}
         />
       {:else if field.type === "list"}
         <WorkspaceSettingList
@@ -303,19 +311,23 @@
           label={field.title}
           itemLabels={field.itemLabels}
           value={Array.isArray(value) ? value : []}
-          disabled={field.disabled}
+          disabled={controlDisabled}
           maximumItems={field.maximumItems}
-          onValueChange={(next) => controller.update(field.id, next)}
+          onValueChange={(next) => void controller.set(field.id, next)}
         />
       {:else if field.type === "object-array" || field.type === "object-grid"}
         <WorkspaceSettingObjectTable
           label={field.title}
           properties={field.properties}
           value={value ?? field.default}
-          disabled={field.disabled}
+          disabled={controlDisabled}
           minimumItems={field.minimumItems}
           maximumItems={field.maximumItems}
-          onValueChange={(next) => controller.update(field.id, next)}
+          rowKey={field.rowKey}
+          reorderable={field.reorderable}
+          addLabel={field.addLabel}
+          rowActions={field.rowActions}
+          onValueChange={(next) => void controller.set(field.id, next)}
         />
       {:else if field.type === "object-map"}
         <WorkspaceSettingObjectTable
@@ -323,8 +335,8 @@
           properties={field.properties}
           mode="map"
           value={value ?? field.default}
-          disabled={field.disabled}
-          onValueChange={(next) => controller.update(field.id, next)}
+          disabled={controlDisabled}
+          onValueChange={(next) => void controller.set(field.id, next)}
         />
       {:else if field.type === "key-value"}
         <div class="ui-workspace-setting-key-value">
@@ -370,7 +382,7 @@
                       onclick={() => {
                         const next = { ...keyValue(field) };
                         delete next[key];
-                        controller.update(field.id, next);
+                        void controller.set(field.id, next);
                       }}
                     >
                       <WorkspaceIcon name="trash-2" />
@@ -383,20 +395,62 @@
           <WorkspaceSettingAddButton
             label={field.addLabel ?? "Add entry"}
             onclick={() =>
-              controller.update(field.id, {
+              void controller.set(field.id, {
                 ...keyValue(field),
                 [nextKey(field)]: keyValueOptions[0]?.value ?? "",
               })}
           />
         </div>
+      {:else if field.type === "output"}
+        {#if field.presentation === "copyable"}
+          <CopyableValue
+            value={value == null ? null : String(value)}
+            label={field.copyLabel ?? field.title}
+            emptyLabel={field.emptyLabel}
+            leadingCharacters={field.leadingCharacters}
+            trailingCharacters={field.trailingCharacters}
+          />
+        {:else}
+          <output
+            id={`setting-${field.id}`}
+            class="ui-workspace-setting-output"
+            data-presentation={field.presentation ?? "text"}
+          >
+            {#if field.presentation === "code"}
+              <code
+                >{value == null
+                  ? (field.emptyLabel ?? "None")
+                  : String(value)}</code
+              >
+            {:else}
+              {value == null ? (field.emptyLabel ?? "None") : String(value)}
+            {/if}
+          </output>
+        {/if}
       {:else if field.type === "custom"}
-        {@const CustomComponent = field.component}
-        <CustomComponent
-          id={field.id}
-          {value}
-          disabled={field.disabled}
-          update={(next) => controller.update(field.id, next)}
-        />
+        {@const CustomComponent = field.adapter
+          ? controller.resolveCustomAdapter(field.id, field.adapter)?.component
+          : field.component}
+        {#if CustomComponent}
+          <CustomComponent
+            id={field.id}
+            {field}
+            {value}
+            disabled={controlDisabled}
+            readOnly={field.readOnly}
+            {busy}
+            {error}
+            setValue={(next) => controller.set(field.id, next)}
+            update={(next) => controller.update(field.id, next)}
+          />
+        {:else}
+          <Alert.Root class="ui-workspace-setting-unsupported">
+            <Alert.Title>Unavailable custom field</Alert.Title>
+            <Alert.Description>
+              The adapter for this setting is not registered.
+            </Alert.Description>
+          </Alert.Root>
+        {/if}
       {:else if field.type === "unsupported"}
         <Alert.Root class="ui-workspace-setting-unsupported">
           <Alert.Title>Unsupported setting</Alert.Title>
@@ -410,7 +464,7 @@
         <Button
           id={`setting-${field.id}`}
           variant={field.variant ?? "outline"}
-          disabled={field.disabled}
+          disabled={field.disabled || busy}
           onclick={() => controller.runAction(field.id)}
         >
           {#if field.icon}<WorkspaceIcon name={field.icon} />{/if}
@@ -418,14 +472,14 @@
         </Button>
       {/if}
 
-      {#if field.type !== "action"}
+      {#if field.type !== "action" && field.type !== "output" && "default" in field && field.default !== undefined}
         <Button
           class="ui-workspace-setting-restore"
           variant="ghost"
           size="icon-sm"
           aria-label={`Restore ${field.title} default`}
           title="Restore default"
-          disabled={field.disabled}
+          disabled={controlDisabled}
           onclick={() => controller.restoreDefault(field.id)}
         >
           <WorkspaceIcon name="rotate-ccw" />

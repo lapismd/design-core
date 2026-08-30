@@ -5,6 +5,7 @@ import {
   ConfigurationSchema,
 } from "./configuration.js";
 import type {
+  WorkspaceSettingsDefinition,
   WorkspaceSettingsChangeEvent,
   WorkspaceSettingsPersistence,
   WorkspaceSettingsSnapshotV1,
@@ -355,5 +356,104 @@ describe("WorkspaceSettingsController", () => {
     ).resolves.toEqual([{ value: "one", label: "One" }]);
     disposeGroup();
     expect(controller.navigationGroups).toEqual([]);
+  });
+
+  it("controls source-backed values without adding them to persistence snapshots", async () => {
+    const values: Record<string, unknown> = {
+      "plugin.endpoint": "wss://relay.example",
+      "plugin.status": "Connected",
+    };
+    const listeners = new Set<(fieldId?: string) => void>();
+    const set = vi.fn(async (fieldId: string, value: unknown) => {
+      values[fieldId] =
+        typeof value === "string" ? value.trim().toLowerCase() : value;
+      for (const listener of listeners) listener(fieldId);
+      return values[fieldId];
+    });
+    const definition: WorkspaceSettingsDefinition = {
+      section: {
+        id: "plugin",
+        title: "Plugin",
+        fields: [
+          {
+            id: "plugin.endpoint",
+            type: "string",
+            title: "Endpoint",
+            default: "",
+            presentation: "url",
+          },
+          {
+            id: "plugin.status",
+            type: "output",
+            title: "Status",
+            presentation: "status",
+          },
+        ],
+      },
+      source: {
+        get: (fieldId) => values[fieldId],
+        set,
+        subscribe: (listener) => {
+          listeners.add(listener);
+          return () => listeners.delete(listener);
+        },
+      },
+    };
+    const controller = new WorkspaceSettingsController({
+      sections: sections(),
+    });
+    const dispose = controller.registerDefinition(definition);
+
+    expect(controller.get("plugin.endpoint")).toBe("wss://relay.example");
+    expect(controller.getSnapshot().values).not.toHaveProperty(
+      "plugin.endpoint",
+    );
+    const pending = controller.set(
+      "plugin.endpoint",
+      "  WSS://SECOND.EXAMPLE  ",
+    );
+    expect(controller.get("plugin.endpoint")).toBe("  WSS://SECOND.EXAMPLE  ");
+    expect(controller.isBusy("plugin.endpoint")).toBe(true);
+    await expect(pending).resolves.toBe(true);
+    expect(controller.get("plugin.endpoint")).toBe("wss://second.example");
+    expect(controller.isBusy("plugin.endpoint")).toBe(false);
+
+    values["plugin.status"] = "Degraded";
+    for (const listener of listeners) listener("plugin.status");
+    expect(controller.get("plugin.status")).toBe("Degraded");
+    dispose();
+    expect(listeners.size).toBe(0);
+  });
+
+  it("rolls back a rejected source-backed update and exposes its error", async () => {
+    const values: Record<string, unknown> = { "plugin.name": "Before" };
+    const controller = new WorkspaceSettingsController();
+    controller.registerDefinition({
+      section: {
+        id: "plugin",
+        title: "Plugin",
+        fields: [
+          {
+            id: "plugin.name",
+            type: "string",
+            title: "Name",
+            default: "",
+          },
+        ],
+      },
+      source: {
+        get: (fieldId) => values[fieldId],
+        set: async () => {
+          throw new Error("Provider rejected the value");
+        },
+        subscribe: () => () => undefined,
+      },
+    });
+
+    await expect(controller.set("plugin.name", "After")).resolves.toBe(false);
+    expect(controller.get("plugin.name")).toBe("Before");
+    expect(controller.getError("plugin.name")).toBe(
+      "Provider rejected the value",
+    );
   });
 });

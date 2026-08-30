@@ -2,7 +2,7 @@
   import { Input } from "@lapismd/design-core/shadcn/input";
   import type { WorkspaceCustomSettingProps } from "./types.js";
 
-  let { id, value, disabled, update }: WorkspaceCustomSettingProps = $props();
+  let { id, value, disabled, setValue }: WorkspaceCustomSettingProps = $props();
 </script>
 
 <label class="ui-workspace-settings-story-custom">
@@ -12,6 +12,6 @@
     type="text"
     value={String(value ?? "")}
     {disabled}
-    oninput={(event) => update(event.currentTarget.value)}
+    oninput={(event) => void setValue(event.currentTarget.value)}
   />
 </label>
