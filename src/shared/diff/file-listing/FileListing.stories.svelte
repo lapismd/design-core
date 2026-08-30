@@ -54,6 +54,14 @@
     await expect(getComputedStyle(selected).backgroundColor).not.toBe(
       "rgba(0, 0, 0, 0)",
     );
+    const viewMode = canvas.getByRole("group", {
+      name: "File listing view mode",
+    });
+    const viewModes = canvas.getAllByRole("radio");
+    await expect(viewModes).toHaveLength(3);
+    await expect(getComputedStyle(viewMode).display).toContain("flex");
+    await expect(viewMode.getBoundingClientRect().height).toBeLessThan(26);
+    await expect(getComputedStyle(viewModes[0]).borderRadius).toBe("0px");
     const activeToggle = canvas.getByRole("radio", {
       name: "Show files as folders",
     });
