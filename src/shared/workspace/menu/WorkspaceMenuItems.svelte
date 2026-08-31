@@ -22,8 +22,9 @@
     event: MouseEvent,
   ) {
     if (entry.disabled) return;
+    const selectedMenu = menu;
     await entry.callback?.(event);
-    if (entry.closeOnSelect) menu.hide();
+    if (entry.closeOnSelect) selectedMenu.hide();
   }
 </script>
 

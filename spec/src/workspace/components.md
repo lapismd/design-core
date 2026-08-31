@@ -252,6 +252,7 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/workspace/menu`.
+- Menu selection MUST retain the selected menu instance before invoking an action so callbacks that destroy their owning workspace view cannot read disposed reactive state during close handling.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 
 ## DC-WS-017 — Mobile Shell
