@@ -1,5 +1,11 @@
 # @lapismd/design-core
 
+## 0.1.2
+
+### Patch Changes
+
+- [#2](https://github.com/lapismd/design-core/pull/2) [`af3a0b3`](https://github.com/lapismd/design-core/commit/af3a0b3aaabd24be368acea795b150af8f4e5b89) Thanks [@stevejuma](https://github.com/stevejuma)! - Keep workspace menu close handling lifecycle-safe when an action callback destroys its owning view.
+
 ## 0.1.1
 
 ### Patch Changes
