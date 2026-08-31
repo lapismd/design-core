@@ -1,5 +1,11 @@
 # @lapismd/design-core
 
+## 0.1.1
+
+### Patch Changes
+
+- [`d1dc4a8`](https://github.com/lapismd/design-core/commit/d1dc4a8fb13eec9b59075712f964a89cee18a1a8) Thanks [@stevejuma](https://github.com/stevejuma)! - Allow custom settings pages to contribute dynamic search entries and reveal the selected row before Design Core scrolls to and highlights it.
+
 ## 0.1.0
 
 ### Initial public release
