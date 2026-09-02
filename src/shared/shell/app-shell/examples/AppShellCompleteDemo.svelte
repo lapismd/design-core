@@ -1,4 +1,5 @@
 <script lang="ts">
+  import "./AppShellExamples.css";
   import { untrack } from "svelte";
   import type {
     AppShellController,

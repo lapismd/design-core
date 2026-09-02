@@ -1,4 +1,5 @@
 <script lang="ts">
+  import "./AppShellExamples.css";
   import { AppShell } from "../index.js";
 
   let {

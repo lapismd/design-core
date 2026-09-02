@@ -1,4 +1,5 @@
 <script lang="ts">
+  import "./AppShellExamples.css";
   import { Button } from "../../../shadcn/button/index.js";
   import type {
     AppShellController,

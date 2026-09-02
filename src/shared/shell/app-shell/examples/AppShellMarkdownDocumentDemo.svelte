@@ -1,4 +1,5 @@
 <script lang="ts">
+  import "./AppShellExamples.css";
   import FileTextIcon from "@lucide/svelte/icons/file-text";
   import type { AppShellSide } from "../app-shell-controller.svelte.js";
   import { AppShell } from "../index.js";

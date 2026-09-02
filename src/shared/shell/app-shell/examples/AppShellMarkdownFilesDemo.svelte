@@ -1,4 +1,5 @@
 <script lang="ts">
+  import "./AppShellExamples.css";
   import FileTextIcon from "@lucide/svelte/icons/file-text";
   import FolderOpenIcon from "@lucide/svelte/icons/folder-open";
   import type {

@@ -229,6 +229,10 @@
       "requirement": "DC-PKG-001"
     },
     {
+      "name": "./storybook/app-shell-reference",
+      "requirement": "DC-PKG-001"
+    },
+    {
       "name": "./styles.css",
       "requirement": "DC-PKG-001"
     },

@@ -1,0 +1,37 @@
+/* Story-only viewport variants. Shell and example presentation styles live
+   with the components that own them. */
+.ui-shell-story-frame-fluid {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+}
+
+.ui-shell-story-frame-fluid:has([data-display-mode="mobile"]) {
+  padding-block: 0;
+}
+
+.ui-shell-story-frame-tablet,
+.ui-shell-story-frame-mobile {
+  width: 100%;
+  min-width: 0;
+  margin-inline: auto;
+  padding-block: 0;
+}
+
+.ui-shell-story-frame-tablet {
+  max-width: 56rem;
+}
+
+.ui-shell-story-frame-mobile {
+  max-width: 30rem;
+  padding-inline: 0.5rem;
+}
+
+.ui-shell-story-frame-constrained-desktop {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  max-width: 56rem;
+  margin-inline: auto;
+}

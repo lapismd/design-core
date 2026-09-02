@@ -236,6 +236,7 @@
     "./styles.css": "./src/styles.css",
     "./storybook.css": "./src/storybook.css",
     "./storybook/catalog-layout": "./src/storybook/catalog-layout.ts",
+    "./storybook/app-shell-reference": "./src/storybook/app-shell-reference/index.ts",
     "./themes/lapis.css": "./src/themes/lapis.css",
     "./ai": "./src/shared/ai/index.ts",
     "./ai/chat": "./src/shared/ai/chat.ts",

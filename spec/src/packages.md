@@ -19,11 +19,11 @@ The root package manifest defines the supported import boundaries. Family barrel
 
 ## DC-PKG-001 — Root styles and themes
 
-**Requirement.** The Root styles and themes family MUST expose shared styles, Storybook styles, theme assets, and catalog-layout helpers at their documented subpaths.
+**Requirement.** The Root styles and themes family MUST expose shared styles, Storybook styles, theme assets, catalog-layout helpers, and canonical Storybook reference fixtures at their documented subpaths.
 
 ### Acceptance details
 
-- The export must resolve to tracked source or the documented workspace build output.
+- Each export, including the canonical Storybook App Shell reference fixture, must resolve to tracked source or the documented workspace build output; the fixture MUST render the same Design Core-owned composition used by the two-expanded-sidebars scenario so consumer catalogs do not copy shell markup or styling.
 - Reusable form families MAY expose focused public subpaths that avoid loading unrelated forms from the barrel.
 - Package checks must fail when the mapped entry point is stale or missing.
 - Tool-only dependencies must remain outside runtime exports and be pinned where reproducibility requires it.
