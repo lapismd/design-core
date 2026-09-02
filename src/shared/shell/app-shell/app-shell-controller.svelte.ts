@@ -450,9 +450,11 @@ export class AppShellController {
   readonly mobile = new AppShellMobileController();
   layoutReady = $state(false);
 
-  readonly #persistence?: AppShellLayoutPersistence;
+  readonly #persistence: AppShellLayoutPersistence | undefined;
   readonly #saveDebounceMs: number;
-  readonly #onPersistenceError?: (event: AppShellPersistenceErrorEvent) => void;
+  readonly #onPersistenceError:
+    | ((event: AppShellPersistenceErrorEvent) => void)
+    | undefined;
   readonly #panels = new Map<string, AppShellSidebarController>();
   readonly #panelIds = new Map<AppShellSidebarController, string>();
   readonly #panelDisposers = new Map<string, () => void>();
@@ -467,17 +469,25 @@ export class AppShellController {
     this.#persistence = options.persistence;
     this.#saveDebounceMs = Math.max(0, options.saveDebounceMs ?? 200);
     this.#onPersistenceError = options.onPersistenceError;
-    const sidebarOptions = {
-      minWidth: options.sidebarMinWidth,
-      maxWidth: options.sidebarMaxWidth,
+    const sidebarOptions: AppShellSidebarControllerOptions = {
+      ...(options.sidebarMinWidth === undefined
+        ? {}
+        : { minWidth: options.sidebarMinWidth }),
+      ...(options.sidebarMaxWidth === undefined
+        ? {}
+        : { maxWidth: options.sidebarMaxWidth }),
     };
     this.left = new AppShellSidebarController(
       "left",
       options.leftCollapsed ?? false,
       {
         ...sidebarOptions,
-        width: options.leftWidth,
-        closed: options.leftClosed,
+        ...(options.leftWidth === undefined
+          ? {}
+          : { width: options.leftWidth }),
+        ...(options.leftClosed === undefined
+          ? {}
+          : { closed: options.leftClosed }),
       },
     );
     this.right = new AppShellSidebarController(
@@ -485,8 +495,12 @@ export class AppShellController {
       options.rightCollapsed ?? false,
       {
         ...sidebarOptions,
-        width: options.rightWidth,
-        closed: options.rightClosed,
+        ...(options.rightWidth === undefined
+          ? {}
+          : { width: options.rightWidth }),
+        ...(options.rightClosed === undefined
+          ? {}
+          : { closed: options.rightClosed }),
       },
     );
     this.#attachPanel("left", this.left);

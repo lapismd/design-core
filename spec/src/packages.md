@@ -36,6 +36,7 @@ The root package manifest defines the supported import boundaries. Family barrel
 
 - The export must resolve to tracked source or the documented workspace build output.
 - Package checks must fail when the mapped entry point is stale or missing.
+- Strict clean consumers must type-check the exported App Shell source without relaxing optional-property checks.
 
 ## DC-PKG-003 — Forms exports
 

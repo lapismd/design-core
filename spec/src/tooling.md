@@ -17,7 +17,7 @@ Repository tools keep source generation, discovery, documentation, and validatio
 
 ### Acceptance details
 
-- Machine-readable output must be stable enough for repository automation.
+- Machine-readable output must be stable enough for repository automation, and validation must include a strict public-shell consumer type-check so source-export compatibility cannot regress unnoticed.
 - Tooling failures must report an actionable source path or command.
 
 ## DC-TOOL-002 — Component generator
