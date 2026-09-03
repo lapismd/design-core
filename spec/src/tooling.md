@@ -29,6 +29,7 @@ Repository tools keep source generation, discovery, documentation, and validatio
 - Machine-readable output must be stable enough for repository automation.
 - Tooling failures must report an actionable source path or command.
 - Generator path allowlists must point to the canonical component inventory rather than a duplicate root document.
+- Multipart family CSS must be emitted from an always-instantiated root or content part rather than an optional sibling component.
 
 ## DC-TOOL-003 — Validation commands
 

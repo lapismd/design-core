@@ -6,7 +6,10 @@ import {
   looksLikeTailwindSource,
 } from "../analysis/style-extractor.js";
 import { extractStyleSites } from "../analysis/style-sites.js";
-import { rewritePartSource } from "../transform/family-emitter.js";
+import {
+  rewritePartSource,
+  selectFamilyStyleHost,
+} from "../transform/family-emitter.js";
 
 describe("extractCnClasses", () => {
   it("collects static cn() string candidates", () => {
@@ -144,6 +147,24 @@ describe("extractFamilyFromFiles", () => {
     ]);
     const parts = family.parts[0]!.sites.map((s) => s.part).sort();
     expect(parts).toEqual(["switch", "switch-thumb"]);
+  });
+});
+
+describe("selectFamilyStyleHost", () => {
+  it("prefers an always-rendered content part over an optional first part", () => {
+    const parts = [
+      { part: "dropdown-menu-checkbox-item" },
+      { part: "dropdown-menu-content" },
+      { part: "dropdown-menu-item" },
+    ];
+
+    expect(selectFamilyStyleHost("dropdown-menu", parts)).toBe(parts[1]);
+  });
+
+  it("keeps a styled family root as the primary host", () => {
+    const parts = [{ part: "button" }, { part: "button-icon" }];
+
+    expect(selectFamilyStyleHost("button", parts)).toBe(parts[0]);
   });
 });
 

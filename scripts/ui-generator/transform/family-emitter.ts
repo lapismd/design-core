@@ -1078,8 +1078,7 @@ export function emitFamily(args: {
   mkdirSync(targetDir, { recursive: true });
   const written: string[] = [];
 
-  const rootPart =
-    family.parts.find((p) => p.part === family.component) ?? family.parts[0]!;
+  const rootPart = selectFamilyStyleHost(family.component, family.parts);
 
   const spec = FAMILY_TOKEN_SPECS[family.component];
   let css = remappedCss;
@@ -1120,4 +1119,20 @@ export function emitFamily(args: {
   written.push(provenancePath);
 
   return written;
+}
+
+export function selectFamilyStyleHost<T extends { part: string }>(
+  component: string,
+  parts: readonly T[],
+): T {
+  const host =
+    parts.find((part) => part.part === component) ??
+    parts.find((part) => part.part === `${component}-content`) ??
+    parts[0];
+  if (host === undefined) {
+    throw new Error(
+      `Cannot select a style host for empty family "${component}"`,
+    );
+  }
+  return host;
 }
