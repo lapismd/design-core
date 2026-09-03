@@ -27,7 +27,7 @@ export type StyleSite = {
 };
 
 const UTILITY_HINT =
-  /\b(flex|inline-flex|grid|bg-|text-|border-|rounded-|h-\d|w-|px-|py-|gap-|shadow-|animate-|size-\d|shrink-0|items-|justify-|overflow-|ring-|outline-|font-|leading-|tracking-|whitespace-|min-w-|max-w-|opacity-|pointer-events-|cursor-|transition-|absolute|relative|fixed|sticky|inset-|top-|right-|bottom-|left-|z-|p-\d|m-\d|dark:|data-\[|aria-|focus-visible:|hover:|disabled:|placeholder:|file:|peer|group)/;
+  /\b(flex|inline-flex|grid|bg-|text-|border-|rounded-|h-\d|w-|px-|py-|gap-|shadow-|animate-|size-\d|shrink-0|items-|justify-|overflow-|ring-|outline-|font-|leading-|tracking-|whitespace-|min-w-|max-w-|opacity-|pointer-events-|cursor-|transition-|absolute|relative|fixed|sticky|inset-|top-|right-|bottom-|left-|z-|p-\d|m(?:[trblxyse])?-(?:\d|auto)|dark:|data-\[|aria-|focus-visible:|hover:|disabled:|placeholder:|file:|peer|group)/;
 
 export function isMarkerCandidate(candidate: string): boolean {
   return (

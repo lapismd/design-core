@@ -95,6 +95,28 @@ describe("extractStyleSites", () => {
     expect(sites[0]!.dataSlot).toBe("dropdown-menu-checkbox-item-indicator");
   });
 
+  it("extracts margin utilities from an unannotated nested icon", () => {
+    const source = `
+<DropdownMenuPrimitive.SubTrigger
+  data-slot="dropdown-menu-sub-trigger"
+  class={cn("flex items-center", className)}
+>
+  <ChevronRightIcon class="ml-auto" />
+</DropdownMenuPrimitive.SubTrigger>
+`;
+    const family = extractFamilyFromFiles("dropdown-menu", [
+      { fileName: "dropdown-menu-sub-trigger.svelte", source },
+    ]);
+    const out = rewritePartSource({
+      part: family.parts[0]!,
+      component: "dropdown-menu",
+    });
+
+    expect(family.parts[0]!.sites).toHaveLength(2);
+    expect(out).not.toContain("ml-auto");
+    expect(out).toContain('data-ui-part="dropdown-menu-chevron-right-icon"');
+  });
+
   it("synthesizes a part for Viewport without data-slot", () => {
     const source = `
 <SelectPrimitive.Content
