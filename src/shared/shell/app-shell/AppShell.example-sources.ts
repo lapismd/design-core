@@ -171,7 +171,7 @@ export const MarkdownDocumentBodySidebars = `<script lang="ts">
         />
       </AppShell.Toolbar>
       <AppShell.Body layout="regions" label="Markdown document">
-        <AppShell.Body.Content>
+        <AppShell.Body.Content scrollbarVisibility="hover">
           <article><h1>Document title</h1></article>
         </AppShell.Body.Content>
         <AppShell.Body.Sidebar
@@ -179,6 +179,7 @@ export const MarkdownDocumentBodySidebars = `<script lang="ts">
           panelId="table-of-contents"
           bind:open={tableOfContentsOpen}
           label="Table of contents"
+          scrollbarVisibility="hover"
         >
           <nav aria-label="Document sections">Overview</nav>
         </AppShell.Body.Sidebar>

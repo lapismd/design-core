@@ -7,6 +7,7 @@
   import type { HTMLAttributes } from "svelte/elements";
   import type { WithElementRef } from "../../../lib/utils.js";
   import { ScrollArea } from "../../shadcn/scroll-area/index.js";
+  import type { ScrollAreaVisibility } from "../../shadcn/scroll-area/scroll-area-model.js";
   import { useAppShell } from "./app-shell-context.svelte.js";
   import { useAppShellBody } from "./app-shell-body-context.svelte.js";
   import type { AppShellSide } from "./app-shell-controller.svelte.js";
@@ -19,6 +20,7 @@
     panelId,
     label,
     mobileLabel,
+    scrollbarVisibility,
     tabindex: _tabindex,
     class: className,
     children,
@@ -34,6 +36,8 @@
     label?: string;
     /** Mobile edge selector label. Defaults to the accessible landmark label. */
     mobileLabel?: string;
+    /** When its scrollbar is painted: while scrolling, on hover, or always. */
+    scrollbarVisibility?: ScrollAreaVisibility;
   } = $props();
 
   const controller = useAppShell();
@@ -108,7 +112,7 @@
   inert={(mobileMode && !mobileActive) || (!mobileMode && !open)}
 >
   <ScrollArea
-    type="auto"
+    type={scrollbarVisibility ?? "auto"}
     class="ui-minimal-app-shell__body-sidebar-scroll-area"
   >
     {@render children?.()}

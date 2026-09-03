@@ -69,11 +69,15 @@
     open={sidebarSide !== undefined}
     label="Table of contents"
     mobileLabel="Document contents"
+    scrollbarVisibility="hover"
   >
     {@render tableOfContents()}
   </AppShell.Body.Sidebar>
 
-  <AppShell.Body.Content label={file ? `${file} content` : "Document content"}>
+  <AppShell.Body.Content
+    label={file ? `${file} content` : "Document content"}
+    scrollbarVisibility="hover"
+  >
     {#if file}
       <article class="ui-shell-story-document">
         <header>

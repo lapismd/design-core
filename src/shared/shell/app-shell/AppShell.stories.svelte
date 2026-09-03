@@ -1570,7 +1570,7 @@
 
 <Story
   name="Markdown document body sidebars"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   play={async ({ canvas }) => {
     documentController.left.expand();
     documentController.left.resetWidth();
@@ -1642,6 +1642,12 @@
     );
     await expect(tocViewport).toBeInTheDocument();
     await expect(contentViewport).toBeInTheDocument();
+    await expect(
+      leftToc.querySelector('[data-ui-part="scroll-area"]'),
+    ).toHaveAttribute("data-scroll-visibility", "hover");
+    await expect(
+      markdownContent.querySelector('[data-ui-part="scroll-area"]'),
+    ).toHaveAttribute("data-scroll-visibility", "hover");
     await expect(getComputedStyle(tocViewport!).overflowY).toBe("scroll");
     await expect(getComputedStyle(contentViewport!).overflowY).toBe("scroll");
     await expect(contentViewport!.scrollHeight).toBeGreaterThan(
