@@ -69,6 +69,7 @@ Overlay primitives preserve accessible labelling, focus management, dismissal, p
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/shadcn/dropdown-menu`.
+- Family styling MUST be hosted by the required Content part so action-only consumers retain the menu surface, item layout, and interaction states without importing optional checkbox or radio parts.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 
 ## DC-SHA-047 — Hover Card
