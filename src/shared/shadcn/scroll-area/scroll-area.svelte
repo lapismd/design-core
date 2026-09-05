@@ -292,6 +292,7 @@
         width: 0.25rem;
         flex: 0 0 0.25rem;
         margin-inline-start: auto;
+        margin-inline-end: 1px;
       }
 
       [data-ui-component="scroll-area"][data-ui-part="scroll-area-scrollbar"][data-orientation="vertical"]
@@ -308,6 +309,7 @@
         height: 0.25rem;
         flex: 0 0 0.25rem;
         margin-block-start: auto;
+        margin-block-end: 1px;
       }
 
       [data-ui-component="scroll-area"][data-ui-part="scroll-area-scrollbar"][data-orientation="horizontal"]

@@ -52,7 +52,7 @@ test.describe("Scroll Area preferences", () => {
       .toBe(true);
   });
 
-  test("keeps compact thumbs edge anchored while hover expands and strengthens them", async ({
+  test("keeps compact thumbs one pixel from the outer edge while hover expands inward", async ({
     page,
   }) => {
     await openPreferenceStory(page);
@@ -104,7 +104,7 @@ test.describe("Scroll Area preferences", () => {
       );
       expect(resting.trackCrossSize).toBeCloseTo(8, 0);
       expect(resting.crossSize).toBeCloseTo(4, 0);
-      expect(resting.edgeDelta).toBeLessThan(1);
+      expect(resting.edgeDelta).toBeCloseTo(1, 1);
 
       await thumb.hover();
       await expect
@@ -131,7 +131,7 @@ test.describe("Scroll Area preferences", () => {
         { outerEdge: testCase.outerEdge },
       );
       expect(hovered.background).not.toBe(resting.background);
-      expect(hovered.edgeDelta).toBeLessThan(1);
+      expect(hovered.edgeDelta).toBeCloseTo(1, 1);
 
       await page.mouse.move(790, 890);
       await expect
