@@ -76,11 +76,15 @@ regions and mount a consumer-controlled sidebar on either side:
     side={tableOfContentsSide ?? "right"}
     bind:open={tableOfContentsOpen}
     label="Table of contents"
+    scrollbarVisibility="hover"
   >
     ...
   </AppShell.Body.Sidebar>
 
-  <AppShell.Body.Content label="README content">
+  <AppShell.Body.Content
+    label="README content"
+    scrollbarVisibility="hover"
+  >
     <article>...</article>
   </AppShell.Body.Content>
 </AppShell.Body>
@@ -92,6 +96,10 @@ shadcn Scroll Area. The body itself remains fixed and non-scrolling, and the
 consumer owns the local sidebar's `open` value and which side it occupies.
 This makes table-of-contents state easy to derive from a selected Markdown file
 without registering another application-level sidebar.
+
+Set `scrollbarVisibility` on either region to `"scroll"`, `"hover"`, or
+`"always"` when its scrollbar paint should differ from the default always-on
+region presentation. Scrolling remains independent regardless of paint mode.
 
 `Body.Toggle` is an icon-sized shadcn Button positioned inside the body:
 top-left for `side="left"` and top-right for `side="right"`. It exposes

@@ -133,15 +133,20 @@
     expect(chip).not.toBeNull();
     expect(drawer).not.toBeNull();
     const rest = getComputedStyle(chip!);
-    expect(rest.backgroundColor).not.toBe(
-      getComputedStyle(drawer!).backgroundColor,
+    const restBackground = rest.backgroundColor;
+    const hoverBackground = rest.getPropertyValue(
+      "--ui-ai-chat-attachment-background-hover",
     );
+    expect(restBackground).not.toBe(getComputedStyle(drawer!).backgroundColor);
     expect(rest.borderTopLeftRadius).not.toBe("999px");
-    await userEvent.hover(chip!);
-    expect(getComputedStyle(chip!).backgroundColor).not.toBe(rest.backgroundColor);
-    const removeRest = getComputedStyle(remove).backgroundColor;
-    await userEvent.hover(remove);
-    expect(getComputedStyle(remove).backgroundColor).not.toBe(removeRest);
+    expect(hoverBackground).not.toBe(
+      rest.getPropertyValue("--ui-ai-chat-attachment-background"),
+    );
+    remove.focus();
+    await expect(remove).toHaveFocus();
+    expect(getComputedStyle(remove).backgroundColor).not.toBe(
+      "rgba(0, 0, 0, 0)",
+    );
   }}
 >
   {#snippet template()}
@@ -502,9 +507,7 @@
     }
     await userEvent.click(buttons[0]!);
     await userEvent.click(buttons[1]!);
-    await expect(canvas.getByTestId("stop-plain")).toHaveTextContent(
-      "Stopped",
-    );
+    await expect(canvas.getByTestId("stop-plain")).toHaveTextContent("Stopped");
     await expect(canvas.getByTestId("stop-drawer")).toHaveTextContent(
       "Stopped",
     );

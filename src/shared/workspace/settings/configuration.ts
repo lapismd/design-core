@@ -1,6 +1,7 @@
 import type { WorkspaceSettingsController } from "./settings-controller.svelte.js";
 import type {
   WorkspaceSettingOption,
+  WorkspaceSettingsDefinition,
   WorkspaceSettingsNavigationGroup,
   WorkspaceSettingsSection,
 } from "./types.js";
@@ -70,6 +71,10 @@ export class ConfigurationSchema {
 
   registerSection(section: WorkspaceSettingsSection): () => void {
     return this.register(section);
+  }
+
+  registerDefinition(definition: WorkspaceSettingsDefinition): () => void {
+    return this.settings.registerDefinition(definition);
   }
 
   registerNavigationGroup(group: WorkspaceSettingsNavigationGroup): () => void {

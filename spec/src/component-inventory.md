@@ -50,6 +50,9 @@ see [`spec/records/code-and-code-block.md`](../records/code-and-code-block.md).
 Prefer them for inline/fenced presentation. Forms
 `code-highlighter` remains the Lezer/`parser`-driven form-preview path.
 
+Workspace Settings owns the reusable `CopyableValue` controlled-output
+presentation under `workspace/settings`; it is not a second shadcn family.
+
 Batch commands: `pnpm ui:add:batch a` (simple roots), `b`
 (stateful/light compound), `c` (portals), and `d` (layout/field compounds).
 Inspect a family with `pnpm ui:inspect <name>`.

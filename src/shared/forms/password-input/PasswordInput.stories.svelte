@@ -11,7 +11,7 @@
       docs: {
         description: {
           component:
-            "A masked secret field that looks like a single Input, with a borderless overlay reveal. Settings string fields use this through `presentation: \"password\"`. Secret Field remains the env-or-inline credential control.",
+            'A masked secret field that looks like a single Input, with a borderless overlay reveal. Settings string fields use this through `presentation: "password"`. Secret Field remains the env-or-inline credential control.',
         },
         source: { code: Basic, language: "svelte", type: "code" },
       },

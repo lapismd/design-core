@@ -87,34 +87,34 @@
     onValueChange={onValueChange as ((next: string[]) => void) | undefined}
   />
 {:else}
-<SelectRoot
-  {...rest}
-  type="single"
-  {disabled}
-  bind:value={selectedValue}
-  onValueChange={onValueChange as ((next: string) => void) | undefined}
->
-  <Select.Trigger
-    {id}
-    role="combobox"
-    aria-label={ariaLabel}
-    aria-controls={optionsId}
+  <SelectRoot
+    {...rest}
+    type="single"
+    {disabled}
+    bind:value={selectedValue}
+    onValueChange={onValueChange as ((next: string) => void) | undefined}
   >
-    <span class="ui-workspace-setting-select__value">{triggerContent}</span>
-  </Select.Trigger>
-  <Select.Content
-    id={optionsId}
-    aria-label={ariaLabel ? `${ariaLabel} options` : undefined}
-  >
-    <Select.Group>
-      {#each items as item (item.value)}
-        <Select.Item
-          value={item.value}
-          label={item.label}
-          disabled={item.disabled}
-        />
-      {/each}
-    </Select.Group>
-  </Select.Content>
-</SelectRoot>
+    <Select.Trigger
+      {id}
+      role="combobox"
+      aria-label={ariaLabel}
+      aria-controls={optionsId}
+    >
+      <span class="ui-workspace-setting-select__value">{triggerContent}</span>
+    </Select.Trigger>
+    <Select.Content
+      id={optionsId}
+      aria-label={ariaLabel ? `${ariaLabel} options` : undefined}
+    >
+      <Select.Group>
+        {#each items as item (item.value)}
+          <Select.Item
+            value={item.value}
+            label={item.label}
+            disabled={item.disabled}
+          />
+        {/each}
+      </Select.Group>
+    </Select.Content>
+  </SelectRoot>
 {/if}

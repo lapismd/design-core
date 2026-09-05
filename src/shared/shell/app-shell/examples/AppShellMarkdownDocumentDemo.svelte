@@ -1,4 +1,5 @@
 <script lang="ts">
+  import "./AppShellExamples.css";
   import FileTextIcon from "@lucide/svelte/icons/file-text";
   import type { AppShellSide } from "../app-shell-controller.svelte.js";
   import { AppShell } from "../index.js";
@@ -69,11 +70,15 @@
     open={sidebarSide !== undefined}
     label="Table of contents"
     mobileLabel="Document contents"
+    scrollbarVisibility="hover"
   >
     {@render tableOfContents()}
   </AppShell.Body.Sidebar>
 
-  <AppShell.Body.Content label={file ? `${file} content` : "Document content"}>
+  <AppShell.Body.Content
+    label={file ? `${file} content` : "Document content"}
+    scrollbarVisibility="hover"
+  >
     {#if file}
       <article class="ui-shell-story-document">
         <header>

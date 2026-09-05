@@ -187,7 +187,7 @@ test.describe("Scroll Area WebKit overlay", () => {
     await expect(imperativeRoot).toHaveCSS("overflow", "hidden");
   });
 
-  test("keeps the File Explorer overlay flush to its container edge", async ({
+  test("keeps the File Explorer rail flush while its thumb is inset", async ({
     page,
   }) => {
     await page.goto(
@@ -205,16 +205,25 @@ test.describe("Scroll Area WebKit overlay", () => {
         '[data-ui-part="scroll-area-scrollbar"][data-orientation="vertical"]',
       );
       if (!bar) throw new Error("Explorer scrollbar is missing");
+      const thumb = bar.querySelector<HTMLElement>(
+        '[data-ui-part="scroll-area-thumb"]',
+      );
+      if (!thumb) throw new Error("Explorer scrollbar thumb is missing");
       return {
         edgeDelta: Math.abs(
           element.getBoundingClientRect().right -
             bar.getBoundingClientRect().right,
+        ),
+        thumbEdgeDelta: Math.abs(
+          element.getBoundingClientRect().right -
+            thumb.getBoundingClientRect().right,
         ),
         inset: Number.parseFloat(getComputedStyle(bar).insetInlineEnd),
         zIndex: Number.parseInt(getComputedStyle(bar).zIndex, 10),
       };
     });
     expect(alignment.edgeDelta).toBeLessThan(2);
+    expect(alignment.thumbEdgeDelta).toBeCloseTo(1, 1);
     expect(alignment.inset).toBe(0);
     expect(alignment.zIndex).toBeGreaterThan(10);
   });

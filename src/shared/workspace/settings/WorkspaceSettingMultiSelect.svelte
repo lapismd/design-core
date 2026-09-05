@@ -85,7 +85,9 @@
           dataUiComponent="workspace-setting-multiselect"
           data-ui-part="trigger"
         >
-          <span class="ui-workspace-setting-select__value">{triggerContent}</span>
+          <span class="ui-workspace-setting-select__value"
+            >{triggerContent}</span
+          >
           <span data-ui-part="chevron">
             <WorkspaceIcon name="chevrons-up-down" />
           </span>
@@ -100,17 +102,16 @@
         data-ui-component="workspace-setting-multiselect"
         data-ui-part="content"
       >
-        <CommandView.Root
-          shouldFilter={false}
-          label={ariaLabel ?? placeholder}
-        >
+        <CommandView.Root shouldFilter={false} label={ariaLabel ?? placeholder}>
           <CommandView.Input
             bind:value={query}
             placeholder="Search options..."
             autocomplete="off"
             spellcheck="false"
           />
-          <CommandView.List aria-label={ariaLabel ? `${ariaLabel} options` : "Options"}>
+          <CommandView.List
+            aria-label={ariaLabel ? `${ariaLabel} options` : "Options"}
+          >
             <CommandView.Empty>No options found.</CommandView.Empty>
             {#if filtered.length > 0}
               <CommandView.Group>

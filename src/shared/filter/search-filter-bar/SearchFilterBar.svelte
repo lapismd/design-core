@@ -112,12 +112,12 @@
       {ariaLabel}
       shortcut={!showFilterToggle || filtersExpanded ? shortcut : ""}
       {disabled}
-      {inputId}
+      {...inputId === undefined ? {} : { inputId }}
       {inputMode}
       {clearSearchLabel}
       {error}
       {editorExtensions}
-      {filterSyntax}
+      {...filterSyntax === undefined ? {} : { filterSyntax }}
       {onValueChange}
       {onClearSearch}
     >

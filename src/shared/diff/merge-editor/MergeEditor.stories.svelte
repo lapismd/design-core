@@ -150,9 +150,9 @@
       );
       await expect(viewport).not.toBeNull();
       await expect(gutter).not.toBeNull();
-      await expect(gutter!.getBoundingClientRect().bottom).toBeGreaterThanOrEqual(
-        viewport!.getBoundingClientRect().bottom - 16,
-      );
+      await expect(
+        gutter!.getBoundingClientRect().bottom,
+      ).toBeGreaterThanOrEqual(viewport!.getBoundingClientRect().bottom - 16);
       const gutterColor = getComputedStyle(gutter!).backgroundColor;
       await expect(gutterColor).not.toBe("transparent");
       await expect(gutterColor).not.toBe("rgba(0, 0, 0, 0)");

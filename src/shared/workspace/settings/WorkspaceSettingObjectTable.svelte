@@ -5,13 +5,17 @@
   import * as Table from "@lapismd/design-core/shadcn/table";
   import WorkspaceIcon from "../icon/WorkspaceIcon.svelte";
   import WorkspaceSettingAddButton from "./WorkspaceSettingAddButton.svelte";
+  import CopyableValue from "./CopyableValue.svelte";
   import {
     asObjectMap,
     asObjectRows,
     createObjectRow,
     nextObjectMapKey,
   } from "./object-collection.js";
-  import type { WorkspaceObjectProperty } from "./types.js";
+  import type {
+    WorkspaceObjectProperty,
+    WorkspaceObjectRowAction,
+  } from "./types.js";
 
   let {
     label,
@@ -22,6 +26,12 @@
     minimumItems,
     maximumItems,
     addLabel,
+    rowKey,
+    reorderable = false,
+    allowAdd = true,
+    allowRemove = true,
+    stateRevision = 0,
+    rowActions = [],
     onValueChange,
   }: {
     label: string;
@@ -32,8 +42,22 @@
     minimumItems?: number;
     maximumItems?: number;
     addLabel?: string;
+    rowKey?: string;
+    reorderable?: boolean;
+    allowAdd?: boolean;
+    allowRemove?: boolean;
+    stateRevision?: number;
+    rowActions?: WorkspaceObjectRowAction[];
     onValueChange: (value: unknown) => void;
   } = $props();
+
+  let busyActions = $state<Record<string, boolean>>({});
+  let actionResults = $state<
+    Record<string, { tone: "success" | "warning" | "error"; message: string }>
+  >({});
+  let visibleProperties = $derived(
+    properties.filter((property) => property.presentation !== "hidden"),
+  );
 
   let rows = $derived.by(() => {
     if (mode === "map") {
@@ -43,15 +67,22 @@
       }));
     }
     return asObjectRows(value).map((row, index) => ({
-      key: String(index),
+      key:
+        rowKey && typeof row[rowKey] === "string" && String(row[rowKey]).trim()
+          ? String(row[rowKey])
+          : String(index),
       row,
     }));
   });
   let canAdd = $derived(
-    !disabled && (maximumItems === undefined || rows.length < maximumItems),
+    allowAdd &&
+      !disabled &&
+      (maximumItems === undefined || rows.length < maximumItems),
   );
   let canRemove = $derived(
-    !disabled && (minimumItems === undefined || rows.length > minimumItems),
+    allowRemove &&
+      !disabled &&
+      (minimumItems === undefined || rows.length > minimumItems),
   );
   let resolvedAddLabel = $derived(
     addLabel ?? (mode === "map" ? `Add ${label} entry` : `Add ${label} row`),
@@ -131,6 +162,69 @@
         .map((entry) => entry.row),
     );
   }
+
+  function moveRow(index: number, offset: -1 | 1) {
+    if (mode !== "array" || disabled || !reorderable) return;
+    const target = index + offset;
+    if (target < 0 || target >= rows.length) return;
+    const next = rows.map((entry) => entry.row);
+    [next[index], next[target]] = [next[target]!, next[index]!];
+    emitArray(next);
+  }
+
+  function actionVisible(
+    action: WorkspaceObjectRowAction,
+    row: Record<string, unknown>,
+  ): boolean {
+    return typeof action.hidden === "function"
+      ? !action.hidden(row)
+      : action.hidden !== true;
+  }
+
+  function actionDisabled(
+    action: WorkspaceObjectRowAction,
+    row: Record<string, unknown>,
+    key: string,
+  ): boolean {
+    stateRevision;
+    const configured =
+      typeof action.disabled === "function"
+        ? action.disabled(row)
+        : action.disabled === true;
+    return (
+      disabled ||
+      configured ||
+      busyActions[`${key}:${action.id}`] === true ||
+      action.busy?.(row) === true
+    );
+  }
+
+  async function runRowAction(
+    action: WorkspaceObjectRowAction,
+    row: Record<string, unknown>,
+    index: number,
+    key: string,
+  ): Promise<void> {
+    if (actionDisabled(action, row, key)) return;
+    if (action.confirm && !(await action.confirm(row))) return;
+    const actionKey = `${key}:${action.id}`;
+    delete actionResults[actionKey];
+    busyActions[actionKey] = true;
+    try {
+      const result = await action.run(row, index);
+      if (result) actionResults[actionKey] = result;
+    } catch (caught) {
+      actionResults[actionKey] = {
+        tone: "error",
+        message:
+          caught instanceof Error
+            ? caught.message
+            : "Unable to run this action",
+      };
+    } finally {
+      busyActions[actionKey] = false;
+    }
+  }
 </script>
 
 <div class="ui-workspace-setting-object-collection">
@@ -140,14 +234,14 @@
         {#if mode === "map"}
           <Table.Head>Name</Table.Head>
         {/if}
-        {#each properties as property (property.id)}
+        {#each visibleProperties as property (property.id)}
           <Table.Head>{property.title}</Table.Head>
         {/each}
         <Table.Head>Actions</Table.Head>
       </Table.Row>
     </Table.Header>
     <Table.Body>
-      {#each rows as entry, index (mode === "map" ? entry.key : index)}
+      {#each rows as entry, index (entry.key)}
         <Table.Row>
           {#if mode === "map"}
             <Table.Cell>
@@ -160,19 +254,40 @@
               />
             </Table.Cell>
           {/if}
-          {#each properties as property (property.id)}
+          {#each visibleProperties as property (property.id)}
             <Table.Cell>
               {#if property.type === "boolean"}
                 <Switch
                   checked={Boolean(entry.row[property.id])}
-                  {disabled}
+                  disabled={disabled || property.readOnly}
                   aria-label={`${label} ${property.title} row ${index + 1}`}
                   onCheckedChange={(checked) =>
                     updateCell(index, property.id, checked)}
                 />
+              {:else if property.presentation === "copyable"}
+                <CopyableValue
+                  value={String(entry.row[property.id] ?? "")}
+                  label={`${label} ${property.title}`}
+                />
+              {:else if property.presentation === "code"}
+                <code class="ui-workspace-setting-object-code"
+                  >{String(entry.row[property.id] ?? "")}</code
+                >
+              {:else if property.presentation === "status"}
+                <span class="ui-workspace-setting-object-status"
+                  >{String(entry.row[property.id] ?? "")}</span
+                >
+              {:else if property.readOnly}
+                <span class="ui-workspace-setting-object-value"
+                  >{String(entry.row[property.id] ?? "")}</span
+                >
               {:else}
                 <Input
-                  type={property.type === "string" ? "text" : "number"}
+                  type={property.type === "string"
+                    ? property.presentation === "url"
+                      ? "url"
+                      : "text"
+                    : "number"}
                   step={property.type === "integer" ? 1 : "any"}
                   aria-label={`${label} ${property.title} row ${index + 1}`}
                   value={String(entry.row[property.id] ?? "")}
@@ -190,23 +305,72 @@
             </Table.Cell>
           {/each}
           <Table.Cell>
-            <Button
-              variant="ghost"
-              size="icon-sm"
-              aria-label={`Remove ${label} row ${index + 1}`}
-              disabled={!canRemove}
-              onclick={() => removeRow(index)}
-            >
-              <WorkspaceIcon name="x" />
-            </Button>
+            <div class="ui-workspace-setting-object-actions">
+              {#if mode === "array" && reorderable}
+                <Button
+                  variant="ghost"
+                  size="icon-sm"
+                  aria-label={`Move ${label} row ${index + 1} up`}
+                  disabled={disabled || index === 0}
+                  onclick={() => moveRow(index, -1)}
+                >
+                  <WorkspaceIcon name="arrow-up" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon-sm"
+                  aria-label={`Move ${label} row ${index + 1} down`}
+                  disabled={disabled || index === rows.length - 1}
+                  onclick={() => moveRow(index, 1)}
+                >
+                  <WorkspaceIcon name="arrow-down" />
+                </Button>
+              {/if}
+              {#each rowActions.filter( (action) => actionVisible(action, entry.row), ) as action (action.id)}
+                <Button
+                  variant={action.variant ?? "ghost"}
+                  size={action.icon ? "icon-sm" : "sm"}
+                  aria-label={action.label}
+                  title={action.label}
+                  disabled={actionDisabled(action, entry.row, entry.key)}
+                  onclick={() =>
+                    void runRowAction(action, entry.row, index, entry.key)}
+                >
+                  {#if action.icon}<WorkspaceIcon name={action.icon} />{/if}
+                  {#if !action.icon}{action.label}{/if}
+                </Button>
+                {@const result = actionResults[`${entry.key}:${action.id}`]}
+                {#if result}
+                  <span
+                    class="ui-workspace-setting-object-action-result"
+                    data-tone={result.tone}
+                    role={result.tone === "error" ? "alert" : "status"}
+                    >{result.message}</span
+                  >
+                {/if}
+              {/each}
+              {#if !disabled && allowRemove}
+                <Button
+                  variant="ghost"
+                  size="icon-sm"
+                  aria-label={`Remove ${label} row ${index + 1}`}
+                  disabled={!canRemove}
+                  onclick={() => removeRow(index)}
+                >
+                  <WorkspaceIcon name="x" />
+                </Button>
+              {/if}
+            </div>
           </Table.Cell>
         </Table.Row>
       {/each}
     </Table.Body>
   </Table.Root>
-  <WorkspaceSettingAddButton
-    label={resolvedAddLabel}
-    disabled={!canAdd}
-    onclick={addRow}
-  />
+  {#if !disabled && allowAdd}
+    <WorkspaceSettingAddButton
+      label={resolvedAddLabel}
+      disabled={!canAdd}
+      onclick={addRow}
+    />
+  {/if}
 </div>

@@ -74,7 +74,7 @@
     {/each}
     {#if onAdd}
       <EmojiPicker
-        {emojis}
+        {...emojis === undefined ? {} : { emojis }}
         label={addLabel}
         triggerLabel={addLabel}
         onSelect={onAdd}

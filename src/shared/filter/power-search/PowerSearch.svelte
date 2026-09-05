@@ -207,7 +207,7 @@
         {disabled}
         ariaLabel="Add filter field"
         onSelectField={openAddForField}
-        onCommitText={contentSearchFieldKey ? handleCommitText : undefined}
+        {...contentSearchFieldKey ? { onCommitText: handleCommitText } : {}}
       />
     </div>
 

@@ -19,12 +19,7 @@
   data-slot="command-view"
   class={className}
 >
-  <Command.Root
-    bind:value
-    bind:ref
-    {shouldFilter}
-    {...restProps}
-  >
+  <Command.Root bind:value bind:ref {shouldFilter} {...restProps}>
     {@render children?.()}
   </Command.Root>
 </div>

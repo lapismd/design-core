@@ -1,0 +1,25 @@
+#storybook-root:has(.ui-shell-story-frame) {
+  height: 100vh;
+}
+
+.ui-shell-story-frame {
+  box-sizing: border-box;
+  height: 100%;
+  min-width: 48rem;
+  padding: 1.5rem;
+  background: var(--muted);
+}
+
+/* Detached interaction-test renderers do not provide the Storybook root height. */
+.ui-shell-story-frame:not(:where(#storybook-root *)) {
+  height: 40rem;
+}
+
+.ui-shell-story-surface {
+  --ui-shell-height: 100%;
+
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 1rem 2.5rem
+    color-mix(in srgb, var(--foreground) 10%, transparent);
+}

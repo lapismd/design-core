@@ -1,3 +1,7 @@
+<script lang="ts">
+  import "./AppShellExamples.css";
+</script>
+
 <div class="ui-shell-story-body-demo">
   <header>
     <p>Composable layout</p>

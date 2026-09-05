@@ -68,8 +68,29 @@
     await userEvent.click(canvas.getByRole("button", { name: "always" }));
     await expect(inherited).toHaveAttribute("data-scroll-visibility", "always");
     await expect(canvas.getByLabelText("No overflow area")).toBeVisible();
-    await expect(canvas.getByLabelText("Horizontal area")).toBeVisible();
+    const horizontal = canvas.getByLabelText("Horizontal area");
+    await expect(horizontal).toBeVisible();
     await expect(canvas.getByLabelText("Dual axis area")).toBeVisible();
+
+    for (const [root, orientation, edge] of [
+      [inherited, "vertical", "right"],
+      [horizontal, "horizontal", "bottom"],
+    ] as const) {
+      const scrollbar = root.querySelector<HTMLElement>(
+        `[data-ui-part="scroll-area-scrollbar"][data-orientation="${orientation}"]`,
+      );
+      const thumb = scrollbar?.querySelector<HTMLElement>(
+        '[data-ui-part="scroll-area-thumb"]',
+      );
+      await expect(thumb).toBeInTheDocument();
+      const scrollbarBounds = scrollbar!.getBoundingClientRect();
+      const thumbBounds = thumb!.getBoundingClientRect();
+      const edgeGap =
+        edge === "right"
+          ? scrollbarBounds.right - thumbBounds.right
+          : scrollbarBounds.bottom - thumbBounds.bottom;
+      expect(edgeGap).toBeCloseTo(1, 1);
+    }
   }}
   tags={["visual-pending"]}
   parameters={{

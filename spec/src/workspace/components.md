@@ -46,6 +46,10 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 | Window-controls safe area      | Workspace chrome                                 | DC-WS-062   |
 | Workspace tab cursors          | Workspace tabs                                   | DC-WS-063   |
 | Narrow settings navigation     | `@lapismd/design-core/workspace/settings`        | DC-WS-064   |
+| Controlled settings sources    | `@lapismd/design-core/workspace/settings`        | DC-WS-065   |
+| Custom field adapters          | `@lapismd/design-core/workspace/settings`        | DC-WS-066   |
+| Settings copyable output       | `@lapismd/design-core/workspace/settings`        | DC-WS-067   |
+| Settings object-row actions    | `@lapismd/design-core/workspace/settings`        | DC-WS-068   |
 
 ## DC-WS-008 — About Dialog
 
@@ -313,6 +317,49 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 - The narrow trigger MUST identify the currently selected settings section.
 - The Sheet MUST provide an accessible title, search, close action, and complete navigation.
 - Selecting a section in the Sheet MUST update the shared controller and close the Sheet.
+
+## DC-WS-065 — Controlled settings sources
+
+**Requirement.** A settings section MAY bind its values to one controlled source. Source-backed values MUST use the normal validation and rendering flow, remain outside controller persistence snapshots, and reconcile asynchronous writes without creating a second state path.
+
+### Acceptance details
+
+- A source MUST expose `get`, asynchronous `set`, and disposable change subscription operations.
+- A validated write MUST update optimistically, accept a canonical source value, and roll back with an inline error on failure.
+- Source notifications MUST update every renderer of the section without requesting controller persistence.
+- Section disposal MUST release its source subscription.
+
+## DC-WS-066 — Custom settings field adapters
+
+**Requirement.** Custom settings fields MUST be controlled field adapters that receive their current value and setter through the same controller path as built-in fields. Adapter identity MUST be stable and renderer-independent.
+
+### Acceptance details
+
+- Adapter props MUST include value, setter, disabled, read-only, busy, error, and field metadata.
+- Adapter values MUST participate in validation, search, reveal, dirty state, and source reconciliation.
+- Existing component-backed custom fields MUST remain source compatible through an internal adapter.
+- Full-width adapters MUST inherit host-owned settings spacing and responsive geometry.
+
+## DC-WS-067 — Settings copyable output
+
+**Requirement.** Settings MUST provide a read-only output field and reusable `CopyableValue` presentation. A shortened visible value MUST copy the complete value and expose the complete value through its accessible name.
+
+### Acceptance details
+
+- Output presentations MUST include text, code, status, and copyable values.
+- Copy feedback MUST not replace the underlying complete value.
+- The component MUST use public Workspace tokens and remain usable at narrow widths.
+
+## DC-WS-068 — Settings object-row actions
+
+**Requirement.** Object collections MUST support stable row identity, editable and read-only presentations, accessible reordering, and source-controlled row actions without persisting derived row state.
+
+### Acceptance details
+
+- String properties MAY render as URL, code, copyable, status, or hidden identity cells.
+- Row actions MUST expose disabled, busy, confirmation, and result state.
+- Add, remove, move-up, and move-down controls MUST remain keyboard accessible.
+- Derived cells and action state MUST be omitted from controller persistence.
 
 ## DC-WS-044 — Settings searchable multi-enum
 

@@ -43,13 +43,13 @@ test.describe("Storybook MDX rendering", () => {
     });
   }
 
-  test("highlights Svelte markup through the HTML language alias", async ({
+  test("highlights Svelte markup through the bundled TSX grammar", async ({
     page,
   }) => {
     await page.goto(docsUrl("shell-guidance--docs"));
 
     const source = page
-      .locator("#storybook-docs pre.prismjs .language-html")
+      .locator("#storybook-docs pre.prismjs .language-tsx")
       .first();
     await expect(source).toBeVisible();
     await expect(source.locator(".token.tag").first()).toBeVisible();

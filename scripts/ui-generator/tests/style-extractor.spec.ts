@@ -6,7 +6,10 @@ import {
   looksLikeTailwindSource,
 } from "../analysis/style-extractor.js";
 import { extractStyleSites } from "../analysis/style-sites.js";
-import { rewritePartSource } from "../transform/family-emitter.js";
+import {
+  rewritePartSource,
+  selectFamilyStyleHost,
+} from "../transform/family-emitter.js";
 
 describe("extractCnClasses", () => {
   it("collects static cn() string candidates", () => {
@@ -92,6 +95,28 @@ describe("extractStyleSites", () => {
     expect(sites[0]!.dataSlot).toBe("dropdown-menu-checkbox-item-indicator");
   });
 
+  it("extracts margin utilities from an unannotated nested icon", () => {
+    const source = `
+<DropdownMenuPrimitive.SubTrigger
+  data-slot="dropdown-menu-sub-trigger"
+  class={cn("flex items-center", className)}
+>
+  <ChevronRightIcon class="ml-auto" />
+</DropdownMenuPrimitive.SubTrigger>
+`;
+    const family = extractFamilyFromFiles("dropdown-menu", [
+      { fileName: "dropdown-menu-sub-trigger.svelte", source },
+    ]);
+    const out = rewritePartSource({
+      part: family.parts[0]!,
+      component: "dropdown-menu",
+    });
+
+    expect(family.parts[0]!.sites).toHaveLength(2);
+    expect(out).not.toContain("ml-auto");
+    expect(out).toContain('data-ui-part="dropdown-menu-chevron-right-icon"');
+  });
+
   it("synthesizes a part for Viewport without data-slot", () => {
     const source = `
 <SelectPrimitive.Content
@@ -144,6 +169,24 @@ describe("extractFamilyFromFiles", () => {
     ]);
     const parts = family.parts[0]!.sites.map((s) => s.part).sort();
     expect(parts).toEqual(["switch", "switch-thumb"]);
+  });
+});
+
+describe("selectFamilyStyleHost", () => {
+  it("prefers an always-rendered content part over an optional first part", () => {
+    const parts = [
+      { part: "dropdown-menu-checkbox-item" },
+      { part: "dropdown-menu-content" },
+      { part: "dropdown-menu-item" },
+    ];
+
+    expect(selectFamilyStyleHost("dropdown-menu", parts)).toBe(parts[1]);
+  });
+
+  it("keeps a styled family root as the primary host", () => {
+    const parts = [{ part: "button" }, { part: "button-icon" }];
+
+    expect(selectFamilyStyleHost("button", parts)).toBe(parts[0]);
   });
 });
 

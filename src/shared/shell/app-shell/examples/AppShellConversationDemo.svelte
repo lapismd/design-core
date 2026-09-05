@@ -1,4 +1,5 @@
 <script lang="ts">
+  import "./AppShellExamples.css";
   import SparklesIcon from "@lucide/svelte/icons/sparkles";
   import {
     Composer,

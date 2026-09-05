@@ -15,6 +15,7 @@ export interface WorkspaceSettingBase<Id extends string = string> {
   description?: string;
   order?: number;
   disabled?: boolean;
+  readOnly?: boolean;
   deprecated?: string;
 }
 
@@ -89,7 +90,24 @@ export interface WorkspaceActionSetting extends WorkspaceSettingBase {
   label: string;
   icon?: WorkspaceIconName;
   variant?: "default" | "outline" | "destructive" | "ghost";
-  run(): void | Promise<void>;
+  isDisabled?(): boolean;
+  isBusy?(): boolean;
+  confirm?(): boolean | Promise<boolean>;
+  run(): void | WorkspaceActionResult | Promise<void | WorkspaceActionResult>;
+}
+
+export interface WorkspaceActionResult {
+  tone: "success" | "warning" | "error";
+  message: string;
+}
+
+export interface WorkspaceOutputSetting extends WorkspaceSettingBase {
+  type: "output";
+  presentation?: "text" | "code" | "status" | "copyable";
+  emptyLabel?: string;
+  copyLabel?: string;
+  leadingCharacters?: number;
+  trailingCharacters?: number;
 }
 
 export interface WorkspaceSectionSettingGroup extends WorkspaceSettingBase {
@@ -115,6 +133,23 @@ export interface WorkspaceObjectProperty {
   type: "string" | "number" | "integer" | "boolean";
   default?: string | number | boolean;
   required?: boolean;
+  presentation?: "text" | "url" | "code" | "copyable" | "status" | "hidden";
+  readOnly?: boolean;
+}
+
+export interface WorkspaceObjectRowAction {
+  id: string;
+  label: string;
+  icon?: WorkspaceIconName;
+  variant?: "default" | "outline" | "destructive" | "ghost";
+  disabled?: boolean | ((row: Record<string, unknown>) => boolean);
+  hidden?: boolean | ((row: Record<string, unknown>) => boolean);
+  busy?: (row: Record<string, unknown>) => boolean;
+  confirm?: (row: Record<string, unknown>) => boolean | Promise<boolean>;
+  run(
+    row: Record<string, unknown>,
+    index: number,
+  ): void | WorkspaceActionResult | Promise<void | WorkspaceActionResult>;
 }
 
 export interface WorkspaceObjectCollectionSetting extends WorkspaceSettingBase {
@@ -123,6 +158,12 @@ export interface WorkspaceObjectCollectionSetting extends WorkspaceSettingBase {
   properties: WorkspaceObjectProperty[];
   minimumItems?: number;
   maximumItems?: number;
+  rowKey?: string;
+  reorderable?: boolean;
+  allowAdd?: boolean;
+  allowRemove?: boolean;
+  addLabel?: string;
+  rowActions?: WorkspaceObjectRowAction[];
 }
 
 export interface WorkspaceObjectMapSetting extends WorkspaceSettingBase {
@@ -144,17 +185,32 @@ export interface WorkspaceKeyValueSetting extends WorkspaceSettingBase {
   allowUnknownValues?: boolean;
 }
 
-export interface WorkspaceCustomSettingProps {
+export interface WorkspaceCustomSettingProps<T = unknown> {
   id: string;
-  value: unknown;
+  field: WorkspaceCustomSetting<T>;
+  value: T;
   disabled?: boolean;
-  update(value: unknown): boolean;
+  readOnly?: boolean;
+  busy?: boolean;
+  error?: string;
+  setValue(value: T): Promise<boolean>;
+  /** @deprecated Use setValue for controlled custom fields. */
+  update(value: T): boolean;
 }
 
-export interface WorkspaceCustomSetting extends WorkspaceSettingBase {
+export interface WorkspaceCustomFieldAdapter<T = unknown> {
+  id: string;
+  component: Component<WorkspaceCustomSettingProps<T>>;
+}
+
+export interface WorkspaceCustomSetting<T = unknown>
+  extends WorkspaceSettingBase {
   type: "custom";
-  default: unknown;
-  component: Component<WorkspaceCustomSettingProps>;
+  default?: T;
+  adapter?: string;
+  component?: Component<WorkspaceCustomSettingProps<T>>;
+  presentation?: "row" | "full-width";
+  validate?(value: T): string | null;
 }
 
 export interface WorkspaceUnsupportedSetting extends WorkspaceSettingBase {
@@ -171,6 +227,7 @@ export type WorkspaceSettingField =
   | WorkspaceMultiEnumSetting
   | WorkspaceListSetting
   | WorkspaceActionSetting
+  | WorkspaceOutputSetting
   | WorkspaceSettingGroup
   | WorkspaceObjectCollectionSetting
   | WorkspaceObjectMapSetting
@@ -209,6 +266,18 @@ export interface WorkspaceSettingsSection {
   fields?: WorkspaceSettingField[];
 }
 
+export interface WorkspaceSettingsSource {
+  get(fieldId: string): unknown;
+  set(fieldId: string, value: unknown): Promise<unknown | void>;
+  subscribe(listener: (fieldId?: string) => void): () => void;
+}
+
+export interface WorkspaceSettingsDefinition {
+  section: WorkspaceSettingsSection;
+  source: WorkspaceSettingsSource;
+  adapters?: readonly WorkspaceCustomFieldAdapter<any>[];
+}
+
 export interface WorkspaceSettingsNavigationGroup {
   id: string;
   title: string;
@@ -221,7 +290,7 @@ export interface WorkspaceSettingsSnapshotV1 {
 }
 
 export interface WorkspaceSettingsChangeEvent {
-  source: "update" | "restore-default" | "replace" | "load";
+  source: "update" | "source" | "restore-default" | "replace" | "load";
   id?: string;
 }
 
@@ -254,6 +323,7 @@ export interface WorkspaceSettingsEventMap {
   "validation-error": [event: WorkspaceSettingsValidationError];
   "persistence-error": [event: { operation: "load" | "save"; error: unknown }];
   "persistence-success": [event: { operation: "load" | "save" }];
+  "source-error": [event: { id: string; error: unknown }];
 }
 
 export interface WorkspaceSettingsSearchResult {

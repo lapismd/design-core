@@ -37,8 +37,8 @@ Design Core is a shared presentation and controller library. Consumer applicatio
 
 ### Acceptance details
 
-- Direct compatibility exports may delegate to family barrels but must not fork behavior.
-- Focused public subpaths MAY isolate one reusable family when consumers should not load unrelated barrel dependencies.
+- Direct compatibility exports may delegate to family barrels but must not fork behavior, and source exports plus their declared dependencies must remain type-compatible with strict consumers, including exact optional-property and unchecked-index semantics across composed Shadcn, AI, Filter, and Shell surfaces.
+- Focused public subpaths MAY isolate one reusable family or a Design Core-owned Storybook reference composition, provided consumers do not load unrelated barrel dependencies and reference components do not require story-local CSS.
 - A breaking removal or semantic change requires a new or revised canonical requirement.
 - Root manifest changes must update the owning architecture and package chapters in the same protected diff.
 
@@ -50,7 +50,8 @@ Design Core is a shared presentation and controller library. Consumer applicatio
 
 - Design Core must not vendor or patch a sibling package to conceal an upstream defect.
 - Consumer-specific adapters may remain local when they do not redefine the upstream public contract.
-- Shared development tooling may use published npm packages once available.
+- Shared development tooling may use published npm packages and narrow patched dependency resolutions or overrides, but browser validation dependencies must resolve deterministically before a cold suite starts rather than changing the active module graph during execution.
+- Lifecycle-sensitive Shell and Shadcn browser lanes may serialize their workers when concurrent first loads would race one shared development catalog, and heavy Workspace fixture imports may use an explicit bounded cold-start readiness budget.
 
 ## DC-ARCH-006 — External consumption
 

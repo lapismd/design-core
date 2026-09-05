@@ -4,32 +4,32 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 
 ## Public surface coverage
 
-| Surface              | Public boundary                        | Requirement |
-| -------------------- | -------------------------------------- | ----------- |
-| Shared AI invariants | AI layer                               | DC-AI-001   |
-| Layout               | `@lapismd/design-core/ai/chat`         | DC-AI-002   |
-| Layout Scroll Button | `@lapismd/design-core/ai/chat`         | DC-AI-003   |
-| Message List         | `@lapismd/design-core/ai/chat`         | DC-AI-004   |
-| Message              | `@lapismd/design-core/ai/chat`         | DC-AI-005   |
-| Message Bubble       | `@lapismd/design-core/ai/chat`         | DC-AI-006   |
-| Message Metadata     | `@lapismd/design-core/ai/chat`         | DC-AI-007   |
-| System Message       | `@lapismd/design-core/ai/chat`         | DC-AI-008   |
-| Composer             | `@lapismd/design-core/ai/chat`         | DC-AI-009   |
-| Composer Input       | `@lapismd/design-core/ai/chat`         | DC-AI-010   |
-| Composer trigger submit | `@lapismd/design-core/ai/chat`      | DC-AI-024   |
-| Composer Drawer      | `@lapismd/design-core/ai/chat`         | DC-AI-011   |
-| Send Button          | `@lapismd/design-core/ai/chat`         | DC-AI-012   |
-| Composer Token       | `@lapismd/design-core/ai/chat`         | DC-AI-013   |
-| Tokenized Text       | `@lapismd/design-core/ai/chat`         | DC-AI-014   |
-| Tool Calls           | `@lapismd/design-core/ai/chat`         | DC-AI-015   |
-| Dictation Button     | `@lapismd/design-core/ai/chat`         | DC-AI-016   |
-| Emoji Picker         | `@lapismd/design-core/ai/experimental` | DC-AI-017   |
-| Reaction Bar         | `@lapismd/design-core/ai/experimental` | DC-AI-018   |
-| Reasoning            | `@lapismd/design-core/ai/experimental` | DC-AI-019   |
-| Typing Indicator     | `@lapismd/design-core/ai/experimental` | DC-AI-020   |
-| Unread Divider       | `@lapismd/design-core/ai/experimental` | DC-AI-021   |
-| Conversation         | Storybook composition                  | DC-AI-022   |
-| AI Overview          | Documentation surface                  | DC-AI-023   |
+| Surface                 | Public boundary                        | Requirement |
+| ----------------------- | -------------------------------------- | ----------- |
+| Shared AI invariants    | AI layer                               | DC-AI-001   |
+| Layout                  | `@lapismd/design-core/ai/chat`         | DC-AI-002   |
+| Layout Scroll Button    | `@lapismd/design-core/ai/chat`         | DC-AI-003   |
+| Message List            | `@lapismd/design-core/ai/chat`         | DC-AI-004   |
+| Message                 | `@lapismd/design-core/ai/chat`         | DC-AI-005   |
+| Message Bubble          | `@lapismd/design-core/ai/chat`         | DC-AI-006   |
+| Message Metadata        | `@lapismd/design-core/ai/chat`         | DC-AI-007   |
+| System Message          | `@lapismd/design-core/ai/chat`         | DC-AI-008   |
+| Composer                | `@lapismd/design-core/ai/chat`         | DC-AI-009   |
+| Composer Input          | `@lapismd/design-core/ai/chat`         | DC-AI-010   |
+| Composer trigger submit | `@lapismd/design-core/ai/chat`         | DC-AI-024   |
+| Composer Drawer         | `@lapismd/design-core/ai/chat`         | DC-AI-011   |
+| Send Button             | `@lapismd/design-core/ai/chat`         | DC-AI-012   |
+| Composer Token          | `@lapismd/design-core/ai/chat`         | DC-AI-013   |
+| Tokenized Text          | `@lapismd/design-core/ai/chat`         | DC-AI-014   |
+| Tool Calls              | `@lapismd/design-core/ai/chat`         | DC-AI-015   |
+| Dictation Button        | `@lapismd/design-core/ai/chat`         | DC-AI-016   |
+| Emoji Picker            | `@lapismd/design-core/ai/experimental` | DC-AI-017   |
+| Reaction Bar            | `@lapismd/design-core/ai/experimental` | DC-AI-018   |
+| Reasoning               | `@lapismd/design-core/ai/experimental` | DC-AI-019   |
+| Typing Indicator        | `@lapismd/design-core/ai/experimental` | DC-AI-020   |
+| Unread Divider          | `@lapismd/design-core/ai/experimental` | DC-AI-021   |
+| Conversation            | Storybook composition                  | DC-AI-022   |
+| AI Overview             | Documentation surface                  | DC-AI-023   |
 
 ## DC-AI-001 — Shared AI invariants
 
@@ -125,6 +125,7 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 - The public boundary is `@lapismd/design-core/ai/chat`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 - Trigger menus MUST anchor to the caret or input using the composer-input containing block, flip above when space below the nearest clipping ancestor or the viewport is insufficient, and MUST NOT use viewport-fixed coordinates that drift inside isolated or transformed hosts.
+- Trigger selection MUST guard indexed search results under unchecked-index consumer semantics.
 
 ## DC-AI-011 — Composer Drawer
 
@@ -135,7 +136,7 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 - The public boundary is `@lapismd/design-core/ai/chat`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 - A consumer MAY keep the drawer interactive while the disabled composer body blocks input and send except the stop control when `isStopShown` is true.
-- File chips and lettered feedback options MUST use the attachment fill tokens and compact radius: chips stay darker than the drawer at rest, and option hover or selected paint MUST stay distinct from the drawer.
+- File chips and lettered feedback options MUST use distinct rest and hover attachment fill tokens plus the compact radius: chips stay darker than the drawer at rest, focused remove controls expose their interactive paint, and selected feedback paint stays distinct from the drawer.
 
 ## DC-AI-012 — Send Button
 
@@ -174,7 +175,7 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 
 - The public boundary is `@lapismd/design-core/ai/chat`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
-- Tool-call disclosure indicators MUST point right while closed and down while open for both grouped calls and individual call details.
+- Tool-call disclosure indicators MUST point right while closed and down while open for both grouped calls and individual call details, and single-call rendering MUST remain safe under unchecked-index consumer semantics.
 - Pending and running calls MUST render the public Spinner as a rotating busy indicator.
 
 ## DC-AI-016 — Dictation Button
@@ -203,6 +204,7 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 
 - The public boundary is `@lapismd/design-core/ai/experimental`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- Optional emoji choices MUST be omitted rather than forwarded as explicit `undefined` values.
 
 ## DC-AI-019 — Reasoning
 

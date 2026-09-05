@@ -12,9 +12,10 @@
   import AppShellProjectSidebarDemo from "./examples/AppShellProjectSidebarDemo.svelte";
   import AppShellSidebarDemo from "./examples/AppShellSidebarDemo.svelte";
   import AppShellToolbarDemo from "./examples/AppShellToolbarDemo.svelte";
+  import { AppShellTwoExpandedSidebarsReference } from "../../../storybook/app-shell-reference/index.js";
   import { AppShellController } from "./app-shell-controller.svelte.js";
   import { AppShell, AppShellRoot } from "./index.js";
-  import "./AppShell.stories.css";
+  import "./AppShell.demo.css";
 
   const { Story } = defineMeta({
     title: "Shell/App Shell",
@@ -350,29 +351,7 @@
   }}
 >
   {#snippet template()}
-    <div class="ui-shell-story-frame">
-      <AppShell.Root
-        controller={expandedController}
-        displayMode="desktop"
-        desktopMinMainWidth={0}
-        class="ui-shell-story-surface"
-      >
-        <AppShell.Sidebar side="left">
-          <AppShellSidebarDemo controller={expandedController} side="left" />
-        </AppShell.Sidebar>
-        <AppShell.Main>
-          <AppShell.Toolbar>
-            <AppShellToolbarDemo />
-          </AppShell.Toolbar>
-          <AppShell.Body label="Workspace content">
-            <AppShellBodyDemo />
-          </AppShell.Body>
-        </AppShell.Main>
-        <AppShell.Sidebar side="right" closeable>
-          <AppShellConversationDemo controller={expandedController} />
-        </AppShell.Sidebar>
-      </AppShell.Root>
-    </div>
+    <AppShellTwoExpandedSidebarsReference controller={expandedController} />
   {/snippet}
 </Story>
 
@@ -1570,7 +1549,7 @@
 
 <Story
   name="Markdown document body sidebars"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   play={async ({ canvas }) => {
     documentController.left.expand();
     documentController.left.resetWidth();
@@ -1642,6 +1621,12 @@
     );
     await expect(tocViewport).toBeInTheDocument();
     await expect(contentViewport).toBeInTheDocument();
+    await expect(
+      leftToc.querySelector('[data-ui-part="scroll-area"]'),
+    ).toHaveAttribute("data-scroll-visibility", "hover");
+    await expect(
+      markdownContent.querySelector('[data-ui-part="scroll-area"]'),
+    ).toHaveAttribute("data-scroll-visibility", "hover");
     await expect(getComputedStyle(tocViewport!).overflowY).toBe("scroll");
     await expect(getComputedStyle(contentViewport!).overflowY).toBe("scroll");
     await expect(contentViewport!.scrollHeight).toBeGreaterThan(

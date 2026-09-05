@@ -15,7 +15,10 @@
   import WorkspaceSettingsSurface from "./WorkspaceSettingsSurface.svelte";
   import * as exampleSources from "./WorkspaceSettings.example-sources.js";
   import { WorkspaceSettingsController } from "./settings-controller.svelte.js";
-  import type { WorkspaceSettingsSection } from "./types.js";
+  import type {
+    WorkspaceSettingsDefinition,
+    WorkspaceSettingsSection,
+  } from "./types.js";
   import "./WorkspaceSettings.stories.css";
 
   class RequiredWorkspacePlugin extends AppShellPlugin {}
@@ -318,8 +321,16 @@
               id: "demo.columns",
               type: "object-array",
               title: "Table columns",
-              default: [{ id: "title", width: 240 }],
+              default: [{ key: "column-title", id: "title", width: 240 }],
+              rowKey: "key",
+              reorderable: true,
               properties: [
+                {
+                  id: "key",
+                  title: "Key",
+                  type: "string",
+                  presentation: "hidden",
+                },
                 {
                   id: "id",
                   title: "ID",
@@ -423,9 +434,27 @@
               id: "demo.custom",
               type: "custom",
               title: "Custom renderer",
-              description: "Applications can supply a typed field component.",
+              description:
+                "Applications can register a controlled typed field adapter.",
               default: "Application value",
+              adapter: "demo.controlled-field",
+            },
+            {
+              id: "demo.compat-custom",
+              type: "custom",
+              title: "Compatibility custom renderer",
+              description:
+                "Component-backed fields use the same controlled setter.",
+              default: "Compatibility value",
               component: WorkspaceSettingsStoryCustomField,
+            },
+            {
+              id: "demo.revision",
+              type: "output",
+              title: "Revision",
+              description: "Read-only source values can be copied in full.",
+              presentation: "copyable",
+              copyLabel: "revision ID",
             },
             {
               id: "demo.unsupported",
@@ -451,6 +480,41 @@
       }
       return [];
     });
+  }
+
+  function createControlledAllControls(): WorkspaceSettingsController {
+    const defaults = new WorkspaceSettingsController({
+      sections: allControlSections,
+    }).getSnapshot().values;
+    const values: Record<string, unknown> = {
+      ...defaults,
+      "demo.revision": "revision-abcdefghijklmnopqrstuvwxyz",
+    };
+    const listeners = new Set<(fieldId?: string) => void>();
+    const definition: WorkspaceSettingsDefinition = {
+      section: allControlSections[0]!,
+      source: {
+        get: (fieldId) => values[fieldId],
+        set: async (fieldId, value) => {
+          values[fieldId] = value;
+          for (const listener of listeners) listener(fieldId);
+          return value;
+        },
+        subscribe: (listener) => {
+          listeners.add(listener);
+          return () => listeners.delete(listener);
+        },
+      },
+      adapters: [
+        {
+          id: "demo.controlled-field",
+          component: WorkspaceSettingsStoryCustomField,
+        },
+      ],
+    };
+    const controller = new WorkspaceSettingsController();
+    controller.registerDefinition(definition);
+    return controller;
   }
 
   const builtInApp = createSettingsApp();
@@ -509,14 +573,98 @@
       },
     ],
   });
-  const allControls = new WorkspaceSettingsController({
-    sections: allControlSections,
-  });
+  const allControls = createControlledAllControls();
   attachDemoOptionSources(allControls);
-  const collectionControls = new WorkspaceSettingsController({
-    sections: allControlSections,
-  });
+  const collectionControls = createControlledAllControls();
   attachDemoOptionSources(collectionControls);
+  function createManagedRowsController(): WorkspaceSettingsController {
+    let actionEnabled = false;
+    const listeners = new Set<(fieldId?: string) => void>();
+    const rows = [
+      {
+        key: "primary",
+        label: "Primary device",
+        status: "Active",
+      },
+    ];
+    const definition: WorkspaceSettingsDefinition = {
+      section: {
+        id: "managed-rows",
+        title: "Managed rows",
+        fields: [
+          {
+            id: "demo.managed-action-enabled",
+            type: "boolean",
+            title: "Allow managed action",
+            default: false,
+          },
+          {
+            id: "demo.managed-rows",
+            type: "object-array",
+            title: "Managed devices",
+            default: [],
+            rowKey: "key",
+            allowAdd: false,
+            allowRemove: false,
+            addLabel: "Add managed device",
+            properties: [
+              {
+                id: "key",
+                title: "Key",
+                type: "string",
+                presentation: "hidden",
+              },
+              {
+                id: "label",
+                title: "Device",
+                type: "string",
+                readOnly: true,
+              },
+              {
+                id: "status",
+                title: "Status",
+                type: "string",
+                presentation: "status",
+                readOnly: true,
+              },
+            ],
+            rowActions: [
+              {
+                id: "inspect",
+                label: "Inspect managed device",
+                disabled: () => !actionEnabled,
+                run: () => ({
+                  tone: "success",
+                  message: "Managed device inspected.",
+                }),
+              },
+            ],
+          },
+        ],
+      },
+      source: {
+        get: (fieldId) =>
+          fieldId === "demo.managed-action-enabled" ? actionEnabled : rows,
+        set: async (fieldId, value) => {
+          if (fieldId === "demo.managed-action-enabled") {
+            actionEnabled = value === true;
+          }
+          for (const listener of listeners) listener(fieldId);
+          return fieldId === "demo.managed-action-enabled"
+            ? actionEnabled
+            : rows;
+        },
+        subscribe: (listener) => {
+          listeners.add(listener);
+          return () => listeners.delete(listener);
+        },
+      },
+    };
+    const controller = new WorkspaceSettingsController();
+    controller.registerDefinition(definition);
+    return controller;
+  }
+  const managedRowsController = createManagedRowsController();
   const toggleTableControls = new WorkspaceSettingsController({
     sections: [
       {
@@ -1163,6 +1311,22 @@
     await expect(canvas.getByRole("alert")).toHaveTextContent(
       "Unsupported setting",
     );
+    const copyRevision = canvas.getByRole("button", {
+      name: /Copy full revision ID: revision-abcdefghijklmnopqrstuvwxyz/,
+    });
+    await expect(copyRevision).toHaveTextContent("revision…wxyz");
+    const writeText = fn(async () => undefined);
+    Object.defineProperty(globalThis.navigator, "clipboard", {
+      configurable: true,
+      value: { writeText },
+    });
+    await userEvent.click(copyRevision);
+    await waitFor(() =>
+      expect(writeText).toHaveBeenCalledWith(
+        "revision-abcdefghijklmnopqrstuvwxyz",
+      ),
+    );
+    await expect(copyRevision).toHaveAttribute("data-copied", "true");
 
     const search = canvas.getByRole("searchbox", {
       name: "Search settings",
@@ -1290,6 +1454,44 @@
             <AppSettingsSearch />
             <AppSettingsNavigation />
           </aside>
+          <AppSettingsContent />
+        </AppSettingsRoot>
+      </div>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Source-managed collection actions"
+  tags={["visual-pending"]}
+  play={async ({ canvas }) => {
+    const action = canvas.getByRole("button", {
+      name: "Inspect managed device",
+    });
+    await expect(action).toBeDisabled();
+    await expect(
+      canvas.queryByRole("button", { name: "Add managed device" }),
+    ).toBeNull();
+    await expect(
+      canvas.queryByRole("button", {
+        name: "Remove Managed devices row 1",
+      }),
+    ).toBeNull();
+
+    await userEvent.click(
+      canvas.getByRole("switch", { name: "Allow managed action" }),
+    );
+    await waitFor(() => expect(action).toBeEnabled());
+    await userEvent.click(action);
+    await expect(canvas.getByRole("status")).toHaveTextContent(
+      "Managed device inspected.",
+    );
+  }}
+>
+  {#snippet template()}
+    <div class="ui-workspace-settings-story-canvas">
+      <div class="ui-workspace-settings-story-frame">
+        <AppSettingsRoot controller={managedRowsController}>
           <AppSettingsContent />
         </AppSettingsRoot>
       </div>

@@ -4,6 +4,7 @@ import {
 } from "../core/event-dispatcher.js";
 import type {
   WorkspaceActionSetting,
+  WorkspaceCustomFieldAdapter,
   WorkspaceSettingField,
   WorkspaceSettingGroup,
   WorkspaceSettingOption,
@@ -15,6 +16,7 @@ import type {
   WorkspaceSettingsSearchEntry,
   WorkspaceSettingsSection,
   WorkspaceSettingsSnapshotV1,
+  WorkspaceSettingsDefinition,
 } from "./types.js";
 
 interface IndexedSetting {
@@ -90,7 +92,13 @@ function defaultValues(
   const values: Record<string, unknown> = {};
   for (const section of sections) {
     for (const { field } of flattenFields(section)) {
-      if (field.type !== "action" && field.type !== "unsupported") {
+      if (
+        field.type !== "action" &&
+        field.type !== "output" &&
+        field.type !== "unsupported" &&
+        "default" in field &&
+        field.default !== undefined
+      ) {
         values[field.id] = cloneValue(field.default);
       }
     }
@@ -103,6 +111,7 @@ function validateValue(
   value: unknown,
 ): string | null {
   if (field.type === "action") return "Actions do not store values";
+  if (field.type === "output") return null;
   if (field.type === "boolean") {
     return typeof value === "boolean" ? null : "Expected a boolean value";
   }
@@ -208,7 +217,9 @@ function validateValue(
       ? null
       : "Every key and value must be a string";
   }
-  if (field.type === "custom") return null;
+  if (field.type === "custom") {
+    return field.validate?.(value) ?? null;
+  }
   if (field.type === "unsupported") return null;
   if (field.type !== "list") return "Unsupported setting value";
   if (!Array.isArray(value)) return "Expected a list";
@@ -238,6 +249,12 @@ export class WorkspaceSettingsController {
   dirty = $state(false);
   saving = $state(false);
   validationErrors = $state<Record<string, string>>({});
+  sourceErrors = $state<Record<string, string>>({});
+  sourceBusy = $state<Record<string, boolean>>({});
+  sourceRevision = $state(0);
+  actionResults = $state<
+    Record<string, { tone: "success" | "warning" | "error"; message: string }>
+  >({});
   selectedSectionId = $state("");
   dialogOpen = $state(false);
   revealFieldId = $state<string | null>(null);
@@ -249,6 +266,15 @@ export class WorkspaceSettingsController {
   #pendingSaveEvent: WorkspaceSettingsChangeEvent | null = null;
   #saveChain: Promise<void> = Promise.resolve();
   #hydrating = false;
+  readonly #definitions = new Map<
+    string,
+    {
+      definition: WorkspaceSettingsDefinition;
+      disposeSource: () => void;
+    }
+  >();
+  readonly #sourceWriteChains = new Map<string, Promise<boolean>>();
+  readonly #sourceWriteVersions = new Map<string, number>();
   #optionSourceLoader?: (
     sourceId: string,
     context: {
@@ -293,6 +319,7 @@ export class WorkspaceSettingsController {
   }
 
   registerSection(section: WorkspaceSettingsSection): () => void {
+    this.#disposeDefinition(section.id);
     this.sections = [
       ...this.sections.filter((candidate) => candidate.id !== section.id),
       section,
@@ -305,6 +332,36 @@ export class WorkspaceSettingsController {
     if (!this.selectedSectionId) this.selectedSectionId = section.id;
     this.#events.trigger("schema-change");
     return () => this.unregisterSection(section.id);
+  }
+
+  registerDefinition(definition: WorkspaceSettingsDefinition): () => void {
+    const { section, source } = definition;
+    this.unregisterSection(section.id);
+    this.sections = [...this.sections, section].sort(
+      (a, b) => (a.order ?? 0) - (b.order ?? 0),
+    );
+    const defaults = defaultValues([section]);
+    for (const [id, value] of Object.entries(defaults)) {
+      if (!(id in this.values)) this.values[id] = value;
+    }
+    this.#definitions.set(section.id, {
+      definition,
+      disposeSource: () => undefined,
+    });
+    this.#syncDefinition(definition);
+    const disposeSource = source.subscribe((fieldId) => {
+      this.sourceRevision += 1;
+      this.#syncDefinition(definition, fieldId);
+    });
+    this.#definitions.set(section.id, { definition, disposeSource });
+    this.#validateAll();
+    if (!this.selectedSectionId) this.selectedSectionId = section.id;
+    this.#events.trigger("schema-change");
+    return () => {
+      if (this.#definitions.get(section.id)?.definition === definition) {
+        this.unregisterSection(section.id);
+      }
+    };
   }
 
   registerNavigationGroup(group: WorkspaceSettingsNavigationGroup): () => void {
@@ -352,6 +409,7 @@ export class WorkspaceSettingsController {
   }
 
   unregisterSection(sectionId: string): void {
+    this.#disposeDefinition(sectionId);
     const next = this.sections.filter((section) => section.id !== sectionId);
     if (next.length === this.sections.length) return;
     this.sections = next;
@@ -364,6 +422,44 @@ export class WorkspaceSettingsController {
 
   get<T = unknown>(id: string): T | undefined {
     return this.values[id] as T | undefined;
+  }
+
+  isBusy(id: string): boolean {
+    this.sourceRevision;
+    const indexed = this.#field(id);
+    return (
+      this.sourceBusy[id] === true ||
+      (indexed?.field.type === "action" && indexed.field.isBusy?.() === true)
+    );
+  }
+
+  isDisabled(id: string): boolean {
+    this.sourceRevision;
+    const indexed = this.#field(id);
+    return Boolean(
+      indexed?.field.disabled ||
+        indexed?.field.readOnly ||
+        (indexed?.field.type === "action" && indexed.field.isDisabled?.()),
+    );
+  }
+
+  getActionResult(id: string) {
+    return this.actionResults[id];
+  }
+
+  getError(id: string): string | undefined {
+    return this.validationErrors[id] ?? this.sourceErrors[id];
+  }
+
+  resolveCustomAdapter(
+    fieldId: string,
+    adapterId: string,
+  ): WorkspaceCustomFieldAdapter | undefined {
+    const indexed = this.#field(fieldId);
+    if (!indexed) return undefined;
+    return this.#definitions
+      .get(indexed.section.id)
+      ?.definition.adapters?.find((adapter) => adapter.id === adapterId);
   }
 
   selectSection(sectionId: string): boolean {
@@ -448,7 +544,13 @@ export class WorkspaceSettingsController {
 
   update(id: string, value: unknown): boolean {
     const indexed = this.#field(id);
-    if (!indexed || indexed.field.type === "action" || indexed.field.disabled) {
+    if (
+      !indexed ||
+      indexed.field.type === "action" ||
+      indexed.field.type === "output" ||
+      indexed.field.disabled ||
+      indexed.field.readOnly
+    ) {
       return false;
     }
     const error = validateValue(indexed.field, value);
@@ -457,15 +559,98 @@ export class WorkspaceSettingsController {
       this.#events.trigger("validation-error", { id, value, message: error });
       return false;
     }
+    if (this.#definitions.has(indexed.section.id)) {
+      void this.set(id, value);
+      return true;
+    }
     delete this.validationErrors[id];
+    delete this.sourceErrors[id];
     this.values[id] = cloneValue(value);
     this.#changed({ source: "update", id });
     return true;
   }
 
+  async set(id: string, value: unknown): Promise<boolean> {
+    const indexed = this.#field(id);
+    if (
+      !indexed ||
+      indexed.field.type === "action" ||
+      indexed.field.type === "output" ||
+      indexed.field.disabled ||
+      indexed.field.readOnly
+    ) {
+      return false;
+    }
+    const error = validateValue(indexed.field, value);
+    if (error) {
+      this.validationErrors[id] = error;
+      this.#events.trigger("validation-error", { id, value, message: error });
+      return false;
+    }
+    const registration = this.#definitions.get(indexed.section.id);
+    if (!registration) return this.update(id, value);
+
+    delete this.validationErrors[id];
+    delete this.sourceErrors[id];
+    const previous = this.values[id];
+    const candidate = cloneValue(value);
+    const version = (this.#sourceWriteVersions.get(id) ?? 0) + 1;
+    this.#sourceWriteVersions.set(id, version);
+    this.values[id] = candidate;
+    this.sourceBusy[id] = true;
+    this.#events.trigger("change", { source: "source", id });
+
+    const prior = this.#sourceWriteChains.get(id) ?? Promise.resolve(true);
+    const task = prior
+      .catch(() => false)
+      .then(async () => {
+        try {
+          const canonical = await registration.definition.source.set(
+            id,
+            candidate,
+          );
+          if (this.#sourceWriteVersions.get(id) === version) {
+            const resolved =
+              canonical === undefined
+                ? registration.definition.source.get(id)
+                : canonical;
+            if (resolved !== undefined) this.values[id] = cloneValue(resolved);
+          }
+          return true;
+        } catch (caught) {
+          if (this.#sourceWriteVersions.get(id) === version) {
+            this.values[id] = previous;
+            this.sourceErrors[id] =
+              caught instanceof Error
+                ? caught.message
+                : "Unable to update this setting";
+          }
+          this.#events.trigger("source-error", { id, error: caught });
+          return false;
+        } finally {
+          if (this.#sourceWriteVersions.get(id) === version) {
+            this.sourceBusy[id] = false;
+          }
+        }
+      });
+    this.#sourceWriteChains.set(id, task);
+    return task;
+  }
+
   restoreDefault(id: string): boolean {
     const indexed = this.#field(id);
-    if (!indexed || indexed.field.type === "action") return false;
+    if (
+      !indexed ||
+      indexed.field.type === "action" ||
+      indexed.field.type === "output" ||
+      !("default" in indexed.field) ||
+      indexed.field.default === undefined
+    ) {
+      return false;
+    }
+    if (this.#definitions.has(indexed.section.id)) {
+      return this.update(id, cloneValue(indexed.field.default));
+    }
     delete this.validationErrors[id];
     this.values[id] = cloneValue(indexed.field.default);
     this.#changed({ source: "restore-default", id });
@@ -474,15 +659,54 @@ export class WorkspaceSettingsController {
 
   async runAction(id: string): Promise<boolean> {
     const indexed = this.#field(id);
-    if (!indexed || indexed.field.type !== "action" || indexed.field.disabled) {
+    if (
+      !indexed ||
+      indexed.field.type !== "action" ||
+      this.isDisabled(id) ||
+      this.sourceBusy[id]
+    ) {
       return false;
     }
-    await (indexed.field as WorkspaceActionSetting).run();
-    return true;
+    const action = indexed.field as WorkspaceActionSetting;
+    if (action.confirm && !(await action.confirm())) return false;
+    delete this.actionResults[id];
+    this.sourceBusy[id] = true;
+    try {
+      const result = await action.run();
+      if (result) this.actionResults[id] = result;
+      return true;
+    } catch (caught) {
+      this.actionResults[id] = {
+        tone: "error",
+        message:
+          caught instanceof Error
+            ? caught.message
+            : "Unable to run this action",
+      };
+      return false;
+    } finally {
+      this.sourceBusy[id] = false;
+    }
   }
 
   getSnapshot(): WorkspaceSettingsSnapshotV1 {
-    return { version: 1, values: cloneValue(this.values) };
+    const values: Record<string, unknown> = {};
+    for (const section of this.sections) {
+      if (this.#definitions.has(section.id)) continue;
+      for (const { field } of flattenFields(section)) {
+        if (
+          field.type === "action" ||
+          field.type === "output" ||
+          field.type === "unsupported"
+        ) {
+          continue;
+        }
+        if (field.id in this.values) {
+          values[field.id] = cloneValue(this.values[field.id]);
+        }
+      }
+    }
+    return { version: 1, values };
   }
 
   changeSnapshot(value: unknown): void {
@@ -496,17 +720,21 @@ export class WorkspaceSettingsController {
       record.values !== null
         ? record.values
         : {};
-    this.values = { ...defaultValues(this.sections) };
+    const sourceValues = this.#sourceValues();
+    this.values = { ...defaultValues(this.#controllerSections()) };
     for (const [id, candidate] of Object.entries(incoming)) {
       const indexed = this.#field(id);
       if (
         indexed &&
+        !this.#definitions.has(indexed.section.id) &&
         indexed.field.type !== "action" &&
+        indexed.field.type !== "output" &&
         validateValue(indexed.field, candidate) === null
       ) {
         this.values[id] = cloneValue(candidate);
       }
     }
+    Object.assign(this.values, sourceValues);
     this.#validateAll();
     this.#changed({ source: "replace" });
   }
@@ -519,17 +747,21 @@ export class WorkspaceSettingsController {
       if (value !== null && value !== undefined) {
         const record = value as Partial<WorkspaceSettingsSnapshotV1>;
         if (record.version === 1 && record.values) {
-          this.values = { ...defaultValues(this.sections) };
+          const sourceValues = this.#sourceValues();
+          this.values = { ...defaultValues(this.#controllerSections()) };
           for (const [id, candidate] of Object.entries(record.values)) {
             const indexed = this.#field(id);
             if (
               indexed &&
+              !this.#definitions.has(indexed.section.id) &&
               indexed.field.type !== "action" &&
+              indexed.field.type !== "output" &&
               validateValue(indexed.field, candidate) === null
             ) {
               this.values[id] = cloneValue(candidate);
             }
           }
+          Object.assign(this.values, sourceValues);
         }
       }
       if (this.#persistence) {
@@ -633,6 +865,9 @@ export class WorkspaceSettingsController {
   destroy(): void {
     if (this.#saveTimer) clearTimeout(this.#saveTimer);
     this.close();
+    for (const sectionId of [...this.#definitions.keys()]) {
+      this.#disposeDefinition(sectionId);
+    }
     this.#events.clear();
   }
 
@@ -652,14 +887,74 @@ export class WorkspaceSettingsController {
     return null;
   }
 
+  #controllerSections(): WorkspaceSettingsSection[] {
+    return this.sections.filter(
+      (section) => !this.#definitions.has(section.id),
+    );
+  }
+
+  #sourceValues(): Record<string, unknown> {
+    const result: Record<string, unknown> = {};
+    for (const { definition } of this.#definitions.values()) {
+      for (const { field } of flattenFields(definition.section)) {
+        if (field.type === "action" || field.type === "unsupported") continue;
+        const value = definition.source.get(field.id);
+        if (value !== undefined) result[field.id] = cloneValue(value);
+      }
+    }
+    return result;
+  }
+
+  #syncDefinition(
+    definition: WorkspaceSettingsDefinition,
+    fieldId?: string,
+  ): void {
+    for (const { field } of flattenFields(definition.section)) {
+      if (
+        (fieldId && field.id !== fieldId) ||
+        field.type === "action" ||
+        field.type === "unsupported" ||
+        this.sourceBusy[field.id]
+      ) {
+        continue;
+      }
+      const value = definition.source.get(field.id);
+      if (value === undefined) continue;
+      const error = validateValue(field, value);
+      if (error) {
+        this.validationErrors[field.id] = error;
+        continue;
+      }
+      delete this.validationErrors[field.id];
+      delete this.sourceErrors[field.id];
+      this.values[field.id] = cloneValue(value);
+      this.#events.trigger("change", { source: "source", id: field.id });
+    }
+  }
+
+  #disposeDefinition(sectionId: string): void {
+    const registration = this.#definitions.get(sectionId);
+    if (!registration) return;
+    registration.disposeSource();
+    this.#definitions.delete(sectionId);
+  }
+
   #validateAll(): void {
     const next: Record<string, string> = {};
     for (const section of this.sections) {
       for (const { field } of flattenFields(section)) {
-        if (field.type === "action") continue;
+        if (
+          field.type === "action" ||
+          field.type === "output" ||
+          this.#definitions.has(section.id)
+        ) {
+          continue;
+        }
         const error = validateValue(field, this.values[field.id]);
         if (error) {
-          this.values[field.id] = cloneValue(field.default);
+          if ("default" in field && field.default !== undefined) {
+            this.values[field.id] = cloneValue(field.default);
+          }
         }
       }
     }

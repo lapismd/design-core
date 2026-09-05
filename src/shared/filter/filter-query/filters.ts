@@ -350,14 +350,14 @@ export class BooleanFilter extends Filter {
     const size = this.args.length;
     if (this.op == FilterType.NOT) {
       if (size == 1) {
-        return `-${this.args[0]}`;
+        return `-${this.args[0]!}`;
       }
       return `-(${this.args.map((it) => it.toString()).join("")})`;
     }
 
     const separator = this.op === FilterType.AND ? " " : ",";
     return size == 1
-      ? this.args[0].toString()
+      ? this.args[0]!.toString()
       : `(${this.args.map((it) => it.toString()).join(separator)})`;
   }
 

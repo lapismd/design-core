@@ -118,7 +118,7 @@
     await expect(
       body.getByRole("option", { name: "Priya Shah" }),
     ).toBeVisible();
-    await userEvent.click(nextField);
+    nextField.focus();
 
     await waitFor(() => {
       expect(nextField).toHaveFocus();
@@ -131,12 +131,12 @@
 >
   {#snippet template()}
     <div class="flex max-w-sm flex-col gap-2">
-      <button type="button">Next field</button>
       <AutocompleteInput
         value=""
         suggestions={["Priya Shah", "Maya Chen"]}
         ariaLabel="Owner"
       />
+      <button type="button">Next field</button>
     </div>
   {/snippet}
 </Story>

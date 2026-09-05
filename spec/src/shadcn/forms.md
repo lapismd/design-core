@@ -46,6 +46,7 @@ Shadcn form controls provide the low-level accessible inputs used directly or in
 - The public boundary is `@lapismd/design-core/shadcn/command`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 - The dialog variant must retain modal positioning when Command semantic identity replaces Dialog identity.
+- Optional portal and group content must remain omitted, rather than passed as `undefined`, for exact-optional source consumers.
 
 ## DC-SHA-051 — Command View
 

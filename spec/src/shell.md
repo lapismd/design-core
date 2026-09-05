@@ -26,7 +26,9 @@ The App Shell owns application structure and responsive layout while consumers o
 ### Acceptance details
 
 - The intended content pane, rather than the page, must own scrolling when the bounded-shell composition is used.
-- Compact compositions must preserve shell radius and reduce only documented outer spacing.
+- Body content and body sidebar regions must accept `scrollbarVisibility` values of `scroll`, `hover`, and `always` while retaining always-on scrollbar paint when the option is omitted.
+- Compact and reference compositions must preserve shell radius, expose bounded content extension points, carry required presentation styling with their components, and leave Storybook styles to size or constrain only the demonstration canvas.
+- Public App Shell controller source must type-check for consumers that enable `exactOptionalPropertyTypes`.
 
 ## DC-SHELL-003 — Shell Guidance
 

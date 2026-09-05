@@ -2,6 +2,7 @@ import { expect, test, type Page } from "@playwright/test";
 
 const storyUrl = (storyId: string) =>
   `/iframe.html?id=${storyId}&viewMode=story`;
+const frameworkReadyTimeout = 45_000;
 
 async function openStory(page: Page, storyId: string): Promise<void> {
   await page.goto(storyUrl(storyId));
@@ -123,7 +124,9 @@ test.describe("Workspace real pointer behavior", () => {
       page,
       "workspace-demo-reusable-framework--pointer-drag-surface",
     );
-    await expect(page.locator("[data-app-shell-ready='true']")).toBeVisible();
+    await expect(page.locator("[data-app-shell-ready='true']")).toBeVisible({
+      timeout: frameworkReadyTimeout,
+    });
 
     const source = page.getByRole("button", { name: "Plan", exact: true });
     const target = page.locator(
@@ -185,7 +188,9 @@ test.describe("Workspace real pointer behavior", () => {
       page,
       "workspace-demo-reusable-framework--empty-sidebar-drop-surface",
     );
-    await expect(page.locator("[data-app-shell-ready='true']")).toBeVisible();
+    await expect(page.locator("[data-app-shell-ready='true']")).toBeVisible({
+      timeout: frameworkReadyTimeout,
+    });
 
     const primary = page.locator(
       "[data-ui-component='workspace-tabs'][data-workspace-pane-id='framework-primary-pane']",

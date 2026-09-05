@@ -7,8 +7,16 @@ import {
 } from "./multiselect.js";
 
 const items = [
-  { value: "left", label: "Left sidebar", description: "Primary navigation rail" },
-  { value: "right", label: "Right sidebar", description: "Secondary inspector rail" },
+  {
+    value: "left",
+    label: "Left sidebar",
+    description: "Primary navigation rail",
+  },
+  {
+    value: "right",
+    label: "Right sidebar",
+    description: "Secondary inspector rail",
+  },
   { value: "status", label: "Status bar", description: "Footer status items" },
 ];
 
@@ -24,10 +32,7 @@ describe("settings multi-select helpers", () => {
       summarizeMultiSelectIds(["MD013", "MD041"], "Select options..."),
     ).toBe("MD013, MD041");
     expect(
-      summarizeMultiSelectIds(
-        ["MD013", "MD041", "MD018"],
-        "Select options...",
-      ),
+      summarizeMultiSelectIds(["MD013", "MD041", "MD018"], "Select options..."),
     ).toBe("MD013, MD041 + 1 more");
   });
 

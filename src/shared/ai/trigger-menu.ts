@@ -40,9 +40,8 @@ export function nearestClipBottom(
   let bottom = viewportHeight;
   let current = element?.parentElement ?? null;
   while (current) {
-    const overflowY = current.ownerDocument.defaultView
-      ?.getComputedStyle(current)
-      .overflowY;
+    const overflowY =
+      current.ownerDocument.defaultView?.getComputedStyle(current).overflowY;
     if (overflowY && CLIPPING_OVERFLOW.has(overflowY)) {
       bottom = Math.min(bottom, current.getBoundingClientRect().bottom);
     }

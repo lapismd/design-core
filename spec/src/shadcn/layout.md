@@ -59,7 +59,7 @@ Layout primitives establish reusable spatial, scrolling, and responsive composit
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/shadcn/scroll-area`.
-- Blink and Gecko MUST retain Bits UI scrolling while WebKit hosts identified by an engine marker or user agent MUST use a dedicated native viewport outside Bits UI's hidden-scrollbar selector; both strategies MUST render Design Core-owned, compact edge-anchored thumbs that reserve no native gutter, expand inward, and adopt a stronger shade while hovered or dragged without widening the transparent interaction rail.
+- Blink and Gecko MUST retain Bits UI scrolling while WebKit hosts identified by an engine marker or user agent MUST use a dedicated native viewport outside Bits UI's hidden-scrollbar selector; both strategies MUST render Design Core-owned compact thumbs exactly one CSS pixel from the inline-end edge when vertical and the block-end edge when horizontal, reserve no native gutter, expand inward, and adopt a stronger shade while hovered or dragged without widening the edge-aligned transparent interaction rail.
 - `ScrollAreaVisibility` MUST expose `scroll`, `hover`, and `always`; an omitted local type MUST inherit the nearest App Shell preference, while an explicit type remains authoritative for standalone consumers.
 - Browser coverage MUST prove wheel, keyboard, programmatic, track, and thumb-drag scrolling; bounded direct and imperative layouts; overflow-aware geometry; each visibility mode without relying on native scrollbar paint; and safe overlay listener/observer teardown when Svelte clears bound references before effect cleanup.
 

@@ -41,7 +41,7 @@
     data-slot="command-content"
     class={className}
     {showCloseButton}
-    {portalProps}
+    {...portalProps === undefined ? {} : { portalProps }}
   >
     <Command {...restProps} bind:value bind:ref {children} />
   </Dialog.Content>

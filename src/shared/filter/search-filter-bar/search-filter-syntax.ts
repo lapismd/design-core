@@ -261,7 +261,7 @@ function operatorDescription(operator: string) {
 function valueCompletions(field: SearchFilterField): Completion[] {
   return uniqueValues(field).map((value) => ({
     label: value.label ?? value.value,
-    detail: value.description,
+    ...(value.description === undefined ? {} : { detail: value.description }),
     type: "constant",
     apply: value.apply ?? value.value,
   }));

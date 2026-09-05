@@ -2,18 +2,22 @@
   import type { HTMLAttributes } from "svelte/elements";
   import type { WithElementRef } from "../../../lib/utils.js";
   import { ScrollArea } from "../../shadcn/scroll-area/index.js";
+  import type { ScrollAreaVisibility } from "../../shadcn/scroll-area/scroll-area-model.js";
   import { useAppShell } from "./app-shell-context.svelte.js";
   import { useAppShellBody } from "./app-shell-body-context.svelte.js";
 
   let {
     ref = $bindable(null),
     label,
+    scrollbarVisibility,
     class: className,
     children,
     ...restProps
   }: WithElementRef<HTMLAttributes<HTMLDivElement>> & {
     /** Optional accessible name for this independently scrolling region. */
     label?: string;
+    /** When its scrollbar is painted: while scrolling, on hover, or always. */
+    scrollbarVisibility?: ScrollAreaVisibility;
   } = $props();
 
   useAppShell();
@@ -38,7 +42,7 @@
   aria-label={label}
 >
   <ScrollArea
-    type="auto"
+    type={scrollbarVisibility ?? "auto"}
     class="ui-minimal-app-shell__body-content-scroll-area"
   >
     {@render children?.()}

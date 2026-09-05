@@ -37,7 +37,7 @@ Filter contracts separate query language, reusable search chrome, and consumer q
 
 ### Acceptance details
 
-- The public boundary is `@lapismd/design-core/filter`; its `SearchFilterInput` MUST expose the same plain and CodeMirror lifecycle in compact rows without bar chrome.
+- The public boundary is `@lapismd/design-core/filter`; its `SearchFilterInput` MUST expose the same plain and CodeMirror lifecycle in compact rows without bar chrome, and the focused `SearchFilterBar.svelte` source export MUST type-check for strict consumers that enable exact optional properties and unchecked indexed access.
 - Search surfaces with small enumerated facets beneath the query MUST use forms `FilterCommandPicker` selectors by default; parallel button sets are reserved for true mode or action switching.
 - Expandable search-syntax guidance MUST use a Lucide disclosure icon whose orientation reflects the native disclosure state.
 - The catalog MUST prove filter-query completion tooltips portal into the owner document, escape search-surface clipping, remain hit-testable above adjacent content, use a compact 18rem viewport-bounded default width, and wrap labels and details inside each row.
@@ -50,6 +50,7 @@ Filter contracts separate query language, reusable search chrome, and consumer q
 
 - The public boundary is Storybook composition.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- Optional content-search callbacks MUST be omitted when unavailable so strict source consumers retain exact optional-property compatibility.
 
 ## DC-FILTER-005 — Filter Guidance
 

@@ -17,7 +17,7 @@ Repository tools keep source generation, discovery, documentation, and validatio
 
 ### Acceptance details
 
-- Machine-readable output must be stable enough for repository automation.
+- Machine-readable output must be stable enough for repository automation, and validation must include strict public Shell, Search Filter Bar, and composed source-consumer type-checks so source-export compatibility cannot regress unnoticed.
 - Tooling failures must report an actionable source path or command.
 
 ## DC-TOOL-002 — Component generator
@@ -26,9 +26,10 @@ Repository tools keep source generation, discovery, documentation, and validatio
 
 ### Acceptance details
 
-- Machine-readable output must be stable enough for repository automation.
+- Machine-readable output must be stable enough for repository automation, and type validation must exercise focused and composed public source exports under the strict compiler options used by first-party consumers.
 - Tooling failures must report an actionable source path or command.
 - Generator path allowlists must point to the canonical component inventory rather than a duplicate root document.
+- Multipart family CSS must be emitted from an always-instantiated root or content part rather than an optional sibling component, including styles extracted from unannotated nested elements.
 
 ## DC-TOOL-003 — Validation commands
 
@@ -39,7 +40,7 @@ Repository tools keep source generation, discovery, documentation, and validatio
 - Machine-readable output must be stable enough for repository automation.
 - Tooling failures must report an actionable source path or command.
 - Specification commands must retain separate validation, build, spec-first, index, search, and serve entry points through the configured shared CLI.
-- Release-safe aggregate gates must use bootstrap-safe validation and packaging must fail if a tarball includes local cache artifacts such as source-tree `Library/Caches`, `__pycache__`, or Python bytecode files.
+- Release-safe aggregate gates must use bootstrap-safe validation, cold Storybook browser tests must prebundle editor parser dependencies so Vite cannot invalidate active suites with a dependency-optimization reload, lifecycle-sensitive Storybook browser checks must run serially against one initialized catalog, heavy Workspace fixture imports must have a bounded cold-start readiness window, and packaging must fail if a tarball includes local cache artifacts such as source-tree `Library/Caches`, `__pycache__`, or Python bytecode files.
 
 ## DC-TOOL-004 — Offline documentation
 

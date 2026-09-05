@@ -310,13 +310,14 @@ export class DateExpression {
 
   resolve(): DateExpressionInput | DateRange {
     if (this.#operands.length == 1) {
-      if (this.#operands[0] instanceof DateExpression) {
-        return this.#operands[0].resolve();
+      const operand = this.#operands[0]!;
+      if (operand instanceof DateExpression) {
+        return operand.resolve();
       } else {
-        return this.#operands[0];
+        return operand;
       }
     }
-    return this.eval(this.#operands[0], this.#operands[1]);
+    return this.eval(this.#operands[0]!, this.#operands[1]!);
   }
 
   private eval(left: DateExpressionInput, right: DateExpressionInput) {
@@ -510,9 +511,9 @@ export class Parser {
     }, this.leave.bind(this));
 
     if (this.stack.length == 1) {
-      const filter = this.stack[0];
+      const filter = this.stack[0]!;
       if (filter instanceof BooleanFilter) {
-        this.predicate = filter.args.length == 1 ? filter.args[0] : filter;
+        this.predicate = filter.args.length == 1 ? filter.args[0]! : filter;
       } else {
         this.errors.push(
           `Expected {${filter}} to be instance of BooleanFilter`,
@@ -658,7 +659,7 @@ export class Parser {
       return new NumberFilter(this.content(node));
     } else if (node.name === "Regex") {
       const value = this.content(node).match(/\/(.+)\/([a-z]+)?/) || [];
-      return new PatternFilter(new RegExp(value[1], value[2] ?? ""));
+      return new PatternFilter(new RegExp(value[1] ?? "", value[2] ?? ""));
     } else if (node.name === "AccountName") {
       return new AccountFilter(this.content(node));
     }
@@ -704,7 +705,7 @@ export class Parser {
   private dateExpression(node: SyntaxNode | null | undefined) {
     return dateExpression(node, {
       content: this.content.bind(this),
-      now: this.options.now,
+      ...(this.options.now === undefined ? {} : { now: this.options.now }),
     });
   }
 }

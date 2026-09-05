@@ -1,4 +1,5 @@
 <script lang="ts">
+  import "./AppShellExamples.css";
   import BoxesIcon from "@lucide/svelte/icons/boxes";
   import FolderKanbanIcon from "@lucide/svelte/icons/folder-kanban";
   import NotebookTabsIcon from "@lucide/svelte/icons/notebook-tabs";

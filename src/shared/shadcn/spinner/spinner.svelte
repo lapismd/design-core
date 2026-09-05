@@ -18,9 +18,9 @@
 <Loader2Icon
   {...omitDataUiComponent(restProps)}
   {role}
-  name={name === null ? undefined : name}
-  color={color === null ? undefined : color}
-  stroke={stroke === null ? undefined : stroke}
+  {...name == null ? {} : { name }}
+  {...color == null ? {} : { color }}
+  {...stroke == null ? {} : { stroke }}
   aria-label={ariaLabel}
   data-ui-component="spinner"
   class={className}

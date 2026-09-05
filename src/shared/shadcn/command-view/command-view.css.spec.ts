@@ -2,7 +2,10 @@ import { readFileSync } from "node:fs";
 
 import { describe, expect, it } from "vitest";
 
-const css = readFileSync(new URL("./command-view.css", import.meta.url), "utf8");
+const css = readFileSync(
+  new URL("./command-view.css", import.meta.url),
+  "utf8",
+);
 
 describe("command view item icon alignment", () => {
   it("keeps the item icon on the label row", () => {

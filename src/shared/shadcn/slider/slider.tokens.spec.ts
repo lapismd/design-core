@@ -20,7 +20,9 @@ describe("slider tokens", () => {
     );
 
     expect(css).toContain(`${sliderTokenNames.thumbBackground}:`);
-    expect(source).toContain(`var(\n        ${sliderTokenNames.thumbBackground},`);
+    expect(source).toContain(
+      `var(\n        ${sliderTokenNames.thumbBackground},`,
+    );
     expect(source).toContain("var(--color-white, #ffffff)");
     expect(rootBlock).toContain("--color-white: #ffffff;");
     expect(rootBlock).toContain("--color-black: #000000;");

@@ -5,11 +5,14 @@ import AppSettingsSearch from "./AppSettingsSearch.svelte";
 import AppSettingsSection from "./AppSettingsSection.svelte";
 import AppShellHotkeySettings from "./AppShellHotkeySettings.svelte";
 import AppShellPluginsSettings from "./AppShellPluginsSettings.svelte";
+import CopyableValue from "./CopyableValue.svelte";
+import DeclarativeSettingsSection from "./DeclarativeSettingsSection.svelte";
 import WorkspaceSettingField from "./WorkspaceSettingField.svelte";
 import WorkspaceSettingList from "./WorkspaceSettingList.svelte";
 import WorkspaceSettingsSurface from "./WorkspaceSettingsSurface.svelte";
 
 export * from "./configuration.js";
+export * from "./copyable-value.js";
 export * from "./persistence.js";
 export * from "./settings-controller.svelte.js";
 export * from "./types.js";
@@ -22,6 +25,8 @@ export {
   AppSettingsSection,
   AppShellHotkeySettings,
   AppShellPluginsSettings,
+  CopyableValue,
+  DeclarativeSettingsSection,
   WorkspaceSettingField,
   WorkspaceSettingList,
   WorkspaceSettingsSurface,

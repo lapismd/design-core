@@ -7,9 +7,10 @@ import viteConfig from "./vite.config";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
-// Keep axe annotations available to the browser runner so preview
-// `parameters.a11y.test: "error"` fails `pnpm test:storybook` on violations.
-const storybookA11yDependencies = [
+// Keep browser-runner dependencies stable across a cold suite. Axe annotations
+// enforce preview accessibility errors; the editor parser avoids a mid-run Vite reload.
+const storybookBrowserDependencies = [
+  "@lezer/common",
   "aria-query",
   "react",
   "react-dom",
@@ -22,7 +23,7 @@ export default mergeConfig(
   viteConfig,
   defineConfig({
     optimizeDeps: {
-      include: storybookA11yDependencies,
+      include: storybookBrowserDependencies,
     },
     ssr: {
       noExternal: ["aria-query"],
@@ -52,7 +53,7 @@ export default mergeConfig(
             }),
           ],
           optimizeDeps: {
-            include: storybookA11yDependencies,
+            include: storybookBrowserDependencies,
           },
           ssr: {
             noExternal: ["aria-query"],

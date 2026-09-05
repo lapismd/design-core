@@ -37,7 +37,7 @@
     <Select.Root
       type="single"
       bind:open
-      value={activePanelId}
+      value={activePanelId ?? panels[0]?.id ?? ""}
       onValueChange={(value) => {
         if (value) controller.mobile.selectPanel(side, value);
       }}
