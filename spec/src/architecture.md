@@ -50,7 +50,7 @@ Design Core is a shared presentation and controller library. Consumer applicatio
 
 - Design Core must not vendor or patch a sibling package to conceal an upstream defect.
 - Consumer-specific adapters may remain local when they do not redefine the upstream public contract.
-- Shared development tooling may use published npm packages once available, but browser validation dependencies must resolve deterministically before a cold suite starts rather than changing the active module graph during execution.
+- Shared development tooling may use published npm packages and narrow patched dependency resolutions or overrides, but browser validation dependencies must resolve deterministically before a cold suite starts rather than changing the active module graph during execution.
 - Lifecycle-sensitive Shell and Shadcn browser lanes may serialize their workers when concurrent first loads would race one shared development catalog.
 
 ## DC-ARCH-006 — External consumption
