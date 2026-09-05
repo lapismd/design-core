@@ -52,6 +52,7 @@
   let editing = $state(false);
   let filterValue = $state("");
   let activeIndex = $state(0);
+  let blurFocusTarget: HTMLElement | null = null;
   const listId = `autocomplete-list-${Math.random().toString(36).slice(2)}`;
 
   const normalizedSuggestions = $derived.by(() => {
@@ -115,10 +116,10 @@
     void onCommit(suggestion);
   }
 
-  function commitValue() {
+  function commitValue(close = true) {
     const committed = value.trim();
     if (!committed) return;
-    if (!forceOpen) open = false;
+    if (close && !forceOpen) open = false;
     editing = false;
     filterValue = "";
     void onCommit(committed);
@@ -130,6 +131,13 @@
     editing = false;
     filterValue = "";
     activeIndex = 0;
+  }
+
+  function handleCloseAutoFocus(event: Event) {
+    event.preventDefault();
+    const target = blurFocusTarget;
+    blurFocusTarget = null;
+    target?.focus({ preventScroll: true });
   }
 
   function handleKeydown(event: KeyboardEvent) {
@@ -166,9 +174,8 @@
     }
     if (event.key === "Tab") {
       if (commitOnTab && value.trim()) {
-        commitValue();
+        commitValue(false);
       }
-      closeList();
       return;
     }
     if (event.key === "Backspace" && !value) {
@@ -213,11 +220,16 @@
         activeIndex = 0;
       }}
       onkeydown={handleKeydown}
-      onblur={() => {
+      onblur={(event) => {
+        blurFocusTarget =
+          event.relatedTarget instanceof HTMLElement
+            ? event.relatedTarget
+            : null;
         if (commitOnBlur) {
           commitValue();
+        } else {
+          closeList();
         }
-        closeList();
       }}
     />
     <Popover.Content
@@ -227,7 +239,7 @@
       customAnchor={input}
       {portalProps}
       onOpenAutoFocus={(event) => event.preventDefault()}
-      onCloseAutoFocus={(event) => event.preventDefault()}
+      onCloseAutoFocus={handleCloseAutoFocus}
     >
       <div id={listId} class="ui-autocomplete-input__list" role="listbox">
         {#each normalizedSuggestions as suggestion, index (suggestion)}

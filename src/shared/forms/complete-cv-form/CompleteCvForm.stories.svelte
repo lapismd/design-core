@@ -369,14 +369,24 @@
           canvas.getByRole("textbox", { name: "CV YAML" }),
         ).toHaveTextContent("John Example");
 
+        const textSection = canvas.getByTestId("cv-section-TextEntry");
         await userEvent.click(
           canvas.getByRole("button", { name: "Collapse all CV groups" }),
         );
-        await expect(canvas.queryByLabelText("Email")).not.toBeInTheDocument();
+        await waitFor(() =>
+          expect(within(textSection).queryAllByLabelText("Text")).toHaveLength(
+            0,
+          ),
+        );
+        await expect(canvas.getByLabelText("Email")).toBeVisible();
         await userEvent.click(
           canvas.getByRole("button", { name: "Expand all CV groups" }),
         );
-        await expect(canvas.getByLabelText("Email")).toBeVisible();
+        await waitFor(() =>
+          expect(
+            within(textSection).getAllByLabelText("Text").length,
+          ).toBeGreaterThan(0),
+        );
       },
     );
 

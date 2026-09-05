@@ -136,7 +136,7 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 - The public boundary is `@lapismd/design-core/ai/chat`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 - A consumer MAY keep the drawer interactive while the disabled composer body blocks input and send except the stop control when `isStopShown` is true.
-- File chips and lettered feedback options MUST use the attachment fill tokens and compact radius: chips stay darker than the drawer at rest, and option hover or selected paint MUST stay distinct from the drawer.
+- File chips and lettered feedback options MUST use distinct rest and hover attachment fill tokens plus the compact radius: chips stay darker than the drawer at rest, focused remove controls expose their interactive paint, and selected feedback paint stays distinct from the drawer.
 
 ## DC-AI-012 — Send Button
 

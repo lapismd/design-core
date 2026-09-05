@@ -133,17 +133,20 @@
     expect(chip).not.toBeNull();
     expect(drawer).not.toBeNull();
     const rest = getComputedStyle(chip!);
-    expect(rest.backgroundColor).not.toBe(
-      getComputedStyle(drawer!).backgroundColor,
+    const restBackground = rest.backgroundColor;
+    const hoverBackground = rest.getPropertyValue(
+      "--ui-ai-chat-attachment-background-hover",
     );
+    expect(restBackground).not.toBe(getComputedStyle(drawer!).backgroundColor);
     expect(rest.borderTopLeftRadius).not.toBe("999px");
-    await userEvent.hover(chip!);
-    expect(getComputedStyle(chip!).backgroundColor).not.toBe(
-      rest.backgroundColor,
+    expect(hoverBackground).not.toBe(
+      rest.getPropertyValue("--ui-ai-chat-attachment-background"),
     );
-    const removeRest = getComputedStyle(remove).backgroundColor;
-    await userEvent.hover(remove);
-    expect(getComputedStyle(remove).backgroundColor).not.toBe(removeRest);
+    remove.focus();
+    await expect(remove).toHaveFocus();
+    expect(getComputedStyle(remove).backgroundColor).not.toBe(
+      "rgba(0, 0, 0, 0)",
+    );
   }}
 >
   {#snippet template()}

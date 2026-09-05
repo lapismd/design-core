@@ -86,6 +86,6 @@ Workspace panels provide generic domain-neutral views driven by consumer data an
 ### Acceptance details
 
 - The lightbulb MUST be absent when `buildItemMenu` adds no entries.
-- The open menu MUST portal outside the Problems view without clipping to that container.
+- The open menu MUST portal outside the Problems view without clipping to that container; collision-aware placement MAY choose either side of the panel.
 - Click MUST not navigate the row.
 - Unit tests and the bottom-panel story MUST cover presence, absence, menu titles, and outside-panel paint.
