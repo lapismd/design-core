@@ -40,7 +40,7 @@ Repository tools keep source generation, discovery, documentation, and validatio
 - Machine-readable output must be stable enough for repository automation.
 - Tooling failures must report an actionable source path or command.
 - Specification commands must retain separate validation, build, spec-first, index, search, and serve entry points through the configured shared CLI.
-- Release-safe aggregate gates must use bootstrap-safe validation, cold Storybook browser tests must prebundle editor parser dependencies so Vite cannot invalidate active suites with a dependency-optimization reload, lifecycle-sensitive Storybook browser checks must run serially against one initialized catalog, and packaging must fail if a tarball includes local cache artifacts such as source-tree `Library/Caches`, `__pycache__`, or Python bytecode files.
+- Release-safe aggregate gates must use bootstrap-safe validation, cold Storybook browser tests must prebundle editor parser dependencies so Vite cannot invalidate active suites with a dependency-optimization reload, lifecycle-sensitive Storybook browser checks must run serially against one initialized catalog, heavy Workspace fixture imports must have a bounded cold-start readiness window, and packaging must fail if a tarball includes local cache artifacts such as source-tree `Library/Caches`, `__pycache__`, or Python bytecode files.
 
 ## DC-TOOL-004 — Offline documentation
 

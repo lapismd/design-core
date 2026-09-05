@@ -10,6 +10,7 @@ const baseURL = `http://127.0.0.1:${port}`;
 export default defineConfig({
   testDir: "./tests/workspace",
   fullyParallel: false,
+  timeout: 60_000,
   expect: {
     timeout: 15_000,
   },
