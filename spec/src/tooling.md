@@ -10,6 +10,7 @@ Repository tools keep source generation, discovery, documentation, and validatio
 | Component generator   | Tooling         | DC-TOOL-002 |
 | Validation commands   | Tooling         | DC-TOOL-003 |
 | Offline documentation | Tooling         | DC-TOOL-004 |
+| Turbo orchestration   | Tooling         | DC-TOOL-005 |
 
 ## DC-TOOL-001 — UI catalog CLI
 
@@ -52,3 +53,14 @@ Repository tools keep source generation, discovery, documentation, and validatio
 - Tooling failures must report an actionable source path or command.
 - Guide and component discovery must point readers back to canonical source paths instead of becoming a second authority.
 - Removed Docs MCP commands must not appear in root package scripts or Storybook host configuration.
+
+## DC-TOOL-005 — Turbo orchestration
+
+**Requirement.** Turbo orchestration MUST expose deterministic local and CI task commands, bounded concurrency, and auditable cache results.
+
+### Acceptance details
+
+- The local nonvisual aggregate must execute the same functional lanes that CI fans out, running governance, quality, and unit work concurrently while serializing resource-heavy Storybook and browser suites.
+- Static Storybook output must be restored from cache when its inputs are unchanged.
+- Cache reporting must distinguish remote hits, local hits, and executed tasks.
+- Focused tests must cover default concurrency, overrides, and cache-summary classification.

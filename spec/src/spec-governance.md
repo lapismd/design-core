@@ -28,26 +28,27 @@ Specification governance keeps requirements discoverable, mapped, validated, and
 
 ## Change map
 
-| Protected area                                                           | Owning canonical chapter         |
-| ------------------------------------------------------------------------ | -------------------------------- |
-| Root package manifests and exports                                       | `architecture.md`, `packages.md` |
-| Shared styles, themes, and tokens                                        | `styling-and-themes.md`          |
-| Shadcn families                                                          | Matching chapter under `shadcn/` |
-| Forms families                                                           | Matching chapter under `forms/`  |
-| `password-input` form family                                             | `forms/inputs.md`                |
-| Filter layer                                                             | `filter.md`                      |
-| AI layer                                                                 | `ai.md`                          |
-| Diff layer (`FileListing`, `FileChangeStats`, `FileDiff`, `MergeEditor`) | `diff.md`                        |
-| Shell layer                                                              | `shell.md`                       |
-| Workspace framework                                                      | `workspace/framework.md`         |
-| Workspace components                                                     | `workspace/components.md`        |
-| Workspace panels                                                         | `workspace/panels.md`            |
-| Workspace plugins                                                        | `workspace/plugins.md`           |
-| Storybook host, reference fixtures, and specification mirrors            | `storybook-catalog.md`           |
-| UI generator and offline docs tooling                                    | `tooling.md`                     |
-| Specification validators, book, map, QMD, and agent rules                | `spec-governance.md`             |
-| Component classification                                                 | `component-inventory.md`         |
-| Cross-family forms composition guidance                                  | `forms/guidance.md`              |
+| Protected area                                                           | Owning canonical chapter                       |
+| ------------------------------------------------------------------------ | ---------------------------------------------- |
+| Root package manifests and exports                                       | `architecture.md`, `packages.md`               |
+| Shared styles, themes, and tokens                                        | `styling-and-themes.md`                        |
+| Shadcn families                                                          | Matching chapter under `shadcn/`               |
+| Forms families                                                           | Matching chapter under `forms/`                |
+| `password-input` form family                                             | `forms/inputs.md`                              |
+| Filter layer                                                             | `filter.md`                                    |
+| AI layer                                                                 | `ai.md`                                        |
+| Diff layer (`FileListing`, `FileChangeStats`, `FileDiff`, `MergeEditor`) | `diff.md`                                      |
+| Shell layer                                                              | `shell.md`                                     |
+| Workspace framework                                                      | `workspace/framework.md`                       |
+| Workspace components                                                     | `workspace/components.md`                      |
+| Workspace panels                                                         | `workspace/panels.md`                          |
+| Workspace plugins                                                        | `workspace/plugins.md`                         |
+| Storybook host, reference fixtures, and specification mirrors            | `storybook-catalog.md`                         |
+| UI generator and offline docs tooling                                    | `tooling.md`                                   |
+| Root task graph, CI workflows, and cache environment example             | `architecture.md`, `packages.md`, `tooling.md` |
+| Specification validators, book, map, QMD, and agent rules                | `spec-governance.md`                           |
+| Component classification                                                 | `component-inventory.md`                       |
+| Cross-family forms composition guidance                                  | `forms/guidance.md`                            |
 
 ## DC-GOV-002 — Verification matrix
 
@@ -117,7 +118,7 @@ Specification governance keeps requirements discoverable, mapped, validated, and
 - A diagnostic must identify its stable code, governing requirement, source path, line when available, affected identifier, and corrective action.
 - Generated or discovery surfaces must point back to canonical Markdown rather than becoming a second source of truth.
 - Supporting implementation records must live under `spec/records/`, and completed one-time plans must live under `spec/archive/`; neither location is normative or included in the canonical book.
-- Release artifacts under `.release/`, source-tree `Library/Caches`, `__pycache__`, and Python bytecode artifacts must remain ignored, and release packaging checks must reject cache artifacts if they appear in an npm tarball.
+- Release artifacts under `.release/`, Turbo output under `.turbo/`, local `.env` credentials, source-tree `Library/Caches`, `__pycache__`, and Python bytecode artifacts must remain ignored, and release packaging checks must reject cache artifacts if they appear in an npm tarball.
 
 ## DC-GOV-009 — Storybook documentation checks
 

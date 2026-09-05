@@ -1,4 +1,5 @@
 node_modules
+.turbo/
 storybook-static
 storybook-static-check
 spec/book/
@@ -24,6 +25,7 @@ src/**/Library/Caches/
 src/**/__pycache__/
 src/**/*.pyc
 # Per-checkout Storybook/visual-test port allocation
+/.env
 .env.storybook.local
 # Ephemeral visual-diff artifacts written by Playwright visual runs
 tests/visual/storybook.spec.ts-snapshots/**/*.json

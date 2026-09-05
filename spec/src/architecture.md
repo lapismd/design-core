@@ -12,6 +12,7 @@ Design Core is a shared presentation and controller library. Consumer applicatio
 | Local source ownership   | Architecture    | DC-ARCH-005 |
 | External consumption     | Architecture    | DC-ARCH-006 |
 | Component classification | Architecture    | DC-ARCH-007 |
+| Validation execution     | Architecture    | DC-ARCH-008 |
 
 ## DC-ARCH-002 — Layer boundaries
 
@@ -63,3 +64,14 @@ Design Core is a shared presentation and controller library. Consumer applicatio
 - The published boundary must omit repository-local caches and catalog-only examples.
 - Colocated workspace linking must not change the published dependency range.
 - Public metadata must identify `lapismd/design-core` as the canonical source.
+
+## DC-ARCH-008 — Validation execution
+
+**Requirement.** Repository validation MUST execute cacheable work through a bounded Turbo runner with signed remote caching that fails open to normal local execution.
+
+### Acceptance details
+
+- Default concurrency must be half the available processors capped at four, with a validated `TURBO_CONCURRENCY` override.
+- CI and non-CI executions must not share cache keys.
+- VCS-dependent governance and registry-dependent dependency audits must remain uncached.
+- Remote cache credentials must come from ignored local environment files or CI secrets and must never be logged.

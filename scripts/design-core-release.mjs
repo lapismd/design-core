@@ -198,6 +198,7 @@ function assertNoPortableManifestViolations(tarballPath) {
     "package/.storybook/",
     "package/storybook-static/",
     "package/.visual-delta/",
+    "package/.turbo/",
     "package/.qmd/",
     "package/tests/",
     "package/node_modules/",

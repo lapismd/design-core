@@ -224,6 +224,26 @@ pnpm spec:search -- "tokens"
 pnpm spec:check
 ```
 
+### CI and local parity
+
+`pnpm checks` runs the nonvisual governance, quality, unit, Storybook, pointer,
+and AI browser lanes through Turbo. Governance, quality, and unit work executes
+concurrently with half the available processors, capped at four. Resource-heavy
+Storybook and browser suites run one at a time locally so catalog startup and
+interaction readiness remain deterministic; set `TURBO_CONCURRENCY` to a
+positive number or percentage to override the general task bound.
+
+Local task output is cached under `.turbo/`. The same tasks use the signed
+organization cache in CI and fail open to normal execution when it is
+unavailable. To use the remote cache locally, copy `.env.example` to the ignored
+root `.env` and provide `TURBO_TOKEN` and
+`TURBO_REMOTE_CACHE_SIGNATURE_KEY`. Never commit those credentials.
+
+CI fans the nine nonvisual lanes out in parallel, including separate Workspace,
+Shell, Shadcn, and AI browser runners. It runs full and production dependency
+audits after they pass and reports one stable `Validate` result. Visual
+comparison remains an explicit, separate command.
+
 ## Release and validation
 
 Common validation commands:

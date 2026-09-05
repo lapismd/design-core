@@ -6,7 +6,7 @@ const storyUrl = `/iframe.html?id=${storyId}&viewMode=story`;
 
 async function openStory(page: Page): Promise<void> {
   await page.goto(storyUrl);
-  await waitForVisualStoryFinished(page, storyId);
+  await waitForVisualStoryFinished(page, storyId, 30_000);
   await page.evaluate(async () => {
     await document.fonts.ready;
   });
