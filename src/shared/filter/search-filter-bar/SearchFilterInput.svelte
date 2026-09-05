@@ -403,7 +403,7 @@
   {#key `${chipEditSession.from}:${chipEditSession.to}:${chipEditSession.field}`}
     <SearchFilterPredicateEditor
       session={chipEditSession}
-      {filterSyntax}
+      {...filterSyntax === undefined ? {} : { filterSyntax }}
       {disabled}
       onCancel={closePredicateChipEditor}
       onApply={applyPredicateChipEdit}

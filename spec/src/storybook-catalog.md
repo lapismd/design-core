@@ -69,6 +69,7 @@ Storybook is the interactive catalog and acceptance surface. It documents compon
 ### Acceptance details
 
 - Public components must use public package imports and include the state or composition needed to reproduce the scenario.
+- Public reference fixtures may accept typed snippets for bounded consumer-owned content while retaining Design Core ownership of the surrounding composition and styling.
 - Show Code must not present a story-only demo, harness, fixture, story surface, or inferred story args as consumer API.
 
 ## DC-CAT-007 — Explicit source

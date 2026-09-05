@@ -1,4 +1,5 @@
 <script lang="ts">
+  import type { Snippet } from "svelte";
   import { AppShell } from "../../shared/shell/app-shell/index.js";
   import { AppShellController } from "../../shared/shell/app-shell/app-shell-controller.svelte.js";
   import AppShellBodyDemo from "../../shared/shell/app-shell/examples/AppShellBodyDemo.svelte";
@@ -9,8 +10,12 @@
 
   let {
     controller = new AppShellController(),
+    leftSidebar,
+    showRightToggle = true,
   }: {
     controller?: AppShellController;
+    leftSidebar?: Snippet<[AppShellController]>;
+    showRightToggle?: boolean;
   } = $props();
 </script>
 
@@ -22,11 +27,15 @@
     class="ui-shell-story-surface"
   >
     <AppShell.Sidebar side="left">
-      <AppShellSidebarDemo {controller} side="left" />
+      {#if leftSidebar}
+        {@render leftSidebar(controller)}
+      {:else}
+        <AppShellSidebarDemo {controller} side="left" />
+      {/if}
     </AppShell.Sidebar>
     <AppShell.Main>
       <AppShell.Toolbar>
-        <AppShellToolbarDemo />
+        <AppShellToolbarDemo {showRightToggle} />
       </AppShell.Toolbar>
       <AppShell.Body label="Workspace content">
         <AppShellBodyDemo />

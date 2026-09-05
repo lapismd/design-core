@@ -37,7 +37,7 @@ Design Core is a shared presentation and controller library. Consumer applicatio
 
 ### Acceptance details
 
-- Direct compatibility exports may delegate to family barrels but must not fork behavior, and source exports must remain type-compatible with strict consumers, including exact optional-property semantics.
+- Direct compatibility exports may delegate to family barrels but must not fork behavior, and source exports plus their declared dependencies must remain type-compatible with strict consumers, including exact optional-property and unchecked-index semantics across composed Shadcn, AI, Filter, and Shell surfaces.
 - Focused public subpaths MAY isolate one reusable family or a Design Core-owned Storybook reference composition, provided consumers do not load unrelated barrel dependencies and reference components do not require story-local CSS.
 - A breaking removal or semantic change requires a new or revised canonical requirement.
 - Root manifest changes must update the owning architecture and package chapters in the same protected diff.

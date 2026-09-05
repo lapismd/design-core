@@ -331,9 +331,10 @@
           Math.max(1, searchState.items.length);
         return;
       }
-      if (event.key === "Enter" && searchState.items[highlightedIndex]) {
+      const highlightedItem = searchState.items[highlightedIndex];
+      if (event.key === "Enter" && highlightedItem) {
         event.preventDefault();
-        insertTriggerSelection(searchState.items[highlightedIndex]);
+        insertTriggerSelection(highlightedItem);
         return;
       }
       if (event.key === "Escape") {

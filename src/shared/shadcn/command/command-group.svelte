@@ -31,5 +31,7 @@
       {heading}
     </CommandPrimitive.GroupHeading>
   {/if}
-  <CommandPrimitive.GroupItems {children} />
+  <CommandPrimitive.GroupItems>
+    {#if children}{@render children()}{/if}
+  </CommandPrimitive.GroupItems>
 </CommandPrimitive.Group>

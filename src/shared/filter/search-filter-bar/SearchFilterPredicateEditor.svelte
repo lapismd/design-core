@@ -158,7 +158,7 @@
   <div class="cv-search-filter-bar__predicate-editor-row">
     <SearchFilterFieldAutocomplete
       value={field}
-      {filterSyntax}
+      {...filterSyntax === undefined ? {} : { filterSyntax }}
       {disabled}
       onValueChange={handleFieldChange}
     />

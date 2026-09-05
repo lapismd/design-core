@@ -125,6 +125,7 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 - The public boundary is `@lapismd/design-core/ai/chat`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 - Trigger menus MUST anchor to the caret or input using the composer-input containing block, flip above when space below the nearest clipping ancestor or the viewport is insufficient, and MUST NOT use viewport-fixed coordinates that drift inside isolated or transformed hosts.
+- Trigger selection MUST guard indexed search results under unchecked-index consumer semantics.
 
 ## DC-AI-011 — Composer Drawer
 
@@ -174,7 +175,7 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 
 - The public boundary is `@lapismd/design-core/ai/chat`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
-- Tool-call disclosure indicators MUST point right while closed and down while open for both grouped calls and individual call details.
+- Tool-call disclosure indicators MUST point right while closed and down while open for both grouped calls and individual call details, and single-call rendering MUST remain safe under unchecked-index consumer semantics.
 - Pending and running calls MUST render the public Spinner as a rotating busy indicator.
 
 ## DC-AI-016 — Dictation Button
@@ -203,6 +204,7 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 
 - The public boundary is `@lapismd/design-core/ai/experimental`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- Optional emoji choices MUST be omitted rather than forwarded as explicit `undefined` values.
 
 ## DC-AI-019 — Reasoning
 

@@ -23,7 +23,7 @@ The root package manifest defines the supported import boundaries. Family barrel
 
 ### Acceptance details
 
-- Each export, including the canonical Storybook App Shell reference fixture, must resolve to tracked source or the documented workspace build output; the fixture MUST render the same Design Core-owned composition used by the two-expanded-sidebars scenario so consumer catalogs do not copy shell markup or styling.
+- Each export, including the canonical Storybook App Shell reference fixture, must resolve to tracked source or the documented workspace build output; the fixture MUST render the same Design Core-owned composition used by the two-expanded-sidebars scenario and expose bounded content extension points, including an optional right-sidebar toggle, so consumer catalogs do not copy shell markup or styling.
 - Reusable form families MAY expose focused public subpaths that avoid loading unrelated forms from the barrel.
 - Package checks must fail when the mapped entry point is stale or missing.
 - Tool-only dependencies must remain outside runtime exports and be pinned where reproducibility requires it.
@@ -36,7 +36,7 @@ The root package manifest defines the supported import boundaries. Family barrel
 
 - The export must resolve to tracked source or the documented workspace build output.
 - Package checks must fail when the mapped entry point is stale or missing.
-- Strict clean consumers must type-check the exported App Shell source without relaxing optional-property checks.
+- Strict clean consumers must type-check composed Shadcn source exports without relaxing optional-property checks.
 
 ## DC-PKG-003 — Forms exports
 
@@ -46,6 +46,7 @@ The root package manifest defines the supported import boundaries. Family barrel
 
 - The export must resolve to tracked source or the documented workspace build output.
 - Package checks must fail when the mapped entry point is stale or missing.
+- Strict clean consumers must type-check stable and experimental AI source exports without relaxing optional-property or indexed-access checks.
 
 ## DC-PKG-004 — AI exports
 
@@ -63,6 +64,8 @@ The root package manifest defines the supported import boundaries. Family barrel
 ### Acceptance details
 
 - The export must resolve to tracked source or the documented workspace build output.
+- The focused Search Filter Bar source export must carry the runtime and type dependencies needed by a clean strict consumer.
+- Composed filter source exports must omit unavailable optional callbacks instead of forwarding explicit `undefined` values.
 - Package checks must fail when the mapped entry point is stale or missing.
 
 ## DC-PKG-006 — Shell exports

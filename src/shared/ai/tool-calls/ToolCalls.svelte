@@ -141,7 +141,7 @@
   >
     {#if !hasMultipleCalls}
       <ul data-ui-part="call-list" data-single-call>
-        {@render callRow(calls[0], 0)}
+        {@render callRow(calls[0]!, 0)}
       </ul>
     {:else}
       <Collapsible.Root open={expanded} onOpenChange={setExpanded}>

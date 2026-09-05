@@ -74,6 +74,9 @@ importers:
       '@lucide/svelte':
         specifier: ^1.21.0
         version: 1.25.0(svelte@5.56.6)
+      '@types/luxon':
+        specifier: ^3.4.2
+        version: 3.7.2
       bits-ui:
         specifier: ^2.18.1
         version: 2.18.1(@internationalized/date@3.12.2)(svelte@5.56.6)
@@ -177,9 +180,6 @@ importers:
       '@tobilu/qmd':
         specifier: 2.5.3
         version: 2.5.3(typescript@5.9.3)
-      '@types/luxon':
-        specifier: ^3.4.2
-        version: 3.7.2
       '@types/node':
         specifier: ^22.15.0
         version: 22.20.1

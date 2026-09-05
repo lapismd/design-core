@@ -17,7 +17,7 @@ Repository tools keep source generation, discovery, documentation, and validatio
 
 ### Acceptance details
 
-- Machine-readable output must be stable enough for repository automation, and validation must include a strict public-shell consumer type-check so source-export compatibility cannot regress unnoticed.
+- Machine-readable output must be stable enough for repository automation, and validation must include strict public Shell, Search Filter Bar, and composed source-consumer type-checks so source-export compatibility cannot regress unnoticed.
 - Tooling failures must report an actionable source path or command.
 
 ## DC-TOOL-002 — Component generator
@@ -26,7 +26,7 @@ Repository tools keep source generation, discovery, documentation, and validatio
 
 ### Acceptance details
 
-- Machine-readable output must be stable enough for repository automation.
+- Machine-readable output must be stable enough for repository automation, and type validation must exercise focused and composed public source exports under the strict compiler options used by first-party consumers.
 - Tooling failures must report an actionable source path or command.
 - Generator path allowlists must point to the canonical component inventory rather than a duplicate root document.
 - Multipart family CSS must be emitted from an always-instantiated root or content part rather than an optional sibling component, including styles extracted from unannotated nested elements.
