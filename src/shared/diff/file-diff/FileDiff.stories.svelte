@@ -69,15 +69,17 @@
       '[data-ui-component="scroll-area"][data-ui-part="scroll-area"]',
     );
     expect(areas.length).toBeGreaterThan(0);
-    expect(Math.abs(root.getBoundingClientRect().height - host.clientHeight)).toBeLessThan(
-      2,
-    );
+    expect(
+      Math.abs(root.getBoundingClientRect().height - host.clientHeight),
+    ).toBeLessThan(2);
     const bars = [
       ...root.querySelectorAll<HTMLElement>(
         '[data-ui-part="scroll-area-scrollbar"][data-orientation="horizontal"]',
       ),
     ];
-    const limit = options?.above?.getBoundingClientRect().top ?? root.getBoundingClientRect().bottom;
+    const limit =
+      options?.above?.getBoundingClientRect().top ??
+      root.getBoundingClientRect().bottom;
     for (const bar of bars) {
       const box = bar.getBoundingClientRect();
       expect(box.bottom).toBeLessThanOrEqual(limit + 2);
@@ -344,7 +346,9 @@
   name="Wraps long lines"
   play={async ({ canvas }) => {
     const root = canvas
-      .getByText(diffText(`export const note = "${"beta ".repeat(24).trim()}";`))
+      .getByText(
+        diffText(`export const note = "${"beta ".repeat(24).trim()}";`),
+      )
       .closest("[data-ui-component='file-diff']");
     await expect(root).toHaveAttribute("data-wrap", "true");
     const text = root?.querySelector(".ui-diff-file-diff__text");

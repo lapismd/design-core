@@ -138,7 +138,9 @@
     );
     expect(rest.borderTopLeftRadius).not.toBe("999px");
     await userEvent.hover(chip!);
-    expect(getComputedStyle(chip!).backgroundColor).not.toBe(rest.backgroundColor);
+    expect(getComputedStyle(chip!).backgroundColor).not.toBe(
+      rest.backgroundColor,
+    );
     const removeRest = getComputedStyle(remove).backgroundColor;
     await userEvent.hover(remove);
     expect(getComputedStyle(remove).backgroundColor).not.toBe(removeRest);
@@ -502,9 +504,7 @@
     }
     await userEvent.click(buttons[0]!);
     await userEvent.click(buttons[1]!);
-    await expect(canvas.getByTestId("stop-plain")).toHaveTextContent(
-      "Stopped",
-    );
+    await expect(canvas.getByTestId("stop-plain")).toHaveTextContent("Stopped");
     await expect(canvas.getByTestId("stop-drawer")).toHaveTextContent(
       "Stopped",
     );

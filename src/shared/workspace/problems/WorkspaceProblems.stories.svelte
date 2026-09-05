@@ -387,7 +387,9 @@
     await userEvent.keyboard("{Escape}");
     await waitFor(() =>
       expect(
-        canvasElement.ownerDocument.querySelector('[role="menu"][data-state="open"]'),
+        canvasElement.ownerDocument.querySelector(
+          '[role="menu"][data-state="open"]',
+        ),
       ).toBeNull(),
     );
     const groupTrigger = canvas.getByRole("button", {

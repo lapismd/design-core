@@ -198,7 +198,9 @@
     );
     expect(rest.borderTopLeftRadius).not.toBe("999px");
     await userEvent.hover(chip!);
-    expect(getComputedStyle(chip!).backgroundColor).not.toBe(rest.backgroundColor);
+    expect(getComputedStyle(chip!).backgroundColor).not.toBe(
+      rest.backgroundColor,
+    );
     const removeRest = getComputedStyle(remove).backgroundColor;
     await userEvent.hover(remove);
     expect(getComputedStyle(remove).backgroundColor).not.toBe(removeRest);

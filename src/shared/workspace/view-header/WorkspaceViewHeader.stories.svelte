@@ -88,10 +88,15 @@
       .getByRole("banner")
       .querySelector('[data-ui-part="title-container"]');
     const back = canvas.getByRole("button", { name: "Back" });
-    await expect(titleContainer).toHaveAttribute("data-desktop-drag-region", "");
+    await expect(titleContainer).toHaveAttribute(
+      "data-desktop-drag-region",
+      "",
+    );
     await expect(back).toHaveAttribute("data-desktop-drag-region", "false");
     await expect(
-      getComputedStyle(titleContainer!).getPropertyValue("-webkit-app-region").trim(),
+      getComputedStyle(titleContainer!)
+        .getPropertyValue("-webkit-app-region")
+        .trim(),
     ).toBe("drag");
     await expect(
       getComputedStyle(back).getPropertyValue("-webkit-app-region").trim(),

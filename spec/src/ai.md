@@ -4,32 +4,32 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 
 ## Public surface coverage
 
-| Surface              | Public boundary                        | Requirement |
-| -------------------- | -------------------------------------- | ----------- |
-| Shared AI invariants | AI layer                               | DC-AI-001   |
-| Layout               | `@lapismd/design-core/ai/chat`         | DC-AI-002   |
-| Layout Scroll Button | `@lapismd/design-core/ai/chat`         | DC-AI-003   |
-| Message List         | `@lapismd/design-core/ai/chat`         | DC-AI-004   |
-| Message              | `@lapismd/design-core/ai/chat`         | DC-AI-005   |
-| Message Bubble       | `@lapismd/design-core/ai/chat`         | DC-AI-006   |
-| Message Metadata     | `@lapismd/design-core/ai/chat`         | DC-AI-007   |
-| System Message       | `@lapismd/design-core/ai/chat`         | DC-AI-008   |
-| Composer             | `@lapismd/design-core/ai/chat`         | DC-AI-009   |
-| Composer Input       | `@lapismd/design-core/ai/chat`         | DC-AI-010   |
-| Composer trigger submit | `@lapismd/design-core/ai/chat`      | DC-AI-024   |
-| Composer Drawer      | `@lapismd/design-core/ai/chat`         | DC-AI-011   |
-| Send Button          | `@lapismd/design-core/ai/chat`         | DC-AI-012   |
-| Composer Token       | `@lapismd/design-core/ai/chat`         | DC-AI-013   |
-| Tokenized Text       | `@lapismd/design-core/ai/chat`         | DC-AI-014   |
-| Tool Calls           | `@lapismd/design-core/ai/chat`         | DC-AI-015   |
-| Dictation Button     | `@lapismd/design-core/ai/chat`         | DC-AI-016   |
-| Emoji Picker         | `@lapismd/design-core/ai/experimental` | DC-AI-017   |
-| Reaction Bar         | `@lapismd/design-core/ai/experimental` | DC-AI-018   |
-| Reasoning            | `@lapismd/design-core/ai/experimental` | DC-AI-019   |
-| Typing Indicator     | `@lapismd/design-core/ai/experimental` | DC-AI-020   |
-| Unread Divider       | `@lapismd/design-core/ai/experimental` | DC-AI-021   |
-| Conversation         | Storybook composition                  | DC-AI-022   |
-| AI Overview          | Documentation surface                  | DC-AI-023   |
+| Surface                 | Public boundary                        | Requirement |
+| ----------------------- | -------------------------------------- | ----------- |
+| Shared AI invariants    | AI layer                               | DC-AI-001   |
+| Layout                  | `@lapismd/design-core/ai/chat`         | DC-AI-002   |
+| Layout Scroll Button    | `@lapismd/design-core/ai/chat`         | DC-AI-003   |
+| Message List            | `@lapismd/design-core/ai/chat`         | DC-AI-004   |
+| Message                 | `@lapismd/design-core/ai/chat`         | DC-AI-005   |
+| Message Bubble          | `@lapismd/design-core/ai/chat`         | DC-AI-006   |
+| Message Metadata        | `@lapismd/design-core/ai/chat`         | DC-AI-007   |
+| System Message          | `@lapismd/design-core/ai/chat`         | DC-AI-008   |
+| Composer                | `@lapismd/design-core/ai/chat`         | DC-AI-009   |
+| Composer Input          | `@lapismd/design-core/ai/chat`         | DC-AI-010   |
+| Composer trigger submit | `@lapismd/design-core/ai/chat`         | DC-AI-024   |
+| Composer Drawer         | `@lapismd/design-core/ai/chat`         | DC-AI-011   |
+| Send Button             | `@lapismd/design-core/ai/chat`         | DC-AI-012   |
+| Composer Token          | `@lapismd/design-core/ai/chat`         | DC-AI-013   |
+| Tokenized Text          | `@lapismd/design-core/ai/chat`         | DC-AI-014   |
+| Tool Calls              | `@lapismd/design-core/ai/chat`         | DC-AI-015   |
+| Dictation Button        | `@lapismd/design-core/ai/chat`         | DC-AI-016   |
+| Emoji Picker            | `@lapismd/design-core/ai/experimental` | DC-AI-017   |
+| Reaction Bar            | `@lapismd/design-core/ai/experimental` | DC-AI-018   |
+| Reasoning               | `@lapismd/design-core/ai/experimental` | DC-AI-019   |
+| Typing Indicator        | `@lapismd/design-core/ai/experimental` | DC-AI-020   |
+| Unread Divider          | `@lapismd/design-core/ai/experimental` | DC-AI-021   |
+| Conversation            | Storybook composition                  | DC-AI-022   |
+| AI Overview             | Documentation surface                  | DC-AI-023   |
 
 ## DC-AI-001 — Shared AI invariants
 

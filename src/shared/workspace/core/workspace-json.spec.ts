@@ -140,8 +140,7 @@ describe("Lapis-compatible workspace JSON", () => {
     });
 
     const restored = workspaceLayoutFromJson(workspaceLayoutToJson(layout));
-    const tab =
-      restored.main.kind === "tabs" ? restored.main.items[0] : null;
+    const tab = restored.main.kind === "tabs" ? restored.main.items[0] : null;
     if (!tab || tab.kind !== "tab") {
       throw new Error("Expected a restored missing-view tab");
     }
@@ -164,7 +163,10 @@ describe("Lapis-compatible workspace JSON", () => {
               createWorkspaceTab({
                 id: "fixture-a",
                 title: "Fixture A",
-                view: { type: "fixture-a", state: { mode: "preview", file: "Note.md" } },
+                view: {
+                  type: "fixture-a",
+                  state: { mode: "preview", file: "Note.md" },
+                },
               }),
               createWorkspaceTab({
                 id: "fixture-b",
@@ -183,9 +185,7 @@ describe("Lapis-compatible workspace JSON", () => {
 
     const restored = workspaceLayoutFromJson(workspaceLayoutToJson(layout));
     const group =
-      restored.right.root.kind === "tabs"
-        ? restored.right.root.items[0]
-        : null;
+      restored.right.root.kind === "tabs" ? restored.right.root.items[0] : null;
     if (!group || group.kind !== "sidebar-group") {
       throw new Error("Expected a restored sidebar group");
     }

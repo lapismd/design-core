@@ -187,9 +187,7 @@
       const viewport = view.querySelector<HTMLElement>(
         "[data-ui-part='scroll-area-viewport']",
       );
-      return viewport
-        ? [{ side: view.dataset.mergeSide, viewport }]
-        : [];
+      return viewport ? [{ side: view.dataset.mergeSide, viewport }] : [];
     });
     if (targets.length === 0) return;
     let syncing = false;
@@ -202,10 +200,7 @@
           if (candidate.viewport.scrollTop !== target.viewport.scrollTop) {
             candidate.viewport.scrollTop = target.viewport.scrollTop;
           }
-          if (
-            !syncAcross &&
-            candidate.side !== target.side
-          ) {
+          if (!syncAcross && candidate.side !== target.side) {
             continue;
           }
           if (candidate.viewport.scrollLeft !== target.viewport.scrollLeft) {

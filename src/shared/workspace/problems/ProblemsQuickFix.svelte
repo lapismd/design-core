@@ -30,10 +30,7 @@
       class="ui-workspace-problems__severity"
       name={severityIcon}
     />
-    <WorkspaceIcon
-      class="ui-workspace-problems__lightbulb"
-      name="lightbulb"
-    />
+    <WorkspaceIcon class="ui-workspace-problems__lightbulb" name="lightbulb" />
   </DropdownMenu.Trigger>
   <DropdownMenu.Portal>
     <DropdownMenu.Content

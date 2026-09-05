@@ -107,15 +107,15 @@ pages.
 
 ### Token layers
 
-| Layer               | Prefix                         | Defaults                                    |
-| ------------------- | ------------------------------ | ------------------------------------------- |
-| Theme               | `--background`, `--primary`, … | `src/theme.css`                             |
-| Shadcn family       | `--ui-<family>-*`              | `<family>.tokens.css`                       |
-| Forms               | `--ui-form-*`                  | `src/shared/forms/form.tokens.css`          |
-| Filter and AI       | `--ui-*` / `--ui-ai-*`         | colocated CSS and token maps                |
-| Diff                | `--ui-diff-*`                  | `src/shared/diff/diff.tokens.css`           |
-| Structural shell    | `--ui-shell-*`                 | `src/shared/shell/shell.tokens.css`         |
-| Workspace framework | `--ui-workspace-*`             | `src/shared/workspace/workspace.tokens.css` |
+| Layer               | Prefix                         | Defaults                                          |
+| ------------------- | ------------------------------ | ------------------------------------------------- |
+| Theme               | `--background`, `--primary`, … | `src/theme.css`                                   |
+| Shadcn family       | `--ui-<family>-*`              | `<family>.tokens.css`                             |
+| Forms               | `--ui-form-*`                  | `src/shared/forms/form.tokens.css`                |
+| Filter and AI       | `--ui-*` / `--ui-ai-*`         | colocated CSS and token maps                      |
+| Diff                | `--ui-diff-*`                  | `src/shared/diff/diff.tokens.css`                 |
+| Structural shell    | `--ui-shell-*`                 | `src/shared/shell/shell.tokens.css`               |
+| Workspace framework | `--ui-workspace-*`             | `src/shared/workspace/workspace.tokens.css`       |
 | Desktop drag        | `data-desktop-drag-region`     | `src/shared/workspace/workspace-desktop-drag.css` |
 
 Set public tokens on `:root` or an appropriate shared ancestor such as

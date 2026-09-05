@@ -1031,7 +1031,8 @@
 
 [data-ui-component="ai-chat-composer-drawer"]
   [data-ai-chat-part="drawer-content"]
-  [data-ui-part="attachment-remove"] svg {
+  [data-ui-part="attachment-remove"]
+  svg {
   width: 0.75rem;
   height: 0.75rem;
 }

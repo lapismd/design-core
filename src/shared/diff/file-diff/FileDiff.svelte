@@ -107,10 +107,7 @@
           if (candidate.scrollTop !== target.scrollTop) {
             candidate.scrollTop = target.scrollTop;
           }
-          if (
-            syncHorizontal &&
-            candidate.scrollLeft !== target.scrollLeft
-          ) {
+          if (syncHorizontal && candidate.scrollLeft !== target.scrollLeft) {
             candidate.scrollLeft = target.scrollLeft;
           }
         }
@@ -214,10 +211,10 @@
 {/snippet}
 
 {#snippet splitCell(
-    row: UnifiedDiffRow | null,
-    side: "left" | "right",
-    pairKey: string,
-  )}
+  row: UnifiedDiffRow | null,
+  side: "left" | "right",
+  pairKey: string,
+)}
   {#if row}
     <div
       class="ui-diff-file-diff__row"
