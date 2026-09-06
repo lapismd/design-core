@@ -16,6 +16,7 @@ The root package manifest defines the supported import boundaries. Family barrel
 | Private workspace tools | Package boundary | DC-PKG-008  |
 | Versioned package       | npm artifact     | DC-PKG-009  |
 | Diff exports            | Package exports  | DC-PKG-010  |
+| Validation pipeline     | Repository CI    | DC-PKG-011  |
 
 ## DC-PKG-001 — Root styles and themes
 
@@ -115,3 +116,14 @@ The root package manifest defines the supported import boundaries. Family barrel
 
 - The export must resolve to tracked source or the documented workspace build output.
 - Package checks must fail when the mapped entry point is stale or missing.
+
+## DC-PKG-011 — Parallel validation pipeline
+
+**Requirement.** Pull requests and pushes to `main` MUST fan out the complete nonvisual validation suite into independent blocking lanes before one stable aggregate result.
+
+### Acceptance details
+
+- Governance, quality, unit, static Storybook, Storybook interaction, Workspace pointer, Shell pointer, Shadcn pointer, and AI browser lanes must run independently.
+- Cacheable lanes must use the signed Turbo cache contract and publish cache summaries.
+- Full and production dependency audits must run after every nonvisual lane succeeds.
+- Visual comparison must remain outside the blocking graph, and maintained Node.js 24-compatible actions must be used.

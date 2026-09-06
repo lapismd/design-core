@@ -1,0 +1,46 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "remoteCache": {
+    "signature": true,
+    "timeout": 10,
+    "uploadTimeout": 30
+  },
+  "futureFlags": {
+    "longerSignatureKey": true
+  },
+  "globalEnv": ["CI"],
+  "tasks": {
+    "build:storybook": {
+      "outputs": ["storybook-static/**", ".visual-delta/cache/**"]
+    },
+    "ci:governance": {
+      "cache": false,
+      "outputs": []
+    },
+    "ci:quality": {
+      "outputs": []
+    },
+    "ci:unit": {
+      "outputs": []
+    },
+    "ci:storybook-static": {
+      "dependsOn": ["build:storybook"],
+      "outputs": []
+    },
+    "ci:storybook-interaction": {
+      "outputs": []
+    },
+    "ci:browser-workspace": {
+      "outputs": []
+    },
+    "ci:browser-shell": {
+      "outputs": []
+    },
+    "ci:browser-shadcn": {
+      "outputs": []
+    },
+    "ci:browser-ai": {
+      "outputs": []
+    }
+  }
+}

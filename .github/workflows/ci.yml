@@ -17,40 +17,295 @@ concurrency:
   group: design-core-ci-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
+env:
+  TURBO_API: ${{ vars.TURBO_API }}
+  TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+  TURBO_REMOTE_CACHE_SIGNATURE_KEY: ${{ secrets.TURBO_REMOTE_CACHE_SIGNATURE_KEY }}
+
 jobs:
-  nonvisual:
-    name: Nonvisual checks
+  governance:
+    name: Governance
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 20
     steps:
       - name: Check out the repository
         uses: actions/checkout@v6
-
+        with:
+          fetch-depth: 0
       - name: Set up pnpm
         uses: pnpm/action-setup@v6
-
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
           node-version: 24
           cache: pnpm
-
       - name: Install mdBook
         uses: taiki-e/install-action@v2
         with:
           tool: mdbook@0.5.4
-
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile --prefer-offline
+      - name: Run governance checks
+        run: node scripts/run-turbo.mjs ci:governance --summarize
+      - name: Report Turbo cache
+        run: node scripts/report-turbo-cache.mjs --github-summary
 
+  quality:
+    name: Quality
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v6
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v6
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile --prefer-offline
+      - name: Run formatting, type, and source-style checks
+        run: node scripts/run-turbo.mjs ci:quality --summarize
+      - name: Report Turbo cache
+        run: node scripts/report-turbo-cache.mjs --github-summary
+
+  unit:
+    name: Unit tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v6
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v6
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile --prefer-offline
+      - name: Run unit tests
+        run: node scripts/run-turbo.mjs ci:unit --summarize
+      - name: Report Turbo cache
+        run: node scripts/report-turbo-cache.mjs --github-summary
+
+  storybook-static:
+    name: Static Storybook
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v6
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v6
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile --prefer-offline
+      - name: Build and audit Storybook metadata
+        run: node scripts/run-turbo.mjs ci:storybook-static --summarize
+      - name: Report Turbo cache
+        run: node scripts/report-turbo-cache.mjs --github-summary
+
+  storybook-interaction:
+    name: Storybook interactions
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v6
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v6
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile --prefer-offline
+      - name: Install Chromium
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Run Storybook interaction and accessibility tests
+        run: node scripts/run-turbo.mjs ci:storybook-interaction --summarize
+      - name: Report Turbo cache
+        run: node scripts/report-turbo-cache.mjs --github-summary
+
+  browser-workspace:
+    name: Workspace pointer tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v6
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v6
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile --prefer-offline
+      - name: Install Chromium
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Run Workspace pointer acceptance
+        run: node scripts/run-turbo.mjs ci:browser-workspace --summarize
+      - name: Report Turbo cache
+        run: node scripts/report-turbo-cache.mjs --github-summary
+
+  browser-shell:
+    name: Shell pointer tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v6
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v6
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile --prefer-offline
+      - name: Install Chromium
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Run Shell pointer acceptance
+        run: node scripts/run-turbo.mjs ci:browser-shell --summarize
+      - name: Report Turbo cache
+        run: node scripts/report-turbo-cache.mjs --github-summary
+
+  browser-shadcn:
+    name: Shadcn pointer tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v6
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v6
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile --prefer-offline
       - name: Install browser engines
         run: pnpm exec playwright install --with-deps chromium webkit
+      - name: Run Shadcn pointer acceptance
+        run: node scripts/run-turbo.mjs ci:browser-shadcn --summarize
+      - name: Report Turbo cache
+        run: node scripts/report-turbo-cache.mjs --github-summary
 
-      - name: Run nonvisual checks
-        run: pnpm checks:nonvisual
+  browser-ai:
+    name: AI browser acceptance
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v6
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v6
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile --prefer-offline
+      - name: Install Chromium
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Run AI browser acceptance
+        run: node scripts/run-turbo.mjs ci:browser-ai --summarize
+      - name: Report Turbo cache
+        run: node scripts/report-turbo-cache.mjs --github-summary
 
+  audit:
+    name: Dependency audits
+    needs:
+      - governance
+      - quality
+      - unit
+      - storybook-static
+      - storybook-interaction
+      - browser-workspace
+      - browser-shell
+      - browser-shadcn
+      - browser-ai
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v6
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v6
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile --prefer-offline
       - name: Audit all dependencies
         run: pnpm audit
-
       - name: Audit production dependencies
         run: pnpm audit --prod
+
+  validate:
+    name: Validate
+    if: always()
+    needs:
+      - governance
+      - quality
+      - unit
+      - storybook-static
+      - storybook-interaction
+      - browser-workspace
+      - browser-shell
+      - browser-shadcn
+      - browser-ai
+      - audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Aggregate blocking validation lanes
+        env:
+          GOVERNANCE: ${{ needs.governance.result }}
+          QUALITY: ${{ needs.quality.result }}
+          UNIT: ${{ needs.unit.result }}
+          STORYBOOK_STATIC: ${{ needs.storybook-static.result }}
+          STORYBOOK_INTERACTION: ${{ needs.storybook-interaction.result }}
+          BROWSER_WORKSPACE: ${{ needs.browser-workspace.result }}
+          BROWSER_SHELL: ${{ needs.browser-shell.result }}
+          BROWSER_SHADCN: ${{ needs.browser-shadcn.result }}
+          BROWSER_AI: ${{ needs.browser-ai.result }}
+          AUDIT: ${{ needs.audit.result }}
+        run: |
+          set -euo pipefail
+          results=(
+            "$GOVERNANCE"
+            "$QUALITY"
+            "$UNIT"
+            "$STORYBOOK_STATIC"
+            "$STORYBOOK_INTERACTION"
+            "$BROWSER_WORKSPACE"
+            "$BROWSER_SHELL"
+            "$BROWSER_SHADCN"
+            "$BROWSER_AI"
+            "$AUDIT"
+          )
+          for result in "${results[@]}"; do
+            if [ "$result" != "success" ]; then
+              echo "A required Design Core validation lane finished with: $result" >&2
+              exit 1
+            fi
+          done
+          echo "All blocking Design Core validation lanes passed."
