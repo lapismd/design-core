@@ -22,11 +22,16 @@
     resizable = true,
     closeable = false,
     variant = "default",
+    constraintPriority,
+    constrainedPresentation = "preview",
     revealOnEdgeHover = false,
     edgeRevealLabel,
     resizeLabel,
     mobileLabel,
     tabindex: _tabindex,
+    hidden: hiddenProp,
+    inert: inertProp,
+    "aria-hidden": ariaHidden,
     style,
     class: className,
     children,
@@ -43,7 +48,11 @@
     /** Whether nested `AppShell.Sidebar.Close` actions may close this sidebar. */
     closeable?: boolean;
     /** Full-height outer chrome or the default transparent shell sidebar. */
-    variant?: "default" | "outer";
+    variant?: "default" | "outer" | "rail";
+    /** Lower values leave inline desktop flow before higher values. */
+    constraintPriority?: number;
+    /** Presentation used when protected main width displaces this panel. */
+    constrainedPresentation?: "preview" | "replace-main";
     /** Preview a collapsed or closed sidebar from the corresponding page edge. */
     revealOnEdgeHover?: boolean;
     /** Accessible name for the collapsed/closed edge-preview control. */
@@ -79,6 +88,7 @@
     get controller() {
       return sidebar;
     },
+    syncLayout,
     dismissOverlay,
   });
   let renderedWidth = $state(APP_SHELL_DEFAULT_SIDEBAR_WIDTH);
@@ -99,6 +109,18 @@
       (side === "left" ? "Preview left sidebar" : "Preview right sidebar"),
   );
   let mobilePanelId = $derived(controller.getPanelId(sidebar));
+  let desktopConstrained = $state(false);
+  let desktopPreviewed = $state(false);
+  let suspended = $state(false);
+  let covered = $state(false);
+  function syncProjection(): void {
+    desktopConstrained = controller.isPanelConstrained(mobilePanelId);
+    desktopPreviewed = controller.isPanelDesktopPreviewed(mobilePanelId);
+    suspended = controller.isPanelSuspended(mobilePanelId);
+    covered = controller.isPanelCovered(mobilePanelId);
+  }
+  syncProjection();
+  const unsubscribeProjection = controller.onProjectionChange(syncProjection);
   let mobileMode = $derived(controller.mobile.resolvedMode === "mobile");
   let mobileActive = $derived(
     !mobileMode ||
@@ -106,13 +128,15 @@
         controller.mobile.activePanelId(side) === mobilePanelId),
   );
   let presentation = $derived(
-    mobileMode ? "mobile" : sidebar.previewed ? "overlay" : "inline",
-  );
-  let renderSidebar = $derived(
     mobileMode
-      ? mobilePanelId !== undefined
-      : !sidebarClosed || sidebar.previewed,
+      ? "mobile"
+      : sidebar.previewed || desktopPreviewed
+        ? "overlay"
+        : desktopConstrained && constrainedPresentation === "replace-main"
+          ? "replace-main"
+          : "inline",
   );
+  let renderSidebar = $derived(mobileMode ? mobilePanelId !== undefined : true);
   let preserveCollapsedRail = $derived(
     !mobileMode && !sidebarClosed && sidebarCollapsed && sidebar.previewed,
   );
@@ -147,8 +171,76 @@
       get element() {
         return ref;
       },
+      ...(constraintPriority === undefined ? {} : { constraintPriority }),
+      constrainedPresentation,
     };
     return untrack(() => controller.mobile.registerPanel(registration));
+  });
+
+  $effect(() => {
+    const panelId = mobilePanelId;
+    const element = ref;
+    untrack(() => controller.setPanelElement(panelId, element));
+    return () => untrack(() => controller.setPanelElement(panelId, null));
+  });
+
+  $effect(() => {
+    const element = ref;
+    const root = controller.mobile.getRootElement();
+    const main = controller.mobile.getMainElement();
+    if (
+      presentation !== "replace-main" ||
+      !element ||
+      !root ||
+      !main ||
+      typeof ResizeObserver === "undefined"
+    ) {
+      return;
+    }
+
+    const updateInsets = () => {
+      const rootBounds = root.getBoundingClientRect();
+      const mainBounds = main.getBoundingClientRect();
+      const paddingLeft = rootBounds.left + root.clientLeft;
+      const paddingRight = paddingLeft + root.clientWidth;
+      const paddingTop = rootBounds.top + root.clientTop;
+      const paddingBottom = paddingTop + root.clientHeight;
+      const rtl = getComputedStyle(root).direction === "rtl";
+      const inlineStart = rtl
+        ? paddingRight - mainBounds.right
+        : mainBounds.left - paddingLeft;
+      const inlineEnd = rtl
+        ? mainBounds.left - paddingLeft
+        : paddingRight - mainBounds.right;
+      element.style.setProperty(
+        "--ui-shell-replacement-inline-start",
+        `${Math.max(0, inlineStart)}px`,
+      );
+      element.style.setProperty(
+        "--ui-shell-replacement-inline-end",
+        `${Math.max(0, inlineEnd)}px`,
+      );
+      element.style.setProperty(
+        "--ui-shell-replacement-block-start",
+        `${Math.max(0, mainBounds.top - paddingTop)}px`,
+      );
+      element.style.setProperty(
+        "--ui-shell-replacement-block-end",
+        `${Math.max(0, paddingBottom - mainBounds.bottom)}px`,
+      );
+    };
+    let frame = requestAnimationFrame(updateInsets);
+    const scheduleUpdate = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(updateInsets);
+    };
+    const observer = new ResizeObserver(scheduleUpdate);
+    observer.observe(root);
+    observer.observe(main);
+    return () => {
+      cancelAnimationFrame(frame);
+      observer.disconnect();
+    };
   });
 
   $effect(() => {
@@ -227,8 +319,12 @@
 
   onDestroy(() => {
     unsubscribeLayout();
+    unsubscribeProjection();
     stopResize();
     sidebar.dismissPreview();
+    controller.setPanelElement(mobilePanelId, null);
+    if (mobilePanelId)
+      controller.setPanelDesktopPreviewed(mobilePanelId, false);
   });
 
   function revealFromEdge(element?: Element | null): void {
@@ -239,7 +335,9 @@
       return;
     }
     if (isDesktopOverlayOnly(element)) {
-      ref?.setAttribute("data-desktop-overlay-preview", "");
+      if (mobilePanelId) {
+        controller.setPanelDesktopPreviewed(mobilePanelId, true);
+      }
       queueMicrotask(() => ref?.focus({ preventScroll: true }));
       return;
     }
@@ -247,18 +345,14 @@
   }
 
   function isDesktopOverlayOnly(element?: Element | null): boolean {
-    if (!mobilePanelId) return false;
-    return (
-      (element ?? ref)
-        ?.closest("[data-shell-root]")
-        ?.getAttribute("data-desktop-overlay-panels")
-        ?.split(/\s+/)
-        .includes(mobilePanelId) ?? false
-    );
+    void element;
+    return desktopConstrained && constrainedPresentation === "preview";
   }
 
   function dismissOverlay(): void {
     sidebar.dismissPreview();
+    if (mobilePanelId)
+      controller.setPanelDesktopPreviewed(mobilePanelId, false);
   }
 
   function keepOverlay(): void {
@@ -412,7 +506,9 @@
     onblur={handleOverlayBlur}
     onclick={(event) => {
       if (isDesktopOverlayOnly(event.currentTarget)) {
-        ref?.setAttribute("data-desktop-overlay-preview", "");
+        if (mobilePanelId) {
+          controller.setPanelDesktopPreviewed(mobilePanelId, true);
+        }
         queueMicrotask(() => ref?.focus({ preventScroll: true }));
       } else sidebar.toggle();
     }}
@@ -448,15 +544,21 @@
     data-state={sidebarState}
     data-variant={variant}
     data-presentation={presentation}
+    data-desktop-constrained={desktopConstrained || undefined}
+    data-constrained-presentation={constrainedPresentation}
     data-collapsed={sidebarCollapsed || undefined}
     data-closeable={closeable || undefined}
     data-previewed={sidebar.previewed || undefined}
     data-mobile-panel-id={mobilePanelId}
     data-mobile-panel-active={mobileActive || undefined}
     data-resizing={resizing || undefined}
+    data-consumer-hidden={Boolean(hiddenProp) || undefined}
+    data-consumer-inert={Boolean(inertProp) || undefined}
+    data-consumer-aria-hidden={ariaHidden}
     aria-label={accessibleLabel}
-    aria-hidden={mobileMode && !mobileActive}
-    inert={mobileMode && !mobileActive}
+    hidden={Boolean(hiddenProp) || suspended}
+    aria-hidden={(mobileMode && !mobileActive) || covered ? "true" : ariaHidden}
+    inert={Boolean(inertProp) || (mobileMode && !mobileActive) || covered}
     onmouseenter={keepOverlay}
     onmouseleave={presentation === "overlay"
       ? handleOverlayPointerLeave
@@ -465,7 +567,7 @@
     onfocusout={presentation === "overlay" ? handleOverlayBlur : undefined}
   >
     {@render children?.()}
-    {#if !mobileMode && resizable && (!sidebarCollapsed || presentation === "overlay")}
+    {#if !mobileMode && resizable && presentation !== "replace-main" && (!sidebarCollapsed || presentation === "overlay")}
       <div
         role="slider"
         tabindex="0"

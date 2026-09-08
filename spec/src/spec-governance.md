@@ -1,6 +1,6 @@
 # Specification governance
 
-Specification governance keeps requirements discoverable, mapped, validated, and changed before or with protected implementation.
+Specification governance keeps requirements discoverable, mapped, validated, and changed before or with protected implementation, including same-change verification evidence for expanded public component families.
 
 ## Public surface coverage
 

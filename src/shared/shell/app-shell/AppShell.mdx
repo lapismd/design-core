@@ -12,8 +12,8 @@ or as a container-aware mobile track.
 
 Start with **Shell/Guidance** for the canonical compound topology, toggle
 placement, cross-column header alignment, collapsed-rail content rules, and
-desktop preview overlays (`previewOnHover` / `revealOnEdgeHover`). This page
-is the detailed API and behavior reference.
+desktop constrained panels and structural surface layers. This page is the
+detailed API and behavior reference.
 
 ## Structure
 
@@ -40,6 +40,16 @@ is the detailed API and behavior reference.
     </AppShell.Sidebar.Header>
     <AppShell.Sidebar.Body>...</AppShell.Sidebar.Body>
   </AppShell.Sidebar>
+
+  <AppShell.SurfaceLayer
+    open={surfaceOpen}
+    label="Reviews"
+    coverPanelIds={["right"]}
+    onDismiss={closeSurface}
+  >
+    <AppShell.SurfaceLayer.Header>Reviews</AppShell.SurfaceLayer.Header>
+    <AppShell.SurfaceLayer.Body>...</AppShell.SurfaceLayer.Body>
+  </AppShell.SurfaceLayer>
 </AppShell.Root>
 ```
 
@@ -139,18 +149,24 @@ shell.mobile.showMain();
 Repeated outer sidebars must use a controller created with
 `shell.createSidebar(id, side)` so mobile mode has a stable panel identity.
 
-## Constrained desktop presentation
+## Same-side panels and constrained desktop presentation
 
-Desktop keeps the main stage usable before allowing inline sidebars to consume
-all available width. Its protected width comes from
-`--ui-shell-desktop-min-main-width` (`36rem`) or the
-`desktopMinMainWidth` root prop. When the bounded root cannot fit that stage,
-the shell removes outer panels from inline flow in this order: right sidebar,
-named outer-left sidebars, then the built-in left sidebar. Their existing
-toggle or edge action opens a temporary full-height overlay preview
-(`data-desktop-overlay-preview`), not a Popover and not collapsed/closed
-`previewOnHover`. See **Complete shell composition** and **Constrained
-desktop overlays**.
+Any number of sidebars may share one edge when each additional panel has a
+stable controller from `shell.createSidebar(id, side)`. On the right, compose
+siblings after `Main` from nearest-main to outermost. `constraintPriority`
+controls which panel leaves inline flow first when the bounded root must
+protect main; lower values are selected first and structural registration order
+breaks ties.
+
+Desktop's protected width comes from `--ui-shell-desktop-min-main-width`
+(`36rem`) or `desktopMinMainWidth`. A constrained panel uses the default
+`constrainedPresentation="preview"` and opens as a temporary full-height
+overlay through its existing toggle, or it may use
+`constrainedPresentation="replace-main"` to occupy the exact inset main
+rectangle. Replacement makes the covered main surface inert and inaccessible.
+Higher-priority outer rails remain inline, and the panel automatically returns
+inline after a resize, left-sidebar collapse, or registration change creates
+enough room. See **Composable same-side panels and surface layer**.
 
 This is presentation-only. Collapsed, closed, and resized controller values
 remain unchanged, and the same panels return inline when the container grows.
@@ -214,6 +230,9 @@ the edge control expands it inline. The same accessible resize handle remains
 available on the preview, and its controller width is retained when the sidebar
 next opens inline. This is a desktop affordance, not the Workspace mobile sheet.
 
+`variant="rail"` is a transparent, headerless outer rail aligned to the main
+surface's block inset. It retains normal controller resize and persistence.
+
 `Sidebar.Toggle` is the shared toolbar action for either side. It collapses an
 expanded sidebar, expands a collapsed sidebar, and opens a closed sidebar.
 Set `previewOnHover` when a toggle in adjacent chrome should preview its
@@ -230,6 +249,43 @@ interactive without pinning the sidebar open permanently.
 `Sidebar.Header`; its automatic inline margin places it at the far edge. Closing
 removes the sidebar from layout completely so `Main` reclaims its width and
 gap. Collapsing still preserves the icon rail.
+
+When a toggle lives in persistent application chrome outside `AppShell.Root`,
+pass `shellController={shell}` explicitly. The action then controls the same
+named panel without requiring shell context.
+
+## Structural surface layer
+
+`AppShell.SurfaceLayer` is the shell-owned convention for one routed, non-modal
+surface that replaces main without unmounting the underlying application. It
+always covers and inerts main. `coverPanelIds` expands the measured bounds over
+registered sidebars. `suspendPanelIds` temporarily removes registered panels
+without changing or persisting their state.
+
+{/* prettier-ignore */}
+```tsx
+<AppShell.SurfaceLayer
+  open={reviewsOpen}
+  label="Release reviews"
+  coverPanelIds={["right"]}
+  suspendPanelIds={["release-overview"]}
+  returnFocus={reviewsTrigger}
+  onDismiss={closeReviews}
+>
+  <AppShell.SurfaceLayer.Header>Reviews</AppShell.SurfaceLayer.Header>
+  <AppShell.SurfaceLayer.Body>...</AppShell.SurfaceLayer.Body>
+</AppShell.SurfaceLayer>
+```
+
+The layer owns its semantic scrim, exact logical-direction geometry,
+ResizeObserver recalculation, Escape and scrim dismissal, focus restoration,
+covered-panel inert/ARIA state, rounded border, and shadowless styling. A root
+permits one active structural layer. Dialogs, menus, and general overlays keep
+using their existing primitives.
+
+Override `--ui-shell-surface-layer-main-start-allowance` to reveal a leading
+portion of main or `--ui-shell-surface-layer-inline-end-inset` to tune the
+trailing gutter. Mobile forces the leading allowance to zero.
 
 ## Controller
 
@@ -290,22 +346,24 @@ without changing shell components.
 
 ## Tokens
 
-| Token                                       | Default                   | Purpose                                     |
-| ------------------------------------------- | ------------------------- | ------------------------------------------- |
-| `--ui-shell-height`                         | `100vh`                   | Root application height                     |
-| `--ui-shell-left-sidebar-width`             | `18rem`                   | Expanded left sidebar                       |
-| `--ui-shell-right-sidebar-width`            | `18rem`                   | Expanded right sidebar                      |
-| `--ui-shell-right-sidebar-gap`              | `0.5rem`                  | Gap before right sidebar                    |
-| `--ui-shell-collapsed-sidebar-width`        | `3rem`                    | Either collapsed icon rail                  |
-| `--ui-shell-body-sidebar-width`             | `14rem`                   | Local body sidebar width                    |
-| `--ui-shell-mobile-sidebar-width`           | `min(22rem, 86cqw)`       | Mobile edge lane width                      |
-| `--ui-shell-desktop-min-main-width`         | `36rem`                   | Protected desktop main width                |
-| `--ui-shell-sidebar-toggle-indicator-width` | `24%`                     | Expanded toggle panel mark                  |
-| `--ui-shell-toolbar-height`                 | `3rem`                    | Top chrome divider baseline                 |
-| `--ui-shell-main-block-inset`               | `0.5rem`                  | Desktop main top/bottom inset (0 on mobile) |
-| `--ui-shell-main-radius`                    | `0.875rem`                | Main surface radius                         |
-| `--ui-shell-main-shadow`                    | `shadow-sm` equivalent    | Main surface depth                          |
-| `--ui-shell-main-border`                    | `1px solid var(--border)` | Main surface border                         |
+| Token                                           | Default                   | Purpose                                      |
+| ----------------------------------------------- | ------------------------- | -------------------------------------------- |
+| `--ui-shell-height`                             | `100vh`                   | Root application height                      |
+| `--ui-shell-left-sidebar-width`                 | `18rem`                   | Expanded left sidebar                        |
+| `--ui-shell-right-sidebar-width`                | `18rem`                   | Expanded right sidebar                       |
+| `--ui-shell-right-sidebar-gap`                  | `0.5rem`                  | Gap before right sidebar                     |
+| `--ui-shell-collapsed-sidebar-width`            | `3rem`                    | Either collapsed icon rail                   |
+| `--ui-shell-body-sidebar-width`                 | `14rem`                   | Local body sidebar width                     |
+| `--ui-shell-mobile-sidebar-width`               | `min(22rem, 86cqw)`       | Mobile edge lane width                       |
+| `--ui-shell-desktop-min-main-width`             | `36rem`                   | Protected desktop main width                 |
+| `--ui-shell-sidebar-toggle-indicator-width`     | `24%`                     | Expanded toggle panel mark                   |
+| `--ui-shell-toolbar-height`                     | `3rem`                    | Top chrome divider baseline                  |
+| `--ui-shell-main-block-inset`                   | `0.5rem`                  | Desktop main top/bottom inset (0 on mobile)  |
+| `--ui-shell-main-radius`                        | `0.875rem`                | Main surface radius                          |
+| `--ui-shell-main-shadow`                        | `shadow-sm` equivalent    | Main surface depth                           |
+| `--ui-shell-main-border`                        | `1px solid var(--border)` | Main surface border                          |
+| `--ui-shell-surface-layer-main-start-allowance` | `0px`                     | Leading main allowance for structural layers |
+| `--ui-shell-surface-layer-inline-end-inset`     | main block inset          | Structural layer trailing gutter             |
 
 Override tokens on `:root` or the shell root. Colors continue to come from the
 shared semantic theme. Left and right width tokens remain authoritative until

@@ -10,6 +10,9 @@ import AppShellSidebarClose from "./AppShellSidebarClose.svelte";
 import AppShellSidebarFooter from "./AppShellSidebarFooter.svelte";
 import AppShellSidebarHeader from "./AppShellSidebarHeader.svelte";
 import AppShellSidebarToggle from "./AppShellSidebarToggle.svelte";
+import AppShellSurfaceLayer from "./AppShellSurfaceLayer.svelte";
+import AppShellSurfaceLayerBody from "./AppShellSurfaceLayerBody.svelte";
+import AppShellSurfaceLayerHeader from "./AppShellSurfaceLayerHeader.svelte";
 import AppShellToolbar from "./AppShellToolbar.svelte";
 
 export const Sidebar = Object.assign(AppShellSidebar, {
@@ -26,6 +29,11 @@ export const Body = Object.assign(AppShellBody, {
   Toggle: AppShellBodyToggle,
 });
 
+export const SurfaceLayer = Object.assign(AppShellSurfaceLayer, {
+  Header: AppShellSurfaceLayerHeader,
+  Body: AppShellSurfaceLayerBody,
+});
+
 export {
   AppShellBody,
   AppShellBodyContent,
@@ -39,6 +47,9 @@ export {
   AppShellSidebarFooter,
   AppShellSidebarHeader,
   AppShellSidebarToggle,
+  AppShellSurfaceLayer,
+  AppShellSurfaceLayerBody,
+  AppShellSurfaceLayerHeader,
   AppShellToolbar,
   AppShellBodyContent as BodyContent,
   AppShellBodySidebar as BodySidebar,
@@ -50,6 +61,8 @@ export {
   AppShellSidebarFooter as SidebarFooter,
   AppShellSidebarHeader as SidebarHeader,
   AppShellSidebarToggle as SidebarToggle,
+  AppShellSurfaceLayerBody as SurfaceLayerBody,
+  AppShellSurfaceLayerHeader as SurfaceLayerHeader,
   AppShellToolbar as Toolbar,
 };
 
@@ -59,6 +72,7 @@ export const AppShell = {
   Main: AppShellMain,
   Toolbar: AppShellToolbar,
   Body,
+  SurfaceLayer,
 } as const;
 
 export * from "./app-shell-body-context.svelte.js";

@@ -68,11 +68,19 @@ duplicate it with a bespoke button, move it into scrolling content, or use
 `Sidebar.Close` as collapse.
 
 For multiple panels on one side, create each stable controller with
-`controller.createSidebar(id, side)`. Put the outer panel first with
-`variant="outer"`, `revealOnEdgeHover`, and `edgeRevealLabel`; put its toggle
-in the adjacent inner `Sidebar.Header` with `previewOnHover`. The **Nested
-project and file sidebars** and **Complete shell composition** stories are
-canonical.
+`controller.createSidebar(id, side)`. On the right, compose siblings after
+`Main` from nearest-main to outermost. Use `constraintPriority` (lower values
+leave inline flow first), `constrainedPresentation="replace-main"` for an exact
+main-surface replacement, and `variant="rail"` for a transparent headerless
+outer rail. The **Composable same-side panels and surface layer** story is the
+canonical multi-panel reference.
+
+Use `AppShell.SurfaceLayer` for one active non-modal structural layer per root.
+It always covers main; `coverPanelIds` extends the measured bounds and
+`suspendPanelIds` temporarily removes panels without changing persisted state.
+Compose its `Header` and `Body` parts and route dismissal through `onDismiss`.
+The shell owns scrim/Escape dismissal, focus return, inert/ARIA restoration,
+logical-direction geometry, and resize observation.
 
 ## Desktop preview overlays
 
@@ -142,12 +150,13 @@ When the desktop root cannot protect `--ui-shell-desktop-min-main-width`
 (`36rem`, or `desktopMinMainWidth`), lower-priority rails leave inline flow in
 order: right → named outer-left → built-in left. Durable collapse/close/width
 are unchanged. Overlayed panels reopen through adjacent toggles or edge
-affordance as full-height overlay previews (`data-desktop-overlay-preview`),
-not shadcn Popovers and not `previewOnHover` (which needs collapsed/closed
-state). Keep any remaining inline left rail collapsed so main stays fully
+affordance as full-height overlay previews, not shadcn Popovers and not
+`previewOnHover` (which needs collapsed/closed state). Panels configured with
+`constrainedPresentation="replace-main"` instead occupy the exact main-surface
+bounds. Keep any remaining inline left rail collapsed so main stays fully
 visible. Do not set `desktopMinMainWidth={0}` unless intentionally disabling
 protection. References: **Complete shell composition**, **Constrained desktop
-overlays**.
+overlays**, and **Composable same-side panels and surface layer**.
 
 ## Body and ownership boundaries
 

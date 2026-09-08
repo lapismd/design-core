@@ -9,6 +9,7 @@
   import AppShellMarkdownDocumentDemo from "./examples/AppShellMarkdownDocumentDemo.svelte";
   import AppShellMarkdownFilesDemo from "./examples/AppShellMarkdownFilesDemo.svelte";
   import AppShellModeSwitchDemo from "./examples/AppShellModeSwitchDemo.svelte";
+  import AppShellMultiPanelDemo from "./examples/AppShellMultiPanelDemo.svelte";
   import AppShellProjectSidebarDemo from "./examples/AppShellProjectSidebarDemo.svelte";
   import AppShellSidebarDemo from "./examples/AppShellSidebarDemo.svelte";
   import AppShellToolbarDemo from "./examples/AppShellToolbarDemo.svelte";
@@ -89,6 +90,62 @@
   );
   const constrainedDesktopProjectSidebarController =
     constrainedDesktopController.createSidebar("projects", "left", {
+      width: 220,
+    });
+  const multiPanelController = new AppShellController({
+    leftWidth: 220,
+    rightWidth: 260,
+  });
+  const multiPanelOverviewController = multiPanelController.createSidebar(
+    "overview",
+    "right",
+    { width: 220 },
+  );
+  const multiPanelActivityController = multiPanelController.createSidebar(
+    "activity",
+    "right",
+    { width: 220 },
+  );
+  const multiPanelWideController = new AppShellController({
+    leftWidth: 220,
+    rightWidth: 260,
+  });
+  const multiPanelWideOverviewController =
+    multiPanelWideController.createSidebar("overview", "right", {
+      width: 220,
+    });
+  const multiPanelWideActivityController =
+    multiPanelWideController.createSidebar("activity", "right", {
+      width: 220,
+    });
+  const multiPanelRtlController = new AppShellController({
+    leftWidth: 220,
+    rightWidth: 260,
+  });
+  const multiPanelRtlOverviewController = multiPanelRtlController.createSidebar(
+    "overview",
+    "right",
+    {
+      width: 220,
+    },
+  );
+  const multiPanelRtlActivityController = multiPanelRtlController.createSidebar(
+    "activity",
+    "right",
+    {
+      width: 220,
+    },
+  );
+  const multiPanelMobileController = new AppShellController({
+    leftWidth: 220,
+    rightWidth: 260,
+  });
+  const multiPanelMobileOverviewController =
+    multiPanelMobileController.createSidebar("overview", "right", {
+      width: 220,
+    });
+  const multiPanelMobileActivityController =
+    multiPanelMobileController.createSidebar("activity", "right", {
       width: 220,
     });
   let nestedSelectedProject = $state("");
@@ -234,6 +291,9 @@
     const rightClose = canvas.getByRole("button", {
       name: "Close right sidebar",
     });
+    await expect(expandedController.getPanelElement("right")).toBe(
+      rightSidebar,
+    );
     await expect(rightClose).toBeVisible();
     await expect(
       rightHeaderRect.right - rightClose.getBoundingClientRect().right,
@@ -300,8 +360,10 @@
       name: "Collapse right sidebar",
     });
     await userEvent.click(rightClose);
+    await expect(expandedController.right.closed).toBe(true);
+    await waitFor(() => expect(rightSidebar.hidden).toBe(true));
     await waitFor(() =>
-      expect(canvas.queryByLabelText("Right sidebar")).not.toBeInTheDocument(),
+      expect(canvas.getByLabelText("Right sidebar")).not.toBeVisible(),
     );
     await expect(rightToggle).toHaveAttribute(
       "aria-label",
@@ -389,9 +451,7 @@
     await expect(
       getComputedStyle(expandedProjectHeader!).borderBlockEndWidth,
     ).toBe("0px");
-    await expect(
-      canvas.queryByLabelText("Files sidebar"),
-    ).not.toBeInTheDocument();
+    await expect(canvas.getByLabelText("Files sidebar")).not.toBeVisible();
     const mainToolbar = canvas.getByRole("banner", { name: "Main toolbar" });
     const filesToggle = canvas.getByRole("button", {
       name: "Open files sidebar",
@@ -728,9 +788,7 @@
     await userEvent.keyboard("{Enter}");
     await expect(projectSidebarController.closed).toBe(true);
     await waitFor(() =>
-      expect(
-        canvas.queryByLabelText("Projects sidebar"),
-      ).not.toBeInTheDocument(),
+      expect(canvas.getByLabelText("Projects sidebar")).not.toBeVisible(),
     );
     await expect(
       Math.abs(filesSidebar.getBoundingClientRect().left - rootRect.left),
@@ -809,7 +867,7 @@
 
 <Story
   name="Complete shell composition"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   parameters={{
     visualDelta: {
       images: [
@@ -979,9 +1037,7 @@
     await userEvent.click(
       canvas.getByRole("button", { name: "Close left sidebar" }),
     );
-    await expect(
-      canvas.queryByLabelText("Projects sidebar"),
-    ).not.toBeInTheDocument();
+    await expect(canvas.getByLabelText("Projects sidebar")).not.toBeVisible();
     await expect(
       canvas.getByRole("button", { name: "Preview projects sidebar" }),
     ).toBeVisible();
@@ -996,7 +1052,7 @@
     await userEvent.click(
       canvas.getByRole("button", { name: "Close right sidebar" }),
     );
-    await expect(canvas.queryByLabelText("AI sidebar")).not.toBeInTheDocument();
+    await expect(canvas.getByLabelText("AI sidebar")).not.toBeVisible();
     const openRight = canvas.getByRole("button", {
       name: "Open right sidebar",
     });
@@ -1058,8 +1114,8 @@
     await userEvent.click(constrainedRightToggle);
     const constrainedAiSidebar = canvas.getByLabelText("AI sidebar");
     await expect(constrainedAiSidebar).toHaveAttribute(
-      "data-desktop-overlay-preview",
-      "",
+      "data-presentation",
+      "overlay",
     );
     await expect(completeController.right.state).toBe("expanded");
     await userEvent.click(
@@ -1076,8 +1132,8 @@
     const constrainedProjectsSidebar =
       canvas.getByLabelText("Projects sidebar");
     await expect(constrainedProjectsSidebar).toHaveAttribute(
-      "data-desktop-overlay-preview",
-      "",
+      "data-presentation",
+      "overlay",
     );
     await expect(completeProjectSidebarController.state).toBe("expanded");
     await userEvent.click(
@@ -1120,7 +1176,7 @@
 
 <Story
   name="Automatic tablet composition"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   play={async ({ canvas }) => {
     const root = canvas.getByRole("group", {
       name: "Mobile application shell",
@@ -1466,7 +1522,7 @@
     });
     await userEvent.click(rightToggle);
     const aiSidebar = canvas.getByLabelText("AI sidebar");
-    await expect(aiSidebar).toHaveAttribute("data-desktop-overlay-preview", "");
+    await expect(aiSidebar).toHaveAttribute("data-presentation", "overlay");
     await expect(aiSidebar).toHaveAttribute("data-state", "expanded");
     await userEvent.click(
       within(aiSidebar).getByRole("button", {
@@ -1482,8 +1538,8 @@
     await userEvent.click(projectsToggle);
     const projectsSidebar = canvas.getByLabelText("Projects sidebar");
     await expect(projectsSidebar).toHaveAttribute(
-      "data-desktop-overlay-preview",
-      "",
+      "data-presentation",
+      "overlay",
     );
     await userEvent.click(
       within(projectsSidebar).getByRole("button", {
@@ -1543,6 +1599,197 @@
       displayMode="desktop"
       frameClass="ui-shell-story-frame-constrained-desktop"
       showBodySidebar={false}
+    />
+  {/snippet}
+</Story>
+
+<Story
+  name="Composable same-side panels and surface layer"
+  tags={["visual-pending"]}
+  parameters={{
+    docs: {
+      description: {
+        story:
+          "Three independently controlled right panels compose nearest-main to outermost. The low-priority details panel replaces main when constrained, the outer rails remain inline, and a structural layer covers main plus Details while suspending Overview without changing persisted panel state.",
+      },
+      source: {
+        code: exampleSources.ComposableSameSidePanels,
+        language: "tsx",
+        type: "code",
+      },
+    },
+  }}
+  play={async ({ canvas, canvasElement }) => {
+    multiPanelController.left.expand();
+    multiPanelController.right.expand();
+    multiPanelOverviewController.expand();
+    multiPanelActivityController.expand();
+
+    const root = canvasElement.querySelector<HTMLElement>("[data-shell-root]")!;
+    const frame = root.closest<HTMLElement>(".ui-shell-story-frame")!;
+    frame.style.width = "1300px";
+    frame.style.maxWidth = "none";
+    const main = root.querySelector<HTMLElement>('[data-ui-part="main"]')!;
+    const details = canvas.getByLabelText("Details");
+    const overview = canvas.getByLabelText("Overview rail");
+    const activity = canvas.getByLabelText("Activity rail");
+    await expect(multiPanelController.getPanelElement("overview")).toBe(
+      overview,
+    );
+
+    await waitFor(() =>
+      expect(details).toHaveAttribute("data-presentation", "replace-main"),
+    );
+    await expect(overview).toHaveAttribute("data-presentation", "inline");
+    await expect(activity).toHaveAttribute("data-presentation", "inline");
+    await expect(main).toHaveAttribute("inert");
+    await expect(main).toHaveAttribute("aria-hidden", "true");
+    await expect(
+      root.querySelectorAll('[data-ui-part="sidebar"][data-side="right"]'),
+    ).toHaveLength(3);
+
+    await waitFor(() => {
+      const mainRect = main.getBoundingClientRect();
+      const replacementRect = details.getBoundingClientRect();
+      expect(
+        Math.abs(replacementRect.left - mainRect.left),
+      ).toBeLessThanOrEqual(1);
+      expect(Math.abs(replacementRect.top - mainRect.top)).toBeLessThanOrEqual(
+        1,
+      );
+      expect(
+        Math.abs(replacementRect.width - mainRect.width),
+      ).toBeLessThanOrEqual(1);
+      expect(
+        Math.abs(replacementRect.height - mainRect.height),
+      ).toBeLessThanOrEqual(1);
+    });
+
+    multiPanelController.left.collapse();
+    await waitFor(() =>
+      expect(details).toHaveAttribute("data-presentation", "inline"),
+    );
+    await expect(main).not.toHaveAttribute("inert");
+    multiPanelController.left.expand();
+    await waitFor(() =>
+      expect(details).toHaveAttribute("data-presentation", "replace-main"),
+    );
+
+    const openReviews = canvas.getByRole("button", { name: "Open reviews" });
+    await userEvent.click(openReviews);
+    const surface = await canvas.findByRole("region", {
+      name: "Release reviews",
+    });
+    await expect(surface).toBeVisible();
+    await waitFor(() =>
+      expect(multiPanelController.isPanelSuspended("overview")).toBe(true),
+    );
+    await waitFor(() =>
+      expect(canvas.getByLabelText("Overview rail")).not.toBeVisible(),
+    );
+    await expect(canvas.getByLabelText("Activity rail")).toBeVisible();
+    await expect(main).toHaveAttribute("inert");
+    await expect(details).toHaveAttribute("inert");
+    await expect(surface.closest('[data-ui-part="surface-layer"]')).toHaveStyle(
+      "pointer-events: none",
+    );
+
+    const layerMainRect = main.getBoundingClientRect();
+    const detailsRect = details.getBoundingClientRect();
+    await waitFor(() => {
+      const surfaceRect = surface.getBoundingClientRect();
+      expect(
+        Math.abs(surfaceRect.left - layerMainRect.left),
+        `surface left ${surfaceRect.left}, main left ${layerMainRect.left}`,
+      ).toBeLessThanOrEqual(1);
+      expect(
+        Math.abs(surfaceRect.top - layerMainRect.top),
+        `surface top ${surfaceRect.top}, main top ${layerMainRect.top}`,
+      ).toBeLessThanOrEqual(1);
+      expect(
+        Math.abs(surfaceRect.right - (detailsRect.right - 8)),
+        `surface right ${surfaceRect.right}, details right ${detailsRect.right}`,
+      ).toBeLessThanOrEqual(1);
+      expect(
+        Math.abs(surfaceRect.bottom - layerMainRect.bottom),
+        `surface bottom ${surfaceRect.bottom}, main bottom ${layerMainRect.bottom}`,
+      ).toBeLessThanOrEqual(1);
+    });
+
+    await userEvent.keyboard("{Escape}");
+    await expect(
+      canvas.queryByRole("region", { name: "Release reviews" }),
+    ).toBeNull();
+    await expect(canvas.getByLabelText("Overview rail")).toBeVisible();
+    await waitFor(() => expect(openReviews).toHaveFocus());
+
+    await userEvent.click(openReviews);
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Close reviews" }),
+    );
+    await expect(
+      canvas.queryByRole("region", { name: "Release reviews" }),
+    ).toBeNull();
+    await expect(
+      root.querySelectorAll('[data-ui-part="sidebar"][data-side="right"]'),
+    ).toHaveLength(3);
+  }}
+>
+  {#snippet template()}
+    <AppShellMultiPanelDemo
+      controller={multiPanelController}
+      overview={multiPanelOverviewController}
+      activity={multiPanelActivityController}
+    />
+  {/snippet}
+</Story>
+
+<Story
+  name="Composable same-side panels wide"
+  tags={["visual-pending"]}
+  parameters={{
+    docs: {
+      source: {
+        code: exampleSources.ComposableSameSidePanels,
+        language: "tsx",
+        type: "code",
+      },
+    },
+  }}
+>
+  {#snippet template()}
+    <AppShellMultiPanelDemo
+      controller={multiPanelWideController}
+      overview={multiPanelWideOverviewController}
+      activity={multiPanelWideActivityController}
+      frameClass="ui-shell-story-multi-panel-wide"
+    />
+  {/snippet}
+</Story>
+
+<Story
+  name="Composable same-side panels dark RTL"
+  tags={["visual-pending"]}
+  globals={{ colorMode: "dark" }}
+>
+  {#snippet template()}
+    <AppShellMultiPanelDemo
+      controller={multiPanelRtlController}
+      overview={multiPanelRtlOverviewController}
+      activity={multiPanelRtlActivityController}
+      direction="rtl"
+    />
+  {/snippet}
+</Story>
+
+<Story name="Composable same-side panels mobile" tags={["visual-pending"]}>
+  {#snippet template()}
+    <AppShellMultiPanelDemo
+      controller={multiPanelMobileController}
+      overview={multiPanelMobileOverviewController}
+      activity={multiPanelMobileActivityController}
+      displayMode="mobile"
+      frameClass="ui-shell-story-frame-mobile"
     />
   {/snippet}
 </Story>

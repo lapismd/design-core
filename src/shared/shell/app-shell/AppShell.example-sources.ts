@@ -152,6 +152,50 @@ export const ConstrainedDesktopOverlays = shellSource({
   namedOuterSidebar: true,
 });
 
+export const ComposableSameSidePanels = `<script lang="ts">
+  import { AppShell, AppShellController } from "@lapismd/design-core/shell";
+
+  const shell = new AppShellController({ rightWidth: 320 });
+  const overview = shell.createSidebar("release-overview", "right", {
+    width: 224,
+  });
+  let reviewsOpen = $state(false);
+</script>
+
+<AppShell.Root controller={shell} displayMode="auto">
+  <AppShell.Main>...</AppShell.Main>
+
+  <AppShell.Sidebar
+    side="right"
+    label="Details"
+    constraintPriority={0}
+    constrainedPresentation="replace-main"
+  >
+    ...
+  </AppShell.Sidebar>
+
+  <AppShell.Sidebar
+    side="right"
+    sidebarController={overview}
+    label="Release overview"
+    variant="rail"
+    constraintPriority={100}
+  >
+    ...
+  </AppShell.Sidebar>
+
+  <AppShell.SurfaceLayer
+    open={reviewsOpen}
+    label="Release reviews"
+    coverPanelIds={["right"]}
+    suspendPanelIds={["release-overview"]}
+    onDismiss={() => (reviewsOpen = false)}
+  >
+    <AppShell.SurfaceLayer.Header>Reviews</AppShell.SurfaceLayer.Header>
+    <AppShell.SurfaceLayer.Body>...</AppShell.SurfaceLayer.Body>
+  </AppShell.SurfaceLayer>
+</AppShell.Root>`;
+
 export const MarkdownDocumentBodySidebars = `<script lang="ts">
   import { AppShell, AppShellController } from "@lapismd/design-core/shell";
 
