@@ -1,9 +1,18 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent } from "storybook/test";
-  import { Basic, Fill, Split, Wrap } from "./FileDiff.example-sources.js";
+  import { Button } from "../../shadcn/button/index.js";
+  import { Textarea } from "../../shadcn/textarea/index.js";
+  import {
+    Basic,
+    Fill,
+    LineAnnotation,
+    Split,
+    Wrap,
+  } from "./FileDiff.example-sources.js";
   import FileDiff from "./FileDiff.svelte";
   import FileDiffComposer from "./FileDiffComposer.svelte";
+  import type { FileDiffLineContext } from "./types.js";
 
   const { Story } = defineMeta({
     title: "Diff/File Diff",
@@ -146,6 +155,106 @@
       );
   }
 </script>
+
+<script lang="ts">
+  let annotationContext = $state<FileDiffLineContext>();
+  let annotationDraft = $state("");
+  let savedAnnotation = $state("");
+
+  function annotationMatches(context: FileDiffLineContext): boolean {
+    return (
+      annotationContext?.path === context.path &&
+      annotationContext.lineNumber === context.lineNumber &&
+      annotationContext.variant === context.variant
+    );
+  }
+</script>
+
+<Story
+  name="Composes a host-owned inline annotation"
+  play={async ({ canvas }) => {
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Comment on project.conf line 2" }),
+    );
+    const composer = canvas.getByRole("region", {
+      name: "Comment on project.conf line 2",
+    });
+    await expect(composer).toBeVisible();
+    await userEvent.type(
+      canvas.getByRole("textbox", { name: "Comment" }),
+      "Keep the project flag documented.",
+    );
+    await userEvent.click(canvas.getByRole("button", { name: "Comment" }));
+    await expect(canvas.getByRole("status")).toHaveTextContent(
+      "Keep the project flag documented.",
+    );
+    await expect(composer).not.toBeInTheDocument();
+  }}
+  tags={["visual-pending"]}
+  parameters={{
+    docs: {
+      source: { code: LineAnnotation, language: "tsx", type: "code" },
+    },
+  }}
+>
+  {#snippet template()}
+    {#snippet lineAction(context: FileDiffLineContext)}
+      {#if context.lineNumber === 2 && context.variant === "added"}
+        <Button
+          type="button"
+          variant="ghost"
+          size="sm"
+          aria-label="Comment on project.conf line 2"
+          onclick={() => {
+            annotationContext = context;
+            annotationDraft = "";
+          }}>Comment</Button
+        >
+      {/if}
+    {/snippet}
+    {#snippet lineComment(context: FileDiffLineContext)}
+      {#if annotationMatches(context)}
+        <section
+          class="bg-background mx-2 my-1 rounded-md border p-2"
+          aria-label="Comment on project.conf line 2"
+        >
+          <Textarea
+            bind:value={annotationDraft}
+            aria-label="Comment"
+            placeholder="Add a comment…"
+          />
+          <div class="mt-2 flex justify-end gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onclick={() => (annotationContext = undefined)}>Cancel</Button
+            >
+            <Button
+              type="button"
+              size="sm"
+              disabled={!annotationDraft.trim()}
+              onclick={() => {
+                savedAnnotation = annotationDraft.trim();
+                annotationContext = undefined;
+              }}>Comment</Button
+            >
+          </div>
+        </section>
+      {/if}
+    {/snippet}
+    <div class="max-w-3xl p-4">
+      <FileDiff
+        path="project.conf"
+        oldText={"app=lapis\nprojects=off\n"}
+        newText={"app=lapis\nprojects=on\n"}
+        lineAccessory={lineAction}
+        lineAnnotation={lineComment}
+      />
+      <output class="sr-only">{savedAnnotation}</output>
+    </div>
+  {/snippet}
+</Story>
 
 <Story
   name="Renders a unified file diff"

@@ -15,11 +15,14 @@
     viewMode = "unified",
     scrollTo,
     lineAccessory,
+    lineAnnotation,
   }: {
     files: FileDiffFile[];
     viewMode?: FileDiffViewMode;
     scrollTo?: FileDiffScrollTarget | null;
     lineAccessory?: Snippet<[FileDiffLineContext]>;
+    /** Host-owned content inserted after each matching unified diff row. */
+    lineAnnotation?: Snippet<[FileDiffLineContext]>;
   } = $props();
 </script>
 
@@ -54,6 +57,7 @@
             ? scrollTo
             : null}
           {lineAccessory}
+          {lineAnnotation}
         />
       </section>
     {/each}

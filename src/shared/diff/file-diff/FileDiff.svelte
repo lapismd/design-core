@@ -40,6 +40,7 @@
     language,
     scrollTo,
     lineAccessory,
+    lineAnnotation,
   }: {
     path: string;
     oldText?: string | null;
@@ -51,6 +52,8 @@
     language?: string;
     scrollTo?: FileDiffScrollTarget | null;
     lineAccessory?: Snippet<[FileDiffLineContext]>;
+    /** Host-owned content inserted after each matching unified diff row. */
+    lineAnnotation?: Snippet<[FileDiffLineContext]>;
   } = $props();
 
   let expandedBlocks = $state<ExpandedBlockState>({});
@@ -208,6 +211,9 @@
       {@render lineAccessory(lineContext(row))}
     {/if}
   </div>
+  {#if lineAnnotation}
+    {@render lineAnnotation(lineContext(row))}
+  {/if}
 {/snippet}
 
 {#snippet splitCell(

@@ -45,8 +45,9 @@ directories or collapsed unchanged context. Do not call git or jj from this
 layer.
 
 Line comments, terminal send, and pull-request authors stay in the host. File
-Diff exposes `data-diff-line-*` attributes and a `lineAccessory` snippet so
-hosts can attach those accessories later.
+Diff exposes `data-diff-line-*`, a `lineAccessory` snippet for row actions, and
+a `lineAnnotation` snippet after unified rows so hosts can render inline comment
+composers and conversations without moving review policy into Design Core.
 
 ## Stories
 

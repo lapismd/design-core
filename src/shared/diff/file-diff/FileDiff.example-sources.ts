@@ -77,3 +77,42 @@ export const Composer = `<script lang="ts">
     },
   ]}
 />`;
+
+export const LineAnnotation = `<script lang="ts">
+  import { FileDiff, type FileDiffLineContext } from "@lapismd/design-core/diff";
+  import { Button } from "@lapismd/design-core/shadcn/button";
+  import { Textarea } from "@lapismd/design-core/shadcn/textarea";
+
+  let activeLine = $state<FileDiffLineContext>();
+  let comment = $state("");
+
+  function publishComment(context: FileDiffLineContext, content: string) {
+    activeLine = undefined;
+    comment = "";
+    // Persist the host-owned comment with context.path/lineNumber/variant.
+  }
+<\/script>
+
+{#snippet lineAction(context: FileDiffLineContext)}
+  <Button
+    aria-label={\`Comment on line \${context.lineNumber}\`}
+    onclick={() => (activeLine = context)}
+  >Comment</Button>
+{/snippet}
+
+{#snippet lineComment(context: FileDiffLineContext)}
+  {#if activeLine?.lineNumber === context.lineNumber && activeLine.variant === context.variant}
+    <section aria-label={\`Comment on line \${context.lineNumber}\`}>
+      <Textarea bind:value={comment} aria-label="Comment" />
+      <Button onclick={() => publishComment(context, comment)}>Comment</Button>
+    </section>
+  {/if}
+{/snippet}
+
+<FileDiff
+  path="src/app.ts"
+  {oldText}
+  {newText}
+  lineAccessory={lineAction}
+  lineAnnotation={lineComment}
+/>`;
