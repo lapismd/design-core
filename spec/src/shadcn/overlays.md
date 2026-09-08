@@ -103,9 +103,10 @@ Overlay primitives preserve accessible labelling, focus management, dismissal, p
 
 ## DC-SHA-050 — Tooltip
 
-**Requirement.** The Tooltip family MUST provide concise supplementary text on hover or focus with configurable timing.
+**Requirement.** The Tooltip family MUST provide concise supplementary text on hover or focus with configurable timing and a compact global presentation whose typography and padding remain consumer-overridable through public tokens.
 
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/shadcn/tooltip`.
+- The default content MUST use 0.6875rem text on a 1rem line with compact inline and block padding, while `--ui-tooltip-font-size`, `--ui-tooltip-line-height`, `--ui-tooltip-padding-inline`, and `--ui-tooltip-padding-block` MUST allow application-level adjustment.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.

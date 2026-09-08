@@ -26,6 +26,10 @@
     await userEvent.hover(trigger);
     await expect(trigger).toHaveAttribute("data-state", "instant-open");
     await expect(trigger).toHaveAttribute("aria-describedby");
+    const content = within(document.body).getByText("Save draft");
+    const contentStyle = getComputedStyle(content);
+    await expect(contentStyle.fontSize).toBe("11px");
+    await expect(contentStyle.lineHeight).toBe("16px");
     await userEvent.unhover(trigger);
   }}
   tags={["skip-visual"]}
@@ -48,7 +52,7 @@
 
 <Story
   name="Open tooltip"
-  tags={["visual-state", "visual-approved"]}
+  tags={["visual-state", "visual-pending"]}
   play={async ({ canvas }) => {
     const trigger = canvas.getByRole("button", { name: "Hover" });
     trigger.focus();
