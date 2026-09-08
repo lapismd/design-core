@@ -21,7 +21,7 @@ Diff contracts keep change-set listing, file comparison, and merge presentation 
 
 ### Acceptance details
 
-- The public boundary is Diff layer.
+- The public boundary is Diff layer and MUST remain consumable under strict indexed-access and exact-optional TypeScript settings.
 - Diff production sources MUST import only shadcn primitives and Diff-owned modules.
 - Hosts MUST supply file contents, selection persistence, and merge resolution policy.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.

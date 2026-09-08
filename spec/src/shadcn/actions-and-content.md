@@ -84,4 +84,5 @@ Action and content primitives adapt shadcn-svelte semantics to Design Core styli
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/shadcn/code-block`.
+- Token and highlight projection MUST remain consumable under strict indexed-access TypeScript settings without changing rendered ranges.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.

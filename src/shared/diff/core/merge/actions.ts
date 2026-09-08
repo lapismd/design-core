@@ -32,7 +32,7 @@ function blockRangeForIndex(
   }
   for (let rangeIndex = ranges.length - 1; rangeIndex >= 0; rangeIndex -= 1) {
     const range = ranges[rangeIndex];
-    if (range.end <= index) {
+    if (range && range.end <= index) {
       return range;
     }
   }
@@ -59,6 +59,7 @@ function replaceCenterContent(model: MergeModel, content: string): MergeModel {
   let lineIndex = 0;
   for (let blockIndex = 0; blockIndex < model.blocks.length; blockIndex += 1) {
     const block = model.blocks[blockIndex];
+    if (!block) continue;
     const start = lineIndex;
     lineIndex += linesFromBlock(block, "base").length;
     ranges.push({ blockIndex, start, end: lineIndex });
@@ -69,7 +70,7 @@ function replaceCenterContent(model: MergeModel, content: string): MergeModel {
     if (op.kind === "same") {
       const range = blockRangeForIndex(ranges, currentIndex);
       if (range) {
-        linesByBlock[range.blockIndex].push(op.right);
+        linesByBlock[range.blockIndex]?.push(op.right);
       }
       currentIndex += 1;
     } else if (op.kind === "left") {
@@ -77,7 +78,7 @@ function replaceCenterContent(model: MergeModel, content: string): MergeModel {
     } else {
       const range = blockRangeForIndex(ranges, currentIndex);
       if (range) {
-        linesByBlock[range.blockIndex].push(op.value);
+        linesByBlock[range.blockIndex]?.push(op.value);
       }
     }
   }

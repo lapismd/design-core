@@ -179,8 +179,9 @@ function applyRangesToContainer(
   for (let i = 0; i < lineDivs.length; i++) {
     const tokenIndex = globalLineOffset + i;
     const tokens = tokenLines[tokenIndex];
-    if (tokens && tokens.length > 0) {
-      applyLineRanges(lineDivs[i], tokens, results, resolve);
+    const lineDiv = lineDivs[i];
+    if (lineDiv && tokens && tokens.length > 0) {
+      applyLineRanges(lineDiv, tokens, results, resolve);
     }
   }
   return results;
@@ -216,6 +217,7 @@ export function applyHighlightRangesChunked(
 
   for (let i = 0; i < codeEl.children.length; i++) {
     const child = codeEl.children[i];
+    if (!child) continue;
     const lineDivs = child.querySelectorAll("[data-line]");
     if (
       lineDivs.length > 0 &&
@@ -235,8 +237,9 @@ export function applyHighlightRangesChunked(
     const lineDivs = codeEl.querySelectorAll("[data-line]");
     for (let i = 0; i < lineDivs.length; i++) {
       const tokens = tokenLines[i];
-      if (tokens && tokens.length > 0) {
-        applyLineRanges(lineDivs[i], tokens, allRanges, resolve);
+      const lineDiv = lineDivs[i];
+      if (lineDiv && tokens && tokens.length > 0) {
+        applyLineRanges(lineDiv, tokens, allRanges, resolve);
       }
     }
     return () => cleanupRanges(allRanges);
@@ -253,7 +256,7 @@ export function applyHighlightRangesChunked(
     const ranges = applyRangesToContainer(
       wrapper,
       tokenLines,
-      chunkLineOffsets[index],
+      chunkLineOffsets[index] ?? 0,
       resolve,
     );
     chunkRanges.set(wrapper, ranges);
@@ -269,6 +272,7 @@ export function applyHighlightRangesChunked(
 
   for (let i = 0; i < chunkWrappers.length; i++) {
     const wrapper = chunkWrappers[i];
+    if (!wrapper) continue;
 
     const handler = (e: Event) => {
       // contentvisibilityautostatechange fires with .skipped = true when
@@ -347,7 +351,7 @@ export function applyHighlightRangesBatch(
 
     const lineDiv = lineDivs[divIndex];
     const tokens = tokenLines[i];
-    if (tokens && tokens.length > 0) {
+    if (lineDiv && tokens && tokens.length > 0) {
       applyLineRanges(lineDiv, tokens, results, resolve);
     }
   }

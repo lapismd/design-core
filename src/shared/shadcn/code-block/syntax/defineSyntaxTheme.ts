@@ -60,11 +60,13 @@ export function resolveSyntaxTokenForMode(
   mode: "light" | "dark",
 ): string {
   if (Array.isArray(value)) {
-    return mode === "dark" ? value[1] : value[0];
+    return (mode === "dark" ? value[1] : value[0]) ?? "";
   }
   const match = value.match(/^light-dark\(([^,]+),([^)]+)\)$/);
   if (match) {
-    return mode === "dark" ? match[2].trim() : match[1].trim();
+    return mode === "dark"
+      ? (match[2]?.trim() ?? "")
+      : (match[1]?.trim() ?? "");
   }
   return value;
 }
