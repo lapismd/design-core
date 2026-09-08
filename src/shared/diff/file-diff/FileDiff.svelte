@@ -200,6 +200,14 @@
     data-diff-line-variant={row.variant}
     data-variant={row.variant}
   >
+    {#if lineAccessory}
+      <div
+        class="ui-diff-file-diff__accessory"
+        data-ui-part="diff-row-accessory"
+      >
+        {@render lineAccessory(lineContext(row))}
+      </div>
+    {/if}
     <span class="ui-diff-file-diff__gutter" aria-hidden="true">
       {row.lineNumber ?? ""}
     </span>
@@ -207,9 +215,6 @@
       {row.variant === "added" ? "+" : row.variant === "removed" ? "-" : " "}
     </span>
     {@render highlightedText(row)}
-    {#if lineAccessory}
-      {@render lineAccessory(lineContext(row))}
-    {/if}
   </div>
   {#if lineAnnotation}
     {@render lineAnnotation(lineContext(row))}
@@ -232,13 +237,18 @@
       data-side={side}
       data-pair-key={pairKey}
     >
+      {#if lineAccessory}
+        <div
+          class="ui-diff-file-diff__accessory"
+          data-ui-part="diff-row-accessory"
+        >
+          {@render lineAccessory(lineContext(row))}
+        </div>
+      {/if}
       <span class="ui-diff-file-diff__gutter" aria-hidden="true">
         {lineNumberForSplitSide(row, side) ?? ""}
       </span>
       {@render highlightedText(row)}
-      {#if lineAccessory}
-        {@render lineAccessory(lineContext(row))}
-      {/if}
     </div>
   {:else}
     <div

@@ -82,6 +82,7 @@ export const LineAnnotation = `<script lang="ts">
   import { FileDiff, type FileDiffLineContext } from "@lapismd/design-core/diff";
   import { Button } from "@lapismd/design-core/shadcn/button";
   import { Textarea } from "@lapismd/design-core/shadcn/textarea";
+  import MessageSquarePlusIcon from "@lucide/svelte/icons/message-square-plus";
 
   let activeLine = $state<FileDiffLineContext>();
   let comment = $state("");
@@ -96,8 +97,10 @@ export const LineAnnotation = `<script lang="ts">
 {#snippet lineAction(context: FileDiffLineContext)}
   <Button
     aria-label={\`Comment on line \${context.lineNumber}\`}
+    size="icon-xs"
+    variant="ghost"
     onclick={() => (activeLine = context)}
-  >Comment</Button>
+  ><MessageSquarePlusIcon aria-hidden="true" /></Button>
 {/snippet}
 
 {#snippet lineComment(context: FileDiffLineContext)}

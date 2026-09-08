@@ -45,7 +45,7 @@ Diff contracts keep change-set listing, file comparison, and merge presentation 
 
 - The public boundary is `@lapismd/design-core/diff`.
 - Unchanged context MUST collapse with incremental expand controls.
-- Line identity MUST be exposed through `data-diff-line-*`, a `lineAccessory` snippet, and a host-owned `lineAnnotation` seam after unified rows; split gutters MUST show old-file numbers on the left and new-file numbers on the right, each aligned with its row.
+- Line identity MUST be exposed through `data-diff-line-*`, a `lineAccessory` snippet, and a host-owned `lineAnnotation` seam after unified rows; line accessories MUST occupy the number gutter and reveal on row hover or keyboard focus, while split gutters MUST show old-file numbers on the left and new-file numbers on the right, each aligned with its row.
 - The catalog MUST demonstrate unified, split, collapsed-context, binary, empty, multi-file composer, and wrap-text states without introducing a second runtime contract.
 
 ## DC-DIFF-004 — Merge Editor

@@ -1,6 +1,7 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, userEvent } from "storybook/test";
+  import { expect, userEvent, waitFor } from "storybook/test";
+  import MessageSquarePlusIcon from "@lucide/svelte/icons/message-square-plus";
   import { Button } from "../../shadcn/button/index.js";
   import { Textarea } from "../../shadcn/textarea/index.js";
   import {
@@ -173,9 +174,20 @@
 <Story
   name="Composes a host-owned inline annotation"
   play={async ({ canvas }) => {
-    await userEvent.click(
-      canvas.getByRole("button", { name: "Comment on project.conf line 2" }),
+    const action = canvas.getByRole("button", {
+      name: "Comment on project.conf line 2",
+    });
+    const accessory = action.closest("[data-ui-part='diff-row-accessory']");
+    const row = action.closest("[data-ui-part='diff-row']");
+    await expect(accessory).not.toBeNull();
+    await expect(row).not.toBeNull();
+    await expect(getComputedStyle(accessory as HTMLElement).opacity).toBe("0");
+    (action as HTMLElement).focus();
+    await expect(action).toHaveFocus();
+    await waitFor(() =>
+      expect(getComputedStyle(accessory as HTMLElement).opacity).toBe("1"),
     );
+    await userEvent.click(action);
     const composer = canvas.getByRole("region", {
       name: "Comment on project.conf line 2",
     });
@@ -203,12 +215,12 @@
         <Button
           type="button"
           variant="ghost"
-          size="sm"
+          size="icon-xs"
           aria-label="Comment on project.conf line 2"
           onclick={() => {
             annotationContext = context;
             annotationDraft = "";
-          }}>Comment</Button
+          }}><MessageSquarePlusIcon aria-hidden="true" /></Button
         >
       {/if}
     {/snippet}
