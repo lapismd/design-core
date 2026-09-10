@@ -59,11 +59,47 @@ export const Fill = `<script lang="ts">
 </div>`;
 
 export const Composer = `<script lang="ts">
-  import { FileDiffComposer } from "@lapismd/design-core/diff";
+  import {
+    FileDiffComposer,
+    type FileDiffComposerFileContext,
+    type FileDiffFileScrollTarget,
+  } from "@lapismd/design-core/diff";
+  import { Button } from "@lapismd/design-core/shadcn/button";
+
+  let collapsedFilePaths = $state<string[]>(["src/a.ts"]);
+  let scrollRequest = $state<FileDiffFileScrollTarget>({
+    path: "src/b.ts",
+    requestId: 0,
+  });
+
+  function toggleFile(path: string, collapsed: boolean) {
+    collapsedFilePaths = collapsed
+      ? [...new Set([...collapsedFilePaths, path])]
+      : collapsedFilePaths.filter((candidate) => candidate !== path);
+  }
 </script>
 
+{#snippet fileHeader(context: FileDiffComposerFileContext)}
+  <span>{context.selected ? "Selected" : "Not selected"}</span>
+{/snippet}
+
+<Button
+  variant="outline"
+  onclick={() => {
+    scrollRequest = {
+      path: "src/b.ts",
+      requestId: Number(scrollRequest.requestId) + 1,
+    };
+  }}>Scroll to src/b.ts</Button
+>
 <FileDiffComposer
   viewMode="unified"
+  selectedPath="src/b.ts"
+  {collapsedFilePaths}
+  scrollToFile={scrollRequest}
+  stickyHeaders
+  onFileToggle={toggleFile}
+  fileHeaderTrailing={fileHeader}
   files={[
     {
       path: "src/a.ts",
