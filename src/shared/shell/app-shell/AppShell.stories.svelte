@@ -55,6 +55,11 @@
     leftWidth: 280,
     rightWidth: 320,
   });
+  const mobileFocusController = new AppShellController({ rightClosed: true });
+  const mobileFocusProjectSidebar = mobileFocusController.createSidebar(
+    "projects",
+    "left",
+  );
   const modeSwitchController = new AppShellController({
     leftWidth: 224,
     rightWidth: 256,
@@ -1359,6 +1364,13 @@
     const aiSidebar = canvas.getByLabelText("AI sidebar");
     await expect(aiSidebar).toHaveAttribute("data-mobile-panel-active", "true");
     await expect(aiSidebar).toHaveFocus();
+    await waitFor(() => {
+      const bounds = mobileGroup.getBoundingClientRect();
+      const panel = aiSidebar.getBoundingClientRect();
+      expect(panel.left).toBeGreaterThanOrEqual(bounds.left - 1);
+      expect(panel.right).toBeLessThanOrEqual(bounds.right + 1);
+      expect(mobileGroup.scrollLeft).toBe(0);
+    });
 
     const rightSelector = canvas.getByRole("button", {
       name: "Choose right sidebar panel",
@@ -1378,6 +1390,7 @@
     await userEvent.keyboard("{Escape}");
     await expect(root).toHaveAttribute("data-mobile-stage", "main");
     await expect(rightToggle).toHaveFocus();
+    await expect(mobileGroup.scrollLeft).toBe(0);
 
     await expect(completeMobileProjectSidebarController.state).toBe("closed");
     await expect(completeMobileController.left.state).toBe("collapsed");
@@ -1391,6 +1404,48 @@
     <AppShellCompleteDemo
       controller={completeMobileController}
       projectSidebar={completeMobileProjectSidebarController}
+      displayMode="mobile"
+      frameClass="ui-shell-story-frame-mobile"
+    />
+  {/snippet}
+</Story>
+
+<Story
+  name="Mobile panel focus"
+  tags={["visual-pending"]}
+  parameters={{
+    docs: {
+      source: {
+        code: exampleSources.MobileEdgePanels,
+        language: "tsx",
+        type: "code",
+      },
+    },
+  }}
+  play={async ({ canvas }) => {
+    const stage = canvas.getByRole("group", {
+      name: "Mobile application shell",
+    });
+    const toggle = canvas.getByRole("button", { name: "Open right sidebar" });
+    await userEvent.click(toggle);
+    const panel = canvas.getByLabelText("AI sidebar");
+    await expect(panel).toHaveFocus();
+    await waitFor(() => {
+      const viewport = stage.getBoundingClientRect();
+      const bounds = panel.getBoundingClientRect();
+      expect(bounds.left).toBeGreaterThanOrEqual(viewport.left - 1);
+      expect(bounds.right).toBeLessThanOrEqual(viewport.right + 1);
+      expect(stage.scrollLeft).toBe(0);
+    });
+    await userEvent.keyboard("{Escape}");
+    await expect(toggle).toHaveFocus();
+    await expect(stage.scrollLeft).toBe(0);
+  }}
+>
+  {#snippet template()}
+    <AppShellCompleteDemo
+      controller={mobileFocusController}
+      projectSidebar={mobileFocusProjectSidebar}
       displayMode="mobile"
       frameClass="ui-shell-story-frame-mobile"
     />

@@ -185,14 +185,17 @@ export class AppShellMobileController {
     if (returnFocus) this.#returnFocus = returnFocus;
     this.#rootElement?.focus({ preventScroll: true });
     this.stage = side;
-    queueMicrotask(() => this.activePanel(side)?.element?.focus());
+    queueMicrotask(() =>
+      this.activePanel(side)?.element?.focus({ preventScroll: true }),
+    );
   }
 
   showMain(restoreFocus = true): void {
     const focusTarget = this.#returnFocus ?? this.#mainElement;
     this.#rootElement?.focus({ preventScroll: true });
     this.stage = "main";
-    if (restoreFocus) queueMicrotask(() => focusTarget?.focus());
+    if (restoreFocus)
+      queueMicrotask(() => focusTarget?.focus({ preventScroll: true }));
     this.#returnFocus = null;
   }
 
