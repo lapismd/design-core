@@ -286,6 +286,7 @@
 }
 
 .ui-diff-file-diff-composer__header-start,
+.ui-diff-file-diff-composer__header-leading,
 .ui-diff-file-diff-composer__header-trailing {
   display: flex;
   min-width: 0;

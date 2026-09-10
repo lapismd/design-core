@@ -517,6 +517,11 @@
     await expect(
       canvas.getByTitle("src/b.ts").closest("[data-ui-part='file-section']"),
     ).toHaveAttribute("data-selected", "true");
+    await expect(
+      canvas.getByRole("button", {
+        name: "Toggle related file list for src/a.ts",
+      }),
+    ).toBeVisible();
     await userEvent.click(
       canvas.getByRole("button", { name: "Expand src/a.ts" }),
     );
@@ -547,6 +552,13 @@
     {#snippet fileHeader(context: FileDiffComposerFileContext)}
       <span>{context.selected ? "Selected" : "Not selected"}</span>
     {/snippet}
+    {#snippet fileHeaderLeading(context: FileDiffComposerFileContext)}
+      <Button
+        variant="ghost"
+        size="icon-xs"
+        aria-label={`Toggle related file list for ${context.path}`}>L</Button
+      >
+    {/snippet}
     <div class="max-w-3xl p-4">
       <Button
         class="mb-3"
@@ -565,6 +577,7 @@
         scrollToFile={composerScrollRequest}
         stickyHeaders
         onFileToggle={toggleComposerFile}
+        {fileHeaderLeading}
         fileHeaderTrailing={fileHeader}
         scrollTo={{ path: "src/b.ts", lineNumber: 1, variant: "added" }}
         files={[

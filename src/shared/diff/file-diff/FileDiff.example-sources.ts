@@ -83,6 +83,12 @@ export const Composer = `<script lang="ts">
   <span>{context.selected ? "Selected" : "Not selected"}</span>
 {/snippet}
 
+{#snippet fileHeaderLeading(context: FileDiffComposerFileContext)}
+  <Button variant="ghost" size="icon-xs" aria-label={"Toggle related file list for " + context.path}>
+    L
+  </Button>
+{/snippet}
+
 <Button
   variant="outline"
   onclick={() => {
@@ -99,6 +105,7 @@ export const Composer = `<script lang="ts">
   scrollToFile={scrollRequest}
   stickyHeaders
   onFileToggle={toggleFile}
+  {fileHeaderLeading}
   fileHeaderTrailing={fileHeader}
   files={[
     {

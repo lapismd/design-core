@@ -25,6 +25,7 @@
     stickyHeaders = false,
     scrollTo,
     onFileToggle,
+    fileHeaderLeading,
     fileHeaderTrailing,
     lineAccessory,
     lineAnnotation,
@@ -37,6 +38,7 @@
     stickyHeaders?: boolean;
     scrollTo?: FileDiffScrollTarget | null;
     onFileToggle?: (path: string, collapsed: boolean) => void;
+    fileHeaderLeading?: Snippet<[FileDiffComposerFileContext]>;
     fileHeaderTrailing?: Snippet<[FileDiffComposerFileContext]>;
     lineAccessory?: Snippet<[FileDiffLineContext]>;
     /** Host-owned content inserted after each matching unified diff row. */
@@ -89,6 +91,11 @@
       >
         <header class="ui-diff-file-diff-composer__header">
           <div class="ui-diff-file-diff-composer__header-start">
+            {#if fileHeaderLeading}
+              <div class="ui-diff-file-diff-composer__header-leading">
+                {@render fileHeaderLeading(context)}
+              </div>
+            {/if}
             {#if onFileToggle}
               <Button
                 type="button"
