@@ -186,3 +186,5 @@ refuses leftover utilities after native-CSS conversion.
 4. Stamp `data-ui-component` and `data-ui-part`.
 5. Document the tokens the component reads.
 6. Run `pnpm check:no-tailwind`, focused story checks, and the repository gate.
+
+Dialog recipes consume runtime container and text tokens explicitly defined in the theme so packaged consumers retain geometry without generating Tailwind utilities.

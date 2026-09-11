@@ -1,6 +1,16 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
+  /* Runtime defaults must survive consumer Tailwind tree shaking. */
+  --container-xs: 20rem;
+  --container-md: 28rem;
+  --container-lg: 32rem;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
   /* Compiled shadcn CSS reads these even when a consumer does not reprocess @theme. */
   --color-white: #ffffff;
   --color-black: #000000;

@@ -129,3 +129,14 @@ export {
 export type { InlineOptionPickerOption } from "./inline-option-picker/InlineOptionPicker.svelte";
 export type { AddSectionOption } from "./add-section-chooser/AddSectionChooser.svelte";
 export * from "./core/core";
+
+export {
+  DialogFrame,
+  type DialogFrameProps,
+  type DialogFrameSize,
+} from "./dialog-frame/index.js";
+export {
+  ConfirmDialog,
+  type ConfirmDialogProps,
+} from "./confirm-dialog/index.js";
+export { ConfirmButton } from "./confirm-button/index.js";

@@ -303,6 +303,7 @@
     "./workspace/view-header": "./src/shared/workspace/view-header/index.ts",
     "./workspace/tokens": "./src/shared/workspace/workspace.tokens.ts",
     "./workspace/view-host": "./src/shared/workspace/view-host/index.ts",
-    "./workspace/workspace.tokens.css": "./src/shared/workspace/workspace.tokens.css"
+    "./workspace/workspace.tokens.css": "./src/shared/workspace/workspace.tokens.css",
+    "./forms/dialog": "./src/shared/forms/dialog.ts"
   }
 }

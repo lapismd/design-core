@@ -225,3 +225,10 @@ are tracked in `src/shared/workspace/PLAN.md`.
 
 - Markdown stack: editor, preview, TOC, Carta, Mermaid.
 - `FlipCardDeck` and `StructuredTable*`.
+
+## Shared dialog compositions
+
+- `DialogFrame`: application-independent modal layout with controlled root, sidebar, scroll body, and stationary footer.
+- `ConfirmDialog` and `ConfirmButton`: compact asynchronous confirmation and trigger composition.
+
+Import these through `@lapismd/design-core/forms`; domain-specific controls remain in consumers.

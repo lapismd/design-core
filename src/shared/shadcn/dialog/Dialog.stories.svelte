@@ -87,7 +87,7 @@
 
 <Story
   name="Open dialog"
-  tags={["visual-state", "visual-approved"]}
+  tags={["visual-state", "visual-pending"]}
   play={async ({ canvas }) => {
     await dismissOverlays();
     await userEvent.click(canvas.getByRole("button", { name: "Open Dialog" }));

@@ -20,6 +20,8 @@ Design Core is a shared presentation and controller library. Consumer applicatio
 
 ### Acceptance details
 
+- Shared Forms compositions own dialog geometry and asynchronous confirmation, while applications provide content snippets.
+
 - A lower-level layer must not acquire consumer routing, persistence, vault, or application-domain policy.
 - A cross-layer composition may depend only on public contracts or an explicitly documented internal boundary.
 

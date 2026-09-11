@@ -276,6 +276,7 @@
         }
         [data-ui-component="button"][data-variant="outline"]:hover,
         [data-ui-component="button"][data-variant="ghost"]:hover {
+          background-color: var(--accent);
           color: var(--foreground);
         }
         [data-ui-component="button"][data-variant="link"]:hover {
@@ -293,6 +294,9 @@
             transparent
           );
         }
+      }
+      [data-ui-component="button"][data-variant="ghost"]:focus-visible {
+        background-color: var(--accent);
       }
       [data-ui-component="button"]:focus-visible {
         border-color: var(--ui-button-focus-ring-color, var(--ring));

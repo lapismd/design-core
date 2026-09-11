@@ -45,6 +45,8 @@ The root package manifest defines the supported import boundaries. Family barrel
 
 ### Acceptance details
 
+- DialogFrame, ConfirmDialog, and ConfirmButton MUST expose focused source subpaths verified with strict consumer compiler settings.
+
 - The export must resolve to tracked source or the documented workspace build output.
 - Package checks must fail when the mapped entry point is stale or missing.
 - Strict clean consumers must type-check stable and experimental AI source exports without relaxing optional-property or indexed-access checks.
