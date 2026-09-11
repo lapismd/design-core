@@ -50,7 +50,7 @@ Overlay primitives preserve accessible labelling, focus management, dismissal, p
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/shadcn/dialog`.
-- The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- The catalog MUST demonstrate stable portal content and retained input focus during property updates without introducing a second runtime contract.
 - The modal scrim must remain visible when Dialog content is restyled by a composed family such as Command.
 - The built-in dialog close Button MUST retain its Button styling identity, compact icon sizing, rounded target, hover feedback, and focus-visible feedback, including in downstream compiled consumers with runtime size-token defaults.
 

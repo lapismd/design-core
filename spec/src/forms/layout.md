@@ -131,7 +131,7 @@ Form layout families provide reusable chrome for sections, fields, repeaters, ac
 ### Acceptance details
 
 - Width recipes are 28, 40, and 68 rem with viewport insets; the body alone scrolls.
-- The caller owns open state through Dialog.Root and supplies domain content through snippets.
+- The caller owns open state through Dialog.Root and supplies domain content through snippets, with content updates preserving mounted controls, their values, and keyboard focus.
 - Close and Escape preserve focus restoration and cannot dismiss during a pending operation.
 - Dialog headings remain local and do not introduce document banner landmarks.
 

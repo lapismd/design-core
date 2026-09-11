@@ -25,6 +25,12 @@
       "dialog",
       { name: "Edit record" },
     );
+    const firstField = within(dialog).getByRole("textbox", { name: "Field 1" });
+    await userEvent.type(firstField, "Updated record");
+    expect(firstField).toBeInTheDocument();
+    expect(firstField).toHaveFocus();
+    expect(firstField).toHaveValue("Updated record");
+    expect(within(dialog).getByText("Editing Updated record")).toBeVisible();
     const close = within(dialog).getByRole("button", {
       name: "Close",
     });

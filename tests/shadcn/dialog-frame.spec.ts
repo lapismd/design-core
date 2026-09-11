@@ -11,6 +11,16 @@ for (const width of [1280, 390]) {
       await trigger.click();
       const dialog = page.getByRole("dialog", { name: "Edit record" });
       await expect(dialog.getByRole("banner")).toHaveCount(0);
+      const field = dialog.getByRole("textbox", {
+        name: "Field 1",
+        exact: true,
+      });
+      const originalField = await field.elementHandle();
+      await field.pressSequentially("Updated record");
+      await expect(field).toHaveValue("Updated record");
+      await expect(field).toBeFocused();
+      expect(await originalField!.evaluate((el) => el.isConnected)).toBe(true);
+      await expect(dialog.getByText("Editing Updated record")).toBeVisible();
       const close = dialog.getByRole("button", { name: "Close", exact: true });
       await dialog.getByRole("textbox").first().focus();
       await page.mouse.move(0, 0);
