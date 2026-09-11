@@ -63,7 +63,7 @@
     else onEscapeKeydown?.(event);
   }}
 >
-  <header data-ui-part="dialog-frame-header">
+  <div data-ui-part="dialog-frame-header">
     <div data-ui-part="dialog-frame-heading">
       <Dialog.Title
         >{#if typeof title === "string"}{title}{:else}{@render title()}{/if}</Dialog.Title
@@ -86,7 +86,7 @@
         >
       {/snippet}
     </Dialog.Close>
-  </header>
+  </div>
   <div data-ui-part="dialog-frame-layout" data-has-sidebar={Boolean(sidebar)}>
     {#if sidebar}<aside data-ui-part="dialog-frame-sidebar">
         {@render sidebar()}

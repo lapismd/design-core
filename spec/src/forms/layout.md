@@ -133,6 +133,7 @@ Form layout families provide reusable chrome for sections, fields, repeaters, ac
 - Width recipes are 28, 40, and 68 rem with viewport insets; the body alone scrolls.
 - The caller owns open state through Dialog.Root and supplies domain content through snippets.
 - Close and Escape preserve focus restoration and cannot dismiss during a pending operation.
+- Dialog headings remain local and do not introduce document banner landmarks.
 
 ## DC-FORM-045 — Confirmation dialog
 

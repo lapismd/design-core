@@ -10,6 +10,7 @@ for (const width of [1280, 390]) {
       const trigger = page.getByRole("button", { name: "Edit record" });
       await trigger.click();
       const dialog = page.getByRole("dialog", { name: "Edit record" });
+      await expect(dialog.getByRole("banner")).toHaveCount(0);
       const close = dialog.getByRole("button", { name: "Close", exact: true });
       await dialog.getByRole("textbox").first().focus();
       await page.mouse.move(0, 0);
