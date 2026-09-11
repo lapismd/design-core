@@ -2,7 +2,8 @@
   import type { ComponentProps, Snippet } from "svelte";
   import type * as DialogTypes from "../../shadcn/dialog/index.js";
 
-  export type DialogFrameSize = "compact" | "form" | "wide";
+  export type DialogFrameSize = "compact" | "form" | "large" | "wide";
+  export type DialogFrameSurface = "plain" | "inset";
   export type DialogFrameProps = Omit<
     ComponentProps<typeof DialogTypes.Content>,
     "children" | "title" | "showCloseButton" | "dataUiComponent" | "dataUiPart"
@@ -11,6 +12,8 @@
     description?: string | Snippet;
     descriptionHidden?: boolean;
     size?: DialogFrameSize;
+    /** Visual treatment for the dialog shell and main content surface. */
+    surface?: DialogFrameSurface;
     busy?: boolean;
     closeLabel?: string;
     sidebar?: Snippet;
@@ -33,6 +36,7 @@
     description,
     descriptionHidden = false,
     size = "form",
+    surface = "plain",
     busy = false,
     closeLabel = "Close",
     sidebar,
@@ -53,6 +57,7 @@
   showCloseButton={false}
   data-ui-dialog-frame=""
   data-frame-size={size}
+  data-frame-surface={surface}
   data-frame-padding={bodyPadding}
   onInteractOutside={(event) => {
     if (busy) event.preventDefault();

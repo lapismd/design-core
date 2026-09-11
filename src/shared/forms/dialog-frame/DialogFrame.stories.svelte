@@ -43,6 +43,15 @@
     const footer = dialog.querySelector<HTMLElement>(
       '[data-ui-part="dialog-frame-footer"]',
     )!;
+    const header = dialog.querySelector<HTMLElement>(
+      '[data-ui-part="dialog-frame-header"]',
+    )!;
+    const sidebar = dialog.querySelector<HTMLElement>(
+      '[data-ui-part="dialog-frame-sidebar"]',
+    )!;
+    const main = dialog.querySelector<HTMLElement>(
+      '[data-ui-part="dialog-frame-main"]',
+    )!;
     const viewport = dialog.querySelector<HTMLElement>(
       '[data-ui-part="scroll-area-viewport"]',
     )!;
@@ -51,6 +60,12 @@
     viewport.scrollTop = viewport.scrollHeight;
     await waitFor(() => expect(viewport.scrollTop).toBeGreaterThan(0));
     expect(footer.getBoundingClientRect().top).toBeCloseTo(top, 0);
+    expect(dialog.getBoundingClientRect().width).toBeLessThanOrEqual(896);
+    expect(dialog.getBoundingClientRect().height).toBeLessThanOrEqual(672);
+    expect(getComputedStyle(header).backgroundColor).toBe(
+      getComputedStyle(sidebar).backgroundColor,
+    );
+    expect(getComputedStyle(main).borderRadius).not.toBe("0px");
     expect(dialog.getBoundingClientRect().right).toBeLessThanOrEqual(
       window.innerWidth - 15,
     );

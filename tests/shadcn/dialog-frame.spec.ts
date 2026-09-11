@@ -22,6 +22,17 @@ for (const width of [1280, 390]) {
       expect(await originalField!.evaluate((el) => el.isConnected)).toBe(true);
       await expect(dialog.getByText("Editing Updated record")).toBeVisible();
       const close = dialog.getByRole("button", { name: "Close", exact: true });
+      const header = dialog.locator('[data-ui-part="dialog-frame-header"]');
+      const sidebar = dialog.locator('[data-ui-part="dialog-frame-sidebar"]');
+      const main = dialog.locator('[data-ui-part="dialog-frame-main"]');
+      await expect(dialog).toHaveAttribute("data-frame-size", "large");
+      await expect(dialog).toHaveAttribute("data-frame-surface", "inset");
+      expect(
+        await header.evaluate((el) => getComputedStyle(el).backgroundColor),
+      ).toBe(
+        await sidebar.evaluate((el) => getComputedStyle(el).backgroundColor),
+      );
+      await expect(main).toHaveCSS("border-radius", "16px");
       await dialog.getByRole("textbox").first().focus();
       await page.mouse.move(0, 0);
       const before = await close.evaluate(
@@ -57,6 +68,7 @@ for (const width of [1280, 390]) {
         .toBeGreaterThan(0);
       expect((await footer.boundingBox())!.y).toBeCloseTo(footerBefore!.y, 0);
       const bounds = (await dialog.boundingBox())!;
+      expect(bounds.width).toBeLessThanOrEqual(896);
       expect(bounds.x).toBeGreaterThanOrEqual(15);
       expect(bounds.x + bounds.width).toBeLessThanOrEqual(width - 15);
       expect(bounds.y + bounds.height).toBeLessThanOrEqual(625);

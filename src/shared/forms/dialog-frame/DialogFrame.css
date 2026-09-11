@@ -18,6 +18,13 @@
 [data-ui-dialog-frame][data-frame-size="wide"] {
   --ui-dialog-frame-width: 68rem;
 }
+[data-ui-dialog-frame][data-frame-size="large"] {
+  --ui-dialog-frame-width: 56rem;
+  max-height: min(42rem, calc(100dvh - 2rem));
+}
+[data-ui-dialog-frame][data-frame-surface="inset"] {
+  background: var(--muted);
+}
 [data-ui-dialog-frame] > [data-ui-part="dialog-frame-header"] {
   display: flex;
   align-items: flex-start;
@@ -39,6 +46,15 @@
 [data-ui-dialog-frame] [data-ui-part="dialog-frame-close"] {
   flex: none;
 }
+[data-ui-dialog-frame][data-frame-surface="inset"]
+  > [data-ui-part="dialog-frame-header"] {
+  background: var(--muted);
+}
+[data-ui-dialog-frame][data-frame-surface="inset"]
+  [data-ui-part="dialog-frame-close"]:is(:hover, :focus-visible) {
+  background: var(--background);
+  color: var(--foreground);
+}
 [data-ui-dialog-frame] [data-ui-part="dialog-frame-layout"] {
   display: flex;
   flex: 1;
@@ -50,12 +66,23 @@
   padding: 0.5rem 1rem 1rem;
   background: var(--muted);
 }
+[data-ui-dialog-frame][data-frame-surface="inset"]
+  [data-ui-part="dialog-frame-sidebar"] {
+  flex-basis: 13rem;
+}
 [data-ui-dialog-frame] [data-ui-part="dialog-frame-main"] {
   display: flex;
   flex-direction: column;
   flex: 1;
   min-width: 0;
   min-height: 0;
+}
+[data-ui-dialog-frame][data-frame-surface="inset"]
+  [data-ui-part="dialog-frame-main"] {
+  margin: 0 1rem 1rem 0;
+  border-radius: 1rem;
+  background: var(--background);
+  overflow: hidden;
 }
 [data-ui-dialog-frame] .ui-dialog-frame-scroll {
   flex: 1;
@@ -95,5 +122,9 @@
   }
   [data-ui-dialog-frame] [data-ui-part="dialog-frame-sidebar"] {
     flex: none;
+  }
+  [data-ui-dialog-frame][data-frame-surface="inset"]
+    [data-ui-part="dialog-frame-main"] {
+    margin-left: 1rem;
   }
 }

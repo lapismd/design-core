@@ -126,14 +126,14 @@ Form layout families provide reusable chrome for sections, fields, repeaters, ac
 
 ## DC-FORM-044 — Dialog frame
 
-**Requirement.** The DialogFrame composition MUST own compact, form, and wide modal geometry, accessible headings, a standard close control, an optional sidebar, a ScrollArea body, and stationary actions.
+**Requirement.** The DialogFrame composition MUST own compact, form, large, and wide modal geometry, accessible headings, a standard close control, optional plain or inset surfaces, an optional sidebar, a ScrollArea body, and stationary actions.
 
 ### Acceptance details
 
-- Width recipes are 28, 40, and 68 rem with viewport insets; the body alone scrolls.
+- Width recipes are 28, 40, 56, and 68 rem with viewport insets; the large recipe is capped at 42 rem high and the body alone scrolls.
+- The inset surface uses one muted shell across the header and sidebar, contains the main area on a raised surface, and gives the close control a contrasting hover and keyboard-focus background.
 - The caller owns open state through Dialog.Root and supplies domain content through snippets, with content updates preserving mounted controls, their values, and keyboard focus.
-- Close and Escape preserve focus restoration and cannot dismiss during a pending operation.
-- Dialog headings remain local and do not introduce document banner landmarks.
+- Close and Escape preserve focus restoration and cannot dismiss during a pending operation; dialog headings remain local and do not introduce document banner landmarks.
 
 ## DC-FORM-045 — Confirmation dialog
 

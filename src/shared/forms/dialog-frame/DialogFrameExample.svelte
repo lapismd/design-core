@@ -17,7 +17,8 @@
     description={name
       ? `Editing ${name}`
       : "The form scrolls while its actions remain visible."}
-    size="wide"
+    size="large"
+    surface="inset"
     class={name ? "record-filled" : "record-empty"}
   >
     {#snippet sidebar()}<nav aria-label="Sections">
