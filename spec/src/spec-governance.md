@@ -69,7 +69,7 @@ Specification governance keeps requirements discoverable, mapped, validated, and
 - A diagnostic must identify its stable code, governing requirement, source path, line when available, affected identifier, and corrective action.
 - Repository-owned configuration must map Design Core paths, statuses, and governing DC identifiers onto reusable shared validators.
 - Mirror validation must reject missing, stale, misordered, retargeted, or prose-bearing Storybook pages.
-- Public-surface validation must map every root export to exactly one owning requirement.
+- Public-surface validation must map every root export to exactly one owning requirement, including new AI subpath exports in the same change as their canonical AI requirement.
 
 ## DC-GOV-004 — Spec-first classification
 

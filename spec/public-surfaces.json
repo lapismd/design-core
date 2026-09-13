@@ -479,6 +479,10 @@
       "requirement": "DC-AI-015"
     },
     {
+      "name": "AI/Chat/Tool Call Detail",
+      "requirement": "DC-AI-025"
+    },
+    {
       "name": "AI/Overview",
       "requirement": "DC-AI-023"
     },

@@ -16,6 +16,8 @@ Repository tools keep source generation, discovery, documentation, validation, C
 
 **Requirement.** The UI catalog CLI family MUST list and inspect guides and component families in human-readable and JSON forms.
 
+The AI catalog derives stable public chat components, including shared tool-call detail, from their colocated stories and public subpath exports.
+
 ### Acceptance details
 
 - Machine-readable output must be stable enough for repository automation, and validation must include strict public Shell, Search Filter Bar, and composed source-consumer type-checks so source-export compatibility cannot regress unnoticed.

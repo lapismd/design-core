@@ -12,6 +12,15 @@ export { default as SendButton } from "./send-button/SendButton.svelte";
 export { default as ComposerToken } from "./composer-token/ComposerToken.svelte";
 export { default as TokenizedText } from "./tokenized-text/TokenizedText.svelte";
 export { default as ToolCalls } from "./tool-calls/ToolCalls.svelte";
+export { default as ToolCallDetail } from "./tool-call-detail/ToolCallDetail.svelte";
+export {
+  isOneLineToolAlert,
+  presentToolPayload,
+  toolCallTarget,
+  type PresentedToolPayload,
+  type ToolPayloadHint,
+  type ToolPayloadLanguage,
+} from "./tool-call-detail/tool-call-detail.js";
 export { default as DictationButton } from "./dictation-button/DictationButton.svelte";
 
 export {

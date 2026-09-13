@@ -132,9 +132,12 @@ Hello
 
   it("lists the complete stable and experimental AI Chat catalog", () => {
     const ai = listComponents(packageRoot, { layer: "ai" });
-    // 15 stable + 5 experimental + overview
-    expect(ai).toHaveLength(21);
+    // 16 stable + 5 experimental + overview
+    expect(ai).toHaveLength(22);
     expect(ai.find((entry) => entry.id === "composer-input")?.import).toBe(
+      "@lapismd/design-core/ai/chat",
+    );
+    expect(ai.find((entry) => entry.id === "tool-call-detail")?.import).toBe(
       "@lapismd/design-core/ai/chat",
     );
     expect(

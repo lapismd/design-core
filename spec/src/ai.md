@@ -22,6 +22,7 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 | Composer Token          | `@lapismd/design-core/ai/chat`         | DC-AI-013   |
 | Tokenized Text          | `@lapismd/design-core/ai/chat`         | DC-AI-014   |
 | Tool Calls              | `@lapismd/design-core/ai/chat`         | DC-AI-015   |
+| Tool Call Detail        | `@lapismd/design-core/ai/chat`         | DC-AI-025   |
 | Dictation Button        | `@lapismd/design-core/ai/chat`         | DC-AI-016   |
 | Emoji Picker            | `@lapismd/design-core/ai/experimental` | DC-AI-017   |
 | Reaction Bar            | `@lapismd/design-core/ai/experimental` | DC-AI-018   |
@@ -261,3 +262,14 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 - The public boundary is `@lapismd/design-core/ai/chat`.
 - `submitOnSelect` MUST work for pointer and Enter selection of the highlighted item.
 - Items without the flag MUST keep the existing insert-and-continue behavior.
+
+## DC-AI-025 — Tool Call Detail
+
+**Requirement.** Tool Call Detail MUST provide a presentation-only, provider-neutral view of structured tool input, output, and errors, including safe envelope unwrapping and readable code formatting.
+
+### Acceptance details
+
+- The public boundary is `@lapismd/design-core/ai/chat`.
+- Input, output, and multiline errors MUST use the public Code Block with copy support, wrapping, and bounded height.
+- Short one-line errors MAY remain on the Tool Calls summary row; formatter helpers MUST distinguish those alerts without executing or mutating tool data.
+- The catalog MUST demonstrate JSON input, command output, and an error without introducing a runtime contract.
