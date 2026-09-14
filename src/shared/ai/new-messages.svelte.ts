@@ -1,6 +1,10 @@
 export type NewMessagesOptions = {
   isLocked: () => boolean;
   onResize?: () => void;
+  /** Opt in to coalescing geometry work outside the ResizeObserver delivery. */
+  deferResize?: boolean | (() => boolean);
+  requestAnimationFrame?: typeof globalThis.requestAnimationFrame;
+  cancelAnimationFrame?: typeof globalThis.cancelAnimationFrame;
   createResizeObserver?: (
     callback: ResizeObserverCallback,
   ) => Pick<ResizeObserver, "observe" | "disconnect">;
@@ -20,6 +24,7 @@ export function createNewMessages(
   let element: HTMLElement | null = null;
   let observer: Pick<ResizeObserver, "observe" | "disconnect"> | null = null;
   let hasNewMessages = $state(false);
+  let resizeFrame = 0;
   const seenMessageIds = new Set<string>();
 
   const makeObserver =
@@ -43,12 +48,30 @@ export function createNewMessages(
 
     observer = makeObserver((entries) => {
       if (!entries.some((entry) => entry.target === element)) return;
-      options.onResize?.();
+      const deferred =
+        typeof options.deferResize === "function"
+          ? options.deferResize()
+          : options.deferResize;
+      if (!deferred) {
+        options.onResize?.();
+        return;
+      }
+      if (resizeFrame) return;
+      const current = element;
+      resizeFrame = (options.requestAnimationFrame ?? requestAnimationFrame)(
+        () => {
+          resizeFrame = 0;
+          if (element === current) options.onResize?.();
+        },
+      );
     });
     observer?.observe(element);
   }
 
   function cleanup(): void {
+    if (resizeFrame)
+      (options.cancelAnimationFrame ?? cancelAnimationFrame)(resizeFrame);
+    resizeFrame = 0;
     observer?.disconnect();
     observer = null;
     element = null;

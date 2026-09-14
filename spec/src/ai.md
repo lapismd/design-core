@@ -71,7 +71,7 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 - The public boundary is `@lapismd/design-core/ai/chat`.
 - Existing children, density, gap, streaming, empty-state and manual Load older messages APIs MUST retain their defaults without instantiating a virtualizer; `virtualize={true}` opts in to row rendering, single-flight anchored paging and the guarded 600 px loading boundary.
 - User intent and Jump to latest MUST invalidate pending positioning work while accessible Load older messages and Retry controls remain available, with the virtualizer alone owning row anchoring and deferred measurements preserving the reader's following intent.
-- Explicit message-arrival notifications, controlled unread state and geometry observation MUST remain separate.
+- Unchanged virtualizer inputs MUST NOT schedule new measurements or position reports, while history-mode resize work MUST be coalesced outside observer delivery and cancelled on teardown.
 
 ## DC-AI-005 — Message
 

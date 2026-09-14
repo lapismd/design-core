@@ -254,6 +254,40 @@ describe("createNewMessages", () => {
     controller.notify("message");
     expect(controller.hasNewMessages).toBe(true);
   });
+  it("coalesces opt-in resize work and cancels it when detached", () => {
+    let resize!: ResizeObserverCallback;
+    let frame!: FrameRequestCallback;
+    const onResize = vi.fn(),
+      cancel = vi.fn();
+    const controller = createNewMessages({
+      isLocked: () => false,
+      deferResize: true,
+      onResize,
+      requestAnimationFrame(callback) {
+        frame = callback;
+        return 1;
+      },
+      cancelAnimationFrame: cancel,
+      createResizeObserver(callback) {
+        resize = callback;
+        return { observe() {}, disconnect() {} };
+      },
+    });
+    const element = fakeElement(),
+      entries = [{ target: element } as unknown as ResizeObserverEntry];
+    controller.attach(element);
+    resize(entries, {} as ResizeObserver);
+    resize(entries, {} as ResizeObserver);
+    expect(onResize).not.toHaveBeenCalled();
+    frame(0);
+    expect(onResize).toHaveBeenCalledTimes(1);
+    expect(controller.hasNewMessages).toBe(false);
+    resize(entries, {} as ResizeObserver);
+    controller.cleanup();
+    expect(cancel).toHaveBeenCalledWith(1);
+    frame(0);
+    expect(onResize).toHaveBeenCalledTimes(1);
+  });
 });
 
 describe("composer behavior", () => {

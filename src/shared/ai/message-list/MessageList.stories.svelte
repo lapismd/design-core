@@ -316,6 +316,17 @@
     expect(
       canvasElement.querySelectorAll('[data-ui-part="virtual-row"]').length,
     ).toBeLessThan(35);
+    await new Promise((resolve) => setTimeout(resolve, 100));
+    const reports = Number(
+      canvas.getByLabelText("Position reports").textContent,
+    );
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Update unrelated status" }),
+    );
+    await new Promise((resolve) => setTimeout(resolve, 100));
+    expect(
+      Number(canvas.getByLabelText("Position reports").textContent),
+    ).toBeLessThanOrEqual(reports + 1);
     viewport.dispatchEvent(new WheelEvent("wheel", { deltaY: -900 }));
     viewport.scrollTop -= 900;
     viewport.dispatchEvent(new Event("scroll"));

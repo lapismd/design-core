@@ -45,6 +45,16 @@
   let paginationArmed = false;
   let lastTop = 0;
   let alive = true;
+  let priorConfiguration:
+    | {
+        key: string;
+        items: readonly T[];
+        margin: number;
+        size: number;
+        overscan: number;
+        retained: string;
+      }
+    | undefined;
   onDestroy(() => {
     alive = false;
   });
@@ -115,6 +125,24 @@
     const size = estimateSize,
       scan = overscan;
     untrack(() => {
+      const retained = JSON.stringify(extra);
+      if (
+        priorConfiguration?.key === key &&
+        priorConfiguration.items === nextItems &&
+        priorConfiguration.margin === scrollMargin &&
+        priorConfiguration.size === size &&
+        priorConfiguration.overscan === scan &&
+        priorConfiguration.retained === retained
+      )
+        return;
+      priorConfiguration = {
+        key,
+        items: nextItems,
+        margin: scrollMargin,
+        size,
+        overscan: scan,
+        retained,
+      };
       const instance = get(virtualizer);
       const viewport = layout?.getScrollContainer();
       const oldRow = instance

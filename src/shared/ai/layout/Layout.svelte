@@ -61,6 +61,7 @@
     anchorOnResize: () => scrollMode === "history",
   });
   const newMessages = createNewMessages({
+    deferResize: () => scrollMode === "history",
     isLocked: () => streamScroll.isLocked,
     onResize: () => {
       if (scrollMode === "history")

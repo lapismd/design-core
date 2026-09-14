@@ -20,6 +20,8 @@
   let loads = $state(0);
   let key = $state("channel-a");
   let delay = $state(false);
+  let statusUpdates = $state(0);
+  let positionReports = $state(0);
   function append(incoming: boolean) {
     items = [
       ...items,
@@ -41,6 +43,8 @@
     >Switch conversation</Button
   >
   <Button onclick={() => (delay = !delay)}>Toggle delayed history</Button>
+  <Button onclick={() => statusUpdates++}>Update unrelated status</Button>
+  <output aria-label="Position reports">{positionReports}</output>
   <output aria-label="History loads">{loads}</output>
   <output aria-label="Reading anchor">{position?.messageId ?? "none"}</output>
 </div>
@@ -59,10 +63,18 @@
   >
     {#snippet composer()}<span>Conversation composer</span>{/snippet}
     <MessageList
-      {items}
+      {...{
+        items,
+        overscan: 6,
+        estimateSize: 112,
+        retainRowIds: [],
+        "data-status": statusUpdates,
+        "data-position-reports": positionReports,
+      }}
       virtualize
       conversationKey={presentation.key === key ? presentation.key : key}
       onPositionChange={(next) => {
+        positionReports++;
         position = next;
         if (
           JSON.stringify(presentation.position) !== JSON.stringify(next) ||
