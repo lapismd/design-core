@@ -12,6 +12,8 @@ export type LayoutContextValue = {
   getScrollContainer: () => HTMLElement | null;
   setScrollContainer: (element: HTMLElement | null) => void;
   setContent: (element: HTMLElement | null) => void;
+  /** A virtual list owns row resize anchoring; the layout still owns scroll writes. */
+  setVirtualized?: (active: boolean) => void;
   streamScroll: StreamScrollController;
   newMessages: NewMessagesController;
 };

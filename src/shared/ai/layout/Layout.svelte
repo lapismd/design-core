@@ -56,13 +56,15 @@
 
   let messageAreaRef = $state<HTMLElement | null>(null);
   let contentRef = $state<HTMLElement | null>(null);
+  let virtualized = false;
   const streamScroll = createStreamScroll({
     anchorOnResize: () => scrollMode === "history",
   });
   const newMessages = createNewMessages({
     isLocked: () => streamScroll.isLocked,
     onResize: () => {
-      if (scrollMode === "history") streamScroll.contentResized();
+      if (scrollMode === "history")
+        streamScroll.contentResized({ restoreAnchor: !virtualized });
       else {
         streamScroll.scrollIfLocked();
         streamScroll.update();
@@ -77,6 +79,8 @@
 
   let pendingJump = false;
   let jumpVersion = 0;
+  let priorConversationKey: string | undefined;
+  let conversationInitialized = false;
   let jumpError = $state<string | undefined>();
   let documentActive = $state(true);
   const unread = $derived(controlledNewMessages ?? newMessages.hasNewMessages);
@@ -123,6 +127,9 @@
   $effect(() => {
     const key = conversationKey;
     untrack(() => {
+      if (conversationInitialized && key === priorConversationKey) return;
+      conversationInitialized = true;
+      priorConversationKey = key;
       jumpVersion++;
       pendingJump = false;
       if (key === undefined) return;
@@ -161,6 +168,9 @@
       streamScroll.attach(element);
     },
     setContent,
+    setVirtualized(active) {
+      virtualized = active;
+    },
     streamScroll,
     newMessages,
   });

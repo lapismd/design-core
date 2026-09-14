@@ -193,6 +193,30 @@ describe("createStreamScroll", () => {
     element.emitScroll();
     expect(scroll.isLocked).toBe(false);
   });
+
+  it("retains user position intent when a virtual measurement temporarily reaches the old bottom", () => {
+    const element = fakeElement();
+    const scroll = createStreamScroll({
+      anchorOnResize: true,
+      requestAnimationFrame: () => 1,
+    });
+    scroll.attach(element);
+    element.scrollTop = 200;
+    element.emitScroll();
+    scroll.scrollToOffset(400, true);
+    element.emitScroll();
+    expect(scroll.isLocked).toBe(false);
+    Object.defineProperty(element, "scrollHeight", {
+      value: 900,
+      configurable: true,
+    });
+    scroll.contentResized({ restoreAnchor: false });
+    expect(element.scrollTop).toBe(400);
+    expect(scroll.isLocked).toBe(false);
+    element.scrollTop = 700;
+    element.emitScroll();
+    expect(scroll.isLocked).toBe(true);
+  });
 });
 
 describe("createNewMessages", () => {

@@ -316,6 +316,7 @@
     expect(
       canvasElement.querySelectorAll('[data-ui-part="virtual-row"]').length,
     ).toBeLessThan(35);
+    viewport.dispatchEvent(new WheelEvent("wheel", { deltaY: -900 }));
     viewport.scrollTop -= 900;
     viewport.dispatchEvent(new Event("scroll"));
     await waitFor(() =>

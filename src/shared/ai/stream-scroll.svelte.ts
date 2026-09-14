@@ -23,7 +23,7 @@ export type StreamScrollController = {
   readonly positionRevision?: number;
   scrollToOffset?: (offset: number, preserveIntent?: boolean) => void;
   captureAnchor?: () => () => void;
-  contentResized?: () => void;
+  contentResized?: (options?: { restoreAnchor?: boolean }) => void;
   readonly isScrolledUp: boolean;
   readonly isLocked: boolean;
   attach: (element: HTMLElement | null) => void;
@@ -91,6 +91,7 @@ export function createStreamScroll(
   let positionRevision = 0;
   let restoreAnchor: (() => void) | undefined;
   let pendingUserScroll = false;
+  let adjustedScrollTop: number | undefined;
   const anchorsEnabled = () =>
     typeof anchorOnResize === "function" ? anchorOnResize() : anchorOnResize;
   let isLocked = $state(true);
@@ -211,12 +212,22 @@ export function createStreamScroll(
   }
 
   function handleScroll(): void {
+    if (
+      adjustedScrollTop !== undefined &&
+      element?.scrollTop === adjustedScrollTop
+    ) {
+      adjustedScrollTop = undefined;
+      isScrolledUp = distanceFromBottom() > buttonThreshold;
+      return;
+    }
+    adjustedScrollTop = undefined;
     pendingUserScroll = false;
     update();
     restoreAnchor = !isLocked && anchorsEnabled() ? captureAnchor() : undefined;
   }
 
   function handleUserScrollIntent(): void {
+    adjustedScrollTop = undefined;
     positionRevision++;
     if (anchorsEnabled()) {
       pendingUserScroll = true;
@@ -279,6 +290,7 @@ export function createStreamScroll(
     stopAnimation();
     positionRevision++;
     pendingUserScroll = false;
+    adjustedScrollTop = undefined;
     restoreAnchor = undefined;
     element = null;
   }
@@ -288,17 +300,28 @@ export function createStreamScroll(
       return positionRevision;
     },
     captureAnchor,
-    contentResized() {
-      if (isLocked) jumpToBottom();
-      else if (anchorsEnabled()) restoreAnchor?.();
-      update();
+    contentResized({ restoreAnchor: shouldRestore = true } = {}) {
+      if (isLocked) {
+        jumpToBottom();
+        update();
+      } else {
+        if (shouldRestore && anchorsEnabled()) restoreAnchor?.();
+        // Geometry changes cannot acknowledge that the reader returned to latest.
+        isLocked = false;
+        isScrolledUp = distanceFromBottom() > buttonThreshold;
+      }
     },
     scrollToOffset(offset, preserveIntent = false) {
       if (!element) return;
       if (!preserveIntent) positionRevision++;
       stopAnimation();
       element.scrollTop = Math.max(0, offset);
-      update();
+      if (preserveIntent) {
+        // A measurement correction can clamp against the previous DOM height.
+        // It must not relock following before the resized rows have rendered.
+        adjustedScrollTop = element.scrollTop;
+        isScrolledUp = distanceFromBottom() > buttonThreshold;
+      } else update();
     },
     get isScrolledUp() {
       return isScrolledUp;

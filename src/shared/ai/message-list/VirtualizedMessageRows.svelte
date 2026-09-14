@@ -4,7 +4,7 @@
     defaultRangeExtractor,
   } from "@tanstack/svelte-virtual";
   import { get } from "svelte/store";
-  import { tick, untrack, type Snippet } from "svelte";
+  import { onDestroy, tick, untrack, type Snippet } from "svelte";
   import { useLayoutContext } from "../context.svelte.js";
   import type { MessageListPosition } from "./position.js";
 
@@ -34,6 +34,8 @@
     onLoadOlder?: () => Promise<void>;
   } = $props();
   const layout = useLayoutContext();
+  const stableKey = $derived(conversationKey);
+  const stableItems = $derived(items);
   let virtualRef = $state<HTMLDivElement | null>(null);
   let activeRowId = $state<string>();
   let margin = $state(0);
@@ -42,16 +44,26 @@
   let priorItems: readonly T[] = [];
   let paginationArmed = false;
   let lastTop = 0;
+  let alive = true;
+  onDestroy(() => {
+    alive = false;
+  });
   const virtualizer = createVirtualizer<HTMLElement, HTMLDivElement>({
     count: 0,
     getScrollElement: () => layout?.getScrollContainer() ?? null,
     estimateSize: () => estimateSize,
     enabled: false,
+    useAnimationFrameWithResizeObserver: true,
     scrollToFn: (offset, options) =>
       layout?.streamScroll.scrollToOffset?.(
         offset + (options.adjustments ?? 0),
         true,
       ),
+  });
+
+  $effect(() => {
+    layout?.setVirtualized?.(true);
+    return () => layout?.setVirtualized?.(false);
   });
 
   function readPosition(): MessageListPosition | undefined {
@@ -92,8 +104,8 @@
 
   // Inputs alone invalidate the virtualizer. Its returned ranges must never restart this effect.
   $effect(() => {
-    const nextItems = items,
-      key = conversationKey,
+    const nextItems = stableItems,
+      key = stableKey,
       enabled = true,
       scrollMargin = margin;
     const keep = [...retainRowIds, ...(activeRowId ? [activeRowId] : [])];
@@ -139,6 +151,7 @@
           ),
       });
       void tick().then(() => {
+        if (!alive) return;
         if (
           key !== conversationKey ||
           revision !== layout?.streamScroll.positionRevision
@@ -168,7 +181,10 @@
               "start",
             )?.[0];
             if (start !== undefined)
-              layout?.streamScroll.scrollToOffset?.(start + position.offset);
+              layout?.streamScroll.scrollToOffset?.(
+                start + position.offset,
+                Boolean(preserve),
+              );
           } else if (!sameKey || layout?.streamScroll.isLocked)
             layout?.streamScroll.scrollIfLocked();
         }
@@ -226,7 +242,6 @@
       passive: true,
     });
     return () => {
-      reportPosition();
       viewport.removeEventListener("scroll", onScroll);
       viewport.removeEventListener("focusin", rememberInteraction);
       viewport.removeEventListener("pointerdown", rememberInteraction);

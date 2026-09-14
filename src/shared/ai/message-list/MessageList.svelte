@@ -73,6 +73,8 @@
   let loadError = $state<string | null>(null);
   let arrivalKey: string | undefined;
   let previousMessageId: string | undefined;
+  let historyKey: string | undefined;
+  let historyInitialized = false;
 
   setListContext({ getDensity: () => density });
 
@@ -94,7 +96,10 @@
   });
 
   $effect(() => {
-    void conversationKey;
+    const key = conversationKey;
+    if (historyInitialized && key === historyKey) return;
+    historyInitialized = true;
+    historyKey = key;
     loadVersion++;
     loadingOlder = false;
     loadError = null;

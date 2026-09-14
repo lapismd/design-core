@@ -8,12 +8,15 @@
   let items = $state(
     Array.from({ length: 1000 }, (_, index) => ({
       id: `message-${index}`,
-      text: `Message ${index}: Cached conversation content.`,
+      text: `Message ${index}: ${"Variable-height cached conversation content. ".repeat((index % 7) + 1)}`,
     })),
   );
   let unread = $state(false);
   let expanded = $state(false);
   let position = $state<MessageListPosition>();
+  let presentation = $state<{ key: string; position?: MessageListPosition }>({
+    key: "channel-a",
+  });
   let loads = $state(0);
   let key = $state("channel-a");
   let delay = $state(false);
@@ -43,11 +46,12 @@
 </div>
 <div
   data-story="virtual-history-frame"
-  style="height: 420px; max-width: 640px; display: flex; flex-direction: column;"
+  style:width={expanded ? "360px" : "640px"}
+  style="height: 420px; max-width: 100%; display: flex; flex-direction: column;"
 >
   <Layout
     scrollMode="history"
-    conversationKey={key}
+    conversationKey={presentation.key === key ? presentation.key : key}
     hasNewMessages={unread}
     onViewportChange={({ atLatest, active }) => {
       if (atLatest && active) unread = false;
@@ -57,8 +61,15 @@
     <MessageList
       {items}
       virtualize
-      conversationKey={key}
-      onPositionChange={(next) => (position = next)}
+      conversationKey={presentation.key === key ? presentation.key : key}
+      onPositionChange={(next) => {
+        position = next;
+        if (
+          JSON.stringify(presentation.position) !== JSON.stringify(next) ||
+          presentation.key !== key
+        )
+          presentation = { key, position: next };
+      }}
       scrollToTopAction={async () => {
         loads++;
         if (delay) await new Promise((resolve) => setTimeout(resolve, 250));
