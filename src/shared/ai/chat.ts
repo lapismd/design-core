@@ -28,6 +28,7 @@ export {
   type ScrollBehavior,
   type ScrollToBottomOptions,
   type StreamScrollController,
+  type PositionedStreamScrollController,
   type StreamScrollOptions,
 } from "./stream-scroll.svelte.js";
 export {
@@ -77,3 +78,5 @@ export type {
   ToolCallStatus,
 } from "./types.js";
 export type { ComposerToken as ComposerTokenValue } from "./types.js";
+
+export type { MessageListPosition } from "./message-list/position.js";

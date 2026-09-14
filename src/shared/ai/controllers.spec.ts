@@ -9,7 +9,10 @@ import {
 } from "./composer-tokens.js";
 import { createNewMessages } from "./new-messages.svelte.js";
 import { createSpeechRecognition } from "./speech-recognition.svelte.js";
-import { createStreamScroll } from "./stream-scroll.svelte.js";
+import {
+  createStreamScroll,
+  type StreamScrollController,
+} from "./stream-scroll.svelte.js";
 import {
   createTriggerSearch,
   positionComposerTriggerMenu,
@@ -124,6 +127,72 @@ describe("createStreamScroll", () => {
     element.emitWheel();
     expect(cancelAnimationFrame).toHaveBeenCalledOnce();
   });
+  it("accepts an existing custom controller without the optional history extensions", () => {
+    const noop = () => {};
+    const legacy: StreamScrollController = {
+      isScrolledUp: false,
+      isLocked: true,
+      attach: noop,
+      cleanup: noop,
+      update: noop,
+      scrollToBottom: noop,
+      scrollToMessage: noop,
+      scrollToLastMessage: noop,
+      scrollIfLocked: noop,
+      lock: noop,
+      unlock: noop,
+    };
+    expect(legacy.isLocked).toBe(true);
+  });
+
+  it("does not inspect message geometry for default streaming consumers", () => {
+    const querySelectorAll = vi.fn(
+      () => [] as unknown as NodeListOf<HTMLElement>,
+    );
+    const element = fakeElement({ querySelectorAll });
+    const scroll = createStreamScroll({ requestAnimationFrame: () => 1 });
+    scroll.attach(element);
+    element.scrollTop = 100;
+    element.emitScroll();
+    expect(scroll.isLocked).toBe(false);
+    expect(querySelectorAll).not.toHaveBeenCalled();
+  });
+
+  it("does not let a delayed prepend undo Jump to latest", () => {
+    const element = fakeElement();
+    const scroll = createStreamScroll({
+      anchorOnResize: true,
+      requestAnimationFrame: () => 1,
+    });
+    scroll.attach(element);
+    element.scrollTop = 100;
+    element.emitScroll();
+    const restore = scroll.captureAnchor();
+    Object.defineProperty(element, "scrollHeight", {
+      value: 800,
+      configurable: true,
+    });
+    scroll.scrollToBottom({ behavior: "instant" });
+    restore();
+    expect(element.scrollTop).toBe(600);
+    expect(scroll.isLocked).toBe(true);
+  });
+
+  it("does not relock on resize between user intent and the actual scroll", () => {
+    const element = fakeElement();
+    const scroll = createStreamScroll({
+      anchorOnResize: true,
+      requestAnimationFrame: () => 1,
+    });
+    scroll.attach(element);
+    scroll.scrollToBottom({ behavior: "instant" });
+    element.emitWheel();
+    scroll.contentResized();
+    expect(scroll.isLocked).toBe(false);
+    element.scrollTop = 200;
+    element.emitScroll();
+    expect(scroll.isLocked).toBe(false);
+  });
 });
 
 describe("createNewMessages", () => {
@@ -137,7 +206,7 @@ describe("createNewMessages", () => {
     expect(controller.hasNewMessages).toBe(true);
   });
 
-  it("ignores the initial resize observation", () => {
+  it("uses every resize for layout without inferring message arrival", () => {
     let resize: ((entries: ResizeObserverEntry[]) => void) | undefined;
     const controller = createNewMessages({
       isLocked: () => false,
@@ -151,6 +220,14 @@ describe("createNewMessages", () => {
     resize?.([{ target: element } as unknown as ResizeObserverEntry]);
     expect(controller.hasNewMessages).toBe(false);
     resize?.([{ target: element } as unknown as ResizeObserverEntry]);
+    expect(controller.hasNewMessages).toBe(false);
+  });
+  it("resets notification and deduplication state when detached", () => {
+    const controller = createNewMessages({ isLocked: () => false });
+    controller.notify("message");
+    controller.cleanup();
+    expect(controller.hasNewMessages).toBe(false);
+    controller.notify("message");
     expect(controller.hasNewMessages).toBe(true);
   });
 });

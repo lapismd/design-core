@@ -134,6 +134,7 @@
     "@lezer/highlight": "^1.2.3",
     "@lezer/lr": "^1.4.2",
     "@lucide/svelte": "^1.21.0",
+    "@tanstack/svelte-virtual": "^3.13.39",
     "@types/luxon": "^3.4.2",
     "bits-ui": "^2.18.1",
     "chrono-node": "^2.10.1",

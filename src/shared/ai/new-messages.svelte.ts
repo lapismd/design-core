@@ -19,7 +19,6 @@ export function createNewMessages(
 ): NewMessagesController {
   let element: HTMLElement | null = null;
   let observer: Pick<ResizeObserver, "observe" | "disconnect"> | null = null;
-  let initialized = false;
   let hasNewMessages = $state(false);
   const seenMessageIds = new Set<string>();
 
@@ -44,11 +43,7 @@ export function createNewMessages(
 
     observer = makeObserver((entries) => {
       if (!entries.some((entry) => entry.target === element)) return;
-      if (!initialized) {
-        initialized = true;
-        return;
-      }
-      markNew();
+      options.onResize?.();
     });
     observer?.observe(element);
   }
@@ -57,7 +52,8 @@ export function createNewMessages(
     observer?.disconnect();
     observer = null;
     element = null;
-    initialized = false;
+    hasNewMessages = false;
+    seenMessageIds.clear();
   }
 
   return {

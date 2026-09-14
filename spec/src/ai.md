@@ -43,14 +43,14 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 
 ## DC-AI-002 — Layout
 
-**Requirement.** The Layout family MUST compose a bounded chat surface with header, message, composer, and scroll regions.
+**Requirement.** The Layout family MUST compose a bounded chat surface with one scroll-position owner. Consumers MAY supply controlled unread state, conversation identity and saved reading position. Geometry observation MUST only maintain layout and anchoring; it MUST NOT imply message arrival.
 
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/ai/chat`.
-- The generated ScrollArea content wrapper MUST preserve the bounded viewport height.
-- An empty conversation MUST fill the message area while the composer remains docked at the bottom.
-- The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- The default `scrollMode="stream"` MUST retain existing streaming auto-follow, spring navigation and snippet composition, while `scrollMode="history"` opts in to anchored cached-history navigation.
+- The generated ScrollArea wrapper and empty state MUST preserve the bounded viewport height while the composer remains docked.
+- Manual arrival at the latest content MUST dismiss generic arrival notifications; failed or pending jumps MUST NOT acknowledge controlled unread content, and switching identity MUST reset transient state.
 
 ## DC-AI-003 — Layout Scroll Button
 
@@ -64,12 +64,14 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 
 ## DC-AI-004 — Message List
 
-**Requirement.** The Message List family MUST render ordered message content with stable scrolling and consumer-owned records.
+**Requirement.** The Message List family MUST render ordered message content with stable scrolling and consumer-owned records. Opt-in virtualization MUST retain stable row keys and active interaction anchors while bounding mounted rows; existing snippet consumers MUST remain compatible.
 
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/ai/chat`.
-- The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- Existing children, density, gap, streaming, empty-state and manual Load older messages APIs MUST retain their defaults without instantiating a virtualizer; `virtualize={true}` opts in to row rendering, single-flight anchored paging and the guarded 600 px loading boundary.
+- User intent and Jump to latest MUST invalidate pending positioning work, and accessible Load older messages and Retry controls MUST remain available.
+- Explicit message-arrival notifications, controlled unread state and geometry observation MUST remain separate.
 
 ## DC-AI-005 — Message
 

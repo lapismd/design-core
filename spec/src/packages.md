@@ -57,6 +57,8 @@ The root package manifest defines the supported import boundaries. Family barrel
 
 ### Acceptance details
 
+- Opt-in message virtualization MUST declare `@tanstack/svelte-virtual` as a normal runtime dependency and export its consumer-facing position contract through the stable chat entry point without requiring a consumer migration.
+
 - The export must resolve to tracked source or the documented workspace build output.
 - Package checks must fail when the mapped entry point is stale or missing.
 
