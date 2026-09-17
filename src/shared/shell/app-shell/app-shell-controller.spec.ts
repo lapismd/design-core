@@ -241,6 +241,120 @@ describe("AppShellController", () => {
     expect(outerLeft.state).toBe("closed");
   });
 
+  it("projects each constrained same-side panel independently", () => {
+    const controller = new AppShellController();
+    const inspector = controller.createSidebar("inspector", "right", {
+      width: 320,
+    });
+    const overview = controller.createSidebar("overview", "right", {
+      width: 224,
+    });
+    controller.mobile.registerPanel({
+      id: "inspector",
+      side: "right",
+      label: "Inspector",
+      kind: "sidebar",
+      constraintPriority: 0,
+      constrainedPresentation: "replace-main",
+    });
+    controller.mobile.registerPanel({
+      id: "overview",
+      side: "right",
+      label: "Overview",
+      kind: "sidebar",
+      constraintPriority: 100,
+      constrainedPresentation: "preview",
+    });
+
+    controller.setConstrainedPanelIds(["inspector"]);
+
+    expect(controller.isPanelConstrained("inspector")).toBe(true);
+    expect(controller.isPanelConstrained("overview")).toBe(false);
+    expect(controller.getConstrainedPresentation("inspector")).toBe(
+      "replace-main",
+    );
+    expect(controller.mainOccluded).toBe(true);
+    expect(controller.getLayout().panels).toMatchObject({
+      inspector: { side: "right", width: 320 },
+      overview: { side: "right", width: 224 },
+    });
+
+    inspector.close();
+    expect(controller.mainOccluded).toBe(false);
+    overview.close();
+    controller.setConstrainedPanelIds(["overview"]);
+    controller.setPanelDesktopPreviewed("overview", true);
+    expect(controller.isPanelDesktopPreviewed("overview")).toBe(true);
+    controller.setConstrainedPanelIds([]);
+    expect(controller.isPanelDesktopPreviewed("overview")).toBe(false);
+  });
+
+  it("keeps structural coverage and suspension transient", () => {
+    const controller = new AppShellController();
+    const overview = controller.createSidebar("overview", "right", {
+      width: 248,
+    });
+    const before = controller.getLayout();
+    const token = Symbol("layer");
+
+    controller.activateSurfaceLayer({
+      token,
+      coverPanelIds: ["right"],
+      suspendPanelIds: ["overview"],
+    });
+
+    expect(controller.mainOccluded).toBe(true);
+    expect(controller.isPanelCovered("right")).toBe(true);
+    expect(controller.isPanelSuspended("overview")).toBe(true);
+    expect(controller.getLayout()).toEqual(before);
+    expect(overview.state).toBe("expanded");
+    expect(() =>
+      controller.activateSurfaceLayer({
+        token: Symbol("second-layer"),
+        coverPanelIds: [],
+        suspendPanelIds: [],
+      }),
+    ).toThrow("AppShell.Root supports one active SurfaceLayer.");
+
+    controller.deactivateSurfaceLayer(token);
+    expect(controller.mainOccluded).toBe(false);
+    expect(controller.isPanelCovered("right")).toBe(false);
+    expect(controller.isPanelSuspended("overview")).toBe(false);
+    expect(controller.getLayout()).toEqual(before);
+  });
+
+  it("cleans transient projection and geometry registration with a panel", () => {
+    const controller = new AppShellController();
+    const panel = new AppShellSidebarController("right");
+    const unregister = controller.registerSidebar("activity", panel);
+    const attributes = new Map<string, string>();
+    const element = {
+      dataset: {},
+      hidden: false,
+      inert: false,
+      getAttribute: (name: string) => attributes.get(name) ?? null,
+      hasAttribute: (name: string) => attributes.has(name),
+      setAttribute: (name: string, value: string) =>
+        attributes.set(name, value),
+      removeAttribute: (name: string) => attributes.delete(name),
+      toggleAttribute: (name: string, force?: boolean) => {
+        if (force ?? !attributes.has(name)) attributes.set(name, "");
+        else attributes.delete(name);
+      },
+    } as unknown as HTMLElement;
+    controller.setPanelElement("activity", element);
+    controller.setConstrainedPanelIds(["activity"]);
+    controller.setPanelDesktopPreviewed("activity", true);
+
+    expect(controller.getPanelElement("activity")).toBe(element);
+    unregister();
+
+    expect(controller.getPanel("activity")).toBeUndefined();
+    expect(controller.getPanelElement("activity")).toBeNull();
+    expect(controller.isPanelConstrained("activity")).toBe(false);
+    expect(controller.isPanelDesktopPreviewed("activity")).toBe(false);
+  });
+
   it("restores and saves every registered panel through the layout adapter", async () => {
     const persisted: AppShellLayoutV1 = {
       version: APP_SHELL_LAYOUT_VERSION,

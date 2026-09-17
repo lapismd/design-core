@@ -21,7 +21,7 @@ Diff contracts keep change-set listing, file comparison, and merge presentation 
 
 ### Acceptance details
 
-- The public boundary is Diff layer.
+- The public boundary is Diff layer and MUST remain consumable under strict indexed-access and exact-optional TypeScript settings.
 - Diff production sources MUST import only shadcn primitives and Diff-owned modules.
 - Hosts MUST supply file contents, selection persistence, and merge resolution policy.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
@@ -43,9 +43,9 @@ Diff contracts keep change-set listing, file comparison, and merge presentation 
 
 ### Acceptance details
 
-- The public boundary is `@lapismd/design-core/diff`.
-- Unchanged context MUST collapse with incremental expand controls.
-- Line identity MUST be exposed through `data-diff-line-*` or a `lineAccessory` snippet, and split gutters MUST show old-file numbers on the left and new-file numbers on the right, each aligned with its row.
+- The public boundary is `@lapismd/design-core/diff`, and unchanged context MUST collapse with incremental expand controls.
+- Line identity MUST be exposed through `data-diff-line-*`, a `lineAccessory` snippet, and a host-owned `lineAnnotation` seam after unified rows; line accessories MUST occupy the number gutter and reveal on row hover or keyboard focus, while split gutters MUST show old-file numbers on the left and new-file numbers on the right, each aligned with its row.
+- Multi-file composition MUST expose controlled selection and collapse state, host-owned header leading and trailing content, optional sticky headers, and repeatable path scroll requests without owning persistence.
 - The catalog MUST demonstrate unified, split, collapsed-context, binary, empty, multi-file composer, and wrap-text states without introducing a second runtime contract.
 
 ## DC-DIFF-004 — Merge Editor

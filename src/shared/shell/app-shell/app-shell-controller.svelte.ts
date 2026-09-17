@@ -14,6 +14,7 @@ export type AppShellDisplayMode = "auto" | "desktop" | "mobile";
 export type AppShellResolvedDisplayMode = Exclude<AppShellDisplayMode, "auto">;
 export type AppShellMobileStage = "left" | "main" | "right";
 export type AppShellMobilePanelKind = "sidebar" | "body-sidebar";
+export type AppShellConstrainedPresentation = "preview" | "replace-main";
 
 export interface AppShellMobilePanelRegistration {
   /** Stable id used by mobile selectors and targeted toggle actions. */
@@ -26,6 +27,19 @@ export interface AppShellMobilePanelRegistration {
   readonly kind: AppShellMobilePanelKind;
   /** Current panel landmark, when mounted in a browser. */
   readonly element?: HTMLElement | null;
+  /** Lower values leave inline desktop flow before higher values. */
+  readonly constraintPriority?: number;
+  /** Presentation used when protected main width displaces this panel. */
+  readonly constrainedPresentation?: AppShellConstrainedPresentation;
+}
+
+export interface AppShellSurfaceLayerRegistration {
+  /** Unique mounted layer owner. Only one may be active per root. */
+  readonly token: symbol;
+  /** Sidebar ids included in the covered, inert surface. */
+  readonly coverPanelIds: readonly string[];
+  /** Sidebar ids removed transiently without changing durable layout. */
+  readonly suspendPanelIds: readonly string[];
 }
 
 export const APP_SHELL_DEFAULT_SIDEBAR_WIDTH = 288;
@@ -171,14 +185,17 @@ export class AppShellMobileController {
     if (returnFocus) this.#returnFocus = returnFocus;
     this.#rootElement?.focus({ preventScroll: true });
     this.stage = side;
-    queueMicrotask(() => this.activePanel(side)?.element?.focus());
+    queueMicrotask(() =>
+      this.activePanel(side)?.element?.focus({ preventScroll: true }),
+    );
   }
 
   showMain(restoreFocus = true): void {
     const focusTarget = this.#returnFocus ?? this.#mainElement;
     this.#rootElement?.focus({ preventScroll: true });
     this.stage = "main";
-    if (restoreFocus) queueMicrotask(() => focusTarget?.focus());
+    if (restoreFocus)
+      queueMicrotask(() => focusTarget?.focus({ preventScroll: true }));
     this.#returnFocus = null;
   }
 
@@ -208,9 +225,19 @@ export class AppShellMobileController {
     this.#mainElement = element;
   }
 
+  /** @internal Return the mounted main landmark. */
+  getMainElement(): HTMLElement | null {
+    return this.#mainElement;
+  }
+
   /** @internal Register the root as a safe focus waypoint between lanes. */
   setRootElement(element: HTMLElement | null): void {
     this.#rootElement = element;
+  }
+
+  /** @internal Return the mounted shell root. */
+  getRootElement(): HTMLElement | null {
+    return this.#rootElement;
   }
 
   #ensureActivePanel(side: AppShellSide): void {
@@ -231,6 +258,7 @@ type AppShellSidebarLayoutChangeSource = Exclude<
 type AppShellSidebarLayoutChangeListener = (
   source: AppShellSidebarLayoutChangeSource,
 ) => void;
+type AppShellProjectionChangeListener = () => void;
 
 /** Reactive state for one side of an App Shell. */
 export class AppShellSidebarController {
@@ -449,6 +477,11 @@ export class AppShellController {
   readonly right: AppShellSidebarController;
   readonly mobile = new AppShellMobileController();
   layoutReady = $state(false);
+  constrainedPanelIds = $state<string[]>([]);
+  desktopPreviewPanelIds = $state<string[]>([]);
+  activeSurfaceLayer = $state<AppShellSurfaceLayerRegistration | null>(null);
+  projectionVersion = $state(0);
+  panelElementsVersion = $state(0);
 
   readonly #persistence: AppShellLayoutPersistence | undefined;
   readonly #saveDebounceMs: number;
@@ -458,10 +491,14 @@ export class AppShellController {
   readonly #panels = new Map<string, AppShellSidebarController>();
   readonly #panelIds = new Map<AppShellSidebarController, string>();
   readonly #panelDisposers = new Map<string, () => void>();
+  readonly #panelElements = new Map<string, HTMLElement>();
+  readonly #projectionChangeListeners =
+    new Set<AppShellProjectionChangeListener>();
   #restoredPanels = new Map<string, AppShellSidebarLayout>();
   #hydrating = false;
   #restorePromise: Promise<void> | null = null;
   #saveTimer: ReturnType<typeof setTimeout> | null = null;
+  #projectionFrame: number | null = null;
   #pendingSaveEvent: AppShellLayoutChangeEvent | null = null;
   #saveChain: Promise<void> = Promise.resolve();
 
@@ -522,6 +559,133 @@ export class AppShellController {
     return this.#panelIds.get(sidebar);
   }
 
+  /** Whether protected desktop width has displaced this panel from inline flow. */
+  isPanelConstrained(id: string | undefined): boolean {
+    return id !== undefined && this.constrainedPanelIds.includes(id);
+  }
+
+  /** Return the mounted panel's configured constrained presentation. */
+  getConstrainedPresentation(
+    id: string | undefined,
+  ): AppShellConstrainedPresentation {
+    if (!id) return "preview";
+    return (
+      this.mobile.panels.find((panel) => panel.id === id)
+        ?.constrainedPresentation ?? "preview"
+    );
+  }
+
+  /** Whether a constrained preview panel is currently presented. */
+  isPanelDesktopPreviewed(id: string | undefined): boolean {
+    return id !== undefined && this.desktopPreviewPanelIds.includes(id);
+  }
+
+  /** Present or dismiss one constrained desktop preview without durable changes. */
+  setPanelDesktopPreviewed(id: string, previewed: boolean): void {
+    if (!this.isPanelConstrained(id)) previewed = false;
+    const current = this.desktopPreviewPanelIds.includes(id);
+    if (current === previewed) return;
+    this.desktopPreviewPanelIds = previewed
+      ? [...this.desktopPreviewPanelIds, id]
+      : this.desktopPreviewPanelIds.filter((candidate) => candidate !== id);
+    this.#projectionChanged();
+  }
+
+  /** @internal Install the current constrained projection from AppShell.Root. */
+  setConstrainedPanelIds(ids: readonly string[]): void {
+    const next = [...new Set(ids)];
+    if (
+      next.length === this.constrainedPanelIds.length &&
+      next.every((id, index) => this.constrainedPanelIds[index] === id)
+    ) {
+      return;
+    }
+    this.constrainedPanelIds = next;
+    this.desktopPreviewPanelIds = this.desktopPreviewPanelIds.filter((id) =>
+      next.includes(id),
+    );
+    this.#projectionChanged();
+  }
+
+  /** @internal Subscribe mounted shell parts to transient projection changes. */
+  onProjectionChange(listener: AppShellProjectionChangeListener): () => void {
+    this.#projectionChangeListeners.add(listener);
+    return () => this.#projectionChangeListeners.delete(listener);
+  }
+
+  /** @internal Register a mounted sidebar landmark for shell geometry. */
+  setPanelElement(id: string | undefined, element: HTMLElement | null): void {
+    if (!id) return;
+    if (element) {
+      if (this.#panelElements.get(id) === element) return;
+      this.#panelElements.set(id, element);
+      this.#syncPanelProjection(id);
+    } else {
+      if (!this.#panelElements.delete(id)) return;
+    }
+    this.panelElementsVersion += 1;
+  }
+
+  /** @internal Return a mounted sidebar landmark. */
+  getPanelElement(id: string): HTMLElement | null {
+    void this.panelElementsVersion;
+    return this.#panelElements.get(id) ?? null;
+  }
+
+  /** @internal Reconcile every mounted panel with durable and transient state. */
+  syncPanelProjections(): void {
+    for (const id of this.#panelElements.keys()) {
+      this.#syncPanelProjection(id);
+    }
+  }
+
+  /** Whether the active structural layer temporarily removes this panel. */
+  isPanelSuspended(id: string | undefined): boolean {
+    return (
+      id !== undefined &&
+      (this.activeSurfaceLayer?.suspendPanelIds.includes(id) ?? false)
+    );
+  }
+
+  /** Whether the active structural layer covers this mounted panel. */
+  isPanelCovered(id: string | undefined): boolean {
+    return (
+      id !== undefined &&
+      (this.activeSurfaceLayer?.coverPanelIds.includes(id) ?? false)
+    );
+  }
+
+  /** Whether a structural layer or replacement panel currently covers main. */
+  get mainOccluded(): boolean {
+    if (this.activeSurfaceLayer) return true;
+    return this.constrainedPanelIds.some((id) => {
+      const panel = this.getPanel(id);
+      return (
+        panel !== undefined &&
+        !panel.closed &&
+        !this.isPanelSuspended(id) &&
+        this.getConstrainedPresentation(id) === "replace-main"
+      );
+    });
+  }
+
+  /** @internal Activate the root's single structural surface layer. */
+  activateSurfaceLayer(registration: AppShellSurfaceLayerRegistration): void {
+    const current = this.activeSurfaceLayer;
+    if (current && current.token !== registration.token) {
+      throw new Error("AppShell.Root supports one active SurfaceLayer.");
+    }
+    this.activeSurfaceLayer = registration;
+    this.#projectionChanged();
+  }
+
+  /** @internal Remove a mounted structural surface layer. */
+  deactivateSurfaceLayer(token: symbol): void {
+    if (this.activeSurfaceLayer?.token !== token) return;
+    this.activeSurfaceLayer = null;
+    this.#projectionChanged();
+  }
+
   /** Create and register an independently persisted same-side panel. */
   createSidebar(
     id: string,
@@ -563,6 +727,15 @@ export class AppShellController {
       this.#panelDisposers.delete(panelId);
       this.#panels.delete(panelId);
       this.#panelIds.delete(sidebar);
+      this.#panelElements.delete(panelId);
+      this.constrainedPanelIds = this.constrainedPanelIds.filter(
+        (id) => id !== panelId,
+      );
+      this.desktopPreviewPanelIds = this.desktopPreviewPanelIds.filter(
+        (id) => id !== panelId,
+      );
+      this.panelElementsVersion += 1;
+      this.#projectionChanged();
       this.#requestSave({ source: "unregister", panelId });
     };
   }
@@ -619,6 +792,18 @@ export class AppShellController {
     this.#panelDisposers.clear();
     this.#panels.clear();
     this.#panelIds.clear();
+    this.#panelElements.clear();
+    this.constrainedPanelIds = [];
+    this.desktopPreviewPanelIds = [];
+    this.activeSurfaceLayer = null;
+    this.#projectionChangeListeners.clear();
+    if (
+      this.#projectionFrame !== null &&
+      typeof cancelAnimationFrame !== "undefined"
+    ) {
+      cancelAnimationFrame(this.#projectionFrame);
+      this.#projectionFrame = null;
+    }
   }
 
   #attachPanel(id: string, sidebar: AppShellSidebarController): void {
@@ -627,6 +812,7 @@ export class AppShellController {
     this.#panelDisposers.set(
       id,
       sidebar.onLayoutChange((source) => {
+        this.#projectionChanged();
         this.#requestSave({ source, panelId: id });
       }),
     );
@@ -658,6 +844,64 @@ export class AppShellController {
       this.#saveTimer = null;
       void this.flushSave();
     }, this.#saveDebounceMs);
+  }
+
+  #projectionChanged(): void {
+    this.projectionVersion += 1;
+    for (const listener of this.#projectionChangeListeners) listener();
+    const sync = () => {
+      this.#projectionFrame = null;
+      this.syncPanelProjections();
+    };
+    if (typeof requestAnimationFrame === "undefined") {
+      queueMicrotask(sync);
+      return;
+    }
+    if (this.#projectionFrame !== null)
+      cancelAnimationFrame(this.#projectionFrame);
+    this.#projectionFrame = requestAnimationFrame(sync);
+  }
+
+  #syncPanelProjection(id: string): void {
+    const element = this.#panelElements.get(id);
+    const sidebar = this.#panels.get(id);
+    if (!element || !sidebar) return;
+    const suspended = this.isPanelSuspended(id);
+    const covered = suspended || this.isPanelCovered(id);
+    const constrained = this.isPanelConstrained(id);
+    const mobile = this.mobile.resolvedMode === "mobile";
+    const presentation = this.getConstrainedPresentation(id);
+    const previewed = this.isPanelDesktopPreviewed(id) || sidebar.previewed;
+    const consumerAriaHidden = element.getAttribute(
+      "data-consumer-aria-hidden",
+    );
+
+    element.toggleAttribute("data-suspended", suspended);
+    element.toggleAttribute("data-desktop-constrained", constrained);
+    element.dataset.state = sidebar.state;
+    element.dataset.presentation = mobile
+      ? "mobile"
+      : constrained
+        ? previewed
+          ? "overlay"
+          : presentation === "replace-main"
+            ? "replace-main"
+            : "inline"
+        : "inline";
+    element.hidden =
+      element.hasAttribute("data-consumer-hidden") ||
+      suspended ||
+      (!mobile &&
+        (sidebar.closed ||
+          (constrained && presentation === "preview" && !previewed)));
+    element.inert = element.hasAttribute("data-consumer-inert") || covered;
+    if (covered || consumerAriaHidden === "true") {
+      element.setAttribute("aria-hidden", "true");
+    } else if (consumerAriaHidden === null) {
+      element.removeAttribute("aria-hidden");
+    } else {
+      element.setAttribute("aria-hidden", consumerAriaHidden);
+    }
   }
 }
 

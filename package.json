@@ -2,7 +2,7 @@
   "name": "@lapismd/design-core",
   "version": "0.1.2",
   "description": "Shared Lapis design system, forms, shell, and workspace primitives",
-  "license": "AGPL-3.0-or-later",
+  "license": "Apache-2.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/lapismd/design-core.git"
@@ -134,6 +134,7 @@
     "@lezer/highlight": "^1.2.3",
     "@lezer/lr": "^1.4.2",
     "@lucide/svelte": "^1.21.0",
+    "@tanstack/svelte-virtual": "^3.13.39",
     "@types/luxon": "^3.4.2",
     "bits-ui": "^2.18.1",
     "chrono-node": "^2.10.1",
@@ -176,8 +177,8 @@
     "@types/pngjs": "^6.0.5",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
-    "@vitest/browser": "^4.1.10",
-    "@vitest/browser-playwright": "^4.1.10",
+    "@vitest/browser": "^4.1.11",
+    "@vitest/browser-playwright": "^4.1.11",
     "aria-query": "5.3.2",
     "execa": "^10.0.0",
     "highlight.js": "^11.11.1",
@@ -203,7 +204,7 @@
     "turbo": "^2.5.4",
     "typescript": "^5.7.2",
     "vite": "^6.2.2",
-    "vitest": "^4.1.10",
+    "vitest": "^4.1.11",
     "zod": "^4.4.3"
   },
   "exports": {
@@ -303,6 +304,7 @@
     "./workspace/view-header": "./src/shared/workspace/view-header/index.ts",
     "./workspace/tokens": "./src/shared/workspace/workspace.tokens.ts",
     "./workspace/view-host": "./src/shared/workspace/view-host/index.ts",
-    "./workspace/workspace.tokens.css": "./src/shared/workspace/workspace.tokens.css"
+    "./workspace/workspace.tokens.css": "./src/shared/workspace/workspace.tokens.css",
+    "./forms/dialog": "./src/shared/forms/dialog.ts"
   }
 }

@@ -50,8 +50,9 @@ Overlay primitives preserve accessible labelling, focus management, dismissal, p
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/shadcn/dialog`.
-- The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- The catalog MUST demonstrate stable portal content and retained input focus during property updates without introducing a second runtime contract.
 - The modal scrim must remain visible when Dialog content is restyled by a composed family such as Command.
+- The built-in dialog close Button MUST retain its Button styling identity, compact icon sizing, rounded target, hover feedback, and focus-visible feedback, including in downstream compiled consumers with runtime size-token defaults.
 
 ## DC-SHA-045 — Drawer
 
@@ -103,9 +104,10 @@ Overlay primitives preserve accessible labelling, focus management, dismissal, p
 
 ## DC-SHA-050 — Tooltip
 
-**Requirement.** The Tooltip family MUST provide concise supplementary text on hover or focus with configurable timing.
+**Requirement.** The Tooltip family MUST provide concise supplementary text on hover or focus with configurable timing and a compact global presentation whose typography and padding remain consumer-overridable through public tokens.
 
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/shadcn/tooltip`.
+- The default content MUST use 0.6875rem text on a 1rem line with compact inline and block padding, while `--ui-tooltip-font-size`, `--ui-tooltip-line-height`, `--ui-tooltip-padding-inline`, and `--ui-tooltip-padding-block` MUST allow application-level adjustment.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.

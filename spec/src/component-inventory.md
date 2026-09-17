@@ -154,11 +154,18 @@ guidance, tokens, and the package barrel):
 
 - Compound `Root`, `Sidebar`, `Sidebar.Header`, `Sidebar.Body`,
   `Sidebar.Footer`, `Sidebar.Toggle`, `Sidebar.Close`, `Main`, `Toolbar`, and
-  `Body`, `Body.Content`, `Body.Sidebar`, and `Body.Toggle` surfaces
+  `Body`, `Body.Content`, `Body.Sidebar`, `Body.Toggle`, `SurfaceLayer`,
+  `SurfaceLayer.Header`, and `SurfaceLayer.Body` surfaces
 - Viewport-height root with overrideable structural geometry tokens
 - Independent reactive left and right expanded/collapsed/closed and width
   controllers
-- Optional standalone sidebar controllers for repeated same-side layouts
+- Optional standalone sidebar controllers for arbitrary repeated same-side
+  layouts, deterministic constraint priority, per-panel preview or main-surface
+  replacement, and transient suspension
+- Headerless transparent `rail` sidebars aligned to the inset main surface
+- One controller-owned structural SurfaceLayer per root with covered-panel
+  geometry, scrim/Escape dismissal, focus return, inert restoration, and
+  logical-direction layout
 - Full-height outer sidebar variant with an opt-in collapsed/closed edge preview
 - Opt-in delayed toggle-hover preview for a collapsed or closed sidebar
 - Accessible pointer and keyboard resize handles baked into expanded sidebars
@@ -218,3 +225,10 @@ are tracked in `src/shared/workspace/PLAN.md`.
 
 - Markdown stack: editor, preview, TOC, Carta, Mermaid.
 - `FlipCardDeck` and `StructuredTable*`.
+
+## Shared dialog compositions
+
+- `DialogFrame`: application-independent modal layout with controlled root, sidebar, scroll body, and stationary footer.
+- `ConfirmDialog` and `ConfirmButton`: compact asynchronous confirmation and trigger composition.
+
+Import these through `@lapismd/design-core/forms`; domain-specific controls remain in consumers.

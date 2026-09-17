@@ -196,3 +196,7 @@ colocated interaction story covering its meaningful states.
 
 Regenerate Docs scaffolding with `node scripts/generate-form-docs.mjs` when
 adding a new shared form export (then edit the generated MDX guidance as needed).
+
+## Dialog compositions
+
+Use `DialogFrame` inside `Dialog.Root` for modal workflows. Supply title, description, body, optional sidebar, and footer snippets; do not reconstruct close controls or scroll/footer geometry. Use `ConfirmDialog` for controlled confirmation and `ConfirmButton` for a trigger plus confirmation. Both await the action and retain failures.

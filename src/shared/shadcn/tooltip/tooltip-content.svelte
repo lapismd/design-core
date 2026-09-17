@@ -119,14 +119,20 @@
         fill: var(--foreground);
       }
       [data-ui-component="tooltip"][data-ui-part="tooltip-content"] {
-        padding-inline: calc(var(--spacing) * 3);
+        padding-inline: var(
+          --ui-tooltip-padding-inline,
+          calc(var(--spacing) * 2.5)
+        );
       }
       [data-ui-component="tooltip"][data-ui-part="tooltip-content"] {
-        padding-block: calc(var(--spacing) * 1.5);
+        padding-block: var(
+          --ui-tooltip-padding-block,
+          calc(var(--spacing) * 1)
+        );
       }
       [data-ui-component="tooltip"][data-ui-part="tooltip-content"] {
-        font-size: var(--text-xs);
-        line-height: var(--tw-leading, var(--text-xs--line-height));
+        font-size: var(--ui-tooltip-font-size, 0.6875rem);
+        line-height: var(--ui-tooltip-line-height, 1rem);
       }
       [data-ui-component="tooltip"][data-ui-part="tooltip-content"] {
         color: var(--ui-tooltip-foreground, var(--background));

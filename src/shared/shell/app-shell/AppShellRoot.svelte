@@ -64,6 +64,10 @@
   let dragOffset = $state<number | null>(null);
   let measuredPanelWidth = $state(0);
   let measuredDesktopMinMainWidth = $state(576);
+  let projectionVersion = $state(0);
+  const unsubscribeProjection = rootController.onProjectionChange(() => {
+    projectionVersion += 1;
+  });
   let rootStyle = $derived(
     [
       style,
@@ -93,6 +97,7 @@
     rootController.mobile.panelsFor("right").length > 0,
   );
   let constrainedDesktopPanelIds = $derived.by(() => {
+    void projectionVersion;
     if (resolvedMode !== "desktop" || !Number.isFinite(observedWidth)) {
       return [] as string[];
     }
@@ -101,7 +106,7 @@
       desktopMinMainWidth ?? measuredDesktopMinMainWidth,
     );
     if (minimumMainWidth === 0) return [] as string[];
-    const candidates = [
+    const registeredPanels = [
       ...rootController.mobile
         .panelsFor("right")
         .filter((panel) => panel.kind === "sidebar"),
@@ -111,18 +116,33 @@
       ...rootController.mobile
         .panelsFor("left")
         .filter((panel) => panel.kind === "sidebar" && panel.id === "left"),
-    ].flatMap((panel) => {
+    ];
+    const candidates = registeredPanels.flatMap((panel, order) => {
       const sidebar = rootController.getPanel(panel.id);
-      if (!sidebar || sidebar.closed) return [];
+      if (
+        !sidebar ||
+        sidebar.closed ||
+        rootController.isPanelSuspended(panel.id)
+      ) {
+        return [];
+      }
       return [
         {
           id: panel.id,
+          order,
+          priority: Number.isFinite(panel.constraintPriority)
+            ? (panel.constraintPriority ?? order)
+            : order,
           width: sidebar.collapsed
             ? 48
             : (sidebar.width ?? APP_SHELL_DEFAULT_SIDEBAR_WIDTH),
         },
       ];
     });
+    candidates.sort(
+      (left, right) =>
+        left.priority - right.priority || left.order - right.order,
+    );
     let occupiedWidth = candidates.reduce(
       (total, candidate) => total + candidate.width,
       minimumMainWidth + 16,
@@ -139,16 +159,8 @@
   $effect(() => rootController.mobile.setResolvedMode(resolvedMode));
   $effect(() => {
     const panelIds = constrainedDesktopPanelIds;
-    queueMicrotask(() => {
-      for (const sidebar of ref?.querySelectorAll<HTMLElement>(
-        '[data-ui-part="sidebar"][data-desktop-overlay-preview]',
-      ) ?? []) {
-        const panelId = sidebar.dataset.mobilePanelId;
-        if (!panelId || !panelIds.includes(panelId)) {
-          sidebar.removeAttribute("data-desktop-overlay-preview");
-        }
-      }
-    });
+    untrack(() => rootController.setConstrainedPanelIds(panelIds));
+    untrack(() => rootController.syncPanelProjections());
   });
   $effect(() => rootController.mobile.setRootElement(ref));
   $effect(() => rootController.mobile.setPanelHost("left", leftPanelHost));
@@ -175,11 +187,13 @@
   });
 
   onDestroy(() => {
+    unsubscribeProjection();
     clearGesture();
     rootController.mobile.setRootElement(null);
     rootController.mobile.setPanelHost("left", null);
     rootController.mobile.setMainHost(null);
     rootController.mobile.setPanelHost("right", null);
+    rootController.setConstrainedPanelIds([]);
     void rootController.flushSave();
   });
 

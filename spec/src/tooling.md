@@ -1,6 +1,6 @@
 # Tooling
 
-Repository tools keep source generation, discovery, documentation, and validation reproducible for humans and agents. The catalog CLI lists Diff families, including File Change Stats and Merge Editor, beside shadcn, forms, filter, and AI. Agent tooling guidance keeps external LapisMD repositories outside the workspace and resolves published dependencies through npm semver ranges while preserving portable manifests.
+Repository tools keep source generation, discovery, documentation, validation, Changesets, and package-pack evidence reproducible for humans and agents. The catalog CLI lists Diff families, including File Change Stats and Merge Editor, beside shadcn, forms, filter, and AI. Agent tooling guidance keeps external LapisMD repositories outside the workspace and resolves published dependencies through npm semver ranges while preserving portable manifests.
 
 ## Public surface coverage
 
@@ -15,6 +15,8 @@ Repository tools keep source generation, discovery, documentation, and validatio
 ## DC-TOOL-001 — UI catalog CLI
 
 **Requirement.** The UI catalog CLI family MUST list and inspect guides and component families in human-readable and JSON forms.
+
+The AI catalog derives stable public chat components, including shared tool-call detail, from their colocated stories and public subpath exports.
 
 ### Acceptance details
 

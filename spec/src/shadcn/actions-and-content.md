@@ -32,6 +32,8 @@ Action and content primitives adapt shadcn-svelte semantics to Design Core styli
 - The public boundary is `@lapismd/design-core/shadcn/button`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 
+- Ghost and outline Button controls MUST provide visible hover feedback in both colour modes, and ghost keyboard focus MUST include background feedback.
+
 ## DC-SHA-003 — Button Group
 
 **Requirement.** The Button Group family MUST group related actions with coherent orientation, separators, focus behavior, and accessible labels.
@@ -84,4 +86,5 @@ Action and content primitives adapt shadcn-svelte semantics to Design Core styli
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/shadcn/code-block`.
+- Token and highlight projection MUST remain consumable under strict indexed-access TypeScript settings without changing rendered ranges.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.

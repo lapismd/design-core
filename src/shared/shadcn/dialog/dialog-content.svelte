@@ -50,7 +50,6 @@
             variant="ghost"
             size="icon-sm"
             {...props}
-            dataUiComponent="dialog"
             data-ui-part="dialog-content-anon-0"
             data-slot="dialog-content-anon-0"
           >
@@ -75,7 +74,7 @@
       }
     }
     @layer utilities {
-      [data-ui-component="dialog"][data-ui-part="dialog-content-anon-0"] {
+      [data-ui-component="button"][data-ui-part="dialog-content-anon-0"] {
         position: absolute;
       }
       [data-ui-component="dialog"][data-ui-part="dialog-content"],
@@ -88,10 +87,10 @@
       [data-ui-component="dialog"][data-ui-part="dialog-content"] {
         top: 50%;
       }
-      [data-ui-component="dialog"][data-ui-part="dialog-content-anon-0"] {
+      [data-ui-component="button"][data-ui-part="dialog-content-anon-0"] {
         top: calc(var(--spacing) * 4);
       }
-      [data-ui-component="dialog"][data-ui-part="dialog-content-anon-0"] {
+      [data-ui-component="button"][data-ui-part="dialog-content-anon-0"] {
         right: calc(var(--spacing) * 4);
       }
       [data-ui-component="dialog"][data-ui-part="dialog-content"] {

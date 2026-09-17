@@ -17,6 +17,19 @@ export interface FileDiffFile {
   language?: string;
 }
 
+export interface FileDiffComposerFileContext {
+  file: FileDiffFile;
+  path: string;
+  collapsed: boolean;
+  selected: boolean;
+}
+
+export interface FileDiffFileScrollTarget {
+  path: string;
+  /** Changes for every scroll request, including repeated requests for one path. */
+  requestId: string | number;
+}
+
 export interface FileDiffScrollTarget {
   path?: string;
   lineNumber: number;

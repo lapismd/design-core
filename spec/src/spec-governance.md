@@ -1,6 +1,6 @@
 # Specification governance
 
-Specification governance keeps requirements discoverable, mapped, validated, and changed before or with protected implementation.
+Specification governance keeps requirements discoverable, mapped, validated, and changed before or with protected implementation, including same-change verification evidence for expanded public component families.
 
 ## Public surface coverage
 
@@ -34,6 +34,7 @@ Specification governance keeps requirements discoverable, mapped, validated, and
 | Shared styles, themes, and tokens                                        | `styling-and-themes.md`                        |
 | Shadcn families                                                          | Matching chapter under `shadcn/`               |
 | Forms families                                                           | Matching chapter under `forms/`                |
+| Dialog frame and confirmation form families                              | `forms/layout.md`                              |
 | `password-input` form family                                             | `forms/inputs.md`                              |
 | Filter layer                                                             | `filter.md`                                    |
 | AI layer                                                                 | `ai.md`                                        |
@@ -68,7 +69,7 @@ Specification governance keeps requirements discoverable, mapped, validated, and
 - A diagnostic must identify its stable code, governing requirement, source path, line when available, affected identifier, and corrective action.
 - Repository-owned configuration must map Design Core paths, statuses, and governing DC identifiers onto reusable shared validators.
 - Mirror validation must reject missing, stale, misordered, retargeted, or prose-bearing Storybook pages.
-- Public-surface validation must map every root export to exactly one owning requirement.
+- Public-surface validation must map every root export to exactly one owning requirement, including new AI subpath exports in the same change as their canonical AI requirement.
 
 ## DC-GOV-004 — Spec-first classification
 

@@ -18,6 +18,8 @@ with application-specific layout markup.
 
 - **Application navigation, files, inspector, AI, or another full-height
   rail:** a direct `AppShell.Sidebar` child of `AppShell.Root`.
+- **A structural sheet that replaces main and optionally adjacent panels:**
+  `AppShell.SurfaceLayer` with compound `Header` and `Body` parts.
 - **Main-column title, global actions, and application-sidebar toggles:**
   `AppShell.Toolbar` inside `AppShell.Main`.
 - **Table of contents or another panel local to one document/body:**
@@ -186,6 +188,51 @@ panel’s toggle.
 
 The **Nested project and file sidebars** and **Complete shell composition**
 stories are the reference for this topology.
+
+Right-side siblings use the opposite structural order: compose them after
+`Main` from nearest-main to outermost. Any number may share that edge. Give
+every additional panel a stable controller from `createSidebar(id, "right")`;
+the built-in panel keeps the id `"right"`.
+
+Use `constraintPriority` to describe which panels should leave inline flow
+first when the shell must protect main. Lower values are constrained first;
+registration order breaks ties. `constrainedPresentation="preview"` retains
+the existing toggle-opened overlay behavior. Use
+`constrainedPresentation="replace-main"` for an inspector or settings panel
+that should occupy the exact main-surface rectangle. Higher-priority outer
+rails remain inline, and the replacement returns inline automatically when a
+resize, left-sidebar collapse, or panel removal creates enough room.
+
+`variant="rail"` is the application-overview convention: transparent,
+headerless outer chrome aligned to the inset main surface. Its content still
+belongs in `Sidebar.Body`, and its width/state still belong to its registered
+controller.
+
+{/* prettier-ignore */}
+```tsx
+<AppShell.Main>...</AppShell.Main>
+
+<AppShell.Sidebar
+  side="right"
+  constraintPriority={0}
+  constrainedPresentation="replace-main"
+>
+  ...
+</AppShell.Sidebar>
+
+<AppShell.Sidebar
+  side="right"
+  sidebarController={overview}
+  variant="rail"
+  constraintPriority={100}
+>
+  ...
+</AppShell.Sidebar>
+```
+
+When persistent application chrome lives outside `AppShell.Root`, pass the
+root `shellController` explicitly to `Sidebar.Toggle`. This retains the same
+named-panel behavior without creating an application-specific toggle.
 
 ## Desktop preview overlays
 
@@ -373,21 +420,23 @@ On mobile:
 - offstage lanes remain `inert` and `aria-hidden`;
 - desktop resize handles and icon-rail compaction are absent.
 
-### Constrained desktop overlays
+### Constrained desktop panels
 
 Desktop keeps `--ui-shell-desktop-min-main-width` (`36rem`, or the
 `desktopMinMainWidth` root prop) usable before inline rails consume the root.
-When the bounded root is too narrow, the shell removes lower-priority panels
-from inline flow in this order: right sidebar, named outer-left sidebars, then
-the built-in left sidebar. Their durable `collapsed` / `closed` / `width`
+When the bounded root is too narrow, the shell removes panels from inline flow
+by ascending `constraintPriority`, with structural registration order breaking
+ties. Existing compositions retain their default ordering: built-in right,
+named outer-left, then built-in left. Durable `collapsed` / `closed` / `width`
 values stay unchanged.
 
-Overlayed panels are hidden from layout until their adjacent toggle or edge
-affordance opens a temporary full-height **overlay preview**
-(`data-desktop-overlay-preview`). That is not a shadcn Popover and not the
-collapsed/closed `previewOnHover` / `revealOnEdgeHover` path—those require
-durable collapsed or closed state. Constrained toggles read as Open/Close and
-flip the DOM preview only.
+Panels using the default `constrainedPresentation="preview"` are hidden from
+layout until their adjacent toggle or edge affordance opens a temporary
+full-height overlay. That is not a shadcn Popover and not the collapsed/closed
+`previewOnHover` / `revealOnEdgeHover` path. Panels using
+`constrainedPresentation="replace-main"` instead occupy the exact inset main
+rectangle and make the covered main surface inert and inaccessible until they
+return inline or close.
 
 For a usable constrained layout, keep the remaining inline left rail as a
 **collapsed icon rail** so main fills the rest of the root; do not leave an
@@ -403,12 +452,48 @@ one composition for wide desktop, constrained desktop, and mobile.
 Do not add a second media-query shell or duplicate mobile markup around the
 compound composition.
 
+## Structural surface layers
+
+Use `AppShell.SurfaceLayer` for a routed, non-modal surface that visually
+replaces main while keeping the underlying application mounted. The layer
+always covers and inerts main. `coverPanelIds` extends its measured bounds over
+named sidebars; `suspendPanelIds` temporarily removes panels without changing
+their expanded, collapsed, closed, or width state.
+
+{/* prettier-ignore */}
+```tsx
+<AppShell.SurfaceLayer
+  open={reviewsOpen}
+  label="Release reviews"
+  coverPanelIds={["right"]}
+  suspendPanelIds={["release-overview"]}
+  returnFocus={reviewsButton}
+  onDismiss={closeReviews}
+>
+  <AppShell.SurfaceLayer.Header>Reviews</AppShell.SurfaceLayer.Header>
+  <AppShell.SurfaceLayer.Body>...</AppShell.SurfaceLayer.Body>
+</AppShell.SurfaceLayer>
+```
+
+The shell owns the semantic scrim, exact logical-direction geometry,
+ResizeObserver updates, Escape and scrim dismissal, focus return, restored
+inert/ARIA state, rounded border, and shadowless surface. Consumers own the
+route or state transition passed to `onDismiss`. Only one structural layer may
+be open per root; dialogs, menus, sheets, and general overlays continue to use
+their existing primitives.
+
+Use `--ui-shell-surface-layer-main-start-allowance` to reveal a small leading
+portion of main and `--ui-shell-surface-layer-inline-end-inset` for the trailing
+gutter. Mobile forces the leading allowance to zero.
+
 ## Ownership boundary
 
 The shell owns:
 
 - column and body-region geometry;
 - root sidebar collapse, close, resize, preview, and responsive presentation;
+- same-side panel ordering, constrained replacement, and transient suspension;
+- structural layer geometry, inertness, dismissal, and focus return;
 - mobile stage selection, focus restoration, inertness, and gestures;
 - optional versioned persistence of desktop sidebar geometry.
 

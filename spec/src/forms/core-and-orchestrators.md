@@ -3,6 +3,8 @@
 Forms core supplies manual and config-driven controlled rendering. Orchestrators add structured text and review workflows without owning persistence. Cross-family composition follows the canonical [`Forms guidance`](guidance.md).
 Masked secrets use the Password Input family under Forms / Inputs rather than these orchestrators.
 
+The Forms barrel also exports the generic DialogFrame, ConfirmDialog, and ConfirmButton compositions; focused component subpaths avoid loading form orchestration in strict consumers.
+
 ## Public surface coverage
 
 | Surface          | Public boundary                                | Requirement |

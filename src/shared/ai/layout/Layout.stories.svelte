@@ -3,6 +3,8 @@
   import { expect } from "storybook/test";
   import Composer from "../composer/Composer.svelte";
   import Layout from "./Layout.svelte";
+  import HistoryFixture from "../message-list/MessageListHistoryFixture.svelte";
+  import { Virtualized } from "../message-list/MessageList.example-sources.js";
   import MessageList from "../message-list/MessageList.svelte";
   import Message from "../message/Message.svelte";
   import MessageBubble from "../message-bubble/MessageBubble.svelte";
@@ -237,6 +239,23 @@
       </Layout>
     </div>
   {/snippet}
+</Story>
+
+<Story
+  name="Opt-in cached-history mode"
+  exportName="CachedHistory"
+  tags={["visual-pending"]}
+  parameters={{
+    docs: {
+      source: { code: Virtualized, language: "tsx", type: "code" },
+      description: {
+        story:
+          'Set scrollMode="history" for cached-history anchoring and virtualize on MessageList for bounded rows; existing Layout and children snippets keep streaming mode by default.',
+      },
+    },
+  }}
+>
+  {#snippet template()}<HistoryFixture />{/snippet}
 </Story>
 
 <style>

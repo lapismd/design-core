@@ -20,6 +20,8 @@ Design Core is a shared presentation and controller library. Consumer applicatio
 
 ### Acceptance details
 
+- Shared Forms compositions own dialog geometry and asynchronous confirmation, while applications provide content snippets.
+
 - A lower-level layer must not acquire consumer routing, persistence, vault, or application-domain policy.
 - A cross-layer composition may depend only on public contracts or an explicitly documented internal boundary.
 
@@ -40,7 +42,7 @@ Design Core is a shared presentation and controller library. Consumer applicatio
 
 - Direct compatibility exports may delegate to family barrels but must not fork behavior, and source exports plus their declared dependencies must remain type-compatible with strict consumers, including exact optional-property and unchecked-index semantics across composed Shadcn, AI, Filter, and Shell surfaces.
 - Focused public subpaths MAY isolate one reusable family or a Design Core-owned Storybook reference composition, provided consumers do not load unrelated barrel dependencies and reference components do not require story-local CSS.
-- A breaking removal or semantic change requires a new or revised canonical requirement.
+- Existing AI snippet composition, manual history loading and streaming scroll defaults MUST remain available while virtualization and anchored history opt in through configuration, and a breaking removal or semantic change requires a new or revised canonical requirement.
 - Root manifest changes must update the owning architecture and package chapters in the same protected diff.
 
 ## DC-ARCH-005 — Local source ownership

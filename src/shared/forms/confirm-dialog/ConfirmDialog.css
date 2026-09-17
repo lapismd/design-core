@@ -1,0 +1,21 @@
+[data-ui-confirm-dialog][data-ui-part="alert-dialog-content"] {
+  width: min(28rem, calc(100vw - 2rem));
+  max-width: 28rem;
+  max-height: calc(100dvh - 2rem);
+  overflow: auto;
+  font-family: var(--font-sans, sans-serif);
+  font-size: var(--ui-dialog-frame-font-size, 0.875rem);
+}
+[data-ui-confirm-dialog] [data-slot="alert-dialog-title"] {
+  font-size: var(--ui-dialog-frame-title-size, 1.125rem);
+}
+[data-ui-confirm-dialog] [data-slot="alert-dialog-footer"] {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+[data-ui-confirm-dialog] [role="alert"] {
+  color: var(--destructive);
+  margin: 0;
+}

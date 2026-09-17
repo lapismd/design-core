@@ -8,15 +8,24 @@
   let {
     ref = $bindable(null),
     tabindex: _tabindex,
+    inert: inertProp,
+    "aria-hidden": ariaHidden,
     class: className,
     children,
     ...restProps
   }: WithElementRef<HTMLAttributes<HTMLDivElement>> = $props();
 
   const controller = useAppShell();
+  let mainOccluded = $state(controller.mainOccluded);
+  const unsubscribeProjection = controller.onProjectionChange(() => {
+    mainOccluded = controller.mainOccluded;
+  });
 
   $effect(() => controller.mobile.setMainElement(ref));
-  onDestroy(() => controller.mobile.setMainElement(null));
+  onDestroy(() => {
+    unsubscribeProjection();
+    controller.mobile.setMainElement(null);
+  });
 </script>
 
 <div
@@ -30,6 +39,8 @@
   class={["ui-minimal-app-shell__main", className].filter(Boolean).join(" ")}
   data-ui-component="app-shell"
   data-ui-part="main"
+  inert={Boolean(inertProp) || mainOccluded}
+  aria-hidden={Boolean(inertProp) || mainOccluded ? "true" : ariaHidden}
 >
   {@render children?.()}
 </div>

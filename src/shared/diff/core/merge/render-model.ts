@@ -67,7 +67,7 @@ function isPendingNavigationComponent(component: RenderComponent): boolean {
 function preferPendingComponent(
   candidates: readonly RenderComponent[],
 ): RenderComponent {
-  return (
+  const preferred =
     candidates.find(
       (component) =>
         component.side === "left" && component.action?.kind === "merge",
@@ -76,8 +76,11 @@ function preferPendingComponent(
       (component) =>
         component.side === "right" && component.action?.kind === "merge",
     ) ??
-    candidates[0]
-  );
+    candidates[0];
+  if (!preferred) {
+    throw new Error("Pending merge navigation requires a component");
+  }
+  return preferred;
 }
 
 export function pendingMergeNavigationTargets(
@@ -520,6 +523,13 @@ export function createMergeRenderModel(
         placeholder,
         workingCopyCenter,
       );
+      const action = actionFor(
+        block,
+        side,
+        visualKind,
+        model.mode,
+        workingCopyCenter,
+      );
       const component: RenderComponent = {
         id: `${block.id}:${side}`,
         blockId: block.id,
@@ -534,13 +544,7 @@ export function createMergeRenderModel(
           side === "base" &&
           block.kind === "modified" &&
           centerIncludesMergedChange(block, workingCopyCenter),
-        action: actionFor(
-          block,
-          side,
-          visualKind,
-          model.mode,
-          workingCopyCenter,
-        ),
+        ...(action === undefined ? {} : { action }),
       };
       renderSides[side].push(component);
       blockComponents.set(side, component);

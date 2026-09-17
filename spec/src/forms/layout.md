@@ -15,6 +15,9 @@ Form layout families provide reusable chrome for sections, fields, repeaters, ac
 | Form Section Header   | `@lapismd/design-core/forms` | DC-FORM-028 |
 | Form Sheet            | `@lapismd/design-core/forms` | DC-FORM-029 |
 | Form Toolbar          | `@lapismd/design-core/forms` | DC-FORM-030 |
+| Dialog Frame          | `@lapismd/design-core/forms` | DC-FORM-044 |
+| Confirm Dialog        | `@lapismd/design-core/forms` | DC-FORM-045 |
+| Confirm Button        | `@lapismd/design-core/forms` | DC-FORM-046 |
 | Sortable Array Item   | `@lapismd/design-core/forms` | DC-FORM-031 |
 
 ## DC-FORM-021 — Shared Forms invariants
@@ -120,3 +123,33 @@ Form layout families provide reusable chrome for sections, fields, repeaters, ac
 
 - The public boundary is `@lapismd/design-core/forms`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+
+## DC-FORM-044 — Dialog frame
+
+**Requirement.** The DialogFrame composition MUST own compact, form, large, and wide modal geometry, accessible headings, a standard close control, optional plain or inset surfaces, an optional sidebar, a ScrollArea body, and stationary actions.
+
+### Acceptance details
+
+- Width recipes are 28, 40, 56, and 68 rem with viewport insets; the large recipe is capped at 42 rem high and the body alone scrolls.
+- The inset surface uses one muted shell across the header and sidebar, contains the main area on a raised surface, and gives the close control a contrasting hover and keyboard-focus background.
+- The caller owns open state through Dialog.Root and supplies domain content through snippets, with content updates preserving mounted controls, their values, and keyboard focus.
+- Close and Escape preserve focus restoration and cannot dismiss during a pending operation; dialog headings remain local and do not introduce document banner landmarks.
+
+## DC-FORM-045 — Confirmation dialog
+
+**Requirement.** ConfirmDialog MUST retain a compact centered confirmation until its asynchronous action succeeds, preserving retryable errors and preventing duplicate submission.
+
+### Acceptance details
+
+- Cancel is initially focused, uses outline styling, and performs no confirmed action.
+- Destructive confirmation uses the destructive Button variant.
+- A rejected action retains the dialog and its error; resolving false retains externally reported validation.
+
+## DC-FORM-046 — Confirmation button
+
+**Requirement.** ConfirmButton MUST compose ConfirmDialog with an accessible trigger and restore focus to that trigger when the confirmation closes.
+
+### Acceptance details
+
+- Confirmation behavior remains owned by ConfirmDialog.
+- Consumers provide labels, content, and the action rather than duplicate overlay markup.

@@ -387,6 +387,10 @@
     {
       "name": "./workspace/workspace.tokens.css",
       "requirement": "DC-PKG-007"
+    },
+    {
+      "name": "./forms/dialog",
+      "requirement": "DC-PKG-003"
     }
   ],
   "catalog": [
@@ -473,6 +477,10 @@
     {
       "name": "AI/Chat/Tool Calls",
       "requirement": "DC-AI-015"
+    },
+    {
+      "name": "AI/Chat/Tool Call Detail",
+      "requirement": "DC-AI-025"
     },
     {
       "name": "AI/Overview",
@@ -989,6 +997,18 @@
     {
       "name": "Workspace/Plugins/Notifications",
       "requirement": "DC-WS-037"
+    },
+    {
+      "name": "UI Forms/Layout/Dialog Frame",
+      "requirement": "DC-FORM-044"
+    },
+    {
+      "name": "UI Forms/Layout/Confirm Dialog",
+      "requirement": "DC-FORM-045"
+    },
+    {
+      "name": "UI Forms/Layout/Confirm Button",
+      "requirement": "DC-FORM-046"
     }
   ]
 }

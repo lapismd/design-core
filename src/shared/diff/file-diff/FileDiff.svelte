@@ -40,6 +40,7 @@
     language,
     scrollTo,
     lineAccessory,
+    lineAnnotation,
   }: {
     path: string;
     oldText?: string | null;
@@ -51,6 +52,8 @@
     language?: string;
     scrollTo?: FileDiffScrollTarget | null;
     lineAccessory?: Snippet<[FileDiffLineContext]>;
+    /** Host-owned content inserted after each matching unified diff row. */
+    lineAnnotation?: Snippet<[FileDiffLineContext]>;
   } = $props();
 
   let expandedBlocks = $state<ExpandedBlockState>({});
@@ -197,6 +200,14 @@
     data-diff-line-variant={row.variant}
     data-variant={row.variant}
   >
+    {#if lineAccessory}
+      <div
+        class="ui-diff-file-diff__accessory"
+        data-ui-part="diff-row-accessory"
+      >
+        {@render lineAccessory(lineContext(row))}
+      </div>
+    {/if}
     <span class="ui-diff-file-diff__gutter" aria-hidden="true">
       {row.lineNumber ?? ""}
     </span>
@@ -204,10 +215,10 @@
       {row.variant === "added" ? "+" : row.variant === "removed" ? "-" : " "}
     </span>
     {@render highlightedText(row)}
-    {#if lineAccessory}
-      {@render lineAccessory(lineContext(row))}
-    {/if}
   </div>
+  {#if lineAnnotation}
+    {@render lineAnnotation(lineContext(row))}
+  {/if}
 {/snippet}
 
 {#snippet splitCell(
@@ -226,13 +237,18 @@
       data-side={side}
       data-pair-key={pairKey}
     >
+      {#if lineAccessory}
+        <div
+          class="ui-diff-file-diff__accessory"
+          data-ui-part="diff-row-accessory"
+        >
+          {@render lineAccessory(lineContext(row))}
+        </div>
+      {/if}
       <span class="ui-diff-file-diff__gutter" aria-hidden="true">
         {lineNumberForSplitSide(row, side) ?? ""}
       </span>
       {@render highlightedText(row)}
-      {#if lineAccessory}
-        {@render lineAccessory(lineContext(row))}
-      {/if}
     </div>
   {:else}
     <div

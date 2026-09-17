@@ -1,6 +1,9 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, userEvent } from "storybook/test";
+  import { expect, userEvent, waitFor } from "storybook/test";
+  import HistoryFixture from "./MessageListHistoryFixture.svelte";
+  import LegacyFixture from "./MessageListLegacyFixture.svelte";
+  import { Virtualized, Legacy } from "./MessageList.example-sources.js";
   import Message from "../message/Message.svelte";
   import MessageBubble from "../message-bubble/MessageBubble.svelte";
   import MessageList from "./MessageList.svelte";
@@ -291,6 +294,150 @@
       </MessageList>
     </div>
   {/snippet}
+</Story>
+
+<Story
+  name="Virtualized cached history and truthful notifications"
+  exportName="VirtualizedHistory"
+  tags={["visual-pending"]}
+  parameters={{
+    docs: { source: { code: Virtualized, language: "tsx", type: "code" } },
+  }}
+  play={async ({ canvas, canvasElement }) => {
+    const viewport = canvasElement.querySelector<HTMLElement>(
+      '[data-ui-part="scroll-area-viewport"]',
+    )!;
+    await waitFor(() =>
+      expect(
+        canvasElement.querySelectorAll('[data-ui-part="virtual-row"]').length,
+      ).toBeGreaterThan(0),
+    );
+    await waitFor(() => expect(viewport.scrollTop).toBeGreaterThan(1000));
+    expect(
+      canvasElement.querySelectorAll('[data-ui-part="virtual-row"]').length,
+    ).toBeLessThan(35);
+    await new Promise((resolve) => setTimeout(resolve, 100));
+    const reports = Number(
+      canvas.getByLabelText("Position reports").textContent,
+    );
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Update unrelated status" }),
+    );
+    await new Promise((resolve) => setTimeout(resolve, 100));
+    expect(
+      Number(canvas.getByLabelText("Position reports").textContent),
+    ).toBeLessThanOrEqual(reports + 1);
+    viewport.dispatchEvent(new WheelEvent("wheel", { deltaY: -900 }));
+    viewport.scrollTop -= 900;
+    viewport.dispatchEvent(new Event("scroll"));
+    await waitFor(() =>
+      expect(
+        canvas.getByRole("button", { name: "Scroll to latest" }),
+      ).toBeVisible(),
+    );
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Resize content" }),
+    );
+    await new Promise((resolve) => setTimeout(resolve, 100));
+    expect(
+      canvas.queryByRole("button", { name: "New messages" }),
+    ).not.toBeInTheDocument();
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Send own message" }),
+    );
+    expect(
+      canvas.queryByRole("button", { name: "New messages" }),
+    ).not.toBeInTheDocument();
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Receive message" }),
+    );
+    await waitFor(() =>
+      expect(
+        canvas.getByRole("button", { name: "New messages" }),
+      ).toBeVisible(),
+    );
+    viewport.scrollTop = viewport.scrollHeight;
+    viewport.dispatchEvent(new Event("scroll"));
+    await waitFor(() =>
+      expect(
+        canvas.queryByRole("button", { name: "New messages" }),
+      ).not.toBeInTheDocument(),
+    );
+    expect(
+      canvasElement.querySelectorAll('[data-ui-part="virtual-row"]').length,
+    ).toBeLessThan(35);
+  }}
+>
+  {#snippet template()}<HistoryFixture />{/snippet}
+</Story>
+
+<Story
+  name="Existing snippet API remains unvirtualized"
+  exportName="LegacyCompatibility"
+  tags={["visual-pending"]}
+  parameters={{
+    docs: { source: { code: Legacy, language: "tsx", type: "code" } },
+  }}
+  play={async ({ canvas, canvasElement }) => {
+    const viewport = canvasElement.querySelector<HTMLElement>(
+      '[data-ui-part="scroll-area-viewport"]',
+    )!;
+    const rows = () =>
+      canvasElement.querySelectorAll('[data-ui-component="ai-chat-message"]');
+    await waitFor(() => expect(viewport.scrollTop).toBeGreaterThan(1000));
+    expect(rows()).toHaveLength(100);
+    expect(
+      canvasElement.querySelector('[data-ui-part="virtual-content"]'),
+    ).toBeNull();
+    const list = canvas.getByRole("log", { name: "Messages" });
+    expect(list).toHaveAttribute("data-density", "compact");
+    expect(
+      getComputedStyle(list.querySelector('[data-ui-part="list-inner"]')!).gap,
+    ).toBe("8px");
+    viewport.scrollTop = 0;
+    viewport.dispatchEvent(new Event("scroll"));
+    await waitFor(() =>
+      expect(
+        canvas.getByRole("button", { name: "Scroll to latest" }),
+      ).toBeVisible(),
+    );
+    expect(canvas.getByLabelText("Legacy history requests")).toHaveTextContent(
+      "0",
+    );
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Load older messages" }),
+    );
+    await expect(canvas.getByText("Earlier context 1")).toBeInTheDocument();
+    expect(canvas.getByLabelText("Legacy history requests")).toHaveTextContent(
+      "1",
+    );
+    expect(rows()).toHaveLength(101);
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Reflow existing content" }),
+    );
+    expect(
+      canvas.queryByRole("button", { name: "New messages" }),
+    ).not.toBeInTheDocument();
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Receive explicit arrival" }),
+    );
+    await waitFor(() =>
+      expect(
+        canvas.getByRole("button", { name: "New messages" }),
+      ).toBeVisible(),
+    );
+    await userEvent.click(canvas.getByRole("button", { name: "New messages" }));
+    await waitFor(() =>
+      expect(
+        viewport.scrollHeight - viewport.clientHeight - viewport.scrollTop,
+      ).toBeLessThan(2),
+    );
+    expect(
+      canvas.queryByRole("button", { name: "New messages" }),
+    ).not.toBeInTheDocument();
+  }}
+>
+  {#snippet template()}<LegacyFixture />{/snippet}
 </Story>
 
 <style>

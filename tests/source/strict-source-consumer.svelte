@@ -1,4 +1,8 @@
 <script lang="ts">
+  import * as Dialog from "@lapismd/design-core/shadcn/dialog";
+  import { DialogFrame } from "@lapismd/design-core/forms/dialog";
+  import { ConfirmDialog } from "@lapismd/design-core/forms/dialog";
+  import { ConfirmButton } from "@lapismd/design-core/forms/dialog";
   import { ComposerInput, ToolCalls } from "@lapismd/design-core/ai/chat";
   import { ReactionBar } from "@lapismd/design-core/ai/experimental";
   import {
@@ -34,3 +38,23 @@
     tokens = nextTokens;
   }}
 />
+
+<ConfirmDialog
+  open={false}
+  title="Remove"
+  description="Remove the record"
+  onConfirm={async () => {}}
+/>
+<ConfirmButton
+  title="Remove"
+  description="Remove the record"
+  onConfirm={async () => {}}>Remove</ConfirmButton
+>
+
+<Dialog.Root open={false}
+  ><DialogFrame title="Record"
+    ><p>Fields</p>
+    {#snippet footer()}<button type="button">Save</button
+      >{/snippet}</DialogFrame
+  ></Dialog.Root
+>

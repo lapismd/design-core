@@ -15,13 +15,16 @@ export function setAppShellContext(
  * Call this during component initialization, as required by Svelte context.
  */
 export function useAppShell(): AppShellController {
-  const controller = getContext<AppShellController | undefined>(
-    APP_SHELL_CONTEXT,
-  );
+  const controller = useOptionalAppShell();
   if (!controller) {
     throw new Error(
       "AppShell components must be rendered inside AppShell.Root",
     );
   }
   return controller;
+}
+
+/** Return the nearest root controller when a compound action may live outside it. */
+export function useOptionalAppShell(): AppShellController | undefined {
+  return getContext<AppShellController | undefined>(APP_SHELL_CONTEXT);
 }

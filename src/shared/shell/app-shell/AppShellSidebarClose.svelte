@@ -28,13 +28,10 @@
 
   function isDesktopOverlayOnly(element?: Element | null): boolean {
     const panelId = controller.getPanelId(sidebar);
-    if (!panelId) return false;
+    void element;
     return (
-      (element ?? ref)
-        ?.closest("[data-shell-root]")
-        ?.getAttribute("data-desktop-overlay-panels")
-        ?.split(/\s+/)
-        .includes(panelId) ?? false
+      controller.isPanelConstrained(panelId) &&
+      controller.getConstrainedPresentation(panelId) === "preview"
     );
   }
 
@@ -43,19 +40,16 @@
       '[data-ui-part="sidebar"][data-mobile-panel-id]',
     );
     const panelId = sidebarElement?.dataset.mobilePanelId;
-    const shellRoot = element.closest<HTMLElement>("[data-shell-root]");
-    const toggle =
-      panelId && shellRoot
-        ? shellRoot.querySelector<HTMLButtonElement>(
-            `[data-ui-part="sidebar-toggle"][data-target-panel-id="${CSS.escape(panelId)}"]`,
-          )
-        : null;
+    const shellRoot = controller.mobile.getRootElement();
+    const toggle = panelId
+      ? shellRoot?.querySelector<HTMLButtonElement>(
+          `[data-ui-part="sidebar-toggle"][data-target-panel-id="${CSS.escape(panelId)}"]`,
+        )
+      : null;
     if (toggle) {
       toggle.click();
       toggle.focus({ preventScroll: true });
-    } else {
-      sidebarElement?.removeAttribute("data-desktop-overlay-preview");
-    }
+    } else if (panelId) controller.setPanelDesktopPreviewed(panelId, false);
   }
 </script>
 
@@ -85,11 +79,17 @@
         const targetSidebar = panelId ? controller.getPanel(panelId) : sidebar;
         flushSync(() => {
           targetSidebar?.close();
+          context.syncLayout();
           sidebarElement?.dispatchEvent(
             new Event(APP_SHELL_SIDEBAR_LAYOUT_SYNC_EVENT),
           );
         });
-        sidebarElement?.remove();
+        controller.syncPanelProjections();
+        requestAnimationFrame(() => {
+          if (!targetSidebar?.closed || !sidebarElement?.isConnected) return;
+          sidebarElement.hidden = true;
+          sidebarElement.dataset.state = "closed";
+        });
         context.dismissOverlay();
       }
       onclick?.(event);

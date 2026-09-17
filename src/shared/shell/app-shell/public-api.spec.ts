@@ -19,6 +19,9 @@ import {
   AppShellSidebarFooter,
   AppShellSidebarHeader,
   AppShellSidebarToggle,
+  AppShellSurfaceLayer,
+  AppShellSurfaceLayerBody,
+  AppShellSurfaceLayerHeader,
   AppShellToolbar,
   Body,
   BodyContent,
@@ -32,6 +35,9 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarToggle,
+  SurfaceLayer,
+  SurfaceLayerBody,
+  SurfaceLayerHeader,
   Toolbar,
   createLocalStorageAppShellLayoutPersistence,
   shellTokenDefaults,
@@ -47,6 +53,9 @@ describe("@lapismd/design-core/shell public API", () => {
     expect(AppShell.Sidebar.Footer).toBe(AppShellSidebarFooter);
     expect(AppShell.Sidebar.Close).toBe(AppShellSidebarClose);
     expect(AppShell.Sidebar.Toggle).toBe(AppShellSidebarToggle);
+    expect(AppShell.SurfaceLayer).toBe(AppShellSurfaceLayer);
+    expect(AppShell.SurfaceLayer.Header).toBe(AppShellSurfaceLayerHeader);
+    expect(AppShell.SurfaceLayer.Body).toBe(AppShellSurfaceLayerBody);
     expect(AppShell.Main).toBe(AppShellMain);
     expect(AppShell.Toolbar).toBe(AppShellToolbar);
     expect(AppShell.Body).toBe(AppShellBody);
@@ -60,6 +69,11 @@ describe("@lapismd/design-core/shell public API", () => {
     expect(SidebarClose).toBe(AppShellSidebarClose);
     expect(SidebarFooter).toBe(AppShellSidebarFooter);
     expect(SidebarToggle).toBe(AppShellSidebarToggle);
+    expect(SurfaceLayer).toBe(AppShellSurfaceLayer);
+    expect(SurfaceLayer.Header).toBe(AppShellSurfaceLayerHeader);
+    expect(SurfaceLayer.Body).toBe(AppShellSurfaceLayerBody);
+    expect(SurfaceLayerHeader).toBe(AppShellSurfaceLayerHeader);
+    expect(SurfaceLayerBody).toBe(AppShellSurfaceLayerBody);
     expect(Main).toBe(AppShellMain);
     expect(Toolbar).toBe(AppShellToolbar);
     expect(Body).toBe(AppShellBody);
@@ -101,6 +115,12 @@ describe("@lapismd/design-core/shell public API", () => {
     expect(shellTokenNames.desktopMinMainWidth).toBe(
       "--ui-shell-desktop-min-main-width",
     );
+    expect(shellTokenNames.surfaceLayerMainStartAllowance).toBe(
+      "--ui-shell-surface-layer-main-start-allowance",
+    );
+    expect(shellTokenNames.surfaceLayerInlineEndInset).toBe(
+      "--ui-shell-surface-layer-inline-end-inset",
+    );
     expect(APP_SHELL_DEFAULT_SIDEBAR_WIDTH).toBe(288);
     expect(APP_SHELL_DEFAULT_SIDEBAR_MIN_WIDTH).toBe(220);
     expect(APP_SHELL_DEFAULT_SIDEBAR_MAX_WIDTH).toBe(520);
@@ -118,6 +138,8 @@ describe("@lapismd/design-core/shell public API", () => {
       bodySidebarWidth: "14rem",
       mobileSidebarWidth: "min(22rem, 86cqw)",
       desktopMinMainWidth: "36rem",
+      surfaceLayerMainStartAllowance: "0px",
+      surfaceLayerInlineEndInset: "var(--ui-shell-main-block-inset)",
       sidebarToggleIndicatorWidth: "24%",
       toolbarHeight: "3rem",
       mainBlockInset: "0.5rem",

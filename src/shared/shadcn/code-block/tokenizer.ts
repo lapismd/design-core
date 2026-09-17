@@ -517,13 +517,13 @@ export function flatTokensToLines(
   for (const token of tokens) {
     while (
       lineIdx < lineStarts.length - 1 &&
-      token.start >= lineStarts[lineIdx + 1]
+      token.start >= (lineStarts[lineIdx + 1] ?? Number.POSITIVE_INFINITY)
     ) {
       lineIdx++;
     }
 
-    const lineStart = lineStarts[lineIdx];
-    result[lineIdx].push({
+    const lineStart = lineStarts[lineIdx] ?? 0;
+    result[lineIdx]?.push({
       type: token.type,
       start: token.start - lineStart,
       end: token.end - lineStart,

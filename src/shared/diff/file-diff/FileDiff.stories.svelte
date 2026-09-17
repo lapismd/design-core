@@ -1,9 +1,24 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, userEvent } from "storybook/test";
-  import { Basic, Fill, Split, Wrap } from "./FileDiff.example-sources.js";
+  import { expect, userEvent, waitFor } from "storybook/test";
+  import MessageSquarePlusIcon from "@lucide/svelte/icons/message-square-plus";
+  import { Button } from "../../shadcn/button/index.js";
+  import { Textarea } from "../../shadcn/textarea/index.js";
+  import {
+    Basic,
+    Composer,
+    Fill,
+    LineAnnotation,
+    Split,
+    Wrap,
+  } from "./FileDiff.example-sources.js";
   import FileDiff from "./FileDiff.svelte";
   import FileDiffComposer from "./FileDiffComposer.svelte";
+  import type {
+    FileDiffComposerFileContext,
+    FileDiffFileScrollTarget,
+    FileDiffLineContext,
+  } from "./types.js";
 
   const { Story } = defineMeta({
     title: "Diff/File Diff",
@@ -146,6 +161,128 @@
       );
   }
 </script>
+
+<script lang="ts">
+  let annotationContext = $state<FileDiffLineContext>();
+  let annotationDraft = $state("");
+  let savedAnnotation = $state("");
+  let composerCollapsedPaths = $state<string[]>(["src/a.ts"]);
+  let composerScrollRequest = $state<FileDiffFileScrollTarget>({
+    path: "src/b.ts",
+    requestId: 0,
+  });
+
+  function annotationMatches(context: FileDiffLineContext): boolean {
+    return (
+      annotationContext?.path === context.path &&
+      annotationContext.lineNumber === context.lineNumber &&
+      annotationContext.variant === context.variant
+    );
+  }
+
+  function toggleComposerFile(path: string, collapsed: boolean): void {
+    composerCollapsedPaths = collapsed
+      ? [...new Set([...composerCollapsedPaths, path])]
+      : composerCollapsedPaths.filter((candidate) => candidate !== path);
+  }
+</script>
+
+<Story
+  name="Composes a host-owned inline annotation"
+  play={async ({ canvas }) => {
+    const action = canvas.getByRole("button", {
+      name: "Comment on project.conf line 2",
+    });
+    const accessory = action.closest("[data-ui-part='diff-row-accessory']");
+    const row = action.closest("[data-ui-part='diff-row']");
+    await expect(accessory).not.toBeNull();
+    await expect(row).not.toBeNull();
+    await expect(getComputedStyle(accessory as HTMLElement).opacity).toBe("0");
+    (action as HTMLElement).focus();
+    await expect(action).toHaveFocus();
+    await waitFor(() =>
+      expect(getComputedStyle(accessory as HTMLElement).opacity).toBe("1"),
+    );
+    await userEvent.click(action);
+    const composer = canvas.getByRole("region", {
+      name: "Comment on project.conf line 2",
+    });
+    await expect(composer).toBeVisible();
+    await userEvent.type(
+      canvas.getByRole("textbox", { name: "Comment" }),
+      "Keep the project flag documented.",
+    );
+    await userEvent.click(canvas.getByRole("button", { name: "Comment" }));
+    await expect(canvas.getByRole("status")).toHaveTextContent(
+      "Keep the project flag documented.",
+    );
+    await expect(composer).not.toBeInTheDocument();
+  }}
+  tags={["visual-pending"]}
+  parameters={{
+    docs: {
+      source: { code: LineAnnotation, language: "tsx", type: "code" },
+    },
+  }}
+>
+  {#snippet template()}
+    {#snippet lineAction(context: FileDiffLineContext)}
+      {#if context.lineNumber === 2 && context.variant === "added"}
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon-xs"
+          aria-label="Comment on project.conf line 2"
+          onclick={() => {
+            annotationContext = context;
+            annotationDraft = "";
+          }}><MessageSquarePlusIcon aria-hidden="true" /></Button
+        >
+      {/if}
+    {/snippet}
+    {#snippet lineComment(context: FileDiffLineContext)}
+      {#if annotationMatches(context)}
+        <section
+          class="bg-background mx-2 my-1 rounded-md border p-2"
+          aria-label="Comment on project.conf line 2"
+        >
+          <Textarea
+            bind:value={annotationDraft}
+            aria-label="Comment"
+            placeholder="Add a comment…"
+          />
+          <div class="mt-2 flex justify-end gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onclick={() => (annotationContext = undefined)}>Cancel</Button
+            >
+            <Button
+              type="button"
+              size="sm"
+              disabled={!annotationDraft.trim()}
+              onclick={() => {
+                savedAnnotation = annotationDraft.trim();
+                annotationContext = undefined;
+              }}>Comment</Button
+            >
+          </div>
+        </section>
+      {/if}
+    {/snippet}
+    <div class="max-w-3xl p-4">
+      <FileDiff
+        path="project.conf"
+        oldText={"app=lapis\nprojects=off\n"}
+        newText={"app=lapis\nprojects=on\n"}
+        lineAccessory={lineAction}
+        lineAnnotation={lineComment}
+      />
+      <output class="sr-only">{savedAnnotation}</output>
+    </div>
+  {/snippet}
+</Story>
 
 <Story
   name="Renders a unified file diff"
@@ -377,16 +514,71 @@
   play={async ({ canvas }) => {
     await expect(canvas.getByTitle("src/a.ts")).toBeVisible();
     await expect(canvas.getByTitle("src/b.ts")).toBeVisible();
+    await expect(
+      canvas.getByTitle("src/b.ts").closest("[data-ui-part='file-section']"),
+    ).toHaveAttribute("data-selected", "true");
+    await expect(
+      canvas.getByRole("button", {
+        name: "Toggle related file list for src/a.ts",
+      }),
+    ).toBeVisible();
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Expand src/a.ts" }),
+    );
+    await expect(canvas.getByText(diffText("const a = 2;"))).toBeVisible();
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Collapse src/b.ts" }),
+    );
+    await expect(canvas.queryByText(diffText("const b = 3;"))).toBeNull();
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Expand src/b.ts" }),
+    );
+    const scrollAction = canvas.getByRole("button", {
+      name: "Scroll to src/b.ts",
+    });
+    await userEvent.click(scrollAction);
+    await userEvent.click(scrollAction);
     const target = canvas
       .getByText(diffText("const b = 3;"))
       .closest("[data-diff-line-number]");
     await expect(target).toHaveAttribute("data-diff-line-number", "1");
   }}
   tags={["visual-pending"]}
+  parameters={{
+    docs: { source: { code: Composer, language: "tsx", type: "code" } },
+  }}
 >
   {#snippet template()}
+    {#snippet fileHeader(context: FileDiffComposerFileContext)}
+      <span>{context.selected ? "Selected" : "Not selected"}</span>
+    {/snippet}
+    {#snippet fileHeaderLeading(context: FileDiffComposerFileContext)}
+      <Button
+        variant="ghost"
+        size="icon-xs"
+        aria-label={`Toggle related file list for ${context.path}`}>L</Button
+      >
+    {/snippet}
     <div class="max-w-3xl p-4">
+      <Button
+        class="mb-3"
+        type="button"
+        variant="outline"
+        onclick={() => {
+          composerScrollRequest = {
+            path: "src/b.ts",
+            requestId: Number(composerScrollRequest.requestId) + 1,
+          };
+        }}>Scroll to src/b.ts</Button
+      >
       <FileDiffComposer
+        selectedPath="src/b.ts"
+        collapsedFilePaths={composerCollapsedPaths}
+        scrollToFile={composerScrollRequest}
+        stickyHeaders
+        onFileToggle={toggleComposerFile}
+        {fileHeaderLeading}
+        fileHeaderTrailing={fileHeader}
         scrollTo={{ path: "src/b.ts", lineNumber: 1, variant: "added" }}
         files={[
           {

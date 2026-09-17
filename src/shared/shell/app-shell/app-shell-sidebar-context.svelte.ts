@@ -12,6 +12,7 @@ export interface AppShellSidebarContext {
   readonly side: AppShellSide;
   readonly closeable: boolean;
   readonly controller: AppShellSidebarController;
+  readonly syncLayout: () => void;
   readonly dismissOverlay: () => void;
 }
 

@@ -1,6 +1,6 @@
 <script lang="ts">
   import SparklesIcon from "@lucide/svelte/icons/sparkles";
-  import type { Snippet } from "svelte";
+  import { untrack, type Snippet } from "svelte";
   import type { HTMLAttributes } from "svelte/elements";
   import * as Empty from "@lapismd/design-core/shadcn/empty";
   import { ScrollArea } from "@lapismd/design-core/shadcn/scroll-area";
@@ -16,6 +16,12 @@
     scrollRef = $bindable(null),
     density = "balanced",
     isEmpty = false,
+    scrollMode = "stream",
+    conversationKey,
+    hasNewMessages: controlledNewMessages,
+    hasNewer = false,
+    onLoadLatest,
+    onViewportChange,
     emptyState,
     scrollButton,
     composer,
@@ -27,6 +33,13 @@
     scrollRef?: HTMLElement | null;
     density?: Density;
     isEmpty?: boolean;
+    /** Keep streaming scroll behavior by default; opt in to anchored cached-history navigation. */
+    scrollMode?: "stream" | "history";
+    conversationKey?: string;
+    hasNewMessages?: boolean;
+    hasNewer?: boolean;
+    onLoadLatest?: () => Promise<void>;
+    onViewportChange?: (state: { atLatest: boolean; active: boolean }) => void;
     emptyState?: Snippet;
     scrollButton?: Snippet<
       [
@@ -43,12 +56,20 @@
 
   let messageAreaRef = $state<HTMLElement | null>(null);
   let contentRef = $state<HTMLElement | null>(null);
-  const streamScroll = createStreamScroll();
+  let virtualized = false;
+  const streamScroll = createStreamScroll({
+    anchorOnResize: () => scrollMode === "history",
+  });
   const newMessages = createNewMessages({
+    deferResize: () => scrollMode === "history",
     isLocked: () => streamScroll.isLocked,
     onResize: () => {
-      streamScroll.scrollIfLocked();
-      streamScroll.update();
+      if (scrollMode === "history")
+        streamScroll.contentResized({ restoreAnchor: !virtualized });
+      else {
+        streamScroll.scrollIfLocked();
+        streamScroll.update();
+      }
     },
   });
 
@@ -57,10 +78,89 @@
     newMessages.attach(element);
   }
 
+  let pendingJump = false;
+  let jumpVersion = 0;
+  let priorConversationKey: string | undefined;
+  let conversationInitialized = false;
+  let jumpError = $state<string | undefined>();
+  let documentActive = $state(true);
+  const unread = $derived(controlledNewMessages ?? newMessages.hasNewMessages);
+  const showNewMessages = $derived(
+    unread && (!streamScroll.isLocked || hasNewer || !documentActive),
+  );
+  const showScrollButton = $derived(
+    streamScroll.isScrolledUp || showNewMessages || hasNewer,
+  );
   function scrollToBottom(): void {
-    streamScroll.scrollToBottom();
-    newMessages.dismiss();
+    if (pendingJump) return;
+    if (scrollMode === "stream" && !onLoadLatest) {
+      newMessages.dismiss();
+      streamScroll.scrollToBottom();
+      return;
+    }
+    const key = conversationKey;
+    const version = ++jumpVersion;
+    const revision = streamScroll.positionRevision;
+    pendingJump = true;
+    jumpError = undefined;
+    void (async () => {
+      try {
+        await onLoadLatest?.();
+        if (
+          key === conversationKey &&
+          version === jumpVersion &&
+          revision === streamScroll.positionRevision
+        )
+          streamScroll.scrollToBottom({
+            behavior: scrollMode === "history" ? "instant" : "spring",
+          });
+      } catch (cause) {
+        if (key === conversationKey && version === jumpVersion)
+          jumpError =
+            cause instanceof Error
+              ? cause.message
+              : "Could not load latest messages";
+      } finally {
+        if (version === jumpVersion) pendingJump = false;
+      }
+    })();
   }
+  $effect(() => {
+    const key = conversationKey;
+    untrack(() => {
+      if (conversationInitialized && key === priorConversationKey) return;
+      conversationInitialized = true;
+      priorConversationKey = key;
+      jumpVersion++;
+      pendingJump = false;
+      if (key === undefined) return;
+      newMessages.attach(contentRef ?? messageAreaRef);
+      streamScroll.attach(null);
+      streamScroll.attach(scrollRef);
+      jumpError = undefined;
+    });
+    return () => {
+      void key;
+    };
+  });
+  $effect(() => {
+    if (streamScroll.isLocked && !hasNewer && documentActive)
+      newMessages.dismiss();
+    const observation = {
+      atLatest: streamScroll.isLocked && !hasNewer,
+      active: documentActive,
+    };
+    const notify = onViewportChange;
+    untrack(() => notify?.(observation));
+  });
+  $effect(() => {
+    const update = () => {
+      documentActive = document.visibilityState !== "hidden";
+    };
+    update();
+    document.addEventListener("visibilitychange", update);
+    return () => document.removeEventListener("visibilitychange", update);
+  });
 
   setLayoutContext({
     getScrollContainer: () => scrollRef,
@@ -69,6 +169,9 @@
       streamScroll.attach(element);
     },
     setContent,
+    setVirtualized(active) {
+      virtualized = active;
+    },
     streamScroll,
     newMessages,
   });
@@ -118,16 +221,19 @@
         {/if}
       </div>
     </ScrollArea>
+    {#if jumpError}<p role="alert" data-ui-part="history-error">
+        {jumpError}
+      </p>{/if}
     {#if scrollButton}
       {@render scrollButton({
-        isVisible: streamScroll.isScrolledUp || newMessages.hasNewMessages,
-        hasNewMessages: newMessages.hasNewMessages,
+        isVisible: showScrollButton,
+        hasNewMessages: showNewMessages,
         scrollToBottom,
       })}
     {:else}
       <LayoutScrollButton
-        isVisible={streamScroll.isScrolledUp || newMessages.hasNewMessages}
-        hasNewMessages={newMessages.hasNewMessages}
+        isVisible={showScrollButton}
+        hasNewMessages={showNewMessages}
         onClick={scrollToBottom}
       />
     {/if}

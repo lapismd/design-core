@@ -64,6 +64,10 @@
   background: transparent;
 }
 
+.ui-minimal-app-shell__sidebar[hidden] {
+  display: none !important;
+}
+
 .ui-minimal-app-shell__sidebar[data-side="left"] {
   width: var(--ui-shell-sidebar-size, var(--ui-shell-left-sidebar-width));
 }
@@ -78,12 +82,19 @@
   background: var(--background);
 }
 
+.ui-minimal-app-shell__sidebar[data-variant="rail"][data-presentation="inline"] {
+  margin-block: var(--ui-shell-main-block-inset);
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
 .ui-minimal-app-shell__sidebar[data-variant="outer"][data-side="left"][data-presentation="inline"] {
   border-inline-end: 1px solid var(--border);
 }
 
-.ui-minimal-app-shell__sidebar[data-presentation="overlay"],
-.ui-minimal-app-shell__sidebar[data-desktop-overlay-preview] {
+.ui-minimal-app-shell__sidebar[data-presentation="overlay"] {
   position: absolute;
   z-index: 31;
   inset-block: 0;
@@ -92,14 +103,12 @@
     color-mix(in srgb, var(--foreground) 18%, transparent);
 }
 
-.ui-minimal-app-shell__sidebar[data-presentation="overlay"][data-side="left"],
-.ui-minimal-app-shell__sidebar[data-desktop-overlay-preview][data-side="left"] {
+.ui-minimal-app-shell__sidebar[data-presentation="overlay"][data-side="left"] {
   inset-inline-start: 0;
   border-inline-end: 1px solid var(--border);
 }
 
-.ui-minimal-app-shell__sidebar[data-presentation="overlay"][data-side="right"],
-.ui-minimal-app-shell__sidebar[data-desktop-overlay-preview][data-side="right"] {
+.ui-minimal-app-shell__sidebar[data-presentation="overlay"][data-side="right"] {
   inset-inline-end: 0;
   margin-inline-start: 0;
   border-inline-start: 1px solid var(--border);
@@ -139,22 +148,25 @@
   display: block;
 }
 
-.ui-minimal-app-shell[data-desktop-overlay-right]
-  > .ui-minimal-app-shell__composition
-  > .ui-minimal-app-shell__sidebar[data-side="right"]:not(
-    [data-presentation="overlay"]
-  ):not([data-desktop-overlay-preview]),
-.ui-minimal-app-shell[data-desktop-overlay-left]
-  > .ui-minimal-app-shell__composition
-  > .ui-minimal-app-shell__sidebar[data-mobile-panel-id="left"]:not(
-    [data-presentation="overlay"]
-  ):not([data-desktop-overlay-preview]),
-.ui-minimal-app-shell[data-desktop-overlay-outer-left]
-  > .ui-minimal-app-shell__composition
-  > .ui-minimal-app-shell__sidebar[data-side="left"][data-variant="outer"]:not(
-    [data-presentation="overlay"]
-  ):not([data-desktop-overlay-preview]) {
+.ui-minimal-app-shell__sidebar[data-desktop-constrained][data-constrained-presentation="preview"][data-presentation="inline"] {
   display: none;
+}
+
+.ui-minimal-app-shell__sidebar[data-presentation="replace-main"] {
+  position: absolute;
+  z-index: 31;
+  inset-block-start: var(--ui-shell-replacement-block-start, 0px);
+  inset-block-end: var(--ui-shell-replacement-block-end, 0px);
+  inset-inline-start: var(--ui-shell-replacement-inline-start, 0px);
+  inset-inline-end: var(--ui-shell-replacement-inline-end, 0px);
+  display: flex;
+  width: auto;
+  overflow: hidden;
+  margin: 0;
+  border: var(--ui-shell-main-border);
+  border-radius: var(--ui-shell-main-radius);
+  background: var(--background);
+  box-shadow: none;
 }
 
 .ui-minimal-app-shell__sidebar[data-side="right"][data-state="expanded"] {
@@ -171,13 +183,11 @@
   min-width: 0;
 }
 
-.ui-minimal-app-shell__sidebar[data-presentation="overlay"][data-side="left"],
-.ui-minimal-app-shell__sidebar[data-desktop-overlay-preview][data-side="left"] {
+.ui-minimal-app-shell__sidebar[data-presentation="overlay"][data-side="left"] {
   width: var(--ui-shell-sidebar-size, var(--ui-shell-left-sidebar-width));
 }
 
-.ui-minimal-app-shell__sidebar[data-presentation="overlay"][data-side="right"],
-.ui-minimal-app-shell__sidebar[data-desktop-overlay-preview][data-side="right"] {
+.ui-minimal-app-shell__sidebar[data-presentation="overlay"][data-side="right"] {
   width: var(--ui-shell-sidebar-size, var(--ui-shell-right-sidebar-width));
 }
 
@@ -271,6 +281,76 @@
   box-shadow: var(--ui-shell-main-shadow);
 }
 
+.ui-minimal-app-shell__surface-layer {
+  position: absolute;
+  z-index: 32;
+  min-width: 0;
+  min-height: 0;
+  pointer-events: none;
+}
+
+.ui-minimal-app-shell__surface-layer-scrim {
+  position: absolute;
+  inset: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--ui-shell-main-radius);
+  background: color-mix(in oklab, var(--background) 75%, transparent);
+  pointer-events: auto;
+  cursor: pointer;
+  transition: background-color 150ms ease;
+}
+
+.ui-minimal-app-shell__surface-layer-scrim:hover {
+  background: color-mix(in oklab, var(--background) 65%, transparent);
+}
+
+.ui-minimal-app-shell__surface-layer-surface {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: var(--ui-shell-surface-layer-main-start-allowance);
+  inset-inline-end: var(--ui-shell-surface-layer-inline-end-inset);
+  display: grid;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  grid-template-rows: auto minmax(0, 1fr);
+  border: var(--ui-shell-main-border);
+  border-radius: var(--ui-shell-main-radius);
+  outline: none;
+  background: var(--background);
+  box-shadow: none;
+  pointer-events: auto;
+}
+
+.ui-minimal-app-shell__surface-layer-surface:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: -2px;
+}
+
+.ui-minimal-app-shell__surface-layer-header {
+  display: flex;
+  min-width: 0;
+  min-height: var(--ui-shell-toolbar-height);
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.625rem 0.75rem 0.625rem 1rem;
+}
+
+.ui-minimal-app-shell__surface-layer-body {
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.ui-minimal-app-shell__surface-layer-scroll-area {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+}
+
 .ui-minimal-app-shell[data-display-mode="desktop"] .ui-minimal-app-shell__main {
   min-width: min(100%, var(--ui-shell-desktop-min-main-width));
 }
@@ -296,12 +376,6 @@
           )
       )
   )
-  > .ui-minimal-app-shell__composition
-  > .ui-minimal-app-shell__main {
-  margin-inline-end: var(--ui-shell-main-block-inset);
-}
-
-.ui-minimal-app-shell[data-desktop-overlay-right]
   > .ui-minimal-app-shell__composition
   > .ui-minimal-app-shell__main {
   margin-inline-end: var(--ui-shell-main-block-inset);
@@ -435,6 +509,11 @@
 }
 
 .ui-minimal-app-shell[data-display-mode="mobile"]
+  .ui-minimal-app-shell__surface-layer-surface {
+  inset-inline-start: 0;
+}
+
+.ui-minimal-app-shell[data-display-mode="mobile"]
   > .ui-minimal-app-shell__composition {
   display: none;
 }
@@ -445,7 +524,8 @@
   height: 100%;
   min-width: 0;
   min-height: 0;
-  overflow: hidden;
+  /* Stage position belongs to the translated track, not focus scrolling. */
+  overflow: clip;
 }
 
 .ui-minimal-app-shell__mobile-track {
