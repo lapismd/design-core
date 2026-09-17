@@ -506,6 +506,7 @@ Override these public tokens on `:root` or a shared ancestor:
 | `--ui-column-canvas-border-color`                   | `--border`                                      |
 | `--ui-column-canvas-radius`                         | `--radius-lg`, then `--radius`                  |
 | `--ui-column-canvas-header-height`                  | `2.5rem`                                        |
+| `--ui-column-canvas-header-padding-inline-end`      | `0.25rem`                                       |
 | `--ui-column-canvas-gap`                            | `0.75rem`                                       |
 | `--ui-column-canvas-collapsed-width`                | `2.75rem`                                       |
 | `--ui-column-canvas-compact-peek-width`             | `2.75rem` compatibility token                   |

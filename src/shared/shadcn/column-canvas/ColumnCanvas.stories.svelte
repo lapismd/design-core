@@ -1165,6 +1165,15 @@
       canvas.getByRole("button", { name: "Message Bubble" }),
     );
     await expect(canvas.getByText("Detail")).toBeVisible();
+    const header = canvas
+      .getByText("Detail")
+      .closest("[data-ui-part='column-header']");
+    expect(header).not.toBeNull();
+    if (header) {
+      const style = getComputedStyle(header);
+      expect(style.paddingInlineStart).toBe("12px");
+      expect(style.paddingInlineEnd).toBe("4px");
+    }
     await expect(
       canvas.getByText("@lapismd/design-core/ai/chat"),
     ).toBeVisible();
