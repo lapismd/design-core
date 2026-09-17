@@ -104,7 +104,7 @@ export class ColumnCanvasController {
   #onPersistenceError:
     | ((event: ColumnCanvasPersistenceErrorEvent) => void)
     | undefined;
-  #persistence?: ColumnCanvasLayoutPersistence;
+  #persistence: ColumnCanvasLayoutPersistence | undefined;
   #saveDebounceMs: number;
   #hydrating = false;
   #restoredColumns = new Map<string, ColumnCanvasColumnLayout>();
@@ -634,7 +634,10 @@ export class ColumnCanvasController {
     relatedColumnId?: string,
   ): void {
     if (this.#hydrating || !this.layoutReady) return;
-    this.#pendingSaveEvent = { source, columnId, relatedColumnId };
+    this.#pendingSaveEvent =
+      relatedColumnId === undefined
+        ? { source, columnId }
+        : { source, columnId, relatedColumnId };
     if (this.#saveTimer) clearTimeout(this.#saveTimer);
     this.#saveTimer = setTimeout(() => {
       this.#saveTimer = null;
