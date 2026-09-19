@@ -77,6 +77,25 @@
     setOpen(false);
   }
 
+  function gridButtons(): HTMLButtonElement[] {
+    const root = gridRef ?? ref;
+    return Array.from(
+      root?.querySelectorAll<HTMLButtonElement>("[data-emoji]") ?? [],
+    );
+  }
+
+  function focusGridButton(index: number): boolean {
+    const buttons = gridButtons();
+    const target = buttons[Math.min(buttons.length - 1, Math.max(0, index))];
+    target?.focus();
+    return Boolean(target);
+  }
+
+  function moveSearchFocusToGrid(event: KeyboardEvent): void {
+    if (event.key !== "ArrowDown") return;
+    if (focusGridButton(0)) event.preventDefault();
+  }
+
   function moveGridFocus(event: KeyboardEvent): void {
     if (
       ![
@@ -90,9 +109,7 @@
     ) {
       return;
     }
-    const buttons = Array.from(
-      gridRef?.querySelectorAll<HTMLButtonElement>("[data-emoji]") ?? [],
-    );
+    const buttons = gridButtons();
     if (buttons.length === 0) return;
     const current = Math.max(
       0,
@@ -111,9 +128,7 @@
                 ? -current
                 : buttons.length - 1 - current;
     event.preventDefault();
-    buttons[
-      Math.min(buttons.length - 1, Math.max(0, current + offset))
-    ]?.focus();
+    focusGridButton(current + offset);
   }
 </script>
 
@@ -146,6 +161,7 @@
           bind:value={query}
           aria-label={searchLabel}
           placeholder={searchLabel}
+          onkeydown={moveSearchFocusToGrid}
         />
         {#if visible.length === 0}
           <p data-ui-part="emoji-empty">No emoji match “{query.trim()}”.</p>

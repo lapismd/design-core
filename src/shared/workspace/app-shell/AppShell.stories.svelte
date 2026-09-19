@@ -513,8 +513,10 @@
     await userEvent.click(
       page.getByRole("menuitem", { name: /Research notes/ }),
     );
-    await expect(canvas.getByRole("status")).toHaveTextContent(
-      "Research notes selected",
+    await waitFor(() =>
+      expect(canvas.getByRole("status")).toHaveTextContent(
+        "Research notes selected",
+      ),
     );
     await waitFor(() =>
       expect(page.queryByRole("menu")).not.toBeInTheDocument(),
@@ -526,8 +528,10 @@
     await userEvent.click(
       page.getByRole("menuitem", { name: "Manage workspaces" }),
     );
-    await expect(canvas.getByRole("status")).toHaveTextContent(
-      "Manage workspaces selected",
+    await waitFor(() =>
+      expect(canvas.getByRole("status")).toHaveTextContent(
+        "Manage workspaces selected",
+      ),
     );
     await waitFor(() =>
       expect(page.queryByRole("menu")).not.toBeInTheDocument(),

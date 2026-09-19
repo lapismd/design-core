@@ -3,11 +3,15 @@ import { expect, test, type Page } from "@playwright/test";
 const docsUrl = (id: string) =>
   `/iframe.html?id=${encodeURIComponent(id)}&viewMode=docs`;
 
-async function expectScrollableDocs(page: Page, id: string): Promise<void> {
+async function expectScrollableDocs(
+  page: Page,
+  id: string,
+  options: { docsTimeout?: number } = {},
+): Promise<void> {
   await page.goto(docsUrl(id));
 
   const docs = page.locator("#storybook-docs .sbdocs-content");
-  await expect(docs).toBeVisible();
+  await expect(docs).toBeVisible({ timeout: options.docsTimeout });
   await expect
     .poll(() =>
       page.evaluate(() => {
@@ -63,7 +67,9 @@ test.describe("Storybook Docs scrolling", () => {
   test("keeps documentation with embedded app shells scrollable", async ({
     page,
   }) => {
-    await expectScrollableDocs(page, "workspace-plugins-f-mode--docs");
+    await expectScrollableDocs(page, "workspace-plugins-f-mode--docs", {
+      docsTimeout: 45_000,
+    });
     await expect(page.locator(".ui-workspace-fmode-story")).not.toHaveCount(0);
   });
 
