@@ -19,7 +19,8 @@
     ...restProps
   }: HTMLAttributes<HTMLDivElement> & {
     ref?: HTMLDivElement | null;
-    children: Snippet;
+    /** Omit children for a non-interactive progress indicator. */
+    children?: Snippet;
     /** Plain-text summary shown on the collapsed row. */
     preview?: string;
     label?: string;
@@ -45,26 +46,35 @@
   data-streaming={streaming}
   aria-busy={streaming}
 >
-  <Collapsible.Root open={expanded} onOpenChange={setExpanded}>
-    <Collapsible.Trigger data-ai-chat-part="reasoning-trigger">
+  {#if children}
+    <Collapsible.Root open={expanded} onOpenChange={setExpanded}>
+      <Collapsible.Trigger data-ai-chat-part="reasoning-trigger">
+        <CircleDashedIcon data-ui-part="reasoning-icon" aria-hidden="true" />
+        <span data-ui-part="reasoning-row">
+          <span data-ui-part="reasoning-label">{label}</span>
+          {#if duration && !streaming}
+            <span data-ui-part="reasoning-separator" aria-hidden="true">·</span>
+            <span data-ui-part="reasoning-duration">{duration}</span>
+          {/if}
+          {#if preview && !expanded && !streaming}
+            <span data-ui-part="reasoning-separator" aria-hidden="true">—</span>
+            <span data-ui-part="reasoning-preview">{preview}</span>
+          {/if}
+        </span>
+        <ChevronDownIcon data-ui-part="reasoning-chevron" aria-hidden="true" />
+      </Collapsible.Trigger>
+      <Collapsible.Content data-ai-chat-part="reasoning-content">
+        <div data-ui-part="reasoning-content-inner">
+          {@render children()}
+        </div>
+      </Collapsible.Content>
+    </Collapsible.Root>
+  {:else}
+    <div data-ai-chat-part="reasoning-status" role="status">
       <CircleDashedIcon data-ui-part="reasoning-icon" aria-hidden="true" />
       <span data-ui-part="reasoning-row">
         <span data-ui-part="reasoning-label">{label}</span>
-        {#if duration && !streaming}
-          <span data-ui-part="reasoning-separator" aria-hidden="true">·</span>
-          <span data-ui-part="reasoning-duration">{duration}</span>
-        {/if}
-        {#if preview && !expanded && !streaming}
-          <span data-ui-part="reasoning-separator" aria-hidden="true">—</span>
-          <span data-ui-part="reasoning-preview">{preview}</span>
-        {/if}
       </span>
-      <ChevronDownIcon data-ui-part="reasoning-chevron" aria-hidden="true" />
-    </Collapsible.Trigger>
-    <Collapsible.Content data-ai-chat-part="reasoning-content">
-      <div data-ui-part="reasoning-content-inner">
-        {@render children()}
-      </div>
-    </Collapsible.Content>
-  </Collapsible.Root>
+    </div>
+  {/if}
 </div>

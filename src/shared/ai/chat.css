@@ -1320,8 +1320,8 @@
   margin-block-start: 0.5rem;
 }
 
-[data-ui-component="ai-chat-reasoning"]
-  [data-ai-chat-part="reasoning-trigger"] {
+[data-ui-component="ai-chat-reasoning"] [data-ai-chat-part="reasoning-trigger"],
+[data-ui-component="ai-chat-reasoning"] [data-ai-chat-part="reasoning-status"] {
   display: flex;
   width: 100%;
   min-height: 1.75rem;
@@ -1333,6 +1333,10 @@
   color: var(--ui-ai-chat-reasoning-accent);
   text-align: left;
   cursor: pointer;
+}
+
+[data-ui-component="ai-chat-reasoning"] [data-ai-chat-part="reasoning-status"] {
+  cursor: default;
 }
 
 [data-ui-component="ai-chat-reasoning"] [data-ui-part="reasoning-icon"],

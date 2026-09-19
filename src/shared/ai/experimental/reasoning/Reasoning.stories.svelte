@@ -22,6 +22,11 @@
   play={async ({ canvas }) => {
     const trigger = canvas.getByRole("button", { name: /Thinking/ });
     await expect(trigger).toHaveAttribute("aria-expanded", "false");
+    expect(
+      getComputedStyle(
+        trigger.querySelector('[data-ui-part="reasoning-icon"]')!,
+      ).animationName,
+    ).toBe("none");
     await userEvent.click(trigger);
     await expect(trigger).toHaveAttribute("aria-expanded", "true");
     await expect(canvas.getByText(/constraints before choosing/)).toBeVisible();
@@ -37,7 +42,7 @@
       placement: "right",
     },
   }}
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <div data-story="experimental-frame">
@@ -76,7 +81,7 @@
       placement: "right",
     },
   }}
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <div data-story="experimental-frame">
@@ -87,6 +92,30 @@
       </Reasoning>
     </div>
   {/snippet}
+</Story>
+
+<Story
+  name="Working status"
+  tags={["visual-pending"]}
+  parameters={{
+    docs: {
+      source: {
+        code: 'import { Reasoning } from "@lapismd/design-core/ai/experimental";\n<Reasoning label="Working" streaming />',
+        language: "tsx",
+        type: "code",
+      },
+    },
+  }}
+  play={async ({ canvas, canvasElement }) => {
+    await expect(canvas.getByRole("status")).toHaveTextContent("Working");
+    await expect(canvas.queryByRole("button")).not.toBeInTheDocument();
+    const icon = canvasElement.querySelector(
+      '[data-ui-part="reasoning-icon"]',
+    )!;
+    expect(getComputedStyle(icon).animationName).not.toBe("none");
+  }}
+>
+  {#snippet template()}<Reasoning label="Working" streaming />{/snippet}
 </Story>
 
 <style>

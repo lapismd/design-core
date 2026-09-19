@@ -217,7 +217,8 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 
 - The public boundary is `@lapismd/design-core/ai/experimental`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
-- A streaming reasoning row MUST rotate its progress icon unless the user prefers reduced motion.
+- A streaming reasoning row MUST rotate its progress icon unless the user prefers reduced motion; a completed row MUST stop animating.
+- Omitting reasoning children MUST render a non-interactive progress status with the same icon and label styling, without an empty disclosure.
 
 ## DC-AI-020 — Typing Indicator
 
