@@ -51,7 +51,7 @@
     footer?: Snippet;
     items?: readonly T[];
     row?: Snippet<[T, number]>;
-    /** Opt in to bounded row rendering and automatic older-page loading; defaults to false. */
+    /** Opt in to bounded row rendering; non-virtual lists still auto-load older pages. */
     virtualize?: boolean;
     overscan?: number;
     estimateSize?: number;
@@ -68,6 +68,7 @@
   const componentId = $props.id();
   const errorId = `${componentId}-older-error`;
   let innerRef = $state<HTMLDivElement | null>(null);
+  let topSentinel = $state<HTMLDivElement | null>(null);
   let loadingOlder = $state(false);
   let loadVersion = 0;
   let loadError = $state<string | null>(null);
@@ -142,6 +143,32 @@
         loadingOlder = false;
     }
   }
+
+  $effect(() => {
+    const node = topSentinel;
+    const skip = virtualize;
+    const key = conversationKey;
+    void key;
+    if (!node || skip || !scrollToTopAction) return;
+    const root =
+      layout?.getScrollContainer() ??
+      node.closest("[data-ui-part='scroll-area-viewport']");
+    if (!(root instanceof HTMLElement)) return;
+    let armed = false;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const near = entries.some((entry) => entry.isIntersecting);
+        if (!near) armed = true;
+        else if (armed) {
+          armed = false;
+          void loadOlder();
+        }
+      },
+      { root, rootMargin: "600px 0px 0px 0px" },
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  });
 </script>
 
 <div
@@ -158,7 +185,7 @@
 >
   <div bind:this={innerRef} data-ui-part="list-inner" style:gap>
     {#if scrollToTopAction && hasOlder}
-      <div data-ui-part="top-sentinel">
+      <div bind:this={topSentinel} data-ui-part="top-sentinel">
         <Button
           type="button"
           size="xs"

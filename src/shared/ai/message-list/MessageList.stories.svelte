@@ -401,16 +401,12 @@
         canvas.getByRole("button", { name: "Scroll to latest" }),
       ).toBeVisible(),
     );
-    expect(canvas.getByLabelText("Legacy history requests")).toHaveTextContent(
-      "0",
-    );
-    await userEvent.click(
-      canvas.getByRole("button", { name: "Load older messages" }),
+    await waitFor(() =>
+      expect(canvas.getByLabelText("Legacy history requests")).toHaveTextContent(
+        "1",
+      ),
     );
     await expect(canvas.getByText("Earlier context 1")).toBeInTheDocument();
-    expect(canvas.getByLabelText("Legacy history requests")).toHaveTextContent(
-      "1",
-    );
     expect(rows()).toHaveLength(101);
     await userEvent.click(
       canvas.getByRole("button", { name: "Reflow existing content" }),
