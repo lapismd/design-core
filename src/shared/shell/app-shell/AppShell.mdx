@@ -5,6 +5,10 @@ import * as Stories from "./AppShell.stories.svelte";
 
 # App Shell
 
+When a child chat or editor owns scrolling, use
+`<AppShell.Sidebar.Body scrollable={false}>` to keep the sidebar bounded without
+adding a second scroll viewport. Other sidebar bodies scroll by default.
+
 `@lapismd/design-core/shell` is a bounded structural layout for applications that own
 their navigation and content. Consumers compose its compound parts once; the
 root presents them as independently collapsible and resizable desktop sidebars
