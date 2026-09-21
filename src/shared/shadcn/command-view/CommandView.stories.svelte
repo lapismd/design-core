@@ -450,6 +450,7 @@
     const tablist = canvas.getByRole("tablist", { name: "Result filters" });
     expect(tablist).toBeVisible();
     const actions = canvas.getByRole("tab", { name: "Actions" });
+    expect(actions.querySelector("svg")).not.toBeNull();
     await userEvent.click(actions);
     expect(actions).toHaveAttribute("aria-selected", "true");
     expect(
@@ -491,7 +492,15 @@
             { id: "actions", label: "Actions" },
             { id: "settings", label: "Settings" },
           ]}
-        />
+        >
+          {#snippet start({ tab })}
+            {#if tab.id === "actions"}
+              <Columns2Icon />
+            {:else if tab.id === "settings"}
+              <SettingsIcon />
+            {/if}
+          {/snippet}
+        </CommandView.Filters>
         <CommandView.List>
           <CommandView.Empty>No results found.</CommandView.Empty>
           <CommandView.Group heading="Workspace">

@@ -69,7 +69,7 @@ bits-ui command API bindable.
 ### Acceptance details
 
 - The public boundary remains `@lapismd/design-core/shadcn/command-view`.
-- Filters MUST render a tablist of host-supplied tabs, and Footer MUST render host-supplied hint content.
+- Filters MUST render a tablist of host-supplied tabs, MAY render a host start snippet before each tab label, and Footer MUST render host-supplied hint content.
 - Icon pickers and settings comboboxes MUST remain valid without Filters or Footer.
 - The catalog MUST demonstrate Filters and Footer without a second runtime contract.
 
