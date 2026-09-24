@@ -2,6 +2,7 @@
   import CheckIcon from "@lucide/svelte/icons/check";
   import ChevronRightIcon from "@lucide/svelte/icons/chevron-right";
   import CircleAlertIcon from "@lucide/svelte/icons/circle-alert";
+  import CircleHelpIcon from "@lucide/svelte/icons/circle-help";
   import WrenchIcon from "@lucide/svelte/icons/wrench";
   import * as Collapsible from "@lapismd/design-core/shadcn/collapsible";
   import { Badge } from "@lapismd/design-core/shadcn/badge";
@@ -39,13 +40,15 @@
   }
 
   function statusLabel(status: ToolCallStatus = "pending"): string {
-    return status === "pending"
-      ? "Pending"
-      : status === "running"
-        ? "Running"
-        : status === "complete"
-          ? "Complete"
-          : "Error";
+    return status === "unknown"
+      ? "Status unavailable"
+      : status === "pending"
+        ? "Pending"
+        : status === "running"
+          ? "Running"
+          : status === "complete"
+            ? "Complete"
+            : "Error";
   }
 
   function setExpanded(open: boolean): void {
@@ -56,7 +59,9 @@
 
 {#snippet callStatus(status: ToolCallStatus)}
   <span data-ui-part="call-status" data-status={status}>
-    {#if status === "running" || status === "pending"}
+    {#if status === "unknown"}
+      <CircleHelpIcon aria-hidden="true" />
+    {:else if status === "running" || status === "pending"}
       <Spinner />
     {:else if status === "complete"}
       <span data-ui-part="status-circle" aria-hidden="true"></span>

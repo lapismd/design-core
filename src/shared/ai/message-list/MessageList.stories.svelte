@@ -402,9 +402,9 @@
       ).toBeVisible(),
     );
     await waitFor(() =>
-      expect(canvas.getByLabelText("Legacy history requests")).toHaveTextContent(
-        "1",
-      ),
+      expect(
+        canvas.getByLabelText("Legacy history requests"),
+      ).toHaveTextContent("1"),
     );
     await expect(canvas.getByText("Earlier context 1")).toBeInTheDocument();
     expect(rows()).toHaveLength(101);
