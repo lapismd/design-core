@@ -7,6 +7,7 @@
   import * as Collapsible from "@lapismd/design-core/shadcn/collapsible";
   import { Badge } from "@lapismd/design-core/shadcn/badge";
   import { Spinner } from "@lapismd/design-core/shadcn/spinner";
+  import type { Snippet } from "svelte";
   import type { HTMLAttributes } from "svelte/elements";
   import type { ToolCallItem, ToolCallStatus } from "../types.js";
   import "../chat.css";
@@ -18,10 +19,13 @@
     defaultExpanded = false,
     expanded = $bindable(defaultExpanded),
     onExpandedChange = () => {},
+    callWrapper,
     ...restProps
   }: HTMLAttributes<HTMLDivElement> & {
     ref?: HTMLDivElement | null;
     calls: ToolCallItem[];
+    /** Surround each call without replacing its presentation or disclosure. */
+    callWrapper?: Snippet<[ToolCallItem, Snippet]>;
     label?: string;
     defaultExpanded?: boolean;
     expanded?: boolean;
@@ -77,7 +81,7 @@
 {#snippet callRow(call: ToolCallItem, index: number)}
   {@const id = callId(call, index)}
   {@const status = call.status ?? "pending"}
-  <li data-ui-part="call" data-status={status}>
+  {#snippet presentation()}
     <Collapsible.Root
       open={detailOpen[id] ?? false}
       onOpenChange={(open) => {
@@ -133,6 +137,13 @@
         </Collapsible.Content>
       {/if}
     </Collapsible.Root>
+  {/snippet}
+  <li data-ui-part="call" data-status={status}>
+    {#if callWrapper}
+      {@render callWrapper(call, presentation)}
+    {:else}
+      {@render presentation()}
+    {/if}
   </li>
 {/snippet}
 
