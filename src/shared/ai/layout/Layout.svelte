@@ -56,7 +56,7 @@
 
   let messageAreaRef = $state<HTMLElement | null>(null);
   let contentRef = $state<HTMLElement | null>(null);
-  let virtualized = false;
+  let virtualized = $state(false);
   const streamScroll = createStreamScroll({
     anchorOnResize: () => scrollMode === "history",
   });
@@ -193,6 +193,7 @@
   data-ui-component="ai-chat-layout"
   data-ui-part="root"
   data-density={density}
+  data-virtualized={virtualized ? "" : undefined}
   aria-label={ariaLabel}
 >
   <div data-ui-part="scroll-shell">

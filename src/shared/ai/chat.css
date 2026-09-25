@@ -80,6 +80,12 @@
   overscroll-behavior: contain;
 }
 
+[data-ui-component="ai-chat-layout"][data-virtualized]
+  [data-ui-part="scroll-shell"]
+  [data-ui-part="scroll-area-thumb"] {
+  transition: background-color 140ms ease;
+}
+
 [data-ui-component="ai-chat-layout"]
   [data-ui-part="scroll-shell"]
   [data-scroll-area-content] {
