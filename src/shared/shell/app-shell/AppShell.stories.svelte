@@ -1873,6 +1873,14 @@
       "data-ui-part",
       "mobile-main-host",
     );
+    await waitFor(() => {
+      const layerRect = surfaceLayer!.getBoundingClientRect();
+      const surfaceRect = surface.getBoundingClientRect();
+      expect(
+        Math.abs(surfaceRect.left - layerRect.left - 64),
+        `mobile surface allowance ${surfaceRect.left - layerRect.left}`,
+      ).toBeLessThanOrEqual(1);
+    });
     await expect(surface.closest("[inert]")).toBeNull();
     const embeddedBody = await canvas.findByRole("region", {
       name: "Release review list",
@@ -1900,6 +1908,7 @@
       activity={multiPanelMobileActivityController}
       displayMode="mobile"
       frameClass="ui-shell-story-frame-mobile"
+      surfaceLeadingAllowance
       bind:surfaceOpen={multiPanelMobileSurfaceOpen}
     />
   {/snippet}

@@ -15,6 +15,7 @@
     displayMode = "desktop",
     frameClass,
     direction = "ltr",
+    surfaceLeadingAllowance = false,
     surfaceOpen = $bindable(false),
   }: {
     controller: AppShellController;
@@ -23,6 +24,7 @@
     displayMode?: AppShellDisplayMode;
     frameClass?: string;
     direction?: "ltr" | "rtl";
+    surfaceLeadingAllowance?: boolean;
     surfaceOpen?: boolean;
   } = $props();
 
@@ -149,6 +151,9 @@
       returnFocus={surfaceTrigger}
       dismissLabel="Close reviews"
       onDismiss={() => (surfaceOpen = false)}
+      style={surfaceLeadingAllowance
+        ? "--ui-shell-surface-layer-main-start-allowance: 4rem"
+        : undefined}
     >
       <AppShell.SurfaceLayer.Header>
         <strong>Release reviews</strong>
