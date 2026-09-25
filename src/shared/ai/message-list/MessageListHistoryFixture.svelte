@@ -5,7 +5,13 @@
   import Message from "../message/Message.svelte";
   import MessageBubble from "../message-bubble/MessageBubble.svelte";
   import type { MessageListPosition } from "./position.js";
-  let items = $state(
+
+  interface HistoryMessage {
+    id: string;
+    text: string;
+  }
+
+  let items = $state<HistoryMessage[]>(
     Array.from({ length: 1000 }, (_, index) => ({
       id: `message-${index}`,
       text: `Message ${index}: ${"Variable-height cached conversation content. ".repeat((index % 7) + 1)}`,
@@ -22,6 +28,10 @@
   let delay = $state(false);
   let statusUpdates = $state(0);
   let positionReports = $state(0);
+  function estimateHistoryRow(item: HistoryMessage) {
+    return 88 + Math.min(144, Math.ceil(item.text.length / 44) * 22);
+  }
+
   function append(incoming: boolean) {
     items = [
       ...items,
@@ -63,14 +73,12 @@
   >
     {#snippet composer()}<span>Conversation composer</span>{/snippet}
     <MessageList
-      {...{
-        items,
-        overscan: 6,
-        estimateSize: 112,
-        retainRowIds: [],
-        "data-status": statusUpdates,
-        "data-position-reports": positionReports,
-      }}
+      {items}
+      overscan={6}
+      estimateSize={estimateHistoryRow}
+      retainRowIds={[]}
+      data-status={statusUpdates}
+      data-position-reports={positionReports}
       virtualize
       conversationKey={presentation.key === key ? presentation.key : key}
       onPositionChange={(next) => {
@@ -95,7 +103,7 @@
         ];
       }}
     >
-      {#snippet row(item)}
+      {#snippet row(item: HistoryMessage)}
         <Message sender="user"
           ><MessageBubble>
             <p>{item.text}</p>

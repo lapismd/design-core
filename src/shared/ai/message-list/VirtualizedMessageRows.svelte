@@ -7,6 +7,8 @@
   import { onDestroy, tick, untrack, type Snippet } from "svelte";
   import { useLayoutContext } from "../context.svelte.js";
   import type { MessageListPosition } from "./position.js";
+  import { resolveMessageListEstimateSize } from "./estimate-size.js";
+  import type { MessageListEstimateSize } from "./estimate-size.js";
 
   let {
     items,
@@ -24,7 +26,7 @@
     items: readonly T[];
     row: Snippet<[T, number]>;
     overscan: number;
-    estimateSize: number;
+    estimateSize: MessageListEstimateSize<T>;
     conversationKey: string;
     initialPosition?: MessageListPosition | undefined;
     onPositionChange?: ((position: MessageListPosition) => void) | undefined;
@@ -50,7 +52,7 @@
         key: string;
         items: readonly T[];
         margin: number;
-        size: number;
+        estimate: MessageListEstimateSize<T>;
         overscan: number;
         retained: string;
       }
@@ -61,7 +63,8 @@
   const virtualizer = createVirtualizer<HTMLElement, HTMLDivElement>({
     count: 0,
     getScrollElement: () => layout?.getScrollContainer() ?? null,
-    estimateSize: () => estimateSize,
+    estimateSize: (index) =>
+      resolveMessageListEstimateSize(estimateSize, items[index], index),
     enabled: false,
     useAnimationFrameWithResizeObserver: true,
     scrollToFn: (offset, options) =>
@@ -122,7 +125,7 @@
     const extra = keep
       .map((id) => nextItems.findIndex((item) => item.id === id))
       .filter((index) => index >= 0);
-    const size = estimateSize,
+    const estimate = estimateSize,
       scan = overscan;
     untrack(() => {
       const retained = JSON.stringify(extra);
@@ -130,7 +133,7 @@
         priorConfiguration?.key === key &&
         priorConfiguration.items === nextItems &&
         priorConfiguration.margin === scrollMargin &&
-        priorConfiguration.size === size &&
+        priorConfiguration.estimate === estimate &&
         priorConfiguration.overscan === scan &&
         priorConfiguration.retained === retained
       )
@@ -139,7 +142,7 @@
         key,
         items: nextItems,
         margin: scrollMargin,
-        size,
+        estimate,
         overscan: scan,
         retained,
       };
@@ -171,7 +174,8 @@
         scrollMargin,
         getScrollElement: () => layout?.getScrollContainer() ?? null,
         getItemKey: (index) => nextItems[index]!.id,
-        estimateSize: () => size,
+        estimateSize: (index) =>
+          resolveMessageListEstimateSize(estimate, nextItems[index], index),
         overscan: scan,
         rangeExtractor: (range) =>
           [...new Set([...defaultRangeExtractor(range), ...extra])].sort(

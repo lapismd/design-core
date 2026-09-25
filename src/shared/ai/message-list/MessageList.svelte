@@ -9,6 +9,7 @@
   import { setListContext, useLayoutContext } from "../context.svelte.js";
   import type { Density } from "../types.js";
   import type { MessageListPosition } from "./position.js";
+  import type { MessageListEstimateSize } from "./estimate-size.js";
   import "../chat.css";
 
   let {
@@ -54,7 +55,8 @@
     /** Opt in to bounded row rendering; non-virtual lists still auto-load older pages. */
     virtualize?: boolean;
     overscan?: number;
-    estimateSize?: number;
+    /** Estimated row size in pixels, or an item-aware estimator used before DOM measurement. */
+    estimateSize?: MessageListEstimateSize<T>;
     /** Scope restoration and arrivals to a conversation; existing unkeyed lists retain explicit arrival handling. */
     conversationKey?: string;
     initialPosition?: MessageListPosition;
