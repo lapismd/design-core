@@ -15,6 +15,7 @@
     displayMode = "desktop",
     frameClass,
     direction = "ltr",
+    surfaceOpen = $bindable(false),
   }: {
     controller: AppShellController;
     overview: AppShellSidebarController;
@@ -22,9 +23,9 @@
     displayMode?: AppShellDisplayMode;
     frameClass?: string;
     direction?: "ltr" | "rtl";
+    surfaceOpen?: boolean;
   } = $props();
 
-  let surfaceOpen = $state(false);
   let surfaceTrigger = $state<HTMLButtonElement | null>(null);
 </script>
 

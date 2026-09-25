@@ -2,6 +2,7 @@
   import { untrack, type Snippet } from "svelte";
   import type { HTMLAttributes } from "svelte/elements";
   import { useAppShell } from "./app-shell-context.svelte.js";
+  import { appShellTeleport } from "./app-shell-teleport.js";
 
   let {
     ref = $bindable(null),
@@ -139,6 +140,10 @@
 {#if open}
   <div
     bind:this={ref}
+    use:appShellTeleport={{
+      enabled: controller.mobile.resolvedMode === "mobile",
+      target: controller.mobile.getMainHost(),
+    }}
     {...restProps}
     class={["ui-minimal-app-shell__surface-layer", className]
       .filter(Boolean)

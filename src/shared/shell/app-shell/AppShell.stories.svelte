@@ -153,6 +153,7 @@
     multiPanelMobileController.createSidebar("activity", "right", {
       width: 220,
     });
+  let multiPanelMobileSurfaceOpen = $state(false);
   let nestedSelectedProject = $state("");
   let selectedMarkdownFile = $state("");
   let bodySidebarSide = $state<"left" | "right" | undefined>();
@@ -1837,7 +1838,56 @@
   {/snippet}
 </Story>
 
-<Story name="Composable same-side panels mobile" tags={["visual-pending"]}>
+<Story
+  name="Composable same-side panels mobile"
+  tags={["visual-pending"]}
+  play={async ({ canvas, canvasElement }) => {
+    const root = canvasElement.querySelector<HTMLElement>("[data-shell-root]")!;
+    await waitFor(() => {
+      expect(root).toHaveAttribute("data-display-mode", "mobile");
+      expect(root).toHaveAttribute("data-mobile-stage", "main");
+    });
+
+    multiPanelMobileController.mobile.show("right", "activity");
+    await waitFor(() =>
+      expect(root).toHaveAttribute("data-mobile-stage", "right"),
+    );
+    multiPanelMobileController.mobile.showMain(false);
+    await waitFor(() =>
+      expect(root).toHaveAttribute("data-mobile-stage", "main"),
+    );
+
+    multiPanelMobileSurfaceOpen = true;
+    multiPanelMobileController.mobile.showMain(false);
+    await waitFor(() =>
+      expect(root).toHaveAttribute("data-mobile-stage", "main"),
+    );
+    const surface = await canvas.findByRole("region", {
+      name: "Release reviews",
+    });
+    const surfaceLayer = surface.closest<HTMLElement>(
+      '[data-ui-part="surface-layer"]',
+    );
+    await expect(surfaceLayer).toBeInTheDocument();
+    await expect(surfaceLayer?.parentElement).toHaveAttribute(
+      "data-ui-part",
+      "mobile-main-host",
+    );
+    await expect(surface.closest("[inert]")).toBeNull();
+    await expect(root.querySelector('[data-ui-part="main"]')).toHaveAttribute(
+      "inert",
+    );
+
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Close release reviews" }),
+    );
+    await waitFor(() =>
+      expect(
+        canvas.queryByRole("region", { name: "Release reviews" }),
+      ).not.toBeInTheDocument(),
+    );
+  }}
+>
   {#snippet template()}
     <AppShellMultiPanelDemo
       controller={multiPanelMobileController}
@@ -1845,6 +1895,7 @@
       activity={multiPanelMobileActivityController}
       displayMode="mobile"
       frameClass="ui-shell-story-frame-mobile"
+      bind:surfaceOpen={multiPanelMobileSurfaceOpen}
     />
   {/snippet}
 </Story>
