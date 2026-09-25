@@ -172,16 +172,18 @@
         </Button>
       </AppShell.SurfaceLayer.Header>
       <AppShell.SurfaceLayer.Body>
-        <div class="ui-shell-story-multi-panel__reviews">
-          <article>
-            <strong>History 0.1.3</strong>
-            <span>Pending review</span>
-          </article>
-          <article>
-            <strong>Markdown 0.1.5</strong>
-            <span>Approved</span>
-          </article>
-        </div>
+        <AppShell.Body element="section" label="Release review list">
+          <div class="ui-shell-story-multi-panel__reviews">
+            <article>
+              <strong>History 0.1.3</strong>
+              <span>Pending review</span>
+            </article>
+            <article>
+              <strong>Markdown 0.1.5</strong>
+              <span>Approved</span>
+            </article>
+          </div>
+        </AppShell.Body>
       </AppShell.SurfaceLayer.Body>
     </AppShell.SurfaceLayer>
   </AppShell.Root>

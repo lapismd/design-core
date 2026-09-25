@@ -1874,6 +1874,11 @@
       "mobile-main-host",
     );
     await expect(surface.closest("[inert]")).toBeNull();
+    const embeddedBody = await canvas.findByRole("region", {
+      name: "Release review list",
+    });
+    await expect(embeddedBody.tagName).toBe("SECTION");
+    await expect(embeddedBody.closest("main main")).toBeNull();
     await expect(root.querySelector('[data-ui-part="main"]')).toHaveAttribute(
       "inert",
     );
