@@ -4,6 +4,7 @@
     AppShellController,
     AppShellDisplayMode,
     AppShellSidebarController,
+    AppShellSurfaceLayerMobilePlacement,
   } from "../app-shell-controller.svelte.js";
   import { AppShell } from "../index.js";
   import "./AppShellExamples.css";
@@ -16,6 +17,7 @@
     frameClass,
     direction = "ltr",
     surfaceLeadingAllowance = false,
+    surfaceMobilePlacement = "active-lane",
     surfaceOpen = $bindable(false),
   }: {
     controller: AppShellController;
@@ -25,6 +27,7 @@
     frameClass?: string;
     direction?: "ltr" | "rtl";
     surfaceLeadingAllowance?: boolean;
+    surfaceMobilePlacement?: AppShellSurfaceLayerMobilePlacement;
     surfaceOpen?: boolean;
   } = $props();
 
@@ -149,6 +152,7 @@
       coverPanelIds={["right"]}
       suspendPanelIds={["overview"]}
       returnFocus={surfaceTrigger}
+      mobilePlacement={surfaceMobilePlacement}
       dismissLabel="Close reviews"
       onDismiss={() => (surfaceOpen = false)}
       style={surfaceLeadingAllowance

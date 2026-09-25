@@ -154,6 +154,9 @@
       width: 220,
     });
   let multiPanelMobileSurfaceOpen = $state(false);
+  let multiPanelMobileSurfacePlacement = $state<"active-lane" | "root">(
+    "active-lane",
+  );
   let nestedSelectedProject = $state("");
   let selectedMarkdownFile = $state("");
   let bodySidebarSide = $state<"left" | "right" | undefined>();
@@ -1927,6 +1930,43 @@
     await userEvent.click(
       canvas.getByRole("button", { name: "Close release reviews" }),
     );
+
+    multiPanelMobileSurfacePlacement = "root";
+    multiPanelMobileController.mobile.show("right", "activity");
+    await waitFor(() =>
+      expect(root).toHaveAttribute("data-mobile-stage", "right"),
+    );
+    multiPanelMobileSurfaceOpen = true;
+    const rootSurface = await canvas.findByRole("region", {
+      name: "Release reviews",
+    });
+    const rootSurfaceLayer = rootSurface.closest<HTMLElement>(
+      '[data-ui-part="surface-layer"]',
+    );
+    await expect(rootSurfaceLayer).toHaveAttribute(
+      "data-mobile-placement",
+      "root",
+    );
+    await expect(rootSurfaceLayer?.parentElement).toHaveAttribute(
+      "data-ui-part",
+      "root",
+    );
+    await waitFor(() => {
+      const rootRect = root.getBoundingClientRect();
+      const layerRect = rootSurfaceLayer!.getBoundingClientRect();
+      const surfaceRect = rootSurface.getBoundingClientRect();
+      expect(Math.abs(layerRect.left - rootRect.left)).toBeLessThanOrEqual(1);
+      expect(Math.abs(layerRect.right - rootRect.right)).toBeLessThanOrEqual(1);
+      expect(
+        Math.abs(surfaceRect.left - layerRect.left - 64),
+        `mobile root surface allowance ${surfaceRect.left - layerRect.left}`,
+      ).toBeLessThanOrEqual(1);
+    });
+    await expect(rootSurface.closest("[inert]")).toBeNull();
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Close release reviews" }),
+    );
+    multiPanelMobileSurfacePlacement = "active-lane";
   }}
 >
   {#snippet template()}
@@ -1937,6 +1977,7 @@
       displayMode="mobile"
       frameClass="ui-shell-story-frame-mobile"
       surfaceLeadingAllowance
+      surfaceMobilePlacement={multiPanelMobileSurfacePlacement}
       bind:surfaceOpen={multiPanelMobileSurfaceOpen}
     />
   {/snippet}

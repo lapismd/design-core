@@ -3,6 +3,7 @@
   import type { HTMLAttributes } from "svelte/elements";
   import { useAppShell } from "./app-shell-context.svelte.js";
   import { appShellTeleport } from "./app-shell-teleport.js";
+  import type { AppShellSurfaceLayerMobilePlacement } from "./app-shell-controller.svelte.js";
 
   let {
     ref = $bindable(null),
@@ -11,6 +12,7 @@
     coverPanelIds = [],
     suspendPanelIds = [],
     returnFocus,
+    mobilePlacement = "active-lane",
     dismissLabel = `Close ${label}`,
     dismissOnEscape = true,
     onDismiss,
@@ -29,6 +31,8 @@
     suspendPanelIds?: readonly string[];
     /** Focus target restored after dismissal. Defaults to the opener. */
     returnFocus?: HTMLElement | null;
+    /** Mobile host used while the shell is in mobile display mode. */
+    mobilePlacement?: AppShellSurfaceLayerMobilePlacement;
     /** Accessible name for the dismissible scrim. */
     dismissLabel?: string;
     /** Whether unhandled Escape dismisses the layer. */
@@ -47,6 +51,7 @@
   let blockEnd = $state(0);
   const mobileHost = $derived.by(() => {
     if (controller.mobile.resolvedMode !== "mobile") return null;
+    if (mobilePlacement === "root") return controller.mobile.getRootElement();
     const stage = controller.mobile.stage;
     return stage === "main"
       ? controller.mobile.getMainHost()
@@ -101,7 +106,7 @@
     if (!root || !main) return;
     if (
       controller.mobile.resolvedMode === "mobile" &&
-      controller.mobile.stage !== "main"
+      (mobilePlacement === "root" || controller.mobile.stage !== "main")
     ) {
       inlineStart = 0;
       inlineEnd = 0;
@@ -167,6 +172,9 @@
       .join(" ")}
     data-ui-component="app-shell"
     data-ui-part="surface-layer"
+    data-mobile-placement={controller.mobile.resolvedMode === "mobile"
+      ? mobilePlacement
+      : undefined}
     style:inset-inline-start={`${inlineStart}px`}
     style:inset-inline-end={`${inlineEnd}px`}
     style:inset-block-start={`${blockStart}px`}
