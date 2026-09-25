@@ -73,6 +73,7 @@ export function parseReferenceRef(value: unknown): ParsedReference | null {
   const match = REFERENCE_MARKER.exec(trimmed);
   if (!match) return null;
   const target = match[1];
+  if (!target) return null;
   const segments = target.split("/");
   if (!validSegments(segments)) return null;
 

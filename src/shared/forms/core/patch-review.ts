@@ -288,10 +288,16 @@ function splitProposalOperations(operations: JsonPatchOperation[]) {
       groups.push([operation]);
       continue;
     }
-    const [firstIndex, ...restIndexes] = relatedIndexes;
-    groups[firstIndex].push(operation);
+    const firstIndex = relatedIndexes[0];
+    if (firstIndex === undefined) continue;
+    const restIndexes = relatedIndexes.slice(1);
+    const firstGroup = groups[firstIndex];
+    if (!firstGroup) continue;
+    firstGroup.push(operation);
     for (const index of restIndexes.reverse()) {
-      groups[firstIndex].push(...groups[index]);
+      const group = groups[index];
+      if (!group) continue;
+      firstGroup.push(...group);
       groups.splice(index, 1);
     }
   }
@@ -461,7 +467,9 @@ export function createOrAppendJsonReview<T>(
       fileId,
       ...(requiredRoot ? { requiredRoot } : {}),
       baseValue,
-      baseValueHash: proposal.base?.sourceHash,
+      ...(proposal.base?.sourceHash
+        ? { baseValueHash: proposal.base.sourceHash }
+        : {}),
       createdAt: timestamp,
       updatedAt: timestamp,
       changes: [],
@@ -487,7 +495,7 @@ export function createOrAppendJsonReview<T>(
             operations: groupOps,
             paths: operationPaths(groupOps),
             status: "pending",
-            base: proposal.base,
+            ...(proposal.base ? { base: proposal.base } : {}),
             createdAt: timestamp,
             updatedAt: timestamp,
           }) satisfies FormReviewChange,

@@ -60,13 +60,14 @@ function diffSequence(before: readonly string[], after: readonly string[]) {
     beforeIndex -= 1
   ) {
     for (let afterIndex = after.length - 1; afterIndex >= 0; afterIndex -= 1) {
-      table[beforeIndex][afterIndex] =
-        before[beforeIndex] === after[afterIndex]
-          ? table[beforeIndex + 1][afterIndex + 1] + 1
-          : Math.max(
-              table[beforeIndex + 1][afterIndex],
-              table[beforeIndex][afterIndex + 1],
-            );
+      const beforeValue = before[beforeIndex]!;
+      const afterValue = after[afterIndex]!;
+      const row = table[beforeIndex]!;
+      const nextRow = table[beforeIndex + 1]!;
+      row[afterIndex] =
+        beforeValue === afterValue
+          ? nextRow[afterIndex + 1]! + 1
+          : Math.max(nextRow[afterIndex]!, row[afterIndex + 1]!);
     }
   }
 
@@ -74,26 +75,29 @@ function diffSequence(before: readonly string[], after: readonly string[]) {
   let beforeIndex = 0;
   let afterIndex = 0;
   while (beforeIndex < before.length && afterIndex < after.length) {
-    if (before[beforeIndex] === after[afterIndex]) {
-      pushSequencePart(parts, "equal", after[afterIndex]);
+    const beforeValue = before[beforeIndex]!;
+    const afterValue = after[afterIndex]!;
+    if (beforeValue === afterValue) {
+      pushSequencePart(parts, "equal", afterValue);
       beforeIndex += 1;
       afterIndex += 1;
     } else if (
-      table[beforeIndex + 1][afterIndex] >= table[beforeIndex][afterIndex + 1]
+      table[beforeIndex + 1]![afterIndex]! >=
+      table[beforeIndex]![afterIndex + 1]!
     ) {
-      pushSequencePart(parts, "removed", before[beforeIndex]);
+      pushSequencePart(parts, "removed", beforeValue);
       beforeIndex += 1;
     } else {
-      pushSequencePart(parts, "added", after[afterIndex]);
+      pushSequencePart(parts, "added", afterValue);
       afterIndex += 1;
     }
   }
   while (beforeIndex < before.length) {
-    pushSequencePart(parts, "removed", before[beforeIndex]);
+    pushSequencePart(parts, "removed", before[beforeIndex]!);
     beforeIndex += 1;
   }
   while (afterIndex < after.length) {
-    pushSequencePart(parts, "added", after[afterIndex]);
+    pushSequencePart(parts, "added", after[afterIndex]!);
     afterIndex += 1;
   }
   return parts;
@@ -127,8 +131,8 @@ function enrichChangedLines(parts: SequencePart[]) {
   const pairedLength = Math.min(removed.length, added.length);
 
   for (let index = 0; index < pairedLength; index += 1) {
-    const before = removed[index];
-    const after = added[index];
+    const before = removed[index]!;
+    const after = added[index]!;
     const segments = wordSegments(before, after);
     lines.push(
       lineFromSegments(
@@ -176,6 +180,7 @@ export function unifiedDiff(
 
   while (partIndex < parts.length) {
     const part = parts[partIndex];
+    if (!part) break;
     if (part.type === "equal") {
       result.push({
         type: "equal",
@@ -188,8 +193,10 @@ export function unifiedDiff(
     }
 
     const changedParts: SequencePart[] = [];
-    while (partIndex < parts.length && parts[partIndex].type !== "equal") {
-      changedParts.push(parts[partIndex]);
+    while (partIndex < parts.length) {
+      const current = parts[partIndex];
+      if (!current || current.type === "equal") break;
+      changedParts.push(current);
       partIndex += 1;
     }
     const lines = enrichChangedLines(changedParts);

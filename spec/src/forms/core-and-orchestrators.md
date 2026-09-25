@@ -23,6 +23,7 @@ The Forms barrel also exports the generic DialogFrame, ConfirmDialog, and Confir
 - Display-only defaults must remain absent from authoritative values until the consumer edits the field.
 - Array and disclosure metadata must remain outside consumer values unless explicitly part of the configured schema.
 - Shared Form tokens MUST retain the existing subtle sortable-row focus paint and transparent remove-action hover paint as defaults while allowing ancestor overrides for both.
+- Forms source exports MUST remain type-compatible for strict consumers that enable exact optional-property and unchecked-index semantics across field builders, controllers, patch review helpers, and renderer descriptors.
 
 ## DC-FORM-002 — Structured Form
 

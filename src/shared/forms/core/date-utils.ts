@@ -47,6 +47,7 @@ export function todayDateOnly() {
 function parseDateOnlyUtc(value: string) {
   if (!DATE_ONLY_RE.test(value)) return null;
   const [year, month, day] = value.split("-").map((part) => Number(part));
+  if (!year || !month || !day) return null;
   return new Date(Date.UTC(year, month - 1, day));
 }
 
