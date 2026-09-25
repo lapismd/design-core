@@ -49,7 +49,7 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 
 - The public boundary is `@lapismd/design-core/ai/chat`.
 - The default `scrollMode="stream"` MUST retain existing streaming auto-follow, spring navigation and snippet composition, while `scrollMode="history"` opts in to anchored cached-history navigation.
-- The generated ScrollArea wrapper and empty state MUST preserve the bounded viewport height while the composer remains docked.
+- The generated ScrollArea wrapper and empty state MUST preserve the bounded viewport height while the composer remains docked, and consumers MAY select the wrapper scroll strategy for latency-sensitive virtualized layouts.
 - Manual arrival at the latest content MUST dismiss generic arrival notifications; failed or pending jumps MUST NOT acknowledge controlled unread content, and switching identity MUST reset transient state.
 
 ## DC-AI-003 — Layout Scroll Button

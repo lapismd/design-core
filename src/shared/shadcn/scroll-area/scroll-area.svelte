@@ -5,6 +5,7 @@
   import {
     isScrollAreaVisibility,
     SCROLL_AREA_VISIBILITY_ATTRIBUTE,
+    type ScrollAreaStrategy,
     type ScrollAreaVisibility,
   } from "./scroll-area-model.js";
   import { type WithoutChild } from "../../../lib/utils.js";
@@ -33,6 +34,7 @@
     scrollbarYClasses = "",
     type,
     scrollHideDelay = 600,
+    scrollStrategy = "auto",
     children,
     ...restProps
   }: WithoutChild<ScrollAreaPrimitive.RootProps> & {
@@ -40,13 +42,17 @@
     scrollbarXClasses?: string | undefined;
     scrollbarYClasses?: string | undefined;
     viewportRef?: HTMLElement | null;
+    scrollStrategy?: ScrollAreaStrategy;
   } = $props();
 
   let activeRootRef = $state<HTMLElement | null>(null);
   let activeViewportRef = $state<HTMLElement | null>(null);
   let inheritedType = $state<ScrollAreaVisibility | undefined>(undefined);
   let resolvedType = $derived(type ?? inheritedType ?? "hover");
-  const nativeWebKitScrolling = usesNativeWebKitScrolling();
+  const useNativeViewport = $derived(
+    scrollStrategy === "native" ||
+      (scrollStrategy === "auto" && usesNativeWebKitScrolling()),
+  );
 
   $effect(() => {
     ref = activeRootRef;
@@ -89,10 +95,10 @@
   data-slot="scroll-area"
   data-orientation={orientation}
   data-scroll-visibility={resolvedType}
-  data-scroll-strategy={nativeWebKitScrolling ? "native" : "styled"}
+  data-scroll-strategy={useNativeViewport ? "native" : "styled"}
   class={className}
 >
-  {#if nativeWebKitScrolling}
+  {#if useNativeViewport}
     <!-- svelte-ignore a11y_no_noninteractive_tabindex (keyboard access for a named scrollable region) -->
     <div
       bind:this={activeViewportRef}

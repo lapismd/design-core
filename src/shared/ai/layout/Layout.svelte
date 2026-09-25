@@ -3,7 +3,10 @@
   import { untrack, type Snippet } from "svelte";
   import type { HTMLAttributes } from "svelte/elements";
   import * as Empty from "@lapismd/design-core/shadcn/empty";
-  import { ScrollArea } from "@lapismd/design-core/shadcn/scroll-area";
+  import {
+    ScrollArea,
+    type ScrollAreaStrategy,
+  } from "@lapismd/design-core/shadcn/scroll-area";
   import { createNewMessages } from "../new-messages.svelte.js";
   import { createStreamScroll } from "../stream-scroll.svelte.js";
   import { setLayoutContext } from "../context.svelte.js";
@@ -17,6 +20,7 @@
     density = "balanced",
     isEmpty = false,
     scrollMode = "stream",
+    scrollAreaStrategy = "auto",
     conversationKey,
     hasNewMessages: controlledNewMessages,
     hasNewer = false,
@@ -35,6 +39,7 @@
     isEmpty?: boolean;
     /** Keep streaming scroll behavior by default; opt in to anchored cached-history navigation. */
     scrollMode?: "stream" | "history";
+    scrollAreaStrategy?: ScrollAreaStrategy;
     conversationKey?: string;
     hasNewMessages?: boolean;
     hasNewer?: boolean;
@@ -197,7 +202,10 @@
   aria-label={ariaLabel}
 >
   <div data-ui-part="scroll-shell">
-    <ScrollArea bind:viewportRef={scrollRef}>
+    <ScrollArea
+      bind:viewportRef={scrollRef}
+      scrollStrategy={scrollAreaStrategy}
+    >
       <div bind:this={messageAreaRef} data-ui-part="message-area">
         {#if isEmpty}
           <div data-ui-part="empty-state">

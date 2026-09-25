@@ -2,6 +2,8 @@ export type ScrollAreaVisibility = "scroll" | "hover" | "always";
 
 export type ScrollAreaType = ScrollAreaVisibility | "auto";
 
+export type ScrollAreaStrategy = "auto" | "styled" | "native";
+
 export const SCROLL_AREA_VISIBILITY_ATTRIBUTE =
   "data-ui-scrollbar-visibility" as const;
 

@@ -85,6 +85,14 @@
     measurementFrame = requestAnimationFrame(measure);
   }
 
+  function measureImmediately(): void {
+    if (measurementFrame !== undefined) {
+      cancelAnimationFrame(measurementFrame);
+      measurementFrame = undefined;
+    }
+    measure();
+  }
+
   function scheduleScrollHide(): void {
     if (hideTimer !== undefined) clearTimeout(hideTimer);
     scrolling = true;
@@ -184,7 +192,7 @@
     const mountedTrack = track;
     if (!mountedViewport || !mountedTrack) return;
     const handleScroll = () => {
-      scheduleMeasurement();
+      measureImmediately();
       scheduleScrollHide();
     };
     const observeContent = () => {
