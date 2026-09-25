@@ -45,6 +45,13 @@
   let inlineEnd = $state(0);
   let blockStart = $state(0);
   let blockEnd = $state(0);
+  const mobileHost = $derived.by(() => {
+    if (controller.mobile.resolvedMode !== "mobile") return null;
+    const stage = controller.mobile.stage;
+    return stage === "main"
+      ? controller.mobile.getMainHost()
+      : controller.mobile.getPanelHost(stage);
+  });
 
   $effect(() => {
     if (!open || typeof document === "undefined") return;
@@ -92,6 +99,16 @@
     const root = controller.mobile.getRootElement();
     const main = controller.mobile.getMainElement();
     if (!root || !main) return;
+    if (
+      controller.mobile.resolvedMode === "mobile" &&
+      controller.mobile.stage !== "main"
+    ) {
+      inlineStart = 0;
+      inlineEnd = 0;
+      blockStart = 0;
+      blockEnd = 0;
+      return;
+    }
     const coveredElements = coverPanelIds.flatMap((id) => {
       const element = controller.getPanelElement(id);
       return element ? [element] : [];
@@ -142,7 +159,7 @@
     bind:this={ref}
     use:appShellTeleport={{
       enabled: controller.mobile.resolvedMode === "mobile",
-      target: controller.mobile.getMainHost(),
+      target: mobileHost,
     }}
     {...restProps}
     class={["ui-minimal-app-shell__surface-layer", className]

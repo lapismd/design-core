@@ -1899,6 +1899,34 @@
         canvas.queryByRole("region", { name: "Release reviews" }),
       ).not.toBeInTheDocument(),
     );
+
+    multiPanelMobileController.mobile.show("right", "activity");
+    await waitFor(() =>
+      expect(root).toHaveAttribute("data-mobile-stage", "right"),
+    );
+    multiPanelMobileSurfaceOpen = true;
+    const sideSurface = await canvas.findByRole("region", {
+      name: "Release reviews",
+    });
+    const sideSurfaceLayer = sideSurface.closest<HTMLElement>(
+      '[data-ui-part="surface-layer"]',
+    );
+    await expect(sideSurfaceLayer?.parentElement).toHaveAttribute(
+      "data-ui-part",
+      "mobile-panel-host",
+    );
+    await waitFor(() => {
+      const layerRect = sideSurfaceLayer!.getBoundingClientRect();
+      const surfaceRect = sideSurface.getBoundingClientRect();
+      expect(
+        Math.abs(surfaceRect.left - layerRect.left - 64),
+        `mobile side surface allowance ${surfaceRect.left - layerRect.left}`,
+      ).toBeLessThanOrEqual(1);
+    });
+    await expect(sideSurface.closest("[inert]")).toBeNull();
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Close release reviews" }),
+    );
   }}
 >
   {#snippet template()}
