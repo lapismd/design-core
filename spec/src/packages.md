@@ -27,7 +27,7 @@ The root package manifest defines the supported import boundaries. Family barrel
 - Each export, including the canonical Storybook App Shell reference fixture, must resolve to tracked source or the documented workspace build output; the fixture MUST render the same Design Core-owned composition used by the two-expanded-sidebars scenario and expose bounded content extension points, including an optional right-sidebar toggle, so consumer catalogs do not copy shell markup or styling.
 - Reusable form families MAY expose focused public subpaths that avoid loading unrelated forms from the barrel.
 - Package checks must fail when the mapped entry point is stale or missing.
-- Tool-only dependencies must remain outside runtime exports and be pinned where reproducibility requires it.
+- Tool-only dependencies, including declarations for test-only DOM fixtures, must remain outside runtime exports and be pinned where reproducibility requires it.
 
 ## DC-PKG-002 — Shadcn exports
 

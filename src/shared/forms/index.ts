@@ -126,7 +126,7 @@ export {
   type UnifiedDiffSegment,
   type UnifiedDiffSegmentType,
 } from "./core/review-diff";
-export type { InlineOptionPickerOption } from "./inline-option-picker/InlineOptionPicker.svelte";
+export type { InlineOptionPickerOption } from "./inline-option-picker/types";
 export type { AddSectionOption } from "./add-section-chooser/AddSectionChooser.svelte";
 export * from "./core/core";
 
