@@ -113,6 +113,12 @@
       '[data-ui-part="reasoning-icon"]',
     )!;
     expect(getComputedStyle(icon).animationName).not.toBe("none");
+    const label = canvas.getByText("Working", { exact: true });
+    for (const animation of label.getAnimations()) {
+      animation.pause();
+      animation.currentTime = 750;
+    }
+    expect(getComputedStyle(label).opacity).toBe("1");
   }}
 >
   {#snippet template()}<Reasoning label="Working" streaming />{/snippet}

@@ -211,7 +211,7 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 
 ## DC-AI-019 — Reasoning
 
-**Requirement.** The Reasoning family MUST provide explicitly experimental disclosure for reasoning or progress content.
+**Requirement.** The Reasoning family MUST provide explicitly experimental disclosure for reasoning or progress content. Streaming labels MUST retain full opacity so animation does not reduce text contrast.
 
 ### Acceptance details
 

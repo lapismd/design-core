@@ -1368,11 +1368,6 @@
 }
 
 [data-ui-component="ai-chat-reasoning"][data-streaming="true"]
-  [data-ui-part="reasoning-label"] {
-  animation: ui-ai-chat-pulse 1.5s ease-in-out infinite;
-}
-
-[data-ui-component="ai-chat-reasoning"][data-streaming="true"]
   [data-ui-part="reasoning-icon"] {
   animation: ui-ai-chat-spin 1s linear infinite;
 }
