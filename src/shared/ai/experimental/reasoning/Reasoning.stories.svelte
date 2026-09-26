@@ -27,6 +27,11 @@
         trigger.querySelector('[data-ui-part="reasoning-icon"]')!,
       ).animationName,
     ).toBe("none");
+    expect(
+      getComputedStyle(
+        trigger.querySelector('[data-ui-part="reasoning-label"]')!,
+      ).animationName,
+    ).toBe("none");
     await userEvent.click(trigger);
     await expect(trigger).toHaveAttribute("aria-expanded", "true");
     await expect(canvas.getByText(/constraints before choosing/)).toBeVisible();
@@ -112,11 +117,33 @@
     const icon = canvasElement.querySelector(
       '[data-ui-part="reasoning-icon"]',
     )!;
-    expect(getComputedStyle(icon).animationName).not.toBe("none");
     const label = canvas.getByText("Working", { exact: true });
-    for (const animation of label.getAnimations()) {
-      animation.pause();
-      animation.currentTime = 750;
+    const reducedMotion = matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    const forcedColors = matchMedia("(forced-colors: active)").matches;
+    if (reducedMotion || forcedColors) {
+      expect(getComputedStyle(label).animationName).toBe("none");
+      expect(getComputedStyle(icon).animationName).toBe("none");
+      expect(getComputedStyle(label).backgroundImage).toBe("none");
+    } else {
+      expect(getComputedStyle(icon).animationName).not.toBe("none");
+      const [animation] = label.getAnimations();
+      expect(animation).toBeDefined();
+      animation!.pause();
+      const duration = Number(animation!.effect!.getTiming().duration);
+      try {
+        animation!.currentTime = duration * 0.25;
+        const start = parseFloat(getComputedStyle(label).backgroundPositionX);
+        animation!.currentTime = duration * 0.75;
+        const end = parseFloat(getComputedStyle(label).backgroundPositionX);
+        // An oversized background moves right as its percentage decreases.
+        expect(start).toBeGreaterThan(end);
+        expect(getComputedStyle(label).backgroundClip).toBe("text");
+        expect(getComputedStyle(label).opacity).toBe("1");
+      } finally {
+        animation!.play();
+      }
     }
     expect(getComputedStyle(label).opacity).toBe("1");
   }}

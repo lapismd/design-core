@@ -1367,9 +1367,36 @@
   font-weight: 500;
 }
 
-[data-ui-component="ai-chat-reasoning"][data-streaming="true"]
-  [data-ui-part="reasoning-icon"] {
-  animation: ui-ai-chat-spin 1s linear infinite;
+@keyframes ui-ai-chat-reasoning-shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: 0% 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) and (forced-colors: none) {
+  [data-ui-component="ai-chat-reasoning"][data-streaming="true"]
+    [data-ui-part="reasoning-icon"] {
+    animation: ui-ai-chat-spin 1s linear infinite;
+  }
+
+  @supports (background-clip: text) {
+    [data-ui-component="ai-chat-reasoning"][data-streaming="true"]
+      [data-ui-part="reasoning-label"] {
+      background-image: linear-gradient(
+        110deg,
+        var(--ui-ai-chat-reasoning-accent) 35%,
+        var(--foreground) 50%,
+        var(--ui-ai-chat-reasoning-accent) 65%
+      );
+      background-size: 250% 100%;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: ui-ai-chat-reasoning-shimmer 2s linear infinite;
+    }
+  }
 }
 
 [data-ui-component="ai-chat-reasoning"] [data-ui-part="reasoning-duration"],

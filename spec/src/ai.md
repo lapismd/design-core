@@ -211,13 +211,13 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 
 ## DC-AI-019 — Reasoning
 
-**Requirement.** The Reasoning family MUST provide explicitly experimental disclosure for reasoning or progress content. Streaming labels MUST retain full opacity so animation does not reduce text contrast.
+**Requirement.** The Reasoning family MUST provide explicitly experimental disclosure for reasoning or progress content. Streaming labels MUST use a left-to-right shimmer with opaque, readable theme colours.
 
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/ai/experimental`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
-- A streaming reasoning row MUST rotate its progress icon unless the user prefers reduced motion; a completed row MUST stop animating.
+- A streaming reasoning row MUST rotate its progress icon and sweep its label from muted foreground to foreground every two seconds; completed rows MUST remain static, and reduced-motion or forced-colours preferences MUST retain plain readable text without animation.
 - Omitting reasoning children MUST render a non-interactive progress status with the same icon and label styling, without an empty disclosure.
 
 ## DC-AI-020 — Typing Indicator
