@@ -46,7 +46,10 @@
     let current = node.parentElement;
     while (current) {
       const style = getComputedStyle(current);
-      if (/(auto|scroll|overlay)/u.test(`${style.overflowY} ${style.overflow}`))
+      if (
+        current.dataset.uiPart === "scroll-area-viewport" ||
+        /(auto|scroll|overlay)/u.test(`${style.overflowY} ${style.overflow}`)
+      )
         return current;
       current = current.parentElement;
     }

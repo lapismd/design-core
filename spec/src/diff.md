@@ -35,7 +35,7 @@ Diff contracts keep change-set listing, file comparison, and merge presentation 
 - The public boundary is `@lapismd/design-core/diff`.
 - Selection and view mode MUST remain host-controllable through `selectedPath`, `mode`, and a compact three-segment `FileListingViewModeToggle` (list, folder tree, package) with one group border, and selected rows plus the active segment MUST use the shared `--ui-diff-selected` fill.
 - Row leading, label, and meta content MUST be host-replaceable snippets; default file-row meta MUST render File Change Stats from `additions` and `deletions`.
-- Opt-in measured virtualization MUST bound mounted list, folder-tree, and package-tree rows against the nearest scroll viewport, retain stable row keys and keyboard navigation, and request host-owned continuation once per loaded edge without changing the default eager rendering contract; the catalog MUST exercise this path alongside list, tree, package, empty, and selected states.
+- Opt-in measured virtualization MUST bound mounted list, folder-tree, and package-tree rows against the nearest scroll viewport, including the public Scroll Area viewport before runtime overflow styles settle, retain stable row keys and keyboard navigation, and request host-owned continuation once per loaded edge without changing the default eager rendering contract; the catalog MUST exercise this path alongside list, tree, package, empty, and selected states.
 
 ## DC-DIFF-003 — File Diff
 

@@ -126,6 +126,7 @@
       canvas.getByRole("button", { name: "src/generated/file-0001.ts" }),
     ).toHaveFocus();
 
+    viewport.style.overflowY = "auto";
     viewport.scrollTop = viewport.scrollHeight;
     viewport.dispatchEvent(new Event("scroll"));
     await waitFor(() => expect(continuationRequests).toBe(1));
@@ -139,7 +140,8 @@
     <div
       role="region"
       aria-label="Large file listing"
-      style="height: 16rem; max-width: 32rem; overflow-y: auto; padding: 0.5rem;"
+      data-ui-part="scroll-area-viewport"
+      style="height: 16rem; max-width: 32rem; padding: 0.5rem;"
     >
       <FileListing
         files={largeFiles}
