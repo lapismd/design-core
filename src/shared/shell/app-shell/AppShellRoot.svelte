@@ -477,10 +477,7 @@
     class="ui-minimal-app-shell__mobile-stage"
     data-ui-component="app-shell"
     data-ui-part="mobile-stage"
-    role={resolvedMode === "mobile" ? "group" : undefined}
-    aria-label={resolvedMode === "mobile"
-      ? "Mobile application shell"
-      : undefined}
+    role="presentation"
     style:touch-action={stageDragging ? "none" : "pan-y"}
     onpointerdown={handlePointerDown}
     onpointermove={handlePointerMove}

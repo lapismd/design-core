@@ -1186,10 +1186,11 @@
 <Story
   name="Automatic tablet composition"
   tags={["visual-pending"]}
-  play={async ({ canvas }) => {
-    const root = canvas.getByRole("group", {
-      name: "Mobile application shell",
-    }).parentElement;
+  play={async ({ canvas, canvasElement }) => {
+    const stage = canvasElement.querySelector<HTMLElement>(
+      '[data-ui-part="mobile-stage"]',
+    )!;
+    const root = stage.parentElement;
     const frame = root!.closest<HTMLElement>(".ui-shell-story-frame")!;
     await waitFor(() =>
       expect(root).toHaveAttribute("data-display-mode", "mobile"),
@@ -1287,11 +1288,11 @@
       },
     },
   }}
-  play={async ({ canvas }) => {
-    const mobileGroup = canvas.getByRole("group", {
-      name: "Mobile application shell",
-    });
-    const root = mobileGroup.parentElement!;
+  play={async ({ canvas, canvasElement }) => {
+    const mobileStage = canvasElement.querySelector<HTMLElement>(
+      '[data-ui-part="mobile-stage"]',
+    )!;
+    const root = mobileStage.parentElement!;
     const mainLane = root.querySelector('[data-ui-part="mobile-main-lane"]');
     const leftLane = root.querySelector(
       '[data-ui-part="mobile-lane"][data-side="left"]',
@@ -1301,6 +1302,8 @@
     );
 
     await expect(root).toHaveAttribute("data-display-mode", "mobile");
+    await expect(mobileStage).toHaveAttribute("role", "presentation");
+    await expect(mobileStage).not.toHaveAttribute("aria-label");
     await expect(root).toHaveAttribute("data-mobile-stage", "main");
     await expect(mainLane).not.toHaveAttribute("inert");
     await expect(leftLane).toHaveAttribute("inert");
@@ -1369,11 +1372,11 @@
     await expect(aiSidebar).toHaveAttribute("data-mobile-panel-active", "true");
     await expect(aiSidebar).toHaveFocus();
     await waitFor(() => {
-      const bounds = mobileGroup.getBoundingClientRect();
+      const bounds = mobileStage.getBoundingClientRect();
       const panel = aiSidebar.getBoundingClientRect();
       expect(panel.left).toBeGreaterThanOrEqual(bounds.left - 1);
       expect(panel.right).toBeLessThanOrEqual(bounds.right + 1);
-      expect(mobileGroup.scrollLeft).toBe(0);
+      expect(mobileStage.scrollLeft).toBe(0);
     });
 
     const rightSelector = canvas.getByRole("button", {
@@ -1394,7 +1397,7 @@
     await userEvent.keyboard("{Escape}");
     await expect(root).toHaveAttribute("data-mobile-stage", "main");
     await expect(rightToggle).toHaveFocus();
-    await expect(mobileGroup.scrollLeft).toBe(0);
+    await expect(mobileStage.scrollLeft).toBe(0);
 
     await expect(completeMobileProjectSidebarController.state).toBe("closed");
     await expect(completeMobileController.left.state).toBe("collapsed");
@@ -1426,10 +1429,10 @@
       },
     },
   }}
-  play={async ({ canvas }) => {
-    const stage = canvas.getByRole("group", {
-      name: "Mobile application shell",
-    });
+  play={async ({ canvas, canvasElement }) => {
+    const stage = canvasElement.querySelector<HTMLElement>(
+      '[data-ui-part="mobile-stage"]',
+    )!;
     const toggle = canvas.getByRole("button", { name: "Open right sidebar" });
     await userEvent.click(toggle);
     const panel = canvas.getByLabelText("AI sidebar");
