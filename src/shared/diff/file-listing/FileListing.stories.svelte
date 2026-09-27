@@ -1,6 +1,6 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, userEvent } from "storybook/test";
+  import { expect, userEvent, waitFor } from "storybook/test";
   import { Basic } from "./FileListing.example-sources.js";
   import FileListing from "./FileListing.svelte";
   import FileListingViewModeToggle from "./FileListingViewModeToggle.svelte";
@@ -26,6 +26,14 @@
     { path: "packages/web-ui/src/file-tree.ts", additions: 8, deletions: 3 },
     { path: "README.md", additions: 2, deletions: 2 },
   ];
+  const largeFiles: FileListingFile[] = Array.from(
+    { length: 500 },
+    (_, index) => ({
+      path: `src/generated/file-${String(index).padStart(4, "0")}.ts`,
+      additions: index % 7,
+      deletions: index % 3,
+    }),
+  );
 </script>
 
 <script lang="ts">
@@ -34,6 +42,8 @@
   let listMode = $state<FileListingViewMode>("list");
   let packageMode = $state<FileListingViewMode>("package");
   let packageSelected = $state<string | null>(null);
+  let virtualSelected = $state<string | null>(null);
+  let continuationRequests = $state(0);
 </script>
 
 <Story
@@ -92,6 +102,53 @@
         }}
       />
       <output class="sr-only">{selectedPath ?? ""}</output>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Virtualizes a large host-owned list"
+  play={async ({ canvas }) => {
+    const viewport = canvas.getByRole("region", { name: "Large file listing" });
+    const listing = viewport.querySelector<HTMLElement>(
+      '[data-ui-component="file-listing"]',
+    )!;
+    await expect(listing).toHaveAttribute("data-virtualized", "true");
+    await expect(
+      listing.querySelectorAll('[data-ui-part="virtual-row"]').length,
+    ).toBeLessThan(80);
+    const first = canvas.getByRole("button", {
+      name: "src/generated/file-0000.ts",
+    });
+    first.focus();
+    await userEvent.keyboard("{ArrowDown}");
+    await expect(
+      canvas.getByRole("button", { name: "src/generated/file-0001.ts" }),
+    ).toHaveFocus();
+
+    viewport.scrollTop = viewport.scrollHeight;
+    viewport.dispatchEvent(new Event("scroll"));
+    await waitFor(() => expect(continuationRequests).toBe(1));
+    await expect(
+      listing.querySelectorAll('[data-ui-part="virtual-row"]').length,
+    ).toBeLessThan(80);
+  }}
+  tags={["visual-pending"]}
+>
+  {#snippet template()}
+    <div
+      role="region"
+      aria-label="Large file listing"
+      style="height: 16rem; max-width: 32rem; overflow-y: auto; padding: 0.5rem;"
+    >
+      <FileListing
+        files={largeFiles}
+        mode="list"
+        bind:selectedPath={virtualSelected}
+        virtualize
+        hasMore
+        onLoadMore={() => (continuationRequests += 1)}
+      />
     </div>
   {/snippet}
 </Story>
