@@ -63,7 +63,7 @@
   let contentRef = $state<HTMLElement | null>(null);
   let virtualized = $state(false);
   const streamScroll = createStreamScroll({
-    anchorOnResize: () => scrollMode === "history",
+    anchorOnResize: () => scrollMode === "history" && !virtualized,
   });
   const newMessages = createNewMessages({
     deferResize: () => scrollMode === "history",

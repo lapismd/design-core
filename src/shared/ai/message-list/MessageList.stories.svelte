@@ -1,6 +1,6 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, userEvent, waitFor } from "storybook/test";
+  import { expect, fn, userEvent, waitFor } from "storybook/test";
   import HistoryFixture from "./MessageListHistoryFixture.svelte";
   import EstimateUpdateFixture from "./MessageListEstimateUpdateFixture.svelte";
   import LegacyFixture from "./MessageListLegacyFixture.svelte";
@@ -344,14 +344,24 @@
         Number(canvas.getByLabelText("Position reports").textContent),
       ).toBe(settledReports + 1),
     );
-    viewport.dispatchEvent(new WheelEvent("wheel", { deltaY: -900 }));
-    viewport.scrollTop -= 900;
-    viewport.dispatchEvent(new Event("scroll"));
-    await waitFor(() =>
-      expect(
-        canvas.getByRole("button", { name: "Scroll to latest" }),
-      ).toBeVisible(),
-    );
+    const querySelectorAll = fn(viewport.querySelectorAll.bind(viewport));
+    const originalQuerySelectorAll = viewport.querySelectorAll;
+    viewport.querySelectorAll = querySelectorAll;
+    try {
+      viewport.dispatchEvent(new WheelEvent("wheel", { deltaY: -900 }));
+      viewport.scrollTop -= 900;
+      viewport.dispatchEvent(new Event("scroll"));
+      await waitFor(() =>
+        expect(
+          canvas.getByRole("button", { name: "Scroll to latest" }),
+        ).toBeVisible(),
+      );
+      expect(querySelectorAll).not.toHaveBeenCalledWith(
+        "[data-message-id], [data-ui-component='ai-chat-message']",
+      );
+    } finally {
+      viewport.querySelectorAll = originalQuerySelectorAll;
+    }
     await userEvent.click(
       canvas.getByRole("button", { name: "Resize content" }),
     );
