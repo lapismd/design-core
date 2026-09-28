@@ -307,10 +307,7 @@
     flex: none;
     border-radius: var(--ui-scroll-area-radius, 9999px);
     background: var(--ui-scroll-area-foreground, var(--border));
-    transition:
-      width 140ms ease,
-      height 140ms ease,
-      background-color 140ms ease;
+    transition: background-color 140ms ease;
   }
 
   [data-scrollbar-overlay]
@@ -336,6 +333,9 @@
     inset-inline-end: 0;
     inset-block-start: 0;
     width: 0.25rem;
+    transition:
+      width 140ms ease,
+      background-color 140ms ease;
   }
 
   [data-scrollbar-overlay]
@@ -351,6 +351,9 @@
     inset-block-end: 0;
     inset-inline-start: 0;
     height: 0.25rem;
+    transition:
+      height 140ms ease,
+      background-color 140ms ease;
   }
 
   [data-scrollbar-overlay]

@@ -85,11 +85,20 @@
       await expect(thumb).toBeInTheDocument();
       const scrollbarBounds = scrollbar!.getBoundingClientRect();
       const thumbBounds = thumb!.getBoundingClientRect();
+      const transitionProperties = getComputedStyle(thumb!)
+        .transitionProperty.split(",")
+        .map((property) => property.trim());
       const edgeGap =
         edge === "right"
           ? scrollbarBounds.right - thumbBounds.right
           : scrollbarBounds.bottom - thumbBounds.bottom;
       expect(edgeGap).toBeCloseTo(1, 1);
+      expect(transitionProperties).toContain(
+        orientation === "vertical" ? "width" : "height",
+      );
+      expect(transitionProperties).not.toContain(
+        orientation === "vertical" ? "height" : "width",
+      );
     }
   }}
   tags={["visual-pending"]}

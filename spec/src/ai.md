@@ -70,7 +70,7 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 
 - The public boundary is `@lapismd/design-core/ai/chat`.
 - Existing children, density, gap, streaming, empty-state and manual Load older messages APIs MUST retain their defaults without instantiating a virtualizer, while non-virtual lists with `scrollToTopAction` MUST auto-load older pages when the top sentinel leaves then re-enters the owning scroll viewport.
-- `virtualize={true}` opts in to row rendering, single-flight anchored paging and the guarded 600 px loading boundary while accepting either one fixed row estimate or an item-aware estimate function before DOM measurement, and virtualized chat layouts MUST avoid ScrollArea scrollbar geometry animation while measured row heights revise the virtual total size.
+- `virtualize={true}` opts in to row rendering, single-flight anchored paging and the guarded 600 px loading boundary while accepting either one fixed row estimate or an item-aware estimate function before DOM measurement; replacing that estimator MUST invalidate cached sizes for unmounted rows, retain current DOM measurements, and preserve the visible reading anchor or bottom lock while the total size is recomputed, and virtualized chat layouts MUST avoid ScrollArea scrollbar geometry animation while measured row heights revise the virtual total size.
 - Unchanged virtualizer inputs MUST NOT schedule new measurements or position reports, while history-mode resize work MUST be coalesced outside observer delivery and cancelled on teardown.
 
 ## DC-AI-005 — Message

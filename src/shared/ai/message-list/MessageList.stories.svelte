@@ -2,6 +2,7 @@
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent, waitFor } from "storybook/test";
   import HistoryFixture from "./MessageListHistoryFixture.svelte";
+  import EstimateUpdateFixture from "./MessageListEstimateUpdateFixture.svelte";
   import LegacyFixture from "./MessageListLegacyFixture.svelte";
   import { Virtualized, Legacy } from "./MessageList.example-sources.js";
   import Message from "../message/Message.svelte";
@@ -434,6 +435,49 @@
   }}
 >
   {#snippet template()}<LegacyFixture />{/snippet}
+</Story>
+
+<Story
+  name="Updated item estimates replace unmounted sizes"
+  exportName="UpdatedItemEstimates"
+  tags={["visual-pending"]}
+  parameters={{
+    docs: { source: { code: Virtualized, language: "tsx", type: "code" } },
+  }}
+  play={async ({ canvas, canvasElement }) => {
+    const viewport = canvasElement.querySelector<HTMLElement>(
+      '[data-ui-part="scroll-area-viewport"]',
+    )!;
+    const content = canvasElement.querySelector<HTMLElement>(
+      '[data-ui-part="virtual-content"]',
+    )!;
+    await waitFor(() => expect(viewport.scrollTop).toBeGreaterThan(1_000));
+    const originalHeight = Number.parseFloat(content.style.height);
+
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Load first message detail" }),
+    );
+    await waitFor(() =>
+      expect(Number.parseFloat(content.style.height)).toBeGreaterThan(
+        originalHeight + 790,
+      ),
+    );
+    const estimatedHeight = Number.parseFloat(content.style.height);
+
+    viewport.dispatchEvent(new WheelEvent("wheel", { deltaY: -100_000 }));
+    viewport.scrollTop = 0;
+    viewport.dispatchEvent(new Event("scroll"));
+    await expect(
+      await canvas.findByText("Loaded first message detail"),
+    ).toBeVisible();
+    await waitFor(() =>
+      expect(
+        Math.abs(Number.parseFloat(content.style.height) - estimatedHeight),
+      ).toBeLessThanOrEqual(2),
+    );
+  }}
+>
+  {#snippet template()}<EstimateUpdateFixture />{/snippet}
 </Story>
 
 <style>

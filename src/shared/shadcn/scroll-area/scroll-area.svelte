@@ -192,11 +192,7 @@
       }
       [data-ui-component="scroll-area"][data-ui-part="scroll-area-thumb"] {
         background-color: var(--ui-scroll-area-foreground, var(--border));
-        transition:
-          width 140ms ease,
-          height 140ms ease,
-          flex-basis 140ms ease,
-          background-color 140ms ease;
+        transition: background-color 140ms ease;
       }
       [data-ui-component="scroll-area"][data-ui-part="scroll-area-scrollbar"] {
         padding: 0;
@@ -299,6 +295,10 @@
         flex: 0 0 0.25rem;
         margin-inline-start: auto;
         margin-inline-end: 1px;
+        transition:
+          width 140ms ease,
+          flex-basis 140ms ease,
+          background-color 140ms ease;
       }
 
       [data-ui-component="scroll-area"][data-ui-part="scroll-area-scrollbar"][data-orientation="vertical"]
@@ -316,6 +316,10 @@
         flex: 0 0 0.25rem;
         margin-block-start: auto;
         margin-block-end: 1px;
+        transition:
+          height 140ms ease,
+          flex-basis 140ms ease,
+          background-color 140ms ease;
       }
 
       [data-ui-component="scroll-area"][data-ui-part="scroll-area-scrollbar"][data-orientation="horizontal"]

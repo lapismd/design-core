@@ -129,6 +129,9 @@
       scan = overscan;
     untrack(() => {
       const retained = JSON.stringify(extra);
+      const estimateChanged =
+        priorConfiguration?.key === key &&
+        priorConfiguration.estimate !== estimate;
       if (
         priorConfiguration?.key === key &&
         priorConfiguration.items === nextItems &&
@@ -158,7 +161,7 @@
       const restore = restoredKey !== key ? initialPosition : undefined;
       const preserve =
         sameKey &&
-        nextItems !== priorItems &&
+        (nextItems !== priorItems || estimateChanged) &&
         !layout?.streamScroll.isLocked &&
         oldItem;
       priorKey = key;
@@ -182,6 +185,21 @@
             (a, b) => a - b,
           ),
       });
+      if (estimateChanged) {
+        const mounted = [
+          ...(virtualRef?.querySelectorAll<HTMLDivElement>(
+            ':scope > [data-ui-part="virtual-row"]',
+          ) ?? []),
+        ].map((node) => ({
+          index: Number(node.dataset.index),
+          size: node.getBoundingClientRect().height,
+        }));
+        instance.measure();
+        // Rebuild the cleared range from the new estimator before restoring
+        // measurements for rows whose current DOM is still authoritative.
+        instance.getTotalSize();
+        mounted.forEach(({ index, size }) => instance.resizeItem(index, size));
+      }
       void tick().then(() => {
         if (!alive) return;
         if (
