@@ -47,6 +47,8 @@
   let paginationArmed = false;
   let lastTop = 0;
   let alive = true;
+  let positionReportPending = false;
+  let positionReportTimer: ReturnType<typeof setTimeout> | undefined;
   let priorConfiguration:
     | {
         key: string;
@@ -58,6 +60,7 @@
       }
     | undefined;
   onDestroy(() => {
+    flushPositionReport();
     alive = false;
   });
   const virtualizer = createVirtualizer<HTMLElement, HTMLDivElement>({
@@ -104,6 +107,22 @@
       return;
     const position = readPosition();
     if (position) untrack(() => onPositionChange?.(position));
+  }
+
+  function flushPositionReport(force = false) {
+    if (positionReportTimer !== undefined) {
+      clearTimeout(positionReportTimer);
+      positionReportTimer = undefined;
+    }
+    if (!positionReportPending && !force) return;
+    positionReportPending = false;
+    reportPosition();
+  }
+
+  function schedulePositionReport() {
+    positionReportPending = true;
+    if (positionReportTimer !== undefined) clearTimeout(positionReportTimer);
+    positionReportTimer = setTimeout(flushPositionReport, 100);
   }
 
   function measure(node: HTMLDivElement) {
@@ -240,7 +259,7 @@
         }
         if (nextItems.length) {
           restoredKey = key;
-          reportPosition();
+          flushPositionReport(true);
         }
       });
     });
@@ -278,7 +297,7 @@
         void onLoadOlder?.();
       }
       lastTop = top;
-      reportPosition();
+      schedulePositionReport();
     };
     const rememberInteraction = (event: Event) => {
       const target = event.target;
@@ -286,13 +305,17 @@
         activeRowId =
           target.closest<HTMLElement>("[data-message-id]")?.dataset.messageId;
     };
+    const onScrollEnd = () => flushPositionReport();
     viewport.addEventListener("scroll", onScroll, { passive: true });
+    viewport.addEventListener("scrollend", onScrollEnd);
     viewport.addEventListener("focusin", rememberInteraction);
     viewport.addEventListener("pointerdown", rememberInteraction, {
       passive: true,
     });
     return () => {
+      flushPositionReport();
       viewport.removeEventListener("scroll", onScroll);
+      viewport.removeEventListener("scrollend", onScrollEnd);
       viewport.removeEventListener("focusin", rememberInteraction);
       viewport.removeEventListener("pointerdown", rememberInteraction);
     };

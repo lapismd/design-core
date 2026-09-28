@@ -328,6 +328,22 @@
     expect(
       Number(canvas.getByLabelText("Position reports").textContent),
     ).toBeLessThanOrEqual(reports + 1);
+    await new Promise((resolve) => setTimeout(resolve, 100));
+    const settledReports = Number(
+      canvas.getByLabelText("Position reports").textContent,
+    );
+    for (let index = 0; index < 4; index++) {
+      viewport.scrollTop -= 24;
+      viewport.dispatchEvent(new Event("scroll"));
+    }
+    expect(Number(canvas.getByLabelText("Position reports").textContent)).toBe(
+      settledReports,
+    );
+    await waitFor(() =>
+      expect(
+        Number(canvas.getByLabelText("Position reports").textContent),
+      ).toBe(settledReports + 1),
+    );
     viewport.dispatchEvent(new WheelEvent("wheel", { deltaY: -900 }));
     viewport.scrollTop -= 900;
     viewport.dispatchEvent(new Event("scroll"));
