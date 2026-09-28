@@ -4,11 +4,8 @@
   import { Basic, LazyDirectories } from "./FileListing.example-sources.js";
   import FileListing from "./FileListing.svelte";
   import FileListingViewModeToggle from "./FileListingViewModeToggle.svelte";
-  import type {
-    FileListingDirectory,
-    FileListingFile,
-    FileListingViewMode,
-  } from "./types.js";
+  import type { FileListingDirectory } from "../index.js";
+  import type { FileListingFile, FileListingViewMode } from "./types.js";
 
   const { Story } = defineMeta({
     title: "Diff/File Listing",
