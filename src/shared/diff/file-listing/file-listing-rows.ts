@@ -1,9 +1,13 @@
 import {
-  buildFileTree,
-  buildPackageFileTree,
+  buildFileEntryTree,
+  buildPackageFileEntryTree,
   type FileTreeNode,
 } from "../core/file-tree.js";
-import type { FileListingFile, FileListingViewMode } from "./types.js";
+import type {
+  FileListingDirectory,
+  FileListingFile,
+  FileListingViewMode,
+} from "./types.js";
 
 export type FileListingRow<TFile extends FileListingFile = FileListingFile> =
   | {
@@ -27,6 +31,7 @@ export function fileListingRows<TFile extends FileListingFile>(
   files: readonly TFile[],
   mode: FileListingViewMode,
   collapsedDirectoryPaths: ReadonlySet<string>,
+  directories: readonly FileListingDirectory[] = [],
 ): FileListingRow<TFile>[] {
   if (mode === "list") {
     return [...files]
@@ -40,10 +45,17 @@ export function fileListingRows<TFile extends FileListingFile>(
   }
 
   const filesByPath = new Map(files.map((file) => [file.path, file]));
+  const entries = [
+    ...directories.map((directory) => ({
+      path: directory.path,
+      type: "directory" as const,
+    })),
+    ...files.map((file) => ({ path: file.path, type: "file" as const })),
+  ];
   const tree =
     mode === "package"
-      ? buildPackageFileTree(files.map((file) => file.path))
-      : buildFileTree(files.map((file) => file.path));
+      ? buildPackageFileEntryTree(entries)
+      : buildFileEntryTree(entries);
   const rows: FileListingRow<TFile>[] = [];
 
   const visit = (node: FileTreeNode, depth: number): void => {

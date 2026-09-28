@@ -21,6 +21,7 @@
   import { fileListingRows, type FileListingRow } from "./file-listing-rows.js";
   import FileListingVirtualRows from "./FileListingVirtualRows.svelte";
   import type {
+    FileListingDirectory,
     FileListingDirectoryContext,
     FileListingFile,
     FileListingFileContext,
@@ -30,6 +31,7 @@
 
   let {
     files,
+    directories = [],
     mode = "tree",
     selectedPath = $bindable(null),
     collapsedDirectoryPaths,
@@ -49,6 +51,8 @@
   }: {
     /** Host-owned change-set rows. Paths are the only required field. */
     files: FileListingFile[];
+    /** Host-owned directories that may not have loaded children yet. */
+    directories?: FileListingDirectory[];
     /** `list` shows paths; `tree` and `package` group by folders. */
     mode?: FileListingViewMode;
     selectedPath?: string | null;
@@ -82,7 +86,9 @@
   const resolvedCollapsed = $derived(
     collapsedDirectoryPaths ?? internalCollapsed,
   );
-  const rows = $derived(fileListingRows(files, mode, resolvedCollapsed));
+  const rows = $derived(
+    fileListingRows(files, mode, resolvedCollapsed, directories),
+  );
 
   function toggleDirectory(path: string) {
     if (onDirectoryToggle) {
@@ -265,7 +271,7 @@
   data-mode={mode}
   data-virtualized={virtualize ? "true" : undefined}
 >
-  {#if files.length === 0}
+  {#if files.length === 0 && directories.length === 0}
     <p class="ui-diff-file-listing__empty">No changed files</p>
   {:else if virtualize}
     <FileListingVirtualRows

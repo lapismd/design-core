@@ -1,10 +1,14 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent, waitFor } from "storybook/test";
-  import { Basic } from "./FileListing.example-sources.js";
+  import { Basic, LazyDirectories } from "./FileListing.example-sources.js";
   import FileListing from "./FileListing.svelte";
   import FileListingViewModeToggle from "./FileListingViewModeToggle.svelte";
-  import type { FileListingFile, FileListingViewMode } from "./types.js";
+  import type {
+    FileListingDirectory,
+    FileListingFile,
+    FileListingViewMode,
+  } from "./types.js";
 
   const { Story } = defineMeta({
     title: "Diff/File Listing",
@@ -37,6 +41,8 @@
 </script>
 
 <script lang="ts">
+  import { SvelteSet } from "svelte/reactivity";
+
   let mode = $state<FileListingViewMode>("tree");
   let selectedPath = $state<string | null>("src/index.ts");
   let listMode = $state<FileListingViewMode>("list");
@@ -44,6 +50,20 @@
   let packageSelected = $state<string | null>(null);
   let virtualSelected = $state<string | null>(null);
   let continuationRequests = $state(0);
+  let lazyFiles = $state<FileListingFile[]>([{ path: "README.md" }]);
+  let lazyDirectories = $state<FileListingDirectory[]>([{ path: "src" }]);
+  const lazyCollapsed = new SvelteSet<string>(["src"]);
+  let lazyRequests = $state(0);
+
+  function toggleLazyDirectory(path: string) {
+    if (!lazyCollapsed.has(path)) {
+      lazyCollapsed.add(path);
+      return;
+    }
+    lazyRequests += 1;
+    lazyFiles = [...lazyFiles, { path: `${path}/lib.rs` }];
+    lazyCollapsed.delete(path);
+  }
 </script>
 
 <Story
@@ -102,6 +122,41 @@
         }}
       />
       <output class="sr-only">{selectedPath ?? ""}</output>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Loads host-owned directory children"
+  parameters={{
+    docs: {
+      source: { code: LazyDirectories, language: "tsx", type: "code" },
+    },
+  }}
+  play={async ({ canvas }) => {
+    const directory = canvas.getByRole("button", { name: "src" });
+    await expect(directory).toHaveAttribute("aria-expanded", "false");
+    await expect(
+      canvas.queryByRole("button", { name: "src/lib.rs" }),
+    ).toBeNull();
+    await userEvent.click(directory);
+    await expect(directory).toHaveAttribute("aria-expanded", "true");
+    await expect(
+      canvas.getByRole("button", { name: "src/lib.rs" }),
+    ).toBeVisible();
+    await expect(canvas.getByRole("status")).toHaveTextContent("1");
+  }}
+  tags={["visual-pending"]}
+>
+  {#snippet template()}
+    <div class="max-w-md p-4">
+      <FileListing
+        files={lazyFiles}
+        directories={lazyDirectories}
+        collapsedDirectoryPaths={lazyCollapsed}
+        onDirectoryToggle={toggleLazyDirectory}
+      />
+      <output class="sr-only">{lazyRequests}</output>
     </div>
   {/snippet}
 </Story>

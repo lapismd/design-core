@@ -28,4 +28,18 @@ describe("fileListingRows", () => {
       ["file", "README.md", 0],
     ]);
   });
+
+  it("renders unloaded host-owned directories without inventing child files", () => {
+    expect(
+      fileListingRows([{ path: "README.md" }], "tree", new Set(["src"]), [
+        { path: "src" },
+        { path: "docs/reference" },
+      ]).map((row) => [row.kind, row.path, row.depth]),
+    ).toEqual([
+      ["directory", "docs", 0],
+      ["directory", "docs/reference", 1],
+      ["directory", "src", 0],
+      ["file", "README.md", 0],
+    ]);
+  });
 });
