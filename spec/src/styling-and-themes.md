@@ -188,3 +188,7 @@ refuses leftover utilities after native-CSS conversion.
 6. Run `pnpm check:no-tailwind`, focused story checks, and the repository gate.
 
 Dialog recipes consume runtime container and text tokens explicitly defined in the theme so packaged consumers retain geometry without generating Tailwind utilities.
+
+Chat typography exposes `--ui-ai-chat-type-scale` (default 1) on a shared
+ancestor. It scales chat text and text line heights without scaling geometry,
+leaving browser zoom independent and retaining mobile composer minimum sizing.

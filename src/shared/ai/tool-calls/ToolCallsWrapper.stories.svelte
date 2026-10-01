@@ -1,6 +1,6 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, fn, userEvent } from "storybook/test";
+  import { expect, fn, userEvent, waitFor } from "storybook/test";
   import { Button } from "@lapismd/design-core/shadcn/button";
   import type { Snippet } from "svelte";
   import type { ToolCallItem } from "../types.js";
@@ -49,9 +49,11 @@
     await userEvent.click(
       canvas.getByRole("button", { name: "Collapse 2 tool calls" }),
     );
-    await expect(
-      canvas.queryByRole("button", { name: "Reply to Read file" }),
-    ).not.toBeInTheDocument();
+    await waitFor(() =>
+      expect(
+        canvas.queryByRole("button", { name: "Reply to Read file" }),
+      ).not.toBeInTheDocument(),
+    );
   }}
 >
   {#snippet template()}

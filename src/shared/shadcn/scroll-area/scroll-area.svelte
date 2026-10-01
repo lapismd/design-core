@@ -12,6 +12,13 @@
   import { omitDataUiIdentity } from "../../../lib/data-ui-host.js";
 
   function usesNativeWebKitScrolling(): boolean {
+    // Hosts with frequent view teardown may opt into the owned, cancellable
+    // native overlay lifecycle while explicit styled instances keep priority.
+    if (
+      typeof document !== "undefined" &&
+      document.documentElement.dataset.uiScrollStrategy === "native"
+    )
+      return true;
     if (
       typeof document !== "undefined" &&
       document.documentElement.dataset.engine
@@ -103,7 +110,7 @@
     <div
       bind:this={activeViewportRef}
       tabindex={0}
-      role="region"
+      role="group"
       aria-label="Scrollable content"
       data-ui-component="scroll-area"
       data-ui-part="scroll-area-viewport"

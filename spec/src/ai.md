@@ -39,6 +39,8 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 ### Acceptance details
 
 - The public boundary is AI layer.
+- Consumers MAY inherit `--ui-ai-chat-type-scale` (default `1`) to scale chat text and fixed line heights without scaling icons, padding, widths or application zoom.
+- Mobile composer text MUST retain its 16 px focus floor.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 
 ## DC-AI-002 — Layout

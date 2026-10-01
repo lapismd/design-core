@@ -1,6 +1,7 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect } from "storybook/test";
+  import { expect, userEvent, waitFor } from "storybook/test";
+  import NativeLifecycle from "./ScrollAreaNativeLifecycleFixture.svelte";
   import * as ScrollArea from "./index.js";
   import ScrollAreaScrollableList from "./ScrollAreaScrollableList.svelte";
   import ScrollAreaBehaviorFixture from "./ScrollAreaBehaviorFixture.svelte";
@@ -116,3 +117,42 @@
     <ScrollAreaBehaviorFixture />
   {/snippet}
 </Story>
+
+<Story
+  name="Host native strategy survives teardown"
+  tags={["visual-pending"]}
+  parameters={{
+    docs: {
+      source: {
+        code: '// Set document.documentElement.dataset.uiScrollStrategy = "native" before mounting.\n<ScrollArea aria-label="Replies" type="auto">Replies</ScrollArea>',
+        language: "tsx",
+        type: "code",
+      },
+    },
+  }}
+  play={async ({ canvas }) => {
+    await expect(canvas.getByLabelText("Native lifecycle")).toHaveAttribute(
+      "data-scroll-strategy",
+      "native",
+    );
+    const area = canvas.getByLabelText("Native lifecycle");
+    await userEvent.hover(area);
+    const viewport = area.querySelector<HTMLElement>(
+      '[data-ui-part="scroll-area-viewport"]',
+    )!;
+    viewport.scrollTop = 100;
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Toggle native viewport" }),
+    );
+    await waitFor(() =>
+      expect(canvas.queryByLabelText("Native lifecycle")).toBeNull(),
+    );
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Toggle native viewport" }),
+    );
+    await expect(canvas.getByLabelText("Native lifecycle")).toHaveAttribute(
+      "data-scroll-strategy",
+      "native",
+    );
+  }}>{#snippet template()}<NativeLifecycle />{/snippet}</Story
+>

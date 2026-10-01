@@ -1,5 +1,6 @@
 /** CSS custom properties owned by the AI Chat family. */
 export const chatTokenNames = {
+  typeScale: "--ui-ai-chat-type-scale",
   maxContentWidth: "--ui-ai-chat-max-content-width",
   compactGap: "--ui-ai-chat-compact-gap",
   balancedGap: "--ui-ai-chat-balanced-gap",
