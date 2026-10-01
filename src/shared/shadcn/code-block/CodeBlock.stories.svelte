@@ -218,6 +218,24 @@ export function App() {
       .querySelector(".ui-code-token-keyword");
     await expect(token).toBeTruthy();
     await expect(token!).toHaveTextContent("def");
+    // Simulate a host that rejects injected style elements. Bundled CSS must
+    // still paint tokens, independent of earlier range-mode stories.
+    const injected = Array.from(
+      document.querySelectorAll<HTMLStyleElement>(
+        "style[data-ui-code-highlight-styles]",
+      ),
+    ).map((element) => ({
+      sheet: element.sheet!,
+      disabled: element.sheet!.disabled,
+    }));
+    try {
+      for (const { sheet } of injected) sheet.disabled = true;
+      await expect(getComputedStyle(token!).color).not.toBe(
+        getComputedStyle(token!.closest("code")!).color,
+      );
+    } finally {
+      for (const { sheet, disabled } of injected) sheet.disabled = disabled;
+    }
   }}
 >
   {#snippet template()}
