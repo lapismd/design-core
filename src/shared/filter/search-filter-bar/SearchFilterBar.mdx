@@ -23,6 +23,8 @@ tags, and incomplete typing stay plain.
 Import from `@lapismd/design-core/filter`. See [Filter/Guidance](?path=/docs/filter-guidance--docs)
 for the query language.
 
+Use `inputMode="custom"` with `editorExtensions` for a consumer-owned language. This mode preserves the shared search chrome and CodeMirror lifecycle while omitting the filter grammar and predicate chips. Extensions may supply language support, static-class highlighting, completion and keymaps; changing them preserves the current document and undo history.
+
 ## Guidance
 
 ### When to use

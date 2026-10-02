@@ -132,9 +132,10 @@ This matrix records one current evidence status for every canonical requirement.
 | DC-FORM-043   | Implemented | Password Input uses one Input with a borderless overlay reveal; Storybook play masks, checks focus ring without a second border, then reveals and hides                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | DC-FILTER-001 | Implemented | Filter sources, parser tests, catalog stories, and guidance                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | DC-FILTER-002 | Implemented | Filter grammar and predicate-chip tests preserve slash-delimited hierarchical tags as one complete value; filter sources, catalog stories, and guidance retain the shared contract                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| DC-FILTER-003 | Implemented | Search Filter Bar and compact Search Filter Input stories prove one controlled CodeMirror lifecycle, syntax completion, diagnostics, and owner-document completion portals that escape clipping at a compact wrapping width; focused source consumer typecheck proves strict compatibility                                                                                                                                                                                                                                                                                                                             |
+| DC-FILTER-003 | Implemented | Search Filter Bar and compact/custom Search Filter Input stories prove grammar isolation, reactive extension updates with preserved undo history, one controlled CodeMirror lifecycle, syntax completion, diagnostics, and owner-document completion portals that escape clipping at a compact wrapping width; focused source consumer typecheck proves strict compatibility                                                                                                                                                                                                                                           |
 | DC-FILTER-004 | Implemented | Filter sources, parser tests, catalog stories, and guidance                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | DC-FILTER-005 | Implemented | Filter sources, parser tests, catalog stories, and guidance                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| DC-FILTER-006 | Implemented | SearchFilterInput custom-language story proves custom highlighting without chips, reactive completion updates, preserved undo history, controlled clear and shared accessibility.                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | DC-AI-001     | Implemented | AI sources, controllers, Storybook scenarios, and browser acceptance; Message inherited typography scenario verifies text scale and unchanged geometry                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | DC-AI-002     | Implemented | Layout empty-conversation height-chain geometry play, selectable ScrollArea strategy for latency-sensitive virtualized layouts, plus AI browser acceptance                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | DC-AI-003     | Implemented | Layout mounts the scroll button inside `scroll-shell`; Storybook and browser acceptance cover visibility                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
@@ -325,3 +326,48 @@ then passed all 12 family scenarios, including square icon sizes and Clear.
   and the diagnostic browser tab were cleaned up.
 - Versions: inherited Design Core 0.1.2, pnpm 10.32.1 and the existing locked
   Svelte, Vitest and Playwright toolchain. No schema or package export changes.
+
+## Custom query language qualification (2026-10-03)
+
+Enclosing Jujutsu change `ookknysq` adds DC-FILTER-006 for jj-store's rich
+history queries. The exact parent-component custom-language regression failed
+with one failure before implementation and passed both scenarios afterward.
+The complete search-filter family passed three files and ten tests. This proves
+static-class custom highlighting, absence of filter chips, reactive completions,
+controlled clearing and retained selection/undo history.
+
+`pnpm checks` initially rejected acceptance count/atomicity; the canonical
+bullets were repaired. Its next run passed governance, formatting, type checks,
+111 unit files /715 tests, three Turbo tests and the static Storybook build,
+but the interaction runner stalled after206/208 files. Cold isolated reruns
+passed the two missing files /four tests. A serial full retry timed out in
+AppShell under concurrent host load; the exact cold AppShell rerun passed15.
+The final `pnpm exec vitest run --project storybook` completed208 files /644
+interaction and accessibility tests.
+
+Development-host pointer and AI runs timed out before story readiness. A
+disposable Python static host also produced asset connection resets, diagnosed
+with browser request-failure events; only owned hosts/runners were stopped.
+Fresh Node HTTP serving of the prebuilt static catalog on port9370 qualified
+`test:workspace:pointer` (14 passed), `test:shell:pointer` (11 passed), and
+`test:shadcn:pointer` (35 passed, one existing skip), using each command's
+existing host override and unchanged assertions. `test:ai-chat-browser`
+passed all three cases against the same fresh static catalog.
+
+`pnpm spec:check` and changed-file Prettier checks pass. `pnpm packages:pack`
+reported that inherited0.1.2 was already published and selected no package;
+`pnpm pack --pack-destination .local/packages` separately created the ignored
+source-validation tarball. The consumer uses an ignored temporary source
+validation hook with registry-portable manifest/lockfile.
+`.changeset/custom-search-language.md` records the public extension for a
+subsequent release. No package was published.
+
+Logs are `/tmp/rich-search-dc-baseline.log`, `rich-search-dc-family.log`,
+`rich-search-dc-final-focused.log`, `rich-search-dc-checks2.log`,
+`rich-search-dc-stalled-stories.log`, `rich-search-dc-shell-retry.log`,
+`rich-search-dc-storybook-final.log`, `rich-search-dc-workspace-node.log`,
+`rich-search-dc-shell-node.log`, `rich-search-dc-shadcn-node.log`,
+`rich-search-dc-ai-node.log`, `rich-search-dc-spec-final.log`,
+`rich-search-dc-format-final.log` and `rich-search-dc-pack2.log`, all under
+`/tmp`. Design Core screenshot comparisons and baseline updates are excluded
+by the user's explicit instruction.
