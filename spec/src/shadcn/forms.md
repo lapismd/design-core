@@ -99,6 +99,7 @@ bits-ui command API bindable.
 
 - The public boundary is `@lapismd/design-core/shadcn/input-group`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- Actions MUST forward the requested Button size, default to `xs`, and retain square geometry for `icon-xs` and `icon-sm`.
 
 ## DC-SHA-029 — Label
 

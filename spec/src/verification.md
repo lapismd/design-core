@@ -62,7 +62,7 @@ This matrix records one current evidence status for every canonical requirement.
 | DC-SHA-025    | Implemented | src/shared/shadcn/command/; dialog positioning interaction; strict optional-property composition; colocated stories                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 | DC-SHA-026    | Implemented | src/shared/shadcn/field/; colocated stories                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | DC-SHA-027    | Implemented | Input focus-ring story                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| DC-SHA-028    | Implemented | src/shared/shadcn/input-group/; colocated stories                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| DC-SHA-028    | Implemented | src/shared/shadcn/input-group/; colocated stories; InputGroup.sizing.stories.svelte verifies default xs, all four explicit sizes, square icon geometry and Clear interaction                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | DC-SHA-029    | Implemented | src/shared/shadcn/label/; colocated stories                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | DC-SHA-030    | Implemented | src/shared/shadcn/select/; colocated stories                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | DC-SHA-031    | Implemented | src/shared/shadcn/slider/; thumb token fallback; colocated stories                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
@@ -283,3 +283,45 @@ package version 0.1.2; no package was published.
 - `pnpm spec:check` and targeted Prettier verify this final evidence update.
   Registry release, registry-only consumer qualification and visual baseline
   approval remain separate gates.
+
+## Input Group sizing evidence
+
+The enclosing `zukowoxl` change forwards Input Group action sizes through the
+public Button prop. The sizing regression failed once before the repair (`xs`
+was replaced by `default`); `pnpm test:storybook src/shared/shadcn/input-group`
+then passed all 12 family scenarios, including square icon sizes and Clear.
+
+- Final `pnpm checks` passed: governance, formatting/types, 715 unit tests,
+  static Storybook and metadata audit, 643 Storybook scenarios, 14 workspace,
+  11 shell, 3 AI and 35 Shadcn browser scenarios, with one configured engine
+  skip. The earlier successful tasks were replayed from Turbo cache; shell,
+  AI and Shadcn qualification ran on fresh test servers. Log:
+  `/tmp/dc-input-group-checks-qualified.log`.
+- Initial `pnpm checks` stopped at one cold shell preview readiness timeout;
+  exact fresh dev and static retries also timed out. A later complete check
+  passed shell but failed two AI preview readiness waits. Serialized shell and
+  AI reruns passed 11/11 and 3/3; an additional cold AI comparison with the
+  original sizing implementation passed 3/3 before restoring the repair.
+  The final complete check above passed without modifying tests or timeouts.
+  Logs: `/tmp/dc-input-group-checks.log`,
+  `/tmp/dc-input-group-shell-rerun.log`,
+  `/tmp/dc-input-group-shell-static-regression.log`,
+  `/tmp/dc-input-group-ai-browser.log`,
+  `/tmp/dc-input-group-checks-final.log`,
+  `/tmp/dc-input-group-shell-after-inspection.log`,
+  `/tmp/dc-input-group-ai-after-inspection.log`,
+  `/tmp/dc-input-group-ai-baseline.log`. The first independently overlapping
+  Playwright runs also lost a trace artifact; subsequent suites ran serially.
+- `pnpm spec:first` passed. `pnpm packages:pack` skipped the already published
+  inherited version; `pnpm pack --out /tmp/design-core-input-group-fix.tgz`
+  created the source validation package. jj-store consumed the repair through
+  its already governed local validation hook, preserving its registry manifest
+  and lockfile. Its complete store-work lane passed 55/55 after isolating
+  fixture storage. No package was published.
+- Compare-only Visual Delta for Preview, Tooltip, Label, Dropdown and Custom
+  Input failed before screenshots because its canonical build cache returned
+  EACCES. Log: `/tmp/dc-input-group-visual.log`. Visual qualification remains
+  pending; no baselines were changed. Owned temporary preview/static servers
+  and the diagnostic browser tab were cleaned up.
+- Versions: inherited Design Core 0.1.2, pnpm 10.32.1 and the existing locked
+  Svelte, Vitest and Playwright toolchain. No schema or package export changes.
