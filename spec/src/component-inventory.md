@@ -213,7 +213,7 @@ Application-independent workspace framework in `src/shared/workspace/`.
   resource navigation and quick-fix adapters
 - Startup surface (`Workspace/Components/Startup`): application-independent
   task progress and bounded failure presentation with host-owned actions
-- Optional F-Mode and Notifications plugins
+- Optional F-Mode and Notifications plugins; the shared controlled NotificationToasts presenter also accepts host-owned records, actions and lifecycle callbacks without a workspace controller
 
 Import: `@lapismd/design-core/workspace`. Production Workspace sources use
 native CSS, direct headless primitives, selected repository-owned shadcn

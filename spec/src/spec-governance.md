@@ -2,6 +2,10 @@
 
 Specification governance keeps requirements discoverable, mapped, validated, and changed before or with protected implementation, including same-change verification evidence for expanded public component families.
 
+Controlled notification presentation shares DC-WS-037 with the existing plugin.
+Its secondary catalog scenarios register in the public surface map; controlled
+and workspace consumers retain the same severity and dismissal contract.
+
 ## Public surface coverage
 
 | Surface                   | Public boundary | Requirement |

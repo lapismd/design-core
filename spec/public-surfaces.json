@@ -999,6 +999,10 @@
       "requirement": "DC-WS-037"
     },
     {
+      "name": "Workspace/Plugins/Notifications/Controlled",
+      "requirement": "DC-WS-037"
+    },
+    {
       "name": "UI Forms/Layout/Dialog Frame",
       "requirement": "DC-FORM-044"
     },

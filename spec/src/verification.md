@@ -224,7 +224,7 @@ This matrix records one current evidence status for every canonical requirement.
 | DC-WS-034     | Implemented | Problems filter menu, badges, table icon, and Storybook scenarios                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | DC-WS-035     | Implemented | Workspace plugin sources, tests, and Storybook scenarios                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | DC-WS-036     | Implemented | Workspace plugin sources, tests, and Storybook scenarios                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| DC-WS-037     | Implemented | Workspace plugin sources, tests, and Storybook scenarios                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| DC-WS-037     | Implemented | Workspace plugin sources, tests, and Storybook scenarios; ControlledNotifications stories cover controlled severity, dismissal, actions, pause/resume and modal keyboard access                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | DC-WS-038     | Implemented | App Shell navigation contract, sidebar presentation, and Storybook interaction                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | DC-WS-039     | Implemented | Managed plugin registry tests, grouped Core plugins Storybook interaction, and options action that opens a plugin settings section                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | DC-WS-040     | Implemented | Managed plugin registry source, lifecycle delegation, and unit tests                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
@@ -397,3 +397,62 @@ The new multiline story initially misplaced its cursor through userEvent.type;
 keyboard continuation fixed the harness interaction, retaining the exact value
 assertion. All final functional failures are resolved. Logs are under
 `/tmp/history-dc-{focused,types,checks,ai-cold,shadcn-cold}.log`.
+
+## Controlled application toast qualification (2026-10-04)
+
+Enclosing Jujutsu change `lqkpxqtl` extends DC-WS-037 for jj-store's
+application-owned notification service. The new controlled renderer initially
+failed both stories with two additional runtime errors because it required
+`app.notifications`. Its final focused run passes eight stories across
+`ControlledNotifications.stories.svelte` and `Notifications.stories.svelte`,
+including severity, labelled action/dismissal controls, pause/resume and modal
+keyboard access. The existing notification unit target passes ten tests.
+
+The public change retains the app-backed API and adds controlled records and
+callbacks. A manual popover portal follows the active modal's focus scope
+without stealing focus, and removes its detached nodes on teardown. Initial
+modal story teardown exposed leaked portal DOM; cleanup corrected the failure.
+Empty stacks omit region semantics to avoid duplicate empty landmarks in
+isolated consumer fixtures. Cold consumer testing exposed header obstruction;
+the controlled portal now anchors at the bottom end of the viewport.
+
+`pnpm checks` ran the required broader nonvisual lanes because this changes a
+public component API/CSS used by existing workspace hosts and a consumer.
+After correcting the new surface map, acceptance bullet count and owning
+spec-governance entry, governance, formatting, all four type/consumer checks,
+111 unit files / 715 tests, 209 Storybook files / 647 tests, static catalog build
+and metadata audit passed. Three ResizeObserver diagnostics were logged by
+existing stories without test failures. Workspace pointer acceptance passed
+14 tests. Shell pointer acceptance passed ten tests and timed out once before
+story readiness; the exact unchanged mobile-pan test passed on a cold rerun.
+The independent AI browser lane passed all three tests. The Shadcn development
+host also timed out before readiness; that owned run was stopped with five
+passes, one readiness failure, one interrupted test and 29 unrun tests. A fresh
+`pnpm build-storybook` and disposable Node static host on loopback port 9370 passed
+`SHELL_STORYBOOK_PORT=9370 pnpm test:shell:pointer` (11/11) and
+`SHADCN_STORYBOOK_PORT=9370 pnpm test:shadcn:pointer` (35 passed, one existing
+Chromium skip for a WebKit-only assertion). The exact failed readiness targets
+pass with unchanged assertions. The final metadata audit has zero contract
+errors. These completed lanes are recorded separately from the interrupted
+aggregate; the aggregate itself is not described as passing.
+No screenshot comparison or baseline update was run.
+
+`pnpm packages:pack` selected nothing because the inherited package version
+0.1.2 is already published. `pnpm pack --pack-destination .local` separately
+created the source-validation tarball, including the public record type and
+portal/click helpers. An ignored consumer hook installs that exact tarball in
+`jj-store-notifications`; publishable manifests and lockfiles remain portable.
+The consumer's cold production-CSP acceptance passes 17 browser tests, including
+single-toast deduplication, dismissed polling/remount suppression, recovery,
+mobile bounds/axe and exact mutation recovery. This is source/package integration
+evidence, not acceptance of the existing registry version.
+`.changeset/controlled-notification-toasts.md` records the extension for a
+subsequent release. No package was published.
+
+Commands and output are retained locally in `.local/notifications-checks.log`,
+`notifications-stories-final.log`, `notifications-shell-retry.log`,
+`notifications-ai-browser.log`, `notifications-shadcn-browser.log`,
+`notifications-static-final.log`, `notifications-shell-static.log`,
+`notifications-shadcn-static.log`, `notifications-metadata-final.log` and
+`notifications-tarball.log`. Consumer evidence and the source-versus-release boundary are recorded in E-UI-094 in
+jj-store's single milestone ledger.
