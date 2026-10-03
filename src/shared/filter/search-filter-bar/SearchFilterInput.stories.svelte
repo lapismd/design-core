@@ -142,6 +142,34 @@ const language = StreamLanguage.define({
     await expect(
       canvas.getByRole("status", { name: "Query value" }),
     ).toHaveTextContent("");
+    await userEvent.click(input);
+    await userEvent.type(input, "first");
+    await userEvent.keyboard("{Escape}{Enter}");
+    await userEvent.keyboard("invalid");
+    await userEvent.keyboard("{Escape}");
+    await expect(input).toHaveAttribute("aria-multiline", "true");
+    await expect(canvasElement.querySelectorAll(".cm-line").length).toBe(2);
+    await expect(
+      canvas.getByRole("status", { name: "Query value" }).textContent,
+    ).toBe("first\ninvalid");
+    await expect(input).toHaveAttribute("aria-invalid", "true");
+    await expect(canvas.getByRole("alert")).toHaveTextContent(
+      "Invalid custom query",
+    );
+    const pill = canvasElement.querySelector(
+      ".cv-search-filter-bar__search-pill",
+    )!;
+    const styles =
+      canvasElement.ownerDocument.defaultView!.getComputedStyle(pill);
+    await expect(styles.boxShadow).toBe("none");
+    await expect(styles.borderTopColor).toBe("rgba(0, 0, 0, 0)");
+    await expect(
+      parseFloat(
+        canvasElement.ownerDocument.defaultView!.getComputedStyle(
+          canvas.getByRole("alert"),
+        ).marginTop,
+      ),
+    ).toBeGreaterThan(0);
   }}
 >
   {#snippet template()}<SearchFilterCustomLanguageHarness />{/snippet}

@@ -73,3 +73,4 @@ Filter contracts separate query language, reusable search chrome, and consumer q
 - Custom mode MUST omit the filter grammar, predicate chips and filter field completion.
 - Updating extensions MUST preserve the editor document, selection and undo history.
 - Custom and filter modes MUST share controlled values, accessible errors, keyboard behavior and owner-document popup disposal.
+- CodeMirror queries MUST preserve multiple lines and expose multiline semantics; `focusAppearance="borderless"` MUST remove focused input chrome while retaining the caret, and invalid inputs MUST have a tinted error background with a spaced diagnostic.

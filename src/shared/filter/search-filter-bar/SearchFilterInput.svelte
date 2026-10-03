@@ -50,6 +50,7 @@
     inputId = undefined,
     inputMode = "plain",
     density = "default",
+    focusAppearance = "ring",
     showSearchIcon = true,
     showClearButton = true,
     clearSearchLabel = "Clear search",
@@ -70,6 +71,8 @@
     inputMode?: "filter-query" | "plain" | "custom";
     /** Compact removes bar-level spacing so the input fits dense form rows. */
     density?: "default" | "compact";
+    /** Borderless focus retains the visible editor caret without a surrounding ring. */
+    focusAppearance?: "ring" | "borderless";
     showSearchIcon?: boolean;
     showClearButton?: boolean;
     clearSearchLabel?: string;
@@ -237,6 +240,7 @@
     return EditorView.contentAttributes.of({
       role: "searchbox",
       "aria-label": ariaLabel,
+      "aria-multiline": "true",
       "aria-invalid": error ? "true" : "false",
       ...(inputId ? { id: inputId } : {}),
     });
@@ -372,6 +376,7 @@
   class="cv-search-filter-input"
   data-ui-component="search-filter-input"
   data-density={density}
+  data-focus-appearance={focusAppearance}
   data-active={hasValue}
   data-invalid={error ? "" : undefined}
   data-input-mode={inputMode}

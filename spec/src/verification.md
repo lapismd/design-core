@@ -375,3 +375,25 @@ by the user's explicit instruction.
 Main workspace integration of the custom-language source and newer tooltip
 restoration is qualified in [custom search main integration](../records/custom-search-main-integration.md),
 within enclosing Jujutsu change `urzxtuqs`. Both verified source histories are retained.
+
+## History search editor feedback (2026-10-03)
+
+Enclosing Jujutsu change `snktqqso` adds optional borderless focus to
+SearchFilterInput and SearchFilterBar, multiline accessibility semantics and
+shared invalid-input tint/diagnostic spacing. The custom-language interaction
+story checks multiple lines, controlled value, focus chrome and reactive errors.
+Visual comparisons remain excluded by user instruction; baselines unchanged.
+`pnpm test:storybook src/shared/filter/search-filter-bar` passes 3 files and
+10 stories; `pnpm check:types` passes strict package and consumer checks.
+`pnpm checks` passes governance, formatting, 111 unit files/715 tests, 3 Turbo
+tests, static Storybook build/audit, 208 interaction/accessibility files/645
+cases, workspace pointer 14 and shell pointer 11. It then hits 2 AI
+story-readiness timeouts in the development host; the exact cold rerun against
+a fresh Node static host on loopback9370 passes all 3 cases. The remaining
+`SHADCN_STORYBOOK_PORT=9370 pnpm test:shadcn:pointer` passes 35 with the existing
+1 skip. No assertions or baselines changed. Source pack and final spec/format
+checks qualify the published-source boundary separately from a future release.
+The new multiline story initially misplaced its cursor through userEvent.type;
+keyboard continuation fixed the harness interaction, retaining the exact value
+assertion. All final functional failures are resolved. Logs are under
+`/tmp/history-dc-{focused,types,checks,ai-cold,shadcn-cold}.log`.

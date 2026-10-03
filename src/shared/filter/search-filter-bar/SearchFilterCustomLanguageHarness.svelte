@@ -51,6 +51,8 @@
     bind:this={input}
     {value}
     inputMode="custom"
+    focusAppearance="borderless"
+    error={value.includes("invalid") ? "Invalid custom query" : null}
     editorExtensions={extensions}
     ariaLabel="Custom query"
     onValueChange={(next) => (value = next)}
