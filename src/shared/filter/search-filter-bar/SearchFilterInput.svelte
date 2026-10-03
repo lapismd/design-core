@@ -66,8 +66,8 @@
     shortcut?: string;
     disabled?: boolean;
     inputId?: string;
-    /** `filter-query` uses CodeMirror; `plain` uses a native search input. */
-    inputMode?: "filter-query" | "plain";
+    /** `custom` uses caller extensions without the filter grammar or predicate chips. */
+    inputMode?: "filter-query" | "plain" | "custom";
     /** Compact removes bar-level spacing so the input fits dense form rows. */
     density?: "default" | "compact";
     showSearchIcon?: boolean;
@@ -90,6 +90,8 @@
   const placeholderCompartment = new Compartment();
   const autocompleteCompartment = new Compartment();
   const contentAttributesCompartment = new Compartment();
+  const languageCompartment = new Compartment();
+  const extensionsCompartment = new Compartment();
 
   const hasValue = $derived(value.trim().length > 0);
 
@@ -240,6 +242,17 @@
     });
   }
 
+  function queryLanguage(): Extension {
+    return inputMode === "filter-query"
+      ? [
+          filterQuery(),
+          syntaxHighlighting(searchFilterHighlightStyle, { fallback: true }),
+          searchFilterPredicateChips(),
+          predicateChipEditHandler.of(openPredicateChipEditor),
+        ]
+      : [];
+  }
+
   function filterQueryEditor(node: HTMLDivElement, source: string) {
     const tooltipLayer = node.ownerDocument.createElement("div");
     tooltipLayer.className = "cv-search-filter-bar__tooltip-layer";
@@ -252,10 +265,8 @@
       state: EditorState.create({
         doc: source,
         extensions: [
-          filterQuery(),
-          syntaxHighlighting(searchFilterHighlightStyle, { fallback: true }),
-          searchFilterPredicateChips(),
-          predicateChipEditHandler.of(openPredicateChipEditor),
+          languageCompartment.of(queryLanguage()),
+          extensionsCompartment.of(editorExtensions),
           history(),
           drawSelection(),
           EditorView.lineWrapping,
@@ -290,7 +301,6 @@
               scheduleAutocomplete(update.view);
             }
           }),
-          ...editorExtensions,
         ],
       }),
       parent: node,
@@ -315,6 +325,19 @@
       },
     };
   }
+
+  $effect(() => {
+    const extensions = editorExtensions;
+    editor?.dispatch({
+      effects: extensionsCompartment.reconfigure(extensions),
+    });
+  });
+
+  $effect(() => {
+    const language = queryLanguage();
+    chipEditSession = null;
+    editor?.dispatch({ effects: languageCompartment.reconfigure(language) });
+  });
 
   $effect(() => {
     editor?.dispatch({

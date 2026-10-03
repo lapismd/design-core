@@ -43,7 +43,7 @@
     shortcut?: string;
     disabled?: boolean;
     inputId?: string;
-    inputMode?: "filter-query" | "plain";
+    inputMode?: "filter-query" | "plain" | "custom";
     clearSearchLabel?: string;
     clearAllLabel?: string;
     expandFiltersLabel?: string;
