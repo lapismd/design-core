@@ -206,7 +206,7 @@ The controller constructor accepts these host integrations:
         <code>0</code>
       </td>
       <td>
-        Optional blank width after the final column in wide and fixed modes
+        Optional spacer width after the final column in wide and fixed modes
       </td>
     </tr>
     <tr>
@@ -1211,3 +1211,12 @@ Override these public tokens on `:root` or a shared ancestor:
 
 Production sources use native CSS. Toggle, Close, and sticky return controls
 compose the shared shadcn Button.
+
+### Trailing content
+
+The optional `Root` snippet `trailingSpacer` renders accessible content inside
+the existing wide/fixed spacer when the controller's `trailingSpacerWidth` is
+positive. It registers no column and changes no selection, pair or persistence
+state. Blank spacers remain aria-hidden; compact mode omits trailing content.
+
+<Source code={exampleSources.TrailingSpacer} language="tsx" />

@@ -121,16 +121,16 @@ clamps every durable width before storing it.
 
 The controller constructor accepts these host integrations:
 
-| Option                | Default  | Purpose                                                             |
-| --------------------- | -------- | ------------------------------------------------------------------- |
-| `columns`             | Required | Registered column configuration keyed by stable id                  |
-| `initialPath`         | `[]`     | Initial Miller-column selection path                                |
-| `trailingSpacerWidth` | `0`      | Optional blank width after the final column in wide and fixed modes |
-| `persistence`         | None     | Async `load` and `save` adapter for V2 layout state                 |
-| `saveDebounceMs`      | `200`    | Delay before layout callbacks and persistence saves                 |
-| `onPathChange`        | None     | Receives a copied path after selection changes                      |
-| `onLayoutChange`      | None     | Receives the V2 snapshot and its change event before save           |
-| `onPersistenceError`  | None     | Receives failed `load` or `save` operations                         |
+| Option                | Default  | Purpose                                                              |
+| --------------------- | -------- | -------------------------------------------------------------------- |
+| `columns`             | Required | Registered column configuration keyed by stable id                   |
+| `initialPath`         | `[]`     | Initial Miller-column selection path                                 |
+| `trailingSpacerWidth` | `0`      | Optional spacer width after the final column in wide and fixed modes |
+| `persistence`         | None     | Async `load` and `save` adapter for V2 layout state                  |
+| `saveDebounceMs`      | `200`    | Delay before layout callbacks and persistence saves                  |
+| `onPathChange`        | None     | Receives a copied path after selection changes                       |
+| `onLayoutChange`      | None     | Receives the V2 snapshot and its change event before save            |
+| `onPersistenceError`  | None     | Receives failed `load` or `save` operations                          |
 
 ### Controller state and methods
 
@@ -529,3 +529,20 @@ Override these public tokens on `:root` or a shared ancestor:
 
 Production sources use native CSS. Toggle, Close, and sticky return controls
 compose the shared shadcn Button.
+
+### Trailing content
+
+Pass a `trailingSpacer` snippet to `Root` to place accessible actions in the
+existing end spacer. Set `trailingSpacerWidth` on the controller to reserve its
+width. This content does not register a column, participate in pairs, or affect
+selection and persistence. Blank spacers remain aria-hidden; compact mode and
+zero-width spacers render no trailing content.
+
+```svelte
+<ColumnCanvas.Root controller={canvas} displayMode="fixed">
+  {#snippet trailingSpacer()}
+    <Button onclick={createItem}>Create item</Button>
+  {/snippet}
+  <!-- Existing columns -->
+</ColumnCanvas.Root>
+```

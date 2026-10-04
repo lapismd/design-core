@@ -59,6 +59,12 @@
 </script>
 
 <script lang="ts">
+  let spacerMode = $state<"fixed" | "compact">("fixed");
+  let spacerClicks = $state(0);
+  const spacerCanvas = createColumnCanvasController({
+    columns: { content: { defaultWidth: 320 } },
+    trailingSpacerWidth: 240,
+  });
   let styledViewport = $state<HTMLElement | null>(null);
   let styledVisible = $state(true);
   const styledCanvas = createColumnCanvasController({
@@ -2124,5 +2130,67 @@
     <Button onclick={() => (styledVisible = !styledVisible)}
       >{styledVisible ? "Hide styled canvas" : "Show styled canvas"}</Button
     >
+  {/snippet}
+</Story>
+
+<Story
+  name="Interactive trailing spacer"
+  tags={["visual-pending"]}
+  parameters={{
+    docs: {
+      source: {
+        code: exampleSources.TrailingSpacer,
+        language: "tsx",
+        type: "code",
+      },
+    },
+  }}
+  play={async ({ canvas, canvasElement }) => {
+    const root = canvasElement.querySelector<HTMLElement>(
+      '[data-ui-part="root"]',
+    )!;
+    const spacer = root.querySelector<HTMLElement>(
+      '[data-ui-part="trailing-spacer"]',
+    )!;
+    await expect(
+      within(spacer).getByRole("button", { name: "Create item" }),
+    ).toBeVisible();
+    await expect(spacer).not.toHaveAttribute("aria-hidden", "true");
+    await expect(spacer.getBoundingClientRect().width).toBe(240);
+    await expect(root.querySelectorAll('[data-ui-part="column"]')).toHaveLength(
+      1,
+    );
+    await userEvent.click(
+      within(spacer).getByRole("button", { name: "Create item" }),
+    );
+    await expect(canvas.getByRole("status")).toHaveTextContent("Created 1");
+    await userEvent.click(canvas.getByRole("button", { name: "Use compact" }));
+    await waitFor(() =>
+      expect(root.querySelector('[data-ui-part="trailing-spacer"]')).toBeNull(),
+    );
+    await userEvent.click(canvas.getByRole("button", { name: "Use fixed" }));
+    await expect(
+      canvas.getByRole("button", { name: "Create item" }),
+    ).toBeVisible();
+  }}
+>
+  {#snippet template()}
+    <Button
+      onclick={() =>
+        (spacerMode = spacerMode === "fixed" ? "compact" : "fixed")}
+      >Use {spacerMode === "fixed" ? "compact" : "fixed"}</Button
+    >
+    <div style="height:420px;width:960px;max-width:100%">
+      <ColumnCanvas.Root controller={spacerCanvas} displayMode={spacerMode}>
+        {#snippet trailingSpacer()}
+          <Button onclick={() => spacerClicks++}>Create item</Button>
+        {/snippet}
+        <ColumnCanvas.Column id="content" title="Content"
+          ><ColumnCanvas.Body>Existing content</ColumnCanvas.Body
+          ></ColumnCanvas.Column
+        >
+      </ColumnCanvas.Root>
+    </div>
+    <p role="status">Created {spacerClicks}</p>
   {/snippet}
 </Story>

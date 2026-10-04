@@ -47,6 +47,7 @@
     onwheel,
     class: className,
     children,
+    trailingSpacer,
     ...restProps
   }: WithElementRef<HTMLAttributes<HTMLDivElement>> & {
     /**
@@ -62,6 +63,8 @@
     /** Root-width threshold in CSS pixels used by `displayMode="auto"`. */
     compactBreakpoint?: number;
     children?: Snippet;
+    /** Optional accessible content within the existing wide/fixed trailing spacer. */
+    trailingSpacer?: Snippet;
   } = $props();
 
   const scrollingRoot = $derived(scrollViewport ?? ref);
@@ -1018,10 +1021,12 @@
       <div
         data-ui-component="column-canvas"
         data-ui-part="trailing-spacer"
-        aria-hidden="true"
+        aria-hidden={trailingSpacer ? undefined : true}
         style:width={`${trailingSpacerWidth}px`}
         style:min-width={`${trailingSpacerWidth}px`}
-      ></div>
+      >
+        {@render trailingSpacer?.()}
+      </div>
     {/if}
   </div>
 </div>

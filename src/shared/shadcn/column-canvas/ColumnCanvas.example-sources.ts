@@ -189,3 +189,24 @@ export const StickyFloating =
 
 export const StickyFixed =
   '<script lang="ts">\n\timport ArrowLeft from "@lucide/svelte/icons/arrow-left";\n</script>\n\n<ColumnCanvas.Root controller={canvas} displayMode="fixed">\n\t<ColumnCanvas.Column id="workspace" title="Workspace" sticky>\n\t\t{#snippet stickyRail()}<ArrowLeft data-icon="inline-start" aria-hidden="true" />{/snippet}\n\t</ColumnCanvas.Column>\n\t<ColumnCanvas.Column id="inbox" title="Inbox" sticky>\n\t\t{#snippet stickyRail()}<ArrowLeft data-icon="inline-start" aria-hidden="true" />{/snippet}\n\t</ColumnCanvas.Column>\n\t<ColumnCanvas.Column id="detail" title="Detail" />\n</ColumnCanvas.Root>';
+
+export const TrailingSpacer = `<script lang="ts">
+  import * as ColumnCanvas from "@lapismd/design-core/shadcn/column-canvas";
+  import { Button } from "@lapismd/design-core/shadcn/button";
+  const canvas = ColumnCanvas.createColumnCanvasController({
+    columns: { content: { defaultWidth: 320 } },
+    trailingSpacerWidth: 240,
+  });
+  let count = $state(0);
+</script>
+<div style="height:420px">
+  <ColumnCanvas.Root controller={canvas} displayMode="fixed">
+    {#snippet trailingSpacer()}
+      <Button onclick={() => count++}>Create item</Button>
+    {/snippet}
+    <ColumnCanvas.Column id="content" title="Content">
+      <ColumnCanvas.Body>Existing content</ColumnCanvas.Body>
+    </ColumnCanvas.Column>
+  </ColumnCanvas.Root>
+</div>
+<p role="status">Created {count}</p>`;
