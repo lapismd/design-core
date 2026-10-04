@@ -111,15 +111,6 @@
       [data-ui-component="tabs"][data-ui-part="tabs-trigger"] {
         color: var(--ui-tabs-foreground, var(--foreground));
       }
-      @supports (color: color-mix(in lab, red, red)) {
-        [data-ui-component="tabs"][data-ui-part="tabs-trigger"] {
-          color: color-mix(
-            in oklab,
-            var(--ui-tabs-foreground, var(--foreground)) 60%,
-            transparent
-          );
-        }
-      }
       [data-ui-component="tabs"][data-ui-part="tabs-list"] {
         color: var(--muted-foreground);
       }

@@ -38,3 +38,14 @@ export const LazyDirectories = `<script lang="ts">
   collapsedDirectoryPaths={collapsed}
   onDirectoryToggle={toggleDirectory}
 />`;
+
+export const NativeRowDrags = `<script lang="ts">
+  import { FileListing } from "@lapismd/design-core/diff";
+  const files = [{ path: "src/index.ts" }, { path: "README.md" }];
+</script>
+<FileListing
+  {files}
+  fileDraggable={(context) => context.path !== "README.md"}
+  onFileDragStart={(event, context) => { event.dataTransfer?.setData("text/plain", context.path); }}
+  onDirectoryDragStart={(event, context) => { event.dataTransfer?.setData("text/plain", context.node.path); }}
+/>`;

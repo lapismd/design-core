@@ -8,6 +8,7 @@ const stickyStoryId = "shadcn-layout-column-canvas--sticky-floating-columns";
 const stickyFixedStoryId = "shadcn-layout-column-canvas--sticky-fixed-columns";
 const showcaseStoryId =
   "shadcn-layout-column-canvas--product-workspace-showcase";
+const styledStoryId = "shadcn-layout-column-canvas--styled-scroll-canvas";
 
 const storyUrl = (storyId: string) =>
   `/iframe.html?id=${encodeURIComponent(storyId)}&viewMode=story`;
@@ -144,6 +145,50 @@ async function columnSnapPoint(
 }
 
 test.describe("Column Canvas responsive scrolling", () => {
+  test("external styled viewport returns by pointer and keyboard and tears down queued measurements", async ({
+    page,
+  }) => {
+    const errors: string[] = [];
+    page.on("pageerror", (error) => errors.push(error.message));
+    await useReducedMotion(page);
+    await openStory(page, styledStoryId);
+    const root = page.getByRole("region", { name: "Styled canvas" });
+    const viewport = root.locator(
+      'xpath=ancestor::*[@data-ui-part="scroll-area-viewport"][1]',
+    );
+    for (const input of ["pointer", "keyboard"]) {
+      await viewport.evaluate((element) =>
+        element.scrollTo({ left: element.scrollWidth, behavior: "auto" }),
+      );
+      const rail = page.getByRole("button", { name: "Return to one column" });
+      await expect(rail).toBeVisible();
+      const stack = root.locator('[data-ui-part="sticky-stack"]');
+      expect(
+        Math.abs(
+          (await stack.boundingBox())!.x - (await viewport.boundingBox())!.x,
+        ),
+      ).toBeLessThan(1);
+      if (input === "pointer") await rail.click();
+      else {
+        await rail.focus();
+        await rail.press("Enter");
+      }
+      await expect
+        .poll(() => viewport.evaluate((element) => element.scrollLeft))
+        .toBe(0);
+      await expect(rail).toHaveCount(0);
+    }
+    for (let iteration = 0; iteration < 3; iteration++) {
+      await viewport.evaluate((element) =>
+        element.scrollTo({ left: element.scrollWidth, behavior: "auto" }),
+      );
+      await page.getByRole("button", { name: "Hide styled canvas" }).click();
+      await expect(root).toHaveCount(0);
+      await page.getByRole("button", { name: "Show styled canvas" }).click();
+      await expect(root).toBeVisible();
+    }
+    expect(errors).toEqual([]);
+  });
   test("700px and 390px compact layouts give the active column the full stage with no previous-column peek", async ({
     page,
   }) => {

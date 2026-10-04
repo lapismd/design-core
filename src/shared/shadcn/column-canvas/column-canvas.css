@@ -20,6 +20,10 @@
   scroll-padding-inline: var(--ui-column-canvas-padding, 0.75rem);
 }
 
+[data-ui-component="column-canvas"][data-ui-part="root"][data-external-scroll="true"] {
+  overflow: visible;
+}
+
 [data-ui-component="column-canvas"][data-ui-part="root"][data-display-mode="wide"] {
   overscroll-behavior-inline: contain;
   /* Wide canvases keep native continuous scrolling. Structural navigation and

@@ -1,7 +1,11 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, userEvent, waitFor } from "storybook/test";
-  import { Basic, LazyDirectories } from "./FileListing.example-sources.js";
+  import { expect, fireEvent, userEvent, waitFor } from "storybook/test";
+  import {
+    Basic,
+    LazyDirectories,
+    NativeRowDrags,
+  } from "./FileListing.example-sources.js";
   import FileListing from "./FileListing.svelte";
   import FileListingViewModeToggle from "./FileListingViewModeToggle.svelte";
   import type { FileListingDirectory } from "../index.js";
@@ -51,6 +55,7 @@
   let lazyDirectories = $state<FileListingDirectory[]>([{ path: "src" }]);
   const lazyCollapsed = new SvelteSet<string>(["src"]);
   let lazyRequests = $state(0);
+  let lastDrag = $state("");
 
   function toggleLazyDirectory(path: string) {
     if (!lazyCollapsed.has(path)) {
@@ -62,6 +67,56 @@
     lazyCollapsed.delete(path);
   }
 </script>
+
+<Story
+  name="Host owned native row drags"
+  parameters={{
+    docs: { source: { code: NativeRowDrags, language: "tsx", type: "code" } },
+  }}
+  tags={["visual-pending"]}
+  play={async ({ canvas }) => {
+    const file = canvas.getByRole("button", { name: "src/index.ts" });
+    const disabled = canvas.getByRole("button", { name: "README.md" });
+    expect(file).toHaveAttribute("draggable", "true");
+    expect(disabled).toHaveAttribute("draggable", "false");
+    const dataTransfer = new DataTransfer();
+    await fireEvent(
+      file,
+      new DragEvent("dragstart", { bubbles: true, dataTransfer }),
+    );
+    expect(dataTransfer.getData("text/plain")).toBe("src/index.ts");
+    expect(canvas.getByRole("status")).toHaveTextContent("file:src/index.ts");
+    expect(file).not.toHaveAttribute("aria-current");
+    await userEvent.click(file);
+    expect(file).toHaveAttribute("aria-current", "true");
+    const folder = canvas.getByRole("button", { name: "src" });
+    expect(folder).toHaveAttribute("draggable", "true");
+    await fireEvent(
+      folder,
+      new DragEvent("dragstart", { bubbles: true, dataTransfer }),
+    );
+    expect(dataTransfer.getData("text/plain")).toBe("src");
+    expect(canvas.getByRole("status")).toHaveTextContent("directory:src");
+    await userEvent.click(folder);
+    expect(canvas.queryByRole("button", { name: "src/index.ts" })).toBeNull();
+  }}
+>
+  {#snippet template()}
+    <FileListing
+      files={demoFiles}
+      fileDraggable={(context) => context.path !== "README.md"}
+      onFileDragStart={(event, context) => {
+        event.dataTransfer?.setData("text/plain", context.path);
+        lastDrag = `file:${context.path}`;
+      }}
+      onDirectoryDragStart={(event, context) => {
+        event.dataTransfer?.setData("text/plain", context.node.path);
+        lastDrag = `directory:${context.node.path}`;
+      }}
+    />
+    <p role="status">{lastDrag || "No drag"}</p>
+  {/snippet}
+</Story>
 
 <Story
   name="Selects a file in the folder tree"

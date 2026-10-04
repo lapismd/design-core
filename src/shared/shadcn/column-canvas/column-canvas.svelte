@@ -1,6 +1,6 @@
 <script lang="ts">
   import "./column-canvas.css";
-  import { onDestroy, onMount, tick, untrack } from "svelte";
+  import { onDestroy, tick, untrack } from "svelte";
   import type { Snippet } from "svelte";
   import type { HTMLAttributes } from "svelte/elements";
   import ArrowLeft from "@lucide/svelte/icons/arrow-left";
@@ -36,6 +36,7 @@
   let {
     ref = $bindable(null),
     controller,
+    scrollViewport = null,
     displayMode = "auto",
     compactBreakpoint = DEFAULT_COMPACT_BREAKPOINT,
     tabindex = 0,
@@ -54,6 +55,8 @@
      * site or by typing the const as `ColumnCanvasController`.
      */
     controller: ColumnCanvasController;
+    /** Fixed canvases may use an enclosing Scroll Area's bound viewport. */
+    scrollViewport?: HTMLElement | null;
     /** Adaptive by default; `fixed` preserves the original free-scroll canvas. */
     displayMode?: ColumnCanvasDisplayMode;
     /** Root-width threshold in CSS pixels used by `displayMode="auto"`. */
@@ -61,6 +64,7 @@
     children?: Snippet;
   } = $props();
 
+  const scrollingRoot = $derived(scrollViewport ?? ref);
   const rootController = untrack(() => controller);
   let rowElement = $state<HTMLDivElement | null>(null);
   let wideContextWidthProbe = $state<HTMLDivElement | null>(null);
@@ -74,6 +78,7 @@
   );
   let activeStickyColumns = $state.raw<ResolvedStickyColumn[]>([]);
   let stuckStickyColumns = $state.raw<ResolvedStickyColumn[]>([]);
+  let disposed = false;
   let alignmentFrame: number | null = null;
   let alignmentShouldActivateDeepest = false;
   let stickyLayoutFrame: number | null = null;
@@ -291,25 +296,29 @@
   }
 
   function scheduleStickyStateUpdate(): void {
+    if (disposed) return;
     if (stickyStateFrame !== null) cancelAnimationFrame(stickyStateFrame);
     stickyStateFrame = requestAnimationFrame(() => {
       stickyStateFrame = null;
-      updateStickyStates();
+      if (!disposed) updateStickyStates();
     });
   }
 
   function syncStickyLayout(): void {
-    const root = ref;
+    if (disposed) return;
+    const root = scrollingRoot;
     if (!root || !rowElement) return;
 
     const columns = visibleColumns();
     for (const column of columns) clearStickyLayout(column);
     activeStickyColumns = [];
     stuckStickyColumns = [];
-    const rootStyle = getComputedStyle(root);
+    const rootStyle = getComputedStyle(ref ?? root);
     syncResponsiveStageLayout(root, rowElement, rootStyle, columns);
     stickyLayerHeight = root.clientHeight;
-    stickyLayerInlineOffset = finitePixels(rootStyle.paddingInlineStart);
+    stickyLayerInlineOffset = scrollViewport
+      ? 0
+      : finitePixels(rootStyle.paddingInlineStart);
     stickyLayerBlockOffset = finitePixels(rootStyle.paddingBlockStart);
     if (resolvedDisplayMode === "compact") return;
 
@@ -370,7 +379,8 @@
   }
 
   function updateStickyStates(): void {
-    const root = ref;
+    if (disposed) return;
+    const root = scrollingRoot;
     if (!root || resolvedDisplayMode === "compact") {
       stuckStickyColumns = [];
       return;
@@ -399,11 +409,13 @@
   }
 
   function requestStickyLayout(): void {
+    if (disposed) return;
     void tick().then(() => {
+      if (disposed) return;
       if (stickyLayoutFrame !== null) cancelAnimationFrame(stickyLayoutFrame);
       stickyLayoutFrame = requestAnimationFrame(() => {
         stickyLayoutFrame = null;
-        syncStickyLayout();
+        if (!disposed) syncStickyLayout();
       });
     });
   }
@@ -425,9 +437,9 @@
   }
 
   function returnToStickyColumn(column: ResolvedStickyColumn): void {
-    const root = ref;
+    const root = scrollingRoot;
     if (!root) return;
-    const rootStyle = getComputedStyle(root);
+    const rootStyle = getComputedStyle(ref ?? root);
     const paddingStart = finitePixels(rootStyle.paddingInlineStart);
     const currentStart = inlineStartPosition(root, column.element);
     const desiredStart = paddingStart + column.offset;
@@ -464,7 +476,7 @@
       clearTimeout(stickyWheelRoutingTimer);
       stickyWheelRoutingTimer = null;
     }
-    ref?.removeAttribute("data-wheel-routing");
+    scrollingRoot?.removeAttribute("data-wheel-routing");
   }
 
   function startStickyWheelRouting(
@@ -550,7 +562,7 @@
   }
 
   function alignActivePair(): void {
-    const root = ref;
+    const root = scrollingRoot;
     if (!root) return;
     cancelWheelAnimation();
     if (resolvedDisplayMode === "fixed") return;
@@ -580,12 +592,15 @@
   }
 
   function requestPairAlignment(activateDeepest: boolean): void {
+    if (disposed) return;
     alignmentShouldActivateDeepest =
       alignmentShouldActivateDeepest || activateDeepest;
     void tick().then(() => {
+      if (disposed) return;
       if (alignmentFrame !== null) cancelAnimationFrame(alignmentFrame);
       alignmentFrame = requestAnimationFrame(() => {
         alignmentFrame = null;
+        if (disposed) return;
         const shouldActivateDeepest = alignmentShouldActivateDeepest;
         alignmentShouldActivateDeepest = false;
         const columns = visibleColumns();
@@ -648,7 +663,7 @@
     if (resolvedDisplayMode !== "wide" || behavior.kind !== "pair") {
       return behavior;
     }
-    const root = ref;
+    const root = scrollingRoot;
     if (root && pairResizeScrollLeft === null) {
       pairResizeScrollLeft = root.scrollLeft;
     }
@@ -662,7 +677,7 @@
   }
 
   function finishResizePair(): void {
-    const root = ref;
+    const root = scrollingRoot;
     if (!root || pairResizeScrollLeft === null) return;
     void tick().then(() => {
       requestAnimationFrame(() => {
@@ -730,8 +745,8 @@
     requestAlignment();
   });
 
-  onMount(() => {
-    const root = ref;
+  $effect(() => {
+    const root = scrollingRoot;
     if (!root) return;
 
     const measure = (): void => {
@@ -747,7 +762,9 @@
         requestStickyLayout();
       }
     };
-    measure();
+    // Only the viewport owns this observer; its measured state must not
+    // resubscribe the effect and replace a pending responsive alignment.
+    untrack(measure);
     if (typeof ResizeObserver === "undefined") return;
     const observer = new ResizeObserver(measure);
     observer.observe(root);
@@ -755,12 +772,24 @@
   });
 
   onDestroy(() => {
+    disposed = true;
     if (alignmentFrame !== null) cancelAnimationFrame(alignmentFrame);
     if (stickyLayoutFrame !== null) cancelAnimationFrame(stickyLayoutFrame);
     if (stickyStateFrame !== null) cancelAnimationFrame(stickyStateFrame);
     cancelWheelAnimation();
     stopStickyWheelRouting();
     pairResizeScrollLeft = null;
+  });
+
+  $effect(() => {
+    const viewport = scrollViewport;
+    if (!viewport) return;
+    const onScroll = (event: Event) =>
+      handleScroll(
+        event as UIEvent & { currentTarget: EventTarget & HTMLDivElement },
+      );
+    viewport.addEventListener("scroll", onScroll);
+    return () => viewport.removeEventListener("scroll", onScroll);
   });
 
   function handleScroll(
@@ -781,7 +810,7 @@
       // Only descendants belong to the canvas arbitration boundary. A
       // scrollable ancestor outside the root must not mask available
       // horizontal movement.
-      if (target === ref) break;
+      if (target === scrollingRoot) break;
       if (!(target instanceof HTMLElement)) continue;
       const overflow = getComputedStyle(target).overflowY;
       if (
@@ -816,7 +845,7 @@
       return;
     }
 
-    const root = ref;
+    const root = scrollingRoot;
     if (!root) return;
     const maxScrollLeft = Math.max(0, root.scrollWidth - root.clientWidth);
     const canMove =
@@ -852,7 +881,7 @@
   }
 
   function navigateSnapPoint(key: string): boolean {
-    const root = ref;
+    const root = scrollingRoot;
     if (!root) return false;
     const points = columnSnapPoints(root);
     if (points.length === 0) return false;
@@ -915,6 +944,7 @@
   data-ui-part="root"
   data-layout-ready={rootController.layoutReady ? "true" : "false"}
   data-display-mode={resolvedDisplayMode}
+  data-external-scroll={scrollViewport ? "true" : undefined}
   onkeydown={handleKeydown}
   onscroll={handleScroll}
   onwheel={handleWheel}

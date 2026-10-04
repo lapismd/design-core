@@ -37,6 +37,10 @@
     collapsedDirectoryPaths,
     onSelectPath,
     onDirectoryToggle,
+    onFileDragStart,
+    fileDraggable,
+    onDirectoryDragStart,
+    directoryDraggable,
     fileLeading,
     fileLabel,
     fileMeta,
@@ -60,6 +64,19 @@
     collapsedDirectoryPaths?: ReadonlySet<string>;
     onSelectPath?: (path: string) => void;
     onDirectoryToggle?: (path: string) => void;
+    /** Host-owned payload and drag eligibility; rows are inert by default. */
+    onFileDragStart?: (
+      event: DragEvent,
+      context: FileListingFileContext<FileListingFile>,
+    ) => void;
+    fileDraggable?: (
+      context: FileListingFileContext<FileListingFile>,
+    ) => boolean;
+    onDirectoryDragStart?: (
+      event: DragEvent,
+      context: FileListingDirectoryContext,
+    ) => void;
+    directoryDraggable?: (context: FileListingDirectoryContext) => boolean;
     fileLeading?: Snippet<[FileListingFileContext<FileListingFile>]>;
     fileLabel?: Snippet<[FileListingFileContext<FileListingFile>]>;
     fileMeta?: Snippet<[FileListingFileContext<FileListingFile>]>;
@@ -199,6 +216,8 @@
     style={depth === undefined ? undefined : `--ui-diff-file-depth: ${depth}`}
     onclick={() => selectPath(path)}
     onkeydown={handleKeydown}
+    draggable={Boolean(onFileDragStart) && (fileDraggable?.(context) ?? true)}
+    ondragstart={(event) => onFileDragStart?.(event, context)}
   >
     {#if depth !== undefined}
       <span class="ui-diff-file-listing__chevron" aria-hidden="true"></span>
@@ -241,6 +260,9 @@
       class="ui-diff-file-listing__row ui-diff-file-listing__row--directory"
       data-ui-part="directory-row"
       data-directory-path={row.path}
+      draggable={Boolean(onDirectoryDragStart) &&
+        (directoryDraggable?.(directoryContext) ?? true)}
+      ondragstart={(event) => onDirectoryDragStart?.(event, directoryContext)}
       aria-label={row.path}
       aria-expanded={!row.collapsed}
       style={`--ui-diff-file-depth: ${row.depth}`}

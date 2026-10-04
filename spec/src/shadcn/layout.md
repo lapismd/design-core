@@ -33,14 +33,14 @@ Layout primitives establish reusable spatial, scrolling, and responsive composit
 
 ## DC-SHA-036 — Column Canvas
 
-**Requirement.** The Column Canvas family MUST lay out horizontally scrollable columns with consumer-owned items and responsive sizing. In wide auto mode, adjacent expanded columns MUST share the available stage within configured bounds through one inverse resize divider when structurally activated or explicitly resized, with independent durable pair ratios. Collapsed or closed columns MAY expose consumer-owned rails and transient full-height previews without changing durable layout. Fixed and compact modes MUST retain their documented behavior.
+**Requirement.** Column Canvas MUST provide horizontally scrollable columns with consumer-owned items and responsive sizing. Wide auto mode MUST allocate adjacent expanded columns within bounds through inverse resizing and durable pair ratios. Collapsed or closed columns MAY expose custom rails and transient full-height previews without changing persistence. Fixed canvases MAY use an external Scroll Area viewport; column bodies accept an explicit scroll strategy, while compact behavior remains unchanged.
 
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/shadcn/column-canvas`; controller updates must preserve consumer item identity, header actions must use distinct public hover tokens, column headers must keep the shared start inset and a tighter trailing inset so actions sit closer to the column edge, custom collapsed rails must retain the default accessible fallback, and constructing a controller without persistence plus layout-change events that omit `relatedColumnId` MUST stay assignable under `exactOptionalPropertyTypes`.
 - Structural navigation and direct controller open, close, collapse, expand, and runtime column registration changes activate the deepest pair of expanded columns, skip collapsed rails as pair members, deduct their widths, margins, and intervening gaps from the shared stage, supersede any pending resize-scroll restoration, and update the wide-mode native scroll position immediately.
 - Pointer, keyboard, or reset interaction on any eligible divider activates that adjacent expanded pair without moving the canvas; resizing changes the two widths inversely while their total remains constant.
-- Wide and fixed previews must preserve collapsed rail space, leave closed columns out of inline flow, keep owned portalled controls interactive, and remain outside layout persistence; their zero-width boundary MUST expose a thin neutral-grey hover/focus affordance rather than the primary accent, their overlay MUST paint the normal column surface above adjacent content, and compact presentation must disable hover preview.
+- External fixed viewports MUST align sticky return rails at the viewport edge, retain return navigation and stop queued work on teardown; resize observation retains active-pair alignment without tracking measurement state; wide/fixed previews preserve collapsed rail space, omit closed columns, retain interactive portals, avoid persistence, expose a thin neutral-grey boundary and paint the normal surface above adjacent content, while compact mode disables hover preview.
 
 ## DC-SHA-037 — Resizable
 
@@ -58,7 +58,7 @@ Layout primitives establish reusable spatial, scrolling, and responsive composit
 
 ### Acceptance details
 
-- The public boundary is `@lapismd/design-core/shadcn/scroll-area`.
+- The public boundary is `@lapismd/design-core/shadcn/scroll-area`; opt-in `fillContent` fills a bounded viewport for percentage-sized child layouts.
 - Blink and Gecko default to Bits UI; WebKit, explicit `scrollStrategy="native"` and root `data-ui-scroll-strategy="native"` hosts MUST use the dedicated native viewport outside hidden-scrollbar selectors; explicit strategies win; both strategies MUST reserve no gutter, place compact thumbs one pixel from the inline/block end, expand and darken inward on hover/drag without widening the rail, update thumb length without transition, and MAY animate cross-axis expansion; native viewports MUST avoid duplicate landmarks and cancel queued work during teardown.
 - `ScrollAreaVisibility` MUST expose `scroll`, `hover`, and `always`; an omitted local type MUST inherit the nearest App Shell preference, while an explicit type remains authoritative for standalone consumers.
 - Browser coverage MUST prove wheel, keyboard, programmatic, track, and thumb-drag scrolling; bounded direct and imperative layouts; overflow-aware geometry; each visibility mode without relying on native scrollbar paint; and safe overlay listener/observer teardown when Svelte clears bound references before effect cleanup.

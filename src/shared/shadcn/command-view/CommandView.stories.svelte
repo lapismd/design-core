@@ -376,6 +376,7 @@
   play={async ({ canvas, canvasElement }) => {
     const commandView = expectCommandView(canvasElement);
     const scrollArea = expectCommandViewScrollArea(canvasElement);
+    expect(scrollArea.dataset.scrollStrategy).toBe("styled");
     const viewport = scrollArea.querySelector<HTMLElement>(
       '[data-ui-part="scroll-area-viewport"]',
     );
@@ -426,7 +427,7 @@
     <div class="max-w-md">
       <CommandView.Root>
         <CommandView.Input placeholder="Type a command or search..." />
-        <CommandView.List>
+        <CommandView.List scrollStrategy="styled">
           <CommandView.Empty>No results found.</CommandView.Empty>
           <CommandView.Group heading="Commands and actions">
             {#each overflowCommands as command (command.id)}

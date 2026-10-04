@@ -50,7 +50,7 @@ Shadcn form controls provide the low-level accessible inputs used directly or in
 
 ## DC-SHA-051 — Command View
 
-**Requirement.** The Command View family MUST provide a host-agnostic searchable list with composable input start icon, item icon, label, description, and shortcut parts. Overflowing lists MUST use the public ScrollArea viewport. The family MUST NOT own dialog, popover, or other overlay chrome.
+**Requirement.** The Command View family MUST provide a host-agnostic searchable list with composable input start icon, item icon, label, description, and shortcut parts. Overflowing lists MUST use the public ScrollArea viewport and accept an explicit host scroll strategy. The family MUST NOT own dialog, popover, or other overlay chrome.
 
 Root forwards Command filter and value props. It does not expose a separate
 bits-ui command API bindable.

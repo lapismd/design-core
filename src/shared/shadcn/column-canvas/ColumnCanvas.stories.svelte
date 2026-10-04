@@ -14,6 +14,7 @@
   import MessageSquare from "@lucide/svelte/icons/message-square";
   import PanelsTopLeft from "@lucide/svelte/icons/panels-top-left";
   import RotateCcw from "@lucide/svelte/icons/rotate-ccw";
+  import { ScrollArea } from "../scroll-area/index.js";
   import * as ColumnCanvas from "./index.js";
   import { Badge, type BadgeVariant } from "../badge/index.js";
   import { Button } from "../button/index.js";
@@ -58,6 +59,15 @@
 </script>
 
 <script lang="ts">
+  let styledViewport = $state<HTMLElement | null>(null);
+  let styledVisible = $state(true);
+  const styledCanvas = createColumnCanvasController({
+    columns: {
+      one: { defaultWidth: 320 },
+      two: { defaultWidth: 320 },
+      three: { defaultWidth: 320 },
+    },
+  });
   const basicCanvas = createColumnCanvasController({
     columns: {
       categories: {
@@ -2033,5 +2043,86 @@
         </ColumnCanvas.Root>
       </div>
     </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Styled scroll canvas"
+  tags={["visual-pending"]}
+  play={async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const root = canvas.getByRole("region", { name: "Styled canvas" });
+    const viewport = root.closest<HTMLElement>(
+      '[data-ui-part="scroll-area-viewport"]',
+    )!;
+    await waitFor(() =>
+      expect(viewport.scrollWidth).toBeGreaterThan(viewport.clientWidth),
+    );
+    viewport.scrollLeft = 0;
+    viewport.scrollTo({ left: 180, behavior: "auto" });
+    await waitFor(() => expect(viewport.scrollLeft).toBeGreaterThan(0));
+    expect(root.scrollLeft).toBe(0);
+    for (const body of canvasElement.querySelectorAll(
+      '[data-ui-part="column-body"]',
+    ))
+      expect(
+        body.querySelector('[data-scroll-strategy="styled"]'),
+      ).not.toBeNull();
+    expect(root.getBoundingClientRect().height).toBeLessThanOrEqual(360);
+    viewport.scrollTo({ left: viewport.scrollWidth, behavior: "auto" });
+    await waitFor(() =>
+      expect(root.querySelector('[data-column-id="one"]')).toHaveAttribute(
+        "data-sticky-state",
+        "stuck",
+      ),
+    );
+    const stack = root.querySelector<HTMLElement>(
+      '[data-ui-part="sticky-stack"]',
+    )!;
+    expect(stack.getBoundingClientRect().left).toBeCloseTo(
+      viewport.getBoundingClientRect().left,
+      0,
+    );
+    const returnButton = canvas.getByRole("button", {
+      name: "Return to one column",
+    });
+    expect(returnButton).toBeInTheDocument();
+    await fireEvent.click(returnButton);
+    await waitFor(() => expect(viewport.scrollLeft).toBe(0));
+  }}
+>
+  {#snippet template()}
+    {#if styledVisible}
+      <div style="width: 600px; height: 360px">
+        <ScrollArea
+          orientation="horizontal"
+          scrollStrategy="styled"
+          fillContent
+          type="always"
+          bind:viewportRef={styledViewport}
+          style="height:100%;width:100%"
+        >
+          <ColumnCanvas.Root
+            controller={styledCanvas}
+            scrollViewport={styledViewport}
+            displayMode="fixed"
+            aria-label="Styled canvas"
+          >
+            {#each ["one", "two", "three"] as id}
+              <ColumnCanvas.Column {id} title={id} sticky={id === "one"}
+                ><ColumnCanvas.Body scrollStrategy="styled"
+                  >{#each Array.from( { length: 25 }, ) as _, index}<ColumnCanvas.Item
+                      >Item {index + 1}</ColumnCanvas.Item
+                    >{/each}</ColumnCanvas.Body
+                ></ColumnCanvas.Column
+              >
+            {/each}
+          </ColumnCanvas.Root>
+        </ScrollArea>
+      </div>
+    {/if}
+    <Button onclick={() => (styledVisible = !styledVisible)}
+      >{styledVisible ? "Hide styled canvas" : "Show styled canvas"}</Button
+    >
   {/snippet}
 </Story>

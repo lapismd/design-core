@@ -30,6 +30,11 @@ Diff contracts keep change-set listing, file comparison, and merge presentation 
 
 **Requirement.** The File Listing family MUST present a host-owned change-set as a controlled list, folder tree, or compacted package tree without performing filesystem operations.
 
+File and directory rows accept opt-in host drag callbacks and eligibility
+predicates. Native drag events provide the same public context as row slots;
+the host owns payloads and operation policy. Without a drag callback rows remain
+non-draggable, and selection/disclosure behavior stays independent of dragging.
+
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/diff`; hosts MAY provide public `FileListingDirectory` values before their children are loaded, and controlled disclosure MUST request expansion through `onDirectoryToggle` without performing I/O or inventing child files.
@@ -45,7 +50,7 @@ Diff contracts keep change-set listing, file comparison, and merge presentation 
 
 - The public boundary is `@lapismd/design-core/diff`, and unchanged context MUST collapse with incremental expand controls.
 - Line identity MUST be exposed through `data-diff-line-*`, a `lineAccessory` snippet, and a host-owned `lineAnnotation` seam after unified rows; line accessories MUST occupy the number gutter and reveal on row hover or keyboard focus, while split gutters MUST show old-file numbers on the left and new-file numbers on the right, each aligned with its row.
-- Multi-file composition MUST expose controlled selection and collapse state, host-owned header leading and trailing content, optional sticky headers, and repeatable path scroll requests without owning persistence.
+- Multi-file composition MUST expose controlled selection/collapse, host-owned headers, optional sticky headers and repeatable path scrolling without persistence; File Diff accepts an optional host label distinguishing previous/later pane landmarks across files or hunks while preserving default names when omitted.
 - The catalog MUST demonstrate unified, split, collapsed-context, binary, empty, multi-file composer, and wrap-text states without introducing a second runtime contract.
 
 ## DC-DIFF-004 — Merge Editor
@@ -94,7 +99,7 @@ Diff contracts keep change-set listing, file comparison, and merge presentation 
 
 ## DC-DIFF-008 — Diff scroll surfaces
 
-**Requirement.** File Diff and Merge Editor MUST scroll through the public shadcn ScrollArea, fill the host height, and keep unwrapped horizontal scrollbars at the bottom of that filled surface.
+**Requirement.** File Diff and Merge Editor MUST scroll through the public shadcn ScrollArea, fill the host height, and keep unwrapped horizontal scrollbars at the bottom of that filled surface. File Diff MAY override the host scroll strategy for unified and split panes.
 
 ### Acceptance details
 

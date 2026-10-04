@@ -42,6 +42,7 @@
     type,
     scrollHideDelay = 600,
     scrollStrategy = "auto",
+    fillContent = false,
     children,
     ...restProps
   }: WithoutChild<ScrollAreaPrimitive.RootProps> & {
@@ -50,6 +51,8 @@
     scrollbarYClasses?: string | undefined;
     viewportRef?: HTMLElement | null;
     scrollStrategy?: ScrollAreaStrategy;
+    /** Fill a bounded viewport with layouts that size children by percentage. */
+    fillContent?: boolean;
   } = $props();
 
   let activeRootRef = $state<HTMLElement | null>(null);
@@ -115,6 +118,7 @@
       data-ui-component="scroll-area"
       data-ui-part="scroll-area-viewport"
       data-slot="scroll-area-viewport"
+      data-fill-content={fillContent || undefined}
     >
       {@render children?.()}
     </div>
@@ -145,6 +149,7 @@
       data-ui-component="scroll-area"
       data-ui-part="scroll-area-viewport"
       data-slot="scroll-area-viewport"
+      data-fill-content={fillContent || undefined}
     >
       {@render children?.()}
     </ScrollAreaPrimitive.Viewport>
@@ -183,6 +188,10 @@
       }
       [data-ui-component="scroll-area"][data-ui-part="scroll-area-viewport"] {
         width: 100%;
+        height: 100%;
+      }
+      [data-ui-component="scroll-area"][data-ui-part="scroll-area-viewport"][data-fill-content="true"]
+        > div {
         height: 100%;
       }
       [data-ui-component="scroll-area"][data-ui-part="scroll-area-thumb"] {

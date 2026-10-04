@@ -2,18 +2,20 @@
   import type { Snippet } from "svelte";
   import type { HTMLAttributes } from "svelte/elements";
   import type { WithElementRef } from "../../../lib/utils.js";
-  import { ScrollArea } from "../scroll-area/index.js";
+  import { ScrollArea, type ScrollAreaStrategy } from "../scroll-area/index.js";
   import { useColumnCanvasColumn } from "./column-canvas-column-context.svelte.js";
 
   let {
     ref = $bindable(null),
     class: className,
     onScrollNearEnd,
+    scrollStrategy = "auto",
     children,
     ...restProps
   }: WithElementRef<HTMLAttributes<HTMLDivElement>> & {
     /** Fired when the body scrolls within 180px of the bottom. */
     onScrollNearEnd?: () => void;
+    scrollStrategy?: ScrollAreaStrategy;
     children?: Snippet;
   } = $props();
 
@@ -47,7 +49,12 @@
   data-ui-component="column-canvas"
   data-ui-part="column-body"
 >
-  <ScrollArea type="auto" orientation="vertical" bind:viewportRef>
+  <ScrollArea
+    type="auto"
+    orientation="vertical"
+    {scrollStrategy}
+    bind:viewportRef
+  >
     {@render children?.()}
   </ScrollArea>
 </div>
