@@ -12,6 +12,10 @@
     allocateColumnCanvasWidth,
   } from "./column-canvas-layout.js";
   import {
+    resolveColumnCanvasPinning,
+    type PinningLayout,
+  } from "./column-canvas-pinning.js";
+  import {
     setColumnCanvasContext,
     type ColumnCanvasResizeBehavior,
     type ColumnCanvasStickyColumnRegistration,
@@ -81,11 +85,16 @@
   );
   let activeStickyColumns = $state.raw<ResolvedStickyColumn[]>([]);
   let stuckStickyColumns = $state.raw<ResolvedStickyColumn[]>([]);
+  let activeFixedColumns = $state.raw<
+    { element: HTMLElement; offset: number }[]
+  >([]);
+  let fixedPrefixLength = $state(0);
   let disposed = false;
   let alignmentFrame: number | null = null;
   let alignmentShouldActivateDeepest = false;
   let stickyLayoutFrame: number | null = null;
   let stickyStateFrame: number | null = null;
+  let resizeFinishFrame: number | null = null;
   let wheelAnimationFrame: number | null = null;
   let wheelAnimationRoot: HTMLElement | null = null;
   let wheelAnimationDirection: WheelDirection | null = null;
@@ -120,6 +129,10 @@
     );
   }
 
+  function scrollingColumns(): HTMLElement[] {
+    return visibleColumns().slice(fixedPrefixLength);
+  }
+
   function contentEnd(root: HTMLElement): number {
     const padding = Number.parseFloat(getComputedStyle(root).paddingInlineEnd);
     return (
@@ -129,6 +142,15 @@
   }
 
   function targetScrollLeft(root: HTMLElement, target: HTMLElement): number {
+    if (getComputedStyle(root).direction === "rtl") {
+      const end =
+        root.getBoundingClientRect().left +
+        finitePixels(getComputedStyle(root).paddingInlineEnd);
+      return Math.min(
+        0,
+        root.scrollLeft + target.getBoundingClientRect().left - end,
+      );
+    }
     const delta = target.getBoundingClientRect().right - contentEnd(root);
     return Math.max(0, root.scrollLeft + delta);
   }
@@ -197,6 +219,7 @@
     row: HTMLElement,
     rootStyle: CSSStyleDeclaration,
     columns: HTMLElement[],
+    reservedWidth = 0,
   ): void {
     for (const column of columns) clearResponsiveStageLayout(column);
     activePairResize = undefined;
@@ -219,6 +242,7 @@
     const contentWidth = Math.max(
       0,
       root.clientWidth -
+        reservedWidth -
         finitePixels(rootStyle.paddingInlineStart) -
         finitePixels(rootStyle.paddingInlineEnd),
     );
@@ -313,11 +337,62 @@
     if (!root || !rowElement) return;
 
     const columns = visibleColumns();
-    for (const column of columns) clearStickyLayout(column);
+    for (const column of columns) {
+      clearStickyLayout(column);
+      clearResponsiveStageLayout(column);
+    }
+    for (const column of rowElement.querySelectorAll<HTMLElement>(
+      ":scope > [data-fixed-active]",
+    )) {
+      column.removeAttribute("data-fixed-active");
+      column.removeAttribute("data-fixed-state");
+      column.style.removeProperty("--ui-column-canvas-fixed-offset");
+    }
     activeStickyColumns = [];
     stuckStickyColumns = [];
     const rootStyle = getComputedStyle(ref ?? root);
-    syncResponsiveStageLayout(root, rowElement, rootStyle, columns);
+    const gap = finitePixels(getComputedStyle(rowElement).columnGap);
+    const pinning = measurePinning(columns, root, rootStyle, gap);
+    activeFixedColumns = pinning.slots
+      .filter((slot) => slot.kind === "fixed")
+      .map((slot) => ({
+        element: columns.find((column) => column.dataset.columnId === slot.id)!,
+        offset: slot.offset,
+      }));
+    fixedPrefixLength = activeFixedColumns.length ? pinning.prefixLength : 0;
+    syncResponsiveStageLayout(
+      root,
+      rowElement,
+      rootStyle,
+      columns.slice(fixedPrefixLength),
+      fixedPrefixLength
+        ? pinning.extent + (columns.length > fixedPrefixLength ? gap : 0)
+        : 0,
+    );
+    for (const { element, offset } of activeFixedColumns) {
+      // Native sticky positions in the internal root include its padding;
+      // external Scroll Area viewports have no canvas padding of their own.
+      const inset =
+        offset -
+        (scrollViewport ? 0 : finitePixels(rootStyle.paddingInlineStart));
+      element.dataset.fixedActive = "true";
+      element.style.setProperty(
+        "--ui-column-canvas-fixed-offset",
+        `${inset}px`,
+      );
+      const anchor = Array.from(
+        rowElement.querySelectorAll<HTMLElement>(
+          ":scope > [data-ui-part='column-preview-anchor']",
+        ),
+      ).find((anchor) => anchor.dataset.columnId === element.dataset.columnId);
+      if (anchor) {
+        anchor.dataset.fixedActive = "true";
+        anchor.style.setProperty(
+          "--ui-column-canvas-fixed-offset",
+          `${inset}px`,
+        );
+      }
+    }
     stickyLayerHeight = root.clientHeight;
     stickyLayerInlineOffset = scrollViewport
       ? 0
@@ -334,22 +409,14 @@
     const configuredWidth =
       stickyWidthProbe?.getBoundingClientRect().width ?? 0;
     const active: ResolvedStickyColumn[] = [];
-    let stackOffset = 0;
-    let withinLeadingStack = true;
-
-    for (const column of columns) {
-      const requested = column.dataset.sticky === "true";
-      if (!withinLeadingStack || !requested) {
-        withinLeadingStack = false;
-        continue;
-      }
-
-      const id = column.dataset.columnId;
+    for (const slot of pinning.slots) {
+      if (slot.kind === "fixed") continue;
+      const column = columns.find(
+        (column) => column.dataset.columnId === slot.id,
+      )!;
+      const id = slot.id;
       const registration = id ? registrations.get(id) : undefined;
-      if (!id || !registration) {
-        withinLeadingStack = false;
-        continue;
-      }
+      if (!registration) break;
 
       const width = column.getBoundingClientRect().width;
       const collapsed = column.dataset.uiPart === "collapsed-column";
@@ -361,9 +428,8 @@
         registration,
         element: column,
         width: railWidth,
-        offset: stackOffset,
+        offset: slot.offset,
       });
-      stackOffset += railWidth;
     }
 
     activeStickyColumns = active;
@@ -371,6 +437,46 @@
       root.scrollLeft = pairResizeScrollLeft;
     }
     scheduleStickyStateUpdate();
+  }
+
+  function measurePinning(
+    columns: HTMLElement[],
+    root: HTMLElement,
+    style: CSSStyleDeclaration,
+    gap: number,
+  ): PinningLayout {
+    return resolveColumnCanvasPinning(
+      columns.map((column) => {
+        const columnStyle = getComputedStyle(column);
+        const id = columnId(column);
+        return {
+          id: id ?? "",
+          kind: !id
+            ? null
+            : column.dataset.fixed === "true"
+              ? "fixed"
+              : column.dataset.sticky === "true"
+                ? "sticky"
+                : null,
+          expanded: column.dataset.uiPart === "column",
+          width: column.getBoundingClientRect().width,
+          minWidth: id ? rootController.getMinWidth(id) : 0,
+          marginStart: finitePixels(columnStyle.marginInlineStart),
+          marginEnd: finitePixels(columnStyle.marginInlineEnd),
+        };
+      }),
+      {
+        mode: resolvedDisplayMode,
+        availableWidth:
+          root.clientWidth -
+          finitePixels(style.paddingInlineStart) -
+          finitePixels(style.paddingInlineEnd),
+        gap,
+        railWidth: stickyWidthProbe?.getBoundingClientRect().width ?? 0,
+        contextWidth: wideContextWidthProbe?.getBoundingClientRect().width ?? 0,
+        activePairLeadingId,
+      },
+    );
   }
 
   function inlineStartPosition(root: HTMLElement, column: HTMLElement): number {
@@ -390,6 +496,14 @@
     }
 
     const hasScrolled = Math.abs(root.scrollLeft) > 1;
+    for (const column of activeFixedColumns) {
+      column.element.dataset.fixedState =
+        hasScrolled &&
+        inlineStartPosition(root, column.element) <=
+          column.offset + root.clientLeft + 1
+          ? "stuck"
+          : "flowing";
+    }
     const stuckColumns: ResolvedStickyColumn[] = [];
     for (const column of activeStickyColumns) {
       const activationEdge =
@@ -495,14 +609,21 @@
       root.removeAttribute("data-wheel-routing");
       const target =
         adjacentSnapPoint(root, direction) ??
-        (direction > 0 ? Math.max(0, root.scrollWidth - root.clientWidth) : 0);
+        (direction > 0
+          ? inlineScrollSign(root) *
+            Math.max(0, root.scrollWidth - root.clientWidth)
+          : 0);
       if (Math.abs(target - root.scrollLeft) <= 2) return;
       animateWheelToSnapPoint(root, target, direction);
     }, 240);
   }
 
   function columnSnapPoints(root: HTMLElement): number[] {
-    return visibleColumns().map((column) => targetScrollLeft(root, column));
+    return scrollingColumns().map((column) => targetScrollLeft(root, column));
+  }
+
+  function inlineScrollSign(root: HTMLElement): number {
+    return getComputedStyle(root).direction === "rtl" ? -1 : 1;
   }
 
   function adjacentSnapPoint(
@@ -510,11 +631,13 @@
     direction: WheelDirection,
   ): number | undefined {
     const points = columnSnapPoints(root);
+    const sign = inlineScrollSign(root);
+    const current = root.scrollLeft * sign;
     if (direction > 0) {
-      return points.find((point) => point > root.scrollLeft + 2);
+      return points.find((point) => point * sign > current + 2);
     }
     for (let index = points.length - 1; index >= 0; index -= 1) {
-      if (points[index] < root.scrollLeft - 2) return points[index];
+      if (points[index] * sign < current - 2) return points[index];
     }
     return undefined;
   }
@@ -569,7 +692,7 @@
     if (!root) return;
     cancelWheelAnimation();
     if (resolvedDisplayMode === "fixed") return;
-    const columns = visibleColumns();
+    const columns = scrollingColumns();
     const target =
       resolvedDisplayMode === "wide"
         ? activePair(columns).at(-1)
@@ -625,13 +748,19 @@
       return { kind: "column" };
     }
     if (
+      activeFixedColumns.some(
+        (column) => column.element.dataset.columnId === requestedColumnId,
+      )
+    )
+      return { kind: "column" };
+    if (
       activePairResize &&
       requestedColumnId === activePairResize.leadingColumnId
     ) {
       return activePairResize;
     }
 
-    const expanded = visibleColumns().filter(
+    const expanded = scrollingColumns().filter(
       (column) => column.dataset.uiPart === "column",
     );
     const leadingIndex = expanded.findIndex(
@@ -664,6 +793,14 @@
   function activateResizePair(columnId: string): ColumnCanvasResizeBehavior {
     const behavior = getResizeBehavior(columnId);
     if (resolvedDisplayMode !== "wide" || behavior.kind !== "pair") {
+      if (
+        behavior.kind === "column" &&
+        activeFixedColumns.some(
+          (column) => column.element.dataset.columnId === columnId,
+        ) &&
+        pairResizeScrollLeft === null
+      )
+        pairResizeScrollLeft = scrollingRoot?.scrollLeft ?? null;
       return behavior;
     }
     const root = scrollingRoot;
@@ -683,7 +820,11 @@
     const root = scrollingRoot;
     if (!root || pairResizeScrollLeft === null) return;
     void tick().then(() => {
-      requestAnimationFrame(() => {
+      if (disposed) return;
+      if (resizeFinishFrame !== null) cancelAnimationFrame(resizeFinishFrame);
+      resizeFinishFrame = requestAnimationFrame(() => {
+        resizeFinishFrame = null;
+        if (disposed) return;
         if (pairResizeScrollLeft !== null) {
           root.scrollLeft = pairResizeScrollLeft;
         }
@@ -779,6 +920,7 @@
     if (alignmentFrame !== null) cancelAnimationFrame(alignmentFrame);
     if (stickyLayoutFrame !== null) cancelAnimationFrame(stickyLayoutFrame);
     if (stickyStateFrame !== null) cancelAnimationFrame(stickyStateFrame);
+    if (resizeFinishFrame !== null) cancelAnimationFrame(resizeFinishFrame);
     cancelWheelAnimation();
     stopStickyWheelRouting();
     pairResizeScrollLeft = null;
@@ -831,7 +973,9 @@
   ): void {
     onwheel?.(event);
     const routesUnusedVerticalWheel =
-      resolvedDisplayMode === "compact" || activeStickyColumns.length > 0;
+      resolvedDisplayMode === "compact" ||
+      activeStickyColumns.length > 0 ||
+      activeFixedColumns.length > 0;
     if (event.defaultPrevented || !routesUnusedVerticalWheel) return;
     if (
       Math.abs(event.deltaY) <= Math.abs(event.deltaX) ||
@@ -851,10 +995,10 @@
     const root = scrollingRoot;
     if (!root) return;
     const maxScrollLeft = Math.max(0, root.scrollWidth - root.clientWidth);
+    const sign = inlineScrollSign(root);
+    const current = root.scrollLeft * sign;
     const canMove =
-      event.deltaY < 0
-        ? root.scrollLeft > 1
-        : root.scrollLeft < maxScrollLeft - 1;
+      event.deltaY < 0 ? current > 1 : current < maxScrollLeft - 1;
     if (!canMove) return;
 
     if (resolvedDisplayMode !== "compact") {
@@ -864,10 +1008,12 @@
         const direction: WheelDirection = event.deltaY < 0 ? -1 : 1;
         startStickyWheelRouting(root, direction);
       }
-      root.scrollLeft = Math.min(
-        maxScrollLeft,
-        Math.max(0, root.scrollLeft + event.deltaY * STICKY_WHEEL_DELTA_SCALE),
-      );
+      root.scrollLeft =
+        sign *
+        Math.min(
+          maxScrollLeft,
+          Math.max(0, current + event.deltaY * STICKY_WHEEL_DELTA_SCALE),
+        );
       return;
     }
 
@@ -892,16 +1038,10 @@
     let target: number | undefined;
     if (key === "Home") target = points[0];
     if (key === "End") target = points.at(-1);
-    if (key === "ArrowRight") {
-      target = points.find((point) => point > root.scrollLeft + 2);
-    }
-    if (key === "ArrowLeft") {
-      for (let index = points.length - 1; index >= 0; index -= 1) {
-        if (points[index] < root.scrollLeft - 2) {
-          target = points[index];
-          break;
-        }
-      }
+    if (key === "ArrowRight" || key === "ArrowLeft") {
+      const direction =
+        (key === "ArrowRight" ? 1 : -1) * inlineScrollSign(root);
+      target = adjacentSnapPoint(root, direction as WheelDirection);
     }
     if (target === undefined) return false;
 
@@ -964,6 +1104,8 @@
         role="navigation"
         data-ui-component="column-canvas"
         data-ui-part="sticky-stack"
+        data-mixed={activeFixedColumns.length ? "true" : undefined}
+        style:--ui-column-canvas-sticky-stack-width={`${Math.max(...stuckStickyColumns.map((column) => column.offset + column.width))}px`}
         aria-label="Previous columns"
       >
         {#each stuckStickyColumns as column (column.id)}
@@ -973,6 +1115,7 @@
             data-sticky-for={column.id}
             data-sticky-state="stuck"
             style:--ui-column-canvas-sticky-rail-width={`${column.width}px`}
+            style:--ui-column-canvas-sticky-rail-offset={`${column.offset}px`}
           >
             <Button
               variant="outline"

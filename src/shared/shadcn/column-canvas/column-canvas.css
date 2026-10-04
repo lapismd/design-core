@@ -138,6 +138,34 @@
   pointer-events: none;
 }
 
+[data-ui-component="column-canvas"][data-ui-part][data-fixed-active="true"] {
+  position: sticky;
+  inset-inline-start: var(--ui-column-canvas-fixed-offset, 0px);
+  z-index: 20;
+}
+
+[data-ui-component="column-canvas"][data-ui-part="column-preview-anchor"][data-fixed-active="true"] {
+  z-index: var(--ui-column-canvas-preview-z-index, 41);
+}
+
+[data-ui-component="column-canvas"][data-ui-part="sticky-stack"][data-mixed="true"] {
+  width: var(--ui-column-canvas-sticky-stack-width);
+  border: 0;
+  overflow: visible;
+  background: transparent;
+  pointer-events: none;
+}
+
+[data-ui-component="column-canvas"][data-ui-part="sticky-stack"][data-mixed="true"]
+  > [data-ui-part="sticky-rail"] {
+  position: absolute;
+  inset-inline-start: var(--ui-column-canvas-sticky-rail-offset);
+  border: 1px solid var(--ui-column-canvas-border-color, var(--border));
+  border-radius: var(--ui-column-canvas-radius, var(--radius));
+  background: var(--ui-column-canvas-column-background, var(--card));
+  pointer-events: auto;
+}
+
 [data-ui-component="column-canvas"][data-ui-part="wide-context-width-probe"] {
   position: absolute;
   width: var(

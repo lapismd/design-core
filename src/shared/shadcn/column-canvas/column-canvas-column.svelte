@@ -25,6 +25,7 @@
     collapsible: collapsibleProp,
     closeable: closeableProp,
     sticky = false,
+    fixed = false,
     stickyRail,
     collapsedRail,
     revealOnEdgeHover = false,
@@ -75,6 +76,8 @@
      * columns form a stack. Compact presentation ignores this prop.
      */
     sticky?: boolean;
+    /** Pin the original expanded panel or collapsed rail. Overrides sticky; compact ignores it. */
+    fixed?: boolean;
     /** Custom contents for the floating rail's return button. */
     stickyRail?: Snippet;
     /** Consumer-owned collapsed rail. The default title/count trigger remains the fallback. */
@@ -309,7 +312,10 @@
     // Floating-rail geometry is transient presentation state and must not
     // trigger active-column alignment.
     sticky;
+    fixed;
     stickyRail;
+    previewed;
+    revealOnEdgeHover;
     width;
     canvas.requestStickyLayout();
   });
@@ -523,6 +529,7 @@
       data-column-id={id}
       data-column-title={resolvedTitle}
       data-sticky={sticky ? "true" : undefined}
+      data-fixed={fixed ? "true" : undefined}
     >
       {#if previewed}
         <div
@@ -578,6 +585,7 @@
       data-column-title={resolvedTitle}
       data-resizable={resolvedResizable ? "true" : undefined}
       data-sticky={sticky ? "true" : undefined}
+      data-fixed={fixed ? "true" : undefined}
       style:--ui-column-canvas-expanded-width={`${width}px`}
     >
       {@render expandedContents()}

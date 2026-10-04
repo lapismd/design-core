@@ -195,6 +195,7 @@ attributes and a bindable `ref`:
 | `collapsedRail`     | Consumer snippet receiving `{ id, title, count, expand }`; the vertical trigger remains the fallback |
 | `revealOnEdgeHover` | Adds a zero-width boundary control for transient collapsed/closed preview                            |
 | `edgeRevealLabel`   | Accessible label for the boundary preview control                                                    |
+| `fixed`             | Pins the original expanded panel or collapsed rail; overrides sticky                                 |
 | `sticky`            | Registers a leading floating return rail in wide and fixed modes                                     |
 | `stickyRail`        | Named snippet rendered inside the sticky return button                                               |
 | `width`             | Test or harness width override; prefer controller widths in products                                 |
@@ -304,6 +305,34 @@ and input at a canvas edge is left to the surrounding page.
 Sticky is transient presentation state. It is not controller configuration or
 part of the V2 persistence schema. Compact mode ignores it and retains the
 full-stage active-column and snapping behavior.
+
+## Fixed columns
+
+Set `fixed` on leading `Column` parts to pin the original expanded panel or
+collapsed rail at the viewport's inline start. `fixed` defaults to false and
+wins over `sticky`; `stickyRail` is unused for a fixed column. This is separate
+from `Root displayMode="fixed"`, which selects free scrolling and pixel widths.
+The original content stays mounted as scrolling crosses the pin boundary, so
+focus, drafts, menus, drag targets and independent body scrolling remain usable.
+
+Fixed and sticky requests share one consecutive leading group. An ordinary
+column ends that group. Fixed slots preserve actual widths, margins and the
+canvas gap, while consecutive sticky-only rails remain gapless. Closed and
+path-hidden columns occupy no slot. Collapsed previews anchor to the pinned
+rail. Native logical positioning supports RTL and external Scroll Area viewports.
+
+Wide mode reserves the fixed group outside the adaptive scrolling pair; pinned
+columns resize independently. If the fixed group and scrolling minimums cannot
+fit, trailing fixed columns and subsequent pins temporarily return to flow.
+Fixed-width mode reserves the largest remaining column minimum; wide mode
+reserves the active pair, context, collapsed rails and their spacing. Pinning
+returns automatically when capacity permits. Compact mode ignores `fixed`.
+Neither fallback nor pinning alters widths, collapse state or V2 persistence.
+
+Requested columns expose `data-fixed="true"`; eligible pins additionally expose
+`data-fixed-active="true"` and `data-fixed-state="flowing|stuck"`. A released or
+ineligible request retains only `data-fixed`. These attributes describe transient
+presentation, not controller configuration.
 
 ## Persist layout
 
