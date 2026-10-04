@@ -82,7 +82,7 @@ non-draggable, and selection/disclosure behavior stays independent of dragging.
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/diff`.
-- Added and removed counts MUST use distinct `--ui-diff-stat-*` colors and `formatDiffDelta` prefixes.
+- Added and removed counts MUST use distinct `--ui-diff-stat-*` colors and `formatDiffDelta` prefixes, retaining at least 4.5:1 text contrast against the default surface in light and dark modes.
 - Zero sides MUST hide unless `showZero` is set.
 - The catalog MUST demonstrate added, removed, and hidden-zero states without introducing a second runtime contract.
 

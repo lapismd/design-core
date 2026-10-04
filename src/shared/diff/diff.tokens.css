@@ -57,3 +57,9 @@
   --ui-diff-stat-added: oklch(0.42 0.12 145);
   --ui-diff-stat-removed: oklch(0.48 0.19 25);
 }
+
+.dark,
+.dark .ui-diff {
+  --ui-diff-stat-added: oklch(0.8 0.14 145);
+  --ui-diff-stat-removed: oklch(0.76 0.16 25);
+}
