@@ -3,7 +3,7 @@
   import type { Action } from "svelte/action";
   import type { Snippet } from "svelte";
   import type { HTMLAttributes } from "svelte/elements";
-  import ChevronRight from "@lucide/svelte/icons/chevron-right";
+  import { PanelToggleIcon } from "../panel-toggle/index.js";
   import type { WithElementRef } from "../../../lib/utils.js";
   import { useColumnCanvasContext } from "./context.svelte.js";
   import { setColumnCanvasColumnContext } from "./column-canvas-column-context.svelte.js";
@@ -18,6 +18,7 @@
     ref = $bindable(null),
     id,
     title,
+    columnTitle,
     count,
     pathLevel: pathLevelProp,
     resizable: resizableProp,
@@ -44,6 +45,8 @@
      * Omit when composing a custom `Header`.
      */
     title?: string;
+    /** Accessible title for custom headers and collapsed rails, without a default header. */
+    columnTitle?: string;
     /** Convenience count badge for the default header. */
     count?: number;
     /**
@@ -90,7 +93,7 @@
   const canvas = useColumnCanvasContext();
   const controller = canvas.controller;
 
-  const resolvedTitle = $derived(title ?? id);
+  const resolvedTitle = $derived(columnTitle ?? title ?? id);
   const resolvedPathLevel = $derived(
     pathLevelProp ?? controller.getPathLevel(id),
   );
@@ -539,13 +542,14 @@
           type="button"
           data-ui-component="column-canvas"
           data-ui-part="collapsed-trigger"
+          data-panel-toggle
           aria-label={`Expand ${resolvedTitle} column`}
           title={count === undefined
             ? resolvedTitle
             : `${resolvedTitle} (${count})`}
           onclick={expandColumn}
         >
-          <ChevronRight size={14} aria-hidden="true" />
+          <PanelToggleIcon expanded={false} />
           <span
             data-ui-component="column-canvas"
             data-ui-part="collapsed-label"

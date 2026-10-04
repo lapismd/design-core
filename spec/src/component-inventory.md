@@ -25,7 +25,7 @@ exactly one owning shared layer before it becomes a public export.
 Generic primitives in `src/shared/shadcn/`:
 
 accordion, alert, alert-dialog, badge, button, card, code, code-block,
-collapsible, column-canvas, command, command-view, dialog, dropdown-menu, empty, field,
+collapsible, column-canvas, command, command-view, dialog, dropdown-menu, empty, field, panel-toggle,
 input, input-group, label, hover-card, popover, resizable, scroll-area, select, separator,
 sheet, sidebar, skeleton, spinner, switch, swipe-item, tabs, textarea, toggle,
 toggle-group, tooltip, progress, slider, context-menu, drawer
@@ -41,6 +41,10 @@ exists; its contract and research provenance live in
 horizontal column cascades (Miller-column style) with an AppShell-like
 controller, compound Header/Toggle/Body/Item parts, and injected width/collapse
 persistence; it is not registry-backed.
+`panel-toggle` is a project-authored Layout family composing the public Button
+with a compact rectangular panel icon. It accepts controlled expanded state,
+left/right orientation and custom content, and supplies Column Canvas's default
+toggle and collapsed-rail icon. It is not a registry conversion.
 `command-view` is a project-authored Forms family for a host-agnostic searchable
 command surface with composable input and item parts. It composes bits-ui
 Command keyboard behavior and the public ScrollArea viewport. It is not

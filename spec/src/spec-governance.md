@@ -6,6 +6,10 @@ Controlled notification presentation shares DC-WS-037 with the existing plugin.
 Its secondary catalog scenarios register in the public surface map; controlled
 and workspace consumers retain the same severity and dismissal contract.
 
+Panel Toggle registers as a controlled project-authored Layout family under
+DC-SHA-053. Column Canvas composes its default icon under DC-SHA-036 while
+retaining consumer overrides. Both surfaces keep separate verification evidence.
+
 ## Public surface coverage
 
 | Surface                   | Public boundary | Requirement |

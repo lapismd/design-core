@@ -12,6 +12,7 @@ Layout primitives establish reusable spatial, scrolling, and responsive composit
 | Scroll Area   | `@lapismd/design-core/shadcn/scroll-area`   | DC-SHA-038  |
 | Separator     | `@lapismd/design-core/shadcn/separator`     | DC-SHA-039  |
 | Sidebar       | `@lapismd/design-core/shadcn/sidebar`       | DC-SHA-040  |
+| Panel Toggle  | `@lapismd/design-core/shadcn/panel-toggle`  | DC-SHA-053  |
 
 ## DC-SHA-034 — Shared Shadcn invariants
 
@@ -37,7 +38,7 @@ Layout primitives establish reusable spatial, scrolling, and responsive composit
 
 ### Acceptance details
 
-- The public boundary is `@lapismd/design-core/shadcn/column-canvas`; controller updates must preserve consumer item identity, header actions must use distinct public hover tokens, column headers must keep the shared start inset and a tighter trailing inset so actions sit closer to the column edge, custom collapsed rails must retain the default accessible fallback, and constructing a controller without persistence plus layout-change events that omit `relatedColumnId` MUST stay assignable under `exactOptionalPropertyTypes`.
+- The public boundary is `@lapismd/design-core/shadcn/column-canvas`; controller updates must preserve consumer item identity, `columnTitle` must label custom headers and collapsed rails without generating a default header, header actions must use distinct public hover tokens, column headers must keep the shared start inset and a tighter trailing inset so actions sit closer to the column edge, custom collapsed rails must retain the default accessible fallback, and constructing a controller without persistence plus layout-change events that omit `relatedColumnId` MUST stay assignable under `exactOptionalPropertyTypes`.
 - Structural navigation and direct controller open, close, collapse, expand, and runtime column registration changes activate the deepest pair of expanded columns, skip collapsed rails as pair members, deduct their widths, margins, and intervening gaps from the shared stage, supersede any pending resize-scroll restoration, and update the wide-mode native scroll position immediately.
 - Pointer, keyboard, or reset interaction on any eligible divider activates that adjacent expanded pair without moving the canvas; resizing changes the two widths inversely while their total remains constant; `trailingSpacer` snippets use existing positive-width wide/fixed spacers without column registration or state changes, while blank spacers remain aria-hidden and compact mode omits them.
 - External fixed viewports MUST align sticky return rails at the viewport edge, retain return navigation and stop queued work on teardown; resize observation retains active-pair alignment without tracking measurement state; wide/fixed previews preserve collapsed rail space, omit closed columns, retain interactive portals, avoid persistence, expose a thin neutral-grey boundary and paint the normal surface above adjacent content, while compact mode disables hover preview.
@@ -80,3 +81,14 @@ Layout primitives establish reusable spatial, scrolling, and responsive composit
 
 - The public boundary is `@lapismd/design-core/shadcn/sidebar`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+
+## DC-SHA-053 — Panel Toggle
+
+**Requirement.** Panel Toggle MUST compose Button with a compact rectangular icon and controlled expanded state. Hover and keyboard focus MUST preview the opposite bar width without changing state. Column Canvas MUST use this icon by default.
+
+### Acceptance details
+
+- The public boundary is `@lapismd/design-core/shadcn/panel-toggle`; default button and icon sizes are 28×24px and 18×12px, with left or right orientation.
+- Bar transitions MUST preserve frame geometry, reverse on pointer departure, and respect reduced motion and disabled controls.
+- Button semantics, accessible labels, visible focus, forced colors and composed header hover tokens MUST remain available; consumers own state changes.
+- Column Canvas toggles and collapsed rails MUST use the shared icon while retaining custom icons, rails, preview behavior and controller actions.

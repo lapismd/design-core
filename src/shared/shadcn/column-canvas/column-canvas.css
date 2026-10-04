@@ -467,7 +467,7 @@
 }
 
 [data-ui-component="column-canvas"][data-ui-part="collapsed-trigger"]
-  :global(svg) {
+  :global(svg:not([data-ui-component="panel-toggle"])) {
   width: 0.875rem;
   height: 0.875rem;
   flex-shrink: 0;
@@ -475,10 +475,10 @@
 
 [data-ui-component="column-canvas"][data-ui-part="root"]
   [data-ui-part="column-toggle"]
-  :global(svg),
+  :global(svg:not([data-ui-component="panel-toggle"])),
 [data-ui-component="column-canvas"][data-ui-part="root"]
   [data-ui-part="column-close"]
-  :global(svg) {
+  :global(svg:not([data-ui-component="panel-toggle"])) {
   width: 0.875rem;
   height: 0.875rem;
 }

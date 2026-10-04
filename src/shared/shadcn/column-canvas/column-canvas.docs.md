@@ -546,3 +546,10 @@ zero-width spacers render no trailing content.
   <!-- Existing columns -->
 </ColumnCanvas.Root>
 ```
+
+Default toggles and collapsed rails use the compact rectangular Panel Toggle icon.
+Its filled bar previews the next state on hover or keyboard focus and respects
+reduced motion. Custom toggle icons and collapsed-rail snippets remain available.
+
+Use `columnTitle` to label a column with a custom header and its collapsed rail
+without rendering a default header. `title` retains its convenience header.

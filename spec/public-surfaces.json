@@ -643,6 +643,10 @@
       "requirement": "DC-SHA-036"
     },
     {
+      "name": "Shadcn/Layout/Panel Toggle",
+      "requirement": "DC-SHA-053"
+    },
+    {
       "name": "Shadcn/Layout/Resizable",
       "requirement": "DC-SHA-037"
     },

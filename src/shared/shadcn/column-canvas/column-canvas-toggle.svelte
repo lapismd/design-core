@@ -1,8 +1,6 @@
 <script lang="ts">
   import { untrack, type ComponentProps, type Snippet } from "svelte";
-  import ChevronLeft from "@lucide/svelte/icons/chevron-left";
-  import ChevronRight from "@lucide/svelte/icons/chevron-right";
-  import { Button } from "../button/index.js";
+  import { PanelToggle, PanelToggleIcon } from "../panel-toggle/index.js";
   import { useColumnCanvasContext } from "./context.svelte.js";
   import { useColumnCanvasColumn } from "./column-canvas-column-context.svelte.js";
   import type { ColumnCanvasColumnState } from "./column-canvas-types.js";
@@ -15,13 +13,14 @@
     previewDelay = 600,
     previewDismissDelay = 120,
     icon,
+    side = "left",
     class: className,
     onclick,
     onmouseenter,
     onmouseleave,
     onpointerdown,
     ...restProps
-  }: ComponentProps<typeof Button> & {
+  }: Omit<ComponentProps<typeof PanelToggle>, "expanded"> & {
     /** Explicit target when the toggle is rendered outside its column. */
     columnId?: string;
     /** Human-readable target title for generated labels. */
@@ -60,17 +59,18 @@
 </script>
 
 {#if actionable}
-  <Button
+  <PanelToggle
     bind:ref
+    {side}
     variant="ghost"
-    size="icon-sm"
+    size="icon-xs"
     class={className}
     type="button"
     data-ui-part="column-toggle"
     data-target-column-id={targetId}
     data-state={state}
     aria-label={resolveAccessibleLabel()}
-    aria-expanded={previewed || state === "expanded"}
+    expanded={previewed || state === "expanded"}
     title={closed
       ? `Open ${targetTitle}`
       : `${collapsed ? "Expand" : "Collapse"} ${targetTitle}`}
@@ -106,10 +106,8 @@
   >
     {#if icon}
       {@render icon(state)}
-    {:else if collapsed || closed}
-      <ChevronRight size={14} aria-hidden="true" />
     {:else}
-      <ChevronLeft size={14} aria-hidden="true" />
+      <PanelToggleIcon expanded={previewed || state === "expanded"} {side} />
     {/if}
-  </Button>
+  </PanelToggle>
 {/if}
