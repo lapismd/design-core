@@ -153,3 +153,26 @@ export const Demo = `<script lang="ts">
   baseLabel={quicksortFixture.baseLabel}
   rightLabel={quicksortFixture.rightLabel}
 />`;
+
+export const HeaderCenter = `<script lang="ts">
+  import { MergeEditor } from "@lapismd/design-core/diff";
+  import { Button } from "@lapismd/design-core/shadcn/button";
+
+  let version = $state(1);
+</script>
+
+<MergeEditor
+  mode="one-way"
+  path="src/example.ts"
+  left={"first\\nkeep\\nlast\\n"}
+  right={"changed\\nkeep\\ndifferent\\n"}
+>
+  {#snippet headerCenter()}
+    <Button size="xs" variant="outline" onclick={() => version++}>
+      Version {version}
+    </Button>
+  {/snippet}
+  {#snippet headerActions()}
+    <Button size="icon-xs" variant="ghost" aria-label="Merge options">⋮</Button>
+  {/snippet}
+</MergeEditor>`;

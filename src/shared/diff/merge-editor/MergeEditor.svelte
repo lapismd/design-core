@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { onMount, type Snippet } from "svelte";
   import CheckCheckIcon from "@lucide/svelte/icons/check-check";
   import ChevronDownIcon from "@lucide/svelte/icons/chevron-down";
   import ChevronUpIcon from "@lucide/svelte/icons/chevron-up";
@@ -42,13 +42,15 @@
     baseLabel = "Resolved",
     rightLabel = "Right",
     path,
+    headerCenter,
+    headerActions,
     language,
     readOnly = false,
     editable = false,
     editableSides,
     ignoreWhitespace = false,
     ignoreCase = false,
-    syncHorizontalScroll = false,
+    syncHorizontalScroll = true,
     wrap = false,
     onLeftChange,
     onBaseChange,
@@ -64,6 +66,10 @@
     baseLabel?: string;
     rightLabel?: string;
     path?: string;
+    /** Optional host controls centered between the file path and change pager. */
+    headerCenter?: Snippet;
+    /** Optional host actions after the change pager, such as a settings menu. */
+    headerActions?: Snippet;
     language?: string | null;
     readOnly?: boolean;
     /** When true, visible sides are editable unless `editableSides` narrows them. */
@@ -71,6 +77,7 @@
     editableSides?: readonly MergeSide[];
     ignoreWhitespace?: boolean;
     ignoreCase?: boolean;
+    /** Synchronize pane horizontal offsets; defaults to true. Vertical scroll is always synced. */
     syncHorizontalScroll?: boolean;
     wrap?: boolean;
     onLeftChange?: (content: string) => void;
@@ -581,9 +588,15 @@
   data-mode={mode}
   data-path={path}
   data-wrap={wrap ? "true" : undefined}
+  data-header-center={headerCenter ? "true" : undefined}
 >
   <div class="ui-diff-merge-editor__toolbar">
     <span class="ui-diff-merge-editor__title">{path ?? "Merge"}</span>
+    {#if headerCenter}
+      <div class="ui-diff-merge-editor__header-center">
+        {@render headerCenter()}
+      </div>
+    {/if}
     <div class="ui-diff-merge-editor__nav">
       <Button
         variant="ghost"
@@ -608,6 +621,9 @@
       >
         <ChevronDownIcon />
       </Button>
+      {#if headerActions}
+        {@render headerActions()}
+      {/if}
     </div>
   </div>
 

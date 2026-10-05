@@ -59,7 +59,7 @@ non-draggable, and selection/disclosure behavior stays independent of dragging.
 
 ### Acceptance details
 
-- The public boundary is `@lapismd/design-core/diff`.
+- The public boundary is `@lapismd/design-core/diff`, with optional `headerCenter` controls centered between the truncating path and pager (on a second row in narrow editors), optional `headerActions` after the pager, and unchanged chrome when omitted.
 - The editor MUST report resolved content through `onResolvedChange`, overlay optional editable sides that report `onLeftChange`, `onBaseChange`, and `onRightChange`, assemble a working-copy center while the headless default keeps VCS ancestor semantics, insert a side above or below center or remove it through center-pointed actions, and reassemble after those actions or any pane edit.
 - Connector, block, caret, and line-number visuals MUST share the merge render model and one line grid, catalog interaction coverage MUST assert that grid through element-level measurements, column headers MUST align with editor panes, and Next/Previous MUST count and visit pending merge or unresolved-resolve hunks, mark the current hunk with a ring on the code overlay, follow caret or click into a pending hunk, show a visible hover, and scroll only when those buttons move the current hunk.
 - The catalog MUST demonstrate one-way, three-way, editable, MisMerge-style solid insert/reject arrows that use the same `--ui-diff-gutter` color and size as line numbers, syntax-highlighted Changeyard fixtures, comparison-option, and connector-band states without introducing a second runtime contract.
@@ -106,4 +106,4 @@ non-draggable, and selection/disclosure behavior stays independent of dragging.
 - The public boundary is `@lapismd/design-core/diff`.
 - File Diff and Merge Editor MUST mount shadcn `scroll-area` viewports instead of native overflow panes.
 - The editor MUST fill the host height, paint line-number gutters through unused space below the last line, keep those sticky gutters opaque so scrolled line text cannot show through, and keep unwrapped horizontal scrollbars at the bottom of that surface, just above any merge footer.
-- The catalog MUST demonstrate the filled ScrollArea on File Diff and Merge Editor.
+- The catalog MUST demonstrate the filled ScrollArea on File Diff and Merge Editor, with Merge Editor horizontal synchronization enabled by default and overridable through `syncHorizontalScroll`, and scrolled editable text and current-hunk overlays remaining beneath opaque gutters.
