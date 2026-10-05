@@ -158,8 +158,10 @@ restored snapshot that arrived before registration.
 
 Passing `title` to `Column` renders the standard `Header`, `Title`, `Count`,
 `Toggle`, and `Close` chrome. Omit `title` when you need a custom header and
-compose the exported parts yourself. `Body` owns an independent vertical Scroll
-Area. Its `onScrollNearEnd` callback fires whenever the body is within 180 CSS
+compose the exported parts yourself. `Body` owns an independent Scroll Area,
+vertical by default. Set `orientation="both"` for wide content or
+`orientation="horizontal"` for exclusively horizontal scrolling. Its
+`onScrollNearEnd` callback fires whenever the body is within 180 CSS
 pixels of its bottom.
 
 `Item` is a button that accepts native button attributes. `selected` sets both
@@ -483,7 +485,7 @@ The family exports these visual parts:
 | `HeaderActions`   | Action group for custom header controls                                                             |
 | `Toggle`          | Contextual or sibling-targeted durable toggle with optional delayed hover preview                   |
 | `Close`           | Controller-owned close button                                                                       |
-| `Body`            | Independent vertical Scroll Area and near-end callback                                              |
+| `Body`            | Independent Scroll Area (vertical by default, optional horizontal/both) and near-end callback       |
 | `Item`            | Selectable native button row                                                                        |
 | `CollapsedColumn` | Low-level manually controlled rail                                                                  |
 

@@ -354,7 +354,9 @@ compose the exported parts yourself:
 
 <Source code={exampleSources.CustomComposition} language="tsx" />
 
-`Body` owns an independent vertical Scroll Area. Its `onScrollNearEnd` callback
+`Body` owns an independent Scroll Area, vertical by default. Set
+`orientation="both"` for wide content or `orientation="horizontal"` for an
+exclusively horizontal body. Its `onScrollNearEnd` callback
 fires whenever the body is within 180 CSS pixels of its bottom. Use it for
 incremental loading. `Item` is a button that accepts native button attributes;
 `selected` sets both `data-selected` and `aria-pressed`, while `disabled`

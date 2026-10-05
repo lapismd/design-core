@@ -9,12 +9,14 @@
     ref = $bindable(null),
     class: className,
     onScrollNearEnd,
+    orientation = "vertical",
     scrollStrategy = "auto",
     children,
     ...restProps
   }: WithElementRef<HTMLAttributes<HTMLDivElement>> & {
     /** Fired when the body scrolls within 180px of the bottom. */
     onScrollNearEnd?: () => void;
+    orientation?: "vertical" | "horizontal" | "both" | undefined;
     scrollStrategy?: ScrollAreaStrategy;
     children?: Snippet;
   } = $props();
@@ -49,12 +51,7 @@
   data-ui-component="column-canvas"
   data-ui-part="column-body"
 >
-  <ScrollArea
-    type="auto"
-    orientation="vertical"
-    {scrollStrategy}
-    bind:viewportRef
-  >
+  <ScrollArea type="auto" {orientation} {scrollStrategy} bind:viewportRef>
     {@render children?.()}
   </ScrollArea>
 </div>
