@@ -10,6 +10,27 @@
 </script>
 
 <Story
+  name="Secondary action has a resting surface"
+  args={{ secondaryAction: true }}
+  play={async ({ canvasElement }) => {
+    const page = within(canvasElement.ownerDocument.body);
+    const action = page.getByRole("button", { name: "Retry request" });
+    expect(getComputedStyle(action).backgroundColor).not.toBe(
+      "rgba(0, 0, 0, 0)",
+    );
+    expect(getComputedStyle(action).backgroundColor).not.toBe("transparent");
+    await userEvent.hover(action);
+    expect(action).toBeVisible();
+    await userEvent.unhover(action);
+    action.focus();
+    expect(action).toHaveFocus();
+    expect(getComputedStyle(action).outlineStyle).toBe("solid");
+    await userEvent.keyboard("{Enter}");
+    expect(page.getByText("Action: error:retry")).toBeVisible();
+  }}
+/>
+
+<Story
   name="Controlled severity dismissal and actions"
   play={async ({ canvasElement }) => {
     const page = within(canvasElement.ownerDocument.body);

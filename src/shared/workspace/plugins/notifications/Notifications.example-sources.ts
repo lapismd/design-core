@@ -17,7 +17,7 @@ export const Controlled = `import { NotificationToasts, type NotificationToastRe
 
 // The host owns state, lifetime and command execution.
 let records: NotificationToastRecord[] = [
-  { id: 'save-error', severity: 'error', title: 'Save failed', message: 'Your draft is retained.', action: { id: 'retry', label: 'Retry' } },
+  { id: 'save-error', severity: 'error', title: 'Save failed', message: 'Your draft is retained.', action: { id: 'retry', label: 'Retry', variant: 'secondary' } },
 ];
 
 <NotificationToasts records={records} portal

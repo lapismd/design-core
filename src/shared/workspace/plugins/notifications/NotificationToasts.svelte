@@ -76,6 +76,7 @@
         {#if record.action && onAction}<button
             type="button"
             class="ui-workspace-notifications__button"
+            data-action-variant={record.action.variant ?? "ghost"}
             use:notificationClick={() =>
               onAction?.(record.id, record.action!.id)}
             >{record.action.label}</button

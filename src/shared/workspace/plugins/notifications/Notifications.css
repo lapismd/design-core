@@ -267,6 +267,11 @@
   font-size: 0.75rem;
 }
 
+.ui-workspace-notifications__button[data-action-variant="secondary"] {
+  color: var(--secondary-foreground, var(--ui-workspace-popover-foreground));
+  background: var(--secondary, var(--ui-workspace-accent));
+}
+
 .ui-workspace-notifications__icon-button {
   width: 1.75rem;
   height: 1.75rem;
@@ -285,6 +290,15 @@
 .ui-workspace-notifications__status:hover {
   color: var(--ui-workspace-accent-foreground);
   background: var(--ui-workspace-accent);
+}
+
+.ui-workspace-notifications__button[data-action-variant="secondary"]:hover {
+  color: var(--secondary-foreground, var(--ui-workspace-popover-foreground));
+  background: color-mix(
+    in srgb,
+    var(--secondary, var(--ui-workspace-accent)) 90%,
+    var(--ui-workspace-popover-foreground)
+  );
 }
 
 .ui-workspace-notifications__button:focus-visible,

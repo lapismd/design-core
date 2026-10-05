@@ -51,6 +51,11 @@ exported as individually composable components.
 and `onResume` without an `app`. Records contain a stable `id`, `message`,
 optional `title`, `severity` (`info`, `warning`, `error`) and an optional labelled
 action. The host owns deduplication, lifetime, timers and action execution.
+Set `action.variant` to `"secondary"` for a themed button background at rest;
+the default `"ghost"` keeps transparent resting chrome. Both retain hover and
+visible keyboard focus feedback.
+Secondary hover adds a foreground tint so it remains distinguishable even when
+the theme uses the same color for secondary and accent surfaces.
 `portal` places the stack above page content while retaining the active modal's
 keyboard scope. It never opens a notification center or persists records.
 

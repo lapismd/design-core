@@ -92,6 +92,7 @@ Form inputs provide higher-level controlled editing patterns composed from share
 
 - The public boundary is `@lapismd/design-core/forms`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- Selection acceptance MUST confirm that the option popup has closed before auditing the settled accessible state.
 
 ## DC-FORM-013 — Inline Option Picker
 

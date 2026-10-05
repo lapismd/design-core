@@ -15,5 +15,10 @@ export interface NotificationToastRecord {
   title?: string;
   message: string;
   severity: "info" | "warning" | "error";
-  action?: { id: string; label: string };
+  action?: {
+    id: string;
+    label: string;
+    /** Secondary keeps a themed surface at rest; ghost is the default. */
+    variant?: "ghost" | "secondary";
+  };
 }
