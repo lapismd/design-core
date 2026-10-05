@@ -26,6 +26,8 @@ export function App() {
     { length: 16 },
     (_, i) => `const line${i + 1} = ${i + 1};`,
   ).join("\n");
+
+  const repeatedText = 'export const greeting: string = "Hello from JJ";';
 </script>
 
 <script lang="ts">
@@ -42,6 +44,28 @@ export function App() {
 >
   {#snippet template()}
     <CodeBlock code={sampleTsx} language="tsx" />
+  {/snippet}
+</Story>
+
+<Story
+  name="Repeated plain text segments"
+  tags={["skip-visual"]}
+  play={async ({ canvas }) => {
+    const content = canvas
+      .getByRole("group", { name: "typescript" })
+      .querySelector('[data-ui-part="code-block-line-content"]');
+    await expect(content).toBeVisible();
+    await expect(content?.textContent).toBe(repeatedText);
+    await expect(content?.querySelectorAll("span").length).toBeGreaterThan(1);
+  }}
+>
+  {#snippet template()}
+    <CodeBlock
+      code={repeatedText}
+      language="typescript"
+      highlightMode="spans"
+      hasLineNumbers
+    />
   {/snippet}
 </Story>
 
