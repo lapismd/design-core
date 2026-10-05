@@ -176,3 +176,17 @@ export const HeaderCenter = `<script lang="ts">
     <Button size="icon-xs" variant="ghost" aria-label="Merge options">⋮</Button>
   {/snippet}
 </MergeEditor>`;
+
+export const ComparisonPreferences = `<script lang="ts">
+  import { MergeEditor } from "@lapismd/design-core/diff";
+  import { Button } from "@lapismd/design-core/shadcn/button";
+  let ignoreWhitespace = $state(false);
+  let ignoreCase = $state(false);
+</script>
+
+<MergeEditor path="src/settings.ts" left={"Left\\n"} base={"base\\n"} right={"Right\\n"} editable editableSides={["base"]} {ignoreWhitespace} {ignoreCase}>
+  {#snippet headerActions()}
+    <Button size="xs" variant="outline" aria-pressed={ignoreWhitespace} onclick={() => ignoreWhitespace = !ignoreWhitespace}>Ignore whitespace</Button>
+    <Button size="xs" variant="outline" aria-pressed={ignoreCase} onclick={() => ignoreCase = !ignoreCase}>Ignore case</Button>
+  {/snippet}
+</MergeEditor>`;

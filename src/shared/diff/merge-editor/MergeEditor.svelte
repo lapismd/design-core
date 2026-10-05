@@ -91,9 +91,8 @@
     ignoreCase,
     workingCopyCenter: true,
   });
-  const inputKey = $derived(
-    `${mode}\0${left}\0${base}\0${right}\0${ignoreWhitespace}\0${ignoreCase}`,
-  );
+  const inputKey = $derived(`${mode}\0${left}\0${base}\0${right}`);
+  const modelKey = $derived(`${inputKey}\0${ignoreWhitespace}\0${ignoreCase}`);
   const resolvedLanguage = $derived(resolveDiffLanguage(path ?? "", language));
   let draft = $state<{
     key: string;
@@ -108,7 +107,7 @@
     right: draft?.key === inputKey ? draft.right : right,
   });
   const model = $derived(
-    override?.key === inputKey
+    override?.key === modelKey
       ? override.model
       : mode === "one-way"
         ? assembleOneWayMerge(source.left, source.right, mergeOptions)
@@ -297,7 +296,7 @@
 
   function commit(next: MergeModel) {
     const nextBase = serializeMergeCenter(next);
-    override = { key: inputKey, model: next };
+    override = { key: modelKey, model: next };
     draft = {
       key: inputKey,
       left: source.left,

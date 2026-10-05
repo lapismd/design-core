@@ -3,6 +3,7 @@
   import { expect, userEvent, waitFor } from "storybook/test";
   import {
     Basic,
+    ComparisonPreferences,
     Demo,
     Editable,
     Fill,
@@ -40,7 +41,74 @@
   let threeWayState = $state<MergeResolvedChange | null>(null);
   let editableResolved = $state("");
   let headerVersion = $state(1);
+  let comparisonWhitespace = $state(false);
+  let comparisonCase = $state(false);
 </script>
+
+<Story
+  name="Comparison settings retain edited and accepted merge content"
+  tags={["visual-pending"]}
+  parameters={{
+    docs: {
+      source: { code: ComparisonPreferences, language: "tsx", type: "code" },
+    },
+  }}
+  play={async ({ canvas }) => {
+    const editor = canvas.getByRole("textbox", { name: "Edit Resolved" });
+    await userEvent.clear(editor);
+    await userEvent.type(editor, "retained Draft\n");
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Ignore whitespace" }),
+    );
+    await expect(editor).toHaveValue("retained Draft\n");
+    await userEvent.click(canvas.getByRole("button", { name: "Ignore case" }));
+    await expect(editor).toHaveValue("retained Draft\n");
+    await userEvent.click(
+      canvas.getByRole("button", {
+        name: "Accept All Incoming Changes from Left",
+      }),
+    );
+    const accepted = (editor as HTMLTextAreaElement).value;
+    await expect(accepted).toContain("Left");
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Ignore whitespace" }),
+    );
+    await userEvent.click(canvas.getByRole("button", { name: "Ignore case" }));
+    await expect(editor).toHaveValue(accepted);
+  }}
+>
+  {#snippet template()}
+    <div style="height: 20rem; width: 900px; max-width: 100%">
+      <MergeEditor
+        path="src/settings.ts"
+        left={"Left\n"}
+        base={"base\n"}
+        right={"Right\n"}
+        editable
+        editableSides={["base"]}
+        ignoreWhitespace={comparisonWhitespace}
+        ignoreCase={comparisonCase}
+      >
+        {#snippet headerActions()}
+          <Button
+            size="xs"
+            variant="outline"
+            aria-pressed={comparisonWhitespace}
+            onclick={() => (comparisonWhitespace = !comparisonWhitespace)}
+            >Ignore whitespace</Button
+          >
+          <Button
+            size="xs"
+            variant="outline"
+            aria-pressed={comparisonCase}
+            onclick={() => (comparisonCase = !comparisonCase)}
+            >Ignore case</Button
+          >
+        {/snippet}
+      </MergeEditor>
+    </div>
+  {/snippet}
+</Story>
 
 <Story
   name="Keeps gutters above horizontally scrolled editable text"
