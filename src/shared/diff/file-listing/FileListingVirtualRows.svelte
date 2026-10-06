@@ -147,6 +147,9 @@
   .ui-diff-file-listing__virtual-rows {
     min-width: 0;
   }
+  [data-ui-part="virtual-row"] {
+    padding-block: calc(var(--ui-diff-file-listing-row-gap) / 2);
+  }
   .ui-diff-file-listing__virtual-content {
     position: relative;
     width: 100%;

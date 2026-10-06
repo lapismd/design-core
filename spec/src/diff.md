@@ -35,6 +35,11 @@ predicates. Native drag events provide the same public context as row slots;
 the host owns payloads and operation policy. Without a drag callback rows remain
 non-draggable, and selection/disclosure behavior stays independent of dragging.
 
+`--ui-diff-file-listing-row-gap` defaults to `2px`, separating row backgrounds
+in list, folder and package modes. Eager rows split that space across their
+block margins; virtual row wrappers include it in their measured height so
+scroll offsets, continuation and keyboard navigation retain the same spacing.
+
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/diff`; hosts MAY provide public `FileListingDirectory` values before their children are loaded, and controlled disclosure MUST request expansion through `onDirectoryToggle` without performing I/O or inventing child files.

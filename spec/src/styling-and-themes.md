@@ -2,6 +2,9 @@
 
 Design Core styling is native CSS driven by semantic tokens. Themes and consumers may customize documented tokens without depending on private DOM selectors. Diff surfaces read `--ui-diff-*` defaults from `src/shared/diff/diff.tokens.css`.
 
+File Listing exposes `--ui-diff-file-listing-row-gap` (default `2px`) for
+separation between eager and virtualized rows.
+
 Panel Toggle exposes compact button/icon geometry and reversible motion through
 `--ui-panel-toggle-*` tokens imported by the shared stylesheet. Its icon inherits
 currentColor, reduced-motion preferences and Button focus semantics.

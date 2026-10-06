@@ -25,6 +25,19 @@
     },
   });
 
+  function expectRowSeparation(listing: Element) {
+    const rows = [
+      ...listing.querySelectorAll<HTMLElement>(".ui-diff-file-listing__row"),
+    ];
+    expect(rows.length).toBeGreaterThan(1);
+    for (let index = 1; index < rows.length; index += 1) {
+      expect(
+        rows[index].getBoundingClientRect().top -
+          rows[index - 1].getBoundingClientRect().bottom,
+      ).toBeCloseTo(2, 1);
+    }
+  }
+
   const demoFiles: FileListingFile[] = [
     { path: "src/index.ts", additions: 4, deletions: 1 },
     { path: "src/lib/tree.ts", additions: 12, deletions: 0 },
@@ -128,6 +141,9 @@
       "src/lib/tree.ts",
     );
     const selected = canvas.getByRole("button", { name: "src/lib/tree.ts" });
+    expectRowSeparation(
+      selected.closest('[data-ui-component="file-listing"]')!,
+    );
     const idle = canvas.getByRole("button", { name: "README.md" });
     await expect(selected).toHaveAttribute("aria-current", "true");
     await expect(getComputedStyle(selected).backgroundColor).not.toBe(
@@ -227,6 +243,7 @@
     const first = canvas.getByRole("button", {
       name: "src/generated/file-0000.ts",
     });
+    await waitFor(() => expectRowSeparation(listing));
     first.focus();
     await userEvent.keyboard("{ArrowDown}");
     await expect(
@@ -237,6 +254,7 @@
     viewport.scrollTop = viewport.scrollHeight;
     viewport.dispatchEvent(new Event("scroll"));
     await waitFor(() => expect(continuationRequests).toBe(1));
+    await waitFor(() => expectRowSeparation(listing));
     await expect(
       listing.querySelectorAll('[data-ui-part="virtual-row"]').length,
     ).toBeLessThan(80);
