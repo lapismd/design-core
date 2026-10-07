@@ -94,7 +94,6 @@
   let alignmentShouldActivateDeepest = false;
   let stickyLayoutFrame: number | null = null;
   let stickyStateFrame: number | null = null;
-  let resizeFinishFrame: number | null = null;
   let wheelAnimationFrame: number | null = null;
   let wheelAnimationRoot: HTMLElement | null = null;
   let wheelAnimationDirection: WheelDirection | null = null;
@@ -335,6 +334,7 @@
     if (disposed) return;
     const root = scrollingRoot;
     if (!root || !rowElement) return;
+    const previousScrollLeft = root.scrollLeft;
 
     const columns = visibleColumns();
     for (const column of columns) {
@@ -433,8 +433,12 @@
     }
 
     activeStickyColumns = active;
+    // Measuring natural widths can briefly shrink the scrollable extent and
+    // clamp the viewport. Restore its position after the responsive allocation.
     if (pairResizeScrollLeft !== null) {
       root.scrollLeft = pairResizeScrollLeft;
+    } else if (resolvedDisplayMode === "wide") {
+      root.scrollLeft = previousScrollLeft;
     }
     scheduleStickyStateUpdate();
   }
@@ -817,21 +821,11 @@
   }
 
   function finishResizePair(): void {
-    const root = scrollingRoot;
-    if (!root || pairResizeScrollLeft === null) return;
-    void tick().then(() => {
-      if (disposed) return;
-      if (resizeFinishFrame !== null) cancelAnimationFrame(resizeFinishFrame);
-      resizeFinishFrame = requestAnimationFrame(() => {
-        resizeFinishFrame = null;
-        if (disposed) return;
-        if (pairResizeScrollLeft !== null) {
-          root.scrollLeft = pairResizeScrollLeft;
-        }
-        pairResizeScrollLeft = null;
-        scheduleStickyStateUpdate();
-      });
-    });
+    if (!scrollingRoot || pairResizeScrollLeft === null) return;
+    // Layout measurements preserve the viewport themselves. Once the gesture
+    // ends, a later native scroll owns its position even before queued layout.
+    pairResizeScrollLeft = null;
+    scheduleStickyStateUpdate();
   }
 
   setColumnCanvasContext({
@@ -920,7 +914,6 @@
     if (alignmentFrame !== null) cancelAnimationFrame(alignmentFrame);
     if (stickyLayoutFrame !== null) cancelAnimationFrame(stickyLayoutFrame);
     if (stickyStateFrame !== null) cancelAnimationFrame(stickyStateFrame);
-    if (resizeFinishFrame !== null) cancelAnimationFrame(resizeFinishFrame);
     cancelWheelAnimation();
     stopStickyWheelRouting();
     pairResizeScrollLeft = null;

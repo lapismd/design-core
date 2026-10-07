@@ -1741,9 +1741,59 @@
     });
     expect(responsiveCanvas.getWidth("detail")).toBe(380);
     if (root.getAttribute("data-display-mode") === "wide") {
+      const alignedScrollLeft = root.scrollLeft;
+      const detailWidthBeforeSplit = detail!.getBoundingClientRect().width;
+      responsiveCanvas.setPairSplit("components", "detail", 0.6);
+      await waitFor(() => {
+        expect(detail!.getBoundingClientRect().width).toBeLessThan(
+          detailWidthBeforeSplit,
+        );
+        expect(root.scrollLeft).toBeCloseTo(alignedScrollLeft, 1);
+        const contentEnd =
+          root.getBoundingClientRect().right -
+          Number.parseFloat(getComputedStyle(root).paddingInlineEnd);
+        expect(
+          Math.abs(detail!.getBoundingClientRect().right - contentEnd),
+        ).toBeLessThan(2);
+      });
+      const resizeHandle = canvasElement.querySelector<HTMLElement>(
+        '[data-column-id="components"] [data-resize-mode="pair"]',
+      )!;
+      const resizeBounds = resizeHandle.getBoundingClientRect();
+      const resizeX = resizeBounds.left + resizeBounds.width / 2;
+      const resizeY = resizeBounds.top + resizeBounds.height / 2;
+      const detailWidthBeforeDrag = detail!.getBoundingClientRect().width;
+      await fireEvent.pointerDown(resizeHandle, {
+        pointerId: 1,
+        isPrimary: true,
+        button: 0,
+        clientX: resizeX,
+        clientY: resizeY,
+      });
+      await fireEvent.pointerMove(window, {
+        pointerId: 1,
+        clientX: resizeX + 12,
+        clientY: resizeY,
+      });
+      await fireEvent.pointerUp(window, {
+        pointerId: 1,
+        clientX: resizeX + 12,
+        clientY: resizeY,
+      });
       root.scrollTo({ left: 0, behavior: "auto" });
       await fireEvent.scroll(root);
       await waitFor(() => {
+        expect(detail!.getBoundingClientRect().width).toBeLessThan(
+          detailWidthBeforeDrag,
+        );
+        expect(root.scrollLeft).toBeLessThan(2);
+      });
+      responsiveCanvas.resetPairSplit("components", "detail");
+      await waitFor(() => {
+        expect(detail!.getBoundingClientRect().width).toBeCloseTo(
+          detailWidthBeforeSplit,
+          1,
+        );
         expect(root.scrollLeft).toBeLessThan(2);
       });
     }
