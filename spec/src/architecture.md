@@ -1,5 +1,10 @@
 # Architecture
 
+Local packed validation uses prepared modules and declarations through the
+same public import names. Components remain consumer compiled; TypeScript rune
+modules become `.svelte.js` before dependency prebundling. This local profile
+does not publish or replace registry releases.
+
 Design Core is a shared presentation and controller library. Consumer applications retain domain policy, persistence, transport, routing, and environment adapters. Component ownership and public-layer classification are maintained in the canonical [`component inventory`](component-inventory.md).
 
 ## Public surface coverage

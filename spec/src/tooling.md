@@ -1,5 +1,11 @@
 # Tooling
 
+`package:local` stages the normal source inventory, runs `svelte-package` with
+declarations, verifies every TypeScript declaration exists, and writes an
+ignored `-built.tgz` artifact with its SHA-256. Failed preparation cannot select
+an incomplete archive. Consumer types and cold prebundling remain separate
+checks; the command performs no publication or service installation.
+
 Repository tools keep source generation, discovery, documentation, validation, Changesets, and package-pack evidence reproducible for humans and agents. The catalog CLI lists Diff families, including File Change Stats and Merge Editor, beside shadcn, forms, filter, and AI. Agent tooling guidance keeps external LapisMD repositories outside the workspace and resolves published dependencies through npm semver ranges while preserving portable manifests.
 
 ## Public surface coverage
