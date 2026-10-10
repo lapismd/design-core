@@ -208,6 +208,20 @@ The consumer's prior unrelated skeleton warning/provenance omissions were fixed
 by their owning task. Consumer results are recorded in jj-store
 `E-COLUMN-HOVER-001`; no production workaround or dependency patch was added.
 
+The full stack consumer lane subsequently passes all 132 stories in 29 files,
+using an ignored wrapper with an isolated cache and temporary-file watcher ignore.
+Earlier startup attempts were invalidated by another task creating temporary
+tsconfig files; those attempts are retained as unfinished evidence. The seven-file
+repository batch passes 42 of 44 cases and reveals two additional loading-header
+races in the existing collaboration stories. Exact import waits retain the
+original assertions/timeouts; both exact cases pass, followed by a separate
+Classic-setting readiness correction and its exact pass. Catalog checking remains
+clean across 384 modules. jj-store `E-COLUMN-HOVER-002` appends completed local
+acceptance without rewriting the earlier pending record.
+The complete final collaboration family passes all ten cases. Together with the
+six unchanged repository families' passing results, all 44 repository cases have
+passing evidence; the earlier seven-file command remains a recorded failed run.
+
 DC-SHA-036 remains Implemented; durable layout and registry dependency manifests
 are unchanged. Stories remain visual-pending. Inherited AppShell ResizeObserver
 and MergeEditor reactive notices remain explicit, outside this feature.
