@@ -219,7 +219,7 @@
     draggable={Boolean(onFileDragStart) && (fileDraggable?.(context) ?? true)}
     ondragstart={(event) => onFileDragStart?.(event, context)}
   >
-    {#if depth !== undefined}
+    {#if depth !== undefined && depth > 0}
       <span class="ui-diff-file-listing__chevron" aria-hidden="true"></span>
     {/if}
     <span class="ui-diff-file-listing__icon">

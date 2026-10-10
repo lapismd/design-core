@@ -44,7 +44,7 @@ scroll offsets, continuation and keyboard navigation retain the same spacing.
 
 - The public boundary is `@lapismd/design-core/diff`; hosts MAY provide public `FileListingDirectory` values before their children are loaded, and controlled disclosure MUST request expansion through `onDirectoryToggle` without performing I/O or inventing child files.
 - Selection and view mode MUST remain host-controllable through `selectedPath`, `mode`, and a compact three-segment `FileListingViewModeToggle` (list, folder tree, package) with one group border, and selected rows plus the active segment MUST use the shared `--ui-diff-selected` fill.
-- Row leading, label, and meta content MUST be host-replaceable snippets; default file-row meta MUST render File Change Stats from `additions` and `deletions`.
+- Row leading, label, and meta content MUST be host-replaceable snippets; default file-row meta MUST render File Change Stats from `additions` and `deletions`, while root files in folder and package views MUST use the normal row inset without a disclosure spacer; nested files MUST retain their depth and disclosure alignment in eager and virtualized rendering.
 - Opt-in measured virtualization MUST bound mounted list, folder-tree, and package-tree rows against the nearest scroll viewport, including the public Scroll Area viewport before runtime overflow styles settle, retain stable row keys and keyboard navigation, and request host-owned continuation once per loaded edge without changing the default eager rendering contract; the catalog MUST exercise this path alongside lazy-directory, list, tree, package, empty, and selected states.
 
 ## DC-DIFF-003 — File Diff

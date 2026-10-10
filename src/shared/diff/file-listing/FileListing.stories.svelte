@@ -1,6 +1,12 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, fireEvent, userEvent, waitFor } from "storybook/test";
+  import {
+    expect,
+    fireEvent,
+    userEvent,
+    waitFor,
+    within,
+  } from "storybook/test";
   import {
     Basic,
     LazyDirectories,
@@ -128,6 +134,54 @@
       }}
     />
     <p role="status">{lastDrag || "No drag"}</p>
+  {/snippet}
+</Story>
+
+<Story
+  name="Root file icons retain the normal inset in folder and package views"
+  tags={["visual-pending"]}
+  play={async ({ canvas }) => {
+    for (const view of ["tree", "package"]) {
+      for (const virtualized of [false, true]) {
+        const region = canvas.getByRole("region", {
+          name: `${view} ${virtualized ? "virtual" : "eager"} files`,
+        });
+        const rows = within(region);
+        await waitFor(() => {
+          const root = rows.getByRole("button", { name: "README.md" });
+          const nested = rows.getByRole("button", { name: "src/index.ts" });
+          const iconInset = (row: HTMLElement) =>
+            row
+              .querySelector(".ui-diff-file-listing__icon")!
+              .getBoundingClientRect().left - row.getBoundingClientRect().left;
+          expect(iconInset(root)).toBeCloseTo(
+            parseFloat(getComputedStyle(root).paddingInlineStart),
+            1,
+          );
+          expect(iconInset(nested)).toBeCloseTo(
+            parseFloat(getComputedStyle(nested).paddingInlineStart) + 20,
+            1,
+          );
+        });
+      }
+    }
+  }}
+>
+  {#snippet template()}
+    {#each ["tree", "package"] as view}
+      {#each [false, true] as virtualized}
+        <section
+          aria-label={`${view} ${virtualized ? "virtual" : "eager"} files`}
+          style="height: 18rem; overflow: auto;"
+        >
+          <FileListing
+            files={demoFiles}
+            mode={view as FileListingViewMode}
+            virtualize={virtualized}
+          />
+        </section>
+      {/each}
+    {/each}
   {/snippet}
 </Story>
 
