@@ -226,3 +226,31 @@ test("RTL sticky previews remain inside the external viewport", async ({
   ).toBeLessThanOrEqual(1);
   expect(box.x).toBeGreaterThanOrEqual(view.x - 1);
 });
+
+test("removing a focused preview releases handlers without reactive diagnostics", async ({
+  page,
+}) => {
+  const diagnostics: string[] = [];
+  page.on("pageerror", (error) => diagnostics.push(error.message));
+  page.on("console", (message) => {
+    if (message.type() === "warn" && message.text().includes("[svelte]"))
+      diagnostics.push(message.text());
+  });
+  const { primary, preview } = await open(page);
+  await primary
+    .getByRole("button", { name: "Collapse primary column" })
+    .click();
+  await away(page);
+  await primary.hover();
+  await expect(preview).toBeVisible();
+  await preview.getByRole("textbox", { name: "Retained draft" }).focus();
+  // Dispatch the host removal without moving focus to its button first. This
+  // exercises focusout during DOM teardown, as route/story replacement does.
+  await page
+    .getByRole("button", { name: "Toggle canvas" })
+    .dispatchEvent("click");
+  await expect(preview).toHaveCount(0);
+  await expect(primary).toHaveCount(0);
+  await page.waitForTimeout(150);
+  expect(diagnostics).toEqual([]);
+});

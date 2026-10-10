@@ -193,10 +193,12 @@
   let contentMounted = $state(untrack(() => visible && !collapsed));
   let suppressHoverPreview = false;
   let hoverOwned = false;
+  let disposed = false;
   let previewGeometry = $state({ left: 0, top: 0, width: 0, height: 0 });
 
   function enterRail(event: PointerEvent): void {
     if (
+      disposed ||
       event.pointerType !== "mouse" ||
       !previewOnHover ||
       !previewAvailable ||
@@ -212,6 +214,7 @@
   }
 
   function leaveRail(event: PointerEvent): void {
+    if (disposed) return;
     suppressHoverPreview = false;
     if (isPreviewInteractionTarget(event.relatedTarget)) {
       keepPreview();
@@ -221,6 +224,7 @@
   }
 
   function pressRail(event: PointerEvent): void {
+    if (disposed) return;
     if (previewRef?.contains(event.target as Node)) return;
     suppressHoverPreview = true;
     controller.dismissPreview(id);
@@ -240,6 +244,7 @@
   };
 
   function restorePreviewFocus(): void {
+    if (disposed) return;
     if (!previewRef?.contains(previewRef.ownerDocument.activeElement)) return;
     if (!collapsed && !closed && !stuck) return;
     const rail = canvas.getPreviewRail(id) ?? ref;
@@ -251,6 +256,7 @@
   }
 
   function dismissPreview(): void {
+    if (disposed) return;
     suppressHoverPreview = true;
     restorePreviewFocus();
     controller.dismissPreview(id);
@@ -303,10 +309,12 @@
   }
 
   function keepPreview(): void {
+    if (disposed) return;
     controller.keepPreview(id);
   }
 
   function schedulePreviewDismiss(): void {
+    if (disposed || !previewRef?.isConnected) return;
     if (
       previewRef &&
       isPreviewInteractionTarget(previewRef.ownerDocument.activeElement)
@@ -316,10 +324,14 @@
   }
 
   function isPreviewInteractionTarget(target: EventTarget | null): boolean {
-    if (!(target instanceof Node) || !previewRef) return false;
+    if (disposed || !(target instanceof Node) || !previewRef?.isConnected)
+      return false;
     if (previewRef.contains(target)) return true;
     if (canvas.getPreviewRail(id)?.contains(target)) return true;
-    if (collapsed && ref?.contains(target)) return true;
+    // DOM removal can emit focusout after the derived state has been released.
+    // Read the rendered rail state here rather than that destroyed derivation.
+    if (ref?.dataset.uiPart === "collapsed-column" && ref.contains(target))
+      return true;
 
     const controlIds = new Set<string>();
     for (const owner of previewRef.querySelectorAll<HTMLElement>(
@@ -400,6 +412,7 @@
   );
 
   onDestroy(() => {
+    disposed = true;
     controller.dismissPreview(id);
     controller.setStickyPreviewAvailable(id, false);
   });
