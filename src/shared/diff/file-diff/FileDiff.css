@@ -299,3 +299,12 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+/* Syntax palette colors intended for the plain surface cannot guarantee
+   readable contrast on changed rows or their stacked intraline washes. */
+.ui-diff-file-diff__row:is([data-variant="added"], [data-variant="removed"])
+  .ui-diff-file-diff__text
+  [class^="ui-code-token-"],
+.ui-diff-file-diff__text [data-tone] [class^="ui-code-token-"] {
+  color: var(--ui-diff-changed-syntax-foreground, var(--foreground));
+}

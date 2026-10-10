@@ -629,3 +629,39 @@
     </div>
   {/snippet}
 </Story>
+
+<Story
+  name="Highlighted intraline numbers retain readable contrast"
+  tags={["visual-pending"]}
+  args={{
+    path: "example.ts",
+    oldText: "export const answer = 41;\n",
+    newText: "export const answer = 42;\n",
+  }}
+  play={async ({ canvasElement }) => {
+    await waitFor(() => {
+      const tokens = [
+        ...canvasElement.querySelectorAll<HTMLElement>(
+          "[data-tone] .ui-code-token-number",
+        ),
+      ];
+      expect(tokens).toHaveLength(2);
+      for (const token of tokens)
+        expect(getComputedStyle(token).color).toBe(
+          getComputedStyle(token.closest('[data-ui-component="file-diff"]')!)
+            .color,
+        );
+      const keywords = [
+        ...canvasElement.querySelectorAll<HTMLElement>(
+          '.ui-diff-file-diff__row:is([data-variant="added"], [data-variant="removed"]) .ui-code-token-keyword',
+        ),
+      ];
+      expect(keywords).toHaveLength(4);
+      for (const token of keywords)
+        expect(getComputedStyle(token).color).toBe(
+          getComputedStyle(token.closest('[data-ui-component="file-diff"]')!)
+            .color,
+        );
+    });
+  }}
+/>

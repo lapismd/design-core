@@ -178,9 +178,9 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 
 ### Acceptance details
 
-- The public boundary is `@lapismd/design-core/ai/chat`.
+- `--ui-ai-chat-tool-width` MUST allow container-relative sizing with a default of `min(100%, 42rem)`; `--ui-ai-chat-tool-trigger-padding-inline` MUST inset single and grouped trigger contents inside their hit/hover surface without moving the icon on hover; its default is zero.
 - The optional `callWrapper?: Snippet<[ToolCallItem, Snippet]>` MUST compose each call’s existing presentation inside its list item, outside disclosure buttons; without it, rendering remains unchanged and grouped calls expose wrappers only when expanded.
-- Tool-call disclosure indicators MUST point right while closed and down while open for both grouped calls and individual call details, and single-call rendering MUST remain safe under unchecked-index consumer semantics.
+- Tool-call disclosure indicators MUST retain their fixed size beside long titles, point right while closed and down while open for both grouped calls and individual call details, and single-call rendering MUST remain safe under unchecked-index consumer semantics.
 - Pending and running calls MUST render the public Spinner as a rotating busy indicator; an explicit `unknown` execution status MUST show a static status-unavailable indicator, preserve observed details, and MUST NOT imply failure or completion.
 
 ## DC-AI-016 — Dictation Button
