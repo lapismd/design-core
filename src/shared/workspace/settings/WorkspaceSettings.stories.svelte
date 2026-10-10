@@ -731,7 +731,7 @@
 
 <Story
   name="Controller-owned workspace settings"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   play={async ({ canvas }) => {
     const search = canvas.getByRole("searchbox", {
       name: "Search settings",
@@ -741,6 +741,11 @@
     await expect(
       canvas.getByRole("heading", { name: "Settings Search Results" }),
     ).toBeVisible();
+    const heading = canvas.getByRole("heading", {
+      name: "Settings Search Results",
+    });
+    expect(getComputedStyle(heading).fontSize).toBe("16px");
+    expect(getComputedStyle(heading).fontWeight).toBe("400");
   }}
   parameters={{
     visualDelta: {
@@ -907,7 +912,7 @@
 
 <Story
   name="Updates appearance and mobile configuration"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   play={async ({ canvas }) => {
     await userEvent.click(canvas.getByRole("button", { name: "Appearance" }));
     const scheme = canvas.getByRole("combobox", {
@@ -1070,9 +1075,25 @@
       "Toggle table",
       "Extension points",
     ]) {
-      await expect(
-        canvas.getByRole("heading", { name: heading }),
-      ).toBeVisible();
+      const title = canvas.getByRole("heading", { name: heading });
+      await expect(title).toBeVisible();
+      expect(getComputedStyle(title).fontSize).toBe("16px");
+      expect(getComputedStyle(title).fontWeight).toBe("400");
+      expect(getComputedStyle(title).fontFamily).toContain("DM Sans Variable");
+    }
+
+    const title = canvas.getByRole("heading", { name: "Primitives" });
+    const frame = title.closest<HTMLElement>(
+      ".ui-workspace-settings-story-frame",
+    )!;
+    try {
+      frame.style.setProperty("--ui-workspace-settings-heading-size", "18px");
+      frame.style.setProperty("--ui-workspace-settings-heading-weight", "500");
+      expect(getComputedStyle(title).fontSize).toBe("18px");
+      expect(getComputedStyle(title).fontWeight).toBe("500");
+    } finally {
+      frame.style.removeProperty("--ui-workspace-settings-heading-size");
+      frame.style.removeProperty("--ui-workspace-settings-heading-weight");
     }
 
     const workspaceName = canvas.getByLabelText("Workspace name");

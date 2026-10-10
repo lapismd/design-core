@@ -297,6 +297,16 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 - `Workspace/Components/Settings` All supported controls MUST render every default field kind in one selected section, with `object-array`, `object-grid`, and `object-map` as editable property tables: boolean, string presentations including the workspace icon picker and password input, enum, multi-enum, combobox, shadcn Slider ranges and unbounded numbers, labeled list item types, key-value, section and toggle-table groups, action, custom, and unsupported.
 - Restore, list-remove, association-remove, object-row-remove, and settings-search open actions MUST use contrasting panel-action hover tokens, and list plus structured-collection add actions MUST use trailing muted-foreground text that stays WCAG AA on panel paint and brightens on hover.
 
+## DC-WS-069 — Settings heading typography
+
+**Requirement.** Settings schema, custom-page, and search-result headings MUST consume the public workspace settings heading-size and heading-weight tokens, retaining the shared sans font.
+
+### Acceptance details
+
+- Default headings MUST use the existing 1rem size and regular weight; Lapis resolves them to 16px and 400.
+- Ancestor overrides of `--ui-workspace-settings-heading-size` and `--ui-workspace-settings-heading-weight` MUST control these headings without private selectors.
+- Settings catalog acceptance MUST verify the rendered heading size, weight, and brand sans family.
+
 ## DC-WS-049 — Settings text-field focus chrome
 
 **Requirement.** Settings string and textarea fields MUST keep the Input or Textarea focus-visible ring and MUST NOT keep a second border while focused.

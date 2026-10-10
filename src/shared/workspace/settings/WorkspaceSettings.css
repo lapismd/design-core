@@ -208,8 +208,8 @@
 .ui-workspace-settings__schema-section h2,
 .ui-workspace-settings-page h1 {
   margin: 0;
-  font-size: 1.15rem;
-  font-weight: 700;
+  font-size: var(--ui-workspace-settings-heading-size);
+  font-weight: var(--ui-workspace-settings-heading-weight);
   line-height: 1.25;
 }
 
@@ -853,8 +853,8 @@ button.ui-workspace-copyable-value[data-ui-component="button"]:focus-visible {
 .ui-workspace-settings__search-results h1 {
   margin: 0 0 1.75rem;
   color: var(--ui-workspace-foreground);
-  font-size: 1.4rem;
-  font-weight: 700;
+  font-size: var(--ui-workspace-settings-heading-size);
+  font-weight: var(--ui-workspace-settings-heading-weight);
   line-height: 1.2;
 }
 
