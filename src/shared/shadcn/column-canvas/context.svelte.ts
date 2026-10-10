@@ -12,6 +12,11 @@ export type ColumnCanvasStickyColumnRegistration = {
   readonly title: string;
   /** Consumer-owned contents for the floating rail's return button. */
   readonly rail: Snippet | undefined;
+  readonly previewOnHover: boolean;
+  pointerEnter: (event: PointerEvent) => void;
+  pointerLeave: (event: PointerEvent) => void;
+  pointerDown: (event: PointerEvent) => void;
+  setStuck: (stuck: boolean) => void;
 };
 
 export type ColumnCanvasResizeBehavior =
@@ -41,6 +46,9 @@ export type ColumnCanvasContext = {
   activateResizePair: (columnId: string) => ColumnCanvasResizeBehavior;
   /** Finish a pair resize after its final layout update has settled. */
   finishResizePair: () => void;
+  /** Viewport and visible rail used to constrain transient previews. */
+  readonly viewport: HTMLElement | null;
+  getPreviewRail: (columnId: string) => HTMLElement | null;
   /** Register a column's transient floating-rail presentation. */
   registerStickyColumn: (
     registration: ColumnCanvasStickyColumnRegistration,

@@ -9,13 +9,22 @@
     external = false,
     mixed = false,
     mode = "fixed",
+    previewOnHover = true,
+    previewDelay = 600,
+    previewDismissDelay = 120,
+    stickyOnly = false,
   }: {
+    previewOnHover?: boolean;
+    previewDelay?: number;
+    previewDismissDelay?: number;
+    stickyOnly?: boolean;
     external?: boolean;
     mixed?: boolean;
     mode?: "fixed" | "auto" | "compact";
   } = $props();
   let viewport = $state<HTMLElement | null>(null);
-  let enabled = $state(true);
+  let enabled = $state(untrack(() => !stickyOnly));
+  let hoverEnabled = $state(untrack(() => previewOnHover));
   let direction = $state<"ltr" | "rtl">("ltr");
   let currentMode = $state(untrack(() => mode));
   let draft = $state("");
@@ -46,6 +55,9 @@
 <div class="canvas-pinning-demo" data-testid="fixed-host" dir={direction}>
   <div class="canvas-pinning-demo__controls">
     <Button onclick={() => (enabled = !enabled)}>Toggle fixed</Button>
+    <Button onclick={() => (hoverEnabled = !hoverEnabled)}
+      >Toggle hover preview</Button
+    >
     <Button onclick={() => (direction = direction === "ltr" ? "rtl" : "ltr")}
       >Toggle direction</Button
     >
@@ -96,6 +108,9 @@
         sticky={index === 0 || (mixed && index === 1)}
         collapsedRail={index === 1 ? secondaryRail : undefined}
         revealOnEdgeHover
+        previewOnHover={hoverEnabled}
+        {previewDelay}
+        {previewDismissDelay}
       >
         <ColumnCanvas.Body scrollStrategy="styled">
           {#if index === 0}

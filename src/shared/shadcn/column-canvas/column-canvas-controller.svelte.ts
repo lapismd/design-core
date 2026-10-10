@@ -113,6 +113,7 @@ export class ColumnCanvasController {
   #saveTimer: ReturnType<typeof setTimeout> | null = null;
   #pendingSaveEvent: ColumnCanvasLayoutChangeEvent | null = null;
   #saveChain: Promise<void> = Promise.resolve();
+  #stickyPreviewAvailable = new Set<string>();
   #previewTimers = new Map<string, ReturnType<typeof setTimeout>>();
   #previewDismissTimers = new Map<string, ReturnType<typeof setTimeout>>();
 
@@ -363,12 +364,31 @@ export class ColumnCanvasController {
     this.#layoutChanged(id, "close");
   };
 
-  /** Preview a collapsed or closed column without changing durable layout. */
+  /** @internal Register floating-rail eligibility without changing durable layout. */
+  setStickyPreviewAvailable = (id: string, available: boolean): void => {
+    const column = this.#requireColumn(id);
+    if (available) this.#stickyPreviewAvailable.add(id);
+    else if (
+      this.#stickyPreviewAvailable.delete(id) &&
+      !column.collapsed &&
+      !column.closed
+    ) {
+      this.dismissPreview(id);
+    }
+  };
+
+  /** Preview a collapsed, closed or floating sticky column without changing durable layout. */
   preview = (id: string): void => {
     const column = this.#requireColumn(id);
     this.#clearPreviewTimer(id);
     this.#clearPreviewDismissTimer(id);
-    if ((!column.collapsed && !column.closed) || column.previewed) return;
+    if (
+      (!column.collapsed &&
+        !column.closed &&
+        !this.#stickyPreviewAvailable.has(id)) ||
+      column.previewed
+    )
+      return;
     this.#patchColumn(id, { previewed: true });
   };
 
@@ -377,7 +397,12 @@ export class ColumnCanvasController {
     const column = this.#requireColumn(id);
     this.#clearPreviewTimer(id);
     this.#clearPreviewDismissTimer(id);
-    if (!column.collapsed && !column.closed) return;
+    if (
+      !column.collapsed &&
+      !column.closed &&
+      !this.#stickyPreviewAvailable.has(id)
+    )
+      return;
     this.#previewTimers.set(
       id,
       setTimeout(
@@ -535,6 +560,7 @@ export class ColumnCanvasController {
 
   async dispose(): Promise<void> {
     for (const id of Object.keys(this.#columns)) this.dismissPreview(id);
+    this.#stickyPreviewAvailable.clear();
     await this.flushSave();
   }
 

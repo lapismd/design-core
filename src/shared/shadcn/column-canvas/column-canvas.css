@@ -532,3 +532,31 @@
     transition: none;
   }
 }
+
+/* The contents host stays mounted across normal, collapsed and preview states. */
+[data-ui-component="column-canvas"][data-ui-part="column-content"] {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+}
+[data-ui-component="column-canvas"][data-ui-part][hidden] {
+  display: none;
+}
+[data-ui-component="column-canvas"][data-column-id][data-previewed="true"]:is(
+    [data-ui-part="column"],
+    [data-ui-part="collapsed-column"],
+    [data-ui-part="column-preview-anchor"]
+  ) {
+  overflow: visible;
+  z-index: var(--ui-column-canvas-preview-z-index, 41);
+}
+[data-ui-component="column-canvas"][data-ui-part="collapsed-column"] {
+  position: relative;
+}
+[data-ui-component="column-canvas"][data-ui-part="column-preview"] {
+  box-sizing: border-box;
+  inset: auto;
+  min-width: 0;
+}

@@ -373,6 +373,22 @@ as the custom example does.
 Clicking performs the durable expanded → collapsed, collapsed → expanded, or
 closed → open and expanded transition.
 
+### Collapsed rail previews
+
+`Column` defaults `previewOnHover` to `true`, with `previewDelay={600}` and
+`previewDismissDelay={120}`. Hover anywhere on a collapsed or floating sticky
+rail to preview its live contents without expanding, scrolling or saving layout.
+The same setting covers custom rails and fixed collapsed columns. Set
+`previewOnHover={false}` on a column to opt out; `Toggle.previewOnHover` and
+`revealOnEdgeHover` remain separate options.
+
+The delay starts on pointer entry and cancels on departure. Previews support
+mouse hover in wide/fixed layouts, while compact/touch use existing explicit
+controls. Pointer or focus inside the preview or its owned menus keeps it open.
+Escape or an outside click dismisses it. Click the rail to expand or use the
+sticky return control to navigate normally. Drafts and internal scroll remain
+in the same mounted content instance across preview and expanded presentation.
+
 ### Column props
 
 `Column` accepts these family-specific props in addition to native section

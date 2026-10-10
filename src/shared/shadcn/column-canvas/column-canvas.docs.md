@@ -584,3 +584,13 @@ reduced motion. Custom toggle icons and collapsed-rail snippets remain available
 
 Use `columnTitle` to label a column with a custom header and its collapsed rail
 without rendering a default header. `title` retains its convenience header.
+
+## Rail hover previews
+
+`Column.previewOnHover` defaults true. `previewDelay` defaults 600 ms and
+`previewDismissDelay` defaults 120 ms. The whole collapsed/custom rail and any
+floating sticky rail are triggers in wide/fixed modes. Contents remain interactive
+and retain their mounted state; previews never persist layout or scroll the canvas.
+Compact and touch retain explicit controls. Escape/outside clicks dismiss; owned
+portalled controls and focus retain the preview. Toggle hover and edge reveal
+remain independently opt-in.

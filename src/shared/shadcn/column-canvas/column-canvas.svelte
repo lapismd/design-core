@@ -2,6 +2,7 @@
   import "./column-canvas.css";
   import { onDestroy, tick, untrack } from "svelte";
   import type { Snippet } from "svelte";
+  import type { Action } from "svelte/action";
   import type { HTMLAttributes } from "svelte/elements";
   import ArrowLeft from "@lucide/svelte/icons/arrow-left";
   import type { WithElementRef } from "../../../lib/utils.js";
@@ -398,7 +399,11 @@
       ? 0
       : finitePixels(rootStyle.paddingInlineStart);
     stickyLayerBlockOffset = finitePixels(rootStyle.paddingBlockStart);
-    if (resolvedDisplayMode === "compact") return;
+    if (resolvedDisplayMode === "compact") {
+      for (const registration of stickyRegistrations)
+        registration.setStuck(false);
+      return;
+    }
 
     const registrations = new Map(
       stickyRegistrations.map((registration) => [
@@ -496,6 +501,8 @@
     const root = scrollingRoot;
     if (!root || resolvedDisplayMode === "compact") {
       stuckStickyColumns = [];
+      for (const registration of stickyRegistrations)
+        registration.setStuck(false);
       return;
     }
 
@@ -519,6 +526,11 @@
       if (isStuck) stuckColumns.push(column);
     }
     stuckStickyColumns = stuckColumns;
+    for (const registration of stickyRegistrations) {
+      registration.setStuck(
+        stuckColumns.some((column) => column.id === registration.id),
+      );
+    }
   }
 
   function inlineEndPosition(root: HTMLElement, column: HTMLElement): number {
@@ -556,6 +568,29 @@
       requestStickyLayout();
     };
   }
+
+  const stickyRailInteractions: Action<
+    HTMLElement,
+    ColumnCanvasStickyColumnRegistration
+  > = (node, initial) => {
+    let registration = initial;
+    const enter = (event: PointerEvent) => registration.pointerEnter(event);
+    const leave = (event: PointerEvent) => registration.pointerLeave(event);
+    const press = (event: PointerEvent) => registration.pointerDown(event);
+    node.addEventListener("pointerenter", enter);
+    node.addEventListener("pointerleave", leave);
+    node.addEventListener("pointerdown", press);
+    return {
+      update(next) {
+        registration = next;
+      },
+      destroy() {
+        node.removeEventListener("pointerenter", enter);
+        node.removeEventListener("pointerleave", leave);
+        node.removeEventListener("pointerdown", press);
+      },
+    };
+  };
 
   function returnToStickyColumn(column: ResolvedStickyColumn): void {
     const root = scrollingRoot;
@@ -839,6 +874,16 @@
     activateResizePair,
     finishResizePair,
     registerStickyColumn,
+    get viewport() {
+      return scrollingRoot;
+    },
+    getPreviewRail(id) {
+      return (
+        ref?.querySelector<HTMLElement>(
+          `[data-sticky-for="${CSS.escape(id)}"]`,
+        ) ?? null
+      );
+    },
   });
 
   $effect(() => {
@@ -864,16 +909,19 @@
     requestAlignment();
   });
 
-  $effect(() => {
-    // Pair ratios are controller-owned durable state and may be changed by a
-    // consumer without a pointer event from this mounted canvas.
+  // Compare the durable ratios before scheduling layout. Transient previews
+  // also update controller runtime state, but must never remeasure the canvas.
+  const pairSplitIdentity = $derived(
     rootController
       .getLayout()
       .pairSplits.map(
         (split) =>
           `${split.leadingColumnId}\u0000${split.trailingColumnId}\u0000${split.leadingFraction}`,
       )
-      .join("\u0001");
+      .join("\u0001"),
+  );
+  $effect(() => {
+    pairSplitIdentity;
     requestStickyLayout();
   });
 
@@ -1107,6 +1155,7 @@
             data-ui-part="sticky-rail"
             data-sticky-for={column.id}
             data-sticky-state="stuck"
+            use:stickyRailInteractions={column.registration}
             style:--ui-column-canvas-sticky-rail-width={`${column.width}px`}
             style:--ui-column-canvas-sticky-rail-offset={`${column.offset}px`}
           >
@@ -1116,7 +1165,10 @@
               data-ui-part="sticky-return"
               aria-label={`Return to ${column.registration.title} column`}
               title={`Return to ${column.registration.title}`}
-              onclick={() => returnToStickyColumn(column)}
+              onclick={() => {
+                rootController.dismissPreview(column.id);
+                returnToStickyColumn(column);
+              }}
             >
               {#if column.registration.rail}
                 {@render column.registration.rail()}

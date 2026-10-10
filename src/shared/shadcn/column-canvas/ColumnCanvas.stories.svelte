@@ -1285,7 +1285,7 @@
     await expect(
       canvas.getByRole("button", { name: "Expand Components column" }),
     ).toBeVisible();
-    await expect(canvas.queryByText("Tool Calls")).toBeNull();
+    await expect(canvas.getByText("Tool Calls")).not.toBeVisible();
     await userEvent.click(
       canvas.getByRole("button", { name: "Expand Components column" }),
     );
