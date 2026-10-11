@@ -132,6 +132,16 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 - Trigger menus MUST anchor to the caret or input using the composer-input containing block, flip above when space below the nearest clipping ancestor or the viewport is insufficient, and MUST NOT use viewport-fixed coordinates that drift inside isolated or transformed hosts.
 - Trigger selection MUST guard indexed search results under unchecked-index consumer semantics.
 
+## DC-AI-026 — Composer Input handle lifetime
+
+**Requirement.** Composer Input MUST release only its own public handle on disposal across reactive consumer bindings.
+
+### Acceptance details
+
+- A handle assigned through `$state` MUST be cleared on teardown without Svelte identity diagnostics.
+- A consumer replacement handle MUST remain assigned when the component is disposed.
+- Capturing the assigned handle identity MUST NOT subscribe the setup effect to consumer handle changes.
+
 ## DC-AI-011 — Composer Drawer
 
 **Requirement.** The Composer Drawer family MUST reveal supplementary composer controls without owning their domain state.

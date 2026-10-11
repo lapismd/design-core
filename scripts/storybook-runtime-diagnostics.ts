@@ -14,7 +14,9 @@ export function isSvelteRuntimeDiagnostic(args: readonly unknown[]): boolean {
   );
 }
 
-export function installSvelteRuntimeDiagnosticGuard(): () => void {
+export function installSvelteRuntimeDiagnosticGuard(
+  onDiagnostic?: (message: string) => void,
+): () => void {
   const originalWarn = console.warn;
   const originalError = console.error;
   const guard =
@@ -29,6 +31,7 @@ export function installSvelteRuntimeDiagnosticGuard(): () => void {
         .join(" ")
         .replaceAll("%c", "")
         .trim();
+      onDiagnostic?.(message);
       throw new Error(`Svelte runtime diagnostic: ${message}`);
     };
   console.warn = guard(originalWarn);

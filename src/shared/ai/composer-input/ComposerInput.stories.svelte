@@ -4,6 +4,7 @@
   import { Button } from "@lapismd/design-core/shadcn/button";
   import Composer from "../composer/Composer.svelte";
   import ComposerInput from "./ComposerInput.svelte";
+  import ComposerInputHandleLifecycle from "../../../../tests/ai-chat/composer-input-handle-lifecycle.svelte";
   import type { ComposerInputHandle, ComposerTrigger } from "../types.js";
 
   const people = [
@@ -580,6 +581,33 @@
       </Composer>
       <output data-testid="submitted-trigger">{submittedValue}</output>
     </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Bound handle lifecycle"
+  tags={["!autodocs", "visual-pending"]}
+  play={async ({ canvas }) => {
+    const ownership = canvas.getByTestId("handle-ownership");
+    await waitFor(() => expect(ownership).toHaveTextContent("owned"));
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Unmount input" }),
+    );
+    await waitFor(() => expect(ownership).toHaveTextContent("released"));
+    await userEvent.click(canvas.getByRole("button", { name: "Mount input" }));
+    await waitFor(() => expect(ownership).toHaveTextContent("owned"));
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Replace handle" }),
+    );
+    await waitFor(() => expect(ownership).toHaveTextContent("replacement"));
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Unmount input" }),
+    );
+    await waitFor(() => expect(ownership).toHaveTextContent("replacement"));
+  }}
+>
+  {#snippet template()}
+    <ComposerInputHandleLifecycle />
   {/snippet}
 </Story>
 

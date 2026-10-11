@@ -52,14 +52,17 @@ test("accepts KaTeX and its complete propagation chain for preparation and relea
   }
 });
 
-test("exception expires for other versions", () => {
+test("known KaTeX acceptance persists across subsequent package releases", () => {
   for (const version of ["0.2.1", "0.3.1", "0.4.0", undefined]) {
-    assert.throws(() => checkPackedAudit(result(report()), version), /expired/);
+    assert.match(
+      checkPackedAudit(result(report()), version),
+      /Accepted release exception: GHSA-238p-pmpm-9mq7/,
+    );
   }
 });
 
-test("rejects different low and high advisories alongside the accepted advisory", () => {
-  for (const severity of ["low", "high"]) {
+test("rejects other advisories at every severity alongside the accepted advisory", () => {
+  for (const severity of ["info", "low", "moderate", "high", "critical"]) {
     const value = report();
     value.vulnerabilities.other = {
       name: "other",
@@ -130,7 +133,7 @@ test("rejects failed commands, malformed responses, and inconsistent metadata", 
   assert.throws(() => checkPackedAudit(result(value), "0.3.0"), /total/);
 });
 
-test("clean audits pass beyond the exception's versions without using it", () => {
+test("clean audits pass without using the exception", () => {
   const value = report();
   value.vulnerabilities = {};
   value.metadata.vulnerabilities.low = 0;

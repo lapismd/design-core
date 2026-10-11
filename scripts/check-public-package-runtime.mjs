@@ -1,10 +1,11 @@
 import assert from "node:assert/strict";
 import { spawn, spawnSync } from "node:child_process";
-import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { copyFileSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import net from "node:net";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { chromium } from "playwright";
+import { fileURLToPath } from "node:url";
 
 /** Exercise the public archive with a fresh, unconfigured Svelte consumer. */
 export async function checkPublicPackageRuntime(tarball, registry) {
@@ -42,9 +43,19 @@ export async function checkPublicPackageRuntime(tarball, registry) {
       `<script lang="ts">
 import { Button } from "@lapismd/design-core/shadcn/button";
 import { CodeEditor } from "@lapismd/design-core/forms";
+import HandleLifecycle from "./HandleLifecycle.svelte";
 let value = $state('const initial = true;');
 </script>
-<main><Button onclick={() => value = 'const updated = true;'}>Update</Button><CodeEditor bind:value ariaLabel="Packed editor" /></main>`,
+<main><Button onclick={() => value = 'const updated = true;'}>Update</Button><CodeEditor bind:value ariaLabel="Packed editor" /><HandleLifecycle /></main>`,
+    );
+    copyFileSync(
+      fileURLToPath(
+        new URL(
+          "../tests/ai-chat/composer-input-handle-lifecycle.svelte",
+          import.meta.url,
+        ),
+      ),
+      path.join(fixture, "HandleLifecycle.svelte"),
     );
     writeFileSync(
       path.join(fixture, "vite.config.mjs"),
@@ -135,6 +146,11 @@ let value = $state('const initial = true;');
     const page = await browser.newPage();
     const errors = [];
     page.on("pageerror", (error) => errors.push(String(error)));
+    page.on("console", (message) => {
+      if (/(?:\[svelte\]|svelte\.dev\/e\/[a-z_]+)/u.test(message.text())) {
+        errors.push(message.text());
+      }
+    });
     await page.goto(url);
     const update = page.getByRole("button", { name: "Update", exact: true });
     await update.waitFor();
@@ -145,9 +161,31 @@ let value = $state('const initial = true;');
     await page.waitForFunction(() =>
       document.querySelector(".cm-content")?.textContent.includes("updated"),
     );
+    const ownership = page.getByTestId("handle-ownership");
+    assert.equal(await ownership.textContent(), "owned");
+    await page.getByRole("button", { name: "Unmount input" }).click();
+    await page.waitForFunction(
+      () =>
+        document.querySelector('[data-testid="handle-ownership"]')
+          ?.textContent === "released",
+    );
+    await page.getByRole("button", { name: "Mount input" }).click();
+    await page.waitForFunction(
+      () =>
+        document.querySelector('[data-testid="handle-ownership"]')
+          ?.textContent === "owned",
+    );
+    await page.getByRole("button", { name: "Replace handle" }).click();
+    await page.waitForFunction(
+      () =>
+        document.querySelector('[data-testid="handle-ownership"]')
+          ?.textContent === "replacement",
+    );
+    await page.getByRole("button", { name: "Unmount input" }).click();
+    assert.equal(await ownership.textContent(), "replacement");
     assert.deepEqual(errors, []);
     console.log(
-      "Cold public tarball startup and reactive CodeEditor update passed.",
+      "Cold public tarball startup, reactive CodeEditor update, and bound Composer Input handle lifecycle passed with zero Svelte diagnostics.",
     );
   } catch (error) {
     console.error(serverLog.slice(-10000));

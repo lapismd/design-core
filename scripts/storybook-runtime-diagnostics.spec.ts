@@ -37,4 +37,24 @@ describe("Storybook Svelte runtime diagnostics", () => {
       error.mockRestore();
     }
   });
+
+  it("records diagnostics even when teardown catches the thrown error", () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const diagnostics: string[] = [];
+    const restore = installSvelteRuntimeDiagnosticGuard((message) => {
+      diagnostics.push(message);
+    });
+    try {
+      try {
+        console.warn("[svelte] state_proxy_equality_mismatch");
+      } catch {
+        // Component teardown can catch the immediate error; the test gate
+        // still needs the recorded diagnostic after teardown finishes.
+      }
+      expect(diagnostics).toEqual(["[svelte] state_proxy_equality_mismatch"]);
+    } finally {
+      restore();
+      warn.mockRestore();
+    }
+  });
 });
