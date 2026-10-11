@@ -1,5 +1,15 @@
 # @lapismd/design-core
 
+## 0.3.1
+
+### Patch Changes
+
+- [#16](https://github.com/lapismd/design-core/pull/16) [`f94fb98`](https://github.com/lapismd/design-core/commit/f94fb9852f6c3e54ea57f89c2f185b6f00c68e35) Thanks [@stevejuma](https://github.com/stevejuma)! - Release the Composer Input handle correctly through reactive consumer bindings during teardown while preserving replacement handles. Keep Svelte runtime diagnostics fatal even when component cleanup catches the immediate error.
+
+- [#13](https://github.com/lapismd/design-core/pull/13) [`5f533e6`](https://github.com/lapismd/design-core/commit/5f533e656601015b5a5dd3a680f5e97fd13cd1d2) Thanks [@stevejuma](https://github.com/stevejuma)! - Preserve emoji-grid keyboard focus when delayed popover opening frames complete.
+
+- [#15](https://github.com/lapismd/design-core/pull/15) [`02756cb`](https://github.com/lapismd/design-core/commit/02756cb32a5405db45cb47cae9e28d448d20651f) Thanks [@stevejuma](https://github.com/stevejuma)! - Require Bits UI 2.19.5 to prevent Scroll Area resize callbacks and text-selection pointer handlers from reading destroyed Svelte state. Make Svelte runtime diagnostics fatal in Storybook tests and preserve the editing Dialog Frame example's initial field focus.
+
 ## 0.3.0
 
 ### Minor Changes
