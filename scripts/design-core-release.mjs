@@ -718,11 +718,8 @@ switch (command) {
       "./check-public-package-runtime.mjs"
     );
     await checkPublicPackageRuntime(tarball, registry);
-    if (audit.status !== 0) {
-      throw new Error(
-        `Packed production dependency audit failed: ${audit.stdout || audit.stderr || audit.error}`,
-      );
-    }
+    const { checkPackedAudit } = await import("./packed-audit-policy.mjs");
+    console.log(checkPackedAudit(audit, packageJson().version));
     console.log("Design Core source tarball validated in a clean consumer.");
     break;
   }

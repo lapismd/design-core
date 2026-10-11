@@ -44,7 +44,7 @@
     "changeset": "changeset",
     "test:unit": "vitest run --project unit",
     "test:turbo": "node --test scripts/concurrency.test.mjs scripts/turbo-cache-report.test.mjs",
-    "test:release": "node --test scripts/design-core-release.test.mjs",
+    "test:release": "node --test scripts/design-core-release.test.mjs scripts/packed-audit-policy.test.mjs",
     "test:storybook": "vitest run --project storybook",
     "test:storybook:watch": "vitest --project storybook",
     "spec:build": "spec-validator build",

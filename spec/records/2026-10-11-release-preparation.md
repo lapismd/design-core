@@ -81,3 +81,47 @@ the independently audited production graph; log:
 retained at `.release/production-consumer-audit.json`.
 Publication remains blocked pending an upstream repair or explicit user
 acceptance of a recorded exception. Source validation does not waive this.
+
+## Accepted KaTeX release exception — 2026-10-11
+
+The user explicitly requested an exception for GHSA-238p-pmpm-9mq7 and an
+update to the release PRs. This accepts the low-severity risk that existing
+prototype pollution can bypass KaTeX trust restrictions; it does not repair
+KaTeX or assert that consumers are immune. Mira's upstream math ranges remain
+the cause, and local workspace overrides cannot travel to npm consumers.
+
+This exception covers Design Core 0.3.0 and its 0.2.0 preparation manifest.
+Every npm vulnerability row must trace solely to the accepted KaTeX advisory;
+unrelated findings, severity increases, changed ranges, unresolved or cyclic
+chains, inconsistent counts, malformed responses, and command failures remain
+blocking. Complete JSON evidence remains at
+`.release/production-consumer-audit.json`, and the gate prints the accepted
+GHSA. Workspace audits remain unchanged. Remove the exception once upstream
+math ranges admit patched KaTeX; later versions require clean audits or fresh
+explicit acceptance.
+
+Before this policy, the exact `pnpm packages:pack` target failed on six
+affected packages from one unique low advisory after all functional package
+checks passed. The publication blocker above remains historical evidence;
+this section records its explicit risk acceptance for the planned release.
+
+After acceptance, `pnpm packages:pack` passes archive, public type, cold
+runtime, reactive editor, and audit-policy checks, printing the accepted GHSA
+and six propagated package findings. All seven policy tests and all ten release
+tests pass. Canonical checks pass after moving the exception prose outside
+the atomic acceptance-bullet block; full and production workspace audits
+remain at zero findings.
+
+The first `pnpm checks` run found one keyboard-focus timing failure in
+`NavigatesTheEmojiGrid` (678 passed / 1 failed). The exact unchanged rerun,
+`pnpm test:storybook src/shared/ai/experimental/emoji-picker/EmojiPicker.stories.svelte -t NavigatesTheEmojiGrid`,
+passed. A fresh complete `pnpm checks` rerun then passed all nine lanes:
+723 unit tests, 679 interaction/accessibility tests, four clean type checks,
+15 Workspace, 11 Shell, 3 AI, and 56 Shadcn browser passes with the existing
+engine-specific skip. No test assertion, timeout, or UI source changed.
+Screenshot comparisons and baseline updates remain excluded.
+
+Logs: `/tmp/design-katex-exception-pack.log`,
+`/tmp/design-katex-exception-release-tests.log`,
+`/tmp/design-katex-exception-emoji-exact.log`, and
+`/tmp/design-katex-exception-checks-final.log`.

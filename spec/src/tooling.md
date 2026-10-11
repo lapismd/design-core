@@ -52,7 +52,13 @@ starts a fresh Vite/Svelte consumer and exercises Button and reactive CodeEditor
 without consumer aliases or dependency overrides. The release artifact job
 installs Chromium before this check.
 The clean packed production graph is audited independently of workspace
-overrides; failure evidence is retained under `.release/` and blocks the gate.
+overrides; complete evidence is retained under `.release/` and blocks the gate
+unless it meets the explicit KaTeX policy in DC-PKG-009.
+Release tests MUST prove that only that advisory and its npm propagation
+chains are accepted within the approved versions, with all other findings,
+invalid responses, and command failures remaining blocking.
+The release workflow MUST retain the packed audit report as a downloadable
+artifact, including when a reported finding fails the gate.
 
 **Requirement.** The Validation commands family MUST provide focused formatting, type, unit, Storybook, source-style, browser, build, and visual-comparison commands, including narrowly filtered engine projects when a compatibility boundary requires real browser acceptance.
 
