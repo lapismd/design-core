@@ -107,6 +107,16 @@ jobs:
           pnpm packages:pack
           pnpm checks:release
 
+      - name: Retain packed production audit evidence
+        if: always() && hashFiles('.release/production-consumer-audit.json') != ''
+        uses: actions/upload-artifact@v7
+        with:
+          name: design-core-packed-audit-${{ github.sha }}
+          path: .release/production-consumer-audit.json
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 14
+
       - name: Plan exact unpublished versions
         run: pnpm release:plan
 
@@ -144,6 +154,8 @@ jobs:
           path: |
             .release/release-manifest.json
             .release/tarballs/*.tgz
+            .release/production-consumer-audit.json
+          include-hidden-files: true
           if-no-files-found: error
           retention-days: 14
 

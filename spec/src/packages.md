@@ -105,12 +105,23 @@ The root package manifest defines the supported import boundaries. Family barrel
 
 **Requirement.** Design Core MUST be packable as a public versioned source artifact whose manifest uses semver for runtime dependencies, and release automation MUST stop for manual bootstrap until the npm package exists.
 
+The user-approved 2026-10-11 packed-audit exception MAY accept only
+low-severity [GHSA-238p-pmpm-9mq7](https://github.com/advisories/GHSA-238p-pmpm-9mq7)
+for KaTeX `>=0.11.0 <0.18.2` and npm propagation chains terminating solely
+in that advisory, for Design Core 0.3.0 or its 0.2.0 preparation manifest.
+The gate MUST reject other advisories, increased severity, changed vulnerable
+ranges, unresolved or cyclic chains, invalid responses, inconsistent counts,
+and command failures. Complete audit JSON MUST remain under `.release/`,
+and accepted exceptions MUST be printed. Remove the exception when upstream
+math ranges resolve patched KaTeX; subsequent versions MUST NOT inherit it.
+Clean audits require no exception, and workspace audits remain unchanged.
+
 ### Acceptance details
 
 - Mira must resolve through a published npm semver dependency that admits compatible pre-1.0 patch releases; optional search tooling remains outside the normal validation dependency graph.
 - Published development tooling dependencies must use npm semver ranges; pull requests and pushes to `main` must run the complete nonvisual check suite before the full and production-only dependency audits, using GitHub Actions that do not depend on the deprecated Node.js 20 action runtime.
 - The tarball must omit repository-only files and tolerate bounded npm registry visibility delay during post-publication verification.
-- Package checks must pack source even when its version is already published; registry and local archives must prepare rune modules and declarations, preserve public import names, and pass cold Svelte dependency prebundling with declared dependencies; the clean packed production graph must pass its own audit independently of workspace overrides.
+- Package checks must pack source even when its version is already published; registry and local archives must prepare rune modules and declarations, preserve public import names, and pass cold Svelte dependency prebundling with declared dependencies; the clean packed production graph must pass its independent audit or the recorded version-scoped KaTeX exception.
 
 ## DC-PKG-010 — Diff exports
 
