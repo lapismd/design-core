@@ -91,3 +91,57 @@
 >
 
 <Story name="Pointer surface">{#snippet template()}<Example />{/snippet}</Story>
+
+<Story
+  name="Preserves field focus after opening animation frames"
+  tags={["!autodocs", "visual-pending"]}
+  play={async ({ canvas, canvasElement }) => {
+    const queuedFrames = new Map<number, FrameRequestCallback>();
+    const requestFrame = window.requestAnimationFrame;
+    const cancelFrame = window.cancelAnimationFrame;
+    let nextFrame = 0;
+    let dialog: HTMLElement | undefined;
+    const trigger = canvas.getByRole("button", { name: "Edit record" });
+    window.requestAnimationFrame = (callback) => {
+      const frame = --nextFrame;
+      queuedFrames.set(frame, callback);
+      return frame;
+    };
+    window.cancelAnimationFrame = (frame) => {
+      if (!queuedFrames.delete(frame)) cancelFrame(frame);
+    };
+    try {
+      await userEvent.click(trigger);
+      dialog = await within(canvasElement.ownerDocument.body).findByRole(
+        "dialog",
+        { name: "Edit record" },
+      );
+      const field = within(dialog).getByRole("textbox", { name: "Field 1" });
+      await userEvent.click(field);
+      await expect(field).toHaveFocus();
+      const pending = [...queuedFrames.values()];
+      queuedFrames.clear();
+      for (const callback of pending) callback(performance.now());
+      await expect(field).toHaveFocus();
+      await userEvent.keyboard("Updated record");
+      await expect(field).toHaveValue("Updated record");
+      await expect(dialog).toHaveAttribute("data-state", "open");
+      await expect(
+        within(dialog).getByText("Editing Updated record"),
+      ).toBeVisible();
+    } finally {
+      window.requestAnimationFrame = requestFrame;
+      window.cancelAnimationFrame = cancelFrame;
+      for (const callback of queuedFrames.values()) requestFrame(callback);
+      if (dialog?.isConnected && dialog.dataset.state === "open") {
+        await userEvent.click(
+          within(dialog).getByRole("button", { name: "Close" }),
+        );
+        await waitFor(() => expect(trigger).toHaveFocus());
+        await waitFor(() => expect(dialog).not.toBeInTheDocument());
+      }
+    }
+  }}
+>
+  {#snippet template()}<Example />{/snippet}
+</Story>

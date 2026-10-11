@@ -8,6 +8,10 @@ prepared output, while the local archive profile does not publish releases.
 
 Design Core is a shared presentation and controller library. Consumer applications retain domain policy, persistence, transport, routing, and environment adapters. Component ownership and public-layer classification are maintained in the canonical [`component inventory`](component-inventory.md).
 
+Bits UI resolves from the published `^2.19.5` range, including upstream Scroll
+Area resize and text-selection teardown fixes. Runtime diagnostics remain fatal
+in Storybook browser tests, including dependency-originated diagnostics.
+
 Release preparation uses the published Spec Validator 0.1.4 range and Changesets 3. Optional QMD search remains available when installed by the developer; normal
 validation does not install its model/native dependency graph. The supported Node
 range follows Changesets 3. Declared renderer and tooling overrides retain patched

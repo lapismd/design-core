@@ -1,7 +1,9 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, userEvent, waitFor } from "storybook/test";
+  import { expect, userEvent, waitFor, within } from "storybook/test";
+  import { tick } from "svelte";
   import NativeLifecycle from "./ScrollAreaNativeLifecycleFixture.svelte";
+  import StyledLifecycle from "./ScrollAreaStyledLifecycleFixture.svelte";
   import * as ScrollArea from "./index.js";
   import ScrollAreaScrollableList from "./ScrollAreaScrollableList.svelte";
   import ScrollAreaBehaviorFixture from "./ScrollAreaBehaviorFixture.svelte";
@@ -25,6 +27,83 @@
   });
 
   const items = Array.from({ length: 8 }, (_, i) => `Item ${i + 1}`);
+
+  const observers = new Set<ControlledResizeObserver>();
+  class ControlledResizeObserver implements ResizeObserver {
+    static Native: typeof ResizeObserver;
+    callback: ResizeObserverCallback;
+    native: ResizeObserver;
+    constructor(callback: ResizeObserverCallback) {
+      this.callback = callback;
+      this.native = new ControlledResizeObserver.Native(callback);
+    }
+    observe(target: Element, options?: ResizeObserverOptions) {
+      observers.add(this);
+      this.native.observe(target, options);
+    }
+    unobserve(target: Element) {
+      observers.delete(this);
+      this.native.unobserve(target);
+    }
+    disconnect() {
+      observers.delete(this);
+      this.native.disconnect();
+    }
+    trigger() {
+      this.callback([], this);
+    }
+  }
+
+  async function verifyStyledTeardown({
+    canvas,
+  }: {
+    canvas: ReturnType<typeof within>;
+  }) {
+    const resizeObserver = window.ResizeObserver;
+    ControlledResizeObserver.Native = resizeObserver;
+    window.ResizeObserver = ControlledResizeObserver;
+    const frame = () =>
+      new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+    const resize = async () => {
+      for (const observer of observers) observer.trigger();
+      await frame();
+      await tick();
+    };
+    try {
+      const toggle = canvas.getByRole("button", {
+        name: "Toggle styled viewport",
+      });
+      for (let cycle = 1; cycle <= 3; cycle++) {
+        await userEvent.click(toggle);
+        const area = canvas.getByLabelText("Styled lifecycle");
+        await expect(area).toHaveAttribute("data-scroll-strategy", "styled");
+        await resize();
+        await resize();
+        await waitFor(async () => {
+          await resize();
+          expect(
+            area.querySelectorAll('[data-ui-part="scroll-area-thumb"]').length,
+          ).toBe(2);
+        });
+        // Dispose immediately after resize observers queue their work, before
+        // a deferred resize callback can run against destroyed derived state.
+        await resize();
+        toggle.click();
+        await tick();
+        await expect(canvas.queryByLabelText("Styled lifecycle")).toBeNull();
+        await new Promise<void>((resolve) => setTimeout(resolve, 30));
+        await userEvent.click(
+          canvas.getByRole("button", { name: "Remaining control" }),
+        );
+        await expect(canvas.getByRole("status")).toHaveTextContent(
+          `Remaining clicks: ${cycle}`,
+        );
+      }
+    } finally {
+      window.ResizeObserver = resizeObserver;
+      observers.clear();
+    }
+  }
 </script>
 
 <Story
@@ -156,3 +235,19 @@
     );
   }}>{#snippet template()}<NativeLifecycle />{/snippet}</Story
 >
+
+<Story
+  name="Styled always survives queued resize and teardown"
+  tags={["!autodocs", "visual-pending"]}
+  play={verifyStyledTeardown}
+>
+  {#snippet template()}<StyledLifecycle type="always" />{/snippet}
+</Story>
+
+<Story
+  name="Styled auto survives queued resize and teardown"
+  tags={["!autodocs", "visual-pending"]}
+  play={verifyStyledTeardown}
+>
+  {#snippet template()}<StyledLifecycle type="auto" />{/snippet}
+</Story>

@@ -44,11 +44,11 @@ Storybook is the interactive catalog and acceptance surface. It documents compon
 
 ## DC-CAT-004 — Catalog validation
 
-**Requirement.** The Catalog validation family MUST typecheck interactions, build the static catalog, and enforce confirmed accessibility violations as errors.
+**Requirement.** The Catalog validation family MUST typecheck interactions, build the static catalog, and enforce confirmed accessibility violations and Svelte runtime diagnostics as errors.
 
 ### Acceptance details
 
-- Story titles and hierarchy must remain stable discovery identifiers unless a migration is documented.
+- Svelte runtime diagnostics, including `derived_inert`, MUST fail browser tests during rendering, interactions, and teardown rather than remain console-only warnings.
 - Storybook documentation must link or derive from the owning source instead of copying normative contracts.
 - Storybook host addons must resolve from published or repository-owned package boundaries rather than a removed private workspace package.
 - Browser-test dependencies that Vite discovers through editor stories MUST be prebundled before the suite starts so a cold run cannot invalidate active tests with a dependency-optimization reload.

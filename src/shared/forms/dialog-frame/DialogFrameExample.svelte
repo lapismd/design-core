@@ -5,6 +5,7 @@
   import { Input } from "@lapismd/design-core/shadcn/input";
   let open = $state(false);
   let name = $state("");
+  let firstField = $state<HTMLInputElement | null>(null);
 </script>
 
 <Dialog.Root bind:open>
@@ -20,6 +21,11 @@
     size="large"
     surface="inset"
     class={name ? "record-filled" : "record-empty"}
+    onOpenAutoFocus={(event) => {
+      if (!firstField) return;
+      firstField.focus();
+      event.preventDefault();
+    }}
   >
     {#snippet sidebar()}<nav aria-label="Sections">
         <Button variant="secondary">Details</Button>
@@ -27,6 +33,7 @@
     {#each Array.from({ length: 24 }) as _, index}<label
         style="display: grid; gap: 0.5rem; margin-block: 1rem;"
         >Field {index + 1}{#if index === 0}<Input
+            bind:ref={firstField}
             bind:value={name}
           />{:else}<Input />{/if}</label
       >{/each}
