@@ -56,6 +56,10 @@ host changes and keep the owning canonical chapter in the same diff. Run
    warnings (`svelte.config.js` `onwarn`), except known-safe noise (`*`
    unused selectors; global-only styles on bits-ui/shadcn wrappers with
    no scopable HTML). Warnings from `node_modules` are logged only.
+   Storybook browser tests also fail on Svelte runtime diagnostics such as
+   `derived_inert` during rendering, interactions, and teardown, including
+   diagnostics from dependency packages. Fix the owning source or consume its
+   published repair before retrying the complete suite.
 7. **Commit** — record the verified slice immediately (see `pnpm ui guide vcs`).
    Prefer `jj commit` when Jujutsu is available; otherwise use Git.
 
