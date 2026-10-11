@@ -109,8 +109,8 @@ The root package manifest defines the supported import boundaries. Family barrel
 
 - Mira must resolve through a published npm semver dependency in the root manifest and lockfile.
 - Published development tooling dependencies must use npm semver ranges; pull requests and pushes to `main` must run the complete nonvisual check suite before the full and production-only dependency audits, using GitHub Actions that do not depend on the deprecated Node.js 20 action runtime.
-- The tarball must omit repository-only files.
-- Clean consumers must resolve exported source paths using declared dependencies.
+- The tarball must omit repository-only files, and clean consumers must resolve exported source paths using declared dependencies.
+- Post-publication verification must tolerate bounded npm registry visibility delay before failing a clean install, integrity, or provenance check.
 
 ## DC-PKG-010 — Diff exports
 

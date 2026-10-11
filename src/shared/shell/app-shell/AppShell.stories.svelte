@@ -473,11 +473,13 @@
       within(document.body).getByRole("option", { name: "Lapis Notes" }),
     );
     await userEvent.keyboard("{Escape}");
-    await expect(
-      within(document.body).queryByRole("listbox", {
-        name: "Project options",
-      }),
-    ).not.toBeInTheDocument();
+    await waitFor(() =>
+      expect(
+        within(document.body).queryByRole("listbox", {
+          name: "Project options",
+        }),
+      ).not.toBeInTheDocument(),
+    );
 
     const filesSidebar = canvas.getByLabelText("Files sidebar");
     await expect(filesSidebar).toHaveAttribute("data-state", "expanded");

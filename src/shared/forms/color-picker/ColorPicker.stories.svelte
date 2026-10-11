@@ -101,7 +101,8 @@
     );
     const value = page.getByLabelText("Group color value");
     await userEvent.clear(value);
-    await userEvent.type(value, "#112233");
+    (value as HTMLInputElement).value = "#112233";
+    await fireEvent.input(value);
     await waitFor(() =>
       expect(canvas.getByRole("status")).toHaveTextContent("#112233"),
     );

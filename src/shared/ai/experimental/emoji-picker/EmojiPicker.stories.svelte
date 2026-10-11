@@ -84,16 +84,11 @@
         popover.getByRole("textbox", { name: "Search emoji" }),
       ).toHaveFocus(),
     );
-    // Move into the grid; Tab focus order can race with popover mount.
-    await waitFor(
-      async () => {
-        if (document.activeElement !== first) {
-          await userEvent.tab();
-        }
-        expect(first).toHaveFocus();
-      },
-      { timeout: 5_000 },
+    await userEvent.type(
+      popover.getByRole("textbox", { name: "Search emoji" }),
+      "{arrowdown}",
     );
+    await waitFor(() => expect(first).toHaveFocus());
     await userEvent.keyboard("{ArrowRight}");
     await waitFor(() => expect(second).toHaveFocus());
   }}

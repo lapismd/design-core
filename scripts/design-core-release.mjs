@@ -38,6 +38,20 @@ const registry = optionValue(
   process.env.NPM_CONFIG_REGISTRY ?? defaultRegistry,
 );
 
+function positiveIntegerOption(name, fallback) {
+  const value = optionValue(name, fallback);
+  const parsed = Number(value);
+  if (!Number.isInteger(parsed) || parsed < 1) {
+    throw new Error(`${name} must be a positive integer, received ${value}`);
+  }
+  return parsed;
+}
+
+function sleep(ms) {
+  if (ms <= 0) return;
+  Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
+}
+
 function readJson(filePath) {
   return JSON.parse(readFileSync(filePath, "utf8"));
 }
@@ -473,6 +487,43 @@ function tarballPathFromManifest(entry) {
   return path.resolve(releaseDir, entry.tarball);
 }
 
+function waitForPublishedVersion(entry) {
+  const attempts = positiveIntegerOption(
+    "--registry-visibility-attempts",
+    process.env.DESIGN_CORE_RELEASE_VERIFY_ATTEMPTS ?? "30",
+  );
+  const delayMs = positiveIntegerOption(
+    "--registry-visibility-delay-ms",
+    process.env.DESIGN_CORE_RELEASE_VERIFY_DELAY_MS ?? "10000",
+  );
+  let lastError = null;
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    try {
+      const versions = npmViewVersions(entry.name);
+      if (versions?.includes(entry.version)) {
+        if (attempt > 1) {
+          console.log(
+            `${entry.name}@${entry.version} became visible on ${registry} after ${attempt} checks.`,
+          );
+        }
+        return versions;
+      }
+      lastError = new Error(
+        `${entry.name}@${entry.version} is not published on ${registry}`,
+      );
+    } catch (error) {
+      lastError = error;
+    }
+    if (attempt < attempts) {
+      console.log(
+        `${entry.name}@${entry.version} is not visible on ${registry}; retrying in ${delayMs}ms (${attempt}/${attempts}).`,
+      );
+      sleep(delayMs);
+    }
+  }
+  throw lastError;
+}
+
 function publish() {
   requireApprovedPublish();
   const { manifest } = manifestFromArg();
@@ -507,12 +558,7 @@ function verify() {
   const { manifest } = manifestFromArg();
   const auditPath = args[2] ? path.resolve(root, args[2]) : null;
   for (const entry of manifest.packages) {
-    const versions = npmViewVersions(entry.name);
-    if (!versions?.includes(entry.version)) {
-      throw new Error(
-        `${entry.name}@${entry.version} is not published on ${registry}`,
-      );
-    }
+    waitForPublishedVersion(entry);
     const tmp = mkdtempSync(path.join(tmpdir(), "design-core-registry-"));
     try {
       runInherited("npm", ["init", "--yes"], { cwd: tmp });

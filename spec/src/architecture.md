@@ -75,5 +75,5 @@ Design Core is a shared presentation and controller library. Consumer applicatio
 
 - Default concurrency must be half the available processors capped at four, with a validated `TURBO_CONCURRENCY` override.
 - CI and non-CI executions must not share cache keys.
-- VCS-dependent governance and registry-dependent dependency audits must remain uncached.
+- VCS-dependent governance and registry-dependent dependency audits must remain uncached, while post-publication registry checks may use bounded visibility retries for eventual npm propagation.
 - Remote cache credentials must come from ignored local environment files or CI secrets and must never be logged.

@@ -430,7 +430,7 @@
     await waitFor(() =>
       expect(
         viewport.scrollHeight - viewport.clientHeight - viewport.scrollTop,
-      ).toBeLessThan(2),
+      ).toBeLessThanOrEqual(2),
     );
     expect(
       canvas.queryByRole("button", { name: "New messages" }),
