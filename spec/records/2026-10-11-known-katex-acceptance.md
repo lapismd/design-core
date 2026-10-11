@@ -42,4 +42,5 @@ override, dependency patch, fork, or copied dependency source is added.
 - Full and production-only workspace audits recorded **zero findings**.
 - The interaction run also logged **11 Composer Input/Composer Svelte identity
   warnings** caught during cleanup. This does not change the audit exception;
-  the runtime guard and component cleanup require a separate repair.
+  the separate [runtime follow-up](2026-10-11-caught-runtime-diagnostics.md)
+  records the guard and component cleanup repair.

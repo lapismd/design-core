@@ -60,6 +60,9 @@ severity increases, changed vulnerable ranges, invalid responses, and command
 failures remaining blocking.
 Storybook runtime-diagnostic guard tests MUST cover formatted warnings,
 diagnostic URLs, error objects, logging preservation, and console restoration.
+The gate MUST retain diagnostics caught during component teardown and fail
+after the story or final suite cleanup instead of relying only on the
+immediately thrown error.
 The release workflow MUST retain the packed audit report as a downloadable
 artifact, including when a reported finding fails the gate.
 

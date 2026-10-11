@@ -5,6 +5,7 @@
 <script lang="ts">
   import * as Command from "@lapismd/design-core/shadcn/command";
   import type { HTMLAttributes } from "svelte/elements";
+  import { untrack } from "svelte";
   import {
     createComposerTokens,
     createPasteAsToken,
@@ -149,12 +150,15 @@
 
   $effect(() => {
     handle = inputHandle;
+    // A consumer's binding may proxy the plain handle. Retain the identity
+    // returned by that binding without making it an effect dependency.
+    const assignedHandle = untrack(() => handle);
     context?.setInputHandle(inputHandle);
     return () => {
       triggerSearch.cancel();
       tokens.cleanup();
       context?.setInputHandle(null);
-      if (handle === inputHandle) handle = null;
+      if (handle === assignedHandle) handle = null;
     };
   });
 
