@@ -1,4 +1,5 @@
-// Explicitly accepted on 2026-10-11; remove once upstream math ranges are patched.
+// User accepted this known advisory across releases on 2026-10-11.
+// Keep the finding visible; remove once upstream math ranges are patched.
 const advisoryId = "GHSA-238p-pmpm-9mq7";
 const advisoryUrl = `https://github.com/advisories/${advisoryId}`;
 
@@ -10,7 +11,7 @@ function isObject(value) {
   return value !== null && typeof value === "object" && !Array.isArray(value);
 }
 
-export function checkPackedAudit(result, version) {
+export function checkPackedAudit(result) {
   if (result.error || result.signal || ![0, 1].includes(result.status)) {
     fail(
       `audit command failed: ${result.error || result.stderr || result.status}`,
@@ -85,10 +86,5 @@ export function checkPackedAudit(result, version) {
     checked.add(name);
   }
   for (const [name] of entries) visit(name);
-  if (!["0.2.0", "0.3.0"].includes(version)) {
-    fail(
-      "KaTeX exception expired outside approved Design Core release versions",
-    );
-  }
-  return `Accepted release exception: ${advisoryId} (low, KaTeX; ${entries.length} affected packages); Design Core 0.3.0 only, including 0.2.0 preparation. Full audit evidence: .release/production-consumer-audit.json.`;
+  return `Accepted release exception: ${advisoryId} (low, KaTeX; ${entries.length} affected packages); user-approved across releases until upstream math dependencies are patched. The vulnerability remains present. Full audit evidence: .release/production-consumer-audit.json.`;
 }

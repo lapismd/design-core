@@ -719,7 +719,7 @@ switch (command) {
     );
     await checkPublicPackageRuntime(tarball, registry);
     const { checkPackedAudit } = await import("./packed-audit-policy.mjs");
-    console.log(checkPackedAudit(audit, packageJson().version));
+    console.log(checkPackedAudit(audit));
     console.log("Design Core source tarball validated in a clean consumer.");
     break;
   }

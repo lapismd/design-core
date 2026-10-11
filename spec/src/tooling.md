@@ -55,8 +55,9 @@ The clean packed production graph is audited independently of workspace
 overrides; complete evidence is retained under `.release/` and blocks the gate
 unless it meets the explicit KaTeX policy in DC-PKG-009.
 Release tests MUST prove that only that advisory and its npm propagation
-chains are accepted within the approved versions, with all other findings,
-invalid responses, and command failures remaining blocking.
+chains remain accepted across package releases, with other findings,
+severity increases, changed vulnerable ranges, invalid responses, and command
+failures remaining blocking.
 Storybook runtime-diagnostic guard tests MUST cover formatted warnings,
 diagnostic URLs, error objects, logging preservation, and console restoration.
 The release workflow MUST retain the packed audit report as a downloadable
