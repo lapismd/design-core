@@ -1,7 +1,8 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, userEvent, waitFor } from "storybook/test";
+  import { expect, fn, userEvent, waitFor } from "storybook/test";
   import HistoryFixture from "./MessageListHistoryFixture.svelte";
+  import EstimateUpdateFixture from "./MessageListEstimateUpdateFixture.svelte";
   import LegacyFixture from "./MessageListLegacyFixture.svelte";
   import { Virtualized, Legacy } from "./MessageList.example-sources.js";
   import Message from "../message/Message.svelte";
@@ -327,14 +328,40 @@
     expect(
       Number(canvas.getByLabelText("Position reports").textContent),
     ).toBeLessThanOrEqual(reports + 1);
-    viewport.dispatchEvent(new WheelEvent("wheel", { deltaY: -900 }));
-    viewport.scrollTop -= 900;
-    viewport.dispatchEvent(new Event("scroll"));
+    await new Promise((resolve) => setTimeout(resolve, 100));
+    const settledReports = Number(
+      canvas.getByLabelText("Position reports").textContent,
+    );
+    for (let index = 0; index < 4; index++) {
+      viewport.scrollTop -= 24;
+      viewport.dispatchEvent(new Event("scroll"));
+    }
+    expect(Number(canvas.getByLabelText("Position reports").textContent)).toBe(
+      settledReports,
+    );
     await waitFor(() =>
       expect(
-        canvas.getByRole("button", { name: "Scroll to latest" }),
-      ).toBeVisible(),
+        Number(canvas.getByLabelText("Position reports").textContent),
+      ).toBe(settledReports + 1),
     );
+    const querySelectorAll = fn(viewport.querySelectorAll.bind(viewport));
+    const originalQuerySelectorAll = viewport.querySelectorAll;
+    viewport.querySelectorAll = querySelectorAll;
+    try {
+      viewport.dispatchEvent(new WheelEvent("wheel", { deltaY: -900 }));
+      viewport.scrollTop -= 900;
+      viewport.dispatchEvent(new Event("scroll"));
+      await waitFor(() =>
+        expect(
+          canvas.getByRole("button", { name: "Scroll to latest" }),
+        ).toBeVisible(),
+      );
+      expect(querySelectorAll).not.toHaveBeenCalledWith(
+        "[data-message-id], [data-ui-component='ai-chat-message']",
+      );
+    } finally {
+      viewport.querySelectorAll = originalQuerySelectorAll;
+    }
     await userEvent.click(
       canvas.getByRole("button", { name: "Resize content" }),
     );
@@ -401,16 +428,12 @@
         canvas.getByRole("button", { name: "Scroll to latest" }),
       ).toBeVisible(),
     );
-    expect(canvas.getByLabelText("Legacy history requests")).toHaveTextContent(
-      "0",
-    );
-    await userEvent.click(
-      canvas.getByRole("button", { name: "Load older messages" }),
+    await waitFor(() =>
+      expect(
+        canvas.getByLabelText("Legacy history requests"),
+      ).toHaveTextContent("1"),
     );
     await expect(canvas.getByText("Earlier context 1")).toBeInTheDocument();
-    expect(canvas.getByLabelText("Legacy history requests")).toHaveTextContent(
-      "1",
-    );
     expect(rows()).toHaveLength(101);
     await userEvent.click(
       canvas.getByRole("button", { name: "Reflow existing content" }),
@@ -438,6 +461,49 @@
   }}
 >
   {#snippet template()}<LegacyFixture />{/snippet}
+</Story>
+
+<Story
+  name="Updated item estimates replace unmounted sizes"
+  exportName="UpdatedItemEstimates"
+  tags={["visual-pending"]}
+  parameters={{
+    docs: { source: { code: Virtualized, language: "tsx", type: "code" } },
+  }}
+  play={async ({ canvas, canvasElement }) => {
+    const viewport = canvasElement.querySelector<HTMLElement>(
+      '[data-ui-part="scroll-area-viewport"]',
+    )!;
+    const content = canvasElement.querySelector<HTMLElement>(
+      '[data-ui-part="virtual-content"]',
+    )!;
+    await waitFor(() => expect(viewport.scrollTop).toBeGreaterThan(1_000));
+    const originalHeight = Number.parseFloat(content.style.height);
+
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Load first message detail" }),
+    );
+    await waitFor(() =>
+      expect(Number.parseFloat(content.style.height)).toBeGreaterThan(
+        originalHeight + 790,
+      ),
+    );
+    const estimatedHeight = Number.parseFloat(content.style.height);
+
+    viewport.dispatchEvent(new WheelEvent("wheel", { deltaY: -100_000 }));
+    viewport.scrollTop = 0;
+    viewport.dispatchEvent(new Event("scroll"));
+    await expect(
+      await canvas.findByText("Loaded first message detail"),
+    ).toBeVisible();
+    await waitFor(() =>
+      expect(
+        Math.abs(Number.parseFloat(content.style.height) - estimatedHeight),
+      ).toBeLessThanOrEqual(2),
+    );
+  }}
+>
+  {#snippet template()}<EstimateUpdateFixture />{/snippet}
 </Story>
 
 <style>

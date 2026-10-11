@@ -30,22 +30,34 @@ Diff contracts keep change-set listing, file comparison, and merge presentation 
 
 **Requirement.** The File Listing family MUST present a host-owned change-set as a controlled list, folder tree, or compacted package tree without performing filesystem operations.
 
+File and directory rows accept opt-in host drag callbacks and eligibility
+predicates. Native drag events provide the same public context as row slots;
+the host owns payloads and operation policy. Without a drag callback rows remain
+non-draggable, and selection/disclosure behavior stays independent of dragging.
+
+`--ui-diff-file-listing-row-gap` defaults to `2px`, separating row backgrounds
+in list, folder and package modes. Eager rows split that space across their
+block margins; virtual row wrappers include it in their measured height so
+scroll offsets, continuation and keyboard navigation retain the same spacing.
+
 ### Acceptance details
 
-- The public boundary is `@lapismd/design-core/diff`.
+- The public boundary is `@lapismd/design-core/diff`; hosts MAY provide public `FileListingDirectory` values before their children are loaded, and controlled disclosure MUST request expansion through `onDirectoryToggle` without performing I/O or inventing child files.
 - Selection and view mode MUST remain host-controllable through `selectedPath`, `mode`, and a compact three-segment `FileListingViewModeToggle` (list, folder tree, package) with one group border, and selected rows plus the active segment MUST use the shared `--ui-diff-selected` fill.
-- Row leading, label, and meta content MUST be host-replaceable snippets; default file-row meta MUST render File Change Stats from `additions` and `deletions`.
-- The catalog MUST demonstrate list, folder tree, package tree, empty, and selected states without introducing a second runtime contract.
+- Row leading, label, and meta content MUST be host-replaceable snippets; default file-row meta MUST render File Change Stats from `additions` and `deletions`, while root files in folder and package views MUST use the normal row inset without a disclosure spacer; nested files MUST retain their depth and disclosure alignment in eager and virtualized rendering.
+- Opt-in measured virtualization MUST bound mounted list, folder-tree, and package-tree rows against the nearest scroll viewport, including the public Scroll Area viewport before runtime overflow styles settle, retain stable row keys and keyboard navigation, and request host-owned continuation once per loaded edge without changing the default eager rendering contract; the catalog MUST exercise this path alongside lazy-directory, list, tree, package, empty, and selected states.
 
 ## DC-DIFF-003 — File Diff
 
 **Requirement.** The File Diff family MUST render unified or split textual changes from two texts or a unified patch without owning comments or version-control transport.
 
+Highlighted additions/removals MUST retain readable syntax foreground on row and intraline washes through `--ui-diff-changed-syntax-foreground` (default `--foreground`), while unchanged rows retain normal syntax colors.
+
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/diff`, and unchanged context MUST collapse with incremental expand controls.
 - Line identity MUST be exposed through `data-diff-line-*`, a `lineAccessory` snippet, and a host-owned `lineAnnotation` seam after unified rows; line accessories MUST occupy the number gutter and reveal on row hover or keyboard focus, while split gutters MUST show old-file numbers on the left and new-file numbers on the right, each aligned with its row.
-- Multi-file composition MUST expose controlled selection and collapse state, host-owned header leading and trailing content, optional sticky headers, and repeatable path scroll requests without owning persistence.
+- Multi-file composition MUST expose controlled selection/collapse, host-owned headers, optional sticky headers and repeatable path scrolling without persistence; File Diff accepts an optional host label distinguishing previous/later pane landmarks across files or hunks while preserving default names when omitted.
 - The catalog MUST demonstrate unified, split, collapsed-context, binary, empty, multi-file composer, and wrap-text states without introducing a second runtime contract.
 
 ## DC-DIFF-004 — Merge Editor
@@ -54,8 +66,8 @@ Diff contracts keep change-set listing, file comparison, and merge presentation 
 
 ### Acceptance details
 
-- The public boundary is `@lapismd/design-core/diff`.
-- The editor MUST report resolved content through `onResolvedChange`, overlay optional editable sides that report `onLeftChange`, `onBaseChange`, and `onRightChange`, assemble a working-copy center while the headless default keeps VCS ancestor semantics, insert a side above or below center or remove it through center-pointed actions, and reassemble after those actions or any pane edit.
+- The public boundary is `@lapismd/design-core/diff`, with optional `headerCenter` controls centered between the truncating path and pager (on a second row in narrow editors), optional `headerActions` after the pager, and unchanged chrome when omitted.
+- The editor MUST report resolved content through `onResolvedChange`, overlay optional editable sides that report `onLeftChange`, `onBaseChange`, and `onRightChange`, assemble a working-copy center while the headless default keeps VCS ancestor semantics, insert a side above or below center or remove it through center-pointed actions, reassemble after those actions or any pane edit, and retain edited or accepted three-way pane contents when only whitespace or case comparison options change.
 - Connector, block, caret, and line-number visuals MUST share the merge render model and one line grid, catalog interaction coverage MUST assert that grid through element-level measurements, column headers MUST align with editor panes, and Next/Previous MUST count and visit pending merge or unresolved-resolve hunks, mark the current hunk with a ring on the code overlay, follow caret or click into a pending hunk, show a visible hover, and scroll only when those buttons move the current hunk.
 - The catalog MUST demonstrate one-way, three-way, editable, MisMerge-style solid insert/reject arrows that use the same `--ui-diff-gutter` color and size as line numbers, syntax-highlighted Changeyard fixtures, comparison-option, and connector-band states without introducing a second runtime contract.
 
@@ -77,7 +89,7 @@ Diff contracts keep change-set listing, file comparison, and merge presentation 
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/diff`.
-- Added and removed counts MUST use distinct `--ui-diff-stat-*` colors and `formatDiffDelta` prefixes.
+- Added and removed counts MUST use distinct `--ui-diff-stat-*` colors and `formatDiffDelta` prefixes, retaining at least 4.5:1 text contrast against the default surface in light and dark modes.
 - Zero sides MUST hide unless `showZero` is set.
 - The catalog MUST demonstrate added, removed, and hidden-zero states without introducing a second runtime contract.
 
@@ -94,11 +106,11 @@ Diff contracts keep change-set listing, file comparison, and merge presentation 
 
 ## DC-DIFF-008 — Diff scroll surfaces
 
-**Requirement.** File Diff and Merge Editor MUST scroll through the public shadcn ScrollArea, fill the host height, and keep unwrapped horizontal scrollbars at the bottom of that filled surface.
+**Requirement.** File Diff and Merge Editor MUST scroll through the public shadcn ScrollArea, fill the host height, and keep unwrapped horizontal scrollbars at the bottom of that filled surface. File Diff MAY override the host scroll strategy for unified and split panes.
 
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/diff`.
 - File Diff and Merge Editor MUST mount shadcn `scroll-area` viewports instead of native overflow panes.
 - The editor MUST fill the host height, paint line-number gutters through unused space below the last line, keep those sticky gutters opaque so scrolled line text cannot show through, and keep unwrapped horizontal scrollbars at the bottom of that surface, just above any merge footer.
-- The catalog MUST demonstrate the filled ScrollArea on File Diff and Merge Editor.
+- The catalog MUST demonstrate the filled ScrollArea on File Diff and Merge Editor, with Merge Editor horizontal synchronization enabled by default and overridable through `syncHorizontalScroll`, and scrolled editable text and current-hunk overlays remaining beneath opaque gutters.

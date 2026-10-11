@@ -31,7 +31,10 @@
 
   <section>
     <h2>Inherited preference</h2>
-    <ScrollArea.Root aria-label="Inherited vertical area">
+    <ScrollArea.Root
+      aria-label="Inherited vertical area"
+      scrollStrategy="native"
+    >
       <ol>
         {#each Array.from({ length: dynamicCount }, (_, index) => index + 1) as item (item)}
           <li>Dynamic item {item}</li>

@@ -50,6 +50,7 @@
     inputId = undefined,
     inputMode = "plain",
     density = "default",
+    focusAppearance = "ring",
     showSearchIcon = true,
     showClearButton = true,
     clearSearchLabel = "Clear search",
@@ -66,10 +67,12 @@
     shortcut?: string;
     disabled?: boolean;
     inputId?: string;
-    /** `filter-query` uses CodeMirror; `plain` uses a native search input. */
-    inputMode?: "filter-query" | "plain";
+    /** `custom` uses caller extensions without the filter grammar or predicate chips. */
+    inputMode?: "filter-query" | "plain" | "custom";
     /** Compact removes bar-level spacing so the input fits dense form rows. */
     density?: "default" | "compact";
+    /** Borderless focus retains the visible editor caret without a surrounding ring. */
+    focusAppearance?: "ring" | "borderless";
     showSearchIcon?: boolean;
     showClearButton?: boolean;
     clearSearchLabel?: string;
@@ -90,6 +93,8 @@
   const placeholderCompartment = new Compartment();
   const autocompleteCompartment = new Compartment();
   const contentAttributesCompartment = new Compartment();
+  const languageCompartment = new Compartment();
+  const extensionsCompartment = new Compartment();
 
   const hasValue = $derived(value.trim().length > 0);
 
@@ -235,9 +240,21 @@
     return EditorView.contentAttributes.of({
       role: "searchbox",
       "aria-label": ariaLabel,
+      "aria-multiline": "true",
       "aria-invalid": error ? "true" : "false",
       ...(inputId ? { id: inputId } : {}),
     });
+  }
+
+  function queryLanguage(): Extension {
+    return inputMode === "filter-query"
+      ? [
+          filterQuery(),
+          syntaxHighlighting(searchFilterHighlightStyle, { fallback: true }),
+          searchFilterPredicateChips(),
+          predicateChipEditHandler.of(openPredicateChipEditor),
+        ]
+      : [];
   }
 
   function filterQueryEditor(node: HTMLDivElement, source: string) {
@@ -252,10 +269,8 @@
       state: EditorState.create({
         doc: source,
         extensions: [
-          filterQuery(),
-          syntaxHighlighting(searchFilterHighlightStyle, { fallback: true }),
-          searchFilterPredicateChips(),
-          predicateChipEditHandler.of(openPredicateChipEditor),
+          languageCompartment.of(queryLanguage()),
+          extensionsCompartment.of(editorExtensions),
           history(),
           drawSelection(),
           EditorView.lineWrapping,
@@ -290,7 +305,6 @@
               scheduleAutocomplete(update.view);
             }
           }),
-          ...editorExtensions,
         ],
       }),
       parent: node,
@@ -315,6 +329,19 @@
       },
     };
   }
+
+  $effect(() => {
+    const extensions = editorExtensions;
+    editor?.dispatch({
+      effects: extensionsCompartment.reconfigure(extensions),
+    });
+  });
+
+  $effect(() => {
+    const language = queryLanguage();
+    chipEditSession = null;
+    editor?.dispatch({ effects: languageCompartment.reconfigure(language) });
+  });
 
   $effect(() => {
     editor?.dispatch({
@@ -349,6 +376,7 @@
   class="cv-search-filter-input"
   data-ui-component="search-filter-input"
   data-density={density}
+  data-focus-appearance={focusAppearance}
   data-active={hasValue}
   data-invalid={error ? "" : undefined}
   data-input-mode={inputMode}

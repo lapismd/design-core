@@ -2,6 +2,13 @@
 
 Design Core styling is native CSS driven by semantic tokens. Themes and consumers may customize documented tokens without depending on private DOM selectors. Diff surfaces read `--ui-diff-*` defaults from `src/shared/diff/diff.tokens.css`.
 
+File Listing exposes `--ui-diff-file-listing-row-gap` (default `2px`) for
+separation between eager and virtualized rows.
+
+Panel Toggle exposes compact button/icon geometry and reversible motion through
+`--ui-panel-toggle-*` tokens imported by the shared stylesheet. Its icon inherits
+currentColor, reduced-motion preferences and Button focus semantics.
+
 ## Public surface coverage
 
 | Surface               | Public boundary | Requirement |
@@ -188,3 +195,7 @@ refuses leftover utilities after native-CSS conversion.
 6. Run `pnpm check:no-tailwind`, focused story checks, and the repository gate.
 
 Dialog recipes consume runtime container and text tokens explicitly defined in the theme so packaged consumers retain geometry without generating Tailwind utilities.
+
+Chat typography exposes `--ui-ai-chat-type-scale` (default 1) on a shared
+ancestor. It scales chat text and text line heights without scaling geometry,
+leaving browser zoom independent and retaining mobile composer minimum sizing.

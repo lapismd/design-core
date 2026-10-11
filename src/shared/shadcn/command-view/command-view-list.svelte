@@ -1,13 +1,17 @@
 <script lang="ts">
   import { Command as CommandPrimitive } from "bits-ui";
-  import { ScrollArea } from "../scroll-area/index.js";
+  import { ScrollArea, type ScrollAreaStrategy } from "../scroll-area/index.js";
 
   let {
     ref = $bindable(null),
     class: className,
     children,
+    scrollStrategy = "auto",
     ...restProps
-  }: CommandPrimitive.ListProps = $props();
+  }: CommandPrimitive.ListProps & {
+    /** Explicit host choice overrides the inherited scrolling strategy. */
+    scrollStrategy?: ScrollAreaStrategy;
+  } = $props();
 </script>
 
 <div
@@ -16,7 +20,7 @@
   data-slot="command-view-list"
   class={className}
 >
-  <ScrollArea>
+  <ScrollArea {scrollStrategy}>
     <CommandPrimitive.List
       bind:ref
       data-ui-component="command-view"

@@ -3,9 +3,11 @@
   import { expect, userEvent, waitFor } from "storybook/test";
   import {
     Basic,
+    ComparisonPreferences,
     Demo,
     Editable,
     Fill,
+    HeaderCenter,
     MatchingSides,
     MismergeQuicksort,
     OneWayEditable,
@@ -13,6 +15,7 @@
     Wrap,
   } from "./MergeEditor.example-sources.js";
   import MergeEditor from "./MergeEditor.svelte";
+  import { Button } from "../../shadcn/button/index.js";
   import MergeEditorDemo from "./MergeEditorDemo.svelte";
   import { mismergeQuicksortFixture } from "./mismerge-quicksort-fixture.js";
   import { quicksortFixture } from "./quicksort-fixture.js";
@@ -25,7 +28,7 @@
       docs: {
         description: {
           component:
-            "One-way or three-way merge blocks with host-triggered accept, delete, and resolve actions. Optional editable sides overlay a textarea on the highlight stack. Typing in any pane reassembles merge blocks.",
+            "One-way or three-way merge blocks with host-triggered accept, delete, and resolve actions. Optional editable sides overlay a textarea on the highlight stack. Typing in any pane reassembles merge blocks. Optional headerCenter host controls sit between the path and change pager, with a second centered row in narrow editors.",
         },
         source: { code: Basic, language: "tsx", type: "code" },
       },
@@ -37,7 +40,240 @@
   let oneWayResolved = $state("");
   let threeWayState = $state<MergeResolvedChange | null>(null);
   let editableResolved = $state("");
+  let headerVersion = $state(1);
+  let comparisonWhitespace = $state(false);
+  let comparisonCase = $state(false);
 </script>
+
+<Story
+  name="Comparison settings retain edited and accepted merge content"
+  tags={["visual-pending"]}
+  parameters={{
+    docs: {
+      source: { code: ComparisonPreferences, language: "tsx", type: "code" },
+    },
+  }}
+  play={async ({ canvas }) => {
+    const editor = canvas.getByRole("textbox", { name: "Edit Resolved" });
+    await userEvent.clear(editor);
+    await userEvent.type(editor, "retained Draft\n");
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Ignore whitespace" }),
+    );
+    await expect(editor).toHaveValue("retained Draft\n");
+    await userEvent.click(canvas.getByRole("button", { name: "Ignore case" }));
+    await expect(editor).toHaveValue("retained Draft\n");
+    await userEvent.click(
+      canvas.getByRole("button", {
+        name: "Accept All Incoming Changes from Left",
+      }),
+    );
+    const accepted = (editor as HTMLTextAreaElement).value;
+    await expect(accepted).toContain("Left");
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Ignore whitespace" }),
+    );
+    await userEvent.click(canvas.getByRole("button", { name: "Ignore case" }));
+    await expect(editor).toHaveValue(accepted);
+  }}
+>
+  {#snippet template()}
+    <div style="height: 20rem; width: 900px; max-width: 100%">
+      <MergeEditor
+        path="src/settings.ts"
+        left={"Left\n"}
+        base={"base\n"}
+        right={"Right\n"}
+        editable
+        editableSides={["base"]}
+        ignoreWhitespace={comparisonWhitespace}
+        ignoreCase={comparisonCase}
+      >
+        {#snippet headerActions()}
+          <Button
+            size="xs"
+            variant="outline"
+            aria-pressed={comparisonWhitespace}
+            onclick={() => (comparisonWhitespace = !comparisonWhitespace)}
+            >Ignore whitespace</Button
+          >
+          <Button
+            size="xs"
+            variant="outline"
+            aria-pressed={comparisonCase}
+            onclick={() => (comparisonCase = !comparisonCase)}
+            >Ignore case</Button
+          >
+        {/snippet}
+      </MergeEditor>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Keeps gutters above horizontally scrolled editable text"
+  tags={["visual-pending"]}
+  parameters={{
+    docs: { source: { code: Editable, language: "tsx", type: "code" } },
+  }}
+  play={async ({ canvas, canvasElement }) => {
+    const editor = canvas.getByRole("textbox", { name: "Edit Resolved" });
+    const root = editor.closest("[data-ui-component='merge-editor']")!;
+    const viewport = editor.closest(
+      "[data-ui-part='scroll-area-viewport']",
+    ) as HTMLElement;
+    viewport.scrollLeft = 160;
+    await waitFor(() => expect(viewport.scrollLeft).toBeGreaterThan(100));
+    const gutter = viewport.querySelector(".ui-diff-merge-editor__gutter")!;
+    const bounds = gutter.getBoundingClientRect();
+    const top = canvasElement.ownerDocument.elementFromPoint(
+      bounds.right - 6,
+      bounds.top + 10,
+    );
+    expect(gutter.contains(top)).toBe(true);
+    const current = root.querySelector(
+      ".ui-diff-merge-editor__component[data-current='true']",
+    )!;
+    const sideViewport = current.closest(
+      "[data-ui-part='scroll-area-viewport']",
+    ) as HTMLElement;
+    sideViewport.scrollLeft = 160;
+    await waitFor(() => expect(sideViewport.scrollLeft).toBeGreaterThan(100));
+    const sideGutter = sideViewport.querySelector(
+      ".ui-diff-merge-editor__gutter",
+    )!;
+    const side = sideGutter.getBoundingClientRect();
+    expect(
+      sideGutter.contains(
+        canvasElement.ownerDocument.elementFromPoint(
+          side.right - 6,
+          side.top + 10,
+        ),
+      ),
+    ).toBe(true);
+  }}
+>
+  {#snippet template()}
+    <div style="height: 20rem; width: 720px; max-width: 100%">
+      <MergeEditor
+        path="src/gutters.ts"
+        left={"left " + "alpha ".repeat(80)}
+        base={"base " + "beta ".repeat(80)}
+        right={"right " + "gamma ".repeat(80)}
+        editable
+        editableSides={["base"]}
+      />
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Synchronizes horizontal scrolling by default"
+  tags={["visual-pending"]}
+  parameters={{
+    docs: { source: { code: Fill, language: "tsx", type: "code" } },
+  }}
+  play={async ({ canvas }) => {
+    const root = canvas
+      .getByLabelText("Left")
+      .closest("[data-ui-component='merge-editor']")!;
+    const viewports = [
+      ...root.querySelectorAll<HTMLElement>(
+        "[data-ui-part='scroll-area-viewport']",
+      ),
+    ];
+    viewports[0].scrollLeft = 100;
+    await waitFor(() => {
+      expect(viewports[0].scrollLeft).toBeGreaterThan(50);
+      for (const viewport of viewports.slice(1))
+        expect(viewport.scrollLeft).toBe(viewports[0].scrollLeft);
+    });
+  }}
+>
+  {#snippet template()}
+    <div style="height: 20rem; width: 720px; max-width: 100%">
+      <MergeEditor
+        mode="one-way"
+        path="src/scroll.ts"
+        left={"alpha ".repeat(80)}
+        right={"beta ".repeat(80)}
+      />
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Centers host controls between the path and change pager"
+  parameters={{
+    docs: { source: { code: HeaderCenter, language: "tsx", type: "code" } },
+  }}
+  tags={["visual-pending"]}
+  play={async ({ canvas, canvasElement }) => {
+    const control = canvas.getByRole("button", { name: /Version/ });
+    const toolbar = control.closest(".ui-diff-merge-editor__toolbar")!;
+    const host = toolbar.parentElement!.parentElement as HTMLElement;
+    const title = toolbar.querySelector(".ui-diff-merge-editor__title")!;
+    const pager = toolbar.querySelector(".ui-diff-merge-editor__nav")!;
+    for (const width of [720, 480, 320]) {
+      host.style.width = `${width}px`;
+      await waitFor(() => {
+        const bar = toolbar.getBoundingClientRect();
+        const button = control.getBoundingClientRect();
+        const path = title.getBoundingClientRect();
+        const nav = pager.getBoundingClientRect();
+        expect(
+          Math.abs(button.left + button.width / 2 - (bar.left + bar.width / 2)),
+        ).toBeLessThanOrEqual(1);
+        if (width >= 480) {
+          expect(path.right).toBeLessThanOrEqual(button.left);
+          expect(button.right).toBeLessThanOrEqual(nav.left);
+          expect(
+            Math.abs(
+              button.top + button.height / 2 - (nav.top + nav.height / 2),
+            ),
+          ).toBeLessThanOrEqual(1);
+        } else {
+          expect(button.top).toBeGreaterThanOrEqual(nav.bottom);
+        }
+        expect(toolbar.scrollWidth).toBeLessThanOrEqual(
+          toolbar.clientWidth + 1,
+        );
+      });
+    }
+    await userEvent.click(control);
+    await expect(control).toHaveTextContent("Version 2");
+    await expect(canvasElement.ownerDocument.activeElement).toBe(control);
+    await expect(
+      canvas
+        .getByRole("button", { name: "Header actions" })
+        .closest(".ui-diff-merge-editor__nav"),
+    ).toBe(pager);
+    await userEvent.click(canvas.getByRole("button", { name: "Next change" }));
+    await expect(pager).toHaveTextContent("2 / 2");
+  }}
+>
+  {#snippet template()}
+    <div style="width: 720px; max-width: 100%">
+      <MergeEditor
+        mode="one-way"
+        path="src/very/long/path/that/must/truncate/without/moving/the/picker.ts"
+        left={"first\nkeep\nlast\n"}
+        right={"changed\nkeep\ndifferent\n"}
+      >
+        {#snippet headerCenter()}
+          <Button size="xs" variant="outline" onclick={() => headerVersion++}
+            >Version {headerVersion}</Button
+          >
+        {/snippet}
+        {#snippet headerActions()}
+          <Button size="icon-xs" variant="ghost" aria-label="Header actions"
+            >⋮</Button
+          >
+        {/snippet}
+      </MergeEditor>
+    </div>
+  {/snippet}
+</Story>
 
 <Story
   name="Merges a one-way change from the left"

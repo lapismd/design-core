@@ -1,5 +1,7 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
+  import { inheritedTypographyExample } from "./Message.example-sources.js";
+  import { expect } from "storybook/test";
   import Message from "./Message.svelte";
   import MessageBubble from "../message-bubble/MessageBubble.svelte";
   import MessageList from "../message-list/MessageList.svelte";
@@ -221,6 +223,45 @@
         </MessageBubble>
       </Message>
     </MessageList>
+  {/snippet}
+</Story>
+
+<Story
+  name="Inherited typography"
+  tags={["visual-pending"]}
+  parameters={{
+    docs: {
+      source: {
+        code: inheritedTypographyExample,
+        language: "tsx",
+        type: "code",
+      },
+    },
+  }}
+  play={async ({ canvasElement }) => {
+    const bubbles = canvasElement.querySelectorAll(
+      '[data-ui-component="ai-chat-message-bubble"]',
+    );
+    const normal = getComputedStyle(bubbles[0]!);
+    const larger = getComputedStyle(bubbles[1]!);
+    await expect(
+      parseFloat(larger.fontSize) / parseFloat(normal.fontSize),
+    ).toBeCloseTo(15 / 14, 3);
+    await expect(larger.padding).toBe(normal.padding);
+    await expect(larger.borderRadius).toBe(normal.borderRadius);
+  }}
+>
+  {#snippet template()}
+    <div>
+      <Message sender="assistant"
+        ><MessageBubble>Default typography</MessageBubble></Message
+      >
+      <div style="--ui-ai-chat-type-scale: 1.07142857">
+        <Message sender="assistant"
+          ><MessageBubble>Larger typography</MessageBubble></Message
+        >
+      </div>
+    </div>
   {/snippet}
 </Story>
 

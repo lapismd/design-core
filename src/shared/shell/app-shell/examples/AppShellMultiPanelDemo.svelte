@@ -4,6 +4,7 @@
     AppShellController,
     AppShellDisplayMode,
     AppShellSidebarController,
+    AppShellSurfaceLayerMobilePlacement,
   } from "../app-shell-controller.svelte.js";
   import { AppShell } from "../index.js";
   import "./AppShellExamples.css";
@@ -15,6 +16,9 @@
     displayMode = "desktop",
     frameClass,
     direction = "ltr",
+    surfaceLeadingAllowance = false,
+    surfaceMobilePlacement = "active-lane",
+    surfaceOpen = $bindable(false),
   }: {
     controller: AppShellController;
     overview: AppShellSidebarController;
@@ -22,9 +26,11 @@
     displayMode?: AppShellDisplayMode;
     frameClass?: string;
     direction?: "ltr" | "rtl";
+    surfaceLeadingAllowance?: boolean;
+    surfaceMobilePlacement?: AppShellSurfaceLayerMobilePlacement;
+    surfaceOpen?: boolean;
   } = $props();
 
-  let surfaceOpen = $state(false);
   let surfaceTrigger = $state<HTMLButtonElement | null>(null);
 </script>
 
@@ -146,8 +152,12 @@
       coverPanelIds={["right"]}
       suspendPanelIds={["overview"]}
       returnFocus={surfaceTrigger}
+      mobilePlacement={surfaceMobilePlacement}
       dismissLabel="Close reviews"
       onDismiss={() => (surfaceOpen = false)}
+      style={surfaceLeadingAllowance
+        ? "--ui-shell-surface-layer-main-start-allowance: 4rem"
+        : undefined}
     >
       <AppShell.SurfaceLayer.Header>
         <strong>Release reviews</strong>
@@ -171,16 +181,18 @@
         </Button>
       </AppShell.SurfaceLayer.Header>
       <AppShell.SurfaceLayer.Body>
-        <div class="ui-shell-story-multi-panel__reviews">
-          <article>
-            <strong>History 0.1.3</strong>
-            <span>Pending review</span>
-          </article>
-          <article>
-            <strong>Markdown 0.1.5</strong>
-            <span>Approved</span>
-          </article>
-        </div>
+        <AppShell.Body element="section" label="Release review list">
+          <div class="ui-shell-story-multi-panel__reviews">
+            <article>
+              <strong>History 0.1.3</strong>
+              <span>Pending review</span>
+            </article>
+            <article>
+              <strong>Markdown 0.1.5</strong>
+              <span>Approved</span>
+            </article>
+          </div>
+        </AppShell.Body>
       </AppShell.SurfaceLayer.Body>
     </AppShell.SurfaceLayer>
   </AppShell.Root>

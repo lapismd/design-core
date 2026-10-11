@@ -5,6 +5,11 @@ export interface FileTreeNode {
   children: FileTreeNode[];
 }
 
+export interface FileTreeEntry {
+  path: string;
+  type: "file" | "directory";
+}
+
 export function getFilePathName(path: string): string {
   return path.split("/").filter(Boolean).at(-1) ?? path;
 }
@@ -14,10 +19,16 @@ export function getFileDirectory(path: string): string {
 }
 
 export function buildFileTree(paths: string[]): FileTreeNode[] {
+  return buildFileEntryTree(paths.map((path) => ({ path, type: "file" })));
+}
+
+export function buildFileEntryTree(
+  entries: readonly FileTreeEntry[],
+): FileTreeNode[] {
   const root: FileTreeNode[] = [];
 
-  for (const rawPath of paths) {
-    const parts = rawPath.split("/").filter(Boolean);
+  for (const entry of entries) {
+    const parts = entry.path.split("/").filter(Boolean);
     let currentLevel = root;
     let currentPath = "";
 
@@ -25,15 +36,18 @@ export function buildFileTree(paths: string[]): FileTreeNode[] {
       currentPath = currentPath ? `${currentPath}/${part}` : part;
       const isLeaf = index === parts.length - 1;
 
+      const type = isLeaf ? entry.type : "directory";
       let node = currentLevel.find((candidate) => candidate.name === part);
       if (!node) {
         node = {
           name: part,
           path: currentPath,
-          type: isLeaf ? "file" : "directory",
+          type,
           children: [],
         };
         currentLevel.push(node);
+      } else if (type === "directory" || node.children.length > 0) {
+        node.type = "directory";
       }
 
       if (!isLeaf) {
@@ -57,6 +71,14 @@ export function buildFileTree(paths: string[]): FileTreeNode[] {
 }
 
 export function buildPackageFileTree(paths: string[]): FileTreeNode[] {
+  return buildPackageFileEntryTree(
+    paths.map((path) => ({ path, type: "file" })),
+  );
+}
+
+export function buildPackageFileEntryTree(
+  entries: readonly FileTreeEntry[],
+): FileTreeNode[] {
   function compactNode(node: FileTreeNode): FileTreeNode {
     let current: FileTreeNode = {
       ...node,
@@ -79,5 +101,5 @@ export function buildPackageFileTree(paths: string[]): FileTreeNode[] {
     return current;
   }
 
-  return buildFileTree(paths).map(compactNode);
+  return buildFileEntryTree(entries).map(compactNode);
 }

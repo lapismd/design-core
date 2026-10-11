@@ -220,7 +220,7 @@ The canonical specification lives in `spec/src`. Use it for package behavior,
 architecture, style rules, and verification evidence:
 
 ```sh
-pnpm spec:search -- "tokens"
+pnpm spec:search "tokens"
 pnpm spec:check
 ```
 

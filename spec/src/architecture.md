@@ -1,6 +1,17 @@
 # Architecture
 
+Packed validation and registry releases use prepared modules and declarations
+through the same public import names. Components remain consumer compiled;
+TypeScript rune modules become `.svelte.js` before dependency prebundling. Local
+development exports remain source based. Release archives retain source alongside
+prepared output, while the local archive profile does not publish releases.
+
 Design Core is a shared presentation and controller library. Consumer applications retain domain policy, persistence, transport, routing, and environment adapters. Component ownership and public-layer classification are maintained in the canonical [`component inventory`](component-inventory.md).
+
+Release preparation uses the published Spec Validator 0.1.4 range and Changesets 3. Optional QMD search remains available when installed by the developer; normal
+validation does not install its model/native dependency graph. The supported Node
+range follows Changesets 3. Declared renderer and tooling overrides retain patched
+workspace graphs, while packed consumers audit their own dependency resolution.
 
 ## Public surface coverage
 
@@ -40,7 +51,7 @@ Design Core is a shared presentation and controller library. Consumer applicatio
 
 ### Acceptance details
 
-- Direct compatibility exports may delegate to family barrels but must not fork behavior, and source exports plus their declared dependencies must remain type-compatible with strict consumers, including exact optional-property and unchecked-index semantics across composed Shadcn, AI, Filter, and Shell surfaces.
+- Direct compatibility exports may delegate to family barrels but must not fork behavior, and source exports plus their declared dependencies must remain type-compatible with strict consumers, including exact optional-property and unchecked-index semantics across composed Shadcn, AI, Filter, Shell, and Forms surfaces.
 - Focused public subpaths MAY isolate one reusable family or a Design Core-owned Storybook reference composition, provided consumers do not load unrelated barrel dependencies and reference components do not require story-local CSS.
 - Existing AI snippet composition, manual history loading and streaming scroll defaults MUST remain available while virtualization and anchored history opt in through configuration, and a breaking removal or semantic change requires a new or revised canonical requirement.
 - Root manifest changes must update the owning architecture and package chapters in the same protected diff.

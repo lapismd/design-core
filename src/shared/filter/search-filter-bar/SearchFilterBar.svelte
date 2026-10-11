@@ -17,6 +17,7 @@
     inputId = undefined,
     /** `filter-query` uses CodeMirror + filter syntax; `plain` is a normal search input. */
     inputMode = "plain",
+    focusAppearance = "ring",
     clearSearchLabel = "Clear search",
     clearAllLabel = "Clear all",
     expandFiltersLabel = "Expand filter options",
@@ -43,7 +44,8 @@
     shortcut?: string;
     disabled?: boolean;
     inputId?: string;
-    inputMode?: "filter-query" | "plain";
+    inputMode?: "filter-query" | "plain" | "custom";
+    focusAppearance?: "ring" | "borderless";
     clearSearchLabel?: string;
     clearAllLabel?: string;
     expandFiltersLabel?: string;
@@ -114,6 +116,7 @@
       {disabled}
       {...inputId === undefined ? {} : { inputId }}
       {inputMode}
+      {focusAppearance}
       {clearSearchLabel}
       {error}
       {editorExtensions}

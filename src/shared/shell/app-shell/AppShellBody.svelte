@@ -13,12 +13,19 @@
     ref = $bindable(null),
     label,
     layout = "scroll",
+    element = "main",
     class: className,
     children,
     ...restProps
   }: WithElementRef<HTMLAttributes<HTMLElement>> & {
     /** Optional accessible name when a page contains multiple main landmarks. */
     label?: string;
+    /**
+     * Semantic element used for the body landmark. Keep the default `main` for
+     * primary pages and use `section`/`div` when composing an embedded shell
+     * body inside another page landmark.
+     */
+    element?: "main" | "section" | "div";
     /**
      * `scroll` gives the whole body one Scroll Area. `regions` lets nested
      * `Body.Sidebar` and `Body.Content` parts scroll independently.
@@ -53,7 +60,8 @@
   });
 </script>
 
-<main
+<svelte:element
+  this={element}
   bind:this={ref}
   {...restProps}
   class={["ui-minimal-app-shell__body", className].filter(Boolean).join(" ")}
@@ -69,4 +77,4 @@
       {@render children?.()}
     </ScrollArea>
   {/if}
-</main>
+</svelte:element>

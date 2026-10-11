@@ -2,6 +2,8 @@
   import { untrack, type Snippet } from "svelte";
   import type { HTMLAttributes } from "svelte/elements";
   import { useAppShell } from "./app-shell-context.svelte.js";
+  import { appShellTeleport } from "./app-shell-teleport.js";
+  import type { AppShellSurfaceLayerMobilePlacement } from "./app-shell-controller.svelte.js";
 
   let {
     ref = $bindable(null),
@@ -10,6 +12,7 @@
     coverPanelIds = [],
     suspendPanelIds = [],
     returnFocus,
+    mobilePlacement = "active-lane",
     dismissLabel = `Close ${label}`,
     dismissOnEscape = true,
     onDismiss,
@@ -28,6 +31,8 @@
     suspendPanelIds?: readonly string[];
     /** Focus target restored after dismissal. Defaults to the opener. */
     returnFocus?: HTMLElement | null;
+    /** Mobile host used while the shell is in mobile display mode. */
+    mobilePlacement?: AppShellSurfaceLayerMobilePlacement;
     /** Accessible name for the dismissible scrim. */
     dismissLabel?: string;
     /** Whether unhandled Escape dismisses the layer. */
@@ -44,6 +49,14 @@
   let inlineEnd = $state(0);
   let blockStart = $state(0);
   let blockEnd = $state(0);
+  const mobileHost = $derived.by(() => {
+    if (controller.mobile.resolvedMode !== "mobile") return null;
+    if (mobilePlacement === "root") return controller.mobile.getRootElement();
+    const stage = controller.mobile.stage;
+    return stage === "main"
+      ? controller.mobile.getMainHost()
+      : controller.mobile.getPanelHost(stage);
+  });
 
   $effect(() => {
     if (!open || typeof document === "undefined") return;
@@ -91,6 +104,16 @@
     const root = controller.mobile.getRootElement();
     const main = controller.mobile.getMainElement();
     if (!root || !main) return;
+    if (
+      controller.mobile.resolvedMode === "mobile" &&
+      (mobilePlacement === "root" || controller.mobile.stage !== "main")
+    ) {
+      inlineStart = 0;
+      inlineEnd = 0;
+      blockStart = 0;
+      blockEnd = 0;
+      return;
+    }
     const coveredElements = coverPanelIds.flatMap((id) => {
       const element = controller.getPanelElement(id);
       return element ? [element] : [];
@@ -139,12 +162,19 @@
 {#if open}
   <div
     bind:this={ref}
+    use:appShellTeleport={{
+      enabled: controller.mobile.resolvedMode === "mobile",
+      target: mobileHost,
+    }}
     {...restProps}
     class={["ui-minimal-app-shell__surface-layer", className]
       .filter(Boolean)
       .join(" ")}
     data-ui-component="app-shell"
     data-ui-part="surface-layer"
+    data-mobile-placement={controller.mobile.resolvedMode === "mobile"
+      ? mobilePlacement
+      : undefined}
     style:inset-inline-start={`${inlineStart}px`}
     style:inset-inline-end={`${inlineEnd}px`}
     style:inset-block-start={`${blockStart}px`}

@@ -483,8 +483,10 @@ be open per root; dialogs, menus, sheets, and general overlays continue to use
 their existing primitives.
 
 Use `--ui-shell-surface-layer-main-start-allowance` to reveal a small leading
-portion of main and `--ui-shell-surface-layer-inline-end-inset` for the trailing
-gutter. Mobile forces the leading allowance to zero.
+portion of the covered surface and `--ui-shell-surface-layer-inline-end-inset`
+for the trailing gutter. Mobile preserves the configured leading allowance and mounts the layer in
+the active lane host so constrained structural layers can keep a visible strip
+of the underlying main or side lane.
 
 ## Ownership boundary
 

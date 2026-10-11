@@ -4,6 +4,7 @@ export const columnCanvasTokenNames = {
   borderColor: "--ui-column-canvas-border-color",
   radius: "--ui-column-canvas-radius",
   headerHeight: "--ui-column-canvas-header-height",
+  headerPaddingInlineEnd: "--ui-column-canvas-header-padding-inline-end",
   gap: "--ui-column-canvas-gap",
   collapsedWidth: "--ui-column-canvas-collapsed-width",
   compactPeekWidth: "--ui-column-canvas-compact-peek-width",

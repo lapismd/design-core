@@ -153,6 +153,10 @@
     multiPanelMobileController.createSidebar("activity", "right", {
       width: 220,
     });
+  let multiPanelMobileSurfaceOpen = $state(false);
+  let multiPanelMobileSurfacePlacement = $state<"active-lane" | "root">(
+    "active-lane",
+  );
   let nestedSelectedProject = $state("");
   let selectedMarkdownFile = $state("");
   let bodySidebarSide = $state<"left" | "right" | undefined>();
@@ -1184,10 +1188,11 @@
 <Story
   name="Automatic tablet composition"
   tags={["visual-pending"]}
-  play={async ({ canvas }) => {
-    const root = canvas.getByRole("group", {
-      name: "Mobile application shell",
-    }).parentElement;
+  play={async ({ canvas, canvasElement }) => {
+    const stage = canvasElement.querySelector<HTMLElement>(
+      '[data-ui-part="mobile-stage"]',
+    )!;
+    const root = stage.parentElement;
     const frame = root!.closest<HTMLElement>(".ui-shell-story-frame")!;
     await waitFor(() =>
       expect(root).toHaveAttribute("data-display-mode", "mobile"),
@@ -1285,11 +1290,11 @@
       },
     },
   }}
-  play={async ({ canvas }) => {
-    const mobileGroup = canvas.getByRole("group", {
-      name: "Mobile application shell",
-    });
-    const root = mobileGroup.parentElement!;
+  play={async ({ canvas, canvasElement }) => {
+    const mobileStage = canvasElement.querySelector<HTMLElement>(
+      '[data-ui-part="mobile-stage"]',
+    )!;
+    const root = mobileStage.parentElement!;
     const mainLane = root.querySelector('[data-ui-part="mobile-main-lane"]');
     const leftLane = root.querySelector(
       '[data-ui-part="mobile-lane"][data-side="left"]',
@@ -1299,6 +1304,8 @@
     );
 
     await expect(root).toHaveAttribute("data-display-mode", "mobile");
+    await expect(mobileStage).toHaveAttribute("role", "presentation");
+    await expect(mobileStage).not.toHaveAttribute("aria-label");
     await expect(root).toHaveAttribute("data-mobile-stage", "main");
     await expect(mainLane).not.toHaveAttribute("inert");
     await expect(leftLane).toHaveAttribute("inert");
@@ -1367,11 +1374,11 @@
     await expect(aiSidebar).toHaveAttribute("data-mobile-panel-active", "true");
     await expect(aiSidebar).toHaveFocus();
     await waitFor(() => {
-      const bounds = mobileGroup.getBoundingClientRect();
+      const bounds = mobileStage.getBoundingClientRect();
       const panel = aiSidebar.getBoundingClientRect();
       expect(panel.left).toBeGreaterThanOrEqual(bounds.left - 1);
       expect(panel.right).toBeLessThanOrEqual(bounds.right + 1);
-      expect(mobileGroup.scrollLeft).toBe(0);
+      expect(mobileStage.scrollLeft).toBe(0);
     });
 
     const rightSelector = canvas.getByRole("button", {
@@ -1392,7 +1399,7 @@
     await userEvent.keyboard("{Escape}");
     await expect(root).toHaveAttribute("data-mobile-stage", "main");
     await expect(rightToggle).toHaveFocus();
-    await expect(mobileGroup.scrollLeft).toBe(0);
+    await expect(mobileStage.scrollLeft).toBe(0);
 
     await expect(completeMobileProjectSidebarController.state).toBe("closed");
     await expect(completeMobileController.left.state).toBe("collapsed");
@@ -1424,10 +1431,10 @@
       },
     },
   }}
-  play={async ({ canvas }) => {
-    const stage = canvas.getByRole("group", {
-      name: "Mobile application shell",
-    });
+  play={async ({ canvas, canvasElement }) => {
+    const stage = canvasElement.querySelector<HTMLElement>(
+      '[data-ui-part="mobile-stage"]',
+    )!;
     const toggle = canvas.getByRole("button", { name: "Open right sidebar" });
     await userEvent.click(toggle);
     const panel = canvas.getByLabelText("AI sidebar");
@@ -1839,7 +1846,134 @@
   {/snippet}
 </Story>
 
-<Story name="Composable same-side panels mobile" tags={["visual-pending"]}>
+<Story
+  name="Composable same-side panels mobile"
+  tags={["visual-pending"]}
+  play={async ({ canvas, canvasElement }) => {
+    const root = canvasElement.querySelector<HTMLElement>("[data-shell-root]")!;
+    await waitFor(() => {
+      expect(root).toHaveAttribute("data-display-mode", "mobile");
+      expect(root).toHaveAttribute("data-mobile-stage", "main");
+    });
+
+    multiPanelMobileController.mobile.show("right", "activity");
+    await waitFor(() =>
+      expect(root).toHaveAttribute("data-mobile-stage", "right"),
+    );
+    multiPanelMobileController.mobile.showMain(false);
+    await waitFor(() =>
+      expect(root).toHaveAttribute("data-mobile-stage", "main"),
+    );
+
+    multiPanelMobileSurfaceOpen = true;
+    multiPanelMobileController.mobile.showMain(false);
+    await waitFor(() =>
+      expect(root).toHaveAttribute("data-mobile-stage", "main"),
+    );
+    const surface = await canvas.findByRole("region", {
+      name: "Release reviews",
+    });
+    const surfaceLayer = surface.closest<HTMLElement>(
+      '[data-ui-part="surface-layer"]',
+    );
+    await expect(surfaceLayer).toBeInTheDocument();
+    await expect(surfaceLayer?.parentElement).toHaveAttribute(
+      "data-ui-part",
+      "mobile-main-host",
+    );
+    await waitFor(() => {
+      const layerRect = surfaceLayer!.getBoundingClientRect();
+      const surfaceRect = surface.getBoundingClientRect();
+      expect(
+        Math.abs(surfaceRect.left - layerRect.left - 64),
+        `mobile surface allowance ${surfaceRect.left - layerRect.left}`,
+      ).toBeLessThanOrEqual(1);
+    });
+    await expect(surface.closest("[inert]")).toBeNull();
+    const embeddedBody = await canvas.findByRole("region", {
+      name: "Release review list",
+    });
+    await expect(embeddedBody.tagName).toBe("SECTION");
+    await expect(embeddedBody.closest("main main")).toBeNull();
+    await expect(root.querySelector('[data-ui-part="main"]')).toHaveAttribute(
+      "inert",
+    );
+
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Close release reviews" }),
+    );
+    await waitFor(() =>
+      expect(
+        canvas.queryByRole("region", { name: "Release reviews" }),
+      ).not.toBeInTheDocument(),
+    );
+
+    multiPanelMobileController.mobile.show("right", "activity");
+    await waitFor(() =>
+      expect(root).toHaveAttribute("data-mobile-stage", "right"),
+    );
+    multiPanelMobileSurfaceOpen = true;
+    const sideSurface = await canvas.findByRole("region", {
+      name: "Release reviews",
+    });
+    const sideSurfaceLayer = sideSurface.closest<HTMLElement>(
+      '[data-ui-part="surface-layer"]',
+    );
+    await expect(sideSurfaceLayer?.parentElement).toHaveAttribute(
+      "data-ui-part",
+      "mobile-panel-host",
+    );
+    await waitFor(() => {
+      const layerRect = sideSurfaceLayer!.getBoundingClientRect();
+      const surfaceRect = sideSurface.getBoundingClientRect();
+      expect(
+        Math.abs(surfaceRect.left - layerRect.left - 64),
+        `mobile side surface allowance ${surfaceRect.left - layerRect.left}`,
+      ).toBeLessThanOrEqual(1);
+    });
+    await expect(sideSurface.closest("[inert]")).toBeNull();
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Close release reviews" }),
+    );
+
+    multiPanelMobileSurfacePlacement = "root";
+    multiPanelMobileController.mobile.show("right", "activity");
+    await waitFor(() =>
+      expect(root).toHaveAttribute("data-mobile-stage", "right"),
+    );
+    multiPanelMobileSurfaceOpen = true;
+    const rootSurface = await canvas.findByRole("region", {
+      name: "Release reviews",
+    });
+    const rootSurfaceLayer = rootSurface.closest<HTMLElement>(
+      '[data-ui-part="surface-layer"]',
+    );
+    await expect(rootSurfaceLayer).toHaveAttribute(
+      "data-mobile-placement",
+      "root",
+    );
+    await expect(rootSurfaceLayer?.parentElement).toHaveAttribute(
+      "data-ui-part",
+      "root",
+    );
+    await waitFor(() => {
+      const rootRect = root.getBoundingClientRect();
+      const layerRect = rootSurfaceLayer!.getBoundingClientRect();
+      const surfaceRect = rootSurface.getBoundingClientRect();
+      expect(Math.abs(layerRect.left - rootRect.left)).toBeLessThanOrEqual(1);
+      expect(Math.abs(layerRect.right - rootRect.right)).toBeLessThanOrEqual(1);
+      expect(
+        Math.abs(surfaceRect.left - layerRect.left - 64),
+        `mobile root surface allowance ${surfaceRect.left - layerRect.left}`,
+      ).toBeLessThanOrEqual(1);
+    });
+    await expect(rootSurface.closest("[inert]")).toBeNull();
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Close release reviews" }),
+    );
+    multiPanelMobileSurfacePlacement = "active-lane";
+  }}
+>
   {#snippet template()}
     <AppShellMultiPanelDemo
       controller={multiPanelMobileController}
@@ -1847,6 +1981,9 @@
       activity={multiPanelMobileActivityController}
       displayMode="mobile"
       frameClass="ui-shell-story-frame-mobile"
+      surfaceLeadingAllowance
+      surfaceMobilePlacement={multiPanelMobileSurfacePlacement}
+      bind:surfaceOpen={multiPanelMobileSurfaceOpen}
     />
   {/snippet}
 </Story>

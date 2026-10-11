@@ -1,5 +1,11 @@
 # Tooling
 
+`package:local` stages the normal source inventory, runs `svelte-package` with
+declarations, verifies every TypeScript and Svelte declaration exists, and writes an
+ignored `-built.tgz` artifact with its SHA-256. Failed preparation cannot select
+an incomplete archive. Consumer types and cold prebundling remain separate
+checks; the command performs no publication or service installation.
+
 Repository tools keep source generation, discovery, documentation, validation, Changesets, and package-pack evidence reproducible for humans and agents. The catalog CLI lists Diff families, including File Change Stats and Merge Editor, beside shadcn, forms, filter, and AI. Agent tooling guidance keeps external LapisMD repositories outside the workspace and resolves published dependencies through npm semver ranges while preserving portable manifests.
 
 ## Public surface coverage
@@ -36,6 +42,18 @@ The AI catalog derives stable public chat components, including shared tool-call
 
 ## DC-TOOL-003 — Validation commands
 
+Local package checks validate the current source archive independently of
+registry release selection, including when its manifest version is published.
+Release and local archives share rune-module preparation; only release archives
+retain the original source and enter manifest-bound publication.
+The staged compiler configuration keeps declaration output inside the archive
+fixture. `packages:pack` checks every exported runtime and type target, then
+starts a fresh Vite/Svelte consumer and exercises Button and reactive CodeEditor
+without consumer aliases or dependency overrides. The release artifact job
+installs Chromium before this check.
+The clean packed production graph is audited independently of workspace
+overrides; failure evidence is retained under `.release/` and blocks the gate.
+
 **Requirement.** The Validation commands family MUST provide focused formatting, type, unit, Storybook, source-style, browser, build, and visual-comparison commands, including narrowly filtered engine projects when a compatibility boundary requires real browser acceptance.
 
 ### Acceptance details
@@ -43,7 +61,7 @@ The AI catalog derives stable public chat components, including shared tool-call
 - Machine-readable output must be stable enough for repository automation.
 - Tooling failures must report an actionable source path or command.
 - Specification commands must retain separate validation, build, spec-first, index, search, and serve entry points through the configured shared CLI.
-- Release-safe gates must use bootstrap-safe validation, bounded post-publication npm visibility waits, cold Storybook prebundling, serialized lifecycle-sensitive browser checks, bounded Storybook and Workspace cold-run windows, and tarball rejection for local cache artifacts such as source-tree `Library/Caches`, `__pycache__`, or Python bytecode files.
+- Release-safe aggregate gates must use bootstrap-safe validation and bounded post-publication npm visibility waits; cold Storybook tests must prebundle parser dependencies, lifecycle-sensitive checks must run serially, cold runs must have bounded windows, formatting must exclude `.local/` artifacts while preserving evidence, and packaging must reject local cache artifacts.
 
 ## DC-TOOL-004 — Offline documentation
 

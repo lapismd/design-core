@@ -53,7 +53,30 @@ export {
   AppShellWorkspace,
 };
 
-export const AppShell = {
+export const AppShell: {
+  readonly Root: typeof AppShellRoot;
+  readonly BottomPanel: typeof AppShellBottomPanel;
+  readonly DesktopLayout: typeof AppShellDesktopLayout;
+  readonly About: typeof AppShellAboutDialog;
+  readonly CommandPalette: typeof AppShellCommandPalette;
+  readonly CorePluginsSettings: typeof AppShellCorePluginsSettings;
+  readonly Ribbon: typeof AppShellRibbon;
+  readonly HotkeySettings: typeof AppShellHotkeySettingsSurface;
+  readonly LeftSidebar: typeof AppShellLeftSidebar;
+  readonly Main: typeof AppShellMain;
+  readonly Notices: typeof AppShellNotices;
+  readonly OverlayLayer: typeof AppShellOverlayLayer;
+  readonly PluginLayer: typeof AppShellPluginLayer;
+  readonly Sidebar: typeof AppShellSidebar;
+  readonly Tabs: typeof AppShellTabs;
+  readonly Workspace: typeof AppShellWorkspace;
+  readonly RightSidebar: typeof AppShellRightSidebar;
+  readonly FloatingLayer: typeof AppShellFloatingLayer;
+  readonly StatusBar: typeof AppShellStatusBar;
+  readonly Settings: typeof AppShellSettings;
+  readonly SettingsDialog: typeof AppShellSettingsDialog;
+  readonly Surface: typeof AppShellSurface;
+} = {
   Root: AppShellRoot,
   BottomPanel: AppShellBottomPanel,
   DesktopLayout: AppShellDesktopLayout,

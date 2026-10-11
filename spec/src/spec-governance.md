@@ -2,6 +2,14 @@
 
 Specification governance keeps requirements discoverable, mapped, validated, and changed before or with protected implementation, including same-change verification evidence for expanded public component families.
 
+Controlled notification presentation shares DC-WS-037 with the existing plugin.
+Its secondary catalog scenarios register in the public surface map; controlled
+and workspace consumers retain the same severity and dismissal contract.
+
+Panel Toggle registers as a controlled project-authored Layout family under
+DC-SHA-053. Column Canvas composes its default icon under DC-SHA-036 while
+retaining consumer overrides. Both surfaces keep separate verification evidence.
+
 ## Public surface coverage
 
 | Surface                   | Public boundary | Requirement |
@@ -94,6 +102,12 @@ Specification governance keeps requirements discoverable, mapped, validated, and
 ## DC-GOV-006 — QMD discovery
 
 **Requirement.** The QMD discovery family MUST refresh lexical search before discovery, support opt-in semantic search, report paths and line numbers, and provide actionable fallback diagnostics.
+
+QMD installation is opt-in. The published validator's optional peer contract
+keeps ordinary validation free of its native/model dependencies; unavailable QMD
+continues to report the documented `rg` fallback.
+Published CLI script arguments are passed directly through pnpm without an extra
+`--` separator, which the current validator rejects as an unknown argument.
 
 ### Acceptance details
 

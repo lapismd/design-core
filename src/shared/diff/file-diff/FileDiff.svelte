@@ -32,6 +32,8 @@
 
   let {
     path,
+    label,
+    scrollStrategy = "auto",
     oldText = null,
     newText = null,
     patch,
@@ -43,6 +45,10 @@
     lineAnnotation,
   }: {
     path: string;
+    /** Optional context that distinguishes split panes in multi-diff layouts. */
+    label?: string;
+    /** Overrides the host default for both unified and split pane scrollbars. */
+    scrollStrategy?: ScrollArea.ScrollAreaStrategy;
     oldText?: string | null;
     newText?: string | null;
     /** Unified patch used when old/new texts are omitted. */
@@ -347,11 +353,10 @@
           class="ui-diff-file-diff__pane"
           data-ui-part="file-diff-pane"
           data-side={paneSide}
-          aria-label={paneSide === "left"
-            ? "Previous revision"
-            : "Later revision"}
+          aria-label={`${label ? `${label} · ` : ""}${paneSide === "left" ? "Previous revision" : "Later revision"}`}
         >
           <ScrollArea.Root
+            {scrollStrategy}
             class="ui-diff-file-diff__pane-scroll"
             type="auto"
             orientation={wrap ? "vertical" : "both"}
@@ -371,6 +376,7 @@
     </div>
   {:else}
     <ScrollArea.Root
+      {scrollStrategy}
       class="ui-diff-file-diff__scroll"
       type="auto"
       orientation={wrap ? "vertical" : "both"}

@@ -293,7 +293,7 @@ export class FormController<TValues, TContext = undefined> {
     const target = index + direction;
     if (index < 0 || target < 0 || index >= ids.length || target >= ids.length)
       return;
-    [ids[index], ids[target]] = [ids[target], ids[index]];
+    [ids[index], ids[target]] = [ids[target]!, ids[index]!];
     this.#itemIds.set(path, ids);
     this.#moveArrayMetadata(path, index, target);
   }
@@ -346,6 +346,7 @@ export class FormController<TValues, TContext = undefined> {
       if (!value.startsWith(prefix)) return value;
       const remainder = value.slice(prefix.length);
       const [rawIndex, ...tail] = remainder.split(".");
+      if (rawIndex === undefined) return value;
       const itemIndex = Number.parseInt(rawIndex, 10);
       if (!Number.isInteger(itemIndex) || itemIndex <= index) return value;
       return `${prefix}${itemIndex - 1}${tail.length ? `.${tail.join(".")}` : ""}`;

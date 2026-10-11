@@ -30,7 +30,7 @@ function fieldReviewForChange<T>(
   if (!preview) return null;
   return {
     removedValue: formatReviewValue(preview.before),
-    stale: review.stale,
+    ...(review.stale === undefined ? {} : { stale: review.stale }),
     onKeep: () => onKeep(change.id),
     onUndo: () => onUndo(change.id),
   };

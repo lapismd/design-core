@@ -19,7 +19,7 @@ atomic acceptance bullets. Add exactly one verification row. Run
 for an explicit CI revision range. The canonical path map is in
 [`spec-governance.md`](./spec/src/spec-governance.md#change-map).
 
-Use `pnpm spec:search -- "<topic or DC-ID>"` for lexical discovery before a
+Use `pnpm spec:search "<topic or DC-ID>"` for lexical discovery before a
 broad scan. Add `--semantic` only when conceptual retrieval is useful. QMD is
 a cache, not an authority: open the returned file and line in `spec/src`
 before acting. When QMD is unavailable, follow the reported `rg` fallback.

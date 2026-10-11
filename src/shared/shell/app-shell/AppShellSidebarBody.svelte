@@ -8,8 +8,12 @@
     ref = $bindable(null),
     class: className,
     children,
+    scrollable = true,
     ...restProps
-  }: WithElementRef<HTMLAttributes<HTMLDivElement>> = $props();
+  }: WithElementRef<HTMLAttributes<HTMLDivElement>> & {
+    /** Disable the shell viewport when a bounded child owns scrolling. */
+    scrollable?: boolean;
+  } = $props();
 
   useAppShell();
 </script>
@@ -23,7 +27,10 @@
   data-ui-component="app-shell"
   data-ui-part="sidebar-body"
 >
-  <ScrollArea type="auto" class="ui-minimal-app-shell__sidebar-scroll-area">
-    {@render children?.()}
-  </ScrollArea>
+  {#if scrollable}<ScrollArea
+      type="auto"
+      class="ui-minimal-app-shell__sidebar-scroll-area"
+    >
+      {@render children?.()}
+    </ScrollArea>{:else}{@render children?.()}{/if}
 </div>

@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { HTMLAttributes } from "svelte/elements";
-  import ChevronRight from "@lucide/svelte/icons/chevron-right";
+  import { PanelToggleIcon } from "../panel-toggle/index.js";
   import type { WithElementRef } from "../../../lib/utils.js";
   import { useColumnCanvasContext } from "./context.svelte.js";
 
@@ -40,11 +40,12 @@
     type="button"
     data-ui-component="column-canvas"
     data-ui-part="collapsed-trigger"
+    data-panel-toggle
     aria-label={`Expand ${label} column`}
     title={count === undefined ? label : `${label} (${count})`}
     onclick={onExpand}
   >
-    <ChevronRight size={14} aria-hidden="true" />
+    <PanelToggleIcon expanded={false} />
     <span data-ui-component="column-canvas" data-ui-part="collapsed-label">
       <span>{label}</span>
       {#if count !== undefined}

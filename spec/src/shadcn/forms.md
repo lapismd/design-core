@@ -50,7 +50,7 @@ Shadcn form controls provide the low-level accessible inputs used directly or in
 
 ## DC-SHA-051 — Command View
 
-**Requirement.** The Command View family MUST provide a host-agnostic searchable list with composable input start icon, item icon, label, description, and shortcut parts. Overflowing lists MUST use the public ScrollArea viewport. The family MUST NOT own dialog, popover, or other overlay chrome.
+**Requirement.** The Command View family MUST provide a host-agnostic searchable list with composable input start icon, item icon, label, description, and shortcut parts. Overflowing lists MUST use the public ScrollArea viewport and accept an explicit host scroll strategy. The family MUST NOT own dialog, popover, or other overlay chrome.
 
 Root forwards Command filter and value props. It does not expose a separate
 bits-ui command API bindable.
@@ -69,7 +69,7 @@ bits-ui command API bindable.
 ### Acceptance details
 
 - The public boundary remains `@lapismd/design-core/shadcn/command-view`.
-- Filters MUST render a tablist of host-supplied tabs, and Footer MUST render host-supplied hint content.
+- Filters MUST render a tablist of host-supplied tabs, MAY render a host start snippet before each tab label, and Footer MUST render host-supplied hint content.
 - Icon pickers and settings comboboxes MUST remain valid without Filters or Footer.
 - The catalog MUST demonstrate Filters and Footer without a second runtime contract.
 
@@ -99,6 +99,7 @@ bits-ui command API bindable.
 
 - The public boundary is `@lapismd/design-core/shadcn/input-group`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- Actions MUST forward the requested Button size, default to `xs`, and retain square geometry for `icon-xs` and `icon-sm`.
 
 ## DC-SHA-029 — Label
 

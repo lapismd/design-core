@@ -1,4 +1,6 @@
 <script lang="ts">
+  import type { Snippet } from "svelte";
+
   export interface CommandViewFilterTab {
     id: string;
     label: string;
@@ -9,11 +11,13 @@
     value = $bindable(""),
     label = "Result filters",
     onValueChange,
+    start,
   }: {
     tabs: CommandViewFilterTab[];
     value?: string;
     label?: string;
     onValueChange?: (id: string) => void;
+    start?: Snippet<[{ tab: CommandViewFilterTab }]>;
   } = $props();
 
   function select(id: string): void {
@@ -38,6 +42,7 @@
       data-state={value === tab.id ? "active" : "inactive"}
       onclick={() => select(tab.id)}
     >
+      {@render start?.({ tab })}
       {tab.label}
     </button>
   {/each}

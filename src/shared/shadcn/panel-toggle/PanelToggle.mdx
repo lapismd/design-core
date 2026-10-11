@@ -1,0 +1,28 @@
+import { Meta, Primary, Controls, Source } from "@storybook/addon-docs/blocks";
+import * as stories from "./PanelToggle.stories.svelte";
+import { Basic } from "./PanelToggle.example-sources";
+
+<Meta of={stories} />
+
+# Panel Toggle
+
+A controlled, compact panel button with a rectangular frame. Its filled bar
+previews the opposite state on hover or keyboard focus; activation remains
+consumer-owned. Reduced motion removes the transition. Column Canvas uses this
+icon for its default toggles and collapsed rails.
+
+This project-authored family composes the shared Button. Follow
+[Shadcn guidance](?path=/docs/shadcn-guidance--docs) for native CSS composition.
+
+<Source code={Basic} language="tsx" />
+<Primary />
+<Controls />
+
+Use `side="right"` to mirror the indicator. Supply `children` to replace the
+icon or use the decorative `PanelToggleIcon` inside an existing native button
+marked `data-panel-toggle`. Always give that button an accessible label.
+
+The default button is 28×24px and the icon is 18×12px. Documented
+`--ui-panel-toggle-*` tokens control button width/height, icon width/height,
+expanded/collapsed bar widths in SVG units, and motion duration. The icon uses
+currentColor and the button retains shared focus styling and forced colors.

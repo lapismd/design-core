@@ -36,7 +36,7 @@
 <Button
   bind:ref
   {type}
-  data-size={size}
+  {size}
   {variant}
   data-ui-part="input-group-button"
   class={className}

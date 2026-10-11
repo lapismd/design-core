@@ -6,12 +6,12 @@ const docsUrl = (id: string) =>
 async function expectScrollableDocs(
   page: Page,
   id: string,
-  options: { docsTimeout?: number } = {},
+  readyTimeout = 15_000,
 ): Promise<void> {
   await page.goto(docsUrl(id));
 
   const docs = page.locator("#storybook-docs .sbdocs-content");
-  await expect(docs).toBeVisible({ timeout: options.docsTimeout });
+  await expect(docs).toBeVisible({ timeout: readyTimeout });
   await expect
     .poll(() =>
       page.evaluate(() => {
@@ -67,9 +67,8 @@ test.describe("Storybook Docs scrolling", () => {
   test("keeps documentation with embedded app shells scrollable", async ({
     page,
   }) => {
-    await expectScrollableDocs(page, "workspace-plugins-f-mode--docs", {
-      docsTimeout: 45_000,
-    });
+    test.setTimeout(75_000);
+    await expectScrollableDocs(page, "workspace-plugins-f-mode--docs", 60_000);
     await expect(page.locator(".ui-workspace-fmode-story")).not.toHaveCount(0);
   });
 

@@ -92,6 +92,12 @@
     color-mix(in srgb, var(--ui-form-accent) 14%, transparent);
 }
 
+.cv-search-filter-input[data-focus-appearance="borderless"]
+  .cv-search-filter-bar__search-pill:focus-within {
+  border-color: transparent;
+  box-shadow: none;
+}
+
 .cv-search-filter-bar__search-pill > svg {
   width: 1rem !important;
   height: 1rem !important;
@@ -902,14 +908,18 @@
   }
 }
 
-.cv-search-filter-bar[data-invalid] .cv-search-filter-bar__search-pill {
+.cv-search-filter-input[data-invalid] .cv-search-filter-bar__search-pill {
   border-color: color-mix(
     in srgb,
     var(--destructive, #dc2626) 55%,
     var(--ui-form-border)
   );
-  box-shadow: 0 0 0 1px
-    color-mix(in srgb, var(--destructive, #dc2626) 35%, transparent);
+  background: color-mix(
+    in srgb,
+    var(--destructive, #dc2626) 10%,
+    var(--ui-form-background)
+  );
+  box-shadow: none;
 }
 
 .cv-search-filter-bar__error,
@@ -921,4 +931,10 @@
   font-weight: 500;
   line-height: 1.3;
   text-align: center;
+}
+
+.cv-search-filter-input .cv-search-filter-bar__error {
+  margin-block: 0.5rem 0.25rem;
+  padding-inline: 0.5rem;
+  text-align: start;
 }

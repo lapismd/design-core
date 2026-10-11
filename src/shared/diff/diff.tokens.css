@@ -45,6 +45,7 @@
   --ui-diff-surface: var(--ui-workspace-view-background, var(--background));
   --ui-diff-gutter-wash: color-mix(in srgb, var(--muted) 76%, transparent);
   --ui-diff-mono: var(--font-mono, ui-monospace, monospace);
+  --ui-diff-file-listing-row-gap: 2px;
   --ui-diff-row-hover: color-mix(in srgb, var(--muted) 40%, transparent);
   --ui-diff-selected: var(
     --ui-workspace-selection,
@@ -56,4 +57,10 @@
   --ui-diff-frame-radius: calc(var(--radius) * 0.8);
   --ui-diff-stat-added: oklch(0.42 0.12 145);
   --ui-diff-stat-removed: oklch(0.48 0.19 25);
+}
+
+.dark,
+.dark .ui-diff {
+  --ui-diff-stat-added: oklch(0.8 0.14 145);
+  --ui-diff-stat-removed: oklch(0.76 0.16 25);
 }

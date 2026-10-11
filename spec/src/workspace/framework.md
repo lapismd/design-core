@@ -1,5 +1,10 @@
 # Workspace / Framework
 
+The Workspace App Shell compound export retains explicit readonly types for
+its component parts. Prepared declarations preserve existing public signatures
+without unnamed internal Svelte-generated component types. Runtime composition
+and workspace ownership remain unchanged under DC-WS-003.
+
 Workspace framework contracts coordinate reusable layout and state through explicit controllers, registries, events, and consumer adapters.
 Command manager palette search filters by tab (`openPalette({ tab })`,
 `searchPalette(query, { tab })`) and groups Actions by plugin contribution.

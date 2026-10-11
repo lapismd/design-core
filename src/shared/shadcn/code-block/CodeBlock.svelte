@@ -325,7 +325,7 @@
   >
     {#if useSpans}
       <span data-ui-part="code-block-line-content">
-        {#each buildSpanParts(line, tokenLines[lineIndex] ?? []) as part (part.kind === "token" ? part.key : part.text)}
+        {#each buildSpanParts(line, tokenLines[lineIndex] ?? []) as part, partIndex (partIndex)}
           {#if part.kind === "token"}
             <span class={`ui-code-token-${part.type}`}>{part.text}</span>
           {:else}

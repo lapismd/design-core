@@ -56,7 +56,13 @@ export type ComposerInputHandle = {
   expandToken: (id: string) => void;
 };
 
-export type ToolCallStatus = "pending" | "running" | "complete" | "error";
+/** `unknown` preserves observed activity when current execution status is unavailable. */
+export type ToolCallStatus =
+  | "pending"
+  | "running"
+  | "complete"
+  | "error"
+  | "unknown";
 
 export type ToolCallItem = {
   id?: string;

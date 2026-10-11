@@ -1,6 +1,6 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, userEvent, within } from "storybook/test";
+  import { expect, userEvent, within, waitFor } from "storybook/test";
   import FilterCommandPicker from "./FilterCommandPicker.svelte";
 
   const { Story } = defineMeta({
@@ -126,6 +126,9 @@
     await userEvent.type(query, "CONFIG_FILE");
     await userEvent.click(page.getByRole("option", { name: /CONFIG_FILE/ }));
     await expect(canvas.getByRole("status")).toHaveTextContent("CONFIG_FILE");
+    await waitFor(() =>
+      expect(page.queryByRole("listbox")).not.toBeInTheDocument(),
+    );
   }}
 >
   {#snippet template()}

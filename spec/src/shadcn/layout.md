@@ -12,6 +12,7 @@ Layout primitives establish reusable spatial, scrolling, and responsive composit
 | Scroll Area   | `@lapismd/design-core/shadcn/scroll-area`   | DC-SHA-038  |
 | Separator     | `@lapismd/design-core/shadcn/separator`     | DC-SHA-039  |
 | Sidebar       | `@lapismd/design-core/shadcn/sidebar`       | DC-SHA-040  |
+| Panel Toggle  | `@lapismd/design-core/shadcn/panel-toggle`  | DC-SHA-053  |
 
 ## DC-SHA-034 — Shared Shadcn invariants
 
@@ -33,14 +34,14 @@ Layout primitives establish reusable spatial, scrolling, and responsive composit
 
 ## DC-SHA-036 — Column Canvas
 
-**Requirement.** The Column Canvas family MUST lay out horizontally scrollable columns with consumer-owned items and responsive sizing. In wide auto mode, adjacent expanded columns MUST share the available stage within configured bounds through one inverse resize divider when structurally activated or explicitly resized, with independent durable pair ratios. Collapsed or closed columns MAY expose consumer-owned rails and transient full-height previews without changing durable layout. Fixed and compact modes MUST retain their documented behavior.
+**Requirement.** Column Canvas MUST provide horizontally scrollable columns with consumer-owned items and responsive sizing. Wide auto mode MUST allocate scrolling pairs within bounds through inverse resizing and durable pair ratios. Leading `fixed` columns MUST pin their original expanded panels or collapsed rails, releasing trailing pins when scrolling minimums cannot fit. External Scroll Area viewports, custom rails, transient previews and accessible trailing content MUST preserve compact behavior and persistence.
 
 ### Acceptance details
 
-- The public boundary is `@lapismd/design-core/shadcn/column-canvas`; controller updates must preserve consumer item identity, header actions must use distinct public hover tokens, and custom collapsed rails must retain the default accessible fallback.
-- Structural navigation and direct controller open, close, collapse, expand, and runtime column registration changes activate the deepest pair of expanded columns, skip collapsed rails as pair members, deduct their widths, margins, and intervening gaps from the shared stage, supersede any pending resize-scroll restoration, and update the wide-mode native scroll position immediately.
-- Pointer, keyboard, or reset interaction on any eligible divider activates that adjacent expanded pair without moving the canvas; resizing changes the two widths inversely while their total remains constant.
-- Wide and fixed previews must preserve collapsed rail space, leave closed columns out of inline flow, keep owned portalled controls interactive, and remain outside layout persistence; their zero-width boundary MUST expose a thin neutral-grey hover/focus affordance rather than the primary accent, their overlay MUST paint the normal column surface above adjacent content, and compact presentation must disable hover preview.
+- The public boundary is `@lapismd/design-core/shadcn/column-canvas`; controllers preserve identity and optional-property assignability, custom titles label headers/rails without generating headers, custom rails retain accessible fallbacks, headers retain shared start/tighter trailing insets and distinct hover tokens, trailing snippets use positive-width spacers without registration/persistence, blank spacers remain aria-hidden and compact omits spacers; `Body` defaults vertical and supports horizontal/both bounded scrolling, focus and near-end callbacks under native/styled strategies.
+- Structural navigation, controller visibility changes and runtime registration supersede resize capture and immediately align the deepest expanded pair; pointer, keyboard and reset resizing activate adjacent expanded pairs without scrolling and resize inversely at constant total, deducting context, collapsed rails, margins and gaps; measurements retain horizontal position across temporary width resets, resize completion releases capture before later native scroll, and resize observation retains alignment without tracking measurement state.
+- `fixed` defaults false and overrides `sticky` within the leading eligible prefix, pins original expanded/collapsed DOM with logical positioning, preserves spacing and independent resizing outside wide pairs, reserves scrolling pair minimums in wide mode or the largest remaining minimum in fixed mode including margins/gaps, releases trailing fixed pins until capacity fits and restores without durable changes, supports internal/external viewports and disables pinning in compact mode while preserving legacy gapless sticky-only rails.
+- External viewports align sticky return rails at the viewport edge; pinned contents retain focus, portals, drag/drop and vertical-wheel priority; teardown cancels measurements and obsolete interaction handlers; wide/fixed previews default to collapsed/custom/sticky rail hover (600 ms reveal, 120 ms dismissal), support per-column opt-out/timing, preserve one content instance, rail space and closed-column omission, never persist, and anchor within the viewport with normal surfaces and neutral boundaries; compact disables hover previews.
 
 ## DC-SHA-037 — Resizable
 
@@ -58,8 +59,8 @@ Layout primitives establish reusable spatial, scrolling, and responsive composit
 
 ### Acceptance details
 
-- The public boundary is `@lapismd/design-core/shadcn/scroll-area`.
-- Blink and Gecko MUST retain Bits UI scrolling while WebKit hosts identified by an engine marker or user agent MUST use a dedicated native viewport outside Bits UI's hidden-scrollbar selector; both strategies MUST render Design Core-owned compact thumbs exactly one CSS pixel from the inline-end edge when vertical and the block-end edge when horizontal, reserve no native gutter, expand inward, and adopt a stronger shade while hovered or dragged without widening the edge-aligned transparent interaction rail.
+- The public boundary is `@lapismd/design-core/shadcn/scroll-area`; opt-in `fillContent` fills a bounded viewport for percentage-sized child layouts.
+- Blink and Gecko default to Bits UI; WebKit, explicit `scrollStrategy="native"` and root `data-ui-scroll-strategy="native"` hosts MUST use the dedicated native viewport outside hidden-scrollbar selectors; explicit strategies win; both strategies MUST reserve no gutter, place compact thumbs one pixel from the inline/block end, expand and darken inward on hover/drag without widening the rail, update thumb length without transition, and MAY animate cross-axis expansion; native viewports MUST avoid duplicate landmarks and cancel queued work during teardown.
 - `ScrollAreaVisibility` MUST expose `scroll`, `hover`, and `always`; an omitted local type MUST inherit the nearest App Shell preference, while an explicit type remains authoritative for standalone consumers.
 - Browser coverage MUST prove wheel, keyboard, programmatic, track, and thumb-drag scrolling; bounded direct and imperative layouts; overflow-aware geometry; each visibility mode without relying on native scrollbar paint; and safe overlay listener/observer teardown when Svelte clears bound references before effect cleanup.
 
@@ -80,3 +81,14 @@ Layout primitives establish reusable spatial, scrolling, and responsive composit
 
 - The public boundary is `@lapismd/design-core/shadcn/sidebar`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+
+## DC-SHA-053 — Panel Toggle
+
+**Requirement.** Panel Toggle MUST compose Button with a compact rectangular icon and controlled expanded state. Hover and keyboard focus MUST preview the opposite bar width without changing state. Column Canvas MUST use this icon by default.
+
+### Acceptance details
+
+- The public boundary is `@lapismd/design-core/shadcn/panel-toggle`; default button and icon sizes are 28×24px and 18×12px, with left or right orientation.
+- Bar transitions MUST preserve frame geometry, reverse on pointer departure, and respect reduced motion and disabled controls.
+- Button semantics, accessible labels, visible focus, forced colors and composed header hover tokens MUST remain available; consumers own state changes.
+- Column Canvas toggles and collapsed rails MUST use the shared icon while retaining custom icons, rails, preview behavior and controller actions.

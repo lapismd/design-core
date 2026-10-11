@@ -3,3 +3,4 @@ storybook-static
 pnpm-lock.yaml
 .jj
 reference/lapis/workspace-shell
+.local/
