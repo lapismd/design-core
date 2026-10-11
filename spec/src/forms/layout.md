@@ -133,7 +133,7 @@ Form layout families provide reusable chrome for sections, fields, repeaters, ac
 - Width recipes are 28, 40, 56, and 68 rem with viewport insets; the large recipe is capped at 42 rem high and the body alone scrolls.
 - The inset surface uses one muted shell across the header and sidebar, contains the main area on a raised surface, and gives the close control a contrasting hover and keyboard-focus background.
 - The caller owns open state through Dialog.Root and supplies domain content through snippets, with content updates preserving mounted controls, their values, and keyboard focus.
-- Close and Escape preserve focus restoration and cannot dismiss during a pending operation; dialog headings remain local and do not introduce document banner landmarks.
+- Close and Escape preserve focus restoration and cannot dismiss during a pending operation; dialog headings remain local and do not introduce document banner landmarks; catalog interactions MUST await open content and complete exit before ending a dismissal scenario.
 
 ## DC-FORM-045 — Confirmation dialog
 

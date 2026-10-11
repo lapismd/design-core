@@ -55,6 +55,7 @@
   } = $props();
 
   let query = $state("");
+  let searchRef = $state<HTMLInputElement | null>(null);
   let gridRef = $state<HTMLDivElement | null>(null);
 
   const visible = $derived.by(() => {
@@ -75,6 +76,12 @@
   function select(emoji: string): void {
     onSelect(emoji);
     setOpen(false);
+  }
+
+  function focusSearchOnOpen(event: Event): void {
+    // Own initial focus so a deferred popover callback cannot undo navigation.
+    event.preventDefault();
+    searchRef?.focus();
   }
 
   function gridButtons(): HTMLButtonElement[] {
@@ -155,9 +162,11 @@
       align="start"
       aria-label={label}
       data-ai-chat-part="emoji-content"
+      onOpenAutoFocus={focusSearchOnOpen}
     >
       <div bind:this={ref} {...restProps} data-ui-part="emoji-panel">
         <Input
+          bind:ref={searchRef}
           bind:value={query}
           aria-label={searchLabel}
           placeholder={searchLabel}

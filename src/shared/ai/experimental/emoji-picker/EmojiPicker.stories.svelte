@@ -53,7 +53,7 @@
       placement: "right",
     },
   }}
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <div data-story="emoji-frame">
@@ -103,7 +103,54 @@
       placement: "right",
     },
   }}
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
+>
+  {#snippet template()}
+    <EmojiPicker onSelect={() => {}} />
+  {/snippet}
+</Story>
+
+<Story
+  name="Preserves grid focus after opening animation frames"
+  tags={["!autodocs", "visual-pending"]}
+  play={async ({ canvas }) => {
+    const queuedFrames = new Map<number, FrameRequestCallback>();
+    const requestFrame = window.requestAnimationFrame;
+    const cancelFrame = window.cancelAnimationFrame;
+    let nextFrame = 0;
+    window.requestAnimationFrame = (callback) => {
+      const frame = --nextFrame;
+      queuedFrames.set(frame, callback);
+      return frame;
+    };
+    window.cancelAnimationFrame = (frame) => {
+      if (!queuedFrames.delete(frame)) cancelFrame(frame);
+    };
+    try {
+      await userEvent.click(
+        canvas.getByRole("button", { name: "Pick an emoji" }),
+      );
+      const popover = within(document.body);
+      const search = await popover.findByRole("textbox", {
+        name: "Search emoji",
+      });
+      const first = await popover.findByRole("button", {
+        name: "React with thumbs up",
+      });
+      // A user can reach search before scheduled opening frames complete.
+      await userEvent.click(search);
+      await userEvent.keyboard("{ArrowDown}");
+      await expect(first).toHaveFocus();
+      const pending = [...queuedFrames.values()];
+      queuedFrames.clear();
+      for (const callback of pending) callback(performance.now());
+      await expect(first).toHaveFocus();
+    } finally {
+      window.requestAnimationFrame = requestFrame;
+      window.cancelAnimationFrame = cancelFrame;
+      for (const callback of queuedFrames.values()) requestFrame(callback);
+    }
+  }}
 >
   {#snippet template()}
     <EmojiPicker onSelect={() => {}} />

@@ -21,10 +21,11 @@
   }) {
     const trigger = canvas.getByRole("button", { name: "Edit record" });
     await userEvent.click(trigger);
-    const dialog = within(canvasElement.ownerDocument.body).getByRole(
+    const dialog = await within(canvasElement.ownerDocument.body).findByRole(
       "dialog",
       { name: "Edit record" },
     );
+    await waitFor(() => expect(dialog).toHaveAttribute("data-state", "open"));
     const firstField = within(dialog).getByRole("textbox", { name: "Field 1" });
     await userEvent.type(firstField, "Updated record");
     await waitFor(() => {
@@ -78,6 +79,7 @@
     );
     await userEvent.click(close);
     await waitFor(() => expect(trigger).toHaveFocus());
+    await waitFor(() => expect(dialog).not.toBeInTheDocument());
   }
 </script>
 
