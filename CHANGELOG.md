@@ -1,5 +1,39 @@
 # @lapismd/design-core
 
+## 0.3.0
+
+### Minor Changes
+
+- [#10](https://github.com/lapismd/design-core/pull/10) [`eeb8cdf`](https://github.com/lapismd/design-core/commit/eeb8cdf0bb9a2688e3c4ca74e16f18102fb2336a) Thanks [@stevejuma](https://github.com/stevejuma)! - Support application-controlled notification toasts with stable records, severity icons and colors, dismissal/action callbacks and interaction-aware timers. The optional viewport portal retains modal keyboard access and cleans up on teardown; the existing app-backed API remains compatible.
+
+- [#10](https://github.com/lapismd/design-core/pull/10) [`eeb8cdf`](https://github.com/lapismd/design-core/commit/eeb8cdf0bb9a2688e3c4ca74e16f18102fb2336a) Thanks [@stevejuma](https://github.com/stevejuma)! - Add `inputMode="custom"` to SearchFilterBar and SearchFilterInput for host-provided CodeMirror grammars, highlighting and completions. Reactive extension changes retain the draft, selection and undo history while using the shared accessible input and error chrome.
+
+- [#10](https://github.com/lapismd/design-core/pull/10) [`eeb8cdf`](https://github.com/lapismd/design-core/commit/eeb8cdf0bb9a2688e3c4ca74e16f18102fb2336a) Thanks [@stevejuma](https://github.com/stevejuma)! - Add optional borderless search focus, multiline editor semantics and clearer invalid-query feedback.
+
+- [#10](https://github.com/lapismd/design-core/pull/10) [`eeb8cdf`](https://github.com/lapismd/design-core/commit/eeb8cdf0bb9a2688e3c4ca74e16f18102fb2336a) Thanks [@stevejuma](https://github.com/stevejuma)! - Add delayed collapsed-column previews, interactive trailing canvas content,
+  compact panel toggles, lazy and virtualized file listings, and merge header
+  controls that preserve drafts and scrolling. Preserve strict consumer types,
+  host-controlled tool-call presentation, and settings heading typography.
+
+  Refresh Mira's range to admit compatible pre-1.0 patches, and move validation to
+  the published optional-search Spec Validator and maintained Changesets toolchain.
+
+- [#10](https://github.com/lapismd/design-core/pull/10) [`eeb8cdf`](https://github.com/lapismd/design-core/commit/eeb8cdf0bb9a2688e3c4ca74e16f18102fb2336a) Thanks [@stevejuma](https://github.com/stevejuma)! - Support fixed Column Canvas layouts inside styled Scroll Areas, including sticky
+  return rails. Add explicit scroll strategies to column bodies, Command View
+  lists and FileDiff panes, and an opt-in filled Scroll Area content layout.
+  Keep inactive tab labels opaque.
+  Allow hosts to distinguish split diff pane landmarks, and cancel queued canvas
+  measurements after teardown.
+
+  Expose opt-in native File Listing file and directory drag callbacks and host
+  eligibility predicates while retaining ordinary selection and disclosure.
+
+### Patch Changes
+
+- [#10](https://github.com/lapismd/design-core/pull/10) [`eeb8cdf`](https://github.com/lapismd/design-core/commit/eeb8cdf0bb9a2688e3c4ca74e16f18102fb2336a) Thanks [@stevejuma](https://github.com/stevejuma)! - Expose the AI chat typography scale token without changing geometry and accept the host native Scroll Area strategy for safe view teardown.
+
+- [#10](https://github.com/lapismd/design-core/pull/10) [`eeb8cdf`](https://github.com/lapismd/design-core/commit/eeb8cdf0bb9a2688e3c4ca74e16f18102fb2336a) Thanks [@stevejuma](https://github.com/stevejuma)! - Keep the App Shell mobile stage semantically neutral so consumer landmarks contain all accessible application content.
+
 ## 0.2.0
 
 ### Minor Changes
