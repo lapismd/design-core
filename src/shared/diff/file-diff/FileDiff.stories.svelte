@@ -6,6 +6,7 @@
   import { Textarea } from "../../shadcn/textarea/index.js";
   import {
     Basic,
+    NamedSplit,
     Composer,
     Fill,
     LineAnnotation,
@@ -186,6 +187,33 @@
       : composerCollapsedPaths.filter((candidate) => candidate !== path);
   }
 </script>
+
+<Story
+  name="Named split panes"
+  tags={["visual-pending"]}
+  parameters={{
+    docs: { source: { code: NamedSplit, language: "tsx", type: "code" } },
+  }}
+  play={async ({ canvas }) => {
+    for (const label of ["Stack A · first hunk", "Stack A · second hunk"])
+      for (const side of ["Previous revision", "Later revision"])
+        expect(
+          canvas.getByRole("region", { name: `${label} · ${side}` }),
+        ).toBeVisible();
+  }}
+>
+  {#snippet template()}
+    {#each ["Stack A · first hunk", "Stack A · second hunk"] as label}
+      <FileDiff
+        path="src/note.ts"
+        {label}
+        viewMode="split"
+        oldText="previous"
+        newText="later"
+      />
+    {/each}
+  {/snippet}
+</Story>
 
 <Story
   name="Composes a host-owned inline annotation"
@@ -457,6 +485,10 @@
     await expect(root).not.toBeNull();
     await expect(host).not.toBeNull();
     expectFilledScrollArea(root!, host!);
+    const areas = root!.querySelectorAll<HTMLElement>("[data-scroll-strategy]");
+    expect(areas.length).toBe(2);
+    for (const area of areas)
+      expect(area.dataset.scrollStrategy).toBe("styled");
     expectGutterFills(root!);
     await expect(
       canvas.getByText(diffText(`new 1 ${"beta ".repeat(20).trim()}`)),
@@ -474,6 +506,7 @@
         oldText={fillOld}
         newText={fillNew}
         viewMode="split"
+        scrollStrategy="styled"
       />
     </div>
   {/snippet}
@@ -596,3 +629,39 @@
     </div>
   {/snippet}
 </Story>
+
+<Story
+  name="Highlighted intraline numbers retain readable contrast"
+  tags={["visual-pending"]}
+  args={{
+    path: "example.ts",
+    oldText: "export const answer = 41;\n",
+    newText: "export const answer = 42;\n",
+  }}
+  play={async ({ canvasElement }) => {
+    await waitFor(() => {
+      const tokens = [
+        ...canvasElement.querySelectorAll<HTMLElement>(
+          "[data-tone] .ui-code-token-number",
+        ),
+      ];
+      expect(tokens).toHaveLength(2);
+      for (const token of tokens)
+        expect(getComputedStyle(token).color).toBe(
+          getComputedStyle(token.closest('[data-ui-component="file-diff"]')!)
+            .color,
+        );
+      const keywords = [
+        ...canvasElement.querySelectorAll<HTMLElement>(
+          '.ui-diff-file-diff__row:is([data-variant="added"], [data-variant="removed"]) .ui-code-token-keyword',
+        ),
+      ];
+      expect(keywords).toHaveLength(4);
+      for (const token of keywords)
+        expect(getComputedStyle(token).color).toBe(
+          getComputedStyle(token.closest('[data-ui-component="file-diff"]')!)
+            .color,
+        );
+    });
+  }}
+/>

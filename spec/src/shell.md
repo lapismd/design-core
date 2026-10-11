@@ -17,6 +17,7 @@ The App Shell owns application structure and responsive layout while consumers o
 ### Acceptance details
 
 - Responsive variants must keep landmarks, labels, focus order, and consumer actions equivalent.
+- Layout-only mobile stage and lane wrappers must stay semantically neutral so application content remains contained by its real navigation and main landmarks.
 - Mobile panel entry and focus restoration must not scroll the translated stage or move the active panel outside the bounded viewport.
 - Shell tokens must remain the supported styling extension boundary, including `--ui-shell-main-border` with the inset, radius, and shadow main-surface tokens.
 
@@ -26,10 +27,10 @@ The App Shell owns application structure and responsive layout while consumers o
 
 ### Acceptance details
 
-- The intended content pane, rather than the page or translated mobile stage, must own scrolling when the bounded-shell composition is used.
-- Body regions must support the documented scrollbar modes, while compact and reference compositions preserve shell radius, bounded extension points, and component-owned presentation styling.
+- The intended content pane, rather than the page or translated mobile stage, must own scrolling when the bounded-shell composition is used; `Sidebar.Body scrollable={false}` must retain bounded flex geometry while allowing a child chat or editor to own the only scroll viewport.
+- Body regions must support the documented scrollbar modes and an explicit non-main semantic element for embedded shell content, while compact and reference compositions preserve shell radius, bounded extension points, and component-owned presentation styling.
 - Arbitrary same-side sidebars must support deterministic priority and structural ordering, independent persisted geometry, transparent rails, per-panel previews, and exact main-surface replacement that restores inline automatically.
-- One compound `SurfaceLayer` must own covered bounds, logical-direction observation, dismissal, focus and inert restoration, and transient panel suspension, while explicit-controller toggles and public controller types remain consumer-safe under `exactOptionalPropertyTypes`.
+- One compound `SurfaceLayer` must own covered bounds, logical-direction observation, dismissal, focus and inert restoration, transient panel suspension, mobile placement outside inert lane subtrees, active-lane mobile hosting, opt-in root mobile hosting for whole-stage overlays, teardown that does not reattach removed teleported nodes, and configured leading allowance across desktop and mobile, while explicit-controller toggles and public controller types remain consumer-safe under `exactOptionalPropertyTypes`.
 
 ## DC-SHELL-003 — Shell Guidance
 

@@ -5,6 +5,7 @@ export {
   FileListing,
   FileListingViewModeToggle,
   fileIconNameForPath,
+  type FileListingDirectory,
   type FileListingDirectoryContext,
   type FileListingFile,
   type FileListingFileContext,

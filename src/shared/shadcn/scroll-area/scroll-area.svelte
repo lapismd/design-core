@@ -5,12 +5,20 @@
   import {
     isScrollAreaVisibility,
     SCROLL_AREA_VISIBILITY_ATTRIBUTE,
+    type ScrollAreaStrategy,
     type ScrollAreaVisibility,
   } from "./scroll-area-model.js";
   import { type WithoutChild } from "../../../lib/utils.js";
   import { omitDataUiIdentity } from "../../../lib/data-ui-host.js";
 
   function usesNativeWebKitScrolling(): boolean {
+    // Hosts with frequent view teardown may opt into the owned, cancellable
+    // native overlay lifecycle while explicit styled instances keep priority.
+    if (
+      typeof document !== "undefined" &&
+      document.documentElement.dataset.uiScrollStrategy === "native"
+    )
+      return true;
     if (
       typeof document !== "undefined" &&
       document.documentElement.dataset.engine
@@ -33,6 +41,8 @@
     scrollbarYClasses = "",
     type,
     scrollHideDelay = 600,
+    scrollStrategy = "auto",
+    fillContent = false,
     children,
     ...restProps
   }: WithoutChild<ScrollAreaPrimitive.RootProps> & {
@@ -40,13 +50,19 @@
     scrollbarXClasses?: string | undefined;
     scrollbarYClasses?: string | undefined;
     viewportRef?: HTMLElement | null;
+    scrollStrategy?: ScrollAreaStrategy;
+    /** Fill a bounded viewport with layouts that size children by percentage. */
+    fillContent?: boolean;
   } = $props();
 
   let activeRootRef = $state<HTMLElement | null>(null);
   let activeViewportRef = $state<HTMLElement | null>(null);
   let inheritedType = $state<ScrollAreaVisibility | undefined>(undefined);
   let resolvedType = $derived(type ?? inheritedType ?? "hover");
-  const nativeWebKitScrolling = usesNativeWebKitScrolling();
+  const useNativeViewport = $derived(
+    scrollStrategy === "native" ||
+      (scrollStrategy === "auto" && usesNativeWebKitScrolling()),
+  );
 
   $effect(() => {
     ref = activeRootRef;
@@ -89,19 +105,20 @@
   data-slot="scroll-area"
   data-orientation={orientation}
   data-scroll-visibility={resolvedType}
-  data-scroll-strategy={nativeWebKitScrolling ? "native" : "styled"}
+  data-scroll-strategy={useNativeViewport ? "native" : "styled"}
   class={className}
 >
-  {#if nativeWebKitScrolling}
+  {#if useNativeViewport}
     <!-- svelte-ignore a11y_no_noninteractive_tabindex (keyboard access for a named scrollable region) -->
     <div
       bind:this={activeViewportRef}
       tabindex={0}
-      role="region"
+      role="group"
       aria-label="Scrollable content"
       data-ui-component="scroll-area"
       data-ui-part="scroll-area-viewport"
       data-slot="scroll-area-viewport"
+      data-fill-content={fillContent || undefined}
     >
       {@render children?.()}
     </div>
@@ -132,6 +149,7 @@
       data-ui-component="scroll-area"
       data-ui-part="scroll-area-viewport"
       data-slot="scroll-area-viewport"
+      data-fill-content={fillContent || undefined}
     >
       {@render children?.()}
     </ScrollAreaPrimitive.Viewport>
@@ -172,6 +190,10 @@
         width: 100%;
         height: 100%;
       }
+      [data-ui-component="scroll-area"][data-ui-part="scroll-area-viewport"][data-fill-content="true"]
+        > div {
+        height: 100%;
+      }
       [data-ui-component="scroll-area"][data-ui-part="scroll-area-thumb"] {
         flex: 1;
       }
@@ -186,11 +208,7 @@
       }
       [data-ui-component="scroll-area"][data-ui-part="scroll-area-thumb"] {
         background-color: var(--ui-scroll-area-foreground, var(--border));
-        transition:
-          width 140ms ease,
-          height 140ms ease,
-          flex-basis 140ms ease,
-          background-color 140ms ease;
+        transition: background-color 140ms ease;
       }
       [data-ui-component="scroll-area"][data-ui-part="scroll-area-scrollbar"] {
         padding: 0;
@@ -293,6 +311,10 @@
         flex: 0 0 0.25rem;
         margin-inline-start: auto;
         margin-inline-end: 1px;
+        transition:
+          width 140ms ease,
+          flex-basis 140ms ease,
+          background-color 140ms ease;
       }
 
       [data-ui-component="scroll-area"][data-ui-part="scroll-area-scrollbar"][data-orientation="vertical"]
@@ -310,6 +332,10 @@
         flex: 0 0 0.25rem;
         margin-block-start: auto;
         margin-block-end: 1px;
+        transition:
+          height 140ms ease,
+          flex-basis 140ms ease,
+          background-color 140ms ease;
       }
 
       [data-ui-component="scroll-area"][data-ui-part="scroll-area-scrollbar"][data-orientation="horizontal"]

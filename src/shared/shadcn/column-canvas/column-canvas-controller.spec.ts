@@ -188,6 +188,34 @@ describe("createColumnCanvasController", () => {
     expect(onLayoutChange).not.toHaveBeenCalled();
   });
 
+  it("previews an expanded sticky column only while its floating rail is available", async () => {
+    vi.useFakeTimers();
+    const onLayoutChange = vi.fn();
+    const canvas = createColumnCanvasController({
+      columns: { workspace: { defaultWidth: 280, collapsible: true } },
+      onLayoutChange,
+    });
+    const before = canvas.getLayout();
+    canvas.schedulePreview("workspace", 20);
+    await vi.advanceTimersByTimeAsync(20);
+    expect(canvas.isPreviewed("workspace")).toBe(false);
+    canvas.setStickyPreviewAvailable("workspace", true);
+    canvas.schedulePreview("workspace", 20);
+    await vi.advanceTimersByTimeAsync(19);
+    expect(canvas.isPreviewed("workspace")).toBe(false);
+    await vi.advanceTimersByTimeAsync(1);
+    expect(canvas.isPreviewed("workspace")).toBe(true);
+    expect(canvas.getLayout()).toEqual(before);
+    expect(onLayoutChange).not.toHaveBeenCalled();
+    canvas.setStickyPreviewAvailable("workspace", false);
+    expect(canvas.isPreviewed("workspace")).toBe(false);
+    canvas.setStickyPreviewAvailable("workspace", true);
+    canvas.schedulePreview("workspace", 20);
+    canvas.setStickyPreviewAvailable("workspace", false);
+    await vi.advanceTimersByTimeAsync(20);
+    expect(canvas.isPreviewed("workspace")).toBe(false);
+  });
+
   it("clears pending preview timers when disposed", async () => {
     vi.useFakeTimers();
     const canvas = createColumnCanvasController({

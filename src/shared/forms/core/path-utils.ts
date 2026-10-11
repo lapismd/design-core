@@ -37,7 +37,8 @@ function setFormValueAtParts<TValues>(
   value: unknown,
 ): TValues {
   if (parts.length === 0) return value as TValues;
-  const [head, ...tail] = parts;
+  const head = parts[0]!;
+  const tail = parts.slice(1);
 
   if (typeof head === "number") {
     const next = Array.isArray(root) ? [...root] : [];
@@ -90,7 +91,7 @@ export function moveFormArrayItem<TItem>(
     return items as TItem[];
   }
   const next = [...items];
-  [next[index], next[target]] = [next[target], next[index]];
+  [next[index], next[target]] = [next[target]!, next[index]!];
   return next;
 }
 

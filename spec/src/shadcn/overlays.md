@@ -69,10 +69,10 @@ Overlay primitives preserve accessible labelling, focus management, dismissal, p
 
 ### Acceptance details
 
-- The public boundary is `@lapismd/design-core/shadcn/dropdown-menu`.
 - Family styling MUST be hosted by the required Content part so action-only consumers retain the menu surface, item layout, and interaction states without importing optional checkbox or radio parts.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 - Radio groups MUST provide a defined bindable value at the primitive boundary for exact optional-property consumers.
+- Submenu triggers MUST align leading icons with ordinary menu items, applying automatic leading margin only to the built-in trailing indicator.
 
 ## DC-SHA-047 — Hover Card
 
@@ -104,10 +104,11 @@ Overlay primitives preserve accessible labelling, focus management, dismissal, p
 
 ## DC-SHA-050 — Tooltip
 
-**Requirement.** The Tooltip family MUST provide concise supplementary text on hover or focus with configurable timing and a compact global presentation whose typography and padding remain consumer-overridable through public tokens.
+**Requirement.** The Tooltip family MUST provide concise supplementary text on hover or focus with configurable timing and standard shadcn sizing whose typography and padding remain consumer-overridable through public tokens.
 
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/shadcn/tooltip`.
-- The default content MUST use 0.6875rem text on a 1rem line with compact inline and block padding, while `--ui-tooltip-font-size`, `--ui-tooltip-line-height`, `--ui-tooltip-padding-inline`, and `--ui-tooltip-padding-block` MUST allow application-level adjustment.
+- The default content MUST use theme `--text-xs` typography (0.75rem text on a 1rem line), 0.75rem inline padding and 0.375rem block padding, restoring space around the arrow.
+- `--ui-tooltip-font-size`, `--ui-tooltip-line-height`, `--ui-tooltip-padding-inline`, and `--ui-tooltip-padding-block` MUST retain application-level adjustment.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.

@@ -30,6 +30,15 @@ export const Split = `<script lang="ts">
   newText={'export const note = "beta beta beta beta beta beta beta";\\n'}
 />`;
 
+export const NamedSplit = `<script lang="ts">
+  import { FileDiff } from "@lapismd/design-core/diff";
+</script>
+
+{#each ["Stack A · first hunk", "Stack A · second hunk"] as label}
+  <FileDiff path="src/note.ts" {label} viewMode="split"
+    oldText="previous" newText="later" />
+{/each}`;
+
 export const Wrap = `<script lang="ts">
   import { FileDiff } from "@lapismd/design-core/diff";
 </script>

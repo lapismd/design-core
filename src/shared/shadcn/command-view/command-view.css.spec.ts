@@ -16,4 +16,13 @@ describe("command view item icon alignment", () => {
       /\[data-ui-part="item-icon"\] \{[\s\S]*?align-self:\s*center;[\s\S]*?width:\s*var\(--ui-command-view-icon-size\);[\s\S]*?height:\s*var\(--ui-command-view-icon-size\);/,
     );
   });
+
+  it("sizes leading filter-tab icons", () => {
+    expect(css).toMatch(
+      /\[data-ui-part="filters"\] \[role="tab"\] \{[\s\S]*?display:\s*inline-flex;[\s\S]*?gap:\s*0\.375rem;/,
+    );
+    expect(css).toMatch(
+      /\[data-ui-part="filters"\] \[role="tab"\] svg \{[\s\S]*?width:\s*var\(--ui-command-view-icon-size\);/,
+    );
+  });
 });

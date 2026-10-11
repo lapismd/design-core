@@ -12,7 +12,7 @@
 .ui-workspace-notifications__toast {
   pointer-events: auto;
   display: grid;
-  grid-template-columns: 0.25rem minmax(0, 1fr) auto;
+  grid-template-columns: 1rem minmax(0, 1fr) auto;
   align-items: start;
   gap: 0.75rem;
   border: 1px solid var(--ui-workspace-border);
@@ -27,26 +27,45 @@
 }
 
 .ui-workspace-notifications__severity {
-  width: 0.25rem;
-  min-height: 100%;
-  border-radius: 999px;
-  background: var(
-    --ui-workspace-notifications-primary,
-    var(--ui-workspace-accent)
-  );
+  color: var(--ui-workspace-notifications-primary, var(--primary));
 }
-
+.ui-workspace-notifications__severity svg {
+  width: 1rem;
+  height: 1rem;
+}
 .ui-workspace-notifications__toast[data-severity="warning"]
   .ui-workspace-notifications__severity {
-  background: var(
-    --ui-workspace-notifications-warning,
-    var(--ui-workspace-warning)
-  );
+  color: var(--ui-workspace-notifications-warning, var(--warning, #9a6700));
 }
-
 .ui-workspace-notifications__toast[data-severity="error"]
   .ui-workspace-notifications__severity {
-  background: var(--ui-workspace-destructive);
+  color: var(--ui-workspace-destructive, var(--destructive));
+}
+.ui-workspace-notifications__toasts[data-portal] {
+  position: fixed;
+  inset: auto max(0.75rem, env(safe-area-inset-right))
+    max(0.75rem, env(safe-area-inset-bottom)) auto;
+  max-height: calc(100dvh - 1.5rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  margin: 0;
+  padding: 0.25rem;
+  border: 0;
+  background: transparent;
+  box-sizing: border-box;
+  font-family: var(--font-sans, sans-serif);
+  --ui-workspace-border: var(--border);
+  --ui-workspace-popover: var(--popover);
+  --ui-workspace-popover-foreground: var(--popover-foreground);
+  --ui-workspace-muted-foreground: var(--muted-foreground);
+  --ui-workspace-accent: var(--accent);
+  --ui-workspace-accent-foreground: var(--accent-foreground);
+  --ui-workspace-focus-ring: var(--ring);
+  --ui-workspace-radius-small: var(--radius, 0.375rem);
+  --ui-workspace-shadow: 0 4px 16px rgb(0 0 0 / 15%);
+}
+.ui-workspace-notifications__toasts[data-portal]::backdrop {
+  pointer-events: none;
 }
 
 .ui-workspace-notifications__toast-content {
@@ -248,6 +267,11 @@
   font-size: 0.75rem;
 }
 
+.ui-workspace-notifications__button[data-action-variant="secondary"] {
+  color: var(--secondary-foreground, var(--ui-workspace-popover-foreground));
+  background: var(--secondary, var(--ui-workspace-accent));
+}
+
 .ui-workspace-notifications__icon-button {
   width: 1.75rem;
   height: 1.75rem;
@@ -266,6 +290,15 @@
 .ui-workspace-notifications__status:hover {
   color: var(--ui-workspace-accent-foreground);
   background: var(--ui-workspace-accent);
+}
+
+.ui-workspace-notifications__button[data-action-variant="secondary"]:hover {
+  color: var(--secondary-foreground, var(--ui-workspace-popover-foreground));
+  background: color-mix(
+    in srgb,
+    var(--secondary, var(--ui-workspace-accent)) 90%,
+    var(--ui-workspace-popover-foreground)
+  );
 }
 
 .ui-workspace-notifications__button:focus-visible,

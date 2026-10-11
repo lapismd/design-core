@@ -1,8 +1,8 @@
 import type { Component } from "svelte";
 import type { HTMLInputAttributes } from "svelte/elements";
 import type { ColorPickerFormat } from "../color-picker/color-value";
-import type { CyclePickerPreview } from "../cycle-picker/CyclePicker.svelte";
-import type { InlineOptionPickerOption } from "../inline-option-picker/InlineOptionPicker.svelte";
+import type { CyclePickerPreview } from "../cycle-picker/types";
+import type { InlineOptionPickerOption } from "../inline-option-picker/types";
 import type { ReferenceIndex } from "./reference-utils";
 import type { RegisteredFormFieldKind } from "./path-config";
 import type { FieldPath } from "./path-types";

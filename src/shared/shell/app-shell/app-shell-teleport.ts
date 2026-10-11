@@ -31,7 +31,6 @@ export function appShellTeleport(
   return {
     update,
     destroy() {
-      restore();
       anchor.remove();
     },
   };

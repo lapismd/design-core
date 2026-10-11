@@ -3,6 +3,7 @@
   import { expect, userEvent, waitFor, within } from "storybook/test";
   import { Button } from "../button/index.js";
   import * as Tooltip from "./index.js";
+  import { CustomSizing } from "./Tooltip.sizing.example-sources.js";
 
   const { Story } = defineMeta({
     title: "Shadcn/Overlays/Tooltip",
@@ -28,8 +29,11 @@
     await expect(trigger).toHaveAttribute("aria-describedby");
     const content = within(document.body).getByText("Save draft");
     const contentStyle = getComputedStyle(content);
-    await expect(contentStyle.fontSize).toBe("11px");
+    await expect(contentStyle.fontSize).toBe("12px");
     await expect(contentStyle.lineHeight).toBe("16px");
+    await expect(contentStyle.paddingBlockStart).toBe("6px");
+    await expect(contentStyle.paddingInlineStart).toBe("12px");
+    await expect(content.getBoundingClientRect().height).toBe(28);
     await userEvent.unhover(trigger);
   }}
   tags={["skip-visual"]}
@@ -45,6 +49,48 @@
           {/snippet}
         </Tooltip.Trigger>
         <Tooltip.Content>Save draft</Tooltip.Content>
+      </Tooltip.Root>
+    </Tooltip.Provider>
+  {/snippet}
+</Story>
+
+<Story
+  name="Public sizing tokens remain adjustable"
+  tags={["skip-visual"]}
+  play={async ({ canvas }) => {
+    const trigger = canvas.getByRole("button", { name: "Custom hint" });
+    await userEvent.hover(trigger);
+    const content = within(document.body).getByText("Custom tooltip sizing");
+    const style = getComputedStyle(content);
+    await expect(style.fontSize).toBe("14px");
+    await expect(style.lineHeight).toBe("20px");
+    await expect(style.paddingBlockStart).toBe("8px");
+    await expect(style.paddingInlineStart).toBe("16px");
+    await expect(content.getBoundingClientRect().height).toBe(36);
+    await userEvent.unhover(trigger);
+  }}
+  parameters={{
+    docs: {
+      source: {
+        code: CustomSizing,
+        language: "tsx",
+        type: "code",
+      },
+    },
+  }}
+>
+  {#snippet template()}
+    <Tooltip.Provider delayDuration={0}>
+      <Tooltip.Root>
+        <Tooltip.Trigger>
+          {#snippet child({ props })}
+            <Button {...props} variant="outline">Custom hint</Button>
+          {/snippet}
+        </Tooltip.Trigger>
+        <Tooltip.Content
+          style="--ui-tooltip-font-size: 0.875rem; --ui-tooltip-line-height: 1.25rem; --ui-tooltip-padding-inline: 1rem; --ui-tooltip-padding-block: 0.5rem;"
+          >Custom tooltip sizing</Tooltip.Content
+        >
       </Tooltip.Root>
     </Tooltip.Provider>
   {/snippet}

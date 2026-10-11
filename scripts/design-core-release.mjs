@@ -13,6 +13,7 @@ import {
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { packLocal } from "./pack-local.mjs";
 
 const scriptPath = fileURLToPath(import.meta.url);
 const root = path.resolve(path.dirname(scriptPath), "..");
@@ -289,16 +290,14 @@ function sha(filePath, algorithm) {
   return createHash(algorithm).update(readFileSync(filePath)).digest("hex");
 }
 
-function packTarball() {
+async function packTarball() {
   rmSync(tarballDir, { recursive: true, force: true });
   mkdirSync(tarballDir, { recursive: true });
-  const output = run("pnpm", [
-    "pack",
-    "--pack-destination",
-    tarballDir,
-    "--json",
-  ]);
-  const tarballPath = parsePackOutput(output);
+  const tarballPath = await packLocal(root, {
+    retainSource: true,
+    outputDirectory: tarballDir,
+    suffix: "",
+  });
   assertNoPortableManifestViolations(tarballPath);
   return tarballPath;
 }
@@ -332,30 +331,47 @@ function verifyTarballConsumer(tarballPath) {
         `Clean consumer installed ${installed.version}; expected ${expected.version}`,
       );
     }
+    if (
+      JSON.stringify(Object.keys(installed.exports ?? {}).sort()) !==
+      JSON.stringify(Object.keys(expected.exports ?? {}).sort())
+    ) {
+      throw new Error("Prepared consumer archive changed public import names");
+    }
     for (const [key, value] of Object.entries(installed.exports ?? {})) {
       if (key.includes("*")) continue;
-      const target =
-        typeof value === "string"
-          ? value
-          : typeof value?.default === "string"
-            ? value.default
-            : typeof value?.import === "string"
-              ? value.import
-              : null;
-      if (!target || target.includes("*")) continue;
-      const resolved = path.join(installedRoot, target);
-      if (!existsSync(resolved)) {
-        throw new Error(
-          `Clean consumer export ${key} points at missing ${target}`,
-        );
+      const targets =
+        typeof value === "string" ? [value] : Object.values(value);
+      for (const target of targets) {
+        if (typeof target !== "string" || target.includes("*")) continue;
+        const resolved = path.join(installedRoot, target);
+        if (!existsSync(resolved)) {
+          throw new Error(
+            `Clean consumer export ${key} points at missing ${target}`,
+          );
+        }
       }
     }
+    const audit = spawnSync(
+      "npm",
+      ["audit", "--omit=dev", "--json", "--registry", registry],
+      {
+        cwd: tmp,
+        encoding: "utf8",
+        timeout: 120_000,
+      },
+    );
+    mkdirSync(releaseDir, { recursive: true });
+    writeFileSync(
+      path.join(releaseDir, "production-consumer-audit.json"),
+      audit.stdout,
+    );
+    return audit;
   } finally {
     rmSync(tmp, { recursive: true, force: true });
   }
 }
 
-function prepare({ consumerInstall = false } = {}) {
+async function prepare({ consumerInstall = false } = {}) {
   const plan = existsSync(planPath) ? readJson(planPath) : createPlan();
   if (plan.selected.length === 0) {
     writeJson(manifestPath, {
@@ -369,7 +385,7 @@ function prepare({ consumerInstall = false } = {}) {
     console.log("No unpublished Design Core package version selected.");
     return readJson(manifestPath);
   }
-  const tarballPath = packTarball();
+  const tarballPath = await packTarball();
   if (consumerInstall) verifyTarballConsumer(tarballPath);
   const pkg = packageJson();
   const packageEntry = {
@@ -693,12 +709,23 @@ switch (command) {
     createPlan();
     break;
   case "prepare":
-    prepare();
+    await prepare();
     break;
-  case "pack-check":
-    createPlan();
-    prepare({ consumerInstall: true });
+  case "pack-check": {
+    const tarball = await packTarball();
+    const audit = verifyTarballConsumer(tarball);
+    const { checkPublicPackageRuntime } = await import(
+      "./check-public-package-runtime.mjs"
+    );
+    await checkPublicPackageRuntime(tarball, registry);
+    if (audit.status !== 0) {
+      throw new Error(
+        `Packed production dependency audit failed: ${audit.stdout || audit.stderr || audit.error}`,
+      );
+    }
+    console.log("Design Core source tarball validated in a clean consumer.");
     break;
+  }
   case "publish":
     publish();
     break;

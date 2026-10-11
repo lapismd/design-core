@@ -170,17 +170,18 @@ export function customViewField<TRoot, TContext = undefined, TValue = TRoot>(
     props,
     ...fieldConfig
   } = config;
+  const renderer: FormRendererDescriptor<TRoot, TContext, TValue> = {
+    component,
+    wrapper,
+    ...(interactive === undefined ? {} : { interactive }),
+    ...(align === undefined ? {} : { align }),
+    ...(as === undefined ? {} : { as }),
+    ...(props === undefined ? {} : { props }),
+  };
   return customField<TRoot, TContext, TValue>({
     ...fieldConfig,
     renderers: {
-      [view]: {
-        component,
-        wrapper,
-        interactive,
-        align,
-        as,
-        props,
-      },
+      [view]: renderer,
     },
   });
 }
@@ -218,8 +219,8 @@ export function reviewedTextField<TRoot>({
   return textField<TRoot, FieldReviewContext>({
     id,
     label,
-    placeholder,
-    inputType,
+    ...(placeholder === undefined ? {} : { placeholder }),
+    ...(inputType === undefined ? {} : { inputType }),
     get,
     set,
     renderers: {
@@ -269,7 +270,7 @@ export function reviewedStringListField<TRoot>({
       id,
       label,
       addLabel,
-      placeholder,
+      ...(placeholder === undefined ? {} : { placeholder }),
       get,
       set,
     }),

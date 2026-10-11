@@ -39,6 +39,8 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 ### Acceptance details
 
 - The public boundary is AI layer.
+- Consumers MAY inherit `--ui-ai-chat-type-scale` (default `1`) to scale chat text and fixed line heights without scaling icons, padding, widths or application zoom.
+- Mobile composer text MUST retain its 16 px focus floor.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 
 ## DC-AI-002 — Layout
@@ -49,7 +51,7 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 
 - The public boundary is `@lapismd/design-core/ai/chat`.
 - The default `scrollMode="stream"` MUST retain existing streaming auto-follow, spring navigation and snippet composition, while `scrollMode="history"` opts in to anchored cached-history navigation.
-- The generated ScrollArea wrapper and empty state MUST preserve the bounded viewport height while the composer remains docked.
+- The generated ScrollArea wrapper and empty state MUST preserve the bounded viewport height while the composer remains docked, and consumers MAY select the wrapper scroll strategy for latency-sensitive virtualized layouts.
 - Manual arrival at the latest content MUST dismiss generic arrival notifications; failed or pending jumps MUST NOT acknowledge controlled unread content, and switching identity MUST reset transient state.
 
 ## DC-AI-003 — Layout Scroll Button
@@ -69,9 +71,9 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/ai/chat`.
-- Existing children, density, gap, streaming, empty-state and manual Load older messages APIs MUST retain their defaults without instantiating a virtualizer; `virtualize={true}` opts in to row rendering, single-flight anchored paging and the guarded 600 px loading boundary.
-- User intent and Jump to latest MUST invalidate pending positioning work while accessible Load older messages and Retry controls remain available, with the virtualizer alone owning row anchoring and deferred measurements preserving the reader's following intent.
-- Unchanged virtualizer inputs MUST NOT schedule new measurements or position reports, while history-mode resize work MUST be coalesced outside observer delivery and cancelled on teardown.
+- Existing children, density, gap, streaming, empty-state and manual Load older messages APIs MUST retain their defaults without instantiating a virtualizer, while non-virtual lists with `scrollToTopAction` MUST auto-load older pages when the top sentinel leaves then re-enters the owning scroll viewport.
+- `virtualize={true}` MUST enable row rendering, single-flight anchored paging and a guarded 600 px loading boundary with fixed or item-aware estimates before DOM measurement; estimator changes MUST invalidate unmounted sizes while retaining measured sizes and the reading anchor or bottom lock, and virtualized layouts MUST avoid redundant Layout message-geometry scans on every scroll and ScrollArea scrollbar animation while measured rows revise the total size.
+- Unchanged virtualizer inputs MUST NOT schedule measurements or position reports; active scrolling MUST coalesce saved-position reports until settlement, native scroll completion MUST flush pending reports when available, teardown MUST preserve the last pending position, and history-mode resize work MUST be coalesced outside observer delivery and cancelled on teardown.
 
 ## DC-AI-005 — Message
 
@@ -176,10 +178,10 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 
 ### Acceptance details
 
-- The public boundary is `@lapismd/design-core/ai/chat`.
-- The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
-- Tool-call disclosure indicators MUST point right while closed and down while open for both grouped calls and individual call details, and single-call rendering MUST remain safe under unchecked-index consumer semantics.
-- Pending and running calls MUST render the public Spinner as a rotating busy indicator.
+- `--ui-ai-chat-tool-width` MUST allow container-relative sizing with a default of `min(100%, 42rem)`; `--ui-ai-chat-tool-trigger-padding-inline` MUST inset single and grouped trigger contents inside their hit/hover surface without moving the icon on hover; its default is zero.
+- The optional `callWrapper?: Snippet<[ToolCallItem, Snippet]>` MUST compose each call’s existing presentation inside its list item, outside disclosure buttons; without it, rendering remains unchanged and grouped calls expose wrappers only when expanded.
+- Tool-call disclosure indicators MUST retain their fixed size beside long titles, point right while closed and down while open for both grouped calls and individual call details, and single-call rendering MUST remain safe under unchecked-index consumer semantics.
+- Pending and running calls MUST render the public Spinner as a rotating busy indicator; an explicit `unknown` execution status MUST show a static status-unavailable indicator, preserve observed details, and MUST NOT imply failure or completion.
 
 ## DC-AI-016 — Dictation Button
 
@@ -212,13 +214,14 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 
 ## DC-AI-019 — Reasoning
 
-**Requirement.** The Reasoning family MUST provide explicitly experimental disclosure for reasoning or progress content.
+**Requirement.** The Reasoning family MUST provide explicitly experimental disclosure for reasoning or progress content. Streaming labels MUST use a left-to-right shimmer with opaque, readable theme colours.
 
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/ai/experimental`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
-- A streaming reasoning row MUST rotate its progress icon unless the user prefers reduced motion.
+- A streaming reasoning row MUST rotate its progress icon and sweep its label from muted foreground to foreground every two seconds; completed rows MUST remain static, and reduced-motion or forced-colours preferences MUST retain plain readable text without animation.
+- Omitting reasoning children MUST render a non-interactive progress status with the same icon and label styling, without an empty disclosure.
 
 ## DC-AI-020 — Typing Indicator
 

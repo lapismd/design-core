@@ -17,7 +17,7 @@ trackers are discovery or progress surfaces, not authorities.
 
 ## Before changing a protected surface
 
-1. Search with `pnpm spec:search -- "<topic or DC-ID>"`.
+1. Search with `pnpm spec:search "<topic or DC-ID>"`.
 2. Open the returned canonical Markdown file at the reported line.
 3. Find the path owner in `spec/src/spec-governance.md#change-map`.
 4. Update the requirement before or with the implementation.
@@ -52,7 +52,7 @@ pnpm spec:validate
 pnpm spec:build
 pnpm spec:first [-- --base <rev> --head <rev>]
 pnpm spec:index [-- --semantic]
-pnpm spec:search -- [--semantic] [--limit N] [--json] "<query or DC-ID>"
+pnpm spec:search [--semantic] [--limit N] [--json] "<query or DC-ID>"
 pnpm spec:check
 pnpm spec:serve
 ```

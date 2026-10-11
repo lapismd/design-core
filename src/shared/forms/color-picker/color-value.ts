@@ -4,10 +4,10 @@ export type ColorPickerFormat = "hex" | "hex-without-hash";
 export function colorValueForPicker(input: string): string | null {
   const trimmed = input.trim();
   const fullHex = /^#?([0-9a-f]{6})$/i.exec(trimmed);
-  if (fullHex) return `#${fullHex[1].toLowerCase()}`;
+  if (fullHex?.[1]) return `#${fullHex[1].toLowerCase()}`;
 
   const shortHex = /^#?([0-9a-f]{3})$/i.exec(trimmed);
-  if (shortHex) {
+  if (shortHex?.[1]) {
     return `#${shortHex[1]
       .split("")
       .map((part) => part + part)

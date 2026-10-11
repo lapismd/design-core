@@ -509,11 +509,6 @@
 }
 
 .ui-minimal-app-shell[data-display-mode="mobile"]
-  .ui-minimal-app-shell__surface-layer-surface {
-  inset-inline-start: 0;
-}
-
-.ui-minimal-app-shell[data-display-mode="mobile"]
   > .ui-minimal-app-shell__composition {
   display: none;
 }

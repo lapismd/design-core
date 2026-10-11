@@ -11,6 +11,7 @@ Filter contracts separate query language, reusable search chrome, and consumer q
 | Search Filter Bar        | `@lapismd/design-core/filter`              | DC-FILTER-003 |
 | Power Search             | Storybook composition                      | DC-FILTER-004 |
 | Filter Guidance          | Documentation surface                      | DC-FILTER-005 |
+| Custom query languages   | `@lapismd/design-core/filter`              | DC-FILTER-006 |
 
 ## DC-FILTER-001 — Shared Filter invariants
 
@@ -62,3 +63,14 @@ Filter contracts separate query language, reusable search chrome, and consumer q
 - Guidance MUST route compact search-panel facets to forms `FilterCommandPicker` and explain the exception for true mode or action controls.
 - Guidance MUST identify `filterSyntax` as the governed disclosure pattern for search-language help.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+
+## DC-FILTER-006 — Custom query languages
+
+**Requirement.** Search Filter Input MUST support consumer-owned CodeMirror languages through `inputMode="custom"` and reactive `editorExtensions`.
+
+### Acceptance details
+
+- Custom mode MUST omit the filter grammar, predicate chips and filter field completion.
+- Updating extensions MUST preserve the editor document, selection and undo history.
+- Custom and filter modes MUST share controlled values, accessible errors, keyboard behavior and owner-document popup disposal.
+- CodeMirror queries MUST preserve multiple lines and expose multiline semantics; `focusAppearance="borderless"` MUST remove focused input chrome while retaining the caret, and invalid inputs MUST have a tinted error background with a spaced diagnostic.

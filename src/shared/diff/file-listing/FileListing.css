@@ -8,6 +8,11 @@
   font-size: 0.8125rem;
 }
 
+/* Split spacing around eager rows; measured wrappers own virtual spacing. */
+.ui-diff-file-listing > .ui-diff-file-listing__row {
+  margin-block: calc(var(--ui-diff-file-listing-row-gap) / 2);
+}
+
 .ui-diff-file-listing__empty {
   margin: 0;
   padding: 1.5rem 0.5rem;

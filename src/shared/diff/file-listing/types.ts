@@ -8,6 +8,11 @@ export interface FileListingFile {
   deletions?: number;
 }
 
+/** Host-owned directory that may be displayed before its children are loaded. */
+export interface FileListingDirectory {
+  path: string;
+}
+
 export interface FileListingFileContext<TFile extends FileListingFile> {
   file: TFile;
   path: string;

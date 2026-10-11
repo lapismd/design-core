@@ -26,7 +26,7 @@
     await userEvent.click(canvas.getByRole("tab", { name: "Details" }));
     await expect(canvas.getByText("Details panel")).toBeVisible();
   }}
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/tabs/switches-panels-chromium.png"],
@@ -45,6 +45,34 @@
       </Tabs.List>
       <Tabs.Content value="overview">Overview panel</Tabs.Content>
       <Tabs.Content value="details">Details panel</Tabs.Content>
+    </Tabs.Root>
+  {/snippet}
+</Story>
+
+<Story
+  name="Readable inactive labels"
+  tags={["visual-pending"]}
+  play={async ({ canvas }) => {
+    const inactive = canvas.getByRole("tab", { name: "Details" });
+    await expect(getComputedStyle(inactive).color).toBe("rgb(36, 41, 47)");
+    canvas.getByRole("tab", { name: "Overview" }).focus();
+    await userEvent.keyboard("{ArrowRight}");
+    await expect(inactive).toHaveFocus();
+  }}
+>
+  {#snippet template()}
+    <Tabs.Root
+      value="overview"
+      style="--ui-tabs-foreground: #24292f; --ui-tabs-background: #f0f0f0; --foreground: #24292f; --muted-foreground: #57606a; --muted: #f0f0f0; --background: #ffffff"
+    >
+      <Tabs.List
+        ><Tabs.Trigger value="overview">Overview</Tabs.Trigger><Tabs.Trigger
+          value="details">Details</Tabs.Trigger
+        ></Tabs.List
+      >
+      <Tabs.Content value="overview">Overview panel</Tabs.Content><Tabs.Content
+        value="details">Details panel</Tabs.Content
+      >
     </Tabs.Root>
   {/snippet}
 </Story>

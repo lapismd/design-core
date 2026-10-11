@@ -206,7 +206,7 @@ The controller constructor accepts these host integrations:
         <code>0</code>
       </td>
       <td>
-        Optional blank width after the final column in wide and fixed modes
+        Optional spacer width after the final column in wide and fixed modes
       </td>
     </tr>
     <tr>
@@ -354,7 +354,9 @@ compose the exported parts yourself:
 
 <Source code={exampleSources.CustomComposition} language="tsx" />
 
-`Body` owns an independent vertical Scroll Area. Its `onScrollNearEnd` callback
+`Body` owns an independent Scroll Area, vertical by default. Set
+`orientation="both"` for wide content or `orientation="horizontal"` for an
+exclusively horizontal body. Its `onScrollNearEnd` callback
 fires whenever the body is within 180 CSS pixels of its bottom. Use it for
 incremental loading. `Item` is a button that accepts native button attributes;
 `selected` sets both `data-selected` and `aria-pressed`, while `disabled`
@@ -370,6 +372,22 @@ as the custom example does.
 `previewOnHover` uses a 600 ms reveal and 120 ms dismissal grace period.
 Clicking performs the durable expanded → collapsed, collapsed → expanded, or
 closed → open and expanded transition.
+
+### Collapsed rail previews
+
+`Column` defaults `previewOnHover` to `true`, with `previewDelay={600}` and
+`previewDismissDelay={120}`. Hover anywhere on a collapsed or floating sticky
+rail to preview its live contents without expanding, scrolling or saving layout.
+The same setting covers custom rails and fixed collapsed columns. Set
+`previewOnHover={false}` on a column to opt out; `Toggle.previewOnHover` and
+`revealOnEdgeHover` remain separate options.
+
+The delay starts on pointer entry and cancels on departure. Previews support
+mouse hover in wide/fixed layouts, while compact/touch use existing explicit
+controls. Pointer or focus inside the preview or its owned menus keeps it open.
+Escape or an outside click dismisses it. Click the rail to expand or use the
+sticky return control to navigate normally. Drafts and internal scroll remain
+in the same mounted content instance across preview and expanded presentation.
 
 ### Column props
 
@@ -446,6 +464,14 @@ attributes and a bindable `ref`:
         <code>edgeRevealLabel</code>
       </td>
       <td>Accessible label for the boundary preview control</td>
+    </tr>
+    <tr>
+      <td>
+        <code>fixed</code>
+      </td>
+      <td>
+        Pins the original expanded panel or collapsed rail; overrides sticky
+      </td>
     </tr>
     <tr>
       <td>
@@ -641,6 +667,34 @@ flow. In wide and fixed sticky canvases, otherwise-unused vertical wheel input
 over a non-scrollable body moves the horizontal track continuously; scrollable
 bodies still consume the motion first, and canvas-edge motion remains available
 to the surrounding page.
+
+## Fixed columns
+
+Set `fixed` on leading `Column` parts to pin the original expanded panel or
+collapsed rail at the viewport's inline start. `fixed` defaults to false and
+wins over `sticky`; `stickyRail` is unused for a fixed column. This is separate
+from `Root displayMode="fixed"`, which selects free scrolling and pixel widths.
+The original content stays mounted as scrolling crosses the pin boundary, so
+focus, drafts, menus, drag targets and independent body scrolling remain usable.
+
+Fixed and sticky requests share one consecutive leading group. An ordinary
+column ends that group. Fixed slots preserve actual widths, margins and the
+canvas gap, while consecutive sticky-only rails remain gapless. Closed and
+path-hidden columns occupy no slot. Collapsed previews anchor to the pinned
+rail. Native logical positioning supports RTL and external Scroll Area viewports.
+
+Wide mode reserves the fixed group outside the adaptive scrolling pair; pinned
+columns resize independently. If the fixed group and scrolling minimums cannot
+fit, trailing fixed columns and subsequent pins temporarily return to flow.
+Fixed-width mode reserves the largest remaining column minimum; wide mode
+reserves the active pair, context, collapsed rails and their spacing. Pinning
+returns automatically when capacity permits. Compact mode ignores `fixed`.
+Neither fallback nor pinning alters widths, collapse state or V2 persistence.
+
+Requested columns expose `data-fixed="true"`; eligible pins additionally expose
+`data-fixed-active="true"` and `data-fixed-state="flowing|stuck"`. A released or
+ineligible request retains only `data-fixed`. These attributes describe transient
+presentation, not controller configuration.
 
 ## Persist layout
 
@@ -1048,6 +1102,14 @@ Override these public tokens on `:root` or a shared ancestor:
     </tr>
     <tr>
       <td>
+        <code>--ui-column-canvas-header-padding-inline-end</code>
+      </td>
+      <td>
+        <code>0.25rem</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
         <code>--ui-column-canvas-gap</code>
       </td>
       <td>
@@ -1203,3 +1265,16 @@ Override these public tokens on `:root` or a shared ancestor:
 
 Production sources use native CSS. Toggle, Close, and sticky return controls
 compose the shared shadcn Button.
+
+### Trailing content
+
+The optional `Root` snippet `trailingSpacer` renders accessible content inside
+the existing wide/fixed spacer when the controller's `trailingSpacerWidth` is
+positive. It registers no column and changes no selection, pair or persistence
+state. Blank spacers remain aria-hidden; compact mode omits trailing content.
+
+<Source code={exampleSources.TrailingSpacer} language="tsx" />
+
+Default toggles and collapsed rails use the compact rectangular Panel Toggle icon.
+Its filled bar previews the next state on hover or keyboard focus and respects
+reduced motion. Custom toggle icons and collapsed-rail snippets remain available.

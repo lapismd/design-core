@@ -563,7 +563,7 @@
         height: calc(var(--spacing) * 4);
       }
       [data-ui-component="dropdown-menu"][data-ui-part="dropdown-menu-sub-trigger"]
-        svg {
+        [data-ui-part="dropdown-menu-sub-trigger-icon"] {
         margin-inline-start: auto;
       }
       :is(

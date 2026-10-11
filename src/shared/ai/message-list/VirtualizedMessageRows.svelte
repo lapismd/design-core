@@ -7,6 +7,8 @@
   import { onDestroy, tick, untrack, type Snippet } from "svelte";
   import { useLayoutContext } from "../context.svelte.js";
   import type { MessageListPosition } from "./position.js";
+  import { resolveMessageListEstimateSize } from "./estimate-size.js";
+  import type { MessageListEstimateSize } from "./estimate-size.js";
 
   let {
     items,
@@ -24,7 +26,7 @@
     items: readonly T[];
     row: Snippet<[T, number]>;
     overscan: number;
-    estimateSize: number;
+    estimateSize: MessageListEstimateSize<T>;
     conversationKey: string;
     initialPosition?: MessageListPosition | undefined;
     onPositionChange?: ((position: MessageListPosition) => void) | undefined;
@@ -45,23 +47,27 @@
   let paginationArmed = false;
   let lastTop = 0;
   let alive = true;
+  let positionReportPending = false;
+  let positionReportTimer: ReturnType<typeof setTimeout> | undefined;
   let priorConfiguration:
     | {
         key: string;
         items: readonly T[];
         margin: number;
-        size: number;
+        estimate: MessageListEstimateSize<T>;
         overscan: number;
         retained: string;
       }
     | undefined;
   onDestroy(() => {
+    flushPositionReport();
     alive = false;
   });
   const virtualizer = createVirtualizer<HTMLElement, HTMLDivElement>({
     count: 0,
     getScrollElement: () => layout?.getScrollContainer() ?? null,
-    estimateSize: () => estimateSize,
+    estimateSize: (index) =>
+      resolveMessageListEstimateSize(estimateSize, items[index], index),
     enabled: false,
     useAnimationFrameWithResizeObserver: true,
     scrollToFn: (offset, options) =>
@@ -103,6 +109,22 @@
     if (position) untrack(() => onPositionChange?.(position));
   }
 
+  function flushPositionReport(force = false) {
+    if (positionReportTimer !== undefined) {
+      clearTimeout(positionReportTimer);
+      positionReportTimer = undefined;
+    }
+    if (!positionReportPending && !force) return;
+    positionReportPending = false;
+    reportPosition();
+  }
+
+  function schedulePositionReport() {
+    positionReportPending = true;
+    if (positionReportTimer !== undefined) clearTimeout(positionReportTimer);
+    positionReportTimer = setTimeout(flushPositionReport, 100);
+  }
+
   function measure(node: HTMLDivElement) {
     untrack(() => get(virtualizer).measureElement(node));
     return {
@@ -122,15 +144,18 @@
     const extra = keep
       .map((id) => nextItems.findIndex((item) => item.id === id))
       .filter((index) => index >= 0);
-    const size = estimateSize,
+    const estimate = estimateSize,
       scan = overscan;
     untrack(() => {
       const retained = JSON.stringify(extra);
+      const estimateChanged =
+        priorConfiguration?.key === key &&
+        priorConfiguration.estimate !== estimate;
       if (
         priorConfiguration?.key === key &&
         priorConfiguration.items === nextItems &&
         priorConfiguration.margin === scrollMargin &&
-        priorConfiguration.size === size &&
+        priorConfiguration.estimate === estimate &&
         priorConfiguration.overscan === scan &&
         priorConfiguration.retained === retained
       )
@@ -139,7 +164,7 @@
         key,
         items: nextItems,
         margin: scrollMargin,
-        size,
+        estimate,
         overscan: scan,
         retained,
       };
@@ -155,7 +180,7 @@
       const restore = restoredKey !== key ? initialPosition : undefined;
       const preserve =
         sameKey &&
-        nextItems !== priorItems &&
+        (nextItems !== priorItems || estimateChanged) &&
         !layout?.streamScroll.isLocked &&
         oldItem;
       priorKey = key;
@@ -171,13 +196,29 @@
         scrollMargin,
         getScrollElement: () => layout?.getScrollContainer() ?? null,
         getItemKey: (index) => nextItems[index]!.id,
-        estimateSize: () => size,
+        estimateSize: (index) =>
+          resolveMessageListEstimateSize(estimate, nextItems[index], index),
         overscan: scan,
         rangeExtractor: (range) =>
           [...new Set([...defaultRangeExtractor(range), ...extra])].sort(
             (a, b) => a - b,
           ),
       });
+      if (estimateChanged) {
+        const mounted = [
+          ...(virtualRef?.querySelectorAll<HTMLDivElement>(
+            ':scope > [data-ui-part="virtual-row"]',
+          ) ?? []),
+        ].map((node) => ({
+          index: Number(node.dataset.index),
+          size: node.getBoundingClientRect().height,
+        }));
+        instance.measure();
+        // Rebuild the cleared range from the new estimator before restoring
+        // measurements for rows whose current DOM is still authoritative.
+        instance.getTotalSize();
+        mounted.forEach(({ index, size }) => instance.resizeItem(index, size));
+      }
       void tick().then(() => {
         if (!alive) return;
         if (
@@ -218,7 +259,7 @@
         }
         if (nextItems.length) {
           restoredKey = key;
-          reportPosition();
+          flushPositionReport(true);
         }
       });
     });
@@ -256,7 +297,7 @@
         void onLoadOlder?.();
       }
       lastTop = top;
-      reportPosition();
+      schedulePositionReport();
     };
     const rememberInteraction = (event: Event) => {
       const target = event.target;
@@ -264,13 +305,17 @@
         activeRowId =
           target.closest<HTMLElement>("[data-message-id]")?.dataset.messageId;
     };
+    const onScrollEnd = () => flushPositionReport();
     viewport.addEventListener("scroll", onScroll, { passive: true });
+    viewport.addEventListener("scrollend", onScrollEnd);
     viewport.addEventListener("focusin", rememberInteraction);
     viewport.addEventListener("pointerdown", rememberInteraction, {
       passive: true,
     });
     return () => {
+      flushPositionReport();
       viewport.removeEventListener("scroll", onScroll);
+      viewport.removeEventListener("scrollend", onScrollEnd);
       viewport.removeEventListener("focusin", rememberInteraction);
       viewport.removeEventListener("pointerdown", rememberInteraction);
     };

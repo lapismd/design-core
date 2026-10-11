@@ -121,18 +121,21 @@
       [data-ui-component="tooltip"][data-ui-part="tooltip-content"] {
         padding-inline: var(
           --ui-tooltip-padding-inline,
-          calc(var(--spacing) * 2.5)
+          calc(var(--spacing) * 3)
         );
       }
       [data-ui-component="tooltip"][data-ui-part="tooltip-content"] {
         padding-block: var(
           --ui-tooltip-padding-block,
-          calc(var(--spacing) * 1)
+          calc(var(--spacing) * 1.5)
         );
       }
       [data-ui-component="tooltip"][data-ui-part="tooltip-content"] {
-        font-size: var(--ui-tooltip-font-size, 0.6875rem);
-        line-height: var(--ui-tooltip-line-height, 1rem);
+        font-size: var(--ui-tooltip-font-size, var(--text-xs));
+        line-height: var(
+          --ui-tooltip-line-height,
+          var(--tw-leading, var(--text-xs--line-height))
+        );
       }
       [data-ui-component="tooltip"][data-ui-part="tooltip-content"] {
         color: var(--ui-tooltip-foreground, var(--background));

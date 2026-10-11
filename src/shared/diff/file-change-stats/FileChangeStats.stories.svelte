@@ -40,6 +40,22 @@
 </Story>
 
 <Story
+  name="Dark counts retain readable contrast"
+  globals={{ colorMode: "dark" }}
+  tags={["visual-pending"]}
+  play={async ({ canvas }) => {
+    await expect(canvas.getByText("+12")).toBeVisible();
+    await expect(canvas.getByText("-3")).toBeVisible();
+  }}
+>
+  {#snippet template()}
+    <div class="p-4">
+      <FileChangeStats additions={12} deletions={3} />
+    </div>
+  {/snippet}
+</Story>
+
+<Story
   name="Hides a zero side"
   play={async ({ canvas }) => {
     await expect(canvas.getByText("+8")).toBeVisible();

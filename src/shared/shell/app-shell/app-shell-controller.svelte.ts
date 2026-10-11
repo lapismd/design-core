@@ -15,6 +15,7 @@ export type AppShellResolvedDisplayMode = Exclude<AppShellDisplayMode, "auto">;
 export type AppShellMobileStage = "left" | "main" | "right";
 export type AppShellMobilePanelKind = "sidebar" | "body-sidebar";
 export type AppShellConstrainedPresentation = "preview" | "replace-main";
+export type AppShellSurfaceLayerMobilePlacement = "active-lane" | "root";
 
 export interface AppShellMobilePanelRegistration {
   /** Stable id used by mobile selectors and targeted toggle actions. */

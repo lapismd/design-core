@@ -14,6 +14,7 @@
   import MessageSquare from "@lucide/svelte/icons/message-square";
   import PanelsTopLeft from "@lucide/svelte/icons/panels-top-left";
   import RotateCcw from "@lucide/svelte/icons/rotate-ccw";
+  import { ScrollArea } from "../scroll-area/index.js";
   import * as ColumnCanvas from "./index.js";
   import { Badge, type BadgeVariant } from "../badge/index.js";
   import { Button } from "../button/index.js";
@@ -58,6 +59,21 @@
 </script>
 
 <script lang="ts">
+  let spacerMode = $state<"fixed" | "compact">("fixed");
+  let spacerClicks = $state(0);
+  const spacerCanvas = createColumnCanvasController({
+    columns: { content: { defaultWidth: 320 } },
+    trailingSpacerWidth: 240,
+  });
+  let styledViewport = $state<HTMLElement | null>(null);
+  let styledVisible = $state(true);
+  const styledCanvas = createColumnCanvasController({
+    columns: {
+      one: { defaultWidth: 320 },
+      two: { defaultWidth: 320 },
+      three: { defaultWidth: 320 },
+    },
+  });
   const basicCanvas = createColumnCanvasController({
     columns: {
       categories: {
@@ -1165,6 +1181,15 @@
       canvas.getByRole("button", { name: "Message Bubble" }),
     );
     await expect(canvas.getByText("Detail")).toBeVisible();
+    const header = canvas
+      .getByText("Detail")
+      .closest("[data-ui-part='column-header']");
+    expect(header).not.toBeNull();
+    if (header) {
+      const style = getComputedStyle(header);
+      expect(style.paddingInlineStart).toBe("12px");
+      expect(style.paddingInlineEnd).toBe("4px");
+    }
     await expect(
       canvas.getByText("@lapismd/design-core/ai/chat"),
     ).toBeVisible();
@@ -1260,7 +1285,7 @@
     await expect(
       canvas.getByRole("button", { name: "Expand Components column" }),
     ).toBeVisible();
-    await expect(canvas.queryByText("Tool Calls")).toBeNull();
+    await expect(canvas.getByText("Tool Calls")).not.toBeVisible();
     await userEvent.click(
       canvas.getByRole("button", { name: "Expand Components column" }),
     );
@@ -1716,9 +1741,59 @@
     });
     expect(responsiveCanvas.getWidth("detail")).toBe(380);
     if (root.getAttribute("data-display-mode") === "wide") {
+      const alignedScrollLeft = root.scrollLeft;
+      const detailWidthBeforeSplit = detail!.getBoundingClientRect().width;
+      responsiveCanvas.setPairSplit("components", "detail", 0.6);
+      await waitFor(() => {
+        expect(detail!.getBoundingClientRect().width).toBeLessThan(
+          detailWidthBeforeSplit,
+        );
+        expect(root.scrollLeft).toBeCloseTo(alignedScrollLeft, 1);
+        const contentEnd =
+          root.getBoundingClientRect().right -
+          Number.parseFloat(getComputedStyle(root).paddingInlineEnd);
+        expect(
+          Math.abs(detail!.getBoundingClientRect().right - contentEnd),
+        ).toBeLessThan(2);
+      });
+      const resizeHandle = canvasElement.querySelector<HTMLElement>(
+        '[data-column-id="components"] [data-resize-mode="pair"]',
+      )!;
+      const resizeBounds = resizeHandle.getBoundingClientRect();
+      const resizeX = resizeBounds.left + resizeBounds.width / 2;
+      const resizeY = resizeBounds.top + resizeBounds.height / 2;
+      const detailWidthBeforeDrag = detail!.getBoundingClientRect().width;
+      await fireEvent.pointerDown(resizeHandle, {
+        pointerId: 1,
+        isPrimary: true,
+        button: 0,
+        clientX: resizeX,
+        clientY: resizeY,
+      });
+      await fireEvent.pointerMove(window, {
+        pointerId: 1,
+        clientX: resizeX + 12,
+        clientY: resizeY,
+      });
+      await fireEvent.pointerUp(window, {
+        pointerId: 1,
+        clientX: resizeX + 12,
+        clientY: resizeY,
+      });
       root.scrollTo({ left: 0, behavior: "auto" });
       await fireEvent.scroll(root);
       await waitFor(() => {
+        expect(detail!.getBoundingClientRect().width).toBeLessThan(
+          detailWidthBeforeDrag,
+        );
+        expect(root.scrollLeft).toBeLessThan(2);
+      });
+      responsiveCanvas.resetPairSplit("components", "detail");
+      await waitFor(() => {
+        expect(detail!.getBoundingClientRect().width).toBeCloseTo(
+          detailWidthBeforeSplit,
+          1,
+        );
         expect(root.scrollLeft).toBeLessThan(2);
       });
     }
@@ -2024,5 +2099,148 @@
         </ColumnCanvas.Root>
       </div>
     </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Styled scroll canvas"
+  tags={["visual-pending"]}
+  play={async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const root = canvas.getByRole("region", { name: "Styled canvas" });
+    const viewport = root.closest<HTMLElement>(
+      '[data-ui-part="scroll-area-viewport"]',
+    )!;
+    await waitFor(() =>
+      expect(viewport.scrollWidth).toBeGreaterThan(viewport.clientWidth),
+    );
+    viewport.scrollLeft = 0;
+    viewport.scrollTo({ left: 180, behavior: "auto" });
+    await waitFor(() => expect(viewport.scrollLeft).toBeGreaterThan(0));
+    expect(root.scrollLeft).toBe(0);
+    for (const body of canvasElement.querySelectorAll(
+      '[data-ui-part="column-body"]',
+    ))
+      expect(
+        body.querySelector('[data-scroll-strategy="styled"]'),
+      ).not.toBeNull();
+    expect(root.getBoundingClientRect().height).toBeLessThanOrEqual(360);
+    viewport.scrollTo({ left: viewport.scrollWidth, behavior: "auto" });
+    await waitFor(() =>
+      expect(root.querySelector('[data-column-id="one"]')).toHaveAttribute(
+        "data-sticky-state",
+        "stuck",
+      ),
+    );
+    const stack = root.querySelector<HTMLElement>(
+      '[data-ui-part="sticky-stack"]',
+    )!;
+    expect(stack.getBoundingClientRect().left).toBeCloseTo(
+      viewport.getBoundingClientRect().left,
+      0,
+    );
+    const returnButton = canvas.getByRole("button", {
+      name: "Return to one column",
+    });
+    expect(returnButton).toBeInTheDocument();
+    await fireEvent.click(returnButton);
+    await waitFor(() => expect(viewport.scrollLeft).toBe(0));
+  }}
+>
+  {#snippet template()}
+    {#if styledVisible}
+      <div style="width: 600px; height: 360px">
+        <ScrollArea
+          orientation="horizontal"
+          scrollStrategy="styled"
+          fillContent
+          type="always"
+          bind:viewportRef={styledViewport}
+          style="height:100%;width:100%"
+        >
+          <ColumnCanvas.Root
+            controller={styledCanvas}
+            scrollViewport={styledViewport}
+            displayMode="fixed"
+            aria-label="Styled canvas"
+          >
+            {#each ["one", "two", "three"] as id}
+              <ColumnCanvas.Column {id} title={id} sticky={id === "one"}
+                ><ColumnCanvas.Body scrollStrategy="styled"
+                  >{#each Array.from( { length: 25 }, ) as _, index}<ColumnCanvas.Item
+                      >Item {index + 1}</ColumnCanvas.Item
+                    >{/each}</ColumnCanvas.Body
+                ></ColumnCanvas.Column
+              >
+            {/each}
+          </ColumnCanvas.Root>
+        </ScrollArea>
+      </div>
+    {/if}
+    <Button onclick={() => (styledVisible = !styledVisible)}
+      >{styledVisible ? "Hide styled canvas" : "Show styled canvas"}</Button
+    >
+  {/snippet}
+</Story>
+
+<Story
+  name="Interactive trailing spacer"
+  tags={["visual-pending"]}
+  parameters={{
+    docs: {
+      source: {
+        code: exampleSources.TrailingSpacer,
+        language: "tsx",
+        type: "code",
+      },
+    },
+  }}
+  play={async ({ canvas, canvasElement }) => {
+    const root = canvasElement.querySelector<HTMLElement>(
+      '[data-ui-part="root"]',
+    )!;
+    const spacer = root.querySelector<HTMLElement>(
+      '[data-ui-part="trailing-spacer"]',
+    )!;
+    await expect(
+      within(spacer).getByRole("button", { name: "Create item" }),
+    ).toBeVisible();
+    await expect(spacer).not.toHaveAttribute("aria-hidden", "true");
+    await expect(spacer.getBoundingClientRect().width).toBe(240);
+    await expect(root.querySelectorAll('[data-ui-part="column"]')).toHaveLength(
+      1,
+    );
+    await userEvent.click(
+      within(spacer).getByRole("button", { name: "Create item" }),
+    );
+    await expect(canvas.getByRole("status")).toHaveTextContent("Created 1");
+    await userEvent.click(canvas.getByRole("button", { name: "Use compact" }));
+    await waitFor(() =>
+      expect(root.querySelector('[data-ui-part="trailing-spacer"]')).toBeNull(),
+    );
+    await userEvent.click(canvas.getByRole("button", { name: "Use fixed" }));
+    await expect(
+      canvas.getByRole("button", { name: "Create item" }),
+    ).toBeVisible();
+  }}
+>
+  {#snippet template()}
+    <Button
+      onclick={() =>
+        (spacerMode = spacerMode === "fixed" ? "compact" : "fixed")}
+      >Use {spacerMode === "fixed" ? "compact" : "fixed"}</Button
+    >
+    <div style="height:420px;width:960px;max-width:100%">
+      <ColumnCanvas.Root controller={spacerCanvas} displayMode={spacerMode}>
+        {#snippet trailingSpacer()}
+          <Button onclick={() => spacerClicks++}>Create item</Button>
+        {/snippet}
+        <ColumnCanvas.Column id="content" title="Content"
+          ><ColumnCanvas.Body>Existing content</ColumnCanvas.Body
+          ></ColumnCanvas.Column
+        >
+      </ColumnCanvas.Root>
+    </div>
+    <p role="status">Created {spacerClicks}</p>
   {/snippet}
 </Story>

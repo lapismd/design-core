@@ -139,6 +139,8 @@ export const OverflowingResults = `<script lang="ts">
 
 export const FiltersAndFooter = `<script lang="ts">
 	import * as CommandView from "@lapismd/design-core/shadcn/command-view";
+	import Columns2Icon from "@lucide/svelte/icons/columns-2";
+	import SettingsIcon from "@lucide/svelte/icons/settings";
 
 	let tab = $state("all");
 </script>
@@ -152,7 +154,15 @@ export const FiltersAndFooter = `<script lang="ts">
 			{ id: "actions", label: "Actions" },
 			{ id: "settings", label: "Settings" },
 		]}
-	/>
+	>
+		{#snippet start({ tab })}
+			{#if tab.id === "actions"}
+				<Columns2Icon />
+			{:else if tab.id === "settings"}
+				<SettingsIcon />
+			{/if}
+		{/snippet}
+	</CommandView.Filters>
 	<CommandView.List>
 		<CommandView.Empty>No results found.</CommandView.Empty>
 		<CommandView.Group heading="Workspace">

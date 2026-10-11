@@ -27,7 +27,7 @@ The root package manifest defines the supported import boundaries. Family barrel
 - Each export, including the canonical Storybook App Shell reference fixture, must resolve to tracked source or the documented workspace build output; the fixture MUST render the same Design Core-owned composition used by the two-expanded-sidebars scenario and expose bounded content extension points, including an optional right-sidebar toggle, so consumer catalogs do not copy shell markup or styling.
 - Reusable form families MAY expose focused public subpaths that avoid loading unrelated forms from the barrel.
 - Package checks must fail when the mapped entry point is stale or missing.
-- Tool-only dependencies must remain outside runtime exports and be pinned where reproducibility requires it.
+- Tool-only dependencies, including declarations for test-only DOM fixtures, must remain outside runtime exports and be pinned where reproducibility requires it.
 
 ## DC-PKG-002 — Shadcn exports
 
@@ -107,10 +107,10 @@ The root package manifest defines the supported import boundaries. Family barrel
 
 ### Acceptance details
 
-- Mira must resolve through a published npm semver dependency in the root manifest and lockfile.
+- Mira must resolve through a published npm semver dependency that admits compatible pre-1.0 patch releases; optional search tooling remains outside the normal validation dependency graph.
 - Published development tooling dependencies must use npm semver ranges; pull requests and pushes to `main` must run the complete nonvisual check suite before the full and production-only dependency audits, using GitHub Actions that do not depend on the deprecated Node.js 20 action runtime.
-- The tarball must omit repository-only files, and clean consumers must resolve exported source paths using declared dependencies.
-- Post-publication verification must tolerate bounded npm registry visibility delay before failing a clean install, integrity, or provenance check.
+- The tarball must omit repository-only files and tolerate bounded npm registry visibility delay during post-publication verification.
+- Package checks must pack source even when its version is already published; registry and local archives must prepare rune modules and declarations, preserve public import names, and pass cold Svelte dependency prebundling with declared dependencies; the clean packed production graph must pass its own audit independently of workspace overrides.
 
 ## DC-PKG-010 — Diff exports
 

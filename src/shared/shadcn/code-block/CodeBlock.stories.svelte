@@ -26,6 +26,8 @@ export function App() {
     { length: 16 },
     (_, i) => `const line${i + 1} = ${i + 1};`,
   ).join("\n");
+
+  const repeatedText = 'export const greeting: string = "Hello from JJ";';
 </script>
 
 <script lang="ts">
@@ -42,6 +44,28 @@ export function App() {
 >
   {#snippet template()}
     <CodeBlock code={sampleTsx} language="tsx" />
+  {/snippet}
+</Story>
+
+<Story
+  name="Repeated plain text segments"
+  tags={["skip-visual"]}
+  play={async ({ canvas }) => {
+    const content = canvas
+      .getByRole("group", { name: "typescript" })
+      .querySelector('[data-ui-part="code-block-line-content"]');
+    await expect(content).toBeVisible();
+    await expect(content?.textContent).toBe(repeatedText);
+    await expect(content?.querySelectorAll("span").length).toBeGreaterThan(1);
+  }}
+>
+  {#snippet template()}
+    <CodeBlock
+      code={repeatedText}
+      language="typescript"
+      highlightMode="spans"
+      hasLineNumbers
+    />
   {/snippet}
 </Story>
 
@@ -218,6 +242,24 @@ export function App() {
       .querySelector(".ui-code-token-keyword");
     await expect(token).toBeTruthy();
     await expect(token!).toHaveTextContent("def");
+    // Simulate a host that rejects injected style elements. Bundled CSS must
+    // still paint tokens, independent of earlier range-mode stories.
+    const injected = Array.from(
+      document.querySelectorAll<HTMLStyleElement>(
+        "style[data-ui-code-highlight-styles]",
+      ),
+    ).map((element) => ({
+      sheet: element.sheet!,
+      disabled: element.sheet!.disabled,
+    }));
+    try {
+      for (const { sheet } of injected) sheet.disabled = true;
+      await expect(getComputedStyle(token!).color).not.toBe(
+        getComputedStyle(token!.closest("code")!).color,
+      );
+    } finally {
+      for (const { sheet, disabled } of injected) sheet.disabled = disabled;
+    }
   }}
 >
   {#snippet template()}

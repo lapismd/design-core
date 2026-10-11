@@ -376,6 +376,7 @@
   play={async ({ canvas, canvasElement }) => {
     const commandView = expectCommandView(canvasElement);
     const scrollArea = expectCommandViewScrollArea(canvasElement);
+    expect(scrollArea.dataset.scrollStrategy).toBe("styled");
     const viewport = scrollArea.querySelector<HTMLElement>(
       '[data-ui-part="scroll-area-viewport"]',
     );
@@ -426,7 +427,7 @@
     <div class="max-w-md">
       <CommandView.Root>
         <CommandView.Input placeholder="Type a command or search..." />
-        <CommandView.List>
+        <CommandView.List scrollStrategy="styled">
           <CommandView.Empty>No results found.</CommandView.Empty>
           <CommandView.Group heading="Commands and actions">
             {#each overflowCommands as command (command.id)}
@@ -450,6 +451,7 @@
     const tablist = canvas.getByRole("tablist", { name: "Result filters" });
     expect(tablist).toBeVisible();
     const actions = canvas.getByRole("tab", { name: "Actions" });
+    expect(actions.querySelector("svg")).not.toBeNull();
     await userEvent.click(actions);
     expect(actions).toHaveAttribute("aria-selected", "true");
     expect(
@@ -491,7 +493,15 @@
             { id: "actions", label: "Actions" },
             { id: "settings", label: "Settings" },
           ]}
-        />
+        >
+          {#snippet start({ tab })}
+            {#if tab.id === "actions"}
+              <Columns2Icon />
+            {:else if tab.id === "settings"}
+              <SettingsIcon />
+            {/if}
+          {/snippet}
+        </CommandView.Filters>
         <CommandView.List>
           <CommandView.Empty>No results found.</CommandView.Empty>
           <CommandView.Group heading="Workspace">

@@ -1,9 +1,11 @@
 import assert from "node:assert/strict";
 import {
   chmodSync,
+  copyFileSync,
   existsSync,
   mkdirSync,
   readFileSync,
+  rmSync,
   writeFileSync,
 } from "node:fs";
 import { mkdtempSync } from "node:fs";
@@ -149,4 +151,56 @@ test("release verify stops after bounded npm registry visibility attempts", () =
     result.stderr,
     /@lapismd\/design-core@0\.2\.1 is not published on https:\/\/registry\.npmjs\.org/,
   );
+});
+
+test("pack-check does not skip packaging failures when the version is published", () => {
+  const temporary = mkdtempSync(path.join(tmpdir(), "design-core-pack-test-"));
+  try {
+    const binDir = path.join(temporary, "bin");
+    mkdirSync(binDir);
+    const scriptsDir = path.join(temporary, "scripts");
+    mkdirSync(scriptsDir);
+    const fixtureScript = path.join(scriptsDir, "design-core-release.mjs");
+    copyFileSync(releaseScript, fixtureScript);
+    copyFileSync(
+      path.join(root, "scripts", "pack-local.mjs"),
+      path.join(scriptsDir, "pack-local.mjs"),
+    );
+    copyFileSync(
+      path.join(root, "package.json"),
+      path.join(temporary, "package.json"),
+    );
+    writeFakeNpm(binDir);
+    const packLog = path.join(temporary, "pack.json");
+    const fakePnpm = path.join(binDir, "pnpm");
+    writeFileSync(
+      fakePnpm,
+      `#!/usr/bin/env node
+import { writeFileSync } from "node:fs";
+writeFileSync(process.env.FAKE_PACK_LOG, JSON.stringify(process.argv.slice(2)));
+console.error("fixture packaging failure");
+process.exit(71);
+`,
+    );
+    chmodSync(fakePnpm, 0o755);
+    const version = JSON.parse(
+      readFileSync(path.join(root, "package.json"), "utf8"),
+    ).version;
+    const result = spawnSync(process.execPath, [fixtureScript, "pack-check"], {
+      cwd: temporary,
+      encoding: "utf8",
+      env: {
+        ...process.env,
+        PATH: `${binDir}${path.delimiter}${process.env.PATH}`,
+        FAKE_NPM_STATE: path.join(temporary, "npm.json"),
+        FAKE_NPM_VERSION: version,
+        FAKE_PACK_LOG: packLog,
+      },
+    });
+    assert.notEqual(result.status, 0);
+    assert.match(result.stderr, /fixture packaging failure/);
+    assert.equal(JSON.parse(readFileSync(packLog, "utf8"))[0], "pack");
+  } finally {
+    rmSync(temporary, { recursive: true, force: true });
+  }
 });

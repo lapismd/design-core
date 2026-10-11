@@ -1,6 +1,8 @@
 # Forms / Inputs
 
-Form inputs provide higher-level controlled editing patterns composed from shared primitives. Cross-family composition follows the canonical [`Forms guidance`](guidance.md).
+Picker option and preview types are exported from TypeScript modules so strict source consumers can use the Forms barrel without Svelte type synthesis.
+
+Form inputs provide higher-level controlled editing patterns composed from shared primitives. Cross-family composition follows the canonical [`Forms guidance`](guidance.md). Strict source-consumer compatibility for shared input helpers follows the shared Forms invariants in [`Forms / Core and orchestrators`](core-and-orchestrators.md#dc-form-001--shared-forms-invariants).
 
 ## Public surface coverage
 
@@ -90,6 +92,7 @@ Form inputs provide higher-level controlled editing patterns composed from share
 
 - The public boundary is `@lapismd/design-core/forms`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- Selection acceptance MUST confirm that the option popup has closed before auditing the settled accessible state.
 
 ## DC-FORM-013 — Inline Option Picker
 

@@ -16,5 +16,6 @@ export {
 
 export {
   SCROLL_AREA_VISIBILITY_ATTRIBUTE,
+  type ScrollAreaStrategy,
   type ScrollAreaVisibility,
 } from "./scroll-area-model.js";
