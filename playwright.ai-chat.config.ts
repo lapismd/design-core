@@ -15,7 +15,7 @@ export default defineConfig({
   },
   webServer: {
     command: "pnpm storybook:ui",
-    url: baseURL,
+    url: `${baseURL}/__lapis_catalog_ready`,
     reuseExistingServer: true,
     timeout: 120_000,
   },

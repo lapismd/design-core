@@ -51,7 +51,7 @@ Storybook is the interactive catalog and acceptance surface. It documents compon
 - Svelte runtime diagnostics, including `derived_inert`, MUST fail browser tests during rendering, interactions, and teardown through retained diagnostics checked after each story and final suite cleanup, even when cleanup catches the immediately thrown error.
 - Storybook documentation must link or derive from the owning source instead of copying normative contracts.
 - Storybook host addons must resolve from published or repository-owned package boundaries rather than a removed private workspace package.
-- Browser-test dependencies that Vite discovers through editor stories MUST be prebundled before the suite starts so a cold run cannot invalidate active tests with a dependency-optimization reload.
+- Browser suites MUST prepare the dev catalog and Vitest from the same explicit runtime, icon and parser dependency list and await compiled shared client entries with settled static imports before starting interaction readiness clocks.
 
 ## DC-CAT-005 — Specification mirrors
 

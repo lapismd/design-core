@@ -40,7 +40,7 @@ export default defineConfig({
       `STORYBOOK_EXTRA_PORTS='${visualPort} ${port + 90}'`,
       "pnpm storybook",
     ].join(" "),
-    url: `${baseURL}/index.json`,
+    url: `${baseURL}/__lapis_catalog_ready`,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
   },

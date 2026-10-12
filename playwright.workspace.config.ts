@@ -10,6 +10,7 @@ const baseURL = `http://127.0.0.1:${port}`;
 export default defineConfig({
   testDir: "./tests/workspace",
   fullyParallel: false,
+  workers: 1,
   timeout: 60_000,
   expect: {
     timeout: 15_000,
@@ -35,7 +36,7 @@ export default defineConfig({
       `STORYBOOK_EXTRA_PORTS='${visualPort} ${port + 90}'`,
       "pnpm storybook",
     ].join(" "),
-    url: `${baseURL}/index.json`,
+    url: `${baseURL}/__lapis_catalog_ready`,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
   },

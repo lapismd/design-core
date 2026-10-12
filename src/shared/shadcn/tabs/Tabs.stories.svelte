@@ -1,6 +1,6 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import { expect, userEvent } from "storybook/test";
+  import { expect, userEvent, waitFor } from "storybook/test";
   import * as Tabs from "./index.js";
 
   const { Story } = defineMeta({
@@ -73,6 +73,37 @@
       <Tabs.Content value="overview">Overview panel</Tabs.Content><Tabs.Content
         value="details">Details panel</Tabs.Content
       >
+    </Tabs.Root>
+  {/snippet}
+</Story>
+
+<Story
+  name="Line indicator"
+  tags={["visual-pending"]}
+  play={async ({ canvas }) => {
+    const overview = canvas.getByRole("tab", { name: "Overview" });
+    const details = canvas.getByRole("tab", { name: "Details" });
+    await expect(getComputedStyle(overview, "::after").height).toBe("2px");
+    await expect(getComputedStyle(overview, "::after").opacity).toBe("1");
+    await expect(getComputedStyle(details, "::after").opacity).toBe("0");
+    await userEvent.click(details);
+    await expect(canvas.getByText("Details panel")).toBeVisible();
+    await waitFor(() =>
+      expect(getComputedStyle(details, "::after").opacity).toBe("1"),
+    );
+    await waitFor(() =>
+      expect(getComputedStyle(overview, "::after").opacity).toBe("0"),
+    );
+  }}
+>
+  {#snippet template()}
+    <Tabs.Root value="overview">
+      <Tabs.List variant="line">
+        <Tabs.Trigger value="overview">Overview</Tabs.Trigger>
+        <Tabs.Trigger value="details">Details</Tabs.Trigger>
+      </Tabs.List>
+      <Tabs.Content value="overview">Overview panel</Tabs.Content>
+      <Tabs.Content value="details">Details panel</Tabs.Content>
     </Tabs.Root>
   {/snippet}
 </Story>

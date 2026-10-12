@@ -2,6 +2,8 @@ import type { StorybookConfig } from "@storybook/svelte-vite";
 import { fileURLToPath } from "node:url";
 import remarkGfm from "remark-gfm";
 import { mergeConfig } from "vite";
+import { storybookBrowserDependencies } from "./dependency-optimization.js";
+import { catalogReadinessPlugin } from "./catalog-readiness.js";
 
 const config: StorybookConfig = {
   stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|ts|tsx|svelte)"],
@@ -60,6 +62,10 @@ const config: StorybookConfig = {
   viteFinal: async (viteConfig) => {
     // Visual Delta plugins register via the addon preset's viteFinal.
     return mergeConfig(viteConfig, {
+      plugins: [catalogReadinessPlugin()],
+      optimizeDeps: {
+        include: storybookBrowserDependencies,
+      },
       resolve: {
         alias: {
           "@lapismd/design-core/shadcn": fileURLToPath(

@@ -12,6 +12,12 @@ Bits UI resolves from the published `^2.19.5` range, including upstream Scroll
 Area resize and text-selection teardown fixes. Runtime diagnostics remain fatal
 in Storybook browser tests, including dependency-originated diagnostics.
 
+The development catalog and Storybook test host share one dependency-preparation
+inventory, including the exact Lucide imports discovered in catalog sources.
+Browser acceptance waits for client compilation and pending import requests to
+settle through the fail-closed catalog readiness endpoint. Workspace pointer
+acceptance uses one worker against that shared development host.
+
 Release preparation uses the published Spec Validator 0.1.4 range and Changesets 3. Optional QMD search remains available when installed by the developer; normal
 validation does not install its model/native dependency graph. The supported Node
 range follows Changesets 3. Declared renderer and tooling overrides retain patched
