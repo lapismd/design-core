@@ -33,6 +33,7 @@
 </script>
 
 <script lang="ts">
+  let overlayToggleSides = $state<("left" | "right")[]>([]);
   let saveStatus = $state("No layout saved");
   let nextTab = 1;
 
@@ -513,6 +514,79 @@
         controller={constrainedController}
         pane={liveConstrainedTabs}
         createTab={createStoryTab}
+      />
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Overlay window controls safe area"
+  tags={["visual-pending"]}
+  play={async ({ canvas, canvasElement }) => {
+    interactionController.exitFocusMode();
+    const chrome = canvasElement.querySelector<HTMLElement>(
+      ".ui-workspace-tabs__header-main",
+    )!;
+    const frame = chrome.closest<HTMLElement>(
+      ".ui-workspace-tabs-story-frame",
+    )!;
+    try {
+      frame.style.setProperty(
+        "--ui-workspace-window-controls-inline-start",
+        "40px",
+      );
+      frame.style.setProperty(
+        "--ui-workspace-window-controls-overlay-inline-start",
+        "80px",
+      );
+      for (const sides of [[], ["left", "right"]] as ("left" | "right")[][]) {
+        overlayToggleSides = sides;
+        await waitFor(() =>
+          expect(getComputedStyle(chrome).paddingInlineStart).toBe(
+            sides.length ? "48px" : "8px",
+          ),
+        );
+        await userEvent.click(
+          canvas.getByRole("button", { name: "Maximize tab group" }),
+        );
+        await waitFor(() =>
+          expect(getComputedStyle(chrome).paddingInlineStart).toBe("88px"),
+        );
+        frame.style.removeProperty(
+          "--ui-workspace-window-controls-overlay-inline-start",
+        );
+        await waitFor(() =>
+          expect(getComputedStyle(chrome).paddingInlineStart).toBe("8px"),
+        );
+        frame.style.setProperty(
+          "--ui-workspace-window-controls-overlay-inline-start",
+          "80px",
+        );
+        await userEvent.click(
+          canvas.getByRole("button", { name: "Restore tab group" }),
+        );
+        await waitFor(() =>
+          expect(getComputedStyle(chrome).paddingInlineStart).toBe(
+            sides.length ? "48px" : "8px",
+          ),
+        );
+      }
+    } finally {
+      interactionController.exitFocusMode();
+      frame.style.removeProperty("--ui-workspace-window-controls-inline-start");
+      frame.style.removeProperty(
+        "--ui-workspace-window-controls-overlay-inline-start",
+      );
+      overlayToggleSides = [];
+    }
+  }}
+>
+  {#snippet template()}
+    <div class="ui-workspace-tabs-story-frame">
+      <WorkspaceTabs
+        controller={interactionController}
+        pane={liveInteractionTabs}
+        sidebarToggleSides={overlayToggleSides}
       />
     </div>
   {/snippet}

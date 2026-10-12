@@ -169,3 +169,11 @@ Palette presentation remains DC-WS-010 and DC-WS-053 through DC-WS-058.
 - Selecting a destination MUST move the tab into that dock's tabs pane, activate it, and open the dock.
 - The destination that already contains the tab MUST be disabled.
 - Controller tests MUST cover a successful dock move, and the Workspace Tabs pane-menu story MUST expose the submenu labels and icons.
+
+## Host window-controls geometry
+
+The workspace token surface exposes the full-window overlay inset separately
+from ordinary header clearance. Maximized top and stacked groups follow
+DC-WS-070; hosts set the full inset without subtracting ribbon width.
+Settings heading tokens retain configurable typography with bold defaults
+under DC-WS-069.

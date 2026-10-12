@@ -178,7 +178,7 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 - The token MUST default to `0px` when a host does not supply it.
 - Top tabs MUST add the inset to their existing header-main start padding.
 - Stacked tabs MUST apply the inset to the complete leading chrome row.
-- Chrome without a left-sidebar reopen control MUST remain unshifted.
+- Non-maximized chrome without a left-sidebar reopen control MUST remain unshifted.
 
 ## DC-WS-063 — Workspace tab cursors
 
@@ -303,7 +303,7 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 
 ### Acceptance details
 
-- Default headings MUST use the existing 1rem size and regular weight; Lapis resolves them to 16px and 400.
+- Default headings MUST use the existing 1rem size and bold weight; Lapis resolves them to 16px and 700.
 - Ancestor overrides of `--ui-workspace-settings-heading-size` and `--ui-workspace-settings-heading-weight` MUST control these headings without private selectors.
 - Settings catalog acceptance MUST verify the rendered heading size, weight, and brand sans family.
 
@@ -525,3 +525,13 @@ sidebar destinations marked with the `move` icon.
 - Interactive descendants MUST set `data-desktop-drag-region="false"` so they compute `no-drag`.
 - Startup failure disclosures and actions MUST retain pointer and keyboard activation inside the surrounding drag region.
 - Sidebar tab rows MUST remain unmarked while the unused tab-strip spacer MUST be a drag region, so native window drag does not capture pane-to-pane tab moves.
+
+## DC-WS-070 — Maximized window-controls safe area
+
+**Requirement.** Maximized top and stacked groups MUST consume the full-window host inset `--ui-workspace-window-controls-overlay-inline-start`, independent of sidebar reopen controls.
+
+### Acceptance details
+
+- The overlay token MUST default to `0px` and replace the ordinary ribbon-adjusted inset during focus mode.
+- Top tabs MUST add the overlay inset to existing start padding; stacked tabs MUST inset their complete chrome row.
+- Restore MUST return to ordinary header geometry without changing sidebar state.

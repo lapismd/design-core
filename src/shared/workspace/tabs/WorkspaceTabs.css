@@ -52,6 +52,14 @@
   );
 }
 
+.ui-workspace-tabs[data-workspace-focus-mode="true"]
+  > .ui-workspace-tabs__header
+  > .ui-workspace-tabs__header-main {
+  padding-inline-start: calc(
+    8px + var(--ui-workspace-window-controls-overlay-inline-start, 0px)
+  );
+}
+
 .ui-workspace-tabs__left-toggle,
 .ui-workspace-tabs__right-toggle,
 .ui-workspace-tabs__overflow {

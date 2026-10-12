@@ -130,7 +130,10 @@
         outline-style: none;
       }
       [data-ui-component="tabs"][data-ui-part="tabs-list"]:is(
-          :where(.group\/tabs)[data-orientation="vertical"] *
+          :where(
+              [data-ui-component="tabs"][data-ui-part="tabs"]
+            )[data-orientation="vertical"]
+            *
         ),
       .group-data-\[orientation\=vertical\]\/tabs\:h-fit:is(
           :where(
@@ -141,7 +144,10 @@
         height: fit-content;
       }
       [data-ui-component="tabs"][data-ui-part="tabs-trigger"]:is(
-          :where(.group\/tabs)[data-orientation="vertical"] *
+          :where(
+              [data-ui-component="tabs"][data-ui-part="tabs"]
+            )[data-orientation="vertical"]
+            *
         ),
       .group-data-\[orientation\=vertical\]\/tabs\:w-full:is(
           :where(
@@ -152,7 +158,10 @@
         width: 100%;
       }
       [data-ui-component="tabs"][data-ui-part="tabs-list"]:is(
-          :where(.group\/tabs)[data-orientation="vertical"] *
+          :where(
+              [data-ui-component="tabs"][data-ui-part="tabs"]
+            )[data-orientation="vertical"]
+            *
         ),
       .group-data-\[orientation\=vertical\]\/tabs\:flex-col:is(
           :where(
@@ -163,7 +172,10 @@
         flex-direction: column;
       }
       [data-ui-component="tabs"][data-ui-part="tabs-trigger"]:is(
-          :where(.group\/tabs)[data-orientation="vertical"] *
+          :where(
+              [data-ui-component="tabs"][data-ui-part="tabs"]
+            )[data-orientation="vertical"]
+            *
         ),
       .group-data-\[orientation\=vertical\]\/tabs\:justify-start:is(
           :where(
@@ -174,7 +186,10 @@
         justify-content: flex-start;
       }
       [data-ui-component="tabs"][data-ui-part="tabs-trigger"]:is(
-          :where(.group\/tabs-list)[data-variant="line"] *
+          :where(
+              [data-ui-component="tabs"][data-ui-part="tabs-list"]
+            )[data-variant="line"]
+            *
         ),
       .group-data-\[variant\=line\]\/tabs-list\:bg-transparent:is(
           :where(
@@ -185,7 +200,10 @@
         background-color: #0000;
       }
       [data-ui-component="tabs"][data-ui-part="tabs-list"]:is(
-          :where(.group\/tabs):where([data-orientation="horizontal"]) *
+          :where([data-ui-component="tabs"][data-ui-part="tabs"]):where(
+              [data-orientation="horizontal"]
+            )
+            *
         ),
       .group-data-horizontal\/tabs\:h-9:is(
           :where([data-ui-component="tabs"][data-ui-part="tabs"]):where(
@@ -220,7 +238,10 @@
         );
       }
       [data-ui-component="tabs"][data-ui-part="tabs-trigger"]:is(
-          :where(.group\/tabs)[data-orientation="horizontal"] *
+          :where(
+              [data-ui-component="tabs"][data-ui-part="tabs"]
+            )[data-orientation="horizontal"]
+            *
         ):after,
       .group-data-\[orientation\=horizontal\]\/tabs\:after\:inset-x-0:is(
           :where(
@@ -232,7 +253,10 @@
         inset-inline: 0;
       }
       [data-ui-component="tabs"][data-ui-part="tabs-trigger"]:is(
-          :where(.group\/tabs)[data-orientation="horizontal"] *
+          :where(
+              [data-ui-component="tabs"][data-ui-part="tabs"]
+            )[data-orientation="horizontal"]
+            *
         ):after,
       .group-data-\[orientation\=horizontal\]\/tabs\:after\:bottom-\[-5px\]:is(
           :where(
@@ -244,7 +268,10 @@
         bottom: -5px;
       }
       [data-ui-component="tabs"][data-ui-part="tabs-trigger"]:is(
-          :where(.group\/tabs)[data-orientation="horizontal"] *
+          :where(
+              [data-ui-component="tabs"][data-ui-part="tabs"]
+            )[data-orientation="horizontal"]
+            *
         ):after,
       .group-data-\[orientation\=horizontal\]\/tabs\:after\:h-0\.5:is(
           :where(
@@ -256,7 +283,10 @@
         height: calc(var(--spacing) * 0.5);
       }
       [data-ui-component="tabs"][data-ui-part="tabs-trigger"]:is(
-          :where(.group\/tabs)[data-orientation="vertical"] *
+          :where(
+              [data-ui-component="tabs"][data-ui-part="tabs"]
+            )[data-orientation="vertical"]
+            *
         ):after,
       .group-data-\[orientation\=vertical\]\/tabs\:after\:inset-y-0:is(
           :where(
@@ -268,7 +298,10 @@
         inset-block: 0;
       }
       [data-ui-component="tabs"][data-ui-part="tabs-trigger"]:is(
-          :where(.group\/tabs)[data-orientation="vertical"] *
+          :where(
+              [data-ui-component="tabs"][data-ui-part="tabs"]
+            )[data-orientation="vertical"]
+            *
         ):after,
       .group-data-\[orientation\=vertical\]\/tabs\:after\:-right-1:is(
           :where(
@@ -280,7 +313,10 @@
         right: calc(var(--spacing) * -1);
       }
       [data-ui-component="tabs"][data-ui-part="tabs-trigger"]:is(
-          :where(.group\/tabs)[data-orientation="vertical"] *
+          :where(
+              [data-ui-component="tabs"][data-ui-part="tabs"]
+            )[data-orientation="vertical"]
+            *
         ):after,
       .group-data-\[orientation\=vertical\]\/tabs\:after\:w-0\.5:is(
           :where(
@@ -376,7 +412,10 @@
         color: var(--ui-tabs-foreground, var(--foreground));
       }
       [data-ui-component="tabs"][data-ui-part="tabs-trigger"]:is(
-          :where(.group\/tabs-list)[data-variant="default"] *
+          :where(
+              [data-ui-component="tabs"][data-ui-part="tabs-list"]
+            )[data-variant="default"]
+            *
         ):where([data-state="active"]),
       .group-data-\[variant\=default\]\/tabs-list\:data-active\:shadow-sm:is(
           :where(
@@ -385,7 +424,10 @@
             *
         ):where([data-state="active"]),
       [data-ui-component="tabs"][data-ui-part="tabs-trigger"]:is(
-          :where(.group\/tabs-list)[data-variant="default"] *
+          :where(
+              [data-ui-component="tabs"][data-ui-part="tabs-list"]
+            )[data-variant="default"]
+            *
         ):where([data-active]:not([data-active="false"])),
       .group-data-\[variant\=default\]\/tabs-list\:data-active\:shadow-sm:is(
           :where(
@@ -399,7 +441,10 @@
           var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
       }
       [data-ui-component="tabs"][data-ui-part="tabs-trigger"]:is(
-          :where(.group\/tabs-list)[data-variant="line"] *
+          :where(
+              [data-ui-component="tabs"][data-ui-part="tabs-list"]
+            )[data-variant="line"]
+            *
         ):where([data-state="active"]),
       .group-data-\[variant\=line\]\/tabs-list\:data-active\:bg-transparent:is(
           :where(
@@ -408,7 +453,10 @@
             *
         ):where([data-state="active"]),
       [data-ui-component="tabs"][data-ui-part="tabs-trigger"]:is(
-          :where(.group\/tabs-list)[data-variant="line"] *
+          :where(
+              [data-ui-component="tabs"][data-ui-part="tabs-list"]
+            )[data-variant="line"]
+            *
         ):where([data-active]:not([data-active="false"])),
       .group-data-\[variant\=line\]\/tabs-list\:data-active\:bg-transparent:is(
           :where(
@@ -419,7 +467,10 @@
         background-color: #0000;
       }
       [data-ui-component="tabs"][data-ui-part="tabs-trigger"]:is(
-          :where(.group\/tabs-list)[data-variant="line"] *
+          :where(
+              [data-ui-component="tabs"][data-ui-part="tabs-list"]
+            )[data-variant="line"]
+            *
         ):where([data-state="active"]),
       .group-data-\[variant\=line\]\/tabs-list\:data-active\:shadow-none:is(
           :where(
@@ -428,7 +479,10 @@
             *
         ):where([data-state="active"]),
       [data-ui-component="tabs"][data-ui-part="tabs-trigger"]:is(
-          :where(.group\/tabs-list)[data-variant="line"] *
+          :where(
+              [data-ui-component="tabs"][data-ui-part="tabs-list"]
+            )[data-variant="line"]
+            *
         ):where([data-active]:not([data-active="false"])),
       .group-data-\[variant\=line\]\/tabs-list\:data-active\:shadow-none:is(
           :where(
@@ -442,10 +496,16 @@
       }
       :is(
           [data-ui-component="tabs"][data-ui-part="tabs-trigger"]:is(
-              :where(.group\/tabs-list)[data-variant="line"] *
+              :where(
+                  [data-ui-component="tabs"][data-ui-part="tabs-list"]
+                )[data-variant="line"]
+                *
             ):where([data-state="active"]),
           [data-ui-component="tabs"][data-ui-part="tabs-trigger"]:is(
-              :where(.group\/tabs-list)[data-variant="line"] *
+              :where(
+                  [data-ui-component="tabs"][data-ui-part="tabs-list"]
+                )[data-variant="line"]
+                *
             ):where([data-active]:not([data-active="false"]))
         ):after,
       :is(
@@ -501,9 +561,12 @@
       }
       [data-ui-component="tabs"][data-ui-part="tabs-trigger"]:is(
           :global(.dark) *
-        ):is(:where(.group\/tabs-list)[data-variant="line"] *):where(
-          [data-state="active"]
-        ),
+        ):is(
+          :where(
+              [data-ui-component="tabs"][data-ui-part="tabs-list"]
+            )[data-variant="line"]
+            *
+        ):where([data-state="active"]),
       .dark\:group-data-\[variant\=line\]\/tabs-list\:data-active\:border-transparent:is(
           :global(.dark) *
         ):is(
@@ -514,9 +577,12 @@
         ):where([data-state="active"]),
       [data-ui-component="tabs"][data-ui-part="tabs-trigger"]:is(
           :global(.dark) *
-        ):is(:where(.group\/tabs-list)[data-variant="line"] *):where(
-          [data-active]:not([data-active="false"])
-        ),
+        ):is(
+          :where(
+              [data-ui-component="tabs"][data-ui-part="tabs-list"]
+            )[data-variant="line"]
+            *
+        ):where([data-active]:not([data-active="false"])),
       .dark\:group-data-\[variant\=line\]\/tabs-list\:data-active\:border-transparent:is(
           :global(.dark) *
         ):is(
@@ -529,9 +595,12 @@
       }
       [data-ui-component="tabs"][data-ui-part="tabs-trigger"]:is(
           :global(.dark) *
-        ):is(:where(.group\/tabs-list)[data-variant="line"] *):where(
-          [data-state="active"]
-        ),
+        ):is(
+          :where(
+              [data-ui-component="tabs"][data-ui-part="tabs-list"]
+            )[data-variant="line"]
+            *
+        ):where([data-state="active"]),
       .dark\:group-data-\[variant\=line\]\/tabs-list\:data-active\:bg-transparent:is(
           :global(.dark) *
         ):is(
@@ -542,9 +611,12 @@
         ):where([data-state="active"]),
       [data-ui-component="tabs"][data-ui-part="tabs-trigger"]:is(
           :global(.dark) *
-        ):is(:where(.group\/tabs-list)[data-variant="line"] *):where(
-          [data-active]:not([data-active="false"])
-        ),
+        ):is(
+          :where(
+              [data-ui-component="tabs"][data-ui-part="tabs-list"]
+            )[data-variant="line"]
+            *
+        ):where([data-active]:not([data-active="false"])),
       .dark\:group-data-\[variant\=line\]\/tabs-list\:data-active\:bg-transparent:is(
           :global(.dark) *
         ):is(

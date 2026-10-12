@@ -7,17 +7,7 @@ import viteConfig from "./vite.config";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
-// Keep browser-runner dependencies stable across a cold suite. Axe annotations
-// enforce preview accessibility errors; the editor parser avoids a mid-run Vite reload.
-const storybookBrowserDependencies = [
-  "@lezer/common",
-  "aria-query",
-  "react",
-  "react-dom",
-  "react-dom/client",
-  "@storybook/addon-a11y/preview",
-  "@storybook/svelte-vite",
-];
+import { storybookBrowserDependencies } from "./.storybook/dependency-optimization";
 
 export default mergeConfig(
   viteConfig,

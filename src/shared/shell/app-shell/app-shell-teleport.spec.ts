@@ -37,6 +37,17 @@ describe("appShellTeleport", () => {
     action.destroy();
   });
 
+  it("removes a live teleported node from its mobile host during destroy", () => {
+    const { root, node, target } = createTeleportFixture();
+    const action = appShellTeleport(node, { enabled: true, target });
+
+    action.destroy();
+
+    expect(root.contains(node)).toBe(false);
+    expect(target.contains(node)).toBe(false);
+    expect(node.isConnected).toBe(false);
+  });
+
   it("does not reattach a removed node during destroy", () => {
     const { root, node, target } = createTeleportFixture();
     const action = appShellTeleport(node, { enabled: true, target });

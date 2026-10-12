@@ -57,6 +57,7 @@
   --ui-workspace-radius-medium: calc(var(--radius, 0.625rem) * 0.8);
   --ui-workspace-radius-large: var(--radius, 0.625rem);
   --ui-workspace-shadow: 0 12px 32px rgb(15 23 42 / 24%);
+  --ui-workspace-window-controls-overlay-inline-start: 0px;
   --ui-workspace-tab-height: 2.5rem;
   --ui-workspace-tab-active-height: 2.25rem;
   --ui-workspace-tab-width: 12.5rem;
@@ -87,7 +88,7 @@
   --ui-workspace-ribbon-width: 3rem;
   --ui-workspace-status-height: 1.5rem;
   --ui-workspace-settings-heading-size: 1rem;
-  --ui-workspace-settings-heading-weight: 400;
+  --ui-workspace-settings-heading-weight: 700;
   --ui-workspace-settings-label-size: 0.9375rem;
   --ui-workspace-settings-description-size: 0.75rem;
   --ui-workspace-settings-navigation-row-height: 2rem;

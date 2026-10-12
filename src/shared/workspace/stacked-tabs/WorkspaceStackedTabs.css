@@ -38,6 +38,14 @@
   padding-inline-start: var(--ui-workspace-window-controls-inline-start, 0px);
 }
 
+.ui-workspace-stacked-tabs[data-workspace-focus-mode="true"]
+  > .ui-workspace-stacked-tabs__chrome {
+  padding-inline-start: var(
+    --ui-workspace-window-controls-overlay-inline-start,
+    0px
+  );
+}
+
 .ui-workspace-stacked-tabs__chrome-main {
   display: flex;
   min-width: 0;

@@ -63,6 +63,11 @@ diagnostic URLs, error objects, logging preservation, and console restoration.
 The gate MUST retain diagnostics caught during component teardown and fail
 after the story or final suite cleanup instead of relying only on the
 immediately thrown error.
+The development catalog readiness probe MUST prepare representative client
+entries and await pending import requests before browser acceptance begins.
+Compilation failures return an unavailable response and allow a later retry.
+Development and Vitest hosts share explicit runtime and parser dependencies;
+catalog icon imports are discovered deterministically for prebundling.
 The release workflow MUST retain the packed audit report as a downloadable
 artifact, including when a reported finding fails the gate.
 
