@@ -5,6 +5,11 @@ Design Core styling is native CSS driven by semantic tokens. Themes and consumer
 File Listing exposes `--ui-diff-file-listing-row-gap` (default `2px`) for
 separation between eager and virtualized rows.
 
+Settings headings default to bold 700 in both workspace tokens and the Lapis
+theme while retaining the shared sans family (DC-WS-069). Hosts supply full
+window-control clearance through `--ui-workspace-window-controls-overlay-inline-start`
+for maximized groups (DC-WS-070); ordinary chrome retains its ribbon-adjusted inset.
+
 Panel Toggle exposes compact button/icon geometry and reversible motion through
 `--ui-panel-toggle-*` tokens imported by the shared stylesheet. Its icon inherits
 currentColor, reduced-motion preferences and Button focus semantics.

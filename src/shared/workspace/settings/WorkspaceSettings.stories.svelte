@@ -745,7 +745,7 @@
       name: "Settings Search Results",
     });
     expect(getComputedStyle(heading).fontSize).toBe("16px");
-    expect(getComputedStyle(heading).fontWeight).toBe("400");
+    expect(getComputedStyle(heading).fontWeight).toBe("700");
   }}
   parameters={{
     visualDelta: {
@@ -1078,7 +1078,7 @@
       const title = canvas.getByRole("heading", { name: heading });
       await expect(title).toBeVisible();
       expect(getComputedStyle(title).fontSize).toBe("16px");
-      expect(getComputedStyle(title).fontWeight).toBe("400");
+      expect(getComputedStyle(title).fontWeight).toBe("700");
       expect(getComputedStyle(title).fontFamily).toContain("DM Sans Variable");
     }
 
