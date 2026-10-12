@@ -1,5 +1,20 @@
 # @lapismd/design-core
 
+## 0.3.2
+
+### Patch Changes
+
+- [#17](https://github.com/lapismd/design-core/pull/17) [`54e7bac`](https://github.com/lapismd/design-core/commit/54e7bacf1261bb5450bbb16a72c367d74eb86674) Thanks [@stevejuma](https://github.com/stevejuma)! - Use bold section headings in Lapis workspace settings and allow hosts to reserve the full native window-controls inset when a tab group is maximized.
+
+- [#17](https://github.com/lapismd/design-core/pull/17) [`fd6bd54`](https://github.com/lapismd/design-core/commit/fd6bd54b9357f4358d8858b20b0ce771c5cce6f4) Thanks [@stevejuma](https://github.com/stevejuma)! - Align line-tab selection indicators with the divider and remove teleported mobile sidebar content when its owning shell is destroyed.
+
+  The dev catalog and browser runner share explicit runtime/icon prebundling.
+  Pointer suites wait for the client compiler to prepare shared entries before
+  starting their existing interaction readiness clocks.
+  Workspace pointer acceptance runs serially, matching the catalog's existing
+  lifecycle policy and other pointer lanes, so concurrent cold compilation cannot
+  starve a second scenario's unchanged readiness deadline.
+
 ## 0.3.1
 
 ### Patch Changes
