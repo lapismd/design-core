@@ -31,3 +31,18 @@ Workspace/Shell/Shadcn/AI browser, and audit jobs against the committed tree. In
 particular, a cold catalog run must verify the final `.js` helper imports, which
 were not covered by the earlier cold two-scenario pass. No final aggregate pass
 is claimed. Changed stories remain visual-pending; baselines are unchanged.
+
+## Release start
+
+On 2026-10-12 the user requested starting the first dependency release. Live npm
+metadata confirms Design Core `0.3.1`, Mira `0.0.3`, Spec Validator `0.1.4`, AI
+Host `0.3.0` and AI Controller `0.1.0` are published. Design Core is the first
+package with pending changes for this registry effort.
+
+The default-workspace merge restored six historical changesets whose complete
+text already appears in the published `0.3.0` changelog. Release preparation
+removes those duplicate inputs and retains the two new patch changesets for
+native safe areas/settings typography and registry tabs/mobile teardown. The
+expected next release is `0.3.2`; Changesets automation owns the version update.
+A release-source PR must pass all existing CI jobs before versioning and the
+protected npm-production publication workflow. Final local suites remain paused.

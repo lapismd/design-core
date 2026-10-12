@@ -103,6 +103,10 @@ The root package manifest defines the supported import boundaries. Family barrel
 
 ## DC-PKG-009 — Versioned package artifact
 
+Release inputs retain only changesets not already represented in the published
+changelog. Historical workspace integration must not reintroduce consumed
+changesets or repeat their version bumps and release notes.
+
 **Requirement.** Design Core MUST be packable as a public versioned source artifact whose manifest uses semver for runtime dependencies, and release automation MUST stop for manual bootstrap until the npm package exists.
 
 The user-approved 2026-10-11 packed-audit exception MAY accept only
