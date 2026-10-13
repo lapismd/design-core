@@ -91,7 +91,7 @@
       type="button"
       class="ui-workspace-mobile-dock__count"
       data-active={page === "tabs"}
-      aria-label={`Open tabs (${tabCount})`}
+      aria-label={`Open ${tabCount} tabs`}
       onclick={onOpenTabs}
     >
       <WorkspaceIcon name="square-stack" />

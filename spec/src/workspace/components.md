@@ -267,6 +267,7 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 
 - The public boundary is `@lapismd/design-core/workspace/mobile`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- The tab-count action MUST include its visible count in its accessible name.
 
 ## DC-WS-018 — Popout Surface
 

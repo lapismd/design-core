@@ -123,8 +123,12 @@
 
 <Story
   name="Editor with revealable sidebars"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   play={async ({ canvas }) => {
+    const tabs = canvas.getByRole("button", { name: /^Open \d+ tabs$/ });
+    await expect(tabs).toHaveAccessibleName(
+      `Open ${tabs.textContent?.trim()} tabs`,
+    );
     await userEvent.click(
       canvas.getByRole("button", { name: "Open left sidebar" }),
     );
