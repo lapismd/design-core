@@ -90,3 +90,43 @@
     <output class="sr-only">{result}</output>
   {/snippet}
 </Story>
+
+<Story
+  name="Segment and tooltip accessible names"
+  tags={["visual-pending"]}
+  play={async ({ canvas }) => {
+    const version = canvas.getByRole("button", { name: /About Atlas/ });
+    await expect(version).toHaveAccessibleName(/v1\.2\.3/);
+    const menu = canvas.getByRole("button", { name: /Manage plugins/ });
+    await expect(menu).toHaveAccessibleName(/3 plugins/);
+    await userEvent.click(menu);
+    await expect(within(document.body).getByRole("menu")).toBeVisible();
+    await userEvent.keyboard("{Escape}");
+  }}
+  parameters={{
+    docs: {
+      source: { code: exampleSources.Segments, language: "tsx", type: "code" },
+    },
+    visualDelta: {
+      images: [
+        "/visual-baselines/workspace/status-item/segment-and-tooltip-accessible-names-chromium.png",
+      ],
+    },
+  }}
+>
+  {#snippet template()}
+    <div class="ui-workspace-status-item-story-frame">
+      <WorkspaceStatusItem
+        item={{
+          id: "version",
+          segments: ["v1.2.3"],
+          tooltip: "About Atlas",
+          onSelect: () => {},
+        }}
+      />
+      <WorkspaceStatusItem
+        item={{ ...menuItem, label: "3 plugins", tooltip: "Manage plugins" }}
+      />
+    </div>
+  {/snippet}
+</Story>

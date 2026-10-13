@@ -60,7 +60,7 @@
     class={["ui-workspace-copyable-value", className].filter(Boolean).join(" ")}
     variant="ghost"
     size="xs"
-    aria-label={`Copy full ${label}: ${value}`}
+    aria-label={`Copy full ${label}: ${value}${displayValue !== value ? ` · ${displayValue}` : ""}`}
     title={`Copy full ${label}`}
     data-testid={testId}
     data-copied={copied || undefined}

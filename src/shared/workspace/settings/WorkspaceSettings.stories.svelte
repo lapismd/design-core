@@ -1336,6 +1336,7 @@
       name: /Copy full revision ID: revision-abcdefghijklmnopqrstuvwxyz/,
     });
     await expect(copyRevision).toHaveTextContent("revision…wxyz");
+    await expect(copyRevision).toHaveAccessibleName(/revision…wxyz/);
     const writeText = fn(async () => undefined);
     Object.defineProperty(globalThis.navigator, "clipboard", {
       configurable: true,

@@ -12,3 +12,7 @@ export const Basic = `<script lang="ts">
 </script>
 
 <WorkspaceStatusItem {item} />`;
+
+export const Segments = `import { WorkspaceStatusItem } from "@lapismd/design-core/workspace/status-item";
+
+<WorkspaceStatusItem item={{ id: "version", segments: ["v1.2.3"], tooltip: "About Atlas", onSelect: () => {} }} />`;

@@ -9,6 +9,14 @@
   let { item }: { item: WorkspaceStatusItemModel } = $props();
   let open = $state(false);
   let menu = $state(new WorkspaceMenu());
+  const accessibleName = $derived.by(() => {
+    const context = item.tooltip ?? item.label ?? item.id;
+    const visible = item.segments?.join(" ") ?? item.label ?? "";
+    return visible &&
+      !context.toLocaleLowerCase().includes(visible.toLocaleLowerCase())
+      ? `${context} · ${visible}`
+      : context;
+  });
 
   function setOpen(next: boolean): void {
     open = next;
@@ -50,7 +58,7 @@
       data-ui-part="trigger"
       disabled={item.disabled}
       title={item.tooltip ?? item.label}
-      aria-label={item.tooltip ?? item.label ?? item.id}
+      aria-label={accessibleName}
       aria-busy={item.busy}
       data-status-bar-item-id={item.id}
       data-hint-target="status-action"
@@ -82,7 +90,7 @@
     data-ui-part="button"
     disabled={item.disabled}
     title={item.tooltip ?? item.label}
-    aria-label={item.tooltip ?? item.label ?? item.id}
+    aria-label={accessibleName}
     aria-busy={item.busy}
     data-status-bar-item-id={item.id}
     data-hint-target="status-action"
