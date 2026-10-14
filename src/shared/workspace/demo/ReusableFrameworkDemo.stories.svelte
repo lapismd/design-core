@@ -296,7 +296,7 @@
     await waitFor(() => expect(pluginLifecycle.app.ready).toBe(true));
     const documentCanvas = within(canvasElement.ownerDocument.body);
     const pluginsButton = canvas.getByRole("button", {
-      name: "Manage demo plugin",
+      name: "Manage demo plugin · Plugins",
     });
     await userEvent.click(pluginsButton);
     await userEvent.click(
@@ -312,7 +312,7 @@
       expect(pluginsButton).toHaveAttribute("aria-expanded", "false"),
     );
     const enabledPluginsButton = canvas.getByRole("button", {
-      name: "Manage demo plugin",
+      name: "Manage demo plugin · Plugins",
     });
     await waitFor(() =>
       expect(getComputedStyle(enabledPluginsButton).pointerEvents).toBe("auto"),

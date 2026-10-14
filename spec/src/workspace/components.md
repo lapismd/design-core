@@ -267,6 +267,7 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 
 - The public boundary is `@lapismd/design-core/workspace/mobile`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- The tab-count action MUST include its visible count in its accessible name.
 
 ## DC-WS-018 — Popout Surface
 
@@ -358,6 +359,7 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 
 - Output presentations MUST include text, code, status, and copyable values.
 - Copy feedback MUST not replace the underlying complete value.
+- The accessible name MUST contain the shortened visible value as well as the complete copy payload.
 - The component MUST use public Workspace tokens and remain usable at narrow widths.
 
 ## DC-WS-068 — Settings object-row actions
@@ -468,6 +470,7 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/workspace/status-item`.
+- An action's accessible name MUST contain its visible label or segments together with its tooltip context.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 
 ## DC-WS-030 — Workspace Tabs

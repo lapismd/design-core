@@ -45,7 +45,7 @@
   play={async ({ canvas }) => {
     await waitFor(() => expect(aboutApp.ready).toBe(true));
     await userEvent.click(
-      canvas.getByRole("button", { name: "About Workspace Studio" }),
+      canvas.getByRole("button", { name: "About Workspace Studio · v1.12.3" }),
     );
     const dialog = canvas.getByRole("dialog", { name: "Workspace Studio" });
     await expect(dialog).toBeVisible();

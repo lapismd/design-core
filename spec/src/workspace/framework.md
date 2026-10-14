@@ -76,6 +76,7 @@ Palette presentation remains DC-WS-010 and DC-WS-053 through DC-WS-058.
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/workspace/demo`.
+- Demo status-action acceptance MUST include visible status text when selecting actions by accessible name, following DC-WS-029.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 
 ## DC-WS-005 — Workspace drag
