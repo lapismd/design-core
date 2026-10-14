@@ -1,5 +1,13 @@
 # @lapismd/design-core
 
+## 0.3.3
+
+### Patch Changes
+
+- [#19](https://github.com/lapismd/design-core/pull/19) [`9732cad`](https://github.com/lapismd/design-core/commit/9732cad5a2c526ecf9b9e649a9964bc28ed08d8a) Thanks [@stevejuma](https://github.com/stevejuma)! - Keep the visible mobile tab count in the accessible action name without punctuation separating the count from its action.
+
+- [#19](https://github.com/lapismd/design-core/pull/19) [`05ebff3`](https://github.com/lapismd/design-core/commit/05ebff382e0848f9ebcf8df0eaece3a88d3e8fde) Thanks [@stevejuma](https://github.com/stevejuma)! - Include visible status segments and shortened copyable values in their accessible names while retaining tooltip context and the full copy payload.
+
 ## 0.3.2
 
 ### Patch Changes
