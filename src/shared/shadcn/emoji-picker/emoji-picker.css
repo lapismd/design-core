@@ -55,7 +55,10 @@
   font-size: 0.875rem;
 }
 [data-ui-component="emoji-picker"] [data-ui-part="library"] {
-  min-height: min(24rem, calc(100dvh - 3rem));
+  min-height: var(
+    --ui-emoji-picker-min-height,
+    min(24rem, calc(100dvh - 3rem))
+  );
   outline: none;
 }
 [data-ui-component="emoji-picker"] em-emoji-picker {
@@ -75,4 +78,14 @@
   height: min(var(--ui-emoji-picker-height, 27rem), calc(100dvh - 3rem));
   border: 0;
   border-radius: 0;
+}
+
+[data-ui-component="emoji-picker"][data-presentation="inline"] {
+  display: block;
+  width: 100%;
+  min-width: 0;
+}
+[data-ui-component="emoji-picker"][data-presentation="inline"]
+  [aria-disabled="true"] {
+  opacity: 0.5;
 }

@@ -64,8 +64,8 @@ existing family already covers the need.
 - `shared/filter` may import shadcn; it must not import forms in production
   code (stories may compose forms pickers).
 - `shared/forms` may import shadcn and filter. Forms must not import Diff.
-- `shared/ai` may compose generic shared controls but must remain
-  host-controlled and reusable.
+- `shared/ai` may compose generic shared controls and public Diff presentation
+  for normalized tool results, but must remain host-controlled and reusable.
 - `shared/diff` may import shadcn. It must not import forms, filter, AI, shell,
   or workspace.
 - `shared/shell` may compose shadcn Scroll Area for bounded section scrolling,
@@ -114,3 +114,8 @@ primitive or deferred. Prefer extending an audited family over a one-off.
 - `pnpm ui guide forms` — forms vs shadcn controls
 - `pnpm ui guide shell` — canonical shell topology and interaction placement
 - `pnpm ui guide testing` — verify after changing a core component
+
+Chat (`src/shared/chat/`, `@lapismd/design-core/chat`) provides host-neutral
+conversation presentation. It re-exports stable AI chat primitives and adds Mira
+MarkdownContent. Generic avatars and navigation stay in Shadcn; AvatarPicker stays
+in Forms. Inspect `pnpm ui components chat/markdown-content`.

@@ -31,13 +31,13 @@ Shadcn form controls provide the low-level accessible inputs used directly or in
 
 ## DC-SHA-054 — Emoji Picker
 
-**Requirement.** Emoji Picker MUST provide host-neutral full and restricted emoji selection through the shared Popover, with native CSS and lazy-loaded Emoji Mart data.
+**Requirement.** Emoji Picker MUST provide host-neutral full and restricted emoji selection through the shared Popover or an inline panel, with native CSS and lazy-loaded Emoji Mart data.
 
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/shadcn/emoji-picker`; existing AI experimental imports and the explicit searchable `emojis` list remain compatible, including an empty list.
 - Full selection MUST support Unicode search, categories and skin tones, suggested reactions and custom emoji identified by ordinary IDs, shortcodes and image URLs; selection reports the string and optional custom record without owning persistence.
-- The controlled picker MUST support disabled state, trigger composition and explicit light/dark/automatic theme, constrain its popup to available space, and preserve keyboard focus and reopening behavior.
+- The controlled picker MUST support disabled state, trigger composition and explicit light/dark/automatic theme, constrain its popup to available space, and preserve keyboard focus and reopening behavior; inline presentation MUST reuse the same selection/custom-emoji panel without another trigger or popover, loading the full library only when that panel mounts.
 - Full library/data imports MUST occur only when needed; disposal or superseded loading MUST release the picker and observers without stealing focus or mounting stale content, while failed downloads MUST explain refresh recovery and allow dismissal without reloading the host or losing its drafts.
 
 ## DC-SHA-024 — Checkbox

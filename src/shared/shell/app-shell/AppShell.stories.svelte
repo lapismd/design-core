@@ -1,4 +1,6 @@
 <script module lang="ts">
+  import TopbarFixture from "./AppShellTopbar.stories.fixture.svelte";
+  import { Basic as TopbarSource } from "./AppShellTopbar.example-sources.js";
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent, waitFor, within } from "storybook/test";
   import * as exampleSources from "./AppShell.example-sources.js";
@@ -183,7 +185,7 @@
 
 <Story
   name="Two expanded sidebars"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   play={async ({ canvas }) => {
     expandedController.left.expand();
     expandedController.right.expand();
@@ -428,7 +430,7 @@
 
 <Story
   name="Nested project and file sidebars"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   play={async ({ canvas }) => {
     nestedSelectedProject = "";
     projectSidebarController.expand();
@@ -1463,7 +1465,7 @@
 
 <Story
   name="Programmatic display modes"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   play={async ({ canvas }) => {
     const root = canvas
       .getByRole("main", {
@@ -1524,7 +1526,7 @@
 
 <Story
   name="Constrained desktop overlays"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   parameters={{
     visualDelta: {
       images: [
@@ -2174,7 +2176,7 @@
 
 <Story
   name="Independent icon rails"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   play={async ({ canvas }) => {
     interactiveController.left.expand();
     interactiveController.right.expand();
@@ -2330,7 +2332,7 @@
 
 <Story
   name="Single sidebar composition"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   play={async ({ canvas }) => {
     minimalController.left.expand();
     minimalController.left.resetWidth();
@@ -2403,3 +2405,57 @@
     </div>
   {/snippet}
 </Story>
+
+<Story
+  name="Top bar and multiple sidebars"
+  tags={["visual-pending"]}
+  parameters={{
+    docs: { source: { code: TopbarSource, language: "tsx", type: "code" } },
+  }}
+  play={async ({ canvas }) => {
+    await expect(
+      canvas.getByRole("heading", { name: "A shared application shell" }),
+    ).toBeVisible();
+    const documentBody = canvas.getByRole("region", {
+      name: "Document workspace",
+    });
+    await expect(documentBody).toContainElement(
+      canvas.getByRole("button", { name: "Toggle document outline" }),
+    );
+    await expect(documentBody).toContainElement(
+      canvas.getByRole("button", { name: "Toggle document details" }),
+    );
+    await expect(canvas.getByLabelText("Document header")).toContainElement(
+      canvas.getByRole("button", { name: "Toggle workspace inspector" }),
+    );
+    await userEvent.click(canvas.getByRole("button", { name: "Go back" }));
+    await expect(canvas.getByTestId("back-count")).toHaveTextContent("1");
+    await expect(
+      canvas.getByRole("button", { name: "Go forward" }),
+    ).toBeDisabled();
+    await userEvent.click(
+      canvas.getByRole("button", {
+        name: "Toggle document details",
+      }),
+    );
+    await expect(
+      canvas.queryByRole("complementary", { name: "Document details" }),
+    ).toBeNull();
+    await userEvent.click(
+      canvas.getByRole("button", {
+        name: "Toggle document details",
+      }),
+    );
+    await expect(
+      canvas.getByRole("complementary", { name: "Document details" }),
+    ).toBeVisible();
+    const railToggle = canvas.getByRole("button", {
+      name: "Toggle tools rail",
+    });
+    await userEvent.click(railToggle);
+    await expect(
+      canvas.getByRole("complementary", { name: "Tools rail" }),
+    ).toHaveStyle({ borderInlineStartColor: "rgba(0, 0, 0, 0)" });
+    await userEvent.click(railToggle);
+  }}>{#snippet template()}<TopbarFixture />{/snippet}</Story
+>

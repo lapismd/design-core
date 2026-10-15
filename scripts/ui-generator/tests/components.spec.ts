@@ -27,7 +27,7 @@ describe("ui components", () => {
     expect(layers.has("ai")).toBe(true);
     expect(layers.has("diff")).toBe(true);
     expect(layers).toEqual(
-      new Set(["shadcn", "forms", "filter", "ai", "diff"]),
+      new Set(["shadcn", "forms", "filter", "ai", "diff", "chat"]),
     );
 
     const searchFilter = list.find((c) => c.key === "filter/search-filter-bar");
@@ -128,6 +128,15 @@ Hello
     expect(ai.layer).toBe("ai");
     expect(ai.import).toBe("@lapismd/design-core/ai/chat");
     expect(ai.body).toContain("Import");
+  });
+
+  it("discovers the public Chat family without moving legacy AI exports", () => {
+    const chat = getComponent(packageRoot, "chat/markdown-content");
+    expect(chat.import).toBe("@lapismd/design-core/chat");
+    expect(chat.body).toContain("Markdown");
+    expect(
+      listComponents(packageRoot, { layer: "chat" }).map((entry) => entry.id),
+    ).toEqual(["markdown-content"]);
   });
 
   it("lists the complete stable and experimental AI Chat catalog", () => {

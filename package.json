@@ -135,7 +135,7 @@
     "@iconify-json/lucide": "^1.2.63",
     "@iconify/utils": "^2.3.0",
     "@internationalized/date": "^3.12.2",
-    "@lapismd/mira": "~0.0.2",
+    "@lapismd/mira": "~0.0.5",
     "@lezer/common": "^1.2.3",
     "@lezer/highlight": "^1.2.3",
     "@lezer/lr": "^1.4.2",
@@ -317,6 +317,8 @@
     "./workspace/tokens": "./src/shared/workspace/workspace.tokens.ts",
     "./workspace/view-host": "./src/shared/workspace/view-host/index.ts",
     "./workspace/workspace.tokens.css": "./src/shared/workspace/workspace.tokens.css",
-    "./forms/dialog": "./src/shared/forms/dialog.ts"
+    "./forms/dialog": "./src/shared/forms/dialog.ts",
+    "./chat": "./src/shared/chat/index.ts",
+    "./forms/avatar-picker": "./src/shared/forms/avatar-picker/index.ts"
   }
 }

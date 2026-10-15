@@ -1,0 +1,351 @@
+body:has(.topbar-shell-demo) {
+  margin: 0;
+  overflow: hidden;
+}
+.topbar-shell-demo {
+  --ui-chat-markdown-padding: 0;
+  --ui-shell-height: 100%;
+  --ui-shell-body-sidebar-width: 11.5rem;
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--sidebar, var(--muted));
+  font-family: var(--font-sans, system-ui, sans-serif);
+  font-size: 0.875rem;
+}
+.topbar-shell-demo :is(h1, h2, h3, p) {
+  margin: 0;
+}
+.topbar-shell-demo h2 {
+  font-size: 1rem;
+  font-weight: 600;
+}
+.topbar-shell-demo h3 {
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+.topbar-shell-demo__location {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  font-size: 0.8125rem;
+}
+.topbar-shell-demo__location svg {
+  width: 0.875rem;
+  height: 0.875rem;
+  color: var(--muted-foreground);
+}
+.topbar-shell-demo__nav-header {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  min-height: 3.25rem;
+  padding: 0.75rem 1rem;
+  white-space: nowrap;
+}
+.topbar-shell-demo__nav-header > svg {
+  width: 1rem;
+  height: 1rem;
+  flex: none;
+}
+.topbar-shell-demo__nav,
+.topbar-shell-demo__tools {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+}
+.topbar-shell-demo__nav > button,
+.topbar-shell-demo__tools > button {
+  justify-content: start;
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+}
+.topbar-shell-demo__nav[data-compact="true"],
+.topbar-shell-demo__tools[data-compact="true"] {
+  justify-items: center;
+  padding-inline: 0.25rem;
+}
+.topbar-shell-demo__nav[data-compact="true"] > button,
+.topbar-shell-demo__tools[data-compact="true"] > button {
+  --ui-button-padding-inline: 0;
+  width: 2rem;
+  justify-content: center;
+}
+.topbar-shell-demo__nav [aria-current="page"] {
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+.topbar-shell-demo__caption {
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+}
+.topbar-shell-demo__nav > .topbar-shell-demo__caption {
+  padding: 1rem 0.625rem 0.25rem;
+}
+.topbar-shell-demo__profile {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 0.75rem;
+  white-space: nowrap;
+}
+.topbar-shell-demo__workspace[data-ui-component="tabs"] {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+  gap: 0;
+}
+.topbar-shell-demo__header {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.75rem;
+}
+.topbar-shell-demo__heading-row,
+.topbar-shell-demo__document-title,
+.topbar-shell-demo__header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+.topbar-shell-demo__heading-row {
+  justify-content: space-between;
+}
+.topbar-shell-demo__header-actions {
+  flex: none;
+}
+.topbar-shell-demo__document-title h1 {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.topbar-shell-demo__document-title > svg {
+  width: 1rem;
+  height: 1rem;
+  flex: none;
+  color: var(--muted-foreground);
+}
+.topbar-shell-demo__tab-content {
+  padding: 3rem 1rem 1rem;
+  margin: 0;
+  min-width: 0;
+}
+.topbar-shell-demo__tab-content > [data-ui-component="chat-markdown"] {
+  --ui-chat-markdown-padding: 0;
+}
+.topbar-shell-demo__tab-content > :is(h2, .topbar-shell-demo__list-heading) {
+  margin-bottom: 1rem;
+}
+.topbar-shell-demo__document-action {
+  margin-block: 1rem;
+}
+.topbar-shell-demo__panel {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+  min-width: 0;
+}
+.topbar-shell-demo__body-panel {
+  padding-block-start: 3rem;
+}
+.topbar-shell-demo__body-toggle {
+  position: absolute;
+  z-index: 2;
+  inset-block-start: 0.5rem;
+}
+.topbar-shell-demo__body-toggle[data-side="left"] {
+  inset-inline-start: 0.5rem;
+}
+.topbar-shell-demo__body-toggle[data-side="right"] {
+  inset-inline-end: 0.5rem;
+}
+.topbar-shell-demo__panel label {
+  display: grid;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+}
+.topbar-shell-demo__panel dl {
+  display: grid;
+  gap: 0.375rem;
+  margin: 0;
+}
+.topbar-shell-demo__panel dt {
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+}
+.topbar-shell-demo__panel dd {
+  margin: 0 0 0.75rem;
+  font-size: 0.8125rem;
+}
+.topbar-shell-demo__panel > button {
+  justify-content: start;
+  white-space: normal;
+  text-align: start;
+}
+.topbar-shell-demo__task {
+  display: flex;
+  gap: 0.5rem;
+  align-items: start;
+  font-size: 0.75rem;
+}
+.topbar-shell-demo__task > svg {
+  width: 0.875rem;
+  height: 0.875rem;
+  flex: none;
+  color: var(--muted-foreground);
+}
+.topbar-shell-demo__status {
+  display: flex;
+  justify-content: space-between;
+  flex: none;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.6875rem;
+  color: var(--muted-foreground);
+}
+.topbar-shell-demo__status > span {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+.topbar-shell-demo__status svg {
+  width: 0.75rem;
+  height: 0.75rem;
+}
+.topbar-shell-demo__inspector {
+  margin-block: var(--ui-shell-main-block-inset);
+  border: var(--ui-shell-main-border);
+  border-radius: var(--ui-shell-main-radius);
+}
+.topbar-shell-demo__inspector-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.75rem 0.5rem 1rem;
+  min-height: 3rem;
+  border-bottom: 1px solid var(--border);
+}
+.topbar-shell-demo__inspector-header h2 {
+  font-size: 0.8125rem;
+}
+.topbar-shell-demo__workspace-summary {
+  display: grid;
+  justify-items: start;
+  gap: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+.topbar-shell-demo__workspace-summary > svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--primary);
+}
+.topbar-shell-demo__workspace-summary > span {
+  font-size: 0.6875rem;
+  color: var(--muted-foreground);
+}
+.topbar-shell-demo__inspector-event,
+.topbar-shell-demo__activity {
+  display: flex;
+  align-items: start;
+  gap: 0.625rem;
+  padding-block: 0.75rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.75rem;
+}
+.topbar-shell-demo__inspector-event p,
+.topbar-shell-demo__activity p {
+  margin-block: 0.25rem;
+  color: var(--muted-foreground);
+  line-height: 1.5;
+}
+.topbar-shell-demo__inspector-event small,
+.topbar-shell-demo__activity small {
+  color: var(--muted-foreground);
+  font-size: 0.6875rem;
+}
+.topbar-shell-demo__inspector-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  font-size: 0.6875rem;
+  color: var(--muted-foreground);
+  border-top: 1px solid var(--border);
+}
+.topbar-shell-demo__list-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.topbar-shell-demo__list-heading > span {
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+}
+.topbar-shell-demo__document-row[data-ui-component="button"] {
+  width: 100%;
+  height: auto;
+  min-height: 4rem;
+  justify-content: start;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+  text-align: start;
+}
+.topbar-shell-demo__document-row > span:first-of-type {
+  display: grid;
+  flex: 1;
+  gap: 0.375rem;
+}
+.topbar-shell-demo__document-row small {
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+  font-weight: 400;
+}
+.topbar-shell-demo__change {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding-block: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+.topbar-shell-demo__change > svg {
+  width: 1rem;
+  height: 1rem;
+}
+.topbar-shell-demo__change > span:first-of-type {
+  flex: 1;
+}
+.topbar-shell-demo__release {
+  display: grid;
+  gap: 0.75rem;
+  padding-block: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.topbar-shell-demo__release > p {
+  color: var(--muted-foreground);
+  line-height: 1.6;
+}
+.topbar-shell-demo__release > [data-ui-component="badge"] {
+  justify-self: start;
+}
+@media (max-width: 680px) {
+  .topbar-shell-demo__document-title [data-ui-component="badge"] {
+    display: none;
+  }
+  .topbar-shell-demo__status > span:last-child {
+    display: none;
+  }
+}

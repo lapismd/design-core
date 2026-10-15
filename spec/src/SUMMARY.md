@@ -21,6 +21,7 @@
 - [Forms / Examples](forms/examples.md)
 - [Filter](filter.md)
 - [AI](ai.md)
+- [Chat](chat.md)
 - [Diff](diff.md)
 - [Shell](shell.md)
 - [Workspace / Framework](workspace/framework.md)

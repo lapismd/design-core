@@ -282,11 +282,11 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 
 ## DC-AI-025 — Tool Call Detail
 
-**Requirement.** Tool Call Detail MUST provide a presentation-only, provider-neutral view of structured tool input, output, and errors, including safe envelope unwrapping and readable code formatting.
+**Requirement.** Tool Call Detail and Rich Tool Call Detail MUST provide provider-neutral formatted/raw presentation of normalized tool activity without executing tools or interpreting provider schemas.
 
 ### Acceptance details
 
-- The public boundary is `@lapismd/design-core/ai/chat`.
-- Input, output, and multiline errors MUST use the public Code Block with copy support, wrapping, and bounded height.
-- Short one-line errors MAY remain on the Tool Calls summary row; formatter helpers MUST distinguish those alerts without executing or mutating tool data.
-- The catalog MUST demonstrate JSON input, command output, and an error without introducing a runtime contract.
+- Public `/chat` and compatibility `/ai/chat` imports MUST expose the same detail family; existing generic payload props and formatter helpers MUST remain supported; Tool Calls MAY supply normalized `presentation`; an explicit detail snippet takes precedence.
+- Formatted views MUST cover shell command/stdout/stderr in one panel with recorded exit state, file reads, complete patches or old/new diffs, and search locations; file navigation MUST use host callbacks; a maximize control MUST fill the page with the same view and restore focus/state on Escape or restore.
+- Raw MUST retain the exact host-serialized payload, or exact generic input/output/error strings, without envelope unwrapping; both modes MUST retain host-reported partial, redacted and truncated notices; missing paths, incomplete diffs and unavailable output MUST NOT invent facts.
+- Text payloads MUST use public Code Block copy/wrapping/bounded-height presentation and diffs MUST compose public FileDiff; native CSS and catalog examples MUST cover each tool type and raw/formatted switching; one-line legacy errors MAY remain on the summary row.

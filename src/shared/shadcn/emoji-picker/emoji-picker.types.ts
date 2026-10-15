@@ -17,6 +17,8 @@ export type EmojiPickerProps = Omit<
 > & {
   ref?: HTMLDivElement | null;
   open?: boolean;
+  /** Inline mounts the same full/restricted panel without a trigger or another popover. */
+  presentation?: "popover" | "inline";
   /** When supplied, restrict selection to this searchable list, including []. */
   emojis?: readonly EmojiOption[];
   presets?: readonly string[];

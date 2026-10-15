@@ -4,13 +4,14 @@ Disclosure and navigation primitives retain semantic structure and keyboard beha
 
 ## Public surface coverage
 
-| Surface     | Public boundary                           | Requirement |
-| ----------- | ----------------------------------------- | ----------- |
-| Accordion   | `@lapismd/design-core/shadcn/accordion`   | DC-SHA-018  |
-| Collapsible | `@lapismd/design-core/shadcn/collapsible` | DC-SHA-019  |
-| Tabs        | `@lapismd/design-core/shadcn/tabs`        | DC-SHA-020  |
-| Breadcrumb  | `@lapismd/design-core/shadcn/breadcrumb`  | DC-SHA-021  |
-| Pagination  | `@lapismd/design-core/shadcn/pagination`  | DC-SHA-022  |
+| Surface         | Public boundary                               | Requirement |
+| --------------- | --------------------------------------------- | ----------- |
+| Accordion       | `@lapismd/design-core/shadcn/accordion`       | DC-SHA-018  |
+| Collapsible     | `@lapismd/design-core/shadcn/collapsible`     | DC-SHA-019  |
+| Tabs            | `@lapismd/design-core/shadcn/tabs`            | DC-SHA-020  |
+| Breadcrumb      | `@lapismd/design-core/shadcn/breadcrumb`      | DC-SHA-021  |
+| Pagination      | `@lapismd/design-core/shadcn/pagination`      | DC-SHA-022  |
+| Responsive Tabs | `@lapismd/design-core/shadcn/responsive-tabs` | DC-SHA-055  |
 
 ## DC-SHA-017 — Shared Shadcn invariants
 
@@ -68,3 +69,13 @@ Disclosure and navigation primitives retain semantic structure and keyboard beha
 
 - The public boundary is `@lapismd/design-core/shadcn/pagination`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+
+## DC-SHA-055 — Responsive Tabs
+
+**Requirement.** Responsive Tabs MUST keep fitting tabs visible and expose overflow through an accessible menu without losing controlled selection.
+
+### Acceptance details
+
+- The public family MUST compose Tabs and DropdownMenu with disabled items, optional icons, leading/trailing content and pill/line presentation.
+- Width changes MUST support full, partial and menu-only navigation while preserving selected-state indication and compatibility with an owning Tabs.Root.
+- Measurement MUST coalesce animation frames and release observers and queued work on disposal.

@@ -27,6 +27,7 @@ export function discoverCatalogIcons(root: string): string[] {
 export const storybookBrowserDependencies = [
   "bits-ui",
   "emoji-mart",
+  "@lapismd/mira/preview",
   ...discoverCatalogIcons(fileURLToPath(new URL("../src", import.meta.url))),
   "@lezer/common",
   "aria-query",

@@ -13,6 +13,7 @@ Data and feedback primitives communicate state without taking ownership of consu
 | Progress | `@lapismd/design-core/shadcn/progress` | DC-SHA-014  |
 | Skeleton | `@lapismd/design-core/shadcn/skeleton` | DC-SHA-015  |
 | Spinner  | `@lapismd/design-core/shadcn/spinner`  | DC-SHA-016  |
+| Avatar   | `@lapismd/design-core/shadcn/avatar`   | DC-SHA-056  |
 
 ## DC-SHA-009 — Shared Shadcn invariants
 
@@ -88,3 +89,12 @@ Data and feedback primitives communicate state without taking ownership of consu
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 - The indicator MUST rotate continuously unless the user prefers reduced motion.
 - Optional icon-library compatibility attributes MUST be omitted when unavailable so strict consumers do not receive explicit `undefined` values.
+
+## DC-SHA-056 — Avatar
+
+**Requirement.** Avatar MUST present host-owned images, emoji or initials with optional presence and circle or rounded shapes.
+
+### Acceptance details
+
+- The public family MUST provide named and decorative presentations with image-failure fallback and token-driven sizing, including larger `2xl` and `3xl` presentations for editable profile avatars.
+- Presence MUST remain available through an accessible label rather than color alone.

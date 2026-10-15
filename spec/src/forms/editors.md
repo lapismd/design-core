@@ -26,7 +26,7 @@ Editor families separate language or review behavior from the Mira-owned CodeMir
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/forms`.
-- Mira resolution MUST use a published npm semver dependency that admits compatible pre-1.0 patch releases, MUST NOT rely on sibling workspace members or `link:`/`file:` dependencies for release validation, and MUST NOT add an aggregate `codemirror` runtime dependency.
+- Mira resolution MUST use a published npm semver dependency with the qualified 0.0.5 minimum that admits compatible pre-1.0 patch releases, MUST NOT rely on sibling workspace members or `link:`/`file:` dependencies for release validation, and MUST NOT add an aggregate `codemirror` runtime dependency.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 
 ## DC-FORM-034 — Code Highlighter

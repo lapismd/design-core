@@ -1,5 +1,9 @@
 # Storybook catalog
 
+The component promotion batch adds review-pending catalogs for Responsive Tabs,
+Avatar, Avatar Picker, AppShell top-bar composition, and Chat/Markdown Content.
+Each demonstrates public host-owned contracts through copyable examples.
+
 Storybook is the interactive catalog and acceptance surface. It documents components but does not supersede canonical specification Markdown. The specification sidebar includes the Diff chapter after AI.
 
 The Shadcn Forms Emoji Picker catalog demonstrates full Unicode selection,

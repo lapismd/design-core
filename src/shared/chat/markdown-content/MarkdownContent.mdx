@@ -1,0 +1,34 @@
+import { Meta, Source } from "@storybook/addon-docs/blocks";
+import * as Stories from "./MarkdownContent.stories.svelte";
+import { Basic, Hooks } from "./MarkdownContent.example-sources";
+
+<Meta of={Stories} />
+
+# Markdown Content
+
+Import from `@lapismd/design-core/chat`. Stable AI chat primitives are the same
+exports through this entry point; existing `/ai/chat` imports remain supported.
+MarkdownContent uses Mira's public embedded preview with safe HTML enabled.
+
+<Source code={Basic} language="tsx" />
+
+`content` can stream. Use `fullWidth` for a full conversation column or
+`compact={false}` for document spacing. Public Mira `extensions`, `components`,
+`sourcePath`, `linkResolver`, and `assetResolver` remain host-owned. Native click
+handlers can route links without putting application policy into the component.
+
+<Source code={Hooks} language="tsx" />
+
+Mira 0.0.5 safe mode currently strips relative internal links to text before
+its link renderer runs. This inherited upstream limitation remains visible here;
+reference examples use absolute links and injected public post-processors.
+Supporting safe relative references requires a Mira source fix and published release.
+
+Public tokens: `--ui-chat-markdown-font-size`, `--ui-chat-markdown-line-height`,
+`--ui-chat-markdown-max-width`, `--ui-chat-markdown-block-gap` and
+`--ui-chat-markdown-image-height`. Styles load with the family; Tailwind is not required.
+
+The default surface is transparent and left-aligned, with `0.5rem` padding. It
+composes Mira's public preview class and theme tokens to remove the note-style
+centred reading column. Override `--ui-chat-markdown-padding` to change the inset;
+backgrounds remain owned by the enclosing message or document.

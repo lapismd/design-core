@@ -113,6 +113,38 @@ async function checkPrimitiveStates(page) {
     await page.getByTestId("packed-emoji-selection").textContent(),
     "🔥",
   );
+  await page
+    .getByRole("button", { name: "Choose avatar", exact: true })
+    .click();
+  await page
+    .getByRole("textbox", { name: "Avatar image URL" })
+    .fill("https://example.test/avatar.png");
+  assert.equal(
+    await page.getByTestId("packed-avatar-value").textContent(),
+    "https://example.test/avatar.png",
+  );
+  await page.keyboard.press("Escape");
+  assert.equal(
+    await page.getByRole("img", { name: "Packed avatar, online" }).isVisible(),
+    true,
+  );
+  assert.equal(
+    await page
+      .getByRole("heading", { name: "Packed Markdown", exact: true })
+      .isVisible(),
+    true,
+  );
+  assert.equal(
+    await page.getByTestId("packed-topbar-center").isVisible(),
+    true,
+  );
+  await page.getByRole("tab", { name: "Files", exact: true }).click();
+  assert.equal(
+    await page
+      .getByRole("tab", { name: "Files", exact: true })
+      .getAttribute("aria-selected"),
+    "true",
+  );
 }
 
 async function checkStyles(page) {
@@ -226,6 +258,15 @@ import * as InputGroup from "@lapismd/design-core/shadcn/input-group";
 import * as Alert from "@lapismd/design-core/shadcn/alert";
 import { PanelToggle, PanelToggleIcon, type PanelToggleIconProps } from "@lapismd/design-core/shadcn/panel-toggle";
 import { EmojiPicker } from "@lapismd/design-core/shadcn/emoji-picker";
+import { ResponsiveTabs } from "@lapismd/design-core/shadcn/responsive-tabs";
+import { Avatar } from "@lapismd/design-core/shadcn/avatar";
+import { AvatarPicker } from "@lapismd/design-core/forms";
+import { MarkdownContent, Message as SharedMessage } from "@lapismd/design-core/chat";
+import { Message as LegacyMessage } from "@lapismd/design-core/ai/chat";
+import { AppShell } from "@lapismd/design-core/shell";
+if (SharedMessage !== LegacyMessage) throw new Error("Chat compatibility export differs");
+let avatarValue = $state("");
+let navigationValue = $state("overview");
 import { EmojiPicker as LegacyEmojiPicker } from "@lapismd/design-core/ai/experimental";
 import HandleLifecycle from "./HandleLifecycle.svelte";
 if (EmojiPicker !== LegacyEmojiPicker) throw new Error("Emoji compatibility export differs");
@@ -252,6 +293,12 @@ const panelIcon = { side: "bottom", iconVariant: "standard", expanded: true, sty
 <PanelToggleIcon {...panelIcon} class="packed-panel-icon" data-review="panel-icon-only" />
 <EmojiPicker triggerLabel="Packed emoji" onSelect={(emoji) => selectedEmoji = emoji} />
 <output data-testid="packed-emoji-selection">{selectedEmoji}</output>
+<ResponsiveTabs bind:value={navigationValue} items={[{ value: "overview", label: "Overview" }, { value: "files", label: "Files" }]} />
+<Avatar name="Packed avatar" presence="online" />
+<AvatarPicker bind:value={avatarValue} name="Packed profile" />
+<output data-testid="packed-avatar-value">{avatarValue}</output>
+<AppShell.Topbar>{#snippet center()}<span data-testid="packed-topbar-center">Shared top bar</span>{/snippet}</AppShell.Topbar>
+<MarkdownContent content="# Packed Markdown" />
 </main>`,
     );
     copyFileSync(

@@ -1,0 +1,60 @@
+import { Meta, Source } from "@storybook/addon-docs/blocks";
+import * as Stories from "./AvatarPicker.stories.svelte";
+import { Basic, Upload, Inline, Styles } from "./AvatarPicker.example-sources";
+
+<Meta of={Stories} />
+
+# Avatar Picker
+
+Import `AvatarPicker` from `@lapismd/design-core/forms`. Bind its portable string
+`value`; uploading and persistence belong to the host. Images can come from a
+file, drop, URL, custom emoji, or a generated SVG using emoji and background.
+When no image is selected, `initials` (or initials derived from `name`) provides
+the fallback. Initials are host input, not an editor choice.
+
+<Source code={Basic} language="tsx" />
+
+`onUploadImage(file, signal)` returns an image URL. New choices, external value
+changes, disabling and unmounting abort the prior request and ignore late results.
+Without an uploader the picker retains a local data URL. Upload failures preserve
+the selected value. The non-modal popover embeds the full emoji picker directly; no second emoji popover is needed.
+
+<Source code={Upload} language="tsx" />
+
+`shape` and `background` are bindable. `customEmojis` uses the shared EmojiPicker
+records; pass the resolved `theme` when the app differs from the OS.
+
+## Presentation and edit affordance
+
+The avatar has a pencil button with a transparent circular cut-out, so it can sit
+on any host surface. `shape="circle"` and `shape="rounded"` share Avatar's sizing,
+including `2xl` (8rem) and `3xl` (10rem); the default picker size is `xl` (5rem).
+
+<Source code={Styles} language="tsx" />
+
+`presentation="popover"` is the default. `presentation="inline"` opens the same
+editor in document flow. Bind `open` to choose its initial state; Done returns to
+the avatar and restores focus. Changes still update `value` immediately. Image
+selection/drop, pasted URLs, custom emoji and removal use the same host
+callbacks in both modes. `mode` can start on Image or Emoji. Removing the image restores the host-provided initials fallback.
+
+<Source code={Inline} language="tsx" />
+
+Hosts configure `shape`; the editor never exposes shape selection to the user.
+`--ui-avatar-picker-width` now defaults to `26rem`, bounded by available space.
+`--ui-avatar-picker-size` overrides the avatar dimension, `--ui-avatar-radius`
+controls rounded corners, and `--ui-avatar-picker-cutout-gap`,
+`--ui-avatar-picker-edit-background` and `--ui-avatar-picker-edit-foreground`
+customize the edit affordance. Background swatches are available on every tab. Bind `background` separately
+from `value` to persist the backing colour for transparent images; changing it
+does not flatten, upload or replace the original image. Emoji SVG values
+also retain their chosen background.
+
+Edit controls respond to hover, press and keyboard focus; reduced motion disables
+scaling. `--ui-avatar-picker-edit-hover-background` customizes the hover colour.
+
+Avatar popovers use the shared ScrollArea with styled scrollbars and a viewport
+bounded by the available popover space. Inline editors use normal document flow.
+
+The inline and popover emoji sections default to a compact `16rem` height. Override
+`--ui-avatar-picker-emoji-height` when a host has more room.

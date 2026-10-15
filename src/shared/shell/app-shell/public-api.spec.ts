@@ -142,6 +142,8 @@ describe("@lapismd/design-core/shell public API", () => {
       surfaceLayerInlineEndInset: "var(--ui-shell-main-block-inset)",
       sidebarToggleIndicatorWidth: "24%",
       toolbarHeight: "3rem",
+      toolbarPaddingInline: "1rem",
+      toolbarPaddingBlock: "0.125rem",
       mainBlockInset: "0.5rem",
       mainRadius: "0.875rem",
       mainShadow:

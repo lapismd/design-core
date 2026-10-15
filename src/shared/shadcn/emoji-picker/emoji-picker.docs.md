@@ -49,3 +49,8 @@ tokens inherit from Design Core; no Tailwind tooling or AI stylesheet is needed.
 ### Custom
 
 ### Presets
+
+Use `presentation="inline"` to embed the same panel in an existing editor. The
+panel has no trigger or popup and stays visible after selection. The full library
+still loads on panel mount; an AvatarPicker can mount it only on its Emoji tab.
+Restricted lists and custom emoji records work in both presentations.

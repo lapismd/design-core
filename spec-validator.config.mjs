@@ -5,6 +5,8 @@ import {
 } from "@lapismd/spec-validator";
 
 const shadcnChapters = {
+  "responsive-tabs": ["spec/src/shadcn/disclosure-and-navigation.md"],
+  avatar: ["spec/src/shadcn/data-and-feedback.md"],
   accordion: ["spec/src/shadcn/disclosure-and-navigation.md"],
   alert: ["spec/src/shadcn/data-and-feedback.md"],
   "alert-dialog": ["spec/src/shadcn/overlays.md"],
@@ -55,6 +57,7 @@ const shadcnChapters = {
 };
 
 const formChapters = {
+  "avatar-picker": ["spec/src/forms/inputs.md"],
   core: ["spec/src/forms/core-and-orchestrators.md"],
   "structured-form": ["spec/src/forms/core-and-orchestrators.md"],
   "yaml-backed-form": ["spec/src/forms/core-and-orchestrators.md"],
@@ -185,6 +188,7 @@ export default defineConfig(headingRequirements(), {
           chapters: ["spec/src/styling-and-themes.md"],
         },
         { pattern: "^src/shared/filter/", chapters: ["spec/src/filter.md"] },
+        { pattern: "^src/shared/chat/", chapters: ["spec/src/chat.md"] },
         { pattern: "^src/shared/ai/", chapters: ["spec/src/ai.md"] },
         { pattern: "^src/shared/diff/", chapters: ["spec/src/diff.md"] },
         { pattern: "^src/shared/shell/", chapters: ["spec/src/shell.md"] },

@@ -102,7 +102,8 @@ the edge-stage track.
 
 ## Headers and alignment
 
-Every root sidebar uses `Sidebar.Header`; main uses `Toolbar`. Style consumer
+Every root sidebar uses `Sidebar.Header`; main uses `Toolbar`, which includes default block/inline padding through
+`--ui-shell-toolbar-padding-block` and `--ui-shell-toolbar-padding-inline`. Style consumer
 header rows from `--ui-shell-toolbar-height` and keep
 `--ui-shell-main-block-inset` authoritative rather than hard-coding unrelated
 column heights. A header may add a second row, but the first action/title row
@@ -180,3 +181,27 @@ inside the shared shell.
 - Collapse: `Independent icon rails`
 - Responsive edges: `Mobile edge panels`
 - Local panels: `Markdown document body sidebars`
+
+## Application top bar
+
+Compose `AppShell.Topbar` above `AppShell.Root` in a bounded flex column. Its
+`leading`, `center` and `trailing` snippets own content; leading controls render
+before the built-in navigation history, keeping the left sidebar toggle first; optional `onBack` and
+`onForward` callbacks own navigation. Bind the explicit main element through
+`AppShell.Main bind:ref={main}` and pass `mainElement={main}` for centre alignment.
+The bar avoids overlapping edge actions when space is constrained. Host desktop
+drag attributes remain host-supplied. The top bar is a neutral structural container
+so existing main toolbars retain their landmarks.
+
+Tokens: `--ui-shell-topbar-height`, `--ui-shell-topbar-padding` and
+`--ui-shell-topbar-background`. See **Top bar and multiple sidebars** for independent
+navigation, body-local details and far-right tools, using shared Panel Toggle icons.
+
+The top-bar example fills its available viewport and demonstrates independent
+body/content ScrollAreas, a document outline and details, an outer workspace
+inspector, a transparent tools rail and responsive document tabs. The left
+navigation retains named icons when collapsed. Rail resize indicators remain
+transparent, including while hovered, expanded, previewed or dragged; keyboard
+resize focus remains visible. Document-local toggles sit inside the body's left
+and right edges, with content inset below them. The outer workspace-inspector
+toggle sits at the right of the document header.

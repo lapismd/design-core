@@ -1,4 +1,36 @@
 <script lang="ts">
+  import {
+    ResponsiveTabs,
+    type ResponsiveTab,
+  } from "@lapismd/design-core/shadcn/responsive-tabs";
+  import { Avatar, type AvatarProps } from "@lapismd/design-core/shadcn/avatar";
+  import {
+    AvatarPicker,
+    type AvatarPickerProps,
+  } from "@lapismd/design-core/forms/avatar-picker";
+  import { AppShell } from "@lapismd/design-core/shell";
+  import {
+    MarkdownContent,
+    type MarkdownContentProps,
+  } from "@lapismd/design-core/chat";
+  const navItems = [
+    { value: "overview", label: "Overview" },
+  ] satisfies ResponsiveTab[];
+  const avatarProps = {
+    name: "Alex",
+    presence: "online",
+  } satisfies AvatarProps;
+  const pickerProps = {
+    name: "Alex",
+    onUploadImage: async (_file: File, _signal: AbortSignal) => "/avatar.png",
+  } satisfies AvatarPickerProps;
+  const markdownProps = {
+    content: "**Hello**",
+    extensions: [],
+    linkResolver: ({ href }) => href,
+    assetResolver: ({ src }) => src,
+  } satisfies MarkdownContentProps;
+
   import * as Dialog from "@lapismd/design-core/shadcn/dialog";
   import { DialogFrame } from "@lapismd/design-core/forms/dialog";
   import { ConfirmDialog } from "@lapismd/design-core/forms/dialog";
@@ -90,3 +122,9 @@
       >{/snippet}</DialogFrame
   ></Dialog.Root
 >
+
+<ResponsiveTabs value="overview" items={navItems} /><Avatar
+  {...avatarProps}
+/><AvatarPicker {...pickerProps} /><MarkdownContent
+  {...markdownProps}
+/><AppShell.Topbar />

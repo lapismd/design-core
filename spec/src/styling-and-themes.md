@@ -225,3 +225,6 @@ Card Header/Footer and block-aligned Input Group Addon accept
 `data-divided="true"` for a section divider with the corresponding inset.
 Disabled label groups use `data-disabled="true"`; disabled native controls
 before their label need no peer marker. Field relationships use `data-slot`.
+
+Chat is included in the native-CSS source audit. MarkdownContent uses public
+Mira embedded-preview tokens and its own typography, width and block-gap tokens.

@@ -185,3 +185,18 @@
     await expect(document.querySelector("em-emoji-picker")).toBeNull();
   }}
 />
+
+<Story
+  name="Inline panel"
+  parameters={{
+    docs: { source: { code: sources.Inline, language: "tsx", type: "code" } },
+  }}
+>
+  {#snippet template()}<div style="max-width:26rem">
+      <EmojiPicker
+        presentation="inline"
+        {customEmojis}
+        onSelect={(emoji) => (selected = emoji)}
+      /><output>{selected}</output>
+    </div>{/snippet}
+</Story>

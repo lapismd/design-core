@@ -48,3 +48,10 @@ export const Empty = `<script lang="ts">
   import { EmojiPicker } from "@lapismd/design-core/shadcn/emoji-picker";
 </script>
 <EmojiPicker emojis={[]} onSelect={() => {}} />`;
+
+export const Inline = `<script lang="ts">
+  import { EmojiPicker } from "@lapismd/design-core/shadcn/emoji-picker";
+  let value = $state("");
+</script>
+<EmojiPicker presentation="inline" onSelect={(emoji) => (value = emoji)} />
+<output>{value}</output>`;

@@ -16,6 +16,7 @@ import { findTailwindUtilitiesInSource } from "./lib/no-tailwind-utilities.js";
 
 const DEFAULT_ROOTS = [
   "src/shared/ai",
+  "src/shared/chat",
   "src/shared/diff",
   "src/shared/filter",
   "src/shared/forms",

@@ -391,6 +391,14 @@
     {
       "name": "./forms/dialog",
       "requirement": "DC-PKG-003"
+    },
+    {
+      "name": "./chat",
+      "requirement": "DC-CHAT-001"
+    },
+    {
+      "name": "./forms/avatar-picker",
+      "requirement": "DC-FORM-047"
     }
   ],
   "catalog": [
@@ -1021,6 +1029,22 @@
     {
       "name": "UI Forms/Layout/Confirm Button",
       "requirement": "DC-FORM-046"
+    },
+    {
+      "name": "Chat/Markdown Content",
+      "requirement": "DC-CHAT-001"
+    },
+    {
+      "name": "Shadcn/Data/Avatar",
+      "requirement": "DC-SHA-056"
+    },
+    {
+      "name": "Shadcn/Navigation/Responsive Tabs",
+      "requirement": "DC-SHA-055"
+    },
+    {
+      "name": "UI Forms/Avatar Picker",
+      "requirement": "DC-FORM-047"
     }
   ]
 }

@@ -1,5 +1,13 @@
 # Package exports
 
+The app-component promotion batch adds the Chat entry point and qualifies
+published Mira `~0.0.5`. Responsive Tabs and Avatar use family exports; Avatar
+Picker uses Forms and Topbar uses Shell. Consumer adoption remains deferred.
+
+Avatar Picker also offers `./forms/avatar-picker` for focused source consumers,
+matching the existing focused Forms entry-point pattern. The built Forms barrel
+remains its standard import and is verified through the packed consumer.
+
 The root package manifest defines the supported import boundaries. Family barrels may expose compound parts, controllers, tokens, and types.
 
 `./shadcn/emoji-picker` exports the generic picker, custom/Unicode option types,

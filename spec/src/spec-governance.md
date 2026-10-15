@@ -1,5 +1,9 @@
 # Specification governance
 
+App component promotion batch registers Responsive Tabs (DC-SHA-055), Avatar
+(DC-SHA-056), Avatar Picker (DC-FORM-047), Topbar (DC-SHELL-004), and Chat
+MarkdownContent (DC-CHAT-001), with one verification row per requirement.
+
 Specification governance keeps requirements discoverable, mapped, validated, and changed before or with protected implementation, including same-change verification evidence for expanded public component families.
 
 Controlled notification presentation shares DC-WS-037 with the existing plugin.

@@ -10,6 +10,7 @@
   import type { Snippet } from "svelte";
   import type { HTMLAttributes } from "svelte/elements";
   import type { ToolCallItem, ToolCallStatus } from "../types.js";
+  import RichToolCallDetail from "../tool-call-detail/RichToolCallDetail.svelte";
   import "../chat.css";
 
   let {
@@ -81,6 +82,7 @@
 {#snippet callRow(call: ToolCallItem, index: number)}
   {@const id = callId(call, index)}
   {@const status = call.status ?? "pending"}
+  {@const hasDetail = !!(call.detail || call.presentation)}
   {#snippet presentation()}
     <Collapsible.Root
       open={detailOpen[id] ?? false}
@@ -90,8 +92,8 @@
     >
       <Collapsible.Trigger
         data-ai-chat-part="call-trigger"
-        disabled={!call.detail}
-        aria-label={call.detail
+        disabled={!hasDetail}
+        aria-label={hasDetail
           ? `${detailOpen[id] ? "Hide" : "Show"} details for ${call.name}`
           : undefined}
       >
@@ -119,7 +121,7 @@
         {#if call.duration && status === "complete"}
           <span data-ui-part="duration">{call.duration}</span>
         {/if}
-        {#if call.detail}
+        {#if hasDetail}
           <ChevronRightIcon
             data-ui-part="detail-chevron"
             data-direction={detailOpen[id] ? "down" : "right"}
@@ -131,9 +133,13 @@
       {#if call.errorMessage}
         <p data-ui-part="error" role="alert">{call.errorMessage}</p>
       {/if}
-      {#if call.detail}
+      {#if hasDetail}
         <Collapsible.Content data-ai-chat-part="call-detail">
-          {@render call.detail(call)}
+          {#if call.detail}
+            {@render call.detail(call)}
+          {:else if call.presentation}
+            <RichToolCallDetail toolName={call.name} {...call.presentation} />
+          {/if}
         </Collapsible.Content>
       {/if}
     </Collapsible.Root>

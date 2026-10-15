@@ -28,8 +28,8 @@ The App Shell owns application structure and responsive layout while consumers o
 ### Acceptance details
 
 - The intended content pane, rather than the page or translated mobile stage, must own scrolling when the bounded-shell composition is used; `Sidebar.Body scrollable={false}` must retain bounded flex geometry while allowing a child chat or editor to own the only scroll viewport.
-- Body regions must support the documented scrollbar modes and an explicit non-main semantic element for embedded shell content, while compact and reference compositions preserve shell radius, bounded extension points, and component-owned presentation styling.
-- Arbitrary same-side sidebars must support deterministic priority and structural ordering, independent persisted geometry, transparent rails, per-panel previews, and exact main-surface replacement that restores inline automatically.
+- Body regions must support the documented scrollbar modes and an explicit non-main semantic element for embedded shell content, while compact and reference compositions preserve shell radius, bounded extension points, and component-owned presentation styling, including token-driven default padding on the shared main Toolbar.
+- Arbitrary same-side sidebars must support deterministic priority and structural ordering, independent persisted geometry, transparent rail borders and resize indicators in expanded, hover, preview and dragging states, per-panel previews, and exact main-surface replacement that restores inline automatically; keyboard resize focus MUST remain visible.
 - One compound `SurfaceLayer` must own covered bounds, logical-direction observation, dismissal, focus and inert restoration, transient panel suspension, mobile placement outside inert lane subtrees, active-lane mobile hosting, opt-in root mobile hosting for whole-stage overlays, teardown that removes live teleported nodes without reattaching removed nodes, and configured leading allowance across desktop and mobile, while explicit-controller toggles and public controller types remain consumer-safe under `exactOptionalPropertyTypes`.
 
 ## DC-SHELL-003 — Shell Guidance
@@ -40,3 +40,14 @@ The App Shell owns application structure and responsive layout while consumers o
 
 - Examples must use public App Shell contracts.
 - Guidance must identify consumer-owned routing and persistence concerns.
+
+## DC-SHELL-004 — Top bar
+
+**Requirement.** AppShell.Topbar MUST provide reusable application chrome above Root while retaining the canonical sidebar/main topology.
+
+### Acceptance details
+
+- The top bar MUST support leading content before back/forward controls, centre and trailing snippets, optional back/forward callbacks and an explicit main-element reference for centre alignment.
+- Measurements MUST avoid overlap in narrow layouts and release observers and queued frames during teardown.
+- The top bar MUST share the outer body background by default, and the full-height catalog MUST compose icon-collapse left navigation, body-local sidebars, an independent right inspector and a transparent far-right rail using existing controllers and shared Panel Toggle icons, with ResponsiveTabs and independently scrolling content bodies rather than page scrolling.
+- The example MUST place document-local toggles inside the body's corresponding left and right edges and the outer right-inspector toggle at the right of the document header, retaining mobile state and focus behavior.

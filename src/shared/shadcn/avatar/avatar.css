@@ -1,0 +1,66 @@
+[data-ui-component="avatar"] {
+  --_avatar-size: var(--ui-avatar-size, 2rem);
+  position: relative;
+  display: inline-flex;
+  width: var(--_avatar-size);
+  height: var(--_avatar-size);
+  flex: none;
+  vertical-align: middle;
+}
+[data-ui-component="avatar"][data-size="xs"] {
+  --_avatar-size: var(--ui-avatar-size, 1.25rem);
+}
+[data-ui-component="avatar"][data-size="sm"] {
+  --_avatar-size: var(--ui-avatar-size, 1.5rem);
+}
+[data-ui-component="avatar"][data-size="lg"] {
+  --_avatar-size: var(--ui-avatar-size, 3rem);
+}
+[data-ui-component="avatar"][data-size="xl"] {
+  --_avatar-size: var(--ui-avatar-size, 5rem);
+}
+[data-ui-component="avatar"][data-size="2xl"] {
+  --_avatar-size: var(--ui-avatar-size, 8rem);
+}
+[data-ui-component="avatar"][data-size="3xl"] {
+  --_avatar-size: var(--ui-avatar-size, 10rem);
+}
+[data-ui-component="avatar"] [data-ui-part="content"] {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 50%;
+  background: var(--ui-avatar-background, var(--muted));
+  color: var(--ui-avatar-foreground, var(--foreground));
+  font-weight: 600;
+  font-size: calc(var(--_avatar-size) * 0.42);
+}
+[data-ui-component="avatar"][data-shape="rounded"] [data-ui-part="content"] {
+  border-radius: var(--ui-avatar-radius, 25%);
+}
+[data-ui-component="avatar"] img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+[data-ui-component="avatar"] [data-ui-part="presence"] {
+  position: absolute;
+  inset-inline-end: -1px;
+  bottom: -1px;
+  width: 0.6rem;
+  height: 0.6rem;
+  border: 2px solid var(--background);
+  border-radius: 50%;
+  background: var(--muted-foreground);
+}
+[data-ui-component="avatar"] [data-presence="online"] {
+  background: var(--ui-avatar-online, #16803c);
+}
+[data-ui-component="avatar"] [data-presence="away"] {
+  background: var(--ui-avatar-away, #a66b00);
+}
+[data-ui-component="avatar"] [data-presence="busy"] {
+  background: var(--destructive);
+}

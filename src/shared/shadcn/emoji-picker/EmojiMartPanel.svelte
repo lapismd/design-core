@@ -12,7 +12,7 @@
     theme: "light" | "dark" | "auto";
     searchLabel: string;
     onSelect: (emoji: string) => void;
-    onClose: () => void;
+    onClose?: () => void;
   } = $props();
   let host = $state<HTMLDivElement | null>(null);
   // Emoji Mart's declarations do not describe its custom element's DOM base.
@@ -114,9 +114,9 @@
         Emoji could not be loaded. Check your connection and refresh the page to
         try again.
       </p>
-      <Button variant="outline" size="sm" onclick={onClose}
-        >Close emoji picker</Button
-      >
+      {#if onClose}<Button variant="outline" size="sm" onclick={onClose}
+          >Close emoji picker</Button
+        >{/if}
     </div>
   {:else if !ready}
     <p data-ui-part="emoji-loading" role="status">Loading emoji…</p>

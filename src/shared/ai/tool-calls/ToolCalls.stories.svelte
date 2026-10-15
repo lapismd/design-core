@@ -2,6 +2,9 @@
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent } from "storybook/test";
   import ToolCalls from "./ToolCalls.svelte";
+  import DetailFixture from "../tool-call-detail/ToolCallDetail.stories.fixture.svelte";
+  import { examples } from "../tool-call-detail/ToolCallDetail.stories.data.js";
+  import * as detailSources from "../tool-call-detail/ToolCallDetail.example-sources.js";
 
   const editDiffText = `--- a/src/utils/formatDate.ts
 +++ b/src/utils/formatDate.ts
@@ -148,9 +151,10 @@ Time:        1.8s`;
   exportName="Simple"
   parameters={{
     docs: {
+      source: { code: detailSources.Grouped, language: "tsx", type: "code" },
       description: {
         story:
-          "A single inline tool call above a collapsible multi-call group with diff stats. Shows both layouts side by side.",
+          "A single call and a grouped set of normalized tool results. Click a row to see the shared formatted/raw presentation.",
       },
     },
     visualDelta: {
@@ -161,7 +165,7 @@ Time:        1.8s`;
       placement: "right",
     },
   }}
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <div data-story="tool-stack">
@@ -169,7 +173,8 @@ Time:        1.8s`;
         calls={[
           {
             name: "bash",
-            target: "git status",
+            target: "pnpm test",
+            presentation: examples.shell,
             status: "complete",
             duration: "1.2s",
           },
@@ -180,29 +185,47 @@ Time:        1.8s`;
         calls={[
           {
             name: "read",
-            target: "src/components/DataGrid.tsx",
+            target: "src/lib/greeting.ts",
+            presentation: examples.read,
             status: "complete",
             duration: "30ms",
           },
           {
             name: "edit",
-            target: "src/components/DataGrid.tsx",
+            target: "src/lib/greeting.ts",
+            presentation: examples.edit,
             status: "complete",
             duration: "85ms",
-            additions: 24,
-            deletions: 8,
+            additions: 3,
+            deletions: 2,
           },
           {
-            name: "edit",
-            target: "src/components/DataGrid.test.tsx",
+            name: "search",
+            target: "greet",
+            presentation: examples.search,
             status: "complete",
             duration: "60ms",
-            additions: 45,
           },
         ]}
       />
     </div>
   {/snippet}
+</Story>
+
+<Story
+  name="Rich tool results"
+  tags={["visual-pending"]}
+  parameters={{
+    docs: {
+      source: { code: detailSources.Grouped, language: "tsx", type: "code" },
+      description: {
+        story:
+          "Expand a call to compare its normalized presentation with its exact captured raw payload. File navigation stays with the host; maximize a dense result to fill the page.",
+      },
+    },
+  }}
+>
+  {#snippet template()}<DetailFixture scenario="grouped" />{/snippet}
 </Story>
 
 <Story

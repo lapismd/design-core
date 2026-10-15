@@ -4,6 +4,9 @@ Forms core supplies manual and config-driven controlled rendering. Orchestrators
 Masked secrets use the Password Input family under Forms / Inputs rather than these orchestrators.
 
 The Forms barrel also exports the generic DialogFrame, ConfirmDialog, and ConfirmButton compositions; focused component subpaths avoid loading form orchestration in strict consumers.
+AvatarPicker is also available from the Forms barrel and the focused
+`@lapismd/design-core/forms/avatar-picker` entry; its host-owned value/upload
+contract is defined in Forms / Inputs (DC-FORM-047).
 
 ## Public surface coverage
 

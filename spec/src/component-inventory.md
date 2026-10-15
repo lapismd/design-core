@@ -140,6 +140,8 @@ network or host-store dependency. Storybook: `AI/...`.
   typing, and unread primitives. Every export is marked `@experimental`;
   import from `@lapismd/design-core/ai/experimental`.
 
+- `tool-call-detail/` owns generic and rich tool details: formatted/raw shell, file read, file edit and search presentation. `/chat` re-exports this family. Provider adapters remain host-owned.
+
 Import: `@lapismd/design-core/ai`, `@lapismd/design-core/ai/chat`, and
 `@lapismd/design-core/ai/experimental`.
 
@@ -243,3 +245,10 @@ are tracked in `src/shared/workspace/PLAN.md`.
 - `ConfirmDialog` and `ConfirmButton`: compact asynchronous confirmation and trigger composition.
 
 Import these through `@lapismd/design-core/forms`; domain-specific controls remain in consumers.
+
+## App component promotion batch
+
+Responsive Tabs and Avatar are shared Shadcn primitives. Avatar Picker is a
+Forms input. AppShell.Topbar extends the Shell compound family. Chat owns
+MarkdownContent and re-exports existing stable AI chat primitives without moving
+their implementations. These additions retain host-owned storage and adapters.

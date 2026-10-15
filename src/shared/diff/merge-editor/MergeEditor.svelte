@@ -378,6 +378,7 @@
       navigationTargets.length;
     activeIndex = next;
     const target = navigationTargets[next];
+    if (!target) return;
     editorEl
       ?.querySelector<HTMLElement>(
         `[data-ui-part='merge-component'][data-render-component-id="${target.componentId}"][data-placeholder="false"]`,

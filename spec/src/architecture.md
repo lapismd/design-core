@@ -1,5 +1,10 @@
 # Architecture
 
+Chat is a host-neutral presentation layer composing Mira public preview APIs.
+Generic responsive navigation and avatar presentation remain in Shadcn; avatar
+editing remains in Forms. AppShell.Topbar is above the bounded Root and receives
+its main element explicitly rather than reading a global controller.
+
 Packed validation and registry releases use prepared modules and declarations
 through the same public import names. Components remain consumer compiled;
 TypeScript rune modules become `.svelte.js` before dependency prebundling. Local

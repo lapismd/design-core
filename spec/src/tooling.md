@@ -1,5 +1,11 @@
 # Tooling
 
+The public Mira preview joins the catalog prebundle inventory so first Markdown
+rendering cannot invalidate a running story through late dependency discovery.
+
+The offline component catalog includes the Chat layer alongside legacy AI, with
+public imports and colocated examples for MarkdownContent.
+
 `package:local` stages the normal source inventory, runs `svelte-package` with
 declarations, verifies every TypeScript and Svelte declaration exists, and writes an
 ignored `-built.tgz` artifact with its SHA-256. Failed preparation cannot select

@@ -1,4 +1,5 @@
 import type { Snippet } from "svelte";
+import type { ToolCallDetailProps } from "./tool-call-detail/rich-tool-call-detail.types.js";
 
 export type Density = "compact" | "balanced" | "spacious";
 export type MessageSender = "user" | "assistant" | "system";
@@ -77,6 +78,8 @@ export type ToolCallItem = {
   errorMessage?: string;
   data?: unknown;
   detail?: Snippet<[ToolCallItem]>;
+  /** Shared normalized detail presentation; an explicit detail snippet takes precedence. */
+  presentation?: ToolCallDetailProps;
 };
 
 export type SpeechRecognitionError = {
