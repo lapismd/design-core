@@ -5,6 +5,17 @@ declarations, verifies every TypeScript and Svelte declaration exists, and write
 ignored `-built.tgz` artifact with its SHA-256. Failed preparation cannot select
 an incomplete archive. Consumer types and cold prebundling remain separate
 checks; the command performs no publication or service installation.
+The same preparation compiles global CSS without source scanning, audits all
+prepared CSS and Svelte style blocks, and copies referenced assets and licenses.
+The cold archive consumer verifies both development and production styling
+without a Tailwind installation or Vite plugin, using `npm install --omit=peer`
+to exclude the legacy Mira dependency's automatic Tailwind peer installation.
+Required fixture peers such as Svelte are declared explicitly; the normal
+dependency tree's remaining Mira peer is tracked separately from CSS compilation.
+During the incremental CSS migration, local review archives report remaining
+component utility selectors in `.release/remaining-style-utilities.json`;
+release archives reject those references. Local artifacts are validation-only
+and MUST NOT be published while that report is nonempty.
 
 Repository tools keep source generation, discovery, documentation, validation, Changesets, and package-pack evidence reproducible for humans and agents. The catalog CLI lists Diff families, including File Change Stats and Merge Editor, beside shadcn, forms, filter, and AI. Agent tooling guidance keeps external LapisMD repositories outside the workspace and resolves published dependencies through npm semver ranges while preserving portable manifests.
 

@@ -5,6 +5,8 @@ through the same public import names. Components remain consumer compiled;
 TypeScript rune modules become `.svelte.js` before dependency prebundling. Local
 development exports remain source based. Release archives retain source alongside
 prepared output, while the local archive profile does not publish releases.
+Both archive profiles prepare browser CSS before packing. Tailwind remains an
+internal authoring tool; published styles require no consumer compiler or scan.
 
 Design Core is a shared presentation and controller library. Consumer applications retain domain policy, persistence, transport, routing, and environment adapters. Component ownership and public-layer classification are maintained in the canonical [`component inventory`](component-inventory.md).
 

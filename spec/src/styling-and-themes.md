@@ -25,6 +25,7 @@ currentColor, reduced-motion preferences and Button focus semantics.
 | No utility leakage    | Styling         | DC-CSS-005  |
 | Visually hidden text  | Styling         | DC-CSS-006  |
 | Lapis workspace sans  | Theme           | DC-CSS-007  |
+| Prepared browser CSS  | npm artifact    | DC-CSS-008  |
 
 ## DC-CSS-001 — Native CSS
 
@@ -92,6 +93,18 @@ currentColor, reduced-motion preferences and Button focus semantics.
 
 - The token MUST start with `var(--font-sans)` and MAY keep system and emoji fallbacks after that family.
 - Theme contract tests MUST reject a system-ui-only `--ui-workspace-font-sans` stack.
+
+## DC-CSS-008 — Prepared browser CSS
+
+**Requirement.** Published style entry points and component styles MUST work
+without consumer Tailwind compilation or source scanning.
+
+### Acceptance details
+
+- Package preparation MUST resolve compiler directives and stylesheet dependencies, retain required theme defaults and keyframes, and package referenced font assets.
+- Prepared CSS MUST contain no Tailwind directives, package stylesheet imports, or generated utility selectors; semantic selectors, native accessibility helpers, private generated variables, and standard CSS at-rules remain supported.
+- Cold development and production consumers MUST verify fonts, component geometry, focus, and light/dark presentation using only the Svelte Vite plugin.
+- Internal authoring and conversion tools MAY use Tailwind, but preparation MUST NOT scan consumer files or include Storybook utility classes in runtime output.
 
 ## Styling implementation guide
 

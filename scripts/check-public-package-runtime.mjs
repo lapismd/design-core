@@ -1,11 +1,82 @@
 import assert from "node:assert/strict";
 import { spawn, spawnSync } from "node:child_process";
-import { copyFileSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import {
+  copyFileSync,
+  existsSync,
+  mkdtempSync,
+  readFileSync,
+  readdirSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
 import net from "node:net";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { chromium } from "playwright";
 import { fileURLToPath } from "node:url";
+import { assertBrowserCss } from "./prepare-styles.mjs";
+
+async function checkStyles(page) {
+  await page.evaluate(() => document.fonts.ready);
+  const font = await page.evaluate(() => ({
+    family: getComputedStyle(document.body).fontFamily,
+    loaded: document.fonts.check('16px "DM Sans Variable"'),
+  }));
+  assert.match(font.family, /DM Sans Variable/);
+  assert.equal(font.loaded, true);
+  const update = page.getByRole("button", { name: "Update", exact: true });
+  const button = await update.evaluate((element) => {
+    const css = getComputedStyle(element);
+    return {
+      height: css.height,
+      padding: css.paddingLeft,
+      background: css.backgroundColor,
+    };
+  });
+  assert.equal(button.height, "36px");
+  assert.equal(button.padding, "10px");
+  assert.notEqual(button.background, "rgba(0, 0, 0, 0)");
+  const input = page.getByRole("textbox", {
+    name: "Packed input",
+    exact: true,
+  });
+  await input.focus();
+  const inputStyle = await input.evaluate((element) => {
+    const css = getComputedStyle(element);
+    return {
+      height: css.height,
+      border: css.borderStyle,
+      shadow: css.boxShadow,
+    };
+  });
+  assert.equal(inputStyle.height, "36px");
+  assert.equal(inputStyle.border, "solid");
+  assert.notEqual(inputStyle.shadow, "none");
+  const light = await page.evaluate(
+    () => getComputedStyle(document.body).backgroundColor,
+  );
+  await page.evaluate(() => document.documentElement.classList.add("dark"));
+  const dark = await page.evaluate(
+    () => getComputedStyle(document.body).backgroundColor,
+  );
+  assert.notEqual(dark, light);
+  await page.evaluate(() => document.documentElement.classList.remove("dark"));
+  const override = page.getByRole("button", {
+    name: "Token override",
+    exact: true,
+  });
+  assert.equal(
+    await override.evaluate(
+      (element) => getComputedStyle(element).backgroundColor,
+    ),
+    "rgb(10, 20, 30)",
+  );
+  const hidden = page.getByText("Accessible helper", { exact: true });
+  assert.equal(
+    await hidden.evaluate((element) => getComputedStyle(element).position),
+    "absolute",
+  );
+}
 
 /** Exercise the public archive with a fresh, unconfigured Svelte consumer. */
 export async function checkPublicPackageRuntime(tarball, registry) {
@@ -42,11 +113,17 @@ export async function checkPublicPackageRuntime(tarball, registry) {
       path.join(fixture, "App.svelte"),
       `<script lang="ts">
 import { Button } from "@lapismd/design-core/shadcn/button";
+import { Input } from "@lapismd/design-core/shadcn/input";
 import { CodeEditor } from "@lapismd/design-core/forms";
 import HandleLifecycle from "./HandleLifecycle.svelte";
 let value = $state('const initial = true;');
 </script>
-<main><Button onclick={() => value = 'const updated = true;'}>Update</Button><CodeEditor bind:value ariaLabel="Packed editor" /><HandleLifecycle /></main>`,
+<main><Button onclick={() => value = 'const updated = true;'}>Update</Button>
+<Input aria-label="Packed input" />
+<Input type="file" aria-label="Recovery bundle" />
+<div style="--ui-button-background: rgb(10, 20, 30)"><Button>Token override</Button></div>
+<span class="sr-only">Accessible helper</span>
+<CodeEditor bind:value ariaLabel="Packed editor" /><HandleLifecycle /></main>`,
     );
     copyFileSync(
       fileURLToPath(
@@ -80,6 +157,10 @@ let value = $state('const initial = true;');
       [
         "install",
         "--ignore-scripts",
+        // Mira 0.0.x still declares a Tailwind peer through tailwind-variants.
+        // Omit auto-installed peers to prove CSS needs no compiler present;
+        // this fixture declares its required Svelte/tooling peers explicitly.
+        "--omit=peer",
         "--no-audit",
         "--no-fund",
         "--registry",
@@ -88,6 +169,19 @@ let value = $state('const initial = true;');
       { cwd: fixture, encoding: "utf8", timeout: 240_000 },
     );
     assert.equal(install.status, 0, install.stderr || String(install.error));
+    for (const dependency of [
+      "tailwindcss",
+      "@tailwindcss/vite",
+      "@tailwindcss/node",
+      "tw-animate-css",
+      "shadcn-svelte",
+    ]) {
+      assert.equal(
+        existsSync(path.join(fixture, "node_modules", dependency)),
+        false,
+        `Clean consumer unexpectedly installed ${dependency}`,
+      );
+    }
     const types = spawnSync(
       process.execPath,
       [
@@ -154,6 +248,7 @@ let value = $state('const initial = true;');
     await page.goto(url);
     const update = page.getByRole("button", { name: "Update", exact: true });
     await update.waitFor();
+    await checkStyles(page);
     await page.waitForFunction(() =>
       document.querySelector(".cm-content")?.textContent.includes("initial"),
     );
@@ -184,8 +279,71 @@ let value = $state('const initial = true;');
     await page.getByRole("button", { name: "Unmount input" }).click();
     assert.equal(await ownership.textContent(), "replacement");
     assert.deepEqual(errors, []);
+    await page.close();
+    await new Promise((resolve) => {
+      server.once("exit", resolve);
+      server.kill("SIGTERM");
+    });
+    const build = spawnSync(
+      process.execPath,
+      [path.join(fixture, "node_modules/vite/bin/vite.js"), "build"],
+      { cwd: fixture, encoding: "utf8", timeout: 120_000 },
+    );
+    assert.equal(
+      build.status,
+      0,
+      build.stdout + build.stderr || String(build.error),
+    );
+    for (const file of readdirSync(path.join(fixture, "dist"), {
+      recursive: true,
+    })) {
+      if (file.endsWith(".css"))
+        assertBrowserCss(
+          readFileSync(path.join(fixture, "dist", file), "utf8"),
+          file,
+        );
+    }
+    server = spawn(
+      process.execPath,
+      [
+        path.join(fixture, "node_modules/vite/bin/vite.js"),
+        "preview",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        String(port),
+        "--strictPort",
+      ],
+      { cwd: fixture, stdio: ["ignore", "pipe", "pipe"] },
+    );
+    server.stdout.on("data", (data) => {
+      serverLog += data;
+    });
+    server.stderr.on("data", (data) => {
+      serverLog += data;
+    });
+    ready = false;
+    for (let attempt = 0; attempt < 100; attempt++) {
+      try {
+        if ((await fetch(url)).ok) {
+          ready = true;
+          break;
+        }
+      } catch {}
+      if (server.exitCode !== null) throw new Error(serverLog);
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    }
+    assert.equal(ready, true, "Production consumer preview did not start");
+    const production = await browser.newPage();
+    production.on("pageerror", (error) => errors.push(String(error)));
+    await production.goto(url);
+    await production
+      .getByRole("button", { name: "Update", exact: true })
+      .waitFor();
+    await checkStyles(production);
+    assert.deepEqual(errors, []);
     console.log(
-      "Cold public tarball startup, reactive CodeEditor update, and bound Composer Input handle lifecycle passed with zero Svelte diagnostics.",
+      "Cold development and production CSS, fonts, focus, themes, token overrides, reactive CodeEditor, and bound Composer Input lifecycle passed without Tailwind tooling or Svelte diagnostics.",
     );
   } catch (error) {
     console.error(serverLog.slice(-10000));

@@ -103,6 +103,10 @@ The root package manifest defines the supported import boundaries. Family barrel
 
 ## DC-PKG-009 — Versioned package artifact
 
+Prepared CSS follows DC-CSS-008 in both archive profiles. Public import names
+remain stable, and referenced fonts ship with their licenses. CSS authoring
+dependencies belong to development tooling rather than the installed runtime.
+
 Release inputs retain only changesets not already represented in the published
 changelog. Historical workspace integration must not reintroduce consumed
 changesets or repeat their version bumps and release notes.
