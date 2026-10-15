@@ -38,6 +38,12 @@
   let controlDisabled = $derived(
     field.disabled === true || field.readOnly === true,
   );
+  const customAdapter = $derived(
+    field.type === "custom" && field.adapter
+      ? controller.resolveCustomAdapter(field.id, field.adapter)
+      : undefined,
+  );
+  const CustomHeader = $derived(customAdapter?.headerComponent);
   let options = $state<WorkspaceSettingOption[]>([]);
   let optionRequest = 0;
   let keyValueOptions = $derived.by(() => {
@@ -103,6 +109,12 @@
   }
 
   function controlLayout() {
+    if (
+      field.type === "custom" &&
+      field.presentation === "full-width" &&
+      CustomHeader
+    )
+      return "custom-header";
     return field.type === "key-value" ||
       field.type === "object-array" ||
       field.type === "object-grid" ||
@@ -181,6 +193,25 @@
           {error}
         </p>{/if}
     </div>
+
+    {#if field.type === "custom" && field.presentation === "full-width" && CustomHeader}
+      <div
+        class="ui-workspace-setting-item__header-controls"
+        data-ui-part="setting-header-controls"
+      >
+        <CustomHeader
+          id={field.id}
+          {field}
+          {value}
+          disabled={controlDisabled}
+          readOnly={field.readOnly}
+          {busy}
+          {error}
+          setValue={(next) => controller.set(field.id, next)}
+          update={(next) => controller.update(field.id, next)}
+        />
+      </div>
+    {/if}
 
     <div class="ui-workspace-setting-item__control">
       {#if field.type === "boolean"}

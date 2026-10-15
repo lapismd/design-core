@@ -1389,3 +1389,32 @@ button.ui-workspace-copyable-value[data-ui-component="button"]:focus-visible {
   grid-column: 1 / -1;
   width: 100%;
 }
+
+.ui-workspace-setting-item[data-setting-layout="custom-header"] {
+  align-items: center;
+}
+
+.ui-workspace-setting-item__header-controls {
+  display: flex;
+  min-width: 0;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.ui-workspace-setting-item[data-setting-layout="custom-header"]
+  > .ui-workspace-setting-item__control {
+  grid-column: 1 / -1;
+  width: 100%;
+}
+
+.ui-workspace-setting-item [data-ui-component="input"][type="file"] {
+  padding-block: 0;
+  line-height: calc(var(--ui-workspace-settings-control-height) - 2px);
+}
+
+.ui-workspace-setting-item
+  [data-ui-component="input"][type="file"]::file-selector-button {
+  height: calc(var(--ui-workspace-settings-control-height) - 2px);
+  vertical-align: top;
+}
