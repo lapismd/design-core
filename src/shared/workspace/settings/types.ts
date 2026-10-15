@@ -201,6 +201,8 @@ export interface WorkspaceCustomSettingProps<T = unknown> {
 export interface WorkspaceCustomFieldAdapter<T = unknown> {
   id: string;
   component: Component<WorkspaceCustomSettingProps<T>>;
+  /** Optional trailing controls beside a full-width field's label; shares its controlled props. */
+  headerComponent?: Component<WorkspaceCustomSettingProps<T>>;
 }
 
 export interface WorkspaceCustomSetting<T = unknown>

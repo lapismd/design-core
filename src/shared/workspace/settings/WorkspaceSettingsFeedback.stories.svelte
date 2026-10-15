@@ -4,6 +4,8 @@
   import AppShellRoot from "../app-shell/AppShellRoot.svelte";
   import { AppShellController } from "../core/app-shell-controller.svelte.js";
   import WorkspaceSettingsSurface from "./WorkspaceSettingsSurface.svelte";
+  import WorkspaceSettingsStoryHeader from "./WorkspaceSettingsStoryHeader.svelte";
+  import WorkspaceSettingsStoryFileField from "./WorkspaceSettingsStoryFileField.svelte";
   import "./WorkspaceSettings.stories.css";
 
   function createApp() {
@@ -49,6 +51,50 @@
     app.settings.open();
     return app;
   }
+  function createHeaderApp() {
+    const app = new AppShellController();
+    let value: unknown = "idle";
+    const listeners = new Set<() => void>();
+    app.settings.registerDefinition({
+      section: {
+        id: "custom-header",
+        title: "Custom field settings",
+        fields: [
+          {
+            id: "custom-file",
+            type: "custom",
+            title: "Invitation attachment",
+            presentation: "full-width",
+            adapter: "custom-file",
+          },
+        ],
+      },
+      source: {
+        get: () => value,
+        set: async (_id, next) => {
+          value = next;
+          for (const listener of listeners) listener();
+          return next;
+        },
+        subscribe: (listener) => {
+          listeners.add(listener);
+          return () => listeners.delete(listener);
+        },
+      },
+      adapters: [
+        {
+          id: "custom-file",
+          component: WorkspaceSettingsStoryFileField,
+          headerComponent: WorkspaceSettingsStoryHeader,
+        },
+      ],
+    });
+    app.settings.selectSection("custom-header");
+    app.settings.open();
+    return app;
+  }
+  const headerApp = createHeaderApp();
+  const fileApp = createHeaderApp();
   const feedbackApp = createApp();
   const responsiveApp = createApp();
   const { Story } = defineMeta({
@@ -145,6 +191,93 @@
           ><WorkspaceSettingsSurface
             controller={responsiveApp.settings}
             app={responsiveApp}
+          /></AppShellRoot
+        >
+      </div>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Custom field header actions"
+  play={async ({ canvas }) => {
+    await userEvent.click(
+      await canvas.findByRole("button", { name: "Custom field settings" }),
+    );
+    const label = canvas.getByText("Invitation attachment", { exact: true });
+    const action = canvas.getByRole("button", { name: "Create invitation" });
+    const file = canvas.getByLabelText("Invitation attachment");
+    const labelRect = label.getBoundingClientRect();
+    const actionRect = action.getBoundingClientRect();
+    expect(actionRect.left).toBeGreaterThan(labelRect.right);
+    expect(actionRect.top).toBeLessThan(labelRect.bottom);
+    expect(actionRect.bottom).toBeGreaterThan(labelRect.top);
+    expect(file.getBoundingClientRect().top).toBeGreaterThanOrEqual(
+      actionRect.bottom,
+    );
+    await userEvent.click(action);
+    expect(
+      await canvas.findByRole("button", { name: "Cancel invitation" }),
+    ).toBeEnabled();
+    const frame = file.closest<HTMLElement>(
+      ".ui-workspace-settings-story-frame",
+    )!;
+    try {
+      frame.style.width = "28rem";
+      await waitFor(() => {
+        const row = file.closest<HTMLElement>('[data-ui-part="setting-item"]')!;
+        expect(row.scrollWidth).toBeLessThanOrEqual(row.clientWidth + 1);
+        expect(
+          canvas
+            .getByRole("button", { name: "Cancel invitation" })
+            .getBoundingClientRect().right,
+        ).toBeLessThanOrEqual(row.getBoundingClientRect().right + 1);
+      });
+    } finally {
+      frame.style.removeProperty("width");
+    }
+  }}
+>
+  {#snippet template()}
+    <div class="ui-workspace-settings-story-canvas">
+      <div class="ui-workspace-settings-story-frame">
+        <AppShellRoot controller={headerApp} theme="inherit"
+          ><WorkspaceSettingsSurface
+            controller={headerApp.settings}
+            app={headerApp}
+          /></AppShellRoot
+        >
+      </div>
+    </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="File input sizing"
+  play={async ({ canvas }) => {
+    await userEvent.click(
+      await canvas.findByRole("button", { name: "Custom field settings" }),
+    );
+    const file = canvas.getByLabelText("Invitation attachment");
+    const style = getComputedStyle(file);
+    const inner = getComputedStyle(file, "::file-selector-button");
+    expect(
+      parseFloat(inner.height) +
+        parseFloat(style.paddingTop) +
+        parseFloat(style.paddingBottom) +
+        parseFloat(style.borderTopWidth) +
+        parseFloat(style.borderBottomWidth),
+    ).toBeLessThanOrEqual(file.getBoundingClientRect().height + 1);
+    expect(parseFloat(style.paddingLeft)).toBeGreaterThan(0);
+  }}
+>
+  {#snippet template()}
+    <div class="ui-workspace-settings-story-canvas">
+      <div class="ui-workspace-settings-story-frame">
+        <AppShellRoot controller={fileApp} theme="inherit"
+          ><WorkspaceSettingsSurface
+            controller={fileApp.settings}
+            app={fileApp}
           /></AppShellRoot
         >
       </div>

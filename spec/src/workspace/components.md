@@ -558,3 +558,23 @@ sidebar destinations marked with the `move` icon.
 - Control columns are bounded by the available content width.
 - Long action labels wrap without clipping or horizontal overflow.
 - Narrow settings retain their existing single-column layout.
+
+## DC-WS-073 — Custom field header controls
+
+**Requirement.** A full-width custom field adapter MAY provide a controlled header component beside its label while its body spans the complete row.
+
+### Acceptance details
+
+- The header MUST receive the same current value, setter and state props as its body.
+- Desktop header controls MUST align to the trailing edge beside the label; narrow layouts MUST wrap without overflow.
+- Adapters without a header MUST preserve their existing layout and behavior.
+
+## DC-WS-074 — Settings file input geometry
+
+**Requirement.** Settings file inputs MUST fit their native file-selection button and text within the shared control height without clipping.
+
+### Acceptance details
+
+- The outer control MUST retain the standard horizontal padding and Settings height.
+- File-button height plus vertical padding and borders MUST fit inside that outer height.
+- File selection, disabled state and accessible labeling MUST retain the public Input behavior.
