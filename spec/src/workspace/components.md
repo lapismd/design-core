@@ -538,3 +538,23 @@ sidebar destinations marked with the `move` icon.
 - The overlay token MUST default to `0px` and replace the ordinary ribbon-adjusted inset during focus mode.
 - Top tabs MUST add the overlay inset to existing start padding; stacked tabs MUST inset their complete chrome row.
 - Restore MUST return to ordinary header geometry without changing sidebar state.
+
+## DC-WS-071 — Settings action feedback rows
+
+**Requirement.** Settings action results MUST occupy a complete row below their label and action controls, without increasing the controls column width.
+
+### Acceptance details
+
+- Success and warning results retain status semantics; errors retain alert semantics.
+- Feedback spans the complete setting width in desktop and narrow layouts.
+- Action enablement, busy state and result ownership remain controller-owned.
+
+## DC-WS-072 — Settings label space
+
+**Requirement.** Desktop Settings MUST reserve at least half of each ordinary row for its label and description. Long outputs and action feedback MUST NOT squeeze that column; controls MUST stay within the remaining space.
+
+### Acceptance details
+
+- Control columns are bounded by the available content width.
+- Long action labels wrap without clipping or horizontal overflow.
+- Narrow settings retain their existing single-column layout.

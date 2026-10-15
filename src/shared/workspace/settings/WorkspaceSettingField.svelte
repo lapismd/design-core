@@ -466,6 +466,7 @@
         </Alert.Root>
       {:else if field.type === "action"}
         <Button
+          class="ui-workspace-setting-action"
           id={`setting-${field.id}`}
           variant={field.variant ?? "outline"}
           disabled={controller.isDisabled(field.id) || busy}
@@ -475,16 +476,6 @@
           {#if field.icon}<WorkspaceIcon name={field.icon} />{/if}
           {field.label}
         </Button>
-      {/if}
-
-      {#if field.type === "action" && actionResult}
-        <p
-          class="ui-workspace-setting-action-result"
-          data-tone={actionResult.tone}
-          role={actionResult.tone === "error" ? "alert" : "status"}
-        >
-          {actionResult.message}
-        </p>
       {/if}
 
       {#if field.type !== "action" && field.type !== "output" && "default" in field && field.default !== undefined}
@@ -501,5 +492,15 @@
         </Button>
       {/if}
     </div>
+    {#if field.type === "action" && actionResult}
+      <p
+        class="ui-workspace-setting-action-result"
+        data-ui-part="setting-action-result"
+        data-tone={actionResult.tone}
+        role={actionResult.tone === "error" ? "alert" : "status"}
+      >
+        {actionResult.message}
+      </p>
+    {/if}
   </div>
 {/if}

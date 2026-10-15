@@ -223,7 +223,7 @@
 
 .ui-workspace-settings__schema-body {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(10rem, max-content);
+  grid-template-columns: minmax(0, 1fr) minmax(10rem, min(40%, 20rem));
   overflow: hidden;
   border-radius: 0.5rem;
   padding: 0 1.25rem;
@@ -311,7 +311,7 @@
 
 .ui-workspace-setting-item__control {
   display: flex;
-  min-width: 12rem;
+  min-width: 0;
   align-items: center;
   justify-content: flex-end;
   gap: 0.5rem;
@@ -551,7 +551,7 @@
 .ui-workspace-setting-range {
   --muted: var(--ui-workspace-panel-action-hover-background);
   display: flex;
-  min-width: 12rem;
+  min-width: 0;
   align-items: center;
   gap: 0.75rem;
 }
@@ -742,7 +742,9 @@
 
 .ui-workspace-setting-action-result[data-tone="warning"],
 .ui-workspace-setting-object-action-result[data-tone="warning"] {
-  color: var(--ui-workspace-warning, #a16207);
+  color: var(--ui-workspace-foreground);
+  border-inline-start: 2px solid var(--ui-workspace-warning, #a16207);
+  padding-inline-start: 0.5rem;
 }
 
 .ui-workspace-setting-action-result[data-tone="error"],
@@ -1373,4 +1375,17 @@ button.ui-workspace-copyable-value[data-ui-component="button"]:focus-visible {
   flex: 1 1 auto;
   flex-direction: column;
   padding-top: 2.75rem;
+}
+
+.ui-workspace-setting-action[data-ui-component="button"] {
+  max-width: 100%;
+  height: auto;
+  min-height: var(--ui-workspace-settings-control-height);
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.ui-workspace-setting-action-result {
+  grid-column: 1 / -1;
+  width: 100%;
 }
