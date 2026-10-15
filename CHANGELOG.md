@@ -1,5 +1,11 @@
 # @lapismd/design-core
 
+## 0.3.5
+
+### Patch Changes
+
+- [#23](https://github.com/lapismd/design-core/pull/23) [`dde430a`](https://github.com/lapismd/design-core/commit/dde430a6854a0d303bc56d73e646ede22864137e) Thanks [@stevejuma](https://github.com/stevejuma)! - Allow controlled full-width Settings adapters to place header controls beside their label. Keep file inputs and their native file-selection button within the shared Settings control height.
+
 ## 0.3.4
 
 ### Patch Changes
