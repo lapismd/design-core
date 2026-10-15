@@ -1,5 +1,25 @@
 <script lang="ts">
   import {
+    TagList,
+    type TagListItem,
+    type TagListProps,
+  } from "@lapismd/design-core/shadcn/tag-list";
+  const tagItems: readonly TagListItem[] = [
+    {
+      id: "shared",
+      label: "Shared",
+      variant: "outline",
+      tone: "accent",
+      active: true,
+      onClick: (_tag, event) => event.preventDefault(),
+    },
+  ];
+  const tagListProps = {
+    tags: tagItems,
+    size: "sm",
+    label: "Shared tags",
+  } satisfies TagListProps;
+  import {
     ResponsiveTabs,
     type ResponsiveTab,
   } from "@lapismd/design-core/shadcn/responsive-tabs";
@@ -102,6 +122,8 @@
   let tokens = $state<PowerSearchToken[]>([]);
   const filterSyntax = createDemoLedgerFilterSyntax();
 </script>
+
+<TagList {...tagListProps} />
 
 <DropdownMenu.Root>
   <DropdownMenu.Trigger>Filter</DropdownMenu.Trigger>

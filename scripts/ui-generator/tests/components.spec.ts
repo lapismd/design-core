@@ -40,6 +40,11 @@ describe("ui components", () => {
     expect(button!.import).toBe("@lapismd/design-core/shadcn/button");
     expect(button!.exampleCount).toBeGreaterThan(0);
 
+    const tagList = list.find((c) => c.key === "shadcn/tag-list");
+    expect(tagList?.import).toBe("@lapismd/design-core/shadcn/tag-list");
+    expect(tagList?.hasDocs).toBe(true);
+    expect(tagList!.exampleCount).toBeGreaterThan(0);
+
     const formField = list.find((c) => c.key === "forms/form-field");
     expect(formField).toBeDefined();
     expect(formField!.hasDocs).toBe(true);

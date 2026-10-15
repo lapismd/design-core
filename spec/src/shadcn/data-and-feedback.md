@@ -14,6 +14,18 @@ Data and feedback primitives communicate state without taking ownership of consu
 | Skeleton | `@lapismd/design-core/shadcn/skeleton` | DC-SHA-015  |
 | Spinner  | `@lapismd/design-core/shadcn/spinner`  | DC-SHA-016  |
 | Avatar   | `@lapismd/design-core/shadcn/avatar`   | DC-SHA-056  |
+| Tag List | `@lapismd/design-core/shadcn/tag-list` | DC-SHA-057  |
+
+## DC-SHA-057 — Tag List
+
+**Requirement.** Tag List MUST present ordered, host-owned tags in one compact responsive row, composing existing Badge/Button, Tooltip, Popover and ScrollArea primitives.
+
+### Acceptance details
+
+- Tags MUST retain stable IDs, labels, optional component icons, variants, semantic tones, descriptions, disabled state, controlled active state and host callbacks; passive tags MUST remain text and disabled actions MUST never fire.
+- Actual tag, gap and overflow-indicator measurements MUST determine the visible prefix without wrapping or reordering; long labels MUST truncate, the first tag MAY shrink to retain priority, and every tag MUST remain available in the count-labelled overflow popover.
+- Keyboard tooltips, activation, dismissal and resize-related focus recovery MUST retain full labels and descriptions; the viewport-bounded popover MUST use the shared ScrollArea and inherited overlay portal context.
+- Native CSS and documented tokens MUST preserve compact chip styling across sizes and themes; observers, font listeners and scheduled measurements MUST be released on disposal, and inert measuring content MUST stay out of accessibility and tab order.
 
 ## DC-SHA-009 — Shared Shadcn invariants
 

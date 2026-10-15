@@ -1,5 +1,8 @@
 # Tooling
 
+The catalog discovers the project-authored TagList family and its public
+examples under `shadcn/tag-list`.
+
 The public Mira preview and editor join the catalog prebundle inventory so first Markdown
 rendering or composer mounting cannot invalidate a running story through late dependency discovery.
 
@@ -24,6 +27,9 @@ The cold consumer also exercises both Panel Toggle icon variants on all four
 edges and verifies independent icon composition and sizing through public tokens.
 It additionally opens and searches the shared Emoji Picker and verifies that
 the AI compatibility export has the same component identity.
+TagList's public component and types participate in the same clean archive
+fixture, including compact CSS, ordered overflow, token inheritance through the
+popover, host callbacks and focus restoration in development and production.
 The successful preparation report at `.release/remaining-style-utilities.json`
 is empty; local artifacts remain validation-only.
 

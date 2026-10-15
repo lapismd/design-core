@@ -1,0 +1,6 @@
+export const Basic =
+  '<script lang="ts">\n  import { TagList, type TagListItem } from "@lapismd/design-core/shadcn/tag-list";\n  import CloudIcon from "@lucide/svelte/icons/cloud";\n  let selected = $state("");\n  const tags: TagListItem[] = [\n    { id: "documentation", label: "documentation" },\n    { id: "cloud", label: "cloud", icon: CloudIcon, tone: "accent",\n      onClick: (tag) => { selected = tag.id; } },\n    { id: "preview", label: "preview environment", tone: "success" },\n    { id: "review", label: "needs review", tooltip: "Waiting for approval." }\n  ];\n</script>\n<div style="width: 18rem; max-width: 100%">\n  <TagList {tags} />\n</div>\n<output>{selected}</output>';
+export const Sizes =
+  '<script lang="ts">\n  import { TagList } from "@lapismd/design-core/shadcn/tag-list";\n  let selected = $state("");\n  const tags = [\n    { id: "active", label: "Active", active: true, onClick: () => { selected = "active"; } },\n    { id: "disabled", label: "Unavailable", disabled: true, tooltip: "Try again later." }\n  ];\n</script>\n<TagList {tags} size="sm" />\n<TagList {tags} size="md" />\n<TagList {tags} size="lg" />\n<output>{selected}</output>';
+export const Empty =
+  '<script lang="ts">\n  import { TagList } from "@lapismd/design-core/shadcn/tag-list";\n</script>\n<TagList tags={[]} />';

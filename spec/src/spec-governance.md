@@ -99,7 +99,7 @@ regressions; both entries map to one shared implementation.
 - A diagnostic must identify its stable code, governing requirement, source path, line when available, affected identifier, and corrective action.
 - The repository configuration must carry the complete Design Core path-to-chapter map without moving ownership policy into the shared validator package.
 - Forms core helpers MUST map to `forms/core-and-orchestrators.md` rather than fail as unclassified production source.
-- Project-authored shadcn families such as `command-view` MUST appear in that family-to-chapter map.
+- Project-authored shadcn families such as `command-view` MUST appear in that family-to-chapter map; `tag-list` maps to `shadcn/data-and-feedback.md`.
 
 ## DC-GOV-005 — QMD indexing
 
