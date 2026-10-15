@@ -3,6 +3,10 @@
 The component promotion batch adds review-pending catalogs for Responsive Tabs,
 Avatar, Avatar Picker, AppShell top-bar composition, and Chat/Markdown Content.
 Each demonstrates public host-owned contracts through copyable examples.
+Chat also catalogs MarkdownComposer, MessageActions and Reactions with retained
+draft, host-action and custom-emoji review scenarios.
+CommentComposer adds code/Markdown selection replies, compact inline comments,
+narrow layout, disabled/pending drafts and unavailable-source review states.
 
 Storybook is the interactive catalog and acceptance surface. It documents components but does not supersede canonical specification Markdown. The specification sidebar includes the Diff chapter after AI.
 

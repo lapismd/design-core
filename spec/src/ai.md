@@ -120,6 +120,7 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 - The public boundary is `@lapismd/design-core/ai/chat`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 - When `disabled` and `isStopShown` are both true, the stop control MUST remain pointer-interactive while input, send, and other body actions stay blocked.
+- `clearOnSubmit` MUST default to the existing clear behavior and allow hosts such as MarkdownComposer to retain the controlled draft after submission intent.
 
 ## DC-AI-010 — Composer Input
 
@@ -221,6 +222,7 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 
 - The public boundary is `@lapismd/design-core/ai/experimental`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- The experimental import MUST remain compatible with the shared Chat reaction implementation and neutral custom-emoji model defined by DC-CHAT-004.
 - Optional emoji choices MUST be omitted rather than forwarded as explicit `undefined` values.
 
 ## DC-AI-019 — Reasoning

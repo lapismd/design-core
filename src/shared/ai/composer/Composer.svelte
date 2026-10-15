@@ -22,6 +22,7 @@
     density = "balanced",
     elevation = "low",
     isStopShown = false,
+    clearOnSubmit = true,
     status,
     statusPosition = "bottom",
     triggers = [],
@@ -44,6 +45,8 @@
     density?: Density;
     elevation?: "none" | "low";
     isStopShown?: boolean;
+    /** Keep false when the host owns acknowledgement and draft clearing. */
+    clearOnSubmit?: boolean;
     status?: ComposerStatus;
     statusPosition?: "top" | "bottom";
     triggers?: ComposerTrigger[];
@@ -67,7 +70,7 @@
     if (!canSend) return;
     const submitted = value.trim();
     onSubmit(submitted);
-    value = "";
+    if (clearOnSubmit) value = "";
   }
 
   function stop(): void {

@@ -1,7 +1,11 @@
 # Package exports
 
 The app-component promotion batch adds the Chat entry point and qualifies
-published Mira `~0.0.5`. Responsive Tabs and Avatar use family exports; Avatar
+published Mira `~0.0.5`.
+The Chat entry point also exports MarkdownComposer, MessageActions and the
+shared ReactionBar while retaining existing AI compatibility imports. CommentComposer
+and its neutral source, props and focus/selection handle are also exported from Chat.
+Responsive Tabs and Avatar use family exports; Avatar
 Picker uses Forms and Topbar uses Shell. Consumer adoption remains deferred.
 
 Avatar Picker also offers `./forms/avatar-picker` for focused source consumers,

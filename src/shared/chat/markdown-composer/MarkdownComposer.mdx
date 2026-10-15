@@ -1,0 +1,64 @@
+import { Meta, Source } from "@storybook/addon-docs/blocks";
+import * as Stories from "./MarkdownComposer.stories.svelte";
+import { Basic, Document, Custom } from "./MarkdownComposer.example-sources";
+
+<Meta of={Stories} />
+
+# Markdown Composer
+
+A controlled Mira editor inside the existing Composer shell. Bottom formatting
+actions have tooltips; emoji, contextual content and host actions compose with
+both `framed` and `document` presentations. Styles load with this family.
+
+For the compact reply card attached to captured code or text, see
+[Comment Composer](?path=/docs/chat-comment-composer--docs).
+
+<Source code={Basic} language="tsx" />
+
+`onSubmit` emits the exact draft, including whitespace. It never clears it.
+Hosts own pending state, delivery errors, acknowledgement and persistence; clear
+only an acknowledged snapshot that still matches the current draft. `busy`
+blocks editing and actions; `onStop` optionally exposes an enabled stop button.
+`status` supplies host feedback without taking ownership of delivery.
+
+Framed mode submits on Enter, with Shift+Enter for newlines. Document mode uses
+Ctrl/Command+Enter; override `submitOnEnter` explicitly if needed. IME composition
+never submits. A `name` adds a hidden successful form control for host-owned forms.
+
+Document presentation follows jj-store's open writing surface: a transparent
+editor, 14px prose at 1.65 line height, a 1.5rem avatar gutter with a 0.5rem gap,
+and a writing area of at least `max(16rem, 45vh)`. The optional `avatar` snippet
+supplies the host's identity presentation; its gutter remains when omitted.
+The avatar aligns vertically to the first text line, including multiline drafts.
+The editor grows with the document by default, with formatting and send actions
+aligned below its text column. Its default placeholder is empty.
+
+<Source code={Document} language="tsx" />
+
+Supply `reply={{ authorName, content }}` to show the quoted message in the top
+drawer, as in jj-store. The text is truncated visually and its full content is
+available on hover. `onCancelReply` requests host-owned cancellation and restores
+editor focus without changing the draft or selection. Omit the callback for a
+read-only reply preview. The separate `context` snippet remains available for
+additional header context.
+
+`handle` exposes focus, selection, insertion and formatting through public Mira
+APIs. Selection and editor identity survive presentation changes. Supply public
+Mira `extensions` for application syntax and `colorMode` for explicit themes.
+Custom emoji default to `:shortcode:` text; `emojiText` can adapt that syntax.
+Explicit `emojis`, including `[]`, restrict the picker.
+
+<Source code={Custom} language="tsx" />
+
+The `additionalActions` snippet receives focus, insertion, formatting, submission
+and disabled-state helpers. Hosts still own uploads, recipients and queues.
+Tokens: `--ui-markdown-composer-min-height` (6rem) and
+`--ui-markdown-composer-max-height` (18rem), plus
+`--ui-markdown-composer-editor-padding` (0.5rem framed, 0 document). Document
+presentation additionally supports `--ui-markdown-composer-document-min-height`,
+`--ui-markdown-composer-font-family`, `--ui-markdown-composer-font-size`,
+`--ui-markdown-composer-line-height`, `--ui-markdown-composer-avatar-width` and
+`--ui-markdown-composer-avatar-gap`. Set the avatar width and gap to `0px` for
+an unindented document. Its maximum height is unbounded unless explicitly set.
+Both presentations start at the leading edge of their text column. No Tailwind
+tooling is required.

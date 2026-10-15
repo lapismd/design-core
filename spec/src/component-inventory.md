@@ -252,3 +252,10 @@ Responsive Tabs and Avatar are shared Shadcn primitives. Avatar Picker is a
 Forms input. AppShell.Topbar extends the Shell compound family. Chat owns
 MarkdownContent and re-exports existing stable AI chat primitives without moving
 their implementations. These additions retain host-owned storage and adapters.
+
+MarkdownComposer, MessageActions and Reactions are shared Chat presentation
+families: Mira owns Markdown editing, the existing Composer owns shell anatomy,
+and hosts own drafts, delivery, action policy and reaction persistence.
+
+CommentComposer is shared Chat presentation for compact inline drafts and
+captured-source reply cards. Hosts own comment IDs, anchors, queues and delivery.

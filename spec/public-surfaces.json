@@ -1045,6 +1045,22 @@
     {
       "name": "UI Forms/Avatar Picker",
       "requirement": "DC-FORM-047"
+    },
+    {
+      "name": "Chat/Markdown Composer",
+      "requirement": "DC-CHAT-002"
+    },
+    {
+      "name": "Chat/Message Actions",
+      "requirement": "DC-CHAT-003"
+    },
+    {
+      "name": "Chat/Reactions",
+      "requirement": "DC-CHAT-004"
+    },
+    {
+      "name": "Chat/Comment Composer",
+      "requirement": "DC-CHAT-005"
     }
   ]
 }

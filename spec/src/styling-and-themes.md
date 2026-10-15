@@ -228,3 +228,22 @@ before their label need no peer marker. Field relationships use `data-slot`.
 
 Chat is included in the native-CSS source audit. MarkdownContent uses public
 Mira embedded-preview tokens and its own typography, width and block-gap tokens.
+
+MarkdownComposer, MessageActions and Reactions own their CSS and semantic tokens;
+Mira root composition and public CodeMirror APIs supply editor presentation without
+Tailwind tooling or private editor overrides.
+
+MarkdownComposer exposes `--ui-markdown-composer-editor-padding` (0.5rem framed,
+0 document) for its full-width editor inset, alongside min-height and max-height.
+It composes Mira's public file-margin and line-width tokens on the CodeMirror
+root, avoiding the document surface's centered readable-width default.
+Document mode supports `--ui-markdown-composer-document-min-height`
+(`max(16rem, 45vh)`), prose font-family/font-size/line-height tokens and
+avatar-width/avatar-gap tokens. Document height grows naturally unless a host
+sets max-height; its text, actions and hint share the avatar gutter.
+
+CommentComposer owns its compact card and captured-source quote styles through
+`--ui-comment-composer-*` tokens. It uses public MiraCodeEditor tokens and
+CodeMirror APIs, and the shared ScrollArea for bounded source quotes.
+Its source quote follows Mira's body size (default 14px) and its draft uses 1rem;
+both inherit the host sans font, with separate quote/editor typography tokens.

@@ -1,0 +1,26 @@
+import { Meta, Source } from "@storybook/addon-docs/blocks";
+import * as Stories from "./MessageActions.stories.svelte";
+import { Basic, Reactions } from "./MessageActions.example-sources";
+
+<Meta of={Stories} />
+
+# Message Actions
+
+Hosts supply labels, identifiers, optional icon snippets, availability and
+callbacks. No copy, edit, delete or report policy is built in. Primary actions
+appear directly; other actions use the shared DropdownMenu.
+
+<Source code={Basic} language="tsx" />
+
+When wrapping message content, actions reveal on hover or focus within the
+surface. Touch layouts keep them visible below the content. Portaled menus and
+emoji pickers retain the surface until dismissal; the shared controls restore
+trigger focus. Use `alwaysVisible` for persistent controls or `presentation="inline"`
+for a standalone toolbar. Primary unavailable actions stay keyboard-focusable
+with `aria-disabled`; `disabledReason` explains availability and blocks execution.
+
+<Source code={Reactions} language="tsx" />
+
+Custom emoji use the shared neutral registration model. An explicit `emojis`
+list, including an empty list, restricts the picker. Hosts own reaction state.
+Styles load with the family; `--ui-message-actions-radius` defaults to 999px.

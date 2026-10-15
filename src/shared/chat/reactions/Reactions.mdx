@@ -1,0 +1,23 @@
+import { Meta, Source } from "@storybook/addon-docs/blocks";
+import * as Stories from "./Reactions.stories.svelte";
+import { Basic } from "./Reactions.example-sources";
+
+<Meta of={Stories} />
+
+# Reactions
+
+`ReactionBar` supports Unicode and custom-image reactions with host-owned counts
+and selected state. The experimental AI import remains the same component.
+
+<Source code={Basic} language="tsx" />
+
+Pass neutral `customEmojis` registration records. Reactions match registrations
+by ID or shortcode, or retain a captured record as `reaction.custom`. Images are
+decorative; the button's accessible label includes the name and reaction count.
+`onToggle` and `onAdd` retain their string argument and provide the optional
+custom record without changing Unicode-only callbacks.
+
+`disabled` blocks all changes. `emojis` restricts the picker even when custom
+registrations exist; `[]` means no choices. Supply `theme` for an explicit picker
+theme. The emoji dataset stays lazy until the full picker opens. The optional
+`--ui-reaction-emoji-size` token controls custom-image size (1.125rem by default).

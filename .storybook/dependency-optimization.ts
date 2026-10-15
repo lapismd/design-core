@@ -28,6 +28,7 @@ export const storybookBrowserDependencies = [
   "bits-ui",
   "emoji-mart",
   "@lapismd/mira/preview",
+  "@lapismd/mira",
   ...discoverCatalogIcons(fileURLToPath(new URL("../src", import.meta.url))),
   "@lezer/common",
   "aria-query",

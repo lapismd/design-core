@@ -136,7 +136,13 @@ Hello
     expect(chat.body).toContain("Markdown");
     expect(
       listComponents(packageRoot, { layer: "chat" }).map((entry) => entry.id),
-    ).toEqual(["markdown-content"]);
+    ).toEqual([
+      "comment-composer",
+      "markdown-composer",
+      "markdown-content",
+      "message-actions",
+      "reactions",
+    ]);
   });
 
   it("lists the complete stable and experimental AI Chat catalog", () => {

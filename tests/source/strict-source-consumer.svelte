@@ -11,8 +11,33 @@
   import { AppShell } from "@lapismd/design-core/shell";
   import {
     MarkdownContent,
+    CommentComposer,
+    type CommentComposerProps,
+    MarkdownComposer,
+    MessageActions,
+    ReactionBar as SharedReactionBar,
+    type MarkdownComposerProps,
+    type MarkdownComposerHandle,
+    type MarkdownComposerReply,
     type MarkdownContentProps,
   } from "@lapismd/design-core/chat";
+  let sharedHandle = $state<MarkdownComposerHandle | null>(null);
+  const commentProps = {
+    value: "A retained comment",
+    source: { label: "Captured code", quote: "const value = 1;", kind: "code" },
+    onSubmit: (_snapshot: string) => {},
+    onNavigateSource: (opener: HTMLButtonElement) => opener.focus(),
+  } satisfies CommentComposerProps;
+  const sharedReply = {
+    authorName: "Sam",
+    content: "A quoted message",
+  } satisfies MarkdownComposerReply;
+  const sharedComposerProps = {
+    value: "Draft",
+    reply: sharedReply,
+    onCancelReply: () => {},
+    onSubmit: (_snapshot: string) => {},
+  } satisfies MarkdownComposerProps;
   const navItems = [
     { value: "overview", label: "Overview" },
   ] satisfies ResponsiveTab[];
@@ -128,3 +153,10 @@
 /><AvatarPicker {...pickerProps} /><MarkdownContent
   {...markdownProps}
 /><AppShell.Topbar />
+
+<MarkdownComposer {...sharedComposerProps} bind:handle={sharedHandle}>
+  {#snippet avatar()}<span aria-hidden="true">AM</span>{/snippet}
+</MarkdownComposer>
+<CommentComposer {...commentProps} />
+<MessageActions actions={[]}><p>Strict shared message</p></MessageActions>
+<SharedReactionBar reactions={[{ emoji: "👍", count: 1 }]} />
