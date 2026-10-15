@@ -1,5 +1,13 @@
 # @lapismd/design-core
 
+## 0.5.0
+
+### Minor Changes
+
+- [#27](https://github.com/lapismd/design-core/pull/27) [`24e6c27`](https://github.com/lapismd/design-core/commit/24e6c2774ae3f6ded9937f831f5df2b1ab73ae89) Thanks [@stevejuma](https://github.com/stevejuma)! - Add a compact TagList with measured ordered overflow, optional icons, semantic
+  tones, controlled active states, accessible tooltips and an all-tags popover.
+  Compose existing chip primitives with native CSS and host-owned callbacks.
+
 ## 0.4.0
 
 ### Minor Changes
