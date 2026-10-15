@@ -1,5 +1,39 @@
 # @lapismd/design-core
 
+## 0.4.0
+
+### Minor Changes
+
+- [#25](https://github.com/lapismd/design-core/pull/25) [`ed1b35f`](https://github.com/lapismd/design-core/commit/ed1b35f7e1b36986309be386ce93e8612b3ac90c) Thanks [@stevejuma](https://github.com/stevejuma)! - Add controlled MarkdownComposer and host-supplied MessageActions to Chat, and
+  extend ReactionBar with custom-image emoji and disabled/restricted selection
+  while retaining experimental imports. Composer can retain submitted drafts.
+  Add CommentComposer for compact inline and captured-source comment drafts.
+
+### Patch Changes
+
+- [#25](https://github.com/lapismd/design-core/pull/25) [`ed1b35f`](https://github.com/lapismd/design-core/commit/ed1b35f7e1b36986309be386ce93e8612b3ac90c) Thanks [@stevejuma](https://github.com/stevejuma)! - Prepare plain browser CSS and licensed font assets in published archives so
+  consumers do not need Tailwind compilation or source scanning. Keep authoring
+  tools in development dependencies and audit packaged CSS for utility leakage.
+
+  Repair compound component selectors and reject utility leakage in source and
+  archive checks. Preserve compact cards, disabled fields, tab indicators and
+  joined toggles; expose semantic section dividers without utility classes.
+
+- [#25](https://github.com/lapismd/design-core/pull/25) [`ed1b35f`](https://github.com/lapismd/design-core/commit/ed1b35f7e1b36986309be386ce93e8612b3ac90c) Thanks [@stevejuma](https://github.com/stevejuma)! - Add ResponsiveTabs, Avatar, AvatarPicker and AppShell.Topbar with native CSS,
+  controlled host-owned values and public review examples. Introduce the Chat
+  entry point and safe Mira MarkdownContent while preserving existing AI imports.
+  Qualify the published Mira 0.0.5 dependency and expose Chat in the offline catalog.
+
+  Add normalized rich tool details with formatted/raw switching and shell, file,
+  diff and search presentation, plus optional ToolCalls presentation data.
+
+- [#25](https://github.com/lapismd/design-core/pull/25) [`ed1b35f`](https://github.com/lapismd/design-core/commit/ed1b35f7e1b36986309be386ce93e8612b3ac90c) Thanks [@stevejuma](https://github.com/stevejuma)! - Add a shared EmojiPicker with a lazily loaded full catalog, search, categories,
+  skin tones, suggested reactions and custom-image emoji. Preserve explicit
+  restricted lists, string selection callbacks and existing AI experimental imports.
+
+  Provide controlled opening, custom trigger content, explicit themes and native
+  component CSS without requiring Tailwind tooling.
+
 ## 0.3.5
 
 ### Patch Changes
