@@ -1,10 +1,17 @@
 # Architecture
 
+Chat is a host-neutral presentation layer composing Mira public preview APIs.
+Generic responsive navigation and avatar presentation remain in Shadcn; avatar
+editing remains in Forms. AppShell.Topbar is above the bounded Root and receives
+its main element explicitly rather than reading a global controller.
+
 Packed validation and registry releases use prepared modules and declarations
 through the same public import names. Components remain consumer compiled;
 TypeScript rune modules become `.svelte.js` before dependency prebundling. Local
 development exports remain source based. Release archives retain source alongside
 prepared output, while the local archive profile does not publish releases.
+Both archive profiles prepare browser CSS before packing. Tailwind remains an
+internal authoring tool; published styles require no consumer compiler or scan.
 
 Design Core is a shared presentation and controller library. Consumer applications retain domain policy, persistence, transport, routing, and environment adapters. Component ownership and public-layer classification are maintained in the canonical [`component inventory`](component-inventory.md).
 
@@ -17,6 +24,11 @@ inventory, including the exact Lucide imports discovered in catalog sources.
 Browser acceptance waits for client compilation and pending import requests to
 settle through the fail-closed catalog readiness endpoint. Workspace pointer
 acceptance uses one worker against that shared development host.
+
+The generic Emoji Picker owns Unicode and custom-image selection under Shadcn;
+AI experimental entry points re-export that implementation. Hosts retain emoji
+identity and asset policy. Emoji Mart and its dataset are lazy dependencies,
+with the runtime prebundled by catalog hosts to avoid first-open reloads.
 
 Release preparation uses the published Spec Validator 0.1.4 range and Changesets 3. Optional QMD search remains available when installed by the developer; normal
 validation does not install its model/native dependency graph. The supported Node

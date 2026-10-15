@@ -25,6 +25,13 @@
 <style>
   /* Semantic selectors must be global: they target data attributes and descendants. */
   :global {
+    [data-slot="input-group-addon"][data-align="block-start"][data-divided="true"] {
+      border-bottom: 1px solid var(--border);
+    }
+    [data-slot="input-group-addon"][data-align="block-end"][data-divided="true"] {
+      border-top: 1px solid var(--border);
+    }
+
     /*! tailwindcss v4.3.3 | MIT License | https://tailwindcss.com */
     @layer properties {
     }
@@ -421,10 +428,10 @@
         width: calc(var(--spacing) * 4);
         height: calc(var(--spacing) * 4);
       }
-      [data-ui-component="input-group"][data-ui-part="input-group-addon"][data-align="block-start"].border-b {
+      [data-ui-component="input-group"][data-ui-part="input-group-addon"][data-align="block-start"][data-divided="true"] {
         padding-bottom: calc(var(--spacing) * 2);
       }
-      [data-ui-component="input-group"][data-ui-part="input-group-addon"][data-align="block-end"].border-t {
+      [data-ui-component="input-group"][data-ui-part="input-group-addon"][data-align="block-end"][data-divided="true"] {
         padding-top: calc(var(--spacing) * 2);
       }
       [data-ui-component="input-group"][data-ui-part="input-group"]:has(

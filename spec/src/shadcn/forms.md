@@ -10,6 +10,7 @@ Shadcn form controls provide the low-level accessible inputs used directly or in
 | Command              | `@lapismd/design-core/shadcn/command`      | DC-SHA-025  |
 | Command View         | `@lapismd/design-core/shadcn/command-view` | DC-SHA-051  |
 | Command View filters | `@lapismd/design-core/shadcn/command-view` | DC-SHA-052  |
+| Emoji Picker         | `@lapismd/design-core/shadcn/emoji-picker` | DC-SHA-054  |
 | Field                | `@lapismd/design-core/shadcn/field`        | DC-SHA-026  |
 | Input                | `@lapismd/design-core/shadcn/input`        | DC-SHA-027  |
 | Input Group          | `@lapismd/design-core/shadcn/input-group`  | DC-SHA-028  |
@@ -28,6 +29,20 @@ Shadcn form controls provide the low-level accessible inputs used directly or in
 - Multipart primitives must remain importable as one family.
 - Owned source must preserve `data-slot` and Design Core provenance metadata where generated.
 
+## DC-SHA-054 — Emoji Picker
+
+Catalog selection awaits the expected emoji button while the lazy grid loads;
+the search input can mount before selectable results are available.
+
+**Requirement.** Emoji Picker MUST provide host-neutral full and restricted emoji selection through the shared Popover or an inline panel, with native CSS and lazy-loaded Emoji Mart data.
+
+### Acceptance details
+
+- The public boundary is `@lapismd/design-core/shadcn/emoji-picker`; existing AI experimental imports and the explicit searchable `emojis` list remain compatible, including an empty list.
+- Full selection MUST support Unicode search, categories and skin tones, suggested reactions and custom emoji identified by ordinary IDs, shortcodes and image URLs; selection reports the string and optional custom record without owning persistence.
+- The controlled picker MUST support disabled state, trigger composition and explicit light/dark/automatic theme, constrain its popup to available space, and preserve keyboard focus and reopening behavior; inline presentation MUST reuse the same selection/custom-emoji panel without another trigger or popover, loading the full library only when that panel mounts.
+- Full library/data imports MUST occur only when needed; disposal or superseded loading MUST release the picker and observers without stealing focus or mounting stale content, while failed downloads MUST explain refresh recovery and allow dismissal without reloading the host or losing its drafts.
+
 ## DC-SHA-024 — Checkbox
 
 **Requirement.** The Checkbox family MUST expose checked, unchecked, indeterminate, invalid, and disabled states through an accessible control.
@@ -35,6 +50,7 @@ Shadcn form controls provide the low-level accessible inputs used directly or in
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/shadcn/checkbox`.
+- Checkbox disabled context MUST follow the owning semantic Field slot without a group marker.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 
 ## DC-SHA-025 — Command
@@ -80,6 +96,7 @@ bits-ui command API bindable.
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/shadcn/field`.
+- Labels MUST reflect `data-disabled="true"` on their semantic Field ancestor without group classes.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 
 ## DC-SHA-027 — Input
@@ -98,6 +115,7 @@ bits-ui command API bindable.
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/shadcn/input-group`.
+- Block-aligned Addon sections MUST support `data-divided="true"` with a token-colored divider and matching inset.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 - Actions MUST forward the requested Button size, default to `xs`, and retain square geometry for `icon-xs` and `icon-sm`.
 
@@ -108,6 +126,7 @@ bits-ui command API bindable.
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/shadcn/label`.
+- Disabled groups use `data-disabled="true"`; preceding disabled native controls MUST style their label without a peer class.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 
 ## DC-SHA-030 — Select

@@ -176,7 +176,7 @@
       directory: getFileDirectory(path),
       isSelected: path === selectedPath,
       mode,
-      node,
+      ...(node === undefined ? {} : { node }),
     };
   }
 </script>
@@ -305,7 +305,7 @@
       {hasMore}
       {loading}
       {loadingLabel}
-      {onLoadMore}
+      {...onLoadMore === undefined ? {} : { onLoadMore }}
     />
   {:else}
     {#each rows as row, index (row.key)}

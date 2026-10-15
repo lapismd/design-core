@@ -112,7 +112,7 @@
         outline-style: none;
       }
       [data-ui-component="checkbox"][data-ui-part="checkbox"]:is(
-          :where(.group\/field):has(:disabled) *
+          :where([data-slot="field"]):has(:disabled) *
         ) {
         opacity: 0.5;
       }

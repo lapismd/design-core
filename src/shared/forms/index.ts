@@ -140,3 +140,5 @@ export {
   type ConfirmDialogProps,
 } from "./confirm-dialog/index.js";
 export { ConfirmButton } from "./confirm-button/index.js";
+
+export { AvatarPicker, type AvatarPickerProps } from "./avatar-picker/index.js";

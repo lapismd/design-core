@@ -84,6 +84,7 @@ const preview: Preview = {
             ],
             "Filter",
             "AI",
+            "Chat",
             "Diff",
             "Shell",
             "Workspace",

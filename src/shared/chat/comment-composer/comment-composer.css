@@ -1,0 +1,113 @@
+.ui-comment-composer {
+  --_comment-font-family: var(
+    --ui-comment-composer-font-family,
+    var(--font-sans, system-ui)
+  );
+  --_comment-quote-font-size: var(
+    --ui-comment-composer-quote-font-size,
+    var(--mira-markdown-font-size, var(--mira-font-size, 0.875rem))
+  );
+  --_comment-quote-line-height: var(
+    --ui-comment-composer-quote-line-height,
+    var(--mira-markdown-line-height, 1.5)
+  );
+  --mira-code-editor-background: transparent;
+  --mira-code-editor-foreground: var(--foreground);
+  --mira-code-editor-font-family: var(--_comment-font-family);
+  --mira-code-editor-font-size: var(--ui-comment-composer-font-size, 1rem);
+  --mira-code-editor-line-height: var(--ui-comment-composer-line-height, 1.5);
+  --mira-code-editor-padding: 0;
+  min-width: 0;
+  width: 100%;
+  color: var(--foreground);
+  font-family: var(--_comment-font-family);
+}
+.ui-comment-composer[data-context="true"] {
+  padding: var(--ui-comment-composer-padding, 0.5rem);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--ui-comment-composer-context-background, var(--muted));
+}
+.ui-comment-composer__source {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  min-width: 0;
+  margin-block-end: 0.5rem;
+}
+.ui-comment-composer__quote-scroll {
+  flex: 1;
+  min-width: 0;
+  max-height: var(--ui-comment-composer-quote-max-height, 8rem);
+}
+.ui-comment-composer__quote {
+  margin: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: var(--_comment-quote-font-size);
+  line-height: var(--_comment-quote-line-height);
+}
+.ui-comment-composer__quote > code {
+  color: inherit;
+  font: inherit;
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--primary) 15%, transparent);
+  box-decoration-break: clone;
+}
+.ui-comment-composer__markdown {
+  --ui-chat-markdown-padding: 0;
+  --ui-chat-markdown-font-size: var(--_comment-quote-font-size);
+  --ui-chat-markdown-line-height: var(
+    --ui-comment-composer-markdown-quote-line-height,
+    var(--ui-comment-composer-quote-line-height, 1.55)
+  );
+}
+.ui-comment-composer__card {
+  display: flex;
+  min-width: 0;
+  gap: 0.5rem;
+  align-items: flex-start;
+  padding: 0.5rem;
+  border: 1px solid var(--border);
+  border-inline-start: 2px solid
+    var(--ui-comment-composer-accent, var(--primary));
+  border-radius: var(--radius);
+  background: var(--ui-comment-composer-background, var(--background));
+}
+.ui-comment-composer__avatar {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  min-height: 1.5rem;
+}
+.ui-comment-composer__input {
+  flex: 1;
+  min-width: 0;
+}
+.ui-comment-composer__actions {
+  display: flex;
+  flex: 0 0 auto;
+  opacity: 0;
+}
+.ui-comment-composer__card:hover .ui-comment-composer__actions,
+.ui-comment-composer__card:focus-within .ui-comment-composer__actions {
+  opacity: 1;
+}
+.ui-comment-composer__unavailable {
+  margin: 0 0 0.5rem;
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+}
+.ui-comment-composer[data-disabled="true"] {
+  opacity: 0.6;
+}
+@media (hover: none) {
+  .ui-comment-composer__actions {
+    opacity: 1;
+  }
+}
+@media (forced-colors: active) {
+  .ui-comment-composer__card {
+    border-inline-start-color: Highlight;
+  }
+}

@@ -6,10 +6,10 @@ import { Basic } from "./PanelToggle.example-sources";
 
 # Panel Toggle
 
-A controlled, compact panel button with a rectangular frame. Its filled bar
-previews the opposite state on hover or keyboard focus; activation remains
-consumer-owned. Reduced motion removes the transition. Column Canvas uses this
-icon for its default toggles and collapsed rails.
+A controlled panel button with standard and compact icons for all four
+edges. Its filled bar previews the opposite state on hover or keyboard
+focus; activation remains consumer-owned. Reduced motion removes the transition.
+Column Canvas retains the compact default for toggles and collapsed rails.
 
 This project-authored family composes the shared Button. Follow
 [Shadcn guidance](?path=/docs/shadcn-guidance--docs) for native CSS composition.
@@ -18,11 +18,26 @@ This project-authored family composes the shared Button. Follow
 <Primary />
 <Controls />
 
-Use `side="right"` to mirror the indicator. Supply `children` to replace the
+Use `side="right"` to mirror the indicator, `side="top"` for a bar that thickens
+downward, or `side="bottom"` to thicken upward without rotating the frame.
+Supply `children` to replace the
 icon or use the decorative `PanelToggleIcon` inside an existing native button
 marked `data-panel-toggle`. Always give that button an accessible label.
 
-The default button is 28×24px and the icon is 18×12px. Documented
+The default button is 28×24px and the compact icon is 18×12px.
+`iconVariant="standard"` uses Workspace's frame proportions at 16×16px.
+Documented
 `--ui-panel-toggle-*` tokens control button width/height, icon width/height,
 expanded/collapsed bar widths in SVG units, and motion duration. The icon uses
 currentColor and the button retains shared focus styling and forced colors.
+
+The **Variant comparison** story shows both variants in all four directions,
+with collapsed, expanded and disabled controls. Its **Existing button** section
+demonstrates host-owned sizing without hover previews, and **Custom icon** shows
+the content override in the same view.
+The icon accepts SVG styling attributes and exports `PanelToggleIconProps`.
+Keep state, labels and keyboard interaction on the enclosing control.
+
+Standard icons use separate `--ui-panel-toggle-standard-*` sizing and bar tokens,
+so compact token customizations remain compatible. Both variants import native
+CSS with fallbacks; no Tailwind compilation is required for the icon.

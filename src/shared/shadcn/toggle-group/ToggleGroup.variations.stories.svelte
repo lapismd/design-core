@@ -20,7 +20,7 @@
 <Story
   name="Spacing"
   exportName="Spacing"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/toggle-group/spacing-chromium.png"],
@@ -49,7 +49,7 @@
 <Story
   name="Outline"
   exportName="Outline"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/toggle-group/outline-chromium.png"],
@@ -78,7 +78,7 @@
 <Story
   name="Single"
   exportName="Single"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/toggle-group/single-chromium.png"],
@@ -107,7 +107,7 @@
 <Story
   name="Small"
   exportName="Small"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/toggle-group/small-chromium.png"],
@@ -136,7 +136,7 @@
 <Story
   name="Large"
   exportName="Large"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/toggle-group/large-chromium.png"],
@@ -165,7 +165,7 @@
 <Story
   name="Disabled"
   exportName="Disabled"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/toggle-group/disabled-chromium.png"],
@@ -194,7 +194,7 @@
 <Story
   name="Spacing 2"
   exportName="Spacing2"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/toggle-group/spacing-2-chromium.png"],

@@ -60,16 +60,24 @@
         -webkit-user-select: none;
         user-select: none;
       }
-      [data-ui-component="label"]:is(:where(.group)[data-disabled="true"] *) {
+      [data-ui-component="label"]:is(
+          :where([data-disabled])[data-disabled="true"] *
+        ) {
         pointer-events: none;
       }
-      [data-ui-component="label"]:is(:where(.group)[data-disabled="true"] *) {
+      [data-ui-component="label"]:is(
+          :where([data-disabled])[data-disabled="true"] *
+        ) {
         opacity: 0.5;
       }
-      [data-ui-component="label"]:is(:where(.peer):disabled ~ *) {
+      [data-ui-component="label"]:is(
+          :where(:is(input, button, select, textarea)):disabled ~ *
+        ) {
         cursor: not-allowed;
       }
-      [data-ui-component="label"]:is(:where(.peer):disabled ~ *) {
+      [data-ui-component="label"]:is(
+          :where(:is(input, button, select, textarea)):disabled ~ *
+        ) {
         opacity: 0.5;
       }
     }

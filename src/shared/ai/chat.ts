@@ -13,6 +13,16 @@ export { default as ComposerToken } from "./composer-token/ComposerToken.svelte"
 export { default as TokenizedText } from "./tokenized-text/TokenizedText.svelte";
 export { default as ToolCalls } from "./tool-calls/ToolCalls.svelte";
 export { default as ToolCallDetail } from "./tool-call-detail/ToolCallDetail.svelte";
+export { default as RichToolCallDetail } from "./tool-call-detail/RichToolCallDetail.svelte";
+export type {
+  RichToolDetail,
+  ToolCallDetailProps,
+  ToolCaptureState,
+  ToolDetailTarget,
+  ToolDetailView,
+  ToolFileEdit,
+  ToolSearchMatch,
+} from "./tool-call-detail/rich-tool-call-detail.types.js";
 export {
   isOneLineToolAlert,
   presentToolPayload,

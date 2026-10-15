@@ -24,7 +24,7 @@
 
 <Story
   name="Default"
-  tags={["visual-state", "visual-approved"]}
+  tags={["visual-state", "visual-pending"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/checkbox/default-chromium.png"],
@@ -63,7 +63,7 @@
       placement: "right",
     },
   }}
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <div class="flex flex-col gap-3">

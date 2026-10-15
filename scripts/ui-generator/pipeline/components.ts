@@ -10,7 +10,13 @@ import {
   getRecipe,
 } from "../recipes/index.js";
 
-export type ComponentLayer = "shadcn" | "forms" | "filter" | "ai" | "diff";
+export type ComponentLayer =
+  | "shadcn"
+  | "forms"
+  | "filter"
+  | "ai"
+  | "diff"
+  | "chat";
 
 export type ComponentExample = {
   id: string;
@@ -60,7 +66,14 @@ export type ComponentsOptions = {
   layer?: ComponentLayer;
 };
 
-const LAYERS: ComponentLayer[] = ["shadcn", "forms", "filter", "ai", "diff"];
+const LAYERS: ComponentLayer[] = [
+  "shadcn",
+  "forms",
+  "filter",
+  "ai",
+  "diff",
+  "chat",
+];
 
 const FORMS_SKIP_DIRS = new Set(["core"]);
 const FILTER_SKIP_DIRS = new Set(["filter-query"]);
@@ -689,12 +702,28 @@ function collectAi(packageRoot: string): CatalogEntry[] {
   return [...stable, ...experimental].sort((a, b) => a.id.localeCompare(b.id));
 }
 
+function collectChat(packageRoot: string): CatalogEntry[] {
+  const root = path.join(packageRoot, "src/shared/chat");
+  return listDirs(root).map((id) => {
+    const dir = path.join(root, id);
+    return {
+      layer: "chat",
+      id,
+      dir,
+      importPath: "@lapismd/design-core/chat",
+      docsCandidates: listFiles(dir, ".mdx"),
+      storyPaths: listFiles(dir, ".stories.svelte"),
+    };
+  });
+}
+
 export function collectCatalog(packageRoot: string): CatalogEntry[] {
   return [
     ...collectShadcn(packageRoot),
     ...collectForms(packageRoot),
     ...collectFilter(packageRoot),
     ...collectAi(packageRoot),
+    ...collectChat(packageRoot),
     ...collectDiff(packageRoot),
   ];
 }

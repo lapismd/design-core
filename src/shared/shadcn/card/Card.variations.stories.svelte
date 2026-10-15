@@ -18,7 +18,7 @@
 <Story
   name="Preview"
   exportName="Preview"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/card/preview-chromium.png"],
@@ -47,7 +47,7 @@
 <Story
   name="Preview"
   exportName="Preview2"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/card/preview-chromium.png"],
@@ -76,7 +76,7 @@
 <Story
   name="Spacing"
   exportName="Spacing"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/card/spacing-chromium.png"],
@@ -109,7 +109,7 @@
 <Story
   name="Spacing"
   exportName="Spacing2"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/card/spacing-chromium.png"],
@@ -142,7 +142,7 @@
 <Story
   name="Image"
   exportName="Image"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/card/image-chromium.png"],

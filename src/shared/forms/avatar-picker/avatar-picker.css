@@ -1,0 +1,265 @@
+.ui-avatar-picker {
+  --_picker-size: var(--ui-avatar-picker-size, 5rem);
+  --_picker-edit-size: clamp(1.25rem, calc(var(--_picker-size) * 0.26), 3rem);
+  --_picker-cutout-gap: var(
+    --ui-avatar-picker-cutout-gap,
+    max(3px, calc(var(--_picker-size) * 0.025))
+  );
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 100%;
+}
+.ui-avatar-picker[data-size="xs"] {
+  --_picker-size: var(--ui-avatar-picker-size, 1.25rem);
+}
+.ui-avatar-picker[data-size="sm"] {
+  --_picker-size: var(--ui-avatar-picker-size, 1.5rem);
+}
+.ui-avatar-picker[data-size="md"] {
+  --_picker-size: var(--ui-avatar-picker-size, 2rem);
+}
+.ui-avatar-picker[data-size="lg"] {
+  --_picker-size: var(--ui-avatar-picker-size, 3rem);
+}
+.ui-avatar-picker[data-size="2xl"] {
+  --_picker-size: var(--ui-avatar-picker-size, 8rem);
+}
+.ui-avatar-picker[data-size="3xl"] {
+  --_picker-size: var(--ui-avatar-picker-size, 10rem);
+}
+.ui-avatar-picker__trigger[data-ui-component="button"] {
+  --ui-button-height: var(--_picker-size);
+  --ui-button-padding-inline: 0;
+  --ui-button-radius: var(--ui-avatar-radius, 25%);
+  position: relative;
+  width: var(--_picker-size);
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+.ui-avatar-picker[data-shape="circle"] .ui-avatar-picker__trigger {
+  --ui-button-radius: 50%;
+}
+.ui-avatar-picker__trigger[data-ui-component="button"]:is(
+    :hover,
+    [aria-expanded="true"]
+  ) {
+  background: transparent;
+}
+.ui-avatar-picker__trigger > [data-ui-component="avatar"] {
+  --ui-avatar-size: var(--_picker-size);
+  mask-image: radial-gradient(
+    circle at calc(100% - var(--_picker-edit-size) / 2)
+      calc(100% - var(--_picker-edit-size) / 2),
+    transparent calc(var(--_picker-edit-size) / 2 + var(--_picker-cutout-gap)),
+    black calc(var(--_picker-edit-size) / 2 + var(--_picker-cutout-gap) + 0.5px)
+  );
+}
+.ui-avatar-picker__edit {
+  position: absolute;
+  inset-inline-end: 0;
+  bottom: 0;
+  display: grid;
+  place-items: center;
+  width: var(--_picker-edit-size);
+  height: var(--_picker-edit-size);
+  border-radius: 50%;
+  background: var(--ui-avatar-picker-edit-background, var(--foreground));
+  color: var(--ui-avatar-picker-edit-foreground, var(--background));
+  pointer-events: none;
+}
+.ui-avatar-picker__trigger .ui-avatar-picker__edit svg {
+  width: 48%;
+  height: 48%;
+}
+.ui-avatar-picker-content {
+  --ui-popover-width: min(
+    var(--ui-avatar-picker-width, 26rem),
+    calc(100vw - 1rem)
+  );
+  --ui-popover-padding: 0;
+  overflow: hidden;
+}
+.ui-avatar-picker[data-presentation="inline"][data-open="true"] {
+  display: block;
+  width: min(var(--ui-avatar-picker-width, 26rem), 100%);
+}
+[data-ui-component="avatar-picker"][data-ui-part="editor"] {
+  display: grid;
+  gap: 1rem;
+  min-width: 0;
+  width: 100%;
+}
+.ui-avatar-picker__tabs,
+.ui-avatar-picker__tab-content {
+  display: grid;
+  gap: 1rem;
+  min-width: 0;
+}
+.ui-avatar-picker__tab-list {
+  width: 100%;
+}
+.ui-avatar-picker__tab-list [data-slot="tabs-trigger"] {
+  flex: 1;
+}
+.ui-avatar-picker__editor-preview {
+  display: grid;
+  place-items: center;
+  padding-block: 0.75rem;
+}
+.ui-avatar-picker__drop {
+  position: relative;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 0.625rem;
+  min-height: 8rem;
+  border-radius: var(--radius);
+  background: var(--muted);
+  color: var(--foreground);
+  font-size: var(--text-sm, 0.875rem);
+  cursor: pointer;
+}
+.ui-avatar-picker__drop > svg {
+  width: 1.75rem;
+  height: 1.75rem;
+}
+.ui-avatar-picker__drop:is(:focus-within, [data-dragging="true"]) {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+.ui-avatar-picker__browse {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.ui-avatar-picker__drop .ui-avatar-picker__file[data-ui-component="input"] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+.ui-avatar-picker__drop[data-disabled="true"] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.ui-avatar-picker__url {
+  min-height: 2.75rem;
+  border-color: transparent;
+  background: var(--muted);
+}
+.ui-avatar-picker__emoji-panel {
+  --ui-emoji-picker-height: var(--ui-avatar-picker-emoji-height, 16rem);
+  --ui-emoji-picker-min-height: var(--ui-avatar-picker-emoji-height, 16rem);
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--muted);
+}
+.ui-avatar-picker__colors {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(1.75rem, 1fr));
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border-radius: var(--radius);
+  background: var(--muted);
+}
+.ui-avatar-picker__swatch[data-ui-component="button"],
+.ui-avatar-picker__custom-color {
+  --ui-button-height: 1.75rem;
+  --ui-button-padding-inline: 0;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--foreground) 12%, transparent);
+  justify-self: center;
+}
+.ui-avatar-picker__swatch[aria-pressed="true"] {
+  outline: 2px solid var(--foreground);
+  outline-offset: 2px;
+}
+.ui-avatar-picker__custom-color {
+  position: relative;
+  overflow: hidden;
+  border: 0;
+  isolation: isolate;
+  background: conic-gradient(red, yellow, lime, aqua, blue, magenta, red);
+}
+.ui-avatar-picker__custom-color input {
+  appearance: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  border-radius: 50%;
+  box-shadow: none;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+.ui-avatar-picker__custom-color:focus-within {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+.ui-avatar-picker__remove[data-ui-component="button"] {
+  width: 100%;
+  color: var(--destructive);
+}
+.ui-avatar-picker__done {
+  width: 100%;
+}
+.ui-avatar-picker__hint {
+  margin: 0;
+  font-size: var(--text-sm, 0.875rem);
+  color: var(--muted-foreground);
+}
+
+.ui-avatar-picker__edit {
+  transition:
+    background-color 150ms ease,
+    transform 150ms ease,
+    box-shadow 150ms ease;
+}
+@media (hover: hover) {
+  .ui-avatar-picker__trigger:not(:disabled):hover .ui-avatar-picker__edit {
+    background: var(
+      --ui-avatar-picker-edit-hover-background,
+      color-mix(in srgb, var(--foreground) 80%, var(--background))
+    );
+    transform: scale(1.08);
+    box-shadow: 0 2px 5px color-mix(in srgb, var(--foreground) 18%, transparent);
+  }
+}
+.ui-avatar-picker__trigger:focus-visible .ui-avatar-picker__edit {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+.ui-avatar-picker__trigger:not(:disabled):active .ui-avatar-picker__edit {
+  transform: scale(0.96);
+}
+@media (prefers-reduced-motion: reduce) {
+  .ui-avatar-picker__edit,
+  .ui-avatar-picker__trigger:is(:hover, :active, :focus-visible)
+    .ui-avatar-picker__edit {
+    transition: none;
+    transform: none;
+  }
+}
+
+.ui-avatar-picker__scroll[data-ui-component="scroll-area"] {
+  width: 100%;
+  min-height: 0;
+  max-height: var(--bits-popover-content-available-height, calc(100dvh - 1rem));
+}
+.ui-avatar-picker__scroll > [data-ui-part="scroll-area-viewport"] {
+  height: auto;
+  max-height: var(--bits-popover-content-available-height, calc(100dvh - 1rem));
+  overscroll-behavior: contain;
+}
+.ui-avatar-picker__scroll-content {
+  padding: 1rem;
+}

@@ -2,6 +2,7 @@
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent, waitFor, within } from "storybook/test";
   import ReactionBar, { type Reaction } from "./ReactionBar.svelte";
+  import { DEFAULT_EMOJIS } from "../emoji-picker/index.js";
 
   const { Story } = defineMeta({
     title: "AI/Chat/Experimental/Reaction Bar",
@@ -64,11 +65,12 @@
       placement: "right",
     },
   }}
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
 >
   {#snippet template()}
     <div data-story="reaction-frame">
       <ReactionBar
+        emojis={DEFAULT_EMOJIS}
         {reactions}
         onToggle={toggle}
         onAdd={(emoji) => {

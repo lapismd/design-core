@@ -31,6 +31,28 @@
 <style>
   /* Item chrome mirrors Toggle — conversion only extracted group layout rules. */
   :global {
+    [data-ui-component="toggle-group"][data-ui-part="toggle-group"][data-orientation="vertical"] {
+      flex-direction: column;
+    }
+    [data-ui-component="toggle-group"][data-ui-part="toggle-group"][data-spacing="0"][data-orientation="vertical"]
+      > [data-ui-part="toggle-group-item"][data-variant="outline"] {
+      border-top-width: 0;
+    }
+    [data-ui-component="toggle-group"][data-ui-part="toggle-group"][data-spacing="0"][data-orientation="vertical"]
+      > [data-ui-part="toggle-group-item"]:first-child {
+      border-top-left-radius: calc(var(--radius) * 0.8);
+      border-top-right-radius: calc(var(--radius) * 0.8);
+    }
+    [data-ui-component="toggle-group"][data-ui-part="toggle-group"][data-spacing="0"][data-orientation="vertical"]
+      > [data-ui-part="toggle-group-item"][data-variant="outline"]:first-child {
+      border-top-width: 1px;
+    }
+    [data-ui-component="toggle-group"][data-ui-part="toggle-group"][data-spacing="0"][data-orientation="vertical"]
+      > [data-ui-part="toggle-group-item"]:last-child {
+      border-bottom-left-radius: calc(var(--radius) * 0.8);
+      border-bottom-right-radius: calc(var(--radius) * 0.8);
+    }
+
     [data-ui-component="toggle-group"][data-ui-part="toggle-group-item"] {
       display: inline-flex;
       align-items: center;

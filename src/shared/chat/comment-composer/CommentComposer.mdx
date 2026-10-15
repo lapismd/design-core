@@ -1,0 +1,47 @@
+import { Meta, Source } from "@storybook/addon-docs/blocks";
+import * as Stories from "./CommentComposer.stories.svelte";
+import { Basic, Inline } from "./CommentComposer.example-sources";
+
+<Meta of={Stories} />
+
+# Comment Composer
+
+A compact source-context comment draft, adapted from jj-store's
+`ChatCommentArea`, `ChatCommentEditor` and comment-card styles. This is the
+comment/reply presentation used beside selected code and captured text.
+
+<Source code={Basic} language="tsx" />
+
+`source` contains a display label, the exact captured quote, and `kind` (`code`
+or safe `markdown`). Omit it for an inline editor card. `available: false`
+retains the quote and draft, explains that the source changed or is unavailable,
+and disables source navigation. It never guesses a new anchor. Hosts retain IDs,
+revisions, UTF-16 ranges, permissions and delivery validation.
+Use `sourceContent` to inject application-specific Markdown extensions or
+authorized asset rendering through the host's existing MarkdownContent adapter.
+
+Enter inserts a newline. Ctrl/Command+Enter requests submission of the exact
+nonblank draft, without clearing it. IME composition never submits. Escape
+requests `onDismiss`, preserving the draft. Optional `onRemove` requests removal;
+the component never deletes the host's data itself. `pending`, `disabled` and
+`readOnly` block editing and submission. A `name` adds host-form serialization.
+
+`avatar` accepts host-owned identity content. `onNavigateSource` receives the
+opener so the host can restore focus after visiting the captured source.
+`handle` exposes public Mira focus and line/ch selection APIs. Quote/context
+changes keep the same editor and its selection.
+
+Typography follows jj-store: both surfaces use the host sans family (`--font-sans`,
+DM Sans by default). The captured quote follows Mira's Markdown/body size
+(14px by default), including code quotes rendered in the same proportional font.
+The input uses 1rem (16px) with 1.5 line height. Markdown quotes default to 1.55
+line height. Quote sizing stays independent of the input, with host overrides.
+
+<Source code={Inline} language="tsx" />
+
+Styles load with this family. Tokens use the `--ui-comment-composer-` prefix:
+`padding` (0.5rem), `font-family`, `font-size` (1rem), `line-height` (1.5),
+`quote-font-size`, `quote-line-height`, `markdown-quote-line-height`,
+`quote-max-height` (8rem), `accent`, `background` and `context-background`.
+Long captured quotes use the shared ScrollArea. This presentation does not
+include transcript selection, an anchor controller, comment queues or dispatch.

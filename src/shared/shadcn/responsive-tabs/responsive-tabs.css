@@ -1,0 +1,76 @@
+[data-ui-component="responsive-tabs"] {
+  position: relative;
+  min-width: 0;
+  width: 100%;
+}
+[data-ui-component="responsive-tabs"]
+  > :is([data-slot="tabs"], [data-ui-part="controls"]),
+[data-ui-component="responsive-tabs"] [data-ui-part="space"] {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  min-width: 0;
+  gap: var(--ui-responsive-tabs-gap, 0.4rem);
+}
+[data-ui-component="responsive-tabs"] [data-ui-part="space"] {
+  flex: 1;
+}
+[data-ui-component="responsive-tabs"] [data-slot="tabs-list"] {
+  width: max-content;
+  height: auto;
+  padding: 0;
+  gap: var(--ui-responsive-tabs-gap, 0.4rem);
+  background: transparent;
+  border-radius: 0;
+  flex: none;
+}
+[data-ui-component="responsive-tabs"]
+  [data-slot="tabs-list"][data-empty="true"] {
+  display: none;
+}
+[data-ui-component="responsive-tabs"] [data-slot="tabs-trigger"] {
+  flex: none;
+  min-height: 1.9rem;
+  height: auto;
+  white-space: nowrap;
+  padding: 0.25rem 0.8rem;
+}
+[data-ui-component="responsive-tabs"][data-presentation="pill"]
+  [data-slot="tabs-trigger"] {
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--muted) 40%, transparent);
+  box-shadow: none;
+}
+[data-ui-component="responsive-tabs"][data-presentation="pill"]
+  [data-slot="tabs-trigger"][data-state="active"],
+[data-ui-component="responsive-tabs"] [data-selected] {
+  color: var(--foreground);
+  background: var(--muted);
+}
+[data-ui-component="responsive-tabs"] [data-ui-part="space"] > button {
+  flex: none;
+}
+[data-ui-component="responsive-tabs"] svg {
+  width: 1rem;
+  height: 1rem;
+}
+[data-ui-component="responsive-tabs"] [data-ui-part="measurement"] {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  pointer-events: none;
+}
+[data-ui-component="responsive-tabs"] [data-ui-part="measurement"] > div {
+  display: flex;
+  flex-direction: row;
+  width: max-content;
+  gap: var(--ui-responsive-tabs-gap, 0.4rem);
+}
+
+[data-ui-component="responsive-tabs"][data-presentation="line"]
+  [data-selected] {
+  background: transparent;
+  box-shadow: 0 2px 0 var(--primary);
+}

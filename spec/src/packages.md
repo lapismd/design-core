@@ -1,6 +1,23 @@
 # Package exports
 
+The app-component promotion batch adds the Chat entry point and qualifies
+published Mira `~0.0.5`.
+The Chat entry point also exports MarkdownComposer, MessageActions and the
+shared ReactionBar while retaining existing AI compatibility imports. CommentComposer
+and its neutral source, props and focus/selection handle are also exported from Chat.
+Responsive Tabs and Avatar use family exports; Avatar
+Picker uses Forms and Topbar uses Shell. Consumer adoption remains deferred.
+
+Avatar Picker also offers `./forms/avatar-picker` for focused source consumers,
+matching the existing focused Forms entry-point pattern. The built Forms barrel
+remains its standard import and is verified through the packed consumer.
+
 The root package manifest defines the supported import boundaries. Family barrels may expose compound parts, controllers, tokens, and types.
+
+`./shadcn/emoji-picker` exports the generic picker, custom/Unicode option types,
+default suggestions and tokens. AI experimental imports remain aliases to that
+same component. Published Emoji Mart runtime and data dependencies load only
+for the full picker; restricted and suggested-only selections stay lightweight.
 
 ## Public surface coverage
 
@@ -102,6 +119,10 @@ The root package manifest defines the supported import boundaries. Family barrel
 - The package artifact must stay focused on Design Core source, styles, docs, and metadata.
 
 ## DC-PKG-009 — Versioned package artifact
+
+Prepared CSS follows DC-CSS-008 in both archive profiles. Public import names
+remain stable, and referenced fonts ship with their licenses. CSS authoring
+dependencies belong to development tooling rather than the installed runtime.
 
 Release inputs retain only changesets not already represented in the published
 changelog. Historical workspace integration must not reintroduce consumed

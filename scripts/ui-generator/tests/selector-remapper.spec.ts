@@ -2,9 +2,76 @@ import { describe, expect, it } from "vitest";
 import {
   buildButtonOwnership,
   remapCompiledCss,
+  remapMarkerSelectors,
 } from "../transform/selector-remapper.js";
 
+import { assertNoUtilitySelectors } from "../../lib/style-utilities.mjs";
+import {
+  semanticMarkers,
+  semanticMarkerStyles,
+} from "../transform/semantic-markers.js";
+
 describe("remapCompiledCss", () => {
+  it("rejects an unresolved external marker instead of emitting dead CSS", () => {
+    const out = remapCompiledCss(
+      ".opacity-50:is(:where(.group\\/unknown) *) { opacity: .5 }",
+      [{ candidate: "opacity-50", selector: '[data-slot="label"]' }],
+    );
+    expect(() => assertNoUtilitySelectors(out, "label conversion")).toThrow(
+      /group\/unknown/,
+    );
+  });
+
+  it("maps external field and label relationships without dropping unrelated rules", () => {
+    const checkbox = remapMarkerSelectors(
+      '[data-slot="checkbox"]:is(:where(.group\\/field):has(:disabled) *) { opacity: .5 }',
+      semanticMarkers("checkbox"),
+    );
+    const label = remapMarkerSelectors(
+      '[data-slot="label"]:is(:where(.peer):disabled ~ *) { opacity: .5 } .semantic { color: red }',
+      semanticMarkers("label"),
+    );
+    expect(checkbox).toContain('[data-slot="field"]');
+    expect(label).toContain(":is(input, button, select, textarea)");
+    expect(label).toContain(".semantic { color: red }");
+    expect(() => assertNoUtilitySelectors(checkbox + label)).not.toThrow();
+  });
+
+  it.each(["card", "input-group"])(
+    "keeps %s divider paint with its semantic padding condition",
+    (family) => {
+      const out =
+        remapMarkerSelectors(
+          '[data-slot="part"].border-b { padding-bottom: 1rem }',
+          semanticMarkers(family),
+        ) + semanticMarkerStyles(family);
+      expect(out).toContain('[data-slot="part"][data-divided="true"]');
+      expect(out).toContain("border-bottom: 1px solid var(--border)");
+      expect(() => assertNoUtilitySelectors(out)).not.toThrow();
+    },
+  );
+
+  it("replaces every owned class in a compound selector together", () => {
+    const css = `.group-data-test:is(:where(.group) *) { padding: 1rem }`;
+    const out = remapCompiledCss(css, [
+      { candidate: "group-data-test", selector: '[data-slot="card-header"]' },
+      { candidate: "group", selector: '[data-slot="card"]' },
+    ]);
+    expect(out).toContain(
+      '[data-slot="card-header"]:is(:where([data-slot="card"]) *)',
+    );
+    expect(out).not.toContain(".group");
+  });
+
+  it("retains every marker owner in nested selectors", () => {
+    const out = remapMarkerSelectors(`.part:where(.group) { opacity: .5 }`, [
+      { marker: "group", selector: '[data-slot="first"]' },
+      { marker: "group", selector: '[data-slot="second"]' },
+    ]);
+    expect(out).toContain('[data-slot="first"]');
+    expect(out).toContain('[data-slot="second"]');
+    expect(out).not.toContain(".group");
+  });
   it("replaces whole class tokens only", () => {
     const css = `
 .px-2 { padding-inline: 0.5rem }

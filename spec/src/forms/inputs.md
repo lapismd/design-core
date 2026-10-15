@@ -6,23 +6,24 @@ Form inputs provide higher-level controlled editing patterns composed from share
 
 ## Public surface coverage
 
-| Surface                 | Public boundary              | Requirement |
-| ----------------------- | ---------------------------- | ----------- |
-| Autocomplete Input      | `@lapismd/design-core/forms` | DC-FORM-007 |
-| Chip Autocomplete       | `@lapismd/design-core/forms` | DC-FORM-008 |
-| Color Picker            | `@lapismd/design-core/forms` | DC-FORM-009 |
-| Cycle Picker            | `@lapismd/design-core/forms` | DC-FORM-010 |
-| Date Picker             | `@lapismd/design-core/forms` | DC-FORM-011 |
-| Filter Command Picker   | `@lapismd/design-core/forms` | DC-FORM-012 |
-| Inline Option Picker    | `@lapismd/design-core/forms` | DC-FORM-013 |
-| List Editor             | `@lapismd/design-core/forms` | DC-FORM-014 |
-| Password Input          | `@lapismd/design-core/forms` | DC-FORM-043 |
-| Reference Picker        | `@lapismd/design-core/forms` | DC-FORM-015 |
-| Secret Field            | `@lapismd/design-core/forms` | DC-FORM-016 |
-| Segmented Control       | `@lapismd/design-core/forms` | DC-FORM-017 |
-| Task Due Calendar       | `@lapismd/design-core/forms` | DC-FORM-018 |
-| Time Picker             | `@lapismd/design-core/forms` | DC-FORM-019 |
-| Search Filter in a Form | Catalogued composition       | DC-FORM-020 |
+| Surface                 | Public boundary                                         | Requirement |
+| ----------------------- | ------------------------------------------------------- | ----------- |
+| Autocomplete Input      | `@lapismd/design-core/forms`                            | DC-FORM-007 |
+| Chip Autocomplete       | `@lapismd/design-core/forms`                            | DC-FORM-008 |
+| Color Picker            | `@lapismd/design-core/forms`                            | DC-FORM-009 |
+| Cycle Picker            | `@lapismd/design-core/forms`                            | DC-FORM-010 |
+| Date Picker             | `@lapismd/design-core/forms`                            | DC-FORM-011 |
+| Filter Command Picker   | `@lapismd/design-core/forms`                            | DC-FORM-012 |
+| Inline Option Picker    | `@lapismd/design-core/forms`                            | DC-FORM-013 |
+| List Editor             | `@lapismd/design-core/forms`                            | DC-FORM-014 |
+| Password Input          | `@lapismd/design-core/forms`                            | DC-FORM-043 |
+| Reference Picker        | `@lapismd/design-core/forms`                            | DC-FORM-015 |
+| Secret Field            | `@lapismd/design-core/forms`                            | DC-FORM-016 |
+| Segmented Control       | `@lapismd/design-core/forms`                            | DC-FORM-017 |
+| Task Due Calendar       | `@lapismd/design-core/forms`                            | DC-FORM-018 |
+| Time Picker             | `@lapismd/design-core/forms`                            | DC-FORM-019 |
+| Search Filter in a Form | Catalogued composition                                  | DC-FORM-020 |
+| Avatar Picker           | `@lapismd/design-core/forms` and `/forms/avatar-picker` | DC-FORM-047 |
 
 ## DC-FORM-006 — Shared Forms invariants
 
@@ -178,3 +179,17 @@ Form inputs provide higher-level controlled editing patterns composed from share
 
 - The public boundary is Catalogued composition.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+
+## DC-FORM-047 — Avatar Picker
+
+Catalog emoji selection waits for the expected selectable emoji after the lazy
+library mounts, rather than treating its search input as grid readiness.
+
+**Requirement.** Avatar Picker MUST edit host-owned avatar values through image selection/drop, pasted URLs and emoji on a chosen background, using host-provided initials or name as the empty-image fallback.
+
+### Acceptance details
+
+- The avatar trigger MUST include an edit-icon cut-out and hover/focus feedback with host-configured circle/rounded shape and size, supporting both popover and inline editors with Done and removal actions rather than end-user shape or initials options.
+- The editor MUST compose Avatar and inline EmojiPicker with image selection/drop, pasted URLs, emoji and background colour for every type including transparent images, host-provided initials/name fallback, shared styled ScrollArea popover overflow, disabled/pending/failed-upload presentation and local previews without an uploader.
+- A newer choice, external value change, disabling or disposal MUST invalidate stale asynchronous uploads without replacing the retained value, while hosts own uploading and persistence.
+- Public boundaries MUST include Forms and its focused `forms/avatar-picker` entry point, with custom emoji records using the shared neutral EmojiPicker model.

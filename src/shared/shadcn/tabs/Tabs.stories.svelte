@@ -107,3 +107,36 @@
     </Tabs.Root>
   {/snippet}
 </Story>
+
+<Story
+  name="Vertical line tabs"
+  tags={["visual-pending"]}
+  play={async ({ canvas }) => {
+    const list = canvas.getByRole("tablist");
+    const first = canvas.getByRole("tab", { name: "Overview" });
+    const second = canvas.getByRole("tab", { name: "Details" });
+    await expect(getComputedStyle(list).flexDirection).toBe("column");
+    await expect(getComputedStyle(first, "::after").width).toBe("2px");
+    first.focus();
+    await userEvent.keyboard("{ArrowDown}");
+    await expect(second).toHaveFocus();
+    await userEvent.click(second);
+    await expect(canvas.getByText("Details panel")).toBeVisible();
+    await waitFor(() =>
+      expect(getComputedStyle(second, "::after").opacity).toBe("1"),
+    );
+  }}
+>
+  {#snippet template()}
+    <Tabs.Root orientation="vertical" value="overview">
+      <Tabs.List variant="line" aria-label="Vertical sections">
+        <Tabs.Trigger value="overview">Overview</Tabs.Trigger><Tabs.Trigger
+          value="details">Details</Tabs.Trigger
+        >
+      </Tabs.List>
+      <Tabs.Content value="overview">Overview panel</Tabs.Content><Tabs.Content
+        value="details">Details panel</Tabs.Content
+      >
+    </Tabs.Root>
+  {/snippet}
+</Story>

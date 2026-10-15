@@ -25,7 +25,7 @@ exactly one owning shared layer before it becomes a public export.
 Generic primitives in `src/shared/shadcn/`:
 
 accordion, alert, alert-dialog, badge, button, card, code, code-block,
-collapsible, column-canvas, command, command-view, dialog, dropdown-menu, empty, field, panel-toggle,
+collapsible, column-canvas, command, command-view, dialog, dropdown-menu, emoji-picker, empty, field, panel-toggle,
 input, input-group, label, hover-card, popover, resizable, scroll-area, select, separator,
 sheet, sidebar, skeleton, spinner, switch, swipe-item, tabs, textarea, toggle,
 toggle-group, tooltip, progress, slider, context-menu, drawer
@@ -42,9 +42,11 @@ horizontal column cascades (Miller-column style) with an AppShell-like
 controller, compound Header/Toggle/Body/Item parts, and injected width/collapse
 persistence; it is not registry-backed.
 `panel-toggle` is a project-authored Layout family composing the public Button
-with a compact rectangular panel icon. It accepts controlled expanded state,
-left/right orientation and custom content, and supplies Column Canvas's default
-toggle and collapsed-rail icon. It is not a registry conversion.
+with a shared standard or compact panel icon. It accepts controlled expanded
+state, left/right/top/bottom orientation and custom content, and supplies Column
+Canvas's default compact toggle and collapsed-rail icon. The decorative
+`PanelToggleIcon` also composes inside existing controls. It is not a registry
+conversion.
 `command-view` is a project-authored Forms family for a host-agnostic searchable
 command surface with composable input and item parts. It composes bits-ui
 Command keyboard behavior and the public ScrollArea viewport. It is not
@@ -56,6 +58,11 @@ Prefer them for inline/fenced presentation. Forms
 
 Workspace Settings owns the reusable `CopyableValue` controlled-output
 presentation under `workspace/settings`; it is not a second shadcn family.
+
+`emoji-picker` is a project-authored native-CSS family composing Popover and
+Button with lazy-loaded Emoji Mart Unicode search, categories and skin tones,
+suggested reactions, custom image emoji and a restricted searchable grid.
+The AI experimental entry point is a compatibility export of this family.
 
 Batch commands: `pnpm ui:add:batch a` (simple roots), `b`
 (stateful/light compound), `c` (portals), and `d` (layout/field compounds).
@@ -129,9 +136,11 @@ network or host-store dependency. Storybook: `AI/...`.
 - One folder per stable component (layout, composer, message, …) — 15
   ASTRYX-inspired message/layout, composer, token, dictation, and tool-call
   primitives. Stable imports use `@lapismd/design-core/ai/chat`.
-- `experimental/<component>/` — five Lab-derived reasoning, reaction, emoji,
+- `experimental/<component>/` — five Lab-derived reasoning, reaction, emoji compatibility,
   typing, and unread primitives. Every export is marked `@experimental`;
   import from `@lapismd/design-core/ai/experimental`.
+
+- `tool-call-detail/` owns generic and rich tool details: formatted/raw shell, file read, file edit and search presentation. `/chat` re-exports this family. Provider adapters remain host-owned.
 
 Import: `@lapismd/design-core/ai`, `@lapismd/design-core/ai/chat`, and
 `@lapismd/design-core/ai/experimental`.
@@ -236,3 +245,17 @@ are tracked in `src/shared/workspace/PLAN.md`.
 - `ConfirmDialog` and `ConfirmButton`: compact asynchronous confirmation and trigger composition.
 
 Import these through `@lapismd/design-core/forms`; domain-specific controls remain in consumers.
+
+## App component promotion batch
+
+Responsive Tabs and Avatar are shared Shadcn primitives. Avatar Picker is a
+Forms input. AppShell.Topbar extends the Shell compound family. Chat owns
+MarkdownContent and re-exports existing stable AI chat primitives without moving
+their implementations. These additions retain host-owned storage and adapters.
+
+MarkdownComposer, MessageActions and Reactions are shared Chat presentation
+families: Mira owns Markdown editing, the existing Composer owns shell anatomy,
+and hosts own drafts, delivery, action policy and reaction persistence.
+
+CommentComposer is shared Chat presentation for compact inline drafts and
+captured-source reply cards. Hosts own comment IDs, anchors, queues and delivery.

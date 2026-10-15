@@ -391,6 +391,14 @@
     {
       "name": "./forms/dialog",
       "requirement": "DC-PKG-003"
+    },
+    {
+      "name": "./chat",
+      "requirement": "DC-CHAT-001"
+    },
+    {
+      "name": "./forms/avatar-picker",
+      "requirement": "DC-FORM-047"
     }
   ],
   "catalog": [
@@ -645,6 +653,10 @@
     {
       "name": "Shadcn/Layout/Panel Toggle",
       "requirement": "DC-SHA-053"
+    },
+    {
+      "name": "Shadcn/Forms/Emoji Picker",
+      "requirement": "DC-SHA-054"
     },
     {
       "name": "Shadcn/Layout/Resizable",
@@ -1017,6 +1029,38 @@
     {
       "name": "UI Forms/Layout/Confirm Button",
       "requirement": "DC-FORM-046"
+    },
+    {
+      "name": "Chat/Markdown Content",
+      "requirement": "DC-CHAT-001"
+    },
+    {
+      "name": "Shadcn/Data/Avatar",
+      "requirement": "DC-SHA-056"
+    },
+    {
+      "name": "Shadcn/Navigation/Responsive Tabs",
+      "requirement": "DC-SHA-055"
+    },
+    {
+      "name": "UI Forms/Avatar Picker",
+      "requirement": "DC-FORM-047"
+    },
+    {
+      "name": "Chat/Markdown Composer",
+      "requirement": "DC-CHAT-002"
+    },
+    {
+      "name": "Chat/Message Actions",
+      "requirement": "DC-CHAT-003"
+    },
+    {
+      "name": "Chat/Reactions",
+      "requirement": "DC-CHAT-004"
+    },
+    {
+      "name": "Chat/Comment Composer",
+      "requirement": "DC-CHAT-005"
     }
   ]
 }

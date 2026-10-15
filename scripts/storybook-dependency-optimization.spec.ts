@@ -7,6 +7,9 @@ import path from "node:path";
 
 const browserDependencies = [
   "bits-ui",
+  "emoji-mart",
+  "@lapismd/mira/preview",
+  "@lapismd/mira",
   "@lucide/svelte/icons/info",
   "@lucide/svelte/icons/triangle-alert",
   "@lucide/svelte/icons/circle-alert",

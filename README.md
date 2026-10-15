@@ -103,6 +103,19 @@ through tokens and typed props rather than patching internal selectors.
 3. Prefer component props for variants, density, layout, and state.
 4. Avoid overriding private DOM structure or internal class names.
 
+Published archives contain prepared browser CSS and font assets. Consumers do
+not need Tailwind, its Vite plugin, or a source-scanning configuration. Tailwind
+compilation stays in internal authoring and conversion; generated private CSS
+variables remain ordinary browser CSS. The existing Mira dependency can still
+install a Tailwind peer, but Design Core's prepared styles do not use it.
+Use `pnpm package:local` when validating
+the archive boundary rather than importing the unprepared authoring stylesheet.
+
+The source and archive gates reject utility selectors, including compound and
+nested selectors. Component state cleanup is covered by the
+[slice 2 record](spec/records/plain-browser-css-components.md). Theme/import
+restructuring and downstream release remain separate reviewable slices.
+
 Token families:
 
 | Scope                | Token examples                                                      | Source                                                |

@@ -76,8 +76,9 @@ describe("Mira-owned editor shell boundary", () => {
     const mira = packageJson.dependencies["@lapismd/mira"];
 
     expect(validRange(mira ?? "")).not.toBeNull();
-    expect(satisfies("0.0.2", mira ?? "")).toBe(true);
-    expect(satisfies("0.0.3", mira ?? "")).toBe(true);
+    expect(satisfies("0.0.4", mira ?? "")).toBe(false);
+    expect(satisfies("0.0.5", mira ?? "")).toBe(true);
+    expect(satisfies("0.0.6", mira ?? "")).toBe(true);
     expect(satisfies("0.1.0", mira ?? "")).toBe(false);
     expect(mira).not.toMatch(/^(?:link|file|workspace):/);
     expect(workspace).not.toMatch(

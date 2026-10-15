@@ -10,6 +10,8 @@ export const shellTokenNames = {
   desktopMinMainWidth: "--ui-shell-desktop-min-main-width",
   sidebarToggleIndicatorWidth: "--ui-shell-sidebar-toggle-indicator-width",
   toolbarHeight: "--ui-shell-toolbar-height",
+  toolbarPaddingInline: "--ui-shell-toolbar-padding-inline",
+  toolbarPaddingBlock: "--ui-shell-toolbar-padding-block",
   mainBlockInset: "--ui-shell-main-block-inset",
   mainRadius: "--ui-shell-main-radius",
   mainShadow: "--ui-shell-main-shadow",
@@ -34,6 +36,8 @@ export const shellTokenDefaults: Record<ShellTokenKey, string> = {
   desktopMinMainWidth: "36rem",
   sidebarToggleIndicatorWidth: "24%",
   toolbarHeight: "3rem",
+  toolbarPaddingInline: "1rem",
+  toolbarPaddingBlock: "0.125rem",
   mainBlockInset: "0.5rem",
   mainRadius: "0.875rem",
   mainShadow:

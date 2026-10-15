@@ -26,7 +26,7 @@
     await userEvent.click(canvas.getByRole("radio", { name: "Center" }));
     await expect(canvas.getByRole("status")).toHaveTextContent("center");
   }}
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   parameters={{
     visualDelta: {
       images: [
@@ -52,5 +52,40 @@
       </ToggleGroup.Root>
       <output class="text-muted-foreground text-sm">{value}</output>
     </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Vertical joined outline"
+  tags={["visual-pending"]}
+  play={async ({ canvas }) => {
+    const first = canvas.getByRole("radio", { name: "First" });
+    const middle = canvas.getByRole("radio", { name: "Middle" });
+    const last = canvas.getByRole("radio", { name: "Last" });
+    await expect(getComputedStyle(first).borderTopWidth).toBe("1px");
+    await expect(
+      parseFloat(getComputedStyle(first).borderTopLeftRadius),
+    ).toBeGreaterThan(0);
+    await expect(getComputedStyle(middle).borderTopWidth).toBe("0px");
+    await expect(getComputedStyle(middle).borderRadius).toBe("0px");
+    await expect(
+      parseFloat(getComputedStyle(last).borderBottomLeftRadius),
+    ).toBeGreaterThan(0);
+    await userEvent.click(middle);
+    await expect(middle).toHaveAttribute("aria-checked", "true");
+  }}
+>
+  {#snippet template()}
+    <ToggleGroup.Root
+      type="single"
+      orientation="vertical"
+      variant="outline"
+      spacing={0}
+      aria-label="Joined options"
+    >
+      <ToggleGroup.Item value="first">First</ToggleGroup.Item><ToggleGroup.Item
+        value="middle">Middle</ToggleGroup.Item
+      ><ToggleGroup.Item value="last">Last</ToggleGroup.Item>
+    </ToggleGroup.Root>
   {/snippet}
 </Story>

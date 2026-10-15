@@ -1,0 +1,6 @@
+[data-ui-component="ai-chat-reaction-bar"] [data-ui-part="reaction-emoji"] img {
+  display: block;
+  width: var(--ui-reaction-emoji-size, 1.125rem);
+  height: var(--ui-reaction-emoji-size, 1.125rem);
+  object-fit: contain;
+}

@@ -1,10 +1,31 @@
 # Tooling
 
+The public Mira preview and editor join the catalog prebundle inventory so first Markdown
+rendering or composer mounting cannot invalidate a running story through late dependency discovery.
+
+The offline component catalog includes the Chat layer alongside legacy AI, with
+public imports and colocated examples for MarkdownContent.
+It also discovers the CommentComposer presentation family and its public examples.
+
 `package:local` stages the normal source inventory, runs `svelte-package` with
 declarations, verifies every TypeScript and Svelte declaration exists, and writes an
 ignored `-built.tgz` artifact with its SHA-256. Failed preparation cannot select
 an incomplete archive. Consumer types and cold prebundling remain separate
 checks; the command performs no publication or service installation.
+The same preparation compiles global CSS without source scanning, audits all
+prepared CSS and Svelte style blocks, and copies referenced assets and licenses.
+The cold archive consumer verifies both development and production styling
+without a Tailwind installation or Vite plugin, using `npm install --omit=peer`
+to exclude the legacy Mira dependency's automatic Tailwind peer installation.
+Required fixture peers such as Svelte are declared explicitly; the normal
+dependency tree's remaining Mira peer is tracked separately from CSS compilation.
+Both local and release archives reject remaining component utility selectors.
+The cold consumer also exercises both Panel Toggle icon variants on all four
+edges and verifies independent icon composition and sizing through public tokens.
+It additionally opens and searches the shared Emoji Picker and verifies that
+the AI compatibility export has the same component identity.
+The successful preparation report at `.release/remaining-style-utilities.json`
+is empty; local artifacts remain validation-only.
 
 Repository tools keep source generation, discovery, documentation, validation, Changesets, and package-pack evidence reproducible for humans and agents. The catalog CLI lists Diff families, including File Change Stats and Merge Editor, beside shadcn, forms, filter, and AI. Agent tooling guidance keeps external LapisMD repositories outside the workspace and resolves published dependencies through npm semver ranges while preserving portable manifests.
 
@@ -30,6 +51,11 @@ The AI catalog derives stable public chat components, including shared tool-call
 - Tooling failures must report an actionable source path or command.
 
 ## DC-TOOL-002 — Component generator
+
+Conversion replaces all utility and marker classes in compound selectors in
+one pass, expands each declared owner, and rejects unresolved utility selectors
+before emitting sources. Cross-family relationships use semantic slots or
+native controls; Card and Input Group dividers use `data-divided="true"`.
 
 **Requirement.** The Component generator family MUST add, inspect, refresh, and diagnose owned component sources through guarded repository workflows.
 
@@ -68,6 +94,9 @@ entries and await pending import requests before browser acceptance begins.
 Compilation failures return an unavailable response and allow a later retry.
 Development and Vitest hosts share explicit runtime and parser dependencies;
 catalog icon imports are discovered deterministically for prebundling.
+Emoji Mart is prebundled too, preventing a cold first-open dependency discovery
+from reloading the preview while retaining lazy runtime loading of the picker
+and bundled Unicode dataset.
 The release workflow MUST retain the packed audit report as a downloadable
 artifact, including when a reported finding fails the gate.
 

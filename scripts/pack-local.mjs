@@ -100,6 +100,21 @@ export async function packLocal(
         readFileSync(join(packaged, "dist", file + ".d.ts"));
       }
     }
+    const { prepareStyles } = await import("./prepare-styles.mjs");
+    const styles = await prepareStyles(join(packaged, "dist"), {
+      requireNoUtilitySelectors: true,
+    });
+    console.log("Prepared browser CSS:", {
+      compiled: styles.compiled,
+      audited: styles.audited,
+      remainingUtilityReferences: styles.remainingUtilities.length,
+    });
+    const reportDirectory = join(root, ".release");
+    mkdirSync(reportDirectory, { recursive: true });
+    writeFileSync(
+      join(reportDirectory, "remaining-style-utilities.json"),
+      JSON.stringify(styles.remainingUtilities, null, 2) + "\n",
+    );
     manifest.exports = preparedExports(manifest.exports);
     manifest.files = [
       ...(retainSource ? ["src"] : []),

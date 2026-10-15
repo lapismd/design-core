@@ -122,10 +122,10 @@
         {#if !context.collapsed}
           <FileDiff
             path={file.path}
-            oldText={file.oldText}
-            newText={file.newText}
-            patch={file.patch}
-            language={file.language}
+            {...file.oldText === undefined ? {} : { oldText: file.oldText }}
+            {...file.newText === undefined ? {} : { newText: file.newText }}
+            {...file.patch === undefined ? {} : { patch: file.patch }}
+            {...file.language === undefined ? {} : { language: file.language }}
             {viewMode}
             scrollTo={scrollTo?.path === file.path ||
             (scrollTo != null &&
@@ -133,8 +133,8 @@
               files[0]?.path === file.path)
               ? scrollTo
               : null}
-            {lineAccessory}
-            {lineAnnotation}
+            {...lineAccessory === undefined ? {} : { lineAccessory }}
+            {...lineAnnotation === undefined ? {} : { lineAnnotation }}
           />
         {/if}
       </section>

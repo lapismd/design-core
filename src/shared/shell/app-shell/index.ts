@@ -1,3 +1,4 @@
+import AppShellTopbar from "./AppShellTopbar.svelte";
 import AppShellBody from "./AppShellBody.svelte";
 import AppShellBodyContent from "./AppShellBodyContent.svelte";
 import AppShellBodySidebar from "./AppShellBodySidebar.svelte";
@@ -51,6 +52,8 @@ export {
   AppShellSurfaceLayerBody,
   AppShellSurfaceLayerHeader,
   AppShellToolbar,
+  AppShellTopbar,
+  AppShellTopbar as Topbar,
   AppShellBodyContent as BodyContent,
   AppShellBodySidebar as BodySidebar,
   AppShellBodyToggle as BodyToggle,
@@ -67,6 +70,7 @@ export {
 };
 
 export const AppShell = {
+  Topbar: AppShellTopbar,
   Root: AppShellRoot,
   Sidebar,
   Main: AppShellMain,

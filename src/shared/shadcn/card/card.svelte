@@ -28,6 +28,13 @@
 <style>
   /* Semantic selectors must be global: they target data attributes and descendants. */
   :global {
+    [data-slot="card-header"][data-divided="true"] {
+      border-bottom: 1px solid var(--border);
+    }
+    [data-slot="card-footer"][data-divided="true"] {
+      border-top: 1px solid var(--border);
+    }
+
     /*! tailwindcss v4.3.3 | MIT License | https://tailwindcss.com */
     @layer properties {
     }
@@ -154,15 +161,18 @@
         }
       }
       [data-ui-component="card"][data-ui-part="card-content"]:is(
-          :where(.group\/card)[data-size="sm"] *
+          :where(
+              [data-ui-component="card"][data-ui-part="card"]
+            )[data-size="sm"]
+            *
         ),
       [data-ui-component="card"][data-ui-part="card-footer"]:is(
-          :where(.group\/card)[data-size="sm"] *
+          :where(
+              [data-ui-component="card"][data-ui-part="card"]
+            )[data-size="sm"]
+            *
         ),
       [data-ui-component="card"][data-ui-part="card-header"]:is(
-          :where(.group\/card)[data-size="sm"] *
-        ),
-      .group-data-\[size\=sm\]\/card\:px-4:is(
           :where(
               [data-ui-component="card"][data-ui-part="card"]
             )[data-size="sm"]
@@ -171,9 +181,6 @@
         padding-inline: calc(var(--spacing) * 4);
       }
       [data-ui-component="card"][data-ui-part="card-title"]:is(
-          :where(.group\/card)[data-size="sm"] *
-        ),
-      .group-data-\[size\=sm\]\/card\:text-sm:is(
           :where(
               [data-ui-component="card"][data-ui-part="card"]
             )[data-size="sm"]
@@ -198,32 +205,26 @@
       [data-ui-component="card"][data-ui-part="card"][data-size="sm"] {
         --card-spacing: calc(var(--spacing) * 4);
       }
-      [data-ui-component="card"][data-ui-part="card-header"].border-b {
+      [data-ui-component="card"][data-ui-part="card-header"][data-divided="true"] {
         padding-bottom: var(--card-spacing);
       }
       [data-ui-component="card"][data-ui-part="card-header"]:is(
-          :where(.group\/card)[data-size="sm"] *
-        ).border-b,
-      .group-data-\[size\=sm\]\/card\:\[\.border-b\]\:pb-4:is(
           :where(
               [data-ui-component="card"][data-ui-part="card"]
             )[data-size="sm"]
             *
-        ).border-b {
+        )[data-divided="true"] {
         padding-bottom: calc(var(--spacing) * 4);
       }
-      [data-ui-component="card"][data-ui-part="card-footer"].border-t {
+      [data-ui-component="card"][data-ui-part="card-footer"][data-divided="true"] {
         padding-top: var(--card-spacing);
       }
       [data-ui-component="card"][data-ui-part="card-footer"]:is(
-          :where(.group\/card)[data-size="sm"] *
-        ).border-t,
-      .group-data-\[size\=sm\]\/card\:\[\.border-t\]\:pt-4:is(
           :where(
               [data-ui-component="card"][data-ui-part="card"]
             )[data-size="sm"]
             *
-        ).border-t {
+        )[data-divided="true"] {
         padding-top: calc(var(--spacing) * 4);
       }
       :is([data-ui-component="card"][data-ui-part="card"] > *):is(

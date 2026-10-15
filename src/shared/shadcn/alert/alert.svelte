@@ -114,9 +114,6 @@
         color: var(--muted-foreground);
       }
       [data-ui-component="alert"][data-ui-part="alert-title"]:is(
-          :where(.group\/alert):has(> svg) *
-        ),
-      .group-has-\[\>svg\]\/alert\:col-start-2:is(
           :where([data-ui-component="alert"][data-ui-part="alert"]):has(> svg) *
         ) {
         grid-column-start: 2;
