@@ -1,7 +1,7 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent, waitFor, within } from "storybook/test";
-  import EmojiPicker from "./EmojiPicker.svelte";
+  import { EmojiPicker, DEFAULT_EMOJIS } from "./index.js";
 
   const { Story } = defineMeta({
     title: "AI/Chat/Experimental/Emoji Picker",
@@ -58,6 +58,7 @@
   {#snippet template()}
     <div data-story="emoji-frame">
       <EmojiPicker
+        emojis={DEFAULT_EMOJIS}
         triggerLabel="Add reaction"
         onSelect={(emoji) => {
           selected = `Selected ${emoji}`;
@@ -106,7 +107,7 @@
   tags={["visual-pending"]}
 >
   {#snippet template()}
-    <EmojiPicker onSelect={() => {}} />
+    <EmojiPicker emojis={DEFAULT_EMOJIS} onSelect={() => {}} />
   {/snippet}
 </Story>
 
@@ -153,7 +154,7 @@
   }}
 >
   {#snippet template()}
-    <EmojiPicker onSelect={() => {}} />
+    <EmojiPicker emojis={DEFAULT_EMOJIS} onSelect={() => {}} />
   {/snippet}
 </Story>
 

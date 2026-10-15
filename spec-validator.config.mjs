@@ -25,6 +25,7 @@ const shadcnChapters = {
   dialog: ["spec/src/shadcn/overlays.md"],
   drawer: ["spec/src/shadcn/overlays.md"],
   "dropdown-menu": ["spec/src/shadcn/overlays.md"],
+  "emoji-picker": ["spec/src/shadcn/forms.md"],
   empty: ["spec/src/shadcn/data-and-feedback.md"],
   field: ["spec/src/shadcn/forms.md"],
   "hover-card": ["spec/src/shadcn/overlays.md"],

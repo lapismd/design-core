@@ -20,6 +20,11 @@ Browser acceptance waits for client compilation and pending import requests to
 settle through the fail-closed catalog readiness endpoint. Workspace pointer
 acceptance uses one worker against that shared development host.
 
+The generic Emoji Picker owns Unicode and custom-image selection under Shadcn;
+AI experimental entry points re-export that implementation. Hosts retain emoji
+identity and asset policy. Emoji Mart and its dataset are lazy dependencies,
+with the runtime prebundled by catalog hosts to avoid first-open reloads.
+
 Release preparation uses the published Spec Validator 0.1.4 range and Changesets 3. Optional QMD search remains available when installed by the developer; normal
 validation does not install its model/native dependency graph. The supported Node
 range follows Changesets 3. Declared renderer and tooling overrides retain patched

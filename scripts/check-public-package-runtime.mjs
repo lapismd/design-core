@@ -105,6 +105,14 @@ async function checkPrimitiveStates(page) {
       .getAttribute("aria-checked"),
     "true",
   );
+  await page.getByRole("button", { name: "Packed emoji" }).click();
+  const emojiSearch = page.getByRole("searchbox", { name: "Search emoji" });
+  await emojiSearch.fill("fire");
+  await page.getByRole("button", { name: "🔥", exact: true }).click();
+  assert.equal(
+    await page.getByTestId("packed-emoji-selection").textContent(),
+    "🔥",
+  );
 }
 
 async function checkStyles(page) {
@@ -217,7 +225,11 @@ import * as ToggleGroup from "@lapismd/design-core/shadcn/toggle-group";
 import * as InputGroup from "@lapismd/design-core/shadcn/input-group";
 import * as Alert from "@lapismd/design-core/shadcn/alert";
 import { PanelToggle, PanelToggleIcon, type PanelToggleIconProps } from "@lapismd/design-core/shadcn/panel-toggle";
+import { EmojiPicker } from "@lapismd/design-core/shadcn/emoji-picker";
+import { EmojiPicker as LegacyEmojiPicker } from "@lapismd/design-core/ai/experimental";
 import HandleLifecycle from "./HandleLifecycle.svelte";
+if (EmojiPicker !== LegacyEmojiPicker) throw new Error("Emoji compatibility export differs");
+let selectedEmoji = $state("");
 let value = $state('const initial = true;');
 const panelVariants = ["standard", "compact"] as const;
 const panelSides = ["left", "right", "top", "bottom"] as const;
@@ -238,6 +250,8 @@ const panelIcon = { side: "bottom", iconVariant: "standard", expanded: true, sty
 <Alert.Root data-review="alert"><svg aria-hidden="true" width="16" height="16"><circle cx="8" cy="8" r="6" /></svg><Alert.Title>Archive notice</Alert.Title><Alert.Description>Icon alignment.</Alert.Description></Alert.Root>
 {#each panelVariants as iconVariant}{#each panelSides as side}<PanelToggle {iconVariant} {side} expanded data-review={['panel', iconVariant, side].join('-')} />{/each}{/each}
 <PanelToggleIcon {...panelIcon} class="packed-panel-icon" data-review="panel-icon-only" />
+<EmojiPicker triggerLabel="Packed emoji" onSelect={(emoji) => selectedEmoji = emoji} />
+<output data-testid="packed-emoji-selection">{selectedEmoji}</output>
 </main>`,
     );
     copyFileSync(

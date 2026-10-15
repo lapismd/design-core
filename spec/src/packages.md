@@ -2,6 +2,11 @@
 
 The root package manifest defines the supported import boundaries. Family barrels may expose compound parts, controllers, tokens, and types.
 
+`./shadcn/emoji-picker` exports the generic picker, custom/Unicode option types,
+default suggestions and tokens. AI experimental imports remain aliases to that
+same component. Published Emoji Mart runtime and data dependencies load only
+for the full picker; restricted and suggested-only selections stay lightweight.
+
 ## Public surface coverage
 
 | Surface                 | Public boundary  | Requirement |

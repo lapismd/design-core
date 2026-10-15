@@ -17,6 +17,21 @@
     PanelToggleIcon,
     type PanelToggleIconProps,
   } from "@lapismd/design-core/shadcn/panel-toggle";
+  import {
+    EmojiPicker,
+    type CustomEmoji,
+    type EmojiPickerProps,
+  } from "@lapismd/design-core/shadcn/emoji-picker";
+  import { EmojiPicker as LegacyEmojiPicker } from "@lapismd/design-core/ai/experimental";
+  const emojiProps = {
+    customEmojis: [
+      { id: "team:gem", shortcode: "gem", url: "/gem.png" },
+    ] satisfies CustomEmoji[],
+    theme: "dark",
+    onSelect: (_value, custom) => {
+      custom?.id;
+    },
+  } satisfies EmojiPickerProps;
 
   const panelIcon = {
     side: "bottom",
@@ -41,6 +56,8 @@
 </DropdownMenu.Root>
 
 <Spinner />
+<EmojiPicker {...emojiProps} />
+<LegacyEmojiPicker emojis={[]} onSelect={() => {}} />
 <PanelToggle side="bottom" iconVariant="standard" expanded={false} />
 <PanelToggleIcon {...panelIcon} data-icon="inline-start" />
 <ComposerInput />

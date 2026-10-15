@@ -1492,40 +1492,6 @@
   font-weight: 700;
 }
 
-[data-ui-component="ai-chat-emoji-picker"] [data-ai-chat-part="emoji-content"] {
-  --ui-popover-gap: 0.5rem;
-  --ui-popover-padding: 0.5rem;
-  width: 18rem;
-}
-
-[data-ui-component="ai-chat-emoji-picker"] [data-ui-part="emoji-panel"] {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-[data-ui-component="ai-chat-emoji-picker"] [data-ui-part="emoji-grid"] {
-  display: grid;
-  grid-template-columns: repeat(8, minmax(0, 1fr));
-  gap: 0.125rem;
-}
-
-[data-ui-component="ai-chat-emoji-picker"]
-  [data-ui-part="emoji-grid"]
-  [data-ui-component="button"] {
-  width: 2rem;
-  height: 2rem;
-  padding: 0;
-  font-size: calc(1.125rem * var(--ui-ai-chat-type-scale, 1));
-}
-
-[data-ui-component="ai-chat-emoji-picker"] [data-ui-part="emoji-empty"] {
-  margin: 0;
-  padding: 0.5rem 0.25rem;
-  color: var(--muted-foreground);
-  font-size: calc(0.75rem * var(--ui-ai-chat-type-scale, 1));
-}
-
 [data-ui-component="ai-chat-reaction-bar"] {
   --ui-ai-chat-reaction-background: var(--muted);
   --ui-ai-chat-reaction-selected-background: var(--accent);

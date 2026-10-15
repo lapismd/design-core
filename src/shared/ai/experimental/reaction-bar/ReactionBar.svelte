@@ -11,9 +11,10 @@
   import * as Tooltip from "@lapismd/design-core/shadcn/tooltip";
   import { Toggle } from "@lapismd/design-core/shadcn/toggle";
   import type { HTMLAttributes } from "svelte/elements";
-  import EmojiPicker, {
+  import {
+    EmojiPicker,
     type EmojiOption,
-  } from "../emoji-picker/EmojiPicker.svelte";
+  } from "../../../shadcn/emoji-picker/index.js";
   import "../../chat.css";
 
   let {

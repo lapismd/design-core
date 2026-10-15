@@ -26,6 +26,7 @@ export function discoverCatalogIcons(root: string): string[] {
 /** Shared by the dev catalog and Vitest so cold previews do not re-optimize mid-play. */
 export const storybookBrowserDependencies = [
   "bits-ui",
+  "emoji-mart",
   ...discoverCatalogIcons(fileURLToPath(new URL("../src", import.meta.url))),
   "@lezer/common",
   "aria-query",

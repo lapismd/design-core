@@ -1,5 +1,7 @@
 export {
-  default as EmojiPicker,
+  EmojiPicker,
   DEFAULT_EMOJIS,
   type EmojiOption,
-} from "./EmojiPicker.svelte";
+  type CustomEmoji,
+  type EmojiPickerProps,
+} from "../../../shadcn/emoji-picker/index.js";

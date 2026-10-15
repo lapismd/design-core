@@ -10,6 +10,10 @@ Panel Toggle registers as a controlled project-authored Layout family under
 DC-SHA-053. Column Canvas composes its default icon under DC-SHA-036 while
 retaining consumer overrides. Both surfaces keep separate verification evidence.
 
+Emoji Picker registers as a project-authored Shadcn Forms family under
+DC-SHA-054. DC-AI-017 retains compatibility exports and restricted-grid
+regressions; both entries map to one shared implementation.
+
 ## Public surface coverage
 
 | Surface                   | Public boundary | Requirement |

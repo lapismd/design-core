@@ -204,12 +204,12 @@ AI presentation contracts remain provider-neutral and leave transport, model sel
 
 ## DC-AI-017 — Emoji Picker
 
-**Requirement.** The Emoji Picker family MUST provide an explicitly experimental keyboard-accessible emoji selection surface.
+**Requirement.** The experimental Emoji Picker boundary MUST retain compatibility with the shared keyboard-accessible Emoji Picker under DC-SHA-054.
 
 ### Acceptance details
 
-- The public boundary is `@lapismd/design-core/ai/experimental`.
-- The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- The compatibility boundary is `@lapismd/design-core/ai/experimental`; its component, option types and default suggestions MUST re-export the shared implementation.
+- Explicit `emojis` lists MUST retain their searchable restricted grid; omission opens the full picker.
 - Opening MUST focus search without a deferred autofocus callback overriding subsequent user navigation.
 - Keyboard users MUST be able to move from search focus into the emoji grid and then navigate adjacent emoji buttons with arrow keys, including after closing and reopening the picker.
 

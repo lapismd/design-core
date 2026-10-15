@@ -1,0 +1,78 @@
+.ui-emoji-picker-content[data-ui-part="popover-content"] {
+  --ui-popover-width: min(
+    var(--ui-emoji-picker-width, 28rem),
+    calc(100vw - 1rem)
+  );
+  --ui-popover-padding: 0;
+  --ui-popover-gap: 0;
+  max-width: var(--bits-popover-content-available-width, calc(100vw - 1rem));
+  max-height: var(--bits-popover-content-available-height, calc(100dvh - 1rem));
+  overflow: auto;
+}
+.ui-emoji-picker-content[data-restricted="true"] {
+  --ui-popover-width: min(
+    var(--ui-emoji-picker-restricted-width, 18rem),
+    calc(100vw - 1rem)
+  );
+}
+[data-ui-component="emoji-picker"][data-ui-part="panel"] {
+  min-width: 0;
+}
+[data-ui-component="emoji-picker"] [data-ui-part="restricted"] {
+  display: grid;
+  gap: 0.5rem;
+  padding: 0.5rem;
+}
+[data-ui-component="emoji-picker"] [data-ui-part="emoji-grid"] {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 0.125rem;
+}
+[data-ui-component="emoji-picker"] [data-ui-part="emoji-grid"] button {
+  width: 100%;
+  height: 2rem;
+  padding: 0;
+  font-size: var(--ui-emoji-picker-emoji-size, 1.125rem);
+}
+[data-ui-component="emoji-picker"]
+  :is([data-ui-part="presets"], [data-ui-part="custom"]) {
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.5rem;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--border);
+}
+[data-ui-component="emoji-picker"] [data-ui-part="custom"] img {
+  width: 1.25rem;
+  height: 1.25rem;
+  object-fit: contain;
+}
+[data-ui-component="emoji-picker"]
+  :is([data-ui-part="emoji-empty"], [data-ui-part="emoji-loading"]) {
+  margin: 0;
+  padding: 0.75rem;
+  color: var(--muted-foreground);
+  font-size: 0.875rem;
+}
+[data-ui-component="emoji-picker"] [data-ui-part="library"] {
+  min-height: min(24rem, calc(100dvh - 3rem));
+  outline: none;
+}
+[data-ui-component="emoji-picker"] em-emoji-picker {
+  /* Mira/host RGB tokens must not override Emoji Mart's explicit color mode. */
+  --rgb-color: initial;
+  --rgb-accent: initial;
+  --rgb-background: initial;
+  --rgb-input: initial;
+  --color-border: initial;
+  --color-border-over: initial;
+  --border-radius: 0;
+  --shadow: none;
+  --font-family: var(--font-sans, system-ui, sans-serif);
+  --font-size: var(--ui-emoji-picker-font-size, 0.875rem);
+  width: 100%;
+  min-width: 0;
+  height: min(var(--ui-emoji-picker-height, 27rem), calc(100dvh - 3rem));
+  border: 0;
+  border-radius: 0;
+}

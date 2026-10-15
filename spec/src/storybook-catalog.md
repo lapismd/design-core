@@ -2,6 +2,12 @@
 
 Storybook is the interactive catalog and acceptance surface. It documents components but does not supersede canonical specification Markdown. The specification sidebar includes the Diff chapter after AI.
 
+The Shadcn Forms Emoji Picker catalog demonstrates full Unicode selection,
+custom emoji, restricted choices, suggested-only reactions, explicit dark mode,
+disabled controls and controlled mounting. The old AI stories retain focused
+compatibility regressions. Emoji Mart is in the shared dev/Vitest prebundle
+inventory while its runtime and data remain lazy at component opening.
+
 ## Public surface coverage
 
 | Surface               | Public boundary         | Requirement |

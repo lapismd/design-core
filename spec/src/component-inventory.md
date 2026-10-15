@@ -25,7 +25,7 @@ exactly one owning shared layer before it becomes a public export.
 Generic primitives in `src/shared/shadcn/`:
 
 accordion, alert, alert-dialog, badge, button, card, code, code-block,
-collapsible, column-canvas, command, command-view, dialog, dropdown-menu, empty, field, panel-toggle,
+collapsible, column-canvas, command, command-view, dialog, dropdown-menu, emoji-picker, empty, field, panel-toggle,
 input, input-group, label, hover-card, popover, resizable, scroll-area, select, separator,
 sheet, sidebar, skeleton, spinner, switch, swipe-item, tabs, textarea, toggle,
 toggle-group, tooltip, progress, slider, context-menu, drawer
@@ -58,6 +58,11 @@ Prefer them for inline/fenced presentation. Forms
 
 Workspace Settings owns the reusable `CopyableValue` controlled-output
 presentation under `workspace/settings`; it is not a second shadcn family.
+
+`emoji-picker` is a project-authored native-CSS family composing Popover and
+Button with lazy-loaded Emoji Mart Unicode search, categories and skin tones,
+suggested reactions, custom image emoji and a restricted searchable grid.
+The AI experimental entry point is a compatibility export of this family.
 
 Batch commands: `pnpm ui:add:batch a` (simple roots), `b`
 (stateful/light compound), `c` (portals), and `d` (layout/field compounds).
@@ -131,7 +136,7 @@ network or host-store dependency. Storybook: `AI/...`.
 - One folder per stable component (layout, composer, message, …) — 15
   ASTRYX-inspired message/layout, composer, token, dictation, and tool-call
   primitives. Stable imports use `@lapismd/design-core/ai/chat`.
-- `experimental/<component>/` — five Lab-derived reasoning, reaction, emoji,
+- `experimental/<component>/` — five Lab-derived reasoning, reaction, emoji compatibility,
   typing, and unread primitives. Every export is marked `@experimental`;
   import from `@lapismd/design-core/ai/experimental`.
 

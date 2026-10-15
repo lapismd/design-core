@@ -647,6 +647,10 @@
       "requirement": "DC-SHA-053"
     },
     {
+      "name": "Shadcn/Forms/Emoji Picker",
+      "requirement": "DC-SHA-054"
+    },
+    {
       "name": "Shadcn/Layout/Resizable",
       "requirement": "DC-SHA-037"
     },

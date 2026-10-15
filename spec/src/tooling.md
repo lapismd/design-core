@@ -15,6 +15,8 @@ dependency tree's remaining Mira peer is tracked separately from CSS compilation
 Both local and release archives reject remaining component utility selectors.
 The cold consumer also exercises both Panel Toggle icon variants on all four
 edges and verifies independent icon composition and sizing through public tokens.
+It additionally opens and searches the shared Emoji Picker and verifies that
+the AI compatibility export has the same component identity.
 The successful preparation report at `.release/remaining-style-utilities.json`
 is empty; local artifacts remain validation-only.
 
@@ -85,6 +87,9 @@ entries and await pending import requests before browser acceptance begins.
 Compilation failures return an unavailable response and allow a later retry.
 Development and Vitest hosts share explicit runtime and parser dependencies;
 catalog icon imports are discovered deterministically for prebundling.
+Emoji Mart is prebundled too, preventing a cold first-open dependency discovery
+from reloading the preview while retaining lazy runtime loading of the picker
+and bundled Unicode dataset.
 The release workflow MUST retain the packed audit report as a downloadable
 artifact, including when a reported finding fails the gate.
 
