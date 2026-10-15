@@ -77,7 +77,13 @@
     await userEvent.click(body.getByRole("tab", { name: /^Emoji$/ }));
     const library = await emojiLibrary();
     await userEvent.click(
-      within(library).getAllByRole("button", { name: /^😀$/ })[0]!,
+      (
+        await within(library).findAllByRole(
+          "button",
+          { name: /^😀$/ },
+          { timeout: 5000 },
+        )
+      )[0]!,
     );
     await expect(canvas.getByTestId("avatar-value")).toHaveTextContent(
       "data:image/svg+xml",

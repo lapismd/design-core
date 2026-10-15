@@ -15,6 +15,8 @@ custom emoji, restricted choices, suggested-only reactions, explicit dark mode,
 disabled controls and controlled mounting. The old AI stories retain focused
 compatibility regressions. Emoji Mart is in the shared dev/Vitest prebundle
 inventory while its runtime and data remain lazy at component opening.
+Emoji selection interactions await the expected selectable result after the
+lazy library mounts; the search input alone does not prove grid readiness.
 
 ## Public surface coverage
 

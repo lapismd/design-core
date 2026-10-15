@@ -34,7 +34,13 @@
     await userEvent.click(canvas.getByRole("button", { name: "Browse emoji" }));
     const library = await emojiLibrary();
     await userEvent.click(
-      within(library).getAllByRole("button", { name: "😀" })[0]!,
+      (
+        await within(library).findAllByRole(
+          "button",
+          { name: "😀" },
+          { timeout: 5000 },
+        )
+      )[0]!,
     );
     await expect(canvas.getByRole("status")).toHaveTextContent("Selected 😀");
     await userEvent.click(canvas.getByRole("button", { name: "Browse emoji" }));

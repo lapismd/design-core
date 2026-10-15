@@ -38,3 +38,25 @@ and source provenance remain in those records and
 `app-component-promotion-batch.md`. Changed stories remain `visual-pending`;
 screenshot baselines are unchanged. Consumer adoption, Panel Toggle integration
 and the remaining transcript/comment-controller slices stay separate.
+
+## Pull request interaction follow-up
+
+PR #25's first Linux interaction run reported 753 passes and one failure in
+AvatarPicker's `ChooseImageEmojiOrInitials` story: its synchronous emoji lookup
+ran after the search input mounted but before Emoji Mart populated the grid.
+The exact isolated command passed locally before editing. Both selection stories
+now await the same expected emoji button with a bounded asynchronous role query;
+their selection, value and shape assertions remain unchanged. No runtime source,
+shared helper, timeout policy, accessibility rule or baseline was changed.
+
+`pnpm test:storybook src/shared/forms/avatar-picker/AvatarPicker.stories.svelte -t ChooseImageEmojiOrInitials`
+passes after the repair (`/tmp/dc-pr25-avatar-after.log`). Both complete owning
+story families pass 16/16 (`/tmp/dc-pr25-picker-families.log`). The complete main
+workspace gate is rerun before committing this follow-up; the PR's complete
+Linux pipeline remains the final merge gate.
+
+The follow-up `pnpm checks` run in the main workspace passed every lane
+(`/tmp/dc-main-final-checks.log`): 741 units, 754 Storybook cases, four clean
+type checks, static build/metadata, and 112 browser passes with the same single
+platform skip. The evidence-only addition was formatted and specification
+checked before committing.

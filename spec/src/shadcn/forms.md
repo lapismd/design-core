@@ -31,6 +31,9 @@ Shadcn form controls provide the low-level accessible inputs used directly or in
 
 ## DC-SHA-054 — Emoji Picker
 
+Catalog selection awaits the expected emoji button while the lazy grid loads;
+the search input can mount before selectable results are available.
+
 **Requirement.** Emoji Picker MUST provide host-neutral full and restricted emoji selection through the shared Popover or an inline panel, with native CSS and lazy-loaded Emoji Mart data.
 
 ### Acceptance details

@@ -182,6 +182,9 @@ Form inputs provide higher-level controlled editing patterns composed from share
 
 ## DC-FORM-047 — Avatar Picker
 
+Catalog emoji selection waits for the expected selectable emoji after the lazy
+library mounts, rather than treating its search input as grid readiness.
+
 **Requirement.** Avatar Picker MUST edit host-owned avatar values through image selection/drop, pasted URLs and emoji on a chosen background, using host-provided initials or name as the empty-image fallback.
 
 ### Acceptance details
