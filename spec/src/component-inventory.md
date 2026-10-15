@@ -42,9 +42,11 @@ horizontal column cascades (Miller-column style) with an AppShell-like
 controller, compound Header/Toggle/Body/Item parts, and injected width/collapse
 persistence; it is not registry-backed.
 `panel-toggle` is a project-authored Layout family composing the public Button
-with a compact rectangular panel icon. It accepts controlled expanded state,
-left/right orientation and custom content, and supplies Column Canvas's default
-toggle and collapsed-rail icon. It is not a registry conversion.
+with a shared standard or compact panel icon. It accepts controlled expanded
+state, left/right/top/bottom orientation and custom content, and supplies Column
+Canvas's default compact toggle and collapsed-rail icon. The decorative
+`PanelToggleIcon` also composes inside existing controls. It is not a registry
+conversion.
 `command-view` is a project-authored Forms family for a host-agnostic searchable
 command surface with composable input and item parts. It composes bits-ui
 Command keyboard behavior and the public ScrollArea viewport. It is not

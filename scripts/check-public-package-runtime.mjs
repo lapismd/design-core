@@ -47,6 +47,24 @@ async function checkPrimitiveStates(page) {
         .borderBottomWidth,
       alertColumn: css('[data-review="alert"] [data-slot="alert-title"]')
         .gridColumnStart,
+      compactTopHeight: css(
+        '[data-review="panel-compact-top"] [data-ui-part="indicator"]',
+      ).height,
+      standardTopHeight: css(
+        '[data-review="panel-standard-top"] [data-ui-part="indicator"]',
+      ).height,
+      compactBottomHeight: css(
+        '[data-review="panel-compact-bottom"] [data-ui-part="indicator"]',
+      ).height,
+      standardBottomHeight: css(
+        '[data-review="panel-standard-bottom"] [data-ui-part="indicator"]',
+      ).height,
+      compactPanelWidth: css('[data-review="panel-compact-left"] svg').width,
+      compactPanelHeight: css('[data-review="panel-compact-left"] svg').height,
+      standardPanelWidth: css('[data-review="panel-standard-right"] svg').width,
+      standardPanelHeight: css('[data-review="panel-standard-right"] svg')
+        .height,
+      composedIconWidth: css('[data-review="panel-icon-only"]').width,
     };
   });
   assert.equal(styles.cardInset, "16px");
@@ -60,6 +78,15 @@ async function checkPrimitiveStates(page) {
   assert.equal(styles.toggleMiddleBorder, "0px");
   assert.equal(styles.addonDivider, "1px");
   assert.equal(styles.alertColumn, "2");
+  assert.equal(styles.compactTopHeight, "5px");
+  assert.equal(styles.standardTopHeight, "5px");
+  assert.equal(styles.compactBottomHeight, "5px");
+  assert.equal(styles.standardBottomHeight, "5px");
+  assert.equal(styles.compactPanelWidth, "18px");
+  assert.equal(styles.compactPanelHeight, "12px");
+  assert.equal(styles.standardPanelWidth, "16px");
+  assert.equal(styles.standardPanelHeight, "16px");
+  assert.equal(styles.composedIconWidth, "20px");
   await page.getByRole("tab", { name: "Archive details" }).click();
   assert.equal(
     await page.getByText("Archive details panel", { exact: true }).isVisible(),
@@ -189,8 +216,12 @@ import * as Tabs from "@lapismd/design-core/shadcn/tabs";
 import * as ToggleGroup from "@lapismd/design-core/shadcn/toggle-group";
 import * as InputGroup from "@lapismd/design-core/shadcn/input-group";
 import * as Alert from "@lapismd/design-core/shadcn/alert";
+import { PanelToggle, PanelToggleIcon, type PanelToggleIconProps } from "@lapismd/design-core/shadcn/panel-toggle";
 import HandleLifecycle from "./HandleLifecycle.svelte";
 let value = $state('const initial = true;');
+const panelVariants = ["standard", "compact"] as const;
+const panelSides = ["left", "right", "top", "bottom"] as const;
+const panelIcon = { side: "bottom", iconVariant: "standard", expanded: true, style: "--ui-panel-toggle-standard-icon-width: 20px" } satisfies PanelToggleIconProps;
 </script>
 <main><Button onclick={() => value = 'const updated = true;'}>Update</Button>
 <Input aria-label="Packed input" />
@@ -205,6 +236,8 @@ let value = $state('const initial = true;');
 <ToggleGroup.Root type="single" orientation="vertical" variant="outline" spacing={0} data-review="joined"><ToggleGroup.Item value="first">First option</ToggleGroup.Item><ToggleGroup.Item value="middle">Middle option</ToggleGroup.Item><ToggleGroup.Item value="last">Last option</ToggleGroup.Item></ToggleGroup.Root>
 <InputGroup.Root data-review="addons"><InputGroup.Addon align="block-start" data-divided="true">Draft</InputGroup.Addon><InputGroup.Textarea aria-label="Archive draft" /><InputGroup.Addon align="block-end" data-divided="true">Private</InputGroup.Addon></InputGroup.Root>
 <Alert.Root data-review="alert"><svg aria-hidden="true" width="16" height="16"><circle cx="8" cy="8" r="6" /></svg><Alert.Title>Archive notice</Alert.Title><Alert.Description>Icon alignment.</Alert.Description></Alert.Root>
+{#each panelVariants as iconVariant}{#each panelSides as side}<PanelToggle {iconVariant} {side} expanded data-review={['panel', iconVariant, side].join('-')} />{/each}{/each}
+<PanelToggleIcon {...panelIcon} class="packed-panel-icon" data-review="panel-icon-only" />
 </main>`,
     );
     copyFileSync(

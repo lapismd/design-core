@@ -1,10 +1,16 @@
-/** Compact panel controls; override on a shared ancestor. Bar widths are SVG units. */
+/** Panel controls; override on a shared ancestor. Bar thicknesses are SVG units. */
 :root {
   --ui-panel-toggle-width: 1.75rem;
   --ui-panel-toggle-height: 1.5rem;
   --ui-panel-toggle-icon-width: 1.125rem;
   --ui-panel-toggle-icon-height: 0.75rem;
   --ui-panel-toggle-expanded-bar: 9px;
+  --ui-panel-toggle-horizontal-expanded-bar: 5px;
   --ui-panel-toggle-collapsed-bar: 3px;
   --ui-panel-toggle-motion-duration: 150ms;
+  --ui-panel-toggle-standard-icon-width: 1rem;
+  --ui-panel-toggle-standard-icon-height: 1rem;
+  --ui-panel-toggle-standard-expanded-bar: 5.76px;
+  --ui-panel-toggle-standard-collapsed-bar: 2px;
+  --ui-panel-toggle-standard-horizontal-expanded-bar: 5px;
 }

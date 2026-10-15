@@ -18,34 +18,3 @@
   color: var(--foreground);
   background: var(--muted);
 }
-
-[data-ui-component="panel-toggle"][data-ui-part="icon"] {
-  width: var(--ui-panel-toggle-icon-width, 1.125rem);
-  height: var(--ui-panel-toggle-icon-height, 0.75rem);
-  flex-shrink: 0;
-}
-
-[data-ui-component="panel-toggle"][data-ui-part="indicator"] {
-  width: var(--ui-panel-toggle-collapsed-bar, 3px);
-  transition: width var(--ui-panel-toggle-motion-duration, 150ms) ease;
-}
-
-[data-ui-component="panel-toggle"][data-expanded="true"]
-  [data-ui-part="indicator"],
-[data-panel-toggle]:not(:disabled):is(:hover, :focus-visible)
-  [data-ui-component="panel-toggle"][data-expanded="false"]
-  [data-ui-part="indicator"] {
-  width: var(--ui-panel-toggle-expanded-bar, 9px);
-}
-
-[data-panel-toggle]:not(:disabled):is(:hover, :focus-visible)
-  [data-ui-component="panel-toggle"][data-expanded="true"]
-  [data-ui-part="indicator"] {
-  width: var(--ui-panel-toggle-collapsed-bar, 3px);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  [data-ui-component="panel-toggle"][data-ui-part="indicator"] {
-    transition: none;
-  }
-}

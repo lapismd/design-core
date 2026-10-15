@@ -13,6 +13,8 @@ to exclude the legacy Mira dependency's automatic Tailwind peer installation.
 Required fixture peers such as Svelte are declared explicitly; the normal
 dependency tree's remaining Mira peer is tracked separately from CSS compilation.
 Both local and release archives reject remaining component utility selectors.
+The cold consumer also exercises both Panel Toggle icon variants on all four
+edges and verifies independent icon composition and sizing through public tokens.
 The successful preparation report at `.release/remaining-style-utilities.json`
 is empty; local artifacts remain validation-only.
 

@@ -12,6 +12,19 @@
   } from "@lapismd/design-core/filter";
   import * as DropdownMenu from "@lapismd/design-core/shadcn/dropdown-menu";
   import { Spinner } from "@lapismd/design-core/shadcn/spinner";
+  import {
+    PanelToggle,
+    PanelToggleIcon,
+    type PanelToggleIconProps,
+  } from "@lapismd/design-core/shadcn/panel-toggle";
+
+  const panelIcon = {
+    side: "bottom",
+    iconVariant: "standard",
+    expanded: false,
+    class: "consumer-panel-icon",
+    style: "color: currentColor",
+  } satisfies PanelToggleIconProps;
 
   let filter = $state("all");
   let tokens = $state<PowerSearchToken[]>([]);
@@ -28,6 +41,8 @@
 </DropdownMenu.Root>
 
 <Spinner />
+<PanelToggle side="bottom" iconVariant="standard" expanded={false} />
+<PanelToggleIcon {...panelIcon} data-icon="inline-start" />
 <ComposerInput />
 <ToolCalls calls={[{ name: "read", status: "complete" }]} />
 <ReactionBar reactions={[]} onAdd={() => {}} />

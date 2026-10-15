@@ -85,11 +85,11 @@ Layout primitives establish reusable spatial, scrolling, and responsive composit
 
 ## DC-SHA-053 — Panel Toggle
 
-**Requirement.** Panel Toggle MUST compose Button with a compact rectangular icon and controlled expanded state. Hover and keyboard focus MUST preview the opposite bar width without changing state. Column Canvas MUST use this icon by default.
+**Requirement.** Panel Toggle MUST provide controlled standard and compact panel icons for left, right, top and bottom edges through a shared native-CSS implementation.
 
 ### Acceptance details
 
-- The public boundary is `@lapismd/design-core/shadcn/panel-toggle`; default button and icon sizes are 28×24px and 18×12px, with left or right orientation.
-- Bar transitions MUST preserve frame geometry, reverse on pointer departure, and respect reduced motion and disabled controls.
-- Button semantics, accessible labels, visible focus, forced colors and composed header hover tokens MUST remain available; consumers own state changes.
-- Column Canvas toggles and collapsed rails MUST use the shared icon while retaining custom icons, rails, preview behavior and controller actions.
+- The public boundary is `@lapismd/design-core/shadcn/panel-toggle`; compact remains the default with a 28×24px button and 18×12px icon, while standard reproduces Workspace's frame and bar geometry at a default 16×16px size.
+- Expanded state MUST thicken the indicated edge without rotating the frame; button hover and keyboard focus preview the opposite thickness without changing state, respecting disabled controls and reduced motion.
+- The decorative icon MUST accept native SVG styling attributes and documented sizing tokens, while enclosing controls retain labels, focus, forced colors and ownership of state changes.
+- Column Canvas MUST retain its compact default, custom content, preview behavior, controller actions and composed header hover tokens.

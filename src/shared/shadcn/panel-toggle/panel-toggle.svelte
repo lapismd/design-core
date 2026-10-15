@@ -4,7 +4,9 @@
       /** Controlled panel state; consumers handle activation. */
       expanded: boolean;
       /** Edge represented by the filled indicator. */
-      side?: "left" | "right";
+      side?: "left" | "right" | "top" | "bottom";
+      /** Icon geometry; compact preserves the existing Column Canvas default. */
+      iconVariant?: "standard" | "compact";
     };
 </script>
 
@@ -17,6 +19,7 @@
     ref = $bindable(null),
     expanded,
     side = "left",
+    iconVariant = "compact",
     variant = "ghost",
     size = "icon-xs",
     children,
@@ -36,6 +39,6 @@
   {#if children}
     {@render children()}
   {:else}
-    <PanelToggleIcon {expanded} {side} />
+    <PanelToggleIcon {expanded} {side} {iconVariant} />
   {/if}
 </Button>
