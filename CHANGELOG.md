@@ -1,5 +1,11 @@
 # @lapismd/design-core
 
+## 0.3.4
+
+### Patch Changes
+
+- [#21](https://github.com/lapismd/design-core/pull/21) [`81c077a`](https://github.com/lapismd/design-core/commit/81c077a4eda3fa669e36007ee72edbb5904a4afc) Thanks [@stevejuma](https://github.com/stevejuma)! - Keep Settings labels readable at constrained widths and place action feedback across the full row below its controls.
+
 ## 0.3.3
 
 ### Patch Changes
