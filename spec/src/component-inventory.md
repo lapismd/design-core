@@ -30,6 +30,11 @@ input, input-group, label, hover-card, popover, resizable, scroll-area, select, 
 sheet, sidebar, skeleton, spinner, switch, swipe-item, tabs, textarea, toggle,
 toggle-group, tooltip, progress, slider, context-menu, drawer
 
+`tag-list` is a project-authored Data Display family composing existing Badge
+and Button chips with measured overflow, Tooltip, Popover and ScrollArea. Only
+TagList and its item/props types are public; its chip renderer stays private.
+Import it from `@lapismd/design-core/shadcn/tag-list`.
+
 Import: `@lapismd/design-core/shadcn/<family>`
 
 Registry-backed families are converted to scoped native CSS with token maps and

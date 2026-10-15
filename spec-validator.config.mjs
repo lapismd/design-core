@@ -5,6 +5,7 @@ import {
 } from "@lapismd/spec-validator";
 
 const shadcnChapters = {
+  "tag-list": ["spec/src/shadcn/data-and-feedback.md"],
   "responsive-tabs": ["spec/src/shadcn/disclosure-and-navigation.md"],
   avatar: ["spec/src/shadcn/data-and-feedback.md"],
   accordion: ["spec/src/shadcn/disclosure-and-navigation.md"],

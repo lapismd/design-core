@@ -1039,6 +1039,10 @@
       "requirement": "DC-SHA-056"
     },
     {
+      "name": "Shadcn/Data Display/Tag List",
+      "requirement": "DC-SHA-057"
+    },
+    {
       "name": "Shadcn/Navigation/Responsive Tabs",
       "requirement": "DC-SHA-055"
     },

@@ -145,6 +145,60 @@ async function checkPrimitiveStates(page) {
       .getAttribute("aria-selected"),
     "true",
   );
+  const tagList = page.getByRole("list", { name: "Archive tags", exact: true });
+  const firstTag = tagList.locator(
+    '[data-ui-part="row"] [data-tag-id="first"]',
+  );
+  await firstTag.waitFor();
+  assert.equal(
+    await firstTag.evaluate((element) => getComputedStyle(element).height),
+    "20px",
+  );
+  assert.equal(
+    await firstTag.evaluate(
+      (element) => getComputedStyle(element).borderRadius,
+    ),
+    "4px",
+  );
+  const overflow = tagList.getByRole("button", { name: /more archive tags/ });
+  await overflow.click();
+  const tagPopup = page.getByRole("dialog", {
+    name: "Archive tags (3)",
+    exact: true,
+  });
+  await tagPopup.waitFor();
+  assert.deepEqual(
+    await tagPopup
+      .locator('[data-tag-id] [data-ui-part="tag-label"]')
+      .allTextContents(),
+    [
+      "Pinned",
+      "A long label preserved in the archive popover",
+      "Archive action",
+    ],
+  );
+  assert.equal(
+    await tagPopup
+      .locator('[data-tag-id="first"]')
+      .evaluate((element) => getComputedStyle(element).borderRadius),
+    "4px",
+  );
+  await tagPopup
+    .getByRole("button", { name: "Archive action", exact: true })
+    .click();
+  await page.waitForFunction(
+    () =>
+      document.querySelector('[data-testid="packed-tag-selection"]')
+        ?.textContent === "action",
+  );
+  await tagPopup.waitFor({ state: "hidden" });
+  await page.waitForFunction(
+    () => document.activeElement?.getAttribute("data-ui-part") === "overflow",
+  );
+  assert.equal(
+    await overflow.evaluate((element) => element === document.activeElement),
+    true,
+  );
 }
 
 async function checkStyles(page) {
@@ -259,6 +313,7 @@ import * as Alert from "@lapismd/design-core/shadcn/alert";
 import { PanelToggle, PanelToggleIcon, type PanelToggleIconProps } from "@lapismd/design-core/shadcn/panel-toggle";
 import { EmojiPicker } from "@lapismd/design-core/shadcn/emoji-picker";
 import { ResponsiveTabs } from "@lapismd/design-core/shadcn/responsive-tabs";
+import { TagList, type TagListItem, type TagListProps } from "@lapismd/design-core/shadcn/tag-list";
 import { Avatar } from "@lapismd/design-core/shadcn/avatar";
 import { AvatarPicker } from "@lapismd/design-core/forms";
 import { MarkdownContent, Message as SharedMessage } from "@lapismd/design-core/chat";
@@ -271,6 +326,13 @@ import { EmojiPicker as LegacyEmojiPicker } from "@lapismd/design-core/ai/experi
 import HandleLifecycle from "./HandleLifecycle.svelte";
 if (EmojiPicker !== LegacyEmojiPicker) throw new Error("Emoji compatibility export differs");
 let selectedEmoji = $state("");
+let selectedTag = $state("");
+const tags: readonly TagListItem[] = [
+  { id: "first", label: "Pinned" },
+  { id: "long", label: "A long label preserved in the archive popover" },
+  { id: "action", label: "Archive action", onClick: (tag) => selectedTag = tag.id },
+];
+const tagListProps = { tags, label: "Archive tags" } satisfies TagListProps;
 let value = $state('const initial = true;');
 const panelVariants = ["standard", "compact"] as const;
 const panelSides = ["left", "right", "top", "bottom"] as const;
@@ -294,6 +356,8 @@ const panelIcon = { side: "bottom", iconVariant: "standard", expanded: true, sty
 <EmojiPicker triggerLabel="Packed emoji" onSelect={(emoji) => selectedEmoji = emoji} />
 <output data-testid="packed-emoji-selection">{selectedEmoji}</output>
 <ResponsiveTabs bind:value={navigationValue} items={[{ value: "overview", label: "Overview" }, { value: "files", label: "Files" }]} />
+<div style="width:130px;--ui-tag-list-radius:4px"><TagList {...tagListProps} /></div>
+<output data-testid="packed-tag-selection">{selectedTag}</output>
 <Avatar name="Packed avatar" presence="online" />
 <AvatarPicker bind:value={avatarValue} name="Packed profile" />
 <output data-testid="packed-avatar-value">{avatarValue}</output>
@@ -519,7 +583,7 @@ const panelIcon = { side: "bottom", iconVariant: "standard", expanded: true, sty
     await checkStyles(production);
     assert.deepEqual(errors, []);
     console.log(
-      "Cold development and production CSS, fonts, focus, themes, token overrides, reactive CodeEditor, and bound Composer Input lifecycle passed without Tailwind tooling or Svelte diagnostics.",
+      "Cold development and production CSS, fonts, focus, themes, token overrides, TagList overflow/actions, reactive CodeEditor, and bound Composer Input lifecycle passed without Tailwind tooling or Svelte diagnostics.",
     );
   } catch (error) {
     console.error(serverLog.slice(-10000));
