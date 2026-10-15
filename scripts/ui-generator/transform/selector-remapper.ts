@@ -1,7 +1,5 @@
 import postcss from "postcss";
 import selectorParser, {
-  type Attribute,
-  type ClassName,
   type Node,
   type Selector,
 } from "postcss-selector-parser";
@@ -38,34 +36,29 @@ function replaceClassesInSelector(
 
   selectorParser((selectors) => {
     selectors.each((sel: Selector) => {
-      const classNodes: ClassName[] = [];
-      sel.walkClasses((classNode) => {
-        if (ownershipByCandidate.has(classNode.value)) {
-          classNodes.push(classNode);
-        }
+      const candidates = new Set<string>();
+      sel.walkClasses((node) => {
+        if (ownershipByCandidate.has(node.value)) candidates.add(node.value);
       });
-      if (!classNodes.length) return;
+      if (!candidates.size) return;
 
-      for (const classNode of classNodes) {
-        const semantics = ownershipByCandidate.get(classNode.value) ?? [];
-        for (const semantic of semantics) {
-          const clone = sel.clone() as Selector;
-          clone.walkClasses((node) => {
-            if (node.value !== classNode.value) return;
-            const semanticNodes = parseSemanticNodes(semantic);
-            if (!semanticNodes.length) return;
-            let current: Node = node;
-            const first = semanticNodes[0]!;
-            node.replaceWith(first);
-            current = first;
-            for (const extra of semanticNodes.slice(1)) {
-              current.parent?.insertAfter(current, extra);
-              current = extra;
-            }
-          });
-          results.push(clone.toString());
-        }
+      // Expand all owners, then replace every class in each compound selector.
+      // Independent replacements leave half-converted selectors that never match.
+      let expanded = [sel];
+      for (const candidate of candidates) {
+        expanded = expanded.flatMap((current) =>
+          (ownershipByCandidate.get(candidate) ?? []).map((semantic) => {
+            const clone = current.clone() as Selector;
+            clone.walkClasses((node) => {
+              if (node.value === candidate) {
+                node.replaceWith(...parseSemanticNodes(semantic));
+              }
+            });
+            return clone;
+          }),
+        );
       }
+      results.push(...expanded.map((item) => item.toString()));
     });
   }).processSync(selector);
 
@@ -98,7 +91,13 @@ export function remapCompiledCss(
       rule.remove();
       return;
     }
-    rule.selectors = [...new Set(nextSelectors)];
+    rule.selectors = [
+      ...new Set(
+        nextSelectors.map((selector) =>
+          selectorParser().processSync(selector, { lossless: false }),
+        ),
+      ),
+    ];
   });
 
   root.walkAtRules((atRule) => {
@@ -119,39 +118,23 @@ export function remapMarkerSelectors(
   markers: MarkerOwnership[],
 ): string {
   if (!markers.length) return css;
-  const byMarker = new Map<string, string>();
-  for (const m of markers) {
-    if (!byMarker.has(m.marker)) byMarker.set(m.marker, m.selector);
+  const byMarker = new Map<string, string[]>();
+  for (const { marker, selector } of markers) {
+    const owners = byMarker.get(marker) ?? [];
+    if (!owners.includes(selector)) owners.push(selector);
+    byMarker.set(marker, owners);
   }
 
   const root = postcss.parse(css);
   root.walkRules((rule) => {
-    const out: string[] = [];
-    for (const selector of rule.selectors) {
-      let result = selector;
-      selectorParser((selectors) => {
-        selectors.each((sel: Selector) => {
-          sel.walkClasses((classNode) => {
-            const value = classNode.value.replace(/\\/g, "");
-            const semantic = byMarker.get(value);
-            if (!semantic) return;
-            const semanticNodes = parseSemanticNodes(semantic);
-            if (!semanticNodes.length) return;
-            let current: Node = classNode;
-            const first = semanticNodes[0]!;
-            classNode.replaceWith(first);
-            current = first;
-            for (const extra of semanticNodes.slice(1)) {
-              current.parent?.insertAfter(current, extra);
-              current = extra;
-            }
-          });
-          result = sel.toString();
-        });
-      }).processSync(selector);
-      out.push(result);
-    }
-    rule.selectors = [...new Set(out)];
+    rule.selectors = [
+      ...new Set(
+        rule.selectors.flatMap((selector) => {
+          const remapped = replaceClassesInSelector(selector, byMarker);
+          return remapped.length ? remapped : [selector];
+        }),
+      ),
+    ];
   });
   return root.toString();
 }

@@ -4,6 +4,7 @@
   import * as Field from "./index.js";
   import { Input } from "../input/index.js";
 
+  import { Checkbox } from "../checkbox/index.js";
   const { Story } = defineMeta({
     title: "Shadcn/Forms/Field",
     component: Field.Field,
@@ -28,7 +29,7 @@
     await userEvent.type(canvas.getByLabelText("Work email"), "dev@ju.ma");
     await expect(canvas.getByRole("status")).toHaveTextContent("dev@ju.ma");
   }}
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   parameters={{
     visualDelta: {
       images: [
@@ -52,5 +53,30 @@
       </Field.Field>
       <output class="text-muted-foreground text-sm">{email || "empty"}</output>
     </Field.FieldGroup>
+  {/snippet}
+</Story>
+
+<Story
+  name="Disabled horizontal field"
+  tags={["visual-pending"]}
+  play={async ({ canvas }) => {
+    const label = canvas.getByText("Optional newsletter");
+    const checkbox = canvas.getByRole("checkbox");
+    await expect(getComputedStyle(label).opacity).toBe("0.5");
+    await expect(getComputedStyle(checkbox).opacity).toBe("0.5");
+    await expect(checkbox).toBeDisabled();
+  }}
+>
+  {#snippet template()}
+    <Field.Field orientation="horizontal" data-disabled="true">
+      <Checkbox id="disabled-newsletter" disabled />
+      <Field.FieldContent
+        ><Field.FieldLabel for="disabled-newsletter"
+          >Optional newsletter</Field.FieldLabel
+        ><Field.FieldDescription
+          >Receive occasional product news.</Field.FieldDescription
+        ></Field.FieldContent
+      >
+    </Field.Field>
   {/snippet}
 </Story>

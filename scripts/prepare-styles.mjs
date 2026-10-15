@@ -10,9 +10,15 @@ import {
 import path from "node:path";
 import { compile } from "@tailwindcss/node";
 import postcss from "postcss";
-import selectorParser from "postcss-selector-parser";
 import valueParser from "postcss-value-parser";
-import { isTailwindUtility } from "./lib/tailwind-utility.mjs";
+import {
+  utilitySelectors,
+  assertNoUtilitySelectors,
+} from "./lib/style-utilities.mjs";
+export {
+  utilitySelectors,
+  assertNoUtilitySelectors,
+} from "./lib/style-utilities.mjs";
 
 const compilerRules = new Set([
   "apply",
@@ -58,34 +64,6 @@ export function assertBrowserCss(css, file = "stylesheet") {
       throw declaration.error("Unprepared Tailwind value function");
     }
   });
-}
-
-export function utilitySelectors(css, file = "stylesheet") {
-  const findings = [];
-  postcss.parse(css, { from: file }).walkRules((rule) => {
-    selectorParser((selectors) => {
-      selectors.walkClasses((node) => {
-        if (isTailwindUtility(node.value)) {
-          findings.push({
-            file,
-            line: rule.source.start.line,
-            token: node.value,
-          });
-        }
-      });
-    }).processSync(rule.selector);
-  });
-  return findings;
-}
-
-export function assertNoUtilitySelectors(css, file = "stylesheet") {
-  const findings = utilitySelectors(css, file);
-  if (findings.length) {
-    const first = findings[0];
-    throw new Error(
-      `${first.file}:${first.line}: Tailwind utility selector .${first.token} (${findings.length} references)`,
-    );
-  }
 }
 
 function copyAssetLicense(asset, assetsDirectory) {

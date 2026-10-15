@@ -23,7 +23,7 @@
     await expect(canvas.getByText("Workspace settings")).toBeVisible();
     await expect(canvas.getByRole("button", { name: "Save" })).toBeVisible();
   }}
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   parameters={{
     visualDelta: {
       images: [
@@ -52,6 +52,35 @@
       <Card.Footer>
         <Button>Save</Button>
       </Card.Footer>
+    </Card.Root>
+  {/snippet}
+</Story>
+
+<Story
+  name="Compact card with dividers"
+  tags={["visual-pending"]}
+  play={async ({ canvas }) => {
+    const title = canvas.getByText("Compact settings");
+    const header = title.closest('[data-slot="card-header"]')!;
+    const footer = canvas
+      .getByText("Saved locally")
+      .closest('[data-slot="card-footer"]')!;
+    await expect(getComputedStyle(header).paddingLeft).toBe("16px");
+    await expect(getComputedStyle(header).borderBottomWidth).toBe("1px");
+    await expect(getComputedStyle(header).paddingBottom).toBe("16px");
+    await expect(getComputedStyle(title).fontSize).toBe("14px");
+    await expect(getComputedStyle(footer).borderTopWidth).toBe("1px");
+  }}
+>
+  {#snippet template()}
+    <Card.Root size="sm">
+      <Card.Header data-divided="true"
+        ><Card.Title>Compact settings</Card.Title><Card.Description
+          >Small card with section dividers.</Card.Description
+        ></Card.Header
+      >
+      <Card.Content>Content stays aligned with the header.</Card.Content>
+      <Card.Footer data-divided="true">Saved locally</Card.Footer>
     </Card.Root>
   {/snippet}
 </Story>

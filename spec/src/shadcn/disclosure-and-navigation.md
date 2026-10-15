@@ -47,7 +47,7 @@ Disclosure and navigation primitives retain semantic structure and keyboard beha
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/shadcn/tabs`.
-- Line variants MUST show a two-pixel active indicator and apply orientation styling using the semantic tab hosts, without requiring utility group classes.
+- Line variants MUST show a two-pixel active indicator in horizontal and vertical layouts; orientation and active-state styling MUST use semantic tab hosts without utility group classes.
 - Inactive enabled labels MUST retain opaque semantic foregrounds and meet normal-text contrast on supported light and dark surfaces; disabled controls MAY use reduced opacity.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 

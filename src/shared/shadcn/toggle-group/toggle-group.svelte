@@ -103,9 +103,6 @@ get along, so we shut typescript up by casting `value` to `never`.
         border-radius: calc(var(--radius) * 0.8);
       }
       [data-ui-component="toggle-group"][data-ui-part="toggle-group-item"]:is(
-          :where(.group\/toggle-group)[data-spacing="0"] *
-        ),
-      .group-data-\[spacing\=0\]\/toggle-group\:rounded-none:is(
           :where(
               [data-ui-component="toggle-group"][data-ui-part="toggle-group"]
             )[data-spacing="0"]
@@ -114,9 +111,6 @@ get along, so we shut typescript up by casting `value` to `never`.
         border-radius: 0;
       }
       [data-ui-component="toggle-group"][data-ui-part="toggle-group-item"]:is(
-          :where(.group\/toggle-group)[data-spacing="0"] *
-        ),
-      .group-data-\[spacing\=0\]\/toggle-group\:px-2:is(
           :where(
               [data-ui-component="toggle-group"][data-ui-part="toggle-group"]
             )[data-spacing="0"]
@@ -125,9 +119,6 @@ get along, so we shut typescript up by casting `value` to `never`.
         padding-inline: calc(var(--spacing) * 2);
       }
       [data-ui-component="toggle-group"][data-ui-part="toggle-group-item"]:is(
-          :where(.group\/toggle-group)[data-spacing="0"] *
-        ),
-      .group-data-\[spacing\=0\]\/toggle-group\:shadow-none:is(
           :where(
               [data-ui-component="toggle-group"][data-ui-part="toggle-group"]
             )[data-spacing="0"]
@@ -142,9 +133,6 @@ get along, so we shut typescript up by casting `value` to `never`.
         z-index: 10;
       }
       [data-ui-component="toggle-group"][data-ui-part="toggle-group-item"]:is(
-          :where(.group\/toggle-group)[data-spacing="0"] *
-        ):has([data-icon="inline-end"]),
-      .group-data-\[spacing\=0\]\/toggle-group\:has-data-\[icon\=inline-end\]\:pr-1\.5:is(
           :where(
               [data-ui-component="toggle-group"][data-ui-part="toggle-group"]
             )[data-spacing="0"]
@@ -153,9 +141,6 @@ get along, so we shut typescript up by casting `value` to `never`.
         padding-right: calc(var(--spacing) * 1.5);
       }
       [data-ui-component="toggle-group"][data-ui-part="toggle-group-item"]:is(
-          :where(.group\/toggle-group)[data-spacing="0"] *
-        ):has([data-icon="inline-start"]),
-      .group-data-\[spacing\=0\]\/toggle-group\:has-data-\[icon\=inline-start\]\:pl-1\.5:is(
           :where(
               [data-ui-component="toggle-group"][data-ui-part="toggle-group"]
             )[data-spacing="0"]
@@ -164,9 +149,6 @@ get along, so we shut typescript up by casting `value` to `never`.
         padding-left: calc(var(--spacing) * 1.5);
       }
       [data-ui-component="toggle-group"][data-ui-part="toggle-group-item"]:is(
-          :where(.group\/toggle-group):where([data-orientation="horizontal"]) *
-        )[data-spacing="0"]:first-child,
-      .group-data-horizontal\/toggle-group\:data-\[spacing\=0\]\:first\:rounded-l-md:is(
           :where(
               [data-ui-component="toggle-group"][data-ui-part="toggle-group"]
             ):where([data-orientation="horizontal"])
@@ -176,9 +158,6 @@ get along, so we shut typescript up by casting `value` to `never`.
         border-bottom-left-radius: calc(var(--radius) * 0.8);
       }
       [data-ui-component="toggle-group"][data-ui-part="toggle-group-item"]:is(
-          :where(.group\/toggle-group):where([data-orientation="vertical"]) *
-        )[data-spacing="0"]:first-child,
-      .group-data-vertical\/toggle-group\:data-\[spacing\=0\]\:first\:rounded-t-md:is(
           :where(
               [data-ui-component="toggle-group"][data-ui-part="toggle-group"]
             ):where([data-orientation="vertical"])
@@ -188,9 +167,6 @@ get along, so we shut typescript up by casting `value` to `never`.
         border-top-right-radius: calc(var(--radius) * 0.8);
       }
       [data-ui-component="toggle-group"][data-ui-part="toggle-group-item"]:is(
-          :where(.group\/toggle-group):where([data-orientation="horizontal"]) *
-        )[data-spacing="0"]:last-child,
-      .group-data-horizontal\/toggle-group\:data-\[spacing\=0\]\:last\:rounded-r-md:is(
           :where(
               [data-ui-component="toggle-group"][data-ui-part="toggle-group"]
             ):where([data-orientation="horizontal"])
@@ -200,9 +176,6 @@ get along, so we shut typescript up by casting `value` to `never`.
         border-bottom-right-radius: calc(var(--radius) * 0.8);
       }
       [data-ui-component="toggle-group"][data-ui-part="toggle-group-item"]:is(
-          :where(.group\/toggle-group):where([data-orientation="vertical"]) *
-        )[data-spacing="0"]:last-child,
-      .group-data-vertical\/toggle-group\:data-\[spacing\=0\]\:last\:rounded-b-md:is(
           :where(
               [data-ui-component="toggle-group"][data-ui-part="toggle-group"]
             ):where([data-orientation="vertical"])
@@ -220,9 +193,6 @@ get along, so we shut typescript up by casting `value` to `never`.
           var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
       }
       [data-ui-component="toggle-group"][data-ui-part="toggle-group-item"]:is(
-          :where(.group\/toggle-group):where([data-orientation="horizontal"]) *
-        )[data-spacing="0"][data-variant="outline"],
-      .group-data-horizontal\/toggle-group\:data-\[spacing\=0\]\:data-\[variant\=outline\]\:border-l-0:is(
           :where(
               [data-ui-component="toggle-group"][data-ui-part="toggle-group"]
             ):where([data-orientation="horizontal"])
@@ -232,9 +202,6 @@ get along, so we shut typescript up by casting `value` to `never`.
         border-left-width: 0;
       }
       [data-ui-component="toggle-group"][data-ui-part="toggle-group-item"]:is(
-          :where(.group\/toggle-group):where([data-orientation="vertical"]) *
-        )[data-spacing="0"][data-variant="outline"],
-      .group-data-vertical\/toggle-group\:data-\[spacing\=0\]\:data-\[variant\=outline\]\:border-t-0:is(
           :where(
               [data-ui-component="toggle-group"][data-ui-part="toggle-group"]
             ):where([data-orientation="vertical"])
@@ -244,9 +211,6 @@ get along, so we shut typescript up by casting `value` to `never`.
         border-top-width: 0;
       }
       [data-ui-component="toggle-group"][data-ui-part="toggle-group-item"]:is(
-          :where(.group\/toggle-group):where([data-orientation="horizontal"]) *
-        )[data-spacing="0"][data-variant="outline"]:first-child,
-      .group-data-horizontal\/toggle-group\:data-\[spacing\=0\]\:data-\[variant\=outline\]\:first\:border-l:is(
           :where(
               [data-ui-component="toggle-group"][data-ui-part="toggle-group"]
             ):where([data-orientation="horizontal"])
@@ -256,9 +220,6 @@ get along, so we shut typescript up by casting `value` to `never`.
         border-left-width: 1px;
       }
       [data-ui-component="toggle-group"][data-ui-part="toggle-group-item"]:is(
-          :where(.group\/toggle-group):where([data-orientation="vertical"]) *
-        )[data-spacing="0"][data-variant="outline"]:first-child,
-      .group-data-vertical\/toggle-group\:data-\[spacing\=0\]\:data-\[variant\=outline\]\:first\:border-t:is(
           :where(
               [data-ui-component="toggle-group"][data-ui-part="toggle-group"]
             ):where([data-orientation="vertical"])

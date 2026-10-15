@@ -185,9 +185,6 @@
         color: var(--ui-field-foreground, var(--muted-foreground));
       }
       [data-ui-component="field"][data-ui-part="field-description"]:is(
-          :where(.group\/field):has([data-orientation="horizontal"]) *
-        ),
-      .group-has-\[\[data-orientation\=horizontal\]\]\/field\:text-balance:is(
           :where([data-ui-component="field"][data-ui-part="field"]):has(
               [data-orientation="horizontal"]
             )
@@ -196,9 +193,6 @@
         text-wrap: balance;
       }
       [data-ui-component="field"][data-ui-part="field-label"]:is(
-          :where(.group\/field)[data-disabled="true"] *
-        ),
-      .group-data-\[disabled\=true\]\/field\:opacity-50:is(
           :where(
               [data-ui-component="field"][data-ui-part="field"]
             )[data-disabled="true"]

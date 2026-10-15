@@ -41,6 +41,11 @@ import {
 import { writeJson } from "../reports/report.js";
 import { syncUpstreamDocs } from "../docs/sync-upstream-docs.js";
 import { findTailwindUtilitiesInSource } from "../../lib/no-tailwind-utilities.js";
+import { assertNoUtilitySelectors } from "../../lib/style-utilities.mjs";
+import {
+  semanticMarkers,
+  semanticMarkerStyles,
+} from "../transform/semantic-markers.js";
 import { TOKEN_SCHEMA_VERSION } from "../transform/token-wiring.js";
 
 export type ConvertFamilyResult = {
@@ -435,7 +440,12 @@ export async function convertFamilyInWorktree(args: {
     ),
   );
   let remappedCss = remapCompiledCss(compiled.css, ownership);
-  remappedCss = remapMarkerSelectors(remappedCss, markerOwnership);
+  remappedCss = remapMarkerSelectors(remappedCss, [
+    ...markerOwnership,
+    ...semanticMarkers(component),
+  ]);
+  remappedCss += semanticMarkerStyles(component);
+  assertNoUtilitySelectors(remappedCss, `${component} conversion`);
   if (!remappedCss.trim()) {
     throw new GeneratorError(
       "Selector remapping produced empty CSS",

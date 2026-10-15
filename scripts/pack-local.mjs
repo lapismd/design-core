@@ -102,24 +102,19 @@ export async function packLocal(
     }
     const { prepareStyles } = await import("./prepare-styles.mjs");
     const styles = await prepareStyles(join(packaged, "dist"), {
-      requireNoUtilitySelectors: retainSource,
+      requireNoUtilitySelectors: true,
     });
     console.log("Prepared browser CSS:", {
       compiled: styles.compiled,
       audited: styles.audited,
       remainingUtilityReferences: styles.remainingUtilities.length,
     });
-    if (styles.remainingUtilities.length) {
-      const reportDirectory = join(root, ".release");
-      mkdirSync(reportDirectory, { recursive: true });
-      writeFileSync(
-        join(reportDirectory, "remaining-style-utilities.json"),
-        JSON.stringify(styles.remainingUtilities, null, 2) + "\n",
-      );
-      console.warn(
-        "LOCAL REVIEW ONLY: component utility cleanup remains; release packaging is blocked. See .release/remaining-style-utilities.json.",
-      );
-    }
+    const reportDirectory = join(root, ".release");
+    mkdirSync(reportDirectory, { recursive: true });
+    writeFileSync(
+      join(reportDirectory, "remaining-style-utilities.json"),
+      JSON.stringify(styles.remainingUtilities, null, 2) + "\n",
+    );
     manifest.exports = preparedExports(manifest.exports);
     manifest.files = [
       ...(retainSource ? ["src"] : []),

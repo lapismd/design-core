@@ -16,6 +16,70 @@ import { chromium } from "playwright";
 import { fileURLToPath } from "node:url";
 import { assertBrowserCss } from "./prepare-styles.mjs";
 
+async function checkPrimitiveStates(page) {
+  const styles = await page.evaluate(() => {
+    const css = (selector) => {
+      const element = document.querySelector(selector);
+      if (!element)
+        throw new Error(`Missing packed consumer element: ${selector}`);
+      return getComputedStyle(element);
+    };
+    const first = css(
+      '[data-review="joined"] [data-slot="toggle-group-item"]:first-child',
+    );
+    return {
+      cardInset: css('[data-review="compact"] [data-slot="card-header"]')
+        .paddingLeft,
+      divider: css('[data-review="compact"] [data-slot="card-header"]')
+        .borderBottomWidth,
+      label: css('[data-review="disabled"] [data-ui-part="field-label"]')
+        .opacity,
+      checkbox: css('[data-review="disabled"] [data-slot="checkbox"]').opacity,
+      peerLabel: css('[data-review="peer"] [data-slot="label"]').opacity,
+      tabDirection: css('[data-review="tabs"] [data-slot="tabs-list"]')
+        .flexDirection,
+      toggleDirection: css('[data-review="joined"]').flexDirection,
+      toggleCorner: first.borderTopLeftRadius,
+      toggleMiddleBorder: css(
+        '[data-review="joined"] [data-slot="toggle-group-item"]:nth-child(2)',
+      ).borderTopWidth,
+      addonDivider: css('[data-review="addons"] [data-align="block-start"]')
+        .borderBottomWidth,
+      alertColumn: css('[data-review="alert"] [data-slot="alert-title"]')
+        .gridColumnStart,
+    };
+  });
+  assert.equal(styles.cardInset, "16px");
+  assert.equal(styles.divider, "1px");
+  assert.equal(styles.label, "0.5");
+  assert.equal(styles.checkbox, "0.5");
+  assert.equal(styles.peerLabel, "0.5");
+  assert.equal(styles.tabDirection, "column");
+  assert.equal(styles.toggleDirection, "column");
+  assert.ok(parseFloat(styles.toggleCorner) > 0);
+  assert.equal(styles.toggleMiddleBorder, "0px");
+  assert.equal(styles.addonDivider, "1px");
+  assert.equal(styles.alertColumn, "2");
+  await page.getByRole("tab", { name: "Archive details" }).click();
+  assert.equal(
+    await page.getByText("Archive details panel", { exact: true }).isVisible(),
+    true,
+  );
+  if (
+    (await page
+      .getByRole("radio", { name: "Middle option" })
+      .getAttribute("aria-checked")) !== "true"
+  ) {
+    await page.getByRole("radio", { name: "Middle option" }).click();
+  }
+  assert.equal(
+    await page
+      .getByRole("radio", { name: "Middle option" })
+      .getAttribute("aria-checked"),
+    "true",
+  );
+}
+
 async function checkStyles(page) {
   await page.evaluate(() => document.fonts.ready);
   const font = await page.evaluate(() => ({
@@ -52,6 +116,7 @@ async function checkStyles(page) {
   assert.equal(inputStyle.height, "36px");
   assert.equal(inputStyle.border, "solid");
   assert.notEqual(inputStyle.shadow, "none");
+  await checkPrimitiveStates(page);
   const light = await page.evaluate(
     () => getComputedStyle(document.body).backgroundColor,
   );
@@ -60,6 +125,7 @@ async function checkStyles(page) {
     () => getComputedStyle(document.body).backgroundColor,
   );
   assert.notEqual(dark, light);
+  await checkPrimitiveStates(page);
   await page.evaluate(() => document.documentElement.classList.remove("dark"));
   const override = page.getByRole("button", {
     name: "Token override",
@@ -115,6 +181,14 @@ export async function checkPublicPackageRuntime(tarball, registry) {
 import { Button } from "@lapismd/design-core/shadcn/button";
 import { Input } from "@lapismd/design-core/shadcn/input";
 import { CodeEditor } from "@lapismd/design-core/forms";
+import * as Card from "@lapismd/design-core/shadcn/card";
+import * as Field from "@lapismd/design-core/shadcn/field";
+import { Checkbox } from "@lapismd/design-core/shadcn/checkbox";
+import { Label } from "@lapismd/design-core/shadcn/label";
+import * as Tabs from "@lapismd/design-core/shadcn/tabs";
+import * as ToggleGroup from "@lapismd/design-core/shadcn/toggle-group";
+import * as InputGroup from "@lapismd/design-core/shadcn/input-group";
+import * as Alert from "@lapismd/design-core/shadcn/alert";
 import HandleLifecycle from "./HandleLifecycle.svelte";
 let value = $state('const initial = true;');
 </script>
@@ -123,7 +197,15 @@ let value = $state('const initial = true;');
 <Input type="file" aria-label="Recovery bundle" />
 <div style="--ui-button-background: rgb(10, 20, 30)"><Button>Token override</Button></div>
 <span class="sr-only">Accessible helper</span>
-<CodeEditor bind:value ariaLabel="Packed editor" /><HandleLifecycle /></main>`,
+<CodeEditor bind:value ariaLabel="Packed editor" /><HandleLifecycle />
+<Card.Root size="sm" data-review="compact"><Card.Header data-divided="true"><Card.Title>Archive card</Card.Title></Card.Header><Card.Content>Compact content</Card.Content><Card.Footer data-divided="true">Footer</Card.Footer></Card.Root>
+<Field.Field orientation="horizontal" data-disabled="true" data-review="disabled"><Checkbox id="archive-disabled" disabled /><Field.Label for="archive-disabled">Archive disabled</Field.Label></Field.Field>
+<div data-review="peer"><Input id="archive-peer" disabled /><Label for="archive-peer">Disabled input</Label></div>
+<Tabs.Root orientation="vertical" value="overview" data-review="tabs"><Tabs.List variant="line"><Tabs.Trigger value="overview">Archive overview</Tabs.Trigger><Tabs.Trigger value="details">Archive details</Tabs.Trigger></Tabs.List><Tabs.Content value="overview">Archive overview panel</Tabs.Content><Tabs.Content value="details">Archive details panel</Tabs.Content></Tabs.Root>
+<ToggleGroup.Root type="single" orientation="vertical" variant="outline" spacing={0} data-review="joined"><ToggleGroup.Item value="first">First option</ToggleGroup.Item><ToggleGroup.Item value="middle">Middle option</ToggleGroup.Item><ToggleGroup.Item value="last">Last option</ToggleGroup.Item></ToggleGroup.Root>
+<InputGroup.Root data-review="addons"><InputGroup.Addon align="block-start" data-divided="true">Draft</InputGroup.Addon><InputGroup.Textarea aria-label="Archive draft" /><InputGroup.Addon align="block-end" data-divided="true">Private</InputGroup.Addon></InputGroup.Root>
+<Alert.Root data-review="alert"><svg aria-hidden="true" width="16" height="16"><circle cx="8" cy="8" r="6" /></svg><Alert.Title>Archive notice</Alert.Title><Alert.Description>Icon alignment.</Alert.Description></Alert.Root>
+</main>`,
     );
     copyFileSync(
       fileURLToPath(

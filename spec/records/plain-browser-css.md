@@ -1,5 +1,9 @@
 # Plain browser CSS — slice 1
 
+Reviewed by the user on 2026-10-15. The deferred component work is recorded in
+[slice 2](plain-browser-css-components.md); the findings below describe the
+original slice 1 archive.
+
 2026-10-15. Workspace `plain-css`, based on remote main `b46bcf02`
 (Design Core 0.3.5). Owning requirements: DC-CSS-008, DC-PKG-009,
 DC-ARCH-006, DC-TOOL-003.

@@ -22,7 +22,7 @@
 <Story
   name="Preview"
   exportName="Preview"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/field/preview-chromium.png"],
@@ -51,7 +51,7 @@
 <Story
   name="Input"
   exportName="Input"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/field/input-chromium.png"],
@@ -80,7 +80,7 @@
 <Story
   name="Textarea"
   exportName="Textarea"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/field/textarea-chromium.png"],
@@ -109,7 +109,7 @@
 <Story
   name="Select"
   exportName="Select"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/field/select-chromium.png"],
@@ -138,7 +138,7 @@
 <Story
   name="Fieldset"
   exportName="Fieldset"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/field/fieldset-chromium.png"],
@@ -167,7 +167,7 @@
 <Story
   name="Checkbox"
   exportName="Checkbox"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/field/checkbox-chromium.png"],
@@ -196,7 +196,7 @@
 <Story
   name="Switch"
   exportName="Switch"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/field/switch-chromium.png"],
@@ -225,7 +225,7 @@
 <Story
   name="Field Group"
   exportName="FieldGroup"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/field/field-group-chromium.png"],
@@ -258,7 +258,7 @@
 <Story
   name="Responsive Layout"
   exportName="ResponsiveLayout"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/field/responsive-layout-chromium.png"],

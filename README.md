@@ -111,9 +111,10 @@ install a Tailwind peer, but Design Core's prepared styles do not use it.
 Use `pnpm package:local` when validating
 the archive boundary rather than importing the unprepared authoring stylesheet.
 
-The migration is incremental: local review archives report remaining component
-utility selectors, and release preparation rejects them until the component
-cleanup is complete. See the [slice record](spec/records/plain-browser-css.md).
+The source and archive gates reject utility selectors, including compound and
+nested selectors. Component state cleanup is covered by the
+[slice 2 record](spec/records/plain-browser-css-components.md). Theme/import
+restructuring and downstream release remain separate reviewable slices.
 
 Token families:
 

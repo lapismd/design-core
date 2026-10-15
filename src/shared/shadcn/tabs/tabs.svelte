@@ -134,22 +134,10 @@
               [data-ui-component="tabs"][data-ui-part="tabs"]
             )[data-orientation="vertical"]
             *
-        ),
-      .group-data-\[orientation\=vertical\]\/tabs\:h-fit:is(
-          :where(
-              [data-ui-component="tabs"][data-ui-part="tabs"]
-            )[data-orientation="vertical"]
-            *
         ) {
         height: fit-content;
       }
       [data-ui-component="tabs"][data-ui-part="tabs-trigger"]:is(
-          :where(
-              [data-ui-component="tabs"][data-ui-part="tabs"]
-            )[data-orientation="vertical"]
-            *
-        ),
-      .group-data-\[orientation\=vertical\]\/tabs\:w-full:is(
           :where(
               [data-ui-component="tabs"][data-ui-part="tabs"]
             )[data-orientation="vertical"]
@@ -162,22 +150,10 @@
               [data-ui-component="tabs"][data-ui-part="tabs"]
             )[data-orientation="vertical"]
             *
-        ),
-      .group-data-\[orientation\=vertical\]\/tabs\:flex-col:is(
-          :where(
-              [data-ui-component="tabs"][data-ui-part="tabs"]
-            )[data-orientation="vertical"]
-            *
         ) {
         flex-direction: column;
       }
       [data-ui-component="tabs"][data-ui-part="tabs-trigger"]:is(
-          :where(
-              [data-ui-component="tabs"][data-ui-part="tabs"]
-            )[data-orientation="vertical"]
-            *
-        ),
-      .group-data-\[orientation\=vertical\]\/tabs\:justify-start:is(
           :where(
               [data-ui-component="tabs"][data-ui-part="tabs"]
             )[data-orientation="vertical"]
@@ -190,22 +166,10 @@
               [data-ui-component="tabs"][data-ui-part="tabs-list"]
             )[data-variant="line"]
             *
-        ),
-      .group-data-\[variant\=line\]\/tabs-list\:bg-transparent:is(
-          :where(
-              [data-ui-component="tabs"][data-ui-part="tabs-list"]
-            )[data-variant="line"]
-            *
         ) {
         background-color: #0000;
       }
       [data-ui-component="tabs"][data-ui-part="tabs-list"]:is(
-          :where([data-ui-component="tabs"][data-ui-part="tabs"]):where(
-              [data-orientation="horizontal"]
-            )
-            *
-        ),
-      .group-data-horizontal\/tabs\:h-9:is(
           :where([data-ui-component="tabs"][data-ui-part="tabs"]):where(
               [data-orientation="horizontal"]
             )
@@ -242,23 +206,11 @@
               [data-ui-component="tabs"][data-ui-part="tabs"]
             )[data-orientation="horizontal"]
             *
-        ):after,
-      .group-data-\[orientation\=horizontal\]\/tabs\:after\:inset-x-0:is(
-          :where(
-              [data-ui-component="tabs"][data-ui-part="tabs"]
-            )[data-orientation="horizontal"]
-            *
         ):after {
         content: var(--tw-content);
         inset-inline: 0;
       }
       [data-ui-component="tabs"][data-ui-part="tabs-trigger"]:is(
-          :where(
-              [data-ui-component="tabs"][data-ui-part="tabs"]
-            )[data-orientation="horizontal"]
-            *
-        ):after,
-      .group-data-\[orientation\=horizontal\]\/tabs\:after\:bottom-\[-5px\]:is(
           :where(
               [data-ui-component="tabs"][data-ui-part="tabs"]
             )[data-orientation="horizontal"]
@@ -272,23 +224,11 @@
               [data-ui-component="tabs"][data-ui-part="tabs"]
             )[data-orientation="horizontal"]
             *
-        ):after,
-      .group-data-\[orientation\=horizontal\]\/tabs\:after\:h-0\.5:is(
-          :where(
-              [data-ui-component="tabs"][data-ui-part="tabs"]
-            )[data-orientation="horizontal"]
-            *
         ):after {
         content: var(--tw-content);
         height: calc(var(--spacing) * 0.5);
       }
       [data-ui-component="tabs"][data-ui-part="tabs-trigger"]:is(
-          :where(
-              [data-ui-component="tabs"][data-ui-part="tabs"]
-            )[data-orientation="vertical"]
-            *
-        ):after,
-      .group-data-\[orientation\=vertical\]\/tabs\:after\:inset-y-0:is(
           :where(
               [data-ui-component="tabs"][data-ui-part="tabs"]
             )[data-orientation="vertical"]
@@ -313,12 +253,6 @@
         right: calc(var(--spacing) * -1);
       }
       [data-ui-component="tabs"][data-ui-part="tabs-trigger"]:is(
-          :where(
-              [data-ui-component="tabs"][data-ui-part="tabs"]
-            )[data-orientation="vertical"]
-            *
-        ):after,
-      .group-data-\[orientation\=vertical\]\/tabs\:after\:w-0\.5:is(
           :where(
               [data-ui-component="tabs"][data-ui-part="tabs"]
             )[data-orientation="vertical"]
@@ -417,19 +351,7 @@
             )[data-variant="default"]
             *
         ):where([data-state="active"]),
-      .group-data-\[variant\=default\]\/tabs-list\:data-active\:shadow-sm:is(
-          :where(
-              [data-ui-component="tabs"][data-ui-part="tabs-list"]
-            )[data-variant="default"]
-            *
-        ):where([data-state="active"]),
       [data-ui-component="tabs"][data-ui-part="tabs-trigger"]:is(
-          :where(
-              [data-ui-component="tabs"][data-ui-part="tabs-list"]
-            )[data-variant="default"]
-            *
-        ):where([data-active]:not([data-active="false"])),
-      .group-data-\[variant\=default\]\/tabs-list\:data-active\:shadow-sm:is(
           :where(
               [data-ui-component="tabs"][data-ui-part="tabs-list"]
             )[data-variant="default"]
@@ -446,19 +368,7 @@
             )[data-variant="line"]
             *
         ):where([data-state="active"]),
-      .group-data-\[variant\=line\]\/tabs-list\:data-active\:bg-transparent:is(
-          :where(
-              [data-ui-component="tabs"][data-ui-part="tabs-list"]
-            )[data-variant="line"]
-            *
-        ):where([data-state="active"]),
       [data-ui-component="tabs"][data-ui-part="tabs-trigger"]:is(
-          :where(
-              [data-ui-component="tabs"][data-ui-part="tabs-list"]
-            )[data-variant="line"]
-            *
-        ):where([data-active]:not([data-active="false"])),
-      .group-data-\[variant\=line\]\/tabs-list\:data-active\:bg-transparent:is(
           :where(
               [data-ui-component="tabs"][data-ui-part="tabs-list"]
             )[data-variant="line"]
@@ -472,19 +382,7 @@
             )[data-variant="line"]
             *
         ):where([data-state="active"]),
-      .group-data-\[variant\=line\]\/tabs-list\:data-active\:shadow-none:is(
-          :where(
-              [data-ui-component="tabs"][data-ui-part="tabs-list"]
-            )[data-variant="line"]
-            *
-        ):where([data-state="active"]),
       [data-ui-component="tabs"][data-ui-part="tabs-trigger"]:is(
-          :where(
-              [data-ui-component="tabs"][data-ui-part="tabs-list"]
-            )[data-variant="line"]
-            *
-        ):where([data-active]:not([data-active="false"])),
-      .group-data-\[variant\=line\]\/tabs-list\:data-active\:shadow-none:is(
           :where(
               [data-ui-component="tabs"][data-ui-part="tabs-list"]
             )[data-variant="line"]
@@ -502,20 +400,6 @@
                 *
             ):where([data-state="active"]),
           [data-ui-component="tabs"][data-ui-part="tabs-trigger"]:is(
-              :where(
-                  [data-ui-component="tabs"][data-ui-part="tabs-list"]
-                )[data-variant="line"]
-                *
-            ):where([data-active]:not([data-active="false"]))
-        ):after,
-      :is(
-          .group-data-\[variant\=line\]\/tabs-list\:data-active\:after\:opacity-100:is(
-              :where(
-                  [data-ui-component="tabs"][data-ui-part="tabs-list"]
-                )[data-variant="line"]
-                *
-            ):where([data-state="active"]),
-          .group-data-\[variant\=line\]\/tabs-list\:data-active\:after\:opacity-100:is(
               :where(
                   [data-ui-component="tabs"][data-ui-part="tabs-list"]
                 )[data-variant="line"]
@@ -567,7 +451,7 @@
             )[data-variant="line"]
             *
         ):where([data-state="active"]),
-      .dark\:group-data-\[variant\=line\]\/tabs-list\:data-active\:border-transparent:is(
+      [data-ui-component="tabs"][data-ui-part="tabs-list"]:is(
           :global(.dark) *
         ):is(
           :where(
@@ -583,7 +467,7 @@
             )[data-variant="line"]
             *
         ):where([data-active]:not([data-active="false"])),
-      .dark\:group-data-\[variant\=line\]\/tabs-list\:data-active\:border-transparent:is(
+      [data-ui-component="tabs"][data-ui-part="tabs-list"]:is(
           :global(.dark) *
         ):is(
           :where(
@@ -601,7 +485,7 @@
             )[data-variant="line"]
             *
         ):where([data-state="active"]),
-      .dark\:group-data-\[variant\=line\]\/tabs-list\:data-active\:bg-transparent:is(
+      [data-ui-component="tabs"][data-ui-part="tabs-list"]:is(
           :global(.dark) *
         ):is(
           :where(
@@ -617,7 +501,7 @@
             )[data-variant="line"]
             *
         ):where([data-active]:not([data-active="false"])),
-      .dark\:group-data-\[variant\=line\]\/tabs-list\:data-active\:bg-transparent:is(
+      [data-ui-component="tabs"][data-ui-part="tabs-list"]:is(
           :global(.dark) *
         ):is(
           :where(

@@ -30,6 +30,7 @@ Layout primitives establish reusable spatial, scrolling, and responsive composit
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/shadcn/card`.
+- Compact cards MUST apply the smaller inset and title size to their parts; Header and Footer MUST support `data-divided="true"` without utility classes.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 
 ## DC-SHA-036 — Column Canvas

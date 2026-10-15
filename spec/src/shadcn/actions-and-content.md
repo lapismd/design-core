@@ -68,6 +68,7 @@ Action and content primitives adapt shadcn-svelte semantics to Design Core styli
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/shadcn/toggle-group`.
+- Joined outline groups MUST preserve outer corners and single shared borders in both orientations using semantic state attributes.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 
 ## DC-SHA-007 — Code

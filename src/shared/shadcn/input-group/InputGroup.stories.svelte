@@ -29,7 +29,7 @@
     await userEvent.type(input, "250");
     await expect(canvas.getByRole("status")).toHaveTextContent("250");
   }}
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   parameters={{
     visualDelta: {
       images: [
@@ -55,7 +55,7 @@
 
 <Story
   name="Focused control"
-  tags={["visual-state", "visual-approved"]}
+  tags={["visual-state", "visual-pending"]}
   play={async ({ canvas }) => {
     const input = canvas.getByLabelText("Amount");
     await userEvent.click(input);
@@ -81,5 +81,39 @@
         <InputGroup.Input aria-label="Amount" value="120" />
       </InputGroup.Root>
     </div>
+  {/snippet}
+</Story>
+
+<Story
+  name="Divided block addons"
+  tags={["visual-pending"]}
+  play={async ({ canvas }) => {
+    const top = canvas
+      .getByText("Subject")
+      .closest('[data-slot="input-group-addon"]')!;
+    const bottom = canvas
+      .getByText("Private draft")
+      .closest('[data-slot="input-group-addon"]')!;
+    await expect(getComputedStyle(top).borderBottomWidth).toBe("1px");
+    await expect(getComputedStyle(bottom).borderTopWidth).toBe("1px");
+    await userEvent.type(
+      canvas.getByRole("textbox", { name: "Draft" }),
+      "Hello",
+    );
+    await expect(canvas.getByRole("textbox", { name: "Draft" })).toHaveValue(
+      "Hello",
+    );
+  }}
+>
+  {#snippet template()}
+    <InputGroup.Root>
+      <InputGroup.Addon align="block-start" data-divided="true"
+        >Subject</InputGroup.Addon
+      >
+      <InputGroup.Textarea aria-label="Draft" />
+      <InputGroup.Addon align="block-end" data-divided="true"
+        >Private draft</InputGroup.Addon
+      >
+    </InputGroup.Root>
   {/snippet}
 </Story>

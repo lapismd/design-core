@@ -22,7 +22,7 @@
 <Story
   name="Preview"
   exportName="Preview"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/input-group/preview-chromium.png"],
@@ -51,7 +51,7 @@
 <Story
   name="Icon"
   exportName="Icon"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/input-group/icon-chromium.png"],
@@ -80,7 +80,7 @@
 <Story
   name="Text"
   exportName="Text"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/input-group/text-chromium.png"],
@@ -112,7 +112,7 @@
 <Story
   name="Tooltip"
   exportName="Tooltip"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/input-group/tooltip-chromium.png"],
@@ -144,7 +144,7 @@
 <Story
   name="Textarea"
   exportName="Textarea"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/input-group/textarea-chromium.png"],
@@ -177,7 +177,7 @@
 <Story
   name="Spinner"
   exportName="Spinner"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/input-group/spinner-chromium.png"],
@@ -209,7 +209,7 @@
 <Story
   name="Label"
   exportName="Label"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/input-group/label-chromium.png"],
@@ -241,7 +241,7 @@
 <Story
   name="Dropdown"
   exportName="Dropdown"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/input-group/dropdown-chromium.png"],
@@ -274,7 +274,7 @@
 <Story
   name="Custom Input"
   exportName="CustomInput"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
     visualDelta: {
       images: [

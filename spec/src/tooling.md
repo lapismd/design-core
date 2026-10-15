@@ -12,10 +12,9 @@ without a Tailwind installation or Vite plugin, using `npm install --omit=peer`
 to exclude the legacy Mira dependency's automatic Tailwind peer installation.
 Required fixture peers such as Svelte are declared explicitly; the normal
 dependency tree's remaining Mira peer is tracked separately from CSS compilation.
-During the incremental CSS migration, local review archives report remaining
-component utility selectors in `.release/remaining-style-utilities.json`;
-release archives reject those references. Local artifacts are validation-only
-and MUST NOT be published while that report is nonempty.
+Both local and release archives reject remaining component utility selectors.
+The successful preparation report at `.release/remaining-style-utilities.json`
+is empty; local artifacts remain validation-only.
 
 Repository tools keep source generation, discovery, documentation, validation, Changesets, and package-pack evidence reproducible for humans and agents. The catalog CLI lists Diff families, including File Change Stats and Merge Editor, beside shadcn, forms, filter, and AI. Agent tooling guidance keeps external LapisMD repositories outside the workspace and resolves published dependencies through npm semver ranges while preserving portable manifests.
 
@@ -41,6 +40,11 @@ The AI catalog derives stable public chat components, including shared tool-call
 - Tooling failures must report an actionable source path or command.
 
 ## DC-TOOL-002 — Component generator
+
+Conversion replaces all utility and marker classes in compound selectors in
+one pass, expands each declared owner, and rejects unresolved utility selectors
+before emitting sources. Cross-family relationships use semantic slots or
+native controls; Card and Input Group dividers use `data-divided="true"`.
 
 **Requirement.** The Component generator family MUST add, inspect, refresh, and diagnose owned component sources through guarded repository workflows.
 

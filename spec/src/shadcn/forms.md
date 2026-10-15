@@ -35,6 +35,7 @@ Shadcn form controls provide the low-level accessible inputs used directly or in
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/shadcn/checkbox`.
+- Checkbox disabled context MUST follow the owning semantic Field slot without a group marker.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 
 ## DC-SHA-025 — Command
@@ -80,6 +81,7 @@ bits-ui command API bindable.
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/shadcn/field`.
+- Labels MUST reflect `data-disabled="true"` on their semantic Field ancestor without group classes.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 
 ## DC-SHA-027 — Input
@@ -98,6 +100,7 @@ bits-ui command API bindable.
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/shadcn/input-group`.
+- Block-aligned Addon sections MUST support `data-divided="true"` with a token-colored divider and matching inset.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 - Actions MUST forward the requested Button size, default to `xs`, and retain square geometry for `icon-xs` and `icon-sm`.
 
@@ -108,6 +111,7 @@ bits-ui command API bindable.
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/shadcn/label`.
+- Disabled groups use `data-disabled="true"`; preceding disabled native controls MUST style their label without a peer class.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 
 ## DC-SHA-030 — Select

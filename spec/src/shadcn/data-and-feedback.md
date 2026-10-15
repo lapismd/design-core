@@ -48,6 +48,7 @@ Data and feedback primitives communicate state without taking ownership of consu
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/shadcn/alert`.
+- An alert with a leading SVG MUST align its title in the second grid column without group marker classes.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 
 ## DC-SHA-013 — Empty
