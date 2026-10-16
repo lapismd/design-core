@@ -310,7 +310,7 @@
     await expect(
       page
         .getByRole("menuitem", { name: "Open in new window" })
-        .querySelector(".lucide-picture-in-picture"),
+        .querySelector(".lucide-picture-in-picture-2"),
     ).not.toBeNull();
     await userEvent.hover(moveTo);
     for (const name of ["Left Sidebar", "Right Sidebar", "Bottom Sidebar"]) {

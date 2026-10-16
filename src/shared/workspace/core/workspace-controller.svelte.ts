@@ -1152,7 +1152,7 @@ export class WorkspaceShellController {
           .addItem((item) =>
             item
               .setTitle("Open in new window")
-              .setIcon("picture-in-picture")
+              .setIcon("picture-in-picture-2")
               .setDisabled(!this.#popoutHost)
               .onClick(() => {
                 this.popoutTab(tabId);
