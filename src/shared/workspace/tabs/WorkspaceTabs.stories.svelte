@@ -230,11 +230,31 @@
     controller.closeTab(backgroundTabId);
     controller.selectTab("welcome");
 
+    const separatorOpacity = (name: RegExp) => {
+      const header = canvas
+        .getByRole("button", { name })
+        .closest(".ui-workspace-tab");
+      const inner = header?.querySelector<HTMLElement>(
+        ".ui-workspace-tab__inner",
+      );
+      return inner ? getComputedStyle(inner, "::after").opacity : "";
+    };
+    await waitFor(() => {
+      expect(separatorOpacity(/^Welcome\.md$/)).toBe("0");
+      expect(separatorOpacity(/^Today\.md$/)).toBe("1");
+      expect(separatorOpacity(/^Tasks\.md$/)).toBe("1");
+    });
+
     const tab = canvas.getByRole("button", {
       name: /^Today\.md$/,
     });
     await expect(getComputedStyle(tab).cursor).toBe("pointer");
     await userEvent.click(tab);
+    await waitFor(() => {
+      expect(separatorOpacity(/^Welcome\.md$/)).toBe("0");
+      expect(separatorOpacity(/^Today\.md$/)).toBe("0");
+      expect(separatorOpacity(/^Tasks\.md$/)).toBe("1");
+    });
     await expect(tab).toHaveAttribute("aria-pressed", "true");
     await userEvent.click(
       canvas

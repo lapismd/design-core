@@ -187,14 +187,22 @@
 
 .ui-workspace-tab__inner::after {
   position: absolute;
-  inset-inline-end: -1px;
+  z-index: 1;
+  inset-inline-end: 0;
+  top: 50%;
   width: 1px;
   height: 1.25rem;
   background: var(--ui-workspace-tab-divider);
   content: "";
+  pointer-events: none;
+  transform: translateY(-50%);
 }
 
-.ui-workspace-tab[data-active="true"] .ui-workspace-tab__inner::after {
+.ui-workspace-tab[data-active="true"] .ui-workspace-tab__inner::after,
+.ui-workspace-tab:hover .ui-workspace-tab__inner::after,
+.ui-workspace-tab:has(+ .ui-workspace-tab[data-active="true"])
+  .ui-workspace-tab__inner::after,
+.ui-workspace-tab:has(+ .ui-workspace-tab:hover) .ui-workspace-tab__inner::after {
   opacity: 0;
 }
 
