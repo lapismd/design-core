@@ -43,7 +43,7 @@ Form inputs provide higher-level controlled editing patterns composed from share
 - The public boundaries are `@lapismd/design-core/forms` and the focused `@lapismd/design-core/forms/filter-command-picker` entry point.
 - The catalog MUST demonstrate the family’s supported states and portal placement options without introducing a second runtime contract.
 - Moving focus outside an open autocomplete MUST close its suggestion list without restoring focus to the input and reopening it; delayed popover teardown MUST preserve the explicitly chosen next focus target.
-- Opening an autocomplete with an existing value MUST focus the input, select the committed text, and expose alternative suggestions before the user types.
+- Opening an autocomplete with an existing value MUST focus the input, select the committed text, and expose alternative suggestions before the user types; deferred opening selection MUST preserve subsequent typing and keyboard caret movement.
 
 ## DC-FORM-008 — Chip Autocomplete
 
