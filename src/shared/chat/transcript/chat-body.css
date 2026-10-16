@@ -1,0 +1,167 @@
+.ui-transcript-body-reading-surface {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  height: 100%;
+  min-height: 0;
+  min-width: 0;
+  position: relative;
+}
+.ui-transcript-body-scroll-region {
+  position: relative;
+  min-height: 0;
+  height: 100%;
+}
+.ui-transcript-viewport[data-composing="true"] .ui-transcript-document {
+  padding-block-end: 0.5rem;
+}
+.ui-transcript-document-composer {
+  max-width: var(--ui-transcript-max-width, 62rem);
+  margin: 0 auto;
+  padding: 0.25rem 2.75rem 1rem 1rem;
+}
+.ui-transcript-body-footer {
+  background: var(--background);
+  border-top: 1px solid var(--border);
+}
+.ui-transcript-viewport {
+  --ui-chat-markdown-padding: 0;
+  --ui-chat-markdown-font-size: 1em;
+  --ui-chat-markdown-line-height: 1.55;
+  --ui-chat-markdown-block-gap: 0.45rem;
+  --conversation-prose-font: var(--font-sans, system-ui);
+  --conversation-prose-size: var(--ui-transcript-font-size, 0.875rem);
+  --conversation-prose-leading: var(--ui-transcript-line-height, 1.65);
+  height: 100%;
+  min-height: 0;
+  color: var(--foreground);
+  background: var(--background);
+  font-family: var(--font-sans, system-ui);
+  font-size: 1rem;
+}
+.ui-transcript-transcript-activity {
+  max-width: var(--ui-transcript-max-width, 62rem);
+  margin-inline: auto;
+  padding: 0 2.75rem 0.5rem 1rem;
+}
+.ui-transcript-viewport > [data-ui-part="scroll-area-viewport"] {
+  overscroll-behavior: contain;
+}
+.ui-transcript-document {
+  list-style: none;
+  margin: 0 auto;
+  padding: 1.25rem 2.75rem 4rem 1rem;
+  max-width: var(--ui-transcript-max-width, 62rem);
+}
+.ui-transcript-document > li {
+  margin-block-end: 1rem;
+}
+.ui-transcript-document
+  > li:is(
+    [data-kind="reasoning"],
+    [data-kind="tools"],
+    [data-kind="context"],
+    [data-kind="handoff"]
+  ):has(
+    + li:is(
+        [data-kind="reasoning"],
+        [data-kind="tools"],
+        [data-kind="context"],
+        [data-kind="handoff"]
+      )
+  ) {
+  margin-block-end: 0.5rem;
+}
+.ui-transcript-reply-context {
+  margin-block-end: 0.5rem;
+}
+.ui-transcript-document-inset
+  > [data-ui-component="collapsible"]
+  > [data-ui-part="collapsible-content"] {
+  padding-block-start: 0.5rem;
+}
+.ui-transcript-message {
+  display: grid;
+  grid-template-columns: 1.5rem minmax(0, 1fr);
+  gap: 0.5rem;
+}
+.ui-transcript-message-avatar {
+  padding-block-start: 0.25rem;
+}
+.ui-transcript-message-content {
+  min-width: 0;
+}
+.ui-transcript-document-inset {
+  margin-inline-start: 2rem;
+  min-width: 0;
+}
+.ui-transcript-context-trigger {
+  display: inline-flex;
+  width: fit-content;
+  max-width: 100%;
+  gap: 0.5rem;
+  align-items: center;
+  border: 0;
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  padding: 0;
+  min-height: 28px;
+  font-family: var(--font-sans, system-ui);
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: start;
+}
+.ui-transcript-context-trigger:hover {
+  background: transparent;
+}
+.ui-transcript-context-trigger:focus-visible {
+  outline: 2px solid var(--ring);
+}
+.ui-transcript-history-loading {
+  display: flex;
+  justify-content: center;
+  padding-block: 0.75rem;
+}
+.ui-transcript-stale {
+  padding: 1.5rem;
+}
+.ui-transcript-viewport .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+@media (max-width: 600px) {
+  .ui-transcript-document {
+    padding: 1rem 2.25rem 3rem 0.75rem;
+  }
+  .ui-transcript-message {
+    grid-template-columns: 1.5rem minmax(0, 1fr);
+    gap: 0.5rem;
+  }
+  .ui-transcript-document-inset {
+    margin-inline-start: 2rem;
+  }
+}
+
+.ui-transcript-message-metadata {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+  padding-block-start: 0.25rem;
+}
+[data-conversation-view="classic"] .ui-transcript-message {
+  padding-block: 0.5rem;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ui-transcript-body-reading-surface *,
+  .ui-transcript-body-reading-surface *::before,
+  .ui-transcript-body-reading-surface *::after {
+    scroll-behavior: auto;
+  }
+}

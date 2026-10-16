@@ -8,6 +8,10 @@ published Mira `~0.0.5`.
 The Chat entry point also exports MarkdownComposer, MessageActions and the
 shared ReactionBar while retaining existing AI compatibility imports. CommentComposer
 and its neutral source, props and focus/selection handle are also exported from Chat.
+Transcript, HistoryEdge, CommentQueue, TranscriptController and their neutral
+models join this entry point. Rootless TranscriptContent and TranscriptToolContent
+allow hosts to render captured details in an inspector without replacing the
+main conversation viewport or introducing a shell dependency.
 Responsive Tabs and Avatar use family exports; Avatar
 Picker uses Forms and Topbar uses Shell. Consumer adoption remains deferred.
 

@@ -1,0 +1,175 @@
+<script lang="ts">
+  import { getAllContexts, onMount, tick, untrack } from "svelte";
+  import { MiraCodeEditor, type MiraCodeEditorHandle } from "@lapismd/mira";
+  import { Compartment } from "@codemirror/state";
+  import ChatHoverActions from "./ChatHoverActions.svelte";
+  import type { EditorView } from "@codemirror/view";
+  import { readingExtensions, refreshComments } from "./text-editor.js";
+  import type { TranscriptBlock, TranscriptProps } from "./model.js";
+  import type { TranscriptController } from "./comments.svelte.js";
+  import { validAnchor } from "./anchors.js";
+  import { middleFoldKey } from "./middle-fold.js";
+  import { registerReader } from "./reader-registry.js";
+  import { replyIndicator } from "./reply-indicator.js";
+  import "./text-reader.css";
+  let {
+    block,
+    state: comments,
+    showHeader = true,
+    reactionTarget,
+    messageActions,
+    reply = false,
+    fileView = false,
+    initialLine,
+  }: {
+    block: TranscriptBlock;
+    state: TranscriptController;
+    showHeader?: boolean;
+    reactionTarget?: string | undefined;
+    messageActions?: TranscriptProps["messageActions"];
+    reply?: boolean;
+    fileView?: boolean;
+    initialLine?: number;
+  } = $props();
+  let editor: MiraCodeEditorHandle;
+  let view = $state<EditorView>();
+  const contexts = getAllContexts();
+  const replyPrefix = new Compartment();
+  const reader = new Compartment();
+  let configured = "";
+  const extensions = untrack(() => [
+    reader.of(readingExtensions(block, comments, contexts, fileView)),
+    replyPrefix.of(reply ? replyIndicator : []),
+  ]);
+  onMount(() => {
+    let disposed = false;
+    const id = block.id;
+    let release = () => {};
+    const reveal: NonNullable<ReturnType<typeof comments.readers.get>> = (
+      anchor,
+      scroll = false,
+    ) => {
+      if (validAnchor(block, anchor))
+        view?.dispatch({
+          selection: { anchor: anchor.from, head: anchor.to },
+          scrollIntoView: scroll,
+        });
+      editor.focus();
+    };
+    void tick().then(() => {
+      if (disposed) return;
+      view = editor.getView() ?? undefined;
+      release = registerReader(comments.readers, id, reveal);
+    });
+    return () => {
+      disposed = true;
+      release();
+      view = undefined;
+    };
+  });
+  $effect(() => {
+    const signature = JSON.stringify([
+      block.id,
+      block.revision,
+      block.text,
+      block.path,
+      block.kind,
+      block.lineNumbered,
+      block.wholeSection,
+      block.commentable,
+      block.emojis,
+      fileView,
+    ]);
+    if (view && signature !== configured) {
+      configured = signature;
+      const previous = view.state.doc.toString(),
+        next = block.text;
+      let from = 0,
+        end = previous.length,
+        nextEnd = next.length;
+      while (from < end && from < nextEnd && previous[from] === next[from])
+        from++;
+      while (
+        end > from &&
+        nextEnd > from &&
+        previous[end - 1] === next[nextEnd - 1]
+      ) {
+        end--;
+        nextEnd--;
+      }
+      // Only host-owned immutable capture updates bypass the edit-rejection filter.
+      // A minimal replacement preserves cursor positions and existing widgets.
+      view.dispatch({
+        ...(previous === next
+          ? {}
+          : { changes: { from, to: end, insert: next.slice(from, nextEnd) } }),
+        effects: reader.reconfigure(
+          readingExtensions(
+            untrack(() => block),
+            comments,
+            contexts,
+            fileView,
+          ),
+        ),
+        filter: false,
+      });
+    }
+  });
+  $effect(() => {
+    view?.dispatch({
+      effects: replyPrefix.reconfigure(reply ? replyIndicator : []),
+    });
+  });
+  $effect(() => {
+    comments.active;
+    comments.visibleThreads;
+    comments.highlightedThread;
+    comments.disclosures[middleFoldKey(block)];
+    view?.dispatch({ effects: refreshComments.of(null) });
+  });
+  function comment() {
+    comments.open(block, view?.state.selection.main ?? { from: 0, to: 0 });
+  }
+  $effect(() => {
+    if (view && initialLine) {
+      const from = view.state.doc.line(
+        Math.min(initialLine, view.state.doc.lines),
+      ).from;
+      view.dispatch({ selection: { anchor: from }, scrollIntoView: true });
+    }
+  });
+</script>
+
+<section
+  class="ui-transcript-text-block"
+  role="group"
+  data-kind={block.kind}
+  data-file-view={fileView || undefined}
+  data-block-id={block.id}
+  aria-label={`${block.label} content`}
+>
+  {#if showHeader && block.kind !== "markdown"}<header>
+      {block.label}
+    </header>{/if}
+  <div class="ui-transcript-text-reader">
+    <MiraCodeEditor
+      bind:this={editor}
+      value={block.text}
+      {extensions}
+      readonly
+      lineNumbers={fileView}
+      ariaLabel={block.label}
+      variant={fileView ? "code" : "document"}
+      surface="frameless"
+      height="content"
+      minHeight="0"
+    />
+  </div>
+  <ChatHoverActions
+    {block}
+    state={comments}
+    {reactionTarget}
+    {messageActions}
+    onComment={comment}
+  />
+</section>

@@ -1,0 +1,302 @@
+<script lang="ts">
+  import HistoryEdge from "../history-edge/HistoryEdge.svelte";
+  import { SystemMessage } from "../../ai/chat.js";
+  import { tick, untrack } from "svelte";
+  import "./chat-body.css";
+  import * as Collapsible from "../../shadcn/collapsible/index.js";
+  import { ScrollArea } from "../../shadcn/scroll-area/index.js";
+  import ChatDisclosureIcon from "./ChatDisclosureIcon.svelte";
+  import TranscriptAvatar from "./TranscriptAvatar.svelte";
+  import ChatCommentBatch from "./ChatCommentBatch.svelte";
+  import ChatCollapsedComments from "./ChatCollapsedComments.svelte";
+  import ReactionBar from "../../ai/experimental/reaction-bar/ReactionBar.svelte";
+  import ChatNavigation from "./ChatNavigation.svelte";
+  import ChatCommentArea from "./ChatCommentArea.svelte";
+  import ChatReplyContext from "./ChatReplyContext.svelte";
+  import ChatContent from "./ChatContent.svelte";
+  import ChatTools from "./ChatTools.svelte";
+  import { TranscriptController } from "./comments.svelte.js";
+  import type { TranscriptProps } from "./model.js";
+  import { rawToolBlock } from "./tool-blocks.js";
+  import { validAnchor } from "./anchors.js";
+  let {
+    items,
+    author,
+    onSend,
+    reactions = {},
+    reactionOptions,
+    onReact,
+    composer,
+    footer,
+    label = "Agent chat body",
+    customBlock,
+    commentState,
+    view = "document",
+    loading = false,
+    history,
+    onLoadHistory,
+    navigation = true,
+    emptyState,
+    beforeItems,
+    queuedMessages,
+    afterItems,
+    supplement: itemSupplement,
+    metadataSupplement: itemMetadata,
+    messageActions,
+    logLabel = "Conversation messages",
+    ...hostOptions
+  }: TranscriptProps = $props();
+  const ownedComments = new TranscriptController(() => ({
+    canComment: false,
+    ...hostOptions,
+    items,
+    author,
+    onSend,
+    onReact,
+    reactionOptions,
+  }));
+  const comments = $derived(commentState ?? ownedComments);
+  let root = $state<HTMLElement | null>(null);
+  let previousSignature = "";
+  let composing = $state(false);
+  let renderedView = $state<"document" | "classic">("document");
+  $effect(() => {
+    if (!composing) renderedView = view;
+  });
+  const blocks = $derived(
+    items.flatMap((item) => [
+      ...item.blocks,
+      ...(item.tools ?? []).flatMap((tool) => [
+        ...tool.blocks,
+        rawToolBlock(tool),
+      ]),
+    ]),
+  );
+  const stale = $derived(
+    comments.visibleThreads.filter(
+      (thread) => !blocks.some((block) => validAnchor(block, thread.anchor)),
+    ),
+  );
+  $effect(() => {
+    const node = root;
+    comments.root = node;
+    return () => {
+      if (comments.root === node) comments.root = null;
+    };
+  });
+  $effect.pre(() => {
+    const signature = JSON.stringify(
+      items.map((item) => [
+        item.id,
+        item.blocks.map((block) => [block.id, block.revision, block.text]),
+        item.tools?.map((tool) => [
+          tool.id,
+          tool.revision,
+          tool.blocks.map((block) => block.text),
+        ]),
+      ]),
+    );
+    const scrollport = root;
+    if (previousSignature && previousSignature !== signature && scrollport) {
+      const top = scrollport.scrollTop;
+      const bottom =
+        scrollport.scrollHeight - scrollport.clientHeight - top < 8;
+      const bounds = scrollport.getBoundingClientRect();
+      const anchor = [
+        ...scrollport.querySelectorAll<HTMLElement>("[data-chat-item]"),
+      ].find((node) => node.getBoundingClientRect().bottom > bounds.top);
+      const offset = anchor
+        ? anchor.getBoundingClientRect().top - bounds.top
+        : 0;
+      let disposed = false;
+      void tick().then(() => {
+        if (disposed || !scrollport.isConnected) return;
+        scrollport.scrollTop =
+          bottom && !untrack(() => comments.active)
+            ? scrollport.scrollHeight
+            : anchor?.isConnected
+              ? scrollport.scrollTop +
+                anchor.getBoundingClientRect().top -
+                scrollport.getBoundingClientRect().top -
+                offset
+              : top;
+      });
+      previousSignature = signature;
+      return () => {
+        disposed = true;
+      };
+    }
+    previousSignature = signature;
+  });
+</script>
+
+{#snippet reactionBar(item: import("./model.js").TranscriptItem)}
+  {#if reactions[item.id]?.length}<ReactionBar
+      reactions={reactions[item.id] ?? []}
+      label={`Reactions to ${item.label}`}
+      onToggle={(emoji, custom) => onReact?.(item.id, emoji, custom)}
+    />{/if}
+{/snippet}
+<div
+  class="ui-transcript-body-reading-surface"
+  data-ui-component="transcript"
+  data-conversation-view={renderedView}
+  oncompositionstartcapture={() => (composing = true)}
+  oncompositionendcapture={() => (composing = false)}
+>
+  <div class="ui-transcript-body-scroll-region">
+    <ScrollArea
+      class="ui-transcript-viewport"
+      bind:viewportRef={root}
+      role="region"
+      aria-label={label}
+      data-comment-target={comments.active?.anchor.blockId}
+      data-composing={!!composer}
+    >
+      {#if loading}<HistoryEdge state="loading" />{/if}
+      {#if !loading && history && history !== "empty"}<HistoryEdge
+          state={history}
+          onLoad={onLoadHistory}
+        />{/if}
+      {@render beforeItems?.()}
+      <div
+        role="log"
+        aria-label={logLabel}
+        aria-live="polite"
+        aria-busy={loading || history === "loading"}
+      >
+        <ol class="ui-transcript-document">
+          {#each items as item (item.id)}
+            <li data-chat-item={item.id} data-kind={item.kind} tabindex="-1">
+              {#if item.dayLabel}<SystemMessage variant="divider"
+                  >{item.dayLabel}</SystemMessage
+                >{/if}
+              {#if item.commentBatchId}<ChatCommentBatch
+                  state={comments}
+                  batchId={item.commentBatchId}
+                />{/if}
+              {#if item.replyContext}<div
+                  class="ui-transcript-document-inset ui-transcript-reply-context"
+                >
+                  <ChatReplyContext state={comments} {item} />
+                </div>{/if}
+              {#if item.kind === "message" && item.blocks.length}
+                <article
+                  class="ui-transcript-message"
+                  data-message-id={item.id}
+                  aria-label={item.author
+                    ? `Message from ${item.author.name}`
+                    : item.label}
+                >
+                  <div class="ui-transcript-message-avatar">
+                    {#if item.author}<TranscriptAvatar
+                        member={item.author}
+                        size="xsmall"
+                        decorative
+                      />{/if}
+                  </div>
+                  <div class="ui-transcript-message-content">
+                    <span class="sr-only">{item.author?.name ?? item.role}</span
+                    ><ChatContent
+                      blocks={item.blocks}
+                      state={comments}
+                      reactionTarget={item.id}
+                      {messageActions}
+                      reply={item.role === "assistant" && !!item.replyContext}
+                      {customBlock}
+                    />
+                    {@render itemSupplement?.(item)}
+                    {#if renderedView === "classic" || item.timestamp || itemMetadata}<div
+                        class="ui-transcript-message-metadata"
+                      >
+                        {#if renderedView === "classic"}<strong
+                            >{item.author?.name ?? item.role}</strong
+                          >{/if}
+                        {#if item.timestamp}<time datetime={item.timestamp}
+                            >{item.timestamp}</time
+                          >{/if}
+                        {@render itemMetadata?.(item)}
+                      </div>{/if}
+                    {@render reactionBar(item)}
+                  </div>
+                </article>
+              {:else if item.kind === "tools"}<div
+                  class="ui-transcript-document-inset"
+                >
+                  <ChatTools
+                    {item}
+                    state={comments}
+                    {customBlock}
+                    onInspectTool={hostOptions.onInspectTool}
+                  />
+                </div>
+              {:else if item.kind !== "message"}
+                <div class="ui-transcript-document-inset">
+                  <Collapsible.Root
+                    open={comments.disclosures[item.id] ??
+                      item.defaultExpanded ??
+                      false}
+                    onOpenChange={(open) =>
+                      (comments.disclosures[item.id] = open)}
+                  >
+                    <Collapsible.Trigger class="ui-transcript-context-trigger"
+                      ><span>{item.label}</span><ChatDisclosureIcon
+                      /></Collapsible.Trigger
+                    >
+                    <Collapsible.Content
+                      >{#if comments.disclosures[item.id] ?? item.defaultExpanded ?? false}<ChatContent
+                          blocks={item.blocks}
+                          state={comments}
+                          reactionTarget={item.id}
+                          {messageActions}
+                          {customBlock}
+                        />{/if}</Collapsible.Content
+                    >
+                  </Collapsible.Root>
+                  {#if !(comments.disclosures[item.id] ?? item.defaultExpanded ?? false)}<ChatCollapsedComments
+                      state={comments}
+                      blocks={item.blocks}
+                    />{/if}
+                </div>
+              {/if}
+              {#if item.kind !== "message"}{@render itemSupplement?.(
+                  item,
+                )}{@render itemMetadata?.(item)}{@render reactionBar(item)}{/if}
+            </li>
+          {/each}
+        </ol>
+      </div>
+      {#if afterItems}<div class="ui-transcript-transcript-activity">
+          {@render afterItems()}
+        </div>{/if}
+      {#if !items.length && !loading && history !== "loading"}
+        {#if emptyState}{@render emptyState()}{:else}
+          <HistoryEdge state="empty" />
+        {/if}
+      {/if}
+      {#if stale.length}<aside
+          class="ui-transcript-stale"
+          aria-label="Comments on unavailable content"
+        >
+          {#each stale as thread (thread.id)}<ChatCommentArea
+              state={comments}
+              threadId={thread.id}
+              placement="history"
+            />{/each}
+        </aside>{/if}
+      {#if composer}<div class="ui-transcript-document-composer">
+          {@render queuedMessages?.()}
+          <ChatCommentBatch state={comments} />
+          {@render composer(renderedView)}
+        </div>{/if}
+    </ScrollArea>
+    {#if navigation}<ChatNavigation
+        {items}
+        root={root ?? undefined}
+        {comments}
+      />{/if}
+  </div>
+  {#if footer}<div class="ui-transcript-body-footer">
+      {@render footer()}
+    </div>{/if}
+</div>

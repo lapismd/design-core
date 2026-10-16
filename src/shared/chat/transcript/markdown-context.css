@@ -1,0 +1,9 @@
+:where(.ui-transcript-content-flow, .ui-transcript-comment-area) {
+  --ui-chat-markdown-padding: var(--ui-transcript-markdown-padding, 0);
+  --ui-chat-markdown-font-size: var(--ui-transcript-markdown-font-size, 1em);
+  --ui-chat-markdown-line-height: var(
+    --ui-transcript-markdown-line-height,
+    1.55
+  );
+  --ui-chat-markdown-block-gap: var(--ui-transcript-paragraph-spacing, 0.45rem);
+}

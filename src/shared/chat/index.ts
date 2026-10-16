@@ -25,3 +25,12 @@ export type {
   Reaction,
   ReactionBarProps,
 } from "../ai/experimental/reaction-bar/reaction-bar.types.js";
+
+export { default as Transcript } from "./transcript/Transcript.svelte";
+export { default as HistoryEdge } from "./history-edge/HistoryEdge.svelte";
+export { default as CommentQueue } from "./transcript/ChatCommentBatch.svelte";
+export { TranscriptController } from "./transcript/comments.svelte.js";
+export { commentAnchor, validAnchor } from "./transcript/anchors.js";
+export type * from "./transcript/model.js";
+export { default as TranscriptContent } from "./transcript/ChatContent.svelte";
+export { default as TranscriptToolContent } from "./transcript/ChatToolBlocks.svelte";

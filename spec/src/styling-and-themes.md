@@ -247,3 +247,15 @@ CommentComposer owns its compact card and captured-source quote styles through
 CodeMirror APIs, and the shared ScrollArea for bounded source quotes.
 Its source quote follows Mira's body size (default 14px) and its draft uses 1rem;
 both inherit the host sans font, with separate quote/editor typography tokens.
+
+Transcript retains the jj-store reference geometry using native family-owned CSS,
+private `ui-transcript-*` classes and public `--ui-transcript-max-width` (62rem),
+`--ui-transcript-font-size` (0.875rem) and `--ui-transcript-line-height` (1.65).
+Avatars use a 24px column and an 8px content gap. Host fonts and semantic colors
+remain inherited; captured code/patch typography stays separate from prose.
+Rendered transcript Markdown, standalone comment queues and rootless inspectors
+share `--ui-transcript-markdown-padding` (0),
+`--ui-transcript-markdown-font-size` (1em),
+`--ui-transcript-markdown-line-height` (1.55) and
+`--ui-transcript-paragraph-spacing` (0.45rem). These compose the public Markdown
+tokens without adding Mira's document inset or a second comment-editor card.

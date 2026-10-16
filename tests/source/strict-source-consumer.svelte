@@ -1,5 +1,16 @@
 <script lang="ts">
   import {
+    Transcript,
+    TranscriptController,
+    HistoryEdge,
+    CommentQueue,
+    type TranscriptItem,
+  } from "@lapismd/design-core/chat";
+  const transcriptItems: TranscriptItem[] = [];
+  const transcriptController = new TranscriptController(() => ({
+    items: transcriptItems,
+  }));
+  import {
     TagList,
     type TagListItem,
     type TagListProps,
@@ -182,3 +193,7 @@
 <CommentComposer {...commentProps} />
 <MessageActions actions={[]}><p>Strict shared message</p></MessageActions>
 <SharedReactionBar reactions={[{ emoji: "👍", count: 1 }]} />
+
+<Transcript items={transcriptItems} commentState={transcriptController} />
+<HistoryEdge state="loading" />
+<CommentQueue state={transcriptController} />

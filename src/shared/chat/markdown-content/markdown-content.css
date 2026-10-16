@@ -6,6 +6,7 @@
   --mira-font-mono: var(--font-mono, monospace);
   --mira-font-size: var(--ui-chat-markdown-font-size, 0.9375rem);
   --mira-line-height: var(--ui-chat-markdown-line-height, 1.6);
+  --mira-markdown-line-height: var(--ui-chat-markdown-line-height, 1.6);
   box-sizing: border-box;
   padding: var(--ui-chat-markdown-padding, 0.5rem);
   background: transparent;
@@ -19,8 +20,19 @@
   max-width: none;
 }
 [data-ui-component="chat-markdown"][data-compact="true"]
+  > .ui-chat-markdown-preview
   :where(p, ul, ol, blockquote, pre, table) {
-  margin-block: var(--ui-chat-markdown-block-gap, 0.5rem);
+  margin-block: var(--ui-chat-markdown-block-gap, 0.45rem);
+}
+[data-ui-component="chat-markdown"][data-compact="true"]
+  > .ui-chat-markdown-preview
+  :where(p, ul, ol, blockquote, pre, table):first-child {
+  margin-block-start: 0;
+}
+[data-ui-component="chat-markdown"][data-compact="true"]
+  > .ui-chat-markdown-preview
+  :where(p, ul, ol, blockquote, pre, table):last-child {
+  margin-block-end: 0;
 }
 [data-ui-component="chat-markdown"] :where(pre, table) {
   max-width: 100%;
@@ -38,4 +50,7 @@
   --mira-preview-padding: 0;
   --mira-preview-bottom-padding: 0;
   --mira-preview-background: transparent;
+  height: auto;
+  overflow: visible;
+  gap: var(--ui-chat-markdown-block-gap, 0.45rem);
 }

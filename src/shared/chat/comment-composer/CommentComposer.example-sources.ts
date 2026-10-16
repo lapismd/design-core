@@ -18,3 +18,11 @@ export const Inline = `<script lang="ts">
 </script>
 <CommentComposer bind:value onSubmit={(snapshot) => { submitted = snapshot; }} />
 <output>{submitted}</output>`;
+
+export const Bare = `<script lang="ts">
+  import { CommentComposer } from "@lapismd/design-core/chat";
+  let value = $state("Review this capture.");
+</script>
+<div style="padding: .5rem; border: 1px solid var(--border); border-radius: var(--radius)">
+  <CommentComposer presentation="bare" bind:value />
+</div>`;

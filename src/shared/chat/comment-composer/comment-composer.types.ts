@@ -19,8 +19,14 @@ export type CommentComposerProps = Omit<
 > & {
   ref?: HTMLDivElement | null;
   handle?: CommentComposerHandle | null;
+  /** Bare removes the editor card chrome when an enclosing transcript owns it. */
+  presentation?: "card" | "bare";
   value?: string;
   onChange?: (value: string) => void;
+  /** Allows hosts to restore caret/selection across inline and queue editors. */
+  onSelectionChange?: (
+    selection: NonNullable<ReturnType<CommentComposerHandle["getSelection"]>>,
+  ) => void;
   /** Modifier+Enter emits an exact snapshot. Acknowledgement and clearing are host-owned. */
   onSubmit?: (value: string) => void;
   source?: CommentComposerSource;

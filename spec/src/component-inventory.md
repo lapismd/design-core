@@ -264,3 +264,7 @@ and hosts own drafts, delivery, action policy and reaction persistence.
 
 CommentComposer is shared Chat presentation for compact inline drafts and
 captured-source reply cards. Hosts own comment IDs, anchors, queues and delivery.
+
+Transcript, HistoryEdge and CommentQueue are shared Chat presentation. The optional
+TranscriptController is owned by the host so state survives presentation teardown;
+it coordinates exact anchors and snapshots but never executes or persists work.

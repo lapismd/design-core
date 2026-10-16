@@ -14,6 +14,10 @@
   });
 </script>
 
+<script lang="ts">
+  let bareValue = $state("Review this capture.");
+</script>
+
 <Story
   name="Code selection reply"
   play={async ({ canvas }) => {
@@ -78,4 +82,24 @@
       canvas.getByRole("button", { name: "Go to source: .gitignore" }),
     ).toBeDisabled();
   }}>{#snippet template()}<Fixture scenario="unavailable" />{/snippet}</Story
+>
+
+<Story
+  name="Inside an existing card"
+  parameters={{
+    docs: { source: { code: sources.Bare, language: "tsx", type: "code" } },
+  }}
+  play={async ({ canvas, canvasElement }) => {
+    await expect(
+      canvas.getByRole("textbox", { name: "Comment" }),
+    ).toHaveTextContent("Review this capture.");
+    const card = canvasElement.querySelector(".ui-comment-composer__card")!;
+    await expect(getComputedStyle(card).padding).toBe("0px");
+    await expect(getComputedStyle(card).borderWidth).toBe("0px");
+  }}
+  >{#snippet template()}<div
+      style="padding: .5rem; border: 1px solid var(--border); border-radius: var(--radius)"
+    >
+      <CommentComposer presentation="bare" bind:value={bareValue} />
+    </div>{/snippet}</Story
 >

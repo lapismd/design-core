@@ -1,0 +1,12 @@
+import { Meta, Canvas, Source } from "@storybook/addon-docs/blocks";
+import * as Stories from "./HistoryEdge.stories.svelte";
+import { Basic } from "./HistoryEdge.example-sources";
+
+<Meta of={Stories} />
+
+# History Edge
+
+Loading, retry and empty history presentation. The host owns reads and retains existing items.
+
+<Source code={Basic} language="tsx" />
+<Canvas of={Stories.Loading} />

@@ -201,6 +201,59 @@ async function checkPrimitiveStates(page) {
   );
 }
 
+async function checkTranscript(page) {
+  const capture = page.getByRole("textbox", {
+    name: "Archive capture",
+    exact: true,
+  });
+  await capture.waitFor();
+  assert.equal(await capture.getAttribute("aria-readonly"), "true");
+  assert.equal(
+    await page
+      .locator('[data-review="archive-transcript"] .ui-transcript-message')
+      .first()
+      .evaluate((node) => getComputedStyle(node).gap),
+    "8px",
+  );
+  await page
+    .getByRole("button", { name: "Comment on archive capture", exact: true })
+    .click();
+  const pending = page.getByRole("group", {
+    name: "Pending comments",
+    exact: true,
+  });
+  await pending.waitFor();
+  assert.equal(
+    await pending
+      .getByRole("textbox", { name: "Comment on Archive capture", exact: true })
+      .textContent(),
+    "Review this capture",
+  );
+  await page
+    .getByRole("button", { name: "Toggle archive transcript", exact: true })
+    .click();
+  await page
+    .getByRole("button", { name: "Toggle archive transcript", exact: true })
+    .click();
+  await page
+    .getByRole("group", { name: "Pending comments", exact: true })
+    .waitFor();
+  await page
+    .getByRole("button", { name: "Deliver archive comments", exact: true })
+    .click();
+  assert.equal(
+    await page.getByTestId("archive-comment-result").textContent(),
+    "acknowledged",
+  );
+  assert.equal(
+    await page
+      .getByRole("img", { name: "Sent", exact: true })
+      .last()
+      .isVisible(),
+    true,
+  );
+}
+
 async function checkStyles(page) {
   await page.evaluate(() => document.fonts.ready);
   const font = await page.evaluate(() => ({
@@ -238,6 +291,7 @@ async function checkStyles(page) {
   assert.equal(inputStyle.border, "solid");
   assert.notEqual(inputStyle.shadow, "none");
   await checkPrimitiveStates(page);
+  await checkTranscript(page);
   const light = await page.evaluate(
     () => getComputedStyle(document.body).backgroundColor,
   );
@@ -247,6 +301,7 @@ async function checkStyles(page) {
   );
   assert.notEqual(dark, light);
   await checkPrimitiveStates(page);
+  await checkTranscript(page);
   await page.evaluate(() => document.documentElement.classList.remove("dark"));
   const override = page.getByRole("button", {
     name: "Token override",
@@ -316,10 +371,16 @@ import { ResponsiveTabs } from "@lapismd/design-core/shadcn/responsive-tabs";
 import { TagList, type TagListItem, type TagListProps } from "@lapismd/design-core/shadcn/tag-list";
 import { Avatar } from "@lapismd/design-core/shadcn/avatar";
 import { AvatarPicker } from "@lapismd/design-core/forms";
-import { MarkdownContent, Message as SharedMessage } from "@lapismd/design-core/chat";
+import { MarkdownContent, Message as SharedMessage, Transcript, TranscriptController, HistoryEdge, CommentQueue, type TranscriptItem } from "@lapismd/design-core/chat";
 import { Message as LegacyMessage } from "@lapismd/design-core/ai/chat";
 import { AppShell } from "@lapismd/design-core/shell";
 if (SharedMessage !== LegacyMessage) throw new Error("Chat compatibility export differs");
+let transcriptShown = $state(true);
+let transcriptResult = $state("");
+const transcriptBlock = { id: "archive/source", revision: "v1", kind: "markdown" as const, label: "Archive capture", text: "Captured café 👩🏽‍💻. Exact immutable source." };
+const transcriptItems: TranscriptItem[] = [{ id: "archive/message", kind: "message", role: "assistant", label: "Archive message", author: {id: "agent", name: "Assistant"}, blocks: [transcriptBlock] }];
+const transcriptController = new TranscriptController(() => ({ items: transcriptItems, canComment: true, onSend: (snapshot) => { transcriptResult = "acknowledged"; return {publication: "published", batchId: snapshot.id}; } }));
+const emptyController = new TranscriptController(() => ({items: []}));
 let avatarValue = $state("");
 let navigationValue = $state("overview");
 import { EmojiPicker as LegacyEmojiPicker } from "@lapismd/design-core/ai/experimental";
@@ -363,6 +424,12 @@ const panelIcon = { side: "bottom", iconVariant: "standard", expanded: true, sty
 <output data-testid="packed-avatar-value">{avatarValue}</output>
 <AppShell.Topbar>{#snippet center()}<span data-testid="packed-topbar-center">Shared top bar</span>{/snippet}</AppShell.Topbar>
 <MarkdownContent content="# Packed Markdown" />
+<Button onclick={() => transcriptController.open(transcriptBlock,{from:0,to:8},"Review this capture")}>Comment on archive capture</Button>
+<Button onclick={() => transcriptShown = !transcriptShown}>Toggle archive transcript</Button>
+<Button onclick={() => { void transcriptController.send(); }}>Deliver archive comments</Button>
+<output data-testid="archive-comment-result">{transcriptResult}</output>
+<HistoryEdge state="loading" /><CommentQueue state={emptyController} />
+{#if transcriptShown}<div data-review="archive-transcript" style="height:320px"><Transcript items={transcriptItems} commentState={transcriptController}>{#snippet composer()}<span>Host composer</span>{/snippet}</Transcript></div>{/if}
 </main>`,
     );
     copyFileSync(

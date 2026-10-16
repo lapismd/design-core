@@ -136,3 +136,10 @@ artifact, including when a reported finding fails the gate.
 - Static Storybook output must be restored from cache when its inputs are unchanged.
 - Cache reporting must distinguish remote hits, local hits, and executed tasks.
 - Focused tests must cover default concurrency, overrides, and cache-summary classification.
+
+## Transcript consumer qualification
+
+Packed-consumer acceptance mounts Transcript, HistoryEdge and CommentQueue through
+the public Chat entry point without Tailwind tooling. It verifies immutable readers,
+reference geometry, exact queued drafts across presentation teardown and explicit
+host acknowledgement in both cold development and production output.

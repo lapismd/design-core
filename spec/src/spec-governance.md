@@ -6,6 +6,8 @@ MarkdownContent (DC-CHAT-001), with one verification row per requirement.
 Chat additionally registers MarkdownComposer (DC-CHAT-002), MessageActions
 (DC-CHAT-003) and Reactions (DC-CHAT-004) in the same public-surface matrix.
 CommentComposer (DC-CHAT-005) adds captured-source comment presentation there.
+Transcript/HistoryEdge (DC-CHAT-006), exact comments (DC-CHAT-007), and the
+comment queue/navigation (DC-CHAT-008) extend that same host-neutral boundary.
 
 Specification governance keeps requirements discoverable, mapped, validated, and changed before or with protected implementation, including same-change verification evidence for expanded public component families.
 

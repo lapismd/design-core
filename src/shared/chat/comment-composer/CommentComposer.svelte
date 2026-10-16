@@ -22,8 +22,10 @@
     value = $bindable(""),
     source,
     sourceContent,
+    presentation = "card",
     avatar,
     onChange,
+    onSelectionChange,
     onSubmit,
     onDismiss,
     onRemove,
@@ -118,6 +120,7 @@
   class={["ui-comment-composer", className].filter(Boolean).join(" ")}
   data-ui-component="comment-composer"
   data-context={Boolean(source)}
+  data-presentation={presentation}
   data-disabled={disabled}
   data-pending={pending}
   role="group"
@@ -170,6 +173,15 @@
         bind:this={editor}
         {value}
         onChange={change}
+        onUpdate={(update) => {
+          if (
+            update.view.hasFocus &&
+            (update.selectionSet || update.docChanged)
+          ) {
+            const selection = editor?.getSelection();
+            if (selection) onSelectionChange?.(selection);
+          }
+        }}
         readonly={blocked}
         {extensions}
         ariaLabel={inputLabel ??

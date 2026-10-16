@@ -1,0 +1,36 @@
+import { Meta, Canvas, Source } from "@storybook/addon-docs/blocks";
+import * as Stories from "./Transcript.stories.svelte";
+import { Basic } from "./Transcript.example-sources";
+
+<Meta of={Stories} />
+
+# Transcript
+
+Continuous immutable conversations, with exact-range comments and host-owned delivery.
+The default presentation retains jj-store’s document geometry. The caller owns the
+controller so drafts survive presentation teardown. No component reads files or runs tools.
+
+<Source code={Basic} language="tsx" />
+<Canvas of={Stories.ContinuousDocument} />
+
+## Captured tool inspectors
+
+Use `onInspectTool` to open host-owned chrome and render `TranscriptToolContent`
+with the same controller inside it. The rootless content registers its exact
+readers while the main Transcript retains its own scroll/navigation viewport.
+Closing and restoring the opener remain host actions.
+When an inspector shares a block with the main transcript, closing either reader
+restores navigation to the surviving reader.
+
+## Reference and tokens
+
+Adapted from jj-store at `496045ad`, Apache-2.0, LapisMD contributors.
+The 24px avatar column, 8px gap, compact source cards, folded captures and comment
+queue retain the source presentation. Override `--ui-transcript-max-width`,
+`--ui-transcript-font-size` and `--ui-transcript-line-height` when composing a host.
+Rendered Markdown inherits its surrounding text size and uses zero additional
+inset, including in rootless inspectors and standalone queues. Its tokens are
+`--ui-transcript-markdown-padding` (0), `--ui-transcript-markdown-font-size` (1em),
+`--ui-transcript-markdown-line-height` (1.55) and
+`--ui-transcript-paragraph-spacing` (0.45rem). Editable comments use the bare
+CommentComposer presentation inside the existing comment card.
