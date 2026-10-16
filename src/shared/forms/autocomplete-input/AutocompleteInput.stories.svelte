@@ -63,6 +63,90 @@
 </Story>
 
 <Story
+  name="Preserves typing before opening animation frames"
+  tags={["!autodocs", "visual-pending"]}
+  play={async ({ canvas }) => {
+    const queuedFrames = new Map<number, FrameRequestCallback>();
+    const requestFrame = window.requestAnimationFrame;
+    const cancelFrame = window.cancelAnimationFrame;
+    let nextFrame = 0;
+    const input = canvas.getByRole("combobox", { name: "Runner label" });
+    window.requestAnimationFrame = (callback) => {
+      const frame = --nextFrame;
+      queuedFrames.set(frame, callback);
+      return frame;
+    };
+    window.cancelAnimationFrame = (frame) => {
+      if (!queuedFrames.delete(frame)) cancelFrame(frame);
+    };
+    try {
+      await userEvent.click(input);
+      await userEvent.keyboard("l");
+      await expect(input).toHaveValue("l");
+      const pending = [...queuedFrames.values()];
+      queuedFrames.clear();
+      for (const callback of pending) callback(performance.now());
+      await userEvent.keyboard("inux");
+      await expect(input).toHaveValue("linux");
+      await userEvent.keyboard("{Enter}");
+      await expect(canvas.getByRole("status")).toHaveTextContent("linux");
+    } finally {
+      window.requestAnimationFrame = requestFrame;
+      window.cancelAnimationFrame = cancelFrame;
+      for (const callback of queuedFrames.values()) requestFrame(callback);
+    }
+  }}
+>
+  {#snippet template()}
+    <AutocompleteInput
+      value=""
+      ariaLabel="Runner label"
+      onCommit={(next) => {
+        committed = next;
+      }}
+    />
+    <output>{committed || "none"}</output>
+  {/snippet}
+</Story>
+
+<Story
+  name="Preserves keyboard caret movement before opening animation frames"
+  tags={["!autodocs", "visual-pending"]}
+  play={async ({ canvas }) => {
+    const queuedFrames = new Map<number, FrameRequestCallback>();
+    const requestFrame = window.requestAnimationFrame;
+    const cancelFrame = window.cancelAnimationFrame;
+    let nextFrame = 0;
+    const input = canvas.getByRole("combobox", { name: "Owner caret" });
+    window.requestAnimationFrame = (callback) => {
+      const frame = --nextFrame;
+      queuedFrames.set(frame, callback);
+      return frame;
+    };
+    window.cancelAnimationFrame = (frame) => {
+      if (!queuedFrames.delete(frame)) cancelFrame(frame);
+    };
+    try {
+      await userEvent.click(input);
+      await userEvent.keyboard("{Home}");
+      const pending = [...queuedFrames.values()];
+      queuedFrames.clear();
+      for (const callback of pending) callback(performance.now());
+      await userEvent.keyboard("New ");
+      await expect(input).toHaveValue("New Maya Chen");
+    } finally {
+      window.requestAnimationFrame = requestFrame;
+      window.cancelAnimationFrame = cancelFrame;
+      for (const callback of queuedFrames.values()) requestFrame(callback);
+    }
+  }}
+>
+  {#snippet template()}
+    <AutocompleteInput value="Maya Chen" ariaLabel="Owner caret" />
+  {/snippet}
+</Story>
+
+<Story
   name="Edits an existing value while open"
   tags={["visual-pending"]}
   play={async ({ canvas, canvasElement }) => {

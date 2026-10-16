@@ -52,6 +52,7 @@
   let editing = $state(false);
   let filterValue = $state("");
   let activeIndex = $state(0);
+  let selectionVersion = 0;
   let blurFocusTarget: HTMLElement | null = null;
   const listId = `autocomplete-list-${Math.random().toString(36).slice(2)}`;
 
@@ -92,6 +93,7 @@
   }
 
   function beginEditing() {
+    const version = ++selectionVersion;
     editing = true;
     filterValue = "";
     open = true;
@@ -100,6 +102,7 @@
       const currentInput = input;
       if (
         currentInput &&
+        version === selectionVersion &&
         currentInput.ownerDocument.activeElement === currentInput
       ) {
         currentInput.select();
@@ -141,6 +144,7 @@
   }
 
   function handleKeydown(event: KeyboardEvent) {
+    selectionVersion++;
     if (event.key === "ArrowDown") {
       event.preventDefault();
       if (!open) beginEditing();
@@ -214,6 +218,7 @@
         if (!open) beginEditing();
       }}
       oninput={() => {
+        selectionVersion++;
         editing = true;
         filterValue = value;
         open = true;
