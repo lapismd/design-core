@@ -202,7 +202,8 @@
 .ui-workspace-tab:hover .ui-workspace-tab__inner::after,
 .ui-workspace-tab:has(+ .ui-workspace-tab[data-active="true"])
   .ui-workspace-tab__inner::after,
-.ui-workspace-tab:has(+ .ui-workspace-tab:hover) .ui-workspace-tab__inner::after {
+.ui-workspace-tab:has(+ .ui-workspace-tab:hover)
+  .ui-workspace-tab__inner::after {
   opacity: 0;
 }
 
@@ -337,7 +338,8 @@
     display: none;
   }
 
-  .ui-workspace-tab:not([data-active="true"]):not(:hover) .ui-workspace-tab__icon {
+  .ui-workspace-tab:not([data-active="true"]):not(:hover)
+    .ui-workspace-tab__icon {
     display: inline-flex;
     width: 1.5rem;
     min-width: 1.5rem;

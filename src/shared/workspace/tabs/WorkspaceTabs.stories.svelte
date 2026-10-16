@@ -522,9 +522,8 @@
     const frame = canvasElement.querySelector<HTMLElement>(
       ".ui-workspace-tabs-story-frame",
     )!;
-    const tabsRoot = canvasElement.querySelector<HTMLElement>(
-      ".ui-workspace-tabs",
-    )!;
+    const tabsRoot =
+      canvasElement.querySelector<HTMLElement>(".ui-workspace-tabs")!;
     const title = active!.querySelector<HTMLElement>(
       ".ui-workspace-tab__title",
     )!;

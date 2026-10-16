@@ -1,5 +1,8 @@
 # Workspace / Components
 
+Workspace-tab formatting retains DC-WS-030 unchanged; see
+[the formatting record](../../records/workspace-tabs-formatting.md).
+
 Workspace components compose reusable visual surfaces on top of framework and shell contracts.
 
 ## Public surface coverage
