@@ -307,6 +307,11 @@
     }
     const moveTo = page.getByRole("menuitem", { name: /^Move to$/ });
     await expect(moveTo.querySelector("svg")).not.toBeNull();
+    await expect(
+      page
+        .getByRole("menuitem", { name: "Open in new window" })
+        .querySelector(".lucide-picture-in-picture"),
+    ).not.toBeNull();
     await userEvent.hover(moveTo);
     for (const name of ["Left Sidebar", "Right Sidebar", "Bottom Sidebar"]) {
       await expect(page.getByRole("menuitem", { name })).toBeVisible();

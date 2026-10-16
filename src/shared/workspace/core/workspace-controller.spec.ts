@@ -680,6 +680,13 @@ describe("WorkspaceShellController", () => {
     expect(moveTo?.kind).toBe("submenu");
     if (moveTo?.kind !== "submenu") return;
     expect(moveTo.icon).toBe("move");
+    const openInNewWindow = menu.entries.find(
+      (entry) => entry.kind === "item" && entry.title === "Open in new window",
+    );
+    expect(openInNewWindow?.kind).toBe("item");
+    if (openInNewWindow?.kind === "item") {
+      expect(openInNewWindow.icon).toBe("picture-in-picture");
+    }
     const destinations = moveTo.menu.entries.filter(
       (entry) => entry.kind === "item",
     );
