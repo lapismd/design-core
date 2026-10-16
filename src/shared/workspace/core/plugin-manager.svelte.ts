@@ -214,6 +214,7 @@ export class AppShellPluginManager {
   readonly #entries = new Map<string, PluginEntry>();
   readonly #events =
     new WorkspaceEventDispatcher<AppShellPluginManagerEventMap>();
+  readonly #pendingChanges = new Set<Promise<boolean>>();
 
   constructor(
     readonly app: AppShellController,
@@ -295,7 +296,11 @@ export class AppShellPluginManager {
     this.#events.trigger("ready");
   }
 
-  async enable(id: string): Promise<boolean> {
+  enable(id: string): Promise<boolean> {
+    return this.#trackChange(() => this.#enableChoice(id));
+  }
+
+  async #enableChoice(id: string): Promise<boolean> {
     const entry = this.#entries.get(id);
     if (!entry) return false;
     const enabled = await this.#enable(entry, true);
@@ -303,7 +308,11 @@ export class AppShellPluginManager {
     return enabled;
   }
 
-  async disable(id: string): Promise<boolean> {
+  disable(id: string): Promise<boolean> {
+    return this.#trackChange(() => this.#disableChoice(id));
+  }
+
+  async #disableChoice(id: string): Promise<boolean> {
     const entry = this.#entries.get(id);
     if (!entry || entry.descriptor.required) return false;
     const disabled = await this.#disable(entry);
@@ -312,11 +321,38 @@ export class AppShellPluginManager {
   }
 
   async stop(): Promise<void> {
+    await this.flushChanges();
     for (const entry of [...this.#entries.values()].reverse()) {
       await this.#disable(entry, false);
     }
     this.ready = false;
     this.#publish();
+  }
+
+  /** Await admitted lifecycle changes and their persistence before host teardown. */
+  async flushChanges(): Promise<void> {
+    while (this.#pendingChanges.size)
+      await Promise.all([...this.#pendingChanges]);
+  }
+
+  #trackChange(change: () => Promise<boolean>): Promise<boolean> {
+    let resolve!: (value: boolean) => void;
+    let reject!: (error: unknown) => void;
+    const operation = new Promise<boolean>((done, fail) => {
+      resolve = done;
+      reject = fail;
+    });
+    this.#pendingChanges.add(operation);
+    void operation.then(
+      () => this.#pendingChanges.delete(operation),
+      () => this.#pendingChanges.delete(operation),
+    );
+    try {
+      void change().then(resolve, reject);
+    } catch (error) {
+      reject(error);
+    }
+    return operation;
   }
 
   async #enable(entry: PluginEntry, persistChoice: boolean): Promise<boolean> {

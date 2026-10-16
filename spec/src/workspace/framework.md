@@ -26,6 +26,7 @@ Palette presentation remains DC-WS-010 and DC-WS-053 through DC-WS-058.
 | ----------------------------- | ------------------------------------------ | ----------- |
 | Shared Workspace invariants   | Workspace layer                            | DC-WS-001   |
 | Workspace core                | `@lapismd/design-core/workspace/core`      | DC-WS-002   |
+| Plugin transition flush       | `@lapismd/design-core/workspace/core`      | DC-WS-075   |
 | Workspace App Shell           | `@lapismd/design-core/workspace/app-shell` | DC-WS-003   |
 | Workspace demo                | `@lapismd/design-core/workspace/demo`      | DC-WS-004   |
 | Workspace drag                | `@lapismd/design-core/workspace/drag`      | DC-WS-005   |
@@ -59,6 +60,16 @@ Palette presentation remains DC-WS-010 and DC-WS-053 through DC-WS-058.
 - Application workspace state transitions and consumer-adapter intents MUST remain typed and independent of consumer persistence, including Explorer's three activation intents, a consumer-controlled user-created-tab activation policy, and the DC-WS-061 default for the unsynchronized renderer.
 - Programmatic tab creation MUST render immediately, and implicit leaf opens MUST target the active or first main pane when a sidebar or dock has focus.
 - Imperative view registration MUST expose live context chrome before mounting and MUST react when instance-owned chrome becomes available.
+
+## DC-WS-075 — Awaitable plugin transitions
+
+**Requirement.** The App Shell plugin manager MUST expose `flushChanges()` to await admitted enable/disable transitions and their persistence. `stop()` MUST await those transitions before unloading instances.
+
+### Acceptance details
+
+- Pending plugin load, unload and persistence promises MUST finish before a flush resolves.
+- Stopping during an admitted disable MUST unload that instance only once.
+- The boundary MUST remain independent of consumer filesystems and application lifecycle policy.
 
 ## DC-WS-003 — Workspace App Shell
 
