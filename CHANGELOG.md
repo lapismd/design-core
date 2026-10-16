@@ -1,5 +1,13 @@
 # @lapismd/design-core
 
+## 0.5.1
+
+### Patch Changes
+
+- [#29](https://github.com/lapismd/design-core/pull/29) [`41efbc9`](https://github.com/lapismd/design-core/commit/41efbc9b68652c03ad92d15353e8c13b4f827492) Thanks [@stevejuma](https://github.com/stevejuma)! - Preserve text and keyboard caret movement when typing begins before an
+  autocomplete's deferred opening selection. This also prevents the first
+  character of a new chip value from being replaced.
+
 ## 0.5.0
 
 ### Minor Changes
