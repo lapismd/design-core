@@ -498,6 +498,36 @@
     await expect(maximize.getBoundingClientRect().right).toBeLessThanOrEqual(
       options.getBoundingClientRect().left,
     );
+
+    const frame = canvasElement.querySelector<HTMLElement>(
+      ".ui-workspace-tabs-story-frame",
+    )!;
+    const tabsRoot = canvasElement.querySelector<HTMLElement>(
+      ".ui-workspace-tabs",
+    )!;
+    const title = active!.querySelector<HTMLElement>(
+      ".ui-workspace-tab__title",
+    )!;
+    const previousWidth = frame.style.width;
+    frame.style.width = "16rem";
+    tabsRoot.style.setProperty("--ui-workspace-tab-width", "2.5rem");
+    try {
+      const inactiveIcon = canvasElement.querySelector<HTMLElement>(
+        '.ui-workspace-tab:not([data-active="true"]) .ui-workspace-tab__icon',
+      );
+      await waitFor(() => {
+        expect(title.getBoundingClientRect().width).toBe(0);
+        expect(getComputedStyle(icon!).display).toBe("none");
+        expect(getComputedStyle(close!).visibility).toBe("visible");
+        expect(close!.getBoundingClientRect().width).toBeGreaterThan(0);
+        expect(inactiveIcon).not.toBeNull();
+        expect(getComputedStyle(inactiveIcon!).display).not.toBe("none");
+        expect(inactiveIcon!.getBoundingClientRect().width).toBeGreaterThan(0);
+      });
+    } finally {
+      frame.style.width = previousWidth;
+      tabsRoot.style.removeProperty("--ui-workspace-tab-width");
+    }
   }}
   parameters={{
     visualDelta: {

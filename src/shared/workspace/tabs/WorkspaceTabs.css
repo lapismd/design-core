@@ -320,26 +320,35 @@
   }
 
   .ui-workspace-tab__trigger {
-    min-width: 0.5rem;
-    flex: 1 1 0.5rem;
+    min-width: 0;
+    flex: 0 1 0;
     gap: 0;
   }
 
   .ui-workspace-tab__icon {
-    width: auto;
-    flex: 0 1 1.5rem;
+    display: none;
+  }
+
+  .ui-workspace-tab:not([data-active="true"]):not(:hover) .ui-workspace-tab__icon {
+    display: inline-flex;
+    width: 1.5rem;
+    min-width: 1.5rem;
+    flex: 0 0 1.5rem;
+  }
+
+  .ui-workspace-tab:not([data-active="true"]):not(:hover)
+    .ui-workspace-tab__close {
+    width: 0;
+    flex-basis: 0;
+    padding: 0;
     overflow: hidden;
   }
 
-  .ui-workspace-tab__icon svg {
-    width: 100%;
-    min-width: 0;
-    max-width: 100%;
-  }
-
-  .ui-workspace-tab__title {
+  .ui-workspace-tab__title,
+  .ui-workspace-tab__title .ui-workspace-view-label__title {
     width: 0;
-    flex: 0 1 0;
+    max-width: 0;
+    flex: 0 0 0;
   }
 }
 
