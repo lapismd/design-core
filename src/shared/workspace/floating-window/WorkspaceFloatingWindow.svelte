@@ -5,7 +5,7 @@
   import Maximize from "@lucide/svelte/icons/maximize";
   import Minimize from "@lucide/svelte/icons/minimize";
   import Minus from "@lucide/svelte/icons/minus";
-  import PanelTopClose from "@lucide/svelte/icons/panel-top-close";
+  import PictureInPicture from "@lucide/svelte/icons/picture-in-picture";
   import Close from "@lucide/svelte/icons/x";
   import type {
     WorkspaceNode,
@@ -312,7 +312,7 @@
           onpointerdown={(event) => event.stopPropagation()}
           onclick={redock}
         >
-          <PanelTopClose aria-hidden="true" />
+          <PictureInPicture aria-hidden="true" />
         </button>
         <button
           type="button"
@@ -339,7 +339,7 @@
     {/if}
 
     {#if !isCollapsed && !isMaximized}
-      {#each ["n", "e", "s", "w", "ne", "nw", "se", "sw"] as edge}
+      {#each ["n", "e", "s", "w", "ne", "nw", "se", "sw"] as edge (edge)}
         <button
           type="button"
           class="ui-workspace-floating-window__resize"
