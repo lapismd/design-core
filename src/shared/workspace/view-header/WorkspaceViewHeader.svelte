@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { disableOverlayPortalContextKey } from "../../../lib/overlay-portal-context.js";
+  import { getContext } from "svelte";
   import ArrowLeft from "@lucide/svelte/icons/arrow-left";
   import ArrowRight from "@lucide/svelte/icons/arrow-right";
   import ChevronRight from "@lucide/svelte/icons/chevron-right";
@@ -10,6 +12,9 @@
   import WorkspaceIcon from "../icon/WorkspaceIcon.svelte";
   import WorkspaceMenuItems from "../menu/WorkspaceMenuItems.svelte";
   import "./WorkspaceViewHeader.css";
+
+  const disablePortals =
+    getContext<boolean | undefined>(disableOverlayPortalContextKey) ?? false;
 
   let {
     controller,
@@ -266,7 +271,7 @@
       >
         <Ellipsis aria-hidden="true" />
       </DropdownMenu.Trigger>
-      <DropdownMenu.Portal>
+      <DropdownMenu.Portal disabled={disablePortals}>
         <DropdownMenu.Content
           class="ui-workspace-menu__content"
           data-ui-component="workspace-menu"

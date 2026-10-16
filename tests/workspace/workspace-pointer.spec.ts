@@ -744,6 +744,22 @@ test.describe("Workspace real pointer behavior", () => {
     await popup.waitForTimeout(350);
     await expect(previewAction).toBeVisible();
 
-    await popup.close();
+    await popup
+      .getByRole("button", {
+        name: "Open Overlay fixture tab menu",
+        exact: true,
+      })
+      .click();
+    await expect(
+      popup.getByRole("menuitem", { name: "Move to", exact: true }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("menuitem", { name: "Move to", exact: true }),
+    ).toHaveCount(0);
+    await popup.getByRole("menuitem", { name: "Move to", exact: true }).hover();
+    await popup
+      .getByRole("menuitem", { name: "Main window", exact: true })
+      .click();
+    await expect.poll(() => popup.isClosed()).toBe(true);
   });
 });

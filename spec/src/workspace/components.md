@@ -286,6 +286,8 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 - The public boundary is `@lapismd/design-core/workspace/popout`.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 
+- Popup transfers, close admission, document ownership and native-control clearance MUST follow [the popup contracts](framework.md#dc-ws-076).
+
 ## DC-WS-019 — Ribbon
 
 **Requirement.** The Ribbon family MUST present registered workspace destinations and actions in a compact navigation rail.

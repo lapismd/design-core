@@ -20,6 +20,7 @@
     leftSidebarTogglePaneId,
     rightSidebarTogglePaneId,
     bottomPanelTogglePaneId,
+    nativeControls = false,
     createTab,
   }: {
     controller: WorkspaceShellController;
@@ -29,6 +30,7 @@
     leftSidebarTogglePaneId?: string;
     rightSidebarTogglePaneId?: string;
     bottomPanelTogglePaneId?: string;
+    nativeControls?: boolean;
     createTab?: (paneId: string) => WorkspaceTab;
   } = $props();
 
@@ -53,6 +55,7 @@
         {hostId}
         drag={dragState}
         sidebarToggleSides={sidebarToggleSides(node.id)}
+        {nativeControls}
         showBottomPanelToggle={node.id === bottomPanelTogglePaneId}
         {createTab}
       />
@@ -63,6 +66,7 @@
         {hostId}
         drag={dragState}
         sidebarToggleSides={sidebarToggleSides(node.id)}
+        {nativeControls}
         showBottomPanelToggle={node.id === bottomPanelTogglePaneId}
         {createTab}
       />
@@ -79,6 +83,7 @@
         {leftSidebarTogglePaneId}
         {rightSidebarTogglePaneId}
         {bottomPanelTogglePaneId}
+        nativeControls={nativeControls && child.id === node.children[0]?.id}
         {createTab}
       />
     {/snippet}

@@ -265,6 +265,8 @@ export interface WorkspacePopoutHandle {
   focus(): void;
   close(): void;
   onClose(listener: () => void): () => void;
+  /** Cancel native close until the owner has admitted removal. */
+  onCloseRequest?(listener: () => Promise<boolean>): () => void;
 }
 
 export interface WorkspacePopoutHost {

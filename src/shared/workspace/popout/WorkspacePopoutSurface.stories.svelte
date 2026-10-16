@@ -74,7 +74,7 @@
 
 <Story
   name="Detached workspace tree"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   play={async ({ canvas, canvasElement }) => {
     const popoutSurface = canvasElement.querySelector(
       '[data-workspace-popout-id="popout-story-window"]',
@@ -89,6 +89,12 @@
     ).toHaveAttribute("aria-pressed", "true");
   }}
   parameters={{
+    docs: {
+      description: {
+        story:
+          "A retained detached tree uses shared tabs and native-control clearance.",
+      },
+    },
     visualDelta: {
       images: [
         "/visual-baselines/workspace/popout/detached-workspace-tree-chromium.png",
@@ -117,6 +123,14 @@
 
 <Story
   name="Owner-document overlays"
+  parameters={{
+    docs: {
+      description: {
+        story:
+          "Trigger menus and previews stay in their owning popup document.",
+      },
+    },
+  }}
   tags={["visual-pending", "test"]}
   play={async ({ canvas }) => {
     await expect(

@@ -7,6 +7,10 @@ its component parts. Prepared declarations preserve existing public signatures
 without unnamed internal Svelte-generated component types. Runtime composition
 and workspace ownership remain unchanged under DC-WS-003.
 
+Session popup transfer and guarded removal follow DC-WS-076 and DC-WS-077;
+popup document ownership and native-control clearance follow DC-WS-078 and
+DC-WS-079.
+
 Workspace framework contracts coordinate reusable layout and state through explicit controllers, registries, events, and consumer adapters.
 Command manager palette search filters by tab (`openPalette({ tab })`,
 `searchPalette(query, { tab })`) and groups Actions by plugin contribution.
@@ -191,3 +195,49 @@ from ordinary header clearance. Maximized top and stacked groups follow
 DC-WS-070; hosts set the full inset without subtracting ribbon width.
 Settings heading tokens retain configurable typography with bold defaults
 under DC-WS-069.
+
+## DC-WS-076 — Atomic popup transfer
+
+**Requirement.** Popup transfer MUST publish one final layout containing one instance of each moved tab. Failed or throwing host creation MUST preserve the source. The existing Move to menu MUST offer Main window, using the last valid main pane and then the first main pane.
+
+### Acceptance details
+
+- Transfer MUST retain the registered view identity.
+- Returning the last popup tab MUST dispose its empty host once.
+
+## DC-WS-077 — Guarded removal
+
+**Requirement.** Hosts MAY install an asynchronous close guard. Tab and window removal MUST await that guard before changing layout or closing a host. Rejected admission MUST leave tabs and windows reachable and expose the failure. A native close-request hook MUST enter the same admission path.
+
+### Acceptance details
+
+- Unguarded controllers retain synchronous compatibility operations.
+- Moving content between hosts MUST NOT invoke destructive close admission.
+
+## DC-WS-078 — Popup document ownership
+
+**Requirement.** Mounted popup surfaces MUST inherit application contexts and route shortcuts, focus and command palettes through their own document.
+
+### Acceptance details
+
+- Only the focused host MUST present shared command overlays.
+- Built-in tab/header menus and nested submenus MUST remain in their popup document.
+- Disposing a popup MUST release its document listeners.
+
+## DC-WS-079 — Popup native-control clearance
+
+**Requirement.** Each popup's top-left top or stacked tab strip MUST consume the full public overlay native-control inset without ribbon subtraction. Its tabs MUST meet the top edge and retain clearance after resizing or changing splits.
+
+### Acceptance details
+
+- Only the pane at the top-left corner MUST receive the inset.
+- The host MUST continue owning the measured inset value.
+
+## DC-WS-080 — Live popup appearance
+
+**Requirement.** Popup styles, inherited tokens and themes MUST mirror live without remounting retained views. Disposing a popup MUST release its owned style observers.
+
+### Acceptance details
+
+- Source stylesheet changes MUST reach every open popup.
+- Theme changes MUST retain editor identity.

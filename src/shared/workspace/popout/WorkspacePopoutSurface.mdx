@@ -1,4 +1,4 @@
-import { Meta, Canvas } from "@storybook/addon-docs/blocks";
+import { Meta, Canvas, Description } from "@storybook/addon-docs/blocks";
 import * as Stories from "./WorkspacePopoutSurface.stories.svelte";
 
 <Meta of={Stories} />
@@ -12,10 +12,22 @@ public host contract.
 
 The detached surface reuses the controller, view registry, drag state, tabs,
 splits, and theme tokens rather than creating a second application singleton.
+The top-left tab strip uses `--ui-workspace-window-controls-overlay-inline-start`
+for full native-control clearance, including stacked tabs. Live style and theme
+updates retain mounted view identity. Hosts can install `renderer.setCloseGuard`
+and implement the optional handle `onCloseRequest` hook to admit saves before
+removal. Failed admission preserves the layout.
+
 It also establishes an inline-overlay boundary. Trigger-based shadcn overlays
 therefore render only in the popout document; outside a popout those same
 families follow the trigger document's body automatically.
 
+## Detached workspace tree
+
+<Description of={Stories.DetachedWorkspaceTree} />
 <Canvas of={Stories.DetachedWorkspaceTree} />
 
+## Owner-document overlays
+
+<Description of={Stories.OwnerDocumentOverlays} />
 <Canvas of={Stories.OwnerDocumentOverlays} />

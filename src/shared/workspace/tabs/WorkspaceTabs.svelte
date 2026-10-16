@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { disableOverlayPortalContextKey } from "../../../lib/overlay-portal-context.js";
+  import { getContext } from "svelte";
   import ChevronDown from "@lucide/svelte/icons/chevron-down";
   import Check from "@lucide/svelte/icons/check";
   import Maximize from "@lucide/svelte/icons/maximize";
@@ -32,10 +34,14 @@
   import WorkspaceTabsMove from "./WorkspaceTabsMove.svelte";
   import "./WorkspaceTabs.css";
 
+  const disablePortals =
+    getContext<boolean | undefined>(disableOverlayPortalContextKey) ?? false;
+
   let {
     controller,
     pane,
     hostId = "root",
+    nativeControls = false,
     drag,
     sidebarToggleSides = [],
     showBottomPanelToggle = false,
@@ -44,6 +50,7 @@
     controller: WorkspaceShellController;
     pane: WorkspaceTabsNode;
     hostId?: string;
+    nativeControls?: boolean;
     drag?: WorkspaceDragState;
     sidebarToggleSides?: WorkspaceSide[];
     showBottomPanelToggle?: boolean;
@@ -193,6 +200,7 @@
   data-workspace-pane-id={pane.id}
   data-workspace-host-id={hostId}
   data-workspace-pane-presentation="top"
+  data-workspace-native-controls={nativeControls ? "true" : undefined}
   data-workspace-focus-mode={isFocusMode ? "true" : undefined}
   ondragenter={(event) => event.preventDefault()}
   ondrop={(event) => dragState.dropHtml5(event)}
@@ -275,7 +283,7 @@
                               name={item.icon ?? tab.icon ?? "file"}
                             />
                           </DropdownMenu.Trigger>
-                          <DropdownMenu.Portal>
+                          <DropdownMenu.Portal disabled={disablePortals}>
                             <DropdownMenu.Content
                               class="ui-workspace-menu__content"
                               data-ui-component="workspace-menu"
@@ -371,7 +379,7 @@
                     </div>
                   </WorkspaceTabsMove>
                   {#if menu}
-                    <ContextMenu.Portal>
+                    <ContextMenu.Portal disabled={disablePortals}>
                       <ContextMenu.Content
                         class="ui-workspace-menu__content"
                         data-ui-component="workspace-menu"
@@ -460,7 +468,7 @@
         >
           <ChevronDown aria-hidden="true" />
         </DropdownMenu.Trigger>
-        <DropdownMenu.Portal>
+        <DropdownMenu.Portal disabled={disablePortals}>
           <DropdownMenu.Content
             class="ui-workspace-tabs__menu"
             data-ui-component="workspace-tabs-menu"

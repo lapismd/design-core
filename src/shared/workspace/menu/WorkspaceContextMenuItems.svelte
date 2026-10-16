@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { disableOverlayPortalContextKey } from "../../../lib/overlay-portal-context.js";
+  import { getContext } from "svelte";
   import ChevronRight from "@lucide/svelte/icons/chevron-right";
   import { ContextMenu } from "bits-ui";
   import type {
@@ -8,6 +10,9 @@
   import WorkspaceIcon from "../icon/WorkspaceIcon.svelte";
   import WorkspaceContextMenuItemsRecursive from "./WorkspaceContextMenuItems.svelte";
   import "./WorkspaceMenuItems.css";
+
+  const disablePortals =
+    getContext<boolean | undefined>(disableOverlayPortalContextKey) ?? false;
 
   let {
     menu,
@@ -50,7 +55,7 @@
           aria-hidden="true"
         />
       </ContextMenu.SubTrigger>
-      <ContextMenu.Portal>
+      <ContextMenu.Portal disabled={disablePortals}>
         <ContextMenu.SubContent
           class="ui-workspace-menu__content"
           data-ui-component="workspace-menu"

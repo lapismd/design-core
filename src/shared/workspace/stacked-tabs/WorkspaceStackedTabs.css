@@ -303,3 +303,11 @@
   margin: 0.25rem -0.25rem;
   background: var(--ui-workspace-border);
 }
+
+.ui-workspace-stacked-tabs[data-workspace-native-controls="true"]
+  > .ui-workspace-stacked-tabs__chrome {
+  padding-inline-start: var(
+    --ui-workspace-window-controls-overlay-inline-start,
+    0px
+  );
+}

@@ -504,3 +504,11 @@
     width 120ms ease-out;
   will-change: transform, height;
 }
+
+.ui-workspace-tabs[data-workspace-native-controls="true"]
+  > .ui-workspace-tabs__header
+  > .ui-workspace-tabs__header-main {
+  padding-inline-start: calc(
+    8px + var(--ui-workspace-window-controls-overlay-inline-start, 0px)
+  );
+}
