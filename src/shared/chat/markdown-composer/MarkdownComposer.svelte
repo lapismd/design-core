@@ -1,4 +1,10 @@
 <script lang="ts">
+  import { acceptCompletion, completionStatus } from "@codemirror/autocomplete";
+  import {
+    composerSuggestions,
+    composerTriggerQuery,
+  } from "./composer-suggestions.js";
+  import "./composer-suggestions.css";
   import { onMount, untrack } from "svelte";
   import Mira, { type MiraHandle } from "@lapismd/mira";
   import { fromOffset, type MiraMarkdownActionId } from "@lapismd/mira/core";
@@ -57,6 +63,7 @@
     documentActions = $bindable(),
     colorMode = "inherit",
     extensions = [],
+    triggers = [],
     customEmojis = [],
     emojis,
     emojiText,
@@ -166,6 +173,27 @@
         EditorView.domEventHandlers({
           keydown(event, editor) {
             if (
+              !event.defaultPrevented &&
+              !editor.composing &&
+              !event.isComposing &&
+              event.keyCode !== 229 &&
+              !event.shiftKey &&
+              !event.ctrlKey &&
+              !event.metaKey &&
+              !event.altKey &&
+              event.key === "Enter" &&
+              composerTriggerQuery(
+                editor.state,
+                triggers.map((trigger) => trigger.character),
+              ) &&
+              completionStatus(editor.state) !== null
+            ) {
+              if (completionStatus(editor.state) === "active" && !blocked)
+                acceptCompletion(editor);
+              event.preventDefault();
+              return true;
+            }
+            if (
               event.defaultPrevented ||
               editor.composing ||
               event.altKey ||
@@ -200,7 +228,15 @@
       };
     },
   };
-  const editorExtensions = $derived([composerExtension, ...extensions]);
+  const suggestions = composerSuggestions({
+    triggers: () => triggers,
+    disabled: () => blocked,
+  });
+  const editorExtensions = $derived([
+    composerExtension,
+    ...(triggers.length ? [suggestions] : []),
+    ...extensions,
+  ]);
   function change(next: string) {
     value = next;
     onChange?.(next);

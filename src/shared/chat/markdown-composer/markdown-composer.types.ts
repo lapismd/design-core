@@ -62,6 +62,8 @@ export type MarkdownComposerProps = Omit<
   documentActions?: Snippet | undefined;
   colorMode?: MiraColorMode;
   extensions?: readonly MiraExtension[];
+  /** Neutral @, #, slash or emoji suggestions; source cancellation is host-observable. */
+  triggers?: readonly import("./composer-suggestions.js").MarkdownComposerTrigger[];
   customEmojis?: readonly CustomEmoji[];
   emojis?: readonly EmojiOption[];
   /** Adapt custom emoji syntax without introducing application parsing here. */

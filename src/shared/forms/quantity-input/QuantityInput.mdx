@@ -1,0 +1,13 @@
+import { Meta, Source } from "@storybook/addon-docs/blocks";
+import * as Stories from "./QuantityInput.stories.svelte";
+import { Basic } from "./QuantityInput.example-sources.js";
+
+<Meta of={Stories} />
+
+# QuantityInput
+
+Canonical values are integer strings. Supplied units use positive safe integer numerator/denominator ratios. `onValueChange` receives an exact canonical string, empty for unset values or `NaN` for invalid drafts, matching the source contract. Retain the optional `draft` binding across unmounts to keep invalid input text. Display-unit changes never emit edits. Sliders use at most 1002 discrete values for large ranges and always include the exact current value; typing remains exact. Disabled/read-only, optional values and reset remain host-controlled. Public width/ring tokens are `--ui-quantity-input-width` (18rem) and `--ui-quantity-input-ring` (ring).
+
+<Source code={Basic} language="tsx" />
+
+Adapted from jj-store 3be80ad2104f, Apache-2.0, LapisMD contributors. See PROVENANCE.md.

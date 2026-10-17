@@ -121,3 +121,7 @@ inherit that risk acceptance.
 - CI and non-CI executions must not share cache keys.
 - VCS-dependent governance and registry-dependent dependency audits must remain uncached, while post-publication registry checks may use bounded visibility retries for eventual npm propagation.
 - Remote cache credentials must come from ignored local environment files or CI secrets and must never be logged.
+
+## Community component boundaries
+
+Community presentation additions remain source-owned generic families with no runtime or consumer imports; the focused Forms quantity entry point shares the existing Forms implementation.

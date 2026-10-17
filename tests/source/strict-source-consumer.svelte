@@ -1,4 +1,27 @@
 <script lang="ts">
+  import { AvatarGroup } from "@lapismd/design-core/shadcn/avatar";
+  import { AuthorCard } from "@lapismd/design-core/shadcn/author-card";
+  import { ReferenceChip } from "@lapismd/design-core/shadcn/reference-chip";
+  import { LinkPreview } from "@lapismd/design-core/shadcn/link-preview";
+  import { Spoiler } from "@lapismd/design-core/shadcn/spoiler";
+  import { RelativeTime } from "@lapismd/design-core/shadcn/relative-time";
+  import {
+    QuantityInput,
+    bytesUnits,
+  } from "@lapismd/design-core/forms/quantity-input";
+  import {
+    ThreadPanel,
+    type MarkdownComposerTrigger,
+  } from "@lapismd/design-core/chat";
+  const identity = { id: "alex", name: "Alex Morgan" };
+  const triggers: MarkdownComposerTrigger[] = [
+    {
+      character: "@",
+      searchSource: () => [{ id: "alex", label: "Alex" }],
+      onSelect: (item) => item.label,
+    },
+  ];
+
   import * as Sidebar from "@lapismd/design-core/shadcn/sidebar";
   import {
     Transcript,
@@ -227,4 +250,27 @@
 <ComposerStatusBanner
   status={{ type: "info", message: "Captured context" }}
   position="bottom"
+/>
+
+<AvatarGroup items={[identity]} /><AuthorCard
+  author={identity}
+  interaction="popover"
+/>
+<ReferenceChip label="Reference" /><LinkPreview href="https://example.com" />
+<Spoiler>Captured spoiler</Spoiler><RelativeTime
+  timestamp="2026-10-17T12:00:00Z"
+/>
+<QuantityInput
+  id="quantity"
+  label="Quantity"
+  value="1024"
+  units={bytesUnits}
+  min={0}
+  max={1048576}
+  onValueChange={() => {}}
+/>
+<MarkdownComposer {triggers} onSubmit={() => {}} /><ThreadPanel
+  rootId="root"
+  messages={[]}
+  onSubmit={() => {}}
 />

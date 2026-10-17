@@ -16,6 +16,12 @@ Data and feedback primitives communicate state without taking ownership of consu
 | Avatar   | `@lapismd/design-core/shadcn/avatar`   | DC-SHA-056  |
 | Tag List | `@lapismd/design-core/shadcn/tag-list` | DC-SHA-057  |
 
+| Author Card | `@lapismd/design-core/shadcn/author-card` | DC-SHA-058 |
+| Reference Chip | `@lapismd/design-core/shadcn/reference-chip` | DC-SHA-059 |
+| Link Preview | `@lapismd/design-core/shadcn/link-preview` | DC-SHA-060 |
+| Spoiler | `@lapismd/design-core/shadcn/spoiler` | DC-SHA-061 |
+| Relative Time | `@lapismd/design-core/shadcn/relative-time` | DC-SHA-062 |
+
 ## DC-SHA-057 — Tag List
 
 **Requirement.** Tag List MUST present ordered, host-owned tags in one compact responsive row, composing existing Badge/Button, Tooltip, Popover and ScrollArea primitives.
@@ -110,3 +116,50 @@ Data and feedback primitives communicate state without taking ownership of consu
 
 - The public family MUST provide named and decorative presentations with image-failure fallback and token-driven sizing, including larger `2xl` and `3xl` presentations for editable profile avatars.
 - Presence MUST remain available through an accessible label rather than color alone.
+- AvatarGroup MUST default to 32px avatars and preserve supplied identity order, overlapping circle or rounded shapes, full accessible names and optional host-selected overflow limits.
+
+## DC-SHA-058 — Author Card
+
+**Requirement.** AuthorCard MUST present host-owned identity details and actions through shared accessible hover or popover surfaces.
+
+### Acceptance details
+
+- Avatar and mention triggers MUST retain supplied labels, shape, presence, details and disabled actions without resolving profiles or executing application routes.
+- Popover dismissal MUST restore trigger focus and viewport-bounded content MUST use shared ScrollArea with inherited semantic tokens.
+
+## DC-SHA-059 — Reference Chip
+
+**Requirement.** ReferenceChip MUST compose compact icon or avatar references with Badge presentation and host-owned navigation or actions.
+
+### Acceptance details
+
+- Full labels and descriptions MUST remain available through accessible tooltips while long inline labels truncate without changing supplied text.
+- Optional removal MUST be a separate labelled button and disabled references MUST never navigate or invoke callbacks.
+
+## DC-SHA-060 — Link Preview
+
+**Requirement.** LinkPreview MUST present supplied link data in inline, compact and rich layouts without fetching metadata.
+
+### Acceptance details
+
+- Unsafe protocols MUST remain noninteractive while safe links retain their destination, accessible name and keyboard focus.
+- Labels, descriptions, optional media and semantic tokens MUST support narrow containers without application-specific URL classification.
+
+## DC-SHA-061 — Spoiler
+
+**Requirement.** Spoiler MUST provide keyboard-accessible controlled conceal and reveal presentation for inline noninteractive content.
+
+### Acceptance details
+
+- Concealed content MUST be hidden from assistive technology and revealed content MUST retain its original text.
+- The optional Chat spoilerExtension MUST compose safe post-parse Mira rendering for inline delimiters while leaving code and captured source text intact.
+- Particle presentation MUST respect reduced motion and clean up animation frames, observers and listeners on teardown.
+
+## DC-SHA-062 — Relative Time
+
+**Requirement.** RelativeTime MUST present valid dates with relative text and an exact localized date tooltip using an optional supplied clock.
+
+### Acceptance details
+
+- Invalid dates MUST retain a readable fallback and never throw during rendering.
+- Live updates MUST stop on disposal while supplied clocks, locale and absolute-date thresholds remain deterministic.

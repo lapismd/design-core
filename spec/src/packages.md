@@ -187,3 +187,7 @@ and workspace audits remain unchanged.
 - Cacheable lanes must use the signed Turbo cache contract and publish cache summaries.
 - Full and production dependency audits must run after every nonvisual lane succeeds.
 - Visual comparison must remain outside the blocking graph, and maintained Node.js 24-compatible actions must be used.
+
+## Community component boundaries
+
+AvatarGroup extends the Avatar wildcard family; AuthorCard, ReferenceChip, LinkPreview, Spoiler and RelativeTime use their Shadcn family exports. Forms exports QuantityInput through its barrel and forms/quantity-input, while Chat exports ThreadPanel and neutral composer suggestion models.

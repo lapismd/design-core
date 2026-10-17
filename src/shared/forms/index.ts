@@ -142,3 +142,5 @@ export {
 export { ConfirmButton } from "./confirm-button/index.js";
 
 export { AvatarPicker, type AvatarPickerProps } from "./avatar-picker/index.js";
+
+export * from "./quantity-input/index.js";

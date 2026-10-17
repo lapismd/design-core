@@ -399,6 +399,10 @@
     {
       "name": "./forms/avatar-picker",
       "requirement": "DC-FORM-047"
+    },
+    {
+      "name": "./forms/quantity-input",
+      "requirement": "DC-FORM-048"
     }
   ],
   "catalog": [
@@ -1081,6 +1085,34 @@
     {
       "name": "Chat/Sent Context",
       "requirement": "DC-CHAT-011"
+    },
+    {
+      "name": "Shadcn/Data/Author Card",
+      "requirement": "DC-SHA-058"
+    },
+    {
+      "name": "Shadcn/Data/Reference Chip",
+      "requirement": "DC-SHA-059"
+    },
+    {
+      "name": "Shadcn/Content/Link Preview",
+      "requirement": "DC-SHA-060"
+    },
+    {
+      "name": "Shadcn/Content/Spoiler",
+      "requirement": "DC-SHA-061"
+    },
+    {
+      "name": "Shadcn/Data/Relative Time",
+      "requirement": "DC-SHA-062"
+    },
+    {
+      "name": "UI Forms/Quantity Input",
+      "requirement": "DC-FORM-048"
+    },
+    {
+      "name": "Chat/Thread Panel",
+      "requirement": "DC-CHAT-014"
     }
   ]
 }

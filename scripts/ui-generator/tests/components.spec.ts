@@ -150,6 +150,7 @@ Hello
       "prompt-context",
       "reactions",
       "sent-context",
+      "thread-panel",
       "transcript",
     ]);
   });

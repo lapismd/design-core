@@ -279,3 +279,14 @@ success use semantic tokens. `--ui-composer-status-radius`,
 Composer's existing radius and padding tokens. PromptContext owns its escaped
 XML tag/disclosure styling and delegates safe Markdown to Mira's public extension
 API; tag syntax uses the public `--ui-code-syntax-*` colours and host fonts.
+
+Community presentation additions use native component-owned CSS. Public tokens
+use --ui-avatar-group-_, --ui-author-card-_, --ui-reference-chip-_,
+--ui-link-preview-_, --ui-spoiler-_, --ui-relative-time-_, --ui-quantity-input-_
+and --ui-thread-_ prefixes; defaults retain jj-store geometry and semantic
+colours. Composer suggestions use the public CodeMirror completion surface.
+
+AuthorCard's default md trigger uses `--ui-author-card-avatar-size` (2.25rem),
+matching jj-store's 36px author identity; other sizes retain Avatar dimensions.
+AvatarGroup defaults to 32px and its overflow count follows the chosen size,
+unless `--ui-avatar-group-overflow-size` is supplied.

@@ -172,3 +172,7 @@ Published CLI script arguments are passed directly through pnpm without an extra
 - Agents must not vendor dependency source, mutate dependency `node_modules`, or add checkout-specific paths.
 - Dependency source fixes must be made in the owning repository and consumed through a released package version.
 - Agent testing guidance MUST distinguish compiler warnings from fatal browser runtime diagnostics and require owning-source fixes or published dependency repairs.
+
+## Community component boundaries
+
+Community presentation families map to shadcn/data-and-feedback; QuantityInput maps to forms/inputs and composer suggestions and ThreadPanel map to Chat.

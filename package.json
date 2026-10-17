@@ -320,6 +320,7 @@
     "./workspace/workspace.tokens.css": "./src/shared/workspace/workspace.tokens.css",
     "./forms/dialog": "./src/shared/forms/dialog.ts",
     "./chat": "./src/shared/chat/index.ts",
-    "./forms/avatar-picker": "./src/shared/forms/avatar-picker/index.ts"
+    "./forms/avatar-picker": "./src/shared/forms/avatar-picker/index.ts",
+    "./forms/quantity-input": "./src/shared/forms/quantity-input/index.ts"
   }
 }

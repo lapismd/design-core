@@ -39,6 +39,9 @@ compact fold row with a trailing divider.
 | Sent Context                        | `@lapismd/design-core/chat` | DC-CHAT-011 |
 | Versioned comment editing           | `@lapismd/design-core/chat` | DC-CHAT-012 |
 
+| Composer Suggestions | `@lapismd/design-core/chat` | DC-CHAT-013 |
+| Thread Panel | `@lapismd/design-core/chat` | DC-CHAT-014 |
+
 ## DC-CHAT-001 — Markdown Content
 
 **Requirement.** MarkdownContent MUST compose Mira's public embedded preview with safe HTML and host-owned link, asset and extension hooks.
@@ -168,3 +171,25 @@ compact fold row with a trailing divider.
 - Expansion, raw selection and nested XML reader identity MUST survive delivery acknowledgements, raw/rendered switching and collapse/reopen without rewriting captured content; keyboard controls MUST retain visible focus and accessible names.
 - The bounded panel MUST use shared ScrollArea, safe PromptContext Markdown/XML and an icon-only raw toggle; hosts supply exact raw text and Markdown hooks without shared schema interpretation, transport or receipt inference.
 - TranscriptItem MAY provide this context separately from authored blocks; the disclosure MUST precede message content, and recorded examples MUST distinguish demo context from captured delivery evidence.
+
+## DC-CHAT-013 — Markdown composer suggestions
+
+**Requirement.** MarkdownComposer MUST support neutral asynchronous trigger suggestions through public Mira and CodeMirror APIs.
+
+### Acceptance details
+
+- Suggestions MUST retain existing ComposerTrigger search and insertion contracts with keyboard navigation, selection replacement and host-supplied labels.
+- Aborted, stale, disabled or disposed searches MUST never replace newer results or mutate the retained draft.
+- IME composition and escaped inline or fenced code MUST not trigger unintended insertion or message submission.
+- Completion handling MUST claim Enter only for a registered trigger query; Shift+Enter and ordinary document newlines MUST retain their existing editing behavior.
+
+## DC-CHAT-014 — Thread panel
+
+**Requirement.** ThreadPanel MUST compose host-owned nested messages, reactions, history and controlled drafts without owning transport or persistence.
+
+### Acceptance details
+
+- Stable message IDs and explicit parent IDs MUST determine reply order and bounded connector geometry while missing parents and cycles remain readable.
+- Reply selection and source navigation MUST focus the retained composer without clearing its draft.
+- Submission MUST emit exact text and parent identity while failed or unacknowledged submissions retain the draft and newer edits.
+- Message actions, author details, Markdown extensions, loading history and disabled controls MUST compose existing shared primitives.

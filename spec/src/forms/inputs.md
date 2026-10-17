@@ -25,6 +25,8 @@ Form inputs provide higher-level controlled editing patterns composed from share
 | Search Filter in a Form | Catalogued composition                                  | DC-FORM-020 |
 | Avatar Picker           | `@lapismd/design-core/forms` and `/forms/avatar-picker` | DC-FORM-047 |
 
+| Quantity Input | `@lapismd/design-core/forms/quantity-input` | DC-FORM-048 |
+
 ## DC-FORM-006 — Shared Forms invariants
 
 **Requirement.** Forms families MUST preserve accessible labelling, controlled value ownership, exact update types, token-driven focus and invalid states, and consumer-composable layout.
@@ -193,3 +195,13 @@ library mounts, rather than treating its search input as grid readiness.
 - The editor MUST compose Avatar and inline EmojiPicker with image selection/drop, pasted URLs, emoji and background colour for every type including transparent images, host-provided initials/name fallback, shared styled ScrollArea popover overflow, disabled/pending/failed-upload presentation and local previews without an uploader.
 - A newer choice, external value change, disabling or disposal MUST invalidate stale asynchronous uploads without replacing the retained value, while hosts own uploading and persistence.
 - Public boundaries MUST include Forms and its focused `forms/avatar-picker` entry point, with custom emoji records using the shared neutral EmojiPicker model.
+
+## DC-FORM-048 — Quantity Input
+
+**Requirement.** QuantityInput MUST compose exact canonical integer values with supplied display units, optional reset and slider controls.
+
+### Acceptance details
+
+- Switching display units MUST never emit a canonical edit or silently round the retained value.
+- Empty, fractional, unsafe and out-of-range drafts MUST remain distinguishable and retain their input text with accessible validation.
+- Reset and optional sliders MUST retain bounds, keyboard focus and disabled or read-only behaviour without allocating unbounded step arrays.

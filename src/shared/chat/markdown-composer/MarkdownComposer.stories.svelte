@@ -1,4 +1,6 @@
 <script module lang="ts">
+  import SuggestionsFixture from "./Suggestions.stories.fixture.svelte";
+  import { Basic as SuggestionsSource } from "./Suggestions.example-sources.js";
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent, waitFor, within } from "storybook/test";
   import MarkdownComposer from "./MarkdownComposer.svelte";
@@ -125,4 +127,36 @@
       "Draft a **shared** message.",
     );
   }}>{#snippet template()}<Fixture scenario="form" />{/snippet}</Story
+>
+
+<Story
+  name="Mention and command suggestions"
+  parameters={{
+    docs: {
+      source: { code: SuggestionsSource, language: "tsx", type: "code" },
+    },
+  }}
+  play={async ({ canvas }) => {
+    const input = canvas.getByRole("textbox", { name: /^Message$/ });
+    await userEvent.click(input);
+    await userEvent.keyboard("@al");
+    await waitFor(() =>
+      expect(document.querySelector('[role="option"]')).not.toBeNull(),
+    );
+    await userEvent.keyboard("{Enter}");
+    await waitFor(() =>
+      expect(canvas.getByTestId("suggestion-value")).toHaveTextContent(
+        "@Alex Morgan",
+      ),
+    );
+    await expect(canvas.getByTestId("suggestion-sent")).toHaveTextContent("");
+  }}>{#snippet template()}<SuggestionsFixture />{/snippet}</Story
+>
+<Story
+  name="Asynchronous suggestion replacement"
+  parameters={{
+    docs: {
+      source: { code: SuggestionsSource, language: "tsx", type: "code" },
+    },
+  }}>{#snippet template()}<SuggestionsFixture slow />{/snippet}</Story
 >

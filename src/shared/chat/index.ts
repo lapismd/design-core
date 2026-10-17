@@ -44,3 +44,24 @@ export { commentAnchor, validAnchor } from "./transcript/anchors.js";
 export type * from "./transcript/model.js";
 export { default as TranscriptContent } from "./transcript/ChatContent.svelte";
 export { default as TranscriptToolContent } from "./transcript/ChatToolBlocks.svelte";
+
+export {
+  composerSuggestions,
+  suggestionQuery,
+  type MarkdownComposerTrigger,
+  type MarkdownSuggestionItem,
+} from "./markdown-composer/composer-suggestions.js";
+
+export { default as ThreadPanel } from "./thread-panel/ThreadPanel.svelte";
+export type {
+  ThreadPanelProps,
+  ThreadMessage,
+  ThreadSubmission,
+} from "./thread-panel/thread-panel.types.js";
+export {
+  projectThreadTree,
+  threadTreeIndentRem,
+  type ThreadTreeRow,
+} from "./thread-panel/thread-tree.js";
+
+export { spoilerExtension } from "./markdown-content/spoiler-extension.js";

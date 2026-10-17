@@ -1,0 +1,83 @@
+.ui-spoiler {
+  position: relative;
+  display: inline-block;
+  padding: 0 0.12em;
+  border: 0;
+  border-radius: var(--ui-spoiler-radius, 0.3rem);
+  background: var(--ui-spoiler-background, transparent);
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  line-height: inherit;
+  vertical-align: baseline;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  transition: background-color 400ms ease-out;
+}
+
+.ui-spoiler:hover,
+.ui-spoiler:focus-visible,
+.ui-spoiler.revealed {
+  background: color-mix(in srgb, var(--muted) 68%, transparent);
+}
+
+.ui-spoiler:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.ui-spoiler__content {
+  position: relative;
+  z-index: 0;
+  opacity: 0;
+  color: transparent;
+  filter: blur(0.5px);
+  text-decoration-color: transparent;
+  text-shadow: none;
+  transition:
+    opacity 180ms ease-out,
+    filter 180ms ease-out,
+    color 180ms ease-out;
+}
+
+.ui-spoiler__particles {
+  position: absolute;
+  z-index: 1;
+  inset: -0.1em;
+  width: calc(100% + 0.2em);
+  height: calc(100% + 0.2em);
+  border-radius: inherit;
+  color: color-mix(in srgb, var(--foreground) 76%, transparent);
+  opacity: 1;
+  pointer-events: none;
+  transition: opacity 400ms ease-out;
+}
+
+.ui-spoiler.revealed .ui-spoiler__content {
+  opacity: 1;
+  color: inherit;
+  filter: none;
+  text-decoration-color: currentColor;
+}
+
+.ui-spoiler.revealed .ui-spoiler__particles {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-spoiler,
+  .ui-spoiler__content,
+  .ui-spoiler__particles {
+    transition: none;
+  }
+}
+
+.ui-spoiler:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+@media (forced-colors: active) {
+  .ui-spoiler:not(.revealed) {
+    background: CanvasText;
+  }
+}

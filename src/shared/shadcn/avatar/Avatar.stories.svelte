@@ -1,7 +1,8 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, waitFor } from "storybook/test";
-  import { Avatar } from "./index.js";
+  import { Avatar, AvatarGroup } from "./index.js";
+  import { Basic as GroupSource } from "./AvatarGroup.example-sources.js";
   import { Basic } from "./Avatar.example-sources.js";
   const { Story } = defineMeta({
     title: "Shadcn/Data/Avatar",
@@ -56,3 +57,27 @@
   }}
 />
 <Story name="Decorative" args={{ emoji: "🎉", decorative: true }} />
+
+<Story
+  name="Participant groups"
+  parameters={{
+    docs: { source: { code: GroupSource, language: "tsx", type: "code" } },
+  }}
+  play={async ({ canvas }) => {
+    await expect(
+      canvas.getByRole("group", { name: "Review participants" }),
+    ).toBeVisible();
+    await expect(
+      canvas.getByRole("button", { name: /1 more participants/ }),
+    ).toBeVisible();
+  }}
+  >{#snippet template()}<AvatarGroup
+      items={[
+        { id: "alex", name: "Alex Morgan" },
+        { id: "lee", name: "Lee Taylor", shape: "rounded" },
+        { id: "sam", name: "Sam Kim" },
+      ]}
+      max={2}
+      label="Review participants"
+    />{/snippet}</Story
+>

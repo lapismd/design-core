@@ -5,6 +5,12 @@ import {
 } from "@lapismd/spec-validator";
 
 const shadcnChapters = {
+  "author-card": ["spec/src/shadcn/data-and-feedback.md"],
+  "reference-chip": ["spec/src/shadcn/data-and-feedback.md"],
+  "link-preview": ["spec/src/shadcn/data-and-feedback.md"],
+  spoiler: ["spec/src/shadcn/data-and-feedback.md"],
+  "relative-time": ["spec/src/shadcn/data-and-feedback.md"],
+
   "tag-list": ["spec/src/shadcn/data-and-feedback.md"],
   "responsive-tabs": ["spec/src/shadcn/disclosure-and-navigation.md"],
   avatar: ["spec/src/shadcn/data-and-feedback.md"],
@@ -58,6 +64,7 @@ const shadcnChapters = {
 };
 
 const formChapters = {
+  "quantity-input": ["spec/src/forms/inputs.md"],
   "avatar-picker": ["spec/src/forms/inputs.md"],
   core: ["spec/src/forms/core-and-orchestrators.md"],
   "structured-form": ["spec/src/forms/core-and-orchestrators.md"],

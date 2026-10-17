@@ -369,6 +369,46 @@ async function checkTranscript(page) {
   await checkTranscriptAdditions(page);
 }
 
+async function checkCommunityComponents(page) {
+  const scope = page.locator('[data-review="community-components"]');
+  assert.equal(
+    await scope.getByRole("group", { name: "Archive participants" }).count(),
+    1,
+  );
+  const author = scope
+    .locator('[data-review="archive-author"]')
+    .getByRole("button", {
+      name: "About Archive author",
+      exact: true,
+    });
+  await author.click();
+  await page.getByRole("dialog", { name: "About Archive author" }).waitFor();
+  await page.keyboard.press("Escape");
+  assert.equal(
+    await author.evaluate((node) => node === document.activeElement),
+    true,
+  );
+  const spoiler = scope.locator('[data-ui-component="spoiler"]');
+  await spoiler.click();
+  assert.equal(await spoiler.getAttribute("aria-pressed"), "true");
+  await spoiler.click();
+  assert.equal(
+    await scope
+      .getByRole("link", { name: "Archive link", exact: true })
+      .count(),
+    1,
+  );
+  const quantity = scope.getByRole("spinbutton", { name: "Archive quantity" });
+  assert.equal(await quantity.inputValue(), "1");
+  assert.equal(
+    await scope.locator('[data-ui-component="thread-panel"]').count(),
+    1,
+  );
+  const reply = scope.getByRole("textbox", { name: "Reply", exact: true });
+  await reply.fill("Retain the archive reply");
+  assert.equal(await reply.textContent(), "Retain the archive reply");
+}
+
 async function checkStyles(page) {
   await page.evaluate(() => document.fonts.ready);
   const font = await page.evaluate(() => ({
@@ -407,6 +447,7 @@ async function checkStyles(page) {
   assert.notEqual(inputStyle.shadow, "none");
   await checkPrimitiveStates(page);
   await checkTranscript(page);
+  await checkCommunityComponents(page);
   const light = await page.evaluate(
     () => getComputedStyle(document.body).backgroundColor,
   );
@@ -417,6 +458,7 @@ async function checkStyles(page) {
   assert.notEqual(dark, light);
   await checkPrimitiveStates(page);
   await checkTranscript(page);
+  await checkCommunityComponents(page);
   await page.evaluate(() => document.documentElement.classList.remove("dark"));
   const override = page.getByRole("button", {
     name: "Token override",
@@ -484,7 +526,14 @@ import { PanelToggle, PanelToggleIcon, type PanelToggleIconProps } from "@lapism
 import { EmojiPicker } from "@lapismd/design-core/shadcn/emoji-picker";
 import { ResponsiveTabs } from "@lapismd/design-core/shadcn/responsive-tabs";
 import { TagList, type TagListItem, type TagListProps } from "@lapismd/design-core/shadcn/tag-list";
-import { Avatar } from "@lapismd/design-core/shadcn/avatar";
+import { Avatar, AvatarGroup } from "@lapismd/design-core/shadcn/avatar";
+import { AuthorCard } from "@lapismd/design-core/shadcn/author-card";
+import { ReferenceChip } from "@lapismd/design-core/shadcn/reference-chip";
+import { LinkPreview } from "@lapismd/design-core/shadcn/link-preview";
+import { Spoiler } from "@lapismd/design-core/shadcn/spoiler";
+import { RelativeTime } from "@lapismd/design-core/shadcn/relative-time";
+import { QuantityInput, bytesUnits } from "@lapismd/design-core/forms/quantity-input";
+import { ThreadPanel } from "@lapismd/design-core/chat";
 import { AvatarPicker } from "@lapismd/design-core/forms";
 import { MarkdownContent, MarkdownComposer, Message as SharedMessage, Transcript, TranscriptFooter, MessageQueue, PromptContext, SentContext, TranscriptController, HistoryEdge, CommentQueue, type TranscriptItem } from "@lapismd/design-core/chat";
 import type { Snippet } from "svelte";
@@ -570,6 +619,14 @@ const panelIcon = { side: "bottom", iconVariant: "standard", expanded: true, sty
 <PromptContext content={'<acp_context><first /><second /></acp_context>'} />
 <SentContext delivery="unknown" content={'<sent_application_context>\\n## Application state\\n\\nCaptured **Markdown**.\\n</sent_application_context>'} rawContent={JSON.stringify({delivery:"unknown"})} />
 {/key}
+</section>
+<section data-review="community-components">
+<AvatarGroup items={[{id:"archive-author",name:"Archive author"}]} label="Archive participants" />
+<div data-review="archive-author"><AuthorCard author={{id:"archive-author",name:"Archive author"}} interaction="popover" description="Host supplied details" /></div>
+<ReferenceChip label="Archive reference" /><LinkPreview href="https://example.com" title="Archive link" />
+<Spoiler>Archive concealed text</Spoiler><RelativeTime timestamp="2026-10-17T12:00:00Z" now={Date.parse("2026-10-17T12:05:00Z")} />
+<QuantityInput id="archive-quantity" label="Archive quantity" value="1048576" units={bytesUnits} preferredUnit="MiB" min={0} max={1073741824} onValueChange={() => {}} />
+<div style="height:320px"><ThreadPanel rootId="archive-root" messages={[{id:"archive-root",author:{id:"archive-author",name:"Archive author"},content:"A shared thread."}]} onSubmit={() => {}} /></div>
 </section>
 </main>`,
     );

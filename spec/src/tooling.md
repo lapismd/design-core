@@ -153,3 +153,7 @@ Packed-consumer acceptance mounts Transcript, HistoryEdge and CommentQueue throu
 the public Chat entry point without Tailwind tooling. It verifies immutable readers,
 reference geometry, exact queued drafts across presentation teardown and explicit
 host acknowledgement in both cold development and production output.
+
+Community component discovery includes the ThreadPanel Chat family and the
+new Shadcn/Forms families through colocated docs and stories. Public archive
+runtime acceptance exercises their exported styles and controls without Tailwind.

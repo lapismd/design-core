@@ -1,4 +1,7 @@
-# Forms / Core and orchestrators
+# Forms core and orchestrators
+
+QuantityInput is exported from the Forms barrel and its focused entry point;
+its canonical unit and draft contract remains owned by DC-FORM-048 in inputs.
 
 Forms core supplies manual and config-driven controlled rendering. Orchestrators add structured text and review workflows without owning persistence. Cross-family composition follows the canonical [`Forms guidance`](guidance.md).
 Masked secrets use the Password Input family under Forms / Inputs rather than these orchestrators.

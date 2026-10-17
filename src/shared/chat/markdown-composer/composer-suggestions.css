@@ -1,0 +1,41 @@
+.ui-composer-suggestions {
+  max-width: min(26rem, calc(100vw - 2rem));
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  background: var(--popover, var(--background));
+  color: var(--popover-foreground, var(--foreground));
+  box-shadow: var(--shadow-md);
+  font-family: var(--font-sans, system-ui);
+}
+.ui-composer-suggestions li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.625rem;
+  min-height: 2.5rem;
+  font-size: 0.875rem;
+}
+.ui-composer-suggestions li[aria-selected] {
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+.ui-composer-suggestions .cm-completionLabel {
+  flex: 1;
+  min-width: 0;
+}
+.ui-composer-suggestions .cm-completionDetail {
+  color: var(--muted-foreground);
+  font-style: normal;
+  font-size: 0.75rem;
+}
+.ui-composer-suggestions__icon {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+}
+.ui-composer-suggestions__icon > svg {
+  width: 1rem;
+  height: 1rem;
+}

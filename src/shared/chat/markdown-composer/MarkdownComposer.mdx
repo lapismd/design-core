@@ -71,3 +71,14 @@ Only document presentation docks the toolbar; framed presentation keeps it inlin
 Formatting and emoji insertion keep the editor selection, and teardown clears
 only the snippet owned by that composer. Set `submitOnEnter={false}` to keep
 multiline Enter when switching presentations.
+
+## Trigger suggestions
+
+`triggers` accepts neutral `MarkdownComposerTrigger` records, preserving the
+existing ComposerTrigger character/searchSource/onSelect contract. The source
+receives an AbortSignal; stale, disabled and disposed requests are ignored.
+Items may include a shared AvatarIdentity or a component icon. Insertions use
+plain string/token values, so application-specific mention serialization stays
+with the host. CodeMirror owns keyboard navigation, Escape and cursor-relative
+placement; Enter accepts active suggestions before submission. Triggers are
+suppressed inside captured inline/fenced code and during IME composition.

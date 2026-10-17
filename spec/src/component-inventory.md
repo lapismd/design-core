@@ -283,3 +283,12 @@ SentContext is shared Chat presentation for the compact sent/prepared/queued/fai
 unknown application-context disclosure. It composes PromptContext and raw CodeBlock
 inside shared ScrollArea, independently or before Transcript message content.
 Hosts normalize payload schemas and receipts; captured context never implies delivery.
+
+## Community presentation additions
+
+AvatarGroup extends the existing Shadcn Avatar family. AuthorCard, ReferenceChip,
+LinkPreview, Spoiler and RelativeTime are project-authored Shadcn families with
+component-owned native CSS and host-owned display data. QuantityInput is a Forms
+input with exact unit conversion. MarkdownComposer trigger suggestions extend
+the existing Chat family; ThreadPanel adds nested human discussion presentation.
+These families contain no Community identities, repository models or transport.
