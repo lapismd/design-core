@@ -1,5 +1,9 @@
 # Workspace / Components
 
+Sidebar, bottom-panel and mobile/settings visibility icons compose the standard
+PanelToggleIcon under DC-SHA-053; controller actions, hints, drag exclusions,
+expanded sizing and focus behavior remain Workspace-owned.
+
 Workspace-tab formatting retains DC-WS-030 unchanged; see
 [the formatting record](../../records/workspace-tabs-formatting.md).
 

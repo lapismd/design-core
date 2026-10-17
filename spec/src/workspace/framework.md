@@ -1,5 +1,7 @@
 # Workspace / Framework
 
+Workspace panel visibility controls compose PanelToggleIcon under DC-SHA-053. Controller actions, drag exclusions, hint identity, mobile reveal state and expanded wrapper sizing remain owned by Workspace; glyph consolidation introduces no new layout controller.
+
 The Workspace App Shell compound export retains explicit readonly types for
 its component parts. Prepared declarations preserve existing public signatures
 without unnamed internal Svelte-generated component types. Runtime composition

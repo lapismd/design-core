@@ -1,8 +1,5 @@
 <script lang="ts">
-  import PanelLeftCloseIcon from "@lucide/svelte/icons/panel-left-close";
-  import PanelLeftOpenIcon from "@lucide/svelte/icons/panel-left-open";
-  import PanelRightCloseIcon from "@lucide/svelte/icons/panel-right-close";
-  import PanelRightOpenIcon from "@lucide/svelte/icons/panel-right-open";
+  import { PanelToggleIcon } from "../../shadcn/panel-toggle/index.js";
   import type { HTMLButtonAttributes } from "svelte/elements";
   import { Button } from "../../shadcn/button/index.js";
   import { useAppShellBody } from "./app-shell-body-context.svelte.js";
@@ -98,15 +95,5 @@
     }
   }}
 >
-  {#if side === "left"}
-    {#if effectivePressed}
-      <PanelLeftCloseIcon data-ui-part="body-toggle-icon" aria-hidden="true" />
-    {:else}
-      <PanelLeftOpenIcon data-ui-part="body-toggle-icon" aria-hidden="true" />
-    {/if}
-  {:else if effectivePressed}
-    <PanelRightCloseIcon data-ui-part="body-toggle-icon" aria-hidden="true" />
-  {:else}
-    <PanelRightOpenIcon data-ui-part="body-toggle-icon" aria-hidden="true" />
-  {/if}
+  <PanelToggleIcon {side} expanded={effectivePressed} iconVariant="standard" />
 </Button>

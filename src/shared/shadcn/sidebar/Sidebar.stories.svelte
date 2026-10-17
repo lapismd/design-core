@@ -2,9 +2,11 @@
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent } from "storybook/test";
   import * as Sidebar from "./index.js";
+  import { RightEdge } from "./Sidebar.example-sources.js";
 
   const { Story } = defineMeta({
     title: "Shadcn/Layout/Sidebar",
+    tags: ["visual-pending"],
     component: Sidebar.Provider,
     parameters: {
       docs: {
@@ -19,6 +21,7 @@
 
 <script lang="ts">
   let open = $state(true);
+  let rightOpen = $state(false);
 </script>
 
 <Story
@@ -30,7 +33,7 @@
     );
     await expect(canvas.getByRole("status")).toHaveTextContent("closed");
   }}
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   parameters={{
     visualDelta: {
       images: [
@@ -64,3 +67,42 @@
     </Sidebar.Provider>
   {/snippet}
 </Story>
+
+<Story
+  name="Right edge trigger"
+  parameters={{
+    docs: {
+      source: {
+        code: RightEdge,
+        language: "tsx",
+        type: "code",
+      },
+    },
+  }}
+  play={async ({ canvas }) => {
+    const trigger = canvas.getByRole("button", {
+      name: "Toggle right sidebar",
+    });
+    await userEvent.click(trigger);
+    await expect(trigger.querySelector("svg")).toHaveAttribute(
+      "data-side",
+      "right",
+    );
+    await expect(trigger.querySelector("svg")).toHaveAttribute(
+      "data-expanded",
+      "true",
+    );
+  }}
+  >{#snippet template()}<Sidebar.Provider
+      bind:open={rightOpen}
+      style="min-height: 14rem"
+      ><Sidebar.Inset
+        ><Sidebar.Trigger
+          side="right"
+          aria-label="Toggle right sidebar"
+        /></Sidebar.Inset
+      ><Sidebar.Root side="right"
+        ><Sidebar.Content>Right navigation</Sidebar.Content></Sidebar.Root
+      ></Sidebar.Provider
+    >{/snippet}</Story
+>

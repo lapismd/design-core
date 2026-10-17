@@ -52,3 +52,5 @@ instead of the wider left/right expansion, keeping clear space beside the indica
 Ghost paint uses low-specificity selectors so a composing family can retain its
 public hover/focus color tokens. Column Canvas header action colors remain
 authoritative around this Button.
+
+Prefer `PanelToggleIcon` for sidebar visibility icons, `PanelToggle` for a standalone controlled button, and the existing Workspace/AppShell toggle when controller integration is needed.

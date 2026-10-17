@@ -1,4 +1,5 @@
 <script lang="ts">
+  import * as Sidebar from "@lapismd/design-core/shadcn/sidebar";
   import {
     Transcript,
     TranscriptController,
@@ -54,6 +55,7 @@
   } from "@lapismd/design-core/chat";
   let sharedHandle = $state<MarkdownComposerHandle | null>(null);
   const commentProps = {
+    presentation: "bare",
     value: "A retained comment",
     source: { label: "Captured code", quote: "const value = 1;", kind: "code" },
     onSubmit: (_snapshot: string) => {},
@@ -197,3 +199,5 @@
 <Transcript items={transcriptItems} commentState={transcriptController} />
 <HistoryEdge state="loading" />
 <CommentQueue state={transcriptController} />
+
+<Sidebar.Provider><Sidebar.Trigger side="right" /></Sidebar.Provider>

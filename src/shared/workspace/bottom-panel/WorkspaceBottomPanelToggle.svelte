@@ -1,5 +1,6 @@
 <script lang="ts">
   import "./WorkspaceBottomPanel.css";
+  import { PanelToggleIcon } from "../../shadcn/panel-toggle/index.js";
 
   let {
     label,
@@ -38,31 +39,10 @@
   data-hint-label={resolvedLabel}
   onclick={onSelect}
 >
-  <svg
+  <PanelToggleIcon
     class="ui-workspace-bottom-panel-toggle__icon"
-    data-ui-part="icon"
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    stroke-width="2"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-    aria-hidden="true"
-  >
-    <!-- Dedicated bottom-panel geometry keeps the sidebar icon's landscape frame. -->
-    <rect x="1" y="2" width="22" height="20" rx="4"></rect>
-    <rect
-      x="5"
-      y={expanded ? "14" : "17"}
-      width="14"
-      height={expanded ? "5" : "2"}
-      rx={expanded ? "2" : "1"}
-      fill="currentColor"
-      data-ui-part="indicator"
-      class="ui-workspace-bottom-panel-toggle__indicator"
-    ></rect>
-  </svg>
+    side="bottom"
+    {expanded}
+    iconVariant="standard"
+  />
 </button>

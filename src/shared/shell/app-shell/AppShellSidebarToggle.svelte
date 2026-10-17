@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onDestroy, untrack } from "svelte";
   import type { HTMLButtonAttributes } from "svelte/elements";
+  import { PanelToggleIcon } from "../../shadcn/panel-toggle/index.js";
   import { Button } from "../../shadcn/button/index.js";
   import { useOptionalAppShell } from "./app-shell-context.svelte.js";
   import type {
@@ -193,30 +194,14 @@
     onclick?.(event);
   }}
 >
-  <svg
-    data-ui-part="sidebar-toggle-icon"
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    stroke-width="2"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-    aria-hidden="true"
-  >
-    <rect x="1" y="2" width="22" height="20" rx="4"></rect>
-    <g transform={side === "right" ? "translate(24 0) scale(-1 1)" : undefined}>
-      <rect
-        x="4"
-        y="5"
-        width="2"
-        height="14"
-        rx="2"
-        fill="currentColor"
-        data-ui-part="sidebar-toggle-indicator"
-      ></rect>
-    </g>
-  </svg>
+  <PanelToggleIcon
+    class="ui-minimal-app-shell__sidebar-toggle-icon"
+    {side}
+    iconVariant="standard"
+    expanded={mobileMode
+      ? mobileExpanded
+      : desktopOverlayOnly
+        ? desktopDomPreview
+        : sidebar.previewed || (!sidebarClosed && !sidebarCollapsed)}
+  />
 </Button>

@@ -32,6 +32,7 @@
 
   const { Story } = defineMeta({
     title: "Workspace/Demo/Reusable Framework",
+    tags: ["visual-pending"],
     component: ReusableFrameworkDemo,
     parameters: {
       layout: "fullscreen",
@@ -347,7 +348,7 @@
 
 <Story
   name="Mobile composition"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   parameters={{
     visualDelta: {
       images: [

@@ -38,7 +38,7 @@ The App Shell owns application structure and responsive layout while consumers o
 
 ### Acceptance details
 
-- Examples must use public App Shell contracts.
+- Examples must use public App Shell contracts and the shared standard PanelToggleIcon for outer and body-local visibility controls, deriving expanded state from the effective desktop, preview or mobile panel state.
 - Guidance must identify consumer-owned routing and persistence concerns.
 
 ## DC-SHELL-004 — Top bar

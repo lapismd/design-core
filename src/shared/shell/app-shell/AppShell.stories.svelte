@@ -22,6 +22,7 @@
 
   const { Story } = defineMeta({
     title: "Shell/App Shell",
+    tags: ["visual-pending"],
     component: AppShellRoot,
     parameters: {
       layout: "fullscreen",
@@ -608,10 +609,10 @@
     );
 
     const indicator = projectToggle.querySelector(
-      '[data-ui-part="sidebar-toggle-indicator"]',
+      '[data-ui-component="panel-toggle"][data-ui-part="indicator"]',
     );
     const toggleIcon = projectToggle.querySelector(
-      '[data-ui-part="sidebar-toggle-icon"]',
+      '[data-ui-component="panel-toggle"][data-ui-part="icon"]',
     );
     await expect(indicator).toBeInTheDocument();
     await expect(toggleIcon).toBeInTheDocument();

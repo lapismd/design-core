@@ -1,5 +1,7 @@
 # Specification governance
 
+Panel visibility integration is governed by DC-SHA-053, DC-SHA-040 and DC-SHELL-003. The governed pointer examples cover the same native shared icon inside Workspace, AppShell, Sidebar and mobile controls; preview metadata stays visual-pending.
+
 App component promotion batch registers Responsive Tabs (DC-SHA-055), Avatar
 (DC-SHA-056), Avatar Picker (DC-FORM-047), Topbar (DC-SHELL-004), and Chat
 MarkdownContent (DC-CHAT-001), with one verification row per requirement.

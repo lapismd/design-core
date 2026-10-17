@@ -46,6 +46,8 @@ exists; its contract and research provenance live in
 horizontal column cascades (Miller-column style) with an AppShell-like
 controller, compound Header/Toggle/Body/Item parts, and injected width/collapse
 persistence; it is not registry-backed.
+Prefer `PanelToggleIcon` for sidebar visibility icons, `PanelToggle` for a standalone controlled button, and the existing Workspace/AppShell toggle when controller integration is needed.
+
 `panel-toggle` is a project-authored Layout family composing the public Button
 with a shared standard or compact panel icon. It accepts controlled expanded
 state, left/right/top/bottom orientation and custom content, and supplies Column

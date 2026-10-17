@@ -81,7 +81,7 @@ Layout primitives establish reusable spatial, scrolling, and responsive composit
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/shadcn/sidebar`.
-- The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract; Sidebar.Trigger MUST accept a left/right side defaulting to left and derive expanded state from the current desktop or mobile provider state.
 
 ## DC-SHA-053 — Panel Toggle
 
@@ -91,5 +91,5 @@ Layout primitives establish reusable spatial, scrolling, and responsive composit
 
 - The public boundary is `@lapismd/design-core/shadcn/panel-toggle`; compact remains the default with a 28×24px button and 18×12px icon, while standard reproduces Workspace's frame and bar geometry at a default 16×16px size.
 - Expanded state MUST thicken the indicated edge without rotating the frame; button hover and keyboard focus preview the opposite thickness without changing state, respecting disabled controls and reduced motion.
-- The decorative icon MUST accept native SVG styling attributes and documented sizing tokens, while enclosing controls retain labels, focus, forced colors and ownership of state changes.
+- The decorative icon MUST accept native SVG styling attributes and documented sizing tokens; Workspace, AppShell, Sidebar triggers and mobile/settings controls MUST compose it while retaining controller state, labels, focus, drag exclusions, hints and surface sizing.
 - Column Canvas MUST retain its compact default, custom content, preview behavior, controller actions and composed header hover tokens.

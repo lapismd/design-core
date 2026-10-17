@@ -3,8 +3,7 @@
 
   import * as Sidebar from "../index.js";
   import { Button } from "../../button/index.js";
-  import PanelLeftOpenIcon from "@lucide/svelte/icons/panel-left-open";
-  import PanelLeftCloseIcon from "@lucide/svelte/icons/panel-left-close";
+  import { PanelToggleIcon } from "../../panel-toggle/index.js";
   import LifeBuoyIcon from "@lucide/svelte/icons/life-buoy";
   import SendIcon from "@lucide/svelte/icons/send";
   import FrameIcon from "@lucide/svelte/icons/frame";
@@ -69,11 +68,7 @@
   <Sidebar.Inset>
     <header class="flex h-12 items-center justify-between px-4">
       <Button onclick={() => (open = !open)} size="sm" variant="ghost">
-        {#if open}
-          <PanelLeftCloseIcon />
-        {:else}
-          <PanelLeftOpenIcon />
-        {/if}
+        <PanelToggleIcon expanded={open} iconVariant="standard" />
         <span>{open ? "Close" : "Open"} Sidebar</span>
       </Button>
     </header>

@@ -2,7 +2,7 @@
   import { Button } from "../../shadcn/button/index.js";
   import * as Sheet from "../../shadcn/sheet/index.js";
   import type { AppShellController } from "../core/app-shell-controller.svelte.js";
-  import WorkspaceIcon from "../icon/WorkspaceIcon.svelte";
+  import { PanelToggleIcon } from "../../shadcn/panel-toggle/index.js";
   import type { WorkspaceSettingsController } from "./settings-controller.svelte.js";
   import AppSettingsContent from "./AppSettingsContent.svelte";
   import AppSettingsNavigation from "./AppSettingsNavigation.svelte";
@@ -48,7 +48,12 @@
             size="sm"
             aria-label="Open settings navigation"
           >
-            <WorkspaceIcon name="panel-left" data-icon="inline-start" />
+            <PanelToggleIcon
+              expanded={navigationOpen}
+              side="left"
+              iconVariant="standard"
+              data-icon="inline-start"
+            />
             <span>{selectedSection?.title ?? "Settings"}</span>
           </Button>
         {/snippet}

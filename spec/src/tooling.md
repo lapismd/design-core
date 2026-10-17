@@ -1,5 +1,7 @@
 # Tooling
 
+Panel visibility consumer qualification covers Sidebar.Trigger side="right" and bare CommentComposer composition under strict optional-property typing. Browser evidence checks wrapper state, sizing, hints, keyboard activation, mobile dismissal and focus restoration through the public component compositions.
+
 The catalog discovers the project-authored TagList family and its public
 examples under `shadcn/tag-list`.
 

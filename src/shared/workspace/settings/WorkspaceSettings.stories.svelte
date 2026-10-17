@@ -711,6 +711,7 @@
 
   const { Story } = defineMeta({
     title: "Workspace/Components/Settings",
+    tags: ["visual-pending"],
     component: WorkspaceSettingsSurface,
     parameters: {
       layout: "fullscreen",

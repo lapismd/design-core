@@ -26,6 +26,7 @@
 
   const { Story } = defineMeta({
     title: "Workspace/Framework/App Shell",
+    tags: ["visual-pending"],
     component: AppShellRoot,
     parameters: {
       layout: "fullscreen",
@@ -704,7 +705,7 @@
 
 <Story
   name="Mobile surface"
-  tags={["visual-approved"]}
+  tags={["visual-pending"]}
   parameters={{
     visualDelta: {
       images: [

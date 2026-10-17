@@ -381,8 +381,8 @@
 }
 
 .ui-workspace-bottom-panel-toggle__icon {
-  width: 1rem;
-  height: 1rem;
+  --ui-panel-toggle-standard-icon-width: 1rem;
+  --ui-panel-toggle-standard-icon-height: 1rem;
   transition:
     width 150ms ease,
     height 150ms ease;
@@ -390,8 +390,8 @@
 
 .ui-workspace-bottom-panel-toggle[data-state="expanded"]
   .ui-workspace-bottom-panel-toggle__icon {
-  width: 1.25rem;
-  height: 1.25rem;
+  --ui-panel-toggle-standard-icon-width: 1.25rem;
+  --ui-panel-toggle-standard-icon-height: 1.25rem;
 }
 
 .ui-workspace-bottom-panel-group__empty {

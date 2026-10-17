@@ -18,6 +18,7 @@
 
   const { Story } = defineMeta({
     title: "Shadcn/Layout/Sidebar",
+    tags: ["visual-pending"],
     component: Sidebar.Provider,
   });
 </script>
@@ -25,7 +26,7 @@
 <Story
   name="Your First Sidebar"
   exportName="YourFirstSidebar"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
     visualDelta: {
       images: [
@@ -60,7 +61,7 @@
 <Story
   name="Sidebar.Header"
   exportName="SidebarHeader"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/sidebar/sidebar-header-chromium.png"],
@@ -93,7 +94,7 @@
 <Story
   name="Sidebar.Footer"
   exportName="SidebarFooter"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/sidebar/sidebar-footer-chromium.png"],
@@ -126,7 +127,7 @@
 <Story
   name="Sidebar.Group"
   exportName="SidebarGroup"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/sidebar/sidebar-group-chromium.png"],
@@ -159,7 +160,7 @@
 <Story
   name="Collapsible Sidebar.Group"
   exportName="CollapsibleSidebarGroup"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
     visualDelta: {
       images: [
@@ -194,7 +195,7 @@
 <Story
   name="Sidebar.GroupAction"
   exportName="SidebarGroupaction"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
     visualDelta: {
       images: [
@@ -229,7 +230,7 @@
 <Story
   name="Sidebar.Menu"
   exportName="SidebarMenu"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/sidebar/sidebar-menu-chromium.png"],
@@ -262,7 +263,7 @@
 <Story
   name="DropdownMenu"
   exportName="Dropdownmenu"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/sidebar/dropdownmenu-chromium.png"],
@@ -295,7 +296,7 @@
 <Story
   name="Sidebar.MenuSub"
   exportName="SidebarMenusub"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
     visualDelta: {
       images: ["/visual-baselines/shadcn/sidebar/sidebar-menusub-chromium.png"],
@@ -328,7 +329,7 @@
 <Story
   name="Collapsible Sidebar.Menu"
   exportName="CollapsibleSidebarMenu"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
     visualDelta: {
       images: [
@@ -363,7 +364,7 @@
 <Story
   name="Sidebar.MenuBadge"
   exportName="SidebarMenubadge"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
     visualDelta: {
       images: [
@@ -398,7 +399,7 @@
 <Story
   name="Controlled Sidebar"
   exportName="ControlledSidebar"
-  tags={["upstream-example", "visual-approved"]}
+  tags={["upstream-example", "visual-pending"]}
   parameters={{
     visualDelta: {
       images: [

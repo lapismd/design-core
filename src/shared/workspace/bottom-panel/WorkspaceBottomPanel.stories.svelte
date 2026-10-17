@@ -21,6 +21,7 @@
 
   const { Story } = defineMeta({
     title: "Workspace/Components/Bottom Panel",
+    tags: ["visual-pending"],
     component: WorkspaceBottomPanel,
     parameters: {
       layout: "fullscreen",
