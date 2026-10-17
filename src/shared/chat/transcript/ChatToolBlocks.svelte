@@ -70,20 +70,20 @@
     border-radius: var(--radius);
   }
   :global(.ui-transcript-file-trigger) {
-    display: inline-flex;
+    display: flex;
     align-items: center;
     gap: 0.5rem;
     width: fit-content;
     max-width: 100%;
     padding: 0;
-    min-height: 28px;
+    min-height: var(--ui-transcript-tool-row-height, 1.5rem);
     border: 0;
     border-radius: var(--radius);
     background: transparent;
     color: var(--muted-foreground);
     cursor: pointer;
     font-family: var(--font-sans, system-ui);
-    font-size: 0.875rem;
+    font-size: var(--ui-transcript-tool-font-size, 0.8125rem);
     font-weight: 400;
     line-height: 1.5;
     text-align: left;
@@ -106,6 +106,6 @@
     outline-offset: 2px;
   }
   .ui-transcript-tool-file-content {
-    padding-block-start: 0.5rem;
+    padding-block-start: var(--ui-transcript-tool-row-gap, 0.25rem);
   }
 </style>

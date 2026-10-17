@@ -152,7 +152,7 @@
     const bottomPanelToggleIcon = middleBottomToggle?.querySelector("svg")!;
     const rightSidebarToggleIcon = closeRightSidebar.querySelector("svg")!;
     await expect(middleBottomToggle).toHaveAttribute(
-      "data-ui-component",
+      "data-ui-part",
       "workspace-bottom-panel-toggle",
     );
     await expect(middleBottomToggle).toHaveAttribute(
@@ -187,7 +187,7 @@
     const collapsedSidebarBottomToggle =
       openRightSidebar.previousElementSibling;
     await expect(collapsedSidebarBottomToggle).toHaveAttribute(
-      "data-ui-component",
+      "data-ui-part",
       "workspace-bottom-panel-toggle",
     );
     await expect(collapsedSidebarBottomToggle).toHaveAttribute(

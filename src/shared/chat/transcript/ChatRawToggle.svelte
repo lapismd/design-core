@@ -12,7 +12,7 @@
 <span class="ui-transcript-raw-toggle">
   <Button
     variant="ghost"
-    size="icon-sm"
+    size="icon-xs"
     aria-label={label}
     title={label}
     aria-pressed={raw}
@@ -24,6 +24,7 @@
 
 <style>
   .ui-transcript-raw-toggle {
+    display: flex;
     flex: none;
     opacity: 0;
   }

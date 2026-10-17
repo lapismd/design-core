@@ -1,6 +1,16 @@
 <script lang="ts">
-  import type { TranscriptItem, TranscriptProps } from "./model.js";
+  import { getContext } from "svelte";
   import TranscriptAvatar from "./TranscriptAvatar.svelte";
+  import {
+    authorContext,
+    type TranscriptAuthorContext,
+  } from "./author-context.js";
+  import { transcriptAuthorIdentity } from "./author-identity.js";
+  import type { TranscriptItem, TranscriptProps } from "./model.js";
+  import {
+    AvatarGroup,
+    type AvatarIdentity,
+  } from "../../shadcn/avatar/index.js";
   let {
     item,
     onOpenThread,
@@ -25,7 +35,20 @@
         : ""),
   );
   const hasReplies = $derived((item.replyCount ?? 0) > 0 && !!onOpenThread);
+  const participants = $derived(
+    (item.replyParticipants ?? []).map(transcriptAuthorIdentity),
+  );
+  const authorPresentation = getContext<TranscriptAuthorContext | undefined>(
+    authorContext,
+  );
 </script>
+
+{#snippet participantAvatar(identity: AvatarIdentity)}
+  {@const author = item.replyParticipants!.find(
+    (person) => person.id === identity.id,
+  )!}
+  <TranscriptAvatar member={author} size="group" />
+{/snippet}
 
 {#if timestamp || item.edited || hasReplies || supplement}
   <div class="ui-transcript-message-metadata">
@@ -36,25 +59,24 @@
           })}>{timestamp}</time
         >{:else}<span>{timestamp}</span>{/if}{/if}
     {#if item.edited}<span>Edited</span>{/if}
-    {#if hasReplies}<button
-        type="button"
-        class="ui-transcript-message-replies"
-        onclick={() => onOpenThread?.(item)}
-      >
-        {#if item.replyParticipants?.length}<span
-            class="ui-transcript-reply-participants"
-            aria-hidden="true"
-            >{#each item.replyParticipants as author (author.id)}<TranscriptAvatar
-                member={author}
-                size="inline"
-                interactive={false}
-              />{/each}</span
-          >{/if}
-        <span
-          >{item.replyLabel ??
-            `${item.replyCount} ${item.replyCount === 1 ? "reply" : "replies"}`}</span
+    {#if hasReplies}<span class="ui-transcript-message-reply-summary">
+        <AvatarGroup
+          items={participants}
+          size="xs"
+          label="Reply participants"
+          avatar={authorPresentation?.popover ? participantAvatar : undefined}
+        />
+        <button
+          type="button"
+          class="ui-transcript-message-replies"
+          onclick={() => onOpenThread?.(item)}
         >
-      </button>{/if}
+          <span class="ui-transcript-message-reply-label"
+            >{item.replyLabel ??
+              `${item.replyCount} ${item.replyCount === 1 ? "reply" : "replies"}`}</span
+          >
+        </button></span
+      >{/if}
     {@render supplement?.(item)}
   </div>
 {/if}

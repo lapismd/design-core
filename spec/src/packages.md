@@ -191,3 +191,8 @@ and workspace audits remain unchanged.
 ## Community component boundaries
 
 AvatarGroup extends the Avatar wildcard family; AuthorCard, ReferenceChip, LinkPreview, Spoiler and RelativeTime use their Shadcn family exports. Forms exports QuantityInput through its barrel and forms/quantity-input, while Chat exports ThreadPanel and neutral composer suggestion models.
+Compact AvatarGroup composition is covered by strict source consumers and the
+clean packed fixture, including aligned member/overflow sizing and activation of
+a separate reply control without nested buttons.
+Workspace sidebar and bottom-panel imports are also exercised with both states,
+retaining the default PanelToggle button and fixed standard icon without Tailwind.

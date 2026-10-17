@@ -23,6 +23,11 @@
       name: "About Alex Morgan",
     });
     await expect(
+      card.querySelector(
+        '.ui-author-card__identity [data-ui-component="avatar"]',
+      ),
+    ).toHaveStyle({ width: "48px" });
+    await expect(
       within(card).getByRole("button", { name: "Activity" }),
     ).toBeDisabled();
     await userEvent.click(

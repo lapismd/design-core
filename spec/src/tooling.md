@@ -4,6 +4,11 @@ The packed public-runtime fixture exercises acknowledged versioned comment edits
 and the docked MarkdownComposer toolbar across teardown/remount, alongside
 Transcript timestamps. These checks run in both themes and development/production
 consumers without Tailwind tooling; fixtures remain outside the published package.
+The same fixture checks compact AvatarGroup composition, aligned member/overflow
+sizing, participant tooltips and keyboard activation of the separate reply button
+without nested focus targets.
+The packed fixture also checks fixed default Workspace sidebar and bottom-panel
+button/icon dimensions in both states through their public family imports.
 
 Panel visibility consumer qualification covers Sidebar.Trigger side="right" and bare CommentComposer composition under strict optional-property typing. Browser evidence checks wrapper state, sizing, hints, keyboard activation, mobile dismissal and focus restoration through the public component compositions.
 

@@ -17,3 +17,19 @@ Public tokens: `--ui-avatar-size`, `--ui-avatar-radius`, `--ui-avatar-background
 Avatar display props). `max` optionally collapses the suffix behind a named
 count tooltip. Size follows Avatar and defaults to md (32px); `--ui-avatar-group-overlap` defaults to
 .5rem and `--ui-avatar-group-overflow-size` follows the selected avatar size.
+
+Supported group sizes are `xs` (20px), `sm` (24px), `md` (32px), `lg` (48px),
+`xl` (80px), `2xl` (128px) and `3xl` (160px). The overflow count uses the same
+size. See **Participant group sizes** in the Avatar catalog for a comparison.
+
+Compose the group beside a labelled reply or navigation button. Participant
+buttons retain their names and tooltips while the separate reply button owns
+navigation. Transcript reply indicators use this composition at `xs`.
+
+Hovered members rise above their neighbours; keyboard focus keeps the focused
+member visible too. Reply-link decoration stays on the separate count label.
+
+Supply the optional `avatar(person, size)` snippet to replace each member's name
+tooltip with shared AuthorCard presentation. The snippet owns its accessible
+trigger, so the group does not add a second button or tooltip. Omitting it keeps
+the default member tooltips. **Author card participants** demonstrates both states.

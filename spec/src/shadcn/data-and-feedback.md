@@ -116,7 +116,8 @@ Data and feedback primitives communicate state without taking ownership of consu
 
 - The public family MUST provide named and decorative presentations with image-failure fallback and token-driven sizing, including larger `2xl` and `3xl` presentations for editable profile avatars.
 - Presence MUST remain available through an accessible label rather than color alone.
-- AvatarGroup MUST default to 32px avatars and preserve supplied identity order, overlapping circle or rounded shapes, full accessible names and optional host-selected overflow limits.
+- AvatarGroup MUST default to 32px avatars and preserve supplied identity order, overlapping circle or rounded shapes, full accessible names and optional host-selected overflow limits, with hovered or focused participants raised above their neighbours.
+- Groups MUST support every Avatar size, size overflow indicators consistently and accept optional custom member content for shared AuthorCard triggers without nested buttons or tooltips.
 
 ## DC-SHA-058 — Author Card
 
@@ -126,6 +127,7 @@ Data and feedback primitives communicate state without taking ownership of consu
 
 - Avatar and mention triggers MUST retain supplied labels, shape, presence, details and disabled actions without resolving profiles or executing application routes.
 - Popover dismissal MUST restore trigger focus and viewport-bounded content MUST use shared ScrollArea with inherited semantic tokens.
+- Compact trigger sizing MUST NOT shrink the identity avatar inside the author details surface.
 
 ## DC-SHA-059 — Reference Chip
 

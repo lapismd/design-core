@@ -1,13 +1,12 @@
 <script lang="ts">
-  import { Avatar } from "../../shadcn/avatar/index.js";
   import { getContext } from "svelte";
-  import * as Popover from "../../shadcn/popover/index.js";
-  import { ScrollArea } from "../../shadcn/scroll-area/index.js";
-  import { Button } from "../../shadcn/button/index.js";
+  import { Avatar } from "../../shadcn/avatar/index.js";
+  import { AuthorCard } from "../../shadcn/author-card/index.js";
   import {
     authorContext,
     type TranscriptAuthorContext,
   } from "./author-context.js";
+  import { transcriptAuthorIdentity } from "./author-identity.js";
   import type { TranscriptAuthor } from "./model.js";
   let {
     member,
@@ -23,89 +22,53 @@
   const context = getContext<TranscriptAuthorContext | undefined>(
     authorContext,
   );
+  const identity = $derived(transcriptAuthorIdentity(member));
+  const pixels = $derived(
+    size === "inline"
+      ? "1rem"
+      : size === "group"
+        ? "1.25rem"
+        : size === "medium"
+          ? "2.25rem"
+          : "1.5rem",
+  );
+  const description = $derived(context?.popover?.description?.(member));
+  const actions = $derived(
+    (context?.popover?.actions?.(member) ?? []).map((action) => ({
+      id: action.id,
+      label: action.label,
+      ...(action.disabled === undefined ? {} : { disabled: action.disabled }),
+      onSelect: () => action.onSelect(member),
+    })),
+  );
   let open = $state(false);
 </script>
 
-{#snippet avatar()}
-  <Avatar
-    name={member.name}
-    {...member.initials === undefined ? {} : { initials: member.initials }}
-    {...member.image === undefined ? {} : { src: member.image }}
-    {...member.emoji === undefined ? {} : { emoji: member.emoji }}
-    shape={member.shape ?? "circle"}
-    {...member.background === undefined
-      ? {}
-      : { background: member.background }}
-    {decorative}
-    style={`--ui-avatar-size: ${size === "inline" ? "1rem" : size === "medium" ? "2.25rem" : "1.5rem"}`}
-  />
-{/snippet}
+{#snippet details()}{@render context?.popover?.details?.(member)}{/snippet}
 {#if interactive && context?.popover}
-  <Popover.Root bind:open>
-    <Popover.Trigger
-      class="ui-transcript-author-trigger"
-      aria-label={`About ${member.name}`}>{@render avatar()}</Popover.Trigger
-    >
-    <Popover.Content
-      class="ui-transcript-author-popover"
-      align="start"
-      role="dialog"
-      aria-label={`About ${member.name}`}
-    >
-      <ScrollArea
-        scrollStrategy="styled"
-        style="max-height:min(18rem, var(--bits-popover-content-available-height))"
-      >
-        <strong>{member.name}</strong>
-        {#if context.popover.description?.(member)}<p>
-            {context.popover.description(member)}
-          </p>{/if}
-        {@render context.popover.details?.(member)}
-        <div class="ui-transcript-author-actions">
-          {#each context.popover.actions?.(member) ?? [] as action (action.id)}
-            <Button
-              variant="outline"
-              size="sm"
-              disabled={action.disabled}
-              onclick={() => {
-                if (!action.disabled) {
-                  action.onSelect(member);
-                  open = false;
-                }
-              }}>{action.label}</Button
-            >
-          {/each}
-        </div>
-      </ScrollArea>
-    </Popover.Content>
-  </Popover.Root>
-{:else}{@render avatar()}{/if}
+  <span
+    class="ui-transcript-author"
+    style={`--ui-author-card-avatar-size: ${pixels}`}
+  >
+    <AuthorCard
+      author={identity}
+      size="md"
+      interaction={context.popover.interaction ?? "popover"}
+      {...description === undefined ? {} : { description }}
+      {...member.role === undefined ? {} : { role: member.role }}
+      {details}
+      {actions}
+      bind:open
+    />
+  </span>
+{:else}
+  <Avatar {...identity} {decorative} style={`--ui-avatar-size: ${pixels}`} />
+{/if}
 
 <style>
-  :global(.ui-transcript-author-trigger) {
+  .ui-transcript-author {
     display: inline-flex;
     flex: none;
-    padding: 0;
-    border: 0;
-    border-radius: var(--radius);
-    background: transparent;
-    cursor: pointer;
-  }
-  :global(.ui-transcript-author-trigger:focus-visible) {
-    outline: 2px solid var(--ring);
-    outline-offset: 2px;
-  }
-  :global(.ui-transcript-author-popover) {
-    --ui-popover-width: min(17rem, calc(100vw - 2rem));
-  }
-  :global(.ui-transcript-author-popover p) {
-    margin-block: 0.375rem;
-    color: var(--muted-foreground);
-  }
-  .ui-transcript-author-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.375rem;
-    margin-block-start: 0.5rem;
+    vertical-align: middle;
   }
 </style>

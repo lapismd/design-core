@@ -46,7 +46,7 @@ export const ReactionsAndProfiles = `<script lang="ts">
   const items: TranscriptItem[] = [{id:"message",kind:"message",role:"user",label:"Request",author,blocks:[{id:"message/body",revision:"1",kind:"markdown",label:"Request",text:"Please review this change."}]}];
   let reactions = $state<Record<string, Reaction[]>>({});
 </script>
-<div style="height:24rem"><Transcript {items} {reactions} onReact={(id, emoji, custom) => {reactions = {...reactions,[id]:[{emoji,...(custom ? {custom} : {}),count:1,selected:true}]};}} authorPopover={{description: () => "Project maintainer",actions: (person) => [{id:"profile",label:"View profile",onSelect: () => { /* Open the host profile route for person.id. */ }}]}} /></div>`;
+<div style="height:24rem"><Transcript {items} {reactions} onReact={(id, emoji, custom) => {reactions = {...reactions,[id]:[{emoji,...(custom ? {custom} : {}),count:1,selected:true}]};}} authorPopover={{interaction:"hover",description: () => "Project maintainer",actions: (person) => [{id:"profile",label:"View profile",onSelect: () => { /* Open the host profile route for person.id. */ }}]}} /></div>`;
 
 export const RecordedConversation = `<script lang="ts">
   import type { Snippet } from "svelte";

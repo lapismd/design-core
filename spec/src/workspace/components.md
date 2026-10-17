@@ -1,8 +1,9 @@
 # Workspace / Components
 
-Sidebar, bottom-panel and mobile/settings visibility icons compose the standard
-PanelToggleIcon under DC-SHA-053; controller actions, hints, drag exclusions,
-expanded sizing and focus behavior remain Workspace-owned.
+Sidebar and bottom-panel visibility controls compose PanelToggle under DC-SHA-053
+with its default button styling and a fixed standard icon. Mobile/settings
+visibility icons compose PanelToggleIcon. Controller actions, hints and drag
+exclusions remain Workspace-owned.
 
 Workspace-tab formatting retains DC-WS-030 unchanged; see
 [the formatting record](../../records/workspace-tabs-formatting.md).
@@ -76,7 +77,7 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 
 - The public boundary is `@lapismd/design-core/workspace/bottom-panel`.
 - The top resize rail and nested panel dividers MUST expose row and column resize cursors respectively.
-- The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
+- The visibility toggle MUST use PanelToggle's default ghost button styling and fixed standard icon, including hover/focus preview, without growing when expanded; the legacy size prop remains accepted.
 - The family MUST NOT host the dock visibility toggle in the right sidebar header; see DC-WS-048.
 
 ## DC-WS-045 — Bottom Panel status clearance
@@ -432,6 +433,7 @@ Workspace components compose reusable visual surfaces on top of framework and sh
 ### Acceptance details
 
 - The public boundary is `@lapismd/design-core/workspace/sidebar-toggle`.
+- Left and right toggles MUST use PanelToggle's default ghost button styling and fixed standard icon, including hover/focus preview, without growing when expanded; hint identity, drag exclusions, controlled callbacks and the legacy size prop remain available.
 - The catalog MUST demonstrate the family’s supported states without introducing a second runtime contract.
 
 ## DC-WS-025 — Workspace Split

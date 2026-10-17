@@ -1,5 +1,10 @@
 <script lang="ts">
-  import { AvatarGroup } from "@lapismd/design-core/shadcn/avatar";
+  import { Button } from "@lapismd/design-core/shadcn/button";
+  import {
+    AvatarGroup,
+    type AvatarIdentity,
+    type AvatarSize,
+  } from "@lapismd/design-core/shadcn/avatar";
   import { AuthorCard } from "@lapismd/design-core/shadcn/author-card";
   import { ReferenceChip } from "@lapismd/design-core/shadcn/reference-chip";
   import { LinkPreview } from "@lapismd/design-core/shadcn/link-preview";
@@ -252,10 +257,17 @@
   position="bottom"
 />
 
-<AvatarGroup items={[identity]} /><AuthorCard
-  author={identity}
-  interaction="popover"
-/>
+{#snippet participant(person: AvatarIdentity, size: AvatarSize)}<AuthorCard
+    author={person}
+    {size}
+  />{/snippet}
+<AvatarGroup items={[identity]} avatar={participant} /><span
+  ><AvatarGroup
+    items={[identity]}
+    size="xs"
+    label="Reply participants"
+  /><Button aria-label="Open replies">2 replies</Button></span
+><AuthorCard author={identity} interaction="popover" />
 <ReferenceChip label="Reference" /><LinkPreview href="https://example.com" />
 <Spoiler>Captured spoiler</Spoiler><RelativeTime
   timestamp="2026-10-17T12:00:00Z"

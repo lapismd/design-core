@@ -22,6 +22,12 @@
 .ui-avatar-group__member[data-shape="rounded"] {
   border-radius: 25%;
 }
+.ui-avatar-group__member:hover,
+.ui-avatar-group__member:focus-within,
+.ui-avatar-group__overflow:hover,
+.ui-avatar-group__overflow:focus-within {
+  z-index: 1;
+}
 .ui-avatar-group__member:focus-visible,
 .ui-avatar-group__overflow:focus-visible {
   outline: 2px solid var(--ring);

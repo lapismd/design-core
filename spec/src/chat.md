@@ -104,7 +104,7 @@ compact fold row with a trailing divider.
 ### Acceptance details
 
 - Stable item and block identities MUST retain selection, folds and scroll anchors across append, prepend and source updates, and overlapping inspector readers MUST restore still-mounted source registrations under either teardown order; host extensions own application syntax and authorized navigation.
-- Markdown, code, captured line numbers, patches, compact grouped tools with host-supplied icons, raw captures, metadata and custom blocks MUST use native CSS with family-owned tokens and keyboard-accessible controls, with optional author details/actions in shared accessible popovers; nested file disclosures MUST lead with file/patch icons and reasoning MUST have a distinct lightbulb icon unless overridden by the host.
+- Markdown, code, captured line numbers, patches, compact grouped tools with host-supplied icons, uniform disclosure heights and activity gaps, raw captures, metadata and custom blocks MUST use native CSS with family-owned tokens and keyboard-accessible controls, with optional author details/actions through the shared AuthorCard in hover or popover mode across messages, comments, queues and composer avatars; nested file disclosures MUST lead with file/patch icons and reasoning MUST have a distinct lightbulb icon unless overridden by the host.
 - HistoryEdge MUST expose loading, empty, load and retry presentation without discarding retained content or executing transport.
 - Controlled document/classic switching MUST reuse the same items and controller, retain captured readers, comments, drafts and disclosures, defer through IME composition and supply the applied view to the composer snippet, as demonstrated by the full-conversation example.
 
@@ -193,3 +193,14 @@ compact fold row with a trailing divider.
 - Reply selection and source navigation MUST focus the retained composer without clearing its draft.
 - Submission MUST emit exact text and parent identity while failed or unacknowledged submissions retain the draft and newer edits.
 - Message actions, author details, Markdown extensions, loading history and disabled controls MUST compose existing shared primitives.
+
+## DC-CHAT-015 — Reply participant summaries
+
+**Requirement.** Transcript reply metadata MUST reuse the shared AvatarGroup in document and classic presentations with separate participant details and reply navigation controls.
+
+### Acceptance details
+
+- The compact group MUST use the `xs` size and preserve supplied participant order, images, emoji, initials, shape and background.
+- The separate labelled reply control MUST own keyboard activation and navigation callbacks while participant details remain outside it without nested buttons.
+- Optional author presentation MUST compose the same shared AuthorCard for reply participants, retaining host-owned descriptions, details and actions.
+- Reply-link decoration MUST apply only to the count label, leaving participant avatars separate and undecorated.

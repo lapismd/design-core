@@ -18,7 +18,7 @@
 
 .ui-workspace-stacked-tabs[data-workspace-focus-mode="true"]
   > .ui-workspace-stacked-tabs__chrome
-  > [data-ui-component="workspace-sidebar-toggle"] {
+  > [data-workspace-sidebar-toggle] {
   display: none;
 }
 

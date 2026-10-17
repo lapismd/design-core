@@ -187,6 +187,17 @@
         node.getAttribute("data-chat-item"),
       );
     const capturedIds = ids();
+    await expect(
+      canvasElement.querySelector(".ui-transcript-tool-summary"),
+    ).toHaveStyle({ fontSize: "13px", minHeight: "24px" });
+    const replies = canvas.getByRole("button", {
+      name: /^2 replies$/,
+    });
+    await expect(
+      replies.parentElement!.querySelector(
+        '[data-ui-component="avatar-group"]',
+      ),
+    ).toHaveAttribute("data-size", "xs");
     await userEvent.click(canvas.getByRole("button", { name: "Classic" }));
     await expect(root).toHaveAttribute("data-conversation-view", "classic");
     await expect(

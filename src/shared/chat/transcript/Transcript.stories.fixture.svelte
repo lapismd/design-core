@@ -595,6 +595,7 @@
             ]
           : undefined}
         authorPopover={{
+          interaction: scenario === "full" ? "hover" : "popover",
           description: (member) =>
             member.id === "you" || member.name === "You"
               ? "Project maintainer · Available"

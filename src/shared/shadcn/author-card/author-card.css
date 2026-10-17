@@ -72,6 +72,6 @@
   gap: 0.25rem;
 }
 
-.ui-author-card__trigger[data-size="md"] {
+.ui-author-card__trigger[data-size="md"] > [data-ui-component="avatar"] {
   --ui-avatar-size: var(--ui-author-card-avatar-size, 2.25rem);
 }

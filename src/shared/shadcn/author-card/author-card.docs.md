@@ -13,3 +13,7 @@ host tokens and overlays use the existing portal context.
 
 See the colocated AuthorCard.example-sources.ts for consumer-usable source.
 Source attribution is in PROVENANCE.md.
+
+`--ui-author-card-avatar-size` sizes the default trigger's avatar. It does not
+shrink the larger identity avatar in the details card. AvatarGroup can compose
+AuthorCard through its optional `avatar(person, size)` snippet.

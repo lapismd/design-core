@@ -4,59 +4,88 @@ async function open(page: Page, id: string) {
   await page.goto(`/iframe.html?id=${id}&viewMode=story`);
   await waitForVisualStoryFinished(page, id);
 }
-test("Workspace retains sizing, hint and keyboard behavior around the shared icon", async ({
-  page,
-}) => {
-  await open(
+for (const side of ["left", "right"] as const) {
+  test(`Workspace ${side} toggle uses default button styling without resizing`, async ({
     page,
-    "workspace-components-sidebar-toggle--both-sidebar-directions",
-  );
-  const toggle = page.getByRole("button", {
-    name: "Toggle right sidebar",
-    exact: true,
+  }) => {
+    await open(
+      page,
+      "workspace-components-sidebar-toggle--both-sidebar-directions",
+    );
+    const toggle = page.getByRole("button", {
+      name: `Toggle ${side} sidebar`,
+      exact: true,
+    });
+    const icon = toggle.locator(
+      '[data-ui-component="panel-toggle"][data-ui-part="icon"]',
+    );
+    const bar = icon.locator('[data-ui-part="indicator"]');
+    await expect(toggle).toHaveAttribute("data-ui-component", "button");
+    await expect(toggle).toHaveAttribute("data-panel-toggle");
+    await expect(toggle).toHaveAttribute("data-size", "icon-xs");
+    await expect(toggle).toHaveAttribute("data-variant", "ghost");
+    await expect(toggle).toHaveCSS("width", "28px");
+    await expect(toggle).toHaveCSS("height", "24px");
+    await expect(icon).toHaveAttribute("data-icon-variant", "standard");
+    await expect(icon).toHaveAttribute("data-side", side);
+    await expect(icon).toHaveAttribute("data-expanded", "false");
+    await expect(icon).toHaveCSS("width", "16px");
+    await expect(icon).toHaveCSS("height", "16px");
+    await expect(toggle).toHaveAttribute(
+      "data-hint-target-id",
+      `sidebar:${side}:toggle`,
+    );
+    await expect(toggle).toHaveAttribute("data-desktop-drag-region", "false");
+    await toggle.focus();
+    await expect(bar).toHaveCSS("width", "5.76px");
+    await toggle.press("Space");
+    await expect(icon).toHaveAttribute("data-expanded", "true");
+    await expect(toggle).toHaveAttribute("aria-expanded", "true");
+    await expect(icon).toHaveCSS("width", "16px");
+    await expect(icon).toHaveCSS("height", "16px");
+    await expect(toggle).toHaveCSS("width", "28px");
+    await expect(toggle).toHaveCSS("height", "24px");
+    await expect(bar).toHaveCSS("width", "2px");
+    await expect(page.getByRole("status")).toHaveText(
+      `${side === "left" ? "Left" : "Right"} sidebar selected`,
+    );
+    await toggle.press("Enter");
+    await expect(icon).toHaveAttribute("data-expanded", "false");
+    await expect(toggle).toBeFocused();
   });
-  const icon = toggle.locator(
-    '[data-ui-component="panel-toggle"][data-ui-part="icon"]',
-  );
-  await expect(icon).toHaveAttribute("data-icon-variant", "standard");
-  await expect(icon).toHaveAttribute("data-side", "right");
-  await expect(icon).toHaveAttribute("data-expanded", "false");
-  await expect(icon).toHaveCSS("width", "16px");
-  await expect(toggle).toHaveAttribute(
-    "data-hint-target-id",
-    "sidebar:right:toggle",
-  );
-  await expect(toggle).toHaveAttribute("data-desktop-drag-region", "false");
-  await toggle.focus();
-  await toggle.press("Space");
-  await expect(icon).toHaveAttribute("data-expanded", "true");
-  await expect(icon).toHaveCSS("width", "20px");
-  await expect(page.getByRole("status")).toHaveText("Right sidebar selected");
-});
-test("Workspace bottom control keeps the fixed frame and vertical indicator", async ({
+}
+
+test("Workspace bottom control uses default button styling and fixed frame", async ({
   page,
 }) => {
   await open(page, "workspace-demo-reusable-framework--bottom-panel-shell");
-  const toggle = page
-    .locator('[data-ui-component="workspace-bottom-panel-toggle"]')
-    .first();
+  const toggle = page.locator("[data-workspace-bottom-panel-toggle]").first();
   const icon = toggle.locator(
     '[data-ui-component="panel-toggle"][data-ui-part="icon"]',
   );
+  await expect(toggle).toHaveAttribute("data-ui-component", "button");
+  await expect(toggle).toHaveAttribute("data-panel-toggle");
+  await expect(toggle).toHaveAttribute("data-size", "icon-xs");
+  await expect(toggle).toHaveAttribute("data-variant", "ghost");
   await expect(icon).toHaveAttribute("data-side", "bottom");
   await expect(icon).toHaveAttribute("viewBox", "0 0 24 24");
   await expect(icon.locator("rect").first()).toHaveAttribute("width", "22");
-  const previous = await icon.getAttribute("data-expanded");
-  await toggle.click();
-  await expect(icon).toHaveAttribute(
-    "data-expanded",
-    previous === "true" ? "false" : "true",
-  );
-  const bar = icon.locator('[data-ui-part="indicator"]');
-  await expect(bar).toHaveCSS("width", "14px");
-  await expect
-    .poll(() => bar.evaluate((e) => parseFloat(getComputedStyle(e).height)))
-    .toBe(previous === "true" ? 2 : 5);
+  for (let state = 0; state < 2; state++) {
+    await expect(toggle).toHaveCSS("width", "28px");
+    await expect(toggle).toHaveCSS("height", "24px");
+    await expect(icon).toHaveCSS("width", "16px");
+    await expect(icon).toHaveCSS("height", "16px");
+    const previous = await icon.getAttribute("data-expanded");
+    await toggle.click();
+    await expect(icon).toHaveAttribute(
+      "data-expanded",
+      previous === "true" ? "false" : "true",
+    );
+    const bar = icon.locator('[data-ui-part="indicator"]');
+    await expect(bar).toHaveCSS("width", "14px");
+    // Hover previews the next action while keeping the entire SVG frame fixed.
+    await expect(bar).toHaveCSS("height", previous === "true" ? "5px" : "2px");
+  }
 });
 test("AppShell outer and body controls show their effective controller state", async ({
   page,

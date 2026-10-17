@@ -42,6 +42,12 @@ override. This replaces the earlier, larger 1rem default following visual review
 Collapsed file, tool and context headers show only the last nonempty current root
 comment per discussion. Expanding restores earlier comments; agent responses stay
 in their linked messages. Historical versions remain in history.
+Tool, file and reasoning disclosure rows share a compact rhythm: 24px minimum
+height, 13px type and 4px between activity rows, with no extra inline baseline
+space or taller hidden raw control. Override `--ui-transcript-tool-row-height`,
+`--ui-transcript-tool-font-size` and `--ui-transcript-tool-row-gap` to adjust it.
+Prose messages retain their separate paragraph and turn spacing.
+
 Nested file headers lead with file/patch icons; reasoning uses the lightbulb
 also used by jj-store's thinking control. Hosts can override item icons.
 
@@ -65,6 +71,14 @@ Render `MessageQueue` in `queuedMessages` with exact submission snapshots and
 recipient display states. Cancellation, status review and acknowledgement belong
 to the host. Unknown outcomes retain their content and explanation. Long text
 expands without changing the captured snapshot.
+
+Set `authorPopover` to opt every transcript identity into the shared AuthorCard,
+including messages, comments, queues, composer avatars and reply groups. Its
+`interaction` defaults to `"popover"`; choose `"hover"` for profile previews.
+The full conversation enables hover cards with host-supplied descriptions and
+actions. Omitting `authorPopover` retains ordinary avatar presentation and group
+name tooltips. The shared AvatarGroup also accepts a generic `avatar(person, size)`
+snippet for AuthorCard composition outside Transcript.
 
 Supply `onReact`, controlled `reactions` and optional custom/restricted emoji to
 enable adding or toggling reactions, including with an external comment controller.
@@ -107,6 +121,10 @@ hover surface. The same readers remain mounted in Document and Classic. Set
 `timestamp` for display text and `createdAt` for an ISO date/full-date tooltip;
 `edited`, `replyCount`, `replyLabel` and `replyParticipants` supply neutral metadata.
 `onOpenThread(item)` requests host navigation. Metadata supplements remain available.
+Reply participant summaries use the shared AvatarGroup at `xs` (20px), preserving
+images, emoji, initials and shapes. Participant buttons retain their names and optional AuthorCards beside the separate reply button; the reply count owns its navigation
+callback and keyboard activation. Hover underlines only the reply label; avatars remain undecorated
+and the hovered participant rises above its neighbours.
 
 Reply contexts use one outer padded border. Jump to end focuses the enabled
 composer in the transcript's composer slot, falling back to the last item.

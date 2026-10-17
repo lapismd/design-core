@@ -87,6 +87,36 @@ async function checkPrimitiveStates(page) {
   assert.equal(styles.standardPanelWidth, "16px");
   assert.equal(styles.standardPanelHeight, "16px");
   assert.equal(styles.composedIconWidth, "20px");
+  const workspaceToggles = await page
+    .locator(
+      "[data-workspace-sidebar-toggle], [data-workspace-bottom-panel-toggle]",
+    )
+    .evaluateAll((buttons) =>
+      buttons.map((button) => {
+        const icon = button.querySelector("svg");
+        return {
+          host: button.getAttribute("data-ui-component"),
+          variant: button.getAttribute("data-variant"),
+          size: button.getAttribute("data-size"),
+          width: getComputedStyle(button).width,
+          height: getComputedStyle(button).height,
+          iconWidth: getComputedStyle(icon).width,
+          iconHeight: getComputedStyle(icon).height,
+        };
+      }),
+    );
+  assert.deepEqual(
+    workspaceToggles,
+    Array.from({ length: 6 }, () => ({
+      host: "button",
+      variant: "ghost",
+      size: "icon-xs",
+      width: "28px",
+      height: "24px",
+      iconWidth: "16px",
+      iconHeight: "16px",
+    })),
+  );
   await page.getByRole("tab", { name: "Archive details" }).click();
   assert.equal(
     await page.getByText("Archive details panel", { exact: true }).isVisible(),
@@ -375,6 +405,52 @@ async function checkCommunityComponents(page) {
     await scope.getByRole("group", { name: "Archive participants" }).count(),
     1,
   );
+  const replyGroup = scope.getByRole("button", {
+    name: "Packed replies",
+    exact: true,
+  });
+  assert.equal(await replyGroup.locator("button, [tabindex]").count(), 0);
+  assert.equal(
+    await replyGroup.locator('[data-ui-component="avatar-group"]').count(),
+    0,
+  );
+  const participants = scope.getByRole("group", {
+    name: "Packed reply participants",
+  });
+  assert.equal(await participants.getByRole("button").count(), 2);
+  const participant = participants.getByRole("button", {
+    name: "About Archive author",
+    exact: true,
+  });
+  await participant.hover();
+  const participantCard = page.getByRole("group", {
+    name: "About Archive author",
+    exact: true,
+  });
+  await participantCard.waitFor();
+  assert.equal(
+    await participantCard.locator('[data-ui-component="author-card"]').count(),
+    1,
+  );
+  await page.keyboard.press("Escape");
+  await participantCard.waitFor({ state: "hidden" });
+  assert.equal(
+    await participants
+      .locator('[data-ui-component="avatar"]')
+      .evaluate((node) => getComputedStyle(node).width),
+    "20px",
+  );
+  assert.equal(
+    await participants
+      .locator(".ui-avatar-group__overflow")
+      .evaluate((node) => getComputedStyle(node).width),
+    "20px",
+  );
+  const replyClicks = scope.getByTestId("packed-reply-clicks");
+  const previousClicks = Number(await replyClicks.textContent());
+  await replyGroup.focus();
+  await page.keyboard.press("Enter");
+  assert.equal(Number(await replyClicks.textContent()), previousClicks + 1);
   const author = scope
     .locator('[data-review="archive-author"]')
     .getByRole("button", {
@@ -523,10 +599,12 @@ import * as ToggleGroup from "@lapismd/design-core/shadcn/toggle-group";
 import * as InputGroup from "@lapismd/design-core/shadcn/input-group";
 import * as Alert from "@lapismd/design-core/shadcn/alert";
 import { PanelToggle, PanelToggleIcon, type PanelToggleIconProps } from "@lapismd/design-core/shadcn/panel-toggle";
+import { WorkspaceSidebarToggle } from "@lapismd/design-core/workspace/sidebar-toggle";
+import { WorkspaceBottomPanelToggle } from "@lapismd/design-core/workspace/bottom-panel";
 import { EmojiPicker } from "@lapismd/design-core/shadcn/emoji-picker";
 import { ResponsiveTabs } from "@lapismd/design-core/shadcn/responsive-tabs";
 import { TagList, type TagListItem, type TagListProps } from "@lapismd/design-core/shadcn/tag-list";
-import { Avatar, AvatarGroup } from "@lapismd/design-core/shadcn/avatar";
+import { Avatar, AvatarGroup, type AvatarIdentity, type AvatarSize } from "@lapismd/design-core/shadcn/avatar";
 import { AuthorCard } from "@lapismd/design-core/shadcn/author-card";
 import { ReferenceChip } from "@lapismd/design-core/shadcn/reference-chip";
 import { LinkPreview } from "@lapismd/design-core/shadcn/link-preview";
@@ -559,6 +637,7 @@ import HandleLifecycle from "./HandleLifecycle.svelte";
 if (EmojiPicker !== LegacyEmojiPicker) throw new Error("Emoji compatibility export differs");
 let selectedEmoji = $state("");
 let selectedTag = $state("");
+let packedReplyClicks = $state(0);
 const tags: readonly TagListItem[] = [
   { id: "first", label: "Pinned" },
   { id: "long", label: "A long label preserved in the archive popover" },
@@ -585,6 +664,11 @@ const panelIcon = { side: "bottom", iconVariant: "standard", expanded: true, sty
 <Alert.Root data-review="alert"><svg aria-hidden="true" width="16" height="16"><circle cx="8" cy="8" r="6" /></svg><Alert.Title>Archive notice</Alert.Title><Alert.Description>Icon alignment.</Alert.Description></Alert.Root>
 {#each panelVariants as iconVariant}{#each panelSides as side}<PanelToggle {iconVariant} {side} expanded data-review={['panel', iconVariant, side].join('-')} />{/each}{/each}
 <PanelToggleIcon {...panelIcon} class="packed-panel-icon" data-review="panel-icon-only" />
+{#each [false, true] as expanded}
+<WorkspaceSidebarToggle side="left" label="Packed left sidebar" size="small" {expanded} onSelect={() => {}} />
+<WorkspaceSidebarToggle side="right" label="Packed right sidebar" {expanded} onSelect={() => {}} />
+<WorkspaceBottomPanelToggle {expanded} onSelect={() => {}} />
+{/each}
 <EmojiPicker triggerLabel="Packed emoji" onSelect={(emoji) => selectedEmoji = emoji} />
 <output data-testid="packed-emoji-selection">{selectedEmoji}</output>
 <ResponsiveTabs bind:value={navigationValue} items={[{ value: "overview", label: "Overview" }, { value: "files", label: "Files" }]} />
@@ -620,8 +704,11 @@ const panelIcon = { side: "bottom", iconVariant: "standard", expanded: true, sty
 <SentContext delivery="unknown" content={'<sent_application_context>\\n## Application state\\n\\nCaptured **Markdown**.\\n</sent_application_context>'} rawContent={JSON.stringify({delivery:"unknown"})} />
 {/key}
 </section>
+{#snippet packedParticipant(person: AvatarIdentity, size: AvatarSize)}<AuthorCard author={person} {size} description="Packed participant details" />{/snippet}
 <section data-review="community-components">
 <AvatarGroup items={[{id:"archive-author",name:"Archive author"}]} label="Archive participants" />
+<span><AvatarGroup items={[{id:"archive-author",name:"Archive author"},{id:"archive-agent",name:"Archive agent",emoji:"🐝"}]} size="xs" max={1} label="Packed reply participants" avatar={packedParticipant} /><Button aria-label="Packed replies" onclick={() => packedReplyClicks += 1}>2 replies</Button></span>
+<output data-testid="packed-reply-clicks">{packedReplyClicks}</output>
 <div data-review="archive-author"><AuthorCard author={{id:"archive-author",name:"Archive author"}} interaction="popover" description="Host supplied details" /></div>
 <ReferenceChip label="Archive reference" /><LinkPreview href="https://example.com" title="Archive link" />
 <Spoiler>Archive concealed text</Spoiler><RelativeTime timestamp="2026-10-17T12:00:00Z" now={Date.parse("2026-10-17T12:05:00Z")} />

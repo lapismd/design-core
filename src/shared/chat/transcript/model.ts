@@ -22,6 +22,8 @@ export interface TranscriptAuthor {
 }
 /** UI-only profile presentation, kept outside captured author/submission data. */
 export interface TranscriptAuthorPopover {
+  /** Defaults to click/keyboard popovers; choose hover for profile previews. */
+  interaction?: "hover" | "popover" | undefined;
   description?: ((author: TranscriptAuthor) => string | undefined) | undefined;
   details?: Snippet<[TranscriptAuthor]> | undefined;
   actions?:

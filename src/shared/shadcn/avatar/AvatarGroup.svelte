@@ -1,4 +1,5 @@
 <script lang="ts">
+  import type { Snippet } from "svelte";
   import type { HTMLAttributes } from "svelte/elements";
   import Avatar from "./avatar.svelte";
   import {
@@ -13,6 +14,7 @@
     label = "Participants",
     size = "md",
     max,
+    avatar,
     class: className,
     ...rest
   }: HTMLAttributes<HTMLSpanElement> & {
@@ -20,6 +22,8 @@
     label?: string;
     size?: AvatarSize;
     max?: number;
+    /** Optional member content owns its trigger; use this to compose AuthorCard without nested buttons or tooltips. */
+    avatar?: Snippet<[AvatarIdentity, AvatarSize]> | undefined;
   } = $props();
   const limit = $derived(
     max === undefined ? items.length : Math.max(0, Math.floor(max)),
@@ -39,17 +43,22 @@
   >
     <Tooltip.Provider>
       {#each visible as item (item.id)}
-        <Tooltip.Root
-          ><Tooltip.Trigger
+        {#if avatar}<span
             class="ui-avatar-group__member"
             data-shape={item.shape ?? "circle"}
-            aria-label={item.name}
           >
-            <Avatar {...avatarIdentityProps(item)} {size} decorative />
-          </Tooltip.Trigger><Tooltip.Content role="tooltip"
-            >{item.name}</Tooltip.Content
-          ></Tooltip.Root
-        >
+            {@render avatar(item, size)}
+          </span>{:else}<Tooltip.Root
+            ><Tooltip.Trigger
+              class="ui-avatar-group__member"
+              data-shape={item.shape ?? "circle"}
+              aria-label={item.name}
+            >
+              <Avatar {...avatarIdentityProps(item)} {size} decorative />
+            </Tooltip.Trigger><Tooltip.Content role="tooltip"
+              >{item.name}</Tooltip.Content
+            ></Tooltip.Root
+          >{/if}
       {/each}
       {#if hidden.length}<Tooltip.Root
           ><Tooltip.Trigger

@@ -11,7 +11,7 @@
       docs: {
         description: {
           component:
-            "Source-shaped left and right sidebar visibility control with serializable F-mode hint metadata.",
+            "Shared PanelToggle styling and fixed standard icons with controlled Workspace visibility and serializable F-mode hint metadata.",
         },
       },
     },
@@ -28,6 +28,14 @@
   name="Both sidebar directions"
   tags={["visual-pending"]}
   play={async ({ canvas }) => {
+    for (const button of canvas.getAllByRole("button")) {
+      await expect(button).toHaveAttribute("data-panel-toggle");
+      await expect(button).toHaveAttribute("data-size", "icon-xs");
+      await expect(button.getBoundingClientRect().width).toBe(28);
+      await expect(
+        button.querySelector("svg")!.getBoundingClientRect().width,
+      ).toBe(16);
+    }
     await userEvent.click(
       canvas.getByRole("button", { name: "Toggle right sidebar" }),
     );

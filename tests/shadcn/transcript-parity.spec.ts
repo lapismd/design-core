@@ -8,6 +8,44 @@ async function open(page: Page) {
   await waitForVisualStoryFinished(page, id);
 }
 
+test("reply participants use compact shared avatars without nested controls", async ({
+  page,
+}) => {
+  await open(page);
+  for (const view of ["Document", "Classic"]) {
+    await page.getByRole("button", { name: view, exact: true }).click();
+    const replies = page
+      .locator('[data-chat-item="delta-0"]')
+      .getByRole("button", { name: "2 replies", exact: true });
+    const group = replies
+      .locator("..")
+      .locator('[data-ui-component="avatar-group"]');
+    await expect(group).toHaveAttribute("data-size", "xs");
+    expect(
+      await replies.locator('[data-ui-component="avatar-group"]').count(),
+    ).toBe(0);
+    await expect(group).toHaveAttribute("aria-label", "Reply participants");
+    await expect(group.locator('[data-ui-component="avatar"]')).toHaveCount(2);
+    await expect(group.getByRole("button")).toHaveCount(2);
+    await expect(group.locator("button button")).toHaveCount(0);
+    const dimensions = await group
+      .locator('[data-ui-component="avatar"]')
+      .evaluateAll((nodes) =>
+        nodes.map((node) => ({
+          width: node.getBoundingClientRect().width,
+          height: node.getBoundingClientRect().height,
+        })),
+      );
+    expect(dimensions).toEqual([
+      { width: 20, height: 20 },
+      { width: 20, height: 20 },
+    ]);
+    await replies.focus();
+    await page.keyboard.press("Enter");
+    await expect(page.getByRole("status")).toContainText("Open replies for");
+  }
+});
+
 test("sent comments edit through acknowledged versioned drafts and expose message metadata", async ({
   page,
 }) => {
@@ -174,4 +212,25 @@ test("composer keeps multiline Enter and docks formatting actions in the fixed f
   await footer.getByRole("button", { name: "Formatting options" }).click();
   await footer.getByRole("button", { name: "Bold", exact: true }).click();
   await expect(input).toContainText("**Retained formatting selection**");
+});
+
+test("reply link decoration stays on the label and never crosses the avatars", async ({
+  page,
+}) => {
+  await open(page);
+  for (const mode of ["Document", "Classic"]) {
+    await page.getByRole("button", { name: mode, exact: true }).click();
+    const replies = page
+      .getByRole("button", { name: "2 replies", exact: true })
+      .first();
+    await replies.hover();
+    await expect(replies).toHaveCSS("text-decoration-line", "none");
+    await expect(
+      replies.locator(".ui-transcript-message-reply-label"),
+    ).toHaveCSS("text-decoration-line", "underline");
+    await expect(
+      replies.locator("..").locator('[data-ui-component="avatar-group"]'),
+    ).toHaveCSS("text-decoration-line", "none");
+    await expect(replies.locator("button, a[href], [tabindex]")).toHaveCount(0);
+  }
 });
