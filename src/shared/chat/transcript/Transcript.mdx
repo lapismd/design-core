@@ -39,8 +39,9 @@ foreground. Comments and their editors default to the transcript's prose size
 (0.875rem), with `--ui-transcript-comment-font-size` available for an explicit
 override. This replaces the earlier, larger 1rem default following visual review.
 
-Collapsed file, tool and context headers retain every nonempty current discussion
-entry, including replies, in order. Historical versions remain in history.
+Collapsed file, tool and context headers show only the last nonempty current root
+comment per discussion. Expanding restores earlier comments; agent responses stay
+in their linked messages. Historical versions remain in history.
 Nested file headers lead with file/patch icons; reasoning uses the lightbulb
 also used by jj-store's thinking control. Hosts can override item icons.
 
@@ -51,6 +52,11 @@ outside the scrolling document. It can read `state={controller}` or explicit
 controlled props. Idle content shows Send; busy content shows Queue; busy empty
 content shows Stop when the host supplies `onStop`. Pending delivery can retain
 a separate stop button. A persistent `onStop` callback does not imply busy state.
+Send uses the paper-plane icon, Queue the upward arrow and Stop the square.
+The full conversation simulates a confirmed stop by setting `busy` to false;
+sending from idle starts another simulated response. The pending-stop example
+retains its stopping state until host acknowledgement. Real hosts must update
+`busy` from confirmed runtime state rather than assuming a stop request succeeded.
 Callbacks request host actions and never imply delivery.
 `actions`, `workspace` and `controls` snippets accept additional buttons and menus.
 Set `showSendButton={false}` on MarkdownComposer to keep one send affordance.
@@ -92,3 +98,28 @@ optional exact `rawContent`. The compact SentContext disclosure appears before
 authored message blocks. Its delivery labels and raw/rendered UI match jj-store;
 it never infers delivery or adds context to captured comment text. The full story
 labels its unknown-delivery context as demonstration data.
+
+## Reviewed parity refinements
+
+Classic uses shared Message chrome with a 36px avatar, an author/role header and
+hover surface. The same readers remain mounted in Document and Classic. Set
+`--ui-transcript-classic-padding` to override Classic's 0.375rem row inset. Set
+`timestamp` for display text and `createdAt` for an ISO date/full-date tooltip;
+`edited`, `replyCount`, `replyLabel` and `replyParticipants` supply neutral metadata.
+`onOpenThread(item)` requests host navigation. Metadata supplements remain available.
+
+Reply contexts use one outer padded border. Jump to end focuses the enabled
+composer in the transcript's composer slot, falling back to the last item.
+Set `submitOnEnter={false}` when both presentations should keep multiline Enter.
+Use `dockActions` and `bind:documentActions` on MarkdownComposer, rendering the
+bound snippet once in TranscriptFooter's `actions`; document actions are docked,
+while Classic keeps its inline toolbar as in jj-store.
+
+Enable sent-comment editing with `canEditComment(thread, comment)`. The controller
+also requires a current authored sent/replied comment, `version`, and available
+source. `editSent` creates or resumes a replacement draft; `onSend` receives its
+`editOf` original comment ID, message ID and version. Keep persistence and version
+conflict resolution in the host. Published results can return `commentVersions`
+keyed by submitted comment ID. Only acknowledgement retires the exact replaced
+version; queued/unknown/rejected changes retain it, and newer drafts are preserved.
+Without a returned version, further editing waits for a host data refresh.

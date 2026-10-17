@@ -18,9 +18,16 @@
   container: transcript-footer / inline-size;
 }
 .ui-transcript-footer__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex-wrap: wrap;
   flex: 1 0 auto;
   min-width: 0;
   max-width: 100%;
+}
+.ui-transcript-footer__actions:has([data-formatting-open]) {
+  flex-basis: 100%;
 }
 .ui-transcript-footer__send {
   border-radius: 50%;

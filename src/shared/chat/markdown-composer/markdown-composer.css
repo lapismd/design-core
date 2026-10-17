@@ -86,6 +86,10 @@
   gap: 0.125rem;
   min-width: 0;
 }
+.ui-markdown-composer[data-actions-docked="true"][data-send-hidden="true"]
+  [data-ui-part="footer"] {
+  display: none;
+}
 .ui-markdown-composer [data-ui-part="footer"] {
   align-items: flex-end;
 }

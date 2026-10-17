@@ -164,6 +164,47 @@ export class TranscriptController {
       location,
     };
   }
+  canEditSent(thread: TranscriptCommentThread, original: TranscriptComment) {
+    return (
+      !this.sending &&
+      !this.retainedSubmission &&
+      this.props().canComment !== false &&
+      !original.historical &&
+      (original.status === "sent" || original.status === "replied") &&
+      original.author.id === this.author.id &&
+      !!original.version &&
+      this.isAvailable(thread) &&
+      this.props().canEditComment?.(thread, original) === true &&
+      !thread.comments.some(
+        (c) =>
+          c.editOf?.commentId === original.id &&
+          c.status !== "draft" &&
+          !c.historical,
+      )
+    );
+  }
+  editSent(thread: TranscriptCommentThread, original: TranscriptComment) {
+    if (!this.canEditSent(thread, original)) return;
+    let draft = thread.comments.find(
+      (c) => c.status === "draft" && c.editOf?.commentId === original.id,
+    );
+    if (!draft) {
+      thread.comments.push({
+        id: crypto.randomUUID().replaceAll("-", ""),
+        messageId: original.messageId ?? original.id,
+        editOf: {
+          commentId: original.id,
+          messageId: original.messageId ?? original.id,
+          version: original.version!,
+        },
+        author: { ...original.author },
+        text: original.text,
+        status: "draft",
+      });
+      draft = thread.comments.at(-1)!;
+    }
+    this.activate(thread, draft, "inline");
+  }
   activate(
     thread: TranscriptCommentThread,
     comment: TranscriptComment,
@@ -209,8 +250,12 @@ export class TranscriptController {
   send() {
     return submission.send(this);
   }
-  markPublished(value: TranscriptSubmission, batchId?: string) {
-    submission.markPublished(this, value, batchId);
+  markPublished(
+    value: TranscriptSubmission,
+    batchId?: string,
+    versions?: Readonly<Record<string, string>>,
+  ) {
+    submission.markPublished(this, value, batchId, versions);
   }
   confirmPublication(id: string, clearMessage = false, batchId?: string) {
     submission.confirmPublication(this, id, clearMessage, batchId);

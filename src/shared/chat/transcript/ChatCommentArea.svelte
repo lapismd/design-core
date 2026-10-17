@@ -8,6 +8,7 @@
   import ComposerStatusBanner from "../../ai/composer/ComposerStatusBanner.svelte";
   import { Button } from "../../shadcn/button/index.js";
   import CornerUpLeftIcon from "@lucide/svelte/icons/corner-up-left";
+  import PencilIcon from "@lucide/svelte/icons/pencil";
   import XIcon from "@lucide/svelte/icons/x";
   import MessageSquarePlusIcon from "@lucide/svelte/icons/message-square-plus";
   import CornerDownRightIcon from "@lucide/svelte/icons/corner-down-right";
@@ -33,7 +34,7 @@
     const entries =
       thread?.comments.filter(
         (c) =>
-          (placement === "summary" || !c.replyTo) &&
+          !c.replyTo &&
           (!commentIds
             ? !c.historical
             : commentIds.includes(c.id) ||
@@ -42,7 +43,7 @@
                 commentIds.includes(`${c.messageId}:${c.version}`))),
       ) ?? [];
     return placement === "summary"
-      ? entries.filter((c) => c.text.trim())
+      ? entries.filter((c) => c.text.trim()).slice(-1)
       : entries;
   });
   const source = $derived(
@@ -162,6 +163,16 @@
                   onclick={(event) =>
                     state.goToSource(thread!, event.currentTarget)}
                   ><CornerUpLeftIcon /></Button
+                >
+              {/if}
+              {#if placement === "inline" && state.canEditSent(thread, comment)}
+                <Button
+                  variant="ghost"
+                  size="icon-xs"
+                  aria-label="Edit comment"
+                  title="Edit comment"
+                  onclick={() => state.editSent(thread!, comment)}
+                  ><PencilIcon /></Button
                 >
               {/if}
               {#if comment.status === "draft"}

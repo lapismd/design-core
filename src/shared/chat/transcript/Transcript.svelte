@@ -5,7 +5,7 @@
   } from "./presentation-context.js";
   import HistoryEdge from "../history-edge/HistoryEdge.svelte";
   import SentContext from "../sent-context/SentContext.svelte";
-  import { SystemMessage } from "../../ai/chat.js";
+  import { SystemMessage, Message } from "../../ai/chat.js";
   import { tick, untrack, setContext } from "svelte";
   import {
     reactionContext,
@@ -22,6 +22,7 @@
   import * as Collapsible from "../../shadcn/collapsible/index.js";
   import { ScrollArea } from "../../shadcn/scroll-area/index.js";
   import ChatDisclosureIcon from "./ChatDisclosureIcon.svelte";
+  import TranscriptMessageMetadata from "./TranscriptMessageMetadata.svelte";
   import TranscriptAvatar from "./TranscriptAvatar.svelte";
   import ChatCommentBatch from "./ChatCommentBatch.svelte";
   import ChatCollapsedComments from "./ChatCollapsedComments.svelte";
@@ -60,6 +61,7 @@
     supplement: itemSupplement,
     metadataSupplement: itemMetadata,
     messageActions,
+    onOpenThread,
     logLabel = "Conversation messages",
     ...hostOptions
   }: TranscriptProps = $props();
@@ -242,7 +244,16 @@
                   <ChatReplyContext state={comments} {item} />
                 </div>{/if}
               {#if item.kind === "message" && item.blocks.length}
-                <article
+                {#if item.sentContext}<div class="ui-transcript-document-inset">
+                    <SentContext
+                      {...item.sentContext}
+                      markdown={hostOptions.markdown ??
+                        comments.props().markdown}
+                    />
+                  </div>{/if}
+                <Message
+                  sender="assistant"
+                  density="balanced"
                   class="ui-transcript-message"
                   data-role={item.role}
                   data-message-id={item.id}
@@ -250,19 +261,23 @@
                     ? `Message from ${item.author.name}`
                     : item.label}
                 >
-                  <div class="ui-transcript-message-avatar">
-                    {#if item.author}<TranscriptAvatar
-                        member={item.author}
-                        size="xsmall"
-                        decorative
-                      />{/if}
-                  </div>
+                  {#snippet avatar()}<div class="ui-transcript-message-avatar">
+                      {#if item.author}<TranscriptAvatar
+                          member={item.author}
+                          size={renderedView === "classic"
+                            ? "medium"
+                            : "xsmall"}
+                          decorative
+                        />{/if}
+                    </div>{/snippet}
+                  {#snippet name()}{#if renderedView === "classic"}<span
+                        class="ui-transcript-message-author"
+                        >{item.author?.name ?? item.role ?? item.label}</span
+                      >{#if item.author?.role}<span
+                          class="ui-transcript-message-role"
+                          >{item.author.role}</span
+                        >{/if}{/if}{/snippet}
                   <div class="ui-transcript-message-content">
-                    {#if item.sentContext}<SentContext
-                        {...item.sentContext}
-                        markdown={hostOptions.markdown ??
-                          comments.props().markdown}
-                      />{/if}
                     <span class="sr-only">{item.author?.name ?? item.role}</span
                     ><ChatContent
                       blocks={item.blocks}
@@ -273,20 +288,14 @@
                       {customBlock}
                     />
                     {@render itemSupplement?.(item)}
-                    {#if renderedView === "classic" || item.timestamp || itemMetadata}<div
-                        class="ui-transcript-message-metadata"
-                      >
-                        {#if renderedView === "classic"}<strong
-                            >{item.author?.name ?? item.role}</strong
-                          >{/if}
-                        {#if item.timestamp}<time datetime={item.timestamp}
-                            >{item.timestamp}</time
-                          >{/if}
-                        {@render itemMetadata?.(item)}
-                      </div>{/if}
+                    <TranscriptMessageMetadata
+                      {item}
+                      {onOpenThread}
+                      supplement={itemMetadata}
+                    />
                     {@render reactionBar(item)}
                   </div>
-                </article>
+                </Message>
               {:else if item.kind === "tools"}<div
                   class="ui-transcript-document-inset"
                 >
@@ -358,7 +367,10 @@
               placement="history"
             />{/each}
         </aside>{/if}
-      {#if composer}<div class="ui-transcript-document-composer">
+      {#if composer}<div
+          class="ui-transcript-document-composer"
+          data-transcript-composer
+        >
           {@render queuedMessages?.()}
           <ChatCommentBatch state={comments} />
           {@render composer(renderedView)}

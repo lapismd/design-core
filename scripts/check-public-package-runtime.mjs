@@ -324,6 +324,48 @@ async function checkTranscript(page) {
       .isVisible(),
     true,
   );
+  await page
+    .getByRole("button", { name: "Edit last archive comment", exact: true })
+    .click();
+  await page
+    .getByRole("button", { name: "Deliver archive comments", exact: true })
+    .click();
+  await page.waitForFunction(
+    () =>
+      document.querySelector('[data-testid="archive-edit-result"]')
+        ?.textContent === "versioned replacement acknowledged",
+  );
+  assert.equal(
+    await page
+      .locator('[data-review="archive-transcript"] time')
+      .getAttribute("datetime"),
+    "2026-10-08T12:00:00Z",
+  );
+  const dock = page.locator('[data-review="archive-dock"]');
+  await dock
+    .getByRole("button", { name: "Formatting options", exact: true })
+    .waitFor();
+  assert.equal(
+    await dock
+      .getByRole("group", {
+        name: "Message formatting and actions",
+        exact: true,
+      })
+      .count(),
+    1,
+  );
+  await page
+    .getByRole("button", { name: "Toggle docked composer", exact: true })
+    .click();
+  await dock
+    .getByRole("button", { name: "Formatting options", exact: true })
+    .waitFor({ state: "detached" });
+  await page
+    .getByRole("button", { name: "Toggle docked composer", exact: true })
+    .click();
+  await dock
+    .getByRole("button", { name: "Formatting options", exact: true })
+    .waitFor();
   await checkTranscriptAdditions(page);
 }
 
@@ -444,15 +486,18 @@ import { ResponsiveTabs } from "@lapismd/design-core/shadcn/responsive-tabs";
 import { TagList, type TagListItem, type TagListProps } from "@lapismd/design-core/shadcn/tag-list";
 import { Avatar } from "@lapismd/design-core/shadcn/avatar";
 import { AvatarPicker } from "@lapismd/design-core/forms";
-import { MarkdownContent, Message as SharedMessage, Transcript, TranscriptFooter, MessageQueue, PromptContext, SentContext, TranscriptController, HistoryEdge, CommentQueue, type TranscriptItem } from "@lapismd/design-core/chat";
+import { MarkdownContent, MarkdownComposer, Message as SharedMessage, Transcript, TranscriptFooter, MessageQueue, PromptContext, SentContext, TranscriptController, HistoryEdge, CommentQueue, type TranscriptItem } from "@lapismd/design-core/chat";
+import type { Snippet } from "svelte";
 import { Message as LegacyMessage } from "@lapismd/design-core/ai/chat";
 import { AppShell } from "@lapismd/design-core/shell";
 if (SharedMessage !== LegacyMessage) throw new Error("Chat compatibility export differs");
 let transcriptShown = $state(true);
 let transcriptResult = $state("");
 const transcriptBlock = { id: "archive/source", revision: "v1", kind: "markdown" as const, label: "Archive capture", text: "Captured café 👩🏽‍💻. Exact immutable source." };
-const transcriptItems: TranscriptItem[] = [{ id: "archive/message", kind: "message", role: "assistant", label: "Archive message", author: {id: "agent", name: "Assistant"}, blocks: [transcriptBlock] }];
-const transcriptController = new TranscriptController(() => ({ items: transcriptItems, canComment: true, onSend: (snapshot) => { transcriptResult = "acknowledged"; return {publication: "published", batchId: snapshot.id}; } }));
+const transcriptItems: TranscriptItem[] = [{ id: "archive/message", kind: "message", role: "assistant", label: "Archive message", author: {id: "agent", name: "Assistant"}, createdAt: "2026-10-08T12:00:00Z", edited: true, blocks: [transcriptBlock] }];
+const transcriptController = new TranscriptController(() => ({ items: transcriptItems, canComment: true, canEditComment: () => true, onSend: (snapshot) => { transcriptResult = "acknowledged"; return {publication: "published", batchId: snapshot.id, commentVersions: Object.fromEntries(snapshot.comments.map(comment => [comment.commentId, comment.editOf ? "v2" : "v1"]))}; } }));
+let dockShown = $state(true);
+let dockActions = $state<Snippet>();
 const emptyController = new TranscriptController(() => ({items: []}));
 let archiveHasContent = $state(true);
 let archiveFollowupsRevision = $state(0);
@@ -504,9 +549,18 @@ const panelIcon = { side: "bottom", iconVariant: "standard", expanded: true, sty
 <Button onclick={() => transcriptController.open(transcriptBlock,{from:0,to:8},"Review this capture")}>Comment on archive capture</Button>
 <Button onclick={() => transcriptShown = !transcriptShown}>Toggle archive transcript</Button>
 <Button onclick={() => { void transcriptController.send(); }}>Deliver archive comments</Button>
+<Button onclick={() => {
+  const thread = transcriptController.threads.at(-1);
+  const comment = thread?.comments.filter(entry => entry.status === "sent" && !entry.historical).at(-1);
+  if (thread && comment) { transcriptController.editSent(thread, comment); transcriptController.draft = "Updated archive comment"; }
+}}>Edit last archive comment</Button>
+<output data-testid="archive-edit-result">{transcriptController.threads.at(-1)?.comments.some(comment => comment.version === "v2" && comment.status === "sent") ? "versioned replacement acknowledged" : ""}</output>
 <output data-testid="archive-comment-result">{transcriptResult}</output>
 <HistoryEdge state="loading" /><CommentQueue state={emptyController} />
 {#if transcriptShown}<div data-review="archive-transcript" style="height:320px"><Transcript items={transcriptItems} commentState={transcriptController}>{#snippet composer()}<span>Host composer</span>{/snippet}</Transcript></div>{/if}
+<Button onclick={() => dockShown = !dockShown}>Toggle docked composer</Button>
+{#if dockShown}<MarkdownComposer presentation="document" dockActions bind:documentActions={dockActions} showSendButton={false} onSubmit={() => {}} />{/if}
+<div data-review="archive-dock"><TranscriptFooter>{#snippet actions()}{@render dockActions?.()}{/snippet}</TranscriptFooter></div>
 <section data-review="archive-followups">
 <Button onclick={() => { archiveHasContent = true; archiveQueueResult = ""; archiveQueue = archiveQueue.map(entry => ({...entry,recipients:entry.recipients.map(recipient => ({...recipient,cancelling:false}))})); archiveFollowupsRevision++; }}>Reset archive followups</Button>
 {#key archiveFollowupsRevision}
@@ -514,7 +568,7 @@ const panelIcon = { side: "bottom", iconVariant: "standard", expanded: true, sty
 <TranscriptFooter busy canSend hasContent={archiveHasContent} onSend={() => {archiveHasContent=false;archiveQueueResult="Queued";}} onStop={() => {archiveQueueResult="Stop requested";}} />
 <output data-testid="archive-queue-result">{archiveQueueResult}</output>
 <PromptContext content={'<acp_context><first /><second /></acp_context>'} />
-<SentContext delivery="unknown" content={'<sent_application_context>Captured **Markdown**.</sent_application_context>'} rawContent={JSON.stringify({delivery:"unknown"})} />
+<SentContext delivery="unknown" content={'<sent_application_context>\\n## Application state\\n\\nCaptured **Markdown**.\\n</sent_application_context>'} rawContent={JSON.stringify({delivery:"unknown"})} />
 {/key}
 </section>
 </main>`,

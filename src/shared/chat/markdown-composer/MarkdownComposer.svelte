@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { onMount, untrack } from "svelte";
   import Mira, { type MiraHandle } from "@lapismd/mira";
   import { fromOffset, type MiraMarkdownActionId } from "@lapismd/mira/core";
   import type { MiraExtension } from "@lapismd/mira/extensions";
@@ -53,6 +53,8 @@
     showSendButton = true,
     submitOnEnter,
     formattingOpen = $bindable(false),
+    dockActions = false,
+    documentActions = $bindable(),
     colorMode = "inherit",
     extensions = [],
     customEmojis = [],
@@ -208,7 +210,79 @@
       emojiText?.(emoji, custom) ?? (custom ? `:${custom.shortcode}:` : emoji),
     );
   }
+  const docked = $derived(dockActions && presentation === "document");
+  $effect(() => {
+    const actions = docked ? toolbar : undefined;
+    untrack(() => (documentActions = actions));
+    return () =>
+      untrack(() => {
+        if (documentActions === actions) documentActions = undefined;
+      });
+  });
 </script>
+
+{#snippet toolbar()}<Tooltip.Provider>
+    <div
+      class="ui-markdown-composer__actions"
+      role="group"
+      data-formatting-open={formattingOpen || undefined}
+      aria-label="Message formatting and actions"
+    >
+      <Tooltip.Root>
+        <Tooltip.Trigger
+          >{#snippet child({ props })}
+            <Button
+              {...props}
+              variant="ghost"
+              size="icon-sm"
+              disabled={blocked}
+              aria-label="Formatting options"
+              aria-pressed={formattingOpen}
+              onclick={() => (formattingOpen = !formattingOpen)}
+              ><TypeIcon aria-hidden="true" /></Button
+            >
+          {/snippet}</Tooltip.Trigger
+        >
+        <Tooltip.Content>Formatting options</Tooltip.Content>
+      </Tooltip.Root>
+      {#if formattingOpen}
+        {#each formatActions as action (action.id)}
+          <Tooltip.Root>
+            <Tooltip.Trigger
+              >{#snippet child({ props })}
+                <Button
+                  {...props}
+                  variant="ghost"
+                  size="icon-sm"
+                  disabled={blocked}
+                  aria-label={action.label}
+                  onmousedown={(event) => event.preventDefault()}
+                  onclick={() => applyFormatting(action.id)}
+                  ><action.Icon aria-hidden="true" /></Button
+                >
+              {/snippet}</Tooltip.Trigger
+            >
+            <Tooltip.Content>{action.label}</Tooltip.Content>
+          </Tooltip.Root>
+        {/each}
+      {/if}
+      <EmojiPicker
+        triggerLabel="Add emoji"
+        disabled={blocked}
+        {customEmojis}
+        {...emojis === undefined ? {} : { emojis }}
+        theme={colorMode === "light" || colorMode === "dark"
+          ? colorMode
+          : "auto"}
+        onSelect={addEmoji}
+      />
+      {@render additionalActions?.({
+        ...publicHandle,
+        disabled: blocked,
+        submit,
+      })}
+    </div>
+  </Tooltip.Provider>{/snippet}
 
 {#snippet replyPreview()}
   {#if reply}
@@ -248,6 +322,8 @@
   class={["ui-markdown-composer", className].filter(Boolean).join(" ")}
   data-ui-component="markdown-composer"
   data-presentation={presentation}
+  data-actions-docked={docked}
+  data-send-hidden={!showSendButton}
   aria-busy={busy}
   role="group"
   aria-label={label}
@@ -293,67 +369,7 @@
           </ScrollArea>
         </div>
       {/snippet}
-      {#snippet footerActions()}
-        <div
-          class="ui-markdown-composer__actions"
-          role="group"
-          aria-label="Message formatting and actions"
-        >
-          <Tooltip.Root>
-            <Tooltip.Trigger
-              >{#snippet child({ props })}
-                <Button
-                  {...props}
-                  variant="ghost"
-                  size="icon-sm"
-                  disabled={blocked}
-                  aria-label="Formatting options"
-                  aria-pressed={formattingOpen}
-                  onclick={() => (formattingOpen = !formattingOpen)}
-                  ><TypeIcon aria-hidden="true" /></Button
-                >
-              {/snippet}</Tooltip.Trigger
-            >
-            <Tooltip.Content>Formatting options</Tooltip.Content>
-          </Tooltip.Root>
-          {#if formattingOpen}
-            {#each formatActions as action (action.id)}
-              <Tooltip.Root>
-                <Tooltip.Trigger
-                  >{#snippet child({ props })}
-                    <Button
-                      {...props}
-                      variant="ghost"
-                      size="icon-sm"
-                      disabled={blocked}
-                      aria-label={action.label}
-                      onmousedown={(event) => event.preventDefault()}
-                      onclick={() => applyFormatting(action.id)}
-                      ><action.Icon aria-hidden="true" /></Button
-                    >
-                  {/snippet}</Tooltip.Trigger
-                >
-                <Tooltip.Content>{action.label}</Tooltip.Content>
-              </Tooltip.Root>
-            {/each}
-          {/if}
-          <EmojiPicker
-            triggerLabel="Add emoji"
-            disabled={blocked}
-            {customEmojis}
-            {...emojis === undefined ? {} : { emojis }}
-            theme={colorMode === "light" || colorMode === "dark"
-              ? colorMode
-              : "auto"}
-            onSelect={addEmoji}
-          />
-          {@render additionalActions?.({
-            ...publicHandle,
-            disabled: blocked,
-            submit,
-          })}
-        </div>
-      {/snippet}
+      {#snippet footerActions()}{#if !docked}{@render toolbar()}{/if}{/snippet}
       {#snippet sendButton()}
         {#if showSendButton}
           <Button

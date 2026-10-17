@@ -49,16 +49,35 @@ export const ReactionsAndProfiles = `<script lang="ts">
 <div style="height:24rem"><Transcript {items} {reactions} onReact={(id, emoji, custom) => {reactions = {...reactions,[id]:[{emoji,...(custom ? {custom} : {}),count:1,selected:true}]};}} authorPopover={{description: () => "Project maintainer",actions: (person) => [{id:"profile",label:"View profile",onSelect: () => { /* Open the host profile route for person.id. */ }}]}} /></div>`;
 
 export const RecordedConversation = `<script lang="ts">
-  import { Transcript, TranscriptFooter, TranscriptController, MarkdownComposer, promptElementsExtension, type TranscriptItem, type TranscriptCommentThread } from "@lapismd/design-core/chat";
+  import type { Snippet } from "svelte";
+  import { Transcript, TranscriptFooter, TranscriptController, MarkdownComposer, promptElementsExtension, type TranscriptItem, type TranscriptCommentThread, type TranscriptProps } from "@lapismd/design-core/chat";
   import { SegmentedControl } from "@lapismd/design-core/forms";
   let view = $state<"document" | "classic">("document");
+  let documentActions = $state<Snippet>();
   // Supply normalized captured items and exact anchors from a host-owned recording.
-  let { items, threads }: {items: readonly TranscriptItem[]; threads: TranscriptCommentThread[]} = $props();
-  const controller = new TranscriptController(() => ({items,canComment:true,onSend:() => ({publication:"unknown",error:"Connect a host delivery adapter to send."})}));
+  // The host changes busy only after receiving runtime acknowledgements.
+  let { items, threads, busy = false, stopping = false, onStop, onSend }: {items: readonly TranscriptItem[]; threads: TranscriptCommentThread[]; busy?: boolean; stopping?: boolean; onStop?: () => void; onSend?: TranscriptProps["onSend"]} = $props();
+  const controller = new TranscriptController(() => ({items,canComment:true,onSend:(snapshot) => onSend ? onSend(snapshot) : ({publication:"unknown",error:"Connect a host delivery adapter to send."})}));
   controller.threads = threads;
 </script>
 <SegmentedControl value={view} options={["document", "classic"]} labels={{document:"Document",classic:"Classic"}} ariaLabel="Conversation view" onChange={(next) => { if (next === "document" || next === "classic") view = next; }} />
 <div style="height:40rem"><Transcript {view} {items} commentState={controller} markdown={{extensions:[promptElementsExtension]}}>
-  {#snippet composer(currentView)}<MarkdownComposer bind:value={controller.message} presentation={currentView === "document" ? "document" : "framed"} showSendButton={false} onSubmit={() => {void controller.send();}} />{/snippet}
+  {#snippet composer(currentView)}<MarkdownComposer bind:value={controller.message} presentation={currentView === "document" ? "document" : "framed"} dockActions bind:documentActions submitOnEnter={false} showSendButton={false} onSubmit={() => {void controller.send();}} />{/snippet}
+  {#snippet footer()}<TranscriptFooter state={controller} {busy} {stopping} {onStop} actions={documentActions} />{/snippet}
+</Transcript></div>`;
+
+export const EditableComments = `<script lang="ts">
+  import { Transcript, TranscriptController, TranscriptFooter, type TranscriptItem, type TranscriptCommentThread } from "@lapismd/design-core/chat";
+  let {items,threads}: {items: readonly TranscriptItem[];threads: TranscriptCommentThread[]} = $props();
+  const controller = new TranscriptController(() => ({items,author:{id:"me",name:"You"},canComment:true,
+    canEditComment: (_thread, comment) => comment.author.id === "me",
+    onSend: async (snapshot) => {
+      // Each replacement includes editOf: {commentId, messageId, version}.
+      // Submit it using host optimistic concurrency, then return actual published versions.
+      return {publication:"unknown",error:"Connect the host to confirm publication."};
+    }
+  }), threads);
+</script>
+<div style="height:36rem"><Transcript {items} commentState={controller}>
   {#snippet footer()}<TranscriptFooter state={controller} />{/snippet}
 </Transcript></div>`;

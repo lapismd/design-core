@@ -64,3 +64,16 @@ default with the surrounding transcript prose size (0.875rem by default), and
 binds reply prose, quotes and comments to the captured host font/foreground.
 The existing comment-size override remains available. See the review record for
 exact before/after typography, retained-state and cold-browser evidence.
+
+## Subsequent repair pass
+
+The follow-up comparison against jj-store `3be80ad2104f` identified eight remaining
+gaps: duplicate reply-card chrome, jump-to-end focus, Classic message anatomy,
+Enter behaviour across views, acknowledged-comment editing, docked composer
+actions, message metadata and long-queue expansion styling. These are addressed
+in the separate repair change. See [the repair record](transcript-parity-repairs.md)
+for behaviour, exact regression evidence and the remaining qualification boundary.
+The recorded fixture and intentional 14px comments are preserved. A subsequent
+user request restores jj-store's last-root-comment summary per collapsed discussion;
+expanding reveals earlier comments and linked agent responses remain in the transcript.
+Transport, durable edits and conflict resolution remain host-owned.

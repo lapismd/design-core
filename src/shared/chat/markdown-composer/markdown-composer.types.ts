@@ -56,6 +56,10 @@ export type MarkdownComposerProps = Omit<
   /** Defaults to Enter in framed mode and modifier+Enter in document mode. */
   submitOnEnter?: boolean;
   formattingOpen?: boolean;
+  /** Move document-mode actions into the host footer through documentActions. */
+  dockActions?: boolean;
+  /** Live toolbar snippet; bind and render once in the host footer. Cleared on teardown. */
+  documentActions?: Snippet | undefined;
   colorMode?: MiraColorMode;
   extensions?: readonly MiraExtension[];
   customEmojis?: readonly CustomEmoji[];

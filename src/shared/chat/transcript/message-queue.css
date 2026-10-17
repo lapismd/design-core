@@ -68,3 +68,35 @@
 .ui-transcript-message-queue__metadata p {
   margin: 0;
 }
+.ui-transcript-queue-fold {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-block: 0.25rem;
+}
+.ui-transcript-queue-fold button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.125rem 0.25rem;
+  border: 0;
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.75rem;
+}
+.ui-transcript-queue-fold button:hover {
+  color: var(--foreground);
+  background: var(--muted);
+}
+.ui-transcript-queue-fold button:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+.ui-transcript-queue-fold > span {
+  height: 1px;
+  flex: 1;
+  background: var(--border);
+}

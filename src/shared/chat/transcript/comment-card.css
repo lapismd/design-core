@@ -13,10 +13,7 @@
   isolation: isolate;
 }
 .ui-transcript-comment-context {
-  padding: 0.5rem;
-  border: 1px solid var(--border);
   border-radius: var(--radius);
-  background: var(--muted);
 }
 .ui-transcript-comment-quote {
   margin: 0 0 0.5rem;

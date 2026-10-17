@@ -18,6 +18,7 @@ export interface TranscriptAuthor {
   initials?: string | undefined;
   shape?: "circle" | "rounded" | undefined;
   background?: string | undefined;
+  role?: string | undefined;
 }
 /** UI-only profile presentation, kept outside captured author/submission data. */
 export interface TranscriptAuthorPopover {
@@ -81,7 +82,13 @@ export interface TranscriptItem {
   tools?: readonly TranscriptTool[] | undefined;
   defaultExpanded?: boolean | undefined;
   dayLabel?: string | undefined;
+  /** Display label; use createdAt for an ISO timestamp and full-date tooltip. */
   timestamp?: string | undefined;
+  createdAt?: string | undefined;
+  edited?: boolean | undefined;
+  replyCount?: number | undefined;
+  replyLabel?: string | undefined;
+  replyParticipants?: readonly TranscriptAuthor[] | undefined;
   commentBatchId?: string | undefined;
   replyContext?:
     | { threadId: string; commentIds: readonly string[] }
@@ -94,6 +101,12 @@ export interface TranscriptCommentAnchor {
   to: number;
   quote: string;
 }
+/** Optimistic replacement identity supplied to the host, never inferred. */
+export interface TranscriptCommentEdit {
+  commentId: string;
+  messageId: string;
+  version: string;
+}
 export interface TranscriptComment {
   id: string;
   author: TranscriptAuthor;
@@ -101,6 +114,7 @@ export interface TranscriptComment {
   status: "draft" | "sending" | "queued" | "sent" | "replied";
   messageId?: string | undefined;
   version?: string | undefined;
+  editOf?: TranscriptCommentEdit | undefined;
   historical?: boolean | undefined;
   batchIds?: string[] | undefined;
   batchId?: string | undefined;
@@ -117,6 +131,7 @@ export interface TranscriptCommentThread {
   comments: TranscriptComment[];
 }
 export interface TranscriptSubmissionComment {
+  editOf?: TranscriptCommentEdit | undefined;
   threadId: string;
   commentId: string;
   anchor: TranscriptCommentAnchor;
@@ -132,6 +147,8 @@ export interface TranscriptSubmission {
 /** Host acknowledgement. Undefined never implies successful delivery. */
 export interface TranscriptSubmissionResult {
   publication: "published" | "queued" | "unknown" | "refused";
+  /** Published versions keyed by submitted comment ID. */
+  commentVersions?: Readonly<Record<string, string>> | undefined;
   batchId?: string | undefined;
   delivery?:
     | readonly {
@@ -148,6 +165,10 @@ export interface TranscriptHost {
   items: readonly TranscriptItem[];
   author?: TranscriptAuthor | undefined;
   canComment?: boolean | undefined;
+  /** Opt in to editing current authored comments; onSend receives versioned editOf. */
+  canEditComment?:
+    | ((thread: TranscriptCommentThread, comment: TranscriptComment) => boolean)
+    | undefined;
   commentUnavailable?: string | undefined;
   /** Overrides the retained-source explanation, colour and attached edge. */
   unavailableStatus?: ComposerStatus | undefined;
@@ -255,6 +276,7 @@ export interface TranscriptProps extends TranscriptHost {
   queuedMessages?: Snippet | undefined;
   supplement?: Snippet<[TranscriptItem]> | undefined;
   metadataSupplement?: Snippet<[TranscriptItem]> | undefined;
+  onOpenThread?: ((item: TranscriptItem) => void) | undefined;
   messageActions?: Snippet<[string]> | undefined;
   reactions?: Readonly<Record<string, readonly Reaction[]>> | undefined;
   /** Receives the applied view so the host can adapt one retained composer. */

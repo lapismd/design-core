@@ -9,6 +9,7 @@
     QueuedMessages,
     ReactionsAndProfiles,
     RecordedConversation,
+    EditableComments,
   } from "./Transcript.example-sources.js";
   const { Story } = defineMeta({
     title: "Chat/Transcript",
@@ -23,6 +24,12 @@
 <Story
   name="Continuous document"
   play={async ({ canvas }) => {
+    const send = canvas.getByRole("button", {
+      name: /^Send message$/,
+    });
+    await expect(send.querySelector("svg")).toHaveClass(
+      "lucide-send-horizontal",
+    );
     await expect(
       canvas.getByRole("log", { name: "Conversation messages" }),
     ).toBeVisible();
@@ -194,4 +201,13 @@
   }}
 >
   {#snippet template()}<Fixture scenario="full" />{/snippet}
+</Story>
+
+<Story
+  name="Editable comments and metadata"
+  parameters={{
+    docs: { source: { code: EditableComments, language: "tsx", type: "code" } },
+  }}
+>
+  {#snippet template()}<Fixture scenario="edit" />{/snippet}
 </Story>

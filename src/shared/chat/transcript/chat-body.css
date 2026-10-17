@@ -79,15 +79,21 @@
   > [data-ui-part="collapsible-content"] {
   padding-block-start: 0.5rem;
 }
-.ui-transcript-message {
+.ui-transcript-body-reading-surface
+  .ui-transcript-message[data-ui-component][data-ui-part] {
   display: grid;
   grid-template-columns: 1.5rem minmax(0, 1fr);
   gap: 0.5rem;
 }
 .ui-transcript-message-avatar {
+  display: flex;
+  align-items: flex-start;
   padding-block-start: 0.25rem;
 }
-.ui-transcript-message[data-role="user"] > .ui-transcript-message-avatar {
+[data-conversation-view="document"]
+  .ui-transcript-message[data-role="user"]
+  > [data-ui-part="avatar"]
+  > .ui-transcript-message-avatar {
   padding-block-start: 0;
   transform: translateY(
     calc(
@@ -100,6 +106,12 @@
 }
 .ui-transcript-message-content {
   min-width: 0;
+  width: 100%;
+}
+.ui-transcript-message
+  > [data-ui-part="content"]
+  > [data-ui-part="name"]:empty {
+  display: none;
 }
 .ui-transcript-document-inset {
   margin-inline-start: 2rem;
@@ -166,13 +178,70 @@
 .ui-transcript-message-metadata {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 1.5rem;
   color: var(--muted-foreground);
   font-size: 0.75rem;
-  padding-block-start: 0.25rem;
+  line-height: 1;
 }
-[data-conversation-view="classic"] .ui-transcript-message {
-  padding-block: 0.5rem;
+[data-conversation-view="classic"]
+  .ui-transcript-message[data-ui-component][data-ui-part] {
+  grid-template-columns: 2.25rem minmax(0, 1fr);
+  width: calc(100% + 1rem);
+  max-width: none;
+  margin-inline: -0.5rem;
+  padding: var(--ui-transcript-classic-padding, 0.375rem) 0.5rem;
+  border-radius: var(--radius);
+  transition: background-color 120ms ease;
+}
+[data-conversation-view="classic"]
+  .ui-transcript-message:is(:hover, :focus-within) {
+  background: color-mix(in srgb, var(--foreground) 4%, transparent);
+}
+[data-conversation-view="classic"] .ui-transcript-message-avatar {
+  transform: none;
+  padding-block-start: 0;
+}
+[data-conversation-view="classic"]
+  .ui-transcript-message
+  > [data-ui-part="content"]
+  > [data-ui-part="name"] {
+  color: var(--foreground);
+  font-size: var(--ui-transcript-font-size, 0.875rem);
+  line-height: 1.5;
+}
+.ui-transcript-message-author {
+  font-weight: 700;
+}
+.ui-transcript-message-role {
+  margin-inline-start: 0.35rem;
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+.ui-transcript-message-replies {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.ui-transcript-message-replies:hover {
+  text-decoration: underline;
+}
+.ui-transcript-message-replies:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+.ui-transcript-reply-participants {
+  display: inline-flex;
+  gap: 0.125rem;
 }
 @media (prefers-reduced-motion: reduce) {
   .ui-transcript-body-reading-surface *,

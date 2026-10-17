@@ -125,7 +125,10 @@ test("document and classic share the same captured readers, drafts and disclosur
     await expect(fold).toHaveAttribute("aria-expanded", "false");
     await expect(
       edit.locator('[data-thread-id="demo-review:action"] [data-comment-id]'),
-    ).toHaveCount(3);
+    ).toHaveCount(1);
+    await expect(
+      edit.locator('[data-thread-id="demo-review:action"]'),
+    ).toContainText("keep the existing shutdown default");
     expect(
       await page
         .locator("[data-chat-item]")

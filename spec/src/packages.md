@@ -7,6 +7,8 @@ the declared registry dependency `@codemirror/lang-xml`; recorded-session data,
 adapters and avatar assets use `.stories.fixture.*` names and MUST be omitted
 from published archives. Packed acceptance exercises the new public footer,
 queue and XML context exports in cold development and production consumers.
+The same public archive acceptance covers versioned sent-comment edits, valid
+timestamp metadata and docked MarkdownComposer toolbar teardown/remount.
 
 The focused `shadcn/tag-list` family exports TagList and its item/props types.
 Strict source consumers cover the same existing wildcard export boundary.

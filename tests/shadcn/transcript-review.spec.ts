@@ -27,12 +27,15 @@ test("sent-context disclosure precedes the prompt and preserves unknown delivery
     }),
   ).toBeVisible();
   expect(
-    await prompt
-      .locator(".ui-transcript-message-content")
-      .evaluate((el) =>
-        el.firstElementChild?.getAttribute("data-ui-component"),
-      ),
-  ).toBe("sent-context");
+    await prompt.evaluate((el) => {
+      const context = el.querySelector('[data-ui-component="sent-context"]')!;
+      const message = el.querySelector(".ui-transcript-message")!;
+      return !!(
+        context.compareDocumentPosition(message) &
+        Node.DOCUMENT_POSITION_FOLLOWING
+      );
+    }),
+  ).toBe(true);
   await expect(prompt).toContainText(
     "Demonstration context; delivery is not captured in this recording.",
   );
@@ -113,6 +116,11 @@ test("an idle agent offers Send even with a persistent stop callback", async ({
   await expect(
     page.getByRole("button", { name: "Send message", exact: true }),
   ).toBeEnabled();
+  await expect(
+    page
+      .getByRole("button", { name: "Send message", exact: true })
+      .locator("svg"),
+  ).toHaveClass(/lucide-send-horizontal/);
   await page.getByRole("button", { name: "Send message", exact: true }).click();
   await expect(page.getByTestId("transcript-result")).toHaveText(
     "Message submitted",
@@ -120,6 +128,40 @@ test("an idle agent offers Send even with a persistent stop callback", async ({
   await expect(
     page.getByRole("region", { name: "Queued messages" }).getByRole("article"),
   ).toHaveCount(1);
+});
+
+test("full document footer transitions between running, queueing and acknowledged idle", async ({
+  page,
+}) => {
+  await open(page, "full-conversation-with-context-tools-and-replies");
+  const input = page.getByRole("textbox", { name: "Message", exact: true });
+  const stop = page.getByRole("button", { name: "Stop agent", exact: true });
+  const send = page.getByRole("button", { name: "Send message", exact: true });
+  const queue = page.getByRole("button", {
+    name: "Queue message",
+    exact: true,
+  });
+  await expect(stop.locator("svg")).toHaveClass(/lucide-square/);
+  await input.fill("Queue this while running.");
+  await expect(queue).toBeEnabled();
+  await expect(queue.locator("svg")).toHaveClass(/lucide-arrow-up/);
+  await queue.click();
+  await expect(input).toBeEmpty();
+  await expect(stop).toBeEnabled();
+  await stop.click();
+  await expect(send).toBeDisabled();
+  await expect(send.locator("svg")).toHaveClass(/lucide-send-horizontal/);
+  await expect(page.getByTestId("transcript-result")).toHaveText(
+    "Agent stopped",
+  );
+  await input.fill("Start the next response.");
+  await expect(send).toBeEnabled();
+  await send.click();
+  await expect(input).toBeEmpty();
+  await expect(stop).toBeEnabled();
+  await input.fill("Another follow-up while running.");
+  await expect(queue.locator("svg")).toHaveClass(/lucide-arrow-up/);
+  await expect(queue).toBeEnabled();
 });
 
 test("quoted list rows retain compact spacing and the host foreground", async ({
@@ -314,7 +356,7 @@ test("recorded session preserves grouped tools, XML context and linked agent rep
   await expect(reply).toContainText("Demo review");
 });
 
-test("collapsed files retain every current comment and agent reply", async ({
+test("collapsed files show the last comment and expansion restores the discussion", async ({
   page,
 }) => {
   await open(page, "full-conversation-with-context-tools-and-replies");
@@ -327,12 +369,22 @@ test("collapsed files retain every current comment and agent reply", async ({
     })
     .click();
   const discussion = file.locator('[data-thread-id="demo-review:action"]');
-  await expect(discussion.locator("[data-comment-id]")).toHaveCount(3);
+  await expect(discussion.locator("[data-comment-id]")).toHaveCount(1);
+  await expect(discussion).toContainText("keep the existing shutdown default");
+  await expect(discussion).not.toContainText(
+    "keep screen blocking separate from shutdown",
+  );
+  await file
+    .getByRole("button", {
+      name: "Show captured file Sources/BedtimeCore/Schedule.swift",
+      exact: true,
+    })
+    .click();
+  await expect(discussion.locator("[data-comment-id]")).toHaveCount(2);
   await expect(discussion).toContainText(
     "keep screen blocking separate from shutdown",
   );
   await expect(discussion).toContainText("keep the existing shutdown default");
-  await expect(discussion).toContainText("Simulated reply:");
   await edit
     .getByRole("button", {
       name: "Hide details for Applied 6 edits across 6 files",
@@ -341,7 +393,14 @@ test("collapsed files retain every current comment and agent reply", async ({
     .click();
   await expect(
     edit.locator('[data-thread-id="demo-review:action"] [data-comment-id]'),
-  ).toHaveCount(3);
+  ).toHaveCount(1);
+  await expect(
+    edit.locator('[data-thread-id="demo-review:action"]'),
+  ).toContainText("keep the existing shutdown default");
+  await page.getByRole("button", { name: "Classic", exact: true }).click();
+  await expect(
+    edit.locator('[data-thread-id="demo-review:action"] [data-comment-id]'),
+  ).toHaveCount(1);
 });
 
 test("nested file and thinking disclosures have distinct leading icons", async ({

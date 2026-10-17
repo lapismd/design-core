@@ -70,18 +70,27 @@
                           ? entry.submission.text
                           : `${preview.text.trimEnd()}…`}
                       </p>{/if}
-                    {#if preview.truncated}<Button
-                        size="xs"
-                        variant="ghost"
-                        aria-controls={`${id}-${index}`}
-                        aria-expanded={expanded[entry.id] ?? false}
-                        onclick={() =>
-                          (expanded[entry.id] = !expanded[entry.id])}
-                        >{#if expanded[entry.id]}<ChevronDownIcon
-                          />{:else}<ChevronRightIcon />{/if}{expanded[entry.id]
-                          ? "See Less"
-                          : "See More"}</Button
-                      >{/if}
+                    {#if preview.truncated}<div
+                        class="ui-transcript-queue-fold"
+                      >
+                        <button
+                          type="button"
+                          aria-controls={`${id}-${index}`}
+                          aria-expanded={expanded[entry.id] ?? false}
+                          onclick={() =>
+                            (expanded[entry.id] = !expanded[entry.id])}
+                        >
+                          {#if expanded[entry.id]}<ChevronDownIcon
+                              size={16}
+                              aria-hidden="true"
+                            />{:else}<ChevronRightIcon
+                              size={16}
+                              aria-hidden="true"
+                            />{/if}{expanded[entry.id]
+                            ? "See Less"
+                            : "See More"}
+                        </button><span></span>
+                      </div>{/if}
                     {#each entry.submission.comments as comment (comment.commentId)}<blockquote
                       >
                         <span>{comment.author.name}: </span>{comment.text}

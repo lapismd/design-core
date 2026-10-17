@@ -13,10 +13,12 @@
     member,
     size = "xsmall",
     decorative = true,
+    interactive = true,
   }: {
     member: TranscriptAuthor;
     size?: string;
     decorative?: boolean;
+    interactive?: boolean;
   } = $props();
   const context = getContext<TranscriptAuthorContext | undefined>(
     authorContext,
@@ -35,10 +37,10 @@
       ? {}
       : { background: member.background }}
     {decorative}
-    style={`--ui-avatar-size: ${size === "inline" ? "1rem" : "1.5rem"}`}
+    style={`--ui-avatar-size: ${size === "inline" ? "1rem" : size === "medium" ? "2.25rem" : "1.5rem"}`}
   />
 {/snippet}
-{#if context?.popover}
+{#if interactive && context?.popover}
   <Popover.Root bind:open>
     <Popover.Trigger
       class="ui-transcript-author-trigger"

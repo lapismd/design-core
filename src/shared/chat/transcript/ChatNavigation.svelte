@@ -185,7 +185,7 @@
   function jumpToEnd() {
     if (!root) return;
     const draft = root.querySelector<HTMLElement>(
-      "[data-chat-next-message] [role='textbox']",
+      "[data-transcript-composer] [role='textbox']:not([aria-readonly='true']):not([contenteditable='false']):not(:disabled):not([aria-disabled='true'])",
     );
     (draft ?? target(items.at(-1)?.id ?? ""))?.focus({ preventScroll: true });
     close();

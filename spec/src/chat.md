@@ -5,6 +5,23 @@ remain implemented in their current owners and are re-exported through `/chat`,
 including ToolCallDetail, RichToolCallDetail and their normalized presentation types
 (DC-AI-025).
 
+### Presentation notes
+
+Classic presentation uses the shared Message primitive with an author/role header,
+larger avatar and hover surface while retaining the document's mounted readers.
+Optional metadata includes edited state, reply participants/count and a host reply
+callback, with display timestamps separate from valid machine-readable dates.
+Reply contexts have one padded outer border around the quote and comment list.
+Jump to end focuses the enabled composer when present, otherwise the last item.
+The full-conversation example retains multiline Enter in either view.
+
+### Composition notes
+
+MarkdownComposer can expose its live formatting/emoji actions through a bound
+snippet for a fixed footer, removing the inline duplicate while retaining editor
+selection and releasing the snippet on teardown. Long queued messages use the
+compact fold row with a trailing divider.
+
 ## Public surface coverage
 
 | Surface                             | Public boundary             | Requirement |
@@ -20,6 +37,7 @@ including ToolCallDetail, RichToolCallDetail and their normalized presentation t
 | Transcript Footer and Message Queue | `@lapismd/design-core/chat` | DC-CHAT-009 |
 | Prompt Context                      | `@lapismd/design-core/chat` | DC-CHAT-010 |
 | Sent Context                        | `@lapismd/design-core/chat` | DC-CHAT-011 |
+| Versioned comment editing           | `@lapismd/design-core/chat` | DC-CHAT-012 |
 
 ## DC-CHAT-001 — Markdown Content
 
@@ -93,7 +111,7 @@ including ToolCallDetail, RichToolCallDetail and their normalized presentation t
 
 ### Acceptance details
 
-- Selection, keyboard, typing, paste and IME MUST create equivalent exact anchors; multiple comments and whole-section anchors MUST retain drafts through folding and raw/rich transitions, and collapsed files/tools/sections MUST show all nonempty current discussion entries, including replies, in their original order without duplicating historical versions.
+- Selection, keyboard, typing, paste and IME MUST create equivalent exact anchors; multiple comments and whole-section anchors MUST retain drafts through folding and raw/rich transitions, and collapsed files/tools/sections MUST show only the last nonempty current root comment per anchored discussion, with earlier comments restored on expansion and agent responses retained in their linked messages.
 - Changed or missing sources MUST retain quotes and unavailable explanations, and source navigation MUST reveal folded content before restoring selection and focus.
 - Comment editors MUST compose CommentComposer, retain host typography and block edits/submission while disabled or sending.
 - Unavailable-source status MUST reuse Composer's curved status banner with host-selected semantic colour and top/bottom placement, while retaining the exact quote and explanation.
@@ -114,10 +132,21 @@ including ToolCallDetail, RichToolCallDetail and their normalized presentation t
 
 ### Acceptance details
 
-- TranscriptFooter MUST select Send, Queue or Stop from host-supplied busy/content/pending state, preserve accessible names and keyboard activation, and accept custom actions, workspace content and controls without executing agent operations.
+- TranscriptFooter MUST select Send, Queue or Stop from host-supplied busy/content/pending state, use jj-store's paper-plane icon for idle Send, upward arrow for Queue and square for Stop, preserve accessible names and keyboard activation, and accept custom actions, workspace content and controls without executing agent operations.
 - MessageQueue MUST retain exact immutable submission text/comments, recipients, cancellation/error/unknown states and expansion; callbacks request host actions and MUST NOT remove entries or infer delivery.
-- Transcript examples MUST show busy-agent message queues, comments-only submission, retained/rejected drafts, extensible footer controls and reaction addition/toggling including custom emoji and disabled controls.
+- Transcript examples MUST show busy-agent message queues, comments-only submission, retained/rejected drafts, extensible footer controls and reaction addition/toggling including custom emoji and disabled controls; the full conversation MUST demonstrate a host-acknowledged stop returning to idle and a new idle submission starting a busy response.
 - Footer and reactions MUST work with externally owned TranscriptController instances; MarkdownComposer MUST allow its send control to be omitted when the fixed footer owns sending, without losing editor identity or formatting controls.
+
+## DC-CHAT-012 — Editing acknowledged comments
+
+**Requirement.** TranscriptController MUST preserve acknowledged comments while submitting host-authorized, versioned replacement drafts.
+
+### Acceptance details
+
+- Editing MUST require an available source, an authored current sent/replied comment with a host version and explicit host capability, and MUST resume an existing replacement draft rather than duplicate it.
+- Submission MUST include the exact original comment/message/version identity without mutating the acknowledged text or source anchor.
+- Only explicit publication acknowledgement MAY retire the replaced version, while rejection, queued delivery and unknown outcomes retain it alongside the replacement draft or pending version.
+- Acknowledgement MUST preserve newer draft edits and use host-returned comment versions for subsequent editing, with missing versions preventing another edit until the host supplies one.
 
 ## DC-CHAT-010 — XML prompt context
 

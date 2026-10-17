@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { tick, untrack } from "svelte";
+  import { tick, untrack, type Snippet } from "svelte";
   import recordedSession from "./reference/capture.stories.fixture.json";
   import { deltaChatItems } from "./reference/adapter.stories.fixture.js";
   import { referenceDiscussions } from "./reference/discussions.stories.fixture.js";
@@ -30,6 +30,7 @@
   import SegmentedControl from "../../forms/segmented-control/SegmentedControl.svelte";
   import type { TranscriptItem, TranscriptSubmissionResult } from "./model.js";
   let { scenario = "document" }: { scenario?: string } = $props();
+  let inputActions = $state<Snippet>();
   let view = $state<"document" | "classic">(
     untrack(() => (scenario === "classic" ? "classic" : "document")),
   );
@@ -239,6 +240,7 @@
     items,
     author,
     canComment: true,
+    canEditComment: () => true,
     unavailableStatus:
       scenario === "status-bottom"
         ? { type: "error", message: "Original content unavailable or changed." }
@@ -252,6 +254,7 @@
           publication: "refused",
           error: "Host refused this submission. Drafts retained.",
         };
+      const queueSubmission = busy || scenario === "queued";
       if (busy)
         queued = [
           ...queued,
@@ -266,9 +269,13 @@
       result = snapshot.comments.length
         ? `${snapshot.comments.length} comments submitted`
         : "Message submitted";
+      if (scenario === "full") busy = true;
       return {
-        publication: busy || scenario === "queued" ? "queued" : "published",
+        publication: queueSubmission ? "queued" : "published",
         batchId: snapshot.id,
+        commentVersions: Object.fromEntries(
+          snapshot.comments.map((c) => [c.commentId, `demo-${snapshot.id}`]),
+        ),
       };
     },
   }));
@@ -421,7 +428,25 @@
           }
         : item,
     );
-    controller.threads = projected.threads;
+    controller.threads = projected.threads.map((thread) => ({
+      ...thread,
+      comments: thread.comments.map((comment) => ({
+        ...comment,
+        version: "demo-v1",
+      })),
+    }));
+    items = items.map((item, index) =>
+      index === 0
+        ? {
+            ...item,
+            timestamp: "12:00",
+            createdAt: "2026-10-08T12:00:00Z",
+            edited: true,
+            replyCount: 2,
+            replyParticipants: [author, agent],
+          }
+        : item,
+    );
     busy = true;
     agentLabel = "Codex";
     queued = [
@@ -439,6 +464,39 @@
     reactions = {
       [items[0]!.id]: [{ emoji: "👍", count: 2, selected: false }],
     };
+  });
+  untrack(() => {
+    if (scenario !== "edit") return;
+    items = items.map((item) =>
+      item.id === "prompt"
+        ? {
+            ...item,
+            timestamp: "12:00",
+            createdAt: "2026-10-08T12:00:00Z",
+            edited: true,
+            replyCount: 2,
+            replyParticipants: [author, agent],
+          }
+        : item,
+    );
+    controller.threads = [
+      {
+        id: "editable-thread",
+        label: prose.label,
+        sourceKind: "markdown",
+        anchor: commentAnchor(prose, { from: 0, to: 0 }),
+        comments: [
+          {
+            id: "editable-comment",
+            messageId: "saved-comment",
+            version: "v1",
+            author,
+            text: "Review the schedule before changing defaults.",
+            status: "sent",
+          },
+        ],
+      },
+    ];
   });
   function stream() {
     items = items.map((item) =>
@@ -488,7 +546,8 @@
       >{/if}
     {#if scenario === "full"}<small class="transcript-fixture-provenance"
         >Recorded Delta session: Add configurable screen lock overlay · 30
-        captured tools. Review comments, replies and queue are labelled demos.</small
+        captured tools. Metadata, review comments, replies and queue are
+        demonstrations.</small
       >{/if}
     {#if scenario === "full"}<SegmentedControl
         value={view}
@@ -558,6 +617,9 @@
           ],
         }}
         {view}
+        onOpenThread={(item) => {
+          result = `Open replies for ${item.label}`;
+        }}
         loading={scenario === "loading"}
         history={scenario === "retry" ? "retry" : undefined}
         onLoadHistory={prepend}
@@ -586,11 +648,17 @@
             {busy}
             {stopping}
             onStop={() => {
+              if (scenario === "full") {
+                busy = false;
+                stopping = false;
+                result = "Agent stopped";
+                return;
+              }
               stopping = true;
               result = "Stop requested; awaiting host confirmation";
             }}
           >
-            {#snippet actions()}<Button
+            {#snippet actions()}{@render inputActions?.()}<Button
                 variant="ghost"
                 size="icon-sm"
                 aria-label="Attach context"
@@ -628,6 +696,9 @@
           </TranscriptFooter>{/snippet}
         {#snippet composer(currentView)}<MarkdownComposer
             bind:value={controller.message}
+            dockActions
+            bind:documentActions={inputActions}
+            submitOnEnter={false}
             presentation={currentView === "document" ? "document" : "framed"}
             showSendButton={false}
             disabled={controller.sending || !!controller.retainedSubmission}

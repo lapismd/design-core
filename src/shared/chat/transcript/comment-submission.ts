@@ -31,6 +31,9 @@ export async function send(state: TranscriptController) {
           anchor: Object.freeze({ ...thread.anchor }),
           author: Object.freeze({ ...comment.author }),
           text: comment.text,
+          ...(comment.editOf
+            ? { editOf: Object.freeze({ ...comment.editOf }) }
+            : {}),
         }),
       ),
     ),
@@ -52,7 +55,11 @@ export async function send(state: TranscriptController) {
     if (outcome?.publication === "unknown" || outcome?.recoveryRequired) {
       state.retainedSubmission = submission;
       if (outcome.publication === "published")
-        state.markPublished(submission, outcome.batchId);
+        state.markPublished(
+          submission,
+          outcome.batchId,
+          outcome.commentVersions,
+        );
       state.error =
         outcome.error ??
         "Publication is awaiting confirmation. Check the retained request.";
@@ -65,6 +72,12 @@ export async function send(state: TranscriptController) {
         comment.status = outcome?.publication === "queued" ? "queued" : "sent";
       comment.batchId = outcome?.batchId ?? submission.id;
     }
+    if (outcome.publication === "published")
+      state.markPublished(
+        submission,
+        outcome.batchId ?? submission.id,
+        outcome.commentVersions,
+      );
     if (state.message === submission.text) state.message = "";
     state.error = outcome?.error ?? "";
     state.active = undefined;
@@ -91,12 +104,23 @@ export function markPublished(
   state: TranscriptController,
   submission: TranscriptSubmission,
   batchId?: string,
+  versions?: Readonly<Record<string, string>>,
 ) {
   for (const entry of submission.comments) {
     const comment = state.findComment(entry.commentId);
     if (comment && comment.text === entry.text) {
       if (comment.status !== "replied") comment.status = "sent";
       comment.batchId = batchId ?? submission.id;
+      if (entry.editOf) {
+        const original = state.findComment(entry.editOf.commentId);
+        if (
+          original?.version === entry.editOf.version &&
+          (original.messageId ?? original.id) === entry.editOf.messageId
+        )
+          original.historical = true;
+      }
+      if (versions?.[entry.commentId])
+        comment.version = versions[entry.commentId];
     }
   }
 }
@@ -139,7 +163,11 @@ export function recover(
     return;
   }
   if (result.publication === "published") {
-    state.markPublished(state.retainedSubmission, result.batchId);
+    state.markPublished(
+      state.retainedSubmission,
+      result.batchId,
+      result.commentVersions,
+    );
     if (!result.recoveryRequired) {
       state.confirmPublication(id, true, result.batchId);
       return;

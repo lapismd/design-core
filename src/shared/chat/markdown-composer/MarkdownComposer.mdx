@@ -62,3 +62,12 @@ presentation additionally supports `--ui-markdown-composer-document-min-height`,
 an unindented document. Its maximum height is unbounded unless explicitly set.
 Both presentations start at the leading edge of their text column. No Tailwind
 tooling is required.
+
+## Docked document toolbar
+
+Set `dockActions` and bind `documentActions` to a `Snippet | undefined` state,
+then render it once in a fixed footer (for example `TranscriptFooter actions={documentActions}`).
+Only document presentation docks the toolbar; framed presentation keeps it inline.
+Formatting and emoji insertion keep the editor selection, and teardown clears
+only the snippet owned by that composer. Set `submitOnEnter={false}` to keep
+multiline Enter when switching presentations.
