@@ -107,3 +107,35 @@ Final logs: `/tmp/dc-community-release-gates.log`,
 `/tmp/dc-community-shadcn-qualified2.log`,
 `/tmp/dc-community-browser-recheck.log` and
 `/tmp/dc-community-parent-workspace-all.log`.
+
+## Local main-workspace integration
+
+On 17 October 2026 the user requested landing this slice in the main workspace.
+The feature was rebased onto exact main-workspace parent `aedd61d88d5f`, preserving
+the newer Transcript collapsed-comment and footer-state repairs. No conflicts
+or implementation edits were needed. `jj interdiff` between original feature
+`6230d903f6f8` and rebased feature `c7c042f2` reports zero changed files.
+
+Combined-tree qualification:
+
+- `pnpm checks:release` passed: canonical checks, all four type lanes, native
+  CSS, 815 unit tests, release-helper tests, production Storybook and visual
+  metadata with zero contract errors.
+- `pnpm test:storybook --no-file-parallelism`: 825 passed, one dropdown-menu
+  pointer-events failure. Its unchanged exact story file then passed 2/2 with
+  the same command restricted to `DropdownMenuConsumer.stories.svelte`. All
+  826 catalog cases have passing evidence; the initial retry is retained here.
+- A fresh Storybook process on port 10019 passed all 42 native browser cases
+  across `community-components`, `transcript`, `transcript-parity`,
+  `transcript-review` and `transcript-view`.
+- The seven parent-reproducing Workspace failures remain explicitly deferred
+  by the user's earlier acceptance. No assertions or baselines were changed.
+
+Logs: `/tmp/dc-community-land-release.log`,
+`/tmp/dc-community-land-stories.log`,
+`/tmp/dc-community-land-dropdown-retry.log` and
+`/tmp/dc-community-land-browser.log`.
+
+The clean default workspace advances onto this combined stack. Other workspaces,
+the published `main` bookmark, package versions and consumer repositories are
+preserved. This local integration includes no push or publication.
